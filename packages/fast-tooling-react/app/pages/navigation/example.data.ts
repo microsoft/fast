@@ -5,27 +5,27 @@ import { DataDictionary } from "@microsoft/fast-tooling";
 const noChildren: any = {
     text: "Hello world",
 };
-
 const children: DataDictionary<any> = [
     {
-        "": {
+        foo: {
             schemaId: childrenSchema.id,
             data: {
                 children: [
                     {
-                        id: "children[0]",
-                        dataLocation: "children",
+                        id: "bar",
                     },
                     {
-                        id: "children[1]",
-                        dataLocation: "children",
+                        id: "bat",
+                    },
+                    {
+                        id: "baz",
                     },
                 ],
             },
         },
-        "children[0]": {
+        bar: {
             parent: {
-                id: "",
+                id: "foo",
                 dataLocation: "children",
             },
             schemaId: noChildrenSchema.id,
@@ -33,9 +33,9 @@ const children: DataDictionary<any> = [
                 text: "bar",
             },
         },
-        "children[1]": {
+        bat: {
             parent: {
-                id: "",
+                id: "foo",
                 dataLocation: "children",
             },
             schemaId: noChildrenSchema.id,
@@ -43,8 +43,16 @@ const children: DataDictionary<any> = [
                 text: "bat",
             },
         },
+        baz: {
+            parent: {
+                id: "foo",
+                dataLocation: "children",
+            },
+            schemaId: childrenSchema.id,
+            data: {},
+        },
     },
-    "",
+    "foo",
 ];
 
 export { children, noChildren };

@@ -8,6 +8,7 @@ import {
 } from "../../src/form/types";
 import * as testConfigs from "./form/";
 import {
+    DataDictionary,
     getDataFromSchema,
     MessageSystem,
     MessageSystemType,
@@ -19,6 +20,7 @@ export type componentDataOnChange = (e: React.ChangeEvent<HTMLFormElement>) => v
 export interface FormTestPageState {
     schema: any;
     data: any;
+    dataDictionary: DataDictionary<unknown>;
     navigation: any;
     attributeAssignment?: FormAttributeSettingsMappingToPropertyNames;
     showExtendedControls: boolean;
@@ -73,6 +75,15 @@ class FormAndNavigationTestPage extends React.Component<{}, FormTestPageState> {
         this.state = {
             schema: testConfigs.textField.schema,
             data: exampleData,
+            dataDictionary: [
+                {
+                    "": {
+                        schemaId: testConfigs.textField.schema.id,
+                        data: exampleData,
+                    },
+                },
+                "",
+            ],
             navigation: void 0,
             showExtendedControls: false,
             dataLocation: "",
@@ -134,7 +145,7 @@ class FormAndNavigationTestPage extends React.Component<{}, FormTestPageState> {
                                 borderRadius: "4px",
                             }}
                         >
-                            {JSON.stringify(this.state.data, null, 2)}
+                            {JSON.stringify(this.state.dataDictionary, null, 2)}
                         </pre>
                         <pre>{this.state.dataLocation}</pre>
                     </div>
@@ -246,6 +257,7 @@ class FormAndNavigationTestPage extends React.Component<{}, FormTestPageState> {
                 if (e.data.data && e.data.navigation) {
                     this.setState({
                         data: e.data.data,
+                        dataDictionary: e.data.dataDictionary,
                         navigation: e.data.navigation,
                     });
                 }
@@ -253,12 +265,14 @@ class FormAndNavigationTestPage extends React.Component<{}, FormTestPageState> {
                 if (e.data.data) {
                     this.setState({
                         data: e.data.data,
+                        dataDictionary: e.data.dataDictionary,
                     });
                 }
             case MessageSystemType.navigation:
                 if (e.data.navigation) {
                     this.setState({
                         data: e.data.navigation,
+                        dataDictionary: e.data.dataDictionary,
                     });
                 }
         }

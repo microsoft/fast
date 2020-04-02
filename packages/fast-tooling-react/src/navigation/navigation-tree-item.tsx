@@ -4,141 +4,107 @@ import {
     ConnectDragSource,
     ConnectDropTarget,
     DragElementWrapper,
+    DragObjectWithType,
     DragPreviewOptions,
     DragSourceOptions,
     DropTargetMonitor,
     useDrag,
     useDrop,
 } from "react-dnd";
-import { TreeNavigationItem } from "@microsoft/fast-tooling";
-
-function getStyle(
-    isOver: boolean,
-    isDragging: boolean,
-    isCurrentDragItem: boolean,
-    type: DragDropItemType
-): React.CSSProperties {
-    return (isOver && type === DragDropItemType.linkedData) ||
-        (isDragging && isCurrentDragItem)
-        ? {
-              opacity: 0,
-          }
-        : null;
-}
+import { HoverLocation } from "./navigation.props";
 
 function treeItemEndLeaf(
-    linkClassName: (dragging: boolean, canDrag: boolean) => string,
-    isOver: boolean,
-    isDragging: boolean,
-    isCurrentDragItem: boolean,
-    isDraggable: boolean,
-    dictionaryId: string,
-    navigationConfigId: string,
     handleClick: React.MouseEventHandler<HTMLElement>,
     handleKeyDown: React.KeyboardEventHandler<HTMLElement>,
-    item: TreeNavigationItem,
-    type?: DragDropItemType,
+    className: string,
+    children: React.ReactNode,
+    dictionaryId: string,
+    navigationConfigId: string,
     ref?: (node: HTMLAnchorElement) => React.ReactElement<any>
 ): React.ReactElement {
     return (
         <a
-            ref={ref}
-            style={getStyle(isOver, isDragging, isCurrentDragItem, type)}
-            className={linkClassName(isDragging, isDraggable)}
-            role={"treeitem"}
+            className={className}
             onClick={handleClick}
-            data-dictionaryid={dictionaryId}
-            data-navigationconfigid={navigationConfigId}
+            ref={ref}
             tabIndex={0}
             onKeyDown={handleKeyDown}
+            data-dictionaryid={dictionaryId}
+            data-navigationconfigid={navigationConfigId}
         >
-            <span>{item.text}</span>
+            {children}
         </a>
     );
 }
 
 function treeItemCollapsible(
-    isOver: boolean,
-    contentClassName: (dragging: boolean, canDrag: boolean) => string,
-    isDragging: boolean,
-    isCurrentDragItem: boolean,
-    isDraggable: boolean,
-    expanded: boolean,
+    handleClick: React.MouseEventHandler<HTMLElement>,
+    handleKeyDown: React.KeyboardEventHandler<HTMLElement>,
+    className: string,
     children: React.ReactNode,
-    type?: DragDropItemType,
-    ref?: (node: HTMLDivElement) => React.ReactElement<any>
+    dictionaryId: string,
+    navigationConfigId: string,
+    ref?: (node: HTMLSpanElement) => React.ReactElement<any>
 ): React.ReactElement {
     return (
-        <div
+        <span
+            className={className}
+            onClick={handleClick}
             ref={ref}
-            style={getStyle(isOver, isDragging, isCurrentDragItem, type)}
-            className={contentClassName(isDragging, isDraggable)}
-            role={"treeitem"}
-            aria-expanded={expanded}
+            tabIndex={0}
+            onKeyDown={handleKeyDown}
+            data-dictionaryid={dictionaryId}
+            data-navigationconfigid={navigationConfigId}
         >
             {children}
-        </div>
+        </span>
     );
 }
 
 export const NavigationTreeItem: React.FC<NavigationTreeItemProps> = ({
     children,
-    contentClassName,
-    linkClassName,
-    item,
-    isDragging,
-    isCurrentDragItem,
-    isDraggable,
+    className,
+    isCollapsible,
     handleClick,
+    handleKeyDown,
     dictionaryId,
     navigationConfigId,
-    handleKeyDown,
-    expanded,
-    isOver,
 }: React.PropsWithChildren<NavigationTreeItemProps>): React.ReactElement => {
-    return children[1].length !== 0
+    return isCollapsible
         ? treeItemCollapsible(
-              isOver,
-              contentClassName,
-              isDragging,
-              isCurrentDragItem,
-              isDraggable,
-              expanded,
-              children
-          )
-        : treeItemEndLeaf(
-              linkClassName,
-              isOver,
-              isDragging,
-              isCurrentDragItem,
-              isDraggable,
-              dictionaryId,
-              navigationConfigId,
               handleClick,
               handleKeyDown,
-              item
+              className,
+              children,
+              dictionaryId,
+              navigationConfigId
+          )
+        : treeItemEndLeaf(
+              handleClick,
+              handleKeyDown,
+              className,
+              children,
+              dictionaryId,
+              navigationConfigId
           );
 };
 
 export const DraggableNavigationTreeItem: React.FC<NavigationTreeItemProps> = ({
     type,
     children,
-    contentClassName,
-    linkClassName,
-    item,
-    isDragging,
-    isCurrentDragItem,
-    isDraggable,
     handleClick,
+    handleKeyDown,
+    className,
+    isCollapsible,
+    dragStart,
+    dragEnd,
+    dragHover,
     dictionaryId,
     navigationConfigId,
-    handleKeyDown,
-    expanded,
-    moveDragItem,
-    dropDragItem,
-    dragEnd,
-    dragStart,
+    index,
 }: React.PropsWithChildren<NavigationTreeItemProps>): React.ReactElement => {
+    let ref: HTMLAnchorElement | HTMLSpanElement | null = null;
+
     const drag: [
         unknown,
         DragElementWrapper<DragSourceOptions>,
@@ -151,6 +117,8 @@ export const DraggableNavigationTreeItem: React.FC<NavigationTreeItemProps> = ({
             dragStart(dictionaryId);
         },
         end(): void {
+            // TODO: investigate why when not dropped on a drop target this takes extra time to respond
+            // see issue: https://github.com/microsoft/fast-dna/issues/2867
             dragEnd();
         },
     });
@@ -162,55 +130,60 @@ export const DraggableNavigationTreeItem: React.FC<NavigationTreeItemProps> = ({
         DragElementWrapper<any>
     ] = useDrop({
         accept: [DragDropItemType.linkedData],
-        hover(): void {
-            moveDragItem(type, dictionaryId, navigationConfigId);
-        },
-        drop(): void {
-            dropDragItem(type);
+        hover(item: DragObjectWithType, monitor: DropTargetMonitor): void {
+            const dragItemOffsetY: number = monitor.getClientOffset().y;
+            const dropItemBoundingClientRect: DOMRect = ref.getBoundingClientRect() as DOMRect;
+            let hoverLocation: HoverLocation = HoverLocation.before;
+
+            if (
+                dropItemBoundingClientRect.y + dropItemBoundingClientRect.height / 2 <
+                dragItemOffsetY
+            ) {
+                hoverLocation = HoverLocation.after;
+            }
+
+            dragHover(type, dictionaryId, navigationConfigId, index, hoverLocation);
         },
         collect: (monitor: DropTargetMonitor): { isOver: boolean } => ({
             isOver: monitor.isOver(),
         }),
     });
     const dropTarget: ConnectDropTarget = drop[1];
-    const isOver: boolean = drop[0].isOver;
 
-    return children[1].length !== 0
+    function refNode(node: HTMLSpanElement | HTMLAnchorElement): React.ReactElement {
+        switch (type) {
+            case DragDropItemType.linkedData:
+                return dragSource(dropTarget(node));
+            case DragDropItemType.linkedDataContainer:
+                return dropTarget(node);
+            case DragDropItemType.default:
+                return <React.Fragment>{node}</React.Fragment>;
+        }
+    }
+
+    return isCollapsible
         ? treeItemCollapsible(
-              isOver,
-              contentClassName,
-              isDragging,
-              isCurrentDragItem,
-              isDraggable,
-              expanded,
+              handleClick,
+              handleKeyDown,
+              className,
               children,
-              type,
-              (node: HTMLDivElement): React.ReactElement => {
-                  if (type === DragDropItemType.linkedData) {
-                      dragSource(dropTarget(node));
-                  }
-
-                  return dropTarget(node);
+              dictionaryId,
+              navigationConfigId,
+              (node: HTMLSpanElement): React.ReactElement => {
+                  ref = node;
+                  return refNode(node);
               }
           )
         : treeItemEndLeaf(
-              linkClassName,
-              isOver,
-              isDragging,
-              isCurrentDragItem,
-              isDraggable,
-              dictionaryId,
-              navigationConfigId,
               handleClick,
               handleKeyDown,
-              item,
-              type,
+              className,
+              children,
+              dictionaryId,
+              navigationConfigId,
               (node: HTMLAnchorElement): React.ReactElement => {
-                  if (type === DragDropItemType.linkedData) {
-                      dragSource(dropTarget(node));
-                  }
-
-                  return dropTarget(node);
+                  ref = node;
+                  return refNode(node);
               }
           );
 };
