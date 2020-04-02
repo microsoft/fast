@@ -74,7 +74,7 @@
     "rollup": "^1.18.0",
     "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-typescript": "^1.0.1",
-    "ts-jest": "^23.10.5",
+    "ts-jest": "^25.3.0",
     "tslib": "^1.10.0",
     "tslint": "^5.9.1",
     "tslint-config-prettier": "^1.15.0",

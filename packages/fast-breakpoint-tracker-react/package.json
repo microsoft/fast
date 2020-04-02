@@ -77,7 +77,7 @@
     "react": "^16.8.0",
     "react-dom": "^16.8.0",
     "react-test-renderer": "^16.2.0",
-    "ts-jest": "^24.0.0",
+    "ts-jest": "^25.3.0",
     "tslint": "^5.9.1",
     "tslint-config-prettier": "^1.15.0",
     "typescript": "3.3.3",
