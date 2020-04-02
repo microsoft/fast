@@ -72,7 +72,6 @@ class Navigation extends Foundation<
             dataDictionary: null,
             activeItem: null,
             expandedNavigationConfigItems: {},
-            isDragging: false,
             linkedData: void 0,
             linkedDataLocation: null,
             hoveredItem: null,
@@ -415,7 +414,6 @@ class Navigation extends Foundation<
     private handleDragStart = (index: number): ((dictionaryId: string) => void) => {
         return (dictionaryId: string): void => {
             this.setState({
-                isDragging: true,
                 linkedData: this.state.dataDictionary[0][dictionaryId],
                 linkedDataLocation: [
                     this.state.navigationDictionary[0][dictionaryId][0][
@@ -463,7 +461,6 @@ class Navigation extends Foundation<
         });
 
         this.setState({
-            isDragging: false,
             hoveredItem: null,
         });
     };
@@ -502,6 +499,13 @@ class Navigation extends Foundation<
                         ? index
                         : index + 1,
             ],
+            linkedData: {
+                ...this.state.linkedData,
+                parent: {
+                    id: parentDictionaryId,
+                    dataLocation: parentDataLocation,
+                },
+            },
         });
     };
 

@@ -51,11 +51,6 @@ export interface NavigationState {
     dataDictionary: DataDictionary<unknown>;
 
     /**
-     * The dragging state
-     */
-    isDragging: boolean;
-
-    /**
      * The linked data currently being dragged
      */
     linkedData: Data<unknown>;
