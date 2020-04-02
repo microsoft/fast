@@ -247,19 +247,18 @@ export class Slider extends FormAssociated<HTMLInputElement> {
 
     private clickHandler = (e: MouseEvent) => {
         if (!this.disabled && !this.readOnly) {
-            let trackElement: any = this.shadowRoot!.querySelector(".track");
-            this.trackWidth = trackElement.clientWidth;
+            this.trackWidth = this.track.clientWidth;
             if (this.trackWidth === 0) {
                 this.trackWidth = 1;
             }
-            this.trackMinWidth = trackElement.getBoundingClientRect().left;
-
             e.preventDefault();
             (e.target as HTMLElement).focus();
             window.addEventListener("mouseup", this.handleWindowMouseUp);
             window.addEventListener("mousemove", this.handleMouseMove);
 
-            this.value = `${this.calculateNewValue(e.pageX)}`;
+            const controlValue: number =
+                this.orientation === SliderOrientation.horizontal ? e.pageX : e.pageY;
+            this.value = `${this.calculateNewValue(controlValue)}`;
             this.updateForm();
         }
     };
@@ -272,6 +271,7 @@ export class Slider extends FormAssociated<HTMLInputElement> {
                 : value - remainderVal;
 
         if (constrainedVal < this.min || constrainedVal > this.max) {
+            // TODO here until we figure out how this happens
             console.log("Error invalid value for slider:", constrainedVal);
             return Number(this.value);
         } else {
