@@ -11,4 +11,5 @@ FASTDesignSystemProvider;
 export default {
     title: "Slider",
 };
-export const Base = () => Examples;
+
+export const Slider = () => Examples;

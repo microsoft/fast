@@ -10,9 +10,6 @@ import { convertPixelToPercent } from "./slider-utilities";
 
 export enum SliderMode {
     singleValue = "single-value",
-    adjustFromLower = "adjust-from-lower",
-    adjustFromUpper = "adjust-from-upper",
-    dualThumb = "dual-thumb",
 }
 
 export enum SliderOrientation {
@@ -59,7 +56,7 @@ export class Slider extends FormAssociated<HTMLInputElement> {
     public trackMinWidth: number = 0;
 
     /**
-     * The element's value to be included in form submission when checked.
+     * The element's value to be included in form submission changed.
      */
     @attr
     public value: string; // Map to proxy element.
@@ -85,7 +82,7 @@ export class Slider extends FormAssociated<HTMLInputElement> {
     }
 
     /**
-     * Min allowed value
+     * Min allowed value default is 0
      */
     @attr
     public min: number = 0; // Map to proxy element.
@@ -96,7 +93,7 @@ export class Slider extends FormAssociated<HTMLInputElement> {
     }
 
     /**
-     * Max allowed value
+     * Max allowed value default is 10
      */
     @attr
     public max: number = 10; // Map to proxy element.
@@ -106,6 +103,9 @@ export class Slider extends FormAssociated<HTMLInputElement> {
         }
     }
 
+    /**
+     * Value to increment or decrement via arrow keys, mouse click or drag
+     */
     @attr
     public step: number = 1; // Map to proxy element.
     private stepChanged(): void {
@@ -115,13 +115,13 @@ export class Slider extends FormAssociated<HTMLInputElement> {
     }
 
     /**
-     * Orientation value, horizontal or vertical
+     * Orientation value, horizontal | vertical
      */
     @attr
     public orientation: SliderOrientation = SliderOrientation.horizontal;
 
     /**
-     * mode value, singleValue | dualThumb | adjustFromUpper | adjustFromLower
+     * mode value, default singleValue
      */
     @attr
     public mode: SliderMode = SliderMode.singleValue;

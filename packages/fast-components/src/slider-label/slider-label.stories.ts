@@ -10,4 +10,4 @@ export default {
     title: "SliderLabel",
 };
 
-export const Base = () => Examples;
+export const SliderLabel = () => Examples;
