@@ -163,7 +163,7 @@ export class Slider extends FormAssociated<HTMLInputElement> {
     };
 
     private getDirection = (): string => {
-        const dirNode: any = this.parentElement!.closest("div[dir]");
+        const dirNode: any = this.parentElement!.closest("[dir]");
         return dirNode !== null && dirNode["dir"] === "rtl" ? "rtl" : "ltr";
     };
 
@@ -186,7 +186,7 @@ export class Slider extends FormAssociated<HTMLInputElement> {
     };
 
     private updateForm = (): void => {
-        this.proxy.value = this.value;
+        this.setFormValue(this.value, this.value);
     };
 
     /**
@@ -211,7 +211,9 @@ export class Slider extends FormAssociated<HTMLInputElement> {
             return;
         }
         // update the value based on current position
-        this.value = `${this.calculateNewValue(e.pageX)}`;
+        const eventValue: number =
+            this.orientation === SliderOrientation.horizontal ? e.pageX : e.pageY;
+        this.value = `${this.calculateNewValue(eventValue)}`;
         this.updateForm();
     };
 

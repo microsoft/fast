@@ -5,10 +5,12 @@ import { ref } from "@microsoft/fast-element/dist/directives";
 export const SliderTemplate = html<Slider>`
   <template
     role="slider"
-    tabindex="0"
+    tabindex="${x => (x.disabled ? null : 0)}"
     aria-valuenow="${x => x.value}"
     aria-valuemin="${x => x.min}"
     aria-valuemax="${x => x.max}"
+    aria-disabled="${x => x.disabled}"
+    aria-readonly="${x => x.readOnly}"
   >
     <div
           ${ref("root")}
