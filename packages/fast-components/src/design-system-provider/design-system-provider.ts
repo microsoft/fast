@@ -1,4 +1,4 @@
-import { FastElement, Observable } from "@microsoft/fast-element";
+import { FastElement, Observable, DOM } from "@microsoft/fast-element";
 import { DesignSystemConsumer, designSystemConsumer } from "../design-system-consumer";
 
 interface CustomPropertyDefinition {
@@ -251,8 +251,7 @@ function setCustomPropertyFactory(
             return;
         } else {
             ticking = true;
-
-            window.requestAnimationFrame(() => {
+            DOM.queueUpdate(() => {
                 ticking = false;
 
                 /* tslint:disable-next-line */
