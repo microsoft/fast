@@ -7,7 +7,7 @@ export const BadgeStyles = css`
         font-family: var(--body-font);
         ${/* Font size, weight, and line height are temporary - 
             replace when adaptive typography is figured out */ ""} font-size: 12px;
-        font-weight: 400px;
+        font-weight: 400;
         line-height: 18px;
     }
 
