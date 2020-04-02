@@ -163,7 +163,7 @@ export class Slider extends FormAssociated<HTMLInputElement> {
     };
 
     private getDirection = (): string => {
-        const dirNode: any = this.parentElement!.closest("[dir]");
+        const dirNode: HTMLElement | null = this.parentElement!.closest("[dir]");
         return dirNode !== null && dirNode["dir"] === "rtl" ? "rtl" : "ltr";
     };
 

@@ -9,10 +9,10 @@ export class SliderLabel extends FastElement {
     public root: HTMLDivElement;
 
     @attr
-    public max;
-
-    @attr
     public position: string;
+    private positionChanged(): void {
+        this.positionStyle = this.positionAsStyle();
+    }
 
     @attr({ attribute: "hide-mark", mode: "boolean" })
     public hideMark: boolean = false;
