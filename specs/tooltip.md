@@ -63,7 +63,7 @@ Tooltip widgets do not receive focus. A hover that contains focusable elements c
 
 ### Accessibility
 
-The interaction model for the tooltip should map to the [W3C interactioni model](https://w3c.github.io/aria-practices/#tooltip).
+The interaction model for the tooltip should map to the [W3C interaction model](https://w3c.github.io/aria-practices/#tooltip).
 
 Two important things to note:
 1. Focus stays on the triggering element while the tooltip is displayed.
