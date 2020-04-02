@@ -33,7 +33,6 @@ Extends FAST Element
 - `direction` - enum, previous or next. Defaults to next
 - `hiddenFromAT` - The control is hidden from assistive technology. Defaults to true
 - `disabled` - the control is disabled. There are scenarios where a flipper would be visible and disabled
-- `label` - the accessible label for the control, exposed to AT when not hidden
 
 *Events*
 - `click` - mimics the click event of traditional buttons
@@ -46,7 +45,6 @@ Extends FAST Element
     aria-hidden=${x => x.hiddenFromAT}
     aria-disabled=${x => x.disabled}
     tabindex=${x => x.hiddenFromAT ? -1 : 0}
-    aria-label=${x.label}
 >
     ${when(
         x => x.direction === "next",
