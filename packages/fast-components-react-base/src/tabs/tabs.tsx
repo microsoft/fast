@@ -8,6 +8,7 @@ import {
     keyCodeArrowUp,
     keyCodeEnd,
     keyCodeHome,
+    Orientation,
 } from "@microsoft/fast-web-utilities";
 import { get } from "lodash-es";
 import React from "react";
@@ -37,6 +38,7 @@ export interface TabsState {
 
 class Tabs extends Foundation<TabsHandledProps, TabsUnhandledProps, TabsState> {
     public static defaultProps: Partial<TabsProps> = {
+        orientation: Orientation.horizontal,
         disableTabFocus: false,
         managedClasses: {},
     };
@@ -316,18 +318,33 @@ class Tabs extends Foundation<TabsHandledProps, TabsUnhandledProps, TabsState> {
      * Handles the keydown event on the tab element
      */
     private handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>): void => {
-        switch (e.keyCode) {
-            case keyCodeArrowLeft:
-            case keyCodeArrowUp:
-                e.preventDefault();
-                this.activateTab(TabLocation.previous);
-                break;
-            case keyCodeArrowRight:
-            case keyCodeArrowDown:
-                e.preventDefault();
+        const keyCode: number = e.keyCode;
 
-                this.activateTab(TabLocation.next);
-                break;
+        if (this.props.orientation === Orientation.horizontal) {
+            switch (keyCode) {
+                case keyCodeArrowLeft:
+                    e.preventDefault();
+                    this.activateTab(TabLocation.previous);
+                    break;
+                case keyCodeArrowRight:
+                    e.preventDefault();
+                    this.activateTab(TabLocation.next);
+                    break;
+            }
+        } else {
+            switch (e.keyCode) {
+                case keyCodeArrowUp:
+                    e.preventDefault();
+                    this.activateTab(TabLocation.previous);
+                    break;
+                case keyCodeArrowDown:
+                    e.preventDefault();
+                    this.activateTab(TabLocation.next);
+                    break;
+            }
+        }
+
+        switch (keyCode) {
             case keyCodeHome:
                 this.activateTab(TabLocation.first);
                 break;

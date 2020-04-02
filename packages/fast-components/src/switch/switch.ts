@@ -1,10 +1,9 @@
 import { attr, observable } from "@microsoft/fast-element";
 import { FormAssociated } from "../form-associated";
 import { keyCodeSpace } from "@microsoft/fast-web-utilities";
-import { bool } from "../utilities";
 
 export class Switch extends FormAssociated<HTMLInputElement> {
-    @attr({ attribute: "readonly" })
+    @attr({ attribute: "readonly", mode: "boolean" })
     public readOnly: boolean; // Map to proxy element
     private readOnlyChanged(): void {
         if (this.proxy instanceof HTMLElement) {
@@ -16,10 +15,22 @@ export class Switch extends FormAssociated<HTMLInputElement> {
             : this.classList.remove("readonly");
     }
 
-    @attr({ attribute: "checked" })
-    public checkedAttribute: string | null;
+    /**
+     * The element's value to be included in form submission when checked.
+     * Default to "on" to reach parity with input[type="checkbox"]
+     */
+    @attr
+    public value: string = "on"; // Map to proxy element.
+    private valueChanged(): void {
+        if (this.proxy instanceof HTMLElement) {
+            this.proxy.value = this.value;
+        }
+    }
+
+    @attr({ attribute: "checked", mode: "boolean" })
+    public checkedAttribute: boolean;
     private checkedAttributeChanged(): void {
-        this.defaultChecked = typeof this.checkedAttribute === "string";
+        this.defaultChecked = this.checkedAttribute;
     }
 
     /**
@@ -96,7 +107,7 @@ export class Switch extends FormAssociated<HTMLInputElement> {
     };
 
     public clickHandler = (e: MouseEvent) => {
-        if (!bool(this.disabled) && !bool(this.readOnly)) {
+        if (!this.disabled && !this.readOnly) {
             this.checked = !this.checked;
         }
     };

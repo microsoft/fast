@@ -1,6 +1,7 @@
 import { css } from "@microsoft/fast-element";
 import { disabledCursor, display } from "../styles";
 import { focusVisible } from "../styles/focus";
+import { SystemColors } from "../styles/system-colors";
 
 export const TextFieldStyles = css`
     ${display("inline-block")} :host {
@@ -75,7 +76,7 @@ export const TextFieldStyles = css`
         margin-inline-end: 11px;
     }
 
-    :host(:hover:not([disabled])) .root {
+    :host(:hover:not(.disabled)) .root {
         background: var(--neutral-fill-input-hover);
         border-color: var(--neutral-outline-hover);
     }
@@ -90,19 +91,42 @@ export const TextFieldStyles = css`
         border-color: transparent;
     }
 
-    :host(.filled:hover:not([disabled])) .root {
+    :host(.filled:hover:not(.disabled)) .root {
         background: var(--neutral-fill-hover);
         border-color: transparent;
     }
 
-    :host([disabled]) .label,
-    :host([readonly]) .label,
-    :host([readonly]) .control,
-    :host([disabled]) .control {
+    :host(.disabled) .label,
+    :host(.readonly) .label,
+    :host(.readonly) .control,
+    :host(.disabled) .control {
         cursor: ${disabledCursor};
     }
 
-    :host([disabled]) {
+    :host(.disabled) {
         opacity: var(--disabled-opacity);
+    }
+
+    @media (forced-colors: active) {
+        .root, :host(.filled) .root {
+            forced-color-adjust: none;
+            background: ${SystemColors.Field};
+            border-color: ${SystemColors.FieldText};
+        }
+
+        :host(.disabled) {
+            opacity: 1;
+        }
+        
+        :host(.disabled) .root {
+            border-color: ${SystemColors.GrayText};
+            background: ${SystemColors.Field};
+        }
+
+        
+        :host(:focus-within) .root {
+            border-color: ${SystemColors.Highlight};
+            box-shadow: 0 0 0 1px ${SystemColors.Highlight} inset;
+        }
     }
 `;

@@ -60,14 +60,14 @@ export const Observable = {
                 Observable.track(this, propertyName);
                 return this[fieldName];
             },
-            set: function(this: any, value) {
+            set: function(this: any, newValue) {
                 const oldValue = this[fieldName];
 
-                if (oldValue !== value) {
-                    this[fieldName] = value;
+                if (oldValue !== newValue) {
+                    this[fieldName] = newValue;
 
                     if (hasCallback) {
-                        this[callbackName]();
+                        this[callbackName](oldValue, newValue);
                     }
 
                     Observable.notify(this, propertyName);
