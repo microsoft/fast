@@ -97,7 +97,7 @@
     "eyes.selenium": "3.6.2",
     "glob": "^7.1.2",
     "husky": "^1.1.2",
-    "jest": "^24.5.0",
+    "jest": "^25.2.4",
     "lerna": "3.18.2",
     "lint-staged": "^10.1.1",
     "markdown-it": "^8.4.1",
