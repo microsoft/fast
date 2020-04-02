@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.5.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-element@0.4.0...@microsoft/fast-element@0.5.0) (2020-04-02)
+
+
+### Features
+
+* **fast-element:** add trusted types for HTML ([#2855](https://github.com/Microsoft/fast-dna/issues/2855)) ([69d44a2](https://github.com/Microsoft/fast-dna/commit/69d44a289ce6ca43a7f536edb600af61f453728f))
+
+
+
+
+
 # [0.4.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-element@0.3.1...@microsoft/fast-element@0.4.0) (2020-03-30)
 
 

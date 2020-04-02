@@ -2,7 +2,7 @@ import { TabsClassNameContract } from "@microsoft/fast-components-class-name-con
 import { CarouselClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import { Tabs, TabsItem } from "@microsoft/fast-components-react-base";
-import { classNames } from "@microsoft/fast-web-utilities";
+import { classNames, Orientation } from "@microsoft/fast-web-utilities";
 import { canUseDOM } from "exenv-es6";
 import { get, isNil } from "lodash-es";
 import React from "react";
@@ -113,6 +113,7 @@ class Carousel extends Foundation<
                     onUpdate={this.handleUpdate}
                     items={this.slides as TabsItem[]}
                     managedClasses={this.generateTabsClassNames()}
+                    orientation={Orientation.horizontal}
                     disableTabFocus={this.props.autoplay}
                 />
                 {this.generateNextFlipper()}
