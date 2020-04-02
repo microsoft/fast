@@ -34,7 +34,9 @@ export const DOM = Object.freeze({
     },
 
     isMarker(node: Node): node is Comment {
-        return node.nodeType === 8 && (node as Comment).data.startsWith(markerClass);
+        return (
+            node && node.nodeType === 8 && (node as Comment).data.startsWith(markerClass)
+        );
     },
 
     extractDirectiveIndexFromMarker(node: Comment): number {
