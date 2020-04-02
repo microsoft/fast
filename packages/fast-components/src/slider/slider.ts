@@ -126,17 +126,12 @@ export class Slider extends FormAssociated<HTMLInputElement> {
     @attr
     public mode: SliderMode = SliderMode.singleValue;
 
-    /**
-     * Set to true when the component has constructed
-     */
-    private constructed: boolean = false;
     protected proxy = document.createElement("input");
 
     constructor() {
         super();
         this.proxy.setAttribute("type", "range");
         this.direction = this.getDirection();
-        this.constructed = true;
     }
 
     public connectedCallback(): void {
