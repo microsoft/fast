@@ -4,14 +4,14 @@ import { TextAreaTemplate as template } from "./text-area.template";
 import { TextAreaStyles as styles } from "./text-area.styles";
 import { designSystemConsumer } from "../design-system-consumer";
 import {
-    neutralfillhover,
-    neutralfillinputhover,
-    neutralfillinputrest,
-    neutralfillrest,
-    neutralfocus,
-    neutralforegroundrest,
-    neutraloutlinehover,
-    neutraloutlinerest,
+    neutralFillHover,
+    neutralFillInputHover,
+    neutralFillInputRest,
+    neutralFillRest,
+    neutralFocus,
+    neutralForegroundRest,
+    neutralOutlineHover,
+    neutralOutlineRest,
 } from "../styles/recipes";
 
 @customElement({
@@ -24,14 +24,14 @@ import {
 })
 @designSystemConsumer({
     recipes: [
-        neutralforegroundrest,
-        neutralfillinputrest,
-        neutraloutlinerest,
-        neutralfillinputhover,
-        neutraloutlinehover,
-        neutralfocus,
-        neutralfillrest,
-        neutralfillhover,
+        neutralForegroundRest,
+        neutralFillInputRest,
+        neutralOutlineRest,
+        neutralFillInputHover,
+        neutralOutlineHover,
+        neutralFocus,
+        neutralFillRest,
+        neutralFillHover,
     ],
 })
 export class FASTTextArea extends TextArea {}

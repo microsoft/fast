@@ -5,27 +5,27 @@ import {
     accentForegroundCut,
     accentForegroundLarge,
     DesignSystem,
-    neutralDividerRest,
+    neutralDividerRest as neutralDividerRestRecipe,
     neutralFill,
     neutralFillCard,
     neutralFillInput,
     neutralFillStealth,
     neutralFillToggle,
-    neutralFocus,
-    neutralFocusInnerAccent,
+    neutralFocus as neutralFocusRecipe,
+    neutralFocusInnerAccent as neutralFocusInnerAccentRecipe,
     neutralForeground,
-    neutralForegroundHint,
-    neutralForegroundHintLarge,
-    neutralForegroundToggle,
-    neutralForegroundToggleLarge,
-    neutralLayerCard,
-    neutralLayerCardContainer,
-    neutralLayerFloating,
-    neutralLayerL1,
-    neutralLayerL1Alt,
-    neutralLayerL2,
-    neutralLayerL3,
-    neutralLayerL4,
+    neutralForegroundHint as neutralForegroundHintRecipe,
+    neutralForegroundHintLarge as neutralForegroundHintLargeRecipe,
+    neutralForegroundToggle as neutralForegroundToggleRecipe,
+    neutralForegroundToggleLarge as neutralForegroundToggleLargeRecipe,
+    neutralLayerCard as neutralLayerCardRecipe,
+    neutralLayerCardContainer as neutralLayerCardContainerRecipe,
+    neutralLayerFloating as neutralLayerFloatingRecipe,
+    neutralLayerL1 as neutralLayerL1Recipe,
+    neutralLayerL1Alt as neutralLayerL1AltRecipe,
+    neutralLayerL2 as neutralLayerL2Recipe,
+    neutralLayerL3 as neutralLayerL3Recipe,
+    neutralLayerL4 as neutralLayerL4Recipe,
     neutralOutline,
 } from "@microsoft/fast-components-styles-msft";
 
@@ -33,307 +33,307 @@ export interface DesignSystemResolverEntry {
     name: string;
     resolver: (designSystem: DesignSystem) => string | number;
 }
-export const neutralforegroundrest: DesignSystemResolverEntry = {
+export const neutralForegroundRest: DesignSystemResolverEntry = {
     name: "neutral-foreground-rest",
     resolver: x => neutralForeground(x).rest,
 };
 
-export const neutralforegroundhover: DesignSystemResolverEntry = {
+export const neutralForegroundHover: DesignSystemResolverEntry = {
     name: "neutral-foreground-hover",
     resolver: x => neutralForeground(x).hover,
 };
 
-export const neutralforegroundactive: DesignSystemResolverEntry = {
+export const neutralForegroundActive: DesignSystemResolverEntry = {
     name: "neutral-foreground-active",
     resolver: x => neutralForeground(x).active,
 };
 
-export const neutralforegroundfocus: DesignSystemResolverEntry = {
+export const neutralForegroundFocus: DesignSystemResolverEntry = {
     name: "neutral-foreground-focus",
     resolver: x => neutralForeground(x).focus,
 };
 
-export const neutralforegroundtoggle: DesignSystemResolverEntry = {
+export const neutralForegroundToggle: DesignSystemResolverEntry = {
     name: "neutral-foreground-toggle",
-    resolver: x => neutralForegroundToggle(x),
+    resolver: neutralForegroundToggleRecipe,
 };
 
-export const neutralforegroundtogglelarge: DesignSystemResolverEntry = {
+export const neutralForegroundToggleLarge: DesignSystemResolverEntry = {
     name: "neutral-foreground-toggle-large",
-    resolver: x => neutralForegroundToggleLarge(x),
+    resolver: neutralForegroundToggleLargeRecipe,
 };
 
-export const neutralforegroundhint: DesignSystemResolverEntry = {
+export const neutralForegroundHint: DesignSystemResolverEntry = {
     name: "neutral-foreground-hint",
-    resolver: x => neutralForegroundHint(x),
+    resolver: neutralForegroundHintRecipe,
 };
 
-export const neutralforegroundhintlarge: DesignSystemResolverEntry = {
+export const neutralForegroundHintLarge: DesignSystemResolverEntry = {
     name: "neutral-foreground-hint-large",
-    resolver: x => neutralForegroundHintLarge(x),
+    resolver: neutralForegroundHintLargeRecipe,
 };
 
-export const accentforegroundrest: DesignSystemResolverEntry = {
+export const accentForegroundRest: DesignSystemResolverEntry = {
     name: "accent-foreground-rest",
     resolver: x => accentForeground(x).rest,
 };
 
-export const accentforegroundhover: DesignSystemResolverEntry = {
+export const accentForegroundHover: DesignSystemResolverEntry = {
     name: "accent-foreground-hover",
     resolver: x => accentForeground(x).hover,
 };
 
-export const accentforegroundactive: DesignSystemResolverEntry = {
+export const accentForegroundActive: DesignSystemResolverEntry = {
     name: "accent-foreground-active",
     resolver: x => accentForeground(x).active,
 };
 
-export const accentforegroundfocus: DesignSystemResolverEntry = {
+export const accentForegroundFocus: DesignSystemResolverEntry = {
     name: "accent-foreground-focus",
     resolver: x => accentForeground(x).focus,
 };
 
-export const accentforegroundcutrest: DesignSystemResolverEntry = {
+export const accentForegroundCutRest: DesignSystemResolverEntry = {
     name: "accent-foreground-cut-rest",
     resolver: x => accentForegroundCut(x),
 };
 
-export const accentforegroundlargerest: DesignSystemResolverEntry = {
+export const accentForegroundLargeRest: DesignSystemResolverEntry = {
     name: "accent-foreground-large-rest",
     resolver: x => accentForegroundLarge(x).rest,
 };
 
-export const accentforegroundlargehover: DesignSystemResolverEntry = {
+export const accentForegroundLargeHover: DesignSystemResolverEntry = {
     name: "accent-foreground-large-hover",
     resolver: x => accentForegroundLarge(x).hover,
 };
 
-export const accentforegroundlargeactive: DesignSystemResolverEntry = {
+export const accentForegroundLargeActive: DesignSystemResolverEntry = {
     name: "accent-foreground-large-active",
     resolver: x => accentForegroundLarge(x).active,
 };
 
-export const accentforegroundlargefocus: DesignSystemResolverEntry = {
+export const accentForegroundLargeFocus: DesignSystemResolverEntry = {
     name: "accent-foreground-large-focus",
     resolver: x => accentForegroundLarge(x).focus,
 };
 
-export const neutralfillrest: DesignSystemResolverEntry = {
+export const neutralFillRest: DesignSystemResolverEntry = {
     name: "neutral-fill-rest",
     resolver: x => neutralFill(x).rest,
 };
 
-export const neutralfillhover: DesignSystemResolverEntry = {
+export const neutralFillHover: DesignSystemResolverEntry = {
     name: "neutral-fill-hover",
     resolver: x => neutralFill(x).hover,
 };
 
-export const neutralfillactive: DesignSystemResolverEntry = {
+export const neutralFillActive: DesignSystemResolverEntry = {
     name: "neutral-fill-active",
     resolver: x => neutralFill(x).active,
 };
 
-export const neutralfillfocus: DesignSystemResolverEntry = {
+export const neutralFillFocus: DesignSystemResolverEntry = {
     name: "neutral-fill-focus",
     resolver: x => neutralFill(x).focus,
 };
 
-export const neutralfillselected: DesignSystemResolverEntry = {
+export const neutralFillSelected: DesignSystemResolverEntry = {
     name: "neutral-fill-selected",
     resolver: x => neutralFill(x).selected,
 };
 
-export const neutralfillstealthrest: DesignSystemResolverEntry = {
+export const neutralFillStealthRest: DesignSystemResolverEntry = {
     name: "neutral-fill-stealth-rest",
     resolver: x => neutralFillStealth(x).rest,
 };
 
-export const neutralfillstealthhover: DesignSystemResolverEntry = {
+export const neutralFillStealthHover: DesignSystemResolverEntry = {
     name: "neutral-fill-stealth-hover",
     resolver: x => neutralFillStealth(x).hover,
 };
 
-export const neutralfillstealthactive: DesignSystemResolverEntry = {
+export const neutralFillStealthActive: DesignSystemResolverEntry = {
     name: "neutral-fill-stealth-active",
     resolver: x => neutralFillStealth(x).active,
 };
 
-export const neutralfillstealthfocus: DesignSystemResolverEntry = {
+export const neutralFillStealthFocus: DesignSystemResolverEntry = {
     name: "neutral-fill-stealth-focus",
     resolver: x => neutralFillStealth(x).focus,
 };
 
-export const neutralfillstealthselected: DesignSystemResolverEntry = {
+export const neutralFillStealthSelected: DesignSystemResolverEntry = {
     name: "neutral-fill-stealth-selected",
     resolver: x => neutralFillStealth(x).selected,
 };
 
-export const neutralfilltogglerest: DesignSystemResolverEntry = {
+export const neutralFillToggleRest: DesignSystemResolverEntry = {
     name: "neutral-fill-toggle-rest",
     resolver: x => neutralFillToggle(x).rest,
 };
 
-export const neutralfilltogglehover: DesignSystemResolverEntry = {
+export const neutralFillToggleHover: DesignSystemResolverEntry = {
     name: "neutral-fill-toggle-hover",
     resolver: x => neutralFillToggle(x).hover,
 };
 
-export const neutralfilltoggleactive: DesignSystemResolverEntry = {
+export const neutralFillToggleActive: DesignSystemResolverEntry = {
     name: "neutral-fill-toggle-active",
     resolver: x => neutralFillToggle(x).active,
 };
 
-export const neutralfilltogglefocus: DesignSystemResolverEntry = {
+export const neutralFillToggleFocus: DesignSystemResolverEntry = {
     name: "neutral-fill-toggle-focus",
     resolver: x => neutralFillToggle(x).focus,
 };
 
-export const neutralfillinputrest: DesignSystemResolverEntry = {
+export const neutralFillInputRest: DesignSystemResolverEntry = {
     name: "neutral-fill-input-rest",
     resolver: x => neutralFillInput(x).rest,
 };
 
-export const neutralfillinputhover: DesignSystemResolverEntry = {
+export const neutralFillInputHover: DesignSystemResolverEntry = {
     name: "neutral-fill-input-hover",
     resolver: x => neutralFillInput(x).hover,
 };
 
-export const neutralfillinputactive: DesignSystemResolverEntry = {
+export const neutralFillInputActive: DesignSystemResolverEntry = {
     name: "neutral-fill-input-active",
     resolver: x => neutralFillInput(x).active,
 };
 
-export const neutralfillinputfocus: DesignSystemResolverEntry = {
+export const neutralFillInputFocus: DesignSystemResolverEntry = {
     name: "neutral-fill-input-focus",
     resolver: x => neutralFillInput(x).focus,
 };
 
-export const accentfillrest: DesignSystemResolverEntry = {
+export const accentFillRest: DesignSystemResolverEntry = {
     name: "accent-fill-rest",
     resolver: x => accentFill(x).rest,
 };
 
-export const accentfillhover: DesignSystemResolverEntry = {
+export const accentFillHover: DesignSystemResolverEntry = {
     name: "accent-fill-hover",
     resolver: x => accentFill(x).hover,
 };
 
-export const accentfillactive: DesignSystemResolverEntry = {
+export const accentFillActive: DesignSystemResolverEntry = {
     name: "accent-fill-active",
     resolver: x => accentFill(x).active,
 };
 
-export const accentfillfocus: DesignSystemResolverEntry = {
+export const accentFillFocus: DesignSystemResolverEntry = {
     name: "accent-fill-focus",
     resolver: x => accentFill(x).focus,
 };
 
-export const accentfillselected: DesignSystemResolverEntry = {
+export const accentFillSelected: DesignSystemResolverEntry = {
     name: "accent-fill-selected",
     resolver: x => accentFill(x).selected,
 };
 
-export const accentfilllargerest: DesignSystemResolverEntry = {
+export const accentFillLargeRest: DesignSystemResolverEntry = {
     name: "accent-fill-large-rest",
     resolver: x => accentFillLarge(x).rest,
 };
 
-export const accentfilllargehover: DesignSystemResolverEntry = {
+export const accentFillLargeHover: DesignSystemResolverEntry = {
     name: "accent-fill-large-hover",
     resolver: x => accentFillLarge(x).hover,
 };
 
-export const accentfilllargeactive: DesignSystemResolverEntry = {
+export const accentFillLargeActive: DesignSystemResolverEntry = {
     name: "accent-fill-large-active",
     resolver: x => accentFillLarge(x).active,
 };
 
-export const accentfilllargefocus: DesignSystemResolverEntry = {
+export const accentFillLargeFocus: DesignSystemResolverEntry = {
     name: "accent-fill-large-focus",
     resolver: x => accentFillLarge(x).focus,
 };
 
-export const accentfilllargeselected: DesignSystemResolverEntry = {
+export const accentFillLargeSelected: DesignSystemResolverEntry = {
     name: "accent-fill-large-selected",
     resolver: x => accentFillLarge(x).selected,
 };
 
-export const neutralfillcardrest: DesignSystemResolverEntry = {
+export const neutralFillCardRest: DesignSystemResolverEntry = {
     name: "neutral-fill-card-rest",
     resolver: x => neutralFillCard(x),
 };
 
-export const neutraloutlinerest: DesignSystemResolverEntry = {
+export const neutralOutlineRest: DesignSystemResolverEntry = {
     name: "neutral-outline-rest",
     resolver: x => neutralOutline(x).rest,
 };
 
-export const neutraloutlinehover: DesignSystemResolverEntry = {
+export const neutralOutlineHover: DesignSystemResolverEntry = {
     name: "neutral-outline-hover",
     resolver: x => neutralOutline(x).hover,
 };
 
-export const neutraloutlineactive: DesignSystemResolverEntry = {
+export const neutralOutlineActive: DesignSystemResolverEntry = {
     name: "neutral-outline-active",
     resolver: x => neutralOutline(x).active,
 };
 
-export const neutraloutlinefocus: DesignSystemResolverEntry = {
+export const neutralOutlineFocus: DesignSystemResolverEntry = {
     name: "neutral-outline-focus",
     resolver: x => neutralOutline(x).focus,
 };
 
-export const neutraldividerrest: DesignSystemResolverEntry = {
+export const neutralDividerRest: DesignSystemResolverEntry = {
     name: "neutral-divider-rest",
-    resolver: x => neutralDividerRest(x),
+    resolver: neutralDividerRestRecipe,
 };
 
-export const neutrallayerfloating: DesignSystemResolverEntry = {
+export const neutralLayerFloating: DesignSystemResolverEntry = {
     name: "neutral-layer-floating",
-    resolver: x => neutralLayerFloating(x),
+    resolver: neutralLayerFloatingRecipe,
 };
 
-export const neutrallayercard: DesignSystemResolverEntry = {
+export const neutralLayerCard: DesignSystemResolverEntry = {
     name: "neutral-layer-card",
-    resolver: x => neutralLayerCard(x),
+    resolver: neutralLayerCardRecipe,
 };
 
-export const neutrallayercardcontainer: DesignSystemResolverEntry = {
+export const neutralLayerCardContainer: DesignSystemResolverEntry = {
     name: "neutral-layer-card-container",
-    resolver: x => neutralLayerCardContainer(x),
+    resolver: neutralLayerCardContainerRecipe,
 };
 
-export const neutrallayerl1: DesignSystemResolverEntry = {
+export const neutralLayerL1: DesignSystemResolverEntry = {
     name: "neutral-layer-l1",
-    resolver: x => neutralLayerL1(x),
+    resolver: neutralLayerL1Recipe,
 };
 
-export const neutrallayerl1alt: DesignSystemResolverEntry = {
+export const neutralLayerL1Alt: DesignSystemResolverEntry = {
     name: "neutral-layer-l1-alt",
-    resolver: x => neutralLayerL1Alt(x),
+    resolver: neutralLayerL1AltRecipe,
 };
 
-export const neutrallayerl2: DesignSystemResolverEntry = {
+export const neutralLayerL2: DesignSystemResolverEntry = {
     name: "neutral-layer-l2",
-    resolver: x => neutralLayerL2(x),
+    resolver: neutralLayerL2Recipe,
 };
 
-export const neutrallayerl3: DesignSystemResolverEntry = {
+export const neutralLayerL3: DesignSystemResolverEntry = {
     name: "neutral-layer-l3",
-    resolver: x => neutralLayerL3(x),
+    resolver: neutralLayerL3Recipe,
 };
 
-export const neutrallayerl4: DesignSystemResolverEntry = {
+export const neutralLayerL4: DesignSystemResolverEntry = {
     name: "neutral-layer-l4",
-    resolver: x => neutralLayerL4(x),
+    resolver: neutralLayerL4Recipe,
 };
 
-export const neutralfocus: DesignSystemResolverEntry = {
+export const neutralFocus: DesignSystemResolverEntry = {
     name: "neutral-focus",
-    resolver: x => neutralFocus(x),
+    resolver: neutralFocusRecipe,
 };
 
-export const neutralfocusinneraccent: DesignSystemResolverEntry = {
+export const neutralFocusInnerAccent: DesignSystemResolverEntry = {
     name: "neutral-focus-inner-accent",
-    resolver: x => neutralFocusInnerAccent(() => x.accentBaseColor)(x),
+    resolver: x => neutralFocusInnerAccentRecipe(() => x.accentBaseColor)(x),
 };

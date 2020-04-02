@@ -4,15 +4,15 @@ import { SwitchTemplate as template } from "./switch.template";
 import { SwitchStyles as styles } from "./switch.styles";
 import { designSystemConsumer } from "../design-system-consumer";
 import {
-    accentfillrest,
-    accentforegroundcutrest,
-    neutralfillinputactive,
-    neutralfillinputhover,
-    neutralfillinputrest,
-    neutralforegroundrest,
-    neutraloutlineactive,
-    neutraloutlinehover,
-    neutraloutlinerest,
+    accentFillRest,
+    accentForegroundCutRest,
+    neutralFillInputActive,
+    neutralFillInputHover,
+    neutralFillInputRest,
+    neutralForegroundRest,
+    neutralOutlineActive,
+    neutralOutlineHover,
+    neutralOutlineRest,
 } from "../styles/recipes";
 
 @customElement({
@@ -22,15 +22,15 @@ import {
 })
 @designSystemConsumer({
     recipes: [
-        neutralfillinputrest,
-        neutraloutlinerest,
-        neutralfillinputhover,
-        neutraloutlinehover,
-        neutralfillinputactive,
-        neutraloutlineactive,
-        neutralforegroundrest,
-        accentforegroundcutrest,
-        accentfillrest,
+        neutralFillInputRest,
+        neutralOutlineRest,
+        neutralFillInputHover,
+        neutralOutlineHover,
+        neutralFillInputActive,
+        neutralOutlineActive,
+        neutralForegroundRest,
+        accentForegroundCutRest,
+        accentFillRest,
     ],
 })
 export class FASTSwitch extends Switch {}

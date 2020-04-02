@@ -3,7 +3,7 @@ import { Card } from "./card";
 import { CardTemplate as template } from "./card.template";
 import { CardStyles as styles } from "./card.styles";
 import { designSystemConsumer } from "../design-system-consumer";
-import { neutrallayercard } from "../styles/recipes";
+import { neutralLayerCard } from "../styles/recipes";
 
 @customElement({
     name: "fast-card",
@@ -11,7 +11,7 @@ import { neutrallayercard } from "../styles/recipes";
     styles,
 })
 @designSystemConsumer({
-    recipes: [neutrallayercard],
+    recipes: [neutralLayerCard],
 })
 export class FASTCard extends Card {}
 export * from "./card.template";

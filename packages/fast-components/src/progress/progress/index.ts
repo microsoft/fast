@@ -4,9 +4,9 @@ import { ProgressTemplate as template } from "./progress.template";
 import { ProgressStyles as styles } from "./progress.styles";
 import { designSystemConsumer } from "../../design-system-consumer";
 import {
-    accentfillrest,
-    neutralfillrest,
-    neutralforegroundhint,
+    accentFillRest,
+    neutralFillRest,
+    neutralForegroundHint,
 } from "../../styles/recipes";
 
 @customElement({
@@ -15,7 +15,7 @@ import {
     styles,
 })
 @designSystemConsumer({
-    recipes: [neutralfillrest, accentfillrest, neutralforegroundhint],
+    recipes: [neutralFillRest, accentFillRest, neutralForegroundHint],
 })
 export class FASTProgress extends BaseProgress {}
 export * from "./progress.template";

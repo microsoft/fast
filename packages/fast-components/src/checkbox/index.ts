@@ -4,11 +4,11 @@ import { CheckboxTemplate as template } from "./checkbox.template";
 import { CheckboxStyles as styles } from "./checkbox.styles";
 import { designSystemConsumer } from "../design-system-consumer";
 import {
-    neutralfillinputhover,
-    neutralfillinputrest,
-    neutralforegroundrest,
-    neutraloutlinehover,
-    neutraloutlinerest,
+    neutralFillInputHover,
+    neutralFillInputRest,
+    neutralForegroundRest,
+    neutralOutlineHover,
+    neutralOutlineRest,
 } from "../styles/recipes";
 
 @customElement({
@@ -18,11 +18,11 @@ import {
 })
 @designSystemConsumer({
     recipes: [
-        neutraloutlinerest,
-        neutralfillinputrest,
-        neutralforegroundrest,
-        neutralfillinputhover,
-        neutraloutlinehover,
+        neutralOutlineRest,
+        neutralFillInputRest,
+        neutralForegroundRest,
+        neutralFillInputHover,
+        neutralOutlineHover,
     ],
 })
 export class FASTCheckbox extends Checkbox {}
