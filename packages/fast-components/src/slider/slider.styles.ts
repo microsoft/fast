@@ -4,16 +4,14 @@ import { focusVisible } from "../styles/focus";
 import { SystemColors } from "../styles/system-colors";
 
 export const SliderStyles = css`
-    :host {
-        --thumb-size: calc(var(--height-number) * 0.5);
-        --thumb-translate: calc(var(--thumb-size) * 0.5);
-        --track-overhang: calc((var(--design-unit) / 2) * -1);
-    }
     :host([hidden]) {
         display: none;
     }
 
     ${display("inline-grid")} :host {
+        --thumb-size: calc(var(--height-number) * 0.5);
+        --thumb-translate: calc(var(--thumb-size) * 0.5);
+        --track-overhang: calc((var(--design-unit) / 2) * -1);
         align-items: center;
         outline: none;
         width: 100%;

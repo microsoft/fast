@@ -1,10 +1,10 @@
 import { css } from "@microsoft/fast-element";
+import { disabledCursor, display } from "../styles";
 import { SystemColors } from "../styles/system-colors";
 
 export const SliderLabelStyles = css`
-    :host {
+    ${display("block")} :host {
         --half-thumb-size: calc(var(--height-number) * 0.25);
-        display: block;
     }
     .slider-label {
         position: absolute;
