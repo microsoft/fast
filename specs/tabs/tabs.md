@@ -1,4 +1,4 @@
-# fast-tabs
+# Tabs
 
 ## Overview
 
@@ -41,19 +41,19 @@
   - vertical
 - `activeId` - string
 - `tab-activation` - enum 
-  - focus - default
-  - key-press
+  - auto - default
+  - manual
 
 *Events:*
-- `onChange` - fires when component `activeId` updates
+- `change` - fires when component `activeId` updates
 
 ### Anatomy and Appearance
 
 *Parts:*
 - tabs
-- tab-list
+- tablist
 - tab
-- tab-panel
+- tabpanel
 
 *Slot Names*
 - before-content
@@ -62,8 +62,8 @@
 *Template:*
 ```HTML
 <div class="tabs" class="tabs">
-    <div class="tab-list" part="tab-list" role="tablist" aria-label="Sample Tabs">
-        <slot name="before-content" part="before-content"></slot>
+    <slot class="start" name="start" part="start"></slot>
+    <div class="tablist" part="tablist" role="tablist" aria-label="Sample Tabs">
         <button class="tab" part="tab" role="tab" aria-selected="true" aria-controls="panel-1" id="tab-1" tabindex="0">
             Tab One
         </button>
@@ -73,15 +73,15 @@
         <button class="tab" part="tab" role="tab" aria-selected="false" aria-controls="panel-3" id="tab-3" tabindex="-1">
             Tab Three
         </button>
-        <slot name="after-content" part="after-content"></slot>
     </div>
-    <div class="tab-panel" part="tab-panel" id="panel-1" role="tabpanel" tabindex="0" aria-labelledby="tab-1">
+    <slot class="end" name="end" part="end"></slot>
+    <div class="tabpanel" part="tabpanel" id="panel-1" role="tabpanel" tabindex="0" aria-labelledby="tab-1">
         Content of the first tab
     </div>
-    <div class="tab-panel" part="tab-panel" id="panel-2" role="tabpanel" tabindex="0" aria-labelledby="tab-2" hidden>
+    <div class="tabpanel" part="tabpanel" id="panel-2" role="tabpanel" tabindex="0" aria-labelledby="tab-2" hidden>
         Content of the second tab
     </div>
-    <div class="tab-panel" part="tab-panel" id="panel-3" role="tabpanel" tabindex="0" aria-labelledby="tab-3" hidden>
+    <div class="tabpanel" part="tabpanel" id="panel-3" role="tabpanel" tabindex="0" aria-labelledby="tab-3" hidden>
         Content of the third tab
     </div>
 </div>
@@ -156,7 +156,7 @@
 
 ### States
 
-*Tabs* can either be controlled or uncontrolled, meaning if `activeId` is passed the app author is taking control of the selected tab. The `onChange` event fires differently depending on the `tab-activation` attribute, on tab focus if `tab-activation` is set to `"focus"` or on mouse click or "spacebar" press if `tab-activation` is set to `"key-press"`.
+*Tabs* can either be controlled or uncontrolled, meaning if `activeId` is passed the app author is taking control of the selected tab. The `change` event fires differently depending on the `tab-activation` attribute, on tab focus if `tab-activation` is set to `"focus"` or on mouse click or "spacebar" press if `tab-activation` is set to `"key-press"`.
 
 ### Globalization
 
