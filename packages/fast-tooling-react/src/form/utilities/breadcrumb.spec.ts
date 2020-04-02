@@ -89,24 +89,61 @@ describe("getDictionaryBreadcrumbs", () => {
                                 type: DataType.object,
                                 items: [],
                             },
+                            baz: {
+                                self: "baz",
+                                parent: "",
+                                relativeDataLocation: "baz",
+                                schemaLocation: "properties.baz",
+                                schema: {},
+                                disabled: false,
+                                data: {},
+                                text: "General example child 1",
+                                type: DataType.object,
+                                items: [],
+                            },
+                        },
+                        "",
+                    ],
+                    bat: [
+                        {
+                            "": {
+                                self: "",
+                                parent: null,
+                                parentDictionaryItem: {
+                                    id: "bar",
+                                    dataLocation: "baz",
+                                },
+                                relativeDataLocation: "",
+                                schemaLocation: "",
+                                schema: {},
+                                disabled: false,
+                                data: {},
+                                text: "General example child 1 child",
+                                type: DataType.object,
+                                items: [],
+                            },
                         },
                         "",
                     ],
                 },
                 "foo",
             ],
-            "bar",
+            "bat",
             "",
             jest.fn()
         );
 
-        expect(breadcrumbs.length).toBe(3);
+        expect(breadcrumbs.length).toBe(5);
         expect(breadcrumbs[0].href).toBe("");
         expect(breadcrumbs[0].text).toBe("General example root");
         expect(breadcrumbs[1].href).toBe("bat");
         expect(breadcrumbs[1].text).toBe("General example property");
         expect(breadcrumbs[2].href).toBe("");
         expect(breadcrumbs[2].text).toBe("General example child");
+        expect(breadcrumbs[3].href).toBe("baz");
+        expect(breadcrumbs[3].text).toBe("General example child 1");
+        expect(breadcrumbs[4].href).toBe("");
+        expect(breadcrumbs[4].text).toBe("General example child 1 child");
     });
 });
 
@@ -185,5 +222,8 @@ describe("getBreadcrumbs", () => {
         );
 
         expect(breadcrumbs.length).toBe(3);
+        expect(breadcrumbs[0].text).toBe("C");
+        expect(breadcrumbs[1].text).toBe("B");
+        expect(breadcrumbs[2].text).toBe("A");
     });
 });
