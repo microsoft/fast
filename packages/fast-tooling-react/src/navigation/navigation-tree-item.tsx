@@ -123,12 +123,7 @@ export const DraggableNavigationTreeItem: React.FC<NavigationTreeItemProps> = ({
         },
     });
     const dragSource: ConnectDragSource = drag[1];
-    const drop: [
-        {
-            isOver: boolean;
-        },
-        DragElementWrapper<any>
-    ] = useDrop({
+    const drop: [{}, DragElementWrapper<any>] = useDrop({
         accept: [DragDropItemType.linkedData],
         hover(item: DragObjectWithType, monitor: DropTargetMonitor): void {
             const dragItemOffsetY: number = monitor.getClientOffset().y;
@@ -144,9 +139,6 @@ export const DraggableNavigationTreeItem: React.FC<NavigationTreeItemProps> = ({
 
             dragHover(type, dictionaryId, navigationConfigId, index, hoverLocation);
         },
-        collect: (monitor: DropTargetMonitor): { isOver: boolean } => ({
-            isOver: monitor.isOver(),
-        }),
     });
     const dropTarget: ConnectDropTarget = drop[1];
 
@@ -155,9 +147,8 @@ export const DraggableNavigationTreeItem: React.FC<NavigationTreeItemProps> = ({
             case DragDropItemType.linkedData:
                 return dragSource(dropTarget(node));
             case DragDropItemType.linkedDataContainer:
-                return dropTarget(node);
             case DragDropItemType.default:
-                return <React.Fragment>{node}</React.Fragment>;
+                return dropTarget(node);
         }
     }
 
