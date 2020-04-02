@@ -69,4 +69,31 @@ export const FlipperStyles = css`
     :host::-moz-focus-inner {
         border: 0;
     }
+
+    @media (forced-colors: active) {
+        :host {
+            background: ${SystemColors.Canvas}
+            border-color: ${SystemColors.ButtonText};
+        }
+
+        :host .next,
+        :host .previous {
+            color: ${SystemColors.ButtonText}
+            fill: ${SystemColors.ButtonText}
+        }
+
+        :host::before {
+            background: ${SystemColors.Canvas}
+        }
+
+        :host(:hover)::before {
+            background: ${SystemColors.Highlight}
+        }
+
+        :host(:hover) .next,
+        :host(:hover) .previous {
+            color: ${SystemColors.HighlightText}
+            fill: ${SystemColors.HighlightText}
+        }
+    }
 `;
