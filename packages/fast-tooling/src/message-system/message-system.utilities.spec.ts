@@ -361,6 +361,68 @@ describe("getMessage", () => {
             ).not.toEqual(-1);
             expect(dictionary.dataDictionary[0][id].data).toEqual(linkedData[0].data);
         });
+        test("should add linkedData to a specific index of an existing array of linkedData items", () => {
+            getMessage({
+                type: MessageSystemType.initialize,
+                data: [
+                    {
+                        data: {
+                            schemaId: "foo",
+                            data: {
+                                linkedData: [
+                                    {
+                                        id: "foo",
+                                    },
+                                ],
+                            },
+                        },
+                        foo: {
+                            schemaId: "foo",
+                            data: {
+                                test: "hello world",
+                            },
+                        },
+                    },
+                    "data",
+                ],
+                schemaDictionary: {
+                    foo: { id: "foo" },
+                },
+            });
+            const linkedData: Data<unknown>[] = [
+                {
+                    schemaId: "foo",
+                    data: {
+                        hello: "world",
+                    },
+                },
+            ];
+            const message: AddLinkedDataDataMessageOutgoing = getMessage({
+                type: MessageSystemType.data,
+                action: MessageSystemDataTypeAction.addLinkedData,
+                linkedData,
+                dataLocation: "linkedData",
+                index: 0,
+            }) as AddLinkedDataDataMessageOutgoing;
+
+            expect(Array.isArray((message.data as any).linkedData)).toEqual(true);
+            expect((message.data as any).linkedData.length).toEqual(2);
+
+            const id: string = (message.data as any).linkedData[0].id;
+            const dictionary: GetDataDictionaryMessageOutgoing = getMessage({
+                type: MessageSystemType.dataDictionary,
+                action: MessageSystemDataDictionaryTypeAction.get,
+            }) as GetDataDictionaryMessageOutgoing;
+
+            expect(
+                Object.keys(dictionary.dataDictionary[0]).findIndex(
+                    (dictionaryKey: string) => {
+                        return dictionaryKey === id;
+                    }
+                )
+            ).not.toEqual(-1);
+            expect(dictionary.dataDictionary[0][id].data).toEqual(linkedData[0].data);
+        });
         test("should remove linkedData from the data and the data dictionary", () => {
             getMessage({
                 type: MessageSystemType.initialize,
