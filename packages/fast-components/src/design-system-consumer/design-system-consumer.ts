@@ -10,6 +10,17 @@ export interface ConsumerArgs {
 export interface DesignSystemConsumer {
     recipes: DesignSystemResolverEntry[];
     provider: DesignSystemProvider | null;
+    isDesignSystemConsumer: boolean;
+}
+
+/**
+ * Type-safe checking for if an HTMLElement is a DesignSystemProvider.
+ * @param el The element to test
+ */
+export function isDesignSystemProvider(
+    el: HTMLElement | DesignSystemConsumer
+): el is DesignSystemConsumer {
+    return (el as any).isDesignSystemConsumer;
 }
 
 export function designSystemConsumer<T extends { new (...args: any[]) }>(
@@ -23,6 +34,8 @@ export function designSystemConsumer<T extends { new (...args: any[]) }>(
 ): any {
     function decorator(constructor: T, options: ConsumerArgs): T {
         class Consumer extends constructor implements DesignSystemConsumer {
+            public readonly isDesignSystemConsumer = true;
+
             public readonly recipes = options.recipes;
 
             @observable
@@ -37,6 +50,8 @@ export function designSystemConsumer<T extends { new (...args: any[]) }>(
                 while (parent !== null) {
                     if ((parent as any).isDesignSystemProvider) {
                         return parent as any;
+                    } else if (isDesignSystemProvider(parent)) {
+                        return parent.provider;
                     } else {
                         parent = composedParent(parent);
                     }
