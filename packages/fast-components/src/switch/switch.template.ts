@@ -1,15 +1,14 @@
 import { html, when } from "@microsoft/fast-element";
 import { Switch } from "./switch";
-import { bool } from "../utilities";
 
 export const SwitchTemplate = html<Switch>`
     <template
         role="switch"
-        $aria-checked="${x => bool(x.checked)}"
-        $aria-required="${x => bool(x.required)}"
-        $aria-disabled="${x => bool(x.disabled)}"
-        $aria-readonly="${x => bool(x.readOnly)}"
-        $tabindex="${x => (bool(x.disabled) ? null : 0)}"
+        aria-checked="${x => x.checked}"
+        aria-required="${x => x.required}"
+        aria-disabled="${x => x.disabled}"
+        aria-readonly="${x => x.readOnly}"
+        tabindex="${x => (x.disabled ? null : 0)}"
         @keypress="${(x, c) => x.keypressHandler(c.event as KeyboardEvent)}"
         @click="${(x, c) => x.clickHandler(c.event as MouseEvent)}"
     >

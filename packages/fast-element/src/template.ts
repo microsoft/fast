@@ -14,38 +14,54 @@ export interface SyntheticViewTemplate {
     create(): SyntheticView;
 }
 
-export class HTMLTemplate extends Directive
+export class ViewTemplate extends Directive
     implements ElementViewTemplate, SyntheticViewTemplate {
     public createPlaceholder = DOM.createBlockPlaceholder;
-    private behaviorCount: number;
-    private hasHostBehaviors: boolean;
-    private fragment: DocumentFragment;
+    private behaviorCount: number = 0;
+    private hasHostBehaviors: boolean = false;
+    private fragment: DocumentFragment | null = null;
     private targetOffset = 0;
+    private viewBehaviorFactories: BehaviorFactory[] | null = null;
+    private hostBehaviorFactories: BehaviorFactory[] | null = null;
+
     constructor(
-        { content: fragment }: HTMLTemplateElement,
-        private viewBehaviorFactories: BehaviorFactory[],
-        private hostBehaviorFactories: BehaviorFactory[]
+        private html: string | HTMLTemplateElement,
+        private directives: Directive[]
     ) {
         super();
-
-        this.fragment = fragment;
-        this.behaviorCount =
-            this.viewBehaviorFactories.length + this.hostBehaviorFactories.length;
-        this.hasHostBehaviors = this.hostBehaviorFactories.length > 0;
-
-        if (DOM.isMarker(fragment.firstChild!)) {
-            // If the first node in a fragment is a marker, that means it's an unstable first node,
-            // because something like a when, repeat, etc. could add nodes before the marker.
-            // To mitigate this, we insert a stable first node. However, if we insert a node,
-            // that will alter the result of the TreeWalker. So, we also need to offset the target index.
-            fragment.insertBefore(document.createComment(""), fragment.firstChild);
-            this.targetOffset = -1;
-        }
     }
 
     public create(host?: Element) {
+        if (this.fragment === null) {
+            let template: HTMLTemplateElement;
+            const html = this.html;
+
+            if (typeof html === "string") {
+                template = document.createElement("template");
+                template.innerHTML = DOM.createHTML(html);
+
+                const fec = template.content.firstElementChild;
+
+                if (fec !== null && fec.tagName === "TEMPLATE") {
+                    template = fec as HTMLTemplateElement;
+                }
+            } else {
+                template = html;
+            }
+
+            const result = compileTemplate(template, this.directives);
+
+            this.fragment = result.fragment;
+            this.viewBehaviorFactories = result.viewBehaviorFactories;
+            this.hostBehaviorFactories = result.hostBehaviorFactories;
+            this.targetOffset = result.targetOffset;
+            this.behaviorCount =
+                this.viewBehaviorFactories.length + this.hostBehaviorFactories.length;
+            this.hasHostBehaviors = this.hostBehaviorFactories.length > 0;
+        }
+
         const fragment = this.fragment.cloneNode(true) as DocumentFragment;
-        const viewFactories = this.viewBehaviorFactories;
+        const viewFactories = this.viewBehaviorFactories!;
         const behaviors = new Array<Behavior>(this.behaviorCount);
         const walker = document.createTreeWalker(
             fragment,
@@ -74,7 +90,7 @@ export class HTMLTemplate extends Directive
         }
 
         if (this.hasHostBehaviors) {
-            const hostFactories = this.hostBehaviorFactories;
+            const hostFactories = this.hostBehaviorFactories!;
 
             for (let i = 0, ii = hostFactories.length; i < ii; ++i, ++behaviorIndex) {
                 behaviors[behaviorIndex] = hostFactories[i].createBehavior(host);
@@ -117,11 +133,18 @@ export function html<T = any>(
     let html = "";
 
     for (let i = 0, ii = strings.length - 1; i < ii; ++i) {
-        html += strings[i];
+        let currentString = strings[i];
         let value = values[i];
+
+        html += currentString;
 
         if (typeof value === "function") {
             value = new BindingDirective(value as Expression);
+
+            const match = lastAttributeNameRegex.exec(currentString);
+            if (match !== null) {
+                (value as BindingDirective).targetName = match[2];
+            }
         }
 
         if (value instanceof Directive) {
@@ -134,5 +157,10 @@ export function html<T = any>(
 
     html += strings[strings.length - 1];
 
-    return compileTemplate(html, directives);
+    return new ViewTemplate(html, directives);
 }
+
+// Much thanks to LitHTML for working this out!
+export const lastAttributeNameRegex =
+    // eslint-disable-next-line no-control-regex
+    /([ \x09\x0a\x0c\x0d])([^\0-\x1F\x7F-\x9F "'>=/]+)([ \x09\x0a\x0c\x0d]*=[ \x09\x0a\x0c\x0d]*(?:[^ \x09\x0a\x0c\x0d"'`<>=]*|"[^"]*|'[^']*))$/;

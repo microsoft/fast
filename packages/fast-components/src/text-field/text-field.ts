@@ -1,4 +1,5 @@
-import { attr, FastElement } from "@microsoft/fast-element";
+import { attr } from "@microsoft/fast-element";
+import { FormAssociated } from "../form-associated";
 
 export enum TextFieldAppearance {
     filled = "filled",
@@ -13,7 +14,7 @@ export enum TextFieldType {
     url = "url",
 }
 
-export class TextField extends FastElement {
+export class TextField extends FormAssociated<HTMLInputElement> {
     @attr
     public appearance: TextFieldAppearance = TextFieldAppearance.outline;
     private appearanceChanged(): void {
@@ -22,59 +23,125 @@ export class TextField extends FastElement {
             : this.classList.remove("filled");
     }
 
-    @attr({ attribute: "required" })
-    public required: boolean;
-    private requiredChanged(): void {
-        this.required
-            ? this.classList.add("required")
-            : this.classList.remove("required");
-    }
+    @attr({ mode: "boolean" })
+    @attr({ attribute: "readonly", mode: "boolean" })
+    public readOnly: boolean;
+    private readOnlyChanged(): void {
+        if (this.proxy instanceof HTMLElement) {
+            this.proxy.readOnly = this.readOnly;
+        }
 
-    @attr
-    public readonly: boolean;
-    private readonlyChanged(): void {
-        this.readonly
+        this.readOnly
             ? this.classList.add("readonly")
             : this.classList.remove("readonly");
     }
 
-    @attr
+    @attr({ mode: "boolean" })
     public autofocus: boolean;
-
-    @attr
-    public disabled: boolean;
+    private autofocusChanged(): void {
+        if (this.proxy instanceof HTMLElement) {
+            this.proxy.autofocus = this.autofocus;
+        }
+    }
 
     @attr
     public placeholder: string;
+    private placeholderChanged(): void {
+        if (this.proxy instanceof HTMLElement) {
+            this.proxy.placeholder = this.placeholder;
+        }
+    }
 
     @attr
     public type: TextFieldType = TextFieldType.text;
+    private typeChanged(): void {
+        if (this.proxy instanceof HTMLElement) {
+            this.proxy.type = this.type;
+        }
+    }
 
     @attr
     public list: string;
+    private listChanged(): void {
+        if (this.proxy instanceof HTMLElement) {
+            this.proxy.setAttribute("list", this.list);
+        }
+    }
 
     @attr
     public maxlength: number;
+    private maxlengthChanged(): void {
+        if (this.proxy instanceof HTMLElement) {
+            this.proxy.maxLength = this.maxlength;
+        }
+    }
 
     @attr
     public minlength: number;
+    private minlengthChanged(): void {
+        if (this.proxy instanceof HTMLElement) {
+            this.proxy.minLength = this.minlength;
+        }
+    }
 
     @attr
-    public name: string;
-
-    @attr
-    public pattern: RegExp;
+    public pattern: string;
+    private patternChanged(): void {
+        if (this.proxy instanceof HTMLElement) {
+            this.proxy.pattern = this.pattern;
+        }
+    }
 
     @attr
     public size: number;
+    private sizeChanged(): void {
+        if (this.proxy instanceof HTMLElement) {
+            this.proxy.size = this.size;
+        }
+    }
 
-    @attr
+    @attr({ mode: "boolean" })
     public spellcheck: boolean;
+    private spellcheckChanged(): void {
+        if (this.proxy instanceof HTMLElement) {
+            this.proxy.spellcheck = this.spellcheck;
+        }
+    }
 
     @attr
     public value: string;
-    public valueChanged(): void {
+    private valueChanged(): void {
+        if (this.proxy instanceof HTMLElement) {
+            this.proxy.value = this.value;
+        }
+
         this.$emit("change", this.value);
+    }
+
+    public control: HTMLInputElement;
+
+    protected proxy = document.createElement("input");
+
+    constructor() {
+        super();
+
+        this.proxy.setAttribute("type", this.type);
+    }
+
+    public connectedCallback(): void {
+        super.connectedCallback();
+
+        if (this.autofocus) {
+            this.focus();
+        }
+
+        this.setFormValue(this.value, this.value);
+    }
+
+    public handleTextInput(): void {
+        if (this.control && this.control.value) {
+            this.value = this.control.value;
+        }
     }
 
     public afterContent: HTMLSlotElement;

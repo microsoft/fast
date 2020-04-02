@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.4.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-element@0.3.1...@microsoft/fast-element@0.4.0) (2020-03-30)
+
+
+### Bug Fixes
+
+* attribute bindings in fast components ([#2847](https://github.com/Microsoft/fast-dna/issues/2847)) ([0d25806](https://github.com/Microsoft/fast-dna/commit/0d25806360b987a3f3c3a69dc5dd005415f70795))
+* **fast-element:** ensure host attributes have a target name ([#2846](https://github.com/Microsoft/fast-dna/issues/2846)) ([4bd99c9](https://github.com/Microsoft/fast-dna/commit/4bd99c91279d5abf642e73b10acf0459fc9035c8))
+
+
+### Features
+
+* **fast-element:** attribute/property binding revamp ([#2843](https://github.com/Microsoft/fast-dna/issues/2843)) ([ffe7a57](https://github.com/Microsoft/fast-dna/commit/ffe7a57a7978868d28f583de3a3b254904ba3db5))
+* add progress web component ([#2828](https://github.com/Microsoft/fast-dna/issues/2828)) ([5f2be52](https://github.com/Microsoft/fast-dna/commit/5f2be52738396aa1985a49eac667bd6e397abfa7))
+
+
+
+
+
 ## [0.3.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-element@0.3.0...@microsoft/fast-element@0.3.1) (2020-03-25)
 
 

@@ -1,11 +1,10 @@
-import { attr, FastElement, observable, Observable } from "@microsoft/fast-element";
-import { FormAssociated } from "../form-associated";
+import { attr, observable } from "@microsoft/fast-element";
 import { keyCodeSpace } from "@microsoft/fast-web-utilities";
-import { bool } from "../utilities";
+import { FormAssociated } from "../form-associated";
 
 /* tslint:disable:member-ordering */
 export class Checkbox extends FormAssociated<HTMLInputElement> {
-    @attr({ attribute: "readonly" })
+    @attr({ attribute: "readonly", mode: "boolean" })
     public readOnly: boolean; // Map to proxy element
     private readOnlyChanged(): void {
         if (this.proxy instanceof HTMLElement) {
@@ -33,10 +32,10 @@ export class Checkbox extends FormAssociated<HTMLInputElement> {
      * Provides the default checkedness of the input element
      * Passed down to proxy
      */
-    @attr({ attribute: "checked" })
-    public checkedAttribute: string | null;
+    @attr({ attribute: "checked", mode: "boolean" })
+    public checkedAttribute: boolean;
     private checkedAttributeChanged(): void {
-        this.defaultChecked = typeof this.checkedAttribute === "string";
+        this.defaultChecked = this.checkedAttribute;
     }
 
     /**
@@ -134,7 +133,7 @@ export class Checkbox extends FormAssociated<HTMLInputElement> {
     };
 
     public clickHandler = (e: MouseEvent) => {
-        if (!bool(this.disabled) && !bool(this.readOnly)) {
+        if (!this.disabled && !this.readOnly) {
             this.checked = !this.checked;
         }
     };

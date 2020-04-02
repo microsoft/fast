@@ -21,10 +21,10 @@ export const DialogTemplate = html<Dialog>`
         role="dialog"
         class="root"
         part="root"
-        $aria-modal=${x => x.modal}
-        $aria-describedby=${x => x.ariaDescribedby}
-        $aria-labelledby=${x => x.ariaLabelledby}
-        $aria-label=${x => x.ariaLabel}
+        aria-modal=${x => x.modal}
+        aria-describedby=${x => x.ariaDescribedby}
+        aria-labelledby=${x => x.ariaLabelledby}
+        aria-label=${x => x.ariaLabel}
         ${ref("dialog")}
     >
         <slot></slot>

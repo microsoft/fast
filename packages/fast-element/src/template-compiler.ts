@@ -1,45 +1,20 @@
 import { ExpressionContext } from "./interfaces";
-import { HTMLTemplate } from "./template";
 import { BehaviorFactory } from "./directives/behavior";
 import { DOM } from "./dom";
-import { BindingDirective, BindingType } from "./directives/binding";
+import { BindingDirective } from "./directives/binding";
 import { Directive, AttachedBehaviorDirective } from "./directives/directive";
 
 type InlineDirective = BindingDirective | AttachedBehaviorDirective;
-
 const compilationContext = { locatedDirectives: 0, targetIndex: -1 };
-const prefixToBindingType: Record<string, BindingType> = {
-    "@": BindingType.trigger,
-    $: BindingType.attribute,
-    "?": BindingType.booleanAttribute,
-};
 
-export function compileTemplate(
-    html: string | HTMLTemplateElement,
-    directives: Directive[]
-): HTMLTemplate {
-    let element: HTMLTemplateElement;
-
-    if (typeof html === "string") {
-        element = document.createElement("template");
-        element.innerHTML = html;
-
-        const fec = element.content.firstElementChild;
-
-        if (fec !== null && fec.tagName === "TEMPLATE") {
-            element = fec as HTMLTemplateElement;
-        }
-    } else {
-        element = html;
-    }
-
-    const hostFactories: BehaviorFactory[] = [];
+export function compileTemplate(template: HTMLTemplateElement, directives: Directive[]) {
+    const hostBehaviorFactories: BehaviorFactory[] = [];
 
     compilationContext.locatedDirectives = 0;
-    compileAttributes(element, directives, hostFactories, true);
+    compileAttributes(template, directives, hostBehaviorFactories, true);
 
-    const fragment = element.content;
-    const viewFactories: BehaviorFactory[] = [];
+    const fragment = template.content;
+    const viewBehaviorFactories: BehaviorFactory[] = [];
     const directiveCount = directives.length;
     const walker = document.createTreeWalker(
         fragment,
@@ -61,7 +36,7 @@ export function compileTemplate(
 
         switch (node.nodeType) {
             case 1: // element node
-                compileAttributes(node as HTMLElement, directives, viewFactories);
+                compileAttributes(node as HTMLElement, directives, viewBehaviorFactories);
                 break;
             case 3: // text node
                 // use wholeText to retrieve the textContent of all adjacent text nodes.
@@ -72,8 +47,8 @@ export function compileTemplate(
 
                 if (directive !== null) {
                     node.textContent = " ";
-                    directive.setType(BindingType.text);
-                    viewFactories.push(directive);
+                    directive.makeIntoTextBinding();
+                    viewBehaviorFactories.push(directive);
                     directive.targetIndex = compilationContext.targetIndex;
 
                     //remove adjacent text nodes.
@@ -89,7 +64,7 @@ export function compileTemplate(
                         directives[DOM.extractDirectiveIndexFromMarker(node)];
                     directive.targetIndex = compilationContext.targetIndex;
                     compilationContext.locatedDirectives++;
-                    viewFactories.push(directive);
+                    viewBehaviorFactories.push(directive);
                 } else {
                     node.parentNode!.removeChild(node);
                     compilationContext.targetIndex--;
@@ -97,7 +72,23 @@ export function compileTemplate(
         }
     }
 
-    return new HTMLTemplate(element, viewFactories, hostFactories);
+    let targetOffset = 0;
+
+    if (DOM.isMarker(fragment.firstChild!)) {
+        // If the first node in a fragment is a marker, that means it's an unstable first node,
+        // because something like a when, repeat, etc. could add nodes before the marker.
+        // To mitigate this, we insert a stable first node. However, if we insert a node,
+        // that will alter the result of the TreeWalker. So, we also need to offset the target index.
+        fragment.insertBefore(document.createComment(""), fragment.firstChild);
+        targetOffset = -1;
+    }
+
+    return {
+        fragment,
+        viewBehaviorFactories,
+        hostBehaviorFactories,
+        targetOffset,
+    };
 }
 
 function compileAttributes(
@@ -110,16 +101,15 @@ function compileAttributes(
 
     for (let i = 0, ii = attributes.length; i < ii; ++i) {
         const attr = attributes[i];
-        const attrName = attr.name;
         const attrValue = attr.value;
         let directive = tryParsePlaceholders(attrValue, directives);
 
         if (directive === null && includeBasicValues) {
             directive = new BindingDirective(x => attrValue);
+            directive.targetName = attr.name;
         }
 
         if (directive !== null) {
-            prepareAttributeDirective(node, attrName, directive);
             node.removeAttributeNode(attr);
             i--;
             ii--;
@@ -127,111 +117,6 @@ function compileAttributes(
             directive.targetIndex = compilationContext.targetIndex;
             factories.push(directive);
         }
-    }
-}
-
-function prepareAttributeDirective(
-    element: HTMLElement,
-    attrName: string,
-    directive: InlineDirective
-) {
-    if (directive instanceof AttachedBehaviorDirective) {
-        return;
-    }
-
-    const firstChar = attrName[0];
-    const bindingType = prefixToBindingType[firstChar];
-
-    if (bindingType === void 0) {
-        if (attrName === "style") {
-            directive.setType(BindingType.attribute);
-            directive.targetName = "style";
-        } else {
-            directive.targetName = attrNameToPropertyName(element.tagName, attrName);
-        }
-    } else {
-        directive.setType(bindingType);
-        directive.targetName = attrName.substr(1);
-    }
-}
-
-function attrNameToPropertyName(tagName: string, attr: string): string {
-    switch (tagName) {
-        case "LABEL":
-            switch (attr) {
-                case "for":
-                    return "htmlFor";
-                default:
-                    return attr;
-            }
-        case "IMG":
-            switch (attr) {
-                case "usemap":
-                    return "useMap";
-                default:
-                    return attr;
-            }
-        case "INPUT":
-            switch (attr) {
-                case "maxlength":
-                    return "maxLength";
-                case "minlength":
-                    return "minLength";
-                case "formaction":
-                    return "formAction";
-                case "formenctype":
-                    return "formEncType";
-                case "formmethod":
-                    return "formMethod";
-                case "formnovalidate":
-                    return "formNoValidate";
-                case "formtarget":
-                    return "formTarget";
-                case "inputmode":
-                    return "inputMode";
-                default:
-                    return attr;
-            }
-        case "TEXTAREA":
-            switch (attr) {
-                case "maxlength":
-                    return "maxLength";
-                default:
-                    return attr;
-            }
-        case "TD":
-        case "TH":
-            switch (attr) {
-                case "rowspan":
-                    return "rowSpan";
-                case "colspan":
-                    return "colSpan";
-                default:
-                    return attr;
-            }
-        default:
-            switch (attr) {
-                case "class":
-                    return "classList";
-                case "accesskey":
-                    return "accessKey";
-                case "contenteditable":
-                    return "contentEditable";
-                case "tabindex":
-                    return "tabIndex";
-                case "textcontent":
-                    return "textContent";
-                case "innerhtml":
-                    return "innerHTML";
-                case "scrolltop":
-                    return "scrollTop";
-                case "scrollleft":
-                    return "scrollLeft";
-                case "readonly":
-                    return "readOnly";
-                default:
-                    return attr;
-            }
     }
 }
 
@@ -327,12 +212,14 @@ function tryParsePlaceholders(
         return parts[0] as InlineDirective;
     }
 
+    let targetName!: string;
     const partCount = parts.length;
     const finalParts = parts!.map(x => {
         if (typeof x === "string") {
             return () => x;
         }
 
+        targetName = (x as BindingDirective).targetName || targetName;
         compilationContext.locatedDirectives++;
         return (x as BindingDirective).expression;
     });
@@ -347,5 +234,7 @@ function tryParsePlaceholders(
         return output;
     };
 
-    return new BindingDirective(expression);
+    const binding = new BindingDirective(expression);
+    binding.targetName = targetName;
+    return binding;
 }

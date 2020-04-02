@@ -1,6 +1,5 @@
 import { attr, emptyArray, FastElement } from "@microsoft/fast-element";
 import { keyCodeEnter } from "@microsoft/fast-web-utilities";
-import { bool } from "../utilities";
 
 export const supportsElementInternals = "ElementInternals" in window;
 
@@ -92,15 +91,16 @@ export abstract class FormAssociated<
     @attr
     public value: string = "";
 
-    @attr
+    @attr({ mode: "boolean" })
     public disabled: boolean = false;
     protected disabledChanged(): void {
-        const disabled = bool(this.disabled);
         if (this.proxy instanceof HTMLElement) {
-            this.proxy.disabled = disabled; // TODO: https://github.com/microsoft/fast-dna/issues/2742
+            this.proxy.disabled = this.disabled;
         }
 
-        disabled ? this.classList.add("disabled") : this.classList.remove("disabled");
+        this.disabled
+            ? this.classList.add("disabled")
+            : this.classList.remove("disabled");
     }
 
     @attr
@@ -114,15 +114,16 @@ export abstract class FormAssociated<
     /**
      * Require the field prior to form submission
      */
-    @attr
+    @attr({ mode: "boolean" })
     public required: boolean = false;
     protected requiredChanged(): void {
-        const required = bool(this.required);
         if (this.proxy instanceof HTMLElement) {
-            this.proxy.required = required; // TODO: https://github.com/microsoft/fast-dna/issues/2742
+            this.proxy.required = this.required;
         }
 
-        required ? this.classList.add("required") : this.classList.remove("required");
+        this.required
+            ? this.classList.add("required")
+            : this.classList.remove("required");
     }
 
     /**
@@ -168,8 +169,8 @@ export abstract class FormAssociated<
             // property change callbacks, but during initialization
             // on the intial call of the callback, the proxy is
             // still undefined. We should find a better way to address this.
-            this.proxy.disabled = bool(this.disabled); // TODO: https://github.com/microsoft/fast-dna/issues/2742
-            this.proxy.required = bool(this.required); // TODO: https://github.com/microsoft/fast-dna/issues/2742
+            this.proxy.disabled = this.disabled;
+            this.proxy.required = this.required;
             if (typeof this.name === "string") {
                 this.proxy.name = this.name;
             }

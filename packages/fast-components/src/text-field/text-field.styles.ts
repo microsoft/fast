@@ -76,7 +76,7 @@ export const TextFieldStyles = css`
         margin-inline-end: 11px;
     }
 
-    :host(:hover:not([disabled])) .root {
+    :host(:hover:not(.disabled)) .root {
         background: var(--neutral-fill-input-hover);
         border-color: var(--neutral-outline-hover);
     }
@@ -91,19 +91,19 @@ export const TextFieldStyles = css`
         border-color: transparent;
     }
 
-    :host(.filled:hover:not([disabled])) .root {
+    :host(.filled:hover:not(.disabled)) .root {
         background: var(--neutral-fill-hover);
         border-color: transparent;
     }
 
-    :host([disabled]) .label,
-    :host([readonly]) .label,
-    :host([readonly]) .control,
-    :host([disabled]) .control {
+    :host(.disabled) .label,
+    :host(.readonly) .label,
+    :host(.readonly) .control,
+    :host(.disabled) .control {
         cursor: ${disabledCursor};
     }
 
-    :host([disabled]) {
+    :host(.disabled) {
         opacity: var(--disabled-opacity);
     }
 
@@ -114,11 +114,11 @@ export const TextFieldStyles = css`
             border-color: ${SystemColors.FieldText};
         }
 
-        :host([disabled]) {
+        :host(.disabled) {
             opacity: 1;
         }
         
-        :host([disabled]) .root {
+        :host(.disabled) .root {
             border-color: ${SystemColors.GrayText};
             background: ${SystemColors.Field};
         }
