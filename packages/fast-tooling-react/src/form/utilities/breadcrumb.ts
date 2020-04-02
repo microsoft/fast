@@ -24,24 +24,41 @@ export function getDictionaryBreadcrumbs(
     navigationDictionary: NavigationConfigDictionary,
     dictionaryId: string,
     navigationConfigId: string,
+    handleClick: HandleBreadcrumbClick
+): BreadcrumbItem[] {
+    return resolveDictionaryBreadcrumbs(
+        navigationDictionary,
+        dictionaryId,
+        navigationConfigId,
+        handleClick
+    ).reverse();
+}
+
+/**
+ * Resolve breadcrumbs from navigation dictionary
+ */
+export function resolveDictionaryBreadcrumbs(
+    navigationDictionary: NavigationConfigDictionary,
+    dictionaryId: string,
+    navigationConfigId: string,
     handleClick: HandleBreadcrumbClick,
     breadcrumbItemList: BreadcrumbItem[][] = []
 ): BreadcrumbItem[] {
-    const breadcrumbItems: BreadcrumbItem[][] = [
+    const breadcrumbItems: BreadcrumbItem[][] = breadcrumbItemList.concat([
         getBreadcrumbs(
             navigationDictionary[0][dictionaryId][0],
             dictionaryId,
             navigationConfigId,
             handleClick
         ),
-    ].concat(breadcrumbItemList);
+    ]);
 
     const breadcrumbParent: Parent | undefined =
         navigationDictionary[0][dictionaryId][0][navigationDictionary[0][dictionaryId][1]]
             .parentDictionaryItem;
 
     if (typeof breadcrumbParent !== "undefined") {
-        return getDictionaryBreadcrumbs(
+        return resolveDictionaryBreadcrumbs(
             navigationDictionary,
             breadcrumbParent.id,
             breadcrumbParent.dataLocation, // unsafe replace with a search to find the dictionary id of this
@@ -91,5 +108,5 @@ export function getBreadcrumbs(
         );
     }
 
-    return navigationItems.reverse();
+    return navigationItems;
 }
