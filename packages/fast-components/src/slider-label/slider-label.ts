@@ -6,7 +6,6 @@ export class SliderLabel extends FastElement {
     @observable
     public positionStyle: string;
 
-    @observable
     public root: HTMLDivElement;
 
     @attr

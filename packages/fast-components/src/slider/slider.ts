@@ -34,22 +34,11 @@ export class Slider extends FormAssociated<HTMLInputElement> {
         this.setAttribute("aria-readonly", this.readOnly.toString());
     }
 
-    @observable
     public root: HTMLDivElement;
-
-    @observable
     public track: HTMLDivElement;
-
-    @observable
     public foregroundTrack: HTMLDivElement;
-
-    @observable
     public thumb: HTMLDivElement;
-
-    @observable
     public upperThumb: HTMLDivElement;
-
-    @observable
     public lowerThumb: HTMLDivElement;
 
     @observable
@@ -155,7 +144,6 @@ export class Slider extends FormAssociated<HTMLInputElement> {
         this.updateForm();
         this.setupTrackConstraints();
         this.setupListeners();
-        this.setupClassForOrientation();
         this.setupDefaultValue();
     }
 
@@ -193,14 +181,6 @@ export class Slider extends FormAssociated<HTMLInputElement> {
         this.addEventListener("keydown", this.keypressHandler);
         this.addEventListener("mousedown", this.clickHandler);
         this.thumb.addEventListener("mousedown", this.handleThumbMouseDown);
-    };
-
-    private setupClassForOrientation = (): void => {
-        if (this.orientation === SliderOrientation.horizontal) {
-            this.root.classList.add("slider-horizontal");
-        } else {
-            this.root.classList.add("slider-vertical");
-        }
     };
 
     private setupDefaultValue = (): void => {

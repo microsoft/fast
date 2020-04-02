@@ -1,5 +1,5 @@
 import { html } from "@microsoft/fast-element";
-import { Slider } from "./slider";
+import { Slider, SliderOrientation } from "./slider";
 import { ref } from "@microsoft/fast-element/dist/directives";
 
 export const SliderTemplate = html<Slider>`
@@ -13,7 +13,10 @@ export const SliderTemplate = html<Slider>`
     <div
           ${ref("root")}
           part="slider"
-          class="slider"
+          class="slider ${x =>
+              x.orientation === SliderOrientation.horizontal
+                  ? "slider-horizontal"
+                  : "slider-vertical"}"
     >
       <div part="layout-region" class="layout-region">
           <div ${ref("track")} part="track-container" class="track">
