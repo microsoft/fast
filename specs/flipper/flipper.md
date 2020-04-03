@@ -31,7 +31,7 @@ Extends FAST Element
 
 *Attrs*
 - `direction` - enum, previous or next. Defaults to next
-- `hiddenFromAT` - The control is hidden from assistive technology. Defaults to true
+- `hiddenFromAT` - The control is hidden from assistive technology. In the case that `aria-hidden` exists on the host, the control will default to that value and respond accordingly. If it doesn't exist, we'll internally default to hiding this from AT.
 - `disabled` - the control is disabled. There are scenarios where a flipper would be visible and disabled
 
 *Events*
