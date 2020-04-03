@@ -51,11 +51,19 @@ enum Location {
 export class AnchoredRegion extends FastElement {
     @attr
     public anchor: string = "";
-    private anchorChanged(): void {}
+    private anchorChanged(): void {
+        // if (this.isConnected) {
+        //     this.anchorElement = this.getAnchor();
+        // }
+    }
 
     @attr
     public viewport: string = "";
-    private viewportChanged(): void {}
+    private viewportChanged(): void {
+        // if (this.isConnected) {
+        //     this.viewportElement = this.getViewport();
+        // }
+    }
 
     @attr({ attribute: "horizontal-positioning-mode" })
     public horizontalPositioningMode: AxisPositioningMode = "uncontrolled";
@@ -86,13 +94,21 @@ export class AnchoredRegion extends FastElement {
      * indicates that an initial positioning pass on layout has completed
      */
     @observable
-    public initialLayoutComplete: boolean;
+    public initialLayoutComplete: boolean = false;
 
     public anchorElement: HTMLElement | null;
-    private anchorElementChanged(): void {}
+    private anchorElementChanged(): void {
+        if (this.initialLayoutComplete) {
+            this.reset();
+        }
+    }
 
     public viewportElement: HTMLElement | null;
-    private viewportElementChanged(): void {}
+    private viewportElementChanged(): void {
+        if (this.initialLayoutComplete) {
+            this.reset();
+        }
+    }
 
     /**
      * values to be applied to the component's transform origin attribute on render
@@ -192,6 +208,13 @@ export class AnchoredRegion extends FastElement {
         // );
     }
 
+    private reset() {
+        // this.disconnectObservers();
+        // this.setInitialState();
+        // this.updateLayout();
+        // this.connectObservers();
+    }
+
     private setInitialState = (): void => {
         this.initialLayoutComplete = false;
         this.transformOrigin = "top left";
@@ -260,7 +283,7 @@ export class AnchoredRegion extends FastElement {
     /**
      * Gets the viewport element
      */
-    private getViewport = (): HTMLElement | null => {
+    public getViewport = (): HTMLElement | null => {
         if (isNil(this.viewport)) {
             return this.region.parentElement;
         }
@@ -271,7 +294,7 @@ export class AnchoredRegion extends FastElement {
     /**
      *  Gets the anchor element
      */
-    private getAnchor = (): HTMLElement | null => {
+    public getAnchor = (): HTMLElement | null => {
         return document.getElementById(this.anchor);
     };
 
