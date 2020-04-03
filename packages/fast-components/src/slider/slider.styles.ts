@@ -16,12 +16,7 @@ export const SliderStyles = css`
         outline: none;
         width: 100%;
         margin: calc(var(--design-unit) * 1px) 0;
-        ${
-            /*
-           * Chromium likes to select label text or the default slot when
-           * the checkbox is clicked. Maybe there is a better solution here?
-           */ ""
-        } user-select: none;
+        user-select: none;
     }
     .slider {
         box-sizing: border-box;
@@ -34,7 +29,7 @@ export const SliderStyles = css`
         background: var(--neutral-foreground-hint);
         transition: all 0.2s ease;
     }
-    .layout-region {
+    .positioning-region {
         position: relative;
         margin: 0 8px;
         display: grid;

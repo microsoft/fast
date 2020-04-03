@@ -21,7 +21,7 @@ export const SliderTemplate = html<Slider>`
                   ? "slider-horizontal"
                   : "slider-vertical"}"
     >
-      <div part="layout-region" class="layout-region">
+      <div part="positioning-region" class="positioning-region">
           <div ${ref("track")} part="track-container" class="track">
             <slot name="track"></slot>
           </div>
