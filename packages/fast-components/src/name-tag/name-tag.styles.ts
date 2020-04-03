@@ -9,7 +9,7 @@ export const NameTagStyles = css`
         --depth: 4;
         display: block;
         color: var(--accent-foreground-cut-rest);
-        background: var(--accent-fill-rest);
+        background: var(--neutral-fill-rest);
         border-radius: calc(var(--corner-radius) * 1px);
         min-width: calc(var(--design-unit) * 81.25px);
         max-width: calc(var(--design-unit) * 125px);
