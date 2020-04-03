@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.25.6](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@4.25.5...@microsoft/fast-components-react-base@4.25.6) (2020-04-02)
+
+
+### Bug Fixes
+
+* correct tabs interaction model to map to the w3c specification and add default orientation ([#2858](https://github.com/Microsoft/fast-dna/issues/2858)) ([1f51ac4](https://github.com/Microsoft/fast-dna/commit/1f51ac4b75750c4ac25f7dc5c56440c8cd9bf281))
+
+
+
+
+
 ## [4.25.5](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@4.25.4...@microsoft/fast-components-react-base@4.25.5) (2020-03-30)
 
 **Note:** Version bump only for package @microsoft/fast-components-react-base

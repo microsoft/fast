@@ -3,7 +3,7 @@ import { PivotClassNameContract } from "@microsoft/fast-components-class-name-co
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import { Tabs as BaseTabs } from "@microsoft/fast-components-react-base";
 import { toPx } from "@microsoft/fast-jss-utilities";
-import { classNames, Direction } from "@microsoft/fast-web-utilities";
+import { classNames, Direction, Orientation } from "@microsoft/fast-web-utilities";
 import { canUseDOM } from "exenv-es6";
 import { get } from "lodash-es";
 import React from "react";
@@ -104,6 +104,7 @@ class Pivot extends Foundation<PivotHandledProps, PivotUnhandledProps, PivotStat
                 managedClasses={this.generatePivotClassNames()}
                 activeId={this.state.activeId}
                 onUpdate={this.handleTabsUpdate}
+                orientation={this.props.orientation}
                 items={this.props.items}
                 label={this.props.label}
             >
