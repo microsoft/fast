@@ -10,9 +10,11 @@ FAST Tooling is a library agnostic specific set of utilities to assist in creati
         - [Nesting data](#nesting-data)
 - [Message system](#message-system)
     - [Sending and receiving messages](#sending-and-receiving-messages)
+        - [Custom messages](#custom-messages)
 - [Data utilities](#data-utilities)
     - [Generating data](#generating-data-from-json-schema)
     - [Mapping data](#mapping-data)
+    - [Validation](#validation)
 
 ## Installation
 
@@ -105,6 +107,22 @@ if (window.Worker) {
 }
 ```
 
+#### Custom messages
+
+It is possible to send custom messages, all that is required is the data being sent includes the type `MessageSystemType.custom`.
+
+Example:
+```javascript
+import { MessageSystemType } from "@microsoft/fast-tooling";
+
+...
+
+fastMessageSystem.postMessage({
+    type: MessageSystemType.custom,
+    myMessage: "Hello world"
+});
+```
+
 ## Data utilities
 
 Data utilities are used for the various data manipulations in the message system, they are also provided as exports.
@@ -175,3 +193,28 @@ The expected result:
     greeting: "Hello world"
 }
 ```
+
+### Validation
+
+Validation is treated as optional by the message system but is available as a utility. This is done in case other validation methods are used as validators are decently sized packages and there may be validation scenarios that are not covered by standard JSON schema validation.
+
+To facilitate ease of use however, the export `AjvMapper` is provided which utilizes the `ajv` library.
+
+Example:
+```javascript
+import { AjvMapper, MessageSystem } from "@microsoft/fast-tooling";
+
+let fastMessageSystem: MessageSystem;
+let ajvMapper: AjvMapper;
+
+if ((window as any).Worker) {
+    fastMessageSystem = new MessageSystem({
+        ...
+    });
+    ajvMapper = new AjvMapper({
+        messageSystem: fastMessageSystem,
+    });
+}
+```
+
+If necessary it is possible to make a custom validator. The `AjvMapper` can be used as a guide for mapping the pathing values and error messages to a format the message system can accept.
