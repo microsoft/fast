@@ -81,7 +81,7 @@
     "@storybook/addon-actions": "^5.1.9",
     "@storybook/preset-typescript": "^1.0.0",
     "@storybook/react": "^5.1.1",
-    "@types/jest": "^24.0.11",
+    "@types/jest": "^25.2.0",
     "@types/lodash-es": "^4.17.0",
     "@types/node": "^9.4.6",
     "@types/react": "^16.8.0",
