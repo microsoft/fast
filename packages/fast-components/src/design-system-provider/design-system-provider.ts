@@ -1,5 +1,6 @@
-import { FastElement, Observable, DOM } from "@microsoft/fast-element";
+import { FastElement, Observable, DOM, observable } from "@microsoft/fast-element";
 import { DesignSystemConsumer, designSystemConsumer } from "../design-system-consumer";
+import { convertStylePropertyPixelsToNumber } from "@microsoft/fast-web-utilities";
 
 interface CustomPropertyDefinition {
     name: string;
@@ -96,7 +97,7 @@ export class DesignSystemProvider extends FastElement {
      * This is "observable" but will notify on object mutation
      * instead of object assignment
      */
-    public designSystem = mutationObserver(this, designSystemKey);
+    public designSystem = {};
 
     /**
      * All consumer objects registered with the provider.
@@ -114,41 +115,56 @@ export class DesignSystemProvider extends FastElement {
 
     public connectedCallback(): void {
         super.connectedCallback();
-        const notifier = Observable.getNotifier(this);
+        const selfNotifier = Observable.getNotifier(this);
+        const designSystemNotifier = Observable.getNotifier(this.designSystem);
 
         Object.keys(this.designSystemProperties).forEach(property => {
-            notifier.subscribe(this, property);
-        });
+            observable(this.designSystem, property);
 
-        notifier.subscribe(this, designSystemKey);
-    }
+            selfNotifier.subscribe(this.attributeChangeHandler, property); // Notify ourselves when properties related to DS change
+            designSystemNotifier.subscribe(this.designSystemChangeHandler, property); // Notify ourselves when design system properties change
 
-    /**
-     * Invoked when the parent provider's design-system object changes
-     * or when any property defined as a design-system property is changed.
-     * Will update the designSystem object
-     * @param source The source object changing
-     * @param key The property of the source object that changed
-     */
-    public handleChange(source: any, key: string): void {
-        if (source === this && this.designSystemProperties.hasOwnProperty(key)) {
-            // If a property on *this* object that is declared as a design system property
-            this.designSystem[key] = this[key];
-            const desginSystemProperty = this.designSystemProperties[key];
-
-            if (desginSystemProperty && desginSystemProperty.customProperty) {
+            // If property is set then put it onto the design system
+            if (this[property] !== undefined) {
+                this.designSystem[property] = this[property];
                 this.setCustomProperty({
-                    name: desginSystemProperty.customPropertyName,
-                    value: this[key],
+                    name: this.designSystemProperties[property].customPropertyName,
+                    value: this[property],
                 });
             }
-            this.consumers.forEach(this.writeConsumerRecipeData);
-        } else if (source === this.provider && key === designSystemKey) {
-            // If our provider's design system has changed
+        });
+    }
+
+    private attributeChangeHandler = {
+        handleChange: (source: this, key: string) => {
+            const value = this[key];
+
+            if (value !== undefined && value !== null) {
+                this.designSystem[key] = value;
+                const property = this.designSystemProperties[key];
+
+                if (property && property.customProperty) {
+                    this.setCustomProperty({
+                        name: property.customPropertyName,
+                        value: this[key],
+                    });
+                }
+            } else {
+                this.syncDesignSystemWithProvider();
+                this.style.removeProperty(
+                    `--${this.designSystemProperties[key].customPropertyName}`
+                );
+                this.consumers.forEach(this.writeConsumerRecipeData);
+            }
+        },
+    };
+
+    private designSystemChangeHandler = {
+        handleChange: () => {
             this.syncDesignSystemWithProvider();
             this.consumers.forEach(this.writeConsumerRecipeData);
-        }
-    }
+        },
+    };
 
     public subscribe(consumer: DesignSystemConsumer): void {
         if (!this.consumers.has(consumer)) {
@@ -182,8 +198,8 @@ export class DesignSystemProvider extends FastElement {
      */
     private syncDesignSystemWithProvider(): void {
         if (this.provider) {
-            Object.keys(this.provider.designSystem).forEach(key => {
-                if (this[key] === void 0) {
+            Object.keys(this.designSystemProperties).forEach(key => {
+                if (this[key] === void 0 || this[key] === null) {
                     this.designSystem[key] = this.provider!.designSystem[key];
                 }
             });
@@ -200,36 +216,25 @@ export class DesignSystemProvider extends FastElement {
         next: DesignSystemProvider | null
     ): void {
         if (prev instanceof HTMLElement) {
-            Observable.getNotifier(prev).unsubscribe(this, designSystemKey);
+            Object.keys(prev.designSystemProperties).forEach(key => {
+                Observable.getNotifier(prev.designSystem).unsubscribe(
+                    this.designSystemChangeHandler,
+                    key
+                );
+            });
         }
 
         if (next instanceof HTMLElement && isDesignSystemProvider(next)) {
-            Observable.getNotifier(next).subscribe(this, designSystemKey);
+            Object.keys(next.designSystemProperties).forEach(key => {
+                Observable.getNotifier(next.designSystem).subscribe(
+                    this.designSystemChangeHandler,
+                    key
+                );
+            });
+
             this.syncDesignSystemWithProvider();
         }
     }
-}
-
-/**
- * Simple proxy object to notify observers on
- * object mutation.
- * @param source The object to fire notifications
- * @param key The observable property name to fire a notification on
- */
-function mutationObserver(source: any, key: string): {} {
-    const notifier = Observable.getNotifier(source);
-
-    return new Proxy(
-        {},
-        {
-            set(obj: any, prop: string, value: any): boolean {
-                obj[prop] = value;
-
-                notifier.notify(source, key);
-                return true;
-            },
-        }
-    );
 }
 
 function setCustomPropertyFactory(
