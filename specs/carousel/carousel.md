@@ -84,32 +84,26 @@ Notes:
         class="carousel-items"
         aria-live="off"
     >
-        ${ x => 
+        ${ x => x.items.map((item, index) => {
+            const itemCount = x.getItemCount();
+            const activeClass = x.getActiveIndex() === index
+                ? 'active'
+                : x.getPreviousIndex() === index
+                    ? 'previous'
+                    : x.getNextIndex() === index
+                        ? 'next'
+                        : '';
+
             return `
-                <div
-                    class="carousel-item-previous"
-                    role="group"
-                    aria-roledescription="slide"
-                    aria-label="${x.getPreviousIndex} of ${x.getItemCount}"
-                >
-                    ${x.getPreviousItem()}
-                </div>
-                <div
-                    class="carousel-item-active"
-                    role="group"
-                    aria-roledescription="slide"
-                    aria-label="${x.getActiveIndex} of ${x.getItemCount}"
-                >
-                    ${x.getActiveItem()}
-                </div>
-                <div
-                    class="carousel-item-next"
-                    role="group"
-                    aria-roledescription="slide"
-                    aria-label="${x.getNextIndex} of ${x.getItemCount}"
-                >
-                    ${x.getNextItem()}
-                </div>`
+            <div
+                class="carousel-item-${activeClass}"
+                role="group"
+                aria-roledescription="slide"
+                aria-label="${index} of ${itemCount}"
+            >
+                ${item}
+            </div>`
+            }).join('')
         }
     </div>
     <slot name="previous-button">
