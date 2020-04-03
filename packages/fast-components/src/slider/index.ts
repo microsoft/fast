@@ -16,8 +16,8 @@ export enum SliderOrientation {
 export interface SliderConfiguration {
     max: number;
     min: number;
-    orientation: SliderOrientation;
-    direction: Direction;
+    orientation?: SliderOrientation;
+    direction?: Direction;
 }
 
 @customElement({

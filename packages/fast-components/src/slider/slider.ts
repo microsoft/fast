@@ -56,7 +56,7 @@ export class Slider extends FormAssociated<HTMLInputElement>
     public value: string; // Map to proxy element.
     private valueChanged(): void {
         if (Number(this.value) === Number.NaN) {
-            this.value = "0";
+            this.value = "1";
         }
 
         if (this.proxy instanceof HTMLElement) {
@@ -65,8 +65,8 @@ export class Slider extends FormAssociated<HTMLInputElement>
 
         const percentage: number =
             this.direction !== Direction.rtl
-                ? (1 - (Number(this.value) / this.max - this.min)) * 100
-                : (Number(this.value) / this.max - this.min) * 100;
+                ? (1 - Number(this.value) / (Number(this.max) - Number(this.min))) * 100
+                : (Number(this.value) / (Number(this.max) - Number(this.min))) * 100;
 
         this.position = this.isDragging
             ? `right: ${percentage}%; transition: all 0.1s ease;`
