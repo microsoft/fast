@@ -51,7 +51,7 @@ As defined by the W3C:
 - ???
 
 *Slots:*
-- `item` - slot for slide content
+- `default` - use default slot for slide content
 - `play-toggle` - the control to toggle if the slides rotate or not
 - `next-button` - the control used to rotate to the next slide
 - `previous-button` - the control used to rotate to the previous slide
@@ -74,7 +74,7 @@ Notes:
     tabindex="-1"
     @click="${x => x.handleClick()}"
 >
-    <slot name="item">Slide content / items go here. Use multiple item slots to add multiple slides.</slot>
+    <slot>Slide content / items go here. Use multiple item slots to add multiple slides.</slot>
 
     <slot name="play-toggle"> Default Play Toggle </slot>
     <slot name="next-button">
