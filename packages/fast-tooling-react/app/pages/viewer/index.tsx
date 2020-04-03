@@ -1,5 +1,5 @@
 import React from "react";
-import { MessageSystem } from "@microsoft/fast-tooling";
+import { MessageSystem, MessageSystemType } from "@microsoft/fast-tooling";
 import {
     defaultDevices,
     Device,
@@ -15,6 +15,7 @@ export interface PageState {
     width: number;
     activeDevice: Device;
     orientation: Orientation;
+    inputValue: string;
 }
 
 let fastMessageSystem: MessageSystem;
@@ -42,6 +43,7 @@ class ViewerPage extends React.Component<{}, PageState> {
                     },
                 },
             });
+            fastMessageSystem.add({ onMessage: this.handleMessageSystem });
         }
 
         this.state = {
@@ -49,6 +51,7 @@ class ViewerPage extends React.Component<{}, PageState> {
             width: 800,
             activeDevice: defaultDevices[0],
             orientation: Orientation.portrait,
+            inputValue: "",
         };
     }
 
@@ -56,6 +59,13 @@ class ViewerPage extends React.Component<{}, PageState> {
         return (
             <div style={{ width: "100%", height: "calc(100vh - 200px)" }}>
                 <div style={{ margin: "10px 0" }}>
+                    <input
+                        type="text"
+                        onChange={this.handleInputUpdate}
+                        value={this.state.inputValue}
+                    />
+                    <br />
+                    <br />
                     <SelectDevice
                         devices={defaultDevices}
                         onUpdateDevice={this.handleDeviceUpdate}
@@ -89,6 +99,21 @@ class ViewerPage extends React.Component<{}, PageState> {
     private isRotateDisabled(): boolean {
         return !!!this.state.activeDevice.width && !!!this.state.activeDevice.height;
     }
+
+    private handleMessageSystem = (e: MessageEvent): void => {
+        if (e.data.type === MessageSystemType.custom) {
+            this.setState({
+                inputValue: e.data.value,
+            });
+        }
+    };
+
+    private handleInputUpdate = (e: React.ChangeEvent<HTMLInputElement>): void => {
+        fastMessageSystem.postMessage({
+            type: MessageSystemType.custom,
+            value: e.target.value,
+        } as any);
+    };
 
     private handleOrientationUpdate = (orientation: Orientation): void => {
         if (!this.isRotateDisabled()) {
