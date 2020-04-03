@@ -28,7 +28,7 @@ export const SliderTemplate = html<Slider>`
           <div ${ref("foregroundTrack")} part="foreground-track" class="foreground-track">
             <slot name="foreground-track"></slot>
           </div>
-          <div style="height: 1px"></div>
+          <div></div>
           <slot></slot>
           <div ${ref("thumb")} part="thumb-container" class="thumb-container" style=${x =>
     x.position}>
