@@ -10,6 +10,7 @@ The tooling available in FAST Tooling React can be used together to create UI fo
 - [Installation](#installation)
 - [Requirements](#requirements)
 - [Form](#form)
+    - [Validation](#validation)
     - [Drag and drop](#drag-and-drop)
     - [Using form control plugins](#using-form-control-plugins)
         - [List of control types](#list-of-control-types)
@@ -32,6 +33,7 @@ The tooling available in FAST Tooling React can be used together to create UI fo
     - [Controlling the location](#controlling-the-location)
 - [Viewer](#viewer)
     - [Setting width and height](#setting-width-and-height)
+    - [Sending custom messages](#sending-custom-messages)
     - [Select device](#select-device)
         - [Devices](#devices)
     - [Rotate](#rotate)
@@ -97,6 +99,10 @@ import { Form } from "@microsoft/fast-tooling-react";
     messageSystem={fastMessageSystem}
 />
 ```
+
+### Validation
+
+Validation is treated as optional, there is a validation utility provided by the `@microsoft/fast-tooling` package that will give basic JSON schema validation errors. Refer to the `@microsoft/fast-tooling` README for details.
 
 ### Drag and drop
 
@@ -654,7 +660,7 @@ Example:
 
 To create a responsive width an height, the `width` and `height` can be tied to values in state and combined with the `onUpdateHeight`, `onUpdateWidth` and `responsive` props. This creates draggable borders around the iframe.
 
-Exampe:
+Example:
 
 ```jsx
 <Viewer
@@ -681,6 +687,10 @@ handleUpdateViewerWidth = (newViewerWidth) => {
 }
 
 ```
+
+### Sending custom messages
+
+Sending custom messages through the message system will be posted to the iframe. For information on how to send custom messages refer to the `@microsoft/fast-tooling` README file.
 
 ### Select device
 
