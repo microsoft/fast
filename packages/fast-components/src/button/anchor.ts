@@ -1,6 +1,7 @@
-import { customElement, FastElement, attr, html } from "@microsoft/fast-element";
+import { attr, FastElement, html } from "@microsoft/fast-element";
+import { ButtonAppearance } from "./button";
 
-const template = html<Anchor>`
+export const anchorTemplate = html<Anchor>`
     <a
         download="${x => x.download}"
         href="${x => x.href}"
@@ -11,13 +12,21 @@ const template = html<Anchor>`
         target="${x => x.target}"
         type="${x => x.type}"
     >
-        <slot slot="after"></slot>
+        <slot slot="start"></slot>
         <slot></slot>
-        <slot slot="after"></slot>
+        <slot slot="end"></slot>
     </a>
 `;
 
 export class Anchor extends FastElement {
+    @attr
+    public appearance: ButtonAppearance = ButtonAppearance.neutral;
+    public appearanceChanged(): void {
+        this.appearance
+            ? this.classList.add(`${ButtonAppearance[this.appearance]}`)
+            : this.classList.remove(`${ButtonAppearance[this.appearance]}`);
+    }
+
     @attr
     public download: string;
 
@@ -37,7 +46,7 @@ export class Anchor extends FastElement {
     public rel: string;
 
     @attr
-    public target: "_self" | "_blank" | "_parent" | "_self" | "_top";
+    public target: "_self" | "_blank" | "_parent" | "_top";
 
     @attr
     public type: string;
