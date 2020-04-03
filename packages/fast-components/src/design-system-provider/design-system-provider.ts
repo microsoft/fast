@@ -1,15 +1,18 @@
 import { FastElement, Observable, DOM, observable } from "@microsoft/fast-element";
 import { DesignSystemConsumer, designSystemConsumer } from "../design-system-consumer";
-import { convertStylePropertyPixelsToNumber } from "@microsoft/fast-web-utilities";
-
-interface CustomPropertyDefinition {
-    name: string;
-    value: string | (() => string);
-}
 
 interface DesignSystemPropertyDeclarationConfig {
     customPropertyName?: string;
     customProperty?: boolean;
+}
+
+interface SetCustomPropertyConfig {
+    customPropertyName: string;
+    value: string | (() => string);
+}
+
+interface DeleteCustomPropertyConfig {
+    customPropertyName: string;
 }
 
 /**
@@ -69,8 +72,6 @@ export function isDesignSystemProvider(
     return (el as any).isDesignSystemProvider;
 }
 
-const designSystemKey = "designSystem";
-
 /**
  * Slight hack to get intelisense and type checking for the
  * @designSystemConsumer decorator because TypeScript does
@@ -90,7 +91,7 @@ export class DesignSystemProvider extends FastElement {
     /**
      * RAF-throttled method to set css custom properties on the instance
      */
-    private setCustomProperty = setCustomPropertyFactory(this);
+    private setCustomProperty = new CustomPropertyManager(this);
 
     /**
      * The design-system object.
@@ -127,8 +128,9 @@ export class DesignSystemProvider extends FastElement {
             // If property is set then put it onto the design system
             if (this[property] !== undefined) {
                 this.designSystem[property] = this[property];
-                this.setCustomProperty({
-                    name: this.designSystemProperties[property].customPropertyName,
+                this.setCustomProperty.set({
+                    customPropertyName: this.designSystemProperties[property]
+                        .customPropertyName,
                     value: this[property],
                 });
             }
@@ -137,23 +139,22 @@ export class DesignSystemProvider extends FastElement {
 
     private attributeChangeHandler = {
         handleChange: (source: this, key: string) => {
-            const value = this[key];
-
-            if (value !== undefined && value !== null) {
-                this.designSystem[key] = value;
+            if (this.hasDesignSystemProperty(key)) {
+                this.designSystem[key] = this[key];
                 const property = this.designSystemProperties[key];
 
                 if (property && property.customProperty) {
-                    this.setCustomProperty({
-                        name: property.customPropertyName,
+                    this.setCustomProperty.set({
+                        customPropertyName: property.customPropertyName,
                         value: this[key],
                     });
                 }
             } else {
                 this.syncDesignSystemWithProvider();
-                this.style.removeProperty(
-                    `--${this.designSystemProperties[key].customPropertyName}`
-                );
+                this.setCustomProperty.delete({
+                    customPropertyName: this.designSystemProperties[key]
+                        .customPropertyName,
+                });
                 this.consumers.forEach(this.writeConsumerRecipeData);
             }
         },
@@ -179,8 +180,8 @@ export class DesignSystemProvider extends FastElement {
 
     private writeConsumerRecipeData = (consumer: DesignSystemConsumer) => {
         consumer.recipes.forEach(recipe => {
-            this.setCustomProperty({
-                name: recipe.name,
+            this.setCustomProperty.set({
+                customPropertyName: recipe.name,
                 // use spread on the designSystem object to circumvent memoization
                 // done in the color recipes - we use the same *reference* in WC
                 // for performance improvements but that throws off the recipes
@@ -199,11 +200,23 @@ export class DesignSystemProvider extends FastElement {
     private syncDesignSystemWithProvider(): void {
         if (this.provider) {
             Object.keys(this.designSystemProperties).forEach(key => {
-                if (this[key] === void 0 || this[key] === null) {
+                if (!this.hasDesignSystemProperty(key)) {
                     this.designSystem[key] = this.provider!.designSystem[key];
                 }
             });
         }
+    }
+
+    /**
+     * Determines if the instance property that maps to a design system property is valid.
+     * Used to determine if the provider should inherit a property from it's parent
+     * or if it should write the CSS custom property itself.
+     * @param key the design system property name
+     */
+    private hasDesignSystemProperty(key: string): boolean {
+        return !!this.designSystemProperties[key]
+            ? this[key] !== void 0 && this[key] !== null
+            : false;
     }
 
     /**
@@ -237,40 +250,114 @@ export class DesignSystemProvider extends FastElement {
     }
 }
 
-function setCustomPropertyFactory(
-    source: any
-): (definition: CustomPropertyDefinition) => void {
-    let store: CustomPropertyDefinition[] = [];
-    let ticking = false;
+/* tslint:disable-next-line */
+class CustomPropertyManager<
+    T extends {
+        style: {
+            setProperty(name: string, value: any): void;
+            removeProperty(name: string);
+        };
+    }
+> {
+    private ticking = false;
+    private store: Array<SetCustomPropertyConfig | DeleteCustomPropertyConfig> = [];
+    constructor(private context: T) {}
 
-    return (definition: CustomPropertyDefinition) => {
-        const index = store.findIndex(x => x.name === definition.name);
+    private shouldSet(
+        config: SetCustomPropertyConfig | DeleteCustomPropertyConfig
+    ): config is SetCustomPropertyConfig {
+        return config.hasOwnProperty("value");
+    }
+
+    private tick = (): void => {
+        this.ticking = false;
+
+        /* tslint:disable-next-line */
+        for (let i = 0; i < this.store.length; i++) {
+            const config = this.store[i];
+            const name = `--${config.customPropertyName}`;
+
+            if (this.shouldSet(config)) {
+                this.context.style.setProperty(
+                    name,
+                    typeof config.value === "function" ? config.value() : config.value
+                );
+            } else {
+                this.context.style.removeProperty(config.customPropertyName);
+            }
+        }
+
+        this.store = [];
+    };
+
+    private append(
+        definition: SetCustomPropertyConfig | DeleteCustomPropertyConfig
+    ): void {
+        const index = this.store.findIndex(
+            x => x.customPropertyName === definition.customPropertyName
+        );
 
         if (index !== -1) {
-            store[index] = definition;
+            this.store[index] = definition;
         } else {
-            store.push(definition);
+            this.store.push(definition);
         }
 
-        if (ticking) {
+        if (this.ticking) {
             return;
         } else {
-            ticking = true;
-            DOM.queueUpdate(() => {
-                ticking = false;
-
-                /* tslint:disable-next-line */
-                for (let i = 0; i < store.length; i++) {
-                    const value = store[i];
-
-                    source.style.setProperty(
-                        `--${value.name}`,
-                        typeof value.value === "function" ? value.value() : value.value
-                    );
-                }
-
-                store = [];
-            });
+            this.ticking = true;
+            DOM.queueUpdate(this.tick);
         }
-    };
+    }
+
+    public set: (config: SetCustomPropertyConfig) => void = this.append;
+    public delete: (config: DeleteCustomPropertyConfig) => void = this.append;
 }
+
+// function customPropertyManager(
+//     source: any
+// ): { set: (definition: SetCustomPropertyConfig) => void, delete: (definition: SetCustomPropertyConfig) => void} {
+//     let store: Array<SetCustomPropertyConfig | DeleteCustomPropertyConfig> = [];
+//     let ticking = false;
+
+//     function name(definition: SetCustomPropertyConfig): string {
+//         return `--${definition.customPropertyName}`
+//     }
+
+//     return {
+//         set: (definition: SetCustomPropertyConfig): void => {
+//             const index = store.findIndex(x => x.customPropertyName === definition.customPropertyName);
+
+//             if (index !== -1) {
+//                 store[index] = definition;
+//             } else {
+//                 store.push(definition);
+//             }
+
+//             if (ticking) {
+//                 return;
+//             } else {
+//                 ticking = true;
+//                 DOM.queueUpdate(() => {
+//                     ticking = false;
+
+//                     /* tslint:disable-next-line */
+//                     for (let i = 0; i < store.length; i++) {
+//                         const value = store[i];
+
+//                         source.style.setProperty(
+//                             name(value),
+//                             typeof value.value === "function" ? value.value() : value.value
+//                         );
+//                     }
+
+//                     store = [];
+//                 });
+//             }
+//         },
+//         delete: (definition: SetCustomPropertyConfig): void => {
+//             DOM.queueUpdate(() => source.style.removeProperty(name(definition)))
+//         }
+//     }
+// }
