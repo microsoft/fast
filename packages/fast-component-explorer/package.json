@@ -74,7 +74,7 @@
     "@microsoft/fast-jss-utilities": "^4.7.8",
     "@microsoft/fast-layouts-react": "^4.11.5",
     "@microsoft/fast-tslint-rules": "^3.1.0",
-    "@types/jest": "^23.3.10",
+    "@types/jest": "^25.2.0",
     "@types/lodash-es": "^4.17.0",
     "@types/node": "^10.12.12",
     "@types/react": "^16.7.17",

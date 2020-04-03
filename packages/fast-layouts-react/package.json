@@ -68,7 +68,7 @@
     "@babel/preset-react": "^7.0.0",
     "@microsoft/fast-jss-manager-react": "^4.6.3",
     "@microsoft/fast-tslint-rules": "^3.1.0",
-    "@types/jest": "^24.0.11",
+    "@types/jest": "^25.2.0",
     "@types/lodash-es": "^4.17.0",
     "@types/node": "^9.4.6",
     "@types/react": "^16.8.0",
