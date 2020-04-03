@@ -18,22 +18,30 @@ export class SliderLabel extends FastElement {
     public hideMark: boolean = false;
     private config: SliderConfiguration;
 
+    constructor() {
+        super();
+        this.getSliderConfiguration();
+    }
     public connectedCallback(): void {
         super.connectedCallback();
-        this.getSliderConfiguration();
         this.positionStyle = this.positionAsStyle();
         this.styleForOrientation();
     }
 
+    private isSliderConfig(node: any): node is SliderConfiguration {
+        return node.max !== undefined;
+    }
+
     private getSliderConfiguration = (): void => {
-        this.config = (this.parentNode as unknown) as SliderConfiguration;
-        if ((<SliderConfiguration>(this.parentNode as unknown)).max === undefined) {
+        if (!this.isSliderConfig(this.parentNode)) {
             this.config = {
                 min: 0,
                 max: 0,
                 direction: Direction.ltr,
                 orientation: SliderOrientation.horizontal,
             };
+        } else {
+            this.config = <SliderConfiguration>this.parentNode;
         }
     };
 
@@ -46,7 +54,7 @@ export class SliderLabel extends FastElement {
     };
 
     private positionAsStyle = (): any => {
-        const direction: string = "ltr"; //this.sliderDirection;
+        const direction: string = this.config.direction;
         const rightNum: number =
             ((this.config.max - this.config.min - Number(this.position)) /
                 (this.config.max - this.config.min)) *
