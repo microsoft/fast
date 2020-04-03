@@ -111,7 +111,7 @@
     "@microsoft/fast-jss-manager-react": "^4.6.3",
     "@microsoft/fast-jss-utilities": "^4.7.8",
     "@microsoft/fast-web-utilities": "^4.4.1",
-    "@microsoft/fast-tooling": "^0.0.1",
+    "@microsoft/fast-tooling": "^0.0.2",
     "exenv-es6": "^1.0.0",
     "raf-throttle": "^2.0.3",
     "react-dnd": "^9.0.0",
