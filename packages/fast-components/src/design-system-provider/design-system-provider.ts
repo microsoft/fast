@@ -1,4 +1,4 @@
-import { FastElement, Observable, DOM, observable } from "@microsoft/fast-element";
+import { DOM, FastElement, Observable, observable } from "@microsoft/fast-element";
 import { DesignSystemConsumer, designSystemConsumer } from "../design-system-consumer";
 
 interface DesignSystemPropertyDeclarationConfig {
@@ -19,7 +19,6 @@ interface DeleteCustomPropertyConfig {
  * Decorator to declare a property as a design-system property.
  * Accepts an optional config to customize whether a css custom property
  * will be written and if so, what the name of that property is.
-
  */
 export function designSystemProperty<T extends DesignSystemProvider>(
     config: DesignSystemPropertyDeclarationConfig
