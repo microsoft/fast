@@ -2,7 +2,7 @@
     "name": "@microsoft/fast-tooling",
     "description": "FAST Tooling",
     "sideEffects": false,
-    "version": "0.0.1",
+    "version": "0.0.2",
     "author": {
         "name": "Microsoft",
         "url": "https://discord.gg/FcSNfg4"
