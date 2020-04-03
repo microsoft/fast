@@ -1,6 +1,6 @@
 import { attr, FastElement, observable } from "@microsoft/fast-element";
-import { FASTSlider } from "../slider";
-import { SliderOrientation } from "../slider/slider";
+import { SliderOrientation, SliderConfiguration } from "../slider";
+import { Direction } from "@microsoft/fast-web-utilities";
 
 export class SliderLabel extends FastElement {
     @observable
@@ -16,32 +16,29 @@ export class SliderLabel extends FastElement {
 
     @attr({ attribute: "hide-mark", mode: "boolean" })
     public hideMark: boolean = false;
-
-    private sliderMax: number;
-    private sliderMin: number;
-    private sliderOrientation: SliderOrientation;
+    private config: SliderConfiguration;
 
     public connectedCallback(): void {
         super.connectedCallback();
-        this.setupSliderValues();
+        this.getSliderConfiguration();
         this.positionStyle = this.positionAsStyle();
         this.styleForOrientation();
     }
 
-    private setupSliderValues = (): void => {
-        if (this.parentNode instanceof FASTSlider) {
-            this.sliderMax = (this.parentNode as FASTSlider).max;
-            this.sliderMin = (this.parentNode as FASTSlider).min;
-            this.sliderOrientation = (this.parentNode as FASTSlider).orientation;
-        } else {
-            this.sliderMax = 0;
-            this.sliderMin = 0;
-            this.sliderOrientation = SliderOrientation.horizontal;
+    private getSliderConfiguration = (): void => {
+        this.config = (this.parentNode as unknown) as SliderConfiguration;
+        if ((<SliderConfiguration>(this.parentNode as unknown)).max === undefined) {
+            this.config = {
+                min: 0,
+                max: 0,
+                direction: Direction.ltr,
+                orientation: SliderOrientation.horizontal,
+            };
         }
     };
 
     private styleForOrientation = (): void => {
-        if (this.sliderOrientation === SliderOrientation.horizontal) {
+        if (this.config.orientation === SliderOrientation.horizontal) {
             this.root.classList.add("slider-label-horizontal");
         } else {
             this.root.classList.add("slider-label-vertical");
@@ -49,13 +46,13 @@ export class SliderLabel extends FastElement {
     };
 
     private positionAsStyle = (): any => {
-        const direction: string = (this.parentNode as FASTSlider).direction;
+        const direction: string = "ltr"; //this.sliderDirection;
         const rightNum: number =
-            ((this.sliderMax - this.sliderMin - Number(this.position)) /
-                (this.sliderMax - this.sliderMin)) *
+            ((this.config.max - this.config.min - Number(this.position)) /
+                (this.config.max - this.config.min)) *
             100;
         const leftNum: number =
-            (Number(this.position) / (this.sliderMax - this.sliderMin)) * 100;
+            (Number(this.position) / (this.config.min - this.config.min)) * 100;
 
         return direction === "rtl"
             ? `right: ${leftNum}%; left: ${rightNum}%;`

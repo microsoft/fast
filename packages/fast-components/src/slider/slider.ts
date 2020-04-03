@@ -5,19 +5,13 @@ import {
     keyCodeArrowLeft,
     keyCodeArrowDown,
     keyCodeArrowUp,
+    Direction,
 } from "@microsoft/fast-web-utilities";
 import { convertPixelToPercent } from "./slider-utilities";
+import { SliderConfiguration, SliderMode, SliderOrientation } from "./index";
 
-export enum SliderMode {
-    singleValue = "single-value",
-}
-
-export enum SliderOrientation {
-    horizontal = "horizontal",
-    vertical = "vertical",
-}
-
-export class Slider extends FormAssociated<HTMLInputElement> {
+export class Slider extends FormAssociated<HTMLInputElement>
+    implements SliderConfiguration {
     @attr({ attribute: "readonly", mode: "boolean" })
     public readOnly: boolean; // Map to proxy element
     private readOnlyChanged(): void {
@@ -39,7 +33,7 @@ export class Slider extends FormAssociated<HTMLInputElement> {
     public lowerThumb: HTMLDivElement;
 
     @observable
-    public direction: string = "ltr";
+    public direction: Direction = Direction.ltr;
 
     @observable
     public isDragging: boolean = false;
@@ -70,7 +64,7 @@ export class Slider extends FormAssociated<HTMLInputElement> {
         }
 
         const percentage: number =
-            this.direction !== "rtl"
+            this.direction !== Direction.rtl
                 ? (1 - (Number(this.value) / this.max - this.min)) * 100
                 : (Number(this.value) / this.max - this.min) * 100;
 
@@ -162,9 +156,11 @@ export class Slider extends FormAssociated<HTMLInputElement> {
         }
     };
 
-    private getDirection = (): string => {
+    private getDirection = (): Direction => {
         const dirNode: HTMLElement | null = this.parentElement!.closest("[dir]");
-        return dirNode !== null && dirNode["dir"] === "rtl" ? "rtl" : "ltr";
+        return dirNode !== null && dirNode["dir"] === "rtl"
+            ? Direction.rtl
+            : Direction.ltr;
     };
 
     private setupTrackConstraints = (): void => {
@@ -278,7 +274,7 @@ export class Slider extends FormAssociated<HTMLInputElement> {
 
     private increment = (): void => {
         const newVal: number =
-            this.direction !== "rtl"
+            this.direction !== Direction.rtl
                 ? Number(this.value) + Number(this.step)
                 : Number(this.value) - Number(this.step);
         const incrementedVal: number = this.convertToConstrainedValue(newVal);
@@ -290,7 +286,7 @@ export class Slider extends FormAssociated<HTMLInputElement> {
 
     private decrement = (): void => {
         const newVal =
-            this.direction !== "rtl"
+            this.direction !== Direction.rtl
                 ? Number(this.value) - Number(this.step)
                 : Number(this.value) + Number(this.step);
         const decrementedVal: number = this.convertToConstrainedValue(newVal);
