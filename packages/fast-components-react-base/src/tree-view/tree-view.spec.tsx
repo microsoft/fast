@@ -70,7 +70,8 @@ describe("TreeView", (): void => {
         expect(rendered.state("focusable")).toBe(false);
     });
 
-    test("should focus a `selected` child element if one exists when focus is brought to it", (): void => {
+    // Test is incompatible with Jest 25.x, refer to issue #2883
+    xtest("should focus a `selected` child element if one exists when focus is brought to it", (): void => {
         const rendered: ReactWrapper = mount(
             <TreeView>
                 <div
@@ -88,7 +89,8 @@ describe("TreeView", (): void => {
         expect(document.activeElement.id).toBe(expectedElementWithFocus);
     });
 
-    test("should focus a `treeitem` when focus is brought to it and there is not a previously focused or selected item", (): void => {
+    // Test is incompatible with Jest 25.x, refer to issue #2884
+    xtest("should focus a `treeitem` when focus is brought to it and there is not a previously focused or selected item", (): void => {
         const rendered: ReactWrapper = mount(
             <TreeView id={"root"}>
                 <div id={"shouldBeActive"} role="treeitem" />
