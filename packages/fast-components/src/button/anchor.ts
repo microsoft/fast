@@ -1,8 +1,11 @@
-import { attr, FastElement, html } from "@microsoft/fast-element";
+import { attr, FastElement, html, ref } from "@microsoft/fast-element";
 import { ButtonAppearance } from "./button";
+
+export type AnchorAppearance = ButtonAppearance | "hypertext";
 
 export const anchorTemplate = html<Anchor>`
     <a
+        class="control"
         download="${x => x.download}"
         href="${x => x.href}"
         hreflang="${x => x.hreflang}"
@@ -12,19 +15,47 @@ export const anchorTemplate = html<Anchor>`
         target="${x => x.target}"
         type="${x => x.type}"
     >
-        <slot slot="start"></slot>
-        <slot></slot>
-        <slot slot="end"></slot>
+        <span
+            name="start"
+            part="start"
+            ${ref("startContainer")}
+        >
+            <slot
+                name="start"
+                ${ref("start")}
+                @slotchange=${x => x.handleStartContentChange()}
+            ></slot>
+        </span>
+        <span class="content" part="content">
+            <slot></slot>
+        </span>
+        <span
+            name="end"
+            part="end"
+            ${ref("endContainer")}
+        >
+            <slot
+                name="end"
+                ${ref("end")}
+                @slotchange=${x => x.handleEndContentChange()}
+            ></slot>
+        </span>
     </a>
 `;
 
 export class Anchor extends FastElement {
     @attr
-    public appearance: ButtonAppearance = ButtonAppearance.neutral;
+    public appearance: AnchorAppearance;
     public appearanceChanged(): void {
-        this.appearance
-            ? this.classList.add(`${ButtonAppearance[this.appearance]}`)
-            : this.classList.remove(`${ButtonAppearance[this.appearance]}`);
+        if (this._currentAppearance !== this.appearance) {
+            // add our appearance
+            this.classList.add(`${this.appearance}`);
+            // remove our current appearance
+            this.classList.remove(`${this._currentAppearance}`);
+
+            // update our internal appearance.
+            this._currentAppearance = this.appearance;
+        }
     }
 
     @attr
@@ -50,4 +81,32 @@ export class Anchor extends FastElement {
 
     @attr
     public type: string;
+
+    private _currentAppearance: AnchorAppearance = "neutral";
+
+    public connectedCallback(): void {
+        super.connectedCallback();
+
+        if (this.appearance) {
+            this._currentAppearance = this.appearance;
+        }
+
+        this.classList.add(`${this._currentAppearance}`);
+    }
+
+    public start: HTMLSlotElement;
+    public startContainer: HTMLSpanElement;
+    public handleStartContentChange(): void {
+        this.start.assignedNodes().length > 0
+            ? this.startContainer.classList.add("start")
+            : this.startContainer.classList.remove("start");
+    }
+
+    public end: HTMLSlotElement;
+    public endContainer: HTMLSpanElement;
+    public handleEndContentChange(): void {
+        this.end.assignedNodes().length > 0
+            ? this.endContainer.classList.add("end")
+            : this.endContainer.classList.remove("end");
+    }
 }
