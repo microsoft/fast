@@ -1,16 +1,15 @@
-import { attr, FastElement, html } from "@microsoft/fast-element";
+import { attr, FastElement, html, ref } from "@microsoft/fast-element";
 
-export enum ButtonAppearance {
-    accent = "accent",
-    hypertext = "hypertext",
-    lightweight = "lightweight",
-    neutral = "neutral",
-    outline = "outline",
-    stealth = "stealth",
-}
+export type ButtonAppearance =
+    | "accent"
+    | "lightweight"
+    | "neutral"
+    | "outline"
+    | "stealth";
 
 export const buttonTemplate = html<Button>`
     <button
+        class="control"
         autofocus=${x => x.autofocus}
         disabled=${x => x.disabled}
         form=${x => x.form}
@@ -23,19 +22,45 @@ export const buttonTemplate = html<Button>`
         type=${x => x.type}
         value=${x => x.value}
     >
-        <slot slot="start"></slot>
-        <slot></slot>
-        <slot slot="end"></slot>
+        <span
+            part="start"
+            ${ref("startContainer")}
+        >
+            <slot
+                name="start"
+                ${ref("start")}
+                @slotchange=${x => x.handleStartContentChange()}
+            ></slot>
+        </span>
+        <span class="content" part="content">
+            <slot></slot>
+        </span>
+        <span
+            part="end"
+            ${ref("endContainer")}
+        >
+            <slot
+                name="end"
+                ${ref("end")}
+                @slotchange=${x => x.handleEndContentChange()}
+            ></slot>
+        </span>
     </button>
 `;
 
 export class Button extends FastElement {
     @attr
-    public appearance: ButtonAppearance = ButtonAppearance.neutral;
+    public appearance: ButtonAppearance;
     public appearanceChanged(): void {
-        this.appearance
-            ? this.classList.add(`${ButtonAppearance[this.appearance]}`)
-            : this.classList.remove(`${ButtonAppearance[this.appearance]}`);
+        if (this._currentAppearance !== this.appearance) {
+            // add our appearance
+            this.classList.add(`${this.appearance}`);
+            // remove our current appearance
+            this.classList.remove(`${this._currentAppearance}`);
+
+            // update our internal appearance.
+            this._currentAppearance = this.appearance;
+        }
     }
 
     @attr({ mode: "boolean" })
@@ -70,4 +95,32 @@ export class Button extends FastElement {
 
     @attr
     public value: string;
+
+    private _currentAppearance: ButtonAppearance = "neutral";
+
+    public connectedCallback(): void {
+        super.connectedCallback();
+
+        if (this.appearance) {
+            this._currentAppearance = this.appearance;
+        }
+
+        this.classList.add(`${this._currentAppearance}`);
+    }
+
+    public start: HTMLSlotElement;
+    public startContainer: HTMLSpanElement;
+    public handleStartContentChange(): void {
+        this.start.assignedNodes().length > 0
+            ? this.startContainer.classList.add("start")
+            : this.startContainer.classList.remove("start");
+    }
+
+    public end: HTMLSlotElement;
+    public endContainer: HTMLSpanElement;
+    public handleEndContentChange(): void {
+        this.end.assignedNodes().length > 0
+            ? this.endContainer.classList.add("end")
+            : this.endContainer.classList.remove("end");
+    }
 }
