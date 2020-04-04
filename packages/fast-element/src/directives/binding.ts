@@ -33,17 +33,11 @@ function triggerUnbind(this: BindingBehavior) {
 }
 
 function updateAttributeTarget(this: BindingBehavior, value: unknown): void {
-    if (value === null || value === void 0) {
-        this.target.removeAttribute(this.targetName!);
-    } else {
-        this.target.setAttribute(this.targetName!, value as string);
-    }
+    DOM.setAttribute(this.target, this.targetName!, value);
 }
 
 function updateBooleanAttributeTarget(this: BindingBehavior, value: unknown): void {
-    (value as boolean)
-        ? (this.target as HTMLElement).setAttribute(this.targetName!, "")
-        : (this.target as HTMLElement).removeAttribute(this.targetName!);
+    DOM.setBooleanAttribute(this.target, this.targetName!, value as boolean);
 }
 
 function updateTextTarget(this: BindingBehavior, value: unknown): void {
