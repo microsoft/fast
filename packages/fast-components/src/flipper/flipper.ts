@@ -1,4 +1,4 @@
-import { attr, FastElement } from "@microsoft/fast-element";
+import { attr, booleanConverter, FastElement } from "@microsoft/fast-element";
 
 export enum FlipperDirection {
     next = "next",
@@ -14,12 +14,29 @@ export class Flipper extends FastElement {
             : this.classList.remove("disabled");
     }
 
-    @attr({ attribute: "hidden-from-at", mode: "boolean" })
+    @attr({ attribute: "aria-hidden", mode: "fromView", converter: booleanConverter })
     public hiddenFromAT: boolean = true;
-
-    @attr
-    public label: string;
+    public hiddenFromATChanged(): void {
+        this.hiddenFromAT === false
+            ? this.setAttribute("tabindex", "0")
+            : this.setAttribute("tabindex", "-1");
+    }
 
     @attr
     public direction: FlipperDirection = FlipperDirection.next;
+    public directionChanged(
+        oldValue: FlipperDirection,
+        newValue: FlipperDirection
+    ): void {
+        if (this.direction) {
+            this.classList.remove(`${oldValue}`);
+            this.classList.add(`${newValue}`);
+        } else {
+            this.classList.remove(`${oldValue}`);
+        }
+    }
+
+    public connectedCallback(): void {
+        super.connectedCallback();
+    }
 }

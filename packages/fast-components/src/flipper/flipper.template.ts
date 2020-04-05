@@ -4,10 +4,7 @@ import { Flipper, FlipperDirection } from "./flipper";
 export const FlipperTemplate = html<Flipper>`
 <template
     role="button"
-    tabindex=${x => (x.hiddenFromAT ? -1 : 0)}
-    aria-hidden=${x => (x.hiddenFromAT ? true : void 0)}
     aria-disabled=${x => (x.disabled ? true : void 0)}
-    aria-label=${x => x.label}
 >
     ${when(
         x => x.direction === FlipperDirection.next,

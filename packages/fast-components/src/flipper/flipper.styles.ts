@@ -1,17 +1,18 @@
 import { css } from "@microsoft/fast-element";
-import { display, disabledCursor, focusVisible } from "../styles";
+import { disabledCursor, display, focusVisible } from "../styles";
+import { heightNumber } from "../styles/size";
 import { SystemColors } from "../styles/system-colors";
 
 export const FlipperStyles = css`
     ${display("inline-flex")} :host {
-        width: calc(var(--height-number) * 1px);
-        height: calc(var(--height-number) * 1px);
+        width: calc(${heightNumber} * 1px);
+        height: calc(${heightNumber} * 1px);
         justify-content: center;
         align-items: center;
         margin: 0;
         position: relative;
         fill: var(--neutral-foreground-rest);
-        color: var--neutral-foreground-rest);
+        color: var(--neutral-foreground-rest);
         background: transparent;
         border: none;
         padding: 0;
@@ -50,7 +51,6 @@ export const FlipperStyles = css`
         background: var(--neutral-fill-stealth-hover);
         border-color: var(--neutral-outline-hover);
     }
-
 
     :host(:${focusVisible}) {
         outline: none;
