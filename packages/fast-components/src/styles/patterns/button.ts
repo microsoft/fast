@@ -1,40 +1,12 @@
 import { css } from "@microsoft/fast-element";
 import { display } from "../display";
 import { focusVisible } from "../focus";
+import { heightNumber } from "../size";
 
 export const BaseButtonStyles = css`
     ${display("inline-block")} :host {
         font-family: var(--body-font);
         outline: none;
-
-        --fast-button-corner-radius: calc(var(--corner-radius) * 1px);
-        --fast-button-fill-rest: var(--neutral-fill-rest);
-        --fast-button-fill-hover: var(--neutral-fill-hover);
-        --fast-button-fill-active: var(--neutral-fill-active);
-
-        --fast-button-foreground-rest: var(--neutral-foreground-rest);
-        --fast-button-foreground-hover: var(--fast-button-foreground-rest);
-        --fast-button-foreground-active: var(--fast-button-foreground-rest);
-
-        --fast-button-border-rest-color: transparent;
-        --fast-button-border-rest-style: solid;
-        --fast-button-border-rest-width: calc(var(--outline-width) * 1px);
-        
-        --fast-button-border-hover-color: var(--fast-button-border-rest-color);
-        --fast-button-border-hover-style: var(--fast-button-border-rest-style);
-        --fast-button-border-hover-width: var(--fast-button-border-rest-width);
-        
-        --fast-button-border-active-color: var(--fast-button-border-hover-color);
-        --fast-button-border-active-style: var(--fast-button-border-hover-style);
-        --fast-button-border-active-width: var(--fast-button-border-hover-width);
-
-        --fast-button-border-focus-color: var(--neutral-focus);
-        --fast-button-border-focus-style: var(--fast-button-border-rest-style);
-
-        --fast-button-border-rest: var(--fast-button-border-rest-width) var(--fast-button-border-rest-style) var(--fast-button-border-rest-color);
-        --fast-button-border-hover: var(--fast-button-border-hover-width) var(--fast-button-border-hover-style) var(--fast-button-border-hover-color);
-        --fast-button-border-active: var(--fast-button-border-active-width) var(--fast-button-border-active-style) var(--fast-button-border-active-color);
-        --fast-button-border-focus: var(--fast-button-border-rest-width) var(--fast-button-border-focus-style) var(--fast-button-border-focus-color);
     }
 
     .control {
@@ -49,36 +21,31 @@ export const BaseButtonStyles = css`
         justify-content: center;
         align-items: center;
         padding: 0 calc((6 + (var(--design-unit) * 2 * var(--density))) * 1px);
-        height: calc(var(--height-number) * 1px);
-        min-width: calc(var(--height-number) * 1px);
+        height: calc(${heightNumber} * 1px);
+        min-width: calc(${heightNumber} * 1px);
         max-width: calc(var(--design-unit) * 94.5px));
         white-space: nowrap;
         outline: none;
         text-decoration: none;
-        border-radius: var(--fast-button-corner-radius);
-        background-color: var(--fast-button-fill-rest);
-        color: var(--fast-button-foreground-rest);
-        fill: var(--fast-button-foreground-rest);
-        border: var(--fast-button-border-rest);
+        cursor: pointer;
+        border-radius: calc(var(--corner-radius) * 1px);
+        background-color: var(--neutral-fill-rest);
+        color: var(--neutral-foreground-rest);
+        fill: var(--neutral-foreground-rest);
+        border: calc(var(--outline-width) * 1px) solid transparent;
     }
 
     .control:hover {
-        background-color: var(--fast-button-fill-hover);
-        color: var(--fast-button-foreground-hover);
-        fill: var(--fast-button-foreground-hover);
-        border: var(--fast-button-border-hover);
+        background-color: var(--neutral-fill-hover);
     }
 
     .control:active {
-        background-color: var(--fast-button-fill-active);
-        color: var(--fast-button-foreground-active);
-        fill: var(--fast-button-foreground-active);
-        border: var(--fast-button-border-active);
+        background-color: var(--neutral-fill-active);
     }
 
     .control:${focusVisible} {
-        border: var(--fast-button-border-focus);
-        box-shadow: 0 0 0 calc((var(--focus-outline-width) - var(--outline-width)) * 1px) var(--fast-button-border-focus-color);
+        border: calc(var(--outline-width) * 1px) solid var(--neutral-focus);
+        box-shadow: 0 0 0 calc((var(--focus-outline-width) - var(--outline-width)) * 1px) var(--neutral-focus);
     }
 
     .control::-moz-focus-inner {
@@ -105,14 +72,17 @@ export const BaseButtonStyles = css`
 `;
 
 export const AccentButtonStyles = css`
-    :host(.accent) {
-        --fast-button-fill-rest: var(--accent-fill-rest);
-        --fast-button-fill-hover: var(--accent-fill-hover);
-        --fast-button-fill-active: var(--accent-fill-active);
-    
-        --fast-button-foreground-rest: var(--accent-foreground-cut-rest);
-        --fast-button-foreground-hover: var(--fast-button-foreground-rest);
-        --fast-button-foreground-active: var(--fast-button-foreground-rest);    
+    :host(.accent) .control {
+        background: var(--accent-fill-rest);
+        color: var(--accent-foreground-cut-rest);  
+    }
+
+    :host(.accent) .control:hover {
+        background: var(--accent-fill-hover);
+    }
+
+    :host(.accent) .control:active {
+        background: var(--accent-fill-active);
     }
 
     :host(.accent) .control:${focusVisible} {
@@ -121,70 +91,50 @@ export const AccentButtonStyles = css`
 `;
 
 export const HypertextStyles = css`
-    :host(.hypertext) {
-        --fast-button-fill-rest: transparent;
-        --fast-button-fill-hover: transparent;
-        --fast-button-fill-active: transparent;
-
-        --fast-button-corner-radius: none;
-    }
-
     :host(.hypertext) .control {
         padding: 0;
         height: auto;
         border: none;
         box-shadow: none;
+        border-radius: 0;
     }
 
     :host(.hypertext) .control:link,
     :host(.hypertext) .control:visited {
-        --fast-button-foreground-rest: var(--accent-foreground-rest);
-        --fast-button-foreground-hover: var(--accent-foreground-hover);
-        --fast-button-foreground-active: var(--accent-foreground-active);
-
-        --fast-button-border-rest: transparent;
-        --fast-button-border-hover: transparent;
-        --fast-button-border-active: transparent;
-
-        --fast-button-border-focus-width: calc(var(--focus-outline-width) * 1px);
-
-        border-bottom: var(--fast-button-border-rest-width) var(--fast-button-border-rest-style) var(--fast-button-foreground-rest);
+        background: transparent;
+        color: var(--accent-foreground-rest);
+        border-bottom: calc(var(--outline-width) * 1px) solid var(--accent-foreground-rest);
     }
 
     :host(.hypertext) .control:hover {
-        border-bottom-color: var(--fast-button-foreground-hover);
+        border-bottom-color: var(--accent-foreground-hover);
     }
 
     :host(.hypertext) .control:active {
-        border-bottom-color: var(--fast-button-foreground-active);
+        border-bottom-color: var(--accent-foreground-active);
     }
 
     :host(.hypertext) .control:${focusVisible} {
-        border-bottom: var(--fast-button-border-focus-width) var(--fast-button-border-focus-style) var(--neutral-focus);
+        border-bottom: calc(var(--focus-outline-width) * 1px) solid var(--neutral-focus);
     }
 `;
 
 export const LightweightButtonStyles = css`
-    :host(.lightweight) {
-        --fast-button-fill-rest: transparent;
-        --fast-button-fill-hover: transparent;
-        --fast-button-fill-active: transparent;
-
-        --fast-button-foreground-rest: var(--accent-foreground-rest);
-        --fast-button-foreground-hover: var(--accent-foreground-hover);
-        --fast-button-foreground-active: var(--accent-foreground-active);
-
-        --fast-button-border-rest: transparent;
-        --fast-button-border-hover: transparent;
-        --fast-button-border-active: transparent;
-
-        --fast-button-corner-radius: none;
-    }
-
     :host(.lightweight) .control {
         padding: 0;
         border: none;
         box-shadow: none;
+        border-radius: 0;
+        background: transparent;
+        color: var(--accent-foreground-rest);
+    }
+
+    :host(.lightweight) .control:hover {
+        color: var(--accent-foreground-hover);
+    }
+
+    :host(.lightweight) .control:active {
+        color: var(--accent-foreground-active);
     }
 
     :host(.lightweight) .content {
@@ -201,11 +151,11 @@ export const LightweightButtonStyles = css`
     }
 
     :host(.lightweight) .control:hover .content::before {
-        background: var(--fast-button-foreground-hover);
+        background: var(--accent-foreground-hover);
     }
 
     :host(.lightweight) .control:active .content::before {
-        background: var(--fast-button-foreground-active);
+        background: var(--accent-foreground-active);
     }
 
     :host(.lightweight) .control:${focusVisible} .content::before {
@@ -215,21 +165,30 @@ export const LightweightButtonStyles = css`
 `;
 
 export const OutlineButtonStyles = css`
-    :host(.outline) {
-        --fast-button-fill-rest: transparent;
-        --fast-button-fill-hover: transparent;
-        --fast-button-fill-active: transparent;
+    :host(.outline) .control {
+        background: transparent;
+        border-color: var(--neutral-outline-rest);
+    }
 
-        --fast-button-border-rest-color: var(--neutral-outline-rest);
-        --fast-button-border-rest-hover: var(--neutral-outline-hover);
-        --fast-button-border-rest-active: var(--neutral-outline-active);
+    :host(.outline) .control:hover {
+        border-color: var(--neutral-outline-hover);
+    }
+
+    :host(.outline) .control:active {
+        border-color: var(--neutral-outline-active);
     }
 `;
 
 export const StealthButtonStyles = css`
-    :host(.stealth) {
-        --fast-button-fill-rest: var(--neutral-fill-stealth-rest);
-        --fast-button-fill-hover: var(--neutral-fill-stealth-hover);
-        --fast-button-fill-active: var(--neutral-fill-stealth-active);
+    :host(.stealth) .control {
+        background: var(--neutral-fill-stealth-rest);
+    }
+
+    :host(.stealth) .control:hover {
+        background: var(--neutral-fill-stealth-hover);
+    }
+
+    :host(.stealth) .control:active {
+        background: var(--neutral-fill-stealth-active);
     }
 `;
