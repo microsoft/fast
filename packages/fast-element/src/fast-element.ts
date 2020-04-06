@@ -1,6 +1,5 @@
 import { Controller } from "./controller";
 import { emptyArray } from "./interfaces";
-import { Observable } from "./observation/observable";
 import { ElementViewTemplate } from "./template";
 import { ElementStyles } from "./styles";
 import { AttributeDefinition, AttributeConfiguration } from "./attributes";
