@@ -4,8 +4,8 @@ import { Direction } from "@microsoft/fast-web-utilities";
 import { convertPixelToPercent } from "../slider/slider-utilities";
 
 const defaultConfig: SliderConfiguration = {
-    min: 1,
-    max: 1,
+    min: 0,
+    max: 0,
     direction: Direction.ltr,
     orientation: SliderOrientation.horizontal,
 };
@@ -79,8 +79,12 @@ export class SliderLabel extends FastElement {
             this.config.min,
             this.config.max
         );
-        const rightNum: number = Math.round((1 - pct) * 100);
-        const leftNum: number = Math.round(pct * 100);
+        let rightNum: number = Math.round((1 - pct) * 100);
+        let leftNum: number = Math.round(pct * 100);
+        if (leftNum === Number.NaN && rightNum === Number.NaN) {
+            rightNum = 50;
+            leftNum = 50;
+        }
 
         return direction === Direction.rtl
             ? `right: ${leftNum}%; left: ${rightNum}%;`
