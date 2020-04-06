@@ -171,7 +171,7 @@ export class Slider extends FormAssociated<HTMLInputElement>
 
     private setupTrackConstraints = (): void => {
         this.trackWidth = this.track.clientWidth;
-        this.trackMinWidth = this.track.getBoundingClientRect().left;
+        this.trackMinWidth = this.track.clientLeft;
     };
 
     private setupListeners = (): void => {
