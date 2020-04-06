@@ -1,7 +1,7 @@
 import { Controller } from "../controller";
 import { FastElement } from "../fast-element";
 import { Notifier, PropertyChangeNotifier } from "./notifier";
-import { Expression, ExpressionContext } from "../interfaces";
+import { Expression, ExpressionContext, emptyArray } from "../interfaces";
 
 export interface GetterInspector {
     inspect(source: unknown, propertyName: string): void;
@@ -54,6 +54,11 @@ export const Observable = {
         const callbackName = `${propertyName}Changed`;
         const hasCallback = callbackName in target;
 
+        const observedProperties =
+            (target as any).observedProperties ||
+            ((target as any).observedProperties = []);
+        observedProperties.push(propertyName);
+
         Reflect.defineProperty(target, propertyName, {
             enumerable: true,
             get: function(this: any) {
@@ -74,6 +79,10 @@ export const Observable = {
                 }
             },
         });
+    },
+
+    getObservedProperties(target: {}): string[] {
+        return (target as any).observedProperties || emptyArray;
     },
 };
 
