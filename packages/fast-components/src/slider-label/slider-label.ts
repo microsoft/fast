@@ -1,10 +1,11 @@
 import { attr, FastElement, observable } from "@microsoft/fast-element";
 import { SliderOrientation, SliderConfiguration } from "../slider";
 import { Direction } from "@microsoft/fast-web-utilities";
+import { convertPixelToPercent } from "../slider/slider-utilities";
 
 const defaultConfig: SliderConfiguration = {
-    min: 0,
-    max: 0,
+    min: 1,
+    max: 1,
     direction: Direction.ltr,
     orientation: SliderOrientation.horizontal,
 };
@@ -72,12 +73,14 @@ export class SliderLabel extends FastElement {
         const direction: Direction = this.config.direction
             ? this.config.direction
             : Direction.ltr;
-        const rightNum: number =
-            ((this.config.max - this.config.min - Number(this.position)) /
-                (this.config.max - this.config.min)) *
-            100;
-        const leftNum: number =
-            (Number(this.position) / (this.config.min - this.config.min)) * 100;
+
+        const pct = convertPixelToPercent(
+            Number(this.position),
+            this.config.min,
+            this.config.max
+        );
+        const rightNum: number = Math.round((1 - pct) * 100);
+        const leftNum: number = Math.round(pct * 100);
 
         return direction === Direction.rtl
             ? `right: ${leftNum}%; left: ${rightNum}%;`
