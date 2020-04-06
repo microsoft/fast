@@ -1,4 +1,5 @@
 import { attr, FastElement, html, ref } from "@microsoft/fast-element";
+import { FormAssociated } from "../form-associated";
 
 export type ButtonAppearance =
     | "accent"
@@ -12,7 +13,7 @@ export const buttonTemplate = html<Button>`
         class="control"
         autofocus=${x => x.autofocus}
         disabled=${x => x.disabled}
-        form=${x => x.form}
+        form=${x => x.formId}
         formaction=${x => x.formaction}
         formenctype=${x => x.formenctype}
         formmethod=${x => x.formmethod}
@@ -48,64 +49,82 @@ export const buttonTemplate = html<Button>`
     </button>
 `;
 
-export class Button extends FastElement {
+export class Button extends FormAssociated<HTMLInputElement> {
     @attr
-    public appearance: ButtonAppearance;
-    public appearanceChanged(): void {
-        if (this._currentAppearance !== this.appearance) {
-            // add our appearance
-            this.classList.add(`${this.appearance}`);
-            // remove our current appearance
-            this.classList.remove(`${this._currentAppearance}`);
-
-            // update our internal appearance.
-            this._currentAppearance = this.appearance;
+    public appearance: ButtonAppearance = "neutral";
+    public appearanceChanged(
+        oldValue: ButtonAppearance,
+        newValue: ButtonAppearance
+    ): void {
+        if (oldValue !== newValue) {
+            this.classList.add(`${newValue}`);
+            this.classList.remove(`${oldValue}`);
         }
     }
 
     @attr({ mode: "boolean" })
     public autofocus: boolean;
 
-    @attr({ mode: "boolean" })
-    public disabled: boolean;
-
-    @attr
-    public form: string;
+    @attr({ attribute: "form" })
+    public formId: string;
 
     @attr
     public formaction: string;
+    private formactionChanged(): void {
+        if (this.proxy instanceof HTMLElement) {
+            this.proxy.formAction = this.formaction;
+        }
+    }
 
     @attr
     public formenctype: string;
+    private formenctypeChanged(): void {
+        if (this.proxy instanceof HTMLElement) {
+            this.proxy.formEnctype = this.formenctype;
+        }
+    }
 
     @attr
     public formmethod: string;
+    private formmethodChanged(): void {
+        if (this.proxy instanceof HTMLElement) {
+            this.proxy.formMethod = this.formmethod;
+        }
+    }
 
     @attr({ mode: "boolean" })
     public formnovalidate: boolean;
+    private formnovalidateChanged(): void {
+        if (this.proxy instanceof HTMLElement) {
+            this.proxy.formNoValidate = this.formnovalidate;
+        }
+    }
 
     @attr
     public formtarget: "_self" | "_blank" | "_parent" | "_top";
+    private formtargetChanged(): void {
+        if (this.proxy instanceof HTMLElement) {
+            this.proxy.formTarget = this.formtarget;
+        }
+    }
 
     @attr
     public name: string;
 
     @attr
     public type: "submit" | "reset" | "button";
+    private typeChanged(): void {
+        if (this.proxy instanceof HTMLElement) {
+            this.proxy.type = this.type;
+        }
+    }
 
     @attr
     public value: string;
-
-    private _currentAppearance: ButtonAppearance = "neutral";
-
-    public connectedCallback(): void {
-        super.connectedCallback();
-
-        if (this.appearance) {
-            this._currentAppearance = this.appearance;
+    private valueChanged(): void {
+        if (this.proxy instanceof HTMLElement) {
+            this.proxy.value = this.value;
         }
-
-        this.classList.add(`${this._currentAppearance}`);
     }
 
     public start: HTMLSlotElement;
@@ -122,5 +141,19 @@ export class Button extends FastElement {
         this.end.assignedNodes().length > 0
             ? this.endContainer.classList.add("end")
             : this.endContainer.classList.remove("end");
+    }
+
+    protected proxy: HTMLInputElement = document.createElement("input");
+
+    constructor() {
+        super();
+
+        this.proxy.setAttribute("type", `${this.type}`);
+    }
+
+    public connectedCallback(): void {
+        super.connectedCallback();
+
+        this.setFormValue(this.value, this.value);
     }
 }

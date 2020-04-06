@@ -45,16 +45,14 @@ export const anchorTemplate = html<Anchor>`
 
 export class Anchor extends FastElement {
     @attr
-    public appearance: AnchorAppearance;
-    public appearanceChanged(): void {
-        if (this._currentAppearance !== this.appearance) {
-            // add our appearance
-            this.classList.add(`${this.appearance}`);
-            // remove our current appearance
-            this.classList.remove(`${this._currentAppearance}`);
-
-            // update our internal appearance.
-            this._currentAppearance = this.appearance;
+    public appearance: AnchorAppearance = "neutral";
+    public appearanceChanged(
+        oldValue: AnchorAppearance,
+        newValue: AnchorAppearance
+    ): void {
+        if (oldValue !== newValue) {
+            this.classList.add(`${newValue}`);
+            this.classList.remove(`${oldValue}`);
         }
     }
 
@@ -81,18 +79,6 @@ export class Anchor extends FastElement {
 
     @attr
     public type: string;
-
-    private _currentAppearance: AnchorAppearance = "neutral";
-
-    public connectedCallback(): void {
-        super.connectedCallback();
-
-        if (this.appearance) {
-            this._currentAppearance = this.appearance;
-        }
-
-        this.classList.add(`${this._currentAppearance}`);
-    }
 
     public start: HTMLSlotElement;
     public startContainer: HTMLSpanElement;
