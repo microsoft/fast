@@ -1,14 +1,15 @@
 import { css } from "@microsoft/fast-element";
 import { display } from "../../styles";
 import { SystemColors } from "../../styles/system-colors";
+import { heightNumber } from "../../styles/size";
 
 export const ProgressRingStyles = css`
     ${display("flex")} :host {
         align-items: center;
         outline: none;
-        height: calc(var(--height-number) * 1px);
-        width: calc(var(--height-number) * 1px);
-        margin: calc(var(--design-unit) * 1px) 0;
+        height: calc(${heightNumber} * 1px);
+        width: calc(${heightNumber} * 1px);
+        margin: calc(${heightNumber} * 1px) 0;
     }
 
     .progress {

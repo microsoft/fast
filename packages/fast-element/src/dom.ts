@@ -62,6 +62,20 @@ export const DOM = Object.freeze({
 
         updateQueue.push(callable);
     },
+
+    setAttribute(element: HTMLElement, attributeName: string, value: any) {
+        if (value === null || value === undefined) {
+            element.removeAttribute(attributeName);
+        } else {
+            element.setAttribute(attributeName, value);
+        }
+    },
+
+    setBooleanAttribute(element: HTMLElement, attributeName: string, value: boolean) {
+        value
+            ? element.setAttribute(attributeName, "")
+            : element.removeAttribute(attributeName);
+    },
 });
 
 function processQueue() {
