@@ -1,12 +1,15 @@
 import { css } from "@microsoft/fast-element";
 import { display } from "../styles";
+import { heightNumber } from "../styles/size";
 
 export const BadgeStyles = css`
     ${display("inline-block")} :host {
         box-sizing: border-box;
         font-family: var(--body-font);
-        ${/* Font size, weight, and line height are temporary - 
-            replace when adaptive typography is figured out */ ""} font-size: 12px;
+        ${
+            /* Font size, weight, and line height are temporary - 
+            replace when adaptive typography is figured out */ ""
+        } font-size: 12px;
         font-weight: 400;
         line-height: 18px;
     }
@@ -19,8 +22,10 @@ export const BadgeStyles = css`
     :host(.circular) .badge {
         border-radius: 100px;
         padding: 0 calc(var(--design-unit) * 1px);
-        ${/* Need to work with Brian on width and height here */ ""} height: calc((var(--height-number) - (var(--design-unit) * 3)) * 1px);
-        min-width: calc((var(--height-number) - (var(--design-unit) * 3)) * 1px);
+        ${
+            /* Need to work with Brian on width and height here */ ""
+        } height: calc((${heightNumber} - (var(--design-unit) * 3)) * 1px);
+        min-width: calc((${heightNumber} - (var(--design-unit) * 3)) * 1px);
         display: flex;
         align-items: center;
         justify-content: center;

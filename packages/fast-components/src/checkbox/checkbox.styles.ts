@@ -2,6 +2,7 @@ import { css } from "@microsoft/fast-element";
 import { disabledCursor, display } from "../styles";
 import { focusVisible } from "../styles/focus";
 import { SystemColors } from "../styles/system-colors";
+import { heightNumber } from "../styles/size";
 
 export const CheckboxStyles = css`
     ${display("inline-flex")} :host {
@@ -18,8 +19,8 @@ export const CheckboxStyles = css`
 
     .checkbox {
         position: relative;
-        width: calc((var(--height-number) / 2 + var(--design-unit)) * 1px);
-        height: calc((var(--height-number) / 2 + var(--design-unit)) * 1px);
+        width: calc((${heightNumber} / 2 + var(--design-unit)) * 1px);
+        height: calc((${heightNumber} / 2 + var(--design-unit)) * 1px);
         box-sizing: border-box;
         border-radius: calc(var(--corner-radius) * 1px);
         border: calc(var(--outline-width) * 1px) solid var(--neutral-outline-rest);
