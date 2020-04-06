@@ -67,25 +67,63 @@ export class AnchoredRegion extends FastElement {
 
     @attr({ attribute: "horizontal-positioning-mode" })
     public horizontalPositioningMode: AxisPositioningMode = "uncontrolled";
+    private horizontalPositioningModeChanged(): void {
+        this.updateLayoutForAttributeChange();
+    }
+
     @attr({ attribute: "horizontal-default-position" })
     public horizontalDefaultPosition: HorizontalPosition = "unset";
-    @attr({ attribute: "horizontal-inset" })
+    private horizontalDefaultPositionChanged(): void {
+        this.updateLayoutForAttributeChange();
+    }
+
+    @attr({ attribute: "horizontal-inset", mode: "boolean" })
     public horizontalInset: boolean = false;
+    private horizontalInsetChanged(): void {
+        this.updateLayoutForAttributeChange();
+    }
+
     @attr({ attribute: "horizontal-threshold" })
     public horizontalThreshold: string = "";
-    @attr({ attribute: "horizontal-scaling" })
+    private horizontalThresholdChanged(): void {
+        this.updateLayoutForAttributeChange();
+    }
+
+    @attr({ attribute: "horizontal-scaling", mode: "boolean" })
     public horizontalScaling: boolean = false;
+    private horizontalScalingChanged(): void {
+        this.updateLayoutForAttributeChange();
+    }
 
     @attr({ attribute: "vertical-positioning-mode" })
     public verticalPositioningMode: AxisPositioningMode = "uncontrolled";
+    private verticalPositioningModeChanged(): void {
+        this.updateLayoutForAttributeChange();
+    }
+
     @attr({ attribute: "vertical-default-position" })
     public verticalDefaultPosition: VerticalPosition = "unset";
-    @attr({ attribute: "vertical-inset" })
+    private verticalDefaultPositionChanged(): void {
+        this.updateLayoutForAttributeChange();
+    }
+
+    @attr({ attribute: "vertical-inset", mode: "boolean" })
     public verticalInset: boolean = false;
+    private verticalInsetChanged(): void {
+        this.updateLayoutForAttributeChange();
+    }
+
     @attr({ attribute: "vertical-threshold" })
     public verticalThreshold: string = "";
-    @attr({ attribute: "vertical-scaling" })
+    private verticalThresholdChanged(): void {
+        this.updateLayoutForAttributeChange();
+    }
+
+    @attr({ attribute: "vertical-scaling", mode: "boolean" })
     public verticalScaling: boolean = false;
+    private verticalScalingChanged(): void {
+        this.updateLayoutForAttributeChange();
+    }
 
     @observable
     public regionStyle: string = "";
@@ -208,11 +246,17 @@ export class AnchoredRegion extends FastElement {
         // );
     }
 
+    private updateLayoutForAttributeChange() {
+        if (this.initialLayoutComplete) {
+            this.updateLayout();
+        }
+    }
+
     private reset() {
-        // this.disconnectObservers();
-        // this.setInitialState();
+        this.disconnectObservers();
+        this.setInitialState();
+        this.connectObservers();
         // this.updateLayout();
-        // this.connectObservers();
     }
 
     private setInitialState = (): void => {
