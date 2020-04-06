@@ -2,6 +2,7 @@ import { css } from "@microsoft/fast-element";
 import { disabledCursor, display } from "../styles";
 import { focusVisible } from "../styles/focus";
 import { SystemColors } from "../styles/system-colors";
+import { heightNumber } from "../styles/size";
 
 export const SliderStyles = css`
     :host([hidden]) {
@@ -9,7 +10,7 @@ export const SliderStyles = css`
     }
 
     ${display("inline-grid")} :host {
-        --thumb-size: calc(var(--height-number) * 0.5);
+        --thumb-size: calc(${heightNumber} * 0.5);
         --thumb-translate: calc(var(--thumb-size) * 0.5);
         --track-overhang: calc((var(--design-unit) / 2) * -1);
         align-items: center;

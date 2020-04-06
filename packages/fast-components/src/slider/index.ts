@@ -3,6 +3,13 @@ import { Slider } from "./slider";
 import { SliderTemplate as template } from "./slider.template";
 import { SliderStyles as styles } from "./slider.styles";
 import { Direction } from "@microsoft/fast-web-utilities";
+import { designSystemConsumer } from "../design-system-consumer";
+import {
+    neutralForegroundRest,
+    neutralForegroundHover,
+    neutralForegroundActive,
+    neutralOutlineRest,
+} from "../styles/recipes";
 
 export enum SliderMode {
     singleValue = "single-value",
@@ -24,6 +31,14 @@ export interface SliderConfiguration {
     name: "fast-slider",
     template,
     styles,
+})
+@designSystemConsumer({
+    recipes: [
+        neutralForegroundActive,
+        neutralForegroundHover,
+        neutralForegroundRest,
+        neutralOutlineRest,
+    ],
 })
 export class FASTSlider extends Slider {}
 export * from "./slider.template";

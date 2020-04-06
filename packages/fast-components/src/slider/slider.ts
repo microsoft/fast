@@ -1,4 +1,10 @@
-import { attr, FastElement, observable, Observable } from "@microsoft/fast-element";
+import {
+    attr,
+    FastElement,
+    nullableNumberConverter,
+    observable,
+    Observable,
+} from "@microsoft/fast-element";
 import { FormAssociated } from "../form-associated";
 import {
     keyCodeArrowRight,
@@ -52,7 +58,7 @@ export class Slider extends FormAssociated<HTMLInputElement>
     /**
      * The element's value to be included in form submission changed.
      */
-    @attr
+    @attr({ converter: nullableNumberConverter })
     public value: string; // Map to proxy element.
     private valueChanged(): void {
         if (Number(this.value) === Number.NaN) {
@@ -78,7 +84,7 @@ export class Slider extends FormAssociated<HTMLInputElement>
     /**
      * Min allowed value default is 0
      */
-    @attr
+    @attr({ converter: nullableNumberConverter })
     public min: number = 0; // Map to proxy element.
     private minChanged(): void {
         if (this.proxy instanceof HTMLElement) {
@@ -89,7 +95,7 @@ export class Slider extends FormAssociated<HTMLInputElement>
     /**
      * Max allowed value default is 10
      */
-    @attr
+    @attr({ converter: nullableNumberConverter })
     public max: number = 10; // Map to proxy element.
     private maxChanged(): void {
         if (this.proxy instanceof HTMLElement) {
@@ -100,7 +106,7 @@ export class Slider extends FormAssociated<HTMLInputElement>
     /**
      * Value to increment or decrement via arrow keys, mouse click or drag
      */
-    @attr
+    @attr({ converter: nullableNumberConverter })
     public step: number = 1; // Map to proxy element.
     private stepChanged(): void {
         if (this.proxy instanceof HTMLElement) {
