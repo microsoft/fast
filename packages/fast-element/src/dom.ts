@@ -34,7 +34,9 @@ export const DOM = Object.freeze({
     },
 
     isMarker(node: Node): node is Comment {
-        return node.nodeType === 8 && (node as Comment).data.startsWith(markerClass);
+        return (
+            node && node.nodeType === 8 && (node as Comment).data.startsWith(markerClass)
+        );
     },
 
     extractDirectiveIndexFromMarker(node: Comment): number {
@@ -59,6 +61,20 @@ export const DOM = Object.freeze({
         }
 
         updateQueue.push(callable);
+    },
+
+    setAttribute(element: HTMLElement, attributeName: string, value: any) {
+        if (value === null || value === undefined) {
+            element.removeAttribute(attributeName);
+        } else {
+            element.setAttribute(attributeName, value);
+        }
+    },
+
+    setBooleanAttribute(element: HTMLElement, attributeName: string, value: boolean) {
+        value
+            ? element.setAttribute(attributeName, "")
+            : element.removeAttribute(attributeName);
     },
 });
 

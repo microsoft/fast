@@ -1,4 +1,5 @@
 import { Observable } from "./observation/observable";
+import { DOM } from "./dom";
 
 export interface ValueConverter {
     toView(value: any): string | null;
@@ -76,8 +77,8 @@ export class AttributeDefinition {
         }
     }
 
-    public setValue(object: any, newValue: any) {
-        const oldValue = object[this.fieldName];
+    public setValue(element: HTMLElement, newValue: any) {
+        const oldValue = element[this.fieldName];
         const converter = this.converter;
 
         if (converter !== void 0) {
@@ -85,62 +86,63 @@ export class AttributeDefinition {
         }
 
         if (oldValue !== newValue) {
-            object[this.fieldName] = newValue;
+            element[this.fieldName] = newValue;
 
-            this.tryReflectToAttribute(object, newValue, converter);
+            this.tryReflectToAttribute(element, newValue, converter);
 
             if (this.hasCallback) {
-                object[this.callbackName](oldValue, newValue);
+                element[this.callbackName](oldValue, newValue);
             }
 
-            Observable.notify(object, this.property);
+            Observable.notify(element, this.property);
         }
     }
 
-    public getValue(object: any): any {
-        Observable.track(object, this.property);
-        return object[this.fieldName];
+    public getValue(element: HTMLElement): any {
+        Observable.track(element, this.property);
+        return element[this.fieldName];
     }
 
-    public onAttributeChangedCallback(object: any, value: any) {
-        if (this.guards.has(object)) {
+    public onAttributeChangedCallback(element: HTMLElement, value: any) {
+        if (this.guards.has(element)) {
             return;
         }
 
-        this.guards.add(object);
-        this.setValue(object, value);
-        this.guards.delete(object);
+        this.guards.add(element);
+        this.setValue(element, value);
+        this.guards.delete(element);
     }
 
     private tryReflectToAttribute(
-        object: any,
+        element: HTMLElement,
         newValue: any,
         converter?: ValueConverter
     ) {
         const mode = this.mode;
+        const guards = this.guards;
 
-        if (this.guards.has(object) || mode === "fromView") {
+        if (guards.has(element) || mode === "fromView") {
             return;
         }
 
-        this.guards.add(object);
+        DOM.queueUpdate(() => {
+            guards.add(element);
 
-        switch (mode) {
-            case "reflect":
-                if (converter !== void 0) {
-                    newValue = converter.toView(newValue);
-                }
+            switch (mode) {
+                case "reflect":
+                    DOM.setAttribute(
+                        element,
+                        this.attribute,
+                        converter !== void 0 ? converter.toView(newValue) : newValue
+                    );
+                    break;
+                case "boolean":
+                    DOM.setBooleanAttribute(element, this.attribute, newValue);
+                    break;
+            }
 
-                (object as HTMLElement).setAttribute(this.attribute, newValue);
-                break;
-            case "boolean":
-                newValue
-                    ? (object as HTMLElement).setAttribute(this.attribute, "")
-                    : (object as HTMLElement).removeAttribute(this.attribute);
-                break;
-        }
-
-        this.guards.delete(object);
+            guards.delete(element);
+        });
     }
 
     public static collect(

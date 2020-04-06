@@ -2,6 +2,7 @@ import { css } from "@microsoft/fast-element";
 import { disabledCursor, display } from "../styles";
 import { focusVisible } from "../styles/focus";
 import { SystemColors } from "../styles/system-colors";
+import { heightNumber } from "../styles/size";
 
 export const TextFieldStyles = css`
     ${display("inline-block")} :host {
@@ -19,7 +20,7 @@ export const TextFieldStyles = css`
         background: var(--neutral-fill-input-rest);
         border-radius: calc(var(--corner-radius) * 1px);
         border: calc(var(--outline-width) * 1px) solid var(--neutral-outline-rest);
-        height: calc(var(--height-number) * 1px);
+        height: calc(${heightNumber} * 1px);
     }
 
     .control {
