@@ -2,6 +2,7 @@ import { FastElementDefinition, FastElement } from "./fast-element";
 import { Container, Registry, Resolver, InterfaceSymbol } from "./di";
 import { ElementView } from "./view";
 import { PropertyChangeNotifier } from "./observation/notifier";
+import { Observable } from "./observation/observable";
 
 const defaultEventOptions: CustomEventInit = {
     bubbles: true,
@@ -12,6 +13,7 @@ export class Controller extends PropertyChangeNotifier implements Container {
     public view: ElementView | null = null;
     public isConnected: boolean = false;
     private resolvers = new Map<any, Resolver>();
+    private boundObservables: Record<string, any> | null = null;
 
     public constructor(
         public readonly element: HTMLElement,
@@ -41,6 +43,26 @@ export class Controller extends PropertyChangeNotifier implements Container {
         }
 
         definition.dependencies.forEach(x => x.register(this));
+
+        // Capture any observable values that were set by the binding engine before
+        // the browser upgraded the element. Then delete the property since it will
+        // shadow the getter/setter that is required to make the observable function.
+        // Later, in the connect callback, we'll re-apply the values.
+        const observedProps = Observable.getObservedProperties(element);
+
+        if (observedProps.length > 0) {
+            const boundObservables = (this.boundObservables = Object.create(null));
+
+            for (let i = 0, ii = observedProps.length; i < ii; ++i) {
+                const propertyName = observedProps[i];
+                const value = (element as any)[propertyName];
+
+                if (value !== void 0) {
+                    delete (element as any)[propertyName];
+                    boundObservables[propertyName] = value;
+                }
+            }
+        }
     }
 
     public onConnectedCallback() {
@@ -48,8 +70,23 @@ export class Controller extends PropertyChangeNotifier implements Container {
             return;
         }
 
+        const element = this.element;
+        const boundObservables = this.boundObservables;
+
+        // If we have any observables that were bound, re-apply their values.
+        if (boundObservables !== null) {
+            const propertyNames = Object.keys(boundObservables);
+
+            for (let i = 0, ii = propertyNames.length; i < ii; ++i) {
+                const propertyName = propertyNames[i];
+                (element as any)[propertyName] = boundObservables[propertyName];
+            }
+
+            this.boundObservables = null;
+        }
+
         if (this.view !== null) {
-            this.view.bind(this.element);
+            this.view.bind(element);
         }
 
         this.isConnected = true;
