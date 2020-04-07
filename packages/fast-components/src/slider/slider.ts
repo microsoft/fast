@@ -58,14 +58,23 @@ export class Slider extends FormAssociated<HTMLInputElement>
     /**
      * The element's value to be included in form submission changed.
      */
-    @attr({ converter: nullableNumberConverter })
+    @attr
     public value: string; // Map to proxy element.
     private valueChanged(): void {
         if (Number(this.value) === Number.NaN) {
             this.value = "1";
         }
 
+        if (this.value === "0") {
+            console.log("this.value was changed to 0");
+        }
+
         if (this.proxy instanceof HTMLElement) {
+            console.log(
+                "valueChanged, proxy is htmlElement, calling updateFOrm() value:"
+                    .toString,
+                this.value
+            );
             this.updateForm();
         }
 
@@ -74,6 +83,9 @@ export class Slider extends FormAssociated<HTMLInputElement>
                 ? (1 - Number(this.value) / (Number(this.max) - Number(this.min))) * 100
                 : (Number(this.value) / (Number(this.max) - Number(this.min))) * 100;
 
+        if (this.direction === Direction.rtl) {
+            console.log("RTL percentage:", percentage);
+        }
         this.position = this.isDragging
             ? `right: ${percentage}%; transition: all 0.1s ease;`
             : `right: ${percentage}%; transition: all 0.2s ease;`;
@@ -181,13 +193,18 @@ export class Slider extends FormAssociated<HTMLInputElement>
     };
 
     private setupDefaultValue = (): void => {
+        console.log("setupDefaultValue called...");
         if (this.value === "") {
+            console.log("this.value === '' inside setupDefaultValue()");
+            console.log(`setupDefaultValue max:${this.max} this.min: ${this.min}`);
             this.value = `${this.convertToConstrainedValue((this.max - this.min) / 2)}`;
+            console.log("calling updateForm with value:", this.value);
             this.updateForm();
         }
     };
 
     private updateForm = (): void => {
+        console.log("updateForm called this.value:", this.value);
         this.setFormValue(this.value, this.value);
     };
 
@@ -228,6 +245,7 @@ export class Slider extends FormAssociated<HTMLInputElement>
             this.direction
         );
         const newValue: number = (this.max - this.min) * newPosition + this.min;
+        console.log("nevValue:", newValue);
         return this.convertToConstrainedValue(newValue);
     };
 
@@ -269,6 +287,7 @@ export class Slider extends FormAssociated<HTMLInputElement>
                 ? value - remainderVal + Number(this.step)
                 : value - remainderVal;
 
+        console.log("Constrained value:", constrainedVal);
         if (constrainedVal < this.min || constrainedVal > this.max) {
             // TODO here until we figure out how this happens
             console.log("Error invalid value for slider:", constrainedVal);

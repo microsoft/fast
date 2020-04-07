@@ -10,8 +10,10 @@ export function convertPixelToPercent(
     direction?: Direction
 ): number {
     let pct: number = limit(0, 1, (pixelPos - minPosition) / maxPosition);
+
     if (direction === Direction.rtl) {
         pct = 1 - pct;
     }
+    console.log("pct:", pct);
     return pct;
 }
