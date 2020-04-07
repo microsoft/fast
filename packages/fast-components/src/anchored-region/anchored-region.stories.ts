@@ -18,7 +18,7 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
 function scrollViewports(): void {
     document.querySelectorAll("div[id^='viewport']").forEach(el => {
         if (el instanceof HTMLDivElement) {
-            el.scrollTop = 250;
+            el.scrollTop = 200;
             el.scrollLeft = 250;
         }
     });
@@ -49,6 +49,44 @@ function setButtonActions(): void {
                             return;
                         }
                         region.setAttribute("anchor", "toggle-anchor-anchor2");
+                    };
+                    break;
+
+                case "toggle-positions-horizontal":
+                    el.onclick = event => {
+                        const region: HTMLElement | null = document.getElementById(
+                            "toggle-positions-region"
+                        );
+                        if (region === null) {
+                            return;
+                        }
+                        const currentPosition: string | null = region.getAttribute(
+                            "horizontal-default-position"
+                        );
+                        if (currentPosition === "left") {
+                            region.setAttribute("horizontal-default-position", "right");
+                        } else {
+                            region.setAttribute("horizontal-default-position", "left");
+                        }
+                    };
+                    break;
+
+                case "toggle-positions-vertical":
+                    el.onclick = event => {
+                        const region: HTMLElement | null = document.getElementById(
+                            "toggle-positions-region"
+                        );
+                        if (region === null) {
+                            return;
+                        }
+                        const currentPosition: string | null = region.getAttribute(
+                            "vertical-default-position"
+                        );
+                        if (currentPosition === "top") {
+                            region.setAttribute("vertical-default-position", "bottom");
+                        } else {
+                            region.setAttribute("vertical-default-position", "top");
+                        }
                     };
                     break;
             }

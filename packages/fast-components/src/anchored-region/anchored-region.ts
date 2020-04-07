@@ -291,7 +291,7 @@ export class AnchoredRegion extends FastElement {
         this.baseHorizontalOffset = 0;
         this.baseVerticalOffset = 0;
 
-        // this.regionStyle = "";
+        this.regionStyle = "";
     };
 
     private connectObservers = (): void => {
@@ -619,6 +619,13 @@ export class AnchoredRegion extends FastElement {
      *
      */
     private updateRegionStyle = (): void => {
+        this.classList.toggle("horizontalInset", this.horizontalInset);
+        this.classList.toggle("verticalInset", this.verticalInset);
+        this.classList.toggle("top", this.currentVerticalPosition === "top");
+        this.classList.toggle("bottom", this.currentVerticalPosition === "bottom");
+        this.classList.toggle("left", this.currentHorizontalPosition === "left");
+        this.classList.toggle("right", this.currentHorizontalPosition === "right");
+
         this.regionStyle = `
             height: ${this.regionHeight};
             width: ${this.regionWidth};
