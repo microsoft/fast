@@ -176,7 +176,7 @@ class TestPage extends React.Component {
             { y: e.currentTarget.offsetTop - 87 },
             { duration: 250 }
         );
-        const bounceKeyframes: (Partial<Keyframe>)[] = [
+        const bounceKeyframes: Array<Partial<Keyframe>> = [
             { transform: "scale(1)" },
             { transform: "scale(2.2)", offset: 0.35 },
             { transform: "scale(2)", offset: 0.55 },
@@ -199,7 +199,7 @@ class TestPage extends React.Component {
         const diamond: HTMLElement = e.currentTarget.querySelector("#diamond");
         const checkmark: HTMLElement = e.currentTarget.querySelector("#doSvg1");
 
-        const diamondFrames: (Partial<Keyframe>)[] = [
+        const diamondFrames: Array<Partial<Keyframe>> = [
             { transform: "scale(1)" },
             { transform: "scale(1.6)", offset: 0.75 },
             { transform: "scale(0.95)", offset: 0.78 },
@@ -209,7 +209,7 @@ class TestPage extends React.Component {
             { transform: "scale(1)" },
         ];
 
-        const doSvgFrames: (Partial<Keyframe>)[] = [
+        const doSvgFrames: Array<Partial<Keyframe>> = [
             { transform: "scale(0)" },
             { transform: "scale(1.1)", offset: 0.9 },
             { transform: "scale(1)" },
@@ -360,7 +360,7 @@ class TestPage extends React.Component {
         const square2: HTMLElement = e.currentTarget.querySelector("#fourSquare2");
         const square3: HTMLElement = e.currentTarget.querySelector("#fourSquare3");
         const square4: HTMLElement = e.currentTarget.querySelector("#fourSquare4");
-        const fadeKeyFrames: (Partial<Keyframe>)[] = [
+        const fadeKeyFrames: Array<Partial<Keyframe>> = [
             { opacity: "1" },
             { opacity: "0", offset: 0.4 },
             { opacity: "0", offset: 0.8 },

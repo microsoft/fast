@@ -56,7 +56,7 @@ class FormAndNavigationTestPage extends React.Component<{}, FormTestPageState> {
     /**
      * The plugins initialized for the mapPluginsToForm mapper
      */
-    private plugins: (FormPlugin<FormPluginProps>)[];
+    private plugins: Array<FormPlugin<FormPluginProps>>;
 
     constructor(props: {}) {
         super(props);

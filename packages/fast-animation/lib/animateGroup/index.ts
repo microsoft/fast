@@ -11,9 +11,9 @@ class AnimateGroup {
     /**
      * Stores the group effect object
      */
-    private animations: (AnimateTo | AnimateFrom)[];
+    private animations: Array<AnimateTo | AnimateFrom>;
 
-    constructor(animations: (AnimateTo | AnimateFrom)[]) {
+    constructor(animations: Array<AnimateTo | AnimateFrom>) {
         this.animations = animations;
     }
 

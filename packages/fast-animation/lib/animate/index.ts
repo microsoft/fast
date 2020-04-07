@@ -228,7 +228,7 @@ export default abstract class Animate {
     /**
      * adds a set of keyframes to set of animation keyframes the animation should execute
      */
-    public addKeyframes = (keyframes: (Partial<Keyframe>)[]): void => {
+    public addKeyframes = (keyframes: Array<Partial<Keyframe>>): void => {
         this._keyframes.push(keyframes as Keyframe[]);
     };
 

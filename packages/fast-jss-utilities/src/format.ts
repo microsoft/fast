@@ -2,7 +2,7 @@ import { isString } from "lodash-es";
 
 export function format<T>(
     value: string,
-    ...args: ((designSystem: T) => string)[]
+    ...args: Array<(designSystem: T) => string>
 ): (designSystem: T) => string {
     return (designSystem: T): string => {
         return args.reduce(
