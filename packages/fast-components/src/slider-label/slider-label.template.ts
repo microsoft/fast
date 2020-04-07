@@ -18,7 +18,7 @@ export const SliderLabelTemplate = html<SliderLabel>`
                 </div>    
             `
             )}
-            <div class="label">
+            <div part="label" class="label">
                 <slot>
                 </slot>
             </div>
