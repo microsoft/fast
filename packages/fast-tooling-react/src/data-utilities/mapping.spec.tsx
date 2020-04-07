@@ -40,6 +40,44 @@ describe("reactMapper", () => {
                     foo: {
                         schemaId: "foo",
                         data: {
+                            text: "Hello",
+                            number: 42,
+                        },
+                    },
+                },
+                "foo",
+            ],
+            mapper: reactMapper(componentDictionary),
+            resolver: reactResolver,
+            schemaDictionary: {
+                foo: {
+                    id: "foo",
+                    type: "object",
+                    properties: {
+                        text: {
+                            type: "string",
+                        },
+                        number: {
+                            type: "number",
+                        },
+                    },
+                },
+            },
+        });
+        const mappedData: any = mount(resolvedData);
+        const mappedComponent: any = mappedData.find("Foo");
+
+        expect(mappedComponent).toHaveLength(1);
+        expect(mappedComponent.prop("text")).toEqual("Hello");
+        expect(mappedComponent.prop("number")).toEqual(42);
+    });
+    test("should map data to a React component as children", () => {
+        const resolvedData: any = mapDataDictionary({
+            dataDictionary: [
+                {
+                    foo: {
+                        schemaId: "foo",
+                        data: {
                             children: [
                                 {
                                     id: "bat",
