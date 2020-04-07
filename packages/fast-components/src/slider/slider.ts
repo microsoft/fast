@@ -33,10 +33,7 @@ export class Slider extends FormAssociated<HTMLInputElement>
 
     public root: HTMLDivElement;
     public track: HTMLDivElement;
-    public foregroundTrack: HTMLDivElement;
     public thumb: HTMLDivElement;
-    public upperThumb: HTMLDivElement;
-    public lowerThumb: HTMLDivElement;
 
     @observable
     public direction: Direction = Direction.ltr;
@@ -46,10 +43,6 @@ export class Slider extends FormAssociated<HTMLInputElement>
 
     @observable
     public position: string;
-    @observable
-    public lowerPosition: string;
-    @observable
-    public upperPosition: string;
     @observable
     public trackWidth: number = 0;
     @observable

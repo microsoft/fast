@@ -25,11 +25,6 @@ export const SliderStyles = css`
         outline: none;
         cursor: pointer;
     }
-    .foreground-track {
-        display: none;
-        background: var(--neutral-foreground-hint);
-        transition: all 0.2s ease;
-    }
     .positioning-region {
         position: relative;
         margin: 0 8px;
@@ -106,11 +101,6 @@ export const SliderStyles = css`
         .track {
             forced-color-adjust: none;
             background: ${SystemColors.FieldText};
-        }
-
-        .foreground-track {
-            forced-color-adjust: none;
-            background: ${SystemColors.ActiveText}
         }
         
         :host(:${focusVisible}) .thumb-cursor {
