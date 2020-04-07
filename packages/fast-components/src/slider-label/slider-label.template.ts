@@ -1,14 +1,16 @@
-import { html, when, ref } from "@microsoft/fast-element";
+import { html, when } from "@microsoft/fast-element";
 import { SliderLabel } from "./slider-label";
+import { SliderOrientation } from "../slider";
 
 export const SliderLabelTemplate = html<SliderLabel>`
-    <div
-        ${ref("root")}
-        part="slider-label"
-        class="slider-label"
+    <template
+        class=${x =>
+            x.config.orientation === SliderOrientation.horizontal
+                ? "slider-label-horizontal"
+                : "slider-label-vertical"}
         style=${x => x.positionStyle}
     >
-        <div class="container">
+        <div part="container" class="container">
             ${when(
                 x => !x.hideMark,
                 html`
@@ -21,5 +23,5 @@ export const SliderLabelTemplate = html<SliderLabel>`
                 </slot>
             </div>
         </div>
-    </div>
+    </template>
 `;

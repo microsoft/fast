@@ -24,7 +24,7 @@ export class SliderLabel extends FastElement {
 
     @attr({ attribute: "hide-mark", mode: "boolean" })
     public hideMark: boolean = false;
-    private config: SliderConfiguration = {
+    public config: SliderConfiguration = {
         min: 0,
         max: 0,
         direction: Direction.ltr,
@@ -38,7 +38,6 @@ export class SliderLabel extends FastElement {
     public connectedCallback(): void {
         super.connectedCallback();
         this.positionStyle = this.positionAsStyle();
-        this.styleForOrientation();
     }
 
     private isSliderConfig(node: any): node is SliderConfiguration {
@@ -58,14 +57,6 @@ export class SliderLabel extends FastElement {
                 direction: direction || Direction.ltr,
                 orientation: orientation || SliderOrientation.horizontal,
             };
-        }
-    };
-
-    private styleForOrientation = (): void => {
-        if (this.config.orientation === SliderOrientation.horizontal) {
-            this.root.classList.add("slider-label-horizontal");
-        } else {
-            this.root.classList.add("slider-label-vertical");
         }
     };
 

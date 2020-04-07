@@ -14,6 +14,5 @@ export function convertPixelToPercent(
     if (direction === Direction.rtl) {
         pct = 1 - pct;
     }
-    console.log("pct:", pct);
     return pct;
 }

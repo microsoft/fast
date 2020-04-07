@@ -8,15 +8,17 @@ export const SliderLabelStyles = css`
         --half-thumb-size: calc(${heightNumber} * 0.25);
     }
     .slider-label {
+    }
+    :host {
         position: absolute;
         display: grid;
     }
-    .slider-label-horizontal {
+    :host(.slider-label-horizontal) {
         align-self: start;
         grid-row: 2;
         margin-top: -2px;
     }
-    .slider-label-vertical {
+    :host(.slider-label-vertical) {
         justify-self: start;
         grid-column: 2;
         margin-left: -2px;
@@ -25,11 +27,11 @@ export const SliderLabelStyles = css`
         display: grid;
         justify-self: center;
     }
-    .slider-label-horizontal .container {
+    :host(.slider-label-horizontal) .container {
         grid-template-rows: auto auto;
         grid-template-columns: 0;
     }
-    .slider-label-vertical .container {
+    :host(.slider-label-vertical) .container {
         grid-template-columns: auto auto;
         grid-template-rows: 0;
     }
