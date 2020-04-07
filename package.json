@@ -98,7 +98,7 @@
     "glob": "^7.1.2",
     "husky": "^1.1.2",
     "jest": "^25.2.7",
-    "lerna": "3.18.2",
+    "lerna": "^3.20.2",
     "lint-staged": "^10.1.2",
     "markdown-it": "^8.4.1",
     "prettier": "1.14.3",
