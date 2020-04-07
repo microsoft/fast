@@ -44,7 +44,10 @@ export function reactMapper(
                 .reduce((previousValue: {}, currentValue: string) => {
                     return {
                         ...previousValue,
-                        [currentValue]: allAvailableProps[currentValue],
+                        [currentValue]:
+                            config.dataDictionary[0][config.dictionaryId].data[
+                                currentValue
+                            ],
                     };
                 }, {}),
         };
