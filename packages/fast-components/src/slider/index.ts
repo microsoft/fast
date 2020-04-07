@@ -5,9 +5,9 @@ import { SliderStyles as styles } from "./slider.styles";
 import { Direction } from "@microsoft/fast-web-utilities";
 import { designSystemConsumer } from "../design-system-consumer";
 import {
-    neutralForegroundRest,
-    neutralForegroundHover,
     neutralForegroundActive,
+    neutralForegroundHover,
+    neutralForegroundRest,
     neutralOutlineRest,
 } from "../styles/recipes";
 

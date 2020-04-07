@@ -1,5 +1,5 @@
 import { attr, FastElement, observable } from "@microsoft/fast-element";
-import { SliderOrientation, SliderConfiguration } from "../slider";
+import { SliderConfiguration, SliderOrientation } from "../slider";
 import { Direction } from "@microsoft/fast-web-utilities";
 import { convertPixelToPercent } from "../slider/slider-utilities";
 
@@ -48,12 +48,11 @@ export class SliderLabel extends FastElement {
         if (!this.isSliderConfig(this.parentNode)) {
             this.config = defaultConfig;
         } else {
-            const { min, max, direction, orientation } = <SliderConfiguration>(
-                this.parentNode
-            );
+            const { min, max, direction, orientation } = this
+                .parentNode as SliderConfiguration;
             this.config = {
-                min: min,
-                max: max,
+                min,
+                max,
                 direction: direction || Direction.ltr,
                 orientation: orientation || SliderOrientation.horizontal,
             };

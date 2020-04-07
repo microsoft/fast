@@ -7,11 +7,11 @@ import {
 } from "@microsoft/fast-element";
 import { FormAssociated } from "../form-associated";
 import {
-    keyCodeArrowRight,
-    keyCodeArrowLeft,
-    keyCodeArrowDown,
-    keyCodeArrowUp,
     Direction,
+    keyCodeArrowDown,
+    keyCodeArrowLeft,
+    keyCodeArrowRight,
+    keyCodeArrowUp,
 } from "@microsoft/fast-web-utilities";
 import { convertPixelToPercent } from "./slider-utilities";
 import { SliderConfiguration, SliderMode, SliderOrientation } from "./index";
@@ -157,9 +157,7 @@ export class Slider extends FormAssociated<HTMLInputElement>
 
     private getDirection = (): Direction => {
         const dirNode: HTMLElement | null = this.parentElement!.closest("[dir]");
-        return dirNode !== null && dirNode["dir"] === "rtl"
-            ? Direction.rtl
-            : Direction.ltr;
+        return dirNode !== null && dirNode.dir === "rtl" ? Direction.rtl : Direction.ltr;
     };
 
     private setupTrackConstraints = (): void => {
@@ -264,7 +262,6 @@ export class Slider extends FormAssociated<HTMLInputElement>
 
         if (constrainedVal < this.min || constrainedVal > this.max) {
             // TODO here until we figure out how this happens
-            console.log("Error invalid value for slider:", constrainedVal);
             return Number(this.value);
         } else {
             return constrainedVal;
