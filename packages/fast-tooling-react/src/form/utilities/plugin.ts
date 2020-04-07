@@ -56,7 +56,7 @@ interface FormPluginResolverSchemaMap {
 export function mapPluginsToSchema(
     schema: any,
     data: any,
-    plugins: Array<FormPlugin<FormPluginProps>> = []
+    plugins: (FormPlugin<FormPluginProps>)[] = []
 ): any {
     const mappedSchema: any = cloneDeep(schema);
 

@@ -299,7 +299,7 @@ describe("consolidateKeyframes", () => {
         x: 20,
         y: 20,
     };
-    const customKeyframes: Array<Partial<Keyframe>> = [
+    const customKeyframes: (Partial<Keyframe>)[] = [
         { opacity: "0" },
         { opacity: "0.75", offset: 0.75 },
         { opacity: "1" },

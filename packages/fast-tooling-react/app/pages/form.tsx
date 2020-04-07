@@ -95,7 +95,7 @@ class FormTestPage extends React.Component<{}, FormTestPageState> {
     /**
      * The plugins initialized for the mapPluginsToForm mapper
      */
-    private plugins: Array<FormPlugin<FormPluginProps>>;
+    private plugins: (FormPlugin<FormPluginProps>)[];
 
     /**
      * The custom control plugins used in the form

@@ -5,7 +5,7 @@ import { AnimateConfig } from "../animate";
 /**
  * Key frame object for fade-in animations
  */
-export const fadeInKeyframes: Array<Partial<Keyframe>> = [
+export const fadeInKeyframes: (Partial<Keyframe>)[] = [
     { opacity: "0.01" }, // Start at 0.01 due to a bug animating from 0
     { opacity: "1" },
 ];
@@ -13,7 +13,7 @@ export const fadeInKeyframes: Array<Partial<Keyframe>> = [
 /**
  * Key frame object for fade-out animations
  */
-export const fadeOutKeyframes: Array<Partial<Keyframe>> = [
+export const fadeOutKeyframes: (Partial<Keyframe>)[] = [
     { opacity: "1" },
     { opacity: "0" },
 ];
@@ -45,7 +45,7 @@ export function fadeOut(
 
 export function applyFade(
     element: HTMLElement,
-    keyframes: Array<Partial<Keyframe>>,
+    keyframes: (Partial<Keyframe>)[],
     timing: EffectTiming = {}
 ): AnimateTo {
     const fadeAnimationTiming: EffectTiming = Object.assign({}, fadeEffectTiming, timing);

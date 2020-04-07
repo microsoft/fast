@@ -32,8 +32,8 @@
   },
   "devDependencies": {
     "@babel/core": "^7.8.4",
-    "@storybook/cli": "^5.3.13",
-    "@storybook/html": "^5.3.13",
+    "@storybook/cli": "^5.3.18",
+    "@storybook/html": "^5.3.18",
     "prettier": "1.14.3",
     "ts-loader": "^6.2.1",
     "typescript": "^3.7.5"

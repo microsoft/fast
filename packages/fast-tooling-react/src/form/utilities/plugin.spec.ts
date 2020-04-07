@@ -85,7 +85,7 @@ describe("mapPluginsToSchema", () => {
             }
         }
 
-        const plugins: Array<FormPlugin<FormPluginProps>> = [
+        const plugins: (FormPlugin<FormPluginProps>)[] = [
             new MyUpdateSchemaPlugin({
                 id: "plugins/pluginModifiedString",
             }),

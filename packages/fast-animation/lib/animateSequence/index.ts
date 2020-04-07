@@ -8,9 +8,9 @@ class AnimateSequence {
      */
     public onFinish: () => void;
 
-    private animations: Array<AnimateTo | AnimateFrom>;
+    private animations: (AnimateTo | AnimateFrom)[];
 
-    constructor(animations: Array<AnimateTo | AnimateFrom>) {
+    constructor(animations: (AnimateTo | AnimateFrom)[]) {
         this.animations = animations;
     }
 
@@ -53,7 +53,7 @@ class AnimateSequence {
      * Sequences a set of animations and calls the specified method
      */
     private applySequencedCallback(
-        animations: Array<AnimateTo | AnimateFrom>,
+        animations: (AnimateTo | AnimateFrom)[],
         method: string
     ): void {
         const animationCount: number = animations.length;

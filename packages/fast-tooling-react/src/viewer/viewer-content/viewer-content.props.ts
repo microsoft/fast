@@ -14,7 +14,7 @@ export interface ViewerContentHandledProps extends ViewerContentManagedClasses {
     /**
      * The plugins available for manipulating the data mapping function
      */
-    plugins?: Array<Plugin<PluginProps>>;
+    plugins?: (Plugin<PluginProps>)[];
 }
 
 export type ViewerContentProps = ViewerContentUnhandledProps & ViewerContentHandledProps;

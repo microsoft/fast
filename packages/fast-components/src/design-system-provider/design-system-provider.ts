@@ -263,7 +263,7 @@ class CustomPropertyManager<
     }
 > {
     private ticking = false;
-    private store: Array<SetCustomPropertyConfig | DeleteCustomPropertyConfig> = [];
+    private store: (SetCustomPropertyConfig | DeleteCustomPropertyConfig)[] = [];
     constructor(private context: T) {}
 
     private shouldSet(

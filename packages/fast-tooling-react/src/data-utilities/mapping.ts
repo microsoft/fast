@@ -30,7 +30,7 @@ export function mapDataToComponent(
     schema: any,
     data: any,
     childOptions: ChildOptionItem[] = [],
-    plugins: Array<Plugin<PluginProps>> = []
+    plugins: (Plugin<PluginProps>)[] = []
 ): any {
     const mappedData: any = cloneDeep(data);
     const reactChildrenDataLocations: string[] =
@@ -137,7 +137,7 @@ function getPluginResolverDataMap(
 function resolveData(
     mappedDataLocation: MappedDataLocation,
     data: any,
-    plugins: Array<Plugin<PluginProps>>,
+    plugins: (Plugin<PluginProps>)[],
     childOptions: ChildOptionItem[]
 ): any {
     switch (mappedDataLocation.mappingType) {
@@ -157,7 +157,7 @@ function resolveData(
 function mapPluginToData(
     pluginModifiedDataLocation: PluginLocation,
     data: any,
-    plugins: Array<Plugin<PluginProps>>,
+    plugins: (Plugin<PluginProps>)[],
     childOptions: ChildOptionItem[]
 ): any {
     const {
