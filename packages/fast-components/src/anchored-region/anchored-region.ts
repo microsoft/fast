@@ -52,9 +52,10 @@ export class AnchoredRegion extends FastElement {
     @attr
     public anchor: string = "";
     private anchorChanged(): void {
-        // if (this.isConnected) {
-        //     this.anchorElement = this.getAnchor();
-        // }
+        if (this.initialLayoutComplete) {
+            this.anchorElement = this.getAnchor();
+            this.reset();
+        }
     }
 
     @attr
@@ -256,7 +257,6 @@ export class AnchoredRegion extends FastElement {
         this.disconnectObservers();
         this.setInitialState();
         this.connectObservers();
-        // this.updateLayout();
     }
 
     private setInitialState = (): void => {
@@ -290,6 +290,8 @@ export class AnchoredRegion extends FastElement {
 
         this.baseHorizontalOffset = 0;
         this.baseVerticalOffset = 0;
+
+        // this.regionStyle = "";
     };
 
     private connectObservers = (): void => {

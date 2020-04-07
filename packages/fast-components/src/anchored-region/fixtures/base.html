@@ -74,4 +74,31 @@
             </fast-anchored-region>
         </div>
     </div>
+
+    <h4>Toggle anchor</h4>
+    <div 
+        id="viewport-toggle-anchor"
+        style="position: relative; height:400px; width: 400px; background: lightgray; overflow: scroll;"
+    >
+        <div
+            style="height:1000px; width: 1000px; overflow: hidden;"
+        >
+            <button id="toggle-anchor-anchor1" style="margin-left: 400px; margin-top: 500px;">
+                Set anchor 1
+            </button>
+            <button id="toggle-anchor-anchor2" style="margin-top: 100px;">
+                Set anchor 2
+            </button>
+            <fast-anchored-region
+                id="toggle-anchor-region"
+                anchor="toggle-anchor-anchor1" 
+                viewport="viewport-toggle-anchor"
+                vertical-positioning-mode="dynamic"
+                horizontal-positioning-mode="dynamic"
+            >
+                <div style="height:100px; width: 100px; background: yellow">
+                </div>
+            </fast-anchored-region>
+        </div>
+    </div>
 </fast-design-system-provider>
