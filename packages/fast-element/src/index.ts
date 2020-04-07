@@ -15,3 +15,5 @@ export * from "./directives/directive";
 export * from "./directives/ref";
 export * from "./directives/when";
 export * from "./directives/repeat";
+export * from "./directives/slotted";
+export * from "./directives/children";
