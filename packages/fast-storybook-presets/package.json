@@ -46,7 +46,7 @@
     "@types/webpack-env": "^1.14.0",
     "prettier": "1.14.3",
     "react": "^16.8.6",
-    "tslint": "^6.1.1",
+    "tslint": "^5.11.0",
     "tslint-config-prettier": "^1.18.0",
     "typescript": "^3.5.3"
   }

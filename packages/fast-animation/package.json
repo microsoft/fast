@@ -83,7 +83,7 @@
     "require-dir": "^0.3.2",
     "style-loader": "^0.13.2",
     "ts-jest": "^25.3.1",
-    "tslint": "^6.1.1",
+    "tslint": "^5.11.0",
     "tslint-config-prettier": "^1.15.0",
     "tslint-loader": "^3.5.3",
     "tslint-react": "^3.0.0",
