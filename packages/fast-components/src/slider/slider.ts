@@ -47,6 +47,10 @@ export class Slider extends FormAssociated<HTMLInputElement>
     public trackWidth: number = 0;
     @observable
     public trackMinWidth: number = 0;
+    @observable
+    public trackHeight: number = 0;
+    @observable
+    public trackMinHeight: number = 0;
 
     /**
      * The element's value to be included in form submission changed.
@@ -169,16 +173,8 @@ export class Slider extends FormAssociated<HTMLInputElement>
     private setupTrackConstraints = (): void => {
         this.trackWidth = this.track.clientWidth;
         this.trackMinWidth = this.track.clientLeft;
-        console.log("clientHeight:", this.track.clientHeight);
-        console.log(
-            "this.track.getBoundingClientRect().height:",
-            this.track.getBoundingClientRect().height
-        );
-        console.log(
-            "this.track.getBoundingClientRect().bottom:",
-            this.track.getBoundingClientRect().bottom
-        );
-        console.log("this.track.clientTop:", this.track.clientTop);
+        this.trackHeight = this.track.clientHeight;
+        this.trackMinHeight = this.track.clientTop;
     };
 
     private setupListeners = (): void => {
@@ -230,8 +226,12 @@ export class Slider extends FormAssociated<HTMLInputElement>
         // update the value based on current position
         const newPosition = convertPixelToPercent(
             rawValue,
-            this.trackMinWidth,
-            this.trackWidth,
+            this.orientation === SliderOrientation.horizontal
+                ? this.trackMinWidth
+                : this.trackMinHeight,
+            this.orientation === SliderOrientation.horizontal
+                ? this.trackWidth
+                : this.trackHeight,
             this.direction
         );
         const newValue: number = (this.max - this.min) * newPosition + this.min;
@@ -286,7 +286,8 @@ export class Slider extends FormAssociated<HTMLInputElement>
 
     private increment = (): void => {
         const newVal: number =
-            this.direction !== Direction.rtl
+            this.direction !== Direction.rtl &&
+            this.orientation !== SliderOrientation.vertical
                 ? Number(this.value) + Number(this.step)
                 : Number(this.value) - Number(this.step);
         const incrementedVal: number = this.convertToConstrainedValue(newVal);
@@ -298,7 +299,8 @@ export class Slider extends FormAssociated<HTMLInputElement>
 
     private decrement = (): void => {
         const newVal =
-            this.direction !== Direction.rtl
+            this.direction !== Direction.rtl &&
+            this.orientation !== SliderOrientation.vertical
                 ? Number(this.value) - Number(this.step)
                 : Number(this.value) + Number(this.step);
         const decrementedVal: number = this.convertToConstrainedValue(newVal);
