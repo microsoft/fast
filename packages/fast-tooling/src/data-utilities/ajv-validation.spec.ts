@@ -408,6 +408,7 @@ describe("AjvMapper", () => {
                         action: MessageSystemDataTypeAction.addLinkedData,
                         data: "foo",
                         dictionaryId: "bar",
+                        linkedDataIds: [],
                         dataDictionary,
                         navigation: [
                             {

@@ -237,6 +237,7 @@ describe("getMessage", () => {
                 )
             ).not.toEqual(-1);
             expect(dictionary.dataDictionary[0][id].data).toEqual(linkedData[0].data);
+            expect(message.linkedDataIds).toEqual([{ id }]);
         });
         test("should add linkedData to the data and the data dictionary when specifying a dictionary ID", () => {
             getMessage({
