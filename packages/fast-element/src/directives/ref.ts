@@ -13,5 +13,5 @@ export class RefBehavior implements Behavior {
 }
 
 export function ref<T = any>(propertyName: keyof T & string): CaptureType<T> {
-    return new AttachedBehaviorDirective("ref", RefBehavior, propertyName);
+    return new AttachedBehaviorDirective("fast-ref", RefBehavior, propertyName);
 }
