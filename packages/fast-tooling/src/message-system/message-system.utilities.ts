@@ -259,7 +259,7 @@ function getDataMessage(data: DataMessageIncoming): DataMessageOutgoing {
                 navigationDictionary,
             };
         case MessageSystemDataTypeAction.addLinkedData:
-            const linkedDataRefs: LinkedData[] = [];
+            const linkedDataIds: LinkedData[] = [];
             const addLinkedDataDictionaryId: string =
                 typeof data.dictionaryId === "string"
                     ? data.dictionaryId
@@ -268,7 +268,7 @@ function getDataMessage(data: DataMessageIncoming): DataMessageOutgoing {
             data.linkedData.forEach((linkedData: Data<unknown>) => {
                 const id: string = uniqueId("fast");
                 dataDictionary[0][id] = linkedData;
-                linkedDataRefs.push({ id });
+                linkedDataIds.push({ id });
             });
             // update the parent to include the added linkedData
             let currentLinkedDataRefs: LinkedData[] | void = get(
@@ -278,12 +278,12 @@ function getDataMessage(data: DataMessageIncoming): DataMessageOutgoing {
 
             if (Array.isArray(currentLinkedDataRefs)) {
                 if (typeof data.index === "number") {
-                    currentLinkedDataRefs.splice(data.index, 0, ...linkedDataRefs);
+                    currentLinkedDataRefs.splice(data.index, 0, ...linkedDataIds);
                 } else {
-                    currentLinkedDataRefs = currentLinkedDataRefs.concat(linkedDataRefs);
+                    currentLinkedDataRefs = currentLinkedDataRefs.concat(linkedDataIds);
                 }
             } else {
-                currentLinkedDataRefs = linkedDataRefs;
+                currentLinkedDataRefs = linkedDataIds;
             }
 
             set(
@@ -301,6 +301,7 @@ function getDataMessage(data: DataMessageIncoming): DataMessageOutgoing {
                 type: MessageSystemType.data,
                 action: MessageSystemDataTypeAction.addLinkedData,
                 dictionaryId: addLinkedDataDictionaryId,
+                linkedDataIds,
                 data: dataDictionary[0][addLinkedDataDictionaryId].data,
                 dataDictionary,
                 navigation: navigationDictionary[0][addLinkedDataDictionaryId],

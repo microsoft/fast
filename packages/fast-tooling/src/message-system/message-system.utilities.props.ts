@@ -218,7 +218,8 @@ export interface AddLinkedDataDataMessageIncoming {
 export interface AddLinkedDataDataMessageOutgoing {
     type: MessageSystemType.data;
     action: MessageSystemDataTypeAction.addLinkedData;
-    dictionaryId: string; // the new dictionary id
+    dictionaryId: string; // dictionary id that the linked data was added to
+    linkedDataIds: LinkedData[]; // the linked data
     data: unknown;
     dataDictionary: DataDictionary<unknown>;
     navigation: NavigationConfig;
