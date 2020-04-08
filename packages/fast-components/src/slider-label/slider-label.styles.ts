@@ -5,11 +5,8 @@ import { heightNumber } from "../styles/size";
 
 export const SliderLabelStyles = css`
     ${display("block")} :host {
-        --half-thumb-size: calc(${heightNumber} * 0.25);
     }
-    .slider-label {
-    }
-    :host {
+    .root {
         position: absolute;
         display: grid;
     }
@@ -21,6 +18,7 @@ export const SliderLabelStyles = css`
     :host(.slider-label-vertical) {
         justify-self: start;
         grid-column: 2;
+        margin-left: 2px;
     }
     .container {
         display: grid;
@@ -33,8 +31,8 @@ export const SliderLabelStyles = css`
     :host(.slider-label-vertical) .container {
         grid-template-columns: auto auto;
         grid-template-rows: 0;
-        min-width: 16px;
-        height: 16px;
+        min-width: calc(var(--thumb-size) * 1px);
+        height: calc(var(--thumb-size) * 1px);
     }
     .label {
         justify-self: center;
@@ -46,7 +44,7 @@ export const SliderLabelStyles = css`
     }
     .mark {
         width: calc((var(--design-unit) / 2) * 1px);
-        height: calc(var(--half-thumb-size) * 1px);
+        height: calc(${heightNumber} * 0.25 * 1px);
         background: var(--neutral-outline-rest);
         justify-self: center;
     }

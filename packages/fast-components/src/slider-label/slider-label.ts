@@ -37,8 +37,17 @@ export class SliderLabel extends FastElement {
     }
     public connectedCallback(): void {
         super.connectedCallback();
+        this.setStyleForOrientation();
         this.positionStyle = this.positionAsStyle();
     }
+
+    private setStyleForOrientation = (): void => {
+        if (this.config.orientation === SliderOrientation.horizontal) {
+            this.classList.add("slider-label-horizontal");
+        } else {
+            this.classList.add("slider-label-vertical");
+        }
+    };
 
     private isSliderConfig(node: any): node is SliderConfiguration {
         return node.max !== undefined && node.min !== undefined;
