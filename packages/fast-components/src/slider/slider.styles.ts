@@ -25,11 +25,18 @@ export const SliderStyles = css`
         outline: none;
         cursor: pointer;
     }
-    .positioning-region {
+    .slider-horizontal .positioning-region {
         position: relative;
         margin: 0 8px;
         display: grid;
         grid-template-rows: calc(var(--thumb-size) * 1px) 1fr;
+    }
+    .slider-vertical .positioning-region {
+        position: relative;
+        margin: 0 8px;
+        display: grid;
+        height: 100%;
+        grid-template-columns: calc(var(--thumb-size) * 1px) 1fr;
     }
     .thumb-container {
         position: absolute;
@@ -59,6 +66,7 @@ export const SliderStyles = css`
     }
     .slider-horizontal {
         width: 100%;
+        min-width: 150px;
     }
     .slider-horizontal .track {
         right: calc(var(--track-overhang) * 1px);
@@ -73,6 +81,7 @@ export const SliderStyles = css`
         justify-self: start;
         margin-left: 6px;
         width: 4px;
+        height: 100%;
     }
     .track {
         background: var(--neutral-outline-rest);
@@ -80,6 +89,7 @@ export const SliderStyles = css`
     }
     .slider-vertical {
         height: 100%;
+        min-height: 250px;
     }
     :host(.disabled) .label,
     :host(.readonly) .label,

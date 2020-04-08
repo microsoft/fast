@@ -67,9 +67,15 @@ export class Slider extends FormAssociated<HTMLInputElement>
                 ? (1 - Number(this.value) / (Number(this.max) - Number(this.min))) * 100
                 : (Number(this.value) / (Number(this.max) - Number(this.min))) * 100;
 
-        this.position = this.isDragging
-            ? `right: ${percentage}%; transition: all 0.1s ease;`
-            : `right: ${percentage}%; transition: all 0.2s ease;`;
+        if (this.orientation === SliderOrientation.horizontal) {
+            this.position = this.isDragging
+                ? `right: ${percentage}%; transition: all 0.1s ease;`
+                : `right: ${percentage}%; transition: all 0.2s ease;`;
+        } else {
+            this.position = this.isDragging
+                ? `bottom: ${percentage}%; transition: all 0.1s ease;`
+                : `bottom: ${percentage}%; transition: all 0.2s ease;`;
+        }
 
         this.$emit("change");
     }
@@ -163,6 +169,16 @@ export class Slider extends FormAssociated<HTMLInputElement>
     private setupTrackConstraints = (): void => {
         this.trackWidth = this.track.clientWidth;
         this.trackMinWidth = this.track.clientLeft;
+        console.log("clientHeight:", this.track.clientHeight);
+        console.log(
+            "this.track.getBoundingClientRect().height:",
+            this.track.getBoundingClientRect().height
+        );
+        console.log(
+            "this.track.getBoundingClientRect().bottom:",
+            this.track.getBoundingClientRect().bottom
+        );
+        console.log("this.track.clientTop:", this.track.clientTop);
     };
 
     private setupListeners = (): void => {
