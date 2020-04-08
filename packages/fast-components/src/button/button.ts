@@ -11,8 +11,8 @@ export type ButtonAppearance =
 export const buttonTemplate = html<Button>`
     <button
         class="control"
-        autofocus=${x => x.autofocus}
-        disabled=${x => x.disabled}
+        ?autofocus=${x => x.autofocus}
+        ?disabled=${x => x.disabled}
         form=${x => x.formId}
         formaction=${x => x.formaction}
         formenctype=${x => x.formenctype}
@@ -119,7 +119,6 @@ export class Button extends FormAssociated<HTMLInputElement> {
         }
     }
 
-    @attr
     public value: string;
     private valueChanged(): void {
         if (this.proxy instanceof HTMLElement) {

@@ -52,6 +52,11 @@ export const BaseButtonStyles = css`
         border: 0;
     }
 
+    :host(.disabled),
+    :host a.control:not(:link) {
+        opacity: var(--disabled-opacity);
+    }
+
     .start,
     .end,
     ::slotted(svg) {
