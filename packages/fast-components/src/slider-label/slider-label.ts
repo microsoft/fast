@@ -76,8 +76,12 @@ export class SliderLabel extends FastElement {
             leftNum = 50;
         }
 
-        return direction === Direction.rtl
-            ? `right: ${leftNum}%; left: ${rightNum}%;`
-            : `left: ${leftNum}%; right: ${rightNum}%;`;
+        if (this.config.orientation === SliderOrientation.horizontal) {
+            return direction === Direction.rtl
+                ? `right: ${leftNum}%; left: ${rightNum}%;`
+                : `left: ${leftNum}%; right: ${rightNum}%;`;
+        } else {
+            return `top: ${leftNum}%; bottom: ${rightNum}%;`;
+        }
     };
 }

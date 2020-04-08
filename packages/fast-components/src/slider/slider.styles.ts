@@ -65,8 +65,7 @@ export const SliderStyles = css`
         transform: translateY(calc(var(--thumb-translate) * 1px));
     }
     .slider-horizontal {
-        width: 100%;
-        min-width: 150px;
+        min-width: calc(var(--design-unit) * 60px);
     }
     .slider-horizontal .track {
         right: calc(var(--track-overhang) * 1px);
@@ -89,7 +88,8 @@ export const SliderStyles = css`
     }
     .slider-vertical {
         height: 100%;
-        min-height: 250px;
+        min-height: calc(var(--design-unit) * 60px);
+        min-width: calc(var(--design-unit) * 20px);
     }
     :host(.disabled) .label,
     :host(.readonly) .label,

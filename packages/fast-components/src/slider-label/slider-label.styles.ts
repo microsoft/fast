@@ -21,7 +21,6 @@ export const SliderLabelStyles = css`
     :host(.slider-label-vertical) {
         justify-self: start;
         grid-column: 2;
-        margin-left: -2px;
     }
     .container {
         display: grid;
@@ -34,6 +33,8 @@ export const SliderLabelStyles = css`
     :host(.slider-label-vertical) .container {
         grid-template-columns: auto auto;
         grid-template-rows: 0;
+        min-width: 16px;
+        height: 16px;
     }
     .label {
         justify-self: center;
@@ -48,6 +49,14 @@ export const SliderLabelStyles = css`
         height: calc(var(--half-thumb-size) * 1px);
         background: var(--neutral-outline-rest);
         justify-self: center;
+    }
+    :host(.slider-label-vertical) .mark {
+        transform: rotate(90deg);
+        align-self: center;
+    }
+    :host(.slider-label-vertical) .label {
+        margin-left: calc((var(--design-unit) / 2) * 2px);
+        align-self: center;
     }
     @media (forced-colors: active) {
         .mark {

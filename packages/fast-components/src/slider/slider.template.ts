@@ -12,6 +12,7 @@ export const SliderTemplate = html<Slider>`
     aria-valuemax="${x => x.max}"
     aria-disabled="${x => x.disabled}"
     aria-readonly="${x => x.readOnly}"
+    aria-orientation="${x => x.orientation}"
   >
     <div
           ${ref("root")}

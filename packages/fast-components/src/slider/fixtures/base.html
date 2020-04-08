@@ -1,7 +1,28 @@
 <fast-design-system-provider use-defaults>
     <div style="display: flex; flex-direction: column; justify-content: space-evenly; width: 500px; height: 100vh">
 
-        <fast-slider orientation="vertical" style="height: 300px;"></fast-slider>
+        <fast-slider orientation="vertical" min="0" max="100" step="10" style="height: 300px; width: 50px;">
+            <fast-slider-label
+                position="0"
+            >
+                0&#8451;
+            </fast-slider-label>            
+            <fast-slider-label
+                position="10"
+            >
+                10&#8451;
+            </fast-slider-label>
+            <fast-slider-label
+                position="90"
+            >
+                90&#8451;
+            </fast-slider-label>
+            <fast-slider-label
+            position="100"
+        >
+            100&#8451;
+        </fast-slider-label>
+        </fast-slider>
 
         <!-- No max or min -->
         <fast-slider></fast-slider>
@@ -29,7 +50,7 @@
         </div>
 
         <!-- Custom labels (rtl) -->
-        <div style="display: flex; flex-direction: column; height:min-content">
+        <div style="display: flex; flex-direction: column; align-items: flex-start; height:min-content">
             <label for="rtl-slider" style="margin-left: 8px;">rtl support</label>
             <div dir="rtl" style="width: 100%;">
                 <fast-slider
