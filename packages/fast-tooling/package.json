@@ -1,6 +1,6 @@
 {
     "name": "@microsoft/fast-tooling",
-    "description": "A library agnostic set of utilities to assist in creating web UI",
+    "description": "A set of utilities to assist in creating web UI",
     "sideEffects": false,
     "version": "0.0.2",
     "author": {
