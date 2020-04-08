@@ -1,6 +1,6 @@
 {
     "name": "@microsoft/fast-tooling",
-    "description": "FAST Tooling",
+    "description": "A set of utilities to assist in creating web UI",
     "sideEffects": false,
     "version": "0.0.2",
     "author": {
