@@ -35,8 +35,4 @@ export class Flipper extends FastElement {
             this.classList.remove(`${oldValue}`);
         }
     }
-
-    public connectedCallback(): void {
-        super.connectedCallback();
-    }
 }
