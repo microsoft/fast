@@ -123,8 +123,10 @@ export class Slider extends FormAssociated<HTMLInputElement>
     public orientation: SliderOrientation = SliderOrientation.horizontal;
     private orientationChanged(): void {
         if (this.orientation === SliderOrientation.horizontal) {
+            this.classList.remove("slider-vertical");
             this.classList.add("slider-horizontal");
         } else {
+            this.classList.remove("slider-horizontal");
             this.classList.add("slider-vertical");
         }
     }
