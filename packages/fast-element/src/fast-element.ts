@@ -10,7 +10,7 @@ const defaultElementOptions: ElementDefinitionOptions = {};
 
 function createFastElement(BaseType: typeof HTMLElement) {
     return class FastElement extends BaseType {
-        public $controller!: Controller;
+        public $fastController!: Controller;
 
         public constructor() {
             super();
@@ -22,15 +22,15 @@ function createFastElement(BaseType: typeof HTMLElement) {
             detail?: any,
             options?: Omit<CustomEventInit, "detail">
         ) {
-            return this.$controller.emit(type, detail, options);
+            return this.$fastController.emit(type, detail, options);
         }
 
         public connectedCallback() {
-            this.$controller.onConnectedCallback();
+            this.$fastController.onConnectedCallback();
         }
 
         public disconnectedCallback() {
-            this.$controller.onDisconnectedCallback();
+            this.$fastController.onDisconnectedCallback();
         }
 
         public attributeChangedCallback(
@@ -38,7 +38,7 @@ function createFastElement(BaseType: typeof HTMLElement) {
             oldValue: string,
             newValue: string
         ) {
-            this.$controller.onAttributeChangedCallback(name, oldValue, newValue);
+            this.$fastController.onAttributeChangedCallback(name, oldValue, newValue);
         }
     };
 }

@@ -1,5 +1,6 @@
 import { Observable } from "./observation/observable";
 import { DOM } from "./dom";
+import { Notifier } from "./observation/notifier";
 
 export interface ValueConverter {
     toView(value: any): string | null;
@@ -94,7 +95,7 @@ export class AttributeDefinition {
                 element[this.callbackName](oldValue, newValue);
             }
 
-            Observable.notify(element, this.property);
+            ((element as any).$fastController as Notifier).notify(element, this.property);
         }
     }
 
