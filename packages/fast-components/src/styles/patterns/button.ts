@@ -14,7 +14,6 @@ export const BaseButtonStyles = css`
             /* Font size is temporary - 
             replace when adaptive typography is figured out */ ""
         } font-size: 14px;
-        line-height: 20px;
         line-height: 1;
         box-sizing: border-box;
         display: inline-flex;
