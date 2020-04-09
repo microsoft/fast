@@ -9,6 +9,7 @@ Here you'll find specifications for custom elements and other library features.
 - [Card](./card/card.md)
 - [Checkbox](./checkbox.md)
 - [Dialog](./dialog/dialog.md)
+- [Flipper](./flipper/flipper.md)
 - [Form associated custom elements]("./form-associated-custom-element.md")
 - [Menu](./menu/menu.md)
 - [Number field](./number-field.md)

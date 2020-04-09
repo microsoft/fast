@@ -334,43 +334,45 @@ In both examples above, after your event handler is executed, `preventDefault()`
 
 The second example demonstrates an important characteristic of the templating engine: it only supports *unidirectional data flow* (model => view). It does not support *two-way data binding* (model <=> view). As shown above, pushing data from the view back to the model should be handled with explicit events that call into your model's API.
 
-### Using Directives
+## Observables and Rendering
+
+The arrow function expressions and directives allow the `fast-element` templating engine to intelligently update only the parts of the DOM that actually change, with no need for a virtual DOM, VDOM diffing, or DOM reconciliation algorithms. This approach enables top-tier initial render time, industry-leading incremental DOM updates, and ultra-low memory allocation.
+
+When an expression is used within a template, the underlying engine uses a technique to capture which properties are accessed in that expression. With the list of properties captured, it then subscribes to changes in their values. Any time a value changes, a task is scheduled on the DOM update queue. When the queue is processed, all updates run as a batch, updating precisely the aspects of the DOM that have changed.
+
+To enable expression tracking and change notification, properties must be decorated with either `@attr` or `@observable`. Use `@attr` for primitive properties (string, bool, number) that are intended to be surfaced on your element as HTML attributes. Use `@observable` for all other properties.  In addition to observing properties, the templating system can also observe arrays. The `repeat` directive (described below) is able to efficiently respond to array change records, updating the DOM based on changes in the collection.
+
+These decorators are a means of meta-programming the properties on your class, such that they include all the implementation needed to support tracking and observation. You can access any property within your template, but if it hasn't been decorated with one of these two decorators, its value will not update after the initial render.
+
+> **IMPORTANT:** The `@attr` decorator can only be used in a `FastElement` but the `@observable` decorator can be used in any class.
+
+> **IMPORTANT:** Properties with only a getter, that function as a computed property over other observables, should not be decorated with `@attr` or `@observable`.
+
+#### Features of @attr and @observable
+
+* **Tracking** - Provides property access tracking for the templating engine.
+* **Observation** - Provides an ability to subscribe to changes in the property. The templating engine uses this, but you can also directly subscribe as well. Here's how you would subscribe to changes in the `Person`'s `name` property:
+  ```TypeScript
+    const person = new Person('John');
+    const notifier = Observable.getNotifier(person);
+    const handler = {
+      handleChange(source: any, propertyName: string) {
+        // respond to the change here
+      }
+    };
+
+    notifier.subscribe(handler, 'name')
+    notifier.unsubscribe(handler, 'name');
+  ```
+* **Self Observation** - On the class where the attr/observable is defined, you can optionally implement a *propertyName*Changed method to easily respond to changes.
+
+## Using Directives
 
 In addition to declaring dynamic parts of templates with expressions, you also have access to several powerful *directives*, which aid in common scenarios.
 
-#### The Ref Directive
+### Structural Directives
 
-Sometimes you need a direct reference to a DOM node from your template. This might be because you want to control playback of a `video` element, use the drawing context of a `canvas` element, or pass an element to a 3rd party library. Whatever the reason, you can get a reference to the DOM node by using the `ref` directive.
-
-**Example: Referencing an Element**
-
-```TypeScript
-import { FastElement, customElement, attr, html, ref } from '@microsoft/fast-element';
-
-const template = html<MP4Player>`
-  <video ${ref('video')}>
-    <source src=${x => x.src} type="video/mp4">
-  </video>
-`;
-
-@customElement({
-  name: 'mp4-player',
-  template
-})
-export class MP4Player extends FastElement {
-  @attr src: string;
-  video: HTMLVideoElement;
-
-  connectedCallback() {
-    super.connectedCallback();
-    this.video.play();
-  }
-}
-```
-
-Place the `ref` directive on the element you want to reference and provide it with a property name to assign the reference to. Once the `connectedCallback` lifecycle event runs, your property will be set to the reference, ready for use.
-
-> **NOTE:** If you provide a type for your HTML template, TypeScript will type check the property name you provide to ensure that it actually exists on your element.
+Structural directives change the shape of the DOM itself by adding and removing nodes based on the state of your element.
 
 #### The When Directive
 
@@ -407,7 +409,7 @@ export class MyApp extends FastElement {
 }
 ```
 
-> **IMPORTANT:** You may have noticed the use of the `@observable` decorator on the `ready` property above. The `@observable` decorator creates a property that the template system can watch for changes. It is similar to `@attr`, but the property is not surfaced as an HTML attribute on the element itself. While `@attr` can only be used in a `FastElement`, `@observable` can be used in any class. You can learn more about observation and incremental template updates below in the section "Observables and Rendering".
+> **REMINDER:** The `@observable` decorator creates a property that the template system can watch for changes. It is similar to `@attr`, but the property is not surfaced as an HTML attribute on the element itself. While `@attr` can only be used in a `FastElement`, `@observable` can be used in any class.
 
 > **NOTE**: Additional features are planned for `when` which will enable `elseif` and `else` conditional rendering. Today, you need multiple, separate `when` blocks to achieve the same end result.
 
@@ -529,6 +531,109 @@ export class FriendList extends FastElement {
 }
 ```
 
+### Referential Directives
+
+Referential directives allow you to easily get references to DOM nodes in various scenarios.
+
+#### The Ref Directive
+
+Sometimes you need a direct reference to a single DOM node from your template. This might be because you want to control playback of a `video` element, use the drawing context of a `canvas` element, or pass an element to a 3rd party library. Whatever the reason, you can get a reference to the DOM node by using the `ref` directive.
+
+**Example: Referencing an Element**
+
+```TypeScript
+import { FastElement, customElement, attr, html, ref } from '@microsoft/fast-element';
+
+const template = html<MP4Player>`
+  <video ${ref('video')}>
+    <source src=${x => x.src} type="video/mp4">
+  </video>
+`;
+
+@customElement({
+  name: 'mp4-player',
+  template
+})
+export class MP4Player extends FastElement {
+  @attr src: string;
+  video: HTMLVideoElement;
+
+  connectedCallback() {
+    super.connectedCallback();
+    this.video.play();
+  }
+}
+```
+
+Place the `ref` directive on the element you want to reference and provide it with a property name to assign the reference to. Once the `connectedCallback` lifecycle event runs, your property will be set to the reference, ready for use.
+
+> **NOTE:** If you provide a type for your HTML template, TypeScript will type check the property name you provide to ensure that it actually exists on your element.
+
+#### The Children Directive
+
+Besides using `ref` to reference a single DOM node, you can use `children` to get references to all child nodes of a particular element.
+
+**Example: Referencing Child Nodes**
+
+```TypeScript
+import { FastElement, customElement, html, children, repeat } from '@microsoft/fast-element';
+
+const template = html<FriendList>`
+  <ul ${children('listItems')}>
+    ${repeat(x => x.friends, html<string>`
+      <li>${x => x}</li>
+    `)}
+  </ul>
+`;
+
+@customElement({
+  name: 'friend-list',
+  template
+})
+export class FriendList extends FastElement {
+  @observable listItems: Node[];
+  @observable friends: string[] = [];
+
+  connectedCallback() {
+    super.connectedCallback();
+    console.log(this.listItems);
+  }
+}
+```
+
+In the example above, the `listItems` property will be populated with all child nodes of the `ul` element. If `listItems` is decorated with `@observable` then it will be updated dynamically as the child nodes change. Like any observable, you can optionally implement a *propertyName*Changed method to be notified when the nodes change. Additionally, you can provide an `options` object to the `children` directive to specify customized configuration for the underlying [MutationObserver](https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver).
+
+> **IMPORTANT:** Like `ref`, the child nodes are not available until the `connectedCallback` lifecycle event.
+
+#### The Slotted Directive
+
+Sometimes you may want references to all nodes that are assigned to a particular slot. To accomplish this, use the `slotted` directive. (For more on slots, see the section below on "Working with Shadow DOM".)
+
+```TypeScript
+import { FastElement, customElement, html, slotted } from '@microsoft/fast-element';
+
+const template = html<MyElement>`
+  <div>
+    <slot ${slotted('slottedNodes')}></slot>
+  </div>
+`;
+
+@customElement({
+  name: 'my-element',
+  template
+})
+export class MyElement extends FastElement {
+  @observable slottedNodes: Node[];
+
+  connectedCallback() {
+    super.connectedCallback();
+    console.log(this.slottedNodes);
+  }
+}
+```
+
+Similar to the `children` directive, the `slotted` directive will populate the `slottedNodes` property with nodes assigned to the slot. If `slottedNodes` is decorated with `@observable` then it will be updated dynamically as the assigned nodes change. Like any observable, you can optionally implement a *propertyName*Changed method to be notified when the nodes change. Additionally, you can provide an `options` object to the `slotted` directive to specify customized configuration for the underlying [assignedNodes() API call](https://developer.mozilla.org/en-US/docs/Web/API/HTMLSlotElement/assignedNodes).
+
 ### Host Directives
 
 In all the examples above, our bindings and directives have only affected elements within the Shadow DOM of the component. However, sometimes you want to affect the host element itself, based on property state. For example, a progress component might want to write various `aria` attributes to the host, based on the progress state. In order to facilitate scenarios like this, you can use a `template` element as the root of your template, and it will represent the host element. Any attribute or directive you place on the `template` element will be applied to the host itself.
@@ -561,35 +666,7 @@ const template = html<MyProgress>`
 </my-progress>
 ```
 
-### Observables and Rendering
-
-The arrow function expressions and directives allow the `fast-element` templating engine to intelligently update only the parts of the DOM that actually change, with no need for a virtual DOM, VDOM diffing, or DOM reconciliation algorithms. This approach enables top-tier initial render time, industry-leading incremental DOM updates, and ultra-low memory allocation.
-
-When an expression is used within a template, the underlying engine uses a technique to capture which properties are accessed in that expression. With the list of properties captured, it then subscribes to changes in their values. Any time a value changes, a task is scheduled on the DOM update queue. When the queue is processed, all updates run as a batch, updating precisely the aspects of the DOM that have changed.
-
-To enable expression tracking and change notification, properties must be decorated with either `@attr` or `@observable`. These decorators are a means of meta-programming the properties on your class, such that they include all the implementation needed to support tracking and observation. You can access any property within your template, but if it hasn't been decorated with one of these two decorators, its value will not update after the initial render.
-
-> **IMPORTANT:** Properties with only a getter, that function as a computed property over other observables, should not be decorated with `@attr` or `@observable`.
-
-In addition to observing properties, the templating system can also observe arrays. The `repeat` directive is able to efficiently respond to array change records, updating the DOM based on changes in the collection.
-
-#### Features of @attr and @observable
-
-* **Tracking** - Provides property access tracking for the templating engine.
-* **Observation** - Provides an ability to subscribe to changes in the property. The templating engine uses this, but you can also directly subscribe as well. Here's how you would subscribe to changes in the `Person`'s `name` property:
-  ```TypeScript
-    const person = new Person('John');
-    const notifier = Observable.getNotifier(person);
-    const handler = {
-      handleChange(source: any, propertyName: string) {
-        // respond to the change here
-      }
-    };
-
-    notifier.subscribe(handler, 'name')
-    notifier.unsubscribe(handler, 'name');
-  ```
-* **Self Observation** - On the class where the attr/observable is defined, you can optionally implement a *propertyName*Changed method to easily respond to changes.
+> **TIP:** Using the `children` directive on the `template` element will provide you with references to all Light DOM child nodes of your custom element, regardless of if or where they are slotted.
 
 ## Working with Shadow DOM
 

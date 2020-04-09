@@ -114,11 +114,18 @@ export class HTMLView implements ElementView, SyntheticView {
      * The nodes are not disposed and the view can later be re-inserted.
      */
     public remove() {
-        range.setStart(this.firstChild, 0);
-        range.setEnd(this.lastChild, 0);
-        this.fragment = range.extractContents();
-        this.firstChild = this.fragment.firstChild!;
-        this.lastChild = this.fragment.lastChild!;
+        const fragment = this.fragment;
+        const end = this.lastChild!;
+        let current = this.firstChild!;
+        let next;
+
+        while (current !== end) {
+            next = current.nextSibling;
+            fragment.appendChild(current);
+            current = next!;
+        }
+
+        fragment.appendChild(end);
     }
 
     /**
@@ -126,9 +133,18 @@ export class HTMLView implements ElementView, SyntheticView {
      * Once a view has been disposed, it cannot be inserted or bound again.
      */
     public dispose() {
-        range.setStart(this.firstChild, 0);
-        range.setEnd(this.lastChild, 0);
-        range.deleteContents();
+        const parent = this.firstChild.parentNode!;
+        const end = this.lastChild!;
+        let current = this.firstChild!;
+        let next;
+
+        while (current !== end) {
+            next = current.nextSibling;
+            parent.removeChild(current);
+            current = next!;
+        }
+
+        parent.removeChild(end);
 
         const behaviors = this.behaviors;
 
