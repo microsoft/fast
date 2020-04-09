@@ -88,7 +88,7 @@ export class AttributeDefinition {
         if (oldValue !== newValue) {
             element[this.fieldName] = newValue;
 
-            this.tryReflectToAttribute(element, newValue, converter);
+            this.tryReflectToAttribute(element);
 
             if (this.hasCallback) {
                 element[this.callbackName](oldValue, newValue);
@@ -113,11 +113,7 @@ export class AttributeDefinition {
         this.guards.delete(element);
     }
 
-    private tryReflectToAttribute(
-        element: HTMLElement,
-        newValue: any,
-        converter?: ValueConverter
-    ) {
+    private tryReflectToAttribute(element: HTMLElement) {
         const mode = this.mode;
         const guards = this.guards;
 
@@ -128,16 +124,19 @@ export class AttributeDefinition {
         DOM.queueUpdate(() => {
             guards.add(element);
 
+            const latestValue = element[this.fieldName];
+
             switch (mode) {
                 case "reflect":
+                    const converter = this.converter;
                     DOM.setAttribute(
                         element,
                         this.attribute,
-                        converter !== void 0 ? converter.toView(newValue) : newValue
+                        converter !== void 0 ? converter.toView(latestValue) : latestValue
                     );
                     break;
                 case "boolean":
-                    DOM.setBooleanAttribute(element, this.attribute, newValue);
+                    DOM.setBooleanAttribute(element, this.attribute, latestValue);
                     break;
             }
 
