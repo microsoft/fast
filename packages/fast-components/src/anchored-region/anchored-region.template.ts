@@ -8,9 +8,7 @@ export const AnchoredRegionTemplate = html<AnchoredRegion>`
           ${ref("region")}
           style=${x => x.regionStyle}
     >
-    <slot></slot>
+        ${when(x => x.initialLayoutComplete, html`<slot></slot>`)}
     </div>
   </template>
 `;
-// TODO: replace "<slot></slot>" with this when it no longer crashes
-// ${when(x => x.initialLayoutComplete, html`<slot></slot>`)}

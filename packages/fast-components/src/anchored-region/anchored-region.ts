@@ -43,6 +43,7 @@ export class AnchoredRegion extends FastElement {
     public anchor: string = "";
     private anchorChanged(): void {
         if (this.initialLayoutComplete) {
+            this.initialLayoutComplete = false;
             this.disconnectAnchor(this.anchorElement);
             this.anchorElement = this.getAnchor();
             this.reset();
@@ -53,6 +54,7 @@ export class AnchoredRegion extends FastElement {
     public viewport: string = "";
     private viewportChanged(): void {
         if (this.initialLayoutComplete) {
+            this.initialLayoutComplete = false;
             this.disconnectViewport(this.viewportElement);
             this.viewportElement = this.getViewport();
             this.reset();
@@ -132,6 +134,7 @@ export class AnchoredRegion extends FastElement {
     private anchorElementChanged(oldvalue, newvalue): void {
         this.disconnectAnchor(oldvalue);
         if (this.initialLayoutComplete) {
+            this.initialLayoutComplete = false;
             this.reset();
         }
     }
@@ -140,6 +143,7 @@ export class AnchoredRegion extends FastElement {
     private viewportElementChanged(oldvalue, newvalue): void {
         this.disconnectViewport(oldvalue);
         if (this.initialLayoutComplete) {
+            this.initialLayoutComplete = false;
             this.reset();
         }
     }
@@ -678,6 +682,7 @@ export class AnchoredRegion extends FastElement {
             bottom: ${this.regionBottom};
             left: ${this.regionLeft}; 
             transform-origin: ${this.transformOrigin};
+            opacity: ${this.initialLayoutComplete ? 1 : 0}
         `;
     };
 
