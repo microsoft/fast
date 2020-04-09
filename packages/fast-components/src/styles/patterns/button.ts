@@ -22,7 +22,6 @@ export const BaseButtonStyles = css`
         padding: 0 calc((6 + (var(--design-unit) * 2 * var(--density))) * 1px);
         height: calc(${heightNumber} * 1px);
         min-width: calc(${heightNumber} * 1px);
-        max-width: calc(var(--design-unit) * 94.5px));
         white-space: nowrap;
         outline: none;
         text-decoration: none;
