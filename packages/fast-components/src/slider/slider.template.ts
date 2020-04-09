@@ -14,25 +14,16 @@ export const SliderTemplate = html<Slider>`
     aria-readonly="${x => x.readOnly}"
     aria-orientation="${x => x.orientation}"
   >
-    <div
-          ${ref("root")}
-          part="slider"
-          class="slider ${x =>
-              x.orientation === SliderOrientation.horizontal
-                  ? "slider-horizontal"
-                  : "slider-vertical"}"
-    >
-      <div part="positioning-region" class="positioning-region">
-          <div ${ref("track")} part="track-container" class="track">
-            <slot name="track"></slot>
-          </div>
-          <div></div>
-          <slot></slot>
-          <div ${ref("thumb")} part="thumb-container" class="thumb-container" style=${x =>
+    <div part="positioning-region" class="positioning-region">
+        <div ${ref("track")} part="track-container" class="track">
+          <slot name="track"></slot>
+        </div>
+        <div></div>
+        <slot></slot>
+        <div ${ref("thumb")} part="thumb-container" class="thumb-container" style=${x =>
     x.position}>
-              <slot name="thumb"><div class="thumb-cursor"></div></slot>
-          </div>
-      </div>
+            <slot name="thumb"><div class="thumb-cursor"></div></slot>
+        </div>
     </div>
   </template>
 `;

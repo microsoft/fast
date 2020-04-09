@@ -31,7 +31,6 @@ export class Slider extends FormAssociated<HTMLInputElement>
         this.setAttribute("aria-readonly", this.readOnly.toString());
     }
 
-    public root: HTMLDivElement;
     public track: HTMLDivElement;
     public thumb: HTMLDivElement;
 
@@ -122,6 +121,13 @@ export class Slider extends FormAssociated<HTMLInputElement>
      */
     @attr
     public orientation: SliderOrientation = SliderOrientation.horizontal;
+    private orientationChanged(): void {
+        if (this.orientation === SliderOrientation.horizontal) {
+            this.classList.add("slider-horizontal");
+        } else {
+            this.classList.add("slider-vertical");
+        }
+    }
 
     /**
      * mode value, default singleValue
