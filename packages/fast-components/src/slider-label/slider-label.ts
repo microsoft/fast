@@ -31,12 +31,9 @@ export class SliderLabel extends FastElement {
         orientation: SliderOrientation.horizontal,
     };
 
-    constructor() {
-        super();
-        this.getSliderConfiguration();
-    }
     public connectedCallback(): void {
         super.connectedCallback();
+        this.getSliderConfiguration();
         this.setStyleForOrientation();
         this.positionStyle = this.positionAsStyle();
     }
