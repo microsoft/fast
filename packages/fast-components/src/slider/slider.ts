@@ -1,10 +1,4 @@
-import {
-    attr,
-    FastElement,
-    nullableNumberConverter,
-    observable,
-    Observable,
-} from "@microsoft/fast-element";
+import { attr, nullableNumberConverter, observable } from "@microsoft/fast-element";
 import { FormAssociated } from "../form-associated";
 import {
     Direction,
@@ -54,13 +48,9 @@ export class Slider extends FormAssociated<HTMLInputElement>
     /**
      * The element's value to be included in form submission changed.
      */
-    @attr
+    @attr({ converter: nullableNumberConverter })
     public value: string; // Map to proxy element.
     private valueChanged(): void {
-        if (Number(this.value) === Number.NaN) {
-            this.value = "1";
-        }
-
         if (this.proxy instanceof HTMLElement) {
             this.updateForm();
         }
@@ -142,11 +132,14 @@ export class Slider extends FormAssociated<HTMLInputElement>
     constructor() {
         super();
         this.proxy.setAttribute("type", "range");
-        this.direction = this.getDirection();
     }
 
     public connectedCallback(): void {
         super.connectedCallback();
+        this.direction = this.getDirection();
+        if (this.direction === Direction.rtl) {
+            this.value = `${this.value}`;
+        }
         this.updateForm();
         this.setupTrackConstraints();
         this.setupListeners();
@@ -158,6 +151,32 @@ export class Slider extends FormAssociated<HTMLInputElement>
         this.removeEventListener("mousedown", this.clickHandler);
         this.thumb.removeEventListener("mousedown", this.handleThumbMouseDown);
     }
+
+    public increment = (): void => {
+        const newVal: number =
+            this.direction !== Direction.rtl &&
+            this.orientation !== SliderOrientation.vertical
+                ? Number(this.value) + Number(this.step)
+                : Number(this.value) - Number(this.step);
+        const incrementedVal: number = this.convertToConstrainedValue(newVal);
+        const incrementedValString: string =
+            incrementedVal < Number(this.max) ? `${incrementedVal}` : `${this.max}`;
+        this.value = incrementedValString;
+        this.updateForm();
+    };
+
+    public decrement = (): void => {
+        const newVal =
+            this.direction !== Direction.rtl &&
+            this.orientation !== SliderOrientation.vertical
+                ? Number(this.value) - Number(this.step)
+                : Number(this.value) + Number(this.step);
+        const decrementedVal: number = this.convertToConstrainedValue(newVal);
+        const decrementedValString: string =
+            decrementedVal > Number(this.min) ? `${decrementedVal}` : `${this.min}`;
+        this.value = decrementedValString;
+        this.updateForm();
+    };
 
     protected keypressHandler = (e: KeyboardEvent) => {
         super.keypressHandler(e);
@@ -290,31 +309,5 @@ export class Slider extends FormAssociated<HTMLInputElement>
         } else {
             return constrainedVal;
         }
-    };
-
-    private increment = (): void => {
-        const newVal: number =
-            this.direction !== Direction.rtl &&
-            this.orientation !== SliderOrientation.vertical
-                ? Number(this.value) + Number(this.step)
-                : Number(this.value) - Number(this.step);
-        const incrementedVal: number = this.convertToConstrainedValue(newVal);
-        const incrementedValString: string =
-            incrementedVal < Number(this.max) ? `${incrementedVal}` : `${this.max}`;
-        this.value = incrementedValString;
-        this.updateForm();
-    };
-
-    private decrement = (): void => {
-        const newVal =
-            this.direction !== Direction.rtl &&
-            this.orientation !== SliderOrientation.vertical
-                ? Number(this.value) - Number(this.step)
-                : Number(this.value) + Number(this.step);
-        const decrementedVal: number = this.convertToConstrainedValue(newVal);
-        const decrementedValString: string =
-            decrementedVal > Number(this.min) ? `${decrementedVal}` : `${this.min}`;
-        this.value = decrementedValString;
-        this.updateForm();
     };
 }
