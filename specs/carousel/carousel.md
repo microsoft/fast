@@ -47,8 +47,6 @@ As defined by the W3C:
 
 ** See the [W3C Specification](https://w3c.github.io/aria-practices/#wai-aria-roles-states-and-properties-4) for requirements and details.
 
-*CSS custom properties:*
-- ???
 
 *Slots:*
 - `default` - use default slot for slide content
@@ -84,27 +82,7 @@ Notes:
         class="carousel-items"
         aria-live="off"
     >
-        ${ x => x.items.map((item, index) => {
-            const itemCount = x.getItemCount();
-            const activeClass = x.getActiveIndex() === index
-                ? 'active'
-                : x.getPreviousIndex() === index
-                    ? 'previous'
-                    : x.getNextIndex() === index
-                        ? 'next'
-                        : '';
-
-            return `
-            <div
-                class="carousel-item-${activeClass}"
-                role="group"
-                aria-roledescription="slide"
-                aria-label="${index} of ${itemCount}"
-            >
-                ${item}
-            </div>`
-            }).join('')
-        }
+    {Carousel Items would be inserted here after the controller handles them from the default slot}
     </div>
     <slot name="previous-button">
         <fast-flipper direction={FlipperDirection.previous} />
@@ -159,11 +137,11 @@ Note: Next and previous buttons will use the fast-flipper as default so the slot
         </button>
 
         <div role="tab-list" class="tab-list" aria-label="A carousel of items">
-            <div tabindex="0" role="tab" class="tab-list-tab"></div>
-            <div tabindex="-1" role="tab" class="tab-list-tab"></div>
-            <div tabindex="-1" role="tab" class="tab-list-tab"></div>
-            <div tabindex="-1" role="tab" class="tab-list-tab"></div>
-            <div tabindex="-1" role="tab" class="tab-list-tab"></div>
+            <div tabindex="0" role="tab" class="tab-list-tab">Tab 1</div>
+            <div tabindex="-1" role="tab" class="tab-list-tab">Tab 2</div>
+            <div tabindex="-1" role="tab" class="tab-list-tab">Tab 3</div>
+            <div tabindex="-1" role="tab" class="tab-list-tab">Tab 4</div>
+            <div tabindex="-1" role="tab" class="tab-list-tab">Tab 5</div>
         </div>
     >
     </fast-carousel>
