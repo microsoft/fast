@@ -18,7 +18,7 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
 function scrollViewports(): void {
     document.querySelectorAll("div[id^='viewport']").forEach(el => {
         if (el instanceof HTMLDivElement) {
-            el.scrollTop = 200;
+            el.scrollTop = 280;
             el.scrollLeft = 250;
         }
     });

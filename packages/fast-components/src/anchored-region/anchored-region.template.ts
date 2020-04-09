@@ -12,4 +12,5 @@ export const AnchoredRegionTemplate = html<AnchoredRegion>`
     </div>
   </template>
 `;
-//${when(x => x.initialLayoutComplete, html`<slot></slot>`)}
+// TODO: replace "<slot></slot>" with this when it no longer crashes
+// ${when(x => x.initialLayoutComplete, html`<slot></slot>`)}
