@@ -23,13 +23,13 @@ export const SliderStyles = css`
         outline: none;
         cursor: pointer;
     }
-    :host(.slider-horizontal) .positioning-region {
+    :host(.horizontal) .positioning-region {
         position: relative;
         margin: 0 8px;
         display: grid;
         grid-template-rows: calc(var(--thumb-size) * 1px) 1fr;
     }
-    :host(.slider-vertical) .positioning-region {
+    :host(.vertical) .positioning-region {
         position: relative;
         margin: 0 8px;
         display: grid;
@@ -56,23 +56,23 @@ export const SliderStyles = css`
     .thumb-cursor:active {
         background: var(--neutral-foreground-active);
     }
-    :host(.slider-horizontal) .thumb-container {
+    :host(.horizontal) .thumb-container {
         transform: translateX(calc(var(--thumb-translate) * 1px));
     }
-    :host(.slider-vertical) .thumb-container {
+    :host(.vertical) .thumb-container {
         transform: translateY(calc(var(--thumb-translate) * 1px));
     }
-    :host(.slider-horizontal) {
+    :host(.horizontal) {
         min-width: calc(var(--design-unit) * 60px);
     }
-    :host(.slider-horizontal) .track {
+    :host(.horizontal) .track {
         right: calc(var(--track-overhang) * 1px);
         left: calc(var(--track-overhang) * 1px);
         align-self: start;
         margin-top: 6px;
         height: 4px;
     }
-    :host(.slider-vertical) .track {
+    :host(.vertical) .track {
         top: calc(var(--track-overhang) * 1px);
         bottom: calc(var(--track-overhang) * 1px);
         justify-self: start;
@@ -84,7 +84,7 @@ export const SliderStyles = css`
         background: var(--neutral-outline-rest);
         position: absolute;
     }
-    :host(.slider-vertical) {
+    :host(.vertical) {
         height: 100%;
         min-height: calc(var(--design-unit) * 60px);
         min-width: calc(var(--design-unit) * 20px);

@@ -8,6 +8,7 @@ import {
     neutralForegroundActive,
     neutralForegroundHover,
     neutralForegroundRest,
+    neutralOutlineHover,
     neutralOutlineRest,
 } from "../styles/recipes";
 
@@ -38,6 +39,7 @@ export interface SliderConfiguration {
         neutralForegroundHover,
         neutralForegroundRest,
         neutralOutlineRest,
+        neutralOutlineHover,
     ],
 })
 export class FASTSlider extends Slider {}

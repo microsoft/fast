@@ -10,12 +10,12 @@ export const SliderLabelStyles = css`
         position: absolute;
         display: grid;
     }
-    :host(.slider-label-horizontal) {
+    :host(.horizontal) {
         align-self: start;
         grid-row: 2;
         margin-top: -2px;
     }
-    :host(.slider-label-vertical) {
+    :host(.vertical) {
         justify-self: start;
         grid-column: 2;
         margin-left: 2px;
@@ -24,11 +24,11 @@ export const SliderLabelStyles = css`
         display: grid;
         justify-self: center;
     }
-    :host(.slider-label-horizontal) .container {
+    :host(.horizontal) .container {
         grid-template-rows: auto auto;
         grid-template-columns: 0;
     }
-    :host(.slider-label-vertical) .container {
+    :host(.vertical) .container {
         grid-template-columns: auto auto;
         grid-template-rows: 0;
         min-width: calc(var(--thumb-size) * 1px);
@@ -48,11 +48,11 @@ export const SliderLabelStyles = css`
         background: var(--neutral-outline-rest);
         justify-self: center;
     }
-    :host(.slider-label-vertical) .mark {
+    :host(.vertical) .mark {
         transform: rotate(90deg);
         align-self: center;
     }
-    :host(.slider-label-vertical) .label {
+    :host(.vertical) .label {
         margin-left: calc((var(--design-unit) / 2) * 2px);
         align-self: center;
     }

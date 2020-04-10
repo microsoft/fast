@@ -6,6 +6,8 @@ import {
     keyCodeArrowLeft,
     keyCodeArrowRight,
     keyCodeArrowUp,
+    keyCodeEnd,
+    keyCodeHome,
 } from "@microsoft/fast-web-utilities";
 import { convertPixelToPercent } from "./slider-utilities";
 import { SliderConfiguration, SliderMode, SliderOrientation } from "./index";
@@ -113,11 +115,11 @@ export class Slider extends FormAssociated<HTMLInputElement>
     public orientation: SliderOrientation = SliderOrientation.horizontal;
     private orientationChanged(): void {
         if (this.orientation === SliderOrientation.horizontal) {
-            this.classList.remove("slider-vertical");
-            this.classList.add("slider-horizontal");
+            this.classList.remove("vertical");
+            this.classList.add("horizontal");
         } else {
-            this.classList.remove("slider-horizontal");
-            this.classList.add("slider-vertical");
+            this.classList.remove("horizontal");
+            this.classList.add("vertical");
         }
     }
 
@@ -180,15 +182,21 @@ export class Slider extends FormAssociated<HTMLInputElement>
 
     protected keypressHandler = (e: KeyboardEvent) => {
         super.keypressHandler(e);
-        switch (e.keyCode) {
-            case keyCodeArrowRight:
-            case keyCodeArrowUp:
-                this.increment();
-                break;
-            case keyCodeArrowLeft:
-            case keyCodeArrowDown:
-                this.decrement();
-                break;
+        if (e.keyCode === keyCodeHome) {
+            this.value = `${this.min}`;
+        } else if (e.keyCode === keyCodeEnd) {
+            this.value = `${this.max}`;
+        } else if (!e.shiftKey) {
+            switch (e.keyCode) {
+                case keyCodeArrowRight:
+                case keyCodeArrowUp:
+                    this.increment();
+                    break;
+                case keyCodeArrowLeft:
+                case keyCodeArrowDown:
+                    this.decrement();
+                    break;
+            }
         }
     };
 

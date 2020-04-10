@@ -1,8 +1,8 @@
 import { attr, FastElement, observable } from "@microsoft/fast-element";
 import { SliderConfiguration, SliderOrientation } from "../slider";
 import {
-    Direction,
     convertStylePropertyPixelsToNumber,
+    Direction,
 } from "@microsoft/fast-web-utilities";
 import { convertPixelToPercent } from "../slider/slider-utilities";
 
@@ -43,9 +43,9 @@ export class SliderLabel extends FastElement {
 
     private setStyleForOrientation = (): void => {
         if (this.config.orientation === SliderOrientation.horizontal) {
-            this.classList.add("slider-label-horizontal");
+            this.classList.add("horizontal");
         } else {
-            this.classList.add("slider-label-vertical");
+            this.classList.add("vertical");
         }
     };
 
@@ -55,7 +55,6 @@ export class SliderLabel extends FastElement {
 
     private getSliderConfiguration = (): void => {
         if (!this.isSliderConfig(this.parentNode)) {
-            console.log("parent is not a FASTSlider, no min and max");
             this.config = defaultConfig;
         } else {
             const { min, max, direction, orientation } = this
