@@ -1,7 +1,7 @@
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, ReactWrapper } from "enzyme";
-import { useTimeout, UseTimeout } from "./use-timeout";
+import { UseTimeout } from "./use-timeout";
 
 /*
  * Configure Enzyme
@@ -15,6 +15,7 @@ jest.useFakeTimers();
 
 describe("use-timeout", (): void => {
     test("should throw if the provided callback is not a function", (): void => {
+        /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
         const rendered: ReactWrapper = mount(
             React.createElement(UseTimeout as () => JSX.Element, {
                 delay: 300,
@@ -30,6 +31,7 @@ describe("use-timeout", (): void => {
 
     test("should call a callback after the provided period of time", (): void => {
         const spy: jest.Mock = jest.fn();
+        /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
         const rendered: ReactWrapper = mount(
             React.createElement(UseTimeout as () => JSX.Element, {
                 delay: 300,

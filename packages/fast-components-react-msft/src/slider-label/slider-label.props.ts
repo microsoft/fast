@@ -1,18 +1,17 @@
 import React from "react";
-import { Omit, Subtract } from "utility-types";
+import { Omit } from "utility-types";
 import {
-    SliderTrackItemAnchor,
     SliderTrackItemHandledProps as BaseSliderTrackItemHandledProps,
     SliderTrackItemManagedClasses as BaseSliderTrackItemManagedClasses,
     SliderTrackItemUnhandledProps as BaseSliderTrackItemUnhandledProps,
+    SliderTrackItemAnchor,
 } from "@microsoft/fast-components-react-base";
 import {
     ManagedClasses,
     SliderLabelClassNameContract,
 } from "@microsoft/fast-components-class-name-contracts-msft";
 
-export interface SliderLabelManagedClasses
-    extends ManagedClasses<SliderLabelClassNameContract> {}
+export type SliderLabelManagedClasses = ManagedClasses<SliderLabelClassNameContract>;
 
 export interface SliderLabelHandledProps
     extends Omit<
@@ -40,6 +39,5 @@ export interface SliderLabelHandledProps
     valuePositionBinding?: number | SliderTrackItemAnchor;
 }
 
-/* tslint:disable-next-line:no-empty-interface */
-export interface SliderLabelUnhandledProps extends BaseSliderTrackItemUnhandledProps {}
+export type SliderLabelUnhandledProps = BaseSliderTrackItemUnhandledProps;
 export type SliderLabelProps = SliderLabelHandledProps & SliderLabelUnhandledProps;

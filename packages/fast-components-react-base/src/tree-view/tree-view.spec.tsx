@@ -1,15 +1,14 @@
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, ReactWrapper, shallow } from "enzyme";
-import TreeView from "./tree-view";
 import TreeViewItem from "../tree-view-item";
 import { DisplayNamePrefix } from "../utilities";
+import TreeView from "./tree-view";
 import {
     TreeViewHandledProps,
     TreeViewProps,
     TreeViewUnhandledProps,
 } from "./tree-view.props";
-import { keyCodeArrowUp } from "@microsoft/fast-web-utilities";
 
 /**
  * Configure Enzyme

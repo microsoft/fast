@@ -1,8 +1,8 @@
-import { DesignSystem } from "../design-system";
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { directionSwitch } from "@microsoft/fast-jss-utilities";
-import { neutralForegroundHint, neutralForegroundRest } from "../utilities/color";
 import { BreadcrumbClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
+import { neutralForegroundHint, neutralForegroundRest } from "../utilities/color";
+import { DesignSystem } from "../design-system";
 import { applyCursorDefault } from "../utilities/cursor";
 import { applyScaledTypeRamp } from "../utilities/typography";
 

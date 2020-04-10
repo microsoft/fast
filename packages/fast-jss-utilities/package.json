@@ -23,9 +23,9 @@
     "prepare": "yarn clean:dist && yarn build",
     "prettier": "prettier --config ../../.prettierrc --write \"**/*.ts\"",
     "prettier:diff": "prettier --config ../../.prettierrc \"**/*.ts\" --list-different",
-    "test": "yarn tslint && yarn unit-tests",
-    "tslint": "tslint -c ./tslint.json '**/*.ts'",
-    "tslint:fix": "tslint -c ./tslint.json --fix '**/*.ts'",
+    "test": "yarn eslint && yarn unit-tests",
+    "eslint": "eslint . --ext .ts,",
+    "eslint:fix": "eslint . --ext .ts --fix",
     "unit-tests": "jest --runInBand",
     "watch": "yarn build -- -w --preserveWatchOutput"
   },
@@ -56,16 +56,15 @@
   "devDependencies": {
     "@babel/core": "^7.0.0",
     "@babel/preset-env": "^7.1.0",
-    "@microsoft/fast-tslint-rules": "^3.1.0",
+    "@microsoft/eslint-config-fast-dna": "^1.0.0",
     "@types/jest": "^25.2.1",
     "babel-core": "^7.0.0-bridge.0",
     "babel-jest": "^25.2.6",
+    "eslint-config-prettier": "^6.10.1",
     "jest": "^25.2.7",
     "lodash-es": "^4.17.10",
-    "prettier": "1.14.3",
+    "prettier": "2.0.2",
     "ts-jest": "^25.3.1",
-    "tslint": "^5.11.0",
-    "tslint-config-prettier": "^1.15.0",
     "typescript": "3.3.3"
   },
   "dependencies": {

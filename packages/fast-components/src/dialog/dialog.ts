@@ -40,11 +40,11 @@ export class Dialog extends FastElement {
         super.connectedCallback();
 
         // store references to tabbable elements
-        this.tabbableElements = tabbable(this);
+        this.tabbableElements = tabbable(this as Element);
 
         this.observer = new MutationObserver(this.onChildListChange);
         // only observe if nodes are added or removed
-        this.observer.observe(this, { childList: true });
+        this.observer.observe(this as Element, { childList: true });
 
         document.addEventListener("keydown", this.handleDocumentKeydown);
 
@@ -70,10 +70,11 @@ export class Dialog extends FastElement {
 
     private onChildListChange(
         mutations: MutationRecord[],
+        /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
         observer: MutationObserver
     ): void {
         if (mutations!.length) {
-            this.tabbableElements = tabbable(this);
+            this.tabbableElements = tabbable(this as Element);
         }
     }
 

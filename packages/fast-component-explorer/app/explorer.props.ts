@@ -1,7 +1,5 @@
-import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
-import { ExplorerClassNameContract } from "./explorer.style";
-import { Direction } from "@microsoft/fast-web-utilities";
 import { DesignSystem } from "@microsoft/fast-components-styles-msft";
+import { ExplorerClassNameContract } from "./explorer.style";
 
 /**
  * The properties of a component
@@ -25,7 +23,7 @@ export interface ViewConfig {
     transparentBackground: boolean;
 }
 
-export interface ExplorerUnhandledProps extends React.HTMLAttributes<HTMLDivElement> {}
+export type ExplorerUnhandledProps = React.HTMLAttributes<HTMLDivElement>;
 
 export interface ExplorerHandledProps {
     managedClasses: ExplorerClassNameContract;
@@ -44,7 +42,6 @@ export enum ThemeName {
     light = "light",
 }
 
-/* tslint:disable-next-line */
 export interface ExplorerState {
     /**
      * The current data location

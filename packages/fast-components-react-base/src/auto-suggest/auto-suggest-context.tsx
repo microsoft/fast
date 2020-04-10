@@ -8,8 +8,8 @@ export interface AutoSuggestContextType {
     currentValue: string;
 }
 
-export const AutoSuggestContext: React.Context<
-    AutoSuggestContextType
-> = React.createContext({
-    currentValue: "",
-});
+export const AutoSuggestContext: React.Context<AutoSuggestContextType> = React.createContext(
+    {
+        currentValue: "",
+    }
+);

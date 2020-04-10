@@ -97,7 +97,7 @@ export class FigmaPluginNode extends PluginNode {
     public supports(): Array<RecipeTypes | "designSystem"> {
         return Object.keys(RecipeTypes)
             .concat("designSystem")
-            .filter(key => {
+            .filter((key: string) => {
                 switch (key) {
                     case RecipeTypes.backgroundFills:
                     case RecipeTypes.strokeFills:

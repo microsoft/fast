@@ -1,5 +1,4 @@
 import { mergeDesignSystem } from "./index";
-import * as ShallowRenderer from "react-test-renderer/shallow";
 
 describe("mergeDesignSystem", (): void => {
     test("should return a new object", (): void => {

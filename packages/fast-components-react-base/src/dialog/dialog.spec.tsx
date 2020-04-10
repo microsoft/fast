@@ -1,24 +1,20 @@
 import React from "react";
-import ReactDOM from "react-dom";
-import * as ShallowRenderer from "react-test-renderer/shallow";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
+import { keyCodeEscape } from "@microsoft/fast-web-utilities";
+import { DisplayNamePrefix } from "../utilities";
 import Dialog, {
     DialogClassNameContract,
     DialogHandledProps,
-    DialogManagedClasses,
     DialogProps,
     DialogUnhandledProps,
 } from "./dialog";
-import { keyCodeEscape } from "@microsoft/fast-web-utilities";
-import { DisplayNamePrefix } from "../utilities";
 
 /*
  * Configure Enzyme
  */
 configure({ adapter: new Adapter() });
 
-/* tslint:disable:no-string-literal */
 describe("dialog", (): void => {
     const managedClasses: DialogClassNameContract = {
         dialog: "dialog-class",
@@ -244,6 +240,7 @@ describe("dialog", (): void => {
 
         document.addEventListener = mockAddListenerFn;
 
+        /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
         const rendered: any = mount(
             <Dialog managedClasses={managedClasses} visible={true} />
         );

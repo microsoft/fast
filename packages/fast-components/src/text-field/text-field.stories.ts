@@ -1,8 +1,8 @@
-import { FASTTextField } from "./";
-import { FASTDesignSystemProvider } from "../design-system-provider";
-import TextFieldTemplate from "./fixtures/text-field.html";
 import { STORY_RENDERED } from "@storybook/core-events";
 import addons from "@storybook/addons";
+import { FASTDesignSystemProvider } from "../design-system-provider";
+import TextFieldTemplate from "./fixtures/text-field.html";
+import { FASTTextField } from "./";
 
 // Prevent tree-shaking
 FASTTextField;

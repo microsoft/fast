@@ -3,7 +3,6 @@ import { mergeWith } from "lodash-es";
 import React from "react";
 import { designSystemContext } from "./context";
 import SheetManager, { JSSSheetOptions } from "./sheet-manager";
-import { jss } from "./jss";
 
 /**
  * Describes an interface for adjusting a styled component
@@ -144,7 +143,7 @@ abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S,
 
     public render(): JSX.Element {
         if (!this.hasCreatedIntialStyleSheets) {
-            if (!!this.styles) {
+            if (this.styles) {
                 const options: JSSSheetOptions = {
                     meta: this.managedComponent.displayName || this.managedComponent.name,
                     index: this.index,
@@ -174,7 +173,7 @@ abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S,
         const hadSheetProps: boolean = !!prevProps.jssStyleSheet;
 
         if (this.designSystem !== this.context) {
-            if (!!this.styles) {
+            if (this.styles) {
                 JSSManager.sheetManager.update(
                     this.styles,
                     this.designSystem,
@@ -249,7 +248,7 @@ abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S,
      * Return the JSSStyleSheet associated with the current designSystem and style
      */
     private primaryStyleSheet(): JSSStyleSheet | void {
-        if (!!this.styles) {
+        if (this.styles) {
             return JSSManager.sheetManager.get(this.styles, this.designSystem);
         }
     }
@@ -258,7 +257,7 @@ abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S,
      * Return the JSSStylesheet associated with the jssStyleSheet prop
      */
     private secondaryStyleSheet(): JSSStyleSheet | void {
-        if (!!this.props.jssStyleSheet) {
+        if (this.props.jssStyleSheet) {
             return JSSManager.sheetManager.get(
                 this.props.jssStyleSheet,
                 this.designSystem
@@ -307,8 +306,9 @@ abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S,
         const stylesheet: any = this.primaryStyleSheet();
 
         const options: JSSSheetOptions = {
-            meta: `${this.managedComponent.displayName ||
-                this.managedComponent.name} - jssStyleSheet`,
+            meta: `${
+                this.managedComponent.displayName || this.managedComponent.name
+            } - jssStyleSheet`,
             index: stylesheet ? stylesheet.options.index + 1 : this.index + 1,
         };
 

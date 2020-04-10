@@ -16,10 +16,6 @@ export interface BezierCurve {
     1: BezierCurvePoint;
 }
 
-export function cubicBezier(name: string): string {
-    return bezierCurves.hasOwnProperty(name) ? formatCubicBezier(bezierCurves[name]) : "";
-}
-
 /**
  * Formats a cubic bezier config into a cubic bezier string
  */
@@ -36,4 +32,8 @@ export function formatCubicBezier(points: BezierCurve): string {
     const p1: BezierCurvePoint = points[1];
 
     return `cubic-bezier(${p0[0]}, ${p0[1]}, ${p1[0]}, ${p1[1]})`;
+}
+
+export function cubicBezier(name: string): string {
+    return bezierCurves.hasOwnProperty(name) ? formatCubicBezier(bezierCurves[name]) : "";
 }

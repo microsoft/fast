@@ -1,10 +1,8 @@
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow, ShallowWrapper } from "enzyme";
-import ContextMenu, { ContextMenuUnhandledProps } from "./context-menu";
 import {
     keyCodeArrowDown,
-    keyCodeArrowLeft,
     keyCodeArrowRight,
     keyCodeArrowUp,
     keyCodeEnd,
@@ -12,6 +10,7 @@ import {
 } from "@microsoft/fast-web-utilities";
 import { ContextMenuItemRole } from "../context-menu-item";
 import { DisplayNamePrefix } from "../utilities";
+import ContextMenu, { ContextMenuUnhandledProps } from "./context-menu";
 
 /*
  * Configure Enzyme
@@ -202,6 +201,7 @@ describe("context menu", (): void => {
     test("should not call focus on mount when enableAutoFocus is false", (): void => {
         const spy: jest.SpyInstance = jest.spyOn(ContextMenu.prototype, "focus" as any);
 
+        /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
         const rendered: any = mount(
             <ContextMenu enableAutoFocus={false}>
                 <div role="menuitem">two</div>
@@ -210,6 +210,7 @@ describe("context menu", (): void => {
             </ContextMenu>
         );
 
+        /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
         const defaultRendered: any = mount(
             <ContextMenu>
                 <div role="menuitem">two</div>
@@ -224,6 +225,7 @@ describe("context menu", (): void => {
     test("should call focus on mount when enableAutoFocus is true", (): void => {
         const spy: jest.SpyInstance = jest.spyOn(ContextMenu.prototype, "focus" as any);
 
+        /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
         const rendered: any = mount(
             <ContextMenu enableAutoFocus={true}>
                 <div role="menuitem">two</div>

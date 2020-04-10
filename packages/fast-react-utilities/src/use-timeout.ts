@@ -8,14 +8,11 @@ export function useTimeout(
     delay: number | null,
     dependencies: any[] = []
 ): void {
-    const savedCallback: React.MutableRefObject<(() => any)> = useRef(callback);
+    const savedCallback: React.MutableRefObject<() => any> = useRef(callback);
 
-    useEffect(
-        () => {
-            savedCallback.current = callback;
-        },
-        [callback]
-    );
+    useEffect(() => {
+        savedCallback.current = callback;
+    }, [callback]);
 
     useEffect(() => {
         function tick(): void {

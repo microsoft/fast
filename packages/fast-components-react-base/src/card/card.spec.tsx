@@ -1,15 +1,14 @@
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, shallow } from "enzyme";
+import { DisplayNamePrefix } from "../utilities";
 import Card, {
     CardClassNameContract,
     CardHandledProps,
-    CardManagedClasses,
     CardProps,
     CardTag,
     CardUnhandledProps,
 } from "./card";
-import { DisplayNamePrefix } from "../utilities";
 
 /*
  * Configure Enzyme

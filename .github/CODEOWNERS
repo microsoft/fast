@@ -58,8 +58,8 @@
 # fast-tooling-react
 /packages/fast-tooling-react/ @janechu @nicholasrice @chrisdholt
 
-# fast-tslint-rules
-/packages/fast-tslint-rules/ @nicholasrice @janechu @chrisdholt
+# fast-eslint-rules
+/packages/fast-eslint-rules/ @nicholasrice @janechu @chrisdholt
 
 # fast-web-utilities
 /packages/fast-web-utilities/ @janechu @chrisdholt @nicholasrice

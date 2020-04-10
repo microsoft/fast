@@ -1,23 +1,22 @@
 import React from "react";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
+import { Subtract } from "utility-types";
 import {
     Grid as BaseGrid,
+    GridHandledProps as BaseGridHandledProps,
+    GridProps as BaseGridProps,
     GridAlignment,
     GridClassNamesContract,
     GridGutter,
-    GridHandledProps as BaseGridHandledProps,
     GridManagedClasses,
-    GridProps as BaseGridProps,
     GridTag,
     GridUnhandledProps,
 } from "./grid";
-import { Subtract } from "utility-types";
 
-/* tslint:disable-next-line:typedef */
 const Grid = manageJss()(BaseGrid);
 type Grid = typeof Grid;
 
-interface GridHandledProps extends Subtract<BaseGridHandledProps, GridManagedClasses> {}
+type GridHandledProps = Subtract<BaseGridHandledProps, GridManagedClasses>;
 type GridProps = ManagedJSSProps<BaseGridProps, GridClassNamesContract, undefined>;
 
 export {

@@ -1,7 +1,7 @@
 import { storiesOf } from "@storybook/react";
 import React from "react";
-import { Pivot } from "./";
 import { uniqueId } from "lodash-es";
+import { Pivot } from "./";
 
 storiesOf("Pivot", module).add("Default", () => (
     <Pivot

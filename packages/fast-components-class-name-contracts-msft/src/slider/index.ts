@@ -3,5 +3,5 @@ import { SliderClassNameContract as BaseSliderClassNameContract } from "@microso
 /**
  * The class name contract for the select component
  */
-/* tslint:disable-next-line */
+/* eslint-disable-next-line @typescript-eslint/no-empty-interface */
 export interface SliderClassNameContract extends BaseSliderClassNameContract {}

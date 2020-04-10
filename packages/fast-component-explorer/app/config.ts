@@ -2,20 +2,21 @@ import { get } from "lodash-es";
 import { MenuItem } from "@microsoft/fast-tooling-react";
 import { FormChildOptionItem } from "@microsoft/fast-tooling-react/dist/form/form";
 import { pascalCase } from "@microsoft/fast-web-utilities";
+import { createBrowserHistory } from "history";
 import * as testComponentViewConfigs from "./components";
 import * as componentViewConfigs from "./utilities/configs";
-import { createBrowserHistory } from "history";
 
 const schemas: any[] = Object.keys(componentViewConfigs).map(
     (componentViewConfigKey: string) =>
         componentViewConfigs[componentViewConfigKey].schema
 );
 const history: any = createBrowserHistory();
+/* eslint-disable @typescript-eslint/no-use-before-define */
 const menu: MenuItem[] = generateMenu(schemas);
 const childOptions: FormChildOptionItem[] = getComponentChildrenOptions().concat(
     getTestComponentChildrenOptions()
 );
-
+/* eslint-enable @typescript-eslint/no-use-before-define */
 const initialComponentRoute: string = get(menu, "[0].location", "");
 
 function getRouteFromSchemaId(schemaId: string): string {

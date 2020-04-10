@@ -1,10 +1,10 @@
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
-import MSFTSelect from "./select";
 import { SelectOption } from "../select-option";
-import { Select, SelectHandledProps, SelectProps, SelectUnhandledProps } from "./index";
 import { DisplayNamePrefix } from "../utilities";
+import MSFTSelect from "./select";
+import { Select, SelectUnhandledProps } from "./index";
 
 /*
  * Configure Enzyme
@@ -16,8 +16,6 @@ const itemB: JSX.Element = <SelectOption id="b" value="b" displayString="ab" />;
 const itemC: JSX.Element = <SelectOption id="c" value="c" displayString="abc" />;
 
 describe("select", (): void => {
-    const href: string = "https://www.microsoft.com";
-
     test("should have a displayName that matches the component name", () => {
         expect(`${DisplayNamePrefix}${(MSFTSelect as any).name}`).toBe(
             MSFTSelect.displayName

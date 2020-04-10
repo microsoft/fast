@@ -40,7 +40,7 @@ interface ViewportPositionerSubtractedProps extends ViewportPositionerManagedCla
     anchor?: React.RefObject<any> | HTMLElement;
 }
 
-export interface FlyoutManagedClasses extends ManagedClasses<FlyoutClassNameContract> {}
+export type FlyoutManagedClasses = ManagedClasses<FlyoutClassNameContract>;
 export interface FlyoutHandledProps
     extends Subtract<ViewportPositionerHandledProps, ViewportPositionerSubtractedProps>,
         FlyoutManagedClasses {
@@ -113,6 +113,5 @@ export interface FlyoutHandledProps
     visible?: boolean;
 }
 
-/* tslint:disable-next-line:no-empty-interface */
-export interface FlyoutUnhandledProps extends ViewportPositionerUnhandledProps {}
+export type FlyoutUnhandledProps = ViewportPositionerUnhandledProps;
 export type FlyoutProps = FlyoutHandledProps & FlyoutUnhandledProps;

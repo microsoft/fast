@@ -1,4 +1,3 @@
-import { DesignSystem, DesignSystemResolver } from "../design-system";
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { CheckboxClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import {
@@ -9,6 +8,7 @@ import {
     format,
     toPx,
 } from "@microsoft/fast-jss-utilities";
+import { DesignSystem, DesignSystemResolver } from "../design-system";
 import {
     neutralFillInputActive,
     neutralFillInputHover,

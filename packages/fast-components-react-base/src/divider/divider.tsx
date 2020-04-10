@@ -10,7 +10,6 @@ import {
     DividerUnhandledProps,
 } from "./divider.props";
 
-/* tslint:disable-next-line */
 class Divider extends Foundation<DividerHandledProps, DividerUnhandledProps, {}> {
     public static displayName: string = `${DisplayNamePrefix}Divider`;
 

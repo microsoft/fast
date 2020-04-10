@@ -1,15 +1,9 @@
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
-import { ContextMenuItemClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
-import MSFTContextMenuItem from "./context-menu-item";
-import {
-    ContextMenuItem,
-    ContextMenuItemHandledProps,
-    ContextMenuItemProps,
-    ContextMenuItemUnhandledProps,
-} from "./index";
 import { DisplayNamePrefix } from "../utilities";
+import MSFTContextMenuItem from "./context-menu-item";
+import { ContextMenuItem, ContextMenuItemUnhandledProps } from "./index";
 
 /*
  * Configure Enzyme

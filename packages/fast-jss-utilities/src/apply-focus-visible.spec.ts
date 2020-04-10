@@ -1,9 +1,9 @@
+import { CSSRules } from "@microsoft/fast-jss-manager";
 import {
     applyFocusVisible,
     applyFocusVisiblePolyfillSelector,
     applyFocusVisibleSelector,
 } from "./apply-focus-visible";
-import { CSSRules } from "@microsoft/fast-jss-manager";
 
 /**
  * Mock and allow control of focus-visible return value

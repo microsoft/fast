@@ -1,13 +1,14 @@
 import React from "react";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
+import { Subtract } from "utility-types";
 import {
+    Row as BaseRow,
+    RowHandledProps as BaseRowHandledProps,
+    RowProps as BaseRowProps,
     east,
     north,
-    Row as BaseRow,
     RowClassNamesContract,
-    RowHandledProps as BaseRowHandledProps,
     RowManagedClasses,
-    RowProps as BaseRowProps,
     RowResizeControlProps,
     RowResizeDirection,
     rowStyleSheet,
@@ -15,13 +16,11 @@ import {
     south,
     west,
 } from "./row";
-import { Subtract } from "utility-types";
 
-/* tslint:disable-next-line:typedef */
 const Row = manageJss(rowStyleSheet)(BaseRow);
 type Row = typeof Row;
 
-interface RowHandledProps extends Subtract<BaseRowHandledProps, RowManagedClasses> {}
+type RowHandledProps = Subtract<BaseRowHandledProps, RowManagedClasses>;
 type RowProps = ManagedJSSProps<BaseRowProps, RowClassNamesContract, undefined>;
 
 export {

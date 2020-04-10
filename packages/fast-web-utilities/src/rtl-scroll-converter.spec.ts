@@ -14,7 +14,6 @@ function getDummyDiv(): HTMLDivElement {
     return dummy;
 }
 
-/* tslint:disable:no-string-literal */
 describe("RtlScrollConverter", (): void => {
     test("should not throw on getter", () => {
         const testElement: HTMLDivElement = getDummyDiv();

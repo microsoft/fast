@@ -1,6 +1,9 @@
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
+import { TextActionClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
+import { Button } from "../button";
+import { DisplayNamePrefix } from "../utilities";
 import TextAction, {
     TextActionAppearance,
     TextActionButtonPosition,
@@ -8,9 +11,6 @@ import TextAction, {
     TextActionProps,
     TextActionUnhandledProps,
 } from "./text-action";
-import { TextActionClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
-import { Button } from "../button";
-import { DisplayNamePrefix } from "../utilities";
 
 const managedClasses: TextActionClassNameContract = {
     textAction: "text-action",
@@ -129,12 +129,9 @@ describe("text-action", (): void => {
         rendered.setState({ focused: true });
 
         expect(rendered.state("focused")).toBe(true);
-        expect(
-            rendered
-                .find("div")
-                .first()
-                .prop("className")
-        ).toContain(`${managedClasses.textAction} ${managedClasses.textAction__focus}`);
+        expect(rendered.find("div").first().prop("className")).toContain(
+            `${managedClasses.textAction} ${managedClasses.textAction__focus}`
+        );
     });
 
     test("should render a button in the after position by default if a button is passed as a prop", () => {
@@ -200,11 +197,7 @@ describe("text-action", (): void => {
 
         expect(rendered.find("svg")).not.toBe(undefined);
         expect(
-            rendered
-                .find(`.${managedClasses.textAction}`)
-                .first()
-                .childAt(0)
-                .type()
+            rendered.find(`.${managedClasses.textAction}`).first().childAt(0).type()
         ).toEqual("svg");
     });
 
@@ -232,11 +225,7 @@ describe("text-action", (): void => {
 
         expect(rendered.find("svg")).not.toBe(undefined);
         expect(
-            rendered
-                .find(`.${managedClasses.textAction}`)
-                .first()
-                .childAt(1)
-                .type()
+            rendered.find(`.${managedClasses.textAction}`).first().childAt(1).type()
         ).toEqual("svg");
     });
 
@@ -273,10 +262,7 @@ describe("text-action", (): void => {
             true
         );
         expect(
-            rendered
-                .find(`.${managedClasses.textAction}`)
-                .find("button")
-                .exists()
+            rendered.find(`.${managedClasses.textAction}`).find("button").exists()
         ).toBe(true);
     });
 
@@ -314,10 +300,7 @@ describe("text-action", (): void => {
             true
         );
         expect(
-            rendered
-                .find(`.${managedClasses.textAction}`)
-                .find("button")
-                .exists()
+            rendered.find(`.${managedClasses.textAction}`).find("button").exists()
         ).toBe(true);
     });
 });

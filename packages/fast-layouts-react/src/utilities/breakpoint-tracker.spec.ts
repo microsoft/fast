@@ -1,9 +1,8 @@
-import BreakpointTracker, { BreakpointTrackerCallback } from "./breakpoint-tracker";
-import { Breakpoint, Breakpoints, defaultBreakpoints } from "./breakpoints";
 import { canUseDOM } from "exenv-es6";
+import BreakpointTracker, { BreakpointTrackerCallback } from "./breakpoint-tracker";
+import { Breakpoints, defaultBreakpoints } from "./breakpoints";
 jest.mock("exenv-es6", () => ({ canUseDOM: jest.fn() }));
 
-/* tslint:disable:no-string-literal */
 describe("breakpointTracker", (): void => {
     let subscriber: any;
     let callback: any;
@@ -18,6 +17,7 @@ describe("breakpointTracker", (): void => {
         canUseDOM["mockImplementation"](() => true);
 
         subscriber = {
+            /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
             onBreakpointChanged: (notification: BreakpointTrackerCallback): void => {
                 return;
             },

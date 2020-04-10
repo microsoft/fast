@@ -1,10 +1,10 @@
 import { storiesOf } from "@storybook/react";
 import React from "react";
-import ListboxItem from "../listbox-item";
-import Select from "./";
 import { uniqueId } from "lodash-es";
 import { action } from "@storybook/addon-actions";
+import ListboxItem from "../listbox-item";
 import { AxisPositioningMode } from "../viewport-positioner";
+import Select from "./";
 
 storiesOf("Select", module)
     .add("Default", () => (

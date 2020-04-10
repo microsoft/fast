@@ -5,14 +5,10 @@ export const TextAreaTemplate = html<TextArea>`
     ${when(
         x => x.childNodes.length,
         html`
-        <label
-            part="label"
-            class="label"
-            for="control"
-        >
-            <slot name="label"></slot>
-        </label>
-    `
+            <label part="label" class="label" for="control">
+                <slot name="label"></slot>
+            </label>
+        `
     )}
     <textarea
         part="control"

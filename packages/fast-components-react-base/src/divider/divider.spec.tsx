@@ -1,15 +1,14 @@
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, shallow, ShallowWrapper } from "enzyme";
+import { DisplayNamePrefix } from "../utilities";
 import Divider, {
     DividerClassNameContract,
     DividerHandledProps,
-    DividerManagedClasses,
     DividerProps,
     DividerRoles,
     DividerUnhandledProps,
 } from "./divider";
-import { DisplayNamePrefix } from "../utilities";
 
 configure({ adapter: new Adapter() });
 

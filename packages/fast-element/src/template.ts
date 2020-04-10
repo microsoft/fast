@@ -1,5 +1,5 @@
 import { compileTemplate } from "./template-compiler";
-import { HTMLView, ElementView, SyntheticView, View } from "./view";
+import { ElementView, HTMLView, SyntheticView } from "./view";
 import { DOM } from "./dom";
 import { Behavior, BehaviorFactory } from "./directives/behavior";
 import { Expression } from "./interfaces";
@@ -14,13 +14,30 @@ export interface SyntheticViewTemplate {
     create(): SyntheticView;
 }
 
+export class HTMLTemplateBehavior implements Behavior {
+    private view: SyntheticView;
+
+    constructor(template: SyntheticViewTemplate, location: HTMLElement) {
+        this.view = template.create();
+        this.view.insertBefore(location);
+    }
+
+    bind(source: unknown): void {
+        this.view.bind(source);
+    }
+
+    unbind(): void {
+        this.view.unbind();
+    }
+}
+
 export class ViewTemplate extends Directive
     implements ElementViewTemplate, SyntheticViewTemplate {
-    public createPlaceholder = DOM.createBlockPlaceholder;
+    public createPlaceholder: (index: number) => string = DOM.createBlockPlaceholder;
     private behaviorCount: number = 0;
     private hasHostBehaviors: boolean = false;
     private fragment: DocumentFragment | null = null;
-    private targetOffset = 0;
+    private targetOffset: number = 0;
     private viewBehaviorFactories: BehaviorFactory[] | null = null;
     private hostBehaviorFactories: BehaviorFactory[] | null = null;
 
@@ -31,7 +48,7 @@ export class ViewTemplate extends Directive
         super();
     }
 
-    public create(host?: Element) {
+    public create(host?: Element): HTMLView {
         if (this.fragment === null) {
             let template: HTMLTemplateElement;
             const html = this.html;
@@ -100,40 +117,29 @@ export class ViewTemplate extends Directive
         return new HTMLView(fragment, behaviors);
     }
 
-    public createBehavior(target: any) {
+    public createBehavior(target: any): HTMLTemplateBehavior {
         return new HTMLTemplateBehavior(this, target);
     }
 }
 
-export class HTMLTemplateBehavior implements Behavior {
-    private view: SyntheticView;
+// Much thanks to LitHTML for working this out!
+export const lastAttributeNameRegex =
+    // eslint-disable-next-line no-control-regex
+    /([ \x09\x0a\x0c\x0d])([^\0-\x1F\x7F-\x9F "'>=/]+)([ \x09\x0a\x0c\x0d]*=[ \x09\x0a\x0c\x0d]*(?:[^ \x09\x0a\x0c\x0d"'`<>=]*|"[^"]*|'[^']*))$/;
 
-    constructor(template: SyntheticViewTemplate, location: HTMLElement) {
-        this.view = template.create();
-        this.view.insertBefore(location);
-    }
-
-    bind(source: unknown) {
-        this.view.bind(source);
-    }
-
-    unbind() {
-        this.view.unbind();
-    }
-}
-
+/* eslint-disable-next-line @typescript-eslint/no-empty-interface */
 export interface CaptureType<T> {}
 type TemplateValue<T> = Expression<T> | string | number | Directive | CaptureType<T>;
 
 export function html<T = any>(
     strings: TemplateStringsArray,
     ...values: TemplateValue<T>[]
-) {
+): ViewTemplate {
     const directives: Directive[] = [];
     let html = "";
 
     for (let i = 0, ii = strings.length - 1; i < ii; ++i) {
-        let currentString = strings[i];
+        const currentString = strings[i];
         let value = values[i];
 
         html += currentString;
@@ -159,8 +165,3 @@ export function html<T = any>(
 
     return new ViewTemplate(html, directives);
 }
-
-// Much thanks to LitHTML for working this out!
-export const lastAttributeNameRegex =
-    // eslint-disable-next-line no-control-regex
-    /([ \x09\x0a\x0c\x0d])([^\0-\x1F\x7F-\x9F "'>=/]+)([ \x09\x0a\x0c\x0d]*=[ \x09\x0a\x0c\x0d]*(?:[^ \x09\x0a\x0c\x0d"'`<>=]*|"[^"]*|'[^']*))$/;

@@ -1,10 +1,12 @@
-import { Directive } from "./directive";
 import { Expression } from "../interfaces";
 import { ObservableExpression } from "../observation/observable";
 import { DOM } from "../dom";
+import { Directive } from "./directive";
 import { Behavior } from "./behavior";
 
-function normalBind(this: BindingBehavior, source: unknown) {
+const context = {} as any;
+
+function normalBind(this: BindingBehavior, source: unknown): void {
     this.source = source;
 
     if (this.observableExpression === null) {
@@ -14,17 +16,17 @@ function normalBind(this: BindingBehavior, source: unknown) {
     this.updateTarget(this.observableExpression.evaluate(source, context));
 }
 
-function triggerBind(this: BindingBehavior, source: unknown) {
+function triggerBind(this: BindingBehavior, source: unknown): void {
     this.source = source;
     this.target.addEventListener(this.targetName!, this, true);
 }
 
-function normalUnbind(this: BindingBehavior) {
+function normalUnbind(this: BindingBehavior): void {
     this.observableExpression!.dispose();
     this.source = null;
 }
 
-function triggerUnbind(this: BindingBehavior) {
+function triggerUnbind(this: BindingBehavior): void {
     this.target.removeEventListener(this.targetName!, this, true);
     this.source = null;
 }
@@ -49,7 +51,8 @@ export class BindingDirective extends Directive {
     private cleanedTargetName?: string;
     private originalTargetName?: string;
 
-    public createPlaceholder = DOM.createInterpolationPlaceholder;
+    public createPlaceholder: (index: number) => string =
+        DOM.createInterpolationPlaceholder;
     private bind: typeof normalBind = normalBind;
     private unbind: typeof normalUnbind = normalUnbind;
     private updateTarget: typeof updateAttributeTarget = updateAttributeTarget;
@@ -58,7 +61,7 @@ export class BindingDirective extends Directive {
         super();
     }
 
-    public get targetName() {
+    public get targetName(): string | undefined {
         return this.originalTargetName;
     }
 
@@ -75,6 +78,7 @@ export class BindingDirective extends Directive {
                 this.updateTarget = updatePropertyTarget;
                 if (this.cleanedTargetName === "innerHTML") {
                     const expression = this.expression;
+                    /* eslint-disable-next-line */
                     this.expression = (s, c) => DOM.createHTML(expression(s, c));
                 }
                 break;
@@ -98,11 +102,12 @@ export class BindingDirective extends Directive {
         }
     }
 
-    public makeIntoTextBinding() {
+    public makeIntoTextBinding(): void {
         this.updateTarget = updateTextTarget;
     }
 
-    createBehavior(target: any) {
+    createBehavior(target: any): BindingBehavior {
+        /* eslint-disable-next-line @typescript-eslint/no-use-before-define */
         return new BindingBehavior(
             target,
             this.expression,
@@ -113,8 +118,6 @@ export class BindingDirective extends Directive {
         );
     }
 }
-
-const context = {} as any;
 
 export class BindingBehavior implements Behavior {
     public source: unknown = void 0;
@@ -133,7 +136,7 @@ export class BindingBehavior implements Behavior {
         this.updateTarget(this.observableExpression!.evaluate(this.source, context));
     }
 
-    handleEvent(event: Event) {
+    handleEvent(event: Event): void {
         const context = { event };
         const result = this.expression(this.source, context as any);
 

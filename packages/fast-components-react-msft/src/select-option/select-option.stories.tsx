@@ -1,8 +1,8 @@
 import { storiesOf } from "@storybook/react";
 import React from "react";
-import { SelectOption } from "./";
 import { uniqueId } from "lodash-es";
 import { glyphFactory, SVGGlyph } from "../../assets/svg-element";
+import { SelectOption } from "./";
 
 storiesOf("Select option", module)
     .add("Default", () => (

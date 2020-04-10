@@ -1,6 +1,6 @@
-import { Behavior } from "./behavior";
 import { Observable } from "../observation/observable";
 import { emptyArray } from "../interfaces";
+import { Behavior } from "./behavior";
 
 export interface NodeBehaviorBehaviorOptions<T = any> {
     property: T;
@@ -17,7 +17,7 @@ export abstract class NodeObservationBehavior<T extends NodeBehaviorBehaviorOpti
     abstract unobserve(): void;
     abstract getNodes(): Node[];
 
-    bind(source: any) {
+    bind(source: any): void {
         this.shouldUpdate =
             Observable.getObservedProperties(source).indexOf(this.options.property) !==
             -1;
@@ -29,7 +29,7 @@ export abstract class NodeObservationBehavior<T extends NodeBehaviorBehaviorOpti
         }
     }
 
-    unbind() {
+    unbind(): void {
         this.updateTarget(emptyArray);
         this.source = null;
 
@@ -38,11 +38,11 @@ export abstract class NodeObservationBehavior<T extends NodeBehaviorBehaviorOpti
         }
     }
 
-    handleEvent() {
+    handleEvent(): void {
         this.updateTarget(this.getNodes());
     }
 
-    updateTarget(value: ReadonlyArray<any>) {
+    updateTarget(value: ReadonlyArray<any>): void {
         this.source[this.options.property] = value;
     }
 }

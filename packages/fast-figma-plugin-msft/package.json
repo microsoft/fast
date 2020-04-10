@@ -9,9 +9,9 @@
     "watch": "webpack --progress --watch --mode=production",
     "prettier": "prettier --config ../../.prettierrc --write \"**/*.{ts,tsx}\"",
     "prettier:diff": "prettier --config ../../.prettierrc \"**/*.{ts,tsx}\" --list-different",
-    "test": "yarn tslint && yarn build",
-    "tslint": "tslint -c ./tslint.json '**/*.ts{,x}'",
-    "tslint:fix": "tslint -c ./tslint.json --fix '**/*.ts{,x}'"
+    "test": "yarn eslint && yarn build",
+    "eslint": "eslint . --ext .ts",
+    "eslint:fix": "eslint . --ext .ts --fix"
   },
   "repository": {
     "type": "git",
@@ -39,13 +39,12 @@
     "clean-webpack-plugin": "^3.0.0",
     "copy-webpack-plugin": "^5.1.1",
     "css-loader": "^3.4.1",
+    "eslint-config-prettier": "^6.10.1",
     "html-webpack-inline-source-plugin": "^0.0.10",
-    "prettier": "1.14.3",
+    "prettier": "2.0.2",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "style-loader": "^1.1.2",
-    "tslint": "^5.11.0",
-    "tslint-config-prettier": "^1.18.0",
     "typescript": "3.7.4",
     "webpack": "^4.41.5",
     "webpack-bundle-analyzer": "^3.6.0",

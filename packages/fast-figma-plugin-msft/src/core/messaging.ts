@@ -1,5 +1,5 @@
 import { DesignSystem } from "@microsoft/fast-components-styles-msft";
-import { RecipeRegistry, RecipeTypes } from "./recipe-registry";
+import { RecipeTypes } from "./recipe-registry";
 
 export enum MessageTypes {
     recipe = "recipe",

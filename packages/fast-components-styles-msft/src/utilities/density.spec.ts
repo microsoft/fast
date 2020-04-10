@@ -43,9 +43,11 @@ describe("density", (): void => {
             )
         );
         expect(height(2, "em")({} as DesignSystem)).toBe(
-            `${(defaultDesignSystem.baseHeightMultiplier + defaultDesignSystem.density) *
+            `${
+                (defaultDesignSystem.baseHeightMultiplier + defaultDesignSystem.density) *
                 defaultDesignSystem.designUnit *
-                2}em`
+                2
+            }em`
         );
         expect(getDensityCategory({} as DesignSystem)).toBe(DensityCategory.normal);
         expect(densityCategorySwitch(-1, 0, 1)({} as DesignSystem)).toBe(0);
@@ -65,9 +67,11 @@ describe("density", (): void => {
             )
         );
         expect(horizontalSpacing(2, "em")({} as DesignSystem)).toBe(
-            `${(defaultDesignSystem.baseHorizontalSpacingMultiplier + 0) *
-                defaultDesignSystem.designUnit -
-                2}em`
+            `${
+                (defaultDesignSystem.baseHorizontalSpacingMultiplier + 0) *
+                    defaultDesignSystem.designUnit -
+                2
+            }em`
         );
         expect(glyphSize({} as DesignSystem)).toBe(
             toPx(
@@ -77,9 +81,11 @@ describe("density", (): void => {
             )
         );
         expect(glyphSize("em")({} as DesignSystem)).toBe(
-            `${(defaultDesignSystem.baseHeightMultiplier / 2) *
-                defaultDesignSystem.designUnit +
-                0}em`
+            `${
+                (defaultDesignSystem.baseHeightMultiplier / 2) *
+                    defaultDesignSystem.designUnit +
+                0
+            }em`
         );
     });
 

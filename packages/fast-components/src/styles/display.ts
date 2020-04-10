@@ -1,5 +1,3 @@
-import { css } from "@microsoft/fast-element";
-
 export type CSSDisplayPropertyValue =
     | "block"
     | "contents"

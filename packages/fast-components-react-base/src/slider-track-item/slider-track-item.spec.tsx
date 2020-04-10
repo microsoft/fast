@@ -1,21 +1,19 @@
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
+import { Direction } from "@microsoft/fast-web-utilities";
+import { SliderContext, SliderMode, SliderOrientation } from "../slider";
+import { DisplayNamePrefix } from "../utilities";
+import { SliderState } from "../slider/slider";
 import SliderTrackItem, {
     SliderTrackItemAnchor,
     SliderTrackItemUnhandledProps,
 } from "./slider-track-item";
-import { SliderContext, SliderMode, SliderOrientation } from "../slider";
-import { DisplayNamePrefix } from "../utilities";
-import { SliderState } from "../slider/slider";
-import { Direction } from "@microsoft/fast-web-utilities";
 
 /*
  * Configure Enzyme
  */
 configure({ adapter: new Adapter() });
-
-/* tslint:disable:no-string-literal */
 
 describe("slider track item", (): void => {
     const defaultSliderState: SliderState = {
@@ -58,6 +56,7 @@ describe("slider track item", (): void => {
         document.body.appendChild(container);
         const getValueAsPercent: any = jest.fn();
 
+        /* eslint-disable-next-line  @typescript-eslint/no-unused-vars */
         const rendered: any = mount(
             <SliderContext.Provider
                 value={{
@@ -88,6 +87,7 @@ describe("slider track item", (): void => {
         getValueAsPercent.mockReturnValueOnce(90);
         getValueAsPercent.mockReturnValueOnce(10);
 
+        /* eslint-disable-next-line  @typescript-eslint/no-unused-vars */
         const rendered: any = mount(
             <SliderContext.Provider
                 value={{
@@ -117,6 +117,7 @@ describe("slider track item", (): void => {
         document.body.appendChild(container);
         const getValueAsPercent: any = jest.fn();
 
+        /* eslint-disable-next-line  @typescript-eslint/no-unused-vars */
         const rendered: any = mount(
             <SliderContext.Provider
                 value={{

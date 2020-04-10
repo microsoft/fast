@@ -1,5 +1,5 @@
 import React from "react";
-import { Omit, Subtract } from "utility-types";
+import { Omit } from "utility-types";
 import {
     CallToActionClassNameContract,
     ManagedClasses,
@@ -19,8 +19,7 @@ export enum CallToActionAppearance {
     stealth = ButtonAppearance.stealth,
 }
 
-export interface CallToActionManagedClasses
-    extends ManagedClasses<CallToActionClassNameContract> {}
+export type CallToActionManagedClasses = ManagedClasses<CallToActionClassNameContract>;
 export interface CallToActionHandledProps
     extends Omit<ButtonHandledProps, "appearance" | keyof ButtonManagedClasses>,
         CallToActionManagedClasses {
@@ -30,6 +29,5 @@ export interface CallToActionHandledProps
     appearance?: CallToActionAppearance;
 }
 
-/* tslint:disable-next-line:no-empty-interface */
-export interface CallToActionUnhandledProps extends ButtonUnhandledProps {}
+export type CallToActionUnhandledProps = ButtonUnhandledProps;
 export type CallToActionProps = CallToActionHandledProps & CallToActionUnhandledProps;

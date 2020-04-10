@@ -1,8 +1,8 @@
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow, ShallowWrapper } from "enzyme";
-import Progress, { ProgressClassNameContract, ProgressType } from "./";
 import { DisplayNamePrefix } from "../utilities";
+import Progress, { ProgressClassNameContract, ProgressType } from "./";
 
 /*
  * Configure Enzyme

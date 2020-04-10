@@ -68,14 +68,11 @@ export function findSwatchIndex(
         // If we don't find the string exactly, it might be because of color formatting differences
         return index !== -1
             ? index
-            : colorPalette.findIndex(
-                  (paletteSwatch: Swatch): boolean => {
-                      return (
-                          isValidColor(paletteSwatch) &&
-                          colorMatches(swatch, paletteSwatch)
-                      );
-                  }
-              );
+            : colorPalette.findIndex((paletteSwatch: Swatch): boolean => {
+                  return (
+                      isValidColor(paletteSwatch) && colorMatches(swatch, paletteSwatch)
+                  );
+              });
     };
 }
 
@@ -93,9 +90,10 @@ export function findClosestSwatchIndex(
             designSystem
         );
         const resolvedSwatch: Swatch = checkDesignSystemResolver(swatch, designSystem);
-        const index: number = findSwatchIndex(resolvedPalette, resolvedSwatch)(
-            designSystem
-        );
+        const index: number = findSwatchIndex(
+            resolvedPalette,
+            resolvedSwatch
+        )(designSystem);
         let swatchLuminance: number;
 
         if (index !== -1) {
@@ -200,9 +198,39 @@ export function swatchByMode(
     };
 }
 
+function binarySearch<T>(
+    valuesToSearch: T[],
+    searchCondition: (value: T) => boolean,
+    startIndex: number = 0,
+    endIndex: number = valuesToSearch.length - 1
+): T {
+    if (endIndex === startIndex) {
+        return valuesToSearch[startIndex];
+    }
+
+    const middleIndex: number = Math.floor((endIndex - startIndex) / 2) + startIndex;
+
+    // Check to see if this passes on the item in the center of the array
+    // if it does check the previous values
+    if (searchCondition(valuesToSearch[middleIndex])) {
+        return binarySearch(
+            valuesToSearch,
+            searchCondition,
+            startIndex,
+            middleIndex // include this index because it passed the search condition
+        );
+    } else {
+        return binarySearch(
+            valuesToSearch,
+            searchCondition,
+            middleIndex + 1, // exclude this index because it failed the search condition
+            endIndex
+        );
+    }
+}
+
 // disable type-defs because this a deeply curried function and the call-signature is pretty complicated
 // and typescript can work it out automatically for consumers
-/* tslint:disable:typedef */
 /**
  * Retrieves a swatch from an input palette, where the swatch's contrast against the reference color
  * passes an input condition. The direction to search in the palette is determined by an input condition.
@@ -316,37 +344,6 @@ export function swatchByContrast(referenceColor: string | SwatchResolver) {
     };
 }
 
-function binarySearch<T>(
-    valuesToSearch: T[],
-    searchCondition: (value: T) => boolean,
-    startIndex: number = 0,
-    endIndex: number = valuesToSearch.length - 1
-): T {
-    if (endIndex === startIndex) {
-        return valuesToSearch[startIndex];
-    }
-
-    const middleIndex: number = Math.floor((endIndex - startIndex) / 2) + startIndex;
-
-    // Check to see if this passes on the item in the center of the array
-    // if it does check the previous values
-    if (searchCondition(valuesToSearch[middleIndex])) {
-        return binarySearch(
-            valuesToSearch,
-            searchCondition,
-            startIndex,
-            middleIndex // include this index because it passed the search condition
-        );
-    } else {
-        return binarySearch(
-            valuesToSearch,
-            searchCondition,
-            middleIndex + 1, // exclude this index because it failed the search condition
-            endIndex
-        );
-    }
-}
-
 /**
  * Resolves the index that the contrast search algorithm should start at
  */
@@ -358,11 +355,11 @@ export function referenceColorInitialIndexResolver(
     return findClosestSwatchIndex(sourcePalette, referenceColor)(designSystem);
 }
 
-/* tslint:enable:typedef */
 export function findClosestBackgroundIndex(designSystem: DesignSystem): number {
-    return findClosestSwatchIndex(neutralPalette, backgroundColor(designSystem))(
-        designSystem
-    );
+    return findClosestSwatchIndex(
+        neutralPalette,
+        backgroundColor(designSystem)
+    )(designSystem);
 }
 
 export function minContrastTargetFactory(

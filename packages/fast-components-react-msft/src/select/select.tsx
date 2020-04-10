@@ -3,11 +3,11 @@ import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-
 import { Select as BaseSelect, SelectState } from "@microsoft/fast-components-react-base";
 import { classNames } from "@microsoft/fast-web-utilities";
 import React from "react";
-import { DisplayNamePrefix } from "../utilities";
-import { SelectHandledProps, SelectProps, SelectUnhandledProps } from "./select.props";
-import { Background } from "../background";
 import { neutralLayerFloating } from "@microsoft/fast-components-styles-msft";
 import { isNil } from "lodash-es";
+import { DisplayNamePrefix } from "../utilities";
+import { Background } from "../background";
+import { SelectHandledProps, SelectProps, SelectUnhandledProps } from "./select.props";
 
 class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, {}> {
     public static displayName: string = `${DisplayNamePrefix}Select`;

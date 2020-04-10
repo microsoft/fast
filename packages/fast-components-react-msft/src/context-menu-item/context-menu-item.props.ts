@@ -10,8 +10,9 @@ import {
     ManagedClasses,
 } from "@microsoft/fast-components-class-name-contracts-msft";
 
-export interface ContextMenuItemManagedClasses
-    extends ManagedClasses<ContextMenuItemClassNameContract> {}
+export type ContextMenuItemManagedClasses = ManagedClasses<
+    ContextMenuItemClassNameContract
+>;
 export interface ContextMenuItemHandledProps
     extends ContextMenuItemManagedClasses,
         Subtract<BaseContextMenuItemHandledProps, BaseContextMenuItemManagedClasses> {
@@ -21,8 +22,6 @@ export interface ContextMenuItemHandledProps
     before?: React.ReactNode;
 }
 
-/* tslint:disable-next-line:no-empty-interface */
-export interface ContextMenuItemUnhandledProps
-    extends BaseContextMenuItemUnhandledProps {}
+export type ContextMenuItemUnhandledProps = BaseContextMenuItemUnhandledProps;
 export type ContextMenuItemProps = ContextMenuItemHandledProps &
     ContextMenuItemUnhandledProps;

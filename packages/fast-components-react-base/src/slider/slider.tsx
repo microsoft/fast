@@ -1,11 +1,3 @@
-import {
-    SliderHandledProps,
-    SliderMode,
-    SliderOrientation,
-    SliderProps,
-    SliderRange,
-    SliderUnhandledProps,
-} from "./slider.props";
 import React from "react";
 import { get, isNil } from "lodash-es";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
@@ -19,15 +11,22 @@ import {
     keyCodePageDown,
     keyCodePageUp,
 } from "@microsoft/fast-web-utilities";
-import ReactDOM from "react-dom";
 import { SliderClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { classNames, Direction } from "@microsoft/fast-web-utilities";
 import { DisplayNamePrefix } from "../utilities";
-import { SliderContext, SliderContextType } from "./slider-context";
 import SliderTrackItem, {
     SliderTrackItemAnchor,
     SliderTrackItemManagedClasses,
 } from "../slider-track-item";
+import { SliderContext, SliderContextType } from "./slider-context";
+import {
+    SliderHandledProps,
+    SliderMode,
+    SliderOrientation,
+    SliderProps,
+    SliderRange,
+    SliderUnhandledProps,
+} from "./slider.props";
 
 export enum SliderThumb {
     upperThumb = "upperThumb",
@@ -507,8 +506,8 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
                                   : state.upperValue
                           )
                         : thumb === SliderThumb.lowerThumb
-                            ? state.lowerValue
-                            : state.upperValue
+                        ? state.lowerValue
+                        : state.upperValue
                 }
                 aria-valuetext={
                     typeof props.valuetextStringFormatter === "function"
@@ -564,6 +563,7 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
     /**
      * This exists only to suppress a build warning
      */
+    /* eslint-disable  @typescript-eslint/no-unused-vars */
     private onInputValueChange = (event: React.ChangeEvent): void => {
         return null;
     };
@@ -733,9 +733,9 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
         const step: number = this.state.usePageStep
             ? this.props.pageStep
             : this.props.step !== 0
-                ? this.props.step
-                : (this.props.range.maxValue - this.props.range.minValue) /
-                  this.rangeInPixels;
+            ? this.props.step
+            : (this.props.range.maxValue - this.props.range.minValue) /
+              this.rangeInPixels;
 
         let newValue: number =
             this.state.activeThumb === SliderThumb.upperThumb

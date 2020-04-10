@@ -1,8 +1,4 @@
-/* tslint:disable:no-var-requires */
 import React from "react";
-const doSvg1: string = require("../assets/images/do-check.svg");
-const easingCurve: string = require("../assets/images/easing-curve.svg");
-const sass: string = require("../assets/styles/test-page.css");
 import ScrollTrigger from "../../../../lib/triggers/ScrollTrigger";
 import ViewEnterTrigger from "../../../../lib/triggers/ViewEnterTrigger";
 import ViewExitTrigger from "../../../../lib/triggers/ViewExitTrigger";
@@ -12,6 +8,12 @@ import AnimateFrom from "../../../../lib/animateFrom";
 import { cubicBezier } from "../../../../lib/curves";
 import AnimateGroup from "../../../../lib/animateGroup";
 import AnimateSequence from "../../../../lib/animateSequence";
+
+/* eslint-disable */
+const sass: string = require("../assets/styles/test-page.css");
+const easingCurve: string = require("../assets/images/easing-curve.svg");
+const doSvg1: string = require("../assets/images/do-check.svg");
+/* eslint-enable */
 
 class TestPage extends React.Component {
     private scrollElement: HTMLElement;
@@ -50,6 +52,7 @@ class TestPage extends React.Component {
             Object.assign({}, effects, { delay: 750 })
         ).play();
 
+        /* eslint-disable */
         scrollTrigger.subscribe(this.scrollElement, (distance: number) => {
             // Save for debugging
             // console.log(distance);
@@ -63,6 +66,7 @@ class TestPage extends React.Component {
             // Save for debugging
             // console.log('exited');
         });
+        /* eslint-enable */
     }
 
     public render(): JSX.Element {
@@ -330,14 +334,9 @@ class TestPage extends React.Component {
         const row3: HTMLElement = e.currentTarget.querySelector(".row3");
 
         const fadeInOptions: AnimateConfig = { opacity: 1 };
-        const fadeOutOptions: AnimateConfig = { opacity: 0 };
         const fadeInEffect: EffectTiming = {
             duration: 350,
             easing: cubicBezier("fastInOut"),
-        };
-        const fadeOutEffect: EffectTiming = {
-            delay: 4000,
-            easing: cubicBezier("easeOut"),
         };
 
         const sequence: AnimateSequence = new AnimateSequence([

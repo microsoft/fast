@@ -1,6 +1,7 @@
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
+import { DisplayNamePrefix } from "../utilities";
 import ButtonBase from "./button-base";
 import {
     ButtonBaseClassNameContract,
@@ -8,7 +9,6 @@ import {
     ButtonBaseProps,
     ButtonBaseUnhandledProps,
 } from "./index";
-import { DisplayNamePrefix } from "../utilities";
 
 /*
  * Configure Enzyme
@@ -82,12 +82,7 @@ describe("button", (): void => {
         const rendered: any = mount(<ButtonBase {...props} />);
 
         expect(rendered.find("svg")).not.toBe(undefined);
-        expect(
-            rendered
-                .find("button")
-                .childAt(0)
-                .type()
-        ).toEqual("svg");
+        expect(rendered.find("button").childAt(0).type()).toEqual("svg");
     });
 
     test("should render prop into the after content location if prop exists", () => {
@@ -111,12 +106,7 @@ describe("button", (): void => {
         const rendered: any = mount(<ButtonBase {...props} />);
 
         expect(rendered.find("svg")).not.toBe(undefined);
-        expect(
-            rendered
-                .find("button")
-                .childAt(1)
-                .type()
-        ).toEqual("svg");
+        expect(rendered.find("button").childAt(1).type()).toEqual("svg");
     });
 
     test("should add a `hasBeforeOrAfterAndChildren` className when `beforeContent` prop and children exist", () => {

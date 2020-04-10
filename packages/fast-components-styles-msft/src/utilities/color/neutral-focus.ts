@@ -1,7 +1,7 @@
-import { findClosestSwatchIndex, isDarkMode, Palette, swatchByContrast } from "./palette";
-import { ColorRecipe, colorRecipeFactory, Swatch, SwatchResolver } from "./common";
 import { DesignSystem, DesignSystemResolver } from "../../design-system";
 import { accentPalette, backgroundColor, neutralPalette } from "../design-system";
+import { findClosestSwatchIndex, isDarkMode, Palette, swatchByContrast } from "./palette";
+import { ColorRecipe, colorRecipeFactory, Swatch, SwatchResolver } from "./common";
 
 const targetRatio: number = 3.5;
 

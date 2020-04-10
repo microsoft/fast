@@ -1,10 +1,10 @@
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
-import MSFTProgress, { ProgressClassNameContract } from "./progress";
-import { ProgressHandledProps, ProgressProps, ProgressUnhandledProps } from "./index";
 import { DisplayNamePrefix } from "../utilities";
+import MSFTProgress, { ProgressClassNameContract } from "./progress";
 import { ProgressSize } from "./progress.props";
+import { ProgressHandledProps, ProgressProps, ProgressUnhandledProps } from "./index";
 
 /*
  * Configure Enzyme

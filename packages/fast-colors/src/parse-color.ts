@@ -1,5 +1,3 @@
-// tslint:disable:no-bitwise
-
 import { ColorRGBA64 } from "./color-rgba-64";
 import { normalize } from "./math-utilities";
 import { NamedColors, namedColorsConfigs } from "./named-colors";
@@ -21,17 +19,17 @@ export function isColorStringHexRGB(raw: string): boolean {
 }
 
 /**
- * Test if a color matches #RRGGBBAA or #RGBA
- */
-export function isColorStringHexRGBA(raw: string): boolean {
-    return isColorStringHexARGB(raw); // No way to differentiate these two formats, so just use the same test
-}
-
-/**
  * Test if a color matches #AARRGGBB or #ARGB
  */
 export function isColorStringHexARGB(raw: string): boolean {
     return hexRGBARegex.test(raw);
+}
+
+/**
+ * Test if a color matches #RRGGBBAA or #RGBA
+ */
+export function isColorStringHexRGBA(raw: string): boolean {
+    return isColorStringHexARGB(raw); // No way to differentiate these two formats, so just use the same test
 }
 
 /**
@@ -200,7 +198,7 @@ export function parseColorNamed(
     const config: typeof namedColorsConfigs[keyof typeof namedColorsConfigs] | void =
         namedColorsConfigs[raw.toLowerCase()];
 
-    return !!config
+    return config
         ? new ColorRGBA64(
               config.r,
               config.g,
@@ -222,12 +220,12 @@ export function parseColor(raw: string): ColorRGBA64 | null {
     return isColorStringHexRGB(rawLower)
         ? parseColorHexRGB(rawLower)
         : isColorStringHexRGBA(rawLower)
-            ? parseColorHexARGB(rawLower)
-            : isColorStringWebRGB(rawLower)
-                ? parseColorWebRGB(rawLower)
-                : isColorStringWebRGBA(rawLower)
-                    ? parseColorWebRGBA(rawLower)
-                    : isColorNamed(rawLower)
-                        ? parseColorNamed(rawLower)
-                        : null;
+        ? parseColorHexARGB(rawLower)
+        : isColorStringWebRGB(rawLower)
+        ? parseColorWebRGB(rawLower)
+        : isColorStringWebRGBA(rawLower)
+        ? parseColorWebRGBA(rawLower)
+        : isColorNamed(rawLower)
+        ? parseColorNamed(rawLower)
+        : null;
 }

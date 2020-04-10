@@ -1,7 +1,7 @@
 import { storiesOf } from "@storybook/react";
 import React from "react";
-import Card from "./";
 import Image from "../image";
+import Card from "./";
 
 storiesOf("Card", module).add("Default with children", () => (
     <Card>

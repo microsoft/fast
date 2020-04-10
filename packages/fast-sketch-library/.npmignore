@@ -2,6 +2,5 @@
 src/
 
 # config
-tslint.json
 tsconfig.json
 webpack.config.js

@@ -1,13 +1,5 @@
 import React from "react";
 import { throttle } from "lodash-es";
-import {
-    PaneHandledProps,
-    PaneProps,
-    PaneResizeControlProps,
-    PaneResizeDirection,
-    PaneUnhandledProps,
-} from "./pane.props";
-import { west } from "../row";
 import rafThrottle from "raf-throttle";
 import { applyFocusVisible, toPx } from "@microsoft/fast-jss-utilities";
 import { ComponentStyles } from "@microsoft/fast-jss-manager-react";
@@ -18,6 +10,14 @@ import {
     keyCodeArrowLeft,
     keyCodeArrowRight,
 } from "@microsoft/fast-web-utilities";
+import { west } from "../row";
+import {
+    PaneHandledProps,
+    PaneProps,
+    PaneResizeControlProps,
+    PaneResizeDirection,
+    PaneUnhandledProps,
+} from "./pane.props";
 
 /**
  * The interface for the Pane's state object
@@ -220,8 +220,8 @@ export class Pane extends Foundation<PaneHandledProps, PaneUnhandledProps, PaneS
         styles.minWidth = this.props.collapsed
             ? toPx(this.props.collapsedWidth)
             : this.props.resizable
-                ? toPx(this.props.minWidth)
-                : width;
+            ? toPx(this.props.minWidth)
+            : width;
 
         if (this.props.overlay) {
             styles.width = width;
@@ -336,7 +336,7 @@ export class Pane extends Foundation<PaneHandledProps, PaneUnhandledProps, PaneS
         this.setWidth(updatedWidth);
     };
 
-    public onWindowResize = (e: UIEvent): void => {
+    public onWindowResize = (): void => {
         this.setWidth(this.rootElement.current.clientWidth);
     };
 

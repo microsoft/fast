@@ -1,6 +1,6 @@
-import { ComponentViewConfig } from "./data.props";
 import { Dialog, DialogProps, dialogSchema } from "@microsoft/fast-components-react-msft";
 import Guidance from "../../.tmp/dialog/guidance";
+import { ComponentViewConfig } from "./data.props";
 
 const dialogConfig: ComponentViewConfig<DialogProps> = {
     schema: dialogSchema,

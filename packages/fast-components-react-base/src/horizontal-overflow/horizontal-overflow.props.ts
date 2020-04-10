@@ -20,8 +20,7 @@ export interface PositionChange {
  * @deprecated
  * TODO #1178: Remove deprecated interface on next major bump
  */
-// tslint:disable-next-line:no-empty-interface
-export interface ScrollChange extends PositionChange {}
+export type ScrollChange = PositionChange;
 
 /**
  * Overflow interface for consumers
@@ -35,10 +34,10 @@ export interface OverflowChange {
     overflowEnd: boolean;
 }
 
-export interface HorizontalOverflowUnhandledProps
-    extends React.HTMLAttributes<HTMLDivElement> {}
-export interface HorizontalOverflowManagedClasses
-    extends ManagedClasses<HorizontalOverflowClassNameContract> {}
+export type HorizontalOverflowUnhandledProps = React.HTMLAttributes<HTMLDivElement>;
+export type HorizontalOverflowManagedClasses = ManagedClasses<
+    HorizontalOverflowClassNameContract
+>;
 export interface HorizontalOverflowHandledProps extends HorizontalOverflowManagedClasses {
     /**
      * The horizontal overflow content

@@ -5,26 +5,27 @@ import {
     ActionTriggerStyles,
     DesignSystem,
 } from "@microsoft/fast-components-styles-msft";
+import { Subtract } from "utility-types";
 import MSFTActionTrigger, {
     ActionTriggerAppearance,
-    ActionTriggerHandledProps as MSFTActionTriggerHandledProps,
     ActionTriggerManagedClasses,
-    ActionTriggerProps as MSFTActionTriggerProps,
     ActionTriggerUnhandledProps,
+    ActionTriggerHandledProps as MSFTActionTriggerHandledProps,
+    ActionTriggerProps as MSFTActionTriggerProps,
 } from "./action-trigger";
 import actionTriggerSchema from "./action-trigger.schema";
-import { Subtract } from "utility-types";
 
 /*
  * The type returned by manageJss type is very complicated so we'll let the
  * compiler infer the type instead of re-declaring just for the package export
  */
-/* tslint:disable-next-line:typedef */
 const ActionTrigger = manageJss(ActionTriggerStyles)(MSFTActionTrigger);
 type ActionTrigger = InstanceType<typeof ActionTrigger>;
 
-interface ActionTriggerHandledProps
-    extends Subtract<MSFTActionTriggerHandledProps, ActionTriggerManagedClasses> {}
+type ActionTriggerHandledProps = Subtract<
+    MSFTActionTriggerHandledProps,
+    ActionTriggerManagedClasses
+>;
 type ActionTriggerProps = ManagedJSSProps<
     MSFTActionTriggerProps,
     ActionTriggerClassNameContract,

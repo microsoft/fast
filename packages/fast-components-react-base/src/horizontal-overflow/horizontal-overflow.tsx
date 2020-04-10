@@ -222,6 +222,7 @@ class HorizontalOverflow extends Foundation<
             // https://bugs.webkit.org/show_bug.cgi?id=157743
             if ((window as WindowWithResizeObserver).ResizeObserver) {
                 this.resizeObserver = new (window as WindowWithResizeObserver).ResizeObserver(
+                    /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
                     (entries: ResizeObserverEntry[]): void => {
                         if (this.overflow !== this.isOverflow()) {
                             this.handleOverflowChange();
@@ -303,6 +304,7 @@ class HorizontalOverflow extends Foundation<
     /**
      * Track scroll position
      */
+    /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
     private onScrollCapture = (event: React.UIEvent): void => {
         this.lastRecordedScroll = this.getScrollPosition();
     };
@@ -516,6 +518,7 @@ class HorizontalOverflow extends Foundation<
             this.withoutSlot([ButtonDirection.previous, ButtonDirection.next]),
             (
                 child: React.ReactNode,
+                /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
                 index: number
             ): React.ReactElement<HTMLLIElement> => {
                 return (

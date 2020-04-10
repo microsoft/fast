@@ -1,7 +1,7 @@
 import { storiesOf } from "@storybook/react";
 import React from "react";
-import { Dialog } from "./";
 import { AccentButton } from "../accent-button";
+import { Dialog } from "./";
 
 storiesOf("Dialog", module)
     .add("Default", () => <Dialog visible={true} />)

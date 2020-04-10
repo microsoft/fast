@@ -1,6 +1,5 @@
 import React from "react";
 import { canUseDOM } from "exenv-es6";
-import { throttle } from "lodash-es";
 import { Breakpoints, defaultBreakpoints, identifyBreakpoint } from "./breakpoints";
 
 export interface BreakpointTrackerProps {

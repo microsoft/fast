@@ -23,8 +23,8 @@ export function localizeSpacing(dir: Direction): (value: string) => string {
         return split.length !== 4
             ? value
             : dir === Direction.rtl
-                ? [split[0], split[3], split[2], split[1]].join(space)
-                : value;
+            ? [split[0], split[3], split[2], split[1]].join(space)
+            : value;
     };
 }
 

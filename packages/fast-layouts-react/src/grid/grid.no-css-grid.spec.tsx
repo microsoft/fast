@@ -1,17 +1,9 @@
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
-import { configure, mount, shallow } from "enzyme";
-import {
-    Grid,
-    GridAlignment,
-    GridClassNamesContract,
-    GridHandledProps,
-    GridUnhandledProps,
-} from "./grid";
-import { GridTag } from "./grid.props";
-import { Column, ColumnClassNamesContract } from "../column";
+import { configure, shallow } from "enzyme";
+import { Column } from "../column";
+import { Grid, GridAlignment, GridClassNamesContract } from "./grid";
 import { GridGutter } from ".";
-import { uniqueId } from "lodash-es";
 
 /**
  * Configure Enzyme

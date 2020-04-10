@@ -1,3 +1,8 @@
+import designSystemDefaults, { DesignSystem } from "../../design-system";
+import {
+    accentPalette as getAccentPalette,
+    neutralPalette as getNeutralPalette,
+} from "../design-system";
 import {
     neutralFillStealth,
     neutralFillStealthActive,
@@ -6,13 +11,8 @@ import {
     neutralFillStealthRest,
     neutralFillStealthSelected,
 } from "./neutral-fill-stealth";
-import designSystemDefaults, { DesignSystem } from "../../design-system";
 import { Palette } from "./palette";
 import { FillSwatchFamily, Swatch } from "./common";
-import {
-    accentPalette as getAccentPalette,
-    neutralPalette as getNeutralPalette,
-} from "../design-system";
 
 describe("neutralFillStealth", (): void => {
     const neutralPalette: Palette = getNeutralPalette(designSystemDefaults);
@@ -58,77 +58,71 @@ describe("neutralFillStealth", (): void => {
     });
 
     test("should return the same color from both implementations", (): void => {
-        neutralPalette.concat(accentPalette).forEach(
-            (swatch: Swatch): void => {
-                expect(neutralFillStealthRest(() => swatch)(designSystemDefaults)).toBe(
-                    neutralFillStealthRest(
-                        Object.assign({}, designSystemDefaults, {
-                            backgroundColor: swatch,
-                        })
-                    )
-                );
-                expect(neutralFillStealthHover(() => swatch)(designSystemDefaults)).toBe(
-                    neutralFillStealthHover(
-                        Object.assign({}, designSystemDefaults, {
-                            backgroundColor: swatch,
-                        })
-                    )
-                );
-                expect(neutralFillStealthActive(() => swatch)(designSystemDefaults)).toBe(
-                    neutralFillStealthActive(
-                        Object.assign({}, designSystemDefaults, {
-                            backgroundColor: swatch,
-                        })
-                    )
-                );
-                expect(neutralFillStealthFocus(() => swatch)(designSystemDefaults)).toBe(
-                    neutralFillStealthFocus(
-                        Object.assign({}, designSystemDefaults, {
-                            backgroundColor: swatch,
-                        })
-                    )
-                );
-                expect(
-                    neutralFillStealthSelected(() => swatch)(designSystemDefaults)
-                ).toBe(
-                    neutralFillStealthSelected(
-                        Object.assign({}, designSystemDefaults, {
-                            backgroundColor: swatch,
-                        })
-                    )
-                );
-            }
-        );
+        neutralPalette.concat(accentPalette).forEach((swatch: Swatch): void => {
+            expect(neutralFillStealthRest(() => swatch)(designSystemDefaults)).toBe(
+                neutralFillStealthRest(
+                    Object.assign({}, designSystemDefaults, {
+                        backgroundColor: swatch,
+                    })
+                )
+            );
+            expect(neutralFillStealthHover(() => swatch)(designSystemDefaults)).toBe(
+                neutralFillStealthHover(
+                    Object.assign({}, designSystemDefaults, {
+                        backgroundColor: swatch,
+                    })
+                )
+            );
+            expect(neutralFillStealthActive(() => swatch)(designSystemDefaults)).toBe(
+                neutralFillStealthActive(
+                    Object.assign({}, designSystemDefaults, {
+                        backgroundColor: swatch,
+                    })
+                )
+            );
+            expect(neutralFillStealthFocus(() => swatch)(designSystemDefaults)).toBe(
+                neutralFillStealthFocus(
+                    Object.assign({}, designSystemDefaults, {
+                        backgroundColor: swatch,
+                    })
+                )
+            );
+            expect(neutralFillStealthSelected(() => swatch)(designSystemDefaults)).toBe(
+                neutralFillStealthSelected(
+                    Object.assign({}, designSystemDefaults, {
+                        backgroundColor: swatch,
+                    })
+                )
+            );
+        });
     });
 
     test("should have consistent return values", (): void => {
-        neutralPalette.concat(accentPalette).forEach(
-            (swatch: Swatch): void => {
-                const backplates: FillSwatchFamily = neutralFillStealth(() => swatch)(
-                    designSystemDefaults
-                );
-                const rest: Swatch = neutralFillStealthRest(() => swatch)(
-                    designSystemDefaults
-                );
-                const hover: Swatch = neutralFillStealthHover(() => swatch)(
-                    designSystemDefaults
-                );
-                const active: Swatch = neutralFillStealthActive(() => swatch)(
-                    designSystemDefaults
-                );
-                const focus: Swatch = neutralFillStealthFocus(() => swatch)(
-                    designSystemDefaults
-                );
-                const selected: Swatch = neutralFillStealthSelected(() => swatch)(
-                    designSystemDefaults
-                );
+        neutralPalette.concat(accentPalette).forEach((swatch: Swatch): void => {
+            const backplates: FillSwatchFamily = neutralFillStealth(() => swatch)(
+                designSystemDefaults
+            );
+            const rest: Swatch = neutralFillStealthRest(() => swatch)(
+                designSystemDefaults
+            );
+            const hover: Swatch = neutralFillStealthHover(() => swatch)(
+                designSystemDefaults
+            );
+            const active: Swatch = neutralFillStealthActive(() => swatch)(
+                designSystemDefaults
+            );
+            const focus: Swatch = neutralFillStealthFocus(() => swatch)(
+                designSystemDefaults
+            );
+            const selected: Swatch = neutralFillStealthSelected(() => swatch)(
+                designSystemDefaults
+            );
 
-                expect(backplates.rest).toBe(rest);
-                expect(backplates.hover).toBe(hover);
-                expect(backplates.active).toBe(active);
-                expect(backplates.focus).toBe(focus);
-                expect(backplates.selected).toBe(selected);
-            }
-        );
+            expect(backplates.rest).toBe(rest);
+            expect(backplates.hover).toBe(hover);
+            expect(backplates.active).toBe(active);
+            expect(backplates.focus).toBe(focus);
+            expect(backplates.selected).toBe(selected);
+        });
     });
 });

@@ -1,26 +1,13 @@
 import { Expression } from "../interfaces";
-import { SyntheticViewTemplate, CaptureType } from "../template";
-import { Behavior } from "./behavior";
+import { CaptureType, SyntheticViewTemplate } from "../template";
 import { DOM } from "../dom";
 import { Observable, ObservableExpression } from "../observation/observable";
-import { SyntheticView, HTMLView } from "../view";
+import { HTMLView, SyntheticView } from "../view";
 import { Subscriber } from "../observation/subscriber-collection";
 import { ArrayObserver, enableArrayObservation } from "../observation/array-observer";
 import { Splice } from "../observation/array-change-records";
+import { Behavior } from "./behavior";
 import { Directive } from "./directive";
-
-export class RepeatDirective extends Directive {
-    createPlaceholder = DOM.createBlockPlaceholder;
-
-    constructor(public expression: Expression, public template: SyntheticViewTemplate) {
-        super();
-        enableArrayObservation();
-    }
-
-    public createBehavior(target: any) {
-        return new RepeatBehavior(target, this.expression, this.template);
-    }
-}
 
 export class RepeatBehavior implements Behavior, Subscriber {
     private source: unknown = void 0;
@@ -37,14 +24,14 @@ export class RepeatBehavior implements Behavior, Subscriber {
         this.observableExpression = new ObservableExpression(expression, this);
     }
 
-    bind(source: unknown) {
+    bind(source: unknown): void {
         this.source = source;
         this.items = this.observableExpression.evaluate(source, null as any);
         this.observeItems();
         this.refreshAllViews();
     }
 
-    unbind() {
+    unbind(): void {
         this.source = null;
         this.items = null;
 
@@ -56,7 +43,7 @@ export class RepeatBehavior implements Behavior, Subscriber {
         this.observableExpression.dispose();
     }
 
-    handleExpressionChange() {
+    handleExpressionChange(): void {
         this.items = this.observableExpression.evaluate(this.source, null as any);
         this.observeItems();
         this.refreshAllViews();
@@ -85,7 +72,7 @@ export class RepeatBehavior implements Behavior, Subscriber {
         }
     }
 
-    private updateViews(splices: Splice[]) {
+    private updateViews(splices: Splice[]): void {
         const views = this.views;
         const totalRemoved: SyntheticView[] = [];
         let removeDelta = 0;
@@ -126,7 +113,7 @@ export class RepeatBehavior implements Behavior, Subscriber {
         }
     }
 
-    private refreshAllViews() {
+    private refreshAllViews(): void {
         const items = this.items!;
         let itemsLength = items.length;
         let views = this.views;
@@ -171,12 +158,25 @@ export class RepeatBehavior implements Behavior, Subscriber {
         }
     }
 
-    private unbindAllViews() {
+    private unbindAllViews(): void {
         const views = this.views;
 
         for (let i = 0, ii = views.length; i < ii; ++i) {
             views[i].unbind();
         }
+    }
+}
+
+export class RepeatDirective extends Directive {
+    createPlaceholder: (index: number) => string = DOM.createBlockPlaceholder;
+
+    constructor(public expression: Expression, public template: SyntheticViewTemplate) {
+        super();
+        enableArrayObservation();
+    }
+
+    public createBehavior(target: any): RepeatBehavior {
+        return new RepeatBehavior(target, this.expression, this.template);
     }
 }
 

@@ -1,22 +1,10 @@
 import { DOM } from "../dom";
-import { SyntheticViewTemplate, CaptureType } from "../template";
+import { CaptureType, SyntheticViewTemplate } from "../template";
 import { SyntheticView } from "../view";
 import { Expression } from "../interfaces";
-import { Behavior } from "./behavior";
 import { ObservableExpression } from "../observation/observable";
+import { Behavior } from "./behavior";
 import { Directive } from "./directive";
-
-export class WhenDirective extends Directive {
-    createPlaceholder = DOM.createBlockPlaceholder;
-
-    constructor(public expression: Expression, public template: SyntheticViewTemplate) {
-        super();
-    }
-
-    public createBehavior(target: any) {
-        return new WhenBehavior(target, this.expression, this.template);
-    }
-}
 
 export class WhenBehavior implements Behavior {
     private view: SyntheticView | null = null;
@@ -32,12 +20,12 @@ export class WhenBehavior implements Behavior {
         this.observableExpression = new ObservableExpression(expression, this);
     }
 
-    bind(source: unknown) {
+    bind(source: unknown): void {
         this.source = source;
         this.updateTarget(this.observableExpression.evaluate(source, null as any));
     }
 
-    unbind() {
+    unbind(): void {
         if (this.view !== null) {
             this.view.unbind();
         }
@@ -46,11 +34,11 @@ export class WhenBehavior implements Behavior {
         this.source = null;
     }
 
-    handleExpressionChange() {
+    handleExpressionChange(): void {
         this.updateTarget(this.observableExpression.evaluate(this.source, null as any));
     }
 
-    updateTarget(show: boolean) {
+    updateTarget(show: boolean): void {
         if (show && this.view == null) {
             this.view = this.cachedView || (this.cachedView = this.template.create());
             this.view.bind(this.source);
@@ -61,6 +49,18 @@ export class WhenBehavior implements Behavior {
             this.view.unbind();
             this.view = null;
         }
+    }
+}
+
+export class WhenDirective extends Directive {
+    createPlaceholder: (index: number) => string = DOM.createBlockPlaceholder;
+
+    constructor(public expression: Expression, public template: SyntheticViewTemplate) {
+        super();
+    }
+
+    public createBehavior(target: any): WhenBehavior {
+        return new WhenBehavior(target, this.expression, this.template);
     }
 }
 

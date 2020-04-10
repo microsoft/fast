@@ -1,9 +1,9 @@
 import { storiesOf } from "@storybook/react";
 import React, { useState } from "react";
-import Checkbox from "./";
 import { uniqueId } from "lodash-es";
-import Label from "../label";
 import { action } from "@storybook/addon-actions";
+import Label from "../label";
+import Checkbox from "./";
 
 /**
  * Simple state manager to track and update checked properties

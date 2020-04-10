@@ -24,11 +24,11 @@
     "prepare": "yarn clean:dist && yarn build",
     "prettier": "prettier --config ../../.prettierrc --write \"**/*.ts\"",
     "prettier:diff": "prettier --config ../../.prettierrc \"**/*.ts\" --list-different",
-    "tslint": "tslint -c ./tslint.json '**/*.ts'",
-    "tslint:fix": "tslint -c ./tslint.json --fix '**/*.ts'"
+    "eslint": "eslint . --ext .ts",
+    "eslint:fix": "eslint . --ext .ts --fix"
   },
   "devDependencies": {
-    "prettier": "1.14.3",
+    "prettier": "2.0.2",
     "typescript": "^3.7.5"
   }
 }

@@ -1,4 +1,3 @@
-import { ComponentViewConfig } from "./data.props";
 import {
     TextField,
     TextFieldProps,
@@ -6,6 +5,7 @@ import {
     TextFieldType,
 } from "@microsoft/fast-components-react-msft";
 import Guidance from "../../.tmp/text-field/guidance";
+import { ComponentViewConfig } from "./data.props";
 
 const textFieldConfig: ComponentViewConfig<TextFieldProps> = {
     schema: textFieldSchema,

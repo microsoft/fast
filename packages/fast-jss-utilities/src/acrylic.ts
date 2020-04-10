@@ -31,10 +31,12 @@ export const backdropFilterSupport: boolean =
 export function applyAcrylic<T>(config: AcrylicConfig): CSSRules<T> {
     const backdropFilterStyles: CSSRules<T> = {
         background: config.backgroundColor,
-        "-webkit-backdrop-filter": `blur(${config.blurRadius ||
-            "30px"}) saturate(${config.saturation || "125%"})`,
-        "backdrop-filter": `blur(${config.blurRadius ||
-            "30px"}) saturate(${config.saturation || "125%"})`,
+        "-webkit-backdrop-filter": `blur(${config.blurRadius || "30px"}) saturate(${
+            config.saturation || "125%"
+        })`,
+        "backdrop-filter": `blur(${config.blurRadius || "30px"}) saturate(${
+            config.saturation || "125%"
+        })`,
     };
 
     const fallbackStyles: CSSRules<T> = {

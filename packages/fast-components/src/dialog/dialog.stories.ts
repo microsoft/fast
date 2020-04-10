@@ -1,6 +1,6 @@
-import { FASTDialog } from "./";
 import { FASTDesignSystemProvider } from "../design-system-provider";
 import DialogTemplate from "./fixtures/dialog.html";
+import { FASTDialog } from "./";
 
 // Prevent tree-shaking
 FASTDialog;

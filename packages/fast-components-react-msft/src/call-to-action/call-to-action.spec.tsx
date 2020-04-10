@@ -1,7 +1,8 @@
 import React from "react";
-import * as ShallowRenderer from "react-test-renderer/shallow";
 import Adapter from "enzyme-adapter-react-16/build";
 import { configure, mount, shallow } from "enzyme";
+import { CallToActionClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
+import { DisplayNamePrefix } from "../utilities";
 import MSFTCallToAction, {
     CallToActionAppearance,
     CallToActionHandledProps,
@@ -10,8 +11,6 @@ import MSFTCallToAction, {
     CallToActionUnhandledProps,
 } from "./call-to-action";
 import { CallToAction } from "./index";
-import { CallToActionClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
-import { DisplayNamePrefix } from "../utilities";
 
 /*
  * Configure Enzyme

@@ -1,5 +1,14 @@
 import { DesignSystem, DesignSystemResolver } from "../../design-system";
 import {
+    accentBaseColor,
+    accentForegroundActiveDelta,
+    accentForegroundFocusDelta,
+    accentForegroundHoverDelta,
+    accentForegroundRestDelta,
+    accentPalette,
+    backgroundColor,
+} from "../design-system";
+import {
     findClosestSwatchIndex,
     findSwatchIndex,
     getSwatch,
@@ -16,15 +25,6 @@ import {
     SwatchFamilyType,
     SwatchRecipe,
 } from "./common";
-import {
-    accentBaseColor,
-    accentForegroundActiveDelta,
-    accentForegroundFocusDelta,
-    accentForegroundHoverDelta,
-    accentForegroundRestDelta,
-    accentPalette,
-    backgroundColor,
-} from "../design-system";
 
 function accentForegroundAlgorithm(
     contrastTarget: number
@@ -32,9 +32,10 @@ function accentForegroundAlgorithm(
     return (designSystem: DesignSystem): SwatchFamily => {
         const palette: Palette = accentPalette(designSystem);
         const accent: Swatch = accentBaseColor(designSystem);
-        const accentIndex: number = findClosestSwatchIndex(accentPalette, accent)(
-            designSystem
-        );
+        const accentIndex: number = findClosestSwatchIndex(
+            accentPalette,
+            accent
+        )(designSystem);
 
         const stateDeltas: any = {
             rest: accentForegroundRestDelta(designSystem),
@@ -66,9 +67,10 @@ function accentForegroundAlgorithm(
         );
 
         // One of these will be rest, the other will be hover. Depends on the offsets and the direction.
-        const accessibleIndex1: number = findSwatchIndex(accentPalette, accessibleSwatch)(
-            designSystem
-        );
+        const accessibleIndex1: number = findSwatchIndex(
+            accentPalette,
+            accessibleSwatch
+        )(designSystem);
         const accessibleIndex2: number =
             accessibleIndex1 + direction * Math.abs(stateDeltas.rest - stateDeltas.hover);
 

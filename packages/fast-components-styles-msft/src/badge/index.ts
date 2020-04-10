@@ -1,5 +1,5 @@
 import { BadgeClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
-import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
+import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import {
     add,
     ellipsis,
@@ -11,7 +11,6 @@ import {
 import designSystemDefaults, {
     DesignSystem,
     DesignSystemResolver,
-    withDesignSystemDefaults,
 } from "../design-system/index";
 import { applyCornerRadius } from "../utilities/border";
 import { accentForegroundCut, neutralForegroundRest } from "../utilities/color";
@@ -27,19 +26,16 @@ import {
 } from "../utilities/design-system";
 
 const filledBackground: string = "#FFD800";
-const largeHeight: DesignSystemResolver<number> = (designSystem: DesignSystem): number =>
-    Math.max(subtract(add(baseHeightMultiplier, density), 2)(designSystem), 5) *
-    designUnit(designSystem);
-
-const smallHeight: DesignSystemResolver<number> = (designSystem: DesignSystem): number =>
-    Math.max(subtract(add(baseHeightMultiplier, density), 3)(designSystem), 4) *
-    designUnit(designSystem);
-
 const density: DesignSystemResolver<number> = (designSystem: DesignSystem): number =>
     designSystem && designSystem.hasOwnProperty("density")
         ? designSystem.density
         : designSystemDefaults.density;
-
+const largeHeight: DesignSystemResolver<number> = (designSystem: DesignSystem): number =>
+    Math.max(subtract(add(baseHeightMultiplier, density), 2)(designSystem), 5) *
+    designUnit(designSystem);
+const smallHeight: DesignSystemResolver<number> = (designSystem: DesignSystem): number =>
+    Math.max(subtract(add(baseHeightMultiplier, density), 3)(designSystem), 4) *
+    designUnit(designSystem);
 const styles: ComponentStyles<BadgeClassNameContract, DesignSystem> = {
     badge: {
         ...applyScaledTypeRamp("t7"),

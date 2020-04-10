@@ -1,9 +1,8 @@
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, shallow } from "enzyme";
-import MSFTContextMenu from "./context-menu";
-import { ContextMenuUnhandledProps } from "./index";
 import { DisplayNamePrefix } from "../utilities";
+import MSFTContextMenu from "./context-menu";
 
 /*
  * Configure Enzyme

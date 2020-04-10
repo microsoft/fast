@@ -1,4 +1,3 @@
-import { ComponentViewConfig } from "./data.props";
 import {
     ContextMenu,
     contextMenuItemSchema,
@@ -6,6 +5,7 @@ import {
     contextMenuSchema,
 } from "@microsoft/fast-components-react-msft";
 import Guidance from "../../.tmp/context-menu/guidance";
+import { ComponentViewConfig } from "./data.props";
 
 const contextMenuConfig: ComponentViewConfig<ContextMenuProps> = {
     schema: contextMenuSchema,

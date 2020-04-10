@@ -1,7 +1,4 @@
 import { customElement } from "@microsoft/fast-element";
-import { TextArea } from "./text-area";
-import { TextAreaTemplate as template } from "./text-area.template";
-import { TextAreaStyles as styles } from "./text-area.styles";
 import { designSystemConsumer } from "../design-system-consumer";
 import {
     neutralFillHover,
@@ -13,6 +10,9 @@ import {
     neutralOutlineHover,
     neutralOutlineRest,
 } from "../styles/recipes";
+import { TextArea } from "./text-area";
+import { TextAreaTemplate as template } from "./text-area.template";
+import { TextAreaStyles as styles } from "./text-area.styles";
 
 @customElement({
     name: "fast-text-area",

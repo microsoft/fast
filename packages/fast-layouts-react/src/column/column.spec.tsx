@@ -29,7 +29,6 @@ jest.mock("@microsoft/fast-web-utilities", () => {
  */
 configure({ adapter: new Adapter() });
 
-/* tslint:disable:no-string-literal */
 describe("Column", (): void => {
     beforeEach(() => {
         canUseDOM["mockImplementation"](() => true);
@@ -110,7 +109,6 @@ describe("Column", (): void => {
 
         expect(rendered.props().style.gridColumn).toEqual("span 6");
 
-        /*tslint:disable-next-line:no-string-literal*/
         (window as any)["innerWidth"] = 0;
 
         // set props to force an update
@@ -145,7 +143,6 @@ describe("Column", (): void => {
     });
 
     test("should set `gridColumn` inline style value with position value relative to the index of the current breakpoint", () => {
-        /*tslint:disable-next-line:no-string-literal*/
         (window as any)["innerWidth"] = 1399;
 
         const rendered: any = shallow(
@@ -158,7 +155,6 @@ describe("Column", (): void => {
 
         expect(rendered.props().style.gridColumn).toEqual("3 / span 6");
 
-        /*tslint:disable-next-line:no-string-literal*/
         (window as any)["innerWidth"] = 0;
 
         // set props to force an update
@@ -196,7 +192,6 @@ describe("Column", (): void => {
         // previous window width was 0
         expect(rendered.props().style.gridRowStart).toEqual("3");
 
-        /*tslint:disable-next-line:no-string-literal*/
         (window as any)["innerWidth"] = 1399;
 
         // set props to force an update
@@ -236,7 +231,6 @@ describe("Column", (): void => {
         // previous window width was 1399
         expect(rendered.props().style.order).toEqual(1);
 
-        /*tslint:disable-next-line:no-string-literal*/
         (window as any)["innerWidth"] = 0;
 
         // set props to force an update

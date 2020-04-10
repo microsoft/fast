@@ -30,7 +30,12 @@ describe("classNames", (): void => {
     });
 
     test("should join the return value of a multiple functions", (): void => {
-        expect(classNames(() => "hello", () => "world")).toBe("hello world");
+        expect(
+            classNames(
+                () => "hello",
+                () => "world"
+            )
+        ).toBe("hello world");
     });
 
     test("should return a the first index of an array arg when the second index is truthy", (): void => {

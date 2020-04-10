@@ -10,12 +10,10 @@ import {
     ManagedClasses,
 } from "@microsoft/fast-components-class-name-contracts-msft";
 
-export interface AutoSuggestManagedClasses
-    extends ManagedClasses<AutoSuggestClassNameContract> {}
+export type AutoSuggestManagedClasses = ManagedClasses<AutoSuggestClassNameContract>;
 export interface AutoSuggestHandledProps
     extends AutoSuggestManagedClasses,
         Subtract<BaseAutoSuggestHandledProps, BaseAutoSuggestManagedClasses> {}
 
-/* tslint:disable-next-line:no-empty-interface */
-export interface AutoSuggestUnhandledProps extends BaseAutoSuggestUnhandledProps {}
+export type AutoSuggestUnhandledProps = BaseAutoSuggestUnhandledProps;
 export type AutoSuggestProps = AutoSuggestHandledProps & AutoSuggestUnhandledProps;

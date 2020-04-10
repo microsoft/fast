@@ -1,21 +1,13 @@
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
-import { configure, mount, shallow } from "enzyme";
-import {
-    Page,
-    PageClassNamesContract,
-    PageHandledProps,
-    PageUnhandledProps,
-} from "./page";
+import { configure, shallow } from "enzyme";
+import { Page } from "./page";
 
 /**
  * Configure Enzyme
  */
 configure({ adapter: new Adapter() });
 describe("Page - without CSS grid support", (): void => {
-    const managedClasses: PageClassNamesContract = {
-        page: "page",
-    };
     test("should set an inline style of `display: -ms-grid` when CSS grid is NOT supported", () => {
         const rendered: any = shallow(<Page />);
 

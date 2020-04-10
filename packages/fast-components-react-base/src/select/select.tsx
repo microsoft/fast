@@ -16,15 +16,10 @@ import React from "react";
 import Listbox from "../listbox";
 import { ListboxItemProps } from "../listbox-item";
 import { DisplayNamePrefix } from "../utilities";
-import {
-    SelectHandledProps,
-    SelectMenuFlyoutConfig,
-    SelectProps,
-    SelectUnhandledProps,
-} from "./select.props";
 import ViewportPositioner, {
     ViewportPositionerClassNameContract,
 } from "../viewport-positioner";
+import { SelectHandledProps, SelectProps, SelectUnhandledProps } from "./select.props";
 
 export interface SelectState {
     value: string | string[];
@@ -238,6 +233,7 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
     /**
      * This exists only to suppress a build warning
      */
+    /* eslint-disable  @typescript-eslint/no-unused-vars */
     private onSelectValueChange = (event: React.ChangeEvent): void => {
         return null;
     };

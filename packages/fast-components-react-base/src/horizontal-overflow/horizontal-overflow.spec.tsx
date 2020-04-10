@@ -1,13 +1,13 @@
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
+import rafThrottle from "raf-throttle";
+import { ConstructibleResizeObserver, DisplayNamePrefix } from "../utilities";
 import HorizontalOverflow, {
     ButtonDirection,
     HorizontalOverflowClassNameContract,
 } from "./";
 import "raf/polyfill";
-import { ConstructibleResizeObserver, DisplayNamePrefix } from "../utilities";
-import rafThrottle from "raf-throttle";
 
 /*
  * Configure Enzyme
@@ -55,7 +55,6 @@ const managedClasses: HorizontalOverflowClassNameContract = {
 
 // TODO #746: https://github.com/Microsoft/fast-dna/issues/746
 
-/* tslint:disable:no-string-literal */
 describe("horizontal overflow", (): void => {
     test("should have a displayName that matches the component name", () => {
         expect(`${DisplayNamePrefix}${(HorizontalOverflow as any).name}`).toBe(
@@ -99,46 +98,22 @@ describe("horizontal overflow", (): void => {
         expect(renderedWithImagesAndPrevious.find("ul").length).toBe(1);
         expect(renderedWithImagesAndPrevious.find("li").length).toBe(6);
         expect(
-            renderedWithImagesAndPrevious
-                .find("li")
-                .at(0)
-                .find("img")
-                .prop("id")
+            renderedWithImagesAndPrevious.find("li").at(0).find("img").prop("id")
         ).toBe(id1);
         expect(
-            renderedWithImagesAndPrevious
-                .find("li")
-                .at(1)
-                .find("img")
-                .prop("id")
+            renderedWithImagesAndPrevious.find("li").at(1).find("img").prop("id")
         ).toBe(id2);
         expect(
-            renderedWithImagesAndPrevious
-                .find("li")
-                .at(2)
-                .find("img")
-                .prop("id")
+            renderedWithImagesAndPrevious.find("li").at(2).find("img").prop("id")
         ).toBe(id3);
         expect(
-            renderedWithImagesAndPrevious
-                .find("li")
-                .at(3)
-                .find("img")
-                .prop("id")
+            renderedWithImagesAndPrevious.find("li").at(3).find("img").prop("id")
         ).toBe(id4);
         expect(
-            renderedWithImagesAndPrevious
-                .find("li")
-                .at(4)
-                .find("img")
-                .prop("id")
+            renderedWithImagesAndPrevious.find("li").at(4).find("img").prop("id")
         ).toBe(id5);
         expect(
-            renderedWithImagesAndPrevious
-                .find("li")
-                .at(5)
-                .find("img")
-                .prop("id")
+            renderedWithImagesAndPrevious.find("li").at(5).find("img").prop("id")
         ).toBe(id6);
     });
 
@@ -149,12 +124,9 @@ describe("horizontal overflow", (): void => {
             </HorizontalOverflow>
         );
 
-        expect(
-            rendered
-                .find("li")
-                .at(0)
-                .props().style
-        ).toEqual({ display: "inline-block" });
+        expect(rendered.find("li").at(0).props().style).toEqual({
+            display: "inline-block",
+        });
     });
 
     test("should render a previous button if one is passed as a child with the appropriate slot prop", () => {
@@ -558,10 +530,6 @@ describe("horizontal overflow", (): void => {
             </HorizontalOverflow>
         );
 
-        const itemsElement: HTMLDivElement = renderedWithImages.find(
-            ".horizontal-overflow-items-class"
-        );
-
         expect(renderedWithImages.instance()["scrollContent"](50, 0)).toBe(undefined);
     });
     test("should allow clicks on previous and next buttons", () => {
@@ -599,6 +567,7 @@ describe("horizontal overflow", (): void => {
             map[event] = callback;
         });
 
+        /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
         const rendered: any = mount(
             <HorizontalOverflow managedClasses={managedClasses}>
                 {imageSet1}
@@ -654,6 +623,7 @@ describe("horizontal overflow", (): void => {
         (window as WindowWithResizeObserver).ResizeObserver = MockObserver;
 
         // Render the component
+        /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
         const rendered: any = mount(
             <HorizontalOverflow managedClasses={managedClasses}>
                 {imageSet1}
@@ -669,7 +639,7 @@ describe("horizontal overflow", (): void => {
             .ResizeObserver;
         const disconnect: jest.Mock<any, any> = jest.fn();
         // Mock the resize observer
-        // tslint:disable-next-line:max-classes-per-file
+
         class MockObserver {
             public observe: jest.Mock<any, any> = jest.fn();
             public unobserve: jest.Mock<any, any> = jest.fn();
@@ -692,13 +662,11 @@ describe("horizontal overflow", (): void => {
     test("should cancel any queued callbacks on unmount", (): void => {
         const actualRafThrottle: typeof rafThrottle = rafThrottle;
         const cancel: jest.Mock = jest.fn();
-        (rafThrottle as typeof rafThrottle) = jest.fn(
-            (): any => {
-                const throttled: any = jest.fn();
-                throttled.cancel = cancel;
-                return throttled;
-            }
-        );
+        (rafThrottle as typeof rafThrottle) = jest.fn((): any => {
+            const throttled: any = jest.fn();
+            throttled.cancel = cancel;
+            return throttled;
+        });
 
         const rendered: any = mount(
             <HorizontalOverflow managedClasses={managedClasses}>
@@ -861,4 +829,3 @@ describe("horizontal overflow", (): void => {
         expect(rendered.instance().isScrollAnimating).toEqual(false);
     });
 });
-/* tslint:enable:no-string-literal */

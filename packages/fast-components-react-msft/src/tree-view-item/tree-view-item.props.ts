@@ -10,8 +10,7 @@ import {
     TreeViewItemClassNameContract,
 } from "@microsoft/fast-components-class-name-contracts-msft";
 
-export interface TreeViewItemManagedClasses
-    extends ManagedClasses<TreeViewItemClassNameContract> {}
+export type TreeViewItemManagedClasses = ManagedClasses<TreeViewItemClassNameContract>;
 export interface TreeViewItemHandledProps
     extends TreeViewItemManagedClasses,
         Subtract<BaseTreeViewItemHandledProps, BaseTreeViewItemManagedClasses> {
@@ -26,6 +25,5 @@ export interface TreeViewItemHandledProps
     afterContent?: (className?: string) => React.ReactNode;
 }
 
-/* tslint:disable-next-line:no-empty-interface */
-export interface TreeViewItemUnhandledProps extends BaseTreeViewItemUnhandledProps {}
+export type TreeViewItemUnhandledProps = BaseTreeViewItemUnhandledProps;
 export type TreeViewItemProps = TreeViewItemHandledProps & TreeViewItemUnhandledProps;

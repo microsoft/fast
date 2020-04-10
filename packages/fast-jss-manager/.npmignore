@@ -2,5 +2,4 @@
 src/
 
 # config
-tslint.json
 tsconfig.json

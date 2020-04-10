@@ -6,9 +6,8 @@ import {
 import { ListboxItemProps } from "../listbox-item";
 import { AutoSuggestState } from "./auto-suggest";
 
-export interface AutoSuggestManagedClasses
-    extends ManagedClasses<AutoSuggestClassNameContract> {}
-export interface AutoSuggestUnhandledProps extends React.HTMLAttributes<HTMLDivElement> {}
+export type AutoSuggestManagedClasses = ManagedClasses<AutoSuggestClassNameContract>;
+export type AutoSuggestUnhandledProps = React.HTMLAttributes<HTMLDivElement>;
 
 export interface AutoSuggestHandledProps extends AutoSuggestManagedClasses {
     /**

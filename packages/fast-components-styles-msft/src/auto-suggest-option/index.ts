@@ -3,8 +3,10 @@ import {
     directionSwitch,
     format,
 } from "@microsoft/fast-jss-utilities";
-import { DesignSystem } from "../design-system";
 import { AutoSuggestOptionClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
+import { ComponentStyles } from "@microsoft/fast-jss-manager";
+import { ellipsis, toPx } from "@microsoft/fast-jss-utilities";
+import { DesignSystem } from "../design-system";
 import { height, horizontalSpacing } from "../utilities/density";
 import {
     neutralFillStealthHover,
@@ -13,9 +15,7 @@ import {
     neutralFocus,
     neutralForegroundRest,
 } from "../utilities/color";
-import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { applyScaledTypeRamp } from "../utilities/typography";
-import { ellipsis, toPx } from "@microsoft/fast-jss-utilities";
 import { applyCornerRadius, applyFocusPlaceholderBorder } from "../utilities/border";
 import { applyCursorDefault } from "../utilities/cursor";
 import { applyDisabledState } from "../utilities/disabled";

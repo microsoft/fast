@@ -1,7 +1,7 @@
 import { storiesOf } from "@storybook/react";
 import React from "react";
-import { AccentButton } from "./";
 import { glyphFactory, SVGGlyph } from "../../assets/svg-element";
+import { AccentButton } from "./";
 
 storiesOf("Accent button", module)
     .add("Default", () => <AccentButton>Accent button</AccentButton>)

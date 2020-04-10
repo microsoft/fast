@@ -1,7 +1,7 @@
 import React from "react";
-import * as ShallowRenderer from "react-test-renderer/shallow";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, shallow, ShallowWrapper } from "enzyme";
+import { DisplayNamePrefix } from "../utilities";
 import Hypertext, {
     HypertextClassNameContract,
     HypertextHandledProps,
@@ -9,7 +9,6 @@ import Hypertext, {
     HypertextProps,
     HypertextUnhandledProps,
 } from "./hypertext";
-import { DisplayNamePrefix } from "../utilities";
 
 /*
  * Configure Enzyme
@@ -71,10 +70,6 @@ describe("hypertext", (): void => {
     });
 
     test("should correctly handle children", () => {
-        const handledProps: HypertextProps = {
-            managedClasses,
-            href: "http://www.microsoft.com",
-        };
         const rendered: any = shallow(
             <Hypertext managedClasses={managedClasses}>Children</Hypertext>
         );

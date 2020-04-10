@@ -1,23 +1,19 @@
 import React from "react";
 import manageJss, { DesignSystemProvider } from "@microsoft/fast-jss-manager-react";
-import style from "./preview.style";
-import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
+import Foundation from "@microsoft/fast-components-foundation-react";
 import { ViewerContent } from "@microsoft/fast-tooling-react";
-import { childOptions } from "./config";
-import initializedPlugins from "./utilities/plugins"; // TODO: add this to Viewer Content
 import { Background } from "@microsoft/fast-components-react-msft";
-import {
-    DesignSystem,
-    DesignSystemDefaults,
-} from "@microsoft/fast-components-styles-msft";
+import { DesignSystemDefaults } from "@microsoft/fast-components-styles-msft";
+import { classNames } from "@microsoft/fast-web-utilities";
 import {
     PreviewHandledProps,
     PreviewProps,
     PreviewState,
     PreviewUnhandledProps,
 } from "./preview.props";
-import { get } from "lodash-es";
-import { classNames } from "@microsoft/fast-web-utilities";
+import initializedPlugins from "./utilities/plugins"; // TODO: add this to Viewer Content
+import { childOptions } from "./config";
+import style from "./preview.style";
 
 /**
  * The preview component exists on a route inside an iframe
@@ -62,7 +58,7 @@ class Preview extends Foundation<
             const state: PreviewState = JSON.parse(message.data);
 
             this.setState(state);
-            /* tslint:disable-next-line */
+            /* eslint-disable-next-line no-empty */
         } catch (e) {}
     };
 }

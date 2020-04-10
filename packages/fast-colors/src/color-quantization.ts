@@ -1,11 +1,26 @@
-// tslint:disable:member-ordering
-// tslint:disable:no-bitwise
-// tslint:disable:prefer-for-of
-
 import { PixelBlob } from "./pixel-blob";
 import { Histogram } from "./histogram";
 import { insertIntoSortedList, PixelBox } from "./pixel-box";
 import { ColorRGBA64 } from "./color-rgba-64";
+
+function countValidBoxes(
+    queue: PixelBox[],
+    isBoxValid: ((box: PixelBox) => boolean) | null
+): number {
+    if (isBoxValid === null) {
+        return queue.length;
+    }
+
+    let retVal: number = 0;
+
+    for (let i: number = 0; i < queue.length; i++) {
+        if (isBoxValid(queue[i])) {
+            retVal++;
+        }
+    }
+
+    return retVal;
+}
 
 export interface QuantizedColor {
     color: ColorRGBA64;
@@ -184,25 +199,6 @@ export function quantize(
                 colorVolume: queue[i].colorVolume,
             };
             index++;
-        }
-    }
-
-    return retVal;
-}
-
-function countValidBoxes(
-    queue: PixelBox[],
-    isBoxValid: ((box: PixelBox) => boolean) | null
-): number {
-    if (isBoxValid === null) {
-        return queue.length;
-    }
-
-    let retVal: number = 0;
-
-    for (let i: number = 0; i < queue.length; i++) {
-        if (isBoxValid(queue[i])) {
-            retVal++;
         }
     }
 

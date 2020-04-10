@@ -4,10 +4,10 @@ import {
     SliderTrackItemClassNameContract,
 } from "@microsoft/fast-components-class-name-contracts-base";
 
-export interface SliderTrackItemManagedClasses
-    extends ManagedClasses<SliderTrackItemClassNameContract> {}
-export interface SliderTrackItemUnhandledProps
-    extends React.HTMLAttributes<HTMLDivElement> {}
+export type SliderTrackItemManagedClasses = ManagedClasses<
+    SliderTrackItemClassNameContract
+>;
+export type SliderTrackItemUnhandledProps = React.HTMLAttributes<HTMLDivElement>;
 
 export enum SliderTrackItemAnchor {
     selectedRangeMin = "selectedRangeMin",

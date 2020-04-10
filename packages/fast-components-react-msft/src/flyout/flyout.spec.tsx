@@ -1,17 +1,11 @@
 import React from "react";
-import ReactDOM from "react-dom";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
-import MSFTFlyout from "./flyout";
-import {
-    FlyoutClassNameContract,
-    FlyoutHandledProps,
-    FlyoutProps,
-    FlyoutUnhandledProps,
-} from "./index";
-import { DisplayNamePrefix } from "../utilities";
 import { Omit } from "utility-types";
 import { keyCodeEscape } from "@microsoft/fast-web-utilities";
+import { DisplayNamePrefix } from "../utilities";
+import MSFTFlyout from "./flyout";
+import { FlyoutClassNameContract, FlyoutProps, FlyoutUnhandledProps } from "./index";
 
 /*
  * Configure Enzyme
@@ -122,6 +116,7 @@ describe("flyout", (): void => {
             map[event] = callback;
         });
 
+        /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
         const rendered: any = mount(
             <div>
                 <div ref={anchorElement} />
@@ -143,6 +138,7 @@ describe("flyout", (): void => {
             map[event] = callback;
         });
 
+        /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
         const rendered: any = mount(
             <div>
                 <div ref={anchorElement} />
@@ -190,7 +186,6 @@ describe("flyout", (): void => {
         const rendered: any = mount(<FlyoutUpdateWrapper visible={true} />);
 
         // map does not exist
-        /* tslint:disable-next-line:no-string-literal */
         expect(map["keydown"]).toBe(undefined);
 
         rendered.setProps({ onDismiss });
@@ -213,7 +208,6 @@ describe("flyout", (): void => {
         const rendered: any = mount(<FlyoutUpdateWrapper visible={true} />);
 
         // map does not exist
-        /* tslint:disable-next-line:no-string-literal */
         expect(map["click"]).toBe(undefined);
 
         rendered.setProps({ onDismiss });
@@ -279,7 +273,6 @@ describe("flyout", (): void => {
 
         rendered.setProps({ onDismiss: void 0 });
 
-        /* tslint:disable-next-line:no-string-literal */
         map.click({});
 
         expect(onDismiss).toHaveBeenCalledTimes(1);

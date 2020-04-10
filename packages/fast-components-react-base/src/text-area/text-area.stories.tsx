@@ -1,7 +1,6 @@
 import { storiesOf } from "@storybook/react";
-import React, { useState } from "react";
+import React from "react";
 import TextArea from "./";
-import { uniqueId } from "lodash-es";
 
 storiesOf("Text Area", module)
     .add("Default", () => <TextArea />)

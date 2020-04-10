@@ -15,7 +15,7 @@ export enum FlipperDirection {
     previous = "previous",
 }
 
-export interface FlipperManagedClasses extends ManagedClasses<FlipperClassNameContract> {}
+export type FlipperManagedClasses = ManagedClasses<FlipperClassNameContract>;
 export interface FlipperHandledProps
     extends Subtract<ButtonHandledProps, ButtonManagedClasses>,
         FlipperManagedClasses {
@@ -35,6 +35,5 @@ export interface FlipperHandledProps
     label?: string;
 }
 
-/* tslint:disable-next-line:no-empty-interface */
-export interface FlipperUnhandledProps extends ButtonUnhandledProps {}
+export type FlipperUnhandledProps = ButtonUnhandledProps;
 export type FlipperProps = FlipperHandledProps & FlipperUnhandledProps;

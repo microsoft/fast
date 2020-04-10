@@ -25,7 +25,7 @@ describe("identifyBreakpoint", (): void => {
         expect(identifyBreakpoint(1000, customBreakpoints)).toBe(2);
     });
 });
-/* tslint:disable:no-string-literal */
+
 describe("getValueByBreakpoint", (): void => {
     test("should return the correct breakpoint with default values when `breakpoints` param is not passed", (): void => {
         // Default window.innerWidth for Jest is 1024
@@ -74,4 +74,3 @@ describe("getValueByBreakpoint", (): void => {
         expect(getValueByBreakpoint([12, 10, 8], customBreakpoints)).toBe(10);
     });
 });
-/* tslint:enable:no-string-literal */

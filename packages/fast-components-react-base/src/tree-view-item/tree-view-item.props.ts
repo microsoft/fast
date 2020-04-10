@@ -2,11 +2,9 @@ import React from "react";
 import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 import { TreeViewItemClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 
-export interface TreeViewItemManagedClasses
-    extends ManagedClasses<TreeViewItemClassNameContract> {}
+export type TreeViewItemManagedClasses = ManagedClasses<TreeViewItemClassNameContract>;
 
-export interface TreeViewItemUnhandledProps
-    extends React.HTMLAttributes<HTMLDivElement> {}
+export type TreeViewItemUnhandledProps = React.HTMLAttributes<HTMLDivElement>;
 
 export interface TreeViewItemHandledProps extends TreeViewItemManagedClasses {
     /**

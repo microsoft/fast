@@ -14,7 +14,6 @@ const srcDir =
  * Start and end file strings
  */
 const startFile = `// Generated file from ./build/convert-readme.js
-/* tslint:disable */
 import React from "react";
 export default class guidance extends React.Component<{}, {}> {
     public render(): JSX.Element {
@@ -41,7 +40,7 @@ const md = new MarkdownIt({
 (function exportReadme() {
     const readmePaths = path.resolve(process.cwd(), srcDir);
 
-    glob(readmePaths, void 0, function(error, files) {
+    glob(readmePaths, void 0, function (error, files) {
         files.forEach(filePath => {
             let guidance = startFile;
             const markdown = fs.readFileSync(filePath, "utf8");

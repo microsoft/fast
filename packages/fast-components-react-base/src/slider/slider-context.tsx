@@ -1,7 +1,7 @@
 import React from "react";
+import { Direction } from "@microsoft/fast-web-utilities";
 import { SliderMode, SliderOrientation, SliderRange } from "./slider.props";
 import { SliderState } from "./slider";
-import { Direction } from "@microsoft/fast-web-utilities";
 
 export interface SliderContextType {
     sliderOrientation: SliderOrientation;

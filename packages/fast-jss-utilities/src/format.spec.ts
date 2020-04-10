@@ -8,6 +8,7 @@ const designSystemDefaults: DesignSystem = {
     value: "foo",
 };
 
+/* eslint-disable-next-line @typescript-eslint/no-unused-vars */
 function formatter(designSystem: DesignSystem): string {
     return "%formatted%";
 }
@@ -33,6 +34,7 @@ describe("format", (): void => {
         );
     });
     test("should format multiple variables when multiple formatters are passed", (): void => {
+        /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
         function secondFormatter(designSystem: DesignSystem): string {
             return "anotherString";
         }
@@ -42,11 +44,9 @@ describe("format", (): void => {
         );
     });
     test("should throw when formatter args are not functions", (): void => {
-        expect(
-            (): void => {
-                format("{0}", false as any)(designSystemDefaults);
-            }
-        ).toThrow();
+        expect((): void => {
+            format("{0}", false as any)(designSystemDefaults);
+        }).toThrow();
     });
     test("should pass supplied formatter functions the input designSystem", (): void => {
         const spy: any = jest.fn();

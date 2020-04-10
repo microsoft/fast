@@ -1,7 +1,7 @@
 import React from "react";
 import { TabsSlot } from "./tabs";
 
-export interface TabItemUnhandledProps extends React.AllHTMLAttributes<HTMLElement> {}
+export type TabItemUnhandledProps = React.AllHTMLAttributes<HTMLElement>;
 export interface TabItemHandledProps {
     /**
      * The unique id for the tab item

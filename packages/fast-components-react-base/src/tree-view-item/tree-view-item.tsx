@@ -2,11 +2,6 @@ import React from "react";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import { TreeViewItemClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import {
-    TreeViewItemHandledProps,
-    TreeViewItemProps,
-    TreeViewItemUnhandledProps,
-} from "./tree-view-item.props";
-import {
     classNames,
     keyCodeArrowDown,
     keyCodeArrowLeft,
@@ -19,6 +14,11 @@ import { getDisplayedNodes, isHTMLElement } from "@microsoft/fast-web-utilities"
 import { canUseDOM } from "exenv-es6";
 import { TreeViewContext, TreeViewContextValue } from "../tree-view/tree-view";
 import { DisplayNamePrefix } from "../utilities";
+import {
+    TreeViewItemHandledProps,
+    TreeViewItemProps,
+    TreeViewItemUnhandledProps,
+} from "./tree-view-item.props";
 
 export interface TreeViewItemState {
     /**

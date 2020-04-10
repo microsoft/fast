@@ -1,7 +1,7 @@
 import { storiesOf } from "@storybook/react";
 import React from "react";
-import { StealthButton } from "./";
 import { glyphFactory, SVGGlyph } from "../../assets/svg-element";
+import { StealthButton } from "./";
 
 storiesOf("Stealth button", module)
     .add("Default", () => <StealthButton>Stealth button</StealthButton>)

@@ -1,6 +1,6 @@
 import React from "react";
-import TreeViewItem from "./";
 import { storiesOf } from "@storybook/react";
+import TreeViewItem from "./";
 
 storiesOf("Tree View Item", module)
     .add("Title Only", () => <TreeViewItem titleContent="Favorites" />)

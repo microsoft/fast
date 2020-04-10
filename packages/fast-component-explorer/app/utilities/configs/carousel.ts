@@ -1,6 +1,4 @@
-import { ComponentViewConfig } from "./data.props";
 import {
-    CallToActionAppearance,
     Carousel,
     CarouselProps,
     carouselSchema,
@@ -10,6 +8,7 @@ import {
 } from "@microsoft/fast-components-react-msft";
 import { uniqueId } from "lodash-es";
 import Guidance from "../../.tmp/carousel/guidance";
+import { ComponentViewConfig } from "./data.props";
 
 const darkImageProps: object = {
     props: {

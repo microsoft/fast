@@ -1,7 +1,7 @@
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import {
-    AutoSuggest as BaseAutoSuggest,
     AutoSuggestState,
+    AutoSuggest as BaseAutoSuggest,
 } from "@microsoft/fast-components-react-base";
 import React from "react";
 import { TextAction } from "../text-action";

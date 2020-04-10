@@ -1,10 +1,10 @@
-import { ComponentViewConfig } from "./data.props";
 import {
     TextArea,
     TextAreaProps,
     textAreaSchema,
 } from "@microsoft/fast-components-react-msft";
 import Guidance from "../../.tmp/text-area/guidance";
+import { ComponentViewConfig } from "./data.props";
 
 const textAreaConfig: ComponentViewConfig<TextAreaProps> = {
     schema: textAreaSchema,

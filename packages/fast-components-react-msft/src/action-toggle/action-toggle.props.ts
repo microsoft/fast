@@ -19,8 +19,7 @@ export enum ActionToggleAppearance {
     stealth = ButtonAppearance.stealth,
 }
 
-export interface ActionToggleManagedClasses
-    extends ManagedClasses<ActionToggleClassNameContract> {}
+export type ActionToggleManagedClasses = ManagedClasses<ActionToggleClassNameContract>;
 export interface ActionToggleHandledProps
     extends Omit<ButtonHandledProps, "appearance" | keyof ButtonManagedClasses>,
         ActionToggleManagedClasses {
@@ -75,6 +74,5 @@ export interface ActionToggleHandledProps
     selected?: boolean;
 }
 
-/* tslint:disable-next-line:no-empty-interface */
-export interface ActionToggleUnhandledProps extends ButtonUnhandledProps {}
+export type ActionToggleUnhandledProps = ButtonUnhandledProps;
 export type ActionToggleProps = ActionToggleHandledProps & ActionToggleUnhandledProps;

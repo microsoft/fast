@@ -1,17 +1,15 @@
 import React from "react";
-import * as ShallowRenderer from "react-test-renderer/shallow";
 import Adapter from "enzyme-adapter-react-16/build";
 import { configure, mount, shallow } from "enzyme";
+import { ActionTriggerClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
+import { DisplayNamePrefix } from "../utilities";
 import MSFTActionTrigger, {
     ActionTriggerAppearance,
     ActionTriggerHandledProps,
-    ActionTriggerManagedClasses,
     ActionTriggerProps,
     ActionTriggerUnhandledProps,
 } from "./action-trigger";
 import { ActionTrigger } from "./index";
-import { ActionTriggerClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
-import { DisplayNamePrefix } from "../utilities";
 
 /*
  * Configure Enzyme
@@ -42,9 +40,8 @@ describe("action trigger", (): void => {
         expect(() => {
             shallow(
                 <MSFTActionTrigger
-                    /* tslint:disable-next-line */
                     glyph={(className?: string): React.ReactNode => {
-                        return <div>X</div>;
+                        return <div className={className}>X</div>;
                     }}
                 />
             );
@@ -94,7 +91,7 @@ describe("action trigger", (): void => {
     test("should apply a 'justified' html class when appearance is justified", () => {
         const props: ActionTriggerHandledProps = {
             glyph: (className?: string): React.ReactNode => {
-                return <div>X</div>;
+                return <div className={className}>X</div>;
             },
             appearance: ActionTriggerAppearance.justified,
         };
@@ -109,7 +106,7 @@ describe("action trigger", (): void => {
     test("should apply a 'lightweight' html class when appearance is lightweight", () => {
         const props: ActionTriggerHandledProps = {
             glyph: (className?: string): React.ReactNode => {
-                return <div>X</div>;
+                return <div className={className}>X</div>;
             },
             appearance: ActionTriggerAppearance.lightweight,
         };
@@ -124,7 +121,7 @@ describe("action trigger", (): void => {
     test("should apply a 'outline' html class when appearance is outline", () => {
         const props: ActionTriggerHandledProps = {
             glyph: (className?: string): React.ReactNode => {
-                return <div>X</div>;
+                return <div className={className}>X</div>;
             },
             appearance: ActionTriggerAppearance.outline,
         };
@@ -139,7 +136,7 @@ describe("action trigger", (): void => {
     test("should apply a 'primary' html class when appearance is primary", () => {
         const props: ActionTriggerHandledProps = {
             glyph: (className?: string): React.ReactNode => {
-                return <div>X</div>;
+                return <div className={className}>X</div>;
             },
             appearance: ActionTriggerAppearance.primary,
         };
@@ -154,7 +151,7 @@ describe("action trigger", (): void => {
     test("should apply a 'stealth' html class when appearance is stealth", () => {
         const props: ActionTriggerHandledProps = {
             glyph: (className?: string): React.ReactNode => {
-                return <div>X</div>;
+                return <div className={className}>X</div>;
             },
             appearance: ActionTriggerAppearance.stealth,
         };
@@ -169,7 +166,7 @@ describe("action trigger", (): void => {
     test("should apply a 'disabled' html class when prop disabled is passed", () => {
         const props: ActionTriggerHandledProps = {
             glyph: (className?: string): React.ReactNode => {
-                return <div>X</div>;
+                return <div className={className}>X</div>;
             },
             disabled: true,
         };
@@ -184,7 +181,7 @@ describe("action trigger", (): void => {
     test("should set a custom class name and 'primary' class name when appearance is primary and a custom class is passed", () => {
         const props: ActionTriggerHandledProps = {
             glyph: (className?: string): React.ReactNode => {
-                return <div>X</div>;
+                return <div className={className}>X</div>;
             },
             appearance: ActionTriggerAppearance.primary,
         };
@@ -202,7 +199,7 @@ describe("action trigger", (): void => {
     test("should apply a custom class-name", () => {
         const props: ActionTriggerHandledProps = {
             glyph: (className?: string): React.ReactNode => {
-                return <div>X</div>;
+                return <div className={className}>X</div>;
             },
         };
 
@@ -216,7 +213,7 @@ describe("action trigger", (): void => {
     test("should apply 'hasGlyphandContent' class when display includes content and glyph", () => {
         const props: ActionTriggerHandledProps = {
             glyph: (className?: string): React.ReactNode => {
-                return <div>X</div>;
+                return <div className={className}>X</div>;
             },
             children: "text",
         };
@@ -231,7 +228,7 @@ describe("action trigger", (): void => {
     test("should not apply 'hasGlyphandContent' class when displaying only glyph", () => {
         const props: ActionTriggerHandledProps = {
             glyph: (className?: string): React.ReactNode => {
-                return <div>X</div>;
+                return <div className={className}>X</div>;
             },
         };
 

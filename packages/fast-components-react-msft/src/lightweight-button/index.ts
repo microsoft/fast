@@ -5,6 +5,7 @@ import {
     DesignSystem,
     LightweightButtonStyles,
 } from "@microsoft/fast-components-styles-msft";
+import { Subtract } from "utility-types";
 import {
     ButtonBase,
     ButtonBaseHandledProps,
@@ -12,20 +13,20 @@ import {
     ButtonBaseProps,
     ButtonBaseUnhandledProps as LightweightButtonUnhandledProps,
 } from "../button-base";
-import lightweightButtonSchema from "./lightweight-button.schema";
-import { Subtract } from "utility-types";
 import { DisplayNamePrefix } from "../utilities";
+import lightweightButtonSchema from "./lightweight-button.schema";
 
 /*
  * The type returned by manageJss type is very complicated so we'll let the
  * compiler infer the type instead of re-declaring just for the package export
  */
-/* tslint:disable-next-line:typedef */
 const LightweightButton = manageJss(LightweightButtonStyles)(ButtonBase);
 type LightweightButton = InstanceType<typeof LightweightButton>;
 
-interface LightweightButtonHandledProps
-    extends Subtract<ButtonBaseHandledProps, ButtonBaseManagedClasses> {}
+type LightweightButtonHandledProps = Subtract<
+    ButtonBaseHandledProps,
+    ButtonBaseManagedClasses
+>;
 type LightweightButtonProps = ManagedJSSProps<
     ButtonBaseProps,
     LightweightButtonClassNameContract,

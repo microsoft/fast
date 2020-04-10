@@ -137,7 +137,7 @@ class Carousel extends Foundation<
     /**
      * React lifecycle hook
      */
-    public componentDidUpdate(prevProps: CarouselProps, prevState: CarouselState): void {
+    public componentDidUpdate(): void {
         if (this.props.autoplay && isNil(this.autoplayTimer)) {
             // Set the window interval if we are in autplay and don't have a timer
             this.autoplayTimer = window.setInterval(

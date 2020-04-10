@@ -39,18 +39,6 @@ function neutralFillAlgorithm(
     };
 }
 
-export const neutralFill: ColorRecipe<FillSwatchFamily> = colorRecipeFactory(
-    (designSystem: DesignSystem): FillSwatchFamily => {
-        return {
-            rest: neutralFillRest(designSystem),
-            hover: neutralFillHover(designSystem),
-            active: neutralFillActive(designSystem),
-            focus: neutralFillFocus(designSystem),
-            selected: neutralFillSelected(designSystem),
-        };
-    }
-);
-
 export const neutralFillRest: SwatchRecipe = colorRecipeFactory(
     neutralFillAlgorithm(neutralFillRestDelta)
 );
@@ -65,4 +53,16 @@ export const neutralFillFocus: SwatchRecipe = colorRecipeFactory(
 );
 export const neutralFillSelected: SwatchRecipe = colorRecipeFactory(
     neutralFillAlgorithm(neutralFillSelectedDelta)
+);
+
+export const neutralFill: ColorRecipe<FillSwatchFamily> = colorRecipeFactory(
+    (designSystem: DesignSystem): FillSwatchFamily => {
+        return {
+            rest: neutralFillRest(designSystem),
+            hover: neutralFillHover(designSystem),
+            active: neutralFillActive(designSystem),
+            focus: neutralFillFocus(designSystem),
+            selected: neutralFillSelected(designSystem),
+        };
+    }
 );

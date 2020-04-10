@@ -37,7 +37,7 @@ function calcEditDistances(
     old: any[],
     oldStart: number,
     oldEnd: number
-) {
+): any[] {
     // "Deletion" columns
     const rowCount = oldEnd - oldStart + 1;
     const columnCount = currentEnd - currentStart + 1;
@@ -74,7 +74,7 @@ function calcEditDistances(
 // This starts at the final weight, and walks "backward" by finding
 // the minimum previous weight recursively until the origin of the weight
 // matrix.
-function spliceOperationsFromEditDistances(distances: number[][]) {
+function spliceOperationsFromEditDistances(distances: number[][]): number[] {
     let i = distances.length - 1;
     let j = distances[0].length - 1;
     let current = distances[i][j];
@@ -127,6 +127,56 @@ function spliceOperationsFromEditDistances(distances: number[][]) {
     return edits;
 }
 
+function sharedPrefix(current: any[], old: any[], searchLength: number): number {
+    for (let i = 0; i < searchLength; ++i) {
+        if (current[i] !== old[i]) {
+            return i;
+        }
+    }
+
+    return searchLength;
+}
+
+function sharedSuffix(current: any[], old: any[], searchLength: number): number {
+    let index1 = current.length;
+    let index2 = old.length;
+    let count = 0;
+
+    while (count < searchLength && current[--index1] === old[--index2]) {
+        count++;
+    }
+
+    return count;
+}
+
+function intersect(start1: number, end1: number, start2: number, end2: number): number {
+    // Disjoint
+    if (end1 < start2 || end2 < start1) {
+        return -1;
+    }
+
+    // Adjacent
+    if (end1 === start2 || end2 === start1) {
+        return 0;
+    }
+
+    // Non-zero intersect, span1 first
+    if (start1 < start2) {
+        if (end1 < end2) {
+            return end1 - start2; // Overlap
+        }
+
+        return end2 - start2; // Contained
+    }
+
+    // Non-zero intersect, span2 first
+    if (end2 < end1) {
+        return end2 - start1; // Overlap
+    }
+
+    return end1 - start1; // Contained
+}
+
 /**
  * Splice Projection functions:
  *
@@ -158,7 +208,7 @@ export function calcSplices(
     old: any[],
     oldStart: number,
     oldEnd: number
-) {
+): readonly never[] | Splice[] {
     let prefixCount = 0;
     let suffixCount = 0;
 
@@ -250,56 +300,6 @@ export function calcSplices(
     return splices;
 }
 
-function sharedPrefix(current: any[], old: any[], searchLength: number) {
-    for (let i = 0; i < searchLength; ++i) {
-        if (current[i] !== old[i]) {
-            return i;
-        }
-    }
-
-    return searchLength;
-}
-
-function sharedSuffix(current: any[], old: any[], searchLength: number) {
-    let index1 = current.length;
-    let index2 = old.length;
-    let count = 0;
-
-    while (count < searchLength && current[--index1] === old[--index2]) {
-        count++;
-    }
-
-    return count;
-}
-
-function intersect(start1: number, end1: number, start2: number, end2: number) {
-    // Disjoint
-    if (end1 < start2 || end2 < start1) {
-        return -1;
-    }
-
-    // Adjacent
-    if (end1 === start2 || end2 === start1) {
-        return 0;
-    }
-
-    // Non-zero intersect, span1 first
-    if (start1 < start2) {
-        if (end1 < end2) {
-            return end1 - start2; // Overlap
-        }
-
-        return end2 - start2; // Contained
-    }
-
-    // Non-zero intersect, span2 first
-    if (end2 < end1) {
-        return end2 - start1; // Overlap
-    }
-
-    return end1 - start1; // Contained
-}
-
 const $push = Array.prototype.push;
 
 function mergeSplice(
@@ -307,7 +307,7 @@ function mergeSplice(
     index: number,
     removed: any[],
     addedCount: number
-) {
+): void {
     const splice = newSplice(index, removed, addedCount);
     let inserted = false;
     let insertionOffset = 0;
@@ -388,7 +388,7 @@ function mergeSplice(
     }
 }
 
-function createInitialSplices(changeRecords: Splice[]) {
+function createInitialSplices(changeRecords: Splice[]): Splice[] {
     const splices: Splice[] = [];
 
     for (let i = 0, ii = changeRecords.length; i < ii; i++) {
@@ -399,7 +399,7 @@ function createInitialSplices(changeRecords: Splice[]) {
     return splices;
 }
 
-export function projectArraySplices(array: any[], changeRecords: any[]) {
+export function projectArraySplices(array: any[], changeRecords: any[]): Splice[] {
     let splices: Splice[] = [];
     const initialSplices = createInitialSplices(changeRecords);
 

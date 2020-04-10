@@ -96,7 +96,9 @@ export class RecipeRegistry {
      * @param type the recipe type to return entries of
      */
     public find(type: RecipeTypes): RecipeDefinition[] {
-        return Object.values(this.entries).filter(value => value.type === type);
+        return Object.values(this.entries).filter(
+            (value: RecipeDefinition<any>) => value.type === type
+        );
     }
 
     /**

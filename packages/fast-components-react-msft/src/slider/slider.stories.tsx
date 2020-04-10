@@ -1,7 +1,5 @@
 import { storiesOf } from "@storybook/react";
 import React from "react";
-import { Slider, SliderClassNameContract } from "./";
-import { SliderLabel } from "../slider-label";
 import {
     SliderMode,
     SliderOrientation,
@@ -11,6 +9,8 @@ import { ComponentStyleSheet } from "@microsoft/fast-jss-manager-react";
 import { DesignSystem, designUnit } from "@microsoft/fast-components-styles-msft";
 import { multiply, toPx } from "@microsoft/fast-jss-utilities";
 import { action } from "@storybook/addon-actions";
+import { SliderLabel } from "../slider-label";
+import { Slider, SliderClassNameContract } from "./";
 
 const vertcialSliderStyles: ComponentStyleSheet<SliderClassNameContract, DesignSystem> = {
     slider: {

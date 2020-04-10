@@ -1,9 +1,9 @@
-import { ComponentViewConfig } from "./data.props";
 import { TabsItem } from "@microsoft/fast-components-react-base";
 import { Pivot, PivotProps, pivotSchema } from "@microsoft/fast-components-react-msft";
+import { uniqueId } from "lodash-es";
 import { groupSchema } from "../../../app/components/group";
 import Guidance from "../../.tmp/pivot/guidance";
-import { uniqueId } from "lodash-es";
+import { ComponentViewConfig } from "./data.props";
 
 const pivotItem1: TabsItem = {
     tab: {

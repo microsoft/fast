@@ -1,15 +1,13 @@
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
+import { DisplayNamePrefix } from "../utilities";
 import MSFTMetatext, {
     MetatextHandledProps,
-    MetatextManagedClasses,
-    MetatextProps,
     MetatextTag,
     MetatextUnhandledProps,
 } from "./metatext";
 import { Metatext } from "./index";
-import { DisplayNamePrefix } from "../utilities";
 
 /*
  * Configure Enzyme

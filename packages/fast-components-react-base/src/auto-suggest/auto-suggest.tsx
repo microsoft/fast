@@ -9,6 +9,7 @@ import {
     keyCodeTab,
 } from "@microsoft/fast-web-utilities";
 import React from "react";
+import { isNil } from "lodash-es";
 import { Listbox, ListboxItemProps, TextField, TextFieldType } from "../index";
 import { DisplayNamePrefix } from "../utilities";
 import { AutoSuggestContext, AutoSuggestContextType } from "./auto-suggest-context";
@@ -17,7 +18,6 @@ import {
     AutoSuggestProps,
     AutoSuggestUnhandledProps,
 } from "./auto-suggest.props";
-import { isNil } from "lodash-es";
 
 export interface AutoSuggestState {
     value: string;
@@ -572,9 +572,9 @@ class AutoSuggest extends Foundation<
         if (this.rootElement.current === null) {
             return;
         }
-        const inputElements: HTMLCollectionOf<
-            HTMLInputElement
-        > = this.rootElement.current.getElementsByTagName("input");
+        const inputElements: HTMLCollectionOf<HTMLInputElement> = this.rootElement.current.getElementsByTagName(
+            "input"
+        );
         if (inputElements.length > 0) {
             inputElements[0].focus();
         }
@@ -588,8 +588,8 @@ class AutoSuggest extends Foundation<
         return typeof this.props.isMenuOpen === "boolean"
             ? this.props.isMenuOpen
             : React.Children.count(this.renderChildren()) === 0
-                ? false
-                : desiredMenuState;
+            ? false
+            : desiredMenuState;
     };
 
     /**

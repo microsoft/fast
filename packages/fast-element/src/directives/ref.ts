@@ -1,15 +1,16 @@
+import { CaptureType } from "../template";
 import { Behavior } from "./behavior";
 import { AttachedBehaviorDirective } from "./directive";
-import { CaptureType } from "../template";
 
 export class RefBehavior implements Behavior {
     constructor(private target: HTMLElement, private propertyName: string) {}
 
-    bind(source: any) {
+    bind(source: any): void {
         source[this.propertyName] = this.target;
     }
 
-    unbind() {}
+    /* eslint-disable-next-line @typescript-eslint/no-empty-function */
+    unbind(): void {}
 }
 
 export function ref<T = any>(propertyName: keyof T & string): CaptureType<T> {

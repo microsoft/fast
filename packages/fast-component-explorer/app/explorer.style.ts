@@ -3,7 +3,6 @@ import {
     accentForegroundRest,
     applyCornerRadius,
     DesignSystem,
-    neutralDividerRest,
     neutralFillActive,
     neutralFillHover,
     neutralFillRest,
@@ -11,7 +10,6 @@ import {
     neutralLayerL2,
     neutralLayerL3,
 } from "@microsoft/fast-components-styles-msft";
-import { format } from "@microsoft/fast-jss-utilities";
 
 export interface ExplorerClassNameContract {
     explorer: string;

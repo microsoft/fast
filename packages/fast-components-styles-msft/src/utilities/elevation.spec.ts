@@ -1,38 +1,46 @@
+import defaultDesignSystem, { DesignSystemResolver } from "../design-system";
 import {
     ambientShadowConfig,
     applyElevation,
     ElevationMultiplier,
     elevationShadow,
 } from "./elevation";
-import defaultDesignSystem, { DesignSystemResolver } from "../design-system";
 
 describe("elevationShadow", () => {
     test("should calculate elevation value e1 correctly", () => {
         expect(
-            elevationShadow(ElevationMultiplier.e1, "#000", ambientShadowConfig)(
-                defaultDesignSystem
-            )
+            elevationShadow(
+                ElevationMultiplier.e1,
+                "#000",
+                ambientShadowConfig
+            )(defaultDesignSystem)
         ).toBe("0px 0px 2.225px rgba(0,0,0,0.11)");
     });
     test("should calculate elevation value e4 correctly", () => {
         expect(
-            elevationShadow(ElevationMultiplier.e4, "#000", ambientShadowConfig)(
-                defaultDesignSystem
-            )
+            elevationShadow(
+                ElevationMultiplier.e4,
+                "#000",
+                ambientShadowConfig
+            )(defaultDesignSystem)
         ).toBe("0px 0px 2.9px rgba(0,0,0,0.11)");
     });
     test("should calculate elevation value e13 correctly", () => {
         expect(
-            elevationShadow(ElevationMultiplier.e13, "#000", ambientShadowConfig)(
-                defaultDesignSystem
-            )
+            elevationShadow(
+                ElevationMultiplier.e13,
+                "#000",
+                ambientShadowConfig
+            )(defaultDesignSystem)
         ).toBe("0px 0px 12.8px rgba(0,0,0,0.11)");
     });
     test("should calculate elevation value e17 correctly", () => {
         expect(
-            elevationShadow(ElevationMultiplier.e17, "#000", ambientShadowConfig)(
-                defaultDesignSystem
-            )
+            elevationShadow(
+                ElevationMultiplier.e17,
+                "#000",
+                ambientShadowConfig
+            )(defaultDesignSystem)
         ).toBe("0px 0px 45.2px rgba(0,0,0,0.11)");
     });
 });

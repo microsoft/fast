@@ -1,3 +1,4 @@
+import { inRange } from "lodash-es";
 import { DesignSystem, DesignSystemResolver } from "../../design-system";
 import {
     accentBaseColor,
@@ -29,7 +30,6 @@ import {
     isDarkMode,
     Palette,
 } from "./palette";
-import { inRange } from "lodash-es";
 
 const neutralFillThreshold: DesignSystemResolver<number> = designSystemResolverMax(
     neutralFillRestDelta,
@@ -56,9 +56,10 @@ function accentFillAlgorithm(
         const swapThreshold: number = neutralFillThreshold(designSystem);
         const direction: 1 | -1 = backgroundIndex >= swapThreshold ? -1 : 1;
         const maxIndex: number = paletteLength - 1;
-        const accentIndex: number = findClosestSwatchIndex(accentPalette, accent)(
-            designSystem
-        );
+        const accentIndex: number = findClosestSwatchIndex(
+            accentPalette,
+            accent
+        )(designSystem);
 
         let accessibleOffset: number = 0;
 

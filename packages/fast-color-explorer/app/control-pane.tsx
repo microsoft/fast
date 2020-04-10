@@ -390,15 +390,11 @@ function mapStateToProps(state: AppState): AppState {
     return state;
 }
 
-/* tslint:disable-next-line */
-const ControlPane = connect(
-    mapStateToProps,
-    {
-        setComponentType,
-        setNeutralBaseColor,
-        setAccentBaseColor,
-        setShowOnlyRecommendedBackgrounds,
-    }
-)(manageJss(styles)(ControlPaneBase));
+const ControlPane = connect(mapStateToProps, {
+    setComponentType,
+    setNeutralBaseColor,
+    setAccentBaseColor,
+    setShowOnlyRecommendedBackgrounds,
+})(manageJss(styles)(ControlPaneBase));
 type ControlPane = InstanceType<typeof ControlPane>;
 export { ControlPane };

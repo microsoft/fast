@@ -15,7 +15,7 @@ Add `fast-eslint-rules` as an extension in your eslint config
 ```js
 {
     "extends": [
-        "@microsoft/fast-eslint-rules",
+        "@microsoft/eslint-config-fast-dna",
         // Other rule sets (if any)
     ]
 }

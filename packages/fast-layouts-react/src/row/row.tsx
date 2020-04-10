@@ -5,16 +5,16 @@ import {
     keyCodeArrowDown,
     keyCodeArrowUp,
 } from "@microsoft/fast-web-utilities";
+import { toPx } from "@microsoft/fast-jss-utilities";
+import { ComponentStyles } from "@microsoft/fast-jss-manager-react";
+import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
+import { canUseDOM } from "exenv-es6";
 import {
     RowHandledProps,
     RowProps,
     RowResizeControlProps,
     RowResizeDirection,
 } from "./row.props";
-import { toPx } from "@microsoft/fast-jss-utilities";
-import { ComponentStyles } from "@microsoft/fast-jss-manager-react";
-import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
-import { canUseDOM } from "exenv-es6";
 
 export const east: string = "east";
 export const west: string = "west";
@@ -212,8 +212,8 @@ export class Row extends Foundation<
         styles.minHeight = this.props.collapsed
             ? this.props.collapsedHeight
             : this.props.resizable
-                ? toPx(this.props.minHeight)
-                : height;
+            ? toPx(this.props.minHeight)
+            : height;
 
         if (this.props.overlay) {
             styles.height = height;

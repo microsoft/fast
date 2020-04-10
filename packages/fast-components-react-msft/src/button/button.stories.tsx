@@ -1,7 +1,7 @@
 import { storiesOf } from "@storybook/react";
 import React from "react";
-import { Button, ButtonAppearance } from "./";
 import { glyphFactory, SVGGlyph } from "../../assets/svg-element";
+import { Button, ButtonAppearance } from "./";
 
 storiesOf("Button", module)
     .add("Default", () => <Button>Button</Button>)

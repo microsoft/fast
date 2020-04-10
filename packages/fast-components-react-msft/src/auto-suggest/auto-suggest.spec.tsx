@@ -1,16 +1,11 @@
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
-import MSFTAutoSuggest from "./auto-suggest";
-import { AutoSuggestOption } from "../auto-suggest-option";
-import {
-    AutoSuggest,
-    AutoSuggestHandledProps,
-    AutoSuggestProps,
-    AutoSuggestUnhandledProps,
-} from "./index";
 import { keyCodeEnter } from "@microsoft/fast-web-utilities";
+import { AutoSuggestOption } from "../auto-suggest-option";
 import { DisplayNamePrefix } from "../utilities";
+import MSFTAutoSuggest from "./auto-suggest";
+import { AutoSuggest, AutoSuggestUnhandledProps } from "./index";
 
 /*
  * Configure Enzyme
@@ -22,8 +17,6 @@ const itemB: JSX.Element = <AutoSuggestOption id="b" value="b" />;
 const itemC: JSX.Element = <AutoSuggestOption id="c" value="c" />;
 
 describe("auto suggest", (): void => {
-    const href: string = "https://www.microsoft.com";
-
     test("should have a displayName that matches the component name", () => {
         expect(`${DisplayNamePrefix}${(MSFTAutoSuggest as any).name}`).toBe(
             MSFTAutoSuggest.displayName
@@ -67,6 +60,7 @@ describe("auto suggest", (): void => {
 
         const inputRenderFn: any = jest.fn();
         inputRenderFn.mockReturnValue("Test");
+        /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
         const rendered: any = mount(
             <AutoSuggest listboxId="listboxId" inputRegion={inputRenderFn}>
                 {itemA}

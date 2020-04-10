@@ -1,8 +1,8 @@
 import { toPx } from "@microsoft/fast-jss-utilities";
 import { CSSRules } from "@microsoft/fast-jss-manager";
+import { clamp } from "lodash-es";
 import { DesignSystem, DesignSystemResolver } from "../design-system";
 import { densityCategorySwitch } from "./density";
-import { clamp } from "lodash-es";
 
 /**
  * The type ramp item config
@@ -54,6 +54,13 @@ export const typeRamp: TypeRamp = [
     {} as TypeRamp
 );
 
+/*
+ * Ensures that a TypeRamp key is in the TypeRamp
+ */
+function sanitizeTypeRampId(key: keyof TypeRamp): keyof TypeRamp {
+    return typeRamp.hasOwnProperty(key) ? key : "t7";
+}
+
 /**
  * Scales a typeramp ID by density
  */
@@ -64,13 +71,6 @@ function scaleTypeRampId(key: keyof TypeRamp): DesignSystemResolver<keyof TypeRa
         const size: number = clamp(typeConfigNumber - densityOffset, 1, 9);
         return sanitizeTypeRampId("t".concat(size.toString()) as keyof TypeRamp);
     };
-}
-
-/*
- * Ensures that a TypeRamp key is in the TypeRamp
- */
-function sanitizeTypeRampId(key: keyof TypeRamp): keyof TypeRamp {
-    return typeRamp.hasOwnProperty(key) ? key : "t7";
 }
 
 /**
@@ -148,16 +148,18 @@ function applyTypeRampFactory(
 /**
  * Applies font size and line-height properties from the typeramp
  */
-export const applyTypeRamp: ReturnType<
-    typeof applyTypeRampFactory
-> = applyTypeRampFactory(applyFontSize, applyLineHeight);
+export const applyTypeRamp: ReturnType<typeof applyTypeRampFactory> = applyTypeRampFactory(
+    applyFontSize,
+    applyLineHeight
+);
 
 /**
  * Applies font size and line-height from the type ramp, scaled with design system density
  */
-export const applyScaledTypeRamp: ReturnType<
-    typeof applyTypeRampFactory
-> = applyTypeRampFactory(applyScaledFontSize, applyScaledLineHeight);
+export const applyScaledTypeRamp: ReturnType<typeof applyTypeRampFactory> = applyTypeRampFactory(
+    applyScaledFontSize,
+    applyScaledLineHeight
+);
 
 /**
  * Takes a param of type ramp key (string) and returns a type ramp configuration

@@ -1,5 +1,5 @@
-import { AttachedBehaviorDirective } from "./directive";
 import { CaptureType } from "../template";
+import { AttachedBehaviorDirective } from "./directive";
 import { NodeBehaviorBehaviorOptions, NodeObservationBehavior } from "./node-observation";
 
 export interface ChildrenBehaviorOptions<T = any>
@@ -13,11 +13,11 @@ export class ChildrenBehavior extends NodeObservationBehavior<ChildrenBehaviorOp
         super(target, options);
     }
 
-    getNodes() {
+    getNodes(): ChildNode[] {
         return Array.from(this.target.childNodes);
     }
 
-    observe() {
+    observe(): void {
         if (this.observer === null) {
             this.observer = new MutationObserver(this.handleEvent.bind(this));
         }
@@ -25,7 +25,7 @@ export class ChildrenBehavior extends NodeObservationBehavior<ChildrenBehaviorOp
         this.observer.observe(this.target, this.options);
     }
 
-    unobserve() {
+    unobserve(): void {
         this.observer!.disconnect();
     }
 }

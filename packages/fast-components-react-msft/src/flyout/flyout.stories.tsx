@@ -1,19 +1,16 @@
 import { storiesOf } from "@storybook/react";
-import React, { useState } from "react";
-import ReactDOM from "react-dom";
-import { action } from "@storybook/addon-actions";
+import React from "react";
+import { ViewportContext } from "@microsoft/fast-components-react-base";
+import { Omit } from "utility-types";
+import { Heading, HeadingSize } from "../heading";
+import { AccentButton } from "../accent-button";
+import { FlyoutAxisPositioningMode } from "./flyout.props";
 import {
     Flyout,
     FlyoutHorizontalPosition,
     FlyoutProps,
     FlyoutVerticalPosition,
 } from "./";
-import { ViewportContext } from "@microsoft/fast-components-react-base";
-import { FlyoutAxisPositioningMode } from "./flyout.props";
-import { Heading, HeadingSize } from "../heading";
-import { Paragraph, ParagraphSize } from "../paragraph";
-import { AccentButton } from "../accent-button";
-import { Omit } from "utility-types";
 
 interface FlyoutTestState {
     /**
@@ -93,13 +90,13 @@ class FlyoutTest extends React.Component<Omit<FlyoutProps, "anchor">, FlyoutTest
         const { children, visible, ...props }: Partial<FlyoutProps> = this.props;
 
         return (
-            <Flyout anchor={this.anchor} visible={this.state.visible} {...props}>
+            <Flyout anchor={this.anchor} visible={visible} {...props}>
                 {children}
             </Flyout>
         );
     }
 
-    private updateFlyoutState = (e: React.MouseEvent<any>): void => {
+    private updateFlyoutState = (): void => {
         this.setState({
             visible: !this.state.visible,
         });
@@ -249,6 +246,5 @@ storiesOf("Flyout", module)
     ))
     .add("with vertical always in view", () => <FlyoutTest verticalAlwaysInView={true} />)
     .add("with soft dismiss", () => (
-        /* tslint:disable-next-line:jsx-no-lambda */
         <FlyoutTest onDismiss={(): void => alert("soft dismiss")} />
     ));

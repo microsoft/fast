@@ -1,5 +1,4 @@
 import React from "react";
-import * as ShallowRenderer from "react-test-renderer/shallow";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow, ShallowWrapper } from "enzyme";
 import {
@@ -17,6 +16,7 @@ import {
     TabPanelClassNameContract,
     TabsClassNameContract,
 } from "@microsoft/fast-components-class-name-contracts-base";
+import { DisplayNamePrefix } from "../utilities";
 import Tabs, {
     Tab,
     TabItem,
@@ -28,7 +28,6 @@ import Tabs, {
     TabsSlot,
     TabsUnhandledProps,
 } from "./index";
-import { DisplayNamePrefix } from "../utilities";
 
 export enum CustomTabsSlot {
     tab = "customTab",
@@ -146,10 +145,7 @@ describe("tabs", (): void => {
             <Tabs managedClasses={tabsManagedClasses} label="label" />
         );
         expect(
-            rendered
-                .find(`.${tabsManagedClasses.tabs_tabList}`)
-                .first()
-                .prop("role")
+            rendered.find(`.${tabsManagedClasses.tabs_tabList}`).first().prop("role")
         ).toBe("tablist");
     });
 
@@ -207,11 +203,6 @@ describe("tabs", (): void => {
     });
 
     test("should set an aria-orientation value equal to the value of the orientation prop when passed", () => {
-        const renderedWithChildren: any = mount(
-            <Tabs managedClasses={tabsManagedClasses} label={"items"}>
-                {children}
-            </Tabs>
-        );
         const renderedWithChildrenHorizontal: any = mount(
             <Tabs
                 managedClasses={tabsManagedClasses}
@@ -547,42 +538,12 @@ describe("tabs", (): void => {
         const tab1: any = rendered.find(Tab.displayName).at(0);
         const tab2: any = rendered.find(Tab.displayName).at(1);
 
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(0)
-                .prop("tabIndex")
-        ).toEqual(0);
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(1)
-                .prop("tabIndex")
-        ).toEqual(-1);
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(2)
-                .prop("tabIndex")
-        ).toEqual(-1);
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(0)
-                .prop("active")
-        ).toBe(true);
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(1)
-                .prop("active")
-        ).toBe(false);
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(2)
-                .prop("active")
-        ).toBe(false);
+        expect(rendered.find(Tab.displayName).at(0).prop("tabIndex")).toEqual(0);
+        expect(rendered.find(Tab.displayName).at(1).prop("tabIndex")).toEqual(-1);
+        expect(rendered.find(Tab.displayName).at(2).prop("tabIndex")).toEqual(-1);
+        expect(rendered.find(Tab.displayName).at(0).prop("active")).toBe(true);
+        expect(rendered.find(Tab.displayName).at(1).prop("active")).toBe(false);
+        expect(rendered.find(Tab.displayName).at(2).prop("active")).toBe(false);
 
         tab2.simulate("click", {
             currentTarget: { getAttribute: (): string => id1 },
@@ -590,245 +551,65 @@ describe("tabs", (): void => {
 
         expect(onUpdate).toBeCalledWith(id1);
 
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(0)
-                .prop("tabIndex")
-        ).toEqual(0);
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(1)
-                .prop("tabIndex")
-        ).toEqual(-1);
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(2)
-                .prop("tabIndex")
-        ).toEqual(-1);
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(0)
-                .prop("active")
-        ).toBe(true);
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(1)
-                .prop("active")
-        ).toBe(false);
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(2)
-                .prop("active")
-        ).toBe(false);
+        expect(rendered.find(Tab.displayName).at(0).prop("tabIndex")).toEqual(0);
+        expect(rendered.find(Tab.displayName).at(1).prop("tabIndex")).toEqual(-1);
+        expect(rendered.find(Tab.displayName).at(2).prop("tabIndex")).toEqual(-1);
+        expect(rendered.find(Tab.displayName).at(0).prop("active")).toBe(true);
+        expect(rendered.find(Tab.displayName).at(1).prop("active")).toBe(false);
+        expect(rendered.find(Tab.displayName).at(2).prop("active")).toBe(false);
 
         tab1.simulate("keydown", { keyCode: keyCodeArrowLeft });
 
         expect(onUpdate).toBeCalledWith(id2);
 
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(0)
-                .prop("tabIndex")
-        ).toEqual(0);
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(1)
-                .prop("tabIndex")
-        ).toEqual(-1);
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(2)
-                .prop("tabIndex")
-        ).toEqual(-1);
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(0)
-                .prop("active")
-        ).toBe(true);
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(1)
-                .prop("active")
-        ).toBe(false);
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(2)
-                .prop("active")
-        ).toBe(false);
+        expect(rendered.find(Tab.displayName).at(0).prop("tabIndex")).toEqual(0);
+        expect(rendered.find(Tab.displayName).at(1).prop("tabIndex")).toEqual(-1);
+        expect(rendered.find(Tab.displayName).at(2).prop("tabIndex")).toEqual(-1);
+        expect(rendered.find(Tab.displayName).at(0).prop("active")).toBe(true);
+        expect(rendered.find(Tab.displayName).at(1).prop("active")).toBe(false);
+        expect(rendered.find(Tab.displayName).at(2).prop("active")).toBe(false);
 
         tab1.simulate("keydown", { keyCode: keyCodeArrowRight });
 
         expect(onUpdate).toBeCalledWith(id1);
 
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(0)
-                .prop("tabIndex")
-        ).toEqual(0);
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(1)
-                .prop("tabIndex")
-        ).toEqual(-1);
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(2)
-                .prop("tabIndex")
-        ).toEqual(-1);
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(0)
-                .prop("active")
-        ).toBe(true);
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(1)
-                .prop("active")
-        ).toBe(false);
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(2)
-                .prop("active")
-        ).toBe(false);
+        expect(rendered.find(Tab.displayName).at(0).prop("tabIndex")).toEqual(0);
+        expect(rendered.find(Tab.displayName).at(1).prop("tabIndex")).toEqual(-1);
+        expect(rendered.find(Tab.displayName).at(2).prop("tabIndex")).toEqual(-1);
+        expect(rendered.find(Tab.displayName).at(0).prop("active")).toBe(true);
+        expect(rendered.find(Tab.displayName).at(1).prop("active")).toBe(false);
+        expect(rendered.find(Tab.displayName).at(2).prop("active")).toBe(false);
 
         tab1.simulate("keydown", { keyCode: keyCodeHome });
 
         expect(onUpdate).toBeCalledWith(id0);
 
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(0)
-                .prop("tabIndex")
-        ).toEqual(0);
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(1)
-                .prop("tabIndex")
-        ).toEqual(-1);
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(2)
-                .prop("tabIndex")
-        ).toEqual(-1);
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(0)
-                .prop("active")
-        ).toBe(true);
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(1)
-                .prop("active")
-        ).toBe(false);
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(2)
-                .prop("active")
-        ).toBe(false);
+        expect(rendered.find(Tab.displayName).at(0).prop("tabIndex")).toEqual(0);
+        expect(rendered.find(Tab.displayName).at(1).prop("tabIndex")).toEqual(-1);
+        expect(rendered.find(Tab.displayName).at(2).prop("tabIndex")).toEqual(-1);
+        expect(rendered.find(Tab.displayName).at(0).prop("active")).toBe(true);
+        expect(rendered.find(Tab.displayName).at(1).prop("active")).toBe(false);
+        expect(rendered.find(Tab.displayName).at(2).prop("active")).toBe(false);
 
         tab1.simulate("keydown", { keyCode: keyCodeEnd });
 
         expect(onUpdate).toBeCalledWith(id2);
 
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(0)
-                .prop("tabIndex")
-        ).toEqual(0);
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(1)
-                .prop("tabIndex")
-        ).toEqual(-1);
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(2)
-                .prop("tabIndex")
-        ).toEqual(-1);
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(0)
-                .prop("active")
-        ).toBe(true);
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(1)
-                .prop("active")
-        ).toBe(false);
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(2)
-                .prop("active")
-        ).toBe(false);
+        expect(rendered.find(Tab.displayName).at(0).prop("tabIndex")).toEqual(0);
+        expect(rendered.find(Tab.displayName).at(1).prop("tabIndex")).toEqual(-1);
+        expect(rendered.find(Tab.displayName).at(2).prop("tabIndex")).toEqual(-1);
+        expect(rendered.find(Tab.displayName).at(0).prop("active")).toBe(true);
+        expect(rendered.find(Tab.displayName).at(1).prop("active")).toBe(false);
+        expect(rendered.find(Tab.displayName).at(2).prop("active")).toBe(false);
 
         rendered.setProps({ activeId: id1 });
 
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(0)
-                .prop("tabIndex")
-        ).toEqual(-1);
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(1)
-                .prop("tabIndex")
-        ).toEqual(0);
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(2)
-                .prop("tabIndex")
-        ).toEqual(-1);
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(0)
-                .prop("active")
-        ).toBe(false);
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(1)
-                .prop("active")
-        ).toBe(true);
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(2)
-                .prop("active")
-        ).toBe(false);
+        expect(rendered.find(Tab.displayName).at(0).prop("tabIndex")).toEqual(-1);
+        expect(rendered.find(Tab.displayName).at(1).prop("tabIndex")).toEqual(0);
+        expect(rendered.find(Tab.displayName).at(2).prop("tabIndex")).toEqual(-1);
+        expect(rendered.find(Tab.displayName).at(0).prop("active")).toBe(false);
+        expect(rendered.find(Tab.displayName).at(1).prop("active")).toBe(true);
+        expect(rendered.find(Tab.displayName).at(2).prop("active")).toBe(false);
     });
 
     test("should not use the callback if it is not a function", () => {
@@ -843,10 +624,7 @@ describe("tabs", (): void => {
             </Tabs>
         );
 
-        rendered
-            .find(Tab.displayName)
-            .at(0)
-            .simulate("keydown", { keyCode: keyCodeEnd });
+        rendered.find(Tab.displayName).at(0).simulate("keydown", { keyCode: keyCodeEnd });
         rendered
             .find(Tab.displayName)
             .at(0)
@@ -881,397 +659,98 @@ describe("tabs", (): void => {
         const tab2: any = rendered.find(Tab.displayName).at(1);
         const tab3: any = rendered.find(Tab.displayName).at(2);
 
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(0)
-                .prop("tabIndex")
-        ).toEqual(0);
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(1)
-                .prop("tabIndex")
-        ).toEqual(-1);
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(2)
-                .prop("tabIndex")
-        ).toEqual(-1);
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(0)
-                .prop("active")
-        ).toBe(true);
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(1)
-                .prop("active")
-        ).toBe(false);
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(2)
-                .prop("active")
-        ).toBe(false);
+        expect(rendered.find(Tab.displayName).at(0).prop("tabIndex")).toEqual(0);
+        expect(rendered.find(Tab.displayName).at(1).prop("tabIndex")).toEqual(-1);
+        expect(rendered.find(Tab.displayName).at(2).prop("tabIndex")).toEqual(-1);
+        expect(rendered.find(Tab.displayName).at(0).prop("active")).toBe(true);
+        expect(rendered.find(Tab.displayName).at(1).prop("active")).toBe(false);
+        expect(rendered.find(Tab.displayName).at(2).prop("active")).toBe(false);
 
         tab1.simulate("keydown", { keyCode: keyCodeArrowUp });
 
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(0)
-                .prop("tabIndex")
-        ).toEqual(-1);
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(1)
-                .prop("tabIndex")
-        ).toEqual(-1);
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(2)
-                .prop("tabIndex")
-        ).toEqual(0);
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(0)
-                .prop("active")
-        ).toBe(false);
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(1)
-                .prop("active")
-        ).toBe(false);
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(2)
-                .prop("active")
-        ).toBe(true);
+        expect(rendered.find(Tab.displayName).at(0).prop("tabIndex")).toEqual(-1);
+        expect(rendered.find(Tab.displayName).at(1).prop("tabIndex")).toEqual(-1);
+        expect(rendered.find(Tab.displayName).at(2).prop("tabIndex")).toEqual(0);
+        expect(rendered.find(Tab.displayName).at(0).prop("active")).toBe(false);
+        expect(rendered.find(Tab.displayName).at(1).prop("active")).toBe(false);
+        expect(rendered.find(Tab.displayName).at(2).prop("active")).toBe(true);
 
         tab3.simulate("keydown", { keyCode: keyCodeArrowUp });
 
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(0)
-                .prop("tabIndex")
-        ).toEqual(-1);
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(1)
-                .prop("tabIndex")
-        ).toEqual(0);
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(2)
-                .prop("tabIndex")
-        ).toEqual(-1);
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(0)
-                .prop("active")
-        ).toBe(false);
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(1)
-                .prop("active")
-        ).toBe(true);
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(2)
-                .prop("active")
-        ).toBe(false);
+        expect(rendered.find(Tab.displayName).at(0).prop("tabIndex")).toEqual(-1);
+        expect(rendered.find(Tab.displayName).at(1).prop("tabIndex")).toEqual(0);
+        expect(rendered.find(Tab.displayName).at(2).prop("tabIndex")).toEqual(-1);
+        expect(rendered.find(Tab.displayName).at(0).prop("active")).toBe(false);
+        expect(rendered.find(Tab.displayName).at(1).prop("active")).toBe(true);
+        expect(rendered.find(Tab.displayName).at(2).prop("active")).toBe(false);
 
         tab2.simulate("keydown", { keyCode: keyCodeArrowUp });
 
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(0)
-                .prop("tabIndex")
-        ).toEqual(0);
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(1)
-                .prop("tabIndex")
-        ).toEqual(-1);
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(2)
-                .prop("tabIndex")
-        ).toEqual(-1);
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(0)
-                .prop("active")
-        ).toBe(true);
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(1)
-                .prop("active")
-        ).toBe(false);
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(2)
-                .prop("active")
-        ).toBe(false);
+        expect(rendered.find(Tab.displayName).at(0).prop("tabIndex")).toEqual(0);
+        expect(rendered.find(Tab.displayName).at(1).prop("tabIndex")).toEqual(-1);
+        expect(rendered.find(Tab.displayName).at(2).prop("tabIndex")).toEqual(-1);
+        expect(rendered.find(Tab.displayName).at(0).prop("active")).toBe(true);
+        expect(rendered.find(Tab.displayName).at(1).prop("active")).toBe(false);
+        expect(rendered.find(Tab.displayName).at(2).prop("active")).toBe(false);
 
         tab1.simulate("keydown", { keyCode: keyCodeArrowDown });
 
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(0)
-                .prop("tabIndex")
-        ).toEqual(-1);
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(1)
-                .prop("tabIndex")
-        ).toEqual(0);
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(2)
-                .prop("tabIndex")
-        ).toEqual(-1);
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(0)
-                .prop("active")
-        ).toBe(false);
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(1)
-                .prop("active")
-        ).toBe(true);
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(2)
-                .prop("active")
-        ).toBe(false);
+        expect(rendered.find(Tab.displayName).at(0).prop("tabIndex")).toEqual(-1);
+        expect(rendered.find(Tab.displayName).at(1).prop("tabIndex")).toEqual(0);
+        expect(rendered.find(Tab.displayName).at(2).prop("tabIndex")).toEqual(-1);
+        expect(rendered.find(Tab.displayName).at(0).prop("active")).toBe(false);
+        expect(rendered.find(Tab.displayName).at(1).prop("active")).toBe(true);
+        expect(rendered.find(Tab.displayName).at(2).prop("active")).toBe(false);
 
         tab2.simulate("keydown", { keyCode: keyCodeArrowDown });
 
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(0)
-                .prop("tabIndex")
-        ).toEqual(-1);
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(1)
-                .prop("tabIndex")
-        ).toEqual(-1);
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(2)
-                .prop("tabIndex")
-        ).toEqual(0);
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(0)
-                .prop("active")
-        ).toBe(false);
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(1)
-                .prop("active")
-        ).toBe(false);
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(2)
-                .prop("active")
-        ).toBe(true);
+        expect(rendered.find(Tab.displayName).at(0).prop("tabIndex")).toEqual(-1);
+        expect(rendered.find(Tab.displayName).at(1).prop("tabIndex")).toEqual(-1);
+        expect(rendered.find(Tab.displayName).at(2).prop("tabIndex")).toEqual(0);
+        expect(rendered.find(Tab.displayName).at(0).prop("active")).toBe(false);
+        expect(rendered.find(Tab.displayName).at(1).prop("active")).toBe(false);
+        expect(rendered.find(Tab.displayName).at(2).prop("active")).toBe(true);
 
         tab3.simulate("keydown", { keyCode: keyCodeArrowDown });
 
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(0)
-                .prop("tabIndex")
-        ).toEqual(0);
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(1)
-                .prop("tabIndex")
-        ).toEqual(-1);
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(2)
-                .prop("tabIndex")
-        ).toEqual(-1);
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(0)
-                .prop("active")
-        ).toBe(true);
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(1)
-                .prop("active")
-        ).toBe(false);
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(2)
-                .prop("active")
-        ).toBe(false);
+        expect(rendered.find(Tab.displayName).at(0).prop("tabIndex")).toEqual(0);
+        expect(rendered.find(Tab.displayName).at(1).prop("tabIndex")).toEqual(-1);
+        expect(rendered.find(Tab.displayName).at(2).prop("tabIndex")).toEqual(-1);
+        expect(rendered.find(Tab.displayName).at(0).prop("active")).toBe(true);
+        expect(rendered.find(Tab.displayName).at(1).prop("active")).toBe(false);
+        expect(rendered.find(Tab.displayName).at(2).prop("active")).toBe(false);
 
         tab1.simulate("keydown", { keyCode: keyCodeEnd });
 
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(0)
-                .prop("tabIndex")
-        ).toEqual(-1);
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(1)
-                .prop("tabIndex")
-        ).toEqual(-1);
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(2)
-                .prop("tabIndex")
-        ).toEqual(0);
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(0)
-                .prop("active")
-        ).toBe(false);
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(1)
-                .prop("active")
-        ).toBe(false);
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(2)
-                .prop("active")
-        ).toBe(true);
+        expect(rendered.find(Tab.displayName).at(0).prop("tabIndex")).toEqual(-1);
+        expect(rendered.find(Tab.displayName).at(1).prop("tabIndex")).toEqual(-1);
+        expect(rendered.find(Tab.displayName).at(2).prop("tabIndex")).toEqual(0);
+        expect(rendered.find(Tab.displayName).at(0).prop("active")).toBe(false);
+        expect(rendered.find(Tab.displayName).at(1).prop("active")).toBe(false);
+        expect(rendered.find(Tab.displayName).at(2).prop("active")).toBe(true);
 
         tab1.simulate("keydown", { keyCode: keyCodeHome });
 
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(0)
-                .prop("tabIndex")
-        ).toEqual(0);
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(1)
-                .prop("tabIndex")
-        ).toEqual(-1);
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(2)
-                .prop("tabIndex")
-        ).toEqual(-1);
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(0)
-                .prop("active")
-        ).toBe(true);
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(1)
-                .prop("active")
-        ).toBe(false);
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(2)
-                .prop("active")
-        ).toBe(false);
+        expect(rendered.find(Tab.displayName).at(0).prop("tabIndex")).toEqual(0);
+        expect(rendered.find(Tab.displayName).at(1).prop("tabIndex")).toEqual(-1);
+        expect(rendered.find(Tab.displayName).at(2).prop("tabIndex")).toEqual(-1);
+        expect(rendered.find(Tab.displayName).at(0).prop("active")).toBe(true);
+        expect(rendered.find(Tab.displayName).at(1).prop("active")).toBe(false);
+        expect(rendered.find(Tab.displayName).at(2).prop("active")).toBe(false);
 
         tab2.simulate("click", {
             currentTarget: { getAttribute: (): string => id1 },
         });
 
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(0)
-                .prop("tabIndex")
-        ).toEqual(-1);
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(1)
-                .prop("tabIndex")
-        ).toEqual(0);
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(2)
-                .prop("tabIndex")
-        ).toEqual(-1);
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(0)
-                .prop("active")
-        ).toBe(false);
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(1)
-                .prop("active")
-        ).toBe(true);
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(2)
-                .prop("active")
-        ).toBe(false);
+        expect(rendered.find(Tab.displayName).at(0).prop("tabIndex")).toEqual(-1);
+        expect(rendered.find(Tab.displayName).at(1).prop("tabIndex")).toEqual(0);
+        expect(rendered.find(Tab.displayName).at(2).prop("tabIndex")).toEqual(-1);
+        expect(rendered.find(Tab.displayName).at(0).prop("active")).toBe(false);
+        expect(rendered.find(Tab.displayName).at(1).prop("active")).toBe(true);
+        expect(rendered.find(Tab.displayName).at(2).prop("active")).toBe(false);
     });
 
+    /* eslint-disable react/display-name */
     function renderTab(tabTitle: string, className?: string): () => React.ReactNode {
         return (): React.ReactNode => <div className={className}>{tabTitle}</div>;
     }
@@ -1282,6 +761,7 @@ describe("tabs", (): void => {
     ): () => React.ReactNode {
         return (): React.ReactNode => <div className={className}>{tabContent}</div>;
     }
+    /* eslint-enable react/display-name */
     const tabItem1: TabsItem = {
         tab: renderTab("tab one"),
         content: renderTabContent("tab one content"),
@@ -1323,12 +803,9 @@ describe("tabs", (): void => {
             />
         );
 
-        expect(
-            renderedWithChildren
-                .find(Tab.displayName)
-                .at(1)
-                .prop("tabIndex")
-        ).toEqual(0);
+        expect(renderedWithChildren.find(Tab.displayName).at(1).prop("tabIndex")).toEqual(
+            0
+        );
     });
 });
 

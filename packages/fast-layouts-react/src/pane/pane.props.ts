@@ -32,8 +32,8 @@ export interface PaneResizeControlProps {
     role?: string;
 }
 
-export interface PaneManagedClasses extends ManagedClasses<PaneClassNamesContract> {}
-export interface PaneUnhandledProps extends React.HTMLAttributes<HTMLDivElement> {}
+export type PaneManagedClasses = ManagedClasses<PaneClassNamesContract>;
+export type PaneUnhandledProps = React.HTMLAttributes<HTMLDivElement>;
 export interface PaneHandledProps extends PaneManagedClasses {
     /**
      * The initial width of the pane

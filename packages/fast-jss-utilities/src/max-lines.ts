@@ -1,6 +1,6 @@
 import * as CSS from "csstype";
-import { toPx } from "./units";
 import { CSSRules } from "@microsoft/fast-jss-manager";
+import { toPx } from "./units";
 
 /**
  * @deprecated

@@ -1,7 +1,7 @@
 import { CSSRules } from "@microsoft/fast-jss-manager";
+import { format, toPx } from "@microsoft/fast-jss-utilities";
 import { applyCornerRadius } from "../utilities/border";
 import { DesignSystem } from "../design-system";
-import { format, toPx } from "@microsoft/fast-jss-utilities";
 import {
     neutralFillHover,
     neutralFillInputActive,
@@ -32,6 +32,7 @@ import {
  * Shared input field styles
  */
 export function inputFieldStyles(
+    /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
     config?: DesignSystem /* @deprecated - argument is no longer necessary */
 ): CSSRules<{}> {
     return {

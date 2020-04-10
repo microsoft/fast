@@ -1,6 +1,6 @@
 import React from "react";
-import { RowClassNamesContract } from "./row";
 import { ManagedClasses } from "@microsoft/fast-jss-manager-react";
+import { RowClassNamesContract } from "./row";
 
 /**
  * The resize direction options: 'north' | 'south'
@@ -32,8 +32,8 @@ export interface RowResizeControlProps {
     role?: string;
 }
 
-export interface RowManagedClasses extends ManagedClasses<RowClassNamesContract> {}
-export interface RowUnhandledProps extends React.HTMLAttributes<HTMLDivElement> {}
+export type RowManagedClasses = ManagedClasses<RowClassNamesContract>;
+export type RowUnhandledProps = React.HTMLAttributes<HTMLDivElement>;
 export interface RowHandledProps extends RowManagedClasses {
     /**
      * The initial height of the row

@@ -5,8 +5,8 @@ import {
 } from "@microsoft/fast-components-class-name-contracts-base";
 import { SliderState, SliderThumb } from "./slider";
 
-export interface SliderManagedClasses extends ManagedClasses<SliderClassNameContract> {}
-export interface SliderUnhandledProps extends React.HTMLAttributes<HTMLDivElement> {}
+export type SliderManagedClasses = ManagedClasses<SliderClassNameContract>;
+export type SliderUnhandledProps = React.HTMLAttributes<HTMLDivElement>;
 
 export enum SliderOrientation {
     horizontal = "horizontal",

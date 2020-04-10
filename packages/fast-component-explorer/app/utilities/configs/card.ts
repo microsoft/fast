@@ -1,4 +1,3 @@
-import { ComponentViewConfig } from "./data.props";
 import {
     Card,
     CardProps,
@@ -6,6 +5,7 @@ import {
     imageSchema,
 } from "@microsoft/fast-components-react-msft";
 import Guidance from "../../.tmp/card/guidance";
+import { ComponentViewConfig } from "./data.props";
 
 const cardConfig: ComponentViewConfig<CardProps> = {
     schema: cardSchema,

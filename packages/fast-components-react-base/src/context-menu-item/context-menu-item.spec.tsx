@@ -1,14 +1,14 @@
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, shallow } from "enzyme";
+import { keyCodeEnter, keyCodeSpace } from "@microsoft/fast-web-utilities";
+import { DisplayNamePrefix } from "../utilities";
 import ContextMenuItem, {
     ContextMenuItemHandledProps,
     ContextMenuItemProps,
     ContextMenuItemRole,
     ContextMenuItemUnhandledProps,
 } from "./context-menu-item";
-import { keyCodeEnter, keyCodeSpace } from "@microsoft/fast-web-utilities";
-import { DisplayNamePrefix } from "../utilities";
 
 /*
  * Configure Enzyme

@@ -11,8 +11,8 @@ export interface TabsItem {
     id: string;
 }
 
-export interface TabsManagedClasses extends ManagedClasses<TabsClassNameContract> {}
-export interface TabsUnhandledProps extends React.HTMLAttributes<HTMLDivElement> {}
+export type TabsManagedClasses = ManagedClasses<TabsClassNameContract>;
+export type TabsUnhandledProps = React.HTMLAttributes<HTMLDivElement>;
 export interface TabsHandledProps extends TabsManagedClasses {
     /**
      * The active tab item id

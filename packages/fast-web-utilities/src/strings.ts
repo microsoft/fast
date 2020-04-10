@@ -4,7 +4,7 @@ import { camelCase } from "lodash-es";
  * Builds a string from a format specifier and replacement parameters.
  */
 export function format(formatSpecifier: string, ...parameters: string[]): string {
-    return formatSpecifier.replace(/{(\d+)}/g, function(
+    return formatSpecifier.replace(/{(\d+)}/g, function (
         match: string,
         index: number
     ): any {
@@ -65,7 +65,7 @@ export function spinalCase(value: string): string {
         .charAt(0)
         .toLowerCase()}${value.slice(1)}`;
 
-    return valueWithLowerCaseFirstLetter.replace(/([A-Z])/g, function(
+    return valueWithLowerCaseFirstLetter.replace(/([A-Z])/g, function (
         match: string,
         group1: string
     ): string {

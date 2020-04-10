@@ -13,6 +13,7 @@ export interface Registry {
     register(controller: Container): void;
 }
 
+/* eslint-disable-next-line @typescript-eslint/no-empty-interface */
 export interface InterfaceSymbol<T> {}
 
 export const DI = {

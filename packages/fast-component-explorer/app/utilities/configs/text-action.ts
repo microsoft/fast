@@ -1,4 +1,3 @@
-import { ComponentViewConfig } from "./data.props";
 import {
     buttonSchema,
     TextAction,
@@ -8,6 +7,7 @@ import {
 } from "@microsoft/fast-components-react-msft";
 import { glyphSchema, Icon } from "../../../app/components/glyph";
 import Guidance from "../../.tmp/text-action/guidance";
+import { ComponentViewConfig } from "./data.props";
 
 const textActionConfig: ComponentViewConfig<TextActionProps> = {
     schema: textActionSchema,

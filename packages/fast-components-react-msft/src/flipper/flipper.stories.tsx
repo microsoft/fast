@@ -1,7 +1,7 @@
 import { storiesOf } from "@storybook/react";
 import React from "react";
-import { Flipper, FlipperDirection } from "./";
 import { action } from "@storybook/addon-actions";
+import { Flipper, FlipperDirection } from "./";
 
 storiesOf("Flipper", module)
     .add("Default", () => <Flipper onClick={action("onClick")} />)

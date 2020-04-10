@@ -1,14 +1,6 @@
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
-import MSFTCarousel, {
-    CarouselHandledProps,
-    CarouselManagedClasses,
-    CarouselProps,
-    CarouselSlide,
-    CarouselSlideTheme,
-    CarouselUnhandledProps,
-} from "./carousel";
 import {
     CallToAction,
     CallToActionAppearance,
@@ -20,7 +12,14 @@ import {
     ParagraphSize,
 } from "../index";
 import { DisplayNamePrefix } from "../utilities";
-import { CarouselClassNameContract } from ".";
+import MSFTCarousel, {
+    CarouselHandledProps,
+    CarouselProps,
+    CarouselSlide,
+    CarouselSlideTheme,
+    CarouselUnhandledProps,
+} from "./carousel";
+import { CarouselClassNameContract } from "./";
 
 function contentOne(): (className?: string) => React.ReactNode {
     return (className?: string): React.ReactNode => (
@@ -185,10 +184,7 @@ describe("carousel", (): void => {
         const rendered: any = mount(<MSFTCarousel {...handledProps} />);
 
         expect(rendered.state("activeId")).toBe("id01");
-        rendered
-            .find('[direction="next"]')
-            .first()
-            .simulate("click");
+        rendered.find('[direction="next"]').first().simulate("click");
         expect(rendered.state("activeId")).toBe("id02");
     });
 
@@ -196,10 +192,7 @@ describe("carousel", (): void => {
         const rendered: any = mount(<MSFTCarousel {...handledProps} />);
 
         rendered.setState({ activeId: "id03" });
-        rendered
-            .find('[direction="next"]')
-            .first()
-            .simulate("click");
+        rendered.find('[direction="next"]').first().simulate("click");
         expect(rendered.state("activeId")).toBe("id01");
     });
 
@@ -207,10 +200,7 @@ describe("carousel", (): void => {
         const rendered: any = mount(<MSFTCarousel {...handledProps} />);
 
         rendered.setState({ activeId: "id02" });
-        rendered
-            .find('[direction="previous"]')
-            .first()
-            .simulate("click");
+        rendered.find('[direction="previous"]').first().simulate("click");
         expect(rendered.state("activeId")).toBe("id01");
     });
 
@@ -218,10 +208,7 @@ describe("carousel", (): void => {
         const rendered: any = mount(<MSFTCarousel {...handledProps} />);
 
         expect(rendered.state("activeId")).toBe("id01");
-        rendered
-            .find('[direction="previous"]')
-            .first()
-            .simulate("click");
+        rendered.find('[direction="previous"]').first().simulate("click");
         expect(rendered.state("activeId")).toBe("id03");
     });
 
@@ -230,10 +217,7 @@ describe("carousel", (): void => {
 
         expect(rendered.state("activeId")).toBe("id01");
 
-        rendered
-            .find('[role="tab"]')
-            .at(1)
-            .simulate("click");
+        rendered.find('[role="tab"]').at(1).simulate("click");
         expect(rendered.state("activeId")).toBe("id02");
     });
 
@@ -243,24 +227,15 @@ describe("carousel", (): void => {
             <MSFTCarousel {...handledProps} onActiveIdUpdate={onActiveIdUpdateMock} />
         );
 
-        rendered
-            .find('[direction="next"]')
-            .first()
-            .simulate("click");
+        rendered.find('[direction="next"]').first().simulate("click");
 
         expect(onActiveIdUpdateMock).toHaveBeenCalledTimes(1);
 
-        rendered
-            .find('[direction="previous"]')
-            .first()
-            .simulate("click");
+        rendered.find('[direction="previous"]').first().simulate("click");
 
         expect(onActiveIdUpdateMock).toHaveBeenCalledTimes(2);
 
-        rendered
-            .find('[role="tab"]')
-            .at(1)
-            .simulate("click");
+        rendered.find('[role="tab"]').at(1).simulate("click");
 
         expect(onActiveIdUpdateMock).toHaveBeenCalledTimes(3);
     });
@@ -271,24 +246,15 @@ describe("carousel", (): void => {
             <MSFTCarousel {...handledProps} onActiveIdUpdate={onActiveIdUpdateFn} />
         );
 
-        rendered
-            .find('[direction="next"]')
-            .first()
-            .simulate("click");
+        rendered.find('[direction="next"]').first().simulate("click");
 
         expect(onActiveIdUpdateFn.mock.results[0].value).toBe("id02");
 
-        rendered
-            .find('[direction="previous"]')
-            .first()
-            .simulate("click");
+        rendered.find('[direction="previous"]').first().simulate("click");
 
         expect(onActiveIdUpdateFn.mock.results[1].value).toBe("id01");
 
-        rendered
-            .find('[role="tab"]')
-            .at(1)
-            .simulate("click");
+        rendered.find('[role="tab"]').at(1).simulate("click");
 
         expect(onActiveIdUpdateFn.mock.results[2].value).toBe("id02");
     });
@@ -301,10 +267,7 @@ describe("carousel", (): void => {
             <MSFTCarousel {...handledProps} onActiveIdUpdate={onActiveIdUpdateFn} />
         );
 
-        rendered
-            .find('[role="tab"]')
-            .at(1)
-            .simulate("click");
+        rendered.find('[role="tab"]').at(1).simulate("click");
 
         expect(onActiveIdUpdateFn.mock.results[0].value).toBe(false);
     });
@@ -394,10 +357,7 @@ describe("carousel", (): void => {
             );
 
             rendered.setState({ activeId: "id02" });
-            rendered
-                .find(".customPrevious")
-                .first()
-                .simulate("click");
+            rendered.find(".customPrevious").first().simulate("click");
             expect(rendered.state("activeId")).toBe("id01");
         });
 
@@ -407,10 +367,7 @@ describe("carousel", (): void => {
             );
 
             rendered.setState({ activeId: "id01" });
-            rendered
-                .find(".customNext")
-                .first()
-                .simulate("click");
+            rendered.find(".customNext").first().simulate("click");
             expect(rendered.state("activeId")).toBe("id02");
         });
     });

@@ -1,3 +1,9 @@
+import { parseColorHexRGB } from "@microsoft/fast-colors";
+import designSystemDefaults, { DesignSystem } from "../../design-system";
+import {
+    accentPalette as getAccentPalette,
+    neutralPalette as getNeutralPalette,
+} from "../design-system";
 import {
     accentForegroundActive,
     accentForegroundHover,
@@ -6,15 +12,9 @@ import {
     accentForegroundLargeRest,
     accentForegroundRest,
 } from "./accent-foreground";
-import designSystemDefaults, { DesignSystem } from "../../design-system";
 import { Palette } from "./palette";
 import { contrast, Swatch } from "./common";
 import { accentPaletteConfig } from "./color-constants";
-import { parseColorHexRGB } from "@microsoft/fast-colors";
-import {
-    accentPalette as getAccentPalette,
-    neutralPalette as getNeutralPalette,
-} from "../design-system";
 
 describe("accentForeground", (): void => {
     const neutralPalette: Palette = getNeutralPalette(designSystemDefaults);
@@ -71,38 +71,35 @@ describe("accentForeground", (): void => {
         ];
 
         accentColors.forEach(
+            /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
             (accent: Swatch): void => {
-                neutralPalette.forEach(
-                    (swatch: Swatch): void => {
-                        const designSystem: DesignSystem = Object.assign(
-                            {},
-                            designSystemDefaults,
-                            {
-                                backgroundColor: swatch,
-                                accentPaletteConfig: Object.assign(
-                                    {},
-                                    accentPaletteConfig,
-                                    { baseColor: parseColorHexRGB(swatch) }
-                                ),
-                            }
-                        );
+                neutralPalette.forEach((swatch: Swatch): void => {
+                    const designSystem: DesignSystem = Object.assign(
+                        {},
+                        designSystemDefaults,
+                        {
+                            backgroundColor: swatch,
+                            accentPaletteConfig: Object.assign({}, accentPaletteConfig, {
+                                baseColor: parseColorHexRGB(swatch),
+                            }),
+                        }
+                    );
 
-                        expect(
-                            contrast(swatch, accentForegroundRest(designSystem))
-                            // There are a few states that are impossible to meet contrast on
-                        ).toBeGreaterThanOrEqual(4.47);
-                        expect(
-                            contrast(swatch, accentForegroundHover(designSystem))
-                            // There are a few states that are impossible to meet contrast on
-                        ).toBeGreaterThanOrEqual(3.7);
-                        expect(
-                            contrast(swatch, accentForegroundLargeRest(designSystem))
-                        ).toBeGreaterThanOrEqual(3);
-                        expect(
-                            contrast(swatch, accentForegroundLargeHover(designSystem))
-                        ).toBeGreaterThanOrEqual(3);
-                    }
-                );
+                    expect(
+                        contrast(swatch, accentForegroundRest(designSystem))
+                        // There are a few states that are impossible to meet contrast on
+                    ).toBeGreaterThanOrEqual(4.47);
+                    expect(
+                        contrast(swatch, accentForegroundHover(designSystem))
+                        // There are a few states that are impossible to meet contrast on
+                    ).toBeGreaterThanOrEqual(3.7);
+                    expect(
+                        contrast(swatch, accentForegroundLargeRest(designSystem))
+                    ).toBeGreaterThanOrEqual(3);
+                    expect(
+                        contrast(swatch, accentForegroundLargeHover(designSystem))
+                    ).toBeGreaterThanOrEqual(3);
+                });
             }
         );
     });

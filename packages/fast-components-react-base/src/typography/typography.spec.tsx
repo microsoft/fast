@@ -1,7 +1,7 @@
 import React from "react";
-import * as ShallowRenderer from "react-test-renderer/shallow";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, shallow } from "enzyme";
+import { DisplayNamePrefix } from "../utilities";
 import Typography, {
     TypographyClassNameContract,
     TypographyHandledProps,
@@ -11,7 +11,6 @@ import Typography, {
     TypographyTag,
     TypographyUnhandledProps,
 } from "./typography";
-import { DisplayNamePrefix } from "../utilities";
 
 /*
  * Configure Enzyme

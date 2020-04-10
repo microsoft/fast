@@ -2,6 +2,7 @@ import React from "react";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
 import { BadgeClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
+import { DisplayNamePrefix } from "../utilities";
 import MSFTBadge from "./badge";
 import {
     Badge,
@@ -10,7 +11,6 @@ import {
     BadgeSize,
     BadgeUnhandledProps,
 } from "./index";
-import { DisplayNamePrefix } from "../utilities";
 
 /*
  * Configure Enzyme

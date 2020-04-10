@@ -1,7 +1,7 @@
-import { black, white } from "./color-constants";
 import { DesignSystem } from "../../design-system";
-import { contrast, Swatch, SwatchRecipe, SwatchResolver } from "./common";
 import { accentBaseColor } from "../design-system";
+import { black, white } from "./color-constants";
+import { contrast, Swatch, SwatchRecipe, SwatchResolver } from "./common";
 
 /**
  * Function to derive accentForegroundCut from an input background and target contrast ratio

@@ -1,7 +1,6 @@
-// tslint:disable:prefer-for-of
+import { test200ImageData } from "../__test-images__/test200";
 import { Histogram } from "./histogram";
 import { ArrayPixelBlob } from "./array-pixel-blob";
-import { test200ImageData } from "../__test-images__/test200";
 
 describe("Generating a histogram from an image", (): void => {
     test("getHistogramIndex", () => {

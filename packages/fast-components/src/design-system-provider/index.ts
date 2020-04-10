@@ -4,14 +4,14 @@ import {
     nullableNumberConverter,
     observable,
 } from "@microsoft/fast-element";
-import { designSystemProperty, DesignSystemProvider } from "./design-system-provider";
-import { DesignSystemProviderStyles as styles } from "./design-system-provider.styles";
-import { DesignSystemProviderTemplate as template } from "./design-system-provider.template";
 import {
     DensityOffset,
     DesignSystem,
     DesignSystemDefaults,
 } from "@microsoft/fast-components-styles-msft";
+import { designSystemProperty, DesignSystemProvider } from "./design-system-provider";
+import { DesignSystemProviderStyles as styles } from "./design-system-provider.styles";
+import { DesignSystemProviderTemplate as template } from "./design-system-provider.template";
 
 @customElement({
     name: "fast-design-system-provider",

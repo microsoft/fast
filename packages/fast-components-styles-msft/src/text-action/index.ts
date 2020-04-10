@@ -1,4 +1,3 @@
-import { applyCornerRadius } from "../utilities/border";
 import { TextFieldClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
 import {
@@ -9,8 +8,9 @@ import {
     subtract,
     toPx,
 } from "@microsoft/fast-jss-utilities";
-import { DesignSystem } from "../design-system";
 import { TextActionClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
+import { DesignSystem } from "../design-system";
+import { applyCornerRadius } from "../utilities/border";
 import {
     neutralFillActive,
     neutralFillHover,

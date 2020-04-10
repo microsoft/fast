@@ -8,14 +8,13 @@ import { MessageTypes, UIMessage } from "./core/messaging";
 const controller = new FigmaController();
 
 function friendlyName(str: string): string {
-    const result = str.split(/([A-Z])/).reduce((prev, current, index) => {
-        return index % 2 === 1 ? prev + " " + current : prev + current;
-    });
+    const result = str
+        .split(/([A-Z])/)
+        .reduce((prev: string, current: string, index: number) => {
+            return index % 2 === 1 ? prev + " " + current : prev + current;
+        });
 
-    return result
-        .charAt(0)
-        .toUpperCase()
-        .concat(result.slice(1));
+    return result.charAt(0).toUpperCase().concat(result.slice(1));
 }
 
 function register(type: RecipeTypes, recipes: RecipeStore): void {
@@ -46,12 +45,12 @@ function syncInstanceWithMaster(target: InstanceNode): void {
 
     function sync(_source: BaseNode, _target: BaseNode): void {
         const pluginDataKeys: Array<keyof PluginNodeData> = ["recipes", "designSystem"];
-        pluginDataKeys.forEach(key => {
+        pluginDataKeys.forEach((key: "recipes" | "designSystem") => {
             _target.setPluginData(key, _source.getPluginData(key));
         });
 
         if (canHaveChildren(_source) && canHaveChildren(_target)) {
-            _source.children.forEach((child, index) => {
+            _source.children.forEach((child: any, index: number) => {
                 sync(child, _target.children[index]);
             });
         }
@@ -91,7 +90,7 @@ figma.on("selectionchange", () => {
 figma.ui.onmessage = (value: UIMessage): void => {
     if (value.type === MessageTypes.sync) {
         value.nodeIds
-            .map(id => figma.getNodeById(id))
+            .map((id: string) => figma.getNodeById(id))
             .filter(isInstanceNode)
             .map(syncInstanceWithMaster);
     }

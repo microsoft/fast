@@ -1,5 +1,3 @@
-/* tslint:disable:jsx-no-lambda */
-/* tslint:disable:no-empty */
 import { Canvas, Container, Row } from "@microsoft/fast-layouts-react";
 import {
     DesignSystem,
@@ -14,12 +12,7 @@ import {
     PaletteType,
 } from "@microsoft/fast-components-styles-msft";
 import { DesignSystemProvider } from "@microsoft/fast-jss-manager-react";
-import { ColorsDesignSystem } from "./design-system";
-import { Gradient } from "./gradient";
-import ColorBlocks from "./color-blocks";
-import { ControlPane } from "./control-pane";
 import React from "react";
-import { AppState } from "./state";
 import { connect } from "react-redux";
 import { Background } from "@microsoft/fast-components-react-msft";
 import { FixedSizeList } from "react-window";
@@ -29,6 +22,11 @@ import {
     Swatch,
 } from "@microsoft/fast-components-styles-msft/dist/utilities/color/common";
 import { StandardLuminance } from "@microsoft/fast-components-styles-msft";
+import { AppState } from "./state";
+import { ControlPane } from "./control-pane";
+import ColorBlocks from "./color-blocks";
+import { Gradient } from "./gradient";
+import { ColorsDesignSystem } from "./design-system";
 
 interface AppProps {
     designSystem: ColorsDesignSystem;
@@ -88,6 +86,7 @@ class App extends React.Component<AppProps, {}> {
                                 <Row fill={true}>
                                     <AutoSizer
                                         onResize={
+                                            /* eslint-disable-next-line */
                                             /* this lambda is intentional - it forces the pure component to re-render */ (): void => {}
                                         }
                                     >
@@ -156,22 +155,20 @@ class App extends React.Component<AppProps, {}> {
 
         return this.props.showOnlyRecommendedBackgrounds
             ? neutralLayers
-            : neutralPalette.map(
-                  (color: string): { color: string; title?: string } => {
-                      const neutralLayerIndex: number = neutralLayers.findIndex(
-                          (config: { color: string; title: string }): boolean =>
-                              config.color === color
-                      );
+            : neutralPalette.map((color: string): { color: string; title?: string } => {
+                  const neutralLayerIndex: number = neutralLayers.findIndex(
+                      (config: { color: string; title: string }): boolean =>
+                          config.color === color
+                  );
 
-                      return {
-                          color,
-                          title:
-                              neutralLayerIndex !== -1
-                                  ? neutralLayers[neutralLayerIndex].title
-                                  : undefined,
-                      };
-                  }
-              );
+                  return {
+                      color,
+                      title:
+                          neutralLayerIndex !== -1
+                              ? neutralLayers[neutralLayerIndex].title
+                              : undefined,
+                  };
+              });
     }
 
     private resolveRecipes = (
@@ -181,17 +178,13 @@ class App extends React.Component<AppProps, {}> {
             baseLayerLuminance: luminance,
         });
         return this.backgroundRecipes
-            .map(
-                (
-                    conf: [ColorRecipe<string>, string]
-                ): {
-                    color: string;
-                    title: string;
-                } => ({
-                    color: conf[0](designSystem),
-                    title: conf[1],
-                })
-            )
+            .map((conf: [ColorRecipe<string>, string]): {
+                color: string;
+                title: string;
+            } => ({
+                color: conf[0](designSystem),
+                title: conf[1],
+            }))
             .reduce(
                 (
                     accum: Array<{ color: string; title: string }>,

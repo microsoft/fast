@@ -4,8 +4,8 @@ import {
     ToggleClassNameContract,
 } from "@microsoft/fast-components-class-name-contracts-base";
 
-export interface ToggleManagedClasses extends ManagedClasses<ToggleClassNameContract> {}
-export interface ToggleUnhandledProps extends React.HTMLAttributes<HTMLDivElement> {}
+export type ToggleManagedClasses = ManagedClasses<ToggleClassNameContract>;
+export type ToggleUnhandledProps = React.HTMLAttributes<HTMLDivElement>;
 export interface ToggleHandledProps extends ToggleManagedClasses {
     /**
      * The label content

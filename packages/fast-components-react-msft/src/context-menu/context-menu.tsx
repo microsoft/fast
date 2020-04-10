@@ -1,14 +1,14 @@
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import { ContextMenu as BaseContextMenu } from "@microsoft/fast-components-react-base";
 import React from "react";
+import { neutralLayerFloating } from "@microsoft/fast-components-styles-msft";
 import { DisplayNamePrefix } from "../utilities";
+import { Background } from "../background";
 import {
     ContextMenuHandledProps,
     ContextMenuProps,
     ContextMenuUnhandledProps,
 } from "./context-menu.props";
-import { Background } from "../background";
-import { neutralLayerFloating } from "@microsoft/fast-components-styles-msft";
 
 class ContextMenu extends Foundation<
     ContextMenuHandledProps,

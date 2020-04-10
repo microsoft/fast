@@ -10,8 +10,7 @@ import {
     ManagedClasses,
 } from "@microsoft/fast-components-class-name-contracts-msft";
 
-export interface ButtonBaseManagedClasses
-    extends ManagedClasses<ButtonBaseClassNameContract> {}
+export type ButtonBaseManagedClasses = ManagedClasses<ButtonBaseClassNameContract>;
 export interface ButtonBaseHandledProps
     extends ButtonBaseManagedClasses,
         Subtract<ButtonHandledProps, ButtonManagedClasses> {
@@ -26,6 +25,5 @@ export interface ButtonBaseHandledProps
     afterContent?: (className?: string) => React.ReactNode;
 }
 
-/* tslint:disable-next-line:no-empty-interface */
-export interface ButtonBaseUnhandledProps extends ButtonUnhandledProps {}
+export type ButtonBaseUnhandledProps = ButtonUnhandledProps;
 export type ButtonBaseProps = ButtonBaseHandledProps & ButtonBaseUnhandledProps;

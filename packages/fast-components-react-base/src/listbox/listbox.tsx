@@ -100,17 +100,15 @@ class Listbox extends Foundation<
      */
     public static getItemIndexById(itemId: string, children: React.ReactNode): number {
         const childrenAsArray: React.ReactNode[] = React.Children.toArray(children);
-        return childrenAsArray.findIndex(
-            (child: React.ReactElement<any>): boolean => {
-                if (
-                    child.props[Listbox.idPropertyKey] === undefined ||
-                    child.props[Listbox.idPropertyKey] !== itemId
-                ) {
-                    return false;
-                }
-                return true;
+        return childrenAsArray.findIndex((child: React.ReactElement<any>): boolean => {
+            if (
+                child.props[Listbox.idPropertyKey] === undefined ||
+                child.props[Listbox.idPropertyKey] !== itemId
+            ) {
+                return false;
             }
-        );
+            return true;
+        });
     }
 
     private static valuePropertyKey: string = "value";
@@ -555,22 +553,20 @@ class Listbox extends Foundation<
 
         const children: React.ReactNode[] = React.Children.toArray(this.props.children);
 
-        children.some(
-            (child: React.ReactElement<any>, index: number): boolean => {
-                if (child.props[this.props.typeAheadPropertyKey] === undefined) {
-                    return false;
-                }
-                if (
-                    startsWith(
-                        child.props[this.props.typeAheadPropertyKey].toLowerCase(),
-                        this.typeAheadString
-                    )
-                ) {
-                    matchIndex = index;
-                    return true;
-                }
+        children.some((child: React.ReactElement<any>, index: number): boolean => {
+            if (child.props[this.props.typeAheadPropertyKey] === undefined) {
+                return false;
             }
-        );
+            if (
+                startsWith(
+                    child.props[this.props.typeAheadPropertyKey].toLowerCase(),
+                    this.typeAheadString
+                )
+            ) {
+                matchIndex = index;
+                return true;
+            }
+        });
 
         if (matchIndex !== -1) {
             this.typeAheadTimer = setTimeout((): void => {

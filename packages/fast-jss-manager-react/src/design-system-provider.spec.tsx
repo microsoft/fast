@@ -1,16 +1,14 @@
 import React from "react";
-import { DesignSystemProvider } from "./design-system-provider";
-import * as ShallowRenderer from "react-test-renderer/shallow";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, ReactWrapper, shallow } from "enzyme";
-import { Consumer, designSystemContext } from "./context";
+import { DesignSystemProvider } from "./design-system-provider";
+import { Consumer } from "./context";
 
 configure({ adapter: new Adapter() });
 
 describe("DesignSystemProvider", (): void => {
     test("should render children", (): void => {
         const text: string = "aRrAyS sTaRt At OnE";
-        const children: React.ReactNode = <p>{text}</p>;
         const provider: ReactWrapper = mount(
             <DesignSystemProvider designSystem={{}}>
                 <p>{text}</p>
@@ -59,11 +57,7 @@ describe("DesignSystemProvider", (): void => {
     test("should allow partial updates to context values", (): void => {
         const renderOne: any = jest.fn();
         const renderTwo: any = jest.fn();
-
-        function render(value: { a: string; b: string }): string {
-            return `${value.a}, ${value.b}`;
-        }
-
+        /* eslint-disable @typescript-eslint/no-unused-vars */
         const tree: ReactWrapper = mount(
             <DesignSystemProvider designSystem={{ a: "a", b: "b" }}>
                 <Consumer>{renderOne}</Consumer>

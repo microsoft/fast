@@ -1,6 +1,6 @@
-import { DesignSystem } from "../design-system";
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { CaptionClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
+import { DesignSystem } from "../design-system";
 
 const styles: ComponentStyles<CaptionClassNameContract, DesignSystem> = {
     caption: {},

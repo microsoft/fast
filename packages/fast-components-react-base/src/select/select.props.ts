@@ -3,20 +3,15 @@ import {
     ManagedClasses,
     SelectClassNameContract,
 } from "@microsoft/fast-components-class-name-contracts-base";
-import { ListboxItemProps } from "../listbox-item";
-import { SelectState } from "./select";
-import {
-    AxisPositioningMode,
-    ViewportPositionerHorizontalPosition,
-    ViewportPositionerProps,
-    ViewportPositionerVerticalPosition,
-} from "../viewport-positioner";
 import { Omit } from "utility-types";
+import { ListboxItemProps } from "../listbox-item";
+import { ViewportPositionerProps } from "../viewport-positioner";
+import { SelectState } from "./select";
 
-export interface SelectManagedClasses extends ManagedClasses<SelectClassNameContract> {}
-export interface SelectUnhandledProps extends React.HTMLAttributes<HTMLDivElement> {}
+export type SelectManagedClasses = ManagedClasses<SelectClassNameContract>;
+export type SelectUnhandledProps = React.HTMLAttributes<HTMLDivElement>;
 
-export interface SelectMenuFlyoutConfig extends Omit<ViewportPositionerProps, "anchor"> {}
+export type SelectMenuFlyoutConfig = Omit<ViewportPositionerProps, "anchor">;
 
 export interface SelectHandledProps extends SelectManagedClasses {
     /**

@@ -31,8 +31,8 @@ export enum GridAlignment {
  */
 export type GridGutter = 0 | 2 | 3 | 6 | 12;
 
-export interface GridManagedClasses extends ManagedClasses<GridClassNamesContract> {}
-export interface GridUnhandledProps extends React.HTMLAttributes<HTMLElement> {}
+export type GridManagedClasses = ManagedClasses<GridClassNamesContract>;
+export type GridUnhandledProps = React.HTMLAttributes<HTMLElement>;
 export interface GridHandledProps extends GridManagedClasses {
     /**
      * The html tag for the grid container

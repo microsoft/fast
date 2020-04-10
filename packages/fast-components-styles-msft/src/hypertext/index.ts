@@ -1,4 +1,6 @@
-import { DesignSystem } from "../design-system";
+import { ComponentStyles } from "@microsoft/fast-jss-manager";
+import { HypertextClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
+import { applyFocusVisible, format, toPx } from "@microsoft/fast-jss-utilities";
 import {
     accentForegroundActive,
     accentForegroundHover,
@@ -6,9 +8,7 @@ import {
     neutralFocus,
     neutralForegroundRest,
 } from "../utilities/color";
-import { ComponentStyles } from "@microsoft/fast-jss-manager";
-import { HypertextClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
-import { applyFocusVisible, format, toPx } from "@microsoft/fast-jss-utilities";
+import { DesignSystem } from "../design-system";
 import { focusOutlineWidth, outlineWidth } from "../utilities/design-system";
 import {
     HighContrastColor,

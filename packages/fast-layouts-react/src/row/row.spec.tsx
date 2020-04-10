@@ -1,8 +1,8 @@
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
-import { Row, RowClassNamesContract, RowHandledProps, RowUnhandledProps } from "./row";
 import { KeyCodes } from "@microsoft/fast-web-utilities";
+import { Row, RowClassNamesContract, RowHandledProps, RowUnhandledProps } from "./row";
 import { RowResizeDirection } from "./row.props";
 import { RowResizeControlProps } from ".";
 

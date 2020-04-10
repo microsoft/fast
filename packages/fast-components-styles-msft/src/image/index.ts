@@ -1,6 +1,6 @@
-import { DesignSystem } from "../design-system";
 import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
 import { ImageClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
+import { DesignSystem } from "../design-system";
 
 function applyImageStyles(): CSSRules<DesignSystem> {
     return {

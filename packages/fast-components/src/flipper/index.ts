@@ -1,7 +1,4 @@
 import { customElement } from "@microsoft/fast-element";
-import { Flipper } from "./flipper";
-import { FlipperTemplate as template } from "./flipper.template";
-import { FlipperStyles as styles } from "./flipper.styles";
 import { designSystemConsumer } from "../design-system-consumer";
 import {
     neutralFillStealthActive,
@@ -13,6 +10,9 @@ import {
     neutralOutlineHover,
     neutralOutlineRest,
 } from "../styles/recipes";
+import { Flipper } from "./flipper";
+import { FlipperTemplate as template } from "./flipper.template";
+import { FlipperStyles as styles } from "./flipper.styles";
 
 @customElement({
     name: "fast-flipper",

@@ -15,10 +15,11 @@ export enum TextFieldType {
     url = "url",
 }
 
-export interface TextFieldManagedClasses
-    extends ManagedClasses<TextFieldClassNameContract> {}
-export interface TextFieldUnhandledProps
-    extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "type"> {}
+export type TextFieldManagedClasses = ManagedClasses<TextFieldClassNameContract>;
+export type TextFieldUnhandledProps = Omit<
+    React.InputHTMLAttributes<HTMLInputElement>,
+    "type"
+>;
 export interface TextFieldHandledProps extends TextFieldManagedClasses {
     /**
      * The text field input type

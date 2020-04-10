@@ -1,9 +1,9 @@
+import designSystemDefaults from "../../design-system";
 import {
     neutralForegroundActive,
     neutralForegroundHover,
     neutralForegroundRest,
 } from "./neutral-foreground";
-import designSystemDefaults from "../../design-system";
 import { contrast } from "./common";
 
 describe("neutralForeground", (): void => {

@@ -52,7 +52,6 @@ describe("Grid", (): void => {
 
             expect(rendered.props().style.gridColumnGap).toEqual("24px");
 
-            /*tslint:disable-next-line:no-string-literal*/
             (window as any)["innerWidth"] = 0;
 
             // set props to force an update

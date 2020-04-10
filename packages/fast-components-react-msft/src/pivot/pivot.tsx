@@ -230,8 +230,8 @@ class Pivot extends Foundation<PivotHandledProps, PivotUnhandledProps, PivotStat
             return !tabElement
                 ? Direction.ltr
                 : getComputedStyle(tabElement).direction === Direction.rtl
-                    ? Direction.rtl
-                    : Direction.ltr;
+                ? Direction.rtl
+                : Direction.ltr;
         }
     }
 }

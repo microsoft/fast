@@ -1,7 +1,7 @@
-import { DesignSystem } from "../design-system";
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { AutoSuggestClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { add, format, multiply, toPx } from "@microsoft/fast-jss-utilities";
+import { DesignSystem } from "../design-system";
 import { applyElevatedCornerRadius } from "../utilities/border";
 import { neutralFillStealthRest } from "../utilities/color";
 import { heightNumber } from "../utilities/density";

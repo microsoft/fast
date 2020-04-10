@@ -1,9 +1,9 @@
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
-import { configure, mount, shallow } from "enzyme";
-import MSFTSliderLabel from "./slider-label";
-import { SliderLabel, SliderLabelHandledProps, SliderLabelUnhandledProps } from "./index";
+import { configure, shallow } from "enzyme";
 import { DisplayNamePrefix } from "../utilities";
+import MSFTSliderLabel from "./slider-label";
+import { SliderLabel, SliderLabelUnhandledProps } from "./index";
 
 /*
  * Configure Enzyme

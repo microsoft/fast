@@ -1,7 +1,6 @@
 import { storiesOf } from "@storybook/react";
-import React, { useState } from "react";
+import React from "react";
 import NumberField from "./";
-import { uniqueId } from "lodash-es";
 
 storiesOf("Number Field", module)
     .add("Default", () => <NumberField />)

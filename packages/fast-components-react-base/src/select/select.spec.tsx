@@ -1,15 +1,15 @@
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
-import { configure, mount, render, shallow } from "enzyme";
-import Select, { SelectClassNameContract, SelectUnhandledProps } from "./select";
-import ListboxItem from "../listbox-item";
+import { configure, mount, shallow } from "enzyme";
 import {
     keyCodeArrowDown,
     keyCodeArrowUp,
     keyCodeSpace,
 } from "@microsoft/fast-web-utilities";
+import ListboxItem from "../listbox-item";
 import { DisplayNamePrefix } from "../utilities";
 import { AxisPositioningMode } from "../viewport-positioner";
+import Select, { SelectClassNameContract, SelectUnhandledProps } from "./select";
 
 /*
  * Configure Enzyme
@@ -17,9 +17,6 @@ import { AxisPositioningMode } from "../viewport-positioner";
 configure({ adapter: new Adapter() });
 
 const itemA: JSX.Element = <ListboxItem id="a" value="a" displayString="a" />;
-const itemADisabled: JSX.Element = (
-    <ListboxItem id="a" value="a" displayString="a" disabled={true} />
-);
 const itemB: JSX.Element = <ListboxItem id="b" value="b" displayString="ab" />;
 const itemC: JSX.Element = <ListboxItem id="c" value="c" displayString="abc" />;
 
@@ -90,8 +87,6 @@ describe("select", (): void => {
                 {itemC}
             </Select>
         );
-
-        const triggerId: string = rendered.instance().triggerId;
 
         const trigger: any = rendered.find("button");
         expect(trigger.prop("aria-expanded")).toEqual(false);
@@ -356,6 +351,7 @@ describe("select", (): void => {
     test("Custom trigger render function is called", (): void => {
         const triggerRenderFn: any = jest.fn();
         triggerRenderFn.mockReturnValue("Test");
+        /* eslint-disable-next-line  @typescript-eslint/no-unused-vars */
         const rendered: any = mount(
             <Select trigger={triggerRenderFn}>
                 {itemA}

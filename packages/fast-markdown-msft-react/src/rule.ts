@@ -1,5 +1,5 @@
-import { Token, Tokens } from "./index";
 import { MarkdownIt } from "markdown-it";
+import { Token, Tokens } from "./index";
 
 export interface State {
     tokens: Token[];
@@ -34,6 +34,7 @@ export default class CreateRule {
 
             switch (state.tokens[i].type) {
                 case "link_open":
+                    /* eslint-disable-next-line no-case-declarations */
                     const linkToken: Token = new state.Token(
                         state.tokens[i].type,
                         "Hypertext",

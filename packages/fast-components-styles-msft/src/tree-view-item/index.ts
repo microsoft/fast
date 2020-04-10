@@ -1,6 +1,5 @@
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { TreeViewItemClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
-import { DesignSystem, DesignSystemResolver } from "../design-system";
 import {
     add,
     applyFocusVisible,
@@ -11,6 +10,7 @@ import {
     subtract,
     toPx,
 } from "@microsoft/fast-jss-utilities";
+import { DesignSystem } from "../design-system";
 import {
     accentForegroundRest,
     neutralFillStealthActive,

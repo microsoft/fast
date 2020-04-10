@@ -1,5 +1,5 @@
-import { AttachedBehaviorDirective } from "./directive";
 import { CaptureType } from "../template";
+import { AttachedBehaviorDirective } from "./directive";
 import { NodeBehaviorBehaviorOptions, NodeObservationBehavior } from "./node-observation";
 
 export interface SlottedBehaviorOptions<T = any>
@@ -11,15 +11,15 @@ export class SlottedBehavior extends NodeObservationBehavior<SlottedBehaviorOpti
         super(target, options);
     }
 
-    getNodes() {
+    getNodes(): Node[] {
         return this.target.assignedNodes(this.options);
     }
 
-    observe() {
+    observe(): void {
         this.target.addEventListener("slotchange", this);
     }
 
-    unobserve() {
+    unobserve(): void {
         this.target.removeEventListener("slotchange", this);
     }
 }

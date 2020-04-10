@@ -13,9 +13,8 @@ export enum DividerRoles {
     separator = "separator",
 }
 
-export interface DividerManagedClasses extends ManagedClasses<DividerClassNameContract> {}
-export interface DividerUnhandledProps
-    extends Omit<React.HTMLAttributes<HTMLHRElement>, "role"> {}
+export type DividerManagedClasses = ManagedClasses<DividerClassNameContract>;
+export type DividerUnhandledProps = Omit<React.HTMLAttributes<HTMLHRElement>, "role">;
 export interface DividerHandledProps extends DividerManagedClasses {
     /**
      * The HTML role attribute

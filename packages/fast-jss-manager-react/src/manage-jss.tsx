@@ -1,7 +1,7 @@
 import React from "react";
 import { ComponentStyles, ManagedClasses } from "@microsoft/fast-jss-manager";
 import { JSSManager, ManagedJSSProps } from "./jss-manager";
-/* tslint:disable-next-line */
+/* eslint-disable-next-line @typescript-eslint/no-var-requires */
 const hoistNonReactStatics = require("hoist-non-react-statics");
 
 /**
@@ -16,12 +16,13 @@ function manageJss<S, C>(
 ): <T>(
     Component: React.ComponentType<T & ManagedClasses<S>>
 ) => React.ComponentClass<ManagedJSSProps<T, S, C>> {
-    return function<T>(
+    return function <T>(
         Component: React.ComponentType<T & ManagedClasses<S>>
     ): React.ComponentClass<ManagedJSSProps<T, S, C>> {
         class JSSManagedComponent extends JSSManager<T, S, C> {
-            public static displayName: string = `withJSS(${Component.displayName ||
-                Component.name})`;
+            public static displayName: string = `withJSS(${
+                Component.displayName || Component.name
+            })`;
             protected styles: ComponentStyles<S, C> = styles;
             protected managedComponent: React.ComponentType<
                 T & ManagedClasses<S>

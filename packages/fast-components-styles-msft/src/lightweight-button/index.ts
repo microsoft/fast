@@ -1,5 +1,6 @@
 import { ButtonBaseClassNameContract as LightweightButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
+import { applyFocusVisible, toPx } from "@microsoft/fast-jss-utilities";
 import { DesignSystem } from "../design-system";
 import { baseButton, buttonStyles } from "../patterns/button";
 import {
@@ -8,7 +9,6 @@ import {
     accentForegroundRest,
     neutralForegroundRest,
 } from "../utilities/color";
-import { applyFocusVisible, toPx } from "@microsoft/fast-jss-utilities";
 import { focusOutlineWidth } from "../utilities/design-system";
 import {
     HighContrastColor,

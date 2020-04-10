@@ -58,6 +58,7 @@ describe("BreakpointTracker", (): void => {
             map[event] = callback;
         });
 
+        /* eslint-disable-next-line */
         const rendered: any = mount(<BreakpointTracker render={renderChild} />);
 
         map.resize();

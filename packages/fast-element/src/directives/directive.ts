@@ -18,11 +18,11 @@ export class AttachedBehaviorDirective<T = any> extends Directive {
         super();
     }
 
-    public createPlaceholder(index: number) {
+    public createPlaceholder(index: number): string {
         return DOM.createCustomAttributePlaceholder(this.name, index);
     }
 
-    public createBehavior(target: any) {
+    public createBehavior(target: any): Behavior {
         return new this.behavior(target, this.options);
     }
 }

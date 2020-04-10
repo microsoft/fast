@@ -17,11 +17,12 @@ export enum TextActionButtonPosition {
     after = "after",
 }
 
-export interface TextActionManagedClasses
-    extends ManagedClasses<TextActionClassNameContract> {}
+export type TextActionManagedClasses = ManagedClasses<TextActionClassNameContract>;
 /* TODO: #1416 - https://github.com/Microsoft/fast-dna/issues/1416 */
-export interface TextActionUnhandledProps
-    extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "type"> {}
+export type TextActionUnhandledProps = Omit<
+    React.InputHTMLAttributes<HTMLInputElement>,
+    "type"
+>;
 export interface TextActionHandledProps
     extends Subtract<TextFieldHandledProps, TextFieldManagedClasses>,
         TextActionManagedClasses {

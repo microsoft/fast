@@ -1,4 +1,3 @@
-import { ComponentViewConfig } from "./data.props";
 import {
     Paragraph,
     ParagraphProps,
@@ -6,6 +5,7 @@ import {
     ParagraphSize,
 } from "@microsoft/fast-components-react-msft";
 import Guidance from "../../.tmp/paragraph/guidance";
+import { ComponentViewConfig } from "./data.props";
 
 const paragraphConfig: ComponentViewConfig<ParagraphProps> = {
     schema: paragraphSchema,

@@ -19,7 +19,7 @@ export class SubscriberCollection {
     private sub3: Subscriber | undefined = void 0;
     private spillover: Subscriber[] | undefined = void 0;
 
-    public hasSubscribers() {
+    public hasSubscribers(): boolean {
         return (
             this.sub1 !== void 0 ||
             this.sub2 !== void 0 ||
@@ -28,14 +28,14 @@ export class SubscriberCollection {
         );
     }
 
-    public hasSubscriber(subscriber: Subscriber) {
+    public hasSubscriber(subscriber: Subscriber): boolean {
         if (this.sub1 === subscriber) return true;
         if (this.sub2 === subscriber) return true;
         if (this.sub3 === subscriber) return true;
         return this.spillover !== void 0 && this.spillover.indexOf(subscriber) !== -1;
     }
 
-    public addSubscriber(subscriber: Subscriber) {
+    public addSubscriber(subscriber: Subscriber): void {
         if (this.hasSubscriber(subscriber)) {
             return;
         }
@@ -62,7 +62,7 @@ export class SubscriberCollection {
         this.spillover.push(subscriber);
     }
 
-    public removeSubscriber(subscriber: Subscriber) {
+    public removeSubscriber(subscriber: Subscriber): void {
         if (this.sub1 === subscriber) {
             this.sub1 = void 0;
             return;
@@ -87,7 +87,7 @@ export class SubscriberCollection {
         }
     }
 
-    public notifySubscribers(source: any, args: any) {
+    public notifySubscribers(source: any, args: any): void {
         const sub1 = this.sub1;
         const sub2 = this.sub2;
         const sub3 = this.sub3;

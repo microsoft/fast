@@ -121,7 +121,7 @@ class SliderTrackItem extends Foundation<
                 return this.context.sliderValueAsPercent(
                     (this.context.sliderState.isDragging ||
                         this.context.sliderState.isTouchDragging) &&
-                    this.context.sliderState.activeThumb === SliderThumb.upperThumb
+                        this.context.sliderState.activeThumb === SliderThumb.upperThumb
                         ? this.context.sliderState.dragValue
                         : this.context.sliderState.upperValue
                 );
@@ -130,7 +130,7 @@ class SliderTrackItem extends Foundation<
                 return this.context.sliderValueAsPercent(
                     (this.context.sliderState.isDragging ||
                         this.context.sliderState.isTouchDragging) &&
-                    this.context.sliderState.activeThumb === SliderThumb.lowerThumb
+                        this.context.sliderState.activeThumb === SliderThumb.lowerThumb
                         ? this.context.sliderState.dragValue
                         : this.context.sliderState.lowerValue
                 );

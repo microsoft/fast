@@ -1,11 +1,11 @@
 import React from "react";
+import { ManagedClasses } from "@microsoft/fast-jss-manager-react";
 import { GridDisplay } from "../utilities";
 import { GridGutter } from "../grid/grid.props";
 import { ColumnClassNamesContract } from "./column";
-import { ManagedClasses } from "@microsoft/fast-jss-manager-react";
 
-export interface ColumnManagedClasses extends ManagedClasses<ColumnClassNamesContract> {}
-export interface ColumnUnhandledProps extends React.HTMLAttributes<HTMLDivElement> {}
+export type ColumnManagedClasses = ManagedClasses<ColumnClassNamesContract>;
+export type ColumnUnhandledProps = React.HTMLAttributes<HTMLDivElement>;
 export interface ColumnHandledProps extends ColumnManagedClasses {
     /**
      * The number of columns a column should span. If an array is passed, each index of the array corresponds to

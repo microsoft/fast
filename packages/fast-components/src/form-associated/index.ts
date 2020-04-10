@@ -75,7 +75,7 @@ export abstract class FormAssociated<
                 )
             );
 
-            const labels = !!parentLabels
+            const labels = parentLabels
                 ? forLabels.concat(Array.from(parentLabels))
                 : forLabels;
 

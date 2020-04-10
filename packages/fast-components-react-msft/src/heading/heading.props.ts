@@ -1,5 +1,4 @@
 import React from "react";
-import { TypographyUnhandledProps } from "../typography";
 import {
     HeadingClassNameContract,
     ManagedClasses,
@@ -30,7 +29,7 @@ export enum HeadingTag {
     p = "p",
 }
 
-export interface HeadingManagedClasses extends ManagedClasses<HeadingClassNameContract> {}
+export type HeadingManagedClasses = ManagedClasses<HeadingClassNameContract>;
 export interface HeadingHandledProps extends HeadingManagedClasses {
     /**
      * The heading content
@@ -48,7 +47,7 @@ export interface HeadingHandledProps extends HeadingManagedClasses {
     tag?: HeadingTag;
 }
 
-/* tslint:disable-next-line:no-empty-interface */
-export interface HeadingUnhandledProps
-    extends React.HTMLAttributes<HTMLHeadingElement | HTMLParagraphElement> {}
+export type HeadingUnhandledProps = React.HTMLAttributes<
+    HTMLHeadingElement | HTMLParagraphElement
+>;
 export type HeadingProps = HeadingHandledProps & HeadingUnhandledProps;

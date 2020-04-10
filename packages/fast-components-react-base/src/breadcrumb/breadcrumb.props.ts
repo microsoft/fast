@@ -4,9 +4,8 @@ import {
     ManagedClasses,
 } from "@microsoft/fast-components-class-name-contracts-base";
 
-export interface BreadcrumbManagedClasses
-    extends ManagedClasses<BreadcrumbClassNameContract> {}
-export interface BreadcrumbUnhandledProps extends React.HTMLAttributes<HTMLElement> {}
+export type BreadcrumbManagedClasses = ManagedClasses<BreadcrumbClassNameContract>;
+export type BreadcrumbUnhandledProps = React.HTMLAttributes<HTMLElement>;
 export interface BreadcrumbHandledProps extends BreadcrumbManagedClasses {
     /**
      * The breadcrumb children

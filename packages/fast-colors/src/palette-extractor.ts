@@ -1,5 +1,3 @@
-// tslint:disable:prefer-for-of
-
 import { QuantizedColor } from "./color-quantization";
 import { ColorHSL } from "./color-hsl";
 import { rgbToHSL } from "./color-converters";

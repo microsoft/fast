@@ -1,15 +1,14 @@
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
+import { DisplayNamePrefix } from "../utilities";
 import MSFTCaption, {
     CaptionHandledProps,
-    CaptionManagedClasses,
     CaptionSize,
     CaptionTag,
     CaptionUnhandledProps,
 } from "./caption";
-import { Caption, CaptionProps } from "./index";
-import { DisplayNamePrefix } from "../utilities";
+import { Caption } from "./index";
 
 /**
  * Configure Enzyme

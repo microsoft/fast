@@ -1,5 +1,4 @@
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
-import { applyCursorPointer } from "../utilities/cursor";
 import {
     add,
     applyFocusVisible,
@@ -10,6 +9,8 @@ import {
     subtract,
     toPx,
 } from "@microsoft/fast-jss-utilities";
+import { SliderClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
+import { applyCursorPointer } from "../utilities/cursor";
 import { DesignSystem, DesignSystemResolver } from "../design-system";
 import { applyPillCornerRadius } from "../utilities/border";
 import {
@@ -20,7 +21,6 @@ import {
     neutralForegroundRest,
     neutralOutlineRest,
 } from "../utilities/color";
-import { SliderClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { densityCategorySwitch, heightNumber } from "../utilities/density";
 import {
     backgroundColor,

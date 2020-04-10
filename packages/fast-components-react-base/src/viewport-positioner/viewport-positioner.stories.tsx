@@ -1,12 +1,11 @@
 import { storiesOf } from "@storybook/react";
 import React, { ReactNode } from "react";
+import { ViewportPositionerVerticalPosition } from "./viewport-positioner.props";
 import ViewportPositioner, {
     AxisPositioningMode,
     ViewportContext,
     ViewportPositionerProps,
 } from "./";
-import Foundation from "@microsoft/fast-components-foundation-react";
-import { ViewportPositionerVerticalPosition } from "./viewport-positioner.props";
 
 const anchorElement: React.RefObject<HTMLDivElement> = React.createRef<HTMLDivElement>();
 const anchorElement2: React.RefObject<HTMLDivElement> = React.createRef<HTMLDivElement>();
@@ -106,6 +105,7 @@ class TestViewport extends React.Component<TestViewportProps, TestViewportState>
         );
     };
 
+    /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
     private onNextPropsClick = (event: React.MouseEvent): void => {
         const nextDataSetIndex: number = this.state.currentDataSetIndex + 1;
         this.setState({
@@ -116,6 +116,7 @@ class TestViewport extends React.Component<TestViewportProps, TestViewportState>
         });
     };
 
+    /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
     private onNextContentsClick = (event: React.MouseEvent): void => {
         const nextContentsIndex: number = this.state.currentContentsIndex + 1;
         this.setState({

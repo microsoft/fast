@@ -13,9 +13,8 @@ export enum CheckboxSlot {
     label = "label",
 }
 
-export interface CheckboxManagedClasses
-    extends ManagedClasses<CheckboxClassNameContract> {}
-export interface CheckboxUnhandledProps extends React.HTMLAttributes<HTMLDivElement> {}
+export type CheckboxManagedClasses = ManagedClasses<CheckboxClassNameContract>;
+export type CheckboxUnhandledProps = React.HTMLAttributes<HTMLDivElement>;
 export interface CheckboxHandledProps extends CheckboxManagedClasses {
     /**
      * The id of the checkbox input element

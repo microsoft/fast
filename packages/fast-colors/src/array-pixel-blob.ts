@@ -1,4 +1,3 @@
-// tslint:disable:member-ordering
 import { ColorRGBA64 } from "./color-rgba-64";
 import { PixelBlob } from "./pixel-blob";
 

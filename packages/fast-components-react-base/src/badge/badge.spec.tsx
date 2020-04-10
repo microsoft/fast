@@ -1,8 +1,8 @@
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
-import Badge, { BadgeHandledProps, BadgeProps, BadgeUnhandledProps } from "./index";
 import { DisplayNamePrefix } from "../utilities";
+import Badge, { BadgeHandledProps, BadgeProps, BadgeUnhandledProps } from "./index";
 
 /*
  * Configure Enzyme

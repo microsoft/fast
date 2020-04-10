@@ -1,16 +1,15 @@
 import { storiesOf } from "@storybook/react";
 import React, { useState } from "react";
+import { ComponentStyles } from "@microsoft/fast-jss-manager";
+import { DesignSystem } from "@microsoft/fast-components-styles-msft";
+import CarouselHero from "../../assets/carousel-hero-content";
+import { HeadingSize, ParagraphSize } from "../../src";
 import {
     Carousel,
     CarouselClassNameContract,
     CarouselSlide,
     CarouselSlideTheme,
 } from "./";
-import { uniqueId } from "lodash-es";
-import CarouselHero from "../../assets/carousel-hero-content";
-import { HeadingSize, ParagraphSize } from "../../src";
-import { ComponentStyles } from "@microsoft/fast-jss-manager";
-import { DesignSystem } from "@microsoft/fast-components-styles-msft";
 
 function itemsFiller(
     itemCount: number,
@@ -77,11 +76,11 @@ function CarouselSateHandler(props: {
         React.Dispatch<React.SetStateAction<boolean>>
     ] = useState(props.autoPlay);
 
-    function handleOnFocus(event: React.FocusEvent): void {
+    function handleOnFocus(): void {
         setAutoPlay(false);
     }
 
-    function handleOnBlur(event: React.FocusEvent): void {
+    function handleOnBlur(): void {
         setAutoPlay(props.autoPlay);
     }
 

@@ -9,7 +9,7 @@ export enum LabelTag {
     legend = "legend",
 }
 
-export interface LabelManagedClasses extends ManagedClasses<LabelClassNameContract> {}
+export type LabelManagedClasses = ManagedClasses<LabelClassNameContract>;
 export interface LabelUnhandledProps
     extends React.LabelHTMLAttributes<HTMLLabelElement | HTMLLegendElement>,
         React.HTMLAttributes<HTMLLabelElement | HTMLLegendElement> {}

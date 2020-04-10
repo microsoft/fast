@@ -1,7 +1,7 @@
 import React from "react";
-import { PageHandledProps, PageProps, PageUnhandledProps } from "./page.props";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import { canUseCssGrid, classNames } from "@microsoft/fast-web-utilities";
+import { PageHandledProps, PageProps, PageUnhandledProps } from "./page.props";
 
 export interface PageClassNamesContract {
     page?: string;
@@ -31,9 +31,7 @@ export class Page extends Foundation<PageHandledProps, PageUnhandledProps, {}> {
     }
 
     private generateAttributes(): React.HTMLAttributes<HTMLDivElement> {
-        const columns: string = `${this.props.margin} minmax(0, ${this.props.maxWidth}) ${
-            this.props.margin
-        }`;
+        const columns: string = `${this.props.margin} minmax(0, ${this.props.maxWidth}) ${this.props.margin}`;
 
         const attributes: React.HTMLAttributes<HTMLDivElement> = {
             ...this.unhandledProps(),
@@ -49,10 +47,10 @@ export class Page extends Foundation<PageHandledProps, PageUnhandledProps, {}> {
                     this.props.cssGridPropertyName === "grid"
                         ? "grid"
                         : this.props.cssGridPropertyName === "-ms-grid"
-                            ? "-ms-grid"
-                            : canUseCssGrid()
-                                ? "grid"
-                                : "-ms-grid",
+                        ? "-ms-grid"
+                        : canUseCssGrid()
+                        ? "grid"
+                        : "-ms-grid",
                 gridTemplateColumns: columns,
                 msGridColumns: columns,
                 // attributes.style has to be spread here again in order to

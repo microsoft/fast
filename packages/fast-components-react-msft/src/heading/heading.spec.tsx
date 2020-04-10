@@ -1,15 +1,14 @@
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
+import { DisplayNamePrefix } from "../utilities";
 import MSFTHeading, {
     HeadingHandledProps,
     HeadingSize,
     HeadingTag,
     HeadingUnhandledProps,
 } from "./heading";
-import { Typography } from "@microsoft/fast-components-react-base";
-import { Heading, HeadingProps } from "./index";
-import { DisplayNamePrefix } from "../utilities";
+import { Heading } from "./index";
 
 /*
  * Configure Enzyme

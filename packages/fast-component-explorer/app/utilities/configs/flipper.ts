@@ -1,4 +1,3 @@
-import { ComponentViewConfig } from "./data.props";
 import {
     Flipper,
     FlipperDirection,
@@ -6,6 +5,7 @@ import {
     flipperSchema,
 } from "@microsoft/fast-components-react-msft";
 import Guidance from "../../.tmp/flipper/guidance";
+import { ComponentViewConfig } from "./data.props";
 
 const flipperConfig: ComponentViewConfig<FlipperProps> = {
     schema: flipperSchema,

@@ -33,7 +33,7 @@ const excludedPackages = [
     "fast-browser-extensions",
     "fast-color-explorer",
     "fast-permutator",
-    "fast-tslint-rules",
+    "fast-eslint-rules",
 ];
 
 /**
@@ -55,7 +55,7 @@ var proc = dryRun
     ? exec(`node ${copyReadmeScriptPath} --dry-run`)
     : exec(`node ${copyReadmeScriptPath}`);
 
-proc.stdout.on("data", function(data) {
+proc.stdout.on("data", function (data) {
     process.stdout.write(data);
 });
 
@@ -63,7 +63,7 @@ proc.on("error", err => {
     console.log(chalk.red(err));
 });
 
-proc.on("close", function(code) {
+proc.on("close", function (code) {
     console.log(chalk.green(`${copyReadmeScript} ran successfully.`));
     execute();
 });
@@ -80,7 +80,7 @@ function execute() {
 
     const packages = path.resolve(rootDir, srcDir);
 
-    glob(packages, { realpath: true }, function(error, srcFiles) {
+    glob(packages, { realpath: true }, function (error, srcFiles) {
         srcFiles.forEach(srcPath => {
             var valid = true;
 
@@ -190,7 +190,7 @@ function addAPILinkToReadme(packageName) {
 
     var usageText = "\n" + `[API Reference](${apiLink})`;
 
-    fs.appendFile(readmePath, usageText, function(err) {
+    fs.appendFile(readmePath, usageText, function (err) {
         if (err) {
             console.log(chalk.red(err));
         }

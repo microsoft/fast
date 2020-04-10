@@ -79,9 +79,10 @@ export function accessibleAlgorithm(
             designSystem // Pass the design system
         );
 
-        const accessibleIndex: number = findSwatchIndex(palette, accessibleSwatch)(
-            designSystem
-        );
+        const accessibleIndex: number = findSwatchIndex(
+            palette,
+            accessibleSwatch
+        )(designSystem);
         const resolvedRest: number = checkDesignSystemResolver(restDelta, designSystem);
         const resolvedHover: number = checkDesignSystemResolver(hoverDelta, designSystem);
         const resolvedActive: number = checkDesignSystemResolver(

@@ -1,4 +1,3 @@
-import { DesignSystem, DesignSystemResolver } from "../design-system";
 import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
 import {
     applyFocusVisible,
@@ -6,6 +5,7 @@ import {
     format,
     toPx,
 } from "@microsoft/fast-jss-utilities";
+import { CarouselClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import {
     neutralFillStealthHover,
     neutralFillStealthRest,
@@ -13,7 +13,7 @@ import {
     neutralForegroundRest,
     neutralOutlineRest,
 } from "../utilities/color";
-import { CarouselClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
+import { DesignSystem, DesignSystemResolver } from "../design-system";
 import { designUnit, focusOutlineWidth, outlineWidth } from "../utilities/design-system";
 import {
     highContrastButtonColorIndicator,
@@ -27,18 +27,18 @@ import {
 
 const white: string = "#FFF";
 const black: string = "#101010";
-const themeDarkNeutralForegroundRest: DesignSystemResolver<
-    string
-> = neutralForegroundRest((): string => black);
-const themeLightNeutralForegroundRest: DesignSystemResolver<
-    string
-> = neutralForegroundRest((): string => white);
-const themeDarkNeutralFillStealthRest: DesignSystemResolver<
-    string
-> = neutralFillStealthRest((): string => black);
-const themeLightNeutralFillStealthRest: DesignSystemResolver<
-    string
-> = neutralFillStealthRest((): string => white);
+const themeDarkNeutralForegroundRest: DesignSystemResolver<string> = neutralForegroundRest(
+    (): string => black
+);
+const themeLightNeutralForegroundRest: DesignSystemResolver<string> = neutralForegroundRest(
+    (): string => white
+);
+const themeDarkNeutralFillStealthRest: DesignSystemResolver<string> = neutralFillStealthRest(
+    (): string => black
+);
+const themeLightNeutralFillStealthRest: DesignSystemResolver<string> = neutralFillStealthRest(
+    (): string => white
+);
 
 const themeDarkNeutralOutlineRest: DesignSystemResolver<string> = neutralOutlineRest(
     (): string => black

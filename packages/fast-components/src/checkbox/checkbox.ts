@@ -2,7 +2,6 @@ import { attr, observable } from "@microsoft/fast-element";
 import { keyCodeSpace } from "@microsoft/fast-web-utilities";
 import { FormAssociated } from "../form-associated";
 
-/* tslint:disable:member-ordering */
 export class Checkbox extends FormAssociated<HTMLInputElement> {
     @attr({ attribute: "readonly", mode: "boolean" })
     public readOnly: boolean; // Map to proxy element
@@ -79,7 +78,7 @@ export class Checkbox extends FormAssociated<HTMLInputElement> {
         this.checked ? this.classList.add("checked") : this.classList.remove("checked");
     }
 
-    protected proxy = document.createElement("input");
+    protected proxy: HTMLInputElement = document.createElement("input");
 
     /**
      * The indeterminate state of the control
@@ -122,7 +121,7 @@ export class Checkbox extends FormAssociated<HTMLInputElement> {
         this.setFormValue(value, value);
     }
 
-    public keypressHandler = (e: KeyboardEvent) => {
+    public keypressHandler = (e: KeyboardEvent): void => {
         super.keypressHandler(e);
 
         switch (e.keyCode) {
@@ -132,10 +131,10 @@ export class Checkbox extends FormAssociated<HTMLInputElement> {
         }
     };
 
-    public clickHandler = (e: MouseEvent) => {
+    /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
+    public clickHandler = (e: MouseEvent): void => {
         if (!this.disabled && !this.readOnly) {
             this.checked = !this.checked;
         }
     };
 }
-/* tslint:enable:member-ordering */

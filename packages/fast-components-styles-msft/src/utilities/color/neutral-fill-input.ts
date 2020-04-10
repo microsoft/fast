@@ -1,12 +1,4 @@
 import { DesignSystem, DesignSystemResolver } from "../../design-system";
-import { findClosestBackgroundIndex, getSwatch, isDarkMode } from "./palette";
-import {
-    ColorRecipe,
-    colorRecipeFactory,
-    FillSwatchFamily,
-    Swatch,
-    SwatchRecipe,
-} from "./common";
 import {
     neutralFillInputActiveDelta,
     neutralFillInputFocusDelta,
@@ -15,6 +7,14 @@ import {
     neutralFillInputSelectedDelta,
     neutralPalette,
 } from "../design-system";
+import { findClosestBackgroundIndex, getSwatch, isDarkMode } from "./palette";
+import {
+    ColorRecipe,
+    colorRecipeFactory,
+    FillSwatchFamily,
+    Swatch,
+    SwatchRecipe,
+} from "./common";
 
 /**
  * Algorithm for determining neutral backplate colors
@@ -32,18 +32,6 @@ function neutralFillInputAlgorithm(
     };
 }
 
-export const neutralFillInput: ColorRecipe<FillSwatchFamily> = colorRecipeFactory(
-    (designSystem: DesignSystem): FillSwatchFamily => {
-        return {
-            rest: neutralFillInputRest(designSystem),
-            hover: neutralFillInputHover(designSystem),
-            active: neutralFillInputActive(designSystem),
-            focus: neutralFillInputFocus(designSystem),
-            selected: neutralFillInputSelected(designSystem),
-        };
-    }
-);
-
 export const neutralFillInputRest: SwatchRecipe = colorRecipeFactory(
     neutralFillInputAlgorithm(neutralFillInputRestDelta)
 );
@@ -58,4 +46,16 @@ export const neutralFillInputFocus: SwatchRecipe = colorRecipeFactory(
 );
 export const neutralFillInputSelected: SwatchRecipe = colorRecipeFactory(
     neutralFillInputAlgorithm(neutralFillInputSelectedDelta)
+);
+
+export const neutralFillInput: ColorRecipe<FillSwatchFamily> = colorRecipeFactory(
+    (designSystem: DesignSystem): FillSwatchFamily => {
+        return {
+            rest: neutralFillInputRest(designSystem),
+            hover: neutralFillInputHover(designSystem),
+            active: neutralFillInputActive(designSystem),
+            focus: neutralFillInputFocus(designSystem),
+            selected: neutralFillInputSelected(designSystem),
+        };
+    }
 );

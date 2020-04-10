@@ -1,17 +1,15 @@
 import React from "react";
-import * as ShallowRenderer from "react-test-renderer/shallow";
 import Adapter from "enzyme-adapter-react-16/build";
 import { configure, mount, shallow } from "enzyme";
+import { ActionToggleClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
+import { DisplayNamePrefix } from "../utilities";
 import MSFTActionToggle, {
     ActionToggleAppearance,
     ActionToggleHandledProps,
-    ActionToggleManagedClasses,
     ActionToggleProps,
     ActionToggleUnhandledProps,
 } from "./action-toggle";
 import { ActionToggle } from "./index";
-import { ActionToggleClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
-import { DisplayNamePrefix } from "../utilities";
 
 /*
  * Configure Enzyme

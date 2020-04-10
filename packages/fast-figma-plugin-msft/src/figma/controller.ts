@@ -1,6 +1,6 @@
 import { Controller } from "../core/controller";
-import { FigmaPluginNode } from "./node";
 import { PluginUIProps } from "../core/ui";
+import { FigmaPluginNode } from "./node";
 
 export class FigmaController extends Controller {
     public getNode(id: string): FigmaPluginNode | null {

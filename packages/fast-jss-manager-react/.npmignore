@@ -11,4 +11,3 @@ src/
 # babel config
 babel.config.js
 tsconfig.json
-tslint.json

@@ -1,8 +1,7 @@
 import { storiesOf } from "@storybook/react";
-import React, { useState } from "react";
-import Divider from "./";
-import { uniqueId } from "lodash-es";
+import React from "react";
 import { DividerRoles } from "./divider.props";
+import Divider from "./";
 
 storiesOf("Divider", module)
     .add("Divider", () => <Divider />)

@@ -1,6 +1,7 @@
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
+import { ConstructibleResizeObserver, DisplayNamePrefix } from "../utilities";
 import ViewportPositioner, {
     Dimension,
     ViewportPositionerClassNameContract,
@@ -8,11 +9,6 @@ import ViewportPositioner, {
     ViewportPositionerUnhandledProps,
     ViewportPositionerVerticalPositionLabel,
 } from "./viewport-positioner";
-import {
-    ConstructibleIntersectionObserver,
-    ConstructibleResizeObserver,
-    DisplayNamePrefix,
-} from "../utilities";
 import {
     AxisPositioningMode,
     ViewportPositionerHorizontalPosition,
@@ -25,14 +21,12 @@ import {
 configure({ adapter: new Adapter() });
 
 // Mock observers
-// tslint:disable:max-classes-per-file
 class DefaultResizeObserver {
     public observe: jest.Mock<any, any> = jest.fn();
     public unobserve: jest.Mock<any, any> = jest.fn();
     public disconnect: jest.Mock<any, any> = jest.fn();
 }
 
-// tslint:disable-next-line:max-classes-per-file
 class DefaultIntersectionObserver {
     public observe: jest.Mock<any, any> = jest.fn();
     public unobserve: jest.Mock<any, any> = jest.fn();
@@ -47,16 +41,6 @@ class DefaultIntersectionObserver {
 (window as WindowWithIntersectionObserver).IntersectionObserver = DefaultIntersectionObserver;
 
 const anchorElement: HTMLDivElement = document.createElement("div");
-
-// positioner rects are described by -x-y coordinates
-const positionerRectX20Y20: ClientRect = {
-    top: 20,
-    right: 30,
-    bottom: 30,
-    left: 20,
-    height: 10,
-    width: 10,
-};
 
 const positionerRectX70Y70: ClientRect = {
     top: 70,
@@ -88,7 +72,6 @@ const managedClasses: ViewportPositionerClassNameContract = {
     viewportPositioner__verticalInset: "viewportPositioner__verticalInset",
 };
 
-/* tslint:disable:no-string-literal */
 describe("viewport positioner", (): void => {
     test("should have a displayName that matches the component name", () => {
         expect(`${DisplayNamePrefix}${(ViewportPositioner as any).name}`).toBe(
@@ -1423,6 +1406,7 @@ describe("viewport positioner", (): void => {
         (window as WindowWithResizeObserver).ResizeObserver = MockResizeObserver;
 
         // Render the component
+        /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
         const rendered: any = mount(
             <ViewportPositioner
                 viewport={container}

@@ -1,5 +1,5 @@
 import { storiesOf } from "@storybook/react";
-import React, { useState } from "react";
+import React from "react";
 import Image, { ImageSlot } from "./";
 
 const sourceElements: JSX.Element[] = [

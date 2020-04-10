@@ -216,8 +216,7 @@ describe("canUseCssGrid", () => {
 
 describe("canUseForcedColors", () => {
     beforeEach(() => {
-        // tslint:disable-next-line:typedef
-        window.matchMedia = jest.fn().mockImplementation(query => {
+        window.matchMedia = jest.fn().mockImplementation((query: any) => {
             return {
                 matches: true,
                 media: query,
@@ -231,8 +230,7 @@ describe("canUseForcedColors", () => {
 
 describe("canUseForcedColors", () => {
     beforeEach(() => {
-        // tslint:disable-next-line:typedef
-        window.matchMedia = jest.fn().mockImplementation(query => {
+        window.matchMedia = jest.fn().mockImplementation((query: any) => {
             return {
                 matches: false,
                 media: query,

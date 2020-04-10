@@ -1,6 +1,6 @@
 import { attr, observable } from "@microsoft/fast-element";
-import { FormAssociated } from "../form-associated";
 import { keyCodeSpace } from "@microsoft/fast-web-utilities";
+import { FormAssociated } from "../form-associated";
 
 export class Switch extends FormAssociated<HTMLInputElement> {
     @attr({ attribute: "readonly", mode: "boolean" })
@@ -106,6 +106,7 @@ export class Switch extends FormAssociated<HTMLInputElement> {
         }
     };
 
+    /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
     public clickHandler = (e: MouseEvent) => {
         if (!this.disabled && !this.readOnly) {
             this.checked = !this.checked;

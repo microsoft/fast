@@ -4,10 +4,10 @@ import {
     TreeViewProps,
     treeViewSchema,
 } from "@microsoft/fast-components-react-msft";
-import { ComponentViewConfig } from "./data.props";
+import { uniqueId } from "lodash-es";
 import Guidance from "../../.tmp/tree-view/guidance";
 import { glyphSchema, Icon } from "../../../app/components/glyph";
-import { uniqueId } from "lodash-es";
+import { ComponentViewConfig } from "./data.props";
 
 const treeViewConfig: ComponentViewConfig<TreeViewProps> = {
     schema: treeViewSchema,

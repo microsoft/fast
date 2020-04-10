@@ -4,8 +4,8 @@ import {
     ManagedClasses,
 } from "@microsoft/fast-components-class-name-contracts-base";
 
-export interface ButtonManagedClasses extends ManagedClasses<ButtonClassNameContract> {}
-export interface ButtonUnhandledProps extends React.AllHTMLAttributes<HTMLElement> {}
+export type ButtonManagedClasses = ManagedClasses<ButtonClassNameContract>;
+export type ButtonUnhandledProps = React.AllHTMLAttributes<HTMLElement>;
 export interface ButtonHandledProps extends ButtonManagedClasses {
     /**
      * The button content

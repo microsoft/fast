@@ -1,6 +1,4 @@
-import AnimateFrom from "../animateFrom";
 import AnimateTo from "../animateTo";
-import { AnimateConfig } from "../animate";
 
 /**
  * Key frame object for fade-in animations
@@ -26,6 +24,19 @@ export const fadeEffectTiming: EffectTiming = {
     duration: 500,
 };
 
+export function applyFade(
+    element: HTMLElement,
+    keyframes: Array<Partial<Keyframe>>,
+    timing: EffectTiming = {}
+): AnimateTo {
+    const fadeAnimationTiming: EffectTiming = Object.assign({}, fadeEffectTiming, timing);
+    const fadeAnimation: AnimateTo = new AnimateTo(element, null, fadeAnimationTiming);
+
+    fadeAnimation.addKeyframes(keyframes);
+
+    return fadeAnimation;
+}
+
 /**
  * Creates an animation to fade an element into view
  */
@@ -41,17 +52,4 @@ export function fadeOut(
     effectTiming: EffectTiming = {}
 ): AnimateTo {
     return applyFade(element, fadeOutKeyframes, effectTiming);
-}
-
-export function applyFade(
-    element: HTMLElement,
-    keyframes: Array<Partial<Keyframe>>,
-    timing: EffectTiming = {}
-): AnimateTo {
-    const fadeAnimationTiming: EffectTiming = Object.assign({}, fadeEffectTiming, timing);
-    const fadeAnimation: AnimateTo = new AnimateTo(element, null, fadeAnimationTiming);
-
-    fadeAnimation.addKeyframes(keyframes);
-
-    return fadeAnimation;
 }
