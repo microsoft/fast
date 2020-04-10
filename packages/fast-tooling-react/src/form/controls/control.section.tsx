@@ -388,14 +388,14 @@ class SectionControl extends React.Component<
         return this.state.oneOfAnyOf === null
             ? this.props.navigation[this.props.navigationConfigId]
             : this.state.oneOfAnyOf.activeIndex === -1
-                ? this.props.navigation[
-                      this.props.navigation[this.props.navigationConfigId].items[0]
+            ? this.props.navigation[
+                  this.props.navigation[this.props.navigationConfigId].items[0]
+              ]
+            : this.props.navigation[
+                  this.props.navigation[this.props.navigationConfigId].items[
+                      this.state.oneOfAnyOf.activeIndex
                   ]
-                : this.props.navigation[
-                      this.props.navigation[this.props.navigationConfigId].items[
-                          this.state.oneOfAnyOf.activeIndex
-                      ]
-                  ];
+              ];
     }
 
     /**

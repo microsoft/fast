@@ -178,10 +178,7 @@ describe("CSSSpacing", () => {
             <Spacing onChange={onChangeCallback} managedClasses={managedClasses} />
         );
 
-        rendered
-            .find("input")
-            .at(top)
-            .simulate("change", { target: { value } });
+        rendered.find("input").at(top).simulate("change", { target: { value } });
 
         expect(onChangeCallback).toHaveBeenCalled();
         expect(onChangeCallback.mock.calls[0][0]).toEqual({ marginTop: value });
@@ -193,10 +190,7 @@ describe("CSSSpacing", () => {
             <Spacing onChange={onChangeCallback} managedClasses={managedClasses} />
         );
 
-        rendered
-            .find("input")
-            .at(bottom)
-            .simulate("change", { target: { value } });
+        rendered.find("input").at(bottom).simulate("change", { target: { value } });
 
         expect(onChangeCallback).toHaveBeenCalled();
         expect(onChangeCallback.mock.calls[0][0]).toEqual({ marginBottom: value });
@@ -208,10 +202,7 @@ describe("CSSSpacing", () => {
             <Spacing onChange={onChangeCallback} managedClasses={managedClasses} />
         );
 
-        rendered
-            .find("input")
-            .at(left)
-            .simulate("change", { target: { value } });
+        rendered.find("input").at(left).simulate("change", { target: { value } });
 
         expect(onChangeCallback).toHaveBeenCalled();
         expect(onChangeCallback.mock.calls[0][0]).toEqual({ marginLeft: value });
@@ -223,10 +214,7 @@ describe("CSSSpacing", () => {
             <Spacing onChange={onChangeCallback} managedClasses={managedClasses} />
         );
 
-        rendered
-            .find("input")
-            .at(right)
-            .simulate("change", { target: { value } });
+        rendered.find("input").at(right).simulate("change", { target: { value } });
 
         expect(onChangeCallback).toHaveBeenCalled();
         expect(onChangeCallback.mock.calls[0][0]).toEqual({ marginRight: value });
@@ -263,10 +251,7 @@ describe("CSSSpacing", () => {
 
         rendered.setState({ activeType: SpacingType.padding });
 
-        rendered
-            .find("input")
-            .at(top)
-            .simulate("change", { target: { value } });
+        rendered.find("input").at(top).simulate("change", { target: { value } });
 
         expect(onChangeCallback).toHaveBeenCalled();
         expect(onChangeCallback.mock.calls[0][0]).toEqual({ paddingTop: value });
@@ -280,10 +265,7 @@ describe("CSSSpacing", () => {
 
         rendered.setState({ activeType: SpacingType.padding });
 
-        rendered
-            .find("input")
-            .at(bottom)
-            .simulate("change", { target: { value } });
+        rendered.find("input").at(bottom).simulate("change", { target: { value } });
 
         expect(onChangeCallback).toHaveBeenCalled();
         expect(onChangeCallback.mock.calls[0][0]).toEqual({
@@ -299,10 +281,7 @@ describe("CSSSpacing", () => {
 
         rendered.setState({ activeType: SpacingType.padding });
 
-        rendered
-            .find("input")
-            .at(left)
-            .simulate("change", { target: { value } });
+        rendered.find("input").at(left).simulate("change", { target: { value } });
 
         expect(onChangeCallback).toHaveBeenCalled();
         expect(onChangeCallback.mock.calls[0][0]).toEqual({ paddingLeft: value });
@@ -316,10 +295,7 @@ describe("CSSSpacing", () => {
 
         rendered.setState({ activeType: SpacingType.padding });
 
-        rendered
-            .find("input")
-            .at(right)
-            .simulate("change", { target: { value } });
+        rendered.find("input").at(right).simulate("change", { target: { value } });
 
         expect(onChangeCallback).toHaveBeenCalled();
         expect(onChangeCallback.mock.calls[0][0]).toEqual({ paddingRight: value });

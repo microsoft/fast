@@ -243,8 +243,8 @@ class ControlSwitch extends React.Component<ControlSwitchProps, {}> {
                 typeof schema.default !== "undefined"
                     ? schema.default
                     : typeof this.props.default !== "undefined"
-                        ? this.props.default
-                        : void 0,
+                    ? this.props.default
+                    : void 0,
             const: schema.const || this.props.const,
             badge: schema.badge,
             badgeDescription: schema.badgeDescription,

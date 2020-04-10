@@ -40,24 +40,14 @@ describe("Viewer", (): void => {
             <Viewer managedClasses={managedClasses} width={800} {...props} />
         );
 
-        expect(
-            rendered
-                .find("div")
-                .last()
-                .prop("style")
-        ).toEqual({ width: "800px" });
+        expect(rendered.find("div").last().prop("style")).toEqual({ width: "800px" });
     });
     test("should set the height if the `height` prop is set", () => {
         const rendered: any = mount(
             <Viewer managedClasses={managedClasses} height={600} {...props} />
         );
 
-        expect(
-            rendered
-                .find("div")
-                .last()
-                .prop("style")
-        ).toEqual({ height: "600px" });
+        expect(rendered.find("div").last().prop("style")).toEqual({ height: "600px" });
     });
     test("should create a series of responsive buttons if the `responsive` prop is true", () => {
         const renderedWithResponsive: any = mount(
@@ -76,7 +66,7 @@ describe("Viewer", (): void => {
                 callback();
             }
         );
-        const updateHeightCallback: (height: number) => void = jest.fn(function(
+        const updateHeightCallback: (height: number) => void = jest.fn(function (
             height: number
         ): void {
             expect(height).toEqual(400);
@@ -110,7 +100,7 @@ describe("Viewer", (): void => {
                 callback();
             }
         );
-        const updateWidthCallback: (width: number) => void = jest.fn(function(
+        const updateWidthCallback: (width: number) => void = jest.fn(function (
             width: number
         ): void {
             expect(width).toEqual(700);

@@ -193,19 +193,17 @@ class FormAndNavigationTestPage extends React.Component<{}, FormTestPageState> {
         ];
 
         for (const group of groups) {
-            Object.keys(group.items).map(
-                (itemName: any, key: number): void => {
-                    if (typeof testConfigs[itemName].schema !== "undefined") {
-                        const childObj: FormChildOptionItem = {
-                            name: testConfigs[itemName].schema.title || "Untitled",
-                            component: testConfigs[itemName].component,
-                            schema: testConfigs[itemName].schema,
-                        };
+            Object.keys(group.items).map((itemName: any, key: number): void => {
+                if (typeof testConfigs[itemName].schema !== "undefined") {
+                    const childObj: FormChildOptionItem = {
+                        name: testConfigs[itemName].schema.title || "Untitled",
+                        component: testConfigs[itemName].component,
+                        schema: testConfigs[itemName].schema,
+                    };
 
-                        childOptions.push(childObj);
-                    }
+                    childOptions.push(childObj);
                 }
-            );
+            });
         }
 
         return childOptions;

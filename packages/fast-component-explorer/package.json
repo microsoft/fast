@@ -97,7 +97,7 @@
     "jss-preset-default": "^4.5.0",
     "lint-staged": "^10.1.2",
     "lodash-es": "^4.17.11",
-    "prettier": "1.14.3",
+    "prettier": "2.0.2",
     "raf-throttle": "^2.0.3",
     "react": "^16.6.3",
     "react-dnd": "^7.4.5",

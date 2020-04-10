@@ -122,9 +122,7 @@ export class Viewer extends Foundation<
         if (this.props.responsive) {
             return (
                 <button
-                    className={`${this.props.managedClasses.handle} ${
-                        this.props.managedClasses.handle__left
-                    }`}
+                    className={`${this.props.managedClasses.handle} ${this.props.managedClasses.handle__left}`}
                     onMouseDown={this.handleMouseDown(ResizeHandleLocation.left)}
                 />
             );
@@ -135,9 +133,7 @@ export class Viewer extends Foundation<
         if (this.props.responsive) {
             return (
                 <button
-                    className={`${this.props.managedClasses.handle} ${
-                        this.props.managedClasses.handle__right
-                    }`}
+                    className={`${this.props.managedClasses.handle} ${this.props.managedClasses.handle__right}`}
                     onMouseDown={this.handleMouseDown(ResizeHandleLocation.right)}
                 />
             );
@@ -149,24 +145,18 @@ export class Viewer extends Foundation<
             return (
                 <React.Fragment>
                     <button
-                        className={`${this.props.managedClasses.handle} ${
-                            this.props.managedClasses.handle__bottomLeft
-                        }`}
+                        className={`${this.props.managedClasses.handle} ${this.props.managedClasses.handle__bottomLeft}`}
                         onMouseDown={this.handleMouseDown(
                             ResizeHandleLocation.bottomLeft
                         )}
                     />
                     <button
-                        className={`${this.props.managedClasses.handle} ${
-                            this.props.managedClasses.handle__bottom
-                        }`}
+                        className={`${this.props.managedClasses.handle} ${this.props.managedClasses.handle__bottom}`}
                         aria-hidden={true}
                         onMouseDown={this.handleMouseDown(ResizeHandleLocation.bottom)}
                     />
                     <button
-                        className={`${this.props.managedClasses.handle} ${
-                            this.props.managedClasses.handle__bottomRight
-                        }`}
+                        className={`${this.props.managedClasses.handle} ${this.props.managedClasses.handle__bottomRight}`}
                         onMouseDown={this.handleMouseDown(
                             ResizeHandleLocation.bottomRight
                         )}

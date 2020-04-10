@@ -63,13 +63,11 @@ class SelectControl extends React.Component<
 
     private handleChange = (): ((e: React.ChangeEvent<HTMLSelectElement>) => void) => {
         return (e: React.ChangeEvent<HTMLSelectElement>): void => {
-            const value: any = this.props.options.find(
-                (option: any): any => {
-                    return typeof option === "string"
-                        ? option === e.target.value
-                        : JSON.stringify(option) === e.target.value;
-                }
-            );
+            const value: any = this.props.options.find((option: any): any => {
+                return typeof option === "string"
+                    ? option === e.target.value
+                    : JSON.stringify(option) === e.target.value;
+            });
             this.props.onChange({ value });
         };
     };
@@ -89,8 +87,8 @@ class SelectControl extends React.Component<
         return typeof this.props.value !== "undefined"
             ? this.props.value
             : typeof this.props.default !== "undefined"
-                ? this.props.default
-                : "";
+            ? this.props.default
+            : "";
     }
 
     /**

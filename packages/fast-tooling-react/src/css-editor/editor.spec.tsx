@@ -55,15 +55,13 @@ describe("CSSEditor", () => {
         const positionValue: PositionValue = PositionValue.absolute;
         const topValue: string = "1";
         const leftValue: string = "2";
-        const callbackPosition: any = jest.fn(
-            (args: any): void => {
-                expect(args).toEqual({
-                    top: updatedPositionValue,
-                    position: positionValue,
-                    left: leftValue,
-                });
-            }
-        );
+        const callbackPosition: any = jest.fn((args: any): void => {
+            expect(args).toEqual({
+                top: updatedPositionValue,
+                position: positionValue,
+                left: leftValue,
+            });
+        });
         const data: CSSEditorValues = {
             position: positionValue,
             top: topValue,
@@ -116,14 +114,12 @@ describe("CSSEditor", () => {
         const updatedSpacingValue: string = "5";
         const topValue: string = "1";
         const leftValue: string = "2";
-        const callbackSpacing: any = jest.fn(
-            (args: any): void => {
-                expect(args).toEqual({
-                    marginLeft: leftValue,
-                    marginTop: updatedSpacingValue,
-                });
-            }
-        );
+        const callbackSpacing: any = jest.fn((args: any): void => {
+            expect(args).toEqual({
+                marginLeft: leftValue,
+                marginTop: updatedSpacingValue,
+            });
+        });
         const data: CSSEditorValues = {
             marginTop: topValue,
             marginLeft: leftValue,

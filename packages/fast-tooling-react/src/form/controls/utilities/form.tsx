@@ -67,13 +67,11 @@ export function getIsRequired(item: any, required: string[]): boolean {
     let isRequired: boolean = false;
 
     if (Array.isArray(required)) {
-        required.forEach(
-            (requiredItem: string): void => {
-                if (requiredItem === item) {
-                    isRequired = true;
-                }
+        required.forEach((requiredItem: string): void => {
+            if (requiredItem === item) {
+                isRequired = true;
             }
-        );
+        });
     }
 
     return isRequired;
@@ -108,7 +106,8 @@ export function resolveExampleDataWithCachedData(schema: any, cachedData: any): 
     Object.keys(curatedCachedData).forEach((item: string) => {
         if (
             typeof exampleData[item] === "undefined" &&
-            (schema.properties && !schema.properties[item])
+            schema.properties &&
+            !schema.properties[item]
         ) {
             unset(curatedCachedData, item);
         }
@@ -178,8 +177,8 @@ function getOneOfAnyOfType(schemaSection: any): CombiningKeyword | null {
     return schemaSection.oneOf
         ? CombiningKeyword.oneOf
         : schemaSection.anyOf
-            ? CombiningKeyword.anyOf
-            : null;
+        ? CombiningKeyword.anyOf
+        : null;
 }
 
 /**
@@ -240,17 +239,15 @@ export function formControlAttributeMapping(
 ): number | null {
     let itemAttributeValue: any = null;
 
-    Object.keys(config).forEach(
-        (attributeName: string): void => {
-            for (const attributeConfig of config[attributeName]) {
-                for (const property of attributeConfig.propertyNames) {
-                    if (property === propertyName) {
-                        itemAttributeValue = attributeConfig.value;
-                    }
+    Object.keys(config).forEach((attributeName: string): void => {
+        for (const attributeConfig of config[attributeName]) {
+            for (const property of attributeConfig.propertyNames) {
+                if (property === propertyName) {
+                    itemAttributeValue = attributeConfig.value;
                 }
             }
         }
-    );
+    });
 
     return itemAttributeValue;
 }
@@ -466,11 +463,11 @@ export function updateControlSectionState(
                   activeIndex: -1,
               }
             : props.navigation[props.navigationConfigId].schema[CombiningKeyword.oneOf]
-                ? {
-                      type: CombiningKeyword.oneOf,
-                      activeIndex: -1,
-                  }
-                : null,
+            ? {
+                  type: CombiningKeyword.oneOf,
+                  activeIndex: -1,
+              }
+            : null,
     };
 }
 

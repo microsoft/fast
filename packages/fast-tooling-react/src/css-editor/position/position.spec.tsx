@@ -112,11 +112,9 @@ describe("CSSPosition", () => {
         expect(input.prop("value")).toBe(value);
     });
     test("should fire `onChange` callback if the `position` prop is changed", () => {
-        const callback: any = jest.fn(
-            (args: any): void => {
-                expect(args.position).toBe(PositionValue.static);
-            }
-        );
+        const callback: any = jest.fn((args: any): void => {
+            expect(args.position).toBe(PositionValue.static);
+        });
         const rendered: any = mount(
             <CSSPosition
                 data={{ position: PositionValue.absolute }}
@@ -133,11 +131,9 @@ describe("CSSPosition", () => {
     });
     test("should fire `onChange` callback if the `top` prop is changed", () => {
         const value: string = "25px";
-        const callback: any = jest.fn(
-            (args: any): void => {
-                expect(args.top).toBe(value);
-            }
-        );
+        const callback: any = jest.fn((args: any): void => {
+            expect(args.top).toBe(value);
+        });
         const rendered: any = mount(
             <CSSPosition
                 data={{ position: PositionValue.absolute }}
@@ -153,11 +149,9 @@ describe("CSSPosition", () => {
     });
     test("should fire `onChange` callback if the `left` prop is changed", () => {
         const value: string = "25px";
-        const callback: any = jest.fn(
-            (args: any): void => {
-                expect(args.left).toBe(value);
-            }
-        );
+        const callback: any = jest.fn((args: any): void => {
+            expect(args.left).toBe(value);
+        });
         const rendered: any = mount(
             <CSSPosition
                 data={{ position: PositionValue.absolute }}
@@ -173,11 +167,9 @@ describe("CSSPosition", () => {
     });
     test("should fire `onChange` callback if the `right` prop is changed", () => {
         const value: string = "25px";
-        const callback: any = jest.fn(
-            (args: any): void => {
-                expect(args.right).toBe(value);
-            }
-        );
+        const callback: any = jest.fn((args: any): void => {
+            expect(args.right).toBe(value);
+        });
         const rendered: any = mount(
             <CSSPosition
                 data={{ position: PositionValue.absolute }}
@@ -193,11 +185,9 @@ describe("CSSPosition", () => {
     });
     test("should fire `onChange` callback if the `bottom` prop is changed", () => {
         const value: string = "25px";
-        const callback: any = jest.fn(
-            (args: any): void => {
-                expect(args.bottom).toBe(value);
-            }
-        );
+        const callback: any = jest.fn((args: any): void => {
+            expect(args.bottom).toBe(value);
+        });
         const rendered: any = mount(
             <CSSPosition
                 data={{ position: PositionValue.absolute }}
@@ -213,13 +203,11 @@ describe("CSSPosition", () => {
     });
     test("should not allow the `left` prop value to be added to the `onChange` callback if the `right` prop is being set", () => {
         const value: string = "25px";
-        const callback: any = jest.fn(
-            (args: any): void => {
-                expect(args.right).toBe(value);
-                expect(args.left).toBe(undefined);
-                expect(args.position).toBe("absolute");
-            }
-        );
+        const callback: any = jest.fn((args: any): void => {
+            expect(args.right).toBe(value);
+            expect(args.left).toBe(undefined);
+            expect(args.position).toBe("absolute");
+        });
         const rendered: any = mount(
             <CSSPosition
                 data={{ position: PositionValue.absolute, left: value }}
@@ -235,13 +223,11 @@ describe("CSSPosition", () => {
     });
     test("should not allow the `right` prop value to be added to the `onChange` callback if the `left` prop is being set", () => {
         const value: string = "25px";
-        const callback: any = jest.fn(
-            (args: any): void => {
-                expect(args.left).toBe(value);
-                expect(args.right).toBe(undefined);
-                expect(args.position).toBe("absolute");
-            }
-        );
+        const callback: any = jest.fn((args: any): void => {
+            expect(args.left).toBe(value);
+            expect(args.right).toBe(undefined);
+            expect(args.position).toBe("absolute");
+        });
         const rendered: any = mount(
             <CSSPosition
                 data={{ position: PositionValue.absolute, right: value }}
@@ -257,13 +243,11 @@ describe("CSSPosition", () => {
     });
     test("should not allow the `bottom` prop value to be added to the `onChange` callback if the `top` prop is being set", () => {
         const value: string = "25px";
-        const callback: any = jest.fn(
-            (args: any): void => {
-                expect(args.top).toBe(value);
-                expect(args.bottom).toBe(undefined);
-                expect(args.position).toBe("absolute");
-            }
-        );
+        const callback: any = jest.fn((args: any): void => {
+            expect(args.top).toBe(value);
+            expect(args.bottom).toBe(undefined);
+            expect(args.position).toBe("absolute");
+        });
         const rendered: any = mount(
             <CSSPosition
                 data={{ position: PositionValue.absolute, bottom: value }}
@@ -279,13 +263,11 @@ describe("CSSPosition", () => {
     });
     test("should not allow the `top` prop value to be added to the `onChange` callback if the `bottom` prop is being set", () => {
         const value: string = "25px";
-        const callback: any = jest.fn(
-            (args: any): void => {
-                expect(args.bottom).toBe(value);
-                expect(args.top).toBe(undefined);
-                expect(args.position).toBe("absolute");
-            }
-        );
+        const callback: any = jest.fn((args: any): void => {
+            expect(args.bottom).toBe(value);
+            expect(args.top).toBe(undefined);
+            expect(args.position).toBe("absolute");
+        });
         const rendered: any = mount(
             <CSSPosition
                 data={{ position: PositionValue.absolute, top: value }}

@@ -176,11 +176,9 @@ export function resolveDataInDataDictionary<T>(
                     (config.dataDictionary[0][config.dataDictionary[0][key].parent.id]
                         .data as object)[
                         config.dataDictionary[0][key].parent.dataLocation
-                    ].map(
-                        (slotItem: LinkedData): string => {
-                            return slotItem.id;
-                        }
-                    )
+                    ].map((slotItem: LinkedData): string => {
+                        return slotItem.id;
+                    })
                 );
             }
         }
@@ -196,17 +194,15 @@ export function resolveDataInDataDictionary<T>(
     });
 
     // call the resolver on all children
-    linkedDataIds.map(
-        (key: string): void => {
-            resolveDataInDataDictionary({
-                dataDictionary: config.dataDictionary,
-                dictionaryId: key,
-                resolvedDictionaryIds: config.resolvedDictionaryIds,
-                schemaDictionary: config.schemaDictionary,
-                mapper: config.mapper,
-            });
-        }
-    );
+    linkedDataIds.map((key: string): void => {
+        resolveDataInDataDictionary({
+            dataDictionary: config.dataDictionary,
+            dictionaryId: key,
+            resolvedDictionaryIds: config.resolvedDictionaryIds,
+            schemaDictionary: config.schemaDictionary,
+            mapper: config.mapper,
+        });
+    });
 }
 
 function attachResolvedDataDictionary<T>(
@@ -267,9 +263,7 @@ export function htmlMapper(
                     return !availableElementSlots.includes(
                         get(
                             config.schema,
-                            `${PropertyKeyword.properties}[${potentialAttribute}][${
-                                ReservedElementMappingKeyword.mapsToSlot
-                            }]`
+                            `${PropertyKeyword.properties}[${potentialAttribute}][${ReservedElementMappingKeyword.mapsToSlot}]`
                         )
                     );
                 });

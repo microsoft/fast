@@ -121,8 +121,8 @@ function getNavigationItems(
     const combiningKeyword: CombiningKeyword | void = schema[CombiningKeyword.oneOf]
         ? CombiningKeyword.oneOf
         : schema[CombiningKeyword.anyOf]
-            ? CombiningKeyword.anyOf
-            : void 0;
+        ? CombiningKeyword.anyOf
+        : void 0;
 
     if (combiningKeyword) {
         return schema[combiningKeyword].map((subSchema: any, index: number) => {
@@ -158,9 +158,7 @@ function getNavigationItems(
                         undefined,
                         dataLocation ? `${dataLocation}.${propertyKey}` : propertyKey,
                         schemaLocation
-                            ? `${schemaLocation}.${
-                                  PropertyKeyword.properties
-                              }.${propertyKey}`
+                            ? `${schemaLocation}.${PropertyKeyword.properties}.${propertyKey}`
                             : `${PropertyKeyword.properties}.${propertyKey}`,
                         parent
                     );

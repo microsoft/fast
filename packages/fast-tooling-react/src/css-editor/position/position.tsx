@@ -119,13 +119,11 @@ export default class CSSPosition extends Foundation<
                 location: Location.right,
                 className: this.props.managedClasses.absoluteInput_centerRow__activeRight,
             },
-        ].forEach(
-            (locationsMappedToClassNames: LocationsMappedToClassNames): void => {
-                classNames = this.props[locationsMappedToClassNames.location]
-                    ? `${classNames} ${locationsMappedToClassNames.className}`
-                    : classNames;
-            }
-        );
+        ].forEach((locationsMappedToClassNames: LocationsMappedToClassNames): void => {
+            classNames = this.props[locationsMappedToClassNames.location]
+                ? `${classNames} ${locationsMappedToClassNames.className}`
+                : classNames;
+        });
 
         return classNames;
     }
@@ -194,13 +192,11 @@ export default class CSSPosition extends Foundation<
         const updatedProps: Partial<CSSPositionValues> = {};
         const excludedProp: Location = this.getExcludedLocation(updatedPropKey);
 
-        props.forEach(
-            (prop: string): void => {
-                if (get(this.props, `data.${prop}`) && prop !== excludedProp) {
-                    updatedProps[prop] = this.props.data[prop];
-                }
+        props.forEach((prop: string): void => {
+            if (get(this.props, `data.${prop}`) && prop !== excludedProp) {
+                updatedProps[prop] = this.props.data[prop];
             }
-        );
+        });
 
         updatedProps[updatedPropKey] = updatedPropValue;
 
@@ -214,9 +210,9 @@ export default class CSSPosition extends Foundation<
         return updatedPropKey === Location.left
             ? Location.right
             : updatedPropKey === Location.right
-                ? Location.left
-                : updatedPropKey === Location.top
-                    ? Location.bottom
-                    : Location.top;
+            ? Location.left
+            : updatedPropKey === Location.top
+            ? Location.bottom
+            : Location.top;
     }
 }
