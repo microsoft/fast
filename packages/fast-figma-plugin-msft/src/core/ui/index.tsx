@@ -553,9 +553,6 @@ export class PluginUI extends React.Component<PluginUIProps> {
         return val;
     }
 
-    /**
-     * TODO: Replace implementation after demo
-     */
     private pageBackgroundIds() {
         return [
             "neutralLayerL1",

@@ -6,7 +6,6 @@
   "private": true,
   "scripts": {
     "build": "webpack --progress --mode=production",
-    "components": "webpack-dev-server --watch --config webpack.components.config.js",
     "watch": "webpack --progress --watch --mode=production",
     "prettier": "prettier --config ../../.prettierrc --write \"**/*.{ts,tsx}\"",
     "prettier:diff": "prettier --config ../../.prettierrc \"**/*.{ts,tsx}\" --list-different",

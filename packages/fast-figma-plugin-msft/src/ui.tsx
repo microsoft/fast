@@ -19,7 +19,6 @@ function dispatchMessage(message: UIMessage): void {
 const root = document.querySelector("fast-design-system-provider");
 
 function render(props?: PluginUIProps): void {
-    // ReactDOM.render(<PluginUI {...props} dispatch={dispatchMessage} />, root);
     ReactDOM.render(<PluginUI {...props} dispatch={dispatchMessage} />, root);
 }
 
