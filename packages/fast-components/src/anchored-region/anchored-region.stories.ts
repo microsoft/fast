@@ -89,6 +89,40 @@ function setButtonActions(): void {
                         }
                     };
                     break;
+
+                case "toggle-positions-small":
+                    el.onclick = event => {
+                        const smallContent: HTMLElement | null = document.getElementById(
+                            "toggle-positions-small"
+                        );
+                        const largeContent: HTMLElement | null = document.getElementById(
+                            "toggle-positions-large"
+                        );
+                        if (smallContent === null || largeContent === null) {
+                            return;
+                        }
+
+                        smallContent.hidden = false;
+                        largeContent.hidden = true;
+                    };
+                    break;
+
+                case "toggle-positions-large":
+                    el.onclick = event => {
+                        const smallContent: HTMLElement | null = document.getElementById(
+                            "toggle-positions-small"
+                        );
+                        const largeContent: HTMLElement | null = document.getElementById(
+                            "toggle-positions-large"
+                        );
+                        if (smallContent === null || largeContent === null) {
+                            return;
+                        }
+
+                        smallContent.hidden = true;
+                        largeContent.hidden = false;
+                    };
+                    break;
             }
         }
     });

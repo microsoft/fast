@@ -1,5 +1,21 @@
 import { attr, FastElement, observable, DOM } from "@microsoft/fast-element";
 
+// TODO: the Resize Observer related files are a temporary stopgap measure until
+// Resize Observer types are pulled into TypeScript, which seems imminent
+// At that point these files should be deleted.
+// https://github.com/microsoft/TypeScript/issues/37861
+import {
+    ConstructibleResizeObserver,
+    ResizeObserverClassDefinition,
+} from "./resize-observer";
+import { ResizeObserverEntry } from "./resize-observer-entry";
+
+declare global {
+    interface WindowWithResizeObserver extends Window {
+        ResizeObserver: ConstructibleResizeObserver;
+    }
+}
+
 export type AxisPositioningMode = "uncontrolled" | "locktodefault" | "dynamic";
 
 export type HorizontalPosition = "start" | "end" | "left" | "right" | "unset";
@@ -42,7 +58,6 @@ export class AnchoredRegion extends FastElement {
     private anchorChanged(): void {
         if (this.initialLayoutComplete) {
             this.initialLayoutComplete = false;
-            this.disconnectAnchor(this.anchorElement);
             this.anchorElement = this.getAnchor();
             this.reset();
         }
@@ -129,8 +144,7 @@ export class AnchoredRegion extends FastElement {
     public initialLayoutComplete: boolean = false;
 
     public anchorElement: HTMLElement | null = null;
-    private anchorElementChanged(oldvalue, newvalue): void {
-        this.disconnectAnchor(oldvalue);
+    private anchorElementChanged(): void {
         if (this.initialLayoutComplete) {
             this.initialLayoutComplete = false;
             this.reset();
@@ -138,8 +152,7 @@ export class AnchoredRegion extends FastElement {
     }
 
     public viewportElement: HTMLElement | null = null;
-    private viewportElementChanged(oldvalue, newvalue): void {
-        this.disconnectViewport(oldvalue);
+    private viewportElementChanged(): void {
         if (this.initialLayoutComplete) {
             this.initialLayoutComplete = false;
             this.reset();
@@ -169,6 +182,7 @@ export class AnchoredRegion extends FastElement {
     private yTransformOrigin: string;
 
     private collisionDetector: IntersectionObserver;
+    private resizeDetector: ResizeObserverClassDefinition;
 
     private viewportRect: ClientRect | DOMRect | null;
     private positionerDimension: Dimension;
@@ -204,8 +218,6 @@ export class AnchoredRegion extends FastElement {
 
     constructor() {
         super();
-        this.handleAnchorResize = this.handleAnchorResize;
-        this.handleRegionResize = this.handleRegionResize;
         this.setInitialState();
     }
 
@@ -323,8 +335,11 @@ export class AnchoredRegion extends FastElement {
         this.collisionDetector.observe(this.region);
         this.collisionDetector.observe(this.anchorElement);
 
-        this.anchorElement.onresize = this.handleAnchorResize;
-        this.region.onresize = this.handleRegionResize;
+        this.resizeDetector = new ((window as unknown) as WindowWithResizeObserver).ResizeObserver(
+            this.handleResize
+        );
+        this.resizeDetector.observe(this.anchorElement);
+        this.resizeDetector.observe(this.region);
 
         this.viewportElement.addEventListener("scroll", this.handleScroll);
     };
@@ -334,19 +349,9 @@ export class AnchoredRegion extends FastElement {
      */
     private disconnectObservers = (): void => {
         this.collisionDetector.disconnect();
+        this.resizeDetector.disconnect();
 
-        this.disconnectAnchor(this.anchorElement);
         this.disconnectViewport(this.viewportElement);
-
-        if (this.region !== null) {
-            this.region.removeEventListener("onresize", this.handleRegionResize);
-        }
-    };
-
-    private disconnectAnchor = (anchor: HTMLElement | null): void => {
-        if (anchor !== null) {
-            anchor.removeEventListener("onresize", this.handleAnchorResize);
-        }
     };
 
     private disconnectViewport = (viewport: HTMLElement | null): void => {
@@ -475,27 +480,37 @@ export class AnchoredRegion extends FastElement {
     };
 
     /**
-     *  Handle region resize events
+     *  Handle resize events
      */
-    private handleRegionResize = (): void => {
-        const regionHeight: number = this.region !== null ? this.region.clientHeight : 0;
-        const regionWidth: number = this.region !== null ? this.region.clientWidth : 0;
-
-        if (!this.horizontalScaling) {
-            this.positionerDimension.width = regionWidth;
-        }
-
-        if (!this.verticalScaling) {
-            this.positionerDimension.height = regionHeight;
-        }
+    private handleResize = (entries: ResizeObserverEntry[]): void => {
+        entries.forEach((entry: ResizeObserverEntry) => {
+            if (entry.target === this.region) {
+                this.handleRegionResize(entry);
+            } else {
+                this.handleAnchorResize(entry);
+            }
+        });
 
         this.requestLayoutUpdate();
     };
 
     /**
+     *  Handle region resize events
+     */
+    private handleRegionResize = (entry: ResizeObserverEntry): void => {
+        if (!this.horizontalScaling) {
+            this.positionerDimension.width = entry.contentRect.width;
+        }
+
+        if (!this.verticalScaling) {
+            this.positionerDimension.height = entry.contentRect.height;
+        }
+    };
+
+    /**
      *  Handle anchor resize events
      */
-    private handleAnchorResize = (): void => {
+    private handleAnchorResize = (entry: ResizeObserverEntry): void => {
         this.anchorHeight =
             this.anchorElement !== null ? this.anchorElement.clientHeight : 0;
         this.anchorWidth =
@@ -520,8 +535,6 @@ export class AnchoredRegion extends FastElement {
         } else {
             this.anchorLeft = this.anchorRight - this.anchorWidth;
         }
-
-        this.requestLayoutUpdate();
     };
 
     /**
