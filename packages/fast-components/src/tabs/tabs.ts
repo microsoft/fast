@@ -16,31 +16,17 @@ export class Tabs extends FastElement {
 
     @observable
     tabs: Node[];
+    tabsChanged(): void {
+        this.getTabs();
+    }
     @observable
     tabPanels: Node[];
-
-    @observable
-    activeTab: string | null = "tab-0";
-
-    connectedCallback() {
-        super.connectedCallback();
-        // console.log(this.tabs);
-        this.getTabs();
+    tabPanelsChanged(): void {
         this.getTabPanels();
     }
 
-    public disconnectedCallback(): void {
-        this.removeEventTabs();
-    }
-
-    private removeEventTabs = (): void => {
-        this.tabs.forEach((element, index: number) => {
-            const tb = element as Element;
-            if (tb.slot === "tab") {
-                tb.removeEventListener("click", this.handleTabClick);
-            }
-        });
-    };
+    @observable
+    activeTab: string | null = "tab-0";
 
     private getTabs = (): void => {
         this.tabs.forEach((element, index: number) => {
