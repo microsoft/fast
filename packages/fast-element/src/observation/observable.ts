@@ -1,13 +1,14 @@
 import { Controller } from "../controller";
 import { FastElement } from "../fast-element";
-import { Notifier, PropertyChangeNotifier } from "./notifier";
-import { Expression, ExpressionContext, emptyArray } from "../interfaces";
+import { emptyArray, Expression, ExpressionContext } from "../interfaces";
 import { DOM } from "../dom";
+import { Notifier, PropertyChangeNotifier } from "./notifier";
 
 const notifierLookup = new WeakMap<any, Notifier>();
 let watcher: ObservableExpression | undefined = void 0;
 
 export const Observable = {
+    /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
     createArrayObserver(array: any[]): Notifier {
         throw new Error("Must call enableArrayObservation before observing arrays.");
     },
@@ -28,17 +29,18 @@ export const Observable = {
         return found;
     },
 
-    track(source: unknown, propertyName: string) {
+    track(source: unknown, propertyName: string): void {
         if (watcher !== void 0) {
             watcher.observe(source, propertyName);
         }
     },
 
-    notify(source: unknown, args: any) {
+    notify(source: unknown, args: any): void {
+        /* eslint-disable-next-line @typescript-eslint/no-use-before-define */
         getNotifier(source).notify(source, args);
     },
 
-    define(target: {}, propertyName: string) {
+    define(target: {}, propertyName: string): void {
         const fieldName = `_${propertyName}`;
         const callbackName = `${propertyName}Changed`;
         const hasCallback = callbackName in target;
@@ -50,14 +52,14 @@ export const Observable = {
 
         Reflect.defineProperty(target, propertyName, {
             enumerable: true,
-            get: function(this: any) {
+            get: function (this: any) {
                 if (watcher !== void 0) {
                     watcher.observe(this, propertyName);
                 }
 
                 return this[fieldName];
             },
-            set: function(this: any, newValue) {
+            set: function (this: any, newValue: any) {
                 const oldValue = this[fieldName];
 
                 if (oldValue !== newValue) {
@@ -66,7 +68,7 @@ export const Observable = {
                     if (hasCallback) {
                         this[callbackName](oldValue, newValue);
                     }
-
+                    /* eslint-disable-next-line @typescript-eslint/no-use-before-define */
                     getNotifier(this).notify(this, propertyName);
                 }
             },
@@ -81,7 +83,7 @@ export const Observable = {
 const getNotifier = Observable.getNotifier;
 const queueUpdate = DOM.queueUpdate;
 
-export function observable($target: {}, $prop: string) {
+export function observable($target: {}, $prop: string): void {
     Observable.define($target, $prop);
 }
 
@@ -97,8 +99,8 @@ interface SubscriptionRecord {
 }
 
 export class ObservableExpression {
-    private needsRefresh = true;
-    private needsQueue = true;
+    private needsRefresh: boolean = true;
+    private needsQueue: boolean = true;
 
     private first: SubscriptionRecord = this as any;
     private last: SubscriptionRecord | null = null;
@@ -110,7 +112,7 @@ export class ObservableExpression {
 
     constructor(private expression: Expression, private observer: ExpressionObserver) {}
 
-    public evaluate(scope: unknown, context: ExpressionContext) {
+    public evaluate(scope: unknown, context: ExpressionContext): any {
         if (this.needsRefresh && this.last !== null) {
             this.dispose();
         }
@@ -123,7 +125,7 @@ export class ObservableExpression {
         return result;
     }
 
-    public dispose() {
+    public dispose(): void {
         if (this.last !== null) {
             let current = this.first;
 
@@ -138,7 +140,7 @@ export class ObservableExpression {
     }
 
     /** @internal */
-    public observe(source: unknown, propertyName: string) {
+    public observe(source: unknown, propertyName: string): void {
         const prev = this.last;
         const notifier = getNotifier(source);
         const current: SubscriptionRecord = prev === null ? this.first : ({} as any);
@@ -167,7 +169,7 @@ export class ObservableExpression {
     }
 
     /** @internal */
-    handleChange() {
+    handleChange(): void {
         if (this.needsQueue) {
             this.needsQueue = false;
             queueUpdate(this);
@@ -175,7 +177,7 @@ export class ObservableExpression {
     }
 
     /** @internal */
-    call() {
+    call(): void {
         this.needsQueue = true;
         this.observer.handleExpressionChange(this);
     }

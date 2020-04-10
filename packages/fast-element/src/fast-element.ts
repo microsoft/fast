@@ -2,12 +2,37 @@ import { Controller } from "./controller";
 import { emptyArray } from "./interfaces";
 import { ElementViewTemplate } from "./template";
 import { ElementStyles } from "./styles";
-import { AttributeDefinition, AttributeConfiguration } from "./attributes";
+import { AttributeConfiguration, AttributeDefinition } from "./attributes";
 import { Registry } from "./di";
 
 const defaultShadowOptions: ShadowRootInit = { mode: "open" };
 const defaultElementOptions: ElementDefinitionOptions = {};
 
+export type PartialFastElementDefinition = {
+    readonly name: string;
+    readonly template?: ElementViewTemplate;
+    readonly styles?: ElementStyles;
+    readonly attributes?: (AttributeConfiguration | string)[];
+    readonly dependencies?: Registry[];
+    readonly shadowOptions?: Partial<ShadowRootInit> | null;
+    readonly elementOptions?: ElementDefinitionOptions;
+};
+
+export class FastElementDefinition {
+    public constructor(
+        public readonly name: string,
+        public readonly attributes: ReadonlyArray<AttributeDefinition>,
+        public readonly propertyLookup: Record<string, AttributeDefinition>,
+        public readonly attributeLookup: Record<string, AttributeDefinition>,
+        public readonly template?: ElementViewTemplate,
+        public readonly styles?: ElementStyles,
+        public readonly shadowOptions?: ShadowRootInit,
+        public readonly elementOptions?: ElementDefinitionOptions,
+        public readonly dependencies: ReadonlyArray<Registry> = emptyArray
+    ) {}
+}
+
+/* eslint-disable-next-line @typescript-eslint/explicit-function-return-type */
 function createFastElement(BaseType: typeof HTMLElement) {
     return class FastElement extends BaseType {
         public $fastController!: Controller;
@@ -21,15 +46,15 @@ function createFastElement(BaseType: typeof HTMLElement) {
             type: string,
             detail?: any,
             options?: Omit<CustomEventInit, "detail">
-        ) {
+        ): boolean | void {
             return this.$fastController.emit(type, detail, options);
         }
 
-        public connectedCallback() {
+        public connectedCallback(): void {
             this.$fastController.onConnectedCallback();
         }
 
-        public disconnectedCallback() {
+        public disconnectedCallback(): void {
             this.$fastController.onDisconnectedCallback();
         }
 
@@ -37,7 +62,7 @@ function createFastElement(BaseType: typeof HTMLElement) {
             name: string,
             oldValue: string,
             newValue: string
-        ) {
+        ): void {
             this.$fastController.onAttributeChangedCallback(name, oldValue, newValue);
         }
     };
@@ -64,8 +89,8 @@ export const FastElement = Object.assign(createFastElement(HTMLElement), {
             nameOrDef.shadowOptions === void 0
                 ? defaultShadowOptions
                 : nameOrDef.shadowOptions === null
-                    ? void 0
-                    : { ...defaultShadowOptions, ...nameOrDef.shadowOptions };
+                ? void 0
+                : { ...defaultShadowOptions, ...nameOrDef.shadowOptions };
 
         const elementOptions =
             nameOrDef.elementOptions === void 0
@@ -85,10 +110,10 @@ export const FastElement = Object.assign(createFastElement(HTMLElement), {
 
             Reflect.defineProperty(proto, current.property, {
                 enumerable: true,
-                get: function(this: any) {
+                get: function (this: any) {
                     return current.getValue(this);
                 },
-                set: function(this: any, value) {
+                set: function (this: any, value: any) {
                     return current.setValue(this, value);
                 },
             });
@@ -121,32 +146,9 @@ export const FastElement = Object.assign(createFastElement(HTMLElement), {
     },
 });
 
-export type PartialFastElementDefinition = {
-    readonly name: string;
-    readonly template?: ElementViewTemplate;
-    readonly styles?: ElementStyles;
-    readonly attributes?: (AttributeConfiguration | string)[];
-    readonly dependencies?: Registry[];
-    readonly shadowOptions?: Partial<ShadowRootInit> | null;
-    readonly elementOptions?: ElementDefinitionOptions;
-};
-
-export class FastElementDefinition {
-    public constructor(
-        public readonly name: string,
-        public readonly attributes: ReadonlyArray<AttributeDefinition>,
-        public readonly propertyLookup: Record<string, AttributeDefinition>,
-        public readonly attributeLookup: Record<string, AttributeDefinition>,
-        public readonly template?: ElementViewTemplate,
-        public readonly styles?: ElementStyles,
-        public readonly shadowOptions?: ShadowRootInit,
-        public readonly elementOptions?: ElementDefinitionOptions,
-        public readonly dependencies: ReadonlyArray<Registry> = emptyArray
-    ) {}
-}
-
 export function customElement(nameOrDef: string | PartialFastElementDefinition) {
-    return function(type: Function) {
+    /* eslint-disable-next-line @typescript-eslint/explicit-function-return-type */
+    return function (type: Function) {
         FastElement.define(type, nameOrDef);
     };
 }

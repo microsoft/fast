@@ -43,7 +43,7 @@ export const nullableNumberConverter: ValueConverter = {
         if (value === null || value === undefined) {
             return null;
         }
-        let number = value * 1;
+        const number: number = value * 1;
         return isNaN(number) ? null : number.toString();
     },
 
@@ -51,7 +51,7 @@ export const nullableNumberConverter: ValueConverter = {
         if (value === null || value === undefined) {
             return null;
         }
-        let number = value * 1;
+        const number: number = value * 1;
         return isNaN(number) ? null : number;
     },
 };
@@ -60,7 +60,7 @@ export class AttributeDefinition {
     private readonly fieldName: string;
     private readonly callbackName: string;
     private readonly hasCallback: boolean;
-    private readonly guards = new Set();
+    private readonly guards: Set<unknown> = new Set();
 
     public constructor(
         public readonly Owner: Function,
@@ -78,7 +78,7 @@ export class AttributeDefinition {
         }
     }
 
-    public setValue(element: HTMLElement, newValue: any) {
+    public setValue(element: HTMLElement, newValue: any): void {
         const oldValue = element[this.fieldName];
         const converter = this.converter;
 
@@ -104,7 +104,7 @@ export class AttributeDefinition {
         return element[this.fieldName];
     }
 
-    public onAttributeChangedCallback(element: HTMLElement, value: any) {
+    public onAttributeChangedCallback(element: HTMLElement, value: any): void {
         if (this.guards.has(element)) {
             return;
         }
@@ -114,7 +114,7 @@ export class AttributeDefinition {
         this.guards.delete(element);
     }
 
-    private tryReflectToAttribute(element: HTMLElement) {
+    private tryReflectToAttribute(element: HTMLElement): void {
         const mode = this.mode;
         const guards = this.guards;
 

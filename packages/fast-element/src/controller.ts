@@ -1,5 +1,5 @@
-import { FastElementDefinition, FastElement } from "./fast-element";
-import { Container, Registry, Resolver, InterfaceSymbol } from "./di";
+import { FastElement, FastElementDefinition } from "./fast-element";
+import { Container, InterfaceSymbol, Registry, Resolver } from "./di";
 import { ElementView } from "./view";
 import { PropertyChangeNotifier } from "./observation/notifier";
 import { Observable } from "./observation/observable";
@@ -12,7 +12,7 @@ const defaultEventOptions: CustomEventInit = {
 export class Controller extends PropertyChangeNotifier implements Container {
     public view: ElementView | null = null;
     public isConnected: boolean = false;
-    private resolvers = new Map<any, Resolver>();
+    private resolvers: Map<any, Resolver> = new Map<any, Resolver>();
     private boundObservables: Record<string, any> | null = null;
 
     public constructor(
@@ -42,7 +42,7 @@ export class Controller extends PropertyChangeNotifier implements Container {
             styles.applyTo(shadowRoot);
         }
 
-        definition.dependencies.forEach(x => x.register(this));
+        definition.dependencies.forEach((x: Registry) => x.register(this));
 
         // Capture any observable values that were set by the binding engine before
         // the browser upgraded the element. Then delete the property since it will
@@ -65,7 +65,7 @@ export class Controller extends PropertyChangeNotifier implements Container {
         }
     }
 
-    public onConnectedCallback() {
+    public onConnectedCallback(): void {
         if (this.isConnected) {
             return;
         }
@@ -92,7 +92,7 @@ export class Controller extends PropertyChangeNotifier implements Container {
         this.isConnected = true;
     }
 
-    public onDisconnectedCallback() {
+    public onDisconnectedCallback(): void {
         if (this.isConnected === false) {
             return;
         }
@@ -104,7 +104,11 @@ export class Controller extends PropertyChangeNotifier implements Container {
         }
     }
 
-    public onAttributeChangedCallback(name: string, oldValue: string, newValue: string) {
+    public onAttributeChangedCallback(
+        name: string,
+        oldValue: string,
+        newValue: string
+    ): void {
         const attrDef = this.definition.attributeLookup[name];
 
         if (attrDef !== void 0) {
@@ -112,7 +116,11 @@ export class Controller extends PropertyChangeNotifier implements Container {
         }
     }
 
-    public emit(type: string, detail?: any, options?: Omit<CustomEventInit, "detail">) {
+    public emit(
+        type: string,
+        detail?: any,
+        options?: Omit<CustomEventInit, "detail">
+    ): void | boolean {
         if (this.isConnected) {
             return this.element.dispatchEvent(
                 new CustomEvent(type, { detail, ...defaultEventOptions, ...options })
@@ -122,7 +130,7 @@ export class Controller extends PropertyChangeNotifier implements Container {
         return false;
     }
 
-    public register(registry: Registry) {
+    public register(registry: Registry): void {
         registry.register(this);
     }
 
@@ -137,11 +145,11 @@ export class Controller extends PropertyChangeNotifier implements Container {
         return resolver(this) as T;
     }
 
-    public registerResolver(key: any, resolver: Resolver) {
+    public registerResolver(key: any, resolver: Resolver): void {
         this.resolvers.set(key, resolver);
     }
 
-    public static forCustomElement(element: HTMLElement) {
+    public static forCustomElement(element: HTMLElement): Controller {
         const controller: Controller = (element as any).$fastController;
 
         if (controller !== void 0) {
