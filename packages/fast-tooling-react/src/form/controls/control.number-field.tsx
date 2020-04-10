@@ -71,8 +71,8 @@ class NumberFieldControl extends React.Component<
         return typeof value === "number"
             ? value
             : typeof this.props.default !== "undefined"
-                ? this.props.default
-                : "";
+            ? this.props.default
+            : "";
     }
 }
 

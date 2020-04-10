@@ -91,10 +91,7 @@ export default class CSSBorder extends Foundation<
     private renderBorderOption(style: string): JSX.Element {
         return (
             <option key={style} value={style}>
-                {style
-                    .charAt(0)
-                    .toUpperCase()
-                    .concat(style.slice(1))}
+                {style.charAt(0).toUpperCase().concat(style.slice(1))}
             </option>
         );
     }

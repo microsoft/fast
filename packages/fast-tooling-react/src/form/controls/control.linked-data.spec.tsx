@@ -249,10 +249,7 @@ describe("LinkedDataControl", () => {
             />
         );
 
-        renderedWithTwoLinkedData
-            .find("DragItem")
-            .find("button")
-            .simulate("click");
+        renderedWithTwoLinkedData.find("DragItem").find("button").simulate("click");
 
         expect(callback).toHaveBeenCalled();
         expect(callback.mock.calls[0][0]).toEqual({

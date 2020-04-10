@@ -27,8 +27,8 @@ class CheckboxControl extends React.Component<
             typeof this.props.value === "boolean"
                 ? this.props.value
                 : typeof this.props.default === "boolean"
-                    ? this.props.default
-                    : false;
+                ? this.props.default
+                : false;
 
         return (
             <div

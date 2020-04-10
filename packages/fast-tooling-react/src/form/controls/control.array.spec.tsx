@@ -284,10 +284,7 @@ describe("ArrayControl", () => {
             />
         );
 
-        rendered
-            .find("a")
-            .at(0)
-            .simulate("click");
+        rendered.find("a").at(0).simulate("click");
 
         expect(handleSectionUpdate).toHaveBeenCalled();
         expect(handleSectionUpdate.mock.calls[0][1]).toEqual("[0]");
@@ -355,10 +352,7 @@ describe("ArrayControl", () => {
             />
         );
 
-        renderedWithTestLocations
-            .find("a")
-            .at(0)
-            .simulate("click");
+        renderedWithTestLocations.find("a").at(0).simulate("click");
 
         expect(handleSectionUpdateWithTestLocations).toHaveBeenCalled();
         expect(handleSectionUpdateWithTestLocations.mock.calls[0][1]).toEqual("test[0]");

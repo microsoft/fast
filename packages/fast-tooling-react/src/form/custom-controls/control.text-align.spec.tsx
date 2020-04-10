@@ -68,10 +68,7 @@ describe("TextAlignControl", () => {
             <TextAlignControl {...textAlignControlProps} onChange={handleChange} />
         );
 
-        rendered
-            .find("input")
-            .at(0)
-            .simulate("change");
+        rendered.find("input").at(0).simulate("change");
 
         expect(handleChange).toHaveBeenCalled();
         expect(handleChange.mock.calls[0][0]).toEqual({ value: "left" });

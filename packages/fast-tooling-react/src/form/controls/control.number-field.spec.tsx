@@ -143,11 +143,6 @@ describe("NumberFieldControl", () => {
                 default={defaultValue}
             />
         );
-        expect(
-            rendered
-                .find("input")
-                .at(0)
-                .prop("value")
-        ).toBe(value);
+        expect(rendered.find("input").at(0).prop("value")).toBe(value);
     });
 });

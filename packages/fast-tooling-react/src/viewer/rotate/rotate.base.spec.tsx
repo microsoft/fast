@@ -35,15 +35,13 @@ describe("Rotate", (): void => {
             <Rotate managedClasses={managedClasses} {...props} />
         );
 
-        rendered.find("input").forEach(
-            (input: any, index: number): void => {
-                if (index === 0) {
-                    expect(input.prop("checked")).toEqual(true);
-                } else {
-                    expect(input.prop("checked")).toEqual(false);
-                }
+        rendered.find("input").forEach((input: any, index: number): void => {
+            if (index === 0) {
+                expect(input.prop("checked")).toEqual(true);
+            } else {
+                expect(input.prop("checked")).toEqual(false);
             }
-        );
+        });
     });
     test("should have the portrait radio be checked when the `orientation` prop is set to portrait", () => {
         const props: RotateHandledProps = {
@@ -54,19 +52,17 @@ describe("Rotate", (): void => {
             <Rotate managedClasses={managedClasses} {...props} />
         );
 
-        rendered.find("input").forEach(
-            (input: any, index: number): void => {
-                if (index === 0) {
-                    expect(input.prop("checked")).toEqual(false);
-                } else {
-                    expect(input.prop("checked")).toEqual(true);
-                }
+        rendered.find("input").forEach((input: any, index: number): void => {
+            if (index === 0) {
+                expect(input.prop("checked")).toEqual(false);
+            } else {
+                expect(input.prop("checked")).toEqual(true);
             }
-        );
+        });
     });
     test("should fire the `onUpdateOrientation` when a radio has been selected and return the updated orientation", () => {
         const updateOrientationCallback: (orientation: Orientation) => void = jest.fn(
-            function(orientation: Orientation): void {
+            function (orientation: Orientation): void {
                 expect(orientation).toBe(Orientation.landscape);
             }
         );
@@ -78,13 +74,11 @@ describe("Rotate", (): void => {
             <Rotate managedClasses={managedClasses} {...props} />
         );
 
-        rendered.find("input").forEach(
-            (input: any, index: number): void => {
-                if (index === 0) {
-                    input.simulate("change");
-                }
+        rendered.find("input").forEach((input: any, index: number): void => {
+            if (index === 0) {
+                input.simulate("change");
             }
-        );
+        });
 
         expect(updateOrientationCallback).toHaveBeenCalled();
     });
@@ -98,15 +92,13 @@ describe("Rotate", (): void => {
             <Rotate managedClasses={managedClasses} {...props} />
         );
 
-        rendered.find("input").forEach(
-            (input: any, index: number): void => {
-                if (index === 0) {
-                    expect(input.prop("disabled")).toEqual(true);
-                } else {
-                    expect(input.prop("disabled")).toEqual(undefined);
-                }
+        rendered.find("input").forEach((input: any, index: number): void => {
+            if (index === 0) {
+                expect(input.prop("disabled")).toEqual(true);
+            } else {
+                expect(input.prop("disabled")).toEqual(undefined);
             }
-        );
+        });
     });
     test("should set the portrait radio to disabled when the `portraitDisabled` prop is true", () => {
         const props: RotateHandledProps = {
@@ -118,14 +110,12 @@ describe("Rotate", (): void => {
             <Rotate managedClasses={managedClasses} {...props} />
         );
 
-        rendered.find("input").forEach(
-            (input: any, index: number): void => {
-                if (index === 0) {
-                    expect(input.prop("disabled")).toEqual(undefined);
-                } else {
-                    expect(input.prop("disabled")).toEqual(true);
-                }
+        rendered.find("input").forEach((input: any, index: number): void => {
+            if (index === 0) {
+                expect(input.prop("disabled")).toEqual(undefined);
+            } else {
+                expect(input.prop("disabled")).toEqual(true);
             }
-        );
+        });
     });
 });

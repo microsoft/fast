@@ -136,10 +136,7 @@ describe("NavigationMenu", () => {
 
         expect(callback).toBeCalledTimes(0);
 
-        rendered
-            .find("span")
-            .at(0)
-            .simulate("click");
+        rendered.find("span").at(0).simulate("click");
 
         expect(callback).toBeCalledTimes(1);
         expect(callback.mock.calls[0][0]).toBe("foo-location");
