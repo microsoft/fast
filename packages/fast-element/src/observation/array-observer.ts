@@ -34,7 +34,7 @@ export function enableArrayObservation() {
     arrayProto.pop = function() {
         const notEmpty = this.length > 0;
         const methodCallResult = pop.apply(this, arguments as any);
-        const o = (this as any).$controller as ArrayObserver;
+        const o = (this as any).$fastController as ArrayObserver;
 
         if (o !== void 0 && notEmpty) {
             o.addSplice(newSplice(this.length, [methodCallResult], 0));
@@ -45,7 +45,7 @@ export function enableArrayObservation() {
 
     arrayProto.push = function() {
         const methodCallResult = push.apply(this, arguments as any);
-        const o = (this as any).$controller as ArrayObserver;
+        const o = (this as any).$fastController as ArrayObserver;
 
         if (o !== void 0) {
             o.addSplice(
@@ -61,7 +61,7 @@ export function enableArrayObservation() {
 
     arrayProto.reverse = function() {
         let oldArray;
-        const o = (this as any).$controller as ArrayObserver;
+        const o = (this as any).$fastController as ArrayObserver;
 
         if (o !== void 0) {
             o.notify();
@@ -80,7 +80,7 @@ export function enableArrayObservation() {
     arrayProto.shift = function() {
         const notEmpty = this.length > 0;
         const methodCallResult = shift.apply(this, arguments as any);
-        const o = (this as any).$controller as ArrayObserver;
+        const o = (this as any).$fastController as ArrayObserver;
 
         if (o !== void 0 && notEmpty) {
             o.addSplice(newSplice(0, [methodCallResult], 0));
@@ -91,7 +91,7 @@ export function enableArrayObservation() {
 
     arrayProto.sort = function() {
         let oldArray;
-        const o = (this as any).$controller as ArrayObserver;
+        const o = (this as any).$fastController as ArrayObserver;
 
         if (o !== void 0) {
             o.notify();
@@ -109,7 +109,7 @@ export function enableArrayObservation() {
 
     arrayProto.splice = function() {
         const methodCallResult = splice.apply(this, arguments as any);
-        const o = (this as any).$controller as ArrayObserver;
+        const o = (this as any).$fastController as ArrayObserver;
 
         if (o !== void 0) {
             o.addSplice(
@@ -129,7 +129,7 @@ export function enableArrayObservation() {
 
     arrayProto.unshift = function() {
         const methodCallResult = unshift.apply(this, arguments as any);
-        const o = (this as any).$controller as ArrayObserver;
+        const o = (this as any).$fastController as ArrayObserver;
 
         if (o !== void 0) {
             o.addSplice(adjustIndex(newSplice(0, [], arguments.length), this));
@@ -169,7 +169,7 @@ export class ArrayObserver extends SubscriberCollection implements Notifier {
 
     constructor(collection: any[]) {
         super();
-        (collection as any).$controller = this;
+        (collection as any).$fastController = this;
         this.collection = collection;
     }
 

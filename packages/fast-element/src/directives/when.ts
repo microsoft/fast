@@ -3,12 +3,7 @@ import { SyntheticViewTemplate, CaptureType } from "../template";
 import { SyntheticView } from "../view";
 import { Expression } from "../interfaces";
 import { Behavior } from "./behavior";
-import {
-    Observable,
-    GetterInspector,
-    inspectAndEvaluate,
-} from "../observation/observable";
-import { Subscriber } from "../observation/subscriber-collection";
+import { ObservableExpression } from "../observation/observable";
 import { Directive } from "./directive";
 
 export class WhenDirective extends Directive {
@@ -23,22 +18,23 @@ export class WhenDirective extends Directive {
     }
 }
 
-export class WhenBehavior implements Behavior, GetterInspector, Subscriber {
+export class WhenBehavior implements Behavior {
     private view: SyntheticView | null = null;
     private cachedView?: SyntheticView;
     private source: unknown;
+    private observableExpression: ObservableExpression;
 
     constructor(
         private location: Node,
-        private expression: Expression,
+        expression: Expression,
         private template: SyntheticViewTemplate
-    ) {}
+    ) {
+        this.observableExpression = new ObservableExpression(expression, this);
+    }
 
     bind(source: unknown) {
         this.source = source;
-        this.updateTarget(
-            inspectAndEvaluate<boolean>(this.expression, source, null as any, this)
-        );
+        this.updateTarget(this.observableExpression.evaluate(source, null as any));
     }
 
     unbind() {
@@ -46,19 +42,12 @@ export class WhenBehavior implements Behavior, GetterInspector, Subscriber {
             this.view.unbind();
         }
 
+        this.observableExpression.dispose();
         this.source = null;
     }
 
-    inspect(source: any, propertyName: string) {
-        Observable.getNotifier(source).subscribe(this, propertyName);
-    }
-
-    handleChange(source: any, propertyName: string): void {
-        DOM.queueUpdate(this);
-    }
-
-    public call() {
-        this.updateTarget(this.expression(this.source, null as any));
+    handleExpressionChange() {
+        this.updateTarget(this.observableExpression.evaluate(this.source, null as any));
     }
 
     updateTarget(show: boolean) {

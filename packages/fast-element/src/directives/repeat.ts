@@ -2,11 +2,7 @@ import { Expression } from "../interfaces";
 import { SyntheticViewTemplate, CaptureType } from "../template";
 import { Behavior } from "./behavior";
 import { DOM } from "../dom";
-import {
-    Observable,
-    GetterInspector,
-    inspectAndEvaluate,
-} from "../observation/observable";
+import { Observable, ObservableExpression } from "../observation/observable";
 import { SyntheticView, HTMLView } from "../view";
 import { Subscriber } from "../observation/subscriber-collection";
 import { ArrayObserver, enableArrayObservation } from "../observation/array-observer";
@@ -26,74 +22,66 @@ export class RepeatDirective extends Directive {
     }
 }
 
-export class RepeatBehavior implements Behavior, GetterInspector, Subscriber {
-    private source: unknown;
+export class RepeatBehavior implements Behavior, Subscriber {
+    private source: unknown = void 0;
     private views: SyntheticView[] = [];
     private items: any[] | null = null;
-    private observer?: ArrayObserver;
+    private itemsObserver?: ArrayObserver = void 0;
+    private observableExpression: ObservableExpression;
 
     constructor(
         private location: Node,
-        private expression: Expression,
+        expression: Expression,
         private template: SyntheticViewTemplate
-    ) {}
+    ) {
+        this.observableExpression = new ObservableExpression(expression, this);
+    }
 
     bind(source: unknown) {
         this.source = source;
-        this.items = inspectAndEvaluate(this.expression, source, null as any, this);
-        this.checkCollectionObserver(false);
+        this.items = this.observableExpression.evaluate(source, null as any);
+        this.observeItems();
         this.refreshAllViews();
     }
 
     unbind() {
         this.source = null;
         this.items = null;
-        this.unbindAllViews();
-        this.checkCollectionObserver(true);
-    }
 
-    inspect(source: any, propertyName: string) {
-        Observable.getNotifier(source).subscribe(this, propertyName);
-    }
-
-    handleChange(source: any, args: string | Splice[]): void {
-        if (typeof args === "string") {
-            this.source = source;
-            this.items = inspectAndEvaluate(
-                this.expression,
-                this.source,
-                null as any,
-                this
-            );
-            this.checkCollectionObserver(false);
-            this.refreshAllViews();
-        } else {
-            this.updateViews(args);
+        if (this.itemsObserver !== void 0) {
+            this.itemsObserver.removeSubscriber(this);
         }
+
+        this.unbindAllViews();
+        this.observableExpression.dispose();
     }
 
-    private checkCollectionObserver(fromUnbind: boolean): void {
-        const oldObserver = this.observer;
-        if (fromUnbind) {
+    handleExpressionChange() {
+        this.items = this.observableExpression.evaluate(this.source, null as any);
+        this.observeItems();
+        this.refreshAllViews();
+    }
+
+    handleChange(source: any, args: Splice[]): void {
+        this.updateViews(args);
+    }
+
+    private observeItems(): void {
+        if (!this.items) {
+            this.items = [];
+        }
+
+        const oldObserver = this.itemsObserver;
+        const newObserver = (this.itemsObserver = Observable.getNotifier<ArrayObserver>(
+            this.items
+        ));
+
+        if (oldObserver !== newObserver) {
             if (oldObserver !== void 0) {
                 oldObserver.removeSubscriber(this);
             }
-        } else {
-            if (!this.items) {
-                this.items = [];
-            }
 
-            const newObserver = (this.observer = Observable.getNotifier<ArrayObserver>(
-                this.items
-            ));
-
-            if (oldObserver !== newObserver && oldObserver) {
-                oldObserver.removeSubscriber(this);
-            }
-
-            if (newObserver) {
-                newObserver.addSubscriber(this);
-            }
+            newObserver.addSubscriber(this);
         }
     }
 

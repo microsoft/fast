@@ -1,17 +1,17 @@
 import { Directive } from "./directive";
 import { Expression } from "../interfaces";
-import { Subscriber } from "../observation/subscriber-collection";
-import {
-    Observable,
-    GetterInspector,
-    inspectAndEvaluate,
-} from "../observation/observable";
+import { ObservableExpression } from "../observation/observable";
 import { DOM } from "../dom";
 import { Behavior } from "./behavior";
 
 function normalBind(this: BindingBehavior, source: unknown) {
     this.source = source;
-    this.updateTarget(inspectAndEvaluate(this.expression, source, context, this));
+
+    if (this.observableExpression === null) {
+        this.observableExpression = new ObservableExpression(this.expression, this);
+    }
+
+    this.updateTarget(this.observableExpression.evaluate(source, context));
 }
 
 function triggerBind(this: BindingBehavior, source: unknown) {
@@ -20,10 +20,7 @@ function triggerBind(this: BindingBehavior, source: unknown) {
 }
 
 function normalUnbind(this: BindingBehavior) {
-    if (this.record !== null) {
-        this.record.unsubscribe(this);
-    }
-
+    this.observableExpression!.dispose();
     this.source = null;
 }
 
@@ -49,8 +46,8 @@ function updatePropertyTarget(this: BindingBehavior, value: unknown): void {
 }
 
 export class BindingDirective extends Directive {
-    private _cleanedTargetName?: string;
-    private _targetName?: string;
+    private cleanedTargetName?: string;
+    private originalTargetName?: string;
 
     public createPlaceholder = DOM.createInterpolationPlaceholder;
     private bind: typeof normalBind = normalBind;
@@ -62,11 +59,11 @@ export class BindingDirective extends Directive {
     }
 
     public get targetName() {
-        return this._targetName;
+        return this.originalTargetName;
     }
 
     public set targetName(value: string | undefined) {
-        this._targetName = value;
+        this.originalTargetName = value;
 
         if (value === void 0) {
             return;
@@ -74,28 +71,28 @@ export class BindingDirective extends Directive {
 
         switch (value[0]) {
             case ":":
-                this._cleanedTargetName = value.substr(1);
+                this.cleanedTargetName = value.substr(1);
                 this.updateTarget = updatePropertyTarget;
-                if (this._cleanedTargetName === "innerHTML") {
+                if (this.cleanedTargetName === "innerHTML") {
                     const expression = this.expression;
                     this.expression = (s, c) => DOM.createHTML(expression(s, c));
                 }
                 break;
             case "?":
-                this._cleanedTargetName = value.substr(1);
+                this.cleanedTargetName = value.substr(1);
                 this.updateTarget = updateBooleanAttributeTarget;
                 break;
             case "@":
-                this._cleanedTargetName = value.substr(1);
+                this.cleanedTargetName = value.substr(1);
                 this.bind = triggerBind;
                 this.unbind = triggerUnbind;
                 break;
             default:
                 if (value === "class") {
-                    this._cleanedTargetName = "className";
+                    this.cleanedTargetName = "className";
                     this.updateTarget = updatePropertyTarget;
                 } else {
-                    this._cleanedTargetName = value;
+                    this.cleanedTargetName = value;
                 }
                 break;
         }
@@ -112,29 +109,16 @@ export class BindingDirective extends Directive {
             this.bind,
             this.unbind,
             this.updateTarget,
-            this._cleanedTargetName
+            this.cleanedTargetName
         );
-    }
-}
-
-class ObservationRecord {
-    constructor(private source: any, private propertyName: string) {}
-
-    subscribe(subscriber: Subscriber) {
-        Observable.getNotifier(this.source).subscribe(subscriber, this.propertyName);
-    }
-
-    unsubscribe(subscriber: Subscriber) {
-        Observable.getNotifier(this.source).unsubscribe(subscriber, this.propertyName);
     }
 }
 
 const context = {} as any;
 
-export class BindingBehavior implements Behavior, GetterInspector, Subscriber {
-    public source: unknown;
-    public record: ObservationRecord | null = null;
-    private needsQueue = true;
+export class BindingBehavior implements Behavior {
+    public source: unknown = void 0;
+    public observableExpression: ObservableExpression | null = null;
 
     constructor(
         public target: any,
@@ -145,11 +129,8 @@ export class BindingBehavior implements Behavior, GetterInspector, Subscriber {
         public targetName?: string
     ) {}
 
-    handleChange(source: any, propertyName: string): void {
-        if (this.needsQueue) {
-            this.needsQueue = false;
-            DOM.queueUpdate(this);
-        }
+    handleExpressionChange(): void {
+        this.updateTarget(this.observableExpression!.evaluate(this.source, context));
     }
 
     handleEvent(event: Event) {
@@ -159,19 +140,5 @@ export class BindingBehavior implements Behavior, GetterInspector, Subscriber {
         if (result !== true) {
             event.preventDefault();
         }
-    }
-
-    call() {
-        this.needsQueue = true;
-        this.updateTarget(this.expression(this.source, context));
-    }
-
-    inspect(source: any, propertyName: string) {
-        if (this.record !== null) {
-            this.record.unsubscribe(this);
-        }
-
-        this.record = new ObservationRecord(source, propertyName);
-        this.record.subscribe(this);
     }
 }
