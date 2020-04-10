@@ -1,4 +1,9 @@
 import {
+    createColorPalette,
+    DesignSystemDefaults,
+} from "@microsoft/fast-components-styles-msft";
+import { parseColorHexRGB } from "@microsoft/fast-colors";
+import {
     AssignRecipeMessage,
     DesignSystemMessage,
     MessageAction,
@@ -9,11 +14,6 @@ import {
 import { PluginNode } from "./node";
 import { RecipeRegistry, RecipeTypes } from "./recipe-registry";
 import { PluginUIActiveNodeData, PluginUIProps } from "./ui";
-import {
-    DesignSystemDefaults,
-    createColorPalette,
-} from "@microsoft/fast-components-styles-msft";
-import { parseColorHexRGB } from "@microsoft/fast-colors";
 
 /**
  * Controller class designed to handle the business logic of the plugin.
@@ -155,13 +155,15 @@ export abstract class Controller {
                 );
 
                 if (message.property === ("accentBaseColor" as any)) {
-                    const palette: string[] = createColorPalette(
-                        parseColorHexRGB(message.value as string)!
-                    );
+                    const color = parseColorHexRGB(message.value as string);
 
-                    nodes.forEach(node =>
-                        node.setDesignSystemProperty("accentPalette", palette)
-                    );
+                    if (color !== null) {
+                        const palette: string[] = createColorPalette(color);
+
+                        nodes.forEach(node =>
+                            node.setDesignSystemProperty("accentPalette", palette)
+                        );
+                    }
                 }
 
                 break;

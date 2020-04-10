@@ -1,10 +1,10 @@
 import { PluginNode, PluginNodeData } from "./core/node";
 import {
+    cornerRadiusRecipe,
     fillRecipes,
     RecipeStore,
     strokeRecipes,
     textFillRecipes,
-    cornerRadiusRecipe,
 } from "./core/recipes";
 import { FigmaController } from "./figma/controller";
 import { RecipeDefinition, RecipeTypes } from "./core/recipe-registry";
@@ -74,7 +74,7 @@ Object.keys(cornerRadiusRecipe).forEach(key => {
         id: key,
         name: recipe.name,
         type: RecipeTypes.cornerRadius,
-        evaluate: (node: PluginNode): number => {
+        evaluate: (): number => {
             return recipe.resolver({} as any);
         },
     };

@@ -1,18 +1,21 @@
 import { attr, css, customElement, FastElement, html } from "@microsoft/fast-element";
 import { designSystemConsumer } from "@microsoft/fast-components/dist/design-system-consumer";
 import {
-    neutralForegroundHint,
     neutralFillStealthHover,
+    neutralForegroundHint,
 } from "@microsoft/fast-components/dist/styles/recipes";
 
 const template = html`
-    <template class="${x => x.orientation} ${x => x.type} ${x =>
-    x.circular ? " circular" : ""} ${x => (x.value === "none" ? "none" : "")} ${x =>
-    x.interactive ? "interactive" : ""} ${x =>
-    x.selected ? "selected" : ""}" style="--swatch-value: ${x =>
-    x.value === "none" ? "transparent" : x.value}" tabindex="${x =>
-    x.interactive ? "0" : null}" role="${x =>
-    x.interactive ? "button" : null}" aria-selected="${x => x.selected}">
+    <template
+        class="${x => x.orientation} ${x => x.type} ${x =>
+            x.circular ? " circular" : ""} ${x =>
+            x.value === "none" ? "none" : ""} ${x =>
+            x.interactive ? "interactive" : ""} ${x => (x.selected ? "selected" : "")}"
+        style="--swatch-value: ${x => (x.value === "none" ? "transparent" : x.value)}"
+        tabindex="${x => (x.interactive ? "0" : null)}"
+        role="${x => (x.interactive ? "button" : null)}"
+        aria-selected="${x => x.selected}"
+    >
         <div class="swatch"></div>
         <slot></slot>
     </template>

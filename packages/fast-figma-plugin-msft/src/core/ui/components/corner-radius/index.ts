@@ -1,15 +1,18 @@
 import { attr, css, customElement, FastElement, html } from "@microsoft/fast-element";
 import { designSystemConsumer } from "@microsoft/fast-components/dist/design-system-consumer";
 import {
-    neutralForegroundHint,
     neutralFillStealthHover,
+    neutralForegroundHint,
 } from "@microsoft/fast-components/dist/styles/recipes";
 
 const template = html<CornerRadius>`
-    <template class="${x => x.orientation} ${x =>
-    x.interactive ? "interactive" : ""} ${x =>
-    x.selected ? "selected" : ""}" style="--radius: ${x => x.value}" tabindex="${x =>
-    x.interactive ? "interactive" : null}" aria-selected="${x => x.selected}">
+    <template
+        class="${x => x.orientation} ${x => (x.interactive ? "interactive" : "")} ${x =>
+            x.selected ? "selected" : ""}"
+        style="--radius: ${x => x.value}"
+        tabindex="${x => (x.interactive ? "interactive" : null)}"
+        aria-selected="${x => x.selected}"
+    >
         <div class="indicator"></div>
         <slot></slot>
     </template>

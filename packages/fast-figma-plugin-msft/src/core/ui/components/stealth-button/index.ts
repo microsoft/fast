@@ -1,10 +1,10 @@
-import { css, customElement, FastElement, html, ref } from "@microsoft/fast-element";
+import { css, customElement, FastElement, html } from "@microsoft/fast-element";
 import { designSystemConsumer } from "@microsoft/fast-components/dist/design-system-consumer";
 import {
-    neutralFillStealthRest,
-    neutralFillStealthHover,
-    neutralFillStealthActive,
     accentForegroundCutRest,
+    neutralFillStealthActive,
+    neutralFillStealthHover,
+    neutralFillStealthRest,
 } from "@microsoft/fast-components/dist/styles/recipes";
 
 const template = html`
@@ -85,15 +85,19 @@ export class StealthButton extends FastElement {
     }
 
     private hasGlyph(): boolean {
-        return this.slotHasContent(this.shadowRoot!.querySelector(
-            "[id='glyph']"
-        ) as HTMLSlotElement);
+        return this.slotHasContent(
+            (this.shadowRoot as ShadowRoot).querySelector(
+                "[id='glyph']"
+            ) as HTMLSlotElement
+        );
     }
 
     private hasContent(): boolean {
-        return this.slotHasContent(this.shadowRoot!.querySelector(
-            "[id='content']"
-        ) as HTMLSlotElement);
+        return this.slotHasContent(
+            (this.shadowRoot as ShadowRoot).querySelector(
+                "[id='content']"
+            ) as HTMLSlotElement
+        );
     }
 
     private slotHasContent(slot: HTMLSlotElement): boolean {
