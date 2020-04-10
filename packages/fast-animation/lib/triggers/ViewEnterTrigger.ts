@@ -12,6 +12,7 @@ export default class ViewEnterTrigger extends ScrollBase {
         super.update();
 
         this.subscriptions.forEach(
+            /* eslint-disable-next-line */
             (subscription: ScrollTriggerSubscription, index: number) => {
                 const inView: boolean = isElementInView(subscription.element);
 

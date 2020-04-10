@@ -1,12 +1,6 @@
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, ReactWrapper, shallow } from "enzyme";
-import TreeViewItem from "./tree-view-item";
-import {
-    TreeViewItemHandledProps,
-    TreeViewItemProps,
-    TreeViewItemUnhandledProps,
-} from "./tree-view-item.props";
 import {
     keyCodeArrowDown,
     keyCodeArrowLeft,
@@ -17,7 +11,12 @@ import {
 } from "@microsoft/fast-web-utilities";
 import { TreeViewContext } from "../tree-view/tree-view";
 import { DisplayNamePrefix } from "../utilities";
-import TreeView from "../tree-view";
+import {
+    TreeViewItemHandledProps,
+    TreeViewItemProps,
+    TreeViewItemUnhandledProps,
+} from "./tree-view-item.props";
+import TreeViewItem from "./tree-view-item";
 
 /**
  * Configure Enzyme
@@ -283,6 +282,7 @@ describe("TreeViewItem", (): void => {
         expect(rendered.children().prop("className")).toBe(null);
     });
 
+    /* eslint-disable react/display-name */
     test("should wrap the `treeViewItem_contentRegion` in a node provided to the `dragConnect` prop when passed", () => {
         const props: TreeViewItemProps = {
             managedClasses: {
@@ -328,11 +328,11 @@ describe("TreeViewItem", (): void => {
         expect(rendered.find("svg")).not.toBe(undefined);
         expect(rendered.find(".expand-collapse-glyph").type()).toEqual("svg");
     });
-
+    /* eslint-enable react/display-name */
     test("should not notify parent context when an item renders without child nodes", (): void => {
         const nestedClass: string = "treeViewItem__nested";
         const spy: any = jest.fn();
-
+        /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
         const rendered: ReactWrapper = mount(
             <TreeViewContext.Provider value={{ adjustNestedTreeItemCount: spy } as any}>
                 <TreeViewItem
@@ -348,7 +348,7 @@ describe("TreeViewItem", (): void => {
     test("should notify parent context when an item mounts with child nodes", (): void => {
         const nestedClass: string = "treeViewItem__nested";
         const spy: any = jest.fn();
-
+        /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
         const rendered: ReactWrapper = mount(
             <TreeViewContext.Provider value={{ adjustNestedTreeItemCount: spy } as any}>
                 <TreeViewItem
@@ -436,11 +436,7 @@ describe("TreeViewItem", (): void => {
             rendered.simulate("keyDown", { keyCode: keyCodeEnter });
             expect(spy).toHaveBeenCalledTimes(1);
 
-            const clickTarget: any = rendered
-                .children()
-                .first()
-                .children()
-                .first();
+            const clickTarget: any = rendered.children().first().children().first();
             clickTarget.simulate("click");
 
             expect(spy).toHaveBeenCalledTimes(2);
@@ -477,10 +473,7 @@ describe("TreeViewItem", (): void => {
             rendered.simulate("keyDown", { keyCode: keyCodeEnter });
             expect(childOnSelectedSpy).toHaveBeenCalledTimes(0);
 
-            rendered
-                .find("#child")
-                .at(0)
-                .simulate("keyDown", { keyCode: keyCodeEnter });
+            rendered.find("#child").at(0).simulate("keyDown", { keyCode: keyCodeEnter });
             expect(childOnSelectedSpy).toHaveBeenCalledTimes(1);
         });
 

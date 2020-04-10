@@ -7,7 +7,6 @@ import { extractHtmlElement } from "./extract-element";
  * Configure Enzyme
  */
 
-/* tslint:disable:max-classes-per-file */
 configure({ adapter: new Adapter() });
 
 class TextComponentClass extends React.Component<{}, {}> {

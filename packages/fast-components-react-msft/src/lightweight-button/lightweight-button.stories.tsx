@@ -1,7 +1,7 @@
 import { storiesOf } from "@storybook/react";
 import React from "react";
-import { LightweightButton } from "./";
 import { glyphFactory, SVGGlyph } from "../../assets/svg-element";
+import { LightweightButton } from "./";
 
 storiesOf("Lightweight button", module)
     .add("Default", () => <LightweightButton>Lightweight button</LightweightButton>)

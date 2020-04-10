@@ -10,8 +10,7 @@ import {
     SelectOptionClassNameContract,
 } from "@microsoft/fast-components-class-name-contracts-msft";
 
-export interface SelectOptionManagedClasses
-    extends ManagedClasses<SelectOptionClassNameContract> {}
+export type SelectOptionManagedClasses = ManagedClasses<SelectOptionClassNameContract>;
 export interface SelectOptionHandledProps
     extends SelectOptionManagedClasses,
         Subtract<BaseListboxItemHandledProps, BaseListboxItemManagedClasses> {
@@ -21,6 +20,5 @@ export interface SelectOptionHandledProps
     glyph?: (className: string) => React.ReactNode;
 }
 
-/* tslint:disable-next-line:no-empty-interface */
-export interface SelectOptionUnhandledProps extends BaseListboxItemUnhandledProps {}
+export type SelectOptionUnhandledProps = BaseListboxItemUnhandledProps;
 export type SelectOptionProps = SelectOptionHandledProps & SelectOptionUnhandledProps;

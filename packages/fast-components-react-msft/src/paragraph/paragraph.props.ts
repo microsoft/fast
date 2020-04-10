@@ -10,8 +10,7 @@ export enum ParagraphSize {
     _3 = 3,
 }
 
-export interface ParagraphManagedClasses
-    extends ManagedClasses<ParagraphClassNameContract> {}
+export type ParagraphManagedClasses = ManagedClasses<ParagraphClassNameContract>;
 export interface ParagraphHandledProps extends ParagraphManagedClasses {
     /**
      * The paragraph content
@@ -24,6 +23,5 @@ export interface ParagraphHandledProps extends ParagraphManagedClasses {
     size?: ParagraphSize;
 }
 
-export interface ParagraphUnhandledProps
-    extends React.HTMLAttributes<HTMLParagraphElement> {}
+export type ParagraphUnhandledProps = React.HTMLAttributes<HTMLParagraphElement>;
 export type ParagraphProps = ParagraphHandledProps & ParagraphUnhandledProps;

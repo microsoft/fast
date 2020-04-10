@@ -1,4 +1,3 @@
-import { ComponentViewConfig } from "./data.props";
 import {
     Select,
     SelectOptionProps,
@@ -8,6 +7,7 @@ import {
 } from "@microsoft/fast-components-react-msft";
 import { uniqueId } from "lodash-es";
 import Guidance from "../../.tmp/select/guidance";
+import { ComponentViewConfig } from "./data.props";
 
 function selectOptionPropFactory(value: string): SelectOptionProps {
     return {

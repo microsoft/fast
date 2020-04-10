@@ -1,17 +1,14 @@
 import React from "react";
-import * as ShallowRenderer from "react-test-renderer/shallow";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow, ShallowWrapper } from "enzyme";
+import { DisplayNamePrefix } from "../utilities";
 import Checkbox, {
     CheckboxClassNameContract,
     CheckboxHandledProps,
-    CheckboxManagedClasses,
     CheckboxProps,
     CheckboxSlot,
-    CheckboxState,
     CheckboxUnhandledProps,
 } from "./checkbox";
-import { DisplayNamePrefix } from "../utilities";
 
 /*
  * Configure Enzyme

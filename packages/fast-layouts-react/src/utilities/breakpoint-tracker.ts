@@ -1,5 +1,4 @@
 import { canUseDOM } from "exenv-es6";
-import { throttle } from "lodash-es";
 import {
     Breakpoint,
     Breakpoints,

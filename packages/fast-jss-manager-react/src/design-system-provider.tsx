@@ -5,11 +5,11 @@
  * to all JSS rules defined as a function
  */
 import React from "react";
-import { designSystemContext, Provider } from "./context";
 import {
     DesignSystemMergingFunction,
     mergeDesignSystem,
 } from "@microsoft/fast-jss-manager";
+import { designSystemContext, Provider } from "./context";
 
 /**
  * @deprecated
@@ -53,6 +53,7 @@ export class DesignSystemProvider<T> extends React.Component<
      */
     private downstreamDesignSystem: T;
 
+    /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
     constructor(props: DesignSystemProviderProps<T>, context: T) {
         super(props);
 

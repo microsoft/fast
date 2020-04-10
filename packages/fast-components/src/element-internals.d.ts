@@ -73,7 +73,7 @@ interface ElementInternals {
     setValidity(flags: ValidityStateFlags, message?: string, anchor?: HTMLElement): void;
 }
 
-declare var ElementInternals: {
+declare let ElementInternals: {
     prototype: ElementInternals;
     new (): ElementInternals;
 };

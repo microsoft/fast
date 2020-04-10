@@ -1,22 +1,20 @@
 import React from "react";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
+import { Subtract } from "utility-types";
 import {
     Canvas as BaseCanvas,
-    CanvasClassNamesContract,
     CanvasHandledProps as BaseCanvasHandledProps,
-    CanvasManagedClasses,
     CanvasProps as BaseCanvasProps,
+    CanvasClassNamesContract,
+    CanvasManagedClasses,
     canvasStyleSheet,
     CanvasUnhandledProps,
 } from "./canvas";
-import { Subtract } from "utility-types";
 
-/* tslint:disable-next-line:typedef */
 const Canvas = manageJss(canvasStyleSheet)(BaseCanvas);
 type Canvas = typeof Canvas;
 
-interface CanvasHandledProps
-    extends Subtract<BaseCanvasHandledProps, CanvasManagedClasses> {}
+type CanvasHandledProps = Subtract<BaseCanvasHandledProps, CanvasManagedClasses>;
 type CanvasProps = ManagedJSSProps<BaseCanvasProps, CanvasClassNamesContract, undefined>;
 
 export {

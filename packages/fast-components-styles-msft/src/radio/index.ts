@@ -1,4 +1,3 @@
-import { DesignSystem, DesignSystemResolver } from "../design-system";
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { RadioClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import {
@@ -10,6 +9,7 @@ import {
     important,
     toPx,
 } from "@microsoft/fast-jss-utilities";
+import { DesignSystem, DesignSystemResolver } from "../design-system";
 import {
     neutralFillInputActive,
     neutralFillInputHover,

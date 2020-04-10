@@ -70,6 +70,7 @@ function Swatch(props: SwatchProps): JSX.Element {
 }
 
 function Radio(props: React.InputHTMLAttributes<HTMLInputElement>): React.ReactElement {
+    /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
     const inner: React.ReactNode = styled.input(({ theme }: { theme: Theme }) => ({
         width: 16,
         height: 16,
@@ -116,6 +117,7 @@ export class DesignSystemPanel extends React.Component<
             .removeListener(REQUEST_DESIGN_SYSTEM_EVENT, this.emitDesignSystemUpdate);
     }
 
+    /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
     private getGlobalStyles = (theme: Theme): any => {
         return {
             [`#storybook-preview-wrapper`]: {

@@ -1,7 +1,7 @@
 import { storiesOf } from "@storybook/react";
 import React from "react";
-import { NeutralButton } from "./";
 import { glyphFactory, SVGGlyph } from "../../assets/svg-element";
+import { NeutralButton } from "./";
 
 storiesOf("Neutral button", module)
     .add("Default", () => <NeutralButton>Neutral button</NeutralButton>)

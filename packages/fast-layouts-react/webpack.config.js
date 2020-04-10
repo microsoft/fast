@@ -1,19 +1,18 @@
-const webpack = require('webpack');
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+const webpack = require("webpack");
+const path = require("path");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
-    devtool: 'inline-source-map',
-    entry: './app/index.tsx',
-    mode: 'development',
+    devtool: "inline-source-map",
+    entry: "./app/index.tsx",
+    mode: "development",
     output: {
-        path: path.resolve('www'),
-        publicPath: '/',
-        filename: 'app.js'
+        path: path.resolve("www"),
+        publicPath: "/",
+        filename: "app.js",
     },
     resolve: {
-        extensions: ['.js', '.ts', '.tsx'],
+        extensions: [".js", ".ts", ".tsx"],
     },
     module: {
         rules: [
@@ -21,36 +20,32 @@ module.exports = {
                 test: /\.tsx?$/,
                 use: [
                     {
-                        loader: 'babel-loader'
+                        loader: "babel-loader",
                     },
                     {
-                        loader: 'ts-loader',
+                        loader: "ts-loader",
                         options: {
                             transpileOnly: true,
                         },
                     },
-
                 ],
             },
             {
                 test: /\.jsx?$/,
                 use: {
-                    loader: 'babel-loader'
-                }
-            }
-        ]
+                    loader: "babel-loader",
+                },
+            },
+        ],
     },
     plugins: [
-        new ForkTsCheckerWebpackPlugin({
-            tslint: path.resolve(__dirname, "./tslint.json")
-        }),
         new HtmlWebpackPlugin({
-            title: 'FAST shell',
-        })
+            title: "FAST shell",
+        }),
     ],
     devServer: {
         compress: false,
         historyApiFallback: true,
-        port: 3000
-    }
+        port: 3000,
+    },
 };

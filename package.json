@@ -10,7 +10,7 @@
   "private": true,
   "workspaces": {
     "packages": ["packages/*"],
-    "nohoist": ["**/react-syntax-highlighter"]
+    "nohoist": ["**/react-syntax-highlighter", "**/@microsoft/fast-tslint-rules"]
   },
   "repository": {
     "type": "git",
@@ -29,9 +29,7 @@
     "integration-tests:beta": "node build/testing/sauce-labs/test-browsers.js beta",
     "integration-tests:release": "node build/testing/sauce-labs/test-browsers.js release",
     "prepare": "lerna run prepare",
-    "test": "yarn tslint && yarn unit-tests",
-    "tslint": "tslint -c ./tslint.json 'build/**/*.ts'",
-    "tslint:fix": "tslint -c ./tslint.json --fix 'build/**/*.ts'",
+    "test": "yarn eslint && yarn unit-tests",
     "unit-tests": "jest --maxWorkers=4",
     "unit-tests:watch": "jest --watch",
     "watch": "tsc -p ./tsconfig.json -w --preserveWatchOutput"
@@ -76,15 +74,13 @@
   },
   "lint-staged": {
     "*.{ts,tsx,js}": [
-      "prettier --write",
-      "git add"
+      "prettier --write"
     ]
   },
   "resolutions": {
     "@types/react": "*"
   },
   "devDependencies": {
-    "@microsoft/fast-tslint-rules": "^3.0.0",
     "@types/jest": "^25.2.1",
     "@types/lodash-es": "^4.17.0",
     "@types/node": "^9.4.7",
@@ -101,11 +97,10 @@
     "lerna": "^3.20.2",
     "lint-staged": "^10.1.2",
     "markdown-it": "^8.4.1",
-    "prettier": "1.14.3",
+    "prettier": "2.0.2",
     "rimraf": "^2.6.2",
     "ts-jest": "^25.3.1",
     "ts-node": "^8.8.2",
-    "tslint": "^5.11.0",
     "typedoc": "^0.14.2",
     "typedoc-plugin-markdown": "^2.2.17",
     "typescript": "3.3.3",

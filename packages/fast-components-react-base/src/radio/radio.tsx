@@ -107,6 +107,7 @@ class Radio extends Foundation<RadioHandledProps, RadioUnhandledProps, RadioStat
     /**
      * @deprecated - remove in next major version
      */
+    /* eslint-disable  @typescript-eslint/no-unused-vars */
     private renderChildrenWithSlot(slot: RadioSlot): React.ReactChild[] {
         const node: React.ReactNode = this.withSlot(RadioSlot.label);
 
@@ -119,6 +120,7 @@ class Radio extends Foundation<RadioHandledProps, RadioUnhandledProps, RadioStat
             });
         });
     }
+    /* eslint-enable  @typescript-eslint/no-unused-vars */
 
     private renderLabel(): React.ReactNode {
         if (typeof this.props.label === "function") {

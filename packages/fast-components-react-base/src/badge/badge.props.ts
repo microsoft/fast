@@ -4,8 +4,8 @@ import {
     ManagedClasses,
 } from "@microsoft/fast-components-class-name-contracts-base";
 
-export interface BadgeManagedClasses extends ManagedClasses<BadgeClassNameContract> {}
-export interface BadgeUnhandledProps extends React.HTMLAttributes<HTMLSpanElement> {}
+export type BadgeManagedClasses = ManagedClasses<BadgeClassNameContract>;
+export type BadgeUnhandledProps = React.HTMLAttributes<HTMLSpanElement>;
 export interface BadgeHandledProps extends BadgeManagedClasses {
     /**
      * The badge children

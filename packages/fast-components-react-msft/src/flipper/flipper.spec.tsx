@@ -1,9 +1,9 @@
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
-import MSFTFlipper, { FlipperHandledProps, FlipperUnhandledProps } from "./flipper";
-import { Flipper, FlipperProps } from "./index";
 import { DisplayNamePrefix } from "../utilities";
+import MSFTFlipper, { FlipperHandledProps, FlipperUnhandledProps } from "./flipper";
+import { Flipper } from "./index";
 
 /*
  * Configure Enzyme
@@ -81,8 +81,6 @@ describe("flipper", (): void => {
         };
 
         const rendered: any = mount(<Flipper {...props} />);
-
-        const flipper: any = rendered.first().first();
 
         expect(rendered.prop("label")).toBe("Test aria-label");
         expect(rendered.exists(`[aria-label="${props.label}"]`)).toBe(true);

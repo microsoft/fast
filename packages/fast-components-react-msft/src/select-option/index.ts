@@ -1,22 +1,23 @@
 import React from "react";
-import MSFTSelectOption, {
-    SelectOptionHandledProps as MSFTSelectOptionHandledProps,
-    SelectOptionManagedClasses,
-    SelectOptionProps as MSFTSelectOptionProps,
-    SelectOptionUnhandledProps,
-} from "./select-option";
-import selectOptionSchema from "./select-option.schema";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { SelectOptionClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { DesignSystem, SelectOptionStyles } from "@microsoft/fast-components-styles-msft";
 import { Subtract } from "utility-types";
+import selectOptionSchema from "./select-option.schema";
+import MSFTSelectOption, {
+    SelectOptionHandledProps as MSFTSelectOptionHandledProps,
+    SelectOptionProps as MSFTSelectOptionProps,
+    SelectOptionManagedClasses,
+    SelectOptionUnhandledProps,
+} from "./select-option";
 
-/* tslint:disable-next-line:typedef */
 const SelectOption = manageJss(SelectOptionStyles)(MSFTSelectOption);
 type SelectOption = InstanceType<typeof SelectOption>;
 
-interface SelectOptionHandledProps
-    extends Subtract<MSFTSelectOptionHandledProps, SelectOptionManagedClasses> {}
+type SelectOptionHandledProps = Subtract<
+    MSFTSelectOptionHandledProps,
+    SelectOptionManagedClasses
+>;
 type SelectOptionProps = ManagedJSSProps<
     MSFTSelectOptionProps,
     SelectOptionClassNameContract,

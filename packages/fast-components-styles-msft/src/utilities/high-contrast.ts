@@ -1,7 +1,7 @@
 import { CSSRules } from "@microsoft/fast-jss-manager";
-import { DesignSystem } from "../design-system";
 import { format, important, toPx } from "@microsoft/fast-jss-utilities";
 import { canUseForcedColors } from "@microsoft/fast-web-utilities";
+import { DesignSystem } from "../design-system";
 import { focusOutlineWidth, outlineWidth } from "./design-system";
 
 export const highContrastSelector: string = "@media (-ms-high-contrast:active)";

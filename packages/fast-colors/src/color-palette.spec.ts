@@ -1,6 +1,4 @@
-// tslint:disable:no-string-literal
-// tslint:disable:prefer-for-of
-
+import { testData } from "../testData";
 import {
     ColorPalette,
     generateOffCenterPalette,
@@ -9,7 +7,6 @@ import {
 } from "./color-palette";
 import { ColorRGBA64 } from "./color-rgba-64";
 import { parseColorHexRGB } from "./parse-color";
-import { testData } from "../testData";
 
 const testPrecision: number = 4;
 

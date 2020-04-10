@@ -1,6 +1,6 @@
-import { DesignSystem } from "../design-system";
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { TypographyClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
+import { DesignSystem } from "../design-system";
 import { applyScaledTypeRamp } from "../utilities/typography";
 import { neutralForegroundRest } from "../utilities/color";
 

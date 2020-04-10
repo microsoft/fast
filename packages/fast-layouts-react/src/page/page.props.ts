@@ -1,10 +1,10 @@
 import React from "react";
-import { GridDisplay } from "../utilities";
 import { ManagedClasses } from "@microsoft/fast-jss-manager-react";
+import { GridDisplay } from "../utilities";
 import { PageClassNamesContract } from "./page";
 
-export interface PageManagedClasses extends ManagedClasses<PageClassNamesContract> {}
-export interface PageUnhandledProps extends React.HTMLAttributes<HTMLDivElement> {}
+export type PageManagedClasses = ManagedClasses<PageClassNamesContract>;
+export type PageUnhandledProps = React.HTMLAttributes<HTMLDivElement>;
 export interface PageHandledProps extends PageManagedClasses {
     /**
      * The left and right page margin values

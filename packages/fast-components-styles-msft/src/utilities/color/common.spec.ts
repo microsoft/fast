@@ -1,5 +1,5 @@
-import { colorMatches, contrast, isValidColor, parseColorString } from "./common";
 import { ColorRGBA64 } from "@microsoft/fast-colors";
+import { colorMatches, contrast, isValidColor, parseColorString } from "./common";
 
 describe("isValidColor", (): void => {
     test("should return true when input is a hex color", (): void => {
@@ -15,11 +15,9 @@ describe("isValidColor", (): void => {
 
 describe("colorMatches", (): void => {
     test("should throw arguments are not colors", (): void => {
-        expect(
-            (): void => {
-                colorMatches("dksfjd", "weeeeeeee");
-            }
-        ).toThrow();
+        expect((): void => {
+            colorMatches("dksfjd", "weeeeeeee");
+        }).toThrow();
     });
 
     test("should return true if colors are the same", (): void => {
@@ -49,32 +47,24 @@ describe("parseColorString", (): void => {
         expect(parseColorString("#001122") instanceof ColorRGBA64).toBe(true);
     });
     test("should throw if the color is a malformed shorthand hex", (): void => {
-        expect(
-            (): void => {
-                parseColorString("#GGG");
-            }
-        ).toThrow();
+        expect((): void => {
+            parseColorString("#GGG");
+        }).toThrow();
     });
     test("should throw if the color is a malformed hex", (): void => {
-        expect(
-            (): void => {
-                parseColorString("#zzzzzz");
-            }
-        ).toThrow();
+        expect((): void => {
+            parseColorString("#zzzzzz");
+        }).toThrow();
     });
     test("should throw if the color is a malformed rgb", (): void => {
-        expect(
-            (): void => {
-                parseColorString("rgb(256, 244, 30)");
-            }
-        ).toThrow();
+        expect((): void => {
+            parseColorString("rgb(256, 244, 30)");
+        }).toThrow();
     });
     test("should throw if the color is a rgba", (): void => {
-        expect(
-            (): void => {
-                parseColorString("rgba(255, 244, 30, 1)");
-            }
-        ).toThrow();
+        expect((): void => {
+            parseColorString("rgba(255, 244, 30, 1)");
+        }).toThrow();
     });
 });
 
@@ -85,15 +75,11 @@ describe("contrast", (): void => {
         expect(contrast("rgb(0, 0, 0)", "rgb(255, 255, 255)")).toBe(21);
     });
     test("should throw if either color cannot be converted to a color", (): void => {
-        expect(
-            (): void => {
-                contrast("oogabooga", "#000");
-            }
-        ).toThrow();
-        expect(
-            (): void => {
-                contrast("#000", "oogabooga");
-            }
-        ).toThrow();
+        expect((): void => {
+            contrast("oogabooga", "#000");
+        }).toThrow();
+        expect((): void => {
+            contrast("#000", "oogabooga");
+        }).toThrow();
     });
 });

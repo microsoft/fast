@@ -1,8 +1,8 @@
 import { storiesOf } from "@storybook/react";
 import React from "react";
-import { Card } from "./";
 import { Image } from "../image";
 import { Heading, HeadingSize, HeadingTag } from "../heading";
+import { Card } from "./";
 
 storiesOf("Card", module)
     .add("With image", () => (

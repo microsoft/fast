@@ -1,6 +1,3 @@
-// tslint:disable:no-string-literal
-// tslint:disable:forin
-
 import {
     blendBurn,
     blendDarken,

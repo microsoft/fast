@@ -1,8 +1,7 @@
-// tslint:disable:prefer-for-of
-import { ArrayPixelBlob } from "./array-pixel-blob";
-import { quantize, QuantizedColor } from "./color-quantization";
 import { test200ImageData } from "../__test-images__/test200";
 import { testGrey200ImageData } from "../__test-images__/testGrey200";
+import { ArrayPixelBlob } from "./array-pixel-blob";
+import { quantize, QuantizedColor } from "./color-quantization";
 
 describe("Generating a histogram from an image", (): void => {
     test("quantize with default settings", () => {

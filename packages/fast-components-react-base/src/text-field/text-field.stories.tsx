@@ -1,8 +1,7 @@
 import { storiesOf } from "@storybook/react";
-import React, { useState } from "react";
-import TextField from "./";
-import { uniqueId } from "lodash-es";
+import React from "react";
 import { TextFieldType } from "./text-field.props";
+import TextField from "./";
 
 storiesOf("Text Field", module)
     .add("Default", () => <TextField />)

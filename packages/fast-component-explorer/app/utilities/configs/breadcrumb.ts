@@ -1,4 +1,3 @@
-import { ComponentViewConfig } from "./data.props";
 import {
     Breadcrumb,
     BreadcrumbProps,
@@ -7,6 +6,7 @@ import {
 } from "@microsoft/fast-components-react-msft";
 import { groupSchema } from "../../../app/components/group";
 import Guidance from "../../.tmp/breadcrumb/guidance";
+import { ComponentViewConfig } from "./data.props";
 
 const breadcrumbConfig: ComponentViewConfig<BreadcrumbProps> = {
     schema: breadcrumbSchema,

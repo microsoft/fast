@@ -11,9 +11,9 @@ export const CheckboxStyles = css`
         margin: calc(var(--design-unit) * 1px) 0;
         ${
             /*
-           * Chromium likes to select label text or the default slot when
-           * the checkbox is clicked. Maybe there is a better solution here?
-           */ ""
+             * Chromium likes to select label text or the default slot when
+             * the checkbox is clicked. Maybe there is a better solution here?
+             */ ""
         } user-select: none;
     }
 

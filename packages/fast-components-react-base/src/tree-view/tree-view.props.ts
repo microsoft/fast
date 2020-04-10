@@ -5,10 +5,9 @@ export interface TreeViewClassNameContract {
     treeView: string;
 }
 
-export interface TreeViewManagedClasses
-    extends ManagedClasses<TreeViewClassNameContract> {}
+export type TreeViewManagedClasses = ManagedClasses<TreeViewClassNameContract>;
 
-export interface TreeViewUnhandledProps extends React.HTMLAttributes<HTMLDivElement> {}
+export type TreeViewUnhandledProps = React.HTMLAttributes<HTMLDivElement>;
 
 export interface TreeViewHandledProps extends TreeViewManagedClasses {
     children: React.ReactNode;

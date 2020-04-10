@@ -1,4 +1,3 @@
-import { ComponentViewConfig } from "./data.props";
 import {
     Slider,
     sliderLabelSchema,
@@ -6,6 +5,7 @@ import {
     sliderSchema,
 } from "@microsoft/fast-components-react-msft";
 import Guidance from "../../.tmp/slider/guidance";
+import { ComponentViewConfig } from "./data.props";
 
 const sliderConfig: ComponentViewConfig<SliderProps> = {
     schema: sliderSchema,

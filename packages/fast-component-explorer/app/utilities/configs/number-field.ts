@@ -1,10 +1,10 @@
-import { ComponentViewConfig } from "./data.props";
 import {
     NumberField,
     NumberFieldProps,
     numberFieldSchema,
 } from "@microsoft/fast-components-react-msft";
 import Guidance from "../../.tmp/number-field/guidance";
+import { ComponentViewConfig } from "./data.props";
 
 const numberFieldConfig: ComponentViewConfig<NumberFieldProps> = {
     schema: numberFieldSchema,

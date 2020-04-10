@@ -4,10 +4,8 @@ import {
     ManagedClasses,
 } from "@microsoft/fast-components-class-name-contracts-base";
 
-export interface HypertextManagedClasses
-    extends ManagedClasses<HypertextClassNameContract> {}
-export interface HypertextUnhandledProps
-    extends React.AnchorHTMLAttributes<HTMLAnchorElement> {}
+export type HypertextManagedClasses = ManagedClasses<HypertextClassNameContract>;
+export type HypertextUnhandledProps = React.AnchorHTMLAttributes<HTMLAnchorElement>;
 export interface HypertextHandledProps extends HypertextManagedClasses {
     /**
      * The hypertext content

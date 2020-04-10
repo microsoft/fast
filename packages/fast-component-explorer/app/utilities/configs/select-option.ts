@@ -1,4 +1,3 @@
-import { ComponentViewConfig } from "./data.props";
 import {
     SelectOption,
     SelectOptionProps,
@@ -7,6 +6,7 @@ import {
 import { uniqueId } from "lodash-es";
 import { glyphSchema, Icon } from "../../../app/components/glyph";
 import Guidance from "../../.tmp/select-option/guidance";
+import { ComponentViewConfig } from "./data.props";
 
 const selectOptionConfig: ComponentViewConfig<SelectOptionProps> = {
     schema: selectOptionSchema,

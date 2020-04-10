@@ -1,13 +1,13 @@
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
+import { DisplayNamePrefix } from "../utilities";
 import MSFTSelectOption from "./select-option";
 import {
     SelectOption,
     SelectOptionHandledProps,
     SelectOptionUnhandledProps,
 } from "./index";
-import { DisplayNamePrefix } from "../utilities";
 
 /*
  * Configure Enzyme

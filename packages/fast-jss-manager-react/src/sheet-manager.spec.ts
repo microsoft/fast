@@ -1,5 +1,5 @@
-import SheetManager from "./sheet-manager";
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
+import SheetManager from "./sheet-manager";
 
 describe("The SheetManager", (): void => {
     const stylesheet: ComponentStyles<any, any> = {

@@ -10,12 +10,10 @@ import {
     ManagedClasses,
 } from "@microsoft/fast-components-class-name-contracts-base";
 
-export interface ContextMenuManagedClasses
-    extends ManagedClasses<ContextMenuClassNameContract> {}
+export type ContextMenuManagedClasses = ManagedClasses<ContextMenuClassNameContract>;
 export interface ContextMenuHandledProps
     extends ContextMenuManagedClasses,
         Subtract<BaseContextMenuHandledProps, BaseContextMenuManagedClasses> {}
 
-/* tslint:disable-next-line:no-empty-interface */
-export interface ContextMenuUnhandledProps extends BaseContextMenuUnhandledProps {}
+export type ContextMenuUnhandledProps = BaseContextMenuUnhandledProps;
 export type ContextMenuProps = ContextMenuHandledProps & ContextMenuUnhandledProps;

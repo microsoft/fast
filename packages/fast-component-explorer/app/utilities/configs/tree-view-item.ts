@@ -1,4 +1,3 @@
-import { ComponentViewConfig } from "./data.props";
 import {
     TreeViewItem,
     TreeViewItemProps,
@@ -6,6 +5,7 @@ import {
 } from "@microsoft/fast-components-react-msft";
 import Guidance from "../../.tmp/tree-view-item/guidance";
 import { glyphSchema, Icon } from "../../../app/components/glyph";
+import { ComponentViewConfig } from "./data.props";
 
 const treeViewItemConfig: ComponentViewConfig<TreeViewItemProps> = {
     schema: treeViewItemSchema,

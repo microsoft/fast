@@ -1,14 +1,14 @@
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
+import { TextFieldClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
+import { DisplayNamePrefix } from "../utilities";
 import TextField, {
     TextFieldAppearance,
     TextFieldHandledProps,
     TextFieldProps,
     TextFieldUnhandledProps,
 } from "./text-field";
-import { TextFieldClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
-import { DisplayNamePrefix } from "../utilities";
 
 const managedClasses: TextFieldClassNameContract = {
     textField: "text-field",

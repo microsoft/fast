@@ -1,22 +1,16 @@
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
-import { configure, mount, render, shallow } from "enzyme";
-import Listbox, { ListboxUnhandledProps } from "./listbox";
-import ListboxItem from "../listbox-item";
-import { DisplayNamePrefix } from "../utilities";
+import { configure, mount, shallow } from "enzyme";
 import {
     keyCodeArrowDown,
-    keyCodeArrowLeft,
     keyCodeArrowRight,
     keyCodeArrowUp,
     keyCodeEnd,
-    keyCodeEnter,
-    keyCodeEscape,
     keyCodeHome,
-    keyCodeSpace,
-    keyCodeTab,
-    startsWith,
 } from "@microsoft/fast-web-utilities";
+import ListboxItem from "../listbox-item";
+import { DisplayNamePrefix } from "../utilities";
+import Listbox, { ListboxUnhandledProps } from "./listbox";
 
 /*
  * Configure Enzyme
@@ -480,19 +474,13 @@ describe("listbox", (): void => {
 
         expect(rendered.state("selectedItems").length).toBe(0);
 
-        rendered
-            .childAt(0)
-            .childAt(0)
-            .simulate("click");
+        rendered.childAt(0).childAt(0).simulate("click");
         expect(rendered.state("selectedItems").length).toBe(1);
         expect(rendered.state("selectedItems")[0].id).toBe("a");
         let element: HTMLElement = document.getElementById("a");
         expect(element.getAttribute("aria-selected")).toBe("true");
 
-        rendered
-            .childAt(0)
-            .childAt(1)
-            .simulate("click");
+        rendered.childAt(0).childAt(1).simulate("click");
         expect(rendered.state("selectedItems").length).toBe(1);
         expect(rendered.state("selectedItems")[0].id).toBe("b");
         element = document.getElementById("b");
@@ -513,19 +501,13 @@ describe("listbox", (): void => {
 
         expect(rendered.state("selectedItems").length).toBe(0);
 
-        rendered
-            .childAt(0)
-            .childAt(0)
-            .simulate("click");
+        rendered.childAt(0).childAt(0).simulate("click");
         expect(rendered.state("selectedItems").length).toBe(1);
         expect(rendered.state("selectedItems")[0].id).toBe("a");
         let element: HTMLElement = document.getElementById("a");
         expect(element.getAttribute("aria-selected")).toBe("true");
 
-        rendered
-            .childAt(0)
-            .childAt(1)
-            .simulate("click");
+        rendered.childAt(0).childAt(1).simulate("click");
         expect(rendered.state("selectedItems").length).toBe(1);
         expect(rendered.state("selectedItems")[0].id).toBe("b");
         element = document.getElementById("b");
@@ -546,19 +528,13 @@ describe("listbox", (): void => {
 
         expect(rendered.state("selectedItems").length).toBe(0);
 
-        rendered
-            .childAt(0)
-            .childAt(1)
-            .simulate("click");
+        rendered.childAt(0).childAt(1).simulate("click");
         expect(rendered.state("selectedItems").length).toBe(1);
         expect(rendered.state("selectedItems")[0].id).toBe("b");
         let element: HTMLElement = document.getElementById("b");
         expect(element.getAttribute("aria-selected")).toBe("true");
 
-        rendered
-            .childAt(0)
-            .childAt(0)
-            .simulate("click", { ctrlKey: true });
+        rendered.childAt(0).childAt(0).simulate("click", { ctrlKey: true });
         expect(rendered.state("selectedItems").length).toBe(2);
         expect(rendered.state("selectedItems")[0].id).toBe("b");
         expect(rendered.state("selectedItems")[1].id).toBe("a");
@@ -567,10 +543,7 @@ describe("listbox", (): void => {
         element = document.getElementById("b");
         expect(element.getAttribute("aria-selected")).toBe("true");
 
-        rendered
-            .childAt(0)
-            .childAt(0)
-            .simulate("click", { ctrlKey: true });
+        rendered.childAt(0).childAt(0).simulate("click", { ctrlKey: true });
         expect(rendered.state("selectedItems").length).toBe(1);
         expect(rendered.state("selectedItems")[0].id).toBe("b");
         element = document.getElementById("a");
@@ -593,26 +566,17 @@ describe("listbox", (): void => {
 
         expect(rendered.state("selectedItems").length).toBe(0);
 
-        rendered
-            .childAt(0)
-            .childAt(1)
-            .simulate("click");
+        rendered.childAt(0).childAt(1).simulate("click");
         expect(rendered.state("selectedItems").length).toBe(1);
         expect(rendered.state("selectedItems")[0].id).toBe("b");
 
-        rendered
-            .childAt(0)
-            .childAt(0)
-            .simulate("click", { shiftKey: true });
+        rendered.childAt(0).childAt(0).simulate("click", { shiftKey: true });
 
         expect(rendered.state("selectedItems").length).toBe(2);
         expect(rendered.state("selectedItems")[0].id).toBe("a");
         expect(rendered.state("selectedItems")[1].id).toBe("b");
 
-        rendered
-            .childAt(0)
-            .childAt(2)
-            .simulate("click", { shiftKey: true });
+        rendered.childAt(0).childAt(2).simulate("click", { shiftKey: true });
 
         expect(rendered.state("selectedItems").length).toBe(2);
         expect(rendered.state("selectedItems")[0].id).toBe("b");
@@ -718,10 +682,7 @@ describe("listbox", (): void => {
         element = document.getElementById("b");
         expect(element.getAttribute("aria-selected")).toBe("true");
 
-        rendered
-            .childAt(0)
-            .childAt(2)
-            .simulate("click", { shiftKey: true });
+        rendered.childAt(0).childAt(2).simulate("click", { shiftKey: true });
         expect(rendered.state("selectedItems").length).toBe(1);
         expect(rendered.state("selectedItems")[0].id).toBe("b");
         element = document.getElementById("b");
@@ -793,10 +754,7 @@ describe("listbox", (): void => {
 
         expect(rendered.state("selectedItems").length).toBe(0);
         expect(onSelectedItemsChanged).toHaveBeenCalledTimes(0);
-        rendered
-            .childAt(0)
-            .childAt(0)
-            .simulate("click");
+        rendered.childAt(0).childAt(0).simulate("click");
         expect(onSelectedItemsChanged).toHaveBeenCalledTimes(1);
         rendered.childAt(0).simulate("keydown", { keyCode: keyCodeArrowDown });
         expect(onSelectedItemsChanged).toHaveBeenCalledTimes(2);
@@ -816,10 +774,7 @@ describe("listbox", (): void => {
         );
 
         expect(onItemInvoked).toHaveBeenCalledTimes(0);
-        rendered
-            .childAt(0)
-            .childAt(0)
-            .simulate("click");
+        rendered.childAt(0).childAt(0).simulate("click");
         expect(onItemInvoked).toHaveBeenCalledTimes(1);
 
         rendered.detach();

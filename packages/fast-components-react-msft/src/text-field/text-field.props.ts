@@ -1,4 +1,3 @@
-import React from "react";
 import { Subtract } from "utility-types";
 import {
     TextFieldHandledProps as BaseTextFieldHandledProps,
@@ -15,8 +14,7 @@ export enum TextFieldAppearance {
     outline = "outline",
 }
 
-export interface TextFieldManagedClasses
-    extends ManagedClasses<TextFieldClassNameContract> {}
+export type TextFieldManagedClasses = ManagedClasses<TextFieldClassNameContract>;
 export interface TextFieldHandledProps
     extends TextFieldManagedClasses,
         Subtract<BaseTextFieldHandledProps, BaseTextFieldManagedClasses> {
@@ -26,6 +24,5 @@ export interface TextFieldHandledProps
     appearance?: TextFieldAppearance;
 }
 
-/* tslint:disable-next-line:no-empty-interface */
-export interface TextFieldUnhandledProps extends BaseTextFieldUnhandledProps {}
+export type TextFieldUnhandledProps = BaseTextFieldUnhandledProps;
 export type TextFieldProps = TextFieldHandledProps & TextFieldUnhandledProps;

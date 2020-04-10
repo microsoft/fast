@@ -5,8 +5,8 @@ import {
 } from "@microsoft/fast-components-class-name-contracts-base";
 import { ListboxItemProps } from "../listbox-item";
 
-export interface ListboxManagedClasses extends ManagedClasses<ListboxClassNameContract> {}
-export interface ListboxUnhandledProps extends React.HTMLAttributes<HTMLDivElement> {}
+export type ListboxManagedClasses = ManagedClasses<ListboxClassNameContract>;
+export type ListboxUnhandledProps = React.HTMLAttributes<HTMLDivElement>;
 export interface ListboxHandledProps extends ListboxManagedClasses {
     /**
      * The listbox children

@@ -1,10 +1,10 @@
-import { ComponentViewConfig } from "./data.props";
 import {
     Progress,
     ProgressProps,
     progressSchema,
 } from "@microsoft/fast-components-react-msft";
 import Guidance from "../../.tmp/progress/guidance";
+import { ComponentViewConfig } from "./data.props";
 
 const progressConfig: ComponentViewConfig<ProgressProps> = {
     schema: progressSchema,

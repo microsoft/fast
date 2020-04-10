@@ -1,5 +1,5 @@
-import { importantValue } from "./important";
 import defaultDesignSystem from "../design-system";
+import { importantValue } from "./important";
 import { height } from "./density";
 
 describe("important", (): void => {

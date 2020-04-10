@@ -1,12 +1,12 @@
 import { storiesOf } from "@storybook/react";
 import React from "react";
-import { ContextMenuItem } from "../context-menu-item";
-import { Divider } from "../divider";
-import { ContextMenu } from "./";
 import { ComponentStyleSheet } from "@microsoft/fast-jss-manager-react";
 import { DesignSystem, designUnit } from "@microsoft/fast-components-styles-msft";
 import { DividerManagedClasses } from "@microsoft/fast-components-react-base";
 import { format, toPx } from "@microsoft/fast-jss-utilities";
+import { Divider } from "../divider";
+import { ContextMenuItem } from "../context-menu-item";
+import { ContextMenu } from "./";
 
 const styles: ComponentStyleSheet<DividerManagedClasses, DesignSystem> = {
     divider: {

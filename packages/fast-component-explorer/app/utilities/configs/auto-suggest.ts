@@ -1,4 +1,3 @@
-import { ComponentViewConfig } from "./data.props";
 import {
     AutoSuggest,
     AutoSuggestOptionProps,
@@ -8,6 +7,7 @@ import {
 } from "@microsoft/fast-components-react-msft";
 import { uniqueId } from "lodash-es";
 import Guidance from "../../.tmp/auto-suggest/guidance";
+import { ComponentViewConfig } from "./data.props";
 
 function autoSuggestOptionPropFactory(value: string): AutoSuggestOptionProps {
     return {

@@ -1,16 +1,14 @@
 import React from "react";
-import * as ShallowRenderer from "react-test-renderer/shallow";
 import Adapter from "enzyme-adapter-react-16";
-import { configure, render, shallow, ShallowWrapper } from "enzyme";
+import { configure, shallow, ShallowWrapper } from "enzyme";
+import { DisplayNamePrefix } from "../utilities";
 import TextField, {
     TextFieldClassNameContract,
     TextFieldHandledProps,
-    TextFieldManagedClasses,
     TextFieldProps,
     TextFieldType,
     TextFieldUnhandledProps,
 } from "./text-field";
-import { DisplayNamePrefix } from "../utilities";
 
 const managedClasses: TextFieldClassNameContract = {
     textField: "text-field-class",

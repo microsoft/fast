@@ -1,4 +1,3 @@
-import { ComponentViewConfig } from "./data.props";
 import {
     Badge,
     BadgeProps,
@@ -6,6 +5,7 @@ import {
     BadgeSize,
 } from "@microsoft/fast-components-react-msft";
 import Guidance from "../../.tmp/badge/guidance";
+import { ComponentViewConfig } from "./data.props";
 
 const badgeConfig: ComponentViewConfig<BadgeProps> = {
     schema: badgeSchema,

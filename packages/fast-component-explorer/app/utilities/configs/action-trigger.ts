@@ -1,12 +1,11 @@
-import { ComponentViewConfig } from "./data.props";
 import {
     ActionTrigger,
-    ActionTriggerAppearance,
     ActionTriggerProps,
     actionTriggerSchema,
 } from "@microsoft/fast-components-react-msft";
 import { glyphSchema, Icon } from "../../../app/components/glyph";
 import Guidance from "../../.tmp/action-trigger/guidance";
+import { ComponentViewConfig } from "./data.props";
 
 const actionTriggerConfig: ComponentViewConfig<ActionTriggerProps> = {
     schema: actionTriggerSchema,

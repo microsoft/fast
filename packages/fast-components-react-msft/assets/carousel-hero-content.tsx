@@ -1,4 +1,6 @@
 import React from "react";
+import { ComponentStyles } from "@microsoft/fast-jss-manager";
+import { DesignSystem } from "@microsoft/fast-components-styles-msft";
 import {
     AccentButton,
     AccentButtonClassNameContract,
@@ -13,8 +15,6 @@ import {
     Paragraph,
     ParagraphProps,
 } from "../src";
-import { ComponentStyles } from "@microsoft/fast-jss-manager";
-import { DesignSystem } from "@microsoft/fast-components-styles-msft";
 
 export interface CarouselHeroContentProps {
     heading?: HeadingProps;

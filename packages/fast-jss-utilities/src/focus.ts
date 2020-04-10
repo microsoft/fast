@@ -1,4 +1,3 @@
-import { canUseDOM } from "exenv-es6";
 import { canUseFocusVisible } from "@microsoft/fast-web-utilities";
 
 /**

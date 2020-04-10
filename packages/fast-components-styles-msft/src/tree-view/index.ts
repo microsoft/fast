@@ -1,7 +1,7 @@
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { TreeViewClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
-import { DesignSystem } from "../design-system";
 import { applyFocusVisible } from "@microsoft/fast-jss-utilities";
+import { DesignSystem } from "../design-system";
 
 const styles: ComponentStyles<TreeViewClassNameContract, DesignSystem> = {
     treeView: {

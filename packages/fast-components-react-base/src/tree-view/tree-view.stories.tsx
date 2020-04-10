@@ -1,8 +1,8 @@
 import React from "react";
 import { storiesOf } from "@storybook/react";
 import { uniqueId } from "lodash-es";
-import TreeView from "./";
 import TreeViewItem from "../tree-view-item";
+import TreeView from "./";
 
 const flatExample: React.ReactNode = [
     <TreeViewItem titleContent="Favorites Bar" key={uniqueId()} />,

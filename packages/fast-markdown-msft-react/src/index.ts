@@ -1,7 +1,7 @@
-import CreateRule from "./rule";
 import { MarkdownIt } from "markdown-it";
 import { TypographySize } from "@microsoft/fast-components-react-base";
 import { HeadingSize, HeadingTag } from "@microsoft/fast-components-react-msft";
+import CreateRule from "./rule";
 
 enum ComponentType {
     heading = "heading",
@@ -27,10 +27,10 @@ export interface Token {
 class FastMarkdownIt {
     constructor(md: MarkdownIt) {
         md.core.ruler.push("fast", new CreateRule(md) as any);
-        md.renderer.rules.paragraph_open = function(): string {
+        md.renderer.rules.paragraph_open = function (): string {
             return `<Typography size={${TypographySize._7}}>`;
         };
-        md.renderer.rules.heading_open = function(
+        md.renderer.rules.heading_open = function (
             tokens: Tokens<Token>,
             idx: number
         ): string {
@@ -38,7 +38,7 @@ class FastMarkdownIt {
                 .toLowerCase()
                 .replace(/\s/g, "-")
                 .replace(/[^a-z\-]/g, "");
-            /*tslint:disable-next-line */
+
             return `<Heading id="${id}" tag="${HeadingTag[tokens[idx].tag]}" size={${
                 HeadingSize[
                     "_" + (parseInt(tokens[idx].tag.charAt(1), 10) + 2).toString()
@@ -48,7 +48,7 @@ class FastMarkdownIt {
         md.renderer.rules.text = (tokens: Tokens<Token>, idx: number): string => {
             return this.replaceSpecialCharacters(tokens[idx].content);
         };
-        md.renderer.rules.fence = function(tokens: Tokens<Token>, idx: number): string {
+        md.renderer.rules.fence = function (tokens: Tokens<Token>, idx: number): string {
             let codeSnippet: string = `<pre${
                 tokens[idx].info ? ` className="language-${tokens[idx].info}"` : ""
             }><code>`;

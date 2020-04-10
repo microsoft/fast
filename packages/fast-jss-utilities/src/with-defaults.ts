@@ -1,4 +1,4 @@
-import { memoize, merge } from "lodash-es";
+import { memoize } from "lodash-es";
 import { mergeDesignSystem } from "@microsoft/fast-jss-manager";
 
 /**

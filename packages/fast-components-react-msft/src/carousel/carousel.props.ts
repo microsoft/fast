@@ -34,8 +34,7 @@ export interface CarouselState {
 /**
  * The carousel managed clsases interface
  */
-export interface CarouselManagedClasses
-    extends ManagedClasses<CarouselClassNameContract> {}
+export type CarouselManagedClasses = ManagedClasses<CarouselClassNameContract>;
 
 /**
  * The carousel prop interface
@@ -93,5 +92,5 @@ export interface CarouselHandledProps extends CarouselManagedClasses {
     ) => React.ReactNode;
 }
 
-export interface CarouselUnhandledProps extends React.HTMLAttributes<HTMLDivElement> {}
+export type CarouselUnhandledProps = React.HTMLAttributes<HTMLDivElement>;
 export type CarouselProps = CarouselHandledProps & CarouselUnhandledProps;

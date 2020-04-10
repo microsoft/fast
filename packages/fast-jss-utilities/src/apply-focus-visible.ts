@@ -1,6 +1,5 @@
 import { canUseFocusVisible } from "@microsoft/fast-web-utilities";
 import { CSSRules } from "@microsoft/fast-jss-manager";
-import { isPlainObject } from "lodash-es";
 
 /**
  * Returns the selector for the browser native :focus-visible implementation

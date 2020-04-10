@@ -1,6 +1,6 @@
-import { DesignSystem } from "../design-system";
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { CardClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
+import { DesignSystem } from "../design-system";
 import { applyElevatedCornerRadius } from "../utilities/border";
 import { applyElevation, ElevationMultiplier } from "../utilities/elevation";
 import { backgroundColor } from "../utilities/design-system";

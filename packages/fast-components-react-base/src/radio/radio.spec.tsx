@@ -1,6 +1,7 @@
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow, ShallowWrapper } from "enzyme";
+import { DisplayNamePrefix } from "../utilities";
 import Radio, {
     RadioClassNameContract,
     RadioHandledProps,
@@ -8,8 +9,6 @@ import Radio, {
     RadioSlot,
     RadioUnhandledProps,
 } from "./radio";
-import Label from "../label";
-import { DisplayNamePrefix } from "../utilities";
 
 /**
  * Configure Enzyme
@@ -107,9 +106,6 @@ describe("radio", (): void => {
                 <div className="child">Label</div>
             </Radio>
         );
-
-        const expected: string =
-            '<div><input type="radio" id="radio03"/><span></span></div>';
 
         expect(rendered.exists(".child")).toBe(false);
     });

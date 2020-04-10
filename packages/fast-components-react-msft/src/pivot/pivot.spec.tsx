@@ -3,8 +3,8 @@ import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
 import { Tab, TabPanel, TabsItem } from "@microsoft/fast-components-react-base";
 import { PivotClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
-import MSFTPivot, { PivotHandledProps, PivotUnhandledProps } from "./pivot";
 import { DisplayNamePrefix } from "../utilities";
+import MSFTPivot, { PivotHandledProps, PivotUnhandledProps } from "./pivot";
 
 /*
  * Configure Enzyme
@@ -132,10 +132,7 @@ describe("pivot", (): void => {
 
         expect(rendered.state("activeId")).toBe(id0);
 
-        rendered
-            .find('[role="tab"]')
-            .at(1)
-            .simulate("click");
+        rendered.find('[role="tab"]').at(1).simulate("click");
         expect(rendered.state("activeId")).toBe(id1);
     });
 
@@ -147,12 +144,7 @@ describe("pivot", (): void => {
         rendered.setState({ offsetX: 50 });
 
         expect(rendered.state("offsetX")).toBe(50);
-        expect(
-            rendered
-                .find("span")
-                .first()
-                .html()
-        ).toContain("translateX(50px)");
+        expect(rendered.find("span").first().html()).toContain("translateX(50px)");
     });
 
     test("should correctly set active ID", () => {
@@ -165,12 +157,9 @@ describe("pivot", (): void => {
             />
         );
 
-        expect(
-            renderedWithChildren
-                .find(Tab.displayName)
-                .at(1)
-                .prop("tabIndex")
-        ).toEqual(0);
+        expect(renderedWithChildren.find(Tab.displayName).at(1).prop("tabIndex")).toEqual(
+            0
+        );
     });
 
     test("should correctly set pivot item class", () => {
@@ -184,11 +173,7 @@ describe("pivot", (): void => {
         );
 
         expect(
-            renderedWithChildren
-                .find(Tab.displayName)
-                .at(0)
-                .childAt(0)
-                .prop("className")
+            renderedWithChildren.find(Tab.displayName).at(0).childAt(0).prop("className")
         ).toContain(`${managedClasses.pivot_tab}`);
     });
 
@@ -223,10 +208,7 @@ describe("pivot", (): void => {
 
         expect(rendered.state("activeId")).toBe(id0);
 
-        rendered
-            .find('[role="tab"]')
-            .at(1)
-            .simulate("click");
+        rendered.find('[role="tab"]').at(1).simulate("click");
         expect(rendered.state("activeId")).toBe(id1);
 
         expect(onUpdate).toHaveBeenCalledTimes(1);

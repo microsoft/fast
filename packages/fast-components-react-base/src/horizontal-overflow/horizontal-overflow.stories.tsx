@@ -1,9 +1,9 @@
 import { storiesOf } from "@storybook/react";
-import React, { useState } from "react";
-import HorizontalOverflow, { OverflowChange } from "./";
+import React from "react";
+import { action } from "@storybook/addon-actions";
 import Button from "../button";
 import Image from "../image";
-import { action } from "@storybook/addon-actions";
+import HorizontalOverflow, { OverflowChange } from "./";
 
 const images: JSX.Element[] = [
     "https://placehold.it/120x100/414141/?text=1",

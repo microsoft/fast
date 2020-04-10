@@ -1,5 +1,3 @@
-import { DesignSystem, DesignSystemResolver } from "../design-system";
-import { applyScaledTypeRamp } from "../utilities/typography";
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import {
     add,
@@ -13,13 +11,14 @@ import {
     toPx,
 } from "@microsoft/fast-jss-utilities";
 import { ToggleClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
+import { applyScaledTypeRamp } from "../utilities/typography";
+import { DesignSystem, DesignSystemResolver } from "../design-system";
 import {
     accentFillRest,
     accentForegroundCut,
     neutralFillInputActive,
     neutralFillInputHover,
     neutralFillInputRest,
-    neutralFillSelected,
     neutralFocus,
     neutralFocusInnerAccent,
     neutralForegroundRest,

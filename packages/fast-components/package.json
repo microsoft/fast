@@ -24,17 +24,18 @@
     "prepare": "yarn clean:dist && yarn build",
     "prettier": "prettier --config ../../.prettierrc --write \"**/*.ts\"",
     "prettier:diff": "prettier --config ../../.prettierrc \"**/*.ts\" --list-different",
-    "tslint": "tslint -c ./tslint.json '**/*.ts'",
-    "tslint:fix": "tslint -c ./tslint.json --fix '**/*.ts'",
+    "eslint": "eslint . --ext .ts",
+    "eslint:fix": "eslint . --ext .ts --fix",
     "start": "start-storybook -p 6006",
-    "test": "yarn build-storybook && yarn tslint",
+    "test": "yarn build-storybook && yarn eslint",
     "build-storybook": "build-storybook"
   },
   "devDependencies": {
     "@babel/core": "^7.8.4",
+    "@microsoft/eslint-config-fast-dna": "^1.0.0",
     "@storybook/cli": "^5.3.13",
     "@storybook/html": "^5.3.13",
-    "prettier": "1.14.3",
+    "prettier": "2.0.2",
     "ts-loader": "^6.2.1",
     "typescript": "^3.7.5"
   },

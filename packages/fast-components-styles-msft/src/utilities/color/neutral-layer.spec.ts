@@ -1,3 +1,4 @@
+import designSystemDefaults, { DesignSystem } from "../../design-system";
 import {
     neutralLayerCard,
     neutralLayerCardContainer,
@@ -8,7 +9,6 @@ import {
     neutralLayerL4,
     StandardLuminance,
 } from "./neutral-layer";
-import designSystemDefaults, { DesignSystem } from "../../design-system";
 
 const lightModeDesignSystem: DesignSystem = Object.assign({}, designSystemDefaults, {
     baseLayerLuminance: StandardLuminance.LightMode,

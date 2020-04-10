@@ -39,7 +39,7 @@
       "en/packages/fast-markdown-msft-react/index",
       "en/packages/fast-sketch-library/index",
       "en/packages/fast-tooling-react/index",
-      "en/packages/fast-tslint-rules/index",
+      "en/packages/fast-eslint-rules/index",
       "en/packages/fast-web-utilities/index"
     ]
   }

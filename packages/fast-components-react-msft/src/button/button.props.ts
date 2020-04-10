@@ -18,7 +18,7 @@ export enum ButtonAppearance {
     stealth = "stealth",
 }
 
-export interface ButtonManagedClasses extends ManagedClasses<ButtonClassNameContract> {}
+export type ButtonManagedClasses = ManagedClasses<ButtonClassNameContract>;
 export interface ButtonHandledProps
     extends ButtonManagedClasses,
         Subtract<BaseButtonHandledProps, BaseButtonManagedClasses> {
@@ -38,6 +38,5 @@ export interface ButtonHandledProps
     afterContent?: (classname?: string) => React.ReactNode;
 }
 
-/* tslint:disable-next-line:no-empty-interface */
-export interface ButtonUnhandledProps extends BaseButtonUnhandledProps {}
+export type ButtonUnhandledProps = BaseButtonUnhandledProps;
 export type ButtonProps = ButtonHandledProps & ButtonUnhandledProps;

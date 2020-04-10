@@ -1,7 +1,7 @@
-import { DesignSystem } from "../design-system";
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { DividerClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { format, toPx } from "@microsoft/fast-jss-utilities";
+import { DesignSystem } from "../design-system";
 import { outlineWidth } from "../utilities/design-system";
 import { neutralDividerRest } from "../utilities/color/neutral-divider";
 import { highContrastBorderColor } from "../utilities/high-contrast";

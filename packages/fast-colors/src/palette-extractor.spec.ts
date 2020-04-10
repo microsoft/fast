@@ -1,9 +1,8 @@
-// tslint:disable:prefer-for-of
+import { test200ImageData } from "../__test-images__/test200";
+import { testGrey200ImageData } from "../__test-images__/testGrey200";
 import { ArrayPixelBlob } from "./array-pixel-blob";
 import { quantize, QuantizedColor } from "./color-quantization";
 import { extractPalette, PaletteEntry } from "./palette-extractor";
-import { test200ImageData } from "../__test-images__/test200";
-import { testGrey200ImageData } from "../__test-images__/testGrey200";
 
 describe("Extracting a palette from a set of colors", (): void => {
     test("Extract palette with default settings", () => {

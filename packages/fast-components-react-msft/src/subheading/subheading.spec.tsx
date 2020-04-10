@@ -1,16 +1,14 @@
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
+import { DisplayNamePrefix } from "../utilities";
 import MSFTSubheading, {
     SubheadingHandledProps,
-    SubheadingManagedClasses,
     SubheadingSize,
     SubheadingTag,
     SubheadingUnhandledProps,
 } from "./subheading";
-import { Subheading, SubheadingProps } from "./index";
-import { TypographySize } from "../typography";
-import { DisplayNamePrefix } from "../utilities";
+import { Subheading } from "./index";
 
 /**
  * Configure enzyme

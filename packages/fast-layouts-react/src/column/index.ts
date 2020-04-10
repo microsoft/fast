@@ -1,21 +1,19 @@
 import React from "react";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
+import { Subtract } from "utility-types";
 import {
     Column as BaseColumn,
-    ColumnClassNamesContract,
     ColumnHandledProps as BaseColumnHandledProps,
-    ColumnManagedClasses,
     ColumnProps as BaseColumnProps,
+    ColumnClassNamesContract,
+    ColumnManagedClasses,
     ColumnUnhandledProps,
 } from "./column";
-import { Subtract } from "utility-types";
 
-/* tslint:disable-next-line:typedef */
 const Column = manageJss()(BaseColumn);
 type Column = typeof Column;
 
-interface ColumnHandledProps
-    extends Subtract<BaseColumnHandledProps, ColumnManagedClasses> {}
+type ColumnHandledProps = Subtract<BaseColumnHandledProps, ColumnManagedClasses>;
 type ColumnProps = ManagedJSSProps<BaseColumnProps, ColumnClassNamesContract, undefined>;
 
 export {

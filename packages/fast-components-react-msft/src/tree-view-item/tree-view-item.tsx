@@ -1,8 +1,8 @@
 import React from "react";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
-import { DisplayNamePrefix } from "../utilities";
 import { TreeViewItemClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { TreeViewItem as BaseTreeViewItem } from "@microsoft/fast-components-react-base";
+import { DisplayNamePrefix } from "../utilities";
 import {
     TreeViewItemHandledProps,
     TreeViewItemProps,

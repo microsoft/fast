@@ -19,9 +19,9 @@
     "prepare": "tsc -p ./tsconfig.json",
     "prettier": "prettier --config ../../.prettierrc --write \"**/*.{ts,tsx}\"",
     "prettier:diff": "prettier --config ../../.prettierrc \"**/*.{ts,tsx}\" --list-different",
-    "test": "yarn tslint",
-    "tslint": "tslint -c ./tslint.json '**/*.ts{,x}'",
-    "tslint:fix": "tslint -c ./tslint.json --fix '**/*.ts{,x}'",
+    "test": "yarn eslint",
+    "eslint": "eslint . --ext .ts,.tsx",
+    "eslint:fix": "eslint . --ext .ts,.tsx --fix",
     "watch": "tsc -p ./tsconfig.json -w --preserveWatchOutput"
   },
   "dependencies": {
@@ -39,15 +39,14 @@
     "react": "^16.6.0"
   },
   "devDependencies": {
-    "@microsoft/fast-tslint-rules": "^3.1.0",
+    "@microsoft/eslint-config-fast-dna": "^1.0.0",
     "@storybook/react": "^5.1.3",
     "@storybook/theming": "^5.1.3",
     "@types/react": "^16.8.19",
     "@types/webpack-env": "^1.14.0",
-    "prettier": "1.14.3",
+    "eslint-config-prettier": "^6.10.1",
+    "prettier": "2.0.2",
     "react": "^16.8.6",
-    "tslint": "^5.11.0",
-    "tslint-config-prettier": "^1.18.0",
     "typescript": "^3.5.3"
   }
 }

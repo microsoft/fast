@@ -20,9 +20,7 @@ import {
 } from "./common";
 import { findClosestBackgroundIndex, getSwatch } from "./palette";
 
-const neutralFillStealthSwapThreshold: DesignSystemResolver<
-    number
-> = designSystemResolverMax(
+const neutralFillStealthSwapThreshold: DesignSystemResolver<number> = designSystemResolverMax(
     neutralFillRestDelta,
     neutralFillHoverDelta,
     neutralFillActiveDelta,
@@ -49,18 +47,6 @@ function neutralFillStealthAlgorithm(
     };
 }
 
-export const neutralFillStealth: ColorRecipe<FillSwatchFamily> = colorRecipeFactory(
-    (designSystem: DesignSystem) => {
-        return {
-            rest: neutralFillStealthRest(designSystem),
-            hover: neutralFillStealthHover(designSystem),
-            active: neutralFillStealthActive(designSystem),
-            focus: neutralFillStealthFocus(designSystem),
-            selected: neutralFillStealthSelected(designSystem),
-        };
-    }
-);
-
 export const neutralFillStealthRest: ColorRecipe<Swatch> = colorRecipeFactory(
     neutralFillStealthAlgorithm(neutralFillStealthRestDelta)
 );
@@ -75,4 +61,16 @@ export const neutralFillStealthFocus: ColorRecipe<Swatch> = colorRecipeFactory(
 );
 export const neutralFillStealthSelected: ColorRecipe<Swatch> = colorRecipeFactory(
     neutralFillStealthAlgorithm(neutralFillStealthSelectedDelta)
+);
+
+export const neutralFillStealth: ColorRecipe<FillSwatchFamily> = colorRecipeFactory(
+    (designSystem: DesignSystem) => {
+        return {
+            rest: neutralFillStealthRest(designSystem),
+            hover: neutralFillStealthHover(designSystem),
+            active: neutralFillStealthActive(designSystem),
+            focus: neutralFillStealthFocus(designSystem),
+            selected: neutralFillStealthSelected(designSystem),
+        };
+    }
 );

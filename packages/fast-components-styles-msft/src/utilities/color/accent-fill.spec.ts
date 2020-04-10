@@ -1,3 +1,9 @@
+import designSystemDefaults, { DesignSystem } from "../../design-system";
+import { accentBaseColor } from "../design-system";
+import {
+    accentPalette as getAccentPalette,
+    neutralPalette as getNeutralPalette,
+} from "../design-system";
 import {
     accentFillActive,
     accentFillHover,
@@ -8,15 +14,9 @@ import {
     accentFillRest,
     accentFillSelected,
 } from "./accent-fill";
-import designSystemDefaults, { DesignSystem } from "../../design-system";
 import { findClosestSwatchIndex, Palette } from "./palette";
 import { contrast, Swatch } from "./common";
 import { accentForegroundCut } from "./accent-foreground-cut";
-import { accentBaseColor } from "../design-system";
-import {
-    accentPalette as getAccentPalette,
-    neutralPalette as getNeutralPalette,
-} from "../design-system";
 
 describe("accentFill", (): void => {
     const neutralPalette: Palette = getNeutralPalette(designSystemDefaults);
@@ -68,50 +68,34 @@ describe("accentFill", (): void => {
             "#F2C812",
         ];
 
-        accentColors.forEach(
-            (accent: Swatch): void => {
-                neutralPalette.forEach(
-                    (swatch: Swatch): void => {
-                        const designSystem: DesignSystem = Object.assign(
-                            {},
-                            designSystemDefaults,
-                            {
-                                backgroundColor: swatch,
-                                accentPaletteSource: ["#FFF", accent, "#000"],
-                            }
-                        );
-
-                        const accentForegroundCutColor: Swatch = accentForegroundCut(
-                            designSystem
-                        );
-
-                        expect(
-                            contrast(
-                                accentForegroundCutColor,
-                                accentFillRest(designSystem)
-                            )
-                        ).toBeGreaterThanOrEqual(4.5);
-                        expect(
-                            contrast(
-                                accentForegroundCutColor,
-                                accentFillHover(designSystem)
-                            )
-                        ).toBeGreaterThanOrEqual(4.5);
-                        expect(
-                            contrast(
-                                accentForegroundCutColor,
-                                accentFillLargeRest(designSystem)
-                            )
-                        ).toBeGreaterThanOrEqual(3);
-                        expect(
-                            contrast(
-                                accentForegroundCutColor,
-                                accentFillLargeHover(designSystem)
-                            )
-                        ).toBeGreaterThanOrEqual(3);
+        accentColors.forEach((accent: Swatch): void => {
+            neutralPalette.forEach((swatch: Swatch): void => {
+                const designSystem: DesignSystem = Object.assign(
+                    {},
+                    designSystemDefaults,
+                    {
+                        backgroundColor: swatch,
+                        accentPaletteSource: ["#FFF", accent, "#000"],
                     }
                 );
-            }
-        );
+
+                const accentForegroundCutColor: Swatch = accentForegroundCut(
+                    designSystem
+                );
+
+                expect(
+                    contrast(accentForegroundCutColor, accentFillRest(designSystem))
+                ).toBeGreaterThanOrEqual(4.5);
+                expect(
+                    contrast(accentForegroundCutColor, accentFillHover(designSystem))
+                ).toBeGreaterThanOrEqual(4.5);
+                expect(
+                    contrast(accentForegroundCutColor, accentFillLargeRest(designSystem))
+                ).toBeGreaterThanOrEqual(3);
+                expect(
+                    contrast(accentForegroundCutColor, accentFillLargeHover(designSystem))
+                ).toBeGreaterThanOrEqual(3);
+            });
+        });
     });
 });

@@ -1,7 +1,4 @@
 import { customElement } from "@microsoft/fast-element";
-import { TextField } from "./text-field";
-import { TextFieldTemplate as template } from "./text-field.template";
-import { TextFieldStyles as styles } from "./text-field.styles";
 import { designSystemConsumer } from "../design-system-consumer";
 import {
     neutralFillHover,
@@ -13,6 +10,9 @@ import {
     neutralOutlineHover,
     neutralOutlineRest,
 } from "../styles/recipes";
+import { TextField } from "./text-field";
+import { TextFieldTemplate as template } from "./text-field.template";
+import { TextFieldStyles as styles } from "./text-field.styles";
 
 @customElement({
     name: "fast-text-field",

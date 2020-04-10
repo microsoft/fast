@@ -14,8 +14,8 @@ function isElementStyles(object: any): object is ElementStyles {
 
 function reduceStyles(styles: InjectableStyles[]): string[] {
     return styles
-        .map(x => (isElementStyles(x) ? reduceStyles(x.styles) : [x]))
-        .reduce((prev, curr) => prev.concat(curr), []);
+        .map((x: InjectableStyles) => (isElementStyles(x) ? reduceStyles(x.styles) : [x]))
+        .reduce((prev: string[], curr: string[]) => prev.concat(curr), []);
 }
 
 type HasAdoptedStyleSheets = ShadowRoot & {
@@ -23,14 +23,14 @@ type HasAdoptedStyleSheets = ShadowRoot & {
 };
 
 export class AdoptedStyleSheetsStyles implements ElementStyles {
-    public readonly brand = elementStylesBrand;
+    public readonly brand: symbol = elementStylesBrand;
     private readonly styleSheets: CSSStyleSheet[];
 
     public constructor(
         public styles: InjectableStyles[],
         styleSheetCache: Map<string, CSSStyleSheet>
     ) {
-        this.styleSheets = reduceStyles(styles).map(x => {
+        this.styleSheets = reduceStyles(styles).map((x: string) => {
             let sheet = styleSheetCache.get(x);
 
             if (sheet === void 0) {
@@ -43,7 +43,7 @@ export class AdoptedStyleSheetsStyles implements ElementStyles {
         });
     }
 
-    public applyTo(shadowRoot: HasAdoptedStyleSheets) {
+    public applyTo(shadowRoot: HasAdoptedStyleSheets): void {
         // https://wicg.github.io/construct-stylesheets/
         // https://developers.google.com/web/updates/2019/02/constructable-stylesheets
         shadowRoot.adoptedStyleSheets = [
@@ -54,14 +54,14 @@ export class AdoptedStyleSheetsStyles implements ElementStyles {
 }
 
 export class StyleElementStyles implements ElementStyles {
-    public readonly brand = elementStylesBrand;
+    public readonly brand: symbol = elementStylesBrand;
     private styleSheets: string[];
 
     public constructor(public styles: InjectableStyles[]) {
         this.styleSheets = reduceStyles(styles);
     }
 
-    public applyTo(shadowRoot: ShadowRoot) {
+    public applyTo(shadowRoot: ShadowRoot): void {
         const styleSheets = this.styleSheets;
 
         for (let i = styleSheets.length - 1; i > -1; --i) {
@@ -72,6 +72,7 @@ export class StyleElementStyles implements ElementStyles {
     }
 }
 
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
 export const createStyles: ElementStyleFactory = (() => {
     if ("adoptedStyleSheets" in window.ShadowRoot.prototype) {
         const styleSheetCache = new Map();
@@ -81,6 +82,7 @@ export const createStyles: ElementStyleFactory = (() => {
 
     return (styles: InjectableStyles[]) => new StyleElementStyles(styles);
 })();
+/* eslint-enable @typescript-eslint/explicit-function-return-type */
 
 export function css(
     strings: TemplateStringsArray,

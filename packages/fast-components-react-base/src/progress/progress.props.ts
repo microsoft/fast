@@ -4,9 +4,8 @@ import {
     ProgressClassNameContract,
 } from "@microsoft/fast-components-class-name-contracts-base";
 
-export interface ProgressManagedClasses
-    extends ManagedClasses<ProgressClassNameContract> {}
-export interface ProgressUnhandledProps extends React.HTMLAttributes<HTMLDivElement> {}
+export type ProgressManagedClasses = ManagedClasses<ProgressClassNameContract>;
+export type ProgressUnhandledProps = React.HTMLAttributes<HTMLDivElement>;
 export interface ProgressHandledProps extends ProgressManagedClasses {
     /**
      * The progress content

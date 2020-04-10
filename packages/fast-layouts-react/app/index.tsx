@@ -2,6 +2,8 @@ import "@babel/polyfill";
 import React from "react";
 import ReactDOM from "react-dom";
 import { ComponentStyles, JSSManager } from "@microsoft/fast-jss-manager-react";
+import { create } from "jss";
+import jssNested from "jss-plugin-nested";
 import { Canvas } from "../src/canvas";
 import { Container } from "../src/container";
 import { Row, RowResizeDirection } from "../src/row";
@@ -9,8 +11,6 @@ import { Pane, PaneResizeDirection } from "../src/pane";
 import { Page } from "../src/page";
 import { Grid } from "../src/grid";
 import { Column, ColumnClassNamesContract } from "../src/column";
-import { create } from "jss";
-import jssNested from "jss-plugin-nested";
 
 const jssInstance: ReturnType<create> = create();
 jssInstance.use(jssNested());

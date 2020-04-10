@@ -17,7 +17,6 @@ describe("toUnit", () => {
         expect(toUnit()(12)).toBe("12px");
     });
     test("should convert a number to pixels if an undefined value is provided", () => {
-        /* tslint:disable-next-line */
         let value: string;
         expect(toUnit(value)(12)).toBe("12px");
     });

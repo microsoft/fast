@@ -1,4 +1,3 @@
-// tslint:disable:member-ordering
 import { ColorRGBA64 } from "./color-rgba-64";
 
 export interface PixelBlob {
@@ -26,6 +25,7 @@ export function loadImageData(source: string): Promise<ImageData> {
                 reject("Unable to create image");
                 return;
             }
+            /* eslint-disable-next-line */
             image.onload = (e: Event): void => {
                 const canvas: HTMLCanvasElement = document.createElement("canvas");
                 if (!canvas) {

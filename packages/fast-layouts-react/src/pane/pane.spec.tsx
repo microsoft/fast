@@ -1,13 +1,13 @@
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
+import { KeyCodes } from "@microsoft/fast-web-utilities";
 import {
     Pane,
     PaneClassNamesContract,
     PaneHandledProps,
     PaneUnhandledProps,
 } from "./pane";
-import { KeyCodes } from "@microsoft/fast-web-utilities";
 import { PaneResizeDirection } from "./pane.props";
 import { PaneResizeControlProps } from ".";
 
@@ -491,7 +491,7 @@ describe("Pane", (): void => {
 
                 map[event] = callback;
             });
-
+            /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
             const rendered: any = mount(
                 <Pane
                     resizable={true}

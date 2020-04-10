@@ -13,10 +13,10 @@ export function getTransitionState(prev: boolean, next: boolean): TransitionStat
     return prev && next
         ? TransitionStates.active
         : !prev && !next
-            ? TransitionStates.inactive
-            : next && !prev
-                ? TransitionStates.activating
-                : TransitionStates.deactivating;
+        ? TransitionStates.inactive
+        : next && !prev
+        ? TransitionStates.activating
+        : TransitionStates.deactivating;
 }
 
 export function useTransitionState(
@@ -32,8 +32,8 @@ export function useTransitionState(
     const _duration: number = isNumber(duration)
         ? duration
         : transitionState === TransitionStates.activating || TransitionStates.inactive
-            ? duration[0]
-            : duration[1];
+        ? duration[0]
+        : duration[1];
 
     useTimeout(
         () => {

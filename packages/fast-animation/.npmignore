@@ -11,4 +11,4 @@ www/
 babel.config.js
 tsconfig.json
 postcss.config.js
-tslint.json
+.eslintrc.js

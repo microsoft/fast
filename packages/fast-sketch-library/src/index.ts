@@ -1,7 +1,7 @@
-import * as puppeteer from "puppeteer";
-import { Browser, Page } from "puppeteer";
 import * as fs from "fs";
 import * as path from "path";
+import * as puppeteer from "puppeteer";
+import { Browser, Page } from "puppeteer";
 import { Page as SketchPage } from "@brainly/html-sketchapp";
 
 /**
@@ -68,60 +68,6 @@ function normalizeSources(
 }
 
 /**
- * Extracts sketch symbol library given a config
- */
-export async function extractSymbolLibrary(
-    config: ExtractSymbolLibraryConfig
-): Promise<string> {
-    // Apply defaults to config
-    config = Object.assign({}, extractSymbolLibraryConfigDefaults, config);
-    const standardizedSources: SymbolLibrarySource[] = normalizeSources(config.sources);
-    const browser: Browser = await puppeteer.launch();
-    const page: Page = await browser.newPage();
-    let symbols: string[][] = [];
-
-    await page.setViewport({
-        width: config.pageWidth,
-        height: config.pageHeight,
-    });
-
-    page.on("console", (message: any) => {
-        // Uncomment the following line for debugging
-        // console.log(message);
-    });
-
-    for (const source of standardizedSources) {
-        symbols = symbols.concat(await getSymbolsFromSource(source, page));
-    }
-
-    symbols = positionSymbols(symbols, config.pageWidth);
-
-    return new Promise<string>(
-        (resolve: (result: string) => void, reject: (error: Error) => void): void => {
-            const sketchPage: SketchPage = new SketchPage({
-                width: config.pageWidth,
-                height: config.pageHeight,
-            });
-
-            sketchPage.setName(config.name);
-
-            const flattenedLayers: string[] = symbols.reduce(
-                (accumulator: string[], currentValue: string[]) => {
-                    return accumulator.concat(currentValue);
-                },
-                []
-            );
-
-            const sketchPageJson: any = sketchPage.toJSON();
-
-            sketchPageJson.layers = flattenedLayers;
-            browser.close();
-            resolve(JSON.stringify(sketchPageJson));
-        }
-    );
-}
-
-/**
  * Extract symbol data from a single source
  */
 async function getSymbolsFromSource(
@@ -143,6 +89,7 @@ async function getSymbolsFromSource(
     );
 
     return new Promise<string[]>(
+        /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
         (resolve: (result: string[]) => void, reject: (error: Error) => void): void => {
             resolve(symbols);
         }
@@ -183,4 +130,60 @@ function positionSymbols(symbols: any, pageWidth: number = 1600): any {
 
         return symbol;
     });
+}
+
+/**
+ * Extracts sketch symbol library given a config
+ */
+export async function extractSymbolLibrary(
+    config: ExtractSymbolLibraryConfig
+): Promise<string> {
+    // Apply defaults to config
+    config = Object.assign({}, extractSymbolLibraryConfigDefaults, config);
+    const standardizedSources: SymbolLibrarySource[] = normalizeSources(config.sources);
+    const browser: Browser = await puppeteer.launch();
+    const page: Page = await browser.newPage();
+    let symbols: string[][] = [];
+
+    await page.setViewport({
+        width: config.pageWidth,
+        height: config.pageHeight,
+    });
+
+    /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
+    page.on("console", (message: any) => {
+        // Uncomment the following line for debugging
+        // console.log(message);
+    });
+
+    for (const source of standardizedSources) {
+        symbols = symbols.concat(await getSymbolsFromSource(source, page));
+    }
+
+    symbols = positionSymbols(symbols, config.pageWidth);
+
+    return new Promise<string>(
+        /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
+        (resolve: (result: string) => void, reject: (error: Error) => void): void => {
+            const sketchPage: SketchPage = new SketchPage({
+                width: config.pageWidth,
+                height: config.pageHeight,
+            });
+
+            sketchPage.setName(config.name);
+
+            const flattenedLayers: string[] = symbols.reduce(
+                (accumulator: string[], currentValue: string[]) => {
+                    return accumulator.concat(currentValue);
+                },
+                []
+            );
+
+            const sketchPageJson: any = sketchPage.toJSON();
+
+            sketchPageJson.layers = flattenedLayers;
+            browser.close();
+            resolve(JSON.stringify(sketchPageJson));
+        }
+    );
 }

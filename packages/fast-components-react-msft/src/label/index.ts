@@ -2,28 +2,26 @@ import React from "react";
 import { FoundationProps } from "@microsoft/fast-components-foundation-react";
 import {
     Label as BaseLabel,
-    LabelClassNameContract,
     LabelHandledProps as BaseLabelHandledProps,
-    LabelManagedClasses,
     LabelProps as BaseLabelProps,
+    LabelClassNameContract,
+    LabelManagedClasses,
     LabelTag,
     LabelUnhandledProps,
 } from "@microsoft/fast-components-react-base";
-import labelSchema from "./label.schema";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { DesignSystem, LabelStyles } from "@microsoft/fast-components-styles-msft";
 import { Subtract } from "utility-types";
+import labelSchema from "./label.schema";
 
 /*
  * The type returned by manageJss type is very complicated so we'll let the
  * compiler infer the type instead of re-declaring just for the package export
  */
-/* tslint:disable-next-line:typedef */
 const Label = manageJss(LabelStyles)(BaseLabel);
 type Label = InstanceType<typeof Label>;
 
-interface LabelHandledProps
-    extends Subtract<BaseLabelHandledProps, LabelManagedClasses> {}
+type LabelHandledProps = Subtract<BaseLabelHandledProps, LabelManagedClasses>;
 type LabelProps = ManagedJSSProps<BaseLabelProps, LabelClassNameContract, DesignSystem>;
 
 export {

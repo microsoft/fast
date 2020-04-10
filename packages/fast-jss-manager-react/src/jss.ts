@@ -1,3 +1,4 @@
+/* eslint-disable-next-line @typescript-eslint/no-unused-vars */
 import JSS, { create, SheetsManager, SheetsRegistry } from "jss";
 import presets from "jss-preset-default";
 

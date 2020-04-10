@@ -1,8 +1,5 @@
 import { storiesOf } from "@storybook/react";
 import React from "react";
-import { SelectOption } from "../select-option";
-import { Heading, HeadingSize } from "../heading";
-import { Select } from "./";
 import { uniqueId } from "lodash-es";
 import { action } from "@storybook/addon-actions";
 import {
@@ -10,7 +7,10 @@ import {
     ViewportPositionerHorizontalPosition,
     ViewportPositionerVerticalPosition,
 } from "@microsoft/fast-components-react-base";
+import { Heading, HeadingSize } from "../heading";
+import { SelectOption } from "../select-option";
 import { Dialog } from "../dialog";
+import { Select } from "./";
 
 const rootElement: React.RefObject<HTMLDivElement> = React.createRef<HTMLDivElement>();
 

@@ -4,10 +4,10 @@ import {
     ViewportPositionerClassNameContract,
 } from "@microsoft/fast-components-class-name-contracts-base";
 
-export interface ViewportPositionerManagedClasses
-    extends ManagedClasses<ViewportPositionerClassNameContract> {}
-export interface ViewportPositionerUnhandledProps
-    extends React.HTMLAttributes<HTMLDivElement> {}
+export type ViewportPositionerManagedClasses = ManagedClasses<
+    ViewportPositionerClassNameContract
+>;
+export type ViewportPositionerUnhandledProps = React.HTMLAttributes<HTMLDivElement>;
 
 export enum ViewportPositionerHorizontalPosition {
     left = "left",

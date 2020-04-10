@@ -77,7 +77,7 @@ export function isDesignSystemProvider(
  * not allow type mutation for decorators.
  * https://github.com/microsoft/TypeScript/issues/4881
  */
-/* tslint:disable-next-line */
+/* eslint-disable-next-line @typescript-eslint/no-empty-interface */
 export interface DesignSystemProvider extends DesignSystemConsumer {}
 @designSystemConsumer
 export class DesignSystemProvider extends FastElement {
@@ -253,7 +253,6 @@ export class DesignSystemProvider extends FastElement {
     }
 }
 
-/* tslint:disable-next-line */
 class CustomPropertyManager<
     T extends {
         style: {
@@ -275,7 +274,6 @@ class CustomPropertyManager<
     private tick = (): void => {
         this.ticking = false;
 
-        /* tslint:disable-next-line */
         for (let i = 0; i < this.store.length; i++) {
             const config = this.store[i];
             const name = `--${config.customPropertyName}`;

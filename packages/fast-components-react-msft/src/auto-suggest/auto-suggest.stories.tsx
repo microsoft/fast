@@ -1,10 +1,9 @@
 import { storiesOf } from "@storybook/react";
 import React, { useState } from "react";
-import { AutoSuggest, AutoSuggestProps } from "./";
-import { AutoSuggestOption } from "../auto-suggest-option";
 import { uniqueId } from "lodash-es";
 import { action } from "@storybook/addon-actions";
-import { Button } from "../";
+import { AutoSuggestOption } from "../auto-suggest-option";
+import { AutoSuggest, AutoSuggestProps } from "./";
 
 /**
  * Simple state manager to track and update value properties

@@ -1,8 +1,8 @@
 import React from "react";
-import { manageJss } from "./manage-jss";
-import { JSSManager } from "./jss-manager";
 import { configure, mount } from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
+import { manageJss } from "./manage-jss";
+import { JSSManager } from "./jss-manager";
 
 /*
  * Configure Enzyme

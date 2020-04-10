@@ -1,15 +1,13 @@
 import React from "react";
-import { JSSManager, mergeClassNames } from "./jss-manager";
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { configure, mount } from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
-import { DesignSystemProvider } from "./design-system-provider";
 import { values } from "lodash-es";
 import { create } from "jss";
+import { DesignSystemProvider } from "./design-system-provider";
+import { JSSManager, mergeClassNames } from "./jss-manager";
 
 configure({ adapter: new Adapter() });
-/* tslint:disable:max-classes-per-file */
-/* tslint:disable:no-string-literal */
 
 /**
  * JSS stylesheet with only static values for CSS properties
@@ -29,20 +27,6 @@ const dynamicStyles: ComponentStyles<any, any> = {
             return "blue";
         },
     },
-};
-
-/**
- * JSS stylesheet defined as a function
- */
-const stylesheetResolver: ComponentStyles<any, any> = (config: any): any => {
-    return {
-        resolvedStylesClass: {
-            background: "green",
-            color: (): string => {
-                return "yellow";
-            },
-        },
-    };
 };
 
 class SimpleComponent extends React.Component<any, {}> {
@@ -123,18 +107,9 @@ describe("The JSSManager", (): void => {
             </React.Fragment>
         );
 
-        const manager: any = rendered
-            .find("StyledManager")
-            .at(0)
-            .instance();
-        const managerTwo: any = rendered
-            .find("StyledManager")
-            .at(1)
-            .instance();
-        const managerThree: any = rendered
-            .find("StyledManager")
-            .at(2)
-            .instance();
+        const manager: any = rendered.find("StyledManager").at(0).instance();
+        const managerTwo: any = rendered.find("StyledManager").at(1).instance();
+        const managerThree: any = rendered.find("StyledManager").at(2).instance();
 
         expect(managerTwo.primaryStyleSheet().options.index).toBe(
             manager.primaryStyleSheet().options.index
@@ -220,16 +195,8 @@ describe("The JSSManager", (): void => {
             </DesignSystemProvider>
         );
 
-        expect(
-            rendered
-                .find("NoStylesManager")
-                .at(0)
-                .instance().context
-        ).toBe(
-            rendered
-                .find("NoStylesManager")
-                .at(1)
-                .instance().context
+        expect(rendered.find("NoStylesManager").at(0).instance().context).toBe(
+            rendered.find("NoStylesManager").at(1).instance().context
         );
     });
 
@@ -241,10 +208,7 @@ describe("The JSSManager", (): void => {
         );
 
         expect(rendered.instance().index).toBeGreaterThan(
-            rendered
-                .children()
-                .find("NoStylesManager")
-                .instance().index
+            rendered.children().find("NoStylesManager").instance().index
         );
     });
 
@@ -295,7 +259,7 @@ describe("The JSSManager", (): void => {
     test("should pass the innerRef prop as a ref prop to the managedComponent", (): void => {
         const ref: React.RefObject<StyledComponent> = React.createRef();
         expect(ref.current instanceof StyledComponent).toBe(false);
-
+        /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
         const rendered: any = mount(<StyledManager innerRef={ref} />);
         expect(ref.current instanceof StyledComponent).toBe(true);
     });
@@ -309,7 +273,7 @@ describe("The JSSManager", (): void => {
 
         JSSManager["sheetManager"].clean();
         JSSManager.jss = customJssInstance;
-
+        /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
         const rendered: any = mount(<StyledManager />);
 
         expect(customJssInstance.createStyleSheet).toHaveBeenCalled();
@@ -318,6 +282,7 @@ describe("The JSSManager", (): void => {
     });
 
     test("should use a custom generateClassName function when provided", (): void => {
+        /* eslint-disable @typescript-eslint/no-unused-vars */
         const classNameGenerator: jest.Mock = jest
             .fn()
             .mockImplementation((rule: any, sheet: any) => rule.key);
@@ -329,6 +294,7 @@ describe("The JSSManager", (): void => {
         const rendered: any = mount(<StyledManager />);
 
         expect(classNameGenerator).toHaveBeenCalledTimes(1);
+        /* eslint-enable @typescript-eslint/no-unused-vars */
     });
 });
 
@@ -346,5 +312,3 @@ describe("mergeClassNames", (): void => {
         expect(mergeClassNames("foo", "bar")).toBe("foo bar");
     });
 });
-/* tslint:enable:max-classes-per-file */
-/* tslint:enable:no-string-literal */

@@ -1,11 +1,11 @@
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow, ShallowWrapper } from "enzyme";
+import { DisplayNamePrefix } from "../utilities";
 import Breadcrumb, {
     BreadcrumbClassNameContract,
     BreadcrumbUnhandledProps,
 } from "./breadcrumb";
-import { DisplayNamePrefix } from "../utilities";
 
 /*
  * Configure Enzyme
@@ -37,7 +37,6 @@ describe("breadcrumb", (): void => {
             shallow(
                 <Breadcrumb
                     managedClasses={managedClasses}
-                    /* tslint:disable-next-line */
                     separator={(className?: string): React.ReactNode => {
                         return <div className={className}>\</div>;
                     }}
@@ -72,7 +71,7 @@ describe("breadcrumb", (): void => {
         const lastItem: any = rendered.findWhere((element: any) => {
             return element.props()["aria-current"] !== undefined;
         });
-        /* tslint:disable-next-line */
+
         expect(lastItem.props()["className"]).toContain("breadcrumb-item-current-class");
     });
 
@@ -89,7 +88,7 @@ describe("breadcrumb", (): void => {
         const lastItem: any = rendered.findWhere((element: any) => {
             return element.props()["aria-current"] !== undefined;
         });
-        /* tslint:disable-next-line */
+
         const className: string = lastItem.props()["className"];
         expect(className).toContain("breadcrumb-item-current-class");
         expect(className).toContain("Test");
@@ -101,7 +100,6 @@ describe("breadcrumb", (): void => {
         const rendered: any = shallow(
             <Breadcrumb
                 managedClasses={managedClasses}
-                /* tslint:disable-next-line */
                 separator={(className?: string): React.ReactNode => {
                     return <div className={className}>\</div>;
                 }}
@@ -122,7 +120,6 @@ describe("breadcrumb", (): void => {
         const rendered: any = shallow(
             <Breadcrumb
                 managedClasses={missingManagedClasses}
-                /* tslint:disable-next-line */
                 separator={(className?: string): React.ReactNode => {
                     return <div className={className}>\</div>;
                 }}

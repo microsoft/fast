@@ -7,13 +7,13 @@ import {
 import { classNames, startsWith } from "@microsoft/fast-web-utilities";
 import { isNil } from "lodash-es";
 import React from "react";
-import { AutoSuggestOptionClassNameContract } from ".";
 import { DisplayNamePrefix } from "../utilities";
 import {
     AutoSuggestOptionHandledProps,
     AutoSuggestOptionProps,
     AutoSuggestOptionUnhandledProps,
 } from "./auto-suggest-option.props";
+import { AutoSuggestOptionClassNameContract } from ".";
 
 class AutoSuggestOption extends Foundation<
     AutoSuggestOptionHandledProps,

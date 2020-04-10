@@ -6,11 +6,8 @@ import "jsdom-global/register";
 import React from "react";
 import ReactDOMServer from "react-dom/server";
 import Adapter from "enzyme-adapter-react-16";
-import { configure, mount, ReactWrapper, shallow } from "enzyme";
-import HorizontalOverflow, {
-    HorizontalOverflowClassNameContract,
-    HorizontalOverflowHandledProps,
-} from "./";
+import { configure, mount, ReactWrapper } from "enzyme";
+import HorizontalOverflow, { HorizontalOverflowClassNameContract } from "./";
 
 /*
  * Configure Enzyme
@@ -63,10 +60,8 @@ describe("horizontal overflow server-side", (): void => {
             </HorizontalOverflow>
         );
 
-        /* tslint:disable:max-line-length */
         expect(renderedWithImagesAndNextAndPrevious).toEqual(
             '<div class="horizontal-overflow-class" data-reactroot=""><div style="height:auto;position:relative;overflow:hidden"><ul class="horizontal-overflow-items-class" style="position:relative;white-space:nowrap;overflow-x:scroll;padding:0;margin:0"><li class="horizontal-overflow-item-class" style="display:inline-block"><img src="https://placehold.it/200x200?text=1"/></li><li class="horizontal-overflow-item-class" style="display:inline-block"><img src="https://placehold.it/200x200?text=2"/></li><li class="horizontal-overflow-item-class" style="display:inline-block"><img src="https://placehold.it/200x200?text=3"/></li><li class="horizontal-overflow-item-class" style="display:inline-block"><img src="https://placehold.it/200x200?text=4"/></li><li class="horizontal-overflow-item-class" style="display:inline-block"><img src="https://placehold.it/200x200?text=5"/></li><li class="horizontal-overflow-item-class" style="display:inline-block"><img src="https://placehold.it/200x200?text=6"/></li></ul></div><div class="horizontal-overflow-previous-class"><button id="testButtonPrevious" slot="previous">previous</button></div><div class="horizontal-overflow-next-class"><button id="testButtonNext" slot="next">next</button></div></div>'
         );
-        /* tslint:enable:max-line-length */
     });
 });

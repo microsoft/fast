@@ -82,7 +82,7 @@ export class HTMLView implements ElementView, SyntheticView {
      * Appends the view's DOM nodes to the referenced node.
      * @param node The parent node to append the view's DOM nodes to.
      */
-    public appendTo(node: Node) {
+    public appendTo(node: Node): void {
         node.appendChild(this.fragment);
     }
 
@@ -90,11 +90,11 @@ export class HTMLView implements ElementView, SyntheticView {
      * Inserts the view's DOM nodes before the referenced node.
      * @param node The node to insert the view's DOM before.
      */
-    public insertBefore(node: Node) {
+    public insertBefore(node: Node): void {
         if (this.fragment.hasChildNodes()) {
             node.parentNode!.insertBefore(this.fragment, node);
         } else {
-            let parentNode = node.parentNode!;
+            const parentNode = node.parentNode!;
             const end = this.lastChild!;
             let current = this.firstChild!;
             let next;
@@ -113,7 +113,7 @@ export class HTMLView implements ElementView, SyntheticView {
      * Removes the view's DOM nodes.
      * The nodes are not disposed and the view can later be re-inserted.
      */
-    public remove() {
+    public remove(): void {
         const fragment = this.fragment;
         const end = this.lastChild!;
         let current = this.firstChild!;
@@ -132,7 +132,7 @@ export class HTMLView implements ElementView, SyntheticView {
      * Removes the view and unbinds its behaviors, disposing of DOM nodes afterward.
      * Once a view has been disposed, it cannot be inserted or bound again.
      */
-    public dispose() {
+    public dispose(): void {
         const parent = this.firstChild.parentNode!;
         const end = this.lastChild!;
         let current = this.firstChild!;
@@ -157,7 +157,7 @@ export class HTMLView implements ElementView, SyntheticView {
      * Binds a view's behaviors to its binding source.
      * @param source The binding source for the view's binding behaviors.
      */
-    public bind(source: unknown) {
+    public bind(source: unknown): void {
         if (this.source === source) {
             return;
         } else if (this.source !== void 0) {
@@ -174,7 +174,7 @@ export class HTMLView implements ElementView, SyntheticView {
     /**
      * Unbinds a view's behaviors from its binding source.
      */
-    public unbind() {
+    public unbind(): void {
         if (this.source === void 0) {
             return;
         }
@@ -192,7 +192,7 @@ export class HTMLView implements ElementView, SyntheticView {
      * Efficiently disposes of a contiguous range of synthetic view instances.
      * @param views A contiguous range of views to be disposed.
      */
-    public static disposeContiguousBatch(views: SyntheticView[]) {
+    public static disposeContiguousBatch(views: SyntheticView[]): void {
         if (views.length === 0) {
             return;
         }

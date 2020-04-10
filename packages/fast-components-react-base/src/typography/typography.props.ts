@@ -29,15 +29,10 @@ export enum TypographySize {
     _9 = 9,
 }
 
-export interface TypographyUnhandledProps
-    extends React.HTMLAttributes<
-            | HTMLHeadingElement
-            | HTMLParagraphElement
-            | HTMLSpanElement
-            | HTMLTableCaptionElement
-        > {}
-export interface TypographyManagedClasses
-    extends ManagedClasses<TypographyClassNameContract> {}
+export type TypographyUnhandledProps = React.HTMLAttributes<
+    HTMLHeadingElement | HTMLParagraphElement | HTMLSpanElement | HTMLTableCaptionElement
+>;
+export type TypographyManagedClasses = ManagedClasses<TypographyClassNameContract>;
 export interface TypographyHandledProps extends TypographyManagedClasses {
     /**
      * The typographic content

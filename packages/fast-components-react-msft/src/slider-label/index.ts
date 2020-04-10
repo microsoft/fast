@@ -1,22 +1,23 @@
 import React from "react";
-import MSFTSliderLabel, {
-    SliderLabelHandledProps as MSFTSliderLabelHandledProps,
-    SliderLabelManagedClasses,
-    SliderLabelProps as MSFTSliderLabelProps,
-    SliderLabelUnhandledProps,
-} from "./slider-label";
-import sliderLabelSchema from "./slider-label.schema";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { SliderLabelClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { DesignSystem, SliderLabelStyles } from "@microsoft/fast-components-styles-msft";
 import { Subtract } from "utility-types";
+import sliderLabelSchema from "./slider-label.schema";
+import MSFTSliderLabel, {
+    SliderLabelHandledProps as MSFTSliderLabelHandledProps,
+    SliderLabelProps as MSFTSliderLabelProps,
+    SliderLabelManagedClasses,
+    SliderLabelUnhandledProps,
+} from "./slider-label";
 
-/* tslint:disable-next-line:typedef */
 const SliderLabel = manageJss(SliderLabelStyles)(MSFTSliderLabel);
 type SliderLabel = InstanceType<typeof SliderLabel>;
 
-interface SliderLabelHandledProps
-    extends Subtract<MSFTSliderLabelHandledProps, SliderLabelManagedClasses> {}
+type SliderLabelHandledProps = Subtract<
+    MSFTSliderLabelHandledProps,
+    SliderLabelManagedClasses
+>;
 type SliderLabelProps = ManagedJSSProps<
     MSFTSliderLabelProps,
     SliderLabelClassNameContract,

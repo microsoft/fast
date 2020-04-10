@@ -1,13 +1,13 @@
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
+import { DisplayNamePrefix } from "../utilities";
 import TreeViewItem from "./tree-view-item";
 import {
     TreeViewItemHandledProps,
     TreeViewItemProps,
     TreeViewItemUnhandledProps,
 } from "./tree-view-item.props";
-import { DisplayNamePrefix } from "../utilities";
 
 /**
  * Configure Enzyme
@@ -65,12 +65,7 @@ describe("TreeViewItem", (): void => {
         const rendered: any = mount(<TreeViewItem {...props} />);
 
         expect(rendered.find("svg")).not.toBe(undefined);
-        expect(
-            rendered
-                .find(".before-content")
-                .at(0)
-                .type()
-        ).toEqual("svg");
+        expect(rendered.find(".before-content").at(0).type()).toEqual("svg");
     });
 
     test("should render prop into the after content location if prop exists", () => {
@@ -98,11 +93,6 @@ describe("TreeViewItem", (): void => {
         const rendered: any = mount(<TreeViewItem {...props} />);
 
         expect(rendered.find("svg")).not.toBe(undefined);
-        expect(
-            rendered
-                .find(".after-content")
-                .at(0)
-                .type()
-        ).toEqual("svg");
+        expect(rendered.find(".after-content").at(0).type()).toEqual("svg");
     });
 });

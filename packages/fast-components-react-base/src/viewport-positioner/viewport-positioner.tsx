@@ -326,9 +326,7 @@ class ViewportPositioner extends Foundation<
             opacity:
                 !this.props.disabled && !this.state.initialLayoutComplete ? 0 : undefined,
             position: "relative",
-            transformOrigin: `${this.state.xTransformOrigin} ${
-                this.state.yTransformOrigin
-            }`,
+            transformOrigin: `${this.state.xTransformOrigin} ${this.state.yTransformOrigin}`,
             transform: `translate(
                 ${Math.floor(this.state.xTranslate)}px, 
                 ${Math.floor(this.state.yTranslate)}px
@@ -658,6 +656,7 @@ class ViewportPositioner extends Foundation<
      */
     private handleCollision = (
         entries: IntersectionObserverEntry[],
+        /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
         observer: IntersectionObserver
     ): void => {
         let positionerRect: DOMRect | ClientRect = null;
@@ -939,21 +938,23 @@ class ViewportPositioner extends Foundation<
             desiredVerticalPosition
         );
 
-        this.setState(Object.assign(
-            {
-                xTranslate: this.getHorizontalTranslate(desiredHorizontalPosition),
-                yTranslate: this.getVerticalTranslate(desiredVerticalPosition),
-                initialLayoutComplete: true,
-            },
-            this.getHorizontalPositioningState(
-                desiredHorizontalPosition,
-                nextPositionerDimension
-            ),
-            this.getVerticalPositioningState(
-                desiredVerticalPosition,
-                nextPositionerDimension
-            )
-        ) as ViewportPositionerState);
+        this.setState(
+            Object.assign(
+                {
+                    xTranslate: this.getHorizontalTranslate(desiredHorizontalPosition),
+                    yTranslate: this.getVerticalTranslate(desiredVerticalPosition),
+                    initialLayoutComplete: true,
+                },
+                this.getHorizontalPositioningState(
+                    desiredHorizontalPosition,
+                    nextPositionerDimension
+                ),
+                this.getVerticalPositioningState(
+                    desiredVerticalPosition,
+                    nextPositionerDimension
+                )
+            ) as ViewportPositionerState
+        );
     };
 
     /**

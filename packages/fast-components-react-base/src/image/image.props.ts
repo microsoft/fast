@@ -5,12 +5,11 @@ import {
 } from "@microsoft/fast-components-class-name-contracts-base";
 import { Omit } from "utility-types";
 
-export interface ImageUnhandledProps
-    extends Omit<
-            React.HTMLAttributes<HTMLImageElement | HTMLPictureElement>,
-            "children"
-        > {}
-export interface ImageManagedClasses extends ManagedClasses<ImageClassNameContract> {}
+export type ImageUnhandledProps = Omit<
+    React.HTMLAttributes<HTMLImageElement | HTMLPictureElement>,
+    "children"
+>;
+export type ImageManagedClasses = ManagedClasses<ImageClassNameContract>;
 export interface ImageHandledProps extends ImageManagedClasses {
     /**
      * The HTML alt attribute value is important for overall accessibility, providing a textual

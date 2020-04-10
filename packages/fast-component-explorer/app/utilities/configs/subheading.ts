@@ -1,4 +1,3 @@
-import { ComponentViewConfig } from "./data.props";
 import {
     Subheading,
     SubheadingProps,
@@ -7,6 +6,7 @@ import {
     SubheadingTag,
 } from "@microsoft/fast-components-react-msft";
 import Guidance from "../../.tmp/subheading/guidance";
+import { ComponentViewConfig } from "./data.props";
 
 const subheadingConfig: ComponentViewConfig<SubheadingProps> = {
     schema: subheadingSchema,

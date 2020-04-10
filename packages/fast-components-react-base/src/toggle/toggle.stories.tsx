@@ -1,9 +1,8 @@
 import { storiesOf } from "@storybook/react";
 import React, { useState } from "react";
-import Toggle, { ToggleHandledProps } from "./";
 import { uniqueId } from "lodash-es";
-import Label from "../label";
 import { action } from "@storybook/addon-actions";
+import Toggle, { ToggleHandledProps } from "./";
 
 /**
  * Simple state manager to track and update selected properties

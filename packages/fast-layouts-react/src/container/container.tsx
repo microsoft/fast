@@ -1,12 +1,12 @@
 import React from "react";
 import { ComponentStyles } from "@microsoft/fast-jss-manager-react";
+import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
+import { classNames } from "@microsoft/fast-web-utilities";
 import {
     ContainerHandledProps,
     ContainerProps,
     ContainerUnhandledProps,
 } from "./container.props";
-import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
-import { classNames } from "@microsoft/fast-web-utilities";
 
 export interface ContainerClassNamesContract {
     container?: string;

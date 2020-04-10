@@ -15,19 +15,12 @@ export const SwitchTemplate = html<Switch>`
         ${when(
             x => x.childNodes.length,
             html`
-            <label
-                part="label"
-                class="label"
-                id="switch-label"
-            >
-                <slot></slot>
-            </label>
-        `
+                <label part="label" class="label" id="switch-label">
+                    <slot></slot>
+                </label>
+            `
         )}
-        <div
-            part="switch"
-            class="switch"
-        >
+        <div part="switch" class="switch">
             <span class="checked-indicator" part="checked-indicator"></span>
         </div>
         <span class="status-message" part="status-message">

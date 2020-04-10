@@ -10,8 +10,9 @@ import {
     ManagedClasses,
 } from "@microsoft/fast-components-class-name-contracts-msft";
 
-export interface AutoSuggestOptionManagedClasses
-    extends ManagedClasses<AutoSuggestOptionClassNameContract> {}
+export type AutoSuggestOptionManagedClasses = ManagedClasses<
+    AutoSuggestOptionClassNameContract
+>;
 export interface AutoSuggestOptionHandledProps
     extends AutoSuggestOptionManagedClasses,
         Subtract<BaseListboxItemHandledProps, BaseListboxItemManagedClasses> {
@@ -26,7 +27,6 @@ export interface AutoSuggestOptionHandledProps
     formatDisplayString?: boolean;
 }
 
-/* tslint:disable-next-line:no-empty-interface */
-export interface AutoSuggestOptionUnhandledProps extends BaseListboxItemUnhandledProps {}
+export type AutoSuggestOptionUnhandledProps = BaseListboxItemUnhandledProps;
 export type AutoSuggestOptionProps = AutoSuggestOptionHandledProps &
     AutoSuggestOptionUnhandledProps;

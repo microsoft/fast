@@ -1,8 +1,7 @@
 import { storiesOf } from "@storybook/react";
 import React from "react";
-import { Divider } from "../divider";
-import { ContextMenuItem } from "./";
 import { glyphFactory, SVGGlyph } from "../../assets/svg-element";
+import { ContextMenuItem } from "./";
 
 storiesOf("Context menu item", module)
     .add("Default", () => <ContextMenuItem>Default menu item</ContextMenuItem>)

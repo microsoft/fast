@@ -1,11 +1,6 @@
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
-import { configure, mount, render, shallow } from "enzyme";
-import Slider, {
-    SliderClassNameContract,
-    SliderThumb,
-    SliderUnhandledProps,
-} from "./slider";
+import { configure, mount, shallow } from "enzyme";
 import {
     Direction,
     keyCodeArrowDown,
@@ -17,9 +12,14 @@ import {
     keyCodePageDown,
     keyCodePageUp,
 } from "@microsoft/fast-web-utilities";
+import { unmountComponentAtNode } from "react-dom";
 import { DisplayNamePrefix } from "../utilities";
+import Slider, {
+    SliderClassNameContract,
+    SliderThumb,
+    SliderUnhandledProps,
+} from "./slider";
 import { SliderMode, SliderOrientation } from "./slider.props";
-import { findDOMNode, unmountComponentAtNode } from "react-dom";
 
 /*
  * Configure Enzyme
@@ -50,17 +50,16 @@ const managedClasses: SliderClassNameContract = {
     slider__modeAdjustBoth: "slider__modeAdjustBoth",
 };
 
-/* tslint:disable:no-string-literal */
-
 describe("Slider", (): void => {
     const defaultCallback: any = jest.fn();
 
     const map: any = {};
-    // tslint:disable-next-line:no-shadowed-variable
+
     window.addEventListener = jest.fn((event: string, callback: any) => {
         map[event] = callback;
     });
 
+    /* eslint-disable-next-line  @typescript-eslint/no-unused-vars */
     window.removeEventListener = jest.fn((event: string, callback: any) => {
         map[event] = defaultCallback;
     });
@@ -359,6 +358,7 @@ describe("Slider", (): void => {
         const thumbRenderFn: any = jest.fn();
         thumbRenderFn.mockReturnValue("Test");
 
+        /* eslint-disable-next-line  @typescript-eslint/no-unused-vars */
         const rendered: any = mount(
             <Slider thumb={thumbRenderFn} mode={SliderMode.adjustBoth} />
         );

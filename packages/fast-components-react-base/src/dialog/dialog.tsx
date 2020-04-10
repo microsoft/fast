@@ -3,11 +3,11 @@ import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-
 import { classNames, keyCodeEscape, keyCodeTab } from "@microsoft/fast-web-utilities";
 import { canUseDOM } from "exenv-es6";
 import React from "react";
-import { DisplayNamePrefix } from "../utilities";
 import { extractHtmlElement } from "@microsoft/fast-react-utilities";
-import { DialogHandledProps, DialogProps, DialogUnhandledProps } from "./dialog.props";
 import { isFunction, isNil } from "lodash-es";
 import Tabbable from "tabbable";
+import { DisplayNamePrefix } from "../utilities";
+import { DialogHandledProps, DialogProps, DialogUnhandledProps } from "./dialog.props";
 
 class Dialog extends Foundation<DialogHandledProps, DialogUnhandledProps, {}> {
     public static defaultProps: Partial<DialogProps> = {

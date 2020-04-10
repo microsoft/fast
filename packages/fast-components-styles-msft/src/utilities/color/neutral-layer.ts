@@ -1,10 +1,5 @@
-import { findClosestSwatchIndex, getSwatch, Palette, swatchByMode } from "./palette";
-import {
-    ColorRecipe,
-    colorRecipeFactory,
-    designSystemResolverMax,
-    Swatch,
-} from "./common";
+import { add, multiply, subtract } from "@microsoft/fast-jss-utilities";
+import { clamp, ColorRGBA64 } from "@microsoft/fast-colors";
 import {
     baseLayerLuminance,
     neutralFillActiveDelta,
@@ -13,9 +8,14 @@ import {
     neutralFillRestDelta,
     neutralPalette,
 } from "../design-system";
-import { add, multiply, subtract } from "@microsoft/fast-jss-utilities";
 import { DesignSystem, DesignSystemResolver } from "../../design-system";
-import { clamp, ColorRGBA64 } from "@microsoft/fast-colors";
+import { findClosestSwatchIndex, getSwatch, swatchByMode } from "./palette";
+import {
+    ColorRecipe,
+    colorRecipeFactory,
+    designSystemResolverMax,
+    Swatch,
+} from "./common";
 
 /**
  * @deprecated Use the recipes because they can be more dynamic for different ramps

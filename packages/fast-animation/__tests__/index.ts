@@ -1,4 +1,3 @@
-/* tslint:disable:no-string-literal */
 import Animate, { AnimateConfig } from "../lib/animate";
 class AnimateMock extends Animate {}
 

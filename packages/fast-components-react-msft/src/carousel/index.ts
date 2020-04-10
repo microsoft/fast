@@ -1,29 +1,27 @@
 import React from "react";
-import MSFTCarousel, {
-    CarouselHandledProps as MSFTCarouselHandledProps,
-    CarouselManagedClasses,
-    CarouselProps as MSFTCarouselProps,
-    CarouselSlide,
-    CarouselSlideTheme,
-    CarouselState,
-    CarouselUnhandledProps,
-} from "./carousel";
-import carouselSchema from "./carousel.schema";
 import { CarouselClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { CarouselStyles, DesignSystem } from "@microsoft/fast-components-styles-msft";
 import { Subtract } from "utility-types";
+import carouselSchema from "./carousel.schema";
+import MSFTCarousel, {
+    CarouselManagedClasses,
+    CarouselSlide,
+    CarouselSlideTheme,
+    CarouselState,
+    CarouselUnhandledProps,
+    CarouselHandledProps as MSFTCarouselHandledProps,
+    CarouselProps as MSFTCarouselProps,
+} from "./carousel";
 
 /*
  * The type returned by manageJss type is very complicated so we'll let the
  * compiler infer the type instead of re-declaring just for the package export
  */
-/* tslint:disable-next-line:typedef */
 const Carousel = manageJss(CarouselStyles)(MSFTCarousel);
 type Carousel = InstanceType<typeof Carousel>;
 
-interface CarouselHandledProps
-    extends Subtract<MSFTCarouselHandledProps, CarouselManagedClasses> {}
+type CarouselHandledProps = Subtract<MSFTCarouselHandledProps, CarouselManagedClasses>;
 type CarouselProps = ManagedJSSProps<
     MSFTCarouselProps,
     CarouselClassNameContract,

@@ -1,15 +1,14 @@
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import { Button as BaseButton, ButtonProps } from "@microsoft/fast-components-react-base";
 import { classNames } from "@microsoft/fast-web-utilities";
-import { get } from "lodash-es";
 import React from "react";
-import { ButtonClassNameContract } from ".";
 import { DisplayNamePrefix } from "../utilities";
 import {
     ButtonAppearance,
     ButtonHandledProps,
     ButtonUnhandledProps,
 } from "./button.props";
+import { ButtonClassNameContract } from ".";
 
 /**
  * Button slot options
@@ -64,13 +63,6 @@ class Button extends Foundation<ButtonHandledProps, ButtonUnhandledProps, {}> {
      * Generates class names
      */
     protected generateClassNames(): string {
-        const className: string = this.props.appearance
-            ? get(
-                  this.props,
-                  `managedClasses.button__${ButtonAppearance[this.props.appearance]}`
-              )
-            : "";
-
         return super.generateClassNames(
             classNames([
                 this.props.managedClasses[

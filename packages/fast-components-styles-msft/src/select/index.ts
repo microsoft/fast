@@ -1,10 +1,5 @@
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import {
-    neutralForegroundRest,
-    neutralLayerFloating,
-    neutralOutlineRest,
-} from "../utilities/color";
-import {
     directionSwitch,
     ellipsis,
     format,
@@ -12,6 +7,11 @@ import {
     toPx,
 } from "@microsoft/fast-jss-utilities";
 import { SelectClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
+import {
+    neutralForegroundRest,
+    neutralLayerFloating,
+    neutralOutlineRest,
+} from "../utilities/color";
 import { glyphSize, height, horizontalSpacing } from "../utilities/density";
 import { applyElevation, ElevationMultiplier } from "../utilities/elevation";
 import DesignSystemDefaults, { DesignSystem } from "../design-system";

@@ -1,4 +1,3 @@
-// tslint:disable:member-ordering
 import { roundToPrecisionSmall } from "./math-utilities";
 
 // CIELAB color space

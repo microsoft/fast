@@ -156,7 +156,7 @@ export default abstract class Animate {
     public set onFinish(callback: () => void) {
         this._onFinish = callback;
 
-        if (Boolean(this.animation)) {
+        if (this.animation) {
             this.animation.onfinish = callback;
         }
     }
@@ -168,7 +168,7 @@ export default abstract class Animate {
     ) {
         this.animationTarget = element;
 
-        if (Boolean(effectTiming)) {
+        if (effectTiming) {
             this.effectTiming = Object.assign({}, this.effectTiming, effectTiming);
         }
 
@@ -286,8 +286,10 @@ export default abstract class Animate {
 
         switch (property) {
             case "transform":
+                /* eslint-disable */
                 const matrixValuesRegex: RegExp = /matrix\((.+)\)/;
                 const matrixValues: string[] | null = value.match(matrixValuesRegex);
+                /* eslint-enable */
 
                 if (Array.isArray(matrixValues)) {
                     const normalizedValues: string[] = matrixValues[1]
@@ -395,29 +397,27 @@ export default abstract class Animate {
 
         animateProperties.forEach((property: string) => {
             keyframeValues[property] = Animate.propertyMap[property]
-                .map(
-                    (option: string): string => {
-                        const value: string | number = this.options[option];
+                .map((option: string): string => {
+                    const value: string | number = this.options[option];
 
-                        if (typeof value === "undefined") {
-                            return null;
-                        }
-
-                        switch (option) {
-                            case "opacity":
-                                return value.toString();
-                            case "top":
-                            case "right":
-                            case "bottom":
-                            case "left":
-                                return typeof value === "number"
-                                    ? this.pixelify(value)
-                                    : value;
-                            default:
-                                return this.formatTransformFunction(option, value);
-                        }
+                    if (typeof value === "undefined") {
+                        return null;
                     }
-                )
+
+                    switch (option) {
+                        case "opacity":
+                            return value.toString();
+                        case "top":
+                        case "right":
+                        case "bottom":
+                        case "left":
+                            return typeof value === "number"
+                                ? this.pixelify(value)
+                                : value;
+                        default:
+                            return this.formatTransformFunction(option, value);
+                    }
+                })
                 .filter((option: string) => Boolean(option))
                 .join(" ");
         });
@@ -441,20 +441,18 @@ export default abstract class Animate {
      * Sorts an array of offset keys in ascending order
      */
     private sortOffsets(offsets: string[]): string[] {
-        return offsets.sort(
-            (a: string, b: string): number => {
-                const A: number = parseFloat(a);
-                const B: number = parseFloat(b);
+        return offsets.sort((a: string, b: string): number => {
+            const A: number = parseFloat(a);
+            const B: number = parseFloat(b);
 
-                if (A < B) {
-                    return -1;
-                } else if (A > B) {
-                    return 1;
-                } else {
-                    return 0;
-                }
+            if (A < B) {
+                return -1;
+            } else if (A > B) {
+                return 1;
+            } else {
+                return 0;
             }
-        );
+        });
     }
 
     /**
@@ -491,8 +489,6 @@ export default abstract class Animate {
      * Returns the animation's keyframes
      */
     public get keyframes(): Keyframe[] {
-        const optionKeyframes: Keyframe[] = this.getOptionKeyframes();
-
         return this.consolidateKeyframes(
             this._keyframes.concat([this.getOptionKeyframes()])
         );

@@ -1,4 +1,3 @@
-import { ComponentViewConfig } from "./data.props";
 import {
     Checkbox,
     CheckboxProps,
@@ -7,6 +6,7 @@ import {
 } from "@microsoft/fast-components-react-msft";
 import { uniqueId } from "lodash-es";
 import Guidance from "../../.tmp/checkbox/guidance";
+import { ComponentViewConfig } from "./data.props";
 
 const id: string = uniqueId();
 

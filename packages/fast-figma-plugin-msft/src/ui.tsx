@@ -16,7 +16,6 @@ function render(props?: PluginUIProps): void {
 }
 
 // Import with require so the dependency doesn't get tree-shaken
-// tslint:disable-next-line
 const styles = require("./global.css");
 
 /**

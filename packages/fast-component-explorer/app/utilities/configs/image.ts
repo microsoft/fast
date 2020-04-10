@@ -1,6 +1,6 @@
-import { ComponentViewConfig } from "./data.props";
 import { Image, ImageProps, imageSchema } from "@microsoft/fast-components-react-msft";
 import Guidance from "../../.tmp/image/guidance";
+import { ComponentViewConfig } from "./data.props";
 
 const imageConfig: ComponentViewConfig<ImageProps> = {
     schema: imageSchema,

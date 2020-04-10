@@ -5,6 +5,7 @@ import {
     DesignSystem,
     NeutralButtonStyles,
 } from "@microsoft/fast-components-styles-msft";
+import { Subtract } from "utility-types";
 import {
     ButtonBase,
     ButtonBaseHandledProps,
@@ -12,20 +13,20 @@ import {
     ButtonBaseProps,
     ButtonBaseUnhandledProps as NeutralButtonUnhandledProps,
 } from "../button-base";
-import neutralButtonSchema from "./neutral-button.schema";
-import { Subtract } from "utility-types";
 import { DisplayNamePrefix } from "../utilities";
+import neutralButtonSchema from "./neutral-button.schema";
 
 /*
  * The type returned by manageJss type is very complicated so we'll let the
  * compiler infer the type instead of re-declaring just for the package export
  */
-/* tslint:disable-next-line:typedef */
 const NeutralButton = manageJss(NeutralButtonStyles)(ButtonBase);
 type NeutralButton = InstanceType<typeof NeutralButton>;
 
-interface NeutralButtonHandledProps
-    extends Subtract<ButtonBaseHandledProps, ButtonBaseManagedClasses> {}
+type NeutralButtonHandledProps = Subtract<
+    ButtonBaseHandledProps,
+    ButtonBaseManagedClasses
+>;
 type NeutralButtonProps = ManagedJSSProps<
     ButtonBaseProps,
     NeutralButtonClassNameContract,

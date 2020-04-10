@@ -5,6 +5,7 @@ import {
     DesignSystem,
     OutlineButtonStyles,
 } from "@microsoft/fast-components-styles-msft";
+import { Subtract } from "utility-types";
 import {
     ButtonBase,
     ButtonBaseHandledProps,
@@ -12,20 +13,20 @@ import {
     ButtonBaseProps,
     ButtonBaseUnhandledProps as OutlineButtonUnhandledProps,
 } from "../button-base";
-import outlineButtonSchema from "./outline-button.schema";
-import { Subtract } from "utility-types";
 import { DisplayNamePrefix } from "../utilities";
+import outlineButtonSchema from "./outline-button.schema";
 
 /*
  * The type returned by manageJss type is very complicated so we'll let the
  * compiler infer the type instead of re-declaring just for the package export
  */
-/* tslint:disable-next-line:typedef */
 const OutlineButton = manageJss(OutlineButtonStyles)(ButtonBase);
 type OutlineButton = InstanceType<typeof OutlineButton>;
 
-interface OutlineButtonHandledProps
-    extends Subtract<ButtonBaseHandledProps, ButtonBaseManagedClasses> {}
+type OutlineButtonHandledProps = Subtract<
+    ButtonBaseHandledProps,
+    ButtonBaseManagedClasses
+>;
 type OutlineButtonProps = ManagedJSSProps<
     ButtonBaseProps,
     OutlineButtonClassNameContract,

@@ -1,5 +1,5 @@
-import { neutralFillCard } from "./neutral-fill-card";
 import defaultDesignSystem, { DesignSystem } from "../../design-system";
+import { neutralFillCard } from "./neutral-fill-card";
 
 describe("neutralFillCard", (): void => {
     test("should operate on design system defaults", (): void => {

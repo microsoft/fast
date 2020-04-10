@@ -1,5 +1,5 @@
 {
-  "name": "@microsoft/fast-eslint-rules",
+  "name": "@microsoft/eslint-config-fast-dna",
   "description": "eslint rules for FAST projects",
   "sideEffects": false,
   "version": "1.0.0",
@@ -19,7 +19,7 @@
   "bugs": {
     "url": "https://github.com/microsoft/fast-dna/issues"
   },
-  "main": ".eslinrc.js",
+  "main": ".eslintrc.js",
   "homepage": "https://github.com/Microsoft/fast-eslint-rules#readme",
   "dependencies": {
     "@typescript-eslint/eslint-plugin": "^2.23.0",

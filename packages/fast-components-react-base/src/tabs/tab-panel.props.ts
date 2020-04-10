@@ -5,9 +5,8 @@ import {
 } from "@microsoft/fast-components-class-name-contracts-base";
 import { TabsSlot } from "./tabs";
 
-export interface TabPanelManagedClasses
-    extends ManagedClasses<TabPanelClassNameContract> {}
-export interface TabPanelUnhandledProps extends React.HTMLAttributes<HTMLDivElement> {}
+export type TabPanelManagedClasses = ManagedClasses<TabPanelClassNameContract>;
+export type TabPanelUnhandledProps = React.HTMLAttributes<HTMLDivElement>;
 export interface TabPanelHandledProps extends TabPanelManagedClasses {
     /**
      * The slot identifying this component to the TabPanel component as a tab-panel

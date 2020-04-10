@@ -1,6 +1,7 @@
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
-import { applyCursorPointer } from "../utilities/cursor";
 import { add, applyFocusVisible, format, toPx } from "@microsoft/fast-jss-utilities";
+import { ContextMenuItemClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
+import { applyCursorPointer } from "../utilities/cursor";
 import { DesignSystem } from "../design-system";
 import { applyCornerRadius, applyFocusPlaceholderBorder } from "../utilities/border";
 import {
@@ -9,9 +10,8 @@ import {
     neutralFocus,
     neutralForegroundRest,
 } from "../utilities/color";
-import { ContextMenuItemClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { height, horizontalSpacingNumber } from "../utilities/density";
-import { designUnit, focusOutlineWidth, outlineWidth } from "../utilities/design-system";
+import { designUnit, focusOutlineWidth } from "../utilities/design-system";
 import { applyDisabledState } from "../utilities/disabled";
 import { applyScaledTypeRamp } from "../utilities/typography";
 import {

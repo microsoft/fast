@@ -11,22 +11,31 @@ export const ProgressTemplate = html<BaseProgress>`
         ${when(
             x => x.value,
             html<BaseProgress>`
-            <div class="progress" part="progress" slot="determinate">
-                <div class="determinate" part="determinate" style="width: ${x =>
-                    x.value}%"></div>
-            </div>
-        `
+                <div class="progress" part="progress" slot="determinate">
+                    <div
+                        class="determinate"
+                        part="determinate"
+                        style="width: ${x => x.value}%"
+                    ></div>
+                </div>
+            `
         )}
         ${when(
             x => !x.value,
             html<BaseProgress>`
-            <div class="progress" part="progress" slot="indeterminate">
-                <slot class="indeterminate" name="indeterminate">
-                    <span class="indeterminate-indicator-1" part="indeterminate-indicator-1"></span>
-                    <span class="indeterminate-indicator-2" part="indeterminate-indicator-2"></span>
-                </slot>
-            </div>
-        `
+                <div class="progress" part="progress" slot="indeterminate">
+                    <slot class="indeterminate" name="indeterminate">
+                        <span
+                            class="indeterminate-indicator-1"
+                            part="indeterminate-indicator-1"
+                        ></span>
+                        <span
+                            class="indeterminate-indicator-2"
+                            part="indeterminate-indicator-2"
+                        ></span>
+                    </slot>
+                </div>
+            `
         )}
     </template>
 `;

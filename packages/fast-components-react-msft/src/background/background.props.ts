@@ -69,6 +69,6 @@ export interface BackgroundHandledProps {
     designSystemMergingFunction?: DesignSystemMergingFunction<DesignSystem>;
 }
 
-export interface BackgroundUnhandledProps extends React.HTMLAttributes<HTMLElement> {}
+export type BackgroundUnhandledProps = React.HTMLAttributes<HTMLElement>;
 
 export type BackgroundProps = BackgroundHandledProps & BackgroundUnhandledProps;

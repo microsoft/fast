@@ -1,13 +1,13 @@
-import { ComponentViewConfig } from "./data.props";
 import {
     Divider,
     DividerClassNameContract,
     DividerProps,
     dividerSchema,
 } from "@microsoft/fast-components-react-msft";
-import Guidance from "../../.tmp/divider/guidance";
 import { DesignSystem } from "@microsoft/fast-components-styles-msft";
 import { ComponentStyleSheet } from "@microsoft/fast-jss-manager-react";
+import Guidance from "../../.tmp/divider/guidance";
+import { ComponentViewConfig } from "./data.props";
 
 const styles: ComponentStyleSheet<DividerClassNameContract, DesignSystem> = {
     divider: {

@@ -1,17 +1,10 @@
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
-import MSFTAutoSuggestOption from "./auto-suggest-option";
-import {
-    AutoSuggestOption,
-    AutoSuggestOptionHandledProps,
-    AutoSuggestOptionUnhandledProps,
-} from "./index";
-import {
-    AutoSuggestContext,
-    AutoSuggestContextType,
-} from "@microsoft/fast-components-react-base";
+import { AutoSuggestContext } from "@microsoft/fast-components-react-base";
 import { DisplayNamePrefix } from "../utilities";
+import MSFTAutoSuggestOption from "./auto-suggest-option";
+import { AutoSuggestOption, AutoSuggestOptionUnhandledProps } from "./index";
 
 /*
  * Configure Enzyme
@@ -46,6 +39,7 @@ describe("auto suggest option", (): void => {
     test("Custom display formatter is called", (): void => {
         const displayFormatter: any = jest.fn();
         displayFormatter.mockReturnValue("formatted display");
+        /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
         const rendered: any = mount(
             <AutoSuggestContext.Provider
                 value={{
@@ -66,6 +60,7 @@ describe("auto suggest option", (): void => {
     test("Display formatter is not called when disabled in props", (): void => {
         const displayFormatter: any = jest.fn();
         displayFormatter.mockReturnValue("formatted display");
+        /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
         const rendered: any = mount(
             <AutoSuggestContext.Provider
                 value={{

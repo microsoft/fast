@@ -1,9 +1,9 @@
 import { SliderLabelClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import {
+    SliderTrackItem as BaseSliderTrackItem,
     SliderContext,
     SliderContextType,
-    SliderTrackItem as BaseSliderTrackItem,
     SliderTrackItemAnchor,
 } from "@microsoft/fast-components-react-base";
 import { classNames, Direction } from "@microsoft/fast-web-utilities";

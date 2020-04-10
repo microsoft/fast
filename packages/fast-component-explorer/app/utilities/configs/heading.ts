@@ -1,4 +1,3 @@
-import { ComponentViewConfig } from "./data.props";
 import {
     Heading,
     HeadingProps,
@@ -7,6 +6,7 @@ import {
     HeadingTag,
 } from "@microsoft/fast-components-react-msft";
 import Guidance from "../../.tmp/heading/guidance";
+import { ComponentViewConfig } from "./data.props";
 
 const headingConfig: ComponentViewConfig<HeadingProps> = {
     schema: headingSchema,

@@ -4,7 +4,6 @@ import manageJss, {
     DesignSystemConsumer,
 } from "@microsoft/fast-jss-manager-react";
 import { Omit } from "utility-types";
-import { ComponentTypes } from "./state";
 import classnames from "classnames";
 import {
     applyElevation,
@@ -18,13 +17,14 @@ import {
     neutralForegroundRest,
     neutralOutlineRest,
 } from "@microsoft/fast-components-styles-msft";
-import { ColorsDesignSystem } from "./design-system";
 import { contrastRatio, parseColorHexRGB } from "@microsoft/fast-colors";
 import {
     ColorRecipe,
     contrast,
 } from "@microsoft/fast-components-styles-msft/dist/utilities/color/common";
 import { format } from "@microsoft/fast-jss-utilities";
+import { ColorsDesignSystem } from "./design-system";
+import { ComponentTypes } from "./state";
 
 export enum SwatchTypes {
     fill = "fill",
@@ -150,11 +150,11 @@ function iconStyleOverrides(
                   backgroundColor: fillRecipe(designSystem),
               }
             : type === SwatchTypes.foreground
-                ? {
-                      color: foregroundRecipe(designSystem),
-                      background: fillRecipe(designSystem),
-                  }
-                : { background: fillRecipe(designSystem) };
+            ? {
+                  color: foregroundRecipe(designSystem),
+                  background: fillRecipe(designSystem),
+              }
+            : { background: fillRecipe(designSystem) };
     };
 }
 
@@ -169,14 +169,9 @@ function formatContrast(
         b: ColorRecipe<string>
     ): DesignSystemResolver<string> => {
         return (designSystem: ColorsDesignSystem): string => {
-            return format(
-                message,
-                (formatDesignSystem: ColorsDesignSystem): string => {
-                    return contrast(a(formatDesignSystem), b(formatDesignSystem)).toFixed(
-                        2
-                    );
-                }
-            )(designSystem);
+            return format(message, (formatDesignSystem: ColorsDesignSystem): string => {
+                return contrast(a(formatDesignSystem), b(formatDesignSystem)).toFixed(2);
+            })(designSystem);
         };
     };
 }
@@ -200,8 +195,8 @@ function iconFactoryByType(type: SwatchTypes): SwatchIconFactory {
                 type === SwatchTypes.foreground
                     ? foregroundRecipe
                     : type === SwatchTypes.outline && typeof outlineRecipe === "function"
-                        ? outlineRecipe
-                        : fillRecipe,
+                    ? outlineRecipe
+                    : fillRecipe,
                 type === SwatchTypes.foreground || type === SwatchTypes.outline
                     ? fillRecipe
                     : backgroundColor
@@ -245,8 +240,8 @@ function colorByType(
         return type === SwatchTypes.outline && typeof outlineRecipe === "function"
             ? outlineRecipe
             : type === SwatchTypes.foreground
-                ? foregroundRecipe
-                : fillRecipe;
+            ? foregroundRecipe
+            : fillRecipe;
     };
 }
 
@@ -283,7 +278,6 @@ function SwatchBase(props: SwatchBaseProps): JSX.Element {
     );
 }
 
-/* tslint:disable-next-line */
 const Swatch = manageJss(swatchTwoStyles)(SwatchBase);
 type Swatch = InstanceType<typeof Swatch>;
 export type SwatchProps = Omit<SwatchBaseProps, "managedClasses">;

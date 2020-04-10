@@ -1,5 +1,5 @@
-import { accentForegroundCut, accentForegroundCutLarge } from "./accent-foreground-cut";
 import designSystemDefaults, { DesignSystem } from "../../design-system";
+import { accentForegroundCut, accentForegroundCutLarge } from "./accent-foreground-cut";
 import { Swatch } from "./common";
 
 describe("Cut text", (): void => {
@@ -12,11 +12,13 @@ describe("Cut text", (): void => {
         expect(accentForegroundCutLarge((): Swatch => "#FFF")({} as any)).toBe("#000000");
 
         expect(
+            /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
             accentForegroundCut((designSystem: DesignSystem) => "#FFF")(
                 designSystemDefaults
             )
         ).toBe("#000000");
         expect(
+            /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
             accentForegroundCutLarge((designSystem: DesignSystem) => "#FFF")(
                 designSystemDefaults
             )

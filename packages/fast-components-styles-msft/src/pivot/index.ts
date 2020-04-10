@@ -1,5 +1,4 @@
 import { PivotClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
-import { DesignSystem } from "../design-system";
 import {
     applyFocusVisible,
     directionSwitch,
@@ -7,6 +6,8 @@ import {
     subtract,
     toPx,
 } from "@microsoft/fast-jss-utilities";
+import { ComponentStyles } from "@microsoft/fast-jss-manager";
+import { DesignSystem } from "../design-system";
 import { height, heightNumber, horizontalSpacing } from "../utilities/density";
 import {
     accentFillRest,
@@ -15,7 +16,6 @@ import {
     neutralForegroundHover,
     neutralForegroundRest,
 } from "../utilities/color";
-import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { applyCornerRadius, applyFocusPlaceholderBorder } from "../utilities/border";
 import { applyScaledTypeRamp } from "../utilities/typography";
 import { focusOutlineWidth } from "../utilities/design-system";

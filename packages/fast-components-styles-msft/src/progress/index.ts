@@ -1,12 +1,12 @@
-import { DesignSystem } from "../design-system";
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { ProgressClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
+import { directionSwitch, format, multiply, toPx } from "@microsoft/fast-jss-utilities";
 import {
     accentFillRest,
     neutralFillRest,
     neutralForegroundHint,
 } from "../utilities/color";
-import { directionSwitch, format, multiply, toPx } from "@microsoft/fast-jss-utilities";
+import { DesignSystem } from "../design-system";
 import { designUnit, outlineWidth } from "../utilities/design-system";
 import { glyphSize, height, heightNumber } from "../utilities/density";
 import {

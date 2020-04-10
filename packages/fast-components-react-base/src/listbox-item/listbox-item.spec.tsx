@@ -1,14 +1,14 @@
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
+import { noop } from "lodash-es";
+import { keyCodeEnter, keyCodeSpace } from "@microsoft/fast-web-utilities";
+import { DisplayNamePrefix } from "../utilities";
 import ListboxItem, {
     ListboxItemHandledProps,
     ListboxItemProps,
     ListboxItemUnhandledProps,
 } from "./listbox-item";
-import { noop } from "lodash-es";
-import { DisplayNamePrefix } from "../utilities";
-import { keyCodeEnter, keyCodeSpace } from "@microsoft/fast-web-utilities";
 
 /*
  * Configure Enzyme

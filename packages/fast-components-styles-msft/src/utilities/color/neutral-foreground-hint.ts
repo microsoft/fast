@@ -1,4 +1,5 @@
 import { DesignSystemResolver } from "../../design-system";
+import { neutralPalette } from "../design-system";
 import {
     colorRecipeFactory,
     SwatchFamily,
@@ -6,7 +7,6 @@ import {
     SwatchFamilyType,
     SwatchRecipe,
 } from "./common";
-import { neutralPalette } from "../design-system";
 import { accessibleAlgorithm } from "./accessible-recipe";
 
 function neutralForegroundHintAlgorithm(

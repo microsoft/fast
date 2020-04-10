@@ -17,6 +17,15 @@ import { degreesToRadians, radiansToDegrees } from "./math-utilities";
 // http://brucelindbloom.com/index.html
 
 /**
+ * Get the luminance of a color in the linear RGB space.
+ * This is not the same as the relative luminance in the sRGB space for WCAG contrast calculations. Use rgbToRelativeLuminance instead.
+ * @param rgb The input color
+ */
+export function rgbToLinearLuminance(rgb: ColorRGBA64): number {
+    return rgb.r * 0.2126 + rgb.g * 0.7152 + rgb.b * 0.0722;
+}
+
+/**
  * Get the relative luminance of a color.
  * Adjusts the color to sRGB space, which is necessary for the WCAG contrast spec.
  * The alpha channel of the input is ignored.
@@ -52,15 +61,6 @@ export function contrastRatio(a: ColorRGBA64, b: ColorRGBA64): number {
     return luminanceA > luminanceB
         ? calculateContrastRatio(luminanceA, luminanceB)
         : calculateContrastRatio(luminanceB, luminanceA);
-}
-
-/**
- * Get the luminance of a color in the linear RGB space.
- * This is not the same as the relative luminance in the sRGB space for WCAG contrast calculations. Use rgbToRelativeLuminance instead.
- * @param rgb The input color
- */
-export function rgbToLinearLuminance(rgb: ColorRGBA64): number {
-    return rgb.r * 0.2126 + rgb.g * 0.7152 + rgb.b * 0.0722;
 }
 
 /**

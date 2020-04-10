@@ -16,9 +16,7 @@ export enum ProgressSize {
     page = "page",
 }
 
-/* tslint:disable:no-empty-interface */
-export interface ProgressManagedClasses
-    extends ManagedClasses<ProgressClassNameContract> {}
+export type ProgressManagedClasses = ManagedClasses<ProgressClassNameContract>;
 export interface ProgressHandledProps
     extends Subtract<BaseProgressHandledProps, BaseProgressManagedClasses>,
         ProgressManagedClasses {
@@ -38,6 +36,5 @@ export interface ProgressHandledProps
     size?: ProgressSize;
 }
 
-export interface ProgressUnhandledProps extends BaseProgressUnhandledProps {}
-/* tslint:enable:no-empty-interface */
+export type ProgressUnhandledProps = BaseProgressUnhandledProps;
 export type ProgressProps = ProgressHandledProps & ProgressUnhandledProps;

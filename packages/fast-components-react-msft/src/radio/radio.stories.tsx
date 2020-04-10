@@ -1,9 +1,9 @@
 import { storiesOf } from "@storybook/react";
-import React, { useState } from "react";
-import { Radio } from "./";
+import React from "react";
 import { uniqueId } from "lodash-es";
-import { Label } from "../label";
 import { action } from "@storybook/addon-actions";
+import { Label } from "../label";
+import { Radio } from "./";
 
 storiesOf("Radio", module)
     .add("Unhandled", () => <Radio inputId={uniqueId()} onChange={action("onChange")} />)

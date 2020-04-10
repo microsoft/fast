@@ -9,10 +9,10 @@ export function classNames(...args: ClassNamesArg[]): string {
             Array.isArray(value) && value[1]
                 ? classNames.call(null, value[0])
                 : isFunction(value)
-                    ? value()
-                    : isString(value)
-                        ? value
-                        : "";
+                ? value()
+                : isString(value)
+                ? value
+                : "";
 
         return !normalizedValue.length ? accum : accum + leadingChar + normalizedValue;
     }, "");

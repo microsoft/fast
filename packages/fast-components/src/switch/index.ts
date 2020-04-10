@@ -1,7 +1,4 @@
 import { customElement } from "@microsoft/fast-element";
-import { Switch } from "./switch";
-import { SwitchTemplate as template } from "./switch.template";
-import { SwitchStyles as styles } from "./switch.styles";
 import { designSystemConsumer } from "../design-system-consumer";
 import {
     accentFillRest,
@@ -14,6 +11,9 @@ import {
     neutralOutlineHover,
     neutralOutlineRest,
 } from "../styles/recipes";
+import { Switch } from "./switch";
+import { SwitchTemplate as template } from "./switch.template";
+import { SwitchStyles as styles } from "./switch.styles";
 
 @customElement({
     name: "fast-switch",

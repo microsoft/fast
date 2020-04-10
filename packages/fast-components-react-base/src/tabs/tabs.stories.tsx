@@ -1,9 +1,10 @@
 import { storiesOf } from "@storybook/react";
-import React, { useState } from "react";
-import Tabs from "./";
+import React from "react";
 import { uniqueId } from "lodash-es";
 import { Orientation } from "@microsoft/fast-web-utilities";
+import Tabs from "./";
 
+/* eslint-disable react/display-name */
 function renderTab(tabTitle: string): (className?: string) => React.ReactNode {
     return (className?: string): React.ReactNode => (
         <div className={className}>{tabTitle}</div>
@@ -15,6 +16,7 @@ function renderTabContent(tabContent: string): (className?: string) => React.Rea
         <div className={className}>{tabContent}</div>
     );
 }
+/* eslint-enable react/display-name */
 
 storiesOf("Tabs", module)
     .add("Default", () => (

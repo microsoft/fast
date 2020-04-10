@@ -2,15 +2,26 @@
  * This script is injected into the DOM with server-side utilities.
  * This script will fail if exectued outside of a browser context
  */
-import {
-    Base,
-    nodeToSketchLayers,
-    Page,
-    SymbolMaster,
-    Text,
-} from "@brainly/html-sketchapp";
+import { Base, nodeToSketchLayers, SymbolMaster, Text } from "@brainly/html-sketchapp";
 import { SymbolLibrarySource } from "./index";
+
 const symbolNameDataAttribute: string = "data-sketch-symbol";
+
+function convertNodeToSketchLayers(node: Element): any[] {
+    const layers: Base[] = nodeToSketchLayers(node);
+
+    return layers.map((layer: Base) => {
+        if (!(layer instanceof Text) && node.classList && node.classList.length) {
+            const classes: string = Array.from(node.classList).join(" ");
+
+            // Trim unique class ids created by JSS
+            const trimmed: string = classes.replace(/[-0-9]+/g, "");
+            layer.setName(trimmed.replace(/[^A-Za-z0-9_]/g, " "));
+        }
+
+        return layer;
+    });
+}
 
 export function getAsketchSymbols(source: SymbolLibrarySource): JSON[] {
     const selectors: string = Array.isArray(source.selectors)
@@ -48,28 +59,10 @@ export function getAsketchSymbols(source: SymbolLibrarySource): JSON[] {
                     []
                 )
                 .filter((value: any) => value !== null)
-                .forEach(
-                    (layer: any): void => {
-                        symbol.addLayer(layer);
-                    }
-                );
+                .forEach((layer: any): void => {
+                    symbol.addLayer(layer);
+                });
             return symbol;
         })
         .map((symbol: SymbolMaster) => symbol.toJSON());
-}
-
-function convertNodeToSketchLayers(node: Element): any[] {
-    const layers: Base[] = nodeToSketchLayers(node);
-
-    return layers.map((layer: Base) => {
-        if (!(layer instanceof Text) && node.classList && node.classList.length) {
-            const classes: string = Array.from(node.classList).join(" ");
-
-            // Trim unique class ids created by JSS
-            const trimmed: string = classes.replace(/[-0-9]+/g, "");
-            layer.setName(trimmed.replace(/[^A-Za-z0-9_]/g, " "));
-        }
-
-        return layer;
-    });
 }

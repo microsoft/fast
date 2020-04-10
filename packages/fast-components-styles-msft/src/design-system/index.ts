@@ -1,16 +1,11 @@
 import { Direction } from "@microsoft/fast-web-utilities";
-import { white } from "../utilities/color/color-constants";
-import {
-    ColorRGBA64,
-    ComponentStateColorPalette,
-    parseColorHexRGB,
-} from "@microsoft/fast-colors";
-import { Palette } from "../utilities/color/palette";
 import { withDefaults } from "@microsoft/fast-jss-utilities";
-import { FontWeight } from "../utilities/fonts";
-import designSystemSchema from "./design-system.schema";
-import { accentPalette, neutralPalette } from "../default-palette";
 import { isFunction } from "lodash-es";
+import { white } from "../utilities/color/color-constants";
+import { Palette } from "../utilities/color/palette";
+import { FontWeight } from "../utilities/fonts";
+import { accentPalette, neutralPalette } from "../default-palette";
+import designSystemSchema from "./design-system.schema";
 
 export const defaultFontWeights: FontWeight = {
     light: 100,
@@ -288,7 +283,7 @@ export const withDesignSystemDefaults: (config: Partial<DesignSystem>) => Design
  * @deprecated Use getDesignSystemValue instead.
  */
 export function getDesignSystemProperty(key: string): DesignSystemResolver<string> {
-    return function(config: DesignSystem): string {
+    return function (config: DesignSystem): string {
         return withDesignSystemDefaults(config)[key];
     };
 }

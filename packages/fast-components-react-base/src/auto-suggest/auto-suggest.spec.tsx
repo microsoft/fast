@@ -1,20 +1,18 @@
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
-import { configure, mount, ReactWrapper, render, shallow } from "enzyme";
-import AutoSuggest, { AutoSuggestUnhandledProps } from "./auto-suggest";
-import ListboxItem from "../listbox-item";
+import { configure, mount, ReactWrapper, shallow } from "enzyme";
 import {
     keyCodeArrowDown,
-    keyCodeArrowLeft,
-    keyCodeArrowRight,
     keyCodeArrowUp,
     keyCodeColon,
     keyCodeEnter,
     keyCodeEscape,
     keyCodeTab,
 } from "@microsoft/fast-web-utilities";
+import ListboxItem from "../listbox-item";
 import { DisplayNamePrefix } from "../utilities";
 import { Listbox } from "../index";
+import AutoSuggest, { AutoSuggestUnhandledProps } from "./auto-suggest";
 
 /*
  * Configure Enzyme
@@ -432,6 +430,7 @@ describe("auto suggest", (): void => {
 
         const inputRenderFn: any = jest.fn();
         inputRenderFn.mockReturnValue("Test");
+        /* eslint-disable-next-line */
         const rendered: any = mount(
             <AutoSuggest listboxId="listboxId" inputRegion={inputRenderFn}>
                 {itemA}

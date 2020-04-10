@@ -1,15 +1,5 @@
-import {
-    ComponentProps,
-    ExplorerHandledProps,
-    ExplorerProps,
-    ExplorerState,
-    ExplorerUnhandledProps,
-    Theme,
-    ThemeName,
-    ViewConfig,
-} from "./explorer.props";
 import { CodePreviewChildOption } from "@microsoft/fast-tooling-react/dist/data-utilities/mapping";
-import { camelCase, get, memoize, merge } from "lodash-es";
+import { camelCase, get, memoize } from "lodash-es";
 import {
     Canvas,
     CanvasClassNamesContract,
@@ -20,7 +10,6 @@ import {
     RowResizeDirection,
 } from "@microsoft/fast-layouts-react";
 import {
-    defaultDevices,
     Form,
     mapDataToCodePreview,
     NavigationMenu,
@@ -30,7 +19,6 @@ import {
 import manageJss, { ComponentStyleSheet } from "@microsoft/fast-jss-manager-react";
 import ReactDOM from "react-dom";
 import React from "react";
-import { downChevron, upChevron } from "./icons/chevrons";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import {
     applyCornerRadius,
@@ -50,10 +38,8 @@ import {
     LabelClassNameContract,
     ListboxItemProps,
     TabsItem,
-    TypographyClassNameContract,
     TypographySize,
 } from "@microsoft/fast-components-react-base";
-import style, { applyScrollbarStyle, ExplorerClassNameContract } from "./explorer.style";
 import {
     ActionToggle,
     ActionToggleAppearance,
@@ -77,16 +63,27 @@ import {
     FormClassNameContract,
 } from "@microsoft/fast-tooling-react/dist/form/form";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import syntaxHighlighterStyles from "./syntax-highlighting-style";
-import { childOptions, history, menu } from "./config";
-import * as componentViewConfigsWithoutCustomConfig from "./utilities/configs";
-import { ComponentViewConfig, Scenario } from "./utilities/configs/data.props";
 import { MemoizedFunction, uniqueId } from "lodash";
 import { classNames, Direction } from "@microsoft/fast-web-utilities";
 import { ColorRGBA64, parseColor } from "@microsoft/fast-colors";
 import { format, multiply, toPx } from "@microsoft/fast-jss-utilities";
 import { NavigationMenuClassNameContract } from "@microsoft/fast-tooling-react/dist/navigation-menu/navigation-menu.style";
 import { StandardLuminance } from "@microsoft/fast-components-styles-msft";
+import { ComponentViewConfig, Scenario } from "./utilities/configs/data.props";
+import * as componentViewConfigsWithoutCustomConfig from "./utilities/configs";
+import { childOptions, history, menu } from "./config";
+import syntaxHighlighterStyles from "./syntax-highlighting-style";
+import style, { applyScrollbarStyle, ExplorerClassNameContract } from "./explorer.style";
+import { downChevron, upChevron } from "./icons/chevrons";
+import {
+    ComponentProps,
+    ExplorerHandledProps,
+    ExplorerProps,
+    ExplorerState,
+    ExplorerUnhandledProps,
+    ThemeName,
+    ViewConfig,
+} from "./explorer.props";
 
 interface ObjectOfComponentViewConfigs {
     [key: string]: ComponentViewConfig<any>;
@@ -143,7 +140,6 @@ class Explorer extends Foundation<
         },
     };
 
-    /* tslint:disable-next-line */
     private checker: string =
         "url('data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMiAyIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGQ9Ik0xIDJWMGgxdjFIMHYxaDF6IiBmaWxsPSIjMDAwIiBmaWxsLW9wYWNpdHk9Ii4xNSIvPjxwYXRoIGQ9Ik0xIDJWMEgwdjFoMnYxSDF6IiBmaWxsPSIjZmZmIiBmaWxsLW9wYWNpdHk9Ii4xNSIvPjwvc3ZnPg==')";
 
@@ -418,6 +414,7 @@ class Explorer extends Foundation<
         const viewerContainer: HTMLDivElement | null = this.viewerContainerRef.current;
 
         if (viewerContainer) {
+            /* eslint-disable-next-line react/no-find-dom-node */
             const viewerNode: Element | Text | null = ReactDOM.findDOMNode(
                 viewerContainer
             );
@@ -821,6 +818,7 @@ class Explorer extends Foundation<
     private handleUpdateScenario = (
         newValue: string | string[],
         selectedItems: ListboxItemProps[],
+        /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
         displayString: string
     ): void => {
         this.setState({
@@ -947,6 +945,7 @@ class Explorer extends Foundation<
         });
     };
 
+    /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
     private handleDevToolsTabTriggerClick = (e: React.MouseEvent<unknown>): void => {
         if (!this.state.devToolsVisible) {
             this.setState({

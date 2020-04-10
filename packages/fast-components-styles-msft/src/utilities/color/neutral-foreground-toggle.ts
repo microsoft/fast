@@ -1,5 +1,5 @@
-import { black, white } from "./color-constants";
 import { DesignSystem } from "../../design-system";
+import { black, white } from "./color-constants";
 import { contrast, Swatch, SwatchRecipe, SwatchResolver } from "./common";
 import { neutralFillToggleRest } from "./neutral-fill-toggle";
 

@@ -1,7 +1,7 @@
-import { Swatch, SwatchResolver } from "./common";
 import { DesignSystem } from "../../design-system";
-import { findClosestSwatchIndex, getSwatch } from "./palette";
 import { backgroundColor, neutralFillCardDelta, neutralPalette } from "../design-system";
+import { Swatch, SwatchResolver } from "./common";
+import { findClosestSwatchIndex, getSwatch } from "./palette";
 
 const neutralCardFillAlgorithm: SwatchResolver = (designSystem: DesignSystem): Swatch => {
     const offset: number = neutralFillCardDelta(designSystem);

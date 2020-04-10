@@ -1,13 +1,13 @@
-import { ComponentViewConfig } from "./data.props";
 import {
     SliderLabel,
     SliderLabelClassNameContract,
     SliderLabelProps,
     sliderLabelSchema,
 } from "@microsoft/fast-components-react-msft";
-import Guidance from "../../.tmp/slider-label/guidance";
 import { DesignSystem } from "@microsoft/fast-components-styles-msft";
 import { ComponentStyleSheet } from "@microsoft/fast-jss-manager-react";
+import Guidance from "../../.tmp/slider-label/guidance";
+import { ComponentViewConfig } from "./data.props";
 
 const styles: ComponentStyleSheet<SliderLabelClassNameContract, DesignSystem> = {
     sliderLabel: {

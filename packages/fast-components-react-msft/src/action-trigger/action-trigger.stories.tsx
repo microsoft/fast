@@ -1,8 +1,8 @@
 import { storiesOf } from "@storybook/react";
-import React, { useState } from "react";
-import { ActionTrigger, ActionTriggerAppearance } from "./";
-import { glyphFactory, SVGGlyph } from "../../assets/svg-element";
+import React from "react";
 import { action } from "@storybook/addon-actions";
+import { glyphFactory, SVGGlyph } from "../../assets/svg-element";
+import { ActionTrigger, ActionTriggerAppearance } from "./";
 
 storiesOf("Action trigger", module)
     .add("Default", () => (

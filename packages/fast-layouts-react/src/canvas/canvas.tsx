@@ -1,8 +1,8 @@
 import React from "react";
-import { CanvasHandledProps, CanvasProps, CanvasUnhandledProps } from "./canvas.props";
 import { ComponentStyles } from "@microsoft/fast-jss-manager-react";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import { classNames } from "@microsoft/fast-web-utilities";
+import { CanvasHandledProps, CanvasProps, CanvasUnhandledProps } from "./canvas.props";
 
 export interface CanvasClassNamesContract {
     canvas?: string;

@@ -54,12 +54,12 @@ The following scripts are required:
 * `npm run prettier` ensures code is formatted correctly (runs on a global repository githook).
 * `npm run prettier:diff` provides a hook to ensure code formatting matches expectations on the build server.
 * `npm run test` runs all tests.
-* `npm run tslint` runs tslint.
+* `npm run eslint` runs eslint.
 
 Additional scripts and common use cases include:
 
 * `npm start` starts the webpack-dev-server.
-* `npm run tslint:fix` runs tslint with the fix option.
+* `npm run eslint:fix` runs eslint with the fix option.
 * `npm run watch` watches the files and builds the exported package when making changes to the source files.
 
 ## .npmignore
@@ -78,7 +78,7 @@ Applications using `webpack-dev-server` can also serve as a means for testing us
 
 ## Typescript
 
-Use TypeScript for packages that include JavaScript and make sure to add `tsconfig.json` and `tslint.json` files.
+Use TypeScript for packages that include JavaScript and make sure to add `tsconfig.json` and `.eslintrc.js` files.
 
 Published packages must be in ES6 module format to support tree-shaking.
 

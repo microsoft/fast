@@ -1,13 +1,6 @@
 import React from "react";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import {
-    TreeViewClassNameContract,
-    TreeViewHandledProps,
-    TreeViewManagedClasses,
-    TreeViewProps,
-    TreeViewUnhandledProps,
-} from "./tree-view.props";
-import {
     classNames,
     getDisplayedNodes,
     isHTMLElement,
@@ -16,6 +9,12 @@ import {
 } from "@microsoft/fast-web-utilities";
 import { canUseDOM } from "exenv-es6";
 import { DisplayNamePrefix } from "../utilities";
+import {
+    TreeViewClassNameContract,
+    TreeViewHandledProps,
+    TreeViewProps,
+    TreeViewUnhandledProps,
+} from "./tree-view.props";
 
 interface TreeViewState {
     /**
@@ -76,7 +75,6 @@ class ChildNodeCountTracker {
     }
 }
 
-/* tslint:disable-next-line */
 class TreeView extends Foundation<
     TreeViewHandledProps,
     TreeViewUnhandledProps,
@@ -193,11 +191,11 @@ class TreeView extends Foundation<
                 "[aria-selected='true']"
             );
 
-            const toBeFocused: HTMLElement | null = !!lastFocused
+            const toBeFocused: HTMLElement | null = lastFocused
                 ? lastFocused.current
-                : !!selectedChild
-                    ? selectedChild
-                    : root.querySelector("[role='treeitem']");
+                : selectedChild
+                ? selectedChild
+                : root.querySelector("[role='treeitem']");
 
             if (isHTMLElement(toBeFocused)) {
                 toBeFocused.focus();

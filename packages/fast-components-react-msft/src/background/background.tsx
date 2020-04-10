@@ -50,11 +50,11 @@ export default class Background extends Foundation<
             typeof background === "string"
                 ? background
                 : typeof background === "function"
-                    ? background(designSystem)
-                    : has(designSystem.neutralPalette, background)
-                        ? get(designSystem.neutralPalette, background)
-                        : DesignSystemDefaults.neutralPalette[background] ||
-                          Background.defaultProps.value(DesignSystemDefaults);
+                ? background(designSystem)
+                : has(designSystem.neutralPalette, background)
+                ? get(designSystem.neutralPalette, background)
+                : DesignSystemDefaults.neutralPalette[background] ||
+                  Background.defaultProps.value(DesignSystemDefaults);
 
         const style: React.CSSProperties = Object.assign(
             {},

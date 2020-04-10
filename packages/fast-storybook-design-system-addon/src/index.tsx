@@ -3,10 +3,10 @@ import { DesignSystemProvider, JSSManager } from "@microsoft/fast-jss-manager-re
 import addons, { makeDecorator, StoryContext, StoryGetter } from "@storybook/addons";
 import { addDecorator } from "@storybook/react";
 import React from "react";
-import { REQUEST_DESIGN_SYSTEM_EVENT, UPDATE_DESIGN_SYSTEM_EVENT } from "./constants";
 import Channel from "@storybook/channels";
 import { create } from "jss";
 import jssNested from "jss-plugin-nested";
+import { REQUEST_DESIGN_SYSTEM_EVENT, UPDATE_DESIGN_SYSTEM_EVENT } from "./constants";
 
 const jssInstance: ReturnType<create> = create();
 jssInstance.use(jssNested());
@@ -65,6 +65,7 @@ class DesignSystemDecorator<T> extends React.Component<
     };
 }
 
+/* eslint-disable react/display-name */
 const decorator: ReturnType<typeof makeDecorator> = makeDecorator({
     name: "withDesignSystem",
     parameterName: "designSystem",
@@ -78,6 +79,7 @@ const decorator: ReturnType<typeof makeDecorator> = makeDecorator({
         );
     },
 });
+/* eslint-enable react/display-name */
 
 export function setup(): void {
     addDecorator(decorator);

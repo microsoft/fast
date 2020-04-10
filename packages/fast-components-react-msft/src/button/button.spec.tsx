@@ -1,8 +1,7 @@
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
-import { ButtonHTMLTags } from "@microsoft/fast-components-react-base";
-import { ButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
+import { DisplayNamePrefix } from "../utilities";
 import MSFTButton from "./button";
 import {
     Button,
@@ -11,7 +10,6 @@ import {
     ButtonProps,
     ButtonUnhandledProps,
 } from "./index";
-import { DisplayNamePrefix } from "../utilities";
 
 /*
  * Configure Enzyme
@@ -66,21 +64,18 @@ describe("button", (): void => {
         expect(rendered.find("a").prop("aria-hidden")).toEqual(true);
     });
 
-    /* tslint:disable-next-line */
     test("should apply a 'primary' html class when appearance is primary", () => {
         const rendered: any = mount(<Button appearance={ButtonAppearance.primary} />);
 
         expect(rendered.find("button").prop("className")).toContain("button__primary");
     });
 
-    /* tslint:disable-next-line */
     test("should apply an 'outline' html class when appearance is outline", () => {
         const rendered: any = mount(<Button appearance={ButtonAppearance.outline} />);
 
         expect(rendered.find("button").prop("className")).toContain("button__outline");
     });
 
-    /* tslint:disable-next-line */
     test("should apply a 'lightweight' html class when appearance is lightweight", () => {
         const rendered: any = mount(<Button appearance={ButtonAppearance.lightweight} />);
 
@@ -144,12 +139,7 @@ describe("button", (): void => {
         const rendered: any = mount(<MSFTButton {...props} />);
 
         expect(rendered.find("svg")).not.toBe(undefined);
-        expect(
-            rendered
-                .find("button")
-                .childAt(0)
-                .type()
-        ).toEqual("svg");
+        expect(rendered.find("button").childAt(0).type()).toEqual("svg");
     });
 
     test("should add a child element with the slot prop set to 'after' into the after slot location", () => {
@@ -186,11 +176,6 @@ describe("button", (): void => {
         const rendered: any = mount(<MSFTButton {...props} />);
 
         expect(rendered.find("svg")).not.toBe(undefined);
-        expect(
-            rendered
-                .find("button")
-                .childAt(1)
-                .type()
-        ).toEqual("svg");
+        expect(rendered.find("button").childAt(1).type()).toEqual("svg");
     });
 });

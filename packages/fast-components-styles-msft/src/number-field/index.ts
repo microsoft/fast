@@ -1,7 +1,7 @@
-import { DesignSystem } from "../design-system";
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { NumberFieldClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { directionSwitch, format } from "@microsoft/fast-jss-utilities";
+import { DesignSystem } from "../design-system";
 import { height, horizontalSpacing } from "../utilities/density";
 import { inputFieldStyles } from "../patterns/input-field";
 

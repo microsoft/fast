@@ -1,3 +1,8 @@
+import designSystemDefaults, { DesignSystem } from "../../design-system";
+import {
+    accentPalette as getAccentPalette,
+    neutralPalette as getNeutralPalette,
+} from "../design-system";
 import {
     neutralFill,
     neutralFillActive,
@@ -6,13 +11,8 @@ import {
     neutralFillRest,
     neutralFillSelected,
 } from "./neutral-fill";
-import designSystemDefaults, { DesignSystem } from "../../design-system";
 import { Palette } from "./palette";
 import { FillSwatchFamily, Swatch } from "./common";
-import {
-    accentPalette as getAccentPalette,
-    neutralPalette as getNeutralPalette,
-} from "../design-system";
 
 describe("neutralFill", (): void => {
     const neutralPalette: Palette = getNeutralPalette(designSystemDefaults);
@@ -64,73 +64,63 @@ describe("neutralFill", (): void => {
     });
 
     test("should return the same color from both implementations", (): void => {
-        neutralPalette.concat(accentPalette).forEach(
-            (swatch: Swatch): void => {
-                expect(neutralFillRest(() => swatch)(designSystemDefaults)).toBe(
-                    neutralFillRest(
-                        Object.assign({}, designSystemDefaults, {
-                            backgroundColor: swatch,
-                        })
-                    )
-                );
-                expect(neutralFillHover(() => swatch)(designSystemDefaults)).toBe(
-                    neutralFillHover(
-                        Object.assign({}, designSystemDefaults, {
-                            backgroundColor: swatch,
-                        })
-                    )
-                );
-                expect(neutralFillActive(() => swatch)(designSystemDefaults)).toBe(
-                    neutralFillActive(
-                        Object.assign({}, designSystemDefaults, {
-                            backgroundColor: swatch,
-                        })
-                    )
-                );
-                expect(neutralFillFocus(() => swatch)(designSystemDefaults)).toBe(
-                    neutralFillFocus(
-                        Object.assign({}, designSystemDefaults, {
-                            backgroundColor: swatch,
-                        })
-                    )
-                );
-                expect(neutralFillSelected(() => swatch)(designSystemDefaults)).toBe(
-                    neutralFillSelected(
-                        Object.assign({}, designSystemDefaults, {
-                            backgroundColor: swatch,
-                        })
-                    )
-                );
-            }
-        );
+        neutralPalette.concat(accentPalette).forEach((swatch: Swatch): void => {
+            expect(neutralFillRest(() => swatch)(designSystemDefaults)).toBe(
+                neutralFillRest(
+                    Object.assign({}, designSystemDefaults, {
+                        backgroundColor: swatch,
+                    })
+                )
+            );
+            expect(neutralFillHover(() => swatch)(designSystemDefaults)).toBe(
+                neutralFillHover(
+                    Object.assign({}, designSystemDefaults, {
+                        backgroundColor: swatch,
+                    })
+                )
+            );
+            expect(neutralFillActive(() => swatch)(designSystemDefaults)).toBe(
+                neutralFillActive(
+                    Object.assign({}, designSystemDefaults, {
+                        backgroundColor: swatch,
+                    })
+                )
+            );
+            expect(neutralFillFocus(() => swatch)(designSystemDefaults)).toBe(
+                neutralFillFocus(
+                    Object.assign({}, designSystemDefaults, {
+                        backgroundColor: swatch,
+                    })
+                )
+            );
+            expect(neutralFillSelected(() => swatch)(designSystemDefaults)).toBe(
+                neutralFillSelected(
+                    Object.assign({}, designSystemDefaults, {
+                        backgroundColor: swatch,
+                    })
+                )
+            );
+        });
     });
 
     test("should have consistent return values", (): void => {
-        neutralPalette.concat(accentPalette).forEach(
-            (swatch: Swatch): void => {
-                const backplates: FillSwatchFamily = neutralFill(() => swatch)(
-                    designSystemDefaults
-                );
-                const rest: Swatch = neutralFillRest(() => swatch)(designSystemDefaults);
-                const hover: Swatch = neutralFillHover(() => swatch)(
-                    designSystemDefaults
-                );
-                const active: Swatch = neutralFillActive(() => swatch)(
-                    designSystemDefaults
-                );
-                const focus: Swatch = neutralFillFocus(() => swatch)(
-                    designSystemDefaults
-                );
-                const selected: Swatch = neutralFillSelected(() => swatch)(
-                    designSystemDefaults
-                );
+        neutralPalette.concat(accentPalette).forEach((swatch: Swatch): void => {
+            const backplates: FillSwatchFamily = neutralFill(() => swatch)(
+                designSystemDefaults
+            );
+            const rest: Swatch = neutralFillRest(() => swatch)(designSystemDefaults);
+            const hover: Swatch = neutralFillHover(() => swatch)(designSystemDefaults);
+            const active: Swatch = neutralFillActive(() => swatch)(designSystemDefaults);
+            const focus: Swatch = neutralFillFocus(() => swatch)(designSystemDefaults);
+            const selected: Swatch = neutralFillSelected(() => swatch)(
+                designSystemDefaults
+            );
 
-                expect(backplates.rest).toBe(rest);
-                expect(backplates.hover).toBe(hover);
-                expect(backplates.active).toBe(active);
-                expect(backplates.focus).toBe(focus);
-                expect(backplates.selected).toBe(selected);
-            }
-        );
+            expect(backplates.rest).toBe(rest);
+            expect(backplates.hover).toBe(hover);
+            expect(backplates.active).toBe(active);
+            expect(backplates.focus).toBe(focus);
+            expect(backplates.selected).toBe(selected);
+        });
     });
 });

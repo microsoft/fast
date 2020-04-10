@@ -15,7 +15,6 @@ import React from "react";
 import { DisplayNamePrefix } from "../utilities";
 import Tab, { TabManagedClasses } from "./tab";
 import TabItem from "./tab-item";
-import { isNil } from "lodash-es";
 import TabPanel, { TabPanelManagedClasses } from "./tab-panel";
 import { TabsHandledProps, TabsItem, TabsProps, TabsUnhandledProps } from "./tabs.props";
 
@@ -90,8 +89,8 @@ class Tabs extends Foundation<TabsHandledProps, TabsUnhandledProps, TabsState> {
                 activeId: this.props.activeId
                     ? this.props.activeId
                     : items.length > 0
-                        ? get(items[0], "props.id")
-                        : "",
+                    ? get(items[0], "props.id")
+                    : "",
             };
         } else {
             this.state = {
@@ -253,6 +252,7 @@ class Tabs extends Foundation<TabsHandledProps, TabsUnhandledProps, TabsState> {
         }
     }
 
+    /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
     private renderTabItem = (tabItem: JSX.Element, index: number): JSX.Element => {
         if (this.props.items) {
             return this.getChildrenBySlot(
@@ -280,6 +280,7 @@ class Tabs extends Foundation<TabsHandledProps, TabsUnhandledProps, TabsState> {
         return React.Children.map(this.tabItems(), this.renderTabPanel);
     }
 
+    /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
     private renderTabPanel = (tabItem: JSX.Element, index: number): JSX.Element => {
         if (this.props.items) {
             return this.getChildrenBySlot(

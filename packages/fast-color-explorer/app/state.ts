@@ -1,8 +1,8 @@
 import { Action, createStore } from "redux";
-import { ColorsDesignSystem, colorsDesignSystem } from "./design-system";
 import { ColorRGBA64 } from "@microsoft/fast-colors";
 import { createColorPalette } from "@microsoft/fast-components-styles-msft";
 import { Swatch } from "@microsoft/fast-components-styles-msft/dist/utilities/color/common";
+import { ColorsDesignSystem, colorsDesignSystem } from "./design-system";
 import { defaultNeutralColor } from "./colors";
 
 export enum ComponentTypes {
@@ -124,9 +124,9 @@ export function setShowOnlyRecommendedBackgrounds(
     return { type: SET_SHOW_ONLY_APPROVED_BACKGROUNDS, value };
 }
 
-export const setNeutralBaseColor: ReturnType<
-    typeof setColorActionCreator
-> = setColorActionCreator(SET_NEUTRAL_BASE_COLOR);
-export const setAccentBaseColor: ReturnType<
-    typeof setColorActionCreator
-> = setColorActionCreator(SET_ACCENT_BASE_COLOR);
+export const setNeutralBaseColor: ReturnType<typeof setColorActionCreator> = setColorActionCreator(
+    SET_NEUTRAL_BASE_COLOR
+);
+export const setAccentBaseColor: ReturnType<typeof setColorActionCreator> = setColorActionCreator(
+    SET_ACCENT_BASE_COLOR
+);

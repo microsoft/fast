@@ -1,8 +1,8 @@
-import { FASTCheckbox } from ".";
-import { FASTDesignSystemProvider } from "../design-system-provider";
-import Examples from "./fixtures/base.html";
 import { STORY_RENDERED } from "@storybook/core-events";
 import addons from "@storybook/addons";
+import { FASTDesignSystemProvider } from "../design-system-provider";
+import Examples from "./fixtures/base.html";
+import { FASTCheckbox } from ".";
 
 // Prevent tree-shaking
 FASTCheckbox;

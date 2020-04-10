@@ -3,13 +3,16 @@ import {
     ContextMenuItemClassNameContract,
     ManagedClasses,
 } from "@microsoft/fast-components-class-name-contracts-base";
-import { ContextMenuItemRole } from "./context-menu-item";
 import { Omit } from "utility-types";
+import { ContextMenuItemRole } from "./context-menu-item";
 
-export interface ContextMenuItemManagedClasses
-    extends ManagedClasses<ContextMenuItemClassNameContract> {}
-export interface ContextMenuItemUnhandledProps
-    extends Omit<React.HTMLAttributes<HTMLDivElement>, "role"> {}
+export type ContextMenuItemManagedClasses = ManagedClasses<
+    ContextMenuItemClassNameContract
+>;
+export type ContextMenuItemUnhandledProps = Omit<
+    React.HTMLAttributes<HTMLDivElement>,
+    "role"
+>;
 export interface ContextMenuItemHandledProps extends ContextMenuItemManagedClasses {
     /**
      * The children of the context menu item

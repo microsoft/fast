@@ -20,6 +20,13 @@ export function applyCornerRadius(): CSSRules<DesignSystem> {
 }
 
 /**
+ * @deprecated Use applyElevatedCornerRadius instead.
+ */
+export function applyFloatingCornerRadius(): CSSRules<DesignSystem> {
+    return cornerRadiusRule(toPx(elevatedCornerRadius));
+}
+
+/**
  * Sets the border radius for elevated surfaces or controls.
  */
 export function applyElevatedCornerRadius(): CSSRules<DesignSystem> {
@@ -34,16 +41,10 @@ export function applyPillCornerRadius(): CSSRules<DesignSystem> {
 }
 
 /**
- * @deprecated Use applyElevatedCornerRadius instead.
- */
-export function applyFloatingCornerRadius(): CSSRules<DesignSystem> {
-    return cornerRadiusRule(toPx(elevatedCornerRadius));
-}
-
-/**
  * Sets the border width, style, and color to reserve the space for the focus indicator.
  */
 export function applyFocusPlaceholderBorder(
+    /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
     config?: DesignSystem /* @deprecated - this function doesn't need an argument */
 ): CSSRules<DesignSystem> {
     return {

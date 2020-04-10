@@ -3,7 +3,6 @@ import { callToActionButtonOverrides } from "@microsoft/fast-components-styles-m
 import { classNames } from "@microsoft/fast-web-utilities";
 import { get } from "lodash-es";
 import React from "react";
-import { CallToActionClassNameContract } from ".";
 import { Button, ButtonAppearance } from "../button";
 import { DisplayNamePrefix } from "../utilities";
 import {
@@ -12,6 +11,7 @@ import {
     CallToActionProps,
     CallToActionUnhandledProps,
 } from "./call-to-action.props";
+import { CallToActionClassNameContract } from ".";
 
 class CallToAction extends Foundation<
     CallToActionHandledProps,

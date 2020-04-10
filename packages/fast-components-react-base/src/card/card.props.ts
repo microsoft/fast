@@ -13,9 +13,8 @@ export enum CardTag {
     section = "section",
 }
 
-export interface CardManagedClasses extends ManagedClasses<CardClassNameContract> {}
-export interface CardUnhandledProps
-    extends React.HTMLAttributes<HTMLDivElement | HTMLElement> {}
+export type CardManagedClasses = ManagedClasses<CardClassNameContract>;
+export type CardUnhandledProps = React.HTMLAttributes<HTMLDivElement | HTMLElement>;
 export interface CardHandledProps extends CardManagedClasses {
     /**
      * The card children

@@ -4,12 +4,9 @@ import {
     TextAreaClassNameContract,
 } from "@microsoft/fast-components-class-name-contracts-base";
 
-export interface TextAreaManagedClasses
-    extends ManagedClasses<TextAreaClassNameContract> {}
-export interface TextAreaUnhandledProps
-    extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {}
+export type TextAreaManagedClasses = ManagedClasses<TextAreaClassNameContract>;
+export type TextAreaUnhandledProps = React.TextareaHTMLAttributes<HTMLTextAreaElement>;
 
-/* tslint:disable-next-line:no-empty-interface */
-export interface TextAreaHandledProps extends TextAreaManagedClasses {}
+export type TextAreaHandledProps = TextAreaManagedClasses;
 
 export type TextAreaProps = TextAreaHandledProps & TextAreaUnhandledProps;

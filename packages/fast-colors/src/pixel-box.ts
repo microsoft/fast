@@ -1,7 +1,3 @@
-// tslint:disable:member-ordering
-// tslint:disable:no-bitwise
-// tslint:disable:prefer-for-of
-
 import { Histogram } from "./histogram";
 import { ColorRGBA64 } from "./color-rgba-64";
 

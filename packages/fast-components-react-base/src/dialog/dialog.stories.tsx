@@ -1,10 +1,10 @@
 import { storiesOf } from "@storybook/react";
 import React from "react";
-import Dialog from "./";
+import { uniqueId } from "lodash-es";
 import Button from "../button";
 import Select from "../select";
 import ListboxItem from "../listbox-item";
-import { uniqueId } from "lodash-es";
+import Dialog from "./";
 
 storiesOf("Dialog", module)
     .add("Default", () => <Dialog />)

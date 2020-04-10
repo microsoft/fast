@@ -1,9 +1,9 @@
 import { storiesOf } from "@storybook/react";
 import React, { useState } from "react";
-import { ActionToggle, ActionToggleAppearance, ActionToggleProps } from "./";
-import { glyphFactory, SVGGlyph } from "../../assets/svg-element";
 import { action } from "@storybook/addon-actions";
+import { glyphFactory, SVGGlyph } from "../../assets/svg-element";
 import { ActionToggleHandledProps } from "./action-toggle.props";
+import { ActionToggle, ActionToggleAppearance, ActionToggleProps } from "./";
 
 /**
  * Simple state manager to track and update checked properties

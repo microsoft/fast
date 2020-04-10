@@ -1,6 +1,3 @@
-// tslint:disable:member-ordering
-// tslint:disable:prefer-for-of
-
 import { contrastRatio } from "./color-converters";
 import { ColorInterpolationSpace, interpolateByColorSpace } from "./color-interpolation";
 import { ColorRGBA64 } from "./color-rgba-64";
@@ -201,19 +198,17 @@ export class ColorScale {
     }
 
     private sortColorScaleStops(stops: ColorScaleStop[]): ColorScaleStop[] {
-        return stops.sort(
-            (a: ColorScaleStop, b: ColorScaleStop): number => {
-                const A: number = a.position;
-                const B: number = b.position;
+        return stops.sort((a: ColorScaleStop, b: ColorScaleStop): number => {
+            const A: number = a.position;
+            const B: number = b.position;
 
-                if (A < B) {
-                    return -1;
-                } else if (A > B) {
-                    return 1;
-                } else {
-                    return 0;
-                }
+            if (A < B) {
+                return -1;
+            } else if (A > B) {
+                return 1;
+            } else {
+                return 0;
             }
-        );
+        });
     }
 }

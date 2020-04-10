@@ -1,4 +1,3 @@
-import { DesignSystem } from "../design-system";
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { FlipperClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import {
@@ -7,6 +6,7 @@ import {
     format,
     toPx,
 } from "@microsoft/fast-jss-utilities";
+import { DesignSystem } from "../design-system";
 import {
     neutralFillStealthActive,
     neutralFillStealthHover,

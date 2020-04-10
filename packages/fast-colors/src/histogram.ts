@@ -1,5 +1,3 @@
-// tslint:disable:member-ordering
-// tslint:disable:no-bitwise
 import { PixelBlob } from "./pixel-blob";
 
 /**

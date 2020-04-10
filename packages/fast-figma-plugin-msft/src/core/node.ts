@@ -1,6 +1,6 @@
 import { DesignSystem } from "@microsoft/fast-components-styles-msft";
-import { RecipeData, RecipeTypes } from "./recipe-registry";
 import { ColorRGBA64 } from "@microsoft/fast-colors";
+import { RecipeData, RecipeTypes } from "./recipe-registry";
 
 /**
  * Defines the data stored by the plugin on a node instance
@@ -34,6 +34,7 @@ export abstract class PluginNode {
             return DesignSystemCache.get(this.id) as Partial<DesignSystem>;
         }
 
+        /* eslint-disable-next-line @typescript-eslint/no-this-alias */
         let node: PluginNode | null = this;
         const designSystems: Array<Partial<DesignSystem>> = [];
 
@@ -42,10 +43,12 @@ export abstract class PluginNode {
             node = node.parent();
         }
 
-        const designSystem = designSystems.reduceRight((prev, next) => ({
-            ...prev,
-            ...next,
-        }));
+        const designSystem = designSystems.reduceRight(
+            (prev: Partial<DesignSystem>, next: Partial<DesignSystem>) => ({
+                ...prev,
+                ...next,
+            })
+        );
         DesignSystemCache.set(this.id, designSystem);
 
         return designSystem;
@@ -117,14 +120,14 @@ export abstract class PluginNode {
         function getIds(node: PluginNode): string[] {
             let found = [node.id];
 
-            node.children().forEach(child => {
+            node.children().forEach((child: PluginNode) => {
                 found = found.concat(getIds(child));
             });
 
             return found;
         }
 
-        getIds(this).forEach(id => DesignSystemCache.delete(id));
+        getIds(this).forEach((id: string) => DesignSystemCache.delete(id));
     }
     protected abstract getPluginData<K extends keyof PluginNodeData>(
         key: K

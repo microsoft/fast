@@ -1,8 +1,7 @@
 import { storiesOf } from "@storybook/react";
-import React, { useState } from "react";
-import { AutoSuggestOption } from "./";
+import React from "react";
 import { uniqueId } from "lodash-es";
-import { action } from "@storybook/addon-actions";
+import { AutoSuggestOption } from "./";
 
 storiesOf("Auto suggest option ", module)
     .add("Default", () => <AutoSuggestOption value={"Value"} id={uniqueId()} />)

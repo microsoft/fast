@@ -1,6 +1,11 @@
 import React from "react";
+import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
+import { canUseCssGrid, classNames } from "@microsoft/fast-web-utilities";
+import { toPx } from "@microsoft/fast-jss-utilities";
 import BreakpointTracker from "../utilities/breakpoint-tracker";
 import { getValueByBreakpoint } from "../utilities/breakpoints";
+import { GridDisplay } from "../utilities";
+import { Column } from "../column";
 import {
     GridAlignment,
     GridHandledProps,
@@ -8,11 +13,6 @@ import {
     GridTag,
     GridUnhandledProps,
 } from "./grid.props";
-import { GridDisplay } from "../utilities";
-import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
-import { Column } from "../column";
-import { canUseCssGrid, classNames } from "@microsoft/fast-web-utilities";
-import { toPx } from "@microsoft/fast-jss-utilities";
 
 export interface GridClassNamesContract {
     grid?: string;
@@ -158,8 +158,9 @@ export class Grid extends Foundation<GridHandledProps, GridUnhandledProps, {}> {
 
     private msGridStyles(): React.CSSProperties {
         return {
-            msGridColumns: `1fr (${toPx(this.generateGutter())} 1fr)[${this.props
-                .columnCount - 1}]`,
+            msGridColumns: `1fr (${toPx(this.generateGutter())} 1fr)[${
+                this.props.columnCount - 1
+            }]`,
             ["msGridRow" as any]: this.props.row,
             ["msGridColumn" as any]: this.props.gridColumn,
         };

@@ -14,7 +14,7 @@ export function extractHtmlElement(
         if (sourceRef.current instanceof HTMLElement) {
             return sourceRef.current;
         }
-
+        /* eslint-disable-next-line react/no-find-dom-node */
         const foundNode: Element | Text | null = ReactDOM.findDOMNode(sourceRef.current);
 
         if (foundNode instanceof HTMLElement || foundNode instanceof Text) {

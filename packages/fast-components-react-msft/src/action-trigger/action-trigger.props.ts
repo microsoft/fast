@@ -19,8 +19,7 @@ export enum ActionTriggerAppearance {
     stealth = ButtonAppearance.stealth,
 }
 
-export interface ActionTriggerManagedClasses
-    extends ManagedClasses<ActionTriggerClassNameContract> {}
+export type ActionTriggerManagedClasses = ManagedClasses<ActionTriggerClassNameContract>;
 export interface ActionTriggerHandledProps
     extends Omit<ButtonHandledProps, "appearance" | keyof ButtonManagedClasses>,
         ActionTriggerManagedClasses {
@@ -45,6 +44,5 @@ export interface ActionTriggerHandledProps
     disabled?: boolean;
 }
 
-/* tslint:disable-next-line:no-empty-interface */
-export interface ActionTriggerUnhandledProps extends ButtonUnhandledProps {}
+export type ActionTriggerUnhandledProps = ButtonUnhandledProps;
 export type ActionTriggerProps = ActionTriggerHandledProps & ActionTriggerUnhandledProps;

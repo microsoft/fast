@@ -10,11 +10,10 @@ import {
     SliderClassNameContract,
 } from "@microsoft/fast-components-class-name-contracts-msft";
 
-export interface SliderManagedClasses extends ManagedClasses<SliderClassNameContract> {}
+export type SliderManagedClasses = ManagedClasses<SliderClassNameContract>;
 export interface SliderHandledProps
     extends SliderManagedClasses,
         Subtract<BaseSliderHandledProps, BaseSliderManagedClasses> {}
 
-/* tslint:disable-next-line:no-empty-interface */
-export interface SliderUnhandledProps extends BaseSliderUnhandledProps {}
+export type SliderUnhandledProps = BaseSliderUnhandledProps;
 export type SliderProps = SliderHandledProps & SliderUnhandledProps;

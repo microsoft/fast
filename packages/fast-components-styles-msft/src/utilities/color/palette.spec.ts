@@ -1,3 +1,5 @@
+import designSystemDefaults, { DesignSystem } from "../../design-system";
+import { accentBaseColor, accentPalette, neutralPalette } from "../design-system";
 import {
     findClosestSwatchIndex,
     findSwatchIndex,
@@ -8,9 +10,7 @@ import {
     swatchByContrast,
     swatchByMode,
 } from "./palette";
-import designSystemDefaults, { DesignSystem } from "../../design-system";
 import { Swatch } from "./common";
-import { accentBaseColor, accentPalette, neutralPalette } from "../design-system";
 
 describe("palette", (): void => {
     test("should return a function", (): void => {
@@ -57,14 +57,13 @@ describe("palette", (): void => {
 });
 
 describe("findSwatchIndex", (): void => {
-    const accent: string = accentBaseColor(designSystemDefaults);
-
     test("should implement design-system defaults", (): void => {
         expect(findSwatchIndex(neutralPalette, "#FFF")({} as DesignSystem)).toBe(0);
         expect(
-            findSwatchIndex(accentPalette, accentBaseColor({} as DesignSystem))(
-                {} as DesignSystem
-            )
+            findSwatchIndex(
+                accentPalette,
+                accentBaseColor({} as DesignSystem)
+            )({} as DesignSystem)
         ).toBe(59);
     });
 
@@ -91,9 +90,10 @@ describe("findSwatchIndex", (): void => {
 
     test("should find accent", (): void => {
         expect(
-            findSwatchIndex(accentPalette, accentBaseColor(designSystemDefaults))(
-                designSystemDefaults
-            )
+            findSwatchIndex(
+                accentPalette,
+                accentBaseColor(designSystemDefaults)
+            )(designSystemDefaults)
         ).toBe(59);
         expect(
             findSwatchIndex(accentPalette, "rgb(0, 120, 212)")(designSystemDefaults)

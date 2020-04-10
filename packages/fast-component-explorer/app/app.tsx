@@ -1,8 +1,8 @@
 import React from "react";
+import { Redirect, Route, Router, Switch } from "react-router-dom";
 import ExplorerRegion from "./explorer-region";
 import Preview from "./preview";
 import { history, initialComponentRoute } from "./config";
-import { Redirect, Route, Router, Switch } from "react-router-dom";
 
 /**
  * The root level app

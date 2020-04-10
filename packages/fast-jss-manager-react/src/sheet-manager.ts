@@ -1,5 +1,5 @@
-import { JSSStyleSheet } from "./jss-manager";
 import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
+import { JSSStyleSheet } from "./jss-manager";
 import { jss, stylesheetRegistry } from "./jss";
 
 export type SheetTracker = [JSSStyleSheet, number];

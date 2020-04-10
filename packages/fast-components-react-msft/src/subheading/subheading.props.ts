@@ -24,8 +24,7 @@ export enum SubheadingTag {
     p = "p",
 }
 
-export interface SubheadingManagedClasses
-    extends ManagedClasses<SubheadingClassNameContract> {}
+export type SubheadingManagedClasses = ManagedClasses<SubheadingClassNameContract>;
 export interface SubheadingHandledProps extends SubheadingManagedClasses {
     /**
      * The subheading content
@@ -43,6 +42,7 @@ export interface SubheadingHandledProps extends SubheadingManagedClasses {
     tag?: SubheadingTag;
 }
 
-export interface SubheadingUnhandledProps
-    extends React.HTMLAttributes<HTMLHeadingElement | HTMLParagraphElement> {}
+export type SubheadingUnhandledProps = React.HTMLAttributes<
+    HTMLHeadingElement | HTMLParagraphElement
+>;
 export type SubheadingProps = SubheadingHandledProps & SubheadingUnhandledProps;

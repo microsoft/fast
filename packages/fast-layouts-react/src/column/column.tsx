@@ -1,10 +1,10 @@
 import React from "react";
+import { canUseDOM } from "exenv-es6";
+import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
+import { canUseCssGrid, classNames } from "@microsoft/fast-web-utilities";
 import BreakpointTracker from "../utilities/breakpoint-tracker";
 import { Breakpoint, identifyBreakpoint } from "../utilities/breakpoints";
-import { canUseDOM, canUseViewport } from "exenv-es6";
-import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import { ColumnHandledProps, ColumnProps, ColumnUnhandledProps } from "./column.props";
-import { canUseCssGrid, classNames } from "@microsoft/fast-web-utilities";
 
 export interface ColumnClassNamesContract {
     column?: string;
@@ -168,8 +168,8 @@ export class Column extends Foundation<ColumnHandledProps, ColumnUnhandledProps,
             this.props.cssGridPropertyName === "grid"
                 ? true
                 : this.props.cssGridPropertyName === "-ms-grid"
-                    ? false
-                    : canUseCssGrid();
+                ? false
+                : canUseCssGrid();
 
         const gridStyles: React.CSSProperties = canUseCssGridStyle
             ? {
