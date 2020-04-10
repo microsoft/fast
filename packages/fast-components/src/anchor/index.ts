@@ -22,13 +22,13 @@ import {
     neutralOutlineRest,
 } from "../styles/recipes";
 import { designSystemConsumer } from "../design-system-consumer";
-import { Button } from "./button";
-import { ButtonTemplate as template } from "./button.template";
-import { ButtonStyles as styles } from "./button.styles";
+import { AnchorStyles as styles } from "./anchor.styles";
+import { Anchor } from "./anchor";
+import { AnchorTemplate as template } from "./anchor.template";
 
-// Button
+// Anchor
 @customElement({
-    name: "fast-button",
+    name: "fast-anchor",
     template,
     styles,
     shadowOptions: {
@@ -59,5 +59,8 @@ import { ButtonStyles as styles } from "./button.styles";
         neutralOutlineRest,
     ],
 })
-export class FASTButton extends Button {}
-export * from "./button";
+
+/* tslint:disable-next-line:max-classes-per-file */
+export class FASTAnchor extends Anchor {}
+export * from "./anchor";
+export * from "./anchor.styles";
