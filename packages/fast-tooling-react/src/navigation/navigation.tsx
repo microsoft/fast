@@ -143,16 +143,14 @@ class Navigation extends Foundation<
                     : this.state.expandedNavigationConfigItems[
                           e.data.activeDictionaryId
                       ].includes(e.data.activeNavigationConfigId)
-                        ? this.state.expandedNavigationConfigItems[
-                              e.data.activeDictionaryId
-                          ].filter((navigationConfigItem: string) => {
-                              return (
-                                  navigationConfigItem !== e.data.activeNavigationConfigId
-                              );
-                          })
-                        : this.state.expandedNavigationConfigItems[
-                              e.data.activeDictionaryId
-                          ].concat([e.data.activeNavigationConfigId]);
+                    ? this.state.expandedNavigationConfigItems[
+                          e.data.activeDictionaryId
+                      ].filter((navigationConfigItem: string) => {
+                          return navigationConfigItem !== e.data.activeNavigationConfigId;
+                      })
+                    : this.state.expandedNavigationConfigItems[
+                          e.data.activeDictionaryId
+                      ].concat([e.data.activeNavigationConfigId]);
 
                 this.setState({
                     activeItem: [
@@ -211,8 +209,8 @@ class Navigation extends Foundation<
             ? DragDropItemType.linkedData
             : this.state.navigationDictionary[0][dictionaryId][0][navigationConfigId]
                   .schema[dictionaryLink]
-                ? DragDropItemType.linkedDataContainer
-                : DragDropItemType.default;
+            ? DragDropItemType.linkedDataContainer
+            : DragDropItemType.default;
 
         return (
             <div
@@ -358,9 +356,7 @@ class Navigation extends Foundation<
         let className: string = this.props.managedClasses.navigation_itemTrigger;
 
         if (isCollapsible) {
-            className += ` ${
-                this.props.managedClasses.navigation_itemTrigger__expandable
-            }`;
+            className += ` ${this.props.managedClasses.navigation_itemTrigger__expandable}`;
         }
 
         if (
@@ -371,15 +367,11 @@ class Navigation extends Foundation<
         }
 
         if (isDraggable) {
-            className += ` ${
-                this.props.managedClasses.navigation_itemTrigger__draggable
-            }`;
+            className += ` ${this.props.managedClasses.navigation_itemTrigger__draggable}`;
         }
 
         if (isDroppable) {
-            className += ` ${
-                this.props.managedClasses.navigation_itemTrigger__droppable
-            }`;
+            className += ` ${this.props.managedClasses.navigation_itemTrigger__droppable}`;
         }
 
         if (
@@ -388,18 +380,12 @@ class Navigation extends Foundation<
             this.state.hoveredItem[2] === navigationConfigId
         ) {
             if (this.state.hoveredItem[0] === DragDropItemType.linkedDataContainer) {
-                className += ` ${
-                    this.props.managedClasses.navigation_itemTrigger__hover
-                }`;
+                className += ` ${this.props.managedClasses.navigation_itemTrigger__hover}`;
             } else if (this.state.hoveredItem[0] === DragDropItemType.linkedData) {
                 if (this.state.hoveredItem[3] === HoverLocation.after) {
-                    className += ` ${
-                        this.props.managedClasses.navigation_itemTrigger__hoverAfter
-                    }`;
+                    className += ` ${this.props.managedClasses.navigation_itemTrigger__hoverAfter}`;
                 } else {
-                    className += ` ${
-                        this.props.managedClasses.navigation_itemTrigger__hoverBefore
-                    }`;
+                    className += ` ${this.props.managedClasses.navigation_itemTrigger__hoverBefore}`;
                 }
             }
         }
@@ -496,8 +482,8 @@ class Navigation extends Foundation<
                 isLinkedDataContainer
                     ? undefined
                     : location === HoverLocation.before
-                        ? index
-                        : index + 1,
+                    ? index
+                    : index + 1,
             ],
             linkedData: {
                 ...this.state.linkedData,

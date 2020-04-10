@@ -75,8 +75,8 @@ export default abstract class ControlPluginUtilities<
             id: Array.isArray(config.id)
                 ? config.id
                 : config.id !== undefined
-                    ? [config.id]
-                    : [],
+                ? [config.id]
+                : [],
         });
     }
 

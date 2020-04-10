@@ -88,7 +88,7 @@ describe("SelectDevice", (): void => {
         expect(rendered.find("select").prop("value")).toEqual(undefined);
     });
     test("should fire the `onUpdateDevice` callback when an option has been selected and return the updated device index", () => {
-        const updateDeviceCallback: (activeDeviceId: string) => void = jest.fn(function(
+        const updateDeviceCallback: (activeDeviceId: string) => void = jest.fn(function (
             activeDeviceId: string
         ): void {
             expect(activeDeviceId).toEqual("testDevice2");

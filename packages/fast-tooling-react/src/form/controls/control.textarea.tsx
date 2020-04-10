@@ -58,8 +58,8 @@ class TextareaControl extends React.Component<
         return typeof this.props.value === "string"
             ? this.props.value
             : typeof this.props.default === "string"
-                ? this.props.default
-                : "";
+            ? this.props.default
+            : "";
     }
 
     private handleChange = (): ((e: React.ChangeEvent<HTMLTextAreaElement>) => void) => {

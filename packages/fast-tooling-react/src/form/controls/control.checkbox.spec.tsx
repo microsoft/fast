@@ -123,12 +123,7 @@ describe("CheckboxControl", () => {
             />
         );
 
-        expect(
-            rendered
-                .find("input")
-                .at(0)
-                .prop("value")
-        ).toBe(true.toString());
+        expect(rendered.find("input").at(0).prop("value")).toBe(true.toString());
     });
     test("should not show default values if data exists", () => {
         const rendered: any = mount(
@@ -139,11 +134,6 @@ describe("CheckboxControl", () => {
                 default={true}
             />
         );
-        expect(
-            rendered
-                .find("input")
-                .at(0)
-                .prop("value")
-        ).toBe(false.toString());
+        expect(rendered.find("input").at(0).prop("value")).toBe(false.toString());
     });
 });

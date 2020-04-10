@@ -185,9 +185,7 @@ export default class CSSPropertyEditor extends Foundation<
         if (this.newRowKeyCounter > 100) {
             this.newRowKeyCounter = 1;
         }
-        this.activeEditRowReactKey = `${CSSPropertyEditor.newRowKey}${
-            this.newRowKeyCounter
-        }`;
+        this.activeEditRowReactKey = `${CSSPropertyEditor.newRowKey}${this.newRowKeyCounter}`;
         return this.activeEditRowReactKey;
     };
 
@@ -313,7 +311,7 @@ export default class CSSPropertyEditor extends Foundation<
 
         this.createRow(
             !isNil(this.propertyEditorRef.current) &&
-            e.nativeEvent.offsetY < this.propertyEditorRef.current.clientHeight / 2
+                e.nativeEvent.offsetY < this.propertyEditorRef.current.clientHeight / 2
                 ? 0
                 : Object.keys(this.editData).length
         );
@@ -359,8 +357,10 @@ export default class CSSPropertyEditor extends Foundation<
      * Focus on the key input of the next row
      */
     private focusOnRow = (index: number): void => {
-        const rows: Element[] = this.domChildren((this.propertyEditorRef
-            .current as HTMLElement).firstElementChild as HTMLElement);
+        const rows: Element[] = this.domChildren(
+            (this.propertyEditorRef.current as HTMLElement)
+                .firstElementChild as HTMLElement
+        );
         if (rows.length < index + 1) {
             return;
         }

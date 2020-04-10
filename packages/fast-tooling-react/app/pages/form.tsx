@@ -250,19 +250,17 @@ class FormTestPage extends React.Component<{}, FormTestPageState> {
         ];
 
         for (const group of groups) {
-            Object.keys(group.items).map(
-                (itemName: any, key: number): void => {
-                    if (typeof testConfigs[itemName].schema !== "undefined") {
-                        const childObj: FormChildOptionItem = {
-                            name: testConfigs[itemName].schema.title || "Untitled",
-                            component: testConfigs[itemName].component,
-                            schema: testConfigs[itemName].schema,
-                        };
+            Object.keys(group.items).map((itemName: any, key: number): void => {
+                if (typeof testConfigs[itemName].schema !== "undefined") {
+                    const childObj: FormChildOptionItem = {
+                        name: testConfigs[itemName].schema.title || "Untitled",
+                        component: testConfigs[itemName].component,
+                        schema: testConfigs[itemName].schema,
+                    };
 
-                        childOptions.push(childObj);
-                    }
+                    childOptions.push(childObj);
                 }
-            );
+            });
         }
 
         return childOptions;
@@ -354,8 +352,8 @@ class FormTestPage extends React.Component<{}, FormTestPageState> {
             ? testConfigs[e.target.value].data
             : testConfigs[e.target.value].schema.id ===
               testConfigs.allControlTypes.schema.id
-                ? this.state.dataSet
-                : getDataFromSchema(testConfigs[e.target.value].schema);
+            ? this.state.dataSet
+            : getDataFromSchema(testConfigs[e.target.value].schema);
 
         if ((window as any).Worker && fastMessageSystem) {
             fastMessageSystem.postMessage({
