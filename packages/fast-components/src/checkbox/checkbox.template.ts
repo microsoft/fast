@@ -13,8 +13,8 @@ export const CheckboxTemplate = html<Checkbox>`
         @click="${(x, c) => x.clickHandler(c.event as MouseEvent)}"
     >
     <div
-        part="checkbox"
-        class="checkbox"
+        part="control"
+        class="control"
     >
             <slot
                 name="checked-indicator"

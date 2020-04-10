@@ -17,7 +17,7 @@ export const CheckboxStyles = css`
         } user-select: none;
     }
 
-    .checkbox {
+    .control {
         position: relative;
         width: calc((${heightNumber} / 2 + var(--design-unit)) * 1px);
         height: calc((${heightNumber} / 2 + var(--design-unit)) * 1px);
@@ -62,20 +62,20 @@ export const CheckboxStyles = css`
         opacity: 0;
     }
 
-    .checkbox:hover {
+    .control:hover {
         background: var(--neutral-fill-input-hover);
         border-color: var(--neutral-outline-hover);
     }
 
-    :host(:${focusVisible}) .checkbox {
+    :host(:${focusVisible}) .control {
         box-shadow: 0 0 0 1px var(--neutral-focus) inset;
         border-color: var(--neutral-focus);
     }
 
     :host(.disabled) .label,
     :host(.readonly) .label,
-    :host(.readonly) .checkbox,
-    :host(.disabled) .checkbox {
+    :host(.readonly) .control,
+    :host(.disabled) .control {
         cursor: ${disabledCursor};
     }
 
@@ -89,7 +89,7 @@ export const CheckboxStyles = css`
     }
 
     @media (forced-colors: active) {
-        .checkbox, .checkbox:hover, .checkbox:active {
+        .control, .control:hover, .control:active {
             forced-color-adjust: none;
             border-color: ${SystemColors.FieldText};
             background: ${SystemColors.Field};
@@ -103,7 +103,7 @@ export const CheckboxStyles = css`
             background: ${SystemColors.FieldText};
         }
         
-        :host(:${focusVisible}) .checkbox {
+        :host(:${focusVisible}) .control {
             border-color: ${SystemColors.Highlight};
         }
 
@@ -111,7 +111,7 @@ export const CheckboxStyles = css`
             opacity: 1;
         }
 
-        :host(.disabled) .checkbox {
+        :host(.disabled) .control {
             forced-color-adjust: none;
             border-color: ${SystemColors.GrayText};
         }
