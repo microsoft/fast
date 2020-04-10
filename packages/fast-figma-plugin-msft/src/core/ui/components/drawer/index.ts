@@ -4,14 +4,14 @@ import { StealthButton } from "../stealth-button";
 StealthButton;
 
 const template = html`
-    <template class="${x => (bool(x.expanded) ? "expanded" : "collapsed")}">
+    <template class="${x => (x.expanded ? "expanded" : "collapsed")}">
         <div class="header">
             ${x => x.name}
             <td-stealth-button
                 class="expand-button"
                 aria-label="Expand region"
                 aria-controls="expanded-content collapsed-content"
-                $aria-expanded="${x => bool(x.expanded).toString()}"
+                aria-expanded="${x => x.expanded.toString()}"
                 @click="${(x, c) => x.handleExpandButtonClick(c.event)}"
             >
                 <svg width="9" height="9" viewBox="0 0 9 9" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -58,32 +58,19 @@ const styles = css`
     }
 `;
 
-/**
- * Process attribute values into a boolean value. Remove this
- * when proper @attr modes are supported.
- * https://github.com/microsoft/fast-dna/issues/2742
- */
-export function bool(value: string | boolean | null): boolean {
-    return typeof value === "boolean"
-        ? value
-        : typeof value === "string"
-            ? value === "true" || value === ""
-            : false;
-}
-
 @customElement({
     name: "td-drawer",
     template,
     styles,
 })
 export class Drawer extends FastElement {
-    @attr
-    public expanded: boolean;
+    @attr({ mode: "boolean" })
+    public expanded: boolean = false;
 
     @attr
     public name: string = "";
 
     private handleExpandButtonClick(): void {
-        this.expanded = !bool(this.expanded);
+        this.expanded = !this.expanded;
     }
 }

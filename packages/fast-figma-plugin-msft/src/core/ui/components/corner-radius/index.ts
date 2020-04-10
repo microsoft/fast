@@ -1,13 +1,15 @@
 import { attr, css, customElement, FastElement, html } from "@microsoft/fast-element";
-import { bool } from "../drawer";
+import { designSystemConsumer } from "@microsoft/fast-components/dist/design-system-consumer";
+import {
+    neutralForegroundHint,
+    neutralFillStealthHover,
+} from "@microsoft/fast-components/dist/styles/recipes";
 
 const template = html<CornerRadius>`
     <template class="${x => x.orientation} ${x =>
-    bool(x.interactive) ? "interactive" : ""} ${x =>
-    bool(x.selected) ? "selected" : ""}" style="--radius: ${x =>
-    x.value}" $tabindex="${x =>
-    bool(x.interactive) ? "interactive" : null}" $aria-selected="${x =>
-    bool(x.selected)}">
+    x.interactive ? "interactive" : ""} ${x =>
+    x.selected ? "selected" : ""}" style="--radius: ${x => x.value}" tabindex="${x =>
+    x.interactive ? "interactive" : null}" aria-selected="${x => x.selected}">
         <div class="indicator"></div>
         <slot></slot>
     </template>
@@ -71,6 +73,9 @@ const styles = css`
     template,
     styles,
 })
+@designSystemConsumer({
+    recipes: [neutralForegroundHint, neutralFillStealthHover],
+})
 export class CornerRadius extends FastElement {
     @attr
     public value: string = "0";
@@ -78,9 +83,9 @@ export class CornerRadius extends FastElement {
     @attr
     public orientation: "vertical" | "horizontal" = "vertical";
 
-    @attr
+    @attr({ mode: "boolean" })
     public interactive: boolean = false;
 
-    @attr
+    @attr({ mode: "boolean" })
     public selected: boolean = false;
 }

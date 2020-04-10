@@ -1,4 +1,11 @@
 import { css, customElement, FastElement, html, ref } from "@microsoft/fast-element";
+import { designSystemConsumer } from "@microsoft/fast-components/dist/design-system-consumer";
+import {
+    neutralFillStealthRest,
+    neutralFillStealthHover,
+    neutralFillStealthActive,
+    accentForegroundCutRest,
+} from "@microsoft/fast-components/dist/styles/recipes";
 
 const template = html`
     <button>
@@ -55,6 +62,14 @@ const styles = css`
         mode: "open",
         delegatesFocus: true,
     },
+})
+@designSystemConsumer({
+    recipes: [
+        neutralFillStealthRest,
+        neutralFillStealthHover,
+        neutralFillStealthActive,
+        accentForegroundCutRest,
+    ],
 })
 export class StealthButton extends FastElement {
     public glyph: HTMLSlotElement;

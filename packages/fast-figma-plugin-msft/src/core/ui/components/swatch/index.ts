@@ -1,21 +1,18 @@
+import { attr, css, customElement, FastElement, html } from "@microsoft/fast-element";
+import { designSystemConsumer } from "@microsoft/fast-components/dist/design-system-consumer";
 import {
-    attr,
-    css,
-    customElement,
-    FastElement,
-    html,
-    when,
-} from "@microsoft/fast-element";
-import { bool } from "../drawer";
+    neutralForegroundHint,
+    neutralFillStealthHover,
+} from "@microsoft/fast-components/dist/styles/recipes";
 
 const template = html`
     <template class="${x => x.orientation} ${x => x.type} ${x =>
-    bool(x.circular) ? " circular" : ""} ${x => (x.value === "none" ? "none" : "")} ${x =>
-    bool(x.interactive) ? "interactive" : ""} ${x =>
-    bool(x.selected) ? "selected" : ""}" style="--swatch-value: ${x =>
-    x.value === "none" ? "transparent" : x.value}" $tabindex="${x =>
-    bool(x.interactive) ? "0" : null}" role="${x =>
-    bool(x.interactive) ? "button" : null}" $aria-selected="${x => bool(x.selected)}">
+    x.circular ? " circular" : ""} ${x => (x.value === "none" ? "none" : "")} ${x =>
+    x.interactive ? "interactive" : ""} ${x =>
+    x.selected ? "selected" : ""}" style="--swatch-value: ${x =>
+    x.value === "none" ? "transparent" : x.value}" tabindex="${x =>
+    x.interactive ? "0" : null}" role="${x =>
+    x.interactive ? "button" : null}" aria-selected="${x => x.selected}">
         <div class="swatch"></div>
         <slot></slot>
     </template>
@@ -116,11 +113,14 @@ export enum SwatchTypes {
     template,
     styles,
 })
+@designSystemConsumer({
+    recipes: [neutralForegroundHint, neutralFillStealthHover],
+})
 export class Swatch extends FastElement {
     @attr
     public type: SwatchTypes = SwatchTypes.background;
 
-    @attr
+    @attr({ mode: "boolean" })
     public circular: boolean = false;
 
     @attr
@@ -132,12 +132,9 @@ export class Swatch extends FastElement {
     @attr
     public label: string;
 
-    @attr
+    @attr({ mode: "boolean" })
     public interactive: boolean = false;
 
-    @attr
+    @attr({ mode: "boolean" })
     public selected: boolean = false;
-    private selectedChanged() {
-        console.log("selected", this.selected, typeof this.selected);
-    }
 }
