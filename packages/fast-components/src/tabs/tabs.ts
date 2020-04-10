@@ -29,6 +29,19 @@ export class Tabs extends FastElement {
         this.getTabPanels();
     }
 
+    public disconnectedCallback(): void {
+        this.removeEventTabs();
+    }
+
+    private removeEventTabs = (): void => {
+        this.tabs.forEach((element, index: number) => {
+            const tb = element as Element;
+            if (tb.slot === "tab") {
+                tb.removeEventListener("click", this.handleTabClick);
+            }
+        });
+    };
+
     private getTabs = (): void => {
         this.tabs.forEach((element, index: number) => {
             const tb = element as Element;
@@ -39,7 +52,7 @@ export class Tabs extends FastElement {
                 );
                 tb.setAttribute("aria-controls", `panel-${index}`);
                 tb.setAttribute("id", `tab-${index}`);
-                tb.addEventListener("mousedown", this.handleTabClick);
+                tb.addEventListener("click", this.handleTabClick);
 
                 console.log("All Tabs", tb);
             }
