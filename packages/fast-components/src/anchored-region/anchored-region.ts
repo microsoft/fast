@@ -1,6 +1,4 @@
-import { attr, FastElement, observable, ref } from "@microsoft/fast-element";
-import { isNil } from "lodash-es";
-import rafThrottle from "raf-throttle";
+import { attr, FastElement, observable, DOM } from "@microsoft/fast-element";
 
 export type AxisPositioningMode = "uncontrolled" | "locktodefault" | "dynamic";
 
@@ -130,7 +128,7 @@ export class AnchoredRegion extends FastElement {
     @observable
     public initialLayoutComplete: boolean = false;
 
-    public anchorElement: HTMLElement | null;
+    public anchorElement: HTMLElement | null = null;
     private anchorElementChanged(oldvalue, newvalue): void {
         this.disconnectAnchor(oldvalue);
         if (this.initialLayoutComplete) {
@@ -139,7 +137,7 @@ export class AnchoredRegion extends FastElement {
         }
     }
 
-    public viewportElement: HTMLElement | null;
+    public viewportElement: HTMLElement | null = null;
     private viewportElementChanged(oldvalue, newvalue): void {
         this.disconnectViewport(oldvalue);
         if (this.initialLayoutComplete) {
@@ -202,27 +200,27 @@ export class AnchoredRegion extends FastElement {
      */
     public region: HTMLDivElement;
 
-    private openRequestAnimationFrame: number | null = null;
+    private openRequestAnimationFrame: boolean = false;
 
     constructor() {
         super();
-        this.handleAnchorResize = rafThrottle(this.handleAnchorResize);
-        this.handleRegionResize = rafThrottle(this.handleRegionResize);
+        this.handleAnchorResize = this.handleAnchorResize;
+        this.handleRegionResize = this.handleRegionResize;
         this.setInitialState();
     }
 
     connectedCallback() {
         super.connectedCallback();
 
-        if (isNil(this.viewportElement)) {
+        if (this.viewportElement === null) {
             this.viewportElement = this.getViewport();
         }
 
-        if (isNil(this.anchorElement)) {
+        if (this.anchorElement === null) {
             this.anchorElement = this.getAnchor();
         }
 
-        if (isNil(this.anchorElement) || isNil(this.viewportElement)) {
+        if (this.anchorElement === null || this.viewportElement === null) {
             return;
         }
 
@@ -312,7 +310,7 @@ export class AnchoredRegion extends FastElement {
      * connects observers and event handlers
      */
     private connectObservers = (): void => {
-        if (isNil(this.anchorElement) || isNil(this.viewportElement)) {
+        if (this.anchorElement === null || this.viewportElement === null) {
             return;
         }
 
@@ -361,7 +359,7 @@ export class AnchoredRegion extends FastElement {
      * Gets the viewport element by id, or defaults to component parent
      */
     public getViewport = (): HTMLElement | null => {
-        if (isNil(this.viewport)) {
+        if (typeof this.viewport !== "string") {
             return this.region.parentElement;
         }
 
@@ -392,7 +390,7 @@ export class AnchoredRegion extends FastElement {
             }
         });
 
-        if (!isNil(this.viewportElement)) {
+        if (this.viewportElement !== null) {
             this.viewportScrollTop = this.viewportElement.scrollTop;
             this.viewportScrollLeft = this.viewportElement.scrollLeft;
         }
@@ -537,10 +535,9 @@ export class AnchoredRegion extends FastElement {
      * Request's an animation frame if there are currently no open animation frame requests
      */
     private requestLayoutUpdate = (): void => {
-        if (this.openRequestAnimationFrame === null) {
-            this.openRequestAnimationFrame = window.requestAnimationFrame(
-                this.updateLayout
-            );
+        if (this.openRequestAnimationFrame === false) {
+            this.openRequestAnimationFrame = true;
+            DOM.queueUpdate(this.updateLayout);
         }
     };
 
@@ -548,9 +545,9 @@ export class AnchoredRegion extends FastElement {
      *  Recalculate layout related state values
      */
     private updateLayout = (): void => {
-        this.openRequestAnimationFrame = null;
+        this.openRequestAnimationFrame = false;
 
-        if (isNil(this.viewportRect) || isNil(this.positionerDimension)) {
+        if (this.viewportRect === null || this.positionerDimension === null) {
             return;
         }
 
@@ -845,7 +842,7 @@ export class AnchoredRegion extends FastElement {
      * Check for scroll changes in viewport and adjust position data
      */
     private updateForScrolling = (): void => {
-        if (isNil(this.viewportElement) || isNaN(this.viewportElement.scrollTop)) {
+        if (this.viewportElement === null || isNaN(this.viewportElement.scrollTop)) {
             return;
         }
         const scrollTop: number = this.viewportElement.scrollTop;
@@ -904,7 +901,7 @@ export class AnchoredRegion extends FastElement {
     private getAvailableWidth = (
         positionOption: AnchoredRegionHorizontalPositionLabel
     ): number => {
-        if (!isNil(this.viewportRect)) {
+        if (this.viewportRect !== null) {
             const spaceLeft: number = this.anchorLeft - this.viewportRect.left;
             const spaceRight: number =
                 this.viewportRect.right - (this.anchorLeft + this.anchorWidth);
@@ -930,7 +927,7 @@ export class AnchoredRegion extends FastElement {
     private getAvailableHeight = (
         positionOption: AnchoredRegionVerticalPositionLabel
     ): number => {
-        if (!isNil(this.viewportRect)) {
+        if (this.viewportRect !== null) {
             const spaceAbove: number = this.anchorTop - this.viewportRect.top;
             const spaceBelow: number =
                 this.viewportRect.bottom - (this.anchorTop + this.anchorHeight);
