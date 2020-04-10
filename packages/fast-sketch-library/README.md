@@ -1,3 +1,4 @@
+**This project is no longer under active development.**
 # FAST Sketch library
 
 `@microsoft/fast-sketch-library` is a tool for quickly extracting sketch libraries from a website. It uses [https://github.com/brainly/html-sketchapp/](https://github.com/brainly/html-sketchapp/) to create an "almost sketch" JSON file which can be loaded into sketch using the plugin provided by `html-sketchapp`.
