@@ -6,7 +6,7 @@
 
 Install the package:
 ```
-npm install @microsoft/fast-eslint-rules
+npm install @microsoft/eslint-config-fast-dna
 ```
 
 ### Configure your eslint config
