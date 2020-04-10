@@ -1,6 +1,9 @@
 import { attr, FastElement, observable } from "@microsoft/fast-element";
 import { SliderConfiguration, SliderOrientation } from "../slider";
-import { Direction } from "@microsoft/fast-web-utilities";
+import {
+    Direction,
+    convertStylePropertyPixelsToNumber,
+} from "@microsoft/fast-web-utilities";
 import { convertPixelToPercent } from "../slider/slider-utilities";
 
 const defaultConfig: SliderConfiguration = {
@@ -52,6 +55,7 @@ export class SliderLabel extends FastElement {
 
     private getSliderConfiguration = (): void => {
         if (!this.isSliderConfig(this.parentNode)) {
+            console.log("parent is not a FASTSlider, no min and max");
             this.config = defaultConfig;
         } else {
             const { min, max, direction, orientation } = this
