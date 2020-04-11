@@ -14,11 +14,25 @@ const template = html`
                 aria-expanded="${x => x.expanded.toString()}"
                 @click="${(x, c) => x.handleExpandButtonClick(c.event)}"
             >
-                <svg width="9" height="9" viewBox="0 0 9 9" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                    <path d="M0 1C0 0.447715 0.447715 0 1 0H2C2.55228 0 3 0.447715 3 1V2C3 2.55228 2.55228 3 2 3H1C0.447715 3 0 2.55228 0 2V1Z" />
-                    <path d="M0 7C0 6.44772 0.447715 6 1 6H2C2.55228 6 3 6.44772 3 7V8C3 8.55228 2.55228 9 2 9H1C0.447715 9 0 8.55228 0 8V7Z" />
-                    <path d="M6 1C6 0.447715 6.44772 0 7 0H8C8.55228 0 9 0.447715 9 1V2C9 2.55228 8.55228 3 8 3H7C6.44772 3 6 2.55228 6 2V1Z" />
-                    <path d="M6 7C6 6.44772 6.44772 6 7 6H8C8.55228 6 9 6.44772 9 7V8C9 8.55228 8.55228 9 8 9H7C6.44772 9 6 8.55228 6 8V7Z" />
+                <svg
+                    width="9"
+                    height="9"
+                    viewBox="0 0 9 9"
+                    xmlns="http://www.w3.org/2000/svg"
+                    aria-hidden="true"
+                >
+                    <path
+                        d="M0 1C0 0.447715 0.447715 0 1 0H2C2.55228 0 3 0.447715 3 1V2C3 2.55228 2.55228 3 2 3H1C0.447715 3 0 2.55228 0 2V1Z"
+                    />
+                    <path
+                        d="M0 7C0 6.44772 0.447715 6 1 6H2C2.55228 6 3 6.44772 3 7V8C3 8.55228 2.55228 9 2 9H1C0.447715 9 0 8.55228 0 8V7Z"
+                    />
+                    <path
+                        d="M6 1C6 0.447715 6.44772 0 7 0H8C8.55228 0 9 0.447715 9 1V2C9 2.55228 8.55228 3 8 3H7C6.44772 3 6 2.55228 6 2V1Z"
+                    />
+                    <path
+                        d="M6 7C6 6.44772 6.44772 6 7 6H8C8.55228 6 9 6.44772 9 7V8C9 8.55228 8.55228 9 8 9H7C6.44772 9 6 8.55228 6 8V7Z"
+                    />
                 </svg>
             </td-stealth-button>
         </div>
@@ -28,7 +42,8 @@ const template = html`
         <div class="collapsed-content" role="region" id="collapsed-content">
             <slot name="collapsed-content"></slot>
         </div>
-    <template>
+        <template> </template
+    ></template>
 `;
 
 const styles = css`
