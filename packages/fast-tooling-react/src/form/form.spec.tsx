@@ -1,16 +1,24 @@
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
-import { configure, mount } from "enzyme";
-import { BareForm, Form } from "./";
+import { configure, mount, render, shallow } from "enzyme";
+import { Form, ModularForm } from "./";
 import { FormProps } from "./form.props";
+import {
+    DataType,
+    InitializeMessageOutgoing,
+    MessageSystem,
+    MessageSystemType,
+    NavigationConfig,
+    Register,
+} from "@microsoft/fast-tooling";
 
-import objectSchema from "../__tests__/schemas/objects.schema.json";
-import arraySchema from "../__tests__/schemas/arrays.schema.json";
-import childrenSchema from "../__tests__/schemas/children.schema.json";
-import invalidDataSchema from "../__tests__/schemas/invalid-data.schema.json";
-import pluginSchema from "../__tests__/schemas/plugin.schema.json";
+import {
+    arraysSchema as arraySchema,
+    childrenSchema,
+    invalidDataSchema,
+    objectsSchema as objectSchema,
+} from "../__tests__/schemas";
 
-import { StringUpdateSchemaPlugin } from "../../app/pages/form/plugin/plugin";
 import { ControlConfig, ControlType, StandardControlPlugin } from "./templates";
 import { TextareaControl } from "./controls/control.textarea";
 import { CheckboxControl } from "./controls/control.checkbox";
@@ -22,10 +30,7 @@ import { ButtonControl } from "./controls/control.button";
 configure({ adapter: new Adapter() });
 
 const formProps: FormProps = {
-    childOptions: [],
-    schema: {},
-    data: "",
-    onChange: jest.fn(),
+    messageSystem: void 0,
 };
 
 describe("Form", () => {
@@ -34,832 +39,1497 @@ describe("Form", () => {
             mount(<Form {...formProps} />);
         }).not.toThrow();
     });
-    test("should update the location by clicking a section link if location is not controlled by the user", () => {
-        const rendered: any = mount(
-            <Form
-                {...formProps}
-                schema={objectSchema}
-                data={{
-                    objectNoRequired: {},
-                }}
-            />
-        );
-        const form: any = rendered.find("Form");
-
-        expect(form.state("navigation")).toHaveLength(1);
-
-        form.find("SectionLinkControl")
-            .at(0)
-            .find("a")
-            .simulate("click");
-
-        expect(form.state("navigation")).toHaveLength(2);
-    });
-    test("should not update the location by clicking a section link if location is not controlled by the user", () => {
-        const locationCallback: any = jest.fn();
-        const rendered: any = mount(
-            <Form
-                {...formProps}
-                schema={objectSchema}
-                data={{
-                    objectNoRequired: {},
-                }}
-                location={{
-                    dataLocation: "",
-                    onChange: locationCallback,
-                }}
-            />
-        );
-        const form: any = rendered.find("Form");
-
-        expect(form.state("navigation")).toHaveLength(1);
-
-        form.find("SectionLinkControl")
-            .at(0)
-            .find("a")
-            .simulate("click");
-
-        expect(form.state("navigation")).toHaveLength(1);
-        expect(locationCallback).toHaveBeenCalled();
-        expect(locationCallback.mock.calls[0][0]).toEqual("objectNoRequired");
-    });
-    test("should update the location by clicking an array link if location is not controlled by the user", () => {
-        const rendered: any = mount(
-            <Form
-                {...formProps}
-                schema={arraySchema}
-                data={{
-                    strings: ["Foo", "Bar"],
-                }}
-            />
-        );
-        const form: any = rendered.find("Form");
-
-        expect(form.state("navigation")).toHaveLength(1);
-
-        form.find("ArrayControl")
-            .at(0)
-            .find("a")
-            .at(0)
-            .simulate("click");
-
-        expect(form.state("navigation")).toHaveLength(2);
-    });
-    test("should not update the location by clicking an array link if location is not controlled by the user", () => {
-        const locationCallback: any = jest.fn();
-        const rendered: any = mount(
-            <Form
-                {...formProps}
-                schema={arraySchema}
-                data={{
-                    strings: ["Foo", "Bar"],
-                }}
-                location={{
-                    dataLocation: "",
-                    onChange: locationCallback,
-                }}
-            />
-        );
-        const form: any = rendered.find("Form");
-
-        expect(form.state("navigation")).toHaveLength(1);
-
-        form.find("ArrayControl")
-            .at(0)
-            .find("a")
-            .at(0)
-            .simulate("click");
-
-        expect(form.state("navigation")).toHaveLength(1);
-        expect(locationCallback).toHaveBeenCalled();
-        expect(locationCallback.mock.calls[0][0]).toEqual("strings[0]");
-    });
-    test("should update the location by clicking a children link if location is not controlled by the user", () => {
-        const rendered: any = mount(
-            <Form
-                {...formProps}
-                schema={childrenSchema}
-                data={{
-                    children: "Foo",
-                }}
-            />
-        );
-        const form: any = rendered.find("Form");
-
-        expect(form.state("navigation")).toHaveLength(1);
-
-        form.find("ChildrenControl")
-            .at(0)
-            .find("a")
-            .at(0)
-            .simulate("click");
-
-        expect(form.state("navigation")).toHaveLength(2);
-    });
-    test("should not update the location by clicking a children link if location is not controlled by the user", () => {
-        const locationCallback: any = jest.fn();
-        const rendered: any = mount(
-            <Form
-                {...formProps}
-                schema={childrenSchema}
-                data={{
-                    children: "Foo",
-                }}
-                location={{
-                    dataLocation: "",
-                    onChange: locationCallback,
-                }}
-            />
-        );
-        const form: any = rendered.find("Form");
-
-        expect(form.state("navigation")).toHaveLength(1);
-
-        form.find("ChildrenControl")
-            .at(0)
-            .find("a")
-            .at(0)
-            .simulate("click");
-
-        expect(form.state("navigation")).toHaveLength(1);
-        expect(locationCallback).toHaveBeenCalled();
-        expect(locationCallback.mock.calls[0][0]).toEqual("children");
-    });
-    test("should update the location by clicking a breadcrumb link if location is not controlled by the user", () => {
-        const rendered: any = mount(
-            <Form
-                {...formProps}
-                schema={objectSchema}
-                data={{
-                    objectNoRequired: {},
-                }}
-            />
-        );
-        const form: any = rendered.find("Form");
-
-        expect(form.state("navigation")).toHaveLength(1);
-
-        form.find("SectionLinkControl")
-            .at(0)
-            .find("a")
-            .simulate("click");
-
-        expect(form.state("navigation")).toHaveLength(2);
-
-        rendered
-            .find("Form")
-            .find("a")
-            .at(0)
-            .simulate("click");
-
-        expect(form.state("navigation")).toHaveLength(1);
-    });
-    test("should not update the location by clicking a breadcrumb link if location is not controlled by the user", () => {
-        const locationCallback: any = jest.fn();
-        const rendered: any = mount(
-            <Form
-                {...formProps}
-                schema={objectSchema}
-                data={{
-                    objectNoRequired: {},
-                }}
-                location={{
-                    dataLocation: "objectNoRequired",
-                    onChange: locationCallback,
-                }}
-            />
-        );
-        const form: any = rendered.find("Form");
-
-        expect(form.state("navigation")).toHaveLength(2);
-
-        rendered
-            .find("Form")
-            .find("a")
-            .at(0)
-            .simulate("click");
-
-        expect(form.state("navigation")).toHaveLength(2);
-        expect(locationCallback).toHaveBeenCalled();
-        expect(locationCallback.mock.calls[0][0]).toEqual("");
-    });
-    test("should not throw if the `onSchemaChange` is not provided and a plugin modifies the schema", () => {
-        const plugins: any = [
-            new StringUpdateSchemaPlugin({
-                id: "plugins/pluginModifiedString",
-            }),
-        ];
-
-        expect(() => {
-            mount(
-                <Form
-                    schema={pluginSchema}
-                    data={{}}
-                    onChange={jest.fn()}
-                    plugins={plugins}
-                />
-            );
-        }).not.toThrow();
-    });
-    test("should not throw if the `onSchemaChange` is not provided and data is updated that modifies the schema", () => {
-        const plugins: any = [
-            new StringUpdateSchemaPlugin({
-                id: "plugins/pluginModifiedString",
-            }),
-        ];
-        const rendered: any = mount(
-            <Form
-                schema={objectSchema}
-                data={{}}
-                onChange={jest.fn()}
-                plugins={plugins}
-            />
-        );
-
-        expect(() => rendered.setProps({ schema: pluginSchema })).not.toThrow();
-    });
-    test("should not trigger the `onSchemaChange` if the schema has plugins that do not modify the schema", () => {
-        const callback: any = jest.fn();
-        const plugins: any = [
-            new StringUpdateSchemaPlugin({
-                id: "unmatchedPluginIdentifier",
-            }),
-        ];
-        const rendered: any = mount(
-            <Form
-                schema={pluginSchema}
-                data={{}}
-                onChange={jest.fn()}
-                plugins={plugins}
-                onSchemaChange={callback}
-            />
-        );
-
-        expect(callback).toHaveBeenCalledTimes(0);
-    });
-    test("should trigger the `onSchemaChange` if the schema has plugins that modify the schema", () => {
-        const callback: any = jest.fn();
-        const plugins: any = [
-            new StringUpdateSchemaPlugin({
-                id: "plugins/pluginModifiedString",
-            }),
-        ];
-        const rendered: any = mount(
-            <Form
-                schema={pluginSchema}
-                data={{}}
-                onChange={jest.fn()}
-                plugins={plugins}
-                onSchemaChange={callback}
-            />
-        );
-
-        expect(callback).toHaveBeenCalledTimes(1);
-    });
-    test("should trigger the `onSchemaChange` if the schema has plugins that modify the schema when data has been updated and this affects the way the schema is rendered", () => {
-        const callback: any = jest.fn();
-        const plugins: any = [
-            new StringUpdateSchemaPlugin({
-                id: "plugins/pluginModifiedString",
-            }),
-        ];
-        const rendered: any = mount(
-            <Form
-                schema={pluginSchema}
-                data={{}}
-                onChange={jest.fn()}
-                plugins={plugins}
-                onSchemaChange={callback}
-            />
-        );
-
-        expect(callback.mock.calls[0][0].properties.pluginModifiedString.enum).toEqual([
-            "red",
-            "green",
-            "blue",
-        ]);
-
-        rendered.setProps({ data: { pluginModifiedNumber: 2 } });
-
-        expect(callback).toHaveBeenCalledTimes(2);
-        expect(callback.mock.calls[1][0].properties.pluginModifiedString.enum).toEqual([
-            "bar",
-        ]);
-    });
-    test("should trigger the `onSchemaChange` if the schema has been updated and plugins have not updated the schema", () => {
-        const callback: any = jest.fn();
-        const rendered: any = mount(
-            <Form
-                schema={pluginSchema}
-                data={{}}
-                onChange={jest.fn()}
-                onSchemaChange={callback}
-            />
-        );
-
-        expect(callback).toHaveBeenCalledTimes(0);
-
-        rendered.setProps({ schema: objectSchema });
-
-        expect(callback).toHaveBeenCalledTimes(1);
-    });
-    test("should trigger the `onSchemaChange` if the schema has been changed and plugins have updated the schema", () => {
-        const callback: any = jest.fn();
-        const plugins: any = [
-            new StringUpdateSchemaPlugin({
-                id: "plugins/pluginModifiedString",
-            }),
-        ];
-        const rendered: any = mount(
-            <Form
-                schema={objectSchema}
-                data={{}}
-                onChange={jest.fn()}
-                plugins={plugins}
-                onSchemaChange={callback}
-            />
-        );
-
-        expect(callback).toHaveBeenCalledTimes(0);
-
-        rendered.setProps({ schema: pluginSchema });
-
-        expect(callback).toHaveBeenCalledTimes(1);
-    });
-    test("should show an updated schema form item if the schema has been changed by plugins and `onSchemaChange` has been provided", () => {
-        const callback: any = jest.fn();
-        const plugins: any = [
-            new StringUpdateSchemaPlugin({
-                id: "plugins/pluginModifiedString",
-            }),
-        ];
-        const rendered: any = mount(
-            <Form
-                schema={pluginSchema}
-                data={{}}
-                onChange={jest.fn()}
-                plugins={plugins}
-                onSchemaChange={callback}
-            />
-        );
-
-        expect(rendered.find("SelectControl")).toHaveLength(2);
-
-        rendered.setProps({ data: { pluginModifiedNumber: 2 } });
-        rendered.update();
-
-        expect(rendered.find("SelectControl")).toHaveLength(1);
-    });
-    test("should show an updated schema form item if the schema has been changed by plugins and `onSchemaChange` has not been provided", () => {
-        const plugins: any = [
-            new StringUpdateSchemaPlugin({
-                id: "plugins/pluginModifiedString",
-            }),
-        ];
-        const rendered: any = mount(
-            <Form
-                schema={pluginSchema}
-                data={{}}
-                onChange={jest.fn()}
-                plugins={plugins}
-            />
-        );
-
-        expect(rendered.find("SelectControl")).toHaveLength(2);
-
-        rendered.setProps({ data: { pluginModifiedNumber: 2 } });
-        rendered.update();
-
-        expect(rendered.find("SelectControl")).toHaveLength(1);
-    });
-    test("should set validation errors to the form state", () => {
-        const data: any = {
-            validBooleanRequired: true,
-            invalidBooleanWrongType: "foo",
-            invalidNullWrongType: "bar",
-            invalidStringWrongType: false,
-            invalidNumberWrongType: "bar",
-            invalidEnumWrongType: "hello",
-            invalidObjectWrongType: true,
-            invalidArrayWrongType: "world",
-            objectExample: {
-                invalidBooleanWrongType: "bat",
+    test("should register the component with a message system", () => {
+        const fastMessageSystem: MessageSystem = new MessageSystem({
+            webWorker: "",
+            dataDictionary: [
+                {
+                    "": {
+                        schemaId: "foo",
+                        data: {},
+                    },
+                },
+                "",
+            ],
+            schemaDictionary: {
+                foo: {
+                    id: "foo",
+                    type: "object",
+                },
             },
-            arrayExample: [true],
-        };
+        });
 
-        const rendered: any = mount(
-            <Form
-                schema={invalidDataSchema}
-                data={data}
-                onChange={jest.fn()}
-                displayValidationInline={true}
-            />
-        );
+        /* tslint:disable-next-line */
+        expect(fastMessageSystem["register"].size).toEqual(0);
 
-        expect(rendered.find("ArrayControl")).toHaveLength(2);
-        expect(rendered.find("ArrayControl").get(0).props.invalidMessage).toEqual(
-            "should be array"
-        );
-        expect(rendered.find("ArrayControl").get(1).props.invalidMessage).toEqual(
-            "Contains invalid data"
-        );
+        mount(<Form {...formProps} messageSystem={fastMessageSystem} />);
+
+        /* tslint:disable-next-line */
+        expect(fastMessageSystem["register"].size).toEqual(1);
     });
-    test("should show a custom form control by id when a custom form control has been passed", () => {
-        const id1: string = "foo";
-        const id2: string = "bat";
-        const id3: string = "none";
+    test("should deregister the component with the message system on unmount", () => {
+        const fastMessageSystem: MessageSystem = new MessageSystem({
+            webWorker: "",
+            dataDictionary: [
+                {
+                    "": {
+                        schemaId: "foo",
+                        data: {},
+                    },
+                },
+                "",
+            ],
+            schemaDictionary: {
+                foo: {
+                    id: "foo",
+                    type: "object",
+                },
+            },
+        });
+
+        const formInstance: any = mount(
+            <Form {...formProps} messageSystem={fastMessageSystem} />
+        );
+
+        formInstance.unmount();
+
+        /* tslint:disable-next-line */
+        expect(fastMessageSystem["register"].size).toEqual(0);
+    });
+    test("should show a section link if the schema contains a property which is an object", () => {
+        const data: any = {
+            bar: {},
+        };
         const schema: any = {
+            id: "foo",
             type: "object",
             properties: {
-                foo: {
-                    type: "string",
-                    formControlId: id1,
+                bar: {
+                    type: "object",
+                    properties: {
+                        bat: {
+                            type: "string",
+                        },
+                    },
                 },
-                bat: {
-                    type: "string",
-                    formControlId: id2,
+            },
+        };
+        const navigation: NavigationConfig = [
+            {
+                abc: {
+                    self: "abc",
+                    parent: null,
+                    relativeDataLocation: "",
+                    schemaLocation: "",
+                    schema,
+                    disabled: false,
+                    data,
+                    text: "bat",
+                    type: DataType.object,
+                    items: ["bar"],
                 },
                 bar: {
-                    type: "string",
-                    formControlId: id3,
+                    self: "bar",
+                    parent: "abc",
+                    relativeDataLocation: "bar",
+                    schemaLocation: "properties.bar",
+                    schema: schema.properties.bar,
+                    disabled: false,
+                    data: data.bar,
+                    text: "bat",
+                    type: DataType.object,
+                    items: [],
+                },
+            },
+            "abc",
+        ];
+        const fastMessageSystem: MessageSystem = new MessageSystem({
+            webWorker: "",
+            dataDictionary: [
+                {
+                    "": {
+                        schemaId: "foo",
+                        data,
+                    },
+                },
+                "",
+            ],
+            schemaDictionary: {
+                foo: schema,
+            },
+        });
+
+        const formInstance: any = mount(
+            <ModularForm {...formProps} messageSystem={fastMessageSystem} />
+        );
+
+        /* tslint:disable-next-line */
+        fastMessageSystem["register"].forEach((registeredItem: Register) => {
+            registeredItem.onMessage({
+                data: {
+                    type: MessageSystemType.initialize,
+                    activeDictionaryId: "",
+                    activeNavigationConfigId: "abc",
+                    schema,
+                    data,
+                    dataDictionary: [
+                        {
+                            "": {
+                                schemaId: "foo",
+                                data,
+                            },
+                        },
+                        "",
+                    ],
+                    navigationDictionary: [
+                        {
+                            "": navigation,
+                        },
+                        "",
+                    ],
+                    navigation,
+                    schemaDictionary: {
+                        foo: schema,
+                    },
+                } as InitializeMessageOutgoing,
+            } as any);
+        });
+
+        formInstance.setState({
+            activeNavigationId: "abc",
+        });
+
+        expect(formInstance.find("SectionLinkControl")).toHaveLength(1);
+    });
+    test("should show a checkbox if the schema contains a property which is a boolean", () => {
+        const data: any = {
+            bar: true,
+        };
+        const schema: any = {
+            id: "foo",
+            type: "object",
+            properties: {
+                bar: {
+                    type: "boolean",
                 },
             },
         };
-        const rendered: any = mount(
-            <BareForm
-                schema={schema}
-                data={{}}
-                onChange={jest.fn()}
-                controlPlugins={[
-                    new StandardControlPlugin({
-                        id: id1,
-                        control: (config: ControlConfig): React.ReactNode => {
-                            return <div id={id1} />;
-                        },
-                    }),
-                    new StandardControlPlugin({
-                        id: id2,
-                        control: (config: ControlConfig): React.ReactNode => {
-                            return <div id={id2} />;
-                        },
-                    }),
-                ]}
-            />
-        );
-
-        expect(rendered.find(`#${id1}`)).toHaveLength(1);
-        expect(rendered.find(`#${id2}`)).toHaveLength(1);
-        expect(rendered.find(`#${id3}`)).toHaveLength(0);
-    });
-    test("should show a custom form control by type when a custom form control has been passed", () => {
-        const id1: string = "foo";
-        const rendered: any = mount(
-            <BareForm
-                schema={{
-                    type: "object",
-                    properties: {
-                        foo: {
-                            type: "string",
-                        },
-                        bar: {
-                            type: "string",
-                        },
-                        bat: {
-                            type: "boolean",
-                        },
-                    },
-                }}
-                data={{}}
-                onChange={jest.fn()}
-                controlPlugins={[
-                    new StandardControlPlugin({
-                        type: ControlType.textarea,
-                        control: (config: ControlConfig): React.ReactNode => {
-                            return <div id={id1} />;
-                        },
-                    }),
-                ]}
-            />
-        );
-
-        expect(rendered.find(`#${id1}`)).toHaveLength(2);
-    });
-    test("should show a custom form control for all types when a custom form control has been passed", () => {
-        const id1: string = "foo";
-        const rendered: any = mount(
-            <BareForm
-                schema={{
-                    type: "object",
-                    properties: {
-                        foo: {
-                            type: "string",
-                        },
-                        bar: {
-                            type: "string",
-                        },
-                        bat: {
-                            type: "boolean",
-                        },
-                    },
-                }}
-                data={{}}
-                onChange={jest.fn()}
-                controlPlugins={[
-                    new StandardControlPlugin({
-                        control: (config: ControlConfig): React.ReactNode => {
-                            const MyComponent: any = config.component;
-
-                            return (
-                                <React.Fragment>
-                                    <div className={id1} />
-                                    <MyComponent {...config} />
-                                </React.Fragment>
-                            );
-                        },
-                    }),
-                ]}
-            />
-        );
-
-        expect(rendered.find(`.${id1}`)).toHaveLength(4);
-    });
-    test("should pass a control to the config that would have been used for the type", () => {
-        const rendered: any = mount(
-            <BareForm
-                schema={{
-                    type: "object",
-                    properties: {
-                        foo: {
-                            type: "number",
-                        },
-                    },
-                }}
-                data={{}}
-                onChange={jest.fn()}
-                controlPlugins={[
-                    new StandardControlPlugin({
-                        component: TextareaControl,
-                        control: (config: ControlConfig): React.ReactNode => {
-                            return <config.component {...config as any} />;
-                        },
-                    }),
-                ]}
-            />
-        );
-
-        expect(rendered.find("TextareaControl")).toHaveLength(1);
-    });
-    test("should use a custom control for a specific type control when both a specific type and all type controls are passed", () => {
-        const rendered: any = mount(
-            <BareForm
-                schema={{
-                    type: "object",
-                    properties: {
-                        foo: {
-                            type: "number",
-                        },
-                        bar: {
-                            type: "boolean",
-                        },
-                    },
-                }}
-                data={{}}
-                onChange={jest.fn()}
-                controlPlugins={[
-                    new StandardControlPlugin({
-                        type: ControlType.numberField,
-                        component: TextareaControl,
-                        control: (config: ControlConfig): React.ReactNode => {
-                            return <config.component {...config as any} />;
-                        },
-                    }),
-                    new StandardControlPlugin({
-                        type: ControlType.checkbox,
-                        component: ButtonControl,
-                        control: (config: ControlConfig): React.ReactNode => {
-                            return <config.component {...config as any} />;
-                        },
-                    }),
-                ]}
-            />
-        );
-
-        expect(rendered.find("TextareaControl")).toHaveLength(1);
-        expect(rendered.find("ButtonControl")).toHaveLength(1);
-    });
-    test("should use a custom control for a specific id control when a specific type control is passed", () => {
-        const id1: string = "foo";
-        const htmlId1: string = "bar";
-        const htmlId2: string = "bar2";
-        const rendered: any = mount(
-            <BareForm
-                schema={{
-                    type: "object",
-                    properties: {
-                        foo: {
-                            type: "boolean",
-                        },
-                        bar: {
-                            formControlId: id1,
-                            type: "boolean",
-                        },
-                    },
-                }}
-                data={{}}
-                onChange={jest.fn()}
-                controlPlugins={[
-                    new StandardControlPlugin({
-                        type: ControlType.checkbox,
-                        component: CheckboxControl,
-                        control: (config: ControlConfig): React.ReactNode => {
-                            return <config.component {...config as any} id={htmlId2} />;
-                        },
-                    }),
-                    new StandardControlPlugin({
-                        id: id1,
-                        component: null,
-                        control: (config: ControlConfig): React.ReactNode => {
-                            return <div id={htmlId1} />;
-                        },
-                    }),
-                ]}
-            />
-        );
-
-        expect(rendered.find(`#${htmlId1}`)).toHaveLength(1);
-        expect(rendered.find(`#${htmlId2}`)).toHaveLength(1);
-    });
-    test("should pass default components if the component has not been passed to a plugin", () => {
-        const rendered: any = mount(
-            <BareForm
-                schema={{
-                    type: "object",
-                    properties: {
-                        foo: {
-                            type: "null",
-                        },
-                        bar: {
-                            type: "boolean",
-                        },
-                    },
-                }}
-                data={{}}
-                onChange={jest.fn()}
-                controlPlugins={[
-                    new StandardControlPlugin({
-                        control: (config: ControlConfig): React.ReactNode => {
-                            return <config.component {...config as any} />;
-                        },
-                    }),
-                    new StandardControlPlugin({
-                        type: ControlType.checkbox,
-                        control: (config: ControlConfig): React.ReactNode => {
-                            return <config.component {...config as any} />;
-                        },
-                    }),
-                ]}
-            />
-        );
-
-        expect(rendered.find("ButtonControl")).toHaveLength(1);
-        expect(rendered.find("CheckboxControl")).toHaveLength(1);
-    });
-    test("should show controls in categories if categories are passed", () => {
-        const rendered: any = mount(
-            <BareForm
-                schema={{
-                    type: "object",
-                    properties: {
-                        foo: {
-                            type: "string",
-                        },
-                        bar: {
-                            type: "number",
-                        },
-                        bat: {
-                            type: "boolean",
-                        },
-                    },
-                    formConfig: {
-                        categories: [
-                            {
-                                title: "Category A",
-                                expandable: true,
-                                items: ["foo"],
-                            },
-                            {
-                                title: "Category B",
-                                items: ["bar"],
-                            },
-                        ],
-                    },
-                }}
-                data={{}}
-                onChange={jest.fn()}
-            />
-        );
-
-        const categories: any = rendered.find("Category");
-
-        expect(categories).toHaveLength(2);
-        expect(categories.at(0).find("TextareaControl")).toHaveLength(1);
-        expect(categories.at(1).find("NumberFieldControl")).toHaveLength(1);
-        expect(rendered.find("CheckboxControl")).toHaveLength(1);
-    });
-    test("should update controls if oneOf select has a value change", () => {
-        const rendered: any = mount(
-            <BareForm
-                schema={{
-                    oneOf: [
-                        {
-                            type: "object",
-                            properties: {
-                                foo: {
-                                    type: "string",
-                                },
-                                bar: {
-                                    type: "number",
-                                },
-                                bat: {
-                                    type: "boolean",
-                                },
-                            },
-                            required: ["foo", "bar", "bat"],
-                            formConfig: {
-                                categories: [
-                                    {
-                                        title: "Category A",
-                                        expandable: true,
-                                        items: ["foo"],
-                                    },
-                                    {
-                                        title: "Category B",
-                                        items: ["bar"],
-                                    },
-                                ],
-                            },
-                        },
-                    ],
-                }}
-                data={undefined}
-                onChange={callback}
-            />
-        );
-        function callback(data: any): void {
-            rendered.setProps({ data });
-        }
-
-        const categoriesBefore: any = rendered.find("Category");
-
-        expect(categoriesBefore).toHaveLength(0);
-        expect(categoriesBefore.at(0).find("TextareaControl")).toHaveLength(0);
-        expect(categoriesBefore.at(1).find("NumberFieldControl")).toHaveLength(0);
-        expect(rendered.find("CheckboxControl")).toHaveLength(0);
-
-        const select: any = rendered.find("select");
-
-        select.simulate("change", { target: { value: "0" } });
-
-        const categoriesAfter: any = rendered.find("Category");
-
-        expect(categoriesAfter).toHaveLength(2);
-        expect(categoriesAfter.at(0).find("TextareaControl")).toHaveLength(1);
-        expect(categoriesAfter.at(1).find("NumberFieldControl")).toHaveLength(1);
-        expect(rendered.find("CheckboxControl")).toHaveLength(1);
-    });
-    test("should allow different data validation if the _UNSAFE_validationData prop has been passed", () => {
-        const data: any = {
-            validBooleanRequired: true,
-            invalidBooleanWrongType: "foo",
-            invalidNullWrongType: "bar",
-            invalidStringWrongType: false,
-            invalidNumberWrongType: "bar",
-            invalidEnumWrongType: "hello",
-            invalidObjectWrongType: true,
-            invalidArrayWrongType: "world",
-            objectExample: {
-                invalidBooleanWrongType: "bat",
+        const navigation: NavigationConfig = [
+            {
+                abc: {
+                    self: "abc",
+                    parent: null,
+                    relativeDataLocation: "",
+                    schemaLocation: "",
+                    schema,
+                    disabled: false,
+                    data,
+                    text: "bat",
+                    type: DataType.object,
+                    items: ["bar"],
+                },
+                bar: {
+                    self: "bar",
+                    parent: "abc",
+                    relativeDataLocation: "bar",
+                    schemaLocation: "properties.bar",
+                    schema: schema.properties.bar,
+                    disabled: false,
+                    data: data.bar,
+                    text: "bat",
+                    type: DataType.object,
+                    items: [],
+                },
             },
-            arrayExample: [true],
-        };
+            "abc",
+        ];
+        const fastMessageSystem: MessageSystem = new MessageSystem({
+            webWorker: "",
+            dataDictionary: [
+                {
+                    "": {
+                        schemaId: "foo",
+                        data,
+                    },
+                },
+                "",
+            ],
+            schemaDictionary: {
+                foo: schema,
+            },
+        });
 
-        const rendered: any = mount(
-            <Form
-                schema={invalidDataSchema}
-                data={{}}
-                _UNSAFE_validationData={data}
-                onChange={jest.fn()}
-                displayValidationInline={true}
+        const formInstance: any = mount(
+            <ModularForm {...formProps} messageSystem={fastMessageSystem} />
+        );
+
+        /* tslint:disable-next-line */
+        fastMessageSystem["register"].forEach((registeredItem: Register) => {
+            registeredItem.onMessage({
+                data: {
+                    type: MessageSystemType.initialize,
+                    activeDictionaryId: "",
+                    activeNavigationConfigId: "abc",
+                    schema,
+                    data,
+                    dataDictionary: [
+                        {
+                            "": {
+                                schemaId: "foo",
+                                data,
+                            },
+                        },
+                        "",
+                    ],
+                    navigation,
+                    navigationDictionary: [
+                        {
+                            "": navigation,
+                        },
+                        "",
+                    ],
+                    schemaDictionary: {
+                        foo: schema,
+                    },
+                } as InitializeMessageOutgoing,
+            } as any);
+        });
+
+        formInstance.setState({
+            activeNavigationId: "abc",
+        });
+
+        expect(formInstance.find("CheckboxControl")).toHaveLength(1);
+    });
+    test("should show a textarea if the schema contains a property which is a string", () => {
+        const data: any = {
+            bar: "hello world",
+        };
+        const schema: any = {
+            id: "foo",
+            type: "object",
+            properties: {
+                bar: {
+                    type: "string",
+                },
+            },
+        };
+        const navigation: NavigationConfig = [
+            {
+                abc: {
+                    self: "abc",
+                    parent: null,
+                    relativeDataLocation: "",
+                    schemaLocation: "",
+                    schema,
+                    disabled: false,
+                    data,
+                    text: "bat",
+                    type: DataType.object,
+                    items: ["bar"],
+                },
+                bar: {
+                    self: "bar",
+                    parent: "abc",
+                    relativeDataLocation: "bar",
+                    schemaLocation: "properties.bar",
+                    schema: schema.properties.bar,
+                    disabled: false,
+                    data: data.bar,
+                    text: "bat",
+                    type: DataType.string,
+                    items: [],
+                },
+            },
+            "abc",
+        ];
+        const fastMessageSystem: MessageSystem = new MessageSystem({
+            webWorker: "",
+            dataDictionary: [
+                {
+                    "": {
+                        schemaId: "foo",
+                        data,
+                    },
+                },
+                "",
+            ],
+            schemaDictionary: {
+                foo: schema,
+            },
+        });
+
+        const formInstance: any = mount(
+            <ModularForm {...formProps} messageSystem={fastMessageSystem} />
+        );
+
+        /* tslint:disable-next-line */
+        fastMessageSystem["register"].forEach((registeredItem: Register) => {
+            registeredItem.onMessage({
+                data: {
+                    type: MessageSystemType.initialize,
+                    activeDictionaryId: "",
+                    activeNavigationConfigId: "abc",
+                    schema,
+                    data,
+                    dataDictionary: [
+                        {
+                            "": {
+                                schemaId: "foo",
+                                data,
+                            },
+                        },
+                        "",
+                    ],
+                    navigation,
+                    navigationDictionary: [
+                        {
+                            "": navigation,
+                        },
+                        "",
+                    ],
+                    schemaDictionary: {
+                        foo: schema,
+                    },
+                } as InitializeMessageOutgoing,
+            } as any);
+        });
+
+        formInstance.setState({
+            activeNavigationId: "abc",
+        });
+
+        expect(formInstance.find("TextareaControl")).toHaveLength(1);
+    });
+    test("should show a numberfield if the schema contains a property which is a number", () => {
+        const data: any = {
+            bar: 42,
+        };
+        const schema: any = {
+            id: "foo",
+            type: "object",
+            properties: {
+                bar: {
+                    type: "number",
+                },
+            },
+        };
+        const navigation: NavigationConfig = [
+            {
+                abc: {
+                    self: "abc",
+                    parent: null,
+                    relativeDataLocation: "",
+                    schemaLocation: "",
+                    schema,
+                    disabled: false,
+                    data,
+                    text: "bat",
+                    type: DataType.object,
+                    items: ["bar"],
+                },
+                bar: {
+                    self: "bar",
+                    parent: "abc",
+                    relativeDataLocation: "bar",
+                    schemaLocation: "properties.bar",
+                    schema: schema.properties.bar,
+                    disabled: false,
+                    data: data.bar,
+                    text: "bat",
+                    type: DataType.object,
+                    items: [],
+                },
+            },
+            "abc",
+        ];
+        const fastMessageSystem: MessageSystem = new MessageSystem({
+            webWorker: "",
+            dataDictionary: [
+                {
+                    "": {
+                        schemaId: "foo",
+                        data,
+                    },
+                },
+                "",
+            ],
+            schemaDictionary: {
+                foo: schema,
+            },
+        });
+
+        const formInstance: any = mount(
+            <ModularForm {...formProps} messageSystem={fastMessageSystem} />
+        );
+
+        /* tslint:disable-next-line */
+        fastMessageSystem["register"].forEach((registeredItem: Register) => {
+            registeredItem.onMessage({
+                data: {
+                    type: MessageSystemType.initialize,
+                    activeDictionaryId: "",
+                    activeNavigationConfigId: "abc",
+                    schema,
+                    data,
+                    dataDictionary: [
+                        {
+                            "": {
+                                schemaId: "foo",
+                                data,
+                            },
+                        },
+                        "",
+                    ],
+                    navigation,
+                    navigationDictionary: [
+                        {
+                            "": navigation,
+                        },
+                        "",
+                    ],
+                    schemaDictionary: {
+                        foo: schema,
+                    },
+                } as InitializeMessageOutgoing,
+            } as any);
+        });
+
+        formInstance.setState({
+            activeNavigationId: "abc",
+        });
+
+        expect(formInstance.find("NumberFieldControl")).toHaveLength(1);
+    });
+    test("should show a select if the schema contains a property which is an enum", () => {
+        const data: any = {
+            bar: 42,
+        };
+        const schema: any = {
+            id: "foo",
+            type: "object",
+            properties: {
+                bar: {
+                    type: "number",
+                    enum: [42, 24],
+                },
+            },
+        };
+        const navigation: NavigationConfig = [
+            {
+                abc: {
+                    self: "abc",
+                    parent: null,
+                    relativeDataLocation: "",
+                    schemaLocation: "",
+                    schema,
+                    disabled: false,
+                    data,
+                    text: "bat",
+                    type: DataType.object,
+                    items: ["bar"],
+                },
+                bar: {
+                    self: "bar",
+                    parent: "abc",
+                    relativeDataLocation: "bar",
+                    schemaLocation: "properties.bar",
+                    schema: schema.properties.bar,
+                    disabled: false,
+                    data: data.bar,
+                    text: "bat",
+                    type: DataType.object,
+                    items: [],
+                },
+            },
+            "abc",
+        ];
+        const fastMessageSystem: MessageSystem = new MessageSystem({
+            webWorker: "",
+            dataDictionary: [
+                {
+                    "": {
+                        schemaId: "foo",
+                        data,
+                    },
+                },
+                "",
+            ],
+            schemaDictionary: {
+                foo: schema,
+            },
+        });
+        const formInstance: any = mount(
+            <ModularForm {...formProps} messageSystem={fastMessageSystem} />
+        );
+
+        /* tslint:disable-next-line */
+        fastMessageSystem["register"].forEach((registeredItem: Register) => {
+            registeredItem.onMessage({
+                data: {
+                    type: MessageSystemType.initialize,
+                    activeDictionaryId: "",
+                    activeNavigationConfigId: "abc",
+                    schema,
+                    data,
+                    dataDictionary: [
+                        {
+                            "": {
+                                schemaId: "foo",
+                                data,
+                            },
+                        },
+                        "",
+                    ],
+                    navigation,
+                    navigationDictionary: [
+                        {
+                            "": navigation,
+                        },
+                        "",
+                    ],
+                    schemaDictionary: {
+                        foo: schema,
+                    },
+                } as InitializeMessageOutgoing,
+            } as any);
+        });
+
+        formInstance.setState({
+            activeNavigationId: "abc",
+        });
+
+        expect(formInstance.find("SelectControl")).toHaveLength(1);
+    });
+    test("should show a display if the schema contains a property which is a const", () => {
+        const data: any = {
+            const: 42,
+        };
+        const schema: any = {
+            id: "foo",
+            type: "object",
+            properties: {
+                const: {
+                    type: "number",
+                    const: 42,
+                },
+            },
+        };
+        const navigation: NavigationConfig = [
+            {
+                abc: {
+                    self: "abc",
+                    parent: null,
+                    relativeDataLocation: "",
+                    schemaLocation: "",
+                    schema,
+                    disabled: false,
+                    data,
+                    text: "bat",
+                    type: DataType.object,
+                    items: ["bar"],
+                },
+                bar: {
+                    self: "bar",
+                    parent: "abc",
+                    relativeDataLocation: "bar",
+                    schemaLocation: "properties.bar",
+                    schema: schema.properties.const,
+                    disabled: false,
+                    data: data.const,
+                    text: "bat",
+                    type: DataType.number,
+                    items: [],
+                },
+            },
+            "abc",
+        ];
+        const fastMessageSystem: MessageSystem = new MessageSystem({
+            webWorker: "",
+            dataDictionary: [
+                {
+                    "": {
+                        schemaId: "foo",
+                        data,
+                    },
+                },
+                "",
+            ],
+            schemaDictionary: {
+                foo: schema,
+            },
+        });
+
+        const formInstance: any = mount(
+            <ModularForm {...formProps} messageSystem={fastMessageSystem} />
+        );
+
+        /* tslint:disable-next-line */
+        fastMessageSystem["register"].forEach((registeredItem: Register) => {
+            registeredItem.onMessage({
+                data: {
+                    type: MessageSystemType.initialize,
+                    activeDictionaryId: "",
+                    activeNavigationConfigId: "abc",
+                    schema,
+                    data,
+                    dataDictionary: [
+                        {
+                            "": {
+                                schemaId: "foo",
+                                data,
+                            },
+                        },
+                        "",
+                    ],
+                    navigation,
+                    navigationDictionary: [
+                        {
+                            "": navigation,
+                        },
+                        "",
+                    ],
+                    schemaDictionary: {
+                        foo: schema,
+                    },
+                } as InitializeMessageOutgoing,
+            } as any);
+        });
+
+        formInstance.setState({
+            activeNavigationId: "abc",
+        });
+
+        expect(formInstance.find("DisplayControl")).toHaveLength(1);
+    });
+    test("should show a button if the schema contains a property which is null", () => {
+        const data: any = {
+            bar: null,
+        };
+        const schema: any = {
+            id: "foo",
+            type: "object",
+            properties: {
+                bar: {
+                    type: "null",
+                },
+            },
+        };
+        const navigation: NavigationConfig = [
+            {
+                abc: {
+                    self: "abc",
+                    parent: null,
+                    relativeDataLocation: "",
+                    schemaLocation: "",
+                    schema,
+                    disabled: false,
+                    data,
+                    text: "bat",
+                    type: DataType.object,
+                    items: ["bar"],
+                },
+                bar: {
+                    self: "bar",
+                    parent: "abc",
+                    relativeDataLocation: "bar",
+                    schemaLocation: "properties.bar",
+                    schema: schema.properties.bar,
+                    disabled: false,
+                    data: data.bar,
+                    text: "bat",
+                    type: DataType.object,
+                    items: [],
+                },
+            },
+            "abc",
+        ];
+        const fastMessageSystem: MessageSystem = new MessageSystem({
+            webWorker: "",
+            dataDictionary: [
+                {
+                    "": {
+                        schemaId: "foo",
+                        data,
+                    },
+                },
+                "",
+            ],
+            schemaDictionary: {
+                foo: schema,
+            },
+        });
+
+        const formInstance: any = mount(
+            <ModularForm {...formProps} messageSystem={fastMessageSystem} />
+        );
+
+        /* tslint:disable-next-line */
+        fastMessageSystem["register"].forEach((registeredItem: Register) => {
+            registeredItem.onMessage({
+                data: {
+                    type: MessageSystemType.initialize,
+                    activeDictionaryId: "",
+                    activeNavigationConfigId: "abc",
+                    schema,
+                    data,
+                    dataDictionary: [
+                        {
+                            "": {
+                                schemaId: "foo",
+                                data,
+                            },
+                        },
+                        "",
+                    ],
+                    navigation,
+                    navigationDictionary: [
+                        {
+                            "": navigation,
+                        },
+                        "",
+                    ],
+                    schemaDictionary: {
+                        foo: schema,
+                    },
+                } as InitializeMessageOutgoing,
+            } as any);
+        });
+
+        formInstance.setState({
+            activeNavigationId: "abc",
+        });
+
+        expect(formInstance.find("ButtonControl")).toHaveLength(1);
+    });
+    test("should show an array if the schema contains a property which is an array", () => {
+        const data: any = {
+            bar: [],
+        };
+        const schema: any = {
+            id: "foo",
+            type: "object",
+            properties: {
+                bar: {
+                    type: "array",
+                    items: {
+                        type: "string",
+                    },
+                },
+            },
+        };
+        const navigation: NavigationConfig = [
+            {
+                abc: {
+                    self: "abc",
+                    parent: null,
+                    relativeDataLocation: "",
+                    schemaLocation: "",
+                    schema,
+                    disabled: false,
+                    data,
+                    text: "bat",
+                    type: DataType.object,
+                    items: ["bar"],
+                },
+                bar: {
+                    self: "bar",
+                    parent: "abc",
+                    relativeDataLocation: "bar",
+                    schemaLocation: "properties.bar",
+                    schema: schema.properties.bar,
+                    disabled: false,
+                    data: data.bar,
+                    text: "bat",
+                    type: DataType.array,
+                    items: [],
+                },
+            },
+            "abc",
+        ];
+
+        const fastMessageSystem: MessageSystem = new MessageSystem({
+            webWorker: "",
+            dataDictionary: [
+                {
+                    "": {
+                        schemaId: "foo",
+                        data,
+                    },
+                },
+                "",
+            ],
+            schemaDictionary: {
+                foo: schema,
+            },
+        });
+
+        const formInstance: any = mount(
+            <ModularForm {...formProps} messageSystem={fastMessageSystem} />
+        );
+
+        /* tslint:disable-next-line */
+        fastMessageSystem["register"].forEach((registeredItem: Register) => {
+            registeredItem.onMessage({
+                data: {
+                    type: MessageSystemType.initialize,
+                    activeDictionaryId: "",
+                    activeNavigationConfigId: "abc",
+                    schema,
+                    data,
+                    dataDictionary: [
+                        {
+                            "": {
+                                schemaId: "foo",
+                                data,
+                            },
+                        },
+                        "",
+                    ],
+                    navigation,
+                    navigationDictionary: [
+                        {
+                            "": navigation,
+                        },
+                        "",
+                    ],
+                    schemaDictionary: {
+                        foo: schema,
+                    },
+                } as InitializeMessageOutgoing,
+            } as any);
+        });
+
+        formInstance.setState({
+            activeNavigationId: "abc",
+        });
+
+        expect(formInstance.find("ArrayControl")).toHaveLength(1);
+    });
+    test("should not show breadcrumbs if the navigation location is at the root level", () => {
+        const schemaDictionary: { [key: string]: any } = {
+            foo: {
+                id: "foo",
+                type: "object",
+                properties: {
+                    bar: {
+                        type: "object",
+                        properties: {},
+                    },
+                },
+            },
+        };
+        const fastMessageSystem: MessageSystem = new MessageSystem({
+            webWorker: "",
+            dataDictionary: [
+                {
+                    abc: {
+                        schemaId: "foo",
+                        data: {
+                            bar: {},
+                        },
+                    },
+                },
+                "abc",
+            ],
+            schemaDictionary,
+        });
+
+        const formInstance: any = mount(
+            <ModularForm {...formProps} messageSystem={fastMessageSystem} />
+        );
+
+        const navigation: NavigationConfig = [
+            {
+                abc: {
+                    self: "abc",
+                    parent: null,
+                    relativeDataLocation: "",
+                    schemaLocation: "",
+                    schema: {
+                        id: "foo",
+                        type: "object",
+                        properties: {
+                            bar: {
+                                type: "object",
+                                properties: {
+                                    bat: {
+                                        type: "string",
+                                    },
+                                },
+                            },
+                        },
+                    },
+                    disabled: false,
+                    data: {
+                        bar: {},
+                    },
+                    text: "bat",
+                    type: DataType.object,
+                    items: ["bar"],
+                },
+                bar: {
+                    self: "bar",
+                    parent: "abc",
+                    relativeDataLocation: "bar",
+                    schemaLocation: "properties.bar",
+                    schema: {
+                        type: "object",
+                        properties: {
+                            bat: {
+                                type: "string",
+                            },
+                        },
+                    },
+                    disabled: false,
+                    data: {},
+                    text: "bat",
+                    type: DataType.object,
+                    items: [],
+                },
+            },
+            "abc",
+        ];
+
+        /* tslint:disable-next-line */
+        fastMessageSystem["register"].forEach((registeredItem: Register) => {
+            registeredItem.onMessage({
+                data: {
+                    type: MessageSystemType.initialize,
+                    activeDictionaryId: "",
+                    activeNavigationConfigId: "abc",
+                    schema: {
+                        id: "foo",
+                        type: "object",
+                        properties: {
+                            bar: {
+                                type: "object",
+                                properties: {},
+                            },
+                        },
+                    },
+                    data: {
+                        bar: {},
+                    },
+                    dataDictionary: [
+                        {
+                            "": {
+                                schemaId: "foo",
+                                data: {
+                                    bar: [],
+                                },
+                            },
+                        },
+                        "",
+                    ],
+                    navigation,
+                    navigationDictionary: [
+                        {
+                            "": navigation,
+                        },
+                        "",
+                    ],
+                    schemaDictionary,
+                } as InitializeMessageOutgoing,
+            } as any);
+        });
+
+        formInstance.setState({
+            activeNavigationId: "abc",
+        });
+
+        expect(formInstance.find("li")).toHaveLength(0);
+    });
+    test("should show breadcrumbs if the navigation location is not at the root level", () => {
+        const schemaDictionary: { [key: string]: any } = {
+            foo: {
+                id: "foo",
+                type: "object",
+                properties: {
+                    bar: {
+                        type: "object",
+                        properties: {},
+                    },
+                },
+            },
+        };
+        const fastMessageSystem: MessageSystem = new MessageSystem({
+            webWorker: "",
+            dataDictionary: [
+                {
+                    abc: {
+                        schemaId: "foo",
+                        data: {
+                            bar: {},
+                        },
+                    },
+                },
+                "abc",
+            ],
+            schemaDictionary,
+        });
+
+        const formInstance: any = mount(
+            <ModularForm {...formProps} messageSystem={fastMessageSystem} />
+        );
+
+        const navigation: NavigationConfig = [
+            {
+                abc: {
+                    self: "abc",
+                    parent: null,
+                    relativeDataLocation: "",
+                    schemaLocation: "",
+                    schema: {
+                        id: "foo",
+                        type: "object",
+                        properties: {
+                            bar: {
+                                type: "object",
+                                properties: {
+                                    bat: {
+                                        type: "string",
+                                    },
+                                },
+                            },
+                        },
+                    },
+                    disabled: false,
+                    data: {
+                        bar: {},
+                    },
+                    text: "bat",
+                    type: DataType.object,
+                    items: ["bar"],
+                },
+                bar: {
+                    self: "bar",
+                    parent: "abc",
+                    relativeDataLocation: "bar",
+                    schemaLocation: "properties.bar",
+                    schema: {
+                        type: "object",
+                        properties: {
+                            bat: {
+                                type: "string",
+                            },
+                        },
+                    },
+                    disabled: false,
+                    data: {},
+                    text: "bat",
+                    type: DataType.object,
+                    items: [],
+                },
+            },
+            "abc",
+        ];
+
+        /* tslint:disable-next-line */
+        fastMessageSystem["register"].forEach((registeredItem: Register) => {
+            registeredItem.onMessage({
+                data: {
+                    type: MessageSystemType.initialize,
+                    activeDictionaryId: "",
+                    activeNavigationConfigId: "bar",
+                    schema: {
+                        id: "foo",
+                        type: "object",
+                        properties: {
+                            bar: {
+                                type: "object",
+                                properties: {},
+                            },
+                        },
+                    },
+                    data: {
+                        bar: {},
+                    },
+                    dataDictionary: [
+                        {
+                            "": {
+                                schemaId: "foo",
+                                data: {
+                                    bar: [],
+                                },
+                            },
+                        },
+                        "",
+                    ],
+                    navigation,
+                    navigationDictionary: [
+                        {
+                            "": navigation,
+                        },
+                        "",
+                    ],
+                    schemaDictionary,
+                } as InitializeMessageOutgoing,
+            } as any);
+        });
+
+        formInstance.setState({
+            activeNavigationId: "bar",
+        });
+
+        expect(formInstance.find("li")).toHaveLength(2);
+    });
+    test("should show a custom form control when encountering a formControlId in the schema instead of the default control if one has been passed", () => {
+        const data: any = {
+            bar: true,
+        };
+        const schema: any = {
+            id: "foo",
+            formControlId: "foobar",
+            type: "object",
+            properties: {
+                bar: {
+                    type: "boolean",
+                },
+            },
+        };
+        const fastMessageSystem: MessageSystem = new MessageSystem({
+            webWorker: "",
+            dataDictionary: [
+                {
+                    abc: {
+                        schemaId: "foo",
+                        data,
+                    },
+                },
+                "abc",
+            ],
+            schemaDictionary: {
+                foo: schema,
+            },
+        });
+
+        const formInstance: any = mount(
+            <ModularForm
+                {...formProps}
+                messageSystem={fastMessageSystem}
+                controls={[
+                    new StandardControlPlugin({
+                        id: "foobar",
+                        control: (config: any): React.ReactNode => {
+                            return <div className="test" />;
+                        },
+                    }),
+                ]}
             />
         );
 
-        expect(rendered.find("ArrayControl")).toHaveLength(2);
-        expect(rendered.find("ArrayControl").get(0).props.invalidMessage).toEqual(
-            "should be array"
+        const navigation: NavigationConfig = [
+            {
+                abc: {
+                    self: "abc",
+                    parent: null,
+                    relativeDataLocation: "",
+                    schemaLocation: "",
+                    schema,
+                    disabled: false,
+                    data,
+                    text: "bat",
+                    type: DataType.object,
+                    items: ["bar"],
+                },
+                bar: {
+                    self: "bar",
+                    parent: "abc",
+                    relativeDataLocation: "bar",
+                    schemaLocation: "properties.bar",
+                    schema: schema.properties.bar,
+                    disabled: false,
+                    data: data.bar,
+                    text: "bat",
+                    type: DataType.boolean,
+                    items: [],
+                },
+            },
+            "abc",
+        ];
+
+        /* tslint:disable-next-line */
+        fastMessageSystem["register"].forEach((registeredItem: Register) => {
+            registeredItem.onMessage({
+                data: {
+                    type: MessageSystemType.initialize,
+                    activeDictionaryId: "",
+                    activeNavigationConfigId: "abc",
+                    schema,
+                    data,
+                    dataDictionary: [
+                        {
+                            "": {
+                                schemaId: "foo",
+                                data,
+                            },
+                        },
+                        "",
+                    ],
+                    navigation,
+                    navigationDictionary: [
+                        {
+                            "": navigation,
+                        },
+                        "",
+                    ],
+                    schemaDictionary: {
+                        foo: schema,
+                    },
+                } as InitializeMessageOutgoing,
+            } as any);
+        });
+
+        formInstance.setState({
+            activeNavigationId: "abc",
+        });
+
+        expect(formInstance.find("CheckboxControl")).toHaveLength(0);
+        expect(formInstance.find(".test")).toHaveLength(1);
+    });
+    test("should show a custom form control as a type instead of the default control if one has been passed", () => {
+        const data: any = {
+            bar: true,
+        };
+        const schema: any = {
+            id: "foo",
+            type: "object",
+            properties: {
+                bar: {
+                    type: "boolean",
+                },
+            },
+        };
+        const navigation: NavigationConfig = [
+            {
+                abc: {
+                    self: "abc",
+                    parent: null,
+                    relativeDataLocation: "",
+                    schemaLocation: "",
+                    schema,
+                    disabled: false,
+                    data,
+                    text: "bat",
+                    type: DataType.object,
+                    items: ["bar"],
+                },
+                bar: {
+                    self: "bar",
+                    parent: "abc",
+                    relativeDataLocation: "bar",
+                    schemaLocation: "properties.bar",
+                    schema: schema.properties.bar,
+                    disabled: false,
+                    data: data.bar,
+                    text: "bat",
+                    type: DataType.boolean,
+                    items: [],
+                },
+            },
+            "abc",
+        ];
+        const fastMessageSystem: MessageSystem = new MessageSystem({
+            webWorker: "",
+            dataDictionary: [
+                {
+                    "": {
+                        schemaId: "foo",
+                        data,
+                    },
+                },
+                "",
+            ],
+            schemaDictionary: {
+                foo: schema,
+            },
+        });
+        const formInstance: any = mount(
+            <ModularForm
+                {...formProps}
+                messageSystem={fastMessageSystem}
+                controls={[
+                    new StandardControlPlugin({
+                        type: ControlType.checkbox,
+                        control: (config: any): React.ReactNode => {
+                            return <div className="test" />;
+                        },
+                    }),
+                ]}
+            />
         );
-        expect(rendered.find("ArrayControl").get(1).props.invalidMessage).toEqual(
-            "Contains invalid data"
+
+        /* tslint:disable-next-line */
+        fastMessageSystem["register"].forEach((registeredItem: Register) => {
+            registeredItem.onMessage({
+                data: {
+                    type: MessageSystemType.initialize,
+                    activeDictionaryId: "",
+                    activeNavigationConfigId: "abc",
+                    schema,
+                    data,
+                    dataDictionary: [
+                        {
+                            "": {
+                                schemaId: "foo",
+                                data,
+                            },
+                        },
+                        "",
+                    ],
+                    navigation,
+                    navigationDictionary: [
+                        {
+                            "": navigation,
+                        },
+                        "",
+                    ],
+                    schemaDictionary: {
+                        foo: schema,
+                    },
+                } as InitializeMessageOutgoing,
+            } as any);
+        });
+
+        formInstance.setState({
+            activeNavigationId: "abc",
+        });
+
+        expect(formInstance.find("CheckboxControl")).toHaveLength(0);
+        expect(formInstance.find(".test")).toHaveLength(1);
+    });
+    test("should show a custom form control as all types instead of the default controls if one has been passed", () => {
+        const schemaDictionary: { [key: string]: any } = {
+            foo: {
+                id: "foo",
+                type: "object",
+                properties: {
+                    bar: {
+                        type: "boolean",
+                    },
+                },
+            },
+        };
+        const fastMessageSystem: MessageSystem = new MessageSystem({
+            webWorker: "",
+            dataDictionary: [
+                {
+                    "": {
+                        schemaId: "foo",
+                        data: {
+                            bar: true,
+                        },
+                    },
+                },
+                "",
+            ],
+            schemaDictionary,
+        });
+
+        const formInstance: any = mount(
+            <ModularForm
+                {...formProps}
+                messageSystem={fastMessageSystem}
+                controls={[
+                    new StandardControlPlugin({
+                        control: (config: any): React.ReactNode => {
+                            return <div className="test" />;
+                        },
+                    }),
+                ]}
+            />
         );
+
+        const navigation: NavigationConfig = [
+            {
+                abc: {
+                    self: "abc",
+                    parent: null,
+                    relativeDataLocation: "",
+                    schemaLocation: "",
+                    schema: {
+                        id: "foo",
+                        type: "object",
+                        properties: {
+                            bar: {
+                                type: "boolean",
+                            },
+                        },
+                    },
+                    disabled: false,
+                    data: {
+                        bar: true,
+                    },
+                    text: "bat",
+                    type: DataType.object,
+                    items: ["bar"],
+                },
+                bar: {
+                    self: "bar",
+                    parent: "abc",
+                    relativeDataLocation: "bar",
+                    schemaLocation: "properties.bar",
+                    schema: {
+                        type: "boolean",
+                    },
+                    disabled: false,
+                    data: true,
+                    text: "bat",
+                    type: DataType.boolean,
+                    items: [],
+                },
+            },
+            "abc",
+        ];
+
+        /* tslint:disable-next-line */
+        fastMessageSystem["register"].forEach((registeredItem: Register) => {
+            registeredItem.onMessage({
+                data: {
+                    type: MessageSystemType.initialize,
+                    activeDictionaryId: "",
+                    activeNavigationConfigId: "abc",
+                    schema: {
+                        id: "foo",
+                        type: "object",
+                        properties: {
+                            bar: {
+                                type: "boolean",
+                            },
+                        },
+                    },
+                    data: {
+                        bar: true,
+                    },
+                    dataDictionary: [
+                        {
+                            "": {
+                                schemaId: "foo",
+                                data: {
+                                    bar: true,
+                                },
+                            },
+                        },
+                        "",
+                    ],
+                    navigation,
+                    navigationDictionary: [
+                        {
+                            "": navigation,
+                        },
+                        "",
+                    ],
+                    schemaDictionary,
+                } as InitializeMessageOutgoing,
+            } as any);
+        });
+
+        formInstance.setState({
+            activeNavigationId: "abc",
+        });
+
+        expect(formInstance.find("SectionControl")).toHaveLength(0);
+        expect(formInstance.find(".test")).toHaveLength(1);
     });
 });

@@ -16,6 +16,9 @@ const themeProps: ThemeControlProps = {
     type: ControlType.select,
     options: ["dark", "light"],
     dataLocation: "",
+    navigationConfigId: "",
+    dictionaryId: "",
+    navigation: {},
     value: "",
     schema: {},
     onChange: jest.fn(),
@@ -25,6 +28,7 @@ const themeProps: ThemeControlProps = {
     elementRef: null,
     validationErrors: [],
     required: false,
+    messageSystem: void 0,
 };
 
 const managedClasses: ThemeControlClassNameContract = {
@@ -62,10 +66,7 @@ describe("ThemeControl", () => {
             <ThemeControl {...themeProps} onChange={handleChange} />
         );
 
-        rendered
-            .find("input")
-            .at(0)
-            .simulate("change");
+        rendered.find("input").at(0).simulate("change");
 
         expect(handleChange).toHaveBeenCalled();
         expect(handleChange.mock.calls[0][0]).toEqual({ value: "light" });

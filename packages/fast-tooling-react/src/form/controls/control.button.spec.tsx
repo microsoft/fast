@@ -20,6 +20,9 @@ const managedClasses: ButtonControlClassNameContract = {
 const buttonProps: ButtonControlProps = {
     type: ControlType.button,
     dataLocation: "",
+    navigationConfigId: "",
+    dictionaryId: "",
+    navigation: {},
     onChange: jest.fn(),
     value: "",
     schema: {},
@@ -29,6 +32,7 @@ const buttonProps: ButtonControlProps = {
     elementRef: null,
     validationErrors: [],
     required: false,
+    messageSystem: void 0,
 };
 
 describe("ButtonControl", () => {

@@ -110,30 +110,10 @@ describe("CSSBorderRadius", () => {
 
         rendered.find("button").simulate("click");
 
-        expect(
-            rendered
-                .find("input")
-                .at(0)
-                .prop("value")
-        ).toBe("12px");
-        expect(
-            rendered
-                .find("input")
-                .at(1)
-                .prop("value")
-        ).toBe("12px");
-        expect(
-            rendered
-                .find("input")
-                .at(2)
-                .prop("value")
-        ).toBe("12px");
-        expect(
-            rendered
-                .find("input")
-                .at(3)
-                .prop("value")
-        ).toBe("12px");
+        expect(rendered.find("input").at(0).prop("value")).toBe("12px");
+        expect(rendered.find("input").at(1).prop("value")).toBe("12px");
+        expect(rendered.find("input").at(2).prop("value")).toBe("12px");
+        expect(rendered.find("input").at(3).prop("value")).toBe("12px");
     });
 
     test("should parse the `data` prop and assign individual values when 2 values are passed", () => {
@@ -150,30 +130,10 @@ describe("CSSBorderRadius", () => {
 
         rendered.find("button").simulate("click");
 
-        expect(
-            rendered
-                .find("input")
-                .at(0)
-                .prop("value")
-        ).toBe("12px");
-        expect(
-            rendered
-                .find("input")
-                .at(1)
-                .prop("value")
-        ).toBe("8px");
-        expect(
-            rendered
-                .find("input")
-                .at(2)
-                .prop("value")
-        ).toBe("12px");
-        expect(
-            rendered
-                .find("input")
-                .at(3)
-                .prop("value")
-        ).toBe("8px");
+        expect(rendered.find("input").at(0).prop("value")).toBe("12px");
+        expect(rendered.find("input").at(1).prop("value")).toBe("8px");
+        expect(rendered.find("input").at(2).prop("value")).toBe("12px");
+        expect(rendered.find("input").at(3).prop("value")).toBe("8px");
     });
 
     test("should parse the `data` prop and assign individual values when 3 values are passed", () => {
@@ -190,30 +150,10 @@ describe("CSSBorderRadius", () => {
 
         rendered.find("button").simulate("click");
 
-        expect(
-            rendered
-                .find("input")
-                .at(0)
-                .prop("value")
-        ).toBe("12px");
-        expect(
-            rendered
-                .find("input")
-                .at(1)
-                .prop("value")
-        ).toBe("8px");
-        expect(
-            rendered
-                .find("input")
-                .at(2)
-                .prop("value")
-        ).toBe("3px");
-        expect(
-            rendered
-                .find("input")
-                .at(3)
-                .prop("value")
-        ).toBe("8px");
+        expect(rendered.find("input").at(0).prop("value")).toBe("12px");
+        expect(rendered.find("input").at(1).prop("value")).toBe("8px");
+        expect(rendered.find("input").at(2).prop("value")).toBe("3px");
+        expect(rendered.find("input").at(3).prop("value")).toBe("8px");
     });
 
     test("should parse the `data` prop and assign individual values when 4 values are passed", () => {
@@ -230,30 +170,10 @@ describe("CSSBorderRadius", () => {
 
         rendered.find("button").simulate("click");
 
-        expect(
-            rendered
-                .find("input")
-                .at(0)
-                .prop("value")
-        ).toBe("12px");
-        expect(
-            rendered
-                .find("input")
-                .at(1)
-                .prop("value")
-        ).toBe("8px");
-        expect(
-            rendered
-                .find("input")
-                .at(2)
-                .prop("value")
-        ).toBe("3px");
-        expect(
-            rendered
-                .find("input")
-                .at(3)
-                .prop("value")
-        ).toBe("7px");
+        expect(rendered.find("input").at(0).prop("value")).toBe("12px");
+        expect(rendered.find("input").at(1).prop("value")).toBe("8px");
+        expect(rendered.find("input").at(2).prop("value")).toBe("3px");
+        expect(rendered.find("input").at(3).prop("value")).toBe("7px");
     });
 
     test("should set the `hasFocus` state when top left input is focused", () => {
@@ -263,10 +183,7 @@ describe("CSSBorderRadius", () => {
 
         rendered.find("button").simulate("click");
 
-        rendered
-            .find("input")
-            .at(0)
-            .simulate("focus");
+        rendered.find("input").at(0).simulate("focus");
 
         expect(rendered.state("hasFocus")).toBe(BorderRadiusValue.borderTopLeftRadius);
     });
@@ -278,10 +195,7 @@ describe("CSSBorderRadius", () => {
 
         rendered.find("button").simulate("click");
 
-        rendered
-            .find("input")
-            .at(1)
-            .simulate("focus");
+        rendered.find("input").at(1).simulate("focus");
 
         expect(rendered.state("hasFocus")).toBe(BorderRadiusValue.borderTopRightRadius);
     });
@@ -293,10 +207,7 @@ describe("CSSBorderRadius", () => {
 
         rendered.find("button").simulate("click");
 
-        rendered
-            .find("input")
-            .at(2)
-            .simulate("focus");
+        rendered.find("input").at(2).simulate("focus");
 
         expect(rendered.state("hasFocus")).toBe(
             BorderRadiusValue.borderBottomRightRadius
@@ -310,17 +221,11 @@ describe("CSSBorderRadius", () => {
 
         rendered.find("button").simulate("click");
 
-        rendered
-            .find("input")
-            .at(3)
-            .simulate("focus");
+        rendered.find("input").at(3).simulate("focus");
 
         expect(rendered.state("hasFocus")).toBe(BorderRadiusValue.borderBottomLeftRadius);
 
-        rendered
-            .find("input")
-            .at(3)
-            .simulate("blur");
+        rendered.find("input").at(3).simulate("blur");
 
         expect(rendered.state("hasFocus")).toBe(void 0);
     });

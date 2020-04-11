@@ -1,49 +1,17 @@
-import { ErrorObject } from "ajv";
-import { FormChildOptionItem } from "../form";
 import { ControlType, StandardControlPlugin } from "../index";
 import { AddExampleData, Controls } from "../controls/utilities/types";
-import { BadgeType } from "./types";
+import { BadgeType, ControlOnChangeConfig, OnChangeConfig } from "./types";
+import {
+    DataDictionary,
+    MessageSystem,
+    TreeNavigation,
+    ValidationError,
+} from "@microsoft/fast-tooling";
 
-export interface UpdateSectionConfig {
-    /**
-     * The lodash path location of the data in the schema
-     */
-    schemaLocation: string;
-
-    /**
-     * The lodash path location of the data
-     */
-    dataLocation: string;
-
-    /**
-     * The JSON schema
-     */
-    schema?: any;
-}
-
-export interface OnChangeConfig extends ControlOnChangeConfig {
-    /**
-     * The lodash path location of the data
-     */
-    dataLocation: string;
-}
-
-export interface ControlOnChangeConfig {
-    /**
-     * The new value for the supplied data location
-     */
-    value: any;
-
-    /**
-     * Whether this data is an array
-     */
-    isArray?: boolean;
-
-    /**
-     * The index if this data is an array
-     */
-    index?: number;
-}
+export type UpdateNavigationCallback = (
+    dictionaryId: string,
+    navigationConfigId?: string
+) => void;
 
 export type FormHTMLElement =
     | HTMLTextAreaElement
@@ -57,7 +25,6 @@ export interface ControlTemplateUtilitiesProps
         TextareaControlOptions,
         SectionLinkControlOptions,
         ArrayControlOptions,
-        ChildrenControlOptions,
         AdditionalControlConfigOptions {
     /**
      * The index to assign as a React key for mapping
@@ -73,6 +40,26 @@ export interface ControlTemplateUtilitiesProps
      * The location of the data
      */
     dataLocation: string;
+
+    /**
+     * The dictionary ID
+     */
+    dictionaryId: string;
+
+    /**
+     * The dictionary of available data items
+     */
+    dataDictionary: DataDictionary<any>;
+
+    /**
+     * The navigation ID
+     */
+    navigationConfigId: string;
+
+    /**
+     * The navigation
+     */
+    navigation: TreeNavigation;
 
     /**
      * The location of the data
@@ -118,7 +105,7 @@ export interface ControlTemplateUtilitiesProps
     /**
      * The update section callback
      */
-    onUpdateSection: (config: UpdateSectionConfig) => void;
+    onUpdateSection: UpdateNavigationCallback;
 
     /**
      * The default data (if available)
@@ -146,9 +133,9 @@ export interface ControlTemplateUtilitiesProps
     invalidMessage: string;
 
     /**
-     * The provided error message from ajv
+     * The provided error message
      */
-    validationErrors: ErrorObject[] | void;
+    validationErrors: ValidationError[];
 
     /**
      * Display the validation inline
@@ -186,6 +173,16 @@ export interface ControlTemplateUtilitiesProps
      * The string to be used if a prop is untitled
      */
     untitled?: string;
+
+    /**
+     * A dictionary of schemas
+     */
+    schemaDictionary: { [key: string]: any };
+
+    /**
+     * The message system
+     */
+    messageSystem: MessageSystem;
 }
 
 export interface CommonControlConfig {
@@ -198,6 +195,21 @@ export interface CommonControlConfig {
      * The location of the data referenced by lodash path syntax
      */
     dataLocation: string;
+
+    /**
+     * The dictionary ID
+     */
+    dictionaryId: string;
+
+    /**
+     * The navigation ID
+     */
+    navigationConfigId: string;
+
+    /**
+     * The navigation
+     */
+    navigation: TreeNavigation;
 
     /**
      * The value of the data to be assigned to the control
@@ -232,7 +244,7 @@ export interface CommonControlConfig {
     /**
      * The invalid error object
      */
-    validationErrors: ErrorObject[] | void;
+    validationErrors: ValidationError[];
 
     /**
      * Display the validation inline
@@ -255,6 +267,11 @@ export interface CommonControlConfig {
      * Callback for handling the updating of the value
      */
     onChange: (config: ControlOnChangeConfig | OnChangeConfig) => void;
+
+    /**
+     * The message system
+     */
+    messageSystem: MessageSystem;
 }
 
 export interface NumberFieldTypeControlOptions {
@@ -308,7 +325,7 @@ export interface SectionLinkControlOptions {
     /**
      * The update section callback
      */
-    onUpdateSection?: (config: UpdateSectionConfig) => void;
+    onUpdateSection?: UpdateNavigationCallback;
 }
 
 export interface SectionControlOptions {
@@ -334,14 +351,9 @@ export interface SectionControlOptions {
     schemaLocation: string;
 
     /**
-     * The optional components to be added as children
-     */
-    childOptions: any[];
-
-    /**
      * The update event to trigger a new active section and/or component
      */
-    onUpdateSection: (config: UpdateSectionConfig) => void;
+    onUpdateSection: UpdateNavigationCallback;
 
     /**
      * The string to be used if a prop is untitled
@@ -352,6 +364,16 @@ export interface SectionControlOptions {
      * Display the validation as browser default tooltips
      */
     displayValidationBrowserDefault?: boolean;
+
+    /**
+     * A dictionary of schemas
+     */
+    schemaDictionary: { [key: string]: any };
+
+    /**
+     * The dictionary of available data items
+     */
+    dataDictionary: DataDictionary<any>;
 }
 
 export interface ArrayControlOptions {
@@ -373,7 +395,7 @@ export interface ArrayControlOptions {
     /**
      * The update section callback
      */
-    onUpdateSection?: (config: UpdateSectionConfig) => void;
+    onUpdateSection?: UpdateNavigationCallback;
 
     /**
      * The location of the data
@@ -387,41 +409,41 @@ export interface ArrayControlOptions {
     invalidMessage?: string;
 }
 
-export interface ChildrenControlOptions {
-    /**
-     * The potential children to be added
-     */
-    childOptions?: FormChildOptionItem[];
-
-    /**
-     * The default children to be added
-     */
-    defaultChildOptions?: string[];
-
-    /**
-     * The update section callback
-     */
-    onUpdateSection?: (config: UpdateSectionConfig) => void;
-}
-
 export interface AdditionalControlConfigOptions {
     component: React.ComponentClass | React.FunctionComponent;
 }
 
+export interface LinkedDataControlOptions {
+    /**
+     * The potential linkedData to be added
+     */
+    schemaDictionary: { [key: string]: any };
+
+    /**
+     * The update section callback
+     */
+    onUpdateSection?: UpdateNavigationCallback;
+
+    /**
+     * The dictionary of available data items
+     */
+    dataDictionary: DataDictionary<any>;
+}
+
 export type NumberFieldTypeControlConfig = CommonControlConfig &
     NumberFieldTypeControlOptions;
+export type LinkedDataControlConfig = CommonControlConfig & LinkedDataControlOptions;
 export type ListControlConfig = CommonControlConfig & ListControlOptions;
 export type TextareaControlConfig = CommonControlConfig & TextareaControlOptions;
 export type SectionLinkControlConfig = CommonControlConfig & SectionLinkControlOptions;
 export type SectionControlConfig = CommonControlConfig & SectionControlOptions;
 export type ArrayControlConfig = CommonControlConfig & ArrayControlOptions;
-export type ChildrenControlConfig = CommonControlConfig & ChildrenControlOptions;
 export type ControlConfig = CommonControlConfig &
     NumberFieldTypeControlOptions &
+    LinkedDataControlOptions &
     ListControlOptions &
     TextareaControlOptions &
     SectionLinkControlOptions &
     SectionControlOptions &
     ArrayControlOptions &
-    ChildrenControlConfig &
     AdditionalControlConfigOptions;

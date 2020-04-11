@@ -11,6 +11,8 @@ import MSFTProgress, {
     ProgressUnhandledProps,
 } from "./progress";
 import progressSchema from "./progress.schema";
+import progressSchema2 from "./progress.schema.2";
+
 /*
  * The type returned by manageJss type is very complicated so we'll let the
  * compiler infer the type instead of re-declaring just for the package export
@@ -31,6 +33,7 @@ export {
     ProgressUnhandledProps,
     ProgressHandledProps,
     progressSchema,
+    progressSchema2,
     ProgressSize,
     ProgressClassNameContract,
 };

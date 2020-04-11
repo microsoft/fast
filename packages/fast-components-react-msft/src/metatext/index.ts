@@ -5,6 +5,7 @@ import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { DesignSystem, MetatextStyles } from "@microsoft/fast-components-styles-msft";
 import { Subtract } from "utility-types";
 import metatextSchema from "./metatext.schema";
+import metatextSchema2 from "./metatext.schema.2";
 import MSFTMetatext, {
     MetatextManagedClasses,
     MetatextTag,
@@ -33,6 +34,7 @@ export {
     MetatextProps,
     MetatextHandledProps,
     metatextSchema,
+    metatextSchema2,
     MetatextUnhandledProps,
     MetatextClassNameContract,
 };

@@ -10,6 +10,7 @@ import MSFTAutoSuggest, {
     AutoSuggestProps as MSFTAutoSuggestProps,
 } from "./auto-suggest";
 import autoSuggestSchema from "./auto-suggest.schema";
+import autoSuggestSchema2 from "./auto-suggest.schema.2";
 
 /*
  * The type returned by manageJss type is very complicated so we'll let the
@@ -34,5 +35,6 @@ export {
     AutoSuggestClassNameContract,
     AutoSuggestHandledProps,
     autoSuggestSchema,
+    autoSuggestSchema2,
     AutoSuggestUnhandledProps,
 };

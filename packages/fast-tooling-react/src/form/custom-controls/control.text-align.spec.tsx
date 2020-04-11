@@ -16,6 +16,9 @@ const textAlignControlProps: TextAlignControlProps = {
     type: ControlType.select,
     options: ["left", "center", "right"],
     dataLocation: "",
+    navigationConfigId: "",
+    dictionaryId: "",
+    navigation: {},
     value: "",
     schema: {},
     onChange: jest.fn(),
@@ -25,6 +28,7 @@ const textAlignControlProps: TextAlignControlProps = {
     updateValidity: jest.fn(),
     validationErrors: [],
     required: false,
+    messageSystem: void 0,
 };
 
 const managedClasses: TextAlignControlClassNameContract = {
@@ -64,10 +68,7 @@ describe("TextAlignControl", () => {
             <TextAlignControl {...textAlignControlProps} onChange={handleChange} />
         );
 
-        rendered
-            .find("input")
-            .at(0)
-            .simulate("change");
+        rendered.find("input").at(0).simulate("change");
 
         expect(handleChange).toHaveBeenCalled();
         expect(handleChange.mock.calls[0][0]).toEqual({ value: "left" });

@@ -11,15 +11,17 @@ import { ViewerClassNameContract } from "./viewer.class-name-contract";
  */
 configure({ adapter: new Adapter() });
 
+const props: ViewerHandledProps = {
+    iframeSrc: "/test",
+    messageSystem: void 0,
+};
+
 describe("Viewer", (): void => {
     const managedClasses: ViewerClassNameContract = {
         viewer: "viewer",
     };
 
     test("should create an iframe", () => {
-        const props: ViewerHandledProps = {
-            iframeSrc: "/test",
-        };
         const rendered: any = mount(
             <Viewer managedClasses={managedClasses} {...props} />
         );
@@ -27,61 +29,32 @@ describe("Viewer", (): void => {
         expect(rendered.find("iframe").length).toBe(1);
     });
     test("should use the `iframeSrc` prop as the iframe src attribute", () => {
-        const iframeSrc: string = "/test";
-        const props: ViewerHandledProps = {
-            iframeSrc,
-        };
         const rendered: any = mount(
             <Viewer managedClasses={managedClasses} {...props} />
         );
 
-        expect(rendered.find("iframe").prop("src")).toBe(iframeSrc);
+        expect(rendered.find("iframe").prop("src")).toBe(props.iframeSrc);
     });
     test("should set the width if the `width` prop is set", () => {
-        const props: ViewerHandledProps = {
-            iframeSrc: "/test",
-            width: 800,
-        };
         const rendered: any = mount(
-            <Viewer managedClasses={managedClasses} {...props} />
+            <Viewer managedClasses={managedClasses} width={800} {...props} />
         );
 
-        expect(
-            rendered
-                .find("div")
-                .last()
-                .prop("style")
-        ).toEqual({ width: "800px" });
+        expect(rendered.find("div").last().prop("style")).toEqual({ width: "800px" });
     });
     test("should set the height if the `height` prop is set", () => {
-        const props: ViewerHandledProps = {
-            iframeSrc: "/test",
-            height: 600,
-        };
         const rendered: any = mount(
-            <Viewer managedClasses={managedClasses} {...props} />
+            <Viewer managedClasses={managedClasses} height={600} {...props} />
         );
 
-        expect(
-            rendered
-                .find("div")
-                .last()
-                .prop("style")
-        ).toEqual({ height: "600px" });
+        expect(rendered.find("div").last().prop("style")).toEqual({ height: "600px" });
     });
     test("should create a series of responsive buttons if the `responsive` prop is true", () => {
-        const propsWithResponsive: ViewerHandledProps = {
-            iframeSrc: "/test",
-            responsive: true,
-        };
         const renderedWithResponsive: any = mount(
-            <Viewer managedClasses={managedClasses} {...propsWithResponsive} />
+            <Viewer managedClasses={managedClasses} responsive={true} {...props} />
         );
-        const propsWithoutResponsive: ViewerHandledProps = {
-            iframeSrc: "/test",
-        };
         const renderedWithoutResponsive: any = mount(
-            <Viewer managedClasses={managedClasses} {...propsWithoutResponsive} />
+            <Viewer managedClasses={managedClasses} {...props} />
         );
 
         expect(renderedWithResponsive.find("button").length).toBe(5);
@@ -93,19 +66,19 @@ describe("Viewer", (): void => {
                 callback();
             }
         );
-        const updateHeightCallback: (height: number) => void = jest.fn(function(
+        const updateHeightCallback: (height: number) => void = jest.fn(function (
             height: number
         ): void {
             expect(height).toEqual(400);
         });
-        const props: ViewerHandledProps = {
-            iframeSrc: "/test",
-            height: 500,
-            responsive: true,
-            onUpdateHeight: updateHeightCallback,
-        };
         const rendered: any = mount(
-            <Viewer managedClasses={managedClasses} {...props} />
+            <Viewer
+                managedClasses={managedClasses}
+                {...props}
+                height={500}
+                responsive={true}
+                onUpdateHeight={updateHeightCallback}
+            />
         );
         const mouseDownEvent: any = {
             button: 0,
@@ -127,19 +100,19 @@ describe("Viewer", (): void => {
                 callback();
             }
         );
-        const updateWidthCallback: (width: number) => void = jest.fn(function(
+        const updateWidthCallback: (width: number) => void = jest.fn(function (
             width: number
         ): void {
             expect(width).toEqual(700);
         });
-        const props: ViewerHandledProps = {
-            iframeSrc: "/test",
-            width: 500,
-            responsive: true,
-            onUpdateWidth: updateWidthCallback,
-        };
         const rendered: any = mount(
-            <Viewer managedClasses={managedClasses} {...props} />
+            <Viewer
+                managedClasses={managedClasses}
+                {...props}
+                width={500}
+                responsive={true}
+                onUpdateWidth={updateWidthCallback}
+            />
         );
         const mouseDownEvent: any = {
             button: 0,

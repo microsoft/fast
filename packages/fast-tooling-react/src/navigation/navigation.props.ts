@@ -1,6 +1,10 @@
-import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
-import { ChildOptionItem } from "../data-utilities";
-import { NavigationClassNameContract } from "./navigation.style";
+import {
+    Data,
+    DataDictionary,
+    MessageSystem,
+    NavigationConfigDictionary,
+} from "@microsoft/fast-tooling";
+import { DragDropItemType } from "./navigation-tree-item.props";
 
 export enum NavigationDataType {
     object = "object",
@@ -10,41 +14,91 @@ export enum NavigationDataType {
     primitiveChild = "primitiveChild",
 }
 
+export enum HoverLocation {
+    before = "before",
+    after = "after",
+}
+
 export interface NavigationState {
-    /**
-     * The navigation data
-     */
-    navigation: TreeNavigation;
-
-    /**
-     * The open items tracked by data location
-     */
-    openItems: string[];
-
     /**
      * The current active item
      */
-    activeItem: null | string;
+    activeItem: {
+        /**
+         * Dictionary key
+         */
+        0: string;
+
+        /**
+         * Navigation config key
+         */
+        1: string;
+    } | null;
 
     /**
-     * The hovered tree item
+     * Expanded navigation config items
      */
-    dragHoverDataLocation: null | string;
+    expandedNavigationConfigItems: { [key: string]: string[] };
 
     /**
-     * The hovered location before
+     * The navigation dictionary
      */
-    dragHoverBeforeDataLocation: null | string;
+    navigationDictionary: NavigationConfigDictionary | null;
 
     /**
-     * The hovered location after
+     * The data dictionary
      */
-    dragHoverAfterDataLocation: null | string;
+    dataDictionary: DataDictionary<unknown>;
 
     /**
-     * The hovered location center
+     * The linked data currently being dragged
      */
-    dragHoverCenterDataLocation: null | string;
+    linkedData: Data<unknown>;
+
+    /**
+     * The linked datas location
+     */
+    linkedDataLocation: {
+        /**
+         * Dictionary key
+         */
+        0: string;
+
+        /**
+         * Navigation config key
+         */
+        1: string;
+
+        /**
+         * The index
+         */
+        2: number;
+    } | null;
+
+    /**
+     * The item being hovered
+     */
+    hoveredItem: {
+        /**
+         * The type of the hovered item
+         */
+        0: DragDropItemType;
+
+        /**
+         * The dictionary ID
+         */
+        1: string;
+
+        /**
+         * The navigation config ID
+         */
+        2: string;
+
+        /**
+         * The location of the hover
+         */
+        3: HoverLocation;
+    } | null;
 }
 
 export interface TreeNavigation {
@@ -70,45 +124,12 @@ export interface TreeNavigation {
     items?: TreeNavigation[] | void;
 }
 
-export interface NavigationHandledProps
-    extends ManagedClasses<NavigationClassNameContract> {
+export interface NavigationHandledProps {
     /**
-     * The JSON schema
+     * The message system
+     * used for sending and receiving data to the message system
      */
-    schema: any;
-
-    /**
-     * The data mapped to the schema
-     */
-    data: any;
-
-    /**
-     * The React child options
-     */
-    childOptions?: ChildOptionItem[];
-
-    /**
-     * The data location if the component is controlled
-     */
-    dataLocation?: string;
-
-    /**
-     * The location update
-     */
-    onLocationUpdate?: (dataLocation: string) => void;
-
-    /**
-     * If navigation items should enable drag to re-order. For this to work,
-     * the parent application will need to ensure the Navigation component is
-     * wrapped with a react-dnd backend. For more information on react-dnd backends,
-     * see http://react-dnd.github.io/react-dnd/docs/overview
-     */
-    dragAndDropReordering?: boolean;
-
-    /**
-     * The onChange callback for updating the data
-     */
-    onChange?: (data: any, dataLocation?: string) => void;
+    messageSystem: MessageSystem;
 }
 
 export type NavigationProps = NavigationHandledProps;

@@ -15,6 +15,7 @@ import {
 } from "../button-base";
 import { DisplayNamePrefix } from "../utilities";
 import stealthButtonSchema from "./stealth-button.schema";
+import stealthButtonSchema2 from "./stealth-button.schema.2";
 
 /*
  * The type returned by manageJss type is very complicated so we'll let the
@@ -45,4 +46,5 @@ export {
     StealthButtonHandledProps,
     StealthButtonUnhandledProps,
     stealthButtonSchema,
+    stealthButtonSchema2,
 };

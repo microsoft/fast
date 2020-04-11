@@ -7,7 +7,7 @@ import {
     SectionValidationState,
 } from "./section.validation.props";
 import styles from "./section.validation.style";
-import { ErrorObject } from "ajv";
+import { ValidationError } from "@microsoft/fast-tooling";
 import { classNames } from "@microsoft/fast-web-utilities";
 
 /**
@@ -88,7 +88,7 @@ class SectionValidation extends React.Component<
     private renderAllValidationErrors(): React.ReactNode {
         if (this.state.expanded) {
             return this.props.validationErrors.map(
-                (validationError: ErrorObject, index: number): React.ReactNode => {
+                (validationError: ValidationError, index: number): React.ReactNode => {
                     return (
                         <li
                             key={`${this.props.dataLocation}${index}`}
@@ -96,17 +96,17 @@ class SectionValidation extends React.Component<
                                 this.props.managedClasses.sectionValidation_errorListItem
                             }
                         >
-                            <span title={validationError.message}>
-                                {validationError.message}
+                            <span title={validationError.invalidMessage}>
+                                {validationError.invalidMessage}
                             </span>
                             <div
                                 className={
                                     this.props.managedClasses
                                         .sectionValidation_errorListItemDetails
                                 }
-                                title={`Ajv dataPath: ${validationError.dataPath}`}
+                                title={`data location: ${validationError.dataLocation}`}
                             >
-                                {validationError.dataPath}
+                                {validationError.dataLocation}
                             </div>
                         </li>
                     );

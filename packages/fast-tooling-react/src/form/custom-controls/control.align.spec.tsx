@@ -16,6 +16,9 @@ const alignControlProps: AlignControlProps = {
     type: ControlType.select,
     options: [Alignment.top, Alignment.center, Alignment.bottom],
     dataLocation: "",
+    navigationConfigId: "",
+    dictionaryId: "",
+    navigation: {},
     value: "",
     schema: {},
     onChange: jest.fn(),
@@ -25,6 +28,7 @@ const alignControlProps: AlignControlProps = {
     updateValidity: jest.fn(),
     validationErrors: [],
     required: false,
+    messageSystem: void 0,
 };
 
 const managedClasses: AlignControlClassNameContract = {
@@ -64,10 +68,7 @@ describe("AlignControl", () => {
             <AlignControl {...alignControlProps} onChange={handleChange} />
         );
 
-        rendered
-            .find("input")
-            .at(0)
-            .simulate("change");
+        rendered.find("input").at(0).simulate("change");
 
         expect(handleChange).toHaveBeenCalled();
         expect(handleChange.mock.calls[0][0]).toEqual({ value: "top" });

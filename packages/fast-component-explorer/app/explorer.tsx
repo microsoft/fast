@@ -58,10 +58,8 @@ import {
     ToggleClassNameContract,
     Typography,
 } from "@microsoft/fast-components-react-msft";
-import {
-    FormChildOptionItem,
-    FormClassNameContract,
-} from "@microsoft/fast-tooling-react/dist/form/form";
+import { FormChildOptionItem } from "@microsoft/fast-tooling-react/dist/form/types";
+import { FormClassNameContract } from "@microsoft/fast-tooling-react/dist/form/form";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { MemoizedFunction, uniqueId } from "lodash";
 import { classNames, Direction } from "@microsoft/fast-web-utilities";

@@ -1,162 +1,58 @@
-import {
-    NavigationDataType,
-    TreeNavigation,
-} from "../../../src/navigation/navigation.props";
-import { ChildOptionItem } from "../../../src";
-import { get } from "lodash-es";
-
-import noChildrenSchema from "./no-children.schema.json";
-import childrenSchema from "./children.schema.json";
+import noChildrenSchema from "./no-children.schema";
+import childrenSchema from "./children.schema";
+import { DataDictionary } from "@microsoft/fast-tooling";
 
 const noChildren: any = {
     text: "Hello world",
 };
-
-const children: any = {
-    foo: "Bar",
-    children: [
-        "Foo",
-        {
-            id: get(noChildrenSchema, "id"),
-            props: noChildren,
-        },
-        {
-            id: get(childrenSchema, "id"),
-            props: {
+const children: DataDictionary<any> = [
+    {
+        foo: {
+            schemaId: childrenSchema.id,
+            data: {
                 children: [
                     {
-                        id: get(childrenSchema, "id"),
-                        props: {
-                            children: [
-                                {
-                                    id: get(childrenSchema, "id"),
-                                    props: {
-                                        children: [
-                                            {
-                                                id: get(childrenSchema, "id"),
-                                                props: {
-                                                    children: {
-                                                        id: get(noChildrenSchema, "id"),
-                                                        props: noChildren,
-                                                    },
-                                                },
-                                            },
-                                        ],
-                                    },
-                                },
-                                {
-                                    id: get(childrenSchema, "id"),
-                                    props: {
-                                        children: {
-                                            id: get(noChildrenSchema, "id"),
-                                            props: noChildren,
-                                        },
-                                    },
-                                },
-                            ],
-                        },
+                        id: "bar",
+                    },
+                    {
+                        id: "bat",
+                    },
+                    {
+                        id: "baz",
                     },
                 ],
             },
         },
-        {
-            id: get(childrenSchema, "id"),
-            props: {
-                children: {
-                    id: get(noChildrenSchema, "id"),
-                    props: noChildren,
-                },
+        bar: {
+            parent: {
+                id: "foo",
+                dataLocation: "children",
+            },
+            schemaId: noChildrenSchema.id,
+            data: {
+                text: "bar",
             },
         },
-        {
-            id: get(childrenSchema, "id"),
-            props: {
-                children: [
-                    {
-                        id: get(childrenSchema, "id"),
-                        props: {
-                            children: {
-                                id: get(noChildrenSchema, "id"),
-                                props: noChildren,
-                            },
-                        },
-                    },
-                    {
-                        id: get(childrenSchema, "id"),
-                        props: {
-                            children: {
-                                id: get(noChildrenSchema, "id"),
-                                props: noChildren,
-                            },
-                        },
-                    },
-                ],
+        bat: {
+            parent: {
+                id: "foo",
+                dataLocation: "children",
+            },
+            schemaId: noChildrenSchema.id,
+            data: {
+                text: "bat",
             },
         },
-    ],
-    object: {
-        children: [
-            {
-                id: get(noChildrenSchema, "id"),
-                props: noChildren,
+        baz: {
+            parent: {
+                id: "foo",
+                dataLocation: "children",
             },
-            "Foo",
-        ],
-    },
-    array: [
-        {
-            children: [
-                {
-                    id: get(noChildrenSchema, "id"),
-                    props: noChildren,
-                },
-                "Bar",
-            ],
+            schemaId: childrenSchema.id,
+            data: {},
         },
-    ],
-};
-
-const navigationData: TreeNavigation[] = [
-    {
-        text: "Child A",
-        type: NavigationDataType.component,
-        dataLocation: "children[0]",
-        items: [
-            {
-                text: "Child B",
-                type: NavigationDataType.component,
-                dataLocation: "children[0].props.children[0]",
-            },
-            {
-                text: "Child C",
-                type: NavigationDataType.component,
-                dataLocation: "children[0].props.children[1]",
-                items: [
-                    {
-                        text: "Child D",
-                        type: NavigationDataType.component,
-                        dataLocation: "children[0].props.children[1].props.children",
-                    },
-                ],
-            },
-        ],
     },
-    {
-        text: "Child E",
-        type: NavigationDataType.component,
-        dataLocation: "children[1]",
-    },
+    "foo",
 ];
 
-const childOptions: ChildOptionItem[] = [
-    {
-        component: null,
-        schema: noChildrenSchema,
-    },
-    {
-        component: null,
-        schema: childrenSchema,
-    },
-];
-
-export { children, childOptions, navigationData, noChildren };
+export { children, noChildren };

@@ -5,14 +5,11 @@ import { controls } from "./control-switch.spec";
 import { Dictionary } from "./dictionary";
 import { DictionaryProps } from "./dictionary.props";
 import { DictionaryClassNameContract } from "./dictionary.style";
-import { getValidationErrors } from "../../../utilities/ajv-validation";
-import { getErrorFromDataLocation } from "../../utilities";
 import { ControlType } from "../../templates";
 import {
     ArrayControl,
     ButtonControl,
     CheckboxControl,
-    ChildrenControl,
     DisplayControl,
     NumberFieldControl,
     SectionLinkControl,
@@ -36,8 +33,21 @@ const managedClasses: DictionaryClassNameContract = {
 const dictionaryProps: DictionaryProps = {
     index: 1,
     type: ControlType.section,
+    schemaDictionary: {},
     controls,
     dataLocation: "",
+    navigationConfigId: "",
+    dictionaryId: "",
+    dataDictionary: [
+        {
+            "": {
+                schemaId: "",
+                data: {},
+            },
+        },
+        "",
+    ],
+    navigation: {},
     schemaLocation: "",
     data: "",
     schema: {},
@@ -51,19 +61,18 @@ const dictionaryProps: DictionaryProps = {
         type: "string",
     },
     enumeratedProperties: [],
-    childOptions: [],
     validationErrors: undefined,
     controlComponents: {
         [ControlType.array]: ArrayControl,
         [ControlType.button]: ButtonControl,
         [ControlType.checkbox]: CheckboxControl,
-        [ControlType.children]: ChildrenControl,
         [ControlType.display]: DisplayControl,
         [ControlType.numberField]: NumberFieldControl,
         [ControlType.sectionLink]: SectionLinkControl,
         [ControlType.select]: SelectControl,
         [ControlType.textarea]: TextareaControl,
     },
+    messageSystem: void 0,
 };
 
 describe("Dictionary", () => {
@@ -197,6 +206,7 @@ describe("Dictionary", () => {
         expect(onChangeCallback).toHaveBeenCalled();
         expect(onChangeCallback.mock.calls[0][0]).toEqual({
             dataLocation: "a",
+            dictionaryId: "",
             value: void 0,
         });
     });
@@ -226,6 +236,7 @@ describe("Dictionary", () => {
         expect(onChangeCallback).toHaveBeenCalled();
         expect(onChangeCallback.mock.calls[0][0]).toEqual({
             dataLocation: "",
+            dictionaryId: "",
             value: { b: "bar", c: "foo" },
         });
     });
@@ -334,14 +345,22 @@ describe("Dictionary", () => {
             randoma: "foo",
             b: "bar",
         };
-        const validationErrors: any = getValidationErrors(schema, data);
         const rendered: any = render(
             <Dictionary
                 {...dictionaryProps}
                 managedClasses={managedClasses}
                 data={data}
                 schema={schema}
-                validationErrors={validationErrors}
+                validationErrors={[
+                    {
+                        dataLocation: "randoma",
+                        invalidMessage: "should be number",
+                    },
+                    {
+                        dataLocation: "b",
+                        invalidMessage: "should be number",
+                    },
+                ]}
                 additionalProperties={{
                     type: "number",
                 }}

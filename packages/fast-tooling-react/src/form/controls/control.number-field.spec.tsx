@@ -20,6 +20,9 @@ const managedClasses: NumberFieldControlClassNameContract = {
 const numberFieldProps: NumberFieldControlProps = {
     type: ControlType.numberField,
     dataLocation: "",
+    navigationConfigId: "",
+    dictionaryId: "",
+    navigation: {},
     onChange: jest.fn(),
     min: 0,
     max: Infinity,
@@ -32,6 +35,7 @@ const numberFieldProps: NumberFieldControlProps = {
     updateValidity: jest.fn(),
     validationErrors: [],
     required: false,
+    messageSystem: void 0,
 };
 
 describe("NumberFieldControl", () => {
@@ -139,11 +143,6 @@ describe("NumberFieldControl", () => {
                 default={defaultValue}
             />
         );
-        expect(
-            rendered
-                .find("input")
-                .at(0)
-                .prop("value")
-        ).toBe(value);
+        expect(rendered.find("input").at(0).prop("value")).toBe(value);
     });
 });
