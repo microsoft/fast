@@ -13,6 +13,7 @@ import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { CheckboxStyles, DesignSystem } from "@microsoft/fast-components-styles-msft";
 import { Subtract } from "utility-types";
 import checkboxSchema from "./checkbox.schema";
+import checkboxSchema2 from "./checkbox.schema.2";
 
 /*
  * The type returned by manageJss type is very complicated so we'll let the
@@ -33,6 +34,7 @@ export {
     CheckboxProps,
     CheckboxHandledProps,
     checkboxSchema,
+    checkboxSchema2,
     CheckboxUnhandledProps,
     CheckboxClassNameContract,
     CheckboxSlot,

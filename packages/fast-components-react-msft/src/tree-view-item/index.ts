@@ -4,6 +4,7 @@ import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { DesignSystem, TreeViewItemStyles } from "@microsoft/fast-components-styles-msft";
 import { Subtract } from "utility-types";
 import treeViewItemSchema from "./tree-view-item.schema";
+import treeViewItemSchema2 from "./tree-view-item.schema.2";
 import MSFTTreeViewItem, {
     TreeViewItemHandledProps as MSFTTreeViewItemHandledProps,
     TreeViewItemProps as MSFTTreeViewItemProps,
@@ -35,4 +36,5 @@ export {
     TreeViewItem,
     TreeViewItemProps,
     treeViewItemSchema,
+    treeViewItemSchema2,
 };

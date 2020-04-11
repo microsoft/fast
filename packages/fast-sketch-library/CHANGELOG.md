@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.5](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-sketch-library@4.0.4...@microsoft/fast-sketch-library@4.0.5) (2020-04-10)
+
+**Note:** Version bump only for package @microsoft/fast-sketch-library
+
+
+
+
+
 ## [4.0.4](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-sketch-library@4.0.3...@microsoft/fast-sketch-library@4.0.4) (2020-03-13)
 
 **Note:** Version bump only for package @microsoft/fast-sketch-library

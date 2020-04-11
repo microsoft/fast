@@ -10,7 +10,7 @@
   "private": true,
   "workspaces": {
     "packages": ["packages/*"],
-    "nohoist": ["**/react-syntax-highlighter", "**/@microsoft/fast-tslint-rules"]
+    "nohoist": ["**/react-syntax-highlighter"]
   },
   "repository": {
     "type": "git",

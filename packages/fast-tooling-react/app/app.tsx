@@ -1,21 +1,16 @@
 import React from "react";
 import { BrowserRouter, Link, Redirect, Route, Switch } from "react-router-dom";
 import { NavigationTestPage } from "./pages/navigation";
-import BasicPage from "./pages/viewer/basic-page";
-import BasicPageViewerContent from "./pages/viewer/basic-page.viewer-content";
-import CustomMessagePage from "./pages/viewer/custom-message-page";
-import CustomMessagePageViewerContent from "./pages/viewer/custom-message-page.viewer-content";
-import DevicePage from "./pages/viewer/device-page";
-import DevicePageViewerContent from "./pages/viewer/device-page.viewer-content";
-import UpdatePropsPage from "./pages/viewer/update-props-page";
-import UpdatePropsViewerContent from "./pages/viewer/update-props-page.viewer-content";
+import ViewerPage from "./pages/viewer";
+import ViewerContentPage from "./pages/viewer/content";
 import { CSSEditorTestPage } from "./pages/css-editor";
 import { StyleEditorsTestPage } from "./pages/style-editors";
 import { FormTestPage } from "./pages/form";
-import { CodePreviewTestPage } from "./pages/code-preview/";
 import { FormAndNavigationTestPage } from "./pages/form-and-navigation";
 import { CSSPropertyEditorTestPage } from "./pages/css-property-editor";
 import { NavigationMenuTestPage } from "./pages/navigation-menu";
+import { WebComponentTestPage } from "./pages/web-components";
+import WebComponentViewerContent from "./pages/web-components/web-component-viewer-content";
 
 class App extends React.Component<{}, {}> {
     public render(): React.ReactNode {
@@ -49,59 +44,30 @@ class App extends React.Component<{}, {}> {
                             path={"/navigation"}
                             component={NavigationTestPage}
                         />
+                        <Route exact={true} path={"/viewer"} component={ViewerPage} />
                         <Route
                             exact={true}
-                            path={"/viewer/basic"}
-                            component={BasicPage}
-                        />
-                        <Route
-                            exact={true}
-                            path={"/viewer/basic/content"}
-                            component={BasicPageViewerContent}
-                        />
-                        <Route
-                            exact={true}
-                            path={"/viewer/custom-message"}
-                            component={CustomMessagePage}
-                        />
-                        <Route
-                            exact={true}
-                            path={"/viewer/custom-message/content"}
-                            component={CustomMessagePageViewerContent}
-                        />
-                        <Route
-                            exact={true}
-                            path={"/viewer/device"}
-                            component={DevicePage}
-                        />
-                        <Route
-                            exact={true}
-                            path={"/viewer/device/content"}
-                            component={DevicePageViewerContent}
-                        />
-                        <Route
-                            exact={true}
-                            path={"/viewer/update-props"}
-                            component={UpdatePropsPage}
-                        />
-                        <Route
-                            exact={true}
-                            path={"/viewer/update-props/content"}
-                            component={UpdatePropsViewerContent}
+                            path={"/viewer/content"}
+                            component={ViewerContentPage}
                         />
                         <Route exact={true} path={"/form"} component={FormTestPage} />
-                        <Route
-                            exact={true}
-                            path={"/code-preview"}
-                            component={CodePreviewTestPage}
-                        />
                         <Route
                             exact={true}
                             path={"/form-and-navigation"}
                             component={FormAndNavigationTestPage}
                         />
+                        <Route
+                            exact={true}
+                            path={"/web-components"}
+                            component={WebComponentTestPage}
+                        />
+                        <Route
+                            exact={true}
+                            path={"/web-components/content"}
+                            component={WebComponentViewerContent}
+                        />
                         <Route exact={true} path={"/"}>
-                            <Redirect to={"/navigation-menu"} />
+                            <Redirect to={"/web-components"} />
                         </Route>
                     </Switch>
                 </div>
@@ -116,9 +82,6 @@ class App extends React.Component<{}, {}> {
                     <ul>
                         <li>
                             <Link to="/navigation-menu">Navigation Menu</Link>
-                        </li>
-                        <li>
-                            <Link to="/code-preview">Code Preview</Link>
                         </li>
                         <li>
                             <Link to="/css-editor">CSS Editor</Link>
@@ -139,23 +102,10 @@ class App extends React.Component<{}, {}> {
                             <Link to="/form-and-navigation">Form and Navigation</Link>
                         </li>
                         <li>
-                            <span>Viewer</span>
-                            <ul>
-                                <li>
-                                    <Link to="/viewer/basic">Basic</Link>
-                                </li>
-                                <li>
-                                    <Link to="/viewer/custom-message">
-                                        Custom message
-                                    </Link>
-                                </li>
-                                <li>
-                                    <Link to="/viewer/device">Device</Link>
-                                </li>
-                                <li>
-                                    <Link to="/viewer/update-props">Update props</Link>
-                                </li>
-                            </ul>
+                            <Link to="/viewer">Viewer</Link>
+                        </li>
+                        <li>
+                            <Link to="/web-components">Web Components</Link>
                         </li>
                     </ul>
                     <hr />

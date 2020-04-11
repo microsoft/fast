@@ -1,6 +1,6 @@
 import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager-react";
 import { applyFocusVisible } from "@microsoft/fast-jss-utilities";
-import { applyTriggerStyle, insetStrongBoxShadow } from "../style";
+import { insetStrongBoxShadow } from "../style";
 import {
     accent,
     foreground300,
@@ -12,145 +12,87 @@ import {
 export interface NavigationClassNameContract {
     navigation?: string;
     navigation_item?: string;
-    navigation_itemExpandTrigger?: string;
-    /**
-     * @deprecated
-     */
-    navigation_item__childItem?: string;
-    navigation_item__primitiveChild?: string;
-    navigation_item__component?: string;
-    navigation_item__draggable?: string;
-    navigation_item__dragging?: string;
-    navigation_itemContent?: string;
-    navigation_itemContent__active?: string;
-    navigation_itemContent__dragHover?: string;
-    navigation_itemContent__dragHoverBefore?: string;
-    navigation_itemContent__dragHoverAfter?: string;
+    navigation_itemTrigger?: string;
+    navigation_itemTrigger__active?: string;
+    navigation_itemTrigger__draggable?: string;
+    navigation_itemTrigger__droppable?: string;
+    navigation_itemTrigger__expandable?: string;
+    navigation_itemTrigger__hover?: string;
+    navigation_itemTrigger__hoverBefore?: string;
+    navigation_itemTrigger__hoverAfter?: string;
     navigation_itemList?: string;
 }
 
 const styles: ComponentStyles<NavigationClassNameContract, {}> = {
     navigation: {
-        fontSize: "12px",
+        "font-size": "12px",
+        "text-indent": "1em",
         background: neutralLayerL4,
         color: foreground300,
         height: "100%",
-    },
-    navigation_item: {
-        display: "flex",
-        flexFlow: "column",
-        textIndent: "1em",
-        position: "relative",
-        cursor: "pointer",
-        "& $navigation_item::after": {
+        "& $navigation_item::before": {
             content: "''",
             height: "100%",
             position: "absolute",
-            left: "calc(1em - 13px)",
-            borderRight: `1px solid ${neutralOutlineActive}`,
-        },
-        '&[aria-expanded="true"] > $navigation_itemList': {
-            display: "block",
-        },
-        '&[aria-expanded="false"] > $navigation_itemContent > $navigation_itemExpandTrigger::before, &[aria-expanded="true"] > $navigation_itemContent > $navigation_itemExpandTrigger::before': {
-            content: "''",
-            display: "inline-block",
-            marginLeft: "6px",
-        },
-        '&[aria-expanded="false"] > $navigation_itemContent > $navigation_itemExpandTrigger::before': {
-            borderTop: "4px solid transparent",
-            borderLeft: `4px solid ${foreground300}`,
-            borderRight: "4px solid transparent",
-            borderBottom: "4px solid transparent",
-        },
-        '&[aria-expanded="true"] > $navigation_itemContent > $navigation_itemExpandTrigger::before': {
-            borderTop: "4px solid transparent",
-            borderLeft: `4px solid ${foreground300}`,
-            borderRight: "4px solid transparent",
-            borderBottom: "4px solid transparent",
-            transform: "rotate(45deg)",
+            left: "calc(1em - 16px)",
+            "border-right": `1px solid ${neutralOutlineActive}`,
+            "z-index": "1",
         },
     },
-    navigation_itemExpandTrigger: {
-        display: "inline-flex",
+    navigation_item: {
+        position: "relative",
+        "text-indent": "1em",
+        "line-height": "20px",
+        "&[aria-expanded='true']": {
+            "& > $navigation_itemTrigger__expandable::before": {
+                transform: "rotate(45deg)",
+            },
+            "& > $navigation_itemList": {
+                display: "block",
+            },
+        },
+    },
+    navigation_itemTrigger: {
+        "font-size": "12px",
+        display: "block",
         cursor: "pointer",
-        background: "transparent",
-        width: "12px",
-        height: "12px",
-        border: "none",
-        padding: "0",
-        verticalAlign: "middle",
-        marginLeft: "-17px",
-        marginRight: "5px",
-        "&:focus": {
-            outline: "none",
-        },
-        "&::before": {
-            alignItems: "center",
-        },
-    },
-    navigation_item__childItem: {
-        "& > $navigation_itemContent": {
-            fontStyle: "normal",
-        },
-    },
-    navigation_item__primitiveChild: {
-        "& > $navigation_itemContent": {
-            fontStyle: "normal",
-        },
-        "& > $navigation_itemContent$navigation_itemContent__dragHover": {
-            background: "none",
-        },
-    },
-    navigation_item__component: {
-        "& > $navigation_itemContent": {
-            fontStyle: "normal",
-        },
-    },
-    navigation_item__draggable: {
-        cursor: "grab",
-    },
-    navigation_item__dragging: {
-        "&$navigation_item__draggable": {
-            cursor: "grabbing",
-        },
-    },
-    navigation_itemContent: {
-        ...applyTriggerStyle(foreground300),
-        cursor: "inherit",
-        textDecoration: "none",
-        fontStyle: "italic",
+        border: "1px solid transparent",
         ...applyFocusVisible({
             ...insetStrongBoxShadow(accent),
         }),
-    },
-    navigation_itemContent__active: {
-        background: neutralFillStealthSelected,
-        position: "relative",
-        borderRadius: "2px",
         "&::before": {
             content: "''",
-            position: "absolute",
-            background: accent,
-            borderRadius: "2px",
-            width: "2px",
-            height: "calc(100% - 4px)",
-            top: "2px",
-            left: "2px",
+            display: "inline-block",
+            "border-top": "4px solid transparent",
+            "border-left": "4px solid transparent",
+            "border-right": "4px solid transparent",
+            "border-bottom": "4px solid transparent",
+            "vertical-align": "middle",
         },
     },
-    navigation_itemContent__dragHover: {
-        background: accent,
+    navigation_itemTrigger__draggable: {
+        cursor: "grab",
     },
-    navigation_itemContent__dragHoverBefore: {
-        boxShadow: `inset 0 1px ${accent}`,
+    navigation_itemTrigger__hover: {
+        "border-color": neutralOutlineActive,
     },
-    navigation_itemContent__dragHoverAfter: {
-        boxShadow: `inset 0 -1px ${accent}`,
+    navigation_itemTrigger__hoverAfter: {
+        "border-bottom-color": neutralOutlineActive,
+    },
+    navigation_itemTrigger__hoverBefore: {
+        "border-top-color": neutralOutlineActive,
+    },
+    navigation_itemTrigger__expandable: {
+        "&::before": {
+            "border-left": `4px solid ${foreground300}`,
+        },
+    },
+    navigation_itemTrigger__active: {
+        background: neutralFillStealthSelected,
     },
     navigation_itemList: {
         display: "none",
-        fontSize: "calc(100% + 20px)",
+        "font-size": "calc(100% + 20px)",
     },
 };
 

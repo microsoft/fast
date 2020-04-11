@@ -6,7 +6,7 @@ import styles, {
 } from "./control.number-field.style";
 import { NumberFieldControlProps } from "./control.number-field.props";
 import { classNames } from "@microsoft/fast-web-utilities";
-import { isDefault } from "../utilities";
+import { isDefault } from "./utilities/form";
 
 /**
  * Form control definition
@@ -71,8 +71,8 @@ class NumberFieldControl extends React.Component<
         return typeof value === "number"
             ? value
             : typeof this.props.default !== "undefined"
-                ? this.props.default
-                : "";
+            ? this.props.default
+            : "";
     }
 }
 

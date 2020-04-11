@@ -6,14 +6,14 @@ import {
     ControlTemplateUtilitiesProps,
     StandardControlPlugin,
 } from "../../templates";
-import { FormChildOptionItem } from "../../types";
-import { generateExampleData, isConst, isSelect } from "../../utilities";
-import { ItemConstraints } from "../../../data-utilities/types";
+import { generateExampleData, isConst, isSelect } from "./form";
+import { ItemConstraints } from "@microsoft/fast-tooling";
 import { SingleLineControlPlugin } from "../../templates/plugin.control.single-line";
 import ControlPluginUtilities, {
     ControlPluginUtilitiesProps,
 } from "../../templates/plugin.control.utilities";
 import { ControlType } from "../../index";
+import { dictionaryLink } from "@microsoft/fast-tooling";
 
 class ControlSwitch extends React.Component<ControlSwitchProps, {}> {
     public static displayName: string = "ControlSwitch";
@@ -34,11 +34,20 @@ class ControlSwitch extends React.Component<ControlSwitchProps, {}> {
 
         // Check to see if there is any associated `controlId`
         // then check for the id within the passed controlPlugins
-        if (typeof this.props.schema.formControlId === "string") {
+        if (
+            typeof this.props.schema.formControlId === "string" &&
+            this.props.controlPlugins
+        ) {
             control = this.props.controlPlugins.find(
                 (controlPlugin: StandardControlPlugin) => {
                     return controlPlugin.matchesId(this.props.schema.formControlId);
                 }
+            );
+        }
+
+        if (this.props.schema[dictionaryLink]) {
+            return this.renderDataLink(
+                control !== undefined ? control : this.props.controls.linkedData
             );
         }
 
@@ -86,10 +95,6 @@ class ControlSwitch extends React.Component<ControlSwitchProps, {}> {
                 return this.renderArray(
                     control !== undefined ? control : this.props.controls.array
                 );
-            case "children":
-                return this.renderChildren(
-                    control !== undefined ? control : this.props.controls.children
-                );
             case "null":
                 return this.renderButton(
                     control !== undefined ? control : this.props.controls.button
@@ -101,13 +106,8 @@ class ControlSwitch extends React.Component<ControlSwitchProps, {}> {
         }
     }
 
-    private renderChildren(control: StandardControlPlugin): React.ReactNode {
-        control.updateProps(
-            Object.assign(this.getCommonControlProps(ControlType.children), {
-                childOptions: this.getChildOptions(),
-                defaultChildOptions: this.props.schema.defaults || null,
-            })
-        );
+    private renderDataLink(control: StandardControlPlugin): React.ReactNode {
+        control.updateProps(this.getCommonControlProps(ControlType.linkedData));
 
         return control.render();
     }
@@ -215,21 +215,6 @@ class ControlSwitch extends React.Component<ControlSwitchProps, {}> {
     };
 
     /**
-     * Gets the child options available to the control
-     */
-    private getChildOptions(): FormChildOptionItem[] {
-        if (Array.isArray(this.props.schema.ids)) {
-            return this.props.childOptions.filter(
-                (childOption: FormChildOptionItem): boolean => {
-                    return this.props.schema.ids.includes(childOption.schema.id);
-                }
-            );
-        }
-
-        return this.props.childOptions;
-    }
-
-    /**
      * Gets the common form control props
      */
     private getCommonControlProps(
@@ -241,8 +226,13 @@ class ControlSwitch extends React.Component<ControlSwitchProps, {}> {
             index: this.props.index,
             type,
             dataLocation: this.props.dataLocation,
+            navigationConfigId: this.props.navigationConfigId,
+            dictionaryId: this.props.dictionaryId,
+            dataDictionary: this.props.dataDictionary,
+            navigation: this.props.navigation,
             schemaLocation: this.props.schemaLocation,
             data: this.props.data,
+            schemaDictionary: this.props.schemaDictionary,
             schema,
             required: this.props.required,
             label: schema.title || schema.description || this.props.untitled,
@@ -253,8 +243,8 @@ class ControlSwitch extends React.Component<ControlSwitchProps, {}> {
                 typeof schema.default !== "undefined"
                     ? schema.default
                     : typeof this.props.default !== "undefined"
-                        ? this.props.default
-                        : void 0,
+                    ? this.props.default
+                    : void 0,
             const: schema.const || this.props.const,
             badge: schema.badge,
             badgeDescription: schema.badgeDescription,
@@ -268,8 +258,8 @@ class ControlSwitch extends React.Component<ControlSwitchProps, {}> {
             controls: this.props.controls,
             controlComponents: this.props.controlComponents,
             controlPlugins: this.props.controlPlugins,
-            childOptions: this.props.childOptions,
             untitled: this.props.untitled,
+            messageSystem: this.props.messageSystem,
         };
     }
 }

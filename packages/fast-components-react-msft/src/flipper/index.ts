@@ -12,6 +12,7 @@ import MSFTFlipper, {
     FlipperProps as MSFTFlipperProps,
 } from "./flipper";
 import flipperSchema from "./flipper.schema";
+import flipperSchema2 from "./flipper.schema.2";
 
 /*
  * The type returned by manageJss type is very complicated so we'll let the
@@ -33,6 +34,7 @@ export {
     FlipperDirection,
     FlipperHandledProps,
     flipperSchema,
+    flipperSchema2,
     FlipperUnhandledProps,
     FlipperClassNameContract,
 };

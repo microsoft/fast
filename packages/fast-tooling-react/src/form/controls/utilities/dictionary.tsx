@@ -5,8 +5,8 @@ import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-
 import styles, { DictionaryClassNameContract } from "./dictionary.style";
 import { DictionaryProps, DictionaryState } from "./dictionary.props";
 import ControlSwitch from "./control-switch";
-import { generateExampleData, getErrorFromDataLocation } from "../../utilities";
-import { PropertyKeyword } from "../../../data-utilities/types";
+import { generateExampleData, getErrorFromDataLocation } from "./form";
+import { PropertyKeyword } from "@microsoft/fast-tooling";
 
 /**
  *  control definition
@@ -164,7 +164,6 @@ class Dictionary extends React.Component<
                                     schema={this.props.additionalProperties}
                                     disabled={this.props.additionalProperties === false}
                                     onUpdateSection={this.props.onUpdateSection}
-                                    childOptions={this.props.childOptions}
                                     required={this.isRequired(currentKey)}
                                     invalidMessage={invalidMessage}
                                     softRemove={false}
@@ -193,6 +192,7 @@ class Dictionary extends React.Component<
                 dataLocation: `${
                     this.props.dataLocation === "" ? "" : `${this.props.dataLocation}.`
                 }${key}`,
+                dictionaryId: this.props.dictionaryId,
                 value: this.props.default,
             });
         } else if (Array.isArray(this.props.examples) && this.props.examples.length > 0) {
@@ -200,6 +200,7 @@ class Dictionary extends React.Component<
                 dataLocation: `${
                     this.props.dataLocation === "" ? "" : `${this.props.dataLocation}.`
                 }${key}`,
+                dictionaryId: this.props.dictionaryId,
                 value: this.props.examples[0],
             });
         } else {
@@ -207,6 +208,7 @@ class Dictionary extends React.Component<
                 dataLocation: `${
                     this.props.dataLocation === "" ? "" : `${this.props.dataLocation}.`
                 }${key}`,
+                dictionaryId: this.props.dictionaryId,
                 value: generateExampleData(this.props.additionalProperties, ""),
             });
         }
@@ -220,6 +222,7 @@ class Dictionary extends React.Component<
                 dataLocation: `${
                     this.props.dataLocation === "" ? "" : `${this.props.dataLocation}.`
                 }${propertyName}`,
+                dictionaryId: this.props.dictionaryId,
                 value: void 0,
             });
         };
@@ -262,7 +265,11 @@ class Dictionary extends React.Component<
                 ] = this.props.data[dataKey];
             });
 
-            this.props.onChange({ dataLocation: this.props.dataLocation, value: data });
+            this.props.onChange({
+                dataLocation: this.props.dataLocation,
+                dictionaryId: this.props.dictionaryId,
+                value: data,
+            });
 
             this.setState({
                 focusedPropertyKey: null,

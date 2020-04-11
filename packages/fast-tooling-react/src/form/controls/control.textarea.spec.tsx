@@ -20,6 +20,9 @@ const managedClasses: TextareaControlClassNameContract = {
 const textareaProps: TextareaControlProps = {
     type: ControlType.textarea,
     dataLocation: "",
+    navigationConfigId: "",
+    dictionaryId: "",
+    navigation: {},
     onChange: jest.fn(),
     value: "",
     schema: {},
@@ -29,6 +32,7 @@ const textareaProps: TextareaControlProps = {
     updateValidity: jest.fn(),
     validationErrors: [],
     required: false,
+    messageSystem: void 0,
 };
 
 describe("TextareaControl", () => {
@@ -117,12 +121,7 @@ describe("TextareaControl", () => {
                 default={defaultValue}
             />
         );
-        expect(
-            rendered
-                .find("textarea")
-                .at(0)
-                .prop("value")
-        ).toBe(value);
+        expect(rendered.find("textarea").at(0).prop("value")).toBe(value);
     });
     test("should show value if value is empty string", () => {
         const value: string = "";
@@ -135,12 +134,7 @@ describe("TextareaControl", () => {
                 default={defaultValue}
             />
         );
-        expect(
-            rendered
-                .find("textarea")
-                .at(0)
-                .prop("value")
-        ).toBe(value);
+        expect(rendered.find("textarea").at(0).prop("value")).toBe(value);
     });
     test("should show default if value is undefined and default is an empty string", () => {
         const value: string = void 0;
@@ -153,12 +147,7 @@ describe("TextareaControl", () => {
                 default={defaultValue}
             />
         );
-        expect(
-            rendered
-                .find("textarea")
-                .at(0)
-                .prop("value")
-        ).toBe(defaultValue);
+        expect(rendered.find("textarea").at(0).prop("value")).toBe(defaultValue);
     });
     test("should show empty string if value or default is not provided", () => {
         const value: string = void 0;
@@ -172,11 +161,6 @@ describe("TextareaControl", () => {
                 default={defaultValue}
             />
         );
-        expect(
-            rendered
-                .find("textarea")
-                .at(0)
-                .prop("value")
-        ).toBe(emptyString);
+        expect(rendered.find("textarea").at(0).prop("value")).toBe(emptyString);
     });
 });

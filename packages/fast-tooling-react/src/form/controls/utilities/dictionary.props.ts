@@ -1,16 +1,10 @@
 import { ControlTemplateUtilitiesProps, StandardControlPlugin } from "../../templates";
-import { FormChildOptionItem } from "../../types";
 import { Controls } from "./types";
 import { Omit } from "utility-types";
-import ajv from "ajv";
+import { ValidationError } from "@microsoft/fast-tooling";
 
 export interface DictionaryProps
     extends Omit<ControlTemplateUtilitiesProps, "invalidMessage" | "component"> {
-    /**
-     * The possible child options
-     */
-    childOptions: FormChildOptionItem[];
-
     /**
      * Control plugins
      */
@@ -58,7 +52,7 @@ export interface DictionaryProps
     /**
      * The validation errors
      */
-    validationErrors: ajv.ErrorObject[] | void;
+    validationErrors: ValidationError[];
 }
 
 export interface DictionaryState {

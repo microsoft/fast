@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.6.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-element@0.5.0...@microsoft/fast-element@0.6.0) (2020-04-10)
+
+
+### Bug Fixes
+
+* **fast-element:** always reflect latest value to attribute ([#2903](https://github.com/Microsoft/fast-dna/issues/2903)) ([48cca59](https://github.com/Microsoft/fast-dna/commit/48cca5923c571c4df697e3501cb879125d3a79eb))
+* **fast-element:** batch attr reflect ([#2885](https://github.com/Microsoft/fast-dna/issues/2885)) ([e863752](https://github.com/Microsoft/fast-dna/commit/e8637528fa0ef162cbf166738bd4a2e519422efe))
+* **fast-element:** ensure node exists when checking if it's a marker ([#2876](https://github.com/Microsoft/fast-dna/issues/2876)) ([ae656b8](https://github.com/Microsoft/fast-dna/commit/ae656b860c66557700ca1bbf1989fbd8ef7da689))
+* **fast-element:** only use Range for batch disposal ([#2901](https://github.com/Microsoft/fast-dna/issues/2901)) ([7e5bf5c](https://github.com/Microsoft/fast-dna/commit/7e5bf5c438fcd53c44b096dc5b52d1449a3368fe))
+* **fast-element:** preserve observable values from before upgrade ([#2889](https://github.com/Microsoft/fast-dna/issues/2889)) ([d84884a](https://github.com/Microsoft/fast-dna/commit/d84884afc8bf023b16dde47e81833026e8605018))
+
+
+### Features
+
+* **fast-element:** add directives for children and slotted references ([#2896](https://github.com/Microsoft/fast-dna/issues/2896)) ([5dc8911](https://github.com/Microsoft/fast-dna/commit/5dc8911868841425079123c7b5c48da937891362))
+* **fast-element:** add multi property binding support ([#2911](https://github.com/Microsoft/fast-dna/issues/2911)) ([46049ea](https://github.com/Microsoft/fast-dna/commit/46049ea73f7b63452229746c6dda52e369bf1c8d))
+* design system provider and recipe implementation ([#2860](https://github.com/Microsoft/fast-dna/issues/2860)) ([8c04e15](https://github.com/Microsoft/fast-dna/commit/8c04e15a3d1809210891643e97686635b36e5a0f))
+
+
+
+
+
 # [0.5.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-element@0.4.0...@microsoft/fast-element@0.5.0) (2020-04-02)
 
 

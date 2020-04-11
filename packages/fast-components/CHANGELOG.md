@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.7.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components@0.6.1...@microsoft/fast-components@0.7.0) (2020-04-10)
+
+
+### Bug Fixes
+
+* align checkbox class and part name to align with other controls ([#2907](https://github.com/Microsoft/fast-dna/issues/2907)) ([4cf68dc](https://github.com/Microsoft/fast-dna/commit/4cf68dc5f7c85d68aad8e5ba8c1cb3264a0aaca2))
+* export missing components and styles ([#2887](https://github.com/Microsoft/fast-dna/issues/2887)) ([a821bb7](https://github.com/Microsoft/fast-dna/commit/a821bb7be398e5ed11d98cb5f3d66dd7d645755f))
+* switch size ([#2906](https://github.com/Microsoft/fast-dna/issues/2906)) ([e8e29c1](https://github.com/Microsoft/fast-dna/commit/e8e29c166969398c7fbc11233ff5e49eeb0de093))
+
+
+### Features
+
+* add badge web component ([#2795](https://github.com/Microsoft/fast-dna/issues/2795)) ([bf6bf51](https://github.com/Microsoft/fast-dna/commit/bf6bf513d3dcb811cc6b83da206de3b80647522e))
+* add divider as web component ([#2864](https://github.com/Microsoft/fast-dna/issues/2864)) ([5c9e09d](https://github.com/Microsoft/fast-dna/commit/5c9e09d5efd62ebdc7d2d4d0b797af77e0ae38ab))
+* add flipper as a web component ([#2870](https://github.com/Microsoft/fast-dna/issues/2870)) ([ceb582e](https://github.com/Microsoft/fast-dna/commit/ceb582e6f9a3b0d3cc73e7afd454ebf8031ef372))
+* design system provider and recipe implementation ([#2860](https://github.com/Microsoft/fast-dna/issues/2860)) ([8c04e15](https://github.com/Microsoft/fast-dna/commit/8c04e15a3d1809210891643e97686635b36e5a0f))
+* remove name tag example component ([#2902](https://github.com/Microsoft/fast-dna/issues/2902)) ([9a6f464](https://github.com/Microsoft/fast-dna/commit/9a6f46491d235461b0094e7b11b5b170d6250a9b))
+
+
+
+
+
 ## [0.6.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components@0.6.0...@microsoft/fast-components@0.6.1) (2020-04-02)
 
 **Note:** Version bump only for package @microsoft/fast-components

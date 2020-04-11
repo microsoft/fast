@@ -54,11 +54,9 @@ class ThemeControl extends React.Component<
 
     private renderInput(theme: string): JSX.Element {
         if (this.props.options && Array.isArray(this.props.options)) {
-            const option: any = this.props.options.find(
-                (item: string): any => {
-                    return item === theme;
-                }
-            );
+            const option: any = this.props.options.find((item: string): any => {
+                return item === theme;
+            });
 
             if (typeof option !== "undefined") {
                 return (

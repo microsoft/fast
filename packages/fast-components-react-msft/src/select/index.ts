@@ -10,6 +10,7 @@ import MSFTSelect, {
     SelectUnhandledProps,
 } from "./select";
 import selectSchema from "./select.schema";
+import selectSchema2 from "./select.schema.2";
 
 /*
  * The type returned by manageJss type is very complicated so we'll let the
@@ -31,5 +32,6 @@ export {
     SelectClassNameContract,
     SelectHandledProps,
     selectSchema,
+    selectSchema2,
     SelectUnhandledProps,
 };

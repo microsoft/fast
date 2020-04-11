@@ -9,7 +9,6 @@ import {
     ArrayControl,
     ButtonControl,
     CheckboxControl,
-    ChildrenControl,
     DisplayControl,
     NumberFieldControl,
     SectionControl,
@@ -41,9 +40,22 @@ const props: SingleLineControlTemplateProps = {
     index: 1,
     type: ControlType.checkbox,
     dataLocation: "",
+    navigationConfigId: "",
+    dictionaryId: "",
+    dataDictionary: [
+        {
+            "": {
+                schemaId: "",
+                data: {},
+            },
+        },
+        "",
+    ],
+    navigation: {},
     schemaLocation: "",
     control: jest.fn(),
     data: void 0,
+    schemaDictionary: {},
     schema: {},
     required: void 0,
     label: "foo",
@@ -56,7 +68,6 @@ const props: SingleLineControlTemplateProps = {
         [ControlType.array]: ArrayControl,
         [ControlType.button]: ButtonControl,
         [ControlType.checkbox]: CheckboxControl,
-        [ControlType.children]: ChildrenControl,
         [ControlType.display]: DisplayControl,
         [ControlType.numberField]: NumberFieldControl,
         [ControlType.sectionLink]: SectionLinkControl,
@@ -66,9 +77,9 @@ const props: SingleLineControlTemplateProps = {
     },
     controls: {
         [ControlType.array]: null,
+        [ControlType.linkedData]: null,
         [ControlType.button]: null,
         [ControlType.checkbox]: null,
-        [ControlType.children]: null,
         [ControlType.display]: null,
         [ControlType.numberField]: null,
         [ControlType.sectionLink]: null,
@@ -76,6 +87,7 @@ const props: SingleLineControlTemplateProps = {
         [ControlType.select]: null,
         [ControlType.textarea]: null,
     },
+    messageSystem: void 0,
 };
 
 describe("SingleLineControlTemplate", () => {

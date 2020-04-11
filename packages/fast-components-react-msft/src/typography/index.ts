@@ -13,6 +13,7 @@ import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { DesignSystem, TypographyStyles } from "@microsoft/fast-components-styles-msft";
 import { Subtract } from "utility-types";
 import typographySchema from "./typography.schema";
+import typographySchema2 from "./typography.schema.2";
 
 /*
  * The type returned by manageJss type is very complicated so we'll let the
@@ -38,6 +39,7 @@ export {
     Typography,
     TypographyProps,
     typographySchema,
+    typographySchema2,
     /**
      * @deprecated
      */

@@ -2,22 +2,22 @@ import React from "react";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, render, shallow } from "enzyme";
 import ControlSwitch, { ControlSwitchProps } from "./control-switch";
-import { ContextComponent, DragDropContext } from "react-dnd";
+import { DndProvider } from "react-dnd";
 import HTML5Backend from "react-dnd-html5-backend";
-
-import oneOfSchema from "../../../__tests__/schemas/one-of.schema.json";
-import numberFieldSchema from "../../../__tests__/schemas/number-field.schema.json";
-import checkboxSchema from "../../../__tests__/schemas/checkbox.schema.json";
-import objectSchema from "../../../__tests__/schemas/objects.schema.json";
-import arraySchema from "../../../__tests__/schemas/arrays.schema.json";
-import childrenSchema from "../../../__tests__/schemas/children.schema.json";
-import textareaSchema from "../../../__tests__/schemas/textarea.schema.json";
+import { BadgeType, ControlContext } from "../../templates/types";
+import {
+    arraysSchema as arraySchema,
+    checkboxSchema,
+    numberFieldSchema,
+    objectsSchema as objectSchema,
+    textareaSchema,
+} from "../../../__tests__/schemas/index";
 import {
     ArrayControlConfig,
-    ChildrenControlConfig,
     CommonControlConfig,
     ControlConfig,
     ControlType,
+    LinkedDataControlConfig,
     ListControlConfig,
     NumberFieldTypeControlConfig,
     SectionControlConfig,
@@ -25,22 +25,20 @@ import {
     SingleLineControlPlugin,
     StandardControlPlugin,
     TextareaControlConfig,
-} from "../../templates";
+} from "../../templates/index";
 import { Controls } from "./types";
-import { BadgeType, ControlContext } from "../../templates/types";
-import { reactChildrenStringSchema } from "../control.children.text";
 import {
     ArrayControl,
     ButtonControl,
     CheckboxControl,
-    ChildrenControl,
     DisplayControl,
+    LinkedDataControl,
     NumberFieldControl,
     SectionControl,
     SectionLinkControl,
     SelectControl,
     TextareaControl,
-} from "../..";
+} from "../index";
 
 const selectControl: StandardControlPlugin = new StandardControlPlugin({
     control: (config: ListControlConfig): React.ReactNode => {
@@ -53,10 +51,10 @@ const arrayControl: StandardControlPlugin = new StandardControlPlugin({
         return <ArrayControl {...config} />;
     },
 });
-const childrenControl: StandardControlPlugin = new StandardControlPlugin({
-    context: ControlContext.fill,
-    control: (config: ChildrenControlConfig): React.ReactNode => {
-        return <ChildrenControl {...config} />;
+const linkedDataControl: StandardControlPlugin = new StandardControlPlugin({
+    context: ControlContext.default,
+    control: (config: LinkedDataControlConfig): React.ReactNode => {
+        return <LinkedDataControl {...config} />;
     },
 });
 const numberFieldControl: StandardControlPlugin = new StandardControlPlugin({
@@ -98,8 +96,8 @@ const buttonControl: StandardControlPlugin = new StandardControlPlugin({
 export const controls: Controls = {
     button: buttonControl,
     array: arrayControl,
+    linkedData: linkedDataControl,
     checkbox: checkboxControl,
-    children: childrenControl,
     display: displayControl,
     textarea: textareaControl,
     select: selectControl,
@@ -108,9 +106,15 @@ export const controls: Controls = {
     numberField: numberFieldControl,
 };
 
-const TestControlSwitch: typeof ControlSwitch & ContextComponent<any> = DragDropContext(
-    HTML5Backend
-)(ControlSwitch);
+const TestControlSwitch: React.FC<ControlSwitchProps> = (
+    props: React.PropsWithChildren<ControlSwitchProps>
+): React.ReactElement => {
+    return (
+        <DndProvider backend={HTML5Backend}>
+            <ControlSwitch {...props} />
+        </DndProvider>
+    );
+};
 
 /*
  * Configure Enzyme
@@ -125,11 +129,23 @@ const formControlSwitchProps: ControlSwitchProps = {
     label: "Label",
     schema: {},
     data: {},
+    schemaDictionary: {},
     required: false,
     untitled: "",
     schemaLocation: "",
     dataLocation: "",
-    childOptions: [],
+    navigationConfigId: "",
+    dictionaryId: "",
+    dataDictionary: [
+        {
+            "": {
+                schemaId: "",
+                data: {},
+            },
+        },
+        "",
+    ],
+    navigation: {},
     onUpdateSection: null,
     onChange: null,
     invalidMessage: "",
@@ -138,13 +154,13 @@ const formControlSwitchProps: ControlSwitchProps = {
         [ControlType.array]: ArrayControl,
         [ControlType.button]: ButtonControl,
         [ControlType.checkbox]: CheckboxControl,
-        [ControlType.children]: ChildrenControl,
         [ControlType.display]: DisplayControl,
         [ControlType.numberField]: NumberFieldControl,
         [ControlType.sectionLink]: SectionLinkControl,
         [ControlType.select]: SelectControl,
         [ControlType.textarea]: TextareaControl,
     },
+    messageSystem: void 0,
 };
 
 describe("ControlSwitch", () => {
@@ -230,20 +246,6 @@ describe("ControlSwitch", () => {
 
         expect(rendered.find("ArrayControl")).toHaveLength(1);
     });
-    test("should render the children UI when a children type is available", () => {
-        const rendered: any = mount(
-            <TestControlSwitch
-                {...formControlSwitchProps}
-                schema={childrenSchema.reactProperties.children}
-                schemaLocation={"reactProperties.children"}
-                dataLocation={"children"}
-                propertyName={"children"}
-                data={[]}
-            />
-        );
-
-        expect(rendered.find("ChildrenControl")).toHaveLength(1);
-    });
     test("should render a select when enums are available", () => {
         const rendered: any = mount(
             <TestControlSwitch
@@ -257,88 +259,6 @@ describe("ControlSwitch", () => {
         );
 
         expect(rendered.find("SelectControl")).toHaveLength(1);
-    });
-    test("should restrict the child options if ids have been passed", () => {
-        const renderedWithDefault: any = mount(
-            <TestControlSwitch
-                {...formControlSwitchProps}
-                childOptions={[
-                    {
-                        component: null,
-                        schema: objectSchema,
-                    },
-                    {
-                        component: null,
-                        schema: arraySchema,
-                    },
-                    {
-                        component: null,
-                        schema: childrenSchema,
-                    },
-                ]}
-                schema={childrenSchema.reactProperties.children}
-                schemaLocation={"reactProperties.children"}
-                dataLocation={"children"}
-                propertyName={"children"}
-                data={[]}
-            />
-        );
-
-        const renderedWithoutDefaultAndIds: any = mount(
-            <TestControlSwitch
-                {...formControlSwitchProps}
-                childOptions={[
-                    {
-                        component: null,
-                        schema: objectSchema,
-                    },
-                    {
-                        component: null,
-                        schema: arraySchema,
-                    },
-                    {
-                        component: null,
-                        schema: childrenSchema,
-                    },
-                ]}
-                schema={
-                    childrenSchema.reactProperties.restrictedChildrenWithReactDefaults
-                }
-                schemaLocation={"reactProperties.restrictedChildrenWithReactDefaults"}
-                dataLocation={"restrictedChildrenWithReactDefaults"}
-                propertyName={"restrictedChildrenWithReactDefaults"}
-                data={[]}
-            />
-        );
-
-        const renderedWithDefaultAndIds: any = mount(
-            <TestControlSwitch
-                {...formControlSwitchProps}
-                childOptions={[
-                    {
-                        component: null,
-                        schema: objectSchema,
-                    },
-                    {
-                        component: null,
-                        schema: arraySchema,
-                    },
-                    {
-                        component: null,
-                        schema: childrenSchema,
-                    },
-                ]}
-                schema={childrenSchema.reactProperties.restrictedWithChildren}
-                schemaLocation={"reactProperties.restrictedWithChildren"}
-                dataLocation={"restrictedWithChildren"}
-                propertyName={"restrictedWithChildren"}
-                data={[]}
-            />
-        );
-
-        expect(renderedWithDefault.find("li")).toHaveLength(4);
-        expect(renderedWithoutDefaultAndIds.find("li")).toHaveLength(1);
-        expect(renderedWithDefaultAndIds.find("li")).toHaveLength(3);
     });
     describe("should pass all config properties to the template", () => {
         describe("common properties", () => {

@@ -46,17 +46,9 @@ describe("CSSPropertyEditor", () => {
     xtest("should focus the key input when the containing div has been clicked", () => {
         const rendered: any = mount(<CSSPropertyEditor />);
 
-        rendered
-            .find("div")
-            .at(0)
-            .simulate("click");
+        rendered.find("div").at(0).simulate("click");
 
-        expect(
-            rendered
-                .find("input")
-                .at(0)
-                .getDOMNode()
-        ).toEqual(document.activeElement);
+        expect(rendered.find("input").at(0).getDOMNode()).toEqual(document.activeElement);
     });
 
     test("should show data key/value pairs as inputs using the key and value as input values", () => {

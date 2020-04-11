@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.8.3](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-class-name-contracts-msft@4.8.2...@microsoft/fast-components-class-name-contracts-msft@4.8.3) (2020-04-10)
+
+**Note:** Version bump only for package @microsoft/fast-components-class-name-contracts-msft
+
+
+
+
+
 ## [4.8.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-class-name-contracts-msft@4.8.1...@microsoft/fast-components-class-name-contracts-msft@4.8.2) (2020-03-13)
 
 **Note:** Version bump only for package @microsoft/fast-components-class-name-contracts-msft

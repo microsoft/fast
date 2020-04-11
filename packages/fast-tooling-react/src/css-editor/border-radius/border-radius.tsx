@@ -180,24 +180,16 @@ export default class CSSBorderRadius extends Foundation<
                     borderRadius.borderRadius = e.target.value;
                     break;
                 case BorderRadiusValue.borderBottomLeftRadius:
-                    borderRadius.borderRadius = `${parsedString[0]} ${parsedString[1]} ${
-                        parsedString[2]
-                    } ${validatedValue}`;
+                    borderRadius.borderRadius = `${parsedString[0]} ${parsedString[1]} ${parsedString[2]} ${validatedValue}`;
                     break;
                 case BorderRadiusValue.borderBottomRightRadius:
-                    borderRadius.borderRadius = `${parsedString[0]} ${
-                        parsedString[1]
-                    } ${validatedValue} ${parsedString[3]}`;
+                    borderRadius.borderRadius = `${parsedString[0]} ${parsedString[1]} ${validatedValue} ${parsedString[3]}`;
                     break;
                 case BorderRadiusValue.borderTopLeftRadius:
-                    borderRadius.borderRadius = `${validatedValue} ${parsedString[1]} ${
-                        parsedString[2]
-                    } ${parsedString[3]}`;
+                    borderRadius.borderRadius = `${validatedValue} ${parsedString[1]} ${parsedString[2]} ${parsedString[3]}`;
                     break;
                 case BorderRadiusValue.borderTopRightRadius:
-                    borderRadius.borderRadius = `${parsedString[0]} ${validatedValue} ${
-                        parsedString[2]
-                    } ${parsedString[3]}`;
+                    borderRadius.borderRadius = `${parsedString[0]} ${validatedValue} ${parsedString[2]} ${parsedString[3]}`;
                     break;
             }
             this.props.onChange(borderRadius);

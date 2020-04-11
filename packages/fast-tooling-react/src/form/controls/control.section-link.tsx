@@ -6,7 +6,7 @@ import styles, {
     SectionLinkControlClassNameContract,
 } from "./control.section-link.style";
 import { SectionLinkControlProps } from "./control.section-link.props";
-import { isDefault } from "../utilities";
+import { isDefault } from "./utilities/form";
 
 /**
  * Form control definition
@@ -51,10 +51,10 @@ class SectionLinkControl extends React.Component<
     }
 
     private handleUpdateSection = (e: React.MouseEvent<HTMLAnchorElement>): void => {
-        this.props.onUpdateSection({
-            schemaLocation: this.props.schemaLocation,
-            dataLocation: this.props.dataLocation,
-        });
+        this.props.onUpdateSection(
+            this.props.dictionaryId,
+            this.props.navigationConfigId
+        );
     };
 }
 
