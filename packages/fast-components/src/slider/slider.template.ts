@@ -1,7 +1,6 @@
 import { html } from "@microsoft/fast-element";
-import { Slider } from "./slider";
 import { ref } from "@microsoft/fast-element/dist/directives";
-import { SliderOrientation } from "./index";
+import { Slider } from "./slider";
 
 export const SliderTemplate = html<Slider>`
     <template

@@ -1,5 +1,4 @@
 import { attr, nullableNumberConverter, observable } from "@microsoft/fast-element";
-import { FormAssociated } from "../form-associated";
 import {
     Direction,
     keyCodeArrowDown,
@@ -9,6 +8,7 @@ import {
     keyCodeEnd,
     keyCodeHome,
 } from "@microsoft/fast-web-utilities";
+import { FormAssociated } from "../form-associated";
 import { convertPixelToPercent } from "./slider-utilities";
 import { SliderConfiguration, SliderMode, SliderOrientation } from "./index";
 

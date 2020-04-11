@@ -1,7 +1,4 @@
 import { customElement } from "@microsoft/fast-element";
-import { Slider } from "./slider";
-import { SliderTemplate as template } from "./slider.template";
-import { SliderStyles as styles } from "./slider.styles";
 import { Direction } from "@microsoft/fast-web-utilities";
 import { designSystemConsumer } from "../design-system-consumer";
 import {
@@ -11,6 +8,9 @@ import {
     neutralOutlineHover,
     neutralOutlineRest,
 } from "../styles/recipes";
+import { Slider } from "./slider";
+import { SliderTemplate as template } from "./slider.template";
+import { SliderStyles as styles } from "./slider.styles";
 
 export enum SliderMode {
     singleValue = "single-value",

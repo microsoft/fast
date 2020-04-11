@@ -1,9 +1,9 @@
 import { customElement } from "@microsoft/fast-element";
+import { designSystemConsumer } from "../design-system-consumer";
+import { neutralOutlineRest } from "../styles/recipes";
 import { SliderLabel } from "./slider-label";
 import { SliderLabelTemplate as template } from "./slider-label.template";
 import { SliderLabelStyles as styles } from "./slider-label.styles";
-import { designSystemConsumer } from "../design-system-consumer";
-import { neutralOutlineRest } from "../styles/recipes";
 
 @customElement({
     name: "fast-slider-label",
