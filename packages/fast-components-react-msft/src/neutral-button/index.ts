@@ -15,6 +15,7 @@ import {
 } from "../button-base";
 import { DisplayNamePrefix } from "../utilities";
 import neutralButtonSchema from "./neutral-button.schema";
+import neutralButtonSchema2 from "./neutral-button.schema.2";
 
 /*
  * The type returned by manageJss type is very complicated so we'll let the
@@ -45,4 +46,5 @@ export {
     NeutralButtonHandledProps,
     NeutralButtonUnhandledProps,
     neutralButtonSchema,
+    neutralButtonSchema2,
 };

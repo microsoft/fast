@@ -15,6 +15,7 @@ import {
 } from "../button-base";
 import { DisplayNamePrefix } from "../utilities";
 import outlineButtonSchema from "./outline-button.schema";
+import outlineButtonSchema2 from "./outline-button.schema.2";
 
 /*
  * The type returned by manageJss type is very complicated so we'll let the
@@ -45,4 +46,5 @@ export {
     OutlineButtonHandledProps,
     OutlineButtonUnhandledProps,
     outlineButtonSchema,
+    outlineButtonSchema2,
 };

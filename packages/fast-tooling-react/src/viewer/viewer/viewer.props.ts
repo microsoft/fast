@@ -1,6 +1,6 @@
 import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 import { ViewerClassNameContract } from "./viewer.class-name-contract";
-import { CustomViewerMessage, ViewerMessage } from "../utilities/message-system";
+import { MessageSystem } from "@microsoft/fast-tooling";
 
 export enum ResizeHandleLocation {
     left,
@@ -17,16 +17,6 @@ export interface ViewerHandledProps extends ViewerManagedClasses {
      * The src route for the viewer iframe
      */
     iframeSrc: string;
-
-    /**
-     * The props to be assigned to the ViewerContent component
-     */
-    viewerContentProps?: any;
-
-    /**
-     * Custom message to pass to the iframe
-     */
-    iframePostMessage?: any;
 
     /**
      * The responsive, resizable functionality for the viewer
@@ -54,19 +44,10 @@ export interface ViewerHandledProps extends ViewerManagedClasses {
     onUpdateWidth?: (width: number) => void;
 
     /**
-     * A callback for when content props have been requested to be updated
+     * The message system
+     * used for sending and receiving data to the message system
      */
-    onUpdateViewerContentProps?: (message: ViewerMessage) => void;
-
-    /**
-     * A callback for when content props are requested to be initialized
-     */
-    onInitializeViewerContentProps?: (message: ViewerMessage) => void;
-
-    /**
-     * A callback for any custom message sent to the iframe
-     */
-    onMessage?: (message: CustomViewerMessage) => void;
+    messageSystem: MessageSystem;
 }
 
 export type ViewerProps = ViewerUnhandledProps & ViewerHandledProps;

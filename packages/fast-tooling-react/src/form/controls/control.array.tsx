@@ -2,13 +2,12 @@ import { uniqueId } from "lodash-es";
 import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import React from "react";
-import { getArrayLinks, isRootLocation } from "../utilities";
+import { getArrayLinks, isRootLocation } from "./utilities/form";
 import styles, { ArrayControlClassNameContract } from "./control.array.style";
 import { ArrayControlProps, ArrayControlState } from "./control.array.props";
 import { DragItem } from "../templates";
 import { ArrayAction } from "../templates/types";
 import { classNames } from "@microsoft/fast-web-utilities";
-import { ErrorObject } from "ajv";
 
 /**
  * Form control definition
@@ -207,12 +206,12 @@ class ArrayControl extends React.Component<
         }
 
         for (const error of this.props.validationErrors) {
-            if (error.dataPath.startsWith(`.${this.props.dataLocation}[${index}]`)) {
+            if (error.dataLocation.startsWith(`${this.props.dataLocation}.${index}`)) {
                 return (
                     <div
                         className={this.props.managedClasses.arrayControl_invalidMessage}
                     >
-                        {error.message}
+                        {error.invalidMessage}
                     </div>
                 );
             }
@@ -246,14 +245,10 @@ class ArrayControl extends React.Component<
         return (e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>): void => {
             e.preventDefault();
 
-            const schemaLocation: string = isRootLocation(this.props.schemaLocation)
-                ? "items"
-                : `${this.props.schemaLocation}.items`;
-
-            this.props.onUpdateSection({
-                schemaLocation,
-                dataLocation: `${this.props.dataLocation}[${index}]`,
-            });
+            this.props.onUpdateSection(
+                this.props.dictionaryId,
+                this.props.navigation[this.props.navigationConfigId].items[index]
+            );
         };
     };
 

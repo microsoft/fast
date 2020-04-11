@@ -1,4 +1,4 @@
-import { NavigationDataType } from "./navigation.props";
+import { HoverLocation } from "./navigation.props";
 
 export enum VerticalDragDirection {
     up,
@@ -6,38 +6,44 @@ export enum VerticalDragDirection {
     center,
 }
 
+export enum DragDropItemType {
+    default = "default",
+    linkedData = "linked-data",
+    linkedDataContainer = "linked-data-container",
+}
+
 export interface NavigationTreeItemProps
     extends NavigationTreeItemDragSourceCollectedProps,
         NavigationTreeItemDropTargetCollectedProps {
     /**
-     * The React children
+     * The type of item for drag and drop
      */
-    children?: React.ReactNode;
+    type: DragDropItemType;
 
     /**
-     * The class
+     * The class names assigned to style the drag item
      */
-    className: (dragging: boolean) => string;
+    className: string;
 
     /**
-     * The class for the content
+     * The dictionary ID
      */
-    contentClassName: string;
+    dictionaryId: string;
 
     /**
-     * The class for the expand trigger
+     * The index of this drag item
      */
-    expandTriggerClassName: string;
+    index: number;
 
     /**
-     * A string representing the data location in lodash notation
+     * The navigation ID
      */
-    dataLocation: string;
+    navigationConfigId: string;
 
     /**
-     * The expanded state
+     * Whether this navigation item is collapsible
      */
-    expanded: boolean;
+    isCollapsible: boolean;
 
     /**
      * The click handler for expanding an item
@@ -45,67 +51,30 @@ export interface NavigationTreeItemProps
     handleClick: React.MouseEventHandler<HTMLElement>;
 
     /**
-     * The click handler for selecting an item
-     */
-    handleSelectionClick: React.MouseEventHandler<HTMLElement>;
-
-    /**
      * The keyDown handler
      */
     handleKeyDown: React.KeyboardEventHandler<HTMLElement>;
 
     /**
-     * The handler for closing dragging items
+     * Callback for starting the drag
      */
-    handleCloseDraggingItem: (dataLocation: string, type: NavigationDataType) => void;
+    dragStart: (dictionaryId: string) => void;
 
     /**
-     * The text used for the tree item
+     * Callback for ending the drag
      */
-    text: string;
+    dragEnd: () => void;
 
     /**
-     * The type of data this tree item represents
+     * Callback for hovering an item
      */
-    type: NavigationDataType;
-
-    /**
-     * The drag hover state
-     */
-    dragHover: boolean;
-
-    /**
-     * The drag hover before state
-     */
-    dragHoverBefore: boolean;
-
-    /**
-     * The drag hover after state
-     */
-    dragHoverAfter: boolean;
-
-    /**
-     * The onChange callback for updating the data
-     */
-    onChange: (
-        sourceDataLocation: string,
-        targetDataLocation: string,
-        type?: NavigationDataType,
-        direction?: VerticalDragDirection
+    dragHover: (
+        type: DragDropItemType,
+        dictionaryId: string,
+        navigationConfigId: string,
+        index: number,
+        location: HoverLocation
     ) => void;
-
-    /**
-     * The hover callback for dragging
-     */
-    onDragHover: (dataLocation: string, direction?: VerticalDragDirection) => void;
-
-    /**
-     * The class for hovering when dragging
-     */
-    getContentDragHoverClassName: (
-        type: NavigationDataType,
-        direction?: VerticalDragDirection
-    ) => string;
 }
 
 export interface NavigationTreeItemDragSourceCollectedProps {
@@ -115,10 +84,10 @@ export interface NavigationTreeItemDragSourceCollectedProps {
 
 export interface NavigationTreeItemDropTargetCollectedProps {
     connectDropTarget?: (el: JSX.Element) => JSX.Element;
-    canDrop?: boolean;
     isOver?: boolean;
 }
 
 export interface NavigationTreeItemDragObject {
-    dataLocation: string;
+    dictionaryId: string;
+    navigationConfigId: string;
 }

@@ -12,6 +12,7 @@ import {
 } from "../button-base";
 import { DisplayNamePrefix } from "../utilities";
 import accentButtonSchema from "./accent-button.schema";
+import accentButtonSchema2 from "./accent-button.schema.2";
 
 /*
  * The type returned by manageJss type is very complicated so we'll let the
@@ -42,4 +43,5 @@ export {
     AccentButtonHandledProps,
     AccentButtonUnhandledProps,
     accentButtonSchema,
+    accentButtonSchema2,
 };

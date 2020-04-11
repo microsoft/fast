@@ -5,6 +5,7 @@ import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { DesignSystem, HeadingStyles } from "@microsoft/fast-components-styles-msft";
 import { Subtract } from "utility-types";
 import headingSchema from "./heading.schema";
+import headingSchema2 from "./heading.schema.2";
 import MSFTHeading, {
     HeadingAlignBaseline,
     HeadingManagedClasses,
@@ -38,5 +39,6 @@ export {
     HeadingClassNameContract,
     HeadingHandledProps,
     headingSchema,
+    headingSchema2,
     HeadingUnhandledProps,
 };

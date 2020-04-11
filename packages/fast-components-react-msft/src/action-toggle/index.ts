@@ -11,6 +11,7 @@ import MSFTActionToggle, {
     ActionToggleProps as MSFTActionToggleProps,
 } from "./action-toggle";
 import actionToggleSchema from "./action-toggle.schema";
+import actionToggleSchema2 from "./action-toggle.schema.2";
 
 /*
  * The type returned by manageJss type is very complicated so we'll let the
@@ -36,5 +37,6 @@ export {
     ActionToggleClassNameContract,
     ActionToggleHandledProps,
     actionToggleSchema,
+    actionToggleSchema2,
     ActionToggleUnhandledProps,
 };

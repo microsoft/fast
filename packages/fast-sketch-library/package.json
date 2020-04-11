@@ -1,7 +1,7 @@
 {
   "name": "@microsoft/fast-sketch-library",
   "description": "A Node.js utility for quickly extracting Sketch symbol libraries from a website",
-  "version": "4.0.4",
+  "version": "4.0.5",
   "private": true,
   "sideEffects": false,
   "author": {
@@ -29,7 +29,7 @@
   },
   "devDependencies": {
     "@brainly/html-sketchapp": "^3.1.0",
-    "@microsoft/eslint-config-fast-dna": "^1.0.0",
+    "@microsoft/eslint-config-fast-dna": "^1.1.0",
     "@types/node": "^9.4.6",
     "@types/puppeteer": "^1.3.2",
     "eslint-config-prettier": "^6.10.1",

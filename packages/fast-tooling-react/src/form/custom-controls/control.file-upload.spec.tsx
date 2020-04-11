@@ -14,6 +14,9 @@ configure({ adapter: new Adapter() });
 const fileUploadControlProps: FileUploadControlProps = {
     type: ControlType.textarea,
     dataLocation: "",
+    navigationConfigId: "",
+    dictionaryId: "",
+    navigation: {},
     disabled: false,
     elementRef: null,
     value: "",
@@ -23,6 +26,7 @@ const fileUploadControlProps: FileUploadControlProps = {
     updateValidity: jest.fn(),
     validationErrors: [],
     required: false,
+    messageSystem: void 0,
 };
 
 describe("FileUploadControl", () => {

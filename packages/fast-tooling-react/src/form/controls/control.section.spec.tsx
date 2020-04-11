@@ -6,15 +6,13 @@ import {
     SectionControlClassNameContract,
     SectionControlProps,
 } from "./control.section.props";
-import { ContextComponent, DragDropContext } from "react-dnd";
+import { DndProvider } from "react-dnd";
 import HTML5Backend from "react-dnd-html5-backend";
 import { controls } from "./utilities/control-switch.spec";
-import ajv, { Ajv, ValidateFunction } from "ajv";
 import {
     ArrayControl,
     ButtonControl,
     CheckboxControl,
-    ChildrenControl,
     ControlType,
     DisplayControl,
     NumberFieldControl,
@@ -22,9 +20,17 @@ import {
     SelectControl,
     TextareaControl,
 } from "../index";
+import { DataType } from "@microsoft/fast-tooling";
 
-const TestSectionControl: typeof StyledSectionControl &
-    ContextComponent<any> = DragDropContext(HTML5Backend)(StyledSectionControl);
+const TestSectionControl: any = (
+    props: React.PropsWithChildren<SectionControlProps>
+): React.ReactElement => {
+    return (
+        <DndProvider backend={HTML5Backend}>
+            <StyledSectionControl {...props} />
+        </DndProvider>
+    );
+};
 
 /*
  * Configure Enzyme
@@ -34,10 +40,35 @@ configure({ adapter: new Adapter() });
 const sectionControlProps: SectionControlProps = {
     type: ControlType.section,
     dataLocation: "",
+    navigationConfigId: "",
+    dictionaryId: "",
+    dataDictionary: [
+        {
+            "": {
+                schemaId: "",
+                data: {},
+            },
+        },
+        "",
+    ],
+    navigation: {
+        "": {
+            self: "",
+            parent: null,
+            relativeDataLocation: "",
+            schemaLocation: "",
+            schema: {},
+            disabled: false,
+            data: void 0,
+            text: "foo",
+            type: DataType.object,
+            items: [],
+        },
+    },
     schemaLocation: "",
     controls,
-    childOptions: [],
     schema: {},
+    schemaDictionary: {},
     disabled: false,
     value: "",
     untitled: "",
@@ -49,7 +80,6 @@ const sectionControlProps: SectionControlProps = {
         [ControlType.array]: ArrayControl,
         [ControlType.button]: ButtonControl,
         [ControlType.checkbox]: CheckboxControl,
-        [ControlType.children]: ChildrenControl,
         [ControlType.display]: DisplayControl,
         [ControlType.numberField]: NumberFieldControl,
         [ControlType.sectionLink]: SectionLinkControl,
@@ -61,6 +91,7 @@ const sectionControlProps: SectionControlProps = {
     reportValidity: jest.fn(),
     updateValidity: jest.fn(),
     required: false,
+    messageSystem: void 0,
 };
 
 const managedClasses: SectionControlClassNameContract = {
@@ -190,26 +221,6 @@ describe("SectionControl", () => {
             1
         );
     });
-    test("should pass the disabled prop to the ControlSwitch", () => {
-        const schema: any = {
-            type: "object",
-            properties: {
-                foo: {
-                    type: "string",
-                },
-            },
-            disabled: true,
-        };
-        const rendered: any = mount(
-            <SectionControl
-                {...sectionControlProps}
-                managedClasses={managedClasses}
-                schema={schema}
-            />
-        );
-
-        expect(rendered.find("ControlSwitch").prop("disabled")).toEqual(true);
-    });
     test("should show an invalid message if validation errors have been passed", () => {
         const schema: any = {
             type: "object",
@@ -220,21 +231,17 @@ describe("SectionControl", () => {
             },
             required: ["foo"],
         };
-        const validator: Ajv = new ajv({ schemaId: "auto", allErrors: true });
-        const validate: ValidateFunction = validator.compile(schema);
-        const isValid: boolean | PromiseLike<any> = validate({});
-        let validationErrors: any = [];
-
-        if (!!!isValid) {
-            validationErrors = validate.errors;
-        }
-
         const rendered: any = mount(
             <SectionControl
                 {...sectionControlProps}
                 managedClasses={managedClasses}
                 schema={schema}
-                validationErrors={validationErrors}
+                validationErrors={[
+                    {
+                        dataLocation: "foo",
+                        invalidMessage: "is required",
+                    },
+                ]}
             />
         );
 
@@ -249,22 +256,13 @@ describe("SectionControl", () => {
                 },
             },
         };
-        const validator: Ajv = new ajv({ schemaId: "auto", allErrors: true });
-        const validate: ValidateFunction = validator.compile(schema);
-        const isValid: boolean | PromiseLike<any> = validate({});
-        let validationErrors: any = [];
-
-        if (!!!isValid) {
-            validationErrors = validate.errors;
-        }
-
         const rendered: any = mount(
             <SectionControl
                 {...sectionControlProps}
                 managedClasses={managedClasses}
                 schema={schema}
                 value={{}}
-                validationErrors={validationErrors}
+                validationErrors={[]}
             />
         );
 

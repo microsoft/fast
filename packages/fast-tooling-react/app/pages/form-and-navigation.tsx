@@ -1,32 +1,30 @@
 import React from "react";
 import { DesignSystemProvider } from "@microsoft/fast-jss-manager-react";
-import { getDataFromSchema } from "../../src/data-utilities";
-import { BareForm, FormPlugin, FormPluginProps, Navigation } from "../../src";
-import {
-    FormComponentMappingToPropertyNamesProps,
-    FormLocation,
-    FormOrderByPropertyNamesProps,
-    FormProps,
-} from "../../src/form/form.props";
+import { ModularForm, ModularNavigation } from "../../src";
+import { FormProps } from "../../src/form/form.props";
 import {
     FormAttributeSettingsMappingToPropertyNames,
     FormChildOptionItem,
 } from "../../src/form/types";
 import * as testConfigs from "./form/";
-import { StringUpdateSchemaPlugin } from "./form/plugin/plugin";
+import {
+    DataDictionary,
+    getDataFromSchema,
+    MessageSystem,
+    MessageSystemType,
+    SchemaDictionary,
+} from "@microsoft/fast-tooling";
 
 export type componentDataOnChange = (e: React.ChangeEvent<HTMLFormElement>) => void;
 
 export interface FormTestPageState {
     schema: any;
     data: any;
-    config?: FormComponentMappingToPropertyNamesProps;
-    orderByPropertyNames?: FormOrderByPropertyNamesProps;
+    dataDictionary: DataDictionary<unknown>;
+    navigation: any;
     attributeAssignment?: FormAttributeSettingsMappingToPropertyNames;
-    onChange: componentDataOnChange;
     showExtendedControls: boolean;
     dataLocation: string;
-    controlled: ControlledState;
     defaultBrowserErrors?: boolean;
     inlineErrors?: boolean;
 }
@@ -36,16 +34,13 @@ export interface GroupItem {
     type: string;
 }
 
-enum ControlledState {
-    controlled = "controlled",
-    uncontrolled = "uncontrolled",
-}
-
 const designSystemDefaults: any = {
     foregroundColor: "#000",
     backgroundColor: "#FFF",
     brandColor: "#0078D4",
 };
+
+let fastMessageSystem: MessageSystem;
 
 class FormAndNavigationTestPage extends React.Component<{}, FormTestPageState> {
     /**
@@ -53,31 +48,45 @@ class FormAndNavigationTestPage extends React.Component<{}, FormTestPageState> {
      */
     private childOptions: FormChildOptionItem[];
 
-    /**
-     * The plugins initialized for the mapPluginsToForm mapper
-     */
-    private plugins: Array<FormPlugin<FormPluginProps>>;
-
     constructor(props: {}) {
         super(props);
 
         this.childOptions = this.getChildOptions();
 
-        this.plugins = [
-            new StringUpdateSchemaPlugin({
-                id: "plugins/pluginModifiedString",
-            }),
-        ];
-
         const exampleData: any = getDataFromSchema(testConfigs.textField.schema);
+
+        if ((window as any).Worker) {
+            fastMessageSystem = new MessageSystem({
+                webWorker: "message-system.js",
+                dataDictionary: [
+                    {
+                        "": {
+                            schemaId: testConfigs.textField.schema.id,
+                            data: exampleData,
+                        },
+                    },
+                    "",
+                ],
+                schemaDictionary: this.generateSchemaDictionary(),
+            });
+            fastMessageSystem.add({ onMessage: this.handleMessageSystem });
+        }
 
         this.state = {
             schema: testConfigs.textField.schema,
             data: exampleData,
-            onChange: this.onChange,
+            dataDictionary: [
+                {
+                    "": {
+                        schemaId: testConfigs.textField.schema.id,
+                        data: exampleData,
+                    },
+                },
+                "",
+            ],
+            navigation: void 0,
             showExtendedControls: false,
             dataLocation: "",
-            controlled: ControlledState.uncontrolled,
             inlineErrors: void 0,
             defaultBrowserErrors: void 0,
         };
@@ -105,22 +114,6 @@ class FormAndNavigationTestPage extends React.Component<{}, FormTestPageState> {
                         }}
                     >
                         <div>
-                            <button
-                                onClick={this.handleUpdateControlledState(
-                                    ControlledState.controlled
-                                )}
-                                style={this.getStyle(ControlledState.controlled)}
-                            >
-                                Controlled
-                            </button>
-                            <button
-                                onClick={this.handleUpdateControlledState(
-                                    ControlledState.uncontrolled
-                                )}
-                                style={this.getStyle(ControlledState.uncontrolled)}
-                            >
-                                Uncontrolled
-                            </button>
                             <select onChange={this.handleComponentUpdate}>
                                 {this.getComponentOptions()}
                             </select>
@@ -152,7 +145,7 @@ class FormAndNavigationTestPage extends React.Component<{}, FormTestPageState> {
                                 borderRadius: "4px",
                             }}
                         >
-                            {JSON.stringify(this.state.data, null, 2)}
+                            {JSON.stringify(this.state.dataDictionary, null, 2)}
                         </pre>
                         <pre>{this.state.dataLocation}</pre>
                     </div>
@@ -165,7 +158,7 @@ class FormAndNavigationTestPage extends React.Component<{}, FormTestPageState> {
                                 "Segoe UI, SegoeUI, Helvetica Neue, Helvetica, Arial, sans-serif",
                         }}
                     >
-                        <BareForm {...this.coerceFormProps()} />
+                        <ModularForm {...this.coerceFormProps()} />
                     </div>
                 </div>
             </DesignSystemProvider>
@@ -173,17 +166,18 @@ class FormAndNavigationTestPage extends React.Component<{}, FormTestPageState> {
     }
 
     private renderNavigation(): React.ReactNode {
-        return (
-            <Navigation
-                data={this.state.data}
-                schema={this.state.schema}
-                childOptions={this.getChildOptions()}
-                onLocationUpdate={this.handleLocationOnChange}
-                dataLocation={this.state.dataLocation}
-                onChange={this.handleDataOnChange}
-                dragAndDropReordering={true}
-            />
-        );
+        return <ModularNavigation messageSystem={fastMessageSystem} />;
+    }
+
+    private generateSchemaDictionary(): SchemaDictionary {
+        const schemaDictionary: SchemaDictionary = {};
+
+        Object.keys(testConfigs).forEach((testConfigKey: string) => {
+            schemaDictionary[testConfigs[testConfigKey].schema.id] =
+                testConfigs[testConfigKey].schema;
+        });
+
+        return schemaDictionary;
     }
 
     /**
@@ -199,19 +193,17 @@ class FormAndNavigationTestPage extends React.Component<{}, FormTestPageState> {
         ];
 
         for (const group of groups) {
-            Object.keys(group.items).map(
-                (itemName: any, key: number): void => {
-                    if (typeof testConfigs[itemName].schema !== "undefined") {
-                        const childObj: FormChildOptionItem = {
-                            name: testConfigs[itemName].schema.title || "Untitled",
-                            component: testConfigs[itemName].component,
-                            schema: testConfigs[itemName].schema,
-                        };
+            Object.keys(group.items).map((itemName: any, key: number): void => {
+                if (typeof testConfigs[itemName].schema !== "undefined") {
+                    const childObj: FormChildOptionItem = {
+                        name: testConfigs[itemName].schema.title || "Untitled",
+                        component: testConfigs[itemName].component,
+                        schema: testConfigs[itemName].schema,
+                    };
 
-                        childOptions.push(childObj);
-                    }
+                    childOptions.push(childObj);
                 }
-            );
+            });
         }
 
         return childOptions;
@@ -219,12 +211,7 @@ class FormAndNavigationTestPage extends React.Component<{}, FormTestPageState> {
 
     private coerceFormProps(): FormProps {
         const formProps: FormProps = {
-            schema: this.state.schema,
-            data: this.state.data,
-            onChange: this.state.onChange,
-            plugins: this.plugins,
-            onSchemaChange: this.handleSchemaChange,
-            childOptions: this.childOptions,
+            messageSystem: fastMessageSystem,
         };
 
         if (typeof this.state.defaultBrowserErrors === "boolean") {
@@ -235,19 +222,7 @@ class FormAndNavigationTestPage extends React.Component<{}, FormTestPageState> {
             formProps.displayValidationInline = this.state.inlineErrors;
         }
 
-        if (this.state.controlled === ControlledState.uncontrolled) {
-            return formProps;
-        } else {
-            const location: FormLocation = {
-                dataLocation: this.state.dataLocation,
-                onChange: this.handleLocationOnChange,
-            };
-
-            return {
-                ...formProps,
-                location,
-            };
-        }
+        return formProps;
     }
 
     private handleShowInlineErrors = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -274,67 +249,53 @@ class FormAndNavigationTestPage extends React.Component<{}, FormTestPageState> {
         }
     };
 
-    /**
-     * Handles the change in schema
-     */
-    private handleSchemaChange = (schema: any): void => {
-        this.setState({
-            schema,
-        });
-    };
-
-    /**
-     * Handles the change in location
-     */
-    private handleLocationOnChange = (dataLocation: string): void => {
-        this.setState({
-            dataLocation,
-        });
-    };
-
-    private handleDataOnChange = (data: any, dataLocation: string): void => {
-        this.setState({
-            data,
-            dataLocation,
-        });
-    };
-
-    /**
-     * The app on change event
-     */
-    private onChange = (data: any): void => {
-        this.setState({
-            data,
-        });
-    };
-
-    private getStyle(controlledState: ControlledState): any {
-        if (controlledState === this.state.controlled) {
-            return {
-                background: "#414141",
-                color: "white",
-            };
+    private handleMessageSystem = (e: MessageEvent): void => {
+        switch (e.data.type) {
+            case MessageSystemType.initialize:
+                if (e.data.data && e.data.navigation) {
+                    this.setState({
+                        data: e.data.data,
+                        dataDictionary: e.data.dataDictionary,
+                        navigation: e.data.navigation,
+                    });
+                }
+            case MessageSystemType.data:
+                if (e.data.data) {
+                    this.setState({
+                        data: e.data.data,
+                        dataDictionary: e.data.dataDictionary,
+                    });
+                }
+            case MessageSystemType.navigation:
+                if (e.data.navigation) {
+                    this.setState({
+                        data: e.data.navigation,
+                        dataDictionary: e.data.dataDictionary,
+                    });
+                }
         }
-    }
-
-    private handleUpdateControlledState = (
-        controlledState: ControlledState
-    ): ((e: React.MouseEvent<HTMLButtonElement>) => void) => {
-        return (e: React.MouseEvent<HTMLButtonElement>): void => {
-            this.setState({
-                controlled: controlledState,
-            });
-        };
     };
 
     private handleComponentUpdate = (e: React.ChangeEvent<HTMLSelectElement>): void => {
-        this.setState({
-            schema: testConfigs[e.target.value].schema,
-            config: testConfigs[e.target.value].config,
-            data:
-                testConfigs[e.target.value].data ||
-                getDataFromSchema(testConfigs[e.target.value].schema),
-        });
+        const data: any = !!testConfigs[e.target.value].data
+            ? testConfigs[e.target.value].data
+            : getDataFromSchema(testConfigs[e.target.value].schema);
+
+        if ((window as any).Worker && fastMessageSystem) {
+            fastMessageSystem.postMessage({
+                type: MessageSystemType.initialize,
+                data: [
+                    {
+                        "": {
+                            schemaId: testConfigs[e.target.value].schema.id,
+                            data,
+                        },
+                    },
+                    "",
+                ],
+                schemaDictionary: this.generateSchemaDictionary(),
+            });
+        }
     };
 
     private getComponentOptions(): JSX.Element[] {

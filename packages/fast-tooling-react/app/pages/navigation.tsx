@@ -1,55 +1,55 @@
 import React from "react";
-import { Navigation } from "../../src";
-import childrenSchema from "./navigation/children.schema.json";
-import { childOptions, children } from "./navigation/example.data";
+import { ModularNavigation } from "../../src";
+import childrenSchema from "./navigation/children.schema";
+import { children } from "./navigation/example.data";
+import { MessageSystem, MessageSystemType } from "@microsoft/fast-tooling";
+import noChildrenSchema from "./navigation/no-children.schema";
 
 export interface NavigationTestPageState {
-    data: any;
-    dragAndDropReordering: boolean;
+    navigation: any;
 }
+
+let fastMessageSystem: MessageSystem;
 
 class NavigationTestPage extends React.Component<{}, NavigationTestPageState> {
     constructor(props: {}) {
         super(props);
 
+        if ((window as any).Worker) {
+            fastMessageSystem = new MessageSystem({
+                webWorker: "message-system.js",
+                dataDictionary: children,
+                schemaDictionary: {
+                    [childrenSchema.id]: childrenSchema,
+                    [noChildrenSchema.id]: noChildrenSchema,
+                },
+            });
+        }
+
+        fastMessageSystem.add({
+            onMessage: this.handleMessageSystem,
+        });
+
         this.state = {
-            data: children,
-            dragAndDropReordering: false,
+            navigation: null,
         };
     }
 
     public render(): React.ReactNode {
         return (
             <div>
-                <input
-                    type={"checkbox"}
-                    id={"dragAndDropReordering"}
-                    value={this.state.dragAndDropReordering.toString()}
-                    onChange={this.handleUpdateDragAndDropReordering}
-                />
-                <label htmlFor={"dragAndDropReordering"}>Drag and drop reordering</label>
-                <Navigation
-                    data={this.state.data}
-                    schema={childrenSchema}
-                    childOptions={childOptions}
-                    onChange={this.handleChange}
-                    dragAndDropReordering={this.state.dragAndDropReordering}
-                />
-                <pre>{JSON.stringify(this.state.data, null, 2)}</pre>
+                <ModularNavigation messageSystem={fastMessageSystem} />
+                <pre>{JSON.stringify(this.state.navigation, null, 2)}</pre>
             </div>
         );
     }
 
-    private handleChange = (data: any): void => {
-        this.setState({
-            data,
-        });
-    };
-
-    private handleUpdateDragAndDropReordering = (): void => {
-        this.setState({
-            dragAndDropReordering: !this.state.dragAndDropReordering,
-        });
+    private handleMessageSystem = (e: MessageEvent): void => {
+        if (e.data && e.data.type === MessageSystemType.initialize) {
+            this.setState({
+                navigation: e.data.navigationDictionary,
+            });
+        }
     };
 }
 

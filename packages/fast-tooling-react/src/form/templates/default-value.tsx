@@ -4,7 +4,11 @@ import { DefaultValueProps } from "./default-value.props";
 class DefaultValue extends React.Component<DefaultValueProps, {}> {
     public render(): React.ReactNode {
         return (
-            <button className={this.props.className} onClick={this.props.onChange}>
+            <button
+                className={this.props.className}
+                onClick={this.props.onChange}
+                disabled={this.props.disabled}
+            >
                 <svg
                     viewBox={"0 0 16 16"}
                     height={"14"}

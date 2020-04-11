@@ -20,6 +20,9 @@ const managedClasses: DisplayControlClassNameContract = {
 const displayProps: DisplayControlProps = {
     type: ControlType.display,
     dataLocation: "",
+    navigationConfigId: "",
+    dictionaryId: "",
+    navigation: {},
     value: "",
     schema: {},
     disabled: false,
@@ -29,6 +32,7 @@ const displayProps: DisplayControlProps = {
     elementRef: null,
     validationErrors: [],
     required: false,
+    messageSystem: void 0,
 };
 
 describe("DisplayControl", () => {

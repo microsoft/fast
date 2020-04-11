@@ -11,6 +11,7 @@ import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { DesignSystem, HypertextStyles } from "@microsoft/fast-components-styles-msft";
 import { Subtract } from "utility-types";
 import hypertextSchema from "./hypertext.schema";
+import hypertextSchema2 from "./hypertext.schema.2";
 
 /*
  * The type returned by manageJss type is very complicated so we'll let the
@@ -31,6 +32,7 @@ export {
     HypertextProps,
     HypertextHandledProps,
     hypertextSchema,
+    hypertextSchema2,
     HypertextUnhandledProps,
     HypertextClassNameContract,
 };

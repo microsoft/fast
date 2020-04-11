@@ -9,9 +9,8 @@ import {
     ControlConfig,
     ControlTemplateUtilitiesProps,
     FormHTMLElement,
-    OnChangeConfig,
 } from "./template.control.utilities.props";
-import { ControlType } from "./types";
+import { ControlType, OnChangeConfig } from "./types";
 
 /**
  * Control template definition
@@ -42,7 +41,11 @@ abstract class ControlTemplateUtilities<P, S> extends React.Component<
                     className={className}
                     checked={this.props.data !== undefined}
                     onChange={this.handleSoftRemove}
-                    disabled={this.props.data === undefined && this.cache === undefined}
+                    disabled={
+                        this.props.disabled &&
+                        this.props.data === undefined &&
+                        this.cache === undefined
+                    }
                 />
             );
         }
@@ -63,7 +66,11 @@ abstract class ControlTemplateUtilities<P, S> extends React.Component<
     public renderConstValueIndicator(className: string): React.ReactNode {
         if (this.props.const !== undefined && this.props.data !== this.props.const) {
             return (
-                <ConstValue className={className} onChange={this.handleSetConstValue} />
+                <ConstValue
+                    className={className}
+                    disabled={this.props.disabled}
+                    onChange={this.handleSetConstValue}
+                />
             );
         }
     }
@@ -80,6 +87,7 @@ abstract class ControlTemplateUtilities<P, S> extends React.Component<
             return (
                 <DefaultValue
                     className={className}
+                    disabled={this.props.disabled}
                     onChange={this.handleSetDefaultValue}
                 />
             );
@@ -89,8 +97,11 @@ abstract class ControlTemplateUtilities<P, S> extends React.Component<
     public handleChange = (config: OnChangeConfig): any => {
         return this.props.onChange({
             dataLocation: this.props.dataLocation,
+            dictionaryId: this.props.dictionaryId,
             value: config.value,
             isArray: config.isArray,
+            isLinkedData: config.isLinkedData,
+            linkedDataAction: config.linkedDataAction,
             index: config.index,
         });
     };
@@ -98,6 +109,7 @@ abstract class ControlTemplateUtilities<P, S> extends React.Component<
     public handleSetDefaultValue = (): void => {
         this.props.onChange({
             dataLocation: this.props.dataLocation,
+            dictionaryId: this.props.dictionaryId,
             value: this.props.default,
         });
     };
@@ -105,6 +117,7 @@ abstract class ControlTemplateUtilities<P, S> extends React.Component<
     public handleSetConstValue = (): void => {
         this.props.onChange({
             dataLocation: this.props.dataLocation,
+            dictionaryId: this.props.dictionaryId,
             value: this.props.const,
         });
     };
@@ -115,11 +128,13 @@ abstract class ControlTemplateUtilities<P, S> extends React.Component<
 
             return this.props.onChange({
                 dataLocation: this.props.dataLocation,
+                dictionaryId: this.props.dictionaryId,
                 value: undefined,
             });
         } else {
             return this.props.onChange({
                 dataLocation: this.props.dataLocation,
+                dictionaryId: this.props.dictionaryId,
                 value: this.cache,
             });
         }
@@ -159,7 +174,12 @@ abstract class ControlTemplateUtilities<P, S> extends React.Component<
     public getConfig(): ControlConfig {
         return {
             type: this.props.type,
+            schemaDictionary: this.props.schemaDictionary,
             dataLocation: this.props.dataLocation,
+            navigationConfigId: this.props.navigationConfigId,
+            dictionaryId: this.props.dictionaryId,
+            dataDictionary: this.props.dataDictionary,
+            navigation: this.props.navigation,
             schemaLocation: this.props.schemaLocation,
             disabled: this.props.disabled,
             value: this.props.data,
@@ -180,19 +200,19 @@ abstract class ControlTemplateUtilities<P, S> extends React.Component<
             onUpdateSection: this.props.onUpdateSection,
             invalidMessage: this.props.invalidMessage,
             validationErrors: this.props.validationErrors,
+            displayValidationBrowserDefault: this.props.displayValidationBrowserDefault,
             displayValidationInline: this.props.displayValidationInline,
             minItems: this.props.minItems,
             maxItems: this.props.maxItems,
             onAddExampleData: this.props.onAddExampleData,
             default: this.props.default,
-            defaultChildOptions: this.props.defaultChildOptions,
-            childOptions: this.props.childOptions,
             component: this.props.component,
             required: this.props.required,
             controls: this.props.controls,
             controlComponents: this.props.controlComponents,
             controlPlugins: this.props.controlPlugins,
             untitled: this.props.untitled,
+            messageSystem: this.props.messageSystem,
         };
     }
 
@@ -202,6 +222,7 @@ abstract class ControlTemplateUtilities<P, S> extends React.Component<
     public handleUpdateValueToDefaultValue = (): void => {
         this.props.onChange({
             dataLocation: this.props.dataLocation,
+            dictionaryId: this.props.dictionaryId,
             value: this.props.default,
         });
     };

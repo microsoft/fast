@@ -21,6 +21,9 @@ const managedClasses: SelectControlClassNameContract = {
 const selectProps: SelectControlProps = {
     type: ControlType.select,
     dataLocation: "",
+    navigationConfigId: "",
+    dictionaryId: "",
+    navigation: {},
     disabled: false,
     options: [],
     onChange: jest.fn(),
@@ -31,6 +34,7 @@ const selectProps: SelectControlProps = {
     elementRef: null,
     validationErrors: [],
     required: false,
+    messageSystem: void 0,
 };
 
 describe("SelectControl", () => {
@@ -155,12 +159,7 @@ describe("SelectControl", () => {
             />
         );
 
-        expect(
-            rendered
-                .find("select")
-                .at(0)
-                .prop("value")
-        ).toBe(defaultValue);
+        expect(rendered.find("select").at(0).prop("value")).toBe(defaultValue);
     });
     test("should not show default values if data exists", () => {
         const value: string = "foo";
@@ -173,12 +172,7 @@ describe("SelectControl", () => {
                 default={defaultValue}
             />
         );
-        expect(
-            rendered
-                .find("select")
-                .at(0)
-                .prop("value")
-        ).toBe(value);
+        expect(rendered.find("select").at(0).prop("value")).toBe(value);
     });
     test("should reset the value to an empty string if the value and default are undefined", () => {
         const value: string = "foo";
@@ -189,12 +183,7 @@ describe("SelectControl", () => {
                 value={value}
             />
         );
-        expect(
-            rendered
-                .find("select")
-                .at(0)
-                .prop("value")
-        ).toBe(value);
+        expect(rendered.find("select").at(0).prop("value")).toBe(value);
 
         rendered.setProps({
             ...selectProps,
@@ -202,11 +191,6 @@ describe("SelectControl", () => {
             value: void 0,
         });
 
-        expect(
-            rendered
-                .find("select")
-                .at(0)
-                .prop("value")
-        ).toBe("");
+        expect(rendered.find("select").at(0).prop("value")).toBe("");
     });
 });
