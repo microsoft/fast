@@ -165,7 +165,7 @@ test("should only notify subscribers of removal when the last instance of the sh
         expect(arg.sheet).toBe(sheet);
     });
 
-    test("should notify a multiple subscribers", () => {
+test("should notify multiple subscribers", () => {
         const A = jest.fn();
         const B = jest.fn();
         const designSystemUpdate = {};
