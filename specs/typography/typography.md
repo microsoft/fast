@@ -1,7 +1,5 @@
 # Typography
 
-*TODO: Sections that will be removed upon review are marked with ~~striketrough~~, remaining for commenting purposes.*
-
 ## Overview
 
 *Typography* defines the underlying type size system for applying to elements, css classes, or within components. This spec does not propose any components of its own.
@@ -42,15 +40,15 @@ Further typography-related specs build on the underlying principles and resource
 
 ## Design
 
-The default type ramp uses a selection of values from [Microsoft Fluent Design](https://www.microsoft.com/design/fluent).
+The default type ramp uses a selection of values from Microsoft Fluent Design.
 
 ![](./images/type-ramp.png)
 
-Note the "Ramp ID", which is used to select the desired size. This ramp is centered around the base type size to associate the relative sizes between content. For instance, your main body text uses the `base` size. You may want a caption to be smaller than that, so you use `-1`. You want your [headings](./headings.md) to be larger, so you use one or more of the `+` sizes.
+Note the "Ramp ID", which is used to apply the desired size. This ramp is built around the base type size to associate the relative sizes between content. For instance, your main body text uses the `base` size. You may want a caption to be smaller than that, so you use `-1`. You want your [headings](./headings.md) to be larger, so you use one or more of the `+` sizes.
 
-This is more declarative than using an index position to reference the sizes, like `7` if this ramp is numbered from the top or `3` if numbered from the bottom. It also allows the sizes that you use to be related to each other rather than at other arbitrary points on the ramp. For example, three levels of headings above body text are `16px`, `20px`, and `28px` instead of jumping all the way to `60px` at the top and skipping the middle. You can add additional sizes at the top and bottom if necessary.
+This is more declarative than using an index position to reference the sizes, like `7` if this ramp is numbered from the top or `3` if numbered from the bottom. It also allows the sizes that you use to be related to each other rather than at other arbitrary points on the ramp. For example, three levels of headings above body text are `16px (+1)`, `20px (+2)`, and `28px (+3)` instead of jumping all the way to `60px (+6)` at the top and skipping the middle. You can add additional sizes at the top and bottom if necessary.
 
-*Note that these are just examples and nothing about any particular usage of a type size is prescribed by the underlying ramp. See further typography specs for other systematic ways to apply the sizes.*
+*Note that these are just examples and nothing about any particular usage of a type size is prescribed by the underlying ramp. See further typography specs for other systematic ways to apply the ramp sizes.*
 
 Type style variables can be added at any point in the DOM. Generally they would be created globally for consistent application throughout your app or site, or they could be overridden or added for a single section of a page.
 
@@ -58,15 +56,30 @@ Type style variables can be added at any point in the DOM. Generally they would 
 
 Pseudo interfaces: (*Could be functions or decorators or otherwise*)
 
-- `typeRamp()`: A default type ramp as illustrated above
-- `typeRamp({'12px', '14px', '24px', '36px'}, 1)`: A type ramp with fixed type size values and default line height, index 1 is base
-- `typeRamp({{'12px', '16px'}, {'14px', '20px'}, {'24px', '28px'}, {'36px', '44px'}}, 1)`: A type ramp with fixed type size values and fixed individual line heights
-- `typeRamp(16, 1.25, 3, 5)`: A type ramp based at `16px` on a major third [modular scale](https://type-scale.com/) of `1.25` with `3` sizes below base and `5` sizes above.
+- `typeRamp()`  
+A default type ramp as illustrated above
+- `typeRamp({'12px', '14px', '24px', '36px'}, 1)`  
+A type ramp with fixed type size values and default line height, index 1 is base
+- `typeRamp({{'12px', '16px'}, {'14px', '20px'}, {'24px', '28px'}, {'36px', '44px'}}, 1)`  
+A type ramp with fixed type size values and fixed individual line heights, index 1 is base
+- `typeRamp({'0.75em', '0.875em', '1em', '1.25em'}, 1)`  
+A type ramp with relative type size values and default line height, index 1 is base
+- `typeRamp({{'10px', '16px'}, {'12px', '16px'}, {'14px', '20px'}, {'16px', '24px'}, {'20px', '28px'}, {'28px', '36px'}, {'34px', '44px'}, {'46px', '56px'}, {'60px', '72px'}}, 1)`  
+The full equivalent of the default type ramp
+
+A different ramp construction, which could be extracted out to another ramp provider class:
+
+- `typeRamp[Modular](16, 1.25, 3, 5)`  
+A type ramp based at `16px` on a major third [modular scale](https://type-scale.com/) of `1.25` with `3` sizes below base and `5` sizes above.
 
 ### Anatomy and Appearance
 
-The type ramp is presented as css variables that extend plus and minus from the base.
+The type ramp is provided as css variables that are named to extend plus and minus from the base.
 
+- `fast-type-ramp-minus-2-size` = `"10px"`
+- `fast-type-ramp-minus-2-height` = `"16px"`
+- `fast-type-ramp-minus-1-size` = `"12px"`
+- `fast-type-ramp-minus-1-height` = `"16px"`
 - `fast-type-ramp-base-size` = `"14px"`
 - `fast-type-ramp-base-height` = `"20px"`
 - `fast-type-ramp-plus-1-size` = `"16px"`
@@ -81,44 +94,16 @@ The type ramp is presented as css variables that extend plus and minus from the 
 - `fast-type-ramp-plus-5-height` = `"56px"`
 - `fast-type-ramp-plus-6-size` = `"60px"`
 - `fast-type-ramp-plus-6-height` = `"72px"`
-- `fast-type-ramp-minus-1-size` = `"12px"`
-- `fast-type-ramp-minus-1-height` = `"16px"`
-- `fast-type-ramp-minus-2-size` = `"10px"`
-- `fast-type-ramp-minus-2-height` = `"16px"`
 
 ---
 
 ## Implementation
 
-*~~Important aspects of the planned implementation with careful consideration of web standards and integration.~~*
-
-### ~~States~~
-
-*~~Key component states, valid state transitions, and how interactions trigger a state transition.~~*
-
 ### Accessibility
 
 Since this spec only deals with type styles there are not traditional accessibility concerns, however this might be a point of potential future extension to allow for type sizing or capping of the smallest size.
 
-### ~~Globalization~~
-
-*~~Consider whether the component has any special globalization needs:~~*
-
-### ~~Security~~
-
-*~~Are there any security implications surrounding the component?~~*
-
-### ~~Performance~~
-
-*~~Are there any performance pitfalls or challenges with implementing the component?~~*
-
-### ~~Dependencies~~
-
-~~Potential future dependency on modular or custom type ramp generation algorithm.~~
-
-### ~~Test Plan~~
-
-*~~What is the plan for testing the component, if different from the normal path?~~*
+Some typographic elements are significant for accessibility, like headings, but the underlying ramp does not dictate or facilitate any relationships in that regard. Usage mappings may be provided as an extension to the type ramp, and is recommended in custom components for further customization. 
 
 ### Tooling
 
@@ -131,10 +116,6 @@ As the typography styles are not components, it would be nice to provide a way t
 *TODO: How do we document styles? Something like this doc, but separate for styles from components?*
 
 ---
-
-## ~~Resources~~
-
-*~~Any related resource links such as web standards, discussion threads, diagrams, etc.~~*
 
 ## Next Steps
 
