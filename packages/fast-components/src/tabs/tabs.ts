@@ -25,23 +25,23 @@ export class Tabs extends FastElement {
     }
 
     @observable
-    tabs: HTMLElement[];
-    tabsChanged(): void {
+    public tabs: HTMLElement[];
+    public tabsChanged(): void {
         this.getTabs(this.activeTabIndex);
     }
     @observable
-    tabPanels: HTMLElement[];
-    tabPanelsChanged(): void {
+    public tabPanels: HTMLElement[];
+    public tabPanelsChanged(): void {
         this.getTabPanels(this.activeTabIndex);
     }
 
     @attr({ mode: "boolean" })
     public activeIndicator = false;
 
-    activeTabIndex: number = 0;
+    private activeTabIndex: number = 0;
 
     @observable
-    activeIndicatorOffset: number = 0;
+    public activeIndicatorOffset: number = 0;
 
     private getTabs = (selectedTabIndex: number): void => {
         this.tabs.forEach((tab: HTMLElement, index: number) => {
@@ -56,14 +56,12 @@ export class Tabs extends FastElement {
                 tab.addEventListener("keydown", this.handleTabKeyDown);
                 tab.setAttribute("tabindex", selectedTabIndex === index ? "0" : "-1");
                 this.getActiveIndicatorOffset(tab, selectedTabIndex, index);
-
-                console.log(this.activeIndicatorOffset);
             }
         });
     };
 
     private getActiveIndicatorOffset(
-        tab: HTMLElement,
+        currentTab: HTMLElement,
         selectedTabIndex: number,
         index: number
     ): void {
@@ -78,23 +76,21 @@ export class Tabs extends FastElement {
         numbers = numbers.slice(0, selectedTabIndex).length
             ? numbers.slice(0, selectedTabIndex)
             : [0];
-        console.log(numbers);
         const reducer = (accumulator, currentValue) => accumulator + currentValue;
         const offset = numbers.reduce(reducer);
         if (selectedTabIndex === index) {
             let value: number;
             if (this.orientation === TabsOrientation.horizontal) {
-                value = tab.getBoundingClientRect().width;
+                value = currentTab.getBoundingClientRect().width;
             } else {
-                value = tab.getBoundingClientRect().height;
+                value = currentTab.getBoundingClientRect().height;
             }
             const center: number = value / 2;
             this.activeIndicatorOffset = offset + center;
-            console.log(this.activeIndicatorOffset);
         }
     }
 
-    private validTabPanels(element): boolean {
+    private validTabPanels(element: HTMLElement): boolean {
         return element.nodeType === 1 && element.getAttribute("role") === "tabpanel";
     }
 
@@ -138,7 +134,6 @@ export class Tabs extends FastElement {
                     break;
             }
         } else {
-            const keyCode: number = event.keyCode;
             switch (keyCode) {
                 case keyCodeArrowUp:
                     event.preventDefault();
@@ -170,7 +165,7 @@ export class Tabs extends FastElement {
         this.setTabs(this.activeTabIndex);
     }
 
-    private focusTab(index: number) {
+    private focusTab(index: number): void {
         const tb = this.tabs as HTMLElement[];
         tb[index].focus();
     }
