@@ -168,7 +168,7 @@ export class Controller extends PropertyChangeNotifier implements Container {
 
         if (behaviors !== null) {
             for (let i = 0, ii = behaviors.length; i < ii; ++i) {
-                behaviors[i].unbind();
+                behaviors[i].bind(element);
             }
         }
 
