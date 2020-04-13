@@ -146,7 +146,9 @@ const unsubscribe = JSSManager.sheetManager.subscribe(subscriber)
 unsubscribe(); // or JSSManager.unsubscribe(subscriber);
 ```
 
-## Server side compiling
+It is important to note that when multiple components are using the same stylesheet / design-system pair, the "add" event will only fire for the *first* element using the pair and the "remove" event will only fire when all components using the pair are removed.
+
+## Server-side compiling
 
 Server side compiling is achieved through the use of a JSS [https://github.com/cssinjs/jss/blob/master/docs/js-api.md#style-sheets-registry](style-sheet-registry). Once the app is run server-side, all stylesheets will be stored in a single registry (`stylesheetRegistry`) for easy output:
 
