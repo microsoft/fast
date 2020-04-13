@@ -1,35 +1,65 @@
-const elementStylesBrand = Symbol();
+import { Behavior } from "./directives/behavior";
 
-export interface ElementStyles {
-    readonly styles: InjectableStyles[];
-    applyTo(shadowRoot: ShadowRoot): void;
+export interface StyleTarget {
+    adoptedStyleSheets?: CSSStyleSheet[];
+
+    prepend(node: Node): void;
+    removeChild(node: Node): void;
+    querySelectorAll<E extends Element = Element>(selectors: string): NodeListOf<E>;
+};
+
+const styleLookup = new Map<string, ElementStyles>();
+
+export abstract class ElementStyles {
+    /** @internal */
+    public abstract readonly styles: ReadonlyArray<InjectableStyles>;
+
+    /** @internal */
+    public readonly behaviors: ReadonlyArray<Behavior> | null = null;
+
+    /** @internal */
+    public abstract addStylesTo(target: StyleTarget): void;
+
+    /** @internal */
+    public abstract removeStylesFrom(target: StyleTarget): void;
+
+    public withBehaviors(...behaviors: Behavior[]): this {
+        (this.behaviors as any) = this.behaviors === null
+            ? behaviors
+            : this.behaviors.concat(behaviors);
+
+        return this;
+    }
+
+    public withKey(key: string): this {
+        styleLookup.set(key, this);
+        return this;
+    }
+
+    public static find(key: string): ElementStyles | null {
+        return styleLookup.get(key) || null;
+    }
 }
 
 type InjectableStyles = string | ElementStyles;
-type ElementStyleFactory = (styles: InjectableStyles[]) => ElementStyles;
+type ElementStyleFactory = (styles: ReadonlyArray<InjectableStyles>) => ElementStyles;
 
-function isElementStyles(object: any): object is ElementStyles {
-    return object.brand === elementStylesBrand;
-}
-
-function reduceStyles(styles: InjectableStyles[]): string[] {
+function reduceStyles(styles: ReadonlyArray<InjectableStyles>): string[] {
     return styles
-        .map((x: InjectableStyles) => (isElementStyles(x) ? reduceStyles(x.styles) : [x]))
+        .map((x: InjectableStyles) => (x instanceof ElementStyles ? reduceStyles(x.styles) : [x]))
         .reduce((prev: string[], curr: string[]) => prev.concat(curr), []);
 }
 
-type HasAdoptedStyleSheets = ShadowRoot & {
-    adoptedStyleSheets: CSSStyleSheet[];
-};
-
-export class AdoptedStyleSheetsStyles implements ElementStyles {
-    public readonly brand: symbol = elementStylesBrand;
+// https://wicg.github.io/construct-stylesheets/
+// https://developers.google.com/web/updates/2019/02/constructable-stylesheets
+export class AdoptedStyleSheetsStyles extends ElementStyles {
     private readonly styleSheets: CSSStyleSheet[];
 
     public constructor(
         public styles: InjectableStyles[],
         styleSheetCache: Map<string, CSSStyleSheet>
     ) {
+        super();
         this.styleSheets = reduceStyles(styles).map((x: string) => {
             let sheet = styleSheetCache.get(x);
 
@@ -43,31 +73,53 @@ export class AdoptedStyleSheetsStyles implements ElementStyles {
         });
     }
 
-    public applyTo(shadowRoot: HasAdoptedStyleSheets): void {
-        // https://wicg.github.io/construct-stylesheets/
-        // https://developers.google.com/web/updates/2019/02/constructable-stylesheets
-        shadowRoot.adoptedStyleSheets = [
-            ...shadowRoot.adoptedStyleSheets,
+    public addStylesTo(target: StyleTarget): void {
+        target.adoptedStyleSheets = [
+            ...target.adoptedStyleSheets!,
             ...this.styleSheets,
         ];
     }
+
+    public removeStylesFrom(target: StyleTarget): void {
+        const sourceSheets = this.styleSheets;
+        target.adoptedStyleSheets = target.adoptedStyleSheets!
+            .filter(x => !sourceSheets.includes(x));
+    }
 }
 
-export class StyleElementStyles implements ElementStyles {
-    public readonly brand: symbol = elementStylesBrand;
+let styleClassId = 0;
+
+function getNextStyleClass() {
+    return `fast-style-class-${++styleClassId}`;
+}
+
+export class StyleElementStyles extends ElementStyles {
     private styleSheets: string[];
+    private styleClass: string;
 
     public constructor(public styles: InjectableStyles[]) {
+        super();
         this.styleSheets = reduceStyles(styles);
+        this.styleClass = getNextStyleClass();
     }
 
-    public applyTo(shadowRoot: ShadowRoot): void {
+    public addStylesTo(target: StyleTarget): void {
         const styleSheets = this.styleSheets;
+        const styleClass = this.styleClass;
 
         for (let i = styleSheets.length - 1; i > -1; --i) {
             const element = document.createElement("style");
             element.innerHTML = styleSheets[i];
-            shadowRoot.prepend(element);
+            element.className = styleClass;
+            target.prepend(element);
+        }
+    }
+
+    public removeStylesFrom(target: StyleTarget): void {
+        const styles = target.querySelectorAll(`.${this.styleClass}`);
+
+        for (const style of styles) {
+            target.removeChild(style);
         }
     }
 }
@@ -95,7 +147,12 @@ export function css(
         cssString += strings[i];
         const value = values[i];
 
-        if (isElementStyles(value)) {
+        if (value instanceof ElementStyles) {
+            if (cssString.trim() !== "") {
+                styles.push(cssString);
+                cssString = "";
+            }
+
             styles.push(value);
         } else {
             cssString += value;
@@ -103,7 +160,10 @@ export function css(
     }
 
     cssString += strings[strings.length - 1];
-    styles.push(cssString);
+
+    if (cssString.trim() !== ""){
+        styles.push(cssString);
+    }
 
     return createStyles(styles);
 }

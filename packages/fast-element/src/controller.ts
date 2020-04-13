@@ -3,6 +3,8 @@ import { Container, InterfaceSymbol, Registry, Resolver } from "./di";
 import { ElementView } from "./view";
 import { PropertyChangeNotifier } from "./observation/notifier";
 import { Observable } from "./observation/observable";
+import { Behavior } from "./directives/behavior";
+import { ElementStyles, StyleTarget } from "./styles";
 
 const defaultEventOptions: CustomEventInit = {
     bubbles: true,
@@ -14,6 +16,7 @@ export class Controller extends PropertyChangeNotifier implements Container {
     public isConnected: boolean = false;
     private resolvers: Map<any, Resolver> = new Map<any, Resolver>();
     private boundObservables: Record<string, any> | null = null;
+    private behaviors: Behavior[] | null = null;
 
     public constructor(
         public readonly element: HTMLElement,
@@ -38,8 +41,8 @@ export class Controller extends PropertyChangeNotifier implements Container {
             }
         }
 
-        if (styles !== void 0 && shadowRoot !== void 0) {
-            styles.applyTo(shadowRoot);
+        if (styles !== void 0) {
+            this.addStyles(styles, shadowRoot);
         }
 
         definition.dependencies.forEach((x: Registry) => x.register(this));
@@ -65,6 +68,73 @@ export class Controller extends PropertyChangeNotifier implements Container {
         }
     }
 
+    public addStyles(styles: ElementStyles, target: StyleTarget | null = this.element.shadowRoot) {
+        if (target !== null) {
+            styles.addStylesTo(target);
+        }
+
+        const sourceBehaviors = styles.behaviors;
+
+        if (sourceBehaviors !== null) {
+            this.addBehaviors(sourceBehaviors);
+        }
+    }
+
+    public removeStyles(styles: ElementStyles) {
+        const target = this.element.shadowRoot;
+
+        if (target !== null) {
+            styles.removeStylesFrom(target);
+        }
+
+        const sourceBehaviors = styles.behaviors;
+
+        if (sourceBehaviors !== null) {
+            this.removeBehaviors(sourceBehaviors);
+        }
+    }
+
+    public addBehaviors(behaviors: ReadonlyArray<Behavior>) {
+        const targetBehaviors = this.behaviors || (this.behaviors = []);
+        const length = behaviors.length;
+
+        for (let i = 0; i < length; ++i) {
+            targetBehaviors.push(behaviors[i]);
+        }
+
+        if (this.isConnected) {
+            const element = this.element;
+
+            for (let i = 0; i < length; ++i) {
+                behaviors[i].bind(element);
+            }
+        }
+    }
+
+    public removeBehaviors(behaviors: ReadonlyArray<Behavior>) {
+        const targetBehaviors = this.behaviors;
+
+        if (targetBehaviors === null) {
+            return;
+        }
+
+        const length = behaviors.length;
+
+        for (let i = 0; i < length; ++i) {
+            const index = targetBehaviors.indexOf(behaviors[i]);
+
+            if (index !== -1) {
+                targetBehaviors.splice(index, 1);
+            }
+        }
+
+        if (this.isConnected) {
+            for (let i = 0; i < length; ++i) {
+                behaviors[i].unbind();
+            }
+        }
+    }
+
     public onConnectedCallback(): void {
         if (this.isConnected) {
             return;
@@ -85,8 +155,18 @@ export class Controller extends PropertyChangeNotifier implements Container {
             this.boundObservables = null;
         }
 
-        if (this.view !== null) {
-            this.view.bind(element);
+        const view = this.view;
+
+        if (view !== null) {
+            view.bind(element);
+        }
+
+        const behaviors = this.behaviors;
+
+        if (behaviors !== null) {
+            for (let i = 0, ii = behaviors.length; i < ii; ++i) {
+                behaviors[i].unbind();
+            }
         }
 
         this.isConnected = true;
@@ -99,8 +179,18 @@ export class Controller extends PropertyChangeNotifier implements Container {
 
         this.isConnected = false;
 
-        if (this.view !== null) {
-            this.view.unbind();
+        const view = this.view;
+
+        if (view !== null) {
+            view.unbind();
+        }
+
+        const behaviors = this.behaviors;
+
+        if (behaviors !== null) {
+            for (let i = 0, ii = behaviors.length; i < ii; ++i) {
+                behaviors[i].unbind();
+            }
         }
     }
 
