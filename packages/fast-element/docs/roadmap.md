@@ -2,8 +2,6 @@
 
 ## Short-term
 
-* **Fix**: Improve subscription cleanup on complex observable expressions.
-* **Feature**: ElementStyle Registration and Behavior Association.
 * **Feature**: Support `class` and/or `style` bindings on the host.
 * **Test**: Testing infrastructure and test coverage.
 
