@@ -6,7 +6,7 @@ export interface StyleTarget {
     prepend(node: Node): void;
     removeChild(node: Node): void;
     querySelectorAll<E extends Element = Element>(selectors: string): NodeListOf<E>;
-};
+}
 
 const styleLookup = new Map<string, ElementStyles>();
 
@@ -24,9 +24,8 @@ export abstract class ElementStyles {
     public abstract removeStylesFrom(target: StyleTarget): void;
 
     public withBehaviors(...behaviors: Behavior[]): this {
-        (this.behaviors as any) = this.behaviors === null
-            ? behaviors
-            : this.behaviors.concat(behaviors);
+        (this.behaviors as any) =
+            this.behaviors === null ? behaviors : this.behaviors.concat(behaviors);
 
         return this;
     }
@@ -46,7 +45,10 @@ type ElementStyleFactory = (styles: ReadonlyArray<InjectableStyles>) => ElementS
 
 function reduceStyles(styles: ReadonlyArray<InjectableStyles>): string[] {
     return styles
-        .map((x: InjectableStyles) => (x instanceof ElementStyles ? reduceStyles(x.styles) : [x]))
+        .map(
+            (x: InjectableStyles) =>
+                x instanceof ElementStyles ? reduceStyles(x.styles) : [x]
+        )
         .reduce((prev: string[], curr: string[]) => prev.concat(curr), []);
 }
 
@@ -74,16 +76,14 @@ export class AdoptedStyleSheetsStyles extends ElementStyles {
     }
 
     public addStylesTo(target: StyleTarget): void {
-        target.adoptedStyleSheets = [
-            ...target.adoptedStyleSheets!,
-            ...this.styleSheets,
-        ];
+        target.adoptedStyleSheets = [...target.adoptedStyleSheets!, ...this.styleSheets];
     }
 
     public removeStylesFrom(target: StyleTarget): void {
         const sourceSheets = this.styleSheets;
-        target.adoptedStyleSheets = target.adoptedStyleSheets!
-            .filter(x => !sourceSheets.includes(x));
+        target.adoptedStyleSheets = target.adoptedStyleSheets!.filter(
+            x => !sourceSheets.includes(x)
+        );
     }
 }
 
@@ -161,7 +161,7 @@ export function css(
 
     cssString += strings[strings.length - 1];
 
-    if (cssString.trim() !== ""){
+    if (cssString.trim() !== "") {
         styles.push(cssString);
     }
 

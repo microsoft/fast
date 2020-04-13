@@ -68,7 +68,10 @@ export class Controller extends PropertyChangeNotifier implements Container {
         }
     }
 
-    public addStyles(styles: ElementStyles, target: StyleTarget | null = this.element.shadowRoot) {
+    public addStyles(
+        styles: ElementStyles,
+        target: StyleTarget | null = this.element.shadowRoot
+    ) {
         if (target !== null) {
             styles.addStylesTo(target);
         }
