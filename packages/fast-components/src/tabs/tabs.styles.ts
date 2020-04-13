@@ -16,14 +16,24 @@ export const TabsStyles = css`
 
     .tablist {
         display: flex;
+        position: relative;
     }
 
     .start {
-        display: contents;
     }
 
     .end {
-        display: contents;
+    }
+
+    .activeIndicator {
+        position: absolute;
+        bottom: 0;
+        width: 40px;
+        left: -20px;
+        height: 3px;
+        border-radius: 5px;
+        background: blue;
+        transition: 0.2s ease-in-out;
     }
 
     .tabpanel {
@@ -42,6 +52,7 @@ export const TabsStyles = css`
         grid-row-end: 2;
         display: flex;
         flex-direction: column;
+        position: relative;
     }
 
     :host(.vertical) .tabpanel {
@@ -52,5 +63,16 @@ export const TabsStyles = css`
 
     :host(.vertical) .end {
         grid-row: 3;
+    }
+
+    :host(.vertical) .activeIndicator {
+        position: absolute;
+        left: 0;
+        width: 3px;
+        top: -5px;
+        height: 10px;
+        border-radius: 5px;
+        background: blue;
+        transition: 0.2s ease-in-out;
     }
 `;

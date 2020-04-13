@@ -17,9 +17,9 @@
     </fast-tabs>
     <h4>Vertical</h4>
     <fast-tabs orientation="vertical">
-        <button slot="tab">Tab one</button>
-        <button slot="tab">Tab two</button>
-        <button slot="tab">Tab three</button>
+        <button slot="tab" id="Tab1">Tab one</button>
+        <button slot="tab" id="Tab2">Tab two</button>
+        <button slot="tab" id="Tab3">Tab three</button>
         <div role="tabpanel">
             Tab one content. This is for testing.
         </div>
@@ -70,6 +70,37 @@
         <button slot="tab">Tab one</button>
         <button slot="tab">Tab two</button>
         <button slot="tab">Tab three</button>
+        <div role="tabpanel">
+            Tab one content. This is for testing.
+        </div>
+        <div role="tabpanel">
+            Tab two content. This is for testing.
+        </div>
+        <div role="tabpanel">
+            Tab three content. This is for testing.
+        </div>
+    </fast-tabs>
+    <h4>Active indicator</h4>
+    <fast-tabs activeIndicator>
+        <button slot="tab">Tab one</button>
+        <button slot="tab">Tab two</button>
+        <button slot="tab">Tab three</button>
+        <div role="tabpanel">
+            Tab one content. This is for testing.
+        </div>
+        <div role="tabpanel">
+            Tab two content. This is for testing.
+        </div>
+        <div role="tabpanel">
+            Tab three content. This is for testing.
+        </div>
+    </fast-tabs>
+    <h4>Active indicator - Vertical</h4>
+    <fast-tabs orientation="vertical" activeIndicator>
+        <button slot="tab" id="Tab1">Tab one</button>
+        <button slot="tab" id="Tab2">Tab two</button>
+        <button slot="tab" id="Tab3">Tab three</button>
+        <div slot="activeIndicator" ></div>
         <div role="tabpanel">
             Tab one content. This is for testing.
         </div>

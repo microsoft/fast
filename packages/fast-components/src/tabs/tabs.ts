@@ -1,4 +1,14 @@
 import { attr, FastElement, observable } from "@microsoft/fast-element";
+import {
+    classNames,
+    keyCodeArrowDown,
+    keyCodeArrowLeft,
+    keyCodeArrowRight,
+    keyCodeArrowUp,
+    keyCodeEnd,
+    keyCodeHome,
+    Orientation,
+} from "@microsoft/fast-web-utilities";
 
 export enum TabsOrientation {
     vertical = "vertical",
@@ -15,75 +25,153 @@ export class Tabs extends FastElement {
     }
 
     @observable
-    tabs: Node[];
+    tabs: HTMLElement[];
     tabsChanged(): void {
-        this.getTabs();
+        this.getTabs(this.activeTabIndex);
     }
     @observable
-    tabPanels: Node[];
+    tabPanels: HTMLElement[];
     tabPanelsChanged(): void {
-        this.getTabPanels();
+        this.getTabPanels(this.activeTabIndex);
     }
 
+    @attr({ mode: "boolean" })
+    public activeIndicator = false;
+
+    activeTabIndex: number = 0;
+
     @observable
-    activeTab: string | null = "tab-0";
+    activeIndicatorOffset: number = 0;
 
-    private getTabs = (): void => {
-        this.tabs.forEach((element, index: number) => {
-            const tb = element as Element;
-            if (tb.slot === "tab") {
-                tb.setAttribute(
+    private getTabs = (selectedTabIndex: number): void => {
+        this.tabs.forEach((tab: HTMLElement, index: number) => {
+            if (tab.slot === "tab") {
+                tab.setAttribute(
                     "aria-selected",
-                    this.activeTab === `tab-${index}` ? "true" : "false"
+                    selectedTabIndex === index ? "true" : "false"
                 );
-                tb.setAttribute("aria-controls", `panel-${index}`);
-                tb.setAttribute("id", `tab-${index}`);
-                tb.addEventListener("click", this.handleTabClick);
+                tab.setAttribute("aria-controls", `panel-${index}`);
+                tab.setAttribute("id", `tab-${index}`);
+                tab.addEventListener("click", this.handleTabClick);
+                tab.addEventListener("keydown", this.handleTabKeyDown);
+                tab.setAttribute("tabindex", selectedTabIndex === index ? "0" : "-1");
+                this.getActiveIndicatorOffset(tab, selectedTabIndex, index);
 
-                console.log("All Tabs", tb);
+                console.log(this.activeIndicatorOffset);
             }
         });
     };
 
-    private validTabPanels(element) {
+    private getActiveIndicatorOffset(
+        tab: HTMLElement,
+        selectedTabIndex: number,
+        index: number
+    ): void {
+        let numbers: number[] = [];
+        this.tabs.forEach((tab: HTMLElement) => {
+            if (this.orientation === TabsOrientation.horizontal) {
+                numbers.push(tab.getBoundingClientRect().width);
+            } else {
+                numbers.push(tab.getBoundingClientRect().height);
+            }
+        });
+        numbers = numbers.slice(0, selectedTabIndex).length
+            ? numbers.slice(0, selectedTabIndex)
+            : [0];
+        console.log(numbers);
+        const reducer = (accumulator, currentValue) => accumulator + currentValue;
+        const offset = numbers.reduce(reducer);
+        if (selectedTabIndex === index) {
+            let value: number;
+            if (this.orientation === TabsOrientation.horizontal) {
+                value = tab.getBoundingClientRect().width;
+            } else {
+                value = tab.getBoundingClientRect().height;
+            }
+            const center: number = value / 2;
+            this.activeIndicatorOffset = offset + center;
+            console.log(this.activeIndicatorOffset);
+        }
+    }
+
+    private validTabPanels(element): boolean {
         return element.nodeType === 1 && element.getAttribute("role") === "tabpanel";
     }
 
-    private getTabPanels = (): void => {
+    private getTabPanels = (selectedTabIndex: number): void => {
         const tp = this.tabPanels.filter(this.validTabPanels);
-        tp.forEach((element, index: number) => {
-            const tabpanels = element as Element;
-            tabpanels.setAttribute("tabindex", "0");
+        tp.forEach((tabpanels: HTMLElement, index: number) => {
             tabpanels.setAttribute("aria-labeledby", `tab-${index}`);
             tabpanels.removeAttribute("hidden");
-            this.activeTab !== `tab-${index}`
+            selectedTabIndex !== index
                 ? tabpanels.setAttribute("hidden", "")
                 : void tabpanels.setAttribute("id", `panel-${index}`);
-            console.log("All Tab panels", tabpanels);
         });
     };
 
-    private handleTabClick = (event: MouseEvent): void => {
+    private setTabs(selectedTabIndex: number): void {
+        this.getTabs(selectedTabIndex);
+        this.getTabPanels(selectedTabIndex);
+        this.focusTab(selectedTabIndex);
+    }
+
+    private handleTabClick = (event): void => {
         const selectedTab = event.srcElement as Element;
+        this.activeTabIndex = Array.from(this.tabs).indexOf(event.target);
         if (selectedTab.nodeType === 1) {
-            this.activeTab = selectedTab.getAttribute("id");
-            this.getTabs();
-            this.getTabPanels();
-            console.log(this.activeTab);
+            this.setTabs(this.activeTabIndex);
         }
     };
 
-    // private getTabs() {
-    //     this.tabItems.filter(item => {
-    //         const tabs = item.childNodes;
-    //         //console.log("Slots", item.childNodes)
-    //         tabs.forEach(element => {
-    //             const tb = element as Element;
-    //             if (tb.slot === "tab") {
-    //                 console.log("All Tabs", tb);
-    //                 return tb;
-    //             }
-    //         });
-    //     });
-    // }
+    private handleTabKeyDown = (event: KeyboardEvent): void => {
+        const keyCode: number = event.keyCode;
+        const tabsLength: number = this.tabs.length;
+        if (this.orientation === TabsOrientation.horizontal) {
+            switch (keyCode) {
+                case keyCodeArrowLeft:
+                    event.preventDefault();
+                    this.decrement(tabsLength);
+                    break;
+                case keyCodeArrowRight:
+                    event.preventDefault();
+                    this.increment(tabsLength);
+                    break;
+            }
+        } else {
+            const keyCode: number = event.keyCode;
+            switch (keyCode) {
+                case keyCodeArrowUp:
+                    event.preventDefault();
+                    this.decrement(tabsLength);
+                    break;
+                case keyCodeArrowDown:
+                    event.preventDefault();
+                    this.increment(tabsLength);
+                    break;
+            }
+        }
+    };
+
+    private decrement(tabsLength: number): void {
+        if (this.activeTabIndex !== 0) {
+            this.activeTabIndex = this.activeTabIndex - 1;
+        } else {
+            this.activeTabIndex = tabsLength - 1;
+        }
+        this.setTabs(this.activeTabIndex);
+    }
+
+    private increment(tabsLength: number): void {
+        if (this.activeTabIndex !== tabsLength - 1) {
+            this.activeTabIndex = this.activeTabIndex + 1;
+        } else {
+            this.activeTabIndex = 0;
+        }
+        this.setTabs(this.activeTabIndex);
+    }
+
+    private focusTab(index: number) {
+        const tb = this.tabs as HTMLElement[];
+        tb[index].focus();
+    }
 }
