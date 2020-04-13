@@ -40,7 +40,7 @@ export default class SheetManager {
         styles: ComponentStyles<unknown, unknown>,
         designSystem: any,
         options?: JSSSheetOptions
-    ): boolean {
+    ): void {
         const tracker: SheetTracker | void = this.getTracker(styles, designSystem);
 
         if (Array.isArray(tracker)) {
