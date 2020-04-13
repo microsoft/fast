@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.6](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-sketch-library@4.0.5...@microsoft/fast-sketch-library@4.0.6) (2020-04-13)
+
+
+### Bug Fixes
+
+* mark fast-sketch-library as no longer under active development ([#2918](https://github.com/Microsoft/fast-dna/issues/2918)) ([d295394](https://github.com/Microsoft/fast-dna/commit/d29539451e44da15961e14b7605fc12515e8621e))
+
+
+
+
+
 ## [4.0.5](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-sketch-library@4.0.4...@microsoft/fast-sketch-library@4.0.5) (2020-04-10)
 
 **Note:** Version bump only for package @microsoft/fast-sketch-library

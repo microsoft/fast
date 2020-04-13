@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.2.3](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-breakpoint-tracker-react@2.2.2...@microsoft/fast-breakpoint-tracker-react@2.2.3) (2020-04-13)
+
+
+### Bug Fixes
+
+* mark fast-breakpoint-tracker-react as no longer under active development ([#2917](https://github.com/Microsoft/fast-dna/issues/2917)) ([0a25ed4](https://github.com/Microsoft/fast-dna/commit/0a25ed4cdc6ef91584dbe0304e6d29e794a88cbb))
+
+
+
+
+
 ## [2.2.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-breakpoint-tracker-react@2.2.1...@microsoft/fast-breakpoint-tracker-react@2.2.2) (2020-04-10)
 
 **Note:** Version bump only for package @microsoft/fast-breakpoint-tracker-react
