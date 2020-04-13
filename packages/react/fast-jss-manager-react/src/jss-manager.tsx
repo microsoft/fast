@@ -26,7 +26,7 @@ export interface JSSManagedComponentProps<T, S, C> {
 export interface JSSStyleSheet {
     attached: boolean;
     classes: { [key: string]: string };
-    options: { index: number };
+    options: { index: number; meta: string };
     attach(): JSSStyleSheet;
     update(config: unknown): JSSStyleSheet;
 }

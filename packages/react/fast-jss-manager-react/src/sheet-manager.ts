@@ -203,7 +203,7 @@ export default class SheetManager {
         return sheet;
     }
 
-    private notify(type: SheetManagerEvent, sheet: JSSStyleSheet): void {
+    private notify(type: SheetManagerSubscriptionEventNames, sheet: JSSStyleSheet): void {
         if (Array.isArray(this.subscribers)) {
             this.subscribers.forEach((subscriber: SheetManagerSubscriber) =>
                 subscriber(type, sheet)
@@ -240,8 +240,8 @@ export default class SheetManager {
     }
 }
 
-export type SheetManagerEvent = "add" | "update" | "remove";
+export type SheetManagerSubscriptionEventNames = "add" | "update" | "remove";
 export type SheetManagerSubscriber = (
-    action: SheetManagerEvent,
+    name: SheetManagerSubscriptionEventNames,
     sheet: JSSStyleSheet
 ) => void;
