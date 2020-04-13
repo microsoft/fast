@@ -160,6 +160,12 @@ export class AnchoredRegion extends FastElement {
     }
 
     /**
+     * the positions currently being applied to layout
+     */
+    public verticalPosition: AnchoredRegionVerticalPositionLabel;
+    public horizontalPosition: AnchoredRegionHorizontalPositionLabel;
+
+    /**
      * values to be applied to the component's transform origin attribute on render
      */
     private transformOrigin: string;
@@ -196,12 +202,6 @@ export class AnchoredRegion extends FastElement {
 
     private viewportScrollTop: number;
     private viewportScrollLeft: number;
-
-    /**
-     * the positions currently being applied to layout
-     */
-    currentVerticalPosition: AnchoredRegionVerticalPositionLabel;
-    currentHorizontalPosition: AnchoredRegionHorizontalPositionLabel;
 
     /**
      * base offsets between the positioner's base position and the anchor's
@@ -247,19 +247,7 @@ export class AnchoredRegion extends FastElement {
     }
 
     adoptedCallback() {
-        // TODO: do we need to handle this?
-    }
-
-    /**
-     * event thrown when the region's position changes
-     */
-    positionChanged() {
-        this.dispatchEvent(
-            new CustomEvent("changed", {
-                bubbles: true,
-                composed: true,
-            })
-        );
+        this.reset();
     }
 
     /**
@@ -309,8 +297,8 @@ export class AnchoredRegion extends FastElement {
         this.viewportScrollTop = 0;
         this.viewportScrollLeft = 0;
 
-        this.currentVerticalPosition = AnchoredRegionVerticalPositionLabel.undefined;
-        this.currentHorizontalPosition = AnchoredRegionHorizontalPositionLabel.undefined;
+        this.verticalPosition = AnchoredRegionVerticalPositionLabel.undefined;
+        this.horizontalPosition = AnchoredRegionHorizontalPositionLabel.undefined;
 
         this.baseHorizontalOffset = 0;
         this.baseVerticalOffset = 0;
@@ -433,7 +421,7 @@ export class AnchoredRegion extends FastElement {
         };
 
         if (shouldDeriveAnchorPosition) {
-            switch (this.currentVerticalPosition) {
+            switch (this.verticalPosition) {
                 case AnchoredRegionVerticalPositionLabel.top:
                     this.anchorTop = positionerRect.bottom;
                     this.anchorBottom = this.anchorTop + this.anchorHeight;
@@ -455,7 +443,7 @@ export class AnchoredRegion extends FastElement {
                     break;
             }
 
-            switch (this.currentHorizontalPosition) {
+            switch (this.horizontalPosition) {
                 case AnchoredRegionHorizontalPositionLabel.left:
                     this.anchorLeft = positionerRect.right;
                     this.anchorRight = this.anchorLeft + this.anchorWidth;
@@ -511,14 +499,12 @@ export class AnchoredRegion extends FastElement {
      *  Handle anchor resize events
      */
     private handleAnchorResize = (entry: ResizeObserverEntry): void => {
-        this.anchorHeight =
-            this.anchorElement !== null ? this.anchorElement.clientHeight : 0;
-        this.anchorWidth =
-            this.anchorElement !== null ? this.anchorElement.clientWidth : 0;
+        this.anchorHeight = entry.contentRect.height;
+        this.anchorWidth = entry.contentRect.width;
 
         if (
-            this.currentVerticalPosition === AnchoredRegionVerticalPositionLabel.top ||
-            this.currentVerticalPosition === AnchoredRegionVerticalPositionLabel.insetTop
+            this.verticalPosition === AnchoredRegionVerticalPositionLabel.top ||
+            this.verticalPosition === AnchoredRegionVerticalPositionLabel.insetTop
         ) {
             this.anchorBottom = this.anchorTop + this.anchorHeight;
         } else {
@@ -526,10 +512,8 @@ export class AnchoredRegion extends FastElement {
         }
 
         if (
-            this.currentHorizontalPosition ===
-                AnchoredRegionHorizontalPositionLabel.left ||
-            this.currentHorizontalPosition ===
-                AnchoredRegionHorizontalPositionLabel.insetLeft
+            this.horizontalPosition === AnchoredRegionHorizontalPositionLabel.left ||
+            this.horizontalPosition === AnchoredRegionHorizontalPositionLabel.insetLeft
         ) {
             this.anchorRight = this.anchorLeft + this.anchorWidth;
         } else {
@@ -655,8 +639,8 @@ export class AnchoredRegion extends FastElement {
         );
 
         const positionChanged: boolean = !(
-            this.currentHorizontalPosition === desiredHorizontalPosition &&
-            this.currentVerticalPosition === desiredVerticalPosition
+            this.horizontalPosition === desiredHorizontalPosition &&
+            this.verticalPosition === desiredVerticalPosition
         );
 
         this.setHorizontalPosition(desiredHorizontalPosition, nextPositionerDimension);
@@ -668,7 +652,7 @@ export class AnchoredRegion extends FastElement {
         this.initialLayoutComplete = true;
 
         if (positionChanged) {
-            this.positionChanged();
+            this.$emit("change");
         }
     };
 
@@ -679,10 +663,10 @@ export class AnchoredRegion extends FastElement {
     private updateRegionStyle = (): void => {
         this.classList.toggle("horizontalInset", this.horizontalInset);
         this.classList.toggle("verticalInset", this.verticalInset);
-        this.classList.toggle("top", this.currentVerticalPosition === "top");
-        this.classList.toggle("bottom", this.currentVerticalPosition === "bottom");
-        this.classList.toggle("left", this.currentHorizontalPosition === "left");
-        this.classList.toggle("right", this.currentHorizontalPosition === "right");
+        this.classList.toggle("top", this.verticalPosition === "top");
+        this.classList.toggle("bottom", this.verticalPosition === "bottom");
+        this.classList.toggle("left", this.horizontalPosition === "left");
+        this.classList.toggle("right", this.horizontalPosition === "right");
 
         this.regionStyle = `
             height: ${this.regionHeight};
@@ -735,7 +719,7 @@ export class AnchoredRegion extends FastElement {
         this.xTransformOrigin = xTransformOrigin;
         this.regionRight = right === null ? "unset" : `${Math.floor(right).toString()}px`;
         this.regionLeft = left === null ? "unset" : `${Math.floor(left).toString()}px`;
-        this.currentHorizontalPosition = desiredHorizontalPosition;
+        this.horizontalPosition = desiredHorizontalPosition;
         this.regionWidth = this.horizontalScaling
             ? `${Math.floor(nextPositionerDimension.width)}px`
             : "fit-content";
@@ -781,7 +765,7 @@ export class AnchoredRegion extends FastElement {
         this.regionTop = top === null ? "unset" : `${Math.floor(top).toString()}px`;
         this.regionBottom =
             bottom === null ? "unset" : `${Math.floor(bottom).toString()}px`;
-        this.currentVerticalPosition = desiredVerticalPosition;
+        this.verticalPosition = desiredVerticalPosition;
         this.regionHeight = this.verticalScaling
             ? `${Math.floor(nextPositionerDimension.height)}px`
             : "fit-content";
@@ -794,7 +778,7 @@ export class AnchoredRegion extends FastElement {
         if (this.horizontalPositioningMode === "uncontrolled") {
             this.baseHorizontalOffset = this.anchorLeft - positionerRect.left;
         } else {
-            switch (this.currentHorizontalPosition) {
+            switch (this.horizontalPosition) {
                 case AnchoredRegionHorizontalPositionLabel.undefined:
                     this.baseHorizontalOffset = this.anchorLeft - positionerRect.left;
                     break;
@@ -824,7 +808,7 @@ export class AnchoredRegion extends FastElement {
         if (this.verticalPositioningMode === "uncontrolled") {
             this.baseVerticalOffset = this.anchorBottom - positionerRect.top;
         } else {
-            switch (this.currentVerticalPosition) {
+            switch (this.verticalPosition) {
                 case AnchoredRegionVerticalPositionLabel.undefined:
                     this.baseVerticalOffset = this.anchorBottom - positionerRect.top;
                     break;
