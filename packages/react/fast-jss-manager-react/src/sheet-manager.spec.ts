@@ -99,11 +99,11 @@ describe("The SheetManager", (): void => {
 
         manager.add(stylesheet, designSystem);
 
+        const arg = subscriber.mock.calls[0][0];
+
         expect(subscriber).toHaveBeenCalledTimes(1);
-        expect(subscriber).toHaveBeenCalledWith(
-            "add",
-            manager.get(stylesheet, designSystem)
-        );
+        expect(arg.type).toBe("add");
+        expect(arg.sheet).toBe(manager.get(stylesheet, designSystem));
     });
 
     test("should not re-notify when the same sheet/design-system pair is added", () => {
@@ -112,11 +112,11 @@ describe("The SheetManager", (): void => {
         manager.add(stylesheet, designSystem);
         manager.add(stylesheet, designSystem);
 
+        const arg = subscriber.mock.calls[0][0];
+
         expect(subscriber).toHaveBeenCalledTimes(1);
-        expect(subscriber).toHaveBeenCalledWith(
-            "add",
-            manager.get(stylesheet, designSystem)
-        );
+        expect(arg.type).toBe("add");
+        expect(arg.sheet).toBe(manager.get(stylesheet, designSystem));
     });
 
     test("should notify a subscriber when a sheet is removed", () => {
@@ -126,9 +126,29 @@ describe("The SheetManager", (): void => {
         manager.subscribe(subscriber);
 
         manager.remove(stylesheet, designSystem);
+        const arg = subscriber.mock.calls[0][0];
 
         expect(subscriber).toHaveBeenCalledTimes(1);
-        expect(subscriber).toHaveBeenCalledWith("remove", sheet);
+        expect(arg.type).toBe("remove");
+        expect(arg.sheet).toBe(sheet);
+    });
+
+    test("should only notify subscribes of removal when the last instance of the sheet is removed", () => {
+        const subscriber = jest.fn();
+        manager.add(stylesheet, designSystem);
+        manager.add(stylesheet, designSystem);
+        const sheet = manager.get(stylesheet, designSystem);
+        manager.subscribe(subscriber);
+
+        manager.remove(stylesheet, designSystem);
+        expect(subscriber).toHaveBeenCalledTimes(0);
+
+        manager.remove(stylesheet, designSystem);
+        const arg = subscriber.mock.calls[0][0];
+
+        expect(subscriber).toHaveBeenCalledTimes(1);
+        expect(arg.type).toBe("remove");
+        expect(arg.sheet).toBe(sheet);
     });
 
     test("should notify a subscriber when a sheet is updated", () => {
@@ -138,9 +158,11 @@ describe("The SheetManager", (): void => {
         manager.subscribe(subscriber);
 
         manager.update(stylesheet, designSystem, {});
+        const arg = subscriber.mock.calls[0][0];
 
         expect(subscriber).toHaveBeenCalledTimes(1);
-        expect(subscriber).toHaveBeenCalledWith("update", sheet);
+        expect(arg.type).toBe("update");
+        expect(arg.sheet).toBe(sheet);
     });
 
     test("should notify a multiple subscribers", () => {
@@ -151,26 +173,19 @@ describe("The SheetManager", (): void => {
         manager.subscribe(B);
 
         manager.add(stylesheet, designSystem);
-        const sheet = manager.get(stylesheet, designSystem);
 
         expect(A).toHaveBeenCalledTimes(1);
         expect(B).toHaveBeenCalledTimes(1);
-        expect(A).toHaveBeenCalledWith("add", sheet);
-        expect(B).toHaveBeenCalledWith("add", sheet);
 
         manager.update(stylesheet, designSystem, designSystemUpdate);
 
         expect(A).toHaveBeenCalledTimes(2);
         expect(B).toHaveBeenCalledTimes(2);
-        expect(A).toHaveBeenLastCalledWith("update", sheet);
-        expect(B).toHaveBeenLastCalledWith("update", sheet);
 
         manager.remove(stylesheet, designSystemUpdate);
 
         expect(A).toHaveBeenCalledTimes(3);
         expect(B).toHaveBeenCalledTimes(3);
-        expect(A).toHaveBeenLastCalledWith("remove", sheet);
-        expect(B).toHaveBeenLastCalledWith("remove", sheet);
     });
 
     test("should not notify a subscriber after it has been unsubscribed", () => {

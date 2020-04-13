@@ -1,5 +1,9 @@
 import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
-import { JSSStyleSheet } from "./jss-manager";
+import {
+    JSSManagerSubscriber,
+    JSSManagerSubscriptionEventType,
+    JSSStyleSheet,
+} from "./jss-manager";
 import { jss, stylesheetRegistry } from "./jss";
 
 export type SheetTracker = [JSSStyleSheet, number];
@@ -25,7 +29,7 @@ export interface JSSSheetOptions {
 export default class SheetManager {
     public jss: any = jss;
     private registry: SheetRegistry = new WeakMap();
-    private subscribers: SheetManagerSubscriber[];
+    private subscribers: JSSManagerSubscriber[];
 
     /**
      * Creates a new JSS stylesheet from a stylesheet and design-system.
@@ -203,10 +207,10 @@ export default class SheetManager {
         return sheet;
     }
 
-    private notify(type: SheetManagerSubscriptionEventNames, sheet: JSSStyleSheet): void {
+    private notify(type: JSSManagerSubscriptionEventType, sheet: JSSStyleSheet): void {
         if (Array.isArray(this.subscribers)) {
-            this.subscribers.forEach((subscriber: SheetManagerSubscriber) =>
-                subscriber(type, sheet)
+            this.subscribers.forEach((subscriber: JSSManagerSubscriber) =>
+                subscriber({ type, sheet })
             );
         }
     }
@@ -215,7 +219,7 @@ export default class SheetManager {
      * Subscribe to add, update, and remove events taken by the sheet manager.
      * @param subscriber The subscription function to invoke
      */
-    public subscribe(subscriber: SheetManagerSubscriber): () => void {
+    public subscribe(subscriber: JSSManagerSubscriber): () => void {
         if (!Array.isArray(this.subscribers)) {
             this.subscribers = [];
         }
@@ -229,7 +233,7 @@ export default class SheetManager {
         };
     }
 
-    public unsubscribe(subscriber: SheetManagerSubscriber): void {
+    public unsubscribe(subscriber: JSSManagerSubscriber): void {
         if (Array.isArray(this.subscribers)) {
             const index = this.subscribers.indexOf(subscriber);
 
@@ -239,9 +243,3 @@ export default class SheetManager {
         }
     }
 }
-
-export type SheetManagerSubscriptionEventNames = "add" | "update" | "remove";
-export type SheetManagerSubscriber = (
-    name: SheetManagerSubscriptionEventNames,
-    sheet: JSSStyleSheet
-) => void;

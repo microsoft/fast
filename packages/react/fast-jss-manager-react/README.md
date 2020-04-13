@@ -125,6 +125,27 @@ The design system value provided by the `DesignSystemProvider` can be accessed i
 </DesignSystemConsumer>
 ```
 
+### Notifications
+It is sometimes useful to know when stylesheets are added, removed, or updated. The `subscribe` and `unsubscribe` methods of the `JSSManager` allows you to do that.
+
+#### Subscriber
+A SheetManagerSubscriber is a function that accepts a single object argument with `"type"` and `"sheet"` properties. The `"type"` field will match `"add"`, `"remove"` or `"update"` and the `"sheet"` is a reference to the JSSStyleSheet object.
+
+```jsx
+import { JSSManager } from "@microsoft/fast-jss-manager-react"`
+function subscriber(data) {
+    if (data.type === "add") {
+        console.log("added classes", Object.values(data.sheet.classes));
+    }
+}
+
+const unsubscribe = JSSManager.sheetManager.subscribe(subscriber)
+
+// ...
+
+unsubscribe(); // or JSSManager.unsubscribe(subscriber);
+```
+
 ## Server side compiling
 
 Server side compiling is achieved through the use of a JSS [https://github.com/cssinjs/jss/blob/master/docs/js-api.md#style-sheets-registry](style-sheet-registry). Once the app is run server-side, all stylesheets will be stored in a single registry (`stylesheetRegistry`) for easy output:
