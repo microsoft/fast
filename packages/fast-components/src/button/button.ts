@@ -16,8 +16,8 @@ export class Button extends FormAssociated<HTMLInputElement> {
         newValue: ButtonAppearance
     ): void {
         if (oldValue !== newValue) {
-            this.classList.add(`${newValue}`);
-            this.classList.remove(`${oldValue}`);
+            this.classList.add(newValue);
+            this.classList.remove(oldValue);
         }
     }
 

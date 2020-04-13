@@ -11,8 +11,8 @@ export class Anchor extends FastElement {
         newValue: AnchorAppearance
     ): void {
         if (oldValue !== newValue) {
-            this.classList.add(`${newValue}`);
-            this.classList.remove(`${oldValue}`);
+            this.classList.add(newValue);
+            this.classList.remove(oldValue);
         }
     }
 
