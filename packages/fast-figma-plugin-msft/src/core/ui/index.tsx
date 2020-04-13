@@ -1,24 +1,22 @@
 import {
     ActionTrigger,
     ActionTriggerAppearance,
-    Caption,
     Checkbox,
     Divider,
     Label,
     Radio,
 } from "@microsoft/fast-components-react-msft";
 import React from "react";
-import { MessageAction, MessageTypes, UIMessage } from "../messaging";
-import { RecipeData, RecipeTypes } from "../recipe-registry";
-// import Swatch from "./swatch";
 import {
     DesignSystem,
-    StandardLuminance,
     DesignSystemDefaults,
+    StandardLuminance,
 } from "@microsoft/fast-components-styles-msft";
-import { refresh, revertChanges, detach } from "./glyphs";
-import { Drawer, Swatch, CornerRadius } from "./components";
 import { ColorRGBA64, parseColorHexRGB } from "@microsoft/fast-colors";
+import { MessageAction, MessageTypes, UIMessage } from "../messaging";
+import { RecipeData, RecipeTypes } from "../recipe-registry";
+import { detach, refresh, revertChanges } from "./glyphs";
+import { CornerRadius, Drawer, Swatch } from "./components";
 
 /* tslint:disable:no-unused-expression */
 Drawer;
@@ -170,7 +168,7 @@ export class PluginUI extends React.Component<PluginUIProps> {
                                 <>
                                     <p className="title inset">Background</p>
                                     {backgroundRecipes.map(recipe => (
-                                        <p className="applied-recipe">
+                                        <p className="applied-recipe" key={recipe.id}>
                                             <td-swatch
                                                 circular
                                                 value={recipe.value}
@@ -207,7 +205,7 @@ export class PluginUI extends React.Component<PluginUIProps> {
                                 <>
                                     <p className="title inset">Foreground</p>
                                     {foregroundRecipes.map(recipe => (
-                                        <p className="applied-recipe">
+                                        <p className="applied-recipe" key={recipe.id}>
                                             <td-swatch
                                                 circular
                                                 value={recipe.value}
@@ -244,7 +242,7 @@ export class PluginUI extends React.Component<PluginUIProps> {
                                 <>
                                     <p className="title inset">Border</p>
                                     {strokeRecipes.map(recipe => (
-                                        <p className="applied-recipe">
+                                        <p className="applied-recipe" key={recipe.id}>
                                             <td-swatch
                                                 circular
                                                 value={recipe.value}
@@ -297,6 +295,7 @@ export class PluginUI extends React.Component<PluginUIProps> {
                                             .map(recipe => {
                                                 return (
                                                     <td-swatch
+                                                        key={recipe.id}
                                                         value={recipe.value}
                                                         title={recipe.value}
                                                         interactive
@@ -330,6 +329,7 @@ export class PluginUI extends React.Component<PluginUIProps> {
                                             .map(recipe => {
                                                 return (
                                                     <td-swatch
+                                                        key={recipe.id}
                                                         circular
                                                         value={recipe.value}
                                                         title={recipe.value}
@@ -361,6 +361,7 @@ export class PluginUI extends React.Component<PluginUIProps> {
                                             .map(recipe => {
                                                 return (
                                                     <td-swatch
+                                                        key={recipe.id}
                                                         circular
                                                         value={recipe.value}
                                                         title={recipe.value}
@@ -395,6 +396,7 @@ export class PluginUI extends React.Component<PluginUIProps> {
                                             RecipeTypes.foregroundFills
                                         ).map(recipe => (
                                             <td-swatch
+                                                key={recipe.id}
                                                 circular
                                                 value={recipe.value}
                                                 title={recipe.value}
@@ -426,6 +428,7 @@ export class PluginUI extends React.Component<PluginUIProps> {
                                     recipe => {
                                         return (
                                             <td-corner-radius
+                                                key={recipe.id}
                                                 value={recipe.value}
                                                 interactive
                                                 selected={
@@ -448,7 +451,7 @@ export class PluginUI extends React.Component<PluginUIProps> {
                         {cornerRadiusRecipes.length ? (
                             <div slot="collapsed-content">
                                 {cornerRadiusRecipes.map(recipe => (
-                                    <p className="applied-recipe">
+                                    <p className="applied-recipe" key={recipe.id}>
                                         <td-corner-radius
                                             value={recipe.value}
                                             orientation="horizontal"

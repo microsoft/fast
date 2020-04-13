@@ -1,7 +1,13 @@
 declare namespace JSX {
     interface IntrinsicElements {
-        "td-drawer": { expanded?: boolean; name: string; children?: React.ReactNode };
+        "td-drawer": {
+            key?: string;
+            expanded?: boolean;
+            name: string;
+            children?: React.ReactNode;
+        };
         "td-swatch": {
+            key?: string;
             type?: string;
             circular?: boolean;
             value: string | "none";
@@ -14,6 +20,7 @@ declare namespace JSX {
             selected?: boolean;
         };
         "td-corner-radius": {
+            key?: string;
             value: string;
             children?: React.ReactNode;
             orientation?: "horizontal" | "vertical";
