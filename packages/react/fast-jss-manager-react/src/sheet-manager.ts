@@ -25,6 +25,7 @@ export interface JSSSheetOptions {
 export default class SheetManager {
     public jss: any = jss;
     private registry: SheetRegistry = new WeakMap();
+    private subscribers: SheetManagerSubscriber[];
 
     /**
      * Creates a new JSS stylesheet from a stylesheet and design-system.
@@ -35,7 +36,7 @@ export default class SheetManager {
         styles: ComponentStyles<unknown, unknown>,
         designSystem: any,
         options?: JSSSheetOptions
-    ): void {
+    ): boolean {
         const tracker: SheetTracker | void = this.getTracker(styles, designSystem);
 
         if (Array.isArray(tracker)) {
@@ -104,7 +105,9 @@ export default class SheetManager {
             !!styles &&
             typeof styles === "object"
         ) {
-            tracker[0].update(nextDesignSystem);
+            const sheet = tracker[0];
+            sheet.update(nextDesignSystem);
+            this.notify("update", sheet);
             this.registry.get(styles).delete(previousDesignSystem);
             this.registry.get(styles).set(nextDesignSystem, tracker);
         } else {
@@ -127,6 +130,7 @@ export default class SheetManager {
                 const sheet: JSSStyleSheet = tracker[0];
                 this.jss.removeStyleSheet(sheet);
                 stylesheetRegistry.remove(sheet);
+                this.notify("remove", sheet);
 
                 this.registry.get(styles).delete(designSystem);
             }
@@ -194,7 +198,50 @@ export default class SheetManager {
 
         sheet.update(designSystem).attach();
         stylesheetRegistry.add(sheet);
+        this.notify("add", sheet);
 
         return sheet;
     }
+
+    private notify(type: SheetManagerEvent, sheet: JSSStyleSheet): void {
+        if (Array.isArray(this.subscribers)) {
+            this.subscribers.forEach((subscriber: SheetManagerSubscriber) =>
+                subscriber(type, sheet)
+            );
+        }
+    }
+
+    /**
+     * Subscribe to add, update, and remove events taken by the sheet manager.
+     * @param subscriber The subscription function to invoke
+     */
+    public subscribe(subscriber: SheetManagerSubscriber): () => void {
+        if (!Array.isArray(this.subscribers)) {
+            this.subscribers = [];
+        }
+
+        if (this.subscribers.indexOf(subscriber) === -1) {
+            this.subscribers.push(subscriber);
+        }
+
+        return (): void => {
+            this.unsubscribe(subscriber);
+        };
+    }
+
+    public unsubscribe(subscriber: SheetManagerSubscriber): void {
+        if (Array.isArray(this.subscribers)) {
+            const index = this.subscribers.indexOf(subscriber);
+
+            if (index !== -1) {
+                this.subscribers.splice(index, 1);
+            }
+        }
+    }
 }
+
+export type SheetManagerEvent = "add" | "update" | "remove";
+export type SheetManagerSubscriber = (
+    action: SheetManagerEvent,
+    sheet: JSSStyleSheet
+) => void;

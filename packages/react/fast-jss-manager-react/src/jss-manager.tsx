@@ -97,7 +97,7 @@ abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S,
     /**
      * Manages stylesheets
      */
-    private static sheetManager: SheetManager = new SheetManager();
+    public static sheetManager: SheetManager = new SheetManager();
 
     /**
      * React context instance data
