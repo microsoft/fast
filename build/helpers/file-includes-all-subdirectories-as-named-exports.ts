@@ -1,6 +1,6 @@
 import path from "path";
 import fs from "fs";
-import { pascalCase } from "../../packages/fast-web-utilities";
+import { pascalCase } from "../../packages/utilities/fast-web-utilities";
 
 /**
  * Verifies all components in source directory are exported, directories listed in "excludes" parameter are ignored

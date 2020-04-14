@@ -1,0 +1,34 @@
+{
+  "name": "@microsoft/fast-element",
+  "description": "A library for constructing Web Components",
+  "private": true,
+  "sideEffects": false,
+  "version": "0.6.0",
+  "author": {
+    "name": "Microsoft",
+    "url": "https://discord.gg/FcSNfg4"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Microsoft/fast-dna.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Microsoft/fast-dna/issues/new/choose"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -p ./tsconfig.json",
+    "clean:dist": "node ../../../build/clean.js dist",
+    "prepare": "yarn clean:dist && yarn build",
+    "prettier": "prettier --config ../../../.prettierrc --write \"**/*.ts\"",
+    "prettier:diff": "prettier --config ../../../.prettierrc \"**/*.ts\" --list-different",
+    "eslint": "eslint . --ext .ts",
+    "eslint:fix": "eslint . --ext .ts --fix"
+  },
+  "devDependencies": {
+    "prettier": "2.0.2",
+    "typescript": "^3.7.5"
+  }
+}

@@ -1,0 +1,93 @@
+{
+  "name": "@microsoft/fast-components-styles-msft",
+  "description": "Javascript style sheets for FAST components",
+  "sideEffects": false,
+  "version": "4.28.6",
+  "author": {
+    "name": "Microsoft",
+    "url": "https://discord.gg/FcSNfg4"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Microsoft/fast-dna.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Microsoft/fast-dna/issues/new/choose"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "clean:dist": "node ../../../build/clean.js dist",
+    "clean:tmp": "node ../../../build/clean.js .tmp",
+    "eslint": "eslint . --ext .ts",
+    "eslint:fix": "eslint . --ext .ts --fix",
+    "test": "yarn eslint && yarn unit-tests",
+    "build": "yarn generate-palettes && tsc -p ./tsconfig.build.json",
+    "build:watch": "yarn build -- -w",
+    "prepare": "yarn clean:dist && yarn build",
+    "prettier": "prettier --config ../../../.prettierrc --write \"**/*.ts\"",
+    "prettier:diff": "prettier --config ../../../.prettierrc \"**/*.ts\" --list-different",
+    "unit-tests": "jest --runInBand",
+    "unit-tests:watch": "jest --watch",
+    "watch": "yarn build -- -w --preserveWatchOutput",
+    "generate-palettes": "rollup --config && node .tmp/generate-palettes.js && yarn clean:tmp"
+  },
+  "jest": {
+    "collectCoverage": true,
+    "coverageThreshold": {
+      "global": {
+        "statements": 80,
+        "branches": 80,
+        "functions": 80,
+        "lines": 80
+      }
+    },
+    "coveragePathIgnorePatterns": [
+      "/node_modules",
+      "./src/utilities/color/index.ts"
+    ],
+    "testURL": "http://localhost",
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest",
+      "^.+\\.jsx?$": "babel-jest"
+    },
+    "transformIgnorePatterns": [
+      "!<rootDir>/node_modules/lodash-es"
+    ],
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(js|ts)$",
+    "moduleFileExtensions": [
+      "ts",
+      "js"
+    ]
+  },
+  "devDependencies": {
+    "@babel/core": "^7.0.0",
+    "@babel/preset-env": "^7.1.0",
+    "@microsoft/eslint-config-fast-dna": "^1.1.0",
+    "@types/jest": "^25.2.1",
+    "babel-core": "^7.0.0-bridge.0",
+    "babel-jest": "^25.2.6",
+    "eslint-config-prettier": "^6.10.1",
+    "jest": "^25.2.7",
+    "lodash-es": "^4.0.0",
+    "prettier": "2.0.2",
+    "rollup": "^1.18.0",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-typescript": "^1.0.1",
+    "ts-jest": "^25.3.1",
+    "tslib": "^1.10.0",
+    "typescript": "3.3.3"
+  },
+  "dependencies": {
+    "@microsoft/fast-colors": "^5.0.5",
+    "@microsoft/fast-components-class-name-contracts-base": "^4.6.3",
+    "@microsoft/fast-components-class-name-contracts-msft": "^4.8.3",
+    "@microsoft/fast-jss-manager": "^4.1.13",
+    "@microsoft/fast-jss-utilities": "^4.7.9",
+    "@microsoft/fast-web-utilities": "^4.4.2"
+  },
+  "peerDependencies": {
+    "lodash-es": "^4.0.0"
+  }
+}
