@@ -21,7 +21,7 @@ const { exec } = require("child_process");
 const { spawn } = require("child_process");
 
 const rootDir = path.resolve(process.cwd());
-const srcDir = "packages/*";
+const srcDir = "packages/*/*";
 const destDir = path.join("docs", "en", "packages");
 
 var copyReadmeScript = "copy-package-readme.js";
@@ -29,12 +29,7 @@ var copyReadmeScriptPath = path.join("build", "documentation", copyReadmeScript)
 var dryRun = false;
 var verbose = false;
 
-const excludedPackages = [
-    "fast-browser-extensions",
-    "fast-color-explorer",
-    "fast-permutator",
-    "fast-eslint-rules",
-];
+const excludedPackages = ["fast-eslint-rules", "fast-tslint-rules"];
 
 /**
  * Obtain command line aguments

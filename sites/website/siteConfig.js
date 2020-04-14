@@ -26,6 +26,7 @@ const siteConfig = {
         "An unopinionated system of components, development tools, and utilities used à la carte or as a suite to build enterprise-grade websites and applications.",
     url: "https://www.fast.design", // Your website URL
     baseUrl: "/",
+    customDocsPath: "../docs",
     // Base URL for your project */
     // For github.io type URLs, you would set the url and baseUrl like:
     //   url: 'https://facebook.github.io',
