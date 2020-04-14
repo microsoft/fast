@@ -1,5 +1,4 @@
 import { Behavior } from "./directives/behavior";
-import { emptyArray } from "./interfaces";
 
 export interface StyleTarget {
     adoptedStyleSheets?: CSSStyleSheet[];
