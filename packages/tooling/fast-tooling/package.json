@@ -20,10 +20,10 @@
     "scripts": {
         "build": "tsc -p ./tsconfig.build.json",
         "build:message-system": "webpack --config webpack.message-system.config.js",
-        "clean:dist": "node ../../build/clean.js dist",
+        "clean:dist": "node ../../../build/clean.js dist",
         "prepare": "yarn clean:dist && yarn build && yarn build:message-system",
-        "prettier": "prettier --config ../../.prettierrc --write \"**/*.ts\"",
-        "prettier:diff": "prettier --config ../../.prettierrc \"**/*.ts\" --list-different",
+        "prettier": "prettier --config ../../../.prettierrc --write \"**/*.ts\"",
+        "prettier:diff": "prettier --config ../../../.prettierrc \"**/*.ts\" --list-different",
         "test": "yarn tslint && yarn unit-tests",
         "tslint": "tslint -c ./tslint.json '**/*.ts'",
         "tslint:fix": "tslint -c ./tslint.json --fix '**/*.ts'",

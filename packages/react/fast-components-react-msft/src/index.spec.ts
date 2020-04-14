@@ -1,5 +1,5 @@
 import * as path from "path";
-import { includesAllSubdirectoriesAsNamedExports } from "../../../build/helpers/file-includes-all-subdirectories-as-named-exports";
+import { includesAllSubdirectoriesAsNamedExports } from "../../../../build/helpers/file-includes-all-subdirectories-as-named-exports";
 
 describe("index.ts", (): void => {
     test("should export all components in the src directory", () => {

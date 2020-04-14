@@ -20,10 +20,10 @@
   "scripts": {
     "build": "tsc -p ./tsconfig.build.json",
     "build:app": "webpack --progress --mode=production",
-    "clean:dist": "node ../../build/clean.js dist",
+    "clean:dist": "node ../../../build/clean.js dist",
     "prepare": "yarn clean:dist && yarn build",
-    "prettier": "prettier --config ../../.prettierrc --write \"**/*.{ts,tsx}\"",
-    "prettier:diff": "prettier --config ../../.prettierrc \"**/*.{ts,tsx}\" --list-different",
+    "prettier": "prettier --config ../../../.prettierrc --write \"**/*.{ts,tsx}\"",
+    "prettier:diff": "prettier --config ../../../.prettierrc \"**/*.{ts,tsx}\" --list-different",
     "start": "webpack-dev-server",
     "test": "yarn eslint && yarn unit-tests && yarn build:app",
     "eslint": "eslint . --ext .ts,.tsx",

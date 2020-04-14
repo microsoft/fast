@@ -9,7 +9,7 @@
   "license": "MIT",
   "private": true,
   "workspaces": {
-    "packages": ["packages/*"],
+    "packages": ["packages/**/*", "sites/fast-color-explorer", "sites/fast-component-explorer"],
     "nohoist": ["**/react-syntax-highlighter"]
   },
   "repository": {

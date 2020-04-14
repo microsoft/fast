@@ -19,10 +19,10 @@
   "types": "./dist/index.d.ts",
   "scripts": {
     "build": "tsc -p ./tsconfig.build.json",
-    "clean:dist": "node ../../build/clean.js dist",
+    "clean:dist": "node ../../../build/clean.js dist",
     "prepare": "yarn clean:dist && yarn build",
-    "prettier": "prettier --config ../../.prettierrc --write \"**/*.ts\"",
-    "prettier:diff": "prettier --config ../../.prettierrc \"**/*.ts\" --list-different",
+    "prettier": "prettier --config ../../../.prettierrc --write \"**/*.ts\"",
+    "prettier:diff": "prettier --config ../../../.prettierrc \"**/*.ts\" --list-different",
     "test": "yarn eslint && yarn unit-tests",
     "eslint": "eslint . --ext .ts",
     "eslint:fix": "eslint . --ext .ts --fix",
