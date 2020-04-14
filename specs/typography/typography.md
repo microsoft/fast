@@ -50,7 +50,7 @@ This is more declarative than using an index position to reference the sizes, li
 
 *Note that these are just examples and nothing about any particular usage of a type size is prescribed by the underlying ramp. See further typography specs for other systematic ways to apply the ramp sizes.*
 
-Type style variables can be added at any point in the DOM. Generally they would be created globally for consistent application throughout your app or site, or they could be overridden or added for a single section of a page.
+Type style variables can be added or updated at any point in the component tree. Generally they would be created globally for consistent application throughout your app or site, or they could be overridden or added for a single section of a page. *Note that this does not prescribe if they are part of the design system or declared as css variables, TBD per larger styling system work.*
 
 ### API
 
@@ -64,17 +64,12 @@ A type ramp with fixed type size values and default line height, index 1 is base
 A type ramp with fixed type size values and fixed individual line heights, index 1 is base
 - `typeRamp({'0.75em', '0.875em', '1em', '1.25em'}, 1)`  
 A type ramp with relative type size values and default line height, index 1 is base
-- `typeRamp({{'10px', '16px'}, {'12px', '16px'}, {'14px', '20px'}, {'16px', '24px'}, {'20px', '28px'}, {'28px', '36px'}, {'34px', '44px'}, {'46px', '56px'}, {'60px', '72px'}}, 1)`  
+- `typeRamp({{'10px', '16px'}, {'12px', '16px'}, {'14px', '20px'}, {'16px', '24px'}, {'20px', '28px'}, {'28px', '36px'}, {'34px', '44px'}, {'46px', '56px'}, {'60px', '72px'}}, 2)`  
 The full equivalent of the default type ramp
-
-A different ramp construction, which could be extracted out to another ramp provider class:
-
-- `typeRamp[Modular](16, 1.25, 3, 5)`  
-A type ramp based at `16px` on a major third [modular scale](https://type-scale.com/) of `1.25` with `3` sizes below base and `5` sizes above.
 
 ### Anatomy and Appearance
 
-The type ramp is provided as css variables that are named to extend plus and minus from the base.
+The type ramp is provided as properties or variables that are named to extend plus and minus from the base.
 
 - `fast-type-ramp-minus-2-size` = `"10px"`
 - `fast-type-ramp-minus-2-height` = `"16px"`
@@ -111,8 +106,6 @@ As the typography styles are not components, it would be nice to provide a way t
 
 ### Documentation
 
-*What additions or changes are needed for user documentation and demos? Are there any architectural/engineering docs we should create as well, perhaps due to some interesting technical challenge or design decisions related to this component?*
-
 *TODO: How do we document styles? Something like this doc, but separate for styles from components?*
 
 ---
@@ -122,3 +115,8 @@ As the typography styles are not components, it would be nice to provide a way t
 Apply the styles to the current components and any example pages.
 
 It would be nice to extend the type ramp settings in the future to be able to be specified by a [modular scale](https://type-scale.com/) or another custom algorithm.
+
+Could be part of the main typography constructor or extracted out to another ramp provider class:
+
+- `typeRamp[Modular](16, 1.25, 3, 5)`  
+A type ramp based at `16px` on a major third [modular scale](https://type-scale.com/) of `1.25` with `3` sizes below base and `5` sizes above.
