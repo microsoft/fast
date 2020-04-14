@@ -208,7 +208,7 @@ export function calcSplices(
     old: any[],
     oldStart: number,
     oldEnd: number
-): readonly never[] | Splice[] {
+): ReadonlyArray<never> | Splice[] {
     let prefixCount = 0;
     let suffixCount = 0;
 

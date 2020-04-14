@@ -147,9 +147,10 @@ export class HTMLView implements ElementView, SyntheticView {
         parent.removeChild(end);
 
         const behaviors = this.behaviors;
+        const oldSource = this.source;
 
         for (let i = 0, ii = behaviors.length; i < ii; ++i) {
-            behaviors[i].unbind();
+            behaviors[i].unbind(oldSource);
         }
     }
 
@@ -158,16 +159,22 @@ export class HTMLView implements ElementView, SyntheticView {
      * @param source The binding source for the view's binding behaviors.
      */
     public bind(source: unknown): void {
+        const behaviors = this.behaviors;
+
         if (this.source === source) {
             return;
         } else if (this.source !== void 0) {
-            this.unbind();
-        }
+            const oldSource = this.source;
 
-        const behaviors = this.behaviors;
-
-        for (let i = 0, ii = behaviors.length; i < ii; ++i) {
-            behaviors[i].bind(source);
+            for (let i = 0, ii = behaviors.length; i < ii; ++i) {
+                const current = behaviors[i];
+                current.unbind(oldSource);
+                current.bind(source);
+            }
+        } else {
+            for (let i = 0, ii = behaviors.length; i < ii; ++i) {
+                behaviors[i].bind(source);
+            }
         }
     }
 
@@ -180,9 +187,10 @@ export class HTMLView implements ElementView, SyntheticView {
         }
 
         const behaviors = this.behaviors;
+        const oldSource = this.source;
 
         for (let i = 0, ii = behaviors.length; i < ii; ++i) {
-            behaviors[i].unbind();
+            behaviors[i].unbind(oldSource);
         }
 
         this.source = void 0;
@@ -202,10 +210,12 @@ export class HTMLView implements ElementView, SyntheticView {
         range.deleteContents();
 
         for (let i = 0, ii = views.length; i < ii; ++i) {
-            const behaviors = (views[i] as any).behaviors as Behavior[];
+            const view = views[i] as any;
+            const behaviors = view.behaviors as Behavior[];
+            const oldSource = view.source;
 
             for (let j = 0, jj = behaviors.length; j < jj; ++j) {
-                behaviors[j].unbind();
+                behaviors[j].unbind(oldSource);
             }
         }
     }
