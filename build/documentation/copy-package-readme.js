@@ -12,7 +12,7 @@ const chalk = require("chalk");
 
 const rootDir = path.resolve(process.cwd());
 const srcReadmePaths = "packages/*/*/?(readme.md|README.md)";
-const destDir = path.join("docs", "en", "packages");
+const destDir = path.join("docs", "en", "packages/");
 const srcSidebar = path.join("sites/website", "sidebars.json");
 
 var dryRun = false;
@@ -61,6 +61,7 @@ function copyReadmeFiles() {
             createDestReadme(srcReadmePath);
             const srcDirPath = path.dirname(srcReadmePath);
             const lastSrcDir = srcDirPath.split(path.sep).pop();
+
             sidebarEntries.push(`en/packages/${lastSrcDir}/index`);
         });
 
@@ -79,7 +80,11 @@ function copyReadmeFiles() {
  * Then appends the original readme from .docs/en/packages/[package-name]
  */
 function createDestReadme(srcReadmePath) {
-    const destReadmePath = srcReadmePath.replace(/(\bpackages\b)(?!.*\1)/, destDir);
+    const destReadmePath = srcReadmePath.replace(
+        /(\bpackages\/\b)(\breact\/\b|\btooling\/\b|\butilities\/\b)(?!.*\1)/,
+        destDir
+    );
+
     const destDirPath = path.dirname(destReadmePath);
     const srcDirPath = path.dirname(srcReadmePath);
     const srcReadmeText = fs.readFileSync(srcReadmePath).toString();

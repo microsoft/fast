@@ -86,11 +86,11 @@ package-lock.json
 lib/core/metadata.js
 lib/core/MetadataBlog.js
 
-website/translated_docs
-website/build/
-website/yarn.lock
-website/node_modules
-website/i18n/
+sites/website/translated_docs
+sites/website/build/
+sites/website/yarn.lock
+sites/website/node_modules
+sites/website/i18n/
 
 # Docusaurus package readme's
 docs/en/packages/*/README.md
