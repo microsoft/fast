@@ -1,6 +1,6 @@
 export interface Behavior {
     bind(source: unknown): void;
-    unbind(): void;
+    unbind(source: unknown): void;
 }
 
 export interface BehaviorFactory {

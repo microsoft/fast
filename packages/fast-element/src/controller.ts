@@ -132,8 +132,10 @@ export class Controller extends PropertyChangeNotifier implements Container {
         }
 
         if (this.isConnected) {
+            const element = this.element;
+
             for (let i = 0; i < length; ++i) {
-                behaviors[i].unbind();
+                behaviors[i].unbind(element);
             }
         }
     }
@@ -191,8 +193,10 @@ export class Controller extends PropertyChangeNotifier implements Container {
         const behaviors = this.behaviors;
 
         if (behaviors !== null) {
+            const element = this.element;
+
             for (let i = 0, ii = behaviors.length; i < ii; ++i) {
-                behaviors[i].unbind();
+                behaviors[i].unbind(element);
             }
         }
     }
