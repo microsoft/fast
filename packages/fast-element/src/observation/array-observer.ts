@@ -123,7 +123,7 @@ export function enableArrayObservation(): void {
     const splice = arrayProto.splice;
     const unshift = arrayProto.unshift;
 
-    arrayProto.pop = function () {
+    arrayProto.pop = function() {
         const notEmpty = this.length > 0;
         const methodCallResult = pop.apply(this, arguments as any);
         const o = (this as any).$fastController as ArrayObserver;
@@ -135,7 +135,7 @@ export function enableArrayObservation(): void {
         return methodCallResult;
     };
 
-    arrayProto.push = function () {
+    arrayProto.push = function() {
         const methodCallResult = push.apply(this, arguments as any);
         const o = (this as any).$fastController as ArrayObserver;
 
@@ -151,7 +151,7 @@ export function enableArrayObservation(): void {
         return methodCallResult;
     };
 
-    arrayProto.reverse = function () {
+    arrayProto.reverse = function() {
         let oldArray;
         const o = (this as any).$fastController as ArrayObserver;
 
@@ -169,7 +169,7 @@ export function enableArrayObservation(): void {
         return methodCallResult;
     };
 
-    arrayProto.shift = function () {
+    arrayProto.shift = function() {
         const notEmpty = this.length > 0;
         const methodCallResult = shift.apply(this, arguments as any);
         const o = (this as any).$fastController as ArrayObserver;
@@ -181,7 +181,7 @@ export function enableArrayObservation(): void {
         return methodCallResult;
     };
 
-    arrayProto.sort = function () {
+    arrayProto.sort = function() {
         let oldArray;
         const o = (this as any).$fastController as ArrayObserver;
 
@@ -199,7 +199,7 @@ export function enableArrayObservation(): void {
         return methodCallResult;
     };
 
-    arrayProto.splice = function () {
+    arrayProto.splice = function() {
         const methodCallResult = splice.apply(this, arguments as any);
         const o = (this as any).$fastController as ArrayObserver;
 
@@ -219,7 +219,7 @@ export function enableArrayObservation(): void {
         return methodCallResult;
     };
 
-    arrayProto.unshift = function () {
+    arrayProto.unshift = function() {
         const methodCallResult = unshift.apply(this, arguments as any);
         const o = (this as any).$fastController as ArrayObserver;
 
