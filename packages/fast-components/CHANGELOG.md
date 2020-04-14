@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.8.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components@0.7.0...@microsoft/fast-components@0.8.0) (2020-04-13)
+
+
+### Features
+
+* add slider web component ([#2861](https://github.com/Microsoft/fast-dna/issues/2861)) ([c295e01](https://github.com/Microsoft/fast-dna/commit/c295e015e9e47ec68b51baf47e2a39c9f4d809b8))
+
+
+
+
+
 # [0.7.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components@0.6.1...@microsoft/fast-components@0.7.0) (2020-04-10)
 
 

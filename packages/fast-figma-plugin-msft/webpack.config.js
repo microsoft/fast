@@ -55,6 +55,7 @@ module.exports = (env, args) => {
                 contentBase: outDir,
                 chunks: ["ui"],
                 inlineSource: "(js)$",
+                template: path.resolve(appDir, "index.html"),
             }),
             new HtmlWebpackInlineSourcePlugin(),
             new BundleAnalyzerPlugin({
