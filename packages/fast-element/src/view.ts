@@ -210,7 +210,7 @@ export class HTMLView implements ElementView, SyntheticView {
         range.deleteContents();
 
         for (let i = 0, ii = views.length; i < ii; ++i) {
-            const view = (views[i] as any);
+            const view = views[i] as any;
             const behaviors = view.behaviors as Behavior[];
             const oldSource = view.source;
 
