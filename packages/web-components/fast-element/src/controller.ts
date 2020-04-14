@@ -5,6 +5,7 @@ import { PropertyChangeNotifier } from "./observation/notifier";
 import { Observable } from "./observation/observable";
 import { Behavior } from "./directives/behavior";
 import { ElementStyles, StyleTarget } from "./styles";
+import { defaultExecutionContext } from "./interfaces";
 
 const defaultEventOptions: CustomEventInit = {
     bubbles: true,
@@ -109,7 +110,7 @@ export class Controller extends PropertyChangeNotifier implements Container {
             const element = this.element;
 
             for (let i = 0; i < length; ++i) {
-                behaviors[i].bind(element);
+                behaviors[i].bind(element, defaultExecutionContext);
             }
         }
     }
@@ -163,14 +164,14 @@ export class Controller extends PropertyChangeNotifier implements Container {
         const view = this.view;
 
         if (view !== null) {
-            view.bind(element);
+            view.bind(element, defaultExecutionContext);
         }
 
         const behaviors = this.behaviors;
 
         if (behaviors !== null) {
             for (let i = 0, ii = behaviors.length; i < ii; ++i) {
-                behaviors[i].bind(element);
+                behaviors[i].bind(element, defaultExecutionContext);
             }
         }
 

@@ -1,4 +1,4 @@
-import { Expression } from "../interfaces";
+import { Expression, ExecutionContext } from "../interfaces";
 import { CaptureType, SyntheticViewTemplate } from "../template";
 import { DOM } from "../dom";
 import { Observable, ObservableExpression } from "../observation/observable";
@@ -15,6 +15,8 @@ export class RepeatBehavior implements Behavior, Subscriber {
     private items: any[] | null = null;
     private itemsObserver?: ArrayObserver = void 0;
     private observableExpression: ObservableExpression;
+    private originalContext: ExecutionContext | undefined = void 0;
+    private childContext: ExecutionContext | undefined = void 0;
 
     constructor(
         private location: Node,
@@ -24,9 +26,13 @@ export class RepeatBehavior implements Behavior, Subscriber {
         this.observableExpression = new ObservableExpression(expression, this);
     }
 
-    bind(source: unknown): void {
+    bind(source: unknown, context: ExecutionContext): void {
         this.source = source;
-        this.items = this.observableExpression.evaluate(source, null as any);
+        this.originalContext = context;
+        this.childContext = Object.create(context);
+        this.childContext!.parent = source;
+
+        this.items = this.observableExpression.evaluate(source, this.originalContext);
         this.observeItems();
         this.refreshAllViews();
     }
@@ -44,7 +50,10 @@ export class RepeatBehavior implements Behavior, Subscriber {
     }
 
     handleExpressionChange(): void {
-        this.items = this.observableExpression.evaluate(this.source, null as any);
+        this.items = this.observableExpression.evaluate(
+            this.source,
+            this.originalContext!
+        );
         this.observeItems();
         this.refreshAllViews();
     }
@@ -73,6 +82,7 @@ export class RepeatBehavior implements Behavior, Subscriber {
     }
 
     private updateViews(splices: Splice[]): void {
+        const childContext = this.childContext!;
         const views = this.views;
         const totalRemoved: SyntheticView[] = [];
         let removeDelta = 0;
@@ -103,7 +113,7 @@ export class RepeatBehavior implements Behavior, Subscriber {
                     totalRemoved.length > 0 ? totalRemoved.shift()! : template.create();
 
                 views.splice(addIndex, 0, view);
-                view.bind(items[addIndex]);
+                view.bind(items[addIndex], childContext);
                 view.insertBefore(location);
             }
         }
@@ -115,6 +125,7 @@ export class RepeatBehavior implements Behavior, Subscriber {
 
     private refreshAllViews(): void {
         const items = this.items!;
+        const childContext = this.childContext!;
         let itemsLength = items.length;
         let views = this.views;
         const viewsLength = views.length;
@@ -131,7 +142,7 @@ export class RepeatBehavior implements Behavior, Subscriber {
 
             for (let i = 0; i < itemsLength; ++i) {
                 const view = template.create();
-                view.bind(items[i]);
+                view.bind(items[i], childContext);
                 views[i] = view;
                 view.insertBefore(location);
             }
@@ -141,10 +152,10 @@ export class RepeatBehavior implements Behavior, Subscriber {
 
             for (; i < itemsLength; ++i) {
                 if (i < viewsLength) {
-                    views[i].bind(items[i]);
+                    views[i].bind(items[i], childContext);
                 } else {
                     const view = template.create();
-                    view.bind(items[i]);
+                    view.bind(items[i], childContext);
                     views.push(view);
                     view.insertBefore(location);
                 }

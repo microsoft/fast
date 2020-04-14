@@ -1,4 +1,5 @@
 import { Behavior } from "./directives/behavior";
+import { ExecutionContext, defaultExecutionContext } from "./interfaces";
 
 /**
  * Represents a collection of DOM nodes which can be bound to a data source.
@@ -8,7 +9,7 @@ export interface View {
      * Binds a view's behaviors to its binding source.
      * @param source The binding source for the view's binding behaviors.
      */
-    bind(source: unknown): void;
+    bind(source: unknown, context: ExecutionContext): void;
 
     /**
      * Unbinds a view's behaviors from its binding source.
@@ -157,8 +158,9 @@ export class HTMLView implements ElementView, SyntheticView {
     /**
      * Binds a view's behaviors to its binding source.
      * @param source The binding source for the view's binding behaviors.
+     * @param context The execution context to run the behaviors within.
      */
-    public bind(source: unknown): void {
+    public bind(source: unknown, context: ExecutionContext): void {
         const behaviors = this.behaviors;
 
         if (this.source === source) {
@@ -169,11 +171,11 @@ export class HTMLView implements ElementView, SyntheticView {
             for (let i = 0, ii = behaviors.length; i < ii; ++i) {
                 const current = behaviors[i];
                 current.unbind(oldSource);
-                current.bind(source);
+                current.bind(source, context);
             }
         } else {
             for (let i = 0, ii = behaviors.length; i < ii; ++i) {
-                behaviors[i].bind(source);
+                behaviors[i].bind(source, context);
             }
         }
     }

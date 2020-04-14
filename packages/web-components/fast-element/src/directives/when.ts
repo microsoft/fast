@@ -1,7 +1,7 @@
 import { DOM } from "../dom";
 import { CaptureType, SyntheticViewTemplate } from "../template";
 import { SyntheticView } from "../view";
-import { Expression } from "../interfaces";
+import { Expression, ExecutionContext } from "../interfaces";
 import { ObservableExpression } from "../observation/observable";
 import { Behavior } from "./behavior";
 import { Directive } from "./directive";
@@ -11,6 +11,7 @@ export class WhenBehavior implements Behavior {
     private cachedView?: SyntheticView;
     private source: unknown;
     private observableExpression: ObservableExpression;
+    private context: ExecutionContext | undefined = void 0;
 
     constructor(
         private location: Node,
@@ -20,9 +21,10 @@ export class WhenBehavior implements Behavior {
         this.observableExpression = new ObservableExpression(expression, this);
     }
 
-    bind(source: unknown): void {
+    bind(source: unknown, context: ExecutionContext): void {
         this.source = source;
-        this.updateTarget(this.observableExpression.evaluate(source, null as any));
+        this.context = context;
+        this.updateTarget(this.observableExpression.evaluate(source, context));
     }
 
     unbind(): void {
@@ -35,13 +37,13 @@ export class WhenBehavior implements Behavior {
     }
 
     handleExpressionChange(): void {
-        this.updateTarget(this.observableExpression.evaluate(this.source, null as any));
+        this.updateTarget(this.observableExpression.evaluate(this.source, this.context!));
     }
 
     updateTarget(show: boolean): void {
         if (show && this.view == null) {
             this.view = this.cachedView || (this.cachedView = this.template.create());
-            this.view.bind(this.source);
+            this.view.bind(this.source, this.context!);
             this.view.insertBefore(this.location);
         } else if (!show && this.view !== null) {
             // do not dispose, since we may want to use the view again

@@ -2,7 +2,7 @@ import { compileTemplate } from "./template-compiler";
 import { ElementView, HTMLView, SyntheticView } from "./view";
 import { DOM } from "./dom";
 import { Behavior, BehaviorFactory } from "./directives/behavior";
-import { Expression } from "./interfaces";
+import { Expression, ExecutionContext } from "./interfaces";
 import { Directive } from "./directives/directive";
 import { BindingDirective } from "./directives/binding";
 
@@ -22,8 +22,8 @@ export class HTMLTemplateBehavior implements Behavior {
         this.view.insertBefore(location);
     }
 
-    bind(source: unknown): void {
-        this.view.bind(source);
+    bind(source: unknown, context: ExecutionContext): void {
+        this.view.bind(source, context);
     }
 
     unbind(): void {

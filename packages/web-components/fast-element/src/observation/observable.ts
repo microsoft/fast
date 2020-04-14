@@ -1,6 +1,6 @@
 import { Controller } from "../controller";
 import { FastElement } from "../fast-element";
-import { emptyArray, Expression, ExpressionContext } from "../interfaces";
+import { emptyArray, Expression, ExecutionContext } from "../interfaces";
 import { DOM } from "../dom";
 import { Notifier, PropertyChangeNotifier } from "./notifier";
 
@@ -112,7 +112,7 @@ export class ObservableExpression {
 
     constructor(private expression: Expression, private observer: ExpressionObserver) {}
 
-    public evaluate(scope: unknown, context: ExpressionContext): any {
+    public evaluate(scope: unknown, context: ExecutionContext): any {
         if (this.needsRefresh && this.last !== null) {
             this.dispose();
         }

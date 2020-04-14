@@ -1,13 +1,16 @@
-import { Expression } from "../interfaces";
+import { Expression, ExecutionContext, setCurrentEvent } from "../interfaces";
 import { ObservableExpression } from "../observation/observable";
 import { DOM } from "../dom";
 import { Directive } from "./directive";
 import { Behavior } from "./behavior";
 
-const context = {} as any;
-
-function normalBind(this: BindingBehavior, source: unknown): void {
+function normalBind(
+    this: BindingBehavior,
+    source: unknown,
+    context: ExecutionContext
+): void {
     this.source = source;
+    this.context = context;
 
     if (this.observableExpression === null) {
         this.observableExpression = new ObservableExpression(this.expression, this);
@@ -24,6 +27,7 @@ function triggerBind(this: BindingBehavior, source: unknown): void {
 function normalUnbind(this: BindingBehavior): void {
     this.observableExpression!.dispose();
     this.source = null;
+    this.context = null;
 }
 
 function triggerUnbind(this: BindingBehavior): void {
@@ -120,7 +124,8 @@ export class BindingDirective extends Directive {
 }
 
 export class BindingBehavior implements Behavior {
-    public source: unknown = void 0;
+    public source: unknown = null;
+    public context: ExecutionContext | null = null;
     public observableExpression: ObservableExpression | null = null;
 
     constructor(
@@ -133,12 +138,15 @@ export class BindingBehavior implements Behavior {
     ) {}
 
     handleExpressionChange(): void {
-        this.updateTarget(this.observableExpression!.evaluate(this.source, context));
+        this.updateTarget(
+            this.observableExpression!.evaluate(this.source, this.context!)
+        );
     }
 
     handleEvent(event: Event): void {
-        const context = { event };
-        const result = this.expression(this.source, context as any);
+        setCurrentEvent(event);
+        const result = this.expression(this.source, this.context!);
+        setCurrentEvent(null);
 
         if (result !== true) {
             event.preventDefault();

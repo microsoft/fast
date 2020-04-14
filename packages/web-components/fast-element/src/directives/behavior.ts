@@ -1,5 +1,7 @@
+import { ExecutionContext } from "src/interfaces";
+
 export interface Behavior {
-    bind(source: unknown): void;
+    bind(source: unknown, context: ExecutionContext): void;
     unbind(source: unknown): void;
 }
 
