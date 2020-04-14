@@ -131,15 +131,16 @@ It is sometimes useful to know when stylesheets are added, removed, or updated. 
 #### Subscriber
 A SheetManagerSubscriber is a function that accepts a single object argument with `"type"` and `"sheet"` properties. The `"type"` field will match `"add"`, `"remove"` or `"update"` and the `"sheet"` is a reference to the JSSStyleSheet object.
 
-```jsx
+```js
 import { JSSManager } from "@microsoft/fast-jss-manager-react"`
+
 function subscriber(data) {
     if (data.type === "add") {
         console.log("added classes", Object.values(data.sheet.classes));
     }
 }
 
-const unsubscribe = JSSManager.sheetManager.subscribe(subscriber)
+const unsubscribe = JSSManager.subscribe(subscriber)
 
 // ...
 
