@@ -43,6 +43,8 @@ export class Tabs extends FastElement {
     @observable
     public activeIndicatorOffset: number = 0;
 
+    public activeIndicatorRef: HTMLElement;
+
     private getTabs = (selectedTabIndex: number): void => {
         if (this.connected) {
             this.tabs.forEach((tab: HTMLElement, index: number) => {
@@ -53,45 +55,63 @@ export class Tabs extends FastElement {
                     );
                     tab.setAttribute("aria-controls", `panel-${index}`);
                     tab.setAttribute("id", `tab-${index}`);
-                    tab.setAttribute("style", `grid-column: ${index + 1}`);
+                    tab.setAttribute(
+                        "style",
+                        this.isHorizontal()
+                            ? `grid-column: ${index + 1}; grid-row: 1`
+                            : `grid-row: ${index + 1}; grid-column: 2`
+                    );
                     tab.addEventListener("click", this.handleTabClick);
                     tab.addEventListener("keydown", this.handleTabKeyDown);
                     tab.setAttribute("tabindex", selectedTabIndex === index ? "0" : "-1");
-                    this.getActiveIndicatorOffset(tab, selectedTabIndex, index);
+                    //this.getActiveIndicatorOffset(tab, selectedTabIndex, index);
+                    this.getActiveIndicatorPosition(selectedTabIndex, index);
+                    this.getActiveIndicatorOffset();
                 }
             });
         }
     };
 
-    private getActiveIndicatorOffset(
-        currentTab: HTMLElement,
-        selectedTabIndex: number,
-        index: number
-    ): void {
-        let numbers: number[] = [];
-        this.tabs.forEach((tab: HTMLElement) => {
-            if (this.orientation === TabsOrientation.horizontal) {
-                numbers.push(tab.getBoundingClientRect().width);
-            } else {
-                numbers.push(tab.getBoundingClientRect().height);
-            }
-        });
-        numbers = numbers.slice(0, selectedTabIndex).length
-            ? numbers.slice(0, selectedTabIndex)
-            : [0];
-        const reducer = (accumulator, currentValue) => accumulator + currentValue;
-        const offset = numbers.reduce(reducer);
+    private getActiveIndicatorPosition(selectedTabIndex, index): void {
         if (selectedTabIndex === index) {
-            let value: number;
-            if (this.orientation === TabsOrientation.horizontal) {
-                value = currentTab.getBoundingClientRect().width;
-            } else {
-                value = currentTab.getBoundingClientRect().height;
-            }
-            const center: number = value / 2;
-            console.log("center", center, "offset", offset);
-            this.activeIndicatorOffset = offset + center;
+            this.activeIndicatorRef.style.gridColumn = index + 1;
         }
+    }
+
+    // private getActiveIndicatorOffset(
+    //     currentTab: HTMLElement,
+    //     selectedTabIndex: number,
+    //     index: number
+    // ): void {
+    //     let numbers: number[] = [];
+    //     this.tabs.forEach((tab: HTMLElement) => {
+    //         if (this.isHorizontal()) {
+    //             numbers.push(tab.getBoundingClientRect().width);
+    //         } else {
+    //             numbers.push(tab.getBoundingClientRect().height);
+    //         }
+    //     });
+    //     numbers = numbers.slice(0, selectedTabIndex).length
+    //         ? numbers.slice(0, selectedTabIndex)
+    //         : [0];
+    //     const reducer = (accumulator, currentValue) => accumulator + currentValue;
+    //     const offset = numbers.reduce(reducer);
+    //     if (selectedTabIndex === index) {
+    //         let value: number;
+    //         if (this.isHorizontal()) {
+    //             value = currentTab.getBoundingClientRect().width;
+    //         } else {
+    //             value = currentTab.getBoundingClientRect().height;
+    //         }
+    //         const center: number = value / 2;
+    //         console.log("center", center, "offset", offset);
+    //         this.activeIndicatorOffset = offset + center;
+    //     }
+    // }
+
+    private getActiveIndicatorOffset(): void {
+        console.log("x", this.activeIndicatorRef.offsetLeft);
+        this.activeIndicatorOffset = this.activeIndicatorRef.offsetLeft;
     }
 
     private validTabPanels(element: HTMLElement): boolean {
@@ -125,10 +145,14 @@ export class Tabs extends FastElement {
         }
     };
 
+    private isHorizontal(): boolean {
+        return this.orientation === TabsOrientation.horizontal;
+    }
+
     private handleTabKeyDown = (event: KeyboardEvent): void => {
         const keyCode: number = event.keyCode;
         const tabsLength: number = this.tabs.length;
-        if (this.orientation === TabsOrientation.horizontal) {
+        if (this.isHorizontal()) {
             switch (keyCode) {
                 case keyCodeArrowLeft:
                     event.preventDefault();
@@ -179,11 +203,6 @@ export class Tabs extends FastElement {
     public connectedCallback(): void {
         super.connectedCallback();
         this.connected = true;
-        console.log("connected!");
-        setTimeout(() => {
-            this.getTabs(this.activeTabIndex);
-            this.getTabPanels(this.activeTabIndex);
-        }, 50);
     }
 
     private connected: boolean = false;

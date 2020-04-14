@@ -1,4 +1,4 @@
-import { html, slotted, when } from "@microsoft/fast-element";
+import { html, ref, slotted, when } from "@microsoft/fast-element";
 import { Tabs, TabsOrientation } from "./tabs";
 
 export const TabsTemplate = html<Tabs>`
@@ -14,16 +14,24 @@ export const TabsTemplate = html<Tabs>`
             ${when(
                 x => x.orientation === TabsOrientation.horizontal && x.activeIndicator,
                 html<Tabs>`
-                <div class="activeIndicator"  part="activeIndicator" style="transform: translateX(${x =>
-                    x.activeIndicatorOffset}px)">
+                <div ${ref(
+                    "activeIndicatorRef"
+                )} class="activeIndicator"  part="activeIndicator">
+                </div>
+                <div class="activeIndicator" part="activeIndicator" style="transform: translateX(${x =>
+                    x.activeIndicatorOffset}px); grid-column: 1">
                 </div>
             `
             )}
             ${when(
                 x => x.orientation === TabsOrientation.vertical && x.activeIndicator,
                 html<Tabs>`
+                <div ${ref(
+                    "activeIndicatorRef"
+                )} class="activeIndicator"  part="activeIndicator">
+                </div>
                 <div class="activeIndicator"  part="activeIndicator" style="transform: translateY(${x =>
-                    x.activeIndicatorOffset}px)">
+                    x.activeIndicatorOffset}px); grid-row: 1">
                 </div>
             `
             )}

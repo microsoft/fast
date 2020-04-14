@@ -19,6 +19,7 @@ export const TabsStyles = css`
         grid-template-rows: auto auto;
         grid-template-columns: auto;
         position: relative;
+        width: fit-content;
     }
 
     .start {
@@ -28,13 +29,12 @@ export const TabsStyles = css`
     }
 
     .activeIndicator {
-        position: absolute;
-        bottom: 0;
+        grid-row: 2;
         width: 40px;
-        left: -20px;
         height: 3px;
         border-radius: 5px;
         background: blue;
+        justify-self: center;
         transition: 0.2s ease-in-out;
     }
 
@@ -52,9 +52,11 @@ export const TabsStyles = css`
     :host(.vertical) .tablist {
         grid-row-start: 2;
         grid-row-end: 2;
-        display: flex;
-        flex-direction: column;
+        display: grid;
+        grid-template-rows: auto;
+        grid-template-columns: auto auto;
         position: relative;
+        width: fit-content;
     }
 
     :host(.vertical) .tabpanel {
@@ -68,13 +70,11 @@ export const TabsStyles = css`
     }
 
     :host(.vertical) .activeIndicator {
-        position: absolute;
-        left: 0;
+        grid-column: 1;
         width: 3px;
-        top: -5px;
         height: 10px;
         border-radius: 5px;
         background: blue;
-        transition: 0.2s ease-in-out;
+        align-self: center;
     }
 `;
