@@ -133,7 +133,7 @@ describe("The SheetManager", (): void => {
         expect(arg.sheet).toBe(sheet);
     });
 
-test("should only notify subscribers of removal when the last instance of the sheet is removed", () => {
+    test("should only notify subscribers of removal when the last instance of the sheet is removed", () => {
         const subscriber = jest.fn();
         manager.add(stylesheet, designSystem);
         manager.add(stylesheet, designSystem);
@@ -165,7 +165,7 @@ test("should only notify subscribers of removal when the last instance of the sh
         expect(arg.sheet).toBe(sheet);
     });
 
-test("should notify multiple subscribers", () => {
+    test("should notify multiple subscribers", () => {
         const A = jest.fn();
         const B = jest.fn();
         const designSystemUpdate = {};
