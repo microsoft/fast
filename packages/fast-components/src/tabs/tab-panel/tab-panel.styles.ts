@@ -1,8 +1,8 @@
 import { css } from "@microsoft/fast-element";
 import { display } from "../../styles";
 
-export const TabStyles = css`
-    ${display("inline-block")} :host {
+export const TabPanelStyles = css`
+    ${display("flex")} :host {
         box-sizing: border-box;
         font-family: var(--body-font);
         ${/* Font size, weight, and line height are temporary - 

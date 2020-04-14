@@ -15,7 +15,9 @@ export const TabsStyles = css`
     }
 
     .tablist {
-        display: flex;
+        display: grid;
+        grid-template-rows: auto auto;
+        grid-template-columns: auto;
         position: relative;
     }
 

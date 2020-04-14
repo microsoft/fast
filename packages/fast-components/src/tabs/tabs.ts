@@ -44,20 +44,23 @@ export class Tabs extends FastElement {
     public activeIndicatorOffset: number = 0;
 
     private getTabs = (selectedTabIndex: number): void => {
-        this.tabs.forEach((tab: HTMLElement, index: number) => {
-            if (tab.slot === "tab") {
-                tab.setAttribute(
-                    "aria-selected",
-                    selectedTabIndex === index ? "true" : "false"
-                );
-                tab.setAttribute("aria-controls", `panel-${index}`);
-                tab.setAttribute("id", `tab-${index}`);
-                tab.addEventListener("click", this.handleTabClick);
-                tab.addEventListener("keydown", this.handleTabKeyDown);
-                tab.setAttribute("tabindex", selectedTabIndex === index ? "0" : "-1");
-                this.getActiveIndicatorOffset(tab, selectedTabIndex, index);
-            }
-        });
+        if (this.connected) {
+            this.tabs.forEach((tab: HTMLElement, index: number) => {
+                if (tab.slot === "tab") {
+                    tab.setAttribute(
+                        "aria-selected",
+                        selectedTabIndex === index ? "true" : "false"
+                    );
+                    tab.setAttribute("aria-controls", `panel-${index}`);
+                    tab.setAttribute("id", `tab-${index}`);
+                    tab.setAttribute("style", `grid-column: ${index + 1}`);
+                    tab.addEventListener("click", this.handleTabClick);
+                    tab.addEventListener("keydown", this.handleTabKeyDown);
+                    tab.setAttribute("tabindex", selectedTabIndex === index ? "0" : "-1");
+                    this.getActiveIndicatorOffset(tab, selectedTabIndex, index);
+                }
+            });
+        }
     };
 
     private getActiveIndicatorOffset(
@@ -86,6 +89,7 @@ export class Tabs extends FastElement {
                 value = currentTab.getBoundingClientRect().height;
             }
             const center: number = value / 2;
+            console.log("center", center, "offset", offset);
             this.activeIndicatorOffset = offset + center;
         }
     }
@@ -95,14 +99,16 @@ export class Tabs extends FastElement {
     }
 
     private getTabPanels = (selectedTabIndex: number): void => {
-        const tp = this.tabPanels.filter(this.validTabPanels);
-        tp.forEach((tabpanels: HTMLElement, index: number) => {
-            tabpanels.setAttribute("aria-labeledby", `tab-${index}`);
-            tabpanels.removeAttribute("hidden");
-            selectedTabIndex !== index
-                ? tabpanels.setAttribute("hidden", "")
-                : void tabpanels.setAttribute("id", `panel-${index}`);
-        });
+        if (this.connected) {
+            const tp = this.tabPanels.filter(this.validTabPanels);
+            tp.forEach((tabpanels: HTMLElement, index: number) => {
+                tabpanels.setAttribute("aria-labeledby", `tab-${index}`);
+                tabpanels.removeAttribute("hidden");
+                selectedTabIndex !== index
+                    ? tabpanels.setAttribute("hidden", "")
+                    : void tabpanels.setAttribute("id", `panel-${index}`);
+            });
+        }
     };
 
     private setTabs(selectedTabIndex: number): void {
@@ -169,4 +175,16 @@ export class Tabs extends FastElement {
         const tb = this.tabs as HTMLElement[];
         tb[index].focus();
     }
+
+    public connectedCallback(): void {
+        super.connectedCallback();
+        this.connected = true;
+        console.log("connected!");
+        setTimeout(() => {
+            this.getTabs(this.activeTabIndex);
+            this.getTabPanels(this.activeTabIndex);
+        }, 50);
+    }
+
+    private connected: boolean = false;
 }

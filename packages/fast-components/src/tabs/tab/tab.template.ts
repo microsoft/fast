@@ -5,5 +5,6 @@ export const TabTemplate = html<Tab>`
     <template
         slot="tab"
     >
+        <slot></slot>
     </template>
 `;
