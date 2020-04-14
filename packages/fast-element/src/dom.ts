@@ -1,7 +1,5 @@
 import { Callable } from "./interfaces";
-const markerClass = `fast-${Math.random()
-    .toString(36)
-    .substring(7)}`;
+const markerClass = `fast-${Math.random().toString(36).substring(7)}`;
 const updateQueue = [] as Callable[];
 
 type TrustedTypesPolicy = { createHTML(html: string): string };

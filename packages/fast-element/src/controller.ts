@@ -71,7 +71,7 @@ export class Controller extends PropertyChangeNotifier implements Container {
     public addStyles(
         styles: ElementStyles,
         target: StyleTarget | null = this.element.shadowRoot
-    ) {
+    ): void {
         if (target !== null) {
             styles.addStylesTo(target);
         }
@@ -83,7 +83,7 @@ export class Controller extends PropertyChangeNotifier implements Container {
         }
     }
 
-    public removeStyles(styles: ElementStyles) {
+    public removeStyles(styles: ElementStyles): void {
         const target = this.element.shadowRoot;
 
         if (target !== null) {
@@ -97,7 +97,7 @@ export class Controller extends PropertyChangeNotifier implements Container {
         }
     }
 
-    public addBehaviors(behaviors: ReadonlyArray<Behavior>) {
+    public addBehaviors(behaviors: ReadonlyArray<Behavior>): void {
         const targetBehaviors = this.behaviors || (this.behaviors = []);
         const length = behaviors.length;
 
@@ -114,7 +114,7 @@ export class Controller extends PropertyChangeNotifier implements Container {
         }
     }
 
-    public removeBehaviors(behaviors: ReadonlyArray<Behavior>) {
+    public removeBehaviors(behaviors: ReadonlyArray<Behavior>): void {
         const targetBehaviors = this.behaviors;
 
         if (targetBehaviors === null) {

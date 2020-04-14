@@ -89,8 +89,8 @@ export const FastElement = Object.assign(createFastElement(HTMLElement), {
             nameOrDef.shadowOptions === void 0
                 ? defaultShadowOptions
                 : nameOrDef.shadowOptions === null
-                    ? void 0
-                    : { ...defaultShadowOptions, ...nameOrDef.shadowOptions };
+                ? void 0
+                : { ...defaultShadowOptions, ...nameOrDef.shadowOptions };
 
         const elementOptions =
             nameOrDef.elementOptions === void 0
@@ -110,10 +110,10 @@ export const FastElement = Object.assign(createFastElement(HTMLElement), {
 
             Reflect.defineProperty(proto, current.property, {
                 enumerable: true,
-                get: function(this: any) {
+                get: function (this: any) {
                     return current.getValue(this);
                 },
-                set: function(this: any, value: any) {
+                set: function (this: any, value: any) {
                     return current.setValue(this, value);
                 },
             });
@@ -148,7 +148,7 @@ export const FastElement = Object.assign(createFastElement(HTMLElement), {
 
 export function customElement(nameOrDef: string | PartialFastElementDefinition) {
     /* eslint-disable-next-line @typescript-eslint/explicit-function-return-type */
-    return function(type: Function) {
+    return function (type: Function) {
         FastElement.define(type, nameOrDef);
     };
 }

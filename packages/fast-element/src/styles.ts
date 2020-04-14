@@ -45,13 +45,18 @@ type ElementStyleFactory = (styles: ReadonlyArray<InjectableStyles>) => ElementS
 
 function reduceStyles(styles: ReadonlyArray<InjectableStyles>): string[] {
     return styles
-        .map(x => (x instanceof ElementStyles ? reduceStyles(x.styles) : [x]))
+        .map((x: InjectableStyles) =>
+            x instanceof ElementStyles ? reduceStyles(x.styles) : [x]
+        )
         .reduce((prev: string[], curr: string[]) => prev.concat(curr), []);
 }
 
-function reduceBehaviors(styles: ReadonlyArray<InjectableStyles>) {
-    return styles.map(x => (x instanceof ElementStyles ? x.behaviors : null)).reduce(
-        (prev, curr) => {
+function reduceBehaviors(
+    styles: ReadonlyArray<InjectableStyles>
+): ReadonlyArray<Behavior> | null {
+    return styles
+        .map((x: InjectableStyles) => (x instanceof ElementStyles ? x.behaviors : null))
+        .reduce((prev: Behavior[] | null, curr: Behavior[] | null) => {
             if (curr === null) {
                 return prev;
             }
@@ -61,9 +66,7 @@ function reduceBehaviors(styles: ReadonlyArray<InjectableStyles>) {
             }
 
             return prev.concat(curr);
-        },
-        null as Behavior[] | null
-    );
+        }, null as Behavior[] | null);
 }
 
 // https://wicg.github.io/construct-stylesheets/
@@ -98,14 +101,14 @@ export class AdoptedStyleSheetsStyles extends ElementStyles {
     public removeStylesFrom(target: StyleTarget): void {
         const sourceSheets = this.styleSheets;
         target.adoptedStyleSheets = target.adoptedStyleSheets!.filter(
-            x => !sourceSheets.includes(x)
+            (x: CSSStyleSheet) => !sourceSheets.includes(x)
         );
     }
 }
 
 let styleClassId = 0;
 
-function getNextStyleClass() {
+function getNextStyleClass(): string {
     return `fast-style-class-${++styleClassId}`;
 }
 
