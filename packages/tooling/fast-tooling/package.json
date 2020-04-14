@@ -1,0 +1,80 @@
+{
+    "name": "@microsoft/fast-tooling",
+    "description": "A set of utilities to assist in creating web UI",
+    "sideEffects": false,
+    "version": "0.1.0",
+    "author": {
+        "name": "Microsoft",
+        "url": "https://discord.gg/FcSNfg4"
+    },
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Microsoft/fast-dna.git"
+    },
+    "bugs": {
+        "url": "https://github.com/Microsoft/fast-dna/issues/new/choose"
+    },
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "scripts": {
+        "build": "tsc -p ./tsconfig.build.json",
+        "build:message-system": "webpack --config webpack.message-system.config.js",
+        "clean:dist": "node ../../../build/clean.js dist",
+        "prepare": "yarn clean:dist && yarn build && yarn build:message-system",
+        "prettier": "prettier --config ../../../.prettierrc --write \"**/*.ts\"",
+        "prettier:diff": "prettier --config ../../../.prettierrc \"**/*.ts\" --list-different",
+        "test": "yarn tslint && yarn unit-tests",
+        "tslint": "tslint -c ./tslint.json '**/*.ts'",
+        "tslint:fix": "tslint -c ./tslint.json --fix '**/*.ts'",
+        "unit-tests": "jest --runInBand",
+        "watch": "yarn build -- -w --preserveWatchOutput"
+    },
+    "jest": {
+        "collectCoverage": true,
+        "coverageThreshold": {
+            "global": {
+                "statements": 100,
+                "branches": 100,
+                "functions": 100,
+                "lines": 100
+            }
+        },
+        "coveragePathIgnorePatterns": [
+            "/(.tmp|__tests__)/*"
+        ],
+        "testURL": "http://localhost",
+        "transform": {
+            "^.+\\.ts$": "ts-jest",
+            "^.+\\.js$": "babel-jest"
+        },
+        "transformIgnorePatterns": [
+            "!<rootDir>/node_modules/lodash-es"
+        ],
+        "testRegex": "(\\.|/)(test|spec)\\.(js|ts)$",
+        "moduleFileExtensions": [
+            "ts",
+            "js",
+            "json"
+        ]
+    },
+    "devDependencies": {
+        "@microsoft/fast-tslint-rules": "^3.1.1",
+        "@types/jest": "^24.0.11",
+        "@types/lodash-es": "^4.17.0",
+        "@types/node": "^9.6.7",
+        "ajv": "^6.10.0",
+        "jest": "^24.5.0",
+        "lodash-es": "^4.0.0",
+        "prettier": "2.0.2",
+        "ts-jest": "^24.0.0",
+        "ts-loader": "^4.0.1",
+        "tslint": "^5.9.1",
+        "tslint-config-prettier": "^1.15.0",
+        "tslint-loader": "^3.6.0",
+        "typescript": "^3.3.3"
+    },
+    "peerDependencies": {
+        "lodash-es": "^4.0.0"
+    }
+}

@@ -32,7 +32,7 @@ Builds all the packages:
 lerna run prepare
 ```
 
-- `yarn tslint` or `yarn tslint:fix` executes tslint on TypeScript in a given package.
+- `yarn eslint` or `yarn eslint:fix` executes eslint in a given package.
 - `yarn unit-tests` executes unit testing for packages.
 - `yarn test` executes processes in a package required to pass before check-in and generally includes building, linting, and unit testing.
 

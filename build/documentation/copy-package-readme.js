@@ -11,9 +11,9 @@ const glob = require("glob");
 const chalk = require("chalk");
 
 const rootDir = path.resolve(process.cwd());
-const srcReadmePaths = "packages/*/?(readme.md|README.md)";
-const destDir = path.join("docs", "en", "packages");
-const srcSidebar = path.join("website", "sidebars.json");
+const srcReadmePaths = "packages/*/*/?(readme.md|README.md)";
+const destDir = path.join("docs", "en", "packages/");
+const srcSidebar = path.join("sites/website", "sidebars.json");
 
 var dryRun = false;
 var sidebarEntries = [];
@@ -25,7 +25,7 @@ var updatedDocsCount = 0;
  * Determine if a dry run will be executed based off --dry-run argument being present
  * if an invalid third parameter is entered, the application will exit
  */
-process.argv.forEach(function(val, index) {
+process.argv.forEach(function (val, index) {
     var validArg = true;
 
     if (index == 2) {
@@ -56,11 +56,12 @@ function copyReadmeFiles() {
     });
 
     createDirectory(destDir);
-    glob(resolvedSrcReadmePaths, { realpath: true }, function(error, srcFiles) {
+    glob(resolvedSrcReadmePaths, { realpath: true }, function (error, srcFiles) {
         srcFiles.forEach(srcReadmePath => {
             createDestReadme(srcReadmePath);
             const srcDirPath = path.dirname(srcReadmePath);
             const lastSrcDir = srcDirPath.split(path.sep).pop();
+
             sidebarEntries.push(`en/packages/${lastSrcDir}/index`);
         });
 
@@ -79,22 +80,20 @@ function copyReadmeFiles() {
  * Then appends the original readme from .docs/en/packages/[package-name]
  */
 function createDestReadme(srcReadmePath) {
-    const destReadmePath = srcReadmePath.replace(/(\bpackages\b)(?!.*\1)/, destDir);
+    const destReadmePath = srcReadmePath.replace(
+        /(\bpackages\/\b)(\breact\/\b|\btooling\/\b|\butilities\/\b)(?!.*\1)/,
+        destDir
+    );
+
     const destDirPath = path.dirname(destReadmePath);
     const srcDirPath = path.dirname(srcReadmePath);
     const srcReadmeText = fs.readFileSync(srcReadmePath).toString();
 
     var folderName = srcDirPath.split(path.sep).pop();
 
-    var lines = fs
-        .readFileSync(srcReadmePath, "utf-8")
-        .split("\n")
-        .filter(Boolean);
+    var lines = fs.readFileSync(srcReadmePath, "utf-8").split("\n").filter(Boolean);
 
-    var title = lines[0]
-        .replace(/#/g, "")
-        .replace(/FAST/g, "")
-        .trim();
+    var title = lines[0].replace(/#/g, "").replace(/FAST/g, "").trim();
 
     var docusaurusHeader =
         `---\n` +

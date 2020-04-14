@@ -1,0 +1,70 @@
+{
+  "name": "@microsoft/fast-colors",
+  "description": "A color utility for generating a range of colors from a single color",
+  "sideEffects": false,
+  "version": "5.0.5",
+  "author": {
+    "name": "Microsoft",
+    "url": "https://discord.gg/FcSNfg4"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Microsoft/fast-dna.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Microsoft/fast-dna/issues/new/choose"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -p ./tsconfig.build.json",
+    "clean:dist": "node ../../../build/clean.js dist",
+    "prepare": "yarn clean:dist && yarn build",
+    "prettier": "prettier --config ../../../.prettierrc --write \"**/*.ts\"",
+    "prettier:diff": "prettier --config ../../../.prettierrc \"**/*.ts\" --list-different",
+    "test": "yarn eslint && yarn unit-tests",
+    "eslint": "eslint . --ext .ts",
+    "eslint:fix": "eslint . --ext .ts --fix",
+    "unit-tests": "jest --runInBand",
+    "unit-tests:watch": "jest --watch",
+    "watch": "yarn build -- -w --preserveWatchOutput"
+  },
+  "jest": {
+    "collectCoverage": true,
+    "coveragePathIgnorePatterns": [
+      "pixel-blob.ts"
+    ],
+    "testURL": "http://localhost",
+    "coverageThreshold": {
+      "global": {
+        "statements": 70,
+        "branches": 33,
+        "functions": 69,
+        "lines": 70
+      }
+    },
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx"
+    ]
+  },
+  "devDependencies": {
+    "@babel/core": "^7.0.0",
+    "@babel/preset-env": "^7.1.0",
+    "@microsoft/eslint-config-fast-dna": "^1.1.0",
+    "@types/jest": "^25.2.1",
+    "babel-core": "^7.0.0-bridge.0",
+    "eslint-config-prettier": "^6.10.1",
+    "jest": "^25.2.7",
+    "prettier": "2.0.2",
+    "ts-jest": "^25.3.1",
+    "typescript": "3.3.3"
+  }
+}

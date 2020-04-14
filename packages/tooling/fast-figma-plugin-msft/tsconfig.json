@@ -1,0 +1,12 @@
+{
+    "extends": "../../../tsconfig.json",
+    "compilerOptions": {
+        "target": "es6",
+        "baseUrl": ".",
+        "outDir": "./dist",
+        "declaration": false,
+        "strictNullChecks": true,
+        "experimentalDecorators": true
+    },
+    "include": ["./src"]
+}

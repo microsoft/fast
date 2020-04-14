@@ -1,0 +1,29 @@
+{
+  "name": "@microsoft/fast-tslint-rules",
+  "description": "tslint rules for FAST projects",
+  "sideEffects": false,
+  "version": "3.1.1",
+  "author": {
+    "name": "Microsoft",
+    "url": "https://discord.gg/FcSNfg4"
+  },
+  "keywords": [
+    "tslint",
+    "typescript"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Microsoft/fast-dna.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Microsoft/fast-dna/issues/new/choose"
+  },
+  "main": "tslint.json",
+  "homepage": "https://github.com/Microsoft/fast-tslint-rules#readme",
+  "dependencies": {
+    "tslint": "^5.11.0",
+    "tslint-react": "^3.4.0",
+    "typescript": "3.3.3"
+  }
+}
