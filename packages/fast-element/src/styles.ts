@@ -46,17 +46,13 @@ type ElementStyleFactory = (styles: ReadonlyArray<InjectableStyles>) => ElementS
 
 function reduceStyles(styles: ReadonlyArray<InjectableStyles>): string[] {
     return styles
-        .map(
-            x =>
-                x instanceof ElementStyles ? reduceStyles(x.styles) : [x]
-        )
+        .map(x => (x instanceof ElementStyles ? reduceStyles(x.styles) : [x]))
         .reduce((prev: string[], curr: string[]) => prev.concat(curr), []);
 }
 
 function reduceBehaviors(styles: ReadonlyArray<InjectableStyles>) {
-    return styles
-        .map(x => x instanceof ElementStyles ? x.behaviors : null)
-        .reduce((prev, curr) => {
+    return styles.map(x => (x instanceof ElementStyles ? x.behaviors : null)).reduce(
+        (prev, curr) => {
             if (curr === null) {
                 return prev;
             }
@@ -66,7 +62,9 @@ function reduceBehaviors(styles: ReadonlyArray<InjectableStyles>) {
             }
 
             return prev.concat(curr);
-        }, null as Behavior[] | null);
+        },
+        null as Behavior[] | null
+    );
 }
 
 // https://wicg.github.io/construct-stylesheets/
