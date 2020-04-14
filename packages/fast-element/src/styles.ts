@@ -1,4 +1,5 @@
 import { Behavior } from "./directives/behavior";
+import { emptyArray } from "./interfaces";
 
 export interface StyleTarget {
     adoptedStyleSheets?: CSSStyleSheet[];
@@ -15,7 +16,7 @@ export abstract class ElementStyles {
     public abstract readonly styles: ReadonlyArray<InjectableStyles>;
 
     /** @internal */
-    public readonly behaviors: ReadonlyArray<Behavior> | null = null;
+    public abstract readonly behaviors: ReadonlyArray<Behavior> | null = null;
 
     /** @internal */
     public abstract addStylesTo(target: StyleTarget): void;
@@ -46,22 +47,40 @@ type ElementStyleFactory = (styles: ReadonlyArray<InjectableStyles>) => ElementS
 function reduceStyles(styles: ReadonlyArray<InjectableStyles>): string[] {
     return styles
         .map(
-            (x: InjectableStyles) =>
+            x =>
                 x instanceof ElementStyles ? reduceStyles(x.styles) : [x]
         )
         .reduce((prev: string[], curr: string[]) => prev.concat(curr), []);
+}
+
+function reduceBehaviors(styles: ReadonlyArray<InjectableStyles>) {
+    return styles
+        .map(x => x instanceof ElementStyles ? x.behaviors : null)
+        .reduce((prev, curr) => {
+            if (curr === null) {
+                return prev;
+            }
+
+            if (prev === null) {
+                prev = [];
+            }
+
+            return prev.concat(curr);
+        }, null as Behavior[] | null);
 }
 
 // https://wicg.github.io/construct-stylesheets/
 // https://developers.google.com/web/updates/2019/02/constructable-stylesheets
 export class AdoptedStyleSheetsStyles extends ElementStyles {
     private readonly styleSheets: CSSStyleSheet[];
+    public readonly behaviors: ReadonlyArray<Behavior> | null = null;
 
     public constructor(
         public styles: InjectableStyles[],
         styleSheetCache: Map<string, CSSStyleSheet>
     ) {
         super();
+        this.behaviors = reduceBehaviors(styles);
         this.styleSheets = reduceStyles(styles).map((x: string) => {
             let sheet = styleSheetCache.get(x);
 
@@ -94,11 +113,14 @@ function getNextStyleClass() {
 }
 
 export class StyleElementStyles extends ElementStyles {
+    public readonly behaviors: ReadonlyArray<Behavior> | null = null;
+
     private styleSheets: string[];
     private styleClass: string;
 
     public constructor(public styles: InjectableStyles[]) {
         super();
+        this.behaviors = reduceBehaviors(styles);
         this.styleSheets = reduceStyles(styles);
         this.styleClass = getNextStyleClass();
     }
