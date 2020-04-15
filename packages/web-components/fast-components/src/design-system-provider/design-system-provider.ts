@@ -229,7 +229,12 @@ export class DesignSystemProvider extends FASTElement
             name: definition.name,
             value:
                 typeof definition.value === "function"
-                    ? definition.value.bind(this, { ...this.designSystem })
+                    ? // use spread on the designSystem object to circumvent memoization
+                      // done in the color recipes - we use the same *reference* in WC
+                      // for performance improvements but that throws off the recipes
+                      // We should look at making the recipes use simple args that
+                      // we can individually memoize.
+                      definition.value.bind(this, { ...this.designSystem })
                     : definition.value,
         });
     };
