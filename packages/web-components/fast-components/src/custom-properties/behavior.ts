@@ -19,6 +19,12 @@ export interface CustomPropertyTarget {
 
 export type CSSCustomPropertyBehavior = Behavior & CSSCustomPropertyDefinition;
 
+/**
+ * Create a CSS Custom Property behavior.
+ * @param name The name of the CSS custom property
+ * @param value The value or value resolver of the custom property
+ * @param host A function to resolve the element to host the CSS custom property
+ */
 export function cssCustomPropertyBehaviorFactory(
     name: string,
     value: string | ((...arg: any[]) => string),

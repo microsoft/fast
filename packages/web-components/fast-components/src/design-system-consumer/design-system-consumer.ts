@@ -6,6 +6,9 @@ export interface DesignSystemConsumer {
     provider: DesignSystemProvider | null;
 }
 
+/**
+ * Behavior to connect an element to the nearest design-system provider
+ */
 export class DesignSystemConsumerBehavior<T extends DesignSystemConsumer & HTMLElement>
     implements Behavior {
     bind(source: T) {
@@ -16,8 +19,12 @@ export class DesignSystemConsumerBehavior<T extends DesignSystemConsumer & HTMLE
     unbind(source: T) {}
 }
 
-export function findProvider(host: HTMLElement): DesignSystemProvider | null {
-    let parent = composedParent(host as any);
+/**
+ * Resolves the nearest DesignSystemProvider element to an element.
+ * @param self The element from which to begin
+ */
+export function findProvider(self: HTMLElement): DesignSystemProvider | null {
+    let parent = composedParent(self);
 
     while (parent !== null) {
         if ((parent as any).isDesignSystemProvider) {
