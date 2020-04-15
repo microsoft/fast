@@ -6,26 +6,14 @@ export interface DesignSystemConsumer {
     provider: DesignSystemProvider | null;
 }
 
-export class DesignSystemConsumerBehavior<T extends DesignSystemConsumer>
+export class DesignSystemConsumerBehavior<T extends DesignSystemConsumer & HTMLElement>
     implements Behavior {
     bind(source: T) {
-        console.log("DesignSystemConsumerBehavior bound");
-        source.provider = findProvider(source as any);
+        source.provider = findProvider(source);
     }
 
-    unbind(source: T) {
-        console.log(source);
-    }
-}
-
-/**
- * Type-safe checking for if an HTMLElement is a DesignSystemProvider.
- * @param el The element to test
- */
-export function isDesignSystemProvider(
-    el: HTMLElement | DesignSystemConsumer
-): el is DesignSystemConsumer {
-    return (el as any).isDesignSystemConsumer;
+    /* eslint-disable-next-line */
+    unbind(source: T) {}
 }
 
 export function findProvider(host: HTMLElement): DesignSystemProvider | null {
@@ -34,8 +22,6 @@ export function findProvider(host: HTMLElement): DesignSystemProvider | null {
     while (parent !== null) {
         if ((parent as any).isDesignSystemProvider) {
             return parent as any;
-        } else if (isDesignSystemProvider(parent)) {
-            return parent.provider;
         } else {
             parent = composedParent(parent);
         }
