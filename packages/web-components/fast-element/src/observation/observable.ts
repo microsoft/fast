@@ -1,6 +1,6 @@
 import { Controller } from "../controller";
 import { FastElement } from "../fast-element";
-import { emptyArray, Expression, ExpressionContext } from "../interfaces";
+import { emptyArray } from "../interfaces";
 import { DOM } from "../dom";
 import { Notifier, PropertyChangeNotifier } from "./notifier";
 
@@ -87,6 +87,59 @@ export function observable($target: {}, $prop: string): void {
     Observable.define($target, $prop);
 }
 
+let currentEvent: Event | null = null;
+
+export function setCurrentEvent(event: Event | null): void {
+    currentEvent = event;
+}
+
+/**
+ * Provides additional contextual information available to behaviors and expressions.
+ */
+export class ExecutionContext<TParent = any> {
+    public index: number = 0;
+    public length: number = 0;
+
+    public parent: TParent = null as any;
+
+    public get event(): Event {
+        return currentEvent!;
+    }
+
+    public get even(): boolean {
+        return this.index % 2 === 0;
+    }
+
+    public get odd(): boolean {
+        return this.index % 2 !== 0;
+    }
+
+    public get first(): boolean {
+        return this.index === 0;
+    }
+
+    public get middle(): boolean {
+        return !this.first && !this.last;
+    }
+
+    public get last(): boolean {
+        return this.index === this.length - 1;
+    }
+}
+
+Observable.define(ExecutionContext.prototype, "index");
+Observable.define(ExecutionContext.prototype, "length");
+
+export const defaultExecutionContext = new ExecutionContext();
+
+/**
+ * The signature of an arrow function capable of being evaluated as part of a template update.
+ */
+export type Expression<TScope = any, TReturn = any, TParent = any> = (
+    scope: TScope,
+    context: ExecutionContext<TParent>
+) => TReturn;
+
 export interface ExpressionObserver {
     handleExpressionChange(expression: ObservableExpression): void;
 }
@@ -112,7 +165,7 @@ export class ObservableExpression {
 
     constructor(private expression: Expression, private observer: ExpressionObserver) {}
 
-    public evaluate(scope: unknown, context: ExpressionContext): any {
+    public evaluate(scope: unknown, context: ExecutionContext): any {
         if (this.needsRefresh && this.last !== null) {
             this.dispose();
         }
