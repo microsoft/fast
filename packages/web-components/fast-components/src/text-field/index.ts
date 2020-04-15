@@ -1,5 +1,4 @@
 import { customElement } from "@microsoft/fast-element";
-import { designSystemConsumer } from "../design-system-consumer";
 import {
     neutralFillHover,
     neutralFillInputHover,
@@ -22,18 +21,18 @@ import { TextFieldStyles as styles } from "./text-field.styles";
         delegatesFocus: true,
     },
 })
-@designSystemConsumer({
-    recipes: [
-        neutralForegroundRest,
-        neutralFillInputRest,
-        neutralOutlineRest,
-        neutralFillInputHover,
-        neutralOutlineHover,
-        neutralFocus,
-        neutralFillRest,
-        neutralFillHover,
-    ],
-})
+// @designSystemConsumer({
+//     recipes: [
+//         neutralForegroundRest,
+//         neutralFillInputRest,
+//         neutralOutlineRest,
+//         neutralFillInputHover,
+//         neutralOutlineHover,
+//         neutralFocus,
+//         neutralFillRest,
+//         neutralFillHover,
+//     ],
+// })
 export class FASTTextField extends TextField {}
 export * from "./text-field.template";
 export * from "./text-field.styles";

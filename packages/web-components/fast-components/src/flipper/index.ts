@@ -1,5 +1,4 @@
 import { customElement } from "@microsoft/fast-element";
-import { designSystemConsumer } from "../design-system-consumer";
 import {
     neutralFillStealthActive,
     neutralFillStealthHover,
@@ -19,18 +18,18 @@ import { FlipperStyles as styles } from "./flipper.styles";
     template,
     styles,
 })
-@designSystemConsumer({
-    recipes: [
-        neutralFillStealthRest,
-        neutralFillStealthHover,
-        neutralFillStealthActive,
-        neutralForegroundRest,
-        neutralFocus,
-        neutralOutlineActive,
-        neutralOutlineHover,
-        neutralOutlineRest,
-    ],
-})
+// @designSystemConsumer({
+//     recipes: [
+//         neutralFillStealthRest,
+//         neutralFillStealthHover,
+//         neutralFillStealthActive,
+//         neutralForegroundRest,
+//         neutralFocus,
+//         neutralOutlineActive,
+//         neutralOutlineHover,
+//         neutralOutlineRest,
+//     ],
+// })
 export class FASTFlipper extends Flipper {}
 export * from "./flipper.template";
 export * from "./flipper.styles";

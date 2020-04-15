@@ -1,5 +1,4 @@
 import { customElement } from "@microsoft/fast-element";
-import { designSystemConsumer } from "../design-system-consumer";
 import {
     neutralFillHover,
     neutralFillInputHover,
@@ -22,18 +21,18 @@ import { TextAreaStyles as styles } from "./text-area.styles";
         delegatesFocus: true,
     },
 })
-@designSystemConsumer({
-    recipes: [
-        neutralForegroundRest,
-        neutralFillInputRest,
-        neutralOutlineRest,
-        neutralFillInputHover,
-        neutralOutlineHover,
-        neutralFocus,
-        neutralFillRest,
-        neutralFillHover,
-    ],
-})
+// @designSystemConsumer({
+//     recipes: [
+//         neutralForegroundRest,
+//         neutralFillInputRest,
+//         neutralOutlineRest,
+//         neutralFillInputHover,
+//         neutralOutlineHover,
+//         neutralFocus,
+//         neutralFillRest,
+//         neutralFillHover,
+//     ],
+// })
 export class FASTTextArea extends TextArea {}
 export * from "./text-area.template";
 export * from "./text-area.styles";
