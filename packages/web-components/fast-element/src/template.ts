@@ -2,9 +2,9 @@ import { compileTemplate } from "./template-compiler";
 import { ElementView, HTMLView, SyntheticView } from "./view";
 import { DOM } from "./dom";
 import { Behavior, BehaviorFactory } from "./directives/behavior";
-import { Expression, ExecutionContext } from "./interfaces";
 import { Directive } from "./directives/directive";
 import { BindingDirective } from "./directives/binding";
+import { ExecutionContext, Expression } from "./observation/observable";
 
 export interface ElementViewTemplate {
     create(host: Element): ElementView;

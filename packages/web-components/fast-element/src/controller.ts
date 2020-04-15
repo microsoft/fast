@@ -2,10 +2,9 @@ import { FastElement, FastElementDefinition } from "./fast-element";
 import { Container, InterfaceSymbol, Registry, Resolver } from "./di";
 import { ElementView } from "./view";
 import { PropertyChangeNotifier } from "./observation/notifier";
-import { Observable } from "./observation/observable";
+import { defaultExecutionContext, Observable } from "./observation/observable";
 import { Behavior } from "./directives/behavior";
 import { ElementStyles, StyleTarget } from "./styles";
-import { defaultExecutionContext } from "./interfaces";
 
 const defaultEventOptions: CustomEventInit = {
     bubbles: true,

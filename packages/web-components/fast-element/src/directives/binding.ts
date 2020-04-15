@@ -1,4 +1,4 @@
-import { Expression, ExecutionContext, setCurrentEvent } from "../interfaces";
+import { ExecutionContext, Expression, setCurrentEvent } from "../observation/observable";
 import { ObservableExpression } from "../observation/observable";
 import { DOM } from "../dom";
 import { Directive } from "./directive";

@@ -1,8 +1,11 @@
 import { DOM } from "../dom";
 import { CaptureType, SyntheticViewTemplate } from "../template";
 import { SyntheticView } from "../view";
-import { Expression, ExecutionContext } from "../interfaces";
-import { ObservableExpression } from "../observation/observable";
+import {
+    ExecutionContext,
+    Expression,
+    ObservableExpression,
+} from "../observation/observable";
 import { Behavior } from "./behavior";
 import { Directive } from "./directive";
 

@@ -1,7 +1,11 @@
-import { Expression, ExecutionContext } from "../interfaces";
 import { CaptureType, SyntheticViewTemplate } from "../template";
 import { DOM } from "../dom";
-import { Observable, ObservableExpression } from "../observation/observable";
+import {
+    ExecutionContext,
+    Expression,
+    Observable,
+    ObservableExpression,
+} from "../observation/observable";
 import { HTMLView, SyntheticView } from "../view";
 import { Subscriber } from "../observation/subscriber-collection";
 import { ArrayObserver, enableArrayObservation } from "../observation/array-observer";
@@ -22,7 +26,7 @@ function bindWithoutPositioning(
     items: any[],
     index: number,
     context: ExecutionContext
-) {
+): void {
     view.bind(items[index], context);
 }
 
@@ -31,7 +35,7 @@ function bindWithPositioning(
     items: any[],
     index: number,
     context: ExecutionContext
-) {
+): void {
     const childContext = Object.create(context);
     childContext.index = index;
     childContext.length = items.length;

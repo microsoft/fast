@@ -2,7 +2,7 @@ import { BehaviorFactory } from "./directives/behavior";
 import { DOM } from "./dom";
 import { BindingDirective } from "./directives/binding";
 import { AttachedBehaviorDirective, Directive } from "./directives/directive";
-import { ExecutionContext } from "./interfaces";
+import { ExecutionContext } from "./observation/observable";
 
 type InlineDirective = BindingDirective | AttachedBehaviorDirective;
 const compilationContext = { locatedDirectives: 0, targetIndex: -1 };

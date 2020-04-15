@@ -1,6 +1,6 @@
 import { Controller } from "../controller";
 import { FastElement } from "../fast-element";
-import { emptyArray, Expression, ExecutionContext } from "../interfaces";
+import { emptyArray } from "../interfaces";
 import { DOM } from "../dom";
 import { Notifier, PropertyChangeNotifier } from "./notifier";
 
@@ -86,6 +86,53 @@ const queueUpdate = DOM.queueUpdate;
 export function observable($target: {}, $prop: string): void {
     Observable.define($target, $prop);
 }
+
+let currentEvent: Event | null = null;
+
+export function setCurrentEvent(event: Event | null): void {
+    currentEvent = event;
+}
+
+/**
+ * Provides additional contextual information available to behaviors and expressions.
+ */
+export class ExecutionContext {
+    @observable public index: number = 0;
+    @observable public length: number = 0;
+
+    public parent: any = null;
+
+    public get event(): Event {
+        return currentEvent!;
+    }
+
+    public get even(): boolean {
+        return this.index % 2 === 0;
+    }
+
+    public get odd(): boolean {
+        return this.index % 2 !== 0;
+    }
+
+    public get first(): boolean {
+        return this.index === 0;
+    }
+
+    public get middle(): boolean {
+        return !this.first && !this.last;
+    }
+
+    public get last(): boolean {
+        return this.index === this.length - 1;
+    }
+}
+
+export const defaultExecutionContext = new ExecutionContext();
+
+/**
+ * The signature of an arrow function capable of being evaluated as part of a template update.
+ */
+export type Expression<T = any, K = any> = (scope: T, context: ExecutionContext) => K;
 
 export interface ExpressionObserver {
     handleExpressionChange(expression: ObservableExpression): void;
