@@ -193,4 +193,55 @@
             </button>
         </div>
     </div>
+
+    <h4>RTL-dynamic</h4>
+    <div 
+        id="viewport-rtl-dynamic"
+        style="position: relative; height:400px; width: 400px; background: lightgray; overflow: scroll;"
+        dir="rtl"
+    >
+        <div
+            style="height:1000px; width: 1000px;"
+        >
+            <fast-anchored-region 
+                anchor="anchor-rtl-dynamic" 
+                viewport="viewport-rtl-dynamic"
+                vertical-positioning-mode="dynamic"
+                vertical-default-position="top"
+                horizontal-positioning-mode="dynamic"
+            >
+                <div style="height:100px; width: 100px; background: yellow">
+                </div>
+            </fast-anchored-region>
+            <button id="anchor-rtl-dynamic" style="margin-right: 500px; margin-top: 500px;">
+                anchor
+            </button>
+        </div>
+    </div>
+
+    <h4>RTL-scaling</h4>
+    <div 
+        id="viewport-rtl-scaling"
+        dir="rtl"
+        style="position: relative; height:400px; width: 400px; background: lightgray; overflow: scroll;"
+    >
+        <div
+            style="height:1000px; width: 1000px; overflow: hidden;"
+        >
+        <button id="anchor-rtl-scaling" style="margin-left: 500px; margin-top: 500px;">
+            anchor
+        </button>
+            <fast-anchored-region 
+                anchor="anchor-rtl-scaling" 
+                viewport="viewport-rtl-scaling"
+                vertical-positioning-mode="dynamic"
+                vertical-scaling="true"
+                horizontal-positioning-mode="dynamic"
+                horizontal-scaling="true"
+            >
+                <div style="height:100%; width: 100%; background: yellow">
+                </div>
+            </fast-anchored-region>
+        </div>
+    </div>
     </fast-design-system-provider>

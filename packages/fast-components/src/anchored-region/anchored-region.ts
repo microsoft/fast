@@ -1,4 +1,5 @@
 import { attr, FastElement, observable, DOM } from "@microsoft/fast-element";
+import { Direction, RtlScrollConverter } from "@microsoft/fast-web-utilities";
 
 // TODO: the Resize Observer related files are a temporary stopgap measure until
 // Resize Observer types are pulled into TypeScript, which seems imminent
@@ -9,6 +10,7 @@ import {
     ResizeObserverClassDefinition,
 } from "./resize-observer";
 import { ResizeObserverEntry } from "./resize-observer-entry";
+import { directionalShadow } from "src/styles";
 
 declare global {
     interface WindowWithResizeObserver extends Window {
@@ -53,6 +55,8 @@ enum Location {
 }
 
 export class AnchoredRegion extends FastElement {
+    private static DirectionAttributeName: string = "dir";
+
     @attr
     public anchor: string = "";
     private anchorChanged(): void {
@@ -215,6 +219,7 @@ export class AnchoredRegion extends FastElement {
     public region: HTMLDivElement;
 
     private openRequestAnimationFrame: boolean = false;
+    private currentDirection: Direction = Direction.ltr;
 
     constructor() {
         super();
@@ -236,9 +241,9 @@ export class AnchoredRegion extends FastElement {
             return;
         }
 
-        this.connectObservers();
+        this.currentDirection = this.getDirection();
 
-        this.updateLayout();
+        this.connectObservers();
     }
 
     public disconnectedCallback(): void {
@@ -385,7 +390,10 @@ export class AnchoredRegion extends FastElement {
 
         if (this.viewportElement !== null) {
             this.viewportScrollTop = this.viewportElement.scrollTop;
-            this.viewportScrollLeft = this.viewportElement.scrollLeft;
+            this.viewportScrollLeft = RtlScrollConverter.getScrollLeft(
+                this.viewportElement,
+                this.currentDirection
+            );
         }
         if (entries.length === 2 && positionerRect !== null) {
             this.updatePositionerOffset(positionerRect);
@@ -486,6 +494,13 @@ export class AnchoredRegion extends FastElement {
      *  Handle region resize events
      */
     private handleRegionResize = (entry: ResizeObserverEntry): void => {
+        // correct for rtl
+        if (this.currentDirection === Direction.rtl) {
+            this.baseHorizontalOffset =
+                this.baseHorizontalOffset -
+                (this.positionerDimension.width - entry.contentRect.width);
+        }
+
         if (!this.horizontalScaling) {
             this.positionerDimension.width = entry.contentRect.width;
         }
@@ -548,6 +563,14 @@ export class AnchoredRegion extends FastElement {
             return;
         }
 
+        // if direction changes we need to reset the layout
+        const newDirection: Direction = this.getDirection();
+        if (newDirection !== this.currentDirection) {
+            this.currentDirection = newDirection;
+            this.reset();
+            return;
+        }
+
         this.updateForScrolling();
 
         let desiredVerticalPosition: AnchoredRegionVerticalPositionLabel =
@@ -557,18 +580,36 @@ export class AnchoredRegion extends FastElement {
 
         if (this.horizontalPositioningMode !== "uncontrolled") {
             const horizontalOptions: AnchoredRegionHorizontalPositionLabel[] = this.getHorizontalPositioningOptions();
+
             if (this.horizontalDefaultPosition !== "unset") {
-                switch (this.horizontalDefaultPosition) {
-                    // todo: rtl support for start/end
+                let dirCorrectedHorizontalDefaultPosition: string = this
+                    .horizontalDefaultPosition;
+
+                if (
+                    dirCorrectedHorizontalDefaultPosition === "start" ||
+                    dirCorrectedHorizontalDefaultPosition === "end"
+                ) {
+                    if (this.currentDirection === Direction.ltr) {
+                        dirCorrectedHorizontalDefaultPosition =
+                            dirCorrectedHorizontalDefaultPosition === "start"
+                                ? "left"
+                                : "right";
+                    } else {
+                        dirCorrectedHorizontalDefaultPosition =
+                            dirCorrectedHorizontalDefaultPosition === "start"
+                                ? "right"
+                                : "left";
+                    }
+                }
+
+                switch (dirCorrectedHorizontalDefaultPosition) {
                     case "left":
-                    case "start":
                         desiredHorizontalPosition = this.horizontalInset
                             ? AnchoredRegionHorizontalPositionLabel.insetLeft
                             : AnchoredRegionHorizontalPositionLabel.left;
                         break;
 
                     case "right":
-                    case "end":
                         desiredHorizontalPosition = this.horizontalInset
                             ? AnchoredRegionHorizontalPositionLabel.insetRight
                             : AnchoredRegionHorizontalPositionLabel.right;
@@ -843,7 +884,11 @@ export class AnchoredRegion extends FastElement {
             return;
         }
         const scrollTop: number = this.viewportElement.scrollTop;
-        const scrollLeft: number = this.viewportElement.scrollLeft;
+        const scrollLeft: number = RtlScrollConverter.getScrollLeft(
+            this.viewportElement,
+            this.currentDirection
+        );
+
         if (this.viewportScrollTop !== scrollTop) {
             const verticalScrollDelta: number = this.viewportScrollTop - scrollTop;
             this.viewportScrollTop = scrollTop;
@@ -853,8 +898,14 @@ export class AnchoredRegion extends FastElement {
         if (this.viewportScrollLeft !== scrollLeft) {
             const horizontalScrollDelta: number = this.viewportScrollLeft - scrollLeft;
             this.viewportScrollLeft = scrollLeft;
-            this.anchorLeft = this.anchorLeft + horizontalScrollDelta;
-            this.anchorRight = this.anchorRight + horizontalScrollDelta;
+            this.anchorLeft =
+                this.currentDirection === Direction.ltr
+                    ? this.anchorLeft + horizontalScrollDelta
+                    : this.anchorLeft - horizontalScrollDelta;
+            this.anchorRight =
+                this.currentDirection === Direction.ltr
+                    ? this.anchorRight + horizontalScrollDelta
+                    : this.anchorRight - horizontalScrollDelta;
         }
     };
 
@@ -950,23 +1001,37 @@ export class AnchoredRegion extends FastElement {
         desiredHorizontalPosition: AnchoredRegionHorizontalPositionLabel,
         desiredVerticalPosition: AnchoredRegionVerticalPositionLabel
     ): Dimension => {
-        const newPositionerDimension: Dimension = {
+        const newRegionDimension: Dimension = {
             height: this.positionerDimension.height,
             width: this.positionerDimension.width,
         };
 
         if (this.horizontalScaling) {
-            newPositionerDimension.width = this.getAvailableWidth(
-                desiredHorizontalPosition
-            );
+            newRegionDimension.width = this.getAvailableWidth(desiredHorizontalPosition);
         }
 
         if (this.verticalScaling) {
-            newPositionerDimension.height = this.getAvailableHeight(
-                desiredVerticalPosition
-            );
+            newRegionDimension.height = this.getAvailableHeight(desiredVerticalPosition);
         }
 
-        return newPositionerDimension;
+        return newRegionDimension;
+    };
+
+    /**
+     *  gets the current direction
+     */
+    private getDirection = (): Direction => {
+        if (this.viewportElement === null) {
+            return Direction.ltr;
+        }
+
+        const closest: Element | null = this.viewportElement.closest(
+            `[${AnchoredRegion.DirectionAttributeName}]`
+        );
+
+        return closest === null ||
+            closest.getAttribute(AnchoredRegion.DirectionAttributeName) === Direction.ltr
+            ? Direction.ltr
+            : Direction.rtl;
     };
 }

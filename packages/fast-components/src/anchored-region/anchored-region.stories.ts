@@ -3,6 +3,7 @@ import { FASTDesignSystemProvider } from "../design-system-provider";
 import AnchoreRegionTemplate from "./fixtures/base.html";
 import { STORY_RENDERED } from "@storybook/core-events";
 import addons from "@storybook/addons";
+import { Direction, RtlScrollConverter } from "@microsoft/fast-web-utilities";
 
 // Prevent tree-shaking
 FASTAnchoredRegion;
@@ -19,7 +20,11 @@ function scrollViewports(): void {
     document.querySelectorAll("div[id^='viewport']").forEach(el => {
         if (el instanceof HTMLDivElement) {
             el.scrollTop = 280;
-            el.scrollLeft = 250;
+            RtlScrollConverter.setScrollLeft(
+                el,
+                el.dir === Direction.rtl ? -250 : 250,
+                el.dir === Direction.rtl ? Direction.rtl : Direction.ltr
+            );
         }
     });
 }
