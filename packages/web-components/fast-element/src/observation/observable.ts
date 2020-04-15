@@ -96,11 +96,11 @@ export function setCurrentEvent(event: Event | null): void {
 /**
  * Provides additional contextual information available to behaviors and expressions.
  */
-export class ExecutionContext {
+export class ExecutionContext<TParent = any> {
     @observable public index: number = 0;
     @observable public length: number = 0;
 
-    public parent: any = null;
+    public parent: TParent = null as any;
 
     public get event(): Event {
         return currentEvent!;
@@ -132,7 +132,10 @@ export const defaultExecutionContext = new ExecutionContext();
 /**
  * The signature of an arrow function capable of being evaluated as part of a template update.
  */
-export type Expression<T = any, K = any> = (scope: T, context: ExecutionContext) => K;
+export type Expression<TScope = any, TReturn = any, TParent = any> = (
+    scope: TScope,
+    context: ExecutionContext<TParent>
+) => TReturn;
 
 export interface ExpressionObserver {
     handleExpressionChange(expression: ObservableExpression): void;

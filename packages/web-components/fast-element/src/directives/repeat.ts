@@ -1,4 +1,4 @@
-import { CaptureType, SyntheticViewTemplate } from "../template";
+import { CaptureType, SyntheticViewTemplate, ViewTemplate } from "../template";
 import { DOM } from "../dom";
 import {
     ExecutionContext,
@@ -245,10 +245,10 @@ export class RepeatDirective extends Directive {
     }
 }
 
-export function repeat<T = any, K = any>(
-    expression: Expression<T, K[]>,
-    template: SyntheticViewTemplate,
+export function repeat<TScope = any, TItem = any>(
+    expression: Expression<TScope, TItem[]>,
+    template: ViewTemplate<Partial<TItem>, TScope>,
     options: RepeatOptions = defaultRepeatOptions
-): CaptureType<T> {
+): CaptureType<TScope> {
     return new RepeatDirective(expression, template, options);
 }
