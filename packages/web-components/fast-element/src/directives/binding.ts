@@ -19,8 +19,13 @@ function normalBind(
     this.updateTarget(this.observableExpression.evaluate(source, context));
 }
 
-function triggerBind(this: BindingBehavior, source: unknown): void {
+function triggerBind(
+    this: BindingBehavior,
+    source: unknown,
+    context: ExecutionContext
+): void {
     this.source = source;
+    this.context = context;
     this.target.addEventListener(this.targetName!, this, true);
 }
 
@@ -33,6 +38,7 @@ function normalUnbind(this: BindingBehavior): void {
 function triggerUnbind(this: BindingBehavior): void {
     this.target.removeEventListener(this.targetName!, this, true);
     this.source = null;
+    this.context = null;
 }
 
 function updateAttributeTarget(this: BindingBehavior, value: unknown): void {
