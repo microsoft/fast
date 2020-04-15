@@ -11,7 +11,7 @@ jobs:
 
     env:
       AZURE_WEBAPP_NAME: fast-explore
-      AZURE_WEBAPP_PACKAGE_PATH: ./packages/fast-component-explorer/www
+      AZURE_WEBAPP_PACKAGE_PATH: ./sites/fast-component-explorer/www
       AZURE_WEBAPP_SLOT_NAME: stage
 
     steps:
@@ -31,7 +31,7 @@ jobs:
     
     - name: Build Web Application
       run: | 
-        cd packages/fast-component-explorer
+        cd sites/fast-component-explorer
         yarn build:app
 
     - name: 'Deploy to Azure'
