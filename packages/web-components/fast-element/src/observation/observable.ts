@@ -97,8 +97,8 @@ export function setCurrentEvent(event: Event | null): void {
  * Provides additional contextual information available to behaviors and expressions.
  */
 export class ExecutionContext<TParent = any> {
-    @observable public index: number = 0;
-    @observable public length: number = 0;
+    public index: number = 0;
+    public length: number = 0;
 
     public parent: TParent = null as any;
 
@@ -126,6 +126,9 @@ export class ExecutionContext<TParent = any> {
         return this.index === this.length - 1;
     }
 }
+
+Observable.define(ExecutionContext.prototype, "index");
+Observable.define(ExecutionContext.prototype, "length");
 
 export const defaultExecutionContext = new ExecutionContext();
 

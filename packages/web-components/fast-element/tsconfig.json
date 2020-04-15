@@ -4,8 +4,7 @@
         "outDir": "dist",
         "baseUrl": ".",
         "strictNullChecks": true,
-        "target": "es2015",
-        "experimentalDecorators": true
+        "target": "es2015"
     },
     "include": [
         "src/**/*"
