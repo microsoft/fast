@@ -3,8 +3,8 @@ import {
     DesignSystemConsumer,
     DesignSystemConsumerBehavior,
 } from "../design-system-consumer";
-import { CustomPropertyDefinition, CustomPropertyTarget } from "../custom-properties";
-import { CustomPropertyManager } from "../custom-properties";
+import { CSSCustomPropertyDefinition, CustomPropertyTarget } from "../custom-properties";
+import { CSSCustomPropertyManager } from "../custom-properties";
 
 interface DesignSystemPropertyDeclarationConfig {
     customPropertyName?: string;
@@ -71,10 +71,10 @@ export class DesignSystemProvider extends FastElement
     implements CustomPropertyTarget, DesignSystemConsumer {
     private customPropertyBehaviors: Map<
         string,
-        CustomPropertyDefinition & { count: number }
+        CSSCustomPropertyDefinition & { count: number }
     > = new Map();
 
-    public registerCSSCustomProperty(behavior: CustomPropertyDefinition) {
+    public registerCSSCustomProperty(behavior: CSSCustomPropertyDefinition) {
         const cached = this.customPropertyBehaviors.get(behavior.name);
 
         if (cached) {
@@ -85,7 +85,7 @@ export class DesignSystemProvider extends FastElement
         }
     }
 
-    public unregisterCSSCustomProperty(behavior: CustomPropertyDefinition) {
+    public unregisterCSSCustomProperty(behavior: CSSCustomPropertyDefinition) {
         const cached = this.customPropertyBehaviors.get(behavior.name);
 
         if (cached) {
@@ -139,7 +139,7 @@ export class DesignSystemProvider extends FastElement
     /**
      * RAF-throttled method to set css custom properties on the instance
      */
-    private customPropertyManager = new CustomPropertyManager(this);
+    private customPropertyManager = new CSSCustomPropertyManager(this);
 
     /**
      * The design-system object.
@@ -147,11 +147,6 @@ export class DesignSystemProvider extends FastElement
      * instead of object assignment
      */
     public designSystem = {};
-
-    /**
-     * All consumer objects registered with the provider.
-     */
-    private consumers: Set<DesignSystemConsumer> = new Set();
 
     /**
      * Track all design system property names so we can react to changes
@@ -229,7 +224,7 @@ export class DesignSystemProvider extends FastElement
         this.customPropertyBehaviors.forEach(this.writeCustomProperty);
     }
 
-    private writeCustomProperty(definition: CustomPropertyDefinition) {
+    private writeCustomProperty(definition: CSSCustomPropertyDefinition) {
         this.customPropertyManager.set({
             name: definition.name,
             value:

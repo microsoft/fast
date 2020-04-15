@@ -31,307 +31,307 @@ import {
 import { cssCustomPropertyBehaviorFactory } from "../custom-properties";
 import { findProvider } from "../design-system-consumer";
 
-export const neutralForegroundRest = cssCustomPropertyBehaviorFactory(
+export const neutralForegroundRestBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-foreground-rest",
     x => neutralForeground(x).rest,
     findProvider
 );
-export const neutralForegroundHover = cssCustomPropertyBehaviorFactory(
+export const neutralForegroundHoverBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-foreground-hover",
     x => neutralForeground(x).hover,
     findProvider
 );
-export const neutralForegroundActive = cssCustomPropertyBehaviorFactory(
+export const neutralForegroundActiveBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-foreground-active",
     x => neutralForeground(x).active,
     findProvider
 );
-export const neutralForegroundFocus = cssCustomPropertyBehaviorFactory(
+export const neutralForegroundFocusBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-foreground-focus",
     x => neutralForeground(x).focus,
     findProvider
 );
-export const neutralForegroundToggle = cssCustomPropertyBehaviorFactory(
+export const neutralForegroundToggleBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-foreground-toggle",
     neutralForegroundToggleRecipe,
     findProvider
 );
-export const neutralForegroundToggleLarge = cssCustomPropertyBehaviorFactory(
+export const neutralForegroundToggleLargeBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-foreground-toggle-large",
     neutralForegroundToggleLargeRecipe,
     findProvider
 );
-export const neutralForegroundHint = cssCustomPropertyBehaviorFactory(
+export const neutralForegroundHintBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-foreground-hint",
     neutralForegroundHintRecipe,
     findProvider
 );
-export const neutralForegroundHintLarge = cssCustomPropertyBehaviorFactory(
+export const neutralForegroundHintLargeBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-foreground-hint-large",
     neutralForegroundHintLargeRecipe,
     findProvider
 );
-export const accentForegroundRest = cssCustomPropertyBehaviorFactory(
+export const accentForegroundRestBehavior = cssCustomPropertyBehaviorFactory(
     "accent-foreground-rest",
     x => accentForeground(x).rest,
     findProvider
 );
-export const accentForegroundHover = cssCustomPropertyBehaviorFactory(
+export const accentForegroundHoverBehavior = cssCustomPropertyBehaviorFactory(
     "accent-foreground-hover",
     x => accentForeground(x).hover,
     findProvider
 );
-export const accentForegroundActive = cssCustomPropertyBehaviorFactory(
+export const accentForegroundActiveBehavior = cssCustomPropertyBehaviorFactory(
     "accent-foreground-active",
     x => accentForeground(x).active,
     findProvider
 );
-export const accentForegroundFocus = cssCustomPropertyBehaviorFactory(
+export const accentForegroundFocusBehavior = cssCustomPropertyBehaviorFactory(
     "accent-foreground-focus",
     x => accentForeground(x).focus,
     findProvider
 );
-export const accentForegroundCutRest = cssCustomPropertyBehaviorFactory(
+export const accentForegroundCutRestBehavior = cssCustomPropertyBehaviorFactory(
     "accent-foreground-cut-rest",
     x => accentForegroundCut(x),
     findProvider
 );
-export const accentForegroundLargeRest = cssCustomPropertyBehaviorFactory(
+export const accentForegroundLargeRestBehavior = cssCustomPropertyBehaviorFactory(
     "accent-foreground-large-rest",
     x => accentForegroundLarge(x).rest,
     findProvider
 );
-export const accentForegroundLargeHover = cssCustomPropertyBehaviorFactory(
+export const accentForegroundLargeHoverBehavior = cssCustomPropertyBehaviorFactory(
     "accent-foreground-large-hover",
     x => accentForegroundLarge(x).hover,
     findProvider
 );
-export const accentForegroundLargeActive = cssCustomPropertyBehaviorFactory(
+export const accentForegroundLargeActiveBehavior = cssCustomPropertyBehaviorFactory(
     "accent-foreground-large-active",
     x => accentForegroundLarge(x).active,
     findProvider
 );
-export const accentForegroundLargeFocus = cssCustomPropertyBehaviorFactory(
+export const accentForegroundLargeFocusBehavior = cssCustomPropertyBehaviorFactory(
     "accent-foreground-large-focus",
     x => accentForegroundLarge(x).focus,
     findProvider
 );
-export const neutralFillRest = cssCustomPropertyBehaviorFactory(
+export const neutralFillRestBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-fill-rest",
     x => neutralFill(x).rest,
     findProvider
 );
-export const neutralFillHover = cssCustomPropertyBehaviorFactory(
+export const neutralFillHoverBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-fill-hover",
     x => neutralFill(x).hover,
     findProvider
 );
-export const neutralFillActive = cssCustomPropertyBehaviorFactory(
+export const neutralFillActiveBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-fill-active",
     x => neutralFill(x).active,
     findProvider
 );
-export const neutralFillFocus = cssCustomPropertyBehaviorFactory(
+export const neutralFillFocusBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-fill-focus",
     x => neutralFill(x).focus,
     findProvider
 );
-export const neutralFillSelected = cssCustomPropertyBehaviorFactory(
+export const neutralFillSelectedBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-fill-selected",
     x => neutralFill(x).selected,
     findProvider
 );
-export const neutralFillStealthRest = cssCustomPropertyBehaviorFactory(
+export const neutralFillStealthRestBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-fill-stealth-rest",
     x => neutralFillStealth(x).rest,
     findProvider
 );
-export const neutralFillStealthHover = cssCustomPropertyBehaviorFactory(
+export const neutralFillStealthHoverBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-fill-stealth-hover",
     x => neutralFillStealth(x).hover,
     findProvider
 );
-export const neutralFillStealthActive = cssCustomPropertyBehaviorFactory(
+export const neutralFillStealthActiveBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-fill-stealth-active",
     x => neutralFillStealth(x).active,
     findProvider
 );
-export const neutralFillStealthFocus = cssCustomPropertyBehaviorFactory(
+export const neutralFillStealthFocusBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-fill-stealth-focus",
     x => neutralFillStealth(x).focus,
     findProvider
 );
-export const neutralFillStealthSelected = cssCustomPropertyBehaviorFactory(
+export const neutralFillStealthSelectedBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-fill-stealth-selected",
     x => neutralFillStealth(x).selected,
     findProvider
 );
-export const neutralFillToggleRest = cssCustomPropertyBehaviorFactory(
+export const neutralFillToggleRestBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-fill-toggle-rest",
     x => neutralFillToggle(x).rest,
     findProvider
 );
-export const neutralFillToggleHover = cssCustomPropertyBehaviorFactory(
+export const neutralFillToggleHoverBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-fill-toggle-hover",
     x => neutralFillToggle(x).hover,
     findProvider
 );
-export const neutralFillToggleActive = cssCustomPropertyBehaviorFactory(
+export const neutralFillToggleActiveBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-fill-toggle-active",
     x => neutralFillToggle(x).active,
     findProvider
 );
-export const neutralFillToggleFocus = cssCustomPropertyBehaviorFactory(
+export const neutralFillToggleFocusBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-fill-toggle-focus",
     x => neutralFillToggle(x).focus,
     findProvider
 );
-export const neutralFillInputRest = cssCustomPropertyBehaviorFactory(
+export const neutralFillInputRestBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-fill-input-rest",
     x => neutralFillInput(x).rest,
     findProvider
 );
-export const neutralFillInputHover = cssCustomPropertyBehaviorFactory(
+export const neutralFillInputHoverBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-fill-input-hover",
     x => neutralFillInput(x).hover,
     findProvider
 );
-export const neutralFillInputActive = cssCustomPropertyBehaviorFactory(
+export const neutralFillInputActiveBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-fill-input-active",
     x => neutralFillInput(x).active,
     findProvider
 );
-export const neutralFillInputFocus = cssCustomPropertyBehaviorFactory(
+export const neutralFillInputFocusBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-fill-input-focus",
     x => neutralFillInput(x).focus,
     findProvider
 );
-export const accentFillRest = cssCustomPropertyBehaviorFactory(
+export const accentFillRestBehavior = cssCustomPropertyBehaviorFactory(
     "accent-fill-rest",
     x => accentFill(x).rest,
     findProvider
 );
-export const accentFillHover = cssCustomPropertyBehaviorFactory(
+export const accentFillHoverBehavior = cssCustomPropertyBehaviorFactory(
     "accent-fill-hover",
     x => accentFill(x).hover,
     findProvider
 );
-export const accentFillActive = cssCustomPropertyBehaviorFactory(
+export const accentFillActiveBehavior = cssCustomPropertyBehaviorFactory(
     "accent-fill-active",
     x => accentFill(x).active,
     findProvider
 );
-export const accentFillFocus = cssCustomPropertyBehaviorFactory(
+export const accentFillFocusBehavior = cssCustomPropertyBehaviorFactory(
     "accent-fill-focus",
     x => accentFill(x).focus,
     findProvider
 );
-export const accentFillSelected = cssCustomPropertyBehaviorFactory(
+export const accentFillSelectedBehavior = cssCustomPropertyBehaviorFactory(
     "accent-fill-selected",
     x => accentFill(x).selected,
     findProvider
 );
-export const accentFillLargeRest = cssCustomPropertyBehaviorFactory(
+export const accentFillLargeRestBehavior = cssCustomPropertyBehaviorFactory(
     "accent-fill-large-rest",
     x => accentFillLarge(x).rest,
     findProvider
 );
-export const accentFillLargeHover = cssCustomPropertyBehaviorFactory(
+export const accentFillLargeHoverBehavior = cssCustomPropertyBehaviorFactory(
     "accent-fill-large-hover",
     x => accentFillLarge(x).hover,
     findProvider
 );
-export const accentFillLargeActive = cssCustomPropertyBehaviorFactory(
+export const accentFillLargeActiveBehavior = cssCustomPropertyBehaviorFactory(
     "accent-fill-large-active",
     x => accentFillLarge(x).active,
     findProvider
 );
-export const accentFillLargeFocus = cssCustomPropertyBehaviorFactory(
+export const accentFillLargeFocusBehavior = cssCustomPropertyBehaviorFactory(
     "accent-fill-large-focus",
     x => accentFillLarge(x).focus,
     findProvider
 );
-export const accentFillLargeSelected = cssCustomPropertyBehaviorFactory(
+export const accentFillLargeSelectedBehavior = cssCustomPropertyBehaviorFactory(
     "accent-fill-large-selected",
     x => accentFillLarge(x).selected,
     findProvider
 );
-export const neutralFillCardRest = cssCustomPropertyBehaviorFactory(
+export const neutralFillCardRestBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-fill-card-rest",
     x => neutralFillCard(x),
     findProvider
 );
-export const neutralOutlineRest = cssCustomPropertyBehaviorFactory(
+export const neutralOutlineRestBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-outline-rest",
     x => neutralOutline(x).rest,
     findProvider
 );
-export const neutralOutlineHover = cssCustomPropertyBehaviorFactory(
+export const neutralOutlineHoverBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-outline-hover",
     x => neutralOutline(x).hover,
     findProvider
 );
-export const neutralOutlineActive = cssCustomPropertyBehaviorFactory(
+export const neutralOutlineActiveBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-outline-active",
     x => neutralOutline(x).active,
     findProvider
 );
-export const neutralOutlineFocus = cssCustomPropertyBehaviorFactory(
+export const neutralOutlineFocusBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-outline-focus",
     x => neutralOutline(x).focus,
     findProvider
 );
-export const neutralDividerRest = cssCustomPropertyBehaviorFactory(
+export const neutralDividerRestBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-divider-rest",
     neutralDividerRestRecipe,
     findProvider
 );
-export const neutralLayerFloating = cssCustomPropertyBehaviorFactory(
+export const neutralLayerFloatingBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-layer-floating",
     neutralLayerFloatingRecipe,
     findProvider
 );
-export const neutralLayerCard = cssCustomPropertyBehaviorFactory(
+export const neutralLayerCardBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-layer-card",
     neutralLayerCardRecipe,
     findProvider
 );
-export const neutralLayerCardContainer = cssCustomPropertyBehaviorFactory(
+export const neutralLayerCardContainerBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-layer-card-container",
     neutralLayerCardContainerRecipe,
     findProvider
 );
-export const neutralLayerL1 = cssCustomPropertyBehaviorFactory(
+export const neutralLayerL1Behavior = cssCustomPropertyBehaviorFactory(
     "neutral-layer-l1",
     neutralLayerL1Recipe,
     findProvider
 );
-export const neutralLayerL1Alt = cssCustomPropertyBehaviorFactory(
+export const neutralLayerL1AltBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-layer-l1-alt",
     neutralLayerL1AltRecipe,
     findProvider
 );
-export const neutralLayerL2 = cssCustomPropertyBehaviorFactory(
+export const neutralLayerL2Behavior = cssCustomPropertyBehaviorFactory(
     "neutral-layer-l2",
     neutralLayerL2Recipe,
     findProvider
 );
-export const neutralLayerL3 = cssCustomPropertyBehaviorFactory(
+export const neutralLayerL3Behavior = cssCustomPropertyBehaviorFactory(
     "neutral-layer-l3",
     neutralLayerL3Recipe,
     findProvider
 );
-export const neutralLayerL4 = cssCustomPropertyBehaviorFactory(
+export const neutralLayerL4Behavior = cssCustomPropertyBehaviorFactory(
     "neutral-layer-l4",
     neutralLayerL4Recipe,
     findProvider
 );
-export const neutralFocus = cssCustomPropertyBehaviorFactory(
+export const neutralFocusBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-focus",
     neutralFocusRecipe,
     findProvider
 );
-export const neutralFocusInnerAccent = cssCustomPropertyBehaviorFactory(
+export const neutralFocusInnerAccentBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-focus-inner-accent",
     x => neutralFocusInnerAccentRecipe(() => x.accentBaseColor)(x),
     findProvider

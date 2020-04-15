@@ -4,15 +4,15 @@ import { focusVisible } from "../styles/focus";
 import { SystemColors } from "../styles/system-colors";
 import { heightNumber } from "../styles/size";
 import {
-    accentFillRest,
-    accentForegroundCutRest,
-    neutralFillInputActive,
-    neutralFillInputHover,
-    neutralFillInputRest,
-    neutralForegroundRest,
-    neutralOutlineActive,
-    neutralOutlineHover,
-    neutralOutlineRest,
+    accentFillRestBehavior,
+    accentForegroundCutRestBehavior,
+    neutralFillInputActiveBehavior,
+    neutralFillInputHoverBehavior,
+    neutralFillInputRestBehavior,
+    neutralForegroundRestBehavior,
+    neutralOutlineActiveBehavior,
+    neutralOutlineHoverBehavior,
+    neutralOutlineRestBehavior,
 } from "../styles/recipes";
 
 export const SwitchStyles = css`
@@ -169,13 +169,13 @@ export const SwitchStyles = css`
         }
     }
 `.withBehaviors(
-    accentFillRest,
-    accentForegroundCutRest,
-    neutralFillInputActive,
-    neutralFillInputHover,
-    neutralFillInputRest,
-    neutralForegroundRest,
-    neutralOutlineActive,
-    neutralOutlineHover,
-    neutralOutlineRest
+    accentFillRestBehavior,
+    accentForegroundCutRestBehavior,
+    neutralFillInputActiveBehavior,
+    neutralFillInputHoverBehavior,
+    neutralFillInputRestBehavior,
+    neutralForegroundRestBehavior,
+    neutralOutlineActiveBehavior,
+    neutralOutlineHoverBehavior,
+    neutralOutlineRestBehavior
 );

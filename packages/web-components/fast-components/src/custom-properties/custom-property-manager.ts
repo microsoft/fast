@@ -1,10 +1,10 @@
 import { DOM } from "@microsoft/fast-element";
-import { CustomPropertyDefinition } from "./";
+import { CSSCustomPropertyDefinition } from "./";
 
-export type SetCustomPropertyConfig = CustomPropertyDefinition;
-export type DeleteCustomPropertyConfig = Omit<CustomPropertyDefinition, "value">;
+export type SetCustomPropertyConfig = CSSCustomPropertyDefinition;
+export type DeleteCustomPropertyConfig = Omit<CSSCustomPropertyDefinition, "value">;
 
-export class CustomPropertyManager<
+export class CSSCustomPropertyManager<
     T extends {
         style: {
             setProperty(name: string, value: any): void;

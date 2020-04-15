@@ -1,5 +1,5 @@
 import { customElement } from "@microsoft/fast-element";
-import { neutralLayerCard } from "../styles/recipes";
+import { neutralLayerCardBehavior } from "../styles/recipes";
 import { Card } from "./card";
 import { CardTemplate as template } from "./card.template";
 import { CardStyles as styles } from "./card.styles";
