@@ -3,14 +3,14 @@ import { disabledCursor, display } from "../styles";
 import { focusVisible } from "../styles/focus";
 import { heightNumber } from "../styles/size";
 import {
-    neutralFillHover,
-    neutralFillInputHover,
-    neutralFillInputRest,
-    neutralFillRest,
-    neutralFocus,
-    neutralForegroundRest,
-    neutralOutlineHover,
-    neutralOutlineRest,
+    neutralFillHoverBehavior,
+    neutralFillInputHoverBehavior,
+    neutralFillInputRestBehavior,
+    neutralFillRestBehavior,
+    neutralFocusBehavior,
+    neutralForegroundRestBehavior,
+    neutralOutlineHoverBehavior,
+    neutralOutlineRestBehavior,
 } from "../styles/recipes";
 
 export const TextAreaStyles = css`
@@ -109,12 +109,12 @@ export const TextAreaStyles = css`
         }
     }
 `.withBehaviors(
-    neutralFillHover,
-    neutralFillInputHover,
-    neutralFillInputRest,
-    neutralFillRest,
-    neutralFocus,
-    neutralForegroundRest,
-    neutralOutlineHover,
-    neutralOutlineRest
+    neutralFillHoverBehavior,
+    neutralFillInputHoverBehavior,
+    neutralFillInputRestBehavior,
+    neutralFillRestBehavior,
+    neutralFocusBehavior,
+    neutralForegroundRestBehavior,
+    neutralOutlineHoverBehavior,
+    neutralOutlineRestBehavior
 );

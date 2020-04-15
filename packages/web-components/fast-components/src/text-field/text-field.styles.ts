@@ -4,14 +4,14 @@ import { focusVisible } from "../styles/focus";
 import { SystemColors } from "../styles/system-colors";
 import { heightNumber } from "../styles/size";
 import {
-    neutralFillHover,
-    neutralFillInputHover,
-    neutralFillInputRest,
-    neutralFillRest,
-    neutralFocus,
-    neutralForegroundRest,
-    neutralOutlineHover,
-    neutralOutlineRest,
+    neutralFillHoverBehavior,
+    neutralFillInputHoverBehavior,
+    neutralFillInputRestBehavior,
+    neutralFillRestBehavior,
+    neutralFocusBehavior,
+    neutralForegroundRestBehavior,
+    neutralOutlineHoverBehavior,
+    neutralOutlineRestBehavior,
 } from "../styles/recipes";
 
 export const TextFieldStyles = css`
@@ -141,12 +141,12 @@ export const TextFieldStyles = css`
         }
     }
 `.withBehaviors(
-    neutralFillHover,
-    neutralFillInputHover,
-    neutralFillInputRest,
-    neutralFillRest,
-    neutralFocus,
-    neutralForegroundRest,
-    neutralOutlineHover,
-    neutralOutlineRest
+    neutralFillHoverBehavior,
+    neutralFillInputHoverBehavior,
+    neutralFillInputRestBehavior,
+    neutralFillRestBehavior,
+    neutralFocusBehavior,
+    neutralForegroundRestBehavior,
+    neutralOutlineHoverBehavior,
+    neutralOutlineRestBehavior
 );

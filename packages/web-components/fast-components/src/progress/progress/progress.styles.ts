@@ -2,9 +2,9 @@ import { css } from "@microsoft/fast-element";
 import { display } from "../../styles";
 import { SystemColors } from "../../styles/system-colors";
 import {
-    accentFillRest,
-    neutralFillRest,
-    neutralForegroundHint,
+    accentFillRestBehavior,
+    neutralFillRestBehavior,
+    neutralForegroundHintBehavior,
 } from "../../styles/recipes";
 
 export const ProgressStyles = css`
@@ -128,4 +128,8 @@ export const ProgressStyles = css`
             opacity: 1;
         },
     },
-`.withBehaviors(accentFillRest, neutralFillRest, neutralForegroundHint);
+`.withBehaviors(
+    accentFillRestBehavior,
+    neutralFillRestBehavior,
+    neutralForegroundHintBehavior
+);

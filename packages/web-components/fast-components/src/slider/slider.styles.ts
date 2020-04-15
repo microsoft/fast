@@ -4,11 +4,11 @@ import { focusVisible } from "../styles/focus";
 import { SystemColors } from "../styles/system-colors";
 import { heightNumber } from "../styles/size";
 import {
-    neutralForegroundActive,
-    neutralForegroundHover,
-    neutralForegroundRest,
-    neutralOutlineHover,
-    neutralOutlineRest,
+    neutralForegroundActiveBehavior,
+    neutralForegroundHoverBehavior,
+    neutralForegroundRestBehavior,
+    neutralOutlineHoverBehavior,
+    neutralOutlineRestBehavior,
 } from "../styles/recipes";
 
 export const SliderStyles = css`
@@ -132,9 +132,9 @@ export const SliderStyles = css`
         }
     }
 `.withBehaviors(
-    neutralForegroundActive,
-    neutralForegroundHover,
-    neutralForegroundRest,
-    neutralOutlineHover,
-    neutralOutlineRest
+    neutralForegroundActiveBehavior,
+    neutralForegroundHoverBehavior,
+    neutralForegroundRestBehavior,
+    neutralOutlineHoverBehavior,
+    neutralOutlineRestBehavior
 );

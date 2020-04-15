@@ -3,9 +3,9 @@ import { display } from "../../styles";
 import { SystemColors } from "../../styles/system-colors";
 import { heightNumber } from "../../styles/size";
 import {
-    accentFillRest,
-    neutralFillRest,
-    neutralForegroundHint,
+    accentFillRestBehavior,
+    neutralFillRestBehavior,
+    neutralForegroundHintBehavior,
 } from "../../styles/recipes";
 
 export const ProgressRingStyles = css`
@@ -91,4 +91,8 @@ export const ProgressRingStyles = css`
             transform: rotate(1080deg);
         }
     }
-`.withBehaviors(accentFillRest, neutralFillRest, neutralForegroundHint);
+`.withBehaviors(
+    accentFillRestBehavior,
+    neutralFillRestBehavior,
+    neutralForegroundHintBehavior
+);

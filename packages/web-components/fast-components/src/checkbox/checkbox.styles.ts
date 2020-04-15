@@ -4,11 +4,11 @@ import { focusVisible } from "../styles/focus";
 import { SystemColors } from "../styles/system-colors";
 import { heightNumber } from "../styles/size";
 import {
-    neutralFillInputHover,
-    neutralFillInputRest,
-    neutralForegroundRest,
-    neutralOutlineHover,
-    neutralOutlineRest,
+    neutralFillInputHoverBehavior,
+    neutralFillInputRestBehavior,
+    neutralForegroundRestBehavior,
+    neutralOutlineHoverBehavior,
+    neutralOutlineRestBehavior,
 } from "../styles/recipes";
 
 export const CheckboxStyles = css`
@@ -134,9 +134,9 @@ export const CheckboxStyles = css`
         }
     }
 `.withBehaviors(
-    neutralFillInputHover,
-    neutralFillInputRest,
-    neutralForegroundRest,
-    neutralOutlineHover,
-    neutralOutlineRest
+    neutralFillInputHoverBehavior,
+    neutralFillInputRestBehavior,
+    neutralForegroundRestBehavior,
+    neutralOutlineHoverBehavior,
+    neutralOutlineRestBehavior
 );
