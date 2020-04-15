@@ -2,15 +2,15 @@ import { compileTemplate } from "./template-compiler";
 import { ElementView, HTMLView, SyntheticView } from "./view";
 import { DOM } from "./dom";
 import { Behavior, BehaviorFactory } from "./directives/behavior";
-import { Expression } from "./interfaces";
 import { Directive } from "./directives/directive";
 import { BindingDirective } from "./directives/binding";
+import { ExecutionContext, Expression } from "./observation/observable";
 
 export interface ElementViewTemplate {
     create(host: Element): ElementView;
 }
 
-export interface SyntheticViewTemplate {
+export interface SyntheticViewTemplate<TScope = any, TParent = any> {
     create(): SyntheticView;
 }
 
@@ -22,8 +22,8 @@ export class HTMLTemplateBehavior implements Behavior {
         this.view.insertBefore(location);
     }
 
-    bind(source: unknown): void {
-        this.view.bind(source);
+    bind(source: unknown, context: ExecutionContext): void {
+        this.view.bind(source, context);
     }
 
     unbind(): void {
@@ -31,7 +31,7 @@ export class HTMLTemplateBehavior implements Behavior {
     }
 }
 
-export class ViewTemplate extends Directive
+export class ViewTemplate<TScope = any, TParent = any> extends Directive
     implements ElementViewTemplate, SyntheticViewTemplate {
     public createPlaceholder: (index: number) => string = DOM.createBlockPlaceholder;
     private behaviorCount: number = 0;
@@ -128,13 +128,18 @@ export const lastAttributeNameRegex =
     /([ \x09\x0a\x0c\x0d])([^\0-\x1F\x7F-\x9F "'>=/]+)([ \x09\x0a\x0c\x0d]*=[ \x09\x0a\x0c\x0d]*(?:[^ \x09\x0a\x0c\x0d"'`<>=]*|"[^"]*|'[^']*))$/;
 
 /* eslint-disable-next-line @typescript-eslint/no-empty-interface */
-export interface CaptureType<T> {}
-type TemplateValue<T> = Expression<T> | string | number | Directive | CaptureType<T>;
+export interface CaptureType<TScope> {}
+type TemplateValue<TScope, TParent = any> =
+    | Expression<TScope, any, TParent>
+    | string
+    | number
+    | Directive
+    | CaptureType<TScope>;
 
-export function html<T = any>(
+export function html<TScope = any, TParent = any>(
     strings: TemplateStringsArray,
-    ...values: TemplateValue<T>[]
-): ViewTemplate {
+    ...values: TemplateValue<TScope, TParent>[]
+): ViewTemplate<TScope, TParent> {
     const directives: Directive[] = [];
     let html = "";
 

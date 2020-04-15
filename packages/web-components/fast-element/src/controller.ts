@@ -1,8 +1,7 @@
 import { FastElement, FastElementDefinition } from "./fast-element";
-import { Container, InterfaceSymbol, Registry, Resolver } from "./di";
 import { ElementView } from "./view";
 import { PropertyChangeNotifier } from "./observation/notifier";
-import { Observable } from "./observation/observable";
+import { defaultExecutionContext, Observable } from "./observation/observable";
 import { Behavior } from "./directives/behavior";
 import { ElementStyles, StyleTarget } from "./styles";
 
@@ -11,10 +10,9 @@ const defaultEventOptions: CustomEventInit = {
     composed: true,
 };
 
-export class Controller extends PropertyChangeNotifier implements Container {
+export class Controller extends PropertyChangeNotifier {
     public view: ElementView | null = null;
     public isConnected: boolean = false;
-    private resolvers: Map<any, Resolver> = new Map<any, Resolver>();
     private boundObservables: Record<string, any> | null = null;
     private behaviors: Behavior[] | null = null;
 
@@ -44,8 +42,6 @@ export class Controller extends PropertyChangeNotifier implements Container {
         if (styles !== void 0) {
             this.addStyles(styles, shadowRoot);
         }
-
-        definition.dependencies.forEach((x: Registry) => x.register(this));
 
         // Capture any observable values that were set by the binding engine before
         // the browser upgraded the element. Then delete the property since it will
@@ -109,7 +105,7 @@ export class Controller extends PropertyChangeNotifier implements Container {
             const element = this.element;
 
             for (let i = 0; i < length; ++i) {
-                behaviors[i].bind(element);
+                behaviors[i].bind(element, defaultExecutionContext);
             }
         }
     }
@@ -163,14 +159,14 @@ export class Controller extends PropertyChangeNotifier implements Container {
         const view = this.view;
 
         if (view !== null) {
-            view.bind(element);
+            view.bind(element, defaultExecutionContext);
         }
 
         const behaviors = this.behaviors;
 
         if (behaviors !== null) {
             for (let i = 0, ii = behaviors.length; i < ii; ++i) {
-                behaviors[i].bind(element);
+                behaviors[i].bind(element, defaultExecutionContext);
             }
         }
 
@@ -225,25 +221,6 @@ export class Controller extends PropertyChangeNotifier implements Container {
         }
 
         return false;
-    }
-
-    public register(registry: Registry): void {
-        registry.register(this);
-    }
-
-    public get<T>(key: InterfaceSymbol<T>): T;
-    public get<T = any>(key: any): T | null {
-        const resolver = this.resolvers.get(key);
-
-        if (resolver === void 0) {
-            return null;
-        }
-
-        return resolver(this) as T;
-    }
-
-    public registerResolver(key: any, resolver: Resolver): void {
-        this.resolvers.set(key, resolver);
     }
 
     public static forCustomElement(element: HTMLElement): Controller {
