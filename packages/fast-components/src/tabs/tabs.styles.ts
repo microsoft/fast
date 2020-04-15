@@ -30,11 +30,16 @@ export const TabsStyles = css`
 
     .activeIndicator {
         grid-row: 2;
+        grid-column: 1;
         width: 40px;
         height: 3px;
         border-radius: 5px;
         justify-self: center;
         background: blue;
+    }
+
+    .activeIndicatorTransition {
+        transition: transform 0.2s linear;
     }
 
     .tabpanel {
@@ -70,11 +75,15 @@ export const TabsStyles = css`
 
     :host(.vertical) .activeIndicator {
         grid-column: 1;
+        grid-row: 1;
         width: 3px;
         height: 10px;
         border-radius: 5px;
-        transition: 0.2s ease-in-out;
         align-self: center;
         background: blue;
+    }
+
+    :host(.vertical) .activeIndicatorTransition {
+        transition: transform 0.2s linear;
     }
 `;

@@ -68,88 +68,10 @@ export class Tabs extends FastElement {
                     tab.addEventListener("click", this.handleTabClick);
                     tab.addEventListener("keydown", this.handleTabKeyDown);
                     tab.setAttribute("tabindex", selectedTabIndex === index ? "0" : "-1");
-                    this.getActiveIndicatorPosition();
                 }
             });
         }
     };
-
-    private getActiveIndicatorPosition(): void {
-        if (this.activeIndicator) {
-            if (this.isHorizontal()) {
-                const prev: number = this.activeIndicatorRef.offsetLeft;
-                this.activeIndicatorRef.style.gridColumn = `${this.activeTabIndex + 1}`;
-                this.ticking = true;
-                const next: number = this.activeIndicatorRef.offsetLeft;
-                this.activeIndicatorRef.style.gridColumn = `${this.prevIndex + 1}`;
-                const dif: number = next - prev;
-                this.activeIndicatorRef.style.transform = `translateX(${dif}px)`;
-                this.activeIndicatorRef.style.transition = "transform 0.2s linear";
-                this.activeIndicatorRef.addEventListener("transitionend", () => {
-                    this.ticking = false;
-                    this.activeIndicatorRef.style.gridColumn = `${this.activeTabIndex +
-                        1}`;
-                    this.activeIndicatorRef.style.transform = "translateX(0px)";
-                    this.activeIndicatorRef.style.transition = "transform 0s linear";
-                });
-            } else {
-                const prev: number = this.activeIndicatorRef.offsetTop;
-                this.activeIndicatorRef.style.gridRow = `${this.activeTabIndex + 1}`;
-                const next: number = this.activeIndicatorRef.offsetTop;
-                this.activeIndicatorRef.style.gridRow = `${this.prevIndex + 1}`;
-                const dif: number = next - prev;
-                this.activeIndicatorRef.style.transform = `translateY(${dif}px)`;
-                this.activeIndicatorRef.style.transition = "transform 0.2s linear";
-                this.activeIndicatorRef.addEventListener("transitionend", () => {
-                    this.ticking = false;
-                    this.activeIndicatorRef.style.gridRow = `${this.activeTabIndex + 1}`;
-                    this.activeIndicatorRef.style.transform = "translateX(0px)";
-                    this.activeIndicatorRef.style.transition = "transform 0s linear";
-                });
-            }
-        }
-    }
-
-    // private getActiveIndicatorOffset(
-    //     currentTab: HTMLElement,
-    //     selectedTabIndex: number,
-    //     index: number
-    // ): void {
-    //     let numbers: number[] = [];
-    //     this.tabs.forEach((tab: HTMLElement) => {
-    //         if (this.isHorizontal()) {
-    //             numbers.push(tab.getBoundingClientRect().width);
-    //         } else {
-    //             numbers.push(tab.getBoundingClientRect().height);
-    //         }
-    //     });
-    //     numbers = numbers.slice(0, selectedTabIndex).length
-    //         ? numbers.slice(0, selectedTabIndex)
-    //         : [0];
-    //     const reducer = (accumulator, currentValue) => accumulator + currentValue;
-    //     const offset = numbers.reduce(reducer);
-    //     if (selectedTabIndex === index) {
-    //         let value: number;
-    //         if (this.isHorizontal()) {
-    //             value = currentTab.getBoundingClientRect().width;
-    //         } else {
-    //             value = currentTab.getBoundingClientRect().height;
-    //         }
-    //         const center: number = value / 2;
-    //         console.log("center", center, "offset", offset);
-    //         this.activeIndicatorOffset = offset + center;
-    //     }
-    // }
-
-    // private getActiveIndicatorOffset(): void {
-    //     if (this.activeIndicator) {
-    //         console.log("x", this.activeIndicatorRef.offsetLeft);
-    //     this.activeIndicatorOffset = this.activeIndicatorRef.offsetLeft;
-    //     this.activeIndicatorRef.addEventListener('transitionend', () => {
-    //         console.log('Transition ended');
-    //       });
-    //     }
-    // }
 
     private validTabPanels(element: HTMLElement): boolean {
         return element.nodeType === 1 && element.getAttribute("role") === "tabpanel";
@@ -170,6 +92,7 @@ export class Tabs extends FastElement {
 
     private setTabs(selectedTabIndex: number): void {
         this.getTabs(selectedTabIndex);
+        this.handleActiveIndicatorPosition();
         this.getTabPanels(selectedTabIndex);
         this.focusTab(selectedTabIndex);
     }
@@ -187,10 +110,6 @@ export class Tabs extends FastElement {
         return this.orientation === TabsOrientation.horizontal;
     }
 
-    private setTimer(): void {
-        this.ticking = true;
-    }
-
     private handleTabKeyDown = (event: KeyboardEvent): void => {
         const keyCode: number = event.keyCode;
         const tabsLength: number = this.tabs.length;
@@ -198,15 +117,10 @@ export class Tabs extends FastElement {
             switch (keyCode) {
                 case keyCodeArrowLeft:
                     event.preventDefault();
-                    this.ticking = true;
-                    if (this.ticking) {
-                    }
-                    console.log("Fire!");
                     this.decrement(tabsLength);
                     break;
                 case keyCodeArrowRight:
                     event.preventDefault();
-                    this.ticking = true;
                     this.increment(tabsLength);
                     break;
             }
@@ -214,17 +128,67 @@ export class Tabs extends FastElement {
             switch (keyCode) {
                 case keyCodeArrowUp:
                     event.preventDefault();
-                    this.ticking = true;
                     this.decrement(tabsLength);
                     break;
                 case keyCodeArrowDown:
                     event.preventDefault();
-                    this.ticking = true;
                     this.increment(tabsLength);
                     break;
             }
         }
     };
+
+    private handleActiveIndicatorPosition() {
+        if (this.ticking) {
+            this.activeIndicatorRef.style.transform = "translateX(0px)";
+            this.activeIndicatorRef.classList.remove("activeIndicatorTransition");
+            if (this.isHorizontal()) {
+                this.activeIndicatorRef.style.gridColumn = `${this.activeTabIndex + 1}`;
+            } else {
+                this.activeIndicatorRef.style.gridRow = `${this.activeTabIndex + 1}`;
+            }
+            this.ticking = false;
+        } else {
+            this.ticking = true;
+
+            this.animateActiveIndicator();
+        }
+    }
+
+    private animateActiveIndicator(): void {
+        if (this.activeIndicator) {
+            if (this.isHorizontal()) {
+                const prev: number = this.activeIndicatorRef.offsetLeft;
+                this.activeIndicatorRef.style.gridColumn = `${this.activeTabIndex + 1}`;
+                const next: number = this.activeIndicatorRef.offsetLeft;
+                this.activeIndicatorRef.style.gridColumn = `${this.prevIndex + 1}`;
+                const dif: number = next - prev;
+                this.activeIndicatorRef.style.transform = `translateX(${dif}px)`;
+                this.activeIndicatorRef.classList.add("activeIndicatorTransition");
+                this.activeIndicatorRef.addEventListener("transitionend", () => {
+                    this.ticking = false;
+                    this.activeIndicatorRef.style.gridColumn = `${this.activeTabIndex +
+                        1}`;
+                    this.activeIndicatorRef.style.transform = "translateX(0px)";
+                    this.activeIndicatorRef.classList.remove("activeIndicatorTransition");
+                });
+            } else {
+                const prev: number = this.activeIndicatorRef.offsetTop;
+                this.activeIndicatorRef.style.gridRow = `${this.activeTabIndex + 1}`;
+                const next: number = this.activeIndicatorRef.offsetTop;
+                this.activeIndicatorRef.style.gridRow = `${this.prevIndex + 1}`;
+                const dif: number = next - prev;
+                this.activeIndicatorRef.style.transform = `translateY(${dif}px)`;
+                this.activeIndicatorRef.classList.add("activeIndicatorTransition");
+                this.activeIndicatorRef.addEventListener("transitionend", () => {
+                    this.ticking = false;
+                    this.activeIndicatorRef.style.gridRow = `${this.activeTabIndex + 1}`;
+                    this.activeIndicatorRef.style.transform = "translateX(0px)";
+                    this.activeIndicatorRef.classList.remove("activeIndicatorTransition");
+                });
+            }
+        }
+    }
 
     private decrement(tabsLength: number): void {
         this.prevIndex = this.activeTabIndex;
