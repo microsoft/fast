@@ -3,7 +3,6 @@ import { emptyArray } from "./interfaces";
 import { ElementViewTemplate } from "./template";
 import { ElementStyles } from "./styles";
 import { AttributeConfiguration, AttributeDefinition } from "./attributes";
-import { Registry } from "./di";
 
 const defaultShadowOptions: ShadowRootInit = { mode: "open" };
 const defaultElementOptions: ElementDefinitionOptions = {};
@@ -13,7 +12,6 @@ export type PartialFastElementDefinition = {
     readonly template?: ElementViewTemplate;
     readonly styles?: ElementStyles;
     readonly attributes?: (AttributeConfiguration | string)[];
-    readonly dependencies?: Registry[];
     readonly shadowOptions?: Partial<ShadowRootInit> | null;
     readonly elementOptions?: ElementDefinitionOptions;
 };
@@ -27,8 +25,7 @@ export class FastElementDefinition {
         public readonly template?: ElementViewTemplate,
         public readonly styles?: ElementStyles,
         public readonly shadowOptions?: ShadowRootInit,
-        public readonly elementOptions?: ElementDefinitionOptions,
-        public readonly dependencies: ReadonlyArray<Registry> = emptyArray
+        public readonly elementOptions?: ElementDefinitionOptions
     ) {}
 }
 
@@ -132,8 +129,7 @@ export const FastElement = Object.assign(createFastElement(HTMLElement), {
             nameOrDef.template,
             nameOrDef.styles,
             shadowOptions,
-            elementOptions,
-            nameOrDef.dependencies
+            elementOptions
         );
 
         fastDefinitions.set(Type, definition);

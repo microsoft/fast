@@ -5,7 +5,6 @@ export * from "./controller";
 export * from "./interfaces";
 export * from "./template-compiler";
 export * from "./styles";
-export * from "./di";
 export * from "./view";
 export * from "./observation/observable";
 export * from "./dom";
