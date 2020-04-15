@@ -1,6 +1,5 @@
 import { customElement } from "@microsoft/fast-element";
 import { BaseProgress } from "../base-progress";
-import { designSystemConsumer } from "../../design-system-consumer";
 import {
     accentFillRest,
     neutralFillRest,
@@ -14,9 +13,9 @@ import { ProgressRingStyles as styles } from "./progress-ring.styles";
     template,
     styles,
 })
-@designSystemConsumer({
-    recipes: [neutralFillRest, accentFillRest, neutralForegroundHint],
-})
+// @designSystemConsumer({
+//     recipes: [neutralFillRest, accentFillRest, neutralForegroundHint],
+// })
 export class FASTProgressRing extends BaseProgress {}
 export * from "./progress-ring.template";
 export * from "./progress-ring.styles";

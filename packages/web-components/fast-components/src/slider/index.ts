@@ -1,6 +1,5 @@
 import { customElement } from "@microsoft/fast-element";
 import { Direction } from "@microsoft/fast-web-utilities";
-import { designSystemConsumer } from "../design-system-consumer";
 import {
     neutralForegroundActive,
     neutralForegroundHover,
@@ -33,15 +32,15 @@ export interface SliderConfiguration {
     template,
     styles,
 })
-@designSystemConsumer({
-    recipes: [
-        neutralForegroundActive,
-        neutralForegroundHover,
-        neutralForegroundRest,
-        neutralOutlineRest,
-        neutralOutlineHover,
-    ],
-})
+// @designSystemConsumer({
+//     recipes: [
+//         neutralForegroundActive,
+//         neutralForegroundHover,
+//         neutralForegroundRest,
+//         neutralOutlineRest,
+//         neutralOutlineHover,
+//     ],
+// })
 export class FASTSlider extends Slider {}
 export * from "./slider.template";
 export * from "./slider.styles";
