@@ -48,14 +48,14 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
         }
     }
     /**
-     * Define design system property atttributes
+     * Define design system property attributes
      */
     @attr({ attribute: "background-color" })
     @designSystemProperty({ customPropertyName: "background-color" })
     public backgroundColor: string;
 
     @attr({ attribute: "accent-base-color" })
-    @designSystemProperty({ customPropertyName: "accent-base-color" })
+    @designSystemProperty({ customProperty: false })
     public accentBaseColor: string;
 
     @observable
@@ -106,223 +106,223 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
     public disabledOpacity: number;
 
     @attr({ attribute: "accent-fill-rest-delta", converter: nullableNumberConverter })
-    @designSystemProperty({ customPropertyName: "accent-fill-rest-delta" })
+    @designSystemProperty({ customProperty: false })
     public accentFillRestDelta: number;
 
     @attr({ attribute: "accent-fill-hover-delta", converter: nullableNumberConverter })
-    @designSystemProperty({ customPropertyName: "accent-fill-hover-delta" })
+    @designSystemProperty({ customProperty: false })
     public accentFillHoverDelta: number;
 
     @attr({ attribute: "accent-fill-active-delta", converter: nullableNumberConverter })
-    @designSystemProperty({ customPropertyName: "accent-fill-active-delta" })
+    @designSystemProperty({ customProperty: false })
     public accentFillActiveDelta: number;
 
     @attr({ attribute: "accent-fill-focus-delta", converter: nullableNumberConverter })
-    @designSystemProperty({ customPropertyName: "accent-fill-focus-delta" })
+    @designSystemProperty({ customProperty: false })
     public accentFillFocusDelta: number;
 
     @attr({ attribute: "accent-fill-selected-delta", converter: nullableNumberConverter })
-    @designSystemProperty({ customPropertyName: "accent-fill-selected-delta" })
+    @designSystemProperty({ customProperty: false })
     public accentFillSelectedDelta: number;
 
     @attr({
         attribute: "accent-foreground-rest-delta",
         converter: nullableNumberConverter,
     })
-    @designSystemProperty({ customPropertyName: "accent-foreground-rest-delta" })
+    @designSystemProperty({ customProperty: false })
     public accentForegroundRestDelta: number;
 
     @attr({
         attribute: "accent-foreground-hover-delta",
         converter: nullableNumberConverter,
     })
-    @designSystemProperty({ customPropertyName: "accent-foreground-hover-delta" })
+    @designSystemProperty({ customProperty: false })
     public accentForegroundHoverDelta: number;
 
     @attr({
         attribute: "accent-foreground-active-delta",
         converter: nullableNumberConverter,
     })
-    @designSystemProperty({ customPropertyName: "accent-foreground-active-delta" })
+    @designSystemProperty({ customProperty: false })
     public accentForegroundActiveDelta: number;
 
     @attr({
         attribute: "accent-foreground-focus-delta",
         converter: nullableNumberConverter,
     })
-    @designSystemProperty({ customPropertyName: "accent-foreground-focus-delta" })
+    @designSystemProperty({ customProperty: false })
     public accentForegroundFocusDelta: number;
 
     @attr({ attribute: "neutral-fill-rest-delta", converter: nullableNumberConverter })
-    @designSystemProperty({ customPropertyName: "neutral-fill-rest-delta" })
+    @designSystemProperty({ customProperty: false })
     public neutralFillRestDelta: number;
 
     @attr({ attribute: "neutral-fill-hover-delta", converter: nullableNumberConverter })
-    @designSystemProperty({ customPropertyName: "neutral-fill-hover-delta" })
+    @designSystemProperty({ customProperty: false })
     public neutralFillHoverDelta: number;
 
     @attr({ attribute: "neutral-fill-active-delta", converter: nullableNumberConverter })
-    @designSystemProperty({ customPropertyName: "neutral-fill-active-delta" })
+    @designSystemProperty({ customProperty: false })
     public neutralFillActiveDelta: number;
 
     @attr({ attribute: "neutral-fill-focus-delta", converter: nullableNumberConverter })
-    @designSystemProperty({ customPropertyName: "neutral-fill-focus-delta" })
+    @designSystemProperty({ customProperty: false })
     public neutralFillFocusDelta: number;
 
     @attr({
         attribute: "neutral-fill-selected-delta",
         converter: nullableNumberConverter,
     })
-    @designSystemProperty({ customPropertyName: "neutral-fill-selected-delta" })
+    @designSystemProperty({ customProperty: false })
     public neutralFillSelectedDelta: number;
 
     @attr({
         attribute: "neutral-fill-input-rest-delta",
         converter: nullableNumberConverter,
     })
-    @designSystemProperty({ customPropertyName: "neutral-fill-input-rest-delta" })
+    @designSystemProperty({ customProperty: false })
     public neutralFillInputRestDelta: number;
 
     @attr({
         attribute: "neutral-fill-input-hover-delta",
         converter: nullableNumberConverter,
     })
-    @designSystemProperty({ customPropertyName: "neutral-fill-input-hover-delta" })
+    @designSystemProperty({ customProperty: false })
     public neutralFillInputHoverDelta: number;
 
     @attr({
         attribute: "neutral-fill-input-active-delta",
         converter: nullableNumberConverter,
     })
-    @designSystemProperty({ customPropertyName: "neutral-fill-input-active-delta" })
+    @designSystemProperty({ customProperty: false })
     public neutralFillInputActiveDelta: number;
 
     @attr({
         attribute: "neutral-fill-input-focus-delta",
         converter: nullableNumberConverter,
     })
-    @designSystemProperty({ customPropertyName: "neutral-fill-input-focus-delta" })
+    @designSystemProperty({ customProperty: false })
     public neutralFillInputFocusDelta: number;
 
     @attr({
         attribute: "neutral-fill-input-selected-delta",
         converter: nullableNumberConverter,
     })
-    @designSystemProperty({ customPropertyName: "neutral-fill-input-selected-delta" })
+    @designSystemProperty({ customProperty: false })
     public neutralFillInputSelectedDelta: number;
 
     @attr({
         attribute: "neutral-fill-stealth-rest-delta",
         converter: nullableNumberConverter,
     })
-    @designSystemProperty({ customPropertyName: "neutral-fill-stealth-rest-delta" })
+    @designSystemProperty({ customProperty: false })
     public neutralFillStealthRestDelta: number;
 
     @attr({
         attribute: "neutral-fill-stealth-hover-delta",
         converter: nullableNumberConverter,
     })
-    @designSystemProperty({ customPropertyName: "neutral-fill-stealth-hover-delta" })
+    @designSystemProperty({ customProperty: false })
     public neutralFillStealthHoverDelta: number;
 
     @attr({
         attribute: "neutral-fill-stealth-active-delta",
         converter: nullableNumberConverter,
     })
-    @designSystemProperty({ customPropertyName: "neutral-fill-stealth-active-delta" })
+    @designSystemProperty({ customProperty: false })
     public neutralFillStealthActiveDelta: number;
 
     @attr({
         attribute: "neutral-fill-stealth-focus-delta",
         converter: nullableNumberConverter,
     })
-    @designSystemProperty({ customPropertyName: "neutral-fill-stealth-focus-delta" })
+    @designSystemProperty({ customProperty: false })
     public neutralFillStealthFocusDelta: number;
 
     @attr({
         attribute: "neutral-fill-stealth-selected-delta",
         converter: nullableNumberConverter,
     })
-    @designSystemProperty({ customPropertyName: "neutral-fill-stealth-selected-delta" })
+    @designSystemProperty({ customProperty: false })
     public neutralFillStealthSelectedDelta: number;
 
     @attr({
         attribute: "neutral-fill-toggle-hover-delta",
         converter: nullableNumberConverter,
     })
-    @designSystemProperty({ customPropertyName: "neutral-fill-toggle-hover-delta" })
+    @designSystemProperty({ customProperty: false })
     public neutralFillToggleHoverDelta: number;
 
     @attr({
         attribute: "neutral-fill-toggle-hover-active",
         converter: nullableNumberConverter,
     })
-    @designSystemProperty({ customPropertyName: "neutral-fill-toggle-hover-active" })
+    @designSystemProperty({ customProperty: false })
     public neutralFillToggleActiveDelta: number;
 
     @attr({
         attribute: "neutral-fill-toggle-hover-focus",
         converter: nullableNumberConverter,
     })
-    @designSystemProperty({ customPropertyName: "neutral-fill-toggle-hover-focus" })
+    @designSystemProperty({ customProperty: false })
     public neutralFillToggleFocusDelta: number;
 
     @attr({ attribute: "base-layer-luminance", converter: nullableNumberConverter })
-    @designSystemProperty({ customPropertyName: "base-layer-luminance" })
+    @designSystemProperty({ customProperty: false })
     public baseLayerLuminance: number; // 0...1
 
     @attr({ attribute: "neutral-fill-card-delta", converter: nullableNumberConverter })
-    @designSystemProperty({ customPropertyName: "neutral-fill-card-delta" })
+    @designSystemProperty({ customProperty: false })
     public neutralFillCardDelta: number;
 
     @attr({
         attribute: "neutral-foreground-hover-delta",
         converter: nullableNumberConverter,
     })
-    @designSystemProperty({ customPropertyName: "neutral-foreground-hover-delta" })
+    @designSystemProperty({ customProperty: false })
     public neutralForegroundHoverDelta: number;
 
     @attr({
         attribute: "neutral-foreground-active-delta",
         converter: nullableNumberConverter,
     })
-    @designSystemProperty({ customPropertyName: "neutral-foreground-active-delta" })
+    @designSystemProperty({ customProperty: false })
     public neutralForegroundActiveDelta: number;
 
     @attr({
         attribute: "neutral-foreground-focus-delta",
         converter: nullableNumberConverter,
     })
-    @designSystemProperty({ customPropertyName: "neutral-foreground-focus-delta" })
+    @designSystemProperty({ customProperty: false })
     public neutralForegroundFocusDelta: number;
 
     @attr({ attribute: "neutral-divider-rest-delta", converter: nullableNumberConverter })
-    @designSystemProperty({ customPropertyName: "neutral-divider-rest-delta" })
+    @designSystemProperty({ customProperty: false })
     public neutralDividerRestDelta: number;
 
     @attr({ attribute: "neutral-outline-rest-delta", converter: nullableNumberConverter })
-    @designSystemProperty({ customPropertyName: "neutral-outline-rest-delta" })
+    @designSystemProperty({ customProperty: false })
     public neutralOutlineRestDelta: number;
 
     @attr({
         attribute: "neutral-outline-hover-delta",
         converter: nullableNumberConverter,
     })
-    @designSystemProperty({ customPropertyName: "neutral-outline-hover-delta" })
+    @designSystemProperty({ customProperty: false })
     public neutralOutlineHoverDelta: number;
 
     @attr({
         attribute: "neutral-outline-active-delta",
         converter: nullableNumberConverter,
     })
-    @designSystemProperty({ customPropertyName: "neutral-outline-active-delta" })
+    @designSystemProperty({ customProperty: false })
     public neutralOutlineActiveDelta: number;
 
     @attr({
         attribute: "neutral-outline-focus-delta",
         converter: nullableNumberConverter,
     })
-    @designSystemProperty({ customPropertyName: "neutral-outline-focus-delta" })
+    @designSystemProperty({ customProperty: false })
     public neutralOutlineFocusDelta: number;
 }
 export * from "./design-system-provider";
