@@ -1,8 +1,8 @@
-import { ExpressionContext } from "./interfaces";
 import { BehaviorFactory } from "./directives/behavior";
 import { DOM } from "./dom";
 import { BindingDirective } from "./directives/binding";
 import { AttachedBehaviorDirective, Directive } from "./directives/directive";
+import { ExecutionContext } from "./observation/observable";
 
 type InlineDirective = BindingDirective | AttachedBehaviorDirective;
 const compilationContext = { locatedDirectives: 0, targetIndex: -1 };
@@ -111,7 +111,7 @@ function tryParsePlaceholders(
         return (x as BindingDirective).expression;
     });
 
-    const expression = (scope: unknown, context: ExpressionContext): string => {
+    const expression = (scope: unknown, context: ExecutionContext): string => {
         let output = "";
 
         for (let i = 0; i < partCount; ++i) {

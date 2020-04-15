@@ -314,7 +314,7 @@ DOM.setHTMLPolicy(myPolicy);
 
 #### Events
 
-Besides rendering content, attributes, and properties, you'll often want to add event listeners and execute code when events fire. To do that, prepend the event name with `@` and provide the expression to be called when that event fires. Within an event expression, you also have access to a special *context* argument from which you can access the event args.
+Besides rendering content, attributes, and properties, you'll often want to add event listeners and execute code when events fire. To do that, prepend the event name with `@` and provide the expression to be called when that event fires. Within an event expression, you also have access to a special *context* argument from which you can access the `event` object.
 
 **Example: Basic Events**
 
@@ -458,6 +458,30 @@ export class FriendList extends FastElement {
     this.name = (event.target! as HTMLInputElement).value;
   }
 }
+```
+
+Similar to event handlers, within a `repeat` block you have access to a special context object. Here is a list of the properties that are available on the context:
+
+* `event` - The event object when inside an event handler.
+* `parent` - The parent scope when inside a `repeat` block.
+* `index` - The index of the current item when inside a `repeat` block (opt in).
+* `length` - The length of the array when inside a `repeat` block (opt in).
+* `even` - True if the index of the current item is even when inside a `repeat` block (opt in).
+* `odd` - True if the index of the current item is odd when inside a `repeat` block (opt in).
+* `first` - True if the current item is first in the array inside a `repeat` block (opt in).
+* `middle` - True if the current item is somewhere in the middle of the the array inside a `repeat` block (opt in).
+* `last` - True if the current item is last in the array inside a `repeat` block (opt in).
+
+Some context properties are opt-in because they are more costly to update. So, for performance reasons, they are not available by default. To opt into the positioning properties, pass options to the repeat directive, with the setting `positioning: true`. For example, here's how we would use the `index` in our friends template from above:
+
+**Example: List Rendering with Item Index**
+
+```html
+<ul>
+  ${repeat(x => x.friends, html<string>`
+    <li>${(x, c) => c.index} ${x => x}</li>
+  `, { positioning: true })}
+</ul>
 ```
 
 #### Composing Templates
