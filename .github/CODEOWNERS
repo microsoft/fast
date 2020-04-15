@@ -9,60 +9,8 @@
 
 # File type specific owners
 # Markdown specific files
-*.md    @awentzel @nalogiudice @chrisdholt @falkicon
-/docs/ @awentzel @nalogiudice @chrisdholt @falkicon
-/website/ @awentzel @nalogiudice @chrisdholt @falkicon
-
-# Package specific owners
-
-# fast-animation
-/packages/fast-animation/ @nicholasrice @chrisdholt
-
-# fast-breakpoint-tracker-react
-/packages/fast-breakpoint-tracker-react/ @nicholasrice @chrisdholt
-
-# fast-browser-extension
-/packages/fast-browser-extension/ @nicholasrice @janechu
-
-# fast-colors
-/packages/fast-colors/ @nicholasrice @chrisdholt
-
-# fast-components-*
-/packages/fast-components-class-name-contracts-base/ @chrisdholt @janechu @nicholasrice
-/packages/fast-components-class-name-contracts-msft/ @chrisdholt @janechu @nicholasrice
-/packages/fast-components-react-base/ @chrisdholt @janechu @nicholasrice
-/packages/fast-components-react-msft/ @chrisdholt @janechu @nicholasrice
-/packages/fast-components-styles-msft/ @chrisdholt @janechu @nicholasrice
-
-# fast-glyphs
-/packages/fast-glyphs/ @janechu @chrisdholt
-
-# fast-jest-snapshots
-/packages/fast-jest-snapshots/ @nicholasrice @janechu @chrisdholt
-
-# fast-jss-manager-*
-/packages/fast-jss-manager/ @nicholasrice @janechu @chrisdholt
-/packages/fast-jss-manager-angular/ @nicholasrice @janechu @chrisdholt
-/packages/fast-jss-manager-react/ @nicholasrice @janechu @chrisdholt
-/packages/fast-jss-utilities/ @nicholasrice @janechu @chrisdholt
-
-# fast-layouts-react
-/packages/fast-layouts-react/ @chrisdholt @nicholasrice
-
-# fast-markdown-react
-/packages/fast-markdown-msft-react/ @janechu @chrisdholt
-
-# fast-sketch-library
-/packages/fast-sketch-library/ @nicholasrice @janechu
-
-# fast-tooling-react
-/packages/fast-tooling-react/ @janechu @nicholasrice @chrisdholt
-
-# fast-eslint-rules
-/packages/fast-eslint-rules/ @nicholasrice @janechu @chrisdholt
-
-# fast-web-utilities
-/packages/fast-web-utilities/ @janechu @chrisdholt @nicholasrice
+*.md    @awentzel @chrisdholt @falkicon
+/docs/ @awentzel @chrisdholt @falkicon
 
 # Github management
 .github/ @awentzel @janechu @chrisdholt @nicholasrice
@@ -74,14 +22,42 @@
 *.yml @awentzel @janechu @nicholasrice @chrisdholt
 build/ @janechu @nicholasrice @chrisdholt @awentzel
 
-# Figma plugin
-/packages/fast-figma-plugin-msft/ @nicholasrice @bheston @e-vanaubrey @Jeremy-Knudsen
-
-# fast-element
-/packages/fast-element/ @EisenbergEffect @chrisdholt @janechu @nicholasrice
-
-# fast-components
-/packages/fast-components/ @EisenbergEffect @chrisdholt @janechu @nicholasrice
-
-# Web Component specs
+# Specifications
 /specs/ @EisenbergEffect @chrisdholt @janechu @nicholasrice
+
+# Sites
+/sites/fast-color-explorer/ @nicholasrice @janechu @bheston
+/sites/fast-component-explorer/ @janechu @nicholasrice
+/sites/website/ @awentzel @chrisdholt @falkicon
+
+# Package specific owners
+
+# React
+/packages/react/fast-components-class-name-contracts-base/ @chrisdholt @janechu @nicholasrice
+/packages/react/fast-components-class-name-contracts-msft/ @chrisdholt @janechu @nicholasrice
+/packages/react/fast-components-foundation-react/ @chrisdholt @janechu @nicholasrice
+/packages/react/fast-components-react-base/ @chrisdholt @janechu @nicholasrice
+/packages/react/fast-components-react-msft/ @chrisdholt @janechu @nicholasrice
+/packages/react/fast-components-styles-msft/ @chrisdholt @janechu @nicholasrice
+/packages/react/fast-jss-manager/ @nicholasrice @janechu @chrisdholt
+/packages/react/fast-jss-manager-react/ @nicholasrice @janechu @chrisdholt
+/packages/react/fast-jss-utilities/ @nicholasrice @janechu @chrisdholt
+/packages/react/fast-layouts-react/ @chrisdholt @nicholasrice
+/packages/react/fast-react-utilities/ @chrisdholt @nicholasrice
+/packages/react/fast-storybook-design-system-addon/ @nicholasrice @chrisdholt @janechu
+/packages/react/fast-storybook-presets/ @nicholasrice @chrisdholt @janechu
+
+# Tooling
+/packages/tooling/fast-figma-plugin-msft/ @nicholasrice @bheston @janechu
+/packages/tooling/fast-tooling-react/ @janechu @nicholasrice @chrisdholt
+/packages/tooling/fast-tooling/ @janechu @nicholasrice @chrisdholt
+
+# Utilities
+/packages/utilities/fast-animation/ @nicholasrice @chrisdholt
+/packages/utilities/fast-colors/ @nicholasrice @chrisdholt
+/packages/utilities/fast-eslint-rules/ @nicholasrice @janechu @chrisdholt
+/packages/utilities/fast-web-utilities/ @janechu @chrisdholt @nicholasrice
+
+# Web components
+/packages/web-components/fast-element/ @EisenbergEffect @chrisdholt @janechu @nicholasrice
+/packages/web-components/fast-components/ @EisenbergEffect @chrisdholt @janechu @nicholasrice
