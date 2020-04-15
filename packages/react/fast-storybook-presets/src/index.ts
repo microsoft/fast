@@ -30,6 +30,7 @@ export function addons(entry: string[] = [], options?: FASTDNAPresetOptions): st
         require.resolve("@storybook/addon-a11y/register"),
         require.resolve("@storybook/addon-viewport/register"),
         require.resolve("@storybook/addon-actions/register"),
+        require.resolve("storybook-addon-performance/register"),
     ]);
 
     return entry;
