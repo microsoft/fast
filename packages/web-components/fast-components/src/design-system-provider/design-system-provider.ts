@@ -224,15 +224,15 @@ export class DesignSystemProvider extends FastElement
         this.customPropertyBehaviors.forEach(this.writeCustomProperty);
     }
 
-    private writeCustomProperty(definition: CSSCustomPropertyDefinition) {
+    private writeCustomProperty = (definition: CSSCustomPropertyDefinition) => {
         this.customPropertyManager.set({
             name: definition.name,
             value:
                 typeof definition.value === "function"
-                    ? definition.value.bind(this, this.designSystem)
+                    ? definition.value.bind(this, { ...this.designSystem })
                     : definition.value,
         });
-    }
+    };
 
     /**
      * Synchronize the provider's design system with the local
