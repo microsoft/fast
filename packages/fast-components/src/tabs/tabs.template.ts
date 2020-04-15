@@ -18,9 +18,6 @@ export const TabsTemplate = html<Tabs>`
                     "activeIndicatorRef"
                 )} class="activeIndicator"  part="activeIndicator">
                 </div>
-                <div class="activeIndicator" part="activeIndicator" style="transform: translateX(${x =>
-                    x.activeIndicatorOffset}px); grid-column: 1">
-                </div>
             `
             )}
             ${when(
@@ -28,10 +25,7 @@ export const TabsTemplate = html<Tabs>`
                 html<Tabs>`
                 <div ${ref(
                     "activeIndicatorRef"
-                )} class="activeIndicator"  part="activeIndicator">
-                </div>
-                <div class="activeIndicator"  part="activeIndicator" style="transform: translateY(${x =>
-                    x.activeIndicatorOffset}px); grid-row: 1">
+                )} class="activeIndicator" part="activeIndicator">
                 </div>
             `
             )}

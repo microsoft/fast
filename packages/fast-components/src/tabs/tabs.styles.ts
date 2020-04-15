@@ -19,7 +19,7 @@ export const TabsStyles = css`
         grid-template-rows: auto auto;
         grid-template-columns: auto;
         position: relative;
-        width: fit-content;
+        width: max-content;
     }
 
     .start {
@@ -33,9 +33,8 @@ export const TabsStyles = css`
         width: 40px;
         height: 3px;
         border-radius: 5px;
-        background: blue;
         justify-self: center;
-        transition: 0.2s ease-in-out;
+        background: blue;
     }
 
     .tabpanel {
@@ -56,7 +55,7 @@ export const TabsStyles = css`
         grid-template-rows: auto;
         grid-template-columns: auto auto;
         position: relative;
-        width: fit-content;
+        width: max-content;
     }
 
     :host(.vertical) .tabpanel {
@@ -74,7 +73,8 @@ export const TabsStyles = css`
         width: 3px;
         height: 10px;
         border-radius: 5px;
-        background: blue;
+        transition: 0.2s ease-in-out;
         align-self: center;
+        background: blue;
     }
 `;

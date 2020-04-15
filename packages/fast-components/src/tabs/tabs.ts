@@ -45,6 +45,10 @@ export class Tabs extends FastElement {
 
     public activeIndicatorRef: HTMLElement;
 
+    private prevIndex: number = 0;
+
+    private ticking: boolean = false;
+
     private getTabs = (selectedTabIndex: number): void => {
         if (this.connected) {
             this.tabs.forEach((tab: HTMLElement, index: number) => {
@@ -64,17 +68,45 @@ export class Tabs extends FastElement {
                     tab.addEventListener("click", this.handleTabClick);
                     tab.addEventListener("keydown", this.handleTabKeyDown);
                     tab.setAttribute("tabindex", selectedTabIndex === index ? "0" : "-1");
-                    //this.getActiveIndicatorOffset(tab, selectedTabIndex, index);
-                    this.getActiveIndicatorPosition(selectedTabIndex, index);
-                    this.getActiveIndicatorOffset();
+                    this.getActiveIndicatorPosition();
                 }
             });
         }
     };
 
-    private getActiveIndicatorPosition(selectedTabIndex, index): void {
-        if (selectedTabIndex === index) {
-            this.activeIndicatorRef.style.gridColumn = index + 1;
+    private getActiveIndicatorPosition(): void {
+        if (this.activeIndicator) {
+            if (this.isHorizontal()) {
+                const prev: number = this.activeIndicatorRef.offsetLeft;
+                this.activeIndicatorRef.style.gridColumn = `${this.activeTabIndex + 1}`;
+                this.ticking = true;
+                const next: number = this.activeIndicatorRef.offsetLeft;
+                this.activeIndicatorRef.style.gridColumn = `${this.prevIndex + 1}`;
+                const dif: number = next - prev;
+                this.activeIndicatorRef.style.transform = `translateX(${dif}px)`;
+                this.activeIndicatorRef.style.transition = "transform 0.2s linear";
+                this.activeIndicatorRef.addEventListener("transitionend", () => {
+                    this.ticking = false;
+                    this.activeIndicatorRef.style.gridColumn = `${this.activeTabIndex +
+                        1}`;
+                    this.activeIndicatorRef.style.transform = "translateX(0px)";
+                    this.activeIndicatorRef.style.transition = "transform 0s linear";
+                });
+            } else {
+                const prev: number = this.activeIndicatorRef.offsetTop;
+                this.activeIndicatorRef.style.gridRow = `${this.activeTabIndex + 1}`;
+                const next: number = this.activeIndicatorRef.offsetTop;
+                this.activeIndicatorRef.style.gridRow = `${this.prevIndex + 1}`;
+                const dif: number = next - prev;
+                this.activeIndicatorRef.style.transform = `translateY(${dif}px)`;
+                this.activeIndicatorRef.style.transition = "transform 0.2s linear";
+                this.activeIndicatorRef.addEventListener("transitionend", () => {
+                    this.ticking = false;
+                    this.activeIndicatorRef.style.gridRow = `${this.activeTabIndex + 1}`;
+                    this.activeIndicatorRef.style.transform = "translateX(0px)";
+                    this.activeIndicatorRef.style.transition = "transform 0s linear";
+                });
+            }
         }
     }
 
@@ -109,10 +141,15 @@ export class Tabs extends FastElement {
     //     }
     // }
 
-    private getActiveIndicatorOffset(): void {
-        console.log("x", this.activeIndicatorRef.offsetLeft);
-        this.activeIndicatorOffset = this.activeIndicatorRef.offsetLeft;
-    }
+    // private getActiveIndicatorOffset(): void {
+    //     if (this.activeIndicator) {
+    //         console.log("x", this.activeIndicatorRef.offsetLeft);
+    //     this.activeIndicatorOffset = this.activeIndicatorRef.offsetLeft;
+    //     this.activeIndicatorRef.addEventListener('transitionend', () => {
+    //         console.log('Transition ended');
+    //       });
+    //     }
+    // }
 
     private validTabPanels(element: HTMLElement): boolean {
         return element.nodeType === 1 && element.getAttribute("role") === "tabpanel";
@@ -139,6 +176,7 @@ export class Tabs extends FastElement {
 
     private handleTabClick = (event): void => {
         const selectedTab = event.srcElement as Element;
+        this.prevIndex = this.activeTabIndex;
         this.activeTabIndex = Array.from(this.tabs).indexOf(event.target);
         if (selectedTab.nodeType === 1) {
             this.setTabs(this.activeTabIndex);
@@ -149,6 +187,10 @@ export class Tabs extends FastElement {
         return this.orientation === TabsOrientation.horizontal;
     }
 
+    private setTimer(): void {
+        this.ticking = true;
+    }
+
     private handleTabKeyDown = (event: KeyboardEvent): void => {
         const keyCode: number = event.keyCode;
         const tabsLength: number = this.tabs.length;
@@ -156,10 +198,15 @@ export class Tabs extends FastElement {
             switch (keyCode) {
                 case keyCodeArrowLeft:
                     event.preventDefault();
+                    this.ticking = true;
+                    if (this.ticking) {
+                    }
+                    console.log("Fire!");
                     this.decrement(tabsLength);
                     break;
                 case keyCodeArrowRight:
                     event.preventDefault();
+                    this.ticking = true;
                     this.increment(tabsLength);
                     break;
             }
@@ -167,10 +214,12 @@ export class Tabs extends FastElement {
             switch (keyCode) {
                 case keyCodeArrowUp:
                     event.preventDefault();
+                    this.ticking = true;
                     this.decrement(tabsLength);
                     break;
                 case keyCodeArrowDown:
                     event.preventDefault();
+                    this.ticking = true;
                     this.increment(tabsLength);
                     break;
             }
@@ -178,6 +227,7 @@ export class Tabs extends FastElement {
     };
 
     private decrement(tabsLength: number): void {
+        this.prevIndex = this.activeTabIndex;
         if (this.activeTabIndex !== 0) {
             this.activeTabIndex = this.activeTabIndex - 1;
         } else {
@@ -187,6 +237,7 @@ export class Tabs extends FastElement {
     }
 
     private increment(tabsLength: number): void {
+        this.prevIndex = this.activeTabIndex;
         if (this.activeTabIndex !== tabsLength - 1) {
             this.activeTabIndex = this.activeTabIndex + 1;
         } else {
