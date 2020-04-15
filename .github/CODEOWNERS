@@ -48,7 +48,7 @@ build/ @janechu @nicholasrice @chrisdholt @awentzel
 /packages/react/fast-storybook-presets/ @nicholasrice @chrisdholt @janechu
 
 # Tooling
-/packages/tooling/fast-figma-plugin-msft/ @nicholasrice @bheston @e-vanaubrey @Jeremy-Knudsen
+/packages/tooling/fast-figma-plugin-msft/ @nicholasrice @bheston @janechu
 /packages/tooling/fast-tooling-react/ @janechu @nicholasrice @chrisdholt
 /packages/tooling/fast-tooling/ @janechu @nicholasrice @chrisdholt
 
