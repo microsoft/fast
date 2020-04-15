@@ -3,6 +3,13 @@ import { disabledCursor, display } from "../styles";
 import { focusVisible } from "../styles/focus";
 import { SystemColors } from "../styles/system-colors";
 import { heightNumber } from "../styles/size";
+import {
+    neutralFillInputHover,
+    neutralFillInputRest,
+    neutralForegroundRest,
+    neutralOutlineHover,
+    neutralOutlineRest,
+} from "../styles/recipes";
 
 export const CheckboxStyles = css`
     ${display("inline-flex")} :host {
@@ -126,4 +133,10 @@ export const CheckboxStyles = css`
             fill: ${SystemColors.GrayText};
         }
     }
-`;
+`.withBehaviors(
+    neutralFillInputHover,
+    neutralFillInputRest,
+    neutralForegroundRest,
+    neutralOutlineHover,
+    neutralOutlineRest
+);

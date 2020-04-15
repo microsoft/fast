@@ -3,6 +3,13 @@ import { disabledCursor, display } from "../styles";
 import { focusVisible } from "../styles/focus";
 import { SystemColors } from "../styles/system-colors";
 import { heightNumber } from "../styles/size";
+import {
+    neutralForegroundActive,
+    neutralForegroundHover,
+    neutralForegroundRest,
+    neutralOutlineHover,
+    neutralOutlineRest,
+} from "../styles/recipes";
 
 export const SliderStyles = css`
     :host([hidden]) {
@@ -124,4 +131,10 @@ export const SliderStyles = css`
             background: ${SystemColors.GrayText};
         }
     }
-`;
+`.withBehaviors(
+    neutralForegroundActive,
+    neutralForegroundHover,
+    neutralForegroundRest,
+    neutralOutlineHover,
+    neutralOutlineRest
+);

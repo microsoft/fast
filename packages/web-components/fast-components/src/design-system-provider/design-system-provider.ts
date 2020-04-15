@@ -74,7 +74,7 @@ export class DesignSystemProvider extends FastElement
         CustomPropertyDefinition & { count: number }
     > = new Map();
 
-    public registerCustomPropertyBehavior(behavior: CustomPropertyDefinition) {
+    public registerCSSCustomProperty(behavior: CustomPropertyDefinition) {
         const cached = this.customPropertyBehaviors.get(behavior.name);
 
         if (cached) {
@@ -85,7 +85,7 @@ export class DesignSystemProvider extends FastElement
         }
     }
 
-    public unregisterCustomPropertyBehavior(behavior: CustomPropertyDefinition) {
+    public unregisterCSSCustomProperty(behavior: CustomPropertyDefinition) {
         const cached = this.customPropertyBehaviors.get(behavior.name);
 
         if (cached) {
@@ -234,7 +234,7 @@ export class DesignSystemProvider extends FastElement
             name: definition.name,
             value:
                 typeof definition.value === "function"
-                    ? definition.value.bind(this.designSystem)
+                    ? definition.value.bind(this, this.designSystem)
                     : definition.value,
         });
     }

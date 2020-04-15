@@ -12,43 +12,36 @@ export interface CustomPropertyDefinition {
 }
 
 export interface CustomPropertyTarget {
-    registerCustomPropertyBehavior(behavior: CustomPropertyDefinition): void;
-    unregisterCustomPropertyBehavior(behavior: CustomPropertyDefinition): void;
+    registerCSSCustomProperty(behavior: CustomPropertyDefinition): void;
+    unregisterCSSCustomProperty(behavior: CustomPropertyDefinition): void;
 }
 
-export class CustomPropertyBehavior implements Behavior, CustomPropertyDefinition {
-    constructor(
-        /**
-         * The name of the custom property
-         */
-        public readonly name: string,
+export type CSSCustomPropertyBehavior = Behavior & CustomPropertyDefinition;
 
-        /**
-         * The value of the custom property or a function that resolves the value
-         */
-        public readonly value: string | ((...arg: any[]) => string),
+export function cssCustomPropertyBehaviorFactory(
+    name: string,
+    value: string | ((...arg: any[]) => string),
+    host: (source: typeof FastElement & HTMLElement) => CustomPropertyTarget | null
+): CSSCustomPropertyBehavior {
+    return Object.freeze({
+        name,
+        value,
+        host,
+        bind(source: typeof FastElement | HTMLElement): void {
+            const target = this.host(source);
 
-        /**
-         * A function to retrieve the element that should host the custom property
-         */
-        private host: (source: typeof FastElement) => CustomPropertyTarget | null
-    ) {}
+            if (target) {
+                target.registerCSSCustomProperty(this);
+            }
+        },
+        unbind(source: typeof FastElement | HTMLElement): void {
+            const target = this.host(source);
 
-    public bind(source: typeof FastElement) {
-        const target = this.host(source);
-
-        if (target) {
-            target.registerCustomPropertyBehavior(this);
-        }
-    }
-
-    public unbind(source: typeof FastElement) {
-        const target = this.host(source);
-
-        if (target) {
-            target.unregisterCustomPropertyBehavior(this);
-        }
-    }
+            if (target) {
+                target.unregisterCSSCustomProperty(this);
+            }
+        },
+    });
 }
 
 export * from "./custom-property-manager";
