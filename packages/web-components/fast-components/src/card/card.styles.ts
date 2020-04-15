@@ -1,6 +1,7 @@
 import { css } from "@microsoft/fast-element";
 import { display, elevation } from "../styles";
 import { SystemColors } from "../styles/system-colors";
+import { neutralLayerCard } from "../styles/recipes";
 
 export const CardStyles = css`
     ${display("block")} :host {
@@ -22,4 +23,4 @@ export const CardStyles = css`
             background: ${SystemColors.Canvas};
         }
     }
-`;
+`.withBehaviors(neutralLayerCard);

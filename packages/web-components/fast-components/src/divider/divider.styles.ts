@@ -1,7 +1,6 @@
 import { css } from "@microsoft/fast-element";
 import { display } from "../styles";
-import { CustomPropertyBehavior } from "../custom-properties";
-import { findProvider } from "../design-system-consumer";
+import { neutralDividerRest } from "../styles/recipes";
 
 export const DividerStyles = css`
     ${display("block")} :host {
@@ -11,8 +10,4 @@ export const DividerStyles = css`
         border: none;
         border-top: calc(var(--outline-width) * 1px) solid var(--neutral-divider-rest);
     }
-`.withBehaviors(
-    new CustomPropertyBehavior("test-custom-property", () => "bar", findProvider as any)
-);
-
-// class RecipeFactory
+`.withBehaviors(neutralDividerRest);

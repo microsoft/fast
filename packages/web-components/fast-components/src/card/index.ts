@@ -9,9 +9,6 @@ import { CardStyles as styles } from "./card.styles";
     template,
     styles,
 })
-// @designSystemConsumer({
-//     recipes: [neutralLayerCard],
-// })
 export class FASTCard extends Card {}
 export * from "./card.template";
 export * from "./card.styles";

@@ -7,6 +7,28 @@ import {
     OutlineButtonStyles,
     StealthButtonStyles,
 } from "../styles";
+import {
+    accentFillActive,
+    accentFillHover,
+    accentFillRest,
+    accentForegroundActive,
+    accentForegroundCutRest,
+    accentForegroundHover,
+    accentForegroundRest,
+    neutralFillActive,
+    neutralFillFocus,
+    neutralFillHover,
+    neutralFillRest,
+    neutralFillStealthActive,
+    neutralFillStealthHover,
+    neutralFillStealthRest,
+    neutralFocus,
+    neutralFocusInnerAccent,
+    neutralForegroundRest,
+    neutralOutlineActive,
+    neutralOutlineHover,
+    neutralOutlineRest,
+} from "../styles/recipes";
 
 export const ButtonStyles = css`
     ${BaseButtonStyles}
@@ -15,4 +37,25 @@ export const ButtonStyles = css`
     ${LightweightButtonStyles}
     ${OutlineButtonStyles}
     ${StealthButtonStyles}
-`;
+`.withBehaviors(
+    accentFillActive,
+    accentFillHover,
+    accentFillRest,
+    accentForegroundActive,
+    accentForegroundCutRest,
+    accentForegroundHover,
+    accentForegroundRest,
+    neutralFillActive,
+    neutralFillFocus,
+    neutralFillHover,
+    neutralFillRest,
+    neutralFillStealthActive,
+    neutralFillStealthHover,
+    neutralFillStealthRest,
+    neutralFocus,
+    neutralFocusInnerAccent,
+    neutralForegroundRest,
+    neutralOutlineActive,
+    neutralOutlineHover,
+    neutralOutlineRest
+);

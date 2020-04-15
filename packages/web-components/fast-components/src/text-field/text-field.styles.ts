@@ -3,6 +3,16 @@ import { disabledCursor, display } from "../styles";
 import { focusVisible } from "../styles/focus";
 import { SystemColors } from "../styles/system-colors";
 import { heightNumber } from "../styles/size";
+import {
+    neutralFillHover,
+    neutralFillInputHover,
+    neutralFillInputRest,
+    neutralFillRest,
+    neutralFocus,
+    neutralForegroundRest,
+    neutralOutlineHover,
+    neutralOutlineRest,
+} from "../styles/recipes";
 
 export const TextFieldStyles = css`
     ${display("inline-block")} :host {
@@ -130,4 +140,13 @@ export const TextFieldStyles = css`
             box-shadow: 0 0 0 1px ${SystemColors.Highlight} inset;
         }
     }
-`;
+`.withBehaviors(
+    neutralFillHover,
+    neutralFillInputHover,
+    neutralFillInputRest,
+    neutralFillRest,
+    neutralFocus,
+    neutralForegroundRest,
+    neutralOutlineHover,
+    neutralOutlineRest
+);

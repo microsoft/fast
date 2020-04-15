@@ -1,11 +1,4 @@
 import { customElement } from "@microsoft/fast-element";
-import {
-    neutralFillInputHover,
-    neutralFillInputRest,
-    neutralForegroundRest,
-    neutralOutlineHover,
-    neutralOutlineRest,
-} from "../styles/recipes";
 import { Checkbox } from "./checkbox";
 import { CheckboxTemplate as template } from "./checkbox.template";
 import { CheckboxStyles as styles } from "./checkbox.styles";
@@ -15,15 +8,6 @@ import { CheckboxStyles as styles } from "./checkbox.styles";
     template,
     styles,
 })
-// @designSystemConsumer({
-//     recipes: [
-//         neutralOutlineRest,
-//         neutralFillInputRest,
-//         neutralForegroundRest,
-//         neutralFillInputHover,
-//         neutralOutlineHover,
-//     ],
-// })
 export class FASTCheckbox extends Checkbox {}
 export * from "./checkbox.template";
 export * from "./checkbox.styles";
