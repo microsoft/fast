@@ -255,6 +255,8 @@ You can also use an expression to set an attribute value on an HTML Element. Sim
 </li>
 ```
 
+> **NOTE:** When binding to `class`, the underlying engine will not over-write classes added to the element via other mechanisms. It only adds and removes classes that result directly from the binding. This "safe by default" behavior does come at a slight performance cost. To opt out of this feature and squeeze out every ounce of performance by always overwriting all classes, use a property binding (see below) on the `className` property. e.g. `:className="list-item ${x => x.type}"`.
+
 ```HTML
 <span style="text-decoration: ${x => x.done ? 'line-through' : ''}">
   ${x => x.description}
