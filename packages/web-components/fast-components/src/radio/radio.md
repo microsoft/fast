@@ -1,7 +1,7 @@
 # Radio
 
 ## Overview
-An implementation of a radio button as a form-connected web-component.
+An implementation of a radio button as a form-connected web-component. Facilitating single select from a group of visible choices.
 
 ### Use Cases
 Used anywhere an author might otherwise use an `input[type="radio"]`. Used to facilitate choice where only one choice is acceptable.
@@ -25,7 +25,7 @@ We want general feature-parity between this component and an `input[type="radio"
 ---
 
 ### API
-Extends [form associated custom element](./form-associated-custom-element.md).
+Extends [form associated custom element](../form-associated/form-associated-custom-element.md).
 
 *Component Name*
 `fast-radio`
@@ -39,8 +39,9 @@ Extends [form associated custom element](./form-associated-custom-element.md).
   - The radio should be submitted with the form but should not be editable.
 - `disabled`
   - The radio should be disabled from user interaction and will not be submitted with the form data.
-- `value`
-  - is not visible to the user, it's used to determine which radio is selected in a radio group
+- `value` - Not visible to the user, it's used for form data and to distinguish between other radio buttons of the same name attribute value.
+- `name` - All radio buttons with the same name will operate as a group allowing only 
+one radio within the group to be selected at a time.
 - `checked`
   - The initial checked value. 
   
@@ -53,10 +54,14 @@ Extends [form associated custom element](./form-associated-custom-element.md).
 
 ```HTML
 <!-- shadow root -->
-<label part="label"><slot></slot></label>
-<div part="radio">
-  <div part="checked-indicator"></div>
-</div>
+<template 
+  role="radio"
+>
+  <label part="label"><slot></slot></label>
+  <div part="radio">
+    <div part="checked-indicator"></div>
+  </div>
+</template>
 <!-- end shadow root -->
 ```
 
