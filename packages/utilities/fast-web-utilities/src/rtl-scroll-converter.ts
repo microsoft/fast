@@ -182,7 +182,7 @@ export class RtlScrollConverter {
      */
     private static isDirect(testElement: HTMLDivElement): boolean {
         testElement.scrollLeft = -1;
-        return testElement.scrollLeft === -1;
+        return testElement.scrollLeft < 0;
     }
 
     /**
