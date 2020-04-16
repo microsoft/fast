@@ -50,7 +50,7 @@ export class Slider extends FormAssociated<HTMLInputElement>
     /**
      * The element's value to be included in form submission changed.
      */
-    @attr({ converter: nullableNumberConverter })
+    // @attr({ converter: nullableNumberConverter })
     public value: string; // Map to proxy element.
     private valueChanged(): void {
         if (this.proxy instanceof HTMLElement) {
