@@ -1,9 +1,8 @@
 import { attr, css, customElement, FASTElement, html } from "@microsoft/fast-element";
-import { designSystemConsumer } from "@microsoft/fast-components/dist/design-system-consumer";
 import {
-    neutralFillStealthHover,
-    neutralForegroundHint,
-} from "@microsoft/fast-components/dist/styles/recipes";
+    neutralFillStealthHoverBehavior,
+    neutralForegroundHintBehavior,
+} from "@microsoft/fast-components";
 
 const template = html`
     <template
@@ -105,7 +104,8 @@ const styles = css`
     :host(.selected:hover) {
         background: #daebf7;
     }
-`;
+`.withBehaviors(neutralFillStealthHoverBehavior, neutralForegroundHintBehavior);
+
 export enum SwatchTypes {
     background = "background",
     border = "border",
@@ -115,9 +115,6 @@ export enum SwatchTypes {
     name: "td-swatch",
     template,
     styles,
-})
-@designSystemConsumer({
-    recipes: [neutralForegroundHint, neutralFillStealthHover],
 })
 export class Swatch extends FASTElement {
     @attr
