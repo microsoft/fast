@@ -1,4 +1,4 @@
-import { attr } from "@microsoft/fast-element";
+import { attr, nullableNumberConverter } from "@microsoft/fast-element";
 import { FormAssociated } from "../form-associated";
 
 export enum TextAreaAppearance {
@@ -56,7 +56,7 @@ export class TextArea extends FormAssociated<HTMLTextAreaElement> {
 
     public textarea: HTMLTextAreaElement;
 
-    @attr
+    @attr({ mode: "boolean" })
     public autofocus: boolean;
     private autofocusChanged(): void {
         if (this.proxy instanceof HTMLElement) {
@@ -64,16 +64,8 @@ export class TextArea extends FormAssociated<HTMLTextAreaElement> {
         }
     }
 
-    @attr
+    @attr({ converter: nullableNumberConverter, mode: "fromView" })
     public cols: number = 20;
-
-    @attr
-    public disabled: boolean;
-    protected disabledChanged(): void {
-        if (this.proxy instanceof HTMLElement) {
-            this.proxy.disabled = this.disabled;
-        }
-    }
 
     @attr({ attribute: "form" })
     public formId: string;
@@ -86,7 +78,7 @@ export class TextArea extends FormAssociated<HTMLTextAreaElement> {
         }
     }
 
-    @attr
+    @attr({ converter: nullableNumberConverter })
     public maxlength: number;
     private maxlengthChanged(): void {
         if (this.proxy instanceof HTMLElement) {
@@ -94,7 +86,7 @@ export class TextArea extends FormAssociated<HTMLTextAreaElement> {
         }
     }
 
-    @attr
+    @attr({ converter: nullableNumberConverter })
     public minlength: number;
     private minlengthChanged(): void {
         if (this.proxy instanceof HTMLElement) {
@@ -108,10 +100,10 @@ export class TextArea extends FormAssociated<HTMLTextAreaElement> {
     @attr
     public placeholder: string;
 
-    @attr
+    @attr({ converter: nullableNumberConverter, mode: "fromView" })
     public rows: number;
 
-    @attr
+    @attr({ mode: "boolean" })
     public spellcheck: boolean;
     private spellcheckChanged(): void {
         if (this.proxy instanceof HTMLElement) {

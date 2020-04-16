@@ -23,7 +23,6 @@ export class TextField extends FormAssociated<HTMLInputElement> {
             : this.classList.remove("filled");
     }
 
-    @attr({ mode: "boolean" })
     @attr({ attribute: "readonly", mode: "boolean" })
     public readOnly: boolean;
     private readOnlyChanged(): void {
