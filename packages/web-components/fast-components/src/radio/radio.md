@@ -54,14 +54,10 @@ one radio within the group to be selected at a time.
 
 ```HTML
 <!-- shadow root -->
-<template 
-  role="radio"
->
-  <label part="label"><slot></slot></label>
-  <div part="radio">
-    <div part="checked-indicator"></div>
-  </div>
-</template>
+<label part="label"><slot></slot></label>
+<div part="control">
+  <div part="checked-indicator"></div>
+</div>
 <!-- end shadow root -->
 ```
 
@@ -76,7 +72,7 @@ one radio within the group to be selected at a time.
 
 *Slotted Content/Slotted Classes*
 *CSS Parts*
-- radio
+- control
 - label
 - checked-indicator
 
@@ -84,7 +80,8 @@ one radio within the group to be selected at a time.
 **checked**: `true` or `false`
 The checked state can be toggled by:
 - Clicking the radio button (or any of it's labels)
-- Pressing the space-bar while focus is placed on the radio button
+- Pressing the space-bar while focus is placed on the radio button will toggle it on
+- Pressing the right/top or left/bottom arrow keys will move the focus and toggle on the checked value for the radio button receiving focus.
 - Adding / removing the "checked" content attribute
   - This will only trigger a change if the "checked" property has not been changed, either through user action or programmatically
 
@@ -102,8 +99,6 @@ The root element inside the shadow-dom of the radio will be a focusable element 
 - aria-required: the required state of the component
 - aria-disabled: the disabled state of the component
 - tabindex: 0
-
-Because we're delegating focus to this element, the relevant information will be presented to AT users when they focus this element.
 
 ## Next steps
 Adding mechanisms, slots, and data for surfacing validation error messages.
