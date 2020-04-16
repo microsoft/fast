@@ -1,6 +1,6 @@
-import { attr, FastElement, nullableNumberConverter } from "@microsoft/fast-element";
+import { attr, FASTElement, nullableNumberConverter } from "@microsoft/fast-element";
 
-export class BaseProgress extends FastElement {
+export class BaseProgress extends FASTElement {
     @attr({ converter: nullableNumberConverter })
     public value: number;
 

@@ -1,5 +1,6 @@
 import { css } from "@microsoft/fast-element";
 import { display } from "../styles";
+import { neutralDividerRestBehavior } from "../styles/recipes";
 
 export const DividerStyles = css`
     ${display("block")} :host {
@@ -9,4 +10,4 @@ export const DividerStyles = css`
         border: none;
         border-top: calc(var(--outline-width) * 1px) solid var(--neutral-divider-rest);
     }
-`;
+`.withBehaviors(neutralDividerRestBehavior);

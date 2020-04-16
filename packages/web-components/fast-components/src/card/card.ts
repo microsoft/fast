@@ -1,3 +1,3 @@
-import { FastElement } from "@microsoft/fast-element";
+import { FASTElement } from "@microsoft/fast-element";
 
-export class Card extends FastElement {}
+export class Card extends FASTElement {}
