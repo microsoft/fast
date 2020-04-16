@@ -1,4 +1,4 @@
-import { attr, emptyArray, FastElement } from "@microsoft/fast-element";
+import { attr, emptyArray, FASTElement } from "@microsoft/fast-element";
 import { keyCodeEnter } from "@microsoft/fast-web-utilities";
 
 export const supportsElementInternals = "ElementInternals" in window;
@@ -9,7 +9,7 @@ export const supportsElementInternals = "ElementInternals" in window;
  */
 export abstract class FormAssociated<
     T extends HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-> extends FastElement {
+> extends FASTElement {
     /**
      * Must evaluate to true to enable elementInternals.
      * Feature detects API support and resolve respectively

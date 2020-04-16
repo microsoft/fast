@@ -1,4 +1,4 @@
-import { attr, FastElement, observable } from "@microsoft/fast-element";
+import { attr, FASTElement, observable } from "@microsoft/fast-element";
 import { Direction } from "@microsoft/fast-web-utilities";
 import { SliderConfiguration, SliderOrientation } from "../slider";
 import { convertPixelToPercent } from "../slider/slider-utilities";
@@ -10,7 +10,7 @@ const defaultConfig: SliderConfiguration = {
     orientation: SliderOrientation.horizontal,
 };
 
-export class SliderLabel extends FastElement {
+export class SliderLabel extends FASTElement {
     @observable
     public positionStyle: string;
 

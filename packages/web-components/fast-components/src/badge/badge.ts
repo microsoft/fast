@@ -1,6 +1,6 @@
-import { attr, FastElement } from "@microsoft/fast-element";
+import { attr, FASTElement } from "@microsoft/fast-element";
 
-export class Badge extends FastElement {
+export class Badge extends FASTElement {
     @attr({ attribute: "fill" })
     public fill: string;
 
