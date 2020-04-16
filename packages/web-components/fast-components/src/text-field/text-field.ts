@@ -1,4 +1,4 @@
-import { attr } from "@microsoft/fast-element";
+import { attr, nullableNumberConverter } from "@microsoft/fast-element";
 import { FormAssociated } from "../form-associated";
 
 export enum TextFieldAppearance {
@@ -67,7 +67,7 @@ export class TextField extends FormAssociated<HTMLInputElement> {
         }
     }
 
-    @attr
+    @attr({ converter: nullableNumberConverter })
     public maxlength: number;
     private maxlengthChanged(): void {
         if (this.proxy instanceof HTMLElement) {
@@ -75,7 +75,7 @@ export class TextField extends FormAssociated<HTMLInputElement> {
         }
     }
 
-    @attr
+    @attr({ converter: nullableNumberConverter })
     public minlength: number;
     private minlengthChanged(): void {
         if (this.proxy instanceof HTMLElement) {
@@ -91,7 +91,7 @@ export class TextField extends FormAssociated<HTMLInputElement> {
         }
     }
 
-    @attr
+    @attr({ converter: nullableNumberConverter })
     public size: number;
     private sizeChanged(): void {
         if (this.proxy instanceof HTMLElement) {
