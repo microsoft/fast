@@ -13,8 +13,6 @@ on:
 jobs:
   build_linux:
     runs-on: ubuntu-latest
-    env:
-        CC_TEST_REPORTER_ID: 08a773cb4ea5811add5a45e12873e5cd2634c005568705cc37abfd5217617a32
 
     steps:
     - uses: actions/checkout@v2
@@ -22,10 +20,10 @@ jobs:
     - name: Install Lerna
       run: sudo yarn global add lerna@3.18.2  
 
-   # Cache yarn dependencies
     - name: Get yarn cache directory path
       id: yarn-cache-dir-path
-      run: echo "::set-output name=dir::$(yarn cache dir)"
+      run: echo '::set-output name=dir::$(yarn cache dir)'
+
     - name: Set up node_modules cache
       uses: actions/cache@v1.1.2
       id: yarn-cache
@@ -44,6 +42,28 @@ jobs:
     - name: Testing unit tests
       run: lerna run test --stream
 
+    - name: Collect and upload code coverage to Code Climate
+      uses: paambaati/codeclimate-action@v2.5.6
+      env: 
+        CC_TEST_REPORTER_ID: 08a773cb4ea5811add5a45e12873e5cd2634c005568705cc37abfd5217617a32
+      with:
+        coverageCommand: yarn run jest --coverage
+        coverageLocations:
+          "./packages/react/fast-components-foundation-react/coverage/lcov.info:lcov",
+          "./packages/react/fast-components-react-base/coverage/lcov.info:lcov"
+          # './packages/react/fast-components-react-msft/coverage/lcov.info:lcov',
+          # './packages/react/fast-components-styles-msft/coverage/lcov.info:lcov',
+          # './packages/react/fast-jss-manager-react/coverage/lcov.info:lcov',
+          # './packages/react/fast-jss-utilities/coverage/lcov.info:lcov',
+          # './packages/react/fast-layouts-react/coverage/lcov.info:lcov',
+          # './packages/react/fast-react-utilities/coverage/lcov.info:lcov',
+          # './packages/tooling/fast-tooling/coverage/lcov.info:lcov',
+          # './packages/tooling/fast-tooling-react/coverage/lcov.info:lcov',
+          # './packages/utilities/fast-animation/coverage/lcov.info:lcov',
+          # './packages/utilities/fast-colors/coverage/lcov.info:lcov',
+          # './packages/utilities/fast-web-utilities/coverage/lcov.info:lcov'
+        debug: true
+            
     # Stop reporting to Code Climate until a resolution exists for incompatabilities with Jest 25.x
     # as described in https://github.com/codeclimate/test-reporter/issues/427 
     # - name: Install Code Climate
@@ -60,10 +80,10 @@ jobs:
     # - name: Collect coverage reports
     #   run: |
     #     for f in packages/*; do
-    #       if [ -d "$f" ]; then
+    #       if [ -d '$f' ]; then
     #         echo $f
     #         set +e
-    #         if [ -d "$f/coverage" ]; then
+    #         if [ -d '$f/coverage' ]; then
     #           ./coverage/cc-test-reporter format-coverage -t lcov -o coverage/coverage.${f//\//-}.json $f/coverage/lcov.info
     #         fi
     #       fi
