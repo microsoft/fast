@@ -1,4 +1,4 @@
-import { attr, css, customElement, FastElement, html } from "@microsoft/fast-element";
+import { attr, css, customElement, FASTElement, html } from "@microsoft/fast-element";
 import { designSystemConsumer } from "@microsoft/fast-components/dist/design-system-consumer";
 import {
     neutralFillStealthHover,
@@ -79,7 +79,7 @@ const styles = css`
 @designSystemConsumer({
     recipes: [neutralForegroundHint, neutralFillStealthHover],
 })
-export class CornerRadius extends FastElement {
+export class CornerRadius extends FASTElement {
     @attr
     public value: string = "0";
 

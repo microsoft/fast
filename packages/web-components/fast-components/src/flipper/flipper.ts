@@ -1,11 +1,11 @@
-import { attr, booleanConverter, FastElement } from "@microsoft/fast-element";
+import { attr, booleanConverter, FASTElement } from "@microsoft/fast-element";
 
 export enum FlipperDirection {
     next = "next",
     previous = "previous",
 }
 
-export class Flipper extends FastElement {
+export class Flipper extends FASTElement {
     @attr({ mode: "boolean" })
     public disabled: boolean;
     public disabledChanged(): void {
