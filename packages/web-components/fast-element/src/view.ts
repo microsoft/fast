@@ -1,14 +1,20 @@
 import { Behavior } from "./directives/behavior";
+import { ExecutionContext } from "./observation/observable";
 
 /**
  * Represents a collection of DOM nodes which can be bound to a data source.
  */
 export interface View {
     /**
+     * The execution context the view is running within.
+     */
+    readonly context: ExecutionContext | null;
+
+    /**
      * Binds a view's behaviors to its binding source.
      * @param source The binding source for the view's binding behaviors.
      */
-    bind(source: unknown): void;
+    bind(source: unknown, context: ExecutionContext): void;
 
     /**
      * Unbinds a view's behaviors from its binding source.
@@ -70,6 +76,7 @@ const range = document.createRange();
  */
 export class HTMLView implements ElementView, SyntheticView {
     private source: any = void 0;
+    public context: ExecutionContext | null = null;
     public firstChild: Node;
     public lastChild: Node;
 
@@ -157,8 +164,9 @@ export class HTMLView implements ElementView, SyntheticView {
     /**
      * Binds a view's behaviors to its binding source.
      * @param source The binding source for the view's binding behaviors.
+     * @param context The execution context to run the behaviors within.
      */
-    public bind(source: unknown): void {
+    public bind(source: unknown, context: ExecutionContext): void {
         const behaviors = this.behaviors;
 
         if (this.source === source) {
@@ -166,14 +174,20 @@ export class HTMLView implements ElementView, SyntheticView {
         } else if (this.source !== void 0) {
             const oldSource = this.source;
 
+            this.source = source;
+            this.context = context;
+
             for (let i = 0, ii = behaviors.length; i < ii; ++i) {
                 const current = behaviors[i];
                 current.unbind(oldSource);
-                current.bind(source);
+                current.bind(source, context);
             }
         } else {
+            this.source = source;
+            this.context = context;
+
             for (let i = 0, ii = behaviors.length; i < ii; ++i) {
-                behaviors[i].bind(source);
+                behaviors[i].bind(source, context);
             }
         }
     }
