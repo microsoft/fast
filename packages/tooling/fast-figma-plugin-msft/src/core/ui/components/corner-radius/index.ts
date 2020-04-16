@@ -1,9 +1,8 @@
-import { attr, css, customElement, FastElement, html } from "@microsoft/fast-element";
-import { designSystemConsumer } from "@microsoft/fast-components/dist/design-system-consumer";
+import { attr, css, customElement, FASTElement, html } from "@microsoft/fast-element";
 import {
-    neutralFillStealthHover,
-    neutralForegroundHint,
-} from "@microsoft/fast-components/dist/styles/recipes";
+    neutralFillStealthHoverBehavior,
+    neutralForegroundHintBehavior,
+} from "@microsoft/fast-components";
 
 const template = html<CornerRadius>`
     <template
@@ -69,17 +68,14 @@ const styles = css`
     :host(.selected:hover) {
         background: #daebf7;
     }
-`;
+`.withBehaviors(neutralFillStealthHoverBehavior, neutralForegroundHintBehavior);
 
 @customElement({
     name: "td-corner-radius",
     template,
     styles,
 })
-@designSystemConsumer({
-    recipes: [neutralForegroundHint, neutralFillStealthHover],
-})
-export class CornerRadius extends FastElement {
+export class CornerRadius extends FASTElement {
     @attr
     public value: string = "0";
 

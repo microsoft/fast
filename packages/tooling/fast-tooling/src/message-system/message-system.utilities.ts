@@ -235,11 +235,14 @@ function getDataMessage(data: DataMessageIncoming): DataMessageOutgoing {
                 navigationDictionary,
             };
         case MessageSystemDataTypeAction.update:
+            const dictionaryId: string =
+                data.dictionaryId !== undefined ? data.dictionaryId : activeDictionaryId;
+
             if (data.dataLocation === "") {
-                dataDictionary[0][activeDictionaryId].data = data.data;
+                dataDictionary[0][dictionaryId].data = data.data;
             } else {
                 set(
-                    dataDictionary[0][activeDictionaryId].data as object,
+                    dataDictionary[0][dictionaryId].data as object,
                     data.dataLocation,
                     data.data
                 );
@@ -253,9 +256,9 @@ function getDataMessage(data: DataMessageIncoming): DataMessageOutgoing {
             return {
                 type: MessageSystemType.data,
                 action: MessageSystemDataTypeAction.update,
-                data: dataDictionary[0][activeDictionaryId].data,
+                data: dataDictionary[0][dictionaryId].data,
                 dataDictionary,
-                navigation: navigationDictionary[0][activeDictionaryId],
+                navigation: navigationDictionary[0][dictionaryId],
                 navigationDictionary,
             };
         case MessageSystemDataTypeAction.addLinkedData:

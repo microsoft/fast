@@ -1,5 +1,7 @@
+import { ExecutionContext } from "../observation/observable";
+
 export interface Behavior {
-    bind(source: unknown): void;
+    bind(source: unknown, context: ExecutionContext): void;
     unbind(source: unknown): void;
 }
 

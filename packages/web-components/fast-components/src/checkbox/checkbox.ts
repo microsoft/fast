@@ -19,7 +19,6 @@ export class Checkbox extends FormAssociated<HTMLInputElement> {
      * The element's value to be included in form submission when checked.
      * Default to "on" to reach parity with input[type="checkbox"]
      */
-    @attr
     public value: string = "on"; // Map to proxy element.
     private valueChanged(): void {
         if (this.proxy instanceof HTMLElement) {
