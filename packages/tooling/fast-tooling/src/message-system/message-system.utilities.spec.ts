@@ -189,6 +189,51 @@ describe("getMessage", () => {
 
             expect(message.data).toEqual({ hello: "venus" });
         });
+        test("should return a data blob with updated values when a dictionaryId has been specified", () => {
+            getMessage({
+                type: MessageSystemType.initialize,
+                data: [
+                    {
+                        foo: {
+                            schemaId: "foo",
+                            data: {},
+                        },
+                        bar: {
+                            schemaId: "foo",
+                            data: {},
+                        },
+                    },
+                    "foo",
+                ],
+                schemaDictionary: {
+                    foo: { id: "foo" },
+                },
+            });
+            const message: UpdateDataMessageOutgoing = getMessage({
+                type: MessageSystemType.data,
+                action: MessageSystemDataTypeAction.update,
+                dictionaryId: "bar",
+                dataLocation: "",
+                data: { hello: "venus" },
+            }) as UpdateDataMessageOutgoing;
+
+            expect(message.data).toEqual({ hello: "venus" });
+            expect(message.dataDictionary).toEqual([
+                {
+                    foo: {
+                        schemaId: "foo",
+                        data: {},
+                    },
+                    bar: {
+                        schemaId: "foo",
+                        data: {
+                            hello: "venus",
+                        },
+                    },
+                },
+                "foo",
+            ]);
+        });
         test("should add linkedData to the data and the data dictionary", () => {
             getMessage({
                 type: MessageSystemType.initialize,
