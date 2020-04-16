@@ -54,15 +54,21 @@ one radio within the group to be selected at a time.
 
 ```HTML
 <!-- shadow root -->
-<label part="label"><slot></slot></label>
+<label part="label">
+  <slot></slot>
+</label>
 <div part="control">
-  <div part="checked-indicator"></div>
+  <slot name="checked-indicator">
+    <div part="checked-indicator">
+    </div>
+  </slot>
 </div>
 <!-- end shadow root -->
 ```
 
 *Slot Names*
 - default: label for the radio
+- checked-indicator: visual indicator control is checked
 
 *Host Classes*
 - checked
