@@ -174,13 +174,6 @@ export const SwitchStyles = css`
             background: ${SystemColors.Field};
             border-color: ${SystemColors.GrayText};
         }
-
-        :host(.disabled) .label,
-        :host(.disabled) .unchecked-message,
-        :host(.disabled.checked) .checked-message {
-            forced-color-adjust: none;
-            color: ${SystemColors.GrayText};
-        }
     }
 `.withBehaviors(
     accentFillRestBehavior,
