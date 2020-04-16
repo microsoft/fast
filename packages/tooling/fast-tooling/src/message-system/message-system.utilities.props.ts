@@ -176,6 +176,11 @@ export interface UpdateActiveIdNavigationDictionaryMessageOutgoing {
 export interface UpdateDataMessageIncoming {
     type: MessageSystemType.data;
     action: MessageSystemDataTypeAction.update;
+    /**
+     * Dictionary ID to use if it is different from the current
+     * active dictionary ID
+     */
+    dictionaryId?: string;
     dataLocation: string;
     data: unknown;
 }
