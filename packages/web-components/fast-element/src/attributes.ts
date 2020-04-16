@@ -95,7 +95,7 @@ export class AttributeDefinition {
                 element[this.callbackName](oldValue, newValue);
             }
 
-            ((element as any).$FASTController as Notifier).notify(element, this.property);
+            ((element as any).$fastController as Notifier).notify(element, this.property);
         }
     }
 

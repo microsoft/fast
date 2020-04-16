@@ -224,7 +224,7 @@ export class Controller extends PropertyChangeNotifier {
     }
 
     public static forCustomElement(element: HTMLElement): Controller {
-        const controller: Controller = (element as any).$FASTController;
+        const controller: Controller = (element as any).$fastController;
 
         if (controller !== void 0) {
             return controller;
@@ -236,6 +236,6 @@ export class Controller extends PropertyChangeNotifier {
             throw new Error("Missing fast element definition.");
         }
 
-        return ((element as any).$FASTController = new Controller(element, definition));
+        return ((element as any).$fastController = new Controller(element, definition));
     }
 }

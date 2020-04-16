@@ -14,7 +14,7 @@ export const Observable = {
     },
 
     getNotifier<T extends Notifier = Notifier>(source: any): T {
-        let found = source.$FASTController || notifierLookup.get(source);
+        let found = source.$fastController || notifierLookup.get(source);
 
         if (found === void 0) {
             if (source instanceof FASTElement) {
@@ -52,14 +52,14 @@ export const Observable = {
 
         Reflect.defineProperty(target, propertyName, {
             enumerable: true,
-            get: function (this: any) {
+            get: function(this: any) {
                 if (watcher !== void 0) {
                     watcher.observe(this, propertyName);
                 }
 
                 return this[fieldName];
             },
-            set: function (this: any, newValue: any) {
+            set: function(this: any, newValue: any) {
                 const oldValue = this[fieldName];
 
                 if (oldValue !== newValue) {
