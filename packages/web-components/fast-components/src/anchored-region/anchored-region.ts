@@ -1,4 +1,4 @@
-import { attr, FastElement, observable, DOM } from "@microsoft/fast-element";
+import { attr, DOM, FastElement, observable } from "@microsoft/fast-element";
 import { Direction, RtlScrollConverter } from "@microsoft/fast-web-utilities";
 
 // TODO: the Resize Observer related files are a temporary stopgap measure until
@@ -10,7 +10,6 @@ import {
     ResizeObserverClassDefinition,
 } from "./resize-observer";
 import { ResizeObserverEntry } from "./resize-observer-entry";
-import { directionalShadow } from "src/styles";
 
 declare global {
     interface WindowWithResizeObserver extends Window {
@@ -374,10 +373,7 @@ export class AnchoredRegion extends FastElement {
     /**
      *  Handle collisions
      */
-    private handleCollision = (
-        entries: IntersectionObserverEntry[],
-        observer: IntersectionObserver
-    ): void => {
+    private handleCollision = (entries: IntersectionObserverEntry[]): void => {
         let positionerRect: DOMRect | ClientRect | null = null;
         entries.forEach((entry: IntersectionObserverEntry) => {
             if (entry.target === this.region) {
