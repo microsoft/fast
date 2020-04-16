@@ -1,4 +1,4 @@
-import { FastElement, FastElementDefinition } from "./fast-element";
+import { FASTElement, FASTElementDefinition } from "./fast-element";
 import { ElementView } from "./view";
 import { PropertyChangeNotifier } from "./observation/notifier";
 import { defaultExecutionContext, Observable } from "./observation/observable";
@@ -18,7 +18,7 @@ export class Controller extends PropertyChangeNotifier {
 
     public constructor(
         public readonly element: HTMLElement,
-        public readonly definition: FastElementDefinition
+        public readonly definition: FASTElementDefinition
     ) {
         super();
 
@@ -224,18 +224,18 @@ export class Controller extends PropertyChangeNotifier {
     }
 
     public static forCustomElement(element: HTMLElement): Controller {
-        const controller: Controller = (element as any).$fastController;
+        const controller: Controller = (element as any).$FASTController;
 
         if (controller !== void 0) {
             return controller;
         }
 
-        const definition = FastElement.getDefinition(element.constructor as any);
+        const definition = FASTElement.getDefinition(element.constructor as any);
 
         if (definition === void 0) {
             throw new Error("Missing fast element definition.");
         }
 
-        return ((element as any).$fastController = new Controller(element, definition));
+        return ((element as any).$FASTController = new Controller(element, definition));
     }
 }

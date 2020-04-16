@@ -1,5 +1,5 @@
 import { Controller } from "../controller";
-import { FastElement } from "../fast-element";
+import { FASTElement } from "../fast-element";
 import { emptyArray } from "../interfaces";
 import { DOM } from "../dom";
 import { Notifier, PropertyChangeNotifier } from "./notifier";
@@ -14,10 +14,10 @@ export const Observable = {
     },
 
     getNotifier<T extends Notifier = Notifier>(source: any): T {
-        let found = source.$fastController || notifierLookup.get(source);
+        let found = source.$FASTController || notifierLookup.get(source);
 
         if (found === void 0) {
-            if (source instanceof FastElement) {
+            if (source instanceof FASTElement) {
                 found = Controller.forCustomElement(source);
             } else if (Array.isArray(source)) {
                 found = Observable.createArrayObserver(source);
