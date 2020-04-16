@@ -145,11 +145,12 @@ export const SwitchStyles = css`
         }
 
         :host(.checked) .switch {
-            background: ${SystemColors.FieldText};
+            background: ${SystemColors.Highlight};
+            border-color: ${SystemColors.Highlight};
         }
 
         :host(.checked) .checked-indicator {
-            background: ${SystemColors.Field};
+            background: ${SystemColors.HighlightText};
         }
 
         :host(.disabled) {
@@ -159,6 +160,12 @@ export const SwitchStyles = css`
         :host(:${focusVisible}) .switch {
             border-color: ${SystemColors.Highlight};
         }
+
+        :host(.checked:${focusVisible}) .switch {
+            border-color: ${SystemColors.FieldText};
+            box-shadow: 0 0 0 2px ${SystemColors.Field} inset;
+        }
+
         :host(.disabled) .checked-indicator {
             background: ${SystemColors.GrayText};
         }
@@ -166,6 +173,13 @@ export const SwitchStyles = css`
         :host(.disabled) .switch {
             background: ${SystemColors.Field};
             border-color: ${SystemColors.GrayText};
+        }
+
+        :host(.disabled) .label,
+        :host(.disabled) .unchecked-message,
+        :host(.disabled.checked) .checked-message {
+            forced-color-adjust: none;
+            color: ${SystemColors.GrayText};
         }
     }
 `.withBehaviors(
