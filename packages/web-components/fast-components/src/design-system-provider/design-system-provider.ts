@@ -1,4 +1,4 @@
-import { DOM, FastElement, Observable, observable } from "@microsoft/fast-element";
+import { DOM, FASTElement, Observable, observable } from "@microsoft/fast-element";
 import { DesignSystemConsumer, designSystemConsumer } from "../design-system-consumer";
 
 interface DesignSystemPropertyDeclarationConfig {
@@ -80,7 +80,7 @@ export function isDesignSystemProvider(
 /* eslint-disable-next-line @typescript-eslint/no-empty-interface */
 export interface DesignSystemProvider extends DesignSystemConsumer {}
 @designSystemConsumer
-export class DesignSystemProvider extends FastElement {
+export class DesignSystemProvider extends FASTElement {
     /**
      * Allows other components to identify this as a provider.
      * Using instanceof DesignSystemProvider did not seem to work.

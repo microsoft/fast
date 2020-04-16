@@ -1,4 +1,4 @@
-import { attr, css, customElement, FastElement, html } from "@microsoft/fast-element";
+import { attr, css, customElement, FASTElement, html } from "@microsoft/fast-element";
 import { StealthButton } from "../stealth-button";
 
 StealthButton;
@@ -78,7 +78,7 @@ const styles = css`
     template,
     styles,
 })
-export class Drawer extends FastElement {
+export class Drawer extends FASTElement {
     @attr({ mode: "boolean" })
     public expanded: boolean = false;
 

@@ -5,3 +5,10 @@ __test__/
 
 # Source files
 src/
+docs/
+
+# config files
+.eslintignore
+.eslintrc.js
+.prettierignore
+tsconfig.json
