@@ -629,4 +629,32 @@ describe("select", (): void => {
 
         document.body.removeChild(container);
     });
+
+    test("Custom onClick function is called", (): void => {
+        const testFn: any = jest.fn();
+        const rendered: any = mount(
+            <Select onClick={testFn}>
+                {itemA}
+                {itemB}
+                {itemC}
+            </Select>
+        );
+        expect(testFn).toHaveBeenCalledTimes(0);
+        rendered.simulate("click");
+        expect(testFn).toHaveBeenCalledTimes(1);
+    });
+
+    test("Custom onKeydown function is called", (): void => {
+        const testFn: any = jest.fn();
+        const rendered: any = mount(
+            <Select onKeyDown={testFn}>
+                {itemA}
+                {itemB}
+                {itemC}
+            </Select>
+        );
+        expect(testFn).toHaveBeenCalledTimes(0);
+        rendered.simulate("keydown");
+        expect(testFn).toHaveBeenCalledTimes(1);
+    });
 });
