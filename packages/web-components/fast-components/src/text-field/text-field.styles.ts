@@ -125,6 +125,18 @@ export const TextFieldStyles = css`
             border-color: ${SystemColors.FieldText};
         }
 
+        :host(:hover:not(.disabled)) .root,
+        :host(.filled:hover:not(.disabled)) .root,
+        :host(.filled:hover) .root {
+            background: ${SystemColors.Canvas};
+            border-color: ${SystemColors.Highlight};
+        }
+
+        .before-content,
+        .after-content {
+            fill: ${SystemColors.ButtonText};
+        }
+
         :host(.disabled) {
             opacity: 1;
         }
@@ -134,7 +146,6 @@ export const TextFieldStyles = css`
             background: ${SystemColors.Field};
         }
 
-        
         :host(:focus-within) .root {
             border-color: ${SystemColors.Highlight};
             box-shadow: 0 0 0 1px ${SystemColors.Highlight} inset;
