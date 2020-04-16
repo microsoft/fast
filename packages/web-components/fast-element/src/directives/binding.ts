@@ -57,7 +57,7 @@ function updatePropertyTarget(this: BindingBehavior, value: unknown): void {
     this.target[this.targetName!] = value;
 }
 
-function updateClassTarget(this: BindingBehavior, value: string) {
+function updateClassTarget(this: BindingBehavior, value: string): void {
     const classVersions = this.classVersions || Object.create(null);
     const target = this.target;
     let version = this.version || 0;
