@@ -1,4 +1,4 @@
-import { attr, css, customElement, FastElement, html } from "@microsoft/fast-element";
+import { attr, css, customElement, FASTElement, html } from "@microsoft/fast-element";
 import { designSystemConsumer } from "@microsoft/fast-components/dist/design-system-consumer";
 import {
     neutralFillStealthHover,
@@ -119,7 +119,7 @@ export enum SwatchTypes {
 @designSystemConsumer({
     recipes: [neutralForegroundHint, neutralFillStealthHover],
 })
-export class Swatch extends FastElement {
+export class Swatch extends FASTElement {
     @attr
     public type: SwatchTypes = SwatchTypes.background;
 

@@ -1,4 +1,4 @@
-import { css, customElement, FastElement, html } from "@microsoft/fast-element";
+import { css, customElement, FASTElement, html } from "@microsoft/fast-element";
 import { designSystemConsumer } from "@microsoft/fast-components/dist/design-system-consumer";
 import {
     accentForegroundCutRest,
@@ -71,7 +71,7 @@ const styles = css`
         accentForegroundCutRest,
     ],
 })
-export class StealthButton extends FastElement {
+export class StealthButton extends FASTElement {
     public glyph: HTMLSlotElement;
     public content: HTMLSlotElement;
     public connectedCallback(): void {
