@@ -107,8 +107,6 @@ export class TextField extends FormAssociated<HTMLInputElement> {
         }
     }
 
-    @attr
-    public value: string;
     private valueChanged(): void {
         if (this.proxy instanceof HTMLElement) {
             this.proxy.value = this.value;

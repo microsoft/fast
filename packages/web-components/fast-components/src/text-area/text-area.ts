@@ -22,18 +22,6 @@ export class TextArea extends FormAssociated<HTMLTextAreaElement> {
             : this.classList.remove("filled");
     }
 
-    @attr({ attribute: "required", mode: "boolean" })
-    public required: boolean;
-    protected requiredChanged(): void {
-        if (this.proxy instanceof HTMLElement) {
-            this.proxy.required = this.required;
-        }
-
-        this.required
-            ? this.classList.add("required")
-            : this.classList.remove("required");
-    }
-
     @attr({ mode: "boolean" })
     public readonly: boolean;
     private readonlyChanged(): void {
@@ -111,8 +99,6 @@ export class TextArea extends FormAssociated<HTMLTextAreaElement> {
         }
     }
 
-    @attr
-    public value: string;
     public valueChanged(): void {
         if (this.textarea && this.value !== this.textarea.value) {
             this.textarea.value = this.value;
