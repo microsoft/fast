@@ -499,7 +499,11 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
     /**
      * Handles clicks
      */
-    private handleClick = (e: React.MouseEvent): void => {
+    private handleClick = (e: React.MouseEvent<HTMLDivElement>): void => {
+        if (typeof this.props.onClick === "function") {
+            this.props.onClick(e);
+        }
+
         if (this.props.disabled || e.defaultPrevented) {
             return;
         }
@@ -514,6 +518,10 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
      * Handles key events
      */
     private handleKeydown = (e: React.KeyboardEvent<HTMLDivElement>): void => {
+        if (typeof this.props.onKeyDown === "function") {
+            this.props.onKeyDown(e);
+        }
+
         if (this.props.disabled || e.defaultPrevented) {
             return;
         }

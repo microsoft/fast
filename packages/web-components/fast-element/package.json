@@ -1,7 +1,6 @@
 {
   "name": "@microsoft/fast-element",
   "description": "A library for constructing Web Components",
-  "private": true,
   "sideEffects": false,
   "version": "0.6.0",
   "author": {

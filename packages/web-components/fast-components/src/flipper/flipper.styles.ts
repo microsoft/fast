@@ -2,6 +2,16 @@ import { css } from "@microsoft/fast-element";
 import { disabledCursor, display, focusVisible } from "../styles";
 import { heightNumber } from "../styles/size";
 import { SystemColors } from "../styles/system-colors";
+import {
+    neutralFillStealthActiveBehavior,
+    neutralFillStealthHoverBehavior,
+    neutralFillStealthRestBehavior,
+    neutralFocusBehavior,
+    neutralForegroundRestBehavior,
+    neutralOutlineActiveBehavior,
+    neutralOutlineHoverBehavior,
+    neutralOutlineRestBehavior,
+} from "../styles/recipes";
 
 export const FlipperStyles = css`
     ${display("inline-flex")} :host {
@@ -96,4 +106,13 @@ export const FlipperStyles = css`
             fill: ${SystemColors.HighlightText}
         }
     }
-`;
+`.withBehaviors(
+    neutralFillStealthActiveBehavior,
+    neutralFillStealthHoverBehavior,
+    neutralFillStealthRestBehavior,
+    neutralFocusBehavior,
+    neutralForegroundRestBehavior,
+    neutralOutlineActiveBehavior,
+    neutralOutlineHoverBehavior,
+    neutralOutlineRestBehavior
+);
