@@ -31,7 +31,7 @@ jobs:
     
     - name: Build Web Application
       run: | 
-        cd packages/fast-component-explorer
+        cd sites/fast-component-explorer
         yarn build:app
 
     - name: 'Deploy to Azure'

@@ -1,7 +1,11 @@
-import { Expression } from "../interfaces";
-import { CaptureType, SyntheticViewTemplate } from "../template";
+import { CaptureType, SyntheticViewTemplate, ViewTemplate } from "../template";
 import { DOM } from "../dom";
-import { Observable, ObservableExpression } from "../observation/observable";
+import {
+    ExecutionContext,
+    Expression,
+    Observable,
+    ObservableExpression,
+} from "../observation/observable";
 import { HTMLView, SyntheticView } from "../view";
 import { Subscriber } from "../observation/subscriber-collection";
 import { ArrayObserver, enableArrayObservation } from "../observation/array-observer";
@@ -9,24 +13,65 @@ import { Splice } from "../observation/array-change-records";
 import { Behavior } from "./behavior";
 import { Directive } from "./directive";
 
+export interface RepeatOptions {
+    positioning: boolean;
+}
+
+const defaultRepeatOptions: RepeatOptions = Object.freeze({
+    positioning: false,
+});
+
+function bindWithoutPositioning(
+    view: SyntheticView,
+    items: any[],
+    index: number,
+    context: ExecutionContext
+): void {
+    view.bind(items[index], context);
+}
+
+function bindWithPositioning(
+    view: SyntheticView,
+    items: any[],
+    index: number,
+    context: ExecutionContext
+): void {
+    const childContext = Object.create(context);
+    childContext.index = index;
+    childContext.length = items.length;
+    view.bind(items[index], childContext);
+}
+
 export class RepeatBehavior implements Behavior, Subscriber {
     private source: unknown = void 0;
     private views: SyntheticView[] = [];
     private items: any[] | null = null;
     private itemsObserver?: ArrayObserver = void 0;
     private observableExpression: ObservableExpression;
+    private originalContext: ExecutionContext | undefined = void 0;
+    private childContext: ExecutionContext | undefined = void 0;
+    private bindView: typeof bindWithoutPositioning = bindWithoutPositioning;
 
     constructor(
         private location: Node,
         expression: Expression,
-        private template: SyntheticViewTemplate
+        private template: SyntheticViewTemplate,
+        private options: RepeatOptions
     ) {
         this.observableExpression = new ObservableExpression(expression, this);
+
+        if (options.positioning) {
+            this.bindView = bindWithPositioning;
+        }
     }
 
-    bind(source: unknown): void {
+    bind(source: unknown, context: ExecutionContext): void {
         this.source = source;
-        this.items = this.observableExpression.evaluate(source, null as any);
+        this.originalContext = context;
+        this.childContext = Object.create(context);
+        this.childContext!.parent = source;
+
+        this.items = this.observableExpression.evaluate(source, this.originalContext);
         this.observeItems();
         this.refreshAllViews();
     }
@@ -44,7 +89,10 @@ export class RepeatBehavior implements Behavior, Subscriber {
     }
 
     handleExpressionChange(): void {
-        this.items = this.observableExpression.evaluate(this.source, null as any);
+        this.items = this.observableExpression.evaluate(
+            this.source,
+            this.originalContext!
+        );
         this.observeItems();
         this.refreshAllViews();
     }
@@ -73,8 +121,10 @@ export class RepeatBehavior implements Behavior, Subscriber {
     }
 
     private updateViews(splices: Splice[]): void {
+        const childContext = this.childContext!;
         const views = this.views;
         const totalRemoved: SyntheticView[] = [];
+        const bindView = this.bindView;
         let removeDelta = 0;
 
         for (let i = 0, ii = splices.length; i < ii; ++i) {
@@ -103,7 +153,7 @@ export class RepeatBehavior implements Behavior, Subscriber {
                     totalRemoved.length > 0 ? totalRemoved.shift()! : template.create();
 
                 views.splice(addIndex, 0, view);
-                view.bind(items[addIndex]);
+                bindView(view, items, addIndex, childContext);
                 view.insertBefore(location);
             }
         }
@@ -111,15 +161,25 @@ export class RepeatBehavior implements Behavior, Subscriber {
         for (let i = 0, ii = totalRemoved.length; i < ii; ++i) {
             totalRemoved[i].dispose();
         }
+
+        if (this.options.positioning) {
+            for (let i = 0, ii = views.length; i < ii; ++i) {
+                const currentContext = views[i].context!;
+                currentContext.length = ii;
+                currentContext.index = i;
+            }
+        }
     }
 
     private refreshAllViews(): void {
         const items = this.items!;
+        const childContext = this.childContext!;
         let itemsLength = items.length;
         let views = this.views;
         const viewsLength = views.length;
         const template = this.template;
         const location = this.location;
+        const bindView = this.bindView;
 
         if (itemsLength === 0) {
             // all views need to be removed
@@ -131,7 +191,7 @@ export class RepeatBehavior implements Behavior, Subscriber {
 
             for (let i = 0; i < itemsLength; ++i) {
                 const view = template.create();
-                view.bind(items[i]);
+                bindView(view, items, i, childContext);
                 views[i] = view;
                 view.insertBefore(location);
             }
@@ -141,10 +201,11 @@ export class RepeatBehavior implements Behavior, Subscriber {
 
             for (; i < itemsLength; ++i) {
                 if (i < viewsLength) {
-                    views[i].bind(items[i]);
+                    const view = views[i];
+                    bindView(view, items, i, childContext);
                 } else {
                     const view = template.create();
-                    view.bind(items[i]);
+                    bindView(view, items, i, childContext);
                     views.push(view);
                     view.insertBefore(location);
                 }
@@ -170,19 +231,24 @@ export class RepeatBehavior implements Behavior, Subscriber {
 export class RepeatDirective extends Directive {
     createPlaceholder: (index: number) => string = DOM.createBlockPlaceholder;
 
-    constructor(public expression: Expression, public template: SyntheticViewTemplate) {
+    constructor(
+        public expression: Expression,
+        public template: SyntheticViewTemplate,
+        public options: RepeatOptions
+    ) {
         super();
         enableArrayObservation();
     }
 
     public createBehavior(target: any): RepeatBehavior {
-        return new RepeatBehavior(target, this.expression, this.template);
+        return new RepeatBehavior(target, this.expression, this.template, this.options);
     }
 }
 
-export function repeat<T = any, K = any>(
-    expression: Expression<T, K[]>,
-    template: SyntheticViewTemplate
-): CaptureType<T> {
-    return new RepeatDirective(expression, template);
+export function repeat<TScope = any, TItem = any>(
+    expression: Expression<TScope, TItem[]>,
+    template: ViewTemplate<Partial<TItem>, TScope>,
+    options: RepeatOptions = defaultRepeatOptions
+): CaptureType<TScope> {
+    return new RepeatDirective(expression, template, options);
 }
