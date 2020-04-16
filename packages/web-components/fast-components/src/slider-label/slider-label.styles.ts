@@ -2,6 +2,7 @@ import { css } from "@microsoft/fast-element";
 import { display } from "../styles";
 import { SystemColors } from "../styles/system-colors";
 import { heightNumber } from "../styles/size";
+import { neutralOutlineRestBehavior } from "../styles/recipes";
 
 export const SliderLabelStyles = css`
     ${display("block")} :host {
@@ -62,4 +63,4 @@ export const SliderLabelStyles = css`
             background: ${SystemColors.FieldText};
         }
     }
-`;
+`.withBehaviors(neutralOutlineRestBehavior);
