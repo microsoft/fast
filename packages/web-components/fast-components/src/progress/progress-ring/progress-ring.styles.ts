@@ -2,6 +2,11 @@ import { css } from "@microsoft/fast-element";
 import { display } from "../../styles";
 import { SystemColors } from "../../styles/system-colors";
 import { heightNumber } from "../../styles/size";
+import {
+    accentFillRestBehavior,
+    neutralFillRestBehavior,
+    neutralForegroundHintBehavior,
+} from "../../styles/recipes";
 
 export const ProgressRingStyles = css`
     ${display("flex")} :host {
@@ -86,4 +91,8 @@ export const ProgressRingStyles = css`
             transform: rotate(1080deg);
         }
     }
-`;
+`.withBehaviors(
+    accentFillRestBehavior,
+    neutralFillRestBehavior,
+    neutralForegroundHintBehavior
+);

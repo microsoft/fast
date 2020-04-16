@@ -1,11 +1,10 @@
 import { css, customElement, FASTElement, html } from "@microsoft/fast-element";
-import { designSystemConsumer } from "@microsoft/fast-components/dist/design-system-consumer";
 import {
-    accentForegroundCutRest,
-    neutralFillStealthActive,
-    neutralFillStealthHover,
-    neutralFillStealthRest,
-} from "@microsoft/fast-components/dist/styles/recipes";
+    accentForegroundCutRestBehavior,
+    neutralFillStealthActiveBehavior,
+    neutralFillStealthHoverBehavior,
+    neutralFillStealthRestBehavior,
+} from "@microsoft/fast-components";
 
 const template = html`
     <button>
@@ -52,7 +51,12 @@ const styles = css`
         background: #18a0fb;
         fill: var(--accent-foreground-cut-rest);
     }
-`;
+`.withBehaviors(
+    accentForegroundCutRestBehavior,
+    neutralFillStealthActiveBehavior,
+    neutralFillStealthHoverBehavior,
+    neutralFillStealthRestBehavior
+);
 
 @customElement({
     name: "td-stealth-button",
@@ -62,14 +66,6 @@ const styles = css`
         mode: "open",
         delegatesFocus: true,
     },
-})
-@designSystemConsumer({
-    recipes: [
-        neutralFillStealthRest,
-        neutralFillStealthHover,
-        neutralFillStealthActive,
-        accentForegroundCutRest,
-    ],
 })
 export class StealthButton extends FASTElement {
     public glyph: HTMLSlotElement;

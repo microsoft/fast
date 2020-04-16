@@ -3,6 +3,17 @@ import { disabledCursor, display } from "../styles";
 import { focusVisible } from "../styles/focus";
 import { SystemColors } from "../styles/system-colors";
 import { heightNumber } from "../styles/size";
+import {
+    accentFillRestBehavior,
+    accentForegroundCutRestBehavior,
+    neutralFillInputActiveBehavior,
+    neutralFillInputHoverBehavior,
+    neutralFillInputRestBehavior,
+    neutralForegroundRestBehavior,
+    neutralOutlineActiveBehavior,
+    neutralOutlineHoverBehavior,
+    neutralOutlineRestBehavior,
+} from "../styles/recipes";
 
 export const SwitchStyles = css`
     :host([hidden]) {
@@ -157,4 +168,14 @@ export const SwitchStyles = css`
             border-color: ${SystemColors.GrayText};
         }
     }
-`;
+`.withBehaviors(
+    accentFillRestBehavior,
+    accentForegroundCutRestBehavior,
+    neutralFillInputActiveBehavior,
+    neutralFillInputHoverBehavior,
+    neutralFillInputRestBehavior,
+    neutralForegroundRestBehavior,
+    neutralOutlineActiveBehavior,
+    neutralOutlineHoverBehavior,
+    neutralOutlineRestBehavior
+);
