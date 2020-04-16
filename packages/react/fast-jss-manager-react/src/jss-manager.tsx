@@ -26,7 +26,7 @@ export interface JSSManagedComponentProps<T, S, C> {
 export interface JSSStyleSheet {
     attached: boolean;
     classes: { [key: string]: string };
-    options: { index: number };
+    options: { index: number; meta: string };
     attach(): JSSStyleSheet;
     update(config: unknown): JSSStyleSheet;
 }
@@ -50,6 +50,12 @@ export function mergeClassNames(a: string | void, b: string | void): string | vo
     }
 }
 
+export type JSSManagerSubscriptionEventType = "add" | "update" | "remove";
+export type JSSManagerSubscriber = (data: {
+    type: JSSManagerSubscriptionEventType;
+    sheet: JSSStyleSheet;
+}) => void;
+
 abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S, C>, {}> {
     /**
      * Define the contextType for the manager to be the design system context
@@ -69,6 +75,14 @@ abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S,
      */
     public static get jss(): any {
         return JSSManager.sheetManager.jss;
+    }
+
+    public static subscribe(subscriber: JSSManagerSubscriber): () => void {
+        return JSSManager.sheetManager.subscribe(subscriber);
+    }
+
+    public static unsubscribe(subscriber: JSSManagerSubscriber): void {
+        JSSManager.sheetManager.unsubscribe(subscriber);
     }
 
     /**
