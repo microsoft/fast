@@ -146,6 +146,10 @@ export const TextFieldStyles = css`
             background: ${SystemColors.Field};
         }
 
+        :host(.filled:hover.disabled) .root {
+            border-color: ${SystemColors.GrayText};
+        }
+
         :host(:focus-within) .root {
             border-color: ${SystemColors.Highlight};
             box-shadow: 0 0 0 1px ${SystemColors.Highlight} inset;
