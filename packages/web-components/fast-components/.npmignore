@@ -1,7 +1,12 @@
 # Tests
 __test__/
-*.spec.*
 *.test.*
+
+# specifications
+*.spec.*
+
+# images
+images/
 
 # Source files
 src/

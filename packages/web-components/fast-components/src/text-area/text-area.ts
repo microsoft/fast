@@ -1,4 +1,5 @@
-import { attr, FastElement } from "@microsoft/fast-element";
+import { attr } from "@microsoft/fast-element";
+import { FormAssociated } from "../form-associated";
 
 export enum TextAreaAppearance {
     filled = "filled",
@@ -12,7 +13,7 @@ export enum TextAreaResize {
     vertical = "vertical",
 }
 
-export class TextArea extends FastElement {
+export class TextArea extends FormAssociated<HTMLTextAreaElement> {
     @attr
     public appearance: TextAreaAppearance = TextAreaAppearance.outline;
     private appearanceChanged(): void {
@@ -23,7 +24,11 @@ export class TextArea extends FastElement {
 
     @attr({ attribute: "required", mode: "boolean" })
     public required: boolean;
-    private requiredChanged(): void {
+    protected requiredChanged(): void {
+        if (this.proxy instanceof HTMLElement) {
+            this.proxy.required = this.required;
+        }
+
         this.required
             ? this.classList.add("required")
             : this.classList.remove("required");
@@ -32,6 +37,10 @@ export class TextArea extends FastElement {
     @attr({ mode: "boolean" })
     public readonly: boolean;
     private readonlyChanged(): void {
+        if (this.proxy instanceof HTMLElement) {
+            this.proxy.readOnly = this.readonly;
+        }
+
         this.readonly
             ? this.classList.add("readonly")
             : this.classList.remove("readonly");
@@ -49,24 +58,49 @@ export class TextArea extends FastElement {
 
     @attr
     public autofocus: boolean;
+    private autofocusChanged(): void {
+        if (this.proxy instanceof HTMLElement) {
+            this.proxy.autofocus = this.autofocus;
+        }
+    }
 
     @attr
     public cols: number = 20;
 
     @attr
     public disabled: boolean;
+    protected disabledChanged(): void {
+        if (this.proxy instanceof HTMLElement) {
+            this.proxy.disabled = this.disabled;
+        }
+    }
 
-    @attr
-    public form: string;
+    @attr({ attribute: "form" })
+    public formId: string;
 
     @attr
     public list: string;
+    private listChanged(): void {
+        if (this.proxy instanceof HTMLElement) {
+            this.proxy.setAttribute("list", this.list);
+        }
+    }
 
     @attr
     public maxlength: number;
+    private maxlengthChanged(): void {
+        if (this.proxy instanceof HTMLElement) {
+            this.proxy.maxLength = this.maxlength;
+        }
+    }
 
     @attr
     public minlength: number;
+    private minlengthChanged(): void {
+        if (this.proxy instanceof HTMLElement) {
+            this.proxy.minLength = this.minlength;
+        }
+    }
 
     @attr
     public name: string;
@@ -79,6 +113,11 @@ export class TextArea extends FastElement {
 
     @attr
     public spellcheck: boolean;
+    private spellcheckChanged(): void {
+        if (this.proxy instanceof HTMLElement) {
+            this.proxy.spellcheck = this.spellcheck;
+        }
+    }
 
     @attr
     public value: string;
@@ -86,13 +125,21 @@ export class TextArea extends FastElement {
         if (this.textarea && this.value !== this.textarea.value) {
             this.textarea.value = this.value;
         }
+
+        if (this.proxy instanceof HTMLElement) {
+            this.proxy.value = this.value;
+        }
     }
+
+    protected proxy: HTMLTextAreaElement = document.createElement("textarea");
 
     public connectedCallback(): void {
         super.connectedCallback();
 
         if (this.value) {
             this.textarea.value = this.value;
+
+            this.setFormValue(this.value, this.value);
         }
     }
 
