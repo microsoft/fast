@@ -12,7 +12,7 @@ export interface CSSCustomPropertyDefinition {
     value: string | ((...args: any[]) => string);
 }
 
-export interface CustomPropertyTarget {
+export interface CSSCustomPropertyTarget {
     registerCSSCustomProperty(behavior: CSSCustomPropertyDefinition): void;
     unregisterCSSCustomProperty(behavior: CSSCustomPropertyDefinition): void;
 }
@@ -28,7 +28,7 @@ export type CSSCustomPropertyBehavior = Behavior & CSSCustomPropertyDefinition;
 export function cssCustomPropertyBehaviorFactory(
     name: string,
     value: string | ((...arg: any[]) => string),
-    host: (source: typeof FastElement & HTMLElement) => CustomPropertyTarget | null
+    host: (source: typeof FastElement & HTMLElement) => CSSCustomPropertyTarget | null
 ): CSSCustomPropertyBehavior {
     return Object.freeze({
         name,

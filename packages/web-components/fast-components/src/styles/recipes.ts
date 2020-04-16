@@ -1,31 +1,31 @@
 import {
+    accentBaseColor,
     accentFill,
     accentFillLarge,
     accentForeground,
     accentForegroundCut,
     accentForegroundLarge,
-    DesignSystem,
-    neutralDividerRest as neutralDividerRestRecipe,
+    neutralDividerRest,
     neutralFill,
     neutralFillCard,
     neutralFillInput,
     neutralFillStealth,
     neutralFillToggle,
-    neutralFocusInnerAccent as neutralFocusInnerAccentRecipe,
-    neutralFocus as neutralFocusRecipe,
+    neutralFocus,
+    neutralFocusInnerAccent,
     neutralForeground,
-    neutralForegroundHintLarge as neutralForegroundHintLargeRecipe,
-    neutralForegroundHint as neutralForegroundHintRecipe,
-    neutralForegroundToggleLarge as neutralForegroundToggleLargeRecipe,
-    neutralForegroundToggle as neutralForegroundToggleRecipe,
-    neutralLayerCardContainer as neutralLayerCardContainerRecipe,
-    neutralLayerCard as neutralLayerCardRecipe,
-    neutralLayerFloating as neutralLayerFloatingRecipe,
-    neutralLayerL1Alt as neutralLayerL1AltRecipe,
-    neutralLayerL1 as neutralLayerL1Recipe,
-    neutralLayerL2 as neutralLayerL2Recipe,
-    neutralLayerL3 as neutralLayerL3Recipe,
-    neutralLayerL4 as neutralLayerL4Recipe,
+    neutralForegroundHint,
+    neutralForegroundHintLarge,
+    neutralForegroundToggle,
+    neutralForegroundToggleLarge,
+    neutralLayerCard,
+    neutralLayerCardContainer,
+    neutralLayerFloating,
+    neutralLayerL1,
+    neutralLayerL1Alt,
+    neutralLayerL2,
+    neutralLayerL3,
+    neutralLayerL4,
     neutralOutline,
 } from "@microsoft/fast-components-styles-msft";
 import { cssCustomPropertyBehaviorFactory } from "../custom-properties";
@@ -53,22 +53,22 @@ export const neutralForegroundFocusBehavior = cssCustomPropertyBehaviorFactory(
 );
 export const neutralForegroundToggleBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-foreground-toggle",
-    neutralForegroundToggleRecipe,
+    neutralForegroundToggle,
     findProvider
 );
 export const neutralForegroundToggleLargeBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-foreground-toggle-large",
-    neutralForegroundToggleLargeRecipe,
+    neutralForegroundToggleLarge,
     findProvider
 );
 export const neutralForegroundHintBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-foreground-hint",
-    neutralForegroundHintRecipe,
+    neutralForegroundHint,
     findProvider
 );
 export const neutralForegroundHintLargeBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-foreground-hint-large",
-    neutralForegroundHintLargeRecipe,
+    neutralForegroundHintLarge,
     findProvider
 );
 export const accentForegroundRestBehavior = cssCustomPropertyBehaviorFactory(
@@ -283,56 +283,56 @@ export const neutralOutlineFocusBehavior = cssCustomPropertyBehaviorFactory(
 );
 export const neutralDividerRestBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-divider-rest",
-    neutralDividerRestRecipe,
+    neutralDividerRest,
     findProvider
 );
 export const neutralLayerFloatingBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-layer-floating",
-    neutralLayerFloatingRecipe,
+    neutralLayerFloating,
     findProvider
 );
 export const neutralLayerCardBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-layer-card",
-    neutralLayerCardRecipe,
+    neutralLayerCard,
     findProvider
 );
 export const neutralLayerCardContainerBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-layer-card-container",
-    neutralLayerCardContainerRecipe,
+    neutralLayerCardContainer,
     findProvider
 );
 export const neutralLayerL1Behavior = cssCustomPropertyBehaviorFactory(
     "neutral-layer-l1",
-    neutralLayerL1Recipe,
+    neutralLayerL1,
     findProvider
 );
 export const neutralLayerL1AltBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-layer-l1-alt",
-    neutralLayerL1AltRecipe,
+    neutralLayerL1Alt,
     findProvider
 );
 export const neutralLayerL2Behavior = cssCustomPropertyBehaviorFactory(
     "neutral-layer-l2",
-    neutralLayerL2Recipe,
+    neutralLayerL2,
     findProvider
 );
 export const neutralLayerL3Behavior = cssCustomPropertyBehaviorFactory(
     "neutral-layer-l3",
-    neutralLayerL3Recipe,
+    neutralLayerL3,
     findProvider
 );
 export const neutralLayerL4Behavior = cssCustomPropertyBehaviorFactory(
     "neutral-layer-l4",
-    neutralLayerL4Recipe,
+    neutralLayerL4,
     findProvider
 );
 export const neutralFocusBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-focus",
-    neutralFocusRecipe,
+    neutralFocus,
     findProvider
 );
 export const neutralFocusInnerAccentBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-focus-inner-accent",
-    x => neutralFocusInnerAccentRecipe(() => x.accentBaseColor)(x),
+    neutralFocusInnerAccent(accentBaseColor),
     findProvider
 );
