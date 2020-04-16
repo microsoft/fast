@@ -70,13 +70,8 @@ export function isDesignSystemProvider(
     return (el as any).isDesignSystemProvider;
 }
 
-<<<<<<< HEAD
-export class DesignSystemProvider extends FASTElement
-    implements CustomPropertyTarget, DesignSystemConsumer {
-=======
 export class DesignSystemProvider extends FASTElement
     implements CSSCustomPropertyTarget, DesignSystemConsumer {
->>>>>>> fix intermitant error and update names
     private customPropertyBehaviors: Map<
         string,
         CSSCustomPropertyDefinition & { count: number }

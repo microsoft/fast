@@ -1,4 +1,4 @@
-import { Behavior, FastElement } from "@microsoft/fast-element";
+import { Behavior, FASTElement } from "@microsoft/fast-element";
 
 export interface CSSCustomPropertyDefinition {
     /**
@@ -28,20 +28,20 @@ export type CSSCustomPropertyBehavior = Behavior & CSSCustomPropertyDefinition;
 export function cssCustomPropertyBehaviorFactory(
     name: string,
     value: string | ((...arg: any[]) => string),
-    host: (source: typeof FastElement & HTMLElement) => CSSCustomPropertyTarget | null
+    host: (source: typeof FASTElement & HTMLElement) => CSSCustomPropertyTarget | null
 ): CSSCustomPropertyBehavior {
     return Object.freeze({
         name,
         value,
         host,
-        bind(source: typeof FastElement | HTMLElement): void {
+        bind(source: typeof FASTElement | HTMLElement): void {
             const target = this.host(source);
 
             if (target) {
                 target.registerCSSCustomProperty(this);
             }
         },
-        unbind(source: typeof FastElement | HTMLElement): void {
+        unbind(source: typeof FASTElement | HTMLElement): void {
             const target = this.host(source);
 
             if (target) {
