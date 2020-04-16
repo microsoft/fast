@@ -2,7 +2,7 @@
 
 ## Overview
 
-*Tabs* are a set of layered sections of content, known as tab panels, that display one panel of content at a time. Each tab panel has an associated tab element, that when activated, displays the panel. The list of tab elements is arranged along one edge of the currently displayed panel.
+*Tabs* are a set of layered sections of content that display one panel of content at a time. Each tab panel has an associated tab element, that when activated, displays the panel. The list of tab elements is arranged along one edge of the currently displayed panel.
 
 ### Use Cases
 
@@ -12,13 +12,17 @@
   
 ### Features
 
-- **Orientation:** Allows the tab list to be oriented vertically to the left or right (depending on language region) of the tab content or horizontally above the content.
-- **Tab activation:** Offers a way to activate a tab and it's content by either focusing a tab or by key press (Space or Enter).
-- **Supplemental content:** Offers a way to add content to the left and/or right of the the tab list.
+- **Orientation:** Allows the tab list to be oriented horizontally above the tab content or vertically to the left or right (depending on language region) of the tab content.
+- **Supplemental content:** Offers a way to add content via start and end to the left and/or right (depending on language region) of the the tab list.
+- **Active indicator:** Offers a way to add an active indicator that highlights the currently active tab and animates to the next active tab.
+- **Active tab:** Provides a reference to the currently active tab.
+- **Active id:** Provides a way to set the active tab.
 
 ### Risks and Challenges
 
 *Tabs* has specific guidance on DOM structure by the [WC3](https://w3c.github.io/aria-practices/examples/tabs/tabs-2/tabs.html). This structure lacks logical groupings by separating the tab from its content. Some component libraries compensate for this by creating some kind of intermediary grouping that makes it easier for app authors to implement. Even though the DOM structure disassociates that logical grouping. While other component libraries stick to the DOM structure model. 
+
+Some scenarios require an indicator that highlights the currently active tab then animates to the next activated tab. Most solutions rely on finding active tab's position on screen and then preforming some math to get the position. This works for most cases but if the tab list repositions itself either by window resizing or other layout changes the active indicator is no longer aligned properly.
 
 ### Prior Art/Examples
 - [FAST-DNA Pivot (React)](https://explore.fast.design/components/pivot)
@@ -32,7 +36,10 @@
 
 ### API
 
-*Component name:*
+*The key elements of the component's public API surface:*
+
+**Tabs**
+*Component names:*
 - `fast-tabs`
 
 *Attributes:*
@@ -40,24 +47,40 @@
   - horizontal - default
   - vertical
 - `activeId` - string
-- `tab-activation` - enum 
-  - auto - default
-  - manual
 
 *Events:*
-- `change` - fires when component `activeId` updates
-
-### Anatomy and Appearance
+- `change` - fires when component `activeTab` updates
 
 *Parts:*
 - tabs
 - tablist
 - tab
 - tabpanel
+- activeindicator
 
 *Slot Names*
-- before-content
-- after-content
+- start
+- end
+
+**Tab**
+*Component names:*
+- `fast-tab`
+
+*Attributes:*
+- `id` - string
+
+*Slot Names*
+- start
+- end
+
+**Tab Panel**
+*Component names:*
+- `fast-tab-panel`
+
+*Attributes:*
+- `id` - string
+
+### Anatomy and Appearance
 
 *Template:*
 ```HTML
@@ -73,6 +96,7 @@
         <button class="tab" part="tab" role="tab" aria-selected="false" aria-controls="panel-3" id="tab-3" tabindex="-1">
             Tab Three
         </button>
+        <div class="activeindicator" part="activeindicator"></div>
     </div>
     <slot class="end" name="end" part="end"></slot>
     <div class="tabpanel" part="tabpanel" id="panel-1" role="tabpanel" tabindex="0" aria-labelledby="tab-1">
@@ -89,62 +113,14 @@
 
 ## Implementation
 
-*Logical grouping option 1:*
 ```HTML
-<fast-tabs>
-    <fast-tab-pane tab="Tab One" key="1">
-        Content of the first tab
-    </fast-tab-pane>
-    <fast-tab-pane tab="Tab Two" key="2">
-        Content of the second tab
-    </fast-tab-pane>
-    <fast-tab-pane tab="Tab Three" key="3">
-        Content of the third tab
-    </fast-tab-pane>
-    <div slot="before-content">
-        Before content
-    </div>
-    <div slot="after-content">
-        Before content
-    </div>
-</fast-tabs>
-```
-
-*Logical grouping option 2:*
-```HTML
-<fast-tabs>
-    <fast-tab-item>
-        <fast-tab>Tab One</fast-tab>
-        <fast-tab-panel>Content of the first tab</fast-tab-panel>
-    </fast-tab-item>
-    <fast-tab-item>
-        <fast-tab>Tab Two</fast-tab>
-        <fast-tab-panel>Content of the Second tab</fast-tab-panel>
-    </fast-tab-item>
-    <fast-tab-item>
-        <fast-tab>Tab Three</fast-tab>
-        <fast-tab-panel>Content of the Third tab</fast-tab-panel>
-    </fast-tab-item>
-    <div slot="before-content">
-        Before content
-    </div>
-    <div slot="after-content">
-        Before content
-    </div>
-</fast-tabs>
-```
-
-*DOM grouping:*
-```HTML
-<fast-tabs>
-    <fast-tab-list>
-        <fast-tab>Tab One</fast-tab>
-        <fast-tab>Tab Two</fast-tab>
-        <fast-tab>Tab Three</fast-tab>
-    </fast-tab-list>
-    <fast-tab-panel>Content of the first tab</fast-tab-panel>
-    <fast-tab-panel>Content of the Second tab</fast-tab-panel>
-    <fast-tab-panel>Content of the Third tab</fast-tab-panel>
+<fast-tabs activeindicator>
+    <fast-tab id="tab-1">Tab One</fast-tab>
+    <fast-tab id="tab-2">Tab Two</fast-tab>
+    <fast-tab id="tab-3">Tab Three</fast-tab>
+    <fast-tab-panel id="panel-1">Content of the first tab</fast-tab-panel>
+    <fast-tab-panel id="panel-2">Content of the Second tab</fast-tab-panel>
+    <fast-tab-panel id="panel-3">Content of the Third tab</fast-tab-panel>
     <div slot="before-content">
         Before content
     </div>
@@ -156,7 +132,7 @@
 
 ### States
 
-*Tabs* can either be controlled or uncontrolled, meaning if `activeId` is passed the app author is taking control of the selected tab. The `change` event fires differently depending on the `tab-activation` attribute, on tab focus if `tab-activation` is set to `"focus"` or on mouse click or "spacebar" press if `tab-activation` is set to `"key-press"`.
+*Tabs* can either be controlled or uncontrolled, meaning if `activeId` is passed the app author is taking control of the selected tab. When the `change` event fires it updates the `activeId` and `activeTab`.
 
 ### Globalization
 
