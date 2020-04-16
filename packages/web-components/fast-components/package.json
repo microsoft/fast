@@ -1,7 +1,6 @@
 {
   "name": "@microsoft/fast-components",
   "description": "A library of Web Components",
-  "private": true,
   "sideEffects": false,
   "version": "0.8.0",
   "author": {
