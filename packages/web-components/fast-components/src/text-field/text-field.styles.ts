@@ -128,7 +128,7 @@ export const TextFieldStyles = css`
         :host(:hover:not(.disabled)) .root,
         :host(.filled:hover:not(.disabled)) .root,
         :host(.filled:hover) .root {
-            background: ${SystemColors.Canvas};
+            background: ${SystemColors.Field};
             border-color: ${SystemColors.Highlight};
         }
 
@@ -141,13 +141,10 @@ export const TextFieldStyles = css`
             opacity: 1;
         }
         
-        :host(.disabled) .root {
-            border-color: ${SystemColors.GrayText};
-            background: ${SystemColors.Field};
-        }
-
+        :host(.disabled) .root,
         :host(.filled:hover.disabled) .root {
             border-color: ${SystemColors.GrayText};
+            background: ${SystemColors.Field};
         }
 
         :host(:focus-within) .root {
