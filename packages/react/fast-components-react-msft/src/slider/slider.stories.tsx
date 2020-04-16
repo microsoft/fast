@@ -1,8 +1,10 @@
 import { storiesOf } from "@storybook/react";
 import React from "react";
 import {
+    SliderHandledProps,
     SliderMode,
     SliderOrientation,
+    SliderState,
     SliderTrackItemAnchor,
 } from "@microsoft/fast-components-react-base";
 import { ComponentStyleSheet } from "@microsoft/fast-jss-manager-react";
@@ -10,6 +12,7 @@ import { DesignSystem, designUnit } from "@microsoft/fast-components-styles-msft
 import { multiply, toPx } from "@microsoft/fast-jss-utilities";
 import { action } from "@storybook/addon-actions";
 import { SliderLabel } from "../slider-label";
+import { Heading, HeadingSize } from "../heading";
 import { Slider, SliderClassNameContract } from "./";
 
 const vertcialSliderStyles: ComponentStyleSheet<SliderClassNameContract, DesignSystem> = {
@@ -181,4 +184,53 @@ storiesOf("Slider", module)
                 label="High"
             />
         </Slider>
+    ))
+    .add("Narrate labels", () => (
+        <div>
+            <Heading
+                size={HeadingSize._4}
+                id="sliderHeading"
+                style={{
+                    margin: "0 0 20px 0",
+                }}
+            >
+                Select speed
+            </Heading>
+            <Slider
+                range={{ minValue: 1, maxValue: 3 }}
+                onValueChange={action("onValueChange")}
+                maxThumbLabelledBy="sliderHeading sliderLabelLow sliderLabelMedium sliderLabelHigh"
+                valuetextStringFormatter={(
+                    sliderProps: SliderHandledProps,
+                    sliderState: SliderState
+                ): string => {
+                    switch (sliderState.upperValue) {
+                        case 1:
+                            return "low";
+
+                        case 2:
+                            return "medium";
+
+                        case 3:
+                            return "high";
+                    }
+                }}
+            >
+                <SliderLabel
+                    id="sliderLabelLow"
+                    valuePositionBinding={SliderTrackItemAnchor.totalRangeMin}
+                    label="Low"
+                />
+                <SliderLabel
+                    id="sliderLabelMedium"
+                    valuePositionBinding={2}
+                    label="medium"
+                />
+                <SliderLabel
+                    id="sliderLabelHigh"
+                    valuePositionBinding={SliderTrackItemAnchor.totalRangeMax}
+                    label="High"
+                />
+            </Slider>
+        </div>
     ));

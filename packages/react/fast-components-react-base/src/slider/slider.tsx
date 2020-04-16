@@ -84,6 +84,10 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
         thumb: void 0,
         minThumbLabel: void 0,
         maxThumbLabel: void 0,
+        minThumbLabelledBy: void 0,
+        maxThumbLabelledBy: void 0,
+        minThumbDescribedBy: void 0,
+        maxThumbDescribedBy: void 0,
         valuetextStringFormatter: void 0,
         displayValueConverter: void 0,
     };
@@ -519,6 +523,17 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
                         ? props.maxThumbLabel || null
                         : props.minThumbLabel || null
                 }
+                aria-labelledby={
+                    thumb === SliderThumb.upperThumb
+                        ? props.maxThumbLabelledBy || null
+                        : props.minThumbLabelledBy || null
+                }
+                aria-describedby={
+                    thumb === SliderThumb.upperThumb
+                        ? props.maxThumbDescribedBy || null
+                        : props.minThumbDescribedBy || null
+                }
+                aria-orientation={this.props.orientation}
             />
         );
     }
