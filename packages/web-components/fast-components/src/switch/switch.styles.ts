@@ -3,6 +3,17 @@ import { disabledCursor, display } from "../styles";
 import { focusVisible } from "../styles/focus";
 import { SystemColors } from "../styles/system-colors";
 import { heightNumber } from "../styles/size";
+import {
+    accentFillRestBehavior,
+    accentForegroundCutRestBehavior,
+    neutralFillInputActiveBehavior,
+    neutralFillInputHoverBehavior,
+    neutralFillInputRestBehavior,
+    neutralForegroundRestBehavior,
+    neutralOutlineActiveBehavior,
+    neutralOutlineHoverBehavior,
+    neutralOutlineRestBehavior,
+} from "../styles/recipes";
 
 export const SwitchStyles = css`
     :host([hidden]) {
@@ -134,11 +145,12 @@ export const SwitchStyles = css`
         }
 
         :host(.checked) .switch {
-            background: ${SystemColors.FieldText};
+            background: ${SystemColors.Highlight};
+            border-color: ${SystemColors.Highlight};
         }
 
         :host(.checked) .checked-indicator {
-            background: ${SystemColors.Field};
+            background: ${SystemColors.HighlightText};
         }
 
         :host(.disabled) {
@@ -148,6 +160,12 @@ export const SwitchStyles = css`
         :host(:${focusVisible}) .switch {
             border-color: ${SystemColors.Highlight};
         }
+
+        :host(.checked:${focusVisible}) .switch {
+            border-color: ${SystemColors.FieldText};
+            box-shadow: 0 0 0 2px ${SystemColors.Field} inset;
+        }
+
         :host(.disabled) .checked-indicator {
             background: ${SystemColors.GrayText};
         }
@@ -157,4 +175,14 @@ export const SwitchStyles = css`
             border-color: ${SystemColors.GrayText};
         }
     }
-`;
+`.withBehaviors(
+    accentFillRestBehavior,
+    accentForegroundCutRestBehavior,
+    neutralFillInputActiveBehavior,
+    neutralFillInputHoverBehavior,
+    neutralFillInputRestBehavior,
+    neutralForegroundRestBehavior,
+    neutralOutlineActiveBehavior,
+    neutralOutlineHoverBehavior,
+    neutralOutlineRestBehavior
+);

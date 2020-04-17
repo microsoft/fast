@@ -1,6 +1,11 @@
 import { css } from "@microsoft/fast-element";
 import { display } from "../../styles";
 import { SystemColors } from "../../styles/system-colors";
+import {
+    accentFillRestBehavior,
+    neutralFillRestBehavior,
+    neutralForegroundHintBehavior,
+} from "../../styles/recipes";
 
 export const ProgressStyles = css`
     ${display("flex")} :host {
@@ -123,4 +128,8 @@ export const ProgressStyles = css`
             opacity: 1;
         },
     },
-`;
+`.withBehaviors(
+    accentFillRestBehavior,
+    neutralFillRestBehavior,
+    neutralForegroundHintBehavior
+);

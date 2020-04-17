@@ -10,13 +10,16 @@ Once the repo has been cloned, install Lerna:
 yarn global add lerna
 ```
 
-Install all package dependencies:
+Install all package dependencies and build all workspaces (local dependencies):
 
 ```bash
-yarn install
+yarn
 ```
 
-Build the workspaces (local dependencies)
+### Maintaining
+
+Build all workspaces (local dependencies):
+
 ```bash
 lerna run prepare
 ```

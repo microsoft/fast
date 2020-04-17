@@ -25,7 +25,7 @@ We want general feature-parity between this component and an `input[type="checkb
 ---
 
 ### API
-Extends [form associated custom element](./form-associated-custom-element.md).
+Extends [form associated custom element](../form-associated/form-associated-custom-element.md).
 
 *Component Name*
 `fast-checkbox`

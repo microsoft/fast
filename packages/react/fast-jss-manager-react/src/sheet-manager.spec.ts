@@ -92,4 +92,120 @@ describe("The SheetManager", (): void => {
 
         expect(manager.get(stylesheet, designSystem)).not.toBeUndefined();
     });
+
+    test("should notify a subscriber when a sheet is added", () => {
+        const subscriber = jest.fn();
+        manager.subscribe(subscriber);
+
+        manager.add(stylesheet, designSystem);
+
+        const arg = subscriber.mock.calls[0][0];
+
+        expect(subscriber).toHaveBeenCalledTimes(1);
+        expect(arg.type).toBe("add");
+        expect(arg.sheet).toBe(manager.get(stylesheet, designSystem));
+    });
+
+    test("should not re-notify when the same sheet/design-system pair is added", () => {
+        const subscriber = jest.fn();
+        manager.subscribe(subscriber);
+        manager.add(stylesheet, designSystem);
+        manager.add(stylesheet, designSystem);
+
+        const arg = subscriber.mock.calls[0][0];
+
+        expect(subscriber).toHaveBeenCalledTimes(1);
+        expect(arg.type).toBe("add");
+        expect(arg.sheet).toBe(manager.get(stylesheet, designSystem));
+    });
+
+    test("should notify a subscriber when a sheet is removed", () => {
+        const subscriber = jest.fn();
+        manager.add(stylesheet, designSystem);
+        const sheet = manager.get(stylesheet, designSystem);
+        manager.subscribe(subscriber);
+
+        manager.remove(stylesheet, designSystem);
+        const arg = subscriber.mock.calls[0][0];
+
+        expect(subscriber).toHaveBeenCalledTimes(1);
+        expect(arg.type).toBe("remove");
+        expect(arg.sheet).toBe(sheet);
+    });
+
+    test("should only notify subscribers of removal when the last instance of the sheet is removed", () => {
+        const subscriber = jest.fn();
+        manager.add(stylesheet, designSystem);
+        manager.add(stylesheet, designSystem);
+        const sheet = manager.get(stylesheet, designSystem);
+        manager.subscribe(subscriber);
+
+        manager.remove(stylesheet, designSystem);
+        expect(subscriber).toHaveBeenCalledTimes(0);
+
+        manager.remove(stylesheet, designSystem);
+        const arg = subscriber.mock.calls[0][0];
+
+        expect(subscriber).toHaveBeenCalledTimes(1);
+        expect(arg.type).toBe("remove");
+        expect(arg.sheet).toBe(sheet);
+    });
+
+    test("should notify a subscriber when a sheet is updated", () => {
+        const subscriber = jest.fn();
+        manager.add(stylesheet, designSystem);
+        const sheet = manager.get(stylesheet, designSystem);
+        manager.subscribe(subscriber);
+
+        manager.update(stylesheet, designSystem, {});
+        const arg = subscriber.mock.calls[0][0];
+
+        expect(subscriber).toHaveBeenCalledTimes(1);
+        expect(arg.type).toBe("update");
+        expect(arg.sheet).toBe(sheet);
+    });
+
+    test("should notify multiple subscribers", () => {
+        const A = jest.fn();
+        const B = jest.fn();
+        const designSystemUpdate = {};
+        manager.subscribe(A);
+        manager.subscribe(B);
+
+        manager.add(stylesheet, designSystem);
+
+        expect(A).toHaveBeenCalledTimes(1);
+        expect(B).toHaveBeenCalledTimes(1);
+
+        manager.update(stylesheet, designSystem, designSystemUpdate);
+
+        expect(A).toHaveBeenCalledTimes(2);
+        expect(B).toHaveBeenCalledTimes(2);
+
+        manager.remove(stylesheet, designSystemUpdate);
+
+        expect(A).toHaveBeenCalledTimes(3);
+        expect(B).toHaveBeenCalledTimes(3);
+    });
+
+    test("should not notify a subscriber after it has been unsubscribed", () => {
+        const subscriber = jest.fn();
+        manager.subscribe(subscriber);
+        manager.unsubscribe(subscriber);
+
+        manager.add(stylesheet, designSystem);
+
+        expect(subscriber).toHaveBeenCalledTimes(0);
+    });
+
+    test("subscribe should return a function that unsubscribes the subscriber", () => {
+        const subscriber = jest.fn();
+        const unsubscribe = manager.subscribe(subscriber);
+
+        unsubscribe();
+
+        manager.add(stylesheet, designSystem);
+
+        expect(subscriber).toHaveBeenCalledTimes(0);
+    });
 });

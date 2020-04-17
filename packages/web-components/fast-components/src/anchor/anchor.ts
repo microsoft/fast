@@ -1,9 +1,9 @@
-import { attr, FastElement } from "@microsoft/fast-element";
+import { attr, FASTElement } from "@microsoft/fast-element";
 import { ButtonAppearance } from "../button";
 
 export type AnchorAppearance = ButtonAppearance | "hypertext";
 
-export class Anchor extends FastElement {
+export class Anchor extends FASTElement {
     @attr
     public appearance: AnchorAppearance = "neutral";
     public appearanceChanged(
