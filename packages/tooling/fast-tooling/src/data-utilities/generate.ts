@@ -94,17 +94,16 @@ function getDataFromSchemaByDataType(schema: any): any {
     }
 
     switch (schema.type) {
-        case DataType.array:
-            {
-                const arrayData: any[] = [];
-                const minItems: number = schema.minItems ? schema.minItems : 2;
+        case DataType.array: {
+            const arrayData: any[] = [];
+            const minItems: number = schema.minItems ? schema.minItems : 2;
 
-                for (let i: number = 0; i < minItems; i++) {
-                    arrayData.push(getDataFromSchema(schema.items));
-                }
-
-                return arrayData;
+            for (let i: number = 0; i < minItems; i++) {
+                arrayData.push(getDataFromSchema(schema.items));
             }
+
+            return arrayData;
+        }
         case DataType.boolean:
             return true;
         case DataType.null:
