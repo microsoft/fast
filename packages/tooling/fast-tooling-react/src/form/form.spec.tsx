@@ -59,12 +59,10 @@ describe("Form", () => {
             },
         });
 
-        /* tslint:disable-next-line */
         expect(fastMessageSystem["register"].size).toEqual(0);
 
         mount(<Form {...formProps} messageSystem={fastMessageSystem} />);
 
-        /* tslint:disable-next-line */
         expect(fastMessageSystem["register"].size).toEqual(1);
     });
     test("should deregister the component with the message system on unmount", () => {
@@ -93,7 +91,6 @@ describe("Form", () => {
 
         formInstance.unmount();
 
-        /* tslint:disable-next-line */
         expect(fastMessageSystem["register"].size).toEqual(0);
     });
     test("should show a section link if the schema contains a property which is an object", () => {
@@ -163,7 +160,6 @@ describe("Form", () => {
             <ModularForm {...formProps} messageSystem={fastMessageSystem} />
         );
 
-        /* tslint:disable-next-line */
         fastMessageSystem["register"].forEach((registeredItem: Register) => {
             registeredItem.onMessage({
                 data: {
@@ -263,7 +259,6 @@ describe("Form", () => {
             <ModularForm {...formProps} messageSystem={fastMessageSystem} />
         );
 
-        /* tslint:disable-next-line */
         fastMessageSystem["register"].forEach((registeredItem: Register) => {
             registeredItem.onMessage({
                 data: {
@@ -363,7 +358,6 @@ describe("Form", () => {
             <ModularForm {...formProps} messageSystem={fastMessageSystem} />
         );
 
-        /* tslint:disable-next-line */
         fastMessageSystem["register"].forEach((registeredItem: Register) => {
             registeredItem.onMessage({
                 data: {
@@ -463,7 +457,6 @@ describe("Form", () => {
             <ModularForm {...formProps} messageSystem={fastMessageSystem} />
         );
 
-        /* tslint:disable-next-line */
         fastMessageSystem["register"].forEach((registeredItem: Register) => {
             registeredItem.onMessage({
                 data: {
@@ -563,7 +556,6 @@ describe("Form", () => {
             <ModularForm {...formProps} messageSystem={fastMessageSystem} />
         );
 
-        /* tslint:disable-next-line */
         fastMessageSystem["register"].forEach((registeredItem: Register) => {
             registeredItem.onMessage({
                 data: {
@@ -664,7 +656,6 @@ describe("Form", () => {
             <ModularForm {...formProps} messageSystem={fastMessageSystem} />
         );
 
-        /* tslint:disable-next-line */
         fastMessageSystem["register"].forEach((registeredItem: Register) => {
             registeredItem.onMessage({
                 data: {
@@ -764,7 +755,6 @@ describe("Form", () => {
             <ModularForm {...formProps} messageSystem={fastMessageSystem} />
         );
 
-        /* tslint:disable-next-line */
         fastMessageSystem["register"].forEach((registeredItem: Register) => {
             registeredItem.onMessage({
                 data: {
@@ -868,7 +858,6 @@ describe("Form", () => {
             <ModularForm {...formProps} messageSystem={fastMessageSystem} />
         );
 
-        /* tslint:disable-next-line */
         fastMessageSystem["register"].forEach((registeredItem: Register) => {
             registeredItem.onMessage({
                 data: {
@@ -991,7 +980,6 @@ describe("Form", () => {
             "abc",
         ];
 
-        /* tslint:disable-next-line */
         fastMessageSystem["register"].forEach((registeredItem: Register) => {
             registeredItem.onMessage({
                 data: {
@@ -1125,7 +1113,6 @@ describe("Form", () => {
             "abc",
         ];
 
-        /* tslint:disable-next-line */
         fastMessageSystem["register"].forEach((registeredItem: Register) => {
             registeredItem.onMessage({
                 data: {
@@ -1249,7 +1236,6 @@ describe("Form", () => {
             "abc",
         ];
 
-        /* tslint:disable-next-line */
         fastMessageSystem["register"].forEach((registeredItem: Register) => {
             registeredItem.onMessage({
                 data: {
@@ -1360,7 +1346,6 @@ describe("Form", () => {
             />
         );
 
-        /* tslint:disable-next-line */
         fastMessageSystem["register"].forEach((registeredItem: Register) => {
             registeredItem.onMessage({
                 data: {
@@ -1483,7 +1468,6 @@ describe("Form", () => {
             "abc",
         ];
 
-        /* tslint:disable-next-line */
         fastMessageSystem["register"].forEach((registeredItem: Register) => {
             registeredItem.onMessage({
                 data: {

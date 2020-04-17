@@ -5,7 +5,7 @@ export interface CSSColorValues {
     color?: string;
 }
 
-export interface CSSColorUnhandledProps extends React.HTMLAttributes<HTMLDivElement> {}
+export type CSSColorUnhandledProps = React.HTMLAttributes<HTMLDivElement>;
 
 export interface CSSColorHandledProps extends ManagedClasses<CSSColorClassNameContract> {
     /**

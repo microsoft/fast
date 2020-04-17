@@ -7,8 +7,7 @@ export interface CSSPropertyEditorRowClassNameContract {
     cssPropertyEditorRow_inputValue?: string;
 }
 
-export interface CSSPropertyEditorRowUnhandledProps
-    extends React.HTMLAttributes<HTMLDivElement> {}
+export type CSSPropertyEditorRowUnhandledProps = React.HTMLAttributes<HTMLDivElement>;
 
 export interface CSSPropertyEditorRowHandledProps
     extends ManagedClasses<CSSPropertyEditorRowClassNameContract> {

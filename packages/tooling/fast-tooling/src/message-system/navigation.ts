@@ -1,60 +1,17 @@
 import { get } from "lodash-es";
 import {
-    NavigationConfig,
-    NavigationConfigDictionary,
-    TreeNavigation,
-} from "./navigation.props";
-import {
     CombiningKeyword,
     DataType,
     itemsKeyword,
     PropertyKeyword,
 } from "../data-utilities/types";
+import {
+    NavigationConfig,
+    NavigationConfigDictionary,
+    TreeNavigation,
+} from "./navigation.props";
 import { SchemaDictionary } from "./schema.props";
 import { DataDictionary, Parent } from "./data.props";
-
-export function getNavigationDictionary(
-    schemaDictionary: SchemaDictionary,
-    data: DataDictionary<unknown>
-): NavigationConfigDictionary {
-    const navigationConfigs: NavigationConfigDictionary[] = [];
-
-    Object.keys(data[0]).forEach((dataKey: string) => {
-        navigationConfigs.push([
-            {
-                [dataKey]: getNavigation(
-                    schemaDictionary[data[0][dataKey].schemaId],
-                    data[0][dataKey].data,
-                    data[0][dataKey].parent
-                ),
-            },
-            dataKey,
-        ]);
-    });
-
-    return [
-        navigationConfigs.reduce(
-            (
-                accum: { [key: string]: NavigationConfig },
-                navigationConfig: NavigationConfigDictionary
-            ) => {
-                accum[navigationConfig[1]] = navigationConfig[0][navigationConfig[1]];
-
-                return accum;
-            },
-            {}
-        ),
-        data[1],
-    ];
-}
-
-export function getNavigation(
-    schema: any,
-    data?: any,
-    parent?: Parent
-): NavigationConfig {
-    return getNavigationRecursive(schema, !!schema.disabled, data, parent);
-}
 
 function getNavigationRecursive(
     schema: any,
@@ -67,6 +24,7 @@ function getNavigationRecursive(
     id?: string
 ): NavigationConfig {
     const self: string = id || dataLocation;
+    /* eslint-disable-next-line @typescript-eslint/no-use-before-define */
     const items: NavigationConfig[] = getNavigationItems(
         schema,
         disabled,
@@ -107,6 +65,49 @@ function getNavigationRecursive(
             ),
         },
         self,
+    ];
+}
+
+export function getNavigation(
+    schema: any,
+    data?: any,
+    parent?: Parent
+): NavigationConfig {
+    return getNavigationRecursive(schema, !!schema.disabled, data, parent);
+}
+
+export function getNavigationDictionary(
+    schemaDictionary: SchemaDictionary,
+    data: DataDictionary<unknown>
+): NavigationConfigDictionary {
+    const navigationConfigs: NavigationConfigDictionary[] = [];
+
+    Object.keys(data[0]).forEach((dataKey: string) => {
+        navigationConfigs.push([
+            {
+                [dataKey]: getNavigation(
+                    schemaDictionary[data[0][dataKey].schemaId],
+                    data[0][dataKey].data,
+                    data[0][dataKey].parent
+                ),
+            },
+            dataKey,
+        ]);
+    });
+
+    return [
+        navigationConfigs.reduce(
+            (
+                accum: { [key: string]: NavigationConfig },
+                navigationConfig: NavigationConfigDictionary
+            ) => {
+                accum[navigationConfig[1]] = navigationConfig[0][navigationConfig[1]];
+
+                return accum;
+            },
+            {}
+        ),
+        data[1],
     ];
 }
 
