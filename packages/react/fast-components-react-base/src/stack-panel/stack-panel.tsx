@@ -87,26 +87,6 @@ class StackPanel extends Foundation<
     private maxScroll: number = 0;
 
     /**
-     *  The position the current scroll animation started at
-     */
-    private currentScrollAnimStartPosition: number;
-
-    /**
-     * The target position of the current scroll animation
-     */
-    private currentScrollAnimEndPosition: number;
-
-    /**
-     * Start time for current scroll animation
-     */
-    private currentScrollAnimStartTime: number;
-
-    /**
-     * Flag indicates if a scroll animation is in progress
-     */
-    private isScrollAnimating: boolean = false;
-
-    /**
      * Stores last scroll position from scroll events
      */
     private lastRecordedScroll: number = 0;
