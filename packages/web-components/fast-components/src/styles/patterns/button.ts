@@ -2,6 +2,8 @@ import { css } from "@microsoft/fast-element";
 import { display } from "../display";
 import { focusVisible } from "../focus";
 import { heightNumber } from "../size";
+import { SystemColors } from "../system-colors";
+import { disabledCursor } from "../disabled";
 
 export const BaseButtonStyles = css`
     ${display("inline-block")} :host {
@@ -10,10 +12,8 @@ export const BaseButtonStyles = css`
     }
 
     .control {
-        ${
-            /* Font size is temporary - 
-            replace when adaptive typography is figured out */ ""
-        } font-size: 14px;
+        ${/* Font size is temporary - 
+            replace when adaptive typography is figured out */ ""} font-size: 14px;
         line-height: 1;
         box-sizing: border-box;
         display: inline-flex;
@@ -41,9 +41,10 @@ export const BaseButtonStyles = css`
         background-color: var(--neutral-fill-active);
     }
 
-    .control:${focusVisible} {
+    .control: ${focusVisible} {
         border: calc(var(--outline-width) * 1px) solid var(--neutral-focus);
-        box-shadow: 0 0 0 calc((var(--focus-outline-width) - var(--outline-width)) * 1px) var(--neutral-focus);
+        box-shadow: 0 0 0 calc((var(--focus-outline-width) - var(--outline-width)) * 1px)
+            var(--neutral-focus);
     }
 
     .control::-moz-focus-inner {
@@ -58,10 +59,8 @@ export const BaseButtonStyles = css`
     .start,
     .end,
     ::slotted(svg) {
-        ${
-            /* Glyph size and margin-left is temporary - 
-            replace when adaptive typography is figured out */ ""
-        } width: 16px;
+        ${/* Glyph size and margin-left is temporary - 
+            replace when adaptive typography is figured out */ ""} width: 16px;
         height: 16px;
     }
 
@@ -71,6 +70,19 @@ export const BaseButtonStyles = css`
 
     .end {
         margin-inline-start: 11px;
+    }
+
+    @media (forced-colors: active) {
+        :host(.disabled),
+        :host(.disabled) .control {
+            forced-color-adjust: none;
+            background: ${SystemColors.ButtonFace};
+            border-color: ${SystemColors.GrayText};
+            color: ${SystemColors.GrayText};
+            cursor: ${disabledCursor};
+            fill: ${SystemColors.GrayText};
+            opacity: 1;
+        }
     }
 `;
 
@@ -90,6 +102,30 @@ export const AccentButtonStyles = css`
 
     :host(.accent) .control:${focusVisible} {
         box-shadow: 0 0 0 calc(var(--focus-outline-width) * 1px) inset var(--neutral-focus-inner-accent);
+    }
+
+    @media (forced-colors: active) {
+        :host(.accent) .control {
+            forced-color-adjust: none;
+            background: ${SystemColors.Highlight};
+            color: ${SystemColors.HighlightText};
+        }
+
+        :host(.accent) .control:hover {
+            background: ${SystemColors.HighlightText};
+            border-color: ${SystemColors.Highlight};
+            color: ${SystemColors.Highlight};
+        }
+
+        :host(.accent:${focusVisible}) .control {
+            border-color: ${SystemColors.ButtonText};
+            box-shadow: 0 0 0 2px ${SystemColors.HighlightText} inset;
+        }
+
+        :host(.accent.disabled) .control {
+            background: ${SystemColors.ButtonFace};
+            color: ${SystemColors.GrayText};
+        }
     }
 `;
 
@@ -165,6 +201,26 @@ export const LightweightButtonStyles = css`
         background: var(--neutral-foreground-rest);
         height: calc(var(--focus-outline-width) * 1px);
     }
+
+    @media (forced-colors: active) {
+        :host(.lightweight) .control:hover {
+            forced-color-adjust: none;
+            color: ${SystemColors.Highlight};
+        }
+
+        :host(.lightweight) .control:hover .content::before {
+            background: ${SystemColors.Highlight};
+        }
+
+        :host(.lightweight.disabled) .control {
+            forced-color-adjust: none;
+            color: ${SystemColors.GrayText};
+        }
+    
+        :host(.lightweight.disabled) .control:hover .content::before {
+            background: none;
+        }
+    }
 `;
 
 export const OutlineButtonStyles = css`
@@ -180,6 +236,12 @@ export const OutlineButtonStyles = css`
     :host(.outline) .control:active {
         border-color: var(--neutral-outline-active);
     }
+
+    @media (forced-colors: active) {
+        :host(.outline.disabled) .control {
+            border-color: ${SystemColors.GrayText};
+        }
+    }
 `;
 
 export const StealthButtonStyles = css`
@@ -193,5 +255,12 @@ export const StealthButtonStyles = css`
 
     :host(.stealth) .control:active {
         background: var(--neutral-fill-stealth-active);
+    }
+
+    @media (forced-colors: active) {
+        :host(.stealth.disabled) .control {
+            background: none;
+            border-color: transparent;
+        }
     }
 `;
