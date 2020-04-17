@@ -1,6 +1,6 @@
-import { FastElement } from "@microsoft/fast-element";
+import { FASTElement } from "@microsoft/fast-element";
 
-export class Tab extends FastElement {
+export class Tab extends FASTElement {
     protected proxy = document.createElement("input");
 
     constructor() {
