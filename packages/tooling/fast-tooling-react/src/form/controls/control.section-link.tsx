@@ -11,7 +11,6 @@ import { isDefault } from "./utilities/form";
 /**
  * Form control definition
  */
-/* tslint:disable-next-line */
 class SectionLinkControl extends React.Component<
     SectionLinkControlProps & ManagedClasses<SectionLinkControlClassNameContract>,
     {}

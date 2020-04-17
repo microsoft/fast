@@ -1,6 +1,6 @@
+import { DataDictionary } from "@microsoft/fast-tooling";
 import noChildrenSchema from "./no-children.schema";
 import childrenSchema from "./children.schema";
-import { DataDictionary } from "@microsoft/fast-tooling";
 
 const noChildren: any = {
     text: "Hello world",

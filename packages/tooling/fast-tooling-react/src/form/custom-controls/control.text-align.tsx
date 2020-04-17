@@ -8,7 +8,6 @@ import { classNames } from "@microsoft/fast-web-utilities";
 /**
  * Custom form control definition
  */
-/* tslint:disable-next-line */
 class TextAlignControl extends React.Component<
     TextAlignControlProps & ManagedClasses<TextAlignControlClassNameContract>,
     {}

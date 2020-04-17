@@ -24,9 +24,9 @@
         "prepare": "yarn clean:dist && yarn build && yarn build:message-system",
         "prettier": "prettier --config ../../../.prettierrc --write \"**/*.ts\"",
         "prettier:diff": "prettier --config ../../../.prettierrc \"**/*.ts\" --list-different",
-        "test": "yarn tslint && yarn unit-tests",
-        "tslint": "tslint -c ./tslint.json '**/*.ts'",
-        "tslint:fix": "tslint -c ./tslint.json --fix '**/*.ts'",
+        "test": "yarn eslint && yarn run unit-tests && yarn build",
+        "eslint": "eslint . --ext .ts",
+        "eslint:fix": "eslint . --ext .ts --fix",
         "unit-tests": "jest --runInBand",
         "watch": "yarn build -- -w --preserveWatchOutput"
     },
@@ -59,19 +59,16 @@
         ]
     },
     "devDependencies": {
-        "@microsoft/fast-tslint-rules": "^3.1.1",
         "@types/jest": "^24.0.11",
         "@types/lodash-es": "^4.17.0",
         "@types/node": "^9.6.7",
         "ajv": "^6.10.0",
+        "eslint-config-prettier": "^6.10.1",
         "jest": "^24.5.0",
         "lodash-es": "^4.0.0",
         "prettier": "2.0.2",
         "ts-jest": "^24.0.0",
         "ts-loader": "^4.0.1",
-        "tslint": "^5.9.1",
-        "tslint-config-prettier": "^1.15.0",
-        "tslint-loader": "^3.6.0",
         "typescript": "^3.3.3"
     },
     "peerDependencies": {

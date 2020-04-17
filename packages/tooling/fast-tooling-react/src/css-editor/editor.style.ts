@@ -1,6 +1,6 @@
 import { ComponentStyles } from "@microsoft/fast-jss-manager-react";
-import { CSSPositionClassNameContract } from "./position/position.style";
 import { foreground300, neutralLayerL4 } from "../style";
+import { CSSPositionClassNameContract } from "./position/position.style";
 
 export interface CSSEditorClassNameContract extends CSSPositionClassNameContract {
     cssEditor?: string;

@@ -10,7 +10,6 @@ import { isDefault } from "./utilities/form";
 /**
  * Form control definition
  */
-/* tslint:disable-next-line */
 class SelectControl extends React.Component<
     SelectControlProps & ManagedClasses<SelectControlClassNameContract>,
     {}

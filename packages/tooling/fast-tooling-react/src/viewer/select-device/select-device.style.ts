@@ -1,28 +1,12 @@
-import {
-    ComponentStyles,
-    ComponentStyleSheet,
-    CSSRules,
-} from "@microsoft/fast-jss-manager-react";
-import {
-    applyLocalizedProperty,
-    Direction,
-    ellipsis,
-} from "@microsoft/fast-jss-utilities";
+import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager-react";
+import { ellipsis } from "@microsoft/fast-jss-utilities";
+import { DesignSystem, selectInputStyle, selectSpanStyle } from "../../style";
 import { SelectDeviceClassNameContract } from "./select-device.class-name-contract";
-import {
-    DesignSystem,
-    selectInputStyle,
-    selectSpanStyle,
-    withDesignSystemDefaults,
-} from "../../style";
 
 const styles: ComponentStyles<
     SelectDeviceClassNameContract,
     {}
-> = (config: {}): ComponentStyleSheet<SelectDeviceClassNameContract, DesignSystem> => {
-    const designSystem: DesignSystem = withDesignSystemDefaults(config);
-    const direction: Direction = designSystem.direction;
-
+> = (): ComponentStyleSheet<SelectDeviceClassNameContract, DesignSystem> => {
     return {
         selectDevice: {
             display: "inline-block",

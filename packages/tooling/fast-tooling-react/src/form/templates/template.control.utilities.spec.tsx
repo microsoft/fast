@@ -9,7 +9,6 @@ import { BadgeType } from "./types";
  */
 configure({ adapter: new Adapter() });
 
-/* tslint:disable-next-line */
 class TestClass extends ControlTemplateUtilities<{}, {}> {}
 
 const config: any = {
