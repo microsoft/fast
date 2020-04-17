@@ -1,4 +1,4 @@
-import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager-react";
+import { ComponentStyles } from "@microsoft/fast-jss-manager-react";
 import { ellipsis } from "@microsoft/fast-jss-utilities";
 import {
     chevronDownStyle,

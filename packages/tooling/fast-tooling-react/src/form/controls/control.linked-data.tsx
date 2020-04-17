@@ -14,7 +14,6 @@ import { ArrayAction, LinkedDataActionType } from "../templates/types";
 /**
  * Form control definition
  */
-/* tslint:disable-next-line */
 class LinkedDataControl extends React.Component<
     LinkedDataControlProps & ManagedClasses<LinkedDataControlClassNameContract>,
     LinkedDataControlState

@@ -1,8 +1,6 @@
-import { AjvMapper } from "./ajv-validation";
 import {
     AddLinkedDataDataMessageOutgoing,
     DataDictionary,
-    DataMessageOutgoing,
     DuplicateDataMessageOutgoing,
     InitializeMessageOutgoing,
     MessageSystem,
@@ -17,6 +15,7 @@ import {
     SchemaSetValidationMessageResponse,
     UpdateDataMessageOutgoing,
 } from "../message-system";
+import { AjvMapper } from "./ajv-validation";
 import { DataType } from "./types";
 
 describe("AjvMapper", () => {
@@ -38,14 +37,14 @@ describe("AjvMapper", () => {
                 },
             });
 
-            const ajvMapper: AjvMapper = new AjvMapper({
+            new AjvMapper({
                 messageSystem,
             });
         }).not.toThrow();
     });
     test("should not throw if the message system is undefined", () => {
         expect(() => {
-            const ajvMapper: AjvMapper = new AjvMapper({
+            new AjvMapper({
                 messageSystem: undefined,
             });
         }).not.toThrow();
@@ -67,14 +66,12 @@ describe("AjvMapper", () => {
             },
         });
 
-        /* tslint:disable-next-line */
         expect(messageSystem["register"].size).toEqual(0);
 
-        const ajvMapper: AjvMapper = new AjvMapper({
+        new AjvMapper({
             messageSystem,
         });
 
-        /* tslint:disable-next-line */
         expect(messageSystem["register"].size).toEqual(1);
     });
     test("should deregister from the message system", () => {
@@ -94,19 +91,16 @@ describe("AjvMapper", () => {
             },
         });
 
-        /* tslint:disable-next-line */
         expect(messageSystem["register"].size).toEqual(0);
 
         const ajvMapper: AjvMapper = new AjvMapper({
             messageSystem,
         });
 
-        /* tslint:disable-next-line */
         expect(messageSystem["register"].size).toEqual(1);
 
         ajvMapper.destroy();
 
-        /* tslint:disable-next-line */
         expect(messageSystem["register"].size).toEqual(0);
     });
     test("should call the message callback if an initialize message has been sent", () => {
@@ -152,7 +146,6 @@ describe("AjvMapper", () => {
             "foo",
         ];
 
-        /* tslint:disable-next-line */
         messageSystem["register"].forEach((registeredItem: Register) => {
             registeredItem.onMessage({
                 data: {
@@ -184,7 +177,6 @@ describe("AjvMapper", () => {
             } as any);
         });
 
-        /* tslint:disable-next-line */
         expect(ajvMapper["validation"]["foo"]).toEqual([]);
     });
     test("should convert ajv errors to the error format expected by the message system", () => {
@@ -232,7 +224,6 @@ describe("AjvMapper", () => {
             "foo",
         ];
 
-        /* tslint:disable-next-line */
         messageSystem["register"].forEach((registeredItem: Register) => {
             registeredItem.onMessage({
                 data: {
@@ -264,7 +255,6 @@ describe("AjvMapper", () => {
             } as any);
         });
 
-        /* tslint:disable-next-line */
         expect(ajvMapper["validation"]["foo"]).toEqual([
             {
                 dataLocation: "",
@@ -324,7 +314,6 @@ describe("AjvMapper", () => {
                 messageSystem,
             });
 
-            /* tslint:disable-next-line */
             messageSystem["register"].forEach((registeredItem: Register) => {
                 registeredItem.onMessage({
                     data: {
@@ -342,7 +331,6 @@ describe("AjvMapper", () => {
                     } as InitializeMessageOutgoing,
                 } as any);
             });
-            /* tslint:disable-next-line */
             messageSystem["register"].forEach((registeredItem: Register) => {
                 registeredItem.onMessage({
                     data: {
@@ -356,7 +344,6 @@ describe("AjvMapper", () => {
                 } as any);
             });
 
-            /* tslint:disable-next-line */
             expect(ajvMapper["validation"]["foo"]).toEqual([
                 {
                     dataLocation: "",
@@ -382,7 +369,6 @@ describe("AjvMapper", () => {
                 messageSystem,
             });
 
-            /* tslint:disable-next-line */
             messageSystem["register"].forEach((registeredItem: Register) => {
                 registeredItem.onMessage({
                     data: {
@@ -400,7 +386,6 @@ describe("AjvMapper", () => {
                     } as InitializeMessageOutgoing,
                 } as any);
             });
-            /* tslint:disable-next-line */
             messageSystem["register"].forEach((registeredItem: Register) => {
                 registeredItem.onMessage({
                     data: {
@@ -432,7 +417,6 @@ describe("AjvMapper", () => {
                 } as any);
             });
 
-            /* tslint:disable-next-line */
             expect(ajvMapper["validation"]["bar"]).toEqual([
                 {
                     dataLocation: "",
@@ -452,7 +436,6 @@ describe("AjvMapper", () => {
                 messageSystem,
             });
 
-            /* tslint:disable-next-line */
             messageSystem["register"].forEach((registeredItem: Register) => {
                 registeredItem.onMessage({
                     data: {
@@ -470,7 +453,6 @@ describe("AjvMapper", () => {
                     } as InitializeMessageOutgoing,
                 } as any);
             });
-            /* tslint:disable-next-line */
             messageSystem["register"].forEach((registeredItem: Register) => {
                 registeredItem.onMessage({
                     data: {
@@ -484,7 +466,6 @@ describe("AjvMapper", () => {
                 } as any);
             });
 
-            /* tslint:disable-next-line */
             expect(ajvMapper["validation"]["foo"]).toEqual([
                 {
                     dataLocation: "",
@@ -504,7 +485,6 @@ describe("AjvMapper", () => {
                 messageSystem,
             });
 
-            /* tslint:disable-next-line */
             messageSystem["register"].forEach((registeredItem: Register) => {
                 registeredItem.onMessage({
                     data: {
@@ -522,7 +502,6 @@ describe("AjvMapper", () => {
                     } as InitializeMessageOutgoing,
                 } as any);
             });
-            /* tslint:disable-next-line */
             messageSystem["register"].forEach((registeredItem: Register) => {
                 registeredItem.onMessage({
                     data: {
@@ -536,7 +515,6 @@ describe("AjvMapper", () => {
                 } as any);
             });
 
-            /* tslint:disable-next-line */
             expect(ajvMapper["validation"]["foo"]).toEqual([
                 {
                     dataLocation: "",
@@ -556,7 +534,6 @@ describe("AjvMapper", () => {
                 messageSystem,
             });
 
-            /* tslint:disable-next-line */
             messageSystem["register"].forEach((registeredItem: Register) => {
                 registeredItem.onMessage({
                     data: {
@@ -574,7 +551,6 @@ describe("AjvMapper", () => {
                     } as InitializeMessageOutgoing,
                 } as any);
             });
-            /* tslint:disable-next-line */
             messageSystem["register"].forEach((registeredItem: Register) => {
                 registeredItem.onMessage({
                     data: {
@@ -588,7 +564,6 @@ describe("AjvMapper", () => {
                 } as any);
             });
 
-            /* tslint:disable-next-line */
             expect(ajvMapper["validation"]["foo"]).toEqual([
                 {
                     dataLocation: "",
@@ -633,7 +608,7 @@ describe("AjvMapper", () => {
                 schemaDictionary: null,
             });
             messageSystem.postMessage = postMessageCallback;
-            const ajvMapper: AjvMapper = new AjvMapper({
+            new AjvMapper({
                 messageSystem,
             });
             const id: string = "foobarbat";
@@ -648,7 +623,6 @@ describe("AjvMapper", () => {
                 data,
             };
 
-            /* tslint:disable-next-line */
             messageSystem["register"].forEach((registeredItem: Register) => {
                 registeredItem.onMessage({
                     data: requestMessage,
@@ -672,7 +646,7 @@ describe("AjvMapper", () => {
                 schemaDictionary: null,
             });
             messageSystem.postMessage = postMessageCallback;
-            const ajvMapper: AjvMapper = new AjvMapper({
+            new AjvMapper({
                 messageSystem,
             });
             const id: string = "foobarbat";
@@ -687,7 +661,6 @@ describe("AjvMapper", () => {
                 data,
             };
 
-            /* tslint:disable-next-line */
             messageSystem["register"].forEach((registeredItem: Register) => {
                 registeredItem.onMessage({
                     data: requestMessage,
@@ -711,7 +684,7 @@ describe("AjvMapper", () => {
                 schemaDictionary: null,
             });
             messageSystem.postMessage = postMessageCallback;
-            const ajvMapper: AjvMapper = new AjvMapper({
+            new AjvMapper({
                 messageSystem,
             });
             const id: string = "foobarbat";
@@ -725,7 +698,6 @@ describe("AjvMapper", () => {
                 index: -1,
             };
 
-            /* tslint:disable-next-line */
             messageSystem["register"].forEach((registeredItem: Register) => {
                 registeredItem.onMessage({
                     data: responseMessage,

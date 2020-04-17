@@ -35,7 +35,7 @@ export interface CSSEditorValues
 
 export type CSSOnChange = (CSS: CSSEditorValues) => void;
 
-export interface CSSEditorUnhandledProps extends React.HTMLAttributes<HTMLDivElement> {}
+export type CSSEditorUnhandledProps = React.HTMLAttributes<HTMLDivElement>;
 
 export interface CSSEditorHandledProps
     extends ManagedClasses<CSSEditorClassNameContract> {

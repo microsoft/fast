@@ -101,7 +101,6 @@ const linkedDataProps: LinkedDataControlProps = {
     messageSystem: void 0,
 };
 
-/* tslint:disable:no-string-literal */
 describe("LinkedDataControl", () => {
     test("should not throw", () => {
         expect(() => {

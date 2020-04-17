@@ -6,8 +6,8 @@ export enum Orientation {
     portrait = "portrait",
 }
 
-export interface RotateManagedClasses extends ManagedClasses<RotateClassNameContract> {}
-export interface RotateUnhandledProps extends React.AllHTMLAttributes<HTMLElement> {}
+export type RotateManagedClasses = ManagedClasses<RotateClassNameContract>;
+export type RotateUnhandledProps = React.AllHTMLAttributes<HTMLElement>;
 export interface RotateHandledProps extends RotateManagedClasses {
     /**
      * A callback used when the orientation has been updated

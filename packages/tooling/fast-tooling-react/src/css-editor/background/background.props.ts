@@ -5,8 +5,7 @@ export interface CSSBackgroundValues {
     background?: string;
 }
 
-export interface CSSBackgroundUnhandledProps
-    extends React.HTMLAttributes<HTMLDivElement> {}
+export type CSSBackgroundUnhandledProps = React.HTMLAttributes<HTMLDivElement>;
 
 export interface CSSBackgroundHandledProps
     extends ManagedClasses<CSSBackgroundClassNameContract> {

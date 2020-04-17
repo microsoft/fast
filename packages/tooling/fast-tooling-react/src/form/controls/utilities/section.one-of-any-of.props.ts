@@ -1,6 +1,3 @@
-/* tslint:disable-next-line */
-export interface SectionOneOfAnyOfState {}
-
 export interface SectionOneOfAnyOfProps {
     label: string;
     activeIndex: number;

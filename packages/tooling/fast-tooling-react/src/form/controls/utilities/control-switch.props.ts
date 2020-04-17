@@ -1,7 +1,7 @@
+import { Omit } from "utility-types";
 import { ControlTemplateUtilitiesProps, StandardControlPlugin } from "../../templates";
 import { AttributeSettingsMappingToPropertyNames } from "../../types";
 import { Controls } from "./types";
-import { Omit } from "utility-types";
 
 export interface ControlSwitchProps
     extends Omit<ControlTemplateUtilitiesProps, "component"> {

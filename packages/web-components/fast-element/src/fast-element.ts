@@ -1,5 +1,4 @@
 import { Controller } from "./controller";
-import { emptyArray } from "./interfaces";
 import { ElementViewTemplate } from "./template";
 import { ElementStyles } from "./styles";
 import { AttributeConfiguration, AttributeDefinition } from "./attributes";

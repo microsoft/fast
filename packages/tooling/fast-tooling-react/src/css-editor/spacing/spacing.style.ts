@@ -1,6 +1,6 @@
 import { ComponentStyles } from "@microsoft/fast-jss-manager-react";
 import { toPx } from "@microsoft/fast-jss-utilities";
-import { background000, controlWrapperStyle, inputStyle } from "../../style";
+import { controlWrapperStyle, inputStyle } from "../../style";
 
 export interface CSSSpacingClassNameContract {
     cssSpacing?: string;

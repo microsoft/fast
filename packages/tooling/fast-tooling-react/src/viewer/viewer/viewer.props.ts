@@ -1,6 +1,6 @@
 import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
-import { ViewerClassNameContract } from "./viewer.class-name-contract";
 import { MessageSystem } from "@microsoft/fast-tooling";
+import { ViewerClassNameContract } from "./viewer.class-name-contract";
 
 export enum ResizeHandleLocation {
     left,
@@ -10,8 +10,8 @@ export enum ResizeHandleLocation {
     bottomRight,
 }
 
-export interface ViewerManagedClasses extends ManagedClasses<ViewerClassNameContract> {}
-export interface ViewerUnhandledProps extends React.AllHTMLAttributes<HTMLElement> {}
+export type ViewerManagedClasses = ManagedClasses<ViewerClassNameContract>;
+export type ViewerUnhandledProps = React.AllHTMLAttributes<HTMLElement>;
 export interface ViewerHandledProps extends ViewerManagedClasses {
     /**
      * The src route for the viewer iframe
