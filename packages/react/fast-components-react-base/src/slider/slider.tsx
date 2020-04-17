@@ -275,15 +275,9 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
     }
 
     /**
-     * Renders the internals of the component but skips the
-     * first render so we can determine direction before doing layout
-     * (avoids transition animations to get the layout right to begin with)
+     * Renders the internals of the component
      */
     private renderSliderInternals = (): React.ReactNode => {
-        if (this.state.direction === null) {
-            return null;
-        }
-
         return (
             <SliderContext.Provider
                 value={{
@@ -298,6 +292,8 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
                 <div
                     className={classNames(this.props.managedClasses.slider_layoutRegion)}
                     style={{
+                        // hide visuals until we have a direction to avoid flicker
+                        opacity: this.state.direction === null ? 0 : undefined,
                         position: "relative",
                     }}
                 >
