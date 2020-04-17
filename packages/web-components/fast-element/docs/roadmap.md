@@ -2,7 +2,7 @@
 
 ## Short-term
 
-* **Feature**: Support `class` and/or `style` bindings on the host.
+* **Experiment**: See if it's possible combine template instantiate and bind, and if that improves initial render time.
 * **Test**: Testing infrastructure and test coverage.
 
 ## Medium-term
@@ -14,6 +14,7 @@
 * **Test:** Include perf benchmarks in the automated build process and track changes over time.
 * **Doc:** Re-organize the current docs into a series of smaller articles.
 * **Experiment:** See if internal algos can be improved by leveraging typed arrays.
+* **Feature**: Support `style` bindings on the host.
 
 ## Long-term
 
