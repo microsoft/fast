@@ -81,12 +81,7 @@ describe("stack panel", (): void => {
             clientHeight: 100,
             clientWidth: 200,
         };
-        expect(
-            rendered
-                .first()
-                .instance()
-                ["getViewportSpan"]()
-        ).toBe(100);
+        expect(rendered.first().instance()["getViewportSpan"]()).toBe(100);
     });
 
     test("getViewportSpan returns expected value when orientation is horizontal", (): void => {
@@ -98,12 +93,7 @@ describe("stack panel", (): void => {
             clientHeight: 100,
             clientWidth: 200,
         };
-        expect(
-            rendered
-                .first()
-                .instance()
-                ["getViewportSpan"]()
-        ).toBe(200);
+        expect(rendered.first().instance()["getViewportSpan"]()).toBe(200);
     });
     test("getScrollIntoViewPosition returns expected values", (): void => {
         const rendered: any = mount(
@@ -111,24 +101,9 @@ describe("stack panel", (): void => {
         );
 
         rendered.first().instance().viewportSpan = 200;
-        expect(
-            rendered
-                .first()
-                .instance()
-                ["getScrollIntoViewPosition"](0)
-        ).toBe(0);
-        expect(
-            rendered
-                .first()
-                .instance()
-                ["getScrollIntoViewPosition"](4)
-        ).toBe(660);
-        expect(
-            rendered
-                .first()
-                .instance()
-                ["getScrollIntoViewPosition"](11)
-        ).toBe(2400);
+        expect(rendered.first().instance()["getScrollIntoViewPosition"](0)).toBe(0);
+        expect(rendered.first().instance()["getScrollIntoViewPosition"](4)).toBe(660);
+        expect(rendered.first().instance()["getScrollIntoViewPosition"](11)).toBe(2400);
     });
 
     test("getMaxScrollDistance returns value corresponding to height of items and viewport", (): void => {
@@ -137,24 +112,14 @@ describe("stack panel", (): void => {
         );
 
         rendered.first().instance().viewportSpan = 200;
-        expect(
-            rendered
-                .first()
-                .instance()
-                ["getMaxScrollDistance"]()
-        ).toBe(2470);
+        expect(rendered.first().instance()["getMaxScrollDistance"]()).toBe(2470);
     });
 
     test("getMaxScrollDistance returns 0 when there are no items", (): void => {
         const rendered: any = mount(<StackPanel />);
 
         rendered.first().instance().viewportSpan = 200;
-        expect(
-            rendered
-                .first()
-                .instance()
-                ["getMaxScrollDistance"]()
-        ).toBe(0);
+        expect(rendered.first().instance()["getMaxScrollDistance"]()).toBe(0);
     });
 
     test("should create a resize observer if it is available", (): void => {

@@ -153,8 +153,8 @@ class TestStackPanel extends React.Component<TestStackPanelProps, {}> {
             const thisSpan: number = isArray(this.props.stackPanelProps.itemSpan)
                 ? this.props.stackPanelProps.itemSpan[i]
                 : isNil(this.props.stackPanelProps.itemSpan)
-                    ? 100
-                    : this.props.stackPanelProps.itemSpan;
+                ? 100
+                : this.props.stackPanelProps.itemSpan;
 
             const thisHeight: number =
                 this.props.stackPanelProps.orientation === Orientation.horizontal
