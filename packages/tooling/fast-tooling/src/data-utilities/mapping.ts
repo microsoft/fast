@@ -131,32 +131,6 @@ export interface ResolverConfig<T> {
     parent: string | null;
 }
 
-export function mapDataDictionary<T>(config: MapDataConfig<T>): T {
-    // clone the data given, this will be mutated
-    const clonedData = cloneDeep(config.dataDictionary);
-    // The items as they are resolved
-    const resolvedDictionaryIds: string[] = [];
-
-    // map the dictionary items to the cloned data
-    // store the dictionary items as a list in order
-    resolveDataInDataDictionary({
-        dataDictionary: clonedData,
-        resolvedDictionaryIds,
-        dictionaryId: clonedData[1],
-        schemaDictionary: config.schemaDictionary,
-        mapper: config.mapper,
-    });
-
-    // resolve the data dictionary items up the tree
-    return attachResolvedDataDictionary({
-        resolvedData: undefined,
-        dataDictionary: clonedData,
-        schemaDictionary: config.schemaDictionary,
-        items: resolvedDictionaryIds.reverse(),
-        resolver: config.resolver,
-    });
-}
-
 export function resolveDataInDataDictionary<T>(
     config: ResolveDataInDataDictionaryConfig<T>
 ): void {
@@ -221,6 +195,32 @@ function attachResolvedDataDictionary<T>(
     }
 
     return config.resolvedData;
+}
+
+export function mapDataDictionary<T>(config: MapDataConfig<T>): T {
+    // clone the data given, this will be mutated
+    const clonedData = cloneDeep(config.dataDictionary);
+    // The items as they are resolved
+    const resolvedDictionaryIds: string[] = [];
+
+    // map the dictionary items to the cloned data
+    // store the dictionary items as a list in order
+    resolveDataInDataDictionary({
+        dataDictionary: clonedData,
+        resolvedDictionaryIds,
+        dictionaryId: clonedData[1],
+        schemaDictionary: config.schemaDictionary,
+        mapper: config.mapper,
+    });
+
+    // resolve the data dictionary items up the tree
+    return attachResolvedDataDictionary({
+        resolvedData: undefined,
+        dataDictionary: clonedData,
+        schemaDictionary: config.schemaDictionary,
+        items: resolvedDictionaryIds.reverse(),
+        resolver: config.resolver,
+    });
 }
 
 /**

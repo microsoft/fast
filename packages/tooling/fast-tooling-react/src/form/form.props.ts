@@ -1,5 +1,3 @@
-import { SingleLineControlPlugin, StandardControlPlugin } from "./templates";
-import { ControlContext } from "./templates/types";
 import {
     DataDictionary,
     MessageSystem,
@@ -7,6 +5,8 @@ import {
     NavigationConfigDictionary,
     Validation,
 } from "@microsoft/fast-tooling";
+import { SingleLineControlPlugin, StandardControlPlugin } from "./templates";
+import { ControlContext } from "./templates/types";
 
 /**
  * Form class name contract

@@ -5,7 +5,6 @@ import styles from "./section.one-of-any-of.style";
 import {
     SectionOneOfAnyOfClassNameContract,
     SectionOneOfAnyOfProps,
-    SectionOneOfAnyOfState,
 } from "./section.one-of-any-of.props";
 import { uniqueId } from "lodash-es";
 
@@ -15,7 +14,7 @@ import { uniqueId } from "lodash-es";
  */
 class SectionOneOfAnyOf extends React.Component<
     SectionOneOfAnyOfProps & ManagedClasses<SectionOneOfAnyOfClassNameContract>,
-    SectionOneOfAnyOfState
+    {}
 > {
     public static displayName: string = "SectionOneOfAnyOf";
 

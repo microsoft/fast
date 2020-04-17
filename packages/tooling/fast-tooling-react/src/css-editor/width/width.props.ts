@@ -5,7 +5,7 @@ export interface CSSWidthValues {
     width?: string;
 }
 
-export interface CSSWidthUnhandledProps extends React.HTMLAttributes<HTMLDivElement> {}
+export type CSSWidthUnhandledProps = React.HTMLAttributes<HTMLDivElement>;
 
 export interface CSSWidthHandledProps extends ManagedClasses<CSSWidthClassNameContract> {
     /**

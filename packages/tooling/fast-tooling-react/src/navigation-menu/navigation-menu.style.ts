@@ -1,9 +1,8 @@
-import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager-react";
-import { applyTriggerStyle, insetStrongBoxShadow } from "../style";
+import { ComponentStyles } from "@microsoft/fast-jss-manager-react";
 import { applyFocusVisible } from "@microsoft/fast-jss-utilities";
+import { applyTriggerStyle, insetStrongBoxShadow } from "../style";
 import {
     accent,
-    background800,
     foreground300,
     neutralFillStealthSelected,
     neutralLayerL4,

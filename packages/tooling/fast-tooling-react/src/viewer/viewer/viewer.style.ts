@@ -1,15 +1,10 @@
-import {
-    ComponentStyles,
-    ComponentStyleSheet,
-    CSSRules,
-} from "@microsoft/fast-jss-manager-react";
+import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager-react";
 import { ViewerClassNameContract } from "./viewer.class-name-contract";
 
-/* tslint:disable:max-line-length */
-const styles: ComponentStyles<
+const styles: ComponentStyles<ViewerClassNameContract, {}> = (): ComponentStyleSheet<
     ViewerClassNameContract,
     {}
-> = (config: {}): ComponentStyleSheet<ViewerClassNameContract, {}> => {
+> => {
     const fixedSize: number = 20;
     const backgroundColor: string = "#999";
 

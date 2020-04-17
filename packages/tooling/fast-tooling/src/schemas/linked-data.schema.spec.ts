@@ -1,4 +1,3 @@
-import jest from "jest";
 import ajv from "ajv";
 import { linkedDataSchema } from "./index";
 

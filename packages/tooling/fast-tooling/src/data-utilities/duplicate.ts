@@ -2,28 +2,6 @@ import { cloneDeep, get, set } from "lodash-es";
 import { normalizeDataLocationToDotNotation } from "./location";
 import { isInArray } from "./array";
 
-export function getDataWithDuplicate<T>(sourceDataLocation: string, data: T): T {
-    const clonedData: T = cloneDeep(data) as T;
-    const normalizedSourceDataLocation: string = normalizeDataLocationToDotNotation(
-        sourceDataLocation
-    );
-
-    if (isInArray(clonedData, normalizedSourceDataLocation)) {
-        duplicateDataInArray(clonedData, normalizedSourceDataLocation);
-    } else {
-        duplicateData(clonedData, normalizedSourceDataLocation);
-    }
-
-    return clonedData;
-}
-
-function duplicateData(data: unknown, sourceDataLocation: string): void {
-    const sourceData: unknown = get(data as object, sourceDataLocation);
-    const targetData: unknown[] = [sourceData, sourceData];
-
-    set(data as object, sourceDataLocation, targetData);
-}
-
 function duplicateDataInArray(data: unknown, sourceDataLocation: string): void {
     const sourceData: unknown = get(data as object, sourceDataLocation);
     const sourceDataLocationSegments: string[] = sourceDataLocation.split(".");
@@ -45,4 +23,26 @@ function duplicateDataInArray(data: unknown, sourceDataLocation: string): void {
     );
 
     set(data as object, parentSourceDataLocation, parentSourceData as object[]);
+}
+
+function duplicateData(data: unknown, sourceDataLocation: string): void {
+    const sourceData: unknown = get(data as object, sourceDataLocation);
+    const targetData: unknown[] = [sourceData, sourceData];
+
+    set(data as object, sourceDataLocation, targetData);
+}
+
+export function getDataWithDuplicate<T>(sourceDataLocation: string, data: T): T {
+    const clonedData: T = cloneDeep(data) as T;
+    const normalizedSourceDataLocation: string = normalizeDataLocationToDotNotation(
+        sourceDataLocation
+    );
+
+    if (isInArray(clonedData, normalizedSourceDataLocation)) {
+        duplicateDataInArray(clonedData, normalizedSourceDataLocation);
+    } else {
+        duplicateData(clonedData, normalizedSourceDataLocation);
+    }
+
+    return clonedData;
 }

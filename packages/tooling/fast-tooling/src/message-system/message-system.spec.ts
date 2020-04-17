@@ -1,10 +1,9 @@
 import MessageSystem from "./message-system";
 
-/* tslint:disable:max-classes-per-file */
 describe("MessageSystem", () => {
     test("should not throw", () => {
         expect(() => {
-            const messageSystem: MessageSystem = new MessageSystem({
+            new MessageSystem({
                 webWorker: "",
                 dataDictionary: [
                     {
@@ -38,14 +37,12 @@ describe("MessageSystem", () => {
             },
         });
 
-        /* tslint:disable-next-line */
         expect(messageSystem["register"].size).toEqual(0);
 
         messageSystem.add({
             onMessage: jest.fn(),
         });
 
-        /* tslint:disable-next-line */
         expect(messageSystem["register"].size).toEqual(1);
     });
     test("should remove an item from the register", () => {
@@ -70,18 +67,15 @@ describe("MessageSystem", () => {
 
         messageSystem.add(config);
 
-        /* tslint:disable-next-line */
         expect(messageSystem["register"].size).toEqual(1);
 
         messageSystem.remove(config);
 
-        /* tslint:disable-next-line */
         expect(messageSystem["register"].size).toEqual(0);
     });
     test("should add a worker if there is a Worker available on the window", () => {
         class Worker {
-            /* tslint:disable-next-line */
-            public postMessage = (): void => {};
+            public postMessage = (): void => void 0;
         }
         (window as any).Worker = Worker;
 
@@ -101,7 +95,6 @@ describe("MessageSystem", () => {
             },
         });
 
-        /* tslint:disable-next-line */
         expect(messageSystem["worker"] instanceof Worker).toEqual(true);
     });
     test("should post a message when the postMessage method is called", () => {
@@ -169,7 +162,6 @@ describe("MessageSystem", () => {
 
         expect(registeredCallback).toHaveBeenCalledTimes(0);
 
-        /* tslint:disable-next-line */
         messageSystem["onMessage"]({ data: "foo" } as any);
 
         expect(registeredCallback).toHaveBeenCalledTimes(1);

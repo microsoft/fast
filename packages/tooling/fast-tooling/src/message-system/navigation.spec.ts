@@ -1,9 +1,9 @@
 import "jest";
-import { getNavigation, getNavigationDictionary } from "./navigation";
-import { NavigationConfigDictionary } from "./navigation.props";
-import { TreeNavigation, TreeNavigationItem } from "./navigation.props";
 import { DataType } from "../data-utilities/types";
 import { dictionaryLink } from "../schemas";
+import { getNavigation, getNavigationDictionary } from "./navigation";
+import { NavigationConfigDictionary } from "./navigation.props";
+import { TreeNavigationItem } from "./navigation.props";
 
 /**
  * Gets the navigation
