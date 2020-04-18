@@ -124,9 +124,12 @@ export const SliderStyles = css`
 
         :host(.disabled) {
             opacity: 1;
+            cursor: ${disabledCursor};
         }
 
-        :host(.disabled) .slider .track .thumb-cursor {
+        :host(.disabled) .slider,
+        :host(.disabled) .track,
+        :host(.disabled) .thumb-cursor {
             forced-color-adjust: none;
             background: ${SystemColors.GrayText};
         }
