@@ -1,0 +1,42 @@
+<fast-design-system-provider use-defaults>
+    <h1>Radio</h1>
+
+    <h4>Defaults</h4>
+    <fast-radio></fast-radio>
+    <div>
+        <fast-radio>label</fast-radio>
+    </div>
+
+    <h4>Checked</h4>
+    <fast-radio name="checked" value="checked" checked></fast-radio>
+
+    <!-- Required -->
+    <h4>Required</h4>
+    <fast-radio name="required" value="required" required></fast-radio>
+
+    <!-- Disabled -->
+    <h4>Disabled</h1>
+    <fast-radio name="disabled" disabled></fast-radio>
+    <fast-radio name="disabled" disabled>label</fast-radio>
+    <fast-radio name="disabled" disabled checked>checked</fast-radio>
+
+    <h4>Inline</h4>
+    <fast-radio name="fruit-inline" value="apples" checked>Apples</fast-radio>
+    <fast-radio name="fruit-inline" disabled value="bananas">Bananas</fast-radio>
+    <fast-radio name="fruit-inline" value="honeydew">Honeydew</fast-radio>
+
+    <h4>Vertical</h4>
+    <fieldset style="display: flex; flex-direction: column; align-items: start;">
+        <legend>Fruit</legend>
+        <fast-radio name="fruit" value="apples" checked>Apples</fast-radio>
+        <fast-radio name="fruit" value="bananas" >Bananas</fast-radio>
+        <fast-radio name="fruit" value="honeydew">Honeydew</fast-radio>
+        <fast-radio name="fruit" value="oranges">Oranges</fast-radio>
+    </fieldset>
+
+
+    <h4>Visual vs audio label</h4>
+    <fast-radio>
+        <span aria-label="Audio label">Visible label</span>
+    </fast-radio>
+</fast-design-system-provider>
