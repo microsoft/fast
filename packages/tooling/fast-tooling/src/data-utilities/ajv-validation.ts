@@ -1,3 +1,4 @@
+import Ajv from "ajv";
 import {
     MessageSystem,
     MessageSystemDataTypeAction,
@@ -8,12 +9,11 @@ import {
     Validation,
     ValidationError,
 } from "../message-system";
-import { normalizeDataLocationToDotNotation } from "./location";
 import {
     SchemaSetValidationAction,
     SchemaSetValidationMessageResponse,
 } from "../message-system";
-import Ajv from "ajv";
+import { normalizeDataLocationToDotNotation } from "./location";
 
 export interface AjvMapperConfig {
     /**

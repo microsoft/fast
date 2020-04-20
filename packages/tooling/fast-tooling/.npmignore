@@ -8,8 +8,9 @@ coverage/
 *.test.*
 
 # Config files
-tslint.json
 .prettierignore
+.eslintignore
+.eslintrc.js
 .storybook
 babel.config.js
 tsconfig.json

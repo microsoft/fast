@@ -12,5 +12,4 @@ export interface FileUploadControlState {
     processing: boolean;
 }
 
-/* tslint:disable-next-line */
-export interface FileUploadControlProps extends CommonControlConfig {}
+export type FileUploadControlProps = CommonControlConfig;

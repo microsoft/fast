@@ -31,7 +31,7 @@ export interface CSSSpacingState {
     hoverType: SpacingType | undefined;
 }
 
-export interface CSSSpacingUnhandledProps extends React.HTMLAttributes<HTMLDivElement> {}
+export type CSSSpacingUnhandledProps = React.HTMLAttributes<HTMLDivElement>;
 
 export interface CSSSpacingValues {
     marginTop?: string;

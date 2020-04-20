@@ -6,6 +6,52 @@ import { CombiningKeyword, DataType, PropertyKeyword } from "./types";
 
 const exampleString: string = "example text";
 
+function isOneOfAnyOf(schema: any): boolean {
+    return schema[CombiningKeyword.oneOf] || schema[CombiningKeyword.anyOf];
+}
+
+function isObjectDataType(schema: any): boolean {
+    return schema.type === DataType.object || schema[PropertyKeyword.properties];
+}
+
+function hasExample(examples: any[]): boolean {
+    return Array.isArray(examples) && examples.length > 0;
+}
+
+function hasRequired(schema: any): boolean {
+    return Array.isArray(schema.required) && schema.required.length > 0;
+}
+
+function hasEnum(schema: any): boolean {
+    return Array.isArray(schema.enum);
+}
+
+function hasConst(schema: any): boolean {
+    return typeof schema.const !== "undefined";
+}
+
+/**
+ * If there is a default value or example values,
+ * return a value to use
+ */
+function getDefaultOrExample(schema: any): any | void {
+    if (typeof schema.default !== "undefined") {
+        return schema.default;
+    }
+
+    if (hasExample(schema.examples)) {
+        return schema.examples[0];
+    }
+
+    if (hasEnum(schema)) {
+        return schema.enum[0];
+    }
+
+    if (hasConst(schema)) {
+        return schema.const;
+    }
+}
+
 /**
  * Gets a single example from a schema
  */
@@ -19,6 +65,7 @@ function getDataFromSchema(schema: any): any {
         return getDataFromSchema(schema[oneOfAnyOf][0]);
     }
 
+    /* eslint-disable-next-line @typescript-eslint/no-use-before-define */
     return getDataFromSchemaByDataType(schema);
 }
 
@@ -47,7 +94,7 @@ function getDataFromSchemaByDataType(schema: any): any {
     }
 
     switch (schema.type) {
-        case DataType.array:
+        case DataType.array: {
             const arrayData: any[] = [];
             const minItems: number = schema.minItems ? schema.minItems : 2;
 
@@ -56,6 +103,7 @@ function getDataFromSchemaByDataType(schema: any): any {
             }
 
             return arrayData;
+        }
         case DataType.boolean:
             return true;
         case DataType.null:
@@ -65,52 +113,6 @@ function getDataFromSchemaByDataType(schema: any): any {
         case DataType.number:
             return Math.round(Math.random() * 100);
     }
-}
-
-/**
- * If there is a default value or example values,
- * return a value to use
- */
-function getDefaultOrExample(schema: any): any | void {
-    if (typeof schema.default !== "undefined") {
-        return schema.default;
-    }
-
-    if (hasExample(schema.examples)) {
-        return schema.examples[0];
-    }
-
-    if (hasEnum(schema)) {
-        return schema.enum[0];
-    }
-
-    if (hasConst(schema)) {
-        return schema.const;
-    }
-}
-
-function isOneOfAnyOf(schema: any): boolean {
-    return schema[CombiningKeyword.oneOf] || schema[CombiningKeyword.anyOf];
-}
-
-function isObjectDataType(schema: any): boolean {
-    return schema.type === DataType.object || schema[PropertyKeyword.properties];
-}
-
-function hasExample(examples: any[]): boolean {
-    return Array.isArray(examples) && examples.length > 0;
-}
-
-function hasRequired(schema: any): boolean {
-    return Array.isArray(schema.required) && schema.required.length > 0;
-}
-
-function hasEnum(schema: any): boolean {
-    return Array.isArray(schema.enum);
-}
-
-function hasConst(schema: any): boolean {
-    return typeof schema.const !== "undefined";
 }
 
 export { getDataFromSchema };

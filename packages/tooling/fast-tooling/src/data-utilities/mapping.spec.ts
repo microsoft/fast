@@ -1,3 +1,5 @@
+import { set } from "lodash-es";
+import { DataDictionary } from "../message-system";
 import {
     htmlMapper,
     htmlResolver,
@@ -6,8 +8,6 @@ import {
     ResolverConfig,
 } from "./mapping";
 import { ReservedElementMappingKeyword } from "./types";
-import { set } from "lodash-es";
-import { DataDictionary } from "../message-system";
 
 describe("mapDataDictionary", () => {
     test("should call a passed mapper and resolver function on a single data dictionary item", () => {

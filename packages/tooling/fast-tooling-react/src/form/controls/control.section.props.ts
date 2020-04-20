@@ -1,5 +1,5 @@
-import { SectionControlConfig } from "../templates";
 import { CombiningKeyword } from "@microsoft/fast-tooling";
+import { SectionControlConfig } from "../templates";
 
 /**
  * Section class name contract
@@ -33,11 +33,9 @@ export interface OneOfAnyOf {
     activeIndex: number;
 }
 
-/* tslint:disable-next-line */
-export interface SectionControlState extends InitialOneOfAnyOfState {}
+export type SectionControlState = InitialOneOfAnyOfState;
 
-/* tslint:disable */
-export interface SectionControlProps extends SectionControlConfig {}
+export type SectionControlProps = SectionControlConfig;
 
 export interface FormControlParameters {
     /**

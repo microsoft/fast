@@ -91,8 +91,6 @@ class WebComponentViewerContent extends React.Component<
                         dataDictionary: parsedJSON.dataDictionary,
                     });
                 }
-
-                /* tslint:disable-next-line */
             } catch (e) {}
         }
     };

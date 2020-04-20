@@ -6,5 +6,4 @@ export enum Alignment {
     bottom = "bottom",
 }
 
-/* tslint:disable-next-line */
-export interface AlignControlProps extends ListControlConfig {}
+export type AlignControlProps = ListControlConfig;

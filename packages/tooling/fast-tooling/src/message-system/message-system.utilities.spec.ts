@@ -1,4 +1,4 @@
-import jest from "jest";
+import { DataType } from "../data-utilities/types";
 import {
     AddDataMessageOutgoing,
     AddLinkedDataDataMessageOutgoing,
@@ -25,12 +25,10 @@ import {
 } from "./message-system.utilities.props";
 import { MessageSystemType } from "./types";
 import { getMessage } from "./message-system.utilities";
-import { DataType } from "../data-utilities/types";
 import { Data, DataDictionary, LinkedData } from "./data.props";
 import { SchemaDictionary } from "./schema.props";
 import { getNavigationDictionary } from "./navigation";
 
-/* tslint:disable */
 describe("getMessage", () => {
     describe("initialize", () => {
         test("should return messages sent with initial values provided", () => {
