@@ -142,7 +142,12 @@ export class Radio extends FormAssociated<HTMLInputElement> {
             if (groupSet) {
                 groupSet.delete(this);
             }
+
+            if (groupSet?.size === 0) {
+                radioGroups.delete(this.name);
+            }
         }
+        console.log("global radioGroups is now:", radioGroups);
     }
 
     private updateForm(): void {
