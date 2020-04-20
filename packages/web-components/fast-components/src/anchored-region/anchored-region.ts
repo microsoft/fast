@@ -1,4 +1,4 @@
-import { attr, DOM, FastElement, observable } from "@microsoft/fast-element";
+import { attr, DOM, FASTElement, observable } from "@microsoft/fast-element";
 import { Direction, RtlScrollConverter } from "@microsoft/fast-web-utilities";
 
 // TODO: the Resize Observer related files are a temporary stopgap measure until
@@ -53,7 +53,7 @@ enum Location {
     bottom = "bottom",
 }
 
-export class AnchoredRegion extends FastElement {
+export class AnchoredRegion extends FASTElement {
     private static DirectionAttributeName: string = "dir";
 
     @attr
