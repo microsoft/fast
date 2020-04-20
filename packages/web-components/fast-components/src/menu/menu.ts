@@ -1,4 +1,4 @@
-import { attr, FastElement } from "@microsoft/fast-element";
+import { attr, FASTElement } from "@microsoft/fast-element";
 import { MenuItemRole } from "../menu-item";
 import { inRange, invert } from "lodash-es";
 import {
@@ -11,7 +11,7 @@ import {
     keyCodeHome,
 } from "@microsoft/fast-web-utilities";
 
-export class Menu extends FastElement {
+export class Menu extends FASTElement {
     public items: HTMLSlotElement;
 
     private menuItems: Element[];

@@ -1,4 +1,4 @@
-import { attr, FastElement } from "@microsoft/fast-element";
+import { attr, FASTElement } from "@microsoft/fast-element";
 import { keyCodeEnter, keyCodeSpace } from "@microsoft/fast-web-utilities";
 
 export enum MenuItemRole {
@@ -7,8 +7,8 @@ export enum MenuItemRole {
     menuitemradio = "menuitemradio",
 }
 
-export class MenuItem extends FastElement {
-    @attr
+export class MenuItem extends FASTElement {
+    @attr({ mode: "boolean" })
     public disabled: boolean;
 
     @attr
