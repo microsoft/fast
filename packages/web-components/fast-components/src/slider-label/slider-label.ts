@@ -8,6 +8,7 @@ const defaultConfig: SliderConfiguration = {
     max: 0,
     direction: Direction.ltr,
     orientation: SliderOrientation.horizontal,
+    disabled: false,
 };
 
 export class SliderLabel extends FASTElement {
@@ -30,6 +31,15 @@ export class SliderLabel extends FASTElement {
         direction: Direction.ltr,
         orientation: SliderOrientation.horizontal,
     };
+
+    @attr({ attribute: "disabled", mode: "boolean" })
+    public disabled: boolean; // Map to proxy element
+    private disabledChanged(): void {
+        this.disabled
+            ? this.classList.add("disabled")
+            : this.classList.remove("disabled");
+        this.setAttribute("aria-disabled", this.disabled.toString());
+    }
 
     public connectedCallback(): void {
         super.connectedCallback();
@@ -54,13 +64,17 @@ export class SliderLabel extends FASTElement {
         if (!this.isSliderConfig(this.parentNode)) {
             this.config = defaultConfig;
         } else {
-            const { min, max, direction, orientation } = this
+            const { min, max, direction, orientation, disabled } = this
                 .parentNode as SliderConfiguration;
+            if (disabled !== undefined) {
+                this.disabled = disabled;
+            }
             this.config = {
                 min,
                 max,
                 direction: direction || Direction.ltr,
                 orientation: orientation || SliderOrientation.horizontal,
+                disabled: disabled || false,
             };
         }
     };

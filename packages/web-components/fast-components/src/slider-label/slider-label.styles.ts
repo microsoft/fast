@@ -57,10 +57,23 @@ export const SliderLabelStyles = css`
         margin-left: calc((var(--design-unit) / 2) * 2px);
         align-self: center;
     }
+    :host(.disabled) {
+        opacity: var(--disabled-opacity);
+    }
     @media (forced-colors: active) {
         .mark {
             forced-color-adjust: none;
             background: ${SystemColors.FieldText};
+        }
+        :host(.disabled) {
+            forced-color-adjust: none;
+            opacity: 1;
+        }
+        :host(.disabled) .label {
+            color: ${SystemColors.GrayText};
+        }
+        :host(.disabled) .mark {
+            background: ${SystemColors.GrayText};
         }
     }
 `.withBehaviors(neutralOutlineRestBehavior);
