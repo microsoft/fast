@@ -19,8 +19,7 @@ export interface CSSBorderRadiusValues {
     borderRadius?: string;
 }
 
-export interface CSSBorderRadiusUnhandledProps
-    extends React.HTMLAttributes<HTMLDivElement> {}
+export type CSSBorderRadiusUnhandledProps = React.HTMLAttributes<HTMLDivElement>;
 
 export interface CSSBorderRadiusHandledProps
     extends ManagedClasses<CSSBorderRadiusClassNameContract> {

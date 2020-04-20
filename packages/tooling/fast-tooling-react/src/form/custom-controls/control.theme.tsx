@@ -8,7 +8,6 @@ import { classNames } from "@microsoft/fast-web-utilities";
 /**
  * Custom form control definition
  */
-/* tslint:disable-next-line */
 class ThemeControl extends React.Component<
     ThemeControlProps & ManagedClasses<ThemeControlClassNameContract>,
     {}

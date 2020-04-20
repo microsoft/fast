@@ -15,6 +15,11 @@ export {
 } from "./jss";
 export { ManagedJSSProps } from "./jss-manager";
 export { Consumer as DesignSystemConsumer } from "./context";
-export { JSSManager } from "./jss-manager";
+export {
+    JSSManager,
+    JSSStyleSheet,
+    JSSManagerSubscriptionEventType,
+    JSSManagerSubscriber,
+} from "./jss-manager";
 export * from "./design-system-provider";
 export * from "@microsoft/fast-jss-manager";
