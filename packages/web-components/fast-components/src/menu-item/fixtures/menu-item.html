@@ -1,4 +1,4 @@
-<fast-design-system-provider style="font-family: var(--body-font)">
+<fast-design-system-provider use-defaults>
     <h1>Menu</h1>
 
     <h4>Default (menuitem)</h4>
@@ -19,9 +19,10 @@
     <h5>checked</h5>
     <fast-menu-item checked="true" role="menuitemradio">Menu item 1</fast-menu-item>
 
-    <h4>Before content</h4>
+    <h4>Start</h4>
     <fast-menu-item>
         <svg
+            slot="start"
             width="16"
             height="16"
             viewBox="0 0 16 16"
@@ -32,10 +33,11 @@
         Menu item 1
     </fast-menu-item>
 
-    <h4>After content</h4>
+    <h4>End</h4>
     <fast-menu-item>
         Menu item 1
         <svg
+            slot="end"
             width="16"
             height="16"
             viewBox="0 0 16 16"
@@ -48,6 +50,7 @@
     <h4>Complex content layout</h4>
     <fast-menu-item>
         <svg
+            slot="start"
             width="16"
             height="16"
             viewBox="0 0 16 16"
@@ -57,6 +60,7 @@
         </svg>
         Menu item 1
         <svg
+            slot="end"
             width="16"
             height="16"
             viewBox="0 0 16 16"

@@ -1,5 +1,4 @@
-import { attr, FASTElement } from "@microsoft/fast-element";
-import { MenuItemRole } from "../menu-item";
+import { attr, FASTElement, DOM } from "@microsoft/fast-element";
 import { inRange, invert } from "lodash-es";
 import {
     isHTMLElement,
@@ -10,6 +9,7 @@ import {
     keyCodeEnd,
     keyCodeHome,
 } from "@microsoft/fast-web-utilities";
+import { MenuItemRole } from "../menu-item";
 
 export class Menu extends FASTElement {
     public items: HTMLSlotElement;
@@ -30,21 +30,25 @@ export class Menu extends FASTElement {
         super.connectedCallback();
 
         // store a reference to our children
-        this.menuItems = this.domChildren();
-        const focusIndex = this.menuItems.findIndex(this.isFocusableElement);
+        DOM.queueUpdate(() => {
+            this.menuItems = this.domChildren();
+            console.log(this.menuItems, "menu items");
+            const focusIndex = this.menuItems.findIndex(this.isFocusableElement);
 
-        // if our focus index is not -1 we have items
-        if (focusIndex !== -1) {
-            this.focusIndex = focusIndex;
-        }
-
-        for (let item: number = 0; item < this.menuItems.length; item++) {
-            if (item === focusIndex) {
-                this.menuItems[item].setAttribute("tabindex", "0");
+            // if our focus index is not -1 we have items
+            if (focusIndex !== -1) {
+                this.focusIndex = focusIndex;
             }
 
-            this.menuItems[item].addEventListener("blur", this.handleMenuItemFocus);
-        }
+            for (let item: number = 0; item < this.menuItems.length; item++) {
+                console.log(this.menuItems[item], "item");
+                if (item === focusIndex) {
+                    this.menuItems[item].setAttribute("tabindex", "0");
+                }
+
+                this.menuItems[item].addEventListener("blur", this.handleMenuItemFocus);
+            }
+        });
     }
 
     public handleMenuKeyDown(e: KeyboardEvent): void | boolean {

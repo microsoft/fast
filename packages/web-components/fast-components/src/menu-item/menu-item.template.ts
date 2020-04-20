@@ -1,4 +1,4 @@
-import { html } from "@microsoft/fast-element";
+import { html, ref } from "@microsoft/fast-element";
 import { MenuItem, MenuItemRole } from "./menu-item";
 
 // this template is going to need to have the menu item as DOM and not the host.
@@ -12,6 +12,23 @@ export const MenuItemTemplate = html<MenuItem>`
         @keydown=${(x, c) => x.handleMenuItemKeyDown(c.event as KeyboardEvent)}
         @click=${(x, c) => x.handleMenuItemClick(c.event as MouseEvent)}
     >
-        <slot></slot>
+        <span part="start" ${ref("startContainer")}>
+            <slot
+                name="start"
+                ${ref("start")}
+                @slotchange=${x => x.handleStartContentChange()}
+            ></slot>
+        </span>
+        <span class="content" part="content">
+            <slot></slot>
+        </span>
+        <span part="end" ${ref("endContainer")}>
+            <slot
+                name="end"
+                ${ref("end")}
+                @slotchange=${x => x.handleEndContentChange()}
+            ></slot>
+        </span>
+        <slot name="menu"></slot>
     </template>
 `;
