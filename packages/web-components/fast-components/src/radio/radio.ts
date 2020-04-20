@@ -9,6 +9,8 @@ import {
 import { FormAssociated } from "../form-associated";
 import { FASTRadio } from ".";
 
+const radioGroups = new Map<string, Set<FASTRadio>>();
+
 export class Radio extends FormAssociated<HTMLInputElement> {
     @attr({ attribute: "readonly", mode: "boolean" })
     public readOnly: boolean; // Map to proxy element
@@ -93,15 +95,12 @@ export class Radio extends FormAssociated<HTMLInputElement> {
     }
 
     private updateOtherGroupRadios(): void {
-        if (this.name !== undefined) {
-            const radioGroup = document.querySelectorAll(
-                `fast-radio[name=${this.proxy.name}]`
-            );
-            radioGroup.forEach((node: any) => {
-                if (node.getAttribute("value") !== this.value) {
-                    node.removeAttribute("checked");
-                    const newLocal = node as FASTRadio;
-                    newLocal.checked = false;
+        if (this.name !== undefined && this.parentNode) {
+            const radioGroup = radioGroups.get(this.name);
+            radioGroup?.forEach((radio: FASTRadio) => {
+                if (radio.getAttribute("value") !== this.value) {
+                    radio.removeAttribute("checked");
+                    radio.checked = false;
                 }
             });
         }
@@ -112,14 +111,10 @@ export class Radio extends FormAssociated<HTMLInputElement> {
     /**
      * Tracks whether the "checked" property has been changed.
      * This is necessary to provide consistent behavior with
-     * normal input checkboxes
+     * normal input radios
      */
+    // TODO: marjon check if this is needed for radio buttons?
     private dirtyChecked: boolean = false;
-
-    /**
-     * Set to true when the component has constructed
-     */
-    private constructed: boolean = false;
 
     constructor() {
         super();
@@ -129,6 +124,25 @@ export class Radio extends FormAssociated<HTMLInputElement> {
     public connectedCallback(): void {
         super.connectedCallback();
         this.updateForm();
+        if (this.name !== undefined) {
+            const radioGroup = radioGroups.get(this.name);
+            if (radioGroup) {
+                radioGroup.add(this);
+            } else {
+                const newSet = new Set<FASTRadio>();
+                newSet.add(this);
+                radioGroups.set(this.name, newSet);
+            }
+        }
+    }
+
+    public disconnectedCallback(): void {
+        if (this.name !== undefined) {
+            const groupSet = radioGroups.get(this.name);
+            if (groupSet) {
+                groupSet.delete(this);
+            }
+        }
     }
 
     private updateForm(): void {
