@@ -1,6 +1,6 @@
-import { Behavior } from "@microsoft/fast-element";
+import { Behavior, FASTElement } from "@microsoft/fast-element";
 import { composedParent } from "../utilities";
-import { DesignSystemProvider } from "../design-system-provider";
+import { DesignSystemProvider, isDesignSystemProvider } from "../design-system-provider";
 
 export interface DesignSystemConsumer {
     provider: DesignSystemProvider | null;
@@ -23,12 +23,22 @@ export class DesignSystemConsumerBehavior<T extends DesignSystemConsumer & HTMLE
  * Resolves the nearest DesignSystemProvider element to an element.
  * @param self The element from which to begin
  */
-export function findProvider(self: HTMLElement): DesignSystemProvider | null {
+export function findProvider(
+    self: HTMLElement & Partial<DesignSystemConsumer>
+): DesignSystemProvider | null {
+    if (self.provider instanceof DesignSystemProvider) {
+        return self.provider;
+    }
+
     let parent = composedParent(self);
 
     while (parent !== null) {
-        if ((parent as any).isDesignSystemProvider) {
-            return parent as any;
+        if (isDesignSystemProvider(parent)) {
+            self.provider = parent as DesignSystemProvider;
+            return parent;
+        } else if ((parent as any).provider instanceof DesignSystemProvider) {
+            self.provider = (parent as any).provider;
+            return (parent as any).provider;
         } else {
             parent = composedParent(parent);
         }
