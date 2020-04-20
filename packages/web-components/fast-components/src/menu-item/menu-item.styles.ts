@@ -13,6 +13,7 @@ import {
 
 export const MenuItemStyles = css`
     ${display("grid")} :host {
+        position: relative;
         outline: none;
         box-sizing: border-box;
         height: calc(${heightNumber} * 1px);
@@ -71,6 +72,14 @@ export const MenuItemStyles = css`
             replace when adaptive typography is figured out */ ""
         } width: 16px;
         height: 16px;
+    }
+
+    ::slotted(fast-menu) {
+        display: none;
+    }
+
+    ::slotted(fast-menu) {
+        display: block;
     }
 `.withBehaviors(
     neutralFillStealthActiveBehavior,

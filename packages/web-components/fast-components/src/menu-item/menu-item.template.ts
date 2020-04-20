@@ -1,4 +1,4 @@
-import { html, ref } from "@microsoft/fast-element";
+import { html, ref, slotted } from "@microsoft/fast-element";
 import { MenuItem, MenuItemRole } from "./menu-item";
 
 // this template is going to need to have the menu item as DOM and not the host.
@@ -9,6 +9,8 @@ export const MenuItemTemplate = html<MenuItem>`
         role=${x => x.role}
         aria-checked=${x => (x.role !== MenuItemRole.menuitem ? x.checked : void 0)}
         aria-disabled=${x => x.disabled}
+        aria-haspopup=${x => (x.slottedMenus ? true : void 0)}
+        aria-expanded=${x => x.expanded}
         @keydown=${(x, c) => x.handleMenuItemKeyDown(c.event as KeyboardEvent)}
         @click=${(x, c) => x.handleMenuItemClick(c.event as MouseEvent)}
     >
@@ -29,6 +31,6 @@ export const MenuItemTemplate = html<MenuItem>`
                 @slotchange=${x => x.handleEndContentChange()}
             ></slot>
         </span>
-        <slot name="menu"></slot>
+        <slot name="menu" ${slotted("slottedMenus")}></slot>
     </template>
 `;

@@ -1,5 +1,5 @@
-import { attr, FASTElement } from "@microsoft/fast-element";
-import { keyCodeEnter, keyCodeSpace } from "@microsoft/fast-web-utilities";
+import { attr, booleanConverter, FASTElement, observable } from "@microsoft/fast-element";
+import { isHTMLElement, keyCodeEnter, keyCodeSpace } from "@microsoft/fast-web-utilities";
 
 export enum MenuItemRole {
     menuitem = "menuitem",
@@ -8,6 +8,17 @@ export enum MenuItemRole {
 }
 
 export class MenuItem extends FASTElement {
+    private menu: HTMLElement;
+
+    @observable
+    public slottedMenus: HTMLElement[];
+    private slottedMenusChanged(): void {
+        // if the menus change for some reason, grab the first one again
+        if (isHTMLElement(this.slottedMenus[0])) {
+            this.menu = this.slottedMenus[0];
+        }
+    }
+
     @attr({ mode: "boolean" })
     public disabled: boolean;
     private disabledChanged(): void {
@@ -16,17 +27,35 @@ export class MenuItem extends FASTElement {
             : this.classList.remove("disabled");
     }
 
+    @attr({ attribute: "aria-expanded", mode: "reflect", converter: booleanConverter })
+    public expanded: boolean = false;
+    private expandedChanged(): void {
+        this.expanded
+            ? this.classList.add("expanded")
+            : this.classList.remove("expanded");
+    }
+
     @attr
     public role: MenuItemRole = MenuItemRole.menuitem;
 
     @attr
     public checked: boolean;
 
+    public connectedCallback(): void {
+        super.connectedCallback();
+
+        console.log(this.menu, "menu");
+    }
+
     public handleMenuItemKeyDown = (e: KeyboardEvent): boolean => {
         switch (e.keyCode) {
             case keyCodeEnter:
             case keyCodeSpace:
-                this.$emit("click", e);
+                if (!!this.menu) {
+                    this.expanded = !this.expanded;
+                    this.menu.focus();
+                }
+                // this.$emit("click", e);
                 break;
         }
 
@@ -34,7 +63,11 @@ export class MenuItem extends FASTElement {
     };
 
     public handleMenuItemClick = (e: MouseEvent): void => {
-        this.$emit("click", e);
+        if (!!this.menu) {
+            this.expanded = !this.expanded;
+            console.log(this.expanded);
+        }
+        // this.$emit("click", e);
     };
 
     public start: HTMLSlotElement;

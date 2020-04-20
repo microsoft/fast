@@ -1,7 +1,7 @@
 <fast-design-system-provider use-defaults>
     <h1>Menu</h1>
     <h4>Default</h4>
-    <fast-menu role="menu">
+    <fast-menu>
         <fast-menu-item>Menu item 1</fast-menu-item>
         <fast-menu-item>Menu item 2</fast-menu-item>
         <fast-menu-item>Menu item 3</fast-menu-item>
@@ -12,6 +12,20 @@
         <fast-menu-item role="menuitem">Menu item 1</fast-menu-item>
         <fast-menu-item role="menuitem">Menu item 2</fast-menu-item>
         <hr/>
-        <fast-menu-item role="menuitem">Menu item 3</fast-menu-item>
+        <fast-menu-item role="menuitem">
+            Submenu Item 1
+            <fast-menu slot="menu" style="position: absolute; right: 0;">
+                <fast-menu-item>Submenu item 1</fast-menu-item>
+                <fast-menu-item>Submenu item 2</fast-menu-item>
+                <fast-menu-item>Submenu item 3</fast-menu-item>
+            </fast-menu>
+        </fast-menu-item>
+    </fast-menu>
+
+    <h4>With standard elements</h4>
+    <fast-menu>
+        <div role="menuitem">Menu item 1</div>
+        <div role="menuitem">Menu item 2</div>
+        <div role="menuitem">Menu item 3</div>
     </fast-menu>
 </fast-design-system-provider>

@@ -1,4 +1,4 @@
-import { attr, FASTElement, DOM } from "@microsoft/fast-element";
+import { DOM, FASTElement, observable } from "@microsoft/fast-element";
 import { inRange, invert } from "lodash-es";
 import {
     isHTMLElement,
@@ -12,7 +12,11 @@ import {
 import { MenuItemRole } from "../menu-item";
 
 export class Menu extends FASTElement {
+    @observable
     public items: HTMLSlotElement;
+    private itemsChanged(): void {
+        this.menuItems = this.domChildren();
+    }
 
     private menuItems: Element[];
 
@@ -29,10 +33,9 @@ export class Menu extends FASTElement {
     public connectedCallback(): void {
         super.connectedCallback();
 
-        // store a reference to our children
+        // We need to queue update currently to ensure that
+        // the attributes on our menu items have time to be set
         DOM.queueUpdate(() => {
-            this.menuItems = this.domChildren();
-            console.log(this.menuItems, "menu items");
             const focusIndex = this.menuItems.findIndex(this.isFocusableElement);
 
             // if our focus index is not -1 we have items
@@ -41,7 +44,6 @@ export class Menu extends FASTElement {
             }
 
             for (let item: number = 0; item < this.menuItems.length; item++) {
-                console.log(this.menuItems[item], "item");
                 if (item === focusIndex) {
                     this.menuItems[item].setAttribute("tabindex", "0");
                 }
@@ -51,9 +53,11 @@ export class Menu extends FASTElement {
         });
     }
 
-    public handleMenuKeyDown(e: KeyboardEvent): void | boolean {
-        console.log(e.currentTarget, "event current target");
+    public focus(): void {
+        this.setFocus(0, 1);
+    }
 
+    public handleMenuKeyDown(e: KeyboardEvent): void | boolean {
         switch (e.keyCode) {
             case keyCodeArrowDown:
             case keyCodeArrowRight:
