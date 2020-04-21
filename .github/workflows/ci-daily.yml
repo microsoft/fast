@@ -25,10 +25,10 @@ jobs:
     - name: Install Lerna
       run: sudo yarn global add lerna
 
-   # Cache yarn dependencies
     - name: Get yarn cache directory path
       id: yarn-cache-dir-path
       run: echo "::set-output name=dir::$(yarn cache dir)"
+      
     - name: Set up node_modules cache
       uses: actions/cache@v1.1.2
       id: yarn-cache
