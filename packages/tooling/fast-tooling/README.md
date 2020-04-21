@@ -100,13 +100,30 @@ if (window.Worker) {
         ],
 
         // your dictionary of schemas to validate data in the dictionary
-        schemas: {
+        schemaDictionary: {
             [mySchema.id]: mySchema,
         },
     });
 }
 ```
 
+The `dataDictionary` and the `schemaDictionary` are not required when creating the instance of the message system but can be provided for a single point of intialization.
+
+If initialization occurs later, the following method can be used:
+
+```javascript
+fastMessageSystem = new MessageSystem({
+    webWorker: "message-system.min.js",
+});
+
+...
+
+fastMessageSystem.initialize({
+    dataDictionary: myDataDictionary,
+    schemaDictionary: mySchemaDictionary,
+});
+```
+    
 #### Initialization message
 
 To re-initialize the message system an initialization message can be sent which requires a `dataDictionary` and `schemaDictionary` to be provided.
