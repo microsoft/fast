@@ -9,7 +9,7 @@ import {
 import { FormAssociated } from "../form-associated";
 import { FASTRadio } from ".";
 
-const radioGroups = new Map<string, Set<FASTRadio>>();
+const radioGroups = new Map<string, FASTRadio[]>();
 
 export class Radio extends FormAssociated<HTMLInputElement> {
     @attr({ attribute: "readonly", mode: "boolean" })
@@ -82,10 +82,8 @@ export class Radio extends FormAssociated<HTMLInputElement> {
         if (this.proxy instanceof HTMLElement) {
             this.proxy.checked = this.checked;
         }
-        //this.updateForm();
 
         this.dispatchEvent(new CustomEvent("change", { bubbles: true, composed: true }));
-
         this.checked ? this.classList.add("checked") : this.classList.remove("checked");
         this.checkedAttribute = this.checked;
 
@@ -127,27 +125,27 @@ export class Radio extends FormAssociated<HTMLInputElement> {
         if (this.name !== undefined) {
             const radioGroup = radioGroups.get(this.name);
             if (radioGroup) {
-                radioGroup.add(this);
+                radioGroup.push(this);
             } else {
-                const newSet = new Set<FASTRadio>();
-                newSet.add(this);
-                radioGroups.set(this.name, newSet);
+                radioGroups.set(this.name, [this]);
             }
         }
+
+        this.addEventListener("keydown", this.keydownHandler);
     }
 
     public disconnectedCallback(): void {
         if (this.name !== undefined) {
-            const groupSet = radioGroups.get(this.name);
-            if (groupSet) {
-                groupSet.delete(this);
+            const group = radioGroups.get(this.name);
+            if (group) {
+                group.splice(group.indexOf(this), 1);
             }
 
-            if (groupSet?.size === 0) {
+            if (group?.length === 0) {
                 radioGroups.delete(this.name);
             }
         }
-        console.log("global radioGroups is now:", radioGroups);
+        this.removeEventListener("keydown", this.keydownHandler);
     }
 
     private updateForm(): void {
@@ -155,20 +153,52 @@ export class Radio extends FormAssociated<HTMLInputElement> {
         this.setFormValue(value, value);
     }
 
-    public keypressHandler = (e: KeyboardEvent): void => {
-        super.keypressHandler(e);
+    public keydownHandler = (e: KeyboardEvent): void => {
+        const group = radioGroups.get(this.name);
 
         switch (e.keyCode) {
-            case keyCodeSpace:
-                this.checked = !this.checked;
-                break;
             case keyCodeArrowRight:
             case keyCodeArrowUp:
-                // TODO: select the radio to the right and mark it checked
+                if (this.name !== undefined) {
+                    if (group) {
+                        let index = group.indexOf(this) + 1;
+                        while (index < group.length) {
+                            if (!group[index].disabled) {
+                                group[index].checked = true;
+                                group[index].focus();
+                                break;
+                            } else {
+                                index += 1;
+                            }
+                        }
+                    }
+                }
                 break;
             case keyCodeArrowLeft:
             case keyCodeArrowDown:
-                // TODO: select the radio to the left and mark it checked if it exists
+                if (this.name !== undefined) {
+                    if (group) {
+                        let index = group.indexOf(this) - 1;
+                        while (index >= 0) {
+                            if (!group[index].disabled) {
+                                group[index].checked = true;
+                                group[index].focus();
+                                break;
+                            } else {
+                                index -= 1;
+                            }
+                        }
+                    }
+                }
+                break;
+        }
+    };
+
+    public keypressHandler = (e: KeyboardEvent): void => {
+        super.keypressHandler(e);
+        switch (e.keyCode) {
+            case keyCodeSpace:
+                this.checked = !this.checked;
                 break;
         }
     };

@@ -113,6 +113,11 @@ export const RadioStyles = css`
             opacity: 1;
         }
 
+        :host(.disabled) .label {
+            forced-color-adjust: none;
+            color: ${SystemColors.GrayText};
+        }
+
         :host(.disabled) .control {
             forced-color-adjust: none;
             border-color: ${SystemColors.GrayText};
@@ -121,6 +126,7 @@ export const RadioStyles = css`
         :host(.disabled) .checked-indicator {
             forced-color-adjust: none;
             fill: ${SystemColors.GrayText};
+            background: ${SystemColors.GrayText};
         }
     }
 `.withBehaviors(
