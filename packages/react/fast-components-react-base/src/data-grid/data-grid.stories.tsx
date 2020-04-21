@@ -21,7 +21,10 @@ function imageCellFn(
             className={className}
             style={{
                 gridColumn: props.columnIndex,
-                background: "orange",
+                borderWidth: "1",
+                borderColor: "black",
+                background: "white",
+                borderStyle: "solid",
             }}
         >
             <img
@@ -49,7 +52,10 @@ function recordIdCellFn(
             className={className}
             style={{
                 gridColumn: props.columnIndex,
+                borderWidth: "1",
+                borderColor: "black",
                 background: "grey",
+                borderStyle: "solid",
             }}
         >
             <img
@@ -85,7 +91,7 @@ function getDataSet(length: number): object[] {
     const dataSet: object[] = [];
 
     for (let i: number = 0; i < length; i++) {
-        const heightString: string = i % 2 ? "/300/200" : "/600/400";
+        const heightString: string = i % 2 ? "/150/100" : "/300/200";
         dataSet.push({
             recordId: `id-${i + 1}`,
             image: `https://picsum.photos/id/${Math.floor(
@@ -236,12 +242,12 @@ storiesOf("Data Grid", module)
     .add("Variable height rows", () => (
         <DataGrid
             style={{
-                height: "600px",
+                height: "400px",
                 width: "800px",
             }}
             dataRowKey="recordId"
             gridData={getDataSet(10000)}
-            itemHeight={200}
+            itemHeight={100}
             columnDefinitions={columnDefinitions}
             itemHeightCallback={getItemHeight}
         />
