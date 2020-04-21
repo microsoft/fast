@@ -46,30 +46,61 @@ jobs:
 
     # Stop reporting to Code Climate until a resolution exists for incompatabilities with Jest 25.x
     # as described in https://github.com/codeclimate/test-reporter/issues/427 
-    # - name: Install Code Climate
-    #   run: |
-    #     if [ ! -f ./coverage/cc-test-reporter ]; then
-    #       mkdir -p ./coverage/
-    #       curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./coverage/cc-test-reporter
-    #       chmod +x ./coverage/cc-test-reporter
-    #     fi
+    - name: Install Code Climate
+      run: |
+        if [ ! -f ./coverage/cc-test-reporter ]; then
+          mkdir -p ./coverage/
+          curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./coverage/cc-test-reporter
+          chmod +x ./coverage/cc-test-reporter
+        fi
     
-    # - name: Notify Code Climate that a build is starting
-    #   run: ./coverage/cc-test-reporter before-build 
+    - name: Notify Code Climate that a build is starting
+      run: |
+        ./coverage/cc-test-reporter before-build --debug
     
-    # - name: Collect coverage reports
-    #   run: |
-    #     for f in packages/*; do
-    #       if [ -d "$f" ]; then
-    #         echo $f
-    #         set +e
-    #         if [ -d "$f/coverage" ]; then
-    #           ./coverage/cc-test-reporter format-coverage -t lcov -o coverage/coverage.${f//\//-}.json $f/coverage/lcov.info
-    #         fi
-    #       fi
-    #     done;
+    - name: Collect coverage reports
+      run: |
+        for f in packages/react/*; do
+          if [ -d "$f" ]; then
+            echo $f
+            set +e
+            if [ -d "$f/coverage" ]; then
+              ./coverage/cc-test-reporter format-coverage -t lcov -o coverage/coverage.${f//\//-}.json $f/coverage/lcov.info --debug
+            fi
+          fi
+        done;
+
+        for f in packages/tooling/*; do
+          if [ -d "$f" ]; then
+            echo $f
+            set +e
+            if [ -d "$f/coverage" ]; then
+              ./coverage/cc-test-reporter format-coverage -t lcov -o coverage/coverage.${f//\//-}.json $f/coverage/lcov.info --debug
+            fi
+          fi
+        done;
     
-    # - name: Summarize and upload code coverage
-    #   run: |
-    #     ./coverage/cc-test-reporter sum-coverage -o coverage/coverage.total.json coverage/coverage.*.json
-    #     ./coverage/cc-test-reporter upload-coverage -i coverage/coverage.total.json
+        for f in packages/utilities/*; do
+          if [ -d "$f" ]; then
+            echo $f
+            set +e
+            if [ -d "$f/coverage" ]; then
+              ./coverage/cc-test-reporter format-coverage -t lcov -o coverage/coverage.${f//\//-}.json $f/coverage/lcov.info --debug
+            fi
+          fi
+        done;
+
+        for f in packages/web-components/*; do
+          if [ -d "$f" ]; then
+            echo $f
+            set +e
+            if [ -d "$f/coverage" ]; then
+              ./coverage/cc-test-reporter format-coverage -t lcov -o coverage/coverage.${f//\//-}.json $f/coverage/lcov.info --debug
+            fi
+          fi
+        done;
+
+    - name: Summarize and upload code coverage
+      run: |
+        ./coverage/cc-test-reporter sum-coverage -o coverage/coverage.total.json coverage/coverage.*.json --debug
+        ./coverage/cc-test-reporter upload-coverage -i coverage/coverage.total.json --debug
