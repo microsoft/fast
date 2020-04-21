@@ -40,7 +40,16 @@ export enum MessageSystemValidationTypeAction {
  */
 export interface InitializeMessageIncoming {
     type: MessageSystemType.initialize;
-    data: DataDictionary<unknown>;
+    /**
+     * This is deprecated in favor of the dataDictionary
+     * property
+     * @deprecated
+     */
+    data?: DataDictionary<unknown>;
+    /**
+     * This is required when data is not provided
+     */
+    dataDictionary?: DataDictionary<unknown>;
     schemaDictionary: SchemaDictionary;
 }
 

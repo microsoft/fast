@@ -107,6 +107,23 @@ if (window.Worker) {
 }
 ```
 
+#### Initialization message
+
+To re-initialize the message system an initialization message can be sent which requires a `dataDictionary` and `schemaDictionary` to be provided.
+
+Example:
+```javascript
+import { MessageSystemType } from "@microsoft/fast-tooling";
+
+...
+
+fastMessageSystem.postMessage({
+    type: MessageSystemType.initialize,
+    dataDictionary: myDataDictionary,
+    schemaDictionary: mySchemaDictionary
+});
+```
+
 #### Custom messages
 
 It is possible to send custom messages, all that is required is the data being sent includes the type `MessageSystemType.custom`.
