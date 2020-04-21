@@ -47,7 +47,7 @@ jobs:
       env: 
         CC_TEST_REPORTER_ID: 08a773cb4ea5811add5a45e12873e5cd2634c005568705cc37abfd5217617a32
       with:
-        coverageCommand: yarn run jest --coverage
+        coverageCommand: yarn test --coverage
         coverageLocations: 
           ${{github.workspace}}/packages/react/fast-components-foundation-react/coverage/lcov.info:lcov, ${{github.workspace}}/packages/react/fast-components-react-base/coverage/lcov.info:lcov
           # './packages/react/fast-components-react-msft/coverage/lcov.info:lcov',
