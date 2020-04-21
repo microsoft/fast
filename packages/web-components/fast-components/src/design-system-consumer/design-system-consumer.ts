@@ -32,6 +32,10 @@ export class DesignSystemConsumerBehavior<T extends DesignSystemConsumer & HTMLE
 
 /**
  * Resolves the nearest DesignSystemProvider element to an element.
+ *
+ * When the provider is found, this function will store the provider on
+ * the `self` so that it can quickly be retrieved by other future invocations
+ * of this function.
  * @param self The element from which to begin
  */
 export function findProvider(
