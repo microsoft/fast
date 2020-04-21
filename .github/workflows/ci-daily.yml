@@ -19,6 +19,9 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
+    - name: Branch name
+      run: echo running on branch ${GITHUB_REF##*/}
+
     - name: Install Lerna
       run: sudo yarn global add lerna@3.18.2  
 
