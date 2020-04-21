@@ -155,6 +155,7 @@ export class AnchoredRegion extends FASTElement {
         }
     }
 
+    @observable
     public viewportElement: HTMLElement | null = null;
     private viewportElementChanged(): void {
         if (this.initialLayoutComplete) {
