@@ -74,11 +74,11 @@ export const MenuItemStyles = css`
         height: 16px;
     }
 
-    ::slotted(fast-menu) {
+    .menu {
         display: none;
     }
 
-    ::slotted(fast-menu) {
+    .expanded {
         display: block;
     }
 `.withBehaviors(

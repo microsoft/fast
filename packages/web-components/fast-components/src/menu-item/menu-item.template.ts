@@ -1,4 +1,4 @@
-import { html, ref, slotted } from "@microsoft/fast-element";
+import { html, ref, slotted, when } from "@microsoft/fast-element";
 import { MenuItem, MenuItemRole } from "./menu-item";
 
 // this template is going to need to have the menu item as DOM and not the host.
@@ -31,6 +31,23 @@ export const MenuItemTemplate = html<MenuItem>`
                 @slotchange=${x => x.handleEndContentChange()}
             ></slot>
         </span>
-        <slot name="menu" ${slotted("slottedMenus")}></slot>
+        ${when(
+            x => x.slottedMenus && x.slottedMenus.length,
+            html<MenuItem>`
+                <fast-anchored-region
+                    :anchorElement=${x => x}
+                    class="menu"
+                    ,
+                    part="menu"
+                    ${ref("menu")}
+                >
+                    <slot name="menu" ${slotted("slottedMenus")}></slot>
+                </fast-anchored-region>
+            `
+        )}
+        ${when(
+            x => x.slottedMenus === null || x.slottedMenus === undefined,
+            html` <slot name="menu" ${slotted("slottedMenus")}></slot> `
+        )}
     </template>
 `;

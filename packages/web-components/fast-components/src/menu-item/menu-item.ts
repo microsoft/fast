@@ -8,14 +8,23 @@ export enum MenuItemRole {
 }
 
 export class MenuItem extends FASTElement {
-    private menu: HTMLElement;
+    /**
+     * The anchored region which renders the menu
+     */
+    public menu: HTMLElement;
+
+    /**
+     * Reference to the first slotted menu
+     */
+    private _menu: HTMLElement;
 
     @observable
     public slottedMenus: HTMLElement[];
     private slottedMenusChanged(): void {
         // if the menus change for some reason, grab the first one again
-        if (isHTMLElement(this.slottedMenus[0])) {
-            this.menu = this.slottedMenus[0];
+        console.log(this.slottedMenus, "slotted menus");
+        if (this.slottedMenus && this.slottedMenus.length) {
+            this._menu = this.slottedMenus[0];
         }
     }
 
@@ -44,16 +53,16 @@ export class MenuItem extends FASTElement {
     public connectedCallback(): void {
         super.connectedCallback();
 
-        console.log(this.menu, "menu");
+        console.log(this._menu, "menu");
     }
 
     public handleMenuItemKeyDown = (e: KeyboardEvent): boolean => {
         switch (e.keyCode) {
             case keyCodeEnter:
             case keyCodeSpace:
-                if (!!this.menu) {
+                if (!!this._menu) {
                     this.expanded = !this.expanded;
-                    this.menu.focus();
+                    this._menu.focus();
                 }
                 // this.$emit("click", e);
                 break;
@@ -63,7 +72,7 @@ export class MenuItem extends FASTElement {
     };
 
     public handleMenuItemClick = (e: MouseEvent): void => {
-        if (!!this.menu) {
+        if (!!this._menu) {
             this.expanded = !this.expanded;
             console.log(this.expanded);
         }
