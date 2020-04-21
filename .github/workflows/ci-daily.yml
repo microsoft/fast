@@ -20,7 +20,12 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: Branch name
-      run: echo running on branch ${GITHUB_REF##*/}
+      shell: bash
+      run: | 
+        echo "GIT_COMMIT_SHA ${GITHUB_SHA}"
+        echo "GIT_BRANCH ${GITHUB_REF}"
+        echo "::set-output name=GIT_COMMIT_SHA::${GITHUB_SHA}"
+        echo "::set-output name=GIT_BRANCH::${GITHUB_REF}"
 
     - name: Install Lerna
       run: sudo yarn global add lerna
@@ -28,7 +33,7 @@ jobs:
     - name: Get yarn cache directory path
       id: yarn-cache-dir-path
       run: echo "::set-output name=dir::$(yarn cache dir)"
-      
+
     - name: Set up node_modules cache
       uses: actions/cache@v1.1.2
       id: yarn-cache
