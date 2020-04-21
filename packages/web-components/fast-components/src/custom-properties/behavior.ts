@@ -34,14 +34,14 @@ export function cssCustomPropertyBehaviorFactory(
         name,
         value,
         host,
-        bind(source: typeof FASTElement | HTMLElement): void {
+        bind(source: typeof FASTElement): void {
             const target = this.host(source);
 
             if (target) {
                 target.registerCSSCustomProperty(this);
             }
         },
-        unbind(source: typeof FASTElement | HTMLElement): void {
+        unbind(source: typeof FASTElement): void {
             const target = this.host(source);
 
             if (target) {
