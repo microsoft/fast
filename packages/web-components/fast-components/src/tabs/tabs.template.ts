@@ -14,7 +14,7 @@ export const TabsTemplate = html<Tabs>`
             <slot class="tab" name="tab" part="tab" ${slotted("tabs")}></slot>
 
             ${when(
-                x => x.orientation === TabsOrientation.horizontal && x.activeIndicator,
+                x => x.orientation === TabsOrientation.horizontal && x.activeindicator,
                 html<Tabs>`
                     <div
                         ${ref("activeIndicatorRef")}
@@ -24,7 +24,7 @@ export const TabsTemplate = html<Tabs>`
                 `
             )}
             ${when(
-                x => x.orientation === TabsOrientation.vertical && x.activeIndicator,
+                x => x.orientation === TabsOrientation.vertical && x.activeindicator,
                 html<Tabs>`
                     <div
                         ${ref("activeIndicatorRef")}
@@ -42,7 +42,7 @@ export const TabsTemplate = html<Tabs>`
             ></slot>
         </div>
         <div class="tabpanel">
-            <slot name="tabpanel" part="tabpanel" ${slotted("tabPanels")}></slot>
+            <slot name="tabpanel" part="tabpanel" ${slotted("tabpanels")}></slot>
         </div>
     </template>
 `;
