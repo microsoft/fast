@@ -14,9 +14,9 @@
 
 - **Orientation:** Allows the tab list to be oriented horizontally above the tab content or vertically to the left or right (depending on language region) of the tab content.
 - **Supplemental content:** Offers a way to add content via start and end to the left and/or right (depending on language region) of the the tab list.
-- **Active indicator:** Offers a way to add an active indicator that highlights the currently active tab and animates to the next active tab.
-- **Active tab:** Provides a reference to the currently active tab.
-- **Active id:** Provides a way to set the active tab.
+- **ActiveIndicator:** Offers a way to add or remove an active indicator that highlights the currently active tab and animates to the next active tab. Defaults to true.
+- **ActiveTab:** Provides a reference to the currently active tab vis the `change` event.
+- **ActiveId:** Provides a way to set the active tab.
 
 ### Risks and Challenges
 
@@ -47,6 +47,7 @@ Some scenarios require an indicator that highlights the currently active tab the
   - horizontal - default
   - vertical
 - `activeId` - string
+- `activeIndicator` - boolean, defaults to true
 
 *Events:*
 - `change` - fires when component `activeTab` updates
@@ -114,7 +115,7 @@ Some scenarios require an indicator that highlights the currently active tab the
 ## Implementation
 
 ```HTML
-<fast-tabs activeindicator>
+<fast-tabs>
     <fast-tab id="tab-1">Tab One</fast-tab>
     <fast-tab id="tab-2">Tab Two</fast-tab>
     <fast-tab id="tab-3">Tab Three</fast-tab>
@@ -132,7 +133,7 @@ Some scenarios require an indicator that highlights the currently active tab the
 
 ### States
 
-*Tabs* can either be controlled or uncontrolled, meaning if `activeId` is passed the app author is taking control of the selected tab. When the `change` event fires it updates the `activeId` and `activeTab`.
+*Tabs* can either be controlled or uncontrolled, meaning if `activeId` is passed the app author is taking control of the selected tab. When the `change` event fires it updates the `activeId` and pass a refrence to the `activeTab`.
 
 ### Globalization
 
