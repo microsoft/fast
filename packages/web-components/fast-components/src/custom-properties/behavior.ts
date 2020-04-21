@@ -37,14 +37,14 @@ export function cssCustomPropertyBehaviorFactory(
         bind(source: typeof FASTElement): void {
             const target = this.host(source);
 
-            if (target) {
+            if (target !== null) {
                 target.registerCSSCustomProperty(this);
             }
         },
         unbind(source: typeof FASTElement): void {
             const target = this.host(source);
 
-            if (target) {
+            if (target !== null) {
                 target.unregisterCSSCustomProperty(this);
             }
         },
