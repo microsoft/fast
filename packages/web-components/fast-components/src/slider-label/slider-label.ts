@@ -38,7 +38,6 @@ export class SliderLabel extends FASTElement {
         this.disabled
             ? this.classList.add("disabled")
             : this.classList.remove("disabled");
-        this.setAttribute("aria-disabled", this.disabled.toString());
     }
 
     public connectedCallback(): void {
