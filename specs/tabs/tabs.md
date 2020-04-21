@@ -46,11 +46,11 @@ Some scenarios require an indicator that highlights the currently active tab the
 - `orientation` - enum
   - horizontal - default
   - vertical
-- `activeId` - string
-- `activeIndicator` - boolean, defaults to true
+- `activeid` - string
+- `activeindicator` - boolean, defaults to true
 
 *Events:*
-- `change` - fires when component `activeTab` updates
+- `change` - fires when component `activetab` updates
 
 *Parts:*
 - tabs
@@ -133,7 +133,7 @@ Some scenarios require an indicator that highlights the currently active tab the
 
 ### States
 
-*Tabs* can either be controlled or uncontrolled, meaning if `activeId` is passed the app author is taking control of the selected tab. When the `change` event fires it updates the `activeId` and pass a refrence to the `activeTab`.
+*Tabs* can either be controlled or uncontrolled, meaning if `activeid` is passed the app author is taking control of the selected tab. When the `change` event fires it updates the `activeid` and pass a refrence to the `activetab`.
 
 ### Globalization
 
