@@ -146,6 +146,7 @@ export class AnchoredRegion extends FASTElement {
     @observable
     public initialLayoutComplete: boolean = false;
 
+    @observable
     public anchorElement: HTMLElement | null = null;
     private anchorElementChanged(): void {
         if (this.initialLayoutComplete) {
@@ -154,6 +155,7 @@ export class AnchoredRegion extends FASTElement {
         }
     }
 
+    @observable
     public viewportElement: HTMLElement | null = null;
     private viewportElementChanged(): void {
         if (this.initialLayoutComplete) {
@@ -247,6 +249,7 @@ export class AnchoredRegion extends FASTElement {
 
     public disconnectedCallback(): void {
         super.disconnectedCallback();
+
         this.disconnectObservers();
     }
 
@@ -340,8 +343,15 @@ export class AnchoredRegion extends FASTElement {
      * disconnect observers and event handlers
      */
     private disconnectObservers = (): void => {
-        this.collisionDetector.disconnect();
-        this.resizeDetector.disconnect();
+        // ensure the collisionDetector exists before disconnecting
+        if (this.collisionDetector) {
+            this.collisionDetector.disconnect();
+        }
+
+        // ensure the resizeDetector exists before disconnecting
+        if (this.resizeDetector) {
+            this.resizeDetector.disconnect();
+        }
 
         this.disconnectViewport(this.viewportElement);
     };
