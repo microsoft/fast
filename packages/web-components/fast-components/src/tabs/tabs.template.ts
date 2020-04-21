@@ -3,11 +3,15 @@ import { Tabs, TabsOrientation } from "./tabs";
 
 export const TabsTemplate = html<Tabs>`
     <template role="tabs">
-        <div class="start" part="start">
-            <slot name="start"></slot>
+        <div name="start" part="start" ${ref("startContainer")}>
+            <slot
+                name="start"
+                ${ref("start")}
+                @slotchange=${x => x.handleStartContentChange()}
+            ></slot>
         </div>
         <div class="tablist" part="tablist" role="tablist">
-            <slot name="tab" part="tab" ${slotted("tabs")}></slot>
+            <slot class="tab" name="tab" part="tab" ${slotted("tabs")}></slot>
 
             ${when(
                 x => x.orientation === TabsOrientation.horizontal && x.activeIndicator,
@@ -30,11 +34,15 @@ export const TabsTemplate = html<Tabs>`
                 `
             )}
         </div>
-        <div class="end" part="end">
-            <slot name="end"></slot>
+        <div name="end" part="end" ${ref("endContainer")}>
+            <slot
+                name="end"
+                ${ref("end")}
+                @slotchange=${x => x.handleEndContentChange()}
+            ></slot>
         </div>
         <div class="tabpanel">
-            <slot part="tabpanel" role="tabpanel" ${slotted("tabPanels")}></slot>
+            <slot name="tabpanel" part="tabpanel" ${slotted("tabPanels")}></slot>
         </div>
     </template>
 `;

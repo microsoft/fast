@@ -1,13 +1,11 @@
 import { attr, FASTElement, observable } from "@microsoft/fast-element";
 import {
-    classNames,
     keyCodeArrowDown,
     keyCodeArrowLeft,
     keyCodeArrowRight,
     keyCodeArrowUp,
     keyCodeEnd,
     keyCodeHome,
-    Orientation,
 } from "@microsoft/fast-web-utilities";
 
 export enum TabsOrientation {
@@ -24,99 +22,133 @@ export class Tabs extends FASTElement {
             : this.classList.remove("vertical");
     }
 
+    @attr
+    public activeId: string;
+
     @observable
     public tabs: HTMLElement[];
     public tabsChanged(): void {
-        if (this.connected) {
-            console.log("Tabs", this.tabs);
-            this.getTabs(this.activeTabIndex);
+        if (this.connected && this.tabs.length <= this.tabPanels.length) {
+            this.getTabs();
+            this.getTabPanels();
+            this.handleActiveIndicatorPosition();
         }
     }
 
     @observable
     public tabPanels: HTMLElement[];
     public tabPanelsChanged(): void {
-        if (this.connected) {
-            console.log("Tab Panels", this.tabPanels);
-            this.getTabPanels(this.activeTabIndex);
+        if (this.connected && this.tabPanels.length <= this.tabs.length) {
+            this.getTabs();
+            this.getTabPanels();
+            this.handleActiveIndicatorPosition();
         }
     }
 
-    @attr({ mode: "boolean" })
-    public activeIndicator = false;
+    public start: HTMLSlotElement;
+    public startContainer: HTMLDivElement;
+    public handleStartContentChange(): void {
+        this.start.assignedNodes().length > 0
+            ? this.startContainer.classList.add("start")
+            : this.startContainer.classList.remove("start");
+    }
 
-    private activeTabIndex: number = 0;
+    public end: HTMLSlotElement;
+    public endContainer: HTMLDivElement;
+    public handleEndContentChange(): void {
+        this.end.assignedNodes().length > 0
+            ? this.endContainer.classList.add("end")
+            : this.endContainer.classList.remove("end");
+    }
+
+    public change = (): void => {
+        this.$emit("change", this.activeTab);
+    };
+
+    @attr({ mode: "boolean" })
+    public activeIndicator = true;
 
     @observable
     public activeIndicatorOffset: number = 0;
-
     public activeIndicatorRef: HTMLElement;
+    public activeTabIndex: number = 0;
+    public activeTab: HTMLElement;
 
-    private prevIndex: number = 0;
-
+    private prevActiveTabIndex: number = 0;
     private ticking: boolean = false;
-
     private tabIDs: string[];
     private tabPanelIDs: string[];
+    private connected: boolean = false;
 
-    private getTabs = (selectedTabIndex: number): void => {
+    private getActiveIndex(): number {
+        if (this.activeId !== undefined) {
+            return this.tabIDs.indexOf(this.activeId) === -1
+                ? 0
+                : this.tabIDs.indexOf(this.activeId);
+        } else {
+            return 0;
+        }
+    }
+
+    private getTabs = (): void => {
         this.tabIDs = this.getTabIds();
         this.tabPanelIDs = this.getTabPanelIds();
+        this.activeTabIndex = this.getActiveIndex();
         this.tabs.forEach((tab: HTMLElement, index: number) => {
             if (tab.slot === "tab") {
-                console.log(this.tabIDs);
+                tab.setAttribute(
+                    "id",
+                    this.tabIDs[index] === undefined || this.tabIDs[index] === null
+                        ? `tab-${index + 1}`
+                        : this.tabIDs[index]
+                );
                 tab.setAttribute(
                     "aria-selected",
-                    selectedTabIndex === index ? "true" : "false"
+                    this.activeTabIndex === index ? "true" : "false"
                 );
                 tab.setAttribute(
                     "aria-controls",
-                    this.tabPanelIDs[index] === undefined || null
-                        ? `panel-${index}`
+                    this.tabPanelIDs[index] === undefined ||
+                        this.tabPanelIDs[index] === null
+                        ? `panel-${index + 1}`
                         : this.tabPanelIDs[index]
-                );
-                tab.setAttribute(
-                    "id",
-                    this.tabIDs[index] === undefined || null
-                        ? `tab-${index}`
-                        : this.tabIDs[index]
                 );
                 tab.setAttribute(
                     "style",
                     this.isHorizontal()
-                        ? `grid-column: ${index + 1}; grid-row: 1`
-                        : `grid-row: ${index + 1}; grid-column: 2`
+                        ? `grid-column: ${index + 1};`
+                        : `grid-row: ${index + 1};`
                 );
                 tab.addEventListener("click", this.handleTabClick);
                 tab.addEventListener("keydown", this.handleTabKeyDown);
-                tab.setAttribute("tabindex", selectedTabIndex === index ? "0" : "-1");
+                tab.setAttribute("tabindex", this.activeTabIndex === index ? "0" : "-1");
+                if (this.activeTabIndex === index) {
+                    this.activeTab = tab;
+                }
+                !this.isHorizontal()
+                    ? tab.classList.add("vertical")
+                    : tab.classList.remove("vertical");
             }
         });
     };
 
-    private validTabPanels(element: HTMLElement): boolean {
-        return element.nodeType === 1 && element.getAttribute("role") === "tabpanel";
-    }
-
-    private getTabPanels = (selectedTabIndex: number): void => {
-        const tp = this.tabPanels.filter(this.validTabPanels);
+    private getTabPanels = (): void => {
         this.tabIDs = this.getTabIds();
         this.tabPanelIDs = this.getTabPanelIds();
-        console.log("Got Tab IDs", this.tabIDs);
-        tp.forEach((tabpanel: HTMLElement, index: number) => {
-            tabpanel.setAttribute(
-                "aria-labeledby",
-                this.tabIDs[index] === undefined || null
-                    ? `tab-${index}`
-                    : this.tabIDs[index]
-            );
+        this.tabPanels.forEach((tabpanel: HTMLElement, index: number) => {
             tabpanel.setAttribute(
                 "id",
-                this.tabPanelIDs[index] === undefined || null
-                    ? `panel-${index}`
+                this.tabPanelIDs[index] === undefined || this.tabPanelIDs[index] === null
+                    ? `panel-${index + 1}`
                     : this.tabPanelIDs[index]
             );
-            selectedTabIndex !== index
+            tabpanel.setAttribute(
+                "aria-labeledby",
+                this.tabIDs[index] === undefined || this.tabIDs[index] === null
+                    ? `tab-${index + 1}`
+                    : this.tabIDs[index]
+            );
+            this.activeTabIndex !== index
                 ? tabpanel.setAttribute("hidden", "")
                 : tabpanel.removeAttribute("hidden");
         });
@@ -124,32 +156,32 @@ export class Tabs extends FASTElement {
 
     private getTabIds(): string[] {
         return this.tabs.map((tab: HTMLElement) => {
-            console.log("Tabs gets called");
             return tab.getAttribute("id") as string;
         });
     }
 
     private getTabPanelIds(): string[] {
-        const tp = this.tabPanels.filter(this.validTabPanels);
-        return tp.map((tabPanel: HTMLElement) => {
-            console.log("TabPanels gets called");
+        return this.tabPanels.map((tabPanel: HTMLElement) => {
             return tabPanel.getAttribute("id") as string;
         });
     }
 
-    private setTabs(selectedTabIndex: number): void {
-        this.getTabs(selectedTabIndex);
+    private setTabs(): void {
+        this.activeId = this.tabIDs[this.activeTabIndex];
+        this.change();
+        this.getTabs();
         this.handleActiveIndicatorPosition();
-        this.getTabPanels(selectedTabIndex);
-        this.focusTab(selectedTabIndex);
+        this.getTabPanels();
+        this.focusTab();
+        this.change();
     }
 
     private handleTabClick = (event): void => {
         const selectedTab = event.srcElement as Element;
-        this.prevIndex = this.activeTabIndex;
+        this.prevActiveTabIndex = this.activeTabIndex;
         this.activeTabIndex = Array.from(this.tabs).indexOf(event.target);
         if (selectedTab.nodeType === 1) {
-            this.setTabs(this.activeTabIndex);
+            this.setTabs();
         }
     };
 
@@ -183,6 +215,18 @@ export class Tabs extends FASTElement {
                     break;
             }
         }
+        switch (keyCode) {
+            case keyCodeHome:
+                event.preventDefault();
+                this.activeTabIndex = 0;
+                this.setTabs();
+                break;
+            case keyCodeEnd:
+                event.preventDefault();
+                this.activeTabIndex = tabsLength - 1;
+                this.setTabs();
+                break;
+        }
     };
 
     private handleActiveIndicatorPosition() {
@@ -211,7 +255,7 @@ export class Tabs extends FASTElement {
             const prev: number = this.activeIndicatorRef.offsetLeft;
             this.activeIndicatorRef.style.gridColumn = `${this.activeTabIndex + 1}`;
             const next: number = this.activeIndicatorRef.offsetLeft;
-            this.activeIndicatorRef.style.gridColumn = `${this.prevIndex + 1}`;
+            this.activeIndicatorRef.style.gridColumn = `${this.prevActiveTabIndex + 1}`;
             const dif: number = next - prev;
             this.activeIndicatorRef.style.transform = `translateX(${dif}px)`;
             this.activeIndicatorRef.classList.add("activeIndicatorTransition");
@@ -225,7 +269,7 @@ export class Tabs extends FASTElement {
             const prev: number = this.activeIndicatorRef.offsetTop;
             this.activeIndicatorRef.style.gridRow = `${this.activeTabIndex + 1}`;
             const next: number = this.activeIndicatorRef.offsetTop;
-            this.activeIndicatorRef.style.gridRow = `${this.prevIndex + 1}`;
+            this.activeIndicatorRef.style.gridRow = `${this.prevActiveTabIndex + 1}`;
             const dif: number = next - prev;
             this.activeIndicatorRef.style.transform = `translateY(${dif}px)`;
             this.activeIndicatorRef.classList.add("activeIndicatorTransition");
@@ -239,28 +283,28 @@ export class Tabs extends FASTElement {
     }
 
     private decrement(tabsLength: number): void {
-        this.prevIndex = this.activeTabIndex;
+        this.prevActiveTabIndex = this.activeTabIndex;
         if (this.activeTabIndex !== 0) {
             this.activeTabIndex = this.activeTabIndex - 1;
         } else {
             this.activeTabIndex = tabsLength - 1;
         }
-        this.setTabs(this.activeTabIndex);
+        this.setTabs();
     }
 
     private increment(tabsLength: number): void {
-        this.prevIndex = this.activeTabIndex;
+        this.prevActiveTabIndex = this.activeTabIndex;
         if (this.activeTabIndex !== tabsLength - 1) {
             this.activeTabIndex = this.activeTabIndex + 1;
         } else {
             this.activeTabIndex = 0;
         }
-        this.setTabs(this.activeTabIndex);
+        this.setTabs();
     }
 
-    private focusTab(index: number): void {
+    private focusTab(): void {
         const tb = this.tabs as HTMLElement[];
-        tb[index].focus();
+        tb[this.activeTabIndex].focus();
     }
 
     public connectedCallback(): void {
@@ -268,5 +312,13 @@ export class Tabs extends FASTElement {
         this.connected = true;
     }
 
-    private connected: boolean = false;
+    constructor() {
+        super();
+
+        if (this.connected) {
+            this.tabIDs = this.getTabIds();
+            this.tabPanelIDs = this.getTabPanelIds();
+            this.activeTabIndex = this.getActiveIndex();
+        }
+    }
 }
