@@ -49,20 +49,10 @@ jobs:
       with:
         coverageCommand: lerna run test --stream
         coverageLocations: 
-          ${{github.workspace}}/packages/react/fast-components-foundation-react/coverage/lcov.info:lcov, ${{github.workspace}}/packages/react/fast-components-react-base/coverage/lcov.info:lcov
-          # './packages/react/fast-components-react-msft/coverage/lcov.info:lcov',
-          # './packages/react/fast-components-styles-msft/coverage/lcov.info:lcov',
-          # './packages/react/fast-jss-manager-react/coverage/lcov.info:lcov',
-          # './packages/react/fast-jss-utilities/coverage/lcov.info:lcov',
-          # './packages/react/fast-layouts-react/coverage/lcov.info:lcov',
-          # './packages/react/fast-react-utilities/coverage/lcov.info:lcov',
-          # './packages/tooling/fast-tooling/coverage/lcov.info:lcov',
-          # './packages/tooling/fast-tooling-react/coverage/lcov.info:lcov',
-          # './packages/utilities/fast-animation/coverage/lcov.info:lcov',
-          # './packages/utilities/fast-colors/coverage/lcov.info:lcov',
-          # './packages/utilities/fast-web-utilities/coverage/lcov.info:lcov'
+          ${{github.workspace}}/packages/react/fast-components-foundation-react/coverage/lcov.info:lcov ${{github.workspace}}/packages/react/fast-components-react-base/coverage/lcov.info:lcov ./packages/react/fast-components-react-msft/coverage/lcov.info:lcov ./packages/react/fast-components-styles-msft/coverage/lcov.info:lcov ${{github.workspace}}/packages/react/fast-jss-manager-react/coverage/lcov.info:lcov ${{github.workspace}}/packages/react/fast-jss-utilities/coverage/lcov.info:lcov ${{github.workspace}}/packages/react/fast-layouts-react/coverage/lcov.info:lcov ${{github.workspace}}/packages/react/fast-react-utilities/coverage/lcov.info:lcov ${{github.workspace}}/packages/tooling/fast-tooling/coverage/lcov.info:lcov ${{github.workspace}}/packages/tooling/fast-tooling-react/coverage/lcov.info:lcov ${{github.workspace}}/packages/utilities/fast-animation/coverage/lcov.info:lcov ${{github.workspace}}/packages/utilities/fast-colors/coverage/lcov.info:lcov ${{github.workspace}}/packages/utilities/fast-web-utilities/coverage/lcov.info:lcov
         debug: true
-            
+ 
+    # Handling arrays on GitHub Actions https://github.community/t5/GitHub-Actions/Can-action-inputs-be-arrays/td-p/33776
     # Stop reporting to Code Climate until a resolution exists for incompatabilities with Jest 25.x
     # as described in https://github.com/codeclimate/test-reporter/issues/427 
     # - name: Install Code Climate
