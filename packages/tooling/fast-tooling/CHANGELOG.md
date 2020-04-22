@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.2.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling@0.1.0...@microsoft/fast-tooling@0.2.0) (2020-04-22)
+
+
+### Features
+
+* allow a data update to be applied to a different dictionary item ([#2946](https://github.com/Microsoft/fast-dna/issues/2946)) ([41c7a2a](https://github.com/Microsoft/fast-dna/commit/41c7a2add7eb3faa15c63cc3df63db421a7d88c0))
+
+
+
+
+
 # 0.1.0 (2020-04-10)
 
 
