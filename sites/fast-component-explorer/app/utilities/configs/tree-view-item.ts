@@ -1,29 +1,42 @@
-import {
-    TreeViewItem,
-    TreeViewItemProps,
-    treeViewItemSchema,
-} from "@microsoft/fast-components-react-msft";
+import { TreeViewItem, treeViewItemSchema2 } from "@microsoft/fast-components-react-msft";
 import Guidance from "../../.tmp/tree-view-item/guidance";
-import { glyphSchema, Icon } from "../../../app/components/glyph";
+import { glyphSchema, Icon } from "../../components/glyph";
 import { ComponentViewConfig } from "./data.props";
 
-const treeViewItemConfig: ComponentViewConfig<TreeViewItemProps> = {
-    schema: treeViewItemSchema,
+const treeViewItemConfig: ComponentViewConfig = {
+    schema: treeViewItemSchema2,
     component: TreeViewItem,
     guidance: Guidance,
     scenarios: [
         {
             displayName: "Basic (selected)",
-            data: {
-                titleContent: "Favorites",
-                beforeContent: {
-                    id: glyphSchema.id,
-                    props: {
-                        path: Icon.folder,
+            dataDictionary: [
+                {
+                    root: {
+                        schemaId: treeViewItemSchema2.id,
+                        data: {
+                            titleContent: "Favorites",
+                            selected: true,
+                            beforeContent: [
+                                {
+                                    id: "beforeContent",
+                                },
+                            ],
+                        },
                     },
-                } as any,
-                selected: true,
-            },
+                    beforeContent: {
+                        parent: {
+                            id: "root",
+                            dataLocation: "beforeContent",
+                        },
+                        schemaId: glyphSchema.id,
+                        data: {
+                            path: Icon.folder,
+                        },
+                    },
+                },
+                "root",
+            ],
         },
     ],
 };

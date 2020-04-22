@@ -1,7 +1,6 @@
 import {
     Divider,
     DividerClassNameContract,
-    DividerProps,
     dividerSchema,
 } from "@microsoft/fast-components-react-msft";
 import { DesignSystem } from "@microsoft/fast-components-styles-msft";
@@ -15,16 +14,24 @@ const styles: ComponentStyleSheet<DividerClassNameContract, DesignSystem> = {
     },
 };
 
-const dividerConfig: ComponentViewConfig<DividerProps> = {
+const dividerConfig: ComponentViewConfig = {
     schema: dividerSchema,
     component: Divider,
     guidance: Guidance,
     scenarios: [
         {
             displayName: "Basic",
-            data: {
-                jssStyleSheet: styles,
-            },
+            dataDictionary: [
+                {
+                    root: {
+                        schemaId: dividerSchema.id,
+                        data: {
+                            jssStyleSheet: styles,
+                        },
+                    },
+                },
+                "root",
+            ],
         },
     ],
 };

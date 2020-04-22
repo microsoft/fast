@@ -1,4 +1,6 @@
-export interface Scenario<D> {
+import { DataDictionary } from "@microsoft/fast-tooling";
+
+export interface Scenario {
     /**
      * The name to display for this scenario
      */
@@ -7,10 +9,10 @@ export interface Scenario<D> {
     /**
      * The data for this scenario
      */
-    data: D;
+    dataDictionary: DataDictionary<unknown>;
 }
 
-export interface ComponentViewConfig<D> {
+export interface ComponentViewConfig {
     /**
      * The JSON schema associated with the component
      */
@@ -29,5 +31,5 @@ export interface ComponentViewConfig<D> {
     /**
      * The scenarios associated with the component
      */
-    scenarios: Array<Scenario<D>>;
+    scenarios: Array<Scenario>;
 }

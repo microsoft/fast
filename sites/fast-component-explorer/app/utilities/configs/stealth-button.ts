@@ -1,60 +1,178 @@
 import {
     StealthButton,
-    StealthButtonProps,
-    stealthButtonSchema,
+    stealthButtonSchema2,
 } from "@microsoft/fast-components-react-msft";
 import Guidance from "../../.tmp/accent-button/guidance";
-import { glyphSchema, Icon } from "../../../app/components/glyph";
+import { glyphSchema, Icon } from "../../components/glyph";
+import textSchema from "../../msft-component-helpers/text.schema";
 import { ComponentViewConfig } from "./data.props";
 
-const stealthButtonConfig: ComponentViewConfig<StealthButtonProps> = {
-    schema: stealthButtonSchema,
+const stealthButtonConfig: ComponentViewConfig = {
+    schema: stealthButtonSchema2,
     component: StealthButton,
     guidance: Guidance,
     scenarios: [
         {
             displayName: "Default",
-            data: {
-                children: "Stealth button",
-            },
+            dataDictionary: [
+                {
+                    root: {
+                        schemaId: stealthButtonSchema2.id,
+                        data: {
+                            children: [
+                                {
+                                    id: "children",
+                                },
+                            ],
+                        },
+                    },
+                    children: {
+                        parent: {
+                            id: "root",
+                            dataLocation: "children",
+                        },
+                        schemaId: textSchema.id,
+                        data: "Stealth button",
+                    },
+                },
+                "root",
+            ],
         },
         {
             displayName: "Anchor",
-            data: {
-                href: "#",
-                children: "Stealth button",
-            },
+            dataDictionary: [
+                {
+                    root: {
+                        schemaId: stealthButtonSchema2.id,
+                        data: {
+                            href: "#",
+                            children: [
+                                {
+                                    id: "children",
+                                },
+                            ],
+                        },
+                    },
+                    children: {
+                        parent: {
+                            id: "root",
+                            dataLocation: "children",
+                        },
+                        schemaId: textSchema.id,
+                        data: "Stealth button",
+                    },
+                },
+                "root",
+            ],
         },
         {
             displayName: "Disabled",
-            data: {
-                disabled: true,
-                children: "Stealth button",
-            },
+            dataDictionary: [
+                {
+                    root: {
+                        schemaId: stealthButtonSchema2.id,
+                        data: {
+                            disabled: true,
+                            children: [
+                                {
+                                    id: "children",
+                                },
+                            ],
+                        },
+                    },
+                    children: {
+                        parent: {
+                            id: "root",
+                            dataLocation: "children",
+                        },
+                        schemaId: textSchema.id,
+                        data: "Stealth button",
+                    },
+                },
+                "root",
+            ],
         },
         {
             displayName: "Glyph before text",
-            data: {
-                children: "Stealth button",
-                beforeContent: {
-                    id: glyphSchema.id,
-                    props: {
-                        path: Icon.user,
+            dataDictionary: [
+                {
+                    root: {
+                        schemaId: stealthButtonSchema2.id,
+                        data: {
+                            children: [
+                                {
+                                    id: "children",
+                                },
+                            ],
+                            beforeContent: [
+                                {
+                                    id: "beforeContent",
+                                },
+                            ],
+                        },
                     },
-                } as any,
-            },
+                    children: {
+                        parent: {
+                            id: "root",
+                            dataLocation: "children",
+                        },
+                        schemaId: textSchema.id,
+                        data: "Stealth button",
+                    },
+                    beforeContent: {
+                        parent: {
+                            id: "root",
+                            dataLocation: "beforeContent",
+                        },
+                        schemaId: glyphSchema.id,
+                        data: {
+                            path: Icon.user,
+                        },
+                    },
+                },
+                "root",
+            ],
         },
         {
             displayName: "Glyph after text",
-            data: {
-                children: "Stealth button",
-                afterContent: {
-                    id: glyphSchema.id,
-                    props: {
-                        path: Icon.arrow,
+            dataDictionary: [
+                {
+                    root: {
+                        schemaId: stealthButtonSchema2.id,
+                        data: {
+                            children: [
+                                {
+                                    id: "children",
+                                },
+                            ],
+                            afterContent: [
+                                {
+                                    id: "afterContent",
+                                },
+                            ],
+                        },
                     },
-                } as any,
-            },
+                    children: {
+                        parent: {
+                            id: "root",
+                            dataLocation: "children",
+                        },
+                        schemaId: textSchema.id,
+                        data: "Stealth button",
+                    },
+                    afterContent: {
+                        parent: {
+                            id: "root",
+                            dataLocation: "afterContent",
+                        },
+                        schemaId: glyphSchema.id,
+                        data: {
+                            path: Icon.arrow,
+                        },
+                    },
+                },
+                "root",
+            ],
         },
     ],
 };

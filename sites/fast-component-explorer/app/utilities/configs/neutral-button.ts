@@ -1,60 +1,174 @@
 import {
     NeutralButton,
-    NeutralButtonProps,
-    neutralButtonSchema,
+    neutralButtonSchema2,
 } from "@microsoft/fast-components-react-msft";
-import Guidance from "../../.tmp/accent-button/guidance";
+import Guidance from "../../.tmp/neutral-button/guidance";
 import { glyphSchema, Icon } from "../../../app/components/glyph";
+import textSchema from "../../msft-component-helpers/text.schema";
 import { ComponentViewConfig } from "./data.props";
 
-const neutralButtonConfig: ComponentViewConfig<NeutralButtonProps> = {
-    schema: neutralButtonSchema,
+const neutralButtonConfig: ComponentViewConfig = {
+    schema: neutralButtonSchema2,
     component: NeutralButton,
     guidance: Guidance,
     scenarios: [
         {
             displayName: "Default",
-            data: {
-                children: "Neutral button",
-            },
+            dataDictionary: [
+                {
+                    root: {
+                        schemaId: neutralButtonSchema2.id,
+                        data: {
+                            children: [
+                                {
+                                    id: "children",
+                                },
+                            ],
+                        },
+                    },
+                    children: {
+                        parent: {
+                            id: "root",
+                            dataLocation: "children",
+                        },
+                        schemaId: textSchema.id,
+                        data: "Neutral button",
+                    },
+                },
+                "root",
+            ],
         },
         {
             displayName: "Anchor",
-            data: {
-                href: "#",
-                children: "Neutral button",
-            },
+            dataDictionary: [
+                {
+                    root: {
+                        schemaId: neutralButtonSchema2.id,
+                        data: {
+                            href: "#",
+                            children: [
+                                {
+                                    id: "children",
+                                },
+                            ],
+                        },
+                    },
+                    children: {
+                        parent: {
+                            id: "root",
+                            dataLocation: "children",
+                        },
+                        schemaId: textSchema.id,
+                        data: "Neutral button",
+                    },
+                },
+                "root",
+            ],
         },
         {
             displayName: "Disabled",
-            data: {
-                disabled: true,
-                children: "Neutral button",
-            },
+            dataDictionary: [
+                {
+                    root: {
+                        schemaId: neutralButtonSchema2.id,
+                        data: {
+                            disabled: true,
+                            children: [
+                                {
+                                    id: "children",
+                                },
+                            ],
+                        },
+                    },
+                    children: {
+                        parent: {
+                            id: "root",
+                            dataLocation: "children",
+                        },
+                        schemaId: textSchema.id,
+                        data: "Neutral button",
+                    },
+                },
+                "root",
+            ],
         },
         {
             displayName: "Glyph before text",
-            data: {
-                children: "Neutral button",
-                beforeContent: {
-                    id: glyphSchema.id,
-                    props: {
-                        path: Icon.user,
+            dataDictionary: [
+                {
+                    root: {
+                        schemaId: neutralButtonSchema2.id,
+                        data: {
+                            children: [
+                                {
+                                    id: "children",
+                                },
+                                {
+                                    id: "beforeContent",
+                                },
+                            ],
+                        },
                     },
-                } as any,
-            },
+                    children: {
+                        parent: {
+                            id: "root",
+                            dataLocation: "children",
+                        },
+                        schemaId: textSchema.id,
+                        data: "Neutral button",
+                    },
+                    beforeContent: {
+                        parent: {
+                            id: "root",
+                            dataLocation: "beforeContent",
+                        },
+                        schemaId: glyphSchema.id,
+                        data: {
+                            path: Icon.user,
+                        },
+                    },
+                },
+                "root",
+            ],
         },
         {
             displayName: "Glyph after text",
-            data: {
-                children: "Neutral button",
-                afterContent: {
-                    id: glyphSchema.id,
-                    props: {
-                        path: Icon.arrow,
+            dataDictionary: [
+                {
+                    root: {
+                        schemaId: neutralButtonSchema2.id,
+                        data: {
+                            children: [
+                                {
+                                    id: "children",
+                                },
+                                {
+                                    id: "afterContent",
+                                },
+                            ],
+                        },
                     },
-                } as any,
-            },
+                    children: {
+                        parent: {
+                            id: "root",
+                            dataLocation: "children",
+                        },
+                        schemaId: textSchema.id,
+                        data: "Neutral button",
+                    },
+                    afterContent: {
+                        parent: {
+                            id: "root",
+                            dataLocation: "afterContent",
+                        },
+                        schemaId: glyphSchema.id,
+                        data: {
+                            path: Icon.arrow,
+                        },
+                    },
+                },
+                "root",
+            ],
         },
     ],
 };
