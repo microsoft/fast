@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.6.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-figma-plugin-msft@0.5.0...@microsoft/fast-figma-plugin-msft@0.6.0) (2020-04-22)
+
+
+### Bug Fixes
+
+* align Fast to FAST ([#2950](https://github.com/Microsoft/fast-dna/issues/2950)) ([94c8744](https://github.com/Microsoft/fast-dna/commit/94c874455eccbb8609715c7fa96095a226428813))
+
+
+### Features
+
+* refactor recipe implementation to use behaviors ([#2947](https://github.com/Microsoft/fast-dna/issues/2947)) ([e8834e5](https://github.com/Microsoft/fast-dna/commit/e8834e5c1d322ce0681e53e5d4cbba1ec112d76d))
+
+
+
+
+
 # [0.5.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-figma-plugin-msft@0.4.7...@microsoft/fast-figma-plugin-msft@0.5.0) (2020-04-13)
 
 

@@ -1,6 +1,6 @@
 {
   "name": "@microsoft/fast-storybook-presets",
-  "version": "1.1.37",
+  "version": "1.2.0",
   "description": "Storybook presets for FAST integration",
   "main": "dist/index.js",
   "author": {
@@ -25,14 +25,14 @@
     "watch": "tsc -p ./tsconfig.json -w --preserveWatchOutput"
   },
   "dependencies": {
-    "@microsoft/fast-components-styles-msft": "^4.28.6",
-    "@microsoft/fast-storybook-design-system-addon": "^1.2.31",
+    "@microsoft/fast-components-styles-msft": "^4.28.7",
+    "@microsoft/fast-storybook-design-system-addon": "^1.2.32",
     "@storybook/addon-a11y": "^5.1.9",
     "@storybook/addon-actions": "^5.1.9",
     "@storybook/addon-viewport": "^5.1.9",
-    "storybook-addon-performance": "^0.7.0",
     "glob": "^7.1.4",
-    "lodash": "^4.17.11"
+    "lodash": "^4.17.11",
+    "storybook-addon-performance": "^0.7.0"
   },
   "peerDependencies": {
     "@microsoft/fast-jss-manager-react": "^4.3.5",
@@ -40,7 +40,7 @@
     "react": "^16.6.0"
   },
   "devDependencies": {
-    "@microsoft/eslint-config-fast-dna": "^1.1.0",
+    "@microsoft/eslint-config-fast-dna": "^1.1.1",
     "@storybook/react": "^5.1.3",
     "@storybook/theming": "^5.1.3",
     "@types/react": "^16.8.19",

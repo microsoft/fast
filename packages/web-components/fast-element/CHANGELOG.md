@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.7.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-element@0.6.0...@microsoft/fast-element@0.7.0) (2020-04-22)
+
+
+### Bug Fixes
+
+* **fast-element:** remove unnecessary references ([#2966](https://github.com/Microsoft/fast-dna/issues/2966)) ([5b724c2](https://github.com/Microsoft/fast-dna/commit/5b724c21476a1abbc3c52b15bdb790565d43d60d))
+* align Fast to FAST ([#2950](https://github.com/Microsoft/fast-dna/issues/2950)) ([94c8744](https://github.com/Microsoft/fast-dna/commit/94c874455eccbb8609715c7fa96095a226428813))
+
+
+### Features
+
+* **fast-element:** add functioning execution context ([#2935](https://github.com/Microsoft/fast-dna/issues/2935)) ([707d4e7](https://github.com/Microsoft/fast-dna/commit/707d4e7ef3b7bee5b77f4b63b1c71666bbb2bd02))
+* **fast-element:** safe class binding ([#2957](https://github.com/Microsoft/fast-dna/issues/2957)) ([e06d73c](https://github.com/Microsoft/fast-dna/commit/e06d73cc2c819bd0683e24a6bd7631beac4a2390))
+
+
+
+
+
 # [0.6.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-element@0.5.0...@microsoft/fast-element@0.6.0) (2020-04-10)
 
 

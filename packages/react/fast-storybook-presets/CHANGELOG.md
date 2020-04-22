@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.2.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-storybook-presets@1.1.37...@microsoft/fast-storybook-presets@1.2.0) (2020-04-22)
+
+
+### Features
+
+* add performance benchmark package to fast-storybook-presets ([#2920](https://github.com/Microsoft/fast-dna/issues/2920)) ([ebd73de](https://github.com/Microsoft/fast-dna/commit/ebd73de99af153ebe73aba19112640a52437bdb2))
+
+
+
+
+
 ## [1.1.37](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-storybook-presets@1.1.36...@microsoft/fast-storybook-presets@1.1.37) (2020-04-10)
 
 **Note:** Version bump only for package @microsoft/fast-storybook-presets
