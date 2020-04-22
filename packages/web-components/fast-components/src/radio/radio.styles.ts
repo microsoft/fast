@@ -12,7 +12,6 @@ import {
 } from "../styles/recipes";
 
 export const RadioStyles = css`
-    --var
     ${display("inline-flex")} :host {
         --input-size: calc((${heightNumber} * 0.5) + var(--design-unit));
         align-items: center;

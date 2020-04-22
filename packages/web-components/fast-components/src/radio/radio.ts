@@ -7,7 +7,7 @@ import {
     keyCodeSpace,
 } from "@microsoft/fast-web-utilities";
 import { FormAssociated } from "../form-associated";
-import { FASTRadio } from ".";
+import { FASTRadio } from "./";
 
 const radioGroups = new Map<string, FASTRadio[]>();
 
@@ -83,6 +83,7 @@ export class Radio extends FormAssociated<HTMLInputElement> {
             this.proxy.checked = this.checked;
         }
 
+        this.$emit("change");
         this.dispatchEvent(new CustomEvent("change", { bubbles: true, composed: true }));
         this.checked ? this.classList.add("checked") : this.classList.remove("checked");
         this.checkedAttribute = this.checked;
@@ -93,7 +94,7 @@ export class Radio extends FormAssociated<HTMLInputElement> {
     }
 
     private updateOtherGroupRadios(): void {
-        if (this.name !== undefined && this.parentNode) {
+        if (this.name !== undefined) {
             const radioGroup = radioGroups.get(this.name);
             radioGroup?.forEach((radio: FASTRadio) => {
                 if (radio.getAttribute("value") !== this.value) {
@@ -117,6 +118,7 @@ export class Radio extends FormAssociated<HTMLInputElement> {
     constructor() {
         super();
         this.proxy.setAttribute("type", "radio");
+        this.addEventListener("keydown", this.keydownHandler);
     }
 
     public connectedCallback(): void {
@@ -130,8 +132,6 @@ export class Radio extends FormAssociated<HTMLInputElement> {
                 radioGroups.set(this.name, [this]);
             }
         }
-
-        this.addEventListener("keydown", this.keydownHandler);
     }
 
     public disconnectedCallback(): void {
@@ -145,7 +145,6 @@ export class Radio extends FormAssociated<HTMLInputElement> {
                 radioGroups.delete(this.name);
             }
         }
-        this.removeEventListener("keydown", this.keydownHandler);
     }
 
     private updateForm(): void {
