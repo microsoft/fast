@@ -152,44 +152,51 @@ export class Radio extends FormAssociated<HTMLInputElement> {
         this.setFormValue(value, value);
     }
 
-    public keydownHandler = (e: KeyboardEvent): void => {
-        const group = radioGroups.get(this.name);
+    private moveToRadioByIndex = (group: FASTRadio[], index: number): void => {
+        group[index].checked = true;
+        group[index].focus();
+    };
 
-        switch (e.keyCode) {
-            case keyCodeArrowRight:
-            case keyCodeArrowUp:
-                if (this.name !== undefined) {
-                    if (group) {
-                        let index = group.indexOf(this) + 1;
-                        while (index < group.length) {
-                            if (!group[index].disabled) {
-                                group[index].checked = true;
-                                group[index].focus();
-                                break;
-                            } else {
-                                index += 1;
-                            }
+    public keydownHandler = (e: KeyboardEvent): void => {
+        const group: FASTRadio[] = radioGroups.get(this.name) as FASTRadio[];
+        let index = 0;
+        if (group && this.name !== undefined) {
+            switch (e.keyCode) {
+                case keyCodeArrowRight:
+                case keyCodeArrowUp:
+                    index = group.indexOf(this) + 1;
+                    index = index === group.length ? 0 : index;
+                    while (index < group.length) {
+                        if (!group[index].disabled) {
+                            this.moveToRadioByIndex(group, index);
+                            break;
+                        } else if (index === group.indexOf(this)) {
+                            break;
+                        } else if (index + 1 >= group.length) {
+                            index = 0;
+                        } else {
+                            index += 1;
                         }
                     }
-                }
-                break;
-            case keyCodeArrowLeft:
-            case keyCodeArrowDown:
-                if (this.name !== undefined) {
-                    if (group) {
-                        let index = group.indexOf(this) - 1;
-                        while (index >= 0) {
-                            if (!group[index].disabled) {
-                                group[index].checked = true;
-                                group[index].focus();
-                                break;
-                            } else {
-                                index -= 1;
-                            }
+                    break;
+                case keyCodeArrowLeft:
+                case keyCodeArrowDown:
+                    index = group.indexOf(this) - 1;
+                    index = index < 0 ? group.length - 1 : index;
+                    while (index >= 0) {
+                        if (!group[index].disabled) {
+                            this.moveToRadioByIndex(group, index);
+                            break;
+                        } else if (index === group.indexOf(this)) {
+                            break;
+                        } else if (index - 1 < 0) {
+                            index = group.length - 1;
+                        } else {
+                            index -= 1;
                         }
                     }
-                }
-                break;
+                    break;
+            }
         }
     };
 
