@@ -1,32 +1,52 @@
-import {
-    TextArea,
-    TextAreaProps,
-    textAreaSchema,
-} from "@microsoft/fast-components-react-msft";
+import { TextArea, textAreaSchema } from "@microsoft/fast-components-react-msft";
 import Guidance from "../../.tmp/text-area/guidance";
 import { ComponentViewConfig } from "./data.props";
 
-const textAreaConfig: ComponentViewConfig<TextAreaProps> = {
+const textAreaConfig: ComponentViewConfig = {
     schema: textAreaSchema,
     component: TextArea,
     guidance: Guidance,
     scenarios: [
         {
             displayName: "Basic",
-            data: {},
+            dataDictionary: [
+                {
+                    root: {
+                        schemaId: textAreaSchema.id,
+                        data: {},
+                    },
+                },
+                "root",
+            ],
         },
         {
             displayName: "Placeholder",
-            data: {
-                placeholder: "Placeholder",
-            },
+            dataDictionary: [
+                {
+                    root: {
+                        schemaId: textAreaSchema.id,
+                        data: {
+                            placeholder: "Placeholder",
+                        },
+                    },
+                },
+                "root",
+            ],
         },
         {
             displayName: "Disabled",
-            data: {
-                disabled: true,
-                placeholder: "Placeholder",
-            },
+            dataDictionary: [
+                {
+                    root: {
+                        schemaId: textAreaSchema.id,
+                        data: {
+                            disabled: true,
+                            placeholder: "Placeholder",
+                        },
+                    },
+                },
+                "root",
+            ],
         },
     ],
 };

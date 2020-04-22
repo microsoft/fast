@@ -1,27 +1,6 @@
 import { DesignSystem } from "@microsoft/fast-components-styles-msft";
 import { ExplorerClassNameContract } from "./explorer.style";
-
-/**
- * The properties of a component
- */
-export interface ComponentProps<T> {
-    id: string;
-    props: T;
-}
-
-/**
- * The view config
- */
-export interface ViewConfig {
-    /**
-     * Viewer design system
-     */
-    designSystem: DesignSystem;
-    /**
-     * Viewer has transparent background
-     */
-    transparentBackground: boolean;
-}
+import { ComponentViewConfig } from "./utilities/configs/data.props";
 
 export type ExplorerUnhandledProps = React.HTMLAttributes<HTMLDivElement>;
 
@@ -44,11 +23,6 @@ export enum ThemeName {
 
 export interface ExplorerState {
     /**
-     * The current data location
-     */
-    dataLocation: string;
-
-    /**
      * The current location path based on route
      */
     locationPathname: string;
@@ -64,9 +38,14 @@ export interface ExplorerState {
     height: number;
 
     /**
-     * The scenario
+     * The selected component
      */
-    scenario: ComponentProps<unknown> | void;
+    componentName: string;
+
+    /**
+     * The selected components schema ID
+     */
+    componentConfig: ComponentViewConfig;
 
     /**
      * The selected scenario index
@@ -74,9 +53,14 @@ export interface ExplorerState {
     selectedScenarioIndex: number;
 
     /**
-     * The configuration for the view
+     * Viewer design system
      */
-    viewConfig: ViewConfig;
+    designSystem: DesignSystem;
+
+    /**
+     * Viewer has transparent background
+     */
+    transparentBackground: boolean;
 
     /**
      * The explorer theme

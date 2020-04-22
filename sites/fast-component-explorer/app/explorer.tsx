@@ -1,5 +1,4 @@
-import { CodePreviewChildOption } from "@microsoft/fast-tooling-react/dist/data-utilities/mapping";
-import { camelCase, get, memoize } from "lodash-es";
+import { camelCase, get } from "lodash-es";
 import {
     Canvas,
     CanvasClassNamesContract,
@@ -9,19 +8,12 @@ import {
     Row,
     RowResizeDirection,
 } from "@microsoft/fast-layouts-react";
-import {
-    Form,
-    mapDataToCodePreview,
-    NavigationMenu,
-    Viewer,
-    ViewerClassNameContract,
-} from "@microsoft/fast-tooling-react";
+import { Form, NavigationMenu, Viewer } from "@microsoft/fast-tooling-react";
 import manageJss, { ComponentStyleSheet } from "@microsoft/fast-jss-manager-react";
 import ReactDOM from "react-dom";
 import React from "react";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import {
-    applyCornerRadius,
     createColorPalette,
     DesignSystem,
     DesignSystemDefaults,
@@ -58,33 +50,35 @@ import {
     ToggleClassNameContract,
     Typography,
 } from "@microsoft/fast-components-react-msft";
-import { FormChildOptionItem } from "@microsoft/fast-tooling-react/dist/form/types";
-import { FormClassNameContract } from "@microsoft/fast-tooling-react/dist/form/form";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { MemoizedFunction, uniqueId } from "lodash";
+import { uniqueId } from "lodash";
 import { classNames, Direction } from "@microsoft/fast-web-utilities";
 import { ColorRGBA64, parseColor } from "@microsoft/fast-colors";
 import { format, multiply, toPx } from "@microsoft/fast-jss-utilities";
-import { NavigationMenuClassNameContract } from "@microsoft/fast-tooling-react/dist/navigation-menu/navigation-menu.style";
 import { StandardLuminance } from "@microsoft/fast-components-styles-msft";
+import {
+    AjvMapper,
+    DataDictionary,
+    MessageSystem,
+    MessageSystemNavigationTypeAction,
+    MessageSystemType,
+} from "@microsoft/fast-tooling";
+import FASTMessageSystemWorker from "@microsoft/fast-tooling/dist/message-system.min.js";
 import { ComponentViewConfig, Scenario } from "./utilities/configs/data.props";
 import * as componentViewConfigsWithoutCustomConfig from "./utilities/configs";
-import { childOptions, history, menu } from "./config";
-import syntaxHighlighterStyles from "./syntax-highlighting-style";
-import style, { applyScrollbarStyle, ExplorerClassNameContract } from "./explorer.style";
+import { history, menu, schemaDictionary } from "./config";
+import style, { ExplorerClassNameContract } from "./explorer.style";
 import { downChevron, upChevron } from "./icons/chevrons";
 import {
-    ComponentProps,
     ExplorerHandledProps,
     ExplorerProps,
     ExplorerState,
     ExplorerUnhandledProps,
     ThemeName,
-    ViewConfig,
 } from "./explorer.props";
+import { previewReady } from "./preview";
 
 interface ObjectOfComponentViewConfigs {
-    [key: string]: ComponentViewConfig<any>;
+    [key: string]: ComponentViewConfig;
 }
 
 // Prepends the custom scenario to each components list fo scenarios
@@ -101,7 +95,8 @@ function setViewConfigsWithCustomConfig(
                 scenarios: [
                     {
                         displayName: "Custom",
-                        data: viewConfigs[viewConfigKey].scenarios[0].data,
+                        dataDictionary:
+                            viewConfigs[viewConfigKey].scenarios[0].dataDictionary,
                     },
                 ].concat(viewConfigs[viewConfigKey].scenarios),
             }
@@ -113,6 +108,9 @@ function setViewConfigsWithCustomConfig(
 
 const dark: string = `#333333`;
 const light: string = "#FFFFFF";
+export const designSystemLinkedDataId: string = "designSystem";
+const fastMessageSystemWorker = new FASTMessageSystemWorker();
+let fastMessageSystem: void | MessageSystem;
 
 class Explorer extends Foundation<
     ExplorerHandledProps,
@@ -141,59 +139,11 @@ class Explorer extends Foundation<
     private checker: string =
         "url('data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMiAyIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGQ9Ik0xIDJWMGgxdjFIMHYxaDF6IiBmaWxsPSIjMDAwIiBmaWxsLW9wYWNpdHk9Ii4xNSIvPjxwYXRoIGQ9Ik0xIDJWMEgwdjFoMnYxSDF6IiBmaWxsPSIjZmZmIiBmaWxsLW9wYWNpdHk9Ii4xNSIvPjwvc3ZnPg==')";
 
-    private viewerStyleOverrides: (
-        viewConfig: ViewConfig
-    ) => ComponentStyleSheet<Partial<ViewerClassNameContract>, DesignSystem> = memoize(
-        (
-            viewConfig: ViewConfig
-        ): ComponentStyleSheet<Partial<ViewerClassNameContract>, DesignSystem> => ({
-            viewer: {
-                minHeight: "unset",
-                width: "fit-content",
-            },
-            viewer_iframe: {
-                "background-size": "8px 8px",
-                backgroundColor: neutralLayerL1(viewConfig.designSystem),
-                background: viewConfig.transparentBackground
-                    ? `transparent ${toPx(8)}/${toPx(8)} ${this.checker} repeat`
-                    : "unset",
-                ...applyCornerRadius(),
-            },
-        })
-    );
-
-    private formStyleOverrides: ComponentStyleSheet<
-        Partial<FormClassNameContract>,
-        DesignSystem
-    > = {
-        form: {
-            height: "unset",
-            background: "unset",
-            paddingRight: "12px",
-        },
-    };
-
-    private navigationMenuStyleOverrides: ComponentStyleSheet<
-        Partial<NavigationMenuClassNameContract>,
-        DesignSystem
-    > = {
-        navigationMenu: {
-            background: "unset",
-        },
-        navigationMenuItem: {
-            textIndent: "0",
-        },
-        navigationMenuItem_listItem: {
-            paddingLeft: "10px",
-        },
-    };
-
     private pivotStyleOverrides: ComponentStyleSheet<
         Partial<PivotClassNameContract>,
         DesignSystem
     > = {
         pivot: {
-            height: "100%",
             boxSizing: "border-box",
         },
         pivot_tabList: {
@@ -206,14 +156,11 @@ class Explorer extends Foundation<
             padding: format("{0} {1}", toPx(designUnit), toPx(multiply(designUnit, 2))),
         },
         pivot_tabPanels: {
-            overflow: "auto",
-            height: "calc(100% - 32px)",
             borderTop: format<DesignSystem>(
                 "{0} solid {1}",
                 neutralDividerRest,
                 toPx(outlineWidth)
             ),
-            ...applyScrollbarStyle(),
         },
     };
 
@@ -256,36 +203,52 @@ class Explorer extends Foundation<
         },
     };
 
-    private resolveSchemaById: ((id: string) => any) & MemoizedFunction;
-
     constructor(props: ExplorerProps) {
         super(props);
 
         const locationPathname: string = get(this.props, "location.pathname", "");
+        const componentName: string = this.getComponentNameSpinalCaseByPath(
+            locationPathname
+        );
+        const componentConfig: any = get(
+            setViewConfigsWithCustomConfig(componentViewConfigsWithoutCustomConfig),
+            `${camelCase(componentName)}Config`
+        );
+        const selectedScenarioIndex: number = 1;
 
-        this.resolveSchemaById = memoize(this.getSchemaById);
+        if ((window as any).Worker) {
+            fastMessageSystem = new MessageSystem({
+                webWorker: fastMessageSystemWorker,
+                dataDictionary: this.getScenarioData(
+                    componentConfig,
+                    selectedScenarioIndex
+                ),
+                schemaDictionary,
+            });
+            new AjvMapper({
+                messageSystem: fastMessageSystem,
+            });
+            fastMessageSystem.add({
+                onMessage: this.handleMessageSystem,
+            });
+        }
 
         this.state = {
-            dataLocation: "",
             width: 0,
             height: 0,
-            scenario: this.getScenarioData(
-                this.getComponentNameSpinalCaseByPath(locationPathname),
-                1
-            ),
-            selectedScenarioIndex: 1,
+            componentName,
+            componentConfig,
+            selectedScenarioIndex,
             locationPathname,
             theme: ThemeName.light,
-            viewConfig: {
-                designSystem: DesignSystemDefaults,
-                transparentBackground: false,
-            },
+            designSystem: DesignSystemDefaults,
+            transparentBackground: false,
             devToolsVisible: true,
         };
     }
 
     public render(): React.ReactNode {
-        if (typeof get(this.state, "scenario.id") === "undefined") {
+        if (typeof this.state.componentName === "undefined") {
             return (
                 <div>
                     <h1>404 - This page does not exist</h1>
@@ -305,7 +268,7 @@ class Explorer extends Foundation<
         }: Partial<ExplorerClassNameContract> = this.props.managedClasses;
 
         return (
-            <Background {...this.unhandledProps()} value={neutralLayerL1}>
+            <Background value={neutralLayerL1}>
                 <Container className={classNames(explorer)}>
                     <Row style={{ flex: "1" }}>
                         <Pane
@@ -322,7 +285,6 @@ class Explorer extends Foundation<
                                     expanded={true}
                                     activeLocation={this.state.locationPathname}
                                     onLocationUpdate={this.handleUpdateRoute}
-                                    jssStyleSheet={this.navigationMenuStyleOverrides}
                                 />
                             </Background>
                         </Pane>
@@ -351,7 +313,17 @@ class Explorer extends Foundation<
                                                 minWidth: "fit-content",
                                             }}
                                         >
-                                            {this.renderViewer()}
+                                            <Viewer
+                                                iframeSrc={"/preview"}
+                                                width={this.state.width}
+                                                height={this.state.height}
+                                                onUpdateHeight={this.handleUpdateHeight}
+                                                onUpdateWidth={this.handleUpdateWidth}
+                                                responsive={true}
+                                                messageSystem={
+                                                    fastMessageSystem as MessageSystem
+                                                }
+                                            />
                                         </div>
                                     </div>
                                 </div>
@@ -396,6 +368,7 @@ class Explorer extends Foundation<
                                     items={this.renderPropertyItems()}
                                     jssStyleSheet={this.pivotStyleOverrides}
                                 />
+                                <Form messageSystem={fastMessageSystem} />
                             </Background>
                         </Pane>
                     </Row>
@@ -407,6 +380,12 @@ class Explorer extends Foundation<
     public componentDidMount(): void {
         this.setViewerToFullSize();
     }
+
+    private handleMessageSystem = (e: MessageEvent): void => {
+        if (e.data.type === MessageSystemType.custom && e.data.action === previewReady) {
+            // TODO: investigate why this is not firing
+        }
+    };
 
     private setViewerToFullSize(): void {
         const viewerContainer: HTMLDivElement | null = this.viewerContainerRef.current;
@@ -430,53 +409,6 @@ class Explorer extends Foundation<
         }
     }
 
-    private renderViewer(): React.ReactNode {
-        return (
-            <Viewer
-                iframeSrc={"/preview"}
-                iframePostMessage={this.state.viewConfig.designSystem}
-                width={this.state.width}
-                height={this.state.height}
-                onUpdateHeight={this.handleUpdateHeight}
-                onUpdateWidth={this.handleUpdateWidth}
-                viewerContentProps={this.state.scenario}
-                responsive={true}
-                jssStyleSheet={this.viewerStyleOverrides(this.state.viewConfig)}
-            />
-        );
-    }
-
-    private renderForm(): React.ReactNode {
-        const schema: any = this.resolveSchemaById(get(this.state.scenario, "id"));
-
-        if (typeof schema !== "undefined") {
-            return (
-                <Form
-                    data={get(this.state.scenario, "props")}
-                    onChange={this.handleUpdateData}
-                    schema={schema}
-                    location={{
-                        onChange: this.handleUpdateLocation,
-                        dataLocation: this.state.dataLocation,
-                    }}
-                    childOptions={childOptions}
-                    jssStyleSheet={this.formStyleOverrides}
-                />
-            );
-        }
-    }
-
-    private renderDesignSystemEditor(): React.ReactNode {
-        return (
-            <Form
-                jssStyleSheet={this.formStyleOverrides}
-                schema={designSystemSchema}
-                data={this.state.viewConfig.designSystem}
-                onChange={this.handleUpdateDesignSystem}
-            />
-        );
-    }
-
     private renderAccentColorPicker(): React.ReactNode {
         const id: string = uniqueId("accent-color-picker");
         const {
@@ -493,7 +425,7 @@ class Explorer extends Foundation<
                     type={"color"}
                     id={id}
                     className={classNames(explorer_colorPicker)}
-                    value={this.state.viewConfig.designSystem.accentBaseColor}
+                    value={this.state.designSystem.accentBaseColor}
                     onChange={this.handleAccentColorPickerChange}
                 />
             </div>
@@ -579,51 +511,14 @@ class Explorer extends Foundation<
                             size={TypographySize._8}
                             onClick={this.handleDevToolsTabTriggerClick}
                         >
-                            Code Preview
-                        </Typography>
-                    );
-                },
-                content: (className: string): React.ReactNode => {
-                    return (
-                        <div className={className}>
-                            <SyntaxHighlighter
-                                language="jsx"
-                                style={syntaxHighlighterStyles}
-                            >
-                                {this.getCodePreview()}
-                            </SyntaxHighlighter>
-                        </div>
-                    );
-                },
-                id: "codePreview",
-            },
-            {
-                tab: (className: string): React.ReactNode => {
-                    return (
-                        <Typography
-                            className={className}
-                            size={TypographySize._8}
-                            onClick={this.handleDevToolsTabTriggerClick}
-                        >
                             Guidance
                         </Typography>
                     );
                 },
                 content: (className: string): React.ReactNode => {
-                    const componentName: string = this.getComponentNameSpinalCaseByPath(
-                        this.state.locationPathname
-                    );
-                    const Guidance: React.ComponentClass = get(
-                        setViewConfigsWithCustomConfig(
-                            componentViewConfigsWithoutCustomConfig
-                        ),
-                        `${camelCase(componentName)}Config.guidance`,
-                        null
-                    ) as any;
-
                     return (
                         <div className={className}>
-                            <Guidance />
+                            <this.state.componentConfig.guidance />
                         </div>
                     );
                 },
@@ -642,17 +537,21 @@ class Explorer extends Foundation<
                     );
                 },
                 content: (className: string): React.ReactNode => {
-                    const schema: any = this.resolveSchemaById(
-                        get(this.state.scenario, "id")
-                    );
-
-                    if (typeof schema !== "undefined") {
+                    if (typeof this.state.componentConfig.schema !== "undefined") {
                         return (
                             <div className={className}>
-                                <pre>{JSON.stringify(schema, null, 2)}</pre>
+                                <pre>
+                                    {JSON.stringify(
+                                        this.state.componentConfig.schema,
+                                        null,
+                                        2
+                                    )}
+                                </pre>
                             </div>
                         );
                     }
+
+                    return null;
                 },
                 id: "schema",
             },
@@ -664,13 +563,17 @@ class Explorer extends Foundation<
             {
                 tab: (className: string): React.ReactNode => {
                     return (
-                        <Typography className={className} size={TypographySize._8}>
+                        <Typography
+                            className={className}
+                            size={TypographySize._8}
+                            onClick={this.handlePropertiesClick}
+                        >
                             Properties
                         </Typography>
                     );
                 },
-                content: (className: string): React.ReactNode => {
-                    return <div className={className}>{this.renderForm()}</div>;
+                content: (): React.ReactNode => {
+                    return null;
                 },
                 id: "properties",
             },
@@ -680,16 +583,14 @@ class Explorer extends Foundation<
                         <Typography
                             className={className}
                             size={TypographySize._8}
-                            onClick={this.handleDevToolsTabTriggerClick}
+                            onClick={this.handleDesignSystemClick}
                         >
                             Design system
                         </Typography>
                     );
                 },
-                content: (className: string): React.ReactNode => {
-                    return (
-                        <div className={className}>{this.renderDesignSystemEditor()}</div>
-                    );
+                content: (): React.ReactNode => {
+                    return null;
                 },
                 id: "designSystem",
             },
@@ -697,12 +598,9 @@ class Explorer extends Foundation<
     }
 
     private renderScenarioSelect(): React.ReactNode {
-        const componentName: string = this.getComponentNameSpinalCaseByPath(
-            this.state.locationPathname
-        );
-        const scenarioOptions: Array<Scenario<any>> = get(
+        const scenarioOptions: Array<Scenario> = get(
             setViewConfigsWithCustomConfig(componentViewConfigsWithoutCustomConfig)[
-                `${camelCase(componentName)}Config`
+                `${camelCase(this.state.componentName)}Config`
             ],
             "scenarios"
         );
@@ -723,10 +621,8 @@ class Explorer extends Foundation<
         }
     }
 
-    private renderScenarioOptions(
-        scenarioOptions: Array<Scenario<any>>
-    ): React.ReactNode {
-        return scenarioOptions.map((scenarioOption: Scenario<any>, index: number) => {
+    private renderScenarioOptions(scenarioOptions: Array<Scenario>): React.ReactNode {
+        return scenarioOptions.map((scenarioOption: Scenario, index: number) => {
             return (
                 <SelectOption
                     key={index}
@@ -743,108 +639,87 @@ class Explorer extends Foundation<
         return paths[paths.length - 1];
     }
 
-    private getSchemaById(id: string): any | void {
-        const childOption: FormChildOptionItem | void = childOptions.find(
-            (componentOption: any): any => {
-                return get(componentOption, "schema.id") === id;
-            }
-        );
-
-        if (typeof childOption !== "undefined") {
-            return get(childOption, "schema");
-        }
-    }
-
-    private getCodePreview(): string | null {
-        return typeof this.state.scenario !== "undefined" &&
-            Array.isArray(childOptions) &&
-            childOptions.length > 0
-            ? mapDataToCodePreview({
-                  data: this.state.scenario,
-                  childOptions: childOptions as CodePreviewChildOption[],
-              })
-            : null;
-    }
-
-    private getScenarioData<T>(
-        componentName: string,
+    private getScenarioData(
+        componentConfig: ComponentViewConfig,
         index?: number
-    ): ComponentProps<T> | void {
+    ): DataDictionary<unknown> {
         // cloning when the scenario data is fetched as there appears to be
         // a mutation happening in one of the Form
-        return {
-            id: get(
-                setViewConfigsWithCustomConfig(componentViewConfigsWithoutCustomConfig)[
-                    `${camelCase(componentName)}Config`
-                ],
-                "schema.id"
-            ),
-            props:
-                typeof index === "number"
-                    ? (get(
-                          setViewConfigsWithCustomConfig(
-                              componentViewConfigsWithoutCustomConfig
-                          ),
-                          `${camelCase(componentName)}Config.scenarios[${index}].data`,
-                          {}
-                      ) as T)
-                    : (get(
-                          setViewConfigsWithCustomConfig(
-                              componentViewConfigsWithoutCustomConfig
-                          ),
-                          `${camelCase(componentName)}Config.scenarios[0].data`,
-                          {}
-                      ) as T),
+        const dataDictionary: DataDictionary<unknown> =
+            typeof index === "number"
+                ? componentConfig.scenarios[index].dataDictionary
+                : componentConfig.scenarios[0].dataDictionary;
+        dataDictionary[0][designSystemLinkedDataId] = {
+            schemaId: designSystemSchema.id,
+            data:
+                this.state && this.state.designSystem
+                    ? this.state.designSystem
+                    : DesignSystemDefaults,
         };
+
+        return dataDictionary;
     }
+
+    private handleDesignSystemClick = (): void => {
+        if ((window as any).Worker && fastMessageSystem) {
+            fastMessageSystem.postMessage({
+                type: MessageSystemType.navigation,
+                action: MessageSystemNavigationTypeAction.update,
+                activeDictionaryId: designSystemLinkedDataId,
+                activeNavigationConfigId: "",
+            });
+        }
+    };
+
+    private handlePropertiesClick = (): void => {
+        if ((window as any).Worker && fastMessageSystem) {
+            fastMessageSystem.postMessage({
+                type: MessageSystemType.navigation,
+                action: MessageSystemNavigationTypeAction.update,
+                activeDictionaryId: this.getScenarioData(
+                    this.state.componentConfig,
+                    this.state.selectedScenarioIndex
+                )[1],
+                activeNavigationConfigId: "",
+            });
+        }
+    };
 
     private handleUpdateDirection = (): void => {
         this.setState({
-            viewConfig: {
-                designSystem: {
-                    ...this.state.viewConfig.designSystem,
-                    direction:
-                        this.state.viewConfig.designSystem.direction === Direction.ltr
-                            ? Direction.rtl
-                            : Direction.ltr,
-                },
-                transparentBackground: this.state.viewConfig.transparentBackground,
+            designSystem: {
+                ...this.state.designSystem,
+                direction:
+                    this.state.designSystem.direction === Direction.ltr
+                        ? Direction.rtl
+                        : Direction.ltr,
             },
         });
     };
 
     private handleUpdateScenario = (
         newValue: string | string[],
-        selectedItems: ListboxItemProps[],
-        /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
-        displayString: string
+        selectedItems: ListboxItemProps[]
     ): void => {
-        this.setState({
-            scenario: this.getScenarioData(
-                this.getComponentNameSpinalCaseByPath(this.state.locationPathname),
-                parseInt(selectedItems[0].value, 10)
-            ),
-            selectedScenarioIndex: parseInt(selectedItems[0].value, 10),
-        });
-    };
+        const selectedScenarioIndex: number = parseInt(selectedItems[0].value, 10);
 
-    private handleUpdateData = (data: any): void => {
-        this.setState({
-            scenario: {
-                id: get(this.state.scenario, "id"),
-                props: data,
+        this.setState(
+            {
+                selectedScenarioIndex,
             },
-            selectedScenarioIndex: 0,
-        });
-    };
-
-    private handleUpdateDesignSystem = (data: DesignSystem): void => {
-        this.setState({
-            viewConfig: {
-                designSystem: data,
-                transparentBackground: this.state.viewConfig.transparentBackground,
-            },
-        });
+            () => {
+                if ((window as any).Worker && fastMessageSystem) {
+                    fastMessageSystem.postMessage({
+                        type: MessageSystemType.initialize,
+                        data: this.getScenarioData(
+                            this.state.componentConfig,
+                            selectedScenarioIndex
+                        ),
+                        schemaDictionary,
+                    });
+                }
+            }
+        );
     };
 
     private handleUpdateHeight = (updatedHeight: number): void => {
@@ -859,20 +734,26 @@ class Explorer extends Foundation<
         });
     };
 
-    private handleUpdateLocation = (dataLocation: string): void => {
-        this.setState({
-            dataLocation,
-        });
-    };
-
     private handleUpdateRoute = (route: string): void => {
+        const componentName: string = this.getComponentNameSpinalCaseByPath(route);
+        const componentConfig: any = get(
+            setViewConfigsWithCustomConfig(componentViewConfigsWithoutCustomConfig),
+            `${camelCase(componentName)}Config`
+        );
+
+        if ((window as any).Worker && fastMessageSystem) {
+            fastMessageSystem.postMessage({
+                type: MessageSystemType.initialize,
+                dataDictionary: this.getScenarioData(componentConfig, 1),
+                schemaDictionary,
+            });
+        }
+
         this.setState(
             {
                 locationPathname: route,
-                scenario: this.getScenarioData(
-                    this.getComponentNameSpinalCaseByPath(route),
-                    1
-                ),
+                componentName,
+                componentConfig,
                 selectedScenarioIndex: 1,
             },
             () => {
@@ -889,25 +770,17 @@ class Explorer extends Foundation<
             : StandardLuminance.LightMode;
         this.setState({
             theme: isLightMode ? ThemeName.dark : ThemeName.light,
-            viewConfig: {
-                designSystem: {
-                    ...this.state.viewConfig.designSystem,
-                    baseLayerLuminance: updatedLuminance,
-                    backgroundColor: updatedThemeColor,
-                },
-                transparentBackground: this.state.viewConfig.transparentBackground,
+            designSystem: {
+                ...this.state.designSystem,
+                baseLayerLuminance: updatedLuminance,
+                backgroundColor: updatedThemeColor,
             },
         });
     };
 
     private handleUpdateTransparency = (): void => {
         this.setState({
-            viewConfig: {
-                designSystem: {
-                    ...this.state.viewConfig.designSystem,
-                },
-                transparentBackground: !this.state.viewConfig.transparentBackground,
-            },
+            transparentBackground: !this.state.transparentBackground,
         });
     };
 
@@ -922,13 +795,10 @@ class Explorer extends Foundation<
         if (accentPaletteSource !== null) {
             const palette: string[] = createColorPalette(accentPaletteSource);
             this.setState({
-                viewConfig: {
-                    designSystem: {
-                        ...this.state.viewConfig.designSystem,
-                        accentBaseColor: value.toUpperCase(),
-                        accentPalette: palette,
-                    },
-                    transparentBackground: this.state.viewConfig.transparentBackground,
+                designSystem: {
+                    ...this.state.designSystem,
+                    accentBaseColor: value.toUpperCase(),
+                    accentPalette: palette,
                 },
             });
         }
