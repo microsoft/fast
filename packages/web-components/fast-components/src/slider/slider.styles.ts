@@ -107,10 +107,15 @@ export const SliderStyles = css`
     }
 
     @media (forced-colors: active) {
-        .thumb-cursor, .thumb-cursor:hover, .thumb-cursor:active {
+        .thumb-cursor {
             forced-color-adjust: none;
             border-color: ${SystemColors.FieldText};
             background: ${SystemColors.FieldText};
+        }
+
+        .thumb-cursor:hover,
+        .thumb-cursor:active {
+            background: ${SystemColors.Highlight};
         }
 
         .track {
@@ -124,9 +129,12 @@ export const SliderStyles = css`
 
         :host(.disabled) {
             opacity: 1;
+            cursor: ${disabledCursor};
         }
 
-        :host(.disabled) .slider .track .thumb-cursor {
+        :host(.disabled) .slider,
+        :host(.disabled) .track,
+        :host(.disabled) .thumb-cursor {
             forced-color-adjust: none;
             background: ${SystemColors.GrayText};
         }

@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.6.4](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-class-name-contracts-base@4.6.3...@microsoft/fast-components-class-name-contracts-base@4.6.4) (2020-04-22)
+
+**Note:** Version bump only for package @microsoft/fast-components-class-name-contracts-base
+
+
+
+
+
 ## [4.6.3](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-class-name-contracts-base@4.6.2...@microsoft/fast-components-class-name-contracts-base@4.6.3) (2020-04-10)
 
 **Note:** Version bump only for package @microsoft/fast-components-class-name-contracts-base
