@@ -238,10 +238,6 @@ export class AnchoredRegion extends FASTElement {
             this.anchorElement = this.getAnchor();
         }
 
-        if (this.anchorElement === null || this.viewportElement === null) {
-            return;
-        }
-
         this.currentDirection = this.getDirection();
 
         this.connectObservers();
@@ -337,6 +333,7 @@ export class AnchoredRegion extends FASTElement {
         this.resizeDetector.observe(this.region);
 
         this.viewportElement.addEventListener("scroll", this.handleScroll);
+        console.log("observers connected");
     };
 
     /**

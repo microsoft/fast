@@ -1,5 +1,5 @@
 import { attr, booleanConverter, FASTElement, observable } from "@microsoft/fast-element";
-import { isHTMLElement, keyCodeEnter, keyCodeSpace } from "@microsoft/fast-web-utilities";
+import { keyCodeEnter, keyCodeSpace } from "@microsoft/fast-web-utilities";
 
 export enum MenuItemRole {
     menuitem = "menuitem",
@@ -8,6 +8,18 @@ export enum MenuItemRole {
 }
 
 export class MenuItem extends FASTElement {
+    @observable
+    public hasMenu: boolean = false;
+
+    @observable
+    public menuItemChildren: Node[];
+    private menuItemChildrenChanged(): void {
+        // casting as any below as if the property is undefined there is no menu
+        this.hasMenu = this.menuItemChildren.some(
+            x => (x as any).tagName === "FAST-MENU"
+        );
+    }
+
     /**
      * The anchored region which renders the menu
      */
@@ -18,12 +30,15 @@ export class MenuItem extends FASTElement {
      */
     private _menu: HTMLElement;
 
+    /**
+     * Reference to top level viewport
+     */
+    public viewport: HTMLElement = document.getElementsByTagName("body")[0];
+
     @observable
     public slottedMenus: HTMLElement[];
     private slottedMenusChanged(): void {
-        // if the menus change for some reason, grab the first one again
-        console.log(this.slottedMenus, "slotted menus");
-        if (this.slottedMenus && this.slottedMenus.length) {
+        if (this.slottedMenus && this.slottedMenus.length > 0) {
             this._menu = this.slottedMenus[0];
         }
     }
@@ -52,8 +67,6 @@ export class MenuItem extends FASTElement {
 
     public connectedCallback(): void {
         super.connectedCallback();
-
-        console.log(this._menu, "menu");
     }
 
     public handleMenuItemKeyDown = (e: KeyboardEvent): boolean => {
