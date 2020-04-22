@@ -1,4 +1,3 @@
-export * from "./anchored-region";
 export * from "./anchor";
 export * from "./badge";
 export * from "./button";

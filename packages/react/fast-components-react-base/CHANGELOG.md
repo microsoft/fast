@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.25.8](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@4.25.7...@microsoft/fast-components-react-base@4.25.8) (2020-04-22)
+
+
+### Bug Fixes
+
+* update select to pass onClick and onKeydown events ([#2910](https://github.com/Microsoft/fast-dna/issues/2910)) ([13be296](https://github.com/Microsoft/fast-dna/commit/13be29605a214bdc3f928b19e226fb4cd0bd0e1d))
+
+
+
+
+
 ## [4.25.7](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@4.25.6...@microsoft/fast-components-react-base@4.25.7) (2020-04-10)
 
 **Note:** Version bump only for package @microsoft/fast-components-react-base
