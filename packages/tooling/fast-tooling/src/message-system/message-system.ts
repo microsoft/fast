@@ -18,7 +18,10 @@ export default class MessageSystem {
 
     constructor(config: MessageSystemConfig) {
         if ((window as any).Worker) {
-            this.worker = new Worker(config.webWorker);
+            this.worker =
+                typeof config.webWorker === "string"
+                    ? new Worker(config.webWorker)
+                    : config.webWorker;
             this.worker.onmessage = this.onMessage;
 
             if (Array.isArray(config.dataDictionary) && config.schemaDictionary) {
