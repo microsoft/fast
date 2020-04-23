@@ -102,11 +102,11 @@ export class Tabs extends FASTElement {
         this.activeTabIndex = this.getActiveIndex();
         this.tabs.forEach((tab: HTMLElement, index: number) => {
             if (tab.slot === "tab") {
-                const tabID: string | null = this.tabIds[index];
+                const tabId: string | null = this.tabIds[index];
                 const tabpanelId: string | null = this.tabpanelIds[index];
                 tab.setAttribute(
                     "id",
-                    tabID === undefined || tabID === null ? `tab-${index + 1}` : tabID
+                    typeof tabId !== "string" ? `tab-${index + 1}` : tabId
                 );
                 tab.setAttribute(
                     "aria-selected",
@@ -114,9 +114,7 @@ export class Tabs extends FASTElement {
                 );
                 tab.setAttribute(
                     "aria-controls",
-                    tabpanelId === undefined || tabpanelId === null
-                        ? `panel-${index + 1}`
-                        : tabpanelId
+                    typeof tabpanelId !== "string" ? `panel-${index + 1}` : tabpanelId
                 );
                 tab.setAttribute(
                     "style",
@@ -141,17 +139,15 @@ export class Tabs extends FASTElement {
         this.tabIds = this.getTabIds();
         this.tabpanelIds = this.getTabPanelIds();
         this.tabpanels.forEach((tabpanel: HTMLElement, index: number) => {
-            const tabID: string | null = this.tabIds[index];
+            const tabId: string | null = this.tabIds[index];
             const tabpanelId: string | null = this.tabpanelIds[index];
             tabpanel.setAttribute(
                 "id",
-                tabpanelId === undefined || tabpanelId === null
-                    ? `panel-${index + 1}`
-                    : tabpanelId
+                typeof tabpanelId !== "string" ? `panel-${index + 1}` : tabpanelId
             );
             tabpanel.setAttribute(
                 "aria-labeledby",
-                tabID === undefined || tabID === null ? `tab-${index + 1}` : tabID
+                typeof tabId !== "string" ? `tab-${index + 1}` : tabId
             );
             this.activeTabIndex !== index
                 ? tabpanel.setAttribute("hidden", "")
