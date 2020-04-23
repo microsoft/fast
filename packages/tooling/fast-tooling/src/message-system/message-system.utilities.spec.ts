@@ -48,7 +48,33 @@ describe("getMessage", () => {
             };
             const message: InitializeMessageOutgoing = getMessage({
                 type: MessageSystemType.initialize,
-                data: dataBlob,
+                dataDictionary: dataBlob,
+                schemaDictionary,
+            }) as InitializeMessageOutgoing;
+
+            expect(message.type).toEqual(MessageSystemType.initialize);
+            expect(message.data).toEqual(dataBlob[0][dataBlob[1]].data);
+            expect(message.schema).toEqual(schemaDictionary["foo"]);
+            expect(typeof message.navigation).toEqual("object");
+        });
+        test("should return messages sent with initial values provided using the deprecated data property", () => {
+            const dataBlob: DataDictionary<unknown> = [
+                {
+                    data: {
+                        schemaId: "foo",
+                        data: {
+                            foo: "bar",
+                        },
+                    },
+                },
+                "data",
+            ];
+            const schemaDictionary: SchemaDictionary = {
+                foo: { id: "foo" },
+            };
+            const message: InitializeMessageOutgoing = getMessage({
+                type: MessageSystemType.initialize,
+                dataDictionary: dataBlob,
                 schemaDictionary,
             }) as InitializeMessageOutgoing;
 

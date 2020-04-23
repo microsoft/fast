@@ -5,6 +5,16 @@ describe("MessageSystem", () => {
         expect(() => {
             new MessageSystem({
                 webWorker: "",
+            });
+        });
+    });
+    test("should not throw when attempting to initialize and Workers are not available", () => {
+        const messageSystem: MessageSystem = new MessageSystem({
+            webWorker: "",
+        });
+
+        expect(() => {
+            messageSystem.initialize({
                 dataDictionary: [
                     {
                         foo: {
@@ -18,7 +28,35 @@ describe("MessageSystem", () => {
                     foo: {},
                 },
             });
+        }).not.toThrow();
+    });
+    test("should send an initialization message when Workers are available", () => {
+        const postMessageCallback: any = jest.fn();
+        class Worker {
+            public postMessage: any = postMessageCallback;
+        }
+        (window as any).Worker = Worker;
+
+        const messageSystem: MessageSystem = new MessageSystem({
+            webWorker: "",
         });
+
+        messageSystem.initialize({
+            dataDictionary: [
+                {
+                    foo: {
+                        schemaId: "foo",
+                        data: undefined,
+                    },
+                },
+                "foo",
+            ],
+            schemaDictionary: {
+                foo: {},
+            },
+        });
+
+        expect(postMessageCallback).toHaveBeenCalledTimes(1);
     });
     test("should add an item to the register", () => {
         const messageSystem: MessageSystem = new MessageSystem({

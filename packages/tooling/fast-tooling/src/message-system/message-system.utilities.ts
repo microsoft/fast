@@ -383,7 +383,13 @@ export function getMessage<C = {}>(
         case MessageSystemType.validation:
             return getValidationMessage(data);
         case MessageSystemType.initialize:
-            dataDictionary = data.data;
+            /**
+             * TODO: remove this ternary to rely on the dataDictionary
+             * as data is @deprecated
+             */
+            dataDictionary = Array.isArray(data.dataDictionary)
+                ? data.dataDictionary
+                : data.data;
             activeDictionaryId = dataDictionary[1];
             schemaDictionary = data.schemaDictionary;
             navigationDictionary = getNavigationDictionary(
