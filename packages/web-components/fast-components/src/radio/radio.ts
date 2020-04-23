@@ -1,15 +1,6 @@
 import { attr, observable } from "@microsoft/fast-element";
-import {
-    keyCodeArrowDown,
-    keyCodeArrowLeft,
-    keyCodeArrowRight,
-    keyCodeArrowUp,
-    keyCodeSpace,
-} from "@microsoft/fast-web-utilities";
+import { keyCodeSpace } from "@microsoft/fast-web-utilities";
 import { FormAssociated } from "../form-associated";
-import { FASTRadio } from "./";
-
-const radioGroups = new Map<string, FASTRadio[]>();
 
 export class Radio extends FormAssociated<HTMLInputElement> {
     @attr({ attribute: "readonly", mode: "boolean" })
@@ -84,25 +75,9 @@ export class Radio extends FormAssociated<HTMLInputElement> {
         }
 
         this.$emit("change");
-        this.dispatchEvent(new CustomEvent("change", { bubbles: true, composed: true }));
         this.checked ? this.classList.add("checked") : this.classList.remove("checked");
         this.checkedAttribute = this.checked;
-
-        if (this.checked) {
-            this.updateOtherGroupRadios();
-        }
-    }
-
-    private updateOtherGroupRadios(): void {
-        if (this.name !== undefined) {
-            const radioGroup = radioGroups.get(this.name);
-            radioGroup?.forEach((radio: FASTRadio) => {
-                if (radio.getAttribute("value") !== this.value) {
-                    radio.removeAttribute("checked");
-                    radio.checked = false;
-                }
-            });
-        }
+        this.updateForm();
     }
 
     protected proxy: HTMLInputElement = document.createElement("input");
@@ -112,39 +87,16 @@ export class Radio extends FormAssociated<HTMLInputElement> {
      * This is necessary to provide consistent behavior with
      * normal input radios
      */
-    // TODO: marjon check if this is needed for radio buttons?
     private dirtyChecked: boolean = false;
 
     constructor() {
         super();
         this.proxy.setAttribute("type", "radio");
-        this.addEventListener("keydown", this.keydownHandler);
     }
 
     public connectedCallback(): void {
         super.connectedCallback();
         this.updateForm();
-        if (this.name !== undefined) {
-            const radioGroup = radioGroups.get(this.name);
-            if (radioGroup) {
-                radioGroup.push(this);
-            } else {
-                radioGroups.set(this.name, [this]);
-            }
-        }
-    }
-
-    public disconnectedCallback(): void {
-        if (this.name !== undefined) {
-            const group = radioGroups.get(this.name);
-            if (group) {
-                group.splice(group.indexOf(this), 1);
-            }
-
-            if (group?.length === 0) {
-                radioGroups.delete(this.name);
-            }
-        }
     }
 
     private updateForm(): void {
@@ -152,61 +104,12 @@ export class Radio extends FormAssociated<HTMLInputElement> {
         this.setFormValue(value, value);
     }
 
-    private moveToRadioByIndex = (group: FASTRadio[], index: number): void => {
-        group[index].checked = true;
-        group[index].focus();
-    };
-
-    public keydownHandler = (e: KeyboardEvent): void => {
-        const group: FASTRadio[] = radioGroups.get(this.name) as FASTRadio[];
-        let index = 0;
-        if (group && this.name !== undefined) {
-            switch (e.keyCode) {
-                case keyCodeArrowRight:
-                case keyCodeArrowUp:
-                    index = group.indexOf(this) + 1;
-                    index = index === group.length ? 0 : index;
-                    while (index < group.length) {
-                        if (!group[index].disabled) {
-                            this.moveToRadioByIndex(group, index);
-                            break;
-                        } else if (index === group.indexOf(this)) {
-                            break;
-                        } else if (index + 1 >= group.length) {
-                            index = 0;
-                        } else {
-                            index += 1;
-                        }
-                    }
-                    break;
-                case keyCodeArrowLeft:
-                case keyCodeArrowDown:
-                    index = group.indexOf(this) - 1;
-                    index = index < 0 ? group.length - 1 : index;
-                    while (index >= 0) {
-                        if (!group[index].disabled) {
-                            this.moveToRadioByIndex(group, index);
-                            break;
-                        } else if (index === group.indexOf(this)) {
-                            break;
-                        } else if (index - 1 < 0) {
-                            index = group.length - 1;
-                        } else {
-                            index -= 1;
-                        }
-                    }
-                    break;
-            }
-        }
-    };
-
     public keypressHandler = (e: KeyboardEvent): void => {
         super.keypressHandler(e);
         switch (e.keyCode) {
             case keyCodeSpace:
                 if (!this.checked) {
                     this.checked = true;
-                    this.updateOtherGroupRadios();
                 }
                 break;
         }

@@ -19,7 +19,11 @@ export const RadioTemplate = html<Radio>`
         </div>
         ${when(
             x => x.childNodes.length,
-            html` <label part="label" class="label"><slot></slot></label> `
+            html`
+                <label part="label" class="label">
+                    <slot></slot>
+                </label>
+            `
         )}
     </template>
 `;
