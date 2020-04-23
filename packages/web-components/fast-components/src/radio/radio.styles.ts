@@ -13,7 +13,7 @@ import {
 
 export const RadioStyles = css`
     ${display("inline-flex")} :host {
-        --input-size: calc((${heightNumber} * 0.5) + var(--design-unit));
+        --input-size: calc((${heightNumber} / 2) + var(--design-unit));
         align-items: center;
         outline: none;
         margin: calc(var(--design-unit) * 1px) 0;
@@ -23,9 +23,9 @@ export const RadioStyles = css`
              * the radio button is clicked. Maybe there is a better solution here?
              */ ""
         } user-select: none;
-        position: "relative";
-        "flex-direction": "row";
-        transition: "all 0.2s ease-in-out";
+        position: relative;
+        flex-direction: row;
+        transition: all 0.2s ease-in-out;
     }
 
     .control {
