@@ -9,8 +9,8 @@ export const SliderTemplate = html<Slider>`
         aria-valuenow="${x => x.value}"
         aria-valuemin="${x => x.min}"
         aria-valuemax="${x => x.max}"
-        aria-disabled="${x => x.disabled}"
-        aria-readonly="${x => x.readOnly}"
+        ?aria-disabled="${x => x.disabled}"
+        ?aria-readonly="${x => x.readOnly}"
         aria-orientation="${x => x.orientation}"
     >
         <div part="positioning-region" class="positioning-region">
