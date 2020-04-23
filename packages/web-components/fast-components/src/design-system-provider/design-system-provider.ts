@@ -71,42 +71,6 @@ export function isDesignSystemProvider(
     );
 }
 
-const customPropertyNameCache: { [key: string]: string } = {};
-function formatCustomPropertyName(name: string): string {
-    if (customPropertyNameCache[name] !== undefined) {
-        return customPropertyNameCache[name];
-    } else {
-        return (customPropertyNameCache[name] = `--${name}`);
-    }
-}
-
-function writeCSSCustomPropertyDefinitionInline(
-    this: DesignSystemProvider,
-    definition: CSSCustomPropertyDefinition
-) {
-    const name = formatCustomPropertyName(definition.name);
-    const value =
-        typeof definition.value === "function"
-            ? // use spread on the designSystem object to circumvent memoization
-              // done in the color recipes - we use the same *reference* in WC
-              // for performance improvements but that throws off the recipes
-              // We should look at making the recipes use simple args that
-              // we can individually memoize.
-              definition.value({ ...this.designSystem })
-            : definition.value;
-
-    if (this.style.getPropertyValue(name) !== value) {
-        this.style.setProperty(name, value);
-    }
-}
-
-function deleteCSSCustomPropertyDefinitionInline(
-    this: DesignSystemProvider,
-    definition: CSSCustomPropertyDefinition
-) {
-    this.style.removeProperty(formatCustomPropertyName(definition.name));
-}
-
 /**
  * Scope of change:
  * This change changes the behavior of the design-system-provider to synchronously create
@@ -124,34 +88,18 @@ const supportsAdoptedStylesheets = "adoptedStyleSheets" in window.ShadowRoot.pro
 
 export class DesignSystemProvider extends FASTElement
     implements CSSCustomPropertyTarget, DesignSystemConsumer {
-    private customPropertyBehaviors: Map<
-        string,
-        CSSCustomPropertyDefinition & { count: number }
-    > = new Map();
+    /**
+     * Allows other components to identify this as a provider.
+     * Using instanceof DesignSystemProvider did not seem to work.
+     */
+    public readonly isDesignSystemProvider = true;
 
-    public registerCSSCustomProperty(behavior: CSSCustomPropertyDefinition) {
-        const cached = this.customPropertyBehaviors.get(behavior.name);
-
-        if (cached) {
-            cached.count += 1;
-        } else {
-            this.customPropertyBehaviors.set(behavior.name, { ...behavior, count: 1 });
-            this.writeCustomProperty(behavior);
-        }
-    }
-
-    public unregisterCSSCustomProperty(behavior: CSSCustomPropertyDefinition) {
-        const cached = this.customPropertyBehaviors.get(behavior.name);
-
-        if (cached) {
-            cached.count -= 1;
-
-            if (cached.count === 0) {
-                this.customPropertyBehaviors.delete(behavior.name);
-                this.deleteCustomProperty(behavior.name);
-            }
-        }
-    }
+    /**
+     * The design-system object.
+     * This is "observable" but will notify on object mutation
+     * instead of object assignment
+     */
+    public designSystem = {};
 
     @observable
     public provider: DesignSystemProvider | null = null;
@@ -180,34 +128,13 @@ export class DesignSystemProvider extends FASTElement
         }
     }
 
-    constructor() {
-        super();
-
-        if (supportsAdoptedStylesheets) {
-            this.writeCustomProperty = () => console.log("Write some custom properties");
-            this.deleteCustomProperty = () =>
-                console.log("Delete some custom properties");
-        } else {
-            this.writeCustomProperty = writeCSSCustomPropertyDefinitionInline.bind(this);
-            this.deleteCustomProperty = deleteCSSCustomPropertyDefinitionInline.bind(
-                this
-            );
-        }
-
-        this.$fastController.addBehaviors([new DesignSystemConsumerBehavior()]);
-    }
     /**
-     * Allows other components to identify this as a provider.
-     * Using instanceof DesignSystemProvider did not seem to work.
+     * Stores all CSSCustomPropertyDefinitions registered with the provider.
      */
-    public readonly isDesignSystemProvider = true;
-
-    /**
-     * The design-system object.
-     * This is "observable" but will notify on object mutation
-     * instead of object assignment
-     */
-    public designSystem = {};
+    private cssCustomPropertyDefinitions: Map<
+        string,
+        CSSCustomPropertyDefinition & { count: number }
+    > = new Map();
 
     /**
      * Track all design system property names so we can react to changes
@@ -217,6 +144,93 @@ export class DesignSystemProvider extends FASTElement
     public designSystemProperties: {
         [propertyName: string]: Required<DesignSystemPropertyDeclarationConfig>;
     };
+
+    /**
+     * Allows CSSCustomPropertyDefinitions to register on this element *before* the constructor
+     * has run and the registration APIs exist. This can manifest when the DOM
+     * is parsed (and custom element tags exist in the DOM) before the script defining the custom elements
+     * and elements is parsed, and the elements using the CSSCustomPropertyBehaviors
+     * are defined before this DesignSystemProvider.
+     */
+    public disconnectedCSSCustomPropertyRegistry: CSSCustomPropertyDefinition[];
+
+    /**
+     * The target of CSSCustomPropertyDefinitions registered
+     * with the provider. This will be #1 when adoptedStyleSheets are supported
+     * and #2 when they are not.
+     *
+     * 1. The `style` property of a CSSStyleRule on an adoptedStyleSheet
+     * 2. The `style` property of the element, resulting in inline styles
+     */
+    public customPropertyTarget: CSSStyleDeclaration;
+
+    /**
+     * Handle changes to design-system-provider IDL and content attributes
+     * that reflect to design-system properties.
+     */
+    private attributeChangeHandler = {
+        handleChange: (source: this, key: string) => {
+            const value = this[key];
+
+            if (this.isValidDesignSystemValue(value)) {
+                this.designSystem[key] = value;
+                const property = this.designSystemProperties[key];
+
+                if (property && property.customProperty) {
+                    this.setCustomProperty({
+                        name: property.customPropertyName,
+                        value,
+                    });
+                }
+            } else {
+                this.syncDesignSystemWithProvider();
+                this.deleteCustomProperty(
+                    this.designSystemProperties[key].customPropertyName
+                );
+                this.writeCustomProperties();
+            }
+        },
+    };
+
+    /**
+     * Handle changes to the local design-system property.
+     */
+    private localDesignSystemChangeHandler = {
+        handleChange: this.writeCustomProperties.bind(this),
+    };
+
+    /**
+     * Handle changes to the upstream design-system provider
+     */
+    private providerDesignSystemChangeHandler = {
+        handleChange: (source: any, key: string) => {
+            if (
+                source[key] !== this.designSystem[key] &&
+                !this.isValidDesignSystemValue(this[key])
+            ) {
+                this.designSystem[key] = source[key];
+            }
+        },
+    };
+
+    constructor() {
+        super();
+
+        if (supportsAdoptedStylesheets && this.shadowRoot !== null) {
+            const sheet = new CSSStyleSheet();
+            sheet.insertRule(":host{}");
+            (this.shadowRoot as any).adoptedStyleSheets = [
+                ...(this.shadowRoot as any).adoptedStyleSheets,
+                sheet,
+            ];
+
+            this.customPropertyTarget = (sheet.rules[0] as CSSStyleRule).style;
+        } else {
+            this.customPropertyTarget = this.style;
+        }
+
+        this.$fastController.addBehaviors([new DesignSystemConsumerBehavior()]);
+    }
 
     public connectedCallback(): void {
         super.connectedCallback();
@@ -234,7 +248,7 @@ export class DesignSystemProvider extends FASTElement
             // If property is set then put it onto the design system
             if (this.isValidDesignSystemValue(value)) {
                 this.designSystem[property] = value;
-                this.writeCustomProperty({
+                this.setCustomProperty({
                     name: this.designSystemProperties[property].customPropertyName,
                     value,
                 });
@@ -254,60 +268,78 @@ export class DesignSystemProvider extends FASTElement
     }
 
     /**
-     * Allows CSSCustomPropertyDefinitions to register on this element *before* the constructor
-     * has run and the registration APIs exist. This can manifest when the DOM
-     * is parsed (and custom element tags exist in the DOM) before the script defining the custom elements
-     * and elements is parsed, and the elements using the CSSCustomPropertyBehaviors
-     * are defined before this DesignSystemProvider.
+     * Register a CSSCustomPropertyDefinition with the design system provider.
+     * Registering a CSSCustomPropertyDefinition will create the CSS custom property.
      */
-    public disconnectedCSSCustomPropertyRegistry: CSSCustomPropertyDefinition[];
+    public registerCSSCustomProperty(behavior: CSSCustomPropertyDefinition) {
+        const cached = this.cssCustomPropertyDefinitions.get(behavior.name);
 
-    private attributeChangeHandler = {
-        handleChange: (source: this, key: string) => {
-            const value = this[key];
-
-            if (this.isValidDesignSystemValue(value)) {
-                this.designSystem[key] = value;
-                const property = this.designSystemProperties[key];
-
-                if (property && property.customProperty) {
-                    this.writeCustomProperty({
-                        name: property.customPropertyName,
-                        value,
-                    });
-                }
-            } else {
-                this.syncDesignSystemWithProvider();
-                this.deleteCustomProperty(
-                    this.designSystemProperties[key].customPropertyName
-                );
-                this.writeCustomProperties();
-            }
-        },
-    };
-
-    private localDesignSystemChangeHandler = {
-        handleChange: this.writeCustomProperties.bind(this),
-    };
-
-    private providerDesignSystemChangeHandler = {
-        handleChange: (source: any, key: string) => {
-            if (
-                source[key] !== this.designSystem[key] &&
-                !this.isValidDesignSystemValue(this[key])
-            ) {
-                this.designSystem[key] = source[key];
-            }
-        },
-    };
-
-    private writeCustomProperties(): void {
-        this.customPropertyBehaviors.forEach(this.writeCustomProperty);
+        if (cached) {
+            cached.count += 1;
+        } else {
+            this.cssCustomPropertyDefinitions.set(behavior.name, {
+                ...behavior,
+                count: 1,
+            });
+            this.setCustomProperty(behavior);
+        }
     }
 
-    private writeCustomProperty: (definition: CSSCustomPropertyDefinition) => void;
-    private deleteCustomProperty: (name: string) => void;
+    /**
+     * Unregister a CSSCustomPropertyDefinition. If all registrations of the definition
+     * are unregistered, the CSS custom property will be removed.
+     */
+    public unregisterCSSCustomProperty(behavior: CSSCustomPropertyDefinition) {
+        const cached = this.cssCustomPropertyDefinitions.get(behavior.name);
 
+        if (cached) {
+            cached.count -= 1;
+
+            if (cached.count === 0) {
+                this.cssCustomPropertyDefinitions.delete(behavior.name);
+                this.deleteCustomProperty(behavior.name);
+            }
+        }
+    }
+
+    /**
+     * Writes all CSS custom property definitions to the design system provider.
+     */
+    private writeCustomProperties(): void {
+        this.cssCustomPropertyDefinitions.forEach(this.setCustomProperty);
+    }
+
+    /**
+     * Writes a CSS custom property to the design system provider,
+     * evaluating any function values with the design system.
+     */
+    private setCustomProperty = (definition: CSSCustomPropertyDefinition) => {
+        this.customPropertyTarget.setProperty(
+            `--${definition.name}`,
+            this.evaluate(definition)
+        );
+    };
+
+    /**
+     * Removes a CSS custom property from the provider.
+     */
+    private deleteCustomProperty = (name: string): void => {
+        this.customPropertyTarget.removeProperty(`--${name}`);
+    };
+
+    /**
+     * Evaluates a CSSCustomPropertyDefinition with the current design system.
+     */
+    public evaluate(definition: CSSCustomPropertyDefinition): string {
+        return typeof definition.value === "function"
+            ? // use spread on the designSystem object to circumvent memoization
+              // done in the color recipes - we use the same *reference* in WC
+              // for performance improvements but that throws off the recipes
+              // We should look at making the recipes use simple args that
+              // we can individually memoize.
+              definition.value({ ...this.designSystem })
+            : definition.value;
+    }
     /**
      * Synchronize the provider's design system with the local
      * overrides. Any value defined on the instance will take priority
