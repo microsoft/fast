@@ -1,5 +1,4 @@
 import { Data } from "@microsoft/fast-tooling";
-import { textSchema } from "./";
 import {
     accentButtonSchema2,
     badgeSchema2,
@@ -23,6 +22,7 @@ import {
     toggleSchema2,
     typographySchema2,
 } from "@microsoft/fast-components-react-msft";
+import { textSchema } from "./";
 
 export interface LinkedDataStack {
     dataLocation: string;

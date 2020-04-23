@@ -1,6 +1,6 @@
 {
-  "name": "@edge-web-ui/creator",
-  "version": "1.0.0",
+  "name": "@microsoft/fast-creator",
+  "version": "0.0.0",
   "description": "Creator app for composing UIs and general UI development",
   "sideEffects": false,
   "private": true,

@@ -50,6 +50,7 @@ import {
     ControlContext,
     ControlOnChangeConfig,
 } from "@microsoft/fast-tooling-react/dist/form/templates/types";
+import FASTMessageSystemWorker from "@microsoft/fast-tooling/dist/message-system.min.js";
 import * as schemas from "./msft-components";
 import {
     CreatorHandledProps,
@@ -69,7 +70,6 @@ import {
 } from "./components";
 import { selectDeviceOverrideStyles } from "./utilities/style-overrides";
 import designSystemSchema from "./msft-component-helpers/design-system.schema";
-import FASTMessageSystemWorker from "@microsoft/fast-tooling/dist/message-system.min.js";
 import { previewReady } from "./preview";
 
 const fastMessageSystemWorker = new FASTMessageSystemWorker();
