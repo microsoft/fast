@@ -29,7 +29,10 @@ export class Tabs extends FASTElement {
     @observable
     public tabs: HTMLElement[];
     public tabsChanged(): void {
-        if (this.connected && this.tabs.length <= this.tabpanels.length) {
+        if (
+            this.$fastController.isConnected &&
+            this.tabs.length <= this.tabpanels.length
+        ) {
             this.setTabs();
             this.setTabPanels();
             this.handleActiveIndicatorPosition();
@@ -39,7 +42,10 @@ export class Tabs extends FASTElement {
     @observable
     public tabpanels: HTMLElement[];
     public tabpanelsChanged(): void {
-        if (this.connected && this.tabpanels.length <= this.tabs.length) {
+        if (
+            this.$fastController.isConnected &&
+            this.tabpanels.length <= this.tabs.length
+        ) {
             this.setTabs();
             this.setTabPanels();
             this.handleActiveIndicatorPosition();
@@ -74,14 +80,14 @@ export class Tabs extends FASTElement {
     private ticking: boolean = false;
     private tabIds: Array<string | null>;
     private tabpanelIds: Array<string | null>;
-    private connected: boolean = false;
 
     private change = (): void => {
         this.$emit("change", this.activetab);
     };
 
     private getActiveIndex(): number {
-        if (this.activeid !== undefined) {
+        const id: string = this.activeid;
+        if (id !== undefined) {
             return this.tabIds.indexOf(this.activeid) === -1
                 ? 0
                 : this.tabIds.indexOf(this.activeid);
@@ -96,11 +102,11 @@ export class Tabs extends FASTElement {
         this.activeTabIndex = this.getActiveIndex();
         this.tabs.forEach((tab: HTMLElement, index: number) => {
             if (tab.slot === "tab") {
+                const tabID: string | null = this.tabIds[index];
+                const tabpanelId: string | null = this.tabpanelIds[index];
                 tab.setAttribute(
                     "id",
-                    this.tabIds[index] === undefined || this.tabIds[index] === null
-                        ? `tab-${index + 1}`
-                        : (this.tabIds[index] as string)
+                    tabID === undefined || tabID === null ? `tab-${index + 1}` : tabID
                 );
                 tab.setAttribute(
                     "aria-selected",
@@ -108,10 +114,9 @@ export class Tabs extends FASTElement {
                 );
                 tab.setAttribute(
                     "aria-controls",
-                    this.tabpanelIds[index] === undefined ||
-                        this.tabpanelIds[index] === null
+                    tabpanelId === undefined || tabpanelId === null
                         ? `panel-${index + 1}`
-                        : (this.tabpanelIds[index] as string)
+                        : tabpanelId
                 );
                 tab.setAttribute(
                     "style",
@@ -136,17 +141,17 @@ export class Tabs extends FASTElement {
         this.tabIds = this.getTabIds();
         this.tabpanelIds = this.getTabPanelIds();
         this.tabpanels.forEach((tabpanel: HTMLElement, index: number) => {
+            const tabID: string | null = this.tabIds[index];
+            const tabpanelId: string | null = this.tabpanelIds[index];
             tabpanel.setAttribute(
                 "id",
-                this.tabpanelIds[index] === undefined || this.tabpanelIds[index] === null
+                tabpanelId === undefined || tabpanelId === null
                     ? `panel-${index + 1}`
-                    : (this.tabpanelIds[index] as string)
+                    : tabpanelId
             );
             tabpanel.setAttribute(
                 "aria-labeledby",
-                this.tabIds[index] === undefined || this.tabIds[index] === null
-                    ? `tab-${index + 1}`
-                    : (this.tabIds[index] as string)
+                tabID === undefined || tabID === null ? `tab-${index + 1}` : tabID
             );
             this.activeTabIndex !== index
                 ? tabpanel.setAttribute("hidden", "")
@@ -287,15 +292,10 @@ export class Tabs extends FASTElement {
     constructor() {
         super();
 
-        if (this.connected) {
+        if (this.$fastController.isConnected) {
             this.tabIds = this.getTabIds();
             this.tabpanelIds = this.getTabPanelIds();
             this.activeTabIndex = this.getActiveIndex();
         }
-    }
-
-    public connectedCallback(): void {
-        super.connectedCallback();
-        this.connected = true;
     }
 }

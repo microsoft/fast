@@ -14,17 +14,7 @@ export const TabsTemplate = html<Tabs>`
             <slot class="tab" name="tab" part="tab" ${slotted("tabs")}></slot>
 
             ${when(
-                x => x.orientation === TabsOrientation.horizontal && x.activeindicator,
-                html<Tabs>`
-                    <div
-                        ${ref("activeIndicatorRef")}
-                        class="activeIndicator"
-                        part="activeIndicator"
-                    ></div>
-                `
-            )}
-            ${when(
-                x => x.orientation === TabsOrientation.vertical && x.activeindicator,
+                x => x.activeindicator,
                 html<Tabs>`
                     <div
                         ${ref("activeIndicatorRef")}
