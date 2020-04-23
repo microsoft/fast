@@ -71,19 +71,6 @@ export function isDesignSystemProvider(
     );
 }
 
-/**
- * Scope of change:
- * This change changes the behavior of the design-system-provider to synchronously create
- * css custom properties instead of batch the update. This is being done to prevent flashes
- * of un-styled content and un-desired transitions that result from the property not being
- * defined when the sheet is initially rendered.
- *
- * This change also introduces an optimization where it will use adopted stylesheets to create
- * the custom properties when that API is available. There are significant performance benefits
- * to this approach: https://jsbench.me/hck9d4noez/1. Inline styles will be the fallback behavior
- * if adopted stylesheets are not supported.
- */
-
 const supportsAdoptedStylesheets = "adoptedStyleSheets" in window.ShadowRoot.prototype;
 
 export class DesignSystemProvider extends FASTElement
