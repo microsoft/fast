@@ -13,7 +13,7 @@ export interface MessageSystemConfig {
     /**
      * The message system web worker location
      */
-    webWorker: string;
+    webWorker: string | Worker;
 
     /**
      * The initial data to map to the message system

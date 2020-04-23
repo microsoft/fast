@@ -82,8 +82,10 @@ const mySchema = {
 if (window.Worker) {
 
     fastMessageSystem = new MessageSystem({
-        // the location of the file on the server
-        // if you are using webpack, include it in the entry section of the config
+        // The string location of the file on the server or the Worker instance.
+        // If using webpack, include it in the entry section of the config.
+        // Alternatively if instantiating the web worker with the webpack worker-loader,
+        // simply use the Worker instance that has been imported
         webWorker: "message-system.min.js",
 
         // your data dictionary to initialize with (you may only need a single item)

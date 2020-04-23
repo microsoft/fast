@@ -1,12 +1,51 @@
 import MessageSystem from "./message-system";
 
 describe("MessageSystem", () => {
-    test("should not throw", () => {
+    test("should not throw when Workers are not available", () => {
         expect(() => {
             new MessageSystem({
                 webWorker: "",
             });
         });
+    });
+    test("should not throw when the webWorker is a string", () => {
+        class Worker {}
+
+        (window as any).Worker = Worker;
+
+        expect(() => {
+            new MessageSystem({
+                webWorker: "",
+            });
+        }).not.toThrow();
+
+        (window as any).Worker = undefined;
+    });
+    test("should not throw when the webWorker is a Worker instance", () => {
+        class Worker {
+            constructor(url: string) {
+                url;
+            }
+            public postMessage: undefined;
+            public onmessage: undefined;
+            public onerror: undefined;
+            public terminate: undefined;
+            public removeEventListener: undefined;
+            public addEventListener: undefined;
+            public dispatchEvent: undefined;
+        }
+
+        (window as any).Worker = Worker;
+
+        expect(() => {
+            const myWorker: Worker = new Worker("");
+
+            new MessageSystem({
+                webWorker: myWorker,
+            });
+        }).not.toThrow();
+
+        (window as any).Worker = undefined;
     });
     test("should not throw when attempting to initialize and Workers are not available", () => {
         const messageSystem: MessageSystem = new MessageSystem({
