@@ -202,7 +202,7 @@ export class DesignSystemProvider extends FASTElement
      * has run and the registration APIs exist. This can manifest when the DOM
      * is parsed (and custom element tags exist in the DOM) before the script defining the custom elements
      * and elements is parsed, and the elements using the CSSCustomPropertyBehaviors
-     * are defined before the this the DesignSystemProvider.
+     * are defined before this DesignSystemProvider.
      */
     public disconnectedCSSCustomPropertyRegistry: CSSCustomPropertyDefinition[];
 
