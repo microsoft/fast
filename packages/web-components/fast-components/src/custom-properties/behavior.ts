@@ -15,7 +15,7 @@ export interface CSSCustomPropertyDefinition {
 export interface CSSCustomPropertyTarget {
     registerCSSCustomProperty(behavior: CSSCustomPropertyDefinition): void;
     unregisterCSSCustomProperty(behavior: CSSCustomPropertyDefinition): void;
-    preconstructionCSSCustomProperties: CSSCustomPropertyDefinition[] | void;
+    disconnectedCSSCustomPropertyRegistry: CSSCustomPropertyDefinition[] | void;
 }
 
 export type CSSCustomPropertyBehavior = Behavior & CSSCustomPropertyDefinition;
@@ -48,11 +48,11 @@ export function cssCustomPropertyBehaviorFactory(
                     // constructed when this is run. We handle that case by accumulating
                     // the behaviors in a normal array. Behaviors associated this way will
                     // get registered when the host is connected
-                    if (!Array.isArray(target.preconstructionCSSCustomProperties)) {
-                        target.preconstructionCSSCustomProperties = [];
+                    if (!Array.isArray(target.disconnectedCSSCustomPropertyRegistry)) {
+                        target.disconnectedCSSCustomPropertyRegistry = [];
                     }
 
-                    target.preconstructionCSSCustomProperties.push(this);
+                    target.disconnectedCSSCustomPropertyRegistry.push(this);
                 }
             }
         },
