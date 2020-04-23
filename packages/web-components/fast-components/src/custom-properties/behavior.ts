@@ -15,6 +15,7 @@ export interface CSSCustomPropertyDefinition {
 export interface CSSCustomPropertyTarget {
     registerCSSCustomProperty(behavior: CSSCustomPropertyDefinition): void;
     unregisterCSSCustomProperty(behavior: CSSCustomPropertyDefinition): void;
+    preconstructionCSSCustomProperties: CSSCustomPropertyDefinition[] | void;
 }
 
 export type CSSCustomPropertyBehavior = Behavior & CSSCustomPropertyDefinition;
@@ -28,7 +29,9 @@ export type CSSCustomPropertyBehavior = Behavior & CSSCustomPropertyDefinition;
 export function cssCustomPropertyBehaviorFactory(
     name: string,
     value: string | ((...arg: any[]) => string),
-    host: (source: typeof FASTElement & HTMLElement) => CSSCustomPropertyTarget | null
+    host: (
+        source: typeof FASTElement & HTMLElement
+    ) => Partial<CSSCustomPropertyTarget> | null
 ): CSSCustomPropertyBehavior {
     return Object.freeze({
         name,
@@ -38,7 +41,19 @@ export function cssCustomPropertyBehaviorFactory(
             const target = this.host(source);
 
             if (target !== null) {
-                target.registerCSSCustomProperty(this);
+                if (typeof target.registerCSSCustomProperty === "function") {
+                    target.registerCSSCustomProperty(this);
+                } else {
+                    // There is potential for the custom property host element to not be
+                    // constructed when this is run. We handle that case by accumulating
+                    // the behaviors in a normal array. Behaviors associated this way will
+                    // get registered when the host is connected
+                    if (!Array.isArray(target.preconstructionCSSCustomProperties)) {
+                        target.preconstructionCSSCustomProperties = [];
+                    }
+
+                    target.preconstructionCSSCustomProperties.push(this);
+                }
             }
         },
         unbind(source: typeof FASTElement): void {

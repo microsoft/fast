@@ -67,7 +67,9 @@ export function designSystemProperty<T extends DesignSystemProvider>(
 export function isDesignSystemProvider(
     el: HTMLElement | DesignSystemProvider
 ): el is DesignSystemProvider {
-    return (el as any).isDesignSystemProvider;
+    return (
+        (el as any).isDesignSystemProvider || el.tagName === "FAST-DESIGN-SYSTEM-PROVIDER"
+    );
 }
 
 export class DesignSystemProvider extends FASTElement
@@ -182,7 +184,27 @@ export class DesignSystemProvider extends FASTElement
                 });
             }
         });
+
+        // Register all properties that may have been attached before construction
+        if (Array.isArray(this.preconstructionCSSCustomProperties)) {
+            for (let i = 0; i < this.preconstructionCSSCustomProperties.length; i++) {
+                this.registerCSSCustomProperty(
+                    this.preconstructionCSSCustomProperties[i]
+                );
+            }
+
+            delete this.preconstructionCSSCustomProperties;
+        }
     }
+
+    /**
+     * Allows CSSCustomPropertyBehaviors to attach to this element *before* the constructor
+     * has run and the registration APIs exist. This can manifest when the DOM
+     * is parsed (and custom element tags exist in the DOM) before the script defining the custom elements
+     * and elements is parsed, and the elements using the CSSCustomPropertyBehaviors
+     * are defined before the this the DesignSystemProvider.
+     */
+    public preconstructionCSSCustomProperties: CSSCustomPropertyDefinition[];
 
     private attributeChangeHandler = {
         handleChange: (source: this, key: string) => {
