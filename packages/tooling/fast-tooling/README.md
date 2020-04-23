@@ -82,8 +82,10 @@ const mySchema = {
 if (window.Worker) {
 
     fastMessageSystem = new MessageSystem({
-        // the location of the file on the server
-        // if you are using webpack, include it in the entry section of the config
+        // The string location of the file on the server or the Worker instance.
+        // If using webpack, include it in the entry section of the config.
+        // Alternatively if instantiating the web worker with the webpack worker-loader,
+        // simply use the Worker instance that has been imported
         webWorker: "message-system.min.js",
 
         // your data dictionary to initialize with (you may only need a single item)
@@ -100,11 +102,45 @@ if (window.Worker) {
         ],
 
         // your dictionary of schemas to validate data in the dictionary
-        schemas: {
+        schemaDictionary: {
             [mySchema.id]: mySchema,
         },
     });
 }
+```
+
+The `dataDictionary` and the `schemaDictionary` are not required when creating the instance of the message system but can be provided for a single point of intialization.
+
+If initialization occurs later, the following method can be used:
+
+```javascript
+fastMessageSystem = new MessageSystem({
+    webWorker: "message-system.min.js",
+});
+
+...
+
+fastMessageSystem.initialize({
+    dataDictionary: myDataDictionary,
+    schemaDictionary: mySchemaDictionary,
+});
+```
+    
+#### Initialization message
+
+To re-initialize the message system an initialization message can be sent which requires a `dataDictionary` and `schemaDictionary` to be provided.
+
+Example:
+```javascript
+import { MessageSystemType } from "@microsoft/fast-tooling";
+
+...
+
+fastMessageSystem.postMessage({
+    type: MessageSystemType.initialize,
+    dataDictionary: myDataDictionary,
+    schemaDictionary: mySchemaDictionary
+});
 ```
 
 #### Custom messages
