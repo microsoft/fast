@@ -7,7 +7,6 @@ import {
     CSSCustomPropertyDefinition,
     CSSCustomPropertyTarget,
 } from "../custom-properties";
-import { CSSCustomPropertyManager } from "../custom-properties";
 
 interface DesignSystemPropertyDeclarationConfig {
     customPropertyName?: string;
@@ -72,6 +71,57 @@ export function isDesignSystemProvider(
     );
 }
 
+const customPropertyNameCache: { [key: string]: string } = {};
+function formatCustomPropertyName(name: string): string {
+    if (customPropertyNameCache[name] !== undefined) {
+        return customPropertyNameCache[name];
+    } else {
+        return (customPropertyNameCache[name] = `--${name}`);
+    }
+}
+
+function writeCSSCustomPropertyDefinitionInline(
+    this: DesignSystemProvider,
+    definition: CSSCustomPropertyDefinition
+) {
+    const name = formatCustomPropertyName(definition.name);
+    const value =
+        typeof definition.value === "function"
+            ? // use spread on the designSystem object to circumvent memoization
+              // done in the color recipes - we use the same *reference* in WC
+              // for performance improvements but that throws off the recipes
+              // We should look at making the recipes use simple args that
+              // we can individually memoize.
+              definition.value({ ...this.designSystem })
+            : definition.value;
+
+    if (this.style.getPropertyValue(name) !== value) {
+        this.style.setProperty(name, value);
+    }
+}
+
+function deleteCSSCustomPropertyDefinitionInline(
+    this: DesignSystemProvider,
+    definition: CSSCustomPropertyDefinition
+) {
+    this.style.removeProperty(formatCustomPropertyName(definition.name));
+}
+
+/**
+ * Scope of change:
+ * This change changes the behavior of the design-system-provider to synchronously create
+ * css custom properties instead of batch the update. This is being done to prevent flashes
+ * of un-styled content and un-desired transitions that result from the property not being
+ * defined when the sheet is initially rendered.
+ *
+ * This change also introduces an optimization where it will use adopted stylesheets to create
+ * the custom properties when that API is available. There are significant performance benefits
+ * to this approach: https://jsbench.me/hck9d4noez/1. Inline styles will be the fallback behavior
+ * if adopted stylesheets are not supported.
+ */
+
+const supportsAdoptedStylesheets = "adoptedStyleSheets" in window.ShadowRoot.prototype;
+
 export class DesignSystemProvider extends FASTElement
     implements CSSCustomPropertyTarget, DesignSystemConsumer {
     private customPropertyBehaviors: Map<
@@ -98,7 +148,7 @@ export class DesignSystemProvider extends FASTElement
 
             if (cached.count === 0) {
                 this.customPropertyBehaviors.delete(behavior.name);
-                this.customPropertyManager.delete(behavior);
+                this.deleteCustomProperty(behavior.name);
             }
         }
     }
@@ -133,6 +183,17 @@ export class DesignSystemProvider extends FASTElement
     constructor() {
         super();
 
+        if (supportsAdoptedStylesheets) {
+            this.writeCustomProperty = () => console.log("Write some custom properties");
+            this.deleteCustomProperty = () =>
+                console.log("Delete some custom properties");
+        } else {
+            this.writeCustomProperty = writeCSSCustomPropertyDefinitionInline.bind(this);
+            this.deleteCustomProperty = deleteCSSCustomPropertyDefinitionInline.bind(
+                this
+            );
+        }
+
         this.$fastController.addBehaviors([new DesignSystemConsumerBehavior()]);
     }
     /**
@@ -140,11 +201,6 @@ export class DesignSystemProvider extends FASTElement
      * Using instanceof DesignSystemProvider did not seem to work.
      */
     public readonly isDesignSystemProvider = true;
-
-    /**
-     * RAF-throttled method to set css custom properties on the instance
-     */
-    private customPropertyManager = new CSSCustomPropertyManager(this);
 
     /**
      * The design-system object.
@@ -178,7 +234,7 @@ export class DesignSystemProvider extends FASTElement
             // If property is set then put it onto the design system
             if (this.isValidDesignSystemValue(value)) {
                 this.designSystem[property] = value;
-                this.customPropertyManager.set({
+                this.writeCustomProperty({
                     name: this.designSystemProperties[property].customPropertyName,
                     value,
                 });
@@ -215,16 +271,16 @@ export class DesignSystemProvider extends FASTElement
                 const property = this.designSystemProperties[key];
 
                 if (property && property.customProperty) {
-                    this.customPropertyManager.set({
+                    this.writeCustomProperty({
                         name: property.customPropertyName,
                         value,
                     });
                 }
             } else {
                 this.syncDesignSystemWithProvider();
-                this.customPropertyManager.delete({
-                    name: this.designSystemProperties[key].customPropertyName,
-                });
+                this.deleteCustomProperty(
+                    this.designSystemProperties[key].customPropertyName
+                );
                 this.writeCustomProperties();
             }
         },
@@ -249,20 +305,8 @@ export class DesignSystemProvider extends FASTElement
         this.customPropertyBehaviors.forEach(this.writeCustomProperty);
     }
 
-    private writeCustomProperty = (definition: CSSCustomPropertyDefinition) => {
-        this.customPropertyManager.set({
-            name: definition.name,
-            value:
-                typeof definition.value === "function"
-                    ? // use spread on the designSystem object to circumvent memoization
-                      // done in the color recipes - we use the same *reference* in WC
-                      // for performance improvements but that throws off the recipes
-                      // We should look at making the recipes use simple args that
-                      // we can individually memoize.
-                      definition.value.bind(this, { ...this.designSystem })
-                    : definition.value,
-        });
-    };
+    private writeCustomProperty: (definition: CSSCustomPropertyDefinition) => void;
+    private deleteCustomProperty: (name: string) => void;
 
     /**
      * Synchronize the provider's design system with the local
