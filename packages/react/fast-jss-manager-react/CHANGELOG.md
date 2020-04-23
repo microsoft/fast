@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.7.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-jss-manager-react@4.6.4...@microsoft/fast-jss-manager-react@4.7.0) (2020-04-22)
+
+
+### Features
+
+* add subscription to JSSManager ([#2924](https://github.com/Microsoft/fast-dna/issues/2924)) ([eb4dab7](https://github.com/Microsoft/fast-dna/commit/eb4dab7341d337701c2c7b7ac59d4b7a7078f023))
+
+
+
+
+
 ## [4.6.4](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-jss-manager-react@4.6.3...@microsoft/fast-jss-manager-react@4.6.4) (2020-04-10)
 
 **Note:** Version bump only for package @microsoft/fast-jss-manager-react
