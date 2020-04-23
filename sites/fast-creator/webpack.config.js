@@ -5,7 +5,8 @@ const CleanWebpackPlugin = require("clean-webpack-plugin");
 const WorkboxPlugin = require("workbox-webpack-plugin");
 const FaviconsWebpackPlugin = require("favicons-webpack-plugin");
 
-const rootNodeModules = path.resolve(__dirname, "./node_modules");
+const rootNodeModules = path.resolve(__dirname, "../../node_modules");
+const nodeModules = path.resolve(__dirname, "./node_modules");
 const appDir = path.resolve(__dirname, "./app");
 const outDir = path.resolve(__dirname, "./www");
 
@@ -15,40 +16,36 @@ module.exports = (env, args) => {
         devtool: isProduction ? "none" : "inline-source-map",
         entry: {
             main: path.resolve(appDir, "index.tsx"),
+            // Due to issues during development, service workers and the WorkboxPlugin are disabled for now
             // serviceWorker: path.resolve(appDir, "service-worker-registration.ts"),
             focusVisible: path.resolve(
-                __dirname,
-                "node_modules/focus-visible/dist/focus-visible.min.js"
-            ),
-            "message-system": path.resolve(
-                __dirname,
-                "node_modules/@microsoft/fast-tooling/dist/message-system.min.js"
+                rootNodeModules,
+                "focus-visible/dist/focus-visible.min.js"
             ),
         },
         output: {
             path: outDir,
             publicPath: "/",
-            filename: "[name].js", // hashing removed due to screwing up the message system path
+            filename: "[name]-[contenthash].js",
         },
         optimization: {
-            // Note: when this is enabled it wraps the web worker with some kind of wrapper that breaks the web worker
-            // runtimeChunk: "single",
-            // splitChunks: {
-            //     chunks: "all",
-            //     maxInitialRequests: 100,
-            //     cacheGroups: {
-            //         vendor: {
-            //             test: /[\\/]node_modules[\\/]/,
-            //             name: module => {
-            //                 const packageName = module.context.match(
-            //                     /[\\/]node_modules[\\/](.*?)([\\/]|$)/
-            //                 )[1];
-            //                 // npm package names are URL-safe, but some servers don't like @ symbols
-            //                 return `npm.${packageName.replace("@", "")}`;
-            //             },
-            //         },
-            //     },
-            // },
+            runtimeChunk: "single",
+            splitChunks: {
+                chunks: "all",
+                maxInitialRequests: 100,
+                cacheGroups: {
+                    vendor: {
+                        test: /[\\/]node_modules[\\/]/,
+                        name: module => {
+                            const packageName = module.context.match(
+                                /[\\/]node_modules[\\/](.*?)([\\/]|$)/
+                            )[1];
+                            // npm package names are URL-safe, but some servers don't like @ symbols
+                            return `npm.${packageName.replace("@", "")}`;
+                        },
+                    },
+                },
+            },
         },
         mode: args.mode || "development",
         module: {
@@ -67,6 +64,12 @@ module.exports = (env, args) => {
                         loader: "babel-loader",
                     },
                 },
+                {
+                    test: /message\-system\.min\.js/,
+                    use: {
+                        loader: "worker-loader",
+                    },
+                },
             ],
         },
         plugins: [
@@ -79,6 +82,7 @@ module.exports = (env, args) => {
                 // Remove this to inspect bundle sizes.
                 analyzerMode: "disabled",
             }),
+            // Due to issues during development, service workers and the WorkboxPlugin are disabled for now
             // new WorkboxPlugin.GenerateSW({
             //     exclude: [/\.map$/, /^manifest.*\.js(?:on)?$/, /\.html$/],
             // }),
@@ -89,14 +93,13 @@ module.exports = (env, args) => {
             alias: {
                 lodash: path.resolve(rootNodeModules, "lodash-es"),
                 "lodash-es": path.resolve(rootNodeModules, "lodash-es"),
-                "react-dnd": path.resolve(rootNodeModules, "react-dnd"),
                 "react-dnd-html5-backend": path.resolve(
                     rootNodeModules,
                     "react-dnd-html5-backend"
                 ),
                 react: path.resolve(rootNodeModules, "react"),
+                "react-dnd": path.resolve(nodeModules, "react-dnd"),
                 "react-dom": path.resolve(rootNodeModules, "react-dom"),
-                cjs: path.resolve(rootNodeModules, "cjs"),
             },
         },
         devServer: {

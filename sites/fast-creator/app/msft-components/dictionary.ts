@@ -1,72 +1,70 @@
 import { ComponentDictionary } from "@microsoft/fast-tooling-react";
 import {
     AccentButton,
+    accentButtonSchema2,
     Badge,
+    badgeSchema2,
     CallToAction,
+    callToActionSchema2,
     Card,
+    cardSchema2,
     Checkbox,
+    checkboxSchema2,
     Divider,
-    Heading,
-    Hypertext,
-    Image,
-    Label,
-    LightweightButton,
-    NeutralButton,
-    NumberField,
-    OutlineButton,
-    Paragraph,
-    Progress,
-    StealthButton,
-    Subheading,
-    TextArea,
-    Toggle,
-    Typography,
-} from "@microsoft/fast-components-react-msft";
-import {
-    accentButtonSchema,
-    badgeSchema,
-    callToActionSchema,
-    cardSchema,
-    checkboxSchema,
     dividerSchema,
-    headingSchema,
-    hypertextSchema,
+    Heading,
+    headingSchema2,
+    Hypertext,
+    hypertextSchema2,
+    Image,
     imageSchema,
-    labelSchema,
-    lightweightButtonSchema,
-    neutralButtonSchema,
+    Label,
+    labelSchema2,
+    LightweightButton,
+    lightweightButtonSchema2,
+    NeutralButton,
+    neutralButtonSchema2,
+    NumberField,
     numberFieldSchema,
-    outlineButtonSchema,
-    paragraphSchema,
-    progressSchema,
-    stealthButtonSchema,
-    subheadingSchema,
+    OutlineButton,
+    outlineButtonSchema2,
+    Paragraph,
+    paragraphSchema2,
+    Progress,
+    progressSchema2,
+    StealthButton,
+    stealthButtonSchema2,
+    Subheading,
+    subheadingSchema2,
+    TextArea,
     textAreaSchema,
-    toggleSchema,
-    typographySchema,
-} from "./";
+    Toggle,
+    toggleSchema2,
+    Typography,
+    typographySchema2,
+} from "@microsoft/fast-components-react-msft";
 
 const componentDictionary: ComponentDictionary = {};
-componentDictionary[accentButtonSchema.id] = AccentButton;
-componentDictionary[badgeSchema.id] = Badge;
-componentDictionary[callToActionSchema.id] = CallToAction;
-componentDictionary[cardSchema.id] = Card;
-componentDictionary[checkboxSchema.id] = Checkbox;
+componentDictionary[accentButtonSchema2.id] = AccentButton;
+componentDictionary[badgeSchema2.id] = Badge;
+componentDictionary[callToActionSchema2.id] = CallToAction;
+componentDictionary[cardSchema2.id] = Card;
+componentDictionary[checkboxSchema2.id] = Checkbox;
 componentDictionary[dividerSchema.id] = Divider;
-componentDictionary[headingSchema.id] = Heading;
-componentDictionary[hypertextSchema.id] = Hypertext;
+componentDictionary[headingSchema2.id] = Heading;
+componentDictionary[hypertextSchema2.id] = Hypertext;
 componentDictionary[imageSchema.id] = Image;
-componentDictionary[labelSchema.id] = Label;
-componentDictionary[lightweightButtonSchema.id] = LightweightButton;
-componentDictionary[neutralButtonSchema.id] = NeutralButton;
+componentDictionary[labelSchema2.id] = Label;
+componentDictionary[lightweightButtonSchema2.id] = LightweightButton;
+componentDictionary[neutralButtonSchema2.id] = NeutralButton;
 componentDictionary[numberFieldSchema.id] = NumberField;
-componentDictionary[outlineButtonSchema.id] = OutlineButton;
-componentDictionary[paragraphSchema.id] = Paragraph;
-componentDictionary[progressSchema.id] = Progress;
-componentDictionary[stealthButtonSchema.id] = StealthButton;
-componentDictionary[subheadingSchema.id] = Subheading;
+componentDictionary[outlineButtonSchema2.id] = OutlineButton;
+componentDictionary[paragraphSchema2.id] = Paragraph;
+componentDictionary[progressSchema2.id] = Progress;
+componentDictionary[stealthButtonSchema2.id] = StealthButton;
+componentDictionary[subheadingSchema2.id] = Subheading;
 componentDictionary[textAreaSchema.id] = TextArea;
-componentDictionary[toggleSchema.id] = Toggle;
-componentDictionary[typographySchema.id] = Typography;
+componentDictionary[toggleSchema2.id] = Toggle;
+componentDictionary[typographySchema2.id] = Typography;
 
 export { componentDictionary };

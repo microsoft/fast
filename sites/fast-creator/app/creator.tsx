@@ -69,7 +69,10 @@ import {
 } from "./components";
 import { selectDeviceOverrideStyles } from "./utilities/style-overrides";
 import designSystemSchema from "./msft-component-helpers/design-system.schema";
+import FASTMessageSystemWorker from "@microsoft/fast-tooling/dist/message-system.min.js";
+import { previewReady } from "./preview";
 
+const fastMessageSystemWorker = new FASTMessageSystemWorker();
 let ajvMapper: AjvMapper;
 let fastMessageSystem: MessageSystem;
 let componentLinkedDataId: string = "root";
@@ -121,7 +124,7 @@ class Creator extends Foundation<CreatorHandledProps, {}, CreatorState> {
             dataDictionary: [
                 {
                     [componentLinkedDataId]: {
-                        schemaId: schemas.cardSchema.id,
+                        schemaId: schemas.cardSchema2.id,
                         data: {},
                     },
                     [designSystemLinkedDataId]: {
@@ -153,7 +156,7 @@ class Creator extends Foundation<CreatorHandledProps, {}, CreatorState> {
 
         if ((window as any).Worker) {
             fastMessageSystem = new MessageSystem({
-                webWorker: "message-system.js",
+                webWorker: fastMessageSystemWorker,
                 dataDictionary: initialView.dataDictionary,
                 schemaDictionary,
             });
@@ -351,6 +354,14 @@ class Creator extends Foundation<CreatorHandledProps, {}, CreatorState> {
         ) {
             componentLinkedDataId = e.data.activeDictionaryId;
             componentNavigationConfigId = e.data.activeNavigationConfigId;
+        }
+
+        if (e.data.type === MessageSystemType.custom && e.data.action === previewReady) {
+            fastMessageSystem.postMessage({
+                type: MessageSystemType.initialize,
+                data: this.state.views[this.state.activeView].dataDictionary,
+                schemaDictionary,
+            });
         }
 
         this.setState(updatedState as CreatorState);

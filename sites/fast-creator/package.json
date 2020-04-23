@@ -97,6 +97,8 @@
     "prettier": "^1.15.3",
     "raf-throttle": "^2.0.3",
     "react": "^16.8.0",
+    "react-dnd": "^9.0.0",
+    "react-dnd-html5-backend": "^9.0.0",
     "react-dom": "^16.8.0",
     "react-router-dom": "^5.1.2",
     "ts-jest": "^23.10.5",
@@ -106,12 +108,12 @@
     "webpack-bundle-analyzer": "^3.0.3",
     "webpack-cli": "^3.1.2",
     "webpack-dev-server": "^3.1.10",
-    "workbox-webpack-plugin": "^3.6.3"
+    "workbox-webpack-plugin": "^3.6.3",
+    "worker-loader": "^2.0.0"
   },
   "dependencies": {
     "@microsoft/fast-components-react-msft": "^4.24.2",
     "@microsoft/fast-tooling-react": "2.0.2",
-    "@microsoft/fast-tooling": "^0.2.0",
-    "react-dnd-html5-backend": "^9.0.0"
+    "@microsoft/fast-tooling": "^0.2.0"
   }
 }

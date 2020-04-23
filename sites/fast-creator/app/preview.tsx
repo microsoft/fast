@@ -22,6 +22,8 @@ import { componentDictionary } from "./msft-components/dictionary";
 import style from "./preview.style";
 import { designSystemLinkedDataId } from "./creator";
 
+export const previewReady: string = "PREVIEW::READY";
+
 export interface PreviewState {
     activeDictionaryId: string;
     dataDictionary: DataDictionary<unknown> | void;
@@ -66,6 +68,13 @@ class Preview extends Foundation<{}, {}, PreviewState> {
 
     public componentDidMount(): void {
         window.addEventListener("message", this.handleMessage);
+        window.postMessage(
+            {
+                type: MessageSystemType.custom,
+                action: previewReady,
+            },
+            "*"
+        );
     }
 
     private renderMappedComponents(): React.ReactNode {

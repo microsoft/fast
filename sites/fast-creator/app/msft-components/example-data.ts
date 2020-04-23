@@ -1,28 +1,28 @@
 import { Data } from "@microsoft/fast-tooling";
+import { textSchema } from "./";
 import {
-    accentButtonSchema,
-    badgeSchema,
-    callToActionSchema,
-    cardSchema,
-    checkboxSchema,
+    accentButtonSchema2,
+    badgeSchema2,
+    callToActionSchema2,
+    cardSchema2,
+    checkboxSchema2,
     dividerSchema,
-    headingSchema,
-    hypertextSchema,
+    headingSchema2,
+    hypertextSchema2,
     imageSchema,
-    labelSchema,
-    lightweightButtonSchema,
-    neutralButtonSchema,
+    labelSchema2,
+    lightweightButtonSchema2,
+    neutralButtonSchema2,
     numberFieldSchema,
-    outlineButtonSchema,
-    paragraphSchema,
-    progressSchema,
-    stealthButtonSchema,
-    subheadingSchema,
+    outlineButtonSchema2,
+    paragraphSchema2,
+    progressSchema2,
+    stealthButtonSchema2,
+    subheadingSchema2,
     textAreaSchema,
-    textSchema,
-    toggleSchema,
-    typographySchema,
-} from "./";
+    toggleSchema2,
+    typographySchema2,
+} from "@microsoft/fast-components-react-msft";
 
 export interface LinkedDataStack {
     dataLocation: string;
@@ -39,7 +39,7 @@ interface ExampleDataItems {
 }
 
 const exampleData: ExampleData = {
-    [accentButtonSchema.id]: {
+    [accentButtonSchema2.id]: {
         props: {},
         linkedData: {
             dataLocation: "children",
@@ -51,7 +51,7 @@ const exampleData: ExampleData = {
             ],
         },
     },
-    [badgeSchema.id]: {
+    [badgeSchema2.id]: {
         props: {},
         linkedData: {
             dataLocation: "children",
@@ -63,13 +63,13 @@ const exampleData: ExampleData = {
             ],
         },
     },
-    [cardSchema.id]: {
+    [cardSchema2.id]: {
         props: {},
     },
-    [checkboxSchema.id]: {
+    [checkboxSchema2.id]: {
         props: {},
     },
-    [callToActionSchema.id]: {
+    [callToActionSchema2.id]: {
         props: {},
         linkedData: {
             dataLocation: "children",
@@ -84,7 +84,7 @@ const exampleData: ExampleData = {
     [dividerSchema.id]: {
         props: {},
     },
-    [headingSchema.id]: {
+    [headingSchema2.id]: {
         props: {},
         linkedData: {
             dataLocation: "children",
@@ -96,7 +96,7 @@ const exampleData: ExampleData = {
             ],
         },
     },
-    [hypertextSchema.id]: {
+    [hypertextSchema2.id]: {
         props: {},
         linkedData: {
             dataLocation: "children",
@@ -111,7 +111,7 @@ const exampleData: ExampleData = {
     [imageSchema.id]: {
         props: {},
     },
-    [labelSchema.id]: {
+    [labelSchema2.id]: {
         props: {},
         linkedData: {
             dataLocation: "children",
@@ -123,7 +123,7 @@ const exampleData: ExampleData = {
             ],
         },
     },
-    [lightweightButtonSchema.id]: {
+    [lightweightButtonSchema2.id]: {
         props: {},
         linkedData: {
             dataLocation: "children",
@@ -135,7 +135,7 @@ const exampleData: ExampleData = {
             ],
         },
     },
-    [neutralButtonSchema.id]: {
+    [neutralButtonSchema2.id]: {
         props: {},
         linkedData: {
             dataLocation: "children",
@@ -150,7 +150,7 @@ const exampleData: ExampleData = {
     [numberFieldSchema.id]: {
         props: {},
     },
-    [outlineButtonSchema.id]: {
+    [outlineButtonSchema2.id]: {
         props: {},
         linkedData: {
             dataLocation: "children",
@@ -162,7 +162,7 @@ const exampleData: ExampleData = {
             ],
         },
     },
-    [paragraphSchema.id]: {
+    [paragraphSchema2.id]: {
         props: {},
         linkedData: {
             dataLocation: "children",
@@ -175,10 +175,10 @@ const exampleData: ExampleData = {
             ],
         },
     },
-    [progressSchema.id]: {
+    [progressSchema2.id]: {
         props: {},
     },
-    [stealthButtonSchema.id]: {
+    [stealthButtonSchema2.id]: {
         props: {},
         linkedData: {
             dataLocation: "children",
@@ -190,7 +190,7 @@ const exampleData: ExampleData = {
             ],
         },
     },
-    [subheadingSchema.id]: {
+    [subheadingSchema2.id]: {
         props: {},
         linkedData: {
             dataLocation: "children",
@@ -205,10 +205,10 @@ const exampleData: ExampleData = {
     [textAreaSchema.id]: {
         props: {},
     },
-    [toggleSchema.id]: {
+    [toggleSchema2.id]: {
         props: {},
     },
-    [typographySchema.id]: {
+    [typographySchema2.id]: {
         props: {},
         linkedData: {
             dataLocation: "children",

@@ -1,66 +1,24 @@
-// Due to the fact that all updated schemas are in the releases branch, the schemas are a temporary copy
-import accentButtonSchema from "./schemas/accent-button.schema";
-export { accentButtonSchema };
-
-import badgeSchema from "./schemas/badge.schema";
-export { badgeSchema };
-
-import callToActionSchema from "./schemas/call-to-action.schema";
-export { callToActionSchema };
-
-import cardSchema from "./schemas/card.schema";
-export { cardSchema };
-
-import checkboxSchema from "./schemas/checkbox.schema";
-export { checkboxSchema };
-
-import dividerSchema from "./schemas/divider.schema";
-export { dividerSchema };
-
-import headingSchema from "./schemas/heading.schema";
-export { headingSchema };
-
-import hypertextSchema from "./schemas/hypertext.schema";
-export { hypertextSchema };
-
-import imageSchema from "./schemas/image.schema";
-export { imageSchema };
-
-import labelSchema from "./schemas/label.schema";
-export { labelSchema };
-
-import lightweightButtonSchema from "./schemas/lightweight-button.schema";
-export { lightweightButtonSchema };
-
-import neutralButtonSchema from "./schemas/neutral-button.schema";
-export { neutralButtonSchema };
-
-import numberFieldSchema from "./schemas/number-field.schema";
-export { numberFieldSchema };
-
-import outlineButtonSchema from "./schemas/outline-button.schema";
-export { outlineButtonSchema };
-
-import paragraphSchema from "./schemas/paragraph.schema";
-export { paragraphSchema };
-
-import progressSchema from "./schemas/progress.schema";
-export { progressSchema };
-
-import stealthButtonSchema from "./schemas/stealth-button.schema";
-export { stealthButtonSchema };
-
-import subheadingSchema from "./schemas/subheading.schema";
-export { subheadingSchema };
-
-import textAreaSchema from "./schemas/text-area.schema";
-export { textAreaSchema };
-
-import toggleSchema from "./schemas/toggle.schema";
-export { toggleSchema };
-
-import typographySchema from "./schemas/typography.schema";
-export { typographySchema };
+export { accentButtonSchema2 } from "@microsoft/fast-components-react-msft";
+export { badgeSchema2 } from "@microsoft/fast-components-react-msft";
+export { callToActionSchema2 } from "@microsoft/fast-components-react-msft";
+export { cardSchema2 } from "@microsoft/fast-components-react-msft";
+export { checkboxSchema2 } from "@microsoft/fast-components-react-msft";
+export { dividerSchema } from "@microsoft/fast-components-react-msft";
+export { headingSchema2 } from "@microsoft/fast-components-react-msft";
+export { hypertextSchema2 } from "@microsoft/fast-components-react-msft";
+export { imageSchema } from "@microsoft/fast-components-react-msft";
+export { labelSchema2 } from "@microsoft/fast-components-react-msft";
+export { lightweightButtonSchema2 } from "@microsoft/fast-components-react-msft";
+export { neutralButtonSchema2 } from "@microsoft/fast-components-react-msft";
+export { numberFieldSchema } from "@microsoft/fast-components-react-msft";
+export { outlineButtonSchema2 } from "@microsoft/fast-components-react-msft";
+export { paragraphSchema2 } from "@microsoft/fast-components-react-msft";
+export { progressSchema2 } from "@microsoft/fast-components-react-msft";
+export { stealthButtonSchema2 } from "@microsoft/fast-components-react-msft";
+export { subheadingSchema2 } from "@microsoft/fast-components-react-msft";
+export { textAreaSchema } from "@microsoft/fast-components-react-msft";
+export { toggleSchema2 } from "@microsoft/fast-components-react-msft";
+export { typographySchema2 } from "@microsoft/fast-components-react-msft";
 
 import textSchema from "./schemas/text.schema";
 export { textSchema };
