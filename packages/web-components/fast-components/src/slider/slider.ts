@@ -275,6 +275,7 @@ export class Slider extends FormAssociated<HTMLInputElement>
     /**
      * Handle a window mouse up during a drag operation
      */
+    /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
     private handleWindowMouseUp = (event: MouseEvent): void => {
         this.stopDragging();
     };
