@@ -44,7 +44,7 @@ The default type ramp uses a selection of values from Microsoft Fluent Design.
 
 ![](./images/type-ramp.png)
 
-Note the "Ramp ID", which is used to apply the desired size. This ramp is built around the base type size to associate the relative sizes between content. For instance, your main body text uses the `base` size. You may want a caption to be smaller than that, so you use `-1`. You want your [headings](./headings.md) to be larger, so you use one or more of the `+` sizes.
+Note the "Ramp ID", which is used to apply the desired size. This ramp is built around the base type size to associate the relative sizes between content. For instance, your main body text uses the `base` size. You may want a caption to be smaller than that, so you use `-1`. You want your [headings](./heading.md) to be larger, so you use one or more of the `+` sizes.
 
 This is more declarative than using an index position to reference the sizes, like `7` if this ramp is numbered from the top or `3` if numbered from the bottom. It also allows the sizes that you use to be related to each other rather than at other arbitrary points on the ramp. For example, three levels of headings above body text are `16px (+1)`, `20px (+2)`, and `28px (+3)` instead of jumping all the way to `60px (+6)` at the top and skipping the middle. You can add additional sizes at the top and bottom if necessary.
 
