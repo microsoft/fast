@@ -149,7 +149,7 @@ export class DesignSystemProvider extends FASTElement
      * 1. The `style` property of a CSSStyleRule on an adoptedStyleSheet
      * 2. The `style` property of the element, resulting in inline styles
      */
-    public customPropertyTarget: CSSStyleDeclaration;
+    private customPropertyTarget: CSSStyleDeclaration;
 
     /**
      * Handle changes to design-system-provider IDL and content attributes
