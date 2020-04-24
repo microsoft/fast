@@ -1,12 +1,9 @@
 import { html, ref, slotted, when } from "@microsoft/fast-element";
 import { endTemplate, startTemplate } from "../patterns/start-end";
-import { Tabs, TabsOrientation } from "./tabs";
+import { Tabs } from "./tabs";
 
 export const TabsTemplate = html<Tabs>`
-    <template
-        role="tabs"
-        class="${x => (x.orientation === TabsOrientation.vertical ? "vertical" : "")}"
-    >
+    <template role="tabs" class="${x => x.orientation}">
         ${startTemplate}
         <div class="tablist" part="tablist" role="tablist">
             <slot class="tab" name="tab" part="tab" ${slotted("tabs")}></slot>

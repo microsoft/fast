@@ -1,7 +1,6 @@
 import { html } from "@microsoft/fast-element";
 import { ref } from "@microsoft/fast-element/dist/directives";
 import { Slider } from "./slider";
-import { SliderOrientation } from ".";
 
 export const SliderTemplate = html<Slider>`
     <template
@@ -13,8 +12,7 @@ export const SliderTemplate = html<Slider>`
         ?aria-disabled="${x => x.disabled}"
         ?aria-readonly="${x => x.readOnly}"
         aria-orientation="${x => x.orientation}"
-        class="${x =>
-            x.orientation === SliderOrientation.vertical ? "vertical" : "horizontal"}"
+        class="${x => x.orientation}"
     >
         <div part="positioning-region" class="positioning-region">
             <div ${ref("track")} part="track-container" class="track">
