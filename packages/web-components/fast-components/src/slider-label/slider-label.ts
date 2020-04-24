@@ -69,8 +69,10 @@ export class SliderLabel extends FASTElement {
 
     private setStyleForOrientation = (): void => {
         if (this.config.orientation === SliderOrientation.horizontal) {
+            this.classList.remove("vertical");
             this.classList.add("horizontal");
         } else {
+            this.classList.remove("horizontal");
             this.classList.add("vertical");
         }
     };
