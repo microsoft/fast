@@ -1,4 +1,4 @@
-import { attr, emptyArray, FASTElement, DOM } from "@microsoft/fast-element";
+import { attr, DOM, emptyArray, FASTElement } from "@microsoft/fast-element";
 import { keyCodeEnter } from "@microsoft/fast-web-utilities";
 
 /**
