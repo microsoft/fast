@@ -1,4 +1,4 @@
-import { html } from "@microsoft/fast-element";
+import { html, slotted } from "@microsoft/fast-element";
 import { RadioGroup } from "./radio-group";
 
 export const RadioGroupTemplate = html<RadioGroup>`
@@ -9,7 +9,7 @@ export const RadioGroupTemplate = html<RadioGroup>`
         tabindex="${x => (x.disabled ? null : 0)}"
     >
         <div part="control" class="control">
-            <slot> </slot>
+            <slot ${slotted("slottedRadioButtons")}> </slot>
         </div>
     </template>
 `;

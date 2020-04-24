@@ -1,6 +1,6 @@
 import { attr, observable, FASTElement } from "@microsoft/fast-element";
 import { keyCodeArrowLeft, keyCodeArrowDown } from "@microsoft/fast-web-utilities";
-import { FASTRadio } from "src/radio";
+import { FASTRadio } from "../radio";
 
 export class RadioGroup extends FASTElement {
     @attr({ attribute: "readonly", mode: "boolean" })
@@ -25,6 +25,8 @@ export class RadioGroup extends FASTElement {
     public selectedValue: string;
     private selectedValueChanged(): void {}
 
+    @observable slottedRadioButtons: Node[];
+
     constructor() {
         super();
         this.addEventListener("keydown", this.keydownHandler);
@@ -32,26 +34,53 @@ export class RadioGroup extends FASTElement {
 
     public connectedCallback(): void {
         super.connectedCallback();
-        for (let index = 0; index < this.children.length; index++) {
-            const radio: FASTRadio = this.children[index] as FASTRadio;
+
+        this.getFilteredRadioButtons().forEach((radio: HTMLElement) => {
             radio.addEventListener("change", this.handleRadioChange);
-        }
+            if (this.name !== undefined) {
+                radio.setAttribute("name", this.name);
+            }
+        });
+        // for (let index = 0; index < this.children.length; index++) {
+        //     const radio: FASTRadio = this.children[index] as FASTRadio;
+        //     radio.addEventListener("change", this.handleRadioChange);
+        //     if (this.name !== undefined) {
+        //         radio.setAttribute("name", this.name);
+        //     }
+        // }
     }
 
+    private getFilteredRadioButtons = (): any => {
+        return this.slottedRadioButtons.filter((node: Node) => {
+            if (node instanceof HTMLElement) {
+                return node as HTMLElement;
+            }
+        });
+    };
+
     private handleRadioChange = (e): void => {
-        const radio: FASTRadio = e.target as FASTRadio;
-        console.log(
-            "radio value:",
-            radio.value,
-            " checked:",
-            radio.checked,
-            " name:",
-            radio.name
-        );
+        const changedRadio: FASTRadio = e.target as FASTRadio;
+        if (changedRadio.checked) {
+            //loop through and uncheck everybody else
+            // for (let index = 0; index < this.children.length; index++) {
+            //     const radio: FASTRadio = this.children[index] as FASTRadio;
+            //     if (radio !== changedRadio) {
+            //         radio.checked = false;
+            //     }
+            // }
+            this.getFilteredRadioButtons().forEach((radio: FASTRadio) => {
+                if (radio !== changedRadio) {
+                    radio.checked = false;
+                }
+            });
+        }
     };
 
     public keydownHandler = (e: KeyboardEvent): void => {
         switch (e.keyCode) {
+            case keyCodeArrowLeft:
+            case keyCodeArrowDown:
+                break;
             case keyCodeArrowLeft:
             case keyCodeArrowDown:
                 break;
