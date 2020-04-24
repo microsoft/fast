@@ -1,5 +1,10 @@
 import { attr, observable, FASTElement } from "@microsoft/fast-element";
-import { keyCodeArrowLeft, keyCodeArrowDown } from "@microsoft/fast-web-utilities";
+import {
+    keyCodeArrowLeft,
+    keyCodeArrowDown,
+    keyCodeArrowRight,
+    keyCodeArrowUp,
+} from "@microsoft/fast-web-utilities";
 import { FASTRadio } from "../radio";
 
 export class RadioGroup extends FASTElement {
@@ -76,13 +81,45 @@ export class RadioGroup extends FASTElement {
         }
     };
 
+    private moveToRadioByIndex = (group: HTMLElement[], index: number) => {};
+
     public keydownHandler = (e: KeyboardEvent): void => {
+        const group = this.getFilteredRadioButtons();
+        let index: number = 0;
         switch (e.keyCode) {
-            case keyCodeArrowLeft:
-            case keyCodeArrowDown:
+            case keyCodeArrowRight:
+            case keyCodeArrowUp:
+                index = group.indexOf(this) + 1;
+                index = index === group.length ? 0 : index;
+                while (index < group.length) {
+                    if (!group[index].disabled) {
+                        this.moveToRadioByIndex(group, index);
+                        break;
+                    } else if (index === group.indexOf(this)) {
+                        break;
+                    } else if (index + 1 >= group.length) {
+                        index = 0;
+                    } else {
+                        index += 1;
+                    }
+                }
                 break;
             case keyCodeArrowLeft:
             case keyCodeArrowDown:
+                index = group.indexOf(this) - 1;
+                index = index < 0 ? group.length - 1 : index;
+                while (index >= 0) {
+                    if (!group[index].disabled) {
+                        this.moveToRadioByIndex(group, index);
+                        break;
+                    } else if (index === group.indexOf(this)) {
+                        break;
+                    } else if (index - 1 < 0) {
+                        index = group.length - 1;
+                    } else {
+                        index -= 1;
+                    }
+                }
                 break;
         }
     };
