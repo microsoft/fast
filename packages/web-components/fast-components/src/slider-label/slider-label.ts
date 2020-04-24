@@ -1,7 +1,8 @@
-import { attr, FASTElement, observable } from "@microsoft/fast-element";
+import { attr, FASTElement, observable, Observable } from "@microsoft/fast-element";
 import { Direction } from "@microsoft/fast-web-utilities";
 import { SliderConfiguration, SliderOrientation } from "../slider";
 import { convertPixelToPercent } from "../slider/slider-utilities";
+import { FASTSlider } from "../slider";
 
 const defaultConfig: SliderConfiguration = {
     min: 0,
@@ -25,7 +26,8 @@ export class SliderLabel extends FASTElement {
 
     @attr({ attribute: "hide-mark", mode: "boolean" })
     public hideMark: boolean = false;
-    public config: SliderConfiguration = {
+
+    private config: SliderConfiguration = {
         min: 0,
         max: 0,
         direction: Direction.ltr,
@@ -40,6 +42,29 @@ export class SliderLabel extends FASTElement {
         this.getSliderConfiguration();
         this.setStyleForOrientation();
         this.positionStyle = this.positionAsStyle();
+        const notifier = Observable.getNotifier(this.parentNode as FASTSlider);
+        const handler = {
+            sliderLabel: this,
+            /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
+            handleChange(source: any, propertyName: string) {
+                if (
+                    propertyName === "direction" ||
+                    propertyName === "max" ||
+                    propertyName === "min"
+                ) {
+                    this.sliderLabel.getSliderConfiguration();
+                } else if (propertyName === "orientation") {
+                    this.sliderLabel.getSliderConfiguration();
+                    this.sliderLabel.setStyleForOrientation();
+                }
+                this.sliderLabel.positionStyle = this.sliderLabel.positionAsStyle();
+            },
+        };
+
+        notifier.subscribe(handler, "orientation");
+        notifier.subscribe(handler, "direction");
+        notifier.subscribe(handler, "max");
+        notifier.subscribe(handler, "min");
     }
 
     private setStyleForOrientation = (): void => {
