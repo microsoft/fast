@@ -81,14 +81,17 @@ export class RadioGroup extends FASTElement {
         }
     };
 
-    private moveToRadioByIndex = (group: HTMLElement[], index: number) => {};
+    private moveToRadioByIndex = (group: any[], index: number) => {
+        (group[index] as FASTRadio).checked = true;
+        group[index].focus();
+    };
 
     public keydownHandler = (e: KeyboardEvent): void => {
         const group = this.getFilteredRadioButtons();
         let index: number = 0;
         switch (e.keyCode) {
-            case keyCodeArrowRight:
-            case keyCodeArrowUp:
+            case keyCodeArrowLeft:
+            case keyCodeArrowDown:
                 index = group.indexOf(this) + 1;
                 index = index === group.length ? 0 : index;
                 while (index < group.length) {
@@ -104,8 +107,8 @@ export class RadioGroup extends FASTElement {
                     }
                 }
                 break;
-            case keyCodeArrowLeft:
-            case keyCodeArrowDown:
+            case keyCodeArrowRight:
+            case keyCodeArrowUp:
                 index = group.indexOf(this) - 1;
                 index = index < 0 ? group.length - 1 : index;
                 while (index >= 0) {
