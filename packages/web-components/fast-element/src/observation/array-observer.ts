@@ -46,24 +46,22 @@ export class ArrayObserver extends SubscriberCollection implements Notifier {
     }
 
     addSplice(splice: Splice): void {
-        if (this.hasSubscribers()) {
-            if (this.splices === void 0) {
-                this.splices = [splice];
-            } else {
-                this.splices.push(splice);
-            }
+        if (this.splices === void 0) {
+            this.splices = [splice];
+        } else {
+            this.splices.push(splice);
+        }
 
-            if (this.needsQueue) {
-                this.needsQueue = false;
-                DOM.queueUpdate(this);
-            }
+        if (this.needsQueue) {
+            this.needsQueue = false;
+            DOM.queueUpdate(this);
         }
     }
 
     reset(oldCollection: any[] | undefined): void {
         this.oldCollection = oldCollection;
 
-        if (this.hasSubscribers() && this.needsQueue) {
+        if (this.needsQueue) {
             this.needsQueue = false;
             DOM.queueUpdate(this);
         }
@@ -83,21 +81,19 @@ export class ArrayObserver extends SubscriberCollection implements Notifier {
         this.splices = void 0;
         this.oldCollection = void 0;
 
-        if (this.hasSubscribers()) {
-            const finalSplices =
-                oldCollection === void 0
-                    ? projectArraySplices(this.collection, splices!)
-                    : calcSplices(
-                          this.collection,
-                          0,
-                          this.collection.length,
-                          oldCollection,
-                          0,
-                          oldCollection.length
-                      );
+        const finalSplices =
+            oldCollection === void 0
+                ? projectArraySplices(this.collection, splices!)
+                : calcSplices(
+                      this.collection,
+                      0,
+                      this.collection.length,
+                      oldCollection,
+                      0,
+                      oldCollection.length
+                  );
 
-            this.notifySubscribers(this, finalSplices);
-        }
+        this.notifySubscribers(this, finalSplices);
     }
 }
 

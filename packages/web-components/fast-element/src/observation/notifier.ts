@@ -7,7 +7,7 @@ export interface Notifier {
 }
 
 export class PropertyChangeNotifier implements Notifier {
-    private subscribers: Record<string, SubscriberCollection> = {};
+    private subscribers: Record<string, SubscriberCollection> = Object.create(null);
 
     public notify(source: any, propertyName: string): void {
         const subscribers = this.subscribers[propertyName];
@@ -18,9 +18,11 @@ export class PropertyChangeNotifier implements Notifier {
     }
 
     public subscribe(subscriber: Subscriber, propertyName: string): void {
-        const subscribers =
-            this.subscribers[propertyName] ||
-            (this.subscribers[propertyName] = new SubscriberCollection());
+        let subscribers = this.subscribers[propertyName];
+
+        if (subscribers === void 0) {
+            this.subscribers[propertyName] = subscribers = new SubscriberCollection();
+        }
 
         subscribers.addSubscriber(subscriber);
     }
