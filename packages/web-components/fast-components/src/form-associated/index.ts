@@ -182,9 +182,7 @@ export abstract class FormAssociated<
             this.proxy.disabled = this.disabled;
         }
 
-        this.disabled
-            ? this.classList.add("disabled")
-            : this.classList.remove("disabled");
+        this.classList.toggle("disabled", this.disabled);
     }
 
     @attr
@@ -205,9 +203,7 @@ export abstract class FormAssociated<
             this.proxy.required = this.required;
         }
 
-        this.required
-            ? this.classList.add("required")
-            : this.classList.remove("required");
+        this.classList.toggle("required", this.required);
     }
 
     /**

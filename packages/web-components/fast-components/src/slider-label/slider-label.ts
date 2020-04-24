@@ -32,13 +32,8 @@ export class SliderLabel extends FASTElement {
         orientation: SliderOrientation.horizontal,
     };
 
-    @attr({ attribute: "disabled", mode: "boolean" })
-    public disabled: boolean; // Map to proxy element
-    private disabledChanged(): void {
-        this.disabled
-            ? this.classList.add("disabled")
-            : this.classList.remove("disabled");
-    }
+    @attr({ mode: "boolean" })
+    public disabled: boolean;
 
     public connectedCallback(): void {
         super.connectedCallback();
