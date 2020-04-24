@@ -4,6 +4,8 @@ import { Radio } from "./radio";
 export const RadioTemplate = html<Radio>`
     <template
         role="radio"
+        class="${x => (x.checked ? "checked" : "")} ${x =>
+            x.readOnly ? "readonly" : ""}"
         aria-checked="${x => x.checked}"
         ?aria-required="${x => x.required}"
         ?aria-disabled="${x => x.disabled}"

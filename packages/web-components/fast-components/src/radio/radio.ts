@@ -9,10 +9,6 @@ export class Radio extends FormAssociated<HTMLInputElement> {
         if (this.proxy instanceof HTMLElement) {
             this.proxy.readOnly = this.readOnly;
         }
-
-        this.readOnly
-            ? this.classList.add("readonly")
-            : this.classList.remove("readonly");
     }
 
     @attr
@@ -75,7 +71,6 @@ export class Radio extends FormAssociated<HTMLInputElement> {
         }
 
         this.$emit("change");
-        this.checked ? this.classList.add("checked") : this.classList.remove("checked");
         this.checkedAttribute = this.checked;
         this.updateForm();
     }
