@@ -1,4 +1,4 @@
-import { attr, emptyArray, FASTElement } from "@microsoft/fast-element";
+import { attr, emptyArray, FASTElement, DOM } from "@microsoft/fast-element";
 import { keyCodeEnter } from "@microsoft/fast-web-utilities";
 
 /**
@@ -182,7 +182,7 @@ export abstract class FormAssociated<
             this.proxy.disabled = this.disabled;
         }
 
-        this.classList.toggle("disabled", this.disabled);
+        DOM.queueUpdate(() => this.classList.toggle("disabled", this.disabled));
     }
 
     @attr
@@ -203,7 +203,7 @@ export abstract class FormAssociated<
             this.proxy.required = this.required;
         }
 
-        this.classList.toggle("required", this.required);
+        DOM.queueUpdate(() => this.classList.toggle("required", this.required));
     }
 
     /**
