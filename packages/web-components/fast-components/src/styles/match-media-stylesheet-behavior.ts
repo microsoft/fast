@@ -34,8 +34,7 @@ export function matchMediaStylesheetBehaviorFactory(query: MediaQueryList) {
             bind(source: typeof FASTElement) {
                 const { constructListener, query, cache } = this;
                 const listener = constructListener(source, this.sheet);
-                // Invoke immediately to add high-contrast
-                // stylesheets if the query currently matches
+                // Invoke immediately to add if the query currently matches
                 listener.bind(query)();
                 query.addListener(listener);
                 cache.set(source, listener);
