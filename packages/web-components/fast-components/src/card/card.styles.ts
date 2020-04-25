@@ -2,6 +2,15 @@ import { css } from "@microsoft/fast-element";
 import { display, elevation } from "../styles";
 import { SystemColors } from "../styles/system-colors";
 import { neutralLayerCardBehavior } from "../styles/recipes";
+import { HighContrastStylesheetBehavior } from "../styles/high-contrast-stylesheet-behavior";
+
+export const HighConstrastCardStyles = css`
+    :host {
+        forced-color-adjust: none;
+        border: calc(var(--outline-width) * 1px) solid ${SystemColors.CanvasText};
+        background: ${SystemColors.Canvas};
+    }
+`;
 
 export const CardStyles = css`
     ${display("block")} :host {
@@ -15,12 +24,7 @@ export const CardStyles = css`
         border-radius: calc(var(--elevated-corner-radius) * 1px);
         ${elevation};
     }
-
-    @media (forced-colors: active) {
-        :host {
-            forced-color-adjust: none;
-            border: calc(var(--outline-width) * 1px) solid ${SystemColors.CanvasText};
-            background: ${SystemColors.Canvas};
-        }
-    }
-`.withBehaviors(neutralLayerCardBehavior);
+`.withBehaviors(
+    neutralLayerCardBehavior,
+    new HighContrastStylesheetBehavior(HighConstrastCardStyles)
+);
