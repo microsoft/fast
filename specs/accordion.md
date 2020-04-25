@@ -48,7 +48,7 @@ As defined by the W3C:
 
 **Accordion Header**
 *Component names:*
-- `accordion-header`
+- `fast-accordion-header`
 
 *Attributes:*
 - `id` - string
@@ -62,7 +62,7 @@ As defined by the W3C:
 
 **Accordion Panel**
 *Component names:*
-- `accordion-panel`
+- `fast-accordion-panel`
 
 *Attributes:*
 - `id` - string
