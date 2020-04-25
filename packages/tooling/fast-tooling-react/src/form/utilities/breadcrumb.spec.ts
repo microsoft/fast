@@ -65,6 +65,18 @@ describe("getDictionaryBreadcrumbs", () => {
                                 disabled: false,
                                 data: {},
                                 text: "General example property",
+                                type: DataType.array,
+                                items: [],
+                            },
+                            "bat[0]": {
+                                self: "bat[0]",
+                                parent: "",
+                                relativeDataLocation: "bat[0]",
+                                schemaLocation: "properties.bat.items",
+                                schema: {},
+                                disabled: false,
+                                data: {},
+                                text: "General example property",
                                 type: DataType.object,
                                 items: [],
                             },
@@ -78,7 +90,7 @@ describe("getDictionaryBreadcrumbs", () => {
                                 parent: null,
                                 parentDictionaryItem: {
                                     id: "foo",
-                                    dataLocation: "bat",
+                                    dataLocation: "bat[0]",
                                 },
                                 relativeDataLocation: "",
                                 schemaLocation: "",
@@ -98,6 +110,18 @@ describe("getDictionaryBreadcrumbs", () => {
                                 disabled: false,
                                 data: {},
                                 text: "General example child 1",
+                                type: DataType.array,
+                                items: [],
+                            },
+                            "baz[0]": {
+                                self: "baz[0]",
+                                parent: "",
+                                relativeDataLocation: "baz[0]",
+                                schemaLocation: "properties.baz.items",
+                                schema: {},
+                                disabled: false,
+                                data: {},
+                                text: "General example child 1",
                                 type: DataType.object,
                                 items: [],
                             },
@@ -111,7 +135,7 @@ describe("getDictionaryBreadcrumbs", () => {
                                 parent: null,
                                 parentDictionaryItem: {
                                     id: "bar",
-                                    dataLocation: "baz",
+                                    dataLocation: "baz[0]",
                                 },
                                 relativeDataLocation: "",
                                 schemaLocation: "",
@@ -136,11 +160,11 @@ describe("getDictionaryBreadcrumbs", () => {
         expect(breadcrumbs.length).toBe(5);
         expect(breadcrumbs[0].href).toBe("");
         expect(breadcrumbs[0].text).toBe("General example root");
-        expect(breadcrumbs[1].href).toBe("bat");
+        expect(breadcrumbs[1].href).toBe("bat[0]");
         expect(breadcrumbs[1].text).toBe("General example property");
         expect(breadcrumbs[2].href).toBe("");
         expect(breadcrumbs[2].text).toBe("General example child");
-        expect(breadcrumbs[3].href).toBe("baz");
+        expect(breadcrumbs[3].href).toBe("baz[0]");
         expect(breadcrumbs[3].text).toBe("General example child 1");
         expect(breadcrumbs[4].href).toBe("");
         expect(breadcrumbs[4].text).toBe("General example child 1 child");
@@ -167,6 +191,7 @@ describe("getBreadcrumbs", () => {
                     items: [],
                 },
             },
+            "",
             "",
             "",
             jest.fn()
@@ -216,6 +241,7 @@ describe("getBreadcrumbs", () => {
                     items: [],
                 },
             },
+            "bar",
             "",
             "bar",
             jest.fn()
