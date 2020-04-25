@@ -13,6 +13,7 @@ export const TextFieldTemplate = html<TextField>`
         class="
             ${x => x.appearance}
             ${x => (x.readOnly ? "readonly" : "")}
+        "
     >
         ${when(
             x => x.childNodes.length,
