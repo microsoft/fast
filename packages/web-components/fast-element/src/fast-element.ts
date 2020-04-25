@@ -2,6 +2,7 @@ import { Controller } from "./controller";
 import { ElementViewTemplate } from "./template";
 import { ElementStyles } from "./styles";
 import { AttributeConfiguration, AttributeDefinition } from "./attributes";
+import { Observable } from "./observation/observable";
 
 const defaultShadowOptions: ShadowRootInit = { mode: "open" };
 const defaultElementOptions: ElementDefinitionOptions = {};
@@ -93,7 +94,7 @@ export const FASTElement = Object.assign(createFASTElement(HTMLElement), {
                 ? defaultElementOptions
                 : { ...defaultElementOptions, ...nameOrDef.shadowOptions };
 
-        const observedAttributes = new Array(attributes.length);
+        const observedAttributes = new Array<string>(attributes.length);
         const proto = Type.prototype;
         const propertyLookup = {};
         const attributeLookup = {};
@@ -101,18 +102,9 @@ export const FASTElement = Object.assign(createFASTElement(HTMLElement), {
         for (let i = 0, ii = attributes.length; i < ii; ++i) {
             const current = attributes[i];
             observedAttributes[i] = current.attribute;
-            propertyLookup[current.property] = current;
+            propertyLookup[current.name] = current;
             attributeLookup[current.attribute] = current;
-
-            Reflect.defineProperty(proto, current.property, {
-                enumerable: true,
-                get: function (this: any) {
-                    return current.getValue(this);
-                },
-                set: function (this: any, value: any) {
-                    return current.setValue(this, value);
-                },
-            });
+            Observable.defineProperty(proto, current);
         }
 
         Reflect.defineProperty(Type, "observedAttributes", {

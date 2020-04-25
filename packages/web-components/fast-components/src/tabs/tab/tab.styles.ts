@@ -7,6 +7,7 @@ import {
     neutralForegroundHoverBehavior,
     neutralForegroundRestBehavior,
 } from "../../styles/recipes";
+import { SystemColors } from "../../styles/system-colors";
 
 export const TabStyles = css`
     ${display("inline-flex")} :host {
@@ -69,6 +70,24 @@ export const TabStyles = css`
     }
 
     :host(.vertical:hover[aria-selected="true"]) {
+    }
+
+    @media (forced-colors: active) {
+        :host {
+            forced-color-adjust: none;
+            border-color: transparent;
+            color: ${SystemColors.ButtonText};
+        }
+
+        :host(:hover),
+        :host(.vertical:hover) {
+            color: ${SystemColors.ButtonText};
+        }
+
+        :host(:${focusVisible}) {
+            border-color: ${SystemColors.ButtonText};
+            box-shadow: none;
+        }
     }
 `.withBehaviors(
     neutralFocusBehavior,
