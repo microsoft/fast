@@ -1,4 +1,5 @@
 import { html, ref } from "@microsoft/fast-element";
+import { endTemplate, startTemplate } from "../patterns/start-end";
 import { Button } from "./";
 
 export const ButtonTemplate = html<Button>`
@@ -16,22 +17,10 @@ export const ButtonTemplate = html<Button>`
         type=${x => x.type}
         value=${x => x.value}
     >
-        <span part="start" ${ref("startContainer")}>
-            <slot
-                name="start"
-                ${ref("start")}
-                @slotchange=${x => x.handleStartContentChange()}
-            ></slot>
-        </span>
+        ${startTemplate}
         <span class="content" part="content">
             <slot></slot>
         </span>
-        <span part="end" ${ref("endContainer")}>
-            <slot
-                name="end"
-                ${ref("end")}
-                @slotchange=${x => x.handleEndContentChange()}
-            ></slot>
-        </span>
+        ${endTemplate}
     </button>
 `;

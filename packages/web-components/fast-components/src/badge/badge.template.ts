@@ -2,7 +2,7 @@ import { html } from "@microsoft/fast-element";
 import { Badge } from "./badge";
 
 export const BadgeTemplate = html<Badge>`
-    <template>
+    <template class="${x => (x.circular ? "circular" : "")}">
         <div
             class="badge"
             style="background-color: var(--badge-fill-${x =>
