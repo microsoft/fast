@@ -103,7 +103,7 @@ export class Radio extends FormAssociated<HTMLInputElement> {
         super.keypressHandler(e);
         switch (e.keyCode) {
             case keyCodeSpace:
-                if (!this.checked) {
+                if (!this.checked && !this.readOnly) {
                     this.checked = true;
                 }
                 break;
