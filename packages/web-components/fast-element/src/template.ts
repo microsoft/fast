@@ -4,13 +4,17 @@ import { DOM } from "./dom";
 import { Behavior, BehaviorFactory } from "./directives/behavior";
 import { Directive } from "./directives/directive";
 import { BindingDirective } from "./directives/binding";
-import { ExecutionContext, Expression } from "./observation/observable";
+import {
+    ExecutionContext,
+    Expression,
+    defaultExecutionContext,
+} from "./observation/observable";
 
 export interface ElementViewTemplate {
     create(host: Element): ElementView;
 }
 
-export interface SyntheticViewTemplate<TScope = any, TParent = any> {
+export interface SyntheticViewTemplate<TSource = any, TParent = any> {
     create(): SyntheticView;
 }
 
@@ -31,7 +35,7 @@ export class HTMLTemplateBehavior implements Behavior {
     }
 }
 
-export class ViewTemplate<TScope = any, TParent = any> extends Directive
+export class ViewTemplate<TSource = any, TParent = any> extends Directive
     implements ElementViewTemplate, SyntheticViewTemplate {
     public createPlaceholder: (index: number) => string = DOM.createBlockPlaceholder;
     private behaviorCount: number = 0;
@@ -117,6 +121,18 @@ export class ViewTemplate<TScope = any, TParent = any> extends Directive
         return new HTMLView(fragment, behaviors);
     }
 
+    public render(source: TSource, host: HTMLElement | string): HTMLView {
+        if (typeof host === "string") {
+            host = document.getElementById(host)!;
+        }
+
+        const view = this.create(host);
+        view.bind(source, defaultExecutionContext);
+        view.appendTo(host);
+
+        return view;
+    }
+
     public createBehavior(target: any): HTMLTemplateBehavior {
         return new HTMLTemplateBehavior(this, target);
     }
@@ -128,7 +144,7 @@ export const lastAttributeNameRegex =
     /([ \x09\x0a\x0c\x0d])([^\0-\x1F\x7F-\x9F "'>=/]+)([ \x09\x0a\x0c\x0d]*=[ \x09\x0a\x0c\x0d]*(?:[^ \x09\x0a\x0c\x0d"'`<>=]*|"[^"]*|'[^']*))$/;
 
 /* eslint-disable-next-line @typescript-eslint/no-empty-interface */
-export interface CaptureType<TScope> {}
+export interface CaptureType<TSource> {}
 type TemplateValue<TScope, TParent = any> =
     | Expression<TScope, any, TParent>
     | string
@@ -136,10 +152,10 @@ type TemplateValue<TScope, TParent = any> =
     | Directive
     | CaptureType<TScope>;
 
-export function html<TScope = any, TParent = any>(
+export function html<TSource = any, TParent = any>(
     strings: TemplateStringsArray,
-    ...values: TemplateValue<TScope, TParent>[]
-): ViewTemplate<TScope, TParent> {
+    ...values: TemplateValue<TSource, TParent>[]
+): ViewTemplate<TSource, TParent> {
     const directives: Directive[] = [];
     let html = "";
 
