@@ -77,8 +77,7 @@ export function matchMediaStylesheetBehaviorFactory(query: MediaQueryList) {
                     return;
                 } else {
                     if (Array.isArray(cached)) {
-                        // If element is being unbound, we're safe to remove *all* listeners
-                        cached.forEach(query.removeListener);
+                        cached.forEach(listener => query.removeListener(listener));
                     } else {
                         query.removeListener(cached);
                     }
