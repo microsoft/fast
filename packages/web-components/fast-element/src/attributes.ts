@@ -1,4 +1,4 @@
-import { Observable } from "./observation/observable";
+import { Accessor, Observable } from "./observation/observable";
 import { DOM } from "./dom";
 import { Notifier } from "./observation/notifier";
 
@@ -56,7 +56,7 @@ export const nullableNumberConverter: ValueConverter = {
     },
 };
 
-export class AttributeDefinition {
+export class AttributeDefinition implements Accessor {
     private readonly fieldName: string;
     private readonly callbackName: string;
     private readonly hasCallback: boolean;
@@ -64,13 +64,13 @@ export class AttributeDefinition {
 
     public constructor(
         public readonly Owner: Function,
-        public readonly property: string,
-        public readonly attribute: string = property.toLowerCase(),
+        public readonly name: string,
+        public readonly attribute: string = name.toLowerCase(),
         public readonly mode: AttributeMode = "reflect",
         public readonly converter?: ValueConverter
     ) {
-        this.fieldName = `_${property}`;
-        this.callbackName = `${property}Changed`;
+        this.fieldName = `_${name}`;
+        this.callbackName = `${name}Changed`;
         this.hasCallback = this.callbackName in Owner.prototype;
 
         if (mode === "boolean" && converter === void 0) {
@@ -78,8 +78,8 @@ export class AttributeDefinition {
         }
     }
 
-    public setValue(element: HTMLElement, newValue: any): void {
-        const oldValue = element[this.fieldName];
+    public setValue(source: HTMLElement, newValue: any): void {
+        const oldValue = source[this.fieldName];
         const converter = this.converter;
 
         if (converter !== void 0) {
@@ -87,21 +87,21 @@ export class AttributeDefinition {
         }
 
         if (oldValue !== newValue) {
-            element[this.fieldName] = newValue;
+            source[this.fieldName] = newValue;
 
-            this.tryReflectToAttribute(element);
+            this.tryReflectToAttribute(source);
 
             if (this.hasCallback) {
-                element[this.callbackName](oldValue, newValue);
+                source[this.callbackName](oldValue, newValue);
             }
 
-            ((element as any).$fastController as Notifier).notify(element, this.property);
+            ((source as any).$fastController as Notifier).notify(source, this.name);
         }
     }
 
-    public getValue(element: HTMLElement): any {
-        Observable.track(element, this.property);
-        return element[this.fieldName];
+    public getValue(source: HTMLElement): any {
+        Observable.track(source, this.name);
+        return source[this.fieldName];
     }
 
     public onAttributeChangedCallback(element: HTMLElement, value: any): void {

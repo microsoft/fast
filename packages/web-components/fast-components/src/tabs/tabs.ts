@@ -8,6 +8,8 @@ import {
     keyCodeHome,
     wrapInBounds,
 } from "@microsoft/fast-web-utilities";
+import { StartEnd } from "../patterns/start-end";
+import { applyMixins } from "../utilities";
 
 export enum TabsOrientation {
     vertical = "vertical",
@@ -17,11 +19,6 @@ export enum TabsOrientation {
 export class Tabs extends FASTElement {
     @attr
     public orientation: TabsOrientation = TabsOrientation.horizontal;
-    private orientationChanged(): void {
-        this.orientation === TabsOrientation.vertical
-            ? this.classList.add("vertical")
-            : this.classList.remove("vertical");
-    }
 
     @attr
     public activeid: string;
@@ -50,22 +47,6 @@ export class Tabs extends FASTElement {
             this.setTabPanels();
             this.handleActiveIndicatorPosition();
         }
-    }
-
-    public start: HTMLSlotElement;
-    public startContainer: HTMLDivElement;
-    public handleStartContentChange(): void {
-        this.start.assignedNodes().length > 0
-            ? this.startContainer.classList.add("start")
-            : this.startContainer.classList.remove("start");
-    }
-
-    public end: HTMLSlotElement;
-    public endContainer: HTMLDivElement;
-    public handleEndContentChange(): void {
-        this.end.assignedNodes().length > 0
-            ? this.endContainer.classList.add("end")
-            : this.endContainer.classList.remove("end");
     }
 
     @attr({ mode: "boolean" })
@@ -295,3 +276,7 @@ export class Tabs extends FASTElement {
         }
     }
 }
+
+/* eslint-disable-next-line */
+export interface Tabs extends StartEnd {}
+applyMixins(Tabs, StartEnd);

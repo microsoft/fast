@@ -1,4 +1,4 @@
-import { Observable } from "../observation/observable";
+import { Accessor, Observable } from "../observation/observable";
 import { emptyArray } from "../interfaces";
 import { Behavior } from "./behavior";
 
@@ -18,9 +18,10 @@ export abstract class NodeObservationBehavior<T extends NodeBehaviorBehaviorOpti
     abstract getNodes(): Node[];
 
     bind(source: any): void {
-        this.shouldUpdate =
-            Observable.getObservedProperties(source).indexOf(this.options.property) !==
-            -1;
+        const name = this.options.property;
+        this.shouldUpdate = Observable.getAccessors(source).some(
+            (x: Accessor) => x.name === name
+        );
         this.source = source;
         this.updateTarget(this.getNodes());
 
