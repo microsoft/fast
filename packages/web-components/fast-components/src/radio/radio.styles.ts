@@ -10,6 +10,7 @@ import {
     neutralOutlineHoverBehavior,
     neutralOutlineRestBehavior,
 } from "../styles/recipes";
+import { forcedColorsStylesheetBehavior } from "../styles/match-media-stylesheet-behavior";
 
 export const RadioStyles = css`
     ${display("inline-flex")} :host {
@@ -92,58 +93,51 @@ export const RadioStyles = css`
     :host(.disabled) {
         opacity: var(--disabled-opacity);
     }
-
-    @media (forced-colors: active) {
-        .control, .control:hover, .control:active {
-            forced-color-adjust: none;
-            border-color: ${SystemColors.FieldText};
-            background: ${SystemColors.Field};
-        }
-
-        :host(:${focusVisible}) .control {
-            border-color: ${SystemColors.Highlight};
-        }
-
-        :host(.checked) .control:hover, .control:active {
-            border-color: ${SystemColors.Highlight};
-            background: ${SystemColors.Highlight};
-        }
-
-        :host(.checked) .checked-indicator {
-            background: ${SystemColors.Highlight};
-            fill: ${SystemColors.Highlight};
-        }
-
-        :host(.checked) .control:hover .checked-indicator {
-            background: ${SystemColors.HighlightText};
-            fill: ${SystemColors.HighlightText};
-        }
-
-        :host(.disabled) {
-            forced-color-adjust: none;
-            opacity: 1;
-        }
-
-        :host(.disabled) .label {
-            color: ${SystemColors.GrayText};
-        }
-
-        :host(.disabled) .control,
-        :host(.checked.disabled) .control:hover, .control:active {
-            background: ${SystemColors.Field};
-            border-color: ${SystemColors.GrayText};
-        }
-
-        :host(.disabled) .checked-indicator,
-        :host(.checked.disabled) .control:hover .checked-indicator {
-            fill: ${SystemColors.GrayText};
-            background: ${SystemColors.GrayText};
-        }
-    }
 `.withBehaviors(
     neutralFillInputHoverBehavior,
     neutralFillInputRestBehavior,
     neutralForegroundRestBehavior,
     neutralOutlineHoverBehavior,
-    neutralOutlineRestBehavior
+    neutralOutlineRestBehavior,
+    forcedColorsStylesheetBehavior(
+        css`
+            .control, .control:hover, .control:active {
+                forced-color-adjust: none;
+                border-color: ${SystemColors.FieldText};
+                background: ${SystemColors.Field};
+            }
+            :host(:${focusVisible}) .control {
+                border-color: ${SystemColors.Highlight};
+            }
+            :host(.checked) .control:hover, .control:active {
+                border-color: ${SystemColors.Highlight};
+                background: ${SystemColors.Highlight};
+            }
+            :host(.checked) .checked-indicator {
+                background: ${SystemColors.Highlight};
+                fill: ${SystemColors.Highlight};
+            }
+            :host(.checked) .control:hover .checked-indicator {
+                background: ${SystemColors.HighlightText};
+                fill: ${SystemColors.HighlightText};
+            }
+            :host(.disabled) {
+                forced-color-adjust: none;
+                opacity: 1;
+            }
+            :host(.disabled) .label {
+                color: ${SystemColors.GrayText};
+            }
+            :host(.disabled) .control,
+            :host(.checked.disabled) .control:hover, .control:active {
+                background: ${SystemColors.Field};
+                border-color: ${SystemColors.GrayText};
+            }
+            :host(.disabled) .checked-indicator,
+            :host(.checked.disabled) .control:hover .checked-indicator {
+                fill: ${SystemColors.GrayText};
+                background: ${SystemColors.GrayText};
+            }
+        `
+    )
 );

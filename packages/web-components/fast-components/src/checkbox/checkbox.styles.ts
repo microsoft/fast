@@ -10,6 +10,7 @@ import {
     neutralOutlineHoverBehavior,
     neutralOutlineRestBehavior,
 } from "../styles/recipes";
+import { forcedColorsStylesheetBehavior } from "../styles/match-media-stylesheet-behavior";
 
 export const CheckboxStyles = css`
     ${display("inline-flex")} :host {
@@ -94,82 +95,69 @@ export const CheckboxStyles = css`
     :host(.disabled) {
         opacity: var(--disabled-opacity);
     }
-
-    @media (forced-colors: active) {
-        .control, .control:hover, .control:active {
-            forced-color-adjust: none;
-            border-color: ${SystemColors.FieldText};
-            background: ${SystemColors.Field};
-        }
-        
-        .checked-indicator {
-            fill: ${SystemColors.FieldText};
-        }
-
-        .indeterminate-indicator {
-            background: ${SystemColors.FieldText};
-        }
-        
-        :host(:${focusVisible}) .control {
-            border-color: ${SystemColors.Highlight};
-        }
-
-        :host(.checked:${focusVisible}) .control {
-            border-color: ${SystemColors.FieldText};
-            box-shadow: 0 0 0 2px ${SystemColors.Field} inset;
-        }
-
-        :host(.checked) .control {
-            background: ${SystemColors.Highlight};
-            border-color: ${SystemColors.Highlight};
-        }
-
-        :host(.checked) .control:hover, .control:active {
-            background: ${SystemColors.HighlightText};
-        }
-
-        :host(.checked) .checked-indicator {
-            fill: ${SystemColors.HighlightText};
-        }
-
-        :host(.checked) .control:hover .checked-indicator {
-            fill: ${SystemColors.Highlight}
-        }
-
-        :host(.checked) .indeterminate-indicator {
-            background: ${SystemColors.HighlightText};
-        }
-
-        :host(.checked) .control:hover .indeterminate-indicator {
-            background: ${SystemColors.Highlight}
-        }
-
-        :host(.disabled) {
-            opacity: 1;
-        }
-
-        :host(.disabled) .control {
-            forced-color-adjust: none;
-            border-color: ${SystemColors.GrayText};
-            background: ${SystemColors.Field};
-        }
-
-        :host(.disabled) .indeterminate-indicator,
-        :host(.checked.disabled) .control:hover .indeterminate-indicator {
-            forced-color-adjust: none;
-            background: ${SystemColors.GrayText};
-        }
-
-        :host(.disabled) .checked-indicator,
-        :host(.checked.disabled) .control:hover .checked-indicator {
-            forced-color-adjust: none;
-            fill: ${SystemColors.GrayText};
-        }
-    }
 `.withBehaviors(
     neutralFillInputHoverBehavior,
     neutralFillInputRestBehavior,
     neutralForegroundRestBehavior,
     neutralOutlineHoverBehavior,
-    neutralOutlineRestBehavior
+    neutralOutlineRestBehavior,
+    forcedColorsStylesheetBehavior(
+        css`
+            .control, .control:hover, .control:active {
+                forced-color-adjust: none;
+                border-color: ${SystemColors.FieldText};
+                background: ${SystemColors.Field};
+            }
+            .checked-indicator {
+                fill: ${SystemColors.FieldText};
+            }
+            .indeterminate-indicator {
+                background: ${SystemColors.FieldText};
+            }
+            :host(:${focusVisible}) .control {
+                border-color: ${SystemColors.Highlight};
+            }
+            :host(.checked:${focusVisible}) .control {
+                border-color: ${SystemColors.FieldText};
+                box-shadow: 0 0 0 2px ${SystemColors.Field} inset;
+            }
+            :host(.checked) .control {
+                background: ${SystemColors.Highlight};
+                border-color: ${SystemColors.Highlight};
+            }
+            :host(.checked) .control:hover, .control:active {
+                background: ${SystemColors.HighlightText};
+            }
+            :host(.checked) .checked-indicator {
+                fill: ${SystemColors.HighlightText};
+            }
+            :host(.checked) .control:hover .checked-indicator {
+                fill: ${SystemColors.Highlight}
+            }
+            :host(.checked) .indeterminate-indicator {
+                background: ${SystemColors.HighlightText};
+            }
+            :host(.checked) .control:hover .indeterminate-indicator {
+                background: ${SystemColors.Highlight}
+            }
+            :host(.disabled) {
+                opacity: 1;
+            }
+            :host(.disabled) .control {
+                forced-color-adjust: none;
+                border-color: ${SystemColors.GrayText};
+                background: ${SystemColors.Field};
+            }
+            :host(.disabled) .indeterminate-indicator,
+            :host(.checked.disabled) .control:hover .indeterminate-indicator {
+                forced-color-adjust: none;
+                background: ${SystemColors.GrayText};
+            }
+            :host(.disabled) .checked-indicator,
+            :host(.checked.disabled) .control:hover .checked-indicator {
+                forced-color-adjust: none;
+                fill: ${SystemColors.GrayText};
+            }
+        `
+    )
 );
