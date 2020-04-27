@@ -74,9 +74,7 @@ export function matchMediaStylesheetBehaviorFactory(query: MediaQueryList) {
                 const { cache, query } = this;
                 const cached = cache.get(source);
 
-                if (cached === void 0) {
-                    return;
-                } else {
+                if (cached !== void 0) {
                     if (Array.isArray(cached)) {
                         cached.forEach(listener => query.removeListener(listener));
                     } else {
