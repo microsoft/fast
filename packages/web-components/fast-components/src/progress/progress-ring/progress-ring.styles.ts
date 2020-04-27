@@ -7,7 +7,7 @@ import {
     neutralFillRestBehavior,
     neutralForegroundHintBehavior,
 } from "../../styles/recipes";
-import { forcedColorsStylesheetBehavior } from "../styles/match-media-stylesheet-behavior";
+import { forcedColorsStylesheetBehavior } from "../../styles/match-media-stylesheet-behavior";
 
 export const ProgressRingStyles = css`
     ${display("flex")} :host {
