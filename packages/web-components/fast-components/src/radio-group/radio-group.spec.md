@@ -39,6 +39,10 @@ Radio group allows the user to be presented with a list of all the options visib
 
 *Attributes:*
 - `selected-value` - allows user to set the initial radio selected within the group independent of value.
+- `readonly`
+  - If there is a selected radio button in the group it should be submitted with the form but none of the radio buttons should be editable.
+- `disabled`
+  - All of the radio buttons should be disabled from user interaction and will not be submitted with the form data.
 
 *Slots:*
 - default slot for radio items

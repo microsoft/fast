@@ -12,7 +12,6 @@ export class RadioGroup extends FASTElement {
     public readOnly: boolean; // Map to proxy element
     private readOnlyChanged(): void {
         const filteredRadios = this.getFilteredRadioButtons();
-        console.log("filteredRadios:", filteredRadios);
         if (filteredRadios !== undefined) {
             filteredRadios.forEach((radio: HTMLElement) => {
                 if (this.disabled) {
@@ -75,6 +74,13 @@ export class RadioGroup extends FASTElement {
 
             if (this.readOnly) {
                 radio.setAttribute("readonly", "");
+            }
+
+            if (
+                this.selectedValue &&
+                this.selectedValue === radio.getAttribute("value")
+            ) {
+                radio.setAttribute("checked", "");
             }
         });
     }
