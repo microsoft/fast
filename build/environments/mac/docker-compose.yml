@@ -1,0 +1,32 @@
+  
+version: "3.4"
+
+services:
+  web:
+    build:
+      context: ./web-application
+    container_name: kw-web
+    deploy:
+      labels:
+        com.kellywentzel: "Kelly Wentzel Web Application"
+      replicas: 2
+      resources:
+        limits:
+          cpus: "0.1"
+          memory: 50M
+      restart_policy: 
+        condition: on-failure
+    image: smebberson/alpine-nginx-nodejs
+    networks: 
+      - kw-elb
+
+    ports:
+      - "3000:80"
+      - "3001:443"
+    restart: always
+    working_dir: /var/www/html
+    volumes:
+      - ./public/:/var/www/html
+
+networks:
+  kw-elb: 
