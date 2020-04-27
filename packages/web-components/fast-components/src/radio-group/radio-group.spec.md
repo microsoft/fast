@@ -38,7 +38,6 @@ Radio group allows the user to be presented with a list of all the options visib
 - `fast-radio-group`
 
 *Attributes:*
-- `value` - represents the value of the selected radio button within the group.
 - `selected-value` - allows user to set the initial radio selected within the group independent of value.
 
 *Slots:*

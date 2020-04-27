@@ -1,5 +1,5 @@
 import { css } from "@microsoft/fast-element";
-import { disabledCursor, display } from "../styles";
+import { display } from "../styles";
 import { focusVisible } from "../styles/focus";
 import { SystemColors } from "../styles/system-colors";
 import { heightNumber } from "../styles/size";

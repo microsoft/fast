@@ -1,7 +1,7 @@
-import { attr, observable, FASTElement } from "@microsoft/fast-element";
+import { attr, FASTElement, observable } from "@microsoft/fast-element";
 import {
-    keyCodeArrowLeft,
     keyCodeArrowDown,
+    keyCodeArrowLeft,
     keyCodeArrowRight,
     keyCodeArrowUp,
 } from "@microsoft/fast-web-utilities";
@@ -11,24 +11,47 @@ export class RadioGroup extends FASTElement {
     @attr({ attribute: "readonly", mode: "boolean" })
     public readOnly: boolean; // Map to proxy element
     private readOnlyChanged(): void {
-        // TODO: set readonly on all the radio children
+        const filteredRadios = this.getFilteredRadioButtons();
+        console.log("filteredRadios:", filteredRadios);
+        if (filteredRadios !== undefined) {
+            filteredRadios.forEach((radio: HTMLElement) => {
+                if (this.disabled) {
+                    radio.setAttribute("readonly", "");
+                } else {
+                    radio.removeAttribute("readonly");
+                }
+            });
+        }
     }
 
     @attr({ attribute: "disabled", mode: "boolean" })
     public disabled: boolean; // Map to proxy element
     private disabledChanged(): void {
-        // TODO: set disabled on all the radio children
+        const filteredRadios = this.getFilteredRadioButtons();
+        if (filteredRadios !== undefined) {
+            filteredRadios.forEach((radio: HTMLElement) => {
+                if (this.disabled) {
+                    radio.setAttribute("disabled", "");
+                } else {
+                    radio.removeAttribute("disabled");
+                }
+            });
+        }
     }
 
     @attr
     public name: string; // Map to proxy element
     protected nameChanged(): void {
-        // TODO: set name attribute on all the radio children
+        this.getFilteredRadioButtons().forEach((radio: HTMLElement) => {
+            radio.setAttribute("name", this.name);
+        });
     }
 
-    @observable
+    @attr({ attribute: "selected-value" })
     public selectedValue: string;
-    private selectedValueChanged(): void {}
+    private selectedValueChanged(): void {
+        this.$emit("change");
+    }
 
     @observable slottedRadioButtons: Node[];
 
@@ -45,39 +68,38 @@ export class RadioGroup extends FASTElement {
             if (this.name !== undefined) {
                 radio.setAttribute("name", this.name);
             }
-        });
-        // for (let index = 0; index < this.children.length; index++) {
-        //     const radio: FASTRadio = this.children[index] as FASTRadio;
-        //     radio.addEventListener("change", this.handleRadioChange);
-        //     if (this.name !== undefined) {
-        //         radio.setAttribute("name", this.name);
-        //     }
-        // }
-    }
 
-    private getFilteredRadioButtons = (): any => {
-        return this.slottedRadioButtons.filter((node: Node) => {
-            if (node instanceof HTMLElement) {
-                return node as HTMLElement;
+            if (this.disabled) {
+                radio.setAttribute("disabled", "");
+            }
+
+            if (this.readOnly) {
+                radio.setAttribute("readonly", "");
             }
         });
+    }
+
+    private getFilteredRadioButtons = (): any[] => {
+        if (this.slottedRadioButtons !== undefined) {
+            return this.slottedRadioButtons.filter((node: Node) => {
+                if (node instanceof HTMLElement) {
+                    return node as HTMLElement;
+                }
+            });
+        } else {
+            return [];
+        }
     };
 
     private handleRadioChange = (e): void => {
         const changedRadio: FASTRadio = e.target as FASTRadio;
         if (changedRadio.checked) {
-            //loop through and uncheck everybody else
-            // for (let index = 0; index < this.children.length; index++) {
-            //     const radio: FASTRadio = this.children[index] as FASTRadio;
-            //     if (radio !== changedRadio) {
-            //         radio.checked = false;
-            //     }
-            // }
             this.getFilteredRadioButtons().forEach((radio: FASTRadio) => {
                 if (radio !== changedRadio) {
                     radio.checked = false;
                 }
             });
+            this.selectedValue = changedRadio.value;
         }
     };
 
