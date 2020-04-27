@@ -38,20 +38,42 @@ As defined by the W3C:
 
 *Attributes:*
 - `expand` - enum
-  - single - default
-  - multi
+  - single
+  - multi - default
 
 *Events*
 - `change: CustomEvent`
   - no custom data
   - bubbles
 
+**Accordion Item**
+*Component names:*
+- `fast-accordion-item`
+
+*Attributes:*
+- `expanded` - boolean
+- `id` - string
+
+*Parts:*
+- panel
+
+*Slot Names*
+- header
+
 **Accordion Header**
 *Component names:*
 - `fast-accordion-header`
 
 *Attributes:*
+- `expanded` - boolean
 - `id` - string
+- `headingtag` - enum
+  - h1
+  - h2
+  - h3 - default
+  - h4
+  - h5
+  - h6
 
 *Parts:*
 - button
@@ -59,13 +81,6 @@ As defined by the W3C:
 *Slot Names*
 - expanded-glyph
 - collapsed-glyph
-
-**Accordion Panel**
-*Component names:*
-- `fast-accordion-panel`
-
-*Attributes:*
-- `id` - string
 
 ### Anatomy and Appearance
 
@@ -148,12 +163,18 @@ As defined by the W3C:
 
 ```HTML
 <fast-accordion>
-    <fast-accordion-header>Panel one</fast-accordion-header>
-    <fast-accordion-panel>Panel one content</fast-accordion-panel>
-    <fast-accordion-header>Panel two</fast-accordion-header>
-    <fast-accordion-panel>Panel two content</fast-accordion-panel>
-    <fast-accordion-header>Panel three</fast-accordion-header>
-    <fast-accordion-panel>Panel three content</fast-accordion-panel>
+    <fast-accordion-item>
+        <fast-accordion-header headingtag="h2">Header One</fast-accordion-header>
+        Panel one Content
+    </fast-accordion-item>
+    <fast-accordion-item expanded>
+        <fast-accordion-header headingtag="h2" expanded>Header Two</fast-accordion-header>
+        Panel two content
+    </fast-accordion-item>
+    <fast-accordion-item>
+        <fast-accordion-header headingtag="h2">Header Three</fast-accordion-header>
+        Panel three content
+    </fast-accordion-item>
 </fast-accordion>
 ```
 
