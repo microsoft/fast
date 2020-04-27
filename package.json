@@ -9,7 +9,7 @@
   "license": "MIT",
   "private": true,
   "workspaces": {
-    "packages": ["packages/**/*", "sites/fast-color-explorer", "sites/fast-component-explorer"],
+    "packages": ["packages/**/*", "sites/fast-color-explorer", "sites/fast-component-explorer", "sites/fast-creator"],
     "nohoist": ["**/react-syntax-highlighter"]
   },
   "repository": {
@@ -85,7 +85,7 @@
     "@types/lodash-es": "^4.17.0",
     "@types/node": "^9.4.7",
     "babel-core": "^7.0.0-bridge.0",
-    "babel-jest": "^25.2.6",
+    "babel-jest": "^25.4.0",
     "babel-preset-env": "^1.6.1",
     "chalk": "^2.4.2",
     "docusaurus-init": "^1.11.0",
@@ -93,13 +93,13 @@
     "eyes.selenium": "3.6.2",
     "glob": "^7.1.2",
     "husky": "^1.1.2",
-    "jest": "^25.2.7",
+    "jest": "^25.4.0",
     "lerna": "^3.20.2",
     "lint-staged": "^10.1.2",
     "markdown-it": "^8.4.1",
     "prettier": "2.0.2",
     "rimraf": "^2.6.2",
-    "ts-jest": "^25.3.1",
+    "ts-jest": "^25.4.0",
     "ts-node": "^8.8.2",
     "typedoc": "^0.14.2",
     "typedoc-plugin-markdown": "^2.2.17",

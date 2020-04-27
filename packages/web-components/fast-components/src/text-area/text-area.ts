@@ -16,31 +16,17 @@ export enum TextAreaResize {
 export class TextArea extends FormAssociated<HTMLTextAreaElement> {
     @attr
     public appearance: TextAreaAppearance = TextAreaAppearance.outline;
-    private appearanceChanged(): void {
-        this.appearance === TextAreaAppearance.filled
-            ? this.classList.add("filled")
-            : this.classList.remove("filled");
-    }
 
     @attr({ mode: "boolean" })
-    public readonly: boolean;
-    private readonlyChanged(): void {
+    public readOnly: boolean;
+    private readOnlyChanged(): void {
         if (this.proxy instanceof HTMLElement) {
-            this.proxy.readOnly = this.readonly;
+            this.proxy.readOnly = this.readOnly;
         }
-
-        this.readonly
-            ? this.classList.add("readonly")
-            : this.classList.remove("readonly");
     }
 
     @attr
     public resize: TextAreaResize = TextAreaResize.none;
-    private resizeChanged(): void {
-        this.resize !== TextAreaResize.none
-            ? this.classList.add(`resize-${this.resize}`)
-            : this.classList.remove(`resize-${this.resize}`);
-    }
 
     public textarea: HTMLTextAreaElement;
 

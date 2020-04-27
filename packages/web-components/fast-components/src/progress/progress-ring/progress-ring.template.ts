@@ -7,6 +7,7 @@ export const ProgressRingTemplate = html<BaseProgress>`
         aria-valuenow="${x => x.value}"
         aria-valuemin="${x => x.min}"
         aria-valuemax="${x => x.max}"
+        class="${x => (x.paused ? "paused" : "")}"
     >
         ${when(
             x => x.value,

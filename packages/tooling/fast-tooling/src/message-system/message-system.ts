@@ -1,5 +1,5 @@
 import { MessageSystemType } from "./types";
-import { MessageSystemConfig, Register } from "./message-system.props";
+import { Initialize, MessageSystemConfig, Register } from "./message-system.props";
 import { MessageSystemIncoming } from "./message-system.utilities.props";
 
 /**
@@ -18,14 +18,19 @@ export default class MessageSystem {
 
     constructor(config: MessageSystemConfig) {
         if ((window as any).Worker) {
-            this.worker = new Worker(config.webWorker);
+            this.worker =
+                typeof config.webWorker === "string"
+                    ? new Worker(config.webWorker)
+                    : config.webWorker;
             this.worker.onmessage = this.onMessage;
 
-            this.worker.postMessage({
-                type: MessageSystemType.initialize,
-                data: config.dataDictionary,
-                schemaDictionary: config.schemaDictionary,
-            });
+            if (Array.isArray(config.dataDictionary) && config.schemaDictionary) {
+                this.worker.postMessage({
+                    type: MessageSystemType.initialize,
+                    data: config.dataDictionary,
+                    schemaDictionary: config.schemaDictionary,
+                });
+            }
         }
     }
 
@@ -41,6 +46,20 @@ export default class MessageSystem {
      */
     public remove(config: Register): void {
         this.register.delete(config);
+    }
+
+    /**
+     * Sends an initialization message
+     */
+    public initialize(config: Initialize): void {
+        if ((window as any).Worker) {
+            (this.worker as Worker).postMessage({
+                type: MessageSystemType.initialize,
+                dataDictionary: config.dataDictionary,
+                data: config.data,
+                schemaDictionary: config.schemaDictionary,
+            });
+        }
     }
 
     /**

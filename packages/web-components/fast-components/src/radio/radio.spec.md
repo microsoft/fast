@@ -40,8 +40,6 @@ Extends [form associated custom element](../form-associated/form-associated-cust
 - `disabled`
   - The radio should be disabled from user interaction and will not be submitted with the form data.
 - `value` - Not visible to the user, it's used for form data and to distinguish between other radio buttons of the same name attribute value.
-- `name` - All radio buttons with the same name will operate as a group allowing only 
-one radio within the group to be selected at a time.
 - `checked`
   - The initial checked value. 
   
@@ -87,9 +85,6 @@ one radio within the group to be selected at a time.
 The checked state can be toggled by:
 - Clicking the radio button (or any of it's labels)
 - Pressing the space-bar while focus is placed on the radio button will toggle it on
-- Pressing the right/top or left/bottom arrow keys will move the focus and toggle on the checked value for the radio button receiving focus.
-- Adding / removing the "checked" content attribute
-  - This will only trigger a change if the "checked" property has not been changed, either through user action or programmatically
 
 **disabled**: `true` or `false`
 When disabled, the value will not be changeable through user interaction. It should also not expose it's value to a form submission.

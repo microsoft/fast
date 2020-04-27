@@ -28,12 +28,7 @@ export class Dialog extends FASTElement {
     private observer: MutationObserver;
 
     public dismiss(): void {
-        this.dispatchEvent(
-            new CustomEvent("dismiss", {
-                bubbles: true,
-                composed: true,
-            })
-        );
+        this.$emit("dismiss");
     }
 
     public connectedCallback(): void {
