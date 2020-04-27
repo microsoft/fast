@@ -61,10 +61,11 @@ export function matchMediaStylesheetBehaviorFactory(query: MediaQueryList) {
 
                 if (cached !== void 0) {
                     // Support multiple bindings of the same behavior
-                    cache.set(
-                        source,
-                        Array.isArray(cached) ? [...cached, listener] : [cached, listener]
-                    );
+                    if (Array.isArray(cached)) {
+                        cached.push(listener);
+                    } else {
+                        cache.set(source, [cached, listener]);
+                    }
                 } else {
                     cache.set(source, listener);
                 }
