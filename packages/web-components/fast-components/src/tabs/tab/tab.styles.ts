@@ -8,6 +8,7 @@ import {
     neutralForegroundRestBehavior,
 } from "../../styles/recipes";
 import { SystemColors } from "../../styles/system-colors";
+import { forcedColorsStylesheetBehavior } from "../../styles/match-media-stylesheet-behavior";
 
 export const TabStyles = css`
     ${display("inline-flex")} :host {
@@ -71,27 +72,26 @@ export const TabStyles = css`
 
     :host(.vertical:hover[aria-selected="true"]) {
     }
-
-    @media (forced-colors: active) {
-        :host {
-            forced-color-adjust: none;
-            border-color: transparent;
-            color: ${SystemColors.ButtonText};
-        }
-
-        :host(:hover),
-        :host(.vertical:hover) {
-            color: ${SystemColors.ButtonText};
-        }
-
-        :host(:${focusVisible}) {
-            border-color: ${SystemColors.ButtonText};
-            box-shadow: none;
-        }
-    }
 `.withBehaviors(
     neutralFocusBehavior,
     neutralForegroundRestBehavior,
     neutralForegroundHoverBehavior,
-    neutralForegroundActiveBehavior
+    neutralForegroundActiveBehavior,
+    forcedColorsStylesheetBehavior(
+        css`
+            :host {
+                forced-color-adjust: none;
+                border-color: transparent;
+                color: ${SystemColors.ButtonText};
+            }
+            :host(:hover),
+            :host(.vertical:hover) {
+                color: ${SystemColors.ButtonText};
+            }
+            :host(:${focusVisible}) {
+                border-color: ${SystemColors.ButtonText};
+                box-shadow: none;
+            }
+        `
+    )
 );

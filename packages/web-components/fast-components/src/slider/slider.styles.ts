@@ -10,6 +10,7 @@ import {
     neutralOutlineHoverBehavior,
     neutralOutlineRestBehavior,
 } from "../styles/recipes";
+import { forcedColorsStylesheetBehavior } from "../styles/match-media-stylesheet-behavior";
 
 export const SliderStyles = css`
     :host([hidden]) {
@@ -105,44 +106,40 @@ export const SliderStyles = css`
     :host(.disabled) {
         opacity: var(--disabled-opacity);
     }
-
-    @media (forced-colors: active) {
-        .thumb-cursor {
-            forced-color-adjust: none;
-            border-color: ${SystemColors.FieldText};
-            background: ${SystemColors.FieldText};
-        }
-
-        .thumb-cursor:hover,
-        .thumb-cursor:active {
-            background: ${SystemColors.Highlight};
-        }
-
-        .track {
-            forced-color-adjust: none;
-            background: ${SystemColors.FieldText};
-        }
-        
-        :host(:${focusVisible}) .thumb-cursor {
-            border-color: ${SystemColors.Highlight};
-        }
-
-        :host(.disabled) {
-            opacity: 1;
-            cursor: ${disabledCursor};
-        }
-
-        :host(.disabled) .slider,
-        :host(.disabled) .track,
-        :host(.disabled) .thumb-cursor {
-            forced-color-adjust: none;
-            background: ${SystemColors.GrayText};
-        }
-    }
 `.withBehaviors(
     neutralForegroundActiveBehavior,
     neutralForegroundHoverBehavior,
     neutralForegroundRestBehavior,
     neutralOutlineHoverBehavior,
-    neutralOutlineRestBehavior
+    neutralOutlineRestBehavior,
+    forcedColorsStylesheetBehavior(
+        css`
+            .thumb-cursor {
+                forced-color-adjust: none;
+                border-color: ${SystemColors.FieldText};
+                background: ${SystemColors.FieldText};
+            }
+            .thumb-cursor:hover,
+            .thumb-cursor:active {
+                background: ${SystemColors.Highlight};
+            }
+            .track {
+                forced-color-adjust: none;
+                background: ${SystemColors.FieldText};
+            }
+            :host(:${focusVisible}) .thumb-cursor {
+                border-color: ${SystemColors.Highlight};
+            }
+            :host(.disabled) {
+                opacity: 1;
+                cursor: ${disabledCursor};
+            }
+            :host(.disabled) .slider,
+            :host(.disabled) .track,
+            :host(.disabled) .thumb-cursor {
+                forced-color-adjust: none;
+                background: ${SystemColors.GrayText};
+            }
+        `
+    )
 );
