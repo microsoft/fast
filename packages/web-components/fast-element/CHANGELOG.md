@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.8.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-element@0.7.0...@microsoft/fast-element@0.8.0) (2020-04-27)
+
+
+### Bug Fixes
+
+* **fast-element:** attr bindings preserved during upgrade ([#3010](https://github.com/Microsoft/fast-dna/issues/3010)) ([e9b14cc](https://github.com/Microsoft/fast-dna/commit/e9b14ccf70efa7eac4b055d7a34fc4e2d775fa0c))
+
+
+### Features
+
+* **fast-element:** add a render method to templates for pure templating ([#3018](https://github.com/Microsoft/fast-dna/issues/3018)) ([c4ac6b2](https://github.com/Microsoft/fast-dna/commit/c4ac6b2a20d67992d5d820e9ae56eb75db7e2e3a))
+
+
+
+
+
 # [0.7.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-element@0.6.0...@microsoft/fast-element@0.7.0) (2020-04-22)
 
 
