@@ -1,4 +1,19 @@
-import { ElementStyles, FASTElement } from "@microsoft/fast-element";
+import { Behavior, ElementStyles, FASTElement } from "@microsoft/fast-element";
+
+type MediaQueryListListener = (this: MediaQueryList, ev?: MediaQueryListEvent) => any;
+
+interface MatchMediaStyleSheetBehavior extends Behavior {
+    query: MediaQueryList;
+    cache: WeakMap<
+        typeof FASTElement,
+        MediaQueryListListener | Array<MediaQueryListListener>
+    >;
+    sheet: ElementStyles;
+    constructListener: (
+        source: typeof FASTElement,
+        sheet: ElementStyles
+    ) => MediaQueryListListener;
+}
 
 /**
  * Construct a behavior to conditionally apply a stylesheet based
@@ -7,7 +22,7 @@ import { ElementStyles, FASTElement } from "@microsoft/fast-element";
 export function matchMediaStylesheetBehaviorFactory(query: MediaQueryList) {
     const cache: WeakMap<
         typeof FASTElement,
-        (this: MediaQueryList) => void
+        ((this: MediaQueryList) => void) | Array<(this: MediaQueryList) => void>
     > = new WeakMap();
 
     return (sheet: ElementStyles) => {
@@ -15,7 +30,11 @@ export function matchMediaStylesheetBehaviorFactory(query: MediaQueryList) {
             query,
             cache,
             sheet,
-            constructListener(source: typeof FASTElement, sheet: ElementStyles) {
+            constructListener(
+                this: MatchMediaStyleSheetBehavior,
+                source: typeof FASTElement,
+                sheet: ElementStyles
+            ): MediaQueryListListener {
                 let attached = false;
 
                 function listener(this: MediaQueryList) {
@@ -31,18 +50,41 @@ export function matchMediaStylesheetBehaviorFactory(query: MediaQueryList) {
 
                 return listener;
             },
-            bind(source: typeof FASTElement) {
+            bind(this: MatchMediaStyleSheetBehavior, source: typeof FASTElement) {
                 const { constructListener, query, cache } = this;
                 const listener = constructListener(source, this.sheet);
+                const cached = cache.get(source);
+
                 // Invoke immediately to add if the query currently matches
                 listener.bind(query)();
                 query.addListener(listener);
-                cache.set(source, listener);
+
+                if (cached !== void 0) {
+                    // Support multiple bindings of the same behavior
+                    cache.set(
+                        source,
+                        Array.isArray(cached) ? [...cached, listener] : [cached, listener]
+                    );
+                } else {
+                    cache.set(source, listener);
+                }
             },
-            unbind(source: typeof FASTElement) {
+            unbind(this: MatchMediaStyleSheetBehavior, source: typeof FASTElement) {
                 const { cache, query } = this;
-                query.removeListener(cache.get(source)!);
-                cache.delete(source);
+                const cached = cache.get(source);
+
+                if (cached === void 0) {
+                    return;
+                } else {
+                    if (Array.isArray(cached)) {
+                        // If element is being unbound, we're safe to remove *all* listeners
+                        cached.forEach(query.removeListener);
+                    } else {
+                        query.removeListener(cached);
+                    }
+
+                    cache.delete(source);
+                }
             },
         });
     };
