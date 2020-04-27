@@ -99,31 +99,43 @@ export const RadioStyles = css`
             border-color: ${SystemColors.FieldText};
             background: ${SystemColors.Field};
         }
-        
-        .checked-indicator {
-            fill: ${SystemColors.FieldText};
-        }
-        
+
         :host(:${focusVisible}) .control {
             border-color: ${SystemColors.Highlight};
         }
 
+        :host(.checked) .control:hover, .control:active {
+            border-color: ${SystemColors.Highlight};
+            background: ${SystemColors.Highlight};
+        }
+
+        :host(.checked) .checked-indicator {
+            background: ${SystemColors.Highlight};
+            fill: ${SystemColors.Highlight};
+        }
+
+        :host(.checked) .control:hover .checked-indicator {
+            background: ${SystemColors.HighlightText};
+            fill: ${SystemColors.HighlightText};
+        }
+
         :host(.disabled) {
+            forced-color-adjust: none;
             opacity: 1;
         }
 
         :host(.disabled) .label {
-            forced-color-adjust: none;
             color: ${SystemColors.GrayText};
         }
 
-        :host(.disabled) .control {
-            forced-color-adjust: none;
+        :host(.disabled) .control,
+        :host(.checked.disabled) .control:hover, .control:active {
+            background: ${SystemColors.Field};
             border-color: ${SystemColors.GrayText};
         }
 
-        :host(.disabled) .checked-indicator {
-            forced-color-adjust: none;
+        :host(.disabled) .checked-indicator,
+        :host(.checked.disabled) .control:hover .checked-indicator {
             fill: ${SystemColors.GrayText};
             background: ${SystemColors.GrayText};
         }
