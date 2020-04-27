@@ -44,10 +44,13 @@ for f in packages/react/*; do
         if [ -d "$f/coverage" ]; then
             echo $f
             #cat $f/coverage/coverage-final.json
-            ./coverage/cc-test-reporter format-coverage $f/coverage/lcov.info \
-            --input-type lcov \
-            --output coverage/coverage.${f//\//-}.json \
-            --debug
+            ./coverage/cc-test-reporter format-coverage \
+            --debug \
+            --prefix /Users/awentzel/aMicrosoft/Projects/fast-dna \
+            --add-prefix fast-dna \
+            --output /Users/awentzel/aMicrosoft/Projects/fast-dna/coverage/coverage.${f//\//-}.json \
+            --input-type lcov /Users/awentzel/aMicrosoft/Projects/fast-dna/$f/coverage/lcov.info
+            
             exit
         fi
     fi
