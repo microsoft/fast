@@ -37,7 +37,7 @@ As defined by the W3C:
 - `fast-accordion`
 
 *Attributes:*
-- `expand` - enum
+- `expandmode` - enum
   - single
   - multi - default
 
@@ -53,104 +53,91 @@ As defined by the W3C:
 *Attributes:*
 - `expanded` - boolean
 - `id` - string
+- `headinglevel` - enum
+  - 1
+  - 2
+  - 3 - default
+  - 4
+  - 5
+  - 6
 
 *Parts:*
 - panel
-
-*Slot Names*
-- header
-
-**Accordion Header**
-*Component names:*
-- `fast-accordion-header`
-
-*Attributes:*
-- `expanded` - boolean
-- `id` - string
-- `headingtag` - enum
-  - h1
-  - h2
-  - h3 - default
-  - h4
-  - h5
-  - h6
-
-*Parts:*
 - button
 
 *Slot Names*
-- expanded-glyph
-- collapsed-glyph
+- default
+- heading
+- glyph
 
 ### Anatomy and Appearance
 
 ```HTML
 <!-- shadow root -->
 <div>
-    <h3>
+    <div role="heading" aria-level="3">
         <button
             type="button"
+            class="button"
             part="button"
             aria-expanded="true"
-            class="button"
-            aria-controls="panel1"
+            aria-controls="accordion1-panel"
             id="accordion1"
         >
-            Panel one
-            <slot name="expanded-glyph" part="expanded-glyph"></slot>
-            <slot name="collapsed-glyph" part="collapsed-glyph"></slot>
+            <slot name="heading" part="heading">Panel one</slot>
+            <slot name="glyph" part="glyph"></slot>
        </button>
-    </h3>
+    </div>
     <div
-        id="panel1"
+        id="accordion1-panel"
         role="region"
         aria-labelledby="accordion1"
     >
         Panel one content
     </div>
-    <h3>
+    <div role="heading" aria-level="3">
         <button
             type="button"
-            aria-expanded="false"
             class="button"
-            aria-controls="panel2"
+            part="button"
+            aria-expanded="false"
+            aria-controls="accordion2-panel"
             id="accordion2"
         >
-            Panel one
-            <slot name="expanded-glyph" part="expanded-glyph"></slot>
-            <slot name="collapsed-glyph" part="collapsed-glyph"></slot>
+            <slot name="heading" part="heading">Panel two</slot>
+            <slot name="glyph" part="glyph"></slot>
        </button>
-    </h3>
+    </div>
     <div
-        id="panel2"
+        id="accordion2-panel"
         part="panel"
         role="region"
         aria-labelledby="accordion2"
         class="panel"
     >
-        Panel one content
+        Panel two content
     </div>
-    <h3>
+    <div role="heading" aria-level="3">
         <button
             type="button"
-            aria-expanded="true"
             class="button"
-            aria-controls="panel3"
+            part="button"
+            aria-expanded="true"
+            aria-controls="accordion3-panel"
             id="accordion3"
         >
-            Panel one
-            <slot name="expanded-glyph" part="expanded-glyph"></slot>
-            <slot name="collapsed-glyph" part="collapsed-glyph"></slot>
+            <slot name="heading" part="heading">Panel three</slot>
+            <slot name="glyph" part="glyph"></slot>
        </button>
-    </h3>
+    </div>
     <div
-        id="panel3"
+        id="accordion3-panel"
         part="panel"
         role="region"
         aria-labelledby="accordion3"
         class="panel"
     >
-        Panel one content
+        Panel three content
     </div>
 </div>
 
@@ -164,15 +151,18 @@ As defined by the W3C:
 ```HTML
 <fast-accordion>
     <fast-accordion-item>
-        <fast-accordion-header headingtag="h2">Header One</fast-accordion-header>
-        Panel one Content
+        <span slot="heading">Panel one</span>
+        <span slot="glyph">^</span>
+        Panel one content
     </fast-accordion-item>
     <fast-accordion-item expanded>
-        <fast-accordion-header headingtag="h2" expanded>Header Two</fast-accordion-header>
+        <span slot="heading">Panel two</span>
+        <span slot="glyph">^</span>
         Panel two content
     </fast-accordion-item>
     <fast-accordion-item>
-        <fast-accordion-header headingtag="h2">Header Three</fast-accordion-header>
+        <span slot="heading">Panel three</span>
+        <span slot="glyph">^</span>
         Panel three content
     </fast-accordion-item>
 </fast-accordion>
