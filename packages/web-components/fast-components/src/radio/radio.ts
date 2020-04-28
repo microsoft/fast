@@ -91,6 +91,9 @@ export class Radio extends FormAssociated<HTMLInputElement> {
 
     public connectedCallback(): void {
         super.connectedCallback();
+        if (this.parentElement?.tagName !== "FAST-RADIO-GROUP") {
+            this.setAttribute("tabindex", "0");
+        }
         this.updateForm();
     }
 

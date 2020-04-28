@@ -84,8 +84,15 @@ export class RadioGroup extends FASTElement {
             ) {
                 this.selectedRadio = radio;
                 radio.setAttribute("checked", "");
+                radio.setAttribute("tabindex", "0");
+            } else {
+                radio.setAttribute("tabindex", "-1");
             }
         });
+
+        if (this.selectedValue === undefined) {
+            radioButtons[0].setAttribute("tabindex", "0");
+        }
     }
 
     private getFilteredRadioButtons = (): any[] => {
@@ -106,6 +113,7 @@ export class RadioGroup extends FASTElement {
             this.getFilteredRadioButtons().forEach((radio: FASTRadio) => {
                 if (radio !== changedRadio) {
                     radio.checked = false;
+                    radio.setAttribute("tabindex", "-1");
                 }
             });
             this.selectedRadio = changedRadio;
