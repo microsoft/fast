@@ -1,14 +1,4 @@
-name: CI - FAST
-
-on:
-  push: 
-    branches:
-    - master
-    - releases/*
-  pull_request:
-    branches:
-    - master
-    - releases/*
+name: CI - FAST Local Testing
 
 jobs:
   build_local_linux:
@@ -26,10 +16,10 @@ jobs:
         npm update -g typescript 
 
     - name: Install package dependencies / prepare workspaces
-      run: yarn install --frozen-lockfile
+      run: yarn install --frozen-lockfile --production=true
 
     - name: Testing unit tests
-      run: lerna run test --stream
+      run: lerna run test --stream --coverage=false
 
     - name: Collect and upload code coverage to Code Climate
       uses: paambaati/codeclimate-action@v2.6.0
