@@ -170,12 +170,16 @@ As defined by the W3C:
 
 ### States
 
+Accordion has 2 modes of expansion let can be set via `expandmode`. `expandmode` defaults to `multi`, meaning multiple accordion-items can be expanded at any given time. If `expandmode` is set to `single` then only one item can be expanded, meaning that when you activate a header all other headers with collapse.
+
 
 ### Accessibility
 
+Keyboard interactions for tabbing and up and down arrow should focus the next or previous header. Space bar should toggle the expansion of the focused header.
+
 ### Globalization
 
-Start and end content should swap in LTR presentations.
+Component should mirror in RTL presentations.
 
 ### Test Plan
 
