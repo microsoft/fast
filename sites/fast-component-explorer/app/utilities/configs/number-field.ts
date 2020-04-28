@@ -1,37 +1,57 @@
-import {
-    NumberField,
-    NumberFieldProps,
-    numberFieldSchema,
-} from "@microsoft/fast-components-react-msft";
+import { NumberField, numberFieldSchema } from "@microsoft/fast-components-react-msft";
 import Guidance from "../../.tmp/number-field/guidance";
 import { ComponentViewConfig } from "./data.props";
 
-const numberFieldConfig: ComponentViewConfig<NumberFieldProps> = {
+const numberFieldConfig: ComponentViewConfig = {
     schema: numberFieldSchema,
     component: NumberField,
     guidance: Guidance,
     scenarios: [
         {
             displayName: "Basic",
-            data: {
-                name: "numberField",
-            },
+            dataDictionary: [
+                {
+                    root: {
+                        schemaId: numberFieldSchema.id,
+                        data: {
+                            name: "numberField",
+                        },
+                    },
+                },
+                "root",
+            ],
         },
         {
             displayName: "Min, max and step",
-            data: {
-                min: 0,
-                max: 100,
-                step: 10,
-                name: "numberField",
-            },
+            dataDictionary: [
+                {
+                    root: {
+                        schemaId: numberFieldSchema.id,
+                        data: {
+                            min: 0,
+                            max: 100,
+                            step: 10,
+                            name: "numberField",
+                        },
+                    },
+                },
+                "root",
+            ],
         },
         {
             displayName: "Disabled",
-            data: {
-                disabled: true,
-                name: "numberField",
-            },
+            dataDictionary: [
+                {
+                    root: {
+                        schemaId: numberFieldSchema.id,
+                        data: {
+                            disabled: true,
+                            name: "numberField",
+                        },
+                    },
+                },
+                "root",
+            ],
         },
     ],
 };

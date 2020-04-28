@@ -1,75 +1,146 @@
 import {
     TextField,
-    TextFieldProps,
     textFieldSchema,
     TextFieldType,
 } from "@microsoft/fast-components-react-msft";
 import Guidance from "../../.tmp/text-field/guidance";
 import { ComponentViewConfig } from "./data.props";
 
-const textFieldConfig: ComponentViewConfig<TextFieldProps> = {
+const textFieldConfig: ComponentViewConfig = {
     schema: textFieldSchema,
     component: TextField,
     guidance: Guidance,
     scenarios: [
         {
             displayName: "Basic",
-            data: {},
+            dataDictionary: [
+                {
+                    root: {
+                        schemaId: textFieldSchema.id,
+                        data: {},
+                    },
+                },
+                "root",
+            ],
         },
         {
             displayName: "Placeholder",
-            data: {
-                placeholder: "Placeholder",
-            },
+            dataDictionary: [
+                {
+                    root: {
+                        schemaId: textFieldSchema.id,
+                        data: {
+                            placeholder: "Placeholder",
+                        },
+                    },
+                },
+                "root",
+            ],
         },
         {
             displayName: "Email",
-            data: {
-                placeholder: "Email",
-                type: TextFieldType.email,
-            },
+            dataDictionary: [
+                {
+                    root: {
+                        schemaId: textFieldSchema.id,
+                        data: {
+                            placeholder: "Email",
+                            type: TextFieldType.email,
+                        },
+                    },
+                },
+                "root",
+            ],
         },
         {
             displayName: "Number",
-            data: {
-                placeholder: "Number",
-                type: TextFieldType.number,
-            },
+            dataDictionary: [
+                {
+                    root: {
+                        schemaId: textFieldSchema.id,
+                        data: {
+                            placeholder: "Number",
+                            type: TextFieldType.number,
+                        },
+                    },
+                },
+                "root",
+            ],
         },
         {
             displayName: "Passsword",
-            data: {
-                placeholder: "Passsword",
-                type: TextFieldType.password,
-            },
+            dataDictionary: [
+                {
+                    root: {
+                        schemaId: textFieldSchema.id,
+                        data: {
+                            placeholder: "Passsword",
+                            type: TextFieldType.password,
+                        },
+                    },
+                },
+                "root",
+            ],
         },
         {
             displayName: "Search",
-            data: {
-                placeholder: "Search",
-                type: TextFieldType.search,
-            },
+            dataDictionary: [
+                {
+                    root: {
+                        schemaId: textFieldSchema.id,
+                        data: {
+                            placeholder: "Search",
+                            type: TextFieldType.search,
+                        },
+                    },
+                },
+                "root",
+            ],
         },
         {
             displayName: "Telephone",
-            data: {
-                placeholder: "Telephone",
-                type: TextFieldType.tel,
-            },
+            dataDictionary: [
+                {
+                    root: {
+                        schemaId: textFieldSchema.id,
+                        data: {
+                            placeholder: "Telephone",
+                            type: TextFieldType.tel,
+                        },
+                    },
+                },
+                "root",
+            ],
         },
         {
             displayName: "Url",
-            data: {
-                placeholder: "Url",
-                type: TextFieldType.url,
-            },
+            dataDictionary: [
+                {
+                    root: {
+                        schemaId: textFieldSchema.id,
+                        data: {
+                            placeholder: "Url",
+                            type: TextFieldType.url,
+                        },
+                    },
+                },
+                "root",
+            ],
         },
         {
             displayName: "Disabled",
-            data: {
-                disabled: true,
-                placeholder: "Placeholder",
-            },
+            dataDictionary: [
+                {
+                    root: {
+                        schemaId: textFieldSchema.id,
+                        data: {
+                            disabled: true,
+                            placeholder: "Placeholder",
+                        },
+                    },
+                },
+                "root",
+            ],
         },
     ],
 };
