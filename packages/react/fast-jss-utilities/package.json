@@ -20,6 +20,7 @@
   "scripts": {
     "build": "tsc -p ./tsconfig.build.json",
     "clean:dist": "node ../../../build/clean.js dist",
+    "coverage": "jest --coverage",
     "prepare": "yarn clean:dist && yarn build",
     "prettier": "prettier --config ../../../.prettierrc --write \"**/*.ts\"",
     "prettier:diff": "prettier --config ../../../.prettierrc \"**/*.ts\" --list-different",
@@ -31,6 +32,12 @@
   },
   "jest": {
     "collectCoverage": true,
+    "coverageReporters": [
+      "json", 
+      [
+        "lcov", {"projectRoot": "../../../"}
+      ]
+    ],
     "coverageThreshold": {
       "global": {
         "statements": 100,

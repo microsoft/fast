@@ -8,6 +8,7 @@
     "build:app": "webpack --progress --mode=production",
     "convert:readme": "node ./build/convert-readme.js",
     "clean:tmp": "node ../../build/clean.js app/.tmp",
+    "coverage": "jest --coverage",
     "prettier": "prettier --config ../../.prettierrc --write \"**/*.{ts,tsx}\"",
     "prettier:diff": "prettier --config ../../.prettierrc \"**/*.{ts,tsx}\" --list-different",
     "start": "webpack-dev-server",
@@ -34,6 +35,12 @@
       "./mock.js"
     ],
     "collectCoverage": true,
+    "coverageReporters": [
+      "json", 
+      [
+        "lcov", {"projectRoot": "../../../"}
+      ]
+    ],
     "coverageThreshold": {
       "global": {
         "statements": 50,
