@@ -40,9 +40,15 @@
     }
   },
   "jest": {
-    "collectCoverage": true,
+    "collectCoverage": false,
     "collectCoverageFrom": [
       "build/helpers/*.ts"
+    ],
+    "coverageReporters": [
+      "json", 
+      [
+        "lcov", {"projectRoot": "."}
+      ]
     ],
     "coverageThreshold": {
       "global": {

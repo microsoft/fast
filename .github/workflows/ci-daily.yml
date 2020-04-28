@@ -17,8 +17,10 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Install Lerna
-      run: sudo yarn global add lerna
+    - name: Add/Update packages
+      run: |
+        yarn global add lerna
+        yarn global add prettier --dev -W
 
     - name: Get yarn cache directory path
       id: yarn-cache-dir-path

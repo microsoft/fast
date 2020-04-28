@@ -11,20 +11,23 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-
-    - name: Install Lerna
-      run: yarn global add lerna
     
-    - name: Upgrade TypeScript
+    - name: Add/Update packages
       run: |
-        tsc -v
-        npm update -g typescript 
+        sudo apt-get update 
+        sudo apt-get install yarn
+        yarn global upgrade typescript
+        yarn global add lerna
+        yarn global add prettier --dev -W
 
     - name: Install package dependencies / prepare workspaces
-      run: yarn install --frozen-lockfile --production=true
+      run: yarn install --frozen-lockfile
+
+    - name: Testing Prettier format
+      run: lerna run prettier:diff
 
     - name: Testing unit tests
-      run: lerna run test --stream --coverage=false
+      run: lerna run test --stream 
 
     - name: Collect and upload code coverage to Code Climate
       uses: paambaati/codeclimate-action@v2.6.0
