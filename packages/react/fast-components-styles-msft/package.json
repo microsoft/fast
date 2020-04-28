@@ -78,7 +78,7 @@
     "eslint-config-prettier": "^6.10.1",
     "jest": "^25.4.0",
     "lodash-es": "^4.0.0",
-    "prettier": "2.0.2",
+    "prettier": "2.0.5",
     "rollup": "^1.18.0",
     "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-typescript": "^1.0.1",

@@ -92,7 +92,7 @@
     "jss": "^9.8.7",
     "jss-plugin-nested": "^10.0.0-alpha.7",
     "lodash-es": "^4.0.0",
-    "prettier": "2.0.2",
+    "prettier": "2.0.5",
     "react": "^16.8.0",
     "react-dom": "^16.8.0",
     "ts-jest": "^25.4.0",

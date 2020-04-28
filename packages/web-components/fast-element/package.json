@@ -27,7 +27,7 @@
     "eslint:fix": "eslint . --ext .ts --fix"
   },
   "devDependencies": {
-    "prettier": "2.0.2",
+    "prettier": "2.0.5",
     "typescript": "^3.7.5"
   }
 }

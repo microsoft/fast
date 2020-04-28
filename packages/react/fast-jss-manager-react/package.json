@@ -83,7 +83,7 @@
     "eslint-config-prettier": "^6.10.1",
     "jest": "^25.4.0",
     "lodash-es": "^4.0.0",
-    "prettier": "2.0.2",
+    "prettier": "2.0.5",
     "react": "^16.8.0",
     "react-dom": "^16.8.0",
     "react-test-renderer": "^16.2.0",

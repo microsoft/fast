@@ -73,7 +73,7 @@
         "eslint-config-prettier": "^6.10.1",
         "jest": "^25.4.0",
         "lodash-es": "^4.0.0",
-        "prettier": "2.0.2",
+        "prettier": "2.0.5",
         "ts-jest": "^25.4.0",
         "ts-loader": "^4.0.1",
         "typescript": "^3.8.3"

@@ -86,7 +86,7 @@
     "modernizr-webpack-plugin": "^1.0.5",
     "postcss": "^5.2.16",
     "postcss-loader": "^3.0.0",
-    "prettier": "2.0.2",
+    "prettier": "2.0.5",
     "react": "^16.3.0",
     "react-dom": "^16.3.0",
     "react-router": "^4.1.1",

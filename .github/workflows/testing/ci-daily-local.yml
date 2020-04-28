@@ -22,6 +22,9 @@ jobs:
     - name: Install package dependencies / prepare workspaces
       run: yarn install --frozen-lockfile
 
+    - name: Testing Prettier format
+      run: lerna run prettier:diff
+
     - name: Testing units
       run: lerna run test --stream
 

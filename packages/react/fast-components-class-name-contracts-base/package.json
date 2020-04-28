@@ -31,7 +31,7 @@
   "devDependencies": {
     "@microsoft/eslint-config-fast-dna": "^1.1.1",
     "eslint-config-prettier": "^6.10.1",
-    "prettier": "2.0.2",
+    "prettier": "2.0.5",
     "typescript": "3.3.3"
   }
 }

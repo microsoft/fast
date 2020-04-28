@@ -34,7 +34,7 @@
     "@microsoft/eslint-config-fast-dna": "^1.1.1",
     "@storybook/cli": "^5.3.13",
     "@storybook/html": "^5.3.13",
-    "prettier": "2.0.2",
+    "prettier": "2.0.5",
     "ts-loader": "^6.2.1",
     "typescript": "^3.7.5"
   },
