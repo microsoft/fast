@@ -1186,4 +1186,48 @@ describe("Slider", (): void => {
         unmountComponentAtNode(container);
         document.body.removeChild(container);
     });
+
+    test("aria labeling attributes applied to thumbs", (): void => {
+        const container: HTMLDivElement = document.createElement("div");
+        document.body.appendChild(container);
+
+        const rendered: any = mount(
+            <Slider
+                range={{
+                    minValue: 0,
+                    maxValue: 100,
+                }}
+                mode={SliderMode.adjustBoth}
+                managedClasses={managedClasses}
+                minThumbLabel="minLabel"
+                maxThumbLabel="maxLabel"
+                minThumbLabelledBy="minLabelledBy"
+                maxThumbLabelledBy="maxLabelledBy"
+                minThumbDescribedBy="minDescribedBy"
+                maxThumbDescribedBy="maxDescribedBy"
+            />,
+            {
+                attachTo: container,
+            }
+        );
+
+        const upperThumb: any = rendered.find(
+            `.${managedClasses.slider_thumb__upperValue}`
+        );
+        expect(upperThumb.prop("aria-label")).toBe("maxLabel");
+        expect(upperThumb.prop("aria-labelledby")).toBe("maxLabelledBy");
+        expect(upperThumb.prop("aria-describedby")).toBe("maxDescribedBy");
+        expect(upperThumb.prop("aria-orientation")).toBe("horizontal");
+
+        const lowerThumb: any = rendered.find(
+            `.${managedClasses.slider_thumb__lowerValue}`
+        );
+        expect(lowerThumb.prop("aria-label")).toBe("minLabel");
+        expect(lowerThumb.prop("aria-labelledby")).toBe("minLabelledBy");
+        expect(lowerThumb.prop("aria-describedby")).toBe("minDescribedBy");
+        expect(lowerThumb.prop("aria-orientation")).toBe("horizontal");
+
+        unmountComponentAtNode(container);
+        document.body.removeChild(container);
+    });
 });
