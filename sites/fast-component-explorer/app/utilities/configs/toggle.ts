@@ -1,8 +1,7 @@
 import {
     Toggle,
     ToggleHandledProps,
-    ToggleProps,
-    toggleSchema,
+    toggleSchema2,
 } from "@microsoft/fast-components-react-msft";
 import { uniqueId } from "lodash-es";
 import Guidance from "../../.tmp/toggle/guidance";
@@ -18,31 +17,55 @@ const toggleProps: Pick<
     inputId: uniqueId(),
 };
 
-const toggleConfig: ComponentViewConfig<ToggleProps> = {
-    schema: toggleSchema,
+const toggleConfig: ComponentViewConfig = {
+    schema: toggleSchema2,
     component: Toggle,
     guidance: Guidance,
     scenarios: [
         {
             displayName: "Unselected",
-            data: {
-                selected: false,
-                ...toggleProps,
-            },
+            dataDictionary: [
+                {
+                    root: {
+                        schemaId: toggleSchema2.id,
+                        data: {
+                            selected: false,
+                            ...toggleProps,
+                        },
+                    },
+                },
+                "root",
+            ],
         },
         {
             displayName: "Selected",
-            data: {
-                selected: true,
-                ...toggleProps,
-            },
+            dataDictionary: [
+                {
+                    root: {
+                        schemaId: toggleSchema2.id,
+                        data: {
+                            selected: true,
+                            ...toggleProps,
+                        },
+                    },
+                },
+                "root",
+            ],
         },
         {
             displayName: "Disabled",
-            data: {
-                disabled: true,
-                ...toggleProps,
-            },
+            dataDictionary: [
+                {
+                    root: {
+                        schemaId: toggleSchema2.id,
+                        data: {
+                            disabled: true,
+                            ...toggleProps,
+                        },
+                    },
+                },
+                "root",
+            ],
         },
     ],
 };

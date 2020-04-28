@@ -1,60 +1,178 @@
 import {
     LightweightButton,
-    LightweightButtonProps,
-    lightweightButtonSchema,
+    lightweightButtonSchema2,
 } from "@microsoft/fast-components-react-msft";
-import Guidance from "../../.tmp/accent-button/guidance";
-import { glyphSchema, Icon } from "../../../app/components/glyph";
+import Guidance from "../../.tmp/lightweight-button/guidance";
+import { glyphSchema, Icon } from "../../components/glyph";
+import textSchema from "../../msft-component-helpers/text.schema";
 import { ComponentViewConfig } from "./data.props";
 
-const lightweightButtonConfig: ComponentViewConfig<LightweightButtonProps> = {
-    schema: lightweightButtonSchema,
+const lightweightButtonConfig: ComponentViewConfig = {
+    schema: lightweightButtonSchema2,
     component: LightweightButton,
     guidance: Guidance,
     scenarios: [
         {
             displayName: "Default",
-            data: {
-                children: "Lightweight button",
-            },
+            dataDictionary: [
+                {
+                    root: {
+                        schemaId: lightweightButtonSchema2.id,
+                        data: {
+                            children: [
+                                {
+                                    id: "children",
+                                },
+                            ],
+                        },
+                    },
+                    children: {
+                        parent: {
+                            id: "root",
+                            dataLocation: "children",
+                        },
+                        schemaId: textSchema.id,
+                        data: "Lightweight button",
+                    },
+                },
+                "root",
+            ],
         },
         {
             displayName: "Anchor",
-            data: {
-                href: "#",
-                children: "Lightweight button",
-            },
+            dataDictionary: [
+                {
+                    root: {
+                        schemaId: lightweightButtonSchema2.id,
+                        data: {
+                            href: "#",
+                            children: [
+                                {
+                                    id: "children",
+                                },
+                            ],
+                        },
+                    },
+                    children: {
+                        parent: {
+                            id: "root",
+                            dataLocation: "children",
+                        },
+                        schemaId: textSchema.id,
+                        data: "Lightweight button",
+                    },
+                },
+                "root",
+            ],
         },
         {
             displayName: "Disabled",
-            data: {
-                disabled: true,
-                children: "Lightweight button",
-            },
+            dataDictionary: [
+                {
+                    root: {
+                        schemaId: lightweightButtonSchema2.id,
+                        data: {
+                            disabled: true,
+                            children: [
+                                {
+                                    id: "children",
+                                },
+                            ],
+                        },
+                    },
+                    children: {
+                        parent: {
+                            id: "root",
+                            dataLocation: "children",
+                        },
+                        schemaId: textSchema.id,
+                        data: "Lightweight button",
+                    },
+                },
+                "root",
+            ],
         },
         {
             displayName: "Glyph before text",
-            data: {
-                children: "Lightweight button",
-                beforeContent: {
-                    id: glyphSchema.id,
-                    props: {
-                        path: Icon.user,
+            dataDictionary: [
+                {
+                    root: {
+                        schemaId: lightweightButtonSchema2.id,
+                        data: {
+                            beforeContent: [
+                                {
+                                    id: "beforeContent",
+                                },
+                            ],
+                            children: [
+                                {
+                                    id: "children",
+                                },
+                            ],
+                        },
                     },
-                } as any,
-            },
+                    children: {
+                        parent: {
+                            id: "root",
+                            dataLocation: "children",
+                        },
+                        schemaId: textSchema.id,
+                        data: "Lightweight button",
+                    },
+                    beforeContent: {
+                        parent: {
+                            id: "root",
+                            dataLocation: "beforeContent",
+                        },
+                        schemaId: glyphSchema.id,
+                        data: {
+                            path: Icon.user,
+                        },
+                    },
+                },
+                "root",
+            ],
         },
         {
             displayName: "Glyph after text",
-            data: {
-                children: "Lightweight button",
-                afterContent: {
-                    id: glyphSchema.id,
-                    props: {
-                        path: Icon.arrow,
+            dataDictionary: [
+                {
+                    root: {
+                        schemaId: lightweightButtonSchema2.id,
+                        data: {
+                            afterContent: [
+                                {
+                                    id: "afterContent",
+                                },
+                            ],
+                            children: [
+                                {
+                                    id: "children",
+                                },
+                            ],
+                        },
                     },
-                } as any,
-            },
+                    children: {
+                        parent: {
+                            id: "root",
+                            dataLocation: "children",
+                        },
+                        schemaId: textSchema.id,
+                        data: "Lightweight button",
+                    },
+                    afterContent: {
+                        parent: {
+                            id: "root",
+                            dataLocation: "afterContent",
+                        },
+                        schemaId: glyphSchema.id,
+                        data: {
+                            path: Icon.arrow,
+                        },
+                    },
+                },
+                "root",
+            ],
         },
     ],
 };
