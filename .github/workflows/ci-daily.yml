@@ -42,7 +42,7 @@ jobs:
       run: lerna run prettier:diff
 
     - name: Testing unit tests
-      run: lerna run test --stream --coverage=false
+      run: lerna run test --stream
 
     - name: Collect and upload code coverage to Code Climate
       uses: paambaati/codeclimate-action@v2.6.0
