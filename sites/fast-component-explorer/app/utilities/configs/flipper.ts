@@ -1,26 +1,41 @@
 import {
     Flipper,
     FlipperDirection,
-    FlipperProps,
-    flipperSchema,
+    flipperSchema2,
 } from "@microsoft/fast-components-react-msft";
 import Guidance from "../../.tmp/flipper/guidance";
 import { ComponentViewConfig } from "./data.props";
 
-const flipperConfig: ComponentViewConfig<FlipperProps> = {
-    schema: flipperSchema,
+const flipperConfig: ComponentViewConfig = {
+    schema: flipperSchema2,
     component: Flipper,
     guidance: Guidance,
     scenarios: [
         {
             displayName: "Next",
-            data: {},
+            dataDictionary: [
+                {
+                    root: {
+                        schemaId: flipperSchema2.id,
+                        data: {},
+                    },
+                },
+                "root",
+            ],
         },
         {
             displayName: "Previous",
-            data: {
-                direction: FlipperDirection.previous,
-            },
+            dataDictionary: [
+                {
+                    root: {
+                        schemaId: flipperSchema2.id,
+                        data: {
+                            direction: FlipperDirection.previous,
+                        },
+                    },
+                },
+                "root",
+            ],
         },
     ],
 };
