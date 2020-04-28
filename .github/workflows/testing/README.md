@@ -36,3 +36,22 @@ $ act -e `./.github/workflows/testing/push.json` -W "./.github/workflows/testing
 ```bash
 $ act -j build_local_linux -e "./.github/workflows/testing/push.json"  -W "./.github/workflows/testing/"
 ```
+
+## Cleanup
+When installing packages on docker instances, if versions change, it's important to kill the docker instance and rebuild.
+
+Determine what instances are running.
+```bash
+$ docker ps
+```
+
+Copy and paste the "CONTAINER ID" as the argument of `kill`.
+```bash
+$ docker kill 2ecf895e7be3
+```
+
+Remove the image.
+```bash
+$ docker rm 2ecf895e7be3
+```
+
