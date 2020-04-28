@@ -1,64 +1,133 @@
 import {
-    buttonSchema,
+    buttonSchema2,
     TextAction,
     TextActionAppearance,
-    TextActionProps,
-    textActionSchema,
+    textActionSchema2,
 } from "@microsoft/fast-components-react-msft";
 import { glyphSchema, Icon } from "../../../app/components/glyph";
 import Guidance from "../../.tmp/text-action/guidance";
 import { ComponentViewConfig } from "./data.props";
 
-const textActionConfig: ComponentViewConfig<TextActionProps> = {
-    schema: textActionSchema,
+const textActionConfig: ComponentViewConfig = {
+    schema: textActionSchema2,
     component: TextAction,
     guidance: Guidance,
     scenarios: [
         {
             displayName: "Filled",
-            data: {
-                appearance: TextActionAppearance.filled,
-                button: {
-                    id: buttonSchema.id,
-                    props: {
-                        children: {
-                            id: glyphSchema.id,
-                            props: {
-                                path: Icon.arrow,
-                            },
+            dataDictionary: [
+                {
+                    root: {
+                        schemaId: textActionSchema2.id,
+                        data: {
+                            appearance: TextActionAppearance.filled,
+                            button: [
+                                {
+                                    id: "button",
+                                },
+                            ],
+                            beforeGlyph: [
+                                {
+                                    id: "beforeGlyph",
+                                },
+                            ],
                         },
                     },
-                } as any,
-                beforeGlyph: {
-                    id: glyphSchema.id,
-                    props: {
-                        path: Icon.user,
+                    button: {
+                        parent: {
+                            id: "root",
+                            dataLocation: "button",
+                        },
+                        schemaId: buttonSchema2.id,
+                        data: {
+                            children: [
+                                {
+                                    id: "buttonchildren",
+                                },
+                            ],
+                        },
                     },
-                } as any,
-            },
+                    buttonchildren: {
+                        parent: {
+                            id: "button",
+                            dataLocation: "children",
+                        },
+                        schemaId: glyphSchema.id,
+                        data: {
+                            path: Icon.arrow,
+                        },
+                    },
+                    beforeGlyph: {
+                        parent: {
+                            id: "root",
+                            dataLocation: "beforeGlyph",
+                        },
+                        schemaId: glyphSchema.id,
+                        data: {
+                            path: Icon.user,
+                        },
+                    },
+                },
+                "root",
+            ],
         },
         {
             displayName: "Outline",
-            data: {
-                appearance: TextActionAppearance.outline,
-                button: {
-                    id: buttonSchema.id,
-                    props: {
-                        children: {
-                            id: glyphSchema.id,
-                            props: {
-                                path: Icon.arrow,
-                            },
+            dataDictionary: [
+                {
+                    root: {
+                        schemaId: textActionSchema2.id,
+                        data: {
+                            appearance: TextActionAppearance.outline,
+                            button: [
+                                {
+                                    id: "button",
+                                },
+                            ],
+                            beforeGlyph: [
+                                {
+                                    id: "beforeGlyph",
+                                },
+                            ],
                         },
                     },
-                } as any,
-                beforeGlyph: {
-                    id: glyphSchema.id,
-                    props: {
-                        path: Icon.user,
+                    button: {
+                        parent: {
+                            id: "root",
+                            dataLocation: "button",
+                        },
+                        schemaId: buttonSchema2.id,
+                        data: {
+                            children: [
+                                {
+                                    id: "buttonchildren",
+                                },
+                            ],
+                        },
                     },
-                } as any,
-            },
+                    buttonchildren: {
+                        parent: {
+                            id: "button",
+                            dataLocation: "children",
+                        },
+                        schemaId: glyphSchema.id,
+                        data: {
+                            path: Icon.arrow,
+                        },
+                    },
+                    beforeGlyph: {
+                        parent: {
+                            id: "root",
+                            dataLocation: "beforeGlyph",
+                        },
+                        schemaId: glyphSchema.id,
+                        data: {
+                            path: Icon.user,
+                        },
+                    },
+                },
+                "root",
+            ],
         },
     ],
 };
