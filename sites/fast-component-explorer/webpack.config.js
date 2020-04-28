@@ -16,6 +16,7 @@ module.exports = (env, args) => {
         devtool: isProduction ? "none" : "inline-source-map",
         entry: {
             main: path.resolve(appDir, "index.tsx"),
+            // Due to issues during development, service workers and the WorkboxPlugin are disabled for now
             // serviceWorker: path.resolve(appDir, "service-worker-registration.ts"),
             focusVisible: path.resolve(
                 rootNodeModules,
@@ -28,23 +29,23 @@ module.exports = (env, args) => {
             filename: "[name]-[contenthash].js",
         },
         optimization: {
-            // runtimeChunk: "single",
-            // splitChunks: {
-            //     chunks: "all",
-            //     maxInitialRequests: 100,
-            //     cacheGroups: {
-            //         vendor: {
-            //             test: /[\\/]node_modules[\\/]/,
-            //             name: module => {
-            //                 const packageName = module.context.match(
-            //                     /[\\/]node_modules[\\/](.*?)([\\/]|$)/
-            //                 )[1];
-            //                 // npm package names are URL-safe, but some servers don't like @ symbols
-            //                 return `npm.${packageName.replace("@", "")}`;
-            //             },
-            //         },
-            //     },
-            // },
+            runtimeChunk: "single",
+            splitChunks: {
+                chunks: "all",
+                maxInitialRequests: 100,
+                cacheGroups: {
+                    vendor: {
+                        test: /[\\/]node_modules[\\/]/,
+                        name: module => {
+                            const packageName = module.context.match(
+                                /[\\/]node_modules[\\/](.*?)([\\/]|$)/
+                            )[1];
+                            // npm package names are URL-safe, but some servers don't like @ symbols
+                            return `npm.${packageName.replace("@", "")}`;
+                        },
+                    },
+                },
+            },
         },
         mode: args.mode || "development",
         module: {
@@ -84,6 +85,7 @@ module.exports = (env, args) => {
                 // Remove this to inspect bundle sizes.
                 analyzerMode: "disabled",
             }),
+            // Due to issues during development, service workers and the WorkboxPlugin are disabled for now
             // new WorkboxPlugin.GenerateSW({
             //     exclude: [/\.map$/, /^manifest.*\.js(?:on)?$/, /\.html$/],
             // }),
