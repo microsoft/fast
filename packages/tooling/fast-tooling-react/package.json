@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-tooling-react",
   "description": "A React-specific set of components and utilities to assist in creating web UI",
   "sideEffects": false,
-  "version": "2.0.2",
+  "version": "2.0.3",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -21,6 +21,7 @@
     "build": "tsc -p ./tsconfig.build.json",
     "build:app": "webpack --progress --mode=production",
     "clean:dist": "node ../../../build/clean.js dist",
+    "coverage": "jest --coverage",
     "prepare": "yarn clean:dist && yarn build",
     "prettier": "prettier --config ../../../.prettierrc --write \"**/*.{ts,tsx}\"",
     "prettier:diff": "prettier --config ../../../.prettierrc \"**/*.{ts,tsx}\" --list-different",
@@ -33,6 +34,12 @@
   },
   "jest": {
     "collectCoverage": true,
+    "coverageReporters": [
+      "json", 
+      [
+        "lcov", {"projectRoot": "../../../"}
+      ]
+    ],
     "coverageThreshold": {
       "global": {
         "statements": 80,
@@ -101,13 +108,13 @@
     "react": "^16.8.0"
   },
   "dependencies": {
-    "@microsoft/fast-colors": "^5.0.6",
+    "@microsoft/fast-colors": "^5.0.7",
     "@microsoft/fast-components-class-name-contracts-base": "^4.6.4",
-    "@microsoft/fast-components-foundation-react": "^3.1.6",
-    "@microsoft/fast-jss-manager-react": "^4.7.0",
-    "@microsoft/fast-jss-utilities": "^4.7.10",
-    "@microsoft/fast-tooling": "^0.2.0",
-    "@microsoft/fast-web-utilities": "^4.4.3",
+    "@microsoft/fast-components-foundation-react": "^3.1.7",
+    "@microsoft/fast-jss-manager-react": "^4.7.1",
+    "@microsoft/fast-jss-utilities": "^4.7.11",
+    "@microsoft/fast-tooling": "^0.3.0",
+    "@microsoft/fast-web-utilities": "^4.4.4",
     "exenv-es6": "^1.0.0",
     "raf-throttle": "^2.0.3",
     "react-dnd": "^9.0.0",

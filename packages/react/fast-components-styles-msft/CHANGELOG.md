@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.28.8](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@4.28.7...@microsoft/fast-components-styles-msft@4.28.8) (2020-04-27)
+
+**Note:** Version bump only for package @microsoft/fast-components-styles-msft
+
+
+
+
+
 ## [4.28.7](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@4.28.6...@microsoft/fast-components-styles-msft@4.28.7) (2020-04-22)
 
 **Note:** Version bump only for package @microsoft/fast-components-styles-msft

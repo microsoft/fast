@@ -11,6 +11,8 @@ export const CheckboxTemplate = html<Checkbox>`
         tabindex="${x => (x.disabled ? null : 0)}"
         @keypress="${(x, c) => x.keypressHandler(c.event as KeyboardEvent)}"
         @click="${(x, c) => x.clickHandler(c.event as MouseEvent)}"
+        class="${x => (x.readOnly ? "readonly" : "")} ${x =>
+            x.checked ? "checked" : ""} ${x => (x.indeterminate ? "indeterminate" : "")}"
     >
         <div part="control" class="control">
             <slot name="checked-indicator">

@@ -12,6 +12,7 @@ export const SliderTemplate = html<Slider>`
         ?aria-disabled="${x => x.disabled}"
         ?aria-readonly="${x => x.readOnly}"
         aria-orientation="${x => x.orientation}"
+        class="${x => x.orientation}"
     >
         <div part="positioning-region" class="positioning-region">
             <div ${ref("track")} part="track-container" class="track">

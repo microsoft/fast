@@ -1,4 +1,5 @@
 import { html, ref, when } from "@microsoft/fast-element";
+import { endTemplate, startTemplate } from "../patterns/start-end";
 import { TextField } from "./text-field";
 
 export const TextFieldTemplate = html<TextField>`
@@ -9,19 +10,17 @@ export const TextFieldTemplate = html<TextField>`
         aria-disabled="${x => x.disabled}"
         aria-readonly="${x => x.readOnly}"
         tabindex="${x => (x.disabled ? null : 0)}"
+        class="
+            ${x => x.appearance}
+            ${x => (x.readOnly ? "readonly" : "")}
+        "
     >
         ${when(
             x => x.childNodes.length,
             html` <label part="label" class="label" for="control"><slot></slot></label> `
         )}
         <div class="root" part="root">
-            <span part="before-content" ${ref("beforeContentContainer")}>
-                <slot
-                    name="before-content"
-                    @slotchange=${x => x.handleBeforeContentChange()}
-                    ${ref("beforeContent")}
-                ></slot>
-            </span>
+            ${startTemplate}
             <input
                 class="control"
                 part="control"
@@ -34,13 +33,7 @@ export const TextFieldTemplate = html<TextField>`
                 value=${x => x.value}
                 ${ref("control")}
             />
-            <span part="after-content" ${ref("afterContentContainer")}>
-                <slot
-                    name="after-content"
-                    @slotchange=${x => x.handleAfterContentChange()}
-                    ${ref("afterContent")}
-                ></slot>
-            </span>
+            ${endTemplate}
         </div>
     </template>
 `;

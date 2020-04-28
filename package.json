@@ -40,9 +40,15 @@
     }
   },
   "jest": {
-    "collectCoverage": true,
+    "collectCoverage": false,
     "collectCoverageFrom": [
       "build/helpers/*.ts"
+    ],
+    "coverageReporters": [
+      "json", 
+      [
+        "lcov", {"projectRoot": "."}
+      ]
     ],
     "coverageThreshold": {
       "global": {
@@ -64,7 +70,8 @@
     ],
     "testPathIgnorePatterns": [
       "packages/",
-      "build/helpers/__tests__/*"
+      "build/helpers/__tests__/*",
+      "build/helpers/"
     ],
     "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(js?|ts?)$",
     "moduleFileExtensions": [
