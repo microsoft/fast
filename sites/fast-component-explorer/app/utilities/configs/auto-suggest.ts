@@ -1,9 +1,8 @@
 import {
     AutoSuggest,
     AutoSuggestOptionProps,
-    autoSuggestOptionSchema,
-    AutoSuggestProps,
-    autoSuggestSchema,
+    autoSuggestOptionSchema2,
+    autoSuggestSchema2,
 } from "@microsoft/fast-components-react-msft";
 import { uniqueId } from "lodash-es";
 import Guidance from "../../.tmp/auto-suggest/guidance";
@@ -17,40 +16,69 @@ function autoSuggestOptionPropFactory(value: string): AutoSuggestOptionProps {
     };
 }
 
-const autoSuggestConfig: ComponentViewConfig<AutoSuggestProps> = {
-    schema: autoSuggestSchema,
+const autoSuggestConfig: ComponentViewConfig = {
+    schema: autoSuggestSchema2,
     component: AutoSuggest,
     guidance: Guidance,
     scenarios: [
         {
             displayName: "Basic",
-            data: {
-                placeholder: "Favorite animal",
-                listboxId: uniqueId(),
-                label: "Select your favorite animal",
-                initialValue: "Cat",
-                children: [
-                    {
-                        id: autoSuggestOptionSchema.id,
-                        props: {
+            dataDictionary: [
+                {
+                    root: {
+                        schemaId: autoSuggestSchema2.id,
+                        data: {
+                            placeholder: "Favorite animal",
+                            listboxId: uniqueId(),
+                            label: "Select your favorite animal",
+                            initialValue: "Cat",
+                            children: [
+                                {
+                                    id: "children0",
+                                },
+                                {
+                                    id: "children1",
+                                },
+                                {
+                                    id: "children2",
+                                },
+                            ],
+                        },
+                    },
+                    children0: {
+                        parent: {
+                            id: "root",
+                            dataLocation: "children",
+                        },
+                        schemaId: autoSuggestOptionSchema2.id,
+                        data: {
                             ...autoSuggestOptionPropFactory("Cat"),
                             selected: true,
                         },
                     },
-                    {
-                        id: autoSuggestOptionSchema.id,
-                        props: {
+                    children1: {
+                        parent: {
+                            id: "root",
+                            dataLocation: "children",
+                        },
+                        schemaId: autoSuggestOptionSchema2.id,
+                        data: {
                             ...autoSuggestOptionPropFactory("Dog"),
                         },
                     },
-                    {
-                        id: autoSuggestOptionSchema.id,
-                        props: {
+                    children2: {
+                        parent: {
+                            id: "root",
+                            dataLocation: "children",
+                        },
+                        schemaId: autoSuggestOptionSchema2.id,
+                        data: {
                             ...autoSuggestOptionPropFactory("Turtle"),
                         },
                     },
-                ],
-            },
+                },
+                "root",
+            ],
         },
     ],
 };

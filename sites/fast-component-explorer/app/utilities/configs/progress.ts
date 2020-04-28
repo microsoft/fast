@@ -1,42 +1,70 @@
-import {
-    Progress,
-    ProgressProps,
-    progressSchema,
-} from "@microsoft/fast-components-react-msft";
+import { Progress, progressSchema2 } from "@microsoft/fast-components-react-msft";
 import Guidance from "../../.tmp/progress/guidance";
 import { ComponentViewConfig } from "./data.props";
 
-const progressConfig: ComponentViewConfig<ProgressProps> = {
-    schema: progressSchema,
+const progressConfig: ComponentViewConfig = {
+    schema: progressSchema2,
     component: Progress,
     guidance: Guidance,
     scenarios: [
         {
             displayName: "Indeterminate",
-            data: {},
+            dataDictionary: [
+                {
+                    root: {
+                        schemaId: progressSchema2.id,
+                        data: {},
+                    },
+                },
+                "root",
+            ],
         },
         {
             displayName: "Min, max and value",
-            data: {
-                minValue: 0,
-                maxValue: 100,
-                value: 72,
-            },
+            dataDictionary: [
+                {
+                    root: {
+                        schemaId: progressSchema2.id,
+                        data: {
+                            minValue: 0,
+                            maxValue: 100,
+                            value: 72,
+                        },
+                    },
+                },
+                "root",
+            ],
         },
         {
             displayName: "Indeterminate circular",
-            data: {
-                circular: true,
-            },
+            dataDictionary: [
+                {
+                    root: {
+                        schemaId: progressSchema2.id,
+                        data: {
+                            circular: true,
+                        },
+                    },
+                },
+                "root",
+            ],
         },
         {
             displayName: "Min, max and value circular",
-            data: {
-                circular: true,
-                minValue: 0,
-                maxValue: 100,
-                value: 72,
-            },
+            dataDictionary: [
+                {
+                    root: {
+                        schemaId: progressSchema2.id,
+                        data: {
+                            circular: true,
+                            minValue: 0,
+                            maxValue: 100,
+                            value: 72,
+                        },
+                    },
+                },
+                "root",
+            ],
         },
     ],
 };
