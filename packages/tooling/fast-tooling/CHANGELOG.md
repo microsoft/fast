@@ -3,6 +3,34 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.3.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling@0.2.0...@microsoft/fast-tooling@0.3.0) (2020-04-27)
+
+
+### Bug Fixes
+
+* deprecate the initialize data property in the initialize message ([#2982](https://github.com/Microsoft/fast-dna/issues/2982)) ([dd01a12](https://github.com/Microsoft/fast-dna/commit/dd01a12b594a7b750a2244642d43e0f692dfb772))
+
+
+### Features
+
+* allow initialization to occur after creating an instance of the MessageSystem ([#2983](https://github.com/Microsoft/fast-dna/issues/2983)) ([908ea85](https://github.com/Microsoft/fast-dna/commit/908ea852077b9f131b6e0852e76b39aab6d0775a))
+* allow the use of an already instantiated Worker in the MessageSystem config ([#2993](https://github.com/Microsoft/fast-dna/issues/2993)) ([7d4e97a](https://github.com/Microsoft/fast-dna/commit/7d4e97afb60c71e952615eaeac986f1f055a095d))
+
+
+
+
+
+# [0.2.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling@0.1.0...@microsoft/fast-tooling@0.2.0) (2020-04-22)
+
+
+### Features
+
+* allow a data update to be applied to a different dictionary item ([#2946](https://github.com/Microsoft/fast-dna/issues/2946)) ([41c7a2a](https://github.com/Microsoft/fast-dna/commit/41c7a2add7eb3faa15c63cc3df63db421a7d88c0))
+
+
+
+
+
 # 0.1.0 (2020-04-10)
 
 

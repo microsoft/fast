@@ -2,7 +2,6 @@ import { ComponentStyles } from "@microsoft/fast-jss-manager-react";
 import {
     controlRegionStyle,
     controlWrapperStyle,
-    inputBackplateStyle,
     inputStyle,
     labelStyle,
 } from "../../style";

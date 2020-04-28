@@ -1,3 +1,10 @@
+import { get, set, uniqueId } from "lodash-es";
+import { getDataWithDuplicate } from "../data-utilities/duplicate";
+import {
+    getDataUpdatedWithoutSourceData,
+    getDataUpdatedWithSourceData,
+} from "../data-utilities/relocate";
+import { MessageSystemType } from "./types";
 import {
     DataDictionaryMessageIncoming,
     DataDictionaryMessageOutgoing,
@@ -17,13 +24,6 @@ import {
     ValidationMessageIncoming,
     ValidationMessageOutgoing,
 } from "./message-system.utilities.props";
-import { MessageSystemType } from "./types";
-import { get, set, uniqueId } from "lodash-es";
-import { getDataWithDuplicate } from "../data-utilities/duplicate";
-import {
-    getDataUpdatedWithoutSourceData,
-    getDataUpdatedWithSourceData,
-} from "../data-utilities/relocate";
 import { getNavigationDictionary } from "./navigation";
 import { NavigationConfigDictionary } from "./navigation.props";
 import { Data, DataDictionary, LinkedData } from "./data.props";
@@ -47,47 +47,6 @@ let activeNavigationConfigId: string;
 let activeDictionaryId: string; // this controls both the data and navigation dictionaries which must remain in sync
 let schemaDictionary: SchemaDictionary;
 const validation: Validation = {};
-
-export function getMessage<C = {}>(
-    data: MessageSystemIncoming<C>
-): MessageSystemOutgoing<C> {
-    switch (data.type) {
-        case MessageSystemType.custom:
-            return getCustomMessage(data);
-        case MessageSystemType.data:
-            return getDataMessage(data);
-        case MessageSystemType.dataDictionary:
-            return getDataDictionaryMessage(data);
-        case MessageSystemType.navigation:
-            return getNavigationMessage(data);
-        case MessageSystemType.navigationDictionary:
-            return getNavigationDictionaryMessage(data);
-        case MessageSystemType.validation:
-            return getValidationMessage(data);
-        case MessageSystemType.initialize:
-            dataDictionary = data.data;
-            activeDictionaryId = dataDictionary[1];
-            schemaDictionary = data.schemaDictionary;
-            navigationDictionary = getNavigationDictionary(
-                schemaDictionary,
-                dataDictionary
-            );
-            activeNavigationConfigId =
-                navigationDictionary[0][navigationDictionary[1]][1];
-
-            return {
-                type: MessageSystemType.initialize,
-                data: dataDictionary[0][activeDictionaryId].data,
-                dataDictionary,
-                navigation: navigationDictionary[0][activeDictionaryId],
-                navigationDictionary,
-                activeDictionaryId,
-                activeNavigationConfigId,
-                schema: schemaDictionary[dataDictionary[0][activeDictionaryId].schemaId],
-                schemaDictionary,
-            };
-    }
-}
 
 /**
  * Handles all custom messages
@@ -234,7 +193,7 @@ function getDataMessage(data: DataMessageIncoming): DataMessageOutgoing {
                 navigation: navigationDictionary[0][activeDictionaryId],
                 navigationDictionary,
             };
-        case MessageSystemDataTypeAction.update:
+        case MessageSystemDataTypeAction.update: {
             const dictionaryId: string =
                 data.dictionaryId !== undefined ? data.dictionaryId : activeDictionaryId;
 
@@ -261,7 +220,8 @@ function getDataMessage(data: DataMessageIncoming): DataMessageOutgoing {
                 navigation: navigationDictionary[0][dictionaryId],
                 navigationDictionary,
             };
-        case MessageSystemDataTypeAction.addLinkedData:
+        }
+        case MessageSystemDataTypeAction.addLinkedData: {
             const linkedDataIds: LinkedData[] = [];
             const addLinkedDataDictionaryId: string =
                 typeof data.dictionaryId === "string"
@@ -310,7 +270,8 @@ function getDataMessage(data: DataMessageIncoming): DataMessageOutgoing {
                 navigation: navigationDictionary[0][addLinkedDataDictionaryId],
                 navigationDictionary,
             };
-        case MessageSystemDataTypeAction.removeLinkedData:
+        }
+        case MessageSystemDataTypeAction.removeLinkedData: {
             const removeLinkedDataDictionaryId: string = data.dictionaryId
                 ? data.dictionaryId
                 : activeDictionaryId;
@@ -356,6 +317,7 @@ function getDataMessage(data: DataMessageIncoming): DataMessageOutgoing {
                 navigation: navigationDictionary[0][activeDictionaryId],
                 navigationDictionary,
             };
+        }
         case MessageSystemDataTypeAction.reorderLinkedData:
             set(
                 dataDictionary[0][activeDictionaryId].data as object,
@@ -400,6 +362,53 @@ function getNavigationMessage(
                 activeDictionaryId,
                 activeNavigationConfigId,
                 navigation: navigationDictionary[0][activeDictionaryId],
+            };
+    }
+}
+
+export function getMessage<C = {}>(
+    data: MessageSystemIncoming<C>
+): MessageSystemOutgoing<C> {
+    switch (data.type) {
+        case MessageSystemType.custom:
+            return getCustomMessage(data);
+        case MessageSystemType.data:
+            return getDataMessage(data);
+        case MessageSystemType.dataDictionary:
+            return getDataDictionaryMessage(data);
+        case MessageSystemType.navigation:
+            return getNavigationMessage(data);
+        case MessageSystemType.navigationDictionary:
+            return getNavigationDictionaryMessage(data);
+        case MessageSystemType.validation:
+            return getValidationMessage(data);
+        case MessageSystemType.initialize:
+            /**
+             * TODO: remove this ternary to rely on the dataDictionary
+             * as data is @deprecated
+             */
+            dataDictionary = Array.isArray(data.dataDictionary)
+                ? data.dataDictionary
+                : data.data;
+            activeDictionaryId = dataDictionary[1];
+            schemaDictionary = data.schemaDictionary;
+            navigationDictionary = getNavigationDictionary(
+                schemaDictionary,
+                dataDictionary
+            );
+            activeNavigationConfigId =
+                navigationDictionary[0][navigationDictionary[1]][1];
+
+            return {
+                type: MessageSystemType.initialize,
+                data: dataDictionary[0][activeDictionaryId].data,
+                dataDictionary,
+                navigation: navigationDictionary[0][activeDictionaryId],
+                navigationDictionary,
+                activeDictionaryId,
+                activeNavigationConfigId,
+                schema: schemaDictionary[dataDictionary[0][activeDictionaryId].schemaId],
+                schemaDictionary,
             };
     }
 }

@@ -12,9 +12,4 @@ export class Badge extends FASTElement {
 
     @attr({ mode: "boolean" })
     public circular: boolean;
-    private circularChanged(): void {
-        this.circular
-            ? this.classList.add("circular")
-            : this.classList.remove("circular");
-    }
 }

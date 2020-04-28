@@ -45,15 +45,15 @@ export class Controller extends PropertyChangeNotifier {
 
         // Capture any observable values that were set by the binding engine before
         // the browser upgraded the element. Then delete the property since it will
-        // shadow the getter/setter that is required to make the observable function.
+        // shadow the getter/setter that is required to make the observable operate.
         // Later, in the connect callback, we'll re-apply the values.
-        const observedProps = Observable.getObservedProperties(element);
+        const accessors = Observable.getAccessors(element);
 
-        if (observedProps.length > 0) {
+        if (accessors.length > 0) {
             const boundObservables = (this.boundObservables = Object.create(null));
 
-            for (let i = 0, ii = observedProps.length; i < ii; ++i) {
-                const propertyName = observedProps[i];
+            for (let i = 0, ii = accessors.length; i < ii; ++i) {
+                const propertyName = accessors[i].name;
                 const value = (element as any)[propertyName];
 
                 if (value !== void 0) {

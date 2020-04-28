@@ -1,7 +1,5 @@
 import { ArrayControlConfig, DragState } from "../templates";
 
-/* tslint:disable-next-line */
-export interface ArrayControlProps extends ArrayControlConfig {}
+export type ArrayControlProps = ArrayControlConfig;
 
-/* tslint:disable-next-line */
-export interface ArrayControlState extends DragState {}
+export type ArrayControlState = DragState;

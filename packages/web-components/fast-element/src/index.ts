@@ -7,6 +7,7 @@ export * from "./template-compiler";
 export * from "./styles";
 export * from "./view";
 export * from "./observation/observable";
+export * from "./observation/notifier";
 export * from "./dom";
 export * from "./directives/behavior";
 export * from "./directives/binding";

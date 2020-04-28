@@ -1,4 +1,4 @@
-import { dictionaryLink, linkedDataSchema } from "@microsoft/fast-tooling";
+import { linkedDataSchema } from "@microsoft/fast-tooling";
 
 export default {
     $schema: "http://json-schema.org/schema#",

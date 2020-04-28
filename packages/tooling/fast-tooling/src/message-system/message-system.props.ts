@@ -1,5 +1,7 @@
+import { Omit } from "utility-types";
 import { DataDictionary } from "./data.props";
 import { SchemaDictionary } from "./schema.props";
+import { InitializeMessageIncoming } from "./message-system.utilities.props";
 
 export interface Register {
     onMessage: OnMessageCallback;
@@ -11,15 +13,17 @@ export interface MessageSystemConfig {
     /**
      * The message system web worker location
      */
-    webWorker: string;
+    webWorker: string | Worker;
 
     /**
      * The initial data to map to the message system
      */
-    dataDictionary: DataDictionary<unknown>;
+    dataDictionary?: DataDictionary<unknown>;
 
     /**
      * The schema to map to the message system
      */
-    schemaDictionary: SchemaDictionary;
+    schemaDictionary?: SchemaDictionary;
 }
+
+export type Initialize = Omit<InitializeMessageIncoming, "type">;

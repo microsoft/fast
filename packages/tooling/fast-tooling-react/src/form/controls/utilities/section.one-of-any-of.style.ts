@@ -1,5 +1,4 @@
-import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager-react";
-import { SectionOneOfAnyOfClassNameContract } from "./section.one-of-any-of.props";
+import { ComponentStyles } from "@microsoft/fast-jss-manager-react";
 import {
     controlStyle,
     controlWrapperStyle,
@@ -7,6 +6,7 @@ import {
     selectInputStyle,
     selectSpanStyle,
 } from "../../../style";
+import { SectionOneOfAnyOfClassNameContract } from "./section.one-of-any-of.props";
 
 const styles: ComponentStyles<SectionOneOfAnyOfClassNameContract, {}> = {
     sectionOneOfAnyOf: {

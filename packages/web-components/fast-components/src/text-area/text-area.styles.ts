@@ -12,6 +12,7 @@ import {
     neutralOutlineHoverBehavior,
     neutralOutlineRestBehavior,
 } from "../styles/recipes";
+import { forcedColorsStylesheetBehavior } from "../styles/match-media-stylesheet-behavior";
 
 export const TextAreaStyles = css`
     ${display("inline-block")} :host {
@@ -102,12 +103,6 @@ export const TextAreaStyles = css`
     :host([disabled]) {
         opacity: var(--disabled-opacity);
     }
-
-    @media (forced-colors: active) {
-        :host([disabled]) {
-            opacity: 1;
-        }
-    }
 `.withBehaviors(
     neutralFillHoverBehavior,
     neutralFillInputHoverBehavior,
@@ -116,5 +111,12 @@ export const TextAreaStyles = css`
     neutralFocusBehavior,
     neutralForegroundRestBehavior,
     neutralOutlineHoverBehavior,
-    neutralOutlineRestBehavior
+    neutralOutlineRestBehavior,
+    forcedColorsStylesheetBehavior(
+        css`
+            :host([disabled]) {
+                opacity: 1;
+            }
+        `
+    )
 );

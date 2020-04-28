@@ -18,6 +18,7 @@ export interface SliderConfiguration {
     min: number;
     orientation?: SliderOrientation;
     direction?: Direction;
+    disabled?: boolean;
 }
 
 @customElement({

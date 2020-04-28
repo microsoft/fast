@@ -15,6 +15,7 @@ export interface CSSCustomPropertyDefinition {
 export interface CSSCustomPropertyTarget {
     registerCSSCustomProperty(behavior: CSSCustomPropertyDefinition): void;
     unregisterCSSCustomProperty(behavior: CSSCustomPropertyDefinition): void;
+    disconnectedCSSCustomPropertyRegistry: CSSCustomPropertyDefinition[] | void;
 }
 
 export type CSSCustomPropertyBehavior = Behavior & CSSCustomPropertyDefinition;
@@ -28,23 +29,37 @@ export type CSSCustomPropertyBehavior = Behavior & CSSCustomPropertyDefinition;
 export function cssCustomPropertyBehaviorFactory(
     name: string,
     value: string | ((...arg: any[]) => string),
-    host: (source: typeof FASTElement & HTMLElement) => CSSCustomPropertyTarget | null
+    host: (
+        source: typeof FASTElement & HTMLElement
+    ) => Partial<CSSCustomPropertyTarget> | null
 ): CSSCustomPropertyBehavior {
     return Object.freeze({
         name,
         value,
         host,
-        bind(source: typeof FASTElement | HTMLElement): void {
+        bind(source: typeof FASTElement): void {
             const target = this.host(source);
 
-            if (target) {
-                target.registerCSSCustomProperty(this);
+            if (target !== null) {
+                if (typeof target.registerCSSCustomProperty === "function") {
+                    target.registerCSSCustomProperty(this);
+                } else {
+                    // There is potential for the custom property host element to not be
+                    // constructed when this is run. We handle that case by accumulating
+                    // the behaviors in a normal array. Behaviors associated this way will
+                    // get registered when the host is connected
+                    if (!Array.isArray(target.disconnectedCSSCustomPropertyRegistry)) {
+                        target.disconnectedCSSCustomPropertyRegistry = [];
+                    }
+
+                    target.disconnectedCSSCustomPropertyRegistry.push(this);
+                }
             }
         },
-        unbind(source: typeof FASTElement | HTMLElement): void {
+        unbind(source: typeof FASTElement): void {
             const target = this.host(source);
 
-            if (target) {
+            if (target !== null) {
                 target.unregisterCSSCustomProperty(this);
             }
         },

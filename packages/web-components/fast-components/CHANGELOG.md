@@ -3,6 +3,55 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.10.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components@0.9.0...@microsoft/fast-components@0.10.0) (2020-04-27)
+
+
+### Bug Fixes
+
+* add mechanism to register custom properties prior to construction ([#2991](https://github.com/Microsoft/fast-dna/issues/2991)) ([42a6f50](https://github.com/Microsoft/fast-dna/commit/42a6f50499632e71d0ef9ce8edeb9d1c92021efc))
+* CSS custom properties not defined when a component first renders ([#2999](https://github.com/Microsoft/fast-dna/issues/2999)) ([db4b694](https://github.com/Microsoft/fast-dna/commit/db4b694090be8497e7384b2f48e76c3955620d22))
+* leverage template to apply classes and tabindex [#2988](https://github.com/Microsoft/fast-dna/issues/2988) ([018cfa1](https://github.com/Microsoft/fast-dna/commit/018cfa18dab561dce2a74def460fcd8205dda275))
+* standardization and refactor ([#3006](https://github.com/Microsoft/fast-dna/issues/3006)) ([046a877](https://github.com/Microsoft/fast-dna/commit/046a877335f59d50cc5015c38e6675477eec5483))
+
+
+### Features
+
+* add radio component ([#2985](https://github.com/Microsoft/fast-dna/issues/2985)) ([fffae9f](https://github.com/Microsoft/fast-dna/commit/fffae9f10e7b7878c89a054829e4788217b79d29))
+* add tab web component ([#2971](https://github.com/Microsoft/fast-dna/issues/2971)) ([b69d5bb](https://github.com/Microsoft/fast-dna/commit/b69d5bb05222ac53f999dc8b88a77f29a92dad61))
+* adds match-media stylesheet behavior ([#3016](https://github.com/Microsoft/fast-dna/issues/3016)) ([650efc3](https://github.com/Microsoft/fast-dna/commit/650efc38641e5a574bff84caa560fb2cdf543cf9))
+
+
+
+
+
+# [0.9.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components@0.8.0...@microsoft/fast-components@0.9.0) (2020-04-22)
+
+
+### Bug Fixes
+
+* addresses issue causing mismanaged disabled state ([#2951](https://github.com/Microsoft/fast-dna/issues/2951)) ([44fdb83](https://github.com/Microsoft/fast-dna/commit/44fdb83c006fa1b7a4d1d492e43ddfe7c69f7a99))
+* align Fast to FAST ([#2950](https://github.com/Microsoft/fast-dna/issues/2950)) ([94c8744](https://github.com/Microsoft/fast-dna/commit/94c874455eccbb8609715c7fa96095a226428813))
+* ensure typings exist in distro [#2944](https://github.com/Microsoft/fast-dna/issues/2944) ([0239b12](https://github.com/Microsoft/fast-dna/commit/0239b12eb1aee0912120255c1725793084f3a596))
+* export anchored region ([#2974](https://github.com/Microsoft/fast-dna/issues/2974)) ([ef77970](https://github.com/Microsoft/fast-dna/commit/ef77970a9d3f5c7fe51e3c359411df1477595232))
+* form associate the textarea component ([#2937](https://github.com/Microsoft/fast-dna/issues/2937)) ([41393f2](https://github.com/Microsoft/fast-dna/commit/41393f2af2d05cd7fee719697fb4ac2d25c1e3e9))
+* high contrast color on slider and slider label ([#2967](https://github.com/Microsoft/fast-dna/issues/2967)) ([1a3fe7c](https://github.com/Microsoft/fast-dna/commit/1a3fe7cda30d44018ea36b289563de47e92c34e2))
+* improve performance of finding contextual design-system-providers ([#2973](https://github.com/Microsoft/fast-dna/issues/2973)) ([b894659](https://github.com/Microsoft/fast-dna/commit/b894659e06379ed3b82453435b28c38804f0116b))
+* make anchorElement observable and check for detectors before disconnect ([#2981](https://github.com/Microsoft/fast-dna/issues/2981)) ([32bab53](https://github.com/Microsoft/fast-dna/commit/32bab538846c96d93fb9de7a8e9799af34f47e8f))
+* removes unnecessary custom properties ([#2939](https://github.com/Microsoft/fast-dna/issues/2939)) ([78eb90e](https://github.com/Microsoft/fast-dna/commit/78eb90ef8e24e8a1beb0e7de4a254e3a1b420fac))
+* update high contrast colors on hover on text field component ([#2956](https://github.com/Microsoft/fast-dna/issues/2956)) ([7e72248](https://github.com/Microsoft/fast-dna/commit/7e72248ff3b8cee26994fe73419cd6661a5f1b91))
+* update high contrast colors on switch component ([#2949](https://github.com/Microsoft/fast-dna/issues/2949)) ([52a2356](https://github.com/Microsoft/fast-dna/commit/52a2356a6d806441b33c0324239e049a4fce2315))
+
+
+### Features
+
+* add anchored region as web component ([#2909](https://github.com/Microsoft/fast-dna/issues/2909)) ([19c0412](https://github.com/Microsoft/fast-dna/commit/19c041278ba60859f12d6f05bca3feba8c8a61b2))
+* export flipper [#2964](https://github.com/Microsoft/fast-dna/issues/2964) ([d9133f7](https://github.com/Microsoft/fast-dna/commit/d9133f7dd5aa76939967a6a526d57134d6fedad7))
+* refactor recipe implementation to use behaviors ([#2947](https://github.com/Microsoft/fast-dna/issues/2947)) ([e8834e5](https://github.com/Microsoft/fast-dna/commit/e8834e5c1d322ce0681e53e5d4cbba1ec112d76d))
+
+
+
+
+
 # [0.8.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components@0.7.0...@microsoft/fast-components@0.8.0) (2020-04-13)
 
 

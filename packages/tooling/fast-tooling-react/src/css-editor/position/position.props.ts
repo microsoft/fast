@@ -20,7 +20,7 @@ export interface LocationsMappedToClassNames {
     className: string;
 }
 
-export interface CSSPositionUnhandledProps extends React.HTMLAttributes<HTMLDivElement> {}
+export type CSSPositionUnhandledProps = React.HTMLAttributes<HTMLDivElement>;
 
 export interface CSSPositionValues {
     position?: PositionValue;

@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-react-utilities",
   "description": "Utilities and tools for React development",
   "sideEffects": false,
-  "version": "1.1.2",
+  "version": "1.1.4",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -20,6 +20,7 @@
   "scripts": {
     "build": "tsc -p ./tsconfig.build.json",
     "clean:dist": "node ../../../build/clean.js dist",
+    "coverage": "jest --coverage",
     "prepare": "yarn clean:dist && yarn build",
     "prettier": "prettier --config ../../../.prettierrc --write \"**/*.{ts,tsx}\"",
     "prettier:diff": "prettier --config ../../../.prettierrc \"**/*.{ts,tsx}\" --list-different",
@@ -32,6 +33,12 @@
   },
   "jest": {
     "collectCoverage": true,
+    "coverageReporters": [
+      "json", 
+      [
+        "lcov", {"projectRoot": "../../../"}
+      ]
+    ],
     "coverageThreshold": {
       "global": {
         "statements": 95,
@@ -62,25 +69,25 @@
     "@babel/core": "^7.0.0",
     "@babel/preset-env": "^7.1.0",
     "@babel/preset-react": "^7.0.0",
-    "@microsoft/eslint-config-fast-dna": "^1.1.0",
+    "@microsoft/eslint-config-fast-dna": "^1.1.1",
     "@types/jest": "^25.2.1",
     "@types/lodash-es": "^4.17.0",
     "@types/node": "^9.4.6",
     "@types/react": "^16.4.18",
     "babel-core": "^7.0.0-bridge.0",
-    "babel-jest": "^25.2.6",
+    "babel-jest": "^25.4.0",
     "babel-loader": "^8.0.6",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
     "eslint-config-prettier": "^6.10.1",
     "eslint-loader": "^4.0.0",
-    "jest": "^25.2.7",
+    "jest": "^25.4.0",
     "lodash-es": "^4.0.0",
     "prettier": "2.0.2",
     "react": "^16.8.0",
     "react-docgen-typescript-loader": "^3.1.0",
     "react-dom": "^16.8.0",
-    "ts-jest": "^25.3.1",
+    "ts-jest": "^25.4.0",
     "ts-loader": "^4.0.1",
     "typescript": "3.3.3"
   },

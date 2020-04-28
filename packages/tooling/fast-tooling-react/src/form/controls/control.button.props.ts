@@ -1,4 +1,3 @@
 import { CommonControlConfig } from "../templates";
 
-/* tslint:disable-next-line */
-export interface ButtonControlProps extends CommonControlConfig {}
+export type ButtonControlProps = CommonControlConfig;

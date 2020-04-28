@@ -22,8 +22,7 @@ export interface CSSPropertyEditorState {
     activeRowUncommittedCSSName: string;
 }
 
-export interface CSSPropertyEditorUnhandledProps
-    extends React.HTMLAttributes<HTMLDivElement> {}
+export type CSSPropertyEditorUnhandledProps = React.HTMLAttributes<HTMLDivElement>;
 
 export interface CSSPropertyEditorHandledProps
     extends ManagedClasses<CSSPropertyEditorClassNameContract> {

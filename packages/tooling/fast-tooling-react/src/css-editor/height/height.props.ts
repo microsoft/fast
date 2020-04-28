@@ -5,7 +5,7 @@ export interface CSSHeightValues {
     height?: string;
 }
 
-export interface CSSHeightUnhandledProps extends React.HTMLAttributes<HTMLDivElement> {}
+export type CSSHeightUnhandledProps = React.HTMLAttributes<HTMLDivElement>;
 
 export interface CSSHeightHandledProps
     extends ManagedClasses<CSSHeightClassNameContract> {

@@ -7,7 +7,7 @@ import {
     ObservableExpression,
 } from "../observation/observable";
 import { HTMLView, SyntheticView } from "../view";
-import { Subscriber } from "../observation/subscriber-collection";
+import { Subscriber } from "../observation/notifier";
 import { ArrayObserver, enableArrayObservation } from "../observation/array-observer";
 import { Splice } from "../observation/array-change-records";
 import { Behavior } from "./behavior";
@@ -81,7 +81,7 @@ export class RepeatBehavior implements Behavior, Subscriber {
         this.items = null;
 
         if (this.itemsObserver !== void 0) {
-            this.itemsObserver.removeSubscriber(this);
+            this.itemsObserver.unsubscribe(this);
         }
 
         this.unbindAllViews();
@@ -113,10 +113,10 @@ export class RepeatBehavior implements Behavior, Subscriber {
 
         if (oldObserver !== newObserver) {
             if (oldObserver !== void 0) {
-                oldObserver.removeSubscriber(this);
+                oldObserver.unsubscribe(this);
             }
 
-            newObserver.addSubscriber(this);
+            newObserver.subscribe(this);
         }
     }
 

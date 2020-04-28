@@ -114,6 +114,26 @@ export interface SliderHandledProps extends SliderManagedClasses {
     minThumbLabel?: string;
 
     /**
+     * The aria-describedby attribute for the min value thumb
+     */
+    minThumbDescribedBy?: string;
+
+    /**
+     * The aria-describedby attribute for the max value thumb
+     */
+    maxThumbDescribedBy?: string;
+
+    /**
+     * The aria-labelledby attribute for the min value thumb
+     */
+    minThumbLabelledBy?: string;
+
+    /**
+     * The aria-labelledby attribute for the max value thumb
+     */
+    maxThumbLabelledBy?: string;
+
+    /**
      * Function which formats the string that populates the "aria-valuetext" attribute of a thumb
      */
     valuetextStringFormatter?: (

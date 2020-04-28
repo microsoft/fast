@@ -57,14 +57,12 @@ describe("Navigation", () => {
             },
         });
 
-        /* tslint:disable-next-line */
         expect(fastMessageSystem["register"].size).toEqual(0);
 
         const rendered: any = mount(
             <ModularNavigation {...navigationProps} messageSystem={fastMessageSystem} />
         );
 
-        /* tslint:disable-next-line */
         expect(fastMessageSystem["register"].size).toEqual(1);
     });
     test("should deregister the component with the message system on unmount", () => {
@@ -98,7 +96,6 @@ describe("Navigation", () => {
 
         rendered.unmount();
 
-        /* tslint:disable-next-line */
         expect(fastMessageSystem["register"].size).toEqual(0);
     });
     test("should render a single navigation item as a collapsible item", () => {
@@ -156,7 +153,6 @@ describe("Navigation", () => {
             <Navigation {...navigationProps} messageSystem={fastMessageSystem} />
         );
 
-        /* tslint:disable-next-line */
         fastMessageSystem["register"].forEach((registeredItem: Register) => {
             registeredItem.onMessage({
                 data: {
@@ -265,7 +261,6 @@ describe("Navigation", () => {
             <Navigation {...navigationProps} messageSystem={fastMessageSystem} />
         );
 
-        /* tslint:disable-next-line */
         fastMessageSystem["register"].forEach((registeredItem: Register) => {
             registeredItem.onMessage({
                 data: {
