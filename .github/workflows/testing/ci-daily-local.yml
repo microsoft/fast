@@ -3,7 +3,7 @@ name: CI - FAST Local Testing
 on:
   push:
     branches:
-      - users/awentzel/*
+      - users/*
 
 jobs:
   build_local_linux:
@@ -16,8 +16,8 @@ jobs:
       run: |
         sudo apt-get update 
         sudo apt-get install yarn
-        yarn global upgrade typescript
-        yarn global add lerna
+        sudo yarn global upgrade typescript
+        sudo yarn global add lerna
 
     - name: Install package dependencies / prepare workspaces
       run: yarn install --frozen-lockfile
@@ -33,9 +33,10 @@ jobs:
         coverageCommand: lerna run coverage
         coverageLocations: |
           ${{github.workspace}}/packages/react/fast-components-foundation-react/coverage/lcov.info:lcov
-          ${{github.workspace}}/packages/react/fast-components-react-msft/coverage/lcov.info:lcov
           ${{github.workspace}}/packages/react/fast-components-react-base/coverage/lcov.info:lcov
+          ${{github.workspace}}/packages/react/fast-components-react-msft/coverage/lcov.info:lcov
           ${{github.workspace}}/packages/react/fast-components-styles-msft/coverage/lcov.info:lcov
+          ${{github.workspace}}/packages/react/fast-jss-manager/coverage/lcov.info:lcov
           ${{github.workspace}}/packages/react/fast-jss-manager-react/coverage/lcov.info:lcov
           ${{github.workspace}}/packages/react/fast-jss-utilities/coverage/lcov.info:lcov
           ${{github.workspace}}/packages/react/fast-layouts-react/coverage/lcov.info:lcov
@@ -45,4 +46,5 @@ jobs:
           ${{github.workspace}}/packages/utilities/fast-animation/coverage/lcov.info:lcov
           ${{github.workspace}}/packages/utilities/fast-colors/coverage/lcov.info:lcov
           ${{github.workspace}}/packages/utilities/fast-web-utilities/coverage/lcov.info:lcov
+          ${{github.workspace}}/sites/fast-component-explorer/coverage/lcov.info:lcov
         debug: true

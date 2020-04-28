@@ -22,17 +22,17 @@ $ azure login
 ## Configure
 The `.actrc` file contains the default configuration and run methods. The `./.github/workflows/testing/push.json` file contains the default GitHub events to run.
 
-The `./.github/workflows/ci-daily-local.yml` file must reside in `./.github/workflows/` in order to run `act`.
-
 Update the "ref" values in `./.github/workflows/testing/push.json` to point to the local git branch to test.  Then perform the following to execute against that branch when running `act`.
 
+Run the event from the `/testing/*` folder as indicated with `-W` or `--workflows` arguments.
+
 ```bash
-$ act -e `./.github/workflows/testing/push.json`
+$ act -e `./.github/workflows/testing/push.json` -W "./.github/workflows/testing/"
 ```
 
 ## Test
-`./.github/workflows/ci-daily-local.yml` is used to test locally CI settings.
+`./.github/workflows/testing/ci-daily-local.yml` is used to test locally CI settings.
 
 ```bash
-$ act -j build_local_linux -e "./.github/workflows/testing/push.json"
+$ act -j build_local_linux -e "./.github/workflows/testing/push.json"  -W "./.github/workflows/testing/"
 ```
