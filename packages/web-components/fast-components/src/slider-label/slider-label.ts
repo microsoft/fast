@@ -1,4 +1,4 @@
-import { attr, FastElement, observable } from "@microsoft/fast-element";
+import { attr, FASTElement, observable } from "@microsoft/fast-element";
 import { Direction } from "@microsoft/fast-web-utilities";
 import { SliderConfiguration, SliderOrientation } from "../slider";
 import { convertPixelToPercent } from "../slider/slider-utilities";
@@ -8,9 +8,10 @@ const defaultConfig: SliderConfiguration = {
     max: 0,
     direction: Direction.ltr,
     orientation: SliderOrientation.horizontal,
+    disabled: false,
 };
 
-export class SliderLabel extends FastElement {
+export class SliderLabel extends FASTElement {
     @observable
     public positionStyle: string;
 
@@ -30,6 +31,9 @@ export class SliderLabel extends FastElement {
         direction: Direction.ltr,
         orientation: SliderOrientation.horizontal,
     };
+
+    @attr({ mode: "boolean" })
+    public disabled: boolean;
 
     public connectedCallback(): void {
         super.connectedCallback();
@@ -54,13 +58,17 @@ export class SliderLabel extends FastElement {
         if (!this.isSliderConfig(this.parentNode)) {
             this.config = defaultConfig;
         } else {
-            const { min, max, direction, orientation } = this
+            const { min, max, direction, orientation, disabled } = this
                 .parentNode as SliderConfiguration;
+            if (disabled !== undefined) {
+                this.disabled = disabled;
+            }
             this.config = {
                 min,
                 max,
                 direction: direction || Direction.ltr,
                 orientation: orientation || SliderOrientation.horizontal,
+                disabled: disabled || false,
             };
         }
     };

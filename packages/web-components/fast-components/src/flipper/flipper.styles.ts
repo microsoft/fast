@@ -2,6 +2,17 @@ import { css } from "@microsoft/fast-element";
 import { disabledCursor, display, focusVisible } from "../styles";
 import { heightNumber } from "../styles/size";
 import { SystemColors } from "../styles/system-colors";
+import {
+    neutralFillStealthActiveBehavior,
+    neutralFillStealthHoverBehavior,
+    neutralFillStealthRestBehavior,
+    neutralFocusBehavior,
+    neutralForegroundRestBehavior,
+    neutralOutlineActiveBehavior,
+    neutralOutlineHoverBehavior,
+    neutralOutlineRestBehavior,
+} from "../styles/recipes";
+import { forcedColorsStylesheetBehavior } from "../styles/match-media-stylesheet-behavior";
 
 export const FlipperStyles = css`
     ${display("inline-flex")} :host {
@@ -21,7 +32,7 @@ export const FlipperStyles = css`
     :host::before {
         content: "";
         opacity: 0.8;
-        background: var(--neutral-fill-steal-rest);
+        background: var(--neutral-fill-stealth-rest);
         border: calc(var(--outline-width) * 1px) solid var(--neutral-outline-rest);
         border-radius: 50%;
         position: absolute;
@@ -69,31 +80,59 @@ export const FlipperStyles = css`
     :host::-moz-focus-inner {
         border: 0;
     }
-
-    @media (forced-colors: active) {
-        :host {
-            background: ${SystemColors.Canvas}
-            border-color: ${SystemColors.ButtonText};
-        }
-
-        :host .next,
-        :host .previous {
-            color: ${SystemColors.ButtonText}
-            fill: ${SystemColors.ButtonText}
-        }
-
-        :host::before {
-            background: ${SystemColors.Canvas}
-        }
-
-        :host(:hover)::before {
-            background: ${SystemColors.Highlight}
-        }
-
-        :host(:hover) .next,
-        :host(:hover) .previous {
-            color: ${SystemColors.HighlightText}
-            fill: ${SystemColors.HighlightText}
-        }
-    }
-`;
+`.withBehaviors(
+    neutralFillStealthActiveBehavior,
+    neutralFillStealthHoverBehavior,
+    neutralFillStealthRestBehavior,
+    neutralFocusBehavior,
+    neutralForegroundRestBehavior,
+    neutralOutlineActiveBehavior,
+    neutralOutlineHoverBehavior,
+    neutralOutlineRestBehavior,
+    forcedColorsStylesheetBehavior(
+        css`
+            :host {
+                background: ${SystemColors.Canvas};
+            }
+            :host .next,
+            :host .previous {
+                color: ${SystemColors.ButtonText};
+                fill: ${SystemColors.ButtonText};
+            }
+            :host::before {
+                background: ${SystemColors.Canvas};
+                border-color: ${SystemColors.ButtonText};
+            }
+            :host(:hover)::before {
+                forced-color-adjust: none;
+                background: ${SystemColors.Highlight};
+                border-color: ${SystemColors.ButtonText};
+            }
+            :host(:hover) .next,
+            :host(:hover) .previous {
+                forced-color-adjust: none;
+                color: ${SystemColors.HighlightText};
+                fill: ${SystemColors.HighlightText};
+            }
+            :host(.disabled) {
+                opacity: 1;
+            }
+            :host(.disabled)::before,
+            :host(.disabled:hover)::before,
+            :host(.disabled) .next,
+            :host(.disabled) .previous,
+            :host(.disabled:hover) .next,
+            :host(.disabled:hover) .previous {
+                forced-color-adjust: none;
+                background: ${SystemColors.Canvas};
+                border-color: ${SystemColors.GrayText};
+                color: ${SystemColors.GrayText};
+                fill: ${SystemColors.GrayText};
+            }
+            :host(:${focusVisible})::before {
+                forced-color-adjust: none;
+                box-shadow: 0 0 0 2px ${SystemColors.ButtonText};
+            }
+        `
+    )
+);

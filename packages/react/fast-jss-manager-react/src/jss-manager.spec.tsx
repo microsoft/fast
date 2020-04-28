@@ -56,6 +56,10 @@ const staticAndDynamicStyles: ComponentStyles<any, any> = {
 };
 
 describe("The JSSManager", (): void => {
+    beforeEach(() => {
+        JSSManager["sheetManager"].clean();
+    });
+
     class NoStylesManager extends JSSManager<any, any, any> {
         protected styles: void = undefined;
         protected managedComponent: React.ComponentClass<any> = SimpleComponent;
@@ -260,7 +264,7 @@ describe("The JSSManager", (): void => {
         const ref: React.RefObject<StyledComponent> = React.createRef();
         expect(ref.current instanceof StyledComponent).toBe(false);
         /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
-        const rendered: any = mount(<StyledManager innerRef={ref} />);
+        mount(<StyledManager innerRef={ref} />);
         expect(ref.current instanceof StyledComponent).toBe(true);
     });
 
@@ -274,7 +278,7 @@ describe("The JSSManager", (): void => {
         JSSManager["sheetManager"].clean();
         JSSManager.jss = customJssInstance;
         /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
-        const rendered: any = mount(<StyledManager />);
+        mount(<StyledManager />);
 
         expect(customJssInstance.createStyleSheet).toHaveBeenCalled();
 
@@ -291,10 +295,37 @@ describe("The JSSManager", (): void => {
         ): ((rule: any, sheet: any) => string) => classNameGenerator;
         JSSManager["sheetManager"].clean();
 
-        const rendered: any = mount(<StyledManager />);
+        mount(<StyledManager />);
 
         expect(classNameGenerator).toHaveBeenCalledTimes(1);
         /* eslint-enable @typescript-eslint/no-unused-vars */
+    });
+
+    test("should allow subscription to add / update / remove events", () => {
+        const subscriber = jest.fn();
+        JSSManager.subscribe(subscriber);
+
+        mount(<StyledManager />);
+
+        expect(subscriber).toHaveBeenCalledTimes(1);
+        expect(subscriber.mock.calls[0][0].type).toBe("add");
+    });
+
+    test("should allow un-subscription to add / update / remove events", () => {
+        const subscriber = jest.fn();
+        JSSManager.subscribe(subscriber);
+        JSSManager.unsubscribe(subscriber);
+
+        mount(<StyledManager />);
+
+        expect(subscriber).toHaveBeenCalledTimes(0);
+
+        const unsubscribe = JSSManager.subscribe(subscriber);
+        unsubscribe();
+
+        mount(<StyledManager />);
+
+        expect(subscriber).toHaveBeenCalledTimes(0);
     });
 });
 

@@ -9,17 +9,12 @@ export class Checkbox extends FormAssociated<HTMLInputElement> {
         if (this.proxy instanceof HTMLElement) {
             this.proxy.readOnly = this.readOnly;
         }
-
-        this.readOnly
-            ? this.classList.add("readonly")
-            : this.classList.remove("readonly");
     }
 
     /**
      * The element's value to be included in form submission when checked.
      * Default to "on" to reach parity with input[type="checkbox"]
      */
-    @attr
     public value: string = "on"; // Map to proxy element.
     private valueChanged(): void {
         if (this.proxy instanceof HTMLElement) {
@@ -70,12 +65,8 @@ export class Checkbox extends FormAssociated<HTMLInputElement> {
         }
 
         if (this.constructed) {
-            this.dispatchEvent(
-                new CustomEvent("change", { bubbles: true, composed: true })
-            );
+            this.$emit("change");
         }
-
-        this.checked ? this.classList.add("checked") : this.classList.remove("checked");
     }
 
     protected proxy: HTMLInputElement = document.createElement("input");
@@ -85,11 +76,6 @@ export class Checkbox extends FormAssociated<HTMLInputElement> {
      */
     @observable
     public indeterminate: boolean = false;
-    private indeterminateChanged(): void {
-        this.indeterminate
-            ? this.classList.add("indeterminate")
-            : this.classList.remove("indeterminate");
-    }
 
     /**
      * Tracks whether the "checked" property has been changed.

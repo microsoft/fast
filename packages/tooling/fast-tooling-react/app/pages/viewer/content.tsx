@@ -27,7 +27,6 @@ class ViewerContent extends React.Component<{}, ViewerContentState> {
                 });
 
                 window.postMessage(e.data, "");
-                /* tslint:disable-next-line */
             } catch (e) {}
         }
     };

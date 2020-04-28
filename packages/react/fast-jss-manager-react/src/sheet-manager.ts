@@ -1,5 +1,9 @@
 import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
-import { JSSStyleSheet } from "./jss-manager";
+import {
+    JSSManagerSubscriber,
+    JSSManagerSubscriptionEventType,
+    JSSStyleSheet,
+} from "./jss-manager";
 import { jss, stylesheetRegistry } from "./jss";
 
 export type SheetTracker = [JSSStyleSheet, number];
@@ -25,6 +29,7 @@ export interface JSSSheetOptions {
 export default class SheetManager {
     public jss: any = jss;
     private registry: SheetRegistry = new WeakMap();
+    private subscribers: JSSManagerSubscriber[];
 
     /**
      * Creates a new JSS stylesheet from a stylesheet and design-system.
@@ -104,7 +109,9 @@ export default class SheetManager {
             !!styles &&
             typeof styles === "object"
         ) {
-            tracker[0].update(nextDesignSystem);
+            const sheet = tracker[0];
+            sheet.update(nextDesignSystem);
+            this.notify("update", sheet);
             this.registry.get(styles).delete(previousDesignSystem);
             this.registry.get(styles).set(nextDesignSystem, tracker);
         } else {
@@ -127,6 +134,7 @@ export default class SheetManager {
                 const sheet: JSSStyleSheet = tracker[0];
                 this.jss.removeStyleSheet(sheet);
                 stylesheetRegistry.remove(sheet);
+                this.notify("remove", sheet);
 
                 this.registry.get(styles).delete(designSystem);
             }
@@ -194,7 +202,44 @@ export default class SheetManager {
 
         sheet.update(designSystem).attach();
         stylesheetRegistry.add(sheet);
+        this.notify("add", sheet);
 
         return sheet;
+    }
+
+    private notify(type: JSSManagerSubscriptionEventType, sheet: JSSStyleSheet): void {
+        if (Array.isArray(this.subscribers)) {
+            this.subscribers.forEach((subscriber: JSSManagerSubscriber) =>
+                subscriber({ type, sheet })
+            );
+        }
+    }
+
+    /**
+     * Subscribe to add, update, and remove events taken by the sheet manager.
+     * @param subscriber The subscription function to invoke
+     */
+    public subscribe(subscriber: JSSManagerSubscriber): () => void {
+        if (!Array.isArray(this.subscribers)) {
+            this.subscribers = [];
+        }
+
+        if (this.subscribers.indexOf(subscriber) === -1) {
+            this.subscribers.push(subscriber);
+        }
+
+        return (): void => {
+            this.unsubscribe(subscriber);
+        };
+    }
+
+    public unsubscribe(subscriber: JSSManagerSubscriber): void {
+        if (Array.isArray(this.subscribers)) {
+            const index = this.subscribers.indexOf(subscriber);
+
+            if (index !== -1) {
+                this.subscribers.splice(index, 1);
+            }
+        }
     }
 }

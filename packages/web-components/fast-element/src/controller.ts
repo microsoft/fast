@@ -1,4 +1,4 @@
-import { FastElement, FastElementDefinition } from "./fast-element";
+import { FASTElement, FASTElementDefinition } from "./fast-element";
 import { ElementView } from "./view";
 import { PropertyChangeNotifier } from "./observation/notifier";
 import { defaultExecutionContext, Observable } from "./observation/observable";
@@ -18,7 +18,7 @@ export class Controller extends PropertyChangeNotifier {
 
     public constructor(
         public readonly element: HTMLElement,
-        public readonly definition: FastElementDefinition
+        public readonly definition: FASTElementDefinition
     ) {
         super();
 
@@ -45,15 +45,15 @@ export class Controller extends PropertyChangeNotifier {
 
         // Capture any observable values that were set by the binding engine before
         // the browser upgraded the element. Then delete the property since it will
-        // shadow the getter/setter that is required to make the observable function.
+        // shadow the getter/setter that is required to make the observable operate.
         // Later, in the connect callback, we'll re-apply the values.
-        const observedProps = Observable.getObservedProperties(element);
+        const accessors = Observable.getAccessors(element);
 
-        if (observedProps.length > 0) {
+        if (accessors.length > 0) {
             const boundObservables = (this.boundObservables = Object.create(null));
 
-            for (let i = 0, ii = observedProps.length; i < ii; ++i) {
-                const propertyName = observedProps[i];
+            for (let i = 0, ii = accessors.length; i < ii; ++i) {
+                const propertyName = accessors[i].name;
                 const value = (element as any)[propertyName];
 
                 if (value !== void 0) {
@@ -230,7 +230,7 @@ export class Controller extends PropertyChangeNotifier {
             return controller;
         }
 
-        const definition = FastElement.getDefinition(element.constructor as any);
+        const definition = FASTElement.getDefinition(element.constructor as any);
 
         if (definition === void 0) {
             throw new Error("Missing fast element definition.");

@@ -74,7 +74,6 @@ class ButtonControl extends React.Component<
      * therefore a value and onChange handler must still be supplied
      * even if there is no intention to update the value.
      */
-    /* tslint:disable-next-line */
     private handleInputChange = (): void => {};
 }
 

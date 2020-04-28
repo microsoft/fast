@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-jss-manager-react",
   "description": "React HOC for managing component JSS stylesheets",
   "sideEffects": false,
-  "version": "4.6.4",
+  "version": "4.7.1",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -20,6 +20,7 @@
   "scripts": {
     "build": "tsc -p ./tsconfig.build.json",
     "clean:dist": "node ../../../build/clean.js dist",
+    "coverage": "jest --coverage",
     "prepare": "yarn clean:dist && yarn build",
     "prettier": "prettier --config ../../../.prettierrc --write \"**/*.{ts,tsx}\"",
     "prettier:diff": "prettier --config ../../../.prettierrc \"**/*.{ts,tsx}\" --list-different",
@@ -33,6 +34,12 @@
   },
   "jest": {
     "collectCoverage": true,
+    "coverageReporters": [
+      "json", 
+      [
+        "lcov", {"projectRoot": "../../../"}
+      ]
+    ],
     "coverageThreshold": {
       "global": {
         "statements": 81,
@@ -64,23 +71,23 @@
     "@babel/core": "^7.0.0",
     "@babel/preset-env": "^7.1.0",
     "@babel/preset-react": "^7.0.0",
-    "@microsoft/eslint-config-fast-dna": "^1.1.0",
+    "@microsoft/eslint-config-fast-dna": "^1.1.1",
     "@types/jest": "^25.2.1",
     "@types/lodash-es": "^4.17.0",
     "@types/node": "^9.4.6",
     "@types/react": "^16.8.0",
     "babel-core": "^7.0.0-bridge.0",
-    "babel-jest": "^25.2.6",
+    "babel-jest": "^25.4.0",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
     "eslint-config-prettier": "^6.10.1",
-    "jest": "^25.2.7",
+    "jest": "^25.4.0",
     "lodash-es": "^4.0.0",
     "prettier": "2.0.2",
     "react": "^16.8.0",
     "react-dom": "^16.8.0",
     "react-test-renderer": "^16.2.0",
-    "ts-jest": "^25.3.1",
+    "ts-jest": "^25.4.0",
     "typescript": "3.3.3",
     "watch": "^1.0.2"
   },
@@ -89,7 +96,7 @@
     "react": "^16.8.0"
   },
   "dependencies": {
-    "@microsoft/fast-jss-manager": "^4.1.13",
+    "@microsoft/fast-jss-manager": "^4.1.15",
     "hoist-non-react-statics": "^3.1.0",
     "jss": "^9.8.0",
     "jss-preset-default": "^4.3.0"

@@ -12,7 +12,8 @@ coverage/
 
 # Config files
 .prettierignore
-tslint.json
+.eslintignore
+.eslintrc.js
 babel.config.js
 tsconfig.build.json
 tsconfig.json

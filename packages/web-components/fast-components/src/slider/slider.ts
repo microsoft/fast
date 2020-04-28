@@ -50,7 +50,6 @@ export class Slider extends FormAssociated<HTMLInputElement>
     /**
      * The element's value to be included in form submission changed.
      */
-    @attr({ converter: nullableNumberConverter })
     public value: string; // Map to proxy element.
     private valueChanged(): void {
         if (this.proxy instanceof HTMLElement) {
@@ -113,15 +112,6 @@ export class Slider extends FormAssociated<HTMLInputElement>
      */
     @attr
     public orientation: SliderOrientation = SliderOrientation.horizontal;
-    private orientationChanged(): void {
-        if (this.orientation === SliderOrientation.horizontal) {
-            this.classList.remove("vertical");
-            this.classList.add("horizontal");
-        } else {
-            this.classList.remove("horizontal");
-            this.classList.add("vertical");
-        }
-    }
 
     /**
      * mode value, default singleValue
@@ -276,6 +266,7 @@ export class Slider extends FormAssociated<HTMLInputElement>
     /**
      * Handle a window mouse up during a drag operation
      */
+    /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
     private handleWindowMouseUp = (event: MouseEvent): void => {
         this.stopDragging();
     };

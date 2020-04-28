@@ -2,6 +2,17 @@ import { css } from "@microsoft/fast-element";
 import { disabledCursor, display } from "../styles";
 import { focusVisible } from "../styles/focus";
 import { heightNumber } from "../styles/size";
+import {
+    neutralFillHoverBehavior,
+    neutralFillInputHoverBehavior,
+    neutralFillInputRestBehavior,
+    neutralFillRestBehavior,
+    neutralFocusBehavior,
+    neutralForegroundRestBehavior,
+    neutralOutlineHoverBehavior,
+    neutralOutlineRestBehavior,
+} from "../styles/recipes";
+import { forcedColorsStylesheetBehavior } from "../styles/match-media-stylesheet-behavior";
 
 export const TextAreaStyles = css`
     ${display("inline-block")} :host {
@@ -92,10 +103,20 @@ export const TextAreaStyles = css`
     :host([disabled]) {
         opacity: var(--disabled-opacity);
     }
-
-    @media (forced-colors: active) {
-        :host([disabled]) {
-            opacity: 1;
-        }
-    }
-`;
+`.withBehaviors(
+    neutralFillHoverBehavior,
+    neutralFillInputHoverBehavior,
+    neutralFillInputRestBehavior,
+    neutralFillRestBehavior,
+    neutralFocusBehavior,
+    neutralForegroundRestBehavior,
+    neutralOutlineHoverBehavior,
+    neutralOutlineRestBehavior,
+    forcedColorsStylesheetBehavior(
+        css`
+            :host([disabled]) {
+                opacity: 1;
+            }
+        `
+    )
+);

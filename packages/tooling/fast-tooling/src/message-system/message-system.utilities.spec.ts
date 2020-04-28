@@ -1,4 +1,4 @@
-import jest from "jest";
+import { DataType } from "../data-utilities/types";
 import {
     AddDataMessageOutgoing,
     AddLinkedDataDataMessageOutgoing,
@@ -25,12 +25,10 @@ import {
 } from "./message-system.utilities.props";
 import { MessageSystemType } from "./types";
 import { getMessage } from "./message-system.utilities";
-import { DataType } from "../data-utilities/types";
 import { Data, DataDictionary, LinkedData } from "./data.props";
 import { SchemaDictionary } from "./schema.props";
 import { getNavigationDictionary } from "./navigation";
 
-/* tslint:disable */
 describe("getMessage", () => {
     describe("initialize", () => {
         test("should return messages sent with initial values provided", () => {
@@ -50,7 +48,33 @@ describe("getMessage", () => {
             };
             const message: InitializeMessageOutgoing = getMessage({
                 type: MessageSystemType.initialize,
-                data: dataBlob,
+                dataDictionary: dataBlob,
+                schemaDictionary,
+            }) as InitializeMessageOutgoing;
+
+            expect(message.type).toEqual(MessageSystemType.initialize);
+            expect(message.data).toEqual(dataBlob[0][dataBlob[1]].data);
+            expect(message.schema).toEqual(schemaDictionary["foo"]);
+            expect(typeof message.navigation).toEqual("object");
+        });
+        test("should return messages sent with initial values provided using the deprecated data property", () => {
+            const dataBlob: DataDictionary<unknown> = [
+                {
+                    data: {
+                        schemaId: "foo",
+                        data: {
+                            foo: "bar",
+                        },
+                    },
+                },
+                "data",
+            ];
+            const schemaDictionary: SchemaDictionary = {
+                foo: { id: "foo" },
+            };
+            const message: InitializeMessageOutgoing = getMessage({
+                type: MessageSystemType.initialize,
+                dataDictionary: dataBlob,
                 schemaDictionary,
             }) as InitializeMessageOutgoing;
 

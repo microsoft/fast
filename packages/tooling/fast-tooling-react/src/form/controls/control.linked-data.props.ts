@@ -4,8 +4,7 @@ export interface ChildComponentDataMapping {
     [T: string]: any;
 }
 
-/* tslint:disable-next-line */
-export interface LinkedDataControlProps extends LinkedDataControlConfig {}
+export type LinkedDataControlProps = LinkedDataControlConfig;
 
 export enum Action {
     add = "add",

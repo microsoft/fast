@@ -17,11 +17,11 @@ module.exports = {
         app: path.resolve(appDir, "index.tsx"),
         focusVisible: path.resolve(
             __dirname,
-            "../../node_modules/focus-visible/dist/focus-visible.min.js"
+            "../../../node_modules/focus-visible/dist/focus-visible.min.js"
         ),
         "message-system": path.resolve(
             __dirname,
-            "../../node_modules/@microsoft/fast-tooling/dist/message-system.min.js"
+            "../../../node_modules/@microsoft/fast-tooling/dist/message-system.min.js"
         ),
     },
     output: {

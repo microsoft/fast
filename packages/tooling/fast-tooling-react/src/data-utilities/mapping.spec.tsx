@@ -14,7 +14,6 @@ import { configure, mount } from "enzyme";
  */
 configure({ adapter: new Adapter() });
 
-/* tslint:disable:max-classes-per-file */
 class Foo extends React.Component<{}, {}> {
     public render(): React.ReactNode {
         return <div>{this.props.children}</div>;

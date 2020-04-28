@@ -1,5 +1,5 @@
-import { accent, cleanListStyle, foreground300, neutralLayerL4 } from "../style";
 import { ComponentStyles } from "@microsoft/fast-jss-manager-react";
+import { accent, cleanListStyle, foreground300, neutralLayerL4 } from "../style";
 import { FormClassNameContract } from "./form.props";
 
 const styles: ComponentStyles<FormClassNameContract, {}> = {

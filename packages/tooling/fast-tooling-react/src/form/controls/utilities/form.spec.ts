@@ -1,16 +1,16 @@
 import "jest";
-import {
-    getErrorFromDataLocation,
-    getSchemaByDataLocation,
-    updateControlSectionState,
-} from "./form";
+import { CombiningKeyword, MessageSystem } from "@microsoft/fast-tooling";
 import {
     childrenSchema,
     mergedOneOfSchema,
     textFieldSchema,
 } from "../../../__tests__/schemas";
 import { InitialOneOfAnyOfState } from "../control.section.props";
-import { CombiningKeyword, MessageSystem } from "@microsoft/fast-tooling";
+import {
+    getErrorFromDataLocation,
+    getSchemaByDataLocation,
+    updateControlSectionState,
+} from "./form";
 
 /**
  * Gets a schema by data location (lodash path syntax)
@@ -87,7 +87,7 @@ describe("getSchemaByDataLocation", () => {
  */
 describe("getInitialOneOfAnyOfState", () => {
     test("should get the initial oneOf/anyOf activeIndex and oneOf/anyOf keyword", () => {
-        const messageSystem: MessageSystem = new MessageSystem({
+        new MessageSystem({
             webWorker: "",
             dataDictionary: [
                 {
@@ -127,16 +127,6 @@ describe("getErrorFromDataLocation", () => {
         expect(getErrorFromDataLocation("", [])).toEqual("");
     });
     test("should get an error that matches a data location", () => {
-        const schema: any = {
-            type: "object",
-            properties: {
-                foo: {
-                    type: "string",
-                },
-            },
-        };
-        const data: any = "foo";
-
         expect(
             getErrorFromDataLocation("", [
                 {
@@ -147,19 +137,6 @@ describe("getErrorFromDataLocation", () => {
         ).toEqual("should be object");
     });
     test("should get an error nested inside a data location", () => {
-        const schema: any = {
-            type: "object",
-            properties: {
-                foo: {
-                    type: "string",
-                    const: "bar",
-                },
-            },
-        };
-        const data: any = {
-            foo: "bat",
-        };
-
         expect(
             getErrorFromDataLocation("foo", [
                 {

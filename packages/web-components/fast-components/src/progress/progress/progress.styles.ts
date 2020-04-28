@@ -1,6 +1,12 @@
 import { css } from "@microsoft/fast-element";
 import { display } from "../../styles";
 import { SystemColors } from "../../styles/system-colors";
+import {
+    accentFillRestBehavior,
+    neutralFillRestBehavior,
+    neutralForegroundHintBehavior,
+} from "../../styles/recipes";
+import { forcedColorsStylesheetBehavior } from "../../styles/match-media-stylesheet-behavior";
 
 export const ProgressStyles = css`
     ${display("flex")} :host {
@@ -68,26 +74,6 @@ export const ProgressStyles = css`
         background-color: var(--neutral-foreground-hint);
     }
 
-    @media (forced-colors: active) {
-        .indeterminate-indicator-1, .indeterminate-indicator-2, .determinate  {
-            forced-color-adjust: none;
-            background-color: ${SystemColors.FieldText};
-        }
-
-        .progress {
-            background-color: ${SystemColors.Field};
-            border: calc(var(--outline-width) * 1px) solid ${SystemColors.FieldText};
-        }
-
-        :host(.paused) .indeterminate-indicator-1, .indeterminate-indicator-2 {
-            background-color: ${SystemColors.Field};
-        }
-
-        :host(.paused) .determinate {
-            background-color: ${SystemColors.GrayText};
-        }
-    }
-
     @keyframes indeterminate-1 {
         0% {
             opacity: 1;
@@ -123,4 +109,29 @@ export const ProgressStyles = css`
             opacity: 1;
         },
     },
-`;
+`.withBehaviors(
+    accentFillRestBehavior,
+    neutralFillRestBehavior,
+    neutralForegroundHintBehavior,
+    forcedColorsStylesheetBehavior(
+        css`
+            .indeterminate-indicator-1,
+            .indeterminate-indicator-2,
+            .determinate {
+                forced-color-adjust: none;
+                background-color: ${SystemColors.FieldText};
+            }
+            .progress {
+                background-color: ${SystemColors.Field};
+                border: calc(var(--outline-width) * 1px) solid ${SystemColors.FieldText};
+            }
+            :host(.paused) .indeterminate-indicator-1,
+            .indeterminate-indicator-2 {
+                background-color: ${SystemColors.Field};
+            }
+            :host(.paused) .determinate {
+                background-color: ${SystemColors.GrayText};
+            }
+        `
+    )
+);

@@ -13,7 +13,7 @@ Components that are intended to replace a native form element (input, textarea, 
 Any custom element that should associate a value to a form.
 
 ## Design
-The implementation will be an *abstract class* that will extend `FastElement`. The class will expose implementations for all of the common form element capabilities. It will also expose and manage an implementation for when the FACE APIs are not available.
+The implementation will be an *abstract class* that will extend `FASTElement`. The class will expose implementations for all of the common form element capabilities. It will also expose and manage an implementation for when the FACE APIs are not available.
 
 Another possible implementation is a decorator, but there are a few challenges with that approach:
   1. decorators cannot augment the class type directly, so we would need to use a pattern similar to https://www.typescriptlang.org/docs/handbook/mixins.html to gain accurate type definitions

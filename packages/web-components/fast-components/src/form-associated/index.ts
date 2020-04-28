@@ -1,4 +1,4 @@
-import { attr, emptyArray, FastElement } from "@microsoft/fast-element";
+import { attr, DOM, emptyArray, FASTElement } from "@microsoft/fast-element";
 import { keyCodeEnter } from "@microsoft/fast-web-utilities";
 
 /**
@@ -93,7 +93,7 @@ export const supportsElementInternals = "ElementInternals" in window;
  */
 export abstract class FormAssociated<
     T extends HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-> extends FastElement {
+> extends FASTElement {
     /**
      * Must evaluate to true to enable elementInternals.
      * Feature detects API support and resolve respectively
@@ -182,9 +182,7 @@ export abstract class FormAssociated<
             this.proxy.disabled = this.disabled;
         }
 
-        this.disabled
-            ? this.classList.add("disabled")
-            : this.classList.remove("disabled");
+        DOM.queueUpdate(() => this.classList.toggle("disabled", this.disabled));
     }
 
     @attr
@@ -205,9 +203,7 @@ export abstract class FormAssociated<
             this.proxy.required = this.required;
         }
 
-        this.required
-            ? this.classList.add("required")
-            : this.classList.remove("required");
+        DOM.queueUpdate(() => this.classList.toggle("required", this.required));
     }
 
     /**

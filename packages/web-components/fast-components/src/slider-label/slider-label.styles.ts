@@ -2,6 +2,8 @@ import { css } from "@microsoft/fast-element";
 import { display } from "../styles";
 import { SystemColors } from "../styles/system-colors";
 import { heightNumber } from "../styles/size";
+import { neutralOutlineRestBehavior } from "../styles/recipes";
+import { forcedColorsStylesheetBehavior } from "../styles/match-media-stylesheet-behavior";
 
 export const SliderLabelStyles = css`
     ${display("block")} :host {
@@ -56,10 +58,27 @@ export const SliderLabelStyles = css`
         margin-left: calc((var(--design-unit) / 2) * 2px);
         align-self: center;
     }
-    @media (forced-colors: active) {
-        .mark {
-            forced-color-adjust: none;
-            background: ${SystemColors.FieldText};
-        }
+    :host(.disabled) {
+        opacity: var(--disabled-opacity);
     }
-`;
+`.withBehaviors(
+    neutralOutlineRestBehavior,
+    forcedColorsStylesheetBehavior(
+        css`
+            .mark {
+                forced-color-adjust: none;
+                background: ${SystemColors.FieldText};
+            }
+            :host(.disabled) {
+                forced-color-adjust: none;
+                opacity: 1;
+            }
+            :host(.disabled) .label {
+                color: ${SystemColors.GrayText};
+            }
+            :host(.disabled) .mark {
+                background: ${SystemColors.GrayText};
+            }
+        `
+    )
+);

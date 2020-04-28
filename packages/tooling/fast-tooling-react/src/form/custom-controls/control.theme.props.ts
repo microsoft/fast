@@ -1,4 +1,3 @@
 import { ListControlConfig } from "../templates";
 
-/* tslint:disable-next-line */
-export interface ThemeControlProps extends ListControlConfig {}
+export type ThemeControlProps = ListControlConfig;

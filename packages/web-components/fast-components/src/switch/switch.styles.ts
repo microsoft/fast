@@ -3,6 +3,18 @@ import { disabledCursor, display } from "../styles";
 import { focusVisible } from "../styles/focus";
 import { SystemColors } from "../styles/system-colors";
 import { heightNumber } from "../styles/size";
+import {
+    accentFillRestBehavior,
+    accentForegroundCutRestBehavior,
+    neutralFillInputActiveBehavior,
+    neutralFillInputHoverBehavior,
+    neutralFillInputRestBehavior,
+    neutralForegroundRestBehavior,
+    neutralOutlineActiveBehavior,
+    neutralOutlineHoverBehavior,
+    neutralOutlineRestBehavior,
+} from "../styles/recipes";
+import { forcedColorsStylesheetBehavior } from "../styles/match-media-stylesheet-behavior";
 
 export const SwitchStyles = css`
     :host([hidden]) {
@@ -120,41 +132,51 @@ export const SwitchStyles = css`
     :host(.checked) .checked-message {
         display: block;
     }
-
-    @media (forced-colors: active) {
-        .checked-indicator {
-            forced-color-adjust: none;
-            background: ${SystemColors.FieldText};
-        }
-
-        .switch, .switch:hover, .switch:active {
-            forced-color-adjust: none;
-            background: ${SystemColors.Field};
-            border-color: ${SystemColors.FieldText};
-        }
-
-        :host(.checked) .switch {
-            background: ${SystemColors.FieldText};
-        }
-
-        :host(.checked) .checked-indicator {
-            background: ${SystemColors.Field};
-        }
-
-        :host(.disabled) {
-            opacity: 1;
-        }
-
-        :host(:${focusVisible}) .switch {
-            border-color: ${SystemColors.Highlight};
-        }
-        :host(.disabled) .checked-indicator {
-            background: ${SystemColors.GrayText};
-        }
-
-        :host(.disabled) .switch {
-            background: ${SystemColors.Field};
-            border-color: ${SystemColors.GrayText};
-        }
-    }
-`;
+`.withBehaviors(
+    accentFillRestBehavior,
+    accentForegroundCutRestBehavior,
+    neutralFillInputActiveBehavior,
+    neutralFillInputHoverBehavior,
+    neutralFillInputRestBehavior,
+    neutralForegroundRestBehavior,
+    neutralOutlineActiveBehavior,
+    neutralOutlineHoverBehavior,
+    neutralOutlineRestBehavior,
+    forcedColorsStylesheetBehavior(
+        css`
+            .checked-indicator {
+                forced-color-adjust: none;
+                background: ${SystemColors.FieldText};
+            }
+            .switch, .switch:hover, .switch:active {
+                forced-color-adjust: none;
+                background: ${SystemColors.Field};
+                border-color: ${SystemColors.FieldText};
+            }
+            :host(.checked) .switch {
+                background: ${SystemColors.Highlight};
+                border-color: ${SystemColors.Highlight};
+            }
+            :host(.checked) .checked-indicator {
+                background: ${SystemColors.HighlightText};
+            }
+            :host(.disabled) {
+                opacity: 1;
+            }
+            :host(:${focusVisible}) .switch {
+                border-color: ${SystemColors.Highlight};
+            }
+            :host(.checked:${focusVisible}) .switch {
+                border-color: ${SystemColors.FieldText};
+                box-shadow: 0 0 0 2px ${SystemColors.Field} inset;
+            }
+            :host(.disabled) .checked-indicator {
+                background: ${SystemColors.GrayText};
+            }
+            :host(.disabled) .switch {
+                background: ${SystemColors.Field};
+                border-color: ${SystemColors.GrayText};
+            }
+        `
+    )
+);

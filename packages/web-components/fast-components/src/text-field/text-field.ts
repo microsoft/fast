@@ -1,5 +1,7 @@
-import { attr } from "@microsoft/fast-element";
+import { attr, nullableNumberConverter } from "@microsoft/fast-element";
 import { FormAssociated } from "../form-associated";
+import { StartEnd } from "../patterns/start-end";
+import { applyMixins } from "../utilities";
 
 export enum TextFieldAppearance {
     filled = "filled",
@@ -17,23 +19,13 @@ export enum TextFieldType {
 export class TextField extends FormAssociated<HTMLInputElement> {
     @attr
     public appearance: TextFieldAppearance = TextFieldAppearance.outline;
-    private appearanceChanged(): void {
-        this.appearance === TextFieldAppearance.filled
-            ? this.classList.add("filled")
-            : this.classList.remove("filled");
-    }
 
-    @attr({ mode: "boolean" })
     @attr({ attribute: "readonly", mode: "boolean" })
     public readOnly: boolean;
     private readOnlyChanged(): void {
         if (this.proxy instanceof HTMLElement) {
             this.proxy.readOnly = this.readOnly;
         }
-
-        this.readOnly
-            ? this.classList.add("readonly")
-            : this.classList.remove("readonly");
     }
 
     @attr({ mode: "boolean" })
@@ -68,7 +60,7 @@ export class TextField extends FormAssociated<HTMLInputElement> {
         }
     }
 
-    @attr
+    @attr({ converter: nullableNumberConverter })
     public maxlength: number;
     private maxlengthChanged(): void {
         if (this.proxy instanceof HTMLElement) {
@@ -76,7 +68,7 @@ export class TextField extends FormAssociated<HTMLInputElement> {
         }
     }
 
-    @attr
+    @attr({ converter: nullableNumberConverter })
     public minlength: number;
     private minlengthChanged(): void {
         if (this.proxy instanceof HTMLElement) {
@@ -92,7 +84,7 @@ export class TextField extends FormAssociated<HTMLInputElement> {
         }
     }
 
-    @attr
+    @attr({ converter: nullableNumberConverter })
     public size: number;
     private sizeChanged(): void {
         if (this.proxy instanceof HTMLElement) {
@@ -108,8 +100,6 @@ export class TextField extends FormAssociated<HTMLInputElement> {
         }
     }
 
-    @attr
-    public value: string;
     private valueChanged(): void {
         if (this.proxy instanceof HTMLElement) {
             this.proxy.value = this.value;
@@ -143,20 +133,7 @@ export class TextField extends FormAssociated<HTMLInputElement> {
             this.value = this.control.value;
         }
     }
-
-    public afterContent: HTMLSlotElement;
-    public afterContentContainer: HTMLSpanElement;
-    public handleAfterContentChange(): void {
-        this.afterContent.assignedNodes().length > 0
-            ? this.afterContentContainer.classList.add("after-content")
-            : this.afterContentContainer.classList.remove("after-content");
-    }
-
-    public beforeContent: HTMLSlotElement;
-    public beforeContentContainer: HTMLSpanElement;
-    public handleBeforeContentChange(): void {
-        this.beforeContent.assignedNodes().length > 0
-            ? this.beforeContentContainer.classList.add("before-content")
-            : this.beforeContentContainer.classList.remove("before-content");
-    }
 }
+/* eslint-disable-next-line */
+export interface TextField extends StartEnd {}
+applyMixins(TextField, StartEnd);

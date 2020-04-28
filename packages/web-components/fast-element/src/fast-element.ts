@@ -1,13 +1,13 @@
 import { Controller } from "./controller";
-import { emptyArray } from "./interfaces";
 import { ElementViewTemplate } from "./template";
 import { ElementStyles } from "./styles";
 import { AttributeConfiguration, AttributeDefinition } from "./attributes";
+import { Observable } from "./observation/observable";
 
 const defaultShadowOptions: ShadowRootInit = { mode: "open" };
 const defaultElementOptions: ElementDefinitionOptions = {};
 
-export type PartialFastElementDefinition = {
+export type PartialFASTElementDefinition = {
     readonly name: string;
     readonly template?: ElementViewTemplate;
     readonly styles?: ElementStyles;
@@ -16,7 +16,7 @@ export type PartialFastElementDefinition = {
     readonly elementOptions?: ElementDefinitionOptions;
 };
 
-export class FastElementDefinition {
+export class FASTElementDefinition {
     public constructor(
         public readonly name: string,
         public readonly attributes: ReadonlyArray<AttributeDefinition>,
@@ -30,8 +30,8 @@ export class FastElementDefinition {
 }
 
 /* eslint-disable-next-line @typescript-eslint/explicit-function-return-type */
-function createFastElement(BaseType: typeof HTMLElement) {
-    return class FastElement extends BaseType {
+function createFASTElement(BaseType: typeof HTMLElement) {
+    return class FASTElement extends BaseType {
         public $fastController!: Controller;
 
         public constructor() {
@@ -65,16 +65,16 @@ function createFastElement(BaseType: typeof HTMLElement) {
     };
 }
 
-const fastDefinitions = new Map<Function, FastElementDefinition>();
+const fastDefinitions = new Map<Function, FASTElementDefinition>();
 
-export const FastElement = Object.assign(createFastElement(HTMLElement), {
+export const FASTElement = Object.assign(createFASTElement(HTMLElement), {
     from(BaseType: typeof HTMLElement) {
-        return createFastElement(BaseType);
+        return createFASTElement(BaseType);
     },
 
     define<T extends Function>(
         Type: T,
-        nameOrDef: string | PartialFastElementDefinition = (Type as any).definition
+        nameOrDef: string | PartialFASTElementDefinition = (Type as any).definition
     ): T {
         if (typeof nameOrDef === "string") {
             nameOrDef = { name: nameOrDef };
@@ -94,7 +94,7 @@ export const FastElement = Object.assign(createFastElement(HTMLElement), {
                 ? defaultElementOptions
                 : { ...defaultElementOptions, ...nameOrDef.shadowOptions };
 
-        const observedAttributes = new Array(attributes.length);
+        const observedAttributes = new Array<string>(attributes.length);
         const proto = Type.prototype;
         const propertyLookup = {};
         const attributeLookup = {};
@@ -102,18 +102,9 @@ export const FastElement = Object.assign(createFastElement(HTMLElement), {
         for (let i = 0, ii = attributes.length; i < ii; ++i) {
             const current = attributes[i];
             observedAttributes[i] = current.attribute;
-            propertyLookup[current.property] = current;
+            propertyLookup[current.name] = current;
             attributeLookup[current.attribute] = current;
-
-            Reflect.defineProperty(proto, current.property, {
-                enumerable: true,
-                get: function (this: any) {
-                    return current.getValue(this);
-                },
-                set: function (this: any, value: any) {
-                    return current.setValue(this, value);
-                },
-            });
+            Observable.defineProperty(proto, current);
         }
 
         Reflect.defineProperty(Type, "observedAttributes", {
@@ -121,7 +112,7 @@ export const FastElement = Object.assign(createFastElement(HTMLElement), {
             enumerable: true,
         });
 
-        const definition = new FastElementDefinition(
+        const definition = new FASTElementDefinition(
             name,
             attributes,
             propertyLookup,
@@ -137,14 +128,14 @@ export const FastElement = Object.assign(createFastElement(HTMLElement), {
         return Type;
     },
 
-    getDefinition<T extends Function>(Type: T): FastElementDefinition | undefined {
+    getDefinition<T extends Function>(Type: T): FASTElementDefinition | undefined {
         return fastDefinitions.get(Type);
     },
 });
 
-export function customElement(nameOrDef: string | PartialFastElementDefinition) {
+export function customElement(nameOrDef: string | PartialFASTElementDefinition) {
     /* eslint-disable-next-line @typescript-eslint/explicit-function-return-type */
     return function (type: Function) {
-        FastElement.define(type, nameOrDef);
+        FASTElement.define(type, nameOrDef);
     };
 }

@@ -1,91 +1,63 @@
-import { observable } from "@microsoft/fast-element";
-import { DesignSystemResolverEntry } from "../styles/recipes";
+import { Behavior } from "@microsoft/fast-element";
 import { composedParent } from "../utilities";
-import { DesignSystemProvider } from "../design-system-provider";
-
-export interface ConsumerArgs {
-    recipes: DesignSystemResolverEntry[];
-}
+import { DesignSystemProvider, isDesignSystemProvider } from "../design-system-provider";
 
 export interface DesignSystemConsumer {
-    recipes: DesignSystemResolverEntry[];
     provider: DesignSystemProvider | null;
-    isDesignSystemConsumer: boolean;
 }
 
 /**
- * Type-safe checking for if an HTMLElement is a DesignSystemProvider.
- * @param el The element to test
+ * Determines if the element has a design-system-provider context
+ * @param element
  */
-export function isDesignSystemProvider(
-    el: HTMLElement | DesignSystemConsumer
-): el is DesignSystemConsumer {
-    return (el as any).isDesignSystemConsumer;
+export function isDesignSystemConsumer(
+    element: HTMLElement | DesignSystemConsumer
+): element is DesignSystemConsumer {
+    const provider = (element as DesignSystemProvider).provider;
+    return provider instanceof HTMLElement && isDesignSystemProvider(provider);
 }
 
-export function designSystemConsumer<T extends { new (...args: any[]) }>(
-    constructor: T
-): T;
-export function designSystemConsumer<T extends { new (...args: any[]) }>(
-    args: ConsumerArgs
-): <_T>(constructor: _T) => _T;
-export function designSystemConsumer<T extends { new (...args: any[]) }>(
-    argsOrConstructor: any
-): any {
-    function decorator(constructor: T, options: ConsumerArgs): T {
-        class Consumer extends constructor implements DesignSystemConsumer {
-            public readonly isDesignSystemConsumer = true;
+/**
+ * Behavior to connect an element to the nearest design-system provider
+ */
+export class DesignSystemConsumerBehavior<T extends DesignSystemConsumer & HTMLElement>
+    implements Behavior {
+    bind(source: T) {
+        source.provider = findProvider(source);
+    }
 
-            public readonly recipes = options.recipes;
+    /* eslint-disable-next-line */
+    unbind(source: T) {}
+}
 
-            @observable
-            public provider: DesignSystemProvider | null = null;
+/**
+ * Resolves the nearest DesignSystemProvider element to an element.
+ *
+ * When the provider is found, this function will store the provider on
+ * the `self` so that it can quickly be retrieved by other future invocations
+ * of this function.
+ * @param self The element from which to begin
+ */
+export function findProvider(
+    self: HTMLElement & Partial<DesignSystemConsumer>
+): DesignSystemProvider | null {
+    if (isDesignSystemConsumer(self)) {
+        return self.provider;
+    }
 
-            /**
-             * Find the parent DesignSystem provider.
-             */
-            public findProvider(): DesignSystemProvider | null {
-                let parent = composedParent(this as any);
+    let parent = composedParent(self);
 
-                while (parent !== null) {
-                    if ((parent as any).isDesignSystemProvider) {
-                        return parent as any;
-                    } else if (isDesignSystemProvider(parent)) {
-                        return parent.provider;
-                    } else {
-                        parent = composedParent(parent);
-                    }
-                }
-
-                return null;
-            }
-
-            public connectedCallback(): void {
-                super.connectedCallback();
-
-                const provider = this.findProvider();
-
-                if (!!provider) {
-                    this.provider = provider;
-                    this.provider.subscribe(this);
-                }
-            }
-
-            public disconnectedCallback(): void {
-                if (!!this.provider) {
-                    this.provider.unsubscribe(this);
-                }
-            }
+    while (parent !== null) {
+        if (isDesignSystemProvider(parent)) {
+            self.provider = parent; // Store provider on ourselves for future reference
+            return parent;
+        } else if (isDesignSystemConsumer(parent)) {
+            self.provider = parent.provider;
+            return parent.provider;
+        } else {
+            parent = composedParent(parent);
         }
-
-        return Consumer;
     }
 
-    if (typeof argsOrConstructor === "function") {
-        return decorator(argsOrConstructor, { recipes: [] });
-    } else {
-        return (constructor: T): T => {
-            return decorator(constructor, argsOrConstructor);
-        };
-    }
+    return null;
 }

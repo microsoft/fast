@@ -4,15 +4,15 @@ The `fast-element` library is a lightweight means to easily building performant,
 
 ## Defining an Element
 
-To define a custom element, begin by creating a class that extends `FastElement` and decorate it with the `@customElement` decorator, providing the element name.
+To define a custom element, begin by creating a class that extends `FASTElement` and decorate it with the `@customElement` decorator, providing the element name.
 
-**Example: A Basic `FastElement` Definition**
+**Example: A Basic `FASTElement` Definition**
 
 ```TypeScript
-import { FastElement, customElement } from '@microsoft/fast-element';
+import { FASTElement, customElement } from '@microsoft/fast-element';
 
 @customElement('name-tag')
-export class NameTag extends FastElement {
+export class NameTag extends FASTElement {
 
 }
 ```
@@ -29,13 +29,13 @@ With this in place, you can now use your `name-tag` element anywhere in HTML wit
 
 We've got a basic Web Component in place, but it doesn't do much. So, let's add an attribute and make it render something. 
 
-**Example: Adding Attributes to a `FastElement`**
+**Example: Adding Attributes to a `FASTElement`**
 
 ```TypeScript
-import { FastElement, customElement, attr } from '@microsoft/fast-element';
+import { FASTElement, customElement, attr } from '@microsoft/fast-element';
 
 @customElement('name-tag')
-export class NameTag extends FastElement {
+export class NameTag extends FASTElement {
   @attr greeting: string = 'Hello';
 
   greetingChanged() {
@@ -48,7 +48,7 @@ To add attributes to your HTML element, create properties decorated by the `@att
 
 > **NOTE:** All properties decorated with `@attr` are also *observable*. See the templating section below for information about how observables enable efficient rendering.
 
-By default, anything extending from `FastElement` will automatically have a `ShadowRoot` attached in order to enable encapsulated rendering. The example above references the `shadowRoot` to set its `innerHTML` any time the `greeting` property changes.
+By default, anything extending from `FASTElement` will automatically have a `ShadowRoot` attached in order to enable encapsulated rendering. The example above references the `shadowRoot` to set its `innerHTML` any time the `greeting` property changes.
 
 To see it in action, you can use the same HTML as above, or change the default `greeting` with the following:
 
@@ -85,10 +85,10 @@ Here's how it works:
 **Example: An Attribute in Reflect Mode with No Special Conversion**
 
 ```TypeScript
-import { FastElement, customElement, attr } from '@microsoft/fast-element';
+import { FASTElement, customElement, attr } from '@microsoft/fast-element';
 
 @customElement('name-tag')
-export class NameTag extends FastElement {
+export class NameTag extends FASTElement {
   @attr greeting: string = 'Hello';
 }
 ```
@@ -96,10 +96,10 @@ export class NameTag extends FastElement {
 **Example: An Attribute in Boolean Mode with Boolean Conversion**
 
 ```TypeScript
-import { FastElement, customElement, attr } from '@microsoft/fast-element';
+import { FASTElement, customElement, attr } from '@microsoft/fast-element';
 
 @customElement('my-checkbox')
-export class MyCheckbox extends FastElement {
+export class MyCheckbox extends FASTElement {
   @attr({ mode: 'boolean' }) disabled: boolean = false;
 }
 ```
@@ -107,7 +107,7 @@ export class MyCheckbox extends FastElement {
 **Example: An Attribute in Reflect Mode with Custom Conversion**
 
 ```TypeScript
-import { FastElement, customElement, attr, ValueConverter } from '@microsoft/fast-element';
+import { FASTElement, customElement, attr, ValueConverter } from '@microsoft/fast-element';
 
 const numberConverter: ValueConverter = {
   toView(value: any): string {
@@ -120,22 +120,22 @@ const numberConverter: ValueConverter = {
 };
 
 @customElement('my-counter')
-export class MyCounter extends FastElement {
+export class MyCounter extends FASTElement {
   @attr({ converter: numberConverter }) count: number = 0;
 }
 ```
 
 ### The Element Lifecycle
 
-All Web Components support a series of lifecycle events that you can tap into to execute custom code at specific points in time. `FastElement` implements several of these callbacks automatically, in order to enable features of its templating engine (described below). However, you can override them to provide your own code. Here's an example of how you would execute custom code when your element is inserted into the DOM.
+All Web Components support a series of lifecycle events that you can tap into to execute custom code at specific points in time. `FASTElement` implements several of these callbacks automatically, in order to enable features of its templating engine (described below). However, you can override them to provide your own code. Here's an example of how you would execute custom code when your element is inserted into the DOM.
 
 **Example: Tapping into the Custom Element Lifecycle**
 
 ```TypeScript
-import { FastElement, customElement, attr } from '@microsoft/fast-element';
+import { FASTElement, customElement, attr } from '@microsoft/fast-element';
 
 @customElement('name-tag')
-export class NameTag extends FastElement {
+export class NameTag extends FASTElement {
   @attr greeting: string = 'Hello';
 
   greetingChanged() {
@@ -153,22 +153,22 @@ The full list of available lifecyle callbacks is:
 
 | Callback | Description |
 | ------------- |-------------|
-| constructor | Runs when the element is created or upgraded. `FastElement` will attach the shadow DOM at this time and hydrate it with the HTML template, if one was provided. |
-| connectedCallback | Runs when the element is inserted into the DOM. `FastElement` will connect template bindings in order to finalize the initial render at this time. |
-| disconnectedCallback | Runs when the element is removed from the DOM. `FastElement` will remove template bindings and clean up resources at this time. |
-| attributeChangedCallback(attrName, oldVal, newVal) | Runs any time one of the element's custom attributes changes. `FastElement` uses this to sync the attribute with its property. When the property updates, a render update is also queued, if there was a template dependency. |
+| constructor | Runs when the element is created or upgraded. `FASTElement` will attach the shadow DOM at this time and hydrate it with the HTML template, if one was provided. |
+| connectedCallback | Runs when the element is inserted into the DOM. `FASTElement` will connect template bindings in order to finalize the initial render at this time. |
+| disconnectedCallback | Runs when the element is removed from the DOM. `FASTElement` will remove template bindings and clean up resources at this time. |
+| attributeChangedCallback(attrName, oldVal, newVal) | Runs any time one of the element's custom attributes changes. `FASTElement` uses this to sync the attribute with its property. When the property updates, a render update is also queued, if there was a template dependency. |
 | adoptedCallback | Runs if the element was moved from its current `document` into a new `document` via a call to the `adoptNode(...)` API. |
 
 ## Declaring a Template
 
-While you can create and update nodes in the Shadow DOM manually, `FastElement` provides a streamlined templating system for the most common rendering scenarios. To create an HTML template for an element, import and use the `html` tagged template helper and pass the template to the `@customElement` decorator.
+While you can create and update nodes in the Shadow DOM manually, `FASTElement` provides a streamlined templating system for the most common rendering scenarios. To create an HTML template for an element, import and use the `html` tagged template helper and pass the template to the `@customElement` decorator.
 
 Here's how we would add a template for our `name-tag` component that renders some basic structure as well as our `greeting`:
 
-**Example: Adding a Template to a `FastElement`**
+**Example: Adding a Template to a `FASTElement`**
 
 ```TypeScript
-import { FastElement, customElement, attr, html } from '@microsoft/fast-element';
+import { FASTElement, customElement, attr, html } from '@microsoft/fast-element';
 
 const template = html<NameTag>`
   <div class="header">
@@ -185,7 +185,7 @@ const template = html<NameTag>`
   name: 'name-tag',
   template
 })
-export class NameTag extends FastElement {
+export class NameTag extends FASTElement {
   @attr greeting: string = 'Hello';
 }
 ```
@@ -255,6 +255,8 @@ You can also use an expression to set an attribute value on an HTML Element. Sim
 </li>
 ```
 
+> **NOTE:** When binding to `class`, the underlying engine will not over-write classes added to the element via other mechanisms. It only adds and removes classes that result directly from the binding. This "safe by default" behavior does come at a slight performance cost. To opt out of this feature and squeeze out every ounce of performance by always overwriting all classes, use a property binding (see below) on the `className` property. e.g. `:className="list-item ${x => x.type}"`.
+
 ```HTML
 <span style="text-decoration: ${x => x.done ? 'line-through' : ''}">
   ${x => x.description}
@@ -295,7 +297,7 @@ Properties can also be set directly on an HTML element. To do so, prepend the pr
 <div :innerHTML=${x => x.someDangerousHTMLContent}></div>
 ```
 
-Avoid scenarios that require you to directly set HTML, especially when the content is coming from an external source. If you must do this, you should always sanitize the HTML. The best way to accomplish HTML sanitization is to configure [a trusted types policy](https://w3c.github.io/webappsec-trusted-types/dist/spec/) with FastElement's template engine. FastElement ensures that all HTML strings pass through the configured policy. Also, by leveraging the platform's trusted types capabilities, you get native enforcement of the policy through CSP headers. Here's an example of how to configure a custom policy to sanitize HTML:
+Avoid scenarios that require you to directly set HTML, especially when the content is coming from an external source. If you must do this, you should always sanitize the HTML. The best way to accomplish HTML sanitization is to configure [a trusted types policy](https://w3c.github.io/webappsec-trusted-types/dist/spec/) with FASTElement's template engine. FASTElement ensures that all HTML strings pass through the configured policy. Also, by leveraging the platform's trusted types capabilities, you get native enforcement of the policy through CSP headers. Here's an example of how to configure a custom policy to sanitize HTML:
 
 ```TypeScript
 import { DOM } from '@microsoft/fast-element';
@@ -344,7 +346,7 @@ To enable expression tracking and change notification, properties must be decora
 
 These decorators are a means of meta-programming the properties on your class, such that they include all the implementation needed to support tracking and observation. You can access any property within your template, but if it hasn't been decorated with one of these two decorators, its value will not update after the initial render.
 
-> **IMPORTANT:** The `@attr` decorator can only be used in a `FastElement` but the `@observable` decorator can be used in any class.
+> **IMPORTANT:** The `@attr` decorator can only be used in a `FASTElement` but the `@observable` decorator can be used in any class.
 
 > **IMPORTANT:** Properties with only a getter, that function as a computed property over other observables, should not be decorated with `@attr` or `@observable`.
 
@@ -381,7 +383,7 @@ The `when` directive enables you to conditionally render blocks of HTML. When yo
 **Example: Conditional Rendering**
 
 ```TypeScript
-import { FastElement, customElement, observable, html, when } from '@microsoft/fast-element';
+import { FASTElement, customElement, observable, html, when } from '@microsoft/fast-element';
 
 const template = html<MyApp>`
   <h1>My App</h1>
@@ -395,7 +397,7 @@ const template = html<MyApp>`
   name: 'my-app',
   template
 })
-export class MyApp extends FastElement {
+export class MyApp extends FASTElement {
   @observable ready: boolean = false;
 
   connectedCallback() {
@@ -409,7 +411,7 @@ export class MyApp extends FastElement {
 }
 ```
 
-> **REMINDER:** The `@observable` decorator creates a property that the template system can watch for changes. It is similar to `@attr`, but the property is not surfaced as an HTML attribute on the element itself. While `@attr` can only be used in a `FastElement`, `@observable` can be used in any class.
+> **REMINDER:** The `@observable` decorator creates a property that the template system can watch for changes. It is similar to `@attr`, but the property is not surfaced as an HTML attribute on the element itself. While `@attr` can only be used in a `FASTElement`, `@observable` can be used in any class.
 
 > **NOTE**: Additional features are planned for `when` which will enable `elseif` and `else` conditional rendering. Today, you need multiple, separate `when` blocks to achieve the same end result.
 
@@ -420,7 +422,7 @@ To render a list of data, use the `repeat` directive, providing the list to rend
 **Example: List Rendering**
 
 ```TypeScript
-import { FastElement, customElement, observable, html } from '@microsoft/fast-element';
+import { FASTElement, customElement, observable, html } from '@microsoft/fast-element';
 import { repeat } from '@microsoft/fast-element/directives/repeat';
 
 const template = html<FriendList>`
@@ -441,7 +443,7 @@ const template = html<FriendList>`
   name: 'friend-list',
   template
 })
-export class FriendList extends FastElement {
+export class FriendList extends FASTElement {
   @observable friends: string[] = [];
   @observable name: string = '';
 
@@ -491,7 +493,7 @@ The `HTMLTemplate` returned from the `html` tag helper is also a directive itsel
 **Example: Composing Templates**
 
 ```TypeScript
-import { FastElement, customElement, observable, html } from '@microsoft/fast-element';
+import { FASTElement, customElement, observable, html } from '@microsoft/fast-element';
 import { repeat } from '@microsoft/fast-element/directives/repeat';
 import { when } from '@microsoft/fast-element/directives/when';
 
@@ -536,7 +538,7 @@ const template = html<FriendList>`
   name: 'friend-list',
   template
 })
-export class FriendList extends FastElement {
+export class FriendList extends FASTElement {
   @observable friends: Person[] = [];
   @observable name: string = '';
 
@@ -566,7 +568,7 @@ Sometimes you need a direct reference to a single DOM node from your template. T
 **Example: Referencing an Element**
 
 ```TypeScript
-import { FastElement, customElement, attr, html, ref } from '@microsoft/fast-element';
+import { FASTElement, customElement, attr, html, ref } from '@microsoft/fast-element';
 
 const template = html<MP4Player>`
   <video ${ref('video')}>
@@ -578,7 +580,7 @@ const template = html<MP4Player>`
   name: 'mp4-player',
   template
 })
-export class MP4Player extends FastElement {
+export class MP4Player extends FASTElement {
   @attr src: string;
   video: HTMLVideoElement;
 
@@ -600,7 +602,7 @@ Besides using `ref` to reference a single DOM node, you can use `children` to ge
 **Example: Referencing Child Nodes**
 
 ```TypeScript
-import { FastElement, customElement, html, children, repeat } from '@microsoft/fast-element';
+import { FASTElement, customElement, html, children, repeat } from '@microsoft/fast-element';
 
 const template = html<FriendList>`
   <ul ${children('listItems')}>
@@ -614,7 +616,7 @@ const template = html<FriendList>`
   name: 'friend-list',
   template
 })
-export class FriendList extends FastElement {
+export class FriendList extends FASTElement {
   @observable listItems: Node[];
   @observable friends: string[] = [];
 
@@ -634,7 +636,7 @@ In the example above, the `listItems` property will be populated with all child 
 Sometimes you may want references to all nodes that are assigned to a particular slot. To accomplish this, use the `slotted` directive. (For more on slots, see the section below on "Working with Shadow DOM".)
 
 ```TypeScript
-import { FastElement, customElement, html, slotted } from '@microsoft/fast-element';
+import { FASTElement, customElement, html, slotted } from '@microsoft/fast-element';
 
 const template = html<MyElement>`
   <div>
@@ -646,7 +648,7 @@ const template = html<MyElement>`
   name: 'my-element',
   template
 })
-export class MyElement extends FastElement {
+export class MyElement extends FASTElement {
   @observable slottedNodes: Node[];
 
   connectedCallback() {
@@ -696,14 +698,14 @@ const template = html<MyProgress>`
 
 So far we've looked at how to define elements, how to define attributes on those elements, and how to control element rendering through declarative templates. However, we haven't yet seen how our custom elements can be composed together with standard HTML or other custom elements.
 
-To enable composition, `FastElement` leverages the Shadow DOM standard. Previously, we've seen how `FastElement` automatically attaches a `ShadowRoot`, and when your element declares a template, it renders that template into the Shadow DOM. To enable element composition, all we need to do is make use of the standard `<slot>` element within our template.
+To enable composition, `FASTElement` leverages the Shadow DOM standard. Previously, we've seen how `FASTElement` automatically attaches a `ShadowRoot`, and when your element declares a template, it renders that template into the Shadow DOM. To enable element composition, all we need to do is make use of the standard `<slot>` element within our template.
 
 Let's return to our original `name-tag` element example and see how we can use a `slot` to compose the person's name.
 
-**Example: Using Slots in a `FastElement`**
+**Example: Using Slots in a `FASTElement`**
 
 ```TypeScript
-import { FastElement, customElement, attr, html } from '@microsoft/fast-element';
+import { FASTElement, customElement, attr, html } from '@microsoft/fast-element';
 
 const template = html<NameTag>`
   <div class="header">
@@ -722,7 +724,7 @@ const template = html<NameTag>`
   name: 'name-tag',
   template
 })
-export class NameTag extends FastElement {
+export class NameTag extends FASTElement {
   @attr greeting: string = 'Hello';
 }
 ```
@@ -771,7 +773,7 @@ In the example above, we use a single `slot` element to render *all* content pla
 **Example: `name-tag` with a Named Slot**
 
 ```TypeScript
-import { FastElement, customElement, attr, html } from '@microsoft/fast-element';
+import { FASTElement, customElement, attr, html } from '@microsoft/fast-element';
 
 const template = html<NameTag>`
   <div class="header">
@@ -791,7 +793,7 @@ const template = html<NameTag>`
   name: 'name-tag',
   template
 })
-export class NameTag extends FastElement {
+export class NameTag extends FASTElement {
   @attr greeting: string = 'Hello';
 }
 ```
@@ -914,13 +916,13 @@ To get the fully composed event path from an event object, invoke the `composedP
 
 #### Custom Events
 
-In various scenarios, it may be appropriate for a custom element to publish its own element-specific events. To do this, you can use the `$emit` helper on `FastElement`. It's a convenience method that creates an instance of `CustomEvent` and uses the `dispatchEvent` API on `FastElement` with the `bubbles: true` and `composed: true` options. It also ensures that the event is only emitted if the custom element is fully connected to the DOM. Here's an example:
+In various scenarios, it may be appropriate for a custom element to publish its own element-specific events. To do this, you can use the `$emit` helper on `FASTElement`. It's a convenience method that creates an instance of `CustomEvent` and uses the `dispatchEvent` API on `FASTElement` with the `bubbles: true` and `composed: true` options. It also ensures that the event is only emitted if the custom element is fully connected to the DOM. Here's an example:
 
 **Example: Custom Event Dispatch**
 
 ```TypeScript
 customElement('my-input')
-export class MyInput extends FastElement {
+export class MyInput extends FASTElement {
   @attr value: string = '';
 
   valueChanged() {
@@ -933,7 +935,7 @@ export class MyInput extends FastElement {
 
 ### Shadow DOM Configuration
 
-In all the examples we've seen so far `FastElement` automatically creates a Shadow Root for your element and attaches it in `open` mode. However, if desired, you can specify `closed` mode or make the element render into the Light DOM instead. These choices can be made by using the `shadowOptions` setting with your `@customElement` decorator.
+In all the examples we've seen so far `FASTElement` automatically creates a Shadow Root for your element and attaches it in `open` mode. However, if desired, you can specify `closed` mode or make the element render into the Light DOM instead. These choices can be made by using the `shadowOptions` setting with your `@customElement` decorator.
 
 **Example: Shadow DOM in Closed Mode**
 
@@ -943,7 +945,7 @@ In all the examples we've seen so far `FastElement` automatically creates a Shad
   template,
   shadowOptions: { mode: 'closed' }
 })
-export class NameTag extends FastElement {
+export class NameTag extends FASTElement {
   @attr greeting: string = 'Hello';
 }
 ```
@@ -958,7 +960,7 @@ export class NameTag extends FastElement {
   template,
   shadowOptions: null
 })
-export class NameTag extends FastElement {
+export class NameTag extends FASTElement {
   @attr greeting: string = 'Hello';
 }
 ```
@@ -969,12 +971,12 @@ In addition to the Shadow DOM mode, `shadowOptions` exposes all the options that
 
 ## Defining CSS
 
-The final piece of our component story is CSS. Similar to HTML, `FastElement` provides a `css` tagged template helper to allow creating and re-using CSS. Let's add some CSS for our `name-tag` component.
+The final piece of our component story is CSS. Similar to HTML, `FASTElement` provides a `css` tagged template helper to allow creating and re-using CSS. Let's add some CSS for our `name-tag` component.
 
-**Example: Adding CSS to a `FastElement`**
+**Example: Adding CSS to a `FASTElement`**
 
 ```TypeScript
-import { html, css, customElement, attr, FastElement } from "@microsoft/fast-element";
+import { html, css, customElement, attr, FASTElement } from "@microsoft/fast-element";
 
 const template = html<NameTag>`
   <div class="header">
@@ -1047,12 +1049,12 @@ const styles = css`
   template,
   styles
 })
-export class NameTag extends FastElement {
+export class NameTag extends FASTElement {
   @attr greeting: string = 'Hello';
 }
 ```
 
-Using the `css` helper, we're able to create `ElementStyles`. We configure this with the element through the `styles` option of the decorator. Internally, `FastElement` will leverage [Constructable Stylesheet Objects](https://wicg.github.io/construct-stylesheets/) and `ShadowRoot#adoptedStyleSheets` to efficiently re-use CSS across components. This means that even if we have 1k instances of our `name-tag` component, they will all share a single instance of the associated styles, allowing for reduced memory allocation and improved performance. Because the styles are associated with the `ShadowRoot`, they will also be encapsulated. This ensures that your styles don't affect other elements and other element styles don't affect your element.
+Using the `css` helper, we're able to create `ElementStyles`. We configure this with the element through the `styles` option of the decorator. Internally, `FASTElement` will leverage [Constructable Stylesheet Objects](https://wicg.github.io/construct-stylesheets/) and `ShadowRoot#adoptedStyleSheets` to efficiently re-use CSS across components. This means that even if we have 1k instances of our `name-tag` component, they will all share a single instance of the associated styles, allowing for reduced memory allocation and improved performance. Because the styles are associated with the `ShadowRoot`, they will also be encapsulated. This ensures that your styles don't affect other elements and other element styles don't affect your element.
 
 > **NOTE:** We've used [CSS Custom Properties](https://developer.mozilla.org/en-US/docs/Web/CSS/--*) throughout our CSS as well as [CSS Calc](https://developer.mozilla.org/en-US/docs/Web/CSS/calc) in order to enable our component to be styled in basic ways by consumers. Additionally, consider adding [CSS Shadow Parts](https://developer.mozilla.org/en-US/docs/Web/CSS/::part) to your template, to enable even more powerful customization.
 
@@ -1120,4 +1122,4 @@ const styles = css`
 
 ## Wrapping Up
 
-We've seen how to use `FastElement` to declaratively build Web Components. In addition to the basics of element and attribute definition, `FastElement` also provides a way to declare templates capable of high-performance rendering, and efficient, incremental batched updates. Finally, CSS can easily be associated with an element in a way that leverages core platform optimizations for performance and low memory allocation.
+We've seen how to use `FASTElement` to declaratively build Web Components. In addition to the basics of element and attribute definition, `FASTElement` also provides a way to declare templates capable of high-performance rendering, and efficient, incremental batched updates. Finally, CSS can easily be associated with an element in a way that leverages core platform optimizations for performance and low memory allocation.

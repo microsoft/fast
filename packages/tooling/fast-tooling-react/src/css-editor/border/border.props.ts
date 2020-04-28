@@ -32,7 +32,7 @@ export interface CSSBorderValues {
     borderWidth?: string;
 }
 
-export interface CSSBorderUnhandledProps extends React.HTMLAttributes<HTMLDivElement> {}
+export type CSSBorderUnhandledProps = React.HTMLAttributes<HTMLDivElement>;
 
 export interface CSSBorderHandledProps
     extends ManagedClasses<CSSBorderClassNameContract> {

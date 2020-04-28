@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.1.7](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-foundation-react@3.1.6...@microsoft/fast-components-foundation-react@3.1.7) (2020-04-27)
+
+**Note:** Version bump only for package @microsoft/fast-components-foundation-react
+
+
+
+
+
+## [3.1.6](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-foundation-react@3.1.5...@microsoft/fast-components-foundation-react@3.1.6) (2020-04-22)
+
+**Note:** Version bump only for package @microsoft/fast-components-foundation-react
+
+
+
+
+
 ## [3.1.5](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-foundation-react@3.1.4...@microsoft/fast-components-foundation-react@3.1.5) (2020-04-10)
 
 **Note:** Version bump only for package @microsoft/fast-components-foundation-react

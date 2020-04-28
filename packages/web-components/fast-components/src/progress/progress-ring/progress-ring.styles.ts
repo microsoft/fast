@@ -2,6 +2,12 @@ import { css } from "@microsoft/fast-element";
 import { display } from "../../styles";
 import { SystemColors } from "../../styles/system-colors";
 import { heightNumber } from "../../styles/size";
+import {
+    accentFillRestBehavior,
+    neutralFillRestBehavior,
+    neutralForegroundHintBehavior,
+} from "../../styles/recipes";
+import { forcedColorsStylesheetBehavior } from "../../styles/match-media-stylesheet-behavior";
 
 export const ProgressRingStyles = css`
     ${display("flex")} :host {
@@ -53,25 +59,6 @@ export const ProgressRingStyles = css`
         stroke: var(--neutral-foreground-hint);
     }
 
-    @media (forced-colors: active) {
-        .indeterminate-indicator-1,
-        .determinate {
-            stroke: ${SystemColors.FieldText};
-        }
-
-        .background {
-            stroke: ${SystemColors.Field};
-        }
-
-        :host(.paused) .indeterminate-indicator-1 {
-            stroke: ${SystemColors.Field};
-        }
-
-        :host(.paused) .determinate {
-            stroke: ${SystemColors.GrayText};
-        }
-    }
-
     @keyframes spin-infinite {
         0% {
             stroke-dasharray: 0.01px 43.97px;
@@ -86,4 +73,25 @@ export const ProgressRingStyles = css`
             transform: rotate(1080deg);
         }
     }
-`;
+`.withBehaviors(
+    accentFillRestBehavior,
+    neutralFillRestBehavior,
+    neutralForegroundHintBehavior,
+    forcedColorsStylesheetBehavior(
+        css`
+            .indeterminate-indicator-1,
+            .determinate {
+                stroke: ${SystemColors.FieldText};
+            }
+            .background {
+                stroke: ${SystemColors.Field};
+            }
+            :host(.paused) .indeterminate-indicator-1 {
+                stroke: ${SystemColors.Field};
+            }
+            :host(.paused) .determinate {
+                stroke: ${SystemColors.GrayText};
+            }
+        `
+    )
+);

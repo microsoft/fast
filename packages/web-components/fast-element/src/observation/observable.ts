@@ -1,11 +1,51 @@
-import { Controller } from "../controller";
-import { FastElement } from "../fast-element";
-import { emptyArray } from "../interfaces";
 import { DOM } from "../dom";
 import { Notifier, PropertyChangeNotifier } from "./notifier";
 
 const notifierLookup = new WeakMap<any, Notifier>();
+const accessorLookup = new WeakMap<any, Accessor[]>();
 let watcher: ObservableExpression | undefined = void 0;
+
+export interface Accessor {
+    name: string;
+    getValue(source: any): any;
+    setValue(source: any, value: any): void;
+}
+
+class DefaultObservableAccessor implements Accessor {
+    private field: string;
+    private callback: string;
+    private hasCallback: boolean;
+
+    constructor(public name: string, target: {}) {
+        this.field = `_${name}`;
+        this.callback = `${name}Changed`;
+        this.hasCallback = this.callback in target;
+    }
+
+    getValue(source: any): any {
+        if (watcher !== void 0) {
+            watcher.observe(source, this.name);
+        }
+
+        return source[this.field];
+    }
+
+    setValue(source: any, newValue: any): void {
+        const field = this.field;
+        const oldValue = source[field];
+
+        if (oldValue !== newValue) {
+            source[field] = newValue;
+
+            if (this.hasCallback) {
+                source[this.callback](oldValue, newValue);
+            }
+
+            /* eslint-disable-next-line @typescript-eslint/no-use-before-define */
+            getNotifier(source).notify(source, this.name);
+        }
+    }
+}
 
 export const Observable = {
     /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
@@ -17,9 +57,7 @@ export const Observable = {
         let found = source.$fastController || notifierLookup.get(source);
 
         if (found === void 0) {
-            if (source instanceof FastElement) {
-                found = Controller.forCustomElement(source);
-            } else if (Array.isArray(source)) {
+            if (Array.isArray(source)) {
                 found = Observable.createArrayObserver(source);
             } else {
                 notifierLookup.set(source, (found = new PropertyChangeNotifier()));
@@ -40,43 +78,45 @@ export const Observable = {
         getNotifier(source).notify(source, args);
     },
 
-    define(target: {}, propertyName: string): void {
-        const fieldName = `_${propertyName}`;
-        const callbackName = `${propertyName}Changed`;
-        const hasCallback = callbackName in target;
+    defineProperty(target: {}, nameOrAccessor: string | Accessor): void {
+        if (typeof nameOrAccessor === "string") {
+            nameOrAccessor = new DefaultObservableAccessor(nameOrAccessor, target);
+        }
 
-        const observedProperties =
-            (target as any).observedProperties ||
-            ((target as any).observedProperties = []);
-        observedProperties.push(propertyName);
+        this.getAccessors(target).push(nameOrAccessor);
 
-        Reflect.defineProperty(target, propertyName, {
+        Reflect.defineProperty(target, nameOrAccessor.name, {
             enumerable: true,
             get: function (this: any) {
-                if (watcher !== void 0) {
-                    watcher.observe(this, propertyName);
-                }
-
-                return this[fieldName];
+                return (nameOrAccessor as Accessor).getValue(this);
             },
             set: function (this: any, newValue: any) {
-                const oldValue = this[fieldName];
-
-                if (oldValue !== newValue) {
-                    this[fieldName] = newValue;
-
-                    if (hasCallback) {
-                        this[callbackName](oldValue, newValue);
-                    }
-                    /* eslint-disable-next-line @typescript-eslint/no-use-before-define */
-                    getNotifier(this).notify(this, propertyName);
-                }
+                (nameOrAccessor as Accessor).setValue(this, newValue);
             },
         });
     },
 
-    getObservedProperties(target: {}): string[] {
-        return (target as any).observedProperties || emptyArray;
+    getAccessors(target: {}): Accessor[] {
+        let accessors = accessorLookup.get(target);
+
+        if (accessors === void 0) {
+            let currentTarget = Reflect.getPrototypeOf(target);
+
+            while (accessors === void 0 && currentTarget !== null) {
+                accessors = accessorLookup.get(currentTarget);
+                currentTarget = Reflect.getPrototypeOf(currentTarget);
+            }
+
+            if (accessors === void 0) {
+                accessors = [];
+            } else {
+                accessors = accessors.slice(0);
+            }
+
+            accessorLookup.set(target, accessors);
+        }
+
+        return accessors;
     },
 };
 
@@ -84,7 +124,7 @@ const getNotifier = Observable.getNotifier;
 const queueUpdate = DOM.queueUpdate;
 
 export function observable($target: {}, $prop: string): void {
-    Observable.define($target, $prop);
+    Observable.defineProperty($target, $prop);
 }
 
 let currentEvent: Event | null = null;
@@ -127,8 +167,8 @@ export class ExecutionContext<TParent = any> {
     }
 }
 
-Observable.define(ExecutionContext.prototype, "index");
-Observable.define(ExecutionContext.prototype, "length");
+Observable.defineProperty(ExecutionContext.prototype, "index");
+Observable.defineProperty(ExecutionContext.prototype, "length");
 
 export const defaultExecutionContext = new ExecutionContext();
 
