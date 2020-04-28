@@ -18,8 +18,7 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: Add/Update packages
-      run: |
-        yarn global add lerna
+      run: sudo yarn global add lerna
 
     - name: Get yarn cache directory path
       id: yarn-cache-dir-path
@@ -35,7 +34,7 @@ jobs:
           ${{ runner.os }}-yarn-
 
     - name: Install package dependencies / prepare workspaces
-      run: yarn install --frozen-lockfile --production=true
+      run: yarn install --frozen-lockfile
 
     - name: Testing Prettier format
       run: lerna run prettier:diff
