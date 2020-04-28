@@ -84,6 +84,10 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
         thumb: void 0,
         minThumbLabel: void 0,
         maxThumbLabel: void 0,
+        minThumbLabelledBy: void 0,
+        maxThumbLabelledBy: void 0,
+        minThumbDescribedBy: void 0,
+        maxThumbDescribedBy: void 0,
         valuetextStringFormatter: void 0,
         displayValueConverter: void 0,
     };
@@ -275,15 +279,9 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
     }
 
     /**
-     * Renders the internals of the component but skips the
-     * first render so we can determine direction before doing layout
-     * (avoids transition animations to get the layout right to begin with)
+     * Renders the internals of the component
      */
     private renderSliderInternals = (): React.ReactNode => {
-        if (this.state.direction === null) {
-            return null;
-        }
-
         return (
             <SliderContext.Provider
                 value={{
@@ -298,6 +296,8 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
                 <div
                     className={classNames(this.props.managedClasses.slider_layoutRegion)}
                     style={{
+                        // hide visuals until we have a direction to avoid flicker
+                        opacity: this.state.direction === null ? 0 : undefined,
                         position: "relative",
                     }}
                 >
@@ -519,6 +519,17 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
                         ? props.maxThumbLabel || null
                         : props.minThumbLabel || null
                 }
+                aria-labelledby={
+                    thumb === SliderThumb.upperThumb
+                        ? props.maxThumbLabelledBy || null
+                        : props.minThumbLabelledBy || null
+                }
+                aria-describedby={
+                    thumb === SliderThumb.upperThumb
+                        ? props.maxThumbDescribedBy || null
+                        : props.minThumbDescribedBy || null
+                }
+                aria-orientation={this.props.orientation}
             />
         );
     }
