@@ -1,45 +1,28 @@
-name: CI - FAST
+name: CI - FAST Local Testing
 
 on:
-  push: 
+  push:
     branches:
-    - master
-    - releases/*
-  pull_request:
-    branches:
-    - master
-    - releases/*
+      - users/*
 
 jobs:
-  build_linux:
+  build_local_linux:
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v2
-
-    - name: Add or Update packages
-      run: sudo yarn global add lerna@3.18.2
-
-    - name: Get yarn cache directory path
-      id: yarn-cache-dir-path
-      run: echo '::set-output name=dir::$(yarn cache dir)'
-
-    - name: Set up node_modules cache
-      uses: actions/cache@v1.1.2
-      id: yarn-cache
-      with:
-        path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-yarn-
+    
+    - name: Add/Update packages
+      run: |
+        sudo apt-get update 
+        sudo apt-get install yarn
+        sudo yarn global upgrade typescript
+        sudo yarn global add lerna
 
     - name: Install package dependencies / prepare workspaces
       run: yarn install --frozen-lockfile
 
-    - name: Testing Prettier format
-      run: lerna run prettier:diff
-
-    - name: Testing unit tests
+    - name: Testing units
       run: lerna run test --stream
 
     - name: Collect and upload code coverage to Code Climate
@@ -64,4 +47,4 @@ jobs:
           ${{github.workspace}}/packages/utilities/fast-colors/coverage/lcov.info:lcov
           ${{github.workspace}}/packages/utilities/fast-web-utilities/coverage/lcov.info:lcov
           ${{github.workspace}}/sites/fast-component-explorer/coverage/lcov.info:lcov
-        debug: false
+        debug: true
