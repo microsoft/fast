@@ -1,30 +1,40 @@
-import {
-    Card,
-    CardProps,
-    cardSchema,
-    imageSchema,
-} from "@microsoft/fast-components-react-msft";
+import { Card, cardSchema2, imageSchema } from "@microsoft/fast-components-react-msft";
 import Guidance from "../../.tmp/card/guidance";
 import { ComponentViewConfig } from "./data.props";
 
-const cardConfig: ComponentViewConfig<CardProps> = {
-    schema: cardSchema,
+const cardConfig: ComponentViewConfig = {
+    schema: cardSchema2,
     component: Card,
     guidance: Guidance,
     scenarios: [
         {
             displayName: "Basic",
-            data: {
-                children: [
-                    {
-                        id: imageSchema.id,
-                        props: {
+            dataDictionary: [
+                {
+                    root: {
+                        schemaId: cardSchema2.id,
+                        data: {
+                            children: [
+                                {
+                                    id: "children",
+                                },
+                            ],
+                        },
+                    },
+                    children: {
+                        parent: {
+                            id: "root",
+                            dataLocation: "children",
+                        },
+                        schemaId: imageSchema.id,
+                        data: {
                             src: "https://placehold.it/300x300/414141",
                             alt: "Placeholder image",
                         },
                     },
-                ],
-            },
+                },
+                "root",
+            ],
         },
     ],
 };
