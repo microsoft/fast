@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.10.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components@0.9.0...@microsoft/fast-components@0.10.0) (2020-04-27)
+
+
+### Bug Fixes
+
+* add mechanism to register custom properties prior to construction ([#2991](https://github.com/Microsoft/fast-dna/issues/2991)) ([42a6f50](https://github.com/Microsoft/fast-dna/commit/42a6f50499632e71d0ef9ce8edeb9d1c92021efc))
+* CSS custom properties not defined when a component first renders ([#2999](https://github.com/Microsoft/fast-dna/issues/2999)) ([db4b694](https://github.com/Microsoft/fast-dna/commit/db4b694090be8497e7384b2f48e76c3955620d22))
+* leverage template to apply classes and tabindex [#2988](https://github.com/Microsoft/fast-dna/issues/2988) ([018cfa1](https://github.com/Microsoft/fast-dna/commit/018cfa18dab561dce2a74def460fcd8205dda275))
+* standardization and refactor ([#3006](https://github.com/Microsoft/fast-dna/issues/3006)) ([046a877](https://github.com/Microsoft/fast-dna/commit/046a877335f59d50cc5015c38e6675477eec5483))
+
+
+### Features
+
+* add radio component ([#2985](https://github.com/Microsoft/fast-dna/issues/2985)) ([fffae9f](https://github.com/Microsoft/fast-dna/commit/fffae9f10e7b7878c89a054829e4788217b79d29))
+* add tab web component ([#2971](https://github.com/Microsoft/fast-dna/issues/2971)) ([b69d5bb](https://github.com/Microsoft/fast-dna/commit/b69d5bb05222ac53f999dc8b88a77f29a92dad61))
+* adds match-media stylesheet behavior ([#3016](https://github.com/Microsoft/fast-dna/issues/3016)) ([650efc3](https://github.com/Microsoft/fast-dna/commit/650efc38641e5a574bff84caa560fb2cdf543cf9))
+
+
+
+
+
 # [0.9.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components@0.8.0...@microsoft/fast-components@0.9.0) (2020-04-22)
 
 
