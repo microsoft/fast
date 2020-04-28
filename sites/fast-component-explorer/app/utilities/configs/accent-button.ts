@@ -1,60 +1,175 @@
-import {
-    AccentButton,
-    AccentButtonProps,
-    accentButtonSchema,
-} from "@microsoft/fast-components-react-msft";
+import { AccentButton, accentButtonSchema2 } from "@microsoft/fast-components-react-msft";
+import textSchema from "../../msft-component-helpers/text.schema";
 import Guidance from "../../.tmp/accent-button/guidance";
-import { glyphSchema, Icon } from "../../../app/components/glyph";
+import { glyphSchema, Icon } from "../../components/glyph";
 import { ComponentViewConfig } from "./data.props";
 
-const accentButtonConfig: ComponentViewConfig<AccentButtonProps> = {
-    schema: accentButtonSchema,
+const accentButtonConfig: ComponentViewConfig = {
+    schema: accentButtonSchema2,
     component: AccentButton,
     guidance: Guidance,
     scenarios: [
         {
             displayName: "Default",
-            data: {
-                children: "Accent button",
-            },
+            dataDictionary: [
+                {
+                    root: {
+                        schemaId: accentButtonSchema2.id,
+                        data: {
+                            children: [
+                                {
+                                    id: "children",
+                                },
+                            ],
+                        },
+                    },
+                    children: {
+                        parent: {
+                            id: "root",
+                            dataLocation: "children",
+                        },
+                        schemaId: textSchema.id,
+                        data: "Accent button",
+                    },
+                },
+                "root",
+            ],
         },
         {
             displayName: "Anchor",
-            data: {
-                href: "#",
-                children: "Accent button",
-            },
+            dataDictionary: [
+                {
+                    root: {
+                        schemaId: accentButtonSchema2.id,
+                        data: {
+                            href: "#",
+                            children: [
+                                {
+                                    id: "children",
+                                },
+                            ],
+                        },
+                    },
+                    children: {
+                        parent: {
+                            id: "root",
+                            dataLocation: "children",
+                        },
+                        schemaId: textSchema.id,
+                        data: "Accent button",
+                    },
+                },
+                "root",
+            ],
         },
         {
             displayName: "Disabled",
-            data: {
-                disabled: true,
-                children: "Accent button",
-            },
+            dataDictionary: [
+                {
+                    root: {
+                        schemaId: accentButtonSchema2.id,
+                        data: {
+                            disabled: true,
+                            children: [
+                                {
+                                    id: "children",
+                                },
+                            ],
+                        },
+                    },
+                    children: {
+                        parent: {
+                            id: "root",
+                            dataLocation: "children",
+                        },
+                        schemaId: textSchema.id,
+                        data: "Accent button",
+                    },
+                },
+                "root",
+            ],
         },
         {
             displayName: "Glyph before text",
-            data: {
-                children: "Accent button",
-                beforeContent: {
-                    id: glyphSchema.id,
-                    props: {
-                        path: Icon.user,
+            dataDictionary: [
+                {
+                    root: {
+                        schemaId: accentButtonSchema2.id,
+                        data: {
+                            beforeContent: [
+                                {
+                                    id: "beforeContent",
+                                },
+                            ],
+                            children: [
+                                {
+                                    id: "children",
+                                },
+                            ],
+                        },
                     },
-                } as any,
-            },
+                    children: {
+                        parent: {
+                            id: "root",
+                            dataLocation: "children",
+                        },
+                        schemaId: textSchema.id,
+                        data: "Accent button",
+                    },
+                    beforeContent: {
+                        parent: {
+                            id: "root",
+                            dataLocation: "beforeContent",
+                        },
+                        schemaId: glyphSchema.id,
+                        data: {
+                            path: Icon.user,
+                        },
+                    },
+                },
+                "root",
+            ],
         },
         {
             displayName: "Glyph after text",
-            data: {
-                children: "Accent button",
-                afterContent: {
-                    id: glyphSchema.id,
-                    props: {
-                        path: Icon.arrow,
+            dataDictionary: [
+                {
+                    root: {
+                        schemaId: accentButtonSchema2.id,
+                        data: {
+                            afterContent: [
+                                {
+                                    id: "afterContent",
+                                },
+                            ],
+                            children: [
+                                {
+                                    id: "children",
+                                },
+                            ],
+                        },
                     },
-                } as any,
-            },
+                    children: {
+                        parent: {
+                            id: "root",
+                            dataLocation: "children",
+                        },
+                        schemaId: textSchema.id,
+                        data: "Accent button",
+                    },
+                    afterContent: {
+                        parent: {
+                            id: "root",
+                            dataLocation: "afterContent",
+                        },
+                        schemaId: glyphSchema.id,
+                        data: {
+                            path: Icon.arrow,
+                        },
+                    },
+                },
+                "root",
+            ],
         },
     ],
 };

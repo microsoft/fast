@@ -1,75 +1,133 @@
 import {
     Slider,
-    sliderLabelSchema,
-    SliderProps,
-    sliderSchema,
+    sliderLabelSchema2,
+    sliderSchema2,
 } from "@microsoft/fast-components-react-msft";
 import Guidance from "../../.tmp/slider/guidance";
 import { ComponentViewConfig } from "./data.props";
 
-const sliderConfig: ComponentViewConfig<SliderProps> = {
-    schema: sliderSchema,
+const sliderConfig: ComponentViewConfig = {
+    schema: sliderSchema2,
     component: Slider,
     guidance: Guidance,
     scenarios: [
         {
             displayName: "Basic",
-            data: {},
+            dataDictionary: [
+                {
+                    root: {
+                        schemaId: sliderSchema2.id,
+                        data: {},
+                    },
+                },
+                "root",
+            ],
         },
         {
             displayName: "Min and max",
-            data: {
-                range: {
-                    minValue: 0,
-                    maxValue: 100,
+            dataDictionary: [
+                {
+                    root: {
+                        schemaId: sliderSchema2.id,
+                        data: {
+                            range: {
+                                minValue: 0,
+                                maxValue: 100,
+                            },
+                        },
+                    },
                 },
-            },
+                "root",
+            ],
         },
         {
             displayName: "With indicators",
-            data: {
-                range: {
-                    minValue: 0,
-                    maxValue: 100,
-                },
-                children: [
-                    {
-                        id: sliderLabelSchema.id,
-                        props: {
+            dataDictionary: [
+                {
+                    root: {
+                        schemaId: sliderSchema2.id,
+                        data: {
+                            range: {
+                                minValue: 0,
+                                maxValue: 100,
+                            },
+                            children: [
+                                {
+                                    id: "children0",
+                                },
+                                {
+                                    id: "children1",
+                                },
+                                {
+                                    id: "children2",
+                                },
+                                {
+                                    id: "children3",
+                                },
+                                {
+                                    id: "children4",
+                                },
+                            ],
+                        },
+                    },
+                    children0: {
+                        parent: {
+                            id: "root",
+                            dataLocation: "children",
+                        },
+                        schemaId: sliderLabelSchema2.id,
+                        data: {
                             valuePositionBinding: 0,
                             label: "low",
                         },
                     },
-                    {
-                        id: sliderLabelSchema.id,
-                        props: {
+                    children1: {
+                        parent: {
+                            id: "root",
+                            dataLocation: "children",
+                        },
+                        schemaId: sliderLabelSchema2.id,
+                        data: {
                             valuePositionBinding: 25,
                             label: "25",
                         },
                     },
-                    {
-                        id: sliderLabelSchema.id,
-                        props: {
+                    children2: {
+                        parent: {
+                            id: "root",
+                            dataLocation: "children",
+                        },
+                        schemaId: sliderLabelSchema2.id,
+                        data: {
                             valuePositionBinding: 50,
-                            label: "low",
+                            label: "50",
                         },
                     },
-                    {
-                        id: sliderLabelSchema.id,
-                        props: {
+                    children3: {
+                        parent: {
+                            id: "root",
+                            dataLocation: "children",
+                        },
+                        schemaId: sliderLabelSchema2.id,
+                        data: {
                             valuePositionBinding: 75,
-                            label: "low",
+                            label: "75",
                         },
                     },
-                    {
-                        id: sliderLabelSchema.id,
-                        props: {
+                    children4: {
+                        parent: {
+                            id: "root",
+                            dataLocation: "children",
+                        },
+                        schemaId: sliderLabelSchema2.id,
+                        data: {
                             valuePositionBinding: 100,
                             label: "high",
                         },
                     },
-                ],
-            },
+                },
+                "root",
+            ],
         },
     ],
 };
