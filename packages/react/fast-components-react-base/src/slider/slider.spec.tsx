@@ -363,7 +363,7 @@ describe("Slider", (): void => {
             <Slider thumb={thumbRenderFn} mode={SliderMode.adjustBoth} />
         );
 
-        expect(thumbRenderFn).toHaveBeenCalledTimes(2);
+        expect(thumbRenderFn).toHaveBeenCalledTimes(4);
     });
 
     test("horizontal orientation class applied by default", (): void => {
@@ -729,7 +729,7 @@ describe("Slider", (): void => {
             }
         );
 
-        expect(valueFormatterFn).toHaveBeenCalledTimes(1);
+        expect(valueFormatterFn).toHaveBeenCalledTimes(2);
         const thumb: any = rendered.find(`.${managedClasses.slider_thumb__upperValue}`);
         expect(thumb.prop("aria-valuetext")).toBe("test Value");
 
@@ -758,7 +758,7 @@ describe("Slider", (): void => {
             }
         );
 
-        expect(displayValueConverterFn).toHaveBeenCalledTimes(3);
+        expect(displayValueConverterFn).toHaveBeenCalledTimes(6);
         const thumb: any = rendered.find(`.${managedClasses.slider_thumb__upperValue}`);
         expect(thumb.prop("aria-valuenow")).toBe(1000);
         expect(thumb.prop("aria-valuemin")).toBe(1000);
@@ -863,26 +863,6 @@ describe("Slider", (): void => {
         );
 
         expect(rendered.state("direction")).toBe(Direction.ltr);
-
-        unmountComponentAtNode(container);
-        document.body.removeChild(container);
-    });
-
-    test("slider internals do not render while direction state is null", (): void => {
-        const container: HTMLDivElement = document.createElement("div");
-        document.body.appendChild(container);
-
-        const rendered: any = mount(<Slider managedClasses={managedClasses} />, {
-            attachTo: container,
-        });
-
-        let renderResults: React.ReactElement<HTMLDivElement> = rendered
-            .instance()
-            ["render"]();
-        expect(React.Children.toArray(renderResults.props.children)).toHaveLength(1);
-        rendered.state().direction = null;
-        renderResults = rendered.instance()["render"]();
-        expect(React.Children.toArray(renderResults.props.children)).toHaveLength(0);
 
         unmountComponentAtNode(container);
         document.body.removeChild(container);
