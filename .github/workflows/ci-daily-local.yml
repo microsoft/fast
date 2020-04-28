@@ -1,5 +1,10 @@
 name: CI - FAST Local Testing
 
+on:
+  push:
+    branches:
+      - users/awentzel/*
+
 jobs:
   build_local_linux:
     runs-on: ubuntu-latest
