@@ -20,6 +20,7 @@
   "scripts": {
     "clean:dist": "node ../../../build/clean.js dist",
     "clean:tmp": "node ../../../build/clean.js .tmp",
+    "coverage": "jest --coverage",
     "eslint": "eslint . --ext .ts",
     "eslint:fix": "eslint . --ext .ts --fix",
     "test": "yarn eslint && yarn unit-tests",
@@ -35,6 +36,12 @@
   },
   "jest": {
     "collectCoverage": true,
+    "coverageReporters": [
+      "json", 
+      [
+        "lcov", {"projectRoot": "../../../"}
+      ]
+    ],
     "coverageThreshold": {
       "global": {
         "statements": 80,
