@@ -1,8 +1,7 @@
 import {
     SliderLabel,
     SliderLabelClassNameContract,
-    SliderLabelProps,
-    sliderLabelSchema,
+    sliderLabelSchema2,
 } from "@microsoft/fast-components-react-msft";
 import { DesignSystem } from "@microsoft/fast-components-styles-msft";
 import { ComponentStyleSheet } from "@microsoft/fast-jss-manager-react";
@@ -16,17 +15,25 @@ const styles: ComponentStyleSheet<SliderLabelClassNameContract, DesignSystem> = 
     sliderLabel__positionMin: {},
 };
 
-const sliderLabelConfig: ComponentViewConfig<SliderLabelProps> = {
-    schema: sliderLabelSchema,
+const sliderLabelConfig: ComponentViewConfig = {
+    schema: sliderLabelSchema2,
     component: SliderLabel,
     guidance: Guidance,
     scenarios: [
         {
             displayName: "Basic",
-            data: {
-                label: "Label",
-                jssStyleSheet: styles,
-            },
+            dataDictionary: [
+                {
+                    root: {
+                        schemaId: sliderLabelSchema2.id,
+                        data: {
+                            label: "Label",
+                            jssStyleSheet: styles,
+                        },
+                    },
+                },
+                "root",
+            ],
         },
     ],
 };
