@@ -29,7 +29,7 @@
     "url": "git+https://github.com/Microsoft/fast-dna.git"
   },
   "author": "Microsoft",
-  "license": "UNLICENSED",
+  "license": "MIT",
   "devDependencies": {
     "@babel/core": "^7.0.0",
     "@babel/plugin-syntax-dynamic-import": "^7.2.0",
