@@ -36,11 +36,6 @@ export class Slider extends FormAssociated<HTMLInputElement>
         if (this.proxy instanceof HTMLElement) {
             this.proxy.readOnly = this.readOnly;
         }
-
-        this.readOnly
-            ? this.classList.add("readonly")
-            : this.classList.remove("readonly");
-        this.setAttribute("aria-readonly", this.readOnly.toString());
     }
 
     public track: HTMLDivElement;

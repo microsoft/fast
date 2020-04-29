@@ -27,37 +27,57 @@ export class SliderLabel extends FASTElement {
     @attr({ attribute: "hide-mark", mode: "boolean" })
     public hideMark: boolean = false;
 
-    private config: SliderConfiguration = {
-        min: 0,
-        max: 0,
-        direction: Direction.ltr,
-        orientation: SliderOrientation.horizontal,
-    };
+    @attr({ attribute: "disabled", mode: "boolean" })
+    public disabled: boolean; // Map to proxy element
 
-    @attr({ mode: "boolean" })
-    public disabled: boolean;
+    @observable
+    public sliderOrientation: SliderOrientation;
+    @observable
+    public sliderMinPosition: number;
+    @observable
+    public sliderMaxPosition: number;
+    @observable
+    public sliderDirection: Direction = Direction.ltr;
 
     public connectedCallback(): void {
         super.connectedCallback();
         this.getSliderConfiguration();
-        this.setStyleForOrientation();
         this.positionStyle = this.positionAsStyle();
         const notifier = Observable.getNotifier(this.parentNode as FASTSlider);
         const handler = {
             sliderLabel: this,
-            /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
             handleChange(source: any, propertyName: string) {
-                if (
-                    propertyName === "direction" ||
-                    propertyName === "max" ||
-                    propertyName === "min"
-                ) {
-                    this.sliderLabel.getSliderConfiguration();
-                } else if (propertyName === "orientation") {
-                    this.sliderLabel.getSliderConfiguration();
-                    this.sliderLabel.setStyleForOrientation();
+                switch (propertyName) {
+                    case "direction":
+                        this.sliderLabel.direction = source.direction;
+                        break;
+                    case "orientation":
+                        this.sliderLabel.sliderOrientation = source.orientation;
+                        break;
+                    case "max":
+                        this.sliderLabel.max = source.max;
+                        break;
+                    case "min":
+                        this.sliderLabel.min = source.min;
+                        break;
+                    default:
+                        break;
                 }
                 this.sliderLabel.positionStyle = this.sliderLabel.positionAsStyle();
+
+                const { min, max, direction, orientation, disabled } = this
+                    .parentNode as SliderConfiguration;
+
+                console.log(
+                    "parent values min:",
+                    min,
+                    " max:",
+                    max,
+                    " orientation:",
+                    orientation,
+                    " direction:",
+                    direction
+                );
             },
         };
 
@@ -67,48 +87,54 @@ export class SliderLabel extends FASTElement {
         notifier.subscribe(handler, "min");
     }
 
-    private setStyleForOrientation = (): void => {
-        if (this.config.orientation === SliderOrientation.horizontal) {
-            this.classList.remove("vertical");
-            this.classList.add("horizontal");
-        } else {
-            this.classList.remove("horizontal");
-            this.classList.add("vertical");
-        }
-    };
-
     private isSliderConfig(node: any): node is SliderConfiguration {
         return node.max !== undefined && node.min !== undefined;
     }
 
     private getSliderConfiguration = (): void => {
         if (!this.isSliderConfig(this.parentNode)) {
-            this.config = defaultConfig;
+            this.sliderDirection = defaultConfig.direction || Direction.ltr;
+            this.sliderOrientation =
+                defaultConfig.orientation || SliderOrientation.horizontal;
+            this.sliderMaxPosition = defaultConfig.max;
+            this.sliderMinPosition = defaultConfig.min;
         } else {
             const { min, max, direction, orientation, disabled } = this
                 .parentNode as SliderConfiguration;
+            console.log(
+                "values from parent min:",
+                min,
+                " max:",
+                max,
+                " orientation:",
+                orientation
+            );
             if (disabled !== undefined) {
                 this.disabled = disabled;
             }
-            this.config = {
-                min,
-                max,
-                direction: direction || Direction.ltr,
-                orientation: orientation || SliderOrientation.horizontal,
-                disabled: disabled || false,
-            };
+            this.sliderDirection = direction || Direction.ltr;
+            this.sliderOrientation = orientation || SliderOrientation.horizontal;
+            this.sliderMaxPosition = max;
+            this.sliderMinPosition = min;
+
+            console.log(
+                "sliderOrientation:",
+                this.sliderOrientation,
+                " sliderMaxPosition:",
+                this.sliderMaxPosition
+            );
         }
     };
 
     private positionAsStyle = (): any => {
-        const direction: Direction = this.config.direction
-            ? this.config.direction
+        const direction: Direction = this.sliderDirection
+            ? this.sliderDirection
             : Direction.ltr;
 
         const pct = convertPixelToPercent(
             Number(this.position),
-            this.config.min,
-            this.config.max
+            this.sliderMinPosition,
+            this.sliderMaxPosition
         );
         let rightNum: number = Math.round((1 - pct) * 100);
         let leftNum: number = Math.round(pct * 100);
@@ -117,7 +143,9 @@ export class SliderLabel extends FASTElement {
             leftNum = 50;
         }
 
-        if (this.config.orientation === SliderOrientation.horizontal) {
+        console.log("leftNum:", leftNum, " rightNum:", rightNum);
+
+        if (this.sliderOrientation === SliderOrientation.horizontal) {
             return direction === Direction.rtl
                 ? `right: ${leftNum}%; left: ${rightNum}%;`
                 : `left: ${leftNum}%; right: ${rightNum}%;`;
