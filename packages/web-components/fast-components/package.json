@@ -26,7 +26,7 @@
     "eslint": "eslint . --ext .ts",
     "eslint:fix": "eslint . --ext .ts --fix",
     "start": "start-storybook -p 6006",
-    "test": "yarn build-storybook && yarn eslint",
+    "test": "build-storybook && yarn eslint",
     "build-storybook": "build-storybook"
   },
   "devDependencies": {
@@ -34,6 +34,7 @@
     "@microsoft/eslint-config-fast-dna": "^1.1.1",
     "@storybook/cli": "^5.3.13",
     "@storybook/html": "^5.3.13",
+    "circular-dependency-plugin": "^5.2.0",
     "prettier": "2.0.2",
     "ts-loader": "^6.2.1",
     "typescript": "^3.7.5"
