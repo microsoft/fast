@@ -7,8 +7,6 @@ export const RadioGroupTemplate = html<RadioGroup>`
         ?aria-disabled="${x => x.disabled}"
         ?aria-readonly="${x => x.readOnly}"
     >
-        <div part="control" class="control">
-            <slot ${slotted("slottedRadioButtons")}> </slot>
-        </div>
+        <slot ${slotted("slottedRadioButtons")}> </slot>
     </template>
 `;

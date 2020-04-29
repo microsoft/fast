@@ -14,17 +14,12 @@ export const RadioGroupStyles = css`
         user-select: none;
         position: relative;
         flex-direction: row;
+        box-sizing: border-box;
+        cursor: pointer;
         transition: all 0.2s ease-in-out;
     }
 
-    .control {
-        position: relative;
-        box-sizing: border-box;
-        outline: none;
-        cursor: pointer;
-    }
-
-    :host(:${focusVisible}) .control {
+    :host(:${focusVisible}) {
         box-shadow: 0 0 0 1px var(--neutral-focus) inset;
         border-color: var(--neutral-focus);
     }
@@ -35,7 +30,7 @@ export const RadioGroupStyles = css`
 `.withBehaviors(
     forcedColorsStylesheetBehavior(
         css`
-            :host(:${focusVisible}) .control {
+            :host(:${focusVisible}) {
                 border-color: ${SystemColors.Highlight};
             }
     
@@ -43,7 +38,7 @@ export const RadioGroupStyles = css`
                 opacity: 1;
             }
     
-            :host(.disabled) .control {
+            :host(.disabled) {
                 forced-color-adjust: none;
                 border-color: ${SystemColors.GrayText};
             }
