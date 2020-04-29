@@ -29,7 +29,7 @@
     "watch": "tsc -p ./tsconfig.json -w --preserveWatchOutput"
   },
   "jest": {
-    "collectCoverage": true,
+    "collectCoverage": false,
     "coverageThreshold": {
       "global": {
         "statements": 95,

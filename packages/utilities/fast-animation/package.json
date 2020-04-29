@@ -18,6 +18,7 @@
   "scripts": {
     "build": "tsc -p ./lib/tsconfig.json",
     "build:app": "webpack --mode=production",
+    "coverage": "jest --coverage",
     "prepare": "yarn build",
     "prettier": "prettier --config ../../../.prettierrc --write \"**/*.{ts,tsx}\"",
     "prettier:diff": "prettier --config ../../../.prettierrc \"**/*.{ts,tsx}\" --list-different",
@@ -30,6 +31,13 @@
   },
   "jest": {
     "collectCoverage": true,
+    "coverageReporters": [
+      "json",
+      "text",
+      [
+        "lcov", {"projectRoot": "../../../"}
+      ]
+    ],
     "coverageThreshold": {
       "global": {
         "statements": 72,

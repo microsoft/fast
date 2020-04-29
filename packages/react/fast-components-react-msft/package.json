@@ -24,6 +24,7 @@
     "copy:all": "yarn convert:json-schema && yarn copy:readme",
     "convert:json-schema": "node ../../../build/convert-schemas.js",
     "copy:readme": "node ../../../build/copy-readme.js",
+    "coverage": "jest --coverage",
     "prepare": "yarn clean:dist && yarn build",
     "prettier": "prettier --config ../../../.prettierrc --write \"**/*.{ts,tsx}\"",
     "prettier:diff": "prettier --config ../../../.prettierrc \"**/*.{ts,tsx}\" --list-different",
@@ -40,6 +41,13 @@
       "./mock.js"
     ],
     "collectCoverage": true,
+    "coverageReporters": [
+      "json",
+      "text",
+      [
+        "lcov", {"projectRoot": "../../../"}
+      ]
+    ],
     "coverageThreshold": {
       "global": {
         "statements": 95,
