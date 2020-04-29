@@ -42,7 +42,8 @@
     ],
     "collectCoverage": true,
     "coverageReporters": [
-      "json", 
+      "json",
+      "text",
       [
         "lcov", {"projectRoot": "../../../"}
       ]
@@ -84,7 +85,6 @@
     "@microsoft/fast-colors": "^5.0.7",
     "@microsoft/fast-jss-manager-react": "^4.7.1",
     "@microsoft/fast-storybook-presets": "^1.2.1",
-    "@microsoft/fast-tooling-react": "^1.32.4",
     "@storybook/addon-actions": "^5.1.9",
     "@storybook/preset-typescript": "^1.0.0",
     "@storybook/react": "^5.1.1",
@@ -127,7 +127,7 @@
     "@microsoft/fast-components-react-base": "^4.25.9",
     "@microsoft/fast-components-styles-msft": "^4.28.8",
     "@microsoft/fast-jss-utilities": "^4.7.11",
-    "@microsoft/fast-tooling": "^0.0.0",
+    "@microsoft/fast-tooling": "^0.3.0",
     "@microsoft/fast-web-utilities": "^4.4.4",
     "exenv-es6": "^1.0.0",
     "utility-types": "^2.1.0"
