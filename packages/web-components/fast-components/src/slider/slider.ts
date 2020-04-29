@@ -10,7 +10,23 @@ import {
 } from "@microsoft/fast-web-utilities";
 import { FormAssociated } from "../form-associated";
 import { convertPixelToPercent } from "./slider-utilities";
-import { SliderConfiguration, SliderMode, SliderOrientation } from "./index";
+
+export enum SliderMode {
+    singleValue = "single-value",
+}
+
+export enum SliderOrientation {
+    horizontal = "horizontal",
+    vertical = "vertical",
+}
+
+export interface SliderConfiguration {
+    max: number;
+    min: number;
+    orientation?: SliderOrientation;
+    direction?: Direction;
+    disabled?: boolean;
+}
 
 export class Slider extends FormAssociated<HTMLInputElement>
     implements SliderConfiguration {

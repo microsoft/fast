@@ -1,6 +1,6 @@
 {
   "name": "@microsoft/fast-creator",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Creator app for composing UIs and general UI development",
   "sideEffects": false,
   "private": true,
@@ -26,10 +26,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://edgewebui@dev.azure.com/edgewebui/Creator/_git/Edge.Creator"
+    "url": "git+https://github.com/Microsoft/fast-dna.git"
   },
   "author": "Microsoft",
-  "license": "UNLICENSED",
+  "license": "MIT",
   "devDependencies": {
     "@babel/core": "^7.0.0",
     "@babel/plugin-syntax-dynamic-import": "^7.2.0",
@@ -38,10 +38,10 @@
     "@microsoft/eslint-config-fast-dna": "^1.1.0",
     "@microsoft/fast-components-class-name-contracts-base": "^4.1.1",
     "@microsoft/fast-components-class-name-contracts-msft": "^4.3.0",
-    "@microsoft/fast-components-foundation-react": "^3.1.7",
-    "@microsoft/fast-jss-manager-react": "^4.7.1",
-    "@microsoft/fast-jss-utilities": "^4.7.11",
-    "@microsoft/fast-layouts-react": "^4.11.8",
+    "@microsoft/fast-components-foundation-react": "^3.1.8",
+    "@microsoft/fast-jss-manager-react": "^4.7.2",
+    "@microsoft/fast-jss-utilities": "^4.7.12",
+    "@microsoft/fast-layouts-react": "^4.11.9",
     "@types/jest": "^25.2.1",
     "@types/node": "^9.6.7",
     "@types/react": "^16.8.0",
@@ -80,8 +80,8 @@
     "worker-loader": "^2.0.0"
   },
   "dependencies": {
-    "@microsoft/fast-components-react-msft": "^4.30.9",
-    "@microsoft/fast-tooling": "^0.3.0",
-    "@microsoft/fast-tooling-react": "^2.0.3"
+    "@microsoft/fast-components-react-msft": "^4.30.10",
+    "@microsoft/fast-tooling": "^0.3.1",
+    "@microsoft/fast-tooling-react": "^2.0.4"
   }
 }
