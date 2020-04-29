@@ -113,7 +113,7 @@ export const FASTElement = Object.assign(createFASTElement(HTMLElement), {
 
 export function customElement(nameOrDef: string | PartialFASTElementDefinition) {
     /* eslint-disable-next-line @typescript-eslint/explicit-function-return-type */
-    return function(type: Function) {
+    return function (type: Function) {
         FASTElement.define(type, nameOrDef);
     };
 }
