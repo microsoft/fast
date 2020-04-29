@@ -92,7 +92,6 @@
     "@types/lodash-es": "^4.17.0",
     "@types/node": "^9.4.7",
     "babel-core": "^7.0.0-bridge.0",
-    
     "babel-preset-env": "^1.6.1",
     "chalk": "^2.4.2",
     "docusaurus-init": "^1.11.0",
