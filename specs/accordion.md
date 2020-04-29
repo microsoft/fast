@@ -82,6 +82,7 @@ As defined by the W3C:
             aria-expanded="true"
             aria-controls="accordion1-panel"
             id="accordion1"
+            tabIndex=0
         >
             <slot name="heading" part="heading">Panel one</slot>
             <slot name="glyph" part="glyph"></slot>
@@ -101,6 +102,7 @@ As defined by the W3C:
             aria-expanded="false"
             aria-controls="accordion2-panel"
             id="accordion2"
+            tabIndex=0
         >
             <slot name="heading" part="heading">Panel two</slot>
             <slot name="glyph" part="glyph"></slot>
@@ -122,6 +124,7 @@ As defined by the W3C:
             aria-expanded="true"
             aria-controls="accordion3-panel"
             id="accordion3"
+            tabIndex=0
         >
             <slot name="heading" part="heading">Panel three</slot>
             <slot name="glyph" part="glyph"></slot>
