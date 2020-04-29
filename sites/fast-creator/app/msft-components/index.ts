@@ -1,7 +1,7 @@
 import { reactComponentDictionary } from "@microsoft/site-utilities";
 
-import textSchema from "./schemas/text.schema";
 import { ComponentDictionary } from "@microsoft/fast-tooling-react";
+import textSchema from "./schemas/text.schema";
 
 export * from "./example-data";
 export { textSchema };
