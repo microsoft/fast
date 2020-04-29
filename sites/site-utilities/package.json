@@ -16,11 +16,6 @@
     },
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
-    "husky": {
-      "hooks": {
-        "pre-commit": "lint-staged"
-      }
-    },
     "lint-staged": {
       "*.{ts,tsx,js}": [
         "npm run prettier",
@@ -32,7 +27,7 @@
       "url": "git+https://github.com/Microsoft/fast-dna.git"
     },
     "author": "Microsoft",
-    "license": "UNLICENSED",
+    "license": "MIT",
     "devDependencies": {
       "@babel/core": "^7.0.0",
       "@babel/plugin-syntax-dynamic-import": "^7.2.0",
@@ -46,7 +41,6 @@
       "babel-loader": "^8.0.6",
       "csstype": "^2.5.8",
       "eslint-config-prettier": "6.10.1",
-      "husky": "^1.2.0",
       "jest": "^25.4.0",
       "jss": "^9.8.7",
       "jss-preset-default": "^4.5.0",
