@@ -14,9 +14,6 @@ export const RadioGroupStyles = css`
         user-select: none;
         position: relative;
         flex-direction: row;
-        box-sizing: border-box;
-        cursor: pointer;
-        transition: all 0.2s ease-in-out;
     }
 
     :host(:${focusVisible}) {

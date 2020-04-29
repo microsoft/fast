@@ -56,9 +56,7 @@ Radio group allows the user to be presented with a list of all the options visib
 <template
     role="radiogroup"
 >
-    <div part="control" class="control">
-        <slot></slot>
-    </div>
+    <slot></slot>
 </template>
 ```
 

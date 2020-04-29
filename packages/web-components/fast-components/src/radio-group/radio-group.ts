@@ -9,7 +9,7 @@ import { FASTRadio } from "../radio";
 
 export class RadioGroup extends FASTElement {
     @attr({ attribute: "readonly", mode: "boolean" })
-    public readOnly: boolean; // Map to proxy element
+    public readOnly: boolean;
     private readOnlyChanged(): void {
         const filteredRadios = this.getFilteredRadioButtons();
         if (filteredRadios !== undefined) {
@@ -24,7 +24,7 @@ export class RadioGroup extends FASTElement {
     }
 
     @attr({ attribute: "disabled", mode: "boolean" })
-    public disabled: boolean; // Map to proxy element
+    public disabled: boolean;
     private disabledChanged(): void {
         const filteredRadios = this.getFilteredRadioButtons();
         if (filteredRadios !== undefined) {
@@ -39,7 +39,7 @@ export class RadioGroup extends FASTElement {
     }
 
     @attr
-    public name: string; // Map to proxy element
+    public name: string;
     protected nameChanged(): void {
         this.getFilteredRadioButtons().forEach((radio: HTMLElement) => {
             radio.setAttribute("name", this.name);
