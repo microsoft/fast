@@ -1,7 +1,12 @@
 import { AttributeDefinition } from "./attributes";
 import { Controller } from "./controller";
 import { Observable } from "./observation/observable";
-import { fastDefinitions, FASTElementDefinition, PartialFASTElementDefinition, getDefinition } from "./fast-definitions";
+import {
+    fastDefinitions,
+    FASTElementDefinition,
+    getDefinition,
+    PartialFASTElementDefinition,
+} from "./fast-definitions";
 
 const defaultShadowOptions: ShadowRootInit = { mode: "open" };
 const defaultElementOptions: ElementDefinitionOptions = {};
@@ -108,7 +113,7 @@ export const FASTElement = Object.assign(createFASTElement(HTMLElement), {
 
 export function customElement(nameOrDef: string | PartialFASTElementDefinition) {
     /* eslint-disable-next-line @typescript-eslint/explicit-function-return-type */
-    return function (type: Function) {
+    return function(type: Function) {
         FASTElement.define(type, nameOrDef);
     };
 }

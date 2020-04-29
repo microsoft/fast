@@ -15,7 +15,6 @@ export class FASTElementDefinition {
     ) {}
 }
 
-
 export type PartialFASTElementDefinition = {
     readonly name: string;
     readonly template?: ElementViewTemplate;
@@ -27,6 +26,8 @@ export type PartialFASTElementDefinition = {
 
 export const fastDefinitions = new Map<Function, FASTElementDefinition>();
 
-export function getDefinition<T extends Function>(Type: T): FASTElementDefinition | undefined {
+export function getDefinition<T extends Function>(
+    Type: T
+): FASTElementDefinition | undefined {
     return fastDefinitions.get(Type);
 }
