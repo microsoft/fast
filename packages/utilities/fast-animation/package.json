@@ -32,7 +32,8 @@
   "jest": {
     "collectCoverage": true,
     "coverageReporters": [
-      "json", 
+      "json",
+      "text",
       [
         "lcov", {"projectRoot": "../../../"}
       ]
