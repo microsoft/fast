@@ -23,6 +23,10 @@ As defined by the W3C:
 
 - **Looping:** Allows the user to navigate from the first slide to the last if the previous button is activated. If on the last slide the user can navigate from the last slide to the first when the next button is activated.
 
+- **ActiveSlideElement:** Provides a reference to the currently active slide from the `change` event.
+
+- **ActiveSlideId:** Provides a way to set the active slide.
+
 
 ### Prior Art/Examples
 - [FAST-DNA (React)](https://explore.fast.design/components/carousel)
@@ -43,7 +47,8 @@ As defined by the W3C:
 - `loop` - boolean value to toggle if the carousel loops slides at the beginning or end (defaults to true)
 - `aria-labelledby` - optional based on implementation**
 - `aria-label` - optional, based on implementation**
-- `paused` - whether the rotation is paused or not
+- `paused` - boolean whether the rotation is paused or not
+- `activeslideid` - string
 
 ** See the [W3C Specification](https://w3c.github.io/aria-practices/#wai-aria-roles-states-and-properties-4) for requirements and details.
 
@@ -56,7 +61,7 @@ As defined by the W3C:
 - `tab-list` - the control to select a certain slide
 
 *Events*
-- `rotate` - callback fired when the a slide rotates. The play/pause state can then be read by the author from the reference element, e.g. event.target.paused
+- `change` - callback fired when the slide changes. This updates the `activeslideid` and passes a reference to the active slide. The play/pause state and `activeslideid` can then be read by the author from the reference element, e.g. event.target.paused, event.target.activeslideid
 
 ### Anatomy and Appearance
 **Structure:**
@@ -173,6 +178,7 @@ Parts:
 
 - `paused` - if the carousel slide rotation is paused
 - `activeSlideElement` - Holds a reference to the HTMLElement that is the active slide.
+- `activeslideid` - the active slide id, can be passed by author to take control of the focused slide.
 
 ### Accessibility
 
