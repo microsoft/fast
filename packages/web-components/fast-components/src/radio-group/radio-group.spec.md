@@ -48,6 +48,21 @@ Radio group allows the user to be presented with a list of all the options visib
 - `change` - raise the change event for external parties to be informed of the selected value change.
 
 ### Anatomy and Appearance
+*Parts:*
+- label
+- control
+
+*Template:*
+```
+<template
+    role="radiogroup"
+>
+    <div part="control" class="control">
+        <slot></slot>
+    </div>
+</template>
+```
+
 
 ### Accessibility
 
