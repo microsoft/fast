@@ -107,6 +107,7 @@ export const FlipperStyles = css`
                 forced-color-adjust: none;
                 background: ${SystemColors.Highlight};
                 border-color: ${SystemColors.ButtonText};
+                opacity: 1;
             }
             :host(:hover) .next,
             :host(:hover) .previous {
