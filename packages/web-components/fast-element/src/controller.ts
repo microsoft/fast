@@ -1,4 +1,4 @@
-import { FASTElement, FASTElementDefinition } from "./fast-element";
+import { FASTElementDefinition, getDefinition } from "./fast-definitions";
 import { ElementView } from "./view";
 import { PropertyChangeNotifier } from "./observation/notifier";
 import { defaultExecutionContext, Observable } from "./observation/observable";
@@ -230,7 +230,7 @@ export class Controller extends PropertyChangeNotifier {
             return controller;
         }
 
-        const definition = FASTElement.getDefinition(element.constructor as any);
+        const definition = getDefinition(element.constructor as any);
 
         if (definition === void 0) {
             throw new Error("Missing fast element definition.");
