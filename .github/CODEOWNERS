@@ -9,14 +9,12 @@
 
 # File type specific owners
 # Markdown specific files
-*.md    @awentzel @chrisdholt @falkicon
+*.md @awentzel @chrisdholt @falkicon
 /docs/ @awentzel @chrisdholt @falkicon
 
 # Github management
 .github/ @awentzel @janechu @chrisdholt @nicholasrice
-
-# Circle Ci
-.circleci/ @awentzel @janechu @nicholasrice @chrisdholt
+.github/workflows/ @awentzel
 
 # Build scripts
 *.yml @awentzel @janechu @nicholasrice @chrisdholt
@@ -56,6 +54,7 @@ build/ @janechu @nicholasrice @chrisdholt @awentzel
 /packages/utilities/fast-animation/ @nicholasrice @chrisdholt
 /packages/utilities/fast-colors/ @nicholasrice @chrisdholt
 /packages/utilities/fast-eslint-rules/ @nicholasrice @janechu @chrisdholt
+/packages/utilities/fast-tslint-rules/ @nicholasrice @janechu @chrisdholt
 /packages/utilities/fast-web-utilities/ @janechu @chrisdholt @nicholasrice
 
 # Web components
