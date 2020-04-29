@@ -5,7 +5,7 @@
 # The last matching pattern has the most precendence.
 
 # These *code owners* will be the default owners for everything in the repository.
-*       @chrisdholt @janechu @nicholasrice
+* @chrisdholt @janechu @nicholasrice
 
 # File type specific owners
 # Markdown specific files
@@ -14,7 +14,7 @@
 
 # Github management
 .github/ @awentzel @janechu @chrisdholt @nicholasrice
-.github/workflows/ @awentzel
+.github/workflows/ @awentzel @chrisdholt
 
 # Build scripts
 *.yml @awentzel @janechu @nicholasrice @chrisdholt
@@ -54,7 +54,6 @@ build/ @janechu @nicholasrice @chrisdholt @awentzel
 /packages/utilities/fast-animation/ @nicholasrice @chrisdholt
 /packages/utilities/fast-colors/ @nicholasrice @chrisdholt
 /packages/utilities/fast-eslint-rules/ @nicholasrice @janechu @chrisdholt
-/packages/utilities/fast-tslint-rules/ @nicholasrice @janechu @chrisdholt
 /packages/utilities/fast-web-utilities/ @janechu @chrisdholt @nicholasrice
 
 # Web components
