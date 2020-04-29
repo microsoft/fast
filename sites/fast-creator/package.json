@@ -26,7 +26,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://edgewebui@dev.azure.com/edgewebui/Creator/_git/Edge.Creator"
+    "url": "git+https://github.com/Microsoft/fast-dna.git"
   },
   "author": "Microsoft",
   "license": "UNLICENSED",
