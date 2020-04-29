@@ -18,8 +18,8 @@ import { RowPosition } from "./data-grid-row.props";
 import throttle from "raf-throttle";
 
 export interface DataGridState {
-    focusRowKey: React.ReactText;
-    focusColumnKey: React.ReactText;
+    focusRowKey: React.ReactText | null;
+    focusColumnKey: React.ReactText | null;
     scrollBarWidth: number;
     currentDataPageStartIndex: number;
     currentDataPageEndIndex: number;
@@ -65,7 +65,7 @@ class DataGrid extends Foundation<
         itemHeightCallback: void 0,
         managedClasses: void 0,
         defaultFocusColumnKey: void 0,
-        defaultFocusRowIndex: void 0,
+        defaultFocusRowKey: void 0,
         stableRangeEndIndex: void 0,
         pageSize: void 0,
     };
@@ -76,9 +76,9 @@ class DataGrid extends Foundation<
     >();
 
     private direction: Direction = Direction.ltr;
-    private defaultRowIndex: number = 0;
     private isFocused: boolean = false;
     private throttledScroll: throttle;
+    private initialFocusRowIndex: number = -1;
 
     /**
      * constructor
@@ -86,24 +86,29 @@ class DataGrid extends Foundation<
     constructor(props: DataGridProps) {
         super(props);
 
-        const rowPositions: rowPosition[] = [];
-        this.throttledScroll = throttle(this.handleScrollChange);
-        this.sizeRowsToIndex(this.props.pageSize, rowPositions);
-
+        let focusRowKey: React.ReactText = null;
+        let focusColumnKey: React.ReactText = null;
         let currentDataPageStartIndex: number = 0;
-        let currentDataPageEndIndex = this.props.pageSize - 1;
-        if (currentDataPageEndIndex > this.props.gridData.length - 1) {
-            currentDataPageEndIndex = this.props.gridData.length - 1;
-        }
+        let currentDataPageEndIndex: number = 0;
+        this.throttledScroll = throttle(this.handleScrollChange);
+        const rowPositions: rowPosition[] = [];
 
-        if (!isNil(this.props.defaultFocusRowIndex)) {
-            const halfPage: number = Math.floor(this.props.pageSize / 2);
+        if (this.props.gridData.length > 0) {
+            if (!isNil(this.props.defaultFocusRowKey)) {
+                focusRowKey = this.props.defaultFocusRowKey;
+                this.initialFocusRowIndex = this.getRowIndexByKey(focusRowKey);
+            }
 
-            currentDataPageStartIndex = this.defaultRowIndex - halfPage;
+            if (this.initialFocusRowIndex === -1) {
+                this.initialFocusRowIndex = 0;
+                focusRowKey = this.props.gridData[0][this.props.dataRowKey];
+            }
+
+            currentDataPageStartIndex =
+                this.initialFocusRowIndex - Math.floor(this.props.pageSize / 2);
             if (currentDataPageStartIndex < 0) {
                 currentDataPageStartIndex = 0;
             }
-
             currentDataPageEndIndex = currentDataPageStartIndex + this.props.pageSize;
             if (currentDataPageEndIndex > this.props.gridData.length - 1) {
                 currentDataPageEndIndex = this.props.gridData.length - 1;
@@ -112,23 +117,13 @@ class DataGrid extends Foundation<
             this.sizeRowsToIndex(currentDataPageEndIndex, rowPositions);
         }
 
-        let focusRowKey: React.ReactText = "";
-        // if (this.props.gridData.length > 0) {
-        //     focusRowKey =
-        //         !isNil(this.props.defaultFocusRowKey) &&
-        //         this.getRowIndexByKey(this.props.defaultFocusRowKey) !== -1
-        //             ? this.props.defaultFocusRowKey
-        //             : this.props.gridData[0][this.props.dataRowKey];
-        // }
-
-        let focusColumnKey: React.ReactText = "";
-        // if (this.props.columnDefinitions.length > 0) {
-        //     focusColumnKey =
-        //         !isNil(this.props.defaultFocusColumnKey) &&
-        //         this.getColumnIndexByKey(this.props.defaultFocusColumnKey) !== -1
-        //             ? this.props.defaultFocusColumnKey
-        //             : this.props.columnDefinitions[0].columnDataKey;
-        // }
+        if (this.props.columnDefinitions.length > 0) {
+            focusColumnKey =
+                !isNil(this.props.defaultFocusColumnKey) &&
+                this.getColumnIndexByKey(this.props.defaultFocusColumnKey) !== -1
+                    ? this.props.defaultFocusColumnKey
+                    : this.props.columnDefinitions[0].columnDataKey;
+        }
 
         this.state = {
             scrollBarWidth: 0,
@@ -189,11 +184,7 @@ class DataGrid extends Foundation<
                 >
                     {this.renderGridHeader()}
                     <StackPanel
-                        initiallyVisibleItemIndex={
-                            isNil(this.props.defaultFocusRowIndex)
-                                ? null
-                                : this.props.defaultFocusRowIndex
-                        }
+                        initiallyVisibleItemIndex={this.initialFocusRowIndex}
                         onScrollChange={this.throttledScroll}
                         itemSpan={itemSpans}
                         style={{
@@ -540,7 +531,7 @@ class DataGrid extends Foundation<
     };
 
     /**
-     * size rows to target index
+     * calculate total height of rows to target index
      * note: this modifies the provided rowposition array directly
      */
     private sizeRowsToIndex = (
@@ -858,41 +849,39 @@ class DataGrid extends Foundation<
      *  Get column index by key
      */
     private getColumnIndexByKey = (columnKey: React.ReactText): number => {
-        const currentColumnIndex: number = this.props.columnDefinitions.findIndex(
+        const columnIndex: number = this.props.columnDefinitions.findIndex(
             (columnDefinition: DataGridColumnDefinition) => {
                 return columnDefinition.columnDataKey === columnKey;
             }
         );
-        return currentColumnIndex;
+        return columnIndex;
     };
 
     /**
      * Get row index by key
      */
     private getRowIndexByKey = (rowKey: ReactText): number => {
-        const currentFocusRowIndex: number = this.props.gridData.findIndex(
-            (dataRow: object) => {
-                return dataRow[this.props.dataRowKey] === rowKey;
-            }
-        );
-        return currentFocusRowIndex === -1 ? this.defaultRowIndex : currentFocusRowIndex;
+        const rowIndex: number = this.props.gridData.findIndex((dataRow: object) => {
+            return dataRow[this.props.dataRowKey] === rowKey;
+        });
+        return rowIndex;
     };
 
     /**
      * Get rowKey
      */
-    private getFocusRowKey = (rowKey: ReactText): ReactText => {
-        const currentFocusRowIndex: number = this.props.gridData.findIndex(
-            (dataRow: object) => {
-                return dataRow[this.props.dataRowKey] === rowKey;
-            }
-        );
-        if (currentFocusRowIndex === -1 && this.props.gridData.length > 0) {
-            return this.props.gridData[this.defaultRowIndex][this.props.dataRowKey];
-        } else {
-            return rowKey;
-        }
-    };
+    // private getFocusRowKey = (rowKey: ReactText): ReactText => {
+    //     const currentFocusRowIndex: number = this.props.gridData.findIndex(
+    //         (dataRow: object) => {
+    //             return dataRow[this.props.dataRowKey] === rowKey;
+    //         }
+    //     );
+    //     if (currentFocusRowIndex === -1 && this.props.gridData.length > 0) {
+    //         return this.props.gridData[this.defaultRowIndex][this.props.dataRowKey];
+    //     } else {
+    //         return rowKey;
+    //     }
+    // };
 
     /**
      * Handle focus event

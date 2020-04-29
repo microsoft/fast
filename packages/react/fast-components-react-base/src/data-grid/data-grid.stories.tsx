@@ -76,13 +76,13 @@ const columnDefinitions: DataGridColumnDefinition[] = [
     {
         columnDataKey: "recordId",
         title: "RecordId",
-        columnWidth: "30%",
+        columnWidth: "120px",
         cell: recordIdCellFn,
     },
     {
         columnDataKey: "image",
         title: "Image",
-        columnWidth: "70%",
+        columnWidth: "auto",
         cell: imageCellFn,
     },
 ];

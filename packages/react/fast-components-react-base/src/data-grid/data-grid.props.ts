@@ -96,9 +96,9 @@ export interface DataGridHandledProps extends DataGridManagedClasses {
     ) => number;
 
     /**
-     * Default focus row index
+     * Default focus row key
      */
-    defaultFocusRowIndex?: number;
+    defaultFocusRowKey?: React.ReactText;
 
     /**
      * Default focus column key
