@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.4](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@2.0.3...@microsoft/fast-tooling-react@2.0.4) (2020-04-29)
+
+
+### Bug Fixes
+
+* address breadcrumb issue when in a location not typically displayed in the breadcrumb array ([#3017](https://github.com/Microsoft/fast-dna/issues/3017)) ([b0276fb](https://github.com/Microsoft/fast-dna/commit/b0276fb82416a5d7418c77e41e1a00399ee54854))
+
+
+
+
+
 ## [2.0.3](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@2.0.2...@microsoft/fast-tooling-react@2.0.3) (2020-04-27)
 
 **Note:** Version bump only for package @microsoft/fast-tooling-react
