@@ -3,6 +3,7 @@ import {
     ActionTrigger,
     Background,
     Badge,
+    cardSchema2,
     Heading,
     HeadingSize,
 } from "@microsoft/fast-components-react-msft";
@@ -51,7 +52,6 @@ import {
     ControlOnChangeConfig,
 } from "@microsoft/fast-tooling-react/dist/form/templates/types";
 import FASTMessageSystemWorker from "@microsoft/fast-tooling/dist/message-system.min.js";
-import * as schemas from "./msft-components";
 import {
     CreatorHandledProps,
     CreatorProps,
@@ -71,20 +71,16 @@ import {
 import { selectDeviceOverrideStyles } from "./utilities/style-overrides";
 import designSystemSchema from "./msft-component-helpers/design-system.schema";
 import { previewReady } from "./preview";
+import { reactComponentSchemaDictionary } from "@microsoft/site-utilities";
+import { textSchema } from "./msft-components";
 
 const fastMessageSystemWorker = new FASTMessageSystemWorker();
-let ajvMapper: AjvMapper;
 let fastMessageSystem: MessageSystem;
 let componentLinkedDataId: string = "root";
 let componentNavigationConfigId: string = "";
 const schemaDictionary: SchemaDictionary = {
-    ...Object.entries(schemas).reduce(
-        (dictionary: any, [key, value]: [string, any]): any => {
-            dictionary[value.id] = value;
-            return dictionary;
-        },
-        {}
-    ),
+    ...reactComponentSchemaDictionary,
+    [textSchema.id]: textSchema,
     [designSystemSchema.id]: designSystemSchema,
 };
 
@@ -124,7 +120,7 @@ class Creator extends Foundation<CreatorHandledProps, {}, CreatorState> {
             dataDictionary: [
                 {
                     [componentLinkedDataId]: {
-                        schemaId: schemas.cardSchema2.id,
+                        schemaId: cardSchema2.id,
                         data: {},
                     },
                     [designSystemLinkedDataId]: {
@@ -160,7 +156,7 @@ class Creator extends Foundation<CreatorHandledProps, {}, CreatorState> {
                 dataDictionary: initialView.dataDictionary,
                 schemaDictionary,
             });
-            ajvMapper = new AjvMapper({
+            new AjvMapper({
                 messageSystem: fastMessageSystem,
             });
             fastMessageSystem.add({ onMessage: this.handleMessageSystem });

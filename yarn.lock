@@ -3839,30 +3839,6 @@
   resolved "https://registry.yarnpkg.com/@mdx-js/util/-/util-1.5.5.tgz#6f88bcb847ebd0117fc81bcd26b83220062fd881"
   integrity sha512-IudQkyZuM8T1CrSX9r0ShPXCABjtEtyrV4lxQqhKAwFqw1aYpy/5LOZhitMLoJTybZPVdPotuh+zjqYy9ZOSbA==
 
-"@microsoft/fast-tooling-react@^1.32.4":
-  version "1.32.4"
-  resolved "https://registry.yarnpkg.com/@microsoft/fast-tooling-react/-/fast-tooling-react-1.32.4.tgz#4d4b1b5ce95c17913442aa3b2d884558649e1d31"
-  integrity sha512-7l2FY5zGEN8Rqf8DJFTWtSoXRwR55h+dSpg2D0HF4S9M1RttDZNE19zyl4zkIXg/eWK/otL+GUGXai4TfSWenw==
-  dependencies:
-    "@microsoft/fast-colors" "^5.0.5"
-    "@microsoft/fast-components-class-name-contracts-base" "^4.6.3"
-    "@microsoft/fast-components-foundation-react" "^3.1.5"
-    "@microsoft/fast-jss-manager-react" "^4.6.4"
-    "@microsoft/fast-jss-utilities" "^4.7.9"
-    "@microsoft/fast-web-utilities" "^4.4.2"
-    ajv "^6.10.0"
-    exenv-es6 "^1.0.0"
-    raf-throttle "^2.0.3"
-    react-dnd "^7.7.0"
-    utility-types "^3.4.1"
-
-"@microsoft/fast-tooling@^0.0.0":
-  version "0.0.0"
-  resolved "https://registry.yarnpkg.com/@microsoft/fast-tooling/-/fast-tooling-0.0.0.tgz#6bd9492c9caf495be2256593cf21a3734c64f40b"
-  integrity sha512-UjtcTZrvQGe4HNpG4Varp+4/sYZ7LgQKHtwTOeCUXGddTokUyvFFCpgRi4lQYMOPQcmU0+aZxmDSFfyh3HGjDg==
-  dependencies:
-    ajv "^6.10.0"
-
 "@mrmlnc/readdir-enhanced@^2.2.1":
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/@mrmlnc/readdir-enhanced/-/readdir-enhanced-2.2.1.tgz#524af240d1a360527b730475ecfa1344aa540dde"
@@ -9676,15 +9652,6 @@ discontinuous-range@1.0.0:
   resolved "https://registry.yarnpkg.com/discontinuous-range/-/discontinuous-range-1.0.0.tgz#e38331f0844bba49b9a9cb71c771585aab1bc65a"
   integrity sha1-44Mx8IRLukm5qctxx3FYWqsbxlo=
 
-dnd-core@^7.7.0:
-  version "7.7.0"
-  resolved "https://registry.yarnpkg.com/dnd-core/-/dnd-core-7.7.0.tgz#3166aefc8c5b85ca4ade4ae836712a3108975fab"
-  integrity sha512-+YqwflWEY1MEAEl2QiEiRaglYkCwIZryyQwximQGuTOm/ns7fS6Lg/i7OCkrtjM10D5FhArf/VUHIL4ZaRBK0g==
-  dependencies:
-    asap "^2.0.6"
-    invariant "^2.2.4"
-    redux "^4.0.1"
-
 dnd-core@^9.5.1:
   version "9.5.1"
   resolved "https://registry.yarnpkg.com/dnd-core/-/dnd-core-9.5.1.tgz#e9ec02d33529b68fa528865704d40ac4b14f2baf"
@@ -12739,7 +12706,7 @@ interpret@^2.0.0:
   resolved "https://registry.yarnpkg.com/interpret/-/interpret-2.0.0.tgz#b783ffac0b8371503e9ab39561df223286aa5433"
   integrity sha512-e0/LknJ8wpMMhTiWcjivB+ESwIuvHnBSlBbmP/pSb8CQJldoj1p2qv7xGZ/+BtbTziYRFSz8OsvdbiX45LtYQA==
 
-invariant@^2.1.0, invariant@^2.2.2, invariant@^2.2.3, invariant@^2.2.4:
+invariant@^2.2.2, invariant@^2.2.3, invariant@^2.2.4:
   version "2.2.4"
   resolved "https://registry.yarnpkg.com/invariant/-/invariant-2.2.4.tgz#610f3c92c9359ce1db616e538008d23ff35158e6"
   integrity sha512-phJfQVBuaJM5raOpJjSfkiD6BpbCE4Ns//LaXl6wGYtUBY83nWS6Rf9tXm2e8VaK60JEjYldbPif/A2B1C2gNA==
@@ -18025,17 +17992,6 @@ react-dnd-html5-backend@^9.0.0:
   integrity sha512-wUdzjREwLqHxFkA6E+XDVL5IFjRDbBI3SHVKil9n3qrGT5dm2tA2oi1aIALdfMKsu00c+OXA9lz/LuKZCE9KXg==
   dependencies:
     dnd-core "^9.5.1"
-
-react-dnd@^7.7.0:
-  version "7.7.0"
-  resolved "https://registry.yarnpkg.com/react-dnd/-/react-dnd-7.7.0.tgz#9d983331ecf87ba33d058d861e6ca9adb8253a2e"
-  integrity sha512-anpJDKMgdXE6kXvtBFmIAe1fuaexpVy7meUyNjiTfCnjQ1mRvnttGTVvcW9fMKijsUQYadiyvzd3BRxteFuVXg==
-  dependencies:
-    "@types/hoist-non-react-statics" "^3.3.1"
-    dnd-core "^7.7.0"
-    hoist-non-react-statics "^3.3.0"
-    invariant "^2.1.0"
-    shallowequal "^1.1.0"
 
 react-dnd@^9.0.0:
   version "9.5.1"

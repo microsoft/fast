@@ -22,7 +22,7 @@ import {
     toggleSchema2,
     typographySchema2,
 } from "@microsoft/fast-components-react-msft";
-import { textSchema } from "./";
+import { textSchema } from "./index";
 
 export interface LinkedDataStack {
     dataLocation: string;
