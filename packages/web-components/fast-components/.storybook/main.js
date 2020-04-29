@@ -1,11 +1,8 @@
 const CircularDependencyPlugin = require("circular-dependency-plugin");
 
-const ciruclarDeps = [];
-
 module.exports = {
     stories: ["../src/**/*.stories.ts"],
     webpackFinal: async config => {
-        console.log(process.env.NODE_ENV);
         config.module.rules.push({
             test: /\.(ts|tsx)$/,
             use: [
