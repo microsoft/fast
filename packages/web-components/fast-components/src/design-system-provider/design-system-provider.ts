@@ -7,6 +7,7 @@ import {
     CSSCustomPropertyDefinition,
     CSSCustomPropertyTarget,
 } from "../custom-properties";
+import { isDesignSystemProvider } from "./is-design-system-provider";
 
 interface DesignSystemPropertyDeclarationConfig {
     customPropertyName?: string;
@@ -57,18 +58,6 @@ export function designSystemProperty<T extends DesignSystemProvider>(
             );
         };
     }
-}
-
-/**
- * Type-safe checking for if an HTMLElement is a DesignSystemProvider.
- * @param el The element to test
- */
-export function isDesignSystemProvider(
-    el: HTMLElement | DesignSystemProvider
-): el is DesignSystemProvider {
-    return (
-        (el as any).isDesignSystemProvider || el.tagName === "FAST-DESIGN-SYSTEM-PROVIDER"
-    );
 }
 
 const supportsAdoptedStylesheets = "adoptedStyleSheets" in window.ShadowRoot.prototype;
