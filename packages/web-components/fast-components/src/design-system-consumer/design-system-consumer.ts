@@ -1,6 +1,7 @@
 import { Behavior } from "@microsoft/fast-element";
 import { composedParent } from "../utilities";
-import { DesignSystemProvider, isDesignSystemProvider } from "../design-system-provider";
+import { DesignSystemProvider } from "../design-system-provider";
+import { isDesignSystemProvider } from "../design-system-provider/is-design-system-provider";
 
 export interface DesignSystemConsumer {
     provider: DesignSystemProvider | null;
