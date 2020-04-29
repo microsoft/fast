@@ -562,7 +562,7 @@ class StackPanel extends Foundation<
      * (including peek)
      */
     private getScrollIntoViewPosition = (index: number): number => {
-        if (index >= this.itemPositions.length) {
+        if (index === -1 || index >= this.itemPositions.length) {
             return 0;
         }
 
