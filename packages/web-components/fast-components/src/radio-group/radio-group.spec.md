@@ -5,9 +5,6 @@
 As defined by the W3C:
 > A radio group is a set of checkable buttons, known as radio buttons, where no more than one of the buttons can be checked at a time. Some implementations may initialize the set with all buttons in the unchecked state in order to force the user to check one of the buttons before moving past a certain point in the workflow.
 
-### Background
-
-
 ### Use Cases
 
 Radio group allows the user to be presented with a list of all the options visible which can facilitate the comparison of choice.

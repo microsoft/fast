@@ -46,9 +46,9 @@ export class RadioGroup extends FASTElement {
         });
     }
 
-    @attr({ attribute: "selected-value" })
-    public selectedValue: string;
-    private selectedValueChanged(): void {
+    @attr
+    public value: string;
+    private valueChanged(): void {
         this.$emit("change");
     }
 
@@ -78,10 +78,7 @@ export class RadioGroup extends FASTElement {
                 radio.setAttribute("readonly", "");
             }
 
-            if (
-                this.selectedValue &&
-                this.selectedValue === radio.getAttribute("value")
-            ) {
+            if (this.value && this.value === radio.getAttribute("value")) {
                 this.selectedRadio = radio;
                 radio.setAttribute("checked", "");
                 radio.setAttribute("tabindex", "0");
@@ -90,7 +87,7 @@ export class RadioGroup extends FASTElement {
             }
         });
 
-        if (this.selectedValue === undefined) {
+        if (this.value === undefined) {
             radioButtons[0].setAttribute("tabindex", "0");
         }
     }
@@ -117,7 +114,7 @@ export class RadioGroup extends FASTElement {
                 }
             });
             this.selectedRadio = changedRadio;
-            this.selectedValue = changedRadio.value;
+            this.value = changedRadio.value;
         }
     };
 

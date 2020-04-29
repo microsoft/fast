@@ -1,4 +1,4 @@
 # fast-radio-group
-An implementation of a [radio](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/radio) as a form-connected web-component.
+An implementation of a [radio-group](https://w3c.github.io/aria-practices/#radiobutton).
 
 For more information view the [component specification](./radio-group.spec.md).

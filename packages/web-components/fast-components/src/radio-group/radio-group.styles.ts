@@ -3,6 +3,7 @@ import { display } from "../styles";
 import { focusVisible } from "../styles/focus";
 import { SystemColors } from "../styles/system-colors";
 import { heightNumber } from "../styles/size";
+import { forcedColorsStylesheetBehavior } from "../styles/match-media-stylesheet-behavior";
 
 export const RadioGroupStyles = css`
     ${display("inline-flex")} :host {
@@ -10,12 +11,7 @@ export const RadioGroupStyles = css`
         align-items: center;
         outline: none;
         margin: calc(var(--design-unit) * 1px) 0;
-        ${
-            /*
-             * Chromium likes to select label text or the default slot when
-             * the radio button is clicked. Maybe there is a better solution here?
-             */ ""
-        } user-select: none;
+        user-select: none;
         position: relative;
         flex-direction: row;
         transition: all 0.2s ease-in-out;
@@ -36,19 +32,21 @@ export const RadioGroupStyles = css`
     :host(.disabled) {
         opacity: var(--disabled-opacity);
     }
-
-    @media (forced-colors: active) {  
-        :host(:${focusVisible}) .control {
-            border-color: ${SystemColors.Highlight};
-        }
-
-        :host(.disabled) {
-            opacity: 1;
-        }
-
-        :host(.disabled) .control {
-            forced-color-adjust: none;
-            border-color: ${SystemColors.GrayText};
-        }
-    }
-`;
+`.withBehaviors(
+    forcedColorsStylesheetBehavior(
+        css`
+            :host(:${focusVisible}) .control {
+                border-color: ${SystemColors.Highlight};
+            }
+    
+            :host(.disabled) {
+                opacity: 1;
+            }
+    
+            :host(.disabled) .control {
+                forced-color-adjust: none;
+                border-color: ${SystemColors.GrayText};
+            }
+        `
+    )
+);
