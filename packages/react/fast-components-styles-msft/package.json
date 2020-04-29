@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-components-styles-msft",
   "description": "Javascript style sheets for FAST components",
   "sideEffects": false,
-  "version": "4.28.8",
+  "version": "4.28.9",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -37,9 +37,13 @@
   "jest": {
     "collectCoverage": true,
     "coverageReporters": [
-      "json", 
+      "json",
+      "text",
       [
-        "lcov", {"projectRoot": "../../../"}
+        "lcov",
+        {
+          "projectRoot": "../../../"
+        }
       ]
     ],
     "coverageThreshold": {
@@ -86,12 +90,12 @@
     "typescript": "3.3.3"
   },
   "dependencies": {
-    "@microsoft/fast-colors": "^5.0.7",
+    "@microsoft/fast-colors": "^5.0.8",
     "@microsoft/fast-components-class-name-contracts-base": "^4.6.4",
     "@microsoft/fast-components-class-name-contracts-msft": "^4.8.4",
-    "@microsoft/fast-jss-manager": "^4.1.15",
-    "@microsoft/fast-jss-utilities": "^4.7.11",
-    "@microsoft/fast-web-utilities": "^4.4.4"
+    "@microsoft/fast-jss-manager": "^4.1.16",
+    "@microsoft/fast-jss-utilities": "^4.7.12",
+    "@microsoft/fast-web-utilities": "^4.4.5"
   },
   "peerDependencies": {
     "lodash-es": "^4.0.0"
