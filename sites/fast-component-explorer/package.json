@@ -38,10 +38,7 @@
     "coverageReporters": [
       "json",
       [
-        "lcov",
-        {
-          "projectRoot": "../../../"
-        }
+        "lcov", {"projectRoot": "../../"}
       ]
     ],
     "coverageThreshold": {
