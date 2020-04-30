@@ -16,8 +16,15 @@ interface DesignSystemPropertyDeclarationConfig {
 
 /**
  * Decorator to declare a property as a design-system property.
- * Accepts an optional config to customize whether a css custom property
- * will be written and if so, what the name of that property is.
+ * Accepts a config object with the following:
+ *
+ * default:
+ * The default value of the property. Will be assigned when the use-defaults attribute is used.
+ *
+ * cssCustomProperty?:
+ * An optional property to control the name of the css custom property being created.
+ * If omitted, the css custom property will share a name with the decorated property name.
+ * If assigned a false value, no css custom property will be created.
  */
 export function designSystemProperty<T extends DesignSystemProvider>(
     config: DesignSystemPropertyDeclarationConfig
