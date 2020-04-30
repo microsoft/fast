@@ -10,8 +10,8 @@ import {
 import { isDesignSystemProvider } from "./is-design-system-provider";
 
 interface DesignSystemPropertyDeclarationConfig {
-    customPropertyName?: string;
-    customProperty?: boolean;
+    cssCustomProperty?: string | false;
+    default: any;
 }
 
 /**
@@ -21,43 +21,26 @@ interface DesignSystemPropertyDeclarationConfig {
  */
 export function designSystemProperty<T extends DesignSystemProvider>(
     config: DesignSystemPropertyDeclarationConfig
-): (source: T, property: string) => void;
-export function designSystemProperty<T extends DesignSystemProvider>(
-    source: T,
-    property: string
-): void;
-export function designSystemProperty<T extends DesignSystemProvider>(
-    configOrSource: T | DesignSystemPropertyDeclarationConfig,
-    property?: string
-): any {
+): (source: T, property: string) => void {
     const decorator = (
         source: T,
         prop: string,
-        config: DesignSystemPropertyDeclarationConfig = {}
+        config: DesignSystemPropertyDeclarationConfig = {} as any
     ) => {
         if (!source.designSystemProperties) {
             source.designSystemProperties = {};
         }
 
         source.designSystemProperties[prop] = {
-            customPropertyName: config.customPropertyName || prop,
-            customProperty:
-                typeof config.customProperty === "boolean" ? config.customProperty : true,
+            cssCustomProperty:
+                config.cssCustomProperty === void 0 ? prop : config.cssCustomProperty,
+            default: config.default,
         };
     };
 
-    if (arguments.length > 1) {
-        // Invoked with no options
-        decorator(configOrSource as T, property!);
-    } else {
-        return (source: T, prop: string) => {
-            decorator(
-                source,
-                prop,
-                configOrSource as DesignSystemPropertyDeclarationConfig
-            );
-        };
-    }
+    return (source: T, prop: string) => {
+        decorator(source, prop, config);
+    };
 }
 
 const supportsAdoptedStylesheets = "adoptedStyleSheets" in window.ShadowRoot.prototype;
@@ -152,17 +135,19 @@ export class DesignSystemProvider extends FASTElement
                 this.designSystem[key] = value;
                 const property = this.designSystemProperties[key];
 
-                if (property && property.customProperty) {
+                if (property && property.cssCustomProperty) {
                     this.setCustomProperty({
-                        name: property.customPropertyName,
+                        name: property.cssCustomProperty,
                         value,
                     });
                 }
             } else {
                 this.syncDesignSystemWithProvider();
-                this.deleteCustomProperty(
-                    this.designSystemProperties[key].customPropertyName
-                );
+                const property = this.designSystemProperties[key].cssCustomProperty;
+                if (typeof property === "string") {
+                    this.deleteCustomProperty(property);
+                }
+
                 this.writeCustomProperties();
             }
         },
@@ -224,10 +209,13 @@ export class DesignSystemProvider extends FASTElement
             // If property is set then put it onto the design system
             if (this.isValidDesignSystemValue(value)) {
                 this.designSystem[property] = value;
-                this.setCustomProperty({
-                    name: this.designSystemProperties[property].customPropertyName,
-                    value,
-                });
+                const { cssCustomProperty } = this.designSystemProperties[property];
+                if (typeof cssCustomProperty === "string") {
+                    this.setCustomProperty({
+                        name: cssCustomProperty,
+                        value,
+                    });
+                }
             }
         });
 

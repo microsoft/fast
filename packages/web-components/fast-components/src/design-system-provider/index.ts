@@ -8,6 +8,7 @@ import {
     DensityOffset,
     DesignSystem,
     DesignSystemDefaults,
+    neutralFillInputHoverDelta,
 } from "@microsoft/fast-components-styles-msft";
 import { designSystemProperty, DesignSystemProvider } from "./design-system-provider";
 import { DesignSystemProviderStyles as styles } from "./design-system-provider.styles";
@@ -51,23 +52,35 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
      * Define design system property attributes
      */
     @attr({ attribute: "background-color", mode: "fromView" })
-    @designSystemProperty({ customPropertyName: "background-color" })
+    @designSystemProperty({
+        cssCustomProperty: "background-color",
+        default: DesignSystemDefaults.backgroundColor,
+    })
     public backgroundColor: string;
 
     @attr({ attribute: "accent-base-color", mode: "fromView" })
-    @designSystemProperty({ customProperty: false })
+    @designSystemProperty({
+        cssCustomProperty: false,
+        default: DesignSystemDefaults.accentBaseColor,
+    })
     public accentBaseColor: string;
 
     @observable
-    @designSystemProperty({ customProperty: false })
+    @designSystemProperty({
+        cssCustomProperty: false,
+        default: DesignSystemDefaults.neutralPalette,
+    })
     public neutralPalette: string[];
 
     @observable
-    @designSystemProperty({ customProperty: false })
+    @designSystemProperty({
+        cssCustomProperty: false,
+        default: DesignSystemDefaults.accentPalette,
+    })
     public accentPalette: string[];
 
     @attr({ converter: nullableNumberConverter, mode: "fromView" })
-    @designSystemProperty
+    @designSystemProperty({ default: DesignSystemDefaults.density })
     public density: DensityOffset;
 
     @attr({
@@ -75,7 +88,10 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
         converter: nullableNumberConverter,
         mode: "fromView",
     })
-    @designSystemProperty({ customPropertyName: "design-unit" })
+    @designSystemProperty({
+        cssCustomProperty: "design-unit",
+        default: DesignSystemDefaults.designUnit,
+    })
     public designUnit: number;
 
     @attr({
@@ -83,7 +99,10 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
         converter: nullableNumberConverter,
         mode: "fromView",
     })
-    @designSystemProperty({ customPropertyName: "base-height-multiplier" })
+    @designSystemProperty({
+        cssCustomProperty: "base-height-multiplier",
+        default: DesignSystemDefaults.baseHeightMultiplier,
+    })
     public baseHeightMultiplier: number;
 
     @attr({
@@ -91,7 +110,10 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
         converter: nullableNumberConverter,
         mode: "fromView",
     })
-    @designSystemProperty({ customPropertyName: "base-horizontal-spacing-multiplier" })
+    @designSystemProperty({
+        cssCustomProperty: "base-horizontal-spacing-multiplier",
+        default: DesignSystemDefaults.baseHorizontalSpacingMultiplier,
+    })
     public baseHorizontalSpacingMultiplier: number;
 
     @attr({
@@ -99,7 +121,10 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
         converter: nullableNumberConverter,
         mode: "fromView",
     })
-    @designSystemProperty({ customPropertyName: "corner-radius" })
+    @designSystemProperty({
+        cssCustomProperty: "corner-radius",
+        default: DesignSystemDefaults.cornerRadius,
+    })
     public cornerRadius: number;
 
     @attr({
@@ -107,7 +132,10 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
         converter: nullableNumberConverter,
         mode: "fromView",
     })
-    @designSystemProperty({ customPropertyName: "elevated-corner-radius" })
+    @designSystemProperty({
+        cssCustomProperty: "elevated-corner-radius",
+        default: DesignSystemDefaults.elevatedCornerRadius,
+    })
     public elevatedCornerRadius: number;
 
     @attr({
@@ -115,7 +143,10 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
         converter: nullableNumberConverter,
         mode: "fromView",
     })
-    @designSystemProperty({ customPropertyName: "outline-width" })
+    @designSystemProperty({
+        cssCustomProperty: "outline-width",
+        default: DesignSystemDefaults.outlineWidth,
+    })
     public outlineWidth: number;
 
     @attr({
@@ -123,7 +154,10 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
         converter: nullableNumberConverter,
         mode: "fromView",
     })
-    @designSystemProperty({ customPropertyName: "focus-outline-width" })
+    @designSystemProperty({
+        cssCustomProperty: "focus-outline-width",
+        default: DesignSystemDefaults.focusOutlineWidth,
+    })
     public focusOutlineWidth: number;
 
     @attr({
@@ -131,7 +165,10 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
         converter: nullableNumberConverter,
         mode: "fromView",
     })
-    @designSystemProperty({ customPropertyName: "disabled-opacity" })
+    @designSystemProperty({
+        cssCustomProperty: "disabled-opacity",
+        default: DesignSystemDefaults.disabledOpacity,
+    })
     public disabledOpacity: number;
 
     @attr({
@@ -139,7 +176,10 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
         converter: nullableNumberConverter,
         mode: "fromView",
     })
-    @designSystemProperty({ customProperty: false })
+    @designSystemProperty({
+        cssCustomProperty: false,
+        default: DesignSystemDefaults.accentFillRestDelta,
+    })
     public accentFillRestDelta: number;
 
     @attr({
@@ -147,7 +187,10 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
         converter: nullableNumberConverter,
         mode: "fromView",
     })
-    @designSystemProperty({ customProperty: false })
+    @designSystemProperty({
+        cssCustomProperty: false,
+        default: DesignSystemDefaults.accentFillHoverDelta,
+    })
     public accentFillHoverDelta: number;
 
     @attr({
@@ -155,7 +198,10 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
         converter: nullableNumberConverter,
         mode: "fromView",
     })
-    @designSystemProperty({ customProperty: false })
+    @designSystemProperty({
+        cssCustomProperty: false,
+        default: DesignSystemDefaults.accentFillActiveDelta,
+    })
     public accentFillActiveDelta: number;
 
     @attr({
@@ -163,7 +209,10 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
         converter: nullableNumberConverter,
         mode: "fromView",
     })
-    @designSystemProperty({ customProperty: false })
+    @designSystemProperty({
+        cssCustomProperty: false,
+        default: DesignSystemDefaults.accentFillFocusDelta,
+    })
     public accentFillFocusDelta: number;
 
     @attr({
@@ -171,7 +220,10 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
         converter: nullableNumberConverter,
         mode: "fromView",
     })
-    @designSystemProperty({ customProperty: false })
+    @designSystemProperty({
+        cssCustomProperty: false,
+        default: DesignSystemDefaults.accentFillSelectedDelta,
+    })
     public accentFillSelectedDelta: number;
 
     @attr({
@@ -179,7 +231,10 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
         converter: nullableNumberConverter,
         mode: "fromView",
     })
-    @designSystemProperty({ customProperty: false })
+    @designSystemProperty({
+        cssCustomProperty: false,
+        default: DesignSystemDefaults.accentForegroundRestDelta,
+    })
     public accentForegroundRestDelta: number;
 
     @attr({
@@ -187,7 +242,10 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
         converter: nullableNumberConverter,
         mode: "fromView",
     })
-    @designSystemProperty({ customProperty: false })
+    @designSystemProperty({
+        cssCustomProperty: false,
+        default: DesignSystemDefaults.accentForegroundHoverDelta,
+    })
     public accentForegroundHoverDelta: number;
 
     @attr({
@@ -195,7 +253,10 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
         converter: nullableNumberConverter,
         mode: "fromView",
     })
-    @designSystemProperty({ customProperty: false })
+    @designSystemProperty({
+        cssCustomProperty: false,
+        default: DesignSystemDefaults.accentForegroundActiveDelta,
+    })
     public accentForegroundActiveDelta: number;
 
     @attr({
@@ -203,7 +264,10 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
         converter: nullableNumberConverter,
         mode: "fromView",
     })
-    @designSystemProperty({ customProperty: false })
+    @designSystemProperty({
+        cssCustomProperty: false,
+        default: DesignSystemDefaults.accentForegroundFocusDelta,
+    })
     public accentForegroundFocusDelta: number;
 
     @attr({
@@ -211,7 +275,10 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
         converter: nullableNumberConverter,
         mode: "fromView",
     })
-    @designSystemProperty({ customProperty: false })
+    @designSystemProperty({
+        cssCustomProperty: false,
+        default: DesignSystemDefaults.neutralFillRestDelta,
+    })
     public neutralFillRestDelta: number;
 
     @attr({
@@ -219,7 +286,10 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
         converter: nullableNumberConverter,
         mode: "fromView",
     })
-    @designSystemProperty({ customProperty: false })
+    @designSystemProperty({
+        cssCustomProperty: false,
+        default: DesignSystemDefaults.neutralFillHoverDelta,
+    })
     public neutralFillHoverDelta: number;
 
     @attr({
@@ -227,7 +297,10 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
         converter: nullableNumberConverter,
         mode: "fromView",
     })
-    @designSystemProperty({ customProperty: false })
+    @designSystemProperty({
+        cssCustomProperty: false,
+        default: DesignSystemDefaults.neutralFillActiveDelta,
+    })
     public neutralFillActiveDelta: number;
 
     @attr({
@@ -235,7 +308,10 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
         converter: nullableNumberConverter,
         mode: "fromView",
     })
-    @designSystemProperty({ customProperty: false })
+    @designSystemProperty({
+        cssCustomProperty: false,
+        default: DesignSystemDefaults.neutralFillFocusDelta,
+    })
     public neutralFillFocusDelta: number;
 
     @attr({
@@ -243,7 +319,10 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
         converter: nullableNumberConverter,
         mode: "fromView",
     })
-    @designSystemProperty({ customProperty: false })
+    @designSystemProperty({
+        cssCustomProperty: false,
+        default: DesignSystemDefaults.neutralFillSelectedDelta,
+    })
     public neutralFillSelectedDelta: number;
 
     @attr({
@@ -251,7 +330,10 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
         converter: nullableNumberConverter,
         mode: "fromView",
     })
-    @designSystemProperty({ customProperty: false })
+    @designSystemProperty({
+        cssCustomProperty: false,
+        default: DesignSystemDefaults.neutralFillInputRestDelta,
+    })
     public neutralFillInputRestDelta: number;
 
     @attr({
@@ -259,7 +341,10 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
         converter: nullableNumberConverter,
         mode: "fromView",
     })
-    @designSystemProperty({ customProperty: false })
+    @designSystemProperty({
+        cssCustomProperty: false,
+        default: DesignSystemDefaults.neutralFillInputHoverDelta,
+    })
     public neutralFillInputHoverDelta: number;
 
     @attr({
@@ -267,7 +352,10 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
         converter: nullableNumberConverter,
         mode: "fromView",
     })
-    @designSystemProperty({ customProperty: false })
+    @designSystemProperty({
+        cssCustomProperty: false,
+        default: DesignSystemDefaults.neutralFillInputActiveDelta,
+    })
     public neutralFillInputActiveDelta: number;
 
     @attr({
@@ -275,7 +363,10 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
         converter: nullableNumberConverter,
         mode: "fromView",
     })
-    @designSystemProperty({ customProperty: false })
+    @designSystemProperty({
+        cssCustomProperty: false,
+        default: DesignSystemDefaults.neutralFillInputFocusDelta,
+    })
     public neutralFillInputFocusDelta: number;
 
     @attr({
@@ -283,7 +374,10 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
         converter: nullableNumberConverter,
         mode: "fromView",
     })
-    @designSystemProperty({ customProperty: false })
+    @designSystemProperty({
+        cssCustomProperty: false,
+        default: DesignSystemDefaults.neutralFillInputSelectedDelta,
+    })
     public neutralFillInputSelectedDelta: number;
 
     @attr({
@@ -291,7 +385,10 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
         converter: nullableNumberConverter,
         mode: "fromView",
     })
-    @designSystemProperty({ customProperty: false })
+    @designSystemProperty({
+        cssCustomProperty: false,
+        default: DesignSystemDefaults.neutralFillStealthRestDelta,
+    })
     public neutralFillStealthRestDelta: number;
 
     @attr({
@@ -299,7 +396,10 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
         converter: nullableNumberConverter,
         mode: "fromView",
     })
-    @designSystemProperty({ customProperty: false })
+    @designSystemProperty({
+        cssCustomProperty: false,
+        default: DesignSystemDefaults.neutralFillStealthHoverDelta,
+    })
     public neutralFillStealthHoverDelta: number;
 
     @attr({
@@ -307,7 +407,10 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
         converter: nullableNumberConverter,
         mode: "fromView",
     })
-    @designSystemProperty({ customProperty: false })
+    @designSystemProperty({
+        cssCustomProperty: false,
+        default: DesignSystemDefaults.neutralFillStealthActiveDelta,
+    })
     public neutralFillStealthActiveDelta: number;
 
     @attr({
@@ -315,7 +418,10 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
         converter: nullableNumberConverter,
         mode: "fromView",
     })
-    @designSystemProperty({ customProperty: false })
+    @designSystemProperty({
+        cssCustomProperty: false,
+        default: DesignSystemDefaults.neutralFillStealthFocusDelta,
+    })
     public neutralFillStealthFocusDelta: number;
 
     @attr({
@@ -323,7 +429,10 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
         converter: nullableNumberConverter,
         mode: "fromView",
     })
-    @designSystemProperty({ customProperty: false })
+    @designSystemProperty({
+        cssCustomProperty: false,
+        default: DesignSystemDefaults.neutralFillStealthSelectedDelta,
+    })
     public neutralFillStealthSelectedDelta: number;
 
     @attr({
@@ -331,7 +440,10 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
         converter: nullableNumberConverter,
         mode: "fromView",
     })
-    @designSystemProperty({ customProperty: false })
+    @designSystemProperty({
+        cssCustomProperty: false,
+        default: DesignSystemDefaults.neutralFillToggleHoverDelta,
+    })
     public neutralFillToggleHoverDelta: number;
 
     @attr({
@@ -339,7 +451,10 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
         converter: nullableNumberConverter,
         mode: "fromView",
     })
-    @designSystemProperty({ customProperty: false })
+    @designSystemProperty({
+        cssCustomProperty: false,
+        default: DesignSystemDefaults.neutralFillToggleActiveDelta,
+    })
     public neutralFillToggleActiveDelta: number;
 
     @attr({
@@ -347,7 +462,10 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
         converter: nullableNumberConverter,
         mode: "fromView",
     })
-    @designSystemProperty({ customProperty: false })
+    @designSystemProperty({
+        cssCustomProperty: false,
+        default: DesignSystemDefaults.neutralFillToggleFocusDelta,
+    })
     public neutralFillToggleFocusDelta: number;
 
     @attr({
@@ -355,7 +473,10 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
         converter: nullableNumberConverter,
         mode: "fromView",
     })
-    @designSystemProperty({ customProperty: false })
+    @designSystemProperty({
+        cssCustomProperty: false,
+        default: DesignSystemDefaults.baseLayerLuminance,
+    })
     public baseLayerLuminance: number; // 0...1
 
     @attr({
@@ -363,7 +484,10 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
         converter: nullableNumberConverter,
         mode: "fromView",
     })
-    @designSystemProperty({ customProperty: false })
+    @designSystemProperty({
+        cssCustomProperty: false,
+        default: DesignSystemDefaults.neutralFillCardDelta,
+    })
     public neutralFillCardDelta: number;
 
     @attr({
@@ -371,7 +495,10 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
         converter: nullableNumberConverter,
         mode: "fromView",
     })
-    @designSystemProperty({ customProperty: false })
+    @designSystemProperty({
+        cssCustomProperty: false,
+        default: DesignSystemDefaults.neutralForegroundHoverDelta,
+    })
     public neutralForegroundHoverDelta: number;
 
     @attr({
@@ -379,7 +506,10 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
         converter: nullableNumberConverter,
         mode: "fromView",
     })
-    @designSystemProperty({ customProperty: false })
+    @designSystemProperty({
+        cssCustomProperty: false,
+        default: DesignSystemDefaults.neutralForegroundActiveDelta,
+    })
     public neutralForegroundActiveDelta: number;
 
     @attr({
@@ -387,7 +517,10 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
         converter: nullableNumberConverter,
         mode: "fromView",
     })
-    @designSystemProperty({ customProperty: false })
+    @designSystemProperty({
+        cssCustomProperty: false,
+        default: DesignSystemDefaults.neutralForegroundFocusDelta,
+    })
     public neutralForegroundFocusDelta: number;
 
     @attr({
@@ -395,7 +528,10 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
         converter: nullableNumberConverter,
         mode: "fromView",
     })
-    @designSystemProperty({ customProperty: false })
+    @designSystemProperty({
+        cssCustomProperty: false,
+        default: DesignSystemDefaults.neutralDividerRestDelta,
+    })
     public neutralDividerRestDelta: number;
 
     @attr({
@@ -403,7 +539,10 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
         converter: nullableNumberConverter,
         mode: "fromView",
     })
-    @designSystemProperty({ customProperty: false })
+    @designSystemProperty({
+        cssCustomProperty: false,
+        default: DesignSystemDefaults.neutralOutlineRestDelta,
+    })
     public neutralOutlineRestDelta: number;
 
     @attr({
@@ -411,7 +550,10 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
         converter: nullableNumberConverter,
         mode: "fromView",
     })
-    @designSystemProperty({ customProperty: false })
+    @designSystemProperty({
+        cssCustomProperty: false,
+        default: DesignSystemDefaults.neutralOutlineHoverDelta,
+    })
     public neutralOutlineHoverDelta: number;
 
     @attr({
@@ -419,7 +561,10 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
         converter: nullableNumberConverter,
         mode: "fromView",
     })
-    @designSystemProperty({ customProperty: false })
+    @designSystemProperty({
+        cssCustomProperty: false,
+        default: DesignSystemDefaults.neutralOutlineActiveDelta,
+    })
     public neutralOutlineActiveDelta: number;
 
     @attr({
@@ -427,7 +572,10 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
         converter: nullableNumberConverter,
         mode: "fromView",
     })
-    @designSystemProperty({ customProperty: false })
+    @designSystemProperty({
+        cssCustomProperty: false,
+        default: DesignSystemDefaults.neutralOutlineFocusDelta,
+    })
     public neutralOutlineFocusDelta: number;
 }
 export * from "./design-system-provider";
