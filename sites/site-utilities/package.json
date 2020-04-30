@@ -1,0 +1,60 @@
+{
+  "name": "@microsoft/site-utilities",
+  "version": "0.0.1",
+  "description": "Utilities for the Creator and Component Explorer sites",
+  "sideEffects": false,
+  "private": true,
+  "scripts": {
+    "build": "tsc -p ./tsconfig.json",
+    "clean:dist": "node ../../build/clean.js dist",
+    "prepare": "yarn clean:dist && yarn build",
+    "prettier": "prettier --config ../../.prettierrc --write \"**/*.{ts,tsx}\"",
+    "prettier:diff": "prettier --config ../../.prettierrc \"**/*.{ts,tsx}\" --list-different",
+    "test": "yarn eslint && yarn build",
+    "eslint": "eslint . --ext .ts,.tsx",
+    "eslint:fix": "eslint . --ext .ts,.tsx --fix"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "lint-staged": {
+    "*.{ts,tsx,js}": [
+      "npm run prettier",
+      "git add ."
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Microsoft/fast-dna.git"
+  },
+  "author": "Microsoft",
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/core": "^7.0.0",
+    "@babel/plugin-syntax-dynamic-import": "^7.2.0",
+    "@babel/preset-env": "^7.1.0",
+    "@babel/preset-react": "^7.0.0",
+    "@microsoft/eslint-config-fast-dna": "^1.1.0",
+    "@types/node": "^9.6.7",
+    "@types/react": "^16.8.0",
+    "babel-core": "^7.0.0-bridge.0",
+    "babel-jest": "^25.4.0",
+    "babel-loader": "^8.0.6",
+    "csstype": "^2.5.8",
+    "eslint-config-prettier": "6.10.1",
+    "jest": "^25.4.0",
+    "jss": "^9.8.7",
+    "jss-preset-default": "^4.5.0",
+    "lint-staged": "^8.1.0",
+    "lodash-es": "^4.17.11",
+    "prettier": "^1.15.3",
+    "raf-throttle": "^2.0.3",
+    "react": "^16.8.0",
+    "ts-jest": "^25.4.0",
+    "typescript": "^3.3.3"
+  },
+  "dependencies": {
+    "@microsoft/fast-components-react-msft": "^4.30.10",
+    "@microsoft/fast-tooling": "^0.3.1",
+    "@microsoft/fast-tooling-react": "^2.0.4"
+  }
+}

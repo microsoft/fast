@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-colors",
   "description": "A color utility for generating a range of colors from a single color",
   "sideEffects": false,
-  "version": "5.0.7",
+  "version": "5.0.8",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -34,9 +34,13 @@
   "jest": {
     "collectCoverage": true,
     "coverageReporters": [
-      "json", 
+      "json",
+      "text",
       [
-        "lcov", {"projectRoot": "../../../"}
+        "lcov",
+        {
+          "projectRoot": "../../../"
+        }
       ]
     ],
     "coveragePathIgnorePatterns": [
