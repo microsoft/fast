@@ -1,4 +1,4 @@
-import { FASTElement, Observable, observable } from "@microsoft/fast-element";
+import { attr, FASTElement, observable, Observable } from "@microsoft/fast-element";
 import {
     DesignSystemConsumer,
     DesignSystemConsumerBehavior,
@@ -25,7 +25,7 @@ export function designSystemProperty<T extends DesignSystemProvider>(
     const decorator = (
         source: T,
         prop: string,
-        config: DesignSystemPropertyDeclarationConfig = {} as any
+        config: DesignSystemPropertyDeclarationConfig
     ) => {
         if (!source.designSystemProperties) {
             source.designSystemProperties = {};
@@ -59,6 +59,23 @@ export class DesignSystemProvider extends FASTElement
      * instead of object assignment
      */
     public designSystem = {};
+
+    /**
+     * Applies the default design-system values to the instance where properties
+     * are not explicitly assigned. This is generally used to set the root design
+     * system context.
+     */
+    @attr({ attribute: "use-defaults", mode: "boolean" })
+    public useDefaults: boolean = false;
+    private useDefaultsChanged() {
+        if (this.useDefaults) {
+            Object.entries(this.designSystemProperties).forEach(([key, property]) => {
+                if (this[key] === void 0) {
+                    this[key] = property.default;
+                }
+            });
+        }
+    }
 
     @observable
     public provider: DesignSystemProvider | null = null;

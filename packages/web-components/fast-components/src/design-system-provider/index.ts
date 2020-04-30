@@ -38,25 +38,6 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
             | "neutralForegroundLightIndex"
         > {
     /**
-     * Applies the default design-system values to the instance where properties
-     * are not explicitly assigned. This is generally used to set the root design
-     * system context.
-     */
-    @attr({ attribute: "use-defaults" })
-    public useDefaults: boolean;
-
-    public connectedCallback(): void {
-        super.connectedCallback();
-
-        if (this.useDefaults === ("" as any)) {
-            Object.keys(this.designSystemProperties).forEach(property => {
-                if (this[property] === void 0) {
-                    this[property] = DesignSystemDefaults[property];
-                }
-            });
-        }
-    }
-    /**
      * Define design system property attributes
      */
     @attr({ attribute: "background-color", ...fromView })
@@ -542,6 +523,7 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
     })
     public neutralOutlineFocusDelta: number;
 }
+
 export * from "./design-system-provider";
 export * from "./design-system-provider.styles";
 export * from "./design-system-provider.template";
