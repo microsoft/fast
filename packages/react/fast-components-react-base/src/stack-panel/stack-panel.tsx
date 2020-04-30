@@ -1,3 +1,4 @@
+import { isArray, isFunction } from "util";
 import { StackPanelClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import { classNames, Direction, RtlScrollConverter } from "@microsoft/fast-web-utilities";
