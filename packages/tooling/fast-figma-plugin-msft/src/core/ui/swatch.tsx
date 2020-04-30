@@ -20,7 +20,7 @@ function Swatch(props: SwatchProps): JSX.Element {
             title={color}
             className={managedClasses.swatch}
             style={{ background: color }}
-            {...rest}
+            {...(rest as any)}
         />
     );
 }
