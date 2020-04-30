@@ -2,7 +2,16 @@ import { attr, observable } from "@microsoft/fast-element";
 import { keyCodeSpace } from "@microsoft/fast-web-utilities";
 import { FormAssociated } from "../form-associated";
 
-export class Radio extends FormAssociated<HTMLInputElement> {
+export interface RadioControl {
+    checked: boolean;
+    disabled: boolean;
+    readOnly: boolean;
+    focus: () => void;
+    setAttribute: (name: string, value: string) => void;
+    getAttribute: (name: string) => string | null;
+}
+
+export class Radio extends FormAssociated<HTMLInputElement> implements RadioControl {
     @attr({ attribute: "readonly", mode: "boolean" })
     public readOnly: boolean; // Map to proxy element
     private readOnlyChanged(): void {

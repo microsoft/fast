@@ -56,7 +56,10 @@ Radio group allows the user to be presented with a list of all the options visib
 <template
     role="radiogroup"
 >
-    <slot></slot>
+    <slot name="label"></slot>
+    <div class="control" part="control">
+        <slot ${slotted("slottedRadioButtons")}> </slot>
+    </div>
 </template>
 ```
 

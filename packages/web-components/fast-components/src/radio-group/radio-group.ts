@@ -5,7 +5,7 @@ import {
     keyCodeArrowRight,
     keyCodeArrowUp,
 } from "@microsoft/fast-web-utilities";
-import { FASTRadio } from "../radio";
+import { RadioControl } from "../radio";
 
 export class RadioGroup extends FASTElement {
     @attr({ attribute: "readonly", mode: "boolean" })
@@ -13,7 +13,7 @@ export class RadioGroup extends FASTElement {
     private readOnlyChanged(): void {
         const filteredRadios = this.getFilteredRadioButtons();
         if (filteredRadios !== undefined) {
-            filteredRadios.forEach((radio: FASTRadio) => {
+            filteredRadios.forEach((radio: HTMLInputElement) => {
                 if (this.disabled) {
                     radio.setAttribute("readonly", "");
                 } else {
@@ -28,7 +28,7 @@ export class RadioGroup extends FASTElement {
     private disabledChanged(): void {
         const filteredRadios = this.getFilteredRadioButtons();
         if (filteredRadios !== undefined) {
-            filteredRadios.forEach((radio: FASTRadio) => {
+            filteredRadios.forEach((radio: HTMLInputElement) => {
                 if (this.disabled) {
                     radio.setAttribute("disabled", "");
                 } else {
@@ -41,19 +41,16 @@ export class RadioGroup extends FASTElement {
     @attr
     public name: string;
     protected nameChanged(): void {
-        this.getFilteredRadioButtons().forEach((radio: FASTRadio) => {
+        this.getFilteredRadioButtons().forEach((radio: HTMLInputElement) => {
             radio.setAttribute("name", this.name);
         });
     }
 
     @attr
     public value: string;
-    private valueChanged(): void {
-        this.$emit("change");
-    }
 
-    @observable slottedRadioButtons: HTMLElement[];
-    private selectedRadio: FASTRadio;
+    @observable slottedRadioButtons: RadioControl[];
+    private selectedRadio: RadioControl;
 
     constructor() {
         super();
@@ -62,10 +59,9 @@ export class RadioGroup extends FASTElement {
 
     public connectedCallback(): void {
         super.connectedCallback();
-
-        const radioButtons: FASTRadio[] = this.getFilteredRadioButtons();
-        radioButtons.forEach((radio: FASTRadio) => {
-            radio.addEventListener("change", this.handleRadioChange);
+        this.addEventListener("change", this.handleRadioChange);
+        const radioButtons: RadioControl[] = this.getFilteredRadioButtons();
+        radioButtons.forEach((radio: RadioControl) => {
             if (this.name !== undefined) {
                 radio.setAttribute("name", this.name);
             }
@@ -92,12 +88,12 @@ export class RadioGroup extends FASTElement {
         }
     }
 
-    private getFilteredRadioButtons = (): FASTRadio[] => {
-        const radioButtons: FASTRadio[] = [];
+    private getFilteredRadioButtons = (): RadioControl[] => {
+        const radioButtons: RadioControl[] = [];
         if (this.slottedRadioButtons !== undefined) {
-            this.slottedRadioButtons.forEach((item: HTMLElement) => {
+            this.slottedRadioButtons.forEach((item: any) => {
                 if (item instanceof HTMLElement) {
-                    radioButtons.push(item as any);
+                    radioButtons.push(item as HTMLInputElement);
                 }
             });
         }
@@ -105,9 +101,9 @@ export class RadioGroup extends FASTElement {
     };
 
     private handleRadioChange = (e: CustomEvent): void => {
-        const changedRadio: FASTRadio = e.target as FASTRadio;
+        const changedRadio: HTMLInputElement = e.target as HTMLInputElement;
         if (changedRadio.checked) {
-            this.getFilteredRadioButtons().forEach((radio: FASTRadio) => {
+            this.getFilteredRadioButtons().forEach((radio: HTMLInputElement) => {
                 if (radio !== changedRadio) {
                     radio.checked = false;
                     radio.setAttribute("tabindex", "-1");
@@ -118,8 +114,8 @@ export class RadioGroup extends FASTElement {
         }
     };
 
-    private moveToRadioByIndex = (group: FASTRadio[], index: number) => {
-        const radio: FASTRadio = group[index];
+    private moveToRadioByIndex = (group: RadioControl[], index: number) => {
+        const radio: RadioControl = group[index];
         if (!radio.readOnly) {
             radio.checked = true;
         }
@@ -128,7 +124,7 @@ export class RadioGroup extends FASTElement {
     };
 
     public keydownHandler = (e: KeyboardEvent): void => {
-        const group: FASTRadio[] = this.getFilteredRadioButtons();
+        const group: RadioControl[] = this.getFilteredRadioButtons();
         let index: number = 0;
         switch (e.keyCode) {
             case keyCodeArrowRight:
