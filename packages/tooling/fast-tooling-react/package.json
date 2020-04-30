@@ -82,7 +82,6 @@
     "@types/react": "^16.8.0",
     "@types/react-router": "^4.0.0",
     "babel-core": "^7.0.0-bridge.0",
-    "babel-jest": "^25.4.0",
     "enzyme": "^3.7.0",
     "enzyme-adapter-react-16": "^1.7.0",
     "eslint-config-prettier": "^6.10.1",
