@@ -69,11 +69,7 @@ sites/website/i18n/
 docs/en/packages/*/README.md
 
 # TypeDoc generated subsites
-<<<<<<< HEAD
-docs/en/packages/*/api/
-=======
 docs/en/packages/*/api/
 
 # GitHub Actions Local Testing
 .github/workflows/testing/*.json
->>>>>>> add bash script to dynamically create local git branch file
