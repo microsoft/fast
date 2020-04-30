@@ -1,5 +1,6 @@
 export * from "./template";
 export * from "./fast-element";
+export { FASTElementDefinition, PartialFASTElementDefinition } from "./fast-definitions";
 export * from "./attributes";
 export * from "./controller";
 export * from "./interfaces";

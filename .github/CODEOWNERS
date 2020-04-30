@@ -5,18 +5,16 @@
 # The last matching pattern has the most precendence.
 
 # These *code owners* will be the default owners for everything in the repository.
-*       @chrisdholt @janechu @nicholasrice
+* @chrisdholt @janechu @nicholasrice
 
 # File type specific owners
 # Markdown specific files
-*.md    @awentzel @chrisdholt @falkicon
+*.md @awentzel @chrisdholt @falkicon
 /docs/ @awentzel @chrisdholt @falkicon
 
 # Github management
 .github/ @awentzel @janechu @chrisdholt @nicholasrice
-
-# Circle Ci
-.circleci/ @awentzel @janechu @nicholasrice @chrisdholt
+.github/workflows/ @awentzel @chrisdholt
 
 # Build scripts
 *.yml @awentzel @janechu @nicholasrice @chrisdholt

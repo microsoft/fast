@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-components-react-base",
   "description": "FAST base components implemented in React.",
   "sideEffects": false,
-  "version": "4.25.9",
+  "version": "4.25.10",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -37,11 +37,15 @@
     "watch": "tsc -p ./tsconfig.json -w --preserveWatchOutput"
   },
   "jest": {
-    "collectCoverage": true,    
+    "collectCoverage": true,
     "coverageReporters": [
-      "json", 
+      "json",
+      "text",
       [
-        "lcov", {"projectRoot": "../../../"}
+        "lcov",
+        {
+          "projectRoot": "../../../"
+        }
       ]
     ],
     "coverageThreshold": {
@@ -77,8 +81,7 @@
     "@babel/preset-env": "^7.1.0",
     "@babel/preset-react": "^7.0.0",
     "@microsoft/eslint-config-fast-dna": "^1.1.1",
-    "@microsoft/fast-storybook-presets": "^1.2.1",
-    "@microsoft/fast-tooling-react": "^1.32.4",
+    "@microsoft/fast-storybook-presets": "^1.2.2",
     "@storybook/addon-actions": "^5.1.9",
     "@storybook/preset-typescript": "^1.1.0",
     "@storybook/react": "^5.1.9",
@@ -120,10 +123,10 @@
   },
   "dependencies": {
     "@microsoft/fast-components-class-name-contracts-base": "^4.6.4",
-    "@microsoft/fast-components-foundation-react": "^3.1.7",
-    "@microsoft/fast-react-utilities": "^1.1.4",
-    "@microsoft/fast-tooling": "^0.0.0",
-    "@microsoft/fast-web-utilities": "^4.4.4",
+    "@microsoft/fast-components-foundation-react": "^3.1.8",
+    "@microsoft/fast-react-utilities": "^1.1.5",
+    "@microsoft/fast-tooling": "^0.3.1",
+    "@microsoft/fast-web-utilities": "^4.4.5",
     "exenv-es6": "^1.0.0",
     "raf-throttle": "^2.0.3",
     "tabbable": "^4.0.0",
