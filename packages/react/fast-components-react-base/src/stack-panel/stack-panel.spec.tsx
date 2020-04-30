@@ -1,12 +1,12 @@
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
+import { Orientation } from "@microsoft/fast-web-utilities";
 import { ConstructibleResizeObserver, DisplayNamePrefix } from "../utilities";
 import StackPanel, {
     StackPanelClassNameContract,
     StackPanelUnhandledProps,
 } from "./stack-panel";
-import { Orientation } from "@microsoft/fast-web-utilities";
 
 /*
  * Configure Enzyme
@@ -72,7 +72,6 @@ describe("stack panel", (): void => {
     });
 
     test("getViewportSpan returns expected value when orientation is vertical", (): void => {
-        const container: HTMLDivElement = document.createElement("div");
         const rendered: any = mount(
             <StackPanel orientation={Orientation.vertical}>item</StackPanel>
         );
@@ -138,7 +137,7 @@ describe("stack panel", (): void => {
         (window as WindowWithResizeObserver).ResizeObserver = MockObserver;
 
         // Render the component
-        const rendered: any = mount(<StackPanel>{sampleStackPanelItems}</StackPanel>);
+        mount(<StackPanel>{sampleStackPanelItems}</StackPanel>);
 
         expect(construct).toBeCalledTimes(1);
         // Replace the window to it's original state

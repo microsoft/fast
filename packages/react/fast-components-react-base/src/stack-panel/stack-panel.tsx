@@ -1,23 +1,17 @@
+import { isArray, isFunction } from "util";
 import { StackPanelClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import { classNames, Direction, RtlScrollConverter } from "@microsoft/fast-web-utilities";
-import { canUseDOM } from "exenv-es6";
 import { get, isNil, merge } from "lodash-es";
 import React from "react";
-import ReactDOM from "react-dom";
 import { toPx } from "@microsoft/fast-jss-utilities";
-import {
-    DisplayNamePrefix,
-    ResizeObserverClassDefinition,
-    ResizeObserverEntry,
-} from "../utilities";
+import { Orientation } from "@microsoft/fast-web-utilities";
+import { DisplayNamePrefix, ResizeObserverClassDefinition } from "../utilities";
 import {
     StackPanelHandledProps,
     StackPanelProps,
     StackPanelUnhandledProps,
 } from "./stack-panel.props";
-import { isArray, isFunction } from "util";
-import { Orientation } from "@microsoft/fast-web-utilities";
 
 export interface StackPanelState {
     isScrollable: boolean;
@@ -464,7 +458,7 @@ class StackPanel extends Foundation<
     /**
      *  Handle viewport resize events
      */
-    private handleResize = (entries: ResizeObserverEntry[]): void => {
+    private handleResize = (): void => {
         this.viewportSpan = this.getViewportSpan();
         this.updateLayout();
     };

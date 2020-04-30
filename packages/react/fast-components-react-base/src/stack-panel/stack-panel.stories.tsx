@@ -1,11 +1,10 @@
+import { isArray } from "util";
+import { Orientation } from "@microsoft/fast-web-utilities";
 import { storiesOf } from "@storybook/react";
 import React from "react";
-import StackPanel, { StackPanelProps } from "./";
 import { isNil } from "lodash-es";
-import Foundation from "@microsoft/fast-components-foundation-react";
 import Button from "../button";
-import { Orientation } from "@microsoft/fast-web-utilities";
-import { isArray } from "util";
+import StackPanel, { StackPanelProps } from "./";
 
 const itemSpans: number[] = [120, 180, 240, 120, 640, 200, 220, 170, 160, 240, 110, 270];
 

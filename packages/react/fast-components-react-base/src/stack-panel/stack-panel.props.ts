@@ -5,9 +5,8 @@ import {
 } from "@microsoft/fast-components-class-name-contracts-base";
 import { Orientation } from "@microsoft/fast-web-utilities";
 
-export interface StackPanelManagedClasses
-    extends ManagedClasses<StackPanelClassNameContract> {}
-export interface StackPanelUnhandledProps extends React.HTMLAttributes<HTMLDivElement> {}
+export type StackPanelManagedClasses = ManagedClasses<StackPanelClassNameContract>;
+export type StackPanelUnhandledProps = React.HTMLAttributes<HTMLDivElement>;
 
 export interface StackPanelHandledProps extends StackPanelManagedClasses {
     /**
