@@ -78,7 +78,6 @@
     "@microsoft/eslint-config-fast-dna": "^1.1.1",
     "@types/jest": "^25.2.1",
     "babel-core": "^7.0.0-bridge.0",
-    "babel-jest": "^25.4.0",
     "eslint-config-prettier": "^6.10.1",
     "jest": "^25.4.0",
     "lodash-es": "^4.0.0",
