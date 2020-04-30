@@ -363,7 +363,7 @@ describe("Slider", (): void => {
             <Slider thumb={thumbRenderFn} mode={SliderMode.adjustBoth} />
         );
 
-        expect(thumbRenderFn).toHaveBeenCalledTimes(2);
+        expect(thumbRenderFn).toHaveBeenCalledTimes(4);
     });
 
     test("horizontal orientation class applied by default", (): void => {
@@ -729,7 +729,7 @@ describe("Slider", (): void => {
             }
         );
 
-        expect(valueFormatterFn).toHaveBeenCalledTimes(1);
+        expect(valueFormatterFn).toHaveBeenCalledTimes(2);
         const thumb: any = rendered.find(`.${managedClasses.slider_thumb__upperValue}`);
         expect(thumb.prop("aria-valuetext")).toBe("test Value");
 
@@ -758,7 +758,7 @@ describe("Slider", (): void => {
             }
         );
 
-        expect(displayValueConverterFn).toHaveBeenCalledTimes(3);
+        expect(displayValueConverterFn).toHaveBeenCalledTimes(6);
         const thumb: any = rendered.find(`.${managedClasses.slider_thumb__upperValue}`);
         expect(thumb.prop("aria-valuenow")).toBe(1000);
         expect(thumb.prop("aria-valuemin")).toBe(1000);
@@ -863,26 +863,6 @@ describe("Slider", (): void => {
         );
 
         expect(rendered.state("direction")).toBe(Direction.ltr);
-
-        unmountComponentAtNode(container);
-        document.body.removeChild(container);
-    });
-
-    test("slider internals do not render while direction state is null", (): void => {
-        const container: HTMLDivElement = document.createElement("div");
-        document.body.appendChild(container);
-
-        const rendered: any = mount(<Slider managedClasses={managedClasses} />, {
-            attachTo: container,
-        });
-
-        let renderResults: React.ReactElement<HTMLDivElement> = rendered
-            .instance()
-            ["render"]();
-        expect(React.Children.toArray(renderResults.props.children)).toHaveLength(1);
-        rendered.state().direction = null;
-        renderResults = rendered.instance()["render"]();
-        expect(React.Children.toArray(renderResults.props.children)).toHaveLength(0);
 
         unmountComponentAtNode(container);
         document.body.removeChild(container);
@@ -1182,6 +1162,50 @@ describe("Slider", (): void => {
         const track: any = rendered.find(`.${managedClasses.slider_track}`);
         track.simulate("mouseDown", { pageY: 50, pageX: 50 });
         expect(onValueChangeFn).toHaveBeenCalledTimes(1);
+
+        unmountComponentAtNode(container);
+        document.body.removeChild(container);
+    });
+
+    test("aria labeling attributes applied to thumbs", (): void => {
+        const container: HTMLDivElement = document.createElement("div");
+        document.body.appendChild(container);
+
+        const rendered: any = mount(
+            <Slider
+                range={{
+                    minValue: 0,
+                    maxValue: 100,
+                }}
+                mode={SliderMode.adjustBoth}
+                managedClasses={managedClasses}
+                minThumbLabel="minLabel"
+                maxThumbLabel="maxLabel"
+                minThumbLabelledBy="minLabelledBy"
+                maxThumbLabelledBy="maxLabelledBy"
+                minThumbDescribedBy="minDescribedBy"
+                maxThumbDescribedBy="maxDescribedBy"
+            />,
+            {
+                attachTo: container,
+            }
+        );
+
+        const upperThumb: any = rendered.find(
+            `.${managedClasses.slider_thumb__upperValue}`
+        );
+        expect(upperThumb.prop("aria-label")).toBe("maxLabel");
+        expect(upperThumb.prop("aria-labelledby")).toBe("maxLabelledBy");
+        expect(upperThumb.prop("aria-describedby")).toBe("maxDescribedBy");
+        expect(upperThumb.prop("aria-orientation")).toBe("horizontal");
+
+        const lowerThumb: any = rendered.find(
+            `.${managedClasses.slider_thumb__lowerValue}`
+        );
+        expect(lowerThumb.prop("aria-label")).toBe("minLabel");
+        expect(lowerThumb.prop("aria-labelledby")).toBe("minLabelledBy");
+        expect(lowerThumb.prop("aria-describedby")).toBe("minDescribedBy");
+        expect(lowerThumb.prop("aria-orientation")).toBe("horizontal");
 
         unmountComponentAtNode(container);
         document.body.removeChild(container);

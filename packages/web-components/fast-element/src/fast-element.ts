@@ -1,33 +1,15 @@
+import { AttributeDefinition } from "./attributes";
 import { Controller } from "./controller";
-import { ElementViewTemplate } from "./template";
-import { ElementStyles } from "./styles";
-import { AttributeConfiguration, AttributeDefinition } from "./attributes";
 import { Observable } from "./observation/observable";
+import {
+    fastDefinitions,
+    FASTElementDefinition,
+    getDefinition,
+    PartialFASTElementDefinition,
+} from "./fast-definitions";
 
 const defaultShadowOptions: ShadowRootInit = { mode: "open" };
 const defaultElementOptions: ElementDefinitionOptions = {};
-
-export type PartialFASTElementDefinition = {
-    readonly name: string;
-    readonly template?: ElementViewTemplate;
-    readonly styles?: ElementStyles;
-    readonly attributes?: (AttributeConfiguration | string)[];
-    readonly shadowOptions?: Partial<ShadowRootInit> | null;
-    readonly elementOptions?: ElementDefinitionOptions;
-};
-
-export class FASTElementDefinition {
-    public constructor(
-        public readonly name: string,
-        public readonly attributes: ReadonlyArray<AttributeDefinition>,
-        public readonly propertyLookup: Record<string, AttributeDefinition>,
-        public readonly attributeLookup: Record<string, AttributeDefinition>,
-        public readonly template?: ElementViewTemplate,
-        public readonly styles?: ElementStyles,
-        public readonly shadowOptions?: ShadowRootInit,
-        public readonly elementOptions?: ElementDefinitionOptions
-    ) {}
-}
 
 /* eslint-disable-next-line @typescript-eslint/explicit-function-return-type */
 function createFASTElement(BaseType: typeof HTMLElement) {
@@ -64,8 +46,6 @@ function createFASTElement(BaseType: typeof HTMLElement) {
         }
     };
 }
-
-const fastDefinitions = new Map<Function, FASTElementDefinition>();
 
 export const FASTElement = Object.assign(createFASTElement(HTMLElement), {
     from(BaseType: typeof HTMLElement) {
@@ -128,9 +108,7 @@ export const FASTElement = Object.assign(createFASTElement(HTMLElement), {
         return Type;
     },
 
-    getDefinition<T extends Function>(Type: T): FASTElementDefinition | undefined {
-        return fastDefinitions.get(Type);
-    },
+    getDefinition,
 });
 
 export function customElement(nameOrDef: string | PartialFASTElementDefinition) {
