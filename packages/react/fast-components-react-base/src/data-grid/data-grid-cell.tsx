@@ -10,6 +10,7 @@ import {
 } from "./data-grid-cell.props";
 import { DataGridContext, DataGridContextType } from "./data-grid-context";
 import { classNames } from "@microsoft/fast-web-utilities";
+import { extractHtmlElement } from "@microsoft/fast-react-utilities";
 
 class DataGridCell extends Foundation<
     DataGridCellHandledProps,
@@ -33,6 +34,7 @@ class DataGridCell extends Foundation<
         columnIndex: void 0,
     };
 
+    private focusTarget: React.RefObject<any> = React.createRef();
     /**
      * Renders the component
      */
@@ -57,15 +59,26 @@ class DataGridCell extends Foundation<
                 this.props,
                 this.generateClassNames(),
                 this.props.columnDefinition.columnDataKey,
-                unhandledProps
+                unhandledProps,
+                this.focusTarget
             );
         } else {
             return this.defaultCellRenderFunction(
                 this.props,
                 this.generateClassNames(),
                 this.props.columnDefinition.columnDataKey,
-                unhandledProps
+                unhandledProps,
+                this.focusTarget
             );
+        }
+    }
+
+    /**
+     * React life-cycle method
+     */
+    public componentDidMount(): void {
+        if (this.isDesiredFocusCell()) {
+            //
         }
     }
 
@@ -85,7 +98,8 @@ class DataGridCell extends Foundation<
         props: DataGridCellProps,
         className: string,
         cellId: React.ReactText,
-        unhandledProps: object
+        unhandledProps: object,
+        focusTarget: React.RefObject<any>
     ): React.ReactNode => {
         return (
             <div
@@ -99,6 +113,21 @@ class DataGridCell extends Foundation<
                 {this.props.rowData[this.props.columnDefinition.columnDataKey]}
             </div>
         );
+    };
+
+    /**
+     * returns true if this is the datagrid's current focus cell
+     */
+    private isDesiredFocusCell = (): boolean => {
+        if (this.context === null) {
+            return false;
+        }
+        return this.props.rowData[this.context.dataGridProps.dataRowKey] ===
+            this.context.dataGridState.desiredFocusRowKey &&
+            this.props.columnDefinition.columnDataKey ===
+                this.context.dataGridState.desiredFocusColumnKey
+            ? true
+            : false;
     };
 
     /**
@@ -127,6 +156,12 @@ class DataGridCell extends Foundation<
      * Handle focus event
      */
     private handleFocus = (e: React.FocusEvent<HTMLElement>): void => {
+        const focusTargetElement: HTMLElement | Text = extractHtmlElement(
+            this.focusTarget
+        );
+        if (focusTargetElement !== null && focusTargetElement instanceof HTMLElement) {
+            focusTargetElement.focus();
+        }
         this.context.onCellFocused(this.props, e);
     };
 }
