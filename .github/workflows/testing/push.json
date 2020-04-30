@@ -1,10 +1,10 @@
 {
     "push": {
       "head": {
-        "ref": "users/awentzel/update-action-cc"
+        "ref": "users/awentzel/test-prettier-failure"
       },
       "base": {
-        "ref": "users/awentzel/update-action-cc"
+        "ref": "users/awentzel/test-prettier-failure"
       }
     }
   }
