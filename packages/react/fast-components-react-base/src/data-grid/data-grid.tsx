@@ -18,6 +18,7 @@ import { RowPosition } from "./data-grid-row.props";
 import throttle from "raf-throttle";
 
 export interface DataGridState {
+    focusRowIndex: number;
     focusRowKey: React.ReactText | null;
     focusColumnKey: React.ReactText | null;
     scrollBarWidth: number;
@@ -131,6 +132,7 @@ class DataGrid extends Foundation<
             currentDataPageEndIndex: currentDataPageEndIndex,
             focusColumnKey,
             focusRowKey,
+            focusRowIndex: this.initialFocusRowIndex,
             rowPositions,
             estimatedTotalHeight: this.getEstimatedTotalHeight(rowPositions),
         };
@@ -249,7 +251,7 @@ class DataGrid extends Foundation<
      * Allows refs to the component to call focus on the grid
      */
     public focus = (): void => {
-        // this.focusOnCell(this.state.focusRowKey, this.state.focusColumnKey);
+        this.focusOnCell(this.state.focusRowKey, this.state.focusColumnKey);
     };
 
     /**
@@ -489,34 +491,6 @@ class DataGrid extends Foundation<
     };
 
     /**
-     * load next page of data
-     */
-    // private sizeNextPage = (rowPositions: rowPosition[]): void => {
-    //     const pageStartIndex: number = rowPositions.length;
-    //     const maxEndIndex: number = this.props.gridData.length - 1;
-
-    //     let pageEndIndex: number = pageStartIndex + this.props.pageSize - 1;
-
-    //     if (pageEndIndex > maxEndIndex) {
-    //         pageEndIndex = maxEndIndex;
-    //     }
-
-    //     for (let i: number = pageStartIndex; i <= pageEndIndex; i++) {
-    //         const thisRowStart: number = i === 0 ? 0 : rowPositions[i - 1].end;
-    //         const thisRowHeight: number = this.props.itemHeightCallback(
-    //             this.props.gridData[i],
-    //             i,
-    //             this.props.itemHeight
-    //         );
-    //         rowPositions.push({
-    //             start: thisRowStart,
-    //             span: thisRowHeight,
-    //             end: thisRowStart + thisRowHeight,
-    //         });
-    //     }
-    // };
-
-    /**
      * get the estimated total height of the datagrid based on row heights calculated so far
      */
     private getEstimatedTotalHeight = (rowPositions: rowPosition[]): number => {
@@ -703,37 +677,31 @@ class DataGrid extends Foundation<
      * move focus to another row
      */
     private incrementFocusRow = (direction: number): void => {
-        // let currentFocusRowIndex: number = this.getRowIndexByKey(this.state.focusRowKey);
-        // if (currentFocusRowIndex === -1) {
-        //     currentFocusRowIndex = 0;
-        // }
-        // let newFocusRowIndex: number = currentFocusRowIndex + direction;
-        // if (newFocusRowIndex < 0) {
-        //     newFocusRowIndex = 0;
-        // } else if (newFocusRowIndex >= this.props.gridData.length) {
-        //     newFocusRowIndex = this.props.gridData.length - 1;
-        // }
-        // const newFocusRowKey: React.ReactText = this.props.gridData[newFocusRowIndex][
-        //     this.props.dataRowKey
-        // ];
-        // const rows: Element[] = this.domChildren(this.gridContainerElement.current);
-        // let rowElement: Element = rows.find((element: HTMLElement) => {
-        //     return element.getAttribute(RowIdKey) === newFocusRowKey;
-        // });
-        // // if we try to move focus outside the range of instanciated elements
-        // // focus on an element at the end/beginning of the range instead
-        // if (isNil(rowElement)) {
-        //     rowElement = direction > 0 ? rows[rows.length - 1] : rows[0];
-        // }
-        // const cellElement: Element = this.domChildren(rowElement as HTMLElement).find(
-        //     (element: HTMLElement) => {
-        //         return element.getAttribute(CellIdKey) === this.state.focusColumnKey;
-        //     }
-        // );
-        // if (isNil(cellElement)) {
-        //     return;
-        // }
-        // (cellElement as HTMLElement).focus();
+        let currentFocusRowIndex: number = this.getRowIndexByKey(this.state.focusRowKey);
+
+        if (currentFocusRowIndex === -1) {
+            currentFocusRowIndex = (this.state.focusRowIndex < this.props.gridData.length) 
+                ? this.state.focusRowIndex 
+                : this.props.gridData.length - 1;
+        }
+
+        let newFocusRowIndex: number = currentFocusRowIndex + direction;
+        if (newFocusRowIndex < 0) {
+            newFocusRowIndex = 0;
+        } else if (newFocusRowIndex >= this.props.gridData.length) {
+            newFocusRowIndex = this.props.gridData.length - 1;
+        }
+        const newFocusRowKey: React.ReactText = this.props.gridData[newFocusRowIndex][
+            this.props.dataRowKey
+        ];
+        
+        const focusRowElement: Element = this.getRowElementByKey(newFocusRowKey);
+        const focusCell: Element = this.getCellElementByKey(this.state.focusColumnKey, focusRowElement);
+        
+        if (isNil(focusCell)) {
+            return;
+        }
+        (focusCell as HTMLElement).focus();
     };
 
     /**
@@ -777,7 +745,7 @@ class DataGrid extends Foundation<
         );
 
         if (cellElement instanceof HTMLElement) {
-            // cellElement.focus();
+            cellElement.focus();
         }
     };
 
@@ -785,18 +753,12 @@ class DataGrid extends Foundation<
      *  Get row element by key
      */
     private getRowElementByKey = (rowId: React.ReactText): Element => {
-        // if (
-        //     isNil(this.gridContainerElement) ||
-        //     isNil(this.gridContainerElement.current)
-        // ) {
-        //     return null;
-        // }
-        // const rowElement: Element = this.domChildren(
-        //     this.gridContainerElement.current
-        // ).find((element: Element) => {
-        //     return element.getAttribute(RowIdKey) === rowId;
-        // });
-        return null;
+        if (
+            isNil(this.rootElement.current)
+        ) {
+            return null;
+        }
+        return this.rootElement.current.querySelector(`[data-rowid=${rowId}]`);
     };
 
     /**
@@ -806,44 +768,36 @@ class DataGrid extends Foundation<
         columnKey: React.ReactText,
         rowElement: Element
     ): Element => {
-        // if (isNil(rowElement)) {
-        //     return null;
-        // }
-        // const cellElement: Element = this.domChildren(rowElement as HTMLElement).find(
-        //     (element: Element) => {
-        //         return element.getAttribute(CellIdKey) === columnKey;
-        //     }
-        // );
-        return null;
+        if (isNil(rowElement)) {
+            return null;
+        }
+
+        return rowElement.querySelector(`[data-cellid=${columnKey}]`);
     };
 
     /**
      *  Move focus to a cell based on row and cell id
-     *  note: only works with rows that are currently instanciated
+     *  note: only works with rows that are currently rendered to the dom
      */
     private focusOnCell = (rowId: React.ReactText, cellId: React.ReactText): void => {
-        const rowElement: Element = this.getRowElementByKey(rowId);
+        const rowIndex: number = this.getRowIndexByKey(rowId);
 
-        if (isNil(rowElement)) {
-            return;
-        }
+        //todo: delayed focus for items not yet in the dom
 
-        const cellElement: Element = this.getCellElementByKey(cellId, rowElement);
+        if (rowIndex >= this.state.currentDataPageStartIndex && rowIndex <= this.state.currentDataPageEndIndex){
+            const rowElement: Element = this.getRowElementByKey(rowId);
 
-        if (cellElement instanceof HTMLElement) {
-            // cellElement.focus();
+            if (isNil(rowElement)) {
+                return;
+            }
+    
+            const cellElement: Element = this.getCellElementByKey(cellId, rowElement);
+    
+            if (cellElement instanceof HTMLElement) {
+                cellElement.focus();
+            }
         }
     };
-
-    /**
-     * Return an array of all elements that are children
-     * of the data container
-     */
-    // private domChildren = (element: HTMLElement): Element[] => {
-    //     return canUseDOM() && this.gridContainerElement.current instanceof HTMLElement
-    //         ? Array.from(element.children)
-    //         : [];
-    // };
 
     /**
      *  Get column index by key
@@ -868,22 +822,6 @@ class DataGrid extends Foundation<
     };
 
     /**
-     * Get rowKey
-     */
-    // private getFocusRowKey = (rowKey: ReactText): ReactText => {
-    //     const currentFocusRowIndex: number = this.props.gridData.findIndex(
-    //         (dataRow: object) => {
-    //             return dataRow[this.props.dataRowKey] === rowKey;
-    //         }
-    //     );
-    //     if (currentFocusRowIndex === -1 && this.props.gridData.length > 0) {
-    //         return this.props.gridData[this.defaultRowIndex][this.props.dataRowKey];
-    //     } else {
-    //         return rowKey;
-    //     }
-    // };
-
-    /**
      * Handle focus event
      */
     private handleCellFocus = (
@@ -893,9 +831,13 @@ class DataGrid extends Foundation<
         if (e.defaultPrevented) {
             return;
         }
+
+        const focusRowKey: ReactText = cell.rowData[this.props.dataRowKey];
+
         this.setState({
-            focusRowKey: cell.rowData[this.props.dataRowKey],
+            focusRowKey,
             focusColumnKey: cell.columnDefinition.columnDataKey,
+            focusRowIndex: this.getRowIndexByKey(focusRowKey)
         });
     };
 
