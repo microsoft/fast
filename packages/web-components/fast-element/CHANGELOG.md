@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.8.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-element@0.8.0...@microsoft/fast-element@0.8.1) (2020-04-29)
+
+
+### Bug Fixes
+
+* removes circular dependencies from web-component packages ([#3037](https://github.com/Microsoft/fast-dna/issues/3037)) ([0f84942](https://github.com/Microsoft/fast-dna/commit/0f849429ca930bcea474e6e4f73f1f8e21248a0f))
+
+
+
+
+
 # [0.8.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-element@0.7.0...@microsoft/fast-element@0.8.0) (2020-04-27)
 
 

@@ -1,4 +1,5 @@
 import {
+    dictionaryLink,
     NavigationConfigDictionary,
     Parent,
     TreeNavigation,
@@ -22,16 +23,28 @@ export type HandleBreadcrumbClick = (
  */
 export function getBreadcrumbs(
     navigation: TreeNavigation,
+    activeNavigationConfigId: string,
     dictionaryId: string,
     navigationConfigId: string,
     handleClick: HandleBreadcrumbClick
 ): BreadcrumbItem[] {
     let navigationItems: BreadcrumbItem[] = [];
 
-    // Arrays do not need to be represented in breadcrumbs
-    // as the array items are shown at the same level as
-    // other simple controls
-    if (navigation[navigationConfigId].type !== DataType.array) {
+    /**
+     * Items that do not need to be represented in breadcrumbs
+     * because they are shown at the same level as simple controls
+     * unless it is the root dictionary ID:
+     * - Arrays
+     * - The parent item of another dictionary link
+     */
+    if (
+        navigationConfigId === activeNavigationConfigId ||
+        (navigation[navigationConfigId].type !== DataType.array &&
+            !(
+                navigation[navigationConfigId].parent &&
+                navigation[navigation[navigationConfigId].parent].schema[dictionaryLink]
+            ))
+    ) {
         navigationItems.push({
             href: navigation[navigationConfigId].self,
             text: navigation[navigationConfigId].text,
@@ -43,6 +56,7 @@ export function getBreadcrumbs(
         navigationItems = navigationItems.concat(
             getBreadcrumbs(
                 navigation,
+                activeNavigationConfigId,
                 dictionaryId,
                 navigation[navigationConfigId].parent,
                 handleClick
@@ -58,6 +72,7 @@ export function getBreadcrumbs(
  */
 export function resolveDictionaryBreadcrumbs(
     navigationDictionary: NavigationConfigDictionary,
+    activeNavigationConfigId: string,
     dictionaryId: string,
     navigationConfigId: string,
     handleClick: HandleBreadcrumbClick,
@@ -66,6 +81,7 @@ export function resolveDictionaryBreadcrumbs(
     const breadcrumbItems: BreadcrumbItem[][] = breadcrumbItemList.concat([
         getBreadcrumbs(
             navigationDictionary[0][dictionaryId][0],
+            activeNavigationConfigId,
             dictionaryId,
             navigationConfigId,
             handleClick
@@ -79,6 +95,7 @@ export function resolveDictionaryBreadcrumbs(
     if (typeof breadcrumbParent !== "undefined") {
         return resolveDictionaryBreadcrumbs(
             navigationDictionary,
+            activeNavigationConfigId,
             breadcrumbParent.id,
             breadcrumbParent.dataLocation, // unsafe replace with a search to find the dictionary id of this
             handleClick,
@@ -105,6 +122,7 @@ export function getDictionaryBreadcrumbs(
 ): BreadcrumbItem[] {
     return resolveDictionaryBreadcrumbs(
         navigationDictionary,
+        navigationConfigId,
         dictionaryId,
         navigationConfigId,
         handleClick
