@@ -103,3 +103,44 @@ html:hover ::-webkit-scrollbar-thumb {
 ::-webkit-scrollbar-thumb:window-inactive {
     background: rgba(0, 0, 0, 0.13);
 }
+
+/* Color Picker overrides */
+
+.block-picker {
+    box-shadow: none !important;
+    width: 100% !important;
+}
+
+.block-picker input {
+    max-width: 118px;
+    margin-left: 64px;
+    height: 24px !important;
+}
+
+.block-picker > div:first-child,
+.block-picker > div:nth-child(2) > div {
+    display: none;
+}
+
+.block-picker > div:nth-child(2) {
+    height: 24px !important;
+    width: 54px !important;
+    border-radius: 2px !important;
+}
+
+.block-picker > div:nth-child(3) {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    display: flex;
+    flex-direction: column-reverse;
+    margin-top: -34px;
+}
+
+.block-picker > div:nth-child(3) > div:first-child {
+    margin-top: 12px;
+}
+
+.block-picker > div:nth-child(3) > div:first-child div {
+    border-radius: 50% !important;
+    margin-bottom: 0 !important;
+}
