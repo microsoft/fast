@@ -17,7 +17,7 @@ import { reactMapper, ViewerCustomAction } from "@microsoft/fast-tooling-react";
 import { Background } from "@microsoft/fast-components-react-msft";
 import { StandardLuminance } from "@microsoft/fast-components-styles-msft";
 import { reactResolver } from "./utilities";
-import { componentDictionary } from "./msft-components/dictionary";
+import { componentDictionary } from "./msft-components";
 import style from "./preview.style";
 import { designSystemLinkedDataId } from "./creator";
 
