@@ -29,7 +29,7 @@ import {
     neutralOutline,
 } from "@microsoft/fast-components-styles-msft";
 import { cssCustomPropertyBehaviorFactory } from "../custom-properties";
-import { findProvider } from "../design-system-consumer";
+import { findProvider } from "../design-system-provider";
 
 export const neutralForegroundRestBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-foreground-rest",

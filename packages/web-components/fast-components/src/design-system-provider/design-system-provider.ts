@@ -1,19 +1,98 @@
-import { attr, FASTElement, observable, Observable } from "@microsoft/fast-element";
 import {
-    DesignSystemConsumer,
-    DesignSystemConsumerBehavior,
-} from "../design-system-consumer";
+    attr,
+    Behavior,
+    FASTElement,
+    Observable,
+    observable,
+} from "@microsoft/fast-element";
 import {
     CSSCustomPropertyDefinition,
     CSSCustomPropertyTarget,
 } from "../custom-properties";
-import { isDesignSystemProvider } from "./is-design-system-provider";
+import { composedParent } from "../utilities";
 import { DesignSystemPropertyDeclarationConfig } from "./design-system-property";
 
 const supportsAdoptedStylesheets = "adoptedStyleSheets" in window.ShadowRoot.prototype;
 
+export interface DesignSystemConsumer {
+    provider: DesignSystemProvider | null;
+}
+
+/**
+ * Determines if the element has a design-system-provider context
+ * @param element
+ */
+export function isDesignSystemConsumer(
+    element: HTMLElement | DesignSystemConsumer
+): element is DesignSystemConsumer {
+    const provider: DesignSystemProvider | null | void = (element as any).provider;
+
+    return (
+        provider !== null &&
+        provider !== void 0 &&
+        DesignSystemProvider.isDesignSystemProvider(provider)
+    );
+}
+
+/**
+ * Behavior to connect an element to the nearest design-system provider
+ */
+export const designSystemConsumerBehavior: Behavior = {
+    bind<T extends DesignSystemConsumer & HTMLElement>(source: T) {
+        source.provider = findProvider(source);
+    },
+
+    /* eslint-disable-next-line */
+    unbind<T extends DesignSystemConsumer & HTMLElement>(source: T) {},
+};
+
+/**
+ * Resolves the nearest DesignSystemProvider element to an element.
+ *
+ * When the provider is found, this function will store the provider on
+ * the `self` so that it can quickly be retrieved by other future invocations
+ * of this function.
+ * @param self The element from which to begin
+ */
+export function findProvider(
+    self: HTMLElement & Partial<DesignSystemConsumer>
+): DesignSystemProvider | null {
+    if (isDesignSystemConsumer(self)) {
+        return self.provider;
+    }
+
+    let parent = composedParent(self);
+
+    while (parent !== null) {
+        if (DesignSystemProvider.isDesignSystemProvider(parent)) {
+            self.provider = parent; // Store provider on ourselves for future reference
+            return parent;
+        } else if (isDesignSystemConsumer(parent)) {
+            self.provider = parent.provider;
+            return parent.provider;
+        } else {
+            parent = composedParent(parent);
+        }
+    }
+
+    return null;
+}
+
 export class DesignSystemProvider extends FASTElement
     implements CSSCustomPropertyTarget, DesignSystemConsumer {
+    /**
+     * Determines if an element is a DesignSystemProvider
+     * @param el The element to test
+     */
+    public static isDesignSystemProvider(
+        el: HTMLElement | DesignSystemProvider
+    ): el is DesignSystemProvider {
+        return (
+            (el as DesignSystemProvider).isDesignSystemProvider ||
+            el instanceof DesignSystemProvider
+        );
+    }
+
     /**
      * Allows other components to identify this as a provider.
      * Using instanceof DesignSystemProvider did not seem to work.
@@ -59,7 +138,10 @@ export class DesignSystemProvider extends FASTElement
             });
         }
 
-        if (next instanceof HTMLElement && isDesignSystemProvider(next)) {
+        if (
+            next instanceof HTMLElement &&
+            DesignSystemProvider.isDesignSystemProvider(next)
+        ) {
             Object.keys(next.designSystemProperties).forEach(key => {
                 Observable.getNotifier(next.designSystem).subscribe(
                     this.providerDesignSystemChangeHandler,
@@ -174,7 +256,7 @@ export class DesignSystemProvider extends FASTElement
             this.customPropertyTarget = this.style;
         }
 
-        this.$fastController.addBehaviors([new DesignSystemConsumerBehavior()]);
+        this.$fastController.addBehaviors([designSystemConsumerBehavior]);
     }
 
     public connectedCallback(): void {
