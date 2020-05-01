@@ -8,6 +8,7 @@ export function isDesignSystemProvider(
     el: HTMLElement | DesignSystemProvider
 ): el is DesignSystemProvider {
     return (
-        (el as any).isDesignSystemProvider || el.tagName === "FAST-DESIGN-SYSTEM-PROVIDER"
+        (el as DesignSystemProvider).isDesignSystemProvider ||
+        el instanceof DesignSystemProvider
     );
 }

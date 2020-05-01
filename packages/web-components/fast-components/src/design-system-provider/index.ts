@@ -9,7 +9,8 @@ import {
     DesignSystem,
     DesignSystemDefaults,
 } from "@microsoft/fast-components-styles-msft";
-import { designSystemProperty, DesignSystemProvider } from "./design-system-provider";
+import { DesignSystemProvider } from "./design-system-provider";
+import { designSystemProperty } from "./design-system-property";
 import { DesignSystemProviderStyles as styles } from "./design-system-provider.styles";
 import { DesignSystemProviderTemplate as template } from "./design-system-provider.template";
 
@@ -40,11 +41,11 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
     /**
      * Define design system property attributes
      */
-    @attr({ attribute: "background-color", ...fromView })
     @designSystemProperty({
         cssCustomProperty: "background-color",
         default: DesignSystemDefaults.backgroundColor,
     })
+    @attr({ attribute: "background-color", ...fromView })
     public backgroundColor: string;
 
     @attr({ attribute: "accent-base-color", ...fromView })
@@ -651,5 +652,6 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
 }
 
 export * from "./design-system-provider";
+export * from "./design-system-property";
 export * from "./design-system-provider.styles";
 export * from "./design-system-provider.template";
