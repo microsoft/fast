@@ -31,6 +31,16 @@
         </fast-radio-group>
     </div>
 
+    <div role="toolbar" style="display: flex; flex-direction: column;margin-top: 12px;">
+        <button>go</button>
+        <fast-radio-group required="true" name="navigation">
+            <fast-radio value="back">back</fast-radio>
+            <fast-radio value="forward">forward</fast-radio>
+            <fast-radio value="refresh">refresh</fast-radio>
+        </fast-radio-group>
+        <button>stop</button>
+    </div>
+
     <div style="display: flex; flex-direction: column;margin-top: 12px;">
         <label id="label2">Disabled radio group</label>
         <fast-radio-group disabled aria-labelledby="label2" name="cars">

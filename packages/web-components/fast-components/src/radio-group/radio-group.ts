@@ -4,6 +4,7 @@ import {
     keyCodeArrowLeft,
     keyCodeArrowRight,
     keyCodeArrowUp,
+    keyCodeEnter,
 } from "@microsoft/fast-web-utilities";
 import { RadioControl } from "../radio";
 
@@ -50,7 +51,7 @@ export class RadioGroup extends FASTElement {
     public value: string;
 
     @observable slottedRadioButtons: RadioControl[];
-    private selectedRadio: RadioControl;
+    private selectedRadio: RadioControl | null;
 
     constructor() {
         super();
@@ -114,31 +115,75 @@ export class RadioGroup extends FASTElement {
         }
     };
 
-    private moveToRadioByIndex = (group: RadioControl[], index: number) => {
+    private moveToRadioByIndex = (
+        group: RadioControl[],
+        index: number,
+        inToolbar: boolean
+    ) => {
         const radio: RadioControl = group[index];
-        if (!radio.readOnly) {
+        if (!radio.readOnly && !inToolbar) {
             radio.checked = true;
         }
         this.selectedRadio = radio;
         radio.focus();
     };
 
+    private moveRightOffGroup = () => {
+        this.selectedRadio = null;
+        (this.nextElementSibling as HTMLInputElement).focus();
+    };
+
+    private moveLeftOffGroup = () => {
+        this.selectedRadio = null;
+        (this.previousElementSibling as HTMLInputElement).focus();
+    };
+
     public keydownHandler = (e: KeyboardEvent): void => {
         const group: RadioControl[] = this.getFilteredRadioButtons();
         let index: number = 0;
+        const toolbar: HTMLElement | null | undefined = this.parentElement?.closest(
+            '[role="toolbar"]'
+        );
+        const inToolbar: boolean = toolbar !== undefined && toolbar !== null;
         switch (e.keyCode) {
+            case keyCodeEnter:
+                index = this.selectedRadio ? group.indexOf(this.selectedRadio) + 1 : 1;
+                if (
+                    this.selectedRadio &&
+                    !this.selectedRadio.readOnly &&
+                    !this.selectedRadio.checked
+                ) {
+                    this.selectedRadio.checked = true;
+                    this.selectedRadio.focus();
+                }
+                break;
             case keyCodeArrowRight:
             case keyCodeArrowUp:
                 index = this.selectedRadio ? group.indexOf(this.selectedRadio) + 1 : 1;
-                index = index === group.length ? 0 : index;
+                if (index === group.length && inToolbar) {
+                    this.moveRightOffGroup();
+                    return;
+                } else if (index === group.length) {
+                    index = 0;
+                }
+                // matching native radio/radiogroup which does not select an item if there is only 1 in the group
                 while (index < group.length && group.length > 1) {
                     if (!group[index].disabled) {
-                        this.moveToRadioByIndex(group, index);
+                        this.moveToRadioByIndex(group, index, inToolbar);
                         break;
-                    } else if (index === group.indexOf(this.selectedRadio)) {
+                    } else if (index === group.indexOf(this.selectedRadio!)) {
+                        console.log("breaking, 1st else if");
                         break;
                     } else if (index + 1 >= group.length) {
-                        index = 0;
+                        if (inToolbar) {
+                            console.log(
+                                "we are inside a toolbar don't set index to 0, move focus to next group"
+                            );
+                            break;
+                        } else {
+                            console.log("setting index to 0 not in toolbar");
+                            index = 0;
+                        }
                     } else {
                         index += 1;
                     }
@@ -146,14 +191,20 @@ export class RadioGroup extends FASTElement {
                 break;
             case keyCodeArrowLeft:
             case keyCodeArrowDown:
-                index = group.indexOf(this.selectedRadio) - 1;
+                index = this.selectedRadio ? group.indexOf(this.selectedRadio) - 1 : 0;
+
+                if (index < 0 && inToolbar) {
+                    this.moveLeftOffGroup();
+                    return;
+                }
+
                 index = index < 0 ? group.length - 1 : index;
 
                 while (index >= 0 && group.length > 1) {
                     if (!group[index].disabled) {
-                        this.moveToRadioByIndex(group, index);
+                        this.moveToRadioByIndex(group, index, inToolbar);
                         break;
-                    } else if (index === group.indexOf(this.selectedRadio)) {
+                    } else if (index === group.indexOf(this.selectedRadio!)) {
                         break;
                     } else if (index - 1 < 0) {
                         index = group.length - 1;

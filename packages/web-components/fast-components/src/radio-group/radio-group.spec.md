@@ -35,7 +35,7 @@ Radio group allows the user to be presented with a list of all the options visib
 - `fast-radio-group`
 
 *Attributes:*
-- `selected-value` - allows user to set the initial radio selected within the group independent of value.
+- `value` - allows user to set the initial radio selected within the group independent of value.
 - `readonly`
   - If there is a selected radio button in the group it should be submitted with the form but none of the radio buttons should be editable.
 - `disabled`
@@ -43,9 +43,8 @@ Radio group allows the user to be presented with a list of all the options visib
 
 *Slots:*
 - default slot for radio items
+- label - provide a label for the radio group
 
-*Events*
-- `change` - raise the change event for external parties to be informed of the selected value change.
 
 ### Anatomy and Appearance
 *Parts:*
