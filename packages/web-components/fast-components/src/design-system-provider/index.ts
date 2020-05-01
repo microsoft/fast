@@ -153,6 +153,108 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
     })
     public disabledOpacity: number;
 
+    @attr({ ...fromView, attribute: "type-ramp-minus-2-size" })
+    @designSystemProperty({
+        cssCustomProperty: "type-ramp-minus-2-size",
+        default: "10px",
+    })
+    public typeRampMinus2Size: string;
+
+    @attr({ ...fromView, attribute: "type-ramp-minus-2-height" })
+    @designSystemProperty({
+        cssCustomProperty: "type-ramp-minus-2-height",
+        default: "16px",
+    })
+    public typeRampMinus2height: string;
+
+    @attr({ ...fromView, attribute: "type-ramp-minus-1-size" })
+    @designSystemProperty({
+        cssCustomProperty: "type-ramp-minus-1-size",
+        default: "12px",
+    })
+    public typeRampMinus1Size: string;
+
+    @attr({ ...fromView, attribute: "type-ramp-minus-1-height" })
+    @designSystemProperty({
+        cssCustomProperty: "type-ramp-minus-1-height",
+        default: "16px",
+    })
+    public typeRampMinus1Height: string;
+
+    @attr({ ...fromView, attribute: "type-ramp-base-size" })
+    @designSystemProperty({ cssCustomProperty: "type-ramp-base-size", default: "14px" })
+    public typeRampBaseSize: string;
+
+    @attr({ ...fromView, attribute: "type-ramp-base-height" })
+    @designSystemProperty({ cssCustomProperty: "type-ramp-base-height", default: "20px" })
+    public typeRampBaseHeight: string;
+
+    @attr({ ...fromView, attribute: "type-ramp-plus-1-size" })
+    @designSystemProperty({ cssCustomProperty: "type-ramp-plus-1-size", default: "16px" })
+    public typeRampPlus1Size: string;
+
+    @attr({ ...fromView, attribute: "type-ramp-plus-1-height" })
+    @designSystemProperty({
+        cssCustomProperty: "type-ramp-plus-1-height",
+        default: "24px",
+    })
+    public typeRampPlus1Height: string;
+
+    @attr({ ...fromView, attribute: "type-ramp-plus-2-size" })
+    @designSystemProperty({ cssCustomProperty: "type-ramp-plus-2-size", default: "20px" })
+    public typeRampPlus2Size: string;
+
+    @attr({ ...fromView, attribute: "type-ramp-plus-2-height" })
+    @designSystemProperty({
+        cssCustomProperty: "type-ramp-plus-2-height",
+        default: "28px",
+    })
+    public typeRampPlus2Height: string;
+
+    @attr({ ...fromView, attribute: "type-ramp-plus-3-size" })
+    @designSystemProperty({ cssCustomProperty: "type-ramp-plus-3-size", default: "28px" })
+    public typeRampPlus3Size: string;
+
+    @attr({ ...fromView, attribute: "type-ramp-plus-3-height" })
+    @designSystemProperty({
+        cssCustomProperty: "type-ramp-plus-3-height",
+        default: "36px",
+    })
+    public typeRampPlus3Height: string;
+
+    @attr({ ...fromView, attribute: "type-ramp-plus-4-size" })
+    @designSystemProperty({ cssCustomProperty: "type-ramp-plus-4-size", default: "34px" })
+    public typeRampPlus4Size: string;
+
+    @attr({ ...fromView, attribute: "type-ramp-plus-4-height" })
+    @designSystemProperty({
+        cssCustomProperty: "type-ramp-plus-4-height",
+        default: "44px",
+    })
+    public typeRampPlus4Height: string;
+
+    @attr({ ...fromView, attribute: "type-ramp-plus-5-size" })
+    @designSystemProperty({ cssCustomProperty: "type-ramp-plus-5-size", default: "46px" })
+    public typeRampPlus5Size: string;
+
+    @attr({ ...fromView, attribute: "type-ramp-plus-5-height" })
+    @designSystemProperty({
+        cssCustomProperty: "type-ramp-plus-5-height",
+        default: "56px",
+    })
+    public typeRampPlus5Height: string;
+
+    @attr({ ...fromView, attribute: "type-ramp-plus-6-size" })
+    @designSystemProperty({ cssCustomProperty: "type-ramp-plus-6-size", default: "60px" })
+    public typeRampPlus6Size: string;
+
+    @attr({ ...fromView, attribute: "type-ramp-plus-6-height" })
+    @designSystemProperty({
+        cssCustomProperty: "type-ramp-plus-6-height",
+        default: "72px",
+    })
+    public typeRampPlus6Height: string;
+
     @attr({
         attribute: "accent-fill-rest-delta",
         ...fromViewNumber,
