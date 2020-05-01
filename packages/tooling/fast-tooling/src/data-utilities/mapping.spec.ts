@@ -1,13 +1,15 @@
 import { set } from "lodash-es";
 import { DataDictionary } from "../message-system";
+import { linkedDataSchema } from "../schemas";
 import {
     htmlMapper,
     htmlResolver,
     mapDataDictionary,
     MapperConfig,
+    mapWebComponentDefinitionToJSONSchema,
     ResolverConfig,
 } from "./mapping";
-import { ReservedElementMappingKeyword } from "./types";
+import { DataType, ReservedElementMappingKeyword } from "./types";
 
 describe("mapDataDictionary", () => {
     test("should call a passed mapper and resolver function on a single data dictionary item", () => {
@@ -911,5 +913,69 @@ describe("htmlMapper", () => {
         mappedElement.append(text2);
 
         expect(result).toEqual(mappedElement);
+    });
+});
+
+describe("mapWebComponentDefinitionToJSONSchema", () => {
+    test("should not throw", () => {
+        expect(() => mapWebComponentDefinitionToJSONSchema({ version: 1 })).not.toThrow();
+    });
+    test("should map attributes and slots to the JSON schema", () => {
+        const name: string = "foo";
+        const description: string = "foo tag";
+        const attrName: string = "attr";
+        const attrDescription: string = "An attribute";
+        const slotName: string = "";
+        const slotDescription: string = "Default slot";
+
+        expect(
+            mapWebComponentDefinitionToJSONSchema({
+                version: 1,
+                tags: [
+                    {
+                        name,
+                        description: "foo tag",
+                        attributes: [
+                            {
+                                name: attrName,
+                                description: attrDescription,
+                                type: DataType.string,
+                                default: "foobar",
+                                required: false,
+                            },
+                        ],
+                        slots: [
+                            {
+                                name: slotName,
+                                description: slotDescription,
+                            },
+                        ],
+                    },
+                ],
+            })
+        ).toEqual([
+            {
+                $schema: "http://json-schema.org/schema#",
+                $id: name,
+                id: name,
+                title: description,
+                type: "object",
+                version: 1,
+                required: ["version"],
+                [ReservedElementMappingKeyword.mapsToTagName]: name,
+                properties: {
+                    [attrName]: {
+                        [ReservedElementMappingKeyword.mapsToAttribute]: attrName,
+                        title: attrDescription,
+                        type: DataType.string,
+                    },
+                    [`Slot${slotName}`]: {
+                        [ReservedElementMappingKeyword.mapsToSlot]: slotName,
+                        title: slotDescription,
+                        ...linkedDataSchema,
+                    },
+                },
+            },
+        ]);
     });
 });
