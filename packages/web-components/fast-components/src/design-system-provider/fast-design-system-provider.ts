@@ -23,8 +23,10 @@ const fromViewNumber: { mode: "fromView"; converter: typeof nullableNumberConver
     converter: nullableNumberConverter,
 };
 
+const name = "fast-design-system-provider";
+
 @customElement({
-    name: "fast-design-system-provider",
+    name,
     template,
     styles,
 })
@@ -651,7 +653,5 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
     public neutralOutlineFocusDelta: number;
 }
 
-export * from "./design-system-provider";
-export * from "./design-system-property";
-export * from "./design-system-provider.styles";
-export * from "./design-system-provider.template";
+// Register the tag-name
+FASTDesignSystemProvider.registerTagName(name);
