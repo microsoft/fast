@@ -254,16 +254,26 @@ function getDataMessage(data: DataMessageIncoming): DataMessageOutgoing {
                 currentLinkedDataRefs = updatedDataForDataDictionary.linkedDataIds;
             }
 
+            // update the data dictionary root dictionary id location with
+            // the update linked data references
             set(
                 dataDictionary[0][addLinkedDataDictionaryId].data as object,
                 data.dataLocation,
                 currentLinkedDataRefs
             );
 
+            // update the data dictionary keys with the update data dictionary
+            // of linked data items
             dataDictionary[0] = {
                 ...dataDictionary[0],
                 ...updatedDataForDataDictionary.dataDictionary[0],
             };
+
+            // update the navigation dictionary
+            navigationDictionary = getNavigationDictionary(
+                schemaDictionary,
+                dataDictionary
+            );
 
             return {
                 type: MessageSystemType.data,
