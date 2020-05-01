@@ -153,6 +153,132 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
     })
     public disabledOpacity: number;
 
+    @attr({ ...fromView, attribute: "type-ramp-minus-2-font-size" })
+    @designSystemProperty({
+        cssCustomProperty: "type-ramp-minus-2-font-size",
+        default: "10px",
+    })
+    public typeRampMinus2FontSize: string;
+
+    @attr({ ...fromView, attribute: "type-ramp-minus-2-line-height" })
+    @designSystemProperty({
+        cssCustomProperty: "type-ramp-minus-2-line-height",
+        default: "16px",
+    })
+    public typeRampMinus2LineHeight: string;
+
+    @attr({ ...fromView, attribute: "type-ramp-minus-1-font-size" })
+    @designSystemProperty({
+        cssCustomProperty: "type-ramp-minus-1-font-size",
+        default: "12px",
+    })
+    public typeRampMinus1FontSize: string;
+
+    @attr({ ...fromView, attribute: "type-ramp-minus-1-line-height" })
+    @designSystemProperty({
+        cssCustomProperty: "type-ramp-minus-1-line-height",
+        default: "16px",
+    })
+    public typeRampMinus1LineHeight: string;
+
+    @attr({ ...fromView, attribute: "type-ramp-base-font-size" })
+    @designSystemProperty({
+        cssCustomProperty: "type-ramp-base-font-size",
+        default: "14px",
+    })
+    public typeRampBaseFontSize: string;
+
+    @attr({ ...fromView, attribute: "type-ramp-base-line-height" })
+    @designSystemProperty({
+        cssCustomProperty: "type-ramp-base-line-height",
+        default: "20px",
+    })
+    public typeRampBaseLineHeight: string;
+
+    @attr({ ...fromView, attribute: "type-ramp-plus-1-font-size" })
+    @designSystemProperty({
+        cssCustomProperty: "type-ramp-plus-1-font-size",
+        default: "16px",
+    })
+    public typeRampPlus1FontSize: string;
+
+    @attr({ ...fromView, attribute: "type-ramp-plus-1-line-height" })
+    @designSystemProperty({
+        cssCustomProperty: "type-ramp-plus-1-line-height",
+        default: "24px",
+    })
+    public typeRampPlus1LineHeight: string;
+
+    @attr({ ...fromView, attribute: "type-ramp-plus-2-font-size" })
+    @designSystemProperty({
+        cssCustomProperty: "type-ramp-plus-2-font-size",
+        default: "20px",
+    })
+    public typeRampPlus2FontSize: string;
+
+    @attr({ ...fromView, attribute: "type-ramp-plus-2-line-height" })
+    @designSystemProperty({
+        cssCustomProperty: "type-ramp-plus-2-line-height",
+        default: "28px",
+    })
+    public typeRampPlus2LineHeight: string;
+
+    @attr({ ...fromView, attribute: "type-ramp-plus-3-font-size" })
+    @designSystemProperty({
+        cssCustomProperty: "type-ramp-plus-3-font-size",
+        default: "28px",
+    })
+    public typeRampPlus3FontSize: string;
+
+    @attr({ ...fromView, attribute: "type-ramp-plus-3-line-height" })
+    @designSystemProperty({
+        cssCustomProperty: "type-ramp-plus-3-line-height",
+        default: "36px",
+    })
+    public typeRampPlus3LineHeight: string;
+
+    @attr({ ...fromView, attribute: "type-ramp-plus-4-font-size" })
+    @designSystemProperty({
+        cssCustomProperty: "type-ramp-plus-4-font-size",
+        default: "34px",
+    })
+    public typeRampPlus4FontSize: string;
+
+    @attr({ ...fromView, attribute: "type-ramp-plus-4-line-height" })
+    @designSystemProperty({
+        cssCustomProperty: "type-ramp-plus-4-line-height",
+        default: "44px",
+    })
+    public typeRampPlus4LineHeight: string;
+
+    @attr({ ...fromView, attribute: "type-ramp-plus-5-font-size" })
+    @designSystemProperty({
+        cssCustomProperty: "type-ramp-plus-5-font-size",
+        default: "46px",
+    })
+    public typeRampPlus5FontSize: string;
+
+    @attr({ ...fromView, attribute: "type-ramp-plus-5-line-height" })
+    @designSystemProperty({
+        cssCustomProperty: "type-ramp-plus-5-line-height",
+        default: "56px",
+    })
+    public typeRampPlus5LineHeight: string;
+
+    @attr({ ...fromView, attribute: "type-ramp-plus-6-font-size" })
+    @designSystemProperty({
+        cssCustomProperty: "type-ramp-plus-6-font-size",
+        default: "60px",
+    })
+    public typeRampPlus6FontSize: string;
+
+    @attr({ ...fromView, attribute: "type-ramp-plus-6-line-height" })
+    @designSystemProperty({
+        cssCustomProperty: "type-ramp-plus-6-line-height",
+        default: "72px",
+    })
+    public typeRampPlus6LineHeight: string;
+
     @attr({
         attribute: "accent-fill-rest-delta",
         ...fromViewNumber,
