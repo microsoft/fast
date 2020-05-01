@@ -249,20 +249,47 @@ class DataGrid extends Foundation<
                 this.props.stableRangeEndIndex
             );
 
+            let newDataPageStartIndex: number = this.state.currentDataPageStartIndex;
             let newDataPageEndIndex: number = this.state.currentDataPageEndIndex;
 
-            if (newDataPageEndIndex < this.props.pageSize - 1) {
-                newDataPageEndIndex = this.props.pageSize - 1;
+            if (
+                this.props.defaultFocusRowKey !== prevProps.defaultFocusRowKey &&
+                !isNil(this.props.defaultFocusRowKey)
+            ) {
+                let newFocusRowIndex: number = this.getRowIndexByKey(
+                    this.props.defaultFocusRowKey
+                );
+
+                if (newFocusRowIndex === -1) {
+                    this.setState({
+                        focusRowKey: this.props.defaultFocusRowKey,
+                        desiredVisibleRowIndex: newFocusRowIndex,
+                    });
+                    newDataPageStartIndex =
+                        newFocusRowIndex - Math.floor(this.props.pageSize / 2);
+                    if (newDataPageStartIndex < 0) {
+                        newDataPageStartIndex = 0;
+                    }
+                    newDataPageEndIndex = newDataPageStartIndex + this.props.pageSize;
+                }
+            }
+
+            if (
+                this.props.defaultFocusColumnKey !== prevProps.defaultFocusColumnKey &&
+                !isNil(this.props.defaultFocusColumnKey)
+            ) {
+                this.setState({
+                    focusColumnKey: this.props.defaultFocusColumnKey,
+                });
             }
 
             if (newDataPageEndIndex > this.props.gridData.length - 1) {
                 newDataPageEndIndex = this.props.gridData.length - 1;
+                newDataPageStartIndex =
+                    newDataPageEndIndex - this.props.pageSize < 0
+                        ? 0
+                        : newDataPageEndIndex - this.props.pageSize;
             }
-
-            const newDataPageStartIndex: number =
-                newDataPageEndIndex - this.props.pageSize < 0
-                    ? 0
-                    : newDataPageEndIndex - this.props.pageSize;
 
             this.sizeRowsToIndex(newDataPageEndIndex, newRowPositions);
 
@@ -427,25 +454,9 @@ class DataGrid extends Foundation<
     };
 
     /**
-     * When the cell with focus scrolls out of the viewport we may need to blur it
-     */
-    private blurCurrentFocusCell = (): void => {
-        if (isNil(this.rootElement.current)) {
-            return;
-        }
-
-        if (this.rootElement.current.contains(document.activeElement)) {
-            (document.activeElement as HTMLElement).blur();
-        }
-    };
-
-    /**
      *  Handle grid focus by enusuring we only focus on gridcells
      */
     private handleGridFocus = (e: React.FocusEvent<HTMLElement>): void => {
-        if (!e.defaultPrevented && e.target.getAttribute("role") !== "gridcell") {
-            this.focusOnCell(this.state.focusRowKey, this.state.focusColumnKey);
-        }
         if (!this.isFocused) {
             this.isFocused = true;
         }
@@ -617,6 +628,36 @@ class DataGrid extends Foundation<
         ].end;
         const currentViewportBottom: number = newScrollValue + viewportSpan;
 
+        //blur if the active element scrolls out of view
+        if (
+            this.state.rowPositions[this.state.focusRowIndex].start >
+                currentViewportBottom ||
+            this.state.rowPositions[this.state.focusRowIndex].end < newScrollValue
+        ) {
+            if (
+                !isNil(this.rootElement.current) &&
+                this.rootElement.current.contains(document.activeElement)
+            ) {
+                (document.activeElement as HTMLElement).blur();
+            }
+
+            const topVisibleElementIndex: number = this.getIndexOfItemAtScrollPosition(
+                newScrollValue,
+                this.state.rowPositions
+            );
+            if (topVisibleElementIndex === -1) {
+                this.setState({
+                    focusRowKey: "",
+                });
+            } else {
+                this.setState({
+                    focusRowKey: this.props.gridData[topVisibleElementIndex][
+                        this.props.dataRowKey
+                    ],
+                });
+            }
+        }
+
         if (
             newScrollValue < currentPageTop ||
             currentViewportBottom > currentPageBottom
@@ -655,12 +696,15 @@ class DataGrid extends Foundation<
     };
 
     /**
-     *
+     * returns the index of row item at a particular scroll position
      */
     private getIndexOfItemAtScrollPosition = (
         scrollPosition: number,
         rowPositions: rowPosition[]
     ): number => {
+        if (rowPositions.length === 0) {
+            return -1;
+        }
         const maxIndex = this.props.gridData.length - 1;
 
         this.sizeRowsToScrollValue(scrollPosition, rowPositions);

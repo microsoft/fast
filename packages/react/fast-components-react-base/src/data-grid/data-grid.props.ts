@@ -72,7 +72,8 @@ export interface DataGridHandledProps extends DataGridManagedClasses {
     stableRangeEndIndex?: number;
 
     /**
-     * Data page size in number of rows
+     * Data page size in number of rows.  This is the maximum number of items that will be converted to data row items passed to the
+     * underlying panel display at any one time.
      * default is 1000
      */
     pageSize?: number;
