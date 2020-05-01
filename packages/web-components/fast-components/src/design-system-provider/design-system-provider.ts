@@ -48,6 +48,11 @@ export const designSystemConsumerBehavior: Behavior = {
 
 export class DesignSystemProvider extends FASTElement
     implements CSSCustomPropertyTarget, DesignSystemConsumer {
+    private static _tagNames: string[] = [];
+
+    public static get tagNames() {
+        return DesignSystemProvider._tagNames;
+    }
     /**
      * Determines if an element is a DesignSystemProvider
      * @param el The element to test
@@ -57,7 +62,7 @@ export class DesignSystemProvider extends FASTElement
     ): el is DesignSystemProvider {
         return (
             (el as DesignSystemProvider).isDesignSystemProvider ||
-            el instanceof DesignSystemProvider
+            DesignSystemProvider.tagNames.includes(el.tagName)
         );
     }
 
@@ -83,6 +88,16 @@ export class DesignSystemProvider extends FASTElement
         }
 
         return null;
+    }
+
+    /**
+     * Registers a tag-name
+     */
+    public static registerTagName(tagName: string) {
+        const tagNameUpper = tagName.toUpperCase();
+        if (!DesignSystemProvider.tagNames.includes(tagNameUpper)) {
+            DesignSystemProvider._tagNames.push(tagNameUpper);
+        }
     }
 
     /**
