@@ -9,7 +9,10 @@ import {
     DesignSystem,
     DesignSystemDefaults,
 } from "@microsoft/fast-components-styles-msft";
-import { DesignSystemProvider, designSystemProvider } from "./design-system-provider";
+import {
+    DesignSystemProvider,
+    designSystemProviderTagName,
+} from "./design-system-provider";
 import { designSystemProperty } from "./design-system-property";
 import { DesignSystemProviderStyles as styles } from "./design-system-provider.styles";
 import { DesignSystemProviderTemplate as template } from "./design-system-provider.template";
@@ -30,7 +33,7 @@ const name = "fast-design-system-provider";
     template,
     styles,
 })
-@designSystemProvider(name)
+@designSystemProviderTagName(name)
 export class FASTDesignSystemProvider extends DesignSystemProvider
     implements
         Omit<

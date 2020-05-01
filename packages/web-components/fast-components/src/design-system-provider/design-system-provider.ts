@@ -410,7 +410,7 @@ export class DesignSystemProvider extends FASTElement
  * Designates an element tag-name as a design-system-provider
  * @param tagName the design-system-provider's tag-name
  */
-export function designSystemProvider(tagName: string) {
+export function designSystemProviderTagName(tagName: string) {
     return <T extends typeof DesignSystemProvider>(providerCtor: T): void => {
         providerCtor.registerTagName(tagName);
     };
