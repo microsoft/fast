@@ -176,16 +176,11 @@ export class RadioGroup extends FASTElement {
                         this.moveToRadioByIndex(group, index, inToolbar);
                         break;
                     } else if (index === group.indexOf(this.selectedRadio!)) {
-                        console.log("breaking, 1st else if");
                         break;
                     } else if (index + 1 >= group.length) {
                         if (inToolbar) {
-                            console.log(
-                                "we are inside a toolbar don't set index to 0, move focus to next group"
-                            );
                             break;
                         } else {
-                            console.log("setting index to 0 not in toolbar");
                             index = 0;
                         }
                     } else {
