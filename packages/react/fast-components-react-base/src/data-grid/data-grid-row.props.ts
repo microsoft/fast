@@ -7,12 +7,6 @@ export interface DataGridRowClassNameContract {
     dataGridRow_cell?: string;
 }
 
-export interface RowPosition {
-    height: number;
-    top: number;
-    bottom: number;
-}
-
 export const RowIdKey: string = "data-rowid";
 
 export interface DataGridRowManagedClasses
@@ -30,11 +24,6 @@ export interface DataGridRowHandledProps extends DataGridRowManagedClasses {
      * String that gets applied to the the css gridTemplateColumns attribute for the row
      */
     gridTemplateColumns: string;
-
-    /**
-     * Positioning data for the placement of the row in the grid
-     */
-    gridRowPosition: RowPosition;
 
     /**
      * The row's index in the parent data grid

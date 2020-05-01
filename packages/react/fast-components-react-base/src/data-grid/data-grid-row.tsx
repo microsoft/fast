@@ -12,7 +12,6 @@ import { DataGridColumnDefinition } from "./data-grid.props";
 import DataGridCell from "./data-grid-cell";
 import { DataGridContext, DataGridContextType } from "./data-grid-context";
 import { classNames } from "@microsoft/fast-web-utilities";
-import { toPx } from "@microsoft/fast-jss-utilities";
 
 class DataGridRow extends Foundation<
     DataGridRowHandledProps,
@@ -30,7 +29,6 @@ class DataGridRow extends Foundation<
     protected handledProps: HandledProps<DataGridRowHandledProps> = {
         rowData: void 0,
         gridTemplateColumns: void 0,
-        gridRowPosition: void 0,
         rowIndex: void 0,
         managedClasses: void 0,
     };

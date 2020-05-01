@@ -4,7 +4,6 @@ import {
     DataGridClassNameContract,
 } from "@microsoft/fast-components-class-name-contracts-base";
 import { DataGridCellProps, DataGridCellUnhandledProps } from "./data-grid-cell.props";
-import { strictEqual } from "assert";
 
 export interface DataGridManagedClasses
     extends ManagedClasses<DataGridClassNameContract> {}
