@@ -39,44 +39,12 @@ export function isDesignSystemConsumer(
  */
 export const designSystemConsumerBehavior: Behavior = {
     bind<T extends DesignSystemConsumer & HTMLElement>(source: T) {
-        source.provider = findProvider(source);
+        source.provider = DesignSystemProvider.findProvider(source);
     },
 
     /* eslint-disable-next-line */
     unbind<T extends DesignSystemConsumer & HTMLElement>(source: T) {},
 };
-
-/**
- * Resolves the nearest DesignSystemProvider element to an element.
- *
- * When the provider is found, this function will store the provider on
- * the `self` so that it can quickly be retrieved by other future invocations
- * of this function.
- * @param self The element from which to begin
- */
-export function findProvider(
-    self: HTMLElement & Partial<DesignSystemConsumer>
-): DesignSystemProvider | null {
-    if (isDesignSystemConsumer(self)) {
-        return self.provider;
-    }
-
-    let parent = composedParent(self);
-
-    while (parent !== null) {
-        if (DesignSystemProvider.isDesignSystemProvider(parent)) {
-            self.provider = parent; // Store provider on ourselves for future reference
-            return parent;
-        } else if (isDesignSystemConsumer(parent)) {
-            self.provider = parent.provider;
-            return parent.provider;
-        } else {
-            parent = composedParent(parent);
-        }
-    }
-
-    return null;
-}
 
 export class DesignSystemProvider extends FASTElement
     implements CSSCustomPropertyTarget, DesignSystemConsumer {
@@ -91,6 +59,30 @@ export class DesignSystemProvider extends FASTElement
             (el as DesignSystemProvider).isDesignSystemProvider ||
             el instanceof DesignSystemProvider
         );
+    }
+
+    public static findProvider(
+        self: HTMLElement & Partial<DesignSystemConsumer>
+    ): DesignSystemProvider | null {
+        if (isDesignSystemConsumer(self)) {
+            return self.provider;
+        }
+
+        let parent = composedParent(self);
+
+        while (parent !== null) {
+            if (DesignSystemProvider.isDesignSystemProvider(parent)) {
+                self.provider = parent; // Store provider on ourselves for future reference
+                return parent;
+            } else if (isDesignSystemConsumer(parent)) {
+                self.provider = parent.provider;
+                return parent.provider;
+            } else {
+                parent = composedParent(parent);
+            }
+        }
+
+        return null;
     }
 
     /**
