@@ -41,11 +41,11 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
     /**
      * Define design system property attributes
      */
+    @attr({ attribute: "background-color", ...fromView })
     @designSystemProperty({
         cssCustomProperty: "background-color",
         default: DesignSystemDefaults.backgroundColor,
     })
-    @attr({ attribute: "background-color", ...fromView })
     public backgroundColor: string;
 
     @attr({ attribute: "accent-base-color", ...fromView })
