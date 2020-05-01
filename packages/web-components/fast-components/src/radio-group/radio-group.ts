@@ -129,9 +129,9 @@ export class RadioGroup extends FASTElement {
         switch (e.keyCode) {
             case keyCodeArrowRight:
             case keyCodeArrowUp:
-                index = group.indexOf(this.selectedRadio) + 1;
+                index = this.selectedRadio ? group.indexOf(this.selectedRadio) + 1 : 1;
                 index = index === group.length ? 0 : index;
-                while (index < group.length) {
+                while (index < group.length && group.length > 1) {
                     if (!group[index].disabled) {
                         this.moveToRadioByIndex(group, index);
                         break;
@@ -149,7 +149,7 @@ export class RadioGroup extends FASTElement {
                 index = group.indexOf(this.selectedRadio) - 1;
                 index = index < 0 ? group.length - 1 : index;
 
-                while (index >= 0) {
+                while (index >= 0 && group.length > 1) {
                     if (!group[index].disabled) {
                         this.moveToRadioByIndex(group, index);
                         break;

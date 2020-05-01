@@ -101,7 +101,7 @@ export class Radio extends FormAssociated<HTMLInputElement> implements RadioCont
     public connectedCallback(): void {
         super.connectedCallback();
         if (
-            this.parentElement?.tagName !== "FAST-RADIO-GROUP" &&
+            this.parentElement?.getAttribute("role") !== "radiogroup" &&
             this.getAttribute("tabindex") === null
         ) {
             if (!this.disabled) {
