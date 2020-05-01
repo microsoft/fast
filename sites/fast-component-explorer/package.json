@@ -82,6 +82,7 @@
     "@microsoft/fast-components-foundation-react": "^3.1.9",
     "@microsoft/fast-jss-utilities": "^4.7.13",
     "@microsoft/fast-layouts-react": "^4.11.10",
+    "@microsoft/site-utilities": "^0.0.1",
     "@types/jest": "^25.2.1",
     "@types/lodash-es": "^4.17.0",
     "@types/node": "^10.12.12",
