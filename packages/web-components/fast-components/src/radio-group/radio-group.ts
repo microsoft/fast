@@ -158,9 +158,13 @@ export class RadioGroup extends FASTElement {
                 }
                 break;
             case keyCodeArrowRight:
-            case keyCodeArrowUp:
+            case keyCodeArrowDown:
                 index = this.selectedRadio ? group.indexOf(this.selectedRadio) + 1 : 1;
-                if (index === group.length && inToolbar) {
+                if (
+                    index === group.length &&
+                    inToolbar &&
+                    e.keyCode === keyCodeArrowRight
+                ) {
                     this.moveRightOffGroup();
                     return;
                 } else if (index === group.length) {
@@ -190,10 +194,10 @@ export class RadioGroup extends FASTElement {
                 }
                 break;
             case keyCodeArrowLeft:
-            case keyCodeArrowDown:
+            case keyCodeArrowUp:
                 index = this.selectedRadio ? group.indexOf(this.selectedRadio) - 1 : 0;
 
-                if (index < 0 && inToolbar) {
+                if (index < 0 && inToolbar && e.keyCode === keyCodeArrowLeft) {
                     this.moveLeftOffGroup();
                     return;
                 }
