@@ -3,6 +3,7 @@ import {
     ActionTrigger,
     Background,
     Badge,
+    cardSchema2,
     Heading,
     HeadingSize,
 } from "@microsoft/fast-components-react-msft";
@@ -57,6 +58,7 @@ import {
     Dimension,
     DirectionSwitch,
     dotDotDotGlyph,
+    reactComponentSchemaDictionary,
     ThemeSelector,
 } from "@microsoft/site-utilities";
 import * as schemas from "./msft-components";
@@ -72,19 +74,15 @@ import { ProjectFileTransfer } from "./components";
 import { selectDeviceOverrideStyles } from "./utilities/style-overrides";
 import designSystemSchema from "./msft-component-helpers/design-system.schema";
 import { previewReady } from "./preview";
+import { textSchema } from "./msft-components";
 
 const fastMessageSystemWorker = new FASTMessageSystemWorker();
 let fastMessageSystem: MessageSystem;
 let componentLinkedDataId: string = "root";
 let componentNavigationConfigId: string = "";
 const schemaDictionary: SchemaDictionary = {
-    ...Object.entries(schemas).reduce(
-        (dictionary: any, [key, value]: [string, any]): any => {
-            dictionary[value.id] = value;
-            return dictionary;
-        },
-        {}
-    ),
+    ...reactComponentSchemaDictionary,
+    [textSchema.id]: textSchema,
     [designSystemSchema.id]: designSystemSchema,
 };
 
@@ -124,7 +122,7 @@ class Creator extends Foundation<CreatorHandledProps, {}, CreatorState> {
             dataDictionary: [
                 {
                     [componentLinkedDataId]: {
-                        schemaId: schemas.cardSchema2.id,
+                        schemaId: cardSchema2.id,
                         data: {},
                     },
                     [designSystemLinkedDataId]: {

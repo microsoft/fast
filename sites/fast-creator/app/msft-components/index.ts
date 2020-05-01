@@ -1,24 +1,11 @@
-export { accentButtonSchema2 } from "@microsoft/fast-components-react-msft";
-export { badgeSchema2 } from "@microsoft/fast-components-react-msft";
-export { callToActionSchema2 } from "@microsoft/fast-components-react-msft";
-export { cardSchema2 } from "@microsoft/fast-components-react-msft";
-export { checkboxSchema2 } from "@microsoft/fast-components-react-msft";
-export { dividerSchema } from "@microsoft/fast-components-react-msft";
-export { headingSchema2 } from "@microsoft/fast-components-react-msft";
-export { hypertextSchema2 } from "@microsoft/fast-components-react-msft";
-export { imageSchema } from "@microsoft/fast-components-react-msft";
-export { labelSchema2 } from "@microsoft/fast-components-react-msft";
-export { lightweightButtonSchema2 } from "@microsoft/fast-components-react-msft";
-export { neutralButtonSchema2 } from "@microsoft/fast-components-react-msft";
-export { numberFieldSchema } from "@microsoft/fast-components-react-msft";
-export { outlineButtonSchema2 } from "@microsoft/fast-components-react-msft";
-export { paragraphSchema2 } from "@microsoft/fast-components-react-msft";
-export { progressSchema2 } from "@microsoft/fast-components-react-msft";
-export { stealthButtonSchema2 } from "@microsoft/fast-components-react-msft";
-export { subheadingSchema2 } from "@microsoft/fast-components-react-msft";
-export { textAreaSchema } from "@microsoft/fast-components-react-msft";
-export { toggleSchema2 } from "@microsoft/fast-components-react-msft";
-export { typographySchema2 } from "@microsoft/fast-components-react-msft";
+import { reactComponentDictionary } from "@microsoft/site-utilities";
 
+import { ComponentDictionary } from "@microsoft/fast-tooling-react";
 import textSchema from "./schemas/text.schema";
+
+export * from "./example-data";
 export { textSchema };
+export const componentDictionary: ComponentDictionary = {
+    ...reactComponentDictionary,
+    [textSchema.id]: null,
+};
