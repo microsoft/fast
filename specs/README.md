@@ -26,7 +26,7 @@ Here you'll find specifications for custom elements and other library features.
 | [Number field](./number-field.md) | :white_check_mark: | -- |
 | [Progress](../packages/web-components/fast-components/src/progress/progress.spec.md) | :white_check_mark: | :white_check_mark: |
 | [Radio](../packages/web-components/fast-components/src/radio/radio.spec.md) | :white_check_mark: | :white_check_mark: |
-| RadioGroup | -- | -- |
+| Radio group | -- | -- |
 | Rating | -- | -- |
 | Select | -- | -- |
 | [Slider](../packages/web-components/fast-components/src/slider/slider.spec.md) | :white_check_mark: | :white_check_mark: |
