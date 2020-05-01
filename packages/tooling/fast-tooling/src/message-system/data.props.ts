@@ -106,3 +106,10 @@ export interface LinkedDataDictionaryUpdate {
      */
     linkedDataIds: LinkedData[];
 }
+
+export interface ResolveDataDictionary {
+    /**
+     * The new data dictionary
+     */
+    dataDictionary: { [key: string]: Data<unknown> };
+}

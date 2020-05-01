@@ -51,11 +51,20 @@ describe("getLinkedDataDictionary", () => {
             hello: "world",
         };
         const linkedDataLocation: string = "greeting";
+        const nestedLinkedDataLocation: string = "beep";
+        const nestedNestedLinkedData: LinkedDataPromise = {
+            schemaId: "bar",
+            data: {
+                foo: "bar",
+            },
+        };
         const nestedLinkedData: LinkedDataPromise = {
             schemaId: "bar",
             data: {
                 hello: "pluto",
             },
+            linkedData: [nestedNestedLinkedData, nestedNestedLinkedData],
+            linkedDataLocation: nestedLinkedDataLocation,
         };
 
         expect(
@@ -90,6 +99,24 @@ describe("getLinkedDataDictionary", () => {
                             id: "fast2",
                             dataLocation: linkedDataLocation,
                         },
+                        items: ["fast4", "fast5"],
+                    },
+                    fast4: {
+                        schemaId: nestedNestedLinkedData.schemaId,
+                        data: nestedNestedLinkedData.data,
+                        parent: {
+                            id: "fast3",
+                            dataLocation: nestedLinkedDataLocation,
+                        },
+                        items: [],
+                    },
+                    fast5: {
+                        schemaId: nestedNestedLinkedData.schemaId,
+                        data: nestedNestedLinkedData.data,
+                        parent: {
+                            id: "fast3",
+                            dataLocation: nestedLinkedDataLocation,
+                        },
                         items: [],
                     },
                 },
@@ -98,6 +125,15 @@ describe("getLinkedDataDictionary", () => {
             linkedDataIds: [
                 {
                     id: "fast2",
+                },
+                {
+                    id: "fast3",
+                },
+                {
+                    id: "fast4",
+                },
+                {
+                    id: "fast5",
                 },
             ],
         });

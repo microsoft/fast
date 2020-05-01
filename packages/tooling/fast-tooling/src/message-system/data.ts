@@ -1,22 +1,18 @@
 import { uniqueId } from "lodash-es";
 import {
     Data,
-    LinkedData,
     LinkedDataDictionaryConfig,
     LinkedDataDictionaryUpdate,
+    ResolveDataDictionary,
 } from "./data.props";
-
-interface ResolveDataDictionary {
-    dataDictionary: { [key: string]: Data<unknown> };
-    linkedDataIds: LinkedData[];
-}
 
 function resolveDataDictionary(
     parentId: string,
     parentDataLocation: string,
-    dataSet: Data<unknown>[]
+    dataSet: Data<unknown>[],
+    itemDictionary: { [key: string]: string[] }
 ): ResolveDataDictionary {
-    const ids: string[] = [];
+    const currentIds: string[] = [];
 
     return {
         dataDictionary: {
@@ -25,28 +21,32 @@ function resolveDataDictionary(
                     previousValue: { [key: string]: Data<unknown> },
                     data: Data<unknown>
                 ) => {
-                    const id: string = uniqueId("fast");
-                    ids.push(id);
+                    const currentId: string = uniqueId("fast");
+                    currentIds.push(currentId);
+                    itemDictionary[parentId] = Array.isArray(itemDictionary[parentId])
+                        ? itemDictionary[parentId].concat([currentId])
+                        : [currentId];
                     const linkedData: { [key: string]: Data<unknown> } = Array.isArray(
                         data.linkedData
                     )
                         ? resolveDataDictionary(
-                              id,
+                              currentId,
                               data.linkedDataLocation,
-                              data.linkedData
+                              data.linkedData,
+                              itemDictionary
                           ).dataDictionary
                         : {};
 
                     return {
                         ...previousValue,
-                        [id]: {
+                        [currentId]: {
                             schemaId: data.schemaId,
                             data: data.data,
                             parent: {
                                 id: parentId,
                                 dataLocation: parentDataLocation,
                             },
-                            items: Object.keys(linkedData),
+                            items: itemDictionary[currentId] || [],
                         },
                         ...linkedData,
                     };
@@ -54,11 +54,6 @@ function resolveDataDictionary(
                 {}
             ),
         },
-        linkedDataIds: ids.map((id: string) => {
-            return {
-                id,
-            };
-        }),
     };
 }
 
@@ -68,11 +63,18 @@ export function getLinkedDataDictionary(
     const resolvedDataDictionary = resolveDataDictionary(
         config.dictionaryId,
         config.dataLocation,
-        config.linkedData
+        config.linkedData,
+        {}
     );
 
     return {
         dataDictionary: [resolvedDataDictionary.dataDictionary, config.dictionaryId],
-        linkedDataIds: resolvedDataDictionary.linkedDataIds,
+        linkedDataIds: Object.entries(resolvedDataDictionary.dataDictionary).map(
+            ([id]: [string, Data<unknown>]) => {
+                return {
+                    id,
+                };
+            }
+        ),
     };
 }
