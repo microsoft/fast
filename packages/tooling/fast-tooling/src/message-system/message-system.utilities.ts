@@ -1,9 +1,10 @@
-import { get, set, uniqueId } from "lodash-es";
+import { get, set } from "lodash-es";
 import { getDataWithDuplicate } from "../data-utilities/duplicate";
 import {
     getDataUpdatedWithoutSourceData,
     getDataUpdatedWithSourceData,
 } from "../data-utilities/relocate";
+import { getLinkedDataDictionary } from "./data";
 import { MessageSystemType } from "./types";
 import {
     DataDictionaryMessageIncoming,
@@ -26,7 +27,7 @@ import {
 } from "./message-system.utilities.props";
 import { getNavigationDictionary } from "./navigation";
 import { NavigationConfigDictionary } from "./navigation.props";
-import { Data, DataDictionary, LinkedData } from "./data.props";
+import { DataDictionary, LinkedData } from "./data.props";
 import { SchemaDictionary } from "./schema.props";
 import { Validation } from "./validation.props";
 
@@ -222,18 +223,16 @@ function getDataMessage(data: DataMessageIncoming): DataMessageOutgoing {
             };
         }
         case MessageSystemDataTypeAction.addLinkedData: {
-            const linkedDataIds: LinkedData[] = [];
             const addLinkedDataDictionaryId: string =
                 typeof data.dictionaryId === "string"
                     ? data.dictionaryId
                     : activeDictionaryId;
-            // add the linkedData to the dictionary
-            data.linkedData.forEach((linkedData: Data<unknown>) => {
-                const id: string = uniqueId("fast");
-                dataDictionary[0][id] = linkedData;
-                linkedDataIds.push({ id });
+
+            const updatedDataForDataDictionary = getLinkedDataDictionary({
+                linkedData: data.linkedData,
+                dictionaryId: addLinkedDataDictionaryId,
+                dataLocation: data.dataLocation,
             });
-            // update the parent to include the added linkedData
             let currentLinkedDataRefs: LinkedData[] | void = get(
                 dataDictionary[0][addLinkedDataDictionaryId].data,
                 data.dataLocation
@@ -241,12 +240,18 @@ function getDataMessage(data: DataMessageIncoming): DataMessageOutgoing {
 
             if (Array.isArray(currentLinkedDataRefs)) {
                 if (typeof data.index === "number") {
-                    currentLinkedDataRefs.splice(data.index, 0, ...linkedDataIds);
+                    currentLinkedDataRefs.splice(
+                        data.index,
+                        0,
+                        ...updatedDataForDataDictionary.linkedDataIds
+                    );
                 } else {
-                    currentLinkedDataRefs = currentLinkedDataRefs.concat(linkedDataIds);
+                    currentLinkedDataRefs = currentLinkedDataRefs.concat(
+                        updatedDataForDataDictionary.linkedDataIds
+                    );
                 }
             } else {
-                currentLinkedDataRefs = linkedDataIds;
+                currentLinkedDataRefs = updatedDataForDataDictionary.linkedDataIds;
             }
 
             set(
@@ -255,16 +260,20 @@ function getDataMessage(data: DataMessageIncoming): DataMessageOutgoing {
                 currentLinkedDataRefs
             );
 
-            navigationDictionary = getNavigationDictionary(
-                schemaDictionary,
-                dataDictionary
-            );
+            dataDictionary[0] = {
+                ...dataDictionary[0],
+                ...updatedDataForDataDictionary.dataDictionary[0],
+            };
 
             return {
                 type: MessageSystemType.data,
                 action: MessageSystemDataTypeAction.addLinkedData,
                 dictionaryId: addLinkedDataDictionaryId,
-                linkedDataIds,
+                linkedDataIds: Object.keys(
+                    updatedDataForDataDictionary.dataDictionary[0]
+                ).map((dataDictionaryKey: string) => {
+                    return { id: dataDictionaryKey };
+                }),
                 data: dataDictionary[0][addLinkedDataDictionaryId].data,
                 dataDictionary,
                 navigation: navigationDictionary[0][addLinkedDataDictionaryId],
