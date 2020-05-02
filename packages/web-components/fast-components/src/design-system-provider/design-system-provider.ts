@@ -77,21 +77,25 @@ export class DesignSystemProvider extends FASTElement
         );
     }
 
+    /**
+     * Finds the closest design-system-provider
+     * to an element.
+     */
     public static findProvider(
-        self: HTMLElement & Partial<DesignSystemConsumer>
+        el: HTMLElement & Partial<DesignSystemConsumer>
     ): DesignSystemProvider | null {
-        if (isDesignSystemConsumer(self)) {
-            return self.provider;
+        if (isDesignSystemConsumer(el)) {
+            return el.provider;
         }
 
-        let parent = composedParent(self);
+        let parent = composedParent(el);
 
         while (parent !== null) {
             if (DesignSystemProvider.isDesignSystemProvider(parent)) {
-                self.provider = parent; // Store provider on ourselves for future reference
+                el.provider = parent; // Store provider on ourselves for future reference
                 return parent;
             } else if (isDesignSystemConsumer(parent)) {
-                self.provider = parent.provider;
+                el.provider = parent.provider;
                 return parent.provider;
             } else {
                 parent = composedParent(parent);
