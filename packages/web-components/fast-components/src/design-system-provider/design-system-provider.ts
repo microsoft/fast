@@ -1,9 +1,10 @@
 import {
     attr,
     Behavior,
+    customElement,
     FASTElement,
-    Observable,
     observable,
+    Observable,
 } from "@microsoft/fast-element";
 import {
     CSSCustomPropertyDefinition,
@@ -11,6 +12,8 @@ import {
 } from "../custom-properties";
 import { composedParent } from "../utilities";
 import { DesignSystemPropertyDeclarationConfig } from "./design-system-property";
+import { DesignSystemProviderStyles as styles } from "./design-system-provider.styles";
+import { DesignSystemProviderTemplate as template } from "./design-system-provider.template";
 
 const supportsAdoptedStylesheets = "adoptedStyleSheets" in window.ShadowRoot.prototype;
 
@@ -407,11 +410,11 @@ export class DesignSystemProvider extends FASTElement
 }
 
 /**
- * Designates an element tag-name as a design-system-provider
- * @param tagName the design-system-provider's tag-name
+ * Defines a design-system-provider custom element
  */
-export function designSystemProviderTagName(tagName: string) {
+export function designSystemProvider(name: string) {
     return <T extends typeof DesignSystemProvider>(providerCtor: T): void => {
-        providerCtor.registerTagName(tagName);
+        customElement({ name, template, styles })(providerCtor);
+        providerCtor.registerTagName(name);
     };
 }

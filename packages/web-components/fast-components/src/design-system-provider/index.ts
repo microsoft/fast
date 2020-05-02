@@ -9,13 +9,8 @@ import {
     DesignSystem,
     DesignSystemDefaults,
 } from "@microsoft/fast-components-styles-msft";
-import {
-    DesignSystemProvider,
-    designSystemProviderTagName,
-} from "./design-system-provider";
+import { DesignSystemProvider, designSystemProvider } from "./design-system-provider";
 import { designSystemProperty } from "./design-system-property";
-import { DesignSystemProviderStyles as styles } from "./design-system-provider.styles";
-import { DesignSystemProviderTemplate as template } from "./design-system-provider.template";
 
 const fromView: { mode: "fromView" } = {
     mode: "fromView",
@@ -26,14 +21,7 @@ const fromViewNumber: { mode: "fromView"; converter: typeof nullableNumberConver
     converter: nullableNumberConverter,
 };
 
-const name = "fast-design-system-provider";
-
-@customElement({
-    name,
-    template,
-    styles,
-})
-@designSystemProviderTagName(name)
+@designSystemProvider("fast-design-system-provider")
 export class FASTDesignSystemProvider extends DesignSystemProvider
     implements
         Omit<
