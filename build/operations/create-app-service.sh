@@ -31,22 +31,21 @@ git_repo=https://github.com/microsoft/fast-dna
 [[ $debug == true ]] && echo $git_repo
 
 # SET LOCATIONS
-location_us_central=centralus
+## For improved isolation and availability in business continuity disaster recovery (BCDR)
+## regionally pair "East US" and "West US" for indepth details on paired regions 
+## Ref: https://docs.microsoft.com/en-us/azure/best-practices-availability-paired-regions
 location_us_west=westus
 location_us_east=eastus
 [[ $debug == true ]] && echo "${bold}${green}Locations"${reset}${unbold}
-[[ $debug == true ]] && echo $location_us_central
-#[[ $debug == true ]] && echo $location_us_west
+[[ $debug == true ]] && echo $location_us_west
 #[[ $debug == true ]] && echo $location_us_east
 
 # SET RESOURCE GROUPS
-resource_group_us_central=$product_name-$location_us_central-rg
-#resource_group_us_west=$product_name-$location_us_west-rg
+resource_group_us_west=$product_name-$location_us_west-rg
 #resource_group_us_east=$product_name-$location_us_east-rg
 
 [[ $debug == true ]] && echo "${bold}${green}Resource Groups"${reset}${unbold}
-[[ $debug == true ]] && echo $resource_group_us_central
-#[[ $debug == true ]] && echo $resource_group_us_west
+[[ $debug == true ]] && echo $resource_group_us_west
 #[[ $debug == true ]] && echo $resource_group_us_east
 
 # CREATE RESOURCE GROUP
