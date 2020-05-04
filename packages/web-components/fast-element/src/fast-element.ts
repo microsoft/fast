@@ -1,12 +1,12 @@
-import { AttributeDefinition } from "./attributes";
-import { Controller } from "./controller";
-import { Observable } from "./observation/observable";
+import { AttributeDefinition } from "./attributes.js";
+import { Controller } from "./controller.js";
+import { Observable } from "./observation/observable.js";
 import {
     fastDefinitions,
     FASTElementDefinition,
     getDefinition,
     PartialFASTElementDefinition,
-} from "./fast-definitions";
+} from "./fast-definitions.js";
 
 const defaultShadowOptions: ShadowRootInit = { mode: "open" };
 const defaultElementOptions: ElementDefinitionOptions = {};

@@ -12,3 +12,6 @@ docs/
 .eslintrc.js
 .prettierignore
 tsconfig.json
+
+# cache
+.rollupcache
