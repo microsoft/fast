@@ -1,6 +1,6 @@
 import { html } from "@microsoft/fast-element";
 import { when } from "@microsoft/fast-element";
-import { ref } from "@microsoft/fast-element/dist/directives/";
+import { ref } from "@microsoft/fast-element";
 import { Dialog } from "./dialog";
 
 export const DialogTemplate = html<Dialog>`
