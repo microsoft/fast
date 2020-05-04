@@ -12,6 +12,8 @@ function imageCellFn(
     props: DataGridCellProps,
     className: string,
     cellId: React.ReactText,
+    rootElement: React.RefObject<any>,
+    focusTarget: React.RefObject<any>,
     unhandledProps: object
 ): React.ReactNode {
     return (
@@ -19,6 +21,7 @@ function imageCellFn(
             {...unhandledProps}
             data-cellid={cellId}
             className={className}
+            ref={rootElement}
             style={{
                 gridColumn: props.columnIndex,
                 borderWidth: "1",
@@ -43,6 +46,8 @@ function recordIdCellFn(
     props: DataGridCellProps,
     className: string,
     cellId: React.ReactText,
+    rootElement: React.RefObject<any>,
+    focusTarget: React.RefObject<any>,
     unhandledProps: object
 ): React.ReactNode {
     return (
@@ -50,6 +55,7 @@ function recordIdCellFn(
             {...unhandledProps}
             data-cellid={cellId}
             className={className}
+            ref={rootElement}
             style={{
                 gridColumn: props.columnIndex,
                 borderWidth: "1",

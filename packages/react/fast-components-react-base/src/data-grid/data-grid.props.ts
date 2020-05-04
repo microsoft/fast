@@ -42,16 +42,18 @@ export interface DataGridColumnDefinition {
      * props: the props for this cell
      * className: css classname for the cell
      * cellId: the value written to the cell's "data-cellid" attribute and used to identify it in the grid
-     * unhandledProps: authors will generally want to write these to their custom implementations
+     * rootElement: ref to the root element of the cell
      * focusTarget: authors of custom cell render functions who wish to focus on an internal element should
      * set the 'ref' attribute of the internal element that should get focus to this value.
+     * unhandledProps: authors will generally want to write these to their custom implementations
      */
     cell?: (
         props: DataGridCellProps,
         className: string,
         cellId: React.ReactText,
-        unhandledProps: object,
-        focusTarget: React.RefObject<any>
+        rootElement: React.RefObject<any>,
+        focusTarget: React.RefObject<any>,
+        unhandledProps: object
     ) => React.ReactNode;
 }
 

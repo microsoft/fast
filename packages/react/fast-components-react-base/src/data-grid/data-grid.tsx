@@ -238,11 +238,6 @@ class DataGrid extends Foundation<
     /**
      * React life-cycle method
      */
-    public componentWillUnmount(): void {}
-
-    /**
-     * React life-cycle method
-     */
     public componentDidUpdate(prevProps: DataGridProps): void {
         if (this.props.gridData !== prevProps.gridData) {
             const newRowPositions: rowPosition[] = this.state.rowPositions.slice(
@@ -919,7 +914,6 @@ class DataGrid extends Foundation<
             }
         } else {
             // shift the items passed to the stack panel to include the desired row indexes
-            // this.sizeRowsToIndex(rowIndex);
 
             let newDataPageStartIndex: number =
                 rowIndex - Math.floor(this.props.pageSize / 2);
@@ -943,7 +937,6 @@ class DataGrid extends Foundation<
             });
         }
 
-        //TODO: scomea - do we park focus somewhere?
         this.setState({
             desiredVisibleRowIndex: rowIndex,
             desiredFocusRowKey: rowId,

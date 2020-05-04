@@ -35,6 +35,8 @@ class DataGridCell extends Foundation<
     };
 
     private focusTarget: React.RefObject<any> = React.createRef();
+    private rootElement: React.RefObject<any> = React.createRef();
+
     /**
      * Renders the component
      */
@@ -59,16 +61,18 @@ class DataGridCell extends Foundation<
                 this.props,
                 this.generateClassNames(),
                 this.props.columnDefinition.columnDataKey,
-                unhandledProps,
-                this.focusTarget
+                this.rootElement,
+                this.focusTarget,
+                unhandledProps
             );
         } else {
             return this.defaultCellRenderFunction(
                 this.props,
                 this.generateClassNames(),
                 this.props.columnDefinition.columnDataKey,
-                unhandledProps,
-                this.focusTarget
+                this.rootElement,
+                this.focusTarget,
+                unhandledProps
             );
         }
     }
@@ -77,8 +81,8 @@ class DataGridCell extends Foundation<
      * React life-cycle method
      */
     public componentDidMount(): void {
-        if (this.isDesiredFocusCell()) {
-            //
+        if (this.isDesiredFocusCell() && this.rootElement.current !== null) {
+            this.rootElement.current.focus();
         }
     }
 
@@ -94,23 +98,25 @@ class DataGridCell extends Foundation<
     /**
      * The default function that renders an unstyled content display
      */
-    private defaultCellRenderFunction = (
+    public defaultCellRenderFunction = (
         props: DataGridCellProps,
         className: string,
         cellId: React.ReactText,
-        unhandledProps: object,
-        focusTarget: React.RefObject<any>
+        rootElement: React.RefObject<any>,
+        focusTarget: React.RefObject<any>,
+        unhandledProps: object
     ): React.ReactNode => {
         return (
             <div
                 {...unhandledProps}
+                ref={rootElement}
                 data-cellid={cellId}
                 className={className}
                 style={{
                     gridColumn: props.columnIndex,
                 }}
             >
-                {this.props.rowData[this.props.columnDefinition.columnDataKey]}
+                {props.rowData[props.columnDefinition.columnDataKey]}
             </div>
         );
     };
