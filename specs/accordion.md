@@ -37,7 +37,7 @@ As defined by the W3C:
 - `fast-accordion`
 
 *Attributes:*
-- `expandmode` - enum
+- `expand-mode` - enum
   - single
   - multi - default
 
@@ -53,7 +53,7 @@ As defined by the W3C:
 *Attributes:*
 - `expanded` - boolean
 - `id` - string
-- `headinglevel` - enum
+- `heading-level` - enum
   - 1
   - 2
   - 3 - default
@@ -175,7 +175,7 @@ As defined by the W3C:
 
 ### States
 
-Accordion has 2 modes of expansion let can be set via `expandmode`. `expandmode` defaults to `multi`, meaning multiple accordion-items can be expanded at any given time. If `expandmode` is set to `single` then only one item can be expanded, meaning that when you activate a header all other headers with collapse.
+Accordion has 2 modes of expansion let can be set via `expand-mode`. `expand-mode` defaults to `multi`, meaning multiple accordion-items can be expanded at any given time. If `expand-mode` is set to `single` then only one item can be expanded, meaning that when you activate a header all other headers with collapse.
 
 
 ### Accessibility
