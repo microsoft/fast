@@ -18,7 +18,7 @@ export class RadioGroup extends FASTElement {
                 if (this.readOnly) {
                     radio.readOnly = true;
                 } else {
-                    radio.removeAttribute("readonly");
+                    radio.readOnly = false;
                 }
             });
         }
@@ -31,9 +31,9 @@ export class RadioGroup extends FASTElement {
         if (filteredRadios !== undefined) {
             filteredRadios.forEach((radio: HTMLInputElement) => {
                 if (this.disabled) {
-                    radio.setAttribute("disabled", "");
+                    radio.disabled = true;
                 } else {
-                    radio.removeAttribute("disabled");
+                    radio.disabled = false;
                 }
             });
         }
@@ -52,6 +52,8 @@ export class RadioGroup extends FASTElement {
 
     @observable slottedRadioButtons: RadioControl[];
     private selectedRadio: RadioControl | null;
+    private parentToolbar: HTMLElement | null | undefined;
+    private isInsideToolbar: boolean = false;
 
     constructor() {
         super();
@@ -66,7 +68,6 @@ export class RadioGroup extends FASTElement {
         super.connectedCallback();
         const radioButtons: RadioControl[] = this.getFilteredRadioButtons();
         radioButtons.forEach((radio: RadioControl) => {
-            //(radio as HTMLInputElement).addEventListener("blur", this.handleBlur);
             if (this.name !== undefined) {
                 radio.setAttribute("name", this.name);
             }
@@ -91,6 +92,10 @@ export class RadioGroup extends FASTElement {
         if (this.value === undefined) {
             radioButtons[0].setAttribute("tabindex", "0");
         }
+
+        this.parentToolbar = this.parentElement?.closest('[role="toolbar"]');
+        this.isInsideToolbar =
+            this.parentToolbar !== undefined && this.parentToolbar !== null;
     }
 
     private getFilteredRadioButtons = (): RadioControl[] => {
@@ -126,13 +131,9 @@ export class RadioGroup extends FASTElement {
         }
     };
 
-    private moveToRadioByIndex = (
-        group: RadioControl[],
-        index: number,
-        inToolbar: boolean
-    ) => {
+    private moveToRadioByIndex = (group: RadioControl[], index: number) => {
         const radio: RadioControl = group[index];
-        if (!radio.readOnly && !inToolbar) {
+        if (!radio.readOnly && !this.isInsideToolbar) {
             radio.checked = true;
             radio.setAttribute("tabindex", "0");
         } else {
@@ -174,48 +175,61 @@ export class RadioGroup extends FASTElement {
         }
     };
 
+    private shouldMoveOffGroupToTheRight = (
+        index: number,
+        group: RadioControl[],
+        keyCode: number
+    ): boolean => {
+        return (
+            index === group.length &&
+            this.isInsideToolbar &&
+            keyCode === keyCodeArrowRight
+        );
+    };
+
+    private shouldMoveOffGroupToTheLeft = (index: number, keyCode: number): boolean => {
+        return index < 0 && this.isInsideToolbar && keyCode === keyCodeArrowLeft;
+    };
+
+    private checkSelectedRadio = (): void => {
+        if (
+            this.selectedRadio !== null &&
+            !this.selectedRadio.readOnly &&
+            !this.selectedRadio.checked
+        ) {
+            this.selectedRadio.checked = true;
+            this.selectedRadio.setAttribute("tabindex", "0");
+            this.selectedRadio.focus();
+        }
+    };
+
+    /* keyboard handling per https://w3c.github.io/aria-practices/#for-radio-groups-not-contained-in-a-toolbar */
     public keydownHandler = (e: KeyboardEvent): void => {
         const group: RadioControl[] = this.getFilteredRadioButtons();
         let index: number = 0;
-        const toolbar: HTMLElement | null | undefined = this.parentElement?.closest(
-            '[role="toolbar"]'
-        );
-        const inToolbar: boolean = toolbar !== undefined && toolbar !== null;
         switch (e.keyCode) {
             case keyCodeEnter:
                 index = this.selectedRadio ? group.indexOf(this.selectedRadio) + 1 : 1;
-                if (
-                    this.selectedRadio &&
-                    !this.selectedRadio.readOnly &&
-                    !this.selectedRadio.checked
-                ) {
-                    this.selectedRadio.checked = true;
-                    this.selectedRadio.setAttribute("tabindex", "0");
-                    this.selectedRadio.focus();
-                }
+                this.checkSelectedRadio();
                 break;
             case keyCodeArrowRight:
             case keyCodeArrowDown:
                 index = this.selectedRadio ? group.indexOf(this.selectedRadio) + 1 : 1;
-                if (
-                    index === group.length &&
-                    inToolbar &&
-                    e.keyCode === keyCodeArrowRight
-                ) {
+                if (this.shouldMoveOffGroupToTheRight(index, group, e.keyCode)) {
                     this.moveRightOffGroup();
                     return;
                 } else if (index === group.length) {
                     index = 0;
                 }
-                // matching native radio/radiogroup which does not select an item if there is only 1 in the group
+                /* matching native radio/radiogroup which does not select an item if there is only 1 in the group */
                 while (index < group.length && group.length > 1) {
                     if (!group[index].disabled) {
-                        this.moveToRadioByIndex(group, index, inToolbar);
+                        this.moveToRadioByIndex(group, index);
                         break;
                     } else if (index === group.indexOf(this.selectedRadio!)) {
                         break;
                     } else if (index + 1 >= group.length) {
-                        if (inToolbar) {
+                        if (this.isInsideToolbar) {
                             break;
                         } else {
                             index = 0;
@@ -229,7 +243,7 @@ export class RadioGroup extends FASTElement {
             case keyCodeArrowUp:
                 index = this.selectedRadio ? group.indexOf(this.selectedRadio) - 1 : 0;
 
-                if (index < 0 && inToolbar && e.keyCode === keyCodeArrowLeft) {
+                if (this.shouldMoveOffGroupToTheLeft(index, e.keyCode)) {
                     this.moveLeftOffGroup();
                     return;
                 }
@@ -238,7 +252,7 @@ export class RadioGroup extends FASTElement {
 
                 while (index >= 0 && group.length > 1) {
                     if (!group[index].disabled) {
-                        this.moveToRadioByIndex(group, index, inToolbar);
+                        this.moveToRadioByIndex(group, index);
                         break;
                     } else if (index === group.indexOf(this.selectedRadio!)) {
                         break;
