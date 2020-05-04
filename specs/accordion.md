@@ -63,12 +63,14 @@ As defined by the W3C:
 
 *Parts:*
 - panel
-- header
+- button
 
 *Slot Names*
 - default
 - heading
 - glyph
+- start
+- end
 
 ### Anatomy and Appearance
 
@@ -76,17 +78,18 @@ As defined by the W3C:
 <!-- shadow root -->
 <div>
     <div role="heading" aria-level="3">
-        <div
-            class="header"
-            part="header"
+        <slot name="start" part="start"></slot>
+        <button
+            class="button"
+            part="button"
             aria-expanded="true"
             aria-controls="accordion1-panel"
             id="accordion1"
-            tabIndex=0
         >
             <slot name="heading" part="heading">Panel one</slot>
-            <slot name="glyph" part="glyph"></slot>
-       </div>
+       </button>
+       <slot name="end" part="end"></slot>
+       <slot name="glyph" part="glyph"></slot>
     </div>
     <div
         id="accordion1-panel"
@@ -96,17 +99,18 @@ As defined by the W3C:
         Panel one content
     </div>
     <div role="heading" aria-level="3">
-        <div
-            class="header"
-            part="header"
+        <slot name="start" part="start"></slot>
+        <button
+            class="button"
+            part="button"
             aria-expanded="false"
             aria-controls="accordion2-panel"
             id="accordion2"
-            tabIndex=0
         >
             <slot name="heading" part="heading">Panel two</slot>
-            <slot name="glyph" part="glyph"></slot>
-       </div>
+       </button>
+       <slot name="end" part="end"></slot>
+       <slot name="glyph" part="glyph"></slot>
     </div>
     <div
         id="accordion2-panel"
@@ -118,17 +122,18 @@ As defined by the W3C:
         Panel two content
     </div>
     <div role="heading" aria-level="3">
-        <div
-            class="header"
-            part="header"
+        <slot name="start" part="start"></slot>
+        <button
+            class="button"
+            part="button"
             aria-expanded="true"
             aria-controls="accordion3-panel"
             id="accordion3"
-            tabIndex=0
         >
             <slot name="heading" part="heading">Panel three</slot>
-            <slot name="glyph" part="glyph"></slot>
-       </div>
+        </button>
+        <slot name="end" part="end"></slot>
+        <slot name="glyph" part="glyph"></slot>
     </div>
     <div
         id="accordion3-panel"
