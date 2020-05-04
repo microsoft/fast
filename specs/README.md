@@ -7,7 +7,7 @@ Here you'll find specifications for custom elements and other library features.
 ## Web Component Specifications
 | Name | Spec | Component |
 | :--------- | :---------: | ---------: |
-| Accordian | -- | -- |
+| [Accordian](./accordion.md) | :white_check_mark: | -- |
 | Alert | -- | -- |
 | [Anchored region](../packages/web-components/fast-components/src/anchored-region/anchored-region.spec.md) | :white_check_mark: | :white_check_mark: |
 | Avatar | -- | -- |
