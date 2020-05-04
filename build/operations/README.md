@@ -59,17 +59,35 @@ FAST uses Azure Cloud Infrasture and Platform as a Service.
 * Performance and Scalability
 * Resiliency
 
-### Management Groups
-Root management group
-* EPIC Design Core
-  * Fast Design Management Group
-    * Fast Production (Primary Region - West US)
-    * Fast Staging (Secondary Region - East US)
+### Management Groups & Subscriptions
+This hierarchy uses the Workload separation strategy:
 
-* Fast Design - Production + Policy
+* Design MG
+  * Fast Design MG
+ 
+    * Fast Production (Primary Region - West US)
+      * Production Subscription
+        * App Service Plan (single unit)
+ 
+    * Fast Staging (Secondary Region - East US)
+      * Staging Subscription
+        * App Service Plan (single unit)
+    
+    * Fast Development
+      * Internal
+      * External
+  
+  * Edge Design Mg
+    * Edge Internal
+    * Edge External
+      * Primary Region
+      * Secondary Region
 
 Subscriptions
 * Internal - Edge Design
 * Internal - Fast Design
 
+
+### Building for Resiliency
+https://docs.microsoft.com/en-us/azure/architecture/framework/resiliency/overview
 
