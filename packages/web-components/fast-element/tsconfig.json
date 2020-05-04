@@ -6,7 +6,6 @@
         "strictNullChecks": true,
         "target": "es2015",
         "module": "ESNext",
-        "removeComments": true,
         "types": [
             "mocha",
             "webpack-env"
