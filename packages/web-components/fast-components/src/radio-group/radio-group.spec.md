@@ -74,10 +74,11 @@ Keyboard interaction will work as described by [W3C](https://w3c.github.io/aria-
 - Right Arrow and Down Arrow: move focus to the next radio button in the group, uncheck the previously focused button, and check the newly focused button. If focus is on the last button, focus moves to the first button.
 - Left Arrow and Up Arrow: move focus to the previous radio button in the group, uncheck the previously focused button, and check the newly focused button. If focus is on the first button, focus moves to the last button.
 
+Additional support for keyboard interaction while in a toolbar as described by [W3C](https://w3c.github.io/aria-practices/#for-radio-group-contained-in-a-toolbar)
 
 Radio group:
 ```html
-<fast-radio-group selected-value="3">
+<fast-radio-group value="3">
     <fast-radio value="1">One</fast-radio>
     <fast-radio value="2">Two</fast-radio>
     <fast-radio value="3" checked>Three</fast-radio>
