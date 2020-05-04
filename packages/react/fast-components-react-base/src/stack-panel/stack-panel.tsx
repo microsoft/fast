@@ -241,6 +241,9 @@ class StackPanel extends Foundation<
         return React.Children.map(this.props.children, this.renderItem);
     }
 
+    /**
+     * Test if a node is cloneable
+     */
     private isClonableElement(node: React.ReactNode): node is React.ReactElement<any> {
         return React.isValidElement(node);
     }
@@ -445,14 +448,7 @@ class StackPanel extends Foundation<
         } else {
             this.updateLayout();
         }
-
-        if (isFunction(this.props.onScrollChange)) {
-            this.props.onScrollChange(
-                this.lastRecordedScroll,
-                this.maxScroll,
-                this.viewportSpan
-            );
-        }
+        this.reportScrollChange();
     };
 
     /**
@@ -460,7 +456,21 @@ class StackPanel extends Foundation<
      */
     private handleResize = (): void => {
         this.viewportSpan = this.getViewportSpan();
+        this.reportScrollChange();
         this.updateLayout();
+    };
+
+    /**
+     *  report scroll changes to callback
+     */
+    private reportScrollChange = (): void => {
+        if (isFunction(this.props.onScrollChange)) {
+            this.props.onScrollChange(
+                this.lastRecordedScroll,
+                this.maxScroll,
+                this.viewportSpan
+            );
+        }
     };
 
     /**
@@ -553,7 +563,6 @@ class StackPanel extends Foundation<
 
     /**
      * Gets the scroll position that brings the item at a particular index into the viewport
-     * (including peek)
      */
     private getScrollIntoViewPosition = (index: number): number => {
         if (index === -1 || index >= this.itemPositions.length) {
