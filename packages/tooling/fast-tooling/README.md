@@ -14,6 +14,7 @@ FAST Tooling is a library agnostic specific set of utilities to assist in creati
 - [Data utilities](#data-utilities)
     - [Generating data](#generating-data-from-json-schema)
     - [Mapping data](#mapping-data)
+    - [Mapping Web Component definitions](#mapping-web-component-definitions)
     - [Validation](#validation)
 
 ## Installation
@@ -228,6 +229,19 @@ The expected result:
 {
     greeting: "Hello world"
 }
+```
+
+### Mapping Web Component definitions
+
+Web components can be described with the TypeScript interface `WebComponentDefinition` or the JSON schema `webComponentSchema`, available as named exports from `@microsoft/fast-tooling`.
+
+Data that maps to these definitions can be passed as an argument to the `mapWebComponentDefinitionToJSONSchema` utility. This will generate an array of JSON schemas (one for each available tag) that the tooling can use.
+
+Example:
+```javascript
+import { mapWebComponentDefinitionToJSONSchema } from "@microsoft/fast-tooling";
+
+const myWebComponentJSONSchema = mapWebComponentDefinitionToJSONSchema(myWebComponentDefinition);
 ```
 
 ### Validation

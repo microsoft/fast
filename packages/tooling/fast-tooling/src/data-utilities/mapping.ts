@@ -1,11 +1,17 @@
 import { cloneDeep, get } from "lodash-es";
 import { Data, DataDictionary, LinkedData, SchemaDictionary } from "../message-system";
+import { linkedDataSchema } from "../schemas";
 import {
     DataType,
     ElementDictionary,
     PropertyKeyword,
     ReservedElementMappingKeyword,
 } from "./types";
+import {
+    WebComponentAttribute,
+    WebComponentDefinition,
+    WebComponentSlot,
+} from "./web-component";
 
 export interface MapperConfig<T> {
     /**
@@ -306,4 +312,76 @@ export function htmlResolver(config: ResolverConfig<any>): HTMLElement | Text {
     }
 
     return config.dataDictionary[0][config.dictionaryId].data;
+}
+
+function mapAttributesToJSONSchema(
+    attributes: WebComponentAttribute[]
+): { [key: string]: any } {
+    return attributes.reduce(
+        (accumulation: { [key: string]: any }, attribute: WebComponentAttribute) => {
+            return {
+                ...accumulation,
+                [attribute.name]: {
+                    title: attribute.description,
+                    [ReservedElementMappingKeyword.mapsToAttribute]: attribute.name,
+                    type: attribute.type,
+                },
+            };
+        },
+        {}
+    );
+}
+
+function mapSlotsToJSONSchema(slots: WebComponentSlot[]): { [key: string]: any } {
+    return slots.reduce(
+        (accumulation: { [key: string]: any }, slot: WebComponentSlot) => {
+            return {
+                ...accumulation,
+                [`Slot${slot.name}`]: {
+                    title: slot.description,
+                    [ReservedElementMappingKeyword.mapsToSlot]: slot.name,
+                    ...linkedDataSchema,
+                },
+            };
+        },
+        {}
+    );
+}
+
+/**
+ * The converter for a web component definition
+ * to a web component JSON schema
+ */
+export function mapWebComponentDefinitionToJSONSchema(
+    webComponentDefinition: WebComponentDefinition
+): { [key: string]: any }[] {
+    const schemas: { [key: string]: any }[] = [];
+
+    if (Array.isArray(webComponentDefinition.tags)) {
+        for (
+            let i = 0, tagLength = webComponentDefinition.tags.length;
+            i < tagLength;
+            i++
+        ) {
+            schemas.push({
+                $schema: "http://json-schema.org/schema#",
+                $id: webComponentDefinition.tags[i].name,
+                id: webComponentDefinition.tags[i].name,
+                title: webComponentDefinition.tags[i].description,
+                type: "object",
+                version: webComponentDefinition.version,
+                required: ["version"],
+                [ReservedElementMappingKeyword.mapsToTagName]:
+                    webComponentDefinition.tags[i].name,
+                properties: {
+                    ...mapAttributesToJSONSchema(
+                        webComponentDefinition.tags[i].attributes
+                    ),
+                    ...mapSlotsToJSONSchema(webComponentDefinition.tags[i].slots),
+                },
+            });
+        }
+    }
+
+    return schemas;
 }

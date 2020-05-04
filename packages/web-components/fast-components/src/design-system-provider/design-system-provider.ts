@@ -1,4 +1,4 @@
-import { FASTElement, Observable, observable } from "@microsoft/fast-element";
+import { attr, FASTElement, observable, Observable } from "@microsoft/fast-element";
 import {
     DesignSystemConsumer,
     DesignSystemConsumerBehavior,
@@ -10,54 +10,44 @@ import {
 import { isDesignSystemProvider } from "./is-design-system-provider";
 
 interface DesignSystemPropertyDeclarationConfig {
-    customPropertyName?: string;
-    customProperty?: boolean;
+    cssCustomProperty?: string | false;
+    default: any;
 }
 
 /**
  * Decorator to declare a property as a design-system property.
- * Accepts an optional config to customize whether a css custom property
- * will be written and if so, what the name of that property is.
+ * Accepts a config object with the following:
+ *
+ * default:
+ * The default value of the property. Will be assigned when the use-defaults attribute is used.
+ *
+ * cssCustomProperty?:
+ * An optional property to control the name of the css custom property being created.
+ * If omitted, the css custom property will share a name with the decorated property name.
+ * If assigned a false value, no css custom property will be created.
  */
 export function designSystemProperty<T extends DesignSystemProvider>(
     config: DesignSystemPropertyDeclarationConfig
-): (source: T, property: string) => void;
-export function designSystemProperty<T extends DesignSystemProvider>(
-    source: T,
-    property: string
-): void;
-export function designSystemProperty<T extends DesignSystemProvider>(
-    configOrSource: T | DesignSystemPropertyDeclarationConfig,
-    property?: string
-): any {
+): (source: T, property: string) => void {
     const decorator = (
         source: T,
         prop: string,
-        config: DesignSystemPropertyDeclarationConfig = {}
+        config: DesignSystemPropertyDeclarationConfig
     ) => {
         if (!source.designSystemProperties) {
             source.designSystemProperties = {};
         }
 
         source.designSystemProperties[prop] = {
-            customPropertyName: config.customPropertyName || prop,
-            customProperty:
-                typeof config.customProperty === "boolean" ? config.customProperty : true,
+            cssCustomProperty:
+                config.cssCustomProperty === void 0 ? prop : config.cssCustomProperty,
+            default: config.default,
         };
     };
 
-    if (arguments.length > 1) {
-        // Invoked with no options
-        decorator(configOrSource as T, property!);
-    } else {
-        return (source: T, prop: string) => {
-            decorator(
-                source,
-                prop,
-                configOrSource as DesignSystemPropertyDeclarationConfig
-            );
-        };
-    }
+    return (source: T, prop: string) => {
+        decorator(source, prop, config);
+    };
 }
 
 const supportsAdoptedStylesheets = "adoptedStyleSheets" in window.ShadowRoot.prototype;
@@ -76,6 +66,23 @@ export class DesignSystemProvider extends FASTElement
      * instead of object assignment
      */
     public designSystem = {};
+
+    /**
+     * Applies the default design-system values to the instance where properties
+     * are not explicitly assigned. This is generally used to set the root design
+     * system context.
+     */
+    @attr({ attribute: "use-defaults", mode: "boolean" })
+    public useDefaults: boolean = false;
+    private useDefaultsChanged() {
+        if (this.useDefaults) {
+            Object.entries(this.designSystemProperties).forEach(([key, property]) => {
+                if (this[key] === void 0) {
+                    this[key] = property.default;
+                }
+            });
+        }
+    }
 
     @observable
     public provider: DesignSystemProvider | null = null;
@@ -152,17 +159,19 @@ export class DesignSystemProvider extends FASTElement
                 this.designSystem[key] = value;
                 const property = this.designSystemProperties[key];
 
-                if (property && property.customProperty) {
+                if (property && property.cssCustomProperty) {
                     this.setCustomProperty({
-                        name: property.customPropertyName,
+                        name: property.cssCustomProperty,
                         value,
                     });
                 }
             } else {
                 this.syncDesignSystemWithProvider();
-                this.deleteCustomProperty(
-                    this.designSystemProperties[key].customPropertyName
-                );
+                const property = this.designSystemProperties[key].cssCustomProperty;
+                if (typeof property === "string") {
+                    this.deleteCustomProperty(property);
+                }
+
                 this.writeCustomProperties();
             }
         },
@@ -224,10 +233,13 @@ export class DesignSystemProvider extends FASTElement
             // If property is set then put it onto the design system
             if (this.isValidDesignSystemValue(value)) {
                 this.designSystem[property] = value;
-                this.setCustomProperty({
-                    name: this.designSystemProperties[property].customPropertyName,
-                    value,
-                });
+                const { cssCustomProperty } = this.designSystemProperties[property];
+                if (typeof cssCustomProperty === "string") {
+                    this.setCustomProperty({
+                        name: cssCustomProperty,
+                        value,
+                    });
+                }
             }
         });
 
