@@ -6,7 +6,7 @@ The *stack panel* component is a container that enables virtualization of child 
 
 ### Usage
 
-Virtualization:  When virtualization is enabled the component does not render child items that are not in the viewport or within the defined buffer zone (ie one or more items outside the viewport).
+Virtualization:  When virtualization is enabled the component does not render child items that are not in the visible area of the stackpanel's scrolling region or within the defined buffer zone (ie one or more items outside the viewport).
 
 Note that virtualized elements can't get focus so typically authors will want at least one out of view item instanciated otherwise it will not be possible to tab outside of the viewport.
 

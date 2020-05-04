@@ -389,7 +389,7 @@ class StackPanel extends Foundation<
         this.setState({
             renderedRangeStartIndex: renderStartIndex,
             renderedRangeEndIndex: renderEndIndex,
-            isScrollable: this.itemContainerSpan > this.viewportSpan ? true : false,
+            isScrollable: this.itemContainerSpan > this.viewportSpan,
         });
     };
 

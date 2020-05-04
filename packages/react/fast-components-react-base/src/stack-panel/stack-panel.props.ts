@@ -39,7 +39,12 @@ export interface StackPanelHandledProps extends StackPanelManagedClasses {
     orientation?: Orientation;
 
     /**
-     * Callback for when scroll values change
+     * Callback for when scroll or viewport span values change
+     * This callback is triggered when the component mounts to report initial values
+     * and is otherwise triggered by scroll or resize events.
+     * newScrollValue: the scrollTop (or scrollLeft) of the scrolling container
+     * scrollMaxValue: the maximum scroll value of the scrolling container
+     * viewportSpan: the span in pixels of the scrolling container
      */
     onScrollChange?: (
         newScrollValue: number,
