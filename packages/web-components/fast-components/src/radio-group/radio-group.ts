@@ -82,7 +82,7 @@ export class RadioGroup extends FASTElement {
 
             if (this.value && this.value === radio.getAttribute("value")) {
                 this.selectedRadio = radio;
-                radio.setAttribute("checked", "");
+                radio.checked = true;
                 radio.setAttribute("tabindex", "0");
             } else {
                 radio.setAttribute("tabindex", "-1");
@@ -133,18 +133,30 @@ export class RadioGroup extends FASTElement {
 
     private moveToRadioByIndex = (group: RadioControl[], index: number) => {
         const radio: RadioControl = group[index];
-        if (!radio.readOnly && !this.isInsideToolbar) {
-            radio.checked = true;
+        if (!this.isInsideToolbar) {
             radio.setAttribute("tabindex", "0");
+            if (radio.readOnly) {
+                this.getFilteredRadioButtons().forEach((nextRadio: HTMLInputElement) => {
+                    if (nextRadio !== radio) {
+                        nextRadio.setAttribute("tabindex", "-1");
+                    }
+                });
+            } else {
+                radio.checked = true;
+            }
         } else {
-            radio.setAttribute("tabindex", "-1");
+            if (radio !== this.selectedRadio) {
+                radio.setAttribute("tabindex", "-1");
+            }
         }
         this.selectedRadio = radio;
         radio.focus();
     };
 
     private moveRightOffGroup = () => {
-        this.selectedRadio = null;
+        if (!this.selectedRadio?.checked) {
+            this.selectedRadio = null;
+        }
         (this.nextElementSibling as HTMLInputElement).focus();
     };
 
@@ -173,6 +185,7 @@ export class RadioGroup extends FASTElement {
                 this.selectedRadio = null;
             }
         }
+        e.preventDefault();
     };
 
     private shouldMoveOffGroupToTheRight = (
@@ -209,7 +222,7 @@ export class RadioGroup extends FASTElement {
         let index: number = 0;
         switch (e.keyCode) {
             case keyCodeEnter:
-                index = this.selectedRadio ? group.indexOf(this.selectedRadio) + 1 : 1;
+                console.log("enter key hit");
                 this.checkSelectedRadio();
                 break;
             case keyCodeArrowRight:
