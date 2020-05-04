@@ -9,7 +9,7 @@ export const RadioGroupStyles = css`
         flex-direction: column;
     }
 
-    .control {
+    .positioning-region {
         display: inline-flex;
         flex-direction: row;
     }

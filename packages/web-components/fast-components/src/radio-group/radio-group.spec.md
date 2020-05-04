@@ -35,7 +35,7 @@ Radio group allows the user to be presented with a list of all the options visib
 - `fast-radio-group`
 
 *Attributes:*
-- `value` - allows user to set the initial radio selected within the group independent of value.
+- `value` - allows user to set the initial radio selected within the group.
 - `readonly`
   - If there is a selected radio button in the group it should be submitted with the form but none of the radio buttons should be editable.
 - `disabled`
@@ -48,7 +48,7 @@ Radio group allows the user to be presented with a list of all the options visib
 
 ### Anatomy and Appearance
 *Parts:*
-- control
+- positioning-region
 
 *Template:*
 ```
@@ -56,7 +56,7 @@ Radio group allows the user to be presented with a list of all the options visib
     role="radiogroup"
 >
     <slot name="label"></slot>
-    <div class="control" part="control">
+    <div class="positioning-region" part="positioning-region">
         <slot ${slotted("slottedRadioButtons")}> </slot>
     </div>
 </template>

@@ -15,8 +15,8 @@ export class RadioGroup extends FASTElement {
         const filteredRadios = this.getFilteredRadioButtons();
         if (filteredRadios !== undefined) {
             filteredRadios.forEach((radio: HTMLInputElement) => {
-                if (this.disabled) {
-                    radio.setAttribute("readonly", "");
+                if (this.readOnly) {
+                    radio.readOnly = true;
                 } else {
                     radio.removeAttribute("readonly");
                 }
@@ -56,23 +56,27 @@ export class RadioGroup extends FASTElement {
     constructor() {
         super();
         this.addEventListener("keydown", this.keydownHandler);
+        this.addEventListener("change", this.handleRadioChange);
+        this.addEventListener("keypress", this.keypressHandler);
+        this.addEventListener("click", this.clickHandler);
+        this.addEventListener("focusout", this.handleFocusOut);
     }
 
     public connectedCallback(): void {
         super.connectedCallback();
-        this.addEventListener("change", this.handleRadioChange);
         const radioButtons: RadioControl[] = this.getFilteredRadioButtons();
         radioButtons.forEach((radio: RadioControl) => {
+            //(radio as HTMLInputElement).addEventListener("blur", this.handleBlur);
             if (this.name !== undefined) {
                 radio.setAttribute("name", this.name);
             }
 
             if (this.disabled) {
-                radio.setAttribute("disabled", "");
+                radio.disabled = true;
             }
 
             if (this.readOnly) {
-                radio.setAttribute("readonly", "");
+                radio.readOnly = true;
             }
 
             if (this.value && this.value === radio.getAttribute("value")) {
@@ -101,6 +105,13 @@ export class RadioGroup extends FASTElement {
         return radioButtons;
     };
 
+    private keypressHandler = (e: KeyboardEvent): void => {
+        const radio: HTMLInputElement | null = e.target as HTMLInputElement;
+        if (radio) {
+            radio.setAttribute("tabindex", radio.checked ? "0" : "-1");
+        }
+    };
+
     private handleRadioChange = (e: CustomEvent): void => {
         const changedRadio: HTMLInputElement = e.target as HTMLInputElement;
         if (changedRadio.checked) {
@@ -123,6 +134,9 @@ export class RadioGroup extends FASTElement {
         const radio: RadioControl = group[index];
         if (!radio.readOnly && !inToolbar) {
             radio.checked = true;
+            radio.setAttribute("tabindex", "0");
+        } else {
+            radio.setAttribute("tabindex", "-1");
         }
         this.selectedRadio = radio;
         radio.focus();
@@ -136,6 +150,28 @@ export class RadioGroup extends FASTElement {
     private moveLeftOffGroup = () => {
         this.selectedRadio = null;
         (this.previousElementSibling as HTMLInputElement).focus();
+    };
+
+    /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
+    private handleFocusOut = (e: FocusEvent) => {
+        const group: RadioControl[] = this.getFilteredRadioButtons();
+        if (!this.selectedRadio) {
+            group[0].setAttribute("tabindex", "0");
+        }
+    };
+
+    private clickHandler = (e: MouseEvent): void => {
+        const radio: HTMLInputElement | null = e.target as HTMLInputElement;
+        if (radio) {
+            const group: RadioControl[] = this.getFilteredRadioButtons();
+            if (radio.checked || group.indexOf(radio) === 0) {
+                radio.setAttribute("tabindex", "0");
+                this.selectedRadio = radio;
+            } else {
+                radio.setAttribute("tabindex", "-1");
+                this.selectedRadio = null;
+            }
+        }
     };
 
     public keydownHandler = (e: KeyboardEvent): void => {
@@ -154,6 +190,7 @@ export class RadioGroup extends FASTElement {
                     !this.selectedRadio.checked
                 ) {
                     this.selectedRadio.checked = true;
+                    this.selectedRadio.setAttribute("tabindex", "0");
                     this.selectedRadio.focus();
                 }
                 break;
