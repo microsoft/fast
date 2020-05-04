@@ -203,7 +203,7 @@ class StackPanel extends Foundation<
             const newScrollPosition: number = this.getScrollIntoViewPosition(
                 this.props.initiallyVisibleItemIndex
             );
-            this.scrollContent(this.getScrollPosition(), newScrollPosition);
+            this.scrollContent(newScrollPosition);
         }
     }
 
@@ -548,10 +548,7 @@ class StackPanel extends Foundation<
     /**
      * Scrolls the container for the items list
      */
-    private scrollContent(
-        startScrollPosition: number,
-        targetScrollPosition: number
-    ): void {
+    private scrollContent(targetScrollPosition: number): void {
         const newScrollPosition: number = Math.max(
             0,
             Math.min(targetScrollPosition, this.maxScroll)
