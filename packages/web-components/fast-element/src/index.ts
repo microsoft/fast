@@ -1,20 +1,23 @@
-export * from "./template";
-export * from "./fast-element";
-export { FASTElementDefinition, PartialFASTElementDefinition } from "./fast-definitions";
-export * from "./attributes";
-export * from "./controller";
-export * from "./interfaces";
-export * from "./template-compiler";
-export * from "./styles";
-export * from "./view";
-export * from "./observation/observable";
-export * from "./observation/notifier";
-export * from "./dom";
-export * from "./directives/behavior";
-export * from "./directives/binding";
-export * from "./directives/directive";
-export * from "./directives/ref";
-export * from "./directives/when";
-export * from "./directives/repeat";
-export * from "./directives/slotted";
-export * from "./directives/children";
+export * from "./template.js";
+export * from "./fast-element.js";
+export {
+    FASTElementDefinition,
+    PartialFASTElementDefinition,
+} from "./fast-definitions.js";
+export * from "./attributes.js";
+export * from "./controller.js";
+export * from "./interfaces.js";
+export * from "./template-compiler.js";
+export * from "./styles.js";
+export * from "./view.js";
+export * from "./observation/observable.js";
+export * from "./observation/notifier.js";
+export * from "./dom.js";
+export * from "./directives/behavior.js";
+export * from "./directives/binding.js";
+export * from "./directives/directive.js";
+export * from "./directives/ref.js";
+export * from "./directives/when.js";
+export * from "./directives/repeat.js";
+export * from "./directives/slotted.js";
+export * from "./directives/children.js";

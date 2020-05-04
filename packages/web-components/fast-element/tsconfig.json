@@ -1,16 +1,20 @@
 {
     "extends": "../../../tsconfig.json",
     "compilerOptions": {
-        "outDir": "dist",
-        "baseUrl": ".",
+        "declarationDir": "dist/dts",
+        "outDir": "dist/esm",
         "strictNullChecks": true,
-        "target": "es2015"
+        "target": "es2015",
+        "module": "ESNext",
+        "removeComments": true,
+        "types": [
+            "mocha",
+            "webpack-env"
+        ],
+        "lib": [
+            "DOM",
+            "ES2015"
+        ]
     },
-    "include": [
-        "src/**/*"
-    ],
-    "exclude": [
-        "node_modules",
-        "**/*.spec.ts"
-    ]
+    "include": ["src"]
 }

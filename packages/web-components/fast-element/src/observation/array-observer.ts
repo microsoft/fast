@@ -1,12 +1,12 @@
-import { DOM } from "../dom";
-import { Observable } from "./observable";
-import { SubscriberCollection } from "./notifier";
+import { DOM } from "../dom.js";
+import { Observable } from "./observable.js";
+import { SubscriberCollection } from "./notifier.js";
 import {
     calcSplices,
     newSplice,
     projectArraySplices,
     Splice,
-} from "./array-change-records";
+} from "./array-change-records.js";
 
 let arrayObservationEnabled = false;
 
