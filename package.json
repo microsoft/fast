@@ -98,7 +98,7 @@
     "dotenv": "^6.0.0",
     "eyes.selenium": "3.6.2",
     "glob": "^7.1.2",
-    "husky": "^1.1.2",
+    "husky": "^4.2.5",
     "jest": "^25.4.0",
     "lerna": "^3.20.2",
     "lint-staged": "^10.1.2",

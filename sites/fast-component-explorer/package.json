@@ -97,7 +97,6 @@
     "favicons-webpack-plugin": "0.0.9",
     "focus-visible": "^4.1.5",
     "html-webpack-plugin": "^3.2.0",
-    "husky": "^1.2.0",
     "jest": "^25.4.0",
     "jss": "^9.8.7",
     "jss-preset-default": "^4.5.0",
