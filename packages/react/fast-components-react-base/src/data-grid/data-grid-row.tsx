@@ -82,7 +82,7 @@ class DataGridRow extends Foundation<
             classNames(dataGridRow, [
                 dataGridRow__focusWithin,
                 this.props.rowData[this.context.dataGridProps.dataRowKey] ===
-                    this.context.dataGridState.focusRowKey,
+                    this.context.focusRowKey,
             ])
         );
     }

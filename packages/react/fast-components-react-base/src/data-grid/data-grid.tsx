@@ -27,7 +27,7 @@ export interface DataGridState {
     estimatedTotalHeight: number;
     desiredVisibleRowIndex: number | null;
     desiredFocusRowKey: ReactText | null;
-    desiredFocusCellKey: ReactText | null;
+    desiredFocusColumnKey: ReactText | null;
 }
 
 /**
@@ -149,7 +149,7 @@ class DataGrid extends Foundation<
             rowPositions,
             estimatedTotalHeight: this.getEstimatedTotalHeight(rowPositions),
             desiredVisibleRowIndex: initialFocusRowIndex,
-            desiredFocusCellKey: null,
+            desiredFocusColumnKey: null,
             desiredFocusRowKey: null,
         };
     }
@@ -196,7 +196,11 @@ class DataGrid extends Foundation<
                 value={{
                     onCellFocused: this.handleCellFocus,
                     onCellKeyDown: this.handleCellKeyDown,
-                    dataGridState: this.state,
+                    focusRowKey: this.state.focusRowKey,
+                    focusCellKey: this.state.desiredFocusColumnKey,
+                    desiredFocusColumnKey: this.state.desiredFocusColumnKey,
+                    desiredFocusRowKey: this.state.desiredFocusRowKey,
+                    desiredVisibleRowIndex: this.state.desiredVisibleRowIndex,
                     dataGridProps: this.props,
                 }}
             >
@@ -885,7 +889,7 @@ class DataGrid extends Foundation<
         rowId: React.ReactText,
         cellId: React.ReactText,
         rowPositions: rowPosition[],
-        forceScrollToTop: boolean
+        forceScrollRowToTop: boolean
     ): void => {
         const rowIndex: number = this.getRowIndexByKey(rowId);
 
@@ -902,19 +906,16 @@ class DataGrid extends Foundation<
             const rowElement: Element = this.getRowElementByKey(rowId);
             if (rowElement !== null) {
                 const cellElement: Element = this.getCellElementByKey(cellId, rowElement);
+                this.setState({
+                    desiredVisibleRowIndex: forceScrollRowToTop ? rowIndex : null,
+                });
                 if (cellElement !== null) {
                     (cellElement as HTMLElement).focus();
                     return;
                 }
-                if (forceScrollToTop) {
-                    this.setState({
-                        desiredVisibleRowIndex: rowIndex,
-                    });
-                }
             }
         } else {
             // shift the items passed to the stack panel to include the desired row indexes
-
             let newDataPageStartIndex: number =
                 rowIndex - Math.floor(this.props.pageSize / 2);
             if (newDataPageStartIndex < 0) {
@@ -938,9 +939,9 @@ class DataGrid extends Foundation<
         }
 
         this.setState({
-            desiredVisibleRowIndex: rowIndex,
+            desiredVisibleRowIndex: forceScrollRowToTop ? rowIndex : null,
             desiredFocusRowKey: rowId,
-            desiredFocusCellKey: cellId,
+            desiredFocusColumnKey: cellId,
         });
     };
 

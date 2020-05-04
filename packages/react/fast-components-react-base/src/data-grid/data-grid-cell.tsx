@@ -129,9 +129,9 @@ class DataGridCell extends Foundation<
             return false;
         }
         return this.props.rowData[this.context.dataGridProps.dataRowKey] ===
-            this.context.dataGridState.desiredFocusRowKey &&
+            this.context.desiredFocusRowKey &&
             this.props.columnDefinition.columnDataKey ===
-                this.context.dataGridState.desiredFocusColumnKey
+                this.context.desiredFocusColumnKey
             ? true
             : false;
     };
@@ -144,9 +144,8 @@ class DataGridCell extends Foundation<
             return false;
         }
         return this.props.rowData[this.context.dataGridProps.dataRowKey] ===
-            this.context.dataGridState.focusRowKey &&
-            this.props.columnDefinition.columnDataKey ===
-                this.context.dataGridState.focusColumnKey
+            this.context.focusRowKey &&
+            this.props.columnDefinition.columnDataKey === this.context.focusColumnKey
             ? true
             : false;
     };
