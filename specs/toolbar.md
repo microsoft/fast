@@ -34,6 +34,7 @@ Used anywhere someone may want to visually and structurally group related intera
 
 *Slots:*
 - `default`
+- `label` - slot for the label
 
 ### Anatomy and Appearance
 
@@ -43,6 +44,7 @@ Used anywhere someone may want to visually and structurally group related intera
     role="toolbar"
     orientation="${x => x.orientation}"
 >
+    <slot name="label"></slot>
     <slot></slot>
 </template>
 ```
