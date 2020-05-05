@@ -30,8 +30,9 @@ export interface StackPanelHandledProps extends StackPanelManagedClasses {
 
     /**
      * How many items to preload before and after the range defined by viewportMaxHeight
+     * (essentially how many offscreen items are rendered on either end of the range)
      */
-    preloadBufferLength?: number;
+    preloadBufferCount?: number;
 
     /**
      * The orientation of the stackpanel

@@ -307,7 +307,7 @@ storiesOf("Stack Panel", module)
         <TestStackPanel
             stackPanelProps={{
                 virtualize: true,
-                preloadBufferLength: 6,
+                preloadBufferCount: 6,
                 neverVirtualizeIndexes: [0, 9999],
             }}
             itemCount={10000}
@@ -317,7 +317,7 @@ storiesOf("Stack Panel", module)
         <TestStackPanel
             stackPanelProps={{
                 virtualize: false,
-                preloadBufferLength: 6,
+                preloadBufferCount: 6,
                 neverVirtualizeIndexes: [0, 199],
             }}
             itemCount={200}
@@ -327,7 +327,7 @@ storiesOf("Stack Panel", module)
         <TestStackPanel
             stackPanelProps={{
                 virtualize: true,
-                preloadBufferLength: 6,
+                preloadBufferCount: 6,
                 neverVirtualizeIndexes: [0, 199],
             }}
             itemCount={200}

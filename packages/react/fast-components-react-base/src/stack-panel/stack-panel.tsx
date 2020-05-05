@@ -1,8 +1,7 @@
-import { isArray, isFunction } from "util";
 import { StackPanelClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import { classNames, Direction, RtlScrollConverter } from "@microsoft/fast-web-utilities";
-import { get, isNil, merge } from "lodash-es";
+import { get, isFunction, isNil, merge } from "lodash-es";
 import React from "react";
 import { toPx } from "@microsoft/fast-jss-utilities";
 import { Orientation } from "@microsoft/fast-web-utilities";
@@ -42,7 +41,7 @@ class StackPanel extends Foundation<
         virtualize: true,
         neverVirtualizeIndexes: [],
         itemSpan: 100,
-        preloadBufferLength: 1,
+        preloadBufferCount: 1,
         orientation: Orientation.vertical,
         scrollLayoutUpdateDelay: 0,
     };
@@ -53,7 +52,7 @@ class StackPanel extends Foundation<
         itemSpan: void 0,
         virtualize: void 0,
         neverVirtualizeIndexes: void 0,
-        preloadBufferLength: void 0,
+        preloadBufferCount: void 0,
         orientation: void 0,
         managedClasses: void 0,
         initiallyVisibleItemIndex: void 0,
@@ -86,9 +85,10 @@ class StackPanel extends Foundation<
     private lastRecordedScroll: number = 0;
 
     /**
-     * Stores last scroll position from scroll events
+     * Delays updating ui during scrolling
+     * (to avoid rendering of items that just scroll by)
      */
-    private scrollLayoutUpdateTimer: NodeJS.Timer;
+    private scrollLayoutUpdateTimer: number | null = null;
 
     /**
      * constructor
@@ -217,7 +217,7 @@ class StackPanel extends Foundation<
                 this.resizeDetector = null;
             }
         }
-        clearTimeout(this.scrollLayoutUpdateTimer);
+        window.clearTimeout(this.scrollLayoutUpdateTimer);
     }
 
     /**
@@ -239,13 +239,6 @@ class StackPanel extends Foundation<
      */
     private renderItems(): React.ReactFragment[] {
         return React.Children.map(this.props.children, this.renderItem);
-    }
-
-    /**
-     * Test if a node is cloneable
-     */
-    private isClonableElement(node: React.ReactNode): node is React.ReactElement<any> {
-        return React.isValidElement(node);
     }
 
     /**
@@ -276,9 +269,9 @@ class StackPanel extends Foundation<
                   }),
         };
 
-        if (this.isClonableElement(item)) {
+        if (React.isValidElement(item)) {
             const styleProps: React.CSSProperties = get(item.props, "style");
-            return React.cloneElement(item, {
+            return React.cloneElement(item as React.ReactElement<any>, {
                 style: merge({}, styleProps, newStyleProps),
             });
         }
@@ -299,7 +292,7 @@ class StackPanel extends Foundation<
         const itemCount: number = childrenAsArray.length;
 
         for (let i: number = 0; i < itemCount; i++) {
-            const itemSpan: number = isArray(this.props.itemSpan)
+            const itemSpan: number = Array.isArray(this.props.itemSpan)
                 ? this.props.itemSpan[i]
                 : this.props.itemSpan;
             const currentItemBottom: number = currentItemStart + itemSpan;
@@ -384,7 +377,7 @@ class StackPanel extends Foundation<
             renderEndIndex = lastIndex;
         }
 
-        clearTimeout(this.scrollLayoutUpdateTimer);
+        window.clearTimeout(this.scrollLayoutUpdateTimer);
 
         this.setState({
             renderedRangeStartIndex: renderStartIndex,
@@ -425,11 +418,8 @@ class StackPanel extends Foundation<
      * gets the current buffer size (number of items to render outside the viewport)
      */
     private getBufferLength = (): number => {
-        if (
-            !isNil(this.props.preloadBufferLength) &&
-            this.props.preloadBufferLength >= 0
-        ) {
-            return Math.floor(this.props.preloadBufferLength);
+        if (!isNil(this.props.preloadBufferCount) && this.props.preloadBufferCount >= 0) {
+            return Math.floor(this.props.preloadBufferCount);
         }
 
         return 1;
@@ -442,7 +432,7 @@ class StackPanel extends Foundation<
         this.lastRecordedScroll = this.getScrollPosition();
         clearTimeout(this.scrollLayoutUpdateTimer);
         if (this.props.scrollLayoutUpdateDelay !== 0) {
-            this.scrollLayoutUpdateTimer = setTimeout((): void => {
+            this.scrollLayoutUpdateTimer = window.setTimeout((): void => {
                 this.updateLayout();
             }, this.props.scrollLayoutUpdateDelay);
         } else {
@@ -488,7 +478,7 @@ class StackPanel extends Foundation<
     /**
      *  gets the current direction
      */
-    private getDirection = (): Direction | null => {
+    private getDirection = (): Direction => {
         if (this.rootElement.current === null) {
             return Direction.ltr;
         }
