@@ -1,0 +1,18 @@
+{
+    "compilerOptions": {
+        "moduleResolution": "node",
+        "module": "ES6",
+        "target": "ES6",
+        "baseUrl": "../fast-website",
+        "strictNullChecks": true,
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
+        "resolveJsonModule": true
+    },
+    "include": [
+        "../fast-website/src/**/*"
+    ],
+    "exclude": [
+        "../fast-website/node_modules",
+    ]
+}
