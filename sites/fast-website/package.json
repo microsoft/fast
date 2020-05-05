@@ -1,8 +1,9 @@
 {
-  "name": "fast-frame",
+  "name": "fast-website",
   "version": "1.0.0",
-  "description": "fast-frame website",
+  "description": "fast website",
   "main": "index.js",
+  "private": true,
   "license": "MIT",
   "devDependencies": {
     "babel-core": "^6.26.3",

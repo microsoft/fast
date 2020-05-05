@@ -1,9 +1,15 @@
+const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin"); // Require  html-webpack-plugin plugin
+const appDir = path.resolve(__dirname, "./src/app");
+const publicDir = path.resolve(__dirname, "./src/public");
+const outDir = path.resolve(__dirname, "./www");
 
 module.exports = {
-    entry: __dirname + "/src/app/index.js", // webpack entry point. Module to start building dependency graph
+    entry: {
+        main: path.resolve(appDir, "index.ts"),
+    },
     output: {
-        path: __dirname + "/dist", // Folder to store generated bundle
+        path: path.resolve(__dirname, "/dist"),
         filename: "bundle.js", // Name of generated bundle after build
         publicPath: "/", // public URL of the output directory when referenced in a browser
     },
@@ -21,15 +27,15 @@ module.exports = {
             {
                 test: /\.js$/,
                 use: "babel-loader",
-                exclude: [/node_modules/],
             },
         ],
     },
     plugins: [
         // Array of plugins to apply to build chunk
         new HtmlWebpackPlugin({
-            template: __dirname + "/src/public/index.html",
-            inject: "body",
+            title: "FAST website",
+            template: path.resolve(publicDir, "index.html"),
+            contentBase: outDir,
         }),
     ],
     devServer: {
