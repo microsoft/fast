@@ -13,6 +13,7 @@ import {
     StandardLuminance,
 } from "@microsoft/fast-components-styles-msft";
 import { ColorRGBA64, parseColorHexRGB } from "@microsoft/fast-colors";
+import { BlockPicker } from "react-color";
 import { MessageAction, MessageTypes, UIMessage } from "../messaging";
 import { RecipeData, RecipeTypes } from "../recipe-registry";
 import { detach, refresh, revertChanges } from "./glyphs";
@@ -499,16 +500,16 @@ export class PluginUI extends React.Component<PluginUIProps> {
             .map(node => node.designSystem[type])
             .filter(value => !!value);
 
-        const onChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-            const { value } = e.target;
-            const parsed = parseColorHexRGB(value);
+        const onChange = (value: any, e: React.ChangeEvent<HTMLInputElement>): void => {
+            const hex: string = value.hex;
+            const parsed = parseColorHexRGB(hex);
 
             if (parsed instanceof ColorRGBA64) {
                 this.props.dispatch({
                     nodeIds: this.props.selectedNodes.map(node => node.id),
                     type: MessageTypes.designSystem,
                     action: MessageAction.assign,
-                    value: value.toUpperCase(),
+                    value: hex.toUpperCase(),
                     property: type,
                 });
             }
@@ -516,15 +517,20 @@ export class PluginUI extends React.Component<PluginUIProps> {
 
         return (
             <p className="inset">
-                <Label>
-                    <input
-                        type="color"
-                        disabled={values.length > 1}
-                        style={{ margin: "4px 8px 0 0" }}
-                        onChange={onChange}
-                        value={values.length ? values[0] : DesignSystemDefaults[type]}
+                <Label style={{ width: "100%" }}>
+                    <p>Accent color</p>
+                    <BlockPicker
+                        color={values.length ? values[0] : DesignSystemDefaults[type]}
+                        onChangeComplete={onChange}
+                        colors={[
+                            "#128475",
+                            "#1C881E",
+                            "#FDB82C",
+                            "#0078D4",
+                            "#8664C3",
+                            "#6A2A2B",
+                        ]}
                     />
-                    Accent color
                 </Label>
             </p>
         );

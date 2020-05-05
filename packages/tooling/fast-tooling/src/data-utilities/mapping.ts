@@ -1,11 +1,17 @@
 import { cloneDeep, get } from "lodash-es";
 import { Data, DataDictionary, LinkedData, SchemaDictionary } from "../message-system";
+import { linkedDataSchema } from "../schemas";
 import {
     DataType,
     ElementDictionary,
     PropertyKeyword,
     ReservedElementMappingKeyword,
 } from "./types";
+import {
+    WebComponentAttribute,
+    WebComponentDefinition,
+    WebComponentSlot,
+} from "./web-component";
 
 export interface MapperConfig<T> {
     /**
@@ -22,6 +28,28 @@ export interface MapperConfig<T> {
      * JSON schema
      */
     schema: any;
+
+    /**
+     * The plugins used to map data
+     */
+    mapperPlugins: MapDataPlugin[];
+}
+
+export interface MapDataPlugin {
+    /**
+     * The ids that map to the pluginIdKeyword in the JSON schema
+     */
+    ids: string[];
+
+    /**
+     * The mapping function that returns the mapped values
+     */
+    mapper: (data: any) => any;
+
+    /**
+     * The resolving function that overrides the resolver
+     */
+    resolver: (data: any) => any;
 }
 
 export interface MapDataConfig<T> {
@@ -45,6 +73,11 @@ export interface MapDataConfig<T> {
      * The resolver that resolves the data dictionary into another structure
      */
     resolver: (config: ResolverConfig<T>) => T;
+
+    /**
+     * The plugins used to map data
+     */
+    plugins?: MapDataPlugin[];
 }
 
 interface AttachResolvedDataDictionaryConfig<T> {
@@ -73,6 +106,11 @@ interface AttachResolvedDataDictionaryConfig<T> {
      * The resolver that resolves the data dictionary into another structure
      */
     resolver: (config: ResolverConfig<T>) => T;
+
+    /**
+     * The plugins used to resolve data
+     */
+    resolverPlugins: MapDataPlugin[];
 }
 
 interface ResolveDataInDataDictionaryConfig<T> {
@@ -101,6 +139,11 @@ interface ResolveDataInDataDictionaryConfig<T> {
      * The mapping function
      */
     mapper: (config: MapperConfig<T>) => T;
+
+    /**
+     * The plugins used to map data
+     */
+    mapperPlugins: MapDataPlugin[];
 }
 
 export interface ResolverConfig<T> {
@@ -129,6 +172,11 @@ export interface ResolverConfig<T> {
      * The parent of the dictionary item
      */
     parent: string | null;
+
+    /**
+     * The plugins used to resolve data
+     */
+    resolverPlugins: MapDataPlugin[];
 }
 
 export function resolveDataInDataDictionary<T>(
@@ -165,6 +213,7 @@ export function resolveDataInDataDictionary<T>(
             config.schemaDictionary[
                 config.dataDictionary[0][config.dictionaryId].schemaId
             ],
+        mapperPlugins: config.mapperPlugins,
     });
 
     // call the resolver on all children
@@ -175,6 +224,7 @@ export function resolveDataInDataDictionary<T>(
             resolvedDictionaryIds: config.resolvedDictionaryIds,
             schemaDictionary: config.schemaDictionary,
             mapper: config.mapper,
+            mapperPlugins: config.mapperPlugins,
         });
     });
 }
@@ -191,6 +241,7 @@ function attachResolvedDataDictionary<T>(
             parent: config.dataDictionary[0][config.items[i]].parent
                 ? config.dataDictionary[0][config.items[i]].parent.id
                 : null,
+            resolverPlugins: config.resolverPlugins,
         });
     }
 
@@ -211,6 +262,7 @@ export function mapDataDictionary<T>(config: MapDataConfig<T>): T {
         dictionaryId: clonedData[1],
         schemaDictionary: config.schemaDictionary,
         mapper: config.mapper,
+        mapperPlugins: config.plugins || [],
     });
 
     // resolve the data dictionary items up the tree
@@ -220,6 +272,7 @@ export function mapDataDictionary<T>(config: MapDataConfig<T>): T {
         schemaDictionary: config.schemaDictionary,
         items: resolvedDictionaryIds.reverse(),
         resolver: config.resolver,
+        resolverPlugins: config.plugins || [],
     });
 }
 
@@ -306,4 +359,76 @@ export function htmlResolver(config: ResolverConfig<any>): HTMLElement | Text {
     }
 
     return config.dataDictionary[0][config.dictionaryId].data;
+}
+
+function mapAttributesToJSONSchema(
+    attributes: WebComponentAttribute[]
+): { [key: string]: any } {
+    return attributes.reduce(
+        (accumulation: { [key: string]: any }, attribute: WebComponentAttribute) => {
+            return {
+                ...accumulation,
+                [attribute.name]: {
+                    title: attribute.description,
+                    [ReservedElementMappingKeyword.mapsToAttribute]: attribute.name,
+                    type: attribute.type,
+                },
+            };
+        },
+        {}
+    );
+}
+
+function mapSlotsToJSONSchema(slots: WebComponentSlot[]): { [key: string]: any } {
+    return slots.reduce(
+        (accumulation: { [key: string]: any }, slot: WebComponentSlot) => {
+            return {
+                ...accumulation,
+                [`Slot${slot.name}`]: {
+                    title: slot.description,
+                    [ReservedElementMappingKeyword.mapsToSlot]: slot.name,
+                    ...linkedDataSchema,
+                },
+            };
+        },
+        {}
+    );
+}
+
+/**
+ * The converter for a web component definition
+ * to a web component JSON schema
+ */
+export function mapWebComponentDefinitionToJSONSchema(
+    webComponentDefinition: WebComponentDefinition
+): { [key: string]: any }[] {
+    const schemas: { [key: string]: any }[] = [];
+
+    if (Array.isArray(webComponentDefinition.tags)) {
+        for (
+            let i = 0, tagLength = webComponentDefinition.tags.length;
+            i < tagLength;
+            i++
+        ) {
+            schemas.push({
+                $schema: "http://json-schema.org/schema#",
+                $id: webComponentDefinition.tags[i].name,
+                id: webComponentDefinition.tags[i].name,
+                title: webComponentDefinition.tags[i].description,
+                type: "object",
+                version: webComponentDefinition.version,
+                required: ["version"],
+                [ReservedElementMappingKeyword.mapsToTagName]:
+                    webComponentDefinition.tags[i].name,
+                properties: {
+                    ...mapAttributesToJSONSchema(
+                        webComponentDefinition.tags[i].attributes
+                    ),
+                    ...mapSlotsToJSONSchema(webComponentDefinition.tags[i].slots),
+                },
+            });
+        }
+    }
+
+    return schemas;
 }
