@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
+/* eslint-disable no-undef */
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin"); // Require  html-webpack-plugin plugin
 const appDir = path.resolve(__dirname, "./src/app");
@@ -8,8 +10,11 @@ module.exports = {
     entry: {
         main: path.resolve(appDir, "index.ts"),
     },
+    resolve: {
+        extensions: [".ts", ".tsx", ".js"],
+    },
     output: {
-        path: path.resolve(__dirname, "/dist"),
+        path: path.resolve(__dirname, "dist"),
         filename: "bundle.js", // Name of generated bundle after build
         publicPath: "/", // public URL of the output directory when referenced in a browser
     },
