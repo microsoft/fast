@@ -5,9 +5,9 @@ import { Behavior, BehaviorFactory } from "./directives/behavior.js";
 import { Directive } from "./directives/directive.js";
 import { BindingDirective } from "./directives/binding.js";
 import {
+    defaultExecutionContext,
     ExecutionContext,
     Expression,
-    defaultExecutionContext,
 } from "./observation/observable.js";
 
 export interface ElementViewTemplate {

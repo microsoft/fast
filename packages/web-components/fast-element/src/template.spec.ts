@@ -1,5 +1,5 @@
-import { html, ViewTemplate } from "./template.js";
 import chai from "chai";
+import { html, ViewTemplate } from "./template.js";
 
 const expect = chai.expect;
 

@@ -1,3 +1,4 @@
+/* eslint-disable */
 if (window.document && !window.document.createRange) {
     window.document.createRange = () => ({
         setStart: () => {},
