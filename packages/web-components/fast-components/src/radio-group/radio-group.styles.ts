@@ -9,7 +9,8 @@ export const RadioGroupStyles = css`
     }
 
     .positioning-region {
-        display: inline-flex;
+        display: flex;
+        flex-wrap: wrap;
         flex-direction: row;
     }
 `;
