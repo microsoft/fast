@@ -144,10 +144,6 @@ export class RadioGroup extends FASTElement {
             } else {
                 radio.checked = true;
             }
-        } else {
-            if (radio !== this.selectedRadio) {
-                radio.setAttribute("tabindex", "-1");
-            }
         }
         this.selectedRadio = radio;
         radio.focus();
@@ -222,7 +218,6 @@ export class RadioGroup extends FASTElement {
         let index: number = 0;
         switch (e.keyCode) {
             case keyCodeEnter:
-                console.log("enter key hit");
                 this.checkSelectedRadio();
                 break;
             case keyCodeArrowRight:
