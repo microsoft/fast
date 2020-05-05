@@ -7,6 +7,7 @@
         "strictNullChecks": true,
         "esModuleInterop": true,
         "allowSyntheticDefaultImports": true,
+        "experimentalDecorators": true,
         "resolveJsonModule": true
     },
     "include": [
