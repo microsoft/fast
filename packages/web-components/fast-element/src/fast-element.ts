@@ -31,6 +31,7 @@ function createFASTElement<T extends typeof HTMLElement>(
         public $fastController!: Controller;
 
         public constructor() {
+            /* eslint-disable-next-line */
             super();
             Controller.forCustomElement(this as any);
         }
