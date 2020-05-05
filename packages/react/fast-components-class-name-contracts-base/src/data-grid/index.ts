@@ -32,3 +32,13 @@ export interface DataGridClassNameContract {
      */
     dataGrid_cell?: string;
 }
+
+export interface DataGridRowClassNameContract {
+    dataGridRow?: string;
+    dataGridRow__focusWithin?: string;
+    dataGridRow_cell?: string;
+}
+
+export interface DataGridCellClassNameContract {
+    dataGridCell?: string;
+}

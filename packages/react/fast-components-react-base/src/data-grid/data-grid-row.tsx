@@ -2,8 +2,8 @@ import React from "react";
 import { get, isNil } from "lodash-es";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import { classNames } from "@microsoft/fast-web-utilities";
+import { DataGridRowClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import {
-    DataGridRowClassNameContract,
     DataGridRowHandledProps,
     DataGridRowProps,
     DataGridRowUnhandledProps,

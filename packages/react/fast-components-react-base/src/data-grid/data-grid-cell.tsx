@@ -3,8 +3,8 @@ import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-
 import { isNil } from "lodash-es";
 import { classNames } from "@microsoft/fast-web-utilities";
 import { extractHtmlElement } from "@microsoft/fast-react-utilities";
+import { DataGridCellClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import {
-    DataGridCellClassNameContract,
     DataGridCellHandledProps,
     DataGridCellProps,
     DataGridCellUnhandledProps,

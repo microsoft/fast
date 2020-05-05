@@ -1,11 +1,8 @@
 import React from "react";
-import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
-
-export interface DataGridRowClassNameContract {
-    dataGridRow?: string;
-    dataGridRow__focusWithin?: string;
-    dataGridRow_cell?: string;
-}
+import {
+    DataGridRowClassNameContract,
+    ManagedClasses,
+} from "@microsoft/fast-components-class-name-contracts-base";
 
 export const RowIdKey: string = "data-rowid";
 
