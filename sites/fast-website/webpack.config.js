@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
+/* eslint-disable no-undef */
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin"); // Require  html-webpack-plugin plugin
 const appDir = path.resolve(__dirname, "./src/app");
