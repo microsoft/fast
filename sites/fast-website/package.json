@@ -6,6 +6,8 @@
   "private": true,
   "license": "MIT",
   "devDependencies": {
+    "@microsoft/fast-components": "^0.10.1",
+    "@microsoft/fast-element": "^0.8.1",
     "babel-core": "^6.26.3",
     "babel-loader": "^8.1.0",
     "babel-preset-env": "^1.7.0",
@@ -16,7 +18,8 @@
     "webpack-dev-server": "^3.10.3"
   },
   "scripts": {
-    "start": "webpack-dev-server --history-api-fallback --inline --progress"
+    "start": "webpack-dev-server --history-api-fallback --inline --progress",
+    "build": "webpack"
   },
   "repository": {
     "type": "git",
