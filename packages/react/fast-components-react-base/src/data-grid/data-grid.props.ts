@@ -1,13 +1,12 @@
 import React from "react";
 import {
-    ManagedClasses,
     DataGridClassNameContract,
+    ManagedClasses,
 } from "@microsoft/fast-components-class-name-contracts-base";
-import { DataGridCellProps, DataGridCellUnhandledProps } from "./data-grid-cell.props";
+import { DataGridCellProps } from "./data-grid-cell.props";
 
-export interface DataGridManagedClasses
-    extends ManagedClasses<DataGridClassNameContract> {}
-export interface DataGridUnhandledProps extends React.HTMLAttributes<HTMLDivElement> {}
+export type DataGridManagedClasses = ManagedClasses<DataGridClassNameContract>;
+export type DataGridUnhandledProps = React.HTMLAttributes<HTMLDivElement>;
 
 export interface DataGridColumnDefinition {
     /**

@@ -1,12 +1,12 @@
 import { storiesOf } from "@storybook/react";
 import React from "react";
+import { isEqual, omit } from "lodash-es";
+import { Omit } from "utility-types";
 import DataGrid, {
     DataGridCellProps,
     DataGridColumnDefinition,
     DataGridProps,
 } from "./index";
-import { isEqual, omit } from "lodash-es";
-import { Omit } from "utility-types";
 
 function imageCellFn(
     props: DataGridCellProps,
@@ -109,7 +109,11 @@ function getDataSet(length: number): object[] {
     return dataSet;
 }
 
-function getItemHeight(itemData: object, rowIndex, defaultItemHeight) {
+function getItemHeight(
+    itemData: object,
+    rowIndex: number,
+    defaultItemHeight: number
+): number {
     if (rowIndex % 2) {
         return defaultItemHeight;
     }
@@ -145,7 +149,7 @@ class DataGridTest extends React.Component<DataGridTestProps, DataGridTestState>
     }
 
     public render(): JSX.Element {
-        const { children, ...props }: Partial<DataGridProps> = omit(this.props, [
+        const { ...props }: Partial<DataGridProps> = omit(this.props, [
             "primaryDataSet",
             "secondaryDataSet",
         ]);
@@ -171,7 +175,7 @@ class DataGridTest extends React.Component<DataGridTestProps, DataGridTestState>
         );
     }
 
-    private toggleDataSetButtonClick = (e: React.MouseEvent<any>): void => {
+    private toggleDataSetButtonClick = (): void => {
         if (isEqual(this.state.currentDataSet, this.props.primaryDataSet)) {
             this.setState({
                 currentDataSet: this.props.secondaryDataSet,

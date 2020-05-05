@@ -1,8 +1,10 @@
 import React, { ReactText } from "react";
-import ReactDOM from "react-dom";
 import { DataGridClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { get, isNil } from "lodash-es";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
+import { classNames, Direction, KeyCodes } from "@microsoft/fast-web-utilities";
+import throttle from "raf-throttle";
+import StackPanel from "../stack-panel";
 import {
     DataGridColumnDefinition,
     DataGridHandledProps,
@@ -10,11 +12,8 @@ import {
     DataGridUnhandledProps,
 } from "./data-grid.props";
 import DataGridRow from "./data-grid-row";
-import { classNames, Direction, KeyCodes } from "@microsoft/fast-web-utilities";
 import { DataGridCellProps } from "./data-grid-cell.props";
 import { DataGridContext, DataGridContextType } from "./data-grid-context";
-import StackPanel from "../stack-panel";
-import throttle from "raf-throttle";
 
 export interface DataGridState {
     focusRowIndex: number;
@@ -23,7 +22,7 @@ export interface DataGridState {
     scrollBarWidth: number;
     currentDataPageStartIndex: number;
     currentDataPageEndIndex: number;
-    rowPositions: rowPosition[];
+    rowPositions: RowPosition[];
     estimatedTotalHeight: number;
     desiredVisibleRowIndex: number | null;
     desiredFocusRowKey: ReactText | null;
@@ -33,7 +32,7 @@ export interface DataGridState {
 /**
  * Used to store the pixel coordinates and span of items
  */
-interface rowPosition {
+interface RowPosition {
     start: number;
     span: number;
     end: number;
@@ -61,7 +60,7 @@ class DataGrid extends Foundation<
     public static displayName: string = "DataGrid";
 
     private static highestCalculatedScrollPosition = (
-        rowPositions: rowPosition[]
+        rowPositions: RowPosition[]
     ): number => {
         if (rowPositions.length === 0) {
             return 0;
@@ -105,7 +104,7 @@ class DataGrid extends Foundation<
         let currentDataPageStartIndex: number = 0;
         let currentDataPageEndIndex: number = 0;
         this.throttledScroll = throttle(this.handleScrollChange);
-        const rowPositions: rowPosition[] = [];
+        const rowPositions: RowPosition[] = [];
 
         if (this.props.gridData.length > 0) {
             if (!isNil(this.props.defaultFocusRowKey)) {
@@ -244,7 +243,7 @@ class DataGrid extends Foundation<
      */
     public componentDidUpdate(prevProps: DataGridProps): void {
         if (this.props.gridData !== prevProps.gridData) {
-            const newRowPositions: rowPosition[] = this.state.rowPositions.slice(
+            const newRowPositions: RowPosition[] = this.state.rowPositions.slice(
                 0,
                 this.props.stableRangeEndIndex
             );
@@ -256,7 +255,7 @@ class DataGrid extends Foundation<
                 this.props.defaultFocusRowKey !== prevProps.defaultFocusRowKey &&
                 !isNil(this.props.defaultFocusRowKey)
             ) {
-                let newFocusRowIndex: number = this.getRowIndexByKey(
+                const newFocusRowIndex: number = this.getRowIndexByKey(
                     this.props.defaultFocusRowKey
                 );
 
@@ -459,9 +458,9 @@ class DataGrid extends Foundation<
     };
 
     /**
-     *  Handle grid focus by enusuring we only focus on gridcells
+     *  Handle grid focus
      */
-    private handleGridFocus = (e: React.FocusEvent<HTMLElement>): void => {
+    private handleGridFocus = (): void => {
         if (!this.isFocused) {
             this.isFocused = true;
         }
@@ -543,7 +542,7 @@ class DataGrid extends Foundation<
     /**
      * get the estimated total height of the datagrid based on row heights calculated so far
      */
-    private getEstimatedTotalHeight = (rowPositions: rowPosition[]): number => {
+    private getEstimatedTotalHeight = (rowPositions: RowPosition[]): number => {
         if (rowPositions.length === 0) {
             return 0;
         }
@@ -560,7 +559,7 @@ class DataGrid extends Foundation<
      */
     private sizeRowsToIndex = (
         targetIndex: number,
-        rowPositions: rowPosition[]
+        rowPositions: RowPosition[]
     ): void => {
         if (rowPositions.length - 1 < targetIndex) {
             const startIndex: number = rowPositions.length;
@@ -592,7 +591,7 @@ class DataGrid extends Foundation<
      */
     private sizeRowsToScrollValue = (
         targetScrollValue: number,
-        rowPositions: rowPosition[]
+        rowPositions: RowPosition[]
     ): void => {
         if (rowPositions[rowPositions.length - 1].end < targetScrollValue) {
             const startIndex: number = rowPositions.length;
@@ -662,7 +661,7 @@ class DataGrid extends Foundation<
             newScrollValue < currentPageTop ||
             currentViewportBottom > currentPageBottom
         ) {
-            const newRowPositions: rowPosition[] = this.state.rowPositions.slice(0);
+            const newRowPositions: RowPosition[] = this.state.rowPositions.slice(0);
 
             const middleViewportPosition: number = Math.floor(
                 newScrollValue + viewportSpan / 2
@@ -700,7 +699,7 @@ class DataGrid extends Foundation<
      */
     private getIndexOfItemAtScrollPosition = (
         scrollPosition: number,
-        rowPositions: rowPosition[]
+        rowPositions: RowPosition[]
     ): number => {
         if (rowPositions.length === 0) {
             return -1;
@@ -888,7 +887,7 @@ class DataGrid extends Foundation<
     private focusOnCell = (
         rowId: React.ReactText,
         cellId: React.ReactText,
-        rowPositions: rowPosition[],
+        rowPositions: RowPosition[],
         forceScrollRowToTop: boolean
     ): void => {
         const rowIndex: number = this.getRowIndexByKey(rowId);
@@ -1014,8 +1013,8 @@ class DataGrid extends Foundation<
      */
     private convertGridDataIndexToStackPanelIndex = (
         gridDataIndex: number,
-        dataPageStartIndex,
-        dataPageEndIndex
+        dataPageStartIndex: number,
+        dataPageEndIndex: number
     ): number => {
         if (gridDataIndex < dataPageStartIndex || gridDataIndex > dataPageEndIndex) {
             return -1;

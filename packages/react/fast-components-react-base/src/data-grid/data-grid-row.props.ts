@@ -9,10 +9,8 @@ export interface DataGridRowClassNameContract {
 
 export const RowIdKey: string = "data-rowid";
 
-export interface DataGridRowManagedClasses
-    extends ManagedClasses<DataGridRowClassNameContract> {}
-
-export interface DataGridRowUnhandledProps extends React.HTMLAttributes<HTMLDivElement> {}
+export type DataGridRowManagedClasses = ManagedClasses<DataGridRowClassNameContract>;
+export type DataGridRowUnhandledProps = React.HTMLAttributes<HTMLDivElement>;
 
 export interface DataGridRowHandledProps extends DataGridRowManagedClasses {
     /**

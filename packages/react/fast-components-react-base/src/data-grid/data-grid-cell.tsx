@@ -1,16 +1,15 @@
 import React from "react";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import { isNil } from "lodash-es";
+import { classNames } from "@microsoft/fast-web-utilities";
+import { extractHtmlElement } from "@microsoft/fast-react-utilities";
 import {
     DataGridCellClassNameContract,
     DataGridCellHandledProps,
-    DataGridCellManagedClasses,
     DataGridCellProps,
     DataGridCellUnhandledProps,
 } from "./data-grid-cell.props";
 import { DataGridContext, DataGridContextType } from "./data-grid-context";
-import { classNames } from "@microsoft/fast-web-utilities";
-import { extractHtmlElement } from "@microsoft/fast-react-utilities";
 
 class DataGridCell extends Foundation<
     DataGridCellHandledProps,

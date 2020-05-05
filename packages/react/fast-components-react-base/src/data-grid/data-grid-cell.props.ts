@@ -8,11 +8,8 @@ export interface DataGridCellClassNameContract {
     dataGridCell?: string;
 }
 
-export interface DataGridCellManagedClasses
-    extends ManagedClasses<DataGridCellClassNameContract> {}
-
-export interface DataGridCellUnhandledProps
-    extends React.HTMLAttributes<HTMLDivElement> {}
+export type DataGridCellManagedClasses = ManagedClasses<DataGridCellClassNameContract>;
+export type DataGridCellUnhandledProps = React.AllHTMLAttributes<HTMLElement>;
 
 export interface DataGridCellHandledProps extends DataGridCellManagedClasses {
     /**

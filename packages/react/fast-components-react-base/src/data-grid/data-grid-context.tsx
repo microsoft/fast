@@ -1,6 +1,6 @@
 import React, { ReactText } from "react";
 import { DataGridCellProps } from "./data-grid-cell.props";
-import { DataGridProps, DataGridState } from "./data-grid";
+import { DataGridProps } from "./data-grid";
 
 export interface DataGridContextType {
     onCellFocused: (
