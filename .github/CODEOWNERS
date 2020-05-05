@@ -9,16 +9,16 @@
 
 # File type specific owners
 # Markdown specific files
-*.md @awentzel @chrisdholt @falkicon
-/docs/ @awentzel @chrisdholt @falkicon
+*.md @awentzel @chrisdholt @falkicon @EisenbergEffect
+/docs/ @awentzel @chrisdholt @falkicon @EisenbergEffect
 
 # Github management
 .github/ @awentzel @janechu @chrisdholt @nicholasrice
-.github/workflows/ @awentzel @chrisdholt
+.github/workflows/ @awentzel @chrisdholt @nicholasrice
 
 # Build scripts
-*.yml @awentzel @janechu @nicholasrice @chrisdholt
-build/ @janechu @nicholasrice @chrisdholt @awentzel
+*.yml @awentzel @janechu @nicholasrice @chrisdholt @EisenbergEffect
+build/ @janechu @nicholasrice @chrisdholt @awentzel @EisenbergEffect
 
 # Specifications
 /specs/ @EisenbergEffect @chrisdholt @janechu @nicholasrice
@@ -26,7 +26,7 @@ build/ @janechu @nicholasrice @chrisdholt @awentzel
 # Sites
 /sites/fast-color-explorer/ @nicholasrice @janechu @bheston
 /sites/fast-component-explorer/ @janechu @nicholasrice
-/sites/website/ @awentzel @chrisdholt @falkicon
+/sites/website/ @awentzel @chrisdholt @falkicon @EisenbergEffect
 
 # Package specific owners
 
