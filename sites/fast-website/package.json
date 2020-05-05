@@ -18,7 +18,8 @@
     "webpack-dev-server": "^3.10.3"
   },
   "scripts": {
-    "start": "webpack-dev-server --history-api-fallback --inline --progress"
+    "start": "webpack-dev-server --history-api-fallback --inline --progress",
+    "build": "webpack"
   },
   "repository": {
     "type": "git",

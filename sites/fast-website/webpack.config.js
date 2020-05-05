@@ -14,7 +14,7 @@ module.exports = {
         extensions: [".ts", ".tsx", ".js"],
     },
     output: {
-        path: path.resolve(__dirname, "/dist"),
+        path: path.resolve(__dirname, "dist"),
         filename: "bundle.js", // Name of generated bundle after build
         publicPath: "/", // public URL of the output directory when referenced in a browser
     },
