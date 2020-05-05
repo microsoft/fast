@@ -2,12 +2,54 @@ import React, { ComponentClass, FunctionComponent } from "react";
 import {
     dictionaryLink,
     MapperConfig,
+    pluginIdKeyword,
     PropertyKeyword,
     ResolverConfig,
 } from "@microsoft/fast-tooling";
 
+export interface ReactMapDataDictionaryPlugin {
+    /**
+     * The ids that map to the pluginIdKeyword in the JSON schema
+     */
+    ids: string[];
+
+    /**
+     * The mapping function that returns the mapped values
+     */
+    mapper: (data: any) => any;
+
+    /**
+     * The resolving function that returns the mapped values
+     */
+    resolver: (data: any) => any;
+}
+
 export interface ComponentDictionary {
     [key: string]: FunctionComponent<any> | ComponentClass<any> | string;
+}
+
+function getPluginResolver(
+    plugins: ReactMapDataDictionaryPlugin[],
+    id?: string
+): ReactMapDataDictionaryPlugin | false {
+    if (typeof id !== "string") {
+        return false;
+    }
+
+    return plugins.find((plugin: ReactMapDataDictionaryPlugin) => {
+        return plugin.ids.includes(id);
+    });
+}
+
+function resolvePropertyWithPlugin(
+    plugin: ReactMapDataDictionaryPlugin,
+    value: any
+): any {
+    return plugin.resolver(value);
+}
+
+function mapPropertyWithPlugin(plugin: ReactMapDataDictionaryPlugin, value: any): any {
+    return plugin.mapper(value);
 }
 
 /**
@@ -42,12 +84,25 @@ export function reactMapper(
                         .includes(potentialProp);
                 })
                 .reduce((previousValue: {}, currentValue: string) => {
+                    const plugin = getPluginResolver(
+                        config.mapperPlugins,
+                        config.schema[PropertyKeyword.properties][currentValue][
+                            pluginIdKeyword
+                        ]
+                    );
+
                     return {
                         ...previousValue,
-                        [currentValue]:
-                            config.dataDictionary[0][config.dictionaryId].data[
-                                currentValue
-                            ],
+                        [currentValue]: plugin
+                            ? mapPropertyWithPlugin(
+                                  plugin,
+                                  config.dataDictionary[0][config.dictionaryId].data[
+                                      currentValue
+                                  ]
+                              )
+                            : config.dataDictionary[0][config.dictionaryId].data[
+                                  currentValue
+                              ],
                     };
                 }, {}),
         };
@@ -67,19 +122,29 @@ export function reactResolver(config: ResolverConfig<unknown>): any {
             ].data.props[
                 config.dataDictionary[0][config.dictionaryId].parent.dataLocation
             ];
+        const childrenProps: any = {
+            ...config.dataDictionary[0][config.dictionaryId].data.props,
+            key: Array.isArray(childrenAtLocation) ? childrenAtLocation.length : 0,
+        };
+        const pluginId: string =
+            config.schemaDictionary[
+                config.dataDictionary[0][
+                    config.dataDictionary[0][config.dictionaryId].parent.id
+                ].schemaId
+            ][PropertyKeyword.properties][
+                config.dataDictionary[0][config.dictionaryId].parent.dataLocation
+            ][pluginIdKeyword];
+        const plugin = getPluginResolver(config.resolverPlugins, pluginId);
+
         // the child item being resolved to a react component
-        const newChildrenAtLocation =
-            typeof config.dataDictionary[0][config.dictionaryId].data === "string"
-                ? config.dataDictionary[0][config.dictionaryId].data
-                : React.createElement(
-                      config.dataDictionary[0][config.dictionaryId].data.component,
-                      {
-                          ...config.dataDictionary[0][config.dictionaryId].data.props,
-                          key: Array.isArray(childrenAtLocation)
-                              ? childrenAtLocation.length
-                              : 0,
-                      }
-                  );
+        const newChildrenAtLocation = plugin
+            ? resolvePropertyWithPlugin(plugin, childrenProps)
+            : typeof config.dataDictionary[0][config.dictionaryId].data === "string"
+            ? config.dataDictionary[0][config.dictionaryId].data
+            : React.createElement(
+                  config.dataDictionary[0][config.dictionaryId].data.component,
+                  childrenProps
+              );
 
         // re-assign this prop with the new child item
         config.dataDictionary[0][
