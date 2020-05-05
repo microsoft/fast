@@ -10,6 +10,9 @@ module.exports = {
     entry: {
         main: path.resolve(appDir, "index.ts"),
     },
+    resolve: {
+        extensions: [".ts", ".tsx", ".js"],
+    },
     output: {
         path: path.resolve(__dirname, "/dist"),
         filename: "bundle.js", // Name of generated bundle after build
