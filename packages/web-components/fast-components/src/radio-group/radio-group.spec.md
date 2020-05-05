@@ -30,7 +30,7 @@ Radio group allows the user to be presented with a list of all the options visib
 
 *The key elements of the component's public API surface:*
 
-**Radio Group**
+**Radio group**
 *Component name:*
 - `fast-radio-group`
 

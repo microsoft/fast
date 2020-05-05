@@ -11,6 +11,5 @@ export const RadioGroupStyles = css`
     .positioning-region {
         display: flex;
         flex-wrap: wrap;
-        flex-direction: row;
     }
 `;

@@ -58,10 +58,10 @@ export class RadioGroup extends FASTElement {
     constructor() {
         super();
         this.addEventListener("keydown", this.keydownHandler);
-        this.addEventListener("change", this.handleRadioChange);
+        this.addEventListener("change", this.radioChangeHandler);
         this.addEventListener("keypress", this.keypressHandler);
         this.addEventListener("click", this.clickHandler);
-        this.addEventListener("focusout", this.handleFocusOut);
+        this.addEventListener("focusout", this.focusOutHandler);
     }
 
     public connectedCallback(): void {
@@ -117,7 +117,7 @@ export class RadioGroup extends FASTElement {
         }
     };
 
-    private handleRadioChange = (e: CustomEvent): void => {
+    private radioChangeHandler = (e: CustomEvent): void => {
         const changedRadio: HTMLInputElement = e.target as HTMLInputElement;
         if (changedRadio.checked) {
             this.getFilteredRadioButtons().forEach((radio: HTMLInputElement) => {
@@ -162,7 +162,7 @@ export class RadioGroup extends FASTElement {
     };
 
     /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
-    private handleFocusOut = (e: FocusEvent) => {
+    private focusOutHandler = (e: FocusEvent) => {
         const group: RadioControl[] = this.getFilteredRadioButtons();
         if (!this.selectedRadio) {
             group[0].setAttribute("tabindex", "0");
@@ -217,6 +217,7 @@ export class RadioGroup extends FASTElement {
     };
 
     /* keyboard handling per https://w3c.github.io/aria-practices/#for-radio-groups-not-contained-in-a-toolbar */
+    /* navigation is different when there is an ancestor with role='toolbar' */
     public keydownHandler = (e: KeyboardEvent): void => {
         const group: RadioControl[] = this.getFilteredRadioButtons();
         let index: number = 0;
@@ -233,6 +234,7 @@ export class RadioGroup extends FASTElement {
                 } else if (index === group.length) {
                     index = 0;
                 }
+                /* looping to get to next radio that is not disabled */
                 /* matching native radio/radiogroup which does not select an item if there is only 1 in the group */
                 while (index < group.length && group.length > 1) {
                     if (!group[index].disabled) {
@@ -260,6 +262,7 @@ export class RadioGroup extends FASTElement {
                 index = this.selectedRadio ? group.indexOf(this.selectedRadio) - 1 : 0;
                 index = index < 0 ? group.length - 1 : index;
 
+                /* looping to get to next radio that is not disabled */
                 while (index >= 0 && group.length > 1) {
                     if (!group[index].disabled) {
                         this.moveToRadioByIndex(group, index);
