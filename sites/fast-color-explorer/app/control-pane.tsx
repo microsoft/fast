@@ -10,10 +10,12 @@ import {
     neutralFocus,
     neutralForegroundRest,
     neutralOutlineRest,
+    neutralDividerRest,
 } from "@microsoft/fast-components-styles-msft";
 import manageJss, {
     ComponentStyleSheet,
     ManagedClasses,
+    DesignSystem,
 } from "@microsoft/fast-jss-manager-react";
 import { format, toPx } from "@microsoft/fast-jss-utilities";
 import { Pane } from "@microsoft/fast-layouts-react";
@@ -139,10 +141,7 @@ const styles: any = (
             color: neutralForegroundRest,
             height: "100%",
             maxWidth: "300px",
-            boxShadow: (config: ColorsDesignSystem): string => {
-                return (elevation(ElevationMultiplier.e7)(undefined as any) as any)
-                    .boxShadow;
-            },
+            borderLeft: `1px solid ${neutralDividerRest(designSystem)}`,
             background: backgroundColor,
         },
     };
@@ -342,14 +341,14 @@ class ControlPaneBase extends React.Component<ControlPaneProps, ControlPaneState
     }
 
     private renderShowOnlyReccomendedBackgroundsInput(): JSX.Element {
-        const id: string = "showOnlyReccomendedBackgrounds";
+        const id: string = "showOnlyRecommendedBackgrounds";
         return (
             <React.Fragment>
                 <div style={{ marginBottom: "12px" }}>
                     <Checkbox
                         checked={this.props.showOnlyRecommendedBackgrounds}
                         inputId={id}
-                        onChange={this.handleReccomendedBackgroundsChange}
+                        onChange={this.handleRecommendedBackgroundsChange}
                     >
                         <Label slot="label" htmlFor={id}>
                             Show recommended backgrounds only
@@ -360,7 +359,7 @@ class ControlPaneBase extends React.Component<ControlPaneProps, ControlPaneState
         );
     }
 
-    private handleReccomendedBackgroundsChange = (
+    private handleRecommendedBackgroundsChange = (
         e: React.ChangeEvent<HTMLInputElement>
     ): void => {
         this.props.setShowOnlyRecommendedBackgrounds(

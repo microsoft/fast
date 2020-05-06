@@ -16,9 +16,9 @@ import {
     neutralFillInputRest,
     neutralFocus,
     neutralForegroundRest,
-    neutralOutlineActive,
-    neutralOutlineHover,
-    neutralOutlineRest,
+    neutralOutlineContrastActive,
+    neutralOutlineContrastHover,
+    neutralOutlineContrastRest,
 } from "../utilities/color";
 import {
     densityCategorySwitch,
@@ -27,7 +27,7 @@ import {
 } from "../utilities/density";
 import { applyDisabledState } from "../utilities/disabled";
 import { applyScaledTypeRamp } from "../utilities/typography";
-import { designUnit, outlineWidth } from "../utilities/design-system";
+import { backgroundColor, designUnit, outlineWidth } from "../utilities/design-system";
 import { applyCursorDisabled, applyCursorPointer } from "../utilities/cursor";
 import {
     HighContrastColor,
@@ -68,14 +68,14 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = {
         border: format(
             "{0} solid {1}",
             toPx<DesignSystem>(outlineWidth),
-            neutralOutlineRest
+            neutralOutlineContrastRest
         ),
         "&:enabled": {
             ...applyCursorPointer(),
         },
         "&:hover:enabled": {
             background: neutralFillInputHover,
-            "border-color": neutralOutlineHover,
+            "border-color": neutralOutlineContrastHover,
             [highContrastSelector]: {
                 background: "transparent",
                 border: format(
@@ -85,9 +85,9 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = {
                 ),
             },
         },
-        "&:active": {
+        "&:active:enabled": {
             background: neutralFillInputActive,
-            "border-color": neutralOutlineActive,
+            "border-color": neutralOutlineContrastActive,
         },
         ...applyFocusVisible({
             "box-shadow": format<DesignSystem>("0 0 0 1px {0} inset", neutralFocus),
@@ -142,7 +142,7 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = {
     radio__checked: {
         "& $radio_stateIndicator": {
             "&::before": {
-                background: neutralForegroundRest,
+                background: backgroundColor,
                 [highContrastSelector]: {
                     background: HighContrastColor.selectedBackground,
                 },
@@ -152,9 +152,14 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = {
             ...highContrastSelectedBackground,
         },
         "& $radio_input": {
+            "background-color": neutralOutlineContrastRest,
             ...highContrastSelectedBackground,
-            "&:hover": {
+            "&:hover:enabled": {
+                "background-color": neutralOutlineContrastHover,
                 ...highContrastHighlightBackground,
+            },
+            "&:active:enabled": {
+                "background-color": neutralOutlineContrastActive,
             },
         },
     },

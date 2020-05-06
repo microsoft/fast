@@ -22,9 +22,9 @@ import {
     neutralFocus,
     neutralFocusInnerAccent,
     neutralForegroundRest,
-    neutralOutlineActive,
-    neutralOutlineHover,
-    neutralOutlineRest,
+    neutralOutlineContrastActive,
+    neutralOutlineContrastHover,
+    neutralOutlineContrastRest,
 } from "../utilities/color";
 import { applyDisabledState } from "../utilities/disabled";
 import { densityCategorySwitch, heightNumber } from "../utilities/density";
@@ -100,7 +100,7 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = {
         border: format(
             "{0} solid {1}",
             toPx<DesignSystem>(outlineWidth),
-            neutralOutlineRest
+            neutralOutlineContrastRest
         ),
         "border-radius": toPx(height),
         appearance: "none",
@@ -109,7 +109,7 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = {
         outline: "none",
         "&:active": {
             background: neutralFillInputActive,
-            "border-color": neutralOutlineActive,
+            "border-color": neutralOutlineContrastActive,
             [highContrastSelector]: {
                 background: HighContrastColor.selectedBackground,
                 "border-color": HighContrastColor.selectedText,
@@ -120,7 +120,7 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = {
         },
         "&:hover": {
             background: neutralFillInputHover,
-            "border-color": neutralOutlineHover,
+            "border-color": neutralOutlineContrastHover,
             [highContrastSelector]: {
                 background: HighContrastColor.background,
                 "border-color": HighContrastColor.selectedBackground,

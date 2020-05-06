@@ -84,6 +84,13 @@ export { neutralFillCard } from "./neutral-fill-card";
  * Border exports
  */
 export {
+    neutralOutlineContrast,
+    neutralOutlineContrastRest,
+    neutralOutlineContrastHover,
+    neutralOutlineContrastActive,
+} from "./neutral-outline-contrast";
+
+export {
     neutralOutline,
     neutralOutlineRest,
     neutralOutlineHover,
