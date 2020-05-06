@@ -50,7 +50,9 @@ az group delete --name "some-resource-group-name"
 ```
 
 ## Architecture
-FAST uses Azure Cloud Infrasture and Platform as a Service.
+FAST uses Azure Cloud Infrasture and Platform as a Service for highly available multi-regional web applications as shown next.  Details are available on [Azure](https://docs.microsoft.com/en-us/azure/architecture/reference-architectures/app-service-web-app/multi-region).
+
+![Web Architecture](diagrams/multi-region-web-app-diagram.png)
 
 ### Requirements
 * Availability
@@ -59,15 +61,22 @@ FAST uses Azure Cloud Infrasture and Platform as a Service.
 * Performance and Scalability
 * Resiliency
 
+### Naming Standards
+Follow all naming standards from https://docs.microsoft.com/en-us/azure/cloud-adoption-framework/ready/azure-best-practices/naming-and-tagging with the one exception, suffics instead of prefix. For example `rg-` is the recommendation. However, choose `-rg` instead to allow for product / area groupings considering that the Azure Portal already has a column for Resource Type.
+
 ### Management Groups & Subscriptions
 This hierarchy uses the Workload separation strategy:
 
-* Design MG
-  * Fast Design MG
+#### Management Groups
+* Design
+  * Fast Design
  
     * Fast Production (Primary Region - West US)
       * Production Subscription
         * App Service Plan (single unit)
+          * Web Apps
+        * Data Storage
+        * CDN
  
     * Fast Staging (Secondary Region - East US)
       * Staging Subscription
@@ -83,9 +92,18 @@ This hierarchy uses the Workload separation strategy:
       * Primary Region
       * Secondary Region
 
-Subscriptions
+#### Subscriptions
 * Internal - Edge Design
 * Internal - Fast Design
+
+
+### Front Door
+Front Door is a modern Content Delivery Network (CDN) and so along with dynamic site acceleration and load balancing, it also supports caching behaviors just like any other CDN. [learn more](https://docs.microsoft.com/en-us/azure/frontdoor/front-door-caching)
+
+
+#### TODO
+1. https://docs.microsoft.com/en-us/azure/frontdoor/quickstart-create-front-door#create-a-front-door-for-your-application
+
 
 
 ### Building for Resiliency

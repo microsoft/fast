@@ -10,4 +10,4 @@ az login
 az configure --defaults output=table disable_confirm_prompt=false enable_log_file=yes log_dir=/log/azure
 
 # Set Subscription
-az account set --subscription "456b8669-6142-4a7b-b4a6-adf39c80289e"
+# az account set --subscription "456b8669-6142-4a7b-b4a6-adf39c80289e"
