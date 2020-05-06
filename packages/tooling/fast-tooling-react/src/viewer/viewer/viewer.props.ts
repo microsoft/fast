@@ -1,5 +1,5 @@
 import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
-import { MessageSystem, CustomMessageIncomingOutgoing } from "@microsoft/fast-tooling";
+import { CustomMessageIncomingOutgoing, MessageSystem } from "@microsoft/fast-tooling";
 import { ViewerClassNameContract } from "./viewer.class-name-contract";
 
 export enum ResizeHandleLocation {
