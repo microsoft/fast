@@ -18,7 +18,7 @@ export class StartEnd {
 }
 
 export const endTemplate = html<StartEnd>`
-    <span class="end" name="end" part="end" ${ref("endContainer")}>
+    <span class="end" part="end" ${ref("endContainer")}>
         <slot
             name="end"
             ${ref("end")}
@@ -28,7 +28,7 @@ export const endTemplate = html<StartEnd>`
 `;
 
 export const startTemplate = html<StartEnd>`
-    <span class="start" name="start" part="start" ${ref("startContainer")}>
+    <span class="start" part="start" ${ref("startContainer")}>
         <slot
             name="start"
             ${ref("start")}
