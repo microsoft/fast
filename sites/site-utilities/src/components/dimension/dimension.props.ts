@@ -5,4 +5,5 @@ export interface DimensionProps {
     onUpdateWidth: any;
     onUpdateHeight: any;
     onUpdateOrientation: any;
+    disabled: boolean;
 }

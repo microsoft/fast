@@ -7,14 +7,13 @@ import {
     DataMessageOutgoing,
     InitializeMessageOutgoing,
     mapDataDictionary,
-    MessageSystemNavigationTypeAction,
     MessageSystemOutgoing,
     MessageSystemType,
     NavigationMessageOutgoing,
     SchemaDictionary,
-    UpdateNavigationMessageIncoming,
+    MessageSystemNavigationTypeAction,
 } from "@microsoft/fast-tooling";
-import { reactMapper } from "@microsoft/fast-tooling-react";
+import { reactMapper, ViewerCustomAction } from "@microsoft/fast-tooling-react";
 import { Background } from "@microsoft/fast-components-react-msft";
 import { StandardLuminance } from "@microsoft/fast-components-styles-msft";
 import { reactResolver } from "./utilities";
@@ -41,6 +40,8 @@ class Preview extends Foundation<{}, {}, PreviewState> {
             schemaDictionary: {},
             theme: StandardLuminance.LightMode,
         };
+
+        window.addEventListener("message", this.handleMessage);
     }
 
     public render(): React.ReactNode {
@@ -67,11 +68,11 @@ class Preview extends Foundation<{}, {}, PreviewState> {
     }
 
     public componentDidMount(): void {
-        window.addEventListener("message", this.handleMessage);
         window.postMessage(
             {
                 type: MessageSystemType.custom,
-                action: previewReady,
+                action: ViewerCustomAction.call,
+                value: previewReady,
             },
             "*"
         );
@@ -130,12 +131,16 @@ class Preview extends Foundation<{}, {}, PreviewState> {
 
     private handleUpdateDictionaryId = (dictionaryId: string): void => {
         window.postMessage(
-            JSON.stringify({
-                type: MessageSystemType.navigation,
-                action: MessageSystemNavigationTypeAction.update,
-                activeDictionaryId: dictionaryId,
-                activeNavigationConfigId: "",
-            } as UpdateNavigationMessageIncoming),
+            {
+                type: MessageSystemType.custom,
+                action: ViewerCustomAction.call,
+                value: {
+                    type: MessageSystemType.navigation,
+                    action: MessageSystemNavigationTypeAction.update,
+                    activeDictionaryId: dictionaryId,
+                    activeNavigationConfigId: "",
+                },
+            },
             "*"
         );
     };
