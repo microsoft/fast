@@ -45,9 +45,9 @@ export class Accordion extends FASTElement {
             if (header instanceof FASTAccordionItem) {
                 header.addEventListener("change", this.activeHeaderChange);
                 if (this.isSingleExpandMode()) {
-                    if (this.activeHeaderIndex !== index) {
-                        header.expanded = false;
-                    }
+                    this.activeHeaderIndex !== index
+                        ? (header.expanded = false)
+                        : (header.expanded = true);
                 }
             }
             const headerId: string | null = this.accordionIds[index];
@@ -67,11 +67,13 @@ export class Accordion extends FASTElement {
     };
 
     private activeHeaderChange = (event): void => {
+        const selectedHeader = event.target as HTMLElement;
         if (this.isSingleExpandMode()) {
             this.resetHeaders();
             event.target.expanded = true;
         }
         this.activeid = event.target.getAttribute("id");
+        this.activeHeaderIndex = Array.from(this.accordionItems).indexOf(selectedHeader);
         this.change();
     };
 
@@ -79,10 +81,6 @@ export class Accordion extends FASTElement {
         return this.accordionItems.map((accordionItem: HTMLElement) => {
             return accordionItem.getAttribute("id");
         });
-    }
-
-    private setComponent(): void {
-        this.focusHeader();
     }
 
     private isSingleExpandMode(): boolean {
@@ -103,11 +101,11 @@ export class Accordion extends FASTElement {
                 break;
             case keyCodeHome:
                 this.activeHeaderIndex = 0;
-                this.setComponent();
+                this.focusHeader();
                 break;
             case keyCodeEnd:
                 this.activeHeaderIndex = this.accordionItems.length - 1;
-                this.setComponent();
+                this.focusHeader();
                 break;
         }
     };
@@ -118,7 +116,7 @@ export class Accordion extends FASTElement {
             this.accordionItems.length - 1,
             this.activeHeaderIndex + adjustment
         );
-        this.setComponent();
+        this.focusHeader();
     }
 
     private focusHeader(): void {
