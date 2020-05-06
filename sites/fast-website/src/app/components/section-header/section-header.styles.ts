@@ -3,6 +3,8 @@ import { display } from "@microsoft/fast-components";
 
 export const SectionHeaderStyles = css`
     ${display("block")} :host {
+        font-family: var(--body-font);
+        color: var(--neutral-foreground-rest);
         box-sizing: border-box;
         text-align: center;
     }
