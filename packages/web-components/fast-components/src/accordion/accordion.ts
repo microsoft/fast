@@ -28,9 +28,6 @@ export class Accordion extends FASTElement {
         }
     }
 
-    @observable
-    public activeIndicatorRef: HTMLElement;
-
     private activeid: string;
     private activeHeaderIndex: number = 0;
     private accordionIds: Array<string | null>;
