@@ -1,13 +1,13 @@
-import { DOM } from "../dom";
-import { CaptureType, SyntheticViewTemplate } from "../template";
-import { SyntheticView } from "../view";
+import { DOM } from "../dom.js";
+import { CaptureType, SyntheticViewTemplate } from "../template.js";
+import { SyntheticView } from "../view.js";
 import {
     ExecutionContext,
     Expression,
     ObservableExpression,
-} from "../observation/observable";
-import { Behavior } from "./behavior";
-import { Directive } from "./directive";
+} from "../observation/observable.js";
+import { Behavior } from "./behavior.js";
+import { Directive } from "./directive.js";
 
 export class WhenBehavior implements Behavior {
     private view: SyntheticView | null = null;
