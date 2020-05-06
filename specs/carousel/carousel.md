@@ -67,7 +67,7 @@ As defined by the W3C:
 **Structure:**
 
 Notes:
-- Since the host element has the handleClick(), it would use event delegation to check what element was clicked on. Example: If the target was an element with a `[slot="next-button"]` it would trigger the controller method for nextSlide(). This way each element passed in via slot would not needs it's own onClick.
+- The host element handleClick() would use event delegation to check what element was clicked on. Example: If the target was an element with a `[slot="next-button"]` it would trigger the controller method for nextSlide(). This way each element passed in via slot would not needs it's own onClick.
 
 ```html
 <!-- shadow dom -->
@@ -75,7 +75,6 @@ Notes:
     class="carousel"
     aria-roledescription="carousel"
     tabindex="-1"
-    @click="${x => x.handleClick()}"
 >
     <slot>Slide content / items go here. Use multiple item slots to add multiple slides.</slot>
 
@@ -173,8 +172,6 @@ Parts:
 ## Implementation
 
 ### States
-
-*Key component states, valid state transitions, and how interactions trigger a state transition.*
 
 - `paused` - if the carousel slide rotation is paused
 - `activeSlideElement` - Holds a reference to the HTMLElement that is the active slide.
