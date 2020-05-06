@@ -17,7 +17,7 @@ As defined by the W3C:
 
 - **Next and Previous Controls:** Simple buttons [aka flippers] that allow for control of displaying the next and previous slides.
 
-- **Slide Picker:** A control or group of controls that allows the specific choice of slide to display, labeled as the tab list.
+- **Slide Picker:** A control or group of controls that allows the specific choice of slide to display, labeled as the tab list. The default for this can be generated using the `slotted` and `repeater` directives.
 
 - **Autoplay:** Allows the carousel to begin rotating through slides automatically after the carousel loads. Autoplay can be toggled on/off with a button, and automatically stops when any element in the carousel receives keyboard focus or is hovered over.
 
@@ -91,7 +91,7 @@ Notes:
     <slot name="previous-button">
         <fast-flipper direction={FlipperDirection.previous} />
     </slot>
-    <slot name="tab-list">Default Tab List </slot>
+    <slot name="tab-list">{A default tab list would be generated using the `slotted` and `repeater` directives to keep the tab-list in sync with the items from the default slot}</slot>
 </div>
 <!-- shadow dom -->
 ```
