@@ -5,6 +5,7 @@ import { AccordionItem } from "./accordion-item";
 export const AccordionItemTemplate = html<AccordionItem>`
     <template
         class="${x => (x.expanded ? "expanded" : "")}"
+        aria-expanded="${x => x.expanded}"
         slot="item"
     >
         <div
@@ -28,9 +29,9 @@ export const AccordionItemTemplate = html<AccordionItem>`
             </button>
             ${startTemplate}
             ${endTemplate}
-            <span class="glyph" part="glyph">
-                <slot name="expanded-glyph" part="expanded-glyph"></slot>
-                <slot name="collapsed-glyph" part="collapsed-glyph"></slot>
+            <span class="icon" part="icon">
+                <slot name="expanded-icon" part="expanded-icon"></slot>
+                <slot name="collapsed-icon" part="collapsed-icon"></slot>
             <span>
         </div>
         <div

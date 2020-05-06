@@ -16,12 +16,9 @@ export const AccordionItemStyles = css`
         box-sizing: border-box;
         font-family: var(--body-font);
         flex-direction: column;
-        ${
-            /* Font size, weight, and line height are temporary - 
-            replace when adaptive typography is figured out */ ""
-        } font-size: 12px;
+        font-size: var(--type-ramp-minus-1-font-size);
         font-weight: 400;
-        line-height: 18px;
+        line-height: var(--type-ramp-minus-1-line-height);
         border-bottom: calc(var(--outline-width) * 1px) solid var(--neutral-divider-rest);
     }
     
@@ -84,7 +81,7 @@ export const AccordionItemStyles = css`
         z-index: 2;
     }
 
-    .glyph {
+    .icon {
         display: flex;
         align-items: center;
         justify-content: center;
@@ -93,19 +90,19 @@ export const AccordionItemStyles = css`
         pointer-events: none;
     }
 
-    slot[name="collapsed-glyph"] {
+    slot[name="collapsed-icon"] {
         display: flex;
     }
 
-    :host(.expanded) slot[name="collapsed-glyph"] {
+    :host(.expanded) slot[name="collapsed-icon"] {
         display: none;
     }
 
-    slot[name="expanded-glyph"] {
+    slot[name="expanded-icon"] {
         display: none;
     }
     
-    :host(.expanded) slot[name="expanded-glyph"] {
+    :host(.expanded) slot[name="expanded-icon"] {
         display: flex;
     }
 

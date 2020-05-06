@@ -10,10 +10,9 @@ export const AccordionStyles = css`
         box-sizing: border-box;
         flex-direction: column;
         font-family: var(--body-font);
-        ${/* Font size, weight, and line height are temporary - 
-            replace when adaptive typography is figured out */ ""} font-size: 12px;
+        font-size: var(--type-ramp-minus-1-font-size);
         font-weight: 400;
-        line-height: 18px;
+        line-height: var(--type-ramp-minus-1-line-height);
         color: var(--neutral-foreground-rest);
         border-top: calc(var(--outline-width) * 1px) solid var(--neutral-divider-rest);
     }

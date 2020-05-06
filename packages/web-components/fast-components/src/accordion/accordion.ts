@@ -21,8 +21,9 @@ export class Accordion extends FASTElement {
 
     @observable
     public accordionItems: HTMLElement[];
-    public accordionItemsChanged(): void {
+    public accordionItemsChanged(oldValue, newValue): void {
         if (this.$fastController.isConnected) {
+            this.removeHeaderListeners(oldValue);
             this.accordionIds = this.getHeaderIds();
             this.setItems();
         }
@@ -60,6 +61,13 @@ export class Accordion extends FASTElement {
     private resetHeaders = (): void => {
         this.accordionItems.forEach((header: FASTAccordionItem, index: number) => {
             header.expanded = false;
+        });
+    };
+
+    private removeHeaderListeners = (oldValue: any): void => {
+        oldValue.forEach((header: HTMLElement, index: number) => {
+            header.removeEventListener("change", this.activeHeaderChange);
+            header.removeEventListener("keydown", this.handleHeaderKeyDown);
         });
     };
 
