@@ -2,19 +2,45 @@
 
 ## What is a Design System
 
-The _design system_ can generally be thought of as a collection named values that inform visual rendering. It quantifies concepts such as type-ramp, color palettes, design units, etc to be used in UI components. Other common names for this concept are _design variables_, _design tokens_ or _theme_.
+The _design system_ can generally be thought of as a collection of named values that inform visual rendering. It quantifies concepts such as type-ramp, color palettes, design units, etc to be used in UI components. Other common names for this concept are _design variables_, _design tokens_ or _theme_.
 
-These values are mutable throughout a UI tree. Where UI tree _A_ may see their contextual _design-unit_ as `4px`, section _B_ may have it's scale increased by providing a _design-unit_ of `6px`. Or, section _C_ may see a contextual _background color_ of `#FFF` where section _D_ may see a contextual _background color_ as `#000`.
+These values are mutable throughout a UI tree. Where UI tree _A_ may see their contextual _design-unit_ as `4px`, section _B_ may have its scale increased by providing a _design-unit_ of `6px`. Or, section _C_ may see a contextual _background color_ of `#FFF` where section _D_ may see a contextual _background color_ as `#000`.
 
 ## Design System Provider
 
-A _design system_ isn't much use if without convenient mechanisms to surface the _design system_ values to UI components and change values where desired. This is where the _Design System Provider_ comes in. `@microsoft/fast-components` exports the `FASTDesignSystemProvider` and `DesignSystemProvider` Web Components to help with:
+A _design system_ isn't much use without convenient mechanisms to surface the _design system_ values to UI components and change values where desired. This is where the _Design System Provider_ comes in. `@microsoft/fast-components` exports the `FASTDesignSystemProvider` and `DesignSystemProvider` Web Components to help with:
 
 1. Declaring _design system_ properties and default values.
 2. Surfacing _design system_ values as [CSS Custom Properties](https://developer.mozilla.org/en-US/docs/Web/CSS/--*).
 3. Surfacing the _design system_ as a JavaScript object accessible on the Custom Element.
 4. Facilitate _design system_ composition in _document order_.
 5. Registering CSS Custom Property definitions to create arbitrary CSS Custom Properties as a function of the _design system_.
+
+### FAST Design System Provider
+
+The easiest way to get up-and-running is to use the `FASTDesignSystemProvider`. This Web Component comes pre-configured with _design system_ properties used by the Web Components in the `@microsoft/fast-components` library.
+
+**EXAMPLE: Using the FASTDesignSystemProvider**
+
+```js
+import { FASTDesignSystemProvider } from "@microsoft/fast-components";
+```
+
+```html
+<fast-design-system-provider use-defaults>
+    Hello World
+</fast-design-system-provider>
+```
+
+_Design system_ properties can be overridden by setting the property or attribute on the `fast-design-system-provider`. See [FAST Design System Properties](#FAST-Design-System-Properties) for a comprehensive list of properties.
+
+**EXAMPLE: Setting design system properties**
+
+```html
+<fast-design-system-provider use-defaults background-color="#111111" design-unit="6">
+    Hello world!
+</fast-design-system-provider>
+```
 
 ### `use-defaults`
 
@@ -67,7 +93,7 @@ DesignSystemProvider.registerCSSCustomProperty({
 
 In the above example, the value function will be re-evaluated if the _design system_ ever changes.
 
-The above API is made especially useful when defining a [component stylesheet](https://github.com/microsoft/fast-dna/blob/master/packages/web-components/fast-element/docs/building-components.md#defining-css) - individual stylesheets can declare dependencies on CSS custom properties that are functions of he element instance's *design system*
+The above API is made especially useful when defining a [component stylesheet](https://github.com/microsoft/fast-dna/blob/master/packages/web-components/fast-element/docs/building-components.md#defining-css) - individual stylesheets can declare dependencies on CSS custom properties that are functions of the element instance's *design system*
 
 **EXAMPLE: creating a recipe dependency**
 ```ts
@@ -85,32 +111,6 @@ const styles = css`
         DesignSystemProvider.findProvider
     )
 )
-```
-
-### FAST Design System Provider
-
-The easiest way to get up-and-running is to use the `FASTDesignSystemProvider`. This Web Component comes pre-configured with _design system_ properties used by the Web Components in the `@microsoft/fast-components` library.
-
-**EXAMPLE: Using the FASTDesignSystemProvider**
-
-```js
-import { FASTDesignSystemProvider } from "@microsoft/fast-components";
-```
-
-```html
-<fast-design-system-provider use-defaults>
-    Hello World
-</fast-design-system-provider>
-```
-
-_Design system_ properties can be overridden by setting the property or attribute on the `fast-design-system-provider`. See [FAST Design System Properties](#FAST-Design-System-Properties) for a comprehensive list of properties.
-
-**EXAMPLE: Setting design system properties**
-
-```html
-<fast-design-system-provider use-defaults background-color="#111111" design-unit="6">
-    Hello world!
-</fast-design-system-provider>
 ```
 
 ### Creating a Design System Provider
