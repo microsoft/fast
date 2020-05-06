@@ -181,7 +181,7 @@ The default value _must_ be set through the `default` property on the supplied c
 ### FAST Design System Properties
 |Property Name|Type|Attribute Name|CSS Custom property|
 |---|---|---|---|
-|backgroundColor|string| background-color,  | background-color |
+|backgroundColor|string| background-color | background-color |
 |accentBaseColor|string| accent-base-color | N/A |
 |neutralPalette|string[]| N/A | N/A |
 |accentPalette|string[]| N/A | N/A |
