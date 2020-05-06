@@ -1,7 +1,6 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: 'Montserrat', sans-serif;
   background: #242424;
   color: #ddd;
 }
@@ -19,18 +18,18 @@ body {
   height: 80px;
 }
 
-.page-section-container {
+.section {
   grid-column: 2;
 }
 
-.page-section-content {
+.section-content {
   display: flex;
   align-items: center;
   justify-content: center;
   height: 300px;
 }
 
-.component-section-content {
+.section-component {
   display: flex;
   align-items: center;
   justify-content: center;
