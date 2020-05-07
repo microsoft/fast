@@ -8,9 +8,9 @@ export const SliderLabelTemplate = html<SliderLabel>`
         class="${x =>
             x.sliderOrientation === SliderOrientation.horizontal
                 ? "horizontal"
-                : "vertical"}
-            ${x => (x.disabled ? "disabled" : "")}
-        >
+                : "vertical"} 
+            ${x => (x.disabled ? "disabled" : "")}"
+    >
         <div ${ref("root")} part="root" class="root" style=${x => x.positionStyle}>
             <div class="container">
                 ${when(x => !x.hideMark, html` <div class="mark"></div> `)}

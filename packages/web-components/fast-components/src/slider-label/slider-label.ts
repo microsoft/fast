@@ -44,9 +44,12 @@ export class SliderLabel extends FASTElement {
         this.getSliderConfiguration();
         this.positionStyle = this.positionAsStyle();
         const notifier = Observable.getNotifier(this.parentNode as FASTSlider);
+        console.log("notifier:", notifier, " for label with pos:", this.position);
         const handler = {
             sliderLabel: this,
             handleChange(source: any, propertyName: string) {
+                console.log("this.sliderLabel.position:", this.sliderLabel.position);
+                console.log("source:", source);
                 switch (propertyName) {
                     case "direction":
                         this.sliderLabel.direction = source.direction;
@@ -64,20 +67,6 @@ export class SliderLabel extends FASTElement {
                         break;
                 }
                 this.sliderLabel.positionStyle = this.sliderLabel.positionAsStyle();
-
-                const { min, max, direction, orientation, disabled } = this
-                    .parentNode as SliderConfiguration;
-
-                console.log(
-                    "parent values min:",
-                    min,
-                    " max:",
-                    max,
-                    " orientation:",
-                    orientation,
-                    " direction:",
-                    direction
-                );
             },
         };
 
@@ -99,16 +88,9 @@ export class SliderLabel extends FASTElement {
             this.sliderMaxPosition = defaultConfig.max;
             this.sliderMinPosition = defaultConfig.min;
         } else {
-            const { min, max, direction, orientation, disabled } = this
+            const parentSlider: SliderConfiguration | null = this
                 .parentNode as SliderConfiguration;
-            console.log(
-                "values from parent min:",
-                min,
-                " max:",
-                max,
-                " orientation:",
-                orientation
-            );
+            const { min, max, direction, orientation, disabled } = parentSlider;
             if (disabled !== undefined) {
                 this.disabled = disabled;
             }
@@ -116,13 +98,6 @@ export class SliderLabel extends FASTElement {
             this.sliderOrientation = orientation || SliderOrientation.horizontal;
             this.sliderMaxPosition = max;
             this.sliderMinPosition = min;
-
-            console.log(
-                "sliderOrientation:",
-                this.sliderOrientation,
-                " sliderMaxPosition:",
-                this.sliderMaxPosition
-            );
         }
     };
 
@@ -133,8 +108,8 @@ export class SliderLabel extends FASTElement {
 
         const pct = convertPixelToPercent(
             Number(this.position),
-            this.sliderMinPosition,
-            this.sliderMaxPosition
+            Number(this.sliderMinPosition),
+            Number(this.sliderMaxPosition)
         );
         let rightNum: number = Math.round((1 - pct) * 100);
         let leftNum: number = Math.round(pct * 100);
@@ -142,8 +117,6 @@ export class SliderLabel extends FASTElement {
             rightNum = 50;
             leftNum = 50;
         }
-
-        console.log("leftNum:", leftNum, " rightNum:", rightNum);
 
         if (this.sliderOrientation === SliderOrientation.horizontal) {
             return direction === Direction.rtl
