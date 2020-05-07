@@ -11,7 +11,6 @@ export const AccordionStyles = css`
         flex-direction: column;
         font-family: var(--body-font);
         font-size: var(--type-ramp-minus-1-font-size);
-        font-weight: 400;
         line-height: var(--type-ramp-minus-1-line-height);
         color: var(--neutral-foreground-rest);
         border-top: calc(var(--outline-width) * 1px) solid var(--neutral-divider-rest);

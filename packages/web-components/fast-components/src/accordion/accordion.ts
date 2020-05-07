@@ -1,4 +1,4 @@
-import { attr, FASTElement, observable } from "@microsoft/fast-element";
+import { attr, booleanConverter, FASTElement, observable } from "@microsoft/fast-element";
 import {
     keyCodeArrowDown,
     keyCodeArrowUp,
@@ -16,73 +16,75 @@ export enum AccordionExpandMode {
 }
 
 export class Accordion extends FASTElement {
-    @attr
+    @attr({ attribute: "expand-mode" })
     public expandmode: AccordionExpandMode = AccordionExpandMode.multi;
 
     @observable
     public accordionItems: HTMLElement[];
     public accordionItemsChanged(oldValue, newValue): void {
         if (this.$fastController.isConnected) {
-            this.removeHeaderListeners(oldValue);
-            this.accordionIds = this.getHeaderIds();
+            this.removeItemListeners(oldValue);
+            this.accordionIds = this.getItemIds();
             this.setItems();
         }
     }
 
     private activeid: string;
-    private activeHeaderIndex: number = 0;
+    private activeItemIndex: number = 0;
     private accordionIds: Array<string | null>;
 
     private change = (): void => {
-        this.$emit("change", this.activeid);
+        this.$emit("change");
     };
 
     private setItems = (): void => {
-        this.accordionIds = this.getHeaderIds();
-        this.accordionItems.forEach((header: HTMLElement, index: number) => {
-            if (header instanceof FASTAccordionItem) {
-                header.addEventListener("change", this.activeHeaderChange);
+        console.log(this.isSingleExpandMode());
+        this.accordionIds = this.getItemIds();
+        this.accordionItems.forEach((item: HTMLElement, index: number) => {
+            if (item instanceof FASTAccordionItem) {
+                item.addEventListener("change", this.activeItemChange);
                 if (this.isSingleExpandMode()) {
-                    this.activeHeaderIndex !== index
-                        ? (header.expanded = false)
-                        : (header.expanded = true);
+                    this.activeItemIndex !== index
+                        ? (item.expanded = false)
+                        : (item.expanded = true);
                 }
             }
-            const headerId: string | null = this.accordionIds[index];
-            header.setAttribute(
+            const itemId: string | null = this.accordionIds[index];
+            item.setAttribute(
                 "id",
-                typeof headerId !== "string" ? `accordion-${index + 1}` : headerId
+                typeof itemId !== "string" ? `accordion-${index + 1}` : itemId
             );
-            this.activeid = this.accordionIds[this.activeHeaderIndex] as string;
-            header.addEventListener("keydown", this.handleHeaderKeyDown);
+            this.activeid = this.accordionIds[this.activeItemIndex] as string;
+            item.addEventListener("keydown", this.handleItemKeyDown);
         });
     };
 
-    private resetHeaders = (): void => {
-        this.accordionItems.forEach((header: FASTAccordionItem, index: number) => {
-            header.expanded = false;
+    private resetItems = (): void => {
+        this.accordionItems.forEach((item: FASTAccordionItem, index: number) => {
+            item.expanded = false;
         });
     };
 
-    private removeHeaderListeners = (oldValue: any): void => {
-        oldValue.forEach((header: HTMLElement, index: number) => {
-            header.removeEventListener("change", this.activeHeaderChange);
-            header.removeEventListener("keydown", this.handleHeaderKeyDown);
+    private removeItemListeners = (oldValue: any): void => {
+        oldValue.forEach((item: HTMLElement, index: number) => {
+            item.removeEventListener("change", this.activeItemChange);
+            item.removeEventListener("keydown", this.handleItemKeyDown);
         });
     };
 
-    private activeHeaderChange = (event): void => {
-        const selectedHeader = event.target as HTMLElement;
+    private activeItemChange = (event): void => {
+        const selectedItem = event.target as HTMLElement;
         if (this.isSingleExpandMode()) {
-            this.resetHeaders();
+            console.log("Hits");
+            this.resetItems();
             event.target.expanded = true;
         }
         this.activeid = event.target.getAttribute("id");
-        this.activeHeaderIndex = Array.from(this.accordionItems).indexOf(selectedHeader);
+        this.activeItemIndex = Array.from(this.accordionItems).indexOf(selectedItem);
         this.change();
     };
 
-    private getHeaderIds(): Array<string | null> {
+    private getItemIds(): Array<string | null> {
         return this.accordionItems.map((accordionItem: HTMLElement) => {
             return accordionItem.getAttribute("id");
         });
@@ -92,9 +94,9 @@ export class Accordion extends FASTElement {
         return this.expandmode === AccordionExpandMode.single;
     }
 
-    private handleHeaderKeyDown = (event: KeyboardEvent): void => {
+    private handleItemKeyDown = (event: KeyboardEvent): void => {
         const keyCode: number = event.keyCode;
-        this.accordionIds = this.getHeaderIds();
+        this.accordionIds = this.getItemIds();
         switch (keyCode) {
             case keyCodeArrowUp:
                 event.preventDefault();
@@ -105,29 +107,29 @@ export class Accordion extends FASTElement {
                 this.adjust(1);
                 break;
             case keyCodeHome:
-                this.activeHeaderIndex = 0;
-                this.focusHeader();
+                this.activeItemIndex = 0;
+                this.focusItem();
                 break;
             case keyCodeEnd:
-                this.activeHeaderIndex = this.accordionItems.length - 1;
-                this.focusHeader();
+                this.activeItemIndex = this.accordionItems.length - 1;
+                this.focusItem();
                 break;
         }
     };
 
     private adjust(adjustment: number): void {
-        this.activeHeaderIndex = wrapInBounds(
+        this.activeItemIndex = wrapInBounds(
             0,
             this.accordionItems.length - 1,
-            this.activeHeaderIndex + adjustment
+            this.activeItemIndex + adjustment
         );
-        this.focusHeader();
+        this.focusItem();
     }
 
-    private focusHeader(): void {
-        const element: HTMLElement = this.accordionItems[this.activeHeaderIndex];
+    private focusItem(): void {
+        const element: HTMLElement = this.accordionItems[this.activeItemIndex];
         if (element instanceof FASTAccordionItem) {
-            element.button.focus();
+            element.expandbutton.focus();
         }
     }
 }

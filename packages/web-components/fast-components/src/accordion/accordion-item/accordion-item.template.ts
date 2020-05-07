@@ -17,7 +17,7 @@ export const AccordionItemTemplate = html<AccordionItem>`
             <button
                 class="button"
                 part="button"
-                ${ref("button")}
+                ${ref("expandbutton")}
                 aria-expanded="${x => x.expanded}"
                 aria-controls="${x => x.id}-panel"
                 id="${x => x.id}"

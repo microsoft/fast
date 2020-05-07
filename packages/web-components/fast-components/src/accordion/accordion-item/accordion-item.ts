@@ -1,17 +1,8 @@
-import { attr, FASTElement, observable } from "@microsoft/fast-element";
-
-export enum AccordionHeadingLevel {
-    h1 = "1",
-    h2 = "2",
-    h3 = "3",
-    h4 = "4",
-    h5 = "5",
-    h6 = "6",
-}
+import { attr, booleanConverter, FASTElement, observable } from "@microsoft/fast-element";
 
 export class AccordionItem extends FASTElement {
-    @attr
-    public headinglevel: AccordionHeadingLevel = AccordionHeadingLevel.h2;
+    @attr({ attribute: "heading-level", mode: "fromView", converter: booleanConverter })
+    public headinglevel: 1 | 2 | 3 | 4 | 5 | 6 = 2;
 
     @attr({ mode: "boolean" })
     public expanded: boolean = false;
@@ -20,7 +11,7 @@ export class AccordionItem extends FASTElement {
     public id: string;
 
     @observable
-    public button: HTMLElement;
+    public expandbutton: HTMLElement;
 
     /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
     public clickHandler = (e: MouseEvent) => {
@@ -29,6 +20,6 @@ export class AccordionItem extends FASTElement {
     };
 
     private change = (): void => {
-        this.$emit("change", this.id);
+        this.$emit("change");
     };
 }

@@ -17,7 +17,6 @@ export const AccordionItemStyles = css`
         font-family: var(--body-font);
         flex-direction: column;
         font-size: var(--type-ramp-minus-1-font-size);
-        font-weight: 400;
         line-height: var(--type-ramp-minus-1-line-height);
         border-bottom: calc(var(--outline-width) * 1px) solid var(--neutral-divider-rest);
     }
@@ -30,7 +29,8 @@ export const AccordionItemStyles = css`
     .heading {
         display: grid;
         position: relative;
-        grid-template-columns: auto 1fr auto calc(${heightNumber} * 1px)
+        grid-template-columns: auto 1fr auto calc(${heightNumber} * 1px);
+        z-index: 2;
     }
 
     .button {
@@ -75,10 +75,6 @@ export const AccordionItemStyles = css`
 
     :host(.expanded) .region {
         display: flex;
-    }
-
-    .heading {
-        z-index: 2;
     }
 
     .icon {
