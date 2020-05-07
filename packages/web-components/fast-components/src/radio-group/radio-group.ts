@@ -8,6 +8,11 @@ import {
 } from "@microsoft/fast-web-utilities";
 import { RadioControl } from "../radio";
 
+export enum RadioOrientation {
+    horizontal = "horizontal",
+    vertical = "vertical",
+}
+
 export class RadioGroup extends FASTElement {
     @attr({ attribute: "readonly", mode: "boolean" })
     public readOnly: boolean;
@@ -49,6 +54,9 @@ export class RadioGroup extends FASTElement {
 
     @attr
     public value: string;
+
+    @attr
+    public orientation: RadioOrientation = RadioOrientation.horizontal;
 
     @observable slottedRadioButtons: RadioControl[];
     private selectedRadio: RadioControl | null;
