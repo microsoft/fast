@@ -1,7 +1,7 @@
 import { attr, booleanConverter, FASTElement, observable } from "@microsoft/fast-element";
 
 export class AccordionItem extends FASTElement {
-    @attr({ attribute: "heading-level", mode: "fromView", converter: booleanConverter })
+    @attr({ attribute: "heading-level", mode: "fromView" })
     public headinglevel: 1 | 2 | 3 | 4 | 5 | 6 = 2;
 
     @attr({ mode: "boolean" })
