@@ -7,6 +7,7 @@ import {
     ResizeHandleLocation,
     ViewerHandledProps,
     ViewerUnhandledProps,
+    ViewerCustomAction,
 } from "./viewer.props";
 import { MessageSystemType, Register } from "@microsoft/fast-tooling";
 
@@ -89,6 +90,22 @@ export class Viewer extends Foundation<
     public componentWillUnmount(): void {
         if (this.props.messageSystem !== undefined) {
             this.props.messageSystem.remove(this.messageSystemConfig);
+        }
+
+        if (canUseDOM() && get(this.iframeRef, "current.contentWindow")) {
+            this.iframeRef.current.contentWindow.removeEventListener(
+                "message",
+                this.handleIframeMessage
+            );
+        }
+    }
+
+    public componentDidMount(): void {
+        if (canUseDOM() && get(this.iframeRef, "current.contentWindow")) {
+            this.iframeRef.current.contentWindow.addEventListener(
+                "message",
+                this.handleIframeMessage
+            );
         }
     }
 
@@ -210,6 +227,20 @@ export class Viewer extends Foundation<
             );
         }
     }
+
+    private handleIframeMessage = (e: MessageEvent): void => {
+        if (
+            e.data &&
+            e.data.type === MessageSystemType.custom &&
+            e.data.action === ViewerCustomAction.call
+        ) {
+            e.stopImmediatePropagation();
+            this.props.messageSystem.postMessage({
+                ...e.data,
+                action: ViewerCustomAction.response,
+            });
+        }
+    };
 
     private handleMessageSystem = (e: MessageEvent): void => {
         this.postMessage(e.data);
