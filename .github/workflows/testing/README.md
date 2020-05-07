@@ -39,6 +39,7 @@ $ act -e `.github/workflows/testing/${github_event}.json` -W "./.github/workflow
 ## Test
 `./.github/workflows/testing/ci-daily-local.yml` is used to test locally CI settings.
 
+Run this command from root
 ```bash
 $ act -j build_local_linux -e "./.github/workflows/testing/${github_event}.json"  -W "./.github/workflows/testing/"
 ```
