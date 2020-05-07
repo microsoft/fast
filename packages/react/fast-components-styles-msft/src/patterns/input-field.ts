@@ -1,5 +1,5 @@
 import { CSSRules } from "@microsoft/fast-jss-manager";
-import { format, toPx, add } from "@microsoft/fast-jss-utilities";
+import { add, format, toPx } from "@microsoft/fast-jss-utilities";
 import { applyCornerRadius } from "../utilities/border";
 import { DesignSystem } from "../design-system";
 import {
@@ -20,9 +20,9 @@ import { applyDisabledState } from "../utilities/disabled";
 import { applyScaledTypeRamp } from "../utilities/typography";
 import { applyFontWeightNormal } from "../utilities/fonts";
 import {
-    outlineWidth,
     backgroundColor,
     focusOutlineWidth,
+    outlineWidth,
 } from "../utilities/design-system";
 import {
     HighContrastColor,

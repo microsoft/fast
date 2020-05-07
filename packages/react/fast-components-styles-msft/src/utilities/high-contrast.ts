@@ -1,5 +1,5 @@
 import { CSSRules } from "@microsoft/fast-jss-manager";
-import { format, important, toPx, add } from "@microsoft/fast-jss-utilities";
+import { add, format, important, toPx } from "@microsoft/fast-jss-utilities";
 import { canUseForcedColors } from "@microsoft/fast-web-utilities";
 import { DesignSystem } from "../design-system";
 import { focusOutlineWidth, outlineWidth } from "./design-system";

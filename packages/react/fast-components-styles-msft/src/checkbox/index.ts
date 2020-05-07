@@ -35,12 +35,12 @@ import {
     HighContrastColor,
     highContrastColorBackground,
     highContrastDisabledBorder,
+    highContrastDoubleOuterFocus,
     highContrastHighlightBackground,
     highContrastOptOutProperty,
     highContrastSelectedBackground,
     highContrastSelector,
     highContrastTextForeground,
-    highContrastDoubleOuterFocus,
 } from "../utilities/high-contrast";
 import { doubleOuterFocus } from "../patterns/input-field";
 

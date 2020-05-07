@@ -30,11 +30,11 @@ import { backgroundColor, designUnit, outlineWidth } from "../utilities/design-s
 import { applyCursorDisabled, applyCursorPointer } from "../utilities/cursor";
 import {
     HighContrastColor,
+    highContrastDoubleOuterFocus,
     highContrastHighlightBackground,
     highContrastOptOutProperty,
     highContrastSelectedBackground,
     highContrastSelector,
-    highContrastDoubleOuterFocus,
 } from "../utilities/high-contrast";
 import { doubleOuterFocus } from "../patterns/input-field";
 

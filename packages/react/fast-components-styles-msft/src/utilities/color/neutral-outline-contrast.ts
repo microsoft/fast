@@ -1,3 +1,4 @@
+import { subtract } from "@microsoft/fast-jss-utilities";
 import {
     neutralOutlineActiveDelta,
     neutralOutlineFocusDelta,
@@ -16,7 +17,6 @@ import {
 } from "./common";
 
 import { accessibleAlgorithm } from "./accessible-recipe";
-import { subtract } from "@microsoft/fast-jss-utilities";
 
 export const neutralOutlineContrastAlgorithm: SwatchFamilyResolver = colorRecipeFactory(
     accessibleAlgorithm(
