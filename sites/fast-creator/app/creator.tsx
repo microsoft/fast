@@ -51,6 +51,13 @@ import {
     ControlOnChangeConfig,
 } from "@microsoft/fast-tooling-react/dist/form/templates/types";
 import FASTMessageSystemWorker from "@microsoft/fast-tooling/dist/message-system.min.js";
+import {
+    AccentColorPicker,
+    Dimension,
+    DirectionSwitch,
+    dotDotDotGlyph,
+    ThemeSelector,
+} from "@microsoft/site-utilities";
 import * as schemas from "./msft-components";
 import {
     CreatorHandledProps,
@@ -60,13 +67,6 @@ import {
     ProjectFileView,
 } from "./creator.props";
 import { exampleData, LinkedDataStack } from "./msft-components/example-data";
-import {
-    AccentColorPicker,
-    Dimension,
-    DirectionSwitch,
-    ThemeSelector,
-    dotDotDotGlyph,
-} from "@microsoft/site-utilities";
 import { ProjectFileTransfer } from "./components";
 import { selectDeviceOverrideStyles } from "./utilities/style-overrides";
 import designSystemSchema from "./msft-component-helpers/design-system.schema";
