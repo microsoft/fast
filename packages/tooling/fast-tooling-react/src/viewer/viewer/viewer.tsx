@@ -1,6 +1,7 @@
 import React from "react";
 import { Viewer as BaseViewer } from "./viewer.base";
 import {
+    ViewerCustomAction,
     ViewerHandledProps as BaseViewerHandledProps,
     ViewerManagedClasses,
     ViewerProps as BaseViewerProps,
@@ -29,6 +30,7 @@ export {
     // as it is intended to work with the other Modular prefixed components
     // See: https://github.com/microsoft/fast-dna/issues/2774
     Viewer as ModularViewer,
+    ViewerCustomAction,
     ViewerProps,
     ViewerClassNameContract,
     ViewerHandledProps,
