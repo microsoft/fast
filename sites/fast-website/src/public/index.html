@@ -3,12 +3,110 @@
   <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
     <title><%= htmlWebpackPlugin.options.title %></title>
   </head>
   <body>
     <fast-design-system-provider use-defaults>
-      <fast-button>Hello, World!</fast-button>
-      <gradient-picker>stub</gradient-picker>
+      <div class="wrapper">
+        <!-- header:start -->
+        <header class="header">
+          <fast-anchor href="#" appearance="lightweight">Logo</fast-anchor>
+          <div class="header-link-group">
+            <fast-anchor href="#" appearance="lightweight">Component</fast-anchor>
+            <fast-anchor href="#" appearance="lightweight">Integration</fast-anchor>
+            <fast-anchor href="#" appearance="lightweight">Documentation</fast-anchor>
+            <fast-anchor href="#" appearance="lightweight">Community</fast-anchor>
+          </div>
+          <fast-anchor href="#" appearance="lightweight">Github</fast-anchor>
+        </header>
+        <!-- header:end -->
+
+        <!-- hero-section:start -->
+        <section class="section">
+          <div class="section-content">
+            Hero section header
+          </div>
+        </section>
+        <!-- hero-section:end -->
+
+        <section class="section">
+          <div class="section-content">
+            Page section header
+          </div>
+        </section>
+
+        <!-- adaptive-ui-system:start -->
+        <section class="section">
+          <div class="section-component">
+            Adaptive UI System
+            <fast-button>Hello, World!</fast-button>
+            <gradient-picker>stub</gradient-picker>
+          </div>
+        </section>
+        <!-- adaptive-ui-system:end -->
+
+        <section class="section">
+          <div class="section-content">
+            Page section header
+          </div>
+        </section>
+
+        <!-- frameworks:start -->
+        <section class="section">
+          <div class="section-component">
+            Framework components
+          </div>
+        </section>
+        <!-- frameworks:end -->
+
+        <section class="section">
+          <div class="section-content">
+            Page section header
+          </div>
+        </section>
+
+        <!-- documentation:start -->
+        <section class="section">
+          <div class="section-component">
+            Documentation components
+          </div>
+        </section>
+        <!-- documentation:end -->
+
+        <section class="section">
+          <div class="section-content">
+            Page section header
+          </div>
+        </section>
+
+        <!-- community:start -->
+        <section class="section">
+          <div class="section-component">
+            Social community components
+          </div>
+        </section>
+        <!-- community:end -->
+
+        <!-- footer:start -->
+          <footer class="footer">
+            <fast-divider></fast-divider>
+            <fast-anchor href="#" appearance="lightweight">Logo</fast-anchor>
+            <div class="footer-links">
+                <div class="footer-link-group">
+                    <span>License</span>
+                    <span>Privacy</span>
+                    <span>Terms of use</span>
+                    <span>&copy; 2020 Microsoft</span>
+                </div>
+                <div class="footer-link-group">
+                  <fast-anchor href="#" appearance="lightweight">Medium</fast-anchor>
+                  <fast-anchor href="#" appearance="lightweight">Github</fast-anchor>
+                </div>
+            </div>
+        </footer>
+        <!-- footer:end -->
+      </div>
     </fast-design-system-provider>
   </body>
 </html>
