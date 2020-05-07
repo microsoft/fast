@@ -60,14 +60,14 @@ import {
     ProjectFileView,
 } from "./creator.props";
 import { exampleData, LinkedDataStack } from "./msft-components/example-data";
-import { dotDotDotGlyph } from "./icons/dot-dot-dot";
 import {
     AccentColorPicker,
     Dimension,
     DirectionSwitch,
-    ProjectFileTransfer,
     ThemeSelector,
-} from "./components";
+    dotDotDotGlyph,
+} from "@microsoft/site-utilities";
+import { ProjectFileTransfer } from "./components";
 import { selectDeviceOverrideStyles } from "./utilities/style-overrides";
 import designSystemSchema from "./msft-component-helpers/design-system.schema";
 import { previewReady } from "./preview";
