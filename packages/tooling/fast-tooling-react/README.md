@@ -34,6 +34,7 @@ The tooling available in FAST Tooling React can be used together to create UI fo
 - [Viewer](#viewer)
     - [Setting width and height](#setting-width-and-height)
     - [Sending custom messages](#sending-custom-messages)
+    - [Receiving custom messages](#receiving-custom-messages)
     - [Select device](#select-device)
         - [Devices](#devices)
     - [Rotate](#rotate)
@@ -690,7 +691,23 @@ handleUpdateViewerWidth = (newViewerWidth) => {
 
 ### Sending custom messages
 
-Sending custom messages through the message system will be posted to the iframe. For information on how to send custom messages refer to the `@microsoft/fast-tooling` README file.
+Sending custom messages through from the iframe can be done with a `postMessage` to the iframe window. The custom message should define the `type` and `action`. The type should be `MessageSystemType.custom` imported from the `@microsoft/fast-tooling` package and the `action` is defined as the enum value `ViewerCustomAction.call` provided as an export.
+
+Example:
+```javascript
+import { MessageSystemType } from "@microsoft/fast-tooling";
+import { ViewerCustomAction } from "@microsoft/fast-tooling-react";
+
+window.postMessage({
+    type: MessageSystemType.custom,
+    action: ViewerCustomAction.call,
+    data: myData
+}, "*");
+```
+
+### Receiving custom messages
+
+When a custom message is sent through the message system with a type of `ViewerCustomAction.call`, it will be passed to all registered callbacks with the message system using a modified `action` type of `ViewerCustomAction.response`. This way any further action that needs to be taken with the message data passed from the iframe can be done by looking for the response.
 
 ### Select device
 

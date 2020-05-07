@@ -1,59 +1,121 @@
-import { attr, FASTElement, observable, Observable } from "@microsoft/fast-element";
 import {
-    DesignSystemConsumer,
-    DesignSystemConsumerBehavior,
-} from "../design-system-consumer";
+    attr,
+    Behavior,
+    customElement,
+    FASTElement,
+    observable,
+    Observable,
+} from "@microsoft/fast-element";
 import {
     CSSCustomPropertyDefinition,
     CSSCustomPropertyTarget,
 } from "../custom-properties";
-import { isDesignSystemProvider } from "./is-design-system-provider";
-
-interface DesignSystemPropertyDeclarationConfig {
-    cssCustomProperty?: string | false;
-    default: any;
-}
-
-/**
- * Decorator to declare a property as a design-system property.
- * Accepts a config object with the following:
- *
- * default:
- * The default value of the property. Will be assigned when the use-defaults attribute is used.
- *
- * cssCustomProperty?:
- * An optional property to control the name of the css custom property being created.
- * If omitted, the css custom property will share a name with the decorated property name.
- * If assigned a false value, no css custom property will be created.
- */
-export function designSystemProperty<T extends DesignSystemProvider>(
-    config: DesignSystemPropertyDeclarationConfig
-): (source: T, property: string) => void {
-    const decorator = (
-        source: T,
-        prop: string,
-        config: DesignSystemPropertyDeclarationConfig
-    ) => {
-        if (!source.designSystemProperties) {
-            source.designSystemProperties = {};
-        }
-
-        source.designSystemProperties[prop] = {
-            cssCustomProperty:
-                config.cssCustomProperty === void 0 ? prop : config.cssCustomProperty,
-            default: config.default,
-        };
-    };
-
-    return (source: T, prop: string) => {
-        decorator(source, prop, config);
-    };
-}
+import { composedParent } from "../utilities";
+import { DesignSystemPropertyDeclarationConfig } from "./design-system-property";
+import { DesignSystemProviderStyles as styles } from "./design-system-provider.styles";
+import { DesignSystemProviderTemplate as template } from "./design-system-provider.template";
 
 const supportsAdoptedStylesheets = "adoptedStyleSheets" in window.ShadowRoot.prototype;
 
+export interface DesignSystemConsumer {
+    provider: DesignSystemProvider | null;
+}
+
+/**
+ * Determines if the element has a design-system-provider context
+ * @param element
+ */
+export function isDesignSystemConsumer(
+    element: HTMLElement | DesignSystemConsumer
+): element is DesignSystemConsumer {
+    const provider: DesignSystemProvider | null | void = (element as any).provider;
+
+    return (
+        provider !== null &&
+        provider !== void 0 &&
+        DesignSystemProvider.isDesignSystemProvider(provider)
+    );
+}
+
+/**
+ * Behavior to connect an element to the nearest design-system provider
+ */
+export const designSystemConsumerBehavior: Behavior = {
+    bind<T extends DesignSystemConsumer & HTMLElement>(source: T) {
+        source.provider = DesignSystemProvider.findProvider(source);
+    },
+
+    /* eslint-disable-next-line */
+    unbind<T extends DesignSystemConsumer & HTMLElement>(source: T) {},
+};
+
 export class DesignSystemProvider extends FASTElement
     implements CSSCustomPropertyTarget, DesignSystemConsumer {
+    /**
+     * Stores a list of all element tag-names that associated
+     * to design-system-providers
+     */
+    private static _tagNames: string[] = [];
+
+    /**
+     * Read all tag-names that are associated to
+     * design-system-providers
+     */
+    public static get tagNames() {
+        return DesignSystemProvider._tagNames;
+    }
+    /**
+     * Determines if an element is a DesignSystemProvider
+     * @param el The element to test
+     */
+    public static isDesignSystemProvider(
+        el: HTMLElement | DesignSystemProvider
+    ): el is DesignSystemProvider {
+        return (
+            (el as DesignSystemProvider).isDesignSystemProvider ||
+            DesignSystemProvider.tagNames.includes(el.tagName)
+        );
+    }
+
+    /**
+     * Finds the closest design-system-provider
+     * to an element.
+     */
+    public static findProvider(
+        el: HTMLElement & Partial<DesignSystemConsumer>
+    ): DesignSystemProvider | null {
+        if (isDesignSystemConsumer(el)) {
+            return el.provider;
+        }
+
+        let parent = composedParent(el);
+
+        while (parent !== null) {
+            if (DesignSystemProvider.isDesignSystemProvider(parent)) {
+                el.provider = parent; // Store provider on ourselves for future reference
+                return parent;
+            } else if (isDesignSystemConsumer(parent)) {
+                el.provider = parent.provider;
+                return parent.provider;
+            } else {
+                parent = composedParent(parent);
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Registers a tag-name to be associated with
+     * the design-system-provider class
+     */
+    public static registerTagName(tagName: string) {
+        const tagNameUpper = tagName.toUpperCase();
+        if (!DesignSystemProvider.tagNames.includes(tagNameUpper)) {
+            DesignSystemProvider._tagNames.push(tagNameUpper);
+        }
+    }
+
     /**
      * Allows other components to identify this as a provider.
      * Using instanceof DesignSystemProvider did not seem to work.
@@ -99,7 +161,10 @@ export class DesignSystemProvider extends FASTElement
             });
         }
 
-        if (next instanceof HTMLElement && isDesignSystemProvider(next)) {
+        if (
+            next instanceof HTMLElement &&
+            DesignSystemProvider.isDesignSystemProvider(next)
+        ) {
             Object.keys(next.designSystemProperties).forEach(key => {
                 Observable.getNotifier(next.designSystem).subscribe(
                     this.providerDesignSystemChangeHandler,
@@ -214,7 +279,7 @@ export class DesignSystemProvider extends FASTElement
             this.customPropertyTarget = this.style;
         }
 
-        this.$fastController.addBehaviors([new DesignSystemConsumerBehavior()]);
+        this.$fastController.addBehaviors([designSystemConsumerBehavior]);
     }
 
     public connectedCallback(): void {
@@ -346,4 +411,14 @@ export class DesignSystemProvider extends FASTElement
     private isValidDesignSystemValue(value: any): boolean {
         return value !== void 0 && value !== null;
     }
+}
+
+/**
+ * Defines a design-system-provider custom element
+ */
+export function designSystemProvider(name: string) {
+    return <T extends typeof DesignSystemProvider>(providerCtor: T): void => {
+        customElement({ name, template, styles })(providerCtor);
+        providerCtor.registerTagName(name);
+    };
 }

@@ -1,24 +1,39 @@
-import { AttributeDefinition } from "./attributes";
-import { Controller } from "./controller";
-import { Observable } from "./observation/observable";
+import { AttributeDefinition } from "./attributes.js";
+import { Controller } from "./controller.js";
+import { Observable } from "./observation/observable.js";
 import {
     fastDefinitions,
     FASTElementDefinition,
     getDefinition,
     PartialFASTElementDefinition,
-} from "./fast-definitions";
+} from "./fast-definitions.js";
 
 const defaultShadowOptions: ShadowRootInit = { mode: "open" };
 const defaultElementOptions: ElementDefinitionOptions = {};
 
+export interface FASTElement {
+    $fastController: Controller;
+    $emit(
+        type: string,
+        detail?: any,
+        options?: Omit<CustomEventInit, "detail">
+    ): boolean | void;
+    connectedCallback(): void;
+    disconnectedCallback(): void;
+    attributeChangedCallback(name: string, oldValue: string, newValue: string): void;
+}
+
 /* eslint-disable-next-line @typescript-eslint/explicit-function-return-type */
-function createFASTElement(BaseType: typeof HTMLElement) {
-    return class FASTElement extends BaseType {
+function createFASTElement<T extends typeof HTMLElement>(
+    BaseType: T
+): { new (): InstanceType<T> & FASTElement } {
+    return class extends (BaseType as any) implements FASTElement {
         public $fastController!: Controller;
 
         public constructor() {
+            /* eslint-disable-next-line */
             super();
-            Controller.forCustomElement(this);
+            Controller.forCustomElement(this as any);
         }
 
         public $emit(
@@ -44,18 +59,18 @@ function createFASTElement(BaseType: typeof HTMLElement) {
         ): void {
             this.$fastController.onAttributeChangedCallback(name, oldValue, newValue);
         }
-    };
+    } as any;
 }
 
 export const FASTElement = Object.assign(createFASTElement(HTMLElement), {
-    from(BaseType: typeof HTMLElement) {
+    from<TBase extends typeof HTMLElement>(BaseType: TBase) {
         return createFASTElement(BaseType);
     },
 
-    define<T extends Function>(
-        Type: T,
+    define<TType extends Function>(
+        Type: TType,
         nameOrDef: string | PartialFASTElementDefinition = (Type as any).definition
-    ): T {
+    ): TType {
         if (typeof nameOrDef === "string") {
             nameOrDef = { name: nameOrDef };
         }

@@ -70,3 +70,6 @@ docs/en/packages/*/README.md
 
 # TypeDoc generated subsites
 docs/en/packages/*/api/
+
+# GitHub Actions Local Testing
+.github/workflows/testing/*.json
