@@ -9,8 +9,6 @@ on:
     branches:
     - master
     - releases/*
-    - features/*
-    - feature/*
 
 jobs:
   build_linux:
