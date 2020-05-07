@@ -50,3 +50,19 @@ body {
 .footer-copyright-group {
   display: flex;
 }
+
+.section-badge {
+  font-weight: bold;
+}
+
+.section-heading-hero {
+  font-size: 60px;
+  line-height: 72px;
+  margin: 0;
+}
+
+.section-heading {
+  font-size: 46px;
+  line-height: 56px;
+  margin: 0;
+}
