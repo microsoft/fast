@@ -5,7 +5,6 @@ import { AccordionItem } from "./accordion-item";
 export const AccordionItemTemplate = html<AccordionItem>`
     <template
         class="${x => (x.expanded ? "expanded" : "")}"
-        aria-expanded="${x => x.expanded}"
         slot="item"
     >
         <div
