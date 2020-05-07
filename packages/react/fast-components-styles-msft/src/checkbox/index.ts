@@ -16,7 +16,6 @@ import {
     neutralFillToggleActive,
     neutralFillToggleHover,
     neutralFillToggleRest,
-    neutralFocus,
     neutralForegroundRest,
     neutralOutlineContrastActive,
     neutralOutlineContrastHover,
@@ -41,14 +40,18 @@ import {
     highContrastSelectedBackground,
     highContrastSelector,
     highContrastTextForeground,
+    highContrastDoubleOuterFocus,
 } from "../utilities/high-contrast";
+import { doubleOuterFocus } from "../patterns/input-field";
 
 const inputSize: DesignSystemResolver<string> = toPx(
     add(divide(heightNumber(), 2), designUnit)
 );
+
 const indeterminateIndicatorMargin: DesignSystemResolver<string> = toPx(
     add(designUnit, densityCategorySwitch(0, 1, 2))
 );
+
 const indicatorSvg: (
     color: DesignSystemResolver<string> | string
 ) => DesignSystemResolver<string> = (
@@ -61,6 +64,7 @@ const indicatorSvg: (
         )}" fill-rule="evenodd" clip-rule="evenodd" d="M8.143 12.6697L15.235 4.5L16.8 5.90363L8.23812 15.7667L3.80005 11.2556L5.27591 9.7555L8.143 12.6697Z"/></svg>`;
     };
 };
+
 const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = {
     checkbox: {
         position: "relative",
@@ -110,14 +114,8 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = {
             "border-color": neutralOutlineContrastActive,
         },
         ...applyFocusVisible({
-            "box-shadow": format<DesignSystem>("0 0 0 1px {0} inset", neutralFocus),
-            "border-color": neutralFocus,
-            [highContrastSelector]: {
-                "box-shadow": format<DesignSystem>(
-                    "0 0 0 1px {0}",
-                    () => HighContrastColor.buttonText
-                ),
-            },
+            ...doubleOuterFocus,
+            ...highContrastDoubleOuterFocus,
         }),
         ...highContrastColorBackground,
     },

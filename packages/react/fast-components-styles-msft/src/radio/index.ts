@@ -14,7 +14,6 @@ import {
     neutralFillInputActive,
     neutralFillInputHover,
     neutralFillInputRest,
-    neutralFocus,
     neutralForegroundRest,
     neutralOutlineContrastActive,
     neutralOutlineContrastHover,
@@ -35,7 +34,9 @@ import {
     highContrastOptOutProperty,
     highContrastSelectedBackground,
     highContrastSelector,
+    highContrastDoubleOuterFocus,
 } from "../utilities/high-contrast";
+import { doubleOuterFocus } from "../patterns/input-field";
 
 const inputSize: DesignSystemResolver<string> = toPx(
     add(divide(heightNumber(), 2), designUnit)
@@ -90,14 +91,8 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = {
             "border-color": neutralOutlineContrastActive,
         },
         ...applyFocusVisible({
-            "box-shadow": format<DesignSystem>("0 0 0 1px {0} inset", neutralFocus),
-            "border-color": neutralFocus,
-            [highContrastSelector]: {
-                "box-shadow": format<DesignSystem>(
-                    "0 0 0 1px {0}",
-                    () => HighContrastColor.buttonText
-                ),
-            },
+            ...doubleOuterFocus,
+            ...highContrastDoubleOuterFocus,
         }),
         [highContrastSelector]: {
             ...highContrastOptOutProperty,

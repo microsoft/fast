@@ -1,6 +1,5 @@
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import {
-    add,
     applyFocusVisible,
     divide,
     format,
@@ -14,7 +13,6 @@ import { applyCursorPointer } from "../utilities/cursor";
 import { DesignSystem, DesignSystemResolver } from "../design-system";
 import { applyPillCornerRadius } from "../utilities/border";
 import {
-    neutralFocus,
     neutralForegroundActive,
     neutralForegroundHint,
     neutralForegroundHover,
@@ -22,13 +20,8 @@ import {
     neutralOutlineRest,
 } from "../utilities/color";
 import { densityCategorySwitch, heightNumber } from "../utilities/density";
-import {
-    backgroundColor,
-    designUnit,
-    focusOutlineWidth,
-} from "../utilities/design-system";
+import { designUnit } from "../utilities/design-system";
 import { applyDisabledState } from "../utilities/disabled";
-import { applyElevation, ElevationMultiplier } from "../utilities/elevation";
 import {
     highContrastBackground,
     HighContrastColor,
@@ -36,7 +29,9 @@ import {
     highContrastHighlightBackground,
     highContrastOptOutProperty,
     highContrastSelector,
+    highContrastDoubleOuterFocus,
 } from "../utilities/high-contrast";
+import { doubleOuterFocus } from "../patterns/input-field";
 
 const thumbSizeValue: DesignSystemResolver<number> = divide(heightNumber(), 2);
 const thumbSize: DesignSystemResolver<string> = toPx(thumbSizeValue);
@@ -73,21 +68,9 @@ const styles: ComponentStyles<SliderClassNameContract, DesignSystem> = {
         background: neutralForegroundRest,
         "border-radius": "50%",
         transition: "all 0.2s ease",
-        ...applyElevation(ElevationMultiplier.e4),
         ...applyFocusVisible<DesignSystem>({
-            "box-shadow": format(
-                `0 0 0 2px {0}, 0 0 0 {2} {1}`,
-                backgroundColor,
-                neutralFocus,
-                toPx(add(focusOutlineWidth, 2))
-            ),
-            [highContrastSelector]: {
-                "box-shadow": format(
-                    `0 0 0 2px Background, 0 0 0 {0} {1}`,
-                    toPx(add(focusOutlineWidth, 2)),
-                    () => HighContrastColor.buttonText
-                ),
-            },
+            ...doubleOuterFocus,
+            ...highContrastDoubleOuterFocus,
         }),
         "&:hover": {
             background: neutralForegroundHover,

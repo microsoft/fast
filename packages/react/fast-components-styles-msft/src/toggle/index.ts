@@ -19,8 +19,6 @@ import {
     neutralFillInputActive,
     neutralFillInputHover,
     neutralFillInputRest,
-    neutralFocus,
-    neutralFocusInnerAccent,
     neutralForegroundRest,
     neutralOutlineContrastActive,
     neutralOutlineContrastHover,
@@ -28,15 +26,16 @@ import {
 } from "../utilities/color";
 import { applyDisabledState } from "../utilities/disabled";
 import { densityCategorySwitch, heightNumber } from "../utilities/density";
-import { designUnit, focusOutlineWidth, outlineWidth } from "../utilities/design-system";
+import { designUnit, outlineWidth } from "../utilities/design-system";
 import { applyCursorDisabled, applyCursorPointer } from "../utilities/cursor";
 import {
     HighContrastColor,
-    highContrastDoubleFocus,
     highContrastOptOutProperty,
     highContrastSelector,
     highContrastTextForeground,
+    highContrastDoubleOuterFocus,
 } from "../utilities/high-contrast";
+import { doubleOuterFocus } from "../patterns/input-field";
 
 const height: DesignSystemResolver<number> = add(divide(heightNumber(), 2), designUnit);
 const width: DesignSystemResolver<number> = multiply(height, 2);
@@ -130,16 +129,8 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = {
             },
         },
         ...applyFocusVisible({
-            "box-shadow": format<DesignSystem>("0 0 0 1px {0} inset", neutralFocus),
-            "border-color": neutralFocus,
-            [highContrastSelector]: {
-                "box-shadow": format<DesignSystem>(
-                    "0 0 0 {0} {1} inset",
-                    toPx<DesignSystem>(outlineWidth),
-                    () => HighContrastColor.buttonText
-                ),
-                "border-color": HighContrastColor.buttonText,
-            },
+            ...doubleOuterFocus,
+            ...highContrastDoubleOuterFocus,
         }),
         [highContrastSelector]: {
             background: HighContrastColor.background,
@@ -153,17 +144,6 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = {
         "& $toggle_input": {
             background: accentFillRest,
             "border-color": accentFillRest,
-            ...applyFocusVisible({
-                "box-shadow": format<DesignSystem>(
-                    "0 0 0 {0} {1} inset, 0 0 0 {2} {3} inset",
-                    toPx(subtract(focusOutlineWidth, outlineWidth)),
-                    neutralFocus,
-                    toPx(add(focusOutlineWidth, outlineWidth)),
-                    neutralFocusInnerAccent(accentFillRest)
-                ),
-                "border-color": neutralFocus,
-                ...highContrastDoubleFocus,
-            }),
             "&:disabled": {
                 "& $toggle_input, & $toggle_label, & $toggle_statusMessage": {
                     [highContrastSelector]: {
@@ -226,8 +206,8 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = {
         ...applyScaledTypeRamp("t7"),
         "line-height": toPx(height),
         float: directionSwitch("left", "right"),
-        "padding-left": directionSwitch("5px", ""),
-        "padding-right": directionSwitch("", "5px"),
+        "padding-left": directionSwitch("6px", ""),
+        "padding-right": directionSwitch("", "6px"),
         "user-select": "none",
         "margin-top": "0",
         "padding-bottom": "0",
