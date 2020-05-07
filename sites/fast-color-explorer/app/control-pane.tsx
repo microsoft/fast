@@ -6,16 +6,16 @@ import {
     elevation,
     ElevationMultiplier,
     height,
+    neutralDividerRest,
     neutralFillInputRest,
     neutralFocus,
     neutralForegroundRest,
     neutralOutlineRest,
-    neutralDividerRest,
 } from "@microsoft/fast-components-styles-msft";
 import manageJss, {
     ComponentStyleSheet,
-    ManagedClasses,
     DesignSystem,
+    ManagedClasses,
 } from "@microsoft/fast-jss-manager-react";
 import { format, toPx } from "@microsoft/fast-jss-utilities";
 import { Pane } from "@microsoft/fast-layouts-react";
