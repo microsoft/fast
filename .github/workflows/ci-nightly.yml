@@ -1,0 +1,42 @@
+name: "Code scanning - action"
+
+on:
+  push:
+  schedule:
+    - cron: '0 0 * * *'
+
+jobs:
+  security-scan:
+    name: Validate Security
+    runs-on: ubuntu-latest    
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v1
+      with:
+        languages: javascript, typescript
+
+    # - name: Add or Update packages
+    #   run: sudo yarn global add lerna@3.18.2
+
+    # - name: Get yarn cache directory path
+    #   id: yarn-cache-dir-path
+    #   run: echo '::set-output name=dir::$(yarn cache dir)'
+
+    # - name: Set up node_modules cache
+    #   uses: actions/cache@v1.1.2
+    #   id: yarn-cache
+    #   with:
+    #     path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+    #     key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+    #     restore-keys: |
+    #       ${{ runner.os }}-yarn-
+
+    # - name: Install package dependencies / prepare workspaces
+    #   run: yarn install --frozen-lockfile
+
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v1
