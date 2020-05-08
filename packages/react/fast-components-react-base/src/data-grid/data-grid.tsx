@@ -54,6 +54,7 @@ class DataGrid extends Foundation<
         ) => {
             return defaultItemHeight;
         },
+        virtualizeItems: true,
         managedClasses: {},
     };
 
@@ -79,6 +80,7 @@ class DataGrid extends Foundation<
         defaultFocusRowKey: void 0,
         stableRangeEndIndex: void 0,
         pageSize: void 0,
+        virtualizeItems: void 0,
     };
 
     private currentTemplateColumns: string = "";
@@ -196,7 +198,7 @@ class DataGrid extends Foundation<
                     onCellFocused: this.handleCellFocus,
                     onCellKeyDown: this.handleCellKeyDown,
                     focusRowKey: this.state.focusRowKey,
-                    focusCellKey: this.state.desiredFocusColumnKey,
+                    focusColumnKey: this.state.focusColumnKey,
                     desiredFocusColumnKey: this.state.desiredFocusColumnKey,
                     desiredFocusRowKey: this.state.desiredFocusRowKey,
                     desiredVisibleRowIndex: this.state.desiredVisibleRowIndex,
@@ -217,9 +219,27 @@ class DataGrid extends Foundation<
                         initiallyVisibleItemIndex={stackPanelVisibleItemIndex}
                         onScrollChange={this.throttledScroll}
                         itemSpan={itemSpans}
+                        virtualize={this.props.virtualizeItems}
                         style={{
                             height: "100%",
                             overflowY: "scroll",
+                        }}
+                        managedClasses={{
+                            stackPanel: get(
+                                this.props.managedClasses,
+                                "dataGrid_scrollingPanel",
+                                ""
+                            ),
+                            stackPanel_items: get(
+                                this.props.managedClasses,
+                                "dataGrid_scrollingPanel_items",
+                                ""
+                            ),
+                            stackPanel__scrollable: get(
+                                this.props.managedClasses,
+                                "dataGrid_scrollingPanel__scrollable",
+                                ""
+                            ),
                         }}
                     >
                         {this.renderRows()}

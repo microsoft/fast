@@ -80,7 +80,7 @@ class DataGridCell extends Foundation<
      * React life-cycle method
      */
     public componentDidMount(): void {
-        if (this.isDesiredFocusCell() && this.rootElement.current !== null) {
+        if (this.isDesiredFocusCell() && !isNil(this.rootElement.current)) {
             this.rootElement.current.focus();
         }
     }

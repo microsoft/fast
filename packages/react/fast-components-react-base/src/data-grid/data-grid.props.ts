@@ -79,6 +79,11 @@ export interface DataGridHandledProps extends DataGridManagedClasses {
     pageSize?: number;
 
     /**
+     * Whether the underlying display panel renders out of view items or not
+     */
+    virtualizeItems?: boolean;
+
+    /**
      * the field which uniquely identifies each data row
      */
     dataRowKey: React.ReactText;

@@ -12,7 +12,7 @@ export interface DataGridContextType {
         event: React.KeyboardEvent<HTMLElement>
     ) => void;
     focusRowKey: ReactText | null;
-    focusCellKey: ReactText | null;
+    focusColumnKey: ReactText | null;
     desiredVisibleRowIndex: number | null;
     desiredFocusRowKey: ReactText | null;
     desiredFocusColumnKey: ReactText | null;
@@ -25,7 +25,7 @@ export const DataGridContext: React.Context<DataGridContextType> = React.createC
     onCellFocused: null,
     onCellKeyDown: null,
     focusRowKey: null,
-    focusCellKey: null,
+    focusColumnKey: null,
     desiredVisibleRowIndex: null,
     desiredFocusRowKey: null,
     desiredFocusColumnKey: null,

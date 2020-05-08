@@ -8,6 +8,21 @@ export interface DataGridClassNameContract {
     dataGrid?: string;
 
     /**
+     * The scrolling container
+     */
+    dataGrid_scrollingPanel?: string;
+
+    /**
+     * the container that contains the data grid rows
+     */
+    dataGrid_scrollingPanel_items?: string;
+
+    /**
+     * Applied if the scrolling panel has enough items to be scrollable
+     */
+    dataGrid_scrollingPanel__scrollable?: string;
+
+    /**
      * The header of the data grid component
      */
     dataGrid_header?: string;
