@@ -1,4 +1,4 @@
-import { emptyArray } from "../interfaces";
+import { emptyArray } from "../interfaces.js";
 
 export interface Splice {
     index: number;

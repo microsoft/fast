@@ -7,7 +7,7 @@ Here you'll find specifications for custom elements and other library features.
 ## Web Component Specifications
 | Name | Spec | Component |
 | :--------- | :---------: | ---------: |
-| Accordian | -- | -- |
+| [Accordian](./accordion.md) | :white_check_mark: | -- |
 | Alert | -- | -- |
 | [Anchored region](../packages/web-components/fast-components/src/anchored-region/anchored-region.spec.md) | :white_check_mark: | :white_check_mark: |
 | Avatar | -- | -- |
@@ -25,7 +25,7 @@ Here you'll find specifications for custom elements and other library features.
 | [Number field](./number-field.md) | :white_check_mark: | -- |
 | [Progress](../packages/web-components/fast-components/src/progress/progress.spec.md) | :white_check_mark: | :white_check_mark: |
 | [Radio](../packages/web-components/fast-components/src/radio/radio.spec.md) | :white_check_mark: | :white_check_mark: |
- RadioGroup | -- | -- |
+| [Radio group](../packages/web-components/fast-components/src/radio-group/radio-group.spec.md) | :white_check_mark: | :white_check_mark: |
 | Rating | -- | -- |
 | Select | -- | -- |
 | [Slider](../packages/web-components/fast-components/src/slider/slider.spec.md) | :white_check_mark: | :white_check_mark: |
@@ -34,7 +34,7 @@ Here you'll find specifications for custom elements and other library features.
 | [Tabs](../packages/web-components/fast-components/src/tabs/tabs.spec.md) | :white_check_mark: | :white_check_mark: |
 | [Text area](../packages/web-components/fast-components/src/text-area/text-area.spec.md) | :white_check_mark: | :white_check_mark: |
 | [Text field](../packages/web-components/fast-components/src/text-field/text-field.spec.md) | :white_check_mark: | :white_check_mark: |
-| Toolbar | -- | -- |
+| [Toolbar](./toolbar.md) | :white_check_mark: | -- |
 | [Tooltip](./tooltip.md) | :white_check_mark: | -- |
 | [Tree view](./tree-view/tree-view.md) | :white_check_mark: | -- |
 | [Typography](./typography.md) | :white_check_mark: | -- |

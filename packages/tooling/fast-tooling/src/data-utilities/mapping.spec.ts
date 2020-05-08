@@ -211,6 +211,7 @@ describe("htmlMapper", () => {
                 id: "text",
                 type: "string",
             },
+            mapperPlugins: [],
         });
         expect(dataDictionary[0][""].data).toEqual(text);
     });
@@ -242,6 +243,7 @@ describe("htmlMapper", () => {
                 [ReservedElementMappingKeyword.mapsToTagName]: "div",
                 type: "object",
             },
+            mapperPlugins: [],
         });
         expect(dataDictionary[0][""].data).toEqual(document.createElement("div"));
     });
@@ -273,6 +275,7 @@ describe("htmlMapper", () => {
                     [ReservedElementMappingKeyword.mapsToTagName]: "div",
                     type: "string",
                 },
+                mapperPlugins: [],
             })
         ).toEqual(undefined);
     });
@@ -297,6 +300,7 @@ describe("htmlMapper", () => {
                     [ReservedElementMappingKeyword.mapsToTagName]: "div",
                     type: "object",
                 },
+                mapperPlugins: [],
             })
         ).toEqual(undefined);
     });
@@ -334,6 +338,7 @@ describe("htmlMapper", () => {
                 [ReservedElementMappingKeyword.mapsToTagName]: "div",
                 type: "object",
             },
+            mapperPlugins: [],
         });
 
         expect(dataDictionary[0][""].data).toEqual(mappedElement);
@@ -383,6 +388,7 @@ describe("htmlMapper", () => {
                     },
                 },
             },
+            mapperPlugins: [],
         });
         expect(dataDictionary[0][""].data).toEqual(mappedElement);
     });

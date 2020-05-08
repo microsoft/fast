@@ -4,6 +4,7 @@ import {
     dictionaryLink,
     linkedDataSchema,
     mapDataDictionary,
+    pluginIdKeyword,
 } from "@microsoft/fast-tooling";
 import { ComponentDictionary, reactMapper, reactResolver } from "./mapping";
 import Adapter from "enzyme-adapter-react-16";
@@ -202,5 +203,113 @@ describe("reactMapper", () => {
         expect(mappedData.find("Foo")).toHaveLength(1);
         expect(mappedData.find("Bar")).toHaveLength(1);
         expect(mappedData.text()).toEqual("Hello world");
+    });
+    test("should map data with a plugin", () => {
+        const pluginId: string = "foobarbat";
+        function mapperPlugin(data: any): any {
+            return "Hello world, " + data;
+        }
+        const resolvedData: any = mapDataDictionary({
+            dataDictionary: [
+                {
+                    foo: {
+                        schemaId: "foo",
+                        data: {
+                            text: "!",
+                            number: 42,
+                        },
+                    },
+                },
+                "foo",
+            ],
+            mapper: reactMapper(componentDictionary),
+            resolver: reactResolver,
+            schemaDictionary: {
+                foo: {
+                    id: "foo",
+                    type: "object",
+                    properties: {
+                        text: {
+                            [pluginIdKeyword]: pluginId,
+                            type: "string",
+                        },
+                        number: {
+                            type: "number",
+                        },
+                    },
+                },
+            },
+            plugins: [
+                {
+                    ids: [pluginId],
+                    mapper: mapperPlugin,
+                    resolver: undefined,
+                },
+            ],
+        });
+        const mappedData: any = mount(resolvedData);
+        const mappedComponent: any = mappedData.find("Foo");
+
+        expect(mappedComponent).toHaveLength(1);
+        expect(mappedComponent.prop("text")).toEqual("Hello world, !");
+        expect(mappedComponent.prop("number")).toEqual(42);
+    });
+    test("should resolve data with a plugin", () => {
+        const pluginId: string = "foobarbat";
+        function resolverPlugin(data: any): any {
+            return "Hello world";
+        }
+        const resolvedData: any = mapDataDictionary({
+            dataDictionary: [
+                {
+                    foo: {
+                        schemaId: "foo",
+                        data: {
+                            children: [
+                                {
+                                    id: "bar",
+                                    dataLocation: "children",
+                                },
+                            ],
+                        },
+                    },
+                    bar: {
+                        schemaId: "foo",
+                        parent: {
+                            id: "foo",
+                            dataLocation: "children",
+                        },
+                        data: {},
+                    },
+                },
+                "foo",
+            ],
+            mapper: reactMapper(componentDictionary),
+            resolver: reactResolver,
+            schemaDictionary: {
+                foo: {
+                    id: "foo",
+                    type: "object",
+                    properties: {
+                        children: {
+                            ...linkedDataSchema,
+                            [pluginIdKeyword]: pluginId,
+                        },
+                    },
+                },
+            },
+            plugins: [
+                {
+                    ids: [pluginId],
+                    mapper: undefined,
+                    resolver: resolverPlugin,
+                },
+            ],
+        });
+        const mappedData: any = mount(resolvedData);
+        const mappedComponent: any = mappedData.find("Foo");
+
+        expect(mappedComponent).toHaveLength(1);
+        expect(mappedComponent.prop("children")).toEqual(["Hello world"]);
     });
 });

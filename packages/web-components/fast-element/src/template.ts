@@ -1,14 +1,14 @@
-import { compileTemplate } from "./template-compiler";
-import { ElementView, HTMLView, SyntheticView } from "./view";
-import { DOM } from "./dom";
-import { Behavior, BehaviorFactory } from "./directives/behavior";
-import { Directive } from "./directives/directive";
-import { BindingDirective } from "./directives/binding";
+import { compileTemplate } from "./template-compiler.js";
+import { ElementView, HTMLView, SyntheticView } from "./view.js";
+import { DOM } from "./dom.js";
+import { Behavior, BehaviorFactory } from "./directives/behavior.js";
+import { Directive } from "./directives/directive.js";
+import { BindingDirective } from "./directives/binding.js";
 import {
+    defaultExecutionContext,
     ExecutionContext,
     Expression,
-    defaultExecutionContext,
-} from "./observation/observable";
+} from "./observation/observable.js";
 
 export interface ElementViewTemplate {
     create(host: Element): ElementView;

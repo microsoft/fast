@@ -1,5 +1,5 @@
-import { DOM } from "../dom";
-import { Notifier, PropertyChangeNotifier } from "./notifier";
+import { DOM } from "../dom.js";
+import { Notifier, PropertyChangeNotifier } from "./notifier.js";
 
 const notifierLookup = new WeakMap<any, Notifier>();
 const accessorLookup = new WeakMap<any, Accessor[]>();

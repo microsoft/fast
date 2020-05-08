@@ -28,6 +28,28 @@ export interface MapperConfig<T> {
      * JSON schema
      */
     schema: any;
+
+    /**
+     * The plugins used to map data
+     */
+    mapperPlugins: MapDataPlugin[];
+}
+
+export interface MapDataPlugin {
+    /**
+     * The ids that map to the pluginIdKeyword in the JSON schema
+     */
+    ids: string[];
+
+    /**
+     * The mapping function that returns the mapped values
+     */
+    mapper: (data: any) => any;
+
+    /**
+     * The resolving function that overrides the resolver
+     */
+    resolver: (data: any) => any;
 }
 
 export interface MapDataConfig<T> {
@@ -51,6 +73,11 @@ export interface MapDataConfig<T> {
      * The resolver that resolves the data dictionary into another structure
      */
     resolver: (config: ResolverConfig<T>) => T;
+
+    /**
+     * The plugins used to map data
+     */
+    plugins?: MapDataPlugin[];
 }
 
 interface AttachResolvedDataDictionaryConfig<T> {
@@ -79,6 +106,11 @@ interface AttachResolvedDataDictionaryConfig<T> {
      * The resolver that resolves the data dictionary into another structure
      */
     resolver: (config: ResolverConfig<T>) => T;
+
+    /**
+     * The plugins used to resolve data
+     */
+    resolverPlugins: MapDataPlugin[];
 }
 
 interface ResolveDataInDataDictionaryConfig<T> {
@@ -107,6 +139,11 @@ interface ResolveDataInDataDictionaryConfig<T> {
      * The mapping function
      */
     mapper: (config: MapperConfig<T>) => T;
+
+    /**
+     * The plugins used to map data
+     */
+    mapperPlugins: MapDataPlugin[];
 }
 
 export interface ResolverConfig<T> {
@@ -135,6 +172,11 @@ export interface ResolverConfig<T> {
      * The parent of the dictionary item
      */
     parent: string | null;
+
+    /**
+     * The plugins used to resolve data
+     */
+    resolverPlugins: MapDataPlugin[];
 }
 
 export function resolveDataInDataDictionary<T>(
@@ -171,6 +213,7 @@ export function resolveDataInDataDictionary<T>(
             config.schemaDictionary[
                 config.dataDictionary[0][config.dictionaryId].schemaId
             ],
+        mapperPlugins: config.mapperPlugins,
     });
 
     // call the resolver on all children
@@ -181,6 +224,7 @@ export function resolveDataInDataDictionary<T>(
             resolvedDictionaryIds: config.resolvedDictionaryIds,
             schemaDictionary: config.schemaDictionary,
             mapper: config.mapper,
+            mapperPlugins: config.mapperPlugins,
         });
     });
 }
@@ -197,6 +241,7 @@ function attachResolvedDataDictionary<T>(
             parent: config.dataDictionary[0][config.items[i]].parent
                 ? config.dataDictionary[0][config.items[i]].parent.id
                 : null,
+            resolverPlugins: config.resolverPlugins,
         });
     }
 
@@ -217,6 +262,7 @@ export function mapDataDictionary<T>(config: MapDataConfig<T>): T {
         dictionaryId: clonedData[1],
         schemaDictionary: config.schemaDictionary,
         mapper: config.mapper,
+        mapperPlugins: config.plugins || [],
     });
 
     // resolve the data dictionary items up the tree
@@ -226,6 +272,7 @@ export function mapDataDictionary<T>(config: MapDataConfig<T>): T {
         schemaDictionary: config.schemaDictionary,
         items: resolvedDictionaryIds.reverse(),
         resolver: config.resolver,
+        resolverPlugins: config.plugins || [],
     });
 }
 

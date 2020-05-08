@@ -1,6 +1,6 @@
-import { Accessor, Observable } from "./observation/observable";
-import { DOM } from "./dom";
-import { Notifier } from "./observation/notifier";
+import { Accessor, Observable } from "./observation/observable.js";
+import { DOM } from "./dom.js";
+import { Notifier } from "./observation/notifier.js";
 
 export interface ValueConverter {
     toView(value: any): string | null;
