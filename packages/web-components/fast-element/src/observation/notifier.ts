@@ -2,16 +2,52 @@
  * Implemented by objects that are interested in change notifications.
  */
 export interface Subscriber {
+    /**
+     * Called when a source this instance has subscribed to changes.
+     * @param source The source of the change.
+     * @param args The event args detailing the change that occurred.
+     */
     handleChange(source: any, args: any): void;
 }
 
+/**
+ * Provides change notification for a source object.
+ */
 export interface Notifier {
-    notify(source: any, args: any): void;
-    subscribe(subscriber: Subscriber, context?: any): void;
-    unsubscribe(subscriber: Subscriber, context?: any): void;
+    /**
+     * The source object that this notifier provides change notification for.
+     */
+    readonly source: any;
+
+    /**
+     * Notifies all subscribers, based on the args.
+     * @param args Data passed along to subscribers during notification.
+     * @remarks
+     * In some implementations, the args may be used to target specific subscribers.
+     * This is usually in the case where a propertyName was passed during subscription.
+     */
+    notify(args: any): void;
+
+    /**
+     * Subscribes to notification of changes in an object's state.
+     * @param subscriber The object that is subscribing for change notification.
+     * @param propertyToWatch The name of the property that the subscriber is interested in watching for changes.
+     * @remarks
+     * Some implementation may or may not require the propertyToWatch.
+     */
+    subscribe(subscriber: Subscriber, propertyToWatch?: any): void;
+
+    /**
+     * Unsubscribes from notification of changes in an object's state.
+     * @param subscriber The object that is unsubscribing from change notification.
+     * @param propertyToUnwatch The name of the property that the subscriber is no longer interested in watching.
+     * @remarks
+     * Some implementation may or may not require the propertyToUnwatch.
+     */
+    unsubscribe(subscriber: Subscriber, propertyToUnwatch?: any): void;
 }
 
-function spilloverSubscribe(this: SubscriberCollection, subscriber: Subscriber): void {
+function spilloverSubscribe(this: SubscriberSet, subscriber: Subscriber): void {
     const spillover = (this as any).spillover as Subscriber[];
     const index = spillover.indexOf(subscriber);
 
@@ -20,7 +56,7 @@ function spilloverSubscribe(this: SubscriberCollection, subscriber: Subscriber):
     }
 }
 
-function spilloverUnsubscribe(this: SubscriberCollection, subscriber: Subscriber): void {
+function spilloverUnsubscribe(this: SubscriberSet, subscriber: Subscriber): void {
     const spillover = (this as any).spillover as Subscriber[];
     const index = spillover.indexOf(subscriber);
 
@@ -29,33 +65,53 @@ function spilloverUnsubscribe(this: SubscriberCollection, subscriber: Subscriber
     }
 }
 
-function spilloverNotifySubscribers(
-    this: SubscriberCollection,
-    source: any,
-    args: any
-): void {
+function spilloverNotifySubscribers(this: SubscriberSet, args: any): void {
     const spillover = (this as any).spillover as Subscriber[];
+    const source = this.source;
 
     for (let i = 0, ii = spillover.length; i < ii; ++i) {
         spillover[i].handleChange(source, args);
     }
 }
 
+function spilloverHas(this: SubscriberSet, subscriber: Subscriber): boolean {
+    return ((this as any).spillover as Subscriber[]).indexOf(subscriber) !== -1;
+}
+
 /**
- * Efficiently keeps track of subscribers interested in change notifications.
+ * An implementation of Notifier that efficiently keeps track of subscribers interested
+ * in a specific change notification on an observable source.
  *
  * @remarks
- * This collection is optimized for the most common scenario of 1 or 2 subscribers.
+ * This set is optimized for the most common scenario of 1 or 2 subscribers.
  * With this in mind, it can store a subscriber in an internal field, allowing it to avoid Array#push operations.
- * If the collection ever exceeds two subscribers, it upgrade to an array.
+ * If the set ever exceeds two subscribers, it upgrades to an array automatically.
  */
-export class SubscriberCollection implements Notifier {
+export class SubscriberSet implements Notifier {
     private sub1: Subscriber | undefined = void 0;
     private sub2: Subscriber | undefined = void 0;
     private spillover: Subscriber[] | undefined = void 0;
 
+    /**
+     * Creates an instance of SubscriberSet for the specified source.
+     * @param source The object source that subscribers will receive notifications from.
+     */
+    public constructor(public readonly source: any) {}
+
+    /**
+     * Checks whether the provided subscriber has been added to this set.
+     * @param subscriber The subscriber to test for inclusion in this set.
+     */
+    public has(subscriber: Subscriber): boolean {
+        return this.sub1 === subscriber || this.sub2 === subscriber;
+    }
+
+    /**
+     * Subscribes to notification of changes in an object's state.
+     * @param subscriber The object that is subscribing for change notification.
+     */
     public subscribe(subscriber: Subscriber): void {
-        if (this.sub1 === subscriber || this.sub2 === subscriber) {
+        if (this.has(subscriber)) {
             return;
         }
 
@@ -69,30 +125,36 @@ export class SubscriberCollection implements Notifier {
             return;
         }
 
-        this.spillover = [this.sub1, this.sub2];
+        this.spillover = [this.sub1, this.sub2, subscriber];
         this.subscribe = spilloverSubscribe;
         this.unsubscribe = spilloverUnsubscribe;
         this.notify = spilloverNotifySubscribers;
+        this.has = spilloverHas;
 
         this.sub1 = void 0;
         this.sub2 = void 0;
     }
 
+    /**
+     * Unsubscribes from notification of changes in an object's state.
+     * @param subscriber The object that is unsubscribing from change notification.
+     */
     public unsubscribe(subscriber: Subscriber): void {
         if (this.sub1 === subscriber) {
             this.sub1 = void 0;
-            return;
-        }
-
-        if (this.sub2 === subscriber) {
+        } else if (this.sub2 === subscriber) {
             this.sub2 = void 0;
-            return;
         }
     }
 
-    public notify(source: any, args: any): void {
+    /**
+     * Notifies all subscribers.
+     * @param args Data passed along to subscribers during notification.
+     */
+    public notify(args: any): void {
         const sub1 = this.sub1;
         const sub2 = this.sub2;
+        const source = this.source;
 
         if (sub1 !== void 0) {
             sub1.handleChange(source, args);
@@ -104,29 +166,54 @@ export class SubscriberCollection implements Notifier {
     }
 }
 
+/**
+ * An implementation of Notifier that allows subscribers to be notified of individual property changes on an object.
+ */
 export class PropertyChangeNotifier implements Notifier {
-    private subscribers: Record<string, SubscriberCollection> = {};
+    private subscribers: Record<string, SubscriberSet> = {};
 
-    public notify(source: any, propertyName: string): void {
+    /**
+     * Creates an instance of PropertyChangeNotifier for the specified source.
+     * @param source The object source that subscribers will receive notifications from.
+     */
+    public constructor(public readonly source: any) {}
+
+    /**
+     * Notifies all subscribers, based on the specified property.
+     * @param propertyName The property name, passed along to subscribers during notification.
+     */
+    public notify(propertyName: string): void {
         const subscribers = this.subscribers[propertyName];
 
         if (subscribers !== void 0) {
-            subscribers.notify(source, propertyName);
+            subscribers.notify(propertyName);
         }
     }
 
-    public subscribe(subscriber: Subscriber, propertyName: string): void {
-        let subscribers = this.subscribers[propertyName];
+    /**
+     * Subscribes to notification of changes in an object's state.
+     * @param subscriber The object that is subscribing for change notification.
+     * @param propertyToWatch The name of the property that the subscriber is interested in watching for changes.
+     */
+    public subscribe(subscriber: Subscriber, propertyToWatch: string): void {
+        let subscribers = this.subscribers[propertyToWatch];
 
         if (subscribers === void 0) {
-            this.subscribers[propertyName] = subscribers = new SubscriberCollection();
+            this.subscribers[propertyToWatch] = subscribers = new SubscriberSet(
+                this.source
+            );
         }
 
         subscribers.subscribe(subscriber);
     }
 
-    public unsubscribe(subscriber: Subscriber, propertyName: string): void {
-        const subscribers = this.subscribers[propertyName];
+    /**
+     * Unsubscribes from notification of changes in an object's state.
+     * @param subscriber The object that is unsubscribing from change notification.
+     * @param propertyToUnwatch The name of the property that the subscriber is no longer interested in watching.
+     */
+    public unsubscribe(subscriber: Subscriber, propertyToUnwatch: string): void {
+        const subscribers = this.subscribers[propertyToUnwatch];
 
         if (subscribers === void 0) {
             return;
