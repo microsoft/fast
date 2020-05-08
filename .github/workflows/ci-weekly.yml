@@ -17,7 +17,7 @@ jobs:
       run: npm i -g lerna
 
     - name: Install package dependencies / prepare workspaces
-       env:
+      env:
         CHILD_CONCURRENCY: 1
       run: |
         yarn install --frozen-lockfile
