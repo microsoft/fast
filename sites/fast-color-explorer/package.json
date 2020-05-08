@@ -45,7 +45,6 @@
     "html-webpack-plugin": "^3.2.0",
     "jss": "^9.8.7",
     "jss-preset-default": "^4.5.0",
-    "lint-staged": "^10.1.2",
     "lodash-es": "^4.17.11",
     "prettier": "2.0.2",
     "react": "^16.6.3",

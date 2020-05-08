@@ -16,12 +16,6 @@
   },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "lint-staged": {
-    "*.{ts,tsx,js}": [
-      "npm run prettier",
-      "git add ."
-    ]
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Microsoft/fast-dna.git"
@@ -44,7 +38,6 @@
     "jest": "^25.4.0",
     "jss": "^9.8.7",
     "jss-preset-default": "^4.5.0",
-    "lint-staged": "^8.1.0",
     "lodash-es": "^4.17.11",
     "prettier": "^1.15.3",
     "raf-throttle": "^2.0.3",
