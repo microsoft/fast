@@ -367,21 +367,11 @@ class StackPanel extends Foundation<
 
         const bufferLength: number = this.getBufferLength();
 
-        let renderStartIndex: number = visibleRangeStartIndex - bufferLength;
-        if (renderStartIndex < 0) {
-            renderStartIndex = 0;
-        }
-
-        let renderEndIndex: number = visibleRangeEndIndex + bufferLength;
-        if (renderEndIndex > lastIndex) {
-            renderEndIndex = lastIndex;
-        }
-
         window.clearTimeout(this.scrollLayoutUpdateTimer);
 
         this.setState({
-            renderedRangeStartIndex: renderStartIndex,
-            renderedRangeEndIndex: renderEndIndex,
+            renderedRangeStartIndex: Math.max(visibleRangeStartIndex - bufferLength, 0),
+            renderedRangeEndIndex: Math.min(visibleRangeEndIndex + bufferLength, lastIndex),
             isScrollable: this.itemContainerSpan > this.viewportSpan,
         });
     };
@@ -410,7 +400,7 @@ class StackPanel extends Foundation<
                 break;
             }
         }
-
+55
         return thresholdIndex;
     };
 
@@ -501,19 +491,19 @@ class StackPanel extends Foundation<
             return 0;
         }
 
-        let scrollPos: number = 0;
-
-        if (this.props.orientation === Orientation.vertical) {
-            scrollPos = this.rootElement.current.scrollTop;
-        } else {
-            scrollPos = RtlScrollConverter.getScrollLeft(
-                this.rootElement.current,
-                this.state.direction
-            );
-            scrollPos = this.state.direction === Direction.rtl ? -scrollPos : scrollPos;
-        }
-
-        return scrollPos;
+        return this.props.orientation === Orientation.vertical
+            ? this.rootElement.current.scrollTop
+            : this.state.direction === Direction.rtl
+                ? RtlScrollConverter.getScrollLeft(
+                    this.rootElement.current,
+                    this.state.direction
+                )
+                : -(
+                    RtlScrollConverter.getScrollLeft(
+                        this.rootElement.current,
+                        this.state.direction
+                    )
+                );
     };
 
     /**
@@ -557,11 +547,10 @@ class StackPanel extends Foundation<
         }
 
         const itemPosition: ItemPosition = this.itemPositions[index];
-        const newScrollPosition: number = Math.max(
+        return Math.max(
             0,
             Math.min(itemPosition.start, this.maxScroll)
         );
-        return newScrollPosition;
     };
 }
 

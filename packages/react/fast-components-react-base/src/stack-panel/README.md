@@ -12,19 +12,17 @@ Note that virtualized elements can't get focus so typically authors will want at
 
 Authors should be aware that this component writes to the width/left or top/height css style attributes of children on render depending on the orientation of the stack panel.
 
-Keys: authors should strongly consider providing keys (https://reactjs.org/docs/lists-and-keys.html) to child elements to maintain stable identies for child items. 
+Keys: authors should strongly consider providing keys (https://reactjs.org/docs/lists-and-keys.html) to child elements to maintain stable identities for child items. 
 
 ### Props
 
- enableVirtualization:  Whether child elements are virtualized or not. Defaults to true.
+ virtualize:  Whether child elements are virtualized or not. Defaults to true.
 
  neverVirtualizeIndexes: Authors can provide an array of indexes which flag child indexes that should not be virtualized.  For example providing "[0, 10]" to this prop would mean that child items at indexes 0 and 10 would be rendered.
 
- defaultItemSpan:  The default span of the child items in pixels, this can be overriden on an item by item basis using the "itemSpanOverrides" prop. Default is 100. 
+ itemSpan:  The span of the child items in pixels, this can be overriden on an item by item basis using the "itemSpanOverrides" prop. Default is 100. For collections with variable item spans authors can provide an array instead where the value at each index corresponds to the span of the item at that index.
 
- itemSpanOverrides: An object where the keys correspond to child indexes and the values to the span to be used to calculate layout for the child at that index.
-
-preloadBufferLength: How many out of view child items to render on either side of the viewport. Default is 1.
+preloadBufferCount: How many out of view child items to render on either side of the viewport. Default is 1.
 
 orientation: Whether the child elements stack vertically or horizontally.  Default is vertical.
 
