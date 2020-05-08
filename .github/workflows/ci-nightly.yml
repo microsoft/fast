@@ -1,9 +1,8 @@
-name: "Code scanning - action"
+name: CI - FAST Security Scan
 
 on:
-  push:
   schedule:
-    - cron: '0 0 * * *'
+  - cron: 0 0 * * *
 
 jobs:
   security-scan:
@@ -14,29 +13,32 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    - name: Initialize CodeQL
-      uses: github/codeql-action/init@v1
+    - name: Add or Update packages
+      run: sudo yarn global add lerna@3.18.2
+
+    - name: Get yarn cache directory path
+      id: yarn-cache-dir-path
+      run: echo '::set-output name=dir::$(yarn cache dir)'
+
+    - name: Set up node_modules cache
+      uses: actions/cache@v1.1.2
+      id: yarn-cache
       with:
-        languages: javascript, typescript
+        path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-yarn-
 
-    # - name: Add or Update packages
-    #   run: sudo yarn global add lerna@3.18.2
+    - name: Install package dependencies / prepare workspaces
+      run: yarn install --frozen-lockfile
 
-    # - name: Get yarn cache directory path
-    #   id: yarn-cache-dir-path
-    #   run: echo '::set-output name=dir::$(yarn cache dir)'
-
-    # - name: Set up node_modules cache
-    #   uses: actions/cache@v1.1.2
-    #   id: yarn-cache
-    #   with:
-    #     path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-    #     key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-    #     restore-keys: |
-    #       ${{ runner.os }}-yarn-
-
-    # - name: Install package dependencies / prepare workspaces
-    #   run: yarn install --frozen-lockfile
+    - name: Perform ShiftLeft Scan
+      uses: ShiftLeftSecurity/scan-action@master
+      # env:
+      #   WORKSPACE: ""
+      #   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        output: reports
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v1
