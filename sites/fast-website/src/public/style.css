@@ -1,8 +1,6 @@
 body {
   margin: 0;
   padding: 0;
-  background: #242424;
-  color: #ddd;
 }
 
 .wrapper {
@@ -26,7 +24,8 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 300px;
+  min-height: 300px;
+  margin: 20px 0;
 }
 
 .section-component {
@@ -50,4 +49,20 @@ body {
 
 .footer-copyright-group {
   display: flex;
+}
+
+.section-badge {
+  font-weight: bold;
+}
+
+.section-heading-hero {
+  font-size: 60px;
+  line-height: 72px;
+  margin: 0;
+}
+
+.section-heading {
+  font-size: 46px;
+  line-height: 56px;
+  margin: 0;
 }
