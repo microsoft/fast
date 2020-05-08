@@ -1,4 +1,5 @@
 import { attr, FASTElement, observable } from "@microsoft/fast-element";
+import { Orientation } from "@microsoft/fast-web-utilities";
 import {
     keyCodeArrowDown,
     keyCodeArrowLeft,
@@ -7,11 +8,6 @@ import {
     keyCodeEnter,
 } from "@microsoft/fast-web-utilities";
 import { RadioControl } from "../radio";
-
-export enum RadioOrientation {
-    horizontal = "horizontal",
-    vertical = "vertical",
-}
 
 export class RadioGroup extends FASTElement {
     @attr({ attribute: "readonly", mode: "boolean" })
@@ -56,7 +52,7 @@ export class RadioGroup extends FASTElement {
     public value: string;
 
     @attr
-    public orientation: RadioOrientation = RadioOrientation.horizontal;
+    public orientation: Orientation = Orientation.horizontal;
 
     @observable slottedRadioButtons: RadioControl[];
     private selectedRadio: RadioControl | null;
