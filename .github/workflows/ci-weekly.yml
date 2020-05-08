@@ -17,7 +17,10 @@ jobs:
       run: npm i -g lerna
 
     - name: Install package dependencies / prepare workspaces
-      run: yarn install --frozen-lockfile
+       env:
+        CHILD_CONCURRENCY: 1
+      run: |
+        yarn install --frozen-lockfile
 
     - name: Ensure Prettier formatting
       run: lerna run prettier:diff
@@ -38,7 +41,7 @@ jobs:
       run: sudo yarn global add lerna 
 
     - name: Install package dependencies / prepare workspaces
-      run: yarn install --frozen-lockfile
+      run: yarn install --frozen-lockfile --network-concurrency 200 --network-timeout 1000
 
     - name: Ensure Prettier formatting
       run: lerna run prettier:diff
