@@ -37,13 +37,23 @@ module.exports = function(config) {
       'source-map-support',
       'mocha',
     ],
+    plugins: [
+      require('karma-mocha'),
+      require('karma-mocha-reporter'),
+      require('karma-webpack'),
+      require('karma-source-map-support'),
+      require('karma-sourcemap-loader'),
+      require('karma-coverage-istanbul-reporter'),
+      require('karma-chrome-launcher'),
+      require('karma-firefox-launcher')
+    ],
     files: [
       `dist/esm/__test__/${setup}.js`,
     ],
     preprocessors: {
       [`dist/esm/__test__/${setup}.js`]: [
-        'webpack',
-        'sourcemap',
+          'webpack',
+          'sourcemap',
       ],
     },
     webpackMiddleware: {
