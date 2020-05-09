@@ -1,0 +1,32 @@
+<msft-design-system-provider use-defaults>
+    <h1>Radio</h1>
+
+    <h4>Defaults</h4>
+    <msft-radio></msft-radio>
+    <div>
+        <msft-radio>label</msft-radio>
+    </div>
+
+    <h4>Checked</h4>
+    <msft-radio value="checked" checked></msft-radio>
+
+    <!-- Required -->
+    <h4>Required</h4>
+    <msft-radio value="required" required></msft-radio>
+
+    <!-- Disabled -->
+    <h4>Disabled</h1>
+    <msft-radio disabled></msft-radio>
+    <msft-radio disabled>label</msft-radio>
+    <msft-radio disabled checked>checked</msft-radio>
+
+    <h4>Visual vs audio label</h4>
+    <msft-radio>
+        <span aria-label="Audio label">Visible label</span>
+    </msft-radio>
+
+    <div style="display: flex; flex-direction: column;margin-top: 12px;">
+        <label id="label1">Outside label</label>
+        <msft-radio aria-labelledby="label1"></msft-radio>
+    </div>
+</msft-design-system-provider>
