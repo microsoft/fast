@@ -1,7 +1,7 @@
 import { css } from "@microsoft/fast-element";
-import { display } from "../display";
-import { focusVisible } from "../focus";
-import { heightNumber } from "../size";
+import { display, focusVisible } from "@microsoft/fast-components";
+// update the below once #3091 is merged
+import { heightNumber } from "@microsoft/fast-components/dist/styles/size";
 
 export const BaseButtonStyles = css`
     ${display("inline-block")} :host {
@@ -49,8 +49,7 @@ export const BaseButtonStyles = css`
         border: 0;
     }
 
-    :host(.disabled),
-    :host a.control:not(:link) {
+    :host(.disabled) {
         opacity: var(--disabled-opacity);
     }
 
@@ -97,6 +96,11 @@ export const HypertextStyles = css`
         border: none;
         box-shadow: none;
         border-radius: 0;
+    }
+
+    :host a.control:not(:link) {
+        background-color: transparent;
+        cursor: default;
     }
 
     :host(.hypertext) .control:link,
