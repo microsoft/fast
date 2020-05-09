@@ -1,0 +1,19 @@
+<msft-design-system-provider use-defaults>
+    <style>
+        .class-override {
+            height: 163px;
+            width: 300px;
+        }
+
+        .state-override:hover {
+            --elevation: 12;
+        }
+    </style>
+    <div>
+        <msft-card style="--card-height: 400px; --card-width: 500px">Card with text</msft-card>
+        <br>
+        <msft-card class="class-override" style="--elevation: 12">Custom depth with class-based height/width</msft-card>
+        <br>
+        <msft-card class="state-override">Custom depth on hover using CSS</msft-card>
+    </div>
+</msft-design-system-provider>
