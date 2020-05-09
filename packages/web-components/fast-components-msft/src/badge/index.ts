@@ -1,4 +1,4 @@
-import { customElement, attr } from "@microsoft/fast-element";
+import { attr, customElement } from "@microsoft/fast-element";
 import { Badge, BadgeTemplate as template } from "@microsoft/fast-components";
 import { BadgeStyles as styles } from "./badge.styles";
 

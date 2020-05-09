@@ -1,10 +1,10 @@
 import { css } from "@microsoft/fast-element";
 import {
+    accentFillRestBehavior,
+    accentForegroundCutRestBehavior,
     disabledCursor,
     display,
     focusVisible,
-    accentFillRestBehavior,
-    accentForegroundCutRestBehavior,
     neutralFillInputActiveBehavior,
     neutralFillInputHoverBehavior,
     neutralFillInputRestBehavior,

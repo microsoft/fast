@@ -4,9 +4,9 @@ import {
     accentForegroundCutRestBehavior,
     accentForegroundRestBehavior,
     display,
-    neutralForegroundRestBehavior,
     neutralFillInputRestBehavior,
     neutralFillToggleRestBehavior,
+    neutralForegroundRestBehavior,
 } from "@microsoft/fast-components";
 
 export const BadgeStyles = css`

@@ -1,13 +1,5 @@
 import { css } from "@microsoft/fast-element";
 import {
-    AccentButtonStyles,
-    BaseButtonStyles,
-    HypertextStyles,
-    LightweightButtonStyles,
-    OutlineButtonStyles,
-    StealthButtonStyles,
-} from "../styles";
-import {
     accentFillActiveBehavior,
     accentFillHoverBehavior,
     accentFillRestBehavior,
@@ -34,6 +26,14 @@ import {
 // update the below imports once #3091 is merged
 import { forcedColorsStylesheetBehavior } from "@microsoft/fast-components/dist/styles/match-media-stylesheet-behavior";
 import { SystemColors } from "@microsoft/fast-components/dist/styles/system-colors";
+import {
+    AccentButtonStyles,
+    BaseButtonStyles,
+    HypertextStyles,
+    LightweightButtonStyles,
+    OutlineButtonStyles,
+    StealthButtonStyles,
+} from "../styles";
 
 export const ButtonStyles = css`
     ${BaseButtonStyles}
