@@ -1,0 +1,59 @@
+import { css } from "@microsoft/fast-element";
+import {
+    accentFillActiveBehavior,
+    accentFillHoverBehavior,
+    accentFillRestBehavior,
+    accentForegroundActiveBehavior,
+    accentForegroundCutRestBehavior,
+    accentForegroundHoverBehavior,
+    accentForegroundRestBehavior,
+    neutralFillActiveBehavior,
+    neutralFillFocusBehavior,
+    neutralFillHoverBehavior,
+    neutralFillRestBehavior,
+    neutralFillStealthActiveBehavior,
+    neutralFillStealthHoverBehavior,
+    neutralFillStealthRestBehavior,
+    neutralFocusBehavior,
+    neutralFocusInnerAccentBehavior,
+    neutralForegroundRestBehavior,
+    neutralOutlineActiveBehavior,
+    neutralOutlineHoverBehavior,
+    neutralOutlineRestBehavior,
+    AccentButtonStyles,
+    BaseButtonStyles,
+    HypertextStyles,
+    LightweightButtonStyles,
+    OutlineButtonStyles,
+    StealthButtonStyles,
+} from "@microsoft/fast-components";
+
+export const AnchorStyles = css`
+    ${BaseButtonStyles}
+    ${AccentButtonStyles}
+    ${HypertextStyles}
+    ${LightweightButtonStyles}
+    ${OutlineButtonStyles}
+    ${StealthButtonStyles}
+`.withBehaviors(
+    accentFillActiveBehavior,
+    accentFillHoverBehavior,
+    accentFillRestBehavior,
+    accentForegroundActiveBehavior,
+    accentForegroundCutRestBehavior,
+    accentForegroundHoverBehavior,
+    accentForegroundRestBehavior,
+    neutralFillActiveBehavior,
+    neutralFillFocusBehavior,
+    neutralFillHoverBehavior,
+    neutralFillRestBehavior,
+    neutralFillStealthActiveBehavior,
+    neutralFillStealthHoverBehavior,
+    neutralFillStealthRestBehavior,
+    neutralFocusBehavior,
+    neutralFocusInnerAccentBehavior,
+    neutralForegroundRestBehavior,
+    neutralOutlineActiveBehavior,
+    neutralOutlineHoverBehavior,
+    neutralOutlineRestBehavior
+);
