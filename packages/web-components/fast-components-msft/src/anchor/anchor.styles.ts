@@ -20,13 +20,15 @@ import {
     neutralOutlineActiveBehavior,
     neutralOutlineHoverBehavior,
     neutralOutlineRestBehavior,
+} from "@microsoft/fast-components";
+import {
     AccentButtonStyles,
     BaseButtonStyles,
     HypertextStyles,
     LightweightButtonStyles,
     OutlineButtonStyles,
     StealthButtonStyles,
-} from "@microsoft/fast-components";
+} from "../styles";
 
 export const AnchorStyles = css`
     ${BaseButtonStyles}
