@@ -50,51 +50,51 @@ az group delete --name "some-resource-group-name"
 ```
 
 ## Architecture
-FAST uses Azure Cloud Infrasture and Platform as a Service for highly available multi-regional web applications as shown next.  Details are available on [Azure](https://docs.microsoft.com/en-us/azure/architecture/reference-architectures/app-service-web-app/multi-region).
+FAST uses Azure Cloud Infrasture and Platform as a Service for highly available multi-regional web applications.
+
+This architecture uses an active/passive with hot standby approach. Meaning the primary regions is receives all traffic, while the other region awaits on hot standby. Hot standby means the VMs in the secondary region are allocated and running at all times.
+
+Learn more from [Azure Documentation](https://docs.microsoft.com/en-us/azure/architecture/reference-architectures/app-service-web-app/multi-region).
 
 ![Web Architecture](diagrams/multi-region-web-app-diagram.png)
-
-### Requirements
-* Availability
-* Data Privacy & Security
-* Management and Monitoring
-* Performance and Scalability
-* Resiliency
+_Fast Production Subscription_
 
 ### Naming Standards
 Follow all naming standards from https://docs.microsoft.com/en-us/azure/cloud-adoption-framework/ready/azure-best-practices/naming-and-tagging with the one exception, suffics instead of prefix. For example `rg-` is the recommendation. However, choose `-rg` instead to allow for product / area groupings considering that the Azure Portal already has a column for Resource Type.
 
-### Management Groups & Subscriptions
-This hierarchy uses the Workload separation strategy:
+### Organizational Structure
+This hierarchy uses the Workload separation strategy. 
 
-#### Management Groups
-* Design
-  * Fast Design
- 
-    * Fast Production (Primary Region - West US)
-      * Production Subscription
-        * App Service Plan (single unit)
-          * Web Apps
-        * Data Storage
-        * CDN
- 
-    * Fast Staging (Secondary Region - East US)
-      * Staging Subscription
-        * App Service Plan (single unit)
-    
-    * Fast Development
-      * Internal
-      * External
+* Fast Design Management Group
+  * Production Management Group
+
+    * Fast Subscription 1
+      * Frontdoor West US
+      * Active Resource Group (Primary Region - West US)  
+      * Standby Resource Group (Secondary Region - East US)
+      * Backdoor East US
+
+    * Fast Subscription 2
+      * Frontdoor West US
+      * Active Resource Group (Primary Region - West US)  
+      * Standby Resource Group (Secondary Region - East US)
+      * Backdoor East US
   
-  * Edge Design Mg
-    * Edge Internal
-    * Edge External
-      * Primary Region
-      * Secondary Region
+  * Staging Management Group
 
-#### Subscriptions
-* Internal - Edge Design
-* Internal - Fast Design
+    * Fast Subscription 3
+      * Frontdoor West US
+      * Active Resource Group (Primary Region - West US)  
+      * Standby Resource Group (Secondary Region - East US)
+      * Backdoor East US
+
+    * Fast Subscription 4
+      * Frontdoor West US
+      * Active Resource Group (Primary Region - West US)  
+      * Standby Resource Group (Secondary Region - East US)
+      * Backdoor East US
+  
+  * Development Management Group
 
 
 ### Front Door
@@ -102,10 +102,16 @@ Front Door is a modern Content Delivery Network (CDN) and so along with dynamic 
 
 
 #### TODO
+1. Setup Permissions for management groups
+  1. Production (Contributor)
+  1. Staging (Contributor)
+  1. Development ()
 1. https://docs.microsoft.com/en-us/azure/frontdoor/quickstart-create-front-door#create-a-front-door-for-your-application
-
 
 
 ### Building for Resiliency
 https://docs.microsoft.com/en-us/azure/architecture/framework/resiliency/overview
 
+
+#### Acceptable Risks
+Front Door is a possible failure point in the system. If the service fails, clients cannot access your application during the downtime. Review the Front Door service level agreement (SLA) and determine whether using Front Door alone meets your business requirements for high availability. If not, consider adding another traffic management solution as a fallback. If the Front Door service fails, change your canonical name (CNAME) records in DNS to point to the other traffic management service. This step must be performed manually, and your application will be unavailable until the DNS changes are propagated.
