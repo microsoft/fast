@@ -8,6 +8,7 @@ export * from "./design-system-provider";
 export * from "./dialog";
 export * from "./divider";
 export * from "./flipper";
+export * from "./patterns";
 export * from "./progress";
 export * from "./switch";
 export * from "./tabs";
@@ -16,3 +17,6 @@ export * from "./text-field";
 
 // export our style goodness
 export * from "./styles";
+
+// export our utilities
+export * from "./utilities";
