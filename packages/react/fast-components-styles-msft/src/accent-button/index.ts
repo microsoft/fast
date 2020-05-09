@@ -24,6 +24,7 @@ import {
     highContrastSelectedOutline,
     highContrastSelector,
 } from "../utilities/high-contrast";
+import { accentFillGradientRest } from "../utilities/color/accent-fill-gradient";
 
 const styles: ComponentStyles<AccentButtonClassNameContract, DesignSystem> = {
     ...baseButton,
@@ -31,7 +32,8 @@ const styles: ComponentStyles<AccentButtonClassNameContract, DesignSystem> = {
         ...buttonStyles(),
         color: accentForegroundCut,
         fill: accentForegroundCut,
-        background: accentFillRest,
+        // background: accentFillRest,
+        background: accentFillGradientRest,
         "&:hover:enabled, a&:not($button__disabled):hover": {
             background: accentFillHover,
             ...highContrastSelectedOutline,
