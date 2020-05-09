@@ -407,14 +407,12 @@ export class HTMLView implements ElementView, SyntheticView {
 // @public (undocumented)
 export const lastAttributeNameRegex: RegExp;
 
-// @public (undocumented)
+// @public
 export interface Notifier {
-    // (undocumented)
-    notify(source: any, args: any): void;
-    // (undocumented)
-    subscribe(subscriber: Subscriber, context?: any): void;
-    // (undocumented)
-    unsubscribe(subscriber: Subscriber, context?: any): void;
+    notify(args: any): void;
+    readonly source: any;
+    subscribe(subscriber: Subscriber, propertyToWatch?: any): void;
+    unsubscribe(subscriber: Subscriber, propertyToUnwatch?: any): void;
 }
 
 // @public (undocumented)
@@ -458,14 +456,14 @@ export type PartialFASTElementDefinition = {
     readonly elementOptions?: ElementDefinitionOptions;
 };
 
-// @public (undocumented)
+// @public
 export class PropertyChangeNotifier implements Notifier {
+    constructor(source: any);
+    notify(propertyName: string): void;
     // (undocumented)
-    notify(source: any, propertyName: string): void;
-    // (undocumented)
-    subscribe(subscriber: Subscriber, propertyName: string): void;
-    // (undocumented)
-    unsubscribe(subscriber: Subscriber, propertyName: string): void;
+    readonly source: any;
+    subscribe(subscriber: Subscriber, propertyToWatch: string): void;
+    unsubscribe(subscriber: Subscriber, propertyToUnwatch: string): void;
 }
 
 // @public (undocumented)
@@ -567,17 +565,17 @@ export interface StyleTarget {
 
 // @public
 export interface Subscriber {
-    // (undocumented)
     handleChange(source: any, args: any): void;
 }
 
 // @public
-export class SubscriberCollection implements Notifier {
+export class SubscriberSet implements Notifier {
+    constructor(source: any);
+    has(subscriber: Subscriber): boolean;
+    notify(args: any): void;
     // (undocumented)
-    notify(source: any, args: any): void;
-    // (undocumented)
+    readonly source: any;
     subscribe(subscriber: Subscriber): void;
-    // (undocumented)
     unsubscribe(subscriber: Subscriber): void;
 }
 
