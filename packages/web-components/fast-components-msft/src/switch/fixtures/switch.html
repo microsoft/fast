@@ -1,0 +1,47 @@
+<msft-design-system-provider use-defaults>
+    <h1>Switch</h1>
+    <h4>Default</h4>
+    <div style="display: flex; flex-direction: column">
+        <msft-switch></msft-switch>
+        <msft-switch>
+            Dark Mode
+        </msft-switch>
+        <msft-switch checked>
+            New Feature
+            <span slot="checked-message">On</span>
+            <span slot="unchecked-message">Off</span>
+        </msft-switch>
+        <msft-switch>
+            Theme
+            <span slot="checked-message">Dark</span>
+            <span slot="unchecked-message">Light</span>
+        </msft-switch>
+    </div>
+
+    <h4>Checked</h4>
+    <msft-switch checked></msft-switch>
+
+    <!-- Required -->
+    <h4>Required</h4>
+    <msft-switch required></msft-switch>
+
+    <!-- Disabled -->
+    <h4>Disabled</h1>
+    <div style="display: flex; flex-direction: column">
+        <msft-switch disabled></msft-switch>
+        <msft-switch disabled>label</msft-switch>
+        <msft-switch disabled checked>checked</msft-switch>
+        <msft-switch disabled checked>
+            checked
+            <span slot="checked-message">On</span>
+            <span slot="unchecked-message">Off</span>
+        </msft-switch>
+    </div>
+
+    <h4>Inline</h4>
+    <msft-switch style="margin-right: 12px">Light Speed</msft-switch>
+    <msft-switch style="margin-right: 12px">Ridiculous Speed</msft-switch >
+    <msft-switch style="margin-right: 12px">Ludicrous Speed</msft-switch>
+    <msft-switch checked>Plaid Speed</msft-switch>
+
+</msft-design-system-provider>
