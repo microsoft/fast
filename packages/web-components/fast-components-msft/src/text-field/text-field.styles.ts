@@ -3,6 +3,8 @@ import {
     disabledCursor,
     display,
     focusVisible,
+    forcedColorsStylesheetBehavior,
+    heightNumber,
     neutralFillHoverBehavior,
     neutralFillInputHoverBehavior,
     neutralFillInputRestBehavior,
@@ -11,11 +13,8 @@ import {
     neutralForegroundRestBehavior,
     neutralOutlineHoverBehavior,
     neutralOutlineRestBehavior,
+    SystemColors,
 } from "@microsoft/fast-components";
-// update the below imports once #3091 is merged
-import { SystemColors } from "@microsoft/fast-components/dist/styles/system-colors";
-import { heightNumber } from "@microsoft/fast-components/dist/styles/size";
-import { forcedColorsStylesheetBehavior } from "@microsoft/fast-components/dist/styles/match-media-stylesheet-behavior";
 
 export const TextFieldStyles = css`
     ${display("inline-block")} :host {

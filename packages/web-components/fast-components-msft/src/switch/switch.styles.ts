@@ -5,6 +5,8 @@ import {
     disabledCursor,
     display,
     focusVisible,
+    forcedColorsStylesheetBehavior,
+    heightNumber,
     neutralFillInputActiveBehavior,
     neutralFillInputHoverBehavior,
     neutralFillInputRestBehavior,
@@ -12,11 +14,8 @@ import {
     neutralOutlineActiveBehavior,
     neutralOutlineHoverBehavior,
     neutralOutlineRestBehavior,
+    SystemColors,
 } from "@microsoft/fast-components";
-// update the below imports once #3091 is merged
-import { SystemColors } from "@microsoft/fast-components/dist/styles/system-colors";
-import { heightNumber } from "@microsoft/fast-components/dist/styles/size";
-import { forcedColorsStylesheetBehavior } from "@microsoft/fast-components/dist/styles/match-media-stylesheet-behavior";
 
 export const SwitchStyles = css`
     :host([hidden]) {

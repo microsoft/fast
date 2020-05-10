@@ -9,6 +9,7 @@ import {
     accentForegroundRestBehavior,
     disabledCursor,
     focusVisible,
+    forcedColorsStylesheetBehavior,
     neutralFillActiveBehavior,
     neutralFillFocusBehavior,
     neutralFillHoverBehavior,
@@ -22,10 +23,8 @@ import {
     neutralOutlineActiveBehavior,
     neutralOutlineHoverBehavior,
     neutralOutlineRestBehavior,
+    SystemColors,
 } from "@microsoft/fast-components";
-// update the below imports once #3091 is merged
-import { forcedColorsStylesheetBehavior } from "@microsoft/fast-components/dist/styles/match-media-stylesheet-behavior";
-import { SystemColors } from "@microsoft/fast-components/dist/styles/system-colors";
 import {
     AccentButtonStyles,
     BaseButtonStyles,

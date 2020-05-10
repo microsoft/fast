@@ -3,6 +3,8 @@ import {
     disabledCursor,
     display,
     focusVisible,
+    forcedColorsStylesheetBehavior,
+    heightNumber,
     neutralFillHoverBehavior,
     neutralFillInputHoverBehavior,
     neutralFillInputRestBehavior,
@@ -12,9 +14,6 @@ import {
     neutralOutlineHoverBehavior,
     neutralOutlineRestBehavior,
 } from "@microsoft/fast-components";
-// update the below imports once #3091 is merged
-import { heightNumber } from "@microsoft/fast-components/dist/styles/size";
-import { forcedColorsStylesheetBehavior } from "@microsoft/fast-components/dist/styles/match-media-stylesheet-behavior";
 
 export const TextAreaStyles = css`
     ${display("inline-block")} :host {

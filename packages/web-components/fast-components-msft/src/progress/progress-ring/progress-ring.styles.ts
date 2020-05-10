@@ -2,13 +2,12 @@ import { css } from "@microsoft/fast-element";
 import {
     accentFillRestBehavior,
     display,
+    forcedColorsStylesheetBehavior,
+    heightNumber,
     neutralFillRestBehavior,
     neutralForegroundHintBehavior,
+    SystemColors,
 } from "@microsoft/fast-components";
-// update the below imports once #3091 is merged
-import { heightNumber } from "@microsoft/fast-components/dist/styles/size";
-import { SystemColors } from "@microsoft/fast-components/dist/styles/system-colors";
-import { forcedColorsStylesheetBehavior } from "@microsoft/fast-components/dist/styles/match-media-stylesheet-behavior";
 
 export const ProgressRingStyles = css`
     ${display("flex")} :host {

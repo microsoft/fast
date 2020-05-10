@@ -3,16 +3,15 @@ import {
     disabledCursor,
     display,
     focusVisible,
+    forcedColorsStylesheetBehavior,
+    heightNumber,
     neutralFillInputHoverBehavior,
     neutralFillInputRestBehavior,
     neutralForegroundRestBehavior,
     neutralOutlineHoverBehavior,
     neutralOutlineRestBehavior,
+    SystemColors,
 } from "@microsoft/fast-components";
-// update the below imports once #3091 is merged
-import { SystemColors } from "@microsoft/fast-components/dist/styles/system-colors";
-import { forcedColorsStylesheetBehavior } from "@microsoft/fast-components/dist/styles/match-media-stylesheet-behavior";
-import { heightNumber } from "@microsoft/fast-components/dist/styles/size";
 
 export const CheckboxStyles = css`
     ${display("inline-flex")} :host {

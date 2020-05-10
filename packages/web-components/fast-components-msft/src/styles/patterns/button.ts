@@ -1,7 +1,5 @@
 import { css } from "@microsoft/fast-element";
-import { display, focusVisible } from "@microsoft/fast-components";
-// update the below once #3091 is merged
-import { heightNumber } from "@microsoft/fast-components/dist/styles/size";
+import { display, focusVisible, heightNumber } from "@microsoft/fast-components";
 
 export const BaseButtonStyles = css`
     ${display("inline-block")} :host {

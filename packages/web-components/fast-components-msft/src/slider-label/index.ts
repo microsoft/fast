@@ -1,8 +1,5 @@
 import { customElement } from "@microsoft/fast-element";
-import {
-    SliderLabel,
-    SliderLabelTemplate as template,
-} from "@microsoft/fast-components/dist/slider-label";
+import { SliderLabel, SliderLabelTemplate as template } from "@microsoft/fast-components";
 import { SliderLabelStyles as styles } from "./slider-label.styles";
 
 @customElement({

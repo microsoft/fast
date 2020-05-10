@@ -1,7 +1,5 @@
 import { customElement } from "@microsoft/fast-element";
-import { Button } from "@microsoft/fast-components";
-// update the below once #3091 is merged
-import { ButtonTemplate as template } from "@microsoft/fast-components/dist/button/button.template";
+import { Button, ButtonTemplate as template } from "@microsoft/fast-components";
 import { ButtonStyles as styles } from "./button.styles";
 
 // Button

@@ -3,6 +3,8 @@ import {
     disabledCursor,
     display,
     focusVisible,
+    forcedColorsStylesheetBehavior,
+    heightNumber,
     neutralFillStealthActiveBehavior,
     neutralFillStealthHoverBehavior,
     neutralFillStealthRestBehavior,
@@ -11,11 +13,8 @@ import {
     neutralOutlineActiveBehavior,
     neutralOutlineHoverBehavior,
     neutralOutlineRestBehavior,
+    SystemColors,
 } from "@microsoft/fast-components";
-// update the below imports once #3091 is merged
-import { heightNumber } from "@microsoft/fast-components/dist/styles/size";
-import { SystemColors } from "@microsoft/fast-components/dist/styles/system-colors";
-import { forcedColorsStylesheetBehavior } from "@microsoft/fast-components/dist/styles/match-media-stylesheet-behavior";
 
 export const FlipperStyles = css`
     ${display("inline-flex")} :host {

@@ -2,12 +2,11 @@ import { css } from "@microsoft/fast-element";
 import {
     accentFillRestBehavior,
     display,
+    forcedColorsStylesheetBehavior,
     neutralFillRestBehavior,
     neutralForegroundHintBehavior,
+    SystemColors,
 } from "@microsoft/fast-components";
-// update the below imports once #3091 is merged
-import { SystemColors } from "@microsoft/fast-components/dist/styles/system-colors";
-import { forcedColorsStylesheetBehavior } from "@microsoft/fast-components/dist/styles/match-media-stylesheet-behavior";
 
 export const ProgressStyles = css`
     ${display("flex")} :host {
