@@ -1,80 +1,89 @@
 import { uniqueId } from "lodash-es";
 import {
     Data,
+    DataDictionary,
+    LinkedData,
     LinkedDataDictionaryConfig,
     LinkedDataDictionaryUpdate,
-    ResolveDataDictionary,
 } from "./data.props";
 
+/**
+ * Resolves a set of data dictionaries from multiple data items
+ */
+function resolveDataDictionaries(
+    parentId: string,
+    dataSet: Data<unknown>[]
+): DataDictionary<unknown>[] {
+    return dataSet.map(dataItem => {
+        /* eslint-disable-next-line @typescript-eslint/no-use-before-define */
+        return resolveDataDictionary(parentId, dataItem, {});
+    });
+}
+
+/**
+ * Resolves a data dictionary from a data item
+ */
 function resolveDataDictionary(
     parentId: string,
-    parentDataLocation: string,
-    dataSet: Data<unknown>[],
-    itemDictionary: { [key: string]: string[] }
-): ResolveDataDictionary {
-    const currentIds: string[] = [];
+    data: Data<unknown>,
+    itemDictionary: { [key: string]: Data<unknown> }
+): DataDictionary<unknown> {
+    const id: string = uniqueId("fast");
+    const dataDictionary: DataDictionary<unknown> = [itemDictionary, id];
+    const linkedDataDictionary: DataDictionary<unknown>[] | null = Array.isArray(
+        data.linkedData
+    )
+        ? resolveDataDictionaries(id, data.linkedData)
+        : null;
 
-    return {
-        dataDictionary: {
-            ...dataSet.reduce(
-                (
-                    previousValue: { [key: string]: Data<unknown> },
-                    data: Data<unknown>
-                ) => {
-                    const currentId: string = uniqueId("fast");
-                    currentIds.push(currentId);
-                    itemDictionary[parentId] = Array.isArray(itemDictionary[parentId])
-                        ? itemDictionary[parentId].concat([currentId])
-                        : [currentId];
-                    const linkedData: { [key: string]: Data<unknown> } = Array.isArray(
-                        data.linkedData
-                    )
-                        ? resolveDataDictionary(
-                              currentId,
-                              data.linkedDataLocation,
-                              data.linkedData,
-                              itemDictionary
-                          ).dataDictionary
-                        : {};
+    const currentData = data.data;
 
-                    return {
-                        ...previousValue,
-                        [currentId]: {
-                            schemaId: data.schemaId,
-                            data: data.data,
-                            parent: {
-                                id: parentId,
-                                dataLocation: parentDataLocation,
-                            },
-                            items: itemDictionary[currentId] || [],
-                        },
-                        ...linkedData,
-                    };
+    if (linkedDataDictionary !== null) {
+        linkedDataDictionary.forEach(linkedDataDictionaryItem => {
+            const currentLinkedDataItems: LinkedData[] =
+                (currentData as any)[
+                    linkedDataDictionaryItem[0][linkedDataDictionaryItem[1]].parent
+                        .dataLocation
+                ] || [];
+
+            (currentData as any)[
+                linkedDataDictionaryItem[0][
+                    linkedDataDictionaryItem[1]
+                ].parent.dataLocation
+            ] = currentLinkedDataItems.concat([
+                {
+                    id: linkedDataDictionaryItem[1],
                 },
-                {}
-            ),
+            ]);
+            dataDictionary[0] = {
+                ...dataDictionary[0],
+                ...linkedDataDictionaryItem[0],
+            };
+        });
+    }
+
+    dataDictionary[0][id] = {
+        schemaId: data.schemaId,
+        data: currentData,
+        parent: {
+            id: parentId,
+            dataLocation: data.dataLocation,
         },
     };
+
+    return dataDictionary;
 }
 
 export function getLinkedDataDictionary(
     config: LinkedDataDictionaryConfig
 ): LinkedDataDictionaryUpdate {
-    const resolvedDataDictionary = resolveDataDictionary(
+    const resolvedDataDictionary = resolveDataDictionaries(
         config.dictionaryId,
-        config.dataLocation,
-        config.linkedData,
-        {}
+        config.linkedData
     );
 
     return {
-        dataDictionary: [resolvedDataDictionary.dataDictionary, config.dictionaryId],
-        linkedDataIds: Object.entries(resolvedDataDictionary.dataDictionary).map(
-            ([id]: [string, Data<unknown>]) => {
-                return {
-                    id,
-                };
-            }
-        ),
+        dataDictionary: resolvedDataDictionary[0],
+        dictionaryId: config.dictionaryId,
     };
 }

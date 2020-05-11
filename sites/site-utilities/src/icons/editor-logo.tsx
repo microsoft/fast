@@ -1,6 +1,6 @@
 import React from "react";
 
-export default (
+export const editorLogo = (
     <svg
         width="19"
         height="19"
