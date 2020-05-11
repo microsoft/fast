@@ -1,4 +1,13 @@
 # Design System Provider
+- [What is a Design System](#what-is-a-design-system)
+- [The Design System Provider](#the-design-system-provider)
+    - [FAST Design System Provider](#FAST-design-system-provider)
+    - [Use Defaults](#use-defaults)
+    - [Composing Design System Providers](#composing-design-system-providers)
+    - [Recipes](#recipes)
+    - [Creating a Design System Provider](#creating-a-design-system-provider)
+        - [Declaring Design System properties](#declaring-design-system-properties)
+    - [FAST Design System Properties](#FAST-design-system-properties)
 
 ## What is a Design System
 
