@@ -1,8 +1,17 @@
+:root {
+  /* FIXME: Is there a better way to set default props to prevent FOUC? */
+  --background-color: #242424;
+}
+
 body {
   background-color: var(--background-color);
   color: var(--neutral-foreground-rest);
   margin: 0;
   padding: 0;
+}
+
+.body-provider {
+  background-color: var(--background-color);
 }
 
 .wrapper {
@@ -53,7 +62,7 @@ body {
 }
 
 .section-badge {
-  /* color: var(--accent-foreground-rest); */
+  color: var(--accent-fill-rest);
   font-weight: bold;
 }
 

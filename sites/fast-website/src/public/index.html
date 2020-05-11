@@ -6,7 +6,11 @@
     <title><%= htmlWebpackPlugin.options.title %></title>
   </head>
   <body>
-    <fast-design-system-provider use-defaults>
+    <website-design-system-provider id="body-provider" class="body-provider"
+      use-defaults
+      background-color="#242424"
+      accent-base-color="#F33378"
+    >
       <div class="wrapper">
         <!-- header:start -->
         <header class="header">
@@ -123,6 +127,6 @@
         </footer>
         <!-- footer:end -->
       </div>
-    </fast-design-system-provider>
+    </website-design-system-provider>
   </body>
 </html>
