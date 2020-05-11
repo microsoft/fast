@@ -27,7 +27,7 @@ A _design system_ isn't much use without convenient mechanisms to surface the _d
 
 ### FAST Design System Provider
 
-The easiest way to get up-and-running is to use the `FASTDesignSystemProvider`. This Web Component comes pre-configured with _design system_ properties used by the Web Components in the `@microsoft/fast-components` library.
+The easiest way to get up-and-running is to use the `FASTDesignSystemProvider`. This Web Component is an implementation of the `DesignSystemProvider` that is configured with _design system_ properties used by the Web Components in the `@microsoft/fast-components` library.
 
 **EXAMPLE: Using the FASTDesignSystemProvider**
 
