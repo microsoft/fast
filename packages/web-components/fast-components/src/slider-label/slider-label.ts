@@ -1,4 +1,10 @@
-import { attr, FASTElement, observable, Observable } from "@microsoft/fast-element";
+import {
+    attr,
+    FASTElement,
+    Notifier,
+    Observable,
+    observable,
+} from "@microsoft/fast-element";
 import { Direction, Orientation } from "@microsoft/fast-web-utilities";
 import { SliderConfiguration } from "../slider";
 import { convertPixelToPercent } from "../slider/slider-utilities";
@@ -39,38 +45,45 @@ export class SliderLabel extends FASTElement {
     @observable
     public sliderDirection: Direction = Direction.ltr;
 
+    private notifier: Notifier;
+
     public connectedCallback(): void {
         super.connectedCallback();
         this.getSliderConfiguration();
         this.positionStyle = this.positionAsStyle();
-        const notifier = Observable.getNotifier(this.parentNode as FASTSlider);
-        const handler = {
-            sliderLabel: this,
-            handleChange(source: any, propertyName: string) {
-                switch (propertyName) {
-                    case "direction":
-                        this.sliderLabel.direction = source.direction;
-                        break;
-                    case "orientation":
-                        this.sliderLabel.sliderOrientation = source.orientation;
-                        break;
-                    case "max":
-                        this.sliderLabel.max = source.max;
-                        break;
-                    case "min":
-                        this.sliderLabel.min = source.min;
-                        break;
-                    default:
-                        break;
-                }
-                this.sliderLabel.positionStyle = this.sliderLabel.positionAsStyle();
-            },
-        };
+        this.notifier = Observable.getNotifier(this.parentNode as FASTSlider);
+        this.notifier.subscribe(this, "orientation");
+        this.notifier.subscribe(this, "direction");
+        this.notifier.subscribe(this, "max");
+        this.notifier.subscribe(this, "min");
+    }
 
-        notifier.subscribe(handler, "orientation");
-        notifier.subscribe(handler, "direction");
-        notifier.subscribe(handler, "max");
-        notifier.subscribe(handler, "min");
+    public disconnectedCallback(): void {
+        super.disconnectedCallback();
+        this.notifier.unsubscribe(this, "orientation");
+        this.notifier.unsubscribe(this, "direction");
+        this.notifier.unsubscribe(this, "max");
+        this.notifier.unsubscribe(this, "min");
+    }
+
+    public handleChange(source: any, propertyName: string) {
+        switch (propertyName) {
+            case "direction":
+                this.sliderDirection = source.direction;
+                break;
+            case "orientation":
+                this.sliderOrientation = source.orientation;
+                break;
+            case "max":
+                this.sliderMinPosition = source.max;
+                break;
+            case "min":
+                this.sliderMinPosition = source.min;
+                break;
+            default:
+                break;
+        }
+        this.positionStyle = this.positionAsStyle();
     }
 
     private isSliderConfig(node: any): node is SliderConfiguration {
