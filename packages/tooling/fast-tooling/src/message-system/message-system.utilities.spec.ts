@@ -280,6 +280,7 @@ describe("getMessage", () => {
                     data: {
                         hello: "world",
                     },
+                    dataLocation: "linkedData",
                 },
             ];
             const message: AddLinkedDataDataMessageOutgoing = getMessage({
@@ -334,6 +335,7 @@ describe("getMessage", () => {
                     data: {
                         hello: "world",
                     },
+                    dataLocation: "linkedData",
                 },
             ];
             const message: AddLinkedDataDataMessageOutgoing = getMessage({
@@ -404,6 +406,7 @@ describe("getMessage", () => {
                     data: {
                         hello: "world",
                     },
+                    dataLocation: "linkedData",
                 },
             ];
             const message: AddLinkedDataDataMessageOutgoing = getMessage({

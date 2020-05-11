@@ -13,7 +13,6 @@ export default [
         ],
         plugins: [
             typescript({
-                cacheRoot: ".rollupcache",
                 tsconfigOverride: {
                     compilerOptions: {
                         declaration: false,
