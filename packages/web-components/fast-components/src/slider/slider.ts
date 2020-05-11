@@ -7,6 +7,7 @@ import {
     keyCodeArrowUp,
     keyCodeEnd,
     keyCodeHome,
+    Orientation,
 } from "@microsoft/fast-web-utilities";
 import { FormAssociated } from "../form-associated";
 import { convertPixelToPercent } from "./slider-utilities";
@@ -15,15 +16,10 @@ export enum SliderMode {
     singleValue = "single-value",
 }
 
-export enum SliderOrientation {
-    horizontal = "horizontal",
-    vertical = "vertical",
-}
-
 export interface SliderConfiguration {
     max: number;
     min: number;
-    orientation?: SliderOrientation;
+    orientation?: Orientation;
     direction?: Direction;
     disabled?: boolean;
 }
@@ -67,7 +63,9 @@ export class Slider extends FormAssociated<HTMLInputElement>
             this.updateForm();
         }
 
-        this.setThumbPositionForOrientation();
+        if (this.$fastController.isConnected) {
+            this.setThumbPositionForOrientation();
+        }
 
         this.$emit("change");
     }
@@ -109,8 +107,12 @@ export class Slider extends FormAssociated<HTMLInputElement>
      * Orientation value, horizontal | vertical
      */
     @attr
-    public orientation: SliderOrientation = SliderOrientation.horizontal;
-
+    public orientation: Orientation = Orientation.horizontal;
+    private orientationChanged(): void {
+        if (this.$fastController.isConnected) {
+            this.setThumbPositionForOrientation();
+        }
+    }
     /**
      * mode value, default singleValue
      */
@@ -144,8 +146,7 @@ export class Slider extends FormAssociated<HTMLInputElement>
 
     public increment = (): void => {
         const newVal: number =
-            this.direction !== Direction.rtl &&
-            this.orientation !== SliderOrientation.vertical
+            this.direction !== Direction.rtl && this.orientation !== Orientation.vertical
                 ? Number(this.value) + Number(this.step)
                 : Number(this.value) - Number(this.step);
         const incrementedVal: number = this.convertToConstrainedValue(newVal);
@@ -157,8 +158,7 @@ export class Slider extends FormAssociated<HTMLInputElement>
 
     public decrement = (): void => {
         const newVal =
-            this.direction !== Direction.rtl &&
-            this.orientation !== SliderOrientation.vertical
+            this.direction !== Direction.rtl && this.orientation !== Orientation.vertical
                 ? Number(this.value) - Number(this.step)
                 : Number(this.value) + Number(this.step);
         const decrementedVal: number = this.convertToConstrainedValue(newVal);
@@ -194,7 +194,7 @@ export class Slider extends FormAssociated<HTMLInputElement>
                 ? (1 - Number(this.value) / (Number(this.max) - Number(this.min))) * 100
                 : (Number(this.value) / (Number(this.max) - Number(this.min))) * 100;
 
-        if (this.orientation === SliderOrientation.horizontal) {
+        if (this.orientation === Orientation.horizontal) {
             this.position = this.isDragging
                 ? `right: ${percentage}%; transition: all 0.1s ease;`
                 : `right: ${percentage}%; transition: all 0.2s ease;`;
@@ -257,7 +257,7 @@ export class Slider extends FormAssociated<HTMLInputElement>
         }
         // update the value based on current position
         const eventValue: number =
-            this.orientation === SliderOrientation.horizontal ? e.pageX : e.pageY;
+            this.orientation === Orientation.horizontal ? e.pageX : e.pageY;
         this.value = `${this.calculateNewValue(eventValue)}`;
         this.updateForm();
     };
@@ -266,10 +266,10 @@ export class Slider extends FormAssociated<HTMLInputElement>
         // update the value based on current position
         const newPosition = convertPixelToPercent(
             rawValue,
-            this.orientation === SliderOrientation.horizontal
+            this.orientation === Orientation.horizontal
                 ? this.trackMinWidth
                 : this.trackMinHeight,
-            this.orientation === SliderOrientation.horizontal
+            this.orientation === Orientation.horizontal
                 ? this.trackWidth
                 : this.trackHeight,
             this.direction
@@ -304,7 +304,7 @@ export class Slider extends FormAssociated<HTMLInputElement>
             window.addEventListener("mousemove", this.handleMouseMove);
 
             const controlValue: number =
-                this.orientation === SliderOrientation.horizontal ? e.pageX : e.pageY;
+                this.orientation === Orientation.horizontal ? e.pageX : e.pageY;
             this.value = `${this.calculateNewValue(controlValue)}`;
             this.updateForm();
         }

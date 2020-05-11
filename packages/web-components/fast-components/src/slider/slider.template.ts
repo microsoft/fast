@@ -1,14 +1,13 @@
 import { html } from "@microsoft/fast-element";
 import { ref } from "@microsoft/fast-element";
+import { Orientation } from "@microsoft/fast-web-utilities";
 import { Slider } from "./slider";
-import { SliderOrientation } from ".";
 
 export const SliderTemplate = html<Slider>`
     <template
         role="slider"
         class="${x => (x.readOnly ? "readonly" : "")} 
-        ${x =>
-            x.orientation === SliderOrientation.horizontal ? "horizontal" : "vertical"}"
+        ${x => (x.orientation === Orientation.horizontal ? "horizontal" : "vertical")}"
         tabindex="${x => (x.disabled ? null : 0)}"
         aria-valuenow="${x => x.value}"
         aria-valuemin="${x => x.min}"

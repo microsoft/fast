@@ -1,6 +1,6 @@
 import { attr, FASTElement, observable, Observable } from "@microsoft/fast-element";
-import { Direction } from "@microsoft/fast-web-utilities";
-import { SliderConfiguration, SliderOrientation } from "../slider";
+import { Direction, Orientation } from "@microsoft/fast-web-utilities";
+import { SliderConfiguration } from "../slider";
 import { convertPixelToPercent } from "../slider/slider-utilities";
 import { FASTSlider } from "../slider";
 
@@ -8,7 +8,7 @@ const defaultConfig: SliderConfiguration = {
     min: 0,
     max: 0,
     direction: Direction.ltr,
-    orientation: SliderOrientation.horizontal,
+    orientation: Orientation.horizontal,
     disabled: false,
 };
 
@@ -31,7 +31,7 @@ export class SliderLabel extends FASTElement {
     public disabled: boolean; // Map to proxy element
 
     @observable
-    public sliderOrientation: SliderOrientation;
+    public sliderOrientation: Orientation;
     @observable
     public sliderMinPosition: number;
     @observable
@@ -83,8 +83,7 @@ export class SliderLabel extends FASTElement {
     private getSliderConfiguration = (): void => {
         if (!this.isSliderConfig(this.parentNode)) {
             this.sliderDirection = defaultConfig.direction || Direction.ltr;
-            this.sliderOrientation =
-                defaultConfig.orientation || SliderOrientation.horizontal;
+            this.sliderOrientation = defaultConfig.orientation || Orientation.horizontal;
             this.sliderMaxPosition = defaultConfig.max;
             this.sliderMinPosition = defaultConfig.min;
         } else {
@@ -95,7 +94,7 @@ export class SliderLabel extends FASTElement {
                 this.disabled = disabled;
             }
             this.sliderDirection = direction || Direction.ltr;
-            this.sliderOrientation = orientation || SliderOrientation.horizontal;
+            this.sliderOrientation = orientation || Orientation.horizontal;
             this.sliderMaxPosition = max;
             this.sliderMinPosition = min;
         }
@@ -118,7 +117,7 @@ export class SliderLabel extends FASTElement {
             leftNum = 50;
         }
 
-        if (this.sliderOrientation === SliderOrientation.horizontal) {
+        if (this.sliderOrientation === Orientation.horizontal) {
             return direction === Direction.rtl
                 ? `right: ${leftNum}%; left: ${rightNum}%;`
                 : `left: ${leftNum}%; right: ${rightNum}%;`;

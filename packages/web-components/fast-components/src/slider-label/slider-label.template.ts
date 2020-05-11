@@ -1,14 +1,12 @@
 import { html, ref, when } from "@microsoft/fast-element";
+import { Orientation } from "@microsoft/fast-web-utilities";
 import { SliderLabel } from "./slider-label";
-import { SliderOrientation } from "../slider";
 
 export const SliderLabelTemplate = html<SliderLabel>`
     <template
         aria-disabled="${x => x.disabled}"
         class="${x =>
-            x.sliderOrientation === SliderOrientation.horizontal
-                ? "horizontal"
-                : "vertical"} 
+            x.sliderOrientation === Orientation.horizontal ? "horizontal" : "vertical"} 
             ${x => (x.disabled ? "disabled" : "")}"
     >
         <div ${ref("root")} part="root" class="root" style=${x => x.positionStyle}>
