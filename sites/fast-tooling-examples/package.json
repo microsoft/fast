@@ -18,8 +18,8 @@
   },
   "scripts": {
     "build": "webpack --progress --mode=production",
-    "prettier": "prettier --config ../../../.prettierrc --write \"**/*.ts\"",
-    "prettier:diff": "prettier --config ../../../.prettierrc \"**/*.ts\" --list-different",
+    "prettier": "prettier --config ../../.prettierrc --write \"**/*.ts\"",
+    "prettier:diff": "prettier --config ../../.prettierrc \"**/*.ts\" --list-different",
     "eslint": "eslint . --ext .ts",
     "eslint:fix": "eslint . --ext .ts --fix",
     "start": "webpack-dev-server",
