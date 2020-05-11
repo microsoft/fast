@@ -1,3 +1,4 @@
+/* eslint-disable */
 import chai from "chai";
 import { html, ViewTemplate } from "./template.js";
 import { DOM } from "./dom.js";
