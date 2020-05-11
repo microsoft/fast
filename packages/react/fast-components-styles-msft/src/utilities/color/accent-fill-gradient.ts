@@ -1,6 +1,6 @@
-import { DesignSystem } from "src";
 import { ColorHSL, hslToRGB, parseColor, rgbToHSL } from "@microsoft/fast-colors";
 import { format } from "@microsoft/fast-jss-utilities";
+import { DesignSystem } from "../../design-system";
 import {
     FillSwatchFamily,
     Swatch,
@@ -11,7 +11,7 @@ import {
     SwatchRecipe,
     SwatchResolver,
 } from "./common";
-import { accentFill } from ".";
+import { accentFill } from "./index";
 
 function gradientSwatchRecipe<T extends SwatchFamily>(
     type: keyof T,
@@ -22,21 +22,23 @@ function gradientSwatchRecipe<T extends SwatchFamily>(
             type,
             callback
         );
-        const color: Swatch = baseRecipe(designSystem);
-        const colorHsl: ColorHSL = rgbToHSL(parseColor(color));
-        let hShifted: number = colorHsl.h + 28;
-        if (hShifted > 360) {
-            hShifted -= 360;
+        const baseColor: Swatch = baseRecipe(designSystem);
+        const baseColorHSL: ColorHSL = rgbToHSL(parseColor(baseColor));
+        let shiftedHue: number = baseColorHSL.h + 28;
+        if (shiftedHue > 360) {
+            shiftedHue -= 360;
         }
-        const secondaryHsl: ColorHSL = ColorHSL.fromObject({
-            h: hShifted,
-            s: colorHsl.s,
-            l: colorHsl.l,
-        });
+        const shiftedColor: Swatch = hslToRGB(
+            ColorHSL.fromObject({
+                h: shiftedHue,
+                s: baseColorHSL.s,
+                l: baseColorHSL.l,
+            })
+        ).toStringHexRGB();
         return format(
             "linear-gradient(0deg, {0} 0%, {1} 100%)",
-            (a: any): string => color,
-            (a: any): string => hslToRGB(secondaryHsl).toStringHexRGB()
+            (a: any): string => baseColor,
+            (a: any): string => shiftedColor
         )(designSystem);
     };
 }
