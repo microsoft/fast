@@ -64,7 +64,7 @@ export class Slider extends FormAssociated<HTMLInputElement>
         }
 
         if (this.$fastController.isConnected) {
-            this.setThumbPositionForOrientation();
+            this.setThumbPositionForOrientation(this.direction);
         }
 
         this.$emit("change");
@@ -110,7 +110,7 @@ export class Slider extends FormAssociated<HTMLInputElement>
     public orientation: Orientation = Orientation.horizontal;
     private orientationChanged(): void {
         if (this.$fastController.isConnected) {
-            this.setThumbPositionForOrientation();
+            this.setThumbPositionForOrientation(this.direction);
         }
     }
     /**
@@ -129,9 +129,6 @@ export class Slider extends FormAssociated<HTMLInputElement>
     public connectedCallback(): void {
         super.connectedCallback();
         this.direction = this.getDirection();
-        if (this.direction === Direction.rtl) {
-            this.value = `${Number(this.value) - 1}`;
-        }
         this.updateForm();
         this.setupTrackConstraints();
         this.setupListeners();
@@ -188,12 +185,11 @@ export class Slider extends FormAssociated<HTMLInputElement>
         }
     };
 
-    private setThumbPositionForOrientation = (): void => {
+    private setThumbPositionForOrientation = (direction: Direction): void => {
         const percentage: number =
-            this.direction !== Direction.rtl
+            direction !== Direction.rtl
                 ? (1 - Number(this.value) / (Number(this.max) - Number(this.min))) * 100
                 : (Number(this.value) / (Number(this.max) - Number(this.min))) * 100;
-
         if (this.orientation === Orientation.horizontal) {
             this.position = this.isDragging
                 ? `right: ${percentage}%; transition: all 0.1s ease;`
@@ -207,6 +203,9 @@ export class Slider extends FormAssociated<HTMLInputElement>
 
     private getDirection = (): Direction => {
         const dirNode: HTMLElement | null = this.parentElement!.closest("[dir]");
+        if (dirNode && dirNode!.dir === "rtl") {
+            this.setThumbPositionForOrientation(Direction.rtl);
+        }
         return dirNode !== null && dirNode.dir === "rtl" ? Direction.rtl : Direction.ltr;
     };
 
