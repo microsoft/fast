@@ -9,7 +9,7 @@ const compilationContext = { locatedDirectives: 0, targetIndex: -1 };
 
 function tryParsePlaceholders(
     value: string,
-    directives: Directive[]
+    directives: ReadonlyArray<Directive>
 ): InlineDirective | null {
     let i = value.indexOf("@{", 0);
     const ii = value.length;
@@ -128,7 +128,7 @@ function tryParsePlaceholders(
 
 function compileAttributes(
     node: HTMLElement,
-    directives: Directive[],
+    directives: ReadonlyArray<Directive>,
     factories: BehaviorFactory[],
     includeBasicValues: boolean = false
 ): void {
@@ -157,7 +157,10 @@ function compileAttributes(
 }
 
 /* eslint-disable-next-line @typescript-eslint/explicit-function-return-type */
-export function compileTemplate(template: HTMLTemplateElement, directives: Directive[]) {
+export function compileTemplate(
+    template: HTMLTemplateElement,
+    directives: ReadonlyArray<Directive>
+) {
     const hostBehaviorFactories: BehaviorFactory[] = [];
 
     compilationContext.locatedDirectives = 0;
