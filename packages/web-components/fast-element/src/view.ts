@@ -1,5 +1,5 @@
-import { Behavior } from "./directives/behavior";
-import { ExecutionContext } from "./observation/observable";
+import { Behavior } from "./directives/behavior.js";
+import { ExecutionContext } from "./observation/observable.js";
 
 /**
  * Represents a collection of DOM nodes which can be bound to a data source.

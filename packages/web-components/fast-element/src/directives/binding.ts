@@ -1,8 +1,12 @@
-import { ExecutionContext, Expression, setCurrentEvent } from "../observation/observable";
-import { ObservableExpression } from "../observation/observable";
-import { DOM } from "../dom";
-import { Directive } from "./directive";
-import { Behavior } from "./behavior";
+import {
+    ExecutionContext,
+    Expression,
+    setCurrentEvent,
+} from "../observation/observable.js";
+import { ObservableExpression } from "../observation/observable.js";
+import { DOM } from "../dom.js";
+import { Directive } from "./directive.js";
+import { Behavior } from "./behavior.js";
 
 function normalBind(
     this: BindingBehavior,

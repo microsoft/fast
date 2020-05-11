@@ -52,6 +52,7 @@ export class RadioGroup extends FASTElement {
 
     @observable slottedRadioButtons: RadioControl[];
     private selectedRadio: RadioControl | null;
+    private focusedRadio: RadioControl | null;
     private parentToolbar: HTMLElement | null | undefined;
     private isInsideToolbar: boolean = false;
 
@@ -82,6 +83,7 @@ export class RadioGroup extends FASTElement {
 
             if (this.value && this.value === radio.getAttribute("value")) {
                 this.selectedRadio = radio;
+                this.focusedRadio = radio;
                 radio.checked = true;
                 radio.setAttribute("tabindex", "0");
             } else {
@@ -91,6 +93,7 @@ export class RadioGroup extends FASTElement {
 
         if (this.value === undefined) {
             radioButtons[0].setAttribute("tabindex", "0");
+            this.focusedRadio = radioButtons[0];
         }
 
         this.parentToolbar = this.parentElement?.closest('[role="toolbar"]');
@@ -143,29 +146,51 @@ export class RadioGroup extends FASTElement {
                 });
             } else {
                 radio.checked = true;
+                this.selectedRadio = radio;
             }
         }
-        this.selectedRadio = radio;
+        this.focusedRadio = radio;
         radio.focus();
     };
 
     private moveRightOffGroup = () => {
-        if (!this.selectedRadio?.checked) {
-            this.selectedRadio = null;
-        }
         (this.nextElementSibling as HTMLInputElement).focus();
     };
 
     private moveLeftOffGroup = () => {
-        this.selectedRadio = null;
         (this.previousElementSibling as HTMLInputElement).focus();
     };
 
     /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
     private focusOutHandler = (e: FocusEvent) => {
         const group: RadioControl[] = this.getFilteredRadioButtons();
-        if (!this.selectedRadio) {
-            group[0].setAttribute("tabindex", "0");
+        const radio: HTMLInputElement | null = e.target as HTMLInputElement;
+        const index: number = radio !== null ? group.indexOf(radio) : 0;
+        const focusedIndex: number = this.focusedRadio
+            ? group.indexOf(this.focusedRadio)
+            : -1;
+
+        if (
+            (focusedIndex === 0 && index === focusedIndex) ||
+            (focusedIndex === group.length - 1 && focusedIndex === index)
+        ) {
+            if (!this.selectedRadio) {
+                this.focusedRadio = group[0];
+                this.focusedRadio.setAttribute("tabindex", "0");
+                group.forEach((nextRadio: HTMLInputElement) => {
+                    if (nextRadio !== this.focusedRadio) {
+                        nextRadio.setAttribute("tabindex", "-1");
+                    }
+                });
+            } else {
+                this.selectedRadio.setAttribute("tabindex", "0");
+                this.focusedRadio = this.selectedRadio;
+                group.forEach((nextRadio: HTMLInputElement) => {
+                    if (nextRadio !== this.selectedRadio) {
+                        nextRadio.setAttribute("tabindex", "-1");
+                    }
+                });
+            }
         }
     };
 
@@ -180,6 +205,7 @@ export class RadioGroup extends FASTElement {
                 radio.setAttribute("tabindex", "-1");
                 this.selectedRadio = null;
             }
+            this.focusedRadio = radio;
         }
         e.preventDefault();
     };
@@ -200,19 +226,20 @@ export class RadioGroup extends FASTElement {
         group: RadioControl[],
         keyCode: number
     ): boolean => {
-        const index = this.selectedRadio ? group.indexOf(this.selectedRadio) : 0;
-        return index <= 0 && this.isInsideToolbar && keyCode === keyCodeArrowLeft;
+        const index = this.focusedRadio ? group.indexOf(this.focusedRadio) - 1 : 0;
+        return index < 0 && this.isInsideToolbar && keyCode === keyCodeArrowLeft;
     };
 
-    private checkSelectedRadio = (): void => {
+    private checkFocusedRadio = (): void => {
         if (
-            this.selectedRadio !== null &&
-            !this.selectedRadio.readOnly &&
-            !this.selectedRadio.checked
+            this.focusedRadio !== null &&
+            !this.focusedRadio.readOnly &&
+            !this.focusedRadio.checked
         ) {
-            this.selectedRadio.checked = true;
-            this.selectedRadio.setAttribute("tabindex", "0");
-            this.selectedRadio.focus();
+            this.focusedRadio.checked = true;
+            this.focusedRadio.setAttribute("tabindex", "0");
+            this.focusedRadio.focus();
+            this.selectedRadio = this.focusedRadio;
         }
     };
 
@@ -223,11 +250,11 @@ export class RadioGroup extends FASTElement {
         let index: number = 0;
         switch (e.keyCode) {
             case keyCodeEnter:
-                this.checkSelectedRadio();
+                this.checkFocusedRadio();
                 break;
             case keyCodeArrowRight:
             case keyCodeArrowDown:
-                index = this.selectedRadio ? group.indexOf(this.selectedRadio) + 1 : 1;
+                index = this.focusedRadio ? group.indexOf(this.focusedRadio) + 1 : 1;
                 if (this.shouldMoveOffGroupToTheRight(index, group, e.keyCode)) {
                     this.moveRightOffGroup();
                     return;
@@ -240,7 +267,10 @@ export class RadioGroup extends FASTElement {
                     if (!group[index].disabled) {
                         this.moveToRadioByIndex(group, index);
                         break;
-                    } else if (index === group.indexOf(this.selectedRadio!)) {
+                    } else if (
+                        this.focusedRadio &&
+                        index === group.indexOf(this.focusedRadio)
+                    ) {
                         break;
                     } else if (index + 1 >= group.length) {
                         if (this.isInsideToolbar) {
@@ -259,7 +289,7 @@ export class RadioGroup extends FASTElement {
                     this.moveLeftOffGroup();
                     return;
                 }
-                index = this.selectedRadio ? group.indexOf(this.selectedRadio) - 1 : 0;
+                index = this.focusedRadio ? group.indexOf(this.focusedRadio) - 1 : 0;
                 index = index < 0 ? group.length - 1 : index;
 
                 /* looping to get to next radio that is not disabled */
@@ -267,7 +297,10 @@ export class RadioGroup extends FASTElement {
                     if (!group[index].disabled) {
                         this.moveToRadioByIndex(group, index);
                         break;
-                    } else if (index === group.indexOf(this.selectedRadio!)) {
+                    } else if (
+                        this.focusedRadio &&
+                        index === group.indexOf(this.focusedRadio)
+                    ) {
                         break;
                     } else if (index - 1 < 0) {
                         index = group.length - 1;

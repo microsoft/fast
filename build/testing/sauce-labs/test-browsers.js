@@ -1,28 +1,28 @@
 /**
- * @name 
+ * @name
  * Test Browsers
- * 
- * @description 
- * Cross browser testing with Selenium Webdriver (browser configurations) and Appium 
+ *
+ * @description
+ * Cross browser testing with Selenium Webdriver (browser configurations) and Appium
  * (device configurations) for testing on Sauce Labs. The configurations are sourced
  * from 'build/testing/config-browsers.js'.
- * 
- * @example 
+ *
+ * @example
  * To execute on CLI, run 'node build/testing/sauce-labs/test-browsers.js' from root directory.
- * 
+ *
  * @requires
- * You must create environment variables if executing this script locally using CLI. This can be done 
+ * You must create environment variables if executing this script locally using CLI. This can be done
  * by adding to your '~/.bashrc' file.
- * 
+ *
  * export SAUCE_LABS_USER=[some value]
- * export SAUCE_LABS_USER=[some value] 
+ * export SAUCE_LABS_USER=[some value]
  *
  * CircleCI has these values included as environment variables
- * 
+ *
  * @see
  * To understand in detail:
  * Getting Started: https://help.crossbrowsertesting.com/selenium-testing/getting-started/javascript/
- * Scripting docs: https://www.seleniumhq.org/docs/03_webdriver.jsp#chapter03-reference 
+ * Scripting docs: https://www.seleniumhq.org/docs/03_webdriver.jsp#chapter03-reference
  */
 const { Builder } = require("selenium-webdriver");
 const chalk = require("chalk");
@@ -42,7 +42,7 @@ const remoteHub = `http://${username}:${accessKey}@ondemand.saucelabs.com:80/wd/
  * @param {Phase} phase
  * @returns {Configuration based on phase}
  */
-const getConfiguration = (phase) => {
+const getConfiguration = phase => {
     switch (phase) {
         case Phase.alpha:
             return new Configure(Phase.alpha);
@@ -51,24 +51,25 @@ const getConfiguration = (phase) => {
         case Phase.release:
             return new Configure(Phase.release);
         default:
-            console.log(chalk.red("Invalid Argument : must be 'alpha', 'beta', or 'release'"));
+            console.log(
+                chalk.red("Invalid Argument : must be 'alpha', 'beta', or 'release'")
+            );
             return process.exit(1);
     }
-}
+};
 
 // Assign browser configurations to an array
 let browsers = getConfiguration(process.argv[2]);
 
 /**
  * Run tests on Sauce Labs
- * @param {string} branchName 
+ * @param {string} branchName
  */
 function test(branchName) {
     console.log("Testing Git branch:", branchName);
 
     // Execute Selenium/Appium Web Drivers on Sauce Labs for each browser configuration
     var flows = browsers.map(function (browser) {
-
         // Setup capabilities
         let capabilities = {
             name: "FAST-DNA MSFT Documentation",
@@ -87,7 +88,7 @@ function test(branchName) {
             locale: browser.locale,
             username: username,
             password: accessKey,
-            extendedDebugging: true
+            extendedDebugging: true,
         };
 
         // Setup WebDriver
@@ -105,10 +106,10 @@ function test(branchName) {
                  * Note: There are many ways to nagivate/find elements on a page
                  * unfortunately, not all are cross-browser compliant.
                  * As a result, we're using webdriver's navigate.
-                 * 
+                 *
                  * Add in data-test attributes to each component, page, layout,
                  * or container we want to capture and select on that.
-                 * 
+                 *
                  * TODO: After browsers matrix is determined we can fine tune and
                  * optimize to use other selectors to see what works. If we're
                  * testing on modern browsers this isn't as much a limitation.
@@ -156,26 +157,25 @@ function test(branchName) {
                 await driver.navigate().to(`${domain}/components/text-field/examples`);
                 await driver.navigate().to(`${domain}/components/toggle/examples`);
                 await driver.navigate().to(`${domain}/components/typography/examples`);
-
             } finally {
                 await driver.quit();
             }
-        })
+        });
     });
 }
 
 /**
  * Run tests on the current branch and use the branch name as the unique identifier on Sauce Labs
  */
-new Promise(function(resolve, reject) {
-    const git = spawn('git', ['rev-parse', '--abbrev-ref', 'HEAD']);
+new Promise(function (resolve, reject) {
+    const git = spawn("git", ["rev-parse", "--abbrev-ref", "HEAD"]);
 
-    git.stdout.on('data', (data) => {
+    git.stdout.on("data", data => {
         resolve(`${data}`.trim());
     });
-    git.stderr.on('data', (data) => {
-        reject('Unable to get branch name', data);
+    git.stderr.on("data", data => {
+        reject("Unable to get branch name", data);
     });
-}).then(function(branchName) {
+}).then(function (branchName) {
     test(branchName);
 });

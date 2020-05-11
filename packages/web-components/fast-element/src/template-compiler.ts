@@ -1,8 +1,8 @@
-import { BehaviorFactory } from "./directives/behavior";
-import { DOM } from "./dom";
-import { BindingDirective } from "./directives/binding";
-import { AttachedBehaviorDirective, Directive } from "./directives/directive";
-import { ExecutionContext } from "./observation/observable";
+import { BehaviorFactory } from "./directives/behavior.js";
+import { DOM } from "./dom.js";
+import { BindingDirective } from "./directives/binding.js";
+import { AttachedBehaviorDirective, Directive } from "./directives/directive.js";
+import { ExecutionContext } from "./observation/observable.js";
 
 type InlineDirective = BindingDirective | AttachedBehaviorDirective;
 const compilationContext = { locatedDirectives: 0, targetIndex: -1 };

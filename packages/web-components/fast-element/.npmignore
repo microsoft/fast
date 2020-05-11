@@ -1,14 +1,23 @@
 # Tests
-__test__/
+dist/dts/__test__/
+dist/esm/__test__/
 *.spec.*
 *.test.*
+coverage/
 
 # Source files
 src/
-docs/
 
 # config files
 .eslintignore
-.eslintrc.js
+.eslintrc.cjs
 .prettierignore
 tsconfig.json
+rollup.config.js
+karma.conf.cjs
+api-extractor.json
+.mocharc.json
+
+# cache
+.rollupcache
+temp

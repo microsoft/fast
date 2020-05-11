@@ -1,12 +1,12 @@
-import { DOM } from "../dom";
-import { Observable } from "./observable";
-import { SubscriberCollection } from "./notifier";
+import { DOM } from "../dom.js";
+import { Observable } from "./observable.js";
+import { SubscriberSet } from "./notifier.js";
 import {
     calcSplices,
     newSplice,
     projectArraySplices,
     Splice,
-} from "./array-change-records";
+} from "./array-change-records.js";
 
 let arrayObservationEnabled = false;
 
@@ -29,17 +29,15 @@ function adjustIndex(changeRecord: Splice, array: any[]): Splice {
     return changeRecord;
 }
 
-export class ArrayObserver extends SubscriberCollection {
-    private collection: any[];
+export class ArrayObserver extends SubscriberSet {
     private oldCollection: any[] | undefined = void 0;
     private splices: any[] | undefined = void 0;
     private needsQueue: boolean = true;
     call: () => void = this.flush;
 
-    constructor(collection: any[]) {
-        super();
-        (collection as any).$fastController = this;
-        this.collection = collection;
+    constructor(source: any[]) {
+        super(source);
+        (source as any).$fastController = this;
     }
 
     public addSplice(splice: Splice): void {
@@ -78,17 +76,17 @@ export class ArrayObserver extends SubscriberCollection {
 
         const finalSplices =
             oldCollection === void 0
-                ? projectArraySplices(this.collection, splices!)
+                ? projectArraySplices(this.source, splices!)
                 : calcSplices(
-                      this.collection,
+                      this.source,
                       0,
-                      this.collection.length,
+                      this.source.length,
                       oldCollection,
                       0,
                       oldCollection.length
                   );
 
-        this.notify(this, finalSplices);
+        this.notify(finalSplices);
     }
 }
 

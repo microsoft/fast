@@ -1,5 +1,5 @@
-import { DOM } from "../dom";
-import { Notifier, PropertyChangeNotifier } from "./notifier";
+import { DOM } from "../dom.js";
+import { Notifier, PropertyChangeNotifier } from "./notifier.js";
 
 const notifierLookup = new WeakMap<any, Notifier>();
 const accessorLookup = new WeakMap<any, Accessor[]>();
@@ -42,7 +42,7 @@ class DefaultObservableAccessor implements Accessor {
             }
 
             /* eslint-disable-next-line @typescript-eslint/no-use-before-define */
-            getNotifier(source).notify(source, this.name);
+            getNotifier(source).notify(this.name);
         }
     }
 }
@@ -60,7 +60,7 @@ export const Observable = {
             if (Array.isArray(source)) {
                 found = Observable.createArrayObserver(source);
             } else {
-                notifierLookup.set(source, (found = new PropertyChangeNotifier()));
+                notifierLookup.set(source, (found = new PropertyChangeNotifier(source)));
             }
         }
 
@@ -75,7 +75,7 @@ export const Observable = {
 
     notify(source: unknown, args: any): void {
         /* eslint-disable-next-line @typescript-eslint/no-use-before-define */
-        getNotifier(source).notify(source, args);
+        getNotifier(source).notify(args);
     },
 
     defineProperty(target: {}, nameOrAccessor: string | Accessor): void {

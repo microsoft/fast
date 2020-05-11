@@ -222,10 +222,15 @@ describe("auto suggest", (): void => {
             </AutoSuggest>
         );
 
-        const input: any = rendered.find("input");
+        let input: any = rendered.find("input");
+        expect(input.prop("aria-expanded")).toBe(false);
+
         expect(rendered.state("isMenuOpen")).toBe(false);
         input.simulate("click");
         expect(rendered.state("isMenuOpen")).toBe(true);
+
+        input = rendered.find("input");
+        expect(input.prop("aria-expanded")).toBe(true);
 
         const listbox: any = rendered.find('[role="listbox"]');
         expect(listbox.prop("id")).toBe("listboxId");
@@ -242,12 +247,20 @@ describe("auto suggest", (): void => {
 
         // const autoSuggest: any = rendered.find(AutoSuggest.displayName);
         expect(rendered.state("isMenuOpen")).toBe(false);
-        const input: any = rendered.find("input");
+        let input: any = rendered.find("input");
+        expect(input.prop("aria-expanded")).toBe(false);
+
         input.simulate("click");
         expect(rendered.state("isMenuOpen")).toBe(true);
 
+        input = rendered.find("input");
+        expect(input.prop("aria-expanded")).toBe(true);
+
         input.simulate("blur");
         expect(rendered.state("isMenuOpen")).toBe(false);
+
+        input = rendered.find("input");
+        expect(input.prop("aria-expanded")).toBe(false);
     });
 
     // Test is incompatible with Jest 25.x, refer to issue #2882

@@ -1,9 +1,9 @@
-import { FASTElementDefinition, getDefinition } from "./fast-definitions";
-import { ElementView } from "./view";
-import { PropertyChangeNotifier } from "./observation/notifier";
-import { defaultExecutionContext, Observable } from "./observation/observable";
-import { Behavior } from "./directives/behavior";
-import { ElementStyles, StyleTarget } from "./styles";
+import { FASTElementDefinition, getDefinition } from "./fast-definitions.js";
+import { ElementView } from "./view.js";
+import { PropertyChangeNotifier } from "./observation/notifier.js";
+import { defaultExecutionContext, Observable } from "./observation/observable.js";
+import { Behavior } from "./directives/behavior.js";
+import { ElementStyles, StyleTarget } from "./styles.js";
 
 const defaultEventOptions: CustomEventInit = {
     bubbles: true,
@@ -20,7 +20,7 @@ export class Controller extends PropertyChangeNotifier {
         public readonly element: HTMLElement,
         public readonly definition: FASTElementDefinition
     ) {
-        super();
+        super(element);
 
         const template = definition.template;
         const styles = definition.styles;

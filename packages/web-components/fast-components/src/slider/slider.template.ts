@@ -1,5 +1,5 @@
 import { html } from "@microsoft/fast-element";
-import { ref } from "@microsoft/fast-element/dist/directives";
+import { ref } from "@microsoft/fast-element";
 import { Slider } from "./slider";
 
 export const SliderTemplate = html<Slider>`

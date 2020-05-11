@@ -1,4 +1,6 @@
 import React from "react";
+import { MessageSystemType } from "@microsoft/fast-tooling";
+import { ViewerCustomAction } from "../../../src";
 
 interface ViewerContentState {
     message: string;
@@ -16,8 +18,24 @@ class ViewerContent extends React.Component<{}, ViewerContentState> {
     }
 
     public render(): React.ReactNode {
-        return <pre>{this.state.message}</pre>;
+        return (
+            <React.Fragment>
+                <pre>{this.state.message}</pre>
+                <button onClick={this.handleReset}>reset</button>
+            </React.Fragment>
+        );
     }
+
+    private handleReset = (): void => {
+        window.postMessage(
+            {
+                type: MessageSystemType.custom,
+                action: ViewerCustomAction.call,
+                value: "reset",
+            },
+            "*"
+        );
+    };
 
     private handlePostMessage = (e: MessageEvent): void => {
         if (typeof e.data === "string") {
@@ -25,8 +43,6 @@ class ViewerContent extends React.Component<{}, ViewerContentState> {
                 this.setState({
                     message: JSON.stringify(JSON.parse(e.data), null, 2),
                 });
-
-                window.postMessage(e.data, "");
             } catch (e) {}
         }
     };

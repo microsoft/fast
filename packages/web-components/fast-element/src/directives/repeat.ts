@@ -1,17 +1,17 @@
-import { CaptureType, SyntheticViewTemplate, ViewTemplate } from "../template";
-import { DOM } from "../dom";
+import { CaptureType, SyntheticViewTemplate, ViewTemplate } from "../template.js";
+import { DOM } from "../dom.js";
 import {
     ExecutionContext,
     Expression,
     Observable,
     ObservableExpression,
-} from "../observation/observable";
-import { HTMLView, SyntheticView } from "../view";
-import { Subscriber } from "../observation/notifier";
-import { ArrayObserver, enableArrayObservation } from "../observation/array-observer";
-import { Splice } from "../observation/array-change-records";
-import { Behavior } from "./behavior";
-import { Directive } from "./directive";
+} from "../observation/observable.js";
+import { HTMLView, SyntheticView } from "../view.js";
+import { Subscriber } from "../observation/notifier.js";
+import { ArrayObserver, enableArrayObservation } from "../observation/array-observer.js";
+import { Splice } from "../observation/array-change-records.js";
+import { Behavior } from "./behavior.js";
+import { Directive } from "./directive.js";
 
 export interface RepeatOptions {
     positioning: boolean;

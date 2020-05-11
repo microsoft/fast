@@ -1,4 +1,4 @@
-import { Behavior } from "./directives/behavior";
+import { Behavior } from "./directives/behavior.js";
 
 export interface StyleTarget {
     adoptedStyleSheets?: CSSStyleSheet[];
@@ -101,7 +101,7 @@ export class AdoptedStyleSheetsStyles extends ElementStyles {
     public removeStylesFrom(target: StyleTarget): void {
         const sourceSheets = this.styleSheets;
         target.adoptedStyleSheets = target.adoptedStyleSheets!.filter(
-            (x: CSSStyleSheet) => !sourceSheets.includes(x)
+            (x: CSSStyleSheet) => sourceSheets.indexOf(x) !== -1
         );
     }
 }
@@ -140,8 +140,8 @@ export class StyleElementStyles extends ElementStyles {
     public removeStylesFrom(target: StyleTarget): void {
         const styles = target.querySelectorAll(`.${this.styleClass}`);
 
-        for (const style of styles) {
-            target.removeChild(style);
+        for (let i = 0, ii = styles.length; i < ii; ++i) {
+            target.removeChild(styles[i]);
         }
     }
 }

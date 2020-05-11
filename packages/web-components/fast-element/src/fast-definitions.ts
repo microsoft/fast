@@ -1,6 +1,6 @@
-import { ElementViewTemplate } from "./template";
-import { ElementStyles } from "./styles";
-import { AttributeConfiguration, AttributeDefinition } from "./attributes";
+import { ElementViewTemplate } from "./template.js";
+import { ElementStyles } from "./styles.js";
+import { AttributeConfiguration, AttributeDefinition } from "./attributes.js";
 
 export class FASTElementDefinition {
     public constructor(

@@ -1,6 +1,6 @@
-import { Accessor, Observable } from "../observation/observable";
-import { emptyArray } from "../interfaces";
-import { Behavior } from "./behavior";
+import { Accessor, Observable } from "../observation/observable.js";
+import { emptyArray } from "../interfaces.js";
+import { Behavior } from "./behavior.js";
 
 export interface NodeBehaviorBehaviorOptions<T = any> {
     property: T;
