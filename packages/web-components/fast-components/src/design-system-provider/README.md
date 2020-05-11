@@ -1,13 +1,4 @@
 # Design System Provider
-- [What is a Design System](#what-is-a-design-system)
-- [The Design System Provider](#the-design-system-provider)
-    - [FAST Design System Provider](#FAST-design-system-provider)
-    - [Use Defaults](#use-defaults)
-    - [Composing Design System Providers](#composing-design-system-providers)
-    - [Recipes](#recipes)
-    - [Creating a Design System Provider](#creating-a-design-system-provider)
-        - [Declaring Design System properties](#declaring-design-system-properties)
-    - [FAST Design System Properties](#FAST-design-system-properties)
 
 ## What is a Design System
 
@@ -102,12 +93,12 @@ DesignSystemProvider.registerCSSCustomProperty({
 
 In the above example, the value function will be re-evaluated if the _design system_ ever changes.
 
-The above API is made especially useful when defining a [component stylesheet](https://github.com/microsoft/fast-dna/blob/master/packages/web-components/fast-element/docs/building-components.md#defining-css) - individual stylesheets can declare dependencies on CSS custom properties that are functions of the element instance's *design system*
+The above API is made especially useful when defining a [component stylesheet](https://github.com/microsoft/fast-dna/blob/master/packages/web-components/fast-element/docs/building-components.md#defining-css) - individual stylesheets can declare dependencies on CSS custom properties that are functions of the element instance's *design system*.
 
 **EXAMPLE: creating a recipe dependency**
 ```ts
 import { css } from "@microsoft/fast-element";
-import { cssCustomPropertyBehaviorFactory, DesignSystemProvider } from "@microsoft/fast-components";
+import { cssCustomPropertyBehaviorFactory, FASTDesignSystemProvider } from "@microsoft/fast-components";
 
 const styles = css`
     :host {
@@ -117,7 +108,7 @@ const styles = css`
     cssCustomPropertyBehaviorFactory(
         "fancy-height",
         designSystem => Math.pow(designSystem.designUnit, 12),
-        DesignSystemProvider.findProvider
+        FASTDesignSystemProvider.findProvider
     )
 )
 ```
