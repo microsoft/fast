@@ -13,7 +13,7 @@
 
 The _design system_ can generally be thought of as a collection of named values that inform visual rendering. It quantifies concepts such as type-ramp, color palettes, design units, etc to be used in UI components. Other common names for this concept are _design variables_, _design tokens_ or _theme_.
 
-These values are mutable throughout a UI tree. Where UI tree _A_ may see their contextual _design-unit_ as `4px`, section _B_ may have its scale increased by providing a _design-unit_ of `6px`. Or, section _C_ may see a contextual _background color_ of `#FFF` where section _D_ may see a contextual _background color_ as `#000`.
+These values are mutable throughout a UI tree. Where UI tree _A_ may see their contextual _design-unit_ as `4px`, tree _B_ may have its scale increased by providing a _design-unit_ of `6px`. Or, tree _C_ may see a contextual _background color_ of `#FFF` where tree _D_ may see a contextual _background color_ as `#000`.
 
 ## Design System Provider
 
