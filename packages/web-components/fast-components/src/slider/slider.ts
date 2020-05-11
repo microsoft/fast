@@ -67,20 +67,7 @@ export class Slider extends FormAssociated<HTMLInputElement>
             this.updateForm();
         }
 
-        const percentage: number =
-            this.direction !== Direction.rtl
-                ? (1 - Number(this.value) / (Number(this.max) - Number(this.min))) * 100
-                : (Number(this.value) / (Number(this.max) - Number(this.min))) * 100;
-
-        if (this.orientation === SliderOrientation.horizontal) {
-            this.position = this.isDragging
-                ? `right: ${percentage}%; transition: all 0.1s ease;`
-                : `right: ${percentage}%; transition: all 0.2s ease;`;
-        } else {
-            this.position = this.isDragging
-                ? `bottom: ${percentage}%; transition: all 0.1s ease;`
-                : `bottom: ${percentage}%; transition: all 0.2s ease;`;
-        }
+        this.setThumbPositionForOrientation();
 
         this.$emit("change");
     }
@@ -198,6 +185,23 @@ export class Slider extends FormAssociated<HTMLInputElement>
                     this.decrement();
                     break;
             }
+        }
+    };
+
+    private setThumbPositionForOrientation = (): void => {
+        const percentage: number =
+            this.direction !== Direction.rtl
+                ? (1 - Number(this.value) / (Number(this.max) - Number(this.min))) * 100
+                : (Number(this.value) / (Number(this.max) - Number(this.min))) * 100;
+
+        if (this.orientation === SliderOrientation.horizontal) {
+            this.position = this.isDragging
+                ? `right: ${percentage}%; transition: all 0.1s ease;`
+                : `right: ${percentage}%; transition: all 0.2s ease;`;
+        } else {
+            this.position = this.isDragging
+                ? `bottom: ${percentage}%; transition: all 0.1s ease;`
+                : `bottom: ${percentage}%; transition: all 0.2s ease;`;
         }
     };
 
