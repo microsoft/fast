@@ -33,9 +33,4 @@ export const FastFrameStyles = css`
         align-items: center;
         justify-content: center;
     }
-
-    fast-tabs ::part(active-indicator) {
-        background: red;
-        height: 2px;
-    }
 `;
