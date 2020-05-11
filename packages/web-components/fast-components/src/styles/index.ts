@@ -2,5 +2,8 @@ export * from "./disabled";
 export * from "./display";
 export * from "./elevation";
 export * from "./focus";
+export * from "./match-media-stylesheet-behavior";
 export * from "./patterns";
 export * from "./recipes";
+export * from "./size";
+export * from "./system-colors";

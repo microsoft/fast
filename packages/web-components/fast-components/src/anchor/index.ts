@@ -13,5 +13,6 @@ import { AnchorTemplate as template } from "./anchor.template";
     },
 })
 export class FASTAnchor extends Anchor {}
-export * from "./anchor";
+export * from "./anchor.template";
 export * from "./anchor.styles";
+export * from "./anchor";
