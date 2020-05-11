@@ -1,9 +1,15 @@
-import { FASTElement, attr, observable } from "@microsoft/fast-element";
+import { FASTElement, observable } from "@microsoft/fast-element";
 
 export class SiteNavigation extends FASTElement {
-    @attr
-    public item: string;
-
     @observable
-    public items: string[] = [];
+    items: HTMLElement[];
+
+    public connectedCallback(): void {
+        super.connectedCallback();
+        this.items.forEach((item: any) => {
+            if (item instanceof HTMLElement) {
+                item.setAttribute("role", "listitem");
+            }
+        });
+    }
 }

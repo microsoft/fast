@@ -8,7 +8,7 @@ import { SiteNavigationStyles as styles } from "./site-navigation.styles";
     template,
     styles,
 })
-export class FASTSectionHeader extends SiteNavigation {}
+export class FASTSiteNavigation extends SiteNavigation {}
 export * from "./site-navigation.template";
 export * from "./site-navigation.styles";
 export * from "./site-navigation";
