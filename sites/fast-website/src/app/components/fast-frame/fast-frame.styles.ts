@@ -1,5 +1,10 @@
 import { css } from "@microsoft/fast-element";
 import { display } from "@microsoft/fast-components";
+import {
+    accentFillRestBehavior,
+    accentForegroundCutRestBehavior,
+    neutralForegroundRestBehavior,
+} from "@microsoft/fast-components";
 
 export const FastFrameStyles = css`
     ${display("block")} :host {
@@ -61,13 +66,12 @@ export const FastFrameStyles = css`
     }
 
     .control-container p {
-        margin-inline-start: calc(var(--design-unit) * 2px + 2px);;
+        margin-inline-start: calc(var(--design-unit) * 2px + 2px);
     }
 
     .control-container-column {
         display: flex;
-        flex-direction: column;
-        flex-flow: wrap;
+        flex-flow: row wrap;
     }
 
     .control-container-grid {
@@ -118,4 +122,8 @@ export const FastFrameStyles = css`
         --badge-fill-primary: #D223CB;
         --badge-color-primary: white;
     }
-`;
+`.withBehaviors(
+    accentFillRestBehavior,
+    accentForegroundCutRestBehavior,
+    neutralForegroundRestBehavior,
+)
