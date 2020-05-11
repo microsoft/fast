@@ -44,12 +44,9 @@ export class SliderLabel extends FASTElement {
         this.getSliderConfiguration();
         this.positionStyle = this.positionAsStyle();
         const notifier = Observable.getNotifier(this.parentNode as FASTSlider);
-        console.log("notifier:", notifier, " for label with pos:", this.position);
         const handler = {
             sliderLabel: this,
             handleChange(source: any, propertyName: string) {
-                console.log("this.sliderLabel.position:", this.sliderLabel.position);
-                console.log("source:", source);
                 switch (propertyName) {
                     case "direction":
                         this.sliderLabel.direction = source.direction;

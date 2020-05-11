@@ -130,7 +130,7 @@ export class Slider extends FormAssociated<HTMLInputElement>
         super.connectedCallback();
         this.direction = this.getDirection();
         if (this.direction === Direction.rtl) {
-            this.value = `${this.value}`;
+            this.value = `${Number(this.value) - 1}`;
         }
         this.updateForm();
         this.setupTrackConstraints();
