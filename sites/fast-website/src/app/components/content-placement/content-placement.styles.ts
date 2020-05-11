@@ -1,7 +1,7 @@
 import { css } from "@microsoft/fast-element";
 import { display } from "@microsoft/fast-components";
 
-export const ContentCardStyles = css`
+export const ContentPlacementStyles = css`
     ${display("block")} :host {
         contain: content;
         font-family: var(--body-font);
@@ -18,33 +18,33 @@ export const ContentCardStyles = css`
         text-align: left;
     }
 
-    fast-card:hover .contentCard_footer__hoverVisible {
+    fast-card:hover .contentPlacement_footer__hoverVisible {
         display: flex;
         justify-content: space-between;
         align-items: center;
     }
 
-    .contentCard_footer__hoverVisible {
+    .contentPlacement_footer__hoverVisible {
         visibility: hidden;
     }
 
-    fast-card:hover .contentCard_footer__hoverVisible {
+    fast-card:hover .contentPlacement_footer__hoverVisible {
         visibility: visible;
     }
 
-    fast-card:hover .contentCard_divider {
+    fast-card:hover .contentPlacement_divider {
         visibility: visible;
     }
 
-    fast-card:hover .contentCard_icon {
+    fast-card:hover .contentPlacement_icon {
         visibility: visible;
     }
 
-    .contentCard_divider {
+    .contentPlacement_divider {
         visibility: hidden;
     }
 
-    fast-card .contentCard_icon {
+    fast-card .contentPlacement_icon {
         visibility: hidden;
         margin-top: calc(var(--design-unit) * 4px);
     }
