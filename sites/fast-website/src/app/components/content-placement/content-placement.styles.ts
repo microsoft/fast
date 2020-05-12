@@ -16,6 +16,12 @@ export const ContentPlacementStyles = css`
         background: transparent;
         padding: 0 calc(var(--design-unit) * 5px) calc(var(--design-unit) * 3px);
         text-align: left;
+        display: flex;
+        flex-direction: column;
+    }
+
+    fast-card ::slotted([slot="body"]) {
+        flex: 1 1 auto;
     }
 
     fast-card:hover .contentPlacement_footer__hoverVisible {
