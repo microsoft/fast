@@ -4,11 +4,11 @@ import { ContentPlacementTemplate as template } from "./content-placement.templa
 import { ContentPlacementStyles as styles } from "./content-placement.styles";
 
 @customElement({
-    name: "fast-content-placement",
+    name: "site-content-placement",
     template,
     styles,
 })
-export class FASTContentPlacement extends ContentPlacement {}
+export class SiteContentPlacement extends ContentPlacement {}
 export * from "./content-placement.template";
 export * from "./content-placement.styles";
 export * from "./content-placement";

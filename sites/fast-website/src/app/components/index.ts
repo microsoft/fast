@@ -2,4 +2,4 @@ export { WebsiteDesignSystemProvider } from "./design-system-provider";
 export { SiteSectionHeader } from "./section-header";
 export { FastFrame } from "./fast-frame";
 export { SiteNavigation } from "./navigation";
-export { FASTContentPlacement } from "./content-placement";
+export { SiteContentPlacement } from "./content-placement";
