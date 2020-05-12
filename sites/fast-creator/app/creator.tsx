@@ -68,9 +68,7 @@ import {
     ProjectFileView,
 } from "./creator.props";
 import { exampleData } from "./msft-components/example-data";
-import {
-    ProjectFileTransfer,
-} from "./components";
+import { ProjectFileTransfer } from "./components";
 import { selectDeviceOverrideStyles } from "./utilities/style-overrides";
 import designSystemSchema from "./msft-component-helpers/design-system.schema";
 import { previewReady } from "./preview";
