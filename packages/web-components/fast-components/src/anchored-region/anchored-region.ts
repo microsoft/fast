@@ -238,6 +238,10 @@ export class AnchoredRegion extends FASTElement {
             this.anchorElement = this.getAnchor();
         }
 
+        if (this.anchorElement === null || this.viewportElement === null) {
+            return;
+        }
+
         this.currentDirection = this.getDirection();
 
         this.connectObservers();

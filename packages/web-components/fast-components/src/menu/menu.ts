@@ -61,15 +61,13 @@ export class Menu extends FASTElement {
         switch (e.keyCode) {
             case keyCodeArrowDown:
             case keyCodeArrowRight:
-                // if I'm a submenu, open me
-                // if I'm not a submenu, go forward one index
+                // go forward one index
                 e.preventDefault();
                 this.setFocus(this.focusIndex + 1, 1);
                 break;
             case keyCodeArrowUp:
             case keyCodeArrowLeft:
-                // if I'm a submenu, close me
-                // if I'm not a submenu, go back one index
+                // go back one index
                 e.preventDefault();
                 this.setFocus(this.focusIndex - 1, -1);
                 break;
