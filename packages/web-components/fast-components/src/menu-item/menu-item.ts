@@ -11,19 +11,9 @@ export enum MenuItemRole {
 export class MenuItem extends FASTElement {
     @attr({ mode: "boolean" })
     public disabled: boolean;
-    private disabledChanged(): void {
-        this.disabled
-            ? this.classList.add("disabled")
-            : this.classList.remove("disabled");
-    }
 
     @attr({ attribute: "aria-expanded", mode: "reflect", converter: booleanConverter })
     public expanded: boolean = false;
-    private expandedChanged(): void {
-        this.expanded
-            ? this.classList.add("expanded")
-            : this.classList.remove("expanded");
-    }
 
     @attr
     public role: MenuItemRole = MenuItemRole.menuitem;

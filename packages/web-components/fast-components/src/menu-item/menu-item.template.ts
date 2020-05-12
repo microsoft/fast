@@ -9,6 +9,8 @@ export const MenuItemTemplate = html<MenuItem>`
         aria-disabled=${x => x.disabled}
         @keydown=${(x, c) => x.handleMenuItemKeyDown(c.event as KeyboardEvent)}
         @click=${(x, c) => x.handleMenuItemClick(c.event as MouseEvent)}
+        class="${x => (x.disabled ? "disabled" : "")} ${x =>
+            x.expanded ? "expanded" : ""}"
     >
         ${startTemplate}
         <span class="content" part="content">
