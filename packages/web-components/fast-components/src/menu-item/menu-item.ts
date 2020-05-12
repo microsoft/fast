@@ -1,4 +1,4 @@
-import { attr, booleanConverter, FASTElement, observable } from "@microsoft/fast-element";
+import { attr, booleanConverter, FASTElement } from "@microsoft/fast-element";
 import { StartEnd } from "../patterns/start-end";
 import { applyMixins } from "../utilities/apply-mixins";
 
@@ -35,12 +35,14 @@ export class MenuItem extends FASTElement {
         super.connectedCallback();
     }
 
+    /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
     public handleMenuItemKeyDown = (e: KeyboardEvent): boolean => {
         this.change();
 
         return true;
     };
 
+    /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
     public handleMenuItemClick = (e: MouseEvent): void => {
         this.change();
     };

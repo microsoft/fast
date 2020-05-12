@@ -1,6 +1,6 @@
-import { children, html, ref, slotted, when } from "@microsoft/fast-element";
-import { MenuItem, MenuItemRole } from "./menu-item";
+import { html } from "@microsoft/fast-element";
 import { endTemplate, startTemplate } from "../patterns/start-end";
+import { MenuItem, MenuItemRole } from "./menu-item";
 
 // this template is going to need to have the menu item as DOM and not the host.
 // the reason for this is that we need to have the menu item directly next to any
