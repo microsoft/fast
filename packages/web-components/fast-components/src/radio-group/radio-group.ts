@@ -1,4 +1,5 @@
 import { attr, FASTElement, observable } from "@microsoft/fast-element";
+import { Orientation } from "@microsoft/fast-web-utilities";
 import {
     keyCodeArrowDown,
     keyCodeArrowLeft,
@@ -49,6 +50,9 @@ export class RadioGroup extends FASTElement {
 
     @attr
     public value: string;
+
+    @attr
+    public orientation: Orientation = Orientation.horizontal;
 
     @observable slottedRadioButtons: RadioControl[];
     private selectedRadio: RadioControl | null;

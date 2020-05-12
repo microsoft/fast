@@ -1,5 +1,5 @@
 import React from "react";
-import ActionTrigger from "@microsoft/fast-components-react-msft/dist/action-trigger/action-trigger";
+import { ActionTrigger } from "@microsoft/fast-components-react-msft";
 import { downChevron, upChevron } from "../../icons/chevrons";
 import { ProjectFileTransferProps } from "./project-file-transfer.props";
 
