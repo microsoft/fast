@@ -7,11 +7,11 @@ import {
     DataMessageOutgoing,
     InitializeMessageOutgoing,
     mapDataDictionary,
+    MessageSystemNavigationTypeAction,
     MessageSystemOutgoing,
     MessageSystemType,
     NavigationMessageOutgoing,
     SchemaDictionary,
-    MessageSystemNavigationTypeAction,
 } from "@microsoft/fast-tooling";
 import { reactMapper, ViewerCustomAction } from "@microsoft/fast-tooling-react";
 import { Background } from "@microsoft/fast-components-react-msft";
