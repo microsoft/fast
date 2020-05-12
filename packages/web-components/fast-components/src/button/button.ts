@@ -13,15 +13,6 @@ export type ButtonAppearance =
 export class Button extends FormAssociated<HTMLInputElement> {
     @attr
     public appearance: ButtonAppearance = "neutral";
-    public appearanceChanged(
-        oldValue: ButtonAppearance,
-        newValue: ButtonAppearance
-    ): void {
-        if (oldValue !== newValue) {
-            this.classList.add(newValue);
-            this.classList.remove(oldValue);
-        }
-    }
 
     @attr({ mode: "boolean" })
     public autofocus: boolean;
