@@ -9,11 +9,8 @@ export const MenuItemTemplate = html<MenuItem>`
         role=${x => x.role}
         aria-checked=${x => (x.role !== MenuItemRole.menuitem ? x.checked : void 0)}
         aria-disabled=${x => x.disabled}
-        aria-haspopup=${x => (x.slottedMenus ? true : void 0)}
-        aria-expanded=${x => x.expanded}
         @keydown=${(x, c) => x.handleMenuItemKeyDown(c.event as KeyboardEvent)}
         @click=${(x, c) => x.handleMenuItemClick(c.event as MouseEvent)}
-        ${children("menuItemChildren")}
     >
         <span part="start" ${ref("startContainer")}>
             <slot
@@ -32,24 +29,5 @@ export const MenuItemTemplate = html<MenuItem>`
                 @slotchange=${x => x.handleEndContentChange()}
             ></slot>
         </span>
-        ${when(
-            x => x.hasMenu,
-            html<MenuItem>`
-                <fast-anchored-region
-                    :anchorElement=${x => x}
-                    :viewportElement=${x => x.viewport}
-                    vertical-positioning-mode="locktodefault"
-                    vertical-default-position="bottom"
-                    vertical-inset="true"
-                    horizontal-positioning-mode="locktodefault"
-                    horizontal-default-position="right"
-                    class="menu"
-                    part="menu"
-                    ${ref("menu")}
-                >
-                    <slot name="menu" ${slotted("slottedMenus")}></slot>
-                </fast-anchored-region>
-            `
-        )}
     </template>
 `;

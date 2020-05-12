@@ -72,15 +72,6 @@ export const MenuItemStyles = css`
         } width: 16px;
         height: 16px;
     }
-
-    ${/*
-    .menu {
-        display: none;
-    } */ ""}
-
-    :host(.expanded) .menu {
-        display: block;
-    }
 `.withBehaviors(
     neutralFillStealthActiveBehavior,
     neutralFillStealthHoverBehavior,
