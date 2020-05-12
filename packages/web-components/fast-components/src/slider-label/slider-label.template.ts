@@ -5,8 +5,7 @@ import { SliderLabel } from "./slider-label";
 export const SliderLabelTemplate = html<SliderLabel>`
     <template
         aria-disabled="${x => x.disabled}"
-        class="${x =>
-            x.sliderOrientation === Orientation.horizontal ? "horizontal" : "vertical"} 
+        class="${x => x.sliderOrientation || Orientation.horizontal} 
             ${x => (x.disabled ? "disabled" : "")}"
     >
         <div ${ref("root")} part="root" class="root" style=${x => x.positionStyle}>

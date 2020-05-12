@@ -7,7 +7,7 @@ export const SliderTemplate = html<Slider>`
     <template
         role="slider"
         class="${x => (x.readOnly ? "readonly" : "")} 
-        ${x => (x.orientation === Orientation.horizontal ? "horizontal" : "vertical")}"
+        ${x => x.orientation || Orientation.horizontal}"
         tabindex="${x => (x.disabled ? null : 0)}"
         aria-valuenow="${x => x.value}"
         aria-valuemin="${x => x.min}"
