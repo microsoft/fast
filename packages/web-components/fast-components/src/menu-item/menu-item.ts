@@ -1,5 +1,6 @@
 import { attr, booleanConverter, FASTElement, observable } from "@microsoft/fast-element";
-import { keyCodeEnter, keyCodeSpace } from "@microsoft/fast-web-utilities";
+import { StartEnd } from "../patterns/start-end";
+import { applyMixins } from "../utilities/apply-mixins";
 
 export enum MenuItemRole {
     menuitem = "menuitem",
@@ -35,29 +36,20 @@ export class MenuItem extends FASTElement {
     }
 
     public handleMenuItemKeyDown = (e: KeyboardEvent): boolean => {
-        this.$emit("click", e);
+        this.change();
 
-        // return true
         return true;
     };
 
     public handleMenuItemClick = (e: MouseEvent): void => {
-        this.$emit("click", e);
+        this.change();
     };
 
-    public start: HTMLSlotElement;
-    public startContainer: HTMLSpanElement;
-    public handleStartContentChange(): void {
-        this.start.assignedNodes().length > 0
-            ? this.startContainer.classList.add("start")
-            : this.startContainer.classList.remove("start");
-    }
-
-    public end: HTMLSlotElement;
-    public endContainer: HTMLSpanElement;
-    public handleEndContentChange(): void {
-        this.end.assignedNodes().length > 0
-            ? this.endContainer.classList.add("end")
-            : this.endContainer.classList.remove("end");
+    private change = (): void => {
+        this.$emit("change");
     }
 }
+
+/* eslint-disable-next-line */
+export interface MenuItem extends StartEnd {}
+applyMixins(MenuItem, StartEnd);

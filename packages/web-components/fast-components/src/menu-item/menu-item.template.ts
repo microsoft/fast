@@ -1,5 +1,6 @@
 import { children, html, ref, slotted, when } from "@microsoft/fast-element";
 import { MenuItem, MenuItemRole } from "./menu-item";
+import { endTemplate, startTemplate } from "../patterns/start-end";
 
 // this template is going to need to have the menu item as DOM and not the host.
 // the reason for this is that we need to have the menu item directly next to any
@@ -12,22 +13,10 @@ export const MenuItemTemplate = html<MenuItem>`
         @keydown=${(x, c) => x.handleMenuItemKeyDown(c.event as KeyboardEvent)}
         @click=${(x, c) => x.handleMenuItemClick(c.event as MouseEvent)}
     >
-        <span part="start" ${ref("startContainer")}>
-            <slot
-                name="start"
-                ${ref("start")}
-                @slotchange=${x => x.handleStartContentChange()}
-            ></slot>
-        </span>
+        ${startTemplate}
         <span class="content" part="content">
             <slot></slot>
         </span>
-        <span part="end" ${ref("endContainer")}>
-            <slot
-                name="end"
-                ${ref("end")}
-                @slotchange=${x => x.handleEndContentChange()}
-            ></slot>
-        </span>
+        ${endTemplate}
     </template>
 `;

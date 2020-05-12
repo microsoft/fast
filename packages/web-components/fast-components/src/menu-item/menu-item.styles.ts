@@ -30,11 +30,8 @@ export const MenuItemStyles = css`
         color: var(--neutral-foreground-rest);
         fill: var(--neutral-foreground-rest);
         cursor: pointer;
-        ${
-            /* Font size and line height are temporary - 
-            replace when adaptive typography is figured out */ ""
-        } font-size: 14px;
-        line-height: 20px;
+        font-size: var(--type-ramp-base-font-size);
+        line-height: var(--type-ramp-base-line-height);
         border-radius: calc(var(--corner-radius) * 1px);
         border: calc(var(--focus-outline-width) * 1px) solid transparent;
     }
