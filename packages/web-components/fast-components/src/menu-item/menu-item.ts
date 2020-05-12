@@ -49,7 +49,7 @@ export class MenuItem extends FASTElement {
 
     private change = (): void => {
         this.$emit("change");
-    }
+    };
 }
 
 /* eslint-disable-next-line */
