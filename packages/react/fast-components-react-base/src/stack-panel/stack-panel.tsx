@@ -371,7 +371,10 @@ class StackPanel extends Foundation<
 
         this.setState({
             renderedRangeStartIndex: Math.max(visibleRangeStartIndex - bufferLength, 0),
-            renderedRangeEndIndex: Math.min(visibleRangeEndIndex + bufferLength, lastIndex),
+            renderedRangeEndIndex: Math.min(
+                visibleRangeEndIndex + bufferLength,
+                lastIndex
+            ),
             isScrollable: this.itemContainerSpan > this.viewportSpan,
         });
     };
@@ -400,7 +403,6 @@ class StackPanel extends Foundation<
                 break;
             }
         }
-55
         return thresholdIndex;
     };
 
@@ -494,16 +496,14 @@ class StackPanel extends Foundation<
         return this.props.orientation === Orientation.vertical
             ? this.rootElement.current.scrollTop
             : this.state.direction === Direction.rtl
-                ? RtlScrollConverter.getScrollLeft(
-                    this.rootElement.current,
-                    this.state.direction
-                )
-                : -(
-                    RtlScrollConverter.getScrollLeft(
-                        this.rootElement.current,
-                        this.state.direction
-                    )
-                );
+            ? RtlScrollConverter.getScrollLeft(
+                  this.rootElement.current,
+                  this.state.direction
+              )
+            : -RtlScrollConverter.getScrollLeft(
+                  this.rootElement.current,
+                  this.state.direction
+              );
     };
 
     /**
@@ -547,10 +547,7 @@ class StackPanel extends Foundation<
         }
 
         const itemPosition: ItemPosition = this.itemPositions[index];
-        return Math.max(
-            0,
-            Math.min(itemPosition.start, this.maxScroll)
-        );
+        return Math.max(0, Math.min(itemPosition.start, this.maxScroll));
     };
 }
 
