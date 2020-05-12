@@ -1,4 +1,3 @@
-/* eslint-disable */
 import chai from "chai";
 import { PropertyChangeNotifier, Subscriber, SubscriberSet } from "./notifier.js";
 const { expect } = chai;
