@@ -185,7 +185,7 @@ export interface ChildrenBehaviorOptions<T = any> extends NodeBehaviorBehaviorOp
 }
 
 // @public (undocumented)
-export function compileTemplate(template: HTMLTemplateElement, directives: Directive[]): {
+export function compileTemplate(template: HTMLTemplateElement, directives: ReadonlyArray<Directive>): {
     fragment: DocumentFragment;
     viewBehaviorFactories: BehaviorFactory[];
     hostBehaviorFactories: BehaviorFactory[];
@@ -287,9 +287,8 @@ export interface ElementView extends View {
     appendTo(node: Node): void;
 }
 
-// @public (undocumented)
+// @public
 export interface ElementViewTemplate {
-    // (undocumented)
     create(host: Element): ElementView;
 }
 
@@ -374,7 +373,7 @@ export class FASTElementDefinition {
 
 // Warning: (ae-forgotten-export) The symbol "TemplateValue" needs to be exported by the entry point index.d.ts
 //
-// @public (undocumented)
+// @public
 export function html<TSource = any, TParent = any>(strings: TemplateStringsArray, ...values: TemplateValue<TSource, TParent>[]): ViewTemplate<TSource, TParent>;
 
 // @public (undocumented)
@@ -403,9 +402,6 @@ export class HTMLView implements ElementView, SyntheticView {
     remove(): void;
     unbind(): void;
 }
-
-// @public (undocumented)
-export const lastAttributeNameRegex: RegExp;
 
 // @public
 export interface Notifier {
@@ -588,9 +584,8 @@ export interface SyntheticView extends View {
     remove(): void;
 }
 
-// @public (undocumented)
+// @public
 export interface SyntheticViewTemplate<TSource = any, TParent = any> {
-    // (undocumented)
     create(): SyntheticView;
 }
 
@@ -609,16 +604,18 @@ export interface View {
     unbind(): void;
 }
 
-// @public (undocumented)
+// @public
 export class ViewTemplate<TSource = any, TParent = any> extends Directive implements ElementViewTemplate, SyntheticViewTemplate {
-    constructor(html: string | HTMLTemplateElement, directives: Directive[]);
-    // (undocumented)
+    constructor(html: string | HTMLTemplateElement, directives: ReadonlyArray<Directive>);
     create(host?: Element): HTMLView;
     // (undocumented)
     createBehavior(target: any): HTMLTemplateBehavior;
     // (undocumented)
     createPlaceholder: (index: number) => string;
     // (undocumented)
+    readonly directives: ReadonlyArray<Directive>;
+    // (undocumented)
+    readonly html: string | HTMLTemplateElement;
     render(source: TSource, host: HTMLElement | string): HTMLView;
     }
 
