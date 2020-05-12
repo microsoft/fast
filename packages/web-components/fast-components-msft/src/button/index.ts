@@ -1,6 +1,6 @@
 import { customElement } from "@microsoft/fast-element";
 import { Button, ButtonTemplate as template } from "@microsoft/fast-components";
-import { ButtonStyles as styles } from "./button.styles";
+import { ButtonStyles as styles } from "./button.styles.js";
 
 // Button
 @customElement({

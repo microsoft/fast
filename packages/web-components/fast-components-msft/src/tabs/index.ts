@@ -1,6 +1,6 @@
 import { customElement } from "@microsoft/fast-element";
 import { Tabs, TabsTemplate as template } from "@microsoft/fast-components";
-import { TabsStyles as styles } from "./tabs.styles";
+import { TabsStyles as styles } from "./tabs.styles.js";
 
 @customElement({
     name: "msft-tabs",

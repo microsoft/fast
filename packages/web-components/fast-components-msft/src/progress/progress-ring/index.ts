@@ -3,7 +3,7 @@ import {
     BaseProgress,
     ProgressRingTemplate as template,
 } from "@microsoft/fast-components";
-import { ProgressRingStyles as styles } from "./progress-ring.styles";
+import { ProgressRingStyles as styles } from "./progress-ring.styles.js";
 
 @customElement({
     name: "msft-progress-ring",

@@ -1,6 +1,6 @@
 import { MSFTDesignSystemProvider } from "../design-system-provider";
 import Examples from "./fixtures/switch.html";
-import { MSFTSwitch } from ".";
+import { MSFTSwitch } from "./";
 
 // Prevent tree-shaking
 MSFTSwitch;
