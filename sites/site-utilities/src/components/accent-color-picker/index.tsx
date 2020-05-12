@@ -7,6 +7,7 @@ export const AccentColorPicker: React.FC<AccentColorPickerProps> = ({
     accentBaseColor,
     onAccentColorPickerChange,
     id,
+    disabled,
 }: React.PropsWithChildren<AccentColorPickerProps>): React.ReactElement => {
     return (
         <div style={{ display: "flex", alignItems: "center" }}>
@@ -25,6 +26,7 @@ export const AccentColorPicker: React.FC<AccentColorPickerProps> = ({
                     height: "22px",
                     border: "none",
                 }}
+                disabled={disabled}
             />
         </div>
     );
