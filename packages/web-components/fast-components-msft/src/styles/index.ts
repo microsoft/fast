@@ -1,1 +1,1 @@
-export * from "./patterns.js";
+export * from "./patterns/index.js";

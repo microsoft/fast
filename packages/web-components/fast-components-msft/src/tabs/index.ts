@@ -8,5 +8,5 @@ import { TabsStyles as styles } from "./tabs.styles.js";
     styles,
 })
 export class MSFTTabs extends Tabs {}
-export * from "./tab";
-export * from "./tab-panel";
+export * from "./tab/index.js";
+export * from "./tab-panel/index.js";
