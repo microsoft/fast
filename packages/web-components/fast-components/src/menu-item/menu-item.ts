@@ -21,10 +21,6 @@ export class MenuItem extends FASTElement {
     @attr
     public checked: boolean;
 
-    public connectedCallback(): void {
-        super.connectedCallback();
-    }
-
     /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
     public handleMenuItemKeyDown = (e: KeyboardEvent): boolean => {
         this.change();
