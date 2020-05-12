@@ -1,7 +1,7 @@
 import { html, slotted } from "@microsoft/fast-element";
-import { SiteNavigation } from "./site-navigation";
+import { Navigation } from "./navigation";
 
-export const SiteNavigationTemplate = html<SiteNavigation>`
+export const NavigationTemplate = html<Navigation>`
     <template>
         <nav>
             <slot ${slotted("items")}></slot>
