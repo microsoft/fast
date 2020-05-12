@@ -1,22 +1,5 @@
 #!/bin/bash
-
-# COMMON TERMINAL CONFIGURATIONS
-red=$(tput setaf 1) 
-green=$(tput setaf 2) 
-reset=$(tput sgr0) 
-bold=$(tput smso)
-unbold=$(tput rmso)
-
-# SET COMMON VARIABLES
-debug=true
-iteration=$(( $RANDOM % 10 ))
-
-
-# SET PRODUCT NAME
-product_name=fast
-[[ $debug == true ]] && echo "${bold}${green}Product Name"${reset}${unbold}
-[[ $debug == true ]] && echo $product_name
-
+source config.sh
 
 # SET GIT REPOSITORY
 git_repo=https://github.com/microsoft/fast-dna
@@ -27,7 +10,9 @@ git_repo=https://github.com/microsoft/fast-dna
 <<COMMENT SET LOCATIONS
 For improved isolation and availability in business continuity disaster recovery (BCDR) 
 regionally pair "East US" and "West US" for indepth details on paired regions 
-Ref: https://docs.microsoft.com/en-us/azure/best-practices-availability-paired-regions
+
+Ref: 
+https://docs.microsoft.com/en-us/azure/best-practices-availability-paired-regions
 COMMENT
 
 location_us_west=westus

@@ -1,20 +1,5 @@
 #!/bin/bash
-
-# COMMON TERMINAL CONFIGURATIONS
-red=$(tput setaf 1) 
-green=$(tput setaf 2) 
-reset=$(tput sgr0) 
-bold=$(tput smso)
-unbold=$(tput rmso)
-
-# SET COMMON VARIABLES
-debug=true
-iteration=$(( $RANDOM % 10 ))
-
-# SET PRODUCT NAME
-product_name=fast
-[[ $debug == true ]] && echo "${bold}${green}Product Name"${reset}${unbold}
-[[ $debug == true ]] && echo $product_name
+source config.sh
 
 <<COMMENT CREATE KEY VAULT
 Takes backups on regular cadence and as objects stored within the Key Vault change.

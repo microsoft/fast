@@ -1,8 +1,5 @@
-# Set Subscription
-az account set --subscription "456b8669-6142-4a7b-b4a6-adf39c80289e"
-
-# List configurations for Component Explorer
-az webapp config show --name fast-explore --resource-group fast-design-rg
+#!/bin/bash
+source config.sh
 
 # resource group = fast-staging-rg
 az webapp config set --name fast-design \
