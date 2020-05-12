@@ -4,4 +4,5 @@ export interface DirectionSwitchProps {
     id: string;
     direction: Direction;
     onUpdateDirection: any;
+    disabled: boolean;
 }

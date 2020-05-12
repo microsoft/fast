@@ -45,6 +45,7 @@ import {
     ModularViewer,
     SelectDevice,
     StandardControlPlugin,
+    ViewerCustomAction,
 } from "@microsoft/fast-tooling-react";
 import {
     ControlContext,
@@ -66,14 +67,13 @@ import {
     ProjectFile,
     ProjectFileView,
 } from "./creator.props";
-import { exampleData, LinkedDataStack } from "./msft-components/example-data";
+import { exampleData } from "./msft-components/example-data";
 import { ProjectFileTransfer } from "./components";
 import { selectDeviceOverrideStyles } from "./utilities/style-overrides";
 import designSystemSchema from "./msft-component-helpers/design-system.schema";
 import { previewReady } from "./preview";
 
 const fastMessageSystemWorker = new FASTMessageSystemWorker();
-let ajvMapper: AjvMapper;
 let fastMessageSystem: MessageSystem;
 let componentLinkedDataId: string = "root";
 let componentNavigationConfigId: string = "";
@@ -150,17 +150,14 @@ class Creator extends Foundation<CreatorHandledProps, {}, CreatorState> {
                 [initialViewId]: initialView,
             },
             activeDictionaryId: componentLinkedDataId,
-            linkedDataStack: null,
-            linkedDataIdsForStack: null,
+            previewReady: false,
         };
 
         if ((window as any).Worker) {
             fastMessageSystem = new MessageSystem({
                 webWorker: fastMessageSystemWorker,
-                dataDictionary: initialView.dataDictionary,
-                schemaDictionary,
             });
-            ajvMapper = new AjvMapper({
+            new AjvMapper({
                 messageSystem: fastMessageSystem,
             });
             fastMessageSystem.add({ onMessage: this.handleMessageSystem });
@@ -211,6 +208,7 @@ class Creator extends Foundation<CreatorHandledProps, {}, CreatorState> {
                                         activeDeviceId={this.state.deviceId}
                                         onUpdateDevice={this.handleUpdateDevice}
                                         jssStyleSheet={selectDeviceOverrideStyles}
+                                        disabled={!this.state.previewReady}
                                     />
                                     <Dimension
                                         width={this.state.width}
@@ -219,6 +217,7 @@ class Creator extends Foundation<CreatorHandledProps, {}, CreatorState> {
                                         onUpdateHeight={this.handleUpdateHeight}
                                         onUpdateOrientation={this.handleUpdateOrientation}
                                         onDimensionChange={this.handleDimensionChange}
+                                        disabled={!this.state.previewReady}
                                     />
                                     <div
                                         style={{
@@ -230,11 +229,13 @@ class Creator extends Foundation<CreatorHandledProps, {}, CreatorState> {
                                             id={"theme-selector"}
                                             theme={this.state.theme}
                                             onUpdateTheme={this.handleUpdateTheme}
+                                            disabled={!this.state.previewReady}
                                         />
                                         <DirectionSwitch
                                             id={"direction-switch"}
                                             direction={this.state.direction}
                                             onUpdateDirection={this.handleUpdateDirection}
+                                            disabled={!this.state.previewReady}
                                         />
                                         <AccentColorPicker
                                             id={"accent-color-picker"}
@@ -242,6 +243,7 @@ class Creator extends Foundation<CreatorHandledProps, {}, CreatorState> {
                                             onAccentColorPickerChange={
                                                 this.handleAccentColorPickerChange
                                             }
+                                            disabled={!this.state.previewReady}
                                         />
                                         <ActionTrigger
                                             glyph={dotDotDotGlyph}
@@ -251,6 +253,7 @@ class Creator extends Foundation<CreatorHandledProps, {}, CreatorState> {
                                                 padding: "0",
                                             }}
                                             onClick={this.handleShowDesignSystemEditor}
+                                            disabled={!this.state.previewReady}
                                         />
                                     </div>
                                 </Background>
@@ -286,7 +289,7 @@ class Creator extends Foundation<CreatorHandledProps, {}, CreatorState> {
                                                 <LinkedDataControl
                                                     {...config}
                                                     onChange={this.handleAddLinkedData(
-                                                        config.onChange
+                                                        config.dataLocation
                                                     )}
                                                 />
                                             );
@@ -302,26 +305,17 @@ class Creator extends Foundation<CreatorHandledProps, {}, CreatorState> {
     }
 
     private handleAddLinkedData = (
-        onChange: (e: ControlOnChangeConfig) => void
+        dataLocation: string
     ): ((e: ControlOnChangeConfig) => void) => {
         return (e: ControlOnChangeConfig): void => {
-            onChange({
-                ...e,
-                value: [
-                    {
-                        ...e.value[0],
-                        data: exampleData[e.value[0].schemaId].props,
-                    },
-                ],
+            fastMessageSystem.postMessage({
+                type: MessageSystemType.data,
+                action: MessageSystemDataTypeAction.addLinkedData,
+                dataLocation,
+                dictionaryId: this.state.activeDictionaryId,
+                index: e.index,
+                linkedData: exampleData[e.value[0].schemaId],
             });
-
-            if (exampleData[e.value[0].schemaId].linkedData) {
-                this.setState({
-                    linkedDataStack: [
-                        exampleData[e.value[0].schemaId].linkedData as LinkedDataStack,
-                    ],
-                });
-            }
         };
     };
 
@@ -337,17 +331,6 @@ class Creator extends Foundation<CreatorHandledProps, {}, CreatorState> {
             };
         }
 
-        // When linked data is added, check to see if other linked data
-        // should be automatically added, for example a text linked data
-        // if Heading has been added. This is done via the private array linkedDataStack
-        if (
-            e.data.type === MessageSystemType.data &&
-            e.data.action === MessageSystemDataTypeAction.addLinkedData &&
-            this.state.linkedDataStack !== null
-        ) {
-            updatedState.linkedDataIdsForStack = e.data.linkedDataIds;
-        }
-
         if (
             e.data.type === MessageSystemType.navigation &&
             e.data.activeDictionaryId !== designSystemLinkedDataId
@@ -356,12 +339,20 @@ class Creator extends Foundation<CreatorHandledProps, {}, CreatorState> {
             componentNavigationConfigId = e.data.activeNavigationConfigId;
         }
 
-        if (e.data.type === MessageSystemType.custom && e.data.action === previewReady) {
-            fastMessageSystem.postMessage({
-                type: MessageSystemType.initialize,
-                data: this.state.views[this.state.activeView].dataDictionary,
-                schemaDictionary,
-            });
+        if (
+            e.data.type === MessageSystemType.custom &&
+            e.data.action === ViewerCustomAction.response
+        ) {
+            if (e.data.value === previewReady) {
+                fastMessageSystem.postMessage({
+                    type: MessageSystemType.initialize,
+                    data: this.state.views[this.state.activeView].dataDictionary,
+                    schemaDictionary,
+                });
+                updatedState.previewReady = true;
+            } else if (e.data.value.type === MessageSystemType.navigation) {
+                fastMessageSystem.postMessage(e.data.value);
+            }
         }
 
         this.setState(updatedState as CreatorState);
@@ -379,40 +370,6 @@ class Creator extends Foundation<CreatorHandledProps, {}, CreatorState> {
 
     public componentDidMount(): void {
         this.setViewerToFullSize();
-    }
-
-    public componentDidUpdate(): void {
-        if (
-            this.state.linkedDataStack !== null &&
-            this.state.linkedDataIdsForStack !== null
-        ) {
-            for (
-                let i = 0, linkedDataLength = this.state.linkedDataStack.length;
-                i < linkedDataLength;
-                i++
-            ) {
-                fastMessageSystem.postMessage({
-                    type: MessageSystemType.data,
-                    action: MessageSystemDataTypeAction.addLinkedData,
-                    dictionaryId: this.state.linkedDataIdsForStack[i].id,
-                    dataLocation: this.state.linkedDataStack[i].dataLocation,
-                    linkedData: [
-                        {
-                            ...this.state.linkedDataStack[i].data[0],
-                            parent: {
-                                id: this.state.linkedDataIdsForStack[i].id,
-                                dataLocation: this.state.linkedDataStack[i].dataLocation,
-                            },
-                        },
-                    ],
-                });
-            }
-
-            this.setState({
-                linkedDataStack: null,
-                linkedDataIdsForStack: null,
-            });
-        }
     }
 
     private handleShowDesignSystemEditor = (): void => {
