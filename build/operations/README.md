@@ -105,7 +105,7 @@ Front Door is a modern Content Delivery Network (CDN) and so along with dynamic 
 Uses read-access geo-redundant storage (RA-GRS), where the data is replicated to a secondary region. You have read-only access to the data in the secondary region through a separate endpoint. If there is a regional outage or disaster, the Azure Storage team might decide to perform a geo-failover to the secondary region. There is no customer action required for this failover. [learn more](https://docs.microsoft.com/en-us/azure/storage/common/storage-redundancy)
 
 ### Key Vault
-Uses one key vault per environment (development, staging, and production)
+Uses one key vault per environment (development, staging, and production). Takes backups on regular cadence and as objects stored within the Key Vault change.
 
 #### TODO
 1. Setup Permissions for management groups
