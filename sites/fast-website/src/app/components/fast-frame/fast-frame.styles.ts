@@ -1,5 +1,10 @@
 import { css } from "@microsoft/fast-element";
 import { display } from "@microsoft/fast-components";
+import {
+    accentFillRestBehavior,
+    accentForegroundCutRestBehavior,
+    neutralForegroundRestBehavior,
+} from "@microsoft/fast-components";
 
 export const FastFrameStyles = css`
     ${display("block")} :host {
@@ -24,13 +29,101 @@ export const FastFrameStyles = css`
         display: flex;
         flex-direction: column;
         width: 100%;
-        align-items: start;
+        text-align: start;
     }
 
     .preview {
-        display: flex;
-        background: #c8c8c8;
-        align-items: center;
-        justify-content: center;
+        display: grid;
+        grid-gap: 40px;
+        grid-template-columns: 1fr 1fr;
+        padding: 40px;
     }
-`;
+
+    .image-container {
+        /** Temp background */
+        background: #C8C8C8;
+        width: 100%;
+        height: 215px;
+        display: flex;
+    }
+
+    .text-container {
+        display: flex;
+        flex-direction: column;
+        padding: 20px;
+        text-align: start;
+    }
+
+    .badge {
+        align-self: flex-end;
+        margin: 20px;
+    }
+
+    .control-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-gap: 20px
+    }
+
+    .control-container p {
+        margin-inline-start: calc(var(--design-unit) * 2px + 2px);
+    }
+
+    .control-container-column {
+        display: flex;
+        flex-flow: row wrap;
+    }
+
+    .control-container-grid {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        text-align: start;
+    }
+
+    .checkbox {
+        grid-row: 2;
+    }
+
+    .checkbox-label {
+        grid-row: 2;
+        grid-column: 2;
+    }
+
+    .icon-cut {
+        fill: var(--accent-foreground-cut-rest);
+    }
+
+    .icon {
+        fill: var(--neutral-foreground-rest);
+    }
+
+    .sample-control {
+        display: flex;
+        align-items: center;
+        width: 100%;
+    }
+
+    .sample-control-actions {
+        margin-inline-start: auto;
+    }
+    
+    .sample-control-text {
+        margin-inline-start: calc(var(--design-unit) * 2px + 2px);
+    }
+
+    .sample-control-icon {
+        width: 21px;
+        height: 21px;
+        background-color: var(--accent-fill-rest);
+        border-radius: calc(var(--corner-radius) * 1px);
+    }
+
+    fast-badge {
+        --badge-fill-primary: #D223CB;
+        --badge-color-primary: white;
+    }
+`.withBehaviors(
+    accentFillRestBehavior,
+    accentForegroundCutRestBehavior,
+    neutralForegroundRestBehavior,
+)
