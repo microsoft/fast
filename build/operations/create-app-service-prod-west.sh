@@ -1,39 +1,8 @@
 #!/bin/bash
 source config.sh
 
-# SET GIT REPOSITORY
-git_repo=https://github.com/microsoft/fast-dna
-[[ $debug == true ]] && echo "${bold}${green}Git Repository"${reset}${unbold}
-[[ $debug == true ]] && echo $git_repo
-
-
-: 'SET LOCATIONS
-For improved isolation and availability in business continuity disaster recovery (BCDR) 
-regionally pair "East US" and "West US" for indepth details on paired regions 
-
-Ref: 
-https://docs.microsoft.com/en-us/azure/best-practices-availability-paired-regions
-COMMENT'
-
-location_us_west=westus
-location_us_east=eastus
-[[ $debug == true ]] && echo "${bold}${green}Locations"${reset}${unbold}
-[[ $debug == true ]] && echo $location_us_west
-#[[ $debug == true ]] && echo $location_us_east
-
-
-# SET RESOURCE GROUPS
-resource_group_us_west=$product_name-$location_us_west-rg
-#resource_group_us_east=$product_name-$location_us_east-rg
-
-[[ $debug == true ]] && echo "${bold}${green}Resource Groups"${reset}${unbold}
-[[ $debug == true ]] && echo $resource_group_us_west
-#[[ $debug == true ]] && echo $resource_group_us_east
-
-
 # CREATE RESOURCE GROUP
-# Available locations?  `$ az account list-locations`
-az group create --location $location_us_west --name $resource_group_us_west
+az group create --location $location --name $resource_group
 
 
 # CREATE APP SERVICE PLAN
@@ -41,7 +10,7 @@ app_service_plan=$product_name-asp-$iteration
 [[ $debug == true ]] && echo "${bold}${green}App Service Plan"${reset}${unbold}
 [[ $debug == true ]] && echo $app_service_plan
 
-az appservice plan create --name $app_service_plan --resource-group $resource_group_us_west --location $location_us_west \
+az appservice plan create --name $app_service_plan --resource-group $resource_group --location $location \
     --sku P3V2 \
     --only-show-errors \
     --is-linux
@@ -56,7 +25,7 @@ app_service=$product_name-as-$iteration
 az webapp list-runtimes --linux
 COMMENT
 
-az webapp create --name $app_service --plan $app_service_plan --resource-group $resource_group_us_west \
+az webapp create --name $app_service --plan $app_service_plan --resource-group $resource_group \
     --runtime "NODE|12-lts"
 #    --startup-file "pm2 start /home/site/wwwroot/server.js --no-daemon"
 
@@ -65,17 +34,17 @@ Ref:
 https://docs.microsoft.com/en-us/cli/azure/webapp/config/appsettings?view=azure-cli-latest#az-webapp-config-appsettings-set
 
 Validate:
-az webapp config appsettings list --name $app_service --resource-group $resource_group_us_west
+az webapp config appsettings list --name $app_service --resource-group $resource_group
 
 Set:
 az webapp config appsettings set \
      --name $app_service \
-     --resource-group $resource_group_us_west \
+     --resource-group $resource_group \
      --settings key=value
 '
 
 ## CONFIGURE BACKUP SNAPSHOTS
-az webapp config snapshot create --resource-group $resource_group_us_west --webapp-name $app_service \
+az webapp config snapshot create --resource-group $resource_group --webapp-name $app_service \
     --container-url 
 
 : 'CONFIGURE LOGGING
@@ -88,14 +57,14 @@ az webapp log config --name $app_service\
     --docker-container-logging filesystem \
     --failed-request-tracing true \
     --level error \
-    --resource-group $resource_group_us_west
+    --resource-group $resource_group
     --web-server-logging filesystem
 
 
 : 'Deploy code from a public GitHub repository. 
 #az webapp up ... https://docs.microsoft.com/en-us/cli/azure/webapp?view=azure-cli-latest#az-webapp-up 
 
-#az webapp deployment source config --name $app_service --resource-group $resource_group_us_central \
+#az webapp deployment source config --name $app_service --resource-group $resource_group \
 #--repo-url $gitrepo --branch master --manual-integration
 
 # Copy the result of the following command into a browser to see the web app.
