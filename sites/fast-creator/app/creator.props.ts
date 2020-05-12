@@ -1,9 +1,8 @@
 import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 import { Direction } from "@microsoft/fast-web-utilities";
-import { DataDictionary, LinkedData } from "@microsoft/fast-tooling";
+import { DataDictionary } from "@microsoft/fast-tooling";
 import { StandardLuminance } from "@microsoft/fast-components-styles-msft";
 import { CreatorClassNameContract } from "./creator.style";
-import { LinkedDataStack } from "./msft-components/example-data";
 
 /**
  * Data for a single view
@@ -72,18 +71,6 @@ export interface ProjectFile {
     views: {
         [key: string]: ProjectFileView;
     };
-
-    /**
-     * The stack of linked data that needs to be resolved
-     * Note: This should be null when it's used as a project file
-     */
-    linkedDataStack: LinkedDataStack[] | null;
-
-    /**
-     * The ditionary ids that correspond to the linked data
-     * Note: This should be null when it's used as a project file
-     */
-    linkedDataIdsForStack: LinkedData[] | null;
 }
 
 export type CreatorManagedClasses = ManagedClasses<CreatorClassNameContract>;
@@ -92,4 +79,9 @@ export type CreatorHandledProps = CreatorManagedClasses;
 
 export type CreatorProps = CreatorHandledProps;
 
-export type CreatorState = ProjectFile;
+export interface CreatorState extends ProjectFile {
+    /**
+     * The preview is ready state
+     */
+    previewReady: boolean;
+}

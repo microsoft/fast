@@ -8,6 +8,7 @@ export const DirectionSwitch: React.FC<DirectionSwitchProps> = ({
     id,
     direction,
     onUpdateDirection,
+    disabled,
 }: React.PropsWithChildren<DirectionSwitchProps>): React.ReactElement => {
     return (
         <div style={{ display: "flex", alignItems: "center" }}>
@@ -21,6 +22,7 @@ export const DirectionSwitch: React.FC<DirectionSwitchProps> = ({
                 selectedMessage={""}
                 unselectedMessage={""}
                 statusMessageId={"direction"}
+                disabled={disabled}
             />
         </div>
     );
