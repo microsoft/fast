@@ -333,7 +333,6 @@ export class AnchoredRegion extends FASTElement {
         this.resizeDetector.observe(this.region);
 
         this.viewportElement.addEventListener("scroll", this.handleScroll);
-        console.log("observers connected");
     };
 
     /**
