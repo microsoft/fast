@@ -7,13 +7,13 @@ git_repo=https://github.com/microsoft/fast-dna
 [[ $debug == true ]] && echo $git_repo
 
 
-<<COMMENT SET LOCATIONS
+: 'SET LOCATIONS
 For improved isolation and availability in business continuity disaster recovery (BCDR) 
 regionally pair "East US" and "West US" for indepth details on paired regions 
 
 Ref: 
 https://docs.microsoft.com/en-us/azure/best-practices-availability-paired-regions
-COMMENT
+COMMENT'
 
 location_us_west=westus
 location_us_east=eastus
@@ -60,7 +60,7 @@ az webapp create --name $app_service --plan $app_service_plan --resource-group $
     --runtime "NODE|12-lts"
 #    --startup-file "pm2 start /home/site/wwwroot/server.js --no-daemon"
 
-<<COMMENT CONFIGURE APP SERVICE
+: 'CONFIGURE APP SERVICE
 Ref:
 https://docs.microsoft.com/en-us/cli/azure/webapp/config/appsettings?view=azure-cli-latest#az-webapp-config-appsettings-set
 
@@ -72,15 +72,15 @@ az webapp config appsettings set \
      --name $app_service \
      --resource-group $resource_group_us_west \
      --settings key=value
-COMMENT
+'
 
 ## CONFIGURE BACKUP SNAPSHOTS
 az webapp config snapshot create --resource-group $resource_group_us_west --webapp-name $app_service \
     --container-url 
 
-<<COMMENT CONFIGURE LOGGING
+: 'CONFIGURE LOGGING
 Description: https://docs.microsoft.com/en-us/cli/azure/webapp/log?view=azure-cli-latest
-COMMENT
+'
 
 az webapp log config --name $app_service\
     --application-logging true \
@@ -92,7 +92,7 @@ az webapp log config --name $app_service\
     --web-server-logging filesystem
 
 
-<<COMMENT Deploy code from a public GitHub repository. 
+: 'Deploy code from a public GitHub repository. 
 #az webapp up ... https://docs.microsoft.com/en-us/cli/azure/webapp?view=azure-cli-latest#az-webapp-up 
 
 #az webapp deployment source config --name $app_service --resource-group $resource_group_us_central \
@@ -113,4 +113,4 @@ echo http://$app_service.azurewebsites.net
 ## Manual Follow Ups
 # 1. How to install security agents in script on newly created VMs
 # . Set Custom Domain
-COMMENT
+'

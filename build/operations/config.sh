@@ -1,10 +1,10 @@
 #!/bin/bash
 
-<<COMMENT SET DEFAULT CONFIGURATION
+: 'SET DEFAULT CONFIGURATION
 File is located at $AZURE_CONFIG_DIR/config and generated on first run of `$ bash login.sh`
 * On Linux/MacOS: $HOME/.azure
 * On Windows: %USERPROFILE%\.azure
-COMMENT
+'
 
 az configure --defaults output=table disable_confirm_prompt=false enable_log_file=yes log_dir=/log/azure
 

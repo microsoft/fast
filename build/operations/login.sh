@@ -4,12 +4,16 @@ source config.sh
 # LOGIN TO AZURE CLOUD
 az login
 
-<<COMMENT Set Subscription
+: 'SET SUBSCRIPTION
 Three subscriptions exist, one for each environment, in config.sh
 Choose one to reference and work with when loggin in
-COMMENT
-subscription = subscription_production
+'
+subscription=$subscription_production
+[[ $debug == true ]] && echo "${bold}${green}Subscription"${reset}${unbold}
+[[ $debug == true ]] && echo $subscription
+
+# SET SUBSCRIPTION
 az account set --subscription $subscription
 
-# Confirm Current Subscription
+# VERIFY SUBSCRIPTION
 az account show --subscription $subscription

@@ -1,12 +1,12 @@
 #!/bin/bash
 source config.sh
 
-<<COMMENT CREATE KEY VAULT
+: 'CREATE KEY VAULT
 Takes backups on regular cadence and as objects stored within the Key Vault change.
 
 Ref: 
 https://docs.microsoft.com/en-us/azure/key-vault/general/best-practices
-COMMENT
+'
 
 keyvault=$product_name"-kv-"
 [[ $debug == true ]] && echo "${bold}${green}Key Vault"${reset}${unbold}
@@ -14,7 +14,7 @@ keyvault=$product_name"-kv-"
 
 az keyvault create -name $keyvault create
 
-<<COMMENT TODO'S
+: 'TODOs
 1. set access policy
 2. set backup
 3. set logging
@@ -25,4 +25,4 @@ az keyvault create -name $keyvault create
 2. add keyvault here
 3. add cnd here
 4. add frontdoor
-COMMENT
+'
