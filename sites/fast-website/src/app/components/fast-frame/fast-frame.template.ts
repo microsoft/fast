@@ -87,7 +87,61 @@ export const FastFrameTemplate = html<FastFrame>`
                 </fast-tab-panel>
             </fast-tabs>
             <div class="preview">
-                Preview goes here
+                <fast-card>
+                    <div class="image-container">
+                        <fast-badge fill="primary" color="primary" class="badge">Badge</fast-badge>
+                    </div>
+                    <div class="text-container">
+                        <h3>Card Options</h3>
+                        <p>At purus lectus quis habitant commodo, cras. Aliquam malesuada velit a tortor. Felis orci tellus netus risus et ultricies augue aliquet. Suscipit mattis mus amet nibh...</p>
+                        <fast-divider></fast-divider>
+                        <div class="sample-control">
+                            <span class="sample-control-icon"></span>
+                            <span class="sample-control-text">Label</span>
+                            <div class="sample-control-actions">
+                                <fast-button appearance="stealth">                                  
+                                    <svg class="icon" width="12" height="14" viewBox="0 0 12 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M11.4857 6.17143C11.7461 6.17143 11.9613 6.36491 11.9953 6.61593L12 6.68571V11.4863C12 12.6747 11.0699 13.6458 9.89789 13.7114L9.77143 13.7149H2.22857C1.04021 13.7149 0.0690885 12.7847 0.00352789 11.6128L0 11.4863V6.68571C0 6.40168 0.230254 6.17143 0.514286 6.17143C0.774649 6.17143 0.989822 6.36491 1.02388 6.61593L1.02857 6.68571V11.4863C1.02857 12.1159 1.51345 12.6323 2.13015 12.6823L2.22857 12.6863H9.77143C10.401 12.6863 10.9174 12.2014 10.9675 11.5847L10.9714 11.4863V6.68571C10.9714 6.40168 11.2017 6.17143 11.4857 6.17143ZM2.20484 3.57689L5.63084 0.150644C5.81331 -0.0318436 6.09883 -0.0485494 6.30017 0.100608L6.35786 0.150331L9.78976 3.57658C9.99077 3.77726 9.99103 4.10288 9.79036 4.30389C9.60793 4.48662 9.32223 4.50346 9.12077 4.35424L9.06305 4.30449L6.51017 1.75611L6.51078 9.77482C6.51078 10.0352 6.3173 10.2504 6.06628 10.2844L5.99649 10.2891C5.73613 10.2891 5.52096 10.0956 5.4869 9.84461L5.48221 9.77482L5.4816 1.75406L2.93218 4.30418C2.7496 4.48677 2.46389 4.50337 2.26255 4.354L2.20487 4.3042C2.02228 4.12163 2.00567 3.83592 2.15505 3.63458L2.20484 3.57689L5.63084 0.150644L2.20484 3.57689Z"/>
+                                    </svg>                        
+                                </fast-button>
+                                <fast-button appearance="stealth">  
+                                    <svg class="icon" width="12" height="3" viewBox="0 0 12 3" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M6 0C6.70595 0 7.27823 0.671573 7.27823 1.5C7.27823 2.32843 6.70595 3 6 3C5.29405 3 4.72177 2.32843 4.72177 1.5C4.72177 0.671573 5.29405 0 6 0ZM10.7218 0C11.4277 0 12 0.671573 12 1.5C12 2.32843 11.4277 3 10.7218 3C10.0158 3 9.44354 2.32843 9.44354 1.5C9.44354 0.671573 10.0158 0 10.7218 0ZM1.27823 0C1.98418 0 2.55646 0.671573 2.55646 1.5C2.55646 2.32843 1.98418 3 1.27823 3C0.572284 3 0 2.32843 0 1.5C0 0.671573 0.572284 0 1.27823 0Z"/>
+                                    </svg>       
+                                </fast-button>
+                            </div>
+                        </div>
+                    </div>
+                </fast-card>
+                <div>
+                    <fast-progress></fast-progress>
+                    <div class="control-container">
+                        <div class="control-container-column">
+                        <fast-radio>Radio 1</fast-radio>
+                        <fast-radio>Radio 2</fast-radio>
+                        </div>
+                        <div class="control-container-grid">
+                            <fast-switch></fast-switch>
+                            <p>Toggle</p>
+                            <fast-checkbox class="checkbox"></fast-checkbox>
+                            <p class="checkbox-label">Checkbox</p>
+                        </div>
+                    </div>
+                    <div class="control-container">
+                        <fast-button appearance="accent">
+                            Button                            
+                            <svg class="icon-cut" slot="end" width="11" height="15" viewBox="0 0 11 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M10.4309 13.8721C10.7451 13.872 11 14.1238 11 14.4345C11 14.7452 10.7454 14.9971 10.4312 14.9972L0.56913 15C0.254899 15.0001 0 14.7483 0 14.4376C0 14.127 0.25457 13.875 0.568801 13.8749L10.4309 13.8721ZM5.42279 0.0051353L5.5 0C5.78804 0 6.0261 0.211628 6.06377 0.486201L6.06897 0.562533L6.06821 10.8269L8.89165 8.03648C9.09367 7.83679 9.40976 7.81866 9.63248 7.98209L9.69629 8.03656C9.89827 8.23629 9.9166 8.54881 9.7513 8.76901L9.69621 8.8321L5.90489 12.5798C5.70299 12.7794 5.38711 12.7976 5.16438 12.6344L5.10057 12.58L1.30485 8.83233C1.08251 8.6128 1.08226 8.25662 1.3043 8.03679C1.50616 7.83694 1.82224 7.81857 2.04509 7.98182L2.10894 8.03625L4.93028 10.8216L4.93103 0.562533C4.93103 0.277745 5.14508 0.0423843 5.42279 0.0051353L5.5 0L5.42279 0.0051353Z"/>
+                            </svg>
+                        </fast-button>
+                        <fast-button appearance="neutral">
+                            Button              
+                            <svg class="icon" slot="end" width="14" height="16" viewBox="0 0 14 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M2.52634 1.20452C1.70406 0.753412 0.668346 1.04814 0.21302 1.86281C0.0733009 2.11279 0 2.39386 0 2.67961V14.307C0 15.2383 0.761969 15.9932 1.7019 15.9932C1.9904 15.9932 2.27415 15.9205 2.52652 15.782L13.1224 9.9675C13.9446 9.5163 14.242 8.49015 13.7866 7.67553C13.6318 7.39875 13.4016 7.17069 13.1222 7.01742L2.52634 1.20452ZM12.794 8.22018C12.9459 8.49172 12.8467 8.83377 12.5727 8.98417L1.97678 14.7987C1.89265 14.8449 1.79807 14.8691 1.7019 14.8691C1.38859 14.8691 1.1346 14.6174 1.1346 14.307V2.67961C1.1346 2.58436 1.15904 2.49067 1.20561 2.40734C1.35738 2.13579 1.70262 2.03754 1.97672 2.18791L12.5726 8.00081C12.6657 8.0519 12.7425 8.12792 12.794 8.22018Z"/>
+                            </svg>
+                        </fast-button>
+                    </div>
+                </div>
             </div>
         </div>
     </template>
