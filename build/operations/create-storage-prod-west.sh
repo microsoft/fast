@@ -1,9 +1,13 @@
-## CREATE STORAGE
-# Standard Performance, Read-access GEO-Redundant, name with numbers and lowercase letters only
-# Description: https://docs.microsoft.com/en-us/azure/storage/common/storage-redundancy
-# Configurations: https://docs.microsoft.com/en-us/cli/azure/storage/account?view=azure-cli-latest#az-storage-account-create
+<<COMMENT CREATE STORAGE
+Standard Performance, Read-access GEO-Redundant, name with numbers and lowercase letters only
 
-storage=$product_name"storeage"$iteration
+Ref:
+https://docs.microsoft.com/en-us/azure/storage/common/storage-redundancy
+https://docs.microsoft.com/en-us/cli/azure/storage/account?view=azure-cli-latest#az-storage-account-create
+
+COMMENT
+
+storage=$product_name"storeage"
 [[ $debug == true ]] && echo "${bold}${green}Storage"${reset}${unbold}
 [[ $debug == true ]] && echo $storage
 

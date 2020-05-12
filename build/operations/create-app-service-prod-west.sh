@@ -7,15 +7,6 @@ reset=$(tput sgr0)
 bold=$(tput smso)
 unbold=$(tput rmso)
 
-# COMMON NAMING STANDARDS
-## Always use lower case letters
-## 1. Prepend with the product name
-##    Example: "fast"
-## 2. Append the Azure Service with the first letters of each service type
-##    Example: "as", would be used for App Service
-## 3. Append with random number from 1-9
-##    Example, fast-as-1
-
 # SET COMMON VARIABLES
 debug=true
 iteration=$(( $RANDOM % 10 ))
@@ -33,10 +24,12 @@ git_repo=https://github.com/microsoft/fast-dna
 [[ $debug == true ]] && echo $git_repo
 
 
-# SET LOCATIONS
-## For improved isolation and availability in business continuity disaster recovery (BCDR)
-## regionally pair "East US" and "West US" for indepth details on paired regions 
-## Ref: https://docs.microsoft.com/en-us/azure/best-practices-availability-paired-regions
+<<COMMENT SET LOCATIONS
+For improved isolation and availability in business continuity disaster recovery (BCDR) 
+regionally pair "East US" and "West US" for indepth details on paired regions 
+Ref: https://docs.microsoft.com/en-us/azure/best-practices-availability-paired-regions
+COMMENT
+
 location_us_west=westus
 location_us_east=eastus
 [[ $debug == true ]] && echo "${bold}${green}Locations"${reset}${unbold}
@@ -54,7 +47,7 @@ resource_group_us_west=$product_name-$location_us_west-rg
 
 
 # CREATE RESOURCE GROUP
-## Available locations?  `$ az account list-locations`
+# Available locations?  `$ az account list-locations`
 az group create --location $location_us_west --name $resource_group_us_west
 
 
@@ -74,30 +67,35 @@ app_service=$product_name-as-$iteration
 [[ $debug == true ]] && echo "${bold}${green}App Service"${reset}${unbold}
 [[ $debug == true ]] && echo $app_service
 
-## Find Linux runtimes
-# az webapp list-runtimes --linux
+<<COMMENT Find Linux runtimes
+az webapp list-runtimes --linux
+COMMENT
 
 az webapp create --name $app_service --plan $app_service_plan --resource-group $resource_group_us_west \
     --runtime "NODE|12-lts"
 #    --startup-file "pm2 start /home/site/wwwroot/server.js --no-daemon"
 
-## CONFIGURE APP SERVICE
-# For example, configuring PORT for SPAs
-# az webapp config appsettings list --name $app_service --resource-group $resource_group_us_west
-# https://docs.microsoft.com/en-us/cli/azure/webapp/config/appsettings?view=azure-cli-latest#az-webapp-config-appsettings-set
+<<COMMENT CONFIGURE APP SERVICE
+Ref:
+https://docs.microsoft.com/en-us/cli/azure/webapp/config/appsettings?view=azure-cli-latest#az-webapp-config-appsettings-set
 
-# az webapp config appsettings set \
-#     --name $app_service \
-#     --resource-group $resource_group_us_west \
-#     --settings key=value
+Validate:
+az webapp config appsettings list --name $app_service --resource-group $resource_group_us_west
 
+Set:
+az webapp config appsettings set \
+     --name $app_service \
+     --resource-group $resource_group_us_west \
+     --settings key=value
+COMMENT
 
 ## CONFIGURE BACKUP SNAPSHOTS
 az webapp config snapshot create --resource-group $resource_group_us_west --webapp-name $app_service \
     --container-url 
 
-## CONFIGURE LOGGING
-# Description: https://docs.microsoft.com/en-us/cli/azure/webapp/log?view=azure-cli-latest
+<<COMMENT CONFIGURE LOGGING
+Description: https://docs.microsoft.com/en-us/cli/azure/webapp/log?view=azure-cli-latest
+COMMENT
 
 az webapp log config --name $app_service\
     --application-logging true \
@@ -109,7 +107,7 @@ az webapp log config --name $app_service\
     --web-server-logging filesystem
 
 
-# Deploy code from a public GitHub repository. 
+<<COMMENT Deploy code from a public GitHub repository. 
 #az webapp up ... https://docs.microsoft.com/en-us/cli/azure/webapp?view=azure-cli-latest#az-webapp-up 
 
 #az webapp deployment source config --name $app_service --resource-group $resource_group_us_central \
@@ -117,9 +115,6 @@ az webapp log config --name $app_service\
 
 # Copy the result of the following command into a browser to see the web app.
 echo http://$app_service.azurewebsites.net
-
-
-
 
 ## Script Additions
 # ?3. Turn FTP state to disabled
@@ -130,14 +125,7 @@ echo http://$app_service.azurewebsites.net
 # 9. Configure Azure CDN
 # 10. Configure host name: https://docs.microsoft.com/en-us/cli/azure/webapp/config/hostname?view=azure-cli-latest#az-webapp-config-hostname-add
 
-
 ## Manual Follow Ups
 # 1. How to install security agents in script on newly created VMs
-
-
-
-
 # . Set Custom Domain
-
-
-exit
+COMMENT

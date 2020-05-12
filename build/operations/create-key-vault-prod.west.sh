@@ -1,0 +1,43 @@
+#!/bin/bash
+
+# COMMON TERMINAL CONFIGURATIONS
+red=$(tput setaf 1) 
+green=$(tput setaf 2) 
+reset=$(tput sgr0) 
+bold=$(tput smso)
+unbold=$(tput rmso)
+
+# SET COMMON VARIABLES
+debug=true
+iteration=$(( $RANDOM % 10 ))
+
+# SET PRODUCT NAME
+product_name=fast
+[[ $debug == true ]] && echo "${bold}${green}Product Name"${reset}${unbold}
+[[ $debug == true ]] && echo $product_name
+
+<<COMMENT CREATE KEY VAULT
+Takes backups on regular cadence and as objects stored within the Key Vault change.
+
+Ref: 
+https://docs.microsoft.com/en-us/azure/key-vault/general/best-practices
+COMMENT
+
+keyvault=$product_name"-kv-"
+[[ $debug == true ]] && echo "${bold}${green}Key Vault"${reset}${unbold}
+[[ $debug == true ]] && echo $keyvault
+
+az keyvault create -name $keyvault create
+
+<<COMMENT TODO'S
+1. set access policy
+2. set backup
+3. set logging
+4. upload certificate
+5. configure Logic Apps can use key vault as well.
+
+1. region = fast-frontdoor-west 
+2. add keyvault here
+3. add cnd here
+4. add frontdoor
+COMMENT

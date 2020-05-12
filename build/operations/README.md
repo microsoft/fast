@@ -62,6 +62,12 @@ _Fast Production Subscription_
 ### Naming Standards
 Follow all naming standards from https://docs.microsoft.com/en-us/azure/cloud-adoption-framework/ready/azure-best-practices/naming-and-tagging with the one exception, suffics instead of prefix. For example `rg-` is the recommendation. However, choose `-rg` instead to allow for product / area groupings considering that the Azure Portal already has a column for Resource Type.
 
+* Always use lower case letters
+* Prepend with the product name, example: "fast"
+* Append the Azure Service with the first letters of each service type, example: "as", would be used for App Service
+* Append with random number from 1-9, example, fast-as-1
+* When services dictate, it's ok to deviate from this naming
+
 ### Organizational Structure
 This hierarchy uses the Workload separation strategy. 
 
