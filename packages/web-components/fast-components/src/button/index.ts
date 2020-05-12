@@ -13,4 +13,6 @@ import { ButtonStyles as styles } from "./button.styles";
     },
 })
 export class FASTButton extends Button {}
+export * from "./button.template";
+export * from "./button.styles";
 export * from "./button";

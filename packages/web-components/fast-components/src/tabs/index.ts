@@ -12,3 +12,5 @@ export class FASTTabs extends Tabs {}
 export * from "./tabs.template";
 export * from "./tabs.styles";
 export * from "./tabs";
+export * from "./tab";
+export * from "./tab-panel";

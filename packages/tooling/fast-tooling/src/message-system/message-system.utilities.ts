@@ -231,7 +231,6 @@ function getDataMessage(data: DataMessageIncoming): DataMessageOutgoing {
             const updatedDataForDataDictionary = getLinkedDataDictionary({
                 linkedData: data.linkedData,
                 dictionaryId: addLinkedDataDictionaryId,
-                dataLocation: data.dataLocation,
             });
             let currentLinkedDataRefs: LinkedData[] | void = get(
                 dataDictionary[0][addLinkedDataDictionaryId].data,
@@ -240,18 +239,22 @@ function getDataMessage(data: DataMessageIncoming): DataMessageOutgoing {
 
             if (Array.isArray(currentLinkedDataRefs)) {
                 if (typeof data.index === "number") {
-                    currentLinkedDataRefs.splice(
-                        data.index,
-                        0,
-                        ...updatedDataForDataDictionary.linkedDataIds
-                    );
+                    currentLinkedDataRefs.splice(data.index, 0, {
+                        id: updatedDataForDataDictionary.dataDictionary[1],
+                    });
                 } else {
-                    currentLinkedDataRefs = currentLinkedDataRefs.concat(
-                        updatedDataForDataDictionary.linkedDataIds
-                    );
+                    currentLinkedDataRefs = currentLinkedDataRefs.concat([
+                        {
+                            id: updatedDataForDataDictionary.dataDictionary[1],
+                        },
+                    ]);
                 }
             } else {
-                currentLinkedDataRefs = updatedDataForDataDictionary.linkedDataIds;
+                currentLinkedDataRefs = [
+                    {
+                        id: updatedDataForDataDictionary.dataDictionary[1],
+                    },
+                ];
             }
 
             // update the data dictionary root dictionary id location with

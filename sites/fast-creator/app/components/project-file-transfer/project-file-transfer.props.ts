@@ -1,4 +1,4 @@
-import { ProjectFile } from "app/creator.props";
+import { ProjectFile } from "../../creator.props";
 
 export interface ProjectFileTransferProps {
     /**

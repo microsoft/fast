@@ -31,7 +31,7 @@ export interface LinkedDataPromise {
     /**
      * The data location this promised linked data should go
      */
-    linkedDataLocation?: string;
+    dataLocation?: string;
 
     /**
      * The linked data to add to this piece of linked data
@@ -56,9 +56,9 @@ export interface Data<T> {
     data: T;
 
     /**
-     * The data location for the linked data
+     * The data location this linked data should go
      */
-    linkedDataLocation?: string;
+    dataLocation?: string;
 
     /**
      * The linked data to add to this piece of linked data
@@ -88,11 +88,6 @@ export interface LinkedDataDictionaryConfig {
      * The root dictionary ID
      */
     dictionaryId: string;
-
-    /**
-     * The root data location
-     */
-    dataLocation: string;
 }
 
 export interface LinkedDataDictionaryUpdate {
@@ -102,14 +97,7 @@ export interface LinkedDataDictionaryUpdate {
     dataDictionary: DataDictionary<unknown>;
 
     /**
-     * The IDs to be added to the dictionaryId at the data location
+     * The dictionary ID to add the root of this data dictionary to
      */
-    linkedDataIds: LinkedData[];
-}
-
-export interface ResolveDataDictionary {
-    /**
-     * The new data dictionary
-     */
-    dataDictionary: { [key: string]: Data<unknown> };
+    dictionaryId: string;
 }

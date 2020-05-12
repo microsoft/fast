@@ -3,13 +3,13 @@ import { keyCodeEscape, keyCodeTab } from "@microsoft/fast-web-utilities";
 import tabbable from "tabbable";
 
 export class Dialog extends FASTElement {
-    @attr
+    @attr({ mode: "boolean" })
     public modal: boolean = true;
 
-    @attr
+    @attr({ mode: "boolean" })
     public hidden: boolean = false;
 
-    @attr({ attribute: "trap-focus" })
+    @attr({ attribute: "trap-focus", mode: "boolean" })
     public trapFocus: boolean = true;
 
     @attr({ attribute: "aria-describedby" })
