@@ -4,4 +4,5 @@ export interface ThemeSelectorProps {
     id: string;
     theme: StandardLuminance;
     onUpdateTheme: any;
+    disabled: boolean;
 }

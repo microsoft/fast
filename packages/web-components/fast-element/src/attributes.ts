@@ -95,7 +95,7 @@ export class AttributeDefinition implements Accessor {
                 source[this.callbackName](oldValue, newValue);
             }
 
-            ((source as any).$fastController as Notifier).notify(source, this.name);
+            ((source as any).$fastController as Notifier).notify(this.name);
         }
     }
 

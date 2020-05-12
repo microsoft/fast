@@ -1,9 +1,9 @@
 import { getLinkedDataDictionary } from "./data";
-import { LinkedDataPromise } from "./data.props";
+import { LinkedDataDictionaryUpdate, LinkedDataPromise } from "./data.props";
 
 describe("getLinkedDataDictionary", () => {
     test("should get a linked data dictionary", () => {
-        const root: string = "rootLocation";
+        const dictionaryId: string = "root";
         const dataLocation: string = "foo";
         const schemaId: string = "foobar";
         const data: any = {
@@ -16,10 +16,10 @@ describe("getLinkedDataDictionary", () => {
                     {
                         schemaId,
                         data,
+                        dataLocation,
                     },
                 ],
-                dictionaryId: root,
-                dataLocation,
+                dictionaryId,
             })
         ).toEqual({
             dataDictionary: [
@@ -28,23 +28,18 @@ describe("getLinkedDataDictionary", () => {
                         schemaId,
                         data,
                         parent: {
-                            id: root,
+                            id: dictionaryId,
                             dataLocation,
                         },
-                        items: [],
                     },
                 },
-                root,
+                "fast1",
             ],
-            linkedDataIds: [
-                {
-                    id: "fast1",
-                },
-            ],
-        });
+            dictionaryId,
+        } as LinkedDataDictionaryUpdate);
     });
     test("should get a linked data dictionary with nested linked data", () => {
-        const root: string = "rootLocation";
+        const dictionaryId: string = "root";
         const dataLocation: string = "foo";
         const schemaId: string = "foobar";
         const data: any = {
@@ -57,6 +52,7 @@ describe("getLinkedDataDictionary", () => {
             data: {
                 foo: "bar",
             },
+            dataLocation: nestedLinkedDataLocation,
         };
         const nestedLinkedData: LinkedDataPromise = {
             schemaId: "bar",
@@ -64,7 +60,7 @@ describe("getLinkedDataDictionary", () => {
                 hello: "pluto",
             },
             linkedData: [nestedNestedLinkedData, nestedNestedLinkedData],
-            linkedDataLocation: nestedLinkedDataLocation,
+            dataLocation: linkedDataLocation,
         };
 
         expect(
@@ -73,33 +69,47 @@ describe("getLinkedDataDictionary", () => {
                     {
                         schemaId,
                         data,
-                        linkedDataLocation,
+                        dataLocation,
                         linkedData: [nestedLinkedData],
                     },
                 ],
-                dictionaryId: root,
-                dataLocation,
+                dictionaryId,
             })
         ).toEqual({
             dataDictionary: [
                 {
                     fast2: {
                         schemaId,
-                        data,
+                        data: {
+                            ...data,
+                            [linkedDataLocation]: [
+                                {
+                                    id: "fast3",
+                                },
+                            ],
+                        },
                         parent: {
-                            id: root,
+                            id: dictionaryId,
                             dataLocation,
                         },
-                        items: ["fast3"],
                     },
                     fast3: {
                         schemaId: nestedLinkedData.schemaId,
-                        data: nestedLinkedData.data,
+                        data: {
+                            ...(nestedLinkedData.data as any),
+                            [nestedLinkedDataLocation]: [
+                                {
+                                    id: "fast4",
+                                },
+                                {
+                                    id: "fast5",
+                                },
+                            ],
+                        },
                         parent: {
                             id: "fast2",
                             dataLocation: linkedDataLocation,
                         },
-                        items: ["fast4", "fast5"],
                     },
                     fast4: {
                         schemaId: nestedNestedLinkedData.schemaId,
@@ -108,7 +118,6 @@ describe("getLinkedDataDictionary", () => {
                             id: "fast3",
                             dataLocation: nestedLinkedDataLocation,
                         },
-                        items: [],
                     },
                     fast5: {
                         schemaId: nestedNestedLinkedData.schemaId,
@@ -117,25 +126,94 @@ describe("getLinkedDataDictionary", () => {
                             id: "fast3",
                             dataLocation: nestedLinkedDataLocation,
                         },
-                        items: [],
                     },
                 },
-                root,
+                "fast2",
             ],
-            linkedDataIds: [
+            dictionaryId,
+        } as LinkedDataDictionaryUpdate);
+    });
+    test("should get a linked data dictionary with multiple nested linked data", () => {
+        const dictionaryId: string = "root";
+        const dataLocation: string = "foo";
+        const schemaId: string = "foobar";
+        const data: any = {
+            hello: "world",
+        };
+        const linkedDataLocation1: string = "a";
+        const linkedDataLocation2: string = "b";
+        const nestedNestedLinkedData1: LinkedDataPromise = {
+            schemaId: "bar",
+            data: {
+                foo: "bar",
+            },
+            dataLocation: linkedDataLocation1,
+        };
+        const nestedNestedLinkedData2: LinkedDataPromise = {
+            schemaId: "foo",
+            data: {
+                foo: "bat",
+            },
+            dataLocation: linkedDataLocation2,
+        };
+
+        expect(
+            getLinkedDataDictionary({
+                linkedData: [
+                    {
+                        schemaId,
+                        data,
+                        dataLocation,
+                        linkedData: [nestedNestedLinkedData1, nestedNestedLinkedData2],
+                    },
+                ],
+                dictionaryId,
+            })
+        ).toEqual({
+            dataDictionary: [
                 {
-                    id: "fast2",
+                    fast6: {
+                        schemaId,
+                        data: {
+                            ...data,
+                            [linkedDataLocation1]: [
+                                {
+                                    id: "fast7",
+                                },
+                            ],
+                            [linkedDataLocation2]: [
+                                {
+                                    id: "fast8",
+                                },
+                            ],
+                        },
+                        parent: {
+                            id: dictionaryId,
+                            dataLocation,
+                        },
+                    },
+                    fast7: {
+                        schemaId: nestedNestedLinkedData1.schemaId,
+                        data: {
+                            ...(nestedNestedLinkedData1.data as any),
+                        },
+                        parent: {
+                            id: "fast6",
+                            dataLocation: linkedDataLocation1,
+                        },
+                    },
+                    fast8: {
+                        schemaId: nestedNestedLinkedData2.schemaId,
+                        data: nestedNestedLinkedData2.data,
+                        parent: {
+                            id: "fast6",
+                            dataLocation: linkedDataLocation2,
+                        },
+                    },
                 },
-                {
-                    id: "fast3",
-                },
-                {
-                    id: "fast4",
-                },
-                {
-                    id: "fast5",
-                },
+                "fast6",
             ],
-        });
+            dictionaryId,
+        } as LinkedDataDictionaryUpdate);
     });
 });

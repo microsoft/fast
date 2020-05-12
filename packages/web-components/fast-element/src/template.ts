@@ -10,11 +10,24 @@ import {
     Expression,
 } from "./observation/observable.js";
 
+/**
+ * A template capable of creating views specifically for rendering custom elements.
+ */
 export interface ElementViewTemplate {
+    /**
+     * Creates an ElementView instance based on this template definition.
+     * @param host The custom element host that this template will be rendered to once created.
+     */
     create(host: Element): ElementView;
 }
 
+/**
+ * A template capable of rendering views not specifically connected to custom elements.
+ */
 export interface SyntheticViewTemplate<TSource = any, TParent = any> {
+    /**
+     * Creates a SyntheticView instance based on this template definition.
+     */
     create(): SyntheticView;
 }
 
@@ -35,6 +48,9 @@ export class HTMLTemplateBehavior implements Behavior {
     }
 }
 
+/**
+ * A template capable of creating HTMLView instances or rendering directly to DOM.
+ */
 export class ViewTemplate<TSource = any, TParent = any> extends Directive
     implements ElementViewTemplate, SyntheticViewTemplate {
     public createPlaceholder: (index: number) => string = DOM.createBlockPlaceholder;
@@ -45,13 +61,22 @@ export class ViewTemplate<TSource = any, TParent = any> extends Directive
     private viewBehaviorFactories: BehaviorFactory[] | null = null;
     private hostBehaviorFactories: BehaviorFactory[] | null = null;
 
+    /**
+     * Creates an instance of ViewTemplate.
+     * @param html The html representing what this template will instantiate, including placeholders for directives.
+     * @param directives The directives that will be connected to placeholders in the html.
+     */
     constructor(
-        private html: string | HTMLTemplateElement,
-        private directives: Directive[]
+        public readonly html: string | HTMLTemplateElement,
+        public readonly directives: ReadonlyArray<Directive>
     ) {
         super();
     }
 
+    /**
+     * Creates an HTMLView instance based on this template definition.
+     * @param host The host element that this template will be rendered to once created.
+     */
     public create(host?: Element): HTMLView {
         if (this.fragment === null) {
             let template: HTMLTemplateElement;
@@ -121,6 +146,11 @@ export class ViewTemplate<TSource = any, TParent = any> extends Directive
         return new HTMLView(fragment, behaviors);
     }
 
+    /**
+     * Creates an HTMLView from this template, binds it to the source, and then appends it to the host.
+     * @param source The data source to bind the template to.
+     * @param host The HTMLElement where the template will be rendered.
+     */
     public render(source: TSource, host: HTMLElement | string): HTMLView {
         if (typeof host === "string") {
             host = document.getElementById(host)!;
@@ -139,7 +169,7 @@ export class ViewTemplate<TSource = any, TParent = any> extends Directive
 }
 
 // Much thanks to LitHTML for working this out!
-export const lastAttributeNameRegex =
+const lastAttributeNameRegex =
     // eslint-disable-next-line no-control-regex
     /([ \x09\x0a\x0c\x0d])([^\0-\x1F\x7F-\x9F "'>=/]+)([ \x09\x0a\x0c\x0d]*=[ \x09\x0a\x0c\x0d]*(?:[^ \x09\x0a\x0c\x0d"'`<>=]*|"[^"]*|'[^']*))$/;
 
@@ -152,6 +182,14 @@ type TemplateValue<TScope, TParent = any> =
     | Directive
     | CaptureType<TScope>;
 
+/**
+ * Transforms a template literal string into a renderable ViewTemplate.
+ * @param strings The string fragments that interpolated with the values.
+ * @param values The values that are interpolated with the string fragments.
+ * @remarks
+ * The html helper supports interpolation of strings, numbers, binding expressions,
+ * other template instances, and Directive instances.
+ */
 export function html<TSource = any, TParent = any>(
     strings: TemplateStringsArray,
     ...values: TemplateValue<TSource, TParent>[]
@@ -175,7 +213,10 @@ export function html<TSource = any, TParent = any>(
         }
 
         if (value instanceof Directive) {
-            html += value.createPlaceholder(i);
+            // Since not all values are directives, we can't use i
+            // as the index for the placeholder. Instead, we need to
+            // use directives.length to get the next index.
+            html += value.createPlaceholder(directives.length);
             directives.push(value);
         } else {
             html += value;

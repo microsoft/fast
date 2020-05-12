@@ -20,7 +20,7 @@ export class Controller extends PropertyChangeNotifier {
         public readonly element: HTMLElement,
         public readonly definition: FASTElementDefinition
     ) {
-        super();
+        super(element);
 
         const template = definition.template;
         const styles = definition.styles;

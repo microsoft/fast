@@ -21,6 +21,7 @@ export * from "./radio";
 export * from "./select";
 export * from "./slider";
 export * from "./slider-track-item";
+export * from "./stack-panel";
 export * from "./tabs";
 export * from "./text-area";
 export * from "./text-field";

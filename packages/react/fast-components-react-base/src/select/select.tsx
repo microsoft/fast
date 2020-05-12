@@ -158,7 +158,6 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
                 className={this.generateClassNames()}
                 onKeyDown={this.handleKeydown}
                 onClick={this.handleClick}
-                tabIndex={-1}
             >
                 {this.renderTrigger()}
                 {this.renderHiddenSelectElement()}
