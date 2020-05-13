@@ -4,7 +4,6 @@ import { display } from "@microsoft/fast-components";
 export const CardSectionStyles = css`
     :host {
         --flow: column;
-        --max-width: 1240px;
     }
 
     @media screen and (max-width: 1000px) {
