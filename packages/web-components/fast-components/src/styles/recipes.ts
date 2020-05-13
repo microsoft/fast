@@ -28,7 +28,7 @@ import {
     neutralOutline,
 } from "../color";
 import { accentBaseColor } from "../fast-design-system";
-import { cssCustomPropertyBehaviorFactory } from "../custom-properties";
+import { cssCustomPropertyBehaviorFactory } from "@microsoft/fast-foundation";
 import { FASTDesignSystemProvider } from "../design-system-provider";
 
 export const neutralForegroundRestBehavior = cssCustomPropertyBehaviorFactory(
