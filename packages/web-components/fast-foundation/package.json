@@ -1,5 +1,5 @@
 {
-  "name": "@microsoft/fast-components",
+  "name": "@microsoft/fast-foundation",
   "description": "A library of Web Component building blocks",
   "sideEffects": false,
   "version": "0.0.0",
