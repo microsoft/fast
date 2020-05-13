@@ -9,29 +9,49 @@ is another Key Vault in Production with different Secrets, Keys, and Certificate
 prevented.
 '
 
+
+: 'CREATE RESOURCE GROUP
+This resource group is for operations related services only.
+'
+resource_group=$product_name-ops-rg
+[[ $debug == true ]] && echo "${bold}${green}Resource Group (Operations)"${reset}${unbold}
+[[ $debug == true ]] && echo $resource_group
+
+az group create --location centralus --name $resource_group
+
+
 : 'CREATE KEY VAULT
 Takes backups on regular cadence and as objects stored within the Key Vault change.
 
+TODOs
+1. Set access policy
+2. Perform regular backups using Azure CLI, not PowerShell
+3. Perform logging using Azure CLI, not PowerShell
+4. Perform CLI upload of certificate
+5. Configure Logic Apps can use key vault as well.
+
 Ref: 
 https://docs.microsoft.com/en-us/azure/key-vault/general/best-practices
+https://docs.microsoft.com/en-us/azure/key-vault/general/logging
+https://docs.microsoft.com/en-us/cli/azure/keyvault?view=azure-cli-latest#az-keyvault-set-policy
+https://docs.microsoft.com/en-us/azure/key-vault/general/security-recommendations
 '
-
-# SET KEY VAULT
-keyvault=$product_name"-kv-"
+keyvault=$product_name-ops-kv
 [[ $debug == true ]] && echo "${bold}${green}Key Vault"${reset}${unbold}
 [[ $debug == true ]] && echo $keyvault
 
-az keyvault create -name $keyvault create
+az keyvault create --name $keyvault --resource-group $resource_group \
+    --sku standard \
+    --enable-purge-protection true \
+    --enable-soft-delete true 
 
-: 'TODOs
-1. set access policy
-2. set backup
-3. set logging
-4. upload certificate
-5. configure Logic Apps can use key vault as well.
+az keyvault update --name $keyvault \
+    --retention-days 90
 
-1. region = fast-frontdoor-west 
-2. add keyvault here
-3. add cnd here
-4. add frontdoor
+#az keyvault set-policy --$keyvault
+
+: 'CREATE CDN
+
+Ref:
+
 '
