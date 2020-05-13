@@ -1,4 +1,5 @@
 import { css } from "@microsoft/fast-element";
+import { forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
 import { disabledCursor, display } from "../styles";
 import { focusVisible } from "../styles/focus";
 import { SystemColors } from "../styles/system-colors";
@@ -13,7 +14,6 @@ import {
     neutralOutlineHoverBehavior,
     neutralOutlineRestBehavior,
 } from "../styles/recipes";
-import { forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
 
 export const TextFieldStyles = css`
     ${display("inline-block")} :host {

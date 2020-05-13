@@ -1,6 +1,6 @@
 import { customElement } from "@microsoft/fast-element";
-import { AnchorStyles as styles } from "./anchor.styles";
 import { Anchor, AnchorTemplate as template } from "@microsoft/fast-foundation";
+import { AnchorStyles as styles } from "./anchor.styles";
 
 // Anchor
 @customElement({
