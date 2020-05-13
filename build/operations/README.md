@@ -75,30 +75,30 @@ This hierarchy uses the Workload separation strategy.
   * Production Management Group
 
     * Fast Subscription 1
-      * Frontdoor West US
+      * Front Door West US
       * Active Resource Group (Primary Region - West US)  
       * Standby Resource Group (Secondary Region - East US)
-      * Backdoor East US
+      * Back Door East US
 
     * Fast Subscription 2
-      * Frontdoor West US
+      * Front Door West US
       * Active Resource Group (Primary Region - West US)  
       * Standby Resource Group (Secondary Region - East US)
-      * Backdoor East US
+      * Back Door East US
   
   * Staging Management Group
 
     * Fast Subscription 3
-      * Frontdoor West US
+      * Front Door West US
       * Active Resource Group (Primary Region - West US)  
       * Standby Resource Group (Secondary Region - East US)
-      * Backdoor East US
+      * Back Door East US
 
     * Fast Subscription 4
-      * Frontdoor West US
+      * Front Door West US
       * Active Resource Group (Primary Region - West US)  
       * Standby Resource Group (Secondary Region - East US)
-      * Backdoor East US
+      * Back Door East US
   
   * Development Management Group
 
