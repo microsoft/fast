@@ -110,13 +110,13 @@ export class Menu extends FASTElement {
 
             this.menuItems[item].addEventListener("blur", this.handleMenuItemFocus);
         }
-    }
+    };
 
     private resetItems = (oldValue: any): void => {
         for (let item: number = 0; item < oldValue.length; item++) {
             oldValue[item].removeEventListener("blur", this.handleMenuItemFocus);
         }
-    }
+    };
 
     /**
      * get an array of valid DOM children
