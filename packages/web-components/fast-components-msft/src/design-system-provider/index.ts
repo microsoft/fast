@@ -643,8 +643,3 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
     })
     public neutralOutlineFocusDelta: number;
 }
-
-export * from "./design-system-provider";
-export * from "./design-system-property";
-export * from "./design-system-provider.styles";
-export * from "./design-system-provider.template";

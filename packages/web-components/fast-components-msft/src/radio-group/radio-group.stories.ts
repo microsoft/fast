@@ -1,9 +1,9 @@
 import { FASTDesignSystemProvider } from "../design-system-provider";
 import Examples from "./fixtures/radio-group.html";
-import { MSFTRadioGroup } from "./";
+import { FASTRadioGroup } from "./";
 
 // Prevent tree-shaking
-MSFTRadioGroup;
+FASTRadioGroup;
 FASTDesignSystemProvider;
 
 export default {

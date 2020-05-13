@@ -32,7 +32,7 @@ import {
     LightweightButtonStyles,
     OutlineButtonStyles,
     StealthButtonStyles,
-} from "../styles/index.js";
+} from "../styles/";
 
 export const ButtonStyles = css`
     ${BaseButtonStyles}

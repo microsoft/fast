@@ -1,6 +1,6 @@
 import { customElement } from "@microsoft/fast-element";
 import { Tabs, TabsTemplate as template } from "@microsoft/fast-components";
-import { TabsStyles as styles } from "./tabs.styles.js";
+import { TabsStyles as styles } from "./tabs.styles";
 
 @customElement({
     name: "fast-tabs",
@@ -8,5 +8,5 @@ import { TabsStyles as styles } from "./tabs.styles.js";
     styles,
 })
 export class FASTTabs extends Tabs {}
-export * from "./tab/index.js";
-export * from "./tab-panel/index.js";
+export * from "./tab/";
+export * from "./tab-panel/";

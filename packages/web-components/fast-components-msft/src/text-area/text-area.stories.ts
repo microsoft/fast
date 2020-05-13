@@ -1,9 +1,9 @@
 import { FASTDesignSystemProvider } from "../design-system-provider";
 import Examples from "./fixtures/text-area.html";
-import { MSFTTextArea } from "./";
+import { FASTTextArea } from "./";
 
 // Prevent tree-shaking
-MSFTTextArea;
+FASTTextArea;
 FASTDesignSystemProvider;
 
 export default {

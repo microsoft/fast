@@ -1,6 +1,6 @@
 import { attr, customElement } from "@microsoft/fast-element";
 import { Badge, BadgeTemplate as template } from "@microsoft/fast-components";
-import { BadgeStyles as styles } from "./badge.styles.js";
+import { BadgeStyles as styles } from "./badge.styles";
 
 export type BadgeFill = "accent" | "lightweight" | "neutral" | "string";
 
