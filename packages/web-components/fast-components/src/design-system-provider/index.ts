@@ -3,6 +3,7 @@ import {
     designSystemProperty,
     designSystemProvider,
     DesignSystemProvider,
+    DesignSystemProviderTemplate as template,
 } from "@microsoft/fast-foundation";
 import { FASTDesignSystem, fastDesignSystemDefaults } from "../fast-design-system";
 import { DesignSystemProviderStyles as styles } from "./design-system-provider.styles";
@@ -16,7 +17,7 @@ const fromViewNumber: { mode: "fromView"; converter: typeof nullableNumberConver
     converter: nullableNumberConverter,
 };
 
-@designSystemProvider("fast-design-system-provider", styles)
+@designSystemProvider("fast-design-system-provider", template, styles)
 export class FASTDesignSystemProvider extends DesignSystemProvider
     implements FASTDesignSystem {
     /**
