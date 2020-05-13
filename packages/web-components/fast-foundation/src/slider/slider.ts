@@ -254,9 +254,13 @@ export class Slider extends FormAssociated<HTMLInputElement>
         if (this.readOnly || this.disabled || e.defaultPrevented) {
             return;
         }
+
         // update the value based on current position
         const eventValue: number =
-            this.orientation === Orientation.horizontal ? e.pageX : e.pageY;
+            this.orientation === Orientation.horizontal
+                ? e.pageX - this.getBoundingClientRect().left
+                : e.pageY;
+
         this.value = `${this.calculateNewValue(eventValue)}`;
         this.updateForm();
     };
@@ -303,7 +307,9 @@ export class Slider extends FormAssociated<HTMLInputElement>
             window.addEventListener("mousemove", this.handleMouseMove);
 
             const controlValue: number =
-                this.orientation === Orientation.horizontal ? e.pageX : e.pageY;
+                this.orientation === Orientation.horizontal
+                    ? e.pageX - this.getBoundingClientRect().left
+                    : e.pageY;
             this.value = `${this.calculateNewValue(controlValue)}`;
             this.updateForm();
         }
