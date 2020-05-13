@@ -91,7 +91,6 @@
   },
   "dependencies": {
     "@microsoft/fast-colors": "^5.0.8",
-    "@microsoft/fast-components-styles-msft": "^4.28.9",
     "@microsoft/fast-element": "^0.8.1",
     "@microsoft/fast-web-utilities": "^4.4.5",
     "tabbable": "^4.0.0"
