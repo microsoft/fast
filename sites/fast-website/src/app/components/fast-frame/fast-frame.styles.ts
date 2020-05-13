@@ -41,7 +41,7 @@ export const FastFrameStyles = css`
 
     .image-container {
         /** Temp background */
-        background: #C8C8C8;
+        background: #c8c8c8;
         width: 100%;
         height: 215px;
         display: flex;
@@ -62,7 +62,7 @@ export const FastFrameStyles = css`
     .control-container {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        grid-gap: 20px
+        grid-gap: 20px;
     }
 
     .control-container p {
@@ -99,6 +99,7 @@ export const FastFrameStyles = css`
 
     .sample-control {
         display: flex;
+        background: var(--background-color);
         align-items: center;
         width: 100%;
     }
@@ -106,7 +107,7 @@ export const FastFrameStyles = css`
     .sample-control-actions {
         margin-inline-start: auto;
     }
-    
+
     .sample-control-text {
         margin-inline-start: calc(var(--design-unit) * 2px + 2px);
     }
@@ -119,11 +120,11 @@ export const FastFrameStyles = css`
     }
 
     fast-badge {
-        --badge-fill-primary: #D223CB;
-        --badge-color-primary: white;
+        --badge-fill-primary: var(--accent-fill-rest);
+        --badge-color-primary: var(--neutral-foreground-rest);
     }
 `.withBehaviors(
     accentFillRestBehavior,
     accentForegroundCutRestBehavior,
-    neutralForegroundRestBehavior,
-)
+    neutralForegroundRestBehavior
+);
