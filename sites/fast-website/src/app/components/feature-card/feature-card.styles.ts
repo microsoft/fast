@@ -1,5 +1,5 @@
 import { css } from "@microsoft/fast-element";
-import { display } from "@microsoft/fast-components";
+import { display, neutralForegroundRestBehavior } from "@microsoft/fast-components";
 
 export const FeatureCardStyles = css`
     ${display("grid")} :host {
@@ -54,4 +54,4 @@ export const FeatureCardStyles = css`
         opacity: 0;
         color: var(--accent-fill-rest);
     }
-`;
+`.withBehaviors(neutralForegroundRestBehavior);
