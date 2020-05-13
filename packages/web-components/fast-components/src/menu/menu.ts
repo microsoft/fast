@@ -14,8 +14,12 @@ import { MenuItemRole } from "../menu-item";
 export class Menu extends FASTElement {
     @observable
     public items: HTMLSlotElement;
-    private itemsChanged(): void {
-        this.menuItems = this.domChildren();
+    private itemsChanged(oldValue, newValue): void {
+        if (this.$fastController.isConnected) {
+            this.menuItems = this.domChildren();
+            this.resetItems(oldValue);
+            this.setItems();
+        }
     }
 
     private menuItems: Element[];
@@ -32,25 +36,8 @@ export class Menu extends FASTElement {
 
     public connectedCallback(): void {
         super.connectedCallback();
-
-        // We need to queue update currently to ensure that
-        // the attributes on our menu items have time to be set
-        DOM.queueUpdate(() => {
-            const focusIndex = this.menuItems.findIndex(this.isFocusableElement);
-
-            // if our focus index is not -1 we have items
-            if (focusIndex !== -1) {
-                this.focusIndex = focusIndex;
-            }
-
-            for (let item: number = 0; item < this.menuItems.length; item++) {
-                if (item === focusIndex) {
-                    this.menuItems[item].setAttribute("tabindex", "0");
-                }
-
-                this.menuItems[item].addEventListener("blur", this.handleMenuItemFocus);
-            }
-        });
+        this.menuItems = this.domChildren();
+        this.setItems();
     }
 
     public focus(): void {
@@ -107,6 +94,29 @@ export class Menu extends FASTElement {
             this.focusIndex = focusIndex;
         }
     };
+
+    private setItems = (): void => {
+        const focusIndex = this.menuItems.findIndex(this.isFocusableElement);
+
+        // if our focus index is not -1 we have items
+        if (focusIndex !== -1) {
+            this.focusIndex = focusIndex;
+        }
+
+        for (let item: number = 0; item < this.menuItems.length; item++) {
+            if (item === focusIndex) {
+                this.menuItems[item].setAttribute("tabindex", "0");
+            }
+
+            this.menuItems[item].addEventListener("blur", this.handleMenuItemFocus);
+        }
+    }
+
+    private resetItems = (oldValue: any): void => {
+        for (let item: number = 0; item < oldValue.length; item++) {
+            oldValue[item].removeEventListener("blur", this.handleMenuItemFocus);
+        }
+    }
 
     /**
      * get an array of valid DOM children

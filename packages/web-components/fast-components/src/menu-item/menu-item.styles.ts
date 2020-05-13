@@ -16,9 +16,6 @@ export const MenuItemStyles = css`
         outline: none;
         box-sizing: border-box;
         height: calc(${heightNumber} * 1px);
-        ${
-            /* grid-template-columns:  calc(var(--design-unit) * 1px) auto calc(var(--design-unit) * 1px); */ ""
-        }
         grid-template-columns: 42px auto 42px;
         grid-template-rows: auto;
         justify-items: center;

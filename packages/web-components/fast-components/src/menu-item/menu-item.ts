@@ -21,14 +21,12 @@ export class MenuItem extends FASTElement {
     @attr
     public checked: boolean;
 
-    /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
     public handleMenuItemKeyDown = (e: KeyboardEvent): boolean => {
         this.change();
 
         return true;
     };
 
-    /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
     public handleMenuItemClick = (e: MouseEvent): void => {
         this.change();
     };
