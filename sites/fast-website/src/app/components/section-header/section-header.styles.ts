@@ -1,5 +1,5 @@
-import { css } from "@microsoft/fast-element";
 import { display } from "@microsoft/fast-components";
+import { css } from "@microsoft/fast-element";
 
 export const SectionHeaderStyles = css`
     ${display("flex")} :host {
