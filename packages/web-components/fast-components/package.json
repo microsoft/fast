@@ -92,7 +92,8 @@
   "dependencies": {
     "@microsoft/fast-colors": "^5.0.8",
     "@microsoft/fast-element": "^0.8.1",
-    "@microsoft/fast-foundation": "^0.0.0"
+    "@microsoft/fast-foundation": "^0.0.0",
+    "@microsoft/fast-web-utilities": "^4.4.5"
   },
   "peerDependencies": {
     "lodash-es": "^4.0.0"

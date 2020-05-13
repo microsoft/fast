@@ -120,9 +120,10 @@ To create a new _Design System Provider_, extend the `DesignSystemProvider` clas
 **EXAMPLE: Creating a custom Design System Provider**
 
 ```ts
-import { DesignSystemProvider, designSystemProvider } from "@microsoft/fast-components";
+import { DesignSystemProvider, designSystemProvider, DesignSystemProviderTemplate as template } from "@microsoft/fast-components";
+import { MyDesignSystemProviderStyles as styles} from "../design-system-provder.styles.ts";
 
-@designSystemProvider("fancy-design-system-provider")
+@designSystemProvider("fancy-design-system-provider", template, styles)
 class FancyDesignSystemProvider extends DesignSystemProvider {}
 ```
 
@@ -140,7 +141,7 @@ Building off the above, _design system_ properties can be declared using the `@d
 
 ```ts
 // ..
-@designSystemProvider("fancy-design-system-provider")
+@designSystemProvider("fancy-design-system-provider", template, styles)
 class FancyDesignSystemProvider extends DesignSystemProvider {
     @attr("fancy-property")
     @designSystemProperty({ cssCustomProperty: "fancy-property", default: "red" })
