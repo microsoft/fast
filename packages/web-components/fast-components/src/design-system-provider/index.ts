@@ -1,7 +1,10 @@
 import { attr, nullableNumberConverter, observable } from "@microsoft/fast-element";
 import { FASTDesignSystem, fastDesignSystemDefaults } from "../fast-design-system";
-import { DesignSystemProvider, designSystemProvider } from "./design-system-provider";
-import { designSystemProperty } from "./design-system-property";
+import {
+    DesignSystemProvider,
+    designSystemProperty,
+    designSystemProvider,
+} from "@microsoft/fast-foundation";
 
 const fromView: { mode: "fromView" } = {
     mode: "fromView",

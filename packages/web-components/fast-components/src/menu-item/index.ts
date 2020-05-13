@@ -1,6 +1,5 @@
 import { customElement } from "@microsoft/fast-element";
-import { MenuItem } from "./menu-item";
-import { MenuItemTemplate as template } from "./menu-item.template";
+import { MenuItem, MenuItemTemplate as template } from "@microsoft/fast-foundation";
 import { MenuItemStyles as styles } from "./menu-item.styles";
 
 @customElement({
@@ -9,6 +8,3 @@ import { MenuItemStyles as styles } from "./menu-item.styles";
     styles,
 })
 export class FASTMenuItem extends MenuItem {}
-export * from "./menu-item.template";
-export * from "./menu-item.styles";
-export * from "./menu-item";

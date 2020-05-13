@@ -1,6 +1,5 @@
 import { customElement } from "@microsoft/fast-element";
-import { Flipper } from "./flipper";
-import { FlipperTemplate as template } from "./flipper.template";
+import { Flipper, FlipperTemplate as template } from "@microsoft/fast-foundation";
 import { FlipperStyles as styles } from "./flipper.styles";
 
 @customElement({
@@ -9,6 +8,3 @@ import { FlipperStyles as styles } from "./flipper.styles";
     styles,
 })
 export class FASTFlipper extends Flipper {}
-export * from "./flipper.template";
-export * from "./flipper.styles";
-export * from "./flipper";
