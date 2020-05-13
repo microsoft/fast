@@ -18,7 +18,7 @@
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {
-    "build": "npm run generate-palettes && tsc -p ./tsconfig.build.json",
+    "build": "npm run build/generate-default-palettes && tsc -p ./tsconfig.build.json",
     "clean:dist": "node ../../../build/clean.js dist",
     "prepare": "yarn clean:dist && yarn build",
     "prettier": "prettier --config ../../../.prettierrc --write \"**/*.ts\"",
