@@ -45,9 +45,10 @@ body {
     grid-column-end: 1;
     grid-row-start: 2;
     grid-row-end: 2;
-    border-right: 1px solid #e1e1e1;
+    border-inline-end: 1px solid #e1e1e1;
 }
 
+/* This should be replaced at a later date once the typography styles are defined */
 .category-title {
     font-size: var(--type-ramp-plus-2-font-size);
 }
