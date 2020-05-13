@@ -15,6 +15,5 @@ src/
 .eslintignore
 .eslintrc.js
 .prettierignore
-.storybook
 tsconfig.json
 tsconfig.build.json
