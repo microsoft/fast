@@ -27,6 +27,10 @@ body {
   height: 80px;
 }
 
+.header-navigation-item {
+  margin: 0 30px;
+}
+
 .section {
   grid-column: 2;
 }
@@ -46,21 +50,6 @@ body {
   height: 600px;
 }
 
-.footer {
-  grid-column: 2;
-  height: 240px;
-  margin-top: 100px
-}
-
-.footer-links {
-  display: flex;
-  justify-content: space-between;
-}
-
-.footer-copyright-group {
-  display: flex;
-}
-
 .section-badge {
   color: var(--accent-fill-rest);
   font-weight: bold;
@@ -76,4 +65,19 @@ body {
   font-size: 46px;
   line-height: 56px;
   margin: 0;
+}
+
+.divider {
+  grid-column: 2;
+  margin-top: 100px;
+  margin-bottom: 60px;
+}
+
+.footer {
+  grid-column: 2;
+  margin-bottom: 84px;
+}
+
+.footer-navigation-item {
+  margin-inline-end: 50px;
 }
