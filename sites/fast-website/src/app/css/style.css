@@ -65,6 +65,14 @@ body {
 }
 /* end */
 
+.section-anchor {
+  color: var(--accent-fill-rest);
+}
+
+site-content-placement:hover .section-anchor-hover{
+  color: var(--accent-fill-rest);
+}
+
 .section-badge {
   color: var(--accent-fill-rest);
   font-weight: bold;
