@@ -11,15 +11,20 @@
     "babel-core": "^6.26.3",
     "babel-loader": "^8.1.0",
     "babel-preset-env": "^1.7.0",
+    "clean-webpack-plugin": "^3.0.0",
     "html-webpack-plugin": "^4.3.0",
+    "mini-css-extract-plugin": "^0.9.0",
+    "optimize-css-assets-webpack-plugin": "^5.0.3",
+    "terser-webpack-plugin": "^3.0.1",
     "ts-loader": "^7.0.2",
     "typescript": "^3.8.3",
     "webpack": "^4.43.0",
-    "webpack-dev-server": "^3.10.3"
+    "webpack-dev-server": "^3.10.3",
+    "webpack-merge": "^4.2.2"
   },
   "scripts": {
-    "start": "webpack-dev-server --history-api-fallback --inline --progress",
-    "build": "webpack"
+    "start": "webpack-dev-server --config=./webpack.dev.js --history-api-fallback --progress",
+    "build": "webpack --config=./webpack.prod.js"
   },
   "repository": {
     "type": "git",
