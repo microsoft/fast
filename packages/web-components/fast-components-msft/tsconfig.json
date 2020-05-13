@@ -4,7 +4,9 @@
         "outDir": "dist",
         "baseUrl": ".",
         "strictNullChecks": true,
-        "experimentalDecorators": true
+        "experimentalDecorators": true,
+        "target": "ES6",
+        "module": "ESNext",
     },
     "include": [
         "src/**/*"
