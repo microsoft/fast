@@ -25,7 +25,7 @@ body {
     grid-row-start: 1;
     grid-row-end: 1;
     display: grid;
-    grid-template-columns: 50% 50%;
+    grid-template-columns: 1fr 1fr;
     border-bottom: 1px solid #e1e1e1;
 }
 
