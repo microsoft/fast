@@ -1,4 +1,4 @@
-# usage
+# Usage
 ```ts
 import { customElement } from "@microsoft/fast-element";
 import { Slider, SliderTemplate as template } from "@microsoft/fast-foundation";

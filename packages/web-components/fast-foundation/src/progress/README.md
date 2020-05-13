@@ -1,4 +1,4 @@
-# usage
+# Usage
 
 ## fast-progress
 ```ts

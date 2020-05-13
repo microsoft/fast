@@ -1,4 +1,4 @@
-# usage
+# Usage
 
 ## tab
 ```ts

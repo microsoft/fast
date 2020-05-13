@@ -1,4 +1,4 @@
-# usage
+# Usage
 ```ts
 import { customElement } from "@microsoft/fast-element";
 import { TextFieldTemplate as template, TextField } from "@microsoft/fast-foundation";

@@ -1,4 +1,4 @@
-# usage
+# Usage
 ```ts
 import { customElement } from "@microsoft/fast-element";
 import { MyAnchorStyles as styles } from "./anchor.styles";

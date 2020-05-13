@@ -1,4 +1,4 @@
-# usage
+# Usage
 ```ts
 import { customElement } from "@microsoft/fast-element";
 import { Card, CardTemplate as template } from "@microsoft/fast-foundation";
