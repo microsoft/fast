@@ -1,5 +1,4 @@
 import {
-    accentBaseColor,
     accentFill,
     accentFillLarge,
     accentForeground,
@@ -27,7 +26,8 @@ import {
     neutralLayerL3,
     neutralLayerL4,
     neutralOutline,
-} from "@microsoft/fast-components-styles-msft";
+} from "../color";
+import { accentBaseColor } from "../fast-design-system";
 import { cssCustomPropertyBehaviorFactory } from "../custom-properties";
 import { FASTDesignSystemProvider } from "../design-system-provider";
 
