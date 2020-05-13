@@ -76,7 +76,22 @@ export const FastFrameTemplate = html<FastFrame>`
                             Ultrices nibh nunc vestibulum fames. At lacus nunc lacus eget
                             neque.
                         </p>
-                        Color Pickers go here.
+                        <fast-radio-group name="background color" @change="${(x, c) => x.backgroundChangeHandler(c.event as MouseEvent)}>
+                            <label slot="label">Background color</label>
+                            <site-color-swatch value="#1F1F1F" backgroundColor="#1F1F1F" checked></site-color-swatch>
+                            <site-color-swatch value="#2B2B2B" backgroundColor="#2B2B2B"></site-color-swatch>
+                            <site-color-swatch value="#333333" backgroundColor="#333333"></site-color-swatch>
+                            <site-color-swatch value="#3B3B3B" backgroundColor="#3B3B3B"></site-color-swatch>
+                            <site-color-swatch value="#424242" backgroundColor="#424242"></site-color-swatch>
+                        </fast-radio-group>
+                        <fast-radio-group name="accent color" @change="${(x, c) => x.accentChangeHandler(c.event as MouseEvent)}>
+                            <label slot="label">Accent color</label>
+                            <site-color-swatch value="#F33378" backgroundColor="#F33378" checked></site-color-swatch>
+                            <site-color-swatch value="#F34733" backgroundColor="#F34733"></site-color-swatch>
+                            <site-color-swatch value="#10A7B5" backgroundColor="#10A7B5"></site-color-swatch>
+                            <site-color-swatch value="#109B82" backgroundColor="#109B82"></site-color-swatch>
+                            <site-color-swatch value="#E1A054" backgroundColor="#E1A054"></site-color-swatch>
+                        </fast-radio-group>
                     </div>
                 </fast-tab-panel>
                 <fast-tab-panel id="TabPanelThree">
@@ -89,8 +104,8 @@ export const FastFrameTemplate = html<FastFrame>`
             <website-design-system-provider
                 use-defaults
                 class="preview"
-                background-color="#424242"
-                accent-base-color="#F33378"
+                background-color="${x => x.backgroundColor}"
+                accent-base-color="${x => x.accentColor}"
             >
                 <fast-card>
                     <div class="image-container">
@@ -142,8 +157,15 @@ export const FastFrameTemplate = html<FastFrame>`
                         </div>
                     </div>
                 </fast-card>
-                <div>
+                <div class="preview-controls">
                     <fast-progress></fast-progress>
+                    <fast-menu>
+                        <fast-menu-item role="menuitem">Menu item 1</fast-menu-item>
+                        <fast-menu-item role="menuitem">Menu item 2</fast-menu-item>
+                        <fast-menu-item role="menuitem">Menu item 3</fast-menu-item>
+                        <hr/>
+                        <fast-menu-item role="menuitem">Menu item 4</fast-menu-item>
+                    </fast-menu>
                     <div class="control-container">
                         <div class="control-container-column">
                             <fast-radio>Radio 1</fast-radio>
@@ -156,12 +178,18 @@ export const FastFrameTemplate = html<FastFrame>`
                             <p class="checkbox-label">Checkbox</p>
                         </div>
                     </div>
+                    <fast-text-field placeholder="Text field"></fast-text-field>
+                    <div class="control-container-2">
+                        <fast-flipper aria-hidden="false"></fast-flipper>
+                        <fast-flipper disabled></fast-flipper>
+                        <fast-slider></fast-slider>
+                    </div>
                     <div class="control-container">
                         <fast-button appearance="accent">
                             Button
                             <svg
                                 class="icon-cut"
-                                slot="end"
+                                slot="start"
                                 width="11"
                                 height="15"
                                 viewBox="0 0 11 15"
@@ -177,7 +205,7 @@ export const FastFrameTemplate = html<FastFrame>`
                             Button
                             <svg
                                 class="icon"
-                                slot="end"
+                                slot="start"
                                 width="14"
                                 height="16"
                                 viewBox="0 0 14 16"
