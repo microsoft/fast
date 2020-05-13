@@ -18,7 +18,7 @@
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {
-    "build": "npm run build/generate-default-palettes && tsc -p ./tsconfig.build.json",
+    "build": "npm run generate-default-palettes && tsc -p ./tsconfig.build.json",
     "clean:dist": "node ../../../build/clean.js dist",
     "prepare": "yarn clean:dist && yarn build",
     "prettier": "prettier --config ../../../.prettierrc --write \"**/*.ts\"",
@@ -29,7 +29,7 @@
     "test": "yarn build-storybook && yarn eslint && yarn unit-tests",
     "build-storybook": "build-storybook",
     "clean:tmp": "node ../../../build/clean.js .tmp",
-    "generate-palettes": "rollup --config && node .tmp/generate-palettes.js && yarn clean:tmp",
+    "generate-default-palettes": "rollup --config && node .tmp/generate-palettes.js && yarn clean:tmp",
     "unit-tests": "jest --runInBand",
     "unit-tests:watch": "jest --watch"
   },

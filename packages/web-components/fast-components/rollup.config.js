@@ -3,7 +3,7 @@ const typescript = require("rollup-plugin-typescript");
 const path = require("path");
 
 module.exports = {
-    input: path.resolve(__dirname, "./generate-palettes.js"),
+    input: path.resolve(__dirname, "./build/generate-default-palettes.js"),
     output: {
         file: ".tmp/generate-palettes.js",
         format: "cjs",
