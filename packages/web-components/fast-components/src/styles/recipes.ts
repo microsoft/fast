@@ -27,7 +27,7 @@ import {
     neutralLayerL3,
     neutralLayerL4,
     neutralOutline,
-} from "@microsoft/fast-components-styles-msft";
+} from "../color";
 import { cssCustomPropertyBehaviorFactory } from "../custom-properties";
 import { FASTDesignSystemProvider } from "../design-system-provider";
 
