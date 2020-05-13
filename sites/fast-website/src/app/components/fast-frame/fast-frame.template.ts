@@ -109,9 +109,9 @@ export const FastFrameTemplate = html<FastFrame>`
             >
                 <fast-card>
                     <div class="image-container">
-                        <fast-badge fill="primary" color="primary" class="badge"
-                            >Badge</fast-badge
-                        >
+                        <fast-badge fill="primary" color="primary" class="badge">
+                            Badge
+                        </fast-badge>
                     </div>
                     <div class="text-container">
                         <h3>Card Options</h3>
