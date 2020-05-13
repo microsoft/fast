@@ -1,4 +1,4 @@
-import { display } from "@microsoft/fast-components";
+import { display, neutralForegroundRestBehavior } from "@microsoft/fast-components";
 import { css } from "@microsoft/fast-element";
 
 export const SectionHeaderStyles = css`
@@ -9,4 +9,4 @@ export const SectionHeaderStyles = css`
         box-sizing: border-box;
         text-align: center;
     }
-`;
+`.withBehaviors(neutralForegroundRestBehavior);
