@@ -37,6 +37,7 @@ export const FastFrameStyles = css`
         grid-gap: 40px;
         grid-template-columns: 1fr 1fr;
         padding: 40px;
+        background: var(--background-color)
     }
 
     .image-container {
@@ -52,6 +53,7 @@ export const FastFrameStyles = css`
         flex-direction: column;
         padding: 20px;
         text-align: start;
+        color: var(--neutral-foreground-rest);
     }
 
     .badge {
@@ -90,6 +92,7 @@ export const FastFrameStyles = css`
         display: grid;
         grid-template-columns: auto 1fr;
         text-align: start;
+        color: var(--neutral-foreground-rest);
     }
 
     .checkbox {

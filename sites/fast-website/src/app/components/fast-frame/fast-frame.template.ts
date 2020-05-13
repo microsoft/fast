@@ -1,5 +1,6 @@
 import { html } from "@microsoft/fast-element";
 import { FastFrame } from "./fast-frame";
+import { StandardLuminance } from "@microsoft/fast-components-styles-msft";
 
 export const FastFrameTemplate = html<FastFrame>`
     <template>
@@ -66,7 +67,9 @@ export const FastFrameTemplate = html<FastFrame>`
                     </svg>
                 </fast-tab>
                 <fast-tab-panel id="TabPanelOne">
-                    Tab one content. This is for testing.
+                <fast-switch @change="${(x, c) => x.themeChange(c.event as MouseEvent)} checked="${x => x.darkMode}">
+                    Dark Mode
+                </fast-switch>
                 </fast-tab-panel>
                 <fast-tab-panel id="TabPanelTwo">
                     <div class="content">
@@ -78,11 +81,11 @@ export const FastFrameTemplate = html<FastFrame>`
                         </p>
                         <fast-radio-group name="background color" @change="${(x, c) => x.backgroundChangeHandler(c.event as MouseEvent)}>
                             <label slot="label">Background color</label>
-                            <site-color-swatch value="#1F1F1F" backgroundColor="#1F1F1F" checked></site-color-swatch>
-                            <site-color-swatch value="#2B2B2B" backgroundColor="#2B2B2B"></site-color-swatch>
-                            <site-color-swatch value="#333333" backgroundColor="#333333"></site-color-swatch>
-                            <site-color-swatch value="#3B3B3B" backgroundColor="#3B3B3B"></site-color-swatch>
-                            <site-color-swatch value="#424242" backgroundColor="#424242"></site-color-swatch>
+                            <site-color-swatch value="${x => x.colorPallet[0]}" backgroundColor="${x => x.colorPallet[0]}" checked></site-color-swatch>
+                            <site-color-swatch value="${x => x.colorPallet[1]}" backgroundColor="${x => x.colorPallet[1]}"></site-color-swatch>
+                            <site-color-swatch value="${x => x.colorPallet[2]}" backgroundColor="${x => x.colorPallet[2]}"></site-color-swatch>
+                            <site-color-swatch value="${x => x.colorPallet[3]}" backgroundColor="${x => x.colorPallet[3]}"></site-color-swatch>
+                            <site-color-swatch value="${x => x.colorPallet[4]}" backgroundColor="${x => x.colorPallet[4]}"></site-color-swatch>
                         </fast-radio-group>
                         <fast-radio-group name="accent color" @change="${(x, c) => x.accentChangeHandler(c.event as MouseEvent)}>
                             <label slot="label">Accent color</label>
@@ -104,6 +107,7 @@ export const FastFrameTemplate = html<FastFrame>`
             <website-design-system-provider
                 use-defaults
                 class="preview"
+                base-layer-luminance="${x => x.darkMode ? StandardLuminance.DarkMode : StandardLuminance.LightMode}"
                 background-color="${x => x.backgroundColor}"
                 accent-base-color="${x => x.accentColor}"
             >
