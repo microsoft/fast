@@ -45,6 +45,7 @@ body {
 
 .section-component {
   --card-width: 410px;
+  color: var(--neutral-foreground-rest);
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -52,11 +53,11 @@ body {
 
 /* This creates the blur and background color changes on hover */
 /* start */
-.section-component:hover fast-hover-card{
+.section-component:hover site-content-placement{
   filter: blur(2px);
 }
 
-.section-component:hover fast-hover-card:hover{
+.section-component:hover site-content-placement:hover{
   /* background: linear-gradient(349.8deg, rgba(143, 68, 95, 0.3) 20.91%, rgba(148, 81, 73, 0.3) 99.75%); */
   box-shadow: 0px 10px 44px rgba(0, 0, 0, 0.1);
   border-radius: var(--design-unit);
