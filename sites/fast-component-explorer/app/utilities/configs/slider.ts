@@ -1,3 +1,4 @@
+import { SliderTrackItemAnchor } from "@microsoft/fast-components-react-base";
 import {
     Slider,
     sliderLabelSchema,
@@ -36,36 +37,36 @@ const sliderConfig: ComponentViewConfig<SliderProps> = {
                     {
                         id: sliderLabelSchema.id,
                         props: {
-                            valuePositionBinding: 0,
-                            label: "low",
+                            valuePositionBinding: SliderTrackItemAnchor.totalRangeMin,
+                            label: "Lowest",
                         },
                     },
                     {
                         id: sliderLabelSchema.id,
                         props: {
                             valuePositionBinding: 25,
-                            label: "25",
+                            label: "1/4",
                         },
                     },
                     {
                         id: sliderLabelSchema.id,
                         props: {
                             valuePositionBinding: 50,
-                            label: "low",
+                            label: "Middle",
                         },
                     },
                     {
                         id: sliderLabelSchema.id,
                         props: {
                             valuePositionBinding: 75,
-                            label: "low",
+                            label: "3/4",
                         },
                     },
                     {
                         id: sliderLabelSchema.id,
                         props: {
-                            valuePositionBinding: 100,
-                            label: "high",
+                            valuePositionBinding: SliderTrackItemAnchor.totalRangeMax,
+                            label: "Highest",
                         },
                     },
                 ],
