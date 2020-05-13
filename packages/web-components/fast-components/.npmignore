@@ -10,6 +10,7 @@ images/
 
 # Source files
 src/
+build/
 
 # config files
 .eslintignore
@@ -18,3 +19,5 @@ src/
 .storybook
 tsconfig.json
 tsconfig.build.json
+rollup.config.json
+babel.config.js
