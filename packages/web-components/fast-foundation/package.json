@@ -1,0 +1,43 @@
+{
+  "name": "@microsoft/fast-components",
+  "description": "A library of Web Component building blocks",
+  "sideEffects": false,
+  "version": "0.0.0",
+  "author": {
+    "name": "Microsoft",
+    "url": "https://discord.gg/FcSNfg4"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Microsoft/fast-dna.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Microsoft/fast-dna/issues/new/choose"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -p ./tsconfig.build.json",
+    "clean:dist": "node ../../../build/clean.js dist",
+    "prepare": "yarn clean:dist && yarn build",
+    "prettier": "prettier --config ../../../.prettierrc --write \"**/*.ts\"",
+    "prettier:diff": "prettier --config ../../../.prettierrc \"**/*.ts\" --list-different",
+    "eslint": "eslint . --ext .ts",
+    "eslint:fix": "eslint . --ext .ts --fix",
+    "test": "yarn eslint"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.8.4",
+    "@microsoft/eslint-config-fast-dna": "^1.1.1",
+    "circular-dependency-plugin": "^5.2.0",
+    "prettier": "2.0.2",
+    "ts-loader": "^6.2.1",
+    "typescript": "^3.7.5"
+  },
+  "dependencies": {
+    "@microsoft/fast-element": "^0.8.1",
+    "@microsoft/fast-web-utilities": "^4.4.5",
+    "tabbable": "^4.0.0"
+  }
+}
