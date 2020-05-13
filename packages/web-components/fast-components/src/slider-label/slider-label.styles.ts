@@ -3,7 +3,7 @@ import { display } from "../styles";
 import { SystemColors } from "../styles/system-colors";
 import { heightNumber } from "../styles/size";
 import { neutralOutlineRestBehavior } from "../styles/recipes";
-import { forcedColorsStylesheetBehavior } from "../styles/match-media-stylesheet-behavior";
+import { forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
 
 export const SliderLabelStyles = css`
     ${display("block")} :host {

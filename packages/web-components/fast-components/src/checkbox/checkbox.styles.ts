@@ -10,7 +10,7 @@ import {
     neutralOutlineHoverBehavior,
     neutralOutlineRestBehavior,
 } from "../styles/recipes";
-import { forcedColorsStylesheetBehavior } from "../styles/match-media-stylesheet-behavior";
+import { forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
 
 export const CheckboxStyles = css`
     ${display("inline-flex")} :host {

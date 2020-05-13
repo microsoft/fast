@@ -7,7 +7,7 @@ import {
 } from "@microsoft/fast-element";
 import { Direction, Orientation } from "@microsoft/fast-web-utilities";
 import { convertPixelToPercent } from "../slider/slider-utilities";
-import { FASTSlider, SliderConfiguration } from "../slider";
+import { SliderConfiguration } from "../slider";
 
 const defaultConfig: SliderConfiguration = {
     min: 0,
@@ -50,7 +50,7 @@ export class SliderLabel extends FASTElement {
         super.connectedCallback();
         this.getSliderConfiguration();
         this.positionStyle = this.positionAsStyle();
-        this.notifier = Observable.getNotifier(this.parentNode as FASTSlider);
+        this.notifier = Observable.getNotifier(this.parentNode);
         this.notifier.subscribe(this, "orientation");
         this.notifier.subscribe(this, "direction");
         this.notifier.subscribe(this, "max");

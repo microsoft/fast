@@ -2,6 +2,7 @@ import {
     attr,
     Behavior,
     customElement,
+    ElementStyles,
     FASTElement,
     observable,
     Observable,
@@ -12,7 +13,6 @@ import {
 } from "../custom-properties";
 import { composedParent } from "../utilities";
 import { DesignSystemPropertyDeclarationConfig } from "./design-system-property";
-import { DesignSystemProviderStyles as styles } from "./design-system-provider.styles";
 import { DesignSystemProviderTemplate as template } from "./design-system-provider.template";
 
 const supportsAdoptedStylesheets = "adoptedStyleSheets" in window.ShadowRoot.prototype;
@@ -416,7 +416,7 @@ export class DesignSystemProvider extends FASTElement
 /**
  * Defines a design-system-provider custom element
  */
-export function designSystemProvider(name: string) {
+export function designSystemProvider(name: string, styles: ElementStyles | undefined) {
     return <T extends typeof DesignSystemProvider>(providerCtor: T): void => {
         customElement({ name, template, styles })(providerCtor);
         providerCtor.registerTagName(name);

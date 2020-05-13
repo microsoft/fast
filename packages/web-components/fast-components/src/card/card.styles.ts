@@ -2,7 +2,7 @@ import { css } from "@microsoft/fast-element";
 import { display, elevation } from "../styles";
 import { SystemColors } from "../styles/system-colors";
 import { neutralLayerCardBehavior } from "../styles/recipes";
-import { forcedColorsStylesheetBehavior } from "../styles/match-media-stylesheet-behavior";
+import { forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
 
 export const CardStyles = css`
     ${display("block")} :host {
