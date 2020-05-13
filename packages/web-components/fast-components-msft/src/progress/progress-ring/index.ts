@@ -6,8 +6,8 @@ import {
 import { ProgressRingStyles as styles } from "./progress-ring.styles.js";
 
 @customElement({
-    name: "msft-progress-ring",
+    name: "fast-progress-ring",
     template,
     styles,
 })
-export class MSFTProgressRing extends BaseProgress {}
+export class FASTProgressRing extends BaseProgress {}

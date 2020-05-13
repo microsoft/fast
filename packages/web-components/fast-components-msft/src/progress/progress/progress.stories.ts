@@ -1,10 +1,10 @@
-import { MSFTDesignSystemProvider } from "../../design-system-provider";
+import { FASTDesignSystemProvider } from "../../design-system-provider";
 import Examples from "./fixtures/linear.html";
-import { MSFTProgress } from "./";
+import { FASTProgress } from "./";
 
 // Prevent tree-shaking
-MSFTProgress;
-MSFTDesignSystemProvider;
+FASTProgress;
+FASTDesignSystemProvider;
 
 export default {
     title: "Progress",

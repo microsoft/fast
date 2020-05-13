@@ -3,8 +3,8 @@ import { Switch, SwitchTemplate as template } from "@microsoft/fast-components";
 import { SwitchStyles as styles } from "./switch.styles.js";
 
 @customElement({
-    name: "msft-switch",
+    name: "fast-switch",
     template,
     styles,
 })
-export class MSFTSwitch extends Switch {}
+export class FASTSwitch extends Switch {}

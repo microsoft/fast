@@ -3,8 +3,8 @@ import { Tab, TabTemplate as template } from "@microsoft/fast-components";
 import { TabStyles as styles } from "./tab.styles.js";
 
 @customElement({
-    name: "msft-tab",
+    name: "fast-tab",
     template,
     styles,
 })
-export class MSFTTab extends Tab {}
+export class FASTTab extends Tab {}

@@ -2,14 +2,14 @@ import { attr, customElement } from "@microsoft/fast-element";
 import { Badge, BadgeTemplate as template } from "@microsoft/fast-components";
 import { BadgeStyles as styles } from "./badge.styles.js";
 
-export type BadgeFill = "accent" | "lightweight" | "neutral";
+export type BadgeFill = "accent" | "lightweight" | "neutral" | "string";
 
 @customElement({
-    name: "msft-badge",
+    name: "fast-badge",
     template,
     styles,
 })
-export class MSFTBadge extends Badge {
+export class FASTBadge extends Badge {
     @attr
     public fill: BadgeFill = "lightweight";
     private fillChanged(oldValue: BadgeFill, newValue: BadgeFill): void {
@@ -18,9 +18,4 @@ export class MSFTBadge extends Badge {
             this.classList.remove(oldValue);
         }
     }
-
-    // Can we remove this and circular as attrs if we don't want to leverage them?
-    // Can I set this internally only in this implementation?
-    @attr({ mode: "fromView" })
-    public color: string = "value";
 }

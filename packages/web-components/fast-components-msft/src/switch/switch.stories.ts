@@ -1,10 +1,10 @@
-import { MSFTDesignSystemProvider } from "../design-system-provider";
+import { FASTDesignSystemProvider } from "../design-system-provider";
 import Examples from "./fixtures/switch.html";
-import { MSFTSwitch } from "./";
+import { FASTSwitch } from "./";
 
 // Prevent tree-shaking
-MSFTSwitch;
-MSFTDesignSystemProvider;
+FASTSwitch;
+FASTDesignSystemProvider;
 
 export default {
     title: "Switch",

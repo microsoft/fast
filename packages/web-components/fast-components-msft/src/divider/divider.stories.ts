@@ -1,10 +1,10 @@
-import { MSFTDesignSystemProvider } from "../design-system-provider";
+import { FASTDesignSystemProvider } from "../design-system-provider";
 import DividerTemplate from "./fixtures/divider.html";
-import { MSFTDivider } from "./";
+import { FASTDivider } from "./";
 
 // Prevent tree-shaking
-MSFTDivider;
-MSFTDesignSystemProvider;
+FASTDivider;
+FASTDesignSystemProvider;
 
 export default {
     title: "Divider",

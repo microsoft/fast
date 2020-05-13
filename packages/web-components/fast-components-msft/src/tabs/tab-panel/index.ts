@@ -3,8 +3,8 @@ import { TabPanel, TabPanelTemplate as template } from "@microsoft/fast-componen
 import { TabPanelStyles as styles } from "./tab-panel.styles.js";
 
 @customElement({
-    name: "msft-tab-panel",
+    name: "fast-tab-panel",
     template,
     styles,
 })
-export class MSFTTabPanel extends TabPanel {}
+export class FASTTabPanel extends TabPanel {}

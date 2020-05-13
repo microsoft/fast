@@ -3,8 +3,8 @@ import { Flipper, FlipperTemplate as template } from "@microsoft/fast-components
 import { FlipperStyles as styles } from "./flipper.styles.js";
 
 @customElement({
-    name: "msft-flipper",
+    name: "fast-flipper",
     template,
     styles,
 })
-export class MSFTFlipper extends Flipper {}
+export class FASTFlipper extends Flipper {}

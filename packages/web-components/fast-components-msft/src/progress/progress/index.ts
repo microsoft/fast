@@ -3,8 +3,8 @@ import { BaseProgress, ProgressTemplate as template } from "@microsoft/fast-comp
 import { ProgressStyles as styles } from "./progress.styles.js";
 
 @customElement({
-    name: "msft-progress",
+    name: "fast-progress",
     template,
     styles,
 })
-export class MSFTProgress extends BaseProgress {}
+export class FASTProgress extends BaseProgress {}

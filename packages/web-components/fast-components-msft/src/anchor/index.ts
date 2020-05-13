@@ -4,11 +4,11 @@ import { AnchorStyles as styles } from "./anchor.styles.js";
 
 // Anchor
 @customElement({
-    name: "msft-anchor",
+    name: "fast-anchor",
     template,
     styles,
     shadowOptions: {
         delegatesFocus: true,
     },
 })
-export class MSFTAnchor extends Anchor {}
+export class FASTAnchor extends Anchor {}

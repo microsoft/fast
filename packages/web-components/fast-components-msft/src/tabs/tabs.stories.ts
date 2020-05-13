@@ -1,14 +1,14 @@
-import { MSFTDesignSystemProvider } from "../design-system-provider";
+import { FASTDesignSystemProvider } from "../design-system-provider";
 import Examples from "./fixtures/tabs.html";
-import { MSFTTab } from "./tab";
-import { MSFTTabPanel } from "./tab-panel";
-import { MSFTTabs } from "./";
+import { FASTTab } from "./tab";
+import { FASTTabPanel } from "./tab-panel";
+import { FASTTabs } from "./";
 
 // Prevent tree-shaking
-MSFTTab;
-MSFTTabPanel;
-MSFTTabs;
-MSFTDesignSystemProvider;
+FASTTab;
+FASTTabPanel;
+FASTTabs;
+FASTDesignSystemProvider;
 
 export default {
     title: "Tabs",

@@ -1,10 +1,10 @@
-import { MSFTDesignSystemProvider } from "../design-system-provider";
+import { FASTDesignSystemProvider } from "../design-system-provider";
 import CardTemplate from "./fixtures/card.html";
-import { MSFTCard } from "./";
+import { FASTCard } from "./";
 
 // Prevent tree-shaking
-MSFTCard;
-MSFTDesignSystemProvider;
+FASTCard;
+FASTDesignSystemProvider;
 
 export default {
     title: "Card",

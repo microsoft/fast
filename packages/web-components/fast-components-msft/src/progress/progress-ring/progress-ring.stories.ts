@@ -1,10 +1,10 @@
-import { MSFTDesignSystemProvider } from "../../design-system-provider";
+import { FASTDesignSystemProvider } from "../../design-system-provider";
 import Examples from "./fixtures/circular.html";
-import { MSFTProgressRing } from ".";
+import { FASTProgressRing } from "./";
 
 // Prevent tree-shaking
-MSFTProgressRing;
-MSFTDesignSystemProvider;
+FASTProgressRing;
+FASTDesignSystemProvider;
 
 export default {
     title: "Progress Ring",

@@ -3,8 +3,8 @@ import { TextFieldTemplate as template, TextField } from "@microsoft/fast-compon
 import { TextFieldStyles as styles } from "./text-field.styles.js";
 
 @customElement({
-    name: "msft-text-field",
+    name: "fast-text-field",
     template,
     styles,
 })
-export class MSFTTextField extends TextField {}
+export class FASTTextField extends TextField {}

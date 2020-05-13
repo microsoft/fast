@@ -1,10 +1,10 @@
-import { MSFTDesignSystemProvider } from "../design-system-provider";
+import { FASTDesignSystemProvider } from "../design-system-provider";
 import Examples from "./fixtures/radio-group.html";
 import { MSFTRadioGroup } from "./";
 
 // Prevent tree-shaking
 MSFTRadioGroup;
-MSFTDesignSystemProvider;
+FASTDesignSystemProvider;
 
 export default {
     title: "RadioGroup",

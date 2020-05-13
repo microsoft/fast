@@ -1,10 +1,10 @@
-import { MSFTDesignSystemProvider } from "../design-system-provider";
+import { FASTDesignSystemProvider } from "../design-system-provider";
 import FlipperTemplate from "./fixtures/flipper.html";
-import { MSFTFlipper } from "./";
+import { FASTFlipper } from "./";
 
 // Prevent tree-shaking
-MSFTFlipper;
-MSFTDesignSystemProvider;
+FASTFlipper;
+FASTDesignSystemProvider;
 
 export default {
     title: "Flipper",

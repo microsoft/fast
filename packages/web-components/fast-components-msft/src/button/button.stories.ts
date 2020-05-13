@@ -1,10 +1,10 @@
-import { MSFTDesignSystemProvider } from "../design-system-provider";
+import { FASTDesignSystemProvider } from "../design-system-provider";
 import ButtonTemplate from "./fixtures/button.html";
-import { MSFTButton } from "./";
+import { FASTButton } from "./";
 
 // Prevent tree-shaking
-MSFTButton;
-MSFTDesignSystemProvider;
+FASTButton;
+FASTDesignSystemProvider;
 
 export default {
     title: "Button",

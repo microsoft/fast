@@ -3,8 +3,8 @@ import { Card, CardTemplate as template } from "@microsoft/fast-components";
 import { CardStyles as styles } from "./card.styles.js";
 
 @customElement({
-    name: "msft-card",
+    name: "fast-card",
     template,
     styles,
 })
-export class MSFTCard extends Card {}
+export class FASTCard extends Card {}

@@ -1,10 +1,10 @@
-import { MSFTDesignSystemProvider } from "../design-system-provider";
+import { FASTDesignSystemProvider } from "../design-system-provider";
 import Examples from "./fixtures/text-field.html";
-import { MSFTTextField } from "./";
+import { FASTTextField } from "./";
 
 // Prevent tree-shaking
-MSFTTextField;
-MSFTDesignSystemProvider;
+FASTTextField;
+FASTDesignSystemProvider;
 
 export default {
     title: "Text field",

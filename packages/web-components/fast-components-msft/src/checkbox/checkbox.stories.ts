@@ -1,12 +1,12 @@
 import { STORY_RENDERED } from "@storybook/core-events";
 import addons from "@storybook/addons";
-import { MSFTDesignSystemProvider } from "../design-system-provider";
+import { FASTDesignSystemProvider } from "../design-system-provider";
 import Examples from "./fixtures/checkbox.html";
-import { MSFTCheckbox } from "./";
+import { FASTCheckbox } from "./";
 
 // Prevent tree-shaking
-MSFTCheckbox;
-MSFTDesignSystemProvider;
+FASTCheckbox;
+FASTDesignSystemProvider;
 
 addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
     if (name.toLowerCase().startsWith("checkbox")) {
@@ -16,7 +16,7 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
 
 function setIndeterminate(): void {
     document.querySelectorAll(".flag-indeterminate").forEach(el => {
-        if (el instanceof MSFTCheckbox) {
+        if (el instanceof FASTCheckbox) {
             el.indeterminate = true;
         }
     });

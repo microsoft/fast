@@ -1,10 +1,10 @@
-import { MSFTDesignSystemProvider } from "../design-system-provider";
+import { FASTDesignSystemProvider } from "../design-system-provider";
 import Examples from "./fixtures/slider.html";
-import { MSFTSlider } from "./";
+import { FASTSlider } from "./";
 
 // Prevent tree-shaking
-MSFTSlider;
-MSFTDesignSystemProvider;
+FASTSlider;
+FASTDesignSystemProvider;
 
 export default {
     title: "Slider",

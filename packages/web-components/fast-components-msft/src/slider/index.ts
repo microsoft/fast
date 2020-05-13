@@ -3,8 +3,8 @@ import { Slider, SliderTemplate as template } from "@microsoft/fast-components";
 import { SliderStyles as styles } from "./slider.styles.js";
 
 @customElement({
-    name: "msft-slider",
+    name: "fast-slider",
     template,
     styles,
 })
-export class MSFTSlider extends Slider {}
+export class FASTSlider extends Slider {}

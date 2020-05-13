@@ -3,8 +3,8 @@ import { SliderLabel, SliderLabelTemplate as template } from "@microsoft/fast-co
 import { SliderLabelStyles as styles } from "./slider-label.styles.js";
 
 @customElement({
-    name: "msft-slider-label",
+    name: "fast-slider-label",
     template,
     styles,
 })
-export class MSFTSliderLabel extends SliderLabel {}
+export class FASTSliderLabel extends SliderLabel {}

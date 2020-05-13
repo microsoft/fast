@@ -4,11 +4,11 @@ import { ButtonStyles as styles } from "./button.styles.js";
 
 // Button
 @customElement({
-    name: "msft-button",
+    name: "fast-button",
     template,
     styles,
     shadowOptions: {
         delegatesFocus: true,
     },
 })
-export class MSFTButton extends Button {}
+export class FASTButton extends Button {}

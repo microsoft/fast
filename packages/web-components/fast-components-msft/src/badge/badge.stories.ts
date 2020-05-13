@@ -1,10 +1,10 @@
-import { MSFTDesignSystemProvider } from "../design-system-provider";
+import { FASTDesignSystemProvider } from "../design-system-provider";
 import BadgeTemplate from "./fixtures/badge.html";
-import { MSFTBadge } from "./";
+import { FASTBadge } from "./";
 
 // Prevent tree-shaking
-MSFTBadge;
-MSFTDesignSystemProvider;
+FASTBadge;
+FASTDesignSystemProvider;
 
 export default {
     title: "Badge",

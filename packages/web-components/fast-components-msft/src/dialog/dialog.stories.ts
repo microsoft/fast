@@ -1,10 +1,10 @@
-import { MSFTDesignSystemProvider } from "../design-system-provider";
+import { FASTDesignSystemProvider } from "../design-system-provider";
 import DialogTemplate from "./fixtures/dialog.html";
-import { MSFTDialog } from "./";
+import { FASTDialog } from "./";
 
 // Prevent tree-shaking
-MSFTDialog;
-MSFTDesignSystemProvider;
+FASTDialog;
+FASTDesignSystemProvider;
 
 export default {
     title: "Dialog",

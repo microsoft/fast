@@ -3,8 +3,8 @@ import { Checkbox, CheckboxTemplate as template } from "@microsoft/fast-componen
 import { CheckboxStyles as styles } from "./checkbox.styles.js";
 
 @customElement({
-    name: "msft-checkbox",
+    name: "fast-checkbox",
     template,
     styles,
 })
-export class MSFTCheckbox extends Checkbox {}
+export class FASTCheckbox extends Checkbox {}

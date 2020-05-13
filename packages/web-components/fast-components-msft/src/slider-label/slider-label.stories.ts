@@ -1,10 +1,10 @@
-import { MSFTDesignSystemProvider } from "../design-system-provider";
+import { FASTDesignSystemProvider } from "../design-system-provider";
 import Examples from "./fixtures/slider-label.html";
-import { MSFTSliderLabel } from "./";
+import { FASTSliderLabel } from "./";
 
 // Prevent tree-shaking
-MSFTSliderLabel;
-MSFTDesignSystemProvider;
+FASTSliderLabel;
+FASTDesignSystemProvider;
 
 export default {
     title: "Slider label",

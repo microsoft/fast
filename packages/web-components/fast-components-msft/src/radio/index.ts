@@ -3,8 +3,8 @@ import { Radio, RadioTemplate as template } from "@microsoft/fast-components";
 import { RadioStyles as styles } from "./radio.styles.js";
 
 @customElement({
-    name: "msft-radio",
+    name: "fast-radio",
     template,
     styles,
 })
-export class MSFTRadio extends Radio {}
+export class FASTRadio extends Radio {}

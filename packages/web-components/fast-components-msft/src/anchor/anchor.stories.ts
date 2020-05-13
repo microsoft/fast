@@ -1,10 +1,10 @@
-import { MSFTDesignSystemProvider } from "../design-system-provider";
+import { FASTDesignSystemProvider } from "../design-system-provider";
 import AnchorTemplate from "./fixtures/anchor.html";
-import { MSFTAnchor } from "./";
+import { FASTAnchor } from "./";
 
 // Prevent tree-shaking
-MSFTAnchor;
-MSFTDesignSystemProvider;
+FASTAnchor;
+FASTDesignSystemProvider;
 
 export default {
     title: "Anchor",

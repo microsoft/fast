@@ -3,8 +3,8 @@ import { Divider, DividerTemplate as template } from "@microsoft/fast-components
 import { DividerStyles as styles } from "./divider.styles.js";
 
 @customElement({
-    name: "msft-divider",
+    name: "fast-divider",
     template,
     styles,
 })
-export class MSFTDivider extends Divider {}
+export class FASTDivider extends Divider {}
