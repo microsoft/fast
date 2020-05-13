@@ -48,6 +48,10 @@ body {
     border-right: 1px solid #e1e1e1;
 }
 
+.category-title {
+    font-size: var(--type-ramp-plus-2-font-size);
+}
+
 .content {
     grid-column-start: 2;
     grid-column-end: 2;
