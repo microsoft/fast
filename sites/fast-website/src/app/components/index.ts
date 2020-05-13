@@ -5,3 +5,4 @@ export { FastFrame } from "./fast-frame";
 export { SiteNavigation } from "./navigation";
 export { SiteContentPlacement } from "./content-placement";
 export { FeatureCard } from "./feature-card";
+export { CardSection } from "./card-section";
