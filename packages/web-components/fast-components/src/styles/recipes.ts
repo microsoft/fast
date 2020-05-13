@@ -1,5 +1,4 @@
 import {
-    accentBaseColor,
     accentFill,
     accentFillLarge,
     accentForeground,
@@ -28,6 +27,7 @@ import {
     neutralLayerL4,
     neutralOutline,
 } from "../color";
+import { accentBaseColor } from "../fast-design-system";
 import { cssCustomPropertyBehaviorFactory } from "../custom-properties";
 import { FASTDesignSystemProvider } from "../design-system-provider";
 

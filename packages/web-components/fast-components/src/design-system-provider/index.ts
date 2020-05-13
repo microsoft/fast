@@ -1,14 +1,5 @@
-import {
-    attr,
-    customElement,
-    nullableNumberConverter,
-    observable,
-} from "@microsoft/fast-element";
-import {
-    DensityOffset,
-    DesignSystem,
-    DesignSystemDefaults,
-} from "@microsoft/fast-components-styles-msft";
+import { attr, nullableNumberConverter, observable } from "@microsoft/fast-element";
+import { FASTDesignSystem, fastDesignSystemDefaults } from "../fast-design-system";
 import { DesignSystemProvider, designSystemProvider } from "./design-system-provider";
 import { designSystemProperty } from "./design-system-property";
 
@@ -23,49 +14,41 @@ const fromViewNumber: { mode: "fromView"; converter: typeof nullableNumberConver
 
 @designSystemProvider("fast-design-system-provider")
 export class FASTDesignSystemProvider extends DesignSystemProvider
-    implements
-        Omit<
-            DesignSystem,
-            | "contrast"
-            | "direction"
-            | "fontWeight"
-            | "neutralForegroundDarkIndex"
-            | "neutralForegroundLightIndex"
-        > {
+    implements FASTDesignSystem {
     /**
      * Define design system property attributes
      */
     @attr({ attribute: "background-color", ...fromView })
     @designSystemProperty({
         cssCustomProperty: "background-color",
-        default: DesignSystemDefaults.backgroundColor,
+        default: fastDesignSystemDefaults.backgroundColor,
     })
     public backgroundColor: string;
 
     @attr({ attribute: "accent-base-color", ...fromView })
     @designSystemProperty({
         cssCustomProperty: false,
-        default: DesignSystemDefaults.accentBaseColor,
+        default: fastDesignSystemDefaults.accentBaseColor,
     })
     public accentBaseColor: string;
 
     @observable
     @designSystemProperty({
         cssCustomProperty: false,
-        default: DesignSystemDefaults.neutralPalette,
+        default: fastDesignSystemDefaults.neutralPalette,
     })
     public neutralPalette: string[];
 
     @observable
     @designSystemProperty({
         cssCustomProperty: false,
-        default: DesignSystemDefaults.accentPalette,
+        default: fastDesignSystemDefaults.accentPalette,
     })
     public accentPalette: string[];
 
     @attr(fromViewNumber)
-    @designSystemProperty({ default: DesignSystemDefaults.density })
-    public density: DensityOffset;
+    @designSystemProperty({ default: fastDesignSystemDefaults.density })
+    public density: 0;
 
     @attr({
         attribute: "design-unit",
@@ -73,7 +56,7 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
     })
     @designSystemProperty({
         cssCustomProperty: "design-unit",
-        default: DesignSystemDefaults.designUnit,
+        default: fastDesignSystemDefaults.designUnit,
     })
     public designUnit: number;
 
@@ -83,7 +66,7 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
     })
     @designSystemProperty({
         cssCustomProperty: "base-height-multiplier",
-        default: DesignSystemDefaults.baseHeightMultiplier,
+        default: fastDesignSystemDefaults.baseHeightMultiplier,
     })
     public baseHeightMultiplier: number;
 
@@ -93,7 +76,7 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
     })
     @designSystemProperty({
         cssCustomProperty: "base-horizontal-spacing-multiplier",
-        default: DesignSystemDefaults.baseHorizontalSpacingMultiplier,
+        default: fastDesignSystemDefaults.baseHorizontalSpacingMultiplier,
     })
     public baseHorizontalSpacingMultiplier: number;
 
@@ -103,7 +86,7 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
     })
     @designSystemProperty({
         cssCustomProperty: "corner-radius",
-        default: DesignSystemDefaults.cornerRadius,
+        default: fastDesignSystemDefaults.cornerRadius,
     })
     public cornerRadius: number;
 
@@ -113,7 +96,7 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
     })
     @designSystemProperty({
         cssCustomProperty: "elevated-corner-radius",
-        default: DesignSystemDefaults.elevatedCornerRadius,
+        default: fastDesignSystemDefaults.elevatedCornerRadius,
     })
     public elevatedCornerRadius: number;
 
@@ -124,7 +107,7 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
     })
     @designSystemProperty({
         cssCustomProperty: "outline-width",
-        default: DesignSystemDefaults.outlineWidth,
+        default: fastDesignSystemDefaults.outlineWidth,
     })
     public outlineWidth: number;
 
@@ -134,7 +117,7 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
     })
     @designSystemProperty({
         cssCustomProperty: "focus-outline-width",
-        default: DesignSystemDefaults.focusOutlineWidth,
+        default: fastDesignSystemDefaults.focusOutlineWidth,
     })
     public focusOutlineWidth: number;
 
@@ -144,7 +127,7 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
     })
     @designSystemProperty({
         cssCustomProperty: "disabled-opacity",
-        default: DesignSystemDefaults.disabledOpacity,
+        default: fastDesignSystemDefaults.disabledOpacity,
     })
     public disabledOpacity: number;
 
@@ -280,7 +263,7 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
     })
     @designSystemProperty({
         cssCustomProperty: false,
-        default: DesignSystemDefaults.accentFillRestDelta,
+        default: fastDesignSystemDefaults.accentFillRestDelta,
     })
     public accentFillRestDelta: number;
 
@@ -290,7 +273,7 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
     })
     @designSystemProperty({
         cssCustomProperty: false,
-        default: DesignSystemDefaults.accentFillHoverDelta,
+        default: fastDesignSystemDefaults.accentFillHoverDelta,
     })
     public accentFillHoverDelta: number;
 
@@ -300,7 +283,7 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
     })
     @designSystemProperty({
         cssCustomProperty: false,
-        default: DesignSystemDefaults.accentFillActiveDelta,
+        default: fastDesignSystemDefaults.accentFillActiveDelta,
     })
     public accentFillActiveDelta: number;
 
@@ -310,7 +293,7 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
     })
     @designSystemProperty({
         cssCustomProperty: false,
-        default: DesignSystemDefaults.accentFillFocusDelta,
+        default: fastDesignSystemDefaults.accentFillFocusDelta,
     })
     public accentFillFocusDelta: number;
 
@@ -320,7 +303,7 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
     })
     @designSystemProperty({
         cssCustomProperty: false,
-        default: DesignSystemDefaults.accentFillSelectedDelta,
+        default: fastDesignSystemDefaults.accentFillSelectedDelta,
     })
     public accentFillSelectedDelta: number;
 
@@ -330,7 +313,7 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
     })
     @designSystemProperty({
         cssCustomProperty: false,
-        default: DesignSystemDefaults.accentForegroundRestDelta,
+        default: fastDesignSystemDefaults.accentForegroundRestDelta,
     })
     public accentForegroundRestDelta: number;
 
@@ -340,7 +323,7 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
     })
     @designSystemProperty({
         cssCustomProperty: false,
-        default: DesignSystemDefaults.accentForegroundHoverDelta,
+        default: fastDesignSystemDefaults.accentForegroundHoverDelta,
     })
     public accentForegroundHoverDelta: number;
 
@@ -350,7 +333,7 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
     })
     @designSystemProperty({
         cssCustomProperty: false,
-        default: DesignSystemDefaults.accentForegroundActiveDelta,
+        default: fastDesignSystemDefaults.accentForegroundActiveDelta,
     })
     public accentForegroundActiveDelta: number;
 
@@ -360,7 +343,7 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
     })
     @designSystemProperty({
         cssCustomProperty: false,
-        default: DesignSystemDefaults.accentForegroundFocusDelta,
+        default: fastDesignSystemDefaults.accentForegroundFocusDelta,
     })
     public accentForegroundFocusDelta: number;
 
@@ -370,7 +353,7 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
     })
     @designSystemProperty({
         cssCustomProperty: false,
-        default: DesignSystemDefaults.neutralFillRestDelta,
+        default: fastDesignSystemDefaults.neutralFillRestDelta,
     })
     public neutralFillRestDelta: number;
 
@@ -380,7 +363,7 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
     })
     @designSystemProperty({
         cssCustomProperty: false,
-        default: DesignSystemDefaults.neutralFillHoverDelta,
+        default: fastDesignSystemDefaults.neutralFillHoverDelta,
     })
     public neutralFillHoverDelta: number;
 
@@ -390,7 +373,7 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
     })
     @designSystemProperty({
         cssCustomProperty: false,
-        default: DesignSystemDefaults.neutralFillActiveDelta,
+        default: fastDesignSystemDefaults.neutralFillActiveDelta,
     })
     public neutralFillActiveDelta: number;
 
@@ -400,7 +383,7 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
     })
     @designSystemProperty({
         cssCustomProperty: false,
-        default: DesignSystemDefaults.neutralFillFocusDelta,
+        default: fastDesignSystemDefaults.neutralFillFocusDelta,
     })
     public neutralFillFocusDelta: number;
 
@@ -410,7 +393,7 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
     })
     @designSystemProperty({
         cssCustomProperty: false,
-        default: DesignSystemDefaults.neutralFillSelectedDelta,
+        default: fastDesignSystemDefaults.neutralFillSelectedDelta,
     })
     public neutralFillSelectedDelta: number;
 
@@ -420,7 +403,7 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
     })
     @designSystemProperty({
         cssCustomProperty: false,
-        default: DesignSystemDefaults.neutralFillInputRestDelta,
+        default: fastDesignSystemDefaults.neutralFillInputRestDelta,
     })
     public neutralFillInputRestDelta: number;
 
@@ -430,7 +413,7 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
     })
     @designSystemProperty({
         cssCustomProperty: false,
-        default: DesignSystemDefaults.neutralFillInputHoverDelta,
+        default: fastDesignSystemDefaults.neutralFillInputHoverDelta,
     })
     public neutralFillInputHoverDelta: number;
 
@@ -440,7 +423,7 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
     })
     @designSystemProperty({
         cssCustomProperty: false,
-        default: DesignSystemDefaults.neutralFillInputActiveDelta,
+        default: fastDesignSystemDefaults.neutralFillInputActiveDelta,
     })
     public neutralFillInputActiveDelta: number;
 
@@ -450,7 +433,7 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
     })
     @designSystemProperty({
         cssCustomProperty: false,
-        default: DesignSystemDefaults.neutralFillInputFocusDelta,
+        default: fastDesignSystemDefaults.neutralFillInputFocusDelta,
     })
     public neutralFillInputFocusDelta: number;
 
@@ -460,7 +443,7 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
     })
     @designSystemProperty({
         cssCustomProperty: false,
-        default: DesignSystemDefaults.neutralFillInputSelectedDelta,
+        default: fastDesignSystemDefaults.neutralFillInputSelectedDelta,
     })
     public neutralFillInputSelectedDelta: number;
 
@@ -470,7 +453,7 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
     })
     @designSystemProperty({
         cssCustomProperty: false,
-        default: DesignSystemDefaults.neutralFillStealthRestDelta,
+        default: fastDesignSystemDefaults.neutralFillStealthRestDelta,
     })
     public neutralFillStealthRestDelta: number;
 
@@ -480,7 +463,7 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
     })
     @designSystemProperty({
         cssCustomProperty: false,
-        default: DesignSystemDefaults.neutralFillStealthHoverDelta,
+        default: fastDesignSystemDefaults.neutralFillStealthHoverDelta,
     })
     public neutralFillStealthHoverDelta: number;
 
@@ -490,7 +473,7 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
     })
     @designSystemProperty({
         cssCustomProperty: false,
-        default: DesignSystemDefaults.neutralFillStealthActiveDelta,
+        default: fastDesignSystemDefaults.neutralFillStealthActiveDelta,
     })
     public neutralFillStealthActiveDelta: number;
 
@@ -500,7 +483,7 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
     })
     @designSystemProperty({
         cssCustomProperty: false,
-        default: DesignSystemDefaults.neutralFillStealthFocusDelta,
+        default: fastDesignSystemDefaults.neutralFillStealthFocusDelta,
     })
     public neutralFillStealthFocusDelta: number;
 
@@ -510,7 +493,7 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
     })
     @designSystemProperty({
         cssCustomProperty: false,
-        default: DesignSystemDefaults.neutralFillStealthSelectedDelta,
+        default: fastDesignSystemDefaults.neutralFillStealthSelectedDelta,
     })
     public neutralFillStealthSelectedDelta: number;
 
@@ -520,7 +503,7 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
     })
     @designSystemProperty({
         cssCustomProperty: false,
-        default: DesignSystemDefaults.neutralFillToggleHoverDelta,
+        default: fastDesignSystemDefaults.neutralFillToggleHoverDelta,
     })
     public neutralFillToggleHoverDelta: number;
 
@@ -530,7 +513,7 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
     })
     @designSystemProperty({
         cssCustomProperty: false,
-        default: DesignSystemDefaults.neutralFillToggleActiveDelta,
+        default: fastDesignSystemDefaults.neutralFillToggleActiveDelta,
     })
     public neutralFillToggleActiveDelta: number;
 
@@ -540,7 +523,7 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
     })
     @designSystemProperty({
         cssCustomProperty: false,
-        default: DesignSystemDefaults.neutralFillToggleFocusDelta,
+        default: fastDesignSystemDefaults.neutralFillToggleFocusDelta,
     })
     public neutralFillToggleFocusDelta: number;
 
@@ -550,7 +533,7 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
     })
     @designSystemProperty({
         cssCustomProperty: false,
-        default: DesignSystemDefaults.baseLayerLuminance,
+        default: fastDesignSystemDefaults.baseLayerLuminance,
     })
     public baseLayerLuminance: number; // 0...1
 
@@ -560,7 +543,7 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
     })
     @designSystemProperty({
         cssCustomProperty: false,
-        default: DesignSystemDefaults.neutralFillCardDelta,
+        default: fastDesignSystemDefaults.neutralFillCardDelta,
     })
     public neutralFillCardDelta: number;
 
@@ -570,7 +553,7 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
     })
     @designSystemProperty({
         cssCustomProperty: false,
-        default: DesignSystemDefaults.neutralForegroundHoverDelta,
+        default: fastDesignSystemDefaults.neutralForegroundHoverDelta,
     })
     public neutralForegroundHoverDelta: number;
 
@@ -580,7 +563,7 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
     })
     @designSystemProperty({
         cssCustomProperty: false,
-        default: DesignSystemDefaults.neutralForegroundActiveDelta,
+        default: fastDesignSystemDefaults.neutralForegroundActiveDelta,
     })
     public neutralForegroundActiveDelta: number;
 
@@ -590,7 +573,7 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
     })
     @designSystemProperty({
         cssCustomProperty: false,
-        default: DesignSystemDefaults.neutralForegroundFocusDelta,
+        default: fastDesignSystemDefaults.neutralForegroundFocusDelta,
     })
     public neutralForegroundFocusDelta: number;
 
@@ -600,7 +583,7 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
     })
     @designSystemProperty({
         cssCustomProperty: false,
-        default: DesignSystemDefaults.neutralDividerRestDelta,
+        default: fastDesignSystemDefaults.neutralDividerRestDelta,
     })
     public neutralDividerRestDelta: number;
 
@@ -610,7 +593,7 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
     })
     @designSystemProperty({
         cssCustomProperty: false,
-        default: DesignSystemDefaults.neutralOutlineRestDelta,
+        default: fastDesignSystemDefaults.neutralOutlineRestDelta,
     })
     public neutralOutlineRestDelta: number;
 
@@ -620,7 +603,7 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
     })
     @designSystemProperty({
         cssCustomProperty: false,
-        default: DesignSystemDefaults.neutralOutlineHoverDelta,
+        default: fastDesignSystemDefaults.neutralOutlineHoverDelta,
     })
     public neutralOutlineHoverDelta: number;
 
@@ -630,7 +613,7 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
     })
     @designSystemProperty({
         cssCustomProperty: false,
-        default: DesignSystemDefaults.neutralOutlineActiveDelta,
+        default: fastDesignSystemDefaults.neutralOutlineActiveDelta,
     })
     public neutralOutlineActiveDelta: number;
 
@@ -640,7 +623,7 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
     })
     @designSystemProperty({
         cssCustomProperty: false,
-        default: DesignSystemDefaults.neutralOutlineFocusDelta,
+        default: fastDesignSystemDefaults.neutralOutlineFocusDelta,
     })
     public neutralOutlineFocusDelta: number;
 }
