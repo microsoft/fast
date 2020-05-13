@@ -1,6 +1,6 @@
 {
     "name": "@microsoft/fast-components-msft",
-    "description": "A library of Web Components",
+    "description": "A library of Web Components with Microsoft styles",
     "sideEffects": false,
     "version": "0.0.0",
     "author": {
