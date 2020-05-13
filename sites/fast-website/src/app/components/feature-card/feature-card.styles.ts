@@ -4,11 +4,10 @@ import { display } from "@microsoft/fast-components";
 export const FeatureCardStyles = css`
     ${display("grid")} :host {
         grid-template-columns: 1fr 2fr;
-        color: var(--text-color);
+        color: var(--neutral-foreground-rest);
         font-family: var(--text-font);
         box-sizing: border-box;
-        margin: 10px 20px;
-        padding: 10px 0;
+        padding: 20px;
         box-shadow: unset;
         height: 120px;
         border-top: 1px solid currentcolor;
@@ -19,7 +18,11 @@ export const FeatureCardStyles = css`
     }
 
     :host(:hover) {
-        filter: blur(0);
+        border: 1px solid currentcolor;
+    }
+
+    :host(:hover) ::slotted(h5) {
+        color: var(--accent-fill-rest);
     }
 
     header {
@@ -49,6 +52,6 @@ export const FeatureCardStyles = css`
     ::slotted(fast-anchor) {
         margin-right: 20px;
         opacity: 0;
-        filter: hue-rotate(100deg);
+        color: var(--accent-fill-rest);
     }
 `;
