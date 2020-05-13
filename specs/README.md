@@ -21,7 +21,7 @@ Here you'll find specifications for custom elements and other library features.
 | [Flipper](../packages/web-components/fast-components/src/flipper/flipper.spec.md) | :white_check_mark: | :white_check_mark: |
 | [Form associated custom elements](../packages/web-components/fast-components/src/form-associated/form-associated-custom-element.spec.md) | :white_check_mark: | :white_check_mark: |
 | Listbox | -- | -- |
-| [Menu](./menu/menu.md) | :white_check_mark: | -- |
+| [Menu](../packages/web-components/fast-components/src/menu/menu.md) | :white_check_mark: | :white_check_mark: |
 | [Number field](./number-field.md) | :white_check_mark: | -- |
 | [Progress](../packages/web-components/fast-components/src/progress/progress.spec.md) | :white_check_mark: | :white_check_mark: |
 | [Radio](../packages/web-components/fast-components/src/radio/radio.spec.md) | :white_check_mark: | :white_check_mark: |
