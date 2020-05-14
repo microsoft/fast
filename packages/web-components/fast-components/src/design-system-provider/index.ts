@@ -1,7 +1,12 @@
 import { attr, nullableNumberConverter, observable } from "@microsoft/fast-element";
+import {
+    designSystemProperty,
+    designSystemProvider,
+    DesignSystemProvider,
+    DesignSystemProviderTemplate as template,
+} from "@microsoft/fast-foundation";
 import { FASTDesignSystem, fastDesignSystemDefaults } from "../fast-design-system";
-import { DesignSystemProvider, designSystemProvider } from "./design-system-provider";
-import { designSystemProperty } from "./design-system-property";
+import { DesignSystemProviderStyles as styles } from "./design-system-provider.styles";
 
 const fromView: { mode: "fromView" } = {
     mode: "fromView",
@@ -12,7 +17,7 @@ const fromViewNumber: { mode: "fromView"; converter: typeof nullableNumberConver
     converter: nullableNumberConverter,
 };
 
-@designSystemProvider("fast-design-system-provider")
+@designSystemProvider("fast-design-system-provider", template, styles)
 export class FASTDesignSystemProvider extends DesignSystemProvider
     implements FASTDesignSystem {
     /**
@@ -627,8 +632,3 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
     })
     public neutralOutlineFocusDelta: number;
 }
-
-export * from "./design-system-provider";
-export * from "./design-system-property";
-export * from "./design-system-provider.styles";
-export * from "./design-system-provider.template";

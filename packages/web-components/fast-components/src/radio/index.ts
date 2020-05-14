@@ -1,6 +1,5 @@
 import { customElement } from "@microsoft/fast-element";
-import { Radio } from "./radio";
-import { RadioTemplate as template } from "./radio.template";
+import { Radio, RadioTemplate as template } from "@microsoft/fast-foundation";
 import { RadioStyles as styles } from "./radio.styles";
 
 @customElement({
@@ -9,6 +8,3 @@ import { RadioStyles as styles } from "./radio.styles";
     styles,
 })
 export class FASTRadio extends Radio {}
-export * from "./radio.template";
-export * from "./radio.styles";
-export * from "./radio";

@@ -1,9 +1,9 @@
 import { css } from "@microsoft/fast-element";
+import { forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
 import { display } from "../styles";
 import { SystemColors } from "../styles/system-colors";
 import { heightNumber } from "../styles/size";
 import { neutralOutlineRestBehavior } from "../styles/recipes";
-import { forcedColorsStylesheetBehavior } from "../styles/match-media-stylesheet-behavior";
 
 export const SliderLabelStyles = css`
     ${display("block")} :host {
