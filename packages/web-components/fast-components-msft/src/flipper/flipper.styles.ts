@@ -3,10 +3,10 @@ import {
     disabledCursor,
     display,
     focusVisible,
-    forcedColorsStylesheetBehavior,
     heightNumber,
     SystemColors,
 } from "@microsoft/fast-components";
+import { forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
 import {
     neutralFillStealthActiveBehavior,
     neutralFillStealthHoverBehavior,

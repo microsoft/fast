@@ -1,10 +1,6 @@
 import { css } from "@microsoft/fast-element";
-import {
-    disabledCursor,
-    focusVisible,
-    forcedColorsStylesheetBehavior,
-    SystemColors,
-} from "@microsoft/fast-components";
+import { disabledCursor, focusVisible, SystemColors } from "@microsoft/fast-components";
+import { forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
 import {
     AccentButtonStyles,
     BaseButtonStyles,

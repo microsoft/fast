@@ -1,10 +1,6 @@
 import { css } from "@microsoft/fast-element";
-import {
-    display,
-    forcedColorsStylesheetBehavior,
-    heightNumber,
-    SystemColors,
-} from "@microsoft/fast-components";
+import { display, heightNumber, SystemColors } from "@microsoft/fast-components";
+import { forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
 import { neutralOutlineRestBehavior } from "../styles";
 
 export const SliderLabelStyles = css`

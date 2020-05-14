@@ -1,9 +1,6 @@
 import { css } from "@microsoft/fast-element";
-import {
-    display,
-    forcedColorsStylesheetBehavior,
-    SystemColors,
-} from "@microsoft/fast-components";
+import { display, SystemColors } from "@microsoft/fast-components";
+import { forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
 import {
     accentFillRestBehavior,
     neutralFillRestBehavior,

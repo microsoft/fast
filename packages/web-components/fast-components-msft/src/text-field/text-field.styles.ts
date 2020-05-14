@@ -3,7 +3,6 @@ import {
     disabledCursor,
     display,
     focusVisible,
-    forcedColorsStylesheetBehavior,
     heightNumber,
     SystemColors,
 } from "@microsoft/fast-components";
