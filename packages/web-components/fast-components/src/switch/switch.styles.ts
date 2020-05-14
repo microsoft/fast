@@ -89,9 +89,8 @@ export const SwitchStyles = css`
         font-family: var(--body-font);
         color: var(--neutral-foreground-rest);
         cursor: pointer;
-        ${
-            /* Font size is temporary - replace when adaptive typography is figured out */ ""
-        } font-size: calc(1rem + (var(--density) * 2px));
+        font-size: var(--type-ramp-base-font-size);
+        line-height: var(--type-ramp-base-line-height);
     }
 
     .label {
@@ -100,6 +99,13 @@ export const SwitchStyles = css`
         ${
             /* Need to discuss with Brian how HorizontalSpacingNumber can work. https://github.com/microsoft/fast-dna/issues/2766 */ ""
         } margin-inline-end: calc(var(--design-unit) * 2px + 2px);
+        font-size: var(--type-ramp-base-font-size);
+        line-height: var(--type-ramp-base-line-height);
+    }
+
+    .label__hidden {
+        display: none;
+        visibility: hidden;
     }
 
     ::slotted(*) {
