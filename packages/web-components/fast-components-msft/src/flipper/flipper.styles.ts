@@ -4,8 +4,8 @@ import {
     display,
     focusVisible,
     heightNumber,
-    SystemColors,
 } from "@microsoft/fast-components";
+import { SystemColors } from "@microsoft/fast-web-utilities";
 import { forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
 import {
     neutralFillStealthActiveBehavior,
