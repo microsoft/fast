@@ -54,7 +54,13 @@ export class FastFrame extends FASTElement {
     public themeChange = (e: any): void => {
         this.darkMode = !this.darkMode;
         if (!this.darkMode) {
-            this.backgroundPalette = ["#FFFFFF", "#F0F0F0", "#DEDEDE", "#D6D6D6", "#C4C4C4"];
+            this.backgroundPalette = [
+                "#FFFFFF",
+                "#F0F0F0",
+                "#DEDEDE",
+                "#D6D6D6",
+                "#C4C4C4",
+            ];
         } else {
             this.backgroundPalette = this.darkPallette;
         }

@@ -18,8 +18,14 @@ export const ColorSwatchTemplate = html<ColorSwatch>`
                 <div part="checked-indicator" class="checked-indicator"></div>
             </slot>
         </div>
-        <label part="label" class="${x => x.defaultSlottedNodes && x.defaultSlottedNodes.length ? 'label' : 'label__hidden'}">
-            <slot ${slotted('defaultSlottedNodes')}></slot>
+        <label
+            part="label"
+            class="${x =>
+                x.defaultSlottedNodes && x.defaultSlottedNodes.length
+                    ? "label"
+                    : "label__hidden"}"
+        >
+            <slot ${slotted("defaultSlottedNodes")}></slot>
         </label>
     </template>
 `;

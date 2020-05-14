@@ -5,6 +5,6 @@ export class ColorSwatch extends FASTRadio {
     @attr
     public backgroundColor: string = "#F33378";
 
-    @observable 
+    @observable
     public defaultSlottedNodes: Node[];
 }
