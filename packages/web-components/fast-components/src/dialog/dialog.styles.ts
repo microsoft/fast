@@ -37,10 +37,10 @@ export const DialogStyles = css`
     .root {
         ${elevation} margin-top: auto;
         margin-bottom: auto;
-        border-radius: calc(var(--elevated-corner-radius));
         width: var(--dialog-width);
         height: var(--dialog-height);
-        background: var(--background-color);
+        background-color: var(--background-color);
         z-index: 1;
+        border-radius: calc(var(--corner-radius) * 1px);
     }
 `;

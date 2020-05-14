@@ -13,7 +13,7 @@ export const CardStyles = css`
         width: var(--card-width, 100%);
         box-sizing: border-box;
         background: var(--neutral-layer-card);
-        border-radius: calc(var(--elevated-corner-radius) * 1px);
+        border-radius: calc(var(--corner-radius) * 1px);
         ${elevation};
     }
 `.withBehaviors(
