@@ -5,13 +5,11 @@ export const FeatureCardStyles = css`
     ${display("grid")} :host {
         contain: layout;
         grid-template-columns: 1fr 2fr;
-        color: var(--neutral-foreground-rest);
+        color: inherit;
         font-family: var(--text-font);
         box-sizing: border-box;
         padding: 20px;
         box-shadow: unset;
-        height: 140px;
-        width: 600px;
     }
 
     :host::before {
