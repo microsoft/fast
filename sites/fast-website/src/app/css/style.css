@@ -16,7 +16,7 @@ body {
 
 .wrapper {
   display: grid;
-  grid-template-columns: minmax(5vw, 1fr) minmax(0px, 1600px) minmax(5vw, 1fr);
+  grid-template-columns: minmax(5vw, 1fr) minmax(0px, 1200px) minmax(5vw, 1fr);
 }
 
 .header {
@@ -44,7 +44,7 @@ body {
 }
 
 .section-component {
-  --card-width: 410px;
+  --card-width: 400px;
   color: var(--neutral-foreground-rest);
   display: flex;
   flex-wrap: wrap;
