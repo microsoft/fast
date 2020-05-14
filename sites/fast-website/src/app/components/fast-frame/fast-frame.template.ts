@@ -1,5 +1,6 @@
-import { html } from "@microsoft/fast-element";
+import { html, repeat } from "@microsoft/fast-element";
 import { FastFrame } from "./fast-frame";
+import { StandardLuminance } from "@microsoft/fast-components-styles-msft";
 
 export const FastFrameTemplate = html<FastFrame>`
     <template>
@@ -66,7 +67,10 @@ export const FastFrameTemplate = html<FastFrame>`
                     </svg>
                 </fast-tab>
                 <fast-tab-panel id="TabPanelOne">
-                    Tab one content. This is for testing.
+                <fast-switch @change="${(x, c) =>
+                    x.themeChange(c.event as MouseEvent)} checked="${x => x.darkMode}">
+                    Dark Mode
+                </fast-switch>
                 </fast-tab-panel>
                 <fast-tab-panel id="TabPanelTwo">
                     <div class="content">
@@ -76,7 +80,32 @@ export const FastFrameTemplate = html<FastFrame>`
                             Ultrices nibh nunc vestibulum fames. At lacus nunc lacus eget
                             neque.
                         </p>
-                        Color Pickers go here.
+                        <fast-radio-group name="background color" @change="${(x, c) =>
+                            x.backgroundChangeHandler(c.event as MouseEvent)}>
+                            <label slot="label">Background color</label>
+                            ${repeat(
+                                x => x.backgroundPalette,
+                                html<string>`
+                                    <site-color-swatch
+                                        value="${x => x}"
+                                        background-color="${x => x}"
+                                    ></site-color-swatch>
+                                `
+                            )}
+                        </fast-radio-group>
+                        <fast-radio-group name="accent color" @change="${(x, c) =>
+                            x.accentChangeHandler(c.event as MouseEvent)}>
+                            <label slot="label">Accent color</label>
+                            ${repeat(
+                                x => x.accentPalette,
+                                html<string>`
+                                    <site-color-swatch
+                                        value="${x => x}"
+                                        background-color="${x => x}"
+                                    ></site-color-swatch>
+                                `
+                            )}
+                        </fast-radio-group>
                     </div>
                 </fast-tab-panel>
                 <fast-tab-panel id="TabPanelThree">
@@ -89,14 +118,18 @@ export const FastFrameTemplate = html<FastFrame>`
             <website-design-system-provider
                 use-defaults
                 class="preview"
-                background-color="#424242"
-                accent-base-color="#F33378"
+                base-layer-luminance="${x =>
+                    x.darkMode
+                        ? StandardLuminance.DarkMode
+                        : StandardLuminance.LightMode}"
+                background-color="${x => x.backgroundColor}"
+                accent-base-color="${x => x.accentColor}"
             >
                 <fast-card>
                     <div class="image-container">
-                        <fast-badge fill="primary" color="primary" class="badge"
-                            >Badge</fast-badge
-                        >
+                        <fast-badge fill="primary" color="primary" class="badge">
+                            Badge
+                        </fast-badge>
                     </div>
                     <div class="text-container">
                         <h3>Card Options</h3>
@@ -142,8 +175,15 @@ export const FastFrameTemplate = html<FastFrame>`
                         </div>
                     </div>
                 </fast-card>
-                <div>
+                <div class="preview-controls">
                     <fast-progress></fast-progress>
+                    <fast-menu>
+                        <fast-menu-item role="menuitem">Menu item 1</fast-menu-item>
+                        <fast-menu-item role="menuitem">Menu item 2</fast-menu-item>
+                        <fast-menu-item role="menuitem">Menu item 3</fast-menu-item>
+                        <hr/>
+                        <fast-menu-item role="menuitem">Menu item 4</fast-menu-item>
+                    </fast-menu>
                     <div class="control-container">
                         <div class="control-container-column">
                             <fast-radio>Radio 1</fast-radio>
@@ -156,12 +196,18 @@ export const FastFrameTemplate = html<FastFrame>`
                             <p class="checkbox-label">Checkbox</p>
                         </div>
                     </div>
+                    <fast-text-field placeholder="Text field"></fast-text-field>
+                    <div class="control-container-2">
+                        <fast-flipper aria-hidden="false"></fast-flipper>
+                        <fast-flipper disabled></fast-flipper>
+                        <fast-slider></fast-slider>
+                    </div>
                     <div class="control-container">
                         <fast-button appearance="accent">
                             Button
                             <svg
                                 class="icon-cut"
-                                slot="end"
+                                slot="start"
                                 width="11"
                                 height="15"
                                 viewBox="0 0 11 15"
@@ -177,7 +223,7 @@ export const FastFrameTemplate = html<FastFrame>`
                             Button
                             <svg
                                 class="icon"
-                                slot="end"
+                                slot="start"
                                 width="14"
                                 height="16"
                                 viewBox="0 0 14 16"
