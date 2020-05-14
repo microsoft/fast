@@ -1,5 +1,5 @@
 <fast-design-system-provider use-defaults>
-    <div style="display: flex; flex-direction: column; justify-content: space-evenly; width: 500px; height: 100vh">
+    <div style="display: flex; flex-direction: column; justify-content: space-evenly; width: 500px; height: 100vh;">
         <div style="margin-bottom: 60px;">
             <button style="width: 90px;margin: 10px;" onclick="const slider = document.getElementById('switcher'); slider.getAttribute('orientation') === 'horizontal' ? slider.setAttribute('orientation', 'vertical') : slider.setAttribute('orientation', 'horizontal');">
                 Toggle orientation
@@ -9,7 +9,7 @@
                     position="0"
                 >
                     0&#8451;
-                </fast-slider-label>            
+                </fast-slider-label>
                 <fast-slider-label
                     position="10"
                 >
@@ -29,6 +29,9 @@
         </div>
         <!-- No max or min -->
         <fast-slider></fast-slider>
+
+        <!-- Margin offsets -->
+        <fast-slider style="margin-left:100px"></fast-slider>
 
         <!-- Text Labels -->
         <div style="display: flex; flex-direction: column; height:min-content">
@@ -82,7 +85,7 @@
                         position="60"
                     >
                         60
-                    </fast-slider-label>                                                
+                    </fast-slider-label>
                     <fast-slider-label
                         position="80"
                     >
@@ -193,7 +196,7 @@
                 hide-mark="true"
             >
                 50
-            </fast-slider-label>            
+            </fast-slider-label>
             <fast-slider-label
                 position="100"
                 hide-mark="true"
