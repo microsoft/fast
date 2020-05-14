@@ -1,4 +1,4 @@
-import { attr, nullableNumberConverter } from "@microsoft/fast-element";
+import { attr, nullableNumberConverter, observable } from "@microsoft/fast-element";
 import { FormAssociated } from "../form-associated/index.js";
 
 export enum TextAreaAppearance {
@@ -84,6 +84,9 @@ export class TextArea extends FormAssociated<HTMLTextAreaElement> {
             this.proxy.spellcheck = this.spellcheck;
         }
     }
+
+    @observable
+    public defaultSlottedNodes: Node[];
 
     public valueChanged(): void {
         if (this.textarea && this.value !== this.textarea.value) {
