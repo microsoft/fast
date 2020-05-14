@@ -17,7 +17,11 @@ const fromViewNumber: { mode: "fromView"; converter: typeof nullableNumberConver
     converter: nullableNumberConverter,
 };
 
-@designSystemProvider("fast-design-system-provider", template, styles)
+@designSystemProvider({
+    name: "fast-design-system-provider",
+    template,
+    styles,
+})
 export class FASTDesignSystemProvider extends DesignSystemProvider
     implements FASTDesignSystem {
     /**
