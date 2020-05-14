@@ -1,4 +1,3 @@
-import { StandardLuminance } from "@microsoft/fast-components-styles-msft";
 import { DataDictionary, SchemaDictionary } from "@microsoft/fast-tooling";
 import { PreviewClassNameContract } from "./preview.style";
 
@@ -13,5 +12,5 @@ export type PreviewProps = PreviewHandledProps & PreviewUnhandledProps;
 export interface PreviewState {
     dataDictionary: DataDictionary<unknown> | void;
     schemaDictionary: SchemaDictionary;
-    theme: StandardLuminance;
+    transparentBackground: boolean;
 }
