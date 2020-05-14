@@ -3,22 +3,34 @@ import { display, neutralForegroundRestBehavior } from "@microsoft/fast-componen
 
 export const FeatureCardStyles = css`
     ${display("grid")} :host {
+        contain: layout;
         grid-template-columns: 1fr 2fr;
         color: var(--neutral-foreground-rest);
         font-family: var(--text-font);
         box-sizing: border-box;
         padding: 20px;
         box-shadow: unset;
-        height: 120px;
-        border-top: 1px solid currentcolor;
+        height: 140px;
+        width: 600px;
+    }
+
+    :host::before {
+        content: "";
+        display: block;
+        background-color: currentColor;
+        position: fixed;
+        height: 1px;
+        width: 93%;
+        left: 20px;
+        top: -1px;
     }
 
     :host(:hover) ::slotted(fast-anchor) {
         opacity: 1;
     }
 
-    :host(:hover) {
-        border: 1px solid currentcolor;
+    :host(:hover)::before {
+        opacity: 0;
     }
 
     :host(:hover) ::slotted(h5) {

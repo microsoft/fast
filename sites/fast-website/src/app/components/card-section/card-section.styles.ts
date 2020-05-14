@@ -6,7 +6,7 @@ export const CardSectionStyles = css`
         --flow: column;
     }
 
-    @media screen and (max-width: 1000px) {
+    @media screen and (max-width: 1200px) {
         :host {
             --flow: row;
         }
@@ -15,7 +15,6 @@ export const CardSectionStyles = css`
     ${display("grid")} :host {
         grid-template-rows: repeat(4, min-content);
         grid-auto-flow: var(--flow);
-        grid-column-gap: 20px;
     }
 
     :host(:hover) ::slotted(feature-card) {
