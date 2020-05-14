@@ -93,13 +93,6 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
     public cornerRadius: number;
 
     @designSystemProperty({
-        attribute: "elevated-corner-radius",
-        converter: nullableNumberConverter,
-        default: fastDesignSystemDefaults.elevatedCornerRadius,
-    })
-    public elevatedCornerRadius: number;
-
-    @designSystemProperty({
         attribute: "outline-width",
         converter: nullableNumberConverter,
         default: fastDesignSystemDefaults.outlineWidth,
