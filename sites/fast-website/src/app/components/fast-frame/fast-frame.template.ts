@@ -84,20 +84,20 @@ export const FastFrameTemplate = html<FastFrame>`
                             x.backgroundChangeHandler(c.event as MouseEvent)}>
                             <label slot="label">Background color</label>
                             <site-color-swatch value="${x =>
-                                x.colorPallet[0]}" backgroundColor="${x =>
-    x.colorPallet[0]}" checked></site-color-swatch>
+                                x.colorPalette[0]}" backgroundColor="${x =>
+    x.colorPalette[0]}" checked></site-color-swatch>
                             <site-color-swatch value="${x =>
-                                x.colorPallet[1]}" backgroundColor="${x =>
-    x.colorPallet[1]}"></site-color-swatch>
+                                x.colorPalette[1]}" backgroundColor="${x =>
+    x.colorPalette[1]}"></site-color-swatch>
                             <site-color-swatch value="${x =>
-                                x.colorPallet[2]}" backgroundColor="${x =>
-    x.colorPallet[2]}"></site-color-swatch>
+                                x.colorPalette[2]}" backgroundColor="${x =>
+    x.colorPalette[2]}"></site-color-swatch>
                             <site-color-swatch value="${x =>
-                                x.colorPallet[3]}" backgroundColor="${x =>
-    x.colorPallet[3]}"></site-color-swatch>
+                                x.colorPalette[3]}" backgroundColor="${x =>
+    x.colorPalette[3]}"></site-color-swatch>
                             <site-color-swatch value="${x =>
-                                x.colorPallet[4]}" backgroundColor="${x =>
-    x.colorPallet[4]}"></site-color-swatch>
+                                x.colorPalette[4]}" backgroundColor="${x =>
+    x.colorPalette[4]}"></site-color-swatch>
                         </fast-radio-group>
                         <fast-radio-group name="accent color" @change="${(x, c) =>
                             x.accentChangeHandler(c.event as MouseEvent)}>
