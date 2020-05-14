@@ -1,4 +1,4 @@
-import { html, when, slotted } from "@microsoft/fast-element";
+import { html, slotted } from "@microsoft/fast-element";
 import { Radio } from "./radio.js";
 
 export const RadioTemplate = html<Radio>`

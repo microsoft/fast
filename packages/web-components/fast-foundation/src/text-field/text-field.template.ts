@@ -1,4 +1,4 @@
-import { html, ref, when, slotted } from "@microsoft/fast-element";
+import { html, ref, slotted } from "@microsoft/fast-element";
 import { endTemplate, startTemplate } from "../patterns/start-end.js";
 import { TextField } from "./text-field.js";
 

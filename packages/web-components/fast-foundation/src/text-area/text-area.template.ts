@@ -1,4 +1,4 @@
-import { html, ref, when, slotted } from "@microsoft/fast-element";
+import { html, ref, slotted } from "@microsoft/fast-element";
 import { TextArea, TextAreaResize } from "./text-area.js";
 
 export const TextAreaTemplate = html<TextArea>`

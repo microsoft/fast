@@ -1,4 +1,4 @@
-import { html, when, slotted } from "@microsoft/fast-element";
+import { html, slotted } from "@microsoft/fast-element";
 import { Switch } from "./switch.js";
 
 export const SwitchTemplate = html<Switch>`
