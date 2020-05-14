@@ -7,17 +7,17 @@ import { DesignSystemProvider } from "./design-system-provider.js";
 /**
  * Decorator to declare a property as a design-system property.
  * Accepts a config object with the following:
- * 
+ *
  * default:
  * The default value of the property. Will be assigned when the use-defaults attribute is used.
  *
  * attribute?:
  * The HTML attribute to map the property to - defaults to the property name.
- * 
+ *
  * mode?:
  * The attr mode - see https://github.com/microsoft/fast-dna/blob/master/packages/web-components/fast-element/docs/guide/building-components.md#customizing-attributes
  * Defaults to "fromView"
- * 
+ *
  * converter?:
  * The attr converter - see https://github.com/microsoft/fast-dna/blob/master/packages/web-components/fast-element/docs/guide/building-components.md#customizing-attributes
  *
@@ -47,7 +47,7 @@ export function designSystemProperty<T extends DesignSystemProvider>(
              * Default to fromView so we don't preform a bunch of DOM writes
              */
             if (config.mode === void 0) {
-                config = {...config, mode: "fromView"}
+                config = { ...config, mode: "fromView" };
             }
 
             attr(config as DecoratorAttributeConfiguration)(source, prop);

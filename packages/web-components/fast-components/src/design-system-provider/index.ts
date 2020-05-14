@@ -50,7 +50,10 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
     })
     public accentPalette: string[];
 
-    @designSystemProperty({ default: fastDesignSystemDefaults.density, converter: nullableNumberConverter })
+    @designSystemProperty({
+        default: fastDesignSystemDefaults.density,
+        converter: nullableNumberConverter,
+    })
     public density: 0;
 
     @designSystemProperty({
@@ -67,7 +70,7 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
     @designSystemProperty({
         attribute: "base-height-multiplier",
         default: fastDesignSystemDefaults.baseHeightMultiplier,
-        converter: nullableNumberConverter
+        converter: nullableNumberConverter,
     })
     public baseHeightMultiplier: number;
 

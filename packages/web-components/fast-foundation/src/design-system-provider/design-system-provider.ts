@@ -46,7 +46,7 @@ export const designSystemConsumerBehavior: Behavior = {
     },
 
     /* eslint-disable-next-line */
-    unbind<T extends DesignSystemConsumer & HTMLElement>(source: T) { },
+    unbind<T extends DesignSystemConsumer & HTMLElement>(source: T) {},
 };
 
 export class DesignSystemProvider extends FASTElement
@@ -190,10 +190,12 @@ export class DesignSystemProvider extends FASTElement
      * by the decorator.
      */
     public designSystemProperties: {
-        [propertyName: string]: Required<Pick<
-            DecoratorDesignSystemPropertyConfiguration,
-            "cssCustomProperty" | "default"
-        >>;
+        [propertyName: string]: Required<
+            Pick<
+                DecoratorDesignSystemPropertyConfiguration,
+                "cssCustomProperty" | "default"
+            >
+        >;
     };
 
     /**
@@ -389,11 +391,11 @@ export class DesignSystemProvider extends FASTElement
     public evaluate(definition: CSSCustomPropertyDefinition): string {
         return typeof definition.value === "function"
             ? // use spread on the designSystem object to circumvent memoization
-            // done in the color recipes - we use the same *reference* in WC
-            // for performance improvements but that throws off the recipes
-            // We should look at making the recipes use simple args that
-            // we can individually memoize.
-            definition.value({ ...this.designSystem })
+              // done in the color recipes - we use the same *reference* in WC
+              // for performance improvements but that throws off the recipes
+              // We should look at making the recipes use simple args that
+              // we can individually memoize.
+              definition.value({ ...this.designSystem })
             : definition.value;
     }
     /**
