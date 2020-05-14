@@ -3,10 +3,15 @@ import { forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import { display } from "../styles";
 import { heightNumber } from "../styles/size";
-import { neutralOutlineRestBehavior } from "../styles/recipes";
+import { 
+    neutralForegroundRestBehavior,
+    neutralOutlineRestBehavior 
+} from "../styles/recipes";
 
 export const SliderLabelStyles = css`
     ${display("block")} :host {
+        color: var(--neutral-foreground-rest);
+        fill: var(--neutral-foreground-rest);
     }
     .root {
         position: absolute;
@@ -66,6 +71,7 @@ export const SliderLabelStyles = css`
         opacity: var(--disabled-opacity);
     }
 `.withBehaviors(
+    neutralForegroundRestBehavior,
     neutralOutlineRestBehavior,
     forcedColorsStylesheetBehavior(
         css`
