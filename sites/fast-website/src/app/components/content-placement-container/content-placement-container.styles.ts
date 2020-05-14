@@ -2,7 +2,7 @@ import { css } from "@microsoft/fast-element";
 import { display } from "@microsoft/fast-components";
 
 export const ContentPlacementContainerStyles = css`
-${display("block")}:host {
+    ${display("block")}:host {
         contain: content;
         font-family: var(--body-font);
     }
