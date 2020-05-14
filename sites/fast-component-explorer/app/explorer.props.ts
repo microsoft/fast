@@ -1,4 +1,5 @@
-import { DesignSystem } from "@microsoft/fast-components-styles-msft";
+import { DesignSystem, StandardLuminance } from "@microsoft/fast-components-styles-msft";
+import { Direction } from "@microsoft/fast-web-utilities";
 import { ExplorerClassNameContract } from "./explorer.style";
 import { ComponentViewConfig } from "./utilities/configs/data.props";
 
@@ -9,17 +10,6 @@ export interface ExplorerHandledProps {
 }
 
 export type ExplorerProps = ExplorerHandledProps & ExplorerUnhandledProps;
-
-export interface Theme {
-    id: string;
-    displayName: string;
-    background?: string;
-}
-
-export enum ThemeName {
-    dark = "dark",
-    light = "light",
-}
 
 export interface ExplorerState {
     /**
@@ -65,10 +55,25 @@ export interface ExplorerState {
     /**
      * The explorer theme
      */
-    theme: ThemeName;
+    theme: StandardLuminance;
 
     /**
      * Dev tools visible
      */
     devToolsVisible: boolean;
+
+    /**
+     * The accent color
+     */
+    accentColor: string;
+
+    /**
+     * The direction
+     */
+    direction: Direction;
+
+    /**
+     * Whether the preview is available
+     */
+    previewReady: boolean;
 }

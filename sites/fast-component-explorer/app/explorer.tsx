@@ -8,7 +8,12 @@ import {
     Row,
     RowResizeDirection,
 } from "@microsoft/fast-layouts-react";
-import { Form, NavigationMenu, Viewer } from "@microsoft/fast-tooling-react";
+import {
+    Form,
+    NavigationMenu,
+    Viewer,
+    ViewerCustomAction,
+} from "@microsoft/fast-tooling-react";
 import manageJss, { ComponentStyleSheet } from "@microsoft/fast-jss-manager-react";
 import ReactDOM from "react-dom";
 import React from "react";
@@ -57,12 +62,19 @@ import { format, multiply, toPx } from "@microsoft/fast-jss-utilities";
 import { StandardLuminance } from "@microsoft/fast-components-styles-msft";
 import {
     AjvMapper,
+    CustomMessageIncomingOutgoing,
     DataDictionary,
     MessageSystem,
+    MessageSystemDataTypeAction,
     MessageSystemNavigationTypeAction,
     MessageSystemType,
 } from "@microsoft/fast-tooling";
 import FASTMessageSystemWorker from "@microsoft/fast-tooling/dist/message-system.min.js";
+import {
+    AccentColorPicker,
+    DirectionSwitch,
+    ThemeSelector,
+} from "@microsoft/site-utilities";
 import { ComponentViewConfig, Scenario } from "./utilities/configs/data.props";
 import * as componentViewConfigsWithoutCustomConfig from "./utilities/configs";
 import { history, menu, schemaDictionary } from "./config";
@@ -73,9 +85,10 @@ import {
     ExplorerProps,
     ExplorerState,
     ExplorerUnhandledProps,
-    ThemeName,
 } from "./explorer.props";
 import { previewReady } from "./preview";
+
+export const backgroundTransparency: string = "PREVIEW::TRANSPARENCY";
 
 interface ObjectOfComponentViewConfigs {
     [key: string]: ComponentViewConfig;
@@ -106,11 +119,9 @@ function setViewConfigsWithCustomConfig(
     return componentViewConfigs;
 }
 
-const dark: string = `#333333`;
-const light: string = "#FFFFFF";
 export const designSystemLinkedDataId: string = "designSystem";
 const fastMessageSystemWorker = new FASTMessageSystemWorker();
-let fastMessageSystem: void | MessageSystem;
+let fastMessageSystem: MessageSystem;
 
 class Explorer extends Foundation<
     ExplorerHandledProps,
@@ -135,9 +146,6 @@ class Explorer extends Foundation<
             flexDirection: "column",
         },
     };
-
-    private checker: string =
-        "url('data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMiAyIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGQ9Ik0xIDJWMGgxdjFIMHYxaDF6IiBmaWxsPSIjMDAwIiBmaWxsLW9wYWNpdHk9Ii4xNSIvPjxwYXRoIGQ9Ik0xIDJWMEgwdjFoMnYxSDF6IiBmaWxsPSIjZmZmIiBmaWxsLW9wYWNpdHk9Ii4xNSIvPjwvc3ZnPg==')";
 
     private pivotStyleOverrides: ComponentStyleSheet<
         Partial<PivotClassNameContract>,
@@ -219,11 +227,6 @@ class Explorer extends Foundation<
         if ((window as any).Worker) {
             fastMessageSystem = new MessageSystem({
                 webWorker: fastMessageSystemWorker,
-                dataDictionary: this.getScenarioData(
-                    componentConfig,
-                    selectedScenarioIndex
-                ),
-                schemaDictionary,
             });
             new AjvMapper({
                 messageSystem: fastMessageSystem,
@@ -240,10 +243,13 @@ class Explorer extends Foundation<
             componentConfig,
             selectedScenarioIndex,
             locationPathname,
-            theme: ThemeName.light,
+            theme: StandardLuminance.LightMode,
             designSystem: DesignSystemDefaults,
             transparentBackground: false,
             devToolsVisible: true,
+            accentColor: "#0078D4",
+            direction: Direction.ltr,
+            previewReady: false,
         };
     }
 
@@ -297,9 +303,26 @@ class Explorer extends Foundation<
                                     >
                                         {this.renderScenarioSelect()}
                                         {this.renderTransparencyToggle()}
-                                        {this.renderThemeToggle()}
-                                        {this.renderDirectionToggle()}
-                                        {this.renderAccentColorPicker()}
+                                        <ThemeSelector
+                                            id={"theme-selector"}
+                                            theme={this.state.theme}
+                                            onUpdateTheme={this.handleUpdateTheme}
+                                            disabled={!this.state.previewReady}
+                                        />
+                                        <DirectionSwitch
+                                            id={"direction-switch"}
+                                            direction={this.state.direction}
+                                            onUpdateDirection={this.handleUpdateDirection}
+                                            disabled={!this.state.previewReady}
+                                        />
+                                        <AccentColorPicker
+                                            id={"accent-color-picker"}
+                                            accentBaseColor={this.state.accentColor}
+                                            onAccentColorPickerChange={
+                                                this.handleAccentColorPickerChange
+                                            }
+                                            disabled={!this.state.previewReady}
+                                        />
                                     </Background>
                                     <div
                                         ref={this.viewerContainerRef}
@@ -382,9 +405,26 @@ class Explorer extends Foundation<
     }
 
     private handleMessageSystem = (e: MessageEvent): void => {
-        if (e.data.type === MessageSystemType.custom && e.data.action === previewReady) {
-            // TODO: investigate why this is not firing
+        const updatedState: Partial<ExplorerState> = {};
+
+        if (
+            e.data.type === MessageSystemType.custom &&
+            e.data.action === ViewerCustomAction.response
+        ) {
+            if (e.data.value === previewReady) {
+                fastMessageSystem.postMessage({
+                    type: MessageSystemType.initialize,
+                    dataDictionary: this.getScenarioData(
+                        this.state.componentConfig,
+                        this.state.selectedScenarioIndex
+                    ),
+                    schemaDictionary,
+                });
+                updatedState.previewReady = true;
+            }
         }
+
+        this.setState(updatedState as ExplorerState);
     };
 
     private setViewerToFullSize(): void {
@@ -407,75 +447,6 @@ class Explorer extends Foundation<
                 });
             }
         }
-    }
-
-    private renderAccentColorPicker(): React.ReactNode {
-        const id: string = uniqueId("accent-color-picker");
-        const {
-            explorer_colorPicker,
-            explorer_viewerControlRegion,
-        }: Partial<ExplorerClassNameContract> = this.props.managedClasses;
-
-        return (
-            <div className={classNames(explorer_viewerControlRegion)}>
-                <Label jssStyleSheet={this.labelStyleOverrides} htmlFor={id}>
-                    Accent color
-                </Label>
-                <input
-                    type={"color"}
-                    id={id}
-                    className={classNames(explorer_colorPicker)}
-                    value={this.state.designSystem.accentBaseColor}
-                    onChange={this.handleAccentColorPickerChange}
-                />
-            </div>
-        );
-    }
-
-    private renderDirectionToggle(): React.ReactNode {
-        const id: string = uniqueId("direction");
-        return (
-            <div
-                className={classNames(
-                    this.props.managedClasses.explorer_viewerControlRegion
-                )}
-            >
-                <Label jssStyleSheet={this.labelStyleOverrides} htmlFor={id}>
-                    RTL
-                </Label>
-                <Toggle
-                    jssStyleSheet={this.toggleStyleOverrides}
-                    inputId={id}
-                    onClick={this.handleUpdateDirection}
-                    selectedMessage={""}
-                    unselectedMessage={""}
-                    statusMessageId={"direction"}
-                />
-            </div>
-        );
-    }
-
-    private renderThemeToggle(): React.ReactNode {
-        const id: string = uniqueId("theme");
-        return (
-            <div
-                className={classNames(
-                    this.props.managedClasses.explorer_viewerControlRegion
-                )}
-            >
-                <Label jssStyleSheet={this.labelStyleOverrides} htmlFor={id}>
-                    Dark mode
-                </Label>
-                <Toggle
-                    jssStyleSheet={this.toggleStyleOverrides}
-                    inputId={id}
-                    onClick={this.handleUpdateTheme}
-                    selectedMessage={""}
-                    unselectedMessage={""}
-                    statusMessageId={"theme"}
-                />
-            </div>
-        );
     }
 
     private renderTransparencyToggle(): React.ReactNode {
@@ -686,14 +657,18 @@ class Explorer extends Foundation<
     };
 
     private handleUpdateDirection = (): void => {
+        const updatedDirection: Direction =
+            this.state.direction === Direction.ltr ? Direction.rtl : Direction.ltr;
         this.setState({
-            designSystem: {
-                ...this.state.designSystem,
-                direction:
-                    this.state.designSystem.direction === Direction.ltr
-                        ? Direction.rtl
-                        : Direction.ltr,
-            },
+            direction: updatedDirection,
+        });
+
+        fastMessageSystem.postMessage({
+            type: MessageSystemType.data,
+            action: MessageSystemDataTypeAction.update,
+            dictionaryId: designSystemLinkedDataId,
+            dataLocation: "direction",
+            data: updatedDirection,
         });
     };
 
@@ -763,18 +738,21 @@ class Explorer extends Foundation<
     };
 
     private handleUpdateTheme = (): void => {
-        const isLightMode: boolean = this.state.theme === ThemeName.light;
-        const updatedThemeColor: string = isLightMode ? dark : light;
-        const updatedLuminance: number = isLightMode
-            ? StandardLuminance.DarkMode
-            : StandardLuminance.LightMode;
+        const updatedTheme: StandardLuminance =
+            this.state.theme === StandardLuminance.LightMode
+                ? StandardLuminance.DarkMode
+                : StandardLuminance.LightMode;
+
         this.setState({
-            theme: isLightMode ? ThemeName.dark : ThemeName.light,
-            designSystem: {
-                ...this.state.designSystem,
-                baseLayerLuminance: updatedLuminance,
-                backgroundColor: updatedThemeColor,
-            },
+            theme: updatedTheme,
+        });
+
+        fastMessageSystem.postMessage({
+            type: MessageSystemType.data,
+            action: MessageSystemDataTypeAction.update,
+            dictionaryId: designSystemLinkedDataId,
+            dataLocation: "baseLayerLuminance",
+            data: updatedTheme,
         });
     };
 
@@ -782,6 +760,13 @@ class Explorer extends Foundation<
         this.setState({
             transparentBackground: !this.state.transparentBackground,
         });
+
+        fastMessageSystem.postMessage({
+            type: MessageSystemType.custom,
+            action: ViewerCustomAction.response,
+            id: backgroundTransparency,
+            value: !this.state.transparentBackground,
+        } as CustomMessageIncomingOutgoing);
     };
 
     /**
@@ -791,17 +776,29 @@ class Explorer extends Foundation<
         e: React.FormEvent<HTMLInputElement>
     ): void => {
         const value: string = e.currentTarget.value;
-        const accentPaletteSource: ColorRGBA64 | null = parseColor(value);
-        if (accentPaletteSource !== null) {
-            const palette: string[] = createColorPalette(accentPaletteSource);
-            this.setState({
-                designSystem: {
-                    ...this.state.designSystem,
-                    accentBaseColor: value.toUpperCase(),
-                    accentPalette: palette,
-                },
-            });
-        }
+
+        this.setState({
+            accentColor: value,
+        });
+
+        const parsed: ColorRGBA64 | null = parseColor(value);
+        const colorPalette = parsed !== null ? createColorPalette(parsed) : null;
+
+        fastMessageSystem.postMessage({
+            type: MessageSystemType.data,
+            action: MessageSystemDataTypeAction.update,
+            dictionaryId: designSystemLinkedDataId,
+            dataLocation: "accentColor",
+            data: value,
+        });
+
+        fastMessageSystem.postMessage({
+            type: MessageSystemType.data,
+            action: MessageSystemDataTypeAction.update,
+            dictionaryId: designSystemLinkedDataId,
+            dataLocation: "accentPalette",
+            data: colorPalette,
+        });
     };
 
     private handleDevToolsToggle = (
