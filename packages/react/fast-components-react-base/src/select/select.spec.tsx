@@ -68,17 +68,6 @@ describe("select", (): void => {
         expect(rendered.state("selectedItems").length).toBe(0);
     });
 
-    test("root element has a tabindex of -1", (): void => {
-        const rendered: any = shallow(
-            <Select>
-                {itemA}
-                {itemB}
-                {itemC}
-            </Select>
-        );
-        expect(rendered.first().prop("tabIndex")).toEqual(-1);
-    });
-
     test("default trigger aria tags are set", (): void => {
         const rendered: any = mount(
             <Select selectedItems={["a"]} labelledBy="testLabellledBy">

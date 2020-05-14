@@ -1,6 +1,5 @@
 import { customElement } from "@microsoft/fast-element";
-import { Divider } from "./divider";
-import { DividerTemplate as template } from "./divider.template";
+import { Divider, DividerTemplate as template } from "@microsoft/fast-foundation";
 import { DividerStyles as styles } from "./divider.styles";
 
 @customElement({
@@ -9,6 +8,3 @@ import { DividerStyles as styles } from "./divider.styles";
     styles,
 })
 export class FASTDivider extends Divider {}
-export * from "./divider.template";
-export * from "./divider.styles";
-export * from "./divider";

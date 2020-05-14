@@ -1,6 +1,5 @@
 import { customElement } from "@microsoft/fast-element";
-import { Checkbox } from "./checkbox";
-import { CheckboxTemplate as template } from "./checkbox.template";
+import { Checkbox, CheckboxTemplate as template } from "@microsoft/fast-foundation";
 import { CheckboxStyles as styles } from "./checkbox.styles";
 
 @customElement({
@@ -9,6 +8,3 @@ import { CheckboxStyles as styles } from "./checkbox.styles";
     styles,
 })
 export class FASTCheckbox extends Checkbox {}
-export * from "./checkbox.template";
-export * from "./checkbox.styles";
-export * from "./checkbox";

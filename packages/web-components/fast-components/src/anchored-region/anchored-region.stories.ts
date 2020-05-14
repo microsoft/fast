@@ -3,7 +3,7 @@ import addons from "@storybook/addons";
 import { Direction, RtlScrollConverter } from "@microsoft/fast-web-utilities";
 import { FASTDesignSystemProvider } from "../design-system-provider";
 import AnchoreRegionTemplate from "./fixtures/base.html";
-import { FASTAnchoredRegion } from ".";
+import { FASTAnchoredRegion } from "./";
 
 // Prevent tree-shaking
 FASTAnchoredRegion;

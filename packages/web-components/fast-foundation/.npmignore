@@ -1,0 +1,19 @@
+# Tests
+__test__/
+*.test.*
+
+# specifications
+*.spec.*
+
+# images
+images/
+
+# Source files
+src/
+
+# config files
+.eslintignore
+.eslintrc.js
+.prettierignore
+tsconfig.json
+tsconfig.build.json

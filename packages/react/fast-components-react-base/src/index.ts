@@ -86,6 +86,11 @@ import SliderTrackItem from "./slider-track-item";
 export { SliderTrackItem };
 export * from "./slider-track-item";
 
+// holding off on exporting this until we are confident of the implementation
+// import StackPanel from "./stack-panel";
+// export { StackPanel };
+// export * from "./stack-panel";
+
 import Tabs from "./tabs";
 export { Tabs };
 export * from "./tabs";

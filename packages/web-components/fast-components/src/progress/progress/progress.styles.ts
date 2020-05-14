@@ -1,4 +1,5 @@
 import { css } from "@microsoft/fast-element";
+import { forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
 import { display } from "../../styles";
 import { SystemColors } from "../../styles/system-colors";
 import {
@@ -6,7 +7,6 @@ import {
     neutralFillRestBehavior,
     neutralForegroundHintBehavior,
 } from "../../styles/recipes";
-import { forcedColorsStylesheetBehavior } from "../../styles/match-media-stylesheet-behavior";
 
 export const ProgressStyles = css`
     ${display("flex")} :host {

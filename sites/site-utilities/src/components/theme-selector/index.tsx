@@ -8,6 +8,7 @@ export const ThemeSelector: React.FC<ThemeSelectorProps> = ({
     id,
     theme,
     onUpdateTheme,
+    disabled,
 }: React.PropsWithChildren<ThemeSelectorProps>): React.ReactElement => {
     return (
         <div style={{ display: "flex", alignItems: "center" }}>
@@ -21,6 +22,7 @@ export const ThemeSelector: React.FC<ThemeSelectorProps> = ({
                 unselectedMessage={""}
                 statusMessageId={"theme"}
                 selected={theme === StandardLuminance.DarkMode}
+                disabled={disabled}
             />
         </div>
     );

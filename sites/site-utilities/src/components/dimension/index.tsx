@@ -10,6 +10,7 @@ export const Dimension: React.FC<DimensionProps> = ({
     onUpdateWidth,
     onUpdateHeight,
     onUpdateOrientation,
+    disabled,
 }: React.PropsWithChildren<DimensionProps>): React.ReactElement => {
     return (
         <div style={{ display: "flex", alignItems: "center", marginLeft: 4 }}>
@@ -19,6 +20,7 @@ export const Dimension: React.FC<DimensionProps> = ({
                 style={{
                     width: "64px",
                 }}
+                disabled={disabled}
             />
             <svg
                 width="14"
@@ -49,11 +51,13 @@ export const Dimension: React.FC<DimensionProps> = ({
                     width: "64px",
                     marginRight: 4,
                 }}
+                disabled={disabled}
             />
             <ActionTrigger
                 glyph={rotateGlyph}
                 aria-label={"Rotate axis"}
                 onClick={onUpdateOrientation}
+                disabled={disabled}
             />
         </div>
     );

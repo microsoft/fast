@@ -1,7 +1,5 @@
 import { customElement } from "@microsoft/fast-element";
-import { neutralLayerCardBehavior } from "../styles/recipes";
-import { Card } from "./card";
-import { CardTemplate as template } from "./card.template";
+import { Card, CardTemplate as template } from "@microsoft/fast-foundation";
 import { CardStyles as styles } from "./card.styles";
 
 @customElement({
@@ -10,6 +8,3 @@ import { CardStyles as styles } from "./card.styles";
     styles,
 })
 export class FASTCard extends Card {}
-export * from "./card.template";
-export * from "./card.styles";
-export * from "./card";

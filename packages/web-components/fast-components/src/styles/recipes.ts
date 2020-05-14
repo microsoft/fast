@@ -1,5 +1,5 @@
+import { cssCustomPropertyBehaviorFactory } from "@microsoft/fast-foundation";
 import {
-    accentBaseColor,
     accentFill,
     accentFillLarge,
     accentForeground,
@@ -27,8 +27,8 @@ import {
     neutralLayerL3,
     neutralLayerL4,
     neutralOutline,
-} from "@microsoft/fast-components-styles-msft";
-import { cssCustomPropertyBehaviorFactory } from "../custom-properties";
+} from "../color";
+import { accentBaseColor } from "../fast-design-system";
 import { FASTDesignSystemProvider } from "../design-system-provider";
 
 export const neutralForegroundRestBehavior = cssCustomPropertyBehaviorFactory(
