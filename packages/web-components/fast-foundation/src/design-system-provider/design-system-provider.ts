@@ -72,7 +72,7 @@ export class DesignSystemProvider extends FASTElement
     ): el is DesignSystemProvider {
         return (
             (el as DesignSystemProvider).isDesignSystemProvider ||
-            DesignSystemProvider.tagNames.includes(el.tagName)
+            DesignSystemProvider.tagNames.indexOf(el.tagName) !== -1
         );
     }
 
@@ -110,7 +110,7 @@ export class DesignSystemProvider extends FASTElement
      */
     public static registerTagName(tagName: string) {
         const tagNameUpper = tagName.toUpperCase();
-        if (!DesignSystemProvider.tagNames.includes(tagNameUpper)) {
+        if (DesignSystemProvider.tagNames.indexOf(tagNameUpper) === -1) {
             DesignSystemProvider._tagNames.push(tagNameUpper);
         }
     }
@@ -137,9 +137,10 @@ export class DesignSystemProvider extends FASTElement
     public useDefaults: boolean = false;
     private useDefaultsChanged() {
         if (this.useDefaults) {
-            Object.entries(this.designSystemProperties).forEach(([key, property]) => {
+            const props = this.designSystemProperties;
+            Object.keys(props).forEach((key: string) => {
                 if (this[key] === void 0) {
-                    this[key] = property.default;
+                    this[key] = props[key].default;
                 }
             });
         }
@@ -399,9 +400,11 @@ export class DesignSystemProvider extends FASTElement
      */
     private syncDesignSystemWithProvider(): void {
         if (this.provider) {
-            Object.entries(this.designSystemProperties).forEach(entry => {
-                if (!this.isValidDesignSystemValue(entry[1])) {
-                    this.designSystem[entry[0]] = this.provider!.designSystem[entry[0]];
+            const designProperties = this.designSystemProperties;
+            Object.keys(designProperties).forEach((key: string) => {
+                const property = designProperties[key];
+                if (!this.isValidDesignSystemValue(property)) {
+                    this.designSystem[key] = this.provider!.designSystem[key];
                 }
             });
         }

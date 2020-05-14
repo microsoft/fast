@@ -2,7 +2,6 @@
 dist/dts/__test__/
 dist/esm/__test__/
 *.spec.*
-*.test.*
 coverage/
 
 # Source files
