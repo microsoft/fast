@@ -30,12 +30,8 @@ export const TextAreaStyles = css`
         border: calc(var(--outline-width) * 1px) solid var(--neutral-outline-rest);
         height: calc(${heightNumber} * 2px);
         font: inherit;
-        ${
-            /* Font size, weight, and line height are temporary - 
-            replace when adaptive typography is figured out */ ""
-        } font-size: 14px;
-        font-weight: 400px;
-        line-height: 20px;
+        font-size: var(--type-ramp-base-font-size);
+        line-height: var(--type-ramp-base-line-height);
         padding-top: calc(var(--design-unit) * 1.5);
         padding-bottom: calc(var(--design-unit) * 1.5);
         max-width: 100%;
@@ -85,12 +81,8 @@ export const TextAreaStyles = css`
         display: block;
         color: var(--neutral-foreground-rest);
         cursor: pointer;
-        ${
-            /* Font size, weight, and line height temporary - 
-            replace when adaptive typography is figured out */ ""
-        } font-size: 14px;
-        font-weight: 400px;
-        line-height: 20px;
+        font-size: var(--type-ramp-base-font-size);
+        line-height: var(--type-ramp-base-line-height);
         margin-bottom: 4px;
     }
 
