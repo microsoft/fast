@@ -3,9 +3,9 @@ import { forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import { display } from "../styles";
 import { heightNumber } from "../styles/size";
-import { 
+import {
     neutralForegroundRestBehavior,
-    neutralOutlineRestBehavior 
+    neutralOutlineRestBehavior,
 } from "../styles/recipes";
 
 export const SliderLabelStyles = css`
