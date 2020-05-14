@@ -88,9 +88,8 @@ export const FastFrameTemplate = html<FastFrame>`
                                 html<string>`
                                     <site-color-swatch
                                         value="${x => x}"
-                                        backgroundColor="${x => x}"
-                                        >Test</site-color-swatch
-                                    >
+                                        background-color="${x => x}"
+                                    ></site-color-swatch>
                                 `
                             )}
                         </fast-radio-group>
@@ -102,7 +101,7 @@ export const FastFrameTemplate = html<FastFrame>`
                                 html<string>`
                                     <site-color-swatch
                                         value="${x => x}"
-                                        backgroundColor="${x => x}"
+                                        background-color="${x => x}"
                                     ></site-color-swatch>
                                 `
                             )}
