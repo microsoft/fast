@@ -155,7 +155,7 @@ export class BindingDirective extends Directive {
         }
     }
 
-    public makeIntoTextBinding(): void {
+    public targetAtContent(): void {
         this.updateTarget = updateTextTarget;
     }
 
