@@ -209,7 +209,7 @@ export const fastDesignSystemDefaults: FASTDesignSystem = {
     outlineWidth: 1,
     neutralPalette: defaultNeutralPalette,
     accentPalette: defaultAccentPalette,
-    accentBaseColor: "#F33378",
+    accentBaseColor: "#DA1A5F",
 
     /**
      * Recipe Deltas
