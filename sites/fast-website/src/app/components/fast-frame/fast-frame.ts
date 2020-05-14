@@ -13,7 +13,7 @@ export class FastFrame extends FASTElement {
     public darkMode: boolean = true;
 
     @observable
-    public colorPalette: string[] = [
+    public backgroundPalette: string[] = [
         "#1F1F1F",
         "#2B2B2B",
         "#333333",
@@ -21,7 +21,16 @@ export class FastFrame extends FASTElement {
         "#424242",
     ];
 
-    private darkPallette: string[] = this.colorPalette;
+    @observable
+    public accentPalette: string[] = [
+        "#F33378",
+        "#F34733",
+        "#10A7B5",
+        "#109B82",
+        "#E1A054",
+    ];
+
+    private darkPallette: string[] = this.backgroundPalette;
 
     private lastSelectedIndex: number = 0;
 
@@ -36,7 +45,7 @@ export class FastFrame extends FASTElement {
         const element: HTMLInputElement = e.target;
         if (element.checked) {
             this.backgroundColor = e.target.value;
-            this.lastSelectedIndex = Array.from(this.colorPalette).indexOf(
+            this.lastSelectedIndex = Array.from(this.backgroundPalette).indexOf(
                 e.target.value
             );
         }
@@ -45,10 +54,10 @@ export class FastFrame extends FASTElement {
     public themeChange = (e: any): void => {
         this.darkMode = !this.darkMode;
         if (!this.darkMode) {
-            this.colorPalette = ["#FFFFFF", "#F0F0F0", "#DEDEDE", "#D6D6D6", "#C4C4C4"];
+            this.backgroundPalette = ["#FFFFFF", "#F0F0F0", "#DEDEDE", "#D6D6D6", "#C4C4C4"];
         } else {
-            this.colorPalette = this.darkPallette;
+            this.backgroundPalette = this.darkPallette;
         }
-        this.backgroundColor = this.colorPalette[this.lastSelectedIndex];
+        this.backgroundColor = this.backgroundPalette[this.lastSelectedIndex];
     };
 }

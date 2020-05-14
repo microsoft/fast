@@ -41,6 +41,10 @@ ${display("inline-flex")} :host {
     cursor: pointer;
 }
 
+.label__hidden {
+    display: none;
+}
+
 .label {
     font-family: var(--body-font);
     color: var(--neutral-foreground-rest);

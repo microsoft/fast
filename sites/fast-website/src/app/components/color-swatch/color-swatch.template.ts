@@ -1,4 +1,4 @@
-import { html, when } from "@microsoft/fast-element";
+import { html, when, slotted } from "@microsoft/fast-element";
 import { ColorSwatch } from "./color-swatch";
 
 export const ColorSwatchTemplate = html<ColorSwatch>`
@@ -18,13 +18,8 @@ export const ColorSwatchTemplate = html<ColorSwatch>`
                 <div part="checked-indicator" class="checked-indicator"></div>
             </slot>
         </div>
-        ${when(
-            x => x.childNodes.length,
-            html`
-                <label part="label" class="label">
-                    <slot></slot>
-                </label>
-            `
-        )}
+        <label part="label" class="${x => x.defaultSlottedNodes && x.defaultSlottedNodes.length ? 'label' : 'label__hidden'}">
+            <slot ${slotted('defaultSlottedNodes')}></slot>
+        </label>
     </template>
 `;

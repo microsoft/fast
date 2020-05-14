@@ -1,4 +1,4 @@
-import { html } from "@microsoft/fast-element";
+import { html, repeat } from "@microsoft/fast-element";
 import { FastFrame } from "./fast-frame";
 import { StandardLuminance } from "@microsoft/fast-components-styles-msft";
 
@@ -83,30 +83,16 @@ export const FastFrameTemplate = html<FastFrame>`
                         <fast-radio-group name="background color" @change="${(x, c) =>
                             x.backgroundChangeHandler(c.event as MouseEvent)}>
                             <label slot="label">Background color</label>
-                            <site-color-swatch value="${x =>
-                                x.colorPalette[0]}" backgroundColor="${x =>
-    x.colorPalette[0]}" checked></site-color-swatch>
-                            <site-color-swatch value="${x =>
-                                x.colorPalette[1]}" backgroundColor="${x =>
-    x.colorPalette[1]}"></site-color-swatch>
-                            <site-color-swatch value="${x =>
-                                x.colorPalette[2]}" backgroundColor="${x =>
-    x.colorPalette[2]}"></site-color-swatch>
-                            <site-color-swatch value="${x =>
-                                x.colorPalette[3]}" backgroundColor="${x =>
-    x.colorPalette[3]}"></site-color-swatch>
-                            <site-color-swatch value="${x =>
-                                x.colorPalette[4]}" backgroundColor="${x =>
-    x.colorPalette[4]}"></site-color-swatch>
+                            ${repeat(x => x.backgroundPalette, html<string>`
+                                <site-color-swatch value="${x => x}" backgroundColor="${x => x}">Test</site-color-swatch>
+                            `)}
                         </fast-radio-group>
                         <fast-radio-group name="accent color" @change="${(x, c) =>
                             x.accentChangeHandler(c.event as MouseEvent)}>
                             <label slot="label">Accent color</label>
-                            <site-color-swatch value="#F33378" backgroundColor="#F33378" checked></site-color-swatch>
-                            <site-color-swatch value="#F34733" backgroundColor="#F34733"></site-color-swatch>
-                            <site-color-swatch value="#10A7B5" backgroundColor="#10A7B5"></site-color-swatch>
-                            <site-color-swatch value="#109B82" backgroundColor="#109B82"></site-color-swatch>
-                            <site-color-swatch value="#E1A054" backgroundColor="#E1A054"></site-color-swatch>
+                            ${repeat(x => x.accentPalette, html<string>`
+                                <site-color-swatch value="${x => x}" backgroundColor="${x => x}"></site-color-swatch>
+                            `)}
                         </fast-radio-group>
                     </div>
                 </fast-tab-panel>
