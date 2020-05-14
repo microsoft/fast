@@ -103,8 +103,8 @@ class DataGrid extends Foundation<
         let initialFocusRowIndex: number = -1;
         let focusRowKey: React.ReactText = null;
         let focusColumnKey: React.ReactText = null;
-        let currentDataPageStartIndex: number = 0;
-        let currentDataPageEndIndex: number = 0;
+        let currentDataPageStartIndex: number = -1;
+        let currentDataPageEndIndex: number = -1;
         this.throttledScroll = throttle(this.handleScrollChange);
         const rowPositions: RowPosition[] = [];
 
@@ -121,13 +121,16 @@ class DataGrid extends Foundation<
 
             currentDataPageStartIndex =
                 initialFocusRowIndex - Math.floor(this.props.pageSize / 2);
-            if (currentDataPageStartIndex < 0) {
-                currentDataPageStartIndex = 0;
-            }
+
+            currentDataPageStartIndex = (currentDataPageStartIndex < 0) 
+                ? 0
+                : currentDataPageStartIndex;
+                
             currentDataPageEndIndex = currentDataPageStartIndex + this.props.pageSize;
-            if (currentDataPageEndIndex > this.props.gridData.length - 1) {
-                currentDataPageEndIndex = this.props.gridData.length - 1;
-            }
+
+            currentDataPageEndIndex = (currentDataPageEndIndex > this.props.gridData.length - 1)
+                ? this.props.gridData.length - 1
+                : currentDataPageEndIndex;
 
             this.sizeRowsToIndex(currentDataPageEndIndex, rowPositions);
         }
@@ -262,82 +265,151 @@ class DataGrid extends Foundation<
      * React life-cycle method
      */
     public componentDidUpdate(prevProps: DataGridProps): void {
-        if (this.props.gridData !== prevProps.gridData) {
-            const newRowPositions: RowPosition[] = this.state.rowPositions.slice(
-                0,
-                this.props.stableRangeEndIndex
-            );
 
-            let newDataPageStartIndex: number = this.state.currentDataPageStartIndex;
-            let newDataPageEndIndex: number = this.state.currentDataPageEndIndex;
+        let shouldUpdateState: boolean = false;
 
-            if (
-                this.props.defaultFocusRowKey !== prevProps.defaultFocusRowKey &&
-                !isNil(this.props.defaultFocusRowKey)
-            ) {
-                const newFocusRowIndex: number = this.getRowIndexByKey(
-                    this.props.defaultFocusRowKey
-                );
-
-                if (newFocusRowIndex === -1) {
-                    this.setState({
-                        focusRowKey: this.props.defaultFocusRowKey,
-                        desiredVisibleRowIndex: newFocusRowIndex,
-                    });
-                    newDataPageStartIndex =
-                        newFocusRowIndex - Math.floor(this.props.pageSize / 2);
-                    if (newDataPageStartIndex < 0) {
-                        newDataPageStartIndex = 0;
-                    }
-                    newDataPageEndIndex = newDataPageStartIndex + this.props.pageSize;
-                }
-            }
-
-            if (
-                this.props.defaultFocusColumnKey !== prevProps.defaultFocusColumnKey &&
-                !isNil(this.props.defaultFocusColumnKey)
-            ) {
-                this.setState({
-                    focusColumnKey: this.props.defaultFocusColumnKey,
-                });
-            }
-
-            if (newDataPageEndIndex > this.props.gridData.length - 1) {
-                newDataPageEndIndex = this.props.gridData.length - 1;
-                newDataPageStartIndex =
-                    newDataPageEndIndex - this.props.pageSize < 0
-                        ? 0
-                        : newDataPageEndIndex - this.props.pageSize;
-            }
-
-            this.sizeRowsToIndex(newDataPageEndIndex, newRowPositions);
-
-            this.setState({
-                rowPositions: newRowPositions,
-                currentDataPageStartIndex: newDataPageStartIndex,
-                currentDataPageEndIndex: newDataPageEndIndex,
-                estimatedTotalHeight: this.getEstimatedTotalHeight(newRowPositions),
-            });
-        }
+        let rowPositions: RowPosition[] = this.state.rowPositions;
+        let currentDataPageStartIndex: number = this.state.currentDataPageStartIndex;
+        let currentDataPageEndIndex: number = this.state.currentDataPageEndIndex;
+        let estimatedTotalHeight: number = this.state.estimatedTotalHeight;
+        let focusRowKey: ReactText | null = this.state.focusRowKey;
+        let focusColumnKey: ReactText | null =  this.state.focusColumnKey;
+        let focusRowIndex: number = this.state.focusRowIndex;
+        let desiredFocusRowKey: ReactText | null = this.state.desiredFocusRowKey;
+        let desiredFocusColumnKey: ReactText | null = this.state.desiredFocusColumnKey;
+        let desiredVisibleRowIndex: number | null = null;
 
         if (this.state.desiredVisibleRowIndex !== null) {
+            // this would have been applied on the last update, so apply state change to null it out 
+            shouldUpdateState = true;
+        }
+
+        // apply a new focus columnkey if one is provided and it exists
+        if (
+            this.props.defaultFocusColumnKey !== prevProps.defaultFocusColumnKey &&
+            !isNil(this.props.defaultFocusColumnKey) &&
+            this.getColumnIndexByKey(this.props.defaultFocusColumnKey) !== -1
+        ) {
+            shouldUpdateState = true;
+            focusColumnKey = this.props.defaultFocusColumnKey;
+        }
+
+        // apply a new focus rowkey if one is provided and it exists
+        if (
+            this.props.defaultFocusRowKey !== prevProps.defaultFocusRowKey &&
+            !isNil(this.props.defaultFocusRowKey)
+        ) {
+            const newFocusRowIndex: number = this.getRowIndexByKey(
+                this.props.defaultFocusRowKey
+            );
+
+            if (newFocusRowIndex !== -1) {
+                shouldUpdateState = true;
+                focusRowKey = this.props.defaultFocusRowKey;
+                desiredVisibleRowIndex = newFocusRowIndex;
+                focusRowIndex = newFocusRowIndex;
+                currentDataPageStartIndex =
+                    newFocusRowIndex - Math.floor(this.props.pageSize / 2);
+                if (currentDataPageStartIndex < 0) {
+                    currentDataPageStartIndex = 0;
+                }
+                currentDataPageEndIndex = Math.min(currentDataPageStartIndex + this.props.pageSize, this.props.gridData.length - 1);
+            }
+        }
+
+        // revalidate when there is new data
+        if (this.props.gridData !== prevProps.gridData) {
+            shouldUpdateState = true;
+
+            if (this.props.gridData.length === 0) {
+                rowPositions = [];
+                currentDataPageStartIndex = -1;
+                currentDataPageEndIndex = -1;
+                estimatedTotalHeight = 0;
+                focusRowKey = null;
+                focusColumnKey = null;
+                focusRowIndex = -1;
+            } else {
+                // if an author tells us nothing has changed before a certain point we keep position data
+                // up to that point.  
+                rowPositions = rowPositions.slice(
+                    0,
+                    this.props.stableRangeEndIndex
+                );
+
+                // ensure focus is still valid
+                const newFocusRowIndex: number = this.getRowIndexByKey(
+                    focusRowKey
+                );
+                if (newFocusRowIndex === -1) {
+                    // our focus row no longer exists, assign a new one based on previous focus row index
+                    focusRowIndex = Math.min(
+                        Math.max(focusRowIndex, 0), 
+                        this.props.gridData.length - 1
+                    );
+                    focusRowKey = this.props.gridData[focusRowIndex][this.props.dataRowKey];
+                } else {
+                    focusRowIndex = newFocusRowIndex;
+                }
+
+                // ensure data page conforms to new data length
+                currentDataPageStartIndex =
+                   focusRowIndex - Math.floor(this.props.pageSize / 2);
+
+                currentDataPageStartIndex = (currentDataPageStartIndex < 0)
+                    ? 0
+                    : currentDataPageStartIndex;
+
+                currentDataPageEndIndex = currentDataPageStartIndex + this.props.pageSize;
+
+                currentDataPageEndIndex = (currentDataPageEndIndex > this.props.gridData.length - 1)
+                    ? this.props.gridData.length - 1
+                    : currentDataPageEndIndex;
+
+                this.sizeRowsToIndex(currentDataPageEndIndex, rowPositions);
+                estimatedTotalHeight = this.getEstimatedTotalHeight(rowPositions);
+
+                // move focus to the new element if necessary
+                if (
+                    this.isFocused && 
+                    this.state.focusRowKey !== focusRowKey ||
+                    this.state.focusColumnKey !== focusColumnKey
+                ) {
+                    const rowElement: Element = this.getRowElementByKey(focusRowKey);
+                    if (rowElement !== null) {
+                        // next focus element already exists, focus on it
+                        (rowElement as HTMLElement).focus();
+                        desiredFocusRowKey = null;
+                        desiredFocusColumnKey = null;
+                     }
+                    else {
+                        // next focus element not in the dom, 
+                        // focus on it after when it mounts
+                        desiredFocusRowKey = focusRowKey;
+                        desiredFocusColumnKey = focusColumnKey;
+
+                        // let the default behavior scroll into view on focus
+                        desiredVisibleRowIndex = null;
+                    }
+                }
+            }
+        }
+
+        if (shouldUpdateState) {
             this.setState({
-                desiredVisibleRowIndex: null,
-            });
+                rowPositions,
+                currentDataPageStartIndex,
+                currentDataPageEndIndex,
+                estimatedTotalHeight,
+                focusRowKey,
+                focusColumnKey,
+                focusRowIndex,
+                desiredFocusRowKey,
+                desiredFocusColumnKey,
+                desiredVisibleRowIndex
+            });  
         }
     }
-
-    /**
-     * Allows refs to the component to call focus on the grid
-     */
-    public focus = (): void => {
-        this.focusOnCell(
-            this.state.focusRowKey,
-            this.state.focusColumnKey,
-            this.state.rowPositions.slice(0),
-            false
-        );
-    };
 
     /**
      * Generates class names
@@ -481,9 +553,7 @@ class DataGrid extends Foundation<
      *  Handle grid focus
      */
     private handleGridFocus = (): void => {
-        if (!this.isFocused) {
-            this.isFocused = true;
-        }
+        this.isFocused = true;
     };
 
     /**
@@ -968,12 +1038,11 @@ class DataGrid extends Foundation<
      *  Get column index by key
      */
     private getColumnIndexByKey = (columnKey: React.ReactText): number => {
-        const columnIndex: number = this.props.columnDefinitions.findIndex(
+        return this.props.columnDefinitions.findIndex(
             (columnDefinition: DataGridColumnDefinition) => {
                 return columnDefinition.columnDataKey === columnKey;
             }
         );
-        return columnIndex;
     };
 
     /**
@@ -1003,6 +1072,8 @@ class DataGrid extends Foundation<
             focusRowKey,
             focusColumnKey: cell.columnDefinition.columnDataKey,
             focusRowIndex: this.getRowIndexByKey(focusRowKey),
+            desiredFocusRowKey: null,
+            desiredFocusColumnKey: null,
         });
     };
 

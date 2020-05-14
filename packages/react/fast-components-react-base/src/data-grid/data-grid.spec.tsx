@@ -495,9 +495,10 @@ describe("data grid", (): void => {
          |   | x |
          ---------
         */
-        expect((document.activeElement as HTMLElement).innerHTML).toBe(
-            updatedTwoRowData[1].age.toString()
-        );
+        // note: because focusing on elements not in the dom at the time of the 
+        // data change relies on context the actual active element does not change
+        // in the test environment, but we can check where focus would go.
+        expect(rendered.state("focusRowKey")).toBe(updatedTwoRowData[1].name)
 
         // Replace the second row, focus should stay there
         const replacedTwoRowData: TestRowData[] = [gridData[0], gridData[1]];
@@ -509,9 +510,7 @@ describe("data grid", (): void => {
          |   | x |
          ---------
         */
-        expect((document.activeElement as HTMLElement).innerHTML).toBe(
-            replacedTwoRowData[1].age.toString()
-        );
+        expect(rendered.state("focusRowKey")).toBe(replacedTwoRowData[1].name)
 
         // Remove the top row
         const singleRowData: TestRowData[] = [gridData[1]];
@@ -522,9 +521,7 @@ describe("data grid", (): void => {
          |   | x |
          ---------
         */
-        expect((document.activeElement as HTMLElement).innerHTML).toBe(
-            singleRowData[0].age.toString()
-        );
+        expect(rendered.state("focusRowKey")).toBe(singleRowData[0].name)
 
         document.body.removeChild(container);
     });
