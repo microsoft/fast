@@ -141,7 +141,7 @@ Building off the above, _design system_ properties can be declared using the `@d
 
 ```ts
 // ..
-@designSystemProvider("fancy-design-system-provider", template, styles)
+@designSystemProvider({name: "fancy-design-system-provider", template, styles})
 class FancyDesignSystemProvider extends DesignSystemProvider {
     @attr("fancy-property")
     @designSystemProperty({ cssCustomProperty: "fancy-property", default: "red" })
