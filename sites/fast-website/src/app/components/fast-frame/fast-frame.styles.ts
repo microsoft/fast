@@ -37,6 +37,7 @@ export const FastFrameStyles = css`
         grid-gap: 40px;
         grid-template-columns: 1fr 1fr;
         padding: 40px;
+        background: var(--background-color);
     }
 
     .image-container {
@@ -52,6 +53,7 @@ export const FastFrameStyles = css`
         flex-direction: column;
         padding: 20px;
         text-align: start;
+        color: var(--neutral-foreground-rest);
     }
 
     .badge {
@@ -59,9 +61,21 @@ export const FastFrameStyles = css`
         margin: 20px;
     }
 
+    .preview-controls {
+        display: grid;
+        grid-auto-rows: max-content;
+        grid-gap: 20px;
+    }
+
     .control-container {
         display: grid;
         grid-template-columns: 1fr 1fr;
+        grid-gap: 20px;
+    }
+
+    .control-container-2 {
+        display: grid;
+        grid-template-columns: auto auto 1fr;
         grid-gap: 20px;
     }
 
@@ -78,6 +92,7 @@ export const FastFrameStyles = css`
         display: grid;
         grid-template-columns: auto 1fr;
         text-align: start;
+        color: var(--neutral-foreground-rest);
     }
 
     .checkbox {
@@ -99,7 +114,6 @@ export const FastFrameStyles = css`
 
     .sample-control {
         display: flex;
-        background: var(--background-color);
         align-items: center;
         width: 100%;
     }
@@ -122,6 +136,14 @@ export const FastFrameStyles = css`
     fast-badge {
         --badge-fill-primary: var(--accent-fill-rest);
         --badge-color-primary: var(--neutral-foreground-rest);
+    }
+
+    fast-slider {
+        min-width: unset;
+    }
+
+    fast-button {
+        display: contents;
     }
 `.withBehaviors(
     accentFillRestBehavior,
