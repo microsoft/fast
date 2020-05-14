@@ -2,7 +2,7 @@ import { css } from "@microsoft/fast-element";
 import { forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
 import { disabledCursor, display } from "../styles";
 import { focusVisible } from "../styles/focus";
-import { SystemColors } from "../styles/system-colors";
+import { SystemColors } from "@microsoft/fast-web-utilities";
 import { heightNumber } from "../styles/size";
 import {
     neutralFillHoverBehavior,

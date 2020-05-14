@@ -32,7 +32,7 @@ import {
     neutralOutlineHoverBehavior,
     neutralOutlineRestBehavior,
 } from "../styles/recipes";
-import { SystemColors } from "../styles/system-colors";
+import { SystemColors } from "@microsoft/fast-web-utilities";
 
 export const ButtonStyles = css`
     ${BaseButtonStyles}

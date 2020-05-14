@@ -8,7 +8,7 @@ import {
     neutralForegroundHoverBehavior,
     neutralForegroundRestBehavior,
 } from "../../styles/recipes";
-import { SystemColors } from "../../styles/system-colors";
+import { SystemColors } from "@microsoft/fast-web-utilities";
 
 export const TabStyles = css`
     ${display("inline-flex")} :host {
