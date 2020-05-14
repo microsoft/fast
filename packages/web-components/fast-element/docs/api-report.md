@@ -144,7 +144,7 @@ export class BindingDirective extends Directive {
     // (undocumented)
     expression: Expression;
     // (undocumented)
-    makeIntoTextBinding(): void;
+    targetAtContent(): void;
     // (undocumented)
     get targetName(): string | undefined;
     set targetName(value: string | undefined);
@@ -184,13 +184,16 @@ export class ChildrenBehavior extends NodeObservationBehavior<ChildrenBehaviorOp
 export interface ChildrenBehaviorOptions<T = any> extends NodeBehaviorBehaviorOptions<T>, MutationObserverInit {
 }
 
-// @public (undocumented)
-export function compileTemplate(template: HTMLTemplateElement, directives: ReadonlyArray<Directive>): {
+// @public
+export interface CompilationResult {
     fragment: DocumentFragment;
-    viewBehaviorFactories: BehaviorFactory[];
     hostBehaviorFactories: BehaviorFactory[];
     targetOffset: number;
-};
+    viewBehaviorFactories: BehaviorFactory[];
+}
+
+// @public
+export function compileTemplate(template: HTMLTemplateElement, directives: ReadonlyArray<Directive>): CompilationResult;
 
 // @public (undocumented)
 export class Controller extends PropertyChangeNotifier {
