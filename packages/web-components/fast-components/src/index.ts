@@ -15,6 +15,7 @@ export * from "./radio";
 export * from "./radio-group";
 export * from "./slider";
 export * from "./slider-label";
+export * from "./styles/recipes";
 export * from "./switch";
 export * from "./tabs";
 export * from "./text-area";
