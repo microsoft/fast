@@ -1,4 +1,4 @@
-import { attr, FASTElement, repeat } from "@microsoft/fast-element";
+import { attr, FASTElement } from "@microsoft/fast-element";
 import {
     CommunityContentPlacementData,
     communityContentPlacementData,
