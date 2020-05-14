@@ -1,8 +1,17 @@
 import { css } from "@microsoft/fast-element";
-import { display, heightNumber, neutralFillInputHoverBehavior, neutralFillInputRestBehavior, neutralOutlineHoverBehavior, neutralOutlineRestBehavior, forcedColorsStylesheetBehavior, SystemColors, focusVisible, disabledCursor } from "@microsoft/fast-components";
 import {
-    neutralForegroundRestBehavior,
+    display,
+    heightNumber,
+    neutralFillInputHoverBehavior,
+    neutralFillInputRestBehavior,
+    neutralOutlineHoverBehavior,
+    neutralOutlineRestBehavior,
+    forcedColorsStylesheetBehavior,
+    SystemColors,
+    focusVisible,
+    disabledCursor,
 } from "@microsoft/fast-components";
+import { neutralForegroundRestBehavior } from "@microsoft/fast-components";
 
 export const ColorSwatchStyles = css`
 ${display("inline-flex")} :host {
@@ -84,13 +93,13 @@ ${display("inline-flex")} :host {
     opacity: var(--disabled-opacity);
 }
 `.withBehaviors(
-neutralFillInputHoverBehavior,
-neutralFillInputRestBehavior,
-neutralForegroundRestBehavior,
-neutralOutlineHoverBehavior,
-neutralOutlineRestBehavior,
-forcedColorsStylesheetBehavior(
-    css`
+    neutralFillInputHoverBehavior,
+    neutralFillInputRestBehavior,
+    neutralForegroundRestBehavior,
+    neutralOutlineHoverBehavior,
+    neutralOutlineRestBehavior,
+    forcedColorsStylesheetBehavior(
+        css`
         .control, .control:hover, .control:active {
             forced-color-adjust: none;
             border-color: ${SystemColors.FieldText};
@@ -131,4 +140,3 @@ forcedColorsStylesheetBehavior(
     `
     )
 );
-    

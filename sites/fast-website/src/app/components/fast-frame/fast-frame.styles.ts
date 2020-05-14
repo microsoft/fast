@@ -37,7 +37,7 @@ export const FastFrameStyles = css`
         grid-gap: 40px;
         grid-template-columns: 1fr 1fr;
         padding: 40px;
-        background: var(--background-color)
+        background: var(--background-color);
     }
 
     .image-container {

@@ -2,12 +2,7 @@ import { html, when } from "@microsoft/fast-element";
 import { ContentPlacement } from "./content-placement";
 
 export const ContentPlacementTemplate = html<ContentPlacement>`<fast-card>
-    <div 
-        class=${x =>
-            x.divider
-                ? ""
-                : "contentPlacement_icon"}
-    >
+    <div class=${x => (x.divider ? "" : "contentPlacement_icon")}>
         <slot name="icon"></slot>
     </div>
     <slot></slot>
