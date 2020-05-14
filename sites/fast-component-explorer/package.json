@@ -8,7 +8,6 @@
     "build:app": "webpack --progress --mode=production",
     "convert:readme": "node ./build/convert-readme.js",
     "clean:tmp": "node ../../build/clean.js app/.tmp",
-    "coverage": "jest --coverage",
     "prettier": "prettier --config ../../.prettierrc --write \"**/*.{ts,tsx}\"",
     "prettier:diff": "prettier --config ../../.prettierrc \"**/*.{ts,tsx}\" --list-different",
     "start": "webpack-dev-server",
@@ -28,49 +27,6 @@
     "url": "https://discord.gg/FcSNfg4"
   },
   "license": "MIT",
-  "jest": {
-    "setupFilesAfterEnv": [
-      "./mock.js"
-    ],
-    "collectCoverage": true,
-    "coverageReporters": [
-      "json",
-      [
-        "lcov",
-        {
-          "projectRoot": "../../"
-        }
-      ]
-    ],
-    "coverageThreshold": {
-      "global": {
-        "statements": 50,
-        "branches": 5,
-        "functions": 15,
-        "lines": 20
-      }
-    },
-    "testURL": "http://localhost",
-    "transform": {
-      "^.+\\.tsx?$": "ts-jest",
-      "^.+\\.jsx?$": "babel-jest"
-    },
-    "transformIgnorePatterns": [
-      "!<rootDir>/node_modules/lodash-es",
-      "node_modules/jss-*",
-      "node_modules/css-vendor"
-    ],
-    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js",
-      "jsx"
-    ],
-    "moduleDirectories": [
-      "node_modules"
-    ]
-  },
   "devDependencies": {
     "@babel/core": "^7.4.5",
     "@babel/plugin-syntax-dynamic-import": "^7.2.0",
@@ -83,7 +39,6 @@
     "@microsoft/fast-jss-utilities": "^4.7.14",
     "@microsoft/fast-layouts-react": "^4.11.11",
     "@microsoft/site-utilities": "^0.0.1",
-    "@types/jest": "^25.2.1",
     "@types/lodash-es": "^4.17.0",
     "@types/node": "^10.12.12",
     "@types/react": "^16.7.17",
@@ -99,7 +54,6 @@
     "favicons-webpack-plugin": "0.0.9",
     "focus-visible": "^4.1.5",
     "html-webpack-plugin": "^3.2.0",
-    "jest": "^25.4.0",
     "jss": "^9.8.7",
     "jss-preset-default": "^4.5.0",
     "lodash-es": "^4.17.11",
@@ -110,7 +64,6 @@
     "react-dom": "^16.6.3",
     "react-router-dom": "^5.1.2",
     "react-syntax-highlighter": "^10.3.0",
-    "ts-jest": "^25.4.0",
     "ts-loader": "^4.0.1",
     "typescript": "^3.2.2",
     "webpack": "4.28.4",

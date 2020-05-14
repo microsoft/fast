@@ -9,8 +9,13 @@ import {
     MessageSystemOutgoing,
     MessageSystemType,
 } from "@microsoft/fast-tooling";
-import { reactMapper, reactResolver } from "@microsoft/fast-tooling-react";
+import {
+    reactMapper,
+    reactResolver,
+    ViewerCustomAction,
+} from "@microsoft/fast-tooling-react";
 import { DesignSystem, StandardLuminance } from "@microsoft/fast-components-styles-msft";
+import { classNames } from "@microsoft/fast-web-utilities";
 import { componentDictionary } from "./msft-components/dictionary";
 import {
     PreviewHandledProps,
@@ -19,7 +24,7 @@ import {
     PreviewUnhandledProps,
 } from "./preview.props";
 import style from "./preview.style";
-import { designSystemLinkedDataId } from "./explorer";
+import { backgroundTransparency, designSystemLinkedDataId } from "./explorer";
 
 export const previewReady: string = "PREVIEW::READY";
 
@@ -38,27 +43,33 @@ class Preview extends Foundation<
         this.state = {
             dataDictionary: void 0,
             schemaDictionary: {},
-            theme: StandardLuminance.LightMode,
+            transparentBackground: false,
         };
+
+        window.addEventListener("message", this.handleMessage);
     }
 
     public render(): React.ReactNode {
         if (this.state.dataDictionary !== undefined) {
             return (
-                <DesignSystemProvider
-                    designSystem={
-                        this.state.dataDictionary[0][designSystemLinkedDataId].data
+                <div
+                    className={classNames(this.props.managedClasses.preview, [
+                        this.props.managedClasses.preview__transparent,
+                        this.state.transparentBackground,
+                    ])}
+                    dir={
+                        (this.state.dataDictionary[0][designSystemLinkedDataId]
+                            .data as DesignSystem).direction
                     }
                 >
-                    <Background
-                        dir={
-                            (this.state.dataDictionary[0][designSystemLinkedDataId]
-                                .data as DesignSystem).direction
+                    <DesignSystemProvider
+                        designSystem={
+                            this.state.dataDictionary[0][designSystemLinkedDataId].data
                         }
                     >
                         {this.renderMappedComponents()}
-                    </Background>
-                </DesignSystemProvider>
+                    </DesignSystemProvider>
+                </div>
             );
         }
 
@@ -66,11 +77,11 @@ class Preview extends Foundation<
     }
 
     public componentDidMount(): void {
-        window.addEventListener("message", this.handleMessage);
         window.postMessage(
             {
                 type: MessageSystemType.custom,
-                action: previewReady,
+                action: ViewerCustomAction.call,
+                value: previewReady,
             },
             "*"
         );
@@ -101,18 +112,46 @@ class Preview extends Foundation<
                             .dataDictionary,
                     });
                     break;
+                case MessageSystemType.custom:
+                    if ((messageData as any).id === backgroundTransparency) {
+                        this.setState({
+                            transparentBackground: (messageData as any).value,
+                        });
+                    }
+
+                    break;
             }
         }
     };
 
     private renderMappedComponents(): React.ReactNode {
         if (this.state.dataDictionary !== undefined) {
-            return mapDataDictionary({
+            const mappedComponents = mapDataDictionary({
                 dataDictionary: this.state.dataDictionary,
                 schemaDictionary: this.state.schemaDictionary,
                 mapper: reactMapper(componentDictionary),
                 resolver: reactResolver,
             });
+
+            if (
+                (this.state.dataDictionary[0][designSystemLinkedDataId]
+                    .data as DesignSystem).baseLayerLuminance ===
+                StandardLuminance.DarkMode
+            ) {
+                return (
+                    <Background
+                        className={this.props.managedClasses.preview_componentRegion}
+                    >
+                        {mappedComponents}
+                    </Background>
+                );
+            }
+
+            return (
+                <div className={this.props.managedClasses.preview_componentRegion}>
+                    {mappedComponents}
+                </div>
+            );
         }
 
         return null;
