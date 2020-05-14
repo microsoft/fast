@@ -2,19 +2,17 @@ import {
     attr,
     Behavior,
     customElement,
-    ElementStyles,
-    ElementViewTemplate,
     FASTElement,
     observable,
     Observable,
 } from "@microsoft/fast-element";
+import { PartialFASTElementDefinition } from "@microsoft/fast-element";
 import {
     CSSCustomPropertyDefinition,
     CSSCustomPropertyTarget,
 } from "../custom-properties/index.js";
 import { composedParent } from "../utilities/index.js";
 import { DesignSystemPropertyDeclarationConfig } from "./design-system-property.js";
-import { PartialFASTElementDefinition } from "@microsoft/fast-element";
 
 const supportsAdoptedStylesheets = "adoptedStyleSheets" in window.ShadowRoot.prototype;
 
