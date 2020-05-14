@@ -2,12 +2,9 @@ import { css } from "@microsoft/fast-element";
 import { display } from "@microsoft/fast-components";
 
 export const ContentPlacementContainerStyles = css`
-    :host {
+${display("block")}:host {
         contain: content;
         font-family: var(--body-font);
-    }
-    :host([hidden]) {
-        display: none;
     }
     .container {
         display: flex;

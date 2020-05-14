@@ -1,6 +1,6 @@
-import { html, when, repeat } from "@microsoft/fast-element";
-import { ContentPlacementContainer } from "./content-placement-container";
+import { html, repeat, when } from "@microsoft/fast-element";
 import { ContentPlacement } from "../content-placement";
+import { ContentPlacementContainer } from "./content-placement-container";
 
 export const ContentPlacementContainerTemplate = html<ContentPlacementContainer>`
     <div class="container">

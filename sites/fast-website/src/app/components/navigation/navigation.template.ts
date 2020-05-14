@@ -1,6 +1,6 @@
 import { html } from "@microsoft/fast-element";
+import { endTemplate, startTemplate } from "@microsoft/fast-components";
 import { Navigation } from "./navigation";
-import { startTemplate, endTemplate } from "@microsoft/fast-components";
 
 export const NavigationTemplate = html<Navigation>`
     <template>

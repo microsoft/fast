@@ -1,38 +1,38 @@
 export interface CommunityContentPlacementData {
-    iconSrc: string;
-    iconAlt: string;
-    header: string;
-    body: string;
-    actionText: string;
     actionLink: string;
+    actionText: string;
+    body: string;
+    header: string;
+    iconAlt: string;
+    iconSrc: string;
 }
 
 export const communityContentPlacementData: CommunityContentPlacementData[] = [
     {
-        iconSrc: "https://via.placeholder.com/16",
-        iconAlt: "Discord",
-        header: "Discord",
+        actionLink: "https://discord.gg/FcSNfg4",
+        actionText: "Join the Discord Chat",
         body:
             "Join our active community on Discord. Follow the latest updates and contributions, ask questions, give feedback, or keep up on our reading list.",
-        actionText: "Join the Discord Chat",
-        actionLink: "#",
+        header: "Discord",
+        iconAlt: "Discord",
+        iconSrc: "https://via.placeholder.com/16",
     },
     {
-        iconSrc: "https://via.placeholder.com/16",
-        iconAlt: "Twitter",
-        header: "Twitter",
+        actionLink: "https://twitter.com/fast_dna",
+        actionText: "Follow us on Twitter",
         body:
             "Follow along as we share out the latest happenings on Twitter. You will find important updates, announcements, and sneak peeks.",
-        actionText: "Follow us on Twitter",
-        actionLink: "#",
+        header: "Twitter",
+        iconAlt: "Twitter",
+        iconSrc: "https://via.placeholder.com/16",
     },
     {
-        iconSrc: "https://via.placeholder.com/16",
-        iconAlt: "Github",
-        header: "Github",
+        actionLink: "https://github.com/microsoft/fast-dna",
+        actionText: "Get Started on Github",
         body:
             "Explore the FAST repository on Github and try out our components, utilities, and tools. Or, mix-and-match with your own solutions.",
-        actionText: "Get Started on Github",
-        actionLink: "https://github.com/microsoft/fast-dna",
+        header: "Github",
+        iconAlt: "Github",
+        iconSrc: "https://via.placeholder.com/16",
     },
 ];
