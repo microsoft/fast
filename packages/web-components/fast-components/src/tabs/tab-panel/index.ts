@@ -1,6 +1,5 @@
 import { customElement } from "@microsoft/fast-element";
-import { TabPanel } from "./tab-panel";
-import { TabPanelTemplate as template } from "./tab-panel.template";
+import { TabPanel, TabPanelTemplate as template } from "@microsoft/fast-foundation";
 import { TabPanelStyles as styles } from "./tab-panel.styles";
 
 @customElement({
@@ -9,6 +8,3 @@ import { TabPanelStyles as styles } from "./tab-panel.styles";
     styles,
 })
 export class FASTTabPanel extends TabPanel {}
-export * from "./tab-panel.template";
-export * from "./tab-panel.styles";
-export * from "./tab-panel";

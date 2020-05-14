@@ -1,6 +1,9 @@
 import { customElement } from "@microsoft/fast-element";
-import { AnchoredRegion } from "./anchored-region";
-import { AnchoredRegionTemplate as template } from "./anchored-region.template";
+// TODO: Update this pathing once we export anchored region from `fast-foundation`
+import {
+    AnchoredRegion,
+    AnchoredRegionTemplate as template,
+} from "@microsoft/fast-foundation/dist/anchored-region";
 import { AnchoredRegionStyles as styles } from "./anchored-region.styles";
 
 @customElement({
@@ -9,6 +12,3 @@ import { AnchoredRegionStyles as styles } from "./anchored-region.styles";
     styles,
 })
 export class FASTAnchoredRegion extends AnchoredRegion {}
-export * from "./anchored-region.template";
-export * from "./anchored-region.styles";
-export * from "./anchored-region";

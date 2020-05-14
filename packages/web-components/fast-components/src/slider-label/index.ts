@@ -1,6 +1,5 @@
 import { customElement } from "@microsoft/fast-element";
-import { SliderLabel } from "./slider-label";
-import { SliderLabelTemplate as template } from "./slider-label.template";
+import { SliderLabel, SliderLabelTemplate as template } from "@microsoft/fast-foundation";
 import { SliderLabelStyles as styles } from "./slider-label.styles";
 
 @customElement({
@@ -9,6 +8,3 @@ import { SliderLabelStyles as styles } from "./slider-label.styles";
     styles,
 })
 export class FASTSliderLabel extends SliderLabel {}
-export * from "./slider-label.template";
-export * from "./slider-label.styles";
-export * from "./slider-label";

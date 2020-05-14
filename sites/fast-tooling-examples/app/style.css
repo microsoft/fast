@@ -1,3 +1,68 @@
+/* This prevents a flash of unstyled components */
+:not(:defined) {
+    visibility: hidden;
+}
+
+:root {
+    --badge-fill-primary: #FB356D;
+    --badge-color-text: white;
+}
+
 body {
     margin: 0;
+}
+
+.main {
+    display: grid;
+    grid-template-columns: 240px auto;
+    grid-template-rows: 44px auto;
+    min-height: 100vh;
+}
+
+.toolbar {
+    grid-column-start: 1;
+    grid-column-end: 3;
+    grid-row-start: 1;
+    grid-row-end: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border-bottom: 1px solid #e1e1e1;
+}
+
+.toolbar-logo {
+    grid-column-start: 1;
+    grid-column-end: 1;
+}
+
+.toolbar-links {
+    grid-column-start: 2;
+    grid-column-end: 2;
+    text-align: end;
+}
+
+.menu {
+    grid-column-start: 1;
+    grid-column-end: 1;
+    grid-row-start: 2;
+    grid-row-end: 2;
+    border-inline-end: 1px solid #e1e1e1;
+}
+
+/* This should be replaced at a later date once the typography styles are defined */
+.category-title {
+    font-size: var(--type-ramp-plus-2-font-size);
+}
+
+.content {
+    grid-column-start: 2;
+    grid-column-end: 2;
+    grid-row-start: 2;
+    grid-row-end: 2;
+}
+
+.toolbar-logo,
+.toolbar-links,
+.menu,
+.content {
+    padding: 5px 10px;
 }

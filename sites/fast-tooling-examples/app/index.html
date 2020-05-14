@@ -1,11 +1,58 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8"/>
+
+<head>
+    <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= htmlWebpackPlugin.options.title %></title>
-  </head>
-  <body>
-    Placeholder
-  </body>
+</head>
+
+<body>
+    <fast-design-system-provider use-defaults>
+        <div class="main">
+            <div class="toolbar">
+                <div class="toolbar-logo">
+                    <fast-anchor
+                        href="/"
+                        appearance="lightweight"
+                    >
+                        FAST Tooling Examples
+                    </fast-anchor>
+                </div>
+                <div class="toolbar-links">
+                    <fast-anchor
+                        href="https://github.com/microsoft/fast-dna/tree/master/packages/tooling"
+                        appearance="lightweight"
+                    >
+                        GitHub
+                    </fast-anchor>
+                </div>
+            </div>
+            <div class="menu">
+                <fast-badge
+                    fill="primary"
+                    color="text"
+                >
+                    ALPHA
+                </fast-badge>
+                <div>
+                    <h2 class="category-title">
+                        Tooling
+                    </h2>
+                    <!-- examples using @microsoft/fast-tooling -->
+                </div>
+                <div>
+                    <h2 class="category-title">
+                        React Tooling
+                    </h2>
+                    <!-- examples using @microsoft/fast-tooling-react -->
+                </div>
+            </div>
+            <div class="content">
+                Placeholder
+            </div>
+        </div>
+    </fast-design-system-provider>
+</body>
+
 </html>

@@ -1,4 +1,5 @@
 import { css } from "@microsoft/fast-element";
+import { forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
 import { disabledCursor, display } from "../styles";
 import { focusVisible } from "../styles/focus";
 import { heightNumber } from "../styles/size";
@@ -12,7 +13,6 @@ import {
     neutralOutlineHoverBehavior,
     neutralOutlineRestBehavior,
 } from "../styles/recipes";
-import { forcedColorsStylesheetBehavior } from "../styles/match-media-stylesheet-behavior";
 
 export const TextAreaStyles = css`
     ${display("inline-block")} :host {
