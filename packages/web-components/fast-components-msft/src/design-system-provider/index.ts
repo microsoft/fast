@@ -9,7 +9,7 @@ import {
     DesignSystemProvider,
     designSystemProperty,
     designSystemProvider,
-} from "@microsoft/fast-components";
+} from "@microsoft/fast-foundation";
 
 const fromView: { mode: "fromView" } = {
     mode: "fromView",
