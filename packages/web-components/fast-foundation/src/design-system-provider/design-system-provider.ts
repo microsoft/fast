@@ -14,6 +14,7 @@ import {
 } from "../custom-properties/index.js";
 import { composedParent } from "../utilities/index.js";
 import { DesignSystemPropertyDeclarationConfig } from "./design-system-property.js";
+import { PartialFASTElementDefinition } from "@microsoft/fast-element";
 
 const supportsAdoptedStylesheets = "adoptedStyleSheets" in window.ShadowRoot.prototype;
 
@@ -416,13 +417,11 @@ export class DesignSystemProvider extends FASTElement
 /**
  * Defines a design-system-provider custom element
  */
-export function designSystemProvider(
-    name: string,
-    template: ElementViewTemplate | undefined,
-    styles: ElementStyles | undefined
-) {
+export function designSystemProvider(nameOrDef: string | PartialFASTElementDefinition) {
     return <T extends typeof DesignSystemProvider>(providerCtor: T): void => {
-        customElement({ name, template, styles })(providerCtor);
-        providerCtor.registerTagName(name);
+        customElement(nameOrDef)(providerCtor);
+        providerCtor.registerTagName(
+            typeof nameOrDef === "string" ? nameOrDef : nameOrDef.name
+        );
     };
 }
