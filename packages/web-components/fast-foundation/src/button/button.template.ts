@@ -1,4 +1,4 @@
-import { html, ref } from "@microsoft/fast-element";
+import { html } from "@microsoft/fast-element";
 import { endTemplate, startTemplate } from "../patterns/start-end";
 import { Button } from "./";
 

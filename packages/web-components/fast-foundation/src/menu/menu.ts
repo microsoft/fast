@@ -1,4 +1,4 @@
-import { DOM, FASTElement, observable } from "@microsoft/fast-element";
+import { FASTElement, observable } from "@microsoft/fast-element";
 import { inRange, invert } from "lodash-es";
 import {
     isHTMLElement,
