@@ -31,7 +31,7 @@ export const FeatureCardStyles = css`
         opacity: 0;
     }
 
-    :host(:hover) ::slotted(h5) {
+    :host(:hover) ::slotted(:first-child) {
         color: var(--accent-fill-rest);
     }
 
@@ -51,7 +51,7 @@ export const FeatureCardStyles = css`
         margin: 0;
     }
 
-    ::slotted(h5) {
+    ::slotted(:first-child) {
         margin: 0 0 10px 0;
     }
 
