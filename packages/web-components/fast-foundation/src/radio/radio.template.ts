@@ -1,4 +1,4 @@
-import { html, when } from "@microsoft/fast-element";
+import { html, slotted } from "@microsoft/fast-element";
 import { Radio } from "./radio.js";
 
 export const RadioTemplate = html<Radio>`
@@ -18,13 +18,14 @@ export const RadioTemplate = html<Radio>`
                 <div part="checked-indicator" class="checked-indicator"></div>
             </slot>
         </div>
-        ${when(
-            x => x.childNodes.length,
-            html`
-                <label part="label" class="label">
-                    <slot></slot>
-                </label>
-            `
-        )}
+        <label
+            part="label"
+            class="${x =>
+                x.defaultSlottedNodes && x.defaultSlottedNodes.length
+                    ? "label"
+                    : "label label__hidden"}"
+        >
+            <slot ${slotted("defaultSlottedNodes")}></slot>
+        </label>
     </template>
 `;

@@ -1,4 +1,4 @@
-import { html, when } from "@microsoft/fast-element";
+import { html, slotted } from "@microsoft/fast-element";
 import { Switch } from "./switch.js";
 
 export const SwitchTemplate = html<Switch>`
@@ -13,14 +13,15 @@ export const SwitchTemplate = html<Switch>`
         @click="${(x, c) => x.clickHandler(c.event as MouseEvent)}"
         class="${x => (x.checked ? "checked" : "")}"
     >
-        ${when(
-            x => x.childNodes.length,
-            html`
-                <label part="label" class="label" id="switch-label">
-                    <slot></slot>
-                </label>
-            `
-        )}
+        <label
+            part="label"
+            class="${x =>
+                x.defaultSlottedNodes && x.defaultSlottedNodes.length
+                    ? "label"
+                    : "label label__hidden"}"
+        >
+            <slot ${slotted("defaultSlottedNodes")}></slot>
+        </label>
         <div part="switch" class="switch">
             <span class="checked-indicator" part="checked-indicator"></span>
         </div>

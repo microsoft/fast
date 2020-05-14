@@ -64,6 +64,11 @@ export const TextFieldStyles = css`
         margin-bottom: 4px;
     }
 
+    .label__hidden {
+        display: none;
+        visibility: hidden;
+    }
+
     .before-content,
     .after-content {
         ${
