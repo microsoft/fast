@@ -10,10 +10,8 @@ export const BaseButtonStyles = css`
     }
 
     .control {
-        ${
-            /* Font size is temporary - 
-            replace when adaptive typography is figured out */ ""
-        } font-size: 14px;
+        font-size: var(--type-ramp-base-font-size);
+        line-height: var(--type-ramp-base-line-height);
         line-height: 1;
         box-sizing: border-box;
         display: inline-flex;
@@ -50,8 +48,7 @@ export const BaseButtonStyles = css`
         border: 0;
     }
 
-    :host(.disabled),
-    :host a.control:not(:link) {
+    :host(.disabled) {
         opacity: var(--disabled-opacity);
     }
 
@@ -101,22 +98,22 @@ export const HypertextStyles = css`
         box-shadow: none;
         border-radius: 0;
     }
-
+    :host a.control:not(:link) {
+        background-color: transparent;
+        cursor: default;
+    }
     :host(.hypertext) .control:link,
     :host(.hypertext) .control:visited {
         background: transparent;
         color: var(--accent-foreground-rest);
         border-bottom: calc(var(--outline-width) * 1px) solid var(--accent-foreground-rest);
     }
-
     :host(.hypertext) .control:hover {
         border-bottom-color: var(--accent-foreground-hover);
     }
-
     :host(.hypertext) .control:active {
         border-bottom-color: var(--accent-foreground-active);
     }
-
     :host(.hypertext) .control:${focusVisible} {
         border-bottom: calc(var(--focus-outline-width) * 1px) solid var(--neutral-focus);
     }

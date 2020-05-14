@@ -79,11 +79,6 @@ export interface FASTDesignSystem {
     cornerRadius: number;
 
     /**
-     * The corner radius applied to elevated surfaces or controls.
-     */
-    elevatedCornerRadius: number;
-
-    /**
      * The width of the outline applied to outline components in pixels.
      */
     outlineWidth: number;
@@ -203,19 +198,18 @@ export const fastDesignSystemDefaults: FASTDesignSystem = {
     typeRampPlus6FontSize: "60px",
     typeRampPlus6LineHeight: "72px",
 
-    backgroundColor: "#FFFFFF",
+    backgroundColor: "#181818",
     density: 0,
     designUnit: 4,
     baseHeightMultiplier: 8,
     baseHorizontalSpacingMultiplier: 3,
     cornerRadius: 2,
-    elevatedCornerRadius: 4,
     focusOutlineWidth: 2,
     disabledOpacity: 0.3,
     outlineWidth: 1,
     neutralPalette: defaultNeutralPalette,
     accentPalette: defaultAccentPalette,
-    accentBaseColor: "#0078D4",
+    accentBaseColor: "#DA1A5F",
 
     /**
      * Recipe Deltas
@@ -315,13 +309,6 @@ export const accentBaseColor: DesignSystemResolver<string> = getDesignSystemValu
  */
 export const cornerRadius: DesignSystemResolver<number> = getDesignSystemValue(
     "cornerRadius"
-);
-
-/**
- * Retrieve the elevatedCornerRadius when invoked with a DesignSystem
- */
-export const elevatedCornerRadius: DesignSystemResolver<number> = getDesignSystemValue(
-    "elevatedCornerRadius"
 );
 
 /**

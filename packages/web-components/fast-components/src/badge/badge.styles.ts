@@ -6,12 +6,8 @@ export const BadgeStyles = css`
     ${display("inline-block")} :host {
         box-sizing: border-box;
         font-family: var(--body-font);
-        ${
-            /* Font size, weight, and line height are temporary - 
-            replace when adaptive typography is figured out */ ""
-        } font-size: 12px;
-        font-weight: 400;
-        line-height: 18px;
+        font-size: var(--type-ramp-minus-1-font-size);
+        line-height: var(--type-ramp-minus-1-height);
     }
 
     .badge {

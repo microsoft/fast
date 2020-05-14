@@ -1,4 +1,4 @@
-import { attr, nullableNumberConverter } from "@microsoft/fast-element";
+import { attr, nullableNumberConverter, observable } from "@microsoft/fast-element";
 import { FormAssociated } from "../form-associated/index.js";
 import { StartEnd } from "../patterns/start-end.js";
 import { applyMixins } from "../utilities/index.js";
@@ -99,6 +99,9 @@ export class TextField extends FormAssociated<HTMLInputElement> {
             this.proxy.spellcheck = this.spellcheck;
         }
     }
+
+    @observable
+    public defaultSlottedNodes: Node[];
 
     private valueChanged(): void {
         if (this.proxy instanceof HTMLElement) {
