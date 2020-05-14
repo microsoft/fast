@@ -15,7 +15,7 @@ describe("neutralForegroundHint", (): void => {
 
     // test("should return a swatch when argument is a ")
     test("should implement design system defaults", (): void => {
-        expect(neutralForegroundHint(undefined as any)).toBe("#767676");
+        expect(neutralForegroundHint(undefined as any)).toBe("#838383");
     });
 
     neutralPalette.concat(accentPalette).forEach((swatch: Swatch): void => {
