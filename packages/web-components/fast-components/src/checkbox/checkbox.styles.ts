@@ -5,9 +5,15 @@ import { disabledCursor, display } from "../styles";
 import { focusVisible } from "../styles/focus";
 import { heightNumber } from "../styles/size";
 import {
+    accentFillActiveBehavior,
+    accentFillHoverBehavior,
+    accentFillRestBehavior,
+    accentForegroundCutRestBehavior,
+    neutralFillInputActiveBehavior,
     neutralFillInputHoverBehavior,
     neutralFillInputRestBehavior,
     neutralForegroundRestBehavior,
+    neutralOutlineActiveBehavior,
     neutralOutlineHoverBehavior,
     neutralOutlineRestBehavior,
 } from "../styles/recipes";
@@ -58,14 +64,14 @@ export const CheckboxStyles = css`
         width: 100%;
         height: 100%;
         display: block;
-        fill: var(--neutral-foreground-rest);
+        fill: var(--accent-foreground-cut-rest);
         opacity: 0;
         pointer-events: none;
     }
 
     .indeterminate-indicator {
         border-radius: calc(var(--corner-radius) * 1px);
-        background: var(--neutral-foreground-rest);
+        background: var(--accent-foreground-cut-rest);
         position: absolute;
         top: 25%;
         right: 25%;
@@ -79,10 +85,36 @@ export const CheckboxStyles = css`
         border-color: var(--neutral-outline-hover);
     }
 
+    .control:active {
+        background: var(--neutral-fill-input-active);
+        border-color: var(--neutral-outline-active);
+    }
+
     :host(:${focusVisible}) .control {
         box-shadow: 0 0 0 1px var(--neutral-focus) inset;
         border-color: var(--neutral-focus);
     }
+
+    :host(.checked) .control {
+        background: var(--accent-fill-rest);
+        border: calc(var(--outline-width) * 1px) solid var(--accent-fill-rest);
+    }
+
+    :host(.checked) .control:hover {
+        background: var(--accent-fill-hover);
+        border: calc(var(--outline-width) * 1px) solid var(--accent-fill-hover);
+    }
+
+    :host(.checked) .control:active {
+        background: var(--accent-fill-active);
+        border: calc(var(--outline-width) * 1px) solid var(--accent-fill-active);
+    }
+
+    :host(.checked:${focusVisible}) .control {
+        box-shadow: 0 0 0 1px var(--neutral-focus) inset;
+        border-color: var(--neutral-focus);
+    }
+
 
     :host(.disabled) .label,
     :host(.readonly) .label,
@@ -100,9 +132,15 @@ export const CheckboxStyles = css`
         opacity: var(--disabled-opacity);
     }
 `.withBehaviors(
+    accentFillActiveBehavior,
+    accentFillHoverBehavior,
+    accentFillRestBehavior,
+    accentForegroundCutRestBehavior,
+    neutralFillInputActiveBehavior,
     neutralFillInputHoverBehavior,
     neutralFillInputRestBehavior,
     neutralForegroundRestBehavior,
+    neutralOutlineActiveBehavior,
     neutralOutlineHoverBehavior,
     neutralOutlineRestBehavior,
     forcedColorsStylesheetBehavior(

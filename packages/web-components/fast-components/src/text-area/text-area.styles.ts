@@ -4,13 +4,16 @@ import { disabledCursor, display } from "../styles";
 import { focusVisible } from "../styles/focus";
 import { heightNumber } from "../styles/size";
 import {
+    accentFillActiveBehavior,
+    accentFillHoverBehavior,
+    accentFillRestBehavior,
+    neutralFillActiveBehavior,
     neutralFillHoverBehavior,
     neutralFillInputHoverBehavior,
     neutralFillInputRestBehavior,
     neutralFillRestBehavior,
     neutralFocusBehavior,
     neutralForegroundRestBehavior,
-    neutralOutlineHoverBehavior,
     neutralOutlineRestBehavior,
 } from "../styles/recipes";
 
@@ -27,7 +30,7 @@ export const TextAreaStyles = css`
         color: var(--neutral-foreground-rest);
         background: var(--neutral-fill-input-rest);
         border-radius: calc(var(--corner-radius) * 1px);
-        border: calc(var(--outline-width) * 1px) solid var(--neutral-outline-rest);
+        border: calc(var(--outline-width) * 1px) solid var(--accent-fill-rest);
         height: calc(${heightNumber} * 2px);
         font: inherit;
         font-size: var(--type-ramp-base-font-size);
@@ -40,7 +43,12 @@ export const TextAreaStyles = css`
 
     .control:hover:enabled {
         background: var(--neutral-fill-input-hover);
-        border-color: var(--neutral-outline-hover);
+        border-color: var(--accent-fill-hover);
+    }
+
+    .control:active:enabled {
+        background: var(--neutral-fill-input-active);
+        border-color: var(--accent-fill-active);
     }
 
     .control:hover,
@@ -57,12 +65,10 @@ export const TextAreaStyles = css`
 
     :host(.filled) .control {
         background: var(--neutral-fill-rest);
-        border-color: transparent;
     }
 
     :host(.filled:hover:not([disabled])) .control {
         background: var(--neutral-fill-hover);
-        border-color: transparent;
     }
 
     :host(.resize-both) .control {
@@ -100,14 +106,20 @@ export const TextAreaStyles = css`
     :host([disabled]) {
         opacity: var(--disabled-opacity);
     }
-`.withBehaviors(
+    :host([disabled]) .control {
+        border-color: var(--neutral-outline-rest);
+    }
+ `.withBehaviors(
+    accentFillActiveBehavior,
+    accentFillHoverBehavior,
+    accentFillRestBehavior,
     neutralFillHoverBehavior,
+    neutralFillActiveBehavior,
     neutralFillInputHoverBehavior,
     neutralFillInputRestBehavior,
     neutralFillRestBehavior,
     neutralFocusBehavior,
     neutralForegroundRestBehavior,
-    neutralOutlineHoverBehavior,
     neutralOutlineRestBehavior,
     forcedColorsStylesheetBehavior(
         css`

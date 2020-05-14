@@ -16,11 +16,15 @@ export const SliderLabelStyles = css`
         align-self: start;
         grid-row: 2;
         margin-top: -2px;
+        height: calc((${heightNumber} / 2 + var(--design-unit)) * 1px);
+        width: auto;
     }
     :host(.vertical) {
         justify-self: start;
         grid-column: 2;
         margin-left: 2px;
+        height: auto;
+        width: calc((${heightNumber} / 2 + var(--design-unit)) * 1px);
     }
     .container {
         display: grid;
@@ -45,7 +49,7 @@ export const SliderLabelStyles = css`
         margin: 2px 0;
     }
     .mark {
-        width: calc((var(--design-unit) / 2) * 1px);
+        width: calc((var(--design-unit) / 4) * 1px);
         height: calc(${heightNumber} * 0.25 * 1px);
         background: var(--neutral-outline-rest);
         justify-self: center;

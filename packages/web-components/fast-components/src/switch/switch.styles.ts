@@ -5,6 +5,8 @@ import { disabledCursor, display } from "../styles";
 import { focusVisible } from "../styles/focus";
 import { heightNumber } from "../styles/size";
 import {
+    accentFillActiveBehavior,
+    accentFillHoverBehavior,
     accentFillRestBehavior,
     accentForegroundCutRestBehavior,
     neutralFillInputActiveBehavior,
@@ -48,10 +50,10 @@ export const SwitchStyles = css`
         position: relative;
         outline: none;
         box-sizing: border-box;
-        width: calc(((${heightNumber} / 2) + var(--design-unit)) * 2px);
-        height: calc(((${heightNumber} / 2) + var(--design-unit)) * 1px);
+        width: calc(${heightNumber} * 1px);
+        height: calc((${heightNumber} / 2 + var(--design-unit)) * 1px);
         background: var(--neutral-fill-input-rest);
-        border-radius: calc(${heightNumber} * 1px);
+        border-radius: calc(var(--corner-radius) * 1px);
         border: calc(var(--outline-width) * 1px) solid var(--neutral-outline-rest);
     }
 
@@ -76,12 +78,12 @@ export const SwitchStyles = css`
 
     .checked-indicator {
         position: absolute;
-        height: calc((${heightNumber} - (var(--design-unit) * 5.5)) * 1px);
-        width: calc((${heightNumber} - (var(--design-unit) * 5.5)) * 1px);
-        top: calc(var(--design-unit) * 1px);
-        left: calc(var(--design-unit) * 1px);
+        top: 5px;
+        left: 5px;
+        right: calc(((${heightNumber} / 2) + 1) * 1px);
+        bottom: 5px;
         background: var(--neutral-foreground-rest);
-        border-radius: 50%;
+        border-radius: calc(var(--corner-radius) * 1px);
         transition: all 0.2s ease-in-out;
     }
 
@@ -115,12 +117,24 @@ export const SwitchStyles = css`
     }
 
     :host(.checked) .checked-indicator {
-        left: calc((((${heightNumber} / 2) + var(--design-unit)) + var(--design-unit)) * 1px);
+        left: calc(((${heightNumber} / 2) + 1) * 1px);
+        right: 5px;
         background: var(--accent-foreground-cut-rest);
     }
 
     :host(.checked) .switch {
         background: var(--accent-fill-rest);
+        border-color: var(--accent-fill-rest);
+    }
+
+    :host(.checked) .switch:hover {
+        background: var(--accent-fill-hover);
+        border-color: var(--accent-fill-hover);
+    }
+
+    :host(.checked) .switch:active {
+        background: var(--accent-fill-active);
+        border-color: var(--accent-fill-active);
     }
 
     .unchecked-message {
@@ -139,6 +153,8 @@ export const SwitchStyles = css`
         display: block;
     }
 `.withBehaviors(
+    accentFillActiveBehavior,
+    accentFillHoverBehavior,
     accentFillRestBehavior,
     accentForegroundCutRestBehavior,
     neutralFillInputActiveBehavior,
