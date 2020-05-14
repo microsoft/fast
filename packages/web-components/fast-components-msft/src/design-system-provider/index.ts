@@ -6,9 +6,9 @@ import {
 } from "@microsoft/fast-components-styles-msft";
 // this import will change to fast-foundation...
 import {
-    DesignSystemProvider,
     designSystemProperty,
     designSystemProvider,
+    DesignSystemProvider,
 } from "@microsoft/fast-foundation";
 
 const fromView: { mode: "fromView" } = {

@@ -3,11 +3,6 @@ import { disabledCursor, focusVisible, SystemColors } from "@microsoft/fast-comp
 import { forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
 import {
     AccentButtonStyles,
-    BaseButtonStyles,
-    HypertextStyles,
-    LightweightButtonStyles,
-    OutlineButtonStyles,
-    StealthButtonStyles,
     accentFillActiveBehavior,
     accentFillHoverBehavior,
     accentFillRestBehavior,
@@ -15,6 +10,9 @@ import {
     accentForegroundCutRestBehavior,
     accentForegroundHoverBehavior,
     accentForegroundRestBehavior,
+    BaseButtonStyles,
+    HypertextStyles,
+    LightweightButtonStyles,
     neutralFillActiveBehavior,
     neutralFillFocusBehavior,
     neutralFillHoverBehavior,
@@ -28,6 +26,8 @@ import {
     neutralOutlineActiveBehavior,
     neutralOutlineHoverBehavior,
     neutralOutlineRestBehavior,
+    OutlineButtonStyles,
+    StealthButtonStyles,
 } from "../styles/";
 
 export const ButtonStyles = css`
