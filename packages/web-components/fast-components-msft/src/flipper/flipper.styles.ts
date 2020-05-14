@@ -5,6 +5,9 @@ import {
     focusVisible,
     forcedColorsStylesheetBehavior,
     heightNumber,
+    SystemColors,
+} from "@microsoft/fast-components";
+import {
     neutralFillStealthActiveBehavior,
     neutralFillStealthHoverBehavior,
     neutralFillStealthRestBehavior,
@@ -13,8 +16,7 @@ import {
     neutralOutlineActiveBehavior,
     neutralOutlineHoverBehavior,
     neutralOutlineRestBehavior,
-    SystemColors,
-} from "@microsoft/fast-components";
+} from "../styles";
 
 export const FlipperStyles = css`
     ${display("inline-flex")} :host {

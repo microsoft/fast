@@ -5,13 +5,15 @@ import {
     focusVisible,
     forcedColorsStylesheetBehavior,
     heightNumber,
+    SystemColors,
+} from "@microsoft/fast-components";
+import {
     neutralFillInputHoverBehavior,
     neutralFillInputRestBehavior,
     neutralForegroundRestBehavior,
     neutralOutlineHoverBehavior,
     neutralOutlineRestBehavior,
-    SystemColors,
-} from "@microsoft/fast-components";
+} from "../styles";
 
 export const CheckboxStyles = css`
     ${display("inline-flex")} :host {

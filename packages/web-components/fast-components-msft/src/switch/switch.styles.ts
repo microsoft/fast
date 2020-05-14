@@ -1,12 +1,15 @@
 import { css } from "@microsoft/fast-element";
 import {
-    accentFillRestBehavior,
-    accentForegroundCutRestBehavior,
     disabledCursor,
     display,
     focusVisible,
     forcedColorsStylesheetBehavior,
     heightNumber,
+    SystemColors,
+} from "@microsoft/fast-components";
+import {
+    accentFillRestBehavior,
+    accentForegroundCutRestBehavior,
     neutralFillInputActiveBehavior,
     neutralFillInputHoverBehavior,
     neutralFillInputRestBehavior,
@@ -14,8 +17,7 @@ import {
     neutralOutlineActiveBehavior,
     neutralOutlineHoverBehavior,
     neutralOutlineRestBehavior,
-    SystemColors,
-} from "@microsoft/fast-components";
+} from "../styles";
 
 export const SwitchStyles = css`
     :host([hidden]) {

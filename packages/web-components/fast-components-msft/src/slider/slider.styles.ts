@@ -5,13 +5,15 @@ import {
     focusVisible,
     forcedColorsStylesheetBehavior,
     heightNumber,
+    SystemColors,
+} from "@microsoft/fast-components";
+import {
     neutralForegroundActiveBehavior,
     neutralForegroundHoverBehavior,
     neutralForegroundRestBehavior,
     neutralOutlineHoverBehavior,
     neutralOutlineRestBehavior,
-    SystemColors,
-} from "@microsoft/fast-components";
+} from "../styles";
 
 export const SliderStyles = css`
     :host([hidden]) {

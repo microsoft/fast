@@ -1,5 +1,17 @@
 import { css } from "@microsoft/fast-element";
 import {
+    disabledCursor,
+    focusVisible,
+    forcedColorsStylesheetBehavior,
+    SystemColors,
+} from "@microsoft/fast-components";
+import {
+    AccentButtonStyles,
+    BaseButtonStyles,
+    HypertextStyles,
+    LightweightButtonStyles,
+    OutlineButtonStyles,
+    StealthButtonStyles,
     accentFillActiveBehavior,
     accentFillHoverBehavior,
     accentFillRestBehavior,
@@ -7,9 +19,6 @@ import {
     accentForegroundCutRestBehavior,
     accentForegroundHoverBehavior,
     accentForegroundRestBehavior,
-    disabledCursor,
-    focusVisible,
-    forcedColorsStylesheetBehavior,
     neutralFillActiveBehavior,
     neutralFillFocusBehavior,
     neutralFillHoverBehavior,
@@ -23,15 +32,6 @@ import {
     neutralOutlineActiveBehavior,
     neutralOutlineHoverBehavior,
     neutralOutlineRestBehavior,
-    SystemColors,
-} from "@microsoft/fast-components";
-import {
-    AccentButtonStyles,
-    BaseButtonStyles,
-    HypertextStyles,
-    LightweightButtonStyles,
-    OutlineButtonStyles,
-    StealthButtonStyles,
 } from "../styles/";
 
 export const ButtonStyles = css`

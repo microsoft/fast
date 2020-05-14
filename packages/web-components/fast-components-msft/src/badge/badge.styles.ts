@@ -1,13 +1,13 @@
 import { css } from "@microsoft/fast-element";
+import { display } from "@microsoft/fast-components";
 import {
     accentFillRestBehavior,
     accentForegroundCutRestBehavior,
     accentForegroundRestBehavior,
-    display,
     neutralFillInputRestBehavior,
     neutralFillToggleRestBehavior,
     neutralForegroundRestBehavior,
-} from "@microsoft/fast-components";
+} from "../styles";
 
 export const BadgeStyles = css`
     ${display("inline-block")} :host {

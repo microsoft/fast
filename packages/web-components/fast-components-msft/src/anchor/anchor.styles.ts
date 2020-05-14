@@ -1,5 +1,11 @@
 import { css } from "@microsoft/fast-element";
 import {
+    AccentButtonStyles,
+    BaseButtonStyles,
+    HypertextStyles,
+    LightweightButtonStyles,
+    OutlineButtonStyles,
+    StealthButtonStyles,
     accentFillActiveBehavior,
     accentFillHoverBehavior,
     accentFillRestBehavior,
@@ -20,14 +26,6 @@ import {
     neutralOutlineActiveBehavior,
     neutralOutlineHoverBehavior,
     neutralOutlineRestBehavior,
-} from "@microsoft/fast-components";
-import {
-    AccentButtonStyles,
-    BaseButtonStyles,
-    HypertextStyles,
-    LightweightButtonStyles,
-    OutlineButtonStyles,
-    StealthButtonStyles,
 } from "../styles/";
 
 export const AnchorStyles = css`

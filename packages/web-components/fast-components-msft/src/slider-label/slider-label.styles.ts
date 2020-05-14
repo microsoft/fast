@@ -3,9 +3,9 @@ import {
     display,
     forcedColorsStylesheetBehavior,
     heightNumber,
-    neutralOutlineRestBehavior,
     SystemColors,
 } from "@microsoft/fast-components";
+import { neutralOutlineRestBehavior } from "../styles";
 
 export const SliderLabelStyles = css`
     ${display("block")} :host {

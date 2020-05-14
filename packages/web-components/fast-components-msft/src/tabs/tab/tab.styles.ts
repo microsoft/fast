@@ -4,12 +4,14 @@ import {
     focusVisible,
     forcedColorsStylesheetBehavior,
     heightNumber,
+    SystemColors,
+} from "@microsoft/fast-components";
+import {
     neutralFocusBehavior,
     neutralForegroundActiveBehavior,
     neutralForegroundHoverBehavior,
     neutralForegroundRestBehavior,
-    SystemColors,
-} from "@microsoft/fast-components";
+} from "../../styles";
 
 export const TabStyles = css`
     ${display("inline-flex")} :host {

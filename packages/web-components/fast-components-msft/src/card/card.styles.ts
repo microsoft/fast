@@ -3,9 +3,9 @@ import {
     display,
     elevation,
     forcedColorsStylesheetBehavior,
-    neutralLayerCardBehavior,
     SystemColors,
 } from "@microsoft/fast-components";
+import { neutralLayerCardBehavior } from "../styles";
 
 export const CardStyles = css`
     ${display("block")} :host {

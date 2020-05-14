@@ -5,6 +5,8 @@ import {
     focusVisible,
     forcedColorsStylesheetBehavior,
     heightNumber,
+} from "@microsoft/fast-components";
+import {
     neutralFillHoverBehavior,
     neutralFillInputHoverBehavior,
     neutralFillInputRestBehavior,
@@ -13,7 +15,7 @@ import {
     neutralForegroundRestBehavior,
     neutralOutlineHoverBehavior,
     neutralOutlineRestBehavior,
-} from "@microsoft/fast-components";
+} from "../styles";
 
 export const TextAreaStyles = css`
     ${display("inline-block")} :host {
