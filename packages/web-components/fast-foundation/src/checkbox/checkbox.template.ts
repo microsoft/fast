@@ -1,4 +1,4 @@
-import { html, when } from "@microsoft/fast-element";
+import { html, when, slotted } from "@microsoft/fast-element";
 import { Checkbox } from "./checkbox.js";
 
 export const CheckboxTemplate = html<Checkbox>`
@@ -34,9 +34,14 @@ export const CheckboxTemplate = html<Checkbox>`
                 <div part="indeterminate-indicator" class="indeterminate-indicator"></div>
             </slot>
         </div>
-        ${when(
-            x => x.childNodes.length,
-            html` <label part="label" class="label"><slot></slot></label> `
-        )}
+        <label
+            part="label"
+            class="${x =>
+                x.defaultSlottedNodes && x.defaultSlottedNodes.length
+                    ? "label"
+                    : "label__hidden"}"
+        >
+            <slot ${slotted("defaultSlottedNodes")}></slot>
+        </label>
     </template>
 `;

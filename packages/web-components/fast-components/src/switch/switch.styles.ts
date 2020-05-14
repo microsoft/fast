@@ -103,6 +103,11 @@ export const SwitchStyles = css`
         line-height: var(--type-ramp-base-line-height);
     }
 
+    .label__hidden {
+        display: none;
+        visibility: hidden;
+    }
+
     ::slotted(*) {
         ${
             /* Need to discuss with Brian how HorizontalSpacingNumber can work. https://github.com/microsoft/fast-dna/issues/2766 */ ""

@@ -1,4 +1,4 @@
-import { html, ref, when } from "@microsoft/fast-element";
+import { html, ref, when, slotted } from "@microsoft/fast-element";
 import { TextArea, TextAreaResize } from "./text-area.js";
 
 export const TextAreaTemplate = html<TextArea>`
@@ -8,14 +8,12 @@ export const TextAreaTemplate = html<TextArea>`
             ${x => (x.readOnly ? "readonly" : "")}
             ${x => (x.resize !== TextAreaResize.none ? `resize-${x.resize}` : "")}"
     >
-        ${when(
-            x => x.childNodes.length,
-            html`
-                <label part="label" class="label" for="control">
-                    <slot name="label"></slot>
-                </label>
-            `
-        )}
+        <label part="label" for="control" class="${x =>
+            x.defaultSlottedNodes && x.defaultSlottedNodes.length
+                ? "label"
+                : "label__hidden"}">
+            <slot ${slotted("defaultSlottedNodes")}></slot>
+        </label>
         <textarea
             part="control"
             class="control"

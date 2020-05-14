@@ -49,6 +49,11 @@ export const CheckboxStyles = css`
         line-height: var(--type-ramp-base-line-height);
     }
 
+    .label__hidden {
+        display: none;
+        visibility: hidden;
+    }
+
     .checked-indicator {
         width: 100%;
         height: 100%;

@@ -86,6 +86,11 @@ export const TextAreaStyles = css`
         margin-bottom: 4px;
     }
 
+    .label__hidden {
+        display: none;
+        visibility: hidden;
+    }
+
     :host([disabled]) .label,
     :host([readonly]) .label,
     :host([readonly]) .control,

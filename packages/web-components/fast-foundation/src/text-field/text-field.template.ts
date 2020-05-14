@@ -1,4 +1,4 @@
-import { html, ref, when } from "@microsoft/fast-element";
+import { html, ref, when, slotted } from "@microsoft/fast-element";
 import { endTemplate, startTemplate } from "../patterns/start-end.js";
 import { TextField } from "./text-field.js";
 
@@ -15,10 +15,16 @@ export const TextFieldTemplate = html<TextField>`
             ${x => (x.readOnly ? "readonly" : "")}
         "
     >
-        ${when(
-            x => x.childNodes.length,
-            html` <label part="label" class="label" for="control"><slot></slot></label> `
-        )}
+        <label
+            part="label"
+            for="control"
+            class="${x =>
+                x.defaultSlottedNodes && x.defaultSlottedNodes.length
+                    ? "label"
+                    : "label__hidden"}"
+        >
+            <slot ${slotted("defaultSlottedNodes")}></slot>
+        </label>
         <div class="root" part="root">
             ${startTemplate}
             <input

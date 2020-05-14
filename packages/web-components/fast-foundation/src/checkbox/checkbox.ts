@@ -32,6 +32,9 @@ export class Checkbox extends FormAssociated<HTMLInputElement> {
         this.defaultChecked = this.checkedAttribute;
     }
 
+    @observable
+    public defaultSlottedNodes: Node[];
+
     /**
      * Initialized to the value of the checked attribute. Can be changed independently of the "checked" attribute,
      * but changing the "checked" attribute always additionally sets this value.
