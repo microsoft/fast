@@ -1,6 +1,6 @@
 import { attr, booleanConverter, FASTElement } from "@microsoft/fast-element";
-import { StartEnd } from "../patterns/start-end";
-import { applyMixins } from "../utilities/apply-mixins";
+import { StartEnd } from "../patterns/start-end.js";
+import { applyMixins } from "../utilities/apply-mixins.js";
 
 export enum MenuItemRole {
     menuitem = "menuitem",

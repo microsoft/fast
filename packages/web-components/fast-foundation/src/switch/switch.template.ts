@@ -1,5 +1,5 @@
 import { html, when } from "@microsoft/fast-element";
-import { Switch } from "./switch";
+import { Switch } from "./switch.js";
 
 export const SwitchTemplate = html<Switch>`
     <template

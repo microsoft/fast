@@ -1,7 +1,5 @@
-import { html } from "@microsoft/fast-element";
-import { when } from "@microsoft/fast-element";
-import { ref } from "@microsoft/fast-element";
-import { Dialog } from "./dialog";
+import { html, ref, when } from "@microsoft/fast-element";
+import { Dialog } from "./dialog.js";
 
 export const DialogTemplate = html<Dialog>`
     <div class="positioning-region" part="positioning-region">

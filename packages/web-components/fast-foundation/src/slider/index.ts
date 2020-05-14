@@ -1,2 +1,2 @@
-export * from "./slider.template";
-export * from "./slider";
+export * from "./slider.template.js";
+export * from "./slider.js";

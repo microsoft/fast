@@ -1,2 +1,2 @@
-export * from "./menu.template";
-export * from "./menu";
+export * from "./menu.template.js";
+export * from "./menu.js";

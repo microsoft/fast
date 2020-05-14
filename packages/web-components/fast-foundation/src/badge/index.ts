@@ -1,2 +1,2 @@
-export * from "./badge.template";
-export * from "./badge";
+export * from "./badge.template.js";
+export * from "./badge.js";

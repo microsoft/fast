@@ -1,4 +1,4 @@
-import { DesignSystemProvider } from "./design-system-provider";
+import { DesignSystemProvider } from "./design-system-provider.js";
 /**
  * Decorator to declare a property as a design-system property.
  * Accepts a config object with the following:

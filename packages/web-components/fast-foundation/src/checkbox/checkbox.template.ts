@@ -1,5 +1,5 @@
 import { html, when } from "@microsoft/fast-element";
-import { Checkbox } from "./checkbox";
+import { Checkbox } from "./checkbox.js";
 
 export const CheckboxTemplate = html<Checkbox>`
     <template

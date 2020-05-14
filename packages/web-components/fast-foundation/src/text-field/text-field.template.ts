@@ -1,6 +1,6 @@
 import { html, ref, when } from "@microsoft/fast-element";
-import { endTemplate, startTemplate } from "../patterns/start-end";
-import { TextField } from "./text-field";
+import { endTemplate, startTemplate } from "../patterns/start-end.js";
+import { TextField } from "./text-field.js";
 
 export const TextFieldTemplate = html<TextField>`
     <template

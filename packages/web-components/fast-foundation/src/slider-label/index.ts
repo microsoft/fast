@@ -1,2 +1,2 @@
-export * from "./slider-label.template";
-export * from "./slider-label";
+export * from "./slider-label.template.js";
+export * from "./slider-label.js";

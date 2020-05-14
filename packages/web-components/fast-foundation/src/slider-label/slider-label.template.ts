@@ -1,6 +1,6 @@
 import { html, ref, when } from "@microsoft/fast-element";
 import { Orientation } from "@microsoft/fast-web-utilities";
-import { SliderLabel } from "./slider-label";
+import { SliderLabel } from "./slider-label.js";
 
 export const SliderLabelTemplate = html<SliderLabel>`
     <template

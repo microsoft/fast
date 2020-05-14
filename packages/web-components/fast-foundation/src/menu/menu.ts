@@ -9,7 +9,7 @@ import {
     keyCodeEnd,
     keyCodeHome,
 } from "@microsoft/fast-web-utilities";
-import { MenuItemRole } from "../menu-item";
+import { MenuItemRole } from "../menu-item/index.js";
 
 export class Menu extends FASTElement {
     @observable

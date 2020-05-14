@@ -1,3 +1,3 @@
-export * from "./base-progress";
-export * from "./progress";
-export * from "./progress-ring";
+export * from "./base-progress.js";
+export * from "./progress/index.js";
+export * from "./progress-ring/index.js";

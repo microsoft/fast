@@ -11,9 +11,9 @@ import {
 import {
     CSSCustomPropertyDefinition,
     CSSCustomPropertyTarget,
-} from "../custom-properties";
-import { composedParent } from "../utilities";
-import { DesignSystemPropertyDeclarationConfig } from "./design-system-property";
+} from "../custom-properties/index.js";
+import { composedParent } from "../utilities/index.js";
+import { DesignSystemPropertyDeclarationConfig } from "./design-system-property.js";
 
 const supportsAdoptedStylesheets = "adoptedStyleSheets" in window.ShadowRoot.prototype;
 

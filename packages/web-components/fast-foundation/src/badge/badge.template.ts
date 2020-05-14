@@ -1,5 +1,5 @@
 import { html } from "@microsoft/fast-element";
-import { Badge } from "./badge";
+import { Badge } from "./badge.js";
 
 export const BadgeTemplate = html<Badge>`
     <template class="${x => (x.circular ? "circular" : "")}">

@@ -1,6 +1,6 @@
 import { html } from "@microsoft/fast-element";
 import { endTemplate, startTemplate } from "../patterns/start-end";
-import { MenuItem, MenuItemRole } from "./menu-item";
+import { MenuItem, MenuItemRole } from "./menu-item.js";
 
 export const MenuItemTemplate = html<MenuItem>`
     <template

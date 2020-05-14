@@ -1,5 +1,5 @@
 import { html, slotted } from "@microsoft/fast-element";
-import { Menu } from "./menu";
+import { Menu } from "./menu.js";
 
 export const MenuTemplate = html<Menu>`
     <template

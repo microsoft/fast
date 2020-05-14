@@ -1,6 +1,6 @@
 import { html } from "@microsoft/fast-element";
-import { endTemplate, startTemplate } from "../patterns/start-end";
-import { Anchor } from "./anchor";
+import { endTemplate, startTemplate } from "../patterns/start-end.js";
+import { Anchor } from "./anchor.js";
 
 export const AnchorTemplate = html<Anchor>`
     <template class="${x => x.appearance}">

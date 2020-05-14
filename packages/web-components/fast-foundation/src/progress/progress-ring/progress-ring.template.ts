@@ -1,5 +1,5 @@
 import { html, when } from "@microsoft/fast-element";
-import { BaseProgress } from "../base-progress";
+import { BaseProgress } from "../base-progress.js";
 
 export const ProgressRingTemplate = html<BaseProgress>`
     <template

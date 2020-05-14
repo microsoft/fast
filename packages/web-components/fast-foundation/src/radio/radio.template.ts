@@ -1,5 +1,5 @@
 import { html, when } from "@microsoft/fast-element";
-import { Radio } from "./radio";
+import { Radio } from "./radio.js";
 
 export const RadioTemplate = html<Radio>`
     <template

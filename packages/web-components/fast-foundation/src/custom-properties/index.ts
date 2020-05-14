@@ -1,1 +1,1 @@
-export * from "./behavior";
+export * from "./behavior.js";
