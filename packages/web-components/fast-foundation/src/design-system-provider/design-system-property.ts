@@ -47,7 +47,7 @@ export function designSystemProperty<T extends DesignSystemProvider>(
              * Default to fromView so we don't preform a bunch of DOM writes
              */
             if (config.mode === void 0) {
-                config.mode = "fromView";
+                config = {...config, mode: "fromView"}
             }
 
             attr(config as DecoratorAttributeConfiguration)(source, prop);
