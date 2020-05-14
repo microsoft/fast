@@ -18,7 +18,7 @@
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {
-    "build": "tsc -p ./tsconfig.build.json",
+    "build": "npm run generate-default-palettes && tsc -p ./tsconfig.build.json",
     "clean:dist": "node ../../../build/clean.js dist",
     "prepare": "yarn clean:dist && yarn build",
     "prettier": "prettier --config ../../../.prettierrc --write \"**/*.ts\"",
@@ -26,24 +26,76 @@
     "eslint": "eslint . --ext .ts",
     "eslint:fix": "eslint . --ext .ts --fix",
     "start": "start-storybook -p 6006",
-    "test": "yarn build-storybook && yarn eslint",
-    "build-storybook": "build-storybook"
+    "test": "yarn build-storybook && yarn eslint && yarn unit-tests",
+    "build-storybook": "build-storybook",
+    "clean:tmp": "node ../../../build/clean.js .tmp",
+    "generate-default-palettes": "rollup --config && node .tmp/generate-palettes.js && yarn clean:tmp",
+    "unit-tests": "jest --runInBand",
+    "unit-tests:watch": "jest --watch"
+  },
+  "jest": {
+    "collectCoverage": true,
+    "coverageReporters": [
+      "json",
+      "text",
+      [
+        "lcov",
+        {
+          "projectRoot": "../../../"
+        }
+      ]
+    ],
+    "coverageThreshold": {
+      "global": {
+        "statements": 80,
+        "branches": 80,
+        "functions": 80,
+        "lines": 80
+      }
+    },
+    "coveragePathIgnorePatterns": [
+      "/node_modules"
+    ],
+    "testURL": "http://localhost",
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest",
+      "^.+\\.jsx?$": "babel-jest"
+    },
+    "transformIgnorePatterns": [
+      "!<rootDir>/node_modules/lodash-es"
+    ],
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(js|ts)$",
+    "moduleFileExtensions": [
+      "ts",
+      "js"
+    ]
   },
   "devDependencies": {
     "@babel/core": "^7.8.4",
+    "@babel/preset-env": "^7.1.0",
     "@microsoft/eslint-config-fast-dna": "^1.1.1",
     "@storybook/cli": "^5.3.13",
     "@storybook/html": "^5.3.13",
+    "@types/jest": "^25.2.1",
+    "babel-core": "^7.0.0-bridge.0",
     "circular-dependency-plugin": "^5.2.0",
+    "jest": "^25.4.0",
+    "lodash-es": "^4.0.0",
     "prettier": "2.0.2",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-typescript": "^1.0.1",
+    "rollup": "^1.18.0",
+    "ts-jest": "^25.4.0",
     "ts-loader": "^6.2.1",
     "typescript": "^3.7.5"
   },
   "dependencies": {
     "@microsoft/fast-colors": "^5.0.8",
-    "@microsoft/fast-components-styles-msft": "^4.28.9",
     "@microsoft/fast-element": "^0.8.1",
-    "@microsoft/fast-web-utilities": "^4.4.5",
-    "tabbable": "^4.0.0"
+    "@microsoft/fast-foundation": "^0.0.1",
+    "@microsoft/fast-web-utilities": "^4.4.5"
+  },
+  "peerDependencies": {
+    "lodash-es": "^4.0.0"
   }
 }

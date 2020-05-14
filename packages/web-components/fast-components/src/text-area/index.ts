@@ -1,6 +1,5 @@
 import { customElement } from "@microsoft/fast-element";
-import { TextArea } from "./text-area";
-import { TextAreaTemplate as template } from "./text-area.template";
+import { TextAreaTemplate as template, TextArea } from "@microsoft/fast-foundation";
 import { TextAreaStyles as styles } from "./text-area.styles";
 
 @customElement({
@@ -12,6 +11,3 @@ import { TextAreaStyles as styles } from "./text-area.styles";
     },
 })
 export class FASTTextArea extends TextArea {}
-export * from "./text-area.template";
-export * from "./text-area.styles";
-export * from "./text-area";

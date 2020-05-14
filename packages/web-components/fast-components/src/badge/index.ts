@@ -1,6 +1,5 @@
 import { customElement } from "@microsoft/fast-element";
-import { Badge } from "./badge";
-import { BadgeTemplate as template } from "./badge.template";
+import { Badge, BadgeTemplate as template } from "@microsoft/fast-foundation";
 import { BadgeStyles as styles } from "./badge.styles";
 
 @customElement({
@@ -9,6 +8,3 @@ import { BadgeStyles as styles } from "./badge.styles";
     styles,
 })
 export class FASTBadge extends Badge {}
-export * from "./badge.template";
-export * from "./badge.styles";
-export * from "./badge";

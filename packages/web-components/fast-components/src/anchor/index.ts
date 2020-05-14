@@ -1,7 +1,6 @@
 import { customElement } from "@microsoft/fast-element";
+import { Anchor, AnchorTemplate as template } from "@microsoft/fast-foundation";
 import { AnchorStyles as styles } from "./anchor.styles";
-import { Anchor } from "./anchor";
-import { AnchorTemplate as template } from "./anchor.template";
 
 // Anchor
 @customElement({
@@ -13,6 +12,3 @@ import { AnchorTemplate as template } from "./anchor.template";
     },
 })
 export class FASTAnchor extends Anchor {}
-export * from "./anchor.template";
-export * from "./anchor.styles";
-export * from "./anchor";

@@ -1,6 +1,5 @@
 import { customElement } from "@microsoft/fast-element";
-import { Switch } from "./switch";
-import { SwitchTemplate as template } from "./switch.template";
+import { Switch, SwitchTemplate as template } from "@microsoft/fast-foundation";
 import { SwitchStyles as styles } from "./switch.styles";
 
 @customElement({
@@ -9,6 +8,3 @@ import { SwitchStyles as styles } from "./switch.styles";
     styles,
 })
 export class FASTSwitch extends Switch {}
-export * from "./switch.template";
-export * from "./switch.styles";
-export * from "./switch";

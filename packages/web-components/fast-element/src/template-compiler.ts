@@ -2,15 +2,48 @@ import { BehaviorFactory } from "./directives/behavior.js";
 import { DOM } from "./dom.js";
 import { BindingDirective } from "./directives/binding.js";
 import { AttachedBehaviorDirective, Directive } from "./directives/directive.js";
-import { ExecutionContext } from "./observation/observable.js";
+import { ExecutionContext, Expression } from "./observation/observable.js";
 
-type InlineDirective = BindingDirective | AttachedBehaviorDirective;
+type InlineDirective = Directive & {
+    targetName?: string;
+    expression: Expression;
+    targetAtContent();
+};
+
 const compilationContext = { locatedDirectives: 0, targetIndex: -1 };
 
-function tryParsePlaceholders(
+function createAggregateBinding(parts: (string | InlineDirective)[]): BindingDirective {
+    let targetName: string | undefined;
+    const partCount = parts.length;
+    const finalParts = parts.map((x: string | InlineDirective) => {
+        if (typeof x === "string") {
+            return (): string => x;
+        }
+
+        targetName = x.targetName || targetName;
+        compilationContext.locatedDirectives++;
+        return x.expression;
+    });
+
+    const expression = (scope: unknown, context: ExecutionContext): string => {
+        let output = "";
+
+        for (let i = 0; i < partCount; ++i) {
+            output += finalParts[i](scope, context);
+        }
+
+        return output;
+    };
+
+    const binding = new BindingDirective(expression);
+    binding.targetName = targetName;
+    return binding;
+}
+
+function parseContent(
     value: string,
     directives: ReadonlyArray<Directive>
-): InlineDirective | null {
+): (string | InlineDirective)[] | InlineDirective | AttachedBehaviorDirective | null {
     let i = value.indexOf("@{", 0);
     const ii = value.length;
     let char;
@@ -95,35 +128,10 @@ function tryParsePlaceholders(
     parts = parts!.filter((x: string | Directive) => x !== "");
 
     if (parts.length == 1) {
-        compilationContext.locatedDirectives++;
-        return parts[0] as InlineDirective;
+        return parts[0] as InlineDirective | AttachedBehaviorDirective;
     }
 
-    let targetName!: string;
-    const partCount = parts.length;
-    const finalParts = parts!.map((x: string | Directive) => {
-        if (typeof x === "string") {
-            return (): string => x;
-        }
-
-        targetName = (x as BindingDirective).targetName || targetName;
-        compilationContext.locatedDirectives++;
-        return (x as BindingDirective).expression;
-    });
-
-    const expression = (scope: unknown, context: ExecutionContext): string => {
-        let output = "";
-
-        for (let i = 0; i < partCount; ++i) {
-            output += finalParts[i](scope, context);
-        }
-
-        return output;
-    };
-
-    const binding = new BindingDirective(expression);
-    binding.targetName = targetName;
-    return binding;
+    return parts as (string | InlineDirective)[];
 }
 
 function compileAttributes(
@@ -137,30 +145,123 @@ function compileAttributes(
     for (let i = 0, ii = attributes.length; i < ii; ++i) {
         const attr = attributes[i];
         const attrValue = attr.value;
-        let directive = tryParsePlaceholders(attrValue, directives);
+        let result = parseContent(attrValue, directives);
 
-        if (directive === null && includeBasicValues) {
-            /* eslint-disable-next-line */
-            directive = new BindingDirective(x => attrValue);
-            directive.targetName = attr.name;
+        if (result === null) {
+            if (includeBasicValues) {
+                result = new BindingDirective(() => attrValue);
+                result.targetName = attr.name;
+            }
+        } else if (Array.isArray(result)) {
+            result = createAggregateBinding(result);
+        } else {
+            compilationContext.locatedDirectives++;
         }
 
-        if (directive !== null) {
+        if (result !== null) {
             node.removeAttributeNode(attr);
             i--;
             ii--;
 
-            directive.targetIndex = compilationContext.targetIndex;
-            factories.push(directive);
+            result.targetIndex = compilationContext.targetIndex;
+            factories.push(result);
         }
     }
 }
 
-/* eslint-disable-next-line @typescript-eslint/explicit-function-return-type */
+function captureContentBinding(
+    binding: BindingDirective,
+    viewBehaviorFactories: BehaviorFactory[]
+): void {
+    binding.targetAtContent();
+    binding.targetIndex = compilationContext.targetIndex;
+    viewBehaviorFactories.push(binding);
+    compilationContext.locatedDirectives++;
+}
+
+function compileContent(
+    node: Text,
+    directives: ReadonlyArray<Directive>,
+    factories: BehaviorFactory[],
+    walker: TreeWalker
+): void {
+    const parseResult = parseContent(node.textContent!, directives);
+
+    if (parseResult !== null) {
+        if (Array.isArray(parseResult)) {
+            let lastNode = node;
+            for (let i = 0, ii = parseResult.length; i < ii; ++i) {
+                const currentPart = parseResult[i];
+                const currentNode =
+                    i === 0
+                        ? node
+                        : lastNode.parentNode!.insertBefore(
+                              document.createTextNode(""),
+                              lastNode.nextSibling
+                          );
+
+                if (typeof currentPart === "string") {
+                    currentNode.textContent = currentPart;
+                } else {
+                    currentNode.textContent = " ";
+                    captureContentBinding(currentPart as BindingDirective, factories);
+                }
+
+                lastNode = currentNode;
+                compilationContext.targetIndex++;
+
+                if (currentNode !== node) {
+                    walker.nextNode();
+                }
+            }
+
+            compilationContext.targetIndex--;
+        } else {
+            node.textContent = " ";
+            captureContentBinding(parseResult as BindingDirective, factories);
+        }
+    }
+}
+
+/**
+ * The result of compiling a template and its directives.
+ */
+export interface CompilationResult {
+    /**
+     * A clonable DocumentFragment representing the compiled HTML.
+     */
+    fragment: DocumentFragment;
+    /**
+     * The behaviors that should be applied to the template's HTML.
+     */
+    viewBehaviorFactories: BehaviorFactory[];
+    /**
+     * The behaviors that should be applied to the host element that
+     * the template is rendered into.
+     */
+    hostBehaviorFactories: BehaviorFactory[];
+    /**
+     * An index offset to apply to BehaviorFactory target indexes when
+     * matching factories to targets.
+     */
+    targetOffset: number;
+}
+
+/**
+ * Compiles a template and associated directives into a raw compilation
+ * result which include a clonable DocumentFragment and factories capable
+ * of attaching runtime behavior to nodes within the fragment.
+ * @param template The template to compile.
+ * @param directives The directives referenced by the template.
+ * @remarks
+ * The template that is provided for compilation is altered in-place
+ * and cannot be compiled again. If the original template must be preserved,
+ * it is recommended that you clone the original and pass the clone to this API.
+ */
 export function compileTemplate(
     template: HTMLTemplateElement,
     directives: ReadonlyArray<Directive>
-) {
+): CompilationResult {
     const hostBehaviorFactories: BehaviorFactory[] = [];
 
     compilationContext.locatedDirectives = 0;
@@ -192,24 +293,7 @@ export function compileTemplate(
                 compileAttributes(node as HTMLElement, directives, viewBehaviorFactories);
                 break;
             case 3: // text node
-                // use wholeText to retrieve the textContent of all adjacent text nodes.
-                const directive = tryParsePlaceholders(
-                    (node as Text).wholeText,
-                    directives
-                ) as BindingDirective;
-
-                if (directive !== null) {
-                    node.textContent = " ";
-                    directive.makeIntoTextBinding();
-                    viewBehaviorFactories.push(directive);
-                    directive.targetIndex = compilationContext.targetIndex;
-
-                    //remove adjacent text nodes.
-                    while (node.nextSibling && node.nextSibling.nodeType === 3) {
-                        node.parentNode!.removeChild(node.nextSibling);
-                    }
-                }
-
+                compileContent(node as Text, directives, viewBehaviorFactories, walker);
                 break;
             case 8: // comment
                 if (DOM.isMarker(node)) {

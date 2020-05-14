@@ -10,8 +10,10 @@ export const BaseButtonStyles = css`
     }
 
     .control {
-        ${/* Font size is temporary - 
-            replace when adaptive typography is figured out */ ""} font-size: 14px;
+        ${
+            /* Font size is temporary - 
+            replace when adaptive typography is figured out */ ""
+        } font-size: 14px;
         line-height: 1;
         box-sizing: border-box;
         display: inline-flex;
@@ -39,10 +41,9 @@ export const BaseButtonStyles = css`
         background-color: var(--neutral-fill-active);
     }
 
-    .control: ${focusVisible} {
+    .control:${focusVisible} {
         border: calc(var(--outline-width) * 1px) solid var(--neutral-focus);
-        box-shadow: 0 0 0 calc((var(--focus-outline-width) - var(--outline-width)) * 1px)
-            var(--neutral-focus);
+        box-shadow: 0 0 0 calc((var(--focus-outline-width) - var(--outline-width)) * 1px) var(--neutral-focus);
     }
 
     .control::-moz-focus-inner {
@@ -57,8 +58,10 @@ export const BaseButtonStyles = css`
     .start,
     .end,
     ::slotted(svg) {
-        ${/* Glyph size and margin-left is temporary - 
-            replace when adaptive typography is figured out */ ""} width: 16px;
+        ${
+            /* Glyph size and margin-left is temporary - 
+            replace when adaptive typography is figured out */ ""
+        } width: 16px;
         height: 16px;
     }
 
