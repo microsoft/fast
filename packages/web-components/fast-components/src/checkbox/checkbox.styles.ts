@@ -45,9 +45,8 @@ export const CheckboxStyles = css`
         } padding-inline-start: calc(var(--design-unit) * 2px + 2px);
         margin-inline-end: calc(var(--design-unit) * 2px + 2px);
         cursor: pointer;
-        ${
-            /* Font size is temporary - replace when adaptive typography is figured out */ ""
-        } font-size: calc(1rem + (var(--density) * 2px));
+        font-size: var(--type-ramp-base-font-size);
+        line-height: var(--type-ramp-base-line-height);
     }
 
     .checked-indicator {
