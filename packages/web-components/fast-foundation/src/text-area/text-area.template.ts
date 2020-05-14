@@ -11,7 +11,7 @@ export const TextAreaTemplate = html<TextArea>`
         <label part="label" for="control" class="${x =>
             x.defaultSlottedNodes && x.defaultSlottedNodes.length
                 ? "label"
-                : "label__hidden"}">
+                : "label label__hidden"}">
             <slot ${slotted("defaultSlottedNodes")}></slot>
         </label>
         <textarea

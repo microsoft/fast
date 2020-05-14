@@ -23,7 +23,7 @@ export const RadioTemplate = html<Radio>`
             class="${x =>
                 x.defaultSlottedNodes && x.defaultSlottedNodes.length
                     ? "label"
-                    : "label__hidden"}"
+                    : "label label__hidden"}"
         >
             <slot ${slotted("defaultSlottedNodes")}></slot>
         </label>
