@@ -1,7 +1,7 @@
 import {
+    attr,
     DecoratorAttributeConfiguration,
     observable,
-    attr,
 } from "@microsoft/fast-element";
 import { DesignSystemProvider } from "./design-system-provider.js";
 /**
@@ -67,8 +67,3 @@ export interface DecoratorDesignSystemPropertyConfiguration
     cssCustomProperty?: string | false;
     default: any;
 }
-
-export type DesignSystemPropertyDeclarationConfig = Pick<
-    DecoratorDesignSystemPropertyConfiguration,
-    "cssCustomProperty" | "default"
->;
