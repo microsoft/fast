@@ -44,7 +44,7 @@ export function designSystemProperty<T extends DesignSystemProvider>(
             observable(source, prop);
         } else {
             /**
-             * Default to fromView so we don't preform a bunch of DOM writes
+             * Default to fromView so we don't perform un-necessary DOM writes
              */
             if (config.mode === void 0) {
                 config = { ...config, mode: "fromView" };
