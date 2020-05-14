@@ -1,7 +1,7 @@
 import { css } from "@microsoft/fast-element";
 import { forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
-import { display } from "../../styles";
 import { SystemColors } from "@microsoft/fast-web-utilities";
+import { display } from "../../styles";
 import { heightNumber } from "../../styles/size";
 import {
     accentFillRestBehavior,

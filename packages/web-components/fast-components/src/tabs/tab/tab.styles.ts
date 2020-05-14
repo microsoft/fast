@@ -1,5 +1,6 @@
 import { css } from "@microsoft/fast-element";
 import { forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
+import { SystemColors } from "@microsoft/fast-web-utilities";
 import { display, focusVisible } from "../../styles";
 import { heightNumber } from "../../styles/size";
 import {
@@ -8,7 +9,6 @@ import {
     neutralForegroundHoverBehavior,
     neutralForegroundRestBehavior,
 } from "../../styles/recipes";
-import { SystemColors } from "@microsoft/fast-web-utilities";
 
 export const TabStyles = css`
     ${display("inline-flex")} :host {

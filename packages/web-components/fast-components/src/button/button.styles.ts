@@ -1,5 +1,6 @@
 import { css } from "@microsoft/fast-element";
 import { forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
+import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
     AccentButtonStyles,
     BaseButtonStyles,
@@ -32,7 +33,6 @@ import {
     neutralOutlineHoverBehavior,
     neutralOutlineRestBehavior,
 } from "../styles/recipes";
-import { SystemColors } from "@microsoft/fast-web-utilities";
 
 export const ButtonStyles = css`
     ${BaseButtonStyles}
