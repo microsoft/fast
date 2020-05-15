@@ -4,5 +4,5 @@ export { SiteSectionHeader } from "./section-header";
 export { FastFrame } from "./fast-frame";
 export { SiteNavigation } from "./navigation";
 export { SiteContentPlacement } from "./content-placement";
-export { FeatureCard } from "./feature-card";
-export { CardSection } from "./card-section";
+export { SiteFeatureCard } from "./feature-card";
+export { SiteCardSection } from "./card-section";
