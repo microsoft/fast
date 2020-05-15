@@ -11,7 +11,6 @@ import {
     accentFillHoverBehavior,
     accentFillRestBehavior,
     heightNumber,
-    neutralFillActiveBehavior,
     neutralFillHoverBehavior,
     neutralFillInputHoverBehavior,
     neutralFillInputRestBehavior,
@@ -52,6 +51,7 @@ export const TextFieldStyles = css`
         padding: 0 calc(var(--design-unit) * 2px + 1px);
         font-size: var(--type-ramp-base-font-size);
         line-height: var(--type-ramp-base-line-height);
+        color: var(--neutral-foreground-rest);
     }
 
     .control:hover,
@@ -136,7 +136,6 @@ export const TextFieldStyles = css`
     accentFillHoverBehavior,
     accentFillRestBehavior,
     neutralFillHoverBehavior,
-    neutralFillActiveBehavior,
     neutralFillInputHoverBehavior,
     neutralFillInputRestBehavior,
     neutralFillRestBehavior,

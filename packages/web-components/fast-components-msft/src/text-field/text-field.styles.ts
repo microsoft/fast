@@ -47,6 +47,7 @@ export const TextFieldStyles = css`
         margin-bottom: auto;
         border: none;
         padding: 0 calc(var(--design-unit) * 2px + 1px);
+        color: var(--neutral-foreground-rest);
         ${
             /* Font size is temporary - 
             replace when adaptive typography is figured out */ ""
