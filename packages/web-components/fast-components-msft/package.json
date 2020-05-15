@@ -2,7 +2,7 @@
     "name": "@microsoft/fast-components-msft",
     "description": "A library of Web Components with Microsoft styles",
     "sideEffects": false,
-    "version": "0.0.0",
+    "version": "0.0.1",
     "author": {
       "name": "Microsoft",
       "url": "https://discord.gg/FcSNfg4"
