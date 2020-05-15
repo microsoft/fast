@@ -72,6 +72,5 @@ export const FeatureCardStyles = css`
     ::slotted(fast-anchor) {
         margin-right: 20px;
         opacity: 0;
-        color: var(--accent-fill-rest);
     }
 `.withBehaviors(neutralForegroundRestBehavior);
