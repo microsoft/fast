@@ -32,4 +32,12 @@ az network front-door create --backend-address "https://fast-design.azurewebsite
     --path / \
     --send-recv-timeout 30
 
+az network front-door frontend-endpoint create --front-door-name $front_door --host-name *.fast.design --name $front_door-ep --resource-group $resource_group 
+# Getting started step 1: https://docs.microsoft.com/en-us/azure/frontdoor/front-door-custom-domain
+# secure How do I lock down the access to my backend to only Azure Front Door?
+# configure custom apex domain: https://docs.microsoft.com/en-us/azure/frontdoor/front-door-how-to-onboard-apex-domain
+# TODO: Handling wildcard domains instead of each subdomain individually
+# https://docs.microsoft.com/en-us/azure/frontdoor/front-door-wildcard-domain
+# https://docs.microsoft.com/en-us/cli/azure/ext/front-door/network/front-door/frontend-endpoint?view=azure-cli-latest#ext-front-door-az-network-front-door-frontend-endpoint-create
+
 

@@ -73,42 +73,31 @@ This hierarchy uses the Workload separation strategy.
 
 * Fast Design Management Group
   * Production Management Group
-
     * Fast Subscription 1
       * Front Door West US
       * Active Resource Group (Primary Region - West US)  
       * Standby Resource Group (Secondary Region - East US)
       * Back Door East US
-
-    * Fast Subscription 2
-      * Front Door West US
-      * Active Resource Group (Primary Region - West US)  
-      * Standby Resource Group (Secondary Region - East US)
-      * Back Door East US
-  
-  * Staging Management Group
-
+  * Development Management Group
     * Fast Subscription 3
       * Front Door West US
       * Active Resource Group (Primary Region - West US)  
       * Standby Resource Group (Secondary Region - East US)
       * Back Door East US
 
-    * Fast Subscription 4
-      * Front Door West US
-      * Active Resource Group (Primary Region - West US)  
-      * Standby Resource Group (Secondary Region - East US)
-      * Back Door East US
-  
-  * Development Management Group
-
+**staging slots are used to manage pre-production smoke testing.
 
 ### Front Door
-Front Door is a modern Content Delivery Network (CDN) and so along with dynamic site acceleration and load balancing, it also supports caching behaviors just like any other CDN. [learn more](https://docs.microsoft.com/en-us/azure/frontdoor/front-door-caching)
+Azure Front Door is an Application Delivery Network (ADN) as a service, offering various layer 7 load-balancing capabilities for your applications. It provides dynamic site acceleration (DSA) along with global load balancing with near real-time failover. It is a highly available and scalable service, which is fully managed by Azure. 
+
+[Front Door Docs](https://docs.microsoft.com/en-us/azure/frontdoor/)
 
 
 ### Storage
-Uses read-access geo-redundant storage (RA-GRS), where the data is replicated to a secondary region. You have read-only access to the data in the secondary region through a separate endpoint. If there is a regional outage or disaster, the Azure Storage team might decide to perform a geo-failover to the secondary region. There is no customer action required for this failover. [learn more](https://docs.microsoft.com/en-us/azure/storage/common/storage-redundancy)
+Uses read-access geo-redundant storage (RA-GRS), where the data is replicated to a secondary region. You have read-only access to the data in the secondary region through a separate endpoint. If there is a regional outage or disaster, the Azure Storage team might decide to perform a geo-failover to the secondary region. There is no customer action required for this failover. 
+
+[Storage Docs](https://docs.microsoft.com/en-us/azure/storage/common/storage-redundancy)
+
 
 ### Key Vault
 Uses one key vault per environment (development, staging, and production). Takes backups on regular cadence and as objects stored within the Key Vault change.

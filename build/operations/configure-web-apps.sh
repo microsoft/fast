@@ -10,22 +10,24 @@ declare -a names=("app" "color" "create" "explore" "motion" "www")
 
 # TODO: DNS Updates https://prod.msftdomains.com/Dns/Requests
 # ---------------------------------------------------
-# Current       ->  Future
+# DNS Name (from)   TYPE        Data (from)                 ||  DNS Name (to)   TYPE        Data (to) Current       ->  Future Name / Data (ewui-ops)
 # ---------------------------------------------------
-# fast-app      ->  app-west-app.azurewebsites.net
-# fast-color    ->  color-west-app.azurewebsites.net
-# fast-create   ->  create-west-app.azurewebsites.net
-# fast-explore  ->  explore-west-app.azurewebsites.net
-# fast-motion   ->  motion-west-app.azurewebsites.net
-# fast-design   ->  www-west-app.azurewebsites.net
+# app       -->     CNAME       fast-app.azurewebsites.net      app     -->     CNAME       app-west-app.azurewebsites.net
+# fast-color.azurewebsites.net      ->  color-west-app.azurewebsites.net
+# fast-create.azurewebsites.net     ->  create-west-app.azurewebsites.net
+# fast-explore.azurewebsites.net    ->  explore-west-app.azurewebsites.net
+# fast-motion.azurewebsites.net     ->  motion-west-app.azurewebsites.net
+# fast-design.azurewebsites.net     ->  www-west-app.azurewebsites.net
+# www.microsoft.github.io           ->  www-west-app.azurewebsites.net
 # ---------------------------------------------------
 # TEST Procedures: 
 # ---------------------------------------------------
 # 1. Manually deploy initial sites w/ parity
 # 2. Test all internal addresses as indicated by "future" above
-# 3. Update DNS Records to point to all sites
-# 4. Update Domain/Sub-Domain mapping for all sites
-# 5. Setup Pipelines for automated deployment
+# 3. Dig `dig www.fast.design`
+# 4. Update DNS Records to point to all sites
+# 5. Update Domain/Sub-Domain mapping for all sites
+# 6. Setup Pipelines for automated deployment
 
 # CREATE WEB APPS
 for name in ${names[@]}; do

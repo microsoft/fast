@@ -30,7 +30,7 @@ TODO: retrieve from GitHub Secrets
 TODO: dev available after subscription migration or if create new subscription
 '
 subscription_production="07b166d9-9849-4c8e-8df4-3f039daf5a05"
-subscription_staging="635254d3-38dc-4c67-b447-de5a723db1f7"
+subscription_development="635254d3-38dc-4c67-b447-de5a723db1f7"
 
 # SET SUBSCRIPTION
 subscription=$subscription_production
@@ -49,7 +49,7 @@ location_us_west=westus
 location_us_east=eastus
 
 # SET LOCATION
-location=$location_us_west
+location=$location_us_east
 [[ $debug == true ]] && echo "${bold}${green}Location"${reset}${unbold}
 [[ $debug == true ]] && echo $location
 
@@ -70,6 +70,6 @@ resource_group_us_west=$product_name-$location_us_west-rg
 resource_group_us_east=$product_name-$location_us_east-rg
 
 # SET RESOURCE GROUP
-resource_group=$resource_group_us_west
+resource_group=$resource_group_us_east
 [[ $debug == true ]] && echo "${bold}${green}Resource Groups"${reset}${unbold}
 [[ $debug == true ]] && echo $resource_group
