@@ -1,8 +1,12 @@
 import { css } from "@microsoft/fast-element";
-import { display, focusVisible, heightNumber } from "@microsoft/fast-components";
 import { SystemColors } from "@microsoft/fast-web-utilities";
-import { forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
 import {
+    display,
+    focusVisible,
+    forcedColorsStylesheetBehavior,
+} from "@microsoft/fast-foundation";
+import {
+    heightNumber,
     neutralFocusBehavior,
     neutralForegroundActiveBehavior,
     neutralForegroundHoverBehavior,

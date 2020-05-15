@@ -1,11 +1,9 @@
 import { css } from "@microsoft/fast-element";
+import { disabledCursor, display, focusVisible } from "@microsoft/fast-foundation";
 import {
     accentFillActiveBehavior,
     accentFillHoverBehavior,
     accentForegroundCutRestBehavior,
-    disabledCursor,
-    display,
-    focusVisible,
     heightNumber,
     neutralFillStealthRestBehavior,
     neutralFocusBehavior,

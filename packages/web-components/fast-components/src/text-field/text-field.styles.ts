@@ -1,13 +1,16 @@
 import { css } from "@microsoft/fast-element";
-import { forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
+import {
+    disabledCursor,
+    display,
+    focusVisible,
+    forcedColorsStylesheetBehavior,
+} from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
-import { disabledCursor, display } from "../styles";
-import { focusVisible } from "../styles/focus";
-import { heightNumber } from "../styles/size";
 import {
     accentFillActiveBehavior,
     accentFillHoverBehavior,
     accentFillRestBehavior,
+    heightNumber,
     neutralFillActiveBehavior,
     neutralFillHoverBehavior,
     neutralFillInputHoverBehavior,
@@ -16,7 +19,7 @@ import {
     neutralFocusBehavior,
     neutralForegroundRestBehavior,
     neutralOutlineRestBehavior,
-} from "../styles/recipes";
+} from "../styles";
 
 export const TextFieldStyles = css`
     ${display("inline-block")} :host {

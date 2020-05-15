@@ -1,7 +1,6 @@
 import { css } from "@microsoft/fast-element";
-import { display } from "@microsoft/fast-components";
 import { SystemColors } from "@microsoft/fast-web-utilities";
-import { forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
+import { display, forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
 import { accentFillRestBehavior, neutralForegroundRestBehavior } from "../styles";
 
 export const TabsStyles = css`

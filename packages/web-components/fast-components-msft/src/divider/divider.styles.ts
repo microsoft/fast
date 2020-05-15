@@ -1,5 +1,5 @@
 import { css } from "@microsoft/fast-element";
-import { display } from "@microsoft/fast-components";
+import { display } from "@microsoft/fast-foundation";
 import { neutralDividerRestBehavior } from "../styles";
 
 export const DividerStyles = css`

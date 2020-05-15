@@ -1,5 +1,5 @@
 import { css } from "@microsoft/fast-element";
-import { display } from "@microsoft/fast-components";
+import { display } from "@microsoft/fast-foundation";
 
 export const TabPanelStyles = css`
     ${display("flex")} :host {
