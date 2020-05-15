@@ -8,9 +8,12 @@ import {
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
     heightNumber,
+    neutralFillInputActiveBehavior,
     neutralFillInputHoverBehavior,
     neutralFillInputRestBehavior,
+    neutralFocusBehavior,
     neutralForegroundRestBehavior,
+    neutralOutlineActiveBehavior,
     neutralOutlineHoverBehavior,
     neutralOutlineRestBehavior,
 } from "../styles";
@@ -40,6 +43,11 @@ export const CheckboxStyles = css`
         cursor: pointer;
     }
 
+    .label__hidden {
+        display: none;
+        visibility: hidden;
+    }
+
     .label {
         font-family: var(--body-font);
         color: var(--neutral-foreground-rest);
@@ -48,9 +56,8 @@ export const CheckboxStyles = css`
         } padding-inline-start: calc(var(--design-unit) * 2px + 2px);
         margin-inline-end: calc(var(--design-unit) * 2px + 2px);
         cursor: pointer;
-        ${
-            /* Font size is temporary - replace when adaptive typography is figured out */ ""
-        } font-size: calc(1rem + (var(--density) * 2px));
+        font-size: var(--type-ramp-base-font-size);
+        line-height: var(--type-ramp-base-line-height);
     }
 
     .checked-indicator {
@@ -73,13 +80,18 @@ export const CheckboxStyles = css`
         opacity: 0;
     }
 
-    .control:hover {
+    :host(:enabled) .control:hover {
         background: var(--neutral-fill-input-hover);
         border-color: var(--neutral-outline-hover);
     }
 
+    :host(:enabled) .control:active {
+        background: var(--neutral-fill-input-active);
+        border-color: var(--neutral-outline-active);
+    }
+
     :host(:${focusVisible}) .control {
-        box-shadow: 0 0 0 1px var(--neutral-focus) inset;
+        box-shadow: 0 0 0 2px var(--background-color), 0 0 0 4px var(--neutral-focus);
         border-color: var(--neutral-focus);
     }
 
@@ -99,9 +111,12 @@ export const CheckboxStyles = css`
         opacity: var(--disabled-opacity);
     }
 `.withBehaviors(
+    neutralFillInputActiveBehavior,
     neutralFillInputHoverBehavior,
     neutralFillInputRestBehavior,
+    neutralFocusBehavior,
     neutralForegroundRestBehavior,
+    neutralOutlineActiveBehavior,
     neutralOutlineHoverBehavior,
     neutralOutlineRestBehavior,
     forcedColorsStylesheetBehavior(

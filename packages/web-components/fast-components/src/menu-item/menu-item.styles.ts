@@ -7,6 +7,7 @@ import {
     heightNumber,
     neutralFillStealthRestBehavior,
     neutralFocusBehavior,
+    neutralFocusInnerAccentBehavior,
     neutralForegroundRestBehavior,
 } from "../styles";
 
@@ -33,6 +34,7 @@ export const MenuItemStyles = css`
     }
 
     :host(:${focusVisible}) {
+        box-shadow: 0 0 0 calc(var(--focus-outline-width) * 1px) inset var(--neutral-focus-inner-accent);
         border-color: var(--neutral-focus);
         background: var(--accent-fill-hover);
         color: var(--accent-foreground-cut-rest);
@@ -99,5 +101,6 @@ export const MenuItemStyles = css`
     accentForegroundCutRestBehavior,
     neutralFillStealthRestBehavior,
     neutralFocusBehavior,
+    neutralFocusInnerAccentBehavior,
     neutralForegroundRestBehavior
 );

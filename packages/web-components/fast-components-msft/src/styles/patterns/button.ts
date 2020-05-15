@@ -9,10 +9,8 @@ export const BaseButtonStyles = css`
     }
 
     .control {
-        ${
-            /* Font size is temporary - 
-            replace when adaptive typography is figured out */ ""
-        } font-size: 14px;
+        font-size: var(--type-ramp-base-font-size);
+        line-height: var(--type-ramp-base-line-height);
         line-height: 1;
         box-sizing: border-box;
         display: inline-flex;

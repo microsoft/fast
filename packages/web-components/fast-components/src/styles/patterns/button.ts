@@ -176,6 +176,11 @@ export const OutlineButtonStyles = css`
     :host(.outline) .control:active {
         border-color: var(--accent-fill-active);
     }
+
+    :host(.outline) .control:${focusVisible} {
+        border: calc(var(--outline-width) * 1px) solid var(--neutral-focus);
+        box-shadow: 0 0 0 calc((var(--focus-outline-width) - var(--outline-width)) * 1px) var(--neutral-focus);
+    }
 `;
 
 export const StealthButtonStyles = css`

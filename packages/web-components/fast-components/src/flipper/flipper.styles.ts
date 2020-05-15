@@ -14,6 +14,7 @@ import {
     heightNumber,
     neutralFillStealthRestBehavior,
     neutralFocusBehavior,
+    neutralFocusInnerAccentBehavior,
     neutralForegroundRestBehavior,
     neutralOutlineRestBehavior,
 } from "../styles";
@@ -83,7 +84,7 @@ export const FlipperStyles = css`
     }
 
     :host(:${focusVisible})::before {
-        box-shadow: 0 0 0 1px var(--neutral-focus) inset;
+        box-shadow: 0 0 0 calc(var(--focus-outline-width) * 1px) inset var(--neutral-focus-inner-accent);
         border-color: var(--neutral-focus);
     }
 
@@ -97,6 +98,7 @@ export const FlipperStyles = css`
     accentForegroundCutRestBehavior,
     neutralFillStealthRestBehavior,
     neutralFocusBehavior,
+    neutralFocusInnerAccentBehavior,
     neutralForegroundRestBehavior,
     neutralOutlineRestBehavior,
     forcedColorsStylesheetBehavior(

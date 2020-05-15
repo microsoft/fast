@@ -38,8 +38,7 @@ export const TextAreaStyles = css`
         font: inherit;
         font-size: var(--type-ramp-base-font-size);
         line-height: var(--type-ramp-base-line-height);
-        padding-top: calc(var(--design-unit) * 1.5);
-        padding-bottom: calc(var(--design-unit) * 1.5);
+        padding: calc(var(--design-unit) * 2px + 1px);
         max-width: 100%;
         resize: none;
     }
