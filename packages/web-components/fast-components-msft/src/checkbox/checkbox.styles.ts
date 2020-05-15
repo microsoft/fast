@@ -8,9 +8,12 @@ import {
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
     heightNumber,
+    neutralFillInputActiveBehavior,
     neutralFillInputHoverBehavior,
     neutralFillInputRestBehavior,
+    neutralFocusBehavior,
     neutralForegroundRestBehavior,
+    neutralOutlineActiveBehavior,
     neutralOutlineHoverBehavior,
     neutralOutlineRestBehavior,
 } from "../styles";
@@ -73,9 +76,14 @@ export const CheckboxStyles = css`
         opacity: 0;
     }
 
-    .control:hover {
+    :host(:enabled) .control:hover {
         background: var(--neutral-fill-input-hover);
         border-color: var(--neutral-outline-hover);
+    }
+
+    :host(:enabled) .control:active {
+        background: var(--neutral-fill-input-active);
+        border-color: var(--neutral-outline-active);
     }
 
     :host(:${focusVisible}) .control {
@@ -99,9 +107,12 @@ export const CheckboxStyles = css`
         opacity: var(--disabled-opacity);
     }
 `.withBehaviors(
+    neutralFillInputActiveBehavior,
     neutralFillInputHoverBehavior,
     neutralFillInputRestBehavior,
+    neutralFocusBehavior,
     neutralForegroundRestBehavior,
+    neutralOutlineActiveBehavior,
     neutralOutlineHoverBehavior,
     neutralOutlineRestBehavior,
     forcedColorsStylesheetBehavior(

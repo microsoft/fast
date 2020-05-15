@@ -8,9 +8,12 @@ import {
 } from "@microsoft/fast-foundation";
 import {
     heightNumber,
+    neutralFillActiveBehavior,
     neutralFillInputHoverBehavior,
     neutralFillInputRestBehavior,
+    neutralFocusBehavior,
     neutralForegroundRestBehavior,
+    neutralOutlineActiveBehavior,
     neutralOutlineHoverBehavior,
     neutralOutlineRestBehavior,
 } from "../styles";
@@ -72,9 +75,14 @@ export const RadioStyles = css`
         pointer-events: none;
     }
 
-    .control:hover {
+    :host(:enabled) .control:hover{
         background: var(--neutral-fill-input-hover);
         border-color: var(--neutral-outline-hover);
+    }
+
+    :host(:enabled) .control:active {
+        background: var(--neutral-fill-input-active);
+        border-color: var(--neutral-outline-active);
     }
 
     :host(:${focusVisible}) .control {
@@ -97,9 +105,12 @@ export const RadioStyles = css`
         opacity: var(--disabled-opacity);
     }
 `.withBehaviors(
+    neutralFillActiveBehavior,
     neutralFillInputHoverBehavior,
     neutralFillInputRestBehavior,
+    neutralFocusBehavior,
     neutralForegroundRestBehavior,
+    neutralOutlineActiveBehavior,
     neutralOutlineHoverBehavior,
     neutralOutlineRestBehavior,
     forcedColorsStylesheetBehavior(

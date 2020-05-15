@@ -39,8 +39,7 @@ export const TextAreaStyles = css`
         } font-size: 14px;
         font-weight: 400px;
         line-height: 20px;
-        padding-top: calc(var(--design-unit) * 1.5);
-        padding-bottom: calc(var(--design-unit) * 1.5);
+        padding: calc(var(--design-unit) * 1.5px) calc(var(--design-unit) * 2px + 1px);
         max-width: 100%;
         resize: none;
     }

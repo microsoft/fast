@@ -41,7 +41,6 @@ export const TextFieldStyles = css`
         -webkit-appearance: none;
         background: transparent;
         border: 0;
-        padding: 0;
         height: calc(100% - 4px);
         margin-top: auto;
         margin-bottom: auto;
@@ -97,7 +96,7 @@ export const TextFieldStyles = css`
         border-color: var(--neutral-outline-hover);
     }
 
-    :host(:focus-within) .root {
+    :host(:focus-within:not(.disabled)) .root {
         border-color: var(--neutral-focus);
         box-shadow: 0 0 0 1px var(--neutral-focus) inset;
     }

@@ -7,12 +7,15 @@ import {
     forcedColorsStylesheetBehavior,
 } from "@microsoft/fast-foundation";
 import {
+    accentFillActiveBehavior,
+    accentFillHoverBehavior,
     accentFillRestBehavior,
     accentForegroundCutRestBehavior,
     heightNumber,
     neutralFillInputActiveBehavior,
     neutralFillInputHoverBehavior,
     neutralFillInputRestBehavior,
+    neutralFocusBehavior,
     neutralForegroundRestBehavior,
     neutralOutlineActiveBehavior,
     neutralOutlineHoverBehavior,
@@ -58,16 +61,13 @@ export const SwitchStyles = css`
         border: calc(var(--outline-width) * 1px) solid var(--neutral-outline-rest);
     }
 
-    .switch:hover {
+    :host(:enabled) .switch:hover {
+        background: var(--neutral-fill-input-hover);
+        border-color: var(--neutral-outline-hover);
         cursor: pointer;
     }
 
-    .switch:hover {
-        background: var(--neutral-fill-input-hover);
-        border-color: var(--neutral-outline-hover);
-    }
-
-    .switch:active {
+    :host(:enabled) .switch:active {
         background: var(--neutral-fill-input-active);
         border-color: var(--neutral-outline-active);
     }
@@ -120,6 +120,19 @@ export const SwitchStyles = css`
         background: var(--accent-fill-rest);
     }
 
+    :host(.checked:enabled) .switch:hover {
+        background: var(--accent-fill-hover);
+    }
+
+    :host(.checked:enabled) .switch:active {
+        background: var(--accent-fill-active);
+    }
+
+    :host(.checked:${focusVisible}:enabled) .switch {
+        box-shadow: 0 0 0 1px var(--neutral-focus) inset;
+        border-color: var(--neutral-focus);
+    }
+
     .unchecked-message {
         display: block;
     }
@@ -136,11 +149,14 @@ export const SwitchStyles = css`
         display: block;
     }
 `.withBehaviors(
+    accentFillActiveBehavior,
+    accentFillHoverBehavior,
     accentFillRestBehavior,
     accentForegroundCutRestBehavior,
     neutralFillInputActiveBehavior,
     neutralFillInputHoverBehavior,
     neutralFillInputRestBehavior,
+    neutralFocusBehavior,
     neutralForegroundRestBehavior,
     neutralOutlineActiveBehavior,
     neutralOutlineHoverBehavior,

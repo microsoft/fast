@@ -15,6 +15,7 @@ import {
     neutralFillInputActiveBehavior,
     neutralFillInputHoverBehavior,
     neutralFillInputRestBehavior,
+    neutralFocusBehavior,
     neutralForegroundRestBehavior,
     neutralOutlineActiveBehavior,
     neutralOutlineHoverBehavior,
@@ -83,13 +84,13 @@ export const CheckboxStyles = css`
         opacity: 0;
     }
 
-    .control:hover {
+    :host(:enabled) .control:hover {
         background: var(--neutral-fill-input-hover);
         border-color: var(--neutral-outline-hover);
     }
 
-    .control:active {
-        background: var(--neutral-fill-input-active);
+    :host(:enabled) .control:active {
+       background: var(--neutral-fill-input-active);
         border-color: var(--neutral-outline-active);
     }
 
@@ -103,17 +104,17 @@ export const CheckboxStyles = css`
         border: calc(var(--outline-width) * 1px) solid var(--accent-fill-rest);
     }
 
-    :host(.checked) .control:hover {
+    :host(.checked:enabled) .control:hover {
         background: var(--accent-fill-hover);
         border: calc(var(--outline-width) * 1px) solid var(--accent-fill-hover);
     }
 
-    :host(.checked) .control:active {
+    :host(.checked:enabled) .control:active {
         background: var(--accent-fill-active);
         border: calc(var(--outline-width) * 1px) solid var(--accent-fill-active);
     }
 
-    :host(.checked:${focusVisible}) .control {
+    :host(.checked:${focusVisible}:enabled) .control {
         box-shadow: 0 0 0 1px var(--neutral-focus) inset;
         border-color: var(--neutral-focus);
     }
@@ -142,6 +143,7 @@ export const CheckboxStyles = css`
     neutralFillInputActiveBehavior,
     neutralFillInputHoverBehavior,
     neutralFillInputRestBehavior,
+    neutralFocusBehavior,
     neutralForegroundRestBehavior,
     neutralOutlineActiveBehavior,
     neutralOutlineHoverBehavior,

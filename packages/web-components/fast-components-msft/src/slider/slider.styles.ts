@@ -8,6 +8,7 @@ import {
 } from "@microsoft/fast-foundation";
 import {
     heightNumber,
+    neutralFocusBehavior,
     neutralForegroundActiveBehavior,
     neutralForegroundHoverBehavior,
     neutralForegroundRestBehavior,
@@ -25,7 +26,6 @@ export const SliderStyles = css`
         --thumb-translate: calc(var(--thumb-size) * 0.5);
         --track-overhang: calc((var(--design-unit) / 2) * -1);
         align-items: center;
-        outline: none;
         width: 100%;
         margin: calc(var(--design-unit) * 1px) 0;
         user-select: none;
@@ -46,6 +46,9 @@ export const SliderStyles = css`
         display: grid;
         height: 100%;
         grid-template-columns: calc(var(--thumb-size) * 1px) 1fr;
+    }
+    :host(:${focusVisible}) .thumb-cursor {
+        box-shadow: 0 0 0 2px var(--neutral-focus) inset;
     }
     .thumb-container {
         position: absolute;
@@ -110,6 +113,7 @@ export const SliderStyles = css`
         opacity: var(--disabled-opacity);
     }
 `.withBehaviors(
+    neutralFocusBehavior,
     neutralForegroundActiveBehavior,
     neutralForegroundHoverBehavior,
     neutralForegroundRestBehavior,
