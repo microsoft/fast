@@ -1,14 +1,17 @@
 import { css } from "@microsoft/fast-element";
-import { forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
+import {
+    disabledCursor,
+    display,
+    focusVisible,
+    forcedColorsStylesheetBehavior,
+} from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
-import { disabledCursor, display } from "../styles";
-import { focusVisible } from "../styles/focus";
-import { heightNumber } from "../styles/size";
 import {
     accentFillActiveBehavior,
     accentFillHoverBehavior,
     accentFillRestBehavior,
     accentForegroundCutRestBehavior,
+    heightNumber,
     neutralFillInputActiveBehavior,
     neutralFillInputHoverBehavior,
     neutralFillInputRestBehavior,
@@ -16,7 +19,7 @@ import {
     neutralOutlineActiveBehavior,
     neutralOutlineHoverBehavior,
     neutralOutlineRestBehavior,
-} from "../styles/recipes";
+} from "../styles";
 
 export const CheckboxStyles = css`
     ${display("inline-flex")} :host {

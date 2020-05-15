@@ -1,6 +1,6 @@
 import { css } from "@microsoft/fast-element";
+import { display } from "@microsoft/fast-foundation";
 import {
-    display,
     elevation,
     neutralDividerRestBehavior,
     neutralLayerFloatingBehavior,

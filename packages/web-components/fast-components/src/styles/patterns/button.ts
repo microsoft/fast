@@ -1,6 +1,5 @@
 import { css } from "@microsoft/fast-element";
-import { display } from "../display";
-import { focusVisible } from "../focus";
+import { display, focusVisible } from "@microsoft/fast-foundation";
 import { heightNumber } from "../size";
 
 export const BaseButtonStyles = css`

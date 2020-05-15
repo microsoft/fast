@@ -1,0 +1,48 @@
+{
+    "name": "@microsoft/fast-components-msft",
+    "description": "A library of Web Components with Microsoft styles",
+    "sideEffects": false,
+    "version": "0.0.0",
+    "author": {
+      "name": "Microsoft",
+      "url": "https://discord.gg/FcSNfg4"
+    },
+    "license": "MIT",
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/Microsoft/fast-dna.git"
+    },
+    "bugs": {
+      "url": "https://github.com/Microsoft/fast-dna/issues/new/choose"
+    },
+    "main": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "scripts": {
+      "build": "tsc -p ./tsconfig.build.json",
+      "clean:dist": "node ../../../build/clean.js dist",
+      "prepare": "yarn clean:dist && yarn build",
+      "prettier": "prettier --config ../../../.prettierrc --write \"**/*.ts\"",
+      "prettier:diff": "prettier --config ../../../.prettierrc \"**/*.ts\" --list-different",
+      "eslint": "eslint . --ext .ts",
+      "eslint:fix": "eslint . --ext .ts --fix",
+      "start": "start-storybook -p 6006",
+      "test": "yarn build-storybook && yarn eslint",
+      "build-storybook": "build-storybook"
+    },
+    "devDependencies": {
+      "@babel/core": "^7.8.4",
+      "@microsoft/eslint-config-fast-dna": "^1.1.1",
+      "@storybook/cli": "^5.3.13",
+      "@storybook/html": "^5.3.13",
+      "circular-dependency-plugin": "^5.2.0",
+      "prettier": "2.0.2",
+      "ts-loader": "^6.2.1",
+      "typescript": "^3.7.5"
+    },
+    "dependencies": {
+      "@microsoft/fast-components": "^0.10.1",
+      "@microsoft/fast-components-styles-msft": "4.28.9",
+      "@microsoft/fast-element": "^0.8.1"
+    }
+  }
+  

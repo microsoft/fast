@@ -4583,7 +4583,7 @@
   dependencies:
     core-js "^3.0.1"
 
-"@storybook/cli@^5.1.3":
+"@storybook/cli@^5.1.3", "@storybook/cli@^5.3.13":
   version "5.3.18"
   resolved "https://registry.yarnpkg.com/@storybook/cli/-/cli-5.3.18.tgz#adba3ed36df35b344b3e48cdb2de0c4400b18852"
   integrity sha512-FiAWpjJqm417CZjLUpn8tw0CrPwk/fx3L7ciL9bYkAkCQNOcau5No02vrpVSZiZPgZ7P7q2gR249RzMu1DRVTA==
@@ -4911,7 +4911,7 @@
   dependencies:
     lodash "^4.17.15"
 
-"@storybook/html@^5.1.3":
+"@storybook/html@^5.1.3", "@storybook/html@^5.3.13":
   version "5.3.18"
   resolved "https://registry.yarnpkg.com/@storybook/html/-/html-5.3.18.tgz#7206cfb6d11c4dde692b3923aa4eb9b3518434dd"
   integrity sha512-u5x3VxFz08UJaBJcsE7ibijCM+pinHzi0Lz9pBAkF/NeBHkgK2c/01cMQIAw/B23uDKFlfnh3DiboHDd18NUAg==

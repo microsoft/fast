@@ -1,8 +1,7 @@
 import { css } from "@microsoft/fast-element";
-import { forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
+import { display, forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
-import { display } from "../styles";
-import { accentFillRestBehavior, neutralForegroundRestBehavior } from "../styles/recipes";
+import { accentFillRestBehavior, neutralForegroundRestBehavior } from "../styles";
 
 export const TabsStyles = css`
     ${display("grid")} :host {
