@@ -1,4 +1,4 @@
-import { FastElement, observable } from "@microsoft/fast-element";
+import { FASTElement, observable } from "@microsoft/fast-element";
 import {
     isHTMLElement,
     keyCodeHome,
@@ -6,7 +6,7 @@ import {
     getDisplayedNodes,
 } from "@microsoft/fast-web-utilities";
 
-export class TreeView extends FastElement {
+export class TreeView extends FASTElement {
     public treeView: HTMLElement;
 
     @observable
@@ -49,8 +49,8 @@ export class TreeView extends FastElement {
             const toBeFocused: HTMLElement | null = !!lastFocused
                 ? lastFocused
                 : !!selectedChild
-                    ? selectedChild
-                    : root.querySelector("[role='treeitem']");
+                ? selectedChild
+                : root.querySelector("[role='treeitem']");
 
             if (toBeFocused && isHTMLElement(toBeFocused)) {
                 toBeFocused.focus();

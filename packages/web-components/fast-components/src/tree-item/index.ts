@@ -1,6 +1,6 @@
 import { customElement } from "@microsoft/fast-element";
-import { TreeItem } from "./tree-item";
-import { TreeItemTemplate as template } from "./tree-item.template";
+import { TreeItem } from "@microsoft/fast-foundation";
+import { TreeItemTemplate as template } from "@microsoft/fast-foundation";
 import { TreeItemStyles as styles } from "./tree-item.styles";
 
 @customElement({
@@ -12,6 +12,3 @@ import { TreeItemStyles as styles } from "./tree-item.styles";
     },
 })
 export class FASTTreeItem extends TreeItem {}
-export * from "./tree-item.template";
-export * from "./tree-item.styles";
-export * from "./tree-item";

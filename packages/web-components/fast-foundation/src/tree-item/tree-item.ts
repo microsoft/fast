@@ -1,4 +1,4 @@
-import { attr, FastElement, observable } from "@microsoft/fast-element";
+import { attr, FASTElement, observable } from "@microsoft/fast-element";
 import {
     getDisplayedNodes,
     isHTMLElement,
@@ -10,7 +10,7 @@ import {
     keyCodeSpace,
 } from "@microsoft/fast-web-utilities";
 
-export class TreeItem extends FastElement {
+export class TreeItem extends FASTElement {
     @attr
     public expanded: boolean;
     public expandedChanged(): void {
@@ -145,7 +145,6 @@ export class TreeItem extends FastElement {
     };
 
     private handleArrowLeft(): void {
-        console.log("got it!");
         if (this.expanded) {
             this.setExpanded(false);
         } else if (isHTMLElement(this.treeItem.parentElement)) {
