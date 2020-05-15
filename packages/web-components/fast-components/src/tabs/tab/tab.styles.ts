@@ -27,12 +27,8 @@ export const TabStyles = css`
     ${display("inline-flex")} :host {
         box-sizing: border-box;
         font-family: var(--body-font);
-        ${
-            /* Font size, weight, and line height are temporary - 
-            replace when adaptive typography is figured out */ ""
-        } font-size: 12px;
-        font-weight: 400;
-        line-height: 18px;
+        font-size: var(--type-ramp-base-font-size);
+        line-height: var(--type-ramp-base-line-height);
         height: calc(${heightNumber} * 1px);
         padding: calc(var(--design-unit) * 5px) calc(var(--design-unit) * 4px);
         color: var(--neutral-foreground-hint);
@@ -55,21 +51,18 @@ export const TabStyles = css`
     }
 
     :host([aria-selected="true"]) {
-        z-index: 2;
         background: var(--neutral-fill-rest);
         color: var(--accent-foreground-rest);
         fill: var(--accent-fill-rest);
     }
 
     :host([aria-selected="true"]:hover) {
-        z-index: 2;
         background: var(--neutral-fill-hover);
         color: var(--accent-foreground-hover);
         fill: var(--accent-fill-hover);
     }
 
     :host([aria-selected="true"]:active) {
-        z-index: 2;
         background: var(--neutral-fill-active);
         color: var(--accent-foreground-active);
         fill: var(--accent-fill-active);

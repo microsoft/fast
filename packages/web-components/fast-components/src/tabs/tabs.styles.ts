@@ -1,11 +1,16 @@
 import { css } from "@microsoft/fast-element";
 import { display, forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
-import { accentFillRestBehavior, neutralForegroundRestBehavior } from "../styles";
+import {
+    accentFillRestBehavior,
+    heightNumber,
+    neutralForegroundRestBehavior,
+} from "../styles";
 
 export const TabsStyles = css`
     ${display("grid")} :host {
         box-sizing: border-box;
+        font-family: var(--body-font);
         font-size: var(--type-ramp-base-font-size);
         line-height: var(--type-ramp-base-line-height);
         color: var(--neutral-foreground-rest);
@@ -20,7 +25,7 @@ export const TabsStyles = css`
         position: relative;
         width: max-content;
         align-self: end;
-        padding: 16px 16px 0;
+        padding: calc(var(--design-unit) * 4px) calc(var(--design-unit) * 4px) 0;
         box-sizing: border-box;
     }
 
@@ -70,7 +75,9 @@ export const TabsStyles = css`
         width: max-content;
         justify-self: end;
         width: 100%;
-        padding: 36px 16px 36px 0;
+        padding: calc((${heightNumber} - var(--design-unit)) * 1px)
+            calc(var(--design-unit) * 4px)
+            calc((${heightNumber} - var(--design-unit)) * 1px) 0;
     }
 
     :host(.vertical) .tabpanel {
