@@ -1,21 +1,24 @@
 import { css } from "@microsoft/fast-element";
-import { forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
-import { disabledCursor, display } from "../styles";
-import { focusVisible } from "../styles/focus";
-import { heightNumber } from "../styles/size";
+import {
+    disabledCursor,
+    display,
+    focusVisible,
+    forcedColorsStylesheetBehavior,
+} from "@microsoft/fast-foundation";
 import {
     accentFillActiveBehavior,
     accentFillHoverBehavior,
     accentFillRestBehavior,
-    neutralFillActiveBehavior,
+    heightNumber,
     neutralFillHoverBehavior,
+    neutralFillInputActiveBehavior,
     neutralFillInputHoverBehavior,
     neutralFillInputRestBehavior,
     neutralFillRestBehavior,
     neutralFocusBehavior,
     neutralForegroundRestBehavior,
     neutralOutlineRestBehavior,
-} from "../styles/recipes";
+} from "../styles";
 
 export const TextAreaStyles = css`
     ${display("inline-block")} :host {
@@ -114,7 +117,7 @@ export const TextAreaStyles = css`
     accentFillHoverBehavior,
     accentFillRestBehavior,
     neutralFillHoverBehavior,
-    neutralFillActiveBehavior,
+    neutralFillInputActiveBehavior,
     neutralFillInputHoverBehavior,
     neutralFillInputRestBehavior,
     neutralFillRestBehavior,
