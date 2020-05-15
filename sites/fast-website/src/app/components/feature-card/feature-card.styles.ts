@@ -4,7 +4,8 @@ import { display, neutralForegroundRestBehavior } from "@microsoft/fast-componen
 export const FeatureCardStyles = css`
     ${display("grid")} :host {
         contain: layout;
-        grid-template-columns: 1fr 2fr;
+        grid-template-columns: repeat(3, minmax(150px, 1fr));
+        grid-template-areas: "header main main";
         color: inherit;
         font-family: var(--text-font);
         box-sizing: border-box;
@@ -35,15 +36,25 @@ export const FeatureCardStyles = css`
         color: var(--accent-fill-rest);
     }
 
+    @media screen and (max-width: 540px) {
+        ${display("grid")} :host {
+            grid-template-columns: repeat(3, minmax(50px, 1fr));
+            grid-template-areas:
+                "header header header"
+                "main main main";
+        }
+    }
+
     header {
-        flex: 1;
+        grid-area: header;
+        padding-bottom: 10px;
     }
 
     main {
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        flex: 2;
+        grid-area: main;
     }
 
     ::slotted(h4) {
