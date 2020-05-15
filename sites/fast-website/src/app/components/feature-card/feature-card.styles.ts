@@ -7,7 +7,6 @@ export const FeatureCardStyles = css`
         grid-template-columns: repeat(3, minmax(150px, 1fr));
         grid-template-areas: "header main main";
         color: inherit;
-        font-family: var(--text-font);
         box-sizing: border-box;
         padding: 20px;
         box-shadow: unset;
