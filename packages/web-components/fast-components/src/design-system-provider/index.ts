@@ -1,4 +1,4 @@
-import { attr, nullableNumberConverter, observable } from "@microsoft/fast-element";
+import { nullableNumberConverter } from "@microsoft/fast-element";
 import {
     designSystemProperty,
     designSystemProvider,
@@ -7,15 +7,6 @@ import {
 } from "@microsoft/fast-foundation";
 import { FASTDesignSystem, fastDesignSystemDefaults } from "../fast-design-system";
 import { DesignSystemProviderStyles as styles } from "./design-system-provider.styles";
-
-const fromView: { mode: "fromView" } = {
-    mode: "fromView",
-};
-
-const fromViewNumber: { mode: "fromView"; converter: typeof nullableNumberConverter } = {
-    ...fromView,
-    converter: nullableNumberConverter,
-};
 
 @designSystemProvider({
     name: "fast-design-system-provider",
@@ -67,10 +58,6 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
     })
     public designUnit: number;
 
-    @attr({
-        attribute: "base-height-multiplier",
-        ...fromViewNumber,
-    })
     @designSystemProperty({
         attribute: "base-height-multiplier",
         default: fastDesignSystemDefaults.baseHeightMultiplier,
