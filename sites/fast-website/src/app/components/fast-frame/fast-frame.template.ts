@@ -80,8 +80,8 @@ export const FastFrameTemplate = html<FastFrame>`
                             Ultrices nibh nunc vestibulum fames. At lacus nunc lacus eget
                             neque.
                         </p>
-                        <fast-radio-group name="background color" @change="${(x, c) =>
-                            x.backgroundChangeHandler(c.event as MouseEvent)}>
+                        <fast-radio-group value="test" name="background color" @change="${(x, c) =>
+                            x.backgroundChangeHandler(c.event as MouseEvent)}">
                             <label slot="label">Background color</label>
                             ${repeat(
                                 x => x.backgroundPalette,
@@ -93,8 +93,8 @@ export const FastFrameTemplate = html<FastFrame>`
                                 `
                             )}
                         </fast-radio-group>
-                        <fast-radio-group name="accent color" @change="${(x, c) =>
-                            x.accentChangeHandler(c.event as MouseEvent)}>
+                        <fast-radio-group value="test" name="accent color" @change="${(x, c) =>
+                            x.accentChangeHandler(c.event as MouseEvent)}">
                             <label slot="label">Accent color</label>
                             ${repeat(
                                 x => x.accentPalette,

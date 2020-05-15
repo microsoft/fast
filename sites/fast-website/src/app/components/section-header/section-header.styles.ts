@@ -1,4 +1,5 @@
-import { display, neutralForegroundRestBehavior } from "@microsoft/fast-components";
+import { neutralForegroundRestBehavior } from "@microsoft/fast-components";
+import { display } from "@microsoft/fast-foundation";
 import { css } from "@microsoft/fast-element";
 
 export const SectionHeaderStyles = css`

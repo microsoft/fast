@@ -1,6 +1,4 @@
 import { FASTElement, attr, observable } from "@microsoft/fast-element";
-import { FASTRadio } from "@microsoft/fast-components";
-import { SiteColorSwatch } from "../color-swatch";
 
 export class FastFrame extends FASTElement {
     @attr({ attribute: "accent-color" })

@@ -1,9 +1,9 @@
 import { ColorRGBA64, parseColor } from "@microsoft/fast-colors";
+import { FASTDesignSystemProvider } from "@microsoft/fast-components";
 import {
     designSystemProperty,
-    designSystemProvider,
-    FASTDesignSystemProvider,
-} from "@microsoft/fast-components";
+    designSystemProvider
+} from "@microsoft/fast-foundation";
 import { createColorPalette } from "@microsoft/fast-components-styles-msft";
 import { observable } from "@microsoft/fast-element";
 
