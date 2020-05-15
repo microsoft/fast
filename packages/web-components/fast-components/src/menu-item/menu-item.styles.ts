@@ -1,11 +1,12 @@
 import { css } from "@microsoft/fast-element";
 import {
+    accentFillActiveBehavior,
+    accentFillHoverBehavior,
+    accentForegroundCutRestBehavior,
     disabledCursor,
     display,
     focusVisible,
     heightNumber,
-    neutralFillStealthActiveBehavior,
-    neutralFillStealthHoverBehavior,
     neutralFillStealthRestBehavior,
     neutralFocusBehavior,
     neutralForegroundRestBehavior,
@@ -35,19 +36,35 @@ export const MenuItemStyles = css`
 
     :host(:${focusVisible}) {
         border-color: var(--neutral-focus);
+        background: var(--accent-fill-hover);
+        color: var(--accent-foreground-cut-rest);
     }
 
     :host(:hover) {
-        background: var(--neutral-fill-stealth-hover);
+        background: var(--accent-fill-hover);
+        color: var(--accent-foreground-cut-rest);
     }
 
     :host(:active) {
-        background: var(--neutral-fill-stealth-active);
+        background: var(--accent-fill-active);
+        color: var(--accent-foreground-cut-rest);
     }
 
     :host(.disabled) {
         cursor: ${disabledCursor};
         opacity: var(--disabled-opacity);
+    }
+
+    :host(.disabled:hover) {
+        color: var(--neutral-foreground-rest);
+        fill: var(--neutral-foreground-rest);
+        background: var(--neutral-fill-stealth-rest)
+    }
+
+    :host(.disabled:hover) .start,
+    :host(.disabled:hover) .end,
+    :host(.disabled:hover)::slotted(svg) {
+        fill: var(--neutral-foreground-rest);
     }
 
     .content {
@@ -66,9 +83,22 @@ export const MenuItemStyles = css`
         } width: 16px;
         height: 16px;
     }
+
+    :host(:hover) .start,
+    :host(:hover) .end,
+    :host(:hover)::slotted(svg){
+        fill: var(--accent-foreground-cut-rest);
+    }
+
+    :host(:active) .start,
+    :host(:active) .end,
+    :host(:active)::slotted(svg) {
+        fill: var(--accent-foreground-cut-rest);
+    }
 `.withBehaviors(
-    neutralFillStealthActiveBehavior,
-    neutralFillStealthHoverBehavior,
+    accentFillActiveBehavior,
+    accentFillHoverBehavior,
+    accentForegroundCutRestBehavior,
     neutralFillStealthRestBehavior,
     neutralFocusBehavior,
     neutralForegroundRestBehavior

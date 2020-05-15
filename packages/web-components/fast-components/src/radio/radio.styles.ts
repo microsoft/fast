@@ -5,9 +5,15 @@ import { disabledCursor, display } from "../styles";
 import { focusVisible } from "../styles/focus";
 import { heightNumber } from "../styles/size";
 import {
+    accentFillActiveBehavior,
+    accentFillHoverBehavior,
+    accentFillRestBehavior,
+    accentForegroundCutRestBehavior,
+    neutralFillInputActiveBehavior,
     neutralFillInputHoverBehavior,
     neutralFillInputRestBehavior,
     neutralForegroundRestBehavior,
+    neutralOutlineActiveBehavior,
     neutralOutlineHoverBehavior,
     neutralOutlineRestBehavior,
 } from "../styles/recipes";
@@ -31,10 +37,10 @@ export const RadioStyles = css`
 
     .control {
         position: relative;
-        width: calc(var(--input-size) * 1px);
-        height: calc(var(--input-size) * 1px);
+        width: calc((${heightNumber} / 2 + var(--design-unit)) * 1px);
+        height: calc((${heightNumber} / 2 + var(--design-unit)) * 1px);
         box-sizing: border-box;
-        border-radius: 50%;
+        border-radius: calc(var(--corner-radius) * 1px);
         border: calc(var(--outline-width) * 1px) solid var(--neutral-outline-rest);
         background: var(--neutral-fill-input-rest);
         outline: none;
@@ -64,21 +70,46 @@ export const RadioStyles = css`
         left: 5px;
         right: 5px;
         bottom: 5px;
-        border-radius: 50%;
+        border-radius: calc(var(--corner-radius) * 1px);
         display: inline-block;
         flex-shrink: 0;
-        background: var(--neutral-foreground-rest);
-        fill: var(--neutral-foreground-rest);
+        background: var(--accent-foreground-cut-rest);
+        fill: var(--accent-foreground-cut-rest);
         opacity: 0;
         pointer-events: none;
     }
 
-    .control:hover {
+    .control:hover{
         background: var(--neutral-fill-input-hover);
         border-color: var(--neutral-outline-hover);
     }
 
+    .control:active {
+        background: var(--neutral-fill-input-active);
+        border-color: var(--neutral-outline-active);
+    }
+
     :host(:${focusVisible}) .control {
+        box-shadow: 0 0 0 1px var(--neutral-focus) inset;
+        border-color: var(--neutral-focus);
+    }
+
+    :host(.checked) .control {
+        background: var(--accent-fill-rest);
+        border: calc(var(--outline-width) * 1px) solid var(--accent-fill-rest);
+    }
+
+    :host(.checked) .control:hover {
+        background: var(--accent-fill-hover);
+        border: calc(var(--outline-width) * 1px) solid var(--accent-fill-hover);
+    }
+
+    :host(.checked) .control:active {
+        background: var(--accent-fill-active);
+        border: calc(var(--outline-width) * 1px) solid var(--accent-fill-active);
+    }
+
+    :host(.checked:${focusVisible}) .control {
         box-shadow: 0 0 0 1px var(--neutral-focus) inset;
         border-color: var(--neutral-focus);
     }
@@ -98,9 +129,15 @@ export const RadioStyles = css`
         opacity: var(--disabled-opacity);
     }
 `.withBehaviors(
+    accentFillActiveBehavior,
+    accentFillHoverBehavior,
+    accentFillRestBehavior,
+    accentForegroundCutRestBehavior,
+    neutralFillInputActiveBehavior,
     neutralFillInputHoverBehavior,
     neutralFillInputRestBehavior,
     neutralForegroundRestBehavior,
+    neutralOutlineActiveBehavior,
     neutralOutlineHoverBehavior,
     neutralOutlineRestBehavior,
     forcedColorsStylesheetBehavior(

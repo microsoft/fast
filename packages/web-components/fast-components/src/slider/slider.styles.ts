@@ -18,7 +18,8 @@ export const SliderStyles = css`
     }
 
     ${display("inline-grid")} :host {
-        --thumb-size: calc(${heightNumber} * 0.5);
+        --track-size: calc(var(--design-unit) * 2);
+        --thumb-size: calc(${heightNumber} * 0.5 - var(--design-unit));
         --thumb-translate: calc(var(--thumb-size) * 0.5);
         --track-overhang: calc((var(--design-unit) / 2) * -1);
         align-items: center;
@@ -49,13 +50,15 @@ export const SliderStyles = css`
         height: calc(var(--thumb-size) * 1px);
         width: calc(var(--thumb-size) * 1px);
         transition: "all 0.2s ease";
+        color: var(--neutral-foreground-rest);
+        fill: var(--neutral-foreground-rest);
     }
     .thumb-cursor {
         border: none;
         width: calc(var(--thumb-size) * 1px);
         height: calc(var(--thumb-size) * 1px);
         background: var(--neutral-foreground-rest);
-        border-radius: 50%;
+        border-radius: calc(var(--corner-radius) * 1px);
     }
     .thumb-cursor:hover {
         background: var(--neutral-foreground-hover);
@@ -77,20 +80,21 @@ export const SliderStyles = css`
         right: calc(var(--track-overhang) * 1px);
         left: calc(var(--track-overhang) * 1px);
         align-self: start;
-        margin-top: 6px;
-        height: 4px;
+        margin-top: calc(var(--design-unit) * 1px);
+        height: calc(var(--track-size) * 1px);
     }
     :host(.vertical) .track {
         top: calc(var(--track-overhang) * 1px);
         bottom: calc(var(--track-overhang) * 1px);
         justify-self: start;
-        margin-left: 6px;
-        width: 4px;
+        margin-left: calc(var(--design-unit) * 1px);
+        width: calc(var(--track-size) * 1px);
         height: 100%;
     }
     .track {
         background: var(--neutral-outline-rest);
         position: absolute;
+        border-radius: calc(var(--corner-radius) * 1px);
     }
     :host(.vertical) {
         height: 100%;

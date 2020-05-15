@@ -5,13 +5,16 @@ import { disabledCursor, display } from "../styles";
 import { focusVisible } from "../styles/focus";
 import { heightNumber } from "../styles/size";
 import {
+    accentFillActiveBehavior,
+    accentFillHoverBehavior,
+    accentFillRestBehavior,
+    neutralFillActiveBehavior,
     neutralFillHoverBehavior,
     neutralFillInputHoverBehavior,
     neutralFillInputRestBehavior,
     neutralFillRestBehavior,
     neutralFocusBehavior,
     neutralForegroundRestBehavior,
-    neutralOutlineHoverBehavior,
     neutralOutlineRestBehavior,
 } from "../styles/recipes";
 
@@ -30,7 +33,7 @@ export const TextFieldStyles = css`
         color: var(--neutral-foreground-rest);
         background: var(--neutral-fill-input-rest);
         border-radius: calc(var(--corner-radius) * 1px);
-        border: calc(var(--outline-width) * 1px) solid var(--neutral-outline-rest);
+        border: calc(var(--outline-width) * 1px) solid var(--accent-fill-rest);
         height: calc(${heightNumber} * 1px);
     }
 
@@ -90,7 +93,12 @@ export const TextFieldStyles = css`
 
     :host(:hover:not(.disabled)) .root {
         background: var(--neutral-fill-input-hover);
-        border-color: var(--neutral-outline-hover);
+        border-color: var(--accent-fill-hover);
+    }
+
+    :host(:active:not(.disabled)) .root {
+        background: var(--neutral-fill-input-hover);
+        border-color: var(--accent-fill-active);
     }
 
     :host(:focus-within) .root {
@@ -100,12 +108,10 @@ export const TextFieldStyles = css`
 
     :host(.filled) .root {
         background: var(--neutral-fill-rest);
-        border-color: transparent;
     }
 
     :host(.filled:hover:not(.disabled)) .root {
         background: var(--neutral-fill-hover);
-        border-color: transparent;
     }
 
     :host(.disabled) .label,
@@ -118,14 +124,21 @@ export const TextFieldStyles = css`
     :host(.disabled) {
         opacity: var(--disabled-opacity);
     }
+
+    :host([disabled]) .control {
+        border-color: var(--neutral-outline-rest);
+    }
 `.withBehaviors(
+    accentFillActiveBehavior,
+    accentFillHoverBehavior,
+    accentFillRestBehavior,
     neutralFillHoverBehavior,
+    neutralFillActiveBehavior,
     neutralFillInputHoverBehavior,
     neutralFillInputRestBehavior,
     neutralFillRestBehavior,
     neutralFocusBehavior,
     neutralForegroundRestBehavior,
-    neutralOutlineHoverBehavior,
     neutralOutlineRestBehavior,
     forcedColorsStylesheetBehavior(
         css`
