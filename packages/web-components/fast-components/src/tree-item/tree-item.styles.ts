@@ -86,6 +86,19 @@ export const TreeItemStyles = css`
         fill: var(--neutral-foreground-rest);
     }
 
+    .leaf-start-gap {
+        margin-left: 16px;
+    }
+    .expand-collapse-glyph-hidden {
+        display: none;
+        ${/* Glyph size is temporary - 
+            replace when glyph-size var is added */ ""} width: 16px;
+        height: 16px;
+        pointer-events: none;
+        fill: var(--neutral-foreground-rest);
+        content: "";
+    }
+
     .before-content,
     .after-content {
         ${/* Glyph size is temporary - 
@@ -134,8 +147,8 @@ export const TreeItemStyles = css`
     }
 
     :host(.nested) .expand-collapse-button {
-        position: absolute;
-        ${/* value needs to be localized */ ""} left: var(--expand-collapse-button-nested-width, calc(var(--height-number) * -1px));
+        ${/*position: absolute;*/ ""}
+        ${/* value needs to be localized   left: var(--expand-collapse-button-nested-width, calc(var(--height-number) * -1px)); */ ""}
     }
 
     ::slotted(fast-tree-item) {
