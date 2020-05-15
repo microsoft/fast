@@ -17,7 +17,7 @@ export const BaseButtonStyles = css`
         display: inline-flex;
         justify-content: center;
         align-items: center;
-        padding: 0 calc((6 + (var(--design-unit) * 2 * var(--density))) * 1px);
+        padding: 0 calc((10 + (var(--design-unit) * 2 * var(--density))) * 1px);
         height: calc(${heightNumber} * 1px);
         min-width: calc(${heightNumber} * 1px);
         white-space: nowrap;
@@ -167,15 +167,15 @@ export const LightweightButtonStyles = css`
 export const OutlineButtonStyles = css`
     :host(.outline) .control {
         background: transparent;
-        border-color: var(--neutral-outline-rest);
+        border-color: var(--accent-fill-rest);
     }
 
     :host(.outline) .control:hover {
-        border-color: var(--neutral-outline-hover);
+        border-color: var(--accent-fill-hover);
     }
 
     :host(.outline) .control:active {
-        border-color: var(--neutral-outline-active);
+        border-color: var(--accent-fill-active);
     }
 `;
 
