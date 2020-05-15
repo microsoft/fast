@@ -7,12 +7,15 @@ import {
     forcedColorsStylesheetBehavior,
 } from "@microsoft/fast-foundation";
 import {
+    accentFillActiveBehavior,
+    accentFillHoverBehavior,
     accentFillRestBehavior,
     accentForegroundCutRestBehavior,
     heightNumber,
     neutralFillInputActiveBehavior,
     neutralFillInputHoverBehavior,
     neutralFillInputRestBehavior,
+    neutralFocusBehavior,
     neutralForegroundRestBehavior,
     neutralOutlineActiveBehavior,
     neutralOutlineHoverBehavior,
@@ -27,6 +30,7 @@ export const SwitchStyles = css`
     ${display("inline-flex")} :host {
         align-items: center;
         outline: none;
+        font-family: var(--body-font);
         margin: calc(var(--design-unit) * 1px) 0;
         ${
             /*
@@ -58,22 +62,19 @@ export const SwitchStyles = css`
         border: calc(var(--outline-width) * 1px) solid var(--neutral-outline-rest);
     }
 
-    .switch:hover {
+    :host(:enabled) .switch:hover {
+        background: var(--neutral-fill-input-hover);
+        border-color: var(--neutral-outline-hover);
         cursor: pointer;
     }
 
-    .switch:hover {
-        background: var(--neutral-fill-input-hover);
-        border-color: var(--neutral-outline-hover);
-    }
-
-    .switch:active {
+    :host(:enabled) .switch:active {
         background: var(--neutral-fill-input-active);
         border-color: var(--neutral-outline-active);
     }
 
     :host(:${focusVisible}) .switch {
-        box-shadow: 0 0 0 1px var(--neutral-focus) inset;
+        box-shadow: 0 0 0 2px var(--background-color), 0 0 0 4px var(--neutral-focus);
         border-color: var(--neutral-focus);
     }
 
@@ -89,20 +90,21 @@ export const SwitchStyles = css`
     }
 
     .status-message {
-        font-family: var(--body-font);
         color: var(--neutral-foreground-rest);
         cursor: pointer;
-        ${
-            /* Font size is temporary - replace when adaptive typography is figured out */ ""
-        } font-size: calc(1rem + (var(--density) * 2px));
+        font-size: var(--type-ramp-base-font-size);
+        line-height: var(--type-ramp-base-line-height);
+    }
+
+    .label__hidden {
+        display: none;
+        visibility: hidden;
     }
 
     .label {
         color: var(--neutral-foreground-rest);
-
-        ${
-            /* Need to discuss with Brian how HorizontalSpacingNumber can work. https://github.com/microsoft/fast-dna/issues/2766 */ ""
-        } margin-inline-end: calc(var(--design-unit) * 2px + 2px);
+        font-size: var(--type-ramp-base-font-size);
+        line-height: var(--type-ramp-base-line-height);
     }
 
     ::slotted(*) {
@@ -118,6 +120,19 @@ export const SwitchStyles = css`
 
     :host(.checked) .switch {
         background: var(--accent-fill-rest);
+    }
+
+    :host(.checked:enabled) .switch:hover {
+        background: var(--accent-fill-hover);
+    }
+
+    :host(.checked:enabled) .switch:active {
+        background: var(--accent-fill-active);
+    }
+
+    :host(.checked:${focusVisible}:enabled) .switch {
+        box-shadow: 0 0 0 2px var(--background-color), 0 0 0 4px var(--neutral-focus);
+        border-color: transparent;
     }
 
     .unchecked-message {
@@ -136,11 +151,14 @@ export const SwitchStyles = css`
         display: block;
     }
 `.withBehaviors(
+    accentFillActiveBehavior,
+    accentFillHoverBehavior,
     accentFillRestBehavior,
     accentForegroundCutRestBehavior,
     neutralFillInputActiveBehavior,
     neutralFillInputHoverBehavior,
     neutralFillInputRestBehavior,
+    neutralFocusBehavior,
     neutralForegroundRestBehavior,
     neutralOutlineActiveBehavior,
     neutralOutlineHoverBehavior,
