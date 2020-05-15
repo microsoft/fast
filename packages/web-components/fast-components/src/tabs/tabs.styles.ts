@@ -1,11 +1,16 @@
 import { css } from "@microsoft/fast-element";
 import { display, forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
-import { accentFillRestBehavior, neutralForegroundRestBehavior } from "../styles";
+import {
+    accentFillRestBehavior,
+    heightNumber,
+    neutralForegroundRestBehavior,
+} from "../styles";
 
 export const TabsStyles = css`
     ${display("grid")} :host {
         box-sizing: border-box;
+        font-family: var(--body-font);
         font-size: var(--type-ramp-base-font-size);
         line-height: var(--type-ramp-base-line-height);
         color: var(--neutral-foreground-rest);
@@ -20,6 +25,8 @@ export const TabsStyles = css`
         position: relative;
         width: max-content;
         align-self: end;
+        padding: calc(var(--design-unit) * 4px) calc(var(--design-unit) * 4px) 0;
+        box-sizing: border-box;
     }
 
     .start {
@@ -33,11 +40,13 @@ export const TabsStyles = css`
     .activeIndicator {
         grid-row: 2;
         grid-column: 1;
-        width: 20px;
-        height: 3px;
-        border-radius: calc(var(--corner-radius) * 1px);
+        width: 100%;
+        height: 5px;
         justify-self: center;
         background: var(--accent-fill-rest);
+        margin-top: 10px;
+        border-radius: calc(var(--corner-radius) * 1px) calc(var(--corner-radius) * 1px) 0
+            0;
     }
 
     .activeIndicatorTransition {
@@ -66,6 +75,9 @@ export const TabsStyles = css`
         width: max-content;
         justify-self: end;
         width: 100%;
+        padding: calc((${heightNumber} - var(--design-unit)) * 1px)
+            calc(var(--design-unit) * 4px)
+            calc((${heightNumber} - var(--design-unit)) * 1px) 0;
     }
 
     :host(.vertical) .tabpanel {
@@ -81,11 +93,14 @@ export const TabsStyles = css`
     :host(.vertical) .activeIndicator {
         grid-column: 1;
         grid-row: 1;
-        width: 3px;
-        height: 20px;
-        border-radius: calc(var(--corner-radius) * 1px);
+        width: 5px;
+        height: 100%;
+        margin-inline-end: 10px;
         align-self: center;
         background: var(--accent-fill-rest);
+        margin-top: 0;
+        border-radius: 0 calc(var(--corner-radius) * 1px) calc(var(--corner-radius) * 1px)
+            0;
     }
 
     :host(.vertical) .activeIndicatorTransition {
