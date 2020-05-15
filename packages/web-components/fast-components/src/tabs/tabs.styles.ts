@@ -40,10 +40,7 @@ export const TabsStyles = css`
         justify-self: center;
         background: var(--accent-fill-rest);
         margin-top: 10px;
-        border-top-left-radius: calc(var(--corner-radius) * 1px);
-        border-top-right-radius: calc(var(--corner-radius) * 1px);
-        border-bottom-left-radius: 0;
-        border-bottom-right-radius: 0;
+        border-radius: calc(var(--corner-radius) * 1px) calc(var(--corner-radius) * 1px) 0 0;
     }
 
     .activeIndicatorTransition {
@@ -95,10 +92,7 @@ export const TabsStyles = css`
         align-self: center;
         background: var(--accent-fill-rest);
         margin-top: 0;
-        border-top-left-radius: 0;
-        border-top-right-radius: calc(var(--corner-radius) * 1px);
-        border-bottom-left-radius: 0;
-        border-bottom-right-radius: calc(var(--corner-radius) * 1px);
+        border-radius: 0 calc(var(--corner-radius) * 1px);
     }
 
     :host(.vertical) .activeIndicatorTransition {
