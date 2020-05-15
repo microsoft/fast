@@ -6,5 +6,8 @@ import { TextFieldStyles as styles } from "./text-field.styles";
     name: "fast-text-field",
     template,
     styles,
+    shadowOptions: {
+        delegatesFocus: true,
+    },
 })
 export class FASTTextField extends TextField {}
