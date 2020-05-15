@@ -74,7 +74,7 @@ export const SwitchStyles = css`
     }
 
     :host(:${focusVisible}) .switch {
-        box-shadow: 0 0 0 1px var(--neutral-focus) inset;
+        box-shadow: 0 0 0 2px var(--background-color), 0 0 0 4px var(--neutral-focus);
         border-color: var(--neutral-focus);
     }
 
@@ -131,8 +131,8 @@ export const SwitchStyles = css`
     }
 
     :host(.checked:${focusVisible}:enabled) .switch {
-        box-shadow: 0 0 0 1px var(--neutral-focus) inset;
-        border-color: var(--neutral-focus);
+        box-shadow: 0 0 0 2px var(--background-color), 0 0 0 4px var(--neutral-focus);
+        border-color: transparent;
     }
 
     .unchecked-message {

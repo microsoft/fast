@@ -48,7 +48,7 @@ export const SliderStyles = css`
         grid-template-columns: calc(var(--thumb-size) * 1px) 1fr;
     }
     :host(:${focusVisible}) .thumb-cursor {
-        box-shadow: 0 0 0 2px var(--neutral-focus) inset;
+        box-shadow: 0 0 0 2px var(--background-color), 0 0 0 4px var(--neutral-focus);
     }
     .thumb-container {
         position: absolute;
