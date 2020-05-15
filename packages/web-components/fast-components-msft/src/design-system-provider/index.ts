@@ -4,12 +4,13 @@ import {
     DesignSystem,
     DesignSystemDefaults,
 } from "@microsoft/fast-components-styles-msft";
-// this import will change to fast-foundation...
 import {
     designSystemProperty,
     designSystemProvider,
     DesignSystemProvider,
+    DesignSystemProviderTemplate as template,
 } from "@microsoft/fast-foundation";
+import { DesignSystemProviderStyles as styles } from "./design-system-provider.styles";
 
 const fromView: { mode: "fromView" } = {
     mode: "fromView",
@@ -20,7 +21,11 @@ const fromViewNumber: { mode: "fromView"; converter: typeof nullableNumberConver
     converter: nullableNumberConverter,
 };
 
-@designSystemProvider("fast-design-system-provider")
+@designSystemProvider({
+    name: "fast-design-system-provider",
+    template,
+    styles,
+})
 export class FASTDesignSystemProvider extends DesignSystemProvider
     implements
         Omit<
