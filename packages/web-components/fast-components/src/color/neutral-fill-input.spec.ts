@@ -1,9 +1,9 @@
-import { FASTDesignSystem, fastDesignSystemDefaults } from "../fast-design-system";
+import { FASTDesignSystem, fastDesignSystemDefaults } from "../fast-design-system.js";
 import {
     accentPalette as getAccentPalette,
     neutralPalette as getNeutralPalette,
-} from "../fast-design-system";
-import { clamp, FillSwatchFamily, Swatch } from "./common";
+} from "../fast-design-system.js";
+import { clamp, FillSwatchFamily, Swatch } from "./common.js";
 import {
     neutralFillInput,
     neutralFillInputActive,
@@ -11,29 +11,35 @@ import {
     neutralFillInputHover,
     neutralFillInputRest,
     neutralFillInputSelected,
-} from "./neutral-fill-input";
-import { isDarkMode, Palette } from "./palette";
+} from "./neutral-fill-input.js";
+import { isDarkMode, Palette } from "./palette.js";
+import chai from "chai";
+const { expect } = chai;
 
 describe("neutralFillInput", (): void => {
     const neutralPalette: Palette = getNeutralPalette(fastDesignSystemDefaults);
     const accentPalette: Palette = getAccentPalette(fastDesignSystemDefaults);
 
     // TODO @nicholasrice: Tests are failing due as palette is expecting light
-    xtest("should operate on design system defaults", (): void => {
-        expect(neutralFillInputRest({} as FASTDesignSystem)).toBe(neutralPalette[0]);
-        expect(neutralFillInputHover({} as FASTDesignSystem)).toBe(neutralPalette[0]);
-        expect(neutralFillInputActive({} as FASTDesignSystem)).toBe(neutralPalette[0]);
-        expect(neutralFillInputFocus({} as FASTDesignSystem)).toBe(neutralPalette[0]);
-        expect(neutralFillInputSelected({} as FASTDesignSystem)).toBe(neutralPalette[0]);
+    it.skip("should operate on design system defaults", (): void => {
+        expect(neutralFillInputRest({} as FASTDesignSystem)).to.equal(neutralPalette[0]);
+        expect(neutralFillInputHover({} as FASTDesignSystem)).to.equal(neutralPalette[0]);
+        expect(neutralFillInputActive({} as FASTDesignSystem)).to.equal(
+            neutralPalette[0]
+        );
+        expect(neutralFillInputFocus({} as FASTDesignSystem)).to.equal(neutralPalette[0]);
+        expect(neutralFillInputSelected({} as FASTDesignSystem)).to.equal(
+            neutralPalette[0]
+        );
     });
 
-    test("should always be lighter than the background by the delta in light mode and darker in dark mode", (): void => {
+    it("should always be lighter than the background by the delta in light mode and darker in dark mode", (): void => {
         neutralPalette.forEach((swatch: Swatch, index: number): void => {
             const designSystem: FASTDesignSystem = {
                 backgroundColor: neutralPalette[index],
             } as FASTDesignSystem;
 
-            expect(neutralFillInputSelected(designSystem)).toBe(
+            expect(neutralFillInputSelected(designSystem)).to.equal(
                 neutralPalette[
                     clamp(
                         index -
@@ -47,37 +53,45 @@ describe("neutralFillInput", (): void => {
         });
     });
 
-    test("should return the same color from both implementations", (): void => {
+    it("should return the same color from both implementations", (): void => {
         neutralPalette.concat(accentPalette).forEach((swatch: Swatch): void => {
-            expect(neutralFillInputRest(() => swatch)(fastDesignSystemDefaults)).toBe(
+            expect(neutralFillInputRest(() => swatch)(fastDesignSystemDefaults)).to.equal(
                 neutralFillInputRest(
                     Object.assign({}, fastDesignSystemDefaults, {
                         backgroundColor: swatch,
                     })
                 )
             );
-            expect(neutralFillInputHover(() => swatch)(fastDesignSystemDefaults)).toBe(
+            expect(
+                neutralFillInputHover(() => swatch)(fastDesignSystemDefaults)
+            ).to.equal(
                 neutralFillInputHover(
                     Object.assign({}, fastDesignSystemDefaults, {
                         backgroundColor: swatch,
                     })
                 )
             );
-            expect(neutralFillInputActive(() => swatch)(fastDesignSystemDefaults)).toBe(
+            expect(
+                neutralFillInputActive(() => swatch)(fastDesignSystemDefaults)
+            ).to.equal(
                 neutralFillInputActive(
                     Object.assign({}, fastDesignSystemDefaults, {
                         backgroundColor: swatch,
                     })
                 )
             );
-            expect(neutralFillInputFocus(() => swatch)(fastDesignSystemDefaults)).toBe(
+            expect(
+                neutralFillInputFocus(() => swatch)(fastDesignSystemDefaults)
+            ).to.equal(
                 neutralFillInputFocus(
                     Object.assign({}, fastDesignSystemDefaults, {
                         backgroundColor: swatch,
                     })
                 )
             );
-            expect(neutralFillInputSelected(() => swatch)(fastDesignSystemDefaults)).toBe(
+            expect(
+                neutralFillInputSelected(() => swatch)(fastDesignSystemDefaults)
+            ).to.equal(
                 neutralFillInputSelected(
                     Object.assign({}, fastDesignSystemDefaults, {
                         backgroundColor: swatch,
@@ -87,7 +101,7 @@ describe("neutralFillInput", (): void => {
         });
     });
 
-    test("should have consistent return values", (): void => {
+    it("should have consistent return values", (): void => {
         neutralPalette.concat(accentPalette).forEach((swatch: Swatch): void => {
             const backplates: FillSwatchFamily = neutralFillInput(() => swatch)(
                 fastDesignSystemDefaults
@@ -108,11 +122,11 @@ describe("neutralFillInput", (): void => {
                 fastDesignSystemDefaults
             );
 
-            expect(backplates.rest).toBe(rest);
-            expect(backplates.hover).toBe(hover);
-            expect(backplates.active).toBe(active);
-            expect(backplates.focus).toBe(focus);
-            expect(backplates.selected).toBe(selected);
+            expect(backplates.rest).to.equal(rest);
+            expect(backplates.hover).to.equal(hover);
+            expect(backplates.active).to.equal(active);
+            expect(backplates.focus).to.equal(focus);
+            expect(backplates.selected).to.equal(selected);
         });
     });
 });

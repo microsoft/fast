@@ -4,7 +4,7 @@ import {
     AnchoredRegion,
     AnchoredRegionTemplate as template,
 } from "@microsoft/fast-foundation/dist/esm/anchored-region/index.js";
-import { AnchoredRegionStyles as styles } from "./anchored-region.styles";
+import { AnchoredRegionStyles as styles } from "./anchored-region.styles.js";
 
 @customElement({
     name: "fast-anchored-region",

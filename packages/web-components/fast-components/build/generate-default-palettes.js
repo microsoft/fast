@@ -1,8 +1,8 @@
 import fs from "fs";
 import path from "path";
 import { parseColorHexRGB } from "@microsoft/fast-colors";
-import { createColorPalette } from "../src/color/create-color-palette";
-import { accentBaseColor, neutralBaseColor } from "../src/color/color-constants";
+import { createColorPalette } from "../src/color/create-color-palette.js";
+import { accentBaseColor, neutralBaseColor } from "../src/color/color-constants.js";
 
 const outpath = path.resolve(__dirname, "../src/default-palette.ts");
 

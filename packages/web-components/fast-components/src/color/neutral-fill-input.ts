@@ -1,4 +1,4 @@
-import { DesignSystemResolver, FASTDesignSystem } from "../fast-design-system";
+import { DesignSystemResolver, FASTDesignSystem } from "../fast-design-system.js";
 import {
     neutralFillInputActiveDelta,
     neutralFillInputFocusDelta,
@@ -6,15 +6,15 @@ import {
     neutralFillInputRestDelta,
     neutralFillInputSelectedDelta,
     neutralPalette,
-} from "../fast-design-system";
-import { findClosestBackgroundIndex, getSwatch, isDarkMode } from "./palette";
+} from "../fast-design-system.js";
+import { findClosestBackgroundIndex, getSwatch, isDarkMode } from "./palette.js";
 import {
     ColorRecipe,
     colorRecipeFactory,
     FillSwatchFamily,
     Swatch,
     SwatchRecipe,
-} from "./common";
+} from "./common.js";
 
 /**
  * Algorithm for determining neutral backplate colors

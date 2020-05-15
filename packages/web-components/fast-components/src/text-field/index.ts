@@ -1,6 +1,6 @@
 import { customElement } from "@microsoft/fast-element";
 import { TextFieldTemplate as template, TextField } from "@microsoft/fast-foundation";
-import { TextFieldStyles as styles } from "./text-field.styles";
+import { TextFieldStyles as styles } from "./text-field.styles.js";
 
 @customElement({
     name: "fast-text-field",

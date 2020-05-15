@@ -21,7 +21,7 @@ import {
     neutralOutlineActiveBehavior,
     neutralOutlineHoverBehavior,
     neutralOutlineRestBehavior,
-} from "../styles";
+} from "../styles/index.js";
 
 export const CheckboxStyles = css`
     ${display("inline-flex")} :host {

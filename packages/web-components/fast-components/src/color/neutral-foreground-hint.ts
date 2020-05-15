@@ -1,13 +1,13 @@
-import { DesignSystemResolver } from "../fast-design-system";
-import { neutralPalette } from "../fast-design-system";
+import { DesignSystemResolver } from "../fast-design-system.js";
+import { neutralPalette } from "../fast-design-system.js";
 import {
     colorRecipeFactory,
     SwatchFamily,
     swatchFamilyToSwatchRecipeFactory,
     SwatchFamilyType,
     SwatchRecipe,
-} from "./common";
-import { accessibleAlgorithm } from "./accessible-recipe";
+} from "./common.js";
+import { accessibleAlgorithm } from "./accessible-recipe.js";
 
 function neutralForegroundHintAlgorithm(
     targetContrast: number

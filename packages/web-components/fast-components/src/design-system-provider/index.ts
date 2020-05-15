@@ -5,8 +5,8 @@ import {
     DesignSystemProvider,
     DesignSystemProviderTemplate as template,
 } from "@microsoft/fast-foundation";
-import { FASTDesignSystem, fastDesignSystemDefaults } from "../fast-design-system";
-import { DesignSystemProviderStyles as styles } from "./design-system-provider.styles";
+import { FASTDesignSystem, fastDesignSystemDefaults } from "../fast-design-system.js";
+import { DesignSystemProviderStyles as styles } from "./design-system-provider.styles.js";
 
 @designSystemProvider({
     name: "fast-design-system-provider",

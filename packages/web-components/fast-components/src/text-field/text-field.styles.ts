@@ -18,7 +18,7 @@ import {
     neutralFocusBehavior,
     neutralForegroundRestBehavior,
     neutralOutlineRestBehavior,
-} from "../styles";
+} from "../styles/index.js";
 
 export const TextFieldStyles = css`
     ${display("inline-block")} :host {

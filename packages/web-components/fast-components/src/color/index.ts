@@ -6,19 +6,22 @@ export {
     neutralForegroundRest,
     neutralForegroundHover,
     neutralForegroundActive,
-} from "./neutral-foreground";
+} from "./neutral-foreground.js";
 
 export {
     neutralForegroundToggle,
     neutralForegroundToggleLarge,
-} from "./neutral-foreground-toggle";
+} from "./neutral-foreground-toggle.js";
 
-export { accentForegroundCut, accentForegroundCutLarge } from "./accent-foreground-cut";
+export {
+    accentForegroundCut,
+    accentForegroundCutLarge,
+} from "./accent-foreground-cut.js";
 
 export {
     neutralForegroundHint,
     neutralForegroundHintLarge,
-} from "./neutral-foreground-hint";
+} from "./neutral-foreground-hint.js";
 
 export {
     accentForeground,
@@ -29,7 +32,7 @@ export {
     accentForegroundLargeRest,
     accentForegroundLargeHover,
     accentForegroundLargeActive,
-} from "./accent-foreground";
+} from "./accent-foreground.js";
 
 /**
  * Fill exports
@@ -40,7 +43,7 @@ export {
     neutralFillHover,
     neutralFillActive,
     neutralFillSelected,
-} from "./neutral-fill";
+} from "./neutral-fill.js";
 
 export {
     neutralFillStealth,
@@ -48,14 +51,14 @@ export {
     neutralFillStealthHover,
     neutralFillStealthActive,
     neutralFillStealthSelected,
-} from "./neutral-fill-stealth";
+} from "./neutral-fill-stealth.js";
 
 export {
     neutralFillToggle,
     neutralFillToggleRest,
     neutralFillToggleHover,
     neutralFillToggleActive,
-} from "./neutral-fill-toggle";
+} from "./neutral-fill-toggle.js";
 
 export {
     neutralFillInput,
@@ -63,7 +66,7 @@ export {
     neutralFillInputHover,
     neutralFillInputActive,
     neutralFillInputSelected,
-} from "./neutral-fill-input";
+} from "./neutral-fill-input.js";
 
 export {
     accentFill,
@@ -76,9 +79,9 @@ export {
     accentFillLargeHover,
     accentFillLargeActive,
     accentFillLargeSelected,
-} from "./accent-fill";
+} from "./accent-fill.js";
 
-export { neutralFillCard } from "./neutral-fill-card";
+export { neutralFillCard } from "./neutral-fill-card.js";
 
 /**
  * Border exports
@@ -88,9 +91,9 @@ export {
     neutralOutlineRest,
     neutralOutlineHover,
     neutralOutlineActive,
-} from "./neutral-outline";
+} from "./neutral-outline.js";
 
-export { neutralDividerRest } from "./neutral-divider";
+export { neutralDividerRest } from "./neutral-divider.js";
 
 /**
  * App layer exports
@@ -105,15 +108,15 @@ export {
     neutralLayerL3,
     neutralLayerL4,
     StandardLuminance,
-} from "./neutral-layer";
+} from "./neutral-layer.js";
 
 /**
  * Focus colors
  */
-export { neutralFocus, neutralFocusInnerAccent } from "./neutral-focus";
+export { neutralFocus, neutralFocusInnerAccent } from "./neutral-focus.js";
 
 /**
  * Export supporting types
  */
-export { isDarkMode, palette, PaletteType, Palette } from "./palette";
-export { createColorPalette } from "./create-color-palette";
+export { isDarkMode, palette, PaletteType, Palette } from "./palette.js";
+export { createColorPalette } from "./create-color-palette.js";

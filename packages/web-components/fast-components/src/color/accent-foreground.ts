@@ -1,4 +1,4 @@
-import { DesignSystemResolver, FASTDesignSystem } from "../fast-design-system";
+import { DesignSystemResolver, FASTDesignSystem } from "../fast-design-system.js";
 import {
     accentBaseColor,
     accentForegroundActiveDelta,
@@ -7,7 +7,7 @@ import {
     accentForegroundRestDelta,
     accentPalette,
     backgroundColor,
-} from "../fast-design-system";
+} from "../fast-design-system.js";
 import {
     findClosestSwatchIndex,
     findSwatchIndex,
@@ -15,7 +15,7 @@ import {
     isDarkMode,
     Palette,
     swatchByContrast,
-} from "./palette";
+} from "./palette.js";
 import {
     colorRecipeFactory,
     Swatch,
@@ -24,7 +24,7 @@ import {
     swatchFamilyToSwatchRecipeFactory,
     SwatchFamilyType,
     SwatchRecipe,
-} from "./common";
+} from "./common.js";
 
 function accentForegroundAlgorithm(
     contrastTarget: number

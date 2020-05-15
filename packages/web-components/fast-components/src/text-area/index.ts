@@ -1,6 +1,6 @@
 import { customElement } from "@microsoft/fast-element";
 import { TextAreaTemplate as template, TextArea } from "@microsoft/fast-foundation";
-import { TextAreaStyles as styles } from "./text-area.styles";
+import { TextAreaStyles as styles } from "./text-area.styles.js";
 
 @customElement({
     name: "fast-text-area",

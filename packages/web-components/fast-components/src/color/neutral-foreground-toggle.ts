@@ -1,7 +1,7 @@
-import { FASTDesignSystem } from "../fast-design-system";
-import { black, white } from "./color-constants";
-import { contrast, Swatch, SwatchRecipe, SwatchResolver } from "./common";
-import { neutralFillToggleRest } from "./neutral-fill-toggle";
+import { FASTDesignSystem } from "../fast-design-system.js";
+import { black, white } from "./color-constants.js";
+import { contrast, Swatch, SwatchRecipe, SwatchResolver } from "./common.js";
+import { neutralFillToggleRest } from "./neutral-fill-toggle.js";
 
 /**
  * Function to derive neutralForegroundToggle from an input background and target contrast ratio

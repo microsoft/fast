@@ -1,6 +1,7 @@
 import { inRange } from "lodash-es";
-import { DesignSystemResolver, FASTDesignSystem } from "../fast-design-system";
 import {
+    DesignSystemResolver,
+    FASTDesignSystem,
     accentBaseColor,
     accentFillActiveDelta,
     accentFillFocusDelta,
@@ -10,8 +11,8 @@ import {
     neutralFillActiveDelta,
     neutralFillHoverDelta,
     neutralFillRestDelta,
-} from "../fast-design-system";
-import { accentForegroundCut } from "./accent-foreground-cut";
+} from "../fast-design-system.js";
+import { accentForegroundCut } from "./accent-foreground-cut.js";
 import {
     colorRecipeFactory,
     contrast,
@@ -22,14 +23,14 @@ import {
     swatchFamilyToSwatchRecipeFactory,
     SwatchFamilyType,
     SwatchRecipe,
-} from "./common";
+} from "./common.js";
 import {
     findClosestBackgroundIndex,
     findClosestSwatchIndex,
     getSwatch,
     isDarkMode,
     Palette,
-} from "./palette";
+} from "./palette.js";
 
 const neutralFillThreshold: DesignSystemResolver<number> = designSystemResolverMax(
     neutralFillRestDelta,

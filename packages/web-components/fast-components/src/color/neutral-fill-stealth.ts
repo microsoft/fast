@@ -1,4 +1,4 @@
-import { DesignSystemResolver, FASTDesignSystem } from "../fast-design-system";
+import { DesignSystemResolver, FASTDesignSystem } from "../fast-design-system.js";
 import {
     neutralFillActiveDelta,
     neutralFillFocusDelta,
@@ -10,15 +10,15 @@ import {
     neutralFillStealthRestDelta,
     neutralFillStealthSelectedDelta,
     neutralPalette,
-} from "../fast-design-system";
+} from "../fast-design-system.js";
 import {
     ColorRecipe,
     colorRecipeFactory,
     designSystemResolverMax,
     FillSwatchFamily,
     Swatch,
-} from "./common";
-import { findClosestBackgroundIndex, getSwatch } from "./palette";
+} from "./common.js";
+import { findClosestBackgroundIndex, getSwatch } from "./palette.js";
 
 const neutralFillStealthSwapThreshold: DesignSystemResolver<number> = designSystemResolverMax(
     neutralFillRestDelta,

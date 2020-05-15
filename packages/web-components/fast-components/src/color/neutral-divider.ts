@@ -1,7 +1,7 @@
-import { FASTDesignSystem } from "../fast-design-system";
-import { neutralDividerRestDelta, neutralPalette } from "../fast-design-system";
-import { findClosestBackgroundIndex, getSwatch, isDarkMode, Palette } from "./palette";
-import { colorRecipeFactory, Swatch, SwatchRecipe, SwatchResolver } from "./common";
+import { FASTDesignSystem } from "../fast-design-system.js";
+import { neutralDividerRestDelta, neutralPalette } from "../fast-design-system.js";
+import { findClosestBackgroundIndex, getSwatch, isDarkMode, Palette } from "./palette.js";
+import { colorRecipeFactory, Swatch, SwatchRecipe, SwatchResolver } from "./common.js";
 
 const neutralDividerAlgorithm: SwatchResolver = (
     designSystem: FASTDesignSystem

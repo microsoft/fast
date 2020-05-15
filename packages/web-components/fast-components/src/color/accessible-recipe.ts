@@ -1,7 +1,7 @@
-import { DesignSystemResolver, FASTDesignSystem } from "../fast-design-system";
-import { evaluateDesignSystemResolver } from "../fast-design-system";
-import { backgroundColor } from "../fast-design-system";
-import { Swatch, SwatchFamily } from "./common";
+import { DesignSystemResolver, FASTDesignSystem } from "../fast-design-system.js";
+import { evaluateDesignSystemResolver } from "../fast-design-system.js";
+import { backgroundColor } from "../fast-design-system.js";
+import { Swatch, SwatchFamily } from "./common.js";
 import {
     findSwatchIndex,
     getSwatch,
@@ -10,7 +10,7 @@ import {
     Palette,
     referenceColorInitialIndexResolver,
     swatchByContrast,
-} from "./palette";
+} from "./palette.js";
 
 function indexToSwatchFamily(
     accessibleIndex: number,

@@ -1,6 +1,6 @@
 import { customElement } from "@microsoft/fast-element";
 import { Radio, RadioTemplate as template } from "@microsoft/fast-foundation";
-import { RadioStyles as styles } from "./radio.styles";
+import { RadioStyles as styles } from "./radio.styles.js";
 
 @customElement({
     name: "fast-radio",

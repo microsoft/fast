@@ -17,7 +17,7 @@ import {
     neutralFocusInnerAccentBehavior,
     neutralForegroundRestBehavior,
     neutralOutlineRestBehavior,
-} from "../styles";
+} from "../styles/index.js";
 
 export const FlipperStyles = css`
     ${display("inline-flex")} :host {

@@ -1,73 +1,75 @@
 import { isColorStringHexRGB } from "@microsoft/fast-colors";
-import { FASTDesignSystem, fastDesignSystemDefaults } from "../fast-design-system";
+import { FASTDesignSystem, fastDesignSystemDefaults } from "../fast-design-system.js";
 import {
     accentPalette as getAccentPalette,
     neutralPalette as getNeutralPalette,
-} from "../fast-design-system";
+} from "../fast-design-system.js";
 import {
     neutralOutline,
     neutralOutlineActive,
     neutralOutlineFocus,
     neutralOutlineHover,
     neutralOutlineRest,
-} from "./neutral-outline";
-import { Palette } from "./palette";
-import { Swatch, SwatchFamily } from "./common";
+} from "./neutral-outline.js";
+import { Palette } from "./palette.js";
+import { Swatch, SwatchFamily } from "./common.js";
+import chai from "chai";
+const { expect } = chai;
 
 describe("neutralOutline", (): void => {
     const neutralPalette: Palette = getNeutralPalette(fastDesignSystemDefaults);
     const accentPalette: Palette = getAccentPalette(fastDesignSystemDefaults);
 
     // TODO @nicholasrice: Tests are failing due as palette is expecting light
-    xtest("should return by default", (): void => {
-        expect(neutralOutlineRest({} as FASTDesignSystem)).toBe(
+    it.skip("should return by default", (): void => {
+        expect(neutralOutlineRest({} as FASTDesignSystem)).to.equal(
             neutralPalette[fastDesignSystemDefaults.neutralOutlineRestDelta]
         );
-        expect(neutralOutlineHover({} as FASTDesignSystem)).toBe(
+        expect(neutralOutlineHover({} as FASTDesignSystem)).to.equal(
             neutralPalette[fastDesignSystemDefaults.neutralOutlineHoverDelta]
         );
-        expect(neutralOutlineActive({} as FASTDesignSystem)).toBe(
+        expect(neutralOutlineActive({} as FASTDesignSystem)).to.equal(
             neutralPalette[fastDesignSystemDefaults.neutralOutlineActiveDelta]
         );
-        expect(neutralOutlineFocus({} as FASTDesignSystem)).toBe(
+        expect(neutralOutlineFocus({} as FASTDesignSystem)).to.equal(
             neutralPalette[fastDesignSystemDefaults.neutralOutlineFocusDelta]
         );
     });
 
-    test("should always return a color", (): void => {
+    it("should always return a color", (): void => {
         neutralPalette.concat(accentPalette).forEach((swatch: Swatch): void => {
             expect(
                 isColorStringHexRGB(
                     neutralOutlineRest(() => swatch)({} as FASTDesignSystem)
                 )
-            ).toBe(true);
+            ).to.equal(true);
         });
     });
 
-    test("should return the same color from both implementations", (): void => {
+    it("should return the same color from both implementations", (): void => {
         neutralPalette.concat(accentPalette).forEach((swatch: Swatch): void => {
-            expect(neutralOutlineRest(() => swatch)(fastDesignSystemDefaults)).toBe(
+            expect(neutralOutlineRest(() => swatch)(fastDesignSystemDefaults)).to.equal(
                 neutralOutlineRest(
                     Object.assign({}, fastDesignSystemDefaults, {
                         backgroundColor: swatch,
                     })
                 )
             );
-            expect(neutralOutlineHover(() => swatch)(fastDesignSystemDefaults)).toBe(
+            expect(neutralOutlineHover(() => swatch)(fastDesignSystemDefaults)).to.equal(
                 neutralOutlineHover(
                     Object.assign({}, fastDesignSystemDefaults, {
                         backgroundColor: swatch,
                     })
                 )
             );
-            expect(neutralOutlineActive(() => swatch)(fastDesignSystemDefaults)).toBe(
+            expect(neutralOutlineActive(() => swatch)(fastDesignSystemDefaults)).to.equal(
                 neutralOutlineActive(
                     Object.assign({}, fastDesignSystemDefaults, {
                         backgroundColor: swatch,
                     })
                 )
             );
-            expect(neutralOutlineFocus(() => swatch)(fastDesignSystemDefaults)).toBe(
+            expect(neutralOutlineFocus(() => swatch)(fastDesignSystemDefaults)).to.equal(
                 neutralOutlineFocus(
                     Object.assign({}, fastDesignSystemDefaults, {
                         backgroundColor: swatch,
@@ -77,7 +79,7 @@ describe("neutralOutline", (): void => {
         });
     });
 
-    test("should have consistent return values", (): void => {
+    it("should have consistent return values", (): void => {
         neutralPalette.concat(accentPalette).forEach((swatch: Swatch): void => {
             const backplates: SwatchFamily = neutralOutline(() => swatch)(
                 fastDesignSystemDefaults
@@ -95,10 +97,10 @@ describe("neutralOutline", (): void => {
                 fastDesignSystemDefaults
             );
 
-            expect(backplates.rest).toBe(rest);
-            expect(backplates.hover).toBe(hover);
-            expect(backplates.active).toBe(active);
-            expect(backplates.focus).toBe(focus);
+            expect(backplates.rest).to.equal(rest);
+            expect(backplates.hover).to.equal(hover);
+            expect(backplates.active).to.equal(active);
+            expect(backplates.focus).to.equal(focus);
         });
     });
 });
