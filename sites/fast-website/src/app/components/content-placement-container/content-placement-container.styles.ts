@@ -3,7 +3,7 @@ import { display } from "@microsoft/fast-components";
 
 export const ContentPlacementContainerStyles = css`
     ${display("block")}:host {
-        contain: content;
+        contain: none;
         font-family: var(--body-font);
     }
     .container {
