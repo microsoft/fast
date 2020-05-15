@@ -13,7 +13,7 @@ export const TreeItemTemplate = html<TreeItem>`
         ${ref("treeItem")}
     >
         <div
-            class="positioning-region ${x => (!x.hasItems ? "leaf-start-gap" : "")}"
+            class="positioning-region"
             part="positioning-region"
             @click="${(x, c) => x.handleContainerClick(c.event as MouseEvent)}"
         >
@@ -43,10 +43,7 @@ export const TreeItemTemplate = html<TreeItem>`
                 ${when(
                     x => !x.hasItems,
                     html<TreeItem>`
-                        <div
-                            aria-hidden="true"
-                            class="expand-collapse-glyph-hidden"
-                        ></div>
+                        <span class="leaf-spacer">.</div>
                     `
                 )}
                 <span part="before-content" ${ref("beforeContentContainer")}>
