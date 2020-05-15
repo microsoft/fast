@@ -1,7 +1,19 @@
 # Component styling
 
+## Hiding elements that have not been upgraded
+Custom Elements that have not been [upgraded](https://developers.google.com/web/fundamentals/web-components/customelements#upgrades) and don't have styles attached can still be rendered by the browser but they likely do not look how they are supposed to. To avoid a *flash of un-styled content* (FOUC) you should be sure to visually hide Custom Elements if they have not been *defined*:
+
+```css
+:not(:defined) {
+    visibility: hidden;
+}
+```
+Note, this will need to be applied by the consuming application and will not be applied by the components themselves.
+
 ## Design System
-## CSS Custom Properties
+In FAST, the *design system* is a collection of properties and values that inform the visual design language of the components. These properties are managed and broadcast through implementations of the *DesignSystemProvider*. See the [*DesignSystemProvider* documentation](https://github.com/microsoft/fast-dna/tree/master/packages/web-components/fast-foundation/src/design-system-provider) for more information.
+
+For the purposes of this section, the *DesignSystemProvider* will create CSS Custom Properties that can be consumed by component stylesheets and provide mechanisms to synchronize, update, and consume those properties programmatically.
 
 ## Type Ramp
 ## Media Queries
@@ -64,13 +76,3 @@ const styles = css`
     `)
 )
 ```
-
-## Hiding elements that have not been upgraded
-Custom Elements that have not been upgraded and don't have styles attached are still rendered by the browser - but they likely do not look how they are supposed to. To avoid a Flash of un-styled Content (FOUC) you should be sure to visually hide Custom Elements if they have not been *defined*:
-
-```css
-:not(:defined) {
-    visibility: hidden;
-}
-```
-Note, this will need to be applied by the consuming application and will not be applied by the components themselves.
