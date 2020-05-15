@@ -5,6 +5,7 @@
 ```ts
 
 import { Behavior } from '@microsoft/fast-element';
+import { DecoratorAttributeConfiguration } from '@microsoft/fast-element';
 import { Direction } from '@microsoft/fast-web-utilities';
 import { ElementStyles } from '@microsoft/fast-element';
 import { FASTElement } from '@microsoft/fast-element';
@@ -131,6 +132,8 @@ export class Checkbox extends FormAssociated<HTMLInputElement> {
     // (undocumented)
     connectedCallback(): void;
     defaultChecked: boolean;
+    // (undocumented)
+    defaultSlottedNodes: Node[];
     indeterminate: boolean;
     // (undocumented)
     keypressHandler: (e: KeyboardEvent) => void;
@@ -170,6 +173,19 @@ export interface CSSCustomPropertyTarget {
 }
 
 // @public (undocumented)
+export type CSSDisplayPropertyValue = "block" | "contents" | "flex" | "grid" | "inherit" | "initial" | "inline" | "inline-block" | "inline-flex" | "inline-grid" | "inline-table" | "list-item" | "none" | "run-in" | "table" | "table-caption" | "table-cell" | "table-column" | "table-column-group" | "table-footer-group" | "table-header-group" | "table-row" | "table-row-group";
+
+// @public (undocumented)
+export interface DecoratorDesignSystemPropertyConfiguration extends Omit<DecoratorAttributeConfiguration, "attribute"> {
+    // (undocumented)
+    attribute?: string | false;
+    // (undocumented)
+    cssCustomProperty?: string | false;
+    // (undocumented)
+    default: any;
+}
+
+// @public (undocumented)
 export interface DesignSystemConsumer {
     // (undocumented)
     provider: DesignSystemProvider | null;
@@ -179,15 +195,7 @@ export interface DesignSystemConsumer {
 export const designSystemConsumerBehavior: Behavior;
 
 // @public
-export function designSystemProperty<T extends DesignSystemProvider>(config: DesignSystemPropertyDeclarationConfig): (source: T, property: string) => void;
-
-// @public (undocumented)
-export interface DesignSystemPropertyDeclarationConfig {
-    // (undocumented)
-    cssCustomProperty?: string | false;
-    // (undocumented)
-    default: any;
-}
+export function designSystemProperty<T extends DesignSystemProvider>(config: DecoratorDesignSystemPropertyConfiguration): (source: T, property: string) => void;
 
 // @public (undocumented)
 export class DesignSystemProvider extends FASTElement implements CSSCustomPropertyTarget, DesignSystemConsumer {
@@ -196,7 +204,7 @@ export class DesignSystemProvider extends FASTElement implements CSSCustomProper
     connectedCallback(): void;
     designSystem: {};
     designSystemProperties: {
-        [propertyName: string]: Required<DesignSystemPropertyDeclarationConfig>;
+        [propertyName: string]: Required<Pick<DecoratorDesignSystemPropertyConfiguration, "cssCustomProperty" | "default">>;
     };
     disconnectedCSSCustomPropertyRegistry: CSSCustomPropertyDefinition[];
     evaluate(definition: CSSCustomPropertyDefinition): string;
@@ -246,6 +254,12 @@ export class Dialog extends FASTElement {
 export const DialogTemplate: import("@microsoft/fast-element").ViewTemplate<Dialog, any>;
 
 // @public (undocumented)
+export const disabledCursor = "not-allowed";
+
+// @public
+export function display(displayValue: CSSDisplayPropertyValue): string;
+
+// @public (undocumented)
 export class Divider extends FASTElement {
     // (undocumented)
     role: DividerRole;
@@ -287,6 +301,9 @@ export enum FlipperDirection {
 export const FlipperTemplate: import("@microsoft/fast-element").ViewTemplate<Flipper, any>;
 
 // @public
+export const focusVisible: string;
+
+// @public
 export const forcedColorsStylesheetBehavior: (sheet: ElementStyles) => Readonly<{
     query: MediaQueryList;
     cache: WeakMap<(new () => HTMLElement & FASTElement) & {
@@ -323,6 +340,9 @@ export const forcedColorsStylesheetBehavior: (sheet: ElementStyles) => Readonly<
         getDefinition: <T extends Function>(Type: T) => import("@microsoft/fast-element").FASTElementDefinition | undefined;
     }): void;
 }>;
+
+// @public (undocumented)
+export const hidden = "\n    :host([hidden]) {\n        display: none;\n    }\n";
 
 // @public
 export function isDesignSystemConsumer(element: HTMLElement | DesignSystemConsumer): element is DesignSystemConsumer;
@@ -430,6 +450,8 @@ export class Radio extends FormAssociated<HTMLInputElement> implements RadioCont
     // (undocumented)
     connectedCallback(): void;
     defaultChecked: boolean;
+    // (undocumented)
+    defaultSlottedNodes: Node[];
     // (undocumented)
     keypressHandler: (e: KeyboardEvent) => void;
     // (undocumented)
@@ -616,6 +638,8 @@ export class Switch extends FormAssociated<HTMLInputElement> {
     connectedCallback(): void;
     defaultChecked: boolean;
     // (undocumented)
+    defaultSlottedNodes: Node[];
+    // (undocumented)
     keypressHandler: (e: KeyboardEvent) => void;
     // (undocumented)
     protected proxy: HTMLInputElement;
@@ -690,6 +714,8 @@ export class TextArea extends FormAssociated<HTMLTextAreaElement> {
     // (undocumented)
     connectedCallback(): void;
     // (undocumented)
+    defaultSlottedNodes: Node[];
+    // (undocumented)
     formId: string;
     // (undocumented)
     handleTextInput: () => void;
@@ -753,6 +779,8 @@ export class TextField extends FormAssociated<HTMLInputElement> {
     connectedCallback(): void;
     // (undocumented)
     control: HTMLInputElement;
+    // (undocumented)
+    defaultSlottedNodes: Node[];
     // (undocumented)
     handleTextInput(): void;
     // (undocumented)
