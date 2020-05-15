@@ -1,7 +1,7 @@
 import { attr, FASTElement } from "@microsoft/fast-element";
-import { ButtonAppearance } from "../button";
-import { StartEnd } from "../patterns/start-end";
-import { applyMixins } from "../utilities/apply-mixins";
+import { ButtonAppearance } from "../button/button.js";
+import { StartEnd } from "../patterns/start-end.js";
+import { applyMixins } from "../utilities/apply-mixins.js";
 
 export type AnchorAppearance = ButtonAppearance | "hypertext";
 export class Anchor extends FASTElement {
