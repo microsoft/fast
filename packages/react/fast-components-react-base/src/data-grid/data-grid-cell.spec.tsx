@@ -198,6 +198,7 @@ describe("data grid cell", (): void => {
             { cell: cellRenderFunction }
         );
 
+        /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
         const rendered: ReactWrapper = mount(
             <DataGridContext.Provider
                 value={

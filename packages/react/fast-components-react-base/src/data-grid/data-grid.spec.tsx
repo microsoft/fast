@@ -7,6 +7,8 @@ import {
     keyCodeArrowLeft,
     keyCodeArrowRight,
     keyCodeArrowUp,
+    keyCodePageDown,
+    keyCodePageUp
 } from "@microsoft/fast-web-utilities";
 import DataGrid, { DataGridState } from "./data-grid";
 import { DataGridContext } from "./data-grid-context";
@@ -76,6 +78,19 @@ describe("data grid", (): void => {
         name: "Harold",
         age: 27,
     };
+
+    function getDataSet(length: number): object[] {
+        const dataSet: object[] = [];
+    
+        for (let i: number = 0; i < length; i++) {
+            dataSet.push({
+                name: `id-${i}`,
+                age: i,
+            });
+        }
+    
+        return dataSet;
+    }
 
     const columnDefinition1: DataGridColumnDefinition = {
         columnDataKey: "name",
@@ -201,6 +216,44 @@ describe("data grid", (): void => {
         expect(rendered.instance()["getRowIndexByKey"]("Richard")).toBe(1);
     });
 
+    test("virtualize items reduces number or rendered items", (): void => {
+        let container: HTMLDivElement = document.createElement("div");
+        document.body.appendChild(container);
+        let rendered: ReactWrapper = mount(
+            <DataGrid
+                gridData={getDataSet(20)}
+                dataRowKey="name"
+                columnDefinitions={columnDefinitions}
+                virtualizeItems={false}
+                managedClasses={managedClasses}
+            />,
+            {
+                attachTo: container,
+            }
+        );
+
+        expect(rendered.find("[data-rowid]").length).toBe(20);
+        document.body.removeChild(container);
+
+        container = document.createElement("div");
+        document.body.appendChild(container);
+        rendered = mount(
+            <DataGrid
+                gridData={getDataSet(20)}
+                dataRowKey="name"
+                columnDefinitions={columnDefinitions}
+                virtualizeItems={true}
+                managedClasses={managedClasses}
+            />,
+            {
+                attachTo: container,
+            }
+        );
+
+        expect(rendered.find("[data-rowid]").length).toBe(1);
+        document.body.removeChild(container);
+    });
+
     test("arrow keys move focus around the grid", (): void => {
         const container: HTMLDivElement = document.createElement("div");
         document.body.appendChild(container);
@@ -232,28 +285,48 @@ describe("data grid", (): void => {
         expect((rendered.instance().state as DataGridState).focusRowKey).toBe("Richard");
         expect((rendered.instance().state as DataGridState).focusColumnKey).toBe("age");
 
-        cell.simulate("keydown", { keyCode: keyCodeArrowDown });
-        expect((rendered.instance().state as DataGridState).focusRowKey).toBe("Harold");
-        expect((rendered.instance().state as DataGridState).focusColumnKey).toBe("age");
-
-        cell.simulate("keydown", { keyCode: keyCodeArrowDown });
-        expect((rendered.instance().state as DataGridState).focusRowKey).toBe("Harold");
-        expect((rendered.instance().state as DataGridState).focusColumnKey).toBe("age");
-
-        cell.simulate("keydown", { keyCode: keyCodeArrowRight });
-        expect((rendered.instance().state as DataGridState).focusRowKey).toBe("Harold");
+        cell.simulate("keydown", { keyCode: keyCodeArrowUp });
+        expect((rendered.instance().state as DataGridState).focusRowKey).toBe("Thomas");
         expect((rendered.instance().state as DataGridState).focusColumnKey).toBe("age");
 
         cell.simulate("keydown", { keyCode: keyCodeArrowLeft });
-        expect((rendered.instance().state as DataGridState).focusRowKey).toBe("Harold");
-        expect((rendered.instance().state as DataGridState).focusColumnKey).toBe("name");
-
-        cell.simulate("keydown", { keyCode: keyCodeArrowLeft });
-        expect((rendered.instance().state as DataGridState).focusRowKey).toBe("Harold");
+        expect((rendered.instance().state as DataGridState).focusRowKey).toBe("Thomas");
         expect((rendered.instance().state as DataGridState).focusColumnKey).toBe("name");
 
         document.body.removeChild(container);
     });
+
+    // test("page up/down keys move up/down in the grid", (): void => {
+    //     const container: HTMLDivElement = document.createElement("div");
+    //     document.body.appendChild(container);
+
+    //     const rendered: any = mount(
+    //         <DataGrid
+    //             gridData={[]}
+    //             dataRowKey="name"
+    //             columnDefinitions={columnDefinitions}
+    //             virtualizeItems={false}
+    //             managedClasses={managedClasses}
+    //             style={{
+    //                 height: "300px",
+    //             }}
+    //         />,
+    //         {
+    //             attachTo: container,
+    //         }
+    //     );
+
+    //     rendered.instance().lastReportedViewportSpan = 100;
+    //     rendered.setProps({ gridData: getDataSet(20) });
+    //     expect((rendered.instance().state as DataGridState).focusRowKey).toBe("id-0");
+
+    //     const row: any = rendered.find("[data-rowid]").first();
+    //     const cell: any = row.find("[data-cellid]").first();
+    //     cell.simulate("keydown", { keyCode: keyCodePageDown });
+    //     expect((rendered.instance().state as DataGridState).focusRowKey).toBe("id-2");
+
+    //     document.body.removeChild(container);
+    // });
 
     /* tslint:disable:no-string-literal */
     test("Focus and blur events change the state of isFocused", (): void => {
