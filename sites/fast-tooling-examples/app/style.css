@@ -6,10 +6,15 @@
 :root {
     --badge-fill-primary: #FB356D;
     --badge-color-text: white;
+    --border: 1px solid #e1e1e1;
 }
 
 body {
     margin: 0;
+}
+
+iframe {
+    border: var(--border);
 }
 
 .main {
@@ -26,7 +31,7 @@ body {
     grid-row-end: 1;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    border-bottom: 1px solid #e1e1e1;
+    border-bottom: var(--border);
 }
 
 .toolbar-logo {
@@ -45,11 +50,11 @@ body {
     grid-column-end: 1;
     grid-row-start: 2;
     grid-row-end: 2;
-    border-inline-end: 1px solid #e1e1e1;
+    border-inline-end: var(--border);
 }
 
-/* This should be replaced at a later date once the typography styles are defined */
 .category-title {
+    /* This should be replaced at a later date once the typography styles are defined */
     font-size: var(--type-ramp-plus-2-font-size);
 }
 
@@ -58,6 +63,26 @@ body {
     grid-column-end: 2;
     grid-row-start: 2;
     grid-row-end: 2;
+}
+
+.content-title {
+    /* This should be replaced at a later date once the typography styles are defined */
+    font-size: var(--type-ramp-plus-3-font-size);
+}
+
+.content-subtitle {
+    /* This should be replaced at a later date once the typography styles are defined */
+    font-size: var(--type-ramp-plus-2-font-size);
+}
+
+.content-paragraph {
+    /* This should be replaced at a later date once the typography styles are defined */
+    font-size: var(--type-ramp-plus-1-font-size);
+}
+
+.content-list {
+    /* This should be replaced at a later date once the typography styles are defined */
+    font-size: var(--type-ramp-plus-1-font-size);
 }
 
 .toolbar-logo,
