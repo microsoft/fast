@@ -30,6 +30,7 @@ export const SwitchStyles = css`
     ${display("inline-flex")} :host {
         align-items: center;
         outline: none;
+        font-family: var(--body-font);
         margin: calc(var(--design-unit) * 1px) 0;
         ${
             /*
@@ -89,20 +90,21 @@ export const SwitchStyles = css`
     }
 
     .status-message {
-        font-family: var(--body-font);
         color: var(--neutral-foreground-rest);
         cursor: pointer;
-        ${
-            /* Font size is temporary - replace when adaptive typography is figured out */ ""
-        } font-size: calc(1rem + (var(--density) * 2px));
+        font-size: var(--type-ramp-base-font-size);
+        line-height: var(--type-ramp-base-line-height);
+    }
+
+    .label__hidden {
+        display: none;
+        visibility: hidden;
     }
 
     .label {
         color: var(--neutral-foreground-rest);
-
-        ${
-            /* Need to discuss with Brian how HorizontalSpacingNumber can work. https://github.com/microsoft/fast-dna/issues/2766 */ ""
-        } margin-inline-end: calc(var(--design-unit) * 2px + 2px);
+        font-size: var(--type-ramp-base-font-size);
+        line-height: var(--type-ramp-base-line-height);
     }
 
     ::slotted(*) {

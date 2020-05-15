@@ -47,11 +47,8 @@ export const TextFieldStyles = css`
         border: none;
         padding: 0 calc(var(--design-unit) * 2px + 1px);
         color: var(--neutral-foreground-rest);
-        ${
-            /* Font size is temporary - 
-            replace when adaptive typography is figured out */ ""
-        } font-size: 14px;
-        line-height: 20px;
+        font-size: var(--type-ramp-base-font-size);
+        line-height: var(--type-ramp-base-line-height);
     }
 
     .control:hover,
@@ -61,14 +58,17 @@ export const TextFieldStyles = css`
         outline: none;
     }
 
+    .label__hidden {
+        display: none;
+        visibility: hidden;
+    }
+
     .label {
         display: block;
         color: var(--neutral-foreground-rest);
         cursor: pointer;
-        ${
-            /* Font size is temporary - 
-            replace when adaptive typography is figured out */ ""
-        } font-size: 14px;
+        font-size: var(--type-ramp-base-font-size);
+        line-height: var(--type-ramp-base-line-height);
         margin-bottom: 4px;
     }
 

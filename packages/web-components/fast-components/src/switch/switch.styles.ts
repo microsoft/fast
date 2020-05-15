@@ -30,6 +30,7 @@ export const SwitchStyles = css`
     ${display("inline-flex")} :host {
         align-items: center;
         outline: none;
+        font-family: var(--body-font);
         margin: calc(var(--design-unit) * 1px) 0;
         ${
             /*
@@ -89,7 +90,6 @@ export const SwitchStyles = css`
     }
 
     .status-message {
-        font-family: var(--body-font);
         color: var(--neutral-foreground-rest);
         cursor: pointer;
         font-size: var(--type-ramp-base-font-size);
