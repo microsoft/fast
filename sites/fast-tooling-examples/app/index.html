@@ -4,6 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <%= htmlWebpackPlugin.tags.headTags %>
     <title><%= htmlWebpackPlugin.options.title %></title>
 </head>
 
@@ -40,19 +41,68 @@
                         Tooling
                     </h2>
                     <!-- examples using @microsoft/fast-tooling -->
+                    <ul>
+                        <li>
+                            <fast-anchor
+                                href="/web-component-1"
+                                appearance="hypertext"
+                            >
+                                Message System 
+                            </fast-anchor>
+                        </li>
+                    </ul>
                 </div>
                 <div>
                     <h2 class="category-title">
                         React Tooling
                     </h2>
                     <!-- examples using @microsoft/fast-tooling-react -->
+                    <ul>
+                        <li>
+                            <fast-anchor
+                                href="/react-1"
+                                appearance="hypertext"
+                            >
+                                Simple Form
+                            </fast-anchor>
+                        </li>
+                    </ul>
                 </div>
             </div>
             <div class="content">
-                Placeholder
+                <div id="text">
+                    <h1 class="content-title">
+                        Tooling Examples
+                    </h1>
+                    <fast-divider role="presentation"></fast-divider>
+                    <h2 class="content-subtitle">
+                        Showcasing common use cases for <code>@microsoft/fast-tooling</code> and <code>@microsoft/fast-tooling-react</code>
+                    </h2>
+                    <p class="content-paragraph">
+                        The examples in this site serve to better illustrate:
+                    </p>
+                    <ul class="content-list">
+                        <li>
+                            How to use the message system
+                        </li>
+                        <li>
+                            How to use the available React components
+                        </li>
+                    </ul>
+                    <p class="content-paragraph">
+                        Additionally each example is encapsulated in its own folder which can be copied as used as a starting point.
+                    </p>
+                </div>
+                <div id="iframe"></div>
             </div>
         </div>
     </fast-design-system-provider>
+    <%= htmlWebpackPlugin
+        .tags
+        .bodyTags
+        .filter((tag) => !tag.attributes.src.includes('example'))
+        .join('')
+    %>
 </body>
 
 </html>

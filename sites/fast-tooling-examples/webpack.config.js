@@ -14,6 +14,11 @@ module.exports = (env, args) => {
         devtool: isProduction ? "none" : "inline-source-map",
         entry: {
             main: path.resolve(appDir, "index.ts"),
+            exampleWebComponent1: path.resolve(
+                appDir,
+                "examples/web-component-1/index.ts"
+            ),
+            exampleReact1: path.resolve(appDir, "examples/react-1/index.tsx"),
         },
         output: {
             path: outDir,
@@ -64,6 +69,12 @@ module.exports = (env, args) => {
                     test: /\.css$/i,
                     use: [MiniCssExtractPlugin.loader, "css-loader"],
                 },
+                {
+                    test: /message\-system\.min\.js/,
+                    use: {
+                        loader: "worker-loader",
+                    },
+                },
             ],
         },
         performance: {
@@ -74,8 +85,21 @@ module.exports = (env, args) => {
         plugins: [
             new CleanWebpackPlugin([outDir]),
             new HtmlWebpackPlugin({
+                inject: false,
                 title: "FAST Tooling Examples",
                 template: path.resolve(appDir, "index.html"),
+            }),
+            new HtmlWebpackPlugin({
+                inject: false,
+                title: "FAST Tooling Examples - Web Components",
+                filename: "examples/web-component-1/index.html",
+                template: path.resolve(appDir, "examples/web-component-1/index.html"),
+            }),
+            new HtmlWebpackPlugin({
+                inject: false,
+                title: "FAST Tooling Examples - React",
+                filename: "examples/react-1/index.html",
+                template: path.resolve(appDir, "examples/react-1/index.html"),
             }),
             new MiniCssExtractPlugin({
                 chunkFilename: "[name]-[contenthash].css",
