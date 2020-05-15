@@ -3,7 +3,7 @@ import { customElement } from "@microsoft/fast-element";
 import {
     AnchoredRegion,
     AnchoredRegionTemplate as template,
-} from "@microsoft/fast-foundation/dist/anchored-region";
+} from "@microsoft/fast-foundation/dist/esm/anchored-region/index.js";
 import { AnchoredRegionStyles as styles } from "./anchored-region.styles";
 
 @customElement({
