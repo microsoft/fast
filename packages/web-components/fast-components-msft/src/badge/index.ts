@@ -1,8 +1,8 @@
-import { attr, customElement } from "@microsoft/fast-element";
+import { attr, customElement, DOM } from "@microsoft/fast-element";
 import { Badge, BadgeTemplate as template } from "@microsoft/fast-foundation";
 import { BadgeStyles as styles } from "./badge.styles";
 
-export type BadgeFill = "accent" | "lightweight" | "neutral" | "string";
+export type BadgeAppearance = "accent" | "lightweight" | "neutral" | string;
 
 @customElement({
     name: "fast-badge",
@@ -10,12 +10,17 @@ export type BadgeFill = "accent" | "lightweight" | "neutral" | "string";
     styles,
 })
 export class FASTBadge extends Badge {
-    @attr
-    public fill: BadgeFill = "lightweight";
-    private fillChanged(oldValue: BadgeFill, newValue: BadgeFill): void {
+    @attr({ mode: "fromView" })
+    public appearance: BadgeAppearance = "lightweight";
+    private appearanceChanged(
+        oldValue: BadgeAppearance,
+        newValue: BadgeAppearance
+    ): void {
         if (oldValue !== newValue) {
-            this.classList.add(newValue);
-            this.classList.remove(oldValue);
+            DOM.queueUpdate(() => {
+                this.classList.add(newValue);
+                this.classList.remove(oldValue);
+            });
         }
     }
 }

@@ -1,6 +1,6 @@
 import { css } from "@microsoft/fast-element";
 import { display } from "@microsoft/fast-foundation";
-import { heightNumber } from "../styles";
+import { accentForegroundRestBehavior, heightNumber } from "../styles";
 
 export const BadgeStyles = css`
     ${display("inline-block")} :host {
@@ -13,6 +13,12 @@ export const BadgeStyles = css`
     .badge {
         border-radius: calc(var(--corner-radius) * 1px);
         padding: calc(var(--design-unit) * 0.5px) calc(var(--design-unit) * 1px);
+        color: var(--accent-foreground-rest);
+        font-weight: 600;
+    }
+
+    .badge[style] {
+        font-weight: 400;
     }
 
     :host(.circular) .badge {
@@ -27,4 +33,4 @@ export const BadgeStyles = css`
         justify-content: center;
         box-sizing: border-box;
     }
-`;
+`.withBehaviors(accentForegroundRestBehavior);
