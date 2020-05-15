@@ -3,9 +3,7 @@ import { display } from "@microsoft/fast-foundation";
 import {
     accentFillRestBehavior,
     accentForegroundCutRestBehavior,
-    accentForegroundRestBehavior,
-    neutralFillInputRestBehavior,
-    neutralFillToggleRestBehavior,
+    neutralFillRestBehavior,
     neutralForegroundRestBehavior,
 } from "../styles";
 
@@ -25,25 +23,23 @@ export const BadgeStyles = css`
     }
 
     :host(.lightweight) {
-        --badge-fill-lightweight: transparent;
-        --badge-color-value: var(--neutral-foreground-rest);
+        background: transparent;
+        color: var(--neutral-foreground-rest);
         font-weight: 600;
     }
 
     :host(.accent) {
-        --badge-fill-accent: var(--accent-fill-rest);
-        --badge-color-value: var(--accent-foreground-cut-rest);
+        background: var(--accent-fill-rest);
+        color: var(--accent-foreground-cut-rest);
     }
 
     :host(.neutral) {
-        --badge-fill-neutral: var(--neutral-fill-toggle-rest);
-        --badge-color-value: var(--neutral-fill-input-rest);
+        background: var(--neutral-fill-rest);
+        color: var(--neutral-foreground-rest);
     }
 `.withBehaviors(
     accentFillRestBehavior,
     accentForegroundCutRestBehavior,
-    accentForegroundRestBehavior,
-    neutralForegroundRestBehavior,
-    neutralFillInputRestBehavior,
-    neutralFillToggleRestBehavior
+    neutralFillRestBehavior,
+    neutralForegroundRestBehavior
 );
