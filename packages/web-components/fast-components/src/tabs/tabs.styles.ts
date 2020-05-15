@@ -20,6 +20,8 @@ export const TabsStyles = css`
         position: relative;
         width: max-content;
         align-self: end;
+        padding: 16px 16px 0 16px;
+        box-sizing: border-box;
     }
 
     .start {
@@ -33,11 +35,15 @@ export const TabsStyles = css`
     .activeIndicator {
         grid-row: 2;
         grid-column: 1;
-        width: 20px;
-        height: 3px;
-        border-radius: calc(var(--corner-radius) * 1px);
+        width: 100%;
+        height: 5px;
         justify-self: center;
         background: var(--accent-fill-rest);
+        margin-top: 10px;
+        border-top-left-radius: calc(var(--corner-radius) * 1px);
+        border-top-right-radius: calc(var(--corner-radius) * 1px);
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
     }
 
     .activeIndicatorTransition {
@@ -66,6 +72,7 @@ export const TabsStyles = css`
         width: max-content;
         justify-self: end;
         width: 100%;
+        padding: 36px 16px 36px 0;
     }
 
     :host(.vertical) .tabpanel {
@@ -81,11 +88,17 @@ export const TabsStyles = css`
     :host(.vertical) .activeIndicator {
         grid-column: 1;
         grid-row: 1;
-        width: 3px;
-        height: 20px;
+        width: 5px;
+        height: 100%;
+        margin-inline-end: 10px;
         border-radius: calc(var(--corner-radius) * 1px);
         align-self: center;
         background: var(--accent-fill-rest);
+        margin-top: 0;
+        border-top-left-radius: 0;
+        border-top-right-radius: calc(var(--corner-radius) * 1px);
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: calc(var(--corner-radius) * 1px);
     }
 
     :host(.vertical) .activeIndicatorTransition {
