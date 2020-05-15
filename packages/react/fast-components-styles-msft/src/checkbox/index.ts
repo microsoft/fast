@@ -13,11 +13,13 @@ import {
     neutralFillInputActive,
     neutralFillInputHover,
     neutralFillInputRest,
-    neutralFocus,
+    neutralFillToggleActive,
+    neutralFillToggleHover,
+    neutralFillToggleRest,
     neutralForegroundRest,
-    neutralOutlineActive,
-    neutralOutlineHover,
-    neutralOutlineRest,
+    neutralOutlineContrastActive,
+    neutralOutlineContrastHover,
+    neutralOutlineContrastRest,
 } from "../utilities/color";
 import { applyCornerRadius } from "../utilities/border";
 import {
@@ -27,30 +29,33 @@ import {
 } from "../utilities/density";
 import { applyDisabledState } from "../utilities/disabled";
 import { applyScaledTypeRamp } from "../utilities/typography";
-import { designUnit, outlineWidth } from "../utilities/design-system";
+import { backgroundColor, designUnit, outlineWidth } from "../utilities/design-system";
 import { applyCursorDisabled, applyCursorPointer } from "../utilities/cursor";
-import { ColorRecipe } from "../utilities/color/common";
 import {
     HighContrastColor,
     highContrastColorBackground,
     highContrastDisabledBorder,
+    highContrastDoubleOuterFocus,
     highContrastHighlightBackground,
     highContrastOptOutProperty,
     highContrastSelectedBackground,
     highContrastSelector,
     highContrastTextForeground,
 } from "../utilities/high-contrast";
+import { doubleOuterFocus } from "../patterns/input-field";
 
 const inputSize: DesignSystemResolver<string> = toPx(
     add(divide(heightNumber(), 2), designUnit)
 );
+
 const indeterminateIndicatorMargin: DesignSystemResolver<string> = toPx(
     add(designUnit, densityCategorySwitch(0, 1, 2))
 );
+
 const indicatorSvg: (
-    color: ColorRecipe<string> | string
+    color: DesignSystemResolver<string> | string
 ) => DesignSystemResolver<string> = (
-    color: ColorRecipe<string> | string
+    color: DesignSystemResolver<string> | string
 ): DesignSystemResolver<string> => {
     return (designSystem: DesignSystem): string => {
         const colorEval: string = typeof color === "string" ? color : color(designSystem);
@@ -59,6 +64,7 @@ const indicatorSvg: (
         )}" fill-rule="evenodd" clip-rule="evenodd" d="M8.143 12.6697L15.235 4.5L16.8 5.90363L8.23812 15.7667L3.80005 11.2556L5.27591 9.7555L8.143 12.6697Z"/></svg>`;
     };
 };
+
 const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = {
     checkbox: {
         position: "relative",
@@ -90,14 +96,14 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = {
         border: format(
             "{0} solid {1}",
             toPx<DesignSystem>(outlineWidth),
-            neutralOutlineRest
+            neutralOutlineContrastRest
         ),
         "&:enabled": {
             ...applyCursorPointer(),
         },
         "&:hover:enabled": {
             background: neutralFillInputHover,
-            "border-color": neutralOutlineHover,
+            "border-color": neutralOutlineContrastHover,
             [highContrastSelector]: {
                 background: HighContrastColor.background,
                 "border-color": HighContrastColor.selectedBackground,
@@ -105,17 +111,11 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = {
         },
         "&:active:enabled": {
             background: neutralFillInputActive,
-            "border-color": neutralOutlineActive,
+            "border-color": neutralOutlineContrastActive,
         },
         ...applyFocusVisible({
-            "box-shadow": format<DesignSystem>("0 0 0 1px {0} inset", neutralFocus),
-            "border-color": neutralFocus,
-            [highContrastSelector]: {
-                "box-shadow": format<DesignSystem>(
-                    "0 0 0 1px {0}",
-                    () => HighContrastColor.buttonText
-                ),
-            },
+            ...doubleOuterFocus,
+            ...highContrastDoubleOuterFocus,
         }),
         ...highContrastColorBackground,
     },
@@ -148,7 +148,7 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = {
             "&::before": {
                 background: format(
                     "url('data:image/svg+xml;utf8,{0}')",
-                    indicatorSvg(neutralForegroundRest)
+                    indicatorSvg(backgroundColor)
                 ),
                 [highContrastSelector]: {
                     background: format(
@@ -171,9 +171,15 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = {
             },
         },
         "& $checkbox_input": {
+            background: neutralFillToggleRest,
+            "border-color": "transparent",
             ...highContrastHighlightBackground,
             "&:hover": {
+                background: neutralFillToggleHover,
                 ...highContrastSelectedBackground,
+            },
+            "&:active": {
+                background: neutralFillToggleActive,
             },
         },
     },

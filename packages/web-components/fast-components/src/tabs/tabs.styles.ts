@@ -1,17 +1,13 @@
 import { css } from "@microsoft/fast-element";
-import { forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
-import { display } from "../styles";
-import { accentFillRestBehavior, neutralForegroundRestBehavior } from "../styles/recipes";
-import { SystemColors } from "../styles/system-colors";
+import { display, forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
+import { SystemColors } from "@microsoft/fast-web-utilities";
+import { accentFillRestBehavior, neutralForegroundRestBehavior } from "../styles";
 
 export const TabsStyles = css`
     ${display("grid")} :host {
         box-sizing: border-box;
-        font-family: var(--body-font);
-        ${/* Font size, weight, and line height are temporary - 
-            replace when adaptive typography is figured out */ ""} font-size: 12px;
-        font-weight: 400;
-        line-height: 18px;
+        font-size: var(--type-ramp-base-font-size);
+        line-height: var(--type-ramp-base-line-height);
         color: var(--neutral-foreground-rest);
         grid-template-columns: auto 1fr auto;
         grid-template-rows: auto 1fr;

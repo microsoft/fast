@@ -1,8 +1,7 @@
 import { css } from "@microsoft/fast-element";
-import { forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
-import { display, elevation } from "../styles";
-import { SystemColors } from "../styles/system-colors";
-import { neutralLayerCardBehavior } from "../styles/recipes";
+import { display, forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
+import { SystemColors } from "@microsoft/fast-web-utilities";
+import { elevation, neutralLayerCardBehavior } from "../styles";
 
 export const CardStyles = css`
     ${display("block")} :host {
@@ -13,7 +12,7 @@ export const CardStyles = css`
         width: var(--card-width, 100%);
         box-sizing: border-box;
         background: var(--neutral-layer-card);
-        border-radius: calc(var(--elevated-corner-radius) * 1px);
+        border-radius: calc(var(--corner-radius) * 1px);
         ${elevation};
     }
 `.withBehaviors(

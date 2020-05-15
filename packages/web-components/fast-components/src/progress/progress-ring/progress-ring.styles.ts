@@ -1,13 +1,12 @@
 import { css } from "@microsoft/fast-element";
-import { forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
-import { display } from "../../styles";
-import { SystemColors } from "../../styles/system-colors";
-import { heightNumber } from "../../styles/size";
+import { display, forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
+import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
     accentFillRestBehavior,
+    heightNumber,
     neutralFillRestBehavior,
     neutralForegroundHintBehavior,
-} from "../../styles/recipes";
+} from "../../styles";
 
 export const ProgressRingStyles = css`
     ${display("flex")} :host {

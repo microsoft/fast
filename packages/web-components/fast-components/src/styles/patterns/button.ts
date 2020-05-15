@@ -1,6 +1,5 @@
 import { css } from "@microsoft/fast-element";
-import { display } from "../display";
-import { focusVisible } from "../focus";
+import { display, focusVisible } from "@microsoft/fast-foundation";
 import { heightNumber } from "../size";
 
 export const BaseButtonStyles = css`
@@ -10,16 +9,14 @@ export const BaseButtonStyles = css`
     }
 
     .control {
-        ${
-            /* Font size is temporary - 
-            replace when adaptive typography is figured out */ ""
-        } font-size: 14px;
+        font-size: var(--type-ramp-base-font-size);
+        line-height: var(--type-ramp-base-line-height);
         line-height: 1;
         box-sizing: border-box;
         display: inline-flex;
         justify-content: center;
         align-items: center;
-        padding: 0 calc((6 + (var(--design-unit) * 2 * var(--density))) * 1px);
+        padding: 0 calc((10 + (var(--design-unit) * 2 * var(--density))) * 1px);
         height: calc(${heightNumber} * 1px);
         min-width: calc(${heightNumber} * 1px);
         white-space: nowrap;
@@ -50,8 +47,7 @@ export const BaseButtonStyles = css`
         border: 0;
     }
 
-    :host(.disabled),
-    :host a.control:not(:link) {
+    :host(.disabled) {
         opacity: var(--disabled-opacity);
     }
 
@@ -101,22 +97,22 @@ export const HypertextStyles = css`
         box-shadow: none;
         border-radius: 0;
     }
-
+    :host a.control:not(:link) {
+        background-color: transparent;
+        cursor: default;
+    }
     :host(.hypertext) .control:link,
     :host(.hypertext) .control:visited {
         background: transparent;
         color: var(--accent-foreground-rest);
         border-bottom: calc(var(--outline-width) * 1px) solid var(--accent-foreground-rest);
     }
-
     :host(.hypertext) .control:hover {
         border-bottom-color: var(--accent-foreground-hover);
     }
-
     :host(.hypertext) .control:active {
         border-bottom-color: var(--accent-foreground-active);
     }
-
     :host(.hypertext) .control:${focusVisible} {
         border-bottom: calc(var(--focus-outline-width) * 1px) solid var(--neutral-focus);
     }
@@ -170,15 +166,15 @@ export const LightweightButtonStyles = css`
 export const OutlineButtonStyles = css`
     :host(.outline) .control {
         background: transparent;
-        border-color: var(--neutral-outline-rest);
+        border-color: var(--accent-fill-rest);
     }
 
     :host(.outline) .control:hover {
-        border-color: var(--neutral-outline-hover);
+        border-color: var(--accent-fill-hover);
     }
 
     :host(.outline) .control:active {
-        border-color: var(--neutral-outline-active);
+        border-color: var(--accent-fill-active);
     }
 `;
 

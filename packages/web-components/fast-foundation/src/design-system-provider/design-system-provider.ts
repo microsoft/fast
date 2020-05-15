@@ -12,7 +12,7 @@ import {
     CSSCustomPropertyTarget,
 } from "../custom-properties/index.js";
 import { composedParent } from "../utilities/index.js";
-import { DesignSystemPropertyDeclarationConfig } from "./design-system-property.js";
+import { DecoratorDesignSystemPropertyConfiguration } from "./design-system-property.js";
 
 const supportsAdoptedStylesheets = "adoptedStyleSheets" in window.ShadowRoot.prototype;
 
@@ -190,7 +190,12 @@ export class DesignSystemProvider extends FASTElement
      * by the decorator.
      */
     public designSystemProperties: {
-        [propertyName: string]: Required<DesignSystemPropertyDeclarationConfig>;
+        [propertyName: string]: Required<
+            Pick<
+                DecoratorDesignSystemPropertyConfiguration,
+                "cssCustomProperty" | "default"
+            >
+        >;
     };
 
     /**

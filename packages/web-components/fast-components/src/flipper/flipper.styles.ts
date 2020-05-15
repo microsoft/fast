@@ -1,18 +1,22 @@
 import { css } from "@microsoft/fast-element";
-import { forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
-import { disabledCursor, display, focusVisible } from "../styles";
-import { heightNumber } from "../styles/size";
-import { SystemColors } from "../styles/system-colors";
 import {
-    neutralFillStealthActiveBehavior,
-    neutralFillStealthHoverBehavior,
+    disabledCursor,
+    display,
+    focusVisible,
+    forcedColorsStylesheetBehavior,
+} from "@microsoft/fast-foundation";
+import { SystemColors } from "@microsoft/fast-web-utilities";
+import {
+    accentFillActiveBehavior,
+    accentFillHoverBehavior,
+    accentFillRestBehavior,
+    accentForegroundCutRestBehavior,
+    heightNumber,
     neutralFillStealthRestBehavior,
     neutralFocusBehavior,
     neutralForegroundRestBehavior,
-    neutralOutlineActiveBehavior,
-    neutralOutlineHoverBehavior,
     neutralOutlineRestBehavior,
-} from "../styles/recipes";
+} from "../styles";
 
 export const FlipperStyles = css`
     ${display("inline-flex")} :host {
@@ -22,8 +26,8 @@ export const FlipperStyles = css`
         align-items: center;
         margin: 0;
         position: relative;
-        fill: var(--neutral-foreground-rest);
-        color: var(--neutral-foreground-rest);
+        fill: var(--accent-foreground-cut-rest);
+        color: var(--accent-foreground-cut-rest);
         background: transparent;
         border: none;
         padding: 0;
@@ -31,9 +35,8 @@ export const FlipperStyles = css`
 
     :host::before {
         content: "";
-        opacity: 0.8;
-        background: var(--neutral-fill-stealth-rest);
-        border: calc(var(--outline-width) * 1px) solid var(--neutral-outline-rest);
+        background: var(--accent-fill-rest);
+        border: calc(var(--outline-width) * 1px) solid var(--accent-fill-rest);
         border-radius: 50%;
         position: absolute;
         top: 0;
@@ -56,11 +59,23 @@ export const FlipperStyles = css`
     :host(.disabled) {
         opacity: var(--disabled-opacity);
         cursor: ${disabledCursor};
+        fill: var(--neutral-foreground-rest);
+        color: var(--neutral-foreground-rest);
     }
 
-    :host(:hover)::before {
-        background: var(--neutral-fill-stealth-hover);
-        border-color: var(--neutral-outline-hover);
+    :host(.disabled)::before {
+        background: var(--neutral-fill-stealth-rest);
+        border: calc(var(--outline-width) * 1px) solid var(--neutral-outline-rest);
+    }
+
+    :host(:hover:enabled)::before {
+        background: var(--accent-fill-hover);
+        border-color: var(--accent-fill-hover);
+    }
+
+    :host(:active:enabled)::before {
+        background: var(--accent-fill-active);
+        border-color: var(--accent-fill-active);
     }
 
     :host(:${focusVisible}) {
@@ -72,22 +87,17 @@ export const FlipperStyles = css`
         border-color: var(--neutral-focus);
     }
 
-    :host(:active)::before {
-        background: var(--neutral-fill-stealth-active);
-        border-color: var(--neutral-outline-active);
-    }
-
     :host::-moz-focus-inner {
         border: 0;
     }
 `.withBehaviors(
-    neutralFillStealthActiveBehavior,
-    neutralFillStealthHoverBehavior,
+    accentFillActiveBehavior,
+    accentFillHoverBehavior,
+    accentFillRestBehavior,
+    accentForegroundCutRestBehavior,
     neutralFillStealthRestBehavior,
     neutralFocusBehavior,
     neutralForegroundRestBehavior,
-    neutralOutlineActiveBehavior,
-    neutralOutlineHoverBehavior,
     neutralOutlineRestBehavior,
     forcedColorsStylesheetBehavior(
         css`

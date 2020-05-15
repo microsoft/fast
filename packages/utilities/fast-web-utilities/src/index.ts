@@ -8,3 +8,4 @@ export * from "./numbers";
 export * from "./strings";
 export * from "./query";
 export * from "./rtl-scroll-converter";
+export * from "./system-colors";
