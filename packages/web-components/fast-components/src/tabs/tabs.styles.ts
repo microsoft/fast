@@ -88,11 +88,10 @@ export const TabsStyles = css`
         width: 5px;
         height: 100%;
         margin-inline-end: 10px;
-        border-radius: calc(var(--corner-radius) * 1px);
         align-self: center;
         background: var(--accent-fill-rest);
         margin-top: 0;
-        border-radius: 0 calc(var(--corner-radius) * 1px);
+        border-radius: 0 calc(var(--corner-radius) * 1px) calc(var(--corner-radius) * 1px) 0;
     }
 
     :host(.vertical) .activeIndicatorTransition {
