@@ -72,49 +72,7 @@
 
         <!-- frameworks:start -->
         <section class="section">
-          <div class="section-component">
-            <site-content-placement divider>
-              <h3>Angular 8.2.14</h3>
-              <p slot="body">Angular's default binding syntax will always set properties on an element. This works well for rich data, like objects and arrays, and also works well for primitive values so long as the Custom Element author has mapped any exposed attributes to corresponding properties.</p>
-              <span slot="compatibility"><img src="https://via.placeholder.com/16" alt="Smiley face"> No issues!</span>
-              <fast-anchor slot="action" appearance="lightweight" href="#" class="section-anchor">Learn More</fast-anchor>
-            </site-content-placement>
-    
-            <site-content-placement divider>
-              <h3>DIO</h3>
-              <p slot="body">DIO uses a runtime heuristic to determine if it should pass data to Custom Elements as either properties or attributes. If a property is already defined on the element instance, DIO will use properties, otherwise it will fallback to attributes</p>
-              <span slot="compatibility"><img src="https://via.placeholder.com/16" alt="Smiley face"> No issues!</span>
-              <fast-anchor slot="action" appearance="lightweight" href="#" class="section-anchor">Learn More</fast-anchor>
-            </site-content-placement>
-    
-            <site-content-placement divider>
-              <h3>hyperHTML 2.32.2</h3>
-              <p slot="body">hyperHTML will pass data to an element as properties, as long as the property is defined on the element's prototype. Otherwise it will fallback to passing data as attributes.</p>
-              <span slot="compatibility"><img src="https://via.placeholder.com/16" alt="Smiley face"> No issues!</span>
-              <fast-anchor slot="action" appearance="lightweight" href="#" class="section-anchor">Learn More</fast-anchor>
-            </site-content-placement>
-    
-            <site-content-placement divider>
-              <h3>Dojo 6.0.4</h3>
-              <p slot="body">Dojo will pass data as attributes only when the data is a type of string, otherwise it is set as a property.</p>
-              <span slot="compatibility"><img src="https://via.placeholder.com/16" alt="Smiley face"> No issues!</span>
-              <fast-anchor slot="action" appearance="lightweight" href="#" class="section-anchor">Learn More</fast-anchor>
-            </site-content-placement>
-    
-            <site-content-placement divider>
-              <h3>hybrids 4.1.7</h3>
-              <p slot="body">Hybrids will pass data to an element as properties, as long as the property is defined on the element's prototype. Otherwise it will fallback to passing data as attributes.</p>
-              <span slot="compatibility"><img src="https://via.placeholder.com/16" alt="Smiley face"> No issues!</span>
-              <fast-anchor slot="action" appearance="lightweight" href="#"class="section-anchor">Learn More</fast-anchor>
-            </site-content-placement>
-    
-            <site-content-placement divider>
-              <h3>AngularJS (1.x) 1.7.9</h3>
-              <p slot="body">AngularJS can declaratively pass data to attributes using ng-attr, or to properties using ng-prop.</p>
-              <span slot="compatibility"><img src="https://via.placeholder.com/16" alt="Smiley face"> No issues!</span>
-              <fast-anchor slot="action" appearance="lightweight" href="#" class="section-anchor">Learn More</fast-anchor>
-            </site-content-placement>
-          </div>
+            <site-content-placement-container section="framework"></fast-content-card-container>
         </section>
         <!-- frameworks:end -->
 
@@ -147,28 +105,7 @@
 
         <!-- community:start -->
         <section class="section">
-          <div class="section-component">
-              <site-content-placement>
-                <div slot="icon"><img src="https://via.placeholder.com/16" alt="Discord"></div>
-                <h3>Discord</h3>
-                <p slot="body">Join our active community on Discord. Follow the latest updates and contributions, ask questions, give feedback, or keep up on our reading list.</p>
-                <fast-anchor slot="action" appearance="lightweight" href="#" class="section-anchor-hover">Join the Discord Chat</fast-anchor>
-              </site-content-placement>
-      
-              <site-content-placement >
-                <div slot="icon"><img src="https://via.placeholder.com/16" alt="Twitter"></div>
-                <h3>Twitter</h3>
-                <p slot="body">Follow along as we share out the latest happenings on Twitter. You will find important updates, announcements, and sneak peeks.</p>
-                <fast-anchor slot="action" appearance="lightweight" href="#" class="section-anchor-hover">Follow us on Twitter</fast-anchor>
-              </site-content-placement>
-      
-              <site-content-placement>
-                <div slot="icon"><img src="https://via.placeholder.com/16" alt="Github"></div>
-                <h3>Github</h3>
-                <p slot="body">Explore the FAST repository on Github and try out our components, utilities, and tools. Or, mix-and-match with your own solutions.</p>
-                <fast-anchor slot="action" appearance="lightweight" href="https://github.com/microsoft/fast-dna" class="section-anchor-hover">Get Started on Github</fast-anchor>
-              </site-content-placement>
-          </div>
+            <site-content-placement-container section="community"></fast-content-card-container>
         </section>
         <!-- community:end -->
 
