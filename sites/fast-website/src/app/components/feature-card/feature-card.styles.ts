@@ -20,7 +20,7 @@ export const FeatureCardStyles = css`
         height: 1px;
         width: 93%;
         left: 20px;
-        top: -1px;
+        top: 0;
     }
 
     :host(:hover) ::slotted(fast-anchor) {
@@ -44,12 +44,12 @@ export const FeatureCardStyles = css`
         }
     }
 
-    header {
+    .card_heading {
         grid-area: header;
         padding-bottom: 10px;
     }
 
-    main {
+    .card_body {
         display: flex;
         flex-direction: column;
         justify-content: space-between;
@@ -62,6 +62,7 @@ export const FeatureCardStyles = css`
     }
 
     ::slotted(:first-child) {
+        font-weight: bold;
         margin: 0 0 10px 0;
     }
 
