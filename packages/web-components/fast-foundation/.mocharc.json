@@ -1,0 +1,8 @@
+{
+  "colors": true,
+  "recursive": true,
+  "timeout": 5000,
+  "require": [
+    "jsdom-global/register"
+  ]
+}

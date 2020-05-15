@@ -1,2 +1,2 @@
-export * from "./tab-panel.template";
-export * from "./tab-panel";
+export * from "./tab-panel.template.js";
+export * from "./tab-panel.js";
