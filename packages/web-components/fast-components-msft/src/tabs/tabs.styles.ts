@@ -7,10 +7,8 @@ export const TabsStyles = css`
     ${display("grid")} :host {
         box-sizing: border-box;
         font-family: var(--body-font);
-        ${/* Font size, weight, and line height are temporary - 
-            replace when adaptive typography is figured out */ ""} font-size: 12px;
-        font-weight: 400;
-        line-height: 18px;
+        font-size: var(--type-ramp-base-font-size);
+        line-height: var(--type-ramp-base-line-height);
         color: var(--neutral-foreground-rest);
         grid-template-columns: auto 1fr auto;
         grid-template-rows: auto 1fr;

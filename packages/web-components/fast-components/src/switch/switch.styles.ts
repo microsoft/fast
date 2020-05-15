@@ -15,6 +15,7 @@ import {
     neutralFillInputActiveBehavior,
     neutralFillInputHoverBehavior,
     neutralFillInputRestBehavior,
+    neutralFocusBehavior,
     neutralForegroundRestBehavior,
     neutralOutlineActiveBehavior,
     neutralOutlineHoverBehavior,
@@ -29,6 +30,7 @@ export const SwitchStyles = css`
     ${display("inline-flex")} :host {
         align-items: center;
         outline: none;
+        font-family: var(--body-font);
         margin: calc(var(--design-unit) * 1px) 0;
         ${
             /*
@@ -60,22 +62,19 @@ export const SwitchStyles = css`
         border: calc(var(--outline-width) * 1px) solid var(--neutral-outline-rest);
     }
 
-    .switch:hover {
+    :host(:enabled) .switch:hover {
+        background: var(--neutral-fill-input-hover);
+        border-color: var(--neutral-outline-hover);
         cursor: pointer;
     }
 
-    .switch:hover {
-        background: var(--neutral-fill-input-hover);
-        border-color: var(--neutral-outline-hover);
-    }
-
-    .switch:active {
+    :host(:enabled) .switch:active {
         background: var(--neutral-fill-input-active);
         border-color: var(--neutral-outline-active);
     }
 
     :host(:${focusVisible}) .switch {
-        box-shadow: 0 0 0 1px var(--neutral-focus) inset;
+        box-shadow: 0 0 0 2px var(--background-color), 0 0 0 4px var(--neutral-focus);
         border-color: var(--neutral-focus);
     }
 
@@ -91,7 +90,6 @@ export const SwitchStyles = css`
     }
 
     .status-message {
-        font-family: var(--body-font);
         color: var(--neutral-foreground-rest);
         cursor: pointer;
         font-size: var(--type-ramp-base-font-size);
@@ -130,14 +128,19 @@ export const SwitchStyles = css`
         border-color: var(--accent-fill-rest);
     }
 
-    :host(.checked) .switch:hover {
+    :host(.checked:enabled) .switch:hover {
         background: var(--accent-fill-hover);
         border-color: var(--accent-fill-hover);
     }
 
-    :host(.checked) .switch:active {
+    :host(.checked:enabled) .switch:active {
         background: var(--accent-fill-active);
         border-color: var(--accent-fill-active);
+    }
+
+    :host(.checked:${focusVisible}:enabled) .switch {
+        box-shadow: 0 0 0 2px var(--background-color), 0 0 0 4px var(--neutral-focus);
+        border-color: transparent;
     }
 
     .unchecked-message {
@@ -163,6 +166,7 @@ export const SwitchStyles = css`
     neutralFillInputActiveBehavior,
     neutralFillInputHoverBehavior,
     neutralFillInputRestBehavior,
+    neutralFocusBehavior,
     neutralForegroundRestBehavior,
     neutralOutlineActiveBehavior,
     neutralOutlineHoverBehavior,
