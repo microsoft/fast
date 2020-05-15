@@ -6,9 +6,19 @@ import {
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
+    accentFillActiveBehavior,
+    accentFillHoverBehavior,
+    accentFillRestBehavior,
+    accentForegroundActiveBehavior,
+    accentForegroundHoverBehavior,
+    accentForegroundRestBehavior,
     heightNumber,
+    neutralFillActiveBehavior,
+    neutralFillHoverBehavior,
+    neutralFillRestBehavior,
     neutralFocusBehavior,
     neutralForegroundActiveBehavior,
+    neutralForegroundHintBehavior,
     neutralForegroundHoverBehavior,
     neutralForegroundRestBehavior,
 } from "../../styles";
@@ -17,15 +27,12 @@ export const TabStyles = css`
     ${display("inline-flex")} :host {
         box-sizing: border-box;
         font-family: var(--body-font);
-        ${
-            /* Font size, weight, and line height are temporary - 
-            replace when adaptive typography is figured out */ ""
-        } font-size: 12px;
-        font-weight: 400;
-        line-height: 18px;
+        font-size: var(--type-ramp-base-font-size);
+        line-height: var(--type-ramp-base-line-height);
         height: calc(${heightNumber} * 1px);
-        padding: 0 calc((6 + (var(--design-unit) * 2 * var(--density))) * 1px);
-        color: var(--neutral-foreground-rest);
+        padding: calc(var(--design-unit) * 5px) calc(var(--design-unit) * 4px);
+        color: var(--neutral-foreground-hint);
+        fill: var(--neutral-foreground-hint);
         border-radius: calc(var(--corner-radius) * 1px);
         border: calc(var(--outline-width) * 1px) solid transparent;
         align-items: center;
@@ -33,16 +40,32 @@ export const TabStyles = css`
         grid-row: 1;
     }
 
-    :host([aria-selected="true"]) {
-        z-index: 2;
-    }
-
     :host(:hover) {
         color: var(--neutral-foreground-hover);
+        fill: var(--neutral-foreground-hover);
     }
 
     :host(:active) {
         color: var(--neutral-foreground-active);
+        fill: var(--neutral-foreground-active);
+    }
+
+    :host([aria-selected="true"]) {
+        background: var(--neutral-fill-rest);
+        color: var(--accent-foreground-rest);
+        fill: var(--accent-fill-rest);
+    }
+
+    :host([aria-selected="true"]:hover) {
+        background: var(--neutral-fill-hover);
+        color: var(--accent-foreground-hover);
+        fill: var(--accent-fill-hover);
+    }
+
+    :host([aria-selected="true"]:active) {
+        background: var(--neutral-fill-active);
+        color: var(--accent-foreground-active);
+        fill: var(--accent-fill-active);
     }
 
     :host(:${focusVisible}) {
@@ -58,7 +81,7 @@ export const TabStyles = css`
 
     :host(.vertical) {
         justify-content: end;
-        grid-column: 2
+        grid-column: 2;
     }
 
     :host(.vertical[aria-selected="true"]) {
@@ -76,10 +99,20 @@ export const TabStyles = css`
     :host(.vertical:hover[aria-selected="true"]) {
     }
 `.withBehaviors(
+    accentFillActiveBehavior,
+    accentFillHoverBehavior,
+    accentFillRestBehavior,
+    accentForegroundActiveBehavior,
+    accentForegroundHoverBehavior,
+    accentForegroundRestBehavior,
+    neutralFillActiveBehavior,
+    neutralFillHoverBehavior,
+    neutralFillRestBehavior,
     neutralFocusBehavior,
-    neutralForegroundRestBehavior,
-    neutralForegroundHoverBehavior,
+    neutralForegroundHintBehavior,
     neutralForegroundActiveBehavior,
+    neutralForegroundHoverBehavior,
+    neutralForegroundRestBehavior,
     forcedColorsStylesheetBehavior(
         css`
             :host {
