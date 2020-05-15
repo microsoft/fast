@@ -247,7 +247,7 @@ describe("stack panel", (): void => {
         );
     });
 
-    test("getMaxScrollDistance returns value corresponding to height of items and viewport", (): void => {
+    test("too short an itemspan list does not throw", (): void => {
         const rendered: any = mount(<StackPanel itemSpan={[]} />);
 
         expect(() => {
