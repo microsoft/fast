@@ -1,18 +1,24 @@
 import { css } from "@microsoft/fast-element";
-import { forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
-import { disabledCursor, display } from "../styles";
-import { focusVisible } from "../styles/focus";
-import { heightNumber } from "../styles/size";
 import {
+    disabledCursor,
+    display,
+    focusVisible,
+    forcedColorsStylesheetBehavior,
+} from "@microsoft/fast-foundation";
+import {
+    accentFillActiveBehavior,
+    accentFillHoverBehavior,
+    accentFillRestBehavior,
+    heightNumber,
     neutralFillHoverBehavior,
+    neutralFillInputActiveBehavior,
     neutralFillInputHoverBehavior,
     neutralFillInputRestBehavior,
     neutralFillRestBehavior,
     neutralFocusBehavior,
     neutralForegroundRestBehavior,
-    neutralOutlineHoverBehavior,
     neutralOutlineRestBehavior,
-} from "../styles/recipes";
+} from "../styles";
 
 export const TextAreaStyles = css`
     ${display("inline-block")} :host {
@@ -27,15 +33,11 @@ export const TextAreaStyles = css`
         color: var(--neutral-foreground-rest);
         background: var(--neutral-fill-input-rest);
         border-radius: calc(var(--corner-radius) * 1px);
-        border: calc(var(--outline-width) * 1px) solid var(--neutral-outline-rest);
+        border: calc(var(--outline-width) * 1px) solid var(--accent-fill-rest);
         height: calc(${heightNumber} * 2px);
         font: inherit;
-        ${
-            /* Font size, weight, and line height are temporary - 
-            replace when adaptive typography is figured out */ ""
-        } font-size: 14px;
-        font-weight: 400px;
-        line-height: 20px;
+        font-size: var(--type-ramp-base-font-size);
+        line-height: var(--type-ramp-base-line-height);
         padding-top: calc(var(--design-unit) * 1.5);
         padding-bottom: calc(var(--design-unit) * 1.5);
         max-width: 100%;
@@ -44,7 +46,12 @@ export const TextAreaStyles = css`
 
     .control:hover:enabled {
         background: var(--neutral-fill-input-hover);
-        border-color: var(--neutral-outline-hover);
+        border-color: var(--accent-fill-hover);
+    }
+
+    .control:active:enabled {
+        background: var(--neutral-fill-input-active);
+        border-color: var(--accent-fill-active);
     }
 
     .control:hover,
@@ -61,12 +68,10 @@ export const TextAreaStyles = css`
 
     :host(.filled) .control {
         background: var(--neutral-fill-rest);
-        border-color: transparent;
     }
 
     :host(.filled:hover:not([disabled])) .control {
         background: var(--neutral-fill-hover);
-        border-color: transparent;
     }
 
     :host(.resize-both) .control {
@@ -85,13 +90,14 @@ export const TextAreaStyles = css`
         display: block;
         color: var(--neutral-foreground-rest);
         cursor: pointer;
-        ${
-            /* Font size, weight, and line height temporary - 
-            replace when adaptive typography is figured out */ ""
-        } font-size: 14px;
-        font-weight: 400px;
-        line-height: 20px;
+        font-size: var(--type-ramp-base-font-size);
+        line-height: var(--type-ramp-base-line-height);
         margin-bottom: 4px;
+    }
+
+    .label__hidden {
+        display: none;
+        visibility: hidden;
     }
 
     :host([disabled]) .label,
@@ -103,14 +109,20 @@ export const TextAreaStyles = css`
     :host([disabled]) {
         opacity: var(--disabled-opacity);
     }
-`.withBehaviors(
+    :host([disabled]) .control {
+        border-color: var(--neutral-outline-rest);
+    }
+ `.withBehaviors(
+    accentFillActiveBehavior,
+    accentFillHoverBehavior,
+    accentFillRestBehavior,
     neutralFillHoverBehavior,
+    neutralFillInputActiveBehavior,
     neutralFillInputHoverBehavior,
     neutralFillInputRestBehavior,
     neutralFillRestBehavior,
     neutralFocusBehavior,
     neutralForegroundRestBehavior,
-    neutralOutlineHoverBehavior,
     neutralOutlineRestBehavior,
     forcedColorsStylesheetBehavior(
         css`

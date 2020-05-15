@@ -2,7 +2,7 @@ name: CI - FAST Validation
 
 on:
   schedule:
-  - cron: 0 7 * * 3 # Every Wednesday at 7am
+  - cron: 0 7 * * 3
 
 
 jobs:
@@ -41,7 +41,7 @@ jobs:
       run: sudo yarn global add lerna 
 
     - name: Install package dependencies / prepare workspaces
-      run: yarn install --frozen-lockfile --network-concurrency 200 --network-timeout 1000
+      run: yarn install --frozen-lockfile
 
     - name: Ensure Prettier formatting
       run: lerna run prettier:diff

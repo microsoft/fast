@@ -1,6 +1,6 @@
 import { css } from "@microsoft/fast-element";
+import { display } from "@microsoft/fast-foundation";
 import {
-    display,
     elevation,
     neutralDividerRestBehavior,
     neutralLayerFloatingBehavior,
@@ -12,6 +12,7 @@ export const MenuStyles = css`
         background: var(--neutral-layer-floating);
         border-radius: var(--elevated-corner-radius);
         ${elevation} margin: 0;
+        border-radius: calc(var(--corner-radius) * 1px);
         padding: calc(var(--design-unit) * 1px) 0;
         max-width: 368px;
         min-width: 64px;

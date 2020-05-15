@@ -2,18 +2,17 @@ import {
     attr,
     Behavior,
     customElement,
-    ElementStyles,
-    ElementViewTemplate,
     FASTElement,
     observable,
     Observable,
 } from "@microsoft/fast-element";
+import { PartialFASTElementDefinition } from "@microsoft/fast-element";
 import {
     CSSCustomPropertyDefinition,
     CSSCustomPropertyTarget,
 } from "../custom-properties/index.js";
 import { composedParent } from "../utilities/index.js";
-import { DesignSystemPropertyDeclarationConfig } from "./design-system-property.js";
+import { DecoratorDesignSystemPropertyConfiguration } from "./design-system-property.js";
 
 const supportsAdoptedStylesheets = "adoptedStyleSheets" in window.ShadowRoot.prototype;
 
@@ -73,7 +72,7 @@ export class DesignSystemProvider extends FASTElement
     ): el is DesignSystemProvider {
         return (
             (el as DesignSystemProvider).isDesignSystemProvider ||
-            DesignSystemProvider.tagNames.includes(el.tagName)
+            DesignSystemProvider.tagNames.indexOf(el.tagName) !== -1
         );
     }
 
@@ -111,7 +110,7 @@ export class DesignSystemProvider extends FASTElement
      */
     public static registerTagName(tagName: string) {
         const tagNameUpper = tagName.toUpperCase();
-        if (!DesignSystemProvider.tagNames.includes(tagNameUpper)) {
+        if (DesignSystemProvider.tagNames.indexOf(tagNameUpper) === -1) {
             DesignSystemProvider._tagNames.push(tagNameUpper);
         }
     }
@@ -138,9 +137,10 @@ export class DesignSystemProvider extends FASTElement
     public useDefaults: boolean = false;
     private useDefaultsChanged() {
         if (this.useDefaults) {
-            Object.entries(this.designSystemProperties).forEach(([key, property]) => {
+            const props = this.designSystemProperties;
+            Object.keys(props).forEach((key: string) => {
                 if (this[key] === void 0) {
-                    this[key] = property.default;
+                    this[key] = props[key].default;
                 }
             });
         }
@@ -190,7 +190,12 @@ export class DesignSystemProvider extends FASTElement
      * by the decorator.
      */
     public designSystemProperties: {
-        [propertyName: string]: Required<DesignSystemPropertyDeclarationConfig>;
+        [propertyName: string]: Required<
+            Pick<
+                DecoratorDesignSystemPropertyConfiguration,
+                "cssCustomProperty" | "default"
+            >
+        >;
     };
 
     /**
@@ -400,9 +405,11 @@ export class DesignSystemProvider extends FASTElement
      */
     private syncDesignSystemWithProvider(): void {
         if (this.provider) {
-            Object.entries(this.designSystemProperties).forEach(entry => {
-                if (!this.isValidDesignSystemValue(entry[1])) {
-                    this.designSystem[entry[0]] = this.provider!.designSystem[entry[0]];
+            const designProperties = this.designSystemProperties;
+            Object.keys(designProperties).forEach((key: string) => {
+                const property = designProperties[key];
+                if (!this.isValidDesignSystemValue(property)) {
+                    this.designSystem[key] = this.provider!.designSystem[key];
                 }
             });
         }
@@ -416,13 +423,11 @@ export class DesignSystemProvider extends FASTElement
 /**
  * Defines a design-system-provider custom element
  */
-export function designSystemProvider(
-    name: string,
-    template: ElementViewTemplate | undefined,
-    styles: ElementStyles | undefined
-) {
+export function designSystemProvider(nameOrDef: string | PartialFASTElementDefinition) {
     return <T extends typeof DesignSystemProvider>(providerCtor: T): void => {
-        customElement({ name, template, styles })(providerCtor);
-        providerCtor.registerTagName(name);
+        customElement(nameOrDef)(providerCtor);
+        providerCtor.registerTagName(
+            typeof nameOrDef === "string" ? nameOrDef : nameOrDef.name
+        );
     };
 }

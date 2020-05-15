@@ -1,5 +1,5 @@
 import { CSSRules } from "@microsoft/fast-jss-manager";
-import { format, toPx } from "@microsoft/fast-jss-utilities";
+import { add, format, toPx } from "@microsoft/fast-jss-utilities";
 import { applyCornerRadius } from "../utilities/border";
 import { DesignSystem } from "../design-system";
 import {
@@ -19,7 +19,11 @@ import { horizontalSpacing } from "../utilities/density";
 import { applyDisabledState } from "../utilities/disabled";
 import { applyScaledTypeRamp } from "../utilities/typography";
 import { applyFontWeightNormal } from "../utilities/fonts";
-import { outlineWidth } from "../utilities/design-system";
+import {
+    backgroundColor,
+    focusOutlineWidth,
+    outlineWidth,
+} from "../utilities/design-system";
 import {
     HighContrastColor,
     highContrastDisabledBorder,
@@ -128,3 +132,12 @@ export function filledInputFieldStyles(): CSSRules<{}> {
         },
     };
 }
+
+export const doubleOuterFocus: CSSRules<DesignSystem> = {
+    "box-shadow": format(
+        `0 0 0 2px {0}, 0 0 0 {2} {1}`,
+        backgroundColor,
+        neutralFocus,
+        toPx(add(focusOutlineWidth, 2))
+    ),
+};

@@ -1,5 +1,5 @@
 import { CSSRules } from "@microsoft/fast-jss-manager";
-import { format, important, toPx } from "@microsoft/fast-jss-utilities";
+import { add, format, important, toPx } from "@microsoft/fast-jss-utilities";
 import { canUseForcedColors } from "@microsoft/fast-web-utilities";
 import { DesignSystem } from "../design-system";
 import { focusOutlineWidth, outlineWidth } from "./design-system";
@@ -122,6 +122,17 @@ export const highContrastOutlineFocus: CSSRules<DesignSystem> = {
         "box-shadow": format(
             "0 0 0 {0} inset {1}",
             toPx(outlineWidth),
+            () => HighContrastColor.buttonText
+        ),
+    },
+};
+
+// Used to apply a focus indicator outside of control bounds for smaller controls like checkbox and radio
+export const highContrastDoubleOuterFocus: CSSRules<DesignSystem> = {
+    [highContrastSelector]: {
+        "box-shadow": format(
+            `0 0 0 2px Background, 0 0 0 {0} {1}`,
+            toPx(add(focusOutlineWidth, 2)),
             () => HighContrastColor.buttonText
         ),
     },
