@@ -1,4 +1,4 @@
-import { attr, customElement } from "@microsoft/fast-element";
+import { attr, customElement, DOM } from "@microsoft/fast-element";
 import { Badge, BadgeTemplate as template } from "@microsoft/fast-foundation";
 import { BadgeStyles as styles } from "./badge.styles";
 
@@ -17,8 +17,10 @@ export class FASTBadge extends Badge {
         newValue: BadgeAppearance
     ): void {
         if (oldValue !== newValue) {
-            this.classList.add(newValue);
-            this.classList.remove(oldValue);
+            DOM.queueUpdate(() => {
+                this.classList.add(newValue);
+                this.classList.remove(oldValue);
+            });
         }
     }
 }
