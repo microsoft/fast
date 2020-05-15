@@ -20,7 +20,7 @@ export const TabsStyles = css`
         position: relative;
         width: max-content;
         align-self: end;
-        padding: 16px 16px 0 16px;
+        padding: 16px 16px 0;
         box-sizing: border-box;
     }
 
