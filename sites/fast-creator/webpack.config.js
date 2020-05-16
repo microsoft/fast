@@ -6,7 +6,6 @@ const WorkboxPlugin = require("workbox-webpack-plugin");
 const FaviconsWebpackPlugin = require("favicons-webpack-plugin");
 
 const rootNodeModules = path.resolve(__dirname, "../../node_modules");
-const nodeModules = path.resolve(__dirname, "./node_modules");
 const appDir = path.resolve(__dirname, "./app");
 const outDir = path.resolve(__dirname, "./www");
 
@@ -98,7 +97,7 @@ module.exports = (env, args) => {
                     "react-dnd-html5-backend"
                 ),
                 react: path.resolve(rootNodeModules, "react"),
-                "react-dnd": path.resolve(nodeModules, "react-dnd"),
+                "react-dnd": path.resolve(rootNodeModules, "react-dnd"),
                 "react-dom": path.resolve(rootNodeModules, "react-dom"),
             },
         },
