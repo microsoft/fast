@@ -3,6 +3,7 @@ import path from "path";
 import typescript from "rollup-plugin-typescript2";
 import { terser } from "rollup-plugin-terser";
 import filesize from "rollup-plugin-filesize";
+import commonJS from "rollup-plugin-commonjs";
 
 export default [
     {
@@ -23,6 +24,8 @@ export default [
             },
         ],
         plugins: [
+            resolve(),
+            commonJS(),
             typescript({
                 tsconfigOverride: {
                     compilerOptions: {
