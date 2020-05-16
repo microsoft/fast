@@ -96,7 +96,7 @@ export const neutralPalette: string[] = [
     "#151515",
     "#121212",
     "#101010",
-    "#000000"
+    "#000000",
 ];
 export const accentPalette: string[] = [
     "#FFFFFF",
@@ -192,5 +192,5 @@ export const accentPalette: string[] = [
     "#260511",
     "#21040E",
     "#1C030C",
-    "#000000"
+    "#000000",
 ];
