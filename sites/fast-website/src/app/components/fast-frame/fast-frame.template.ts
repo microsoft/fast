@@ -2,6 +2,7 @@ import { html, repeat } from "@microsoft/fast-element";
 import { FastFrame } from "./fast-frame";
 import { StandardLuminance } from "@microsoft/fast-components-styles-msft";
 import { accentPalette } from "@microsoft/fast-components/dist/fast-design-system";
+import { FASTRadio } from "@microsoft/fast-components";
 
 export const FastFrameTemplate = html<FastFrame>`
     <template>
@@ -95,7 +96,8 @@ export const FastFrameTemplate = html<FastFrame>`
                                     <site-color-swatch
                                         value="${x => x}"
                                         background-color="${x => x}"
-                                        checked="${x => x === "#1F1F1F"}"
+                                        checked="${(x, c) =>
+                                            x === c.parent.previewBackgroundPalette[0]}"
                                     ></site-color-swatch>
                                 `
                             )}
@@ -108,12 +110,13 @@ export const FastFrameTemplate = html<FastFrame>`
                         >
                             <label slot="label">Accent color</label>
                             ${repeat(
-                                x => x.previewAccentPalette,
+                                (x, c) => x.previewAccentPalette,
                                 html<string>`
                                     <site-color-swatch
                                         value="${x => x}"
                                         background-color="${x => x}"
-                                        checked="${x => x === "#F33378"}"
+                                        checked="${(x, c) =>
+                                            x === c.parent.previewAccentPalette[0]}"
                                     ></site-color-swatch>
                                 `
                             )}
