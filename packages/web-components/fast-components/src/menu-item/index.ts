@@ -1,6 +1,6 @@
 import { customElement } from "@microsoft/fast-element";
 import { MenuItem, MenuItemTemplate as template } from "@microsoft/fast-foundation";
-import { MenuItemStyles as styles } from "./menu-item.styles.js";
+import { MenuItemStyles as styles } from "./menu-item.styles";
 
 @customElement({
     name: "fast-menu-item",

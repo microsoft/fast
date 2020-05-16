@@ -1,10 +1,10 @@
-import { fastDesignSystemDefaults } from "../fast-design-system.js";
+import { fastDesignSystemDefaults } from "../fast-design-system";
 import {
     neutralForegroundActive,
     neutralForegroundHover,
     neutralForegroundRest,
-} from "./neutral-foreground.js";
-import { contrast } from "./common.js";
+} from "./neutral-foreground";
+import { contrast } from "./common";
 import { expect } from "chai";
 
 describe("neutralForeground", (): void => {

@@ -1,18 +1,18 @@
 import { isColorStringHexRGB } from "@microsoft/fast-colors";
-import { FASTDesignSystem, fastDesignSystemDefaults } from "../fast-design-system.js";
+import { FASTDesignSystem, fastDesignSystemDefaults } from "../fast-design-system";
 import {
     accentPalette as getAccentPalette,
     neutralPalette as getNeutralPalette,
-} from "../fast-design-system.js";
+} from "../fast-design-system";
 import {
     neutralOutline,
     neutralOutlineActive,
     neutralOutlineFocus,
     neutralOutlineHover,
     neutralOutlineRest,
-} from "./neutral-outline.js";
-import { Palette } from "./palette.js";
-import { Swatch, SwatchFamily } from "./common.js";
+} from "./neutral-outline";
+import { Palette } from "./palette";
+import { Swatch, SwatchFamily } from "./common";
 import { expect } from "chai";
 
 describe("neutralOutline", (): void => {

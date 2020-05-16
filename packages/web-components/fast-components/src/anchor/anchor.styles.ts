@@ -26,7 +26,7 @@ import {
     neutralOutlineRestBehavior,
     OutlineButtonStyles,
     StealthButtonStyles,
-} from "../styles/index.js";
+} from "../styles/index";
 
 export const AnchorStyles = css`
     ${BaseButtonStyles}

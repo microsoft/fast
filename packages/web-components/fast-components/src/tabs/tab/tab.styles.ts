@@ -11,7 +11,7 @@ import {
     neutralForegroundActiveBehavior,
     neutralForegroundHoverBehavior,
     neutralForegroundRestBehavior,
-} from "../../styles/index.js";
+} from "../../styles/index";
 
 export const TabStyles = css`
     ${display("inline-flex")} :host {

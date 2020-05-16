@@ -11,8 +11,8 @@ import {
     neutralFillActiveDelta,
     neutralFillHoverDelta,
     neutralFillRestDelta,
-} from "../fast-design-system.js";
-import { accentForegroundCut } from "./accent-foreground-cut.js";
+} from "../fast-design-system";
+import { accentForegroundCut } from "./accent-foreground-cut";
 import {
     colorRecipeFactory,
     contrast,
@@ -23,14 +23,14 @@ import {
     swatchFamilyToSwatchRecipeFactory,
     SwatchFamilyType,
     SwatchRecipe,
-} from "./common.js";
+} from "./common";
 import {
     findClosestBackgroundIndex,
     findClosestSwatchIndex,
     getSwatch,
     isDarkMode,
     Palette,
-} from "./palette.js";
+} from "./palette";
 
 const neutralFillThreshold: DesignSystemResolver<number> = designSystemResolverMax(
     neutralFillRestDelta,

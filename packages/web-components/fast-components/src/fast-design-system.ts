@@ -1,7 +1,7 @@
 import {
     accentPalette as defaultAccentPalette,
     neutralPalette as defaultNeutralPalette,
-} from "./default-palette.js";
+} from "./default-palette";
 
 export type DesignSystemResolver<T, Y = FASTDesignSystem> = (d: Y) => T;
 

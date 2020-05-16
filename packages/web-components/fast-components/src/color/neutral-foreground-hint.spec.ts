@@ -1,14 +1,14 @@
-import { fastDesignSystemDefaults } from "../fast-design-system.js";
+import { fastDesignSystemDefaults } from "../fast-design-system";
 import {
     accentPalette as getAccentPalette,
     neutralPalette as getNeutralPalette,
-} from "../fast-design-system.js";
+} from "../fast-design-system";
 import {
     neutralForegroundHint,
     neutralForegroundHintLarge,
-} from "./neutral-foreground-hint.js";
-import { Palette } from "./palette.js";
-import { contrast, Swatch, SwatchRecipe } from "./common.js";
+} from "./neutral-foreground-hint";
+import { Palette } from "./palette";
+import { contrast, Swatch, SwatchRecipe } from "./common";
 import { expect } from "chai";
 
 describe("neutralForegroundHint", (): void => {

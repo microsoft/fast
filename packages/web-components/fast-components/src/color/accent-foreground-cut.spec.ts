@@ -1,9 +1,6 @@
-import { FASTDesignSystem, fastDesignSystemDefaults } from "../fast-design-system.js";
-import {
-    accentForegroundCut,
-    accentForegroundCutLarge,
-} from "./accent-foreground-cut.js";
-import { Swatch } from "./common.js";
+import { FASTDesignSystem, fastDesignSystemDefaults } from "../fast-design-system";
+import { accentForegroundCut, accentForegroundCutLarge } from "./accent-foreground-cut";
+import { Swatch } from "./common";
 import { expect } from "chai";
 
 describe("Cut text", (): void => {

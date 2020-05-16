@@ -1,11 +1,11 @@
-import { FASTDesignSystem } from "../fast-design-system.js";
+import { FASTDesignSystem } from "../fast-design-system";
 import {
     backgroundColor,
     neutralFillCardDelta,
     neutralPalette,
-} from "../fast-design-system.js";
-import { Swatch, SwatchResolver } from "./common.js";
-import { findClosestSwatchIndex, getSwatch } from "./palette.js";
+} from "../fast-design-system";
+import { Swatch, SwatchResolver } from "./common";
+import { findClosestSwatchIndex, getSwatch } from "./palette";
 
 const neutralCardFillAlgorithm: SwatchResolver = (
     designSystem: FASTDesignSystem

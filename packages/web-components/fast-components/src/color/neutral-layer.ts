@@ -1,5 +1,5 @@
 import { clamp, ColorRGBA64 } from "@microsoft/fast-colors";
-import { add, multiply, subtract } from "../utilities/math.js";
+import { add, multiply, subtract } from "../utilities/math";
 import {
     baseLayerLuminance,
     neutralFillActiveDelta,
@@ -7,15 +7,15 @@ import {
     neutralFillHoverDelta,
     neutralFillRestDelta,
     neutralPalette,
-} from "../fast-design-system.js";
-import { DesignSystemResolver, FASTDesignSystem } from "../fast-design-system.js";
-import { findClosestSwatchIndex, getSwatch, swatchByMode } from "./palette.js";
+} from "../fast-design-system";
+import { DesignSystemResolver, FASTDesignSystem } from "../fast-design-system";
+import { findClosestSwatchIndex, getSwatch, swatchByMode } from "./palette";
 import {
     ColorRecipe,
     colorRecipeFactory,
     designSystemResolverMax,
     Swatch,
-} from "./common.js";
+} from "./common";
 
 /**
  * Recommended values for light and dark mode for `baseLayerLuminance` in the design system.

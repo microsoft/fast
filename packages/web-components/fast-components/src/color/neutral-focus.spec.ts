@@ -1,6 +1,6 @@
-import { FASTDesignSystem, fastDesignSystemDefaults } from "../fast-design-system.js";
-import { neutralFocus } from "./neutral-focus.js";
-import { contrast } from "./common.js";
+import { FASTDesignSystem, fastDesignSystemDefaults } from "../fast-design-system";
+import { neutralFocus } from "./neutral-focus";
+import { contrast } from "./common";
 import { expect } from "chai";
 
 describe("neutralFocus", (): void => {

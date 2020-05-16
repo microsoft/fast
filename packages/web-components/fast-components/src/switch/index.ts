@@ -1,6 +1,6 @@
 import { customElement } from "@microsoft/fast-element";
 import { Switch, SwitchTemplate as template } from "@microsoft/fast-foundation";
-import { SwitchStyles as styles } from "./switch.styles.js";
+import { SwitchStyles as styles } from "./switch.styles";
 
 @customElement({
     name: "fast-switch",

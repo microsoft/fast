@@ -3,15 +3,15 @@ import {
     neutralFillToggleFocusDelta,
     neutralFillToggleHoverDelta,
     neutralPalette,
-} from "../fast-design-system.js";
+} from "../fast-design-system";
 import {
     colorRecipeFactory,
     SwatchFamilyResolver,
     swatchFamilyToSwatchRecipeFactory,
     SwatchFamilyType,
     SwatchRecipe,
-} from "./common.js";
-import { accessibleAlgorithm } from "./accessible-recipe.js";
+} from "./common";
+import { accessibleAlgorithm } from "./accessible-recipe";
 
 export const neutralFillToggle: SwatchFamilyResolver = colorRecipeFactory(
     accessibleAlgorithm(

@@ -1,9 +1,9 @@
-import { FASTDesignSystem, fastDesignSystemDefaults } from "../fast-design-system.js";
+import { FASTDesignSystem, fastDesignSystemDefaults } from "../fast-design-system";
 import {
     accentBaseColor,
     accentPalette as getAccentPalette,
     neutralPalette as getNeutralPalette,
-} from "../fast-design-system.js";
+} from "../fast-design-system";
 import {
     accentFillActive,
     accentFillHover,
@@ -13,10 +13,10 @@ import {
     accentFillLargeSelected,
     accentFillRest,
     accentFillSelected,
-} from "./accent-fill.js";
-import { findClosestSwatchIndex, Palette } from "./palette.js";
-import { contrast, Swatch } from "./common.js";
-import { accentForegroundCut } from "./accent-foreground-cut.js";
+} from "./accent-fill";
+import { findClosestSwatchIndex, Palette } from "./palette";
+import { contrast, Swatch } from "./common";
+import { accentForegroundCut } from "./accent-foreground-cut";
 import { expect } from "chai";
 
 describe("accentFill", (): void => {

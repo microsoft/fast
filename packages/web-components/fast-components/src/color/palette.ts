@@ -1,10 +1,10 @@
-import { DesignSystemResolver, FASTDesignSystem } from "../fast-design-system.js";
+import { DesignSystemResolver, FASTDesignSystem } from "../fast-design-system";
 import {
     accentPalette,
     backgroundColor,
     evaluateDesignSystemResolver,
     neutralPalette,
-} from "../fast-design-system.js";
+} from "../fast-design-system";
 
 import {
     clamp,
@@ -14,7 +14,7 @@ import {
     luminance,
     Swatch,
     SwatchResolver,
-} from "./common.js";
+} from "./common";
 
 /**
  * The named palettes of the MSFT design system

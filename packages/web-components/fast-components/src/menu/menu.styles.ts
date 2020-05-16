@@ -4,7 +4,7 @@ import {
     elevation,
     neutralDividerRestBehavior,
     neutralLayerFloatingBehavior,
-} from "../styles/index.js";
+} from "../styles/index";
 
 export const MenuStyles = css`
     ${display("block")} :host {

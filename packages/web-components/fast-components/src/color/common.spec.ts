@@ -1,5 +1,5 @@
 import { ColorRGBA64 } from "@microsoft/fast-colors";
-import { colorMatches, contrast, isValidColor, parseColorString } from "./common.js";
+import { colorMatches, contrast, isValidColor, parseColorString } from "./common";
 import { expect } from "chai";
 
 describe("isValidColor", (): void => {

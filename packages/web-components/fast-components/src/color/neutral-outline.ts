@@ -1,12 +1,12 @@
-import { FASTDesignSystem } from "../fast-design-system.js";
+import { FASTDesignSystem } from "../fast-design-system";
 import {
     neutralOutlineActiveDelta,
     neutralOutlineFocusDelta,
     neutralOutlineHoverDelta,
     neutralOutlineRestDelta,
     neutralPalette,
-} from "../fast-design-system.js";
-import { findClosestBackgroundIndex, getSwatch, isDarkMode } from "./palette.js";
+} from "../fast-design-system";
+import { findClosestBackgroundIndex, getSwatch, isDarkMode } from "./palette";
 import {
     ColorRecipe,
     colorRecipeFactory,
@@ -15,7 +15,7 @@ import {
     swatchFamilyToSwatchRecipeFactory,
     SwatchFamilyType,
     SwatchRecipe,
-} from "./common.js";
+} from "./common";
 
 const neutralOutlineAlgorithm: SwatchFamilyResolver = (
     designSystem: FASTDesignSystem

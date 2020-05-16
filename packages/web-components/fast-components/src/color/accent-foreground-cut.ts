@@ -1,7 +1,7 @@
-import { FASTDesignSystem } from "../fast-design-system.js";
-import { accentBaseColor } from "../fast-design-system.js";
-import { black, white } from "./color-constants.js";
-import { contrast, Swatch, SwatchRecipe, SwatchResolver } from "./common.js";
+import { FASTDesignSystem } from "../fast-design-system";
+import { accentBaseColor } from "../fast-design-system";
+import { black, white } from "./color-constants";
+import { contrast, Swatch, SwatchRecipe, SwatchResolver } from "./common";
 
 /**
  * Function to derive accentForegroundCut from an input background and target contrast ratio

@@ -14,7 +14,7 @@ import {
     neutralForegroundRestBehavior,
     neutralOutlineHoverBehavior,
     neutralOutlineRestBehavior,
-} from "../styles/index.js";
+} from "../styles/index";
 
 export const SliderStyles = css`
     :host([hidden]) {

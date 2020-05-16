@@ -18,7 +18,7 @@ import {
     neutralFocusBehavior,
     neutralForegroundRestBehavior,
     neutralOutlineRestBehavior,
-} from "../styles/index.js";
+} from "../styles/index";
 
 export const TextAreaStyles = css`
     ${display("inline-block")} :host {

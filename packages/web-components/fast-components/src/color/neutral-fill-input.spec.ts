@@ -1,9 +1,9 @@
-import { FASTDesignSystem, fastDesignSystemDefaults } from "../fast-design-system.js";
+import { FASTDesignSystem, fastDesignSystemDefaults } from "../fast-design-system";
 import {
     accentPalette as getAccentPalette,
     neutralPalette as getNeutralPalette,
-} from "../fast-design-system.js";
-import { clamp, FillSwatchFamily, Swatch } from "./common.js";
+} from "../fast-design-system";
+import { clamp, FillSwatchFamily, Swatch } from "./common";
 import {
     neutralFillInput,
     neutralFillInputActive,
@@ -11,8 +11,8 @@ import {
     neutralFillInputHover,
     neutralFillInputRest,
     neutralFillInputSelected,
-} from "./neutral-fill-input.js";
-import { isDarkMode, Palette } from "./palette.js";
+} from "./neutral-fill-input";
+import { isDarkMode, Palette } from "./palette";
 import { expect } from "chai";
 
 describe("neutralFillInput", (): void => {

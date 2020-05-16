@@ -1,5 +1,5 @@
-import { FASTDesignSystem, fastDesignSystemDefaults } from "../fast-design-system.js";
-import { accentBaseColor, accentPalette, neutralPalette } from "../fast-design-system.js";
+import { FASTDesignSystem, fastDesignSystemDefaults } from "../fast-design-system";
+import { accentBaseColor, accentPalette, neutralPalette } from "../fast-design-system";
 import {
     findClosestSwatchIndex,
     findSwatchIndex,
@@ -9,8 +9,8 @@ import {
     PaletteType,
     swatchByContrast,
     swatchByMode,
-} from "./palette.js";
-import { Swatch } from "./common.js";
+} from "./palette";
+import { Swatch } from "./common";
 import { expect } from "chai";
 
 describe("palette", (): void => {

@@ -1,4 +1,4 @@
-import { FASTDesignSystem, fastDesignSystemDefaults } from "../fast-design-system.js";
+import { FASTDesignSystem, fastDesignSystemDefaults } from "../fast-design-system";
 import {
     neutralLayerCard,
     neutralLayerCardContainer,
@@ -8,7 +8,7 @@ import {
     neutralLayerL3,
     neutralLayerL4,
     StandardLuminance,
-} from "./neutral-layer.js";
+} from "./neutral-layer";
 import { expect } from "chai";
 
 const lightModeDesignSystem: FASTDesignSystem = Object.assign(

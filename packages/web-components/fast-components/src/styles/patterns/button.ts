@@ -1,6 +1,6 @@
 import { css } from "@microsoft/fast-element";
 import { display, focusVisible } from "@microsoft/fast-foundation";
-import { heightNumber } from "../size.js";
+import { heightNumber } from "../size";
 
 export const BaseButtonStyles = css`
     ${display("inline-block")} :host {

@@ -3,15 +3,15 @@ import {
     neutralForegroundFocusDelta,
     neutralForegroundHoverDelta,
     neutralPalette,
-} from "../fast-design-system.js";
+} from "../fast-design-system";
 import {
     colorRecipeFactory,
     SwatchFamilyResolver,
     swatchFamilyToSwatchRecipeFactory,
     SwatchFamilyType,
     SwatchRecipe,
-} from "./common.js";
-import { accessibleAlgorithm } from "./accessible-recipe.js";
+} from "./common";
+import { accessibleAlgorithm } from "./accessible-recipe";
 
 export const neutralForeground: SwatchFamilyResolver = colorRecipeFactory(
     accessibleAlgorithm(

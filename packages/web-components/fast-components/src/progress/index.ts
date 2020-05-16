@@ -1,2 +1,2 @@
-export * from "./progress/index.js";
-export * from "./progress-ring/index.js";
+export * from "./progress/index";
+export * from "./progress-ring/index";

@@ -1,8 +1,8 @@
-import { FASTDesignSystem, fastDesignSystemDefaults } from "../fast-design-system.js";
+import { FASTDesignSystem, fastDesignSystemDefaults } from "../fast-design-system";
 import {
     accentPalette as getAccentPalette,
     neutralPalette as getNeutralPalette,
-} from "../fast-design-system.js";
+} from "../fast-design-system";
 import {
     neutralFillStealth,
     neutralFillStealthActive,
@@ -10,9 +10,9 @@ import {
     neutralFillStealthHover,
     neutralFillStealthRest,
     neutralFillStealthSelected,
-} from "./neutral-fill-stealth.js";
-import { Palette } from "./palette.js";
-import { FillSwatchFamily, Swatch } from "./common.js";
+} from "./neutral-fill-stealth";
+import { Palette } from "./palette";
+import { FillSwatchFamily, Swatch } from "./common";
 import { expect } from "chai";
 
 describe("neutralFillStealth", (): void => {

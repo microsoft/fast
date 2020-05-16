@@ -1,5 +1,5 @@
-import { fastDesignSystemDefaults } from "../fast-design-system.js";
-import { neutralDividerRest } from "./neutral-divider.js";
+import { fastDesignSystemDefaults } from "../fast-design-system";
+import { neutralDividerRest } from "./neutral-divider";
 import { expect } from "chai";
 
 describe("neutralDividerRest", (): void => {

@@ -1,5 +1,5 @@
-import { FASTDesignSystem, fastDesignSystemDefaults } from "../fast-design-system.js";
-import { neutralFillCard } from "./neutral-fill-card.js";
+import { FASTDesignSystem, fastDesignSystemDefaults } from "../fast-design-system";
+import { neutralFillCard } from "./neutral-fill-card";
 import { expect } from "chai";
 
 describe("neutralFillCard", (): void => {

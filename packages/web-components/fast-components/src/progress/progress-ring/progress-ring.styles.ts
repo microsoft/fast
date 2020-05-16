@@ -6,7 +6,7 @@ import {
     heightNumber,
     neutralFillRestBehavior,
     neutralForegroundHintBehavior,
-} from "../../styles/index.js";
+} from "../../styles/index";
 
 export const ProgressRingStyles = css`
     ${display("flex")} :host {

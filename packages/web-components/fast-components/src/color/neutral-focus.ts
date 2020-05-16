@@ -1,12 +1,7 @@
-import { DesignSystemResolver, FASTDesignSystem } from "../fast-design-system.js";
-import { accentPalette, backgroundColor, neutralPalette } from "../fast-design-system.js";
-import {
-    findClosestSwatchIndex,
-    isDarkMode,
-    Palette,
-    swatchByContrast,
-} from "./palette.js";
-import { ColorRecipe, colorRecipeFactory, Swatch, SwatchResolver } from "./common.js";
+import { DesignSystemResolver, FASTDesignSystem } from "../fast-design-system";
+import { accentPalette, backgroundColor, neutralPalette } from "../fast-design-system";
+import { findClosestSwatchIndex, isDarkMode, Palette, swatchByContrast } from "./palette";
+import { ColorRecipe, colorRecipeFactory, Swatch, SwatchResolver } from "./common";
 
 const targetRatio: number = 3.5;
 

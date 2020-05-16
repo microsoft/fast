@@ -20,7 +20,7 @@ import {
     neutralOutlineActiveBehavior,
     neutralOutlineHoverBehavior,
     neutralOutlineRestBehavior,
-} from "../styles/index.js";
+} from "../styles/index";
 
 export const SwitchStyles = css`
     :host([hidden]) {
