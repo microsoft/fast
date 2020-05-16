@@ -1,4 +1,4 @@
-import { ResizeObserverEntry } from "./resize-observer-entry.js";
+import { ResizeObserverEntry } from "./resize-observer-entry";
 
 export type ConstructibleResizeObserver = new (
     callback: ResizeObserverCallback

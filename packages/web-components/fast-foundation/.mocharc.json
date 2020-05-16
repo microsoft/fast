@@ -3,6 +3,7 @@
   "recursive": true,
   "timeout": 5000,
   "require": [
+    "esm",
     "jsdom-global/register"
   ]
 }

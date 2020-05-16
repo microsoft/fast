@@ -1,1 +1,1 @@
-export * from "./progress-ring.template.js";
+export * from "./progress-ring.template";

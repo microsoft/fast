@@ -1,5 +1,5 @@
 import { html, ref, slotted } from "@microsoft/fast-element";
-import { TextArea, TextAreaResize } from "./text-area.js";
+import { TextArea, TextAreaResize } from "./text-area";
 
 export const TextAreaTemplate = html<TextArea>`
     <template

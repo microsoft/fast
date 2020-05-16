@@ -1,2 +1,2 @@
-export * from "./checkbox.template.js";
-export * from "./checkbox.js";
+export * from "./checkbox.template";
+export * from "./checkbox";

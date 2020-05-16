@@ -1,7 +1,7 @@
 import { attr, nullableNumberConverter, observable } from "@microsoft/fast-element";
-import { FormAssociated } from "../form-associated/index.js";
-import { StartEnd } from "../patterns/start-end.js";
-import { applyMixins } from "../utilities/index.js";
+import { FormAssociated } from "../form-associated/index";
+import { StartEnd } from "../patterns/start-end";
+import { applyMixins } from "../utilities/index";
 
 export enum TextFieldAppearance {
     filled = "filled",

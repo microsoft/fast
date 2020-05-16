@@ -1,2 +1,2 @@
-export * from "./anchor.template.js";
-export * from "./anchor.js";
+export * from "./anchor.template";
+export * from "./anchor";

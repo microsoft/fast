@@ -1,2 +1,2 @@
-export * from "./button.template.js";
-export * from "./button.js";
+export * from "./button.template";
+export * from "./button";

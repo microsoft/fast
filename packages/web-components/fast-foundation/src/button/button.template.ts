@@ -1,6 +1,6 @@
 import { html } from "@microsoft/fast-element";
-import { endTemplate, startTemplate } from "../patterns/start-end.js";
-import { Button } from "./button.js";
+import { endTemplate, startTemplate } from "../patterns/start-end";
+import { Button } from "./button";
 
 export const ButtonTemplate = html<Button>`
     <template class="${x => x.appearance}">

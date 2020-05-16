@@ -1,2 +1,2 @@
-export * from "./card.template.js";
-export * from "./card.js";
+export * from "./card.template";
+export * from "./card";

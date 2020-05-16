@@ -1,2 +1,2 @@
-export * from "./text-field.template.js";
-export * from "./text-field.js";
+export * from "./text-field.template";
+export * from "./text-field";
