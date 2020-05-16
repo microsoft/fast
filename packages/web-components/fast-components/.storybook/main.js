@@ -4,7 +4,7 @@ module.exports = {
     stories: ["../src/**/*.stories.ts"],
     webpackFinal: async config => {
         config.module.rules.push({
-            test: /\.(|ts|tsx)$/,
+            test: /\.ts$/,
             use: [
                 {
                     loader: require.resolve("ts-loader"),
