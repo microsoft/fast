@@ -19,7 +19,6 @@ build/
 tsconfig.json
 tsconfig.build.json
 rollup.config.json
-babel.config.js
 karma.conf.cjs
 api-extractor.json
 .mocharc.json

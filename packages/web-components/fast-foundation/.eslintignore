@@ -5,4 +5,4 @@ dist
 # don't lint coverage output
 coverage
 # don't lint tests
-*.spec.ts
+*.spec.*
