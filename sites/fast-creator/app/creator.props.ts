@@ -2,7 +2,6 @@ import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-
 import { Direction } from "@microsoft/fast-web-utilities";
 import { DataDictionary } from "@microsoft/fast-tooling";
 import { StandardLuminance } from "@microsoft/fast-components-styles-msft";
-import { CreatorClassNameContract } from "./creator.style";
 
 /**
  * Data for a single view
@@ -73,7 +72,7 @@ export interface ProjectFile {
     };
 }
 
-export type CreatorManagedClasses = ManagedClasses<CreatorClassNameContract>;
+export type CreatorManagedClasses = ManagedClasses<{}>;
 
 export type CreatorHandledProps = CreatorManagedClasses;
 
