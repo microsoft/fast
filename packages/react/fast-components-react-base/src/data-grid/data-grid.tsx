@@ -60,15 +60,6 @@ class DataGrid extends Foundation<
 
     public static displayName: string = "DataGrid";
 
-    private static highestCalculatedScrollPosition = (
-        rowPositions: RowPosition[]
-    ): number => {
-        if (rowPositions.length === 0) {
-            return 0;
-        }
-        return rowPositions[rowPositions.length - 1].end;
-    };
-
     protected handledProps: HandledProps<DataGridHandledProps> = {
         dataRowKey: void 0,
         gridData: void 0,
@@ -122,15 +113,15 @@ class DataGrid extends Foundation<
             currentDataPageStartIndex =
                 initialFocusRowIndex - Math.floor(this.props.pageSize / 2);
 
-            currentDataPageStartIndex = (currentDataPageStartIndex < 0) 
-                ? 0
-                : currentDataPageStartIndex;
-                
+            currentDataPageStartIndex =
+                currentDataPageStartIndex < 0 ? 0 : currentDataPageStartIndex;
+
             currentDataPageEndIndex = currentDataPageStartIndex + this.props.pageSize;
 
-            currentDataPageEndIndex = (currentDataPageEndIndex > this.props.gridData.length - 1)
-                ? this.props.gridData.length - 1
-                : currentDataPageEndIndex;
+            currentDataPageEndIndex =
+                currentDataPageEndIndex > this.props.gridData.length - 1
+                    ? this.props.gridData.length - 1
+                    : currentDataPageEndIndex;
 
             this.sizeRowsToIndex(currentDataPageEndIndex, rowPositions);
         }
@@ -265,7 +256,6 @@ class DataGrid extends Foundation<
      * React life-cycle method
      */
     public componentDidUpdate(prevProps: DataGridProps): void {
-
         let shouldUpdateState: boolean = false;
 
         let rowPositions: RowPosition[] = this.state.rowPositions;
@@ -273,14 +263,14 @@ class DataGrid extends Foundation<
         let currentDataPageEndIndex: number = this.state.currentDataPageEndIndex;
         let estimatedTotalHeight: number = this.state.estimatedTotalHeight;
         let focusRowKey: ReactText | null = this.state.focusRowKey;
-        let focusColumnKey: ReactText | null =  this.state.focusColumnKey;
+        let focusColumnKey: ReactText | null = this.state.focusColumnKey;
         let focusRowIndex: number = this.state.focusRowIndex;
         let desiredFocusRowKey: ReactText | null = this.state.desiredFocusRowKey;
         let desiredFocusColumnKey: ReactText | null = this.state.desiredFocusColumnKey;
         let desiredVisibleRowIndex: number | null = null;
 
         if (this.state.desiredVisibleRowIndex !== null) {
-            // this would have been applied on the last update, so apply state change to null it out 
+            // this would have been applied on the last update, so apply state change to null it out
             shouldUpdateState = true;
         }
 
@@ -313,7 +303,10 @@ class DataGrid extends Foundation<
                 if (currentDataPageStartIndex < 0) {
                     currentDataPageStartIndex = 0;
                 }
-                currentDataPageEndIndex = Math.min(currentDataPageStartIndex + this.props.pageSize, this.props.gridData.length - 1);
+                currentDataPageEndIndex = Math.min(
+                    currentDataPageStartIndex + this.props.pageSize,
+                    this.props.gridData.length - 1
+                );
             }
         }
 
@@ -331,48 +324,44 @@ class DataGrid extends Foundation<
                 focusRowIndex = -1;
             } else {
                 // if an author tells us nothing has changed before a certain point we keep position data
-                // up to that point.  
-                rowPositions = rowPositions.slice(
-                    0,
-                    this.props.stableRangeEndIndex
-                );
+                // up to that point.
+                rowPositions = rowPositions.slice(0, this.props.stableRangeEndIndex);
 
                 // ensure focus is still valid
-                const newFocusRowIndex: number = this.getRowIndexByKey(
-                    focusRowKey
-                );
+                const newFocusRowIndex: number = this.getRowIndexByKey(focusRowKey);
                 if (newFocusRowIndex === -1) {
                     // our focus row no longer exists, assign a new one based on previous focus row index
                     focusRowIndex = Math.min(
-                        Math.max(focusRowIndex, 0), 
+                        Math.max(focusRowIndex, 0),
                         this.props.gridData.length - 1
                     );
-                    focusRowKey = this.props.gridData[focusRowIndex][this.props.dataRowKey];
+                    focusRowKey = this.props.gridData[focusRowIndex][
+                        this.props.dataRowKey
+                    ];
                 } else {
                     focusRowIndex = newFocusRowIndex;
                 }
 
                 // ensure data page conforms to new data length
                 currentDataPageStartIndex =
-                   focusRowIndex - Math.floor(this.props.pageSize / 2);
+                    focusRowIndex - Math.floor(this.props.pageSize / 2);
 
-                currentDataPageStartIndex = (currentDataPageStartIndex < 0)
-                    ? 0
-                    : currentDataPageStartIndex;
+                currentDataPageStartIndex =
+                    currentDataPageStartIndex < 0 ? 0 : currentDataPageStartIndex;
 
                 currentDataPageEndIndex = currentDataPageStartIndex + this.props.pageSize;
 
-                currentDataPageEndIndex = (currentDataPageEndIndex > this.props.gridData.length - 1)
-                    ? this.props.gridData.length - 1
-                    : currentDataPageEndIndex;
+                currentDataPageEndIndex =
+                    currentDataPageEndIndex > this.props.gridData.length - 1
+                        ? this.props.gridData.length - 1
+                        : currentDataPageEndIndex;
 
                 this.sizeRowsToIndex(currentDataPageEndIndex, rowPositions);
                 estimatedTotalHeight = this.getEstimatedTotalHeight(rowPositions);
 
                 // move focus to the new element if necessary
                 if (
-                    this.isFocused && 
-                    this.state.focusRowKey !== focusRowKey ||
+                    (this.isFocused && this.state.focusRowKey !== focusRowKey) ||
                     this.state.focusColumnKey !== focusColumnKey
                 ) {
                     const rowElement: Element = this.getRowElementByKey(focusRowKey);
@@ -381,9 +370,8 @@ class DataGrid extends Foundation<
                         (rowElement as HTMLElement).focus();
                         desiredFocusRowKey = null;
                         desiredFocusColumnKey = null;
-                     }
-                    else {
-                        // next focus element not in the dom, 
+                    } else {
+                        // next focus element not in the dom,
                         // focus on it after when it mounts
                         desiredFocusRowKey = focusRowKey;
                         desiredFocusColumnKey = focusColumnKey;
@@ -406,8 +394,8 @@ class DataGrid extends Foundation<
                 focusRowIndex,
                 desiredFocusRowKey,
                 desiredFocusColumnKey,
-                desiredVisibleRowIndex
-            });  
+                desiredVisibleRowIndex,
+            });
         }
     }
 
@@ -794,21 +782,16 @@ class DataGrid extends Foundation<
         if (rowPositions.length === 0) {
             return -1;
         }
-        const maxIndex = this.props.gridData.length - 1;
+
+        scrollPosition = Math.max(0, scrollPosition);
 
         this.sizeRowsToScrollValue(scrollPosition, rowPositions);
+        const maxIndex = Math.min(rowPositions.length - 1);
 
-        let estimatedItemIndex: number = Math.floor(
-            scrollPosition / this.props.itemHeight
+        const estimatedItemIndex: number = Math.min(
+            maxIndex,
+            Math.floor(scrollPosition / this.props.itemHeight)
         );
-
-        if (estimatedItemIndex > maxIndex) {
-            estimatedItemIndex = maxIndex;
-        }
-
-        if (estimatedItemIndex > rowPositions.length - 1) {
-            estimatedItemIndex = rowPositions.length - 1;
-        }
 
         if (scrollPosition < rowPositions[estimatedItemIndex].start) {
             for (let i: number = estimatedItemIndex; i >= 0; i--) {

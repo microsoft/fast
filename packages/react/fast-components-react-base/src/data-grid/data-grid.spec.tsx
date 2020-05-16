@@ -8,7 +8,7 @@ import {
     keyCodeArrowRight,
     keyCodeArrowUp,
     keyCodePageDown,
-    keyCodePageUp
+    keyCodePageUp,
 } from "@microsoft/fast-web-utilities";
 import DataGrid, { DataGridState } from "./data-grid";
 import { DataGridContext } from "./data-grid-context";
@@ -81,14 +81,14 @@ describe("data grid", (): void => {
 
     function getDataSet(length: number): object[] {
         const dataSet: object[] = [];
-    
+
         for (let i: number = 0; i < length; i++) {
             dataSet.push({
                 name: `id-${i}`,
                 age: i,
             });
         }
-    
+
         return dataSet;
     }
 
@@ -296,37 +296,36 @@ describe("data grid", (): void => {
         document.body.removeChild(container);
     });
 
-    // test("page up/down keys move up/down in the grid", (): void => {
-    //     const container: HTMLDivElement = document.createElement("div");
-    //     document.body.appendChild(container);
+    test("page up/down keys move up/down in the grid", (): void => {
+        const container: HTMLDivElement = document.createElement("div");
+        document.body.appendChild(container);
 
-    //     const rendered: any = mount(
-    //         <DataGrid
-    //             gridData={[]}
-    //             dataRowKey="name"
-    //             columnDefinitions={columnDefinitions}
-    //             virtualizeItems={false}
-    //             managedClasses={managedClasses}
-    //             style={{
-    //                 height: "300px",
-    //             }}
-    //         />,
-    //         {
-    //             attachTo: container,
-    //         }
-    //     );
+        const rendered: any = mount(
+            <DataGrid
+                gridData={getDataSet(20)}
+                dataRowKey="name"
+                columnDefinitions={columnDefinitions}
+                virtualizeItems={false}
+                managedClasses={managedClasses}
+            />,
+            {
+                attachTo: container,
+            }
+        );
 
-    //     rendered.instance().lastReportedViewportSpan = 100;
-    //     rendered.setProps({ gridData: getDataSet(20) });
-    //     expect((rendered.instance().state as DataGridState).focusRowKey).toBe("id-0");
+        rendered.instance().lastReportedViewportSpan = 200;
+        expect((rendered.instance().state as DataGridState).focusRowKey).toBe("id-0");
 
-    //     const row: any = rendered.find("[data-rowid]").first();
-    //     const cell: any = row.find("[data-cellid]").first();
-    //     cell.simulate("keydown", { keyCode: keyCodePageDown });
-    //     expect((rendered.instance().state as DataGridState).focusRowKey).toBe("id-2");
+        const row: any = rendered.find("[data-rowid]").first();
+        const cell: any = row.find("[data-cellid]").first();
+        cell.simulate("keydown", { keyCode: keyCodePageDown });
+        expect((rendered.instance().state as DataGridState).focusRowKey).toBe("id-3");
 
-    //     document.body.removeChild(container);
-    // });
+        cell.simulate("keydown", { keyCode: keyCodePageUp });
+        expect((rendered.instance().state as DataGridState).focusRowKey).toBe("id-0");
+
+        document.body.removeChild(container);
+    });
 
     /* tslint:disable:no-string-literal */
     test("Focus and blur events change the state of isFocused", (): void => {
@@ -385,7 +384,7 @@ describe("data grid", (): void => {
     test("itemHeightCallback prop is called and variable heights applied", (): void => {
         const heightCallback: any = jest.fn();
         heightCallback.mockReturnValueOnce(50);
-        heightCallback.mockReturnValueOnce(100);
+        heightCallback.mockReturnValueOnce(300);
         heightCallback.mockReturnValueOnce(50);
 
         const rendered: ReactWrapper = mount(
@@ -408,13 +407,13 @@ describe("data grid", (): void => {
             50
         );
         expect((rendered.instance().state as DataGridState).rowPositions[1].end).toBe(
-            150
+            350
         );
         expect((rendered.instance().state as DataGridState).rowPositions[2].start).toBe(
-            150
+            350
         );
         expect((rendered.instance().state as DataGridState).rowPositions[2].end).toBe(
-            200
+            400
         );
     });
 
@@ -568,10 +567,10 @@ describe("data grid", (): void => {
          |   | x |
          ---------
         */
-        // note: because focusing on elements not in the dom at the time of the 
+        // note: because focusing on elements not in the dom at the time of the
         // data change relies on context the actual active element does not change
         // in the test environment, but we can check where focus would go.
-        expect(rendered.state("focusRowKey")).toBe(updatedTwoRowData[1].name)
+        expect(rendered.state("focusRowKey")).toBe(updatedTwoRowData[1].name);
 
         // Replace the second row, focus should stay there
         const replacedTwoRowData: TestRowData[] = [gridData[0], gridData[1]];
@@ -583,7 +582,7 @@ describe("data grid", (): void => {
          |   | x |
          ---------
         */
-        expect(rendered.state("focusRowKey")).toBe(replacedTwoRowData[1].name)
+        expect(rendered.state("focusRowKey")).toBe(replacedTwoRowData[1].name);
 
         // Remove the top row
         const singleRowData: TestRowData[] = [gridData[1]];
@@ -594,8 +593,103 @@ describe("data grid", (): void => {
          |   | x |
          ---------
         */
-        expect(rendered.state("focusRowKey")).toBe(singleRowData[0].name)
+        expect(rendered.state("focusRowKey")).toBe(singleRowData[0].name);
 
         document.body.removeChild(container);
+    });
+
+    test("setting an invalid row key does not throw", (): void => {
+        const rendered: ReactWrapper = mount(
+            <DataGrid
+                gridData={gridData}
+                dataRowKey="name"
+                columnDefinitions={columnDefinitions}
+                managedClasses={managedClasses}
+            />
+        );
+
+        expect(() => {
+            rendered.setProps({ defaultFocusRowKey: "invalid" });
+        }).not.toThrow();
+    });
+
+    test("setting an invalid focus column does not throw", (): void => {
+        const rendered: ReactWrapper = mount(
+            <DataGrid
+                gridData={gridData}
+                dataRowKey="name"
+                columnDefinitions={columnDefinitions}
+                managedClasses={managedClasses}
+            />
+        );
+
+        expect(() => {
+            rendered.setProps({ defaultFocusColumnKey: "invalid" });
+        }).not.toThrow();
+    });
+
+    test("getRowIndexByKey returns expected index value", (): void => {
+        const rendered: ReactWrapper = mount(
+            <DataGrid
+                gridData={gridData}
+                dataRowKey="name"
+                columnDefinitions={columnDefinitions}
+                managedClasses={managedClasses}
+            />
+        );
+
+        expect(rendered.instance()["getRowIndexByKey"]("Richard")).toBe(1);
+    });
+
+    test("getRowIndexByKey does not throw with an invalid index", (): void => {
+        const rendered: ReactWrapper = mount(
+            <DataGrid
+                gridData={gridData}
+                dataRowKey="name"
+                columnDefinitions={columnDefinitions}
+                managedClasses={managedClasses}
+            />
+        );
+
+        expect(() => {
+            rendered.instance()["getRowIndexByKey"]("invalid");
+        }).not.toThrow();
+    });
+
+    test("getIndexOfItemAtScrollPosition returns expected index values", (): void => {
+        const heightCallback: any = jest.fn();
+        heightCallback.mockReturnValueOnce(50);
+        heightCallback.mockReturnValueOnce(300);
+        heightCallback.mockReturnValueOnce(50);
+
+        const rendered: ReactWrapper = mount(
+            <DataGrid
+                itemHeightCallback={heightCallback}
+                gridData={gridData}
+                dataRowKey="name"
+                columnDefinitions={columnDefinitions}
+                managedClasses={managedClasses}
+            />
+        );
+
+        const rowPositions: any = rendered.state("rowPositions");
+        expect(
+            rendered.instance()["getIndexOfItemAtScrollPosition"](0, rowPositions)
+        ).toBe(0);
+        expect(
+            rendered.instance()["getIndexOfItemAtScrollPosition"](51, rowPositions)
+        ).toBe(1);
+        expect(
+            rendered.instance()["getIndexOfItemAtScrollPosition"](200, rowPositions)
+        ).toBe(1);
+        expect(
+            rendered.instance()["getIndexOfItemAtScrollPosition"](349, rowPositions)
+        ).toBe(1);
+        expect(
+            rendered.instance()["getIndexOfItemAtScrollPosition"](350, rowPositions)
+        ).toBe(2);
+        expect(
+            rendered.instance()["getIndexOfItemAtScrollPosition"](400, rowPositions)
+        ).toBe(2);
     });
 });
