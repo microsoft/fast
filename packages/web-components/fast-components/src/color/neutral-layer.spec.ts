@@ -9,8 +9,7 @@ import {
     neutralLayerL4,
     StandardLuminance,
 } from "./neutral-layer.js";
-import chai from "chai";
-const { expect } = chai;
+import { expect } from "chai";
 
 const lightModeDesignSystem: FASTDesignSystem = Object.assign(
     {},

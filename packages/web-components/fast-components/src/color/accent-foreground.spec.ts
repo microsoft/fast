@@ -14,8 +14,7 @@ import {
 } from "./accent-foreground.js";
 import { Palette } from "./palette.js";
 import { contrast, Swatch } from "./common.js";
-import chai from "chai";
-const { expect } = chai;
+import { expect } from "chai";
 
 describe("accentForeground", (): void => {
     const neutralPalette: Palette = getNeutralPalette(fastDesignSystemDefaults);

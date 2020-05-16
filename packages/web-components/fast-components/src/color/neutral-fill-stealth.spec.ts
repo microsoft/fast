@@ -13,8 +13,7 @@ import {
 } from "./neutral-fill-stealth.js";
 import { Palette } from "./palette.js";
 import { FillSwatchFamily, Swatch } from "./common.js";
-import chai from "chai";
-const { expect } = chai;
+import { expect } from "chai";
 
 describe("neutralFillStealth", (): void => {
     const neutralPalette: Palette = getNeutralPalette(fastDesignSystemDefaults);

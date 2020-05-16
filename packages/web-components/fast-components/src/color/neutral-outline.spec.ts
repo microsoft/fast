@@ -13,8 +13,7 @@ import {
 } from "./neutral-outline.js";
 import { Palette } from "./palette.js";
 import { Swatch, SwatchFamily } from "./common.js";
-import chai from "chai";
-const { expect } = chai;
+import { expect } from "chai";
 
 describe("neutralOutline", (): void => {
     const neutralPalette: Palette = getNeutralPalette(fastDesignSystemDefaults);

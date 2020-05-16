@@ -5,8 +5,7 @@ import {
     neutralForegroundRest,
 } from "./neutral-foreground.js";
 import { contrast } from "./common.js";
-import chai from "chai";
-const { expect } = chai;
+import { expect } from "chai";
 
 describe("neutralForeground", (): void => {
     it("should return a string when invoked with an object", (): void => {

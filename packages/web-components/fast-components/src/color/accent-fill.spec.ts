@@ -17,8 +17,7 @@ import {
 import { findClosestSwatchIndex, Palette } from "./palette.js";
 import { contrast, Swatch } from "./common.js";
 import { accentForegroundCut } from "./accent-foreground-cut.js";
-import chai from "chai";
-const { expect } = chai;
+import { expect } from "chai";
 
 describe("accentFill", (): void => {
     const neutralPalette: Palette = getNeutralPalette(fastDesignSystemDefaults);

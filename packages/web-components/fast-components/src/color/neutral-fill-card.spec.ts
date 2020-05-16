@@ -1,7 +1,6 @@
 import { FASTDesignSystem, fastDesignSystemDefaults } from "../fast-design-system.js";
 import { neutralFillCard } from "./neutral-fill-card.js";
-import chai from "chai";
-const { expect } = chai;
+import { expect } from "chai";
 
 describe("neutralFillCard", (): void => {
     // TODO @nicholasrice: Tests are failing due as palette is expecting light

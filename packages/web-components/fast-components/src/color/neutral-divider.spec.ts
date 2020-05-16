@@ -1,7 +1,6 @@
 import { fastDesignSystemDefaults } from "../fast-design-system.js";
 import { neutralDividerRest } from "./neutral-divider.js";
-import chai from "chai";
-const { expect } = chai;
+import { expect } from "chai";
 
 describe("neutralDividerRest", (): void => {
     it("should return a string when invoked with an object", (): void => {

@@ -13,8 +13,7 @@ import {
     neutralFillInputSelected,
 } from "./neutral-fill-input.js";
 import { isDarkMode, Palette } from "./palette.js";
-import chai from "chai";
-const { expect } = chai;
+import { expect } from "chai";
 
 describe("neutralFillInput", (): void => {
     const neutralPalette: Palette = getNeutralPalette(fastDesignSystemDefaults);

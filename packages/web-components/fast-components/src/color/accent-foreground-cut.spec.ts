@@ -4,8 +4,7 @@ import {
     accentForegroundCutLarge,
 } from "./accent-foreground-cut.js";
 import { Swatch } from "./common.js";
-import chai from "chai";
-const { expect } = chai;
+import { expect } from "chai";
 
 describe("Cut text", (): void => {
     it("should return white by by default", (): void => {

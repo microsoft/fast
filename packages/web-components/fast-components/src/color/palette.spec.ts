@@ -11,8 +11,7 @@ import {
     swatchByMode,
 } from "./palette.js";
 import { Swatch } from "./common.js";
-import chai from "chai";
-const { expect } = chai;
+import { expect } from "chai";
 
 describe("palette", (): void => {
     it("should return a function", (): void => {

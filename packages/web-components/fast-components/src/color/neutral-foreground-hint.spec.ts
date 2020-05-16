@@ -9,8 +9,7 @@ import {
 } from "./neutral-foreground-hint.js";
 import { Palette } from "./palette.js";
 import { contrast, Swatch, SwatchRecipe } from "./common.js";
-import chai from "chai";
-const { expect } = chai;
+import { expect } from "chai";
 
 describe("neutralForegroundHint", (): void => {
     const neutralPalette: Palette = getNeutralPalette(fastDesignSystemDefaults);
