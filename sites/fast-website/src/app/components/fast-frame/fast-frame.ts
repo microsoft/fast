@@ -1,4 +1,6 @@
 import { FASTElement, attr, observable } from "@microsoft/fast-element";
+import { createColorPalette } from "@microsoft/fast-components";
+import { parseColor, ColorRGBA64 } from "@microsoft/fast-colors";
 
 export class FastFrame extends FASTElement {
     @attr({ attribute: "accent-color" })
@@ -11,7 +13,7 @@ export class FastFrame extends FASTElement {
     public darkMode: boolean = true;
 
     @observable
-    public backgroundPalette: string[] = [
+    public previewBackgroundPalette: string[] = [
         "#1F1F1F",
         "#2B2B2B",
         "#333333",
@@ -20,7 +22,7 @@ export class FastFrame extends FASTElement {
     ];
 
     @observable
-    public accentPalette: string[] = [
+    public previewAccentPalette: string[] = [
         "#F33378",
         "#F34733",
         "#10A7B5",
@@ -28,14 +30,20 @@ export class FastFrame extends FASTElement {
         "#E1A054",
     ];
 
-    private darkPallette: string[] = this.backgroundPalette;
+    private darkPallette: string[] = this.previewBackgroundPalette;
 
-    private lastSelectedIndex: number = 0;
+    @observable
+    public lastSelectedIndex: number = 0;
+
+    @observable
+    public accentPalette: string[];
 
     public accentChangeHandler = (e: any): void => {
         const element: HTMLInputElement = e.target;
         if (element.checked) {
             this.accentColor = e.target.value;
+            const parsedColor = parseColor(this.accentColor);
+            this.accentPalette = createColorPalette(parsedColor as ColorRGBA64);
         }
     };
 
@@ -43,7 +51,7 @@ export class FastFrame extends FASTElement {
         const element: HTMLInputElement = e.target;
         if (element.checked) {
             this.backgroundColor = e.target.value;
-            this.lastSelectedIndex = Array.from(this.backgroundPalette).indexOf(
+            this.lastSelectedIndex = Array.from(this.previewBackgroundPalette).indexOf(
                 e.target.value
             );
         }
@@ -52,7 +60,7 @@ export class FastFrame extends FASTElement {
     public themeChange = (e: any): void => {
         this.darkMode = !this.darkMode;
         if (!this.darkMode) {
-            this.backgroundPalette = [
+            this.previewBackgroundPalette = [
                 "#FFFFFF",
                 "#F0F0F0",
                 "#DEDEDE",
@@ -60,8 +68,8 @@ export class FastFrame extends FASTElement {
                 "#C4C4C4",
             ];
         } else {
-            this.backgroundPalette = this.darkPallette;
+            this.previewBackgroundPalette = this.darkPallette;
         }
-        this.backgroundColor = this.backgroundPalette[this.lastSelectedIndex];
+        this.backgroundColor = this.previewBackgroundPalette[this.lastSelectedIndex];
     };
 }
