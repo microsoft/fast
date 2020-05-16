@@ -1,14 +1,14 @@
-import { compileTemplate } from "./template-compiler.js";
-import { ElementView, HTMLView, SyntheticView } from "./view.js";
-import { DOM } from "./dom.js";
-import { Behavior, BehaviorFactory } from "./directives/behavior.js";
-import { Directive } from "./directives/directive.js";
-import { BindingDirective } from "./directives/binding.js";
+import { compileTemplate } from "./template-compiler";
+import { ElementView, HTMLView, SyntheticView } from "./view";
+import { DOM } from "./dom";
+import { Behavior, BehaviorFactory } from "./directives/behavior";
+import { Directive } from "./directives/directive";
+import { BindingDirective } from "./directives/binding";
 import {
     defaultExecutionContext,
     ExecutionContext,
     Expression,
-} from "./observation/observable.js";
+} from "./observation/observable";
 
 /**
  * A template capable of creating views specifically for rendering custom elements.

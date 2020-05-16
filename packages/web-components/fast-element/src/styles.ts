@@ -1,4 +1,4 @@
-import { Behavior } from "./directives/behavior.js";
+import { Behavior } from "./directives/behavior";
 
 export interface StyleTarget {
     adoptedStyleSheets?: CSSStyleSheet[];

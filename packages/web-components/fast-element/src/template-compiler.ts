@@ -1,8 +1,8 @@
-import { BehaviorFactory } from "./directives/behavior.js";
-import { DOM } from "./dom.js";
-import { BindingDirective } from "./directives/binding.js";
-import { AttachedBehaviorDirective, Directive } from "./directives/directive.js";
-import { ExecutionContext, Expression } from "./observation/observable.js";
+import { BehaviorFactory } from "./directives/behavior";
+import { DOM } from "./dom";
+import { BindingDirective } from "./directives/binding";
+import { AttachedBehaviorDirective, Directive } from "./directives/directive";
+import { ExecutionContext, Expression } from "./observation/observable";
 
 type InlineDirective = Directive & {
     targetName?: string;

@@ -1,4 +1,4 @@
-import { ExecutionContext } from "../observation/observable.js";
+import { ExecutionContext } from "../observation/observable";
 
 export interface Behavior {
     bind(source: unknown, context: ExecutionContext): void;
