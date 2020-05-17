@@ -1,5 +1,4 @@
 import { inRange } from "lodash-es";
-import { DesignSystemResolver, FASTDesignSystem } from "../fast-design-system";
 import {
     accentBaseColor,
     accentFillActiveDelta,
@@ -7,6 +6,8 @@ import {
     accentFillHoverDelta,
     accentFillSelectedDelta,
     accentPalette,
+    DesignSystemResolver,
+    FASTDesignSystem,
     neutralFillActiveDelta,
     neutralFillHoverDelta,
     neutralFillRestDelta,

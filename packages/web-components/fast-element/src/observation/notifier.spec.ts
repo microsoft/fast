@@ -1,6 +1,5 @@
-import chai from "chai";
-import { PropertyChangeNotifier, Subscriber, SubscriberSet } from "./notifier.js";
-const { expect } = chai;
+import { expect } from "chai";
+import { PropertyChangeNotifier, Subscriber, SubscriberSet } from "./notifier";
 
 describe(`A SubscriberSet`, () => {
     const oneThroughTen = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];

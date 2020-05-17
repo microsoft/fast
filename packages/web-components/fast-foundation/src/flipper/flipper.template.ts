@@ -1,5 +1,5 @@
 import { html, when } from "@microsoft/fast-element";
-import { Flipper, FlipperDirection } from "./flipper.js";
+import { Flipper, FlipperDirection } from "./flipper";
 
 export const FlipperTemplate = html<Flipper>`
     <template

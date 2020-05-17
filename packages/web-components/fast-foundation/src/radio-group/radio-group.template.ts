@@ -1,6 +1,6 @@
 import { html, slotted } from "@microsoft/fast-element";
 import { Orientation } from "@microsoft/fast-web-utilities";
-import { RadioGroup } from "./radio-group.js";
+import { RadioGroup } from "./radio-group";
 
 export const RadioGroupTemplate = html<RadioGroup>`
     <template

@@ -8,8 +8,8 @@ import {
     keyCodeHome,
     wrapInBounds,
 } from "@microsoft/fast-web-utilities";
-import { StartEnd } from "../patterns/start-end.js";
-import { applyMixins } from "../utilities/apply-mixins.js";
+import { StartEnd } from "../patterns/start-end";
+import { applyMixins } from "../utilities/apply-mixins";
 
 export enum TabsOrientation {
     vertical = "vertical",

@@ -5,7 +5,7 @@ import {
     accentFillRestBehavior,
     heightNumber,
     neutralForegroundRestBehavior,
-} from "../styles";
+} from "../styles/index";
 
 export const TabsStyles = css`
     ${display("grid")} :host {

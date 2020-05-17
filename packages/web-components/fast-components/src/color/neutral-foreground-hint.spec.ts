@@ -9,17 +9,19 @@ import {
 } from "./neutral-foreground-hint";
 import { Palette } from "./palette";
 import { contrast, Swatch, SwatchRecipe } from "./common";
+import { expect } from "chai";
+
 describe("neutralForegroundHint", (): void => {
     const neutralPalette: Palette = getNeutralPalette(fastDesignSystemDefaults);
     const accentPalette: Palette = getAccentPalette(fastDesignSystemDefaults);
 
     // test("should return a swatch when argument is a ")
-    test("should implement design system defaults", (): void => {
-        expect(neutralForegroundHint(undefined as any)).toBe("#838383");
+    it("should implement design system defaults", (): void => {
+        expect(neutralForegroundHint(undefined as any)).to.equal("#838383");
     });
 
     neutralPalette.concat(accentPalette).forEach((swatch: Swatch): void => {
-        test(`${swatch} should resolve a color from the neutral palette`, (): void => {
+        it(`${swatch} should resolve a color from the neutral palette`, (): void => {
             expect(
                 neutralPalette.indexOf(
                     neutralForegroundHint(
@@ -28,11 +30,11 @@ describe("neutralForegroundHint", (): void => {
                         })
                     )
                 )
-            ).not.toBe(-1);
+            ).not.to.equal(-1);
         });
     });
 
-    test("should return the same color from both methods of setting the reference background", (): void => {
+    it("should return the same color from both methods of setting the reference background", (): void => {
         neutralPalette.concat(accentPalette).forEach((swatch: Swatch): void => {
             expect(
                 neutralForegroundHint(
@@ -40,7 +42,7 @@ describe("neutralForegroundHint", (): void => {
                         backgroundColor: swatch,
                     })
                 )
-            ).toBe(neutralForegroundHint(() => swatch)(fastDesignSystemDefaults));
+            ).to.equal(neutralForegroundHint(() => swatch)(fastDesignSystemDefaults));
         });
     });
 
@@ -53,17 +55,15 @@ describe("neutralForegroundHint", (): void => {
         );
     }
     neutralPalette.concat(accentPalette).forEach((swatch: Swatch): void => {
-        test(`${swatch} should always be at least 4.5 : 1 against the background`, (): void => {
+        it(`${swatch} should always be at least 4.5 : 1 against the background`, (): void => {
             expect(
                 retrieveContrast(swatch, neutralForegroundHint)
                 // Because neutralForegroundHint follows the direction patterns of neutralForeground,
                 // a backgroundColor #777777 is impossible to hit 4.5 against.
-            ).toBeGreaterThanOrEqual(swatch === "#777777" ? 4.48 : 4.5);
-            expect(retrieveContrast(swatch, neutralForegroundHint)).toBeLessThan(5);
-            expect(
-                retrieveContrast(swatch, neutralForegroundHintLarge)
-            ).toBeGreaterThanOrEqual(3);
-            expect(retrieveContrast(swatch, neutralForegroundHintLarge)).toBeLessThan(
+            ).to.be.gte(swatch === "#777777" ? 4.48 : 4.5);
+            expect(retrieveContrast(swatch, neutralForegroundHint)).to.be.lessThan(5);
+            expect(retrieveContrast(swatch, neutralForegroundHintLarge)).to.be.gte(3);
+            expect(retrieveContrast(swatch, neutralForegroundHintLarge)).to.be.lessThan(
                 3.3
             );
         });

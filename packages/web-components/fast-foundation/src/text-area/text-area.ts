@@ -1,5 +1,5 @@
 import { attr, nullableNumberConverter, observable } from "@microsoft/fast-element";
-import { FormAssociated } from "../form-associated/index.js";
+import { FormAssociated } from "../form-associated/index";
 
 export enum TextAreaAppearance {
     filled = "filled",

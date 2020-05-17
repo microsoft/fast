@@ -10,9 +10,9 @@ import { PartialFASTElementDefinition } from "@microsoft/fast-element";
 import {
     CSSCustomPropertyDefinition,
     CSSCustomPropertyTarget,
-} from "../custom-properties/index.js";
-import { composedParent } from "../utilities/index.js";
-import { DecoratorDesignSystemPropertyConfiguration } from "./design-system-property.js";
+} from "../custom-properties/index";
+import { composedParent } from "../utilities/index";
+import { DecoratorDesignSystemPropertyConfiguration } from "./design-system-property";
 
 const supportsAdoptedStylesheets = "adoptedStyleSheets" in window.ShadowRoot.prototype;
 

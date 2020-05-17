@@ -1,9 +1,8 @@
 # Tests
-__test__/
-*.test.*
-
-# specifications
+dist/dts/__test__/
+dist/esm/__test__/
 *.spec.*
+coverage/
 
 # images
 images/
@@ -20,4 +19,10 @@ build/
 tsconfig.json
 tsconfig.build.json
 rollup.config.json
-babel.config.js
+karma.conf.cjs
+api-extractor.json
+.mocharc.json
+
+# cache
+.rollupcache
+temp

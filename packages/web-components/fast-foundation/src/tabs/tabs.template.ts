@@ -1,6 +1,6 @@
 import { html, ref, slotted, when } from "@microsoft/fast-element";
-import { endTemplate, startTemplate } from "../patterns/start-end.js";
-import { Tabs } from "./tabs.js";
+import { endTemplate, startTemplate } from "../patterns/start-end";
+import { Tabs } from "./tabs";
 
 export const TabsTemplate = html<Tabs>`
     <template role="tabs" class="${x => x.orientation}">

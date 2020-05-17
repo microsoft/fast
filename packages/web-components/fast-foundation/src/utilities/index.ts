@@ -1,4 +1,4 @@
-export * from "./apply-mixins.js";
-export * from "./composed-parent.js";
-export * from "./match-media-stylesheet-behavior.js";
+export * from "./apply-mixins";
+export * from "./composed-parent";
+export * from "./match-media-stylesheet-behavior";
 export * from "./style";

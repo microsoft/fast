@@ -1,6 +1,6 @@
 import { attr, observable } from "@microsoft/fast-element";
 import { keyCodeSpace } from "@microsoft/fast-web-utilities";
-import { FormAssociated } from "../form-associated/index.js";
+import { FormAssociated } from "../form-associated/index";
 
 export interface RadioControl {
     checked: boolean;

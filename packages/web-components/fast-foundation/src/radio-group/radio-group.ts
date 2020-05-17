@@ -7,7 +7,7 @@ import {
     keyCodeArrowUp,
     keyCodeEnter,
 } from "@microsoft/fast-web-utilities";
-import { RadioControl } from "../radio/index.js";
+import { RadioControl } from "../radio/index";
 
 export class RadioGroup extends FASTElement {
     @attr({ attribute: "readonly", mode: "boolean" })

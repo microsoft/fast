@@ -13,26 +13,27 @@ import {
 } from "./neutral-fill-stealth";
 import { Palette } from "./palette";
 import { FillSwatchFamily, Swatch } from "./common";
+import { expect } from "chai";
 
 describe("neutralFillStealth", (): void => {
     const neutralPalette: Palette = getNeutralPalette(fastDesignSystemDefaults);
     const accentPalette: Palette = getAccentPalette(fastDesignSystemDefaults);
 
     // TODO @nicholasrice: Tests are failing due as palette is expecting light
-    xtest("should operate on design system defaults", (): void => {
-        expect(neutralFillStealthRest({} as FASTDesignSystem)).toBe(
+    it.skip("should operate on design system defaults", (): void => {
+        expect(neutralFillStealthRest({} as FASTDesignSystem)).to.equal(
             neutralPalette[fastDesignSystemDefaults.neutralFillStealthRestDelta]
         );
-        expect(neutralFillStealthHover({} as FASTDesignSystem)).toBe(
+        expect(neutralFillStealthHover({} as FASTDesignSystem)).to.equal(
             neutralPalette[fastDesignSystemDefaults.neutralFillStealthHoverDelta]
         );
-        expect(neutralFillStealthActive({} as FASTDesignSystem)).toBe(
+        expect(neutralFillStealthActive({} as FASTDesignSystem)).to.equal(
             neutralPalette[fastDesignSystemDefaults.neutralFillStealthActiveDelta]
         );
-        expect(neutralFillStealthFocus({} as FASTDesignSystem)).toBe(
+        expect(neutralFillStealthFocus({} as FASTDesignSystem)).to.equal(
             neutralPalette[fastDesignSystemDefaults.neutralFillStealthFocusDelta]
         );
-        expect(neutralFillStealthSelected({} as FASTDesignSystem)).toBe(
+        expect(neutralFillStealthSelected({} as FASTDesignSystem)).to.equal(
             neutralPalette[
                 fastDesignSystemDefaults.neutralFillStealthRestDelta +
                     fastDesignSystemDefaults.neutralFillStealthSelectedDelta
@@ -41,50 +42,64 @@ describe("neutralFillStealth", (): void => {
     });
 
     // TODO @nicholasrice: Tests are failing due as palette is expecting light
-    xtest("should switch from dark to light after 10 swatches", (): void => {
-        expect(neutralFillStealthHover(fastDesignSystemDefaults)).toBe(
+    it.skip("should switch from dark to light after 10 swatches", (): void => {
+        expect(neutralFillStealthHover(fastDesignSystemDefaults)).to.equal(
             neutralPalette[fastDesignSystemDefaults.neutralFillStealthHoverDelta]
         );
         expect(
             neutralFillStealthHover(() => neutralPalette[1])(fastDesignSystemDefaults)
-        ).toBe(neutralPalette[fastDesignSystemDefaults.neutralFillStealthHoverDelta + 1]);
+        ).to.equal(
+            neutralPalette[fastDesignSystemDefaults.neutralFillStealthHoverDelta + 1]
+        );
         expect(
             neutralFillStealthHover(() => neutralPalette[2])(fastDesignSystemDefaults)
-        ).toBe(neutralPalette[fastDesignSystemDefaults.neutralFillStealthHoverDelta + 2]);
+        ).to.equal(
+            neutralPalette[fastDesignSystemDefaults.neutralFillStealthHoverDelta + 2]
+        );
         expect(
             neutralFillStealthHover(() => neutralPalette[9])(fastDesignSystemDefaults)
-        ).toBe(neutralPalette[fastDesignSystemDefaults.neutralFillStealthHoverDelta + 9]);
+        ).to.equal(
+            neutralPalette[fastDesignSystemDefaults.neutralFillStealthHoverDelta + 9]
+        );
         expect(
             neutralFillStealthHover(() => neutralPalette[10])(fastDesignSystemDefaults)
-        ).toBe(
+        ).to.equal(
             neutralPalette[10 - fastDesignSystemDefaults.neutralFillStealthHoverDelta]
         );
     });
 
-    test("should return the same color from both implementations", (): void => {
+    it("should return the same color from both implementations", (): void => {
         neutralPalette.concat(accentPalette).forEach((swatch: Swatch): void => {
-            expect(neutralFillStealthRest(() => swatch)(fastDesignSystemDefaults)).toBe(
+            expect(
+                neutralFillStealthRest(() => swatch)(fastDesignSystemDefaults)
+            ).to.equal(
                 neutralFillStealthRest(
                     Object.assign({}, fastDesignSystemDefaults, {
                         backgroundColor: swatch,
                     })
                 )
             );
-            expect(neutralFillStealthHover(() => swatch)(fastDesignSystemDefaults)).toBe(
+            expect(
+                neutralFillStealthHover(() => swatch)(fastDesignSystemDefaults)
+            ).to.equal(
                 neutralFillStealthHover(
                     Object.assign({}, fastDesignSystemDefaults, {
                         backgroundColor: swatch,
                     })
                 )
             );
-            expect(neutralFillStealthActive(() => swatch)(fastDesignSystemDefaults)).toBe(
+            expect(
+                neutralFillStealthActive(() => swatch)(fastDesignSystemDefaults)
+            ).to.equal(
                 neutralFillStealthActive(
                     Object.assign({}, fastDesignSystemDefaults, {
                         backgroundColor: swatch,
                     })
                 )
             );
-            expect(neutralFillStealthFocus(() => swatch)(fastDesignSystemDefaults)).toBe(
+            expect(
+                neutralFillStealthFocus(() => swatch)(fastDesignSystemDefaults)
+            ).to.equal(
                 neutralFillStealthFocus(
                     Object.assign({}, fastDesignSystemDefaults, {
                         backgroundColor: swatch,
@@ -93,7 +108,7 @@ describe("neutralFillStealth", (): void => {
             );
             expect(
                 neutralFillStealthSelected(() => swatch)(fastDesignSystemDefaults)
-            ).toBe(
+            ).to.equal(
                 neutralFillStealthSelected(
                     Object.assign({}, fastDesignSystemDefaults, {
                         backgroundColor: swatch,
@@ -103,7 +118,7 @@ describe("neutralFillStealth", (): void => {
         });
     });
 
-    test("should have consistent return values", (): void => {
+    it("should have consistent return values", (): void => {
         neutralPalette.concat(accentPalette).forEach((swatch: Swatch): void => {
             const backplates: FillSwatchFamily = neutralFillStealth(() => swatch)(
                 fastDesignSystemDefaults
@@ -124,11 +139,11 @@ describe("neutralFillStealth", (): void => {
                 fastDesignSystemDefaults
             );
 
-            expect(backplates.rest).toBe(rest);
-            expect(backplates.hover).toBe(hover);
-            expect(backplates.active).toBe(active);
-            expect(backplates.focus).toBe(focus);
-            expect(backplates.selected).toBe(selected);
+            expect(backplates.rest).to.equal(rest);
+            expect(backplates.hover).to.equal(hover);
+            expect(backplates.active).to.equal(active);
+            expect(backplates.focus).to.equal(focus);
+            expect(backplates.selected).to.equal(selected);
         });
     });
 });

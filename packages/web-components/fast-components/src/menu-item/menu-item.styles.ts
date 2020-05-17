@@ -9,7 +9,7 @@ import {
     neutralFocusBehavior,
     neutralFocusInnerAccentBehavior,
     neutralForegroundRestBehavior,
-} from "../styles";
+} from "../styles/index";
 
 export const MenuItemStyles = css`
     ${display("grid")} :host {
