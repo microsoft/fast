@@ -87,11 +87,24 @@ This hierarchy uses the Workload separation strategy.
 
 **staging slots are used to manage pre-production smoke testing.
 
+### Resource Groups / Locations
+For improved isolation and availability in business continuity disaster recovery (BCDR) 
+regionally pair "East US" and "West US" for indepth details on paired regions.
+
+[Availability Docs](https://docs.microsoft.com/en-us/azure/best-practices-availability-paired-regions)
+[Regional Pairing Docs](https://docs.microsoft.com/en-us/azure/architecture/reference-architectures/app-service-web-app/multi-region#regional-pairing)
+
+
 ### Front Door
 Azure Front Door is an Application Delivery Network (ADN) as a service, offering various layer 7 load-balancing capabilities for your applications. It provides dynamic site acceleration (DSA) along with global load balancing with near real-time failover. It is a highly available and scalable service, which is fully managed by Azure. 
 
 [Front Door Docs](https://docs.microsoft.com/en-us/azure/frontdoor/)
 
+Front Door requires the Azure CLI extension before running `create-frontdoor.sh` Bash script, which can be installed using:
+
+```bash
+az extension add -nname front-door
+```
 
 ### Storage
 Uses read-access geo-redundant storage (RA-GRS), where the data is replicated to a secondary region. You have read-only access to the data in the secondary region through a separate endpoint. If there is a regional outage or disaster, the Azure Storage team might decide to perform a geo-failover to the secondary region. There is no customer action required for this failover. 
@@ -101,6 +114,9 @@ Uses read-access geo-redundant storage (RA-GRS), where the data is replicated to
 
 ### Key Vault
 Uses one key vault per environment (development, staging, and production). Takes backups on regular cadence and as objects stored within the Key Vault change.
+
+#### Secrets
+Subscriptions are stored in Azure Key Vault as a manual data operation.  They are then retrievable using Azure CLI, but authorized users only.
 
 #### TODO
 1. Setup Permissions for management groups
