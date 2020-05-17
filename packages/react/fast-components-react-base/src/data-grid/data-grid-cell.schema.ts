@@ -3,12 +3,12 @@ export default {
     title: "Data grid cell",
     description: "A data grid cell's schema definition.",
     type: "object",
-    id: "@edge-web-ui/browser-ring-one/data-grid-cell",
-    formPluginId: "@edge-web-ui/browser-ring-one/data-grid-cell",
+    id: "@microsoft/fast-components-react-base/data-grid-cell",
+    formPluginId: "@microsoft/fast-components-react-base/data-grid-cell",
     properties: {
         rowData: {
             title: "Row data",
-            type: "array",
+            type: "object",
         },
         columnIndex: {
             title: "Column index",
@@ -24,11 +24,11 @@ export default {
                 },
                 title: {
                     title: "Title",
-                    type: "string",
+                    type: "object",
                 },
                 columnWidth: {
                     title: "Column Width",
-                    type: "number",
+                    type: "string",
                 },
             },
         },

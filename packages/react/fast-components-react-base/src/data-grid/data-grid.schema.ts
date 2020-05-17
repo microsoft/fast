@@ -1,14 +1,26 @@
 export default {
     $schema: "http://json-schema.org/schema#",
     title: "Data grid",
-    description: "A dialog component's schema definition.",
+    description: "A data grid component's schema definition.",
     type: "object",
-    id: "@edge-web-ui/browser-ring-one/data-grid",
-    formPluginId: "@edge-web-ui/browser-ring-one/data-grid",
+    id: "@microsoft/fast-components-react-base/data-grid",
+    formPluginId: "@microsoft/fast-components-react-base/data-grid",
     properties: {
         gridData: {
-            title: "Array of data to be rendered",
+            title: "Array of data (objects by row) to be rendered",
             type: "array",
+        },
+        stableRangeEndIndex: {
+            title: "Stable range end index",
+            type: "number",
+        },
+        pageSize: {
+            title: "Data page size",
+            type: "number",
+        },
+        virtualizeItems: {
+            title: "Virtualize items",
+            type: "boolean",
         },
         dataRowKey: {
             title: "Data row key",
@@ -22,16 +34,13 @@ export default {
             title: "Item height",
             type: "number",
         },
-        preloadBufferLength: {
-            title: "preloadBufferLength",
-            type: "number",
+        defaultFocusRowKey: {
+            title: "Default focus row key",
+            type: "string",
         },
-    },
-    reactProperties: {
-        children: {
-            title: "Children",
-            type: "children",
-            defaults: ["text"],
+        defaultFocusColumnKey: {
+            title: "Default focus column key",
+            type: "string",
         },
     },
     required: ["gridData", "dataRowKey", "columnDefinitions"],
