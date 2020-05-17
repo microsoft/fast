@@ -1,6 +1,6 @@
 import { html, ref, slotted } from "@microsoft/fast-element";
-import { endTemplate, startTemplate } from "../patterns/start-end.js";
-import { TextField } from "./text-field.js";
+import { endTemplate, startTemplate } from "../patterns/start-end";
+import { TextField } from "./text-field";
 
 export const TextFieldTemplate = html<TextField>`
     <template

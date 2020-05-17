@@ -3,7 +3,7 @@ import {
     DecoratorAttributeConfiguration,
     observable,
 } from "@microsoft/fast-element";
-import { DesignSystemProvider } from "./design-system-provider.js";
+import { DesignSystemProvider } from "./design-system-provider";
 /**
  * Decorator to declare a property as a design-system property.
  * Accepts a config object with the following:

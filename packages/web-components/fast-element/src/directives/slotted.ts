@@ -1,9 +1,6 @@
-import { CaptureType } from "../template.js";
-import { AttachedBehaviorDirective } from "./directive.js";
-import {
-    NodeBehaviorBehaviorOptions,
-    NodeObservationBehavior,
-} from "./node-observation.js";
+import { CaptureType } from "../template";
+import { AttachedBehaviorDirective } from "./directive";
+import { NodeBehaviorBehaviorOptions, NodeObservationBehavior } from "./node-observation";
 
 export interface SlottedBehaviorOptions<T = any>
     extends NodeBehaviorBehaviorOptions<T>,

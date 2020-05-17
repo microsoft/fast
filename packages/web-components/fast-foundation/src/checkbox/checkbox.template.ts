@@ -1,5 +1,5 @@
 import { html, slotted } from "@microsoft/fast-element";
-import { Checkbox } from "./checkbox.js";
+import { Checkbox } from "./checkbox";
 
 export const CheckboxTemplate = html<Checkbox>`
     <template

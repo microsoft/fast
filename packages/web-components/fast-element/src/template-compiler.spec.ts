@@ -1,10 +1,9 @@
-import chai from "chai";
-import { DOM } from "./dom.js";
-import { BindingDirective } from "./directives/binding.js";
-import { compileTemplate } from "./template-compiler.js";
-import { Directive } from "./directives/directive.js";
-import { defaultExecutionContext } from "./observation/observable.js";
-const { expect } = chai;
+import { expect } from "chai";
+import { DOM } from "./dom";
+import { BindingDirective } from "./directives/binding";
+import { compileTemplate } from "./template-compiler";
+import { Directive } from "./directives/directive";
+import { defaultExecutionContext } from "./observation/observable";
 
 describe("The template compiler", () => {
     function compile(html: string, directives: Directive[]) {

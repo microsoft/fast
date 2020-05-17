@@ -5,7 +5,7 @@ import {
     accentFillRestBehavior,
     neutralFillRestBehavior,
     neutralForegroundHintBehavior,
-} from "../../styles";
+} from "../../styles/index";
 
 export const ProgressStyles = css`
     ${display("flex")} :host {

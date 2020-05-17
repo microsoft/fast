@@ -1,2 +1,2 @@
-export * from "./radio.template.js";
-export * from "./radio.js";
+export * from "./radio.template";
+export * from "./radio";

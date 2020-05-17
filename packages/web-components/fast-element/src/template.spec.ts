@@ -1,9 +1,8 @@
-import chai from "chai";
-import { html, ViewTemplate } from "./template.js";
-import { DOM } from "./dom.js";
-import { BindingDirective } from "./directives/binding.js";
-import { Directive } from "./directives/directive.js";
-const { expect } = chai;
+import { expect } from "chai";
+import { html, ViewTemplate } from "./template";
+import { DOM } from "./dom";
+import { BindingDirective } from "./directives/binding";
+import { Directive } from "./directives/directive";
 
 describe(`The html tag template helper`, () => {
     it(`transforms a string into a ViewTemplate.`, () => {
@@ -21,7 +20,9 @@ describe(`The html tag template helper`, () => {
         }
     }
 
-    class Model { value: "value"; }
+    class Model {
+        value: "value";
+    }
     const stringValue = "string value";
     const numberValue = 42;
     const interpolationScenarios = [
@@ -169,7 +170,11 @@ describe(`The html tag template helper`, () => {
         const template = html<Model>`<my-element :someAttribute=${x => x.value}></my-element>`;
         const placeholder = DOM.createInterpolationPlaceholder(0);
 
-        expect(template.html).to.equal(`<my-element :someAttribute=${placeholder}></my-element>`);
-        expect((template.directives[0] as BindingDirective).targetName).to.equal(":someAttribute");
+        expect(template.html).to.equal(
+            `<my-element :someAttribute=${placeholder}></my-element>`
+        );
+        expect((template.directives[0] as BindingDirective).targetName).to.equal(
+            ":someAttribute"
+        );
     });
 });

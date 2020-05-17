@@ -1,13 +1,30 @@
-const resolve = require("rollup-plugin-node-resolve");
-const typescript = require("rollup-plugin-typescript");
-const path = require("path");
+import resolve from "rollup-plugin-node-resolve";
+import typescript from "rollup-plugin-typescript2";
+import { terser } from "rollup-plugin-terser";
+import filesize from "rollup-plugin-filesize";
+import commonJS from "rollup-plugin-commonjs";
 
-module.exports = {
-    input: path.resolve(__dirname, "./build/generate-default-palettes.js"),
-    output: {
-        file: ".tmp/generate-palettes.js",
-        format: "cjs",
+export default [
+    {
+        input: "src/index.ts",
+        output: [
+            {
+                file: "dist/fast-components.js",
+                format: "esm",
+            },
+        ],
+        plugins: [
+            resolve(),
+            commonJS(),
+            typescript({
+                tsconfigOverride: {
+                    compilerOptions: {
+                        declaration: false,
+                    },
+                },
+            }),
+            terser(),
+            filesize(),
+        ],
     },
-    plugins: [resolve(), typescript()],
-    external: ["fs", "path"],
-};
+];

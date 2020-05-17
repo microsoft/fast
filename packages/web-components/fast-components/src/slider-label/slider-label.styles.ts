@@ -5,7 +5,7 @@ import {
     heightNumber,
     neutralForegroundRestBehavior,
     neutralOutlineRestBehavior,
-} from "../styles";
+} from "../styles/index";
 
 export const SliderLabelStyles = css`
     ${display("block")} :host {

@@ -1,16 +1,17 @@
 import { FASTDesignSystem, fastDesignSystemDefaults } from "../fast-design-system";
 import { neutralFillCard } from "./neutral-fill-card";
+import { expect } from "chai";
 
 describe("neutralFillCard", (): void => {
     // TODO @nicholasrice: Tests are failing due as palette is expecting light
-    xtest("should operate on design system defaults", (): void => {
-        expect(neutralFillCard({} as FASTDesignSystem)).toBe(
+    it.skip("should operate on design system defaults", (): void => {
+        expect(neutralFillCard({} as FASTDesignSystem)).to.equal(
             fastDesignSystemDefaults.neutralPalette[
                 fastDesignSystemDefaults.neutralFillCardDelta
             ]
         );
     });
-    test("should get darker when the index of the backgroundColor is lower than the offset index", (): void => {
+    it("should get darker when the index of the backgroundColor is lower than the offset index", (): void => {
         for (let i: number = 0; i < fastDesignSystemDefaults.neutralFillCardDelta; i++) {
             expect(
                 fastDesignSystemDefaults.neutralPalette.indexOf(
@@ -20,10 +21,10 @@ describe("neutralFillCard", (): void => {
                         })
                     )
                 )
-            ).toBe(fastDesignSystemDefaults.neutralFillCardDelta + i);
+            ).to.equal(fastDesignSystemDefaults.neutralFillCardDelta + i);
         }
     });
-    test("should return the color at three steps lower than the background color", (): void => {
+    it("should return the color at three steps lower than the background color", (): void => {
         for (let i: number = 3; i < fastDesignSystemDefaults.neutralPalette.length; i++) {
             expect(
                 fastDesignSystemDefaults.neutralPalette.indexOf(
@@ -33,14 +34,14 @@ describe("neutralFillCard", (): void => {
                         })
                     )
                 )
-            ).toBe(i - 3);
+            ).to.equal(i - 3);
         }
     });
-    test("should generate a color based on the background color returned by a provided callback", (): void => {
+    it("should generate a color based on the background color returned by a provided callback", (): void => {
         expect(
             neutralFillCard(() => fastDesignSystemDefaults.neutralPalette[4])(
                 fastDesignSystemDefaults
             )
-        ).toBe(fastDesignSystemDefaults.neutralPalette[1]);
+        ).to.equal(fastDesignSystemDefaults.neutralPalette[1]);
     });
 });

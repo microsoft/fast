@@ -27,9 +27,9 @@ import {
     neutralLayerL3,
     neutralLayerL4,
     neutralOutline,
-} from "../color";
+} from "../color/index";
 import { accentBaseColor } from "../fast-design-system";
-import { FASTDesignSystemProvider } from "../design-system-provider";
+import { FASTDesignSystemProvider } from "../design-system-provider/index";
 
 export const neutralForegroundRestBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-foreground-rest",

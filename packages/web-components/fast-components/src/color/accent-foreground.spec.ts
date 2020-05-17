@@ -14,47 +14,52 @@ import {
 } from "./accent-foreground";
 import { Palette } from "./palette";
 import { contrast, Swatch } from "./common";
+import { expect } from "chai";
 
 describe("accentForeground", (): void => {
     const neutralPalette: Palette = getNeutralPalette(fastDesignSystemDefaults);
     const accentPalette: Palette = getAccentPalette(fastDesignSystemDefaults);
 
     // TODO @nicholasrice: Tests are failing due as palette is expecting light
-    xtest("should operate on design system defaults", (): void => {
-        expect(accentForegroundRest({} as FASTDesignSystem)).toBe(accentPalette[59]);
-        expect(accentForegroundHover({} as FASTDesignSystem)).toBe(accentPalette[65]);
-        expect(accentForegroundActive({} as FASTDesignSystem)).toBe(accentPalette[55]);
-        expect(accentForegroundLargeRest({} as FASTDesignSystem)).toBe(accentPalette[59]);
-        expect(accentForegroundLargeHover({} as FASTDesignSystem)).toBe(
+    it.skip("should operate on design system defaults", (): void => {
+        expect(accentForegroundRest({} as FASTDesignSystem)).to.equal(accentPalette[59]);
+        expect(accentForegroundHover({} as FASTDesignSystem)).to.equal(accentPalette[65]);
+        expect(accentForegroundActive({} as FASTDesignSystem)).to.equal(
+            accentPalette[55]
+        );
+        expect(accentForegroundLargeRest({} as FASTDesignSystem)).to.equal(
+            accentPalette[59]
+        );
+        expect(accentForegroundLargeHover({} as FASTDesignSystem)).to.equal(
             accentPalette[65]
         );
-        expect(accentForegroundLargeActive({} as FASTDesignSystem)).toBe(
+        expect(accentForegroundLargeActive({} as FASTDesignSystem)).to.equal(
             accentPalette[55]
         );
     });
 
     // TODO @nicholasrice: Tests are failing due as palette is expecting light
-    xtest("should accept a function that resolves a background swatch", (): void => {
-        expect(typeof accentForegroundRest(() => "#FFF")).toBe("function");
-        expect(accentForegroundRest(() => "#000")({} as FASTDesignSystem)).toBe(
+    it.skip("should accept a function that resolves a background swatch", (): void => {
+        expect(typeof accentForegroundRest(() => "#FFF")).to.equal("function");
+        expect(accentForegroundRest(() => "#000")({} as FASTDesignSystem)).to.equal(
             accentPalette[59]
         );
-        expect(typeof accentForegroundRest(() => "#FFFFFF")).toBe("function");
-        expect(accentForegroundRest(() => "#000000")({} as FASTDesignSystem)).toBe(
+        expect(typeof accentForegroundRest(() => "#FFFFFF")).to.equal("function");
+        expect(accentForegroundRest(() => "#000000")({} as FASTDesignSystem)).to.equal(
             accentPalette[59]
         );
     });
 
     // TODO @nicholasrice: Tests are failing due as palette is expecting light
-    xtest("should increase contrast on hover state and decrease contrast on active state in either mode", (): void => {
+    it.skip("should increase contrast on hover state and decrease contrast on active state in either mode", (): void => {
         expect(
             accentPalette.indexOf(accentForegroundHover(fastDesignSystemDefaults))
-        ).toBeGreaterThan(
+        ).to.be.greaterThan(
             accentPalette.indexOf(accentForegroundRest(fastDesignSystemDefaults))
         );
         expect(
             accentPalette.indexOf(accentForegroundActive(fastDesignSystemDefaults))
-        ).toBeLessThan(
+        ).to.be.lessThan(
             accentPalette.indexOf(accentForegroundRest(fastDesignSystemDefaults))
         );
 
@@ -67,13 +72,15 @@ describe("accentForeground", (): void => {
         );
         expect(
             accentPalette.indexOf(accentForegroundHover(darkDesignSystem))
-        ).toBeLessThan(accentPalette.indexOf(accentForegroundRest(darkDesignSystem)));
+        ).to.be.lessThan(accentPalette.indexOf(accentForegroundRest(darkDesignSystem)));
         expect(
             accentPalette.indexOf(accentForegroundActive(darkDesignSystem))
-        ).toBeGreaterThan(accentPalette.indexOf(accentForegroundRest(darkDesignSystem)));
+        ).to.be.greaterThan(
+            accentPalette.indexOf(accentForegroundRest(darkDesignSystem))
+        );
     });
 
-    test("should have accessible rest and hover colors against the background color", (): void => {
+    it("should have accessible rest and hover colors against the background color", (): void => {
         const accentColors: Swatch[] = [
             "#0078D4",
             "#107C10",
@@ -107,17 +114,17 @@ describe("accentForeground", (): void => {
                     expect(
                         contrast(swatch, accentForegroundRest(designSystem))
                         // There are a few states that are impossible to meet contrast on
-                    ).toBeGreaterThanOrEqual(4.47);
+                    ).to.be.gte(4.47);
                     expect(
                         contrast(swatch, accentForegroundHover(designSystem))
                         // There are a few states that are impossible to meet contrast on
-                    ).toBeGreaterThanOrEqual(3.7);
+                    ).to.be.gte(3.7);
                     expect(
                         contrast(swatch, accentForegroundLargeRest(designSystem))
-                    ).toBeGreaterThanOrEqual(3);
+                    ).to.be.gte(3);
                     expect(
                         contrast(swatch, accentForegroundLargeHover(designSystem))
-                    ).toBeGreaterThanOrEqual(3);
+                    ).to.be.gte(3);
                 });
             }
         );

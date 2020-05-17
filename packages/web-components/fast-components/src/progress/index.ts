@@ -1,2 +1,2 @@
-export * from "./progress";
-export * from "./progress-ring";
+export * from "./progress/index";
+export * from "./progress-ring/index";

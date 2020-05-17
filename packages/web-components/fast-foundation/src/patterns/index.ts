@@ -1,1 +1,1 @@
-export * from "./start-end.js";
+export * from "./start-end";

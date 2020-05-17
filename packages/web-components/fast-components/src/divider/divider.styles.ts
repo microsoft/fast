@@ -1,6 +1,6 @@
 import { css } from "@microsoft/fast-element";
 import { display } from "@microsoft/fast-foundation";
-import { neutralDividerRestBehavior } from "../styles";
+import { neutralDividerRestBehavior } from "../styles/index";
 
 export const DividerStyles = css`
     ${display("block")} :host {

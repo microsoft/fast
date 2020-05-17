@@ -1,7 +1,7 @@
 import { attr } from "@microsoft/fast-element";
-import { FormAssociated } from "../form-associated/index.js";
-import { StartEnd } from "../patterns/start-end.js";
-import { applyMixins } from "../utilities/apply-mixins.js";
+import { FormAssociated } from "../form-associated/index";
+import { StartEnd } from "../patterns/start-end";
+import { applyMixins } from "../utilities/apply-mixins";
 
 export type ButtonAppearance =
     | "accent"

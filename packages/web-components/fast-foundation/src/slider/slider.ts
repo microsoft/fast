@@ -9,8 +9,8 @@ import {
     keyCodeHome,
     Orientation,
 } from "@microsoft/fast-web-utilities";
-import { FormAssociated } from "../form-associated/index.js";
-import { convertPixelToPercent } from "./slider-utilities.js";
+import { FormAssociated } from "../form-associated/index";
+import { convertPixelToPercent } from "./slider-utilities";
 
 export enum SliderMode {
     singleValue = "single-value",

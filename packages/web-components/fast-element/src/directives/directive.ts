@@ -1,5 +1,5 @@
-import { DOM } from "../dom.js";
-import { Behavior, BehaviorFactory } from "./behavior.js";
+import { DOM } from "../dom";
+import { Behavior, BehaviorFactory } from "./behavior";
 
 export abstract class Directive implements BehaviorFactory {
     public targetIndex: number = 0;

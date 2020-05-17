@@ -32,7 +32,7 @@ import {
     neutralOutlineRestBehavior,
     OutlineButtonStyles,
     StealthButtonStyles,
-} from "../styles";
+} from "../styles/index";
 
 export const ButtonStyles = css`
     ${BaseButtonStyles}

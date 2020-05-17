@@ -8,8 +8,8 @@ import { Direction, RtlScrollConverter } from "@microsoft/fast-web-utilities";
 import {
     ConstructibleResizeObserver,
     ResizeObserverClassDefinition,
-} from "./resize-observer.js";
-import { ResizeObserverEntry } from "./resize-observer-entry.js";
+} from "./resize-observer";
+import { ResizeObserverEntry } from "./resize-observer-entry";
 
 declare global {
     interface WindowWithResizeObserver extends Window {
