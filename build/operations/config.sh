@@ -15,21 +15,17 @@ bold=$(tput smso)
 unbold=$(tput rmso)
 
 # SET COMMON VARIABLES
-debug=true
+debug=true && [[ $debug == true ]] && echo "${bold}${green}FAST DEFAULT CONFIGURATION"${reset}${unbold}
 
 # SET PRODUCT NAME
-product_name=fast
-[[ $debug == true ]] && echo "${bold}${green}Product Name"${reset}${unbold} && echo $product_name
+product_name=fast && [[ $debug == true ]] && echo "${bold}${green}Product Name"${reset}${unbold} && echo $product_name
 
-# CONFIGURE / SET LOCATIONS
-location_us_west=westus
-location_us_east=eastus
-location=$location_us_east
-location_abbr=${location:0:4}
-[[ $debug == true ]] && echo "${bold}${green}Location (abbr)"${reset}${unbold} && echo "$location ($location_abbr)"
+# CONFIGURE / SET SUBSCRIPTION, valid options {production, development}
+subscription=production && [[ $debug == true ]] && echo "${bold}${green}Subscription"${reset}${unbold} && echo $subscription
+               
+# CONFIGURE / SET LOCATIONS, valid options {westus, eastus}
+location=eastus
+location_abbr=${location:0:4} && [[ $debug == true ]] && echo "${bold}${green}Location (abbr)"${reset}${unbold} && echo "$location ($location_abbr)"
 
-# CONFIGURE / SET RESOURCE GROUPS
-resource_group_us_west=$product_name-$location_us_west-rg
-resource_group_us_east=$product_name-$location_us_east-rg
-resource_group=$resource_group_us_east
-[[ $debug == true ]] && echo "${bold}${green}Resource Group"${reset}${unbold} && echo $resource_group
+# CONFIGURE / SET RESOURCE GROUPS, valid options {fast-westus-rg, fast-eastus-rg}
+resource_group=fast-eastus-rg && [[ $debug == true ]] && echo "${bold}${green}Resource Group"${reset}${unbold} && echo $resource_group
