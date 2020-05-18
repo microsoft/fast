@@ -1,5 +1,6 @@
 import { css } from "@microsoft/fast-element";
-import { display, neutralForegroundRestBehavior } from "@microsoft/fast-components";
+import { neutralForegroundRestBehavior } from "@microsoft/fast-components";
+import { display } from "@microsoft/fast-foundation";
 
 export const NavigationStyles = css`
     ${display("flex")} :host {
