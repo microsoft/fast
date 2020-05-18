@@ -87,7 +87,7 @@
       "webpack": "^4.43.0"
     },
     "dependencies": {
-      "@microsoft/fast-components": "^0.10.1",
+      "@microsoft/fast-foundation": "^0.0.1",
       "@microsoft/fast-components-styles-msft": "4.28.9",
       "@microsoft/fast-element": "^0.8.1",
       "tslib": "^1.13.0"
