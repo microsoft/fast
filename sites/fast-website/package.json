@@ -7,7 +7,6 @@
   "license": "MIT",
   "devDependencies": {
     "@microsoft/fast-components": "^0.10.1",
-    "@microsoft/fast-element": "^0.8.1",
     "babel-core": "^6.26.3",
     "babel-loader": "^8.1.0",
     "babel-preset-env": "^1.7.0",
@@ -22,6 +21,11 @@
     "webpack": "^4.43.0",
     "webpack-dev-server": "^3.10.3",
     "webpack-merge": "^4.2.2"
+  },
+  "dependencies": {
+    "@microsoft/fast-element": "^0.8.1",
+    "@microsoft/fast-foundation": "^0.0.1",
+    "@microsoft/fast-web-utilities": "^4.4.5"
   },
   "scripts": {
     "start": "webpack-dev-server --config=./webpack.dev.js --history-api-fallback --progress",
