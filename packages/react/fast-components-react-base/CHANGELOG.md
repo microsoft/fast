@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.25.11](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@4.25.10...@microsoft/fast-components-react-base@4.25.11) (2020-05-18)
+
+
+### Bug Fixes
+
+* add aria-expanded state to auto-suggest input ([#3071](https://github.com/Microsoft/fast-dna/issues/3071)) ([5701e00](https://github.com/Microsoft/fast-dna/commit/5701e001a8baa80c46bdcaac083b938914bec9c1))
+* select root should not be focusable ([#2980](https://github.com/Microsoft/fast-dna/issues/2980)) ([c166f4b](https://github.com/Microsoft/fast-dna/commit/c166f4b1a1b8509457d6df5ba787f0fcf6ea73f0))
+* update to unblock CI failures by prettier ([#3057](https://github.com/Microsoft/fast-dna/issues/3057)) ([1776c07](https://github.com/Microsoft/fast-dna/commit/1776c0757b869fbd9fc0edac68d0d1d2bedd6a78))
+
+
+
+
+
 ## [4.25.10](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@4.25.9...@microsoft/fast-components-react-base@4.25.10) (2020-04-29)
 
 

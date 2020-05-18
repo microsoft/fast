@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.5.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-web-utilities@4.4.5...@microsoft/fast-web-utilities@4.5.0) (2020-05-18)
+
+
+### Features
+
+* add system-colors to fast-web-utilities ([#3137](https://github.com/Microsoft/fast-dna/issues/3137)) ([ee37b3f](https://github.com/Microsoft/fast-dna/commit/ee37b3f51336a040b64fc0f00d73c57185cafaa7))
+
+
+
+
+
 ## [4.4.5](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-web-utilities@4.4.4...@microsoft/fast-web-utilities@4.4.5) (2020-04-29)
 
 **Note:** Version bump only for package @microsoft/fast-web-utilities

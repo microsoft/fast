@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.9.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-element@0.8.1...@microsoft/fast-element@0.9.0) (2020-05-18)
+
+
+### Bug Fixes
+
+* **fast-element:** every third subscriber not registered ([#3086](https://github.com/Microsoft/fast-dna/issues/3086)) ([bd26083](https://github.com/Microsoft/fast-dna/commit/bd2608379d38da62cfe3b6d6d02e6925a8652125))
+* **fast-element:** html helper should handle literal and directive interpolated together ([#3106](https://github.com/Microsoft/fast-dna/issues/3106)) ([627f06c](https://github.com/Microsoft/fast-dna/commit/627f06c899f2e308fa402148f1130995f6fb0fb8))
+* add exports that were removed during circular reference refactor [#3038](https://github.com/Microsoft/fast-dna/issues/3038) ([eb1cb91](https://github.com/Microsoft/fast-dna/commit/eb1cb91fb545acf5e88e1280ebde5b15cc80bca3))
+
+
+### Features
+
+* **fast-element:** more granular content compilation with tests ([#3127](https://github.com/Microsoft/fast-dna/issues/3127)) ([c96fef2](https://github.com/Microsoft/fast-dna/commit/c96fef26ee8397866050c3785cdb958105535ea9))
+* **web-components:** new build/test/docs setup ([#3156](https://github.com/Microsoft/fast-dna/issues/3156)) ([51d909a](https://github.com/Microsoft/fast-dna/commit/51d909ad6a616cb63f7c62defe1ee1f3d2abaf02))
+
+
+
+
+
 ## [0.8.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-element@0.8.0...@microsoft/fast-element@0.8.1) (2020-04-29)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.28.10](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@4.28.9...@microsoft/fast-components-styles-msft@4.28.10) (2020-05-18)
+
+
+### Bug Fixes
+
+* update colors for 3:1 accessibility on checkbox, radio, and toggle ([#3073](https://github.com/Microsoft/fast-dna/issues/3073)) ([0dd89c2](https://github.com/Microsoft/fast-dna/commit/0dd89c2c019ab429e461b4d484936a00615f0a7b))
+
+
+
+
+
 ## [4.28.9](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@4.28.8...@microsoft/fast-components-styles-msft@4.28.9) (2020-04-29)
 
 **Note:** Version bump only for package @microsoft/fast-components-styles-msft

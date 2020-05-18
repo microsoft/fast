@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.1.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@2.0.4...@microsoft/fast-tooling-react@2.1.0) (2020-05-18)
+
+
+### Bug Fixes
+
+* adds new call and response to custom messages passed from the Viewer ([#3063](https://github.com/Microsoft/fast-dna/issues/3063)) ([9a598b1](https://github.com/Microsoft/fast-dna/commit/9a598b100a6dffd636268227653e4cc4347ba85e))
+
+
+### Features
+
+* add plugin system to the data dictionary mapping utility ([#3052](https://github.com/Microsoft/fast-dna/issues/3052)) ([401d342](https://github.com/Microsoft/fast-dna/commit/401d3427ae7f4ce69226a60c04def537af5e8c55))
+
+
+
+
+
 ## [2.0.4](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@2.0.3...@microsoft/fast-tooling-react@2.0.4) (2020-04-29)
 
 

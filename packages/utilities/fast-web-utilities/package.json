@@ -1,7 +1,7 @@
 {
   "name": "@microsoft/fast-web-utilities",
   "description": "FAST web utilities",
-  "version": "4.4.5",
+  "version": "4.5.0",
   "sideEffects": false,
   "author": {
     "name": "Microsoft",
@@ -72,7 +72,7 @@
   "devDependencies": {
     "@babel/core": "^7.0.0",
     "@babel/preset-env": "^7.1.0",
-    "@microsoft/eslint-config-fast-dna": "^1.1.1",
+    "@microsoft/eslint-config-fast-dna": "^1.1.2",
     "@types/jest": "^25.2.1",
     "@types/lodash-es": "^4.17.0",
     "babel-core": "^7.0.0-bridge.0",

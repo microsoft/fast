@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.30.11](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@4.30.10...@microsoft/fast-components-react-msft@4.30.11) (2020-05-18)
+
+
+### Bug Fixes
+
+* update to unblock CI failures by prettier ([#3057](https://github.com/Microsoft/fast-dna/issues/3057)) ([1776c07](https://github.com/Microsoft/fast-dna/commit/1776c0757b869fbd9fc0edac68d0d1d2bedd6a78))
+
+
+
+
+
 ## [4.30.10](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@4.30.9...@microsoft/fast-components-react-msft@4.30.10) (2020-04-29)
 
 

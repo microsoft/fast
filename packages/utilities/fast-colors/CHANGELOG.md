@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.0.9](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-colors@5.0.8...@microsoft/fast-colors@5.0.9) (2020-05-18)
+
+**Note:** Version bump only for package @microsoft/fast-colors
+
+
+
+
+
 ## [5.0.8](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-colors@5.0.7...@microsoft/fast-colors@5.0.8) (2020-04-29)
 
 **Note:** Version bump only for package @microsoft/fast-colors

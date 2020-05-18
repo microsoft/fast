@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.13](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-animation@4.0.12...@microsoft/fast-animation@4.0.13) (2020-05-18)
+
+**Note:** Version bump only for package @microsoft/fast-animation
+
+
+
+
+
 ## [4.0.12](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-animation@4.0.11...@microsoft/fast-animation@4.0.12) (2020-04-29)
 
 **Note:** Version bump only for package @microsoft/fast-animation

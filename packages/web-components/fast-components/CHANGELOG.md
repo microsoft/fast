@@ -3,6 +3,51 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components@0.10.1...@microsoft/fast-components@1.0.0) (2020-05-18)
+
+
+### Bug Fixes
+
+* add missing mode to dialog boolean attrs ([#3095](https://github.com/Microsoft/fast-dna/issues/3095)) ([e1a1a19](https://github.com/Microsoft/fast-dna/commit/e1a1a194eaae56876fc16a1f04c7d47be60e55fd))
+* better design-system-provider resolution ([#3051](https://github.com/Microsoft/fast-dna/issues/3051)) ([62e4ea6](https://github.com/Microsoft/fast-dna/commit/62e4ea63d91507cd549eb8916cadc995f1dd8942))
+* focus visuals and style clean up ([#3145](https://github.com/Microsoft/fast-dna/issues/3145)) ([34063c9](https://github.com/Microsoft/fast-dna/commit/34063c98a7c4261f9e234d32202c8a8be1803c21))
+* include missing template exports, patterns, and utilities ([#3091](https://github.com/Microsoft/fast-dna/issues/3091)) ([a724ce3](https://github.com/Microsoft/fast-dna/commit/a724ce3296959b70d3859d909faaebd3245d2524))
+* move appearance class application to template [#3114](https://github.com/Microsoft/fast-dna/issues/3114) ([daeabf1](https://github.com/Microsoft/fast-dna/commit/daeabf1800eae49c0d828462d76d3d406eb2b44e))
+* replaces childNodes.length check with slotted ([#3130](https://github.com/Microsoft/fast-dna/issues/3130)) ([b69d70c](https://github.com/Microsoft/fast-dna/commit/b69d70c97d21660193c3cbcf9369b94135cfddb3))
+* slider labels did not change when parent slider attributes changed in javascript ([#3107](https://github.com/Microsoft/fast-dna/issues/3107)) ([b096906](https://github.com/Microsoft/fast-dna/commit/b0969062db56577cf651c0af61547faafbfbb2e7))
+* style default fast web components ([#3138](https://github.com/Microsoft/fast-dna/issues/3138)) ([6bc4695](https://github.com/Microsoft/fast-dna/commit/6bc469576da66beef5b5f5f1c48e4732276ebc22))
+* update decorator signature to align with customElement ([#3131](https://github.com/Microsoft/fast-dna/issues/3131)) ([10256b5](https://github.com/Microsoft/fast-dna/commit/10256b59acbdfecfaaa1617ecf29eebe2cff47e4))
+* update recipe provider reference [#3090](https://github.com/Microsoft/fast-dna/issues/3090) ([ecbadec](https://github.com/Microsoft/fast-dna/commit/ecbadecb31ca7b3122961fdc21da56c7d847b56e))
+
+
+### Features
+
+* **web-components:** new build/test/docs setup ([#3156](https://github.com/Microsoft/fast-dna/issues/3156)) ([51d909a](https://github.com/Microsoft/fast-dna/commit/51d909ad6a616cb63f7c62defe1ee1f3d2abaf02))
+* add fast-components-msft as a new package ([#3096](https://github.com/Microsoft/fast-dna/issues/3096)) ([0515fff](https://github.com/Microsoft/fast-dna/commit/0515fff5a1b7163e6f63f609e1efdba338e773c7))
+* add fast-foundation as a new package ([#3122](https://github.com/Microsoft/fast-dna/issues/3122)) ([322af95](https://github.com/Microsoft/fast-dna/commit/322af95b7b7b33e7db3e0689647ac301ea5be2f1))
+* add radio-group component ([#3027](https://github.com/Microsoft/fast-dna/issues/3027)) ([adad770](https://github.com/Microsoft/fast-dna/commit/adad7704823f2a0afa7ec7796485156e1057342e))
+* add system-colors to fast-web-utilities ([#3137](https://github.com/Microsoft/fast-dna/issues/3137)) ([ee37b3f](https://github.com/Microsoft/fast-dna/commit/ee37b3f51336a040b64fc0f00d73c57185cafaa7))
+* add vertical and horizontal orientation for radio-group ([#3082](https://github.com/Microsoft/fast-dna/issues/3082)) ([fd6ce2b](https://github.com/Microsoft/fast-dna/commit/fd6ce2b0e814c2cde16bced5fe7da79d3bd3971d))
+* adding typeramp values ([#3050](https://github.com/Microsoft/fast-dna/issues/3050)) ([dc8aa61](https://github.com/Microsoft/fast-dna/commit/dc8aa61b152b013a10e91e0e07263fd70f59c4e4))
+* adds color recipes to fast-components ([#3118](https://github.com/Microsoft/fast-dna/issues/3118)) ([bb99c5a](https://github.com/Microsoft/fast-dna/commit/bb99c5a420898275758e0ffa323e8435a94aa8cb))
+* adds menu and menu item web components ([#3113](https://github.com/Microsoft/fast-dna/issues/3113)) ([9291bd5](https://github.com/Microsoft/fast-dna/commit/9291bd56c6bcf4c60f516f034ec1a4bb90220fe7))
+* initial work to update the fast-components design system ([#3135](https://github.com/Microsoft/fast-dna/issues/3135)) ([a7a9f7f](https://github.com/Microsoft/fast-dna/commit/a7a9f7f03c0d48e31de61a4320322325074b2383))
+* map font sizes to design system values ([#3133](https://github.com/Microsoft/fast-dna/issues/3133)) ([ca20c1d](https://github.com/Microsoft/fast-dna/commit/ca20c1d07aa3040ab8ec4b1222213ed1e2d12264))
+* style tabs to match fast components ([#3148](https://github.com/Microsoft/fast-dna/issues/3148)) ([2edb0ff](https://github.com/Microsoft/fast-dna/commit/2edb0ff2c65ed5f3b19060fecf99e62e8d900669))
+* update badge API and styles ([#3147](https://github.com/Microsoft/fast-dna/issues/3147)) ([23eca38](https://github.com/Microsoft/fast-dna/commit/23eca38c0c0ca4ac0d219315fcc1308e093f3363))
+* updates design-system decorator to be more ergonomic and extensible ([#3047](https://github.com/Microsoft/fast-dna/issues/3047)) ([6d98e4e](https://github.com/Microsoft/fast-dna/commit/6d98e4e07e6cff31bf23523c6af76af06f13236b))
+* wrap attr and observable into designSystemProperty decorator ([#3132](https://github.com/Microsoft/fast-dna/issues/3132)) ([b6d4d59](https://github.com/Microsoft/fast-dna/commit/b6d4d594d7d91e3588f1b461db1054ed0e4daf22))
+
+
+### BREAKING CHANGES
+
+* fundamentally changes and breaks the badge component API and styles
+* breaks certain package exports
+
+
+
+
+
 ## [0.10.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components@0.10.0...@microsoft/fast-components@0.10.1) (2020-04-29)
 
 

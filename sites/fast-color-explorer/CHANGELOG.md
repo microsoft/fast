@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.5.30](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-color-explorer@1.5.29...@microsoft/fast-color-explorer@1.5.30) (2020-05-18)
+
+
+### Bug Fixes
+
+* update colors for 3:1 accessibility on checkbox, radio, and toggle ([#3073](https://github.com/Microsoft/fast-dna/issues/3073)) ([0dd89c2](https://github.com/Microsoft/fast-dna/commit/0dd89c2c019ab429e461b4d484936a00615f0a7b))
+* update to unblock CI failures by prettier ([#3057](https://github.com/Microsoft/fast-dna/issues/3057)) ([1776c07](https://github.com/Microsoft/fast-dna/commit/1776c0757b869fbd9fc0edac68d0d1d2bedd6a78))
+
+
+
+
+
 ## [1.5.29](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-color-explorer@1.5.28...@microsoft/fast-color-explorer@1.5.29) (2020-04-29)
 
 **Note:** Version bump only for package @microsoft/fast-color-explorer

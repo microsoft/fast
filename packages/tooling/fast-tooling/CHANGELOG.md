@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.4.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling@0.3.1...@microsoft/fast-tooling@0.4.0) (2020-05-18)
+
+
+### Bug Fixes
+
+* fixes an issue with adding nested linked data ([#3092](https://github.com/Microsoft/fast-dna/issues/3092)) ([fa5630a](https://github.com/Microsoft/fast-dna/commit/fa5630a198e4c60fab49654157366b4d0abc713f))
+
+
+### Features
+
+* add a web component definition and mapper to JSON schema for tooling ([#3033](https://github.com/Microsoft/fast-dna/issues/3033)) ([221acd7](https://github.com/Microsoft/fast-dna/commit/221acd789522eaef2ff4cee1a49683822e9289a2))
+* add plugin system to the data dictionary mapping utility ([#3052](https://github.com/Microsoft/fast-dna/issues/3052)) ([401d342](https://github.com/Microsoft/fast-dna/commit/401d3427ae7f4ce69226a60c04def537af5e8c55))
+* allow linked data attached to other linked data to be added to a data dictionary ([#3049](https://github.com/Microsoft/fast-dna/issues/3049)) ([2f34dc7](https://github.com/Microsoft/fast-dna/commit/2f34dc738c2ac624722f732ed3ebb508972ae3f0))
+
+
+
+
+
 ## [0.3.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling@0.3.0...@microsoft/fast-tooling@0.3.1) (2020-04-29)
 
 **Note:** Version bump only for package @microsoft/fast-tooling

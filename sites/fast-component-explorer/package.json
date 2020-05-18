@@ -1,6 +1,6 @@
 {
   "name": "@microsoft/fast-component-explorer",
-  "version": "0.8.20",
+  "version": "0.8.21",
   "description": "Component exploration",
   "sideEffects": false,
   "private": true,
@@ -38,7 +38,10 @@
     "coverageReporters": [
       "json",
       [
-        "lcov", {"projectRoot": "../../"}
+        "lcov",
+        {
+          "projectRoot": "../../"
+        }
       ]
     ],
     "coverageThreshold": {
@@ -75,12 +78,12 @@
     "@babel/plugin-syntax-dynamic-import": "^7.2.0",
     "@babel/preset-env": "^7.4.5",
     "@babel/preset-react": "^7.0.0",
-    "@microsoft/eslint-config-fast-dna": "^1.1.1",
-    "@microsoft/fast-components-class-name-contracts-base": "^4.6.4",
-    "@microsoft/fast-components-class-name-contracts-msft": "^4.8.4",
-    "@microsoft/fast-components-foundation-react": "^3.1.8",
-    "@microsoft/fast-jss-utilities": "^4.7.12",
-    "@microsoft/fast-layouts-react": "^4.11.9",
+    "@microsoft/eslint-config-fast-dna": "^1.1.2",
+    "@microsoft/fast-components-class-name-contracts-base": "^4.6.5",
+    "@microsoft/fast-components-class-name-contracts-msft": "^4.8.5",
+    "@microsoft/fast-components-foundation-react": "^3.1.9",
+    "@microsoft/fast-jss-utilities": "^4.7.13",
+    "@microsoft/fast-layouts-react": "^4.11.10",
     "@types/jest": "^25.2.1",
     "@types/lodash-es": "^4.17.0",
     "@types/node": "^10.12.12",
@@ -119,13 +122,13 @@
     "workbox-webpack-plugin": "^3.6.3"
   },
   "dependencies": {
-    "@microsoft/fast-colors": "^5.0.8",
-    "@microsoft/fast-components-react-base": "^4.25.10",
-    "@microsoft/fast-components-react-msft": "^4.30.10",
-    "@microsoft/fast-components-styles-msft": "^4.28.9",
-    "@microsoft/fast-jss-manager-react": "^4.7.2",
+    "@microsoft/fast-colors": "^5.0.9",
+    "@microsoft/fast-components-react-base": "^4.25.11",
+    "@microsoft/fast-components-react-msft": "^4.30.11",
+    "@microsoft/fast-components-styles-msft": "^4.28.10",
+    "@microsoft/fast-jss-manager-react": "^4.7.3",
     "@microsoft/fast-tooling-react": "^1.32.4",
-    "@microsoft/fast-web-utilities": "^4.4.5",
+    "@microsoft/fast-web-utilities": "^4.5.0",
     "react-dnd-html5-backend": "^7.4.4",
     "react-sortable-hoc": "^1.9.1"
   }
