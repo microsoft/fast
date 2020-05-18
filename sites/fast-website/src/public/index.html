@@ -14,20 +14,30 @@
       <div class="wrapper">
         <!-- header:start -->
         <header class="header">
-          <site-navigation>
-            <fast-anchor slot="start" appearance="lightweight" href="#">FAST</fast-anchor>
-            <fast-anchor class="header-navigation-item" appearance="lightweight" href="#">Components</fast-anchor>
-            <fast-anchor class="header-navigation-item" appearance="lightweight" href="#">Integration</fast-anchor>
-            <fast-anchor class="header-navigation-item" appearance="lightweight" href="#">Documentation</fast-anchor>
-            <fast-anchor class="header-navigation-item" appearance="lightweight" href="#">Community</fast-anchor>
-            <fast-anchor slot="end" appearance="lightweight" href="#">
+          <fast-anchor class="header-logo" appearance="lightweight" href="#">FAST</fast-anchor>
+          <site-navigation class="header-navigation">
+            <ul>
+              <li><fast-anchor appearance="lightweight" href="#">Components</fast-anchor></li>
+              <li><fast-anchor appearance="lightweight" href="#">Integration</fast-anchor></li>
+              <li><fast-anchor appearance="lightweight" href="#">Documentation</fast-anchor></li>
+              <li><fast-anchor appearance="lightweight" href="#">Community</fast-anchor></li>
+            </ul>
+            <fast-anchor class="header-github" slot="end" appearance="lightweight" href="#">
               Github
               <svg width="19" height="20" viewBox="0 0 19 20" xmlns="http://www.w3.org/2000/svg">
                 <path d="M6.71154 17.0776C2.09615 18.4906 2.09615 14.7226 0.25 14.2517L6.71154 17.0776ZM13.1731 19.9036V16.2581C13.2077 15.8089 13.1482 15.3574 12.9986 14.9335C12.849 14.5096 12.6127 14.123 12.3054 13.7995C15.2038 13.4698 18.25 12.3489 18.25 7.20563C18.2498 5.89046 17.754 4.62572 16.8654 3.67319C17.2862 2.52257 17.2564 1.25074 16.7823 0.121918C16.7823 0.121918 15.6931 -0.207776 13.1731 1.51605C11.0574 0.930913 8.82722 0.930913 6.71154 1.51605C4.19154 -0.207776 3.10231 0.121918 3.10231 0.121918C2.62819 1.25074 2.59844 2.52257 3.01923 3.67319C2.12396 4.63279 1.62771 5.90895 1.63462 7.23389C1.63462 12.3394 4.68077 13.4604 7.57923 13.8278C7.27554 14.148 7.04132 14.5299 6.89182 14.9486C6.74233 15.3674 6.6809 15.8135 6.71154 16.2581V19.9036" />
               </svg>
             </fast-anchor>
-        </site-navigation>
+          </site-navigation>
+          <div class="header-spacer"/>
         </header>
+        <fast-button class="header-menu" appearance="stealth" onclick="openNavClick()">
+          <svg width="35" height="19" viewBox="0 0 35 19" xmlns="http://www.w3.org/2000/svg">
+            <rect width="35" height="3" rx="1.5"/>
+            <rect x="8" y="8" width="27" height="3" rx="1.5"/>
+            <rect x="8" y="16" width="27" height="3" rx="1.5"/>
+          </svg>
+        </fast-button>
         <!-- header:end -->
 
         <!-- hero-section:start -->
@@ -72,7 +82,7 @@
 
         <!-- frameworks:start -->
         <section class="section">
-            <site-content-placement-container section="framework"></site-content-placement-container>
+          <site-content-placement-container section="framework"></site-content-placement-container>
         </section>
         <!-- frameworks:end -->
 
@@ -98,55 +108,55 @@
                 <fast-anchor slot="footer" class="link" href="#" appearance="lightweight">Read Documentation</fast-anchor>
               </site-feature-card>
               <site-feature-card>
-								<div>02</div>
-								<h4>Design Systems</h4>
+                <div>02</div>
+                <h4>Design Systems</h4>
                 <p slot="body">Use Fluent by default or customize design system properties to make it your own. Or, create your own design system to use with FAST components.</p>
                 <fast-anchor slot="footer" class="link" href="#" appearance="lightweight">View Github</fast-anchor>
                 <fast-anchor slot="footer" class="link" href="#" appearance="lightweight">Read Documentation</fast-anchor>
               </site-feature-card>
               <site-feature-card>
-								<div>03</div>
-								<h4>Technology</h4>
+                <div>03</div>
+                <h4>Technology</h4>
                 <p slot="body">Out of the box, FAST components are built on React, but you can build components on any modern framework using the FAST system.</p>
                 <fast-anchor slot="footer" class="link" href="#" appearance="lightweight">View Github</fast-anchor>
                 <fast-anchor slot="footer" class="link" href="#" appearance="lightweight">Read Documentation</fast-anchor>
               </site-feature-card>
               <site-feature-card>
-								<div>04</div>
-								<h4>Web Standards</h4>
+                <div>04</div>
+                <h4>Web Standards</h4>
                 <p slot="body">All FAST components follow WCAG 2.1, are W3C spec-compliant and use the W3C interaction models when available.</p>
                 <fast-anchor slot="footer" class="link" href="#" appearance="lightweight">View Github</fast-anchor>
                 <fast-anchor slot="footer" class="link" href="#" appearance="lightweight">Read Documentation</fast-anchor>
               </site-feature-card>
               <site-feature-card>
-								<div>05</div>
-								<h4>Animation</h4>
+                <div>05</div>
+                <h4>Animation</h4>
                 <p slot="body">Design sophisticated animation sequences with the animation library, an interface for the Web Animations API.</p>
                 <fast-anchor slot="footer" class="link" href="#" appearance="lightweight">View Github</fast-anchor>
                 <fast-anchor slot="footer" class="link" href="#" appearance="lightweight">Read Documentation</fast-anchor>
               </site-feature-card>
               <site-feature-card>
-								<div>06</div>
-								<h4>Colors</h4>
+                <div>06</div>
+                <h4>Colors</h4>
                 <p slot="body">Create color palettes, extract colors from images, and handle other color operations using our color library.</p>
                 <fast-anchor slot="footer" class="link" href="#" appearance="lightweight">View Github</fast-anchor>
                 <fast-anchor slot="footer" class="link" href="#" appearance="lightweight">Read Documentation</fast-anchor>
               </site-feature-card>
               <site-feature-card>
-								<div>07</div>
-								<h4>Layout / Grid</h4>
+                <div>07</div>
+                <h4>Layout / Grid</h4>
                 <p slot="body">Build layouts such as a 12 column grid for content or an application grid with resizable panels.</p>
                 <fast-anchor slot="footer" class="link" href="#" appearance="lightweight">View Github</fast-anchor>
                 <fast-anchor slot="footer" class="link" href="#" appearance="lightweight">Read Documentation</fast-anchor>
               </site-feature-card>
               <site-feature-card>
-								<div>08</div>
-								<h4>Other</h4>
+                <div>08</div>
+                <h4>Other</h4>
                 <p slot="body">Leverage a toolkit of general utilities such as keyboarding, Right-To-Left (RTL), number, and string manipulation.</p>
                 <fast-anchor slot="footer" class="link" href="#" appearance="lightweight">View Github</fast-anchor>
                 <fast-anchor slot="footer" class="link" href="#" appearance="lightweight">Read Documentation</fast-anchor>
-							</site-feature-card>
-						</site-card-section>
+              </site-feature-card>
+            </site-card-section>
           </div>
         </section>
         <!-- documentation:end -->
@@ -162,7 +172,7 @@
 
         <!-- community:start -->
         <section class="section">
-            <site-content-placement-container section="community"></site-content-placement-container>
+          <site-content-placement-container section="community"></site-content-placement-container>
         </section>
         <!-- community:end -->
 
@@ -180,5 +190,12 @@
         <!-- footer:end -->
       </div>
     </fast-design-system-provider>
+    <script>
+      function openNavClick() {
+        const nav = document.querySelector(".header-navigation");
+
+        nav.classList.toggle("header-navigation__open");
+      }
+    </script>
   </body>
 </html>
