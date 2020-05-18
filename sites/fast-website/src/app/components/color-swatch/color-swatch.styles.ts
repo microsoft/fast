@@ -5,7 +5,7 @@ import {
     neutralOutlineHoverBehavior,
     neutralOutlineRestBehavior,
 } from "@microsoft/fast-components";
-import { heightNumber } from "@microsoft/fast-components/dist/styles/size";
+import { heightNumber } from "@microsoft/fast-components/dist/esm/styles/size";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
     display,
