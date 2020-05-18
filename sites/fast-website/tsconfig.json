@@ -8,7 +8,10 @@
         "esModuleInterop": true,
         "allowSyntheticDefaultImports": true,
         "experimentalDecorators": true,
-        "resolveJsonModule": true
+        "resolveJsonModule": true,
+        "paths": {
+            "svg": ["src/app/svg"]
+        }
     },
     "include": [
         "src/**/*"
