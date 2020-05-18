@@ -1,30 +1,24 @@
 #!/bin/bash
 source config.sh
 
-# 'fast-ops-rg' resource group is for operations related services only, Key Vault, CDN, Front Door, and is locked 
-# except for Administrators and Owners
-
-# Lock Resource Group : https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/manage-resource-groups-cli#lock-resource-groups
-# az lock create --name LockGroup --lock-type CanNotDelete --resource-group $resource_group
-
-# Set Defaults
-front_door=$product_name-fd-test
-resource_group=$product_name-ops-rg
-
-# Install Prerequisit extensions
-az extension add --name front-door
-
-: 'CREATE NETWORK FRONT DOOR
-Creates a Front Door service to manage active/hot standby for regional resource groups.
-
-TODOs
-1. Update FQDN for --backend-address
+: 'AZURE FRONT DOOR SERVICE
+A scalable and secure entry point for fast delivery of global web applications using 
+active/hot standby for regional resource groups.
 
 Ref:
+https://docs.microsoft.com/en-us/azure/frontdoor/
 https://docs.microsoft.com/en-us/cli/azure/ext/front-door/network/front-door?view=azure-cli-latest
 '
 
+# Install Prerequisite extensions
+az extension add --name front-door
+
+# Configure and set name
+front_door=$product_name-fd-test
+resource_group=$product_name-ops-rg
+
 # TODO: 
+# 0.[] Update FQDN for --backend-address
 # 1.[x] Migrate DNS to Azure DNS
 # 2.[9am] Delegate DNS from Domains to Azure DNS
 # 3.[] Verify DNS Delegation https://prod.msftdomains.com/NameServer/Index/?id=1095 

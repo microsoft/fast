@@ -1,41 +1,19 @@
 #!/bin/bash
 
-# CONFIGURE WEB APP NAME PATTERN
+: 'AZURE WEB APP SERVICE
+
+Ref:
+
+'
+# Configure and set name pattern
 web_app=$location_abbr-app
-[[ $debug == true ]] && echo "${bold}${green}Web App Name Pattern"${reset}${unbold}
-[[ $debug == true ]] && echo *-$web_app
+[[ $debug == true ]] && echo "${bold}${green}Web App Name Pattern"${reset}${unbold} && echo *-$web_app
 
-# WEB APPS TO CREATE
-declare -a names=("app" "color" "create" "explore" "motion" "www")
-
-# TODO: DNS Updates https://prod.msftdomains.com/Dns/Requests
-# ---------------------------------------------------
-# DNS Name (from)   TYPE        Data (from)                 ||  DNS Name (to)   TYPE        Data (to) Current       ->  Future Name / Data (ewui-ops)
-# ---------------------------------------------------
-# app       -->     CNAME       fast-app.azurewebsites.net      app     -->     CNAME       app-west-app.azurewebsites.net
-# fast-color.azurewebsites.net      ->  color-west-app.azurewebsites.net
-# fast-create.azurewebsites.net     ->  create-west-app.azurewebsites.net
-# fast-explore.azurewebsites.net    ->  explore-west-app.azurewebsites.net
-# fast-motion.azurewebsites.net     ->  motion-west-app.azurewebsites.net
-# fast-design.azurewebsites.net     ->  www-west-app.azurewebsites.net
-# www.microsoft.github.io           ->  www-west-app.azurewebsites.net
-# ---------------------------------------------------
-# TEST Procedures: 
-# ---------------------------------------------------
-# 1. Manually deploy initial sites w/ parity
-# 2. Test all internal addresses as indicated by "future" above
-# 3. Dig `dig www.fast.design`
-# 4. Update DNS Records to point to all sites
-# 5. Update Domain/Sub-Domain mapping for all sites
-# 6. Setup Pipelines for automated deployment
-
-# CREATE WEB APPS
+# Create
 for name in ${names[@]}; do
     
-    # Build name
-    new_name=$name-$web_app
-    [[ $debug == true ]] && echo "${bold}${green}Web App Name"${reset}${unbold}
-    [[ $debug == true ]] && echo $new_name
+    # Compose name
+    new_name=$name-$web_app && [[ $debug == true ]] && echo "${bold}${green}Web App Name"${reset}${unbold} && echo $new_name
 
     # Create web app
     az webapp create --name $new_name --plan $app_service_plan --resource-group $resource_group --runtime "NODE|12-lts"

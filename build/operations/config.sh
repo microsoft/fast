@@ -15,17 +15,8 @@ bold=$(tput smso)
 unbold=$(tput rmso)
 
 # SET COMMON VARIABLES
-debug=true && [[ $debug == true ]] && echo "${bold}${green}FAST DEFAULT CONFIGURATION"${reset}${unbold}
+debug=false
+dir=$(PWD)
 
-# SET PRODUCT NAME
-product_name=fast && [[ $debug == true ]] && echo "${bold}${green}Product Name"${reset}${unbold} && echo $product_name
-
-# CONFIGURE / SET SUBSCRIPTION, valid options {production, development}
-subscription=production && [[ $debug == true ]] && echo "${bold}${green}Subscription"${reset}${unbold} && echo $subscription
-               
-# CONFIGURE / SET LOCATIONS, valid options {westus, eastus}
-location=eastus
-location_abbr=${location:0:4} && [[ $debug == true ]] && echo "${bold}${green}Location (abbr)"${reset}${unbold} && echo "$location ($location_abbr)"
-
-# CONFIGURE / SET RESOURCE GROUPS, valid options {fast-westus-rg, fast-eastus-rg}
-resource_group=fast-eastus-rg && [[ $debug == true ]] && echo "${bold}${green}Resource Group"${reset}${unbold} && echo $resource_group
+# Requirements
+echo "Scripts are required to run from inside 'fast-dna/build/operations'"

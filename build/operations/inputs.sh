@@ -11,6 +11,7 @@ while (( $# > 1 )); do
             
             #Overwrite default
             location=$2
+            location_abbr=${location:0:4}
             [[ $debug == true ]] && echo "${bold}${green}Location"${reset}${unbold} && echo $location ;;
 
         --name)
@@ -24,7 +25,6 @@ while (( $# > 1 )); do
             #Overwrite default
             product=$2
             [[ $debug == true ]] && echo "${bold}${green}Product"${reset}${unbold} && echo $product ;;
-
      
         --resource-group) 
             
@@ -45,7 +45,7 @@ while (( $# > 1 )); do
             
             az account set --subscription $subscription
             az account show --subscription $subscription ;;
-
+           
         *) ;;
     esac; shift 2
 done

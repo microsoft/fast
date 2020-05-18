@@ -1,26 +1,8 @@
 #!/bin/bash
 source config.sh
 
-: 'CREATE SUBSCRIPTION SERVICES
-These services are located at subscription root and environment specific because we have
-three subscriptions, one each, for production, staging, and development. Isolation in this 
-way will help improve security. For example, if Key Vault is compromised in Development, there
-is another Key Vault in Production with different Secrets, Keys, and Certificates so access is
-prevented.
-'
-
-: 'CREATE RESOURCE GROUP
-This resource group is for operations related services only.
-'
-resource_group=$product_name-ops-rg
-[[ $debug == true ]] && echo "${bold}${green}Resource Group (Operations)"${reset}${unbold}
-[[ $debug == true ]] && echo $resource_group
-
-az group create --location centralus --name $resource_group
-
-
-: 'CREATE KEY VAULT
-Takes backups on regular cadence and as objects stored within the Key Vault change.
+: 'AZURE KEY VAULT
+Key Vault is used to create and maintain keys that access and encrypt your cloud resources, apps, and solutions.
 
 TODOs (Unknown details to perform at this time using Azure CLI)
 1. Set access policy
@@ -30,6 +12,7 @@ TODOs (Unknown details to perform at this time using Azure CLI)
 5. Configure Logic Apps can use key vault as well.
 
 Ref: 
+https://docs.microsoft.com/en-us/azure/key-vault/general/
 https://docs.microsoft.com/en-us/azure/key-vault/general/best-practices
 https://docs.microsoft.com/en-us/azure/key-vault/general/logging
 https://docs.microsoft.com/en-us/cli/azure/keyvault?view=azure-cli-latest#az-keyvault-set-policy
@@ -37,9 +20,10 @@ https://docs.microsoft.com/en-us/azure/key-vault/general/security-recommendation
 https://docs.microsoft.com/en-us/cli/azure/keyvault/certificate?view=azure-cli-latest#az-keyvault-certificate-backup
 https://docs.microsoft.com/en-us/azure/key-vault/secrets/overview-storage-keys
 '
+
+# Configure and set name
 keyvault=$product_name-ops-kv
-[[ $debug == true ]] && echo "${bold}${green}Key Vault"${reset}${unbold}
-[[ $debug == true ]] && echo $keyvault
+[[ $debug == true ]] && echo "${bold}${green}Key Vault"${reset}${unbold} && echo $keyvault
 
 az keyvault create --name $keyvault --resource-group $resource_group \
     --sku standard \
@@ -50,10 +34,3 @@ az keyvault update --name $keyvault \
     --retention-days 90
 
 #az keyvault set-policy --$keyvault
-
-
-: 'CREATE CDN
-
-Ref:
-
-'
