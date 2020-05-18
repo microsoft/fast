@@ -1,6 +1,8 @@
 import { html, repeat } from "@microsoft/fast-element";
 import { FastFrame } from "./fast-frame";
 import { StandardLuminance } from "@microsoft/fast-components-styles-msft";
+import { accentPalette } from "@microsoft/fast-components/dist/fast-design-system";
+import { FASTRadio } from "@microsoft/fast-components";
 
 export const FastFrameTemplate = html<FastFrame>`
     <template>
@@ -80,28 +82,41 @@ export const FastFrameTemplate = html<FastFrame>`
                             Ultrices nibh nunc vestibulum fames. At lacus nunc lacus eget
                             neque.
                         </p>
-                        <fast-radio-group name="background color" @change="${(x, c) =>
-                            x.backgroundChangeHandler(c.event as MouseEvent)}>
+                        <fast-radio-group 
+                            value="${x => x.previewBackgroundPalette[0]}"
+                            name="background color"
+                            @change="${(x, c) =>
+                                x.backgroundChangeHandler(c.event as MouseEvent)}"
+                        >
                             <label slot="label">Background color</label>
                             ${repeat(
-                                x => x.backgroundPalette,
+                                x => x.previewBackgroundPalette,
+
                                 html<string>`
                                     <site-color-swatch
                                         value="${x => x}"
                                         background-color="${x => x}"
+                                        checked="${(x, c) =>
+                                            x === c.parent.previewBackgroundPalette[0]}"
                                     ></site-color-swatch>
                                 `
                             )}
                         </fast-radio-group>
-                        <fast-radio-group name="accent color" @change="${(x, c) =>
-                            x.accentChangeHandler(c.event as MouseEvent)}>
+                        <fast-radio-group
+                            value="${x => x.previewAccentPalette[0]}"
+                            name="accent color"
+                            @change="${(x, c) =>
+                                x.accentChangeHandler(c.event as MouseEvent)}"
+                        >
                             <label slot="label">Accent color</label>
                             ${repeat(
-                                x => x.accentPalette,
+                                (x, c) => x.previewAccentPalette,
                                 html<string>`
                                     <site-color-swatch
                                         value="${x => x}"
                                         background-color="${x => x}"
+                                        checked="${(x, c) =>
+                                            x === c.parent.previewAccentPalette[0]}"
                                     ></site-color-swatch>
                                 `
                             )}
@@ -115,8 +130,7 @@ export const FastFrameTemplate = html<FastFrame>`
                     Tab four content. This is for testing.
                 </fast-tab-panel>
             </fast-tabs>
-            <website-design-system-provider
-                use-defaults
+            <fast-design-system-provider
                 class="preview"
                 base-layer-luminance="${x =>
                     x.darkMode
@@ -124,6 +138,7 @@ export const FastFrameTemplate = html<FastFrame>`
                         : StandardLuminance.LightMode}"
                 background-color="${x => x.backgroundColor}"
                 accent-base-color="${x => x.accentColor}"
+                :accentPalette=${x => x.accentPalette}
             >
                 <fast-card>
                     <div class="image-container">
@@ -237,7 +252,7 @@ export const FastFrameTemplate = html<FastFrame>`
                         </fast-button>
                     </div>
                 </div>
-            </website-design-system-provider>
+            </fast-design-system-provider>
         </div>
     </template>
 `;

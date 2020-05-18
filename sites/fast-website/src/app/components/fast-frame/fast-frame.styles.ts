@@ -1,5 +1,5 @@
 import { css } from "@microsoft/fast-element";
-import { display } from "@microsoft/fast-components";
+import { display } from "@microsoft/fast-foundation";
 import {
     accentFillRestBehavior,
     accentForegroundCutRestBehavior,
@@ -21,7 +21,7 @@ export const FastFrameStyles = css`
 
     .wrapper {
         display: grid;
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: 500px 1fr;
         height: 500px;
     }
 
@@ -35,9 +35,13 @@ export const FastFrameStyles = css`
     .preview {
         display: grid;
         grid-gap: 40px;
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: 280px 1fr;
         padding: 40px;
         background: var(--background-color);
+    }
+
+    fast-card {
+        width: auto;
     }
 
     .image-container {
@@ -84,8 +88,7 @@ export const FastFrameStyles = css`
     }
 
     .control-container-column {
-        display: flex;
-        flex-flow: row wrap;
+        display: grid;
     }
 
     .control-container-grid {
@@ -140,10 +143,6 @@ export const FastFrameStyles = css`
 
     fast-slider {
         min-width: unset;
-    }
-
-    fast-button {
-        display: contents;
     }
 `.withBehaviors(
     accentFillRestBehavior,

@@ -1,5 +1,5 @@
 import { FASTElement } from "@microsoft/fast-element";
-import { applyMixins, StartEnd } from "@microsoft/fast-components";
+import { applyMixins, StartEnd } from "@microsoft/fast-foundation";
 
 export class Navigation extends FASTElement {}
 

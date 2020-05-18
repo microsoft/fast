@@ -1,16 +1,18 @@
 import { css } from "@microsoft/fast-element";
 import {
-    display,
-    heightNumber,
     neutralFillInputHoverBehavior,
     neutralFillInputRestBehavior,
     neutralOutlineHoverBehavior,
     neutralOutlineRestBehavior,
+} from "@microsoft/fast-components";
+import { heightNumber } from "@microsoft/fast-components/dist/styles/size";
+import { SystemColors } from "@microsoft/fast-web-utilities";
+import {
+    display,
     forcedColorsStylesheetBehavior,
-    SystemColors,
     focusVisible,
     disabledCursor,
-} from "@microsoft/fast-components";
+} from "@microsoft/fast-foundation";
 import { neutralForegroundRestBehavior } from "@microsoft/fast-components";
 
 export const ColorSwatchStyles = css`
