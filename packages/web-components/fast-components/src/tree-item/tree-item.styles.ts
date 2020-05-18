@@ -1,15 +1,10 @@
 import { css } from "@microsoft/fast-element";
-import {
-    disabledCursor,
-    display,
-    focusVisible,
-    forcedColorsStylesheetBehavior,
-} from "@microsoft/fast-foundation";
+import { display } from "@microsoft/fast-foundation";
 
 import {
-    neutralFillStealthRestBehavior,
-    neutralFillStealthHoverBehavior,
     neutralFillStealthActiveBehavior,
+    neutralFillStealthHoverBehavior,
+    neutralFillStealthRestBehavior,
     neutralFillStealthSelectedBehavior,
     neutralFocusBehavior,
     neutralFocusInnerAccentBehavior,

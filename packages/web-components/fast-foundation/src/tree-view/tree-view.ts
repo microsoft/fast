@@ -1,9 +1,9 @@
 import { FASTElement, observable } from "@microsoft/fast-element";
 import {
-    isHTMLElement,
-    keyCodeHome,
-    keyCodeEnd,
     getDisplayedNodes,
+    isHTMLElement,
+    keyCodeEnd,
+    keyCodeHome,
 } from "@microsoft/fast-web-utilities";
 
 export class TreeView extends FASTElement {

@@ -1,6 +1,6 @@
-import { FASTTreeView } from "./";
 import { FASTDesignSystemProvider } from "../design-system-provider";
 import TreeViewTemplate from "./fixtures/tree-view.html";
+import { FASTTreeView } from "./";
 
 // Prevent tree-shaking
 FASTTreeView;

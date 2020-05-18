@@ -1,6 +1,6 @@
-import { FASTTreeItem } from "./";
 import { FASTDesignSystemProvider } from "../design-system-provider";
 import TreeItemTemplate from "./fixtures/tree-item.html";
+import { FASTTreeItem } from "./";
 
 // Prevent tree-shaking
 FASTTreeItem;
