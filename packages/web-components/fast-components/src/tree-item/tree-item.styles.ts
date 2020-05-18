@@ -1,5 +1,20 @@
 import { css } from "@microsoft/fast-element";
-import { display } from "../styles";
+import {
+    disabledCursor,
+    display,
+    focusVisible,
+    forcedColorsStylesheetBehavior,
+} from "@microsoft/fast-foundation";
+
+import {
+    neutralFillStealthRestBehavior,
+    neutralFillStealthHoverBehavior,
+    neutralFillStealthActiveBehavior,
+    neutralFillStealthSelectedBehavior,
+    neutralFocusBehavior,
+    neutralFocusInnerAccentBehavior,
+    neutralForegroundRestBehavior,
+} from "../styles/index";
 
 export const TreeItemStyles = css`
     ${display("block")} :host {
@@ -92,7 +107,6 @@ export const TreeItemStyles = css`
         pointer-events: none;
         fill: var(--neutral-foreground-rest);
         opacity: 0;
-        color: transparent;
     }
 
     .before-content,
@@ -151,4 +165,12 @@ export const TreeItemStyles = css`
         --tree-item-nested-width: 1em;
         --expand-collapse-button-nested-width: calc(var(--height-number) * -1px);
     }
-`;
+`.withBehaviors(
+    neutralFillStealthSelectedBehavior,
+    neutralFillStealthActiveBehavior,
+    neutralFillStealthHoverBehavior,
+    neutralFillStealthRestBehavior,
+    neutralFocusBehavior,
+    neutralFocusInnerAccentBehavior,
+    neutralForegroundRestBehavior
+);

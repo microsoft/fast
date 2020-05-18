@@ -26,7 +26,7 @@ export class TreeView extends FASTElement {
         }
     };
 
-    public handleFocus = (e: React.FocusEvent<HTMLDivElement>): void => {
+    public handleFocus = (e: FocusEvent): void => {
         if (!isHTMLElement(this.treeView)) {
             return;
         }

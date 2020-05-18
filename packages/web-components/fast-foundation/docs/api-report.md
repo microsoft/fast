@@ -782,6 +782,77 @@ export enum TextFieldType {
     url = "url"
 }
 
+// @public (undocumented)
+export class TreeItem extends FASTElement {
+    constructor();
+    // (undocumented)
+    afterContent: HTMLSlotElement;
+    // (undocumented)
+    afterContentContainer: HTMLSpanElement;
+    // (undocumented)
+    beforeContent: HTMLSlotElement;
+    // (undocumented)
+    beforeContentContainer: HTMLSpanElement;
+    // (undocumented)
+    connectedCallback(): void;
+    // (undocumented)
+    expandCollapseButton: HTMLDivElement;
+    // (undocumented)
+    expanded: boolean;
+    // (undocumented)
+    expandedChanged(): void;
+    // (undocumented)
+    focusable: boolean;
+    // (undocumented)
+    handleAfterContentChange(): void;
+    // (undocumented)
+    handleBeforeContentChange(): void;
+    // (undocumented)
+    handleBlur: (e: FocusEvent) => void;
+    // (undocumented)
+    handleContainerClick: (e: MouseEvent) => void;
+    // (undocumented)
+    handleExpandCollapseButtonClick: () => void;
+    // (undocumented)
+    handleFocus: (e: Event) => void;
+    // (undocumented)
+    handleItemsChange(): void;
+    // (undocumented)
+    handleKeyDown: (e: KeyboardEvent) => void;
+    // (undocumented)
+    hasItems: boolean;
+    // (undocumented)
+    items: HTMLSlotElement;
+    // (undocumented)
+    selected: boolean;
+    // (undocumented)
+    selectedChanged(): void;
+    // (undocumented)
+    treeItem: HTMLElement;
+}
+
+// @public (undocumented)
+export const TreeItemTemplate: import("@microsoft/fast-element").ViewTemplate<TreeItem, any>;
+
+// @public (undocumented)
+export class TreeView extends FASTElement {
+    // (undocumented)
+    connectedCallback(): void;
+    // (undocumented)
+    focusable: boolean;
+    // (undocumented)
+    handleBlur: (e: FocusEvent) => void;
+    // (undocumented)
+    handleFocus: (e: FocusEvent) => void;
+    // (undocumented)
+    handleKeyDown: (e: KeyboardEvent) => void;
+    // (undocumented)
+    treeView: HTMLElement;
+}
+
+// @public (undocumented)
+export const TreeViewTemplate: import("@microsoft/fast-element").ViewTemplate<TreeView, any>;
+
 
 // Warnings were encountered during analysis:
 //
