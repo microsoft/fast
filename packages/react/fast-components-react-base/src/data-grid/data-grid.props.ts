@@ -64,14 +64,6 @@ export interface DataGridHandledProps extends DataGridManagedClasses {
     gridData: object[];
 
     /**
-     * If props have been updated this is the end index of the range of data items, starting at index 0, that are guaranteed not to
-     * require recalculating size since the last prop update.  This is an optimization for large data sets.
-     * ie. if changes resize the item at index 10, the stable range end should be 9
-     * default is 0
-     */
-    stableRangeEndIndex?: number;
-
-    /**
      * Data page size in number of rows.  This is the maximum number of items that will be converted to data row items passed to the
      * underlying panel display at any one time.
      * default is 1000
@@ -117,6 +109,14 @@ export interface DataGridHandledProps extends DataGridManagedClasses {
      * Default focus column key
      */
     defaultFocusColumnKey?: React.ReactText;
+
+    /**
+     * If props have been updated this is the end index of the range of data items, starting at index 0, that are guaranteed not to
+     * require recalculating size since the last prop update.  This is an optimization for large data sets.
+     * ie. if changes resize the item at index 10, the stable range end should be 9
+     * default is 0
+     */
+    stableRangeEndIndex?: number;
 }
 
 export type DataGridProps = DataGridHandledProps & DataGridUnhandledProps;

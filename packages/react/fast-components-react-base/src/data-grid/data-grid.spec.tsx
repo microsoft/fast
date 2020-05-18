@@ -11,8 +11,7 @@ import {
     keyCodePageUp,
 } from "@microsoft/fast-web-utilities";
 import DataGrid, { DataGridState } from "./data-grid";
-import { DataGridContext } from "./data-grid-context";
-import { DataGridColumnDefinition, DataGridProps } from "./data-grid.props";
+import { DataGridColumnDefinition } from "./data-grid.props";
 import { DataGridCellProps } from "./data-grid-cell.props";
 
 /*
