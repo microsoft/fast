@@ -47,8 +47,9 @@ body {
   margin: 0 30px;
 }
 
-.header-logo {
-  color: var(--neutral-foreground-rest);
+.header-brand svg {
+  width: 114px;
+  height: 40px;
 }
 
 .header-menu {
@@ -93,10 +94,24 @@ body {
 
 .footer {
   grid-column: 2;
+  display: flex;
+  align-items: center;
   margin-bottom: 84px;
 }
 
-.footer-navigation-item {
+.footer-brand svg {
+  width: 114px;
+  height: 40px;
+}
+
+.footer-navigation ul {
+  display: flex;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.footer-navigation li {
   margin-inline-end: 50px;
 }
 
@@ -122,7 +137,7 @@ body {
     z-index: 3;
   }
 
-  .header-logo {
+  .header-brand {
     position: absolute;
     top: 28px;
     left: 30px;
@@ -166,5 +181,13 @@ body {
   .header-navigation__open {
     transform: translateY(0%);
     height: 100%;
+  }
+
+  .footer {
+    align-items: unset;
+  }
+
+  .footer-navigation ul {
+    flex-direction: column;
   }
 }
