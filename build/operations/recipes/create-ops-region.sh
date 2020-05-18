@@ -1,6 +1,4 @@
 #!/bin/bash
-source config.sh
-source inputs.sh
 
 : 'AZURE OPERATIONS RESOURCE GROUP (fast-ops-rg)
 These services are located at subscription root and environment specific, one each, for production and development. 
@@ -11,22 +9,29 @@ These services (Front Door, Key Vault, CDN) are manually created and locked exce
 
 Note: Some aspects of Key Vault are in preview and not creatable using Azure CLI.
 '
+# GLOBAL Configurations
+    source config.sh
 
-# Configure and set name
-resource_group=$product_name-ops-rg
-[[ $debug == true ]] && echo "${bold}${green}Resource Group (Operations)"${reset}${unbold} && echo $resource_group
+    # Product: valid options {fast}
+    product=fast
 
-# Create resource group
-source ../services/create-rg.sh --resource-group $resource_group
+    # Subscription: valid options {production, development}
+    subscription=production
 
-# Lock resource group
+    # Location: valid options {centralus}
+    location=centralus && location_abbr=${location:0:7} 
 
-az group create --location centralus --name $resource_group
+    # Resource group: valid options {fast-centralus-rg}
+    resource_group=$product-ops-rg
 
+    # DNS Zone
+    dns_zone=fast.design
 
-# Create DNS Zone
-# Lock DNS Zone
+## SHELL Arguments
+source inputs.sh --debug true --product $product --subscription $subscription --location $location --resource-group $resource_group
 
-
-
-
+# Create Global Region (Central)
+source $dir/services/create-rg.sh & wait $!
+source $dir/services/create-dns.sh & wait $!
+source $dir/services/create-kv.sh & wait $!
+source $dir/services/create-fd.sh & wait $!
