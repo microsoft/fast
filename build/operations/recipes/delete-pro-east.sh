@@ -10,9 +10,8 @@ This will delete all resources for Production in West Region
     source config.sh
 
     # Web Apps: valid subdomains to be created
-    # declare -a names=("app" "color" "create" "explore" "motion" "www")
-    declare -a names=("app")
-
+    declare -a names=("app" "color" "create" "explore" "motion" "www")
+    
     # Product: valid options {fast}
     product=fast
 
@@ -45,4 +44,3 @@ done
 
 # DELETE Resource group and all child services
 az group delete --name $resource_group
-
