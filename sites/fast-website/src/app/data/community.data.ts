@@ -25,7 +25,7 @@ export const communityContentPlacementData: CommunityContentPlacementData[] = [
         body:
             "Follow along as we share out the latest happenings on Twitter. You will find important updates, announcements, and sneak peeks.",
         header: "Twitter",
-        icon: GithubIcon,
+        icon: TwitterIcon,
     },
     {
         actionLink: "https://github.com/microsoft/fast-dna",
@@ -33,6 +33,6 @@ export const communityContentPlacementData: CommunityContentPlacementData[] = [
         body:
             "Explore the FAST repository on Github and try out our components, utilities, and tools. Or, mix-and-match with your own solutions.",
         header: "Github",
-        icon: TwitterIcon,
+        icon: GithubIcon,
     },
 ];
