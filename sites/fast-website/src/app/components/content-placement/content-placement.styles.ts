@@ -8,13 +8,9 @@ export const ContentPlacementStyles = css`
         box-sizing: border-box;
     }
 
-    :host([hidden]) {
-        display: none;
-    }
-
     fast-card {
         background: transparent;
-        padding: 0 calc(var(--design-unit) * 5px) calc(var(--design-unit) * 3px);
+        padding: calc(var(--design-unit) * 5px);
         text-align: left;
         display: flex;
         flex-direction: column;
@@ -22,36 +18,20 @@ export const ContentPlacementStyles = css`
 
     fast-card ::slotted([slot="body"]) {
         flex: 1 1 auto;
+        margin: 0;
+        font-size: var(--type-ramp-base-font-size);
     }
 
-    fast-card:hover .contentPlacement_footer__hoverVisible {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    .contentPlacement_footer__hoverVisible {
-        visibility: hidden;
-    }
-
-    fast-card:hover .contentPlacement_footer__hoverVisible {
-        visibility: visible;
-    }
-
-    fast-card:hover .contentPlacement_divider {
-        visibility: visible;
+    fast-card ::slotted([slot="action"]) {
+        margin-top: calc(var(--design-unit) * 2px);
     }
 
     fast-card:hover .contentPlacement_icon {
         visibility: visible;
     }
 
-    .contentPlacement_divider {
-        visibility: hidden;
-    }
-
     fast-card .contentPlacement_icon {
         visibility: hidden;
-        margin-top: calc(var(--design-unit) * 4px);
+        margin-bottom: calc(var(--design-unit) * 5px);
     }
 `;

@@ -33,7 +33,6 @@ body {
 
 .section {
   grid-column: 2;
-  --card-width: 400px;
   color: var(--neutral-foreground-rest);
 }
 
