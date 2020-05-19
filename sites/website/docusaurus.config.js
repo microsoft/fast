@@ -14,12 +14,6 @@ module.exports = {
             },
             links: [
                 {
-                    to: "docs/introduction",
-                    activeBasePath: "docs",
-                    label: "Documentation",
-                    position: "left",
-                },
-                {
                     href: "https://github.com/microsoft/fast-dna",
                     label: "GitHub",
                     position: "right",
