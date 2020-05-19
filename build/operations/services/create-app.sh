@@ -12,8 +12,9 @@ web_app=$location_abbr-app
 # Create
 for name in ${names[@]}; do
     
-    # Compose name
+    # Compose names
     new_name=$name-$web_app && [[ $debug == true ]] && echo "${bold}${green}Web App Name"${reset}${unbold} && echo $new_name
+    dns_cname=$new_name.azurewebsites.net && [[ $debug == true ]] && echo "${bold}${green}DNS CNAME"${reset}${unbold} && echo $dns_cname
 
     # Create web app
     az webapp create --name $new_name --plan $app_service_plan --resource-group $resource_group --runtime "NODE|12-lts"
@@ -42,8 +43,10 @@ for name in ${names[@]}; do
         --resource-group $resource_group \
         --web-server-logging filesystem
 
-    #echo "Configure a CNAME record that maps $fqdn to $webappname.azurewebsites.net"
-    #read -p "Press [Enter] key when ready ..."
+    # Set DNS zone w/ cname record
+    # az network dns record-set cname set-record -c fast-app.azurewebsites.net -n app -g fast-ops-rg -z fast.design --if-none-match
+    az network dns record-set cname set-record --cname $dns_cname --record-set-name $name --resource-group fast-ops-rg --zone-name $dns_zone --if-none-match
+
 
     # TODO: https://docs.microsoft.com/en-us/azure/app-service/scripts/cli-configure-ssl-certificate 
     # Configure web app SSL binding
@@ -55,6 +58,10 @@ for name in ${names[@]}; do
         --resource-group $resource_group \
         --name $new_name
     
+    # Bind custom hostname
+    az webapp config hostname add --hostname $sub_domain.fast.design --ids $resource_id 
+
+
     # Configure web app hostname 
     # https://docs.microsoft.com/en-us/cli/azure/webapp/config/hostname?view=azure-cli-latest#az-webapp-config-hostname-add
 
@@ -62,8 +69,7 @@ for name in ${names[@]}; do
     # Set HTTPS Only On
     # Set TLS/SSL Bindings: https://docs.microsoft.com/en-us/cli/azure/webapp/config/ssl?view=azure-cli-latest
 
-    # Secure Key Vaults https://docs.microsoft.com/en-us/azure/key-vault/general/network-security
-    # https://docs.microsoft.com/en-us/azure/key-vault/general/overview-vnet-service-endpoints
+
     ## + New Virtual Network 
     ## https://docs.microsoft.com/en-us/azure/key-vault/general/manage-with-cli2
 

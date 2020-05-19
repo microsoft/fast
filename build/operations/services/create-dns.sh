@@ -8,6 +8,7 @@ billing as your other Azure services.
 Ref:
 https://docs.microsoft.com/en-us/azure/dns/
 https://docs.microsoft.com/en-us/azure/dns/dns-getstarted-cli
+https://docs.microsoft.com/en-us/azure/frontdoor/front-door-how-to-onboard-apex-domain
 https://docs.microsoft.com/en-us/azure/dns/dns-getstarted-cli#create-a-dns-record
 '
 az network dns zone create --resource-group $resource_group -n $dns_zone

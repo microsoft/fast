@@ -10,7 +10,8 @@ This will create/configure all resources for Production in East Region
     source config.sh
 
     # Web Apps: valid subdomains to be created
-    declare -a names=("app" "color" "create" "explore" "motion" "www")
+    # declare -a names=("app" "color" "create" "explore" "motion" "www")
+    declare -a names=("app")
 
     # Product: valid options {fast}
     product=fast
@@ -26,6 +27,10 @@ This will create/configure all resources for Production in East Region
 
     # App service plan
     app_service_plan=$location_abbr-asp
+
+    # DNS Zone
+    dns_zone=fast.design
+
 
 ## SHELL Arguments
 source inputs.sh --debug true --product $product --subscription $subscription --location $location --resource-group $resource_group

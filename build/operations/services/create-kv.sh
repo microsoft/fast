@@ -10,6 +10,8 @@ TODOs (Unknown details to perform at this time using Azure CLI)
 3. Perform logging using Azure CLI, not PowerShell
 4. Perform CLI upload of certificate
 5. Configure Logic Apps can use key vault as well.
+6. Secure Key Vaults https://docs.microsoft.com/en-us/azure/key-vault/general/network-security
+7. Secure Kv https://docs.microsoft.com/en-us/azure/key-vault/general/overview-vnet-service-endpoints
 
 Ref: 
 https://docs.microsoft.com/en-us/azure/key-vault/general/
