@@ -7,10 +7,12 @@ import {
     FrameworkContentPlacementData,
     frameworkContentPlacementData,
 } from "../../data/framework.data";
+import { FeatureCardData, featureCardData } from "../../data/feature.data";
 
 export class ContentPlacementContainer extends FASTElement {
     @attr section: string;
 
     communityContentPlacementData: CommunityContentPlacementData[] = communityContentPlacementData;
     frameworkContentPlacementData: FrameworkContentPlacementData[] = frameworkContentPlacementData;
+    featureCardData: FeatureCardData[] = featureCardData;
 }

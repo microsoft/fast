@@ -5,6 +5,7 @@ export const ContentPlacementContainerStyles = css`
     ${display("block")}:host {
         --border-width: calc(var(--outline-width) * 1px);
         --border: var(--border-width) solid var(--neutral-outline-rest);
+        --flow: row;
         contain: none;
         font-family: var(--body-font);
     }
@@ -33,6 +34,9 @@ export const ContentPlacementContainerStyles = css`
     }
 
     @media screen and (min-width: 700px) and (max-width: 999px) {
+        :host {
+            --flow: column;
+        }
         .framework_container {
             grid-template-columns: repeat(2, 1fr);
         }
@@ -72,6 +76,12 @@ export const ContentPlacementContainerStyles = css`
         .framework_ContentPlacement:nth-of-type(6) {
             border: none;
         }
+    }
+
+    .feature_container {
+        display: grid;
+        grid-template-rows: repeat(4, min-content);
+        grid-auto-flow: var(--flow);
     }
 
     .icon {
