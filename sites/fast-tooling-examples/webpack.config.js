@@ -5,6 +5,8 @@ const CleanWebpackPlugin = require("clean-webpack-plugin");
 const FaviconsWebpackPlugin = require("favicons-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
+const rootNodeModules = path.resolve(__dirname, "../../node_modules");
+const nodeModules = path.resolve(__dirname, "./node_modules");
 const appDir = path.resolve(__dirname, "./app");
 const outDir = path.resolve(__dirname, "./www");
 
@@ -112,6 +114,21 @@ module.exports = (env, args) => {
         ],
         resolve: {
             extensions: [".js", ".tsx", ".ts"],
+            alias: {
+                lodash: path.resolve(rootNodeModules, "lodash-es"),
+                "lodash-es": path.resolve(rootNodeModules, "lodash-es"),
+                "react-dnd-html5-backend": path.resolve(
+                    rootNodeModules,
+                    "react-dnd-html5-backend"
+                ),
+                react: path.resolve(rootNodeModules, "react"),
+                "react-dnd": path.resolve(rootNodeModules, "react-dnd"),
+                "react-dom": path.resolve(rootNodeModules, "react-dom"),
+                "@microsoft/fast-components-react-msft": path.resolve(
+                    rootNodeModules,
+                    "@microsoft/fast-components-react-msft"
+                ),
+            },
         },
         devServer: {
             compress: false,

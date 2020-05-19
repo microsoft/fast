@@ -18,10 +18,11 @@
         .bodyTags
         .filter(
             (tag) => 
-                !tag.attributes.src.includes('main')
-                && (
-                    !tag.attributes.src.includes('example')
-                    || tag.attributes.src.includes('exampleNativeElement1')
+                tag.attributes.src.includes('exampleNativeElement1')
+                || !(
+                    tag.attributes.src.startsWith('main')
+                    || tag.attributes.src.startsWith('/example')
+                    || tag.attributes.src.startsWith('/vendors~example')
                 )
         )
         .join('')

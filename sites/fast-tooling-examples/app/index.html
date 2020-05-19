@@ -100,7 +100,14 @@
     <%= htmlWebpackPlugin
         .tags
         .bodyTags
-        .filter((tag) => !tag.attributes.src.includes('example'))
+        .filter(
+            (tag) => 
+                tag.attributes.src.includes('main')
+                || !(
+                    tag.attributes.src.startsWith('/example')
+                    || tag.attributes.src.startsWith('/vendors~example')
+                )
+        )
         .join('')
     %>
 </body>
