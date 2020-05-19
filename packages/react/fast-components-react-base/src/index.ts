@@ -30,6 +30,10 @@ import Checkbox from "./checkbox";
 export { Checkbox };
 export * from "./checkbox";
 
+import DataGrid from "./data-grid";
+export { DataGrid };
+export * from "./data-grid";
+
 import Dialog from "./dialog";
 export { Dialog };
 export * from "./dialog";
