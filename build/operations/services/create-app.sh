@@ -1,9 +1,12 @@
 #!/bin/bash
 
 : 'AZURE WEB APP SERVICE
+A fully managed compute platform that is optimized for hosting websites and web applications. 
+Customers can use App Service on Linux to host web apps natively on Linux for supported 
+application stacks.
 
 Ref:
-
+https://docs.microsoft.com/en-us/azure/app-service/containers/app-service-linux-intro
 '
 # Configure and set name pattern
 web_app=$location_abbr-app
@@ -43,13 +46,13 @@ for name in ${names[@]}; do
         --resource-group $resource_group \
         --web-server-logging filesystem
 
-    # Set DNS zone w/ cname record
+    # Set DNS zone w/ cname record 
     # az network dns record-set cname set-record -c fast-app.azurewebsites.net -n app -g fast-ops-rg -z fast.design --if-none-match
     az network dns record-set cname set-record --cname $dns_cname --record-set-name $name --resource-group fast-ops-rg --zone-name $dns_zone --if-none-match
-
-    # TODO: https://docs.microsoft.com/en-us/azure/app-service/scripts/cli-configure-ssl-certificate 
-    # Configure web app SSL binding
+    
+    echo "configuring hostname ..."
     key_vault_id=$(az keyvault show --name fast-ops-kv --query "id" -o tsv)
+    az webapp config hostname add --hostname $name.$dns_zone --resource-group $resource_group --webapp-name $new_name
 
     echo "ssl importing ..."
     az webapp config ssl import --key-vault $key_vault_id --key-vault-certificate-name wildcard-fast-design-certificate \
@@ -60,30 +63,11 @@ for name in ${names[@]}; do
     az webapp config ssl bind --certificate-thumbprint E2AF1AB40BE8231661FA6C528A1173D2D9CE56F4 --ssl-type SNI \
         --resource-group $resource_group \
         --name $new_name
-    
-    # Bind custom hostname
-    echo "configuring hostname ..."
-    az webapp config hostname add --hostname $name.$dns_zone --resource-group fast-ops-rg --webapp-name $new_name
 
-    # Configure web app hostname 
-    # https://docs.microsoft.com/en-us/cli/azure/webapp/config/hostname?view=azure-cli-latest#az-webapp-config-hostname-add
+    echo "Internal site: http://$new_name.azurewebsites.net"
+    echo "External site: https://$name.azurewebsites.net"
 
     # Enable Application Insights
     # Set HTTPS Only On
     # Set TLS/SSL Bindings: https://docs.microsoft.com/en-us/cli/azure/webapp/config/ssl?view=azure-cli-latest
-
-
-    ## + New Virtual Network 
-    ## https://docs.microsoft.com/en-us/azure/key-vault/general/manage-with-cli2
-
 done
-
-
-#Deploy code from a public GitHub repository. 
-#az webapp up ... https://docs.microsoft.com/en-us/cli/azure/webapp?view=azure-cli-latest#az-webapp-up 
-
-#az webapp deployment source config --name $web_app --resource-group $resource_group \
-#--repo-url $gitrepo --branch master --manual-integration
-
-# Copy the result of the following command into a browser to see the web app.
-# echo http://$web_app.azurewebsites.net

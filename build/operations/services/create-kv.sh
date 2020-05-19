@@ -12,6 +12,7 @@ TODOs (Unknown details to perform at this time using Azure CLI)
 5. Configure Logic Apps can use key vault as well.
 6. Secure Key Vaults https://docs.microsoft.com/en-us/azure/key-vault/general/network-security
 7. Secure Kv https://docs.microsoft.com/en-us/azure/key-vault/general/overview-vnet-service-endpoints
+8. https://docs.microsoft.com/en-us/azure/key-vault/general/manage-with-cli2
 
 Ref: 
 https://docs.microsoft.com/en-us/azure/key-vault/general/
