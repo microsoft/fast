@@ -27,6 +27,9 @@ This will create/configure all resources for Production in West Region
     # App service plan
     app_service_plan=$location_abbr-asp
 
+    # DNS Zone
+    dns_zone=fast.design
+
 ## SHELL Arguments
 source inputs.sh --debug true --product $product --subscription $subscription --location $location --resource-group $resource_group
 
