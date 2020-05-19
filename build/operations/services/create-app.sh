@@ -10,9 +10,9 @@ https://docs.microsoft.com/en-us/azure/app-service/containers/app-service-linux-
 '
 # Configure and set name pattern
 web_app=$location_abbr-app && [[ $debug == true ]] && echo "${bold}${green}Web App Name Pattern"${reset}${unbold} && echo *-$web_app
+azure_log_analytics_location=southcentralus
+azure_log_analytics_workspace_name=fast-ops-log
 
-echo "creating log analytics workspace ..."
-source create-log.sh
 
 echo "creating web apps ..."
 for name in ${names[@]}; do
@@ -70,40 +70,34 @@ for name in ${names[@]}; do
         az webapp update --https-only true --name $new_name --resource-group $resource_group
         
     echo "creating app insight ..."
-        web_app_insights_name=$new_name-appi
+        web_app_insights_name=$new_name
+
+        # web_app_insights_instrumentation_key=$(
+        #     az monitor app-insights component create --app $web_app_insights_name --location $azure_log_analytics_location --resource-group $resource_group \
+        #         --kind web \
+        #         --application-type web \
+        #         --workspace $azure_log_analytics_workspace_name \
+        #         --output tsv \
+        #         --query instrumentationKey
+        #     )
+
         web_app_insights_instrumentation_key=$(
-            az monitor app-insights component create --app $web_app_insights_name --location $azure_log_analytics_location --resource-group $resource_group \
-                --kind web \
-                --application-type web \
-                --workspace $azure_log_analytics_workspace_name \
-                --output tsv \
-                --query instrumentationKey
-            )
-   
-        # CLI TESTING
-        # web_app_log_analytics_workspace=$(az monitor log-analytics workspace show -g fast-ops-rg -n fast-ops-w --output tsv --query id)
-        # az monitor app-insights component create --app app-west-appaaabb --location westus --resource-group fast-westus-rg --kind web --application-type web --output tsv --query instrumentationKey
-        # az monitor app-insights component create --app app-west-errr --location southcentralus --resource-group fast-ops-rg --kind web --application-type web --workspace fast-ops-w
-        # bugs: https://github.com/MicrosoftDocs/azure-docs/issues/55198 https://github.com/MicrosoftDocs/azure-docs/issues/55193 https://github.com/MicrosoftDocs/azure-docs/issues/55164 
+        az monitor app-insights component create --app app-east-appi --location southcentralus --resource-group fast-ops-rg \
+            --kind web \
+            --application-type web \
+            --workspace fast-ops-log \
+            --output tsv \
+            --query instrumentationKey
+        )
 
-    echo "configuring app insight on web app ..."    
+    echo "configuring app insights [$web_app_insights_instrumentation_key] on web app ..." 
         az webapp config appsettings set --resource-group $resource_group --name $new_name \
-            --settings APPINSIGHTS_INSTRUMENTATIONKEY=$web_app_insights_instrumentation_key \
-            --settings APPINSIGHTS_PROFILERFEATURE_VERSION=1.0.0 \
-            --settings APPINSIGHTS_SNAPSHOTFEATURE_VERSION=1.0.0 \
-            --settings APPLICATIONINSIGHTS_CONNECTION_STRING=InstrumentationKey=$web_app_insights_instrumentation_key \
-            --settings ApplicationInsightsAgent_EXTENSION_VERSION=~2 \
-            --settings DiagnosticServices_EXTENSION_VERSION=~3 \
-            --settings InstrumentationEngine_EXTENSION_VERSION=~1 \
-            --settings SnapshotDebugger_EXTENSION_VERSION=disabled \
-            --settings XDT_MicrosoftApplicationInsights_BaseExtensions=~1 \
-            --settings XDT_MicrosoftApplicationInsights_Mode=recommended \
-            --settings WEBSITE_HTTPLOGGING_RETENTION_DAYS=7
+            --settings APPINSIGHTS_INSTRUMENTATIONKEY="$web_app_insights_instrumentation_key" APPINSIGHTS_PROFILERFEATURE_VERSION="1.0.0" APPINSIGHTS_SNAPSHOTFEATURE_VERSION="1.0.0" APPLICATIONINSIGHTS_CONNECTION_STRING="InstrumentationKey=$web_app_insights_instrumentation_key" ApplicationInsightsAgent_EXTENSION_VERSION="~2" DiagnosticServices_EXTENSION_VERSION="~3" InstrumentationEngine_EXTENSION_VERSION="~1" SnapshotDebugger_EXTENSION_VERSION="disabled" XDT_MicrosoftApplicationInsights_BaseExtensions="~1" XDT_MicrosoftApplicationInsights_Mode="recommended" WEBSITE_HTTPLOGGING_RETENTION_DAYS="7"
 
-    echo "associating app insights on log analytics workspace ..."
-        web_app_log_analytics_workspace=$(az monitor log-analytics workspace list --output tsv --query id)
+    # echo "associating app insights on log analytics workspace ..."
+    #     web_app_log_analytics_workspace=$(az monitor log-analytics workspace list --output tsv --query id)
 
-    echo "Sites: http://$new_name.azurewebsites.net => https://$name.azurewebsites.net"
+    echo "internal|external web sites: http://$new_name.azurewebsites.net => https://$name.$dns_zone"
   
 done
 

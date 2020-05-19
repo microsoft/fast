@@ -35,3 +35,5 @@ source $dir/services/create-rg.sh & wait $!
 source $dir/services/create-dns.sh & wait $!
 source $dir/services/create-kv.sh & wait $!
 source $dir/services/create-fd.sh & wait $!
+source $dir/services/create-log.sh & wait $!
+
