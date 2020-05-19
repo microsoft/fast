@@ -9,6 +9,8 @@ Ref:
 https://docs.microsoft.com/en-us/azure/frontdoor/
 https://docs.microsoft.com/en-us/cli/azure/ext/front-door/network/front-door?view=azure-cli-latest
 '
+#TODO: 
+# [] - ENABLE RBAC https://github.com/Azure/azure-cli/issues/13465
 
 # Install Prerequisite extensions
 az extension add --name front-door
