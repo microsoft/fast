@@ -27,3 +27,5 @@ source inputs.sh --debug true --subscription $subscription --location $location 
 
 # DELETE Resource group and all child services
 az group delete --name $resource_group
+
+#TODO: delete cname record

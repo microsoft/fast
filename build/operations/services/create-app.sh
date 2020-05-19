@@ -47,20 +47,23 @@ for name in ${names[@]}; do
     # az network dns record-set cname set-record -c fast-app.azurewebsites.net -n app -g fast-ops-rg -z fast.design --if-none-match
     az network dns record-set cname set-record --cname $dns_cname --record-set-name $name --resource-group fast-ops-rg --zone-name $dns_zone --if-none-match
 
-
     # TODO: https://docs.microsoft.com/en-us/azure/app-service/scripts/cli-configure-ssl-certificate 
     # Configure web app SSL binding
-    az webapp config ssl import --key-vault /subscriptions/$subscription/resourceGroups/$resource_group/providers/Microsoft.KeyVault/vaults/fast-ops-kv --key-vault-certificate-name wildcard-fast-design-certificate \
+    key_vault_id=$(az keyvault show --name fast-ops-kv --query "id" -o tsv)
+
+    echo "ssl importing ..."
+    az webapp config ssl import --key-vault $key_vault_id --key-vault-certificate-name wildcard-fast-design-certificate \
         --resource-group $resource_group \
         --name $new_name
     
+    echo "ssl binding ..."
     az webapp config ssl bind --certificate-thumbprint E2AF1AB40BE8231661FA6C528A1173D2D9CE56F4 --ssl-type SNI \
         --resource-group $resource_group \
         --name $new_name
     
     # Bind custom hostname
-    az webapp config hostname add --hostname $sub_domain.fast.design --ids $resource_id 
-
+    echo "configuring hostname ..."
+    az webapp config hostname add --hostname $name.$dns_zone --resource-group fast-ops-rg --webapp-name $new_name
 
     # Configure web app hostname 
     # https://docs.microsoft.com/en-us/cli/azure/webapp/config/hostname?view=azure-cli-latest#az-webapp-config-hostname-add
