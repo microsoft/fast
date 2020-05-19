@@ -76,4 +76,9 @@ export interface ExplorerState {
      * Whether the preview is available
      */
     previewReady: boolean;
+
+    /**
+     * The active dictionary ID
+     */
+    activeDictionaryId: string;
 }

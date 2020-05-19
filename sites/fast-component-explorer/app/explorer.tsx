@@ -1,7 +1,5 @@
 import { camelCase, get } from "lodash-es";
 import {
-    Canvas,
-    CanvasClassNamesContract,
     Container,
     Pane,
     PaneResizeDirection,
@@ -9,30 +7,24 @@ import {
     RowResizeDirection,
 } from "@microsoft/fast-layouts-react";
 import {
-    Form,
+    ModularForm,
+    ModularViewer,
     NavigationMenu,
-    Viewer,
     ViewerCustomAction,
 } from "@microsoft/fast-tooling-react";
-import manageJss, { ComponentStyleSheet } from "@microsoft/fast-jss-manager-react";
+import manageJss from "@microsoft/fast-jss-manager-react";
 import ReactDOM from "react-dom";
 import React from "react";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import {
     createColorPalette,
-    DesignSystem,
     DesignSystemDefaults,
     designSystemSchema,
-    designUnit,
-    horizontalSpacing,
-    neutralDividerRest,
     neutralLayerL1,
     neutralLayerL2,
     neutralLayerL3,
-    outlineWidth,
 } from "@microsoft/fast-components-styles-msft";
 import {
-    LabelClassNameContract,
     ListboxItemProps,
     TabsItem,
     TypographySize,
@@ -40,25 +32,18 @@ import {
 import {
     ActionToggle,
     ActionToggleAppearance,
-    ActionToggleClassNameContract,
     ActionToggleProps,
+    ActionTrigger,
     Background,
     Heading,
     HeadingSize,
-    Label,
     Pivot,
-    PivotClassNameContract,
     Select,
-    SelectClassNameContract,
     SelectOption,
-    Toggle,
-    ToggleClassNameContract,
     Typography,
 } from "@microsoft/fast-components-react-msft";
-import { uniqueId } from "lodash";
-import { classNames, Direction } from "@microsoft/fast-web-utilities";
+import { Direction } from "@microsoft/fast-web-utilities";
 import { ColorRGBA64, parseColor } from "@microsoft/fast-colors";
-import { format, multiply, toPx } from "@microsoft/fast-jss-utilities";
 import { StandardLuminance } from "@microsoft/fast-components-styles-msft";
 import {
     AjvMapper,
@@ -73,13 +58,16 @@ import FASTMessageSystemWorker from "@microsoft/fast-tooling/dist/message-system
 import {
     AccentColorPicker,
     DirectionSwitch,
+    dotDotDotGlyph,
+    downChevron,
     ThemeSelector,
+    TransparencyToggle,
+    upChevron,
 } from "@microsoft/site-utilities";
 import { ComponentViewConfig, Scenario } from "./utilities/configs/data.props";
 import * as componentViewConfigsWithoutCustomConfig from "./utilities/configs";
 import { history, menu, schemaDictionary } from "./config";
-import style, { ExplorerClassNameContract } from "./explorer.style";
-import { downChevron, upChevron } from "./icons/chevrons";
+import style from "./explorer.style";
 import {
     ExplorerHandledProps,
     ExplorerProps,
@@ -89,6 +77,8 @@ import {
 import { previewReady } from "./preview";
 
 export const backgroundTransparency: string = "PREVIEW::TRANSPARENCY";
+let componentLinkedDataId: string = "root";
+let componentNavigationConfigId: string = "";
 
 interface ObjectOfComponentViewConfigs {
     [key: string]: ComponentViewConfig;
@@ -137,80 +127,6 @@ class Explorer extends Foundation<
     private viewerContainerRef: React.RefObject<HTMLDivElement> = React.createRef();
     private viewerContentAreaPadding: number = 20;
 
-    private canvasStyleOverrides: ComponentStyleSheet<
-        CanvasClassNamesContract,
-        DesignSystem
-    > = {
-        canvas: {
-            display: "flex",
-            flexDirection: "column",
-        },
-    };
-
-    private pivotStyleOverrides: ComponentStyleSheet<
-        Partial<PivotClassNameContract>,
-        DesignSystem
-    > = {
-        pivot: {
-            boxSizing: "border-box",
-        },
-        pivot_tabList: {
-            padding: format("{0} {1}", toPx(designUnit), toPx(multiply(designUnit, 2))),
-        },
-        pivot_activeIndicator: {
-            top: "23px",
-        },
-        pivot_tabPanelContent: {
-            padding: format("{0} {1}", toPx(designUnit), toPx(multiply(designUnit, 2))),
-        },
-        pivot_tabPanels: {
-            borderTop: format<DesignSystem>(
-                "{0} solid {1}",
-                neutralDividerRest,
-                toPx(outlineWidth)
-            ),
-        },
-    };
-
-    private devToolsToggleStyles: ComponentStyleSheet<
-        ActionToggleClassNameContract,
-        DesignSystem
-    > = {
-        actionToggle: {
-            position: "absolute",
-            top: toPx(designUnit),
-            right: toPx(multiply(designUnit, 2)),
-        },
-    };
-
-    private toggleStyleOverrides: ComponentStyleSheet<
-        Partial<ToggleClassNameContract>,
-        DesignSystem
-    > = {
-        toggle_toggleButton: {
-            display: "flex",
-        },
-    };
-
-    private labelStyleOverrides: ComponentStyleSheet<
-        Partial<LabelClassNameContract>,
-        DesignSystem
-    > = {
-        label: {
-            margin: format("0 {0} 0 {1}", toPx(designUnit), horizontalSpacing()),
-        },
-    };
-
-    private selectStyleOverrides: ComponentStyleSheet<
-        Partial<SelectClassNameContract>,
-        DesignSystem
-    > = {
-        select: {
-            marginRight: "auto",
-            zIndex: "1",
-        },
-    };
-
     constructor(props: ExplorerProps) {
         super(props);
 
@@ -250,6 +166,7 @@ class Explorer extends Foundation<
             accentColor: "#0078D4",
             direction: Direction.ltr,
             previewReady: false,
+            activeDictionaryId: componentLinkedDataId,
         };
     }
 
@@ -263,92 +180,109 @@ class Explorer extends Foundation<
             );
         }
 
-        const {
-            explorer,
-            explorer_devToolsPanel,
-            explorer_navigationPanel,
-            explorer_paneTitleContainer,
-            explorer_propertiesPanel,
-            explorer_toolbar,
-            explorer_viewerRegion,
-        }: Partial<ExplorerClassNameContract> = this.props.managedClasses;
-
         return (
             <Background value={neutralLayerL1}>
-                <Container className={classNames(explorer)}>
+                <Container>
                     <Row style={{ flex: "1" }}>
-                        <Pane
-                            className={classNames(explorer_navigationPanel)}
-                            resizable={true}
-                            resizeFrom={PaneResizeDirection.east}
-                        >
-                            <Background value={neutralLayerL3} drawBackground={false}>
-                                <div className={classNames(explorer_paneTitleContainer)}>
-                                    <Heading size={HeadingSize._6}>FAST Explorer</Heading>
-                                </div>
-                                <NavigationMenu
-                                    menu={menu}
-                                    expanded={true}
-                                    activeLocation={this.state.locationPathname}
-                                    onLocationUpdate={this.handleUpdateRoute}
-                                />
+                        <Pane resizable={true} resizeFrom={PaneResizeDirection.east}>
+                            <Background
+                                value={neutralLayerL3}
+                                drawBackground={true}
+                                style={{
+                                    display: "flex",
+                                    height: "32px",
+                                    alignItems: "center",
+                                    justifyContent: "space-between",
+                                    padding: "0 8px",
+                                }}
+                            >
+                                <Heading size={HeadingSize._6}>FAST Explorer</Heading>
                             </Background>
+                            <NavigationMenu
+                                menu={menu}
+                                expanded={true}
+                                activeLocation={this.state.locationPathname}
+                                onLocationUpdate={this.handleUpdateRoute}
+                            />
                         </Pane>
-                        <Canvas jssStyleSheet={this.canvasStyleOverrides}>
+                        <div
+                            style={{
+                                display: "flex",
+                                flex: 1,
+                                flexDirection: "column",
+                            }}
+                        >
+                            <Row style={{ overflow: "visible", zIndex: 1 }}>
+                                <Background
+                                    value={neutralLayerL2}
+                                    drawBackground={true}
+                                    style={{
+                                        width: "100%",
+                                        display: "flex",
+                                        alignItems: "center",
+                                        justifyContent: "space-between",
+                                        padding: "0 8px",
+                                    }}
+                                >
+                                    {this.renderScenarioSelect()}
+                                    <TransparencyToggle
+                                        id={"transparency-toggle"}
+                                        transparency={this.state.transparentBackground}
+                                        onUpdateTransparency={
+                                            this.handleUpdateTransparency
+                                        }
+                                        disabled={!this.state.previewReady}
+                                    />
+                                    <ThemeSelector
+                                        id={"theme-selector"}
+                                        theme={this.state.theme}
+                                        onUpdateTheme={this.handleUpdateTheme}
+                                        disabled={!this.state.previewReady}
+                                    />
+                                    <DirectionSwitch
+                                        id={"direction-switch"}
+                                        direction={this.state.direction}
+                                        onUpdateDirection={this.handleUpdateDirection}
+                                        disabled={!this.state.previewReady}
+                                    />
+                                    <AccentColorPicker
+                                        id={"accent-color-picker"}
+                                        accentBaseColor={this.state.accentColor}
+                                        onAccentColorPickerChange={
+                                            this.handleAccentColorPickerChange
+                                        }
+                                        disabled={!this.state.previewReady}
+                                    />
+                                    <ActionTrigger
+                                        glyph={dotDotDotGlyph}
+                                        style={{
+                                            marginLeft: 4,
+                                            width: "24px",
+                                            padding: "0",
+                                        }}
+                                        onClick={this.handleShowDesignSystemEditor}
+                                        disabled={!this.state.previewReady}
+                                    />
+                                </Background>
+                            </Row>
                             <Row fill={true}>
-                                <div style={{ overflow: "auto", width: "100%" }}>
-                                    <Background
-                                        value={neutralLayerL2}
-                                        className={classNames(explorer_toolbar)}
-                                    >
-                                        {this.renderScenarioSelect()}
-                                        {this.renderTransparencyToggle()}
-                                        <ThemeSelector
-                                            id={"theme-selector"}
-                                            theme={this.state.theme}
-                                            onUpdateTheme={this.handleUpdateTheme}
-                                            disabled={!this.state.previewReady}
-                                        />
-                                        <DirectionSwitch
-                                            id={"direction-switch"}
-                                            direction={this.state.direction}
-                                            onUpdateDirection={this.handleUpdateDirection}
-                                            disabled={!this.state.previewReady}
-                                        />
-                                        <AccentColorPicker
-                                            id={"accent-color-picker"}
-                                            accentBaseColor={this.state.accentColor}
-                                            onAccentColorPickerChange={
-                                                this.handleAccentColorPickerChange
-                                            }
-                                            disabled={!this.state.previewReady}
-                                        />
-                                    </Background>
-                                    <div
-                                        ref={this.viewerContainerRef}
-                                        className={classNames(explorer_viewerRegion)}
-                                    >
-                                        <div
-                                            style={{
-                                                padding: toPx(
-                                                    this.viewerContentAreaPadding
-                                                ),
-                                                minWidth: "fit-content",
-                                            }}
-                                        >
-                                            <Viewer
-                                                iframeSrc={"/preview"}
-                                                width={this.state.width}
-                                                height={this.state.height}
-                                                onUpdateHeight={this.handleUpdateHeight}
-                                                onUpdateWidth={this.handleUpdateWidth}
-                                                responsive={true}
-                                                messageSystem={
-                                                    fastMessageSystem as MessageSystem
-                                                }
-                                            />
-                                        </div>
-                                    </div>
+                                <div
+                                    ref={this.viewerContainerRef}
+                                    style={{
+                                        padding: `${this.viewerContentAreaPadding}px`,
+                                        width: "100%",
+                                        height: "100%",
+                                    }}
+                                >
+                                    <ModularViewer
+                                        iframeSrc={"/preview"}
+                                        width={this.state.width}
+                                        height={this.state.height}
+                                        onUpdateHeight={this.handleUpdateHeight}
+                                        onUpdateWidth={this.handleUpdateWidth}
+                                        responsive={true}
+                                        messageSystem={fastMessageSystem as MessageSystem}
+                                    />
                                 </div>
                             </Row>
                             <Row
@@ -360,12 +294,15 @@ class Explorer extends Foundation<
                             >
                                 <Background
                                     value={neutralLayerL2}
-                                    className={classNames(explorer_devToolsPanel)}
+                                    style={{
+                                        width: "100%",
+                                        height: "100%",
+                                        overflow: "auto",
+                                    }}
                                 >
                                     <Pivot
                                         label={"documentation"}
                                         items={this.renderPivotItems()}
-                                        jssStyleSheet={this.pivotStyleOverrides}
                                     />
                                     <ActionToggle
                                         appearance={ActionToggleAppearance.stealth}
@@ -374,25 +311,18 @@ class Explorer extends Foundation<
                                         unselectedLabel={"Development tools collapsed"}
                                         unselectedGlyph={upChevron}
                                         selected={this.state.devToolsVisible}
-                                        jssStyleSheet={this.devToolsToggleStyles}
                                         onToggle={this.handleDevToolsToggle}
+                                        style={{
+                                            position: "absolute",
+                                            top: 0,
+                                            right: 0,
+                                        }}
                                     />
                                 </Background>
                             </Row>
-                        </Canvas>
-                        <Pane
-                            className={classNames(explorer_propertiesPanel)}
-                            resizable={true}
-                            resizeFrom={PaneResizeDirection.west}
-                        >
-                            <Background value={neutralLayerL3} drawBackground={false}>
-                                <Pivot
-                                    label={"properties"}
-                                    items={this.renderPropertyItems()}
-                                    jssStyleSheet={this.pivotStyleOverrides}
-                                />
-                                <Form messageSystem={fastMessageSystem} />
-                            </Background>
+                        </div>
+                        <Pane>
+                            <ModularForm messageSystem={fastMessageSystem} />
                         </Pane>
                     </Row>
                 </Container>
@@ -404,8 +334,35 @@ class Explorer extends Foundation<
         this.setViewerToFullSize();
     }
 
+    private handleShowDesignSystemEditor = (): void => {
+        const isDesignSystem: boolean =
+            this.state.activeDictionaryId === designSystemLinkedDataId;
+        const activeDictionaryId: string = isDesignSystem
+            ? componentLinkedDataId
+            : designSystemLinkedDataId;
+
+        this.setState({
+            activeDictionaryId,
+        });
+
+        fastMessageSystem.postMessage({
+            type: MessageSystemType.navigation,
+            action: MessageSystemNavigationTypeAction.update,
+            activeDictionaryId,
+            activeNavigationConfigId: isDesignSystem ? "" : componentNavigationConfigId,
+        });
+    };
+
     private handleMessageSystem = (e: MessageEvent): void => {
         const updatedState: Partial<ExplorerState> = {};
+
+        if (
+            e.data.type === MessageSystemType.navigation &&
+            e.data.activeDictionaryId !== designSystemLinkedDataId
+        ) {
+            componentLinkedDataId = e.data.activeDictionaryId;
+            componentNavigationConfigId = e.data.activeNavigationConfigId;
+        }
 
         if (
             e.data.type === MessageSystemType.custom &&
@@ -443,33 +400,10 @@ class Explorer extends Foundation<
                     viewerNode.clientWidth - this.viewerContentAreaPadding * 2;
                 this.setState({
                     width,
-                    height,
+                    height: height - 24, // 24 is height of view label
                 });
             }
         }
-    }
-
-    private renderTransparencyToggle(): React.ReactNode {
-        const id: string = uniqueId("transparency");
-        return (
-            <div
-                className={classNames(
-                    this.props.managedClasses.explorer_viewerControlRegion
-                )}
-            >
-                <Label jssStyleSheet={this.labelStyleOverrides} htmlFor={id}>
-                    Transparent
-                </Label>
-                <Toggle
-                    jssStyleSheet={this.toggleStyleOverrides}
-                    inputId={id}
-                    onClick={this.handleUpdateTransparency}
-                    selectedMessage={""}
-                    unselectedMessage={""}
-                    statusMessageId={"transparency"}
-                />
-            </div>
-        );
     }
 
     private renderPivotItems(): TabsItem[] {
@@ -529,45 +463,6 @@ class Explorer extends Foundation<
         ];
     }
 
-    private renderPropertyItems(): TabsItem[] {
-        return [
-            {
-                tab: (className: string): React.ReactNode => {
-                    return (
-                        <Typography
-                            className={className}
-                            size={TypographySize._8}
-                            onClick={this.handlePropertiesClick}
-                        >
-                            Properties
-                        </Typography>
-                    );
-                },
-                content: (): React.ReactNode => {
-                    return null;
-                },
-                id: "properties",
-            },
-            {
-                tab: (className: string): React.ReactNode => {
-                    return (
-                        <Typography
-                            className={className}
-                            size={TypographySize._8}
-                            onClick={this.handleDesignSystemClick}
-                        >
-                            Design system
-                        </Typography>
-                    );
-                },
-                content: (): React.ReactNode => {
-                    return null;
-                },
-                id: "designSystem",
-            },
-        ];
-    }
-
     private renderScenarioSelect(): React.ReactNode {
         const scenarioOptions: Array<Scenario> = get(
             setViewConfigsWithCustomConfig(componentViewConfigsWithoutCustomConfig)[
@@ -579,7 +474,6 @@ class Explorer extends Foundation<
         if (Array.isArray(scenarioOptions)) {
             return (
                 <Select
-                    jssStyleSheet={this.selectStyleOverrides}
                     onValueChange={this.handleUpdateScenario}
                     defaultSelection={[scenarioOptions[1].displayName]}
                     selectedItems={[
@@ -630,31 +524,6 @@ class Explorer extends Foundation<
 
         return dataDictionary;
     }
-
-    private handleDesignSystemClick = (): void => {
-        if ((window as any).Worker && fastMessageSystem) {
-            fastMessageSystem.postMessage({
-                type: MessageSystemType.navigation,
-                action: MessageSystemNavigationTypeAction.update,
-                activeDictionaryId: designSystemLinkedDataId,
-                activeNavigationConfigId: "",
-            });
-        }
-    };
-
-    private handlePropertiesClick = (): void => {
-        if ((window as any).Worker && fastMessageSystem) {
-            fastMessageSystem.postMessage({
-                type: MessageSystemType.navigation,
-                action: MessageSystemNavigationTypeAction.update,
-                activeDictionaryId: this.getScenarioData(
-                    this.state.componentConfig,
-                    this.state.selectedScenarioIndex
-                )[1],
-                activeNavigationConfigId: "",
-            });
-        }
-    };
 
     private handleUpdateDirection = (): void => {
         const updatedDirection: Direction =
@@ -805,6 +674,7 @@ class Explorer extends Foundation<
         e: React.MouseEvent<HTMLButtonElement>,
         props: ActionToggleProps
     ): void => {
+        console.log("handle dev tools toggle");
         this.setState({
             devToolsVisible: !props.selected,
         });
