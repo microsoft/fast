@@ -14,9 +14,9 @@ module.exports = (env, args) => {
         devtool: isProduction ? "none" : "inline-source-map",
         entry: {
             main: path.resolve(appDir, "index.ts"),
-            exampleWebComponent1: path.resolve(
+            exampleNativeElement1: path.resolve(
                 appDir,
-                "examples/web-component-1/index.ts"
+                "examples/native-element-1/index.ts"
             ),
             exampleReact1: path.resolve(appDir, "examples/react-1/index.tsx"),
         },
@@ -91,9 +91,9 @@ module.exports = (env, args) => {
             }),
             new HtmlWebpackPlugin({
                 inject: false,
-                title: "FAST Tooling Examples - Web Components",
-                filename: "examples/web-component-1/index.html",
-                template: path.resolve(appDir, "examples/web-component-1/index.html"),
+                title: "FAST Tooling Examples - Native elements",
+                filename: "examples/native-element-1/index.html",
+                template: path.resolve(appDir, "examples/native-element-1/index.html"),
             }),
             new HtmlWebpackPlugin({
                 inject: false,

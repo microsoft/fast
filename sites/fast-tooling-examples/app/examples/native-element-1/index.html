@@ -9,7 +9,10 @@
 </head>
 
 <body>
-    <div id="root"></div>
+    <div id="root">
+        <input id="text" />
+        <pre id="data-dictionary"></pre>
+    </div>
     <%= htmlWebpackPlugin
         .tags
         .bodyTags
@@ -18,7 +21,7 @@
                 !tag.attributes.src.includes('main')
                 && (
                     !tag.attributes.src.includes('example')
-                    || tag.attributes.src.includes('exampleWebComponent1')
+                    || tag.attributes.src.includes('exampleNativeElement1')
                 )
         )
         .join('')
