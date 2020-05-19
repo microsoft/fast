@@ -15,7 +15,7 @@ import {
     startsWith,
 } from "@microsoft/fast-web-utilities";
 import { canUseDOM } from "exenv-es6";
-import { inRange, isEqual } from "lodash-es";
+import { inRange, isEqual, isNil } from "lodash-es";
 import React from "react";
 import { ListboxItemProps } from "../listbox-item";
 import { DisplayNamePrefix } from "../utilities";
@@ -25,6 +25,7 @@ import {
     ListboxProps,
     ListboxUnhandledProps,
 } from "./listbox.props";
+
 export interface ListboxState {
     /**
      * The index of the focusable child
@@ -113,7 +114,6 @@ class Listbox extends Foundation<
 
     private static valuePropertyKey: string = "value";
     private static idPropertyKey: string = "id";
-    private static displayStringPropertyKey: string = "displayString";
     private static disabledPropertyKey: string = "disabled";
 
     /**
@@ -275,20 +275,50 @@ class Listbox extends Foundation<
     }
 
     public componentDidUpdate(prevProps: ListboxProps): void {
+        let currentSelection: ListboxItemProps[] = null;
+
         // if default selection changes between renders we treat as a effective reset
-        // of selection and focus in uncontrolled mode
+        // of selection in uncontrolled mode
         if (
             !isEqual(prevProps.defaultSelection, this.props.defaultSelection) &&
             this.props.selectedItems === undefined
         ) {
-            const updatedSelection: ListboxItemProps[] = this.getInitialSelection();
-            this.updateSelection(updatedSelection);
-            this.setInitialFocus(updatedSelection);
+            currentSelection = this.updateSelection(this.getInitialSelection());
+        }
+
+        if (prevProps.children !== this.props.children) {
+            // if we just got a new selection from props use that
+            // otherwise revalidate old selection against new children
+            currentSelection =
+                currentSelection === null
+                    ? this.updateSelection(this.state.selectedItems.slice(0))
+                    : currentSelection;
+
+            // ensure we have a valid focus index, if not get one
+            const children: Element[] = this.domChildren();
+
+            if (
+                !isNil(this.rootElement.current) &&
+                this.rootElement.current.contains(document.activeElement)
+            ) {
+                // stick with the current focus is we have one
+                this.setState({
+                    focusIndex: children.indexOf(document.activeElement),
+                });
+                return;
+            }
+
+            if (
+                children.length <= this.state.focusIndex ||
+                !this.isFocusableElement(children[this.state.focusIndex])
+            ) {
+                this.setInitialFocus(currentSelection, false);
+            }
         }
     }
 
     public componentDidMount(): void {
-        this.setInitialFocus(this.state.selectedItems);
+        this.setInitialFocus(this.state.selectedItems, true);
     }
 
     public componentWillUnmount(): void {
@@ -390,24 +420,30 @@ class Listbox extends Foundation<
 
     /**
      * sets focus state and selection when component is initially mounted
-     * or when default selection changes
+     * or children have changed and invalidated focus
      */
-    private setInitialFocus = (selection: ListboxItemProps[]): void => {
+    private setInitialFocus = (
+        selection: ListboxItemProps[],
+        isInitialMount: boolean
+    ): void => {
         let focusIndex: number = -1;
 
-        focusIndex =
-            selection.length > 0
-                ? Listbox.getItemIndexById(selection[0].id, this.props.children)
-                : this.domChildren().findIndex(this.isFocusableElement);
-
-        if (focusIndex !== -1) {
-            if (this.props.focusItemOnMount) {
-                this.setFocus(focusIndex, +1);
-            }
-            this.setState({
-                focusIndex,
-            });
+        for (let i: number = 0; i < selection.length; i++) {
+            focusIndex = Listbox.getItemIndexById(selection[i].id, this.props.children);
         }
+
+        if (focusIndex === -1) {
+            focusIndex = this.domChildren().findIndex(this.isFocusableElement);
+        }
+
+        if (this.props.focusItemOnMount && isInitialMount && focusIndex !== -1) {
+            this.setFocus(focusIndex, +1);
+            return;
+        }
+
+        this.setState({
+            focusIndex,
+        });
     };
 
     /**
@@ -664,14 +700,14 @@ class Listbox extends Foundation<
     /**
      * Updates selection state (should be the only place this is done outside of initialization)
      */
-    private updateSelection = (newSelection: ListboxItemProps[]): void => {
+    private updateSelection = (newSelection: ListboxItemProps[]): ListboxItemProps[] => {
         const validatedSelection: ListboxItemProps[] = Listbox.validateSelection(
             newSelection,
             this.props.children
         );
 
         if (isEqual(validatedSelection, this.state.selectedItems)) {
-            return;
+            return validatedSelection;
         }
 
         if (this.props.selectedItems === undefined) {
@@ -683,6 +719,8 @@ class Listbox extends Foundation<
         if (this.props.onSelectedItemsChanged) {
             this.props.onSelectedItemsChanged(validatedSelection);
         }
+
+        return validatedSelection;
     };
 }
 

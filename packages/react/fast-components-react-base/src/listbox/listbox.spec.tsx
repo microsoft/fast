@@ -779,4 +779,41 @@ describe("listbox", (): void => {
 
         rendered.detach();
     });
+
+    test("should reset focus if focused index is invalid", (): void => {
+        const rendered: any = mount(
+            <Listbox>
+                {itemA}
+                {itemB}
+                {itemC}
+            </Listbox>,
+            { attachTo: container }
+        );
+
+        rendered.childAt(0).simulate("keydown", { keyCode: keyCodeEnd });
+        expect(rendered.state("focusIndex")).toBe(2);
+        expect(rendered.state("focussedItemId")).toBe("c");
+        rendered.setProps({ children: [itemA, itemB] });
+        expect(rendered.state("focusIndex")).toBe(0);
+
+        rendered.detach();
+    });
+
+    test("should not reset focus if focused index is valid after children change", (): void => {
+        const rendered: any = mount(
+            <Listbox>
+                {itemA}
+                {itemB}
+            </Listbox>,
+            { attachTo: container }
+        );
+
+        rendered.childAt(0).simulate("keydown", { keyCode: keyCodeEnd });
+        expect(rendered.state("focusIndex")).toBe(1);
+        expect(rendered.state("focussedItemId")).toBe("b");
+        rendered.setProps({ children: [itemA, itemC] });
+        expect(rendered.state("focusIndex")).toBe(1);
+
+        rendered.detach();
+    });
 });
