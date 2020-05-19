@@ -18,10 +18,12 @@ export const CardSectionStyles = css`
     }
 
     :host(:hover) ::slotted(site-feature-card) {
-        filter: blur(1px);
+        color: rgba(171, 171, 171, 1);
     }
 
     :host ::slotted(site-feature-card:hover) {
-        filter: blur(0);
+        cursor: pointer;
+        color: currentColor;
+        background-color: rgba(27, 27, 27, 1);
     }
 `;

@@ -1,5 +1,4 @@
 import { css } from "@microsoft/fast-element";
-import { neutralForegroundRestBehavior } from "@microsoft/fast-components";
 import { display } from "@microsoft/fast-foundation";
 
 export const FeatureCardStyles = css`
@@ -25,7 +24,7 @@ export const FeatureCardStyles = css`
     }
 
     :host(:hover) ::slotted(fast-anchor) {
-        opacity: 1;
+        filter: saturate(1);
     }
 
     :host(:hover)::before {
@@ -73,6 +72,6 @@ export const FeatureCardStyles = css`
 
     ::slotted(fast-anchor) {
         margin-right: 20px;
-        opacity: 0;
+        filter: saturate(0) brightness(1.5);
     }
-`.withBehaviors(neutralForegroundRestBehavior);
+`;
