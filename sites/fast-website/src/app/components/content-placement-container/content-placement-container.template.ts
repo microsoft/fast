@@ -5,7 +5,7 @@ import { CommunityContentPlacementData } from "../../data/community.data";
 export const ContentPlacementContainerTemplate = html<ContentPlacementContainer>`
     <div
         class="container ${x =>
-            ["framework", "community"].includes(x.section)
+            ["framework","feature", "community"].includes(x.section)
                 ? `${x.section}_container`
                 : ""}"
     >

@@ -21,7 +21,7 @@ export const ContentPlacementContainerStyles = css`
         border-width: 0 0 var(--border-width);
         padding: 0 calc(var(--design-unit) * 2px);
     }
-
+    
     .framework_ContentPlacement:last-of-type {
         border-bottom: none;
     }
@@ -75,6 +75,7 @@ export const ContentPlacementContainerStyles = css`
     }
 
     h3 {
+        /* check this margin */
         margin-top: 0 0 calc(var(--design-unit) * 5px) 0;
         font-size: var(--type-ramp-plus-2-font-size);
     }

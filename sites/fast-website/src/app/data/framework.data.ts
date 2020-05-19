@@ -1,6 +1,7 @@
 export interface FrameworkContentPlacementData {
     body?: string;
     header?: string;
+    name?: string;
 }
 
 export const frameworkContentPlacementData: FrameworkContentPlacementData[] = [
