@@ -4,6 +4,8 @@ import { TreeItem } from "./tree-item";
 export const TreeItemTemplate = html<TreeItem>`
     <template
         role="treeitem"
+        class="${x => (x.expanded ? "expanded" : "")} ${x =>
+            x.selected ? "selected" : ""} ${x => (x.nested ? "nested" : "")}"
         aria-expanded="${x => (x.hasItems ? x.expanded : void 0)}"
         aria-selected="${x => x.selected}"
         tabindex="${x => (x.focusable ? 0 : -1) /* need to manage focus here */}"
@@ -64,7 +66,7 @@ export const TreeItemTemplate = html<TreeItem>`
             </div>
         </div>
         ${when(
-            x => !!x.hasItems,
+            x => !!x.hasItems && (x.expanded || x.shouldRenderCollapsedChildren),
             html<TreeItem>`
                 <div role="group" class="items" part="items">
                     <slot
@@ -72,7 +74,7 @@ export const TreeItemTemplate = html<TreeItem>`
                         ${ref("items")}
                         @slotchange=${x => x.handleItemsChange()}
                     ></slot>
-                    <div></div>
+                    <div>bama</div>
                 </div>
             `
         )}

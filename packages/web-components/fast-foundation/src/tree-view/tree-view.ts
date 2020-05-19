@@ -1,4 +1,4 @@
-import { FASTElement, observable } from "@microsoft/fast-element";
+import { FASTElement, observable, attr } from "@microsoft/fast-element";
 import {
     getDisplayedNodes,
     isHTMLElement,
@@ -8,6 +8,9 @@ import {
 
 export class TreeView extends FASTElement {
     public treeView: HTMLElement;
+
+    @attr({ attribute: "render-collapsed-nodes" })
+    public renderCollapsedNodes: boolean = true;
 
     @observable
     public focusable: boolean = true;

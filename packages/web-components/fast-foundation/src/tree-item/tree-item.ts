@@ -1,4 +1,10 @@
-import { attr, FASTElement, observable } from "@microsoft/fast-element";
+import {
+    attr,
+    FASTElement,
+    observable,
+    Observable,
+    Notifier,
+} from "@microsoft/fast-element";
 import {
     getDisplayedNodes,
     isHTMLElement,
@@ -13,19 +19,9 @@ import {
 export class TreeItem extends FASTElement {
     @attr
     public expanded: boolean;
-    public expandedChanged(): void {
-        this.expanded
-            ? this.classList.add("expanded")
-            : this.classList.remove("expanded");
-    }
 
     @attr
     public selected: boolean;
-    public selectedChanged(): void {
-        this.selected
-            ? this.classList.add("selected")
-            : this.classList.remove("selected");
-    }
 
     public expandCollapseButton: HTMLDivElement;
 
@@ -65,10 +61,15 @@ export class TreeItem extends FASTElement {
 
     // need to manage if this is a nested tree view item / items How???
     @observable
-    private nested: boolean;
-    private nestedChanged(): void {
-        this.nested ? this.classList.add("nested") : this.classList.remove("nested");
+    public nested: boolean;
+
+    @observable
+    public shouldRenderCollapsedChildren: boolean = false;
+    private shouldRenderCollapsedChildrenChanged(): void {
+        console.log("shouldRender changed to:", this.shouldRenderCollapsedChildren);
     }
+
+    private notifier: Notifier;
 
     constructor() {
         super();
@@ -76,11 +77,52 @@ export class TreeItem extends FASTElement {
         this.handleItemsChange();
     }
 
+    private getParentTreeNode() {
+        const parentNode: Element | null | undefined = this.parentElement!.closest(
+            "[role='tree']"
+        );
+        return parentNode;
+    }
+
     public connectedCallback(): void {
         super.connectedCallback();
 
+        const parentTreeNode: any = this.getParentTreeNode();
+        if (parentTreeNode) {
+            this.notifier = Observable.getNotifier(parentTreeNode);
+            this.notifier.subscribe(this, "render-collapsed-nodes");
+            console.log(
+                "\n\n***connectedCallback for tree-item, this.parent:",
+                parentTreeNode
+            );
+            this.shouldRenderCollapsedChildren = parentTreeNode.getAttribute(
+                "render-collapsed-nodes"
+            )
+                ? parentTreeNode.getAttribute("render-collapsed-nodes")
+                : true;
+            console.log(
+                "\n***treeViewITem this.shouldRenderCollapsedChildren:",
+                this.shouldRenderCollapsedChildren
+            );
+        }
+
         if (this.hasItems) {
             this.nested = true;
+        }
+    }
+
+    public disconnectedCallback(): void {
+        super.disconnectedCallback();
+        this.notifier.unsubscribe(this, "render-collapsed-nodes");
+    }
+
+    public handleChange(source: any, propertyName: string) {
+        console.log("handleChange in tree-item prop:", propertyName);
+        switch (propertyName) {
+            case "render-collapsed-nodes":
+                console.log("source:", source);
+                this.shouldRenderCollapsedChildren = source.renderCollapsedNodes;
+                break;
         }
     }
 
