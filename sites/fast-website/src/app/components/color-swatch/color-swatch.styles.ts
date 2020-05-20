@@ -62,15 +62,14 @@ ${display("inline-flex")} :host {
 
 .checked-indicator {
     position: absolute;
-    top: 5px;
-    left: 5px;
-    right: 5px;
-    bottom: 5px;
-    border-radius: 50%;
+    top: -1px;
+    left: -1px;
+    right: -1px;
+    bottom: -1px;
+    border-radius: calc(var(--corner-radius) * 1px);
     display: inline-block;
     flex-shrink: 0;
-    background: var(--neutral-foreground-rest);
-    fill: var(--neutral-foreground-rest);
+    border: 1px solid var(--neutral-foreground-rest);
     opacity: 0;
     pointer-events: none;
 }

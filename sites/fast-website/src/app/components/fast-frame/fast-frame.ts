@@ -41,6 +41,18 @@ export class FastFrame extends FASTElement {
     @observable
     public density: number = 0;
 
+    @observable
+    public borderRadius: number = 3;
+
+    @observable
+    public outlineWidth: number = 1;
+
+    @observable
+    public baseHeightMultiplier: number = 10;
+
+    @observable
+    public baseHorizontalSpacingMultiplier: number = 3;
+
     public accentChangeHandler = (e: any): void => {
         const element: HTMLInputElement = e.target;
         if (element.checked) {
@@ -62,6 +74,21 @@ export class FastFrame extends FASTElement {
 
     public densityChangeHandler = (e: any): void => {
         this.density = e.target.value;
+    };
+
+    public borderRadiusChangeHandler = (e: any): void => {
+        this.borderRadius = e.target.value;
+    };
+
+    public outlineWidthChangeHandler = (e: any): void => {
+        this.outlineWidth = e.target.value;
+    };
+
+    public baseHeightMultiplierChangeHandler = (e: any): void => {
+        this.baseHeightMultiplier = e.target.value;
+    };
+    public baseHorizontalSpacingMultiplierChangeHandler = (e: any): void => {
+        this.baseHorizontalSpacingMultiplier = e.target.value;
     };
 
     public themeChange = (e: any): void => {
