@@ -22,7 +22,7 @@ export const FastFrameStyles = css`
     .wrapper {
         display: grid;
         grid-template-columns: 500px 1fr;
-        height: 500px;
+        min-height: 500px;
     }
 
     .content {
