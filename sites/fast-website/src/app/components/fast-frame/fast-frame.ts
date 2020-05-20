@@ -62,7 +62,7 @@ export class FastFrame extends FASTElement {
 
     public densityChangeHandler = (e: any): void => {
         this.density = e.target.value;
-    }
+    };
 
     public themeChange = (e: any): void => {
         this.darkMode = !this.darkMode;

@@ -79,7 +79,7 @@ export const FastFrameTemplate = html<FastFrame>`
                     Tab three content. This is for testing.
                 </fast-tab-panel>
                 <fast-tab-panel id="density-tab-panel">
-                    <div class="content">                       
+                    <div class="content">
                         <label for="density-slider">Density</label>
                         <fast-slider
                             id="density-slider"
