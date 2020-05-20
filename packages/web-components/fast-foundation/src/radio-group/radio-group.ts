@@ -110,7 +110,7 @@ export class RadioGroup extends FASTElement {
         if (this.slottedRadioButtons !== undefined) {
             this.slottedRadioButtons.forEach((item: any) => {
                 if (item instanceof HTMLElement) {
-                    radioButtons.push(item as HTMLInputElement);
+                    radioButtons.push(item as any);
                 }
             });
         }
