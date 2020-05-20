@@ -3,6 +3,7 @@ import { display } from "@microsoft/fast-foundation";
 
 export const ContentPlacementContainerStyles = css`
     ${display("block")}:host {
+        --border: calc(var(--outline-width) * 0.5px) solid var(--neutral-outline-rest);
         contain: none;
         font-family: var(--body-font);
     }
@@ -21,28 +22,27 @@ export const ContentPlacementContainerStyles = css`
     .framework_ContentPlacement:nth-of-type(4),
     .framework_ContentPlacement:nth-of-type(5),
     .framework_ContentPlacement:nth-of-type(6) {
-        border-top: calc(var(--outline-width) * 0.5px) solid var(--neutral-outline-rest);
+        border-top: var(--border);
     }
 
     .framework_ContentPlacement:nth-of-type(1),
     .framework_ContentPlacement:nth-of-type(2),
     .framework_ContentPlacement:nth-of-type(4),
     .framework_ContentPlacement:nth-of-type(5) {
-        border-right: calc(var(--outline-width) * 0.5px) solid var(--neutral-outline-rest);
+        border-right: var(--border);
     }
 
     .framework_ContentPlacement:nth-of-type(1),
     .framework_ContentPlacement:nth-of-type(2),
     .framework_ContentPlacement:nth-of-type(3) {
-        border-bottom: calc(var(--outline-width) * 0.5px) solid
-            var(--neutral-outline-rest);
+        border-bottom: var(--border);
     }
 
     .framework_ContentPlacement:nth-of-type(2),
     .framework_ContentPlacement:nth-of-type(3),
     .framework_ContentPlacement:nth-of-type(5),
     .framework_ContentPlacement:nth-of-type(6) {
-        border-left: calc(var(--outline-width) * 0.5px) solid var(--neutral-outline-rest);
+        border-left: var(--border);
     }
 
     @media screen and (max-width: 1000px) {
@@ -54,32 +54,28 @@ export const ContentPlacementContainerStyles = css`
         .framework_ContentPlacement:nth-of-type(4),
         .framework_ContentPlacement:nth-of-type(6) {
             border: none;
-            border-left: calc(var(--outline-width) * 0.5px) solid
-                var(--neutral-outline-rest);
+            border-left: var(--border);
         }
 
         .framework_ContentPlacement:nth-of-type(1),
         .framework_ContentPlacement:nth-of-type(3),
         .framework_ContentPlacement:nth-of-type(5) {
             border: none;
-            border-right: calc(var(--outline-width) * 0.5px) solid
-                var(--neutral-outline-rest);
+            border-right: var(--border);
         }
 
         .framework_ContentPlacement:nth-of-type(1),
         .framework_ContentPlacement:nth-of-type(2),
         .framework_ContentPlacement:nth-of-type(3),
         .framework_ContentPlacement:nth-of-type(4) {
-            border-bottom: calc(var(--outline-width) * 0.5px) solid
-                var(--neutral-outline-rest);
+            border-bottom: var(--border);
         }
 
         .framework_ContentPlacement:nth-of-type(3),
         .framework_ContentPlacement:nth-of-type(4),
         .framework_ContentPlacement:nth-of-type(5),
         .framework_ContentPlacement:nth-of-type(6) {
-            border-top: calc(var(--outline-width) * 0.5px) solid
-                var(--neutral-outline-rest);
+            border-top: var(--border);
         }
     }
 
