@@ -186,10 +186,13 @@ export class Slider extends FormAssociated<HTMLInputElement>
     };
 
     private setThumbPositionForOrientation = (direction: Direction): void => {
-        const percentage: number =
-            direction !== Direction.rtl
-                ? (1 - Number(this.value) / (Number(this.max) - Number(this.min))) * 100
-                : (Number(this.value) / (Number(this.max) - Number(this.min))) * 100;
+        const newPct: number = convertPixelToPercent(
+            Number(this.value),
+            Number(this.min),
+            Number(this.max),
+            direction
+        );
+        const percentage: number = (1 - newPct) * 100;
         if (this.orientation === Orientation.horizontal) {
             this.position = this.isDragging
                 ? `right: ${percentage}%; transition: all 0.1s ease;`
@@ -224,7 +227,7 @@ export class Slider extends FormAssociated<HTMLInputElement>
 
     private setupDefaultValue = (): void => {
         if (this.value === "") {
-            this.value = `${this.convertToConstrainedValue((this.max - this.min) / 2)}`;
+            this.value = `${this.convertToConstrainedValue((this.max + this.min) / 2)}`;
             this.updateForm();
         }
     };
@@ -316,17 +319,12 @@ export class Slider extends FormAssociated<HTMLInputElement>
     };
 
     private convertToConstrainedValue = (value: number): number => {
-        const remainderVal: number = value % Number(this.step);
-        const constrainedVal: number =
+        let constrainedValue: number = value - this.min;
+        const remainderVal: number = constrainedValue % Number(this.step);
+        constrainedValue =
             remainderVal >= Number(this.step) / 2
-                ? value - remainderVal + Number(this.step)
-                : value - remainderVal;
-
-        if (constrainedVal < this.min || constrainedVal > this.max) {
-            // TODO here until we figure out how this happens
-            return Number(this.value);
-        } else {
-            return constrainedVal;
-        }
+                ? constrainedValue - remainderVal + Number(this.step)
+                : constrainedValue - remainderVal;
+        return constrainedValue + this.min;
     };
 }
