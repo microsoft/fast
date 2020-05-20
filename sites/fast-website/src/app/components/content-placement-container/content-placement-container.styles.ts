@@ -18,30 +18,30 @@ export const ContentPlacementContainerStyles = css`
         padding: 0 calc(var(--design-unit) * 2px);
     }
 
-    .framework_ContentPlacement4,
-    .framework_ContentPlacement5,
-    .framework_ContentPlacement6 {
+    .framework_ContentPlacement:nth-of-type(4),
+    .framework_ContentPlacement:nth-of-type(5),
+    .framework_ContentPlacement:nth-of-type(6) {
         border-top: calc(var(--outline-width) * 0.5px) solid var(--neutral-outline-rest);
     }
 
-    .framework_ContentPlacement1,
-    .framework_ContentPlacement2,
-    .framework_ContentPlacement4,
-    .framework_ContentPlacement5 {
+    .framework_ContentPlacement:nth-of-type(1),
+    .framework_ContentPlacement:nth-of-type(2),
+    .framework_ContentPlacement:nth-of-type(4),
+    .framework_ContentPlacement:nth-of-type(5) {
         border-right: calc(var(--outline-width) * 0.5px) solid var(--neutral-outline-rest);
     }
 
-    .framework_ContentPlacement1,
-    .framework_ContentPlacement2,
-    .framework_ContentPlacement3 {
+    .framework_ContentPlacement:nth-of-type(1),
+    .framework_ContentPlacement:nth-of-type(2),
+    .framework_ContentPlacement:nth-of-type(3) {
         border-bottom: calc(var(--outline-width) * 0.5px) solid
             var(--neutral-outline-rest);
     }
 
-    .framework_ContentPlacement2,
-    .framework_ContentPlacement3,
-    .framework_ContentPlacement5,
-    .framework_ContentPlacement6 {
+    .framework_ContentPlacement:nth-of-type(2),
+    .framework_ContentPlacement:nth-of-type(3),
+    .framework_ContentPlacement:nth-of-type(5),
+    .framework_ContentPlacement:nth-of-type(6) {
         border-left: calc(var(--outline-width) * 0.5px) solid var(--neutral-outline-rest);
     }
 
@@ -50,36 +50,34 @@ export const ContentPlacementContainerStyles = css`
             grid-template-columns: repeat(2, 1fr);
         }
 
-        .framework_ContentPlacement {
+        .framework_ContentPlacement:nth-of-type(2),
+        .framework_ContentPlacement:nth-of-type(4),
+        .framework_ContentPlacement:nth-of-type(6) {
             border: none;
-        }
-
-        .framework_ContentPlacement2,
-        .framework_ContentPlacement4,
-        .framework_ContentPlacement6 {
             border-left: calc(var(--outline-width) * 0.5px) solid
                 var(--neutral-outline-rest);
         }
 
-        .framework_ContentPlacement1,
-        .framework_ContentPlacement3,
-        .framework_ContentPlacement5 {
+        .framework_ContentPlacement:nth-of-type(1),
+        .framework_ContentPlacement:nth-of-type(3),
+        .framework_ContentPlacement:nth-of-type(5) {
+            border: none;
             border-right: calc(var(--outline-width) * 0.5px) solid
                 var(--neutral-outline-rest);
         }
 
-        .framework_ContentPlacement1,
-        .framework_ContentPlacement2,
-        .framework_ContentPlacement3,
-        .framework_ContentPlacement4 {
+        .framework_ContentPlacement:nth-of-type(1),
+        .framework_ContentPlacement:nth-of-type(2),
+        .framework_ContentPlacement:nth-of-type(3),
+        .framework_ContentPlacement:nth-of-type(4) {
             border-bottom: calc(var(--outline-width) * 0.5px) solid
                 var(--neutral-outline-rest);
         }
 
-        .framework_ContentPlacement3,
-        .framework_ContentPlacement4,
-        .framework_ContentPlacement5,
-        .framework_ContentPlacement6 {
+        .framework_ContentPlacement:nth-of-type(3),
+        .framework_ContentPlacement:nth-of-type(4),
+        .framework_ContentPlacement:nth-of-type(5),
+        .framework_ContentPlacement:nth-of-type(6) {
             border-top: calc(var(--outline-width) * 0.5px) solid
                 var(--neutral-outline-rest);
         }
@@ -91,17 +89,18 @@ export const ContentPlacementContainerStyles = css`
             grid-template-columns: 1fr;
         }
 
-        .framework_ContentPlacement {
+        .framework_ContentPlacement:nth-of-type(1),
+        .framework_ContentPlacement:nth-of-type(2),
+        .framework_ContentPlacement:nth-of-type(3),
+        .framework_ContentPlacement:nth-of-type(4),
+        .framework_ContentPlacement:nth-of-type(5) {
             border: none;
-        }
-
-        .framework_ContentPlacement1,
-        .framework_ContentPlacement2,
-        .framework_ContentPlacement3,
-        .framework_ContentPlacement4,
-        .framework_ContentPlacement5 {
             border-bottom: calc(var(--outline-width) * 1px) solid
                 var(--neutral-outline-rest);
+        }
+
+        .framework_ContentPlacement:nth-of-type(6) {
+            border: none;
         }
     }
 
@@ -123,8 +122,7 @@ export const ContentPlacementContainerStyles = css`
     }
 
     h3 {
-        margin-top: 0;
-        margin-bottom: calc(var(--design-unit) * 5px);
+        margin-top: 0 0 calc(var(--design-unit) * 5px) 0;
         font-size: var(--type-ramp-plus-2-font-size);
     }
 `;

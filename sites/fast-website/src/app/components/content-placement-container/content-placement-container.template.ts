@@ -3,19 +3,13 @@ import { ContentPlacementContainer } from "./content-placement-container";
 import { CommunityContentPlacementData } from "../../data/community.data";
 
 export const ContentPlacementContainerTemplate = html<ContentPlacementContainer>`
-    <div
-        class="container ${x =>
-            x.section === "framework" ? "framework_container" : ""} ${x =>
-            x.section === "community" ? "community_container" : ""}"
-    >
+    <div class="container ${x => x.section}_container">
         ${when(
             x => x.section === "framework",
             html<ContentPlacementContainer>`
                 ${repeat(
                     x => x.frameworkContentPlacementData,
-                    html`<site-content-placement
-                        class="framework_ContentPlacement ${x => x.name}"
-                    >
+                    html`<site-content-placement class="framework_ContentPlacement">
                         <h3>${x => x.header}</h3>
                         <p slot="body">${x => x.body}</p>
                     </site-content-placement>`
