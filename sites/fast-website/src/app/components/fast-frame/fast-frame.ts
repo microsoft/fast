@@ -38,6 +38,9 @@ export class FastFrame extends FASTElement {
     @observable
     public accentPalette: string[];
 
+    @observable
+    public density: number = 0;
+
     public accentChangeHandler = (e: any): void => {
         const element: HTMLInputElement = e.target;
         if (element.checked) {
@@ -55,6 +58,10 @@ export class FastFrame extends FASTElement {
                 e.target.value
             );
         }
+    };
+
+    public densityChangeHandler = (e: any): void => {
+        this.density = e.target.value;
     };
 
     public themeChange = (e: any): void => {
