@@ -9,8 +9,7 @@ export function convertPixelToPercent(
     maxPosition: number,
     direction?: Direction
 ): number {
-    let pct: number = limit(0, 1, (pixelPos - minPosition) / maxPosition);
-
+    let pct: number = limit(0, 1, (pixelPos - minPosition) / (maxPosition - minPosition));
     if (direction === Direction.rtl) {
         pct = 1 - pct;
     }
