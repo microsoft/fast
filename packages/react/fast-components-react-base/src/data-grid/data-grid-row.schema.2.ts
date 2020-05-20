@@ -1,5 +1,5 @@
 /**
- * Complies with FAST Tooling 1.0
+ * Complies with FAST Tooling 2.0
  */
 export default {
     $schema: "http://json-schema.org/schema#",
