@@ -95,7 +95,7 @@ export class RadioGroup extends FASTElement {
             }
         });
 
-        if (this.value === undefined) {
+        if (this.value === undefined && radioButtons && radioButtons.length > 0) {
             radioButtons[0].setAttribute("tabindex", "0");
             this.focusedRadio = radioButtons[0];
         }
