@@ -14,11 +14,11 @@ export const FastFrameTemplate = html<FastFrame>`
     <template>
         <div class="wrapper">
             <fast-tabs orientation="vertical" id="myTab" activeId="TabTwo">
-                <fast-tab id="TabOne" title="Mode">${ContrastIcon}</fast-tab>
-                <fast-tab id="TabTwo" title="Color">${PaletteIcon}</fast-tab>
-                <fast-tab id="TabThree" title="Styles">${SwatchesIcon}</fast-tab>
-                <fast-tab id="TabFour" title="Density">${ScreenIcon}</fast-tab>
-                <fast-tab-panel id="TabPanelOne">
+                <fast-tab id="contrast-tab" title="Mode">${ContrastIcon}</fast-tab>
+                <fast-tab id="palette-tab" title="Color">${PaletteIcon}</fast-tab>
+                <fast-tab id="swatches-tab" title="Styles">${SwatchesIcon}</fast-tab>
+                <fast-tab id="density-tab" title="Density">${ScreenIcon}</fast-tab>
+                <fast-tab-panel id="contrast-tab-panel">
                     <fast-switch
                         checked="${x => x.darkMode}"
                         @change="${(x, c) => x.themeChange(c.event as MouseEvent)}"
@@ -26,7 +26,7 @@ export const FastFrameTemplate = html<FastFrame>`
                         Dark Mode
                     </fast-switch>
                 </fast-tab-panel>
-                <fast-tab-panel id="TabPanelTwo">
+                <fast-tab-panel id="palette-tab-panel">
                     <div class="content">
                         <h1>FAST FRAME COLORS</h1>
                         <h2>Pre-existing color you can customize.</h2>
@@ -75,11 +75,23 @@ export const FastFrameTemplate = html<FastFrame>`
                         </fast-radio-group>
                     </div>
                 </fast-tab-panel>
-                <fast-tab-panel id="TabPanelThree">
+                <fast-tab-panel id="swatches-tab-panel">
                     Tab three content. This is for testing.
                 </fast-tab-panel>
-                <fast-tab-panel id="TabPanelFour">
-                    Tab four content. This is for testing.
+                <fast-tab-panel id="density-tab-panel">
+                    <div class="content">                       
+                        <label for="density-slider">Density</label>
+                        <fast-slider
+                            id="density-slider"
+                            min="0"
+                            max="3"
+                            step="1"
+                            value="0"
+                            @change="${(x, c) =>
+                                x.densityChangeHandler(c.event as MouseEvent)}"
+                        >
+                        </fast-slider>
+                    </div>
                 </fast-tab-panel>
             </fast-tabs>
             <fast-design-system-provider
@@ -90,6 +102,7 @@ export const FastFrameTemplate = html<FastFrame>`
                         : StandardLuminance.LightMode}"
                 background-color="${x => x.backgroundColor}"
                 accent-base-color="${x => x.accentColor}"
+                density="${x => x.density}"
                 :accentPalette=${x => x.accentPalette}
             >
                 <fast-card>
@@ -150,11 +163,11 @@ export const FastFrameTemplate = html<FastFrame>`
                     <div class="control-container">
                         <fast-button appearance="accent">
                             Button
-                            <span slot="end">${DownloadIcon}</span>
+                            <span slot="start">${DownloadIcon}</span>
                         </fast-button>
                         <fast-button appearance="neutral">
                             Button
-                            <span slot="end">${PlayIcon}</span>
+                            <span slot="start">${PlayIcon}</span>
                         </fast-button>
                     </div>
                 </div>
