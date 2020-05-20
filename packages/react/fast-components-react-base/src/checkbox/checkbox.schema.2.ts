@@ -27,6 +27,11 @@ export default {
             title: "Input element ID",
             type: "string",
         },
+        ariaLabel: {
+            title: "Aria-label",
+            type: "string",
+            examples: ["label"],
+        },
         name: {
             title: "Name",
             type: "string",

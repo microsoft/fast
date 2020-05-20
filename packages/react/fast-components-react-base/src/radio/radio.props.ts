@@ -3,6 +3,7 @@ import {
     ManagedClasses,
     RadioClassNameContract,
 } from "@microsoft/fast-components-class-name-contracts-base";
+import { Omit } from "utility-types";
 
 export interface RadioHandledProps extends RadioManagedClasses {
     /**
@@ -36,12 +37,21 @@ export interface RadioHandledProps extends RadioManagedClasses {
     label?: (className: string) => React.ReactNode;
 
     /**
+     * The radio aria-label
+     * This is necessary due to how unhandledProps are passed to the root of the component
+     */
+    ariaLabel?: string;
+
+    /**
      * The value of the radio
      */
     value?: string;
 }
 
-export type RadioUnhandledProps = React.HTMLAttributes<HTMLDivElement>;
+export type RadioUnhandledProps = Omit<
+    React.HTMLAttributes<HTMLDivElement>,
+    "aria-label"
+>;
 /**
  * @deprecated
  */

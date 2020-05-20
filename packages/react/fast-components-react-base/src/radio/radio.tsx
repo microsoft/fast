@@ -42,6 +42,7 @@ class Radio extends Foundation<RadioHandledProps, RadioUnhandledProps, RadioStat
      * Handled props instantiation
      */
     protected handledProps: HandledProps<RadioHandledProps> = {
+        ariaLabel: void 0,
         inputId: void 0,
         checked: void 0,
         disabled: void 0,
@@ -75,6 +76,7 @@ class Radio extends Foundation<RadioHandledProps, RadioUnhandledProps, RadioStat
                     name={this.props.name}
                     onChange={this.handleRadioChange}
                     disabled={this.props.disabled || null}
+                    aria-label={this.props.ariaLabel || null}
                     checked={this.state.checked}
                     value={this.props.value}
                 />

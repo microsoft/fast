@@ -5,6 +5,8 @@ const CleanWebpackPlugin = require("clean-webpack-plugin");
 const FaviconsWebpackPlugin = require("favicons-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
+const rootNodeModules = path.resolve(__dirname, "../../node_modules");
+const nodeModules = path.resolve(__dirname, "./node_modules");
 const appDir = path.resolve(__dirname, "./app");
 const outDir = path.resolve(__dirname, "./www");
 
@@ -14,9 +16,9 @@ module.exports = (env, args) => {
         devtool: isProduction ? "none" : "inline-source-map",
         entry: {
             main: path.resolve(appDir, "index.ts"),
-            exampleWebComponent1: path.resolve(
+            exampleNativeElement1: path.resolve(
                 appDir,
-                "examples/web-component-1/index.ts"
+                "examples/native-element-1/index.ts"
             ),
             exampleReact1: path.resolve(appDir, "examples/react-1/index.tsx"),
         },
@@ -91,9 +93,9 @@ module.exports = (env, args) => {
             }),
             new HtmlWebpackPlugin({
                 inject: false,
-                title: "FAST Tooling Examples - Web Components",
-                filename: "examples/web-component-1/index.html",
-                template: path.resolve(appDir, "examples/web-component-1/index.html"),
+                title: "FAST Tooling Examples - Native elements",
+                filename: "examples/native-element-1/index.html",
+                template: path.resolve(appDir, "examples/native-element-1/index.html"),
             }),
             new HtmlWebpackPlugin({
                 inject: false,
@@ -112,6 +114,21 @@ module.exports = (env, args) => {
         ],
         resolve: {
             extensions: [".js", ".tsx", ".ts"],
+            alias: {
+                lodash: path.resolve(rootNodeModules, "lodash-es"),
+                "lodash-es": path.resolve(rootNodeModules, "lodash-es"),
+                "react-dnd-html5-backend": path.resolve(
+                    rootNodeModules,
+                    "react-dnd-html5-backend"
+                ),
+                react: path.resolve(rootNodeModules, "react"),
+                "react-dnd": path.resolve(rootNodeModules, "react-dnd"),
+                "react-dom": path.resolve(rootNodeModules, "react-dom"),
+                "@microsoft/fast-components-react-msft": path.resolve(
+                    rootNodeModules,
+                    "@microsoft/fast-components-react-msft"
+                ),
+            },
         },
         devServer: {
             compress: false,

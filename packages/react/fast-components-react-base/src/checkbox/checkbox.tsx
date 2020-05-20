@@ -52,6 +52,7 @@ class Checkbox extends Foundation<
      * Handled props instantiation
      */
     protected handledProps: HandledProps<CheckboxHandledProps> = {
+        ariaLabel: void 0,
         checked: void 0,
         disabled: void 0,
         inputId: void 0,
@@ -114,6 +115,7 @@ class Checkbox extends Foundation<
                     ref={this.inputRef}
                     onChange={this.handleCheckboxChange}
                     disabled={this.props.disabled || null}
+                    aria-label={this.props.ariaLabel || null}
                     checked={this.state.checked}
                     value={this.props.value}
                 />
