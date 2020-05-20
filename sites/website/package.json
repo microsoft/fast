@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "prepare-docs": "node build/prepare-docs.js",
+    "prepare-docs": "node src/prepare-docs.js",
     "dev": "npm run prepare-docs & docusaurus start",
     "build": "npm run prepare-docs & docusaurus build"
   },
