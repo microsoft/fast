@@ -51,14 +51,14 @@ describe("checkbox", (): void => {
         };
 
         const unhandledProps: CheckboxUnhandledProps = {
-            "aria-label": "label",
+            "aria-hidden": true,
         };
 
         const props: CheckboxProps = { ...handledProps, ...unhandledProps };
 
         const rendered: any = shallow(<Checkbox {...props} />);
 
-        expect(rendered.first().prop("aria-label")).toEqual("label");
+        expect(rendered.first().prop("aria-hidden")).toEqual(true);
     });
 
     test("should add a class and `disabled` attribute to the input element when the disabled prop is true", () => {
@@ -82,6 +82,14 @@ describe("checkbox", (): void => {
         );
 
         expect(rendered.find(".input-class").prop("name")).toBe(checkboxName);
+    });
+
+    test("should apply a aria-label to the input element when the `ariaLabel` prop is passed", (): void => {
+        const rendered: any = mount(
+            <Checkbox managedClasses={managedClasses} inputId="id" ariaLabel="label" />
+        );
+
+        expect(rendered.find("input").prop("aria-label")).toBe("label");
     });
 
     test("should initialize as unchecked if the `checked` prop is not provided", () => {

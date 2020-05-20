@@ -44,10 +44,10 @@
                     <ul>
                         <li>
                             <fast-anchor
-                                href="/web-component-1"
+                                href="/native-element-1"
                                 appearance="hypertext"
                             >
-                                Message System 
+                                Simple Message System
                             </fast-anchor>
                         </li>
                     </ul>
@@ -100,7 +100,14 @@
     <%= htmlWebpackPlugin
         .tags
         .bodyTags
-        .filter((tag) => !tag.attributes.src.includes('example'))
+        .filter(
+            (tag) => 
+                tag.attributes.src.includes('main')
+                || !(
+                    tag.attributes.src.startsWith('/example')
+                    || tag.attributes.src.startsWith('/vendors~example')
+                )
+        )
         .join('')
     %>
 </body>

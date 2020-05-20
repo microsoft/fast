@@ -246,10 +246,11 @@ class StackPanel extends Foundation<
      */
     private renderItem = (item: React.ReactNode, index: number): React.ReactChild => {
         if (
-            this.props.virtualize &&
-            !this.props.neverVirtualizeIndexes.includes(index) &&
-            (index < this.state.renderedRangeStartIndex ||
-                index > this.state.renderedRangeEndIndex)
+            index >= this.itemPositions.length ||
+            (this.props.virtualize &&
+                !this.props.neverVirtualizeIndexes.includes(index) &&
+                (index < this.state.renderedRangeStartIndex ||
+                    index > this.state.renderedRangeEndIndex))
         ) {
             return;
         }

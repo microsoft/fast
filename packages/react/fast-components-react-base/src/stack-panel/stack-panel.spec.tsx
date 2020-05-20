@@ -94,6 +94,7 @@ describe("stack panel", (): void => {
         };
         expect(rendered.first().instance()["getViewportSpan"]()).toBe(200);
     });
+
     test("getScrollIntoViewPosition returns expected values", (): void => {
         const rendered: any = mount(
             <StackPanel itemSpan={itemSpans}>{sampleStackPanelItems}</StackPanel>
@@ -244,5 +245,15 @@ describe("stack panel", (): void => {
         expect(rendered.instance().rootElement.current.className).not.toContain(
             managedClasses.stackPanel__scrollable
         );
+    });
+
+    test("too short an itemspan list does not throw", (): void => {
+        const rendered: any = mount(<StackPanel itemSpan={[]} />);
+
+        expect(() => {
+            rendered.setProps({
+                children: sampleStackPanelItems,
+            });
+        }).not.toThrow();
     });
 });
