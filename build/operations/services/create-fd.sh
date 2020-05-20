@@ -10,7 +10,15 @@ https://docs.microsoft.com/en-us/azure/frontdoor/
 https://docs.microsoft.com/en-us/cli/azure/ext/front-door/network/front-door?view=azure-cli-latest
 '
 #TODO: 
-# [] - ENABLE RBAC https://github.com/Azure/azure-cli/issues/13465
+# [ []color,[]app,[]motion,[]explore,[]create,[]animation,[]www] West region - Setup pipelines for each website to staging.
+#   1. deploy color to new servers
+#   2. update DNS to fd
+#   3. manually add custom domain / cert
+
+# [] Enable RBAC https://github.com/Azure/azure-cli/issues/13465 
+# [] How do I lock down the access to my backend to only Azure Front Door?
+# [] Investigate https://docs.microsoft.com/en-us/azure/key-vault/general/overview-vnet-service-endpoints for better security
+# [] DNS could be updated once all rules are in place on FD, so that we only have wildcard for subdomains
 
 # Install Prerequisite extensions
 az extension add --name front-door
@@ -18,16 +26,6 @@ az extension add --name front-door
 # Configure and set name
 front_door=$product_name-fd-test
 resource_group=$product_name-ops-rg
-
-# TODO: 
-# 0.[] Update FQDN for --backend-address
-# 1.[x] Migrate DNS to Azure DNS
-# 2.[9am] Delegate DNS from Domains to Azure DNS
-# 3.[] Verify DNS Delegation https://prod.msftdomains.com/NameServer/Index/?id=1095 
-# 3.[] Setup temporary Front Door CNAME and Create Customer Domain https://docs.microsoft.com/en-us/azure/frontdoor/front-door-custom-domain
-# 4.[] Update Apex/root/naked domain zone https://docs.microsoft.com/en-us/azure/frontdoor/front-door-how-to-onboard-apex-domain
-# 5.[] Setup wildcard domains https://docs.microsoft.com/en-us/azure/frontdoor/front-door-wildcard-domain
-# 6.[] How do I lock down the access to my backend to only Azure Front Door?
 
 # Create front door
 az network front-door create --backend-address "fast-front.azurefd.net" \
