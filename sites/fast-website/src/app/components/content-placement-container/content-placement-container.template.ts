@@ -3,7 +3,12 @@ import { ContentPlacementContainer } from "./content-placement-container";
 import { CommunityContentPlacementData } from "../../data/community.data";
 
 export const ContentPlacementContainerTemplate = html<ContentPlacementContainer>`
-    <div class="container ${x => x.section}_container">
+    <div
+        class="container ${x =>
+            ["framework", "community"].includes(x.section)
+                ? `${x.section}_container`
+                : ""}"
+    >
         ${when(
             x => x.section === "framework",
             html<ContentPlacementContainer>`
