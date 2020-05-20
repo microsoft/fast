@@ -48,6 +48,9 @@ for name in ${names[@]}; do
             --resource-group $resource_group \
             --web-server-logging filesystem
 
+    echo "creating slot for staging ..."
+        az webapp deployment slot create --name $new_name -g $resource_group --slot stage
+
     echo "creating web app dns zone w/ cname record ..."
         az network dns record-set cname set-record --cname $dns_cname --record-set-name $name --resource-group fast-ops-rg --zone-name $dns_zone --if-none-match
     
