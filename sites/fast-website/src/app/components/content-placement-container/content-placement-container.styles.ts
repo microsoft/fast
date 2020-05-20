@@ -68,6 +68,10 @@ export const ContentPlacementContainerStyles = css`
             /* only two items on a row that should fit three */
             border-bottom: none;
         }
+
+        .framework_ContentPlacement:nth-of-type(6) {
+            border: none;
+        }
     }
 
     .icon {
