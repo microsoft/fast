@@ -28,6 +28,7 @@ export * from "./text-area/index";
 export * from "./text-field/index";
 export * from "./tree-item/index";
 export * from "./tree-view/index";
+export * from "./tooltip/index";
 
 // export our utilities
 export * from "./utilities/index";
