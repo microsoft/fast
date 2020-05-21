@@ -1,39 +1,45 @@
 import { get, omit } from "lodash-es";
 import { MenuItem } from "@microsoft/fast-tooling-react";
 import { createBrowserHistory } from "history";
-import { reactComponentSchemaDictionary } from "@microsoft/site-utilities";
 import { SchemaDictionary } from "@microsoft/fast-tooling";
-import { designSystemSchema } from "@microsoft/fast-components-styles-msft";
-import { glyphSchema } from "./components/glyph";
-import textSchema from "./msft-component-helpers/text.schema";
+import textSchema from "./utilities/text.schema";
+import { webComponentSchemas } from "./fast-components";
+import { labelSchema, imageSchema } from "./utilities";
+import { fastMenuItemId } from "./fast-components/configs/fast-menu";
+import { fastSliderLabelId } from "./fast-components/configs/fast-slider";
+import { fastTabId, fastTabPanelId } from "./fast-components/configs/fast-tabs";
 
 const schemaDictionary: SchemaDictionary = {
-    ...reactComponentSchemaDictionary,
-    [designSystemSchema.id]: designSystemSchema,
-    [glyphSchema.id]: glyphSchema,
+    ...webComponentSchemas,
+    [labelSchema.id]: labelSchema,
+    [imageSchema.id]: imageSchema,
     [textSchema.id]: textSchema,
 };
 
 const history: any = createBrowserHistory();
 /* eslint-disable @typescript-eslint/no-use-before-define */
 const menu: MenuItem[] = generateMenu(
-    omit(schemaDictionary, [textSchema.id, glyphSchema.id, designSystemSchema.id])
+    omit(schemaDictionary, [
+        textSchema.id,
+        imageSchema.id,
+        labelSchema.id,
+        fastMenuItemId,
+        fastSliderLabelId,
+        fastTabId,
+        fastTabPanelId,
+        "fast-design-system-provider",
+    ])
 );
 /* eslint-enable @typescript-eslint/no-use-before-define */
 const initialComponentRoute: string = get(menu, "[0].location", "");
-
-function getRouteFromSchemaId(schemaId: string): string {
-    const matchedRegex: RegExpMatchArray | null = schemaId.match(/\/(?:.(?!\/))+$/);
-    return Array.isArray(matchedRegex) ? `/components${matchedRegex[0]}` : "";
-}
 
 function generateMenu(componentSchemas: SchemaDictionary): MenuItem[] {
     return [
         ...Object.entries(componentSchemas).map(
             ([id]: [string, any]): MenuItem => {
                 return {
-                    displayName: componentSchemas[id].title,
-                    location: getRouteFromSchemaId(id),
+                    displayName: componentSchemas[id].mapsToTagName,
+                    location: `/components/${id}`,
                 };
             }
         ),

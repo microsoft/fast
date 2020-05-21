@@ -7,8 +7,7 @@ const glob = require("glob");
 const fs = require("fs");
 const MarkdownIt = require("markdown-it");
 
-const srcDir =
-    "../../node_modules/@microsoft/fast-components-react-msft/dist/**/README.md";
+const srcDir = "../../packages/web-components/fast-components/src/**/README.md";
 
 /**
  * Start and end file strings
@@ -39,8 +38,9 @@ const md = new MarkdownIt({
  */
 (function exportReadme() {
     const readmePaths = path.resolve(process.cwd(), srcDir);
+    console.log("readmePaths", readmePaths);
 
-    glob(readmePaths, void 0, function (error, files) {
+    glob(readmePaths, void 0, function(error, files) {
         files.forEach(filePath => {
             let guidance = startFile;
             const markdown = fs.readFileSync(filePath, "utf8");
