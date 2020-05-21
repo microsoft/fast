@@ -64,9 +64,9 @@ export class TreeItem extends FASTElement {
     public nested: boolean;
 
     @observable
-    public shouldRenderCollapsedChildren: boolean = false;
-    private shouldRenderCollapsedChildrenChanged(): void {
-        console.log("shouldRender changed to:", this.shouldRenderCollapsedChildren);
+    public renderCollapsedChildren: boolean = false;
+    private renderCollapsedChildrenChanged(): void {
+        console.log("renderCollapsedChildren changed to:", this.renderCollapsedChildren);
     }
 
     private notifier: Notifier;
@@ -95,14 +95,12 @@ export class TreeItem extends FASTElement {
                 "\n\n***connectedCallback for tree-item, this.parent:",
                 parentTreeNode
             );
-            this.shouldRenderCollapsedChildren = parentTreeNode.getAttribute(
+            this.renderCollapsedChildren = parentTreeNode.getAttribute(
                 "render-collapsed-nodes"
-            )
-                ? parentTreeNode.getAttribute("render-collapsed-nodes")
-                : true;
+            );
             console.log(
                 "\n***treeViewITem this.shouldRenderCollapsedChildren:",
-                this.shouldRenderCollapsedChildren
+                this.renderCollapsedChildren
             );
         }
 
@@ -121,7 +119,7 @@ export class TreeItem extends FASTElement {
         switch (propertyName) {
             case "render-collapsed-nodes":
                 console.log("source:", source);
-                this.shouldRenderCollapsedChildren = source.renderCollapsedNodes;
+                this.renderCollapsedChildren = source.renderCollapsedNodes;
                 break;
         }
     }

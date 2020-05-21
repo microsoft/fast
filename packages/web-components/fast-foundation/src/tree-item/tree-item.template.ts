@@ -66,7 +66,7 @@ export const TreeItemTemplate = html<TreeItem>`
             </div>
         </div>
         ${when(
-            x => !!x.hasItems && (x.expanded || x.shouldRenderCollapsedChildren),
+            x => x.hasItems && x.renderCollapsedChildren,
             html<TreeItem>`
                 <div role="group" class="items" part="items">
                     <slot
@@ -74,7 +74,7 @@ export const TreeItemTemplate = html<TreeItem>`
                         ${ref("items")}
                         @slotchange=${x => x.handleItemsChange()}
                     ></slot>
-                    <div>bama</div>
+                    <div>bama!!!</div>
                 </div>
             `
         )}

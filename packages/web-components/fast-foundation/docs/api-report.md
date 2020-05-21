@@ -828,9 +828,9 @@ export class TreeItem extends FASTElement {
     // (undocumented)
     nested: boolean;
     // (undocumented)
-    selected: boolean;
+    renderCollapsedChildren: boolean;
     // (undocumented)
-    shouldRenderCollapsedChildren: boolean;
+    selected: boolean;
     // (undocumented)
     treeItem: HTMLElement;
 }
