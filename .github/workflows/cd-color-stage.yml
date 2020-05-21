@@ -1,7 +1,7 @@
 name: CD - Color Explorer
 
 on:
-  push:
+  pull_request:
     branches:
     - master
 

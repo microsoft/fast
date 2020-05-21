@@ -1,7 +1,7 @@
 name: CD - Creator
 
 on:
-  push:
+  pull_request:
     branches:
     - master
 
