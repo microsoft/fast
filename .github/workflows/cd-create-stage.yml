@@ -12,7 +12,8 @@ jobs:
     env:
       AZURE_WEBAPP_ACTIVE_STAGE_NAME: create-west-app
       AZURE_WEBAPP_PASSIVE_STAGE_NAME: create-east-app
-      AZURE_WEBAPP_BUILD_PATH: sites/fast-creator/www
+      AZURE_WEBAPP_BUILD_PATH: sites/fast-creator
+      AZURE_WEBAPP_DIST_PATH: sites/fast-creator/www
       AZURE_WEBAPP_SLOT_NAME: stage
 
     steps:
@@ -39,14 +40,14 @@ jobs:
       uses: azure/webapps-deploy@v2
       with:
         app-name: ${{ env.AZURE_WEBAPP_ACTIVE_STAGE_NAME }}
-        package: ${{ env.AZURE_WEBAPP_BUILD_PATH }}
+        package: ${{ env.AZURE_WEBAPP_DIST_PATH }}
         slot-name: ${{ env.AZURE_WEBAPP_SLOT_NAME }}
 
     - name: 'Deploy to Passive Azure Region'
       uses: azure/webapps-deploy@v2
       with:
         app-name: ${{ env.AZURE_WEBAPP_PASSIVE_STAGE_NAME }}
-        package: ${{ env.AZURE_WEBAPP_BUILD_PATH }}
+        package: ${{ env.AZURE_WEBAPP_DIST_PATH }}
         slot-name: ${{ env.AZURE_WEBAPP_SLOT_NAME }}
 
     - name: Azure Logout
