@@ -19,30 +19,28 @@ export const ContentPlacementContainerStyles = css`
         padding: 0 calc(var(--design-unit) * 2px);
     }
 
-    .framework_ContentPlacement:nth-of-type(4),
-    .framework_ContentPlacement:nth-of-type(5),
-    .framework_ContentPlacement:nth-of-type(6) {
-        border-top: var(--border);
+    .framework_ContentPlacement:nth-of-type(n) {
+        border: var(--border);
     }
 
-    .framework_ContentPlacement:nth-of-type(1),
-    .framework_ContentPlacement:nth-of-type(2),
-    .framework_ContentPlacement:nth-of-type(4),
-    .framework_ContentPlacement:nth-of-type(5) {
-        border-right: var(--border);
+    .framework_ContentPlacement:nth-last-of-type(1),
+    .framework_ContentPlacement:nth-last-of-type(2),
+    .framework_ContentPlacement:nth-last-of-type(3) {
+        border-bottom: none;
     }
 
     .framework_ContentPlacement:nth-of-type(1),
     .framework_ContentPlacement:nth-of-type(2),
     .framework_ContentPlacement:nth-of-type(3) {
-        border-bottom: var(--border);
+        border-top: none;
     }
 
-    .framework_ContentPlacement:nth-of-type(2),
-    .framework_ContentPlacement:nth-of-type(3),
-    .framework_ContentPlacement:nth-of-type(5),
-    .framework_ContentPlacement:nth-of-type(6) {
-        border-left: var(--border);
+    .framework_ContentPlacement:nth-of-type(3n) {
+        border-right: none;
+    }
+
+    .framework_ContentPlacement:nth-of-type(3n + 1) {
+        border-left: none;
     }
 
     @media screen and (max-width: 1000px) {
@@ -50,31 +48,27 @@ export const ContentPlacementContainerStyles = css`
             grid-template-columns: repeat(2, 1fr);
         }
 
-        .framework_ContentPlacement:nth-of-type(2),
-        .framework_ContentPlacement:nth-of-type(4),
-        .framework_ContentPlacement:nth-of-type(6) {
+        .framework_ContentPlacement:nth-of-type(2n) {
             border: none;
             border-left: var(--border);
         }
 
-        .framework_ContentPlacement:nth-of-type(1),
-        .framework_ContentPlacement:nth-of-type(3),
-        .framework_ContentPlacement:nth-of-type(5) {
+        .framework_ContentPlacement:first-of-type,
+        .framework_ContentPlacement:nth-of-type(2n + 1) {
             border: none;
             border-right: var(--border);
         }
 
-        .framework_ContentPlacement:nth-of-type(1),
-        .framework_ContentPlacement:nth-of-type(2),
-        .framework_ContentPlacement:nth-of-type(3),
-        .framework_ContentPlacement:nth-of-type(4) {
+        .framework_ContentPlacement:nth-of-type(n) {
             border-bottom: var(--border);
         }
 
-        .framework_ContentPlacement:nth-of-type(3),
-        .framework_ContentPlacement:nth-of-type(4),
-        .framework_ContentPlacement:nth-of-type(5),
-        .framework_ContentPlacement:nth-of-type(6) {
+        .framework_ContentPlacement:nth-last-of-type(1),
+        .framework_ContentPlacement:nth-last-of-type(2) {
+            border-bottom: none;
+        }
+
+        .framework_ContentPlacement:nth-of-type(n + 3) {
             border-top: var(--border);
         }
     }
@@ -85,17 +79,13 @@ export const ContentPlacementContainerStyles = css`
             grid-template-columns: 1fr;
         }
 
-        .framework_ContentPlacement:nth-of-type(1),
-        .framework_ContentPlacement:nth-of-type(2),
-        .framework_ContentPlacement:nth-of-type(3),
-        .framework_ContentPlacement:nth-of-type(4),
-        .framework_ContentPlacement:nth-of-type(5) {
+        .framework_ContentPlacement:nth-of-type(n) {
             border: none;
             border-bottom: calc(var(--outline-width) * 1px) solid
                 var(--neutral-outline-rest);
         }
 
-        .framework_ContentPlacement:nth-of-type(6) {
+        .framework_ContentPlacement:last-of-type {
             border: none;
         }
     }
