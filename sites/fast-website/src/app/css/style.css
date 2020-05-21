@@ -3,6 +3,12 @@
   --background-color: #242424;
 }
 
+html,
+body {
+  width: 100%;
+  overflow-x: hidden;
+}
+
 body {
   background-color: var(--background-color);
   color: var(--neutral-foreground-rest);

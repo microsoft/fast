@@ -3,7 +3,8 @@ import { display } from "@microsoft/fast-foundation";
 
 export const ContentPlacementContainerStyles = css`
     ${display("block")}:host {
-        --border: calc(var(--outline-width) * 0.5px) solid var(--neutral-outline-rest);
+        --border-width: calc(var(--outline-width) * 1px);
+        --border: var(--border-width) solid var(--neutral-outline-rest);
         contain: none;
         font-family: var(--body-font);
     }
@@ -11,97 +12,63 @@ export const ContentPlacementContainerStyles = css`
     .framework_container,
     .community_container {
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: 1fr;
         justify-content: center;
     }
 
     .framework_ContentPlacement {
+        border: var(--border);
+        border-width: 0 0 var(--border-width);
         padding: 0 calc(var(--design-unit) * 2px);
     }
 
-    .framework_ContentPlacement:nth-of-type(n) {
-        border: var(--border);
-    }
-
-    .framework_ContentPlacement:nth-last-of-type(1),
-    .framework_ContentPlacement:nth-last-of-type(2),
-    .framework_ContentPlacement:nth-last-of-type(3) {
+    .framework_ContentPlacement:last-of-type {
         border-bottom: none;
     }
 
-    .framework_ContentPlacement:nth-of-type(1),
-    .framework_ContentPlacement:nth-of-type(2),
-    .framework_ContentPlacement:nth-of-type(3) {
-        border-top: none;
+    @media screen and (min-width: 700px) {
+        .framework_ContentPlacement {
+            border-width: 0 var(--border-width) var(--border-width) 0;
+        }
     }
 
-    .framework_ContentPlacement:nth-of-type(3n) {
-        border-right: none;
-    }
-
-    .framework_ContentPlacement:nth-of-type(3n + 1) {
-        border-left: none;
-    }
-
-    @media screen and (max-width: 1000px) {
+    @media screen and (min-width: 700px) and (max-width: 999px) {
         .framework_container {
             grid-template-columns: repeat(2, 1fr);
         }
 
-        .framework_ContentPlacement:nth-of-type(2n) {
-            border: none;
-            border-left: var(--border);
+        .framework_ContentPlacement:nth-of-type(even) {
+            border-right: none;
         }
 
-        .framework_ContentPlacement:first-of-type,
-        .framework_ContentPlacement:nth-of-type(2n + 1) {
-            border: none;
-            border-right: var(--border);
-        }
-
-        .framework_ContentPlacement:nth-of-type(n) {
-            border-bottom: var(--border);
-        }
-
-        .framework_ContentPlacement:nth-last-of-type(1),
-        .framework_ContentPlacement:nth-last-of-type(2) {
+        .framework_ContentPlacement:nth-last-of-type(-n + 2):nth-of-type(odd) {
+            /* The last two items on medium screens have no bottom border */
             border-bottom: none;
         }
-
-        .framework_ContentPlacement:nth-of-type(n + 3) {
-            border-top: var(--border);
-        }
     }
 
-    @media screen and (max-width: 700px) {
+    @media screen and (min-width: 1000px) {
         .framework_container,
         .community_container {
-            grid-template-columns: 1fr;
+            grid-template-columns: repeat(3, 1fr);
         }
 
-        .framework_ContentPlacement:nth-of-type(n) {
-            border: none;
-            border-bottom: calc(var(--outline-width) * 1px) solid
-                var(--neutral-outline-rest);
+        .framework_ContentPlacement:nth-of-type(3n),
+        .framework_ContentPlacement:first-of-type
+            + .framework_ContentPlacement:last-of-type,
+        .framework_ContentPlacement:only-of-type {
+            border-right: none;
         }
 
-        .framework_ContentPlacement:last-of-type {
-            border: none;
+        .framework_ContentPlacement:first-of-type:nth-last-of-type(3n):nth-last-of-type(-n + 3), /* first item when only three items are present */
+        .framework_ContentPlacement:first-of-type:nth-last-of-type(3n) ~ .framework_ContentPlacement:nth-last-of-type(-n + 3), /* last three items when full row of three */
+        .framework_ContentPlacement:first-of-type:nth-last-of-type(3n - 1) ~ .framework_ContentPlacement:nth-last-of-type(-n + 2), /* more than one row, last row with only two items */
+        .framework_ContentPlacement:first-of-type:nth-last-of-type(3n - 2) ~ .framework_ContentPlacement:last-of-type, /* more than one row, last row with only one item */
+        .framework_ContentPlacement:first-of-type:nth-last-of-type(-n + 2) {
+            /* only two items on a row that should fit three */
+            border-bottom: none;
         }
     }
-
-    /* This creates the blur and background color changes on hover */
-    /* start */
-    .container:hover site-content-placement {
-        filter: blur(1px);
-    }
-    .container:hover site-content-placement:hover {
-        /* background: linear-gradient(349.8deg, rgba(143, 68, 95, 0.3) 20.91%, rgba(148, 81, 73, 0.3) 99.75%); */
-        box-shadow: 0px 10px 44px rgba(0, 0, 0, 0.1);
-        border-radius: var(--design-unit);
-        filter: blur(0);
-    }
-    /* end */
 
     .icon {
         fill: currentColor;
