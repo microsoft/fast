@@ -6,10 +6,10 @@
   "private": true,
   "license": "MIT",
   "devDependencies": {
+    "@microsoft/fast-components": "1.0.0",
     "@microsoft/fast-element": "0.9.0",
     "@microsoft/fast-foundation": "1.0.0",
     "@microsoft/fast-web-utilities": "4.5.0",
-    "@microsoft/fast-components": "1.0.0",
     "babel-core": "^6.26.3",
     "babel-loader": "^8.1.0",
     "babel-preset-env": "^1.7.0",
@@ -36,5 +36,8 @@
     "type": "git",
     "url": "git+https://github.com/Microsoft/fast-dna.git"
   },
-  "author": "Microsoft"
+  "author": "Microsoft",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
 }
