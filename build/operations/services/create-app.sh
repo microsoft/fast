@@ -22,7 +22,8 @@ for name in ${names[@]}; do
         dns_cname=$new_name.azurewebsites.net && [[ $debug == true ]] && echo "${bold}${green}DNS CNAME"${reset}${unbold} && echo $dns_cname
 
     echo "creating web app [$new_name] ..."
-        az webapp create --name $new_name --plan $app_service_plan --resource-group $resource_group --runtime "NODE|12-lts"
+        az webapp create --name $new_name --plan $app_service_plan --resource-group $resource_group \
+            --runtime "NODE|12-lts"
 
     echo "configuring web app ..."
         az webapp config set --name $new_name \
@@ -34,8 +35,8 @@ for name in ${names[@]}; do
             --min-tls-version "1.2" \
             --resource-group $resource_group \
             --subscription $subscription \
-            --use-32bit-worker-process false
-            #--startup-file "pm2 start /home/site/wwwroot/server.js --no-daemon"
+            --use-32bit-worker-process false \
+            --startup-file "pm2 start /home/site/wwwroot/server.js --no-daemon"
             #--number-of-workers 4 \ # What is this and how many should be used?
 
     echo "configuring web app logs ..."
@@ -85,7 +86,7 @@ for name in ${names[@]}; do
         
     echo "configuring app insights [$web_app_insights_instrumentation_key] on web app ..." 
         az webapp config appsettings set --resource-group $resource_group --name $new_name \
-            --settings APPINSIGHTS_INSTRUMENTATIONKEY="$web_app_insights_instrumentation_key" APPINSIGHTS_PROFILERFEATURE_VERSION="1.0.0" APPINSIGHTS_SNAPSHOTFEATURE_VERSION="1.0.0" APPLICATIONINSIGHTS_CONNECTION_STRING="InstrumentationKey=$web_app_insights_instrumentation_key" ApplicationInsightsAgent_EXTENSION_VERSION="~2" DiagnosticServices_EXTENSION_VERSION="~3" InstrumentationEngine_EXTENSION_VERSION="~1" SnapshotDebugger_EXTENSION_VERSION="disabled" XDT_MicrosoftApplicationInsights_BaseExtensions="~1" XDT_MicrosoftApplicationInsights_Mode="recommended" WEBSITE_HTTPLOGGING_RETENTION_DAYS="7"
+            --settings PORT="7001" APPINSIGHTS_INSTRUMENTATIONKEY="$web_app_insights_instrumentation_key" APPINSIGHTS_PROFILERFEATURE_VERSION="1.0.0" APPINSIGHTS_SNAPSHOTFEATURE_VERSION="1.0.0" APPLICATIONINSIGHTS_CONNECTION_STRING="InstrumentationKey=$web_app_insights_instrumentation_key" ApplicationInsightsAgent_EXTENSION_VERSION="~2" DiagnosticServices_EXTENSION_VERSION="~3" InstrumentationEngine_EXTENSION_VERSION="~1" SnapshotDebugger_EXTENSION_VERSION="disabled" XDT_MicrosoftApplicationInsights_BaseExtensions="~1" XDT_MicrosoftApplicationInsights_Mode="recommended" WEBSITE_HTTPLOGGING_RETENTION_DAYS="7"
 
     echo "internal|external web sites: http://$new_name.azurewebsites.net => https://$name.$dns_zone"
 
