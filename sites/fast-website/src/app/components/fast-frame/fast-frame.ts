@@ -1,6 +1,12 @@
 import { FASTElement, attr, observable } from "@microsoft/fast-element";
 import { createColorPalette } from "@microsoft/fast-components";
-import { parseColor, ColorRGBA64 } from "@microsoft/fast-colors";
+import {
+    ColorHSL,
+    ColorRGBA64,
+    hslToRGB,
+    parseColorHexRGB,
+    rgbToHSL,
+} from "@microsoft/fast-colors";
 
 export class FastFrame extends FASTElement {
     @attr({ attribute: "accent-color" })
@@ -53,12 +59,27 @@ export class FastFrame extends FASTElement {
     @observable
     public baseHorizontalSpacingMultiplier: number = 3;
 
+    private parsedColor = parseColorHexRGB(this.accentColor);
+
+    @observable
+    public saturation: number;
+
+    @observable
+    public hue: number;
+
+    @observable
+    public lightness: number;
+
     public accentChangeHandler = (e: any): void => {
         const element: HTMLInputElement = e.target;
         if (element.checked) {
             this.accentColor = e.target.value;
-            const parsedColor = parseColor(this.accentColor);
-            this.accentPalette = createColorPalette(parsedColor as ColorRGBA64);
+            const accentColorHSL = rgbToHSL(parseColorHexRGB(this.accentColor)!);
+            this.hue = accentColorHSL.h;
+            this.saturation = accentColorHSL.s;
+            this.lightness = accentColorHSL.l;
+            this.parsedColor = parseColorHexRGB(this.accentColor);
+            this.accentPalette = createColorPalette(this.parsedColor as ColorRGBA64);
         }
     };
 
@@ -87,9 +108,27 @@ export class FastFrame extends FASTElement {
     public baseHeightMultiplierChangeHandler = (e: any): void => {
         this.baseHeightMultiplier = e.target.value;
     };
+
     public baseHorizontalSpacingMultiplierChangeHandler = (e: any): void => {
         this.baseHorizontalSpacingMultiplier = e.target.value;
     };
+
+    public saturationChangeHandler = (e: any): void => {
+        this.saturation = e.target.value;
+        this.updateAccentColor();
+    };
+
+    public hueChangeHandler = (e: any): void => {
+        this.hue = e.target.value;
+        this.updateAccentColor();
+    };
+
+    private updateAccentColor(): void {
+        const accentHSL = new ColorHSL(this.hue, this.saturation, this.lightness);
+        const accentRGB = hslToRGB(accentHSL);
+        this.accentColor = accentRGB.toStringHexRGB();
+        this.accentPalette = createColorPalette(accentRGB);
+    }
 
     public themeChange = (e: any): void => {
         this.darkMode = !this.darkMode;
@@ -106,4 +145,13 @@ export class FastFrame extends FASTElement {
         }
         this.backgroundColor = this.previewBackgroundPalette[this.lastSelectedIndex];
     };
+
+    constructor() {
+        super();
+
+        const accentColorHSL = rgbToHSL(parseColorHexRGB(this.accentColor)!);
+        this.hue = accentColorHSL.h;
+        this.saturation = accentColorHSL.s;
+        this.lightness = accentColorHSL.l;
+    }
 }

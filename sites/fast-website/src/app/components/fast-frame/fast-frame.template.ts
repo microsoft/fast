@@ -9,6 +9,7 @@ import ScreenIcon from "svg/icon-screen.svg";
 import ShareIcon from "svg/icon-share.svg";
 import SwatchesIcon from "svg/icon-swatches.svg";
 import { FastFrame } from "./fast-frame";
+import { ColorHSL, hslToRGB } from "@microsoft/fast-colors";
 
 export const FastFrameTemplate = html<FastFrame>`
     <template>
@@ -26,7 +27,7 @@ export const FastFrameTemplate = html<FastFrame>`
                             Sem viverra fringilla at magna turpis in. Nullam adipiscing fusce auctor semper arcu felis. Purus et enim feugiat arcu. Lectus neque sem est ridiculus tempus urna.
                         </p>
                         <div class="content-control-container" >
-                            <label for="dark-mode-switch">Density</label>
+                            <label for="dark-mode-switch">Dark mode</label>
                             <fast-switch
                                 id="dark-mode-switch"
                                 checked="${x => x.darkMode}"
@@ -89,6 +90,34 @@ export const FastFrameTemplate = html<FastFrame>`
                                     `
                                 )}
                             </fast-radio-group>
+                            <label for="hue-slider">Hue</label>
+                            <fast-slider
+                                id="hue-slider"
+                                min="0"
+                                max="359"
+                                step="1"
+                                value="${x => x.hue}"
+                                @change="${(x, c) =>
+                                    x.hueChangeHandler(c.event as MouseEvent)}"
+                            >
+                                <div slot="track" class="hue-slider-track"></div>
+                            </fast-slider>
+                            <label for="saturation-slider">Saturation</label>
+                            <fast-slider
+                                id="saturation-slider"
+                                min="0"
+                                max="1"
+                                step="0.05"
+                                value="${x => x.saturation}"
+                                @change="${(x, c) =>
+                                    x.saturationChangeHandler(c.event as MouseEvent)}"
+                            >
+                                <div slot="track" class="saturation-slider-track" style="background-image: linear-gradient(to right, ${x =>
+                                    hslToRGB(
+                                        new ColorHSL(x.hue, 0, x.lightness)
+                                    ).toStringHexRGB()}, ${x =>
+    hslToRGB(new ColorHSL(x.hue, 1, x.lightness)).toStringHexRGB()});"></div>
+                            </fast-slider>
                         </div>
                     </div>
                 </fast-tab-panel>

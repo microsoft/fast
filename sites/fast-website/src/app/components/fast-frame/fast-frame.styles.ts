@@ -173,6 +173,41 @@ export const FastFrameStyles = css`
         border-radius: calc(var(--corner-radius) * 1px);
     }
 
+    .saturation-slider-track {
+        height: calc(var(--track-size) * 1px);
+        border-radius: calc(var(--corner-radius) * 1px);
+    }
+
+    .hue-slider-track {
+        height: calc(var(--track-size) * 1px);
+        border-radius: calc(var(--corner-radius) * 1px);
+        background-image: 
+            linear-gradient(
+                to right, 
+                rgb(255, 0, 0),
+                rgb(255, 77, 0),
+                rgb(255, 153, 0),
+                rgb(255, 230, 0),
+                rgb(204, 255, 0),
+                rgb(128, 255, 0),
+                rgb(51, 255, 0),
+                rgb(0, 255, 26),
+                rgb(0, 255, 102),
+                rgb(0, 255, 179),
+                rgb(0, 255, 255),
+                rgb(0, 179, 255),
+                rgb(0, 102, 255),
+                rgb(0, 26, 255),
+                rgb(51, 0, 255),
+                rgb(128, 0, 255),
+                rgb(204, 0, 255),
+                rgb(255, 0, 230),
+                rgb(255, 0, 153),
+                rgb(255, 0, 76),
+                rgb(255, 0, 4)
+            );"
+    }
+
     fast-card {
         width: auto;
     }
@@ -191,9 +226,14 @@ export const FastFrameStyles = css`
         height: 100%;
     }
 
+    fast-radio-group::part(positioning-region) {
+        display: grid;
+        grid-gap: 10px;
+        grid-auto-flow: column;
+    }
+
     site-color-swatch {
-        margin: 0;
-        margin-left: 10px;
+        margin: 0;      
     }
 
     fast-slider-label {
