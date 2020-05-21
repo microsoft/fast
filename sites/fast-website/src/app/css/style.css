@@ -3,6 +3,12 @@
   --background-color: #242424;
 }
 
+html,
+body {
+  width: 100%;
+  overflow-x: hidden;
+}
+
 body {
   background-color: var(--background-color);
   color: var(--neutral-foreground-rest);
@@ -33,7 +39,6 @@ body {
 
 .section {
   grid-column: 2;
-  --card-width: 400px;
   color: var(--neutral-foreground-rest);
 }
 
