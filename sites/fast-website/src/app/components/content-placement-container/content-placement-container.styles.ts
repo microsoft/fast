@@ -5,7 +5,6 @@ export const ContentPlacementContainerStyles = css`
     ${display("block")}:host {
         --border-width: calc(var(--outline-width) * 1px);
         --border: var(--border-width) solid var(--neutral-outline-rest);
-        --flow: row;
         contain: none;
         font-family: var(--body-font);
     }
@@ -22,7 +21,7 @@ export const ContentPlacementContainerStyles = css`
         border-width: 0 0 var(--border-width);
         padding: 0 calc(var(--design-unit) * 2px);
     }
-    
+
     .framework_ContentPlacement:last-of-type {
         border-bottom: none;
     }
@@ -35,10 +34,15 @@ export const ContentPlacementContainerStyles = css`
 
     @media screen and (min-width: 700px) and (max-width: 999px) {
         :host {
-            --flow: column;
+            --flow: row;
         }
+
         .framework_container {
             grid-template-columns: repeat(2, 1fr);
+        }
+
+        .community_container {
+            grid-template-columns: repeat(3, 1fr);
         }
 
         .framework_ContentPlacement:nth-of-type(even) {
@@ -52,6 +56,10 @@ export const ContentPlacementContainerStyles = css`
     }
 
     @media screen and (min-width: 1000px) {
+        :host {
+            --flow: column;
+        }
+
         .framework_container,
         .community_container {
             grid-template-columns: repeat(3, 1fr);
@@ -89,8 +97,7 @@ export const ContentPlacementContainerStyles = css`
     }
 
     h3 {
-        /* check this margin */
-        margin-top: 0 0 calc(var(--design-unit) * 5px) 0;
+        margin: 0 0 calc(var(--design-unit) * 5px) 0;
         font-size: var(--type-ramp-plus-2-font-size);
     }
 `;
