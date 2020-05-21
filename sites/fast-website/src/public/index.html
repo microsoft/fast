@@ -14,26 +14,24 @@
       <div class="wrapper">
         <!-- header:start -->
         <header class="header">
-          <fast-anchor class="header-brand" appearance="lightweight" href="#">
-            <%= require("svg/icon-brand.svg") %>
-          </fast-anchor>
-          <site-navigation class="header-navigation">
-            <ul>
-              <li><fast-anchor appearance="lightweight" href="#">Components</fast-anchor></li>
-              <li><fast-anchor appearance="lightweight" href="#">Integration</fast-anchor></li>
-              <li><fast-anchor appearance="lightweight" href="#">Documentation</fast-anchor></li>
-              <li><fast-anchor appearance="lightweight" href="#">Community</fast-anchor></li>
-            </ul>
-            <fast-anchor class="header-github" slot="end" appearance="lightweight" href="#">
-              Github
-              <%= require("svg/icon-github.svg") %>
+          <site-navigation>
+            <fast-anchor class="logo" slot="start" appearance="lightweight" href="#">
+              <%= require("svg/icon-brand.svg") %>
             </fast-anchor>
+            <div class="anchor-wrapper">
+              <ul>
+                <li><fast-anchor appearance="lightweight" href="#">Components</fast-anchor></li>
+                <li><fast-anchor appearance="lightweight" href="#">Integration</fast-anchor></li>
+                <li><fast-anchor appearance="lightweight" href="#">Documentation</fast-anchor></li>
+                <li><fast-anchor appearance="lightweight" href="#">Community</fast-anchor></li>
+              </ul>
+              <fast-anchor class="github-link" slot="end" appearance="lightweight" href="#">
+                Github
+                <%= require("svg/icon-github.svg") %>
+              </fast-anchor>
+            </div>
           </site-navigation>
-          <div class="header-spacer"/>
         </header>
-        <fast-button class="header-menu" appearance="stealth" onclick="openNavClick()">
-          <%= require("svg/icon-menu.svg") %>
-        </fast-button>
         <!-- header:end -->
 
         <!-- hero-section:start -->
@@ -43,7 +41,7 @@
               <fast-badge slot="badge" class="section-badge">ADAPTIVE UI SYSTEM, UTILITIES, & TOOLS</fast-badge>
               <p class="section-heading-hero">The adaptive interface system for modern web experiences</p>
               <p slot="body">Interfaces bult with FAST adapt to your design system and can be used with any modern UI Framework by leveraging industry standard Web Components.</p>
-              <fast-button slot="action" appearance="outline">Get start</fast-button>
+              <fast-button slot="action" appearance="outline">Get started</fast-button>
             </site-section-header>
           </div>
         </section>
@@ -175,7 +173,7 @@
         <!-- footer:start -->
           <fast-divider class="divider"></fast-divider>
           <div class="footer">
-            <site-navigation class="footer-navigation">
+            <site-navigation>
               <ul>
                 <li><fast-anchor appearance="lightweight" href="#">License</fast-anchor></li>
                 <li><fast-anchor appearance="lightweight" href="#">Privacy & Cookies</fast-anchor></li>
@@ -183,18 +181,12 @@
                 <li><fast-anchor appearance="lightweight" href="#">&copy; 2020 Microsoft</fast-anchor></li>
               </ul>
             </site-navigation>
-            <fast-anchor class="footer-brand" appearance="lightweight" href="#">
+            <fast-anchor class="logo" appearance="lightweight" href="#">
               <%= require("svg/icon-brand.svg") %>
             </fast-anchor>
           </div>
         <!-- footer:end -->
       </div>
     </fast-design-system-provider>
-    <script>
-      function openNavClick() {
-        const nav = document.querySelector(".header-navigation");
-        nav.classList.toggle("header-navigation__open");
-      }
-    </script>
   </body>
 </html>
