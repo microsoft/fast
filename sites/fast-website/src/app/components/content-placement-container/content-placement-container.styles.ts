@@ -1,5 +1,6 @@
 import { css } from "@microsoft/fast-element";
 import { display } from "@microsoft/fast-foundation";
+import { elevation } from "@microsoft/fast-components/dist/esm/styles/elevation.js";
 
 export const ContentPlacementContainerStyles = css`
     ${display("block")}:host {
@@ -100,10 +101,11 @@ export const ContentPlacementContainerStyles = css`
     }
     .community_container:hover site-content-placement:hover,
     .feature_container:hover site-feature-card:hover {
+        --elevation: 4;
         background: var(--neutral-fill-active);
-        box-shadow: 0px 20px 30px rgba(0, 0, 0, 0.15);
         border-radius: calc(var(--corner-radius) * 1px);
         color: var(--neutral-foreground-hover);
+        ${elevation}
     }
     /* end */
 
