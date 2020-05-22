@@ -82,11 +82,11 @@ describe("mapDataDictionary", () => {
         expect(resolver).toHaveBeenCalledTimes(2);
     });
     test("should map a single dictionary entry", () => {
-        const mapper: any = function(config: MapperConfig<any>): any {
+        const mapper: any = function (config: MapperConfig<any>): any {
             config.dataDictionary[0][config.dictionaryId].data =
                 config.dataDictionary[0][config.dictionaryId].data;
         };
-        const resolver: any = function(config: ResolverConfig<any>): any {
+        const resolver: any = function (config: ResolverConfig<any>): any {
             const dataBlob = config.dataDictionary[0][config.dataDictionary[1]].data;
 
             if (config.dataDictionary[0][config.dictionaryId].parent) {
@@ -127,11 +127,11 @@ describe("mapDataDictionary", () => {
         });
     });
     test("should map multiple dictionary entries", () => {
-        const mapper: any = function(config: MapperConfig<any>): any {
+        const mapper: any = function (config: MapperConfig<any>): any {
             config.dataDictionary[0][config.dictionaryId].data =
                 config.dataDictionary[0][config.dictionaryId].data;
         };
-        const resolver: any = function(config: ResolverConfig<any>): any {
+        const resolver: any = function (config: ResolverConfig<any>): any {
             if (config.dataDictionary[0][config.dictionaryId].parent) {
                 set(
                     config.dataDictionary[0][config.parent].data as object,
