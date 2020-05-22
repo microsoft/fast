@@ -1,6 +1,12 @@
 import { css } from "@microsoft/fast-element";
 import { display } from "@microsoft/fast-foundation";
 import { elevation } from "@microsoft/fast-components/dist/esm/styles/elevation.js";
+import {
+    neutralForegroundHintBehavior,
+    neutralForegroundHoverBehavior,
+    neutralOutlineRestBehavior,
+    neutralFillActiveBehavior,
+} from "@microsoft/fast-components";
 
 export const ContentPlacementContainerStyles = css`
     ${display("block")}:host {
@@ -117,4 +123,9 @@ export const ContentPlacementContainerStyles = css`
         margin: 0 0 calc(var(--design-unit) * 5px) 0;
         font-size: var(--type-ramp-plus-2-font-size);
     }
-`;
+`.withBehaviors(
+    neutralForegroundHintBehavior,
+    neutralForegroundHoverBehavior,
+    neutralOutlineRestBehavior,
+    neutralFillActiveBehavior
+);
