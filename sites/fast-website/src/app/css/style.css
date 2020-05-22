@@ -27,14 +27,39 @@ body {
 
 .header {
   grid-column: 2;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  height: 80px;
 }
 
-.header-navigation-item {
+.header site-navigation {
+  align-items: center;
+  height: 94px;
+  justify-content: space-between;
+}
+
+.anchor-wrapper {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  justify-items: center;
+}
+
+ul {
+  display: flex;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+li {
   margin: 0 30px;
+  padding: 0;
+}
+
+.logo svg {
+  width: 114px;
+  height: 40px;
+}
+
+.nav-button {
+  display: none;
 }
 
 .section {
@@ -75,9 +100,99 @@ body {
 
 .footer {
   grid-column: 2;
+  display: flex;
+  align-items: center;
   margin-bottom: 84px;
 }
 
-.footer-navigation-item {
-  margin-inline-end: 50px;
+@media screen and (max-width: 1330px) {
+  .wrapper {
+    grid-template-columns: minmax(5vw, 1fr) minmax(0px, 800px) minmax(5vw, 1fr);
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .wrapper {
+    grid-template-columns: minmax(5vw, 1fr) minmax(0px, auto) minmax(5vw, 1fr);
+  }
+
+  .header {
+    box-shadow: 0px 1.5px 1px rgba(0, 0, 0, 0.08), 0px 1.6px 5px rgba(0, 0, 0, 0.15);
+    grid-column: 1/4;
+    z-index: 3;
+  }
+
+  .header ul {
+    flex: 0 0 auto;
+    flex-direction: column;
+  }
+
+  .header .logo {
+    margin-inline-start: 20px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .github-link {
+    margin-inline-start: 30px;
+  }
+
+  site-navigation {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  .header site-navigation::before {
+    background: var(--background-color);
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 1;
+  }
+
+  site-navigation .anchor-wrapper {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    height: calc(100vh - 94px);
+    background-color: rgba(0, 0, 0, 0.95);
+    transform: translateY(-100%);
+    transition: transform 0.1s ease-in-out;
+    z-index: 0;
+  }
+
+  .site-navigation.debounce .anchor-wrapper {
+    transition-duration: 0s;
+  }
+
+  site-navigation.opened .anchor-wrapper {
+    transform: translateY(0);
+  }
+
+  site-navigation::part(nav-button) {
+    display: block;
+    margin-inline-start: auto;
+    margin-inline-end: 20px;
+    z-index: 2;
+  }
+
+  .footer site-navigation {
+    height: 100%;
+    justify-content: flex-start;
+  }
+
+  .footer ul {
+    flex-direction: column;
+  }
+
+  .footer site-navigation::part(nav-button) {
+    display: none;
+  }
 }
