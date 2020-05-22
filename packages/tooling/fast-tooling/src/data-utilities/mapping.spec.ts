@@ -1019,7 +1019,6 @@ describe("mapWebComponentDefinitionToJSONSchema", () => {
                 title: description,
                 type: "object",
                 version: 1,
-                required: ["version"],
                 [ReservedElementMappingKeyword.mapsToTagName]: name,
                 properties: {
                     [attrName]: {
