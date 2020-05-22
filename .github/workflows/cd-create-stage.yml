@@ -33,7 +33,8 @@ jobs:
         cp ../statics/server.js www
         cd www
         npm i path express express-history-api-fallback
-
+        ls -lta
+        
     - name: 'Deploy to Active Azure Region'
       uses: azure/webapps-deploy@v2
       with:
