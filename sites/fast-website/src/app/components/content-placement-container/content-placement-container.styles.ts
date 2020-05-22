@@ -7,6 +7,7 @@ import {
     neutralOutlineRestBehavior,
     neutralFillActiveBehavior,
 } from "@microsoft/fast-components";
+import { siteBreakpoints } from "../../style/constants";
 
 export const ContentPlacementContainerStyles = css`
     ${display("block")}:host {
@@ -40,17 +41,13 @@ export const ContentPlacementContainerStyles = css`
         border-bottom: none;
     }
 
-    @media screen and (min-width: 700px) {
+    @media screen and (min-width: ${siteBreakpoints[1]}) {
         .framework_ContentPlacement {
             border-width: 0 var(--border-width) var(--border-width) 0;
         }
     }
 
-    @media screen and (min-width: 700px) and (max-width: 999px) {
-        :host {
-            --flow: row;
-        }
-
+    @media screen and (min-width: ${siteBreakpoints[1]}) and (max-width: ${siteBreakpoints[3]}) {
         .framework_container {
             grid-template-columns: repeat(2, 1fr);
         }
@@ -69,11 +66,7 @@ export const ContentPlacementContainerStyles = css`
         }
     }
 
-    @media screen and (min-width: 1000px) {
-        :host {
-            --flow: column;
-        }
-
+    @media screen and (min-width: ${siteBreakpoints[4]}) {
         .framework_container,
         .community_container {
             grid-template-columns: repeat(3, 1fr);
