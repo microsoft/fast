@@ -82,11 +82,11 @@ describe("mapDataDictionary", () => {
         expect(resolver).toHaveBeenCalledTimes(2);
     });
     test("should map a single dictionary entry", () => {
-        const mapper: any = function (config: MapperConfig<any>): any {
+        const mapper: any = function(config: MapperConfig<any>): any {
             config.dataDictionary[0][config.dictionaryId].data =
                 config.dataDictionary[0][config.dictionaryId].data;
         };
-        const resolver: any = function (config: ResolverConfig<any>): any {
+        const resolver: any = function(config: ResolverConfig<any>): any {
             const dataBlob = config.dataDictionary[0][config.dataDictionary[1]].data;
 
             if (config.dataDictionary[0][config.dictionaryId].parent) {
@@ -127,11 +127,11 @@ describe("mapDataDictionary", () => {
         });
     });
     test("should map multiple dictionary entries", () => {
-        const mapper: any = function (config: MapperConfig<any>): any {
+        const mapper: any = function(config: MapperConfig<any>): any {
             config.dataDictionary[0][config.dictionaryId].data =
                 config.dataDictionary[0][config.dictionaryId].data;
         };
-        const resolver: any = function (config: ResolverConfig<any>): any {
+        const resolver: any = function(config: ResolverConfig<any>): any {
             if (config.dataDictionary[0][config.dictionaryId].parent) {
                 set(
                     config.dataDictionary[0][config.parent].data as object,
@@ -967,7 +967,6 @@ describe("mapWebComponentDefinitionToJSONSchema", () => {
                 title: description,
                 type: "object",
                 version: 1,
-                required: ["version"],
                 [ReservedElementMappingKeyword.mapsToTagName]: name,
                 properties: {
                     [attrName]: {
@@ -979,6 +978,55 @@ describe("mapWebComponentDefinitionToJSONSchema", () => {
                         [ReservedElementMappingKeyword.mapsToSlot]: slotName,
                         title: slotDescription,
                         ...linkedDataSchema,
+                    },
+                },
+            },
+        ]);
+    });
+    test("should map an optional enum in attributes to the enum in a JSON schema", () => {
+        const name: string = "foo";
+        const description: string = "foo tag";
+        const attrName: string = "attr";
+        const attrDescription: string = "An attribute";
+        const attrEnum: string[] = ["foo", "bar"];
+
+        expect(
+            mapWebComponentDefinitionToJSONSchema({
+                version: 1,
+                tags: [
+                    {
+                        name,
+                        description: "foo tag",
+                        attributes: [
+                            {
+                                name: attrName,
+                                description: attrDescription,
+                                type: DataType.string,
+                                default: "foobar",
+                                enum: attrEnum,
+                                required: false,
+                            },
+                        ],
+                        slots: [],
+                    },
+                ],
+            })
+        ).toEqual([
+            {
+                $schema: "http://json-schema.org/schema#",
+                $id: name,
+                id: name,
+                title: description,
+                type: "object",
+                version: 1,
+                required: ["version"],
+                [ReservedElementMappingKeyword.mapsToTagName]: name,
+                properties: {
+                    [attrName]: {
+                        [ReservedElementMappingKeyword.mapsToAttribute]: attrName,
+                        title: attrDescription,
+                        enum: attrEnum,
+                        type: DataType.string,
                     },
                 },
             },
