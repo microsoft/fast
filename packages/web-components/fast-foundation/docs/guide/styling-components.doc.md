@@ -4,9 +4,11 @@ title: Styling Components
 sidebar_label: Styling Components
 custom_edit_url: https://github.com/microsoft/fast-dna/edit/master/packages/web-components/fast-foundation/docs/guide/styling-components.doc.md
 ---
+## Applying CSS
+`@microsoft/fast-components` leverages `@microsoft/fast-element` to style components. For details on how to apply CSS, see [leveraging CSS](fast-element/leveraging-css.md).
 
 ## Design System
-In FAST, the *design system* is a collection of properties and values that inform the visual design language of the components. These properties are managed and provided through implementations of the *DesignSystemProvider*. See the [*DesignSystemProvider* documentation](https://github.com/microsoft/fast-dna/tree/master/packages/web-components/fast-foundation/src/design-system-provider) for more information.
+In FAST, the *design system* is a collection of properties and values that inform the visual design language of the components. These properties are managed and provided through implementations of the *DesignSystemProvider*. See the [*DesignSystemProvider* documentation](fast-foundation/fast-design-system-provider.md) for more information.
 
 For the purposes of this section, the *DesignSystemProvider* is a Custom Element that will create CSS Custom Properties that can be consumed by component stylesheets and provide mechanisms to synchronize, update, and consume those properties programmatically.
 
