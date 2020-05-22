@@ -9,6 +9,7 @@ import ScreenIcon from "svg/icon-screen.svg";
 import ShareIcon from "svg/icon-share.svg";
 import SwatchesIcon from "svg/icon-swatches.svg";
 import { FastFrame } from "./fast-frame";
+import { ColorHSL, hslToRGB } from "@microsoft/fast-colors";
 
 export const FastFrameTemplate = html<FastFrame>`
     <template>
@@ -19,78 +20,246 @@ export const FastFrameTemplate = html<FastFrame>`
                 <fast-tab id="swatches-tab" title="Styles">${SwatchesIcon}</fast-tab>
                 <fast-tab id="density-tab" title="Density">${ScreenIcon}</fast-tab>
                 <fast-tab-panel id="contrast-tab-panel">
-                    <fast-switch
-                        checked="${x => x.darkMode}"
-                        @change="${(x, c) => x.themeChange(c.event as MouseEvent)}"
-                    >
-                        Dark Mode
-                    </fast-switch>
+                    <div class="content">
+                        <h1><span class="content-heading-highlight">Fast Frame</span> Dark Mode</h4>
+                        <h2>Pre-built for both light and dark modes</h2>
+                        <p>
+                            Sem viverra fringilla at magna turpis in. Nullam adipiscing fusce auctor semper arcu felis. Purus et enim feugiat arcu. Lectus neque sem est ridiculus tempus urna.
+                        </p>
+                        <div class="content-control-container" >
+                            <label for="dark-mode-switch">Dark mode</label>
+                            <fast-switch
+                                id="dark-mode-switch"
+                                :checked="${x => x.darkMode}"
+                                @change="${(x, c) =>
+                                    x.themeChange(c.event as CustomEvent)}"
+                            >
+                                <span slot="checked-message">On</span>
+                                <span slot="unchecked-message">Off</span>
+                            </fast-switch>
+                        </div>
+                    </div>
                 </fast-tab-panel>
                 <fast-tab-panel id="palette-tab-panel">
                     <div class="content">
-                        <h1>FAST FRAME COLORS</h1>
-                        <h2>Pre-existing color you can customize.</h2>
+                        <h1><span class="content-heading-highlight">Fast Frame</span> Colors</h4>
+                        <h2>Pre-existing color you can customize</h2>
                         <p>
                             Ultrices nibh nunc vestibulum fames. At lacus nunc lacus eget
                             neque.
                         </p>
-                        <fast-radio-group
-                            name="background color"
-                            value="${x => x.previewBackgroundPalette[0]}"
-                            @change="${(x, c) =>
-                                x.backgroundChangeHandler(c.event as MouseEvent)}"
-                        >
-                            <label slot="label">Background color</label>
-                            ${repeat(
-                                x => x.previewBackgroundPalette,
+                        <div class="content-control-container" >
+                            <label for="background-color-pickers">Background color</label>
+                            <fast-radio-group
+                                name="background-color-pickers"
+                                value="${x => x.previewBackgroundPalette[0]}"
+                                @change="${(x, c) =>
+                                    x.backgroundChangeHandler(c.event as CustomEvent)}"
+                            >
+                                ${repeat(
+                                    x => x.previewBackgroundPalette,
 
-                                html<string>`
-                                    <site-color-swatch
-                                        value="${x => x}"
-                                        background-color="${x => x}"
-                                        checked="${(x, c) =>
-                                            x === c.parent.previewBackgroundPalette[0]}"
-                                    ></site-color-swatch>
-                                `
-                            )}
-                        </fast-radio-group>
-                        <fast-radio-group
-                            value="${x => x.previewAccentPalette[0]}"
-                            name="accent color"
-                            @change="${(x, c) =>
-                                x.accentChangeHandler(c.event as MouseEvent)}"
-                        >
-                            <label slot="label">Accent color</label>
-                            ${repeat(
-                                (x, c) => x.previewAccentPalette,
-                                html<string>`
-                                    <site-color-swatch
-                                        value="${x => x}"
-                                        background-color="${x => x}"
-                                        checked="${(x, c) =>
-                                            x === c.parent.previewAccentPalette[0]}"
-                                    ></site-color-swatch>
-                                `
-                            )}
-                        </fast-radio-group>
+                                    html<string>`
+                                        <site-color-swatch
+                                            value="${x => x}"
+                                            background-color="${x => x}"
+                                            checked="${(x, c) =>
+                                                x ===
+                                                c.parent.previewBackgroundPalette[0]}"
+                                        ></site-color-swatch>
+                                    `
+                                )}
+                            </fast-radio-group>
+                            <label for="accent-color-pickers">Accent color</label>
+                            <fast-radio-group
+                                name="accent-color-pickers"
+                                value="${x => x.previewAccentPalette[0]}"
+                                @change="${(x, c) =>
+                                    x.accentChangeHandler(c.event as CustomEvent)}"
+                            >
+                                ${repeat(
+                                    x => x.previewAccentPalette,
+
+                                    html<string>`
+                                        <site-color-swatch
+                                            value="${x => x}"
+                                            background-color="${x => x}"
+                                            checked="${(x, c) =>
+                                                x === c.parent.previewAccentPalette[0]}"
+                                        ></site-color-swatch>
+                                    `
+                                )}
+                            </fast-radio-group>
+                            <label for="hue-slider">Hue</label>
+                            <fast-slider
+                                id="hue-slider"
+                                min="0"
+                                max="359"
+                                step="1"
+                                value="${x => x.hue}"
+                                @change="${(x, c) =>
+                                    x.hueChangeHandler(c.event as CustomEvent)}"
+                            >
+                                <div slot="track" class="hue-slider-track"></div>
+                            </fast-slider>
+                            <label for="saturation-slider">Saturation</label>
+                            <fast-slider
+                                id="saturation-slider"
+                                min="0"
+                                max="1"
+                                step="0.05"
+                                value="${x => x.saturation}"
+                                @change="${(x, c) =>
+                                    x.saturationChangeHandler(c.event as CustomEvent)}"
+                            >
+                                <div slot="track" class="saturation-slider-track" style="background-image: linear-gradient(to right, ${x =>
+                                    hslToRGB(
+                                        new ColorHSL(x.hue, 0, x.lightness)
+                                    ).toStringHexRGB()}, ${x =>
+    hslToRGB(new ColorHSL(x.hue, 1, x.lightness)).toStringHexRGB()});"></div>
+                            </fast-slider>
+                        </div>
                     </div>
                 </fast-tab-panel>
                 <fast-tab-panel id="swatches-tab-panel">
-                    Tab three content. This is for testing.
+                    <div class="content">
+                        <h1><span class="content-heading-highlight">Fast Frame</span> Styles</h4>
+                        <h2>Adjust style settings on the fly</h2>
+                        <p>
+                            Ultrices nibh nunc vestibulum fames. At lacus nunc lacus eget neque.
+                        </p>
+                        <div class="content-control-container-2">
+                            <label for="border-radius-slider">Border radius</label>
+                            <fast-slider
+                                id="border-radius-slider"
+                                min="0"
+                                max="12"
+                                step="1"
+                                value="3"
+                                @change="${(x, c) =>
+                                    x.borderRadiusChangeHandler(c.event as CustomEvent)}"
+                            >
+                                <fast-slider-label
+                                    hide-mark
+                                    position="0"
+                                >
+                                    0
+                                </fast-slider-label>            
+                                <fast-slider-label
+                                    hide-mark
+                                    position="12"
+                                >
+                                    12PX
+                                </fast-slider-label>
+                            </fast-slider>
+                            <label for="outline-width-slider">Outline width</label>
+                            <fast-slider
+                                id="outline-width-slider"
+                                min="0"
+                                max="6"
+                                step="1"
+                                value="1"
+                                @change="${(x, c) =>
+                                    x.outlineWidthChangeHandler(c.event as CustomEvent)}"
+                            >
+                                <fast-slider-label
+                                    hide-mark
+                                    position="0"
+                                >
+                                    0
+                                </fast-slider-label>            
+                                <fast-slider-label
+                                    hide-mark
+                                    position="6"
+                                >
+                                    6PX
+                                </fast-slider-label>
+                            </fast-slider>
+                        </div>
+                    </div>
                 </fast-tab-panel>
                 <fast-tab-panel id="density-tab-panel">
                     <div class="content">
-                        <label for="density-slider">Density</label>
-                        <fast-slider
-                            id="density-slider"
-                            min="0"
-                            max="3"
-                            step="1"
-                            value="0"
-                            @change="${(x, c) =>
-                                x.densityChangeHandler(c.event as MouseEvent)}"
-                        >
-                        </fast-slider>
+                        <h1><span class="content-heading-highlight">Fast Frame</span> Density</h4>
+                        <h2>Quickly change and modify your layout</h2>
+                        <p>
+                            Ultrices nibh nunc vestibulum fames. At lacus nunc lacus eget neque.
+                        </p>
+                        <div class="content-control-container-2">
+                            <label for="density-slider">Density</label>
+                            <fast-slider
+                                id="density-slider"
+                                min="-3"
+                                max="3"
+                                step="1"
+                                value="0"
+                                @change="${(x, c) =>
+                                    x.densityChangeHandler(c.event as CustomEvent)}"
+                            >
+                                <fast-slider-label
+                                    hide-mark
+                                    position="-3"
+                                >
+                                    -3
+                                </fast-slider-label>            
+                                <fast-slider-label
+                                    hide-mark
+                                    position="3"
+                                >
+                                    3
+                                </fast-slider-label>
+                            </fast-slider>
+                            <label for="base-height-multiplier-slider">Base height multiplier</label>
+                            <fast-slider
+                                id="base-height-multiplier-slider"
+                                min="5"
+                                max="15"
+                                step="1"
+                                value="10"
+                                @change="${(x, c) =>
+                                    x.baseHeightMultiplierChangeHandler(
+                                        c.event as CustomEvent
+                                    )}"
+                            >
+                                <fast-slider-label
+                                    hide-mark
+                                    position="0"
+                                >
+                                    5PX
+                                </fast-slider-label>            
+                                <fast-slider-label
+                                    hide-mark
+                                    position="15"
+                                >
+                                    15PX
+                                </fast-slider-label>
+                            </fast-slider>
+                            <label for="base-horizontal-spacing-multiplier-slider">Base horizontal<br/> spacing multiplier</label>
+                            <fast-slider
+                                id="base-horizontal-spacing-multiplier-slider"
+                                min="0"
+                                max="6"
+                                step="1"
+                                value="3"
+                                @change="${(x, c) =>
+                                    x.baseHorizontalSpacingMultiplierChangeHandler(
+                                        c.event as CustomEvent
+                                    )}"
+                            >
+                                <fast-slider-label
+                                    hide-mark
+                                    position="0"
+                                >
+                                    0
+                                </fast-slider-label>            
+                                <fast-slider-label
+                                    hide-mark
+                                    position="6"
+                                >
+                                    6PX
+                                </fast-slider-label>
+                            </fast-slider>
+                        </div>
                     </div>
                 </fast-tab-panel>
             </fast-tabs>
@@ -103,6 +272,11 @@ export const FastFrameTemplate = html<FastFrame>`
                 background-color="${x => x.backgroundColor}"
                 accent-base-color="${x => x.accentColor}"
                 density="${x => x.density}"
+                corner-radius="${x => x.borderRadius}"
+                outline-width="${x => x.outlineWidth}"
+                base-height-multiplier="${x => x.baseHeightMultiplier}"
+                base-horizontal-spacing-multiplier="${x =>
+                    x.baseHorizontalSpacingMultiplier}"
                 :accentPalette=${x => x.accentPalette}
             >
                 <fast-card>
