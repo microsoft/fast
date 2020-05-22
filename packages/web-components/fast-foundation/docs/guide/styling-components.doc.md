@@ -27,6 +27,20 @@ The FAST type ramp is exposed by the `FASTDesignSystemProvider` as CSS Custom Pr
 | Plus 5             | `--type-ramp-plus-5-font-size`  | `--type-ramp-plus-5-line-height` |
 | Plus 6 (largest)   | `--type-ramp-plus-6-font-size`  | `--type-ramp-plus-6-line-height` |
 
+### Design System Properties
+The following properties are provided by the `FASTDesignSystemProvider` and should be used as appropriate.
+
+| Name | Type | Description |
+| `--background-color` | `string` (hex color) | Defines the background of the layer. |
+| `--density` | `number` | A multiplier to control the density of UI elements. |
+| `--design-unit` | `number` | The core sizing unit that all sizes are derived from. |
+| `--base-height-multiplier` | `number` | The number of designUnits used for component height at the base density. |
+| `--base-horizontal-spacing-multiplier` | `number` | The number of designUnits used for horizontal spacing at the base density. |
+| `--corner-radius` | `number` | The corner radius of controls. |
+| `--outline-width` | `number` | The width of the outline of outline controls. |
+| `--focus-outline-width` | `number` | The width the focus indicator |
+| `--disabled-opacity` | `number` | Opacity of disabled controls |
+
 ## Conditional Stylesheets
 ### Forced-colors Stylesheets
 FAST has a commitment to facilitating accessible web experiences and [forced-colors](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors) support is a core tenant of that commitment. `@microsoft/fast-components` exports the `forcedColorsStylesheetBehavior` utility to provide a simple mechanism to apply forced-color stylesheets without bloating the component stylesheet in non-forced-color environments:
