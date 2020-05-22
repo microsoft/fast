@@ -21,11 +21,6 @@ export function when<T = any, K = any>(
         getTemplate = (): SyntheticViewTemplate => templateOrTemplateExpression;
     }
 
-    return (source: any, context: ExecutionContext): SyntheticViewTemplate | null => {
-        if (condition(source, context)) {
-            return getTemplate(source, context);
-        }
-
-        return null;
-    };
+    return (source: any, context: ExecutionContext): SyntheticViewTemplate | null =>
+        condition(source, context) ? getTemplate(source, context) : null;
 }
