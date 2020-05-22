@@ -1,6 +1,6 @@
 import Guidance from "../../.tmp/slider/guidance";
+import { webComponentSchemas } from "../";
 import { ComponentViewConfig } from "./data.props";
-import { webComponentSchemas } from "..";
 
 export const fastSliderId = "fast-slider";
 export const fastSliderLabelId = "fast-slider-label";

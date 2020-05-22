@@ -3,15 +3,20 @@ import manageJss from "@microsoft/fast-jss-manager-react";
 import Foundation from "@microsoft/fast-components-foundation-react";
 import {
     DataMessageOutgoing,
+    htmlMapper,
+    htmlResolver,
     InitializeMessageOutgoing,
     mapDataDictionary,
     MessageSystemOutgoing,
     MessageSystemType,
-    htmlMapper,
-    htmlResolver,
 } from "@microsoft/fast-tooling";
 import { ViewerCustomAction } from "@microsoft/fast-tooling-react";
 import { classNames, Direction } from "@microsoft/fast-web-utilities";
+import * as FASTComponents from "@microsoft/fast-components";
+import {
+    WebComponentDefinition,
+    WebComponentDefinitionTag,
+} from "@microsoft/fast-tooling/dist/data-utilities/web-component";
 import * as componentDefinitions from "./fast-components/configs/component-definitions";
 import {
     PreviewHandledProps,
@@ -21,8 +26,6 @@ import {
 } from "./preview.props";
 import style from "./preview.style";
 import { previewBackgroundTransparency, previewDirection } from "./explorer";
-import * as FASTComponents from "@microsoft/fast-components";
-import { WebComponentDefinitionTag } from "@microsoft/fast-tooling/dist/data-utilities/web-component";
 import { nativeElementTags } from "./utilities";
 
 // Prevent tree shaking
@@ -150,7 +153,7 @@ class Preview extends Foundation<
                             .reduce(
                                 (
                                     previousValue: WebComponentDefinitionTag[],
-                                    currentValue
+                                    currentValue: [string, WebComponentDefinition]
                                 ) => {
                                     if (Array.isArray(currentValue[1].tags)) {
                                         return previousValue.concat(currentValue[1].tags);

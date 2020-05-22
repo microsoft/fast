@@ -1,4 +1,3 @@
-import { DesignSystem, StandardLuminance } from "@microsoft/fast-components-styles-msft";
 import { Direction } from "@microsoft/fast-web-utilities";
 import { ExplorerClassNameContract } from "./explorer.style";
 import { ComponentViewConfig } from "./fast-components/configs/data.props";

@@ -38,9 +38,8 @@ const md = new MarkdownIt({
  */
 (function exportReadme() {
     const readmePaths = path.resolve(process.cwd(), srcDir);
-    console.log("readmePaths", readmePaths);
 
-    glob(readmePaths, void 0, function(error, files) {
+    glob(readmePaths, void 0, function (error, files) {
         files.forEach(filePath => {
             let guidance = startFile;
             const markdown = fs.readFileSync(filePath, "utf8");

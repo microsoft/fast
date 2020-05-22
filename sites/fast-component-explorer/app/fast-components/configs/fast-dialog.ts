@@ -1,7 +1,7 @@
 import textSchema from "../../utilities/text.schema";
 import Guidance from "../../.tmp/dialog/guidance";
+import { webComponentSchemas } from "../";
 import { ComponentViewConfig } from "./data.props";
-import { webComponentSchemas } from "..";
 
 export const fastDialogId = "fast-dialog";
 const fastDialogConfig: ComponentViewConfig = {

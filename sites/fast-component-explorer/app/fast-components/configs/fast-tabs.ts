@@ -1,7 +1,7 @@
 import textSchema from "../../utilities/text.schema";
 import Guidance from "../../.tmp/tabs/guidance";
+import { webComponentSchemas } from "../";
 import { ComponentViewConfig } from "./data.props";
-import { webComponentSchemas } from "..";
 
 export const fastTabsId = "fast-tabs";
 export const fastTabId = "fast-tab";

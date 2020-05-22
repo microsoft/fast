@@ -1,6 +1,6 @@
 import Guidance from "../../.tmp/divider/guidance";
+import { webComponentSchemas } from "../";
 import { ComponentViewConfig } from "./data.props";
-import { webComponentSchemas } from "..";
 
 export const fastDividerId = "fast-divider";
 const fastDividerConfig: ComponentViewConfig = {

@@ -4,7 +4,7 @@ import { createBrowserHistory } from "history";
 import { SchemaDictionary } from "@microsoft/fast-tooling";
 import textSchema from "./utilities/text.schema";
 import { webComponentSchemas } from "./fast-components";
-import { labelSchema, imageSchema } from "./utilities";
+import { imageSchema, labelSchema } from "./utilities";
 import { fastMenuItemId } from "./fast-components/configs/fast-menu";
 import { fastSliderLabelId } from "./fast-components/configs/fast-slider";
 import { fastTabId, fastTabPanelId } from "./fast-components/configs/fast-tabs";

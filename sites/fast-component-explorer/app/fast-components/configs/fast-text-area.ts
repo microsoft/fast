@@ -1,6 +1,6 @@
 import Guidance from "../../.tmp/text-area/guidance";
+import { webComponentSchemas } from "../";
 import { ComponentViewConfig } from "./data.props";
-import { webComponentSchemas } from "..";
 
 export const fastTextAreaId = "fast-text-area";
 const fastTextAreaConfig: ComponentViewConfig = {

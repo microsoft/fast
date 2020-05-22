@@ -1,7 +1,7 @@
 import textSchema from "../../utilities/text.schema";
 import Guidance from "../../.tmp/badge/guidance";
+import { webComponentSchemas } from "../";
 import { ComponentViewConfig } from "./data.props";
-import { webComponentSchemas } from "..";
 
 export const fastBadgeId = "fast-badge";
 const fastBadgeConfig: ComponentViewConfig = {

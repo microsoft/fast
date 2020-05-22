@@ -1,6 +1,6 @@
 import Guidance from "../../.tmp/progress/guidance";
+import { webComponentSchemas } from "../";
 import { ComponentViewConfig } from "./data.props";
-import { webComponentSchemas } from "..";
 
 export const fastProgressId = "fast-progress";
 const fastProgressConfig: ComponentViewConfig = {

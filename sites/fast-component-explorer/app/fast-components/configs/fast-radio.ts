@@ -1,7 +1,7 @@
 import textSchema from "../../utilities/text.schema";
 import Guidance from "../../.tmp/radio/guidance";
+import { webComponentSchemas } from "../";
 import { ComponentViewConfig } from "./data.props";
-import { webComponentSchemas } from "..";
 
 export const fastRadioId = "fast-radio";
 const fastRadioConfig: ComponentViewConfig = {

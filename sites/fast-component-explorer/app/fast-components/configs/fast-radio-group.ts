@@ -1,9 +1,9 @@
 import textSchema from "../../utilities/text.schema";
 import Guidance from "../../.tmp/radio-group/guidance";
-import { ComponentViewConfig } from "./data.props";
-import { webComponentSchemas } from "..";
-import { fastRadioId } from "./fast-radio";
+import { webComponentSchemas } from "../";
 import { labelSchema } from "../../utilities";
+import { ComponentViewConfig } from "./data.props";
+import { fastRadioId } from "./fast-radio";
 
 // <fast-radio-group name="numbers">
 // <label slot="label">Numbers</label>

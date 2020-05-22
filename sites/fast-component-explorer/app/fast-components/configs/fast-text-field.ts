@@ -1,6 +1,6 @@
 import Guidance from "../../.tmp/text-field/guidance";
+import { webComponentSchemas } from "../";
 import { ComponentViewConfig } from "./data.props";
-import { webComponentSchemas } from "..";
 
 export const fastTextFieldId = "fast-text-field";
 const fastTextFieldConfig: ComponentViewConfig = {

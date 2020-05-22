@@ -4158,6 +4158,34 @@
   resolved "https://registry.yarnpkg.com/@mdx-js/util/-/util-1.5.5.tgz#6f88bcb847ebd0117fc81bcd26b83220062fd881"
   integrity sha512-IudQkyZuM8T1CrSX9r0ShPXCABjtEtyrV4lxQqhKAwFqw1aYpy/5LOZhitMLoJTybZPVdPotuh+zjqYy9ZOSbA==
 
+"@microsoft/api-extractor-model@7.8.3":
+  version "7.8.3"
+  resolved "https://registry.yarnpkg.com/@microsoft/api-extractor-model/-/api-extractor-model-7.8.3.tgz#6b2f92107bb8d10de478dda40f5bab0acae03a1b"
+  integrity sha512-CaBwiLf3G8dwnkQwM2Rdxmf85d2vLDfBI4hc/bw9uRhAjTOrxUyoOD0xuxng5eznVTRhWaWxTfPWNjpBBTq9Sg==
+  dependencies:
+    "@microsoft/tsdoc" "0.12.19"
+    "@rushstack/node-core-library" "3.22.0"
+
+"@microsoft/api-extractor@^7.7.13":
+  version "7.8.5"
+  resolved "https://registry.yarnpkg.com/@microsoft/api-extractor/-/api-extractor-7.8.5.tgz#e266ec9fc57682cdafaf14d3bf9aaf9e140d6101"
+  integrity sha512-7XOAg2/ZTEoHeUP2BR8qr9oRNQqNSBeIBwyAfuY+uVCG9uOaTEh4fN/jrrCgCg3O1yeCTljNfzsixEiveRLppg==
+  dependencies:
+    "@microsoft/api-extractor-model" "7.8.3"
+    "@microsoft/tsdoc" "0.12.19"
+    "@rushstack/node-core-library" "3.22.0"
+    "@rushstack/ts-command-line" "4.4.0"
+    colors "~1.2.1"
+    lodash "~4.17.15"
+    resolve "1.8.1"
+    source-map "~0.6.1"
+    typescript "~3.7.2"
+
+"@microsoft/tsdoc@0.12.19":
+  version "0.12.19"
+  resolved "https://registry.yarnpkg.com/@microsoft/tsdoc/-/tsdoc-0.12.19.tgz#2173ccb92469aaf62031fa9499d21b16d07f9b57"
+  integrity sha512-IpgPxHrNxZiMNUSXqR1l/gePKPkfAmIKoDRP9hp7OwjU29ZR8WCJsOJ8iBKgw0Qk+pFwR+8Y1cy8ImLY6e9m4A==
+
 "@mrmlnc/readdir-enhanced@^2.2.1":
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/@mrmlnc/readdir-enhanced/-/readdir-enhanced-2.2.1.tgz#524af240d1a360527b730475ecfa1344aa540dde"
@@ -4321,10 +4349,10 @@
     estree-walker "^1.0.1"
     picomatch "^2.2.2"
 
-"@rushstack/node-core-library@3.19.7":
-  version "3.19.7"
-  resolved "https://registry.yarnpkg.com/@rushstack/node-core-library/-/node-core-library-3.19.7.tgz#8d8a193fd6f99536c92dd797ab50fd5fcb7630ea"
-  integrity sha512-gKE/OXH5GAj8yJ1kEyRW68UekJernilZ3QTRgmQ0MUHBCQmtZ9Q6T5PQ1sVbcL4teH8BMdpZeFy1DKnHs8h3PA==
+"@rushstack/node-core-library@3.22.0":
+  version "3.22.0"
+  resolved "https://registry.yarnpkg.com/@rushstack/node-core-library/-/node-core-library-3.22.0.tgz#f9e434cddc74a5d977b29acd6d2e07b8c25983a0"
+  integrity sha512-bkY9C5zBnE4swbKL1976O0NQHDQ6jhh/ZlGiKx0HghlrkQbAtc6AJIvwZgfwkbZcy+IJKcVNMHZlu0WjdGIXaQ==
   dependencies:
     "@types/node" "10.17.13"
     colors "~1.2.1"
@@ -4334,12 +4362,12 @@
     timsort "~0.3.0"
     z-schema "~3.18.3"
 
-"@rushstack/ts-command-line@4.3.14":
-  version "4.3.14"
-  resolved "https://registry.yarnpkg.com/@rushstack/ts-command-line/-/ts-command-line-4.3.14.tgz#5d7a437d4e9c564ff1b8e876215fca96c74858a1"
-  integrity sha512-YJZIyKvkm3f6ZdKSfMntHS9542Y2mmMWzaiPPoXxLFZntKxEIDE3WfUNlvOSo3yK4fNd09Tz3hfvTivQNHSiKQ==
+"@rushstack/ts-command-line@4.4.0":
+  version "4.4.0"
+  resolved "https://registry.yarnpkg.com/@rushstack/ts-command-line/-/ts-command-line-4.4.0.tgz#796f24681fdcbd01d463278c9e80a51ea5f73b2b"
+  integrity sha512-AYRICJg9Cwz+IBo1+leG0MtHx2uVScEs5P5ZNW3oocKekN6oLZvM1SNxghB7EXJzmYHnEMvCGhQx0Ll4oEkIyQ==
   dependencies:
-    "@types/argparse" "1.0.33"
+    "@types/argparse" "1.0.38"
     argparse "~1.0.9"
     colors "~1.2.1"
 
@@ -5225,10 +5253,10 @@
   resolved "https://registry.yarnpkg.com/@types/anymatch/-/anymatch-1.3.1.tgz#336badc1beecb9dacc38bea2cf32adf627a8421a"
   integrity sha512-/+CRPXpBDpo2RK9C68N3b2cOvO0Cf5B9aPijHsoDQTHivnGSObdOF2BRQOYjojWTDy6nQvMjmqRXIxH55VjxxA==
 
-"@types/argparse@1.0.33":
-  version "1.0.33"
-  resolved "https://registry.yarnpkg.com/@types/argparse/-/argparse-1.0.33.tgz#2728669427cdd74a99e53c9f457ca2866a37c52d"
-  integrity sha512-VQgHxyPMTj3hIlq9SY1mctqx+Jj8kpQfoLvDlVSDNOyuYs8JYfkuY3OW/4+dO657yPmNhHpePRx0/Tje5ImNVQ==
+"@types/argparse@1.0.38":
+  version "1.0.38"
+  resolved "https://registry.yarnpkg.com/@types/argparse/-/argparse-1.0.38.tgz#a81fd8606d481f873a3800c6ebae4f1d768a56a9"
+  integrity sha512-ebDJ9b0e702Yr7pWgB0jzm+CX4Srzz8RcXtLJDJB+BSccqMa36uyH/zUsSYao5+BD1ytv3k3rPYCq4mAE1hsXA==
 
 "@types/asap@^2.0.0":
   version "2.0.0"
@@ -20210,7 +20238,7 @@ react-sizeme@^2.5.2, react-sizeme@^2.6.7:
     shallowequal "^1.1.0"
     throttle-debounce "^2.1.0"
 
-react-sortable-hoc@^1.4.0, react-sortable-hoc@^1.9.1:
+react-sortable-hoc@^1.4.0:
   version "1.10.1"
   resolved "https://registry.yarnpkg.com/react-sortable-hoc/-/react-sortable-hoc-1.10.1.tgz#c352f26263acbcff9cf266bc755653a56c983a38"
   integrity sha512-eVyv5rrK6qY9bG60bboRY78In7OpdRRg+hxp4QMLIjC/UJaFSU7exTYd0764GtXvBqh+b+faYGzren5/ffRYKw==

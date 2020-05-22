@@ -1,7 +1,7 @@
 import textSchema from "../../utilities/text.schema";
 import Guidance from "../../.tmp/menu/guidance";
+import { webComponentSchemas } from "../";
 import { ComponentViewConfig } from "./data.props";
-import { webComponentSchemas } from "..";
 
 export const fastMenuId = "fast-menu";
 export const fastMenuItemId = "fast-menu-item";

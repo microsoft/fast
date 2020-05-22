@@ -1,9 +1,9 @@
 import textSchema from "../../utilities/text.schema";
 import Guidance from "../../.tmp/card/guidance";
-import { ComponentViewConfig } from "./data.props";
-import { webComponentSchemas } from "..";
-import { fastBadgeId } from "./fast-badge";
+import { webComponentSchemas } from "../";
 import { imageSchema } from "../../utilities";
+import { ComponentViewConfig } from "./data.props";
+import { fastBadgeId } from "./fast-badge";
 
 export const fastCardId = "fast-card";
 const fastCardConfig: ComponentViewConfig = {
