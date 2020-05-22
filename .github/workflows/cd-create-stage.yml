@@ -15,7 +15,7 @@ jobs:
       AZURE_WEBAPP_BUILD_PATH: sites/fast-creator
       AZURE_WEBAPP_DIST_PATH: sites/fast-creator/www
       AZURE_WEBAPP_SLOT_NAME: stage
-
+    
     steps:
     - name: Checkout Branch
       uses: actions/checkout@master
@@ -30,6 +30,8 @@ jobs:
       run: |
         cd ${{ env.AZURE_WEBAPP_BUILD_PATH }}
         yarn build
+        cp ../statics/server.js www
+        
 
     - name: 'Deploy to Active Azure Region'
       uses: azure/webapps-deploy@v2

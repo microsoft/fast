@@ -24,12 +24,13 @@ jobs:
       run: yarn global add lerna
 
     - name: Install package dependencies / prepare workspaces
-      run: yarn install --frozen-lockfile
+      run: yarn install --frozen-lockfile --production
     
     - name: Build Web Application
       run: |
         cd ${{ env.AZURE_WEBAPP_BUILD_PATH }}
         yarn build
+        cp ../statics/server.js www
 
     - name: 'Deploy to Active Azure Region'
       uses: azure/webapps-deploy@v2
