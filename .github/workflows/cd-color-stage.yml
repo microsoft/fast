@@ -32,9 +32,9 @@ jobs:
         yarn build
         cp ../statics/server.js www
         cd www
-        npm i path express express-history-api-fallback
+        npm i
         ls -lta
-        
+
     - name: 'Deploy to Active Azure Region'
       uses: azure/webapps-deploy@v2
       with:

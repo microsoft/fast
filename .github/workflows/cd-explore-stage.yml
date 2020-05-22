@@ -32,7 +32,7 @@ jobs:
         yarn build:app
         cp ../statics/server.js www
         cd www
-        npm i path express express-history-api-fallback
+        npm i
         ls -lta
 
     - name: 'Deploy to Active Azure Region'

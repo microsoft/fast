@@ -1,0 +1,12 @@
+{
+  "name": "@microsoft/fast-production-sites",
+  "version": "1.0.0",
+  "description": "These packages are required to run node server on Azure\"",
+  "author": "Microsoft Corporation",
+  "license": "MIT",
+  "dependencies": {
+    "path": "^0.12.7",
+    "express": "^4.17.1",
+    "express-history-api-fallback": "2.2.1"
+  }
+}
