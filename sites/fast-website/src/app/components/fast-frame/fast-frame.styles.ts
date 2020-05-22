@@ -3,6 +3,8 @@ import { display } from "@microsoft/fast-foundation";
 import {
     accentFillRestBehavior,
     accentForegroundCutRestBehavior,
+    accentForegroundRestBehavior,
+    neutralForegroundHintBehavior,
     neutralForegroundRestBehavior,
 } from "@microsoft/fast-components";
 
@@ -30,6 +32,49 @@ export const FastFrameStyles = css`
         flex-direction: column;
         width: 100%;
         text-align: start;
+        background: var(--background-color);
+        padding: 40px;
+    }
+
+    .content-control-container {
+        display: grid;
+        grid-template-rows: auto;
+        grid-template-columns: 1fr auto;
+        grid-gap: 20px;
+        align-items: center;
+    }
+
+    .content-control-container-2 {
+        display: grid;
+        grid-template-rows: auto;
+        grid-template-columns: 1fr 1fr;
+        grid-gap: 20px;
+    }
+
+    .content-control-container :not(label) {
+        justify-self: end;
+    }
+
+    .content h1 {
+        font-size: var(--type-ramp-minus-1-font-size);
+        line-height: var(--type-ramp-base-line-height);
+        color: var(--neutral-foreground-hint);
+        margin: 0;
+        margin-bottom: 15px;
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+
+    .content-heading-highlight {
+        color: var(--accent-foreground-rest);
+    }
+
+    .content h2 {
+        font-size: var(--type-ramp-plus-3-font-size);
+        line-height: var(--type-ramp-plus-3-line-height);
+        margin: 0;
+        margin-bottom: 10px;
+        font-weight: bold;
     }
 
     .preview {
@@ -38,10 +83,6 @@ export const FastFrameStyles = css`
         grid-template-columns: 280px 1fr;
         padding: 40px;
         background: var(--background-color);
-    }
-
-    fast-card {
-        width: auto;
     }
 
     .image-container {
@@ -132,6 +173,45 @@ export const FastFrameStyles = css`
         border-radius: calc(var(--corner-radius) * 1px);
     }
 
+    .saturation-slider-track {
+        height: calc(var(--track-size) * 1px);
+        border-radius: calc(var(--corner-radius) * 1px);
+    }
+
+    .hue-slider-track {
+        height: calc(var(--track-size) * 1px);
+        border-radius: calc(var(--corner-radius) * 1px);
+        background-image: 
+            linear-gradient(
+                to right, 
+                rgb(255, 0, 0),
+                rgb(255, 77, 0),
+                rgb(255, 153, 0),
+                rgb(255, 230, 0),
+                rgb(204, 255, 0),
+                rgb(128, 255, 0),
+                rgb(51, 255, 0),
+                rgb(0, 255, 26),
+                rgb(0, 255, 102),
+                rgb(0, 255, 179),
+                rgb(0, 255, 255),
+                rgb(0, 179, 255),
+                rgb(0, 102, 255),
+                rgb(0, 26, 255),
+                rgb(51, 0, 255),
+                rgb(128, 0, 255),
+                rgb(204, 0, 255),
+                rgb(255, 0, 230),
+                rgb(255, 0, 153),
+                rgb(255, 0, 76),
+                rgb(255, 0, 4)
+            );"
+    }
+
+    fast-card {
+        width: auto;
+    }
+
     fast-badge {
         --badge-fill-primary: var(--accent-fill-rest);
         --badge-color-primary: var(--neutral-foreground-rest);
@@ -140,8 +220,30 @@ export const FastFrameStyles = css`
     fast-slider {
         min-width: unset;
     }
+
+    fast-tab-panel {
+        background: var(--background-color);
+        height: auto;
+    }
+
+    fast-radio-group::part(positioning-region) {
+        display: grid;
+        grid-gap: 10px;
+        grid-auto-flow: column;
+    }
+
+    site-color-swatch {
+        margin: 0;      
+    }
+
+    fast-slider-label {
+        font-size: var(--type-ramp-minus-2-font-size);
+        color: var(--neutral-foreground-hint);
+    }
 `.withBehaviors(
     accentFillRestBehavior,
     accentForegroundCutRestBehavior,
+    accentForegroundRestBehavior,
+    neutralForegroundHintBehavior,
     neutralForegroundRestBehavior
 );
