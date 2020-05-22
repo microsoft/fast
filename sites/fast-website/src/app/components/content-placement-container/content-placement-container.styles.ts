@@ -99,7 +99,7 @@ export const ContentPlacementContainerStyles = css`
         grid-auto-flow: var(--flow);
     }
 
-    /* This creates the color and background color changes on hover */
+    /* This creates the color, background, and elevation changes on hover */
     /* start */
     .community_container:hover site-content-placement,
     .feature_container:hover site-feature-card {
