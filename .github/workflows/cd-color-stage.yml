@@ -30,6 +30,9 @@ jobs:
       run: |
         cd ${{ env.AZURE_WEBAPP_BUILD_PATH }}
         yarn build
+      
+    - name: Package Web Application
+      run: |
         cp ../statics/server.js www
         cd www
         npm i path express express-history-api-fallback
