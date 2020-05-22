@@ -37,7 +37,11 @@ for name in ${names[@]}; do
             --subscription $subscription \
             --use-32bit-worker-process false \
             --startup-file "pm2 start /home/site/wwwroot/server.js --no-daemon"
-            #--number-of-workers 4 \ # What is this and how many should be used?
+           
+
+    # TODO: 
+    # [ ] Turn off ARR Affinity on all servers/slots
+    # [ ] Set --number-of-workers
 
     echo "configuring web app logs ..."
         az webapp log config --name $new_name\
