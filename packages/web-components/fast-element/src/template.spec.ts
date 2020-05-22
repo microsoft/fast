@@ -134,66 +134,43 @@ describe(`The html tag template helper`, () => {
         {
             type: "mixed, back-to-back string, number, expression, and directive",
             location: "at the beginning",
-            template: html<Model>`${stringValue}${numberValue}${x =>
-                x.value}${new TestDirective()}
-            end`,
-            result: `${stringValue}${numberValue}${DOM.createInterpolationPlaceholder(
-                0
-            )}${DOM.createBlockPlaceholder(1)} end`,
+            template: html<Model>`${stringValue}${numberValue}${x => x.value}${new TestDirective()} end`,
+            result: `${stringValue}${numberValue}${DOM.createInterpolationPlaceholder(0)}${DOM.createBlockPlaceholder(1)} end`,
             expectDirectives: [BindingDirective, TestDirective],
         },
         {
             type: "mixed, back-to-back string, number, expression, and directive",
             location: "in the middle",
-            template: html<Model>`beginning
-            ${stringValue}${numberValue}${x => x.value}${new TestDirective()} end`,
-            result: `beginning ${stringValue}${numberValue}${DOM.createInterpolationPlaceholder(
-                0
-            )}${DOM.createBlockPlaceholder(1)} end`,
+            template: html<Model>`beginning ${stringValue}${numberValue}${x => x.value}${new TestDirective()} end`,
+            result: `beginning ${stringValue}${numberValue}${DOM.createInterpolationPlaceholder(0)}${DOM.createBlockPlaceholder(1)} end`,
             expectDirectives: [BindingDirective, TestDirective],
         },
         {
             type: "mixed, back-to-back string, number, expression, and directive",
             location: "at the end",
-            template: html<Model>`beginning
-            ${stringValue}${numberValue}${x => x.value}${new TestDirective()}`,
-            result: `beginning ${stringValue}${numberValue}${DOM.createInterpolationPlaceholder(
-                0
-            )}${DOM.createBlockPlaceholder(1)}`,
+            template: html<Model>`beginning ${stringValue}${numberValue}${x => x.value}${new TestDirective()}`,
+            result: `beginning ${stringValue}${numberValue}${DOM.createInterpolationPlaceholder(0)}${DOM.createBlockPlaceholder(1)}`,
             expectDirectives: [BindingDirective, TestDirective],
         },
         {
             type: "mixed, separated string, number, expression, and directive",
             location: "at the beginning",
-            template: html<Model>`${stringValue}separator${numberValue}separator${x =>
-                x.value}separator${new TestDirective()}
-            end`,
-            result: `${stringValue}separator${numberValue}separator${DOM.createInterpolationPlaceholder(
-                0
-            )}separator${DOM.createBlockPlaceholder(1)} end`,
+            template: html<Model>`${stringValue}separator${numberValue}separator${x => x.value}separator${new TestDirective()} end`,
+            result: `${stringValue}separator${numberValue}separator${DOM.createInterpolationPlaceholder(0)}separator${DOM.createBlockPlaceholder(1)} end`,
             expectDirectives: [BindingDirective, TestDirective],
         },
         {
             type: "mixed, separated string, number, expression, and directive",
             location: "in the middle",
-            template: html<Model>`beginning
-            ${stringValue}separator${numberValue}separator${x =>
-                x.value}separator${new TestDirective()}
-            end`,
-            result: `beginning ${stringValue}separator${numberValue}separator${DOM.createInterpolationPlaceholder(
-                0
-            )}separator${DOM.createBlockPlaceholder(1)} end`,
+            template: html<Model>`beginning ${stringValue}separator${numberValue}separator${x => x.value}separator${new TestDirective()} end`,
+            result: `beginning ${stringValue}separator${numberValue}separator${DOM.createInterpolationPlaceholder(0)}separator${DOM.createBlockPlaceholder(1)} end`,
             expectDirectives: [BindingDirective, TestDirective],
         },
         {
             type: "mixed, separated string, number, expression, and directive",
             location: "at the end",
-            template: html<Model>`beginning
-            ${stringValue}separator${numberValue}separator${x =>
-                x.value}separator${new TestDirective()}`,
-            result: `beginning ${stringValue}separator${numberValue}separator${DOM.createInterpolationPlaceholder(
-                0
-            )}separator${DOM.createBlockPlaceholder(1)}`,
+            template: html<Model>`beginning ${stringValue}separator${numberValue}separator${x => x.value}separator${new TestDirective()}`,
+            result: `beginning ${stringValue}separator${numberValue}separator${DOM.createInterpolationPlaceholder(0)}separator${DOM.createBlockPlaceholder(1)}`,
             expectDirectives: [BindingDirective, TestDirective],
         },
     ];
@@ -212,9 +189,7 @@ describe(`The html tag template helper`, () => {
     });
 
     it(`captures a case-sensitive property name when used with an expression`, () => {
-        const template = html<Model>`<my-element
-            :someAttribute=${x => x.value}
-        ></my-element>`;
+        const template = html<Model>`<my-element :someAttribute=${x => x.value}></my-element>`;
         const placeholder = DOM.createInterpolationPlaceholder(0);
 
         expect(template.html).to.equal(
