@@ -24,7 +24,7 @@ jobs:
       run: yarn global add lerna
 
     - name: Install package dependencies / prepare workspaces
-      run: yarn install --frozen-lockfile --production
+      run: yarn install --frozen-lockfile
     
     - name: Build Web Application
       run: |
