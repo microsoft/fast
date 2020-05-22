@@ -30,16 +30,16 @@ The FAST type ramp is exposed by the `FASTDesignSystemProvider` as CSS Custom Pr
 ### Design System Properties
 The following properties are provided by the `FASTDesignSystemProvider` and should be used as appropriate.
 
-| Name | Type | Description |
-| `--background-color` | `string` (hex color) | Defines the background of the layer. |
-| `--density` | `number` | A multiplier to control the density of UI elements. |
-| `--design-unit` | `number` | The core sizing unit that all sizes are derived from. |
-| `--base-height-multiplier` | `number` | The number of designUnits used for component height at the base density. |
-| `--base-horizontal-spacing-multiplier` | `number` | The number of designUnits used for horizontal spacing at the base density. |
-| `--corner-radius` | `number` | The corner radius of controls. |
-| `--outline-width` | `number` | The width of the outline of outline controls. |
-| `--focus-outline-width` | `number` | The width the focus indicator |
-| `--disabled-opacity` | `number` | Opacity of disabled controls |
+| Name                                   | Type | Description |
+| `--background-color`                   | `string` (hex color) | Defines the background of the layer.                                       |
+| `--density`                            | `number`             | A multiplier to control the density of UI elements.                        |
+| `--design-unit`                        | `number`             | The core sizing unit that all sizes are derived from.                      |
+| `--base-height-multiplier`             | `number`             | The number of designUnits used for component height at the base density.   |
+| `--base-horizontal-spacing-multiplier` | `number`             | The number of designUnits used for horizontal spacing at the base density. |
+| `--corner-radius`                      | `number`             | The corner radius of controls.                                             |
+| `--outline-width`                      | `number`             | The width of the outline of outline controls.                              |
+| `--focus-outline-width`                | `number`             | The width the focus indicator.                                             |
+| `--disabled-opacity`                   | `number`             | Opacity of disabled controls.                                              |
 
 ## Conditional Stylesheets
 ### Forced-colors Stylesheets
