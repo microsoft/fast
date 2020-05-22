@@ -223,7 +223,7 @@ export const FastFrameStyles = css`
 
     fast-tab-panel {
         background: var(--background-color);
-        height: 100%;
+        height: auto;
     }
 
     fast-radio-group::part(positioning-region) {

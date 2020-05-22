@@ -30,9 +30,9 @@ export const FastFrameTemplate = html<FastFrame>`
                             <label for="dark-mode-switch">Dark mode</label>
                             <fast-switch
                                 id="dark-mode-switch"
-                                checked="${x => x.darkMode}"
+                                :checked="${x => x.darkMode}"
                                 @change="${(x, c) =>
-                                    x.themeChange(c.event as MouseEvent)}"
+                                    x.themeChange(c.event as CustomEvent)}"
                             >
                                 <span slot="checked-message">On</span>
                                 <span slot="unchecked-message">Off</span>
@@ -54,7 +54,7 @@ export const FastFrameTemplate = html<FastFrame>`
                                 name="background-color-pickers"
                                 value="${x => x.previewBackgroundPalette[0]}"
                                 @change="${(x, c) =>
-                                    x.backgroundChangeHandler(c.event as MouseEvent)}"
+                                    x.backgroundChangeHandler(c.event as CustomEvent)}"
                             >
                                 ${repeat(
                                     x => x.previewBackgroundPalette,
@@ -75,7 +75,7 @@ export const FastFrameTemplate = html<FastFrame>`
                                 name="accent-color-pickers"
                                 value="${x => x.previewAccentPalette[0]}"
                                 @change="${(x, c) =>
-                                    x.accentChangeHandler(c.event as MouseEvent)}"
+                                    x.accentChangeHandler(c.event as CustomEvent)}"
                             >
                                 ${repeat(
                                     x => x.previewAccentPalette,
@@ -98,7 +98,7 @@ export const FastFrameTemplate = html<FastFrame>`
                                 step="1"
                                 value="${x => x.hue}"
                                 @change="${(x, c) =>
-                                    x.hueChangeHandler(c.event as MouseEvent)}"
+                                    x.hueChangeHandler(c.event as CustomEvent)}"
                             >
                                 <div slot="track" class="hue-slider-track"></div>
                             </fast-slider>
@@ -110,7 +110,7 @@ export const FastFrameTemplate = html<FastFrame>`
                                 step="0.05"
                                 value="${x => x.saturation}"
                                 @change="${(x, c) =>
-                                    x.saturationChangeHandler(c.event as MouseEvent)}"
+                                    x.saturationChangeHandler(c.event as CustomEvent)}"
                             >
                                 <div slot="track" class="saturation-slider-track" style="background-image: linear-gradient(to right, ${x =>
                                     hslToRGB(
@@ -137,7 +137,7 @@ export const FastFrameTemplate = html<FastFrame>`
                                 step="1"
                                 value="3"
                                 @change="${(x, c) =>
-                                    x.borderRadiusChangeHandler(c.event as MouseEvent)}"
+                                    x.borderRadiusChangeHandler(c.event as CustomEvent)}"
                             >
                                 <fast-slider-label
                                     hide-mark
@@ -160,7 +160,7 @@ export const FastFrameTemplate = html<FastFrame>`
                                 step="1"
                                 value="1"
                                 @change="${(x, c) =>
-                                    x.outlineWidthChangeHandler(c.event as MouseEvent)}"
+                                    x.outlineWidthChangeHandler(c.event as CustomEvent)}"
                             >
                                 <fast-slider-label
                                     hide-mark
@@ -194,7 +194,7 @@ export const FastFrameTemplate = html<FastFrame>`
                                 step="1"
                                 value="0"
                                 @change="${(x, c) =>
-                                    x.densityChangeHandler(c.event as MouseEvent)}"
+                                    x.densityChangeHandler(c.event as CustomEvent)}"
                             >
                                 <fast-slider-label
                                     hide-mark
@@ -218,7 +218,7 @@ export const FastFrameTemplate = html<FastFrame>`
                                 value="10"
                                 @change="${(x, c) =>
                                     x.baseHeightMultiplierChangeHandler(
-                                        c.event as MouseEvent
+                                        c.event as CustomEvent
                                     )}"
                             >
                                 <fast-slider-label
@@ -243,7 +243,7 @@ export const FastFrameTemplate = html<FastFrame>`
                                 value="3"
                                 @change="${(x, c) =>
                                     x.baseHorizontalSpacingMultiplierChangeHandler(
-                                        c.event as MouseEvent
+                                        c.event as CustomEvent
                                     )}"
                             >
                                 <fast-slider-label

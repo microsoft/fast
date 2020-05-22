@@ -1,5 +1,5 @@
 import { FASTElement, attr, observable } from "@microsoft/fast-element";
-import { createColorPalette } from "@microsoft/fast-components";
+import { createColorPalette, FASTSlider } from "@microsoft/fast-components";
 import {
     ColorHSL,
     ColorRGBA64,
@@ -7,6 +7,7 @@ import {
     parseColorHexRGB,
     rgbToHSL,
 } from "@microsoft/fast-colors";
+import { SiteColorSwatch } from "../color-swatch";
 
 export class FastFrame extends FASTElement {
     @attr({ attribute: "accent-color" })
@@ -59,8 +60,6 @@ export class FastFrame extends FASTElement {
     @observable
     public baseHorizontalSpacingMultiplier: number = 3;
 
-    private parsedColor = parseColorHexRGB(this.accentColor);
-
     @observable
     public saturation: number;
 
@@ -70,56 +69,72 @@ export class FastFrame extends FASTElement {
     @observable
     public lightness: number;
 
-    public accentChangeHandler = (e: any): void => {
-        const element: HTMLInputElement = e.target;
-        if (element.checked) {
-            this.accentColor = e.target.value;
-            const accentColorHSL = rgbToHSL(parseColorHexRGB(this.accentColor)!);
-            this.hue = accentColorHSL.h;
-            this.saturation = accentColorHSL.s;
-            this.lightness = accentColorHSL.l;
-            this.parsedColor = parseColorHexRGB(this.accentColor);
-            this.accentPalette = createColorPalette(this.parsedColor as ColorRGBA64);
+    public accentChangeHandler = (e: CustomEvent): void => {
+        if (e.target instanceof SiteColorSwatch) {
+            if (e.target.checked) {
+                this.accentColor = e.target.value;
+                const accentColorHSL = rgbToHSL(parseColorHexRGB(this.accentColor)!);
+                this.hue = accentColorHSL.h;
+                this.saturation = accentColorHSL.s;
+                this.lightness = accentColorHSL.l;
+                const parsedColor = parseColorHexRGB(this.accentColor);
+                this.accentPalette = createColorPalette(parsedColor as ColorRGBA64);
+            }
         }
     };
 
-    public backgroundChangeHandler = (e: any): void => {
-        const element: HTMLInputElement = e.target;
-        if (element.checked) {
-            this.backgroundColor = e.target.value;
-            this.lastSelectedIndex = Array.from(this.previewBackgroundPalette).indexOf(
-                e.target.value
-            );
+    public backgroundChangeHandler = (e: CustomEvent): void => {
+        if (e.target instanceof SiteColorSwatch) {
+            if (e.target.checked) {
+                this.backgroundColor = e.target.value;
+                this.lastSelectedIndex = Array.from(
+                    this.previewBackgroundPalette
+                ).indexOf(e.target.value);
+            }
         }
     };
 
-    public densityChangeHandler = (e: any): void => {
-        this.density = e.target.value;
+    public densityChangeHandler = (e: CustomEvent): void => {
+        if (e.target instanceof FASTSlider) {
+            this.density = parseInt(e.target.value);
+        }
     };
 
-    public borderRadiusChangeHandler = (e: any): void => {
-        this.borderRadius = e.target.value;
+    public borderRadiusChangeHandler = (e: CustomEvent): void => {
+        if (e.target instanceof FASTSlider) {
+            this.borderRadius = parseInt(e.target.value);
+        }
     };
 
-    public outlineWidthChangeHandler = (e: any): void => {
-        this.outlineWidth = e.target.value;
+    public outlineWidthChangeHandler = (e: CustomEvent): void => {
+        if (e.target instanceof FASTSlider) {
+            this.outlineWidth = parseInt(e.target.value);
+        }
     };
 
-    public baseHeightMultiplierChangeHandler = (e: any): void => {
-        this.baseHeightMultiplier = e.target.value;
+    public baseHeightMultiplierChangeHandler = (e: CustomEvent): void => {
+        if (e.target instanceof FASTSlider) {
+            this.baseHeightMultiplier = parseInt(e.target.value);
+        }
     };
 
-    public baseHorizontalSpacingMultiplierChangeHandler = (e: any): void => {
-        this.baseHorizontalSpacingMultiplier = e.target.value;
+    public baseHorizontalSpacingMultiplierChangeHandler = (e: CustomEvent): void => {
+        if (e.target instanceof FASTSlider) {
+            this.baseHorizontalSpacingMultiplier = parseInt(e.target.value);
+        }
     };
 
-    public saturationChangeHandler = (e: any): void => {
-        this.saturation = e.target.value;
+    public saturationChangeHandler = (e: CustomEvent): void => {
+        if (e.target instanceof FASTSlider) {
+            this.saturation = parseFloat(e.target.value);
+        }
         this.updateAccentColor();
     };
 
-    public hueChangeHandler = (e: any): void => {
-        this.hue = e.target.value;
+    public hueChangeHandler = (e: CustomEvent): void => {
+        if (e.target instanceof FASTSlider) {
+            this.hue = parseFloat(e.target.value);
+        }
         this.updateAccentColor();
     };
 
@@ -130,7 +145,7 @@ export class FastFrame extends FASTElement {
         this.accentPalette = createColorPalette(accentRGB);
     }
 
-    public themeChange = (e: any): void => {
+    public themeChange = (e: CustomEvent): void => {
         this.darkMode = !this.darkMode;
         if (!this.darkMode) {
             this.previewBackgroundPalette = [
