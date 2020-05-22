@@ -3,6 +3,7 @@ import {
     CheckboxClassNameContract,
     ManagedClasses,
 } from "@microsoft/fast-components-class-name-contracts-base";
+import { Omit } from "utility-types";
 
 /**
  * @deprecated
@@ -14,7 +15,10 @@ export enum CheckboxSlot {
 }
 
 export type CheckboxManagedClasses = ManagedClasses<CheckboxClassNameContract>;
-export type CheckboxUnhandledProps = React.HTMLAttributes<HTMLDivElement>;
+export type CheckboxUnhandledProps = Omit<
+    React.HTMLAttributes<HTMLDivElement>,
+    "aria-label"
+>;
 export interface CheckboxHandledProps extends CheckboxManagedClasses {
     /**
      * The id of the checkbox input element
@@ -50,6 +54,12 @@ export interface CheckboxHandledProps extends CheckboxManagedClasses {
      * The checkbox label
      */
     label?: (className: string) => React.ReactNode;
+
+    /**
+     * The checkbox aria-label
+     * This is necessary due to how unhandledProps are passed to the root of the component
+     */
+    ariaLabel?: string;
 
     /**
      * The value of the checkbox

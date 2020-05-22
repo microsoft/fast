@@ -191,6 +191,14 @@ describe("radio", (): void => {
         expect(onChange).toHaveBeenCalledTimes(2);
     });
 
+    test("should apply a aria-label to the input element when the `ariaLabel` prop is passed", (): void => {
+        const rendered: any = mount(
+            <Radio managedClasses={managedClasses} inputId="id" ariaLabel="label" />
+        );
+
+        expect(rendered.find("input").prop("aria-label")).toBe("label");
+    });
+
     test("should apply a value prop to the input element", (): void => {
         const rendered: any = mount(
             <Radio managedClasses={managedClasses} inputId="id" value="myValue" />

@@ -22,6 +22,11 @@ export default {
             title: "Disabled",
             type: "boolean",
         },
+        ariaLabel: {
+            title: "Aria-label",
+            type: "string",
+            examples: ["label"],
+        },
         name: {
             title: "Name",
             type: "string",
