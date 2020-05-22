@@ -6,7 +6,7 @@ export const CardSectionStyles = css`
         --flow: column;
     }
 
-    @media screen and (max-width: 1000px) {
+    @media screen and (max-width: 900px) {
         :host {
             --flow: row;
         }
@@ -15,13 +15,17 @@ export const CardSectionStyles = css`
     ${display("grid")} :host {
         grid-template-rows: repeat(4, min-content);
         grid-auto-flow: var(--flow);
+        justify-content: center;
     }
 
     :host(:hover) ::slotted(site-feature-card) {
-        filter: blur(1px);
+        filter: saturate(0);
     }
 
     :host ::slotted(site-feature-card:hover) {
-        filter: blur(0);
+        cursor: pointer;
+        color: currentColor;
+        background-color: rgba(27, 27, 27, 1);
+        filter: saturate(1);
     }
 `;
