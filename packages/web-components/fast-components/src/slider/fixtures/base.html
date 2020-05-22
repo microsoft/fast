@@ -1,5 +1,6 @@
 <fast-design-system-provider use-defaults>
     <div style="display: flex; flex-direction: column; justify-content: space-evenly; width: 500px;">
+        <h4>Toggle orientation</h4>
         <div style="margin-bottom: 60px;">
             <button style="width: 90px;margin: 10px;" onclick="const slider = document.getElementById('switcher'); slider.getAttribute('orientation') === 'horizontal' ? slider.setAttribute('orientation', 'vertical') : slider.setAttribute('orientation', 'horizontal');">
                 Toggle orientation
@@ -28,12 +29,19 @@
             </fast-slider>
         </div>
         <!-- No max or min -->
+        <h4>Defaults</h4>
         <fast-slider></fast-slider>
 
         <!-- Margin offsets -->
+        <h4>horizontal with left offset</h4>
         <fast-slider style="margin-left:100px"></fast-slider>
 
+        <!-- Margin offsets vertical -->
+        <h4>Vertical with top offset</h4>
+        <fast-slider orientation="vertical", style="margin-left:100px"></fast-slider>
+
         <!-- Negative positions -->
+        <h4>Negative positions</h4>
         <fast-slider
             min="-3"
             max="3"
@@ -76,8 +84,33 @@
                 </fast-slider-label>          
         </fast-slider>
 
+        <!-- Min above 0 -->
+        <h4>Min value greater than 0</h4>
+        <div style="width: 160px;">
+            <fast-slider
+                min="5"
+                max="15"
+                step="1"
+                value="10"
+                style="min-width: unset;"
+            >
+                    <fast-slider-label
+                        hide-mark="true"
+                        position="5"
+                    >
+                        5
+                    </fast-slider-label>
+                    <fast-slider-label
+                        hide-mark="true"
+                        position="15"
+                    >
+                        15
+                    </fast-slider-label>
+            </fast-slider>
+        </div>
 
         <!-- Text Labels -->
+        <h4>Text labels</h4>
         <div style="display: flex; flex-direction: column; height:min-content">
             <label for="slider1" style="margin-left: 8px; color: var(--neutral-foreground-rest);">Temperature:</label>
             <fast-slider
@@ -100,6 +133,7 @@
         </div>
 
         <!-- Custom labels (rtl) -->
+        <h4>Custom labels (rtl)</h4>
         <div style="display: flex; flex-direction: column; align-items: flex-start; height:min-content">
             <label for="rtl-slider" style="margin-left: 8px; color: var(--neutral-foreground-rest);">rtl support</label>
             <div dir="rtl" style="width: 100%;">
@@ -140,6 +174,7 @@
         </div>
 
         <!-- Using slot for custom thumb -->
+        <h4>Custom thumb</h4>
         <fast-slider
             min="0"
             max="100"
@@ -213,8 +248,34 @@
             </svg>
         </fast-slider>
 
-        <!-- Custom labels and thumb hide marks on labels -->
+        <!-- vertical orientation -->
+        <h4>Vertical</h4>
+        <fast-slider orientation="vertical" min="0" max="100" step="10" value="50" style="height: 300px; width: 50px;">
+            <fast-slider-label
+                position="0"
+            >
+                0&#8451;
+            </fast-slider-label>            
+            <fast-slider-label
+                position="10"
+            >
+                10&#8451;
+            </fast-slider-label>
+            <fast-slider-label
+                position="90"
+            >
+                90&#8451;
+            </fast-slider-label>
+            <fast-slider-label
+                position="100"
+            >
+                100&#8451;
+            </fast-slider-label>
+        </fast-slider>
 
+
+        <!-- Custom labels and thumb hide marks on labels -->
+        <h4>Custom labels and thumb, hide marks on labels</h4>
         <fast-slider
             min="0"
             max="100"
@@ -271,6 +332,7 @@
         </fast-slider>
 
         <!-- Disabled -->
+        <h4>Disabled</h4>
         <fast-slider
             min="0"
             max="100"

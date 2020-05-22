@@ -6,6 +6,7 @@ import {
     keyCodeArrowRight,
     keyCodeArrowUp,
     keyCodeEnter,
+    keyCodeTab,
 } from "@microsoft/fast-web-utilities";
 import { RadioControl } from "../radio/index";
 
@@ -252,6 +253,9 @@ export class RadioGroup extends FASTElement {
     public keydownHandler = (e: KeyboardEvent): void => {
         const group: RadioControl[] = this.getFilteredRadioButtons();
         let index: number = 0;
+        if (e.keyCode !== keyCodeTab) {
+            e.preventDefault();
+        }
         switch (e.keyCode) {
             case keyCodeEnter:
                 this.checkFocusedRadio();
