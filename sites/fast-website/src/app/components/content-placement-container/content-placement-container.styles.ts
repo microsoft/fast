@@ -92,6 +92,21 @@ export const ContentPlacementContainerStyles = css`
         grid-auto-flow: var(--flow);
     }
 
+    /* This creates the color and background color changes on hover */
+    /* start */
+    .community_container:hover site-content-placement,
+    .feature_container:hover site-feature-card {
+        color: var(--neutral-foreground-hint);
+    }
+    .community_container:hover site-content-placement:hover,
+    .feature_container:hover site-feature-card:hover {
+        background: var(--neutral-fill-active);
+        box-shadow: 0px 20px 30px rgba(0, 0, 0, 0.15);
+        border-radius: calc(var(--corner-radius) * 1px);
+        color: var(--neutral-foreground-hover);
+    }
+    /* end */
+
     .icon {
         fill: currentColor;
     }
