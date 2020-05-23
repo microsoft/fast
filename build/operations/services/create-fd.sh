@@ -45,7 +45,7 @@ https://docs.microsoft.com/en-us/cli/azure/ext/front-door/network/front-door?vie
 az extension add --name front-door
 
 # Configure and set name
-front_door=$product_name-fd-test
+front_door=$product_name-fd
 resource_group=$product_name-ops-rg
 
 # Create front door
