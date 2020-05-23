@@ -1,9 +1,9 @@
 import {
     attr,
     FASTElement,
-    observable,
-    Observable,
     Notifier,
+    Observable,
+    observable,
 } from "@microsoft/fast-element";
 import {
     getDisplayedNodes,
