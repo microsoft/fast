@@ -15,7 +15,7 @@ bold=$(tput smso)
 unbold=$(tput rmso)
 
 # SET COMMON VARIABLES
-debug=false
+debug=true
 dir=$(PWD)
 
 # Requirements
