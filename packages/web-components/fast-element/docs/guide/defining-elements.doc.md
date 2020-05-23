@@ -764,7 +764,7 @@ export function when(condition, templateOrTemplateExpression) {
 }
 ```
 
-As you can see, all that `when` does is compose a new function that checks your condition. If it's true, it invokes your template provider function; if false, it returns null, indicating nothing should be rendered.
+As you can see, all that `when` does is compose a new function that checks your condition. If it's `true,` it invokes your template provider function; if `false`, it returns `null`, indicating nothing should be rendered.
 
 ### Referential Directives
 
