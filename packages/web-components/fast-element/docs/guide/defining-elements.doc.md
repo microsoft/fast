@@ -749,13 +749,9 @@ Now that we've explained how content composition works, you may find it interest
 
 ```TypeScript
 export function when(condition, templateOrTemplateExpression) {
-    let getTemplate;
-
-    if (typeof templateOrTemplateExpression === "function") {
-        getTemplate = templateOrTemplateExpression;
-    } else {
-        getTemplate = () => templateOrTemplateExpression;
-    }
+    const getTemplate = typeof templateOrTemplateExpression === "function"
+      ? templateOrTemplateExpression
+      : () => templateOrTemplateExpression;
 
     return (source, context) => 
       condition(source, context) 

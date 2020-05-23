@@ -13,13 +13,10 @@ export function when<T = any, K = any>(
         | SyntheticViewTemplate
         | Expression<T, SyntheticViewTemplate>
 ): CaptureType<T> {
-    let getTemplate: Expression<T, SyntheticViewTemplate>;
-
-    if (typeof templateOrTemplateExpression === "function") {
-        getTemplate = templateOrTemplateExpression;
-    } else {
-        getTemplate = (): SyntheticViewTemplate => templateOrTemplateExpression;
-    }
+    const getTemplate =
+        typeof templateOrTemplateExpression === "function"
+            ? templateOrTemplateExpression
+            : (): SyntheticViewTemplate => templateOrTemplateExpression;
 
     return (source: any, context: ExecutionContext): SyntheticViewTemplate | null =>
         condition(source, context) ? getTemplate(source, context) : null;
