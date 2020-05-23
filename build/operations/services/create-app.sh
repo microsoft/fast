@@ -58,7 +58,7 @@ for name in ${names[@]}; do
 
     echo "creating web app dns zone w/ cname record ..."
         az network dns record-set cname set-record --cname $dns_cname --record-set-name $name --resource-group fast-ops-rg --zone-name $dns_zone --if-none-match
-    
+
     echo "configuring hostname ..."
         key_vault_id=$(az keyvault show --name fast-ops-kv --query "id" -o tsv)
         az webapp config hostname add --hostname $name.$dns_zone --resource-group $resource_group --webapp-name $new_name

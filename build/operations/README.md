@@ -87,48 +87,50 @@ This hierarchy uses the Workload separation strategy.
 
 **staging slots are used to manage pre-production smoke testing.
 
-### Resource Groups / Locations
-For improved isolation and availability in business continuity disaster recovery (BCDR) 
-regionally pair "East US" and "West US" for indepth details on paired regions.
-
-[Availability Docs](https://docs.microsoft.com/en-us/azure/best-practices-availability-paired-regions)
-[Regional Pairing Docs](https://docs.microsoft.com/en-us/azure/architecture/reference-architectures/app-service-web-app/multi-region#regional-pairing)
-
 
 ### Front Door
-Azure Front Door is an Application Delivery Network (ADN) as a service, offering various layer 7 load-balancing capabilities for your applications. It provides dynamic site acceleration (DSA) along with global load balancing with near real-time failover. It is a highly available and scalable service, which is fully managed by Azure. 
+This is considered a global resource and a type of Application Delivery Network (ADN) as a service, offering load-balancing capabilities for global routing to applications across availability regions using active/passive with hot standby approach. Performance is improved with dynamic site acceleration. Full end-to-end encyrption is achieved using TLS/SSL offloading. Configuration changes to Front Door, are deployed across all POPs globally in 3 to 5 minutes. Any updates to the backend pools are seamless and cause zero downtime when configured correctly. For greater scale as traffic increases immensely, we could implement an Azure Load Balance behind Front Door.
 
-[Front Door Docs](https://docs.microsoft.com/en-us/azure/frontdoor/)
+Front Door is a globally distributed multi-tenant platform with huge volumes of capacity to cater to your application's scalability needs. Delivered from the edge of Microsoft's global network, Front Door provides global load balancing capability that allows you to fail over your entire application or even individual microservices across regions or different clouds.
 
-Front Door requires the Azure CLI extension before running `create-frontdoor.sh` Bash script, which can be installed using:
+### Risks
+* Failure Points: Front Door is a possible failure point in the system. If the service fails, clients cannot access your application during the downtime. Review the Front Door service level agreement (SLA) and determine whether using Front Door alone meets your business requirements for high availability. If not, consider adding another traffic management solution as a fallback. If the Front Door service fails, change your canonical name (CNAME) records in DNS to point to the other traffic management service. This step must be performed manually, and your application will be unavailable until the DNS changes are propagated.
 
-```bash
-az extension add -nname front-door
-```
+* Certification Autorotation: For our custom TLS/SSL certificate, autorotation isn't supported and must setup new prior to expiration, and updated across Key Vaults and backend microservices. Updates to certifictes is atomic and does not cause any downtime.
 
-### Storage
-Uses read-access geo-redundant storage (RA-GRS), where the data is replicated to a secondary region. You have read-only access to the data in the secondary region through a separate endpoint. If there is a regional outage or disaster, the Azure Storage team might decide to perform a geo-failover to the secondary region. There is no customer action required for this failover. 
+* Scale Limitations: There are several primary limitations to consider as FAST grows over time including 100 resources per subscription, 50 backend pools per resource, and 100 backends per back-end pool. For additional limitations visit [details](https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/azure-subscription-service-limits#azure-front-door-service-limits)
 
-[Storage Docs](https://docs.microsoft.com/en-us/azure/storage/common/storage-redundancy)
+* MIME Types: There are certain limitations on fonts, images, an data files.
 
+https://docs.microsoft.com/en-us/azure/frontdoor/front-door-caching
+
+
+### Resource Groups / Locations
+For improved isolation and availability in business continuity disaster recovery (BCDR) regionally pairing is used.
 
 ### Key Vault
-Uses one key vault per environment (development, staging, and production). Takes backups on regular cadence and as objects stored within the Key Vault change.
+FAST uses one Key vault per environment (development, staging, and production) for an additional layer of security. If one environment is compromised, others remain safe. Key Vault, takes backups on regular cadence as objects stored within the Key Vault change.  Subscriptions are stored in Azure Key Vault retrievable using Azure CLI, for authorized administrators only.
 
-#### Secrets
-Subscriptions are stored in Azure Key Vault as a manual data operation.  They are then retrievable using Azure CLI, but authorized users only.
+### Storage
+Uses read-access geo-redundant storage (RA-GRS), where the data is replicated to a secondary region. You have read-only access to the data in the secondary region through a separate endpoint. If there is a regional outage or disaster, the Azure Storage team might decide to perform a geo-failover to the secondary region. There is no customer action required for this failover.
 
-#### TODO
-1. Setup Permissions for management groups
-  1. Production (Contributor)
-  1. Staging (Contributor)
-  1. Development ()
-1. https://docs.microsoft.com/en-us/azure/frontdoor/quickstart-create-front-door#create-a-front-door-for-your-application
+### Azure CDN
+For Azure CDN Standard from Microsoft profiles, propagation usually completes in 10 minutes.  If you're setting up compression for the first time for your CDN endpoint, consider waiting 1-2 hours before you troubleshoot to ensure the compression settings have propagated to the POPs.
+
+https://docs.microsoft.com/en-us/azure/cdn/cdn-improve-performance
+
+https://docs.microsoft.com/en-us/azure/cdn/cdn-features
 
 
 ### Building for Resiliency
 https://docs.microsoft.com/en-us/azure/architecture/framework/resiliency/overview
 
 
-#### Acceptable Risks
-Front Door is a possible failure point in the system. If the service fails, clients cannot access your application during the downtime. Review the Front Door service level agreement (SLA) and determine whether using Front Door alone meets your business requirements for high availability. If not, consider adding another traffic management solution as a fallback. If the Front Door service fails, change your canonical name (CNAME) records in DNS to point to the other traffic management service. This step must be performed manually, and your application will be unavailable until the DNS changes are propagated.
+## Log Analytics Reporting
+To query Front Door metics and diagnostics on WAP run on Azure Log Analytics:
+
+```bash
+AzureDiagnostics
+| where ResourceType == "FRONTDOORS" and Category == "FrontdoorWebApplicationFirewallLog"
+| where action_s == "Block"
+```
