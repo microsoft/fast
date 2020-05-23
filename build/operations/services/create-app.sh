@@ -40,9 +40,9 @@ for name in ${names[@]}; do
            
 
     # TODO: 
-    # [ ] Turn off ARR Affinity on all servers/slots
-    # [ ] Set --number-of-workers
-
+    # [] Turn off ARR Affinity on all servers/slots
+    # [] Set --number-of-workers
+    # [] Store logs in their own storage container
     echo "configuring web app logs ..."
         az webapp log config --name $new_name\
             --application-logging true \
@@ -55,6 +55,9 @@ for name in ${names[@]}; do
 
     echo "creating slot for staging ..."
         az webapp deployment slot create --name $new_name -g $resource_group --slot stage
+    
+    echo "creating slot for last-known-good ..."
+        az webapp deployment slot create --name $new_name -g $resource_group --slot lkg
 
     echo "creating web app dns zone w/ cname record ..."
         az network dns record-set cname set-record --cname $dns_cname --record-set-name $name --resource-group fast-ops-rg --zone-name $dns_zone --if-none-match
