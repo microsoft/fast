@@ -65,9 +65,6 @@ export class TreeItem extends FASTElement {
 
     @observable
     public renderCollapsedChildren: boolean = false;
-    private renderCollapsedChildrenChanged(): void {
-        console.log("renderCollapsedChildren changed to:", this.renderCollapsedChildren);
-    }
 
     private notifier: Notifier;
 
@@ -91,17 +88,8 @@ export class TreeItem extends FASTElement {
         if (parentTreeNode) {
             this.notifier = Observable.getNotifier(parentTreeNode);
             this.notifier.subscribe(this, "render-collapsed-nodes");
-            console.log(
-                "\n\n***connectedCallback for tree-item, this.parent:",
-                parentTreeNode
-            );
-            this.renderCollapsedChildren = parentTreeNode.getAttribute(
-                "render-collapsed-nodes"
-            );
-            console.log(
-                "\n***treeViewITem this.shouldRenderCollapsedChildren:",
-                this.renderCollapsedChildren
-            );
+            this.renderCollapsedChildren =
+                parentTreeNode.getAttribute("render-collapsed-nodes") === "true";
         }
 
         if (this.hasItems) {
@@ -115,11 +103,10 @@ export class TreeItem extends FASTElement {
     }
 
     public handleChange(source: any, propertyName: string) {
-        console.log("handleChange in tree-item prop:", propertyName);
         switch (propertyName) {
             case "render-collapsed-nodes":
-                console.log("source:", source);
-                this.renderCollapsedChildren = source.renderCollapsedNodes;
+                this.renderCollapsedChildren =
+                    source.getAttribute("render-collapsed-nodes") === "true";
                 break;
         }
     }
@@ -241,7 +228,7 @@ export class TreeItem extends FASTElement {
     }
 
     private getVisibleNodes(): HTMLElement[] | void {
-        return getDisplayedNodes(this.getTreeRoot(), "[role='treeitem']");
+        return getDisplayedNodes(this.getTreeRoot()!, "[role='treeitem']");
     }
 
     private getTreeRoot(): HTMLElement | null {
@@ -261,7 +248,6 @@ export class TreeItem extends FASTElement {
     private setExpanded(expanded: boolean): void {
         if (this.hasItems) {
             this.expanded = expanded;
-
             this.$emit("expanded-change", this);
         }
     }
