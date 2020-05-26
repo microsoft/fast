@@ -26,7 +26,7 @@ export const CardSectionStyles = css`
     :host ::slotted(site-feature-card:hover) {
         cursor: pointer;
         color: currentColor;
-        background-color: rgba(27, 27, 27, 1);
+        background-color: var(--neutral-fill-hover);
         filter: saturate(1);
     }
 `;
