@@ -23,6 +23,13 @@ export const ContentPlacementContainerStyles = css`
         justify-content: center;
     }
 
+    .feature_container {
+        display: grid;
+        grid-template-rows: repeat(4, min-content);
+        grid-auto-flow: var(--flow);
+        justify-content: center;
+    }
+
     .framework_ContentPlacement {
         border: var(--border);
         border-width: 0 0 var(--border-width);
@@ -91,12 +98,6 @@ export const ContentPlacementContainerStyles = css`
         .framework_ContentPlacement:nth-of-type(6) {
             border: none;
         }
-    }
-
-    .feature_container {
-        display: grid;
-        grid-template-rows: repeat(4, min-content);
-        grid-auto-flow: var(--flow);
     }
 
     /* This creates the color, background, and elevation changes on hover */
