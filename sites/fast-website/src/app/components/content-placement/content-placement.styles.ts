@@ -14,6 +14,7 @@ export const ContentPlacementStyles = css`
         text-align: left;
         display: flex;
         flex-direction: column;
+        box-shadow: none;
     }
 
     fast-card ::slotted([slot="body"]) {
