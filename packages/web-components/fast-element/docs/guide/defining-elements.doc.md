@@ -511,7 +511,7 @@ Some context properties are opt-in because they are more costly to update. So, f
 
 #### Composing Templates
 
-The `ViewTemplate` returned from the `html` tag helper has special handling when it is used inside of another template. The is that you can create templates and compose them into other templates.
+The `ViewTemplate` returned from the `html` tag helper has special handling when it is used inside of another template. This is done so that you can create templates and compose them into other templates.
 
 **Example: Composing Templates**
 
