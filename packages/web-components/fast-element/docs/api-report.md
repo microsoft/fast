@@ -97,7 +97,7 @@ export interface BehaviorFactory {
     targetIndex: number;
 }
 
-// @public (undocumented)
+// @public
 export class BindingBehavior implements Behavior {
     constructor(target: any, expression: Expression, bind: typeof normalBind, unbind: typeof normalUnbind, updateTarget: typeof updatePropertyTarget, targetName?: string | undefined);
     // Warning: (ae-forgotten-export) The symbol "normalBind" needs to be exported by the entry point index.d.ts
@@ -110,9 +110,9 @@ export class BindingBehavior implements Behavior {
     context: ExecutionContext | null;
     // (undocumented)
     expression: Expression;
-    // (undocumented)
+    // @internal (undocumented)
     handleEvent(event: Event): void;
-    // (undocumented)
+    // @internal (undocumented)
     handleExpressionChange(): void;
     // (undocumented)
     observableExpression: ObservableExpression | null;
@@ -134,18 +134,15 @@ export class BindingBehavior implements Behavior {
     version: number;
 }
 
-// @public (undocumented)
+// @public
 export class BindingDirective extends Directive {
     constructor(expression: Expression);
-    // (undocumented)
     createBehavior(target: any): BindingBehavior;
     // (undocumented)
     createPlaceholder: (index: number) => string;
     // (undocumented)
     expression: Expression;
-    // (undocumented)
     targetAtContent(): void;
-    // (undocumented)
     get targetName(): string | undefined;
     set targetName(value: string | undefined);
     }
@@ -153,7 +150,7 @@ export class BindingDirective extends Directive {
 // @public (undocumented)
 export const booleanConverter: ValueConverter;
 
-// @public (undocumented)
+// @public
 export type Callable = typeof Function.prototype.call | {
     call(): void;
 };
@@ -253,7 +250,7 @@ export abstract class Directive implements BehaviorFactory {
     targetIndex: number;
 }
 
-// @public (undocumented)
+// @public
 export const DOM: Readonly<{
     setHTMLPolicy(policy: TrustedTypesPolicy): void;
     createHTML(html: string): string;
@@ -263,6 +260,7 @@ export const DOM: Readonly<{
     createCustomAttributePlaceholder(attributeName: string, index: number): string;
     createBlockPlaceholder(index: number): string;
     queueUpdate(callable: Callable): void;
+    nextUpdate(): Promise<void>;
     setAttribute(element: HTMLElement, attributeName: string, value: any): void;
     setBooleanAttribute(element: HTMLElement, attributeName: string, value: boolean): void;
 }>;
@@ -295,7 +293,7 @@ export interface ElementViewTemplate {
     create(host: Element): ElementView;
 }
 
-// @public (undocumented)
+// @public
 export const emptyArray: readonly never[];
 
 // @public
@@ -379,15 +377,6 @@ export class FASTElementDefinition {
 // @public
 export function html<TSource = any, TParent = any>(strings: TemplateStringsArray, ...values: TemplateValue<TSource, TParent>[]): ViewTemplate<TSource, TParent>;
 
-// @public (undocumented)
-export class HTMLTemplateBehavior implements Behavior {
-    constructor(template: SyntheticViewTemplate, location: HTMLElement);
-    // (undocumented)
-    bind(source: unknown, context: ExecutionContext): void;
-    // (undocumented)
-    unbind(): void;
-    }
-
 // @public
 export class HTMLView implements ElementView, SyntheticView {
     constructor(fragment: DocumentFragment, behaviors: Behavior[]);
@@ -403,6 +392,8 @@ export class HTMLView implements ElementView, SyntheticView {
     // (undocumented)
     lastChild: Node;
     remove(): void;
+    // (undocumented)
+    source: any | null;
     unbind(): void;
 }
 
@@ -604,17 +595,14 @@ export interface ValueConverter {
 export interface View {
     bind(source: unknown, context: ExecutionContext): void;
     readonly context: ExecutionContext | null;
+    readonly source: any | null;
     unbind(): void;
 }
 
 // @public
-export class ViewTemplate<TSource = any, TParent = any> extends Directive implements ElementViewTemplate, SyntheticViewTemplate {
+export class ViewTemplate<TSource = any, TParent = any> implements ElementViewTemplate, SyntheticViewTemplate {
     constructor(html: string | HTMLTemplateElement, directives: ReadonlyArray<Directive>);
     create(host?: Element): HTMLView;
-    // (undocumented)
-    createBehavior(target: any): HTMLTemplateBehavior;
-    // (undocumented)
-    createPlaceholder: (index: number) => string;
     // (undocumented)
     readonly directives: ReadonlyArray<Directive>;
     // (undocumented)
@@ -622,39 +610,13 @@ export class ViewTemplate<TSource = any, TParent = any> extends Directive implem
     render(source: TSource, host: HTMLElement | string): HTMLView;
     }
 
-// @public (undocumented)
-export function when<T = any, K = any>(expression: Expression<T, K>, template: SyntheticViewTemplate): CaptureType<T>;
-
-// @public (undocumented)
-export class WhenBehavior implements Behavior {
-    constructor(location: Node, expression: Expression, template: SyntheticViewTemplate);
-    // (undocumented)
-    bind(source: unknown, context: ExecutionContext): void;
-    // (undocumented)
-    handleExpressionChange(): void;
-    // (undocumented)
-    unbind(): void;
-    // (undocumented)
-    updateTarget(show: boolean): void;
-    }
-
-// @public (undocumented)
-export class WhenDirective extends Directive {
-    constructor(expression: Expression, template: SyntheticViewTemplate);
-    // (undocumented)
-    createBehavior(target: any): WhenBehavior;
-    // (undocumented)
-    createPlaceholder: (index: number) => string;
-    // (undocumented)
-    expression: Expression;
-    // (undocumented)
-    template: SyntheticViewTemplate;
-}
+// @public
+export function when<T = any, K = any>(condition: Expression<T, K>, templateOrTemplateExpression: SyntheticViewTemplate | Expression<T, SyntheticViewTemplate>): CaptureType<T>;
 
 
 // Warnings were encountered during analysis:
 //
-// dist/dts/dom.d.ts:6:5 - (ae-forgotten-export) The symbol "TrustedTypesPolicy" needs to be exported by the entry point index.d.ts
+// dist/dts/dom.d.ts:9:5 - (ae-forgotten-export) The symbol "TrustedTypesPolicy" needs to be exported by the entry point index.d.ts
 // dist/dts/fast-element.d.ts:16:5 - (ae-forgotten-export) The symbol "getDefinition" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)

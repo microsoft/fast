@@ -4,11 +4,7 @@ import { DOM } from "./dom";
 import { Behavior, BehaviorFactory } from "./directives/behavior";
 import { Directive } from "./directives/directive";
 import { BindingDirective } from "./directives/binding";
-import {
-    defaultExecutionContext,
-    ExecutionContext,
-    Expression,
-} from "./observation/observable";
+import { defaultExecutionContext, Expression } from "./observation/observable";
 
 /**
  * A template capable of creating views specifically for rendering custom elements.
@@ -31,29 +27,11 @@ export interface SyntheticViewTemplate<TSource = any, TParent = any> {
     create(): SyntheticView;
 }
 
-export class HTMLTemplateBehavior implements Behavior {
-    private view: SyntheticView;
-
-    constructor(template: SyntheticViewTemplate, location: HTMLElement) {
-        this.view = template.create();
-        this.view.insertBefore(location);
-    }
-
-    bind(source: unknown, context: ExecutionContext): void {
-        this.view.bind(source, context);
-    }
-
-    unbind(): void {
-        this.view.unbind();
-    }
-}
-
 /**
  * A template capable of creating HTMLView instances or rendering directly to DOM.
  */
-export class ViewTemplate<TSource = any, TParent = any> extends Directive
+export class ViewTemplate<TSource = any, TParent = any>
     implements ElementViewTemplate, SyntheticViewTemplate {
-    public createPlaceholder: (index: number) => string = DOM.createBlockPlaceholder;
     private behaviorCount: number = 0;
     private hasHostBehaviors: boolean = false;
     private fragment: DocumentFragment | null = null;
@@ -69,9 +47,7 @@ export class ViewTemplate<TSource = any, TParent = any> extends Directive
     constructor(
         public readonly html: string | HTMLTemplateElement,
         public readonly directives: ReadonlyArray<Directive>
-    ) {
-        super();
-    }
+    ) {}
 
     /**
      * Creates an HTMLView instance based on this template definition.
@@ -162,10 +138,6 @@ export class ViewTemplate<TSource = any, TParent = any> extends Directive
 
         return view;
     }
-
-    public createBehavior(target: any): HTMLTemplateBehavior {
-        return new HTMLTemplateBehavior(this, target);
-    }
 }
 
 // Much thanks to LitHTML for working this out!
@@ -202,6 +174,11 @@ export function html<TSource = any, TParent = any>(
         let value = values[i];
 
         html += currentString;
+
+        if (value instanceof ViewTemplate) {
+            const template = value;
+            value = (): ViewTemplate => template;
+        }
 
         if (typeof value === "function") {
             value = new BindingDirective(value as Expression);
