@@ -14,3 +14,6 @@ az appservice plan create --name $app_service_plan --resource-group $resource_gr
     --sku P3V2 \
     --only-show-errors \
     --is-linux
+
+# TODO's
+# [] Setup Auto Scaling https://docs.microsoft.com/azure/app-service-web/web-sites-scale

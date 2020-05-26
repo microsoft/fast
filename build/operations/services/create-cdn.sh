@@ -21,7 +21,7 @@ cdn_resource_group=$product_name-ops-rg
 cdn_location=centralus
 
 cdn_endpoint_name=fast-static
-cdn_endpoint_origin=faststaticst.blob.core.windows.net
+cdn_endpoint_origin=fastst.blob.core.windows.net
 
 cdn_custom_domain_name=$cdn_endpoint_name-design
 cdn_custom_domain_hostname=static.fast.design

@@ -93,6 +93,8 @@ This is considered a global resource and a type of Application Delivery Network 
 
 Front Door is a globally distributed multi-tenant platform with huge volumes of capacity to cater to your application's scalability needs. Delivered from the edge of Microsoft's global network, Front Door provides global load balancing capability that allows you to fail over your entire application or even individual microservices across regions or different clouds.
 
+The FAST Front Door will perform caching for web files.
+
 ### Risks
 * Failure Points: Front Door is a possible failure point in the system. If the service fails, clients cannot access your application during the downtime. Review the Front Door service level agreement (SLA) and determine whether using Front Door alone meets your business requirements for high availability. If not, consider adding another traffic management solution as a fallback. If the Front Door service fails, change your canonical name (CNAME) records in DNS to point to the other traffic management service. This step must be performed manually, and your application will be unavailable until the DNS changes are propagated.
 
@@ -115,11 +117,9 @@ FAST uses one Key vault per environment (development, staging, and production) f
 Uses read-access geo-redundant storage (RA-GRS), where the data is replicated to a secondary region. You have read-only access to the data in the secondary region through a separate endpoint. If there is a regional outage or disaster, the Azure Storage team might decide to perform a geo-failover to the secondary region. There is no customer action required for this failover.
 
 ### Azure CDN
-For Azure CDN Standard from Microsoft profiles, propagation usually completes in 10 minutes.  If you're setting up compression for the first time for your CDN endpoint, consider waiting 1-2 hours before you troubleshoot to ensure the compression settings have propagated to the POPs.
+For Azure CDN Standard from Microsoft profiles, propagation usually completes in 10 minutes.  If you're setting up compression for the first time for your CDN endpoint, consider waiting 1-2 hours before you troubleshoot to ensure the compression settings have propagated to the POPs. 
 
-https://docs.microsoft.com/en-us/azure/cdn/cdn-improve-performance
-
-https://docs.microsoft.com/en-us/azure/cdn/cdn-features
+FAST CDN, leverages Blob Storage to cache infrequently updated application assets (logos, images, fonts, etc). This technique has greater durability, though does require more maintenance as assets must be deployed separately from Web Applications.
 
 
 ### Building for Resiliency

@@ -8,6 +8,11 @@ application stacks.
 Ref:
 https://docs.microsoft.com/en-us/azure/app-service/containers/app-service-linux-intro
 '
+# TODO's
+# [] Configure diagnostics for all apps https://ms.portal.azure.com/#@microsoft.onmicrosoft.com/resource/subscriptions/07b166d9-9849-4c8e-8df4-3f039daf5a05/resourceGroups/fast-eastus-rg/providers/Microsoft.Web/sites/www-east-app/diagnosticsLogs
+# [] Configure logs with "www-east-app-log" as the name and sent everything to Log Analytics
+
+
 # Configure and set name pattern
 web_app=$location_abbr-app && [[ $debug == true ]] && echo "${bold}${green}Web App Name Pattern"${reset}${unbold} && echo *-$web_app
 azure_log_analytics_location=southcentralus
