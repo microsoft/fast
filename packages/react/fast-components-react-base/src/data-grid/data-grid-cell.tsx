@@ -10,6 +10,7 @@ import {
     DataGridCellUnhandledProps,
 } from "./data-grid-cell.props";
 import { DataGridContext, DataGridContextType } from "./data-grid-context";
+import { DataGridCellRenderConfig } from "./data-grid.props";
 
 class DataGridCell extends Foundation<
     DataGridCellHandledProps,
@@ -25,6 +26,27 @@ class DataGridCell extends Foundation<
 
     public static displayName: string = "DataGridCell";
     public static contextType: React.Context<DataGridContextType> = DataGridContext;
+
+    /**
+     * The default function that renders a cell
+     */
+    public static renderCell = (
+        config: DataGridCellRenderConfig
+    ): React.ReactNode => {
+        return (
+            <div
+                {...config.unhandledProps}
+                ref={config.rootElement}
+                data-cellid={config.columnDataKey}
+                className={config.classNames}
+                style={{
+                    gridColumn: config.columnIndex,
+                }}
+            >
+                {config.rowData[config.columnDataKey]}
+            </div>
+        );
+    };
 
     protected handledProps: HandledProps<DataGridCellHandledProps> = {
         managedClasses: void 0,
@@ -55,25 +77,19 @@ class DataGridCell extends Foundation<
             onFocus: this.handleFocus,
         };
 
-        if (!isNil(this.props.columnDefinition.cell)) {
-            return this.props.columnDefinition.cell(
-                this.props,
-                this.generateClassNames(),
-                this.props.columnDefinition.columnDataKey,
-                this.rootElement,
-                this.focusTarget,
-                unhandledProps
-            );
-        } else {
-            return this.defaultCellRenderFunction(
-                this.props,
-                this.generateClassNames(),
-                this.props.columnDefinition.columnDataKey,
-                this.rootElement,
-                this.focusTarget,
-                unhandledProps
-            );
-        }
+        const config: DataGridCellRenderConfig = {
+            rowData: this.props.rowData,
+            columnDataKey: this.props.columnDefinition.columnDataKey,
+            columnIndex: this.props.columnIndex,
+            classNames: this.generateClassNames(),
+            rootElement: this.rootElement,
+            focusTarget: this.focusTarget,
+            unhandledProps: unhandledProps
+        };
+
+        return !isNil(this.props.columnDefinition.cell)
+          ? this.props.columnDefinition.cell(config)
+          : DataGridCell.renderCell(config);
     }
 
     /**
@@ -95,32 +111,6 @@ class DataGridCell extends Foundation<
     }
 
     /**
-     * The default function that renders an unstyled content display
-     */
-    public defaultCellRenderFunction = (
-        props: DataGridCellProps,
-        className: string,
-        cellId: React.ReactText,
-        rootElement: React.RefObject<any>,
-        focusTarget: React.RefObject<any>,
-        unhandledProps: object
-    ): React.ReactNode => {
-        return (
-            <div
-                {...unhandledProps}
-                ref={rootElement}
-                data-cellid={cellId}
-                className={className}
-                style={{
-                    gridColumn: props.columnIndex,
-                }}
-            >
-                {props.rowData[props.columnDefinition.columnDataKey]}
-            </div>
-        );
-    };
-
-    /**
      * returns true if this is the datagrid's current focus cell
      */
     private isDesiredFocusCell = (): boolean => {
@@ -130,9 +120,7 @@ class DataGridCell extends Foundation<
         return this.props.rowData[this.context.dataGridProps.dataRowKey] ===
             this.context.desiredFocusRowKey &&
             this.props.columnDefinition.columnDataKey ===
-                this.context.desiredFocusColumnKey
-            ? true
-            : false;
+                this.context.desiredFocusColumnKey;
     };
 
     /**
@@ -145,8 +133,6 @@ class DataGridCell extends Foundation<
         return this.props.rowData[this.context.dataGridProps.dataRowKey] ===
             this.context.focusRowKey &&
             this.props.columnDefinition.columnDataKey === this.context.focusColumnKey
-            ? true
-            : false;
     };
 
     /**

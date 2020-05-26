@@ -49,7 +49,6 @@ class DataGridRow extends Foundation<
         // Check if there is already a style object being passed as props
         const styleProps: React.CSSProperties = get(this.props, "style");
 
-        /* tslint:disable:no-string-literal */
         return (
             <div
                 {...this.unhandledProps()}

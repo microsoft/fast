@@ -8,6 +8,7 @@ import StackPanel from "../stack-panel";
 import {
     DataGridColumnDefinition,
     DataGridHandledProps,
+    DataGridHeaderRenderConfig,
     DataGridProps,
     DataGridUnhandledProps,
 } from "./data-grid.props";
@@ -60,6 +61,26 @@ class DataGrid extends Foundation<
 
     public static displayName: string = "DataGrid";
 
+    /**
+     *  default column render function
+     */
+    public static renderColumnHeader = (
+        config: DataGridHeaderRenderConfig
+    ): React.ReactNode => {
+        return (
+            <div
+                className={config.classNames}
+                role="columnheader"
+                key={config.key}
+                style={{
+                    gridColumn: config.columnIndex + 1,
+                }}
+            >
+                {config.title}
+            </div>
+        );
+    };
+
     protected handledProps: HandledProps<DataGridHandledProps> = {
         dataRowKey: void 0,
         gridData: void 0,
@@ -110,7 +131,7 @@ class DataGrid extends Foundation<
                 focusRowKey = this.props.gridData[0][this.props.dataRowKey];
             }
 
-            currentDataPageStartIndex =
+           currentDataPageStartIndex =
                 initialFocusRowIndex - Math.floor(this.props.pageSize / 2);
 
             currentDataPageStartIndex =
@@ -226,7 +247,7 @@ class DataGrid extends Foundation<
                             ),
                             stackPanel_items: get(
                                 this.props.managedClasses,
-                                "dataGrid_scrollingPanel_items",
+                                "dataGrid_scrollingPanelItems",
                                 ""
                             ),
                             stackPanel__scrollable: get(
@@ -451,44 +472,19 @@ class DataGrid extends Foundation<
         column: DataGridColumnDefinition,
         index: number
     ): React.ReactNode => {
-        if (!isNil(column.header)) {
-            return column.header(
-                column.title,
-                column.columnDataKey,
-                index,
-                get(this.props.managedClasses, "dataGrid_columnHeader", "")
-            );
-        } else {
-            return this.renderDefaultColumnHeader(
-                column.title,
-                column.columnDataKey,
-                index,
-                get(this.props.managedClasses, "dataGrid_columnHeader", "")
-            );
-        }
-    };
 
-    /**
-     *  default column render function
-     */
-    private renderDefaultColumnHeader = (
-        columnTitle: React.ReactFragment,
-        key: React.ReactText,
-        columnIndex: number,
-        className: string
-    ): React.ReactNode => {
-        return (
-            <div
-                className={className}
-                role="columnheader"
-                key={key}
-                style={{
-                    gridColumn: columnIndex + 1,
-                }}
-            >
-                {columnTitle}
-            </div>
-        );
+        const config: DataGridHeaderRenderConfig = {
+            title: column.title,
+            key: column.columnDataKey,
+            columnIndex: index,
+            classNames: get(this.props.managedClasses, "dataGrid_columnHeader", ""),
+        };
+
+        if (!isNil(column.header)) {
+            return column.header(config);
+        } else {
+            return DataGrid.renderColumnHeader(config);
+        }
     };
 
     /**
@@ -503,7 +499,7 @@ class DataGrid extends Foundation<
             : index;
         const {
             dataGrid_row,
-            dataGrid_row__focusWithin,
+            dataGrid_row__focusedWithin,
             dataGrid_cell,
         }: DataGridClassNameContract = this.props.managedClasses;
 
@@ -515,7 +511,7 @@ class DataGrid extends Foundation<
                 gridTemplateColumns={this.currentTemplateColumns}
                 managedClasses={{
                     dataGridRow: dataGrid_row,
-                    dataGridRow__focusWithin: dataGrid_row__focusWithin,
+                    dataGridRow__focusWithin: dataGrid_row__focusedWithin,
                     dataGridRow_cell: dataGrid_cell,
                 }}
             />
@@ -701,7 +697,7 @@ class DataGrid extends Foundation<
         newScrollValue: number,
         scrollMaxValue: number,
         viewportSpan: number
-    ): void => {
+    ): void => { 
         const currentPageTop: number = this.state.rowPositions[
             this.state.currentDataPageStartIndex
         ].start;

@@ -36,12 +36,5 @@ export default {
             },
         },
     },
-    reactProperties: {
-        children: {
-            title: "Children",
-            type: "children",
-            defaults: ["text"],
-        },
-    },
     required: ["rowData", "columnIndex", "columnDefinition"],
 };

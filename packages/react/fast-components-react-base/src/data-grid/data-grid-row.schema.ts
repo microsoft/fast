@@ -22,5 +22,5 @@ export default {
             type: "number",
         },
     },
-    required: ["rowData", "gridTemplateColumns", "gridRowTop", "rowIndex"],
+    required: ["rowData", "gridTemplateColumns", "rowIndex"],
 };

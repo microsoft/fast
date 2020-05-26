@@ -15,7 +15,7 @@ export interface DataGridClassNameContract {
     /**
      * the container that contains the data grid rows
      */
-    dataGrid_scrollingPanel_items?: string;
+    dataGrid_scrollingPanelItems?: string;
 
     /**
      * Applied if the scrolling panel has enough items to be scrollable
@@ -40,7 +40,7 @@ export interface DataGridClassNameContract {
     /**
      * Applied when focus is in a particular row
      */
-    dataGrid_row__focusWithin?: string;
+    dataGrid_row__focusedWithin?: string;
 
     /**
      * A cell within the data grid component

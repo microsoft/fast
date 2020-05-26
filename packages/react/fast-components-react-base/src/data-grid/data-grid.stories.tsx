@@ -3,27 +3,22 @@ import React from "react";
 import { isEqual, omit } from "lodash-es";
 import { Omit } from "utility-types";
 import DataGrid, {
-    DataGridCellProps,
+    DataGridCellRenderConfig,
     DataGridColumnDefinition,
     DataGridProps,
 } from "./index";
 
 function imageCellFn(
-    props: DataGridCellProps,
-    className: string,
-    cellId: React.ReactText,
-    rootElement: React.RefObject<any>,
-    focusTarget: React.RefObject<any>,
-    unhandledProps: object
+    config: DataGridCellRenderConfig
 ): React.ReactNode {
     return (
         <div
-            {...unhandledProps}
-            data-cellid={cellId}
-            className={className}
-            ref={rootElement}
+            {...config.unhandledProps}
+            data-cellid={config.columnDataKey}
+            className={config.classNames}
+            ref={config.rootElement}
             style={{
-                gridColumn: props.columnIndex,
+                gridColumn: config.columnIndex,
                 borderWidth: "1",
                 borderColor: "black",
                 background: "white",
@@ -31,7 +26,7 @@ function imageCellFn(
             }}
         >
             <img
-                src={props.rowData[props.columnDefinition.columnDataKey]}
+                src={config.rowData[config.columnDataKey]}
                 alt="Placeholder image"
                 style={{
                     width: "auto",
@@ -43,21 +38,16 @@ function imageCellFn(
 }
 
 function recordIdCellFn(
-    props: DataGridCellProps,
-    className: string,
-    cellId: React.ReactText,
-    rootElement: React.RefObject<any>,
-    focusTarget: React.RefObject<any>,
-    unhandledProps: object
+    config: DataGridCellRenderConfig
 ): React.ReactNode {
     return (
         <div
-            {...unhandledProps}
-            data-cellid={cellId}
-            className={className}
-            ref={rootElement}
+            {...config.unhandledProps}
+            data-cellid={config.columnDataKey}
+            className={config.classNames}
+            ref={config.rootElement}
             style={{
-                gridColumn: props.columnIndex,
+                gridColumn: config.columnIndex,
                 borderWidth: "1",
                 borderColor: "black",
                 background: "grey",
@@ -66,7 +56,7 @@ function recordIdCellFn(
         >
             <img
                 src={`https://placehold.it/120x100/414141/?text=${
-                    props.rowData[props.columnDefinition.columnDataKey]
+                    config.rowData[config.columnDataKey]
                 }`}
                 alt="Placeholder image"
                 style={{

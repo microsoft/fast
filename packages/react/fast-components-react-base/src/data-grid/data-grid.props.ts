@@ -3,10 +3,26 @@ import {
     DataGridClassNameContract,
     ManagedClasses,
 } from "@microsoft/fast-components-class-name-contracts-base";
-import { DataGridCellProps } from "./data-grid-cell.props";
 
 export type DataGridManagedClasses = ManagedClasses<DataGridClassNameContract>;
 export type DataGridUnhandledProps = React.HTMLAttributes<HTMLDivElement>;
+
+export interface DataGridCellRenderConfig {
+    rowData: object;
+    columnDataKey: React.ReactText;
+    columnIndex: number;
+    classNames: string;
+    rootElement: React.RefObject<any>;
+    focusTarget: React.RefObject<any>;
+    unhandledProps: object;
+}
+
+export interface DataGridHeaderRenderConfig {
+    title: React.ReactNode;
+    key: React.ReactText;
+    columnIndex: number;
+    classNames: string;
+}
 
 export interface DataGridColumnDefinition {
     /**
@@ -30,29 +46,22 @@ export interface DataGridColumnDefinition {
      *  Custom render function for the header cell of the column
      */
     header?: (
-        title: React.ReactNode,
-        key: React.ReactText,
-        columnIndex: number,
-        className: string
+        config: DataGridHeaderRenderConfig
     ) => React.ReactNode;
 
     /**
      * Custom render function for a data cells in the column
-     * props: the props for this cell
-     * className: css classname for the cell
-     * cellId: the value written to the cell's "data-cellid" attribute and used to identify it in the grid
+     * rowdata: data object for the row the cell is in
+     * columnDataKey DataGridColumnDefinition for the column the cell is in
+     * columnIndex: index of the column in the grid
+     * classNames: css classnames for the cell
      * rootElement: ref to the root element of the cell
      * focusTarget: authors of custom cell render functions who wish to focus on an internal element should
      * set the 'ref' attribute of the internal element that should get focus to this value.
      * unhandledProps: authors will generally want to write these to their custom implementations
      */
     cell?: (
-        props: DataGridCellProps,
-        className: string,
-        cellId: React.ReactText,
-        rootElement: React.RefObject<any>,
-        focusTarget: React.RefObject<any>,
-        unhandledProps: object
+        DataGridCellRenderConfig
     ) => React.ReactNode;
 }
 

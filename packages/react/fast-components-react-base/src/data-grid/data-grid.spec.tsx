@@ -11,41 +11,35 @@ import {
     keyCodePageUp,
 } from "@microsoft/fast-web-utilities";
 import DataGrid, { DataGridState } from "./data-grid";
-import { DataGridColumnDefinition } from "./data-grid.props";
-import { DataGridCellProps } from "./data-grid-cell.props";
+import { 
+    DataGridCellRenderConfig, 
+    DataGridColumnDefinition 
+} from "./data-grid.props";
 
 /*
  * Configure Enzyme
  */
 configure({ adapter: new Adapter() });
 
-/* tslint:disable:no-string-literal */
 describe("data grid", (): void => {
     interface TestRowData {
         name: string;
         age: number;
     }
 
-    function renderCellWithButton(
-        props: DataGridCellProps,
-        className: string,
-        cellId: React.ReactText,
-        rootElement: React.RefObject<any>,
-        focusTarget: React.RefObject<any>,
-        unhandledProps: object
-    ): React.ReactNode {
+    function renderCellWithButton(config: DataGridCellRenderConfig): React.ReactNode {
         return (
             <div
-                {...unhandledProps}
-                ref={rootElement}
-                data-cellid={cellId}
-                className={className}
+                {...config.unhandledProps}
+                ref={config.rootElement}
+                data-cellid={config.columnDataKey}
+                className={config.classNames}
                 style={{
-                    gridColumn: props.columnIndex,
+                    gridColumn: config.columnIndex,
                 }}
             >
-                <button ref={focusTarget} role="button" tabIndex={-1}>
-                    {props.rowData[props.columnDefinition.columnDataKey]}
+                <button ref={config.focusTarget} role="button" tabIndex={-1}>
+                    {config.rowData[config.columnDataKey]}
                 </button>
             </div>
         );
@@ -54,12 +48,12 @@ describe("data grid", (): void => {
     const managedClasses: DataGridClassNameContract = {
         dataGrid: "dataGrid",
         dataGrid_scrollingPanel: "dataGrid_scrollingPanel",
-        dataGrid_scrollingPanel_items: "dataGrid_scrollingPanel_items",
+        dataGrid_scrollingPanelItems: "dataGrid_scrollingPanelItems",
         dataGrid_scrollingPanel__scrollable: "dataGrid_scrollingPanel__scrollable",
         dataGrid_header: "dataGrid_header",
         dataGrid_columnHeader: "dataGrid_columnHeader",
         dataGrid_row: "dataGrid_viewport",
-        dataGrid_row__focusWithin: "dataGrid_row__focusWithin",
+        dataGrid_row__focusedWithin: "dataGrid_row__focusedWithin",
         dataGrid_cell: "dataGrid_cell",
     };
 
@@ -185,7 +179,7 @@ describe("data grid", (): void => {
             />
         );
 
-        const matches: any = rendered.find('[className="dataGrid_scrollingPanel_items"]');
+        const matches: any = rendered.find('[className="dataGrid_scrollingPanelItems"]');
         expect(matches.length).toBe(1);
     });
 
@@ -326,7 +320,6 @@ describe("data grid", (): void => {
         document.body.removeChild(container);
     });
 
-    /* tslint:disable:no-string-literal */
     test("Focus and blur events change the state of isFocused", (): void => {
         const container: HTMLDivElement = document.createElement("div");
         document.body.appendChild(container);
@@ -351,7 +344,7 @@ describe("data grid", (): void => {
         expect((rendered.instance() as any).isFocused).toBe(true);
 
         rendered.setProps({ gridData: gridDataShortened });
-        expect(row.prop("className")).toContain(managedClasses.dataGrid_row__focusWithin);
+        expect(row.prop("className")).toContain(managedClasses.dataGrid_row__focusedWithin);
         expect((rendered.instance() as any).isFocused).toBe(true);
 
         cell.simulate("blur");
