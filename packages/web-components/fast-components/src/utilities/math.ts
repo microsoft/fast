@@ -48,6 +48,7 @@ const _divide: (
 );
 /**
  * Adds numbers or functions that accept a design system and return a number.
+ * @internal
  */
 export function add<T>(
     ...args: Array<number | ((designSystem: T) => number)>
@@ -57,6 +58,7 @@ export function add<T>(
 
 /**
  * Subtract numbers or functions that accept a design system and return a number.
+ * @internal
  */
 export function subtract<T>(
     ...args: Array<number | ((designSystem: T) => number)>
@@ -66,6 +68,7 @@ export function subtract<T>(
 
 /**
  * Multiplies numbers or functions that accept a design system and return a number.
+ * @internal
  */
 export function multiply<T>(
     ...args: Array<number | ((designSystem: T) => number)>
@@ -75,6 +78,7 @@ export function multiply<T>(
 
 /**
  * Divides numbers or functions that accept a design system and return a number.
+ * @internal
  */
 export function divide<T>(
     ...args: Array<number | ((designSystem: T) => number)>
