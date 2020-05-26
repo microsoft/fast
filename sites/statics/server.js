@@ -15,4 +15,5 @@ app.use("/", express.static(publicDir));
 app.use(fallback("index.html", { root: publicDir }));
 
 // Serve up application on specified port
-app.listen(process.env.PORT);
+var port = process.env.PORT || 7001;
+app.listen(port);
