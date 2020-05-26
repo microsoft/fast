@@ -1,6 +1,5 @@
-:root {
-  /* FIXME: Is there a better way to set default props to prevent FOUC? */
-  --background-color: #242424;
+html {
+  font: 16px "Segoe UI", Arial, Helvetica, sans-serif;
 }
 
 html,
@@ -23,6 +22,8 @@ body {
 .wrapper {
   display: grid;
   grid-template-columns: minmax(5vw, 1fr) minmax(0px, 1200px) minmax(5vw, 1fr);
+  position: relative;
+  z-index: 1;
 }
 
 .header {
@@ -62,13 +63,45 @@ li {
   display: none;
 }
 
+fast-divider {
+  border: none;
+  display: flex;
+  flex-direction: column;
+  height: 58px;
+  justify-content: space-between;
+  margin: calc(var(--design-unit) * 5px) calc(50% - 1.5px);
+  width: 3px;
+}
+
+fast-divider::before,
+fast-divider::after {
+  background-color: var(--accent-fill-rest);
+  content: '';
+  width: 3px;
+}
+
+fast-divider::before {
+  border-radius: 50%;
+  height: 3px;
+}
+
+fast-divider::after {
+  border-radius: calc(var(--corner-radius) * 1px);
+  height: calc(var(--type-ramp-plus-5-font-size) + var(--design-unit) * 1px);
+}
+
 .section {
-  grid-column: 2;
   color: var(--neutral-foreground-rest);
+  min-height: 85vmin;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  grid-column: 2;
 }
 
 .section-content {
   display: flex;
+  flex-flow: row wrap;
   align-items: center;
   justify-content: center;
   min-height: 300px;
@@ -81,14 +114,14 @@ li {
 }
 
 .section-heading-hero {
-  font-size: 60px;
-  line-height: 72px;
+  font-size: var(--type-ramp-plus-6-font-size);
+  line-height: var(--type-ramp-plus-6-line-height);
   margin: 0;
 }
 
 .section-heading {
-  font-size: 46px;
-  line-height: 56px;
+  font-size: var(--type-ramp-plus-5-font-size);
+  line-height: var(--type-ramp-plus-5-line-height);
   margin: 0;
 }
 
@@ -98,7 +131,7 @@ li {
   margin-bottom: 60px;
 }
 
-.footer {
+.site-footer {
   grid-column: 2;
   display: flex;
   align-items: center;
@@ -189,16 +222,16 @@ li {
     z-index: 2;
   }
 
-  .footer site-navigation {
+  .site-footer site-navigation {
     height: 100%;
     justify-content: flex-start;
   }
 
-  .footer ul {
+  .site-footer ul {
     flex-direction: column;
   }
 
-  .footer site-navigation::part(nav-button) {
+  .site-footer site-navigation::part(nav-button) {
     display: none;
   }
 }
