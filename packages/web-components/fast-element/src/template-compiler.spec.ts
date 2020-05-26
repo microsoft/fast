@@ -4,20 +4,13 @@ import { BindingDirective } from "./directives/binding";
 import { compileTemplate } from "./template-compiler";
 import { Directive } from "./directives/directive";
 import { defaultExecutionContext } from "./observation/observable";
+import { toHTML } from "./__test__/helpers";
 
 describe("The template compiler", () => {
     function compile(html: string, directives: Directive[]) {
         const template = document.createElement("template");
         template.innerHTML = html;
         return compileTemplate(template, directives);
-    }
-
-    function toHTML(fragment: DocumentFragment) {
-        return Array.from(fragment.childNodes)
-            .map(x => {
-                return (x as any).outerHTML || x.textContent;
-            })
-            .join("");
     }
 
     function inline(index: number) {
