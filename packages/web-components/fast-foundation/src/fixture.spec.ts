@@ -7,10 +7,10 @@ import {
     DOM,
     observable,
 } from "@microsoft/fast-element";
-import { uniqueName, fixture } from "./fixture";
+import { uniqueElementName, fixture } from "./fixture";
 
 describe("The fixture helper", () => {
-    const name = uniqueName();
+    const name = uniqueElementName();
     const template = html<MyElement>`${x => x.value}<slot></slot>`;
 
     @customElement({

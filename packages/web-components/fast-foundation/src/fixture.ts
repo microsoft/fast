@@ -32,7 +32,7 @@ function findElement(view: HTMLView): HTMLElement {
     return current as any;
 }
 
-export function uniqueName(): string {
+export function uniqueElementName(): string {
     return `fast-unique-${Math.random().toString(36).substring(7)}`;
 }
 
