@@ -1,7 +1,7 @@
 name: CD - Static Assets
 
 on:
-  pull_request:
+  push:
     branches:
     - master
 
