@@ -20,7 +20,7 @@ export const FeatureCardStyles = css`
         background-color: currentColor;
         position: fixed;
         height: 1px;
-        width: calc(100% - (var(--design-unit) * 5px));
+        width: calc(100% - (var(--design-unit) * 10px));
         left: 20px;
         top: 0;
     }
