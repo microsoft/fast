@@ -17,9 +17,6 @@ import ReactDOM from "react-dom";
 import React from "react";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import {
-    createColorPalette,
-    DesignSystemDefaults,
-    designSystemSchema,
     neutralLayerL1,
     neutralLayerL2,
     neutralLayerL3,
@@ -33,7 +30,6 @@ import {
     ActionToggle,
     ActionToggleAppearance,
     ActionToggleProps,
-    ActionTrigger,
     Background,
     Heading,
     HeadingSize,
@@ -43,29 +39,22 @@ import {
     Typography,
 } from "@microsoft/fast-components-react-msft";
 import { Direction } from "@microsoft/fast-web-utilities";
-import { ColorRGBA64, parseColor } from "@microsoft/fast-colors";
-import { StandardLuminance } from "@microsoft/fast-components-styles-msft";
 import {
     AjvMapper,
     CustomMessageIncomingOutgoing,
     DataDictionary,
     MessageSystem,
-    MessageSystemDataTypeAction,
-    MessageSystemNavigationTypeAction,
     MessageSystemType,
 } from "@microsoft/fast-tooling";
 import FASTMessageSystemWorker from "@microsoft/fast-tooling/dist/message-system.min.js";
 import {
-    AccentColorPicker,
     DirectionSwitch,
-    dotDotDotGlyph,
     downChevron,
-    ThemeSelector,
     TransparencyToggle,
     upChevron,
 } from "@microsoft/site-utilities";
-import { ComponentViewConfig, Scenario } from "./utilities/configs/data.props";
-import * as componentViewConfigsWithoutCustomConfig from "./utilities/configs";
+import { ComponentViewConfig, Scenario } from "./fast-components/configs/data.props";
+import * as componentConfigs from "./fast-components/configs/component-configs";
 import { history, menu, schemaDictionary } from "./config";
 import style from "./explorer.style";
 import {
@@ -76,9 +65,9 @@ import {
 } from "./explorer.props";
 import { previewReady } from "./preview";
 
-export const backgroundTransparency: string = "PREVIEW::TRANSPARENCY";
+export const previewBackgroundTransparency: string = "PREVIEW::TRANSPARENCY";
+export const previewDirection: string = "PREVIEW::DIRECTION";
 let componentLinkedDataId: string = "root";
-let componentNavigationConfigId: string = "";
 
 interface ObjectOfComponentViewConfigs {
     [key: string]: ComponentViewConfig;
@@ -109,7 +98,6 @@ function setViewConfigsWithCustomConfig(
     return componentViewConfigs;
 }
 
-export const designSystemLinkedDataId: string = "designSystem";
 const fastMessageSystemWorker = new FASTMessageSystemWorker();
 let fastMessageSystem: MessageSystem;
 
@@ -135,7 +123,7 @@ class Explorer extends Foundation<
             locationPathname
         );
         const componentConfig: any = get(
-            setViewConfigsWithCustomConfig(componentViewConfigsWithoutCustomConfig),
+            setViewConfigsWithCustomConfig(componentConfigs),
             `${camelCase(componentName)}Config`
         );
         const selectedScenarioIndex: number = 1;
@@ -159,11 +147,8 @@ class Explorer extends Foundation<
             componentConfig,
             selectedScenarioIndex,
             locationPathname,
-            theme: StandardLuminance.LightMode,
-            designSystem: DesignSystemDefaults,
             transparentBackground: false,
             devToolsVisible: true,
-            accentColor: "#0078D4",
             direction: Direction.ltr,
             previewReady: false,
             activeDictionaryId: componentLinkedDataId,
@@ -225,44 +210,24 @@ class Explorer extends Foundation<
                                     }}
                                 >
                                     {this.renderScenarioSelect()}
-                                    <TransparencyToggle
-                                        id={"transparency-toggle"}
-                                        transparency={this.state.transparentBackground}
-                                        onUpdateTransparency={
-                                            this.handleUpdateTransparency
-                                        }
-                                        disabled={!this.state.previewReady}
-                                    />
-                                    <ThemeSelector
-                                        id={"theme-selector"}
-                                        theme={this.state.theme}
-                                        onUpdateTheme={this.handleUpdateTheme}
-                                        disabled={!this.state.previewReady}
-                                    />
-                                    <DirectionSwitch
-                                        id={"direction-switch"}
-                                        direction={this.state.direction}
-                                        onUpdateDirection={this.handleUpdateDirection}
-                                        disabled={!this.state.previewReady}
-                                    />
-                                    <AccentColorPicker
-                                        id={"accent-color-picker"}
-                                        accentBaseColor={this.state.accentColor}
-                                        onAccentColorPickerChange={
-                                            this.handleAccentColorPickerChange
-                                        }
-                                        disabled={!this.state.previewReady}
-                                    />
-                                    <ActionTrigger
-                                        glyph={dotDotDotGlyph}
-                                        style={{
-                                            marginLeft: 4,
-                                            width: "24px",
-                                            padding: "0",
-                                        }}
-                                        onClick={this.handleShowDesignSystemEditor}
-                                        disabled={!this.state.previewReady}
-                                    />
+                                    <div style={{ display: "flex" }}>
+                                        <TransparencyToggle
+                                            id={"transparency-toggle"}
+                                            transparency={
+                                                this.state.transparentBackground
+                                            }
+                                            onUpdateTransparency={
+                                                this.handleUpdateTransparency
+                                            }
+                                            disabled={!this.state.previewReady}
+                                        />
+                                        <DirectionSwitch
+                                            id={"direction-switch"}
+                                            direction={this.state.direction}
+                                            onUpdateDirection={this.handleUpdateDirection}
+                                            disabled={!this.state.previewReady}
+                                        />
+                                    </div>
                                 </Background>
                             </Row>
                             <Row fill={true}>
@@ -334,34 +299,11 @@ class Explorer extends Foundation<
         this.setViewerToFullSize();
     }
 
-    private handleShowDesignSystemEditor = (): void => {
-        const isDesignSystem: boolean =
-            this.state.activeDictionaryId === designSystemLinkedDataId;
-        const activeDictionaryId: string = isDesignSystem
-            ? componentLinkedDataId
-            : designSystemLinkedDataId;
-
-        this.setState({
-            activeDictionaryId,
-        });
-
-        fastMessageSystem.postMessage({
-            type: MessageSystemType.navigation,
-            action: MessageSystemNavigationTypeAction.update,
-            activeDictionaryId,
-            activeNavigationConfigId: isDesignSystem ? "" : componentNavigationConfigId,
-        });
-    };
-
     private handleMessageSystem = (e: MessageEvent): void => {
         const updatedState: Partial<ExplorerState> = {};
 
-        if (
-            e.data.type === MessageSystemType.navigation &&
-            e.data.activeDictionaryId !== designSystemLinkedDataId
-        ) {
+        if (e.data.type === MessageSystemType.navigation) {
             componentLinkedDataId = e.data.activeDictionaryId;
-            componentNavigationConfigId = e.data.activeNavigationConfigId;
         }
 
         if (
@@ -465,7 +407,7 @@ class Explorer extends Foundation<
 
     private renderScenarioSelect(): React.ReactNode {
         const scenarioOptions: Array<Scenario> = get(
-            setViewConfigsWithCustomConfig(componentViewConfigsWithoutCustomConfig)[
+            setViewConfigsWithCustomConfig(componentConfigs)[
                 `${camelCase(this.state.componentName)}Config`
             ],
             "scenarios"
@@ -514,13 +456,6 @@ class Explorer extends Foundation<
             typeof index === "number"
                 ? componentConfig.scenarios[index].dataDictionary
                 : componentConfig.scenarios[0].dataDictionary;
-        dataDictionary[0][designSystemLinkedDataId] = {
-            schemaId: designSystemSchema.id,
-            data:
-                this.state && this.state.designSystem
-                    ? this.state.designSystem
-                    : DesignSystemDefaults,
-        };
 
         return dataDictionary;
     }
@@ -533,12 +468,11 @@ class Explorer extends Foundation<
         });
 
         fastMessageSystem.postMessage({
-            type: MessageSystemType.data,
-            action: MessageSystemDataTypeAction.update,
-            dictionaryId: designSystemLinkedDataId,
-            dataLocation: "direction",
-            data: updatedDirection,
-        });
+            type: MessageSystemType.custom,
+            action: ViewerCustomAction.response,
+            id: previewDirection,
+            value: updatedDirection,
+        } as CustomMessageIncomingOutgoing);
     };
 
     private handleUpdateScenario = (
@@ -581,7 +515,7 @@ class Explorer extends Foundation<
     private handleUpdateRoute = (route: string): void => {
         const componentName: string = this.getComponentNameSpinalCaseByPath(route);
         const componentConfig: any = get(
-            setViewConfigsWithCustomConfig(componentViewConfigsWithoutCustomConfig),
+            setViewConfigsWithCustomConfig(componentConfigs),
             `${camelCase(componentName)}Config`
         );
 
@@ -606,25 +540,6 @@ class Explorer extends Foundation<
         );
     };
 
-    private handleUpdateTheme = (): void => {
-        const updatedTheme: StandardLuminance =
-            this.state.theme === StandardLuminance.LightMode
-                ? StandardLuminance.DarkMode
-                : StandardLuminance.LightMode;
-
-        this.setState({
-            theme: updatedTheme,
-        });
-
-        fastMessageSystem.postMessage({
-            type: MessageSystemType.data,
-            action: MessageSystemDataTypeAction.update,
-            dictionaryId: designSystemLinkedDataId,
-            dataLocation: "baseLayerLuminance",
-            data: updatedTheme,
-        });
-    };
-
     private handleUpdateTransparency = (): void => {
         this.setState({
             transparentBackground: !this.state.transparentBackground,
@@ -633,48 +548,15 @@ class Explorer extends Foundation<
         fastMessageSystem.postMessage({
             type: MessageSystemType.custom,
             action: ViewerCustomAction.response,
-            id: backgroundTransparency,
+            id: previewBackgroundTransparency,
             value: !this.state.transparentBackground,
         } as CustomMessageIncomingOutgoing);
-    };
-
-    /**
-     * Event handler for all color input changes
-     */
-    private handleAccentColorPickerChange = (
-        e: React.FormEvent<HTMLInputElement>
-    ): void => {
-        const value: string = e.currentTarget.value;
-
-        this.setState({
-            accentColor: value,
-        });
-
-        const parsed: ColorRGBA64 | null = parseColor(value);
-        const colorPalette = parsed !== null ? createColorPalette(parsed) : null;
-
-        fastMessageSystem.postMessage({
-            type: MessageSystemType.data,
-            action: MessageSystemDataTypeAction.update,
-            dictionaryId: designSystemLinkedDataId,
-            dataLocation: "accentColor",
-            data: value,
-        });
-
-        fastMessageSystem.postMessage({
-            type: MessageSystemType.data,
-            action: MessageSystemDataTypeAction.update,
-            dictionaryId: designSystemLinkedDataId,
-            dataLocation: "accentPalette",
-            data: colorPalette,
-        });
     };
 
     private handleDevToolsToggle = (
         e: React.MouseEvent<HTMLButtonElement>,
         props: ActionToggleProps
     ): void => {
-        console.log("handle dev tools toggle");
         this.setState({
             devToolsVisible: !props.selected,
         });
