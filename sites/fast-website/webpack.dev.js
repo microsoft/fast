@@ -7,7 +7,7 @@ const baseConfig = require("./webpack.common");
 module.exports = merge(baseConfig, {
     devServer: {
         contentBase: "./src/public",
-        open: true,
+        host: "0.0.0.0",
         port: 7700,
     },
     mode: "development",
