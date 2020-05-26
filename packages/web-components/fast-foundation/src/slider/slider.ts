@@ -7,6 +7,7 @@ import {
     keyCodeArrowUp,
     keyCodeEnd,
     keyCodeHome,
+    keyCodeTab,
     Orientation,
 } from "@microsoft/fast-web-utilities";
 import { FormAssociated } from "../form-associated/index";
@@ -133,6 +134,7 @@ export class Slider extends FormAssociated<HTMLInputElement>
         this.setupTrackConstraints();
         this.setupListeners();
         this.setupDefaultValue();
+        this.setThumbPositionForOrientation(this.direction);
     }
 
     public disconnectedCallback(): void {
@@ -167,6 +169,10 @@ export class Slider extends FormAssociated<HTMLInputElement>
 
     protected keypressHandler = (e: KeyboardEvent) => {
         super.keypressHandler(e);
+        if (e.keyCode !== keyCodeTab) {
+            e.preventDefault();
+        }
+
         if (e.keyCode === keyCodeHome) {
             this.value = `${this.min}`;
         } else if (e.keyCode === keyCodeEnd) {
@@ -186,10 +192,13 @@ export class Slider extends FormAssociated<HTMLInputElement>
     };
 
     private setThumbPositionForOrientation = (direction: Direction): void => {
-        const percentage: number =
-            direction !== Direction.rtl
-                ? (1 - Number(this.value) / (Number(this.max) - Number(this.min))) * 100
-                : (Number(this.value) / (Number(this.max) - Number(this.min))) * 100;
+        const newPct: number = convertPixelToPercent(
+            Number(this.value),
+            Number(this.min),
+            Number(this.max),
+            direction
+        );
+        const percentage: number = (1 - newPct) * 100;
         if (this.orientation === Orientation.horizontal) {
             this.position = this.isDragging
                 ? `right: ${percentage}%; transition: all 0.1s ease;`
@@ -212,8 +221,9 @@ export class Slider extends FormAssociated<HTMLInputElement>
     private setupTrackConstraints = (): void => {
         this.trackWidth = this.track.clientWidth;
         this.trackMinWidth = this.track.clientLeft;
-        this.trackHeight = this.track.clientHeight;
-        this.trackMinHeight = this.track.getBoundingClientRect().top;
+        const clientRect: DOMRect = this.track.getBoundingClientRect();
+        this.trackHeight = clientRect.bottom;
+        this.trackMinHeight = clientRect.top;
     };
 
     private setupListeners = (): void => {
@@ -224,7 +234,7 @@ export class Slider extends FormAssociated<HTMLInputElement>
 
     private setupDefaultValue = (): void => {
         if (this.value === "") {
-            this.value = `${this.convertToConstrainedValue((this.max - this.min) / 2)}`;
+            this.value = `${this.convertToConstrainedValue((this.max + this.min) / 2)}`;
             this.updateForm();
         }
     };
@@ -296,12 +306,12 @@ export class Slider extends FormAssociated<HTMLInputElement>
     };
 
     private clickHandler = (e: MouseEvent) => {
+        e.preventDefault();
         if (!this.disabled && !this.readOnly) {
             this.trackWidth = this.track.clientWidth;
             if (this.trackWidth === 0) {
                 this.trackWidth = 1;
             }
-            e.preventDefault();
             (e.target as HTMLElement).focus();
             window.addEventListener("mouseup", this.handleWindowMouseUp);
             window.addEventListener("mousemove", this.handleMouseMove);
@@ -310,23 +320,19 @@ export class Slider extends FormAssociated<HTMLInputElement>
                 this.orientation === Orientation.horizontal
                     ? e.pageX - this.getBoundingClientRect().left
                     : e.pageY;
+
             this.value = `${this.calculateNewValue(controlValue)}`;
             this.updateForm();
         }
     };
 
     private convertToConstrainedValue = (value: number): number => {
-        const remainderVal: number = value % Number(this.step);
-        const constrainedVal: number =
+        let constrainedValue: number = value - this.min;
+        const remainderVal: number = constrainedValue % Number(this.step);
+        constrainedValue =
             remainderVal >= Number(this.step) / 2
-                ? value - remainderVal + Number(this.step)
-                : value - remainderVal;
-
-        if (constrainedVal < this.min || constrainedVal > this.max) {
-            // TODO here until we figure out how this happens
-            return Number(this.value);
-        } else {
-            return constrainedVal;
-        }
+                ? constrainedValue - remainderVal + Number(this.step)
+                : constrainedValue - remainderVal;
+        return constrainedValue + this.min;
     };
 }
