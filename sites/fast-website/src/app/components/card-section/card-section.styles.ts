@@ -1,6 +1,7 @@
 import { css } from "@microsoft/fast-element";
 import { display } from "@microsoft/fast-foundation";
 import { siteBreakpoints } from "../../style/constants";
+import { neutralFillHoverBehavior } from "@microsoft/fast-components";
 
 export const CardSectionStyles = css`
     :host {
@@ -29,4 +30,4 @@ export const CardSectionStyles = css`
         background-color: var(--neutral-fill-hover);
         filter: saturate(1);
     }
-`;
+`.withBehaviors(neutralFillHoverBehavior);
