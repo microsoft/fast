@@ -1,5 +1,12 @@
 import { css } from "@microsoft/fast-element";
 import { display } from "@microsoft/fast-foundation";
+import { elevation } from "@microsoft/fast-components/dist/esm/styles/elevation.js";
+import {
+    neutralForegroundHintBehavior,
+    neutralForegroundHoverBehavior,
+    neutralOutlineRestBehavior,
+    neutralFillActiveBehavior,
+} from "@microsoft/fast-components";
 
 export const ContentPlacementContainerStyles = css`
     ${display("block")}:host {
@@ -13,6 +20,13 @@ export const ContentPlacementContainerStyles = css`
     .community_container {
         display: grid;
         grid-template-columns: 1fr;
+        justify-content: center;
+    }
+
+    .feature_container {
+        display: grid;
+        grid-template-rows: repeat(4, min-content);
+        grid-auto-flow: var(--flow);
         justify-content: center;
     }
 
@@ -33,8 +47,16 @@ export const ContentPlacementContainerStyles = css`
     }
 
     @media screen and (min-width: 700px) and (max-width: 999px) {
+        :host {
+            --flow: row;
+        }
+
         .framework_container {
             grid-template-columns: repeat(2, 1fr);
+        }
+
+        .community_container {
+            grid-template-columns: repeat(3, 1fr);
         }
 
         .framework_ContentPlacement:nth-of-type(even) {
@@ -48,6 +70,10 @@ export const ContentPlacementContainerStyles = css`
     }
 
     @media screen and (min-width: 1000px) {
+        :host {
+            --flow: column;
+        }
+
         .framework_container,
         .community_container {
             grid-template-columns: repeat(3, 1fr);
@@ -68,14 +94,39 @@ export const ContentPlacementContainerStyles = css`
             /* only two items on a row that should fit three */
             border-bottom: none;
         }
+
+        .framework_ContentPlacement:nth-of-type(6) {
+            border: none;
+        }
     }
+
+    /* This creates the color, background, and elevation changes on hover */
+    /* start */
+    .community_container:hover site-content-placement,
+    .feature_container:hover site-feature-card {
+        color: var(--neutral-foreground-hint);
+    }
+    .community_container:hover site-content-placement:hover,
+    .feature_container:hover site-feature-card:hover {
+        --elevation: 4;
+        background: var(--neutral-fill-active);
+        border-radius: calc(var(--corner-radius) * 1px);
+        color: var(--neutral-foreground-hover);
+        ${elevation}
+    }
+    /* end */
 
     .icon {
         fill: currentColor;
     }
 
     h3 {
-        margin-top: 0 0 calc(var(--design-unit) * 5px) 0;
+        margin: 0 0 calc(var(--design-unit) * 5px) 0;
         font-size: var(--type-ramp-plus-2-font-size);
     }
-`;
+`.withBehaviors(
+    neutralForegroundHintBehavior,
+    neutralForegroundHoverBehavior,
+    neutralOutlineRestBehavior,
+    neutralFillActiveBehavior
+);

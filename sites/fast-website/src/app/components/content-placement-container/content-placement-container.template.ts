@@ -1,11 +1,10 @@
 import { html, repeat, when } from "@microsoft/fast-element";
 import { ContentPlacementContainer } from "./content-placement-container";
-import { CommunityContentPlacementData } from "../../data/community.data";
 
 export const ContentPlacementContainerTemplate = html<ContentPlacementContainer>`
     <div
         class="container ${x =>
-            ["framework", "community"].includes(x.section)
+            ["framework", "feature", "community"].includes(x.section)
                 ? `${x.section}_container`
                 : ""}"
     >
@@ -18,6 +17,31 @@ export const ContentPlacementContainerTemplate = html<ContentPlacementContainer>
                         <h3>${x => x.header}</h3>
                         <p slot="body">${x => x.body}</p>
                     </site-content-placement>`
+                )}
+            `
+        )}
+        ${when(
+            x => x.section === "feature",
+            html<ContentPlacementContainer>`
+                ${repeat(
+                    x => x.featureCardData,
+                    html`<site-feature-card>
+                        <div>${x => x.item}</div>
+                        <h4>${x => x.header}</h4>
+                        <p slot="body">${x => x.body}</p>
+                        <fast-anchor
+                            slot="footer"
+                            href=${x => x.githubLink}
+                            appearance="lightweight"
+                            >View Github</fast-anchor
+                        >
+                        <fast-anchor
+                            slot="footer"
+                            href=${x => x.documentationLink}
+                            appearance="lightweight"
+                            >Read Documentation</fast-anchor
+                        >
+                    </site-feature-card>`
                 )}
             `
         )}
