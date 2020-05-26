@@ -1,7 +1,7 @@
 import { SliderLabelClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
-import { toPx } from "@microsoft/fast-jss-utilities";
-import { DesignSystem } from "../design-system";
+import { divide, multiply, toPx } from "@microsoft/fast-jss-utilities";
+import { DesignSystem, DesignSystemResolver } from "../design-system";
 import { neutralForegroundRest, neutralOutlineRest } from "../utilities/color";
 import { applyCursorDefault } from "../utilities/cursor";
 import { heightNumber } from "../utilities/density";
@@ -14,9 +14,9 @@ import {
     highContrastTextForeground,
 } from "../utilities/high-contrast";
 
-function minMaxLabelMargin(config: DesignSystem): string {
-    return toPx(((heightNumber()(config) / 2 + designUnit(config)) / 2) * -1);
-}
+const minMaxLabelMargin: DesignSystemResolver<string> = toPx(
+    multiply(divide(heightNumber(), 4), -1)
+);
 
 const styles: ComponentStyles<SliderLabelClassNameContract, DesignSystem> = {
     sliderLabel: {
