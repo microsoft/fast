@@ -19,7 +19,12 @@ export interface WebComponentAttribute {
     /**
      * The default value of this attribute
      */
-    default: string;
+    default: any;
+
+    /**
+     * The enum values if this is a set of values
+     */
+    enum?: any[];
 
     /**
      * Whether this was attribute is required
