@@ -10,3 +10,9 @@ if (window.document && !window.document.createRange) {
         },
     });
 }
+
+if (!window.requestAnimationFrame) {
+    window.requestAnimationFrame = function (callback: FrameRequestCallback) {
+        return setTimeout(callback, 4);
+    };
+}
