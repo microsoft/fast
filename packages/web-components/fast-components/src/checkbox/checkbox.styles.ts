@@ -91,7 +91,7 @@ export const CheckboxStyles = css`
     }
 
     :host(:enabled) .control:active {
-       background: var(--neutral-fill-input-active);
+        background: var(--neutral-fill-input-active);
         border-color: var(--neutral-outline-active);
     }
 
@@ -152,7 +152,7 @@ export const CheckboxStyles = css`
     neutralOutlineRestBehavior,
     forcedColorsStylesheetBehavior(
         css`
-            .control, .control:hover, .control:active {
+            .control {
                 forced-color-adjust: none;
                 border-color: ${SystemColors.FieldText};
                 background: ${SystemColors.Field};
@@ -163,24 +163,29 @@ export const CheckboxStyles = css`
             .indeterminate-indicator {
                 background: ${SystemColors.FieldText};
             }
+            :host(:enabled) .control:hover, .control:active {
+                border-color: ${SystemColors.Highlight};
+                background: ${SystemColors.Field};
+            }
             :host(:${focusVisible}) .control {
                 border-color: ${SystemColors.Highlight};
+                box-shadow: 0 0 0 2px ${SystemColors.Field}, 0 0 0 4px ${SystemColors.FieldText};
             }
-            :host(.checked:${focusVisible}) .control {
-                border-color: ${SystemColors.FieldText};
-                box-shadow: 0 0 0 2px ${SystemColors.Field} inset;
+            :host(.checked:${focusVisible}:enabled) .control {
+                box-shadow: 0 0 0 2px ${SystemColors.Field}, 0 0 0 4px ${SystemColors.FieldText};
             }
             :host(.checked) .control {
                 background: ${SystemColors.Highlight};
                 border-color: ${SystemColors.Highlight};
             }
-            :host(.checked) .control:hover, .control:active {
+            :host(.checked:enabled) .control:hover, .control:active {
+                border-color: ${SystemColors.Highlight};
                 background: ${SystemColors.HighlightText};
             }
             :host(.checked) .checked-indicator {
                 fill: ${SystemColors.HighlightText};
             }
-            :host(.checked) .control:hover .checked-indicator {
+            :host(.checked:enabled) .control:hover .checked-indicator {
                 fill: ${SystemColors.Highlight}
             }
             :host(.checked) .indeterminate-indicator {
