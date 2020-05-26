@@ -5,11 +5,6 @@ import { labelSchema } from "../../utilities";
 import { ComponentViewConfig } from "./data.props";
 import { fastRadioId } from "./fast-radio";
 
-// <fast-radio-group name="numbers">
-// <label slot="label">Numbers</label>
-//             <fast-radio value="one">One</fast-radio>
-//             <fast-radio value="two">Two</fast-radio>
-
 export const fastRadioGroupId = "fast-radio-group";
 const fastRadioGroupConfig: ComponentViewConfig = {
     schema: webComponentSchemas[fastRadioGroupId],

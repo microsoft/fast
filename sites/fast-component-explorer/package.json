@@ -65,7 +65,7 @@
     "react-router-dom": "^5.1.2",
     "react-syntax-highlighter": "^10.3.0",
     "ts-loader": "^7.0.2",
-    "typescript": "^3.7.5",
+    "typescript": "^3.8.3",
     "webpack": "4.28.4",
     "webpack-bundle-analyzer": "^3.0.3",
     "webpack-cli": "^3.1.2",
