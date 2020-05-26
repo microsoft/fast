@@ -48,6 +48,10 @@ export const ContentPlacementContainerStyles = css`
     }
 
     @media screen and (min-width: ${siteBreakpoints[1]}) and (max-width: ${siteBreakpoints[3]}) {
+        :host {
+            --flow: row;
+        }
+
         .framework_container {
             grid-template-columns: repeat(2, 1fr);
         }
@@ -67,6 +71,10 @@ export const ContentPlacementContainerStyles = css`
     }
 
     @media screen and (min-width: ${siteBreakpoints[4]}) {
+        :host {
+            --flow: column;
+        }
+
         .framework_container,
         .community_container {
             grid-template-columns: repeat(3, 1fr);
