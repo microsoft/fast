@@ -9,8 +9,9 @@ https://docs.microsoft.com/en-us/azure/cdn/common/cdn-redundancy
 https://docs.microsoft.com/en-us/cli/azure/cdn/account?view=azure-cli-latest#az-cdn-account-create
 '
 #TODOs
-# [] Add Get Secret in Key Vault for Microsoft.Azure.Cdn
-
+# [] Add Get Secret in Key Vault for Microsoft.Azure.Cdn using Azure CLI prior to creating custom domain
+# [] Update to endpoing so that it properly waits for completion before continuing to create custom-domain
+# [] Add certificate usage for CDN as indicated below by issue.
 
 # Configure and set name
 product_name=fast
@@ -40,12 +41,16 @@ echo "adding an endpoint ..."
 az cdn endpoint create --name $cdn_endpoint_name --origin $cdn_endpoint_origin --profile-name $cdn_profile_name --resource-group $cdn_resource_group \
     --enable-compression true \
     --no-http true \
-    --no-wait
+    --no-wait & wait $!
+
+# Issue: https://github.com/Azure/azure-cli/issues/13678 requiring the previous line of code to require `& wait $!` for the process to complete.
 
 echo "creating custom domain ..."
 az cdn custom-domain create --endpoint-name $cdn_endpoint_name --hostname $cdn_custom_domain_hostname --name $cdn_custom_domain_name --profile-name $cdn_profile_name --resource-group $cdn_resource_group
 
 echo "enabling custom domain https only ..."
 az cdn custom-domain enable-https --endpoint-name $cdn_endpoint_name --name $cdn_custom_domain_name --profile-name $cdn_profile_name --resource-group $cdn_resource_group
+
+# Issue: https://github.com/Azure/azure-cli/issues/13679 missing information on how to configure `--custom-domain-https-parameters` in the above command.
 
 
