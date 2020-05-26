@@ -1,1 +1,1 @@
-export * from "./configs";
+export * from "./native-element-config";
