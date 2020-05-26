@@ -34,6 +34,7 @@ const style: ComponentStyles<PreviewClassNameContract, DesignSystem> = {
         "background-size": "10px 10px, 10px 10px",
         "box-shadow": "none",
         "text-shadow": "none",
+        "min-height": "100vh",
         transition: "none",
         transform: "scaleX(1) scaleY(1) scaleZ(1)",
     },
