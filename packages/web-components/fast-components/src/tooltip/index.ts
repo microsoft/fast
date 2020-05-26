@@ -1,5 +1,4 @@
 import { customElement } from "@microsoft/fast-element";
-// TODO: Update this pathing once we export anchored region from `fast-foundation`
 import {
     Tooltip,
     TooltipTemplate as template,

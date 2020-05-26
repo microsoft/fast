@@ -5,7 +5,5 @@ export const TooltipStyles = css`
         contain: layout;
         display: block;
         overflow: visible;
-        height: 0px;
-        width: 0px;
     }
 `;

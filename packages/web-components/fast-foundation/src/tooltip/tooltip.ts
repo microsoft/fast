@@ -7,14 +7,9 @@ export class Tooltip extends FASTElement {
     @attr({ mode: "boolean" })
     public hidden: boolean = false;
 
-    @attr
+    @attr       
     public anchor: string = "";
     private anchorChanged(): void {
-        // if (this.initialLayoutComplete) {
-        //     this.initialLayoutComplete = false;
-        //     this.anchorElement = this.getAnchor();
-        //     this.reset();
-        // }
     }
 
     @attr
@@ -34,6 +29,10 @@ export class Tooltip extends FASTElement {
 
     // public tooltip: HTMLDivElement;
 
+    constructor() {
+        super();
+    }
+
     public connectedCallback(): void {
         super.connectedCallback();
     }
@@ -51,4 +50,11 @@ export class Tooltip extends FASTElement {
     private isTooltipHidden(): boolean {
         return typeof this.hidden !== "boolean";
     }
+
+    /**
+     * Gets the viewport element 
+     */
+    // public getViewport = (): HTMLElement | null => {
+    //     return this.region.parentElement;
+    // };
 }
