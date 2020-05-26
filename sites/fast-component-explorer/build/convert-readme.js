@@ -7,7 +7,7 @@ const glob = require("glob");
 const fs = require("fs");
 const MarkdownIt = require("markdown-it");
 
-const srcDir = "../../../node_modules/@microsoft/fast-components/src/**/README.md";
+const srcDir = "../../packages/web-components/fast-components/src/**/README.md";
 
 /**
  * Start and end file strings
