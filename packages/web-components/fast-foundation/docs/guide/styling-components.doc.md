@@ -30,8 +30,9 @@ The FAST type ramp is exposed by the `FASTDesignSystemProvider` as CSS Custom Pr
 ### Design System Properties
 The following properties are provided by the `FASTDesignSystemProvider` and should be used as appropriate.
 
-| Name                                   | Type | Description |
-| `--background-color`                   | `string` (hex color) | Defines the background of the layer.                                       |
+| Name                                   | Type | Description   |
+|----------------------------------------|--------------------  |----------------------------------------------------------------------------|
+| `--background-color`                   | `string` (hex color) | Defines the background color of the node. This is used by color recipes and should represent the color UI is rendering on for a given node tree. |
 | `--density`                            | `number`             | A multiplier to control the density of UI elements.                        |
 | `--design-unit`                        | `number`             | The core sizing unit that all sizes are derived from.                      |
 | `--base-height-multiplier`             | `number`             | The number of designUnits used for component height at the base density.   |
