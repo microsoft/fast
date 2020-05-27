@@ -366,9 +366,16 @@ function mapAttributesToJSONSchema(
 ): { [key: string]: any } {
     return attributes.reduce(
         (accumulation: { [key: string]: any }, attribute: WebComponentAttribute) => {
+            const optionalAttributeProperties: Partial<WebComponentAttribute> = {};
+
+            if (attribute.enum) {
+                optionalAttributeProperties.enum = attribute.enum;
+            }
+
             return {
                 ...accumulation,
                 [attribute.name]: {
+                    ...optionalAttributeProperties,
                     title: attribute.description,
                     [ReservedElementMappingKeyword.mapsToAttribute]: attribute.name,
                     type: attribute.type,
@@ -417,7 +424,6 @@ export function mapWebComponentDefinitionToJSONSchema(
                 title: webComponentDefinition.tags[i].description,
                 type: "object",
                 version: webComponentDefinition.version,
-                required: ["version"],
                 [ReservedElementMappingKeyword.mapsToTagName]:
                     webComponentDefinition.tags[i].name,
                 properties: {

@@ -108,6 +108,28 @@ describe(`The html tag template helper`, () => {
             result: `beginning ${DOM.createBlockPlaceholder(0)}`,
             expectDirectives: [TestDirective],
         },
+        // template interpolation
+        {
+            type: "template",
+            location: "at the beginning",
+            template: html`${html`sub-template`} end`,
+            result: `${DOM.createInterpolationPlaceholder(0)} end`,
+            expectDirectives: [BindingDirective],
+        },
+        {
+            type: "template",
+            location: "in the middle",
+            template: html`beginning ${html`sub-template`} end`,
+            result: `beginning ${DOM.createInterpolationPlaceholder(0)} end`,
+            expectDirectives: [BindingDirective],
+        },
+        {
+            type: "template",
+            location: "at the end",
+            template: html`beginning ${html`sub-template`}`,
+            result: `beginning ${DOM.createInterpolationPlaceholder(0)}`,
+            expectDirectives: [BindingDirective],
+        },
         // mixed interpolation
         {
             type: "mixed, back-to-back string, number, expression, and directive",

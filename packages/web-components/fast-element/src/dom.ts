@@ -1,5 +1,5 @@
 import { Callable } from "./interfaces";
-const markerClass = `fast-${Math.random().toString(36).substring(7)}`;
+const marker = `fast-${Math.random().toString(36).substring(7)}`;
 const updateQueue = [] as Callable[];
 
 type TrustedTypesPolicy = { createHTML(html: string): string };
@@ -53,6 +53,9 @@ function processQueue(): void {
     updateQueue.length = 0;
 }
 
+/**
+ * Common DOM APIs.
+ */
 export const DOM = Object.freeze({
     setHTMLPolicy(policy: TrustedTypesPolicy) {
         if (htmlPolicy !== fastHTMLPolicy) {
@@ -67,13 +70,11 @@ export const DOM = Object.freeze({
     },
 
     isMarker(node: Node): node is Comment {
-        return (
-            node && node.nodeType === 8 && (node as Comment).data.startsWith(markerClass)
-        );
+        return node && node.nodeType === 8 && (node as Comment).data.startsWith(marker);
     },
 
     extractDirectiveIndexFromMarker(node: Comment): number {
-        return parseInt(node.data.replace(`${markerClass}:`, ""));
+        return parseInt(node.data.replace(`${marker}:`, ""));
     },
 
     createInterpolationPlaceholder(index: number): string {
@@ -85,15 +86,28 @@ export const DOM = Object.freeze({
     },
 
     createBlockPlaceholder(index: number) {
-        return `<!--${markerClass}:${index}-->`;
+        return `<!--${marker}:${index}-->`;
     },
 
+    /**
+     * Schedules DOM update work in the next async batch.
+     * @param callable The callable function or object to queue.
+     */
     queueUpdate(callable: Callable) {
         if (updateQueue.length < 1) {
             window.requestAnimationFrame(processQueue);
         }
 
         updateQueue.push(callable);
+    },
+
+    /**
+     * Resolves with the next DOM update.
+     */
+    nextUpdate(): Promise<void> {
+        return new Promise((resolve: () => void) => {
+            DOM.queueUpdate(resolve);
+        });
     },
 
     setAttribute(element: HTMLElement, attributeName: string, value: any) {

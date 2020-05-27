@@ -11,6 +11,11 @@ export interface View {
     readonly context: ExecutionContext | null;
 
     /**
+     * The data that the view is bound to.
+     */
+    readonly source: any | null;
+
+    /**
      * Binds a view's behaviors to its binding source.
      * @param source The binding source for the view's binding behaviors.
      */
@@ -75,11 +80,16 @@ const range = document.createRange();
  * The standard View implementation, which also implements ElementView and SyntheticView.
  */
 export class HTMLView implements ElementView, SyntheticView {
-    private source: any = void 0;
+    public source: any | null = null;
     public context: ExecutionContext | null = null;
     public firstChild: Node;
     public lastChild: Node;
 
+    /**
+     *
+     * @param fragment The html fragment that contains the nodes for this view.
+     * @param behaviors The behaviors to be applied to this view.
+     */
     constructor(private fragment: DocumentFragment, private behaviors: Behavior[]) {
         this.firstChild = fragment.firstChild!;
         this.lastChild = fragment.lastChild!;
@@ -171,7 +181,7 @@ export class HTMLView implements ElementView, SyntheticView {
 
         if (this.source === source) {
             return;
-        } else if (this.source !== void 0) {
+        } else if (this.source !== null) {
             const oldSource = this.source;
 
             this.source = source;
@@ -196,7 +206,7 @@ export class HTMLView implements ElementView, SyntheticView {
      * Unbinds a view's behaviors from its binding source.
      */
     public unbind(): void {
-        if (this.source === void 0) {
+        if (this.source === null) {
             return;
         }
 
@@ -207,7 +217,7 @@ export class HTMLView implements ElementView, SyntheticView {
             behaviors[i].unbind(oldSource);
         }
 
-        this.source = void 0;
+        this.source = null;
     }
 
     /**

@@ -147,15 +147,18 @@ export const RadioStyles = css`
     neutralOutlineRestBehavior,
     forcedColorsStylesheetBehavior(
         css`
-            .control, .control:hover, .control:active {
+            .control,
+            :host(.checked:enabled) .control {
                 forced-color-adjust: none;
                 border-color: ${SystemColors.FieldText};
                 background: ${SystemColors.Field};
             }
-            :host(:${focusVisible}) .control {
+            :host(:enabled) .control:hover {
                 border-color: ${SystemColors.Highlight};
+                background: ${SystemColors.Field};
             }
-            :host(.checked) .control:hover, .control:active {
+            :host(.checked:enabled) .control:hover,
+            :host(.checked:enabled) .control:active {
                 border-color: ${SystemColors.Highlight};
                 background: ${SystemColors.Highlight};
             }
@@ -163,9 +166,18 @@ export const RadioStyles = css`
                 background: ${SystemColors.Highlight};
                 fill: ${SystemColors.Highlight};
             }
-            :host(.checked) .control:hover .checked-indicator {
+            :host(.checked:enabled) .control:hover .checked-indicator,
+            :host(.checked:enabled) .control:active .checked-indicator {
                 background: ${SystemColors.HighlightText};
                 fill: ${SystemColors.HighlightText};
+            }
+            :host(:${focusVisible}) .control {
+                border-color: ${SystemColors.Highlight};
+                box-shadow: 0 0 0 2px ${SystemColors.Field}, 0 0 0 4px ${SystemColors.FieldText};
+            }
+            :host(.checked:${focusVisible}:enabled) .control {
+                border-color: ${SystemColors.Highlight};
+                box-shadow: 0 0 0 2px ${SystemColors.Field}, 0 0 0 4px ${SystemColors.FieldText};
             }
             :host(.disabled) {
                 forced-color-adjust: none;

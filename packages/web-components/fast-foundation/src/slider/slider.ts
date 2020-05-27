@@ -7,6 +7,7 @@ import {
     keyCodeArrowUp,
     keyCodeEnd,
     keyCodeHome,
+    keyCodeTab,
     Orientation,
 } from "@microsoft/fast-web-utilities";
 import { FormAssociated } from "../form-associated/index";
@@ -133,6 +134,7 @@ export class Slider extends FormAssociated<HTMLInputElement>
         this.setupTrackConstraints();
         this.setupListeners();
         this.setupDefaultValue();
+        this.setThumbPositionForOrientation(this.direction);
     }
 
     public disconnectedCallback(): void {
@@ -167,6 +169,10 @@ export class Slider extends FormAssociated<HTMLInputElement>
 
     protected keypressHandler = (e: KeyboardEvent) => {
         super.keypressHandler(e);
+        if (e.keyCode !== keyCodeTab) {
+            e.preventDefault();
+        }
+
         if (e.keyCode === keyCodeHome) {
             this.value = `${this.min}`;
         } else if (e.keyCode === keyCodeEnd) {
@@ -215,8 +221,9 @@ export class Slider extends FormAssociated<HTMLInputElement>
     private setupTrackConstraints = (): void => {
         this.trackWidth = this.track.clientWidth;
         this.trackMinWidth = this.track.clientLeft;
-        this.trackHeight = this.track.clientHeight;
-        this.trackMinHeight = this.track.getBoundingClientRect().top;
+        const clientRect: DOMRect = this.track.getBoundingClientRect();
+        this.trackHeight = clientRect.bottom;
+        this.trackMinHeight = clientRect.top;
     };
 
     private setupListeners = (): void => {
@@ -299,12 +306,12 @@ export class Slider extends FormAssociated<HTMLInputElement>
     };
 
     private clickHandler = (e: MouseEvent) => {
+        e.preventDefault();
         if (!this.disabled && !this.readOnly) {
             this.trackWidth = this.track.clientWidth;
             if (this.trackWidth === 0) {
                 this.trackWidth = 1;
             }
-            e.preventDefault();
             (e.target as HTMLElement).focus();
             window.addEventListener("mouseup", this.handleWindowMouseUp);
             window.addEventListener("mousemove", this.handleMouseMove);
@@ -313,6 +320,7 @@ export class Slider extends FormAssociated<HTMLInputElement>
                 this.orientation === Orientation.horizontal
                     ? e.pageX - this.getBoundingClientRect().left
                     : e.pageY;
+
             this.value = `${this.calculateNewValue(controlValue)}`;
             this.updateForm();
         }

@@ -22,7 +22,6 @@ export const SliderStyles = css`
     }
 
     ${display("inline-grid")} :host {
-        --track-size: calc(var(--design-unit) * 2);
         --thumb-size: calc(${heightNumber} * 0.5 - var(--design-unit));
         --thumb-translate: calc(var(--thumb-size) * 0.5);
         --track-overhang: calc((var(--design-unit) / 2) * -1);
@@ -89,14 +88,14 @@ export const SliderStyles = css`
         left: calc(var(--track-overhang) * 1px);
         align-self: start;
         margin-top: calc(var(--design-unit) * 1px);
-        height: calc(var(--track-size) * 1px);
+        height: 4px;
     }
     :host(.vertical) .track {
         top: calc(var(--track-overhang) * 1px);
         bottom: calc(var(--track-overhang) * 1px);
         justify-self: start;
         margin-left: calc(var(--design-unit) * 1px);
-        width: calc(var(--track-size) * 1px);
+        width: 4px;
         height: 100%;
     }
     .track {
