@@ -16,8 +16,8 @@ module.exports = {
     resolve: {
         extensions: [".svg", ".ts", ".tsx", ".js"],
         alias: {
-            svg: path.resolve(__dirname, "src/app/svg")
-        }
+            svg: path.resolve(__dirname, "src/app/svg"),
+        },
     },
     output: {
         path: path.resolve(__dirname, "dist"),
@@ -59,11 +59,19 @@ module.exports = {
                     {
                         loader: "svg-inline-loader",
                         options: {
-                            removeSVGTagAttrs: false
-                        }
-                    }
-                ]
-            }
+                            removeSVGTagAttrs: false,
+                        },
+                    },
+                ],
+            },
+            {
+                test: /\.png$/,
+                use: [
+                    {
+                        loader: "file-loader",
+                    },
+                ],
+            },
         ],
     },
     plugins: [
