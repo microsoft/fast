@@ -16,7 +16,7 @@ jobs:
     - name: Upload static assets to CDN 
       uses: lauchacarro/Azure-Storage-Action@master
       with:
-        folder: 'sites/static-utilities/statics/assets'
+        folder: 'sites/site-utilities/statics/assets'
         connection-string: ${{ secrets.AZURE_CONNECTION_STRING_STORAGE }}
         public-access-policy: Blob
         blob-container-name: 'assets'
