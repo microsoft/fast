@@ -46,7 +46,7 @@ The following properties are provided by the `FASTDesignSystemProvider` and shou
 ### Forced-colors Stylesheets
 FAST has a commitment to facilitating accessible web experiences and [forced-colors](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors) support is a core tenant of that commitment. `@microsoft/fast-components` exports the `forcedColorsStylesheetBehavior` utility to provide a simple mechanism to apply forced-color stylesheets without bloating the component stylesheet in non-forced-color environments:
 
-__Example: Forced-colors stylesheets
+__Example: Forced-colors stylesheets__
 ```js
 import { forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
@@ -66,7 +66,7 @@ const styles = css`
 ### MatchMedia Stylesheets
 `forcedColorsStylesheetBehavior` builds is an implementation of the `matchMediaStylesheetBehaviorFactory, which can be used to create custom implementations of stylesheets that will be conditionally attached based on a [MediaQueryList](https://developer.mozilla.org/en-US/docs/Web/API/MediaQueryList).
 
-__Example: Using the `matchMediaStylesheetBehaviorFactory__
+__Example: Using the `matchMediaStylesheetBehaviorFactory`__
 ```js
 import { matchMediaStylesheetBehaviorFactory } from "@microsoft/fast-foundation";
 const query = Window.matchMedia('(max-width: 600px)');
