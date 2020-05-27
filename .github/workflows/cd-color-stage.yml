@@ -30,7 +30,7 @@ jobs:
       run: |
         cd ${{ env.AZURE_WEBAPP_BUILD_PATH }}
         yarn build
-        cp ../statics/package.json ../statics/server.js www 
+        cp ../site-utilities/statics/server/package.json ../site-utilities/statics/server/server.js www 
         cd www
         npm i
         ls -lta
