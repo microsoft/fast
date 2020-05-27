@@ -11,10 +11,7 @@ import {
     keyCodePageUp,
 } from "@microsoft/fast-web-utilities";
 import DataGrid, { DataGridState } from "./data-grid";
-import { 
-    DataGridCellRenderConfig, 
-    DataGridColumnDefinition 
-} from "./data-grid.props";
+import { DataGridCellRenderConfig, DataGridColumnDefinition } from "./data-grid.props";
 
 /*
  * Configure Enzyme
@@ -344,7 +341,9 @@ describe("data grid", (): void => {
         expect((rendered.instance() as any).isFocused).toBe(true);
 
         rendered.setProps({ gridData: gridDataShortened });
-        expect(row.prop("className")).toContain(managedClasses.dataGrid_row__focusedWithin);
+        expect(row.prop("className")).toContain(
+            managedClasses.dataGrid_row__focusedWithin
+        );
         expect((rendered.instance() as any).isFocused).toBe(true);
 
         cell.simulate("blur");
@@ -353,13 +352,13 @@ describe("data grid", (): void => {
         document.body.removeChild(container);
     });
 
-    test("itemHeightCallback prop is called and results applied", (): void => {
+    test("rowHeightCallback prop is called and results applied", (): void => {
         const heightCallback: any = jest.fn();
         heightCallback.mockReturnValue(50);
 
         const rendered: ReactWrapper = mount(
             <DataGrid
-                itemHeightCallback={heightCallback}
+                rowHeightCallback={heightCallback}
                 gridData={gridData}
                 dataRowKey="name"
                 columnDefinitions={columnDefinitions}
@@ -373,7 +372,7 @@ describe("data grid", (): void => {
         );
     });
 
-    test("itemHeightCallback prop is called and variable heights applied", (): void => {
+    test("rowHeightCallback prop is called and variable heights applied", (): void => {
         const heightCallback: any = jest.fn();
         heightCallback.mockReturnValueOnce(50);
         heightCallback.mockReturnValueOnce(300);
@@ -381,7 +380,7 @@ describe("data grid", (): void => {
 
         const rendered: ReactWrapper = mount(
             <DataGrid
-                itemHeightCallback={heightCallback}
+                rowHeightCallback={heightCallback}
                 gridData={gridData}
                 dataRowKey="name"
                 columnDefinitions={columnDefinitions}
@@ -656,7 +655,7 @@ describe("data grid", (): void => {
 
         const rendered: ReactWrapper = mount(
             <DataGrid
-                itemHeightCallback={heightCallback}
+                rowHeightCallback={heightCallback}
                 gridData={gridData}
                 dataRowKey="name"
                 columnDefinitions={columnDefinitions}

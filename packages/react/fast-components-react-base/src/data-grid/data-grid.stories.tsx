@@ -6,11 +6,10 @@ import DataGrid, {
     DataGridCellRenderConfig,
     DataGridColumnDefinition,
     DataGridProps,
+    DataGridRowHeightCallbackParams
 } from "./index";
 
-function imageCellFn(
-    config: DataGridCellRenderConfig
-): React.ReactNode {
+function imageCellFn(config: DataGridCellRenderConfig): React.ReactNode {
     return (
         <div
             {...config.unhandledProps}
@@ -37,9 +36,7 @@ function imageCellFn(
     );
 }
 
-function recordIdCellFn(
-    config: DataGridCellRenderConfig
-): React.ReactNode {
+function recordIdCellFn(config: DataGridCellRenderConfig): React.ReactNode {
     return (
         <div
             {...config.unhandledProps}
@@ -99,15 +96,13 @@ function getDataSet(length: number): object[] {
     return dataSet;
 }
 
-function getItemHeight(
-    itemData: object,
-    rowIndex: number,
-    defaultItemHeight: number
+function getRowHeight(
+    row: DataGridRowHeightCallbackParams
 ): number {
-    if (rowIndex % 2) {
-        return defaultItemHeight;
+    if (row.rowIndex % 2) {
+        return row.defaultRowHeight;
     }
-    return defaultItemHeight * 2;
+    return row.defaultRowHeight * 2;
 }
 
 interface DataGridTestState {
@@ -158,7 +153,7 @@ class DataGridTest extends React.Component<DataGridTestProps, DataGridTestState>
                     columnDefinitions={this.props.columnDefinitions}
                     dataRowKey={this.props.dataRowKey}
                     gridData={this.state.currentDataSet}
-                    itemHeight={this.props.itemHeight}
+                    rowHeight={this.props.rowHeight}
                     {...props}
                 />
             </div>
@@ -186,7 +181,7 @@ storiesOf("Data Grid", module)
             }}
             dataRowKey="recordId"
             gridData={getDataSet(100)}
-            itemHeight={100}
+            rowHeight={100}
             columnDefinitions={columnDefinitions}
         />
     ))
@@ -197,7 +192,7 @@ storiesOf("Data Grid", module)
             }}
             dataRowKey="recordId"
             gridData={getDataSet(100)}
-            itemHeight={100}
+            rowHeight={100}
             columnDefinitions={columnDefinitions}
             defaultFocusRowKey="id-50"
             defaultFocusColumnKey="image"
@@ -210,7 +205,7 @@ storiesOf("Data Grid", module)
             }}
             dataRowKey="recordId"
             gridData={[]}
-            itemHeight={100}
+            rowHeight={100}
             columnDefinitions={columnDefinitions}
         />
     ))
@@ -222,7 +217,7 @@ storiesOf("Data Grid", module)
             }}
             dataRowKey="recordId"
             gridData={getDataSet(100)}
-            itemHeight={100}
+            rowHeight={100}
             columnDefinitions={columnDefinitions}
         />
     ))
@@ -235,7 +230,7 @@ storiesOf("Data Grid", module)
             dataRowKey="recordId"
             primaryDataSet={getDataSet(10000)}
             secondaryDataSet={getDataSet(2000)}
-            itemHeight={100}
+            rowHeight={100}
             columnDefinitions={columnDefinitions}
         />
     ))
@@ -248,7 +243,7 @@ storiesOf("Data Grid", module)
             dataRowKey="recordId"
             primaryDataSet={getDataSet(100)}
             secondaryDataSet={getDataSet(0)}
-            itemHeight={100}
+            rowHeight={100}
             columnDefinitions={columnDefinitions}
         />
     ))
@@ -260,8 +255,8 @@ storiesOf("Data Grid", module)
             }}
             dataRowKey="recordId"
             gridData={getDataSet(10000)}
-            itemHeight={100}
+            rowHeight={100}
             columnDefinitions={columnDefinitions}
-            itemHeightCallback={getItemHeight}
+            rowHeightCallback={getRowHeight}
         />
     ));

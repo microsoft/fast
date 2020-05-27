@@ -30,9 +30,7 @@ class DataGridCell extends Foundation<
     /**
      * The default function that renders a cell
      */
-    public static renderCell = (
-        config: DataGridCellRenderConfig
-    ): React.ReactNode => {
+    public static renderCell = (config: DataGridCellRenderConfig): React.ReactNode => {
         return (
             <div
                 {...config.unhandledProps}
@@ -84,12 +82,12 @@ class DataGridCell extends Foundation<
             classNames: this.generateClassNames(),
             rootElement: this.rootElement,
             focusTarget: this.focusTarget,
-            unhandledProps: unhandledProps
+            unhandledProps: unhandledProps,
         };
 
         return !isNil(this.props.columnDefinition.cell)
-          ? this.props.columnDefinition.cell(config)
-          : DataGridCell.renderCell(config);
+            ? this.props.columnDefinition.cell(config)
+            : DataGridCell.renderCell(config);
     }
 
     /**
@@ -117,10 +115,12 @@ class DataGridCell extends Foundation<
         if (this.context === null) {
             return false;
         }
-        return this.props.rowData[this.context.dataGridProps.dataRowKey] ===
-            this.context.desiredFocusRowKey &&
+        return (
+            this.props.rowData[this.context.dataGridProps.dataRowKey] ===
+                this.context.desiredFocusRowKey &&
             this.props.columnDefinition.columnDataKey ===
-                this.context.desiredFocusColumnKey;
+                this.context.desiredFocusColumnKey
+        );
     };
 
     /**
@@ -130,9 +130,11 @@ class DataGridCell extends Foundation<
         if (this.context === null) {
             return false;
         }
-        return this.props.rowData[this.context.dataGridProps.dataRowKey] ===
-            this.context.focusRowKey &&
+        return (
+            this.props.rowData[this.context.dataGridProps.dataRowKey] ===
+                this.context.focusRowKey &&
             this.props.columnDefinition.columnDataKey === this.context.focusColumnKey
+        );
     };
 
     /**

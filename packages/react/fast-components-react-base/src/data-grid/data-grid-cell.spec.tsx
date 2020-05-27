@@ -49,7 +49,7 @@ describe("data grid cell", (): void => {
         dataRowKey: "name",
         gridData: [rowData1, rowData2, rowData3],
         columnDefinitions: [columnDefinition1, columnDefinition2],
-        itemHeight: 60,
+        rowHeight: 60,
     };
 
     test("should have a displayName that matches the component name", () => {

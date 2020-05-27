@@ -33,7 +33,7 @@ export default {
             title: "Array of columndefinitions",
             type: "array",
         },
-        itemHeight: {
+        rowHeight: {
             title: "Item height",
             type: "number",
         },

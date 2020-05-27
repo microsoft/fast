@@ -24,6 +24,12 @@ export interface DataGridHeaderRenderConfig {
     classNames: string;
 }
 
+export interface DataGridRowHeightCallbackParams {
+    rowData: object,
+    rowIndex: number,
+    defaultRowHeight: number
+}
+
 export interface DataGridColumnDefinition {
     /**
      * identifies the data item to be displayed in this column
@@ -45,9 +51,7 @@ export interface DataGridColumnDefinition {
     /**
      *  Custom render function for the header cell of the column
      */
-    header?: (
-        config: DataGridHeaderRenderConfig
-    ) => React.ReactNode;
+    header?: (config: DataGridHeaderRenderConfig) => React.ReactNode;
 
     /**
      * Custom render function for a data cells in the column
@@ -60,9 +64,7 @@ export interface DataGridColumnDefinition {
      * set the 'ref' attribute of the internal element that should get focus to this value.
      * unhandledProps: authors will generally want to write these to their custom implementations
      */
-    cell?: (
-        DataGridCellRenderConfig
-    ) => React.ReactNode;
+    cell?: (DataGridCellRenderConfig) => React.ReactNode;
 }
 
 export interface DataGridHandledProps extends DataGridManagedClasses {
@@ -97,16 +99,14 @@ export interface DataGridHandledProps extends DataGridManagedClasses {
     /**
      *  The default height in pixels of each row
      */
-    itemHeight?: number;
+    rowHeight?: number;
 
     /**
-     * This callback function overrides the itemHeight prop and will be called for each
+     * This callback function overrides the rowHeight prop and will be called for each
      * row of data when the gridData is updated in props.  Allows for non-uniform row heights.
      */
-    itemHeightCallback?: (
-        rowData: object,
-        rowIndex: number,
-        defaultItemHeight: number
+    rowHeightCallback?: (
+        row: DataGridRowHeightCallbackParams,
     ) => number;
 
     /**

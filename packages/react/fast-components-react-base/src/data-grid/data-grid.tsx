@@ -10,6 +10,7 @@ import {
     DataGridHandledProps,
     DataGridHeaderRenderConfig,
     DataGridProps,
+    DataGridRowHeightCallbackParams,
     DataGridUnhandledProps,
 } from "./data-grid.props";
 import DataGridRow from "./data-grid-row";
@@ -45,15 +46,13 @@ class DataGrid extends Foundation<
     DataGridState
 > {
     public static defaultProps: Partial<DataGridProps> = {
-        itemHeight: 60,
+        rowHeight: 60,
         stableRangeEndIndex: 0,
         pageSize: 1000,
-        itemHeightCallback: (
-            rowData: object,
-            rowIndex: number,
-            defaultItemHeight: number
+        rowHeightCallback: (
+           row: DataGridRowHeightCallbackParams
         ) => {
-            return defaultItemHeight;
+            return row.defaultRowHeight;
         },
         virtualizeItems: true,
         managedClasses: {},
@@ -85,8 +84,8 @@ class DataGrid extends Foundation<
         dataRowKey: void 0,
         gridData: void 0,
         columnDefinitions: void 0,
-        itemHeight: void 0,
-        itemHeightCallback: void 0,
+        rowHeight: void 0,
+        rowHeightCallback: void 0,
         managedClasses: void 0,
         defaultFocusColumnKey: void 0,
         defaultFocusRowKey: void 0,
@@ -131,7 +130,7 @@ class DataGrid extends Foundation<
                 focusRowKey = this.props.gridData[0][this.props.dataRowKey];
             }
 
-           currentDataPageStartIndex =
+            currentDataPageStartIndex =
                 initialFocusRowIndex - Math.floor(this.props.pageSize / 2);
 
             currentDataPageStartIndex =
@@ -183,7 +182,7 @@ class DataGrid extends Foundation<
                 this.state.rowPositions[this.state.currentDataPageStartIndex].start
             );
 
-            if (typeof this.props.itemHeightCallback === "function") {
+            if (typeof this.props.rowHeightCallback === "function") {
                 for (
                     let i: number = this.state.currentDataPageStartIndex;
                     i <= this.state.currentDataPageEndIndex;
@@ -472,7 +471,6 @@ class DataGrid extends Foundation<
         column: DataGridColumnDefinition,
         index: number
     ): React.ReactNode => {
-
         const config: DataGridHeaderRenderConfig = {
             title: column.title,
             key: column.columnDataKey,
@@ -622,7 +620,7 @@ class DataGrid extends Foundation<
         }
         const estimatedTotalHeight: number =
             rowPositions[rowPositions.length - 1].end +
-            (this.props.gridData.length - rowPositions.length) * this.props.itemHeight;
+            (this.props.gridData.length - rowPositions.length) * this.props.rowHeight;
 
         return estimatedTotalHeight;
     };
@@ -643,11 +641,11 @@ class DataGrid extends Foundation<
                     : targetIndex;
             for (let i: number = startIndex; i <= endIndex; i++) {
                 const thisRowStart: number = i === 0 ? 0 : rowPositions[i - 1].end;
-                const thisRowHeight: number = this.props.itemHeightCallback(
-                    this.props.gridData[i],
-                    i,
-                    this.props.itemHeight
-                );
+                const thisRowHeight: number = this.props.rowHeightCallback({
+                    rowData: this.props.gridData[i],
+                    rowIndex: i,
+                    defaultRowHeight: this.props.rowHeight
+                });
                 rowPositions.push({
                     start: thisRowStart,
                     span: thisRowHeight,
@@ -672,11 +670,11 @@ class DataGrid extends Foundation<
             const endIndex: number = this.props.gridData.length - 1;
             for (let i: number = startIndex; i <= endIndex; i++) {
                 const thisRowStart: number = i === 0 ? 0 : rowPositions[i - 1].end;
-                const thisRowHeight: number = this.props.itemHeightCallback(
-                    this.props.gridData[i],
-                    i,
-                    this.props.itemHeight
-                );
+                const thisRowHeight: number = this.props.rowHeightCallback({
+                    rowData: this.props.gridData[i],
+                    rowIndex: i,
+                    defaultRowHeight: this.props.rowHeight
+                });
                 const thisRowEnd: number = thisRowStart + thisRowHeight;
                 rowPositions.push({
                     start: thisRowStart,
@@ -697,7 +695,7 @@ class DataGrid extends Foundation<
         newScrollValue: number,
         scrollMaxValue: number,
         viewportSpan: number
-    ): void => { 
+    ): void => {
         const currentPageTop: number = this.state.rowPositions[
             this.state.currentDataPageStartIndex
         ].start;
@@ -786,7 +784,7 @@ class DataGrid extends Foundation<
 
         const estimatedItemIndex: number = Math.min(
             maxIndex,
-            Math.floor(scrollPosition / this.props.itemHeight)
+            Math.floor(scrollPosition / this.props.rowHeight)
         );
 
         if (scrollPosition < rowPositions[estimatedItemIndex].start) {
