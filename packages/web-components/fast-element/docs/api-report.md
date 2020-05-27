@@ -4,13 +4,10 @@
 
 ```ts
 
-// @public (undocumented)
+// @public
 export interface Accessor {
-    // (undocumented)
     getValue(source: any): any;
-    // (undocumented)
     name: string;
-    // (undocumented)
     setValue(source: any, value: any): void;
 }
 
@@ -111,11 +108,11 @@ export class BindingBehavior implements Behavior {
     // (undocumented)
     expression: Expression;
     // @internal (undocumented)
-    handleEvent(event: Event): void;
+    handleChange(): void;
     // @internal (undocumented)
-    handleExpressionChange(): void;
+    handleEvent(event: Event): void;
     // (undocumented)
-    observableExpression: ObservableExpression | null;
+    observableExpression: ComputedObservable | null;
     // (undocumented)
     source: unknown;
     // (undocumented)
@@ -192,6 +189,13 @@ export interface CompilationResult {
 // @public
 export function compileTemplate(template: HTMLTemplateElement, directives: ReadonlyArray<Directive>): CompilationResult;
 
+// @public
+export interface ComputedObservable<TScope = any, TReturn = any, TParent = any> extends Notifier {
+    // (undocumented)
+    getValue(source: TScope, context: ExecutionContext): TReturn;
+    unwatchExpression(): void;
+}
+
 // @public (undocumented)
 export class Controller extends PropertyChangeNotifier {
     constructor(element: HTMLElement, definition: FASTElementDefinition);
@@ -237,7 +241,7 @@ export function customElement(nameOrDef: string | PartialFASTElementDefinition):
 // @public (undocumented)
 export type DecoratorAttributeConfiguration = Omit<AttributeConfiguration, "property">;
 
-// @public (undocumented)
+// @public
 export const defaultExecutionContext: ExecutionContext<any>;
 
 // @public (undocumented)
@@ -298,34 +302,19 @@ export const emptyArray: readonly never[];
 
 // @public
 export class ExecutionContext<TParent = any> {
-    // (undocumented)
-    get even(): boolean;
-    // (undocumented)
     get event(): Event;
-    // (undocumented)
-    get first(): boolean;
-    // (undocumented)
     index: number;
-    // (undocumented)
-    get last(): boolean;
-    // (undocumented)
+    get isEven(): boolean;
+    get isFirst(): boolean;
+    get isInMiddle(): boolean;
+    get isLast(): boolean;
+    get isOdd(): boolean;
     length: number;
-    // (undocumented)
-    get middle(): boolean;
-    // (undocumented)
-    get odd(): boolean;
-    // (undocumented)
     parent: TParent;
 }
 
 // @public
 export type Expression<TScope = any, TReturn = any, TParent = any> = (scope: TScope, context: ExecutionContext<TParent>) => TReturn;
-
-// @public (undocumented)
-export interface ExpressionObserver {
-    // (undocumented)
-    handleExpressionChange(expression: ObservableExpression): void;
-}
 
 // @public (undocumented)
 export interface FASTElement {
@@ -408,33 +397,19 @@ export interface Notifier {
 // @public (undocumented)
 export const nullableNumberConverter: ValueConverter;
 
-// @public (undocumented)
-export const Observable: {
-    createArrayObserver(array: any[]): Notifier;
-    getNotifier<T extends Notifier = Notifier>(source: any): T;
+// @public
+export const Observable: Readonly<{
+    setArrayObserverFactory(factory: (collection: any[]) => Notifier): void;
+    getNotifier(source: any): Notifier;
     track(source: unknown, propertyName: string): void;
     notify(source: unknown, args: any): void;
     defineProperty(target: {}, nameOrAccessor: string | Accessor): void;
     getAccessors(target: {}): Accessor[];
-};
+    computed<TScope = any, TReturn = any, TParent = any>(expression: Expression<any, any, any>): ComputedObservable<TScope, TReturn, TParent>;
+}>;
 
-// @public (undocumented)
-export function observable($target: {}, $prop: string): void;
-
-// @public (undocumented)
-export class ObservableExpression {
-    constructor(expression: Expression, observer: ExpressionObserver);
-    // @internal (undocumented)
-    call(): void;
-    // (undocumented)
-    dispose(): void;
-    // (undocumented)
-    evaluate(scope: unknown, context: ExecutionContext): any;
-    // @internal (undocumented)
-    handleChange(): void;
-    // @internal (undocumented)
-    observe(source: unknown, propertyName: string): void;
-    }
+// @public
+export function observable(target: {}, nameOrAccessor: string | Accessor): void;
 
 // @public (undocumented)
 export type PartialFASTElementDefinition = {
@@ -481,8 +456,6 @@ export class RepeatBehavior implements Behavior, Subscriber {
     // (undocumented)
     handleChange(source: any, args: Splice[]): void;
     // (undocumented)
-    handleExpressionChange(): void;
-    // (undocumented)
     unbind(): void;
     }
 
@@ -507,7 +480,9 @@ export interface RepeatOptions {
     positioning: boolean;
 }
 
-// @public (undocumented)
+// Warning: (ae-internal-missing-underscore) The name "setCurrentEvent" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal (undocumented)
 export function setCurrentEvent(event: Event | null): void;
 
 // @public (undocumented)

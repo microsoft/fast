@@ -1,5 +1,10 @@
-import { ExecutionContext, Expression, setCurrentEvent } from "../observation/observable";
-import { ObservableExpression } from "../observation/observable";
+import {
+    ExecutionContext,
+    Expression,
+    setCurrentEvent,
+    ComputedObservable,
+} from "../observation/observable";
+import { Observable } from "../observation/observable";
 import { DOM } from "../dom";
 import { SyntheticView } from "../view";
 import { Directive } from "./directive";
@@ -14,10 +19,11 @@ function normalBind(
     this.context = context;
 
     if (this.observableExpression === null) {
-        this.observableExpression = new ObservableExpression(this.expression, this);
+        this.observableExpression = Observable.computed(this.expression);
+        this.observableExpression.subscribe(this);
     }
 
-    this.updateTarget(this.observableExpression.evaluate(source, context));
+    this.updateTarget(this.observableExpression.getValue(source, context));
 }
 
 function triggerBind(
@@ -31,7 +37,7 @@ function triggerBind(
 }
 
 function normalUnbind(this: BindingBehavior): void {
-    this.observableExpression!.dispose();
+    this.observableExpression!.unwatchExpression();
     this.source = null;
     this.context = null;
 }
@@ -42,7 +48,7 @@ type ComposableView = SyntheticView & {
 };
 
 function contentUnbind(this: BindingBehavior): void {
-    this.observableExpression!.dispose();
+    this.observableExpression!.unwatchExpression();
     this.source = null;
     this.context = null;
 
@@ -278,7 +284,7 @@ export class BindingDirective extends Directive {
 export class BindingBehavior implements Behavior {
     public source: unknown = null;
     public context: ExecutionContext | null = null;
-    public observableExpression: ObservableExpression | null = null;
+    public observableExpression: ComputedObservable | null = null;
     public classVersions: Record<string, number>;
     public version: number;
 
@@ -303,9 +309,9 @@ export class BindingBehavior implements Behavior {
     /**
      * @internal
      */
-    handleExpressionChange(): void {
+    handleChange(): void {
         this.updateTarget(
-            this.observableExpression!.evaluate(this.source, this.context!)
+            this.observableExpression!.getValue(this.source, this.context!)
         );
     }
 

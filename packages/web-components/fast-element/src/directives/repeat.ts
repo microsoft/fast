@@ -4,11 +4,11 @@ import {
     ExecutionContext,
     Expression,
     Observable,
-    ObservableExpression,
+    ComputedObservable,
 } from "../observation/observable";
 import { HTMLView, SyntheticView } from "../view";
-import { Subscriber } from "../observation/notifier";
-import { ArrayObserver, enableArrayObservation } from "../observation/array-observer";
+import { Subscriber, Notifier } from "../observation/notifier";
+import { enableArrayObservation } from "../observation/array-observer";
 import { Splice } from "../observation/array-change-records";
 import { Behavior } from "./behavior";
 import { Directive } from "./directive";
@@ -46,19 +46,20 @@ export class RepeatBehavior implements Behavior, Subscriber {
     private source: unknown = void 0;
     private views: SyntheticView[] = [];
     private items: any[] | null = null;
-    private itemsObserver?: ArrayObserver = void 0;
-    private observableExpression: ObservableExpression;
+    private itemsObserver?: Notifier = void 0;
+    private observableExpression: ComputedObservable;
     private originalContext: ExecutionContext | undefined = void 0;
     private childContext: ExecutionContext | undefined = void 0;
     private bindView: typeof bindWithoutPositioning = bindWithoutPositioning;
 
     constructor(
         private location: Node,
-        expression: Expression,
+        private expression: Expression,
         private template: SyntheticViewTemplate,
         private options: RepeatOptions
     ) {
-        this.observableExpression = new ObservableExpression(expression, this);
+        this.observableExpression = Observable.computed(expression);
+        this.observableExpression.subscribe(this);
 
         if (options.positioning) {
             this.bindView = bindWithPositioning;
@@ -71,7 +72,7 @@ export class RepeatBehavior implements Behavior, Subscriber {
         this.childContext = Object.create(context);
         this.childContext!.parent = source;
 
-        this.items = this.observableExpression.evaluate(source, this.originalContext);
+        this.items = this.observableExpression.getValue(source, this.originalContext);
         this.observeItems();
         this.refreshAllViews();
     }
@@ -85,20 +86,21 @@ export class RepeatBehavior implements Behavior, Subscriber {
         }
 
         this.unbindAllViews();
-        this.observableExpression.dispose();
-    }
-
-    handleExpressionChange(): void {
-        this.items = this.observableExpression.evaluate(
-            this.source,
-            this.originalContext!
-        );
-        this.observeItems();
-        this.refreshAllViews();
+        this.observableExpression.unwatchExpression();
     }
 
     handleChange(source: any, args: Splice[]): void {
-        this.updateViews(args);
+        if (source === this.expression) {
+            this.items = this.observableExpression.getValue(
+                this.source,
+                this.originalContext!
+            );
+
+            this.observeItems();
+            this.refreshAllViews();
+        } else {
+            this.updateViews(args);
+        }
     }
 
     private observeItems(): void {
@@ -107,9 +109,7 @@ export class RepeatBehavior implements Behavior, Subscriber {
         }
 
         const oldObserver = this.itemsObserver;
-        const newObserver = (this.itemsObserver = Observable.getNotifier<ArrayObserver>(
-            this.items
-        ));
+        const newObserver = (this.itemsObserver = Observable.getNotifier(this.items));
 
         if (oldObserver !== newObserver) {
             if (oldObserver !== void 0) {

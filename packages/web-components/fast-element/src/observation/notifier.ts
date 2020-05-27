@@ -79,8 +79,9 @@ function spilloverHas(this: SubscriberSet, subscriber: Subscriber): boolean {
 }
 
 /**
- * An implementation of Notifier that efficiently keeps track of subscribers interested
- * in a specific change notification on an observable source.
+ * An implementation of {@link Notifier} that efficiently keeps track of
+ * subscribers interested in a specific change notification on an
+ * observable source.
  *
  * @remarks
  * This set is optimized for the most common scenario of 1 or 2 subscribers.
@@ -167,7 +168,8 @@ export class SubscriberSet implements Notifier {
 }
 
 /**
- * An implementation of Notifier that allows subscribers to be notified of individual property changes on an object.
+ * An implementation of Notifier that allows subscribers to be notified
+ * of individual property changes on an object.
  */
 export class PropertyChangeNotifier implements Notifier {
     private subscribers: Record<string, SubscriberSet> = {};
