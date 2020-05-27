@@ -8,12 +8,12 @@ custom_edit_url: https://github.com/microsoft/fast-dna/edit/master/packages/web-
 `@microsoft/fast-components` leverages `@microsoft/fast-element` to style components. For details on how to apply CSS, see [leveraging CSS](fast-element/leveraging-css.md).
 
 ## Design System
-In FAST, the *design system* is a collection of properties and values that inform the visual design language of the components. These properties are managed and provided through implementations of the *DesignSystemProvider*. See the [*DesignSystemProvider* documentation](fast-foundation/fast-design-system-provider.md) for more information.
+In FAST, the *design system* is a collection of properties and values that inform the visual design language of the components. These properties are managed and provided through implementations of the [*DesignSystemProvider*](fast-foundation/fast-design-system-provider.md).
 
-For the purposes of this section, the *DesignSystemProvider* is a Custom Element that will create CSS Custom Properties that can be consumed by component stylesheets and provide mechanisms to synchronize, update, and consume those properties programmatically.
+For the purposes of this section, just know the *DesignSystemProvider* is a Custom Element that will create CSS Custom Properties that can be consumed by component stylesheets and provide mechanisms to synchronize, update, and consume those properties programmatically.
 
 ### Type Ramp
-The FAST type ramp is exposed by the `FASTDesignSystemProvider` as CSS Custom Properties. It centers the ramp around a _base_ font size and line-height, ascending and descending from the _base_. The CSS Custom Properties that can be used are:
+The FAST type ramp is exposed by the `FASTDesignSystemProvider` as CSS Custom Properties. It organizes the ramp around a _base_ font size and line-height, ascending and descending from the _base_. The CSS Custom Properties that can be used are:
 
 | Level              | Font Size                       | Line Height                      |
 |--------------------|---------------------------------|----------------------------------|
@@ -35,11 +35,11 @@ The following properties are provided by the `FASTDesignSystemProvider` and shou
 | `--background-color`                   | `string` (hex color) | Defines the background color of the node. This is used by color recipes and should represent the color UI is rendering on for a given node tree. |
 | `--density`                            | `number`             | A multiplier to control the density of UI elements.                        |
 | `--design-unit`                        | `number`             | The core sizing unit that all sizes are derived from.                      |
-| `--base-height-multiplier`             | `number`             | The number of designUnits used for component height at the base density.   |
-| `--base-horizontal-spacing-multiplier` | `number`             | The number of designUnits used for horizontal spacing at the base density. |
+| `--base-height-multiplier`             | `number`             | The number of design units used for component height at the base density.   |
+| `--base-horizontal-spacing-multiplier` | `number`             | The number of design units used for horizontal spacing at the base density. |
 | `--corner-radius`                      | `number`             | The corner radius of controls.                                             |
 | `--outline-width`                      | `number`             | The width of the outline of outline controls.                              |
-| `--focus-outline-width`                | `number`             | The width the focus indicator.                                             |
+| `--focus-outline-width`                | `number`             | The width of the focus indicator.                                             |
 | `--disabled-opacity`                   | `number`             | Opacity of disabled controls.                                              |
 
 ## Conditional Stylesheets
@@ -64,7 +64,7 @@ const styles = css`
 ```
 
 ### MatchMedia Stylesheets
-`forcedColorsStylesheetBehavior` builds is an implementation of the `matchMediaStylesheetBehaviorFactory, which can be used to create custom implementations of stylesheets that will be conditionally attached based on a [MediaQueryList](https://developer.mozilla.org/en-US/docs/Web/API/MediaQueryList).
+`forcedColorsStylesheetBehavior` builds is an implementation of the `matchMediaStylesheetBehaviorFactory`, which can be used to create custom implementations of stylesheets that will be conditionally attached based on a [MediaQueryList](https://developer.mozilla.org/en-US/docs/Web/API/MediaQueryList).
 
 __Example: Using the `matchMediaStylesheetBehaviorFactory`__
 ```js
@@ -83,11 +83,12 @@ const styles = css`
 ```
 
 ## Hiding Undefined Elements
-Custom Elements that have not been [upgraded](https://developers.google.com/web/fundamentals/web-components/customelements#upgrades) and don't have styles attached can still be rendered by the browser but they likely do not look how they are supposed to. To avoid a *flash of un-styled content* (FOUC) you should be sure to visually hide Custom Elements if they have not been *defined*:
+Custom Elements that have not been [upgraded](https://developers.google.com/web/fundamentals/web-components/customelements#upgrades) and don't have styles attached can still be rendered by the browser but they likely do not look how they are supposed to. To avoid a *flash of un-styled content* (FOUC), visually hide Custom Elements if they have not been *defined*:
 
 ```CSS
 :not(:defined) {
     visibility: hidden;
 }
 ```
-Note, this will need to be applied by the consuming application and will not be applied by the components themselves.
+
+*Note, the consuming application must apply this, as the components themselves do not.*
