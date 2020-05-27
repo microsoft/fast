@@ -135,7 +135,9 @@ export const SliderStyles = css`
                 background: ${SystemColors.FieldText};
             }
             :host(:${focusVisible}) .thumb-cursor {
+                background: ${SystemColors.Highlight};
                 border-color: ${SystemColors.Highlight};
+                box-shadow: 0 0 0 2px ${SystemColors.Field}, 0 0 0 4px ${SystemColors.FieldText};
             }
             :host(.disabled) {
                 opacity: 1;

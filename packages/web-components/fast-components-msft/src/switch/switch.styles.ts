@@ -165,31 +165,44 @@ export const SwitchStyles = css`
     neutralOutlineRestBehavior,
     forcedColorsStylesheetBehavior(
         css`
-            .checked-indicator {
+            .checked-indicator,
+            :host(:enabled) .switch:active .checked-indicator {
                 forced-color-adjust: none;
                 background: ${SystemColors.FieldText};
             }
-            .switch, .switch:hover, .switch:active {
+            .switch {
                 forced-color-adjust: none;
                 background: ${SystemColors.Field};
                 border-color: ${SystemColors.FieldText};
+            }
+            :host(:enabled) .switch:hover {
+                background: ${SystemColors.HighlightText};
+                border-color: ${SystemColors.Highlight};
             }
             :host(.checked) .switch {
                 background: ${SystemColors.Highlight};
                 border-color: ${SystemColors.Highlight};
             }
+            :host(.checked:enabled) .switch:hover,
+            :host(:enabled) .switch:active {
+                background: ${SystemColors.HighlightText};
+                border-color: ${SystemColors.Highlight};
+            }
             :host(.checked) .checked-indicator {
                 background: ${SystemColors.HighlightText};
             }
-            :host(.disabled) {
-                opacity: 1;
+            :host(.checked:enabled) .switch:hover .checked-indicator {
+                background: ${SystemColors.Highlight};
             }
             :host(:${focusVisible}) .switch {
                 border-color: ${SystemColors.Highlight};
+                box-shadow: 0 0 0 2px ${SystemColors.Field}, 0 0 0 4px ${SystemColors.FieldText};
             }
-            :host(.checked:${focusVisible}) .switch {
-                border-color: ${SystemColors.FieldText};
-                box-shadow: 0 0 0 2px ${SystemColors.Field} inset;
+            :host(.checked:${focusVisible}:enabled) .switch {
+                box-shadow: 0 0 0 2px ${SystemColors.Field}, 0 0 0 4px ${SystemColors.FieldText};
+            }
+            :host(.disabled) {
+                opacity: 1;
             }
             :host(.disabled) .checked-indicator {
                 background: ${SystemColors.GrayText};

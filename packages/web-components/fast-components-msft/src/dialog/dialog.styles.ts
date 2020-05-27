@@ -42,5 +42,6 @@ export const DialogStyles = css`
         height: var(--dialog-height);
         background: var(--background-color);
         z-index: 1;
+        border: calc(var(--outline-width) * 1px) solid transparent;
     }
 `;
