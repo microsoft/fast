@@ -1,0 +1,22 @@
+name: CD - Static Assets
+
+on:
+  push:
+    branches:
+    - master
+
+jobs:
+  deploy_linux:
+    runs-on: ubuntu-latest
+  
+    steps:
+    - name: Checkout Branch
+      uses: actions/checkout@master
+
+    - name: Upload static assets to CDN 
+      uses: lauchacarro/Azure-Storage-Action@master
+      with:
+        folder: 'sites/static-utilities/statics/assets'
+        connection-string: ${{ secrets.AZURE_CONNECTION_STRING_STORAGE }}
+        public-access-policy: Blob
+        blob-container-name: 'assets'

@@ -6,7 +6,7 @@ on:
     - master
 
 jobs:
-  build_linux:
+  build_deploy_linux:
     runs-on: ubuntu-latest
 
     env:
@@ -15,26 +15,30 @@ jobs:
       AZURE_WEBAPP_BUILD_PATH: sites/fast-creator
       AZURE_WEBAPP_DIST_PATH: sites/fast-creator/www
       AZURE_WEBAPP_SLOT_NAME: stage
-
+    
     steps:
     - name: Checkout Branch
       uses: actions/checkout@master
 
     - name: Install Lerna
-      run: sudo yarn global add lerna
+      run: yarn global add lerna
 
     - name: Install package dependencies / prepare workspaces
       run: yarn install --frozen-lockfile
     
-    - name: Build Web Application
+    - name: Build & Prepare Web Application
       run: |
         cd ${{ env.AZURE_WEBAPP_BUILD_PATH }}
         yarn build
+        cp ../site-utilities/statics/server/package.json ../site-utilities/statics/server/server.js www 
+        cd www
+        npm i
+        ls -lta
 
     - name: 'Deploy to Active Azure Region'
       uses: azure/webapps-deploy@v2
       with:
-        publish_profile: ${{ secrets.AZURE_PUBLISH_PROFILE_CREATE_ACTIVE }}
+        publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE_CREATE_ACTIVE }}
         app-name: ${{ env.AZURE_WEBAPP_ACTIVE_STAGE_NAME }}
         package: ${{ env.AZURE_WEBAPP_DIST_PATH }}
         slot-name: ${{ env.AZURE_WEBAPP_SLOT_NAME }}
@@ -42,7 +46,7 @@ jobs:
     - name: 'Deploy to Passive Azure Region'
       uses: azure/webapps-deploy@v2
       with:
-        publish_profile: ${{ secrets.AZURE_PUBLISH_PROFILE_CREATE_PASSIVE }}
+        publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE_CREATE_PASSIVE }}
         app-name: ${{ env.AZURE_WEBAPP_PASSIVE_STAGE_NAME }}
         package: ${{ env.AZURE_WEBAPP_DIST_PATH }}
         slot-name: ${{ env.AZURE_WEBAPP_SLOT_NAME }}
