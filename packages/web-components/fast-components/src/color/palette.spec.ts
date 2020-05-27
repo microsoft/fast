@@ -1,3 +1,4 @@
+import { expect } from "chai";
 import { FASTDesignSystem, fastDesignSystemDefaults } from "../fast-design-system";
 import { accentBaseColor, accentPalette, neutralPalette } from "../fast-design-system";
 import {
@@ -11,7 +12,7 @@ import {
     swatchByMode,
 } from "./palette";
 import { Swatch } from "./common";
-import { expect } from "chai";
+import { parseColor } from "@microsoft/fast-colors";
 
 describe("palette", (): void => {
     it("should return a function", (): void => {
@@ -58,8 +59,7 @@ describe("palette", (): void => {
 });
 
 describe("findSwatchIndex", (): void => {
-    // TODO @nicholasrice: Tests are failing due as palette is expecting light
-    it.skip("should implement design-system defaults", (): void => {
+    it("should implement design-system defaults", (): void => {
         expect(findSwatchIndex(neutralPalette, "#FFF")({} as FASTDesignSystem)).to.equal(
             0
         );
@@ -68,7 +68,11 @@ describe("findSwatchIndex", (): void => {
                 accentPalette,
                 accentBaseColor({} as FASTDesignSystem)
             )({} as FASTDesignSystem)
-        ).to.equal(52);
+        ).to.equal(
+            fastDesignSystemDefaults.accentPalette.indexOf(
+                fastDesignSystemDefaults.accentBaseColor
+            )
+        );
     });
 
     it("should return -1 if the color is not found", (): void => {
@@ -107,17 +111,17 @@ describe("findSwatchIndex", (): void => {
         ).to.equal(93);
     });
 
-    // TODO @nicholasrice: Tests are failing due as palette is expecting light
-    it.skip("should find accent", (): void => {
+    it("should find accent", (): void => {
         expect(
             findSwatchIndex(
                 accentPalette,
-                accentBaseColor(fastDesignSystemDefaults)
+                parseColor(fastDesignSystemDefaults.accentBaseColor)!.toStringWebRGB()
             )(fastDesignSystemDefaults)
-        ).to.equal(52);
-        expect(
-            findSwatchIndex(accentPalette, "rgb(243, 51, 120)")(fastDesignSystemDefaults)
-        ).to.equal(52);
+        ).to.equal(
+            fastDesignSystemDefaults.accentPalette.indexOf(
+                fastDesignSystemDefaults.accentBaseColor
+            )
+        );
     });
 });
 
