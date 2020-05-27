@@ -20,6 +20,7 @@ import {
     neutralLayerL1,
     neutralLayerL2,
     neutralLayerL3,
+    StandardLuminance,
 } from "@microsoft/fast-components-styles-msft";
 import {
     ListboxItemProps,
@@ -50,6 +51,7 @@ import FASTMessageSystemWorker from "@microsoft/fast-tooling/dist/message-system
 import {
     DirectionSwitch,
     downChevron,
+    ThemeSelector,
     TransparencyToggle,
     upChevron,
 } from "@microsoft/site-utilities";
@@ -67,6 +69,7 @@ import { previewReady } from "./preview";
 
 export const previewBackgroundTransparency: string = "PREVIEW::TRANSPARENCY";
 export const previewDirection: string = "PREVIEW::DIRECTION";
+export const previewTheme: string = "PREVIEW::THEME";
 let componentLinkedDataId: string = "root";
 
 interface ObjectOfComponentViewConfigs {
@@ -150,6 +153,7 @@ class Explorer extends Foundation<
             transparentBackground: false,
             devToolsVisible: true,
             direction: Direction.ltr,
+            theme: StandardLuminance.DarkMode,
             previewReady: false,
             activeDictionaryId: componentLinkedDataId,
         };
@@ -225,6 +229,12 @@ class Explorer extends Foundation<
                                             id={"direction-switch"}
                                             direction={this.state.direction}
                                             onUpdateDirection={this.handleUpdateDirection}
+                                            disabled={!this.state.previewReady}
+                                        />
+                                        <ThemeSelector
+                                            id={"theme-selector"}
+                                            theme={this.state.theme}
+                                            onUpdateTheme={this.handleUpdateTheme}
                                             disabled={!this.state.previewReady}
                                         />
                                     </div>
@@ -459,6 +469,24 @@ class Explorer extends Foundation<
 
         return dataDictionary;
     }
+
+    private handleUpdateTheme = (): void => {
+        const updatedTheme: StandardLuminance =
+            this.state.theme === StandardLuminance.DarkMode
+                ? StandardLuminance.LightMode
+                : StandardLuminance.DarkMode;
+
+        this.setState({
+            theme: updatedTheme,
+        });
+
+        fastMessageSystem.postMessage({
+            type: MessageSystemType.custom,
+            action: ViewerCustomAction.response,
+            id: previewTheme,
+            value: updatedTheme,
+        } as CustomMessageIncomingOutgoing);
+    };
 
     private handleUpdateDirection = (): void => {
         const updatedDirection: Direction =

@@ -1,4 +1,5 @@
 import { Direction } from "@microsoft/fast-web-utilities";
+import { StandardLuminance } from "@microsoft/fast-components-styles-msft";
 import { ExplorerClassNameContract } from "./explorer.style";
 import { ComponentViewConfig } from "./fast-components/configs/data.props";
 
@@ -55,6 +56,11 @@ export interface ExplorerState {
      * The direction
      */
     direction: Direction;
+
+    /**
+     * The theme
+     */
+    theme: StandardLuminance;
 
     /**
      * Whether the preview is available
