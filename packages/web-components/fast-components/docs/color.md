@@ -6,7 +6,7 @@ FAST utilizes an adaptive color system that provides some unique advantages:
 4. Perceptually uniform UI across different surface colors.
 
 ## Algorithmic colors
-To understand the FAST color system, the first thing to understand is that all of the named colors enumerated below are algorithmic; they are a product of the *designSystem* object in which they are calculated.
+To understand the FAST color system, the first thing to understand is that all of the named colors enumerated below are algorithmic; they are a product of the *designSystem* object in which they are calculated. In the documentation below, these algorithmic colors will be referred to as *recipes*.
 
 ### Inputs
 Each color recipe expects as its sole argument the FAST *DesignSystem* object, but there are a few core pieces of data from that object that impact color resolution.
@@ -15,7 +15,7 @@ Each color recipe expects as its sole argument the FAST *DesignSystem* object, b
 Each color recipe operates on a palette. A palette in an array of hexadecimal colors ordered from light to dark. By default, FAST components leverage the `neutralPalette` and the `accentPalette`. 
 
 ### Background color
-This is the contextual color in which the recipe is rendering on. In foreground, outline, and divider recipes it is used the target color in which to ensure contrast against. In fill recipes it is sometimes used as the starting location in the appropriate palette to begin resolution.
+This is the contextual color that the recipe uses to determine what color it is rendering on. The foreground, outline, and divider recipes will use this color to ensure that the color created is accessible and meets contrast requirements. In fill recipes it is sometimes used as the starting location in the appropriate palette to begin resolution.
 
 ### Offsets
 Some recipes also leverage offset values, typically for *states* (rest, hovered, active, selected). These offsets are used to retrieve a color at the sum of the offset and some reference index (usually the index of the rest color or the background color in the palette).
@@ -48,7 +48,8 @@ const styles = css`
 );
 ```
 
-### Layer Recipes
+### Neutral Recipes
+#### Layer Recipes
 Layer recipes represent the UI layers and surfaces that individual UI elements are contained within. They are applied to primary regions such as toolbars, sidebars, canvas regions, fly-outs, dialogs, and cards.
 
 | name | Description |
@@ -62,7 +63,6 @@ Layer recipes represent the UI layers and surfaces that individual UI elements a
 | `neutralLayerL3` | Used as the background for secondary command surfaces, logically below L2. |
 | `neutralLayerL4` | Used as the background for the lowest command surface or title bar, logically below L3. |
 
-### Neutral Recipes
 #### Text
 Neutral text recipes address *most* cases of text used in a UI, from interactive element text, headings, and body text.
 
@@ -99,7 +99,7 @@ Neutral outlines are used to construct outline controls and dividers.
 | `neutralDividerRest` | Used as the color for divider elements. |
 
 #### Toggles
-Toggles have a set of recipes that are specifically tailored.
+Toggle elements such as checkboxes and switches use a specific set of recipes.
 
 | name | Description |
 |------|-------------|
@@ -126,7 +126,7 @@ Text input elements also have a set of recipes specifically tailored.
 | `neutralFocusInnerAccent` | The color of the inner focus-indicator when an *accent fill* element has document focus. |
 
 ### Accent Recipes
-Accent recipes use the accent palette and are intended to bring attention or otherwise distinguish the element from the rest. 
+Accent recipes use the accent palette and are intended to bring attention or otherwise distinguish the element on the page. 
 
 | name | Description |
 |------|-------------|
