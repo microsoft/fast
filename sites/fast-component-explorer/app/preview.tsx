@@ -13,10 +13,15 @@ import {
 import { ViewerCustomAction } from "@microsoft/fast-tooling-react";
 import { classNames, Direction } from "@microsoft/fast-web-utilities";
 import * as FASTComponents from "@microsoft/fast-components";
+import { fastDesignSystemDefaults } from "@microsoft/fast-components/dist/esm/fast-design-system";
 import {
     WebComponentDefinition,
     WebComponentDefinitionTag,
 } from "@microsoft/fast-tooling/dist/data-utilities/web-component";
+import {
+    neutralLayerL1,
+    StandardLuminance,
+} from "@microsoft/fast-components-styles-msft";
 import * as componentDefinitions from "./fast-components/configs/component-definitions";
 import {
     PreviewHandledProps,
@@ -25,7 +30,11 @@ import {
     PreviewUnhandledProps,
 } from "./preview.props";
 import style from "./preview.style";
-import { previewBackgroundTransparency, previewDirection } from "./explorer";
+import {
+    previewBackgroundTransparency,
+    previewDirection,
+    previewTheme,
+} from "./explorer";
 import { nativeElementTags } from "./utilities";
 
 // Prevent tree shaking
@@ -54,6 +63,7 @@ class Preview extends Foundation<
             schemaDictionary: {},
             transparentBackground: false,
             direction: Direction.ltr,
+            theme: StandardLuminance.DarkMode,
         };
 
         window.addEventListener("message", this.handleMessage);
@@ -121,13 +131,26 @@ class Preview extends Foundation<
                     break;
                 case MessageSystemType.custom:
                     if ((messageData as any).id === previewBackgroundTransparency) {
-                        this.setState({
-                            transparentBackground: (messageData as any).value,
-                        });
+                        this.setState(
+                            {
+                                transparentBackground: (messageData as any).value,
+                            },
+                            this.attachMappedComponents
+                        );
                     } else if ((messageData as any).id === previewDirection) {
-                        this.setState({
-                            direction: (messageData as any).value,
-                        });
+                        this.setState(
+                            {
+                                direction: (messageData as any).value,
+                            },
+                            this.attachMappedComponents
+                        );
+                    } else if ((messageData as any).id === previewTheme) {
+                        this.setState(
+                            {
+                                theme: (messageData as any).value,
+                            },
+                            this.attachMappedComponents
+                        );
                     }
 
                     break;
@@ -143,6 +166,21 @@ class Preview extends Foundation<
             this.ref.current.innerHTML = "";
 
             designSystemProvider.setAttribute("use-defaults", "");
+            designSystemProvider.setAttribute(
+                "background-color",
+                neutralLayerL1(
+                    Object.assign({}, fastDesignSystemDefaults, {
+                        baseLayerLuminance: this.state.theme,
+                    })
+                )
+            );
+            if (!this.state.transparentBackground) {
+                designSystemProvider.setAttribute(
+                    "style",
+                    "background: var(--background-color); height: 100vh;"
+                );
+            }
+
             designSystemProvider.appendChild(
                 mapDataDictionary({
                     dataDictionary: this.state.dataDictionary,
