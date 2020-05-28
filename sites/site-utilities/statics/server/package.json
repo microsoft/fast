@@ -1,0 +1,16 @@
+{
+  "name": "@microsoft/fast-production-sites",
+  "version": "1.0.0",
+  "description": "These packages are required to run node server on Azure\"",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/microsoft/fast-dna.git"
+  },
+  "author": "Microsoft Corporation",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "express": "^4.17.1",
+    "express-history-api-fallback": "2.2.1"
+  }
+}
