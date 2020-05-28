@@ -9,27 +9,20 @@ export class SideNavigation extends FASTElement {
     @attr
     public position: string;
 
+    //can be removed to used sectionArray.length once index is restructured to have the correct amount of sections.
     @attr
     public sections: number;
 
     @observable
-    public currentSection: number = 0;
-
-    // public createArray(): void {
-    //     // let newArr: string[] = [];
-    //     for (let i = 0; i < this.sections; i++) {
-    //         // newArr.push(`${i}`);
-    //         this.sectionArray.push(`${i}`);
-    //     }
-    //     // return(newArr)
-    // };
+    public currentSection: string = "0";
 
     @observable
-    public sectionArray: string[] = ["0", "1", "2", "3", "4"];
+    public sectionArray: HTMLElement[] = Array.from(document.querySelectorAll("section"));
 
     public updatecurrentSection = (): void => {
         const fromTop = window.scrollY;
 
+        //replace sections with sectionArray.length after rebase with John's code that reduces sections down to 5
         for (let i = 0; i < this.sections; i++) {
             const section: HTMLElement | null = document.querySelector(`#section-${i}`);
             if (section === null) {
@@ -38,13 +31,10 @@ export class SideNavigation extends FASTElement {
                 section.offsetTop <= fromTop &&
                 section.offsetTop + section.offsetHeight > fromTop
             ) {
-                this.currentSection = i;
+                this.currentSection = `${i}`;
             }
         }
     };
-
-    // @observable
-    // public sectionArray: string[] =[];
 
     public socialData: CommunityContentPlacementData[] = communityContentPlacementData.filter(
         x => x.header !== "Github"
@@ -55,10 +45,4 @@ export class SideNavigation extends FASTElement {
 
         window.addEventListener("scroll", throttle(this.updatecurrentSection, 100));
     }
-
-    // connectedCallback() {
-    //     super.connectedCallback();
-    //     this.createArray();
-    //     console.log(this.sectionArray)
-    //   }
 }
