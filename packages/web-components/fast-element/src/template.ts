@@ -4,7 +4,7 @@ import { DOM } from "./dom";
 import { Behavior, BehaviorFactory } from "./directives/behavior";
 import { Directive } from "./directives/directive";
 import { BindingDirective } from "./directives/binding";
-import { defaultExecutionContext, Expression } from "./observation/observable";
+import { defaultExecutionContext, Binding } from "./observation/observable";
 
 /**
  * A template capable of creating views specifically for rendering custom elements.
@@ -148,7 +148,7 @@ const lastAttributeNameRegex =
 /* eslint-disable-next-line @typescript-eslint/no-empty-interface */
 export interface CaptureType<TSource> {}
 type TemplateValue<TScope, TParent = any> =
-    | Expression<TScope, any, TParent>
+    | Binding<TScope, any, TParent>
     | string
     | number
     | Directive
@@ -181,7 +181,7 @@ export function html<TSource = any, TParent = any>(
         }
 
         if (typeof value === "function") {
-            value = new BindingDirective(value as Expression);
+            value = new BindingDirective(value as Binding);
 
             const match = lastAttributeNameRegex.exec(currentString);
             if (match !== null) {

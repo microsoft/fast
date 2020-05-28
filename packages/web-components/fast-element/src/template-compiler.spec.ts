@@ -319,7 +319,7 @@ describe("The template compiler", () => {
 
                 if (x.result) {
                     expect(
-                        (viewBehaviorFactories[0] as BindingDirective).expression(
+                        (viewBehaviorFactories[0] as BindingDirective).binding(
                             scope,
                             defaultExecutionContext
                         )

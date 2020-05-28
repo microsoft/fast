@@ -2,9 +2,9 @@ import { CaptureType, SyntheticViewTemplate, ViewTemplate } from "../template";
 import { DOM } from "../dom";
 import {
     ExecutionContext,
-    Expression,
+    Binding,
     Observable,
-    ComputedObservable,
+    ObservableBinding,
 } from "../observation/observable";
 import { HTMLView, SyntheticView } from "../view";
 import { Subscriber, Notifier } from "../observation/notifier";
@@ -47,19 +47,19 @@ export class RepeatBehavior implements Behavior, Subscriber {
     private views: SyntheticView[] = [];
     private items: any[] | null = null;
     private itemsObserver?: Notifier = void 0;
-    private observableExpression: ComputedObservable;
+    private observableBinding: ObservableBinding;
     private originalContext: ExecutionContext | undefined = void 0;
     private childContext: ExecutionContext | undefined = void 0;
     private bindView: typeof bindWithoutPositioning = bindWithoutPositioning;
 
     constructor(
         private location: Node,
-        private expression: Expression,
+        private binding: Binding,
         private template: SyntheticViewTemplate,
         private options: RepeatOptions
     ) {
-        this.observableExpression = Observable.computed(expression);
-        this.observableExpression.subscribe(this);
+        this.observableBinding = Observable.binding(binding);
+        this.observableBinding.subscribe(this);
 
         if (options.positioning) {
             this.bindView = bindWithPositioning;
@@ -72,7 +72,7 @@ export class RepeatBehavior implements Behavior, Subscriber {
         this.childContext = Object.create(context);
         this.childContext!.parent = source;
 
-        this.items = this.observableExpression.getValue(source, this.originalContext);
+        this.items = this.observableBinding.getValue(source, this.originalContext);
         this.observeItems();
         this.refreshAllViews();
     }
@@ -86,12 +86,12 @@ export class RepeatBehavior implements Behavior, Subscriber {
         }
 
         this.unbindAllViews();
-        this.observableExpression.unwatchExpression();
+        this.observableBinding.unwatchExpression();
     }
 
     handleChange(source: any, args: Splice[]): void {
-        if (source === this.expression) {
-            this.items = this.observableExpression.getValue(
+        if (source === this.binding) {
+            this.items = this.observableBinding.getValue(
                 this.source,
                 this.originalContext!
             );
@@ -232,7 +232,7 @@ export class RepeatDirective extends Directive {
     createPlaceholder: (index: number) => string = DOM.createBlockPlaceholder;
 
     constructor(
-        public expression: Expression,
+        public binding: Binding,
         public template: SyntheticViewTemplate,
         public options: RepeatOptions
     ) {
@@ -241,14 +241,14 @@ export class RepeatDirective extends Directive {
     }
 
     public createBehavior(target: any): RepeatBehavior {
-        return new RepeatBehavior(target, this.expression, this.template, this.options);
+        return new RepeatBehavior(target, this.binding, this.template, this.options);
     }
 }
 
 export function repeat<TScope = any, TItem = any>(
-    expression: Expression<TScope, TItem[]>,
+    binding: Binding<TScope, TItem[]>,
     template: ViewTemplate<Partial<TItem>, TScope>,
     options: RepeatOptions = defaultRepeatOptions
 ): CaptureType<TScope> {
-    return new RepeatDirective(expression, template, options);
+    return new RepeatDirective(binding, template, options);
 }

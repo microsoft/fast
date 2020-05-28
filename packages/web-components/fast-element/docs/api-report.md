@@ -95,24 +95,27 @@ export interface BehaviorFactory {
 }
 
 // @public
+export type Binding<TSource = any, TReturn = any, TParent = any> = (source: TSource, context: ExecutionContext<TParent>) => TReturn;
+
+// @public
 export class BindingBehavior implements Behavior {
-    constructor(target: any, expression: Expression, bind: typeof normalBind, unbind: typeof normalUnbind, updateTarget: typeof updatePropertyTarget, targetName?: string | undefined);
+    constructor(target: any, binding: Binding, bind: typeof normalBind, unbind: typeof normalUnbind, updateTarget: typeof updatePropertyTarget, targetName?: string | undefined);
     // Warning: (ae-forgotten-export) The symbol "normalBind" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
     bind: typeof normalBind;
     // (undocumented)
+    binding: Binding;
+    // (undocumented)
     classVersions: Record<string, number>;
     // (undocumented)
     context: ExecutionContext | null;
-    // (undocumented)
-    expression: Expression;
     // @internal (undocumented)
     handleChange(): void;
     // @internal (undocumented)
     handleEvent(event: Event): void;
     // (undocumented)
-    observableExpression: ComputedObservable | null;
+    observableBinding: ObservableBinding | null;
     // (undocumented)
     source: unknown;
     // (undocumented)
@@ -133,12 +136,12 @@ export class BindingBehavior implements Behavior {
 
 // @public
 export class BindingDirective extends Directive {
-    constructor(expression: Expression);
+    constructor(binding: Binding);
+    // (undocumented)
+    binding: Binding;
     createBehavior(target: any): BindingBehavior;
     // (undocumented)
     createPlaceholder: (index: number) => string;
-    // (undocumented)
-    expression: Expression;
     targetAtContent(): void;
     get targetName(): string | undefined;
     set targetName(value: string | undefined);
@@ -188,13 +191,6 @@ export interface CompilationResult {
 
 // @public
 export function compileTemplate(template: HTMLTemplateElement, directives: ReadonlyArray<Directive>): CompilationResult;
-
-// @public
-export interface ComputedObservable<TScope = any, TReturn = any, TParent = any> extends Notifier {
-    // (undocumented)
-    getValue(source: TScope, context: ExecutionContext): TReturn;
-    unwatchExpression(): void;
-}
 
 // @public (undocumented)
 export class Controller extends PropertyChangeNotifier {
@@ -313,9 +309,6 @@ export class ExecutionContext<TParent = any> {
     parent: TParent;
 }
 
-// @public
-export type Expression<TScope = any, TReturn = any, TParent = any> = (scope: TScope, context: ExecutionContext<TParent>) => TReturn;
-
 // @public (undocumented)
 export interface FASTElement {
     // (undocumented)
@@ -405,11 +398,18 @@ export const Observable: Readonly<{
     notify(source: unknown, args: any): void;
     defineProperty(target: {}, nameOrAccessor: string | Accessor): void;
     getAccessors(target: {}): Accessor[];
-    computed<TScope = any, TReturn = any, TParent = any>(expression: Expression<any, any, any>): ComputedObservable<TScope, TReturn, TParent>;
+    binding<TScope = any, TReturn = any, TParent = any>(binding: Binding<any, any, any>): ObservableBinding<TScope, TReturn, TParent>;
 }>;
 
 // @public
 export function observable(target: {}, nameOrAccessor: string | Accessor): void;
+
+// @public
+export interface ObservableBinding<TSource = any, TReturn = any, TParent = any> extends Notifier {
+    // (undocumented)
+    getValue(source: TSource, context: ExecutionContext): TReturn;
+    unwatchExpression(): void;
+}
 
 // @public (undocumented)
 export type PartialFASTElementDefinition = {
@@ -444,11 +444,11 @@ export class RefBehavior implements Behavior {
 }
 
 // @public (undocumented)
-export function repeat<TScope = any, TItem = any>(expression: Expression<TScope, TItem[]>, template: ViewTemplate<Partial<TItem>, TScope>, options?: RepeatOptions): CaptureType<TScope>;
+export function repeat<TScope = any, TItem = any>(binding: Binding<TScope, TItem[]>, template: ViewTemplate<Partial<TItem>, TScope>, options?: RepeatOptions): CaptureType<TScope>;
 
 // @public (undocumented)
 export class RepeatBehavior implements Behavior, Subscriber {
-    constructor(location: Node, expression: Expression, template: SyntheticViewTemplate, options: RepeatOptions);
+    constructor(location: Node, binding: Binding, template: SyntheticViewTemplate, options: RepeatOptions);
     // (undocumented)
     bind(source: unknown, context: ExecutionContext): void;
     // Warning: (ae-forgotten-export) The symbol "Splice" needs to be exported by the entry point index.d.ts
@@ -461,13 +461,13 @@ export class RepeatBehavior implements Behavior, Subscriber {
 
 // @public (undocumented)
 export class RepeatDirective extends Directive {
-    constructor(expression: Expression, template: SyntheticViewTemplate, options: RepeatOptions);
+    constructor(binding: Binding, template: SyntheticViewTemplate, options: RepeatOptions);
+    // (undocumented)
+    binding: Binding;
     // (undocumented)
     createBehavior(target: any): RepeatBehavior;
     // (undocumented)
     createPlaceholder: (index: number) => string;
-    // (undocumented)
-    expression: Expression;
     // (undocumented)
     options: RepeatOptions;
     // (undocumented)
@@ -586,7 +586,7 @@ export class ViewTemplate<TSource = any, TParent = any> implements ElementViewTe
     }
 
 // @public
-export function when<T = any, K = any>(condition: Expression<T, K>, templateOrTemplateExpression: SyntheticViewTemplate | Expression<T, SyntheticViewTemplate>): CaptureType<T>;
+export function when<TSource = any, TReturn = any>(binding: Binding<TSource, TReturn>, templateOrTemplateBinding: SyntheticViewTemplate | Binding<TSource, SyntheticViewTemplate>): CaptureType<TSource>;
 
 
 // Warnings were encountered during analysis:

@@ -3,7 +3,7 @@ import { Notifier, PropertyChangeNotifier, SubscriberSet } from "./notifier";
 
 const notifierLookup = new WeakMap<any, Notifier>();
 const accessorLookup = new WeakMap<any, Accessor[]>();
-let watcher: ComputedObservableImplementation | undefined = void 0;
+let watcher: ObservableBindingImplementation | undefined = void 0;
 let createArrayObserver = (array: any[]): Notifier => {
     throw new Error("Must call enableArrayObservation before observing arrays.");
 };
@@ -171,14 +171,14 @@ export const Observable = Object.freeze({
     },
 
     /**
-     * Creates a {@link ComputedObservable} that can observe the
-     * provided expression.
-     * @param expression The expression to observe.
+     * Creates an {@link ObservableBinding} that can watch the
+     * provided {@link Binding} for changes.
+     * @param binding The binding to observe.
      */
-    computed<TScope = any, TReturn = any, TParent = any>(
-        expression: Expression
-    ): ComputedObservable<TScope, TReturn, TParent> {
-        return new ComputedObservableImplementation(expression);
+    binding<TScope = any, TReturn = any, TParent = any>(
+        binding: Binding
+    ): ObservableBinding<TScope, TReturn, TParent> {
+        return new ObservableBindingImplementation(binding);
     },
 });
 
@@ -281,10 +281,10 @@ export const defaultExecutionContext = new ExecutionContext();
 
 /**
  * The signature of an arrow function capable of being evaluated
- * as part of a template update.
+ * as part of a template binding update.
  */
-export type Expression<TScope = any, TReturn = any, TParent = any> = (
-    scope: TScope,
+export type Binding<TSource = any, TReturn = any, TParent = any> = (
+    source: TSource,
     context: ExecutionContext<TParent>
 ) => TReturn;
 
@@ -298,14 +298,14 @@ interface SubscriptionRecord {
 /**
  * Enables evaluation of and subscription to computed observables.
  */
-export interface ComputedObservable<TScope = any, TReturn = any, TParent = any>
+export interface ObservableBinding<TSource = any, TReturn = any, TParent = any>
     extends Notifier {
     /**
      *
      * @param source The source that the computed expression is based on.
      * @param context The execution context to compute within.
      */
-    getValue(source: TScope, context: ExecutionContext): TReturn;
+    getValue(source: TSource, context: ExecutionContext): TReturn;
 
     /**
      * Forces the computed observable to internally unsubscribe from all
@@ -314,9 +314,9 @@ export interface ComputedObservable<TScope = any, TReturn = any, TParent = any>
     unwatchExpression(): void;
 }
 
-class ComputedObservableImplementation<TScope = any, TReturn = any, TParent = any>
+class ObservableBindingImplementation<TSource = any, TReturn = any, TParent = any>
     extends SubscriberSet
-    implements ComputedObservable<TScope, TReturn, TParent> {
+    implements ObservableBinding<TSource, TReturn, TParent> {
     private needsRefresh: boolean = true;
     private needsQueue: boolean = true;
 
@@ -327,11 +327,11 @@ class ComputedObservableImplementation<TScope = any, TReturn = any, TParent = an
     private notifier: Notifier | undefined = void 0;
     private next: SubscriptionRecord | undefined = void 0;
 
-    constructor(private expression: Expression<TScope, TReturn, TParent>) {
+    constructor(private expression: Binding<TSource, TReturn, TParent>) {
         super(expression);
     }
 
-    public getValue(source: TScope, context: ExecutionContext): TReturn {
+    public getValue(source: TSource, context: ExecutionContext): TReturn {
         if (this.needsRefresh && this.last !== null) {
             this.unwatchExpression();
         }
