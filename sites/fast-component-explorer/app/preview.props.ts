@@ -1,5 +1,6 @@
 import { DataDictionary, SchemaDictionary } from "@microsoft/fast-tooling";
 import { Direction } from "@microsoft/fast-web-utilities";
+import { StandardLuminance } from "@microsoft/fast-components-styles-msft";
 import { PreviewClassNameContract } from "./preview.style";
 
 export type PreviewUnhandledProps = React.HTMLAttributes<HTMLDivElement>;
@@ -15,4 +16,5 @@ export interface PreviewState {
     schemaDictionary: SchemaDictionary;
     transparentBackground: boolean;
     direction: Direction;
+    theme: StandardLuminance;
 }
