@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import { DOM } from "./dom";
 
-describe("The DOM", () => {
+describe("The DOM facade", () => {
     it("can batch updates", async () => {
         let work1 = 0;
         let work2 = 0;
