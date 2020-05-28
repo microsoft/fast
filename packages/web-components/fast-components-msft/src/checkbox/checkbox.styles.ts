@@ -121,9 +121,13 @@ export const CheckboxStyles = css`
     neutralOutlineRestBehavior,
     forcedColorsStylesheetBehavior(
         css`
-            .control, .control:hover, .control:active {
+            .control {
                 forced-color-adjust: none;
                 border-color: ${SystemColors.FieldText};
+                background: ${SystemColors.Field};
+            }
+            :host(:enabled) .control:hover, .control:active {
+                border-color: ${SystemColors.Highlight};
                 background: ${SystemColors.Field};
             }
             .checked-indicator {
@@ -134,10 +138,10 @@ export const CheckboxStyles = css`
             }
             :host(:${focusVisible}) .control {
                 border-color: ${SystemColors.Highlight};
+                box-shadow: 0 0 0 2px ${SystemColors.Field}, 0 0 0 4px ${SystemColors.FieldText};
             }
-            :host(.checked:${focusVisible}) .control {
-                border-color: ${SystemColors.FieldText};
-                box-shadow: 0 0 0 2px ${SystemColors.Field} inset;
+            :host(.checked:${focusVisible}:enabled) .control {
+                box-shadow: 0 0 0 2px ${SystemColors.Field}, 0 0 0 4px ${SystemColors.FieldText};
             }
             :host(.checked) .control {
                 background: ${SystemColors.Highlight};
