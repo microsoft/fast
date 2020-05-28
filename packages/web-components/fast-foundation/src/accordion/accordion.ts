@@ -1,4 +1,4 @@
-import { attr, booleanConverter, FASTElement, observable } from "@microsoft/fast-element";
+import { attr, FASTElement, observable } from "@microsoft/fast-element";
 import {
     keyCodeArrowDown,
     keyCodeArrowUp,
@@ -6,9 +6,7 @@ import {
     keyCodeHome,
     wrapInBounds,
 } from "@microsoft/fast-web-utilities";
-import { StartEnd } from "../patterns/start-end";
-import { applyMixins } from "../utilities";
-import { FASTAccordionItem } from "./accordion-item";
+import { AccordionItem } from "./accordion-item";
 
 export enum AccordionExpandMode {
     single = "single",
@@ -38,10 +36,9 @@ export class Accordion extends FASTElement {
     };
 
     private setItems = (): void => {
-        console.log(this.isSingleExpandMode());
         this.accordionIds = this.getItemIds();
         this.accordionItems.forEach((item: HTMLElement, index: number) => {
-            if (item instanceof FASTAccordionItem) {
+            if (item instanceof AccordionItem) {
                 item.addEventListener("change", this.activeItemChange);
                 if (this.isSingleExpandMode()) {
                     this.activeItemIndex !== index
@@ -60,7 +57,7 @@ export class Accordion extends FASTElement {
     };
 
     private resetItems = (): void => {
-        this.accordionItems.forEach((item: FASTAccordionItem, index: number) => {
+        this.accordionItems.forEach((item: AccordionItem, index: number) => {
             item.expanded = false;
         });
     };
@@ -75,7 +72,6 @@ export class Accordion extends FASTElement {
     private activeItemChange = (event): void => {
         const selectedItem = event.target as HTMLElement;
         if (this.isSingleExpandMode()) {
-            console.log("Hits");
             this.resetItems();
             event.target.expanded = true;
         }
@@ -128,12 +124,8 @@ export class Accordion extends FASTElement {
 
     private focusItem(): void {
         const element: HTMLElement = this.accordionItems[this.activeItemIndex];
-        if (element instanceof FASTAccordionItem) {
+        if (element instanceof AccordionItem) {
             element.expandbutton.focus();
         }
     }
 }
-
-/* eslint-disable-next-line */
-export interface Accordion extends StartEnd {}
-applyMixins(Accordion, StartEnd);

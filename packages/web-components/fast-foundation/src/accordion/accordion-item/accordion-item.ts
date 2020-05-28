@@ -4,6 +4,8 @@ import {
     nullableNumberConverter,
     observable,
 } from "@microsoft/fast-element";
+import { StartEnd } from "../../patterns/start-end";
+import { applyMixins } from "../../utilities/apply-mixins";
 
 export class AccordionItem extends FASTElement {
     @attr({
@@ -32,3 +34,7 @@ export class AccordionItem extends FASTElement {
         this.$emit("change");
     };
 }
+
+/* eslint-disable-next-line */
+export interface AccordionItem extends StartEnd {}
+applyMixins(AccordionItem, StartEnd);

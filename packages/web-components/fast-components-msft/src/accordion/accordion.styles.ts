@@ -4,7 +4,7 @@ import {
     accentFillRestBehavior,
     neutralDividerRestBehavior,
     neutralForegroundRestBehavior,
-} from "../styles/recipes";
+} from "../styles/";
 
 export const AccordionStyles = css`
     ${display("flex")} :host {

@@ -10,7 +10,7 @@ import {
     neutralForegroundActiveBehavior,
     neutralForegroundFocusBehavior,
     neutralForegroundRestBehavior,
-} from "../../styles/recipes";
+} from "../../styles/";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import { heightNumber } from "../../styles/size";
 
