@@ -3,7 +3,7 @@ import { Notifier, PropertyChangeNotifier, SubscriberSet } from "./notifier";
 
 const notifierLookup = new WeakMap<any, Notifier>();
 const accessorLookup = new WeakMap<any, Accessor[]>();
-let watcher: ObservableBindingImplementation | undefined = void 0;
+let watcher: BindingObserverImplementation | undefined = void 0;
 let createArrayObserver = (array: any[]): Notifier => {
     throw new Error("Must call enableArrayObservation before observing arrays.");
 };
@@ -44,7 +44,7 @@ class DefaultObservableAccessor implements Accessor {
 
     getValue(source: any): any {
         if (watcher !== void 0) {
-            watcher.observe(source, this.name);
+            watcher.watch(source, this.name);
         }
 
         return source[this.field];
@@ -104,7 +104,7 @@ export const Observable = Object.freeze({
      */
     track(source: unknown, propertyName: string): void {
         if (watcher !== void 0) {
-            watcher.observe(source, propertyName);
+            watcher.watch(source, propertyName);
         }
     },
 
@@ -171,14 +171,14 @@ export const Observable = Object.freeze({
     },
 
     /**
-     * Creates an {@link ObservableBinding} that can watch the
+     * Creates a {@link BindingObserver} that can watch the
      * provided {@link Binding} for changes.
      * @param binding The binding to observe.
      */
     binding<TScope = any, TReturn = any, TParent = any>(
         binding: Binding
-    ): ObservableBinding<TScope, TReturn, TParent> {
-        return new ObservableBindingImplementation(binding);
+    ): BindingObserver<TScope, TReturn, TParent> {
+        return new BindingObserverImplementation(binding);
     },
 });
 
@@ -296,27 +296,27 @@ interface SubscriptionRecord {
 }
 
 /**
- * Enables evaluation of and subscription to computed observables.
+ * Enables evaluation of and subscription to a binding.
  */
-export interface ObservableBinding<TSource = any, TReturn = any, TParent = any>
+export interface BindingObserver<TSource = any, TReturn = any, TParent = any>
     extends Notifier {
     /**
-     *
-     * @param source The source that the computed expression is based on.
-     * @param context The execution context to compute within.
+     * Begins observing the binding for the source and returns the current value.
+     * @param source The source that the binding is based on.
+     * @param context The execution context to execute the binding within.
+     * @returns The value of the binding.
      */
-    getValue(source: TSource, context: ExecutionContext): TReturn;
+    observe(source: TSource, context: ExecutionContext): TReturn;
 
     /**
-     * Forces the computed observable to internally unsubscribe from all
-     * dependent observables of the computation.
+     * Unsubscribe from all dependent observables of the binding.
      */
-    unwatchExpression(): void;
+    disconnect(): void;
 }
 
-class ObservableBindingImplementation<TSource = any, TReturn = any, TParent = any>
+class BindingObserverImplementation<TSource = any, TReturn = any, TParent = any>
     extends SubscriberSet
-    implements ObservableBinding<TSource, TReturn, TParent> {
+    implements BindingObserver<TSource, TReturn, TParent> {
     private needsRefresh: boolean = true;
     private needsQueue: boolean = true;
 
@@ -327,25 +327,25 @@ class ObservableBindingImplementation<TSource = any, TReturn = any, TParent = an
     private notifier: Notifier | undefined = void 0;
     private next: SubscriptionRecord | undefined = void 0;
 
-    constructor(private expression: Binding<TSource, TReturn, TParent>) {
-        super(expression);
+    constructor(private binding: Binding<TSource, TReturn, TParent>) {
+        super(binding);
     }
 
-    public getValue(source: TSource, context: ExecutionContext): TReturn {
+    public observe(source: TSource, context: ExecutionContext): TReturn {
         if (this.needsRefresh && this.last !== null) {
-            this.unwatchExpression();
+            this.disconnect();
         }
 
         const previousWatcher = watcher;
         watcher = this.needsRefresh ? this : void 0;
         this.needsRefresh = false;
-        const result = this.expression(source, context);
+        const result = this.binding(source, context);
         watcher = previousWatcher;
 
         return result;
     }
 
-    public unwatchExpression(): void {
+    public disconnect(): void {
         if (this.last !== null) {
             let current = this.first;
 
@@ -360,7 +360,7 @@ class ObservableBindingImplementation<TSource = any, TReturn = any, TParent = an
     }
 
     /** @internal */
-    public observe(propertySource: unknown, propertyName: string): void {
+    public watch(propertySource: unknown, propertyName: string): void {
         const prev = this.last;
         const notifier = getNotifier(propertySource);
         const current: SubscriptionRecord = prev === null ? this.first : ({} as any);

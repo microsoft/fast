@@ -4,7 +4,7 @@ import {
     ExecutionContext,
     Binding,
     Observable,
-    ObservableBinding,
+    BindingObserver,
 } from "../observation/observable";
 import { HTMLView, SyntheticView } from "../view";
 import { Subscriber, Notifier } from "../observation/notifier";
@@ -47,7 +47,7 @@ export class RepeatBehavior implements Behavior, Subscriber {
     private views: SyntheticView[] = [];
     private items: any[] | null = null;
     private itemsObserver?: Notifier = void 0;
-    private observableBinding: ObservableBinding;
+    private bindingObserver: BindingObserver;
     private originalContext: ExecutionContext | undefined = void 0;
     private childContext: ExecutionContext | undefined = void 0;
     private bindView: typeof bindWithoutPositioning = bindWithoutPositioning;
@@ -58,8 +58,8 @@ export class RepeatBehavior implements Behavior, Subscriber {
         private template: SyntheticViewTemplate,
         private options: RepeatOptions
     ) {
-        this.observableBinding = Observable.binding(binding);
-        this.observableBinding.subscribe(this);
+        this.bindingObserver = Observable.binding(binding);
+        this.bindingObserver.subscribe(this);
 
         if (options.positioning) {
             this.bindView = bindWithPositioning;
@@ -72,7 +72,7 @@ export class RepeatBehavior implements Behavior, Subscriber {
         this.childContext = Object.create(context);
         this.childContext!.parent = source;
 
-        this.items = this.observableBinding.getValue(source, this.originalContext);
+        this.items = this.bindingObserver.observe(source, this.originalContext);
         this.observeItems();
         this.refreshAllViews();
     }
@@ -86,15 +86,12 @@ export class RepeatBehavior implements Behavior, Subscriber {
         }
 
         this.unbindAllViews();
-        this.observableBinding.unwatchExpression();
+        this.bindingObserver.disconnect();
     }
 
     handleChange(source: any, args: Splice[]): void {
         if (source === this.binding) {
-            this.items = this.observableBinding.getValue(
-                this.source,
-                this.originalContext!
-            );
+            this.items = this.bindingObserver.observe(this.source, this.originalContext!);
 
             this.observeItems();
             this.refreshAllViews();

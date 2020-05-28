@@ -107,6 +107,8 @@ export class BindingBehavior implements Behavior {
     // (undocumented)
     binding: Binding;
     // (undocumented)
+    bindingObserver: BindingObserver | null;
+    // (undocumented)
     classVersions: Record<string, number>;
     // (undocumented)
     context: ExecutionContext | null;
@@ -114,8 +116,6 @@ export class BindingBehavior implements Behavior {
     handleChange(): void;
     // @internal (undocumented)
     handleEvent(event: Event): void;
-    // (undocumented)
-    observableBinding: ObservableBinding | null;
     // (undocumented)
     source: unknown;
     // (undocumented)
@@ -147,6 +147,12 @@ export class BindingDirective extends Directive {
     set targetName(value: string | undefined);
     }
 
+// @public
+export interface BindingObserver<TSource = any, TReturn = any, TParent = any> extends Notifier {
+    disconnect(): void;
+    observe(source: TSource, context: ExecutionContext): TReturn;
+}
+
 // @public (undocumented)
 export const booleanConverter: ValueConverter;
 
@@ -155,7 +161,7 @@ export type Callable = typeof Function.prototype.call | {
     call(): void;
 };
 
-// @public (undocumented)
+// @public
 export interface CaptureType<TSource> {
 }
 
@@ -354,8 +360,6 @@ export class FASTElementDefinition {
     readonly template?: ElementViewTemplate | undefined;
 }
 
-// Warning: (ae-forgotten-export) The symbol "TemplateValue" needs to be exported by the entry point index.d.ts
-//
 // @public
 export function html<TSource = any, TParent = any>(strings: TemplateStringsArray, ...values: TemplateValue<TSource, TParent>[]): ViewTemplate<TSource, TParent>;
 
@@ -398,18 +402,11 @@ export const Observable: Readonly<{
     notify(source: unknown, args: any): void;
     defineProperty(target: {}, nameOrAccessor: string | Accessor): void;
     getAccessors(target: {}): Accessor[];
-    binding<TScope = any, TReturn = any, TParent = any>(binding: Binding<any, any, any>): ObservableBinding<TScope, TReturn, TParent>;
+    binding<TScope = any, TReturn = any, TParent = any>(binding: Binding<any, any, any>): BindingObserver<TScope, TReturn, TParent>;
 }>;
 
 // @public
 export function observable(target: {}, nameOrAccessor: string | Accessor): void;
-
-// @public
-export interface ObservableBinding<TSource = any, TReturn = any, TParent = any> extends Notifier {
-    // (undocumented)
-    getValue(source: TSource, context: ExecutionContext): TReturn;
-    unwatchExpression(): void;
-}
 
 // @public (undocumented)
 export type PartialFASTElementDefinition = {
@@ -557,6 +554,9 @@ export interface SyntheticView extends View {
 export interface SyntheticViewTemplate<TSource = any, TParent = any> {
     create(): SyntheticView;
 }
+
+// @public
+export type TemplateValue<TScope, TParent = any> = Binding<TScope, any, TParent> | string | number | Directive | CaptureType<TScope>;
 
 // @public (undocumented)
 export interface ValueConverter {

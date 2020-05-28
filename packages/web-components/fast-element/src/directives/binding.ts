@@ -2,7 +2,7 @@ import {
     ExecutionContext,
     Binding,
     setCurrentEvent,
-    ObservableBinding,
+    BindingObserver,
 } from "../observation/observable";
 import { Observable } from "../observation/observable";
 import { DOM } from "../dom";
@@ -18,12 +18,12 @@ function normalBind(
     this.source = source;
     this.context = context;
 
-    if (this.observableBinding === null) {
-        this.observableBinding = Observable.binding(this.binding);
-        this.observableBinding.subscribe(this);
+    if (this.bindingObserver === null) {
+        this.bindingObserver = Observable.binding(this.binding);
+        this.bindingObserver.subscribe(this);
     }
 
-    this.updateTarget(this.observableBinding.getValue(source, context));
+    this.updateTarget(this.bindingObserver.observe(source, context));
 }
 
 function triggerBind(
@@ -37,7 +37,7 @@ function triggerBind(
 }
 
 function normalUnbind(this: BindingBehavior): void {
-    this.observableBinding!.unwatchExpression();
+    this.bindingObserver!.disconnect();
     this.source = null;
     this.context = null;
 }
@@ -48,7 +48,7 @@ type ComposableView = SyntheticView & {
 };
 
 function contentUnbind(this: BindingBehavior): void {
-    this.observableBinding!.unwatchExpression();
+    this.bindingObserver!.disconnect();
     this.source = null;
     this.context = null;
 
@@ -284,7 +284,7 @@ export class BindingDirective extends Directive {
 export class BindingBehavior implements Behavior {
     public source: unknown = null;
     public context: ExecutionContext | null = null;
-    public observableBinding: ObservableBinding | null = null;
+    public bindingObserver: BindingObserver | null = null;
     public classVersions: Record<string, number>;
     public version: number;
 
@@ -310,7 +310,7 @@ export class BindingBehavior implements Behavior {
      * @internal
      */
     handleChange(): void {
-        this.updateTarget(this.observableBinding!.getValue(this.source, this.context!));
+        this.updateTarget(this.bindingObserver!.observe(this.source, this.context!));
     }
 
     /**
