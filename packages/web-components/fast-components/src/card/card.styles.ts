@@ -14,16 +14,6 @@ export const CardStyles = css`
         background: var(--neutral-layer-card);
         border-radius: calc(var(--corner-radius) * 1px);
         ${elevation};
+        border: calc(var(--outline-width) * 1px) solid transparent;
     }
-`.withBehaviors(
-    neutralLayerCardBehavior,
-    forcedColorsStylesheetBehavior(
-        css`
-            :host {
-                forced-color-adjust: none;
-                border: calc(var(--outline-width) * 1px) solid ${SystemColors.CanvasText};
-                background: ${SystemColors.Canvas};
-            }
-        `
-    )
-);
+`;
