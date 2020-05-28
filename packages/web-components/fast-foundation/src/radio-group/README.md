@@ -5,6 +5,8 @@ sidebar_label: fast-radio-group
 custom_edit_url: https://github.com/microsoft/fast-dna/edit/master/packages/web-components/fast-foundation/src/radio-group/README.md
 ---
 
+An implementation of a [radio-group](https://w3c.github.io/aria-practices/#radiobutton). While any DOM content is permissible as a child of the radiogroup, only `fast-radio`'s and slotted content with a role of `radio` will recieve keyboard support.
+
 ## Applying Custom Styles
 
 ```ts
@@ -18,4 +20,16 @@ import { RadioGroupStyles as styles } from "./radio-group.styles";
     styles,
 })
 export class FASTRadioGroup extends RadioGroup {}
+```
+
+## Usage
+
+```html
+    <label id="radiogroup">Preset selected-value</label>
+    <fast-radio-group value="maverick" aria-labelledby="radiogroup" name="best-pilot">
+        <fast-radio value="ice-man">Ice Man</fast-radio>
+        <fast-radio value="maverick">Maverick</fast-radio>
+        <fast-radio value="viper">Viper</fast-radio>
+        <fast-radio value="jester">Jester</fast-radio>
+    </fast-radio-group>
 ```
