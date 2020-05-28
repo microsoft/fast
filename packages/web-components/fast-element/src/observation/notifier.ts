@@ -94,10 +94,19 @@ export class SubscriberSet implements Notifier {
     private spillover: Subscriber[] | undefined = void 0;
 
     /**
+     * The source that this subscriber set is reporting changes for.
+     */
+    public readonly source: any;
+
+    /**
      * Creates an instance of SubscriberSet for the specified source.
      * @param source The object source that subscribers will receive notifications from.
+     * @param initialSubscriber An initial subscriber to changes.
      */
-    public constructor(public readonly source: any) {}
+    public constructor(source: any, initialSubscriber?: Subscriber) {
+        this.source = source;
+        this.sub1 = initialSubscriber;
+    }
 
     /**
      * Checks whether the provided subscriber has been added to this set.
@@ -175,10 +184,17 @@ export class PropertyChangeNotifier implements Notifier {
     private subscribers: Record<string, SubscriberSet> = {};
 
     /**
+     * The source that property changes are being notified for.
+     */
+    public readonly source: any;
+
+    /**
      * Creates an instance of PropertyChangeNotifier for the specified source.
      * @param source The object source that subscribers will receive notifications from.
      */
-    public constructor(public readonly source: any) {}
+    public constructor(source: any) {
+        this.source = source;
+    }
 
     /**
      * Notifies all subscribers, based on the specified property.

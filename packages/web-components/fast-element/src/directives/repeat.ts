@@ -58,8 +58,7 @@ export class RepeatBehavior implements Behavior, Subscriber {
         private template: SyntheticViewTemplate,
         private options: RepeatOptions
     ) {
-        this.bindingObserver = Observable.binding(binding);
-        this.bindingObserver.subscribe(this);
+        this.bindingObserver = Observable.binding(binding, this);
 
         if (options.positioning) {
             this.bindView = bindWithPositioning;

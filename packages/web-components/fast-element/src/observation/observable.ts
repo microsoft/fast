@@ -1,5 +1,5 @@
 import { DOM } from "../dom";
-import { Notifier, PropertyChangeNotifier, SubscriberSet } from "./notifier";
+import { Notifier, PropertyChangeNotifier, SubscriberSet, Subscriber } from "./notifier";
 
 const notifierLookup = new WeakMap<any, Notifier>();
 const accessorLookup = new WeakMap<any, Accessor[]>();
@@ -174,11 +174,13 @@ export const Observable = Object.freeze({
      * Creates a {@link BindingObserver} that can watch the
      * provided {@link Binding} for changes.
      * @param binding The binding to observe.
+     * @param initialSubscriber An initial subscriber to changes in the binding value.
      */
     binding<TScope = any, TReturn = any, TParent = any>(
-        binding: Binding
+        binding: Binding,
+        initialSubscriber?: Subscriber
     ): BindingObserver<TScope, TReturn, TParent> {
-        return new BindingObserverImplementation(binding);
+        return new BindingObserverImplementation(binding, initialSubscriber);
     },
 });
 
@@ -327,8 +329,11 @@ class BindingObserverImplementation<TSource = any, TReturn = any, TParent = any>
     private notifier: Notifier | undefined = void 0;
     private next: SubscriptionRecord | undefined = void 0;
 
-    constructor(private binding: Binding<TSource, TReturn, TParent>) {
-        super(binding);
+    constructor(
+        private binding: Binding<TSource, TReturn, TParent>,
+        initialSubscriber?: Subscriber
+    ) {
+        super(binding, initialSubscriber);
     }
 
     public observe(source: TSource, context: ExecutionContext): TReturn {

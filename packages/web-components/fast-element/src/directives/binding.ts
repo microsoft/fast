@@ -19,8 +19,7 @@ function normalBind(
     this.context = context;
 
     if (this.bindingObserver === null) {
-        this.bindingObserver = Observable.binding(this.binding);
-        this.bindingObserver.subscribe(this);
+        this.bindingObserver = Observable.binding(this.binding, this);
     }
 
     this.updateTarget(this.bindingObserver.observe(source, context));

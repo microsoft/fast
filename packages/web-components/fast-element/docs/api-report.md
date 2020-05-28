@@ -402,7 +402,7 @@ export const Observable: Readonly<{
     notify(source: unknown, args: any): void;
     defineProperty(target: {}, nameOrAccessor: string | Accessor): void;
     getAccessors(target: {}): Accessor[];
-    binding<TScope = any, TReturn = any, TParent = any>(binding: Binding<any, any, any>): BindingObserver<TScope, TReturn, TParent>;
+    binding<TScope = any, TReturn = any, TParent = any>(binding: Binding<any, any, any>, initialSubscriber?: Subscriber | undefined): BindingObserver<TScope, TReturn, TParent>;
 }>;
 
 // @public
@@ -422,7 +422,6 @@ export type PartialFASTElementDefinition = {
 export class PropertyChangeNotifier implements Notifier {
     constructor(source: any);
     notify(propertyName: string): void;
-    // (undocumented)
     readonly source: any;
     subscribe(subscriber: Subscriber, propertyToWatch: string): void;
     unsubscribe(subscriber: Subscriber, propertyToUnwatch: string): void;
@@ -532,10 +531,9 @@ export interface Subscriber {
 
 // @public
 export class SubscriberSet implements Notifier {
-    constructor(source: any);
+    constructor(source: any, initialSubscriber?: Subscriber);
     has(subscriber: Subscriber): boolean;
     notify(args: any): void;
-    // (undocumented)
     readonly source: any;
     subscribe(subscriber: Subscriber): void;
     unsubscribe(subscriber: Subscriber): void;
