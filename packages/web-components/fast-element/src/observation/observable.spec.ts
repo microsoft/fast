@@ -205,7 +205,7 @@ describe("The Observable", () => {
             value = observer.observe(model, defaultExecutionContext);
             expect(value).to.equal(model.child.value + model.child2.value);
 
-            // change child
+            // change child 2
             wasNotified = false;
             model.child2 = new ChildModel();
 
