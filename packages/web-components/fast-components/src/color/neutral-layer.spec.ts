@@ -1,3 +1,4 @@
+import { expect } from "chai";
 import { FASTDesignSystem, fastDesignSystemDefaults } from "../fast-design-system";
 import {
     neutralLayerCard,
@@ -9,7 +10,6 @@ import {
     neutralLayerL4,
     StandardLuminance,
 } from "./neutral-layer";
-import { expect } from "chai";
 
 const lightModeDesignSystem: FASTDesignSystem = Object.assign(
     {},
@@ -151,9 +151,8 @@ describe("neutralLayer", (): void => {
             ).to.be.ok;
         });
 
-        // TODO @nicholasrice: Tests are failing due as palette is expecting light
-        it.skip("should operate on a provided background color", (): void => {
-            const color: string = neutralLayerFloating((): string => "#000000")(
+        it("should operate on a provided background color", (): void => {
+            const color: string = neutralLayerFloating((): string => "#FFFFFF")(
                 fastDesignSystemDefaults
             );
 
@@ -169,9 +168,8 @@ describe("neutralLayer", (): void => {
                 )
             ).to.be.ok;
         });
-        // TODO @nicholasrice: Tests are failing due as palette is expecting light
-        it.skip("should operate on a provided background color", (): void => {
-            const color: string = neutralLayerCardContainer((): string => "#000000")(
+        it("should operate on a provided background color", (): void => {
+            const color: string = neutralLayerCardContainer((): string => "#FFFFFF")(
                 fastDesignSystemDefaults
             );
 
@@ -189,9 +187,8 @@ describe("neutralLayer", (): void => {
                 )
             ).to.be.ok;
         });
-        // TODO @nicholasrice: Tests are failing due as palette is expecting light
-        it.skip("should operate on a provided background color", (): void => {
-            const color: string = neutralLayerCard((): string => "#000000")(
+        it("should operate on a provided background color", (): void => {
+            const color: string = neutralLayerCard((): string => "#FFFFFF")(
                 fastDesignSystemDefaults
             );
 

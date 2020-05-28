@@ -1,3 +1,6 @@
+import chai, { expect } from "chai";
+import spies from "chai-spies";
+import { parseColor } from "@microsoft/fast-colors";
 import { FASTDesignSystem, fastDesignSystemDefaults } from "../fast-design-system";
 import { accentBaseColor, accentPalette, neutralPalette } from "../fast-design-system";
 import {
@@ -11,7 +14,8 @@ import {
     swatchByMode,
 } from "./palette";
 import { Swatch } from "./common";
-import { expect } from "chai";
+
+chai.use(spies);
 
 describe("palette", (): void => {
     it("should return a function", (): void => {
@@ -58,8 +62,7 @@ describe("palette", (): void => {
 });
 
 describe("findSwatchIndex", (): void => {
-    // TODO @nicholasrice: Tests are failing due as palette is expecting light
-    it.skip("should implement design-system defaults", (): void => {
+    it("should implement design-system defaults", (): void => {
         expect(findSwatchIndex(neutralPalette, "#FFF")({} as FASTDesignSystem)).to.equal(
             0
         );
@@ -68,7 +71,11 @@ describe("findSwatchIndex", (): void => {
                 accentPalette,
                 accentBaseColor({} as FASTDesignSystem)
             )({} as FASTDesignSystem)
-        ).to.equal(52);
+        ).to.equal(
+            fastDesignSystemDefaults.accentPalette.indexOf(
+                fastDesignSystemDefaults.accentBaseColor
+            )
+        );
     });
 
     it("should return -1 if the color is not found", (): void => {
@@ -107,17 +114,17 @@ describe("findSwatchIndex", (): void => {
         ).to.equal(93);
     });
 
-    // TODO @nicholasrice: Tests are failing due as palette is expecting light
-    it.skip("should find accent", (): void => {
+    it("should find accent", (): void => {
         expect(
             findSwatchIndex(
                 accentPalette,
-                accentBaseColor(fastDesignSystemDefaults)
+                parseColor(fastDesignSystemDefaults.accentBaseColor)!.toStringWebRGB()
             )(fastDesignSystemDefaults)
-        ).to.equal(52);
-        expect(
-            findSwatchIndex(accentPalette, "rgb(243, 51, 120)")(fastDesignSystemDefaults)
-        ).to.equal(52);
+        ).to.equal(
+            fastDesignSystemDefaults.accentPalette.indexOf(
+                fastDesignSystemDefaults.accentBaseColor
+            )
+        );
     });
 });
 
@@ -194,108 +201,109 @@ describe("swatchByContrast", (): void => {
         expect(typeof swatchByContrast({} as any)).to.equal("function");
     });
 
-    // TODO: more significant work to fix up the spies
-    // describe("indexResolver", (): void => {
-    //     it("should pass a reference color as the first argument", (): void => {
-    //         const indexResolver: jest.SpyInstance = jest.fn(() => 0);
-    //         const directionResolver: jest.SpyInstance = jest.fn(() => 1);
-    //         const contrastCondition: jest.SpyInstance = jest.fn(() => false);
+    describe("indexResolver", (): void => {
+        it("should pass a reference color as the first argument", (): void => {
+            const indexResolver = chai.spy(() => 0);
+            const directionResolver = chai.spy(() => 1);
+            const contrastCondition = chai.spy(() => false);
 
-    //         swatchByContrast("#FFF")(neutralPalette)(indexResolver as any)(
-    //             directionResolver as any
-    //         )(contrastCondition as any)({} as FASTDesignSystem);
-    //         expect(indexResolver).toHaveBeenCalledTimes(1);
-    //         expect(indexResolver.mock.calls[0][0]).toBe("#FFF");
-    //     });
-    //     it("should pass the palette as the second argument", (): void => {
-    //         const indexResolver: jest.SpyInstance = jest.fn(() => 0);
-    //         const directionResolver: jest.SpyInstance = jest.fn(() => 1);
-    //         const contrastCondition: jest.SpyInstance = jest.fn(() => false);
-    //         const colorPalette: string[] = ["foo"];
+            swatchByContrast("#FFF")(neutralPalette)(indexResolver as any)(
+                directionResolver as any
+            )(contrastCondition as any)({} as FASTDesignSystem);
+            expect(indexResolver).to.have.been.called.once;
+            expect(indexResolver).to.have.been.called.with("#FFF");
+        });
+        it("should pass the palette as the second argument", (): void => {
+            const indexResolver = chai.spy(() => 0);
+            const directionResolver = chai.spy(() => 1);
+            const contrastCondition = chai.spy(() => false);
+            const colorPalette: string[] = ["foo"];
 
-    //         swatchByContrast("#FFF")(() => colorPalette)(indexResolver as any)(
-    //             directionResolver as any
-    //         )(contrastCondition as any)({} as FASTDesignSystem);
-    //         expect(indexResolver).toHaveBeenCalledTimes(1);
-    //         expect(indexResolver.mock.calls[0][1]).toBe(colorPalette);
-    //     });
-    //     it("should pass the designSystem as the third argument", (): void => {
-    //         const indexResolver: jest.SpyInstance = jest.fn(() => 0);
-    //         const directionResolver: jest.SpyInstance = jest.fn(() => 1);
-    //         const contrastCondition: jest.SpyInstance = jest.fn(() => false);
-    //         const designSystem: FASTDesignSystem = {} as FASTDesignSystem;
+            swatchByContrast("#FFF")(() => colorPalette)(indexResolver as any)(
+                directionResolver as any
+            )(contrastCondition as any)({} as FASTDesignSystem);
+            expect(indexResolver).to.have.been.called.once;
+            expect(indexResolver).to.have.been.called.with(colorPalette);
+        });
+        it("should pass the designSystem as the third argument", (): void => {
+            const indexResolver = chai.spy(() => 0);
+            const directionResolver = chai.spy(() => 1);
+            const contrastCondition = chai.spy(() => false);
+            const designSystem: FASTDesignSystem = {} as FASTDesignSystem;
 
-    //         swatchByContrast("#FFF")(neutralPalette)(indexResolver as any)(
-    //             directionResolver as any
-    //         )(contrastCondition as any)(designSystem);
-    //         expect(indexResolver).toHaveBeenCalledTimes(1);
-    //         expect(indexResolver.mock.calls[0][2]).toBe(designSystem);
-    //     });
-    // });
-    // describe("directionResolver", (): void => {
-    //     it("should pass the reference index as the first argument", (): void => {
-    //         const index: number = 20;
-    //         const indexResolver: jest.SpyInstance = jest.fn(() => index);
-    //         const directionResolver: jest.SpyInstance = jest.fn(() => 1);
-    //         const contrastCondition: jest.SpyInstance = jest.fn(() => false);
+            swatchByContrast("#FFF")(neutralPalette)(indexResolver as any)(
+                directionResolver as any
+            )(contrastCondition as any)(designSystem);
+            expect(indexResolver).to.have.been.called.once;
+            expect(indexResolver).to.have.been.called.with(designSystem);
+        });
+    });
 
-    //         swatchByContrast("#FFF")(neutralPalette)(indexResolver as any)(
-    //             directionResolver as any
-    //         )(contrastCondition as any)({} as FASTDesignSystem);
-    //         expect(directionResolver).toHaveBeenCalledTimes(1);
-    //         expect(directionResolver.mock.calls[0][0]).toBe(index);
-    //     });
-    //     it("should receive the palette length - 1 if the resolved index is greater than the palette length", (): void => {
-    //         const index: number = 105;
-    //         const indexResolver: jest.SpyInstance = jest.fn(() => index);
-    //         const directionResolver: jest.SpyInstance = jest.fn(() => 1);
-    //         const contrastCondition: jest.SpyInstance = jest.fn(() => false);
+    describe("directionResolver", (): void => {
+        it("should pass the reference index as the first argument", (): void => {
+            const index: number = 20;
+            const indexResolver = chai.spy(() => index);
+            const directionResolver = chai.spy(() => 1);
+            const contrastCondition = chai.spy(() => false);
 
-    //         swatchByContrast("#FFF")(neutralPalette)(indexResolver as any)(
-    //             directionResolver as any
-    //         )(contrastCondition as any)({} as FASTDesignSystem);
-    //         expect(directionResolver).toHaveBeenCalledTimes(1);
-    //         expect(directionResolver.mock.calls[0][0]).to.equal(
-    //             neutralPalette({} as FASTDesignSystem).length - 1
-    //         );
-    //     });
-    //     it("should receive 0 if the resolved index is less than 0", (): void => {
-    //         const index: number = -20;
-    //         const indexResolver: jest.SpyInstance = jest.fn(() => index);
-    //         const directionResolver: jest.SpyInstance = jest.fn(() => 1);
-    //         const contrastCondition: jest.SpyInstance = jest.fn(() => false);
+            swatchByContrast("#FFF")(neutralPalette)(indexResolver as any)(
+                directionResolver as any
+            )(contrastCondition as any)({} as FASTDesignSystem);
+            expect(directionResolver).to.have.been.called.once;
+            expect(directionResolver).to.have.been.called.with(index);
+        });
 
-    //         swatchByContrast("#FFF")(neutralPalette)(indexResolver as any)(
-    //             directionResolver as any
-    //         )(contrastCondition as any)({} as FASTDesignSystem);
-    //         expect(directionResolver).toHaveBeenCalledTimes(1);
-    //         expect(directionResolver.mock.calls[0][0]).to.equal(0);
-    //     });
-    //     it("should pass the palette as the second argument", (): void => {
-    //         const indexResolver: jest.SpyInstance = jest.fn(() => 0);
-    //         const directionResolver: jest.SpyInstance = jest.fn(() => 1);
-    //         const contrastCondition: jest.SpyInstance = jest.fn(() => false);
-    //         const colorPalette: string[] = ["foo"];
+        it("should receive the palette length - 1 if the resolved index is greater than the palette length", (): void => {
+            const index: number = 105;
+            const indexResolver = chai.spy(() => index);
+            const directionResolver = chai.spy(() => 1);
+            const contrastCondition = chai.spy(() => false);
 
-    //         swatchByContrast("#FFF")(() => colorPalette)(indexResolver as any)(
-    //             directionResolver as any
-    //         )(contrastCondition as any)({} as FASTDesignSystem);
-    //         expect(directionResolver).toHaveBeenCalledTimes(1);
-    //         expect(directionResolver.mock.calls[0][1]).to.equal(colorPalette);
-    //     });
-    //     it("should pass the designSystem as the third argument", (): void => {
-    //         const indexResolver: jest.SpyInstance = jest.fn(() => 0);
-    //         const directionResolver: jest.SpyInstance = jest.fn(() => 1);
-    //         const contrastCondition: jest.SpyInstance = jest.fn(() => false);
-    //         const designSystem: FASTDesignSystem = {} as FASTDesignSystem;
+            swatchByContrast("#FFF")(neutralPalette)(indexResolver as any)(
+                directionResolver as any
+            )(contrastCondition as any)({} as FASTDesignSystem);
+            expect(directionResolver).to.have.been.called.once;
+            expect(directionResolver).to.have.been.called.with(
+                neutralPalette({} as FASTDesignSystem).length - 1
+            );
+        });
+        it("should receive 0 if the resolved index is less than 0", (): void => {
+            const index: number = -20;
+            const indexResolver = chai.spy(() => index);
+            const directionResolver = chai.spy(() => 1);
+            const contrastCondition = chai.spy(() => false);
 
-    //         swatchByContrast("#FFF")(neutralPalette)(indexResolver as any)(
-    //             directionResolver as any
-    //         )(contrastCondition as any)(designSystem);
-    //         expect(directionResolver).toHaveBeenCalledTimes(1);
-    //         expect(directionResolver.mock.calls[0][2]).to.equal(designSystem);
-    //     });
-    // });
+            swatchByContrast("#FFF")(neutralPalette)(indexResolver as any)(
+                directionResolver as any
+            )(contrastCondition as any)({} as FASTDesignSystem);
+            expect(directionResolver).to.have.been.called.once;
+            expect(directionResolver).to.have.been.called.with(0);
+        });
+        it("should pass the palette as the second argument", (): void => {
+            const indexResolver = chai.spy(() => 0);
+            const directionResolver = chai.spy(() => 1);
+            const contrastCondition = chai.spy(() => false);
+            const colorPalette: string[] = ["foo"];
+
+            swatchByContrast("#FFF")(() => colorPalette)(indexResolver as any)(
+                directionResolver as any
+            )(contrastCondition as any)({} as FASTDesignSystem);
+            expect(directionResolver).to.have.been.called.once;
+            expect(directionResolver).to.have.been.called.with(colorPalette);
+        });
+        it("should pass the designSystem as the third argument", (): void => {
+            const indexResolver = chai.spy(() => 0);
+            const directionResolver = chai.spy(() => 1);
+            const contrastCondition = chai.spy(() => false);
+            const designSystem: FASTDesignSystem = {} as FASTDesignSystem;
+
+            swatchByContrast("#FFF")(neutralPalette)(indexResolver as any)(
+                directionResolver as any
+            )(contrastCondition as any)(designSystem);
+            expect(directionResolver).to.have.been.called.once;
+            expect(directionResolver).to.have.been.called.with(designSystem);
+        });
+    });
 
     it("should return the color at the initial index if it satisfies the predicate", (): void => {
         const indexResolver: () => number = (): number => 0;

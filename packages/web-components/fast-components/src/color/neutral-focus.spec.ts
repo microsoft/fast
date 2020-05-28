@@ -1,7 +1,7 @@
+import { expect } from "chai";
 import { FASTDesignSystem, fastDesignSystemDefaults } from "../fast-design-system";
 import { neutralFocus } from "./neutral-focus";
 import { contrast } from "./common";
-import { expect } from "chai";
 
 describe("neutralFocus", (): void => {
     it("should return a string when invoked with an object", (): void => {
