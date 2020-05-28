@@ -24,15 +24,15 @@ There are a million and one great ways to build your next website or application
 This principle of being unopinionated manifests in several important ways including:
 
 * A flat component architecture that lets you compose what you need without struggling with rigid patterns and complex objects.
-* Separating base components and style that supports multiple frameworks without re-writing or duplicating styles. This separation also lets you build your own styles, with your styling technology of choice, without having to re-build or duplicate the base components.
+* Separating base components from styles and design systems to support multiple implementations without re-writing or duplicating styles. Use the design system to customize existing styled components, or build your own styles, with your design system, without having to re-build or duplicate the base components.
 * Framework agnostic tooling that lets you use our development tools with any view framework.
-* The ability to replace almost any FAST-DNA package with your package of choice. Get started with our animation or layout package and add more as you need them. Alternatively, use our suite of packages to build your next project from the ground up; it's your call.
+* The ability to replace almost any FAST-DNA package with your package of choice. Get started with our animation package and add more as you need them. Alternatively, use our suite of packages to build your next project from the ground up; it's your call.
 
 ### UI development and style guide tools
 
 When developing components and views, excellent development tooling can make all the difference. FAST-DNA offers development and style guide tools that work with FAST components, components from other frameworks, or your components.
 
-Try out component properties with an auto-generated props UI, get a live preview of the code based on any property’s configuration, preview localization (RTL/LTR) and themes, and preview component compositing with a transparency grid.
+Try out component properties with an auto-generated property UI, get a live preview of the code based on any property’s configuration, preview localization (RTL/LTR) and themes, and preview component compositing with a transparency grid.
 
 Also, we built FAST development tools from re-usable packages so, if you have special needs, you can build your tools from the same shared libraries.
 
