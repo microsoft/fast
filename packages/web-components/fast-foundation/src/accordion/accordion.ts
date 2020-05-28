@@ -56,11 +56,11 @@ export class Accordion extends FASTElement {
         });
     };
 
-    private resetItems = (): void => {
+    private resetItems(): void {
         this.accordionItems.forEach((item: AccordionItem, index: number) => {
             item.expanded = false;
         });
-    };
+    }
 
     private removeItemListeners = (oldValue: any): void => {
         oldValue.forEach((item: HTMLElement, index: number) => {

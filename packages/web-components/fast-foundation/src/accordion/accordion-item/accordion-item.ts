@@ -21,7 +21,6 @@ export class AccordionItem extends FASTElement {
     @attr
     public id: string;
 
-    @observable
     public expandbutton: HTMLElement;
 
     /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
