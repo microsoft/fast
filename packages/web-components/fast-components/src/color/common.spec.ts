@@ -1,6 +1,6 @@
 import { ColorRGBA64 } from "@microsoft/fast-colors";
-import { colorMatches, contrast, isValidColor, parseColorString } from "./common";
 import { expect } from "chai";
+import { colorMatches, contrast, isValidColor, parseColorString } from "./common";
 
 describe("isValidColor", (): void => {
     it("should return true when input is a hex color", (): void => {

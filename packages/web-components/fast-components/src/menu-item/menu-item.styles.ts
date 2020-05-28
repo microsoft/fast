@@ -1,5 +1,10 @@
 import { css } from "@microsoft/fast-element";
-import { disabledCursor, display, focusVisible } from "@microsoft/fast-foundation";
+import {
+    disabledCursor,
+    display,
+    focusVisible,
+    forcedColorsStylesheetBehavior,
+} from "@microsoft/fast-foundation";
 import {
     accentFillActiveBehavior,
     accentFillHoverBehavior,
@@ -10,6 +15,7 @@ import {
     neutralFocusInnerAccentBehavior,
     neutralForegroundRestBehavior,
 } from "../styles/index";
+import { SystemColors } from "@microsoft/fast-web-utilities";
 
 export const MenuItemStyles = css`
     ${display("grid")} :host {
@@ -86,10 +92,7 @@ export const MenuItemStyles = css`
 
     :host(:hover) .start,
     :host(:hover) .end,
-    :host(:hover)::slotted(svg){
-        fill: var(--accent-foreground-cut-rest);
-    }
-
+    :host(:hover)::slotted(svg),
     :host(:active) .start,
     :host(:active) .end,
     :host(:active)::slotted(svg) {
@@ -102,5 +105,42 @@ export const MenuItemStyles = css`
     neutralFillStealthRestBehavior,
     neutralFocusBehavior,
     neutralFocusInnerAccentBehavior,
-    neutralForegroundRestBehavior
+    neutralForegroundRestBehavior,
+    forcedColorsStylesheetBehavior(
+        css`
+            :host {
+                border-color: transparent;
+                forced-color-adjust: none;
+            }
+            :host(:hover) {
+                background: ${SystemColors.Highlight};
+                color: ${SystemColors.HighlightText};
+            }
+            :host(:hover) .start,
+            :host(:hover) .end,
+            :host(:hover)::slotted(svg),
+            :host(:active) .start,
+            :host(:active) .end,
+            :host(:active)::slotted(svg) {
+                fill: ${SystemColors.HighlightText};
+            }
+            :host(:${focusVisible}) {
+                background: ${SystemColors.Highlight};
+                border-color: ${SystemColors.ButtonText};
+                box-shadow: 0 0 0 calc(var(--focus-outline-width) * 1px) inset ${SystemColors.HighlightText};
+                color: ${SystemColors.HighlightText};
+                fill: ${SystemColors.HighlightText};
+            }
+            :host(.disabled),
+            :host(.disabled:hover),
+            :host(.disabled:hover) .start,
+            :host(.disabled:hover) .end,
+            :host(.disabled:hover)::slotted(svg) {
+                background: ${SystemColors.Canvas};
+                color: ${SystemColors.GrayText};
+                fill: ${SystemColors.GrayText};
+                opacity: 1;
+            }
+        `
+    )
 );

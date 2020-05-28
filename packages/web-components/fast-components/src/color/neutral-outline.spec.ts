@@ -1,4 +1,5 @@
 import { isColorStringHexRGB } from "@microsoft/fast-colors";
+import { expect } from "chai";
 import { FASTDesignSystem, fastDesignSystemDefaults } from "../fast-design-system";
 import {
     accentPalette as getAccentPalette,
@@ -13,26 +14,20 @@ import {
 } from "./neutral-outline";
 import { Palette } from "./palette";
 import { Swatch, SwatchFamily } from "./common";
-import { expect } from "chai";
 
 describe("neutralOutline", (): void => {
     const neutralPalette: Palette = getNeutralPalette(fastDesignSystemDefaults);
     const accentPalette: Palette = getAccentPalette(fastDesignSystemDefaults);
 
-    // TODO @nicholasrice: Tests are failing due as palette is expecting light
-    it.skip("should return by default", (): void => {
-        expect(neutralOutlineRest({} as FASTDesignSystem)).to.equal(
-            neutralPalette[fastDesignSystemDefaults.neutralOutlineRestDelta]
-        );
-        expect(neutralOutlineHover({} as FASTDesignSystem)).to.equal(
-            neutralPalette[fastDesignSystemDefaults.neutralOutlineHoverDelta]
-        );
-        expect(neutralOutlineActive({} as FASTDesignSystem)).to.equal(
-            neutralPalette[fastDesignSystemDefaults.neutralOutlineActiveDelta]
-        );
-        expect(neutralOutlineFocus({} as FASTDesignSystem)).to.equal(
-            neutralPalette[fastDesignSystemDefaults.neutralOutlineFocusDelta]
-        );
+    it("should return by default", (): void => {
+        [
+            neutralOutlineActive,
+            neutralOutlineFocus,
+            neutralOutlineHover,
+            neutralOutlineRest,
+        ].forEach(fn => {
+            expect(neutralPalette).to.include(fn({} as FASTDesignSystem));
+        });
     });
 
     it("should always return a color", (): void => {
