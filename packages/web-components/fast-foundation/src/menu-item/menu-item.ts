@@ -63,6 +63,7 @@ export class MenuItem extends FASTElement {
      * @internal
      */
     public handleMenuItemKeyDown = (e: KeyboardEvent): boolean => {
+        console.log("hello from menu item...");
         this.change();
 
         return true;

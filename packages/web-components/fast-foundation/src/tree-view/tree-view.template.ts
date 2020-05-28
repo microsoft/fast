@@ -1,15 +1,13 @@
-import { html, ref } from "@microsoft/fast-element";
+import { html, ref, slotted } from "@microsoft/fast-element";
 import { TreeView } from "./tree-view";
 
 export const TreeViewTemplate = html<TreeView>`
     <template
         role="tree"
-        tabindex=${x => (x.focusable ? 0 : 1)}
-        @focus=${x => x.handleFocus}
-        @blur=${x => x.handleBlur}
-        @keydown=${x => x.handleKeyDown}
         ${ref("treeView")}
+        @keydown=${(x, c) => x.handleKeyDown(c.event as KeyboardEvent)}
+        @focusout=${(x, c) => x.handleFocusOut(c.event as FocusEvent)}
     >
-        <slot></slot>
+        <slot ${slotted("slottedTreeItems")}></slot>
     </template>
 `;

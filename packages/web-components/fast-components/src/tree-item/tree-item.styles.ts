@@ -7,6 +7,7 @@ import {
     neutralFillStealthRestBehavior,
     neutralFillStealthSelectedBehavior,
     neutralFocusBehavior,
+    heightNumber,
     neutralFocusInnerAccentBehavior,
     neutralForegroundRestBehavior,
 } from "../styles/index";
@@ -15,6 +16,7 @@ export const TreeItemStyles = css`
     ${display("block")} :host {
         contain: content;
         position: relative;
+        height: calc(${heightNumber} * 1px);
         color: var(--neutral-foreground-rest);
         background: var(--neutral-fill-stealth-rest);
         cursor: pointer;
@@ -24,7 +26,7 @@ export const TreeItemStyles = css`
     }
 
     :host(:focus) {
-        outline: none;
+        outline: red 1px solid;
     }
 
     host:focus-visible > .positioning-region {

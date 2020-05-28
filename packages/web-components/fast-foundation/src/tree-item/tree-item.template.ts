@@ -1,19 +1,20 @@
 import { html, ref, when } from "@microsoft/fast-element";
 import { TreeItem } from "./tree-item";
+import { endTemplate, startTemplate } from "../patterns/start-end";
 
 export const TreeItemTemplate = html<TreeItem>`
     <template
         role="treeitem"
+        tabindex="0"
         class="${x => (x.expanded ? "expanded" : "")} ${x =>
             x.selected ? "selected" : ""} ${x => (x.nested ? "nested" : "")}"
         aria-expanded="${x => (x.hasItems ? x.expanded : void 0)}"
         aria-selected="${x => x.selected}"
-        tabindex="${x => (x.focusable ? 0 : -1) /* need to manage focus here */}"
         @focus=${(x, c) => x.handleFocus(c.event as FocusEvent)}
-        @blur=${(x, c) => x.handleBlur(c.event as FocusEvent)}
         @keydown=${(x, c) => x.handleKeyDown(c.event as KeyboardEvent)}
-        ${ref("treeItem")}
+        @click=${(x, c) => x.handleTreeItemClick(c.event as MouseEvent)}
     >
+        ${startTemplate}
         <div
             class="positioning-region"
             part="positioning-region"
@@ -77,5 +78,6 @@ export const TreeItemTemplate = html<TreeItem>`
                 </div>
             `
         )}
+        ${endTemplate}
     </template>
 `;

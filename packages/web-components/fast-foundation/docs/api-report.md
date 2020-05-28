@@ -417,7 +417,9 @@ export class MenuItem extends FASTElement {
     checked: boolean;
     disabled: boolean;
     expanded: boolean;
-    // @internal (undocumented)
+    // (undocumented)
+    handleFocus: (e: FocusEvent) => void;
+    // (undocumented)
     handleMenuItemClick: (e: MouseEvent) => void;
     // @internal (undocumented)
     handleMenuItemKeyDown: (e: KeyboardEvent) => boolean;
@@ -820,7 +822,9 @@ export class TreeItem extends FASTElement {
     // (undocumented)
     handleItemsChange(): void;
     // (undocumented)
-    handleKeyDown: (e: KeyboardEvent) => void;
+    handleKeyDown: (e: KeyboardEvent) => boolean | void;
+    // (undocumented)
+    handleTreeItemClick: (e: MouseEvent) => void;
     // (undocumented)
     hasItems: boolean;
     // (undocumented)
@@ -840,6 +844,7 @@ export const TreeItemTemplate: import("@microsoft/fast-element").ViewTemplate<Tr
 
 // @public (undocumented)
 export class TreeView extends FASTElement {
+    constructor();
     // (undocumented)
     connectedCallback(): void;
     // (undocumented)
@@ -848,10 +853,13 @@ export class TreeView extends FASTElement {
     handleBlur: (e: FocusEvent) => void;
     // (undocumented)
     handleFocus: (e: FocusEvent) => void;
+    handleFocusOut: (e: FocusEvent) => void;
     // (undocumented)
-    handleKeyDown: (e: KeyboardEvent) => void;
+    handleKeyDown: (e: KeyboardEvent) => boolean | void;
     // (undocumented)
     renderCollapsedNodes: boolean;
+    // (undocumented)
+    slottedTreeItems: HTMLElement[];
     // (undocumented)
     treeView: HTMLElement;
 }
