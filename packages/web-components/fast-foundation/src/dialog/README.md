@@ -4,7 +4,7 @@ title: fast-dialog
 sidebar_label: fast-dialog
 custom_edit_url: https://github.com/microsoft/fast-dna/edit/master/packages/web-components/fast-foundation/src/dialog/README.md
 ---
-A web component implementation of a [dialog](https://w3c.github.io/aria-practices/#dialog_modal) which can either be modal or non-modal.
+A web component implementation of a [dialog](https://w3c.github.io/aria-practices/#dialog_modal) which can either be modal or non-modal. The modal 
 
 ## Applying Custom Styles
 
