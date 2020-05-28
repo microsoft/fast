@@ -1,12 +1,12 @@
 # Color
 FAST utilizes an adaptive color system that provides some unique advantages:
-1. Ensure text meets [WCAG](https://www.w3.org/WAI/standards-guidelines/wcag/) contrast requirements.
-2. Easily swap from light mode to dark, or anywhere in-between.
-3. Color themeing through palette tinting.
-4. Perceptually uniform UI across different surface colors.
+- Ensure text meets [WCAG](https://www.w3.org/WAI/standards-guidelines/wcag/) contrast requirements.
+- Easily swap from light mode to dark, or anywhere in-between.
+- Color themeing through palette tinting.
+- Perceptually uniform UI across different background colors.
 
-## Algorithmic colors
-To understand the FAST color system, the first thing to understand is that all of the named colors enumerated below are algorithmic; they are a product of the *designSystem* object in which they are calculated. In the documentation below, these algorithmic colors will be referred to as *recipes*.
+## Algorithmic Colors (Recipes)
+FAST makes heavy use of algorithmic colors; named colors are a product of the *designSystem* object in which they are calculated. In the documentation below, these algorithmic colors will be referred to as *recipes*.
 
 ### Inputs
 Each color recipe expects as its sole argument the FAST *DesignSystem* object, but there are a few core pieces of data from that object that impact color resolution.
