@@ -136,7 +136,8 @@ export const FlipperStyles = css`
             }
             :host(:${focusVisible})::before {
                 forced-color-adjust: none;
-                box-shadow: 0 0 0 2px ${SystemColors.ButtonText};
+                border-color: ${SystemColors.Highlight};
+                box-shadow: 0 0 0 2px ${SystemColors.Field}, 0 0 0 4px ${SystemColors.FieldText};
             }
         `
     )

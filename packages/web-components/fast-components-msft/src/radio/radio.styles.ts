@@ -119,15 +119,24 @@ export const RadioStyles = css`
     neutralOutlineRestBehavior,
     forcedColorsStylesheetBehavior(
         css`
-            .control, .control:hover, .control:active {
+            .control {
                 forced-color-adjust: none;
                 border-color: ${SystemColors.FieldText};
                 background: ${SystemColors.Field};
             }
+            :host(:enabled) .control:hover, .control:active {
+                border-color: ${SystemColors.Highlight};
+                background: ${SystemColors.Field};
+            }
             :host(:${focusVisible}) .control {
                 border-color: ${SystemColors.Highlight};
+                box-shadow: 0 0 0 2px ${SystemColors.Field}, 0 0 0 4px ${SystemColors.FieldText};
             }
-            :host(.checked) .control:hover, .control:active {
+            :host(.checked:${focusVisible}:enabled) .control {
+                border-color: ${SystemColors.Highlight};
+                box-shadow: 0 0 0 2px ${SystemColors.Field}, 0 0 0 4px ${SystemColors.FieldText};
+            }
+            :host(.checked:enabled) .control:hover, .control:active {
                 border-color: ${SystemColors.Highlight};
                 background: ${SystemColors.Highlight};
             }
