@@ -6,6 +6,7 @@ html,
 body {
   width: 100%;
   overflow-x: hidden;
+  scroll-behavior: smooth;
 }
 
 body {
@@ -24,6 +25,17 @@ body {
   grid-template-columns: minmax(5vw, 1fr) minmax(0px, 1200px) minmax(5vw, 1fr);
   position: relative;
   z-index: 1;
+}
+
+.side-navigation-left {
+  position: fixed;
+  top: 30%;
+}
+
+.side-navigation-right {
+  position: fixed;
+  top: 25%;
+  right: 0%;
 }
 
 .header {
@@ -156,6 +168,15 @@ fast-divider::after {
 @media screen and (max-width: 1330px) {
   .wrapper {
     grid-template-columns: minmax(5vw, 1fr) minmax(0px, 800px) minmax(5vw, 1fr);
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  .side-navigation-left {
+    display: none;
+  }
+  .side-navigation-right {
+    display: none;
   }
 }
 
