@@ -5,6 +5,8 @@ sidebar_label: fast-menu
 custom_edit_url: https://github.com/microsoft/fast-dna/edit/master/packages/web-components/fast-foundation/src/menu/README.md
 ---
 
+The menu is a widget that offers a list of choices to the user, such as a set of actions or functions. While any DOM content is permissible as a child of the menu, only `fast-menu-item`'s and slotted content with a role of `menuitem`, `menuitemcheckbox`, or `menuitemradio` will recieve keyboard support.
+
 ## Applying Custom Styles
 
 ```ts
@@ -18,4 +20,25 @@ import { MenuStyles as styles } from "./menu.styles";
     styles,
 })
 export class FASTMenu extends Menu {}
+```
+
+## Usage
+```html
+    <fast-menu>
+        <fast-menu-item>Menu item 1</fast-menu-item>
+        <fast-menu-item>Menu item 2</fast-menu-item>
+        <fast-menu-item>Menu item 3</fast-menu-item>
+        <fast-divider></fast-divider>
+        <fast-menu-item role="menuitemradio">Menu item 4</fast-menu-item>
+        <fast-menu-item role="menuitemradio">Menu item 5</fast-menu-item>
+    </fast-menu>
+```
+
+__Custom menu items__
+```html
+    <fast-menu>
+        <div role="menuitem">Menu item 1</div>
+        <div role="menuitem">Menu item 2</div>
+        <div role="menuitem">Menu item 3</div>
+    </fast-menu>
 ```
