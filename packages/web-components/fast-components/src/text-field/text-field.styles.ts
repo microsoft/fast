@@ -167,7 +167,7 @@ export const TextFieldStyles = css`
                 border-color: ${SystemColors.GrayText};
                 background: ${SystemColors.Field};
             }
-            :host(:focus-within) .root {
+            :host(:focus-within:enabled) .root {
                 border-color: ${SystemColors.Highlight};
                 box-shadow: 0 0 0 1px ${SystemColors.Highlight} inset;
             }
