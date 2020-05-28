@@ -2,7 +2,7 @@ import { html, repeat, when } from "@microsoft/fast-element";
 import { SideNavigation } from "./side-navigation";
 
 export const SideNavigationTemplate = html<SideNavigation>`
-    <ul class="scroll-indicator-active-${x => x.currentSection}">
+    <ul>
         ${when(
             x => x.position === "left",
             html<SideNavigation>`
@@ -29,8 +29,10 @@ export const SideNavigationTemplate = html<SideNavigation>`
                         <li>
                             <a href="#section-${(x, c) => c.index}" class="scroll-link">
                                 <div
-                                    class="scroll-indicator scroll-indicator-${(x, c) =>
-                                        c.index}"
+                                    class="scroll-indicator ${(x, c) =>
+                                        c.index === c.parent.currentSection
+                                            ? "scroll-indicator-active"
+                                            : ""}"
                                 ></div>
                             </a>
                         </li>

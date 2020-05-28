@@ -14,7 +14,7 @@ export class SideNavigation extends FASTElement {
     public sections: number;
 
     @observable
-    public currentSection: string = "0";
+    public currentSection: number = 0;
 
     @observable
     public sectionArray: HTMLElement[] = Array.from(document.querySelectorAll("section"));
@@ -31,7 +31,7 @@ export class SideNavigation extends FASTElement {
                 section.offsetTop <= fromTop &&
                 section.offsetTop + section.offsetHeight > fromTop
             ) {
-                this.currentSection = `${i}`;
+                this.currentSection = i;
             }
         }
     };

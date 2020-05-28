@@ -1,6 +1,5 @@
 import { css } from "@microsoft/fast-element";
 import { display } from "@microsoft/fast-foundation";
-import { elevation } from "@microsoft/fast-components/dist/esm/styles/elevation.js";
 import {
     accentForegroundActiveBehavior,
     accentForegroundHoverBehavior,
@@ -11,7 +10,6 @@ export const SideNavigationStyles = css`
     ${display("block")}:host {
         --engaged-height: calc(var(--design-unit) * 10px);
         --design-unit-large: calc(var(--design-unit) * 5px);
-        --border: var(--border-width) solid var(--neutral-outline-rest);
         contain: content;
         font-family: var(--body-font);
         flex-direction: column;
@@ -22,8 +20,8 @@ export const SideNavigationStyles = css`
         padding: 0 var(--design-unit-large);
     }
 
-    .icon:hover {
-        fill: var(--accent-fill-rest);
+    li:hover .icon {
+        fill: var(--accent-fill-hover);
     }
 
     .scroll-indicator {
@@ -39,11 +37,7 @@ export const SideNavigationStyles = css`
         background-color: var(--accent-foreground-hover);
     }
 
-    .scroll-indicator-active-0 .scroll-indicator-0,
-    .scroll-indicator-active-1 .scroll-indicator-1,
-    .scroll-indicator-active-2 .scroll-indicator-2,
-    .scroll-indicator-active-3 .scroll-indicator-3,
-    .scroll-indicator-active-4 .scroll-indicator-4 {
+    .scroll-indicator-active {
         height: var(--engaged-height);
         background-color: var(--accent-foreground-active);
     }
