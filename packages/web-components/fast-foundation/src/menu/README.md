@@ -24,21 +24,21 @@ export class FASTMenu extends Menu {}
 
 ## Usage
 ```html
-    <fast-menu>
-        <fast-menu-item>Menu item 1</fast-menu-item>
-        <fast-menu-item>Menu item 2</fast-menu-item>
-        <fast-menu-item>Menu item 3</fast-menu-item>
-        <fast-divider></fast-divider>
-        <fast-menu-item role="menuitemradio">Menu item 4</fast-menu-item>
-        <fast-menu-item role="menuitemradio">Menu item 5</fast-menu-item>
-    </fast-menu>
+<fast-menu>
+    <fast-menu-item>Menu item 1</fast-menu-item>
+    <fast-menu-item>Menu item 2</fast-menu-item>
+    <fast-menu-item>Menu item 3</fast-menu-item>
+    <fast-divider></fast-divider>
+    <fast-menu-item role="menuitemradio">Menu item 4</fast-menu-item>
+    <fast-menu-item role="menuitemradio">Menu item 5</fast-menu-item>
+</fast-menu>
 ```
 
 __Custom menu items__
 ```html
-    <fast-menu>
-        <div role="menuitem">Menu item 1</div>
-        <div role="menuitem">Menu item 2</div>
-        <div role="menuitem">Menu item 3</div>
-    </fast-menu>
+<fast-menu>
+    <div role="menuitem">Menu item 1</div>
+    <div role="menuitem">Menu item 2</div>
+    <div role="menuitem">Menu item 3</div>
+</fast-menu>
 ```

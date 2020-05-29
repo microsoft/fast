@@ -25,26 +25,26 @@ export class FASTSlider extends Slider {}
 ## Usage
 
 ```html
-    <fast-slider min="0" max="100" step="10" value="70">
-        <fast-slider-label
-            position="0"
-        >
-            0
-        </fast-slider-label>
-        <fast-slider-label
-            position="10"
-        >
-            10
-        </fast-slider-label>
-        <fast-slider-label
-            position="90"
-        >
-            90
-        </fast-slider-label>
-        <fast-slider-label
-            position="100"
-        >
-            100
-        </fast-slider-label>
-    </fast-slider>
+<fast-slider min="0" max="100" step="10" value="70">
+    <fast-slider-label
+        position="0"
+    >
+        0
+    </fast-slider-label>
+    <fast-slider-label
+        position="10"
+    >
+        10
+    </fast-slider-label>
+    <fast-slider-label
+        position="90"
+    >
+        90
+    </fast-slider-label>
+    <fast-slider-label
+        position="100"
+    >
+        100
+    </fast-slider-label>
+</fast-slider>
 ```

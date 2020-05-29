@@ -25,5 +25,5 @@ export class FASTRadio extends Radio {}
 ## Usage
 
 ```html
-    <fast-radio value="mango" required>Mango</fast-radio>
+<fast-radio value="mango" required>Mango</fast-radio>
  ```

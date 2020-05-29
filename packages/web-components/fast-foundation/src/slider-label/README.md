@@ -25,5 +25,5 @@ export class FASTSliderLabel extends SliderLabel {}
 ## Usage
 
 ```html
-    <fast-slider-label>Fast</fast-slider-label>
+<fast-slider-label>Fast</fast-slider-label>
 ```

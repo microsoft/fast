@@ -24,11 +24,11 @@ export class FASTCheckbox extends Checkbox {}
 
 ## Usage
 ```html
-    <fieldset>
-        <legend>Fruits</legend>
-        <fast-checkbox checked>Apple</fast-checkbox>
-        <fast-checkbox checked>Banana</fast-checkbox>
-        <fast-checkbox>Honeydew</fast-checkbox>
-        <fast-checkbox checked>Mango</fast-checkbox>
-    </fieldset>
-    ```
+<fieldset>
+    <legend>Fruits</legend>
+    <fast-checkbox checked>Apple</fast-checkbox>
+    <fast-checkbox checked>Banana</fast-checkbox>
+    <fast-checkbox>Honeydew</fast-checkbox>
+    <fast-checkbox checked>Mango</fast-checkbox>
+</fieldset>
+```
