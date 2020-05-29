@@ -366,12 +366,16 @@ function mapAttributesToJSONSchema(
 ): { [key: string]: any } {
     return attributes.reduce(
         (accumulation: { [key: string]: any }, attribute: WebComponentAttribute) => {
-            const optionalAttributeProperties: { enum?: string[] } = {};
+            const optionalAttributeProperties: { enum?: Array<string | number> } = {};
 
             if (attribute.values) {
-                optionalAttributeProperties.enum = attribute.values.map(attribute => {
-                    return attribute.name;
-                });
+                optionalAttributeProperties.enum = attribute.values.map(
+                    attributeValue => {
+                        return attribute.type === DataType.number
+                            ? parseInt(attributeValue.name, 10)
+                            : attributeValue.name;
+                    }
+                );
             }
 
             return {
