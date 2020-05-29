@@ -7,7 +7,7 @@ import { throttle } from "lodash";
 
 export class SideNavigation extends FASTElement {
     @attr
-    public position: string;
+    public category: string;
 
     //can be removed to used sectionArray.length once index is restructured to have the correct amount of sections.
     @attr

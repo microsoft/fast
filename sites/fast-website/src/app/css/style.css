@@ -27,12 +27,12 @@ body {
   z-index: 1;
 }
 
-.side-navigation-left {
+.social-links {
   position: fixed;
   top: 30%;
 }
 
-.side-navigation-right {
+.section-scroll {
   position: fixed;
   top: 25%;
   right: 0%;
@@ -172,10 +172,10 @@ fast-divider::after {
 }
 
 @media screen and (max-width: 1000px) {
-  .side-navigation-left {
+  .social-links {
     display: none;
   }
-  .side-navigation-right {
+  .section-scroll {
     display: none;
   }
 }

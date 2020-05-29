@@ -4,7 +4,7 @@ import { SideNavigation } from "./side-navigation";
 export const SideNavigationTemplate = html<SideNavigation>`
     <ul>
         ${when(
-            x => x.position === "left",
+            x => x.category === "links",
             html<SideNavigation>`
                 ${repeat(
                     x => x.socialData,
@@ -21,7 +21,7 @@ export const SideNavigationTemplate = html<SideNavigation>`
             `
         )}
         ${when(
-            x => x.position === "right",
+            x => x.category === "scroll",
             html<SideNavigation>`
                 ${repeat(
                     x => x.sectionArray,
