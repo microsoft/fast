@@ -61,38 +61,13 @@ lt --port 8000
 
 * You receive a URL to share as long as your local instance remains active. Requests route to your local service at the specified port.
 
-### Testing with Sauce Labs
-
-[Sauce Labs](https://saucelabs.com/beta/dashboard/builds) lets collaborators and contributors execute automated tests against Selenium WebDriver on pre-configured browser matrix's.
-
-The cross-browser testing strategy focuses on the differences between browser rendering engines. There are three different [configuration files](https://github.com/Microsoft/fast-dna/tree/master/build/testing) based on feature maturity of ongoing work.
-
-[Alpha](https://github.com/Microsoft/fast-dna/blob/master/build/testing/config-browsers.alpha.js) - immature feature development:
-
-```bash
-node build/testing/sauce-labs/test-browsers.js alpha
-```
-
-[Beta](https://github.com/Microsoft/fast-dna/blob/master/build/testing/config-browsers.beta.js) - stable feature development:
-
-```bash
-node build/testing/sauce-labs/test-browsers.js beta
-```
-
-[Release](https://github.com/Microsoft/fast-dna/blob/master/build/testing/config-browsers.release.js) - mature feature development:
-
-```bash
-node build/testing/sauce-labs/test-browsers.js release
-```
-
-
 ## Cross browser testing
 
 You can read more from [Mozilla](https://developer.mozilla.org/en-US/docs/Learn/Tools_and_testing/Cross_browser_testing/Introduction) on cross-browser testing and processes.
 
 Report browser bugs by following these links:
 
-* [Edge](https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/)
+* [Edge](https://developer.microsoft.com/en-us/microsoft-edge/support/)
 * [Firefox](https://bugzilla.mozilla.org/)
 * [Safari](https://bugs.webkit.org/)
 * [Chrome](https://bugs.chromium.org/p/chromium/issues/list)
