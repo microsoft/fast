@@ -5,11 +5,11 @@ import { display } from "@microsoft/fast-foundation";
 export const FeatureCardStyles = css`
     ${display("grid")} :host {
         contain: layout;
-        grid-template-columns: repeat(3, minmax(150px, 1fr));
+        grid-template-columns: 150px repeat(2, minmax(120px, 1fr));
         grid-template-areas: "header main main";
         color: inherit;
         box-sizing: border-box;
-        padding: 20px;
+        padding: calc(var(--design-unit) * 5px);
         box-shadow: unset;
     }
 
@@ -19,13 +19,9 @@ export const FeatureCardStyles = css`
         background-color: currentColor;
         position: fixed;
         height: 1px;
-        width: 93%;
+        width: calc(100% - (var(--design-unit) * 10px));
         left: 20px;
         top: 0;
-    }
-
-    :host(:hover) ::slotted(fast-anchor) {
-        opacity: 1;
     }
 
     :host(:hover)::before {
@@ -34,15 +30,6 @@ export const FeatureCardStyles = css`
 
     :host(:hover) ::slotted(:first-child) {
         color: var(--accent-fill-rest);
-    }
-
-    @media screen and (max-width: 540px) {
-        ${display("grid")} :host {
-            grid-template-columns: repeat(3, minmax(50px, 1fr));
-            grid-template-areas:
-                "header header header"
-                "main main main";
-        }
     }
 
     .card_heading {
@@ -58,7 +45,7 @@ export const FeatureCardStyles = css`
     }
 
     ::slotted(h4) {
-        font-size: 20px;
+        font-size: var(--type-ramp-plus-2-font-size);
         margin: 0;
     }
 
@@ -73,6 +60,25 @@ export const FeatureCardStyles = css`
 
     ::slotted(fast-anchor) {
         margin-right: 20px;
-        opacity: 0;
+    }
+
+    @media screen and (max-width: 900px) {
+        ${display("grid")} :host {
+            grid-template-columns: repeat(3, minmax(50px, 1fr));
+            grid-template-areas:
+                "header header header"
+                "main main main";
+            max-width: 600px;
+        }
+
+        :host ::slotted(:first-child) {
+            color: var(--accent-fill-rest);
+        }
+
+        .card_heading {
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: space-between;
+        }
     }
 `.withBehaviors(neutralForegroundRestBehavior);
