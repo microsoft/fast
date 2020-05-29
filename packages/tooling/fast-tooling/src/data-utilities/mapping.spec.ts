@@ -1003,7 +1003,14 @@ describe("mapWebComponentDefinitionToJSONSchema", () => {
                                 description: attrDescription,
                                 type: DataType.string,
                                 default: "foobar",
-                                enum: attrEnum,
+                                values: [
+                                    {
+                                        name: attrEnum[0],
+                                    },
+                                    {
+                                        name: attrEnum[1],
+                                    },
+                                ],
                                 required: false,
                             },
                         ],
