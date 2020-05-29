@@ -1,6 +1,5 @@
 import { css } from "@microsoft/fast-element";
 import { display } from "@microsoft/fast-foundation";
-import { siteBreakpoints } from "../../style/constants";
 import { neutralFillHoverBehavior } from "@microsoft/fast-components";
 
 export const CardSectionStyles = css`
@@ -8,7 +7,7 @@ export const CardSectionStyles = css`
         --flow: column;
     }
 
-    @media screen and (max-width: ${siteBreakpoints[2]}) {
+    @media screen and (max-width: 900px) {
         :host {
             --flow: row;
         }

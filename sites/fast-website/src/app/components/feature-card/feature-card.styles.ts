@@ -1,7 +1,6 @@
 import { css } from "@microsoft/fast-element";
 import { neutralForegroundRestBehavior } from "@microsoft/fast-components";
 import { display } from "@microsoft/fast-foundation";
-import { siteBreakpoints } from "../../style/constants";
 
 export const FeatureCardStyles = css`
     ${display("grid")} :host {
@@ -63,7 +62,7 @@ export const FeatureCardStyles = css`
         margin-right: 20px;
     }
 
-    @media screen and (max-width: ${siteBreakpoints[2]}) {
+    @media screen and (max-width: 900px) {
         ${display("grid")} :host {
             grid-template-columns: repeat(3, minmax(50px, 1fr));
             grid-template-areas:
