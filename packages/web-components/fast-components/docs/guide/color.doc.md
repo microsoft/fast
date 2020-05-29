@@ -1,4 +1,9 @@
-# Color
+---
+id: color
+title: Color
+custom_edit_url: https://github.com/microsoft/fast-dna/edit/master/packages/web-components/fast-components/docs/guide/color.doc.md
+---
+
 FAST utilizes an adaptive color system that provides some unique advantages:
 - Ensure text meets [WCAG](https://www.w3.org/WAI/standards-guidelines/wcag/) contrast requirements.
 - Easily swap from light mode to dark, or anywhere in-between.

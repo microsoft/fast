@@ -1,8 +1,7 @@
 ---
 id: styling-components
 title: Styling Components
-sidebar_label: Styling Components
-custom_edit_url: https://github.com/microsoft/fast-dna/edit/master/packages/web-components/fast-foundation/docs/guide/styling-components.doc.md
+custom_edit_url: https://github.com/microsoft/fast-dna/edit/master/packages/web-components/fast-components/docs/guide/styling-components.doc.md
 ---
 ## Applying CSS
 `@microsoft/fast-components` leverages `@microsoft/fast-element` to style components. For details on how to apply CSS, see [leveraging CSS](fast-element/leveraging-css.md).
