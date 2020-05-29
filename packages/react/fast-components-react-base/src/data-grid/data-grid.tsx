@@ -4,6 +4,7 @@ import { get, isNil } from "lodash-es";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import { classNames, Direction, KeyCodes } from "@microsoft/fast-web-utilities";
 import throttle from "raf-throttle";
+import { canUseDOM } from "exenv-es6";
 import StackPanel from "../stack-panel";
 import {
     DataGridColumnDefinition,
@@ -21,7 +22,6 @@ export interface DataGridState {
     focusRowIndex: number;
     focusRowKey: ReactText | null;
     focusColumnKey: ReactText | null;
-    scrollBarWidth: number;
     currentDataPageStartIndex: number;
     currentDataPageEndIndex: number;
     rowPositions: RowPosition[];
@@ -44,13 +44,13 @@ class DataGrid extends Foundation<
     DataGridHandledProps,
     DataGridUnhandledProps,
     DataGridState
-> {
+    > {
     public static defaultProps: Partial<DataGridProps> = {
         rowHeight: 60,
         stableRangeEndIndex: 0,
         pageSize: 1000,
         rowHeightCallback: (
-           row: DataGridRowHeightCallbackParams
+            row: DataGridRowHeightCallbackParams
         ) => {
             return row.defaultRowHeight;
         },
@@ -99,6 +99,10 @@ class DataGrid extends Foundation<
         HTMLDivElement
     >();
 
+    private nonVirtualizedScrollContainer: React.RefObject<HTMLDivElement> = React.createRef<
+        HTMLDivElement
+    >();
+
     private direction: Direction = Direction.ltr;
     private isFocused: boolean = false;
     private throttledScroll: throttle;
@@ -110,63 +114,9 @@ class DataGrid extends Foundation<
      */
     constructor(props: DataGridProps) {
         super(props);
-
-        let initialFocusRowIndex: number = -1;
-        let focusRowKey: React.ReactText = null;
-        let focusColumnKey: React.ReactText = null;
-        let currentDataPageStartIndex: number = -1;
-        let currentDataPageEndIndex: number = -1;
         this.throttledScroll = throttle(this.handleScrollChange);
-        const rowPositions: RowPosition[] = [];
 
-        if (this.props.gridData.length > 0) {
-            if (!isNil(this.props.defaultFocusRowKey)) {
-                focusRowKey = this.props.defaultFocusRowKey;
-                initialFocusRowIndex = this.getRowIndexByKey(focusRowKey);
-            }
-
-            if (initialFocusRowIndex === -1) {
-                initialFocusRowIndex = 0;
-                focusRowKey = this.props.gridData[0][this.props.dataRowKey];
-            }
-
-            currentDataPageStartIndex =
-                initialFocusRowIndex - Math.floor(this.props.pageSize / 2);
-
-            currentDataPageStartIndex =
-                currentDataPageStartIndex < 0 ? 0 : currentDataPageStartIndex;
-
-            currentDataPageEndIndex = currentDataPageStartIndex + this.props.pageSize;
-
-            currentDataPageEndIndex =
-                currentDataPageEndIndex > this.props.gridData.length - 1
-                    ? this.props.gridData.length - 1
-                    : currentDataPageEndIndex;
-
-            this.sizeRowsToIndex(currentDataPageEndIndex, rowPositions);
-        }
-
-        if (this.props.columnDefinitions.length > 0) {
-            focusColumnKey =
-                !isNil(this.props.defaultFocusColumnKey) &&
-                this.getColumnIndexByKey(this.props.defaultFocusColumnKey) !== -1
-                    ? this.props.defaultFocusColumnKey
-                    : this.props.columnDefinitions[0].columnDataKey;
-        }
-
-        this.state = {
-            scrollBarWidth: 0,
-            currentDataPageStartIndex: currentDataPageStartIndex,
-            currentDataPageEndIndex: currentDataPageEndIndex,
-            focusColumnKey,
-            focusRowKey,
-            focusRowIndex: initialFocusRowIndex,
-            rowPositions,
-            estimatedTotalHeight: this.getEstimatedTotalHeight(rowPositions),
-            desiredVisibleRowIndex: initialFocusRowIndex,
-            desiredFocusColumnKey: null,
-            desiredFocusRowKey: null,
-        };
+        this.state = this.applyInitialState();
     }
 
     /**
@@ -174,37 +124,6 @@ class DataGrid extends Foundation<
      */
     public render(): React.ReactElement<HTMLDivElement> {
         this.currentTemplateColumns = this.getGridTemplateColumns();
-
-        const itemSpans: number[] = [];
-
-        if (this.state.rowPositions.length > 0) {
-            itemSpans.push(
-                this.state.rowPositions[this.state.currentDataPageStartIndex].start
-            );
-
-            if (typeof this.props.rowHeightCallback === "function") {
-                for (
-                    let i: number = this.state.currentDataPageStartIndex;
-                    i <= this.state.currentDataPageEndIndex;
-                    i++
-                ) {
-                    itemSpans.push(this.state.rowPositions[i].span);
-                }
-            }
-            itemSpans.push(
-                this.state.estimatedTotalHeight -
-                    this.state.rowPositions[this.state.currentDataPageEndIndex].end
-            );
-        }
-
-        const stackPanelVisibleItemIndex: number | null =
-            this.state.desiredVisibleRowIndex !== null
-                ? this.convertGridDataIndexToStackPanelIndex(
-                      this.state.desiredVisibleRowIndex,
-                      this.state.currentDataPageStartIndex,
-                      this.state.currentDataPageEndIndex
-                  )
-                : null;
 
         return (
             <DataGridContext.Provider
@@ -229,35 +148,7 @@ class DataGrid extends Foundation<
                     ref={this.rootElement}
                 >
                     {this.renderGridHeader()}
-                    <StackPanel
-                        initiallyVisibleItemIndex={stackPanelVisibleItemIndex}
-                        onScrollChange={this.throttledScroll}
-                        itemSpan={itemSpans}
-                        virtualize={this.props.virtualizeItems}
-                        style={{
-                            height: "100%",
-                            overflowY: "scroll",
-                        }}
-                        managedClasses={{
-                            stackPanel: get(
-                                this.props.managedClasses,
-                                "dataGrid_scrollingPanel",
-                                ""
-                            ),
-                            stackPanel_items: get(
-                                this.props.managedClasses,
-                                "dataGrid_scrollingPanelItems",
-                                ""
-                            ),
-                            stackPanel__scrollable: get(
-                                this.props.managedClasses,
-                                "dataGrid_scrollingPanel__scrollable",
-                                ""
-                            ),
-                        }}
-                    >
-                        {this.renderRows()}
-                    </StackPanel>
+                    {this.renderPanel()}
                 </div>
             </DataGridContext.Provider>
         );
@@ -267,15 +158,42 @@ class DataGrid extends Foundation<
      * React life-cycle method
      */
     public componentDidMount(): void {
+        if (
+            !this.props.virtualizeItems &&
+            this.state.desiredVisibleRowIndex !== null &&
+            !isNil(this.nonVirtualizedScrollContainer.current) &&
+            this.props.gridData.length > this.state.desiredVisibleRowIndex
+        ){
+            const rows: HTMLElement[]  = this.getRenderedRows();
+            this.nonVirtualizedScrollContainer.current.scrollTop = rows[this.state.desiredVisibleRowIndex].offsetTop;
+        }
         this.setState({
             desiredVisibleRowIndex: null,
         });
     }
 
     /**
-     * React life-cycle method
+     * componentDidUpdate when in non-virtualized mode
      */
-    public componentDidUpdate(prevProps: DataGridProps): void {
+    public nonVirtualizedComponentUpdateHandler(prevProps: DataGridProps): void {
+        if (this.props.virtualizeItems) {
+            // virtualization mode changed, reset
+            this.setState(this.applyInitialState());
+            return;
+        }
+
+    }
+
+    /**
+     * componentDidUpdate when in virtualized mode
+     */
+    public virtualizedComponentUpdateHandler(prevProps: DataGridProps): void {
+        if (!this.props.virtualizeItems) {
+            // virtualization mode changed, reset
+            this.setState(this.applyInitialState());
+            return;
+        }
+
         let shouldUpdateState: boolean = false;
 
         let rowPositions: RowPosition[] = this.state.rowPositions;
@@ -429,15 +347,125 @@ class DataGrid extends Foundation<
     }
 
     /**
+     * Gets the initial state of the component based on virtualizion prop
+     * also used when prop is changed during component lifetime
+     */
+    private applyInitialState = (): DataGridState => {
+        const newState: DataGridState = this.applyInitialFocusState(
+            {
+                focusRowIndex: -1,
+                focusRowKey: null,
+                focusColumnKey: null,
+                currentDataPageStartIndex: -1,
+                currentDataPageEndIndex: -1,
+                rowPositions: [],
+                estimatedTotalHeight: 0,
+                desiredVisibleRowIndex: null,
+                desiredFocusRowKey: null,
+                desiredFocusColumnKey: null,
+            }
+        );
+        return this.props.virtualizeItems 
+            ? this.applyVirtualizedInitialState(newState)
+            : this.applyNonVirtualizedInitialState(newState);
+    }
+
+    /**
+     * Gets the virtualized mode initial state
+     * also used when prop is changed during component lifetime
+     */
+    private applyVirtualizedInitialState = (newState: DataGridState): DataGridState => {
+
+        this.componentDidUpdate = this.virtualizedComponentUpdateHandler;
+        this.renderPanel = this.renderVirtualizingPanel;
+
+        if (this.props.gridData.length > 0) {
+            if (!isNil(this.props.defaultFocusRowKey)) {
+                newState.focusRowKey = this.props.defaultFocusRowKey;
+                newState.focusRowIndex = this.getRowIndexByKey(newState.focusRowKey);
+            }
+
+            if (newState.focusRowIndex === -1) {
+                newState.focusRowIndex = 0;
+                newState.focusRowKey = this.props.gridData[0][this.props.dataRowKey];
+            }
+
+            newState.currentDataPageStartIndex =
+                newState.focusRowIndex - Math.floor(this.props.pageSize / 2);
+
+            newState.currentDataPageStartIndex =
+                newState.currentDataPageStartIndex < 0 ? 0 : newState.currentDataPageStartIndex;
+
+            newState.currentDataPageEndIndex = newState.currentDataPageStartIndex + this.props.pageSize;
+
+            newState.currentDataPageEndIndex =
+                newState.currentDataPageEndIndex > this.props.gridData.length - 1
+                    ? this.props.gridData.length - 1
+                    : newState. currentDataPageEndIndex;
+
+            this.sizeRowsToIndex(newState.currentDataPageEndIndex, newState.rowPositions);
+
+            newState.estimatedTotalHeight = this.getEstimatedTotalHeight(newState.rowPositions);
+        }
+
+        return newState;
+    }
+
+    /**
+     * Gets the non-virtualized mode initial state
+     * also used when prop is changed during component lifetime
+     */
+    private applyNonVirtualizedInitialState = (newState: DataGridState): DataGridState => {
+
+        this.componentDidUpdate = this.nonVirtualizedComponentUpdateHandler;
+        this.renderPanel = this.renderNonVirtualizingPanel;
+
+        newState.currentDataPageStartIndex = this.props.gridData.length > 0 ? 0 : -1;
+        newState.currentDataPageEndIndex = this.props.gridData.length > 0 ? this.props.gridData.length - 1: -1;
+        newState.rowPositions = [];
+        newState.estimatedTotalHeight = 0;
+
+        return newState;
+    }
+
+    /**
+     * sets initial/reset focus rows
+     */
+    private applyInitialFocusState = (newState: DataGridState): DataGridState => {
+        if (!isNil(this.props.defaultFocusRowKey)) {
+            newState.focusRowKey = this.props.defaultFocusRowKey;
+            newState.focusRowIndex = this.getRowIndexByKey(newState.focusRowKey);
+        }
+        if (
+            newState.focusRowIndex === -1 &&
+            this.props.gridData.length > 0
+        ) {
+            newState.focusRowIndex = 0;
+            newState.focusRowKey = this.props.gridData[0][this.props.dataRowKey];
+        }
+
+        if (this.props.columnDefinitions.length > 0) {
+            newState.focusColumnKey =
+                !isNil(this.props.defaultFocusColumnKey) &&
+                    this.getColumnIndexByKey(this.props.defaultFocusColumnKey) !== -1
+                    ? this.props.defaultFocusColumnKey
+                    : this.props.columnDefinitions[0].columnDataKey;
+        }
+
+        newState.desiredVisibleRowIndex = newState.focusRowIndex;
+
+        return newState;
+    }
+
+    /**
      *  render the header
      */
-    private renderGridHeader(): React.ReactElement<HTMLDivElement> {
+    private renderGridHeader = (): React.ReactElement<HTMLDivElement> => {
         return (
             <div
                 className={classNames(this.props.managedClasses.dataGrid_header)}
                 role="row"
                 style={{
-                    marginRight: this.state.scrollBarWidth,
                     display: "grid",
                     gridTemplateColumns: this.currentTemplateColumns,
                 }}
@@ -448,9 +476,114 @@ class DataGrid extends Foundation<
     }
 
     /**
+     *  placeholder function until assignement based on virtualization mode
+     */
+    private renderPanel = (): React.ReactElement<HTMLDivElement> => {
+        return null;
+    }
+
+    /**
+     *  render a non-virtualizing panel
+     */
+    private renderNonVirtualizingPanel = (): React.ReactElement<HTMLDivElement> => {
+        return (
+            <div
+                style={{
+                    height: "100%",
+                    overflowY: "scroll",
+                    position: "relative",
+                }}
+                ref={this.nonVirtualizedScrollContainer}
+            >
+                {this.renderNonVirtualizedRows()}
+            </div>
+        );
+    }
+
+    /**
+     *  render non virtualized data rows
+     */
+    private renderNonVirtualizedRows = (): React.ReactChild[] => {
+        const rowsToRender: React.ReactChild[] = [];
+        this.props.gridData.forEach((row: object, index: number) => {
+            rowsToRender.push(this.renderRow(row, index));
+        });
+        return rowsToRender;
+    };
+
+    /**
+     *  render a virtualizing panel
+     */
+    private renderVirtualizingPanel = (): React.ReactElement<HTMLDivElement> => {
+
+        const itemSpans: number[] = [];
+
+        if (this.state.rowPositions.length > 0) {
+            itemSpans.push(
+                this.state.rowPositions[this.state.currentDataPageStartIndex].start
+            );
+
+            if (typeof this.props.rowHeightCallback === "function") {
+                for (
+                    let i: number = this.state.currentDataPageStartIndex;
+                    i <= this.state.currentDataPageEndIndex;
+                    i++
+                ) {
+                    itemSpans.push(this.state.rowPositions[i].span);
+                }
+            }
+            itemSpans.push(
+                this.state.estimatedTotalHeight -
+                this.state.rowPositions[this.state.currentDataPageEndIndex].end
+            );
+        }
+
+        const stackPanelVisibleItemIndex: number | null =
+            this.state.desiredVisibleRowIndex !== null
+                ? this.convertGridDataIndexToStackPanelIndex(
+                    this.state.desiredVisibleRowIndex,
+                    this.state.currentDataPageStartIndex,
+                    this.state.currentDataPageEndIndex
+                )
+                : null;
+
+        return (
+            <StackPanel
+                initiallyVisibleItemIndex={stackPanelVisibleItemIndex}
+                onScrollChange={this.throttledScroll}
+                itemSpan={itemSpans}
+                virtualize={this.props.virtualizeItems}
+                style={{
+                    height: "100%",
+                    overflowY: "scroll" 
+                }}
+                managedClasses={{
+                    stackPanel: get(
+                        this.props.managedClasses,
+                        "dataGrid_scrollingPanel",
+                        ""
+                    ),
+                    stackPanel_items: get(
+                        this.props.managedClasses,
+                        "dataGrid_scrollingPanelItems",
+                        ""
+                    ),
+                    stackPanel__scrollable: get(
+                        this.props.managedClasses,
+                        "dataGrid_scrollingPanel__scrollable",
+                        ""
+                    ),
+                }}
+            >
+                {this.renderVirtualizedRows()}
+            </StackPanel>
+        );
+    }
+
+    /**
      *  render the data rows
      */
-    private renderRows = (): React.ReactChild[] => {
+    private renderVirtualizedRows = (): React.ReactChild[] => {
         const rowsToRender: React.ReactChild[] = [];
         rowsToRender.push(<div key="frontSpacer" />);
         for (
@@ -709,7 +842,7 @@ class DataGrid extends Foundation<
 
         if (
             this.state.rowPositions[this.state.focusRowIndex].start >
-                currentViewportBottom ||
+            currentViewportBottom ||
             this.state.rowPositions[this.state.focusRowIndex].end < newScrollValue
         ) {
             const topVisibleElementIndex: number = this.getIndexOfItemAtScrollPosition(
@@ -922,6 +1055,20 @@ class DataGrid extends Foundation<
         if (cellElement instanceof HTMLElement) {
             cellElement.focus();
         }
+    };
+
+    /**
+     *  Get all rendered rows
+     */
+    private getRenderedRows = (): HTMLElement[] => {
+        if (isNil(this.rootElement.current)) {
+            return null;
+        }
+        return Array.from(
+            this.rootElement.current.querySelectorAll(
+                "[role='row']"
+            )
+        );
     };
 
     /**

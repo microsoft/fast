@@ -259,4 +259,17 @@ storiesOf("Data Grid", module)
             columnDefinitions={columnDefinitions}
             rowHeightCallback={getRowHeight}
         />
+    ))
+    .add("No virtualization", () => (
+        <DataGrid
+            style={{
+                height: "300px",
+            }}
+            virtualizeItems={false}
+            dataRowKey="recordId"
+            gridData={getDataSet(100)}
+            defaultFocusRowKey="id-100"
+            rowHeight={100}
+            columnDefinitions={columnDefinitions}
+        />
     ));
