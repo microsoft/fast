@@ -51,12 +51,24 @@ function copyMarkdown() {
         const root = "./docs";
         const folder = identifyPackage(source);
         const dest = path.join(root, folder, filename);
-
-        fs.copyFile(source, dest, error => {
-            if (error) {
-                console.error(error);
-            }
-        });
+        const copy = () => {
+            fs.copyFile(source, dest, error => {
+                if (error) {
+                    console.error(error);
+                }
+            });
+        };
+        if (fs.existsSync(dest)) {
+            copy();
+        } else {
+            fs.mkdir(path.dirname(dest), { recursive: true }, error => {
+                if (error) {
+                    console.error(error);
+                } else {
+                    copy();
+                }
+            });
+        }
     });
 
     // Copy component docs from fast-foundation.
