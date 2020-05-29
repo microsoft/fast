@@ -39,8 +39,11 @@ module.exports = {
                     type: "category",
                     label: "Styling Components",
                     items: [
-                        "fast-components/styling-components",
+                        "fast-components/intro",
+                        "fast-components/design-system",
+                        "fast-components/type-ramp",
                         "fast-components/color",
+                        "fast-components/match-media-stylesheets",
                     ],
                 },
                 {
