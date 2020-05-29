@@ -1,14 +1,11 @@
+import { expect } from "chai";
 import { FASTDesignSystem, fastDesignSystemDefaults } from "../fast-design-system";
 import { neutralFillCard } from "./neutral-fill-card";
-import { expect } from "chai";
 
 describe("neutralFillCard", (): void => {
-    // TODO @nicholasrice: Tests are failing due as palette is expecting light
-    it.skip("should operate on design system defaults", (): void => {
-        expect(neutralFillCard({} as FASTDesignSystem)).to.equal(
-            fastDesignSystemDefaults.neutralPalette[
-                fastDesignSystemDefaults.neutralFillCardDelta
-            ]
+    it("should operate on design system defaults", (): void => {
+        expect(fastDesignSystemDefaults.neutralPalette).to.include(
+            neutralFillCard({} as FASTDesignSystem)
         );
     });
     it("should get darker when the index of the backgroundColor is lower than the offset index", (): void => {

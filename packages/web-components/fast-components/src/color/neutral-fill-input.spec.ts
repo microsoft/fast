@@ -1,3 +1,4 @@
+import { expect } from "chai";
 import { FASTDesignSystem, fastDesignSystemDefaults } from "../fast-design-system";
 import {
     accentPalette as getAccentPalette,
@@ -13,23 +14,21 @@ import {
     neutralFillInputSelected,
 } from "./neutral-fill-input";
 import { isDarkMode, Palette } from "./palette";
-import { expect } from "chai";
 
 describe("neutralFillInput", (): void => {
     const neutralPalette: Palette = getNeutralPalette(fastDesignSystemDefaults);
     const accentPalette: Palette = getAccentPalette(fastDesignSystemDefaults);
 
-    // TODO @nicholasrice: Tests are failing due as palette is expecting light
-    it.skip("should operate on design system defaults", (): void => {
-        expect(neutralFillInputRest({} as FASTDesignSystem)).to.equal(neutralPalette[0]);
-        expect(neutralFillInputHover({} as FASTDesignSystem)).to.equal(neutralPalette[0]);
-        expect(neutralFillInputActive({} as FASTDesignSystem)).to.equal(
-            neutralPalette[0]
-        );
-        expect(neutralFillInputFocus({} as FASTDesignSystem)).to.equal(neutralPalette[0]);
-        expect(neutralFillInputSelected({} as FASTDesignSystem)).to.equal(
-            neutralPalette[0]
-        );
+    it("should operate on design system defaults", (): void => {
+        [
+            neutralFillInputActive,
+            neutralFillInputFocus,
+            neutralFillInputHover,
+            neutralFillInputRest,
+            neutralFillInputSelected,
+        ].forEach(fn => {
+            expect(neutralPalette).to.include(fn({} as FASTDesignSystem));
+        });
     });
 
     it("should always be lighter than the background by the delta in light mode and darker in dark mode", (): void => {

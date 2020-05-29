@@ -1,3 +1,4 @@
+import { expect } from "chai";
 import { fastDesignSystemDefaults } from "../fast-design-system";
 import {
     accentPalette as getAccentPalette,
@@ -9,7 +10,6 @@ import {
 } from "./neutral-foreground-hint";
 import { Palette } from "./palette";
 import { contrast, Swatch, SwatchRecipe } from "./common";
-import { expect } from "chai";
 
 describe("neutralForegroundHint", (): void => {
     const neutralPalette: Palette = getNeutralPalette(fastDesignSystemDefaults);

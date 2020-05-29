@@ -1,3 +1,4 @@
+import { expect } from "chai";
 import { fastDesignSystemDefaults } from "../fast-design-system";
 import {
     neutralForegroundActive,
@@ -5,7 +6,6 @@ import {
     neutralForegroundRest,
 } from "./neutral-foreground";
 import { contrast } from "./common";
-import { expect } from "chai";
 
 describe("neutralForeground", (): void => {
     it("should return a string when invoked with an object", (): void => {
@@ -24,55 +24,85 @@ describe("neutralForeground", (): void => {
         expect(typeof neutralForegroundActive(() => "#FFF")).to.equal("function");
     });
 
-    // TODO @nicholasrice: Tests are failing due as palette is expecting light
-    it.skip("should operate on default design system if no design system is supplied", (): void => {
-        expect(contrast(neutralForegroundRest(undefined as any), "#FFF")).to.be.gte(14);
+    it("should operate on default design system if no design system is supplied", (): void => {
+        const palette = fastDesignSystemDefaults.neutralPalette;
+        const limitColor = palette[palette.length - 1];
+
+        expect(contrast(neutralForegroundRest(undefined as any), limitColor)).to.be.gte(
+            14
+        );
         expect(
             contrast(
                 neutralForegroundRest(() => undefined as any)(undefined as any),
-                "#FFF"
+                limitColor
             )
         ).to.be.gte(14);
         expect(
-            contrast(neutralForegroundRest(() => "#FFF")(undefined as any), "#FFF")
+            contrast(
+                neutralForegroundRest(() => limitColor)(undefined as any),
+                limitColor
+            )
         ).to.be.gte(14);
         expect(
-            contrast(neutralForegroundRest(() => "#FFFFFF")(undefined as any), "#FFF")
+            contrast(
+                neutralForegroundRest(() => limitColor)(undefined as any),
+                limitColor
+            )
         ).to.be.gte(14);
 
-        expect(contrast(neutralForegroundHover(undefined as any), "#FFF")).to.be.gte(14);
+        expect(contrast(neutralForegroundHover(undefined as any), limitColor)).to.be.gte(
+            14
+        );
         expect(
             contrast(
                 neutralForegroundHover(() => undefined as any)(undefined as any),
-                "#FFF"
+                limitColor
             )
         ).to.be.gte(14);
         expect(
-            contrast(neutralForegroundHover(() => "#FFF")(undefined as any), "#FFF")
+            contrast(
+                neutralForegroundHover(() => limitColor)(undefined as any),
+                limitColor
+            )
         ).to.be.gte(14);
         expect(
-            contrast(neutralForegroundHover(() => "#FFFFFF")(undefined as any), "#FFF")
+            contrast(
+                neutralForegroundHover(() => limitColor)(undefined as any),
+                limitColor
+            )
         ).to.be.gte(14);
 
-        expect(contrast(neutralForegroundActive(undefined as any), "#FFF")).to.be.gte(14);
+        expect(contrast(neutralForegroundActive(undefined as any), limitColor)).to.be.gte(
+            14
+        );
         expect(
             contrast(
                 neutralForegroundActive(() => undefined as any)(undefined as any),
-                "#FFF"
+                limitColor
             )
         ).to.be.gte(14);
         expect(
-            contrast(neutralForegroundActive(() => "#FFF")(undefined as any), "#FFF")
+            contrast(
+                neutralForegroundActive(() => limitColor)(undefined as any),
+                limitColor
+            )
         ).to.be.gte(14);
         expect(
-            contrast(neutralForegroundActive(() => "#FFFFFF")(undefined as any), "#FFF")
+            contrast(
+                neutralForegroundActive(() => limitColor)(undefined as any),
+                limitColor
+            )
         ).to.be.gte(14);
     });
 
-    // TODO @nicholasrice: Tests are failing due as palette is expecting light
-    it.skip("should return correct result with default design system values", (): void => {
+    it("should return correct result with default design system values", (): void => {
         expect(
-            contrast(neutralForegroundRest(fastDesignSystemDefaults), "#FFF")
+            contrast(
+                neutralForegroundRest(fastDesignSystemDefaults),
+                fastDesignSystemDefaults.neutralPalette[
+                    fastDesignSystemDefaults.neutralPalette.length - 1
+                ]
+            )
         ).to.be.gte(14);
     });
 

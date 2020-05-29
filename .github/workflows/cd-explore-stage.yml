@@ -6,41 +6,47 @@ on:
     - master
 
 jobs:
-  build_linux:
+  build_deploy_linux:
     runs-on: ubuntu-latest
 
     env:
-      AZURE_WEBAPP_NAME: fast-explore
-      AZURE_WEBAPP_PACKAGE_PATH: ./sites/fast-component-explorer/www
+      AZURE_WEBAPP_ACTIVE_STAGE_NAME: explore-west-app
+      AZURE_WEBAPP_PASSIVE_STAGE_NAME: explore-east-app
+      AZURE_WEBAPP_BUILD_PATH: sites/fast-component-explorer
+      AZURE_WEBAPP_DIST_PATH: sites/fast-component-explorer/www
       AZURE_WEBAPP_SLOT_NAME: stage
 
     steps:
-    - name: Azure Login
-      uses: azure/login@v1
-      with:
-        creds: ${{ secrets.AZURE_CREDENTIALS_FAST_DESIGN }}
-
     - name: Checkout Branch
       uses: actions/checkout@master
 
     - name: Install Lerna
-      run: sudo yarn global add lerna
+      run: yarn global add lerna
 
     - name: Install package dependencies / prepare workspaces
       run: yarn install --frozen-lockfile
     
-    - name: Build Web Application
-      run: | 
-        cd sites/fast-component-explorer
+    - name: Build & Prepare Web Application
+      run: |
+        cd ${{ env.AZURE_WEBAPP_BUILD_PATH }}
         yarn build:app
+        cp ../site-utilities/statics/server/package.json ../site-utilities/statics/server/server.js www 
+        cd www
+        npm i
+        ls -lta
 
-    - name: 'Deploy to Azure'
+    - name: 'Deploy to Active Azure Region'
       uses: azure/webapps-deploy@v2
       with:
-        app-name: ${{ env.AZURE_WEBAPP_NAME }}
-        package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+        publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE_EXPLORE_ACTIVE }}
+        app-name: ${{ env.AZURE_WEBAPP_ACTIVE_STAGE_NAME }}
+        package: ${{ env.AZURE_WEBAPP_DIST_PATH }}
         slot-name: ${{ env.AZURE_WEBAPP_SLOT_NAME }}
 
-    - name: Azure Logout
-      run: |
-        az logout
+    - name: 'Deploy to Passive Azure Region'
+      uses: azure/webapps-deploy@v2
+      with:
+        publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE_EXPLORE_PASSIVE }}
+        app-name: ${{ env.AZURE_WEBAPP_PASSIVE_STAGE_NAME }}
+        package: ${{ env.AZURE_WEBAPP_DIST_PATH }}
+        slot-name: ${{ env.AZURE_WEBAPP_SLOT_NAME }}
