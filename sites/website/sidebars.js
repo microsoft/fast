@@ -35,7 +35,17 @@ module.exports = {
                         "fast-foundation/fast-text-field",
                     ],
                 },
-                "fast-foundation/styling-components",
+                {
+                    type: "category",
+                    label: "Styling Components",
+                    items: [
+                        "fast-components/intro",
+                        "fast-components/design-system",
+                        "fast-components/type-ramp",
+                        "fast-components/color",
+                        "fast-components/match-media-stylesheets",
+                    ],
+                },
                 {
                     type: "category",
                     label: "Integrations",
