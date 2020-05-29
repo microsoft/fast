@@ -3,30 +3,35 @@ import {
     CommunityContentPlacementData,
     communityContentPlacementData,
 } from "../../data/community.data";
-import { throttle } from "lodash";
+import { throttle } from "lodash-es";
 
 export class SideNavigation extends FASTElement {
     @attr
     public category: string;
 
-    //can be removed to used sectionArray.length once index is restructured to have the correct amount of sections.
+    // TODO: can be removed to used sectionArray.length once index is restructured to have the correct amount of sections.
     @attr
     public sections: number;
 
     @observable
     public currentSection: number = 0;
 
+    // TODO: flter can be removed when index is updated
     @observable
-    public sectionArray: HTMLElement[] = Array.from(document.querySelectorAll("section"));
+    public sectionArray: HTMLElement[] = Array.from(
+        document.querySelectorAll("section")
+    ).filter(x => x.id !== "");
 
-    public updatecurrentSection = (): void => {
+    public updateCurrentSection = (): void => {
         const fromTop = window.scrollY;
 
-        //replace sections with sectionArray.length after rebase with John's code that reduces sections down to 5
+        // TODO: replace sections with sectionArray.length after rebase with John's code that reduces sections down to 5
         for (let i = 0; i < this.sections; i++) {
-            const section: HTMLElement | null = document.querySelector(`#section-${i}`);
+            const section: HTMLElement | null = document.getElementById(
+                `${this.sectionArray[i].id}`
+            );
             if (section === null) {
-                break;
+                continue;
             } else if (
                 section.offsetTop <= fromTop &&
                 section.offsetTop + section.offsetHeight > fromTop
@@ -43,6 +48,6 @@ export class SideNavigation extends FASTElement {
     constructor() {
         super();
 
-        window.addEventListener("scroll", throttle(this.updatecurrentSection, 100));
+        window.addEventListener("scroll", throttle(this.updateCurrentSection, 100));
     }
 }
