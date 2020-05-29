@@ -10,6 +10,7 @@ import {
 
 export const ContentPlacementContainerStyles = css`
     ${display("block")}:host {
+        --flow: column;
         --border-width: calc(var(--outline-width) * 1px);
         --border: var(--border-width) solid var(--neutral-outline-rest);
         contain: none;
@@ -46,11 +47,13 @@ export const ContentPlacementContainerStyles = css`
         }
     }
 
-    @media screen and (min-width: 700px) and (max-width: 999px) {
+    @media screen and (max-width: 900px) {
         :host {
             --flow: row;
         }
+    }
 
+    @media screen and (min-width: 700px) and (max-width: 999px) {
         .framework_container {
             grid-template-columns: repeat(2, 1fr);
         }
@@ -70,10 +73,6 @@ export const ContentPlacementContainerStyles = css`
     }
 
     @media screen and (min-width: 1000px) {
-        :host {
-            --flow: column;
-        }
-
         .framework_container,
         .community_container {
             grid-template-columns: repeat(3, 1fr);
