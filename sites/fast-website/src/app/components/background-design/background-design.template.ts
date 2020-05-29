@@ -4,8 +4,8 @@ import { BackgroundDesign } from "./background-design";
 
 export const BackgroundDesignTemplate = html<BackgroundDesign>`
     <template style="--blur-amount: ${x => x.blurAmount}">
-        <slot name="background-image">
+        <div class="background-image">
             ${BackgroundImage}
-        </slot>
+        </div>
     </template>
 `;
