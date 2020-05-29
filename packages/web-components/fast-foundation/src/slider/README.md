@@ -5,6 +5,8 @@ sidebar_label: fast-slider
 custom_edit_url: https://github.com/microsoft/fast-dna/edit/master/packages/web-components/fast-foundation/src/slider/README.md
 ---
 
+An implementation of a [range slider](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/Input/range) as a form-connected web-component.
+
 ## Applying Custom Styles
 
 ```ts
@@ -18,4 +20,31 @@ import { SliderStyles as styles } from "./slider.styles";
     styles,
 })
 export class FASTSlider extends Slider {}
+```
+
+## Usage
+
+```html
+<fast-slider min="0" max="100" step="10" value="70">
+    <fast-slider-label
+        position="0"
+    >
+        0
+    </fast-slider-label>
+    <fast-slider-label
+        position="10"
+    >
+        10
+    </fast-slider-label>
+    <fast-slider-label
+        position="90"
+    >
+        90
+    </fast-slider-label>
+    <fast-slider-label
+        position="100"
+    >
+        100
+    </fast-slider-label>
+</fast-slider>
 ```
