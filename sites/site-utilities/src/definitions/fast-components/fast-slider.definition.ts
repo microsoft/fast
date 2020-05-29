@@ -41,7 +41,10 @@ export const fastSliderDefinition: WebComponentDefinition = {
                     name: "orientation",
                     description: "The orientation attribute",
                     default: Orientation.horizontal,
-                    enum: [Orientation.horizontal, Orientation.vertical],
+                    values: [
+                        { name: Orientation.horizontal },
+                        { name: Orientation.vertical },
+                    ],
                     required: false,
                     type: DataType.string,
                 },

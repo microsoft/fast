@@ -15,18 +15,21 @@ export const fastTextAreaDefinition: WebComponentDefinition = {
                     default: TextAreaAppearance.outline,
                     required: false,
                     type: DataType.string,
-                    enum: [TextAreaAppearance.outline, TextAreaAppearance.filled],
+                    values: [
+                        { name: TextAreaAppearance.outline },
+                        { name: TextAreaAppearance.filled },
+                    ],
                 },
                 {
                     name: "resize",
                     description: "The resize attribute",
                     required: false,
                     type: DataType.string,
-                    enum: [
-                        TextAreaResize.none,
-                        TextAreaResize.both,
-                        TextAreaResize.horizontal,
-                        TextAreaResize.vertical,
+                    values: [
+                        { name: TextAreaResize.none },
+                        { name: TextAreaResize.both },
+                        { name: TextAreaResize.horizontal },
+                        { name: TextAreaResize.vertical },
                     ],
                     default: TextAreaResize.none,
                 },

@@ -12,7 +12,23 @@ export const fastButtonDefinition: WebComponentDefinition = {
                     name: "appearance",
                     description: "The appearance attribute",
                     type: DataType.string,
-                    enum: ["accent", "lightweight", "neutral", "outline", "stealth"],
+                    values: [
+                        {
+                            name: "accent",
+                        },
+                        {
+                            name: "lightweight",
+                        },
+                        {
+                            name: "neutral",
+                        },
+                        {
+                            name: "outline",
+                        },
+                        {
+                            name: "stealth",
+                        },
+                    ],
                     default: "neutral",
                     required: false,
                 },
@@ -70,7 +86,20 @@ export const fastButtonDefinition: WebComponentDefinition = {
                     description: "The formtarget attribute",
                     type: DataType.string,
                     default: undefined,
-                    enum: ["_self", "_blank", "_parent", "_top"],
+                    values: [
+                        {
+                            name: "_self",
+                        },
+                        {
+                            name: "_blank",
+                        },
+                        {
+                            name: "_parent",
+                        },
+                        {
+                            name: "_top",
+                        },
+                    ],
                     required: false,
                 },
                 {

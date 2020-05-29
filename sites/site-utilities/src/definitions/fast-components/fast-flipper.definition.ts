@@ -27,7 +27,14 @@ export const fastFlipperDefinition: WebComponentDefinition = {
                     name: "direction",
                     type: DataType.boolean,
                     description: "The direction attribute",
-                    enum: [FlipperDirection.previous, FlipperDirection.next],
+                    values: [
+                        {
+                            name: FlipperDirection.previous,
+                        },
+                        {
+                            name: FlipperDirection.next,
+                        },
+                    ],
                     default: FlipperDirection.next,
                     required: false,
                 },

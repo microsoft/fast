@@ -12,13 +12,25 @@ export const fastAnchorDefinition: WebComponentDefinition = {
                     name: "appearance",
                     description: "The appearance attribute",
                     type: DataType.string,
-                    enum: [
-                        "accent",
-                        "lightweight",
-                        "neutral",
-                        "outline",
-                        "stealth",
-                        "hypertext",
+                    values: [
+                        {
+                            name: "accent",
+                        },
+                        {
+                            name: "lightweight",
+                        },
+                        {
+                            name: "neutral",
+                        },
+                        {
+                            name: "outline",
+                        },
+                        {
+                            name: "stealth",
+                        },
+                        {
+                            name: "hypertext",
+                        },
                     ],
                     default: "neutral",
                     required: false,
@@ -70,7 +82,20 @@ export const fastAnchorDefinition: WebComponentDefinition = {
                     description: "The target attribute",
                     type: DataType.string,
                     default: "_self",
-                    enum: ["_self", "_blank", "_parent", "_top"],
+                    values: [
+                        {
+                            name: "_self",
+                        },
+                        {
+                            name: "_blank",
+                        },
+                        {
+                            name: "_parent",
+                        },
+                        {
+                            name: "_top",
+                        },
+                    ],
                     required: false,
                 },
                 {

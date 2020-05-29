@@ -28,10 +28,10 @@ export const fastMenuItemDefinition: WebComponentDefinition = {
                     type: DataType.boolean,
                     description: "The aria-expanded attribute",
                     default: MenuItemRole.menuitem,
-                    enum: [
-                        MenuItemRole.menuitem,
-                        MenuItemRole.menuitemcheckbox,
-                        MenuItemRole.menuitemradio,
+                    values: [
+                        { name: MenuItemRole.menuitem },
+                        { name: MenuItemRole.menuitemcheckbox },
+                        { name: MenuItemRole.menuitemradio },
                     ],
                     required: false,
                 },

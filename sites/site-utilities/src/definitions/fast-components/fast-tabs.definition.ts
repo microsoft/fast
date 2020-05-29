@@ -15,7 +15,10 @@ export const fastTabsDefinition: WebComponentDefinition = {
                     default: Orientation.horizontal,
                     required: false,
                     type: DataType.string,
-                    enum: [Orientation.horizontal, Orientation.vertical],
+                    values: [
+                        { name: Orientation.horizontal },
+                        { name: Orientation.vertical },
+                    ],
                 },
                 {
                     name: "activeid",

@@ -13,7 +13,14 @@ export const fastDividerDefinition: WebComponentDefinition = {
                     name: "role",
                     type: DataType.string,
                     description: "The role attribute",
-                    enum: [DividerRole.separator, DividerRole.presentation],
+                    values: [
+                        {
+                            name: DividerRole.separator,
+                        },
+                        {
+                            name: DividerRole.presentation,
+                        },
+                    ],
                     default: DividerRole.separator,
                     required: false,
                 },
