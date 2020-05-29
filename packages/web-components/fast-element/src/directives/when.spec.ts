@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import { when } from "./when";
 import { html } from "../template";
-import { Expression, defaultExecutionContext } from "../observation/observable";
+import { Binding, defaultExecutionContext } from "../observation/observable";
 
 describe("The 'when' template function", () => {
     it("returns an expression", () => {
@@ -14,13 +14,13 @@ describe("The 'when' template function", () => {
         const template = html`template1`;
 
         it("returns a template when the condition is true", () => {
-            const expression = when(() => true, template) as Expression;
+            const expression = when(() => true, template) as Binding;
             const result = expression(scope, defaultExecutionContext);
             expect(result).to.equal(template);
         });
 
         it("returns null when the condition is false", () => {
-            const expression = when(() => false, template) as Expression;
+            const expression = when(() => false, template) as Binding;
             const result = expression(scope, defaultExecutionContext);
             expect(result).to.equal(null);
         });
@@ -29,7 +29,7 @@ describe("The 'when' template function", () => {
             const expression = when(
                 () => true,
                 () => template
-            ) as Expression;
+            ) as Binding;
             const result = expression(scope, defaultExecutionContext);
             expect(result).to.equal(template);
         });

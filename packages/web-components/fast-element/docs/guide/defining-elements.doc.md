@@ -491,11 +491,11 @@ Similar to event handlers, within a `repeat` block you have access to a special 
 * `parent` - The parent scope when inside a `repeat` block.
 * `index` - The index of the current item when inside a `repeat` block (opt in).
 * `length` - The length of the array when inside a `repeat` block (opt in).
-* `even` - True if the index of the current item is even when inside a `repeat` block (opt in).
-* `odd` - True if the index of the current item is odd when inside a `repeat` block (opt in).
-* `first` - True if the current item is first in the array inside a `repeat` block (opt in).
-* `middle` - True if the current item is somewhere in the middle of the the array inside a `repeat` block (opt in).
-* `last` - True if the current item is last in the array inside a `repeat` block (opt in).
+* `isEven` - True if the index of the current item is even when inside a `repeat` block (opt in).
+* `isOdd` - True if the index of the current item is odd when inside a `repeat` block (opt in).
+* `isFirst` - True if the current item is first in the array inside a `repeat` block (opt in).
+* `isInMiddle` - True if the current item is somewhere in the middle of the the array inside a `repeat` block (opt in).
+* `isLast` - True if the current item is last in the array inside a `repeat` block (opt in).
 
 Some context properties are opt-in because they are more costly to update. So, for performance reasons, they are not available by default. To opt into the positioning properties, pass options to the repeat directive, with the setting `positioning: true`. For example, here's how we would use the `index` in our friends template from above:
 
