@@ -5,7 +5,6 @@ import { neutralFillRestBehavior } from "@microsoft/fast-components";
 export const BackgroundDesignStyles = css`
     ${display("block")} :host {
         contain: content;
-        filter: blur(calc(var(--blur-amount) * 65px));
         height: 99vh; /* https://developers.google.com/web/updates/2016/12/url-bar-resizing */
         isolation: isolate;
         position: fixed;
