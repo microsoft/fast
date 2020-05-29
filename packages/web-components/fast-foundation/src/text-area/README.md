@@ -5,6 +5,8 @@ sidebar_label: fast-text-area
 custom_edit_url: https://github.com/microsoft/fast-dna/edit/master/packages/web-components/fast-foundation/src/text-area/README.md
 ---
 
+An implementation of an [HTML textarea element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/textarea) as a form-connected web-component. The `fast-text-area` supports two visual apperances, outline and filled, with the control defaulting to the outline appearance.
+
 ## Applying Custom Styles
 
 ```ts
@@ -21,4 +23,10 @@ import { TextAreaStyles as styles } from "./text-area.styles";
     },
 })
 export class FASTTextArea extends TextArea {}
+```
+
+## Usage
+
+```html
+<fast-text-area placeholder="Describe your experience">How was your stay?</fast-text-area>
 ```
