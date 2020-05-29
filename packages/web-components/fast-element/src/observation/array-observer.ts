@@ -1,6 +1,6 @@
 import { DOM } from "../dom";
 import { Observable } from "./observable";
-import { SubscriberSet } from "./notifier";
+import { SubscriberSet, Notifier } from "./notifier";
 import {
     calcSplices,
     newSplice,
@@ -29,7 +29,7 @@ function adjustIndex(changeRecord: Splice, array: any[]): Splice {
     return changeRecord;
 }
 
-export class ArrayObserver extends SubscriberSet {
+class ArrayObserver extends SubscriberSet {
     private oldCollection: any[] | undefined = void 0;
     private splices: any[] | undefined = void 0;
     private needsQueue: boolean = true;
@@ -92,6 +92,13 @@ export class ArrayObserver extends SubscriberSet {
 
 /* eslint-disable prefer-rest-params */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
+/**
+ * Enables the array observation mechanism.
+ * @remarks
+ * Array observation is enabled automatically when using the
+ * {@link RepeatDirective}, so calling this API manually is
+ * not typically necessary.
+ */
 export function enableArrayObservation(): void {
     if (arrayObservationEnabled) {
         return;
@@ -99,9 +106,11 @@ export function enableArrayObservation(): void {
 
     arrayObservationEnabled = true;
 
-    Observable.createArrayObserver = (collection: any[]): ArrayObserver => {
-        return new ArrayObserver(collection);
-    };
+    Observable.setArrayObserverFactory(
+        (collection: any[]): Notifier => {
+            return new ArrayObserver(collection);
+        }
+    );
 
     const arrayProto = Array.prototype;
     const pop = arrayProto.pop;

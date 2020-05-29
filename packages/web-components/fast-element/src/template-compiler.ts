@@ -2,11 +2,11 @@ import { BehaviorFactory } from "./directives/behavior";
 import { DOM } from "./dom";
 import { BindingDirective } from "./directives/binding";
 import { AttachedBehaviorDirective, Directive } from "./directives/directive";
-import { ExecutionContext, Expression } from "./observation/observable";
+import { ExecutionContext, Binding } from "./observation/observable";
 
 type InlineDirective = Directive & {
     targetName?: string;
-    expression: Expression;
+    binding: Binding;
     targetAtContent();
 };
 
@@ -22,10 +22,10 @@ function createAggregateBinding(parts: (string | InlineDirective)[]): BindingDir
 
         targetName = x.targetName || targetName;
         compilationContext.locatedDirectives++;
-        return x.expression;
+        return x.binding;
     });
 
-    const expression = (scope: unknown, context: ExecutionContext): string => {
+    const binding = (scope: unknown, context: ExecutionContext): string => {
         let output = "";
 
         for (let i = 0; i < partCount; ++i) {
@@ -35,9 +35,9 @@ function createAggregateBinding(parts: (string | InlineDirective)[]): BindingDir
         return output;
     };
 
-    const binding = new BindingDirective(expression);
-    binding.targetName = targetName;
-    return binding;
+    const directive = new BindingDirective(binding);
+    directive.targetName = targetName;
+    return directive;
 }
 
 function parseContent(
@@ -170,12 +170,12 @@ function compileAttributes(
 }
 
 function captureContentBinding(
-    binding: BindingDirective,
+    directive: BindingDirective,
     viewBehaviorFactories: BehaviorFactory[]
 ): void {
-    binding.targetAtContent();
-    binding.targetIndex = compilationContext.targetIndex;
-    viewBehaviorFactories.push(binding);
+    directive.targetAtContent();
+    directive.targetIndex = compilationContext.targetIndex;
+    viewBehaviorFactories.push(directive);
     compilationContext.locatedDirectives++;
 }
 

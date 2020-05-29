@@ -1,11 +1,28 @@
 import { emptyArray } from "../interfaces";
 
+/**
+ * Represents a set of splice-based changes against an Array.
+ */
 export interface Splice {
+    /**
+     * The index that the splice occurs at.
+     */
     index: number;
+
+    /**
+     * The items that were removed.
+     */
     removed: any[];
+
+    /**
+     * The  number of items that were added.
+     */
     addedCount: number;
 }
 
+/**
+ * @internal
+ */
 export function newSplice(index: number, removed: any[], addedCount: number): Splice {
     return {
         index: index,
@@ -192,6 +209,8 @@ function intersect(start1: number, end1: number, start2: number, end2: number): 
  */
 
 /**
+ * @internal
+ * @remarks
  * Lacking individual splice mutation information, the minimal set of
  * splices can be synthesized given the previous state and final state of an
  * array. The basic approach is to calculate the edit distance matrix and
@@ -399,6 +418,9 @@ function createInitialSplices(changeRecords: Splice[]): Splice[] {
     return splices;
 }
 
+/**
+ * @internal
+ */
 export function projectArraySplices(array: any[], changeRecords: any[]): Splice[] {
     let splices: Splice[] = [];
     const initialSplices = createInitialSplices(changeRecords);
