@@ -6,13 +6,13 @@
     <title><%= htmlWebpackPlugin.options.title %></title>
   </head>
   <body>
-    <fast-design-system-provider id="body-provider" class="body-provider"
+    <fast-design-system-provider
+      class="body-provider"
       use-defaults
-      background-color="#1F1F1F"
-      accent-base-color="#F33378"
+      type-ramp-base-font-size="16px"
     >
+      <background-design></background-design>
       <div class="wrapper">
-        <!-- header:start -->
         <header class="header">
           <site-navigation>
             <fast-anchor class="logo" slot="start" appearance="lightweight" href="#">
@@ -20,113 +20,97 @@
             </fast-anchor>
             <div class="anchor-wrapper">
               <ul>
-                <li><fast-anchor appearance="lightweight" href="#">Components</fast-anchor></li>
+                <li><fast-anchor appearance="lightweight" href="https://explore.fast.design/">Components</fast-anchor></li>
                 <li><fast-anchor appearance="lightweight" href="#">Integration</fast-anchor></li>
                 <li><fast-anchor appearance="lightweight" href="#">Documentation</fast-anchor></li>
                 <li><fast-anchor appearance="lightweight" href="#">Community</fast-anchor></li>
               </ul>
-              <fast-anchor class="github-link" slot="end" appearance="lightweight" href="#">
+              <fast-anchor href="https://github.com/microsoft/fast-dna/" class="github-link" slot="end" appearance="lightweight">
                 Github
-                <%= require("svg/icon-github.svg") %>
+                <span slot="end">
+                  <%= require("svg/icon-github.svg") %>
+                </span>
               </fast-anchor>
             </div>
           </site-navigation>
         </header>
-        <!-- header:end -->
 
-        <!-- hero-section:start -->
         <section class="section">
           <div class="section-content">
             <site-section-header>
               <fast-badge slot="badge" class="section-badge">ADAPTIVE UI SYSTEM, UTILITIES, & TOOLS</fast-badge>
-              <p class="section-heading-hero">The adaptive interface system for modern web experiences</p>
+              <h1 class="section-heading-hero">The adaptive interface system for modern web experiences</h1>
               <p slot="body">Interfaces bult with FAST adapt to your design system and can be used with any modern UI Framework by leveraging industry standard Web Components.</p>
-              <fast-button slot="action" appearance="outline">Get started</fast-button>
+              <fast-button slot="action" appearance="accent">Get started</fast-button>
             </site-section-header>
           </div>
         </section>
-        <!-- hero-section:end -->
 
         <section class="section">
           <div class="section-content">
             <site-section-header>
               <fast-badge slot="badge" class="section-badge">FLEXIBLE AND ADAPTABLE</fast-badge>
-              <p class="section-heading">One component, many faces</p>
-              <p slot="body">Using an unopinionated architecture and Adaptive Styling, one suite of components can blend into any environment.</p>
-              <fast-button slot="action" appearance="outline">Explore components</fast-button>
+              <h2 class="section-heading">Dynamic themes with Adaptive UI</h2>
+              <p slot="body">FAST provides an innovative theming system called Adaptive UI, which builds design system properties that designers use every day directly into every component.</p>
+              <fast-button slot="action" appearance="accent">Explore components</fast-button>
             </site-section-header>
+            <fast-divider role="presentation"></fast-divider>
+            <fast-frame></fast-frame>
           </div>
         </section>
-
-        <!-- adaptive-ui-system:start -->
-        <section class="section">
-          <fast-frame></fast-frame>
-        </section>
-        <!-- adaptive-ui-system:end -->
 
         <section class="section">
           <div class="section-content">
             <site-section-header>
               <fast-badge slot="badge" class="section-badge">FULLY INTEGRATED</fast-badge>
-              <p class="section-heading">Works with existing frameworks</p>
-              <fast-button slot="action" appearance="outline">Learn more</fast-button>
+              <h2 class="section-heading">Works with existing frameworks</h2>
+              <p slot="body">Standards-based Web Components are the foundation of each FAST component, making them compatible with almost any modern web framework.</p>
+              <fast-button slot="action" appearance="accent">Learn More</fast-button>
             </site-section-header>
+            <fast-divider role="presentation"></fast-divider>
+            <site-content-placement-container section="framework"></site-content-placement-container>
           </div>
         </section>
-
-        <!-- frameworks:start -->
-        <section class="section">
-          <site-content-placement-container section="framework"></site-content-placement-container>
-        </section>
-        <!-- frameworks:end -->
 
         <section class="section">
           <div class="section-content">
             <site-section-header>
               <fast-badge slot="badge" class="section-badge">A COMPREHENSIVE TOOLKIT</fast-badge>
-              <p class="section-heading">Feature and Utilities</p>
-              <fast-button slot="action" appearance="outline">Read documentation</fast-button>
+              <h2 class="section-heading">Feature and Utilities</h2>
+              <!-- FIXME: lorem ipsum -->
+              <p style="color: #0F0" slot="body">At id vitae iaculis volutpat laoreet. Massa ut scelerisque ut ac, in aliquam odio. Semper sagittis blandit in sed turpis lorem at diam iaculis. Lorem porta elementum iaculis sed ut nunc.</p>
+              <fast-button slot="action" appearance="accent">Read documentation</fast-button>
             </site-section-header>
+            <fast-divider role="presentation"></fast-divider>
+            <site-content-placement-container section="feature"></site-content-placement-container>
           </div>
         </section>
-
-        <!-- documentation:start -->
-        <section class="section">
-          <site-content-placement-container section="feature"></site-content-placement-container>
-        </section>
-        <!-- documentation:end -->
 
         <section class="section">
           <div class="section-content">
             <site-section-header>
               <fast-badge slot="badge" class="section-badge">LEARN, MODIFY AND FOLLOW</fast-badge>
-              <p class="section-heading">Join the community</p>
+              <h2 class="section-heading">Join the community</h2>
+              <p slot="body">Our community drives the rhythm and direction of FAST. By taking part, your voice will help shape our future.</p>
             </site-section-header>
+            <fast-divider role="presentation"></fast-divider>
+            <site-content-placement-container section="community"></site-content-placement-container>
           </div>
         </section>
 
-        <!-- community:start -->
-        <section class="section">
-          <site-content-placement-container section="community"></site-content-placement-container>
-        </section>
-        <!-- community:end -->
-
-        <!-- footer:start -->
-          <fast-divider class="divider"></fast-divider>
-          <div class="footer">
-            <site-navigation>
-              <ul>
-                <li><fast-anchor appearance="lightweight" href="#">License</fast-anchor></li>
-                <li><fast-anchor appearance="lightweight" href="#">Privacy & Cookies</fast-anchor></li>
-                <li><fast-anchor appearance="lightweight" href="#">Terms of Use</fast-anchor></li>
-                <li><fast-anchor appearance="lightweight" href="#">&copy; 2020 Microsoft</fast-anchor></li>
-              </ul>
-            </site-navigation>
-            <fast-anchor class="logo" appearance="lightweight" href="#">
-              <%= require("svg/icon-brand.svg") %>
-            </fast-anchor>
-          </div>
-        <!-- footer:end -->
+        <footer class="site-footer">
+          <site-navigation>
+            <ul>
+              <li><fast-anchor appearance="lightweight" href="#">License</fast-anchor></li>
+              <li><fast-anchor appearance="lightweight" href="#">Privacy & Cookies</fast-anchor></li>
+              <li><fast-anchor appearance="lightweight" href="#">Terms of Use</fast-anchor></li>
+              <li><fast-anchor appearance="lightweight" href="#">&copy; 2020 Microsoft</fast-anchor></li>
+            </ul>
+          </site-navigation>
+          <fast-anchor class="logo" appearance="lightweight" href="#">
+            <%= require("svg/icon-brand.svg") %>
+          </fast-anchor>
+        </footer>
       </div>
     </fast-design-system-provider>
   </body>
