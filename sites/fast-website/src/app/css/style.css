@@ -154,6 +154,12 @@ li {
     z-index: 1;
   }
 
+  .section-heading-hero,
+  .section-heading {
+    font-size: var(--type-ramp-plus-4-font-size);
+    line-height: var(--type-ramp-plus-4-line-height);
+  }
+
   site-navigation .anchor-wrapper {
     display: flex;
     flex-direction: column;
