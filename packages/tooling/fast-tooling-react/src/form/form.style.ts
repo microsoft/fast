@@ -1,20 +1,27 @@
 import { ComponentStyles } from "@microsoft/fast-jss-manager-react";
-import { accent, cleanListStyle, foreground300, neutralLayerL4 } from "../style";
+import {
+    accentColorCSSProperty,
+    cleanListStyle,
+    defaultTextSizeCSSProperty,
+    gutterCSSProperty,
+    L4CSSProperty,
+    textColorCSSProperty,
+} from "../style";
 import { FormClassNameContract } from "./form.props";
 
 const styles: ComponentStyles<FormClassNameContract, {}> = {
     form: {
-        background: neutralLayerL4,
-        color: foreground300,
+        background: L4CSSProperty,
+        color: textColorCSSProperty,
         height: "100%",
-        padding: "0 0 0 10px",
+        padding: `0 0 0 ${gutterCSSProperty}`,
         overflow: "auto",
+        "font-size": defaultTextSizeCSSProperty,
     },
     form_breadcrumbs: {
         display: "flex",
         "flex-wrap": "wrap",
         "margin-top": "4px",
-        "font-size": "12px",
         "line-height": "16px",
         "padding-bottom": "12px",
         ...cleanListStyle,
@@ -30,7 +37,7 @@ const styles: ComponentStyles<FormClassNameContract, {}> = {
                 "padding-left": "0",
             },
             "& a": {
-                color: accent,
+                color: accentColorCSSProperty,
             },
         },
     },
