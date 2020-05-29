@@ -30,6 +30,7 @@ export const FlipperStyles = css`
         fill: var(--accent-foreground-cut-rest);
         color: var(--accent-foreground-cut-rest);
         background: transparent;
+        outline: none;
         border: none;
         padding: 0;
     }
@@ -64,17 +65,19 @@ export const FlipperStyles = css`
         color: var(--neutral-foreground-rest);
     }
 
-    :host(.disabled)::before {
+    :host(.disabled)::before,
+    :host(.disabled:hover)::before,
+    :host(.disabled:active)::before {
         background: var(--neutral-fill-stealth-rest);
         border: calc(var(--outline-width) * 1px) solid var(--neutral-outline-rest);
     }
 
-    :host(:hover:enabled)::before {
+    :host(:hover)::before {
         background: var(--accent-fill-hover);
         border-color: var(--accent-fill-hover);
     }
 
-    :host(:active:enabled)::before {
+    :host(:active)::before {
         background: var(--accent-fill-active);
         border-color: var(--accent-fill-active);
     }
