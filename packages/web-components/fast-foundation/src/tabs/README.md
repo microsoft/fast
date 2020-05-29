@@ -50,3 +50,32 @@ import { TabPanelStyles as styles } from "./tab-panel.styles";
 })
 export class FASTTabPanel extends TabPanel {}
 ```
+
+## Usage
+
+```html
+<fast-tabs activeId="entrees">
+    <fast-tab id="apps">Appetizers</fast-tab>
+    <fast-tab id="entrees">Entrees</fast-tab>
+    <fast-tab id="desserts">Desserts</fast-tab>
+    <fast-tab-panel id="appsPanel">
+        <a href="#">Stuffed artichokes</a>
+        <a href="#">Bruschetta</a>
+        <a href="#">Oven-baked polenta</a>
+        <a href="#">Salami and Fig Crostini with Ricotta</a>
+        <a href="#">Rosemary-Potato Focaccia with Goat Cheese</a>
+    </fast-tab-panel>
+    <fast-tab-panel id="entreesPanel">
+        <a href="#">Mushroom-Sausage Ragù</a>
+        <a href="#">Tomato Bread Soup with Steamed Mussels</a>
+        <a href="#">Grilled Fish with Artichoke Caponata</a>
+        <a href="#">Celery Root and Mushroom Lasagna</a>
+        <a href="#">Osso Buco with Citrus Gremolata</a>
+    </fast-tab-panel>
+    <fast-tab-panel id="dessertsPanel">
+        <a href="#">Tiramisu</a>
+        <a href="#">Spumoni</a>
+        <a href="#">Limoncello and Ice Cream with Biscotti</a>
+    </fast-tab-panel>
+</fast-tabs>
+```
