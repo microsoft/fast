@@ -1,5 +1,12 @@
 import { DataType } from "./types";
 
+export interface WebComponentAttributeValues {
+    /**
+     * The value
+     */
+    name: string;
+}
+
 export interface WebComponentAttribute {
     /**
      * The name of the attribute
@@ -22,9 +29,9 @@ export interface WebComponentAttribute {
     default: any;
 
     /**
-     * The enum values if this is a set of values
+     * A list of values
      */
-    enum?: any[];
+    values?: WebComponentAttributeValues[];
 
     /**
      * Whether this was attribute is required

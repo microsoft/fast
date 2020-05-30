@@ -1003,7 +1003,14 @@ describe("mapWebComponentDefinitionToJSONSchema", () => {
                                 description: attrDescription,
                                 type: DataType.string,
                                 default: "foobar",
-                                enum: attrEnum,
+                                values: [
+                                    {
+                                        name: attrEnum[0],
+                                    },
+                                    {
+                                        name: attrEnum[1],
+                                    },
+                                ],
                                 required: false,
                             },
                         ],
@@ -1026,6 +1033,61 @@ describe("mapWebComponentDefinitionToJSONSchema", () => {
                         title: attrDescription,
                         enum: attrEnum,
                         type: DataType.string,
+                    },
+                },
+            },
+        ]);
+    });
+    test("should map an optional number enum in attributes to the enum in a JSON schema", () => {
+        const name: string = "foo";
+        const description: string = "foo tag";
+        const attrName: string = "attr";
+        const attrDescription: string = "An attribute";
+        const attrEnum: number[] = [1, 2];
+
+        expect(
+            mapWebComponentDefinitionToJSONSchema({
+                version: 1,
+                tags: [
+                    {
+                        name,
+                        description: "foo tag",
+                        attributes: [
+                            {
+                                name: attrName,
+                                description: attrDescription,
+                                type: DataType.number,
+                                default: "foobar",
+                                values: [
+                                    {
+                                        name: attrEnum[0].toString(),
+                                    },
+                                    {
+                                        name: attrEnum[1].toString(),
+                                    },
+                                ],
+                                required: false,
+                            },
+                        ],
+                        slots: [],
+                    },
+                ],
+            })
+        ).toEqual([
+            {
+                $schema: "http://json-schema.org/schema#",
+                $id: name,
+                id: name,
+                title: description,
+                type: "object",
+                version: 1,
+                [ReservedElementMappingKeyword.mapsToTagName]: name,
+                properties: {
+                    [attrName]: {
+                        [ReservedElementMappingKeyword.mapsToAttribute]: attrName,
+                        title: attrDescription,
+                        enum: attrEnum,
+                        type: DataType.number,
                     },
                 },
             },

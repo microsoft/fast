@@ -20,6 +20,7 @@ describe("getLinkedDataDictionary", () => {
                     },
                 ],
                 dictionaryId,
+                dataLocation: "root-location",
             })
         ).toEqual({
             dataDictionary: [
@@ -74,6 +75,7 @@ describe("getLinkedDataDictionary", () => {
                     },
                 ],
                 dictionaryId,
+                dataLocation: "root-location",
             })
         ).toEqual({
             dataDictionary: [
@@ -168,6 +170,7 @@ describe("getLinkedDataDictionary", () => {
                     },
                 ],
                 dictionaryId,
+                dataLocation: "root-location",
             })
         ).toEqual({
             dataDictionary: [

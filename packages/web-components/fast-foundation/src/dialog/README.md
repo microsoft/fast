@@ -4,6 +4,7 @@ title: fast-dialog
 sidebar_label: fast-dialog
 custom_edit_url: https://github.com/microsoft/fast-dna/edit/master/packages/web-components/fast-foundation/src/dialog/README.md
 ---
+A web component implementation of a [dialog](https://w3c.github.io/aria-practices/#dialog_modal) which can either be modal or non-modal.
 
 ## Applying Custom Styles
 
@@ -18,4 +19,14 @@ import { DialogStyles as styles } from "./dialog.styles";
     styles,
 })
 export class FASTDialog extends Dialog {}
+```
+
+## Usage
+
+```html
+<fast-dialog id="simpleDialog" aria-label="Simple modal dialog" modal="true">
+    <h2>Dialog with text and button.</h2>
+    <fast-button>Button A</fast-button>
+    <fast-button autofocus>Should autofocus</fast-button>
+</fast-dialog>
 ```

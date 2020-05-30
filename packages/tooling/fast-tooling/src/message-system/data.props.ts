@@ -88,6 +88,11 @@ export interface LinkedDataDictionaryConfig {
      * The root dictionary ID
      */
     dictionaryId: string;
+
+    /**
+     * The root data location
+     */
+    dataLocation: string;
 }
 
 export interface LinkedDataDictionaryUpdate {

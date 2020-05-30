@@ -12,11 +12,12 @@ import {
  */
 function resolveDataDictionaries(
     parentId: string,
+    parentDataLocation: string,
     dataSet: Data<unknown>[]
 ): DataDictionary<unknown>[] {
     return dataSet.map(dataItem => {
         /* eslint-disable-next-line @typescript-eslint/no-use-before-define */
-        return resolveDataDictionary(parentId, dataItem, {});
+        return resolveDataDictionary(parentId, parentDataLocation, dataItem, {});
     });
 }
 
@@ -25,6 +26,7 @@ function resolveDataDictionaries(
  */
 function resolveDataDictionary(
     parentId: string,
+    parentDataLocation: string,
     data: Data<unknown>,
     itemDictionary: { [key: string]: Data<unknown> }
 ): DataDictionary<unknown> {
@@ -33,7 +35,7 @@ function resolveDataDictionary(
     const linkedDataDictionary: DataDictionary<unknown>[] | null = Array.isArray(
         data.linkedData
     )
-        ? resolveDataDictionaries(id, data.linkedData)
+        ? resolveDataDictionaries(id, parentDataLocation, data.linkedData)
         : null;
 
     const currentData = data.data;
@@ -67,7 +69,7 @@ function resolveDataDictionary(
         data: currentData,
         parent: {
             id: parentId,
-            dataLocation: data.dataLocation,
+            dataLocation: data.dataLocation || parentDataLocation,
         },
     };
 
@@ -79,6 +81,7 @@ export function getLinkedDataDictionary(
 ): LinkedDataDictionaryUpdate {
     const resolvedDataDictionary = resolveDataDictionaries(
         config.dictionaryId,
+        config.dataLocation,
         config.linkedData
     );
 

@@ -231,6 +231,7 @@ function getDataMessage(data: DataMessageIncoming): DataMessageOutgoing {
             const updatedDataForDataDictionary = getLinkedDataDictionary({
                 linkedData: data.linkedData,
                 dictionaryId: addLinkedDataDictionaryId,
+                dataLocation: data.dataLocation,
             });
             let currentLinkedDataRefs: LinkedData[] | void = get(
                 dataDictionary[0][addLinkedDataDictionaryId].data,

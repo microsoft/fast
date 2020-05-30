@@ -1,5 +1,10 @@
-import { ExecutionContext, Expression, setCurrentEvent } from "../observation/observable";
-import { ObservableExpression } from "../observation/observable";
+import {
+    ExecutionContext,
+    Binding,
+    setCurrentEvent,
+    BindingObserver,
+} from "../observation/observable";
+import { Observable } from "../observation/observable";
 import { DOM } from "../dom";
 import { SyntheticView } from "../view";
 import { Directive } from "./directive";
@@ -13,11 +18,11 @@ function normalBind(
     this.source = source;
     this.context = context;
 
-    if (this.observableExpression === null) {
-        this.observableExpression = new ObservableExpression(this.expression, this);
+    if (this.bindingObserver === null) {
+        this.bindingObserver = Observable.binding(this.binding, this);
     }
 
-    this.updateTarget(this.observableExpression.evaluate(source, context));
+    this.updateTarget(this.bindingObserver.observe(source, context));
 }
 
 function triggerBind(
@@ -31,7 +36,7 @@ function triggerBind(
 }
 
 function normalUnbind(this: BindingBehavior): void {
-    this.observableExpression!.dispose();
+    this.bindingObserver!.disconnect();
     this.source = null;
     this.context = null;
 }
@@ -42,7 +47,7 @@ type ComposableView = SyntheticView & {
 };
 
 function contentUnbind(this: BindingBehavior): void {
-    this.observableExpression!.dispose();
+    this.bindingObserver!.disconnect();
     this.source = null;
     this.context = null;
 
@@ -189,9 +194,9 @@ export class BindingDirective extends Directive {
 
     /**
      * Creates an instance of BindingDirective.
-     * @param expression An expression that returns the data used to update the DOM.
+     * @param binding A binding that returns the data used to update the DOM.
      */
-    constructor(public expression: Expression) {
+    constructor(public binding: Binding) {
         super();
     }
 
@@ -219,9 +224,9 @@ export class BindingDirective extends Directive {
                 this.cleanedTargetName = value.substr(1);
                 this.updateTarget = updatePropertyTarget;
                 if (this.cleanedTargetName === "innerHTML") {
-                    const expression = this.expression;
+                    const binding = this.binding;
                     /* eslint-disable-next-line */
-                    this.expression = (s, c) => DOM.createHTML(expression(s, c));
+                    this.binding = (s, c) => DOM.createHTML(binding(s, c));
                 }
                 break;
             case "?":
@@ -262,7 +267,7 @@ export class BindingDirective extends Directive {
         /* eslint-disable-next-line @typescript-eslint/no-use-before-define */
         return new BindingBehavior(
             target,
-            this.expression,
+            this.binding,
             this.bind,
             this.unbind,
             this.updateTarget,
@@ -278,14 +283,14 @@ export class BindingDirective extends Directive {
 export class BindingBehavior implements Behavior {
     public source: unknown = null;
     public context: ExecutionContext | null = null;
-    public observableExpression: ObservableExpression | null = null;
+    public bindingObserver: BindingObserver | null = null;
     public classVersions: Record<string, number>;
     public version: number;
 
     /**
      *
      * @param target The target of the data updates.
-     * @param expression The expression that returns the latest value for an update.
+     * @param binding The binding that returns the latest value for an update.
      * @param bind The operation to perform during binding.
      * @param unbind The operation to perform during unbinding.
      * @param updateTarget The operation to perform when updating.
@@ -293,7 +298,7 @@ export class BindingBehavior implements Behavior {
      */
     constructor(
         public target: any,
-        public expression: Expression,
+        public binding: Binding,
         public bind: typeof normalBind,
         public unbind: typeof normalUnbind,
         public updateTarget: typeof updatePropertyTarget,
@@ -303,10 +308,8 @@ export class BindingBehavior implements Behavior {
     /**
      * @internal
      */
-    handleExpressionChange(): void {
-        this.updateTarget(
-            this.observableExpression!.evaluate(this.source, this.context!)
-        );
+    handleChange(): void {
+        this.updateTarget(this.bindingObserver!.observe(this.source, this.context!));
     }
 
     /**
@@ -314,7 +317,7 @@ export class BindingBehavior implements Behavior {
      */
     handleEvent(event: Event): void {
         setCurrentEvent(event);
-        const result = this.expression(this.source, this.context!);
+        const result = this.binding(this.source, this.context!);
         setCurrentEvent(null);
 
         if (result !== true) {
