@@ -1,23 +1,23 @@
 import { CaptureType, SyntheticViewTemplate } from "../template";
-import { ExecutionContext, Expression } from "../observation/observable";
+import { ExecutionContext, Binding } from "../observation/observable";
 
 /**
  * A directive that enables basic conditional rendering in a template.
- * @param condition The condition to test for rendering.
- * @param templateOrTemplateExpression The template or an expression that gets
+ * @param binding The condition to test for rendering.
+ * @param templateOrTemplateBinding The template or a binding that gets
  * the template to render when the condition is true.
  */
-export function when<T = any, K = any>(
-    condition: Expression<T, K>,
-    templateOrTemplateExpression:
+export function when<TSource = any, TReturn = any>(
+    binding: Binding<TSource, TReturn>,
+    templateOrTemplateBinding:
         | SyntheticViewTemplate
-        | Expression<T, SyntheticViewTemplate>
-): CaptureType<T> {
+        | Binding<TSource, SyntheticViewTemplate>
+): CaptureType<TSource> {
     const getTemplate =
-        typeof templateOrTemplateExpression === "function"
-            ? templateOrTemplateExpression
-            : (): SyntheticViewTemplate => templateOrTemplateExpression;
+        typeof templateOrTemplateBinding === "function"
+            ? templateOrTemplateBinding
+            : (): SyntheticViewTemplate => templateOrTemplateBinding;
 
-    return (source: any, context: ExecutionContext): SyntheticViewTemplate | null =>
-        condition(source, context) ? getTemplate(source, context) : null;
+    return (source: TSource, context: ExecutionContext): SyntheticViewTemplate | null =>
+        binding(source, context) ? getTemplate(source, context) : null;
 }

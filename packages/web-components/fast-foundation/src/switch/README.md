@@ -5,6 +5,8 @@ sidebar_label: fast-switch
 custom_edit_url: https://github.com/microsoft/fast-dna/edit/master/packages/web-components/fast-foundation/src/switch/README.md
 ---
 
+An implementation of a [switch](https://w3c.github.io/aria/#switch) as a form-connected web-component.
+
 ## Applying Custom Styles
 
 ```ts
@@ -18,4 +20,14 @@ import { SwitchStyles as styles } from "./switch.styles";
     styles,
 })
 export class FASTSwitch extends Switch {}
+```
+
+## Usage
+
+```html
+<fast-switch>
+    Theme
+    <span slot="checked-message">Dark</span>
+    <span slot="unchecked-message">Light</span>
+</fast-switch>
 ```

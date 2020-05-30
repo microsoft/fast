@@ -5,6 +5,8 @@ sidebar_label: fast-divider
 custom_edit_url: https://github.com/microsoft/fast-dna/edit/master/packages/web-components/fast-foundation/src/divider/README.md
 ---
 
+A web component implementation of a [horizontal rule](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/hr).
+
 ##  Applying Custom Styles
 
 ```ts
@@ -18,4 +20,9 @@ import { DividerStyles as styles } from "./divider.styles";
     styles,
 })
 export class FASTDivider extends Divider {}
+```
+
+## Usage
+```html
+<fast-divider></fast-divider>
 ```
