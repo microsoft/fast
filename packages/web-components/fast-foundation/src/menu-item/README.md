@@ -5,6 +5,8 @@ sidebar_label: fast-menu-item
 custom_edit_url: https://github.com/microsoft/fast-dna/edit/master/packages/web-components/fast-foundation/src/menu-item/README.md
 ---
 
+The `fast-menu-item` is a custom element meant to be used with `fast-menu` and supports roles of `menuitem`, `menuitemcheckbox`, and `menuitemradio`.
+
 ## Applying Custom Styles
 
 ```ts
@@ -18,4 +20,10 @@ import { MenuItemStyles as styles } from "./menu-item.styles";
     styles,
 })
 export class FASTMenuItem extends MenuItem {}
+```
+
+## Usage
+
+```html
+<fast-menu-item role="menuitemcheckbox" checked>Open in new window</fast-menu-item>
 ```

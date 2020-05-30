@@ -68,7 +68,8 @@ As defined by the W3C:
 *Slot Names*
 - default
 - heading
-- glyph
+- collapsed-icon
+- expanded-icon
 - start
 - end
 
@@ -89,7 +90,10 @@ As defined by the W3C:
             <slot name="heading" part="heading">Panel one</slot>
        </button>
        <slot name="end" part="end"></slot>
-       <slot name="glyph" part="glyph"></slot>
+       <span class="icon" part="icon">
+           <slot name="expanded-icon" part="expanded-icon"></slot>
+           <slot name="collapsed-icon" part="collapsed-icon"></slot>
+       </span>
     </div>
     <div
         id="accordion1-panel"
@@ -110,7 +114,10 @@ As defined by the W3C:
             <slot name="heading" part="heading">Panel two</slot>
        </button>
        <slot name="end" part="end"></slot>
-       <slot name="glyph" part="glyph"></slot>
+       <span class="icon" part="icon">
+           <slot name="expanded-icon" part="expanded-icon"></slot>
+           <slot name="collapsed-icon" part="collapsed-icon"></slot>
+       </span>
     </div>
     <div
         id="accordion2-panel"
@@ -133,7 +140,10 @@ As defined by the W3C:
             <slot name="heading" part="heading">Panel three</slot>
         </button>
         <slot name="end" part="end"></slot>
-        <slot name="glyph" part="glyph"></slot>
+        <span class="icon" part="icon">
+           <slot name="expanded-icon" part="expanded-icon"></slot>
+           <slot name="collapsed-icon" part="collapsed-icon"></slot>
+       </span>
     </div>
     <div
         id="accordion3-panel"
@@ -157,17 +167,17 @@ As defined by the W3C:
 <fast-accordion>
     <fast-accordion-item>
         <span slot="heading">Panel one</span>
-        <span slot="glyph">^</span>
+        <span slot="icon">^</span>
         Panel one content
     </fast-accordion-item>
     <fast-accordion-item expanded>
         <span slot="heading">Panel two</span>
-        <span slot="glyph">^</span>
+        <span slot="icon">^</span>
         Panel two content
     </fast-accordion-item>
     <fast-accordion-item>
         <span slot="heading">Panel three</span>
-        <span slot="glyph">^</span>
+        <span slot="icon">^</span>
         Panel three content
     </fast-accordion-item>
 </fast-accordion>

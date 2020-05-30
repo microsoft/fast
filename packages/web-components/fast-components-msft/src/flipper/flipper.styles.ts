@@ -30,6 +30,7 @@ export const FlipperStyles = css`
         color: var(--neutral-foreground-rest);
         background: transparent;
         border: none;
+        outline: none;
         padding: 0;
     }
 

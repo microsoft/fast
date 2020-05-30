@@ -24,8 +24,14 @@ export type PartialFASTElementDefinition = {
     readonly elementOptions?: ElementDefinitionOptions;
 };
 
+/**
+ * @internal
+ */
 export const fastDefinitions = new Map<Function, FASTElementDefinition>();
 
+/**
+ * @internal
+ */
 export function getDefinition<T extends Function>(
     Type: T
 ): FASTElementDefinition | undefined {

@@ -79,8 +79,9 @@ function spilloverHas(this: SubscriberSet, subscriber: Subscriber): boolean {
 }
 
 /**
- * An implementation of Notifier that efficiently keeps track of subscribers interested
- * in a specific change notification on an observable source.
+ * An implementation of {@link Notifier} that efficiently keeps track of
+ * subscribers interested in a specific change notification on an
+ * observable source.
  *
  * @remarks
  * This set is optimized for the most common scenario of 1 or 2 subscribers.
@@ -93,10 +94,19 @@ export class SubscriberSet implements Notifier {
     private spillover: Subscriber[] | undefined = void 0;
 
     /**
+     * The source that this subscriber set is reporting changes for.
+     */
+    public readonly source: any;
+
+    /**
      * Creates an instance of SubscriberSet for the specified source.
      * @param source The object source that subscribers will receive notifications from.
+     * @param initialSubscriber An initial subscriber to changes.
      */
-    public constructor(public readonly source: any) {}
+    public constructor(source: any, initialSubscriber?: Subscriber) {
+        this.source = source;
+        this.sub1 = initialSubscriber;
+    }
 
     /**
      * Checks whether the provided subscriber has been added to this set.
@@ -167,16 +177,24 @@ export class SubscriberSet implements Notifier {
 }
 
 /**
- * An implementation of Notifier that allows subscribers to be notified of individual property changes on an object.
+ * An implementation of Notifier that allows subscribers to be notified
+ * of individual property changes on an object.
  */
 export class PropertyChangeNotifier implements Notifier {
     private subscribers: Record<string, SubscriberSet> = {};
 
     /**
+     * The source that property changes are being notified for.
+     */
+    public readonly source: any;
+
+    /**
      * Creates an instance of PropertyChangeNotifier for the specified source.
      * @param source The object source that subscribers will receive notifications from.
      */
-    public constructor(public readonly source: any) {}
+    public constructor(source: any) {
+        this.source = source;
+    }
 
     /**
      * Notifies all subscribers, based on the specified property.
