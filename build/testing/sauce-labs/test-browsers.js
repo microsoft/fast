@@ -1,14 +1,28 @@
 /**
  * @name
- * Test Browsers
+ * Test Browsers, these scripts can launch tests from CLI, although loggin into
+ * Sauce Labs with the existing organization credentials and key, provides a manual
+ * testing environment with many different options available.
  *
  * @description
  * Cross browser testing with Selenium Webdriver (browser configurations) and Appium
  * (device configurations) for testing on Sauce Labs. The configurations are sourced
  * from 'build/testing/config-browsers.js'.
  *
+ * Sauce Labs lets collaborators and contributors execute automated tests against
+ * Selenium WebDriver on pre-configured browser matrix's. The cross-browser testing
+ * strategy focuses on the differences between browser rendering engines. There are
+ * three different configuration files based on feature maturity of ongoing work. Each
+ * is represented by alpha, beta, and release configuration that defines the platform,
+ * browser, version, and screen size. Moving from alpha to release increases the test
+ * scenarios for more comprehensive analysis understanding that production will have
+ * the highest quality standards.  These files are located in `./build/testing`.
+ *
  * @example
- * To execute on CLI, run 'node build/testing/sauce-labs/test-browsers.js' from root directory.
+ * To execute on CLI,
+ * Alpha:   `node build/testing/sauce-labs/test-browsers.js alpha`
+ * Beta:    `node build/testing/sauce-labs/test-browsers.js beta`
+ * Release: `node build/testing/sauce-labs/test-browsers.js release`
  *
  * @requires
  * You must create environment variables if executing this script locally using CLI. This can be done
@@ -16,14 +30,13 @@
  *
  * export SAUCE_LABS_USER=[some value]
  * export SAUCE_LABS_USER=[some value]
- *
- * CircleCI has these values included as environment variables
- *
+ * *
  * @see
  * To understand in detail:
  * Getting Started: https://help.crossbrowsertesting.com/selenium-testing/getting-started/javascript/
  * Scripting docs: https://www.seleniumhq.org/docs/03_webdriver.jsp#chapter03-reference
  */
+
 const { Builder } = require("selenium-webdriver");
 const chalk = require("chalk");
 const { Configure, Phase } = require("../config-browsers.js");
@@ -69,10 +82,10 @@ function test(branchName) {
     console.log("Testing Git branch:", branchName);
 
     // Execute Selenium/Appium Web Drivers on Sauce Labs for each browser configuration
-    var flows = browsers.map(function (browser) {
+    var flows = browsers.map(function(browser) {
         // Setup capabilities
         let capabilities = {
-            name: "FAST-DNA MSFT Documentation",
+            name: "FAST-DNA Documentation",
             build: branchName,
             tags: "msft-docs",
             appiumVersion: browser.appiumVersion,
@@ -98,7 +111,7 @@ function test(branchName) {
             .build();
 
         // Start session and execute test cases
-        driver.getSession().then(async function () {
+        driver.getSession().then(async function() {
             try {
                 await driver.get(domain);
 
@@ -167,7 +180,7 @@ function test(branchName) {
 /**
  * Run tests on the current branch and use the branch name as the unique identifier on Sauce Labs
  */
-new Promise(function (resolve, reject) {
+new Promise(function(resolve, reject) {
     const git = spawn("git", ["rev-parse", "--abbrev-ref", "HEAD"]);
 
     git.stdout.on("data", data => {
@@ -176,6 +189,6 @@ new Promise(function (resolve, reject) {
     git.stderr.on("data", data => {
         reject("Unable to get branch name", data);
     });
-}).then(function (branchName) {
+}).then(function(branchName) {
     test(branchName);
 });
