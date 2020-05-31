@@ -19,9 +19,9 @@ setValue(source: HTMLElement, newValue: any): void;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  source | <code>HTMLElement</code> |  |
-|  newValue | <code>any</code> |  |
+|  source | HTMLElement |  |
+|  newValue | any |  |
 
 <b>Returns:</b>
 
-`void`
+void

@@ -9,6 +9,8 @@ hide_title: true
 
 ## ExecutionContext.index property
 
+The index of the current item within a repeat context.
+
 <b>Signature:</b>
 
 ```typescript

@@ -21,9 +21,9 @@ export declare function attr(target: {}, prop: string): void;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  target | <code>{}</code> | The class |
-|  prop | <code>string</code> | The property name |
+|  target | {} | The class |
+|  prop | string | The property name |
 
 <b>Returns:</b>
 
-`void`
+void

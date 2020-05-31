@@ -9,6 +9,8 @@ hide_title: true
 
 ## defaultExecutionContext variable
 
+The default execution context used in binding expressions.
+
 <b>Signature:</b>
 
 ```typescript

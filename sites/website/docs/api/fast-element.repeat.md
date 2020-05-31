@@ -12,17 +12,17 @@ hide_title: true
 <b>Signature:</b>
 
 ```typescript
-export declare function repeat<TScope = any, TItem = any>(expression: Expression<TScope, TItem[]>, template: ViewTemplate<Partial<TItem>, TScope>, options?: RepeatOptions): CaptureType<TScope>;
+export declare function repeat<TScope = any, TItem = any>(binding: Binding<TScope, TItem[]>, template: ViewTemplate<Partial<TItem>, TScope>, options?: RepeatOptions): CaptureType<TScope>;
 ```
 
 ## Parameters
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  expression | <code>Expression&lt;TScope, TItem[]&gt;</code> |  |
-|  template | <code>ViewTemplate&lt;Partial&lt;TItem&gt;, TScope&gt;</code> |  |
-|  options | <code>RepeatOptions</code> |  |
+|  binding | [Binding](./fast-element.binding.md)<!-- -->&lt;TScope, TItem\[\]&gt; |  |
+|  template | [ViewTemplate](./fast-element.viewtemplate.md)<!-- -->&lt;Partial&lt;TItem&gt;, TScope&gt; |  |
+|  options | [RepeatOptions](./fast-element.repeatoptions.md) |  |
 
 <b>Returns:</b>
 
-`CaptureType<TScope>`
+[CaptureType](./fast-element.capturetype.md)<!-- -->&lt;TScope&gt;

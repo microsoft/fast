@@ -19,8 +19,8 @@ fromView(value: string): any;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  value | <code>string</code> |  |
+|  value | string |  |
 
 <b>Returns:</b>
 
-`any`
+any

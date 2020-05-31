@@ -9,6 +9,8 @@ hide_title: true
 
 ## ExecutionContext.event property
 
+The current event within an event handler.
+
 <b>Signature:</b>
 
 ```typescript

@@ -14,11 +14,12 @@ Creates an instance of SubscriberSet for the specified source.
 <b>Signature:</b>
 
 ```typescript
-constructor(source: any);
+constructor(source: any, initialSubscriber?: Subscriber);
 ```
 
 ## Parameters
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  source | <code>any</code> | The object source that subscribers will receive notifications from. |
+|  source | any | The object source that subscribers will receive notifications from. |
+|  initialSubscriber | [Subscriber](./fast-element.subscriber.md) | An initial subscriber to changes. |

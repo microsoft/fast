@@ -19,7 +19,7 @@ export declare class BaseProgress extends FASTElement
 
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
-|  [max](./fast-foundation.baseprogress.max.md) |  | <code>number</code> |  |
-|  [min](./fast-foundation.baseprogress.min.md) |  | <code>number</code> |  |
-|  [paused](./fast-foundation.baseprogress.paused.md) |  | <code>any</code> |  |
-|  [value](./fast-foundation.baseprogress.value.md) |  | <code>number</code> |  |
+|  [max](./fast-foundation.baseprogress.max.md) |  | number |  |
+|  [min](./fast-foundation.baseprogress.min.md) |  | number |  |
+|  [paused](./fast-foundation.baseprogress.paused.md) |  | any |  |
+|  [value](./fast-foundation.baseprogress.value.md) |  | number |  |

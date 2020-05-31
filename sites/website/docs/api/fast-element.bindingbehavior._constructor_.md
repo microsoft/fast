@@ -14,16 +14,16 @@ Constructs a new instance of the `BindingBehavior` class
 <b>Signature:</b>
 
 ```typescript
-constructor(target: any, expression: Expression, bind: typeof normalBind, unbind: typeof normalUnbind, updateTarget: typeof updatePropertyTarget, targetName?: string | undefined);
+constructor(target: any, binding: Binding, bind: typeof normalBind, unbind: typeof normalUnbind, updateTarget: typeof updatePropertyTarget, targetName?: string | undefined);
 ```
 
 ## Parameters
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  target | <code>any</code> |  |
-|  expression | <code>Expression</code> |  |
-|  bind | <code>typeof normalBind</code> |  |
-|  unbind | <code>typeof normalUnbind</code> |  |
-|  updateTarget | <code>typeof updatePropertyTarget</code> |  |
-|  targetName | <code>string &#124; undefined</code> |  |
+|  target | any | The target of the data updates. |
+|  binding | [Binding](./fast-element.binding.md) | The binding that returns the latest value for an update. |
+|  bind | typeof normalBind | The operation to perform during binding. |
+|  unbind | typeof normalUnbind | The operation to perform during unbinding. |
+|  updateTarget | typeof updatePropertyTarget | The operation to perform when updating. |
+|  targetName | string \| undefined | The name of the target attribute or property to update. |

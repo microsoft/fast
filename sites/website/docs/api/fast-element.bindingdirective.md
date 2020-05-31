@@ -9,6 +9,8 @@ hide_title: true
 
 ## BindingDirective class
 
+A directive that configures data binding to element content and attributes.
+
 <b>Signature:</b>
 
 ```typescript
@@ -19,19 +21,19 @@ export declare class BindingDirective extends Directive
 
 |  Constructor | Modifiers | Description |
 |  --- | --- | --- |
-|  [(constructor)(expression)](./fast-element.bindingdirective._constructor_.md) |  | Constructs a new instance of the <code>BindingDirective</code> class |
+|  [(constructor)(binding)](./fast-element.bindingdirective._constructor_.md) |  | Creates an instance of BindingDirective. |
 
 ## Properties
 
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
-|  [createPlaceholder](./fast-element.bindingdirective.createplaceholder.md) |  | <code>(index: number) =&gt; string</code> |  |
-|  [expression](./fast-element.bindingdirective.expression.md) |  | <code>Expression</code> |  |
-|  [targetName](./fast-element.bindingdirective.targetname.md) |  | <code>string &#124; undefined</code> |  |
+|  [binding](./fast-element.bindingdirective.binding.md) |  | [Binding](./fast-element.binding.md) |  |
+|  [createPlaceholder](./fast-element.bindingdirective.createplaceholder.md) |  | (index: number) =&gt; string |  |
+|  [targetName](./fast-element.bindingdirective.targetname.md) |  | string \| undefined | Gets the name of the attribute or property that this binding is targeting. |
 
 ## Methods
 
 |  Method | Modifiers | Description |
 |  --- | --- | --- |
-|  [createBehavior(target)](./fast-element.bindingdirective.createbehavior.md) |  |  |
-|  [targetAtContent()](./fast-element.bindingdirective.targetatcontent.md) |  |  |
+|  [createBehavior(target)](./fast-element.bindingdirective.createbehavior.md) |  | Creates the runtime BindingBehavior instance based on the configuration information stored in the BindingDirective. |
+|  [targetAtContent()](./fast-element.bindingdirective.targetatcontent.md) |  | Makes this binding target the content of an element rather than a particular attribute or property. |

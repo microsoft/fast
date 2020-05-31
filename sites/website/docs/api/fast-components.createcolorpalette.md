@@ -19,8 +19,8 @@ export function createColorPalette(baseColor: any): string[];
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  baseColor | <code>any</code> |  |
+|  baseColor | any |  |
 
 <b>Returns:</b>
 
-`string[]`
+string\[\]

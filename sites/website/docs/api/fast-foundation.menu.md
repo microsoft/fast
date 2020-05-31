@@ -19,8 +19,8 @@ export declare class Menu extends FASTElement
 
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
-|  [handleFocusOut](./fast-foundation.menu.handlefocusout.md) |  | <code>(e: FocusEvent) =&gt; void</code> | if focus is moving out of the menu, reset to a stable initial state |
-|  [items](./fast-foundation.menu.items.md) |  | <code>HTMLSlotElement</code> |  |
+|  [handleFocusOut](./fast-foundation.menu.handlefocusout.md) |  | (e: FocusEvent) =&gt; void | if focus is moving out of the menu, reset to a stable initial state |
+|  [items](./fast-foundation.menu.items.md) |  | HTMLSlotElement |  |
 
 ## Methods
 

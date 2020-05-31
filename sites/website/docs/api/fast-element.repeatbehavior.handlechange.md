@@ -19,9 +19,9 @@ handleChange(source: any, args: Splice[]): void;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  source | <code>any</code> |  |
-|  args | <code>Splice[]</code> |  |
+|  source | any |  |
+|  args | Splice\[\] |  |
 
 <b>Returns:</b>
 
-`void`
+void

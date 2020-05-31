@@ -21,9 +21,9 @@ unsubscribe(subscriber: Subscriber, propertyToUnwatch: string): void;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  subscriber | <code>Subscriber</code> | The object that is unsubscribing from change notification. |
-|  propertyToUnwatch | <code>string</code> | The name of the property that the subscriber is no longer interested in watching. |
+|  subscriber | [Subscriber](./fast-element.subscriber.md) | The object that is unsubscribing from change notification. |
+|  propertyToUnwatch | string | The name of the property that the subscriber is no longer interested in watching. |
 
 <b>Returns:</b>
 
-`void`
+void

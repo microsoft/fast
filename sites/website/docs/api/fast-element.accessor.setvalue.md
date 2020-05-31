@@ -9,6 +9,8 @@ hide_title: true
 
 ## Accessor.setValue() method
 
+Sets the value of the property on the source object.
+
 <b>Signature:</b>
 
 ```typescript
@@ -19,9 +21,9 @@ setValue(source: any, value: any): void;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  source | <code>any</code> |  |
-|  value | <code>any</code> |  |
+|  source | any | The source object to access. |
+|  value | any | The value to set the property to. |
 
 <b>Returns:</b>
 
-`void`
+void

@@ -19,6 +19,6 @@ export declare class Flipper extends FASTElement
 
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
-|  [direction](./fast-foundation.flipper.direction.md) |  | <code>FlipperDirection</code> |  |
-|  [disabled](./fast-foundation.flipper.disabled.md) |  | <code>boolean</code> |  |
-|  [hiddenFromAT](./fast-foundation.flipper.hiddenfromat.md) |  | <code>boolean</code> |  |
+|  [direction](./fast-foundation.flipper.direction.md) |  | [FlipperDirection](./fast-foundation.flipperdirection.md) |  |
+|  [disabled](./fast-foundation.flipper.disabled.md) |  | boolean |  |
+|  [hiddenFromAT](./fast-foundation.flipper.hiddenfromat.md) |  | boolean |  |

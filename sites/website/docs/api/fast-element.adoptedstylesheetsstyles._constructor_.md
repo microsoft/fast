@@ -21,5 +21,5 @@ constructor(styles: InjectableStyles[], styleSheetCache: Map<string, CSSStyleShe
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  styles | <code>InjectableStyles[]</code> |  |
-|  styleSheetCache | <code>Map&lt;string, CSSStyleSheet&gt;</code> |  |
+|  styles | InjectableStyles\[\] |  |
+|  styleSheetCache | Map&lt;string, CSSStyleSheet&gt; |  |

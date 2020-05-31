@@ -21,8 +21,8 @@ export declare function isDesignSystemConsumer(element: HTMLElement | DesignSyst
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  element | <code>HTMLElement &#124; DesignSystemConsumer</code> |  |
+|  element | HTMLElement \| [DesignSystemConsumer](./fast-foundation.designsystemconsumer.md) |  |
 
 <b>Returns:</b>
 
-`element is DesignSystemConsumer`
+element is [DesignSystemConsumer](./fast-foundation.designsystemconsumer.md)

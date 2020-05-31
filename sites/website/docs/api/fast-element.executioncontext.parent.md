@@ -9,6 +9,8 @@ hide_title: true
 
 ## ExecutionContext.parent property
 
+The parent data object within a repeat context.
+
 <b>Signature:</b>
 
 ```typescript

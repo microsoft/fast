@@ -19,16 +19,16 @@ export declare class RepeatDirective extends Directive
 
 |  Constructor | Modifiers | Description |
 |  --- | --- | --- |
-|  [(constructor)(expression, template, options)](./fast-element.repeatdirective._constructor_.md) |  | Constructs a new instance of the <code>RepeatDirective</code> class |
+|  [(constructor)(binding, template, options)](./fast-element.repeatdirective._constructor_.md) |  | Constructs a new instance of the <code>RepeatDirective</code> class |
 
 ## Properties
 
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
-|  [createPlaceholder](./fast-element.repeatdirective.createplaceholder.md) |  | <code>(index: number) =&gt; string</code> |  |
-|  [expression](./fast-element.repeatdirective.expression.md) |  | <code>Expression</code> |  |
-|  [options](./fast-element.repeatdirective.options.md) |  | <code>RepeatOptions</code> |  |
-|  [template](./fast-element.repeatdirective.template.md) |  | <code>SyntheticViewTemplate</code> |  |
+|  [binding](./fast-element.repeatdirective.binding.md) |  | [Binding](./fast-element.binding.md) |  |
+|  [createPlaceholder](./fast-element.repeatdirective.createplaceholder.md) |  | (index: number) =&gt; string |  |
+|  [options](./fast-element.repeatdirective.options.md) |  | [RepeatOptions](./fast-element.repeatoptions.md) |  |
+|  [template](./fast-element.repeatdirective.template.md) |  | [SyntheticViewTemplate](./fast-element.syntheticviewtemplate.md) |  |
 
 ## Methods
 

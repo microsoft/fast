@@ -9,6 +9,8 @@ hide_title: true
 
 ## SubscriberSet.source property
 
+The source that this subscriber set is reporting changes for.
+
 <b>Signature:</b>
 
 ```typescript

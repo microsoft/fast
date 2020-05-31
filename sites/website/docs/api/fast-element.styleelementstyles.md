@@ -25,8 +25,8 @@ export declare class StyleElementStyles extends ElementStyles
 
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
-|  [behaviors](./fast-element.styleelementstyles.behaviors.md) |  | <code>ReadonlyArray&lt;Behavior&gt; &#124; null</code> |  |
-|  [styles](./fast-element.styleelementstyles.styles.md) |  | <code>InjectableStyles[]</code> |  |
+|  [behaviors](./fast-element.styleelementstyles.behaviors.md) |  | ReadonlyArray&lt;[Behavior](./fast-element.behavior.md)<!-- -->&gt; \| null |  |
+|  [styles](./fast-element.styleelementstyles.styles.md) |  | InjectableStyles\[\] |  |
 
 ## Methods
 

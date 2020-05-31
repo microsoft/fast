@@ -19,10 +19,10 @@ attributeChangedCallback(name: string, oldValue: string, newValue: string): void
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  name | <code>string</code> |  |
-|  oldValue | <code>string</code> |  |
-|  newValue | <code>string</code> |  |
+|  name | string |  |
+|  oldValue | string |  |
+|  newValue | string |  |
 
 <b>Returns:</b>
 
-`void`
+void

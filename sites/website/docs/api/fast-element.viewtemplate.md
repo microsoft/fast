@@ -14,7 +14,7 @@ A template capable of creating HTMLView instances or rendering directly to DOM.
 <b>Signature:</b>
 
 ```typescript
-export declare class ViewTemplate<TSource = any, TParent = any> extends Directive implements ElementViewTemplate, SyntheticViewTemplate 
+export declare class ViewTemplate<TSource = any, TParent = any> implements ElementViewTemplate, SyntheticViewTemplate 
 ```
 
 ## Constructors
@@ -27,14 +27,12 @@ export declare class ViewTemplate<TSource = any, TParent = any> extends Directiv
 
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
-|  [createPlaceholder](./fast-element.viewtemplate.createplaceholder.md) |  | <code>(index: number) =&gt; string</code> |  |
-|  [directives](./fast-element.viewtemplate.directives.md) |  | <code>ReadonlyArray&lt;Directive&gt;</code> |  |
-|  [html](./fast-element.viewtemplate.html.md) |  | <code>string &#124; HTMLTemplateElement</code> |  |
+|  [directives](./fast-element.viewtemplate.directives.md) |  | ReadonlyArray&lt;[Directive](./fast-element.directive.md)<!-- -->&gt; |  |
+|  [html](./fast-element.viewtemplate.html.md) |  | string \| HTMLTemplateElement |  |
 
 ## Methods
 
 |  Method | Modifiers | Description |
 |  --- | --- | --- |
 |  [create(host)](./fast-element.viewtemplate.create.md) |  | Creates an HTMLView instance based on this template definition. |
-|  [createBehavior(target)](./fast-element.viewtemplate.createbehavior.md) |  |  |
 |  [render(source, host)](./fast-element.viewtemplate.render.md) |  | Creates an HTMLView from this template, binds it to the source, and then appends it to the host. |

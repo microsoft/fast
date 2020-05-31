@@ -21,7 +21,8 @@ export interface View
 
 |  Property | Type | Description |
 |  --- | --- | --- |
-|  [context](./fast-element.view.context.md) | <code>ExecutionContext &#124; null</code> | The execution context the view is running within. |
+|  [context](./fast-element.view.context.md) | [ExecutionContext](./fast-element.executioncontext.md) \| null | The execution context the view is running within. |
+|  [source](./fast-element.view.source.md) | any \| null | The data that the view is bound to. |
 
 ## Methods
 

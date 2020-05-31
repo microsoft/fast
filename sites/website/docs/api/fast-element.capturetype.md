@@ -9,6 +9,8 @@ hide_title: true
 
 ## CaptureType interface
 
+A marker interface used to capture types when interpolating Directive helpers into templates.
+
 <b>Signature:</b>
 
 ```typescript

@@ -9,6 +9,8 @@ hide_title: true
 
 ## BindingDirective.createBehavior() method
 
+Creates the runtime BindingBehavior instance based on the configuration information stored in the BindingDirective.
+
 <b>Signature:</b>
 
 ```typescript
@@ -19,8 +21,8 @@ createBehavior(target: any): BindingBehavior;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  target | <code>any</code> |  |
+|  target | any | The target node that the binding behavior should attach to. |
 
 <b>Returns:</b>
 
-`BindingBehavior`
+[BindingBehavior](./fast-element.bindingbehavior.md)

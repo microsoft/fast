@@ -27,7 +27,7 @@ export declare class PropertyChangeNotifier implements Notifier
 
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
-|  [source](./fast-element.propertychangenotifier.source.md) |  | <code>any</code> |  |
+|  [source](./fast-element.propertychangenotifier.source.md) |  | any | The source that property changes are being notified for. |
 
 ## Methods
 

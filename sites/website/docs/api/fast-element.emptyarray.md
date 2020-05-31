@@ -9,8 +9,14 @@ hide_title: true
 
 ## emptyArray variable
 
+A readonly, empty array.
+
 <b>Signature:</b>
 
 ```typescript
 emptyArray: readonly never[]
 ```
+
+## Remarks
+
+Typically returned by APIs that return arrays when there are no actual items to return.

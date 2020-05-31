@@ -14,13 +14,13 @@ Constructs a new instance of the `RepeatDirective` class
 <b>Signature:</b>
 
 ```typescript
-constructor(expression: Expression, template: SyntheticViewTemplate, options: RepeatOptions);
+constructor(binding: Binding, template: SyntheticViewTemplate, options: RepeatOptions);
 ```
 
 ## Parameters
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  expression | <code>Expression</code> |  |
-|  template | <code>SyntheticViewTemplate</code> |  |
-|  options | <code>RepeatOptions</code> |  |
+|  binding | [Binding](./fast-element.binding.md) |  |
+|  template | [SyntheticViewTemplate](./fast-element.syntheticviewtemplate.md) |  |
+|  options | [RepeatOptions](./fast-element.repeatoptions.md) |  |

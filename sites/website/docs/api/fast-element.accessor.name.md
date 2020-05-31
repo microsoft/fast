@@ -9,6 +9,8 @@ hide_title: true
 
 ## Accessor.name property
 
+The name of the property.
+
 <b>Signature:</b>
 
 ```typescript

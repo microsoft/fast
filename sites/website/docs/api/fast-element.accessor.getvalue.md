@@ -9,6 +9,8 @@ hide_title: true
 
 ## Accessor.getValue() method
 
+Gets the value of the property on the source object.
+
 <b>Signature:</b>
 
 ```typescript
@@ -19,8 +21,8 @@ getValue(source: any): any;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  source | <code>any</code> |  |
+|  source | any | The source object to access. |
 
 <b>Returns:</b>
 
-`any`
+any

@@ -19,9 +19,9 @@ handleChange(source: any, propertyName: string): void;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  source | <code>any</code> |  |
-|  propertyName | <code>string</code> |  |
+|  source | any |  |
+|  propertyName | string |  |
 
 <b>Returns:</b>
 
-`void`
+void

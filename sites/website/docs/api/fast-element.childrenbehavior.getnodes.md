@@ -16,4 +16,4 @@ getNodes(): ChildNode[];
 ```
 <b>Returns:</b>
 
-`ChildNode[]`
+ChildNode\[\]

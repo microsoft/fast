@@ -56,43 +56,8 @@ export declare function matchMediaStylesheetBehaviorFactory(query: MediaQueryLis
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  query | <code>MediaQueryList</code> |  |
+|  query | MediaQueryList |  |
 
 <b>Returns:</b>
 
-`(sheet: ElementStyles) => Readonly<{
-    query: MediaQueryList;
-    cache: WeakMap<(new () => HTMLElement & FASTElement) & {
-        from<TBase extends {
-            new (): HTMLElement;
-            prototype: HTMLElement;
-        }>(BaseType: TBase): new () => InstanceType<TBase> & FASTElement;
-        define<TType extends Function>(Type: TType, nameOrDef?: string | import("@microsoft/fast-element").PartialFASTElementDefinition | undefined): TType;
-        getDefinition: <T extends Function>(Type: T) => import("@microsoft/fast-element").FASTElementDefinition | undefined;
-    }, ((this: MediaQueryList) => void)[] | ((this: MediaQueryList) => void)>;
-    sheet: ElementStyles;
-    constructListener(this: MatchMediaStyleSheetBehavior, source: (new () => HTMLElement & FASTElement) & {
-        from<TBase extends {
-            new (): HTMLElement;
-            prototype: HTMLElement;
-        }>(BaseType: TBase): new () => InstanceType<TBase> & FASTElement;
-        define<TType extends Function>(Type: TType, nameOrDef?: string | import("@microsoft/fast-element").PartialFASTElementDefinition | undefined): TType;
-        getDefinition: <T extends Function>(Type: T) => import("@microsoft/fast-element").FASTElementDefinition | undefined;
-    }, sheet: ElementStyles): MediaQueryListListener;
-    bind(this: MatchMediaStyleSheetBehavior, source: (new () => HTMLElement & FASTElement) & {
-        from<TBase extends {
-            new (): HTMLElement;
-            prototype: HTMLElement;
-        }>(BaseType: TBase): new () => InstanceType<TBase> & FASTElement;
-        define<TType extends Function>(Type: TType, nameOrDef?: string | import("@microsoft/fast-element").PartialFASTElementDefinition | undefined): TType;
-        getDefinition: <T extends Function>(Type: T) => import("@microsoft/fast-element").FASTElementDefinition | undefined;
-    }): void;
-    unbind(this: MatchMediaStyleSheetBehavior, source: (new () => HTMLElement & FASTElement) & {
-        from<TBase extends {
-            new (): HTMLElement;
-            prototype: HTMLElement;
-        }>(BaseType: TBase): new () => InstanceType<TBase> & FASTElement;
-        define<TType extends Function>(Type: TType, nameOrDef?: string | import("@microsoft/fast-element").PartialFASTElementDefinition | undefined): TType;
-        getDefinition: <T extends Function>(Type: T) => import("@microsoft/fast-element").FASTElementDefinition | undefined;
-    }): void;
-}>`
+(sheet: [ElementStyles](./fast-element.elementstyles.md)<!-- -->) =&gt; Readonly&lt;{ query: MediaQueryList; cache: WeakMap&lt;(new () =&gt; HTMLElement &amp; [FASTElement](./fast-element.fastelement.md)<!-- -->) &amp; { from&lt;TBase extends { new (): HTMLElement; prototype: HTMLElement; }&gt;(BaseType: TBase): new () =&gt; InstanceType&lt;TBase&gt; &amp; [FASTElement](./fast-element.fastelement.md)<!-- -->; define&lt;TType extends Function&gt;(Type: TType, nameOrDef?: string \| import("@microsoft/fast-element").[PartialFASTElementDefinition](./fast-element.partialfastelementdefinition.md) \| undefined): TType; getDefinition: &lt;T extends Function&gt;(Type: T) =&gt; import("@microsoft/fast-element").[FASTElementDefinition](./fast-element.fastelementdefinition.md) \| undefined; }, ((this: MediaQueryList) =&gt; void)\[\] \| ((this: MediaQueryList) =&gt; void)&gt;; sheet: [ElementStyles](./fast-element.elementstyles.md)<!-- -->; constructListener(this: MatchMediaStyleSheetBehavior, source: (new () =&gt; HTMLElement &amp; [FASTElement](./fast-element.fastelement.md)<!-- -->) &amp; { from&lt;TBase extends { new (): HTMLElement; prototype: HTMLElement; }&gt;(BaseType: TBase): new () =&gt; InstanceType&lt;TBase&gt; &amp; [FASTElement](./fast-element.fastelement.md)<!-- -->; define&lt;TType extends Function&gt;(Type: TType, nameOrDef?: string \| import("@microsoft/fast-element").[PartialFASTElementDefinition](./fast-element.partialfastelementdefinition.md) \| undefined): TType; getDefinition: &lt;T extends Function&gt;(Type: T) =&gt; import("@microsoft/fast-element").[FASTElementDefinition](./fast-element.fastelementdefinition.md) \| undefined; }, sheet: [ElementStyles](./fast-element.elementstyles.md)<!-- -->): MediaQueryListListener; bind(this: MatchMediaStyleSheetBehavior, source: (new () =&gt; HTMLElement &amp; [FASTElement](./fast-element.fastelement.md)<!-- -->) &amp; { from&lt;TBase extends { new (): HTMLElement; prototype: HTMLElement; }&gt;(BaseType: TBase): new () =&gt; InstanceType&lt;TBase&gt; &amp; [FASTElement](./fast-element.fastelement.md)<!-- -->; define&lt;TType extends Function&gt;(Type: TType, nameOrDef?: string \| import("@microsoft/fast-element").[PartialFASTElementDefinition](./fast-element.partialfastelementdefinition.md) \| undefined): TType; getDefinition: &lt;T extends Function&gt;(Type: T) =&gt; import("@microsoft/fast-element").[FASTElementDefinition](./fast-element.fastelementdefinition.md) \| undefined; }): void; unbind(this: MatchMediaStyleSheetBehavior, source: (new () =&gt; HTMLElement &amp; [FASTElement](./fast-element.fastelement.md)<!-- -->) &amp; { from&lt;TBase extends { new (): HTMLElement; prototype: HTMLElement; }&gt;(BaseType: TBase): new () =&gt; InstanceType&lt;TBase&gt; &amp; [FASTElement](./fast-element.fastelement.md)<!-- -->; define&lt;TType extends Function&gt;(Type: TType, nameOrDef?: string \| import("@microsoft/fast-element").[PartialFASTElementDefinition](./fast-element.partialfastelementdefinition.md) \| undefined): TType; getDefinition: &lt;T extends Function&gt;(Type: T) =&gt; import("@microsoft/fast-element").[FASTElementDefinition](./fast-element.fastelementdefinition.md) \| undefined; }): void; }&gt;

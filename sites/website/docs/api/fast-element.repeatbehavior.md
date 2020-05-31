@@ -19,7 +19,7 @@ export declare class RepeatBehavior implements Behavior, Subscriber
 
 |  Constructor | Modifiers | Description |
 |  --- | --- | --- |
-|  [(constructor)(location, expression, template, options)](./fast-element.repeatbehavior._constructor_.md) |  | Constructs a new instance of the <code>RepeatBehavior</code> class |
+|  [(constructor)(location, binding, template, options)](./fast-element.repeatbehavior._constructor_.md) |  | Constructs a new instance of the <code>RepeatBehavior</code> class |
 
 ## Methods
 
@@ -27,5 +27,4 @@ export declare class RepeatBehavior implements Behavior, Subscriber
 |  --- | --- | --- |
 |  [bind(source, context)](./fast-element.repeatbehavior.bind.md) |  |  |
 |  [handleChange(source, args)](./fast-element.repeatbehavior.handlechange.md) |  |  |
-|  [handleExpressionChange()](./fast-element.repeatbehavior.handleexpressionchange.md) |  |  |
 |  [unbind()](./fast-element.repeatbehavior.unbind.md) |  |  |

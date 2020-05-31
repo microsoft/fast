@@ -19,9 +19,9 @@ addStyles(styles: ElementStyles, target?: StyleTarget | null): void;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  styles | <code>ElementStyles</code> |  |
-|  target | <code>StyleTarget &#124; null</code> |  |
+|  styles | [ElementStyles](./fast-element.elementstyles.md) |  |
+|  target | [StyleTarget](./fast-element.styletarget.md) \| null |  |
 
 <b>Returns:</b>
 
-`void`
+void

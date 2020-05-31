@@ -9,7 +9,7 @@ hide_title: true
 
 ## SubscriberSet class
 
-An implementation of Notifier that efficiently keeps track of subscribers interested in a specific change notification on an observable source.
+An implementation of [Notifier](./fast-element.notifier.md) that efficiently keeps track of subscribers interested in a specific change notification on an observable source.
 
 <b>Signature:</b>
 
@@ -25,13 +25,13 @@ This set is optimized for the most common scenario of 1 or 2 subscribers. With t
 
 |  Constructor | Modifiers | Description |
 |  --- | --- | --- |
-|  [(constructor)(source)](./fast-element.subscriberset._constructor_.md) |  | Creates an instance of SubscriberSet for the specified source. |
+|  [(constructor)(source, initialSubscriber)](./fast-element.subscriberset._constructor_.md) |  | Creates an instance of SubscriberSet for the specified source. |
 
 ## Properties
 
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
-|  [source](./fast-element.subscriberset.source.md) |  | <code>any</code> |  |
+|  [source](./fast-element.subscriberset.source.md) |  | any | The source that this subscriber set is reporting changes for. |
 
 ## Methods
 

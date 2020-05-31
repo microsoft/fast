@@ -9,6 +9,8 @@ hide_title: true
 
 ## DOM variable
 
+Common DOM APIs.
+
 <b>Signature:</b>
 
 ```typescript
@@ -21,6 +23,7 @@ DOM: Readonly<{
     createCustomAttributePlaceholder(attributeName: string, index: number): string;
     createBlockPlaceholder(index: number): string;
     queueUpdate(callable: Callable): void;
+    nextUpdate(): Promise<void>;
     setAttribute(element: HTMLElement, attributeName: string, value: any): void;
     setBooleanAttribute(element: HTMLElement, attributeName: string, value: boolean): void;
 }>

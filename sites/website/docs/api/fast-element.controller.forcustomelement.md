@@ -19,8 +19,8 @@ static forCustomElement(element: HTMLElement): Controller;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  element | <code>HTMLElement</code> |  |
+|  element | HTMLElement |  |
 
 <b>Returns:</b>
 
-`Controller`
+[Controller](./fast-element.controller.md)

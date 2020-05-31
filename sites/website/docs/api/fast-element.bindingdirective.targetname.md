@@ -9,6 +9,8 @@ hide_title: true
 
 ## BindingDirective.targetName property
 
+Gets the name of the attribute or property that this binding is targeting.
+
 <b>Signature:</b>
 
 ```typescript

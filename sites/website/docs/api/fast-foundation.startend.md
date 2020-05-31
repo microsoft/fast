@@ -19,10 +19,10 @@ export declare class StartEnd
 
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
-|  [end](./fast-foundation.startend.end.md) |  | <code>HTMLSlotElement</code> |  |
-|  [endContainer](./fast-foundation.startend.endcontainer.md) |  | <code>HTMLSpanElement</code> |  |
-|  [start](./fast-foundation.startend.start.md) |  | <code>HTMLSlotElement</code> |  |
-|  [startContainer](./fast-foundation.startend.startcontainer.md) |  | <code>HTMLSpanElement</code> |  |
+|  [end](./fast-foundation.startend.end.md) |  | HTMLSlotElement |  |
+|  [endContainer](./fast-foundation.startend.endcontainer.md) |  | HTMLSpanElement |  |
+|  [start](./fast-foundation.startend.start.md) |  | HTMLSlotElement |  |
+|  [startContainer](./fast-foundation.startend.startcontainer.md) |  | HTMLSpanElement |  |
 
 ## Methods
 

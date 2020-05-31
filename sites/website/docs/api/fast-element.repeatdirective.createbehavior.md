@@ -19,8 +19,8 @@ createBehavior(target: any): RepeatBehavior;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  target | <code>any</code> |  |
+|  target | any |  |
 
 <b>Returns:</b>
 
-`RepeatBehavior`
+[RepeatBehavior](./fast-element.repeatbehavior.md)

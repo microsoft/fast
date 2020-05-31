@@ -19,4 +19,4 @@ export interface DesignSystemConsumer
 
 |  Property | Type | Description |
 |  --- | --- | --- |
-|  [provider](./fast-foundation.designsystemconsumer.provider.md) | <code>DesignSystemProvider &#124; null</code> |  |
+|  [provider](./fast-foundation.designsystemconsumer.provider.md) | [DesignSystemProvider](./fast-foundation.designsystemprovider.md) \| null |  |

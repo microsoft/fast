@@ -19,8 +19,8 @@ getValue(source: HTMLElement): any;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  source | <code>HTMLElement</code> |  |
+|  source | HTMLElement |  |
 
 <b>Returns:</b>
 
-`any`
+any

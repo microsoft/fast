@@ -19,8 +19,8 @@ export interface SliderConfiguration
 
 |  Property | Type | Description |
 |  --- | --- | --- |
-|  [direction](./fast-foundation.sliderconfiguration.direction.md) | <code>Direction</code> |  |
-|  [disabled](./fast-foundation.sliderconfiguration.disabled.md) | <code>boolean</code> |  |
-|  [max](./fast-foundation.sliderconfiguration.max.md) | <code>number</code> |  |
-|  [min](./fast-foundation.sliderconfiguration.min.md) | <code>number</code> |  |
-|  [orientation](./fast-foundation.sliderconfiguration.orientation.md) | <code>Orientation</code> |  |
+|  [direction](./fast-foundation.sliderconfiguration.direction.md) | Direction |  |
+|  [disabled](./fast-foundation.sliderconfiguration.disabled.md) | boolean |  |
+|  [max](./fast-foundation.sliderconfiguration.max.md) | number |  |
+|  [min](./fast-foundation.sliderconfiguration.min.md) | number |  |
+|  [orientation](./fast-foundation.sliderconfiguration.orientation.md) | Orientation |  |

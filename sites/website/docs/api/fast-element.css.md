@@ -19,9 +19,9 @@ export declare function css(strings: TemplateStringsArray, ...values: Injectable
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  strings | <code>TemplateStringsArray</code> |  |
-|  values | <code>InjectableStyles[]</code> |  |
+|  strings | TemplateStringsArray |  |
+|  values | InjectableStyles\[\] |  |
 
 <b>Returns:</b>
 
-`ElementStyles`
+[ElementStyles](./fast-element.elementstyles.md)

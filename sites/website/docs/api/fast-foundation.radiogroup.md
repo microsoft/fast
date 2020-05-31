@@ -25,13 +25,13 @@ export declare class RadioGroup extends FASTElement
 
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
-|  [disabled](./fast-foundation.radiogroup.disabled.md) |  | <code>boolean</code> |  |
-|  [keydownHandler](./fast-foundation.radiogroup.keydownhandler.md) |  | <code>(e: KeyboardEvent) =&gt; void</code> |  |
-|  [name](./fast-foundation.radiogroup.name.md) |  | <code>string</code> |  |
-|  [orientation](./fast-foundation.radiogroup.orientation.md) |  | <code>Orientation</code> |  |
-|  [readOnly](./fast-foundation.radiogroup.readonly.md) |  | <code>boolean</code> |  |
-|  [slottedRadioButtons](./fast-foundation.radiogroup.slottedradiobuttons.md) |  | <code>RadioControl[]</code> |  |
-|  [value](./fast-foundation.radiogroup.value.md) |  | <code>string</code> |  |
+|  [disabled](./fast-foundation.radiogroup.disabled.md) |  | boolean |  |
+|  [keydownHandler](./fast-foundation.radiogroup.keydownhandler.md) |  | (e: KeyboardEvent) =&gt; void |  |
+|  [name](./fast-foundation.radiogroup.name.md) |  | string |  |
+|  [orientation](./fast-foundation.radiogroup.orientation.md) |  | Orientation |  |
+|  [readOnly](./fast-foundation.radiogroup.readonly.md) |  | boolean |  |
+|  [slottedRadioButtons](./fast-foundation.radiogroup.slottedradiobuttons.md) |  | [RadioControl](./fast-foundation.radiocontrol.md)<!-- -->\[\] |  |
+|  [value](./fast-foundation.radiogroup.value.md) |  | string |  |
 
 ## Methods
 

@@ -9,6 +9,8 @@ hide_title: true
 
 ## Callable type
 
+Represents a callable type such as a function or an object with a "call" method.
+
 <b>Signature:</b>
 
 ```typescript

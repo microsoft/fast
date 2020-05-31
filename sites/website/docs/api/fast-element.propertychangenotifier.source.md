@@ -9,6 +9,8 @@ hide_title: true
 
 ## PropertyChangeNotifier.source property
 
+The source that property changes are being notified for.
+
 <b>Signature:</b>
 
 ```typescript

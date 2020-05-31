@@ -9,19 +9,21 @@ hide_title: true
 
 ## when() function
 
+A directive that enables basic conditional rendering in a template.
+
 <b>Signature:</b>
 
 ```typescript
-export declare function when<T = any, K = any>(expression: Expression<T, K>, template: SyntheticViewTemplate): CaptureType<T>;
+export declare function when<TSource = any, TReturn = any>(binding: Binding<TSource, TReturn>, templateOrTemplateBinding: SyntheticViewTemplate | Binding<TSource, SyntheticViewTemplate>): CaptureType<TSource>;
 ```
 
 ## Parameters
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  expression | <code>Expression&lt;T, K&gt;</code> |  |
-|  template | <code>SyntheticViewTemplate</code> |  |
+|  binding | [Binding](./fast-element.binding.md)<!-- -->&lt;TSource, TReturn&gt; | The condition to test for rendering. |
+|  templateOrTemplateBinding | [SyntheticViewTemplate](./fast-element.syntheticviewtemplate.md) \| [Binding](./fast-element.binding.md)<!-- -->&lt;TSource, [SyntheticViewTemplate](./fast-element.syntheticviewtemplate.md)<!-- -->&gt; | The template or a binding that gets the template to render when the condition is true. |
 
 <b>Returns:</b>
 
-`CaptureType<T>`
+[CaptureType](./fast-element.capturetype.md)<!-- -->&lt;TSource&gt;

@@ -31,8 +31,8 @@ export declare function designSystemProperty<T extends DesignSystemProvider>(con
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  config | <code>DecoratorDesignSystemPropertyConfiguration</code> |  |
+|  config | [DecoratorDesignSystemPropertyConfiguration](./fast-foundation.decoratordesignsystempropertyconfiguration.md) |  |
 
 <b>Returns:</b>
 
-`(source: T, property: string) => void`
+(source: T, property: string) =&gt; void

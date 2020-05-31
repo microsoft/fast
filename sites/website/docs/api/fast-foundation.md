@@ -11,6 +11,8 @@ hide_title: false
 
 |  Class | Description |
 |  --- | --- |
+|  [Accordion](./fast-foundation.accordion.md) |  |
+|  [AccordionItem](./fast-foundation.accordionitem.md) |  |
 |  [Anchor](./fast-foundation.anchor.md) |  |
 |  [Badge](./fast-foundation.badge.md) |  |
 |  [BaseProgress](./fast-foundation.baseprogress.md) |  |
@@ -39,6 +41,7 @@ hide_title: false
 
 |  Enumeration | Description |
 |  --- | --- |
+|  [AccordionExpandMode](./fast-foundation.accordionexpandmode.md) |  |
 |  [DividerRole](./fast-foundation.dividerrole.md) |  |
 |  [FlipperDirection](./fast-foundation.flipperdirection.md) |  |
 |  [MenuItemRole](./fast-foundation.menuitemrole.md) |  |
@@ -66,6 +69,7 @@ hide_title: false
 
 |  Interface | Description |
 |  --- | --- |
+|  [AccordionItem](./fast-foundation.accordionitem.md) |  |
 |  [Anchor](./fast-foundation.anchor.md) |  |
 |  [Button](./fast-foundation.button.md) |  |
 |  [CSSCustomPropertyDefinition](./fast-foundation.csscustompropertydefinition.md) |  |
@@ -82,6 +86,8 @@ hide_title: false
 
 |  Variable | Description |
 |  --- | --- |
+|  [AccordionItemTemplate](./fast-foundation.accordionitemtemplate.md) |  |
+|  [AccordionTemplate](./fast-foundation.accordiontemplate.md) |  |
 |  [AnchorTemplate](./fast-foundation.anchortemplate.md) |  |
 |  [BadgeTemplate](./fast-foundation.badgetemplate.md) |  |
 |  [ButtonTemplate](./fast-foundation.buttontemplate.md) |  |

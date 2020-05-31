@@ -21,4 +21,4 @@ constructor(styles: InjectableStyles[]);
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  styles | <code>InjectableStyles[]</code> |  |
+|  styles | InjectableStyles\[\] |  |

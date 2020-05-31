@@ -21,8 +21,8 @@ has(subscriber: Subscriber): boolean;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  subscriber | <code>Subscriber</code> | The subscriber to test for inclusion in this set. |
+|  subscriber | [Subscriber](./fast-element.subscriber.md) | The subscriber to test for inclusion in this set. |
 
 <b>Returns:</b>
 
-`boolean`
+boolean

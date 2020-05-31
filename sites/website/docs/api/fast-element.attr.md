@@ -21,8 +21,8 @@ export declare function attr(config?: DecoratorAttributeConfiguration): (target:
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  config | <code>DecoratorAttributeConfiguration</code> | The overrides |
+|  config | [DecoratorAttributeConfiguration](./fast-element.decoratorattributeconfiguration.md) | The overrides |
 
 <b>Returns:</b>
 
-`(target: {}, property: string) => void`
+(target: {}, property: string) =&gt; void

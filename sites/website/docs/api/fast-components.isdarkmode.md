@@ -21,8 +21,8 @@ export declare function isDarkMode(designSystem: FASTDesignSystem): boolean;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  designSystem | <code>FASTDesignSystem</code> |  |
+|  designSystem | FASTDesignSystem |  |
 
 <b>Returns:</b>
 
-`boolean`
+boolean

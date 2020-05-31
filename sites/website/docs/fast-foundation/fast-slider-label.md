@@ -5,6 +5,8 @@ sidebar_label: fast-slider-label
 custom_edit_url: https://github.com/microsoft/fast-dna/edit/master/packages/web-components/fast-foundation/src/slider-label/README.md
 ---
 
+The `fast-slider-label` component provides a default styled label to be placed inside a `fast-slider`. Users can choose to hide the mark as well as provide custom label content.
+
 ## Applying Custom Styles
 
 ```ts
@@ -18,4 +20,10 @@ import { SliderLabelStyles as styles } from "./slider-label.styles";
     styles,
 })
 export class FASTSliderLabel extends SliderLabel {}
+```
+
+## Usage
+
+```html
+<fast-slider-label>Fast</fast-slider-label>
 ```

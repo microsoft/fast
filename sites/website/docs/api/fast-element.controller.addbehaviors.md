@@ -19,8 +19,8 @@ addBehaviors(behaviors: ReadonlyArray<Behavior>): void;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  behaviors | <code>ReadonlyArray&lt;Behavior&gt;</code> |  |
+|  behaviors | ReadonlyArray&lt;[Behavior](./fast-element.behavior.md)<!-- -->&gt; |  |
 
 <b>Returns:</b>
 
-`void`
+void

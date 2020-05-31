@@ -14,27 +14,23 @@ hide_title: false
 |  [AdoptedStyleSheetsStyles](./fast-element.adoptedstylesheetsstyles.md) |  |
 |  [AttachedBehaviorDirective](./fast-element.attachedbehaviordirective.md) |  |
 |  [AttributeDefinition](./fast-element.attributedefinition.md) |  |
-|  [BindingBehavior](./fast-element.bindingbehavior.md) |  |
-|  [BindingDirective](./fast-element.bindingdirective.md) |  |
+|  [BindingBehavior](./fast-element.bindingbehavior.md) | A behavior that updates content and attributes based on a configured BindingDirective. |
+|  [BindingDirective](./fast-element.bindingdirective.md) | A directive that configures data binding to element content and attributes. |
 |  [ChildrenBehavior](./fast-element.childrenbehavior.md) |  |
 |  [Controller](./fast-element.controller.md) |  |
 |  [Directive](./fast-element.directive.md) |  |
 |  [ElementStyles](./fast-element.elementstyles.md) |  |
 |  [ExecutionContext](./fast-element.executioncontext.md) | Provides additional contextual information available to behaviors and expressions. |
 |  [FASTElementDefinition](./fast-element.fastelementdefinition.md) |  |
-|  [HTMLTemplateBehavior](./fast-element.htmltemplatebehavior.md) |  |
 |  [HTMLView](./fast-element.htmlview.md) | The standard View implementation, which also implements ElementView and SyntheticView. |
-|  [ObservableExpression](./fast-element.observableexpression.md) |  |
 |  [PropertyChangeNotifier](./fast-element.propertychangenotifier.md) | An implementation of Notifier that allows subscribers to be notified of individual property changes on an object. |
 |  [RefBehavior](./fast-element.refbehavior.md) |  |
 |  [RepeatBehavior](./fast-element.repeatbehavior.md) |  |
 |  [RepeatDirective](./fast-element.repeatdirective.md) |  |
 |  [SlottedBehavior](./fast-element.slottedbehavior.md) |  |
 |  [StyleElementStyles](./fast-element.styleelementstyles.md) |  |
-|  [SubscriberSet](./fast-element.subscriberset.md) | An implementation of Notifier that efficiently keeps track of subscribers interested in a specific change notification on an observable source. |
+|  [SubscriberSet](./fast-element.subscriberset.md) | An implementation of [Notifier](./fast-element.notifier.md) that efficiently keeps track of subscribers interested in a specific change notification on an observable source. |
 |  [ViewTemplate](./fast-element.viewtemplate.md) | A template capable of creating HTMLView instances or rendering directly to DOM. |
-|  [WhenBehavior](./fast-element.whenbehavior.md) |  |
-|  [WhenDirective](./fast-element.whendirective.md) |  |
 
 ## Functions
 
@@ -47,26 +43,25 @@ hide_title: false
 |  [css(strings, values)](./fast-element.css.md) |  |
 |  [customElement(nameOrDef)](./fast-element.customelement.md) |  |
 |  [html(strings, values)](./fast-element.html.md) | Transforms a template literal string into a renderable ViewTemplate. |
-|  [observable($target, $prop)](./fast-element.observable.md) |  |
+|  [observable(target, nameOrAccessor)](./fast-element.observable.md) | Decorator: Defines an observable property on the target. |
 |  [ref(propertyName)](./fast-element.ref.md) |  |
-|  [repeat(expression, template, options)](./fast-element.repeat.md) |  |
-|  [setCurrentEvent(event)](./fast-element.setcurrentevent.md) |  |
+|  [repeat(binding, template, options)](./fast-element.repeat.md) |  |
 |  [slotted(propertyOrOptions)](./fast-element.slotted.md) |  |
-|  [when(expression, template)](./fast-element.when.md) |  |
+|  [when(binding, templateOrTemplateBinding)](./fast-element.when.md) | A directive that enables basic conditional rendering in a template. |
 
 ## Interfaces
 
 |  Interface | Description |
 |  --- | --- |
-|  [Accessor](./fast-element.accessor.md) |  |
+|  [Accessor](./fast-element.accessor.md) | Represents a getter/setter property accessor on an object. |
 |  [Behavior](./fast-element.behavior.md) |  |
 |  [BehaviorFactory](./fast-element.behaviorfactory.md) |  |
-|  [CaptureType](./fast-element.capturetype.md) |  |
+|  [BindingObserver](./fast-element.bindingobserver.md) | Enables evaluation of and subscription to a binding. |
+|  [CaptureType](./fast-element.capturetype.md) | A marker interface used to capture types when interpolating Directive helpers into templates. |
 |  [ChildrenBehaviorOptions](./fast-element.childrenbehavioroptions.md) |  |
 |  [CompilationResult](./fast-element.compilationresult.md) | The result of compiling a template and its directives. |
 |  [ElementView](./fast-element.elementview.md) | A View representing DOM nodes specifically for rendering the view of a custom element. |
 |  [ElementViewTemplate](./fast-element.elementviewtemplate.md) | A template capable of creating views specifically for rendering custom elements. |
-|  [ExpressionObserver](./fast-element.expressionobserver.md) |  |
 |  [FASTElement](./fast-element.fastelement.md) |  |
 |  [Notifier](./fast-element.notifier.md) | Provides change notification for a source object. |
 |  [RepeatOptions](./fast-element.repeatoptions.md) |  |
@@ -84,12 +79,12 @@ hide_title: false
 |  --- | --- |
 |  [booleanConverter](./fast-element.booleanconverter.md) |  |
 |  [createStyles](./fast-element.createstyles.md) |  |
-|  [defaultExecutionContext](./fast-element.defaultexecutioncontext.md) |  |
-|  [DOM](./fast-element.dom.md) |  |
-|  [emptyArray](./fast-element.emptyarray.md) |  |
+|  [defaultExecutionContext](./fast-element.defaultexecutioncontext.md) | The default execution context used in binding expressions. |
+|  [DOM](./fast-element.dom.md) | Common DOM APIs. |
+|  [emptyArray](./fast-element.emptyarray.md) | A readonly, empty array. |
 |  [FASTElement](./fast-element.fastelement.md) |  |
 |  [nullableNumberConverter](./fast-element.nullablenumberconverter.md) |  |
-|  [Observable](./fast-element.observable.md) |  |
+|  [Observable](./fast-element.observable.md) | Common Observable APIs. |
 
 ## Type Aliases
 
@@ -98,7 +93,8 @@ hide_title: false
 |  [AttachedBehaviorType](./fast-element.attachedbehaviortype.md) |  |
 |  [AttributeConfiguration](./fast-element.attributeconfiguration.md) |  |
 |  [AttributeMode](./fast-element.attributemode.md) |  |
-|  [Callable](./fast-element.callable.md) |  |
+|  [Binding](./fast-element.binding.md) | The signature of an arrow function capable of being evaluated as part of a template binding update. |
+|  [Callable](./fast-element.callable.md) | Represents a callable type such as a function or an object with a "call" method. |
 |  [DecoratorAttributeConfiguration](./fast-element.decoratorattributeconfiguration.md) |  |
-|  [Expression](./fast-element.expression.md) | The signature of an arrow function capable of being evaluated as part of a template update. |
 |  [PartialFASTElementDefinition](./fast-element.partialfastelementdefinition.md) |  |
+|  [TemplateValue](./fast-element.templatevalue.md) | Represents the types of values that can be interpolated into a template. |

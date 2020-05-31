@@ -19,8 +19,8 @@ prepend(node: Node): void;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  node | <code>Node</code> |  |
+|  node | Node |  |
 
 <b>Returns:</b>
 
-`void`
+void

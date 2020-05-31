@@ -4,6 +4,9 @@
 
 ### Installing
 
+// add instructions for git cloning
+// add instructions for installing yarn
+
 Once the repo has been cloned, install Lerna:
 
 ```bash

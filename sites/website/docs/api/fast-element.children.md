@@ -19,8 +19,8 @@ export declare function children<T = any>(propertyOrOptions: (keyof T & string) 
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  propertyOrOptions | <code>(keyof T &amp; string) &#124; ChildrenBehaviorOptions&lt;keyof T &amp; string&gt;</code> |  |
+|  propertyOrOptions | (keyof T &amp; string) \| [ChildrenBehaviorOptions](./fast-element.childrenbehavioroptions.md)<!-- -->&lt;keyof T &amp; string&gt; |  |
 
 <b>Returns:</b>
 
-`CaptureType<T>`
+[CaptureType](./fast-element.capturetype.md)<!-- -->&lt;T&gt;

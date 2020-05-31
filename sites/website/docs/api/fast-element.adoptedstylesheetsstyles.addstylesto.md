@@ -19,8 +19,8 @@ addStylesTo(target: StyleTarget): void;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  target | <code>StyleTarget</code> |  |
+|  target | [StyleTarget](./fast-element.styletarget.md) |  |
 
 <b>Returns:</b>
 
-`void`
+void

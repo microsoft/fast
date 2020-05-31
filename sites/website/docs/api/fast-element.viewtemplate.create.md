@@ -21,8 +21,8 @@ create(host?: Element): HTMLView;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  host | <code>Element</code> | The host element that this template will be rendered to once created. |
+|  host | Element | The host element that this template will be rendered to once created. |
 
 <b>Returns:</b>
 
-`HTMLView`
+[HTMLView](./fast-element.htmlview.md)

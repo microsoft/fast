@@ -9,16 +9,16 @@ hide_title: true
 
 ## BindingDirective.(constructor)
 
-Constructs a new instance of the `BindingDirective` class
+Creates an instance of BindingDirective.
 
 <b>Signature:</b>
 
 ```typescript
-constructor(expression: Expression);
+constructor(binding: Binding);
 ```
 
 ## Parameters
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  expression | <code>Expression</code> |  |
+|  binding | [Binding](./fast-element.binding.md) | A binding that returns the data used to update the DOM. |

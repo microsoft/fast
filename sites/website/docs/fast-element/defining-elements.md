@@ -406,21 +406,38 @@ const template = html<MyApp>`
 })
 export class MyApp extends FASTElement {
   @observable ready: boolean = false;
+  @observable data: any = null;
 
   connectedCallback() {
     super.connectedCallback();
+    this.loadData();
+  }
 
-    fetch('some/resource').then(response => {
-      // do something with response...
-      this.ready = true;
-    });
+  async loadData() {
+    const response = await fetch('some/resource');
+    const data = await response.json();
+    
+    this.data = data;
+    this.ready = true;
   }
 }
 ```
 
 > **REMINDER:** The `@observable` decorator creates a property that the template system can watch for changes. It is similar to `@attr`, but the property is not surfaced as an HTML attribute on the element itself. While `@attr` can only be used in a `FASTElement`, `@observable` can be used in any class.
 
-> **NOTE**: Additional features are planned for `when` which will enable `elseif` and `else` conditional rendering. Today, you need multiple, separate `when` blocks to achieve the same end result.
+In addition to providing a template to conditionally render, you can also provide an expression that evaluates to a template. This enables you to dynamically change what you are conditionally rendering.
+
+**Example: Conditional Rendering with Dynamic Template**
+
+```TypeScript
+import { FASTElement, customElement, observable, html, when } from '@microsoft/fast-element';
+
+const template = html<MyApp>`
+  <h1>My App</h1>
+
+  ${when(x => x.ready, x => x.dataTemplate}
+`;
+```
 
 #### The Repeat Directive
 
@@ -429,8 +446,7 @@ To render a list of data, use the `repeat` directive, providing the list to rend
 **Example: List Rendering**
 
 ```TypeScript
-import { FASTElement, customElement, observable, html } from '@microsoft/fast-element';
-import { repeat } from '@microsoft/fast-element/directives/repeat';
+import { FASTElement, customElement, observable, html, repeat } from '@microsoft/fast-element';
 
 const template = html<FriendList>`
   <h1>Friends</h1>
@@ -475,11 +491,11 @@ Similar to event handlers, within a `repeat` block you have access to a special 
 * `parent` - The parent scope when inside a `repeat` block.
 * `index` - The index of the current item when inside a `repeat` block (opt in).
 * `length` - The length of the array when inside a `repeat` block (opt in).
-* `even` - True if the index of the current item is even when inside a `repeat` block (opt in).
-* `odd` - True if the index of the current item is odd when inside a `repeat` block (opt in).
-* `first` - True if the current item is first in the array inside a `repeat` block (opt in).
-* `middle` - True if the current item is somewhere in the middle of the the array inside a `repeat` block (opt in).
-* `last` - True if the current item is last in the array inside a `repeat` block (opt in).
+* `isEven` - True if the index of the current item is even when inside a `repeat` block (opt in).
+* `isOdd` - True if the index of the current item is odd when inside a `repeat` block (opt in).
+* `isFirst` - True if the current item is first in the array inside a `repeat` block (opt in).
+* `isInMiddle` - True if the current item is somewhere in the middle of the the array inside a `repeat` block (opt in).
+* `isLast` - True if the current item is last in the array inside a `repeat` block (opt in).
 
 Some context properties are opt-in because they are more costly to update. So, for performance reasons, they are not available by default. To opt into the positioning properties, pass options to the repeat directive, with the setting `positioning: true`. For example, here's how we would use the `index` in our friends template from above:
 
@@ -495,14 +511,12 @@ Some context properties are opt-in because they are more costly to update. So, f
 
 #### Composing Templates
 
-The `HTMLTemplate` returned from the `html` tag helper is also a directive itself. As a result, you can create templates and compose them into other templates.
+The `ViewTemplate` returned from the `html` tag helper has special handling when it is used inside of another template. This is done so that you can create templates and compose them into other templates.
 
 **Example: Composing Templates**
 
 ```TypeScript
-import { FASTElement, customElement, observable, html } from '@microsoft/fast-element';
-import { repeat } from '@microsoft/fast-element/directives/repeat';
-import { when } from '@microsoft/fast-element/directives/when';
+import { FASTElement, customElement, observable, html, repeat, when } from '@microsoft/fast-element';
 
 interface Named {
   name: string;
@@ -563,6 +577,190 @@ export class FriendList extends FASTElement {
   }
 }
 ```
+
+In the above example, we create an independent `nameTemplate` and then use it in two different places. First inside of a `when` template and then later inside of a `repeat` template.
+
+But content composition is actually more powerful than that, because you aren't limited to *static composition* of templates. You can also provide any expression that returns a template. As a result, when the `@observable` dependencies of the expression change, you can dynamically change which template is selected for rendering. If you don't want to render anything, you can also handle that by returning `null` or `undefined`. Here are a few examples of what you can do with content composition:
+
+**Example: Dynamic Composition**
+
+```TypeScript
+const defaultTemplate = html`...`;
+const templatesByType = {
+  foo: html`...`,
+  bar: html`...`,
+  baz: html`...`
+};
+
+const template = html<MyElement>`
+  <div>${x => x.selectTemplate()}</div>
+`;
+
+@customElement({
+  name: 'my-element',
+  template
+})
+export class MyElement extends FASTElement {
+  @observable data;
+
+  selectTemplate() {
+    return templatesByType[this.data.type] || defaultTemplate;
+  }
+}
+```
+
+**Example: Override Templates**
+
+```TypeScript
+const myCustomTemplate = html`...`
+
+@customElement({
+  name: 'my-derived-element',
+  template
+})
+export class MyDerivedElement extends MyElement {
+  selectTemplate() {
+    return myCustomTemplate;
+  }
+}
+```
+
+**Example: Complex Conditional**
+
+```TypeScript
+const dataTemplate = html`...`;
+const loadingTemplate = html`...`;
+
+const template = html<MyElement>`
+  <div>
+    ${x => {
+      if (x.ready) {
+        return dataTemplate;
+      }
+
+      // Any logic can go here to determine which template to use.
+      // Which template to use will be re-evaluated whenever @observable
+      // properties from this method implementation change.
+
+      return loadingTemplate;
+    }}
+  </div>
+`;
+
+@customElement({
+  name: 'my-element',
+  template
+})
+export class MyElement extends FASTElement {
+  @observable ready: boolean = false;
+  @observable data: any = null;
+
+  connectedCallback() {
+    super.connectedCallback();
+    this.loadData();
+  }
+
+  async loadData() {
+    const response = await fetch('some/resource');
+    const data = await response.json();
+    
+    this.data = data;
+    this.ready = true;
+  }
+}
+```
+
+**Example: Per Item List Types**
+
+```TypeScript
+const defaultTemplate = html`...`;
+const templatesByType = {
+  foo: html`...`,
+  bar: html`...`,
+  baz: html`...`
+};
+
+const template = html<MyElement>`
+  <ul>
+    ${repeat(x => x.items, html`
+      <li>
+        ${(x, c) = c.parent.selectTemplate(x)}
+      </li>
+    `)}
+  <ul>
+`;
+
+@customElement({
+  name: 'my-element',
+  template
+})
+export class MyElement extends FASTElement {
+  @observable items: any[] = [];
+
+  selectTemplate(item) {
+    return templatesByType[item.type] || defaultTemplate;
+  }
+}
+```
+
+**Example: Custom Rendering Override**
+
+```TypeScript
+const defaultTemplate = html`...`;
+const template = html<MyElement>`
+  <div>${x => x.selectTemplate()}</div>
+`;
+
+@customElement({
+  name: 'my-element',
+  template
+})
+export class MyElement extends FASTElement {
+  selectTemplate() {
+    return defaultTemplate;
+  }
+}
+
+export class MyCustomTemplate implements SyntheticViewTemplate {
+  create(): SyntheticView {
+    // construct your own implementation of SyntheticView
+    return customView;
+  }
+}
+
+const customTemplate = new MyCustomTemplate();
+
+@customElement({
+  name: 'my-derived-element',
+  template
+})
+export class MyDerivedElement extends MyElement {
+  selectTemplate() {
+    return customTemplate;
+  }
+}
+```
+
+> **IMPORTANT:** When composing templates, extract the composed template to an external variable. If you define the template inline, within your method, property, or expression, then each time that is invoked, a new instance of the template will be created, rather than reusing the template. This will result in an unnecessary performance cost.
+
+**Example: The `when` Directive**
+
+Now that we've explained how content composition works, you may find it interesting to know that `when` is actually just *syntax sugar* on top of the core composition system. Let's look at the implementation of `when` itself to see how it works:
+
+```TypeScript
+export function when(condition, templateOrTemplateExpression) {
+    const getTemplate = typeof templateOrTemplateExpression === "function"
+      ? templateOrTemplateExpression
+      : () => templateOrTemplateExpression;
+
+    return (source, context) => 
+      condition(source, context) 
+        ? getTemplate(source, context) 
+        : null;
+}
+```
+
+As you can see, all that `when` does is compose a new function that checks your condition. If it's `true,` it invokes your template provider function; if `false`, it returns `null`, indicating nothing should be rendered.
 
 ### Referential Directives
 

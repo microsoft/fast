@@ -21,8 +21,8 @@ constructor(Owner: Function, name: string, attribute?: string, mode?: AttributeM
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  Owner | <code>Function</code> |  |
-|  name | <code>string</code> |  |
-|  attribute | <code>string</code> |  |
-|  mode | <code>AttributeMode</code> |  |
-|  converter | <code>ValueConverter &#124; undefined</code> |  |
+|  Owner | Function |  |
+|  name | string |  |
+|  attribute | string |  |
+|  mode | [AttributeMode](./fast-element.attributemode.md) |  |
+|  converter | [ValueConverter](./fast-element.valueconverter.md) \| undefined |  |

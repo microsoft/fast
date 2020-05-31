@@ -9,15 +9,18 @@ hide_title: true
 
 ## Observable variable
 
+Common Observable APIs.
+
 <b>Signature:</b>
 
 ```typescript
-Observable: {
-    createArrayObserver(array: any[]): Notifier;
-    getNotifier<T extends Notifier = Notifier>(source: any): T;
+Observable: Readonly<{
+    setArrayObserverFactory(factory: (collection: any[]) => Notifier): void;
+    getNotifier(source: any): Notifier;
     track(source: unknown, propertyName: string): void;
     notify(source: unknown, args: any): void;
     defineProperty(target: {}, nameOrAccessor: string | Accessor): void;
     getAccessors(target: {}): Accessor[];
-}
+    binding<TScope = any, TReturn = any, TParent = any>(binding: Binding<any, any, any>, initialSubscriber?: Subscriber | undefined): BindingObserver<TScope, TReturn, TParent>;
+}>
 ```

@@ -21,9 +21,9 @@ handleChange(source: any, args: any): void;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  source | <code>any</code> | The source of the change. |
-|  args | <code>any</code> | The event args detailing the change that occurred. |
+|  source | any | The source of the change. |
+|  args | any | The event args detailing the change that occurred. |
 
 <b>Returns:</b>
 
-`void`
+void

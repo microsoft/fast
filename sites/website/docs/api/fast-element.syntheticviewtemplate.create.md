@@ -18,4 +18,4 @@ create(): SyntheticView;
 ```
 <b>Returns:</b>
 
-`SyntheticView`
+[SyntheticView](./fast-element.syntheticview.md)

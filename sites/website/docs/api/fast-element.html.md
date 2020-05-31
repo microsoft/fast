@@ -21,12 +21,12 @@ export declare function html<TSource = any, TParent = any>(strings: TemplateStri
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  strings | <code>TemplateStringsArray</code> | The string fragments that interpolated with the values. |
-|  values | <code>TemplateValue&lt;TSource, TParent&gt;[]</code> | The values that are interpolated with the string fragments. |
+|  strings | TemplateStringsArray | The string fragments that interpolated with the values. |
+|  values | [TemplateValue](./fast-element.templatevalue.md)<!-- -->&lt;TSource, TParent&gt;\[\] | The values that are interpolated with the string fragments. |
 
 <b>Returns:</b>
 
-`ViewTemplate<TSource, TParent>`
+[ViewTemplate](./fast-element.viewtemplate.md)<!-- -->&lt;TSource, TParent&gt;
 
 ## Remarks
 

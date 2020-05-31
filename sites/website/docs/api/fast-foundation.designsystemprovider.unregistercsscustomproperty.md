@@ -21,8 +21,8 @@ unregisterCSSCustomProperty(behavior: CSSCustomPropertyDefinition): void;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  behavior | <code>CSSCustomPropertyDefinition</code> |  |
+|  behavior | [CSSCustomPropertyDefinition](./fast-foundation.csscustompropertydefinition.md) |  |
 
 <b>Returns:</b>
 
-`void`
+void

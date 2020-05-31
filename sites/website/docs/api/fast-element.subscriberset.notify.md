@@ -21,8 +21,8 @@ notify(args: any): void;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  args | <code>any</code> | Data passed along to subscribers during notification. |
+|  args | any | Data passed along to subscribers during notification. |
 
 <b>Returns:</b>
 
-`void`
+void

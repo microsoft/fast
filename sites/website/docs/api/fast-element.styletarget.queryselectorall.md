@@ -19,8 +19,8 @@ querySelectorAll<E extends Element = Element>(selectors: string): NodeListOf<E>;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  selectors | <code>string</code> |  |
+|  selectors | string |  |
 
 <b>Returns:</b>
 
-`NodeListOf<E>`
+NodeListOf&lt;E&gt;

@@ -5,8 +5,6 @@ sidebar_label: Writing Documentation
 custom_edit_url: https://github.com/microsoft/fast-dna/edit/master/sites/website/src/docs/community/writing-documentation.md
 ---
 
-# Writing style guide
-
 Writing guidelines used for this project come from the [Chicago Manual of Style][CMoS] and [The Associated Press Stylebook][APS]. When these two publications have conflicting guidance, the Chicago Manual of Style is  preferred.
 
 We recognize that many of our contributors may not have access to these paid resources, so we provide a *style guide amendment* that covers many of the most common issues as well as some guidance that is different for this project, or is not covered in other guides.

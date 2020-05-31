@@ -21,8 +21,8 @@ create(host: Element): ElementView;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  host | <code>Element</code> | The custom element host that this template will be rendered to once created. |
+|  host | Element | The custom element host that this template will be rendered to once created. |
 
 <b>Returns:</b>
 
-`ElementView`
+[ElementView](./fast-element.elementview.md)

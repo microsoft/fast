@@ -21,9 +21,9 @@ subscribe(subscriber: Subscriber, propertyToWatch: string): void;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  subscriber | <code>Subscriber</code> | The object that is subscribing for change notification. |
-|  propertyToWatch | <code>string</code> | The name of the property that the subscriber is interested in watching for changes. |
+|  subscriber | [Subscriber](./fast-element.subscriber.md) | The object that is subscribing for change notification. |
+|  propertyToWatch | string | The name of the property that the subscriber is interested in watching for changes. |
 
 <b>Returns:</b>
 
-`void`
+void

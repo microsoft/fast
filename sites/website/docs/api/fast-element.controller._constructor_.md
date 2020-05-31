@@ -21,5 +21,5 @@ constructor(element: HTMLElement, definition: FASTElementDefinition);
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  element | <code>HTMLElement</code> |  |
-|  definition | <code>FASTElementDefinition</code> |  |
+|  element | HTMLElement |  |
+|  definition | [FASTElementDefinition](./fast-element.fastelementdefinition.md) |  |

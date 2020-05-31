@@ -21,8 +21,8 @@ static findProvider(el: HTMLElement & Partial<DesignSystemConsumer>): DesignSyst
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  el | <code>HTMLElement &amp; Partial&lt;DesignSystemConsumer&gt;</code> |  |
+|  el | HTMLElement &amp; Partial&lt;[DesignSystemConsumer](./fast-foundation.designsystemconsumer.md)<!-- -->&gt; |  |
 
 <b>Returns:</b>
 
-`DesignSystemProvider | null`
+[DesignSystemProvider](./fast-foundation.designsystemprovider.md) \| null

@@ -19,23 +19,23 @@ export declare class TextArea extends FormAssociated<HTMLTextAreaElement>
 
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
-|  [appearance](./fast-foundation.textarea.appearance.md) |  | <code>TextAreaAppearance</code> |  |
-|  [autofocus](./fast-foundation.textarea.autofocus.md) |  | <code>boolean</code> |  |
-|  [cols](./fast-foundation.textarea.cols.md) |  | <code>number</code> |  |
-|  [defaultSlottedNodes](./fast-foundation.textarea.defaultslottednodes.md) |  | <code>Node[]</code> |  |
-|  [formId](./fast-foundation.textarea.formid.md) |  | <code>string</code> |  |
-|  [handleTextInput](./fast-foundation.textarea.handletextinput.md) |  | <code>() =&gt; void</code> |  |
-|  [list](./fast-foundation.textarea.list.md) |  | <code>string</code> |  |
-|  [maxlength](./fast-foundation.textarea.maxlength.md) |  | <code>number</code> |  |
-|  [minlength](./fast-foundation.textarea.minlength.md) |  | <code>number</code> |  |
-|  [name](./fast-foundation.textarea.name.md) |  | <code>string</code> |  |
-|  [placeholder](./fast-foundation.textarea.placeholder.md) |  | <code>string</code> |  |
-|  [proxy](./fast-foundation.textarea.proxy.md) |  | <code>HTMLTextAreaElement</code> |  |
-|  [readOnly](./fast-foundation.textarea.readonly.md) |  | <code>boolean</code> |  |
-|  [resize](./fast-foundation.textarea.resize.md) |  | <code>TextAreaResize</code> |  |
-|  [rows](./fast-foundation.textarea.rows.md) |  | <code>number</code> |  |
-|  [spellcheck](./fast-foundation.textarea.spellcheck.md) |  | <code>boolean</code> |  |
-|  [textarea](./fast-foundation.textarea.textarea.md) |  | <code>HTMLTextAreaElement</code> |  |
+|  [appearance](./fast-foundation.textarea.appearance.md) |  | [TextAreaAppearance](./fast-foundation.textareaappearance.md) |  |
+|  [autofocus](./fast-foundation.textarea.autofocus.md) |  | boolean |  |
+|  [cols](./fast-foundation.textarea.cols.md) |  | number |  |
+|  [defaultSlottedNodes](./fast-foundation.textarea.defaultslottednodes.md) |  | Node\[\] |  |
+|  [formId](./fast-foundation.textarea.formid.md) |  | string |  |
+|  [handleTextInput](./fast-foundation.textarea.handletextinput.md) |  | () =&gt; void |  |
+|  [list](./fast-foundation.textarea.list.md) |  | string |  |
+|  [maxlength](./fast-foundation.textarea.maxlength.md) |  | number |  |
+|  [minlength](./fast-foundation.textarea.minlength.md) |  | number |  |
+|  [name](./fast-foundation.textarea.name.md) |  | string |  |
+|  [placeholder](./fast-foundation.textarea.placeholder.md) |  | string |  |
+|  [proxy](./fast-foundation.textarea.proxy.md) |  | HTMLTextAreaElement |  |
+|  [readOnly](./fast-foundation.textarea.readonly.md) |  | boolean |  |
+|  [resize](./fast-foundation.textarea.resize.md) |  | [TextAreaResize](./fast-foundation.textarearesize.md) |  |
+|  [rows](./fast-foundation.textarea.rows.md) |  | number |  |
+|  [spellcheck](./fast-foundation.textarea.spellcheck.md) |  | boolean |  |
+|  [textarea](./fast-foundation.textarea.textarea.md) |  | HTMLTextAreaElement |  |
 
 ## Methods
 

@@ -19,7 +19,7 @@ export interface BehaviorFactory
 
 |  Property | Type | Description |
 |  --- | --- | --- |
-|  [targetIndex](./fast-element.behaviorfactory.targetindex.md) | <code>number</code> |  |
+|  [targetIndex](./fast-element.behaviorfactory.targetindex.md) | number |  |
 
 ## Methods
 

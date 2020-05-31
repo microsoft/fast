@@ -9,6 +9,8 @@ hide_title: true
 
 ## ExecutionContext.length property
 
+The length of the current collection within a repeat context.
+
 <b>Signature:</b>
 
 ```typescript

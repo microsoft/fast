@@ -19,8 +19,8 @@ export declare function ref<T = any>(propertyName: keyof T & string): CaptureTyp
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  propertyName | <code>keyof T &amp; string</code> |  |
+|  propertyName | keyof T &amp; string |  |
 
 <b>Returns:</b>
 
-`CaptureType<T>`
+[CaptureType](./fast-element.capturetype.md)<!-- -->&lt;T&gt;

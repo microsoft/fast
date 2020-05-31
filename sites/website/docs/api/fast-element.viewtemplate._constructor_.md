@@ -21,5 +21,5 @@ constructor(html: string | HTMLTemplateElement, directives: ReadonlyArray<Direct
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  html | <code>string &#124; HTMLTemplateElement</code> | The html representing what this template will instantiate, including placeholders for directives. |
-|  directives | <code>ReadonlyArray&lt;Directive&gt;</code> | The directives that will be connected to placeholders in the html. |
+|  html | string \| HTMLTemplateElement | The html representing what this template will instantiate, including placeholders for directives. |
+|  directives | ReadonlyArray&lt;[Directive](./fast-element.directive.md)<!-- -->&gt; | The directives that will be connected to placeholders in the html. |

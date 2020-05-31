@@ -19,10 +19,10 @@ $emit(type: string, detail?: any, options?: Omit<CustomEventInit, "detail">): bo
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  type | <code>string</code> |  |
-|  detail | <code>any</code> |  |
-|  options | <code>Omit&lt;CustomEventInit, &quot;detail&quot;&gt;</code> |  |
+|  type | string |  |
+|  detail | any |  |
+|  options | Omit&lt;CustomEventInit, "detail"&gt; |  |
 
 <b>Returns:</b>
 
-`boolean | void`
+boolean \| void

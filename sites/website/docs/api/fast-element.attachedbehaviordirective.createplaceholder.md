@@ -19,8 +19,8 @@ createPlaceholder(index: number): string;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  index | <code>number</code> |  |
+|  index | number |  |
 
 <b>Returns:</b>
 
-`string`
+string

@@ -9,6 +9,8 @@ hide_title: true
 
 ## Accessor interface
 
+Represents a getter/setter property accessor on an object.
+
 <b>Signature:</b>
 
 ```typescript
@@ -19,11 +21,11 @@ export interface Accessor
 
 |  Property | Type | Description |
 |  --- | --- | --- |
-|  [name](./fast-element.accessor.name.md) | <code>string</code> |  |
+|  [name](./fast-element.accessor.name.md) | string | The name of the property. |
 
 ## Methods
 
 |  Method | Description |
 |  --- | --- |
-|  [getValue(source)](./fast-element.accessor.getvalue.md) |  |
-|  [setValue(source, value)](./fast-element.accessor.setvalue.md) |  |
+|  [getValue(source)](./fast-element.accessor.getvalue.md) | Gets the value of the property on the source object. |
+|  [setValue(source, value)](./fast-element.accessor.setvalue.md) | Sets the value of the property on the source object. |

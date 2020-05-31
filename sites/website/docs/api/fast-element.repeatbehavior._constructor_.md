@@ -14,14 +14,14 @@ Constructs a new instance of the `RepeatBehavior` class
 <b>Signature:</b>
 
 ```typescript
-constructor(location: Node, expression: Expression, template: SyntheticViewTemplate, options: RepeatOptions);
+constructor(location: Node, binding: Binding, template: SyntheticViewTemplate, options: RepeatOptions);
 ```
 
 ## Parameters
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  location | <code>Node</code> |  |
-|  expression | <code>Expression</code> |  |
-|  template | <code>SyntheticViewTemplate</code> |  |
-|  options | <code>RepeatOptions</code> |  |
+|  location | Node |  |
+|  binding | [Binding](./fast-element.binding.md) |  |
+|  template | [SyntheticViewTemplate](./fast-element.syntheticviewtemplate.md) |  |
+|  options | [RepeatOptions](./fast-element.repeatoptions.md) |  |

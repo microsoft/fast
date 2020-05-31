@@ -9,6 +9,8 @@ hide_title: true
 
 ## BindingDirective.targetAtContent() method
 
+Makes this binding target the content of an element rather than a particular attribute or property.
+
 <b>Signature:</b>
 
 ```typescript
@@ -16,4 +18,4 @@ targetAtContent(): void;
 ```
 <b>Returns:</b>
 
-`void`
+void
