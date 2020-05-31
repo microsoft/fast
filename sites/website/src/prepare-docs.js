@@ -89,7 +89,7 @@ async function copyMarkdown() {
     const mergeDocs = [
         {
             src: "../../CODE_OF_CONDUCT.md",
-            dest: "./src/docs/community/code-of-conduct.md",
+            dest: "./docs/community/code-of-conduct.md",
             metadata: {
                 id: "code-of-conduct",
                 title: "Code of Conduct",
@@ -99,7 +99,7 @@ async function copyMarkdown() {
         },
         {
             src: "../../CONTRIBUTING.md",
-            dest: "./src/docs/community/contributor-guide.md",
+            dest: "./docs/community/contributor-guide.md",
             metadata: {
                 id: "contributor-guide",
                 title: "Contributor Guide",
@@ -109,7 +109,7 @@ async function copyMarkdown() {
         },
         {
             src: "../../LICENSE",
-            dest: "./src/docs/resources/license.md",
+            dest: "./docs/resources/license.md",
             metadata: {
                 id: "license",
                 title: "License",
@@ -119,7 +119,7 @@ async function copyMarkdown() {
         },
         {
             src: "../../SECURITY.md",
-            dest: "./src/docs/resources/security.md",
+            dest: "./docs/resources/security.md",
             metadata: {
                 id: "security",
                 title: "Security",
