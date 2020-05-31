@@ -59,9 +59,23 @@ async function copyMarkdown() {
             await fse.copyFile(source, dest);
         }
     }
+    
+    function isComponentExcluded(source) {
+        for (const exclude of ["anchored-region"]) {
+            if (source.indexOf(exclude) !== -1) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 
     const componentDocs = findFiles("../../packages/web-components/fast-foundation/src", "README.md");
     for (const source of componentDocs) {
+        if (isComponentExcluded(source)) {
+            continue;
+        }
+
         const root = "./docs/fast-foundation";
         const folder = path.dirname(source);
         const dest = path.join(
