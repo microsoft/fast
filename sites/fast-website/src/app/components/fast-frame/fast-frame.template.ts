@@ -330,10 +330,7 @@ export const FastFrameTemplate = html<FastFrame>`
                 </fast-card>
                 <div
                     aria-hidden="${x => !x.expanded}"
-                    class="${x =>
-                        x.expanded
-                            ? "preview-controls"
-                            : "preview-controls preview-controls__hidden"}"
+                    class="preview-controls"
                 >
                     <fast-progress></fast-progress>
                     <fast-menu tabIndex="${x => (x.expanded ? "0" : "-1")}">

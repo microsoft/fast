@@ -7,6 +7,7 @@ import {
     neutralForegroundHintBehavior,
     neutralForegroundRestBehavior,
 } from "@microsoft/fast-components";
+import { drawerBreakpoint } from "./fast-frame";
 
 export const FastFrameStyles = css`
     ${display("block")} :host {
@@ -224,10 +225,6 @@ export const FastFrameStyles = css`
         visibility: hidden;
     }
 
-    .preview-controls__hidden {
-
-    }
-
     fast-card {
         width: 280px;
     }
@@ -275,7 +272,7 @@ export const FastFrameStyles = css`
         }
     
     }
-    @media screen and (max-width: 660px) {
+    @media screen and (max-width: ${drawerBreakpoint}) {
         :host {
             --gutter: 10;
         }

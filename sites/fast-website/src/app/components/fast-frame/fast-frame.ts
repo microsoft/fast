@@ -9,6 +9,8 @@ import {
 } from "@microsoft/fast-colors";
 import { SiteColorSwatch } from "../color-swatch";
 
+export const drawerBreakpoint: string = "660px";
+
 export class FastFrame extends FASTElement {
     @attr({ attribute: "accent-color" })
     public accentColor: string = "#F33378";
@@ -168,11 +170,8 @@ export class FastFrame extends FASTElement {
         this.backgroundColor = this.previewBackgroundPalette[this.lastSelectedIndex];
     };
 
-    private resizeHandler = (): void => {
-        // Reset expanded when screensize is greater than 660
-        if (window.innerWidth > 660) {
-            this.expanded = false;
-        }
+    private resetExpanded = (): void => {
+        this.expanded = false;
     };
 
     constructor() {
@@ -183,6 +182,8 @@ export class FastFrame extends FASTElement {
         this.saturation = accentColorHSL.s;
         this.lightness = accentColorHSL.l;
 
-        window.addEventListener("resize", this.resizeHandler, { passive: true });
+        window
+            .matchMedia(`(max-width: ${drawerBreakpoint})`)
+            .addListener(this.resetExpanded);
     }
 }
