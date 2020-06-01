@@ -69,6 +69,7 @@ module.exports = {
                 "fast-element/observables-and-state",
                 "fast-element/working-with-shadow-dom",
                 "fast-element/leveraging-css",
+                "fast-element/next-steps",
             ],
         },
         {
@@ -95,11 +96,11 @@ module.exports = {
             type: "category",
             label: "Resources",
             items: [
-                "resources/license", 
+                "resources/license",
                 "resources/security",
                 "resources/browser-support",
                 "resources/glossary",
-                "resources/faq"
+                "resources/faq",
             ],
         },
     ],
