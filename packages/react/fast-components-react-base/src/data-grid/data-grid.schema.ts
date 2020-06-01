@@ -12,6 +12,10 @@ export default {
         gridData: {
             title: "Array of data (objects by row) to be rendered",
             type: "array",
+            items: {
+                title: "Row data",
+                type: "object",
+            }
         },
         stableRangeEndIndex: {
             title: "Stable range end index",

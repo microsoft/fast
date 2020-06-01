@@ -1,6 +1,6 @@
 import React, { ReactText } from "react";
 import { DataGridClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
-import { get, isNil } from "lodash-es";
+import { isNil } from "lodash-es";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import { classNames, Direction, KeyCodes } from "@microsoft/fast-web-utilities";
 import throttle from "raf-throttle";
@@ -139,7 +139,7 @@ class DataGrid extends Foundation<
             >
                 <div
                     {...this.unhandledProps()}
-                    className={this.generateClassNames()}
+                    className={this.props.managedClasses.dataGrid}
                     role="grid"
                     tabIndex={-1}
                     onFocus={this.handleGridFocus}
@@ -263,8 +263,7 @@ class DataGrid extends Foundation<
                 newState.currentDataPageStartIndex =
                     newState.focusRowIndex - Math.floor(this.props.pageSize / 2);
 
-                newState.currentDataPageStartIndex =
-                    newState.currentDataPageStartIndex < 0 ? 0 : newState.currentDataPageStartIndex;
+                newState.currentDataPageStartIndex = Math.max(0, newState.currentDataPageStartIndex);
 
                 newState.currentDataPageEndIndex = newState.currentDataPageStartIndex + this.props.pageSize;
 
@@ -305,15 +304,6 @@ class DataGrid extends Foundation<
         }
     }
 
-    /**
-     * Generates class names
-     */
-    protected generateClassNames(): string {
-        const { dataGrid }: DataGridClassNameContract = this.props.managedClasses;
-
-        return super.generateClassNames(classNames(dataGrid));
-    }
-    
     /**
      * Updates focus row related state after an update
      */
@@ -365,11 +355,7 @@ class DataGrid extends Foundation<
                 newState.focusRowKey = this.props.defaultFocusRowKey;
                 newState.desiredVisibleRowIndex = newFocusRowIndex;
                 newState.focusRowIndex = newFocusRowIndex;
-                newState.currentDataPageStartIndex =
-                    newFocusRowIndex - Math.floor(this.props.pageSize / 2);
-                if (newState.currentDataPageStartIndex < 0) {
-                    newState.currentDataPageStartIndex = 0;
-                }
+                newState.currentDataPageStartIndex = Math.max(0, newFocusRowIndex - Math.floor(this.props.pageSize / 2));
                 newState.currentDataPageEndIndex = Math.min(
                     newState.currentDataPageStartIndex + this.props.pageSize,
                     this.props.gridData.length - 1
@@ -412,18 +398,9 @@ class DataGrid extends Foundation<
                 newState.focusRowKey = this.props.gridData[0][this.props.dataRowKey];
             }
 
-            newState.currentDataPageStartIndex =
-                newState.focusRowIndex - Math.floor(this.props.pageSize / 2);
+            newState.currentDataPageStartIndex = Math.max(0, newState.focusRowIndex - Math.floor(this.props.pageSize / 2));
 
-            newState.currentDataPageStartIndex =
-                newState.currentDataPageStartIndex < 0 ? 0 : newState.currentDataPageStartIndex;
-
-            newState.currentDataPageEndIndex = newState.currentDataPageStartIndex + this.props.pageSize;
-
-            newState.currentDataPageEndIndex =
-                newState.currentDataPageEndIndex > this.props.gridData.length - 1
-                    ? this.props.gridData.length - 1
-                    : newState. currentDataPageEndIndex;
+            newState.currentDataPageEndIndex = Math.min(this.props.gridData.length - 1, newState.currentDataPageStartIndex + this.props.pageSize);
 
             this.sizeRowsToIndex(newState.currentDataPageEndIndex, newState.rowPositions);
 
@@ -485,7 +462,7 @@ class DataGrid extends Foundation<
     private renderGridHeader = (): React.ReactElement<HTMLDivElement> => {
         return (
             <div
-                className={classNames(this.props.managedClasses.dataGrid_header)}
+                className={this.props.managedClasses.dataGrid_header}
                 role="row"
                 style={{
                     display: "grid",
@@ -516,6 +493,7 @@ class DataGrid extends Foundation<
                     overflowY: "scroll",
                     position: "relative",
                 }}
+                className={this.props.managedClasses.dataGrid_scrollingPanel}
             >
                 {this.renderNonVirtualizedRows()}
             </div>
@@ -569,6 +547,12 @@ class DataGrid extends Foundation<
                 )
                 : null;
 
+        const {
+            dataGrid_scrollingPanel,
+            dataGrid_scrollingPanelItems,
+            dataGrid_scrollingPanel__scrollable
+        }: DataGridClassNameContract = this.props.managedClasses
+
         return (
             <StackPanel
                 initiallyVisibleItemIndex={stackPanelVisibleItemIndex}
@@ -580,21 +564,9 @@ class DataGrid extends Foundation<
                     overflowY: "scroll" 
                 }}
                 managedClasses={{
-                    stackPanel: get(
-                        this.props.managedClasses,
-                        "dataGrid_scrollingPanel",
-                        ""
-                    ),
-                    stackPanel_items: get(
-                        this.props.managedClasses,
-                        "dataGrid_scrollingPanelItems",
-                        ""
-                    ),
-                    stackPanel__scrollable: get(
-                        this.props.managedClasses,
-                        "dataGrid_scrollingPanel__scrollable",
-                        ""
-                    ),
+                    stackPanel: dataGrid_scrollingPanel,
+                    stackPanel_items: dataGrid_scrollingPanelItems,
+                    stackPanel__scrollable: dataGrid_scrollingPanel__scrollable,
                 }}
             >
                 {this.renderVirtualizedRows()}
@@ -626,11 +598,13 @@ class DataGrid extends Foundation<
         column: DataGridColumnDefinition,
         index: number
     ): React.ReactNode => {
+        const { dataGrid_columnHeader }: DataGridClassNameContract = this.props.managedClasses;
+
         const config: DataGridHeaderRenderConfig = {
             title: column.title,
             key: column.columnDataKey,
             columnIndex: index,
-            classNames: get(this.props.managedClasses, "dataGrid_columnHeader", ""),
+            classNames: dataGrid_columnHeader,
         };
 
         if (!isNil(column.header)) {
