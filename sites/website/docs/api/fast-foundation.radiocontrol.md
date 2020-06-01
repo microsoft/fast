@@ -19,9 +19,9 @@ export interface RadioControl
 
 |  Property | Type | Description |
 |  --- | --- | --- |
-|  [checked](./fast-foundation.radiocontrol.checked.md) | boolean |  |
-|  [disabled](./fast-foundation.radiocontrol.disabled.md) | boolean |  |
-|  [focus](./fast-foundation.radiocontrol.focus.md) | () =&gt; void |  |
-|  [getAttribute](./fast-foundation.radiocontrol.getattribute.md) | (name: string) =&gt; string \| null |  |
-|  [readOnly](./fast-foundation.radiocontrol.readonly.md) | boolean |  |
-|  [setAttribute](./fast-foundation.radiocontrol.setattribute.md) | (name: string, value: string) =&gt; void |  |
+|  [checked](./fast-foundation.radiocontrol.checked.md) | <code>boolean</code> |  |
+|  [disabled](./fast-foundation.radiocontrol.disabled.md) | <code>boolean</code> |  |
+|  [focus](./fast-foundation.radiocontrol.focus.md) | <code>() =&gt; void</code> |  |
+|  [getAttribute](./fast-foundation.radiocontrol.getattribute.md) | <code>(name: string) =&gt; string &#124; null</code> |  |
+|  [readOnly](./fast-foundation.radiocontrol.readonly.md) | <code>boolean</code> |  |
+|  [setAttribute](./fast-foundation.radiocontrol.setattribute.md) | <code>(name: string, value: string) =&gt; void</code> |  |

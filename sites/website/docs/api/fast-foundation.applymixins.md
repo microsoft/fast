@@ -23,9 +23,9 @@ export declare function applyMixins(derivedCtor: any, ...baseCtors: any[]): void
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  derivedCtor | any |  |
-|  baseCtors | any\[\] |  |
+|  derivedCtor | <code>any</code> |  |
+|  baseCtors | <code>any[]</code> |  |
 
 <b>Returns:</b>
 
-void
+`void`

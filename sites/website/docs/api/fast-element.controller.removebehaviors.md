@@ -19,8 +19,8 @@ removeBehaviors(behaviors: ReadonlyArray<Behavior>): void;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  behaviors | ReadonlyArray&lt;[Behavior](./fast-element.behavior.md)<!-- -->&gt; |  |
+|  behaviors | <code>ReadonlyArray&lt;Behavior&gt;</code> |  |
 
 <b>Returns:</b>
 
-void
+`void`

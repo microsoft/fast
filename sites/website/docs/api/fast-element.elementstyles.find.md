@@ -19,8 +19,8 @@ static find(key: string): ElementStyles | null;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  key | string |  |
+|  key | <code>string</code> |  |
 
 <b>Returns:</b>
 
-[ElementStyles](./fast-element.elementstyles.md) \| null
+`ElementStyles | null`

@@ -25,16 +25,16 @@ export declare class Checkbox extends FormAssociated<HTMLInputElement>
 
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
-|  [checked](./fast-foundation.checkbox.checked.md) |  | boolean | The checked state of the control |
-|  [checkedAttribute](./fast-foundation.checkbox.checkedattribute.md) |  | boolean | Provides the default checkedness of the input element Passed down to proxy |
-|  [clickHandler](./fast-foundation.checkbox.clickhandler.md) |  | (e: MouseEvent) =&gt; void |  |
-|  [defaultChecked](./fast-foundation.checkbox.defaultchecked.md) |  | boolean | Initialized to the value of the checked attribute. Can be changed independently of the "checked" attribute, but changing the "checked" attribute always additionally sets this value. |
-|  [defaultSlottedNodes](./fast-foundation.checkbox.defaultslottednodes.md) |  | Node\[\] |  |
-|  [indeterminate](./fast-foundation.checkbox.indeterminate.md) |  | boolean | The indeterminate state of the control |
-|  [keypressHandler](./fast-foundation.checkbox.keypresshandler.md) |  | (e: KeyboardEvent) =&gt; void |  |
-|  [proxy](./fast-foundation.checkbox.proxy.md) |  | HTMLInputElement |  |
-|  [readOnly](./fast-foundation.checkbox.readonly.md) |  | boolean |  |
-|  [value](./fast-foundation.checkbox.value.md) |  | string | The element's value to be included in form submission when checked. Default to "on" to reach parity with input\[type="checkbox"\] |
+|  [checked](./fast-foundation.checkbox.checked.md) |  | <code>boolean</code> | The checked state of the control |
+|  [checkedAttribute](./fast-foundation.checkbox.checkedattribute.md) |  | <code>boolean</code> | Provides the default checkedness of the input element Passed down to proxy |
+|  [clickHandler](./fast-foundation.checkbox.clickhandler.md) |  | <code>(e: MouseEvent) =&gt; void</code> |  |
+|  [defaultChecked](./fast-foundation.checkbox.defaultchecked.md) |  | <code>boolean</code> | Initialized to the value of the checked attribute. Can be changed independently of the "checked" attribute, but changing the "checked" attribute always additionally sets this value. |
+|  [defaultSlottedNodes](./fast-foundation.checkbox.defaultslottednodes.md) |  | <code>Node[]</code> |  |
+|  [indeterminate](./fast-foundation.checkbox.indeterminate.md) |  | <code>boolean</code> | The indeterminate state of the control |
+|  [keypressHandler](./fast-foundation.checkbox.keypresshandler.md) |  | <code>(e: KeyboardEvent) =&gt; void</code> |  |
+|  [proxy](./fast-foundation.checkbox.proxy.md) |  | <code>HTMLInputElement</code> |  |
+|  [readOnly](./fast-foundation.checkbox.readonly.md) |  | <code>boolean</code> |  |
+|  [value](./fast-foundation.checkbox.value.md) |  | <code>string</code> | The element's value to be included in form submission when checked. Default to "on" to reach parity with input\[type="checkbox"\] |
 
 ## Methods
 

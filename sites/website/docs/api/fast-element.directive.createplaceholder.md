@@ -19,8 +19,8 @@ abstract createPlaceholder(index: number): string;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  index | number |  |
+|  index | <code>number</code> |  |
 
 <b>Returns:</b>
 
-string
+`string`

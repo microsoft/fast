@@ -7,48 +7,69 @@ custom_edit_url: https://github.com/microsoft/fast-dna/edit/master/CONTRIBUTING.
 
 ## Getting started
 
-### Installing
+### Machine setup
 
-// add instructions for git cloning
-// add instructions for installing yarn
+To work with the FAST-DNA [monorepo](https://en.wikipedia.org/wiki/Monorepo) you'll need Git, Node.js, Yarn, and Lerna setup on your machine.
 
-Once the repo has been cloned, install Lerna:
+FAST-DNA uses Git as its source control system. If you haven't already installed it, you can download it [here](https://git-scm.com/downloads) or if you prefer a GUI-based approach, try [GitHub Desktop](https://desktop.github.com/).
+
+Once Git is installed, you'll also need Node.js, which FAST-DNA uses as its JavaScript runtime, enabling its build and test scripts. Node.js instructions and downloads for your preferred OS can be found [here](https://nodejs.org/en/).
+
+Because the FAST-DNA repository is structured as a monorepo, we'll need a couple of tools to manage that. The first is Yarn, which can be installed by executing the following command at the terminal:
+
+```shell
+npm install -g yarn
+```
+
+The second tool you'll need is Lerna, which can be installed with this command:
 
 ```bash
 yarn global add lerna
 ```
 
-Install all package dependencies and build all workspaces (local dependencies):
+:::important
+The above steps are a one-time setup for your machine and do not need to be repeated after the initial configuration.
+:::
+
+### Cloning the repository
+
+Now that your machine is setup, you can clone the FAST-DNA repository. Open a terminal and run this command:
+
+```shell
+git clone https://github.com/microsoft/fast-dna.git
+```
+
+### Installing and building
+
+From within the `fast-dna` folder where you've cloned the repo, install all package dependencies and build all workspaces (local dependencies) with this command:
 
 ```bash
 yarn
 ```
 
-### Maintaining
-
-Build all workspaces (local dependencies):
+After the initial install, you can re-build all workspaces in the future with:
 
 ```bash
 lerna run prepare
 ```
 
-Learn more about [installing](https://www.fast.design/docs/en/contributing/install).
-
 ### Testing
 
-Run all tests for all packages:
+To run all tests for all packages, use the following command:
 
 ```bash
 lerna run test
 ```
 
-Learn more about [testing](https://www.fast.design/docs/en/contributing/testing).
+This command can also be run from within individual package folders to execute only tests from that package.
+
+:::note
+Packages are located within the `packages` folder of the repository. Each package has a `package.json` file with a `scripts` section that defines the commands available to you for common tasks such as build, test, lint, etc.
+:::
 
 ### Submitting a pull request
 
-Before submitting a pull request, [rebase](https://www.atlassian.com/git/tutorials/merging-vs-rebasing) your branch from master. Do not use ``git merge`` or the *merge* button provided by Github.
-
-Learn more about [submitting pull requests](https://www.fast.design/docs/en/contributing/working).
+If you'd like to contribute by fixing a bug, implementing a feature, or even correcting typos in our documentation, you'll want to submit a pull request. Before submitting a pull request, be sure to [rebase](https://www.atlassian.com/git/tutorials/merging-vs-rebasing) your branch from master. Do not use ``git merge`` or the *merge* button provided by Github.
 
 ### Documenting breaking changes
 
@@ -64,8 +85,6 @@ Example of how to format `MIGRATION.md`:
 - Export `Foo` has been renamed to `Bar`.
 - `Bat` has been updated to use the new API [`BatConfig`](link/to/api).
 ```
-
----
 
 ## Contribution policy
 

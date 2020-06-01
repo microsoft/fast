@@ -19,6 +19,6 @@ export declare class Badge extends FASTElement
 
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
-|  [circular](./fast-foundation.badge.circular.md) |  | boolean |  |
-|  [color](./fast-foundation.badge.color.md) |  | string |  |
-|  [fill](./fast-foundation.badge.fill.md) |  | string |  |
+|  [circular](./fast-foundation.badge.circular.md) |  | <code>boolean</code> |  |
+|  [color](./fast-foundation.badge.color.md) |  | <code>string</code> |  |
+|  [fill](./fast-foundation.badge.fill.md) |  | <code>string</code> |  |

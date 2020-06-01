@@ -27,9 +27,9 @@ export declare class BindingDirective extends Directive
 
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
-|  [binding](./fast-element.bindingdirective.binding.md) |  | [Binding](./fast-element.binding.md) |  |
-|  [createPlaceholder](./fast-element.bindingdirective.createplaceholder.md) |  | (index: number) =&gt; string |  |
-|  [targetName](./fast-element.bindingdirective.targetname.md) |  | string \| undefined | Gets the name of the attribute or property that this binding is targeting. |
+|  [binding](./fast-element.bindingdirective.binding.md) |  | <code>Binding</code> |  |
+|  [createPlaceholder](./fast-element.bindingdirective.createplaceholder.md) |  | <code>(index: number) =&gt; string</code> |  |
+|  [targetName](./fast-element.bindingdirective.targetname.md) |  | <code>string &#124; undefined</code> | Gets the name of the attribute or property that this binding is targeting. |
 
 ## Methods
 

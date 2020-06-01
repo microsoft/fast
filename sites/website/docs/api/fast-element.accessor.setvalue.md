@@ -21,9 +21,9 @@ setValue(source: any, value: any): void;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  source | any | The source object to access. |
-|  value | any | The value to set the property to. |
+|  source | <code>any</code> | The source object to access. |
+|  value | <code>any</code> | The value to set the property to. |
 
 <b>Returns:</b>
 
-void
+`void`

@@ -21,7 +21,7 @@ constructor(location: Node, binding: Binding, template: SyntheticViewTemplate, o
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  location | Node |  |
-|  binding | [Binding](./fast-element.binding.md) |  |
-|  template | [SyntheticViewTemplate](./fast-element.syntheticviewtemplate.md) |  |
-|  options | [RepeatOptions](./fast-element.repeatoptions.md) |  |
+|  location | <code>Node</code> |  |
+|  binding | <code>Binding</code> |  |
+|  template | <code>SyntheticViewTemplate</code> |  |
+|  options | <code>RepeatOptions</code> |  |

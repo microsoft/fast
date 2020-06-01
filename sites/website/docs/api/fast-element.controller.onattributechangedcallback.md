@@ -19,10 +19,10 @@ onAttributeChangedCallback(name: string, oldValue: string, newValue: string): vo
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  name | string |  |
-|  oldValue | string |  |
-|  newValue | string |  |
+|  name | <code>string</code> |  |
+|  oldValue | <code>string</code> |  |
+|  newValue | <code>string</code> |  |
 
 <b>Returns:</b>
 
-void
+`void`

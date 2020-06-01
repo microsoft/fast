@@ -21,8 +21,8 @@ static disposeContiguousBatch(views: SyntheticView[]): void;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  views | [SyntheticView](./fast-element.syntheticview.md)<!-- -->\[\] | A contiguous range of views to be disposed. |
+|  views | <code>SyntheticView[]</code> | A contiguous range of views to be disposed. |
 
 <b>Returns:</b>
 
-void
+`void`

@@ -19,4 +19,4 @@ export declare class FASTBadge extends Badge
 
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
-|  [appearance](./fast-components-msft.fastbadge.appearance.md) |  | [BadgeAppearance](./fast-components-msft.badgeappearance.md) |  |
+|  [appearance](./fast-components-msft.fastbadge.appearance.md) |  | <code>BadgeAppearance</code> |  |

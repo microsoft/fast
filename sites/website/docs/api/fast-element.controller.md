@@ -25,10 +25,10 @@ export declare class Controller extends PropertyChangeNotifier
 
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
-|  [definition](./fast-element.controller.definition.md) |  | [FASTElementDefinition](./fast-element.fastelementdefinition.md) |  |
-|  [element](./fast-element.controller.element.md) |  | HTMLElement |  |
-|  [isConnected](./fast-element.controller.isconnected.md) |  | boolean |  |
-|  [view](./fast-element.controller.view.md) |  | [ElementView](./fast-element.elementview.md) \| null |  |
+|  [definition](./fast-element.controller.definition.md) |  | <code>FASTElementDefinition</code> |  |
+|  [element](./fast-element.controller.element.md) |  | <code>HTMLElement</code> |  |
+|  [isConnected](./fast-element.controller.isconnected.md) |  | <code>boolean</code> |  |
+|  [view](./fast-element.controller.view.md) |  | <code>ElementView &#124; null</code> |  |
 
 ## Methods
 

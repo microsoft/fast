@@ -19,8 +19,8 @@ export declare function customElement(nameOrDef: string | PartialFASTElementDefi
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  nameOrDef | string \| [PartialFASTElementDefinition](./fast-element.partialfastelementdefinition.md) |  |
+|  nameOrDef | <code>string &#124; PartialFASTElementDefinition</code> |  |
 
 <b>Returns:</b>
 
-(type: Function) =&gt; void
+`(type: Function) => void`

@@ -21,5 +21,5 @@ constructor(target: HTMLElement, propertyName: string);
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  target | HTMLElement |  |
-|  propertyName | string |  |
+|  target | <code>HTMLElement</code> |  |
+|  propertyName | <code>string</code> |  |

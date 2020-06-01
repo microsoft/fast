@@ -19,6 +19,6 @@ export interface DecoratorDesignSystemPropertyConfiguration extends Omit<Decorat
 
 |  Property | Type | Description |
 |  --- | --- | --- |
-|  [attribute](./fast-foundation.decoratordesignsystempropertyconfiguration.attribute.md) | string \| false |  |
-|  [cssCustomProperty](./fast-foundation.decoratordesignsystempropertyconfiguration.csscustomproperty.md) | string \| false |  |
-|  [default](./fast-foundation.decoratordesignsystempropertyconfiguration.default.md) | any |  |
+|  [attribute](./fast-foundation.decoratordesignsystempropertyconfiguration.attribute.md) | <code>string &#124; false</code> |  |
+|  [cssCustomProperty](./fast-foundation.decoratordesignsystempropertyconfiguration.csscustomproperty.md) | <code>string &#124; false</code> |  |
+|  [default](./fast-foundation.decoratordesignsystempropertyconfiguration.default.md) | <code>any</code> |  |

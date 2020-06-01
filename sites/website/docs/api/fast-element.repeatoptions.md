@@ -19,4 +19,4 @@ export interface RepeatOptions
 
 |  Property | Type | Description |
 |  --- | --- | --- |
-|  [positioning](./fast-element.repeatoptions.positioning.md) | boolean |  |
+|  [positioning](./fast-element.repeatoptions.positioning.md) | <code>boolean</code> |  |

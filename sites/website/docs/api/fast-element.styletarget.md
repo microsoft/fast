@@ -19,7 +19,7 @@ export interface StyleTarget
 
 |  Property | Type | Description |
 |  --- | --- | --- |
-|  [adoptedStyleSheets](./fast-element.styletarget.adoptedstylesheets.md) | CSSStyleSheet\[\] |  |
+|  [adoptedStyleSheets](./fast-element.styletarget.adoptedstylesheets.md) | <code>CSSStyleSheet[]</code> |  |
 
 ## Methods
 

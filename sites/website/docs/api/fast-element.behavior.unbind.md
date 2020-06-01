@@ -19,8 +19,8 @@ unbind(source: unknown): void;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  source | unknown |  |
+|  source | <code>unknown</code> |  |
 
 <b>Returns:</b>
 
-void
+`void`

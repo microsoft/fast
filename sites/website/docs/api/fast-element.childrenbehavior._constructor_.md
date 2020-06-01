@@ -21,5 +21,5 @@ constructor(target: HTMLSlotElement, options: ChildrenBehaviorOptions);
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  target | HTMLSlotElement |  |
-|  options | [ChildrenBehaviorOptions](./fast-element.childrenbehavioroptions.md) |  |
+|  target | <code>HTMLSlotElement</code> |  |
+|  options | <code>ChildrenBehaviorOptions</code> |  |

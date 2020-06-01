@@ -21,11 +21,11 @@ constructor(name: string, attributes: ReadonlyArray<AttributeDefinition>, proper
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  name | string |  |
-|  attributes | ReadonlyArray&lt;[AttributeDefinition](./fast-element.attributedefinition.md)<!-- -->&gt; |  |
-|  propertyLookup | Record&lt;string, [AttributeDefinition](./fast-element.attributedefinition.md)<!-- -->&gt; |  |
-|  attributeLookup | Record&lt;string, [AttributeDefinition](./fast-element.attributedefinition.md)<!-- -->&gt; |  |
-|  template | [ElementViewTemplate](./fast-element.elementviewtemplate.md) \| undefined |  |
-|  styles | [ElementStyles](./fast-element.elementstyles.md) \| undefined |  |
-|  shadowOptions | ShadowRootInit \| undefined |  |
-|  elementOptions | ElementDefinitionOptions \| undefined |  |
+|  name | <code>string</code> |  |
+|  attributes | <code>ReadonlyArray&lt;AttributeDefinition&gt;</code> |  |
+|  propertyLookup | <code>Record&lt;string, AttributeDefinition&gt;</code> |  |
+|  attributeLookup | <code>Record&lt;string, AttributeDefinition&gt;</code> |  |
+|  template | <code>ElementViewTemplate &#124; undefined</code> |  |
+|  styles | <code>ElementStyles &#124; undefined</code> |  |
+|  shadowOptions | <code>ShadowRootInit &#124; undefined</code> |  |
+|  elementOptions | <code>ElementDefinitionOptions &#124; undefined</code> |  |

@@ -21,8 +21,8 @@ static registerTagName(tagName: string): void;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  tagName | string |  |
+|  tagName | <code>string</code> |  |
 
 <b>Returns:</b>
 
-void
+`void`

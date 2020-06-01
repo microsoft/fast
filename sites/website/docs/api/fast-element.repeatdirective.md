@@ -25,10 +25,10 @@ export declare class RepeatDirective extends Directive
 
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
-|  [binding](./fast-element.repeatdirective.binding.md) |  | [Binding](./fast-element.binding.md) |  |
-|  [createPlaceholder](./fast-element.repeatdirective.createplaceholder.md) |  | (index: number) =&gt; string |  |
-|  [options](./fast-element.repeatdirective.options.md) |  | [RepeatOptions](./fast-element.repeatoptions.md) |  |
-|  [template](./fast-element.repeatdirective.template.md) |  | [SyntheticViewTemplate](./fast-element.syntheticviewtemplate.md) |  |
+|  [binding](./fast-element.repeatdirective.binding.md) |  | <code>Binding</code> |  |
+|  [createPlaceholder](./fast-element.repeatdirective.createplaceholder.md) |  | <code>(index: number) =&gt; string</code> |  |
+|  [options](./fast-element.repeatdirective.options.md) |  | <code>RepeatOptions</code> |  |
+|  [template](./fast-element.repeatdirective.template.md) |  | <code>SyntheticViewTemplate</code> |  |
 
 ## Methods
 

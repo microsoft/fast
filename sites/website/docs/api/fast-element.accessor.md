@@ -21,7 +21,7 @@ export interface Accessor
 
 |  Property | Type | Description |
 |  --- | --- | --- |
-|  [name](./fast-element.accessor.name.md) | string | The name of the property. |
+|  [name](./fast-element.accessor.name.md) | <code>string</code> | The name of the property. |
 
 ## Methods
 

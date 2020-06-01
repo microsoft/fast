@@ -21,6 +21,6 @@ constructor(binding: Binding, template: SyntheticViewTemplate, options: RepeatOp
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  binding | [Binding](./fast-element.binding.md) |  |
-|  template | [SyntheticViewTemplate](./fast-element.syntheticviewtemplate.md) |  |
-|  options | [RepeatOptions](./fast-element.repeatoptions.md) |  |
+|  binding | <code>Binding</code> |  |
+|  template | <code>SyntheticViewTemplate</code> |  |
+|  options | <code>RepeatOptions</code> |  |

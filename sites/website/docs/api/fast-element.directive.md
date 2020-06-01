@@ -19,7 +19,7 @@ export declare abstract class Directive implements BehaviorFactory
 
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
-|  [targetIndex](./fast-element.directive.targetindex.md) |  | number |  |
+|  [targetIndex](./fast-element.directive.targetindex.md) |  | <code>number</code> |  |
 
 ## Methods
 

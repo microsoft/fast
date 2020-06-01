@@ -21,12 +21,12 @@ export declare function compileTemplate(template: HTMLTemplateElement, directive
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  template | HTMLTemplateElement | The template to compile. |
-|  directives | ReadonlyArray&lt;[Directive](./fast-element.directive.md)<!-- -->&gt; | The directives referenced by the template. |
+|  template | <code>HTMLTemplateElement</code> | The template to compile. |
+|  directives | <code>ReadonlyArray&lt;Directive&gt;</code> | The directives referenced by the template. |
 
 <b>Returns:</b>
 
-[CompilationResult](./fast-element.compilationresult.md)
+`CompilationResult`
 
 ## Remarks
 

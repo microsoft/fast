@@ -21,7 +21,7 @@ export interface CompilationResult
 
 |  Property | Type | Description |
 |  --- | --- | --- |
-|  [fragment](./fast-element.compilationresult.fragment.md) | DocumentFragment | A clonable DocumentFragment representing the compiled HTML. |
-|  [hostBehaviorFactories](./fast-element.compilationresult.hostbehaviorfactories.md) | [BehaviorFactory](./fast-element.behaviorfactory.md)<!-- -->\[\] | The behaviors that should be applied to the host element that the template is rendered into. |
-|  [targetOffset](./fast-element.compilationresult.targetoffset.md) | number | An index offset to apply to BehaviorFactory target indexes when matching factories to targets. |
-|  [viewBehaviorFactories](./fast-element.compilationresult.viewbehaviorfactories.md) | [BehaviorFactory](./fast-element.behaviorfactory.md)<!-- -->\[\] | The behaviors that should be applied to the template's HTML. |
+|  [fragment](./fast-element.compilationresult.fragment.md) | <code>DocumentFragment</code> | A clonable DocumentFragment representing the compiled HTML. |
+|  [hostBehaviorFactories](./fast-element.compilationresult.hostbehaviorfactories.md) | <code>BehaviorFactory[]</code> | The behaviors that should be applied to the host element that the template is rendered into. |
+|  [targetOffset](./fast-element.compilationresult.targetoffset.md) | <code>number</code> | An index offset to apply to BehaviorFactory target indexes when matching factories to targets. |
+|  [viewBehaviorFactories](./fast-element.compilationresult.viewbehaviorfactories.md) | <code>BehaviorFactory[]</code> | The behaviors that should be applied to the template's HTML. |

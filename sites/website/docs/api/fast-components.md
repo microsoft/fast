@@ -11,7 +11,6 @@ hide_title: false
 
 |  Class | Description |
 |  --- | --- |
-|  [FASTAccordion](./fast-components.fastaccordion.md) |  |
 |  [FASTAnchor](./fast-components.fastanchor.md) |  |
 |  [FASTBadge](./fast-components.fastbadge.md) |  |
 |  [FASTButton](./fast-components.fastbutton.md) |  |

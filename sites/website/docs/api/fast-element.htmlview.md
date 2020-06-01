@@ -27,10 +27,10 @@ export declare class HTMLView implements ElementView, SyntheticView
 
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
-|  [context](./fast-element.htmlview.context.md) |  | [ExecutionContext](./fast-element.executioncontext.md) \| null |  |
-|  [firstChild](./fast-element.htmlview.firstchild.md) |  | Node |  |
-|  [lastChild](./fast-element.htmlview.lastchild.md) |  | Node |  |
-|  [source](./fast-element.htmlview.source.md) |  | any \| null |  |
+|  [context](./fast-element.htmlview.context.md) |  | <code>ExecutionContext &#124; null</code> |  |
+|  [firstChild](./fast-element.htmlview.firstchild.md) |  | <code>Node</code> |  |
+|  [lastChild](./fast-element.htmlview.lastchild.md) |  | <code>Node</code> |  |
+|  [source](./fast-element.htmlview.source.md) |  | <code>any &#124; null</code> |  |
 
 ## Methods
 

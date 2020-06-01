@@ -21,8 +21,8 @@ createBehavior(target: any): BindingBehavior;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  target | any | The target node that the binding behavior should attach to. |
+|  target | <code>any</code> | The target node that the binding behavior should attach to. |
 
 <b>Returns:</b>
 
-[BindingBehavior](./fast-element.bindingbehavior.md)
+`BindingBehavior`

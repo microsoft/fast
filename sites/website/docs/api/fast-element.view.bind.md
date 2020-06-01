@@ -21,9 +21,9 @@ bind(source: unknown, context: ExecutionContext): void;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  source | unknown | The binding source for the view's binding behaviors. |
-|  context | [ExecutionContext](./fast-element.executioncontext.md) |  |
+|  source | <code>unknown</code> | The binding source for the view's binding behaviors. |
+|  context | <code>ExecutionContext</code> |  |
 
 <b>Returns:</b>
 
-void
+`void`

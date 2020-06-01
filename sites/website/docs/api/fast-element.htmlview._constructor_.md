@@ -21,5 +21,5 @@ constructor(fragment: DocumentFragment, behaviors: Behavior[]);
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  fragment | DocumentFragment | The html fragment that contains the nodes for this view. |
-|  behaviors | [Behavior](./fast-element.behavior.md)<!-- -->\[\] | The behaviors to be applied to this view. |
+|  fragment | <code>DocumentFragment</code> | The html fragment that contains the nodes for this view. |
+|  behaviors | <code>Behavior[]</code> | The behaviors to be applied to this view. |

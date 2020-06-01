@@ -19,8 +19,8 @@ removeStyles(styles: ElementStyles): void;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  styles | [ElementStyles](./fast-element.elementstyles.md) |  |
+|  styles | <code>ElementStyles</code> |  |
 
 <b>Returns:</b>
 
-void
+`void`

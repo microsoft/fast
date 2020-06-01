@@ -21,12 +21,12 @@ export declare class ExecutionContext<TParent = any>
 
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
-|  [event](./fast-element.executioncontext.event.md) |  | Event | The current event within an event handler. |
-|  [index](./fast-element.executioncontext.index.md) |  | number | The index of the current item within a repeat context. |
-|  [isEven](./fast-element.executioncontext.iseven.md) |  | boolean | Indicates whether the current item within a repeat context has an even index. |
-|  [isFirst](./fast-element.executioncontext.isfirst.md) |  | boolean | Indicates whether the current item within a repeat context is the first item in the collection. |
-|  [isInMiddle](./fast-element.executioncontext.isinmiddle.md) |  | boolean | Indicates whether the current item within a repeat context is somewhere in the middle of the collection. |
-|  [isLast](./fast-element.executioncontext.islast.md) |  | boolean | Indicates whether the current item within a repeat context is the last item in the collection. |
-|  [isOdd](./fast-element.executioncontext.isodd.md) |  | boolean | Indicates whether the current item within a repeat context has an odd index. |
-|  [length](./fast-element.executioncontext.length.md) |  | number | The length of the current collection within a repeat context. |
-|  [parent](./fast-element.executioncontext.parent.md) |  | TParent | The parent data object within a repeat context. |
+|  [event](./fast-element.executioncontext.event.md) |  | <code>Event</code> | The current event within an event handler. |
+|  [index](./fast-element.executioncontext.index.md) |  | <code>number</code> | The index of the current item within a repeat context. |
+|  [isEven](./fast-element.executioncontext.iseven.md) |  | <code>boolean</code> | Indicates whether the current item within a repeat context has an even index. |
+|  [isFirst](./fast-element.executioncontext.isfirst.md) |  | <code>boolean</code> | Indicates whether the current item within a repeat context is the first item in the collection. |
+|  [isInMiddle](./fast-element.executioncontext.isinmiddle.md) |  | <code>boolean</code> | Indicates whether the current item within a repeat context is somewhere in the middle of the collection. |
+|  [isLast](./fast-element.executioncontext.islast.md) |  | <code>boolean</code> | Indicates whether the current item within a repeat context is the last item in the collection. |
+|  [isOdd](./fast-element.executioncontext.isodd.md) |  | <code>boolean</code> | Indicates whether the current item within a repeat context has an odd index. |
+|  [length](./fast-element.executioncontext.length.md) |  | <code>number</code> | The length of the current collection within a repeat context. |
+|  [parent](./fast-element.executioncontext.parent.md) |  | <code>TParent</code> | The parent data object within a repeat context. |

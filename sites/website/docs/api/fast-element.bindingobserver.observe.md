@@ -21,11 +21,11 @@ observe(source: TSource, context: ExecutionContext): TReturn;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  source | TSource | The source that the binding is based on. |
-|  context | [ExecutionContext](./fast-element.executioncontext.md) | The execution context to execute the binding within. |
+|  source | <code>TSource</code> | The source that the binding is based on. |
+|  context | <code>ExecutionContext</code> | The execution context to execute the binding within. |
 
 <b>Returns:</b>
 
-TReturn
+`TReturn`
 
 The value of the binding.

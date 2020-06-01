@@ -19,8 +19,8 @@ handleMenuKeyDown(e: KeyboardEvent): void | boolean;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  e | KeyboardEvent |  |
+|  e | <code>KeyboardEvent</code> |  |
 
 <b>Returns:</b>
 
-void \| boolean
+`void | boolean`

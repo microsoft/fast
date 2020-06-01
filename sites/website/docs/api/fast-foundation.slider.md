@@ -25,26 +25,26 @@ export declare class Slider extends FormAssociated<HTMLInputElement> implements 
 
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
-|  [decrement](./fast-foundation.slider.decrement.md) |  | () =&gt; void |  |
-|  [direction](./fast-foundation.slider.direction.md) |  | Direction |  |
-|  [increment](./fast-foundation.slider.increment.md) |  | () =&gt; void |  |
-|  [isDragging](./fast-foundation.slider.isdragging.md) |  | boolean |  |
-|  [keypressHandler](./fast-foundation.slider.keypresshandler.md) |  | (e: KeyboardEvent) =&gt; void |  |
-|  [max](./fast-foundation.slider.max.md) |  | number | Max allowed value default is 10 |
-|  [min](./fast-foundation.slider.min.md) |  | number | Min allowed value default is 0 |
-|  [mode](./fast-foundation.slider.mode.md) |  | [SliderMode](./fast-foundation.slidermode.md) | mode value, default singleValue |
-|  [orientation](./fast-foundation.slider.orientation.md) |  | Orientation | Orientation value, horizontal \| vertical |
-|  [position](./fast-foundation.slider.position.md) |  | string |  |
-|  [proxy](./fast-foundation.slider.proxy.md) |  | HTMLInputElement |  |
-|  [readOnly](./fast-foundation.slider.readonly.md) |  | boolean |  |
-|  [step](./fast-foundation.slider.step.md) |  | number | Value to increment or decrement via arrow keys, mouse click or drag |
-|  [thumb](./fast-foundation.slider.thumb.md) |  | HTMLDivElement |  |
-|  [track](./fast-foundation.slider.track.md) |  | HTMLDivElement |  |
-|  [trackHeight](./fast-foundation.slider.trackheight.md) |  | number |  |
-|  [trackMinHeight](./fast-foundation.slider.trackminheight.md) |  | number |  |
-|  [trackMinWidth](./fast-foundation.slider.trackminwidth.md) |  | number |  |
-|  [trackWidth](./fast-foundation.slider.trackwidth.md) |  | number |  |
-|  [value](./fast-foundation.slider.value.md) |  | string | The element's value to be included in form submission changed. |
+|  [decrement](./fast-foundation.slider.decrement.md) |  | <code>() =&gt; void</code> |  |
+|  [direction](./fast-foundation.slider.direction.md) |  | <code>Direction</code> |  |
+|  [increment](./fast-foundation.slider.increment.md) |  | <code>() =&gt; void</code> |  |
+|  [isDragging](./fast-foundation.slider.isdragging.md) |  | <code>boolean</code> |  |
+|  [keypressHandler](./fast-foundation.slider.keypresshandler.md) |  | <code>(e: KeyboardEvent) =&gt; void</code> |  |
+|  [max](./fast-foundation.slider.max.md) |  | <code>number</code> | Max allowed value default is 10 |
+|  [min](./fast-foundation.slider.min.md) |  | <code>number</code> | Min allowed value default is 0 |
+|  [mode](./fast-foundation.slider.mode.md) |  | <code>SliderMode</code> | mode value, default singleValue |
+|  [orientation](./fast-foundation.slider.orientation.md) |  | <code>Orientation</code> | Orientation value, horizontal \| vertical |
+|  [position](./fast-foundation.slider.position.md) |  | <code>string</code> |  |
+|  [proxy](./fast-foundation.slider.proxy.md) |  | <code>HTMLInputElement</code> |  |
+|  [readOnly](./fast-foundation.slider.readonly.md) |  | <code>boolean</code> |  |
+|  [step](./fast-foundation.slider.step.md) |  | <code>number</code> | Value to increment or decrement via arrow keys, mouse click or drag |
+|  [thumb](./fast-foundation.slider.thumb.md) |  | <code>HTMLDivElement</code> |  |
+|  [track](./fast-foundation.slider.track.md) |  | <code>HTMLDivElement</code> |  |
+|  [trackHeight](./fast-foundation.slider.trackheight.md) |  | <code>number</code> |  |
+|  [trackMinHeight](./fast-foundation.slider.trackminheight.md) |  | <code>number</code> |  |
+|  [trackMinWidth](./fast-foundation.slider.trackminwidth.md) |  | <code>number</code> |  |
+|  [trackWidth](./fast-foundation.slider.trackwidth.md) |  | <code>number</code> |  |
+|  [value](./fast-foundation.slider.value.md) |  | <code>string</code> | The element's value to be included in form submission changed. |
 
 ## Methods
 

@@ -19,8 +19,8 @@ withBehaviors(...behaviors: Behavior[]): this;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  behaviors | [Behavior](./fast-element.behavior.md)<!-- -->\[\] |  |
+|  behaviors | <code>Behavior[]</code> |  |
 
 <b>Returns:</b>
 
-this
+`this`

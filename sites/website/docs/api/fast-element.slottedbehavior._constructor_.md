@@ -21,5 +21,5 @@ constructor(target: HTMLSlotElement, options: SlottedBehaviorOptions);
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  target | HTMLSlotElement |  |
-|  options | [SlottedBehaviorOptions](./fast-element.slottedbehavioroptions.md) |  |
+|  target | <code>HTMLSlotElement</code> |  |
+|  options | <code>SlottedBehaviorOptions</code> |  |

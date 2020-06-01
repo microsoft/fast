@@ -21,5 +21,5 @@ constructor(source: any, initialSubscriber?: Subscriber);
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  source | any | The object source that subscribers will receive notifications from. |
-|  initialSubscriber | [Subscriber](./fast-element.subscriber.md) | An initial subscriber to changes. |
+|  source | <code>any</code> | The object source that subscribers will receive notifications from. |
+|  initialSubscriber | <code>Subscriber</code> | An initial subscriber to changes. |

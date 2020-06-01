@@ -21,10 +21,10 @@ export declare function cssCustomPropertyBehaviorFactory(name: string, value: st
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  name | string | The name of the CSS custom property |
-|  value | string \| ((...arg: any\[\]) =&gt; string) | The value or value resolver of the custom property |
-|  host | (source: typeof [FASTElement](./fast-element.fastelement.md) &amp; HTMLElement) =&gt; Partial&lt;[CSSCustomPropertyTarget](./fast-foundation.csscustompropertytarget.md)<!-- -->&gt; \| null | A function to resolve the element to host the CSS custom property |
+|  name | <code>string</code> | The name of the CSS custom property |
+|  value | <code>string &#124; ((...arg: any[]) =&gt; string)</code> | The value or value resolver of the custom property |
+|  host | <code>(source: typeof FASTElement &amp; HTMLElement) =&gt; Partial&lt;CSSCustomPropertyTarget&gt; &#124; null</code> | A function to resolve the element to host the CSS custom property |
 
 <b>Returns:</b>
 
-[CSSCustomPropertyBehavior](./fast-foundation.csscustompropertybehavior.md)
+`CSSCustomPropertyBehavior`

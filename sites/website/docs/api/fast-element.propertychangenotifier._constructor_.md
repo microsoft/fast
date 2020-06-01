@@ -21,4 +21,4 @@ constructor(source: any);
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  source | any | The object source that subscribers will receive notifications from. |
+|  source | <code>any</code> | The object source that subscribers will receive notifications from. |

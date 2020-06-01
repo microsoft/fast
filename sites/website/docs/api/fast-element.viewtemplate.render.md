@@ -21,9 +21,9 @@ render(source: TSource, host: HTMLElement | string): HTMLView;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  source | TSource | The data source to bind the template to. |
-|  host | HTMLElement \| string | The HTMLElement where the template will be rendered. |
+|  source | <code>TSource</code> | The data source to bind the template to. |
+|  host | <code>HTMLElement &#124; string</code> | The HTMLElement where the template will be rendered. |
 
 <b>Returns:</b>
 
-[HTMLView](./fast-element.htmlview.md)
+`HTMLView`

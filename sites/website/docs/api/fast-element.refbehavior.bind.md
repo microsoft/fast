@@ -19,8 +19,8 @@ bind(source: any): void;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  source | any |  |
+|  source | <code>any</code> |  |
 
 <b>Returns:</b>
 
-void
+`void`

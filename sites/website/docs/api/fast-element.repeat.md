@@ -19,10 +19,10 @@ export declare function repeat<TScope = any, TItem = any>(binding: Binding<TScop
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  binding | [Binding](./fast-element.binding.md)<!-- -->&lt;TScope, TItem\[\]&gt; |  |
-|  template | [ViewTemplate](./fast-element.viewtemplate.md)<!-- -->&lt;Partial&lt;TItem&gt;, TScope&gt; |  |
-|  options | [RepeatOptions](./fast-element.repeatoptions.md) |  |
+|  binding | <code>Binding&lt;TScope, TItem[]&gt;</code> |  |
+|  template | <code>ViewTemplate&lt;Partial&lt;TItem&gt;, TScope&gt;</code> |  |
+|  options | <code>RepeatOptions</code> |  |
 
 <b>Returns:</b>
 
-[CaptureType](./fast-element.capturetype.md)<!-- -->&lt;TScope&gt;
+`CaptureType<TScope>`

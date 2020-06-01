@@ -19,8 +19,8 @@ withKey(key: string): this;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  key | string |  |
+|  key | <code>string</code> |  |
 
 <b>Returns:</b>
 
-this
+`this`

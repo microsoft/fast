@@ -27,8 +27,8 @@ export declare class ViewTemplate<TSource = any, TParent = any> implements Eleme
 
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
-|  [directives](./fast-element.viewtemplate.directives.md) |  | ReadonlyArray&lt;[Directive](./fast-element.directive.md)<!-- -->&gt; |  |
-|  [html](./fast-element.viewtemplate.html.md) |  | string \| HTMLTemplateElement |  |
+|  [directives](./fast-element.viewtemplate.directives.md) |  | <code>ReadonlyArray&lt;Directive&gt;</code> |  |
+|  [html](./fast-element.viewtemplate.html.md) |  | <code>string &#124; HTMLTemplateElement</code> |  |
 
 ## Methods
 

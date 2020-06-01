@@ -21,8 +21,8 @@ subscribe(subscriber: Subscriber): void;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  subscriber | [Subscriber](./fast-element.subscriber.md) | The object that is subscribing for change notification. |
+|  subscriber | <code>Subscriber</code> | The object that is subscribing for change notification. |
 
 <b>Returns:</b>
 
-void
+`void`

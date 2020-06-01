@@ -19,13 +19,13 @@ export declare class Dialog extends FASTElement
 
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
-|  [ariaDescribedby](./fast-foundation.dialog.ariadescribedby.md) |  | string |  |
-|  [ariaLabel](./fast-foundation.dialog.arialabel.md) |  | string |  |
-|  [ariaLabelledby](./fast-foundation.dialog.arialabelledby.md) |  | string |  |
-|  [dialog](./fast-foundation.dialog.dialog.md) |  | HTMLDivElement |  |
-|  [hidden](./fast-foundation.dialog.hidden.md) |  | boolean |  |
-|  [modal](./fast-foundation.dialog.modal.md) |  | boolean |  |
-|  [trapFocus](./fast-foundation.dialog.trapfocus.md) |  | boolean |  |
+|  [ariaDescribedby](./fast-foundation.dialog.ariadescribedby.md) |  | <code>string</code> |  |
+|  [ariaLabel](./fast-foundation.dialog.arialabel.md) |  | <code>string</code> |  |
+|  [ariaLabelledby](./fast-foundation.dialog.arialabelledby.md) |  | <code>string</code> |  |
+|  [dialog](./fast-foundation.dialog.dialog.md) |  | <code>HTMLDivElement</code> |  |
+|  [hidden](./fast-foundation.dialog.hidden.md) |  | <code>boolean</code> |  |
+|  [modal](./fast-foundation.dialog.modal.md) |  | <code>boolean</code> |  |
+|  [trapFocus](./fast-foundation.dialog.trapfocus.md) |  | <code>boolean</code> |  |
 
 ## Methods
 

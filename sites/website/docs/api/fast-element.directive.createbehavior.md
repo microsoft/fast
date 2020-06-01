@@ -19,8 +19,8 @@ abstract createBehavior(target: any): Behavior;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  target | any |  |
+|  target | <code>any</code> |  |
 
 <b>Returns:</b>
 
-[Behavior](./fast-element.behavior.md)
+`Behavior`

@@ -19,15 +19,15 @@ export declare class SliderLabel extends FASTElement
 
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
-|  [disabled](./fast-foundation.sliderlabel.disabled.md) |  | boolean |  |
-|  [hideMark](./fast-foundation.sliderlabel.hidemark.md) |  | boolean |  |
-|  [position](./fast-foundation.sliderlabel.position.md) |  | string |  |
-|  [positionStyle](./fast-foundation.sliderlabel.positionstyle.md) |  | string |  |
-|  [root](./fast-foundation.sliderlabel.root.md) |  | HTMLDivElement |  |
-|  [sliderDirection](./fast-foundation.sliderlabel.sliderdirection.md) |  | Direction |  |
-|  [sliderMaxPosition](./fast-foundation.sliderlabel.slidermaxposition.md) |  | number |  |
-|  [sliderMinPosition](./fast-foundation.sliderlabel.sliderminposition.md) |  | number |  |
-|  [sliderOrientation](./fast-foundation.sliderlabel.sliderorientation.md) |  | Orientation |  |
+|  [disabled](./fast-foundation.sliderlabel.disabled.md) |  | <code>boolean</code> |  |
+|  [hideMark](./fast-foundation.sliderlabel.hidemark.md) |  | <code>boolean</code> |  |
+|  [position](./fast-foundation.sliderlabel.position.md) |  | <code>string</code> |  |
+|  [positionStyle](./fast-foundation.sliderlabel.positionstyle.md) |  | <code>string</code> |  |
+|  [root](./fast-foundation.sliderlabel.root.md) |  | <code>HTMLDivElement</code> |  |
+|  [sliderDirection](./fast-foundation.sliderlabel.sliderdirection.md) |  | <code>Direction</code> |  |
+|  [sliderMaxPosition](./fast-foundation.sliderlabel.slidermaxposition.md) |  | <code>number</code> |  |
+|  [sliderMinPosition](./fast-foundation.sliderlabel.sliderminposition.md) |  | <code>number</code> |  |
+|  [sliderOrientation](./fast-foundation.sliderlabel.sliderorientation.md) |  | <code>Orientation</code> |  |
 
 ## Methods
 

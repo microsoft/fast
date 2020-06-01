@@ -27,14 +27,14 @@ export declare class BindingBehavior implements Behavior
 
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
-|  [bind](./fast-element.bindingbehavior.bind.md) |  | typeof normalBind |  |
-|  [binding](./fast-element.bindingbehavior.binding.md) |  | [Binding](./fast-element.binding.md) |  |
-|  [bindingObserver](./fast-element.bindingbehavior.bindingobserver.md) |  | [BindingObserver](./fast-element.bindingobserver.md) \| null |  |
-|  [classVersions](./fast-element.bindingbehavior.classversions.md) |  | Record&lt;string, number&gt; |  |
-|  [context](./fast-element.bindingbehavior.context.md) |  | [ExecutionContext](./fast-element.executioncontext.md) \| null |  |
-|  [source](./fast-element.bindingbehavior.source.md) |  | unknown |  |
-|  [target](./fast-element.bindingbehavior.target.md) |  | any |  |
-|  [targetName](./fast-element.bindingbehavior.targetname.md) |  | string \| undefined |  |
-|  [unbind](./fast-element.bindingbehavior.unbind.md) |  | typeof normalUnbind |  |
-|  [updateTarget](./fast-element.bindingbehavior.updatetarget.md) |  | typeof updatePropertyTarget |  |
-|  [version](./fast-element.bindingbehavior.version.md) |  | number |  |
+|  [bind](./fast-element.bindingbehavior.bind.md) |  | <code>typeof normalBind</code> |  |
+|  [binding](./fast-element.bindingbehavior.binding.md) |  | <code>Binding</code> |  |
+|  [bindingObserver](./fast-element.bindingbehavior.bindingobserver.md) |  | <code>BindingObserver &#124; null</code> |  |
+|  [classVersions](./fast-element.bindingbehavior.classversions.md) |  | <code>Record&lt;string, number&gt;</code> |  |
+|  [context](./fast-element.bindingbehavior.context.md) |  | <code>ExecutionContext &#124; null</code> |  |
+|  [source](./fast-element.bindingbehavior.source.md) |  | <code>unknown</code> |  |
+|  [target](./fast-element.bindingbehavior.target.md) |  | <code>any</code> |  |
+|  [targetName](./fast-element.bindingbehavior.targetname.md) |  | <code>string &#124; undefined</code> |  |
+|  [unbind](./fast-element.bindingbehavior.unbind.md) |  | <code>typeof normalUnbind</code> |  |
+|  [updateTarget](./fast-element.bindingbehavior.updatetarget.md) |  | <code>typeof updatePropertyTarget</code> |  |
+|  [version](./fast-element.bindingbehavior.version.md) |  | <code>number</code> |  |

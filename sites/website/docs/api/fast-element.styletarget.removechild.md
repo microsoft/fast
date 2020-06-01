@@ -19,8 +19,8 @@ removeChild(node: Node): void;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  node | Node |  |
+|  node | <code>Node</code> |  |
 
 <b>Returns:</b>
 
-void
+`void`

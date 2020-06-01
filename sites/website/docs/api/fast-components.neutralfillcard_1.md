@@ -19,8 +19,8 @@ export declare function neutralFillCard(backgroundResolver: SwatchResolver): Swa
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  backgroundResolver | SwatchResolver |  |
+|  backgroundResolver | <code>SwatchResolver</code> |  |
 
 <b>Returns:</b>
 
-SwatchResolver
+`SwatchResolver`

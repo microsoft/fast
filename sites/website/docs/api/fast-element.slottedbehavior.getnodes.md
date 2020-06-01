@@ -16,4 +16,4 @@ getNodes(): Node[];
 ```
 <b>Returns:</b>
 
-Node\[\]
+`Node[]`

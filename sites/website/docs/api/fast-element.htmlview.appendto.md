@@ -21,8 +21,8 @@ appendTo(node: Node): void;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  node | Node | The parent node to append the view's DOM nodes to. |
+|  node | <code>Node</code> | The parent node to append the view's DOM nodes to. |
 
 <b>Returns:</b>
 
-void
+`void`

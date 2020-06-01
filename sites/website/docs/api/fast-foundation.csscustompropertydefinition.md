@@ -19,5 +19,5 @@ export interface CSSCustomPropertyDefinition
 
 |  Property | Type | Description |
 |  --- | --- | --- |
-|  [name](./fast-foundation.csscustompropertydefinition.name.md) | string | The custom property name |
-|  [value](./fast-foundation.csscustompropertydefinition.value.md) | string \| ((...args: any\[\]) =&gt; string) | The value of the custom property or a function that resolves the value |
+|  [name](./fast-foundation.csscustompropertydefinition.name.md) | <code>string</code> | The custom property name |
+|  [value](./fast-foundation.csscustompropertydefinition.value.md) | <code>string &#124; ((...args: any[]) =&gt; string)</code> | The value of the custom property or a function that resolves the value |

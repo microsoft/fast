@@ -21,4 +21,4 @@ constructor(binding: Binding);
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  binding | [Binding](./fast-element.binding.md) | A binding that returns the data used to update the DOM. |
+|  binding | <code>Binding</code> | A binding that returns the data used to update the DOM. |

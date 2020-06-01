@@ -21,8 +21,8 @@ getValue(source: any): any;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  source | any | The source object to access. |
+|  source | <code>any</code> | The source object to access. |
 
 <b>Returns:</b>
 
-any
+`any`

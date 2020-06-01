@@ -21,6 +21,6 @@ constructor(name: string, behavior: AttachedBehaviorType<T>, options: T);
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  name | string |  |
-|  behavior | [AttachedBehaviorType](./fast-element.attachedbehaviortype.md)<!-- -->&lt;T&gt; |  |
-|  options | T |  |
+|  name | <code>string</code> |  |
+|  behavior | <code>AttachedBehaviorType&lt;T&gt;</code> |  |
+|  options | <code>T</code> |  |

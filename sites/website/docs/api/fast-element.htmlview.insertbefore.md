@@ -21,8 +21,8 @@ insertBefore(node: Node): void;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  node | Node | The node to insert the view's DOM before. |
+|  node | <code>Node</code> | The node to insert the view's DOM before. |
 
 <b>Returns:</b>
 
-void
+`void`

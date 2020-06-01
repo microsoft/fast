@@ -21,8 +21,8 @@ evaluate(definition: CSSCustomPropertyDefinition): string;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  definition | [CSSCustomPropertyDefinition](./fast-foundation.csscustompropertydefinition.md) |  |
+|  definition | <code>CSSCustomPropertyDefinition</code> |  |
 
 <b>Returns:</b>
 
-string
+`string`

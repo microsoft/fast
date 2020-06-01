@@ -21,8 +21,8 @@ export interface SyntheticView extends View
 
 |  Property | Type | Description |
 |  --- | --- | --- |
-|  [firstChild](./fast-element.syntheticview.firstchild.md) | Node | The first DOM node in the range of nodes that make up the view. |
-|  [lastChild](./fast-element.syntheticview.lastchild.md) | Node | The last DOM node in the range of nodes that make up the view. |
+|  [firstChild](./fast-element.syntheticview.firstchild.md) | <code>Node</code> | The first DOM node in the range of nodes that make up the view. |
+|  [lastChild](./fast-element.syntheticview.lastchild.md) | <code>Node</code> | The last DOM node in the range of nodes that make up the view. |
 
 ## Methods
 

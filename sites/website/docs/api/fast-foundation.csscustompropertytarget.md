@@ -19,7 +19,7 @@ export interface CSSCustomPropertyTarget
 
 |  Property | Type | Description |
 |  --- | --- | --- |
-|  [disconnectedCSSCustomPropertyRegistry](./fast-foundation.csscustompropertytarget.disconnectedcsscustompropertyregistry.md) | [CSSCustomPropertyDefinition](./fast-foundation.csscustompropertydefinition.md)<!-- -->\[\] \| void |  |
+|  [disconnectedCSSCustomPropertyRegistry](./fast-foundation.csscustompropertytarget.disconnectedcsscustompropertyregistry.md) | <code>CSSCustomPropertyDefinition[] &#124; void</code> |  |
 
 ## Methods
 

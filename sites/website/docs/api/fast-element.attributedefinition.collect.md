@@ -19,9 +19,9 @@ static collect(Owner: Function, ...attributeLists: (ReadonlyArray<string | Attri
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  Owner | Function |  |
-|  attributeLists | (ReadonlyArray&lt;string \| [AttributeConfiguration](./fast-element.attributeconfiguration.md)<!-- -->&gt; \| undefined)\[\] |  |
+|  Owner | <code>Function</code> |  |
+|  attributeLists | <code>(ReadonlyArray&lt;string &#124; AttributeConfiguration&gt; &#124; undefined)[]</code> |  |
 
 <b>Returns:</b>
 
-ReadonlyArray&lt;[AttributeDefinition](./fast-element.attributedefinition.md)<!-- -->&gt;
+`ReadonlyArray<AttributeDefinition>`

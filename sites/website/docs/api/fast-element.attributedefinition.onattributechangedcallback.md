@@ -19,9 +19,9 @@ onAttributeChangedCallback(element: HTMLElement, value: any): void;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  element | HTMLElement |  |
-|  value | any |  |
+|  element | <code>HTMLElement</code> |  |
+|  value | <code>any</code> |  |
 
 <b>Returns:</b>
 
-void
+`void`

@@ -19,8 +19,8 @@ export declare function neutralFillCard(designSystem: FASTDesignSystem): Swatch;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  designSystem | FASTDesignSystem |  |
+|  designSystem | <code>FASTDesignSystem</code> |  |
 
 <b>Returns:</b>
 
-Swatch
+`Swatch`

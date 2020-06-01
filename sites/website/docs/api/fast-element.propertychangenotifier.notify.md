@@ -21,8 +21,8 @@ notify(propertyName: string): void;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  propertyName | string | The property name, passed along to subscribers during notification. |
+|  propertyName | <code>string</code> | The property name, passed along to subscribers during notification. |
 
 <b>Returns:</b>
 
-void
+`void`

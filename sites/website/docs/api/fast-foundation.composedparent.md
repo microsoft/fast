@@ -21,8 +21,8 @@ export declare function composedParent<T extends HTMLElement>(element: T): HTMLE
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  element | T | The element to retrieve the parent element of |
+|  element | <code>T</code> | The element to retrieve the parent element of |
 
 <b>Returns:</b>
 
-HTMLElement \| null
+`HTMLElement | null`

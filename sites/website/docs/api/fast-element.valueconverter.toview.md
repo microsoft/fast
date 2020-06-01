@@ -19,8 +19,8 @@ toView(value: any): string | null;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  value | any |  |
+|  value | <code>any</code> |  |
 
 <b>Returns:</b>
 
-string \| null
+`string | null`

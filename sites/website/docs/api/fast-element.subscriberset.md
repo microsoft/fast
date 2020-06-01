@@ -31,7 +31,7 @@ This set is optimized for the most common scenario of 1 or 2 subscribers. With t
 
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
-|  [source](./fast-element.subscriberset.source.md) |  | any | The source that this subscriber set is reporting changes for. |
+|  [source](./fast-element.subscriberset.source.md) |  | <code>any</code> | The source that this subscriber set is reporting changes for. |
 
 ## Methods
 

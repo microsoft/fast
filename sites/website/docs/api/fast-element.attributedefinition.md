@@ -25,11 +25,11 @@ export declare class AttributeDefinition implements Accessor
 
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
-|  [attribute](./fast-element.attributedefinition.attribute.md) |  | string |  |
-|  [converter](./fast-element.attributedefinition.converter.md) |  | [ValueConverter](./fast-element.valueconverter.md) \| undefined |  |
-|  [mode](./fast-element.attributedefinition.mode.md) |  | [AttributeMode](./fast-element.attributemode.md) |  |
-|  [name](./fast-element.attributedefinition.name.md) |  | string |  |
-|  [Owner](./fast-element.attributedefinition.owner.md) |  | Function |  |
+|  [attribute](./fast-element.attributedefinition.attribute.md) |  | <code>string</code> |  |
+|  [converter](./fast-element.attributedefinition.converter.md) |  | <code>ValueConverter &#124; undefined</code> |  |
+|  [mode](./fast-element.attributedefinition.mode.md) |  | <code>AttributeMode</code> |  |
+|  [name](./fast-element.attributedefinition.name.md) |  | <code>string</code> |  |
+|  [Owner](./fast-element.attributedefinition.owner.md) |  | <code>Function</code> |  |
 
 ## Methods
 

@@ -19,4 +19,4 @@ export declare class Divider extends FASTElement
 
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
-|  [role](./fast-foundation.divider.role.md) |  | [DividerRole](./fast-foundation.dividerrole.md) |  |
+|  [role](./fast-foundation.divider.role.md) |  | <code>DividerRole</code> |  |

@@ -21,9 +21,9 @@ constructor(target: any, binding: Binding, bind: typeof normalBind, unbind: type
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  target | any | The target of the data updates. |
-|  binding | [Binding](./fast-element.binding.md) | The binding that returns the latest value for an update. |
-|  bind | typeof normalBind | The operation to perform during binding. |
-|  unbind | typeof normalUnbind | The operation to perform during unbinding. |
-|  updateTarget | typeof updatePropertyTarget | The operation to perform when updating. |
-|  targetName | string \| undefined | The name of the target attribute or property to update. |
+|  target | <code>any</code> | The target of the data updates. |
+|  binding | <code>Binding</code> | The binding that returns the latest value for an update. |
+|  bind | <code>typeof normalBind</code> | The operation to perform during binding. |
+|  unbind | <code>typeof normalUnbind</code> | The operation to perform during unbinding. |
+|  updateTarget | <code>typeof updatePropertyTarget</code> | The operation to perform when updating. |
+|  targetName | <code>string &#124; undefined</code> | The name of the target attribute or property to update. |

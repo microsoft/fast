@@ -25,15 +25,15 @@ export declare class Switch extends FormAssociated<HTMLInputElement>
 
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
-|  [checked](./fast-foundation.switch.checked.md) |  | boolean | The checked state of the control |
-|  [checkedAttribute](./fast-foundation.switch.checkedattribute.md) |  | boolean |  |
-|  [clickHandler](./fast-foundation.switch.clickhandler.md) |  | (e: MouseEvent) =&gt; void |  |
-|  [defaultChecked](./fast-foundation.switch.defaultchecked.md) |  | boolean | Initialized to the value of the checked attribute. Can be changed independently of the "checked" attribute, but changing the "checked" attribute always additionally sets this value. |
-|  [defaultSlottedNodes](./fast-foundation.switch.defaultslottednodes.md) |  | Node\[\] |  |
-|  [keypressHandler](./fast-foundation.switch.keypresshandler.md) |  | (e: KeyboardEvent) =&gt; void |  |
-|  [proxy](./fast-foundation.switch.proxy.md) |  | HTMLInputElement |  |
-|  [readOnly](./fast-foundation.switch.readonly.md) |  | boolean |  |
-|  [value](./fast-foundation.switch.value.md) |  | string | The element's value to be included in form submission when checked. Default to "on" to reach parity with input\[type="checkbox"\] |
+|  [checked](./fast-foundation.switch.checked.md) |  | <code>boolean</code> | The checked state of the control |
+|  [checkedAttribute](./fast-foundation.switch.checkedattribute.md) |  | <code>boolean</code> |  |
+|  [clickHandler](./fast-foundation.switch.clickhandler.md) |  | <code>(e: MouseEvent) =&gt; void</code> |  |
+|  [defaultChecked](./fast-foundation.switch.defaultchecked.md) |  | <code>boolean</code> | Initialized to the value of the checked attribute. Can be changed independently of the "checked" attribute, but changing the "checked" attribute always additionally sets this value. |
+|  [defaultSlottedNodes](./fast-foundation.switch.defaultslottednodes.md) |  | <code>Node[]</code> |  |
+|  [keypressHandler](./fast-foundation.switch.keypresshandler.md) |  | <code>(e: KeyboardEvent) =&gt; void</code> |  |
+|  [proxy](./fast-foundation.switch.proxy.md) |  | <code>HTMLInputElement</code> |  |
+|  [readOnly](./fast-foundation.switch.readonly.md) |  | <code>boolean</code> |  |
+|  [value](./fast-foundation.switch.value.md) |  | <code>string</code> | The element's value to be included in form submission when checked. Default to "on" to reach parity with input\[type="checkbox"\] |
 
 ## Methods
 

@@ -21,7 +21,7 @@ export interface Notifier
 
 |  Property | Type | Description |
 |  --- | --- | --- |
-|  [source](./fast-element.notifier.source.md) | any | The source object that this notifier provides change notification for. |
+|  [source](./fast-element.notifier.source.md) | <code>any</code> | The source object that this notifier provides change notification for. |
 
 ## Methods
 

@@ -21,9 +21,9 @@ export declare function when<TSource = any, TReturn = any>(binding: Binding<TSou
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  binding | [Binding](./fast-element.binding.md)<!-- -->&lt;TSource, TReturn&gt; | The condition to test for rendering. |
-|  templateOrTemplateBinding | [SyntheticViewTemplate](./fast-element.syntheticviewtemplate.md) \| [Binding](./fast-element.binding.md)<!-- -->&lt;TSource, [SyntheticViewTemplate](./fast-element.syntheticviewtemplate.md)<!-- -->&gt; | The template or a binding that gets the template to render when the condition is true. |
+|  binding | <code>Binding&lt;TSource, TReturn&gt;</code> | The condition to test for rendering. |
+|  templateOrTemplateBinding | <code>SyntheticViewTemplate &#124; Binding&lt;TSource, SyntheticViewTemplate&gt;</code> | The template or a binding that gets the template to render when the condition is true. |
 
 <b>Returns:</b>
 
-[CaptureType](./fast-element.capturetype.md)<!-- -->&lt;TSource&gt;
+`CaptureType<TSource>`

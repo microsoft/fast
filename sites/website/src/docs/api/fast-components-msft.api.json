@@ -42,34 +42,6 @@
         },
         {
           "kind": "Class",
-          "canonicalReference": "@microsoft/fast-components-msft!FASTAccordion:class",
-          "docComment": "",
-          "excerptTokens": [
-            {
-              "kind": "Content",
-              "text": "export declare class FASTAccordion extends "
-            },
-            {
-              "kind": "Reference",
-              "text": "Accordion",
-              "canonicalReference": "@microsoft/fast-foundation!Accordion:class"
-            },
-            {
-              "kind": "Content",
-              "text": " "
-            }
-          ],
-          "releaseTag": "Public",
-          "name": "FASTAccordion",
-          "members": [],
-          "extendsTokenRange": {
-            "startIndex": 1,
-            "endIndex": 3
-          },
-          "implementsTokenRanges": []
-        },
-        {
-          "kind": "Class",
           "canonicalReference": "@microsoft/fast-components-msft!FASTAnchor:class",
           "docComment": "",
           "excerptTokens": [

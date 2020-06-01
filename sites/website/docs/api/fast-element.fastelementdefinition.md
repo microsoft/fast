@@ -25,11 +25,11 @@ export declare class FASTElementDefinition
 
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
-|  [attributeLookup](./fast-element.fastelementdefinition.attributelookup.md) |  | Record&lt;string, [AttributeDefinition](./fast-element.attributedefinition.md)<!-- -->&gt; |  |
-|  [attributes](./fast-element.fastelementdefinition.attributes.md) |  | ReadonlyArray&lt;[AttributeDefinition](./fast-element.attributedefinition.md)<!-- -->&gt; |  |
-|  [elementOptions](./fast-element.fastelementdefinition.elementoptions.md) |  | ElementDefinitionOptions \| undefined |  |
-|  [name](./fast-element.fastelementdefinition.name.md) |  | string |  |
-|  [propertyLookup](./fast-element.fastelementdefinition.propertylookup.md) |  | Record&lt;string, [AttributeDefinition](./fast-element.attributedefinition.md)<!-- -->&gt; |  |
-|  [shadowOptions](./fast-element.fastelementdefinition.shadowoptions.md) |  | ShadowRootInit \| undefined |  |
-|  [styles](./fast-element.fastelementdefinition.styles.md) |  | [ElementStyles](./fast-element.elementstyles.md) \| undefined |  |
-|  [template](./fast-element.fastelementdefinition.template.md) |  | [ElementViewTemplate](./fast-element.elementviewtemplate.md) \| undefined |  |
+|  [attributeLookup](./fast-element.fastelementdefinition.attributelookup.md) |  | <code>Record&lt;string, AttributeDefinition&gt;</code> |  |
+|  [attributes](./fast-element.fastelementdefinition.attributes.md) |  | <code>ReadonlyArray&lt;AttributeDefinition&gt;</code> |  |
+|  [elementOptions](./fast-element.fastelementdefinition.elementoptions.md) |  | <code>ElementDefinitionOptions &#124; undefined</code> |  |
+|  [name](./fast-element.fastelementdefinition.name.md) |  | <code>string</code> |  |
+|  [propertyLookup](./fast-element.fastelementdefinition.propertylookup.md) |  | <code>Record&lt;string, AttributeDefinition&gt;</code> |  |
+|  [shadowOptions](./fast-element.fastelementdefinition.shadowoptions.md) |  | <code>ShadowRootInit &#124; undefined</code> |  |
+|  [styles](./fast-element.fastelementdefinition.styles.md) |  | <code>ElementStyles &#124; undefined</code> |  |
+|  [template](./fast-element.fastelementdefinition.template.md) |  | <code>ElementViewTemplate &#124; undefined</code> |  |

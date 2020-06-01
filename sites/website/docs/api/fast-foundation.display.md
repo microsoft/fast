@@ -21,8 +21,8 @@ export declare function display(displayValue: CSSDisplayPropertyValue): string;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  displayValue | [CSSDisplayPropertyValue](./fast-foundation.cssdisplaypropertyvalue.md) |  |
+|  displayValue | <code>CSSDisplayPropertyValue</code> |  |
 
 <b>Returns:</b>
 
-string
+`string`

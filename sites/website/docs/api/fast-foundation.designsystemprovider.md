@@ -21,8 +21,8 @@ export declare function designSystemProvider(nameOrDef: string | PartialFASTElem
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  nameOrDef | string \| [PartialFASTElementDefinition](./fast-element.partialfastelementdefinition.md) |  |
+|  nameOrDef | <code>string &#124; PartialFASTElementDefinition</code> |  |
 
 <b>Returns:</b>
 
-&lt;T extends typeof [DesignSystemProvider](./fast-foundation.designsystemprovider.md)<!-- -->&gt;(providerCtor: T) =&gt; void
+`<T extends typeof DesignSystemProvider>(providerCtor: T) => void`

@@ -19,8 +19,8 @@ export declare function neutralFocusInnerAccent(accentFillColor: DesignSystemRes
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  accentFillColor | DesignSystemResolver&lt;string&gt; |  |
+|  accentFillColor | <code>DesignSystemResolver&lt;string&gt;</code> |  |
 
 <b>Returns:</b>
 
-DesignSystemResolver&lt;string&gt;
+`DesignSystemResolver<string>`

@@ -12,7 +12,6 @@ hide_title: true
 
 |  Class | Description |
 |  --- | --- |
-|  [FASTAccordion](./fast-components-msft.fastaccordion.md) |  |
 |  [FASTAnchor](./fast-components-msft.fastanchor.md) |  |
 |  [FASTBadge](./fast-components-msft.fastbadge.md) |  |
 |  [FASTButton](./fast-components-msft.fastbutton.md) |  |

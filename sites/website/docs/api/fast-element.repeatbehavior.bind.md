@@ -19,9 +19,9 @@ bind(source: unknown, context: ExecutionContext): void;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  source | unknown |  |
-|  context | [ExecutionContext](./fast-element.executioncontext.md) |  |
+|  source | <code>unknown</code> |  |
+|  context | <code>ExecutionContext</code> |  |
 
 <b>Returns:</b>
 
-void
+`void`

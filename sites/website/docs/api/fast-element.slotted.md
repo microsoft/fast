@@ -19,8 +19,8 @@ export declare function slotted<T = any>(propertyOrOptions: (keyof T & string) |
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  propertyOrOptions | (keyof T &amp; string) \| [SlottedBehaviorOptions](./fast-element.slottedbehavioroptions.md)<!-- -->&lt;keyof T &amp; string&gt; |  |
+|  propertyOrOptions | <code>(keyof T &amp; string) &#124; SlottedBehaviorOptions&lt;keyof T &amp; string&gt;</code> |  |
 
 <b>Returns:</b>
 
-[CaptureType](./fast-element.capturetype.md)<!-- -->&lt;T&gt;
+`CaptureType<T>`

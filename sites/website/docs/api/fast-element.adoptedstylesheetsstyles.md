@@ -25,8 +25,8 @@ export declare class AdoptedStyleSheetsStyles extends ElementStyles
 
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
-|  [behaviors](./fast-element.adoptedstylesheetsstyles.behaviors.md) |  | ReadonlyArray&lt;[Behavior](./fast-element.behavior.md)<!-- -->&gt; \| null |  |
-|  [styles](./fast-element.adoptedstylesheetsstyles.styles.md) |  | InjectableStyles\[\] |  |
+|  [behaviors](./fast-element.adoptedstylesheetsstyles.behaviors.md) |  | <code>ReadonlyArray&lt;Behavior&gt; &#124; null</code> |  |
+|  [styles](./fast-element.adoptedstylesheetsstyles.styles.md) |  | <code>InjectableStyles[]</code> |  |
 
 ## Methods
 
