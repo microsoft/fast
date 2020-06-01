@@ -2,10 +2,33 @@ import { css } from "@microsoft/fast-element";
 import { display } from "@microsoft/fast-foundation";
 
 export const ContentPlacementStyles = css`
-    ${display("block")} :host {
-        contain: content;
+    ${display("grid")} :host {
+        justify-content: center;
+        contain: layout;
         font-family: var(--body-font);
         box-sizing: border-box;
+        position: relative;
+    }
+
+    :host(.framework_ContentPlacement)::before {
+        content: "";
+        display: block;
+        background-color: currentColor;
+        position: absolute;
+        width: 1px;
+        height: 100%;
+        left: -1px;
+        top: 0;
+    }
+
+    :host(.framework_ContentPlacement)::after {
+        content: "";
+        display: block;
+        background-color: currentColor;
+        position: absolute;
+        height: 1px;
+        width: 100%;
+        top: -1px;
     }
 
     fast-card {

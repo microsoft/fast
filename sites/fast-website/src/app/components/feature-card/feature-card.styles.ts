@@ -11,13 +11,14 @@ export const FeatureCardStyles = css`
         box-sizing: border-box;
         padding: calc(var(--design-unit) * 5px);
         box-shadow: unset;
+        position: relative;
     }
 
     :host::before {
         content: "";
         display: block;
         background-color: currentColor;
-        position: fixed;
+        position: absolute;
         height: 1px;
         width: calc(100% - (var(--design-unit) * 10px));
         left: 20px;
