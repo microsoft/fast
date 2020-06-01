@@ -19,7 +19,8 @@ export const FastFrameTemplate = html<FastFrame>`
                 <fast-tab id="palette-tab" title="Color">${PaletteIcon}</fast-tab>
                 <fast-tab id="swatches-tab" title="Styles">${SwatchesIcon}</fast-tab>
                 <fast-tab id="density-tab" title="Density">${ScreenIcon}</fast-tab>
-                <fast-tab-panel id="contrast-tab-panel" class="${x => x.expanded ? "tab-panel__expanded" : ""}">
+                <fast-tab-panel id="contrast-tab-panel" class="${x =>
+                    x.expanded ? "tab-panel__expanded" : ""}">
                     <div class="content">
                         <h1><span class="content-heading-highlight">Fast Frame</span> Dark Mode</h4>
                         <h2>Pre-built for both light and dark modes</h2>
@@ -40,7 +41,8 @@ export const FastFrameTemplate = html<FastFrame>`
                         </div>
                     </div>
                 </fast-tab-panel>
-                <fast-tab-panel id="palette-tab-panel" class="${x => x.expanded ? "tab-panel__expanded" : ""}">
+                <fast-tab-panel id="palette-tab-panel" class="${x =>
+                    x.expanded ? "tab-panel__expanded" : ""}">
                     <div class="content">
                         <h1><span class="content-heading-highlight">Fast Frame</span> Colors</h4>
                         <h2>Pre-existing color you can customize</h2>
@@ -121,7 +123,8 @@ export const FastFrameTemplate = html<FastFrame>`
                         </div>
                     </div>
                 </fast-tab-panel>
-                <fast-tab-panel id="swatches-tab-panel" class="${x => x.expanded ? "tab-panel__expanded" : ""}">
+                <fast-tab-panel id="swatches-tab-panel" class="${x =>
+                    x.expanded ? "tab-panel__expanded" : ""}">
                     <div class="content">
                         <h1><span class="content-heading-highlight">Fast Frame</span> Styles</h4>
                         <h2>Adjust style settings on the fly</h2>
@@ -178,7 +181,8 @@ export const FastFrameTemplate = html<FastFrame>`
                         </div>
                     </div>
                 </fast-tab-panel>
-                <fast-tab-panel id="density-tab-panel" class="${x => x.expanded ? "tab-panel__expanded" : ""}">
+                <fast-tab-panel id="density-tab-panel" class="${x =>
+                    x.expanded ? "tab-panel__expanded" : ""}">
                     <div class="content">
                         <h1><span class="content-heading-highlight">Fast Frame</span> Density</h4>
                         <h2>Quickly change and modify your layout</h2>
@@ -264,7 +268,7 @@ export const FastFrameTemplate = html<FastFrame>`
                 </fast-tab-panel>
             </fast-tabs>
             <fast-design-system-provider
-                class="${x => x.expanded ? "preview preview__expanded" : "preview"}"
+                class="${x => (x.expanded ? "preview preview__expanded" : "preview")}"
                 base-layer-luminance="${x =>
                     x.darkMode
                         ? StandardLuminance.DarkMode
@@ -286,11 +290,13 @@ export const FastFrameTemplate = html<FastFrame>`
                     base-horizontal-spacing-multiplier="3"
                 >
                     <fast-flipper
-                        direction="${x => x.expanded ? "next" : "previous"}"
+                        direction="${x => (x.expanded ? "next" : "previous")}"
                         aria-expanded="${x => x.expanded}"
                         aria-hidden="false"
-                        @keypress="${(x, c) => x.handleExpandKeypress(c.event as KeyboardEvent)}"
-                        @click="${(x, c) => x.handleExpandKeypress(c.event as KeyboardEvent)}"
+                        @keypress="${(x, c) =>
+                            x.handleExpandKeypress(c.event as KeyboardEvent)}"
+                        @click="${(x, c) =>
+                            x.handleExpandKeypress(c.event as KeyboardEvent)}"
                     >
                     </fast-flipper>
                 </fast-design-system-provider>
@@ -324,10 +330,13 @@ export const FastFrameTemplate = html<FastFrame>`
                 </fast-card>
                 <div
                     aria-hidden="${x => !x.expanded}"
-                    class="${x => x.expanded ? "preview-controls" : "preview-controls preview-controls__hidden"}"
+                    class="${x =>
+                        x.expanded
+                            ? "preview-controls"
+                            : "preview-controls preview-controls__hidden"}"
                 >
                     <fast-progress></fast-progress>
-                    <fast-menu tabIndex="${x => x.expanded ? "0" : "-1"}">
+                    <fast-menu tabIndex="${x => (x.expanded ? "0" : "-1")}">
                         <fast-menu-item role="menuitem">Menu item 1</fast-menu-item>
                         <fast-menu-item role="menuitem">Menu item 2</fast-menu-item>
                         <fast-menu-item role="menuitem">Menu item 3</fast-menu-item>
@@ -336,28 +345,40 @@ export const FastFrameTemplate = html<FastFrame>`
                     </fast-menu>
                     <div class="control-container">
                         <div class="control-container-column">
-                            <fast-radio tabIndex="${x => x.expanded ? "0" : "-1"}">Radio 1</fast-radio>
-                            <fast-radio tabIndex="${x => x.expanded ? "0" : "-1"}">Radio 2</fast-radio>
+                            <fast-radio tabIndex="${x =>
+                                x.expanded ? "0" : "-1"}">Radio 1</fast-radio>
+                            <fast-radio tabIndex="${x =>
+                                x.expanded ? "0" : "-1"}">Radio 2</fast-radio>
                         </div>
                         <div class="control-container-grid">
-                            <fast-switch tabIndex="${x => x.expanded ? "0" : "-1"}"></fast-switch>
+                            <fast-switch tabIndex="${x =>
+                                x.expanded ? "0" : "-1"}"></fast-switch>
                             <p>Toggle</p>
-                            <fast-checkbox tabIndex="${x => x.expanded ? "0" : "-1"}" class="checkbox"></fast-checkbox>
+                            <fast-checkbox tabIndex="${x =>
+                                x.expanded
+                                    ? "0"
+                                    : "-1"}" class="checkbox"></fast-checkbox>
                             <p class="checkbox-label">Checkbox</p>
                         </div>
                     </div>
-                    <fast-text-field placeholder="Text field" tabIndex="${x => x.expanded ? "0" : "-1"}"></fast-text-field>
+                    <fast-text-field placeholder="Text field" tabIndex="${x =>
+                        x.expanded ? "0" : "-1"}"></fast-text-field>
                     <div class="control-container-2">
-                        <fast-slider tabIndex="${x => x.expanded ? "0" : "-1"}"></fast-slider>
-                        <fast-flipper aria-hidden="false" tabIndex="${x => x.expanded ? "0" : "-1"}"></fast-flipper>
-                        <fast-flipper disabled tabIndex="${x => x.expanded ? "0" : "-1"}"></fast-flipper>
+                        <fast-slider tabIndex="${x =>
+                            x.expanded ? "0" : "-1"}"></fast-slider>
+                        <fast-flipper aria-hidden="false" tabIndex="${x =>
+                            x.expanded ? "0" : "-1"}"></fast-flipper>
+                        <fast-flipper disabled tabIndex="${x =>
+                            x.expanded ? "0" : "-1"}"></fast-flipper>
                     </div>
                     <div class="control-container">
-                        <fast-button appearance="accent" tabIndex="${x => x.expanded ? "0" : "-1"}">
+                        <fast-button appearance="accent" tabIndex="${x =>
+                            x.expanded ? "0" : "-1"}">
                             Button
                             <span slot="start">${DownloadIcon}</span>
                         </fast-button>
-                        <fast-button appearance="neutral" tabIndex="${x => x.expanded ? "0" : "-1"}">
+                        <fast-button appearance="neutral" tabIndex="${x =>
+                            x.expanded ? "0" : "-1"}">
                             Button
                             <span slot="start">${PlayIcon}</span>
                         </fast-button>

@@ -143,7 +143,7 @@ export class FastFrame extends FASTElement {
 
     public handleExpandKeypress = (e: KeyboardEvent): void => {
         this.expanded = !this.expanded;
-    }
+    };
 
     private updateAccentColor(): void {
         const accentHSL = new ColorHSL(this.hue, this.saturation, this.lightness);
@@ -170,8 +170,8 @@ export class FastFrame extends FASTElement {
 
     private resizeHandler = (): void => {
         // Reset expanded when screensize is greater than 660
-        if(window.innerWidth > 660) {
-            this.expanded = false
+        if (window.innerWidth > 660) {
+            this.expanded = false;
         }
     };
 
