@@ -1,8 +1,8 @@
 export function assignCSSCustomProperty(
     customPropertyName: string,
-    customPropertyValue: string | number
+    defaultPropertyValue: string | number
 ): string {
-    return `var(${customPropertyName}, ${customPropertyValue})`;
+    return `var(${customPropertyName}, ${defaultPropertyValue})`;
 }
 
 const propertyNamePrefix = "--fast-tooling-";
