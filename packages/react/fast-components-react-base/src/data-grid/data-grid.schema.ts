@@ -15,7 +15,7 @@ export default {
             items: {
                 title: "Row data",
                 type: "object",
-            }
+            },
         },
         stableRangeEndIndex: {
             title: "Stable range end index",

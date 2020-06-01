@@ -6,7 +6,7 @@ import DataGrid, {
     DataGridCellRenderConfig,
     DataGridColumnDefinition,
     DataGridProps,
-    DataGridRowHeightCallbackParams
+    DataGridRowHeightCallbackParams,
 } from "./index";
 
 function imageCellFn(config: DataGridCellRenderConfig): React.ReactNode {
@@ -96,9 +96,7 @@ function getDataSet(length: number): object[] {
     return dataSet;
 }
 
-function getRowHeight(
-    row: DataGridRowHeightCallbackParams
-): number {
+function getRowHeight(row: DataGridRowHeightCallbackParams): number {
     if (row.rowIndex % 2) {
         return row.defaultRowHeight;
     }

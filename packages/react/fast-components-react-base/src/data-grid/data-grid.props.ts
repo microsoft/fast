@@ -105,9 +105,7 @@ export interface DataGridHandledProps extends DataGridManagedClasses {
      * This callback function overrides the rowHeight prop and will be called for each
      * row of data when the gridData is updated in props.  Allows for non-uniform row heights.
      */
-    rowHeightCallback?: (
-        row: DataGridRowHeightCallbackParams,
-    ) => number;
+    rowHeightCallback?: (row: DataGridRowHeightCallbackParams) => number;
 
     /**
      * Default focus row key
