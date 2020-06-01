@@ -21,7 +21,7 @@ export const ContentPlacementContainerStyles = css`
     }
 
     :host([section="community"]) {
-        grid-template-columns: repeat(auto-fit, minmax(320px, 400px));
+        grid-template-columns: repeat(auto-fit, minmax(225px, 1fr));
     }
 
     /* This creates the color, background, and elevation changes on hover */
@@ -48,6 +48,12 @@ export const ContentPlacementContainerStyles = css`
     h3 {
         margin: 0 0 calc(var(--design-unit) * 5px) 0;
         font-size: var(--type-ramp-plus-2-font-size);
+    }
+
+    @media screen and (max-width: 750px) {
+        :host([section="community"]) {
+            grid-template-columns: unset;
+        }
     }
 `.withBehaviors(
     neutralForegroundHintBehavior,
