@@ -69,6 +69,9 @@ export class FastFrame extends FASTElement {
     @observable
     public lightness: number;
 
+    @observable
+    public expanded: boolean;
+
     public accentChangeHandler = (e: CustomEvent): void => {
         if (e.target instanceof SiteColorSwatch) {
             if (e.target.checked) {
@@ -138,6 +141,10 @@ export class FastFrame extends FASTElement {
         this.updateAccentColor();
     };
 
+    public handleExpandKeypress = (e: KeyboardEvent): void => {
+        this.expanded = !this.expanded;
+    }
+
     private updateAccentColor(): void {
         const accentHSL = new ColorHSL(this.hue, this.saturation, this.lightness);
         const accentRGB = hslToRGB(accentHSL);
@@ -161,6 +168,13 @@ export class FastFrame extends FASTElement {
         this.backgroundColor = this.previewBackgroundPalette[this.lastSelectedIndex];
     };
 
+    private resizeHandler = (): void => {
+        // Reset expanded when screensize is greater than 660
+        if(window.innerWidth > 660) {
+            this.expanded = false
+        }
+    };
+
     constructor() {
         super();
 
@@ -168,5 +182,7 @@ export class FastFrame extends FASTElement {
         this.hue = accentColorHSL.h;
         this.saturation = accentColorHSL.s;
         this.lightness = accentColorHSL.l;
+
+        window.addEventListener("resize", this.resizeHandler, { passive: true });
     }
 }

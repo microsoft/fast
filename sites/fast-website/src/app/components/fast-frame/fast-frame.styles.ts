@@ -15,6 +15,11 @@ export const FastFrameStyles = css`
         color: var(--neutral-foreground-rest);
         box-sizing: border-box;
         text-align: center;
+        width: 100%
+    }
+
+    :host {
+        --gutter: 20;
     }
 
     .icon {
@@ -23,8 +28,10 @@ export const FastFrameStyles = css`
 
     .wrapper {
         display: grid;
-        grid-template-columns: 500px 1fr;
+        grid-template-columns: minMax(400px, 500px) 1fr;
         min-height: 500px;
+        width: 100%;
+        position: relative;
     }
 
     .content {
@@ -33,14 +40,14 @@ export const FastFrameStyles = css`
         width: 100%;
         text-align: start;
         background: var(--background-color);
-        padding: 40px;
+        padding: calc(var(--gutter) * 2px);
     }
 
     .content-control-container {
         display: grid;
         grid-template-rows: auto;
         grid-template-columns: 1fr auto;
-        grid-gap: 20px;
+        grid-gap: calc(var(--gutter) * 1px);
         align-items: center;
     }
 
@@ -48,7 +55,7 @@ export const FastFrameStyles = css`
         display: grid;
         grid-template-rows: auto;
         grid-template-columns: 1fr 1fr;
-        grid-gap: 20px;
+        grid-gap: calc(var(--gutter) * 1px);
     }
 
     .content-control-container :not(label) {
@@ -79,10 +86,11 @@ export const FastFrameStyles = css`
 
     .preview {
         display: grid;
-        grid-gap: 40px;
-        grid-template-columns: 280px 1fr;
-        padding: 40px;
+        grid-gap: calc(var(--gutter) * 2px);
+        grid-template-columns: auto 300px;
+        padding: calc(var(--gutter) * 2px);
         background: var(--background-color);
+        position: relative;
     }
 
     .image-container {
@@ -96,14 +104,14 @@ export const FastFrameStyles = css`
     .text-container {
         display: flex;
         flex-direction: column;
-        padding: 20px;
+        padding: calc(var(--gutter) * 1px);
         text-align: start;
         color: var(--neutral-foreground-rest);
     }
 
     .badge {
         align-self: flex-end;
-        margin: 20px;
+        margin: calc(var(--gutter) * 1px);
     }
 
     .preview-controls {
@@ -120,7 +128,7 @@ export const FastFrameStyles = css`
 
     .control-container-2 {
         display: grid;
-        grid-template-columns: auto auto 1fr;
+        grid-template-columns: 1fr auto auto;
         grid-gap: 20px;
     }
 
@@ -208,8 +216,20 @@ export const FastFrameStyles = css`
             );"
     }
 
+    .responsive-expand-flipper {
+        position: absolute;
+        left: -30px;
+        align-self: center;
+        display: none;
+        visibility: hidden;
+    }
+
+    .preview-controls__hidden {
+
+    }
+
     fast-card {
-        width: auto;
+        width: 280px;
     }
 
     fast-badge {
@@ -223,7 +243,7 @@ export const FastFrameStyles = css`
 
     fast-tab-panel {
         background: var(--background-color);
-        height: auto;
+        height: 100%;
     }
 
     fast-radio-group::part(positioning-region) {
@@ -239,6 +259,96 @@ export const FastFrameStyles = css`
     fast-slider-label {
         font-size: var(--type-ramp-minus-2-font-size);
         color: var(--neutral-foreground-hint);
+    }
+    
+    @media screen and (max-width: 1330px) {
+        :host {
+            --gutter: 10;
+        }
+    
+        fast-card {
+            display: none;
+        }
+
+        .preview {
+            grid-template-columns: minMax(300px, auto);
+        }
+    
+    }
+    @media screen and (max-width: 660px) {
+        :host {
+            --gutter: 10;
+        }
+    
+        fast-card {
+            display: none;
+        }
+
+        .preview {
+            position: absolute;
+            right: -90%;
+            grid-template-columns: 100%;
+            width: 80%;
+            transition: right .5s ease-in-out;
+            align-self: center;
+        }
+
+        .preview__expanded {
+            transition: right .5s ease-in-out;
+            right: -10%;
+        }    
+
+        .wrapper {
+            display: grid;
+            grid-template-columns: auto;
+            width: calc(100vw - 20vw);
+        }
+
+        .responsive-expand-flipper {
+            display: inline-flex;
+            visibility: visible;
+        }
+        
+        .tab-panel__expanded {
+            opacity: 0;
+            transition: opacity .5s ease-in-out;
+        }
+
+        fast-tab-panel {
+            opacity: 1;
+            transition: opacity .5s ease-in-out;
+        }
+    
+    }
+    @media screen and (max-width: 480px) {
+        .preview {
+            right: -88%;
+            width: 70%;
+        }
+
+        .preview__expanded {
+            right: -5%;
+        }    
+
+        .wrapper {
+            width: calc(100vw - 12vw);
+        }
+
+        .content-control-container {
+            grid-template-columns: 1fr;
+        }
+
+        .content-control-container-2 {
+            grid-template-columns: 1fr;
+        }
+
+        .content-control-container :not(label) {
+            justify-self: start;
+        }
+
+        fast-tabs::part(tablist) {
+            padding: 16px 4px 16px 0;
+        }
     }
 `.withBehaviors(
     accentFillRestBehavior,
