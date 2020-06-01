@@ -7,12 +7,13 @@ import {
 } from "@microsoft/fast-components";
 
 export const SideNavigationStyles = css`
-    ${display("block")}:host {
+    ${display("flex")}:host {
         --engaged-height: calc(var(--design-unit) * 10px);
         --design-unit-large: calc(var(--design-unit) * 5px);
         contain: content;
         font-family: var(--body-font);
         flex-direction: column;
+        justify-content: center;
     }
 
     ul {

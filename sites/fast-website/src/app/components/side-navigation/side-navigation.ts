@@ -3,51 +3,54 @@ import {
     CommunityContentPlacementData,
     communityContentPlacementData,
 } from "../../data/community.data";
-import { throttle } from "lodash-es";
 
 export class SideNavigation extends FASTElement {
     @attr
     public category: string;
 
-    // TODO: can be removed to used sectionArray.length once index is restructured to have the correct amount of sections.
-    @attr
-    public sections: number;
-
     @observable
-    public currentSection: number = 0;
+    public currentSection: string = "hero";
 
-    // TODO: flter can be removed when index is updated
     @observable
     public sectionArray: HTMLElement[] = Array.from(
-        document.querySelectorAll("section")
-    ).filter(x => x.id !== "");
-
-    public updateCurrentSection = (): void => {
-        const fromTop = window.scrollY;
-
-        // TODO: replace sections with sectionArray.length after rebase with John's code that reduces sections down to 5
-        for (let i = 0; i < this.sections; i++) {
-            const section: HTMLElement | null = document.getElementById(
-                `${this.sectionArray[i].id}`
-            );
-            if (section === null) {
-                continue;
-            } else if (
-                section.offsetTop <= fromTop &&
-                section.offsetTop + section.offsetHeight > fromTop
-            ) {
-                this.currentSection = i;
-            }
-        }
-    };
+        document.querySelectorAll("section[id]")
+    );
 
     public socialData: CommunityContentPlacementData[] = communityContentPlacementData.filter(
         x => x.header !== "Github"
     );
 
+    public updateCurrentSection = (): void => {
+        const config = {
+            threshold: 0.5,
+        };
+
+        let observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    this.currentSection = entry.target.id;
+                }
+            });
+        }, config);
+
+        this.sectionArray.forEach(section => observer.observe(section));
+    };
+
+    public clickHandler = (event, parent: boolean): void => {
+        const link = parent
+            ? event.target.getAttribute("href")
+            : event.target.parentElement.getAttribute("href");
+
+        event.preventDefault();
+
+        document.querySelector(link).scrollIntoView({
+            behavior: "smooth",
+        });
+    };
+
     constructor() {
         super();
 
-        window.addEventListener("scroll", throttle(this.updateCurrentSection, 100));
+        window.addEventListener("scroll", this.updateCurrentSection);
     }
 }
