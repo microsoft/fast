@@ -44,6 +44,24 @@ function identifyPackage(path) {
     return "";
 }
 
+async function safeCopy(source, dest) {
+    if (fs.existsSync(dest)) {
+        await fse.copyFile(source, dest);
+    } else {
+        await fse.mkdir(path.dirname(dest), { recursive: true });
+        await fse.copyFile(source, dest);
+    }
+}
+
+async function safeWrite(dest, content) {
+    if (fs.existsSync(dest)) {
+        await fse.writeFile(dest, content);
+    } else {
+        await fse.mkdir(path.dirname(dest), { recursive: true });
+        await fse.writeFile(dest, content);
+    }
+}
+
 async function copyMarkdown() {
     const markdownGuides = findFiles("../../packages/web-components", ".doc.md");
     for (const source of markdownGuides) {
@@ -52,14 +70,9 @@ async function copyMarkdown() {
         const folder = identifyPackage(source);
         const dest = path.join(root, folder, filename);
 
-        if (fs.existsSync(dest)) {
-            await fse.copyFile(source, dest);
-        } else {
-            await fse.mkdir(path.dirname(dest), { recursive: true });
-            await fse.copyFile(source, dest);
-        }
+        await safeCopy(source, dest);
     }
-    
+
     function isComponentExcluded(source) {
         for (const exclude of ["anchored-region"]) {
             if (source.indexOf(exclude) !== -1) {
@@ -70,7 +83,10 @@ async function copyMarkdown() {
         return false;
     }
 
-    const componentDocs = findFiles("../../packages/web-components/fast-foundation/src", "README.md");
+    const componentDocs = findFiles(
+        "../../packages/web-components/fast-foundation/src",
+        "README.md"
+    );
     for (const source of componentDocs) {
         if (isComponentExcluded(source)) {
             continue;
@@ -83,7 +99,7 @@ async function copyMarkdown() {
             `fast-${folder.substr(folder.lastIndexOf(path.sep) + 1)}.md`
         );
 
-        await fse.copyFile(source, dest);
+        await safeCopy(source, dest);
     }
 
     const mergeDocs = [
@@ -94,8 +110,9 @@ async function copyMarkdown() {
                 id: "code-of-conduct",
                 title: "Code of Conduct",
                 sidebar_label: "Code of Conduct",
-                custom_edit_url: "https://github.com/microsoft/fast-dna/edit/master/CODE_OF_CONDUCT.md"
-            }
+                custom_edit_url:
+                    "https://github.com/microsoft/fast-dna/edit/master/CODE_OF_CONDUCT.md",
+            },
         },
         {
             src: "../../CONTRIBUTING.md",
@@ -104,8 +121,9 @@ async function copyMarkdown() {
                 id: "contributor-guide",
                 title: "Contributor Guide",
                 sidebar_label: "Contributor Guide",
-                custom_edit_url: "https://github.com/microsoft/fast-dna/edit/master/CONTRIBUTING.md"
-            }
+                custom_edit_url:
+                    "https://github.com/microsoft/fast-dna/edit/master/CONTRIBUTING.md",
+            },
         },
         {
             src: "../../LICENSE",
@@ -114,8 +132,9 @@ async function copyMarkdown() {
                 id: "license",
                 title: "License",
                 sidebar_label: "License",
-                custom_edit_url: "https://github.com/microsoft/fast-dna/edit/master/LICENSE"
-            }
+                custom_edit_url:
+                    "https://github.com/microsoft/fast-dna/edit/master/LICENSE",
+            },
         },
         {
             src: "../../SECURITY.md",
@@ -124,9 +143,10 @@ async function copyMarkdown() {
                 id: "security",
                 title: "Security",
                 sidebar_label: "Security",
-                custom_edit_url: "https://github.com/microsoft/fast-dna/edit/master/security.md"
-            }
-        }
+                custom_edit_url:
+                    "https://github.com/microsoft/fast-dna/edit/master/security.md",
+            },
+        },
     ];
 
     for (const file of mergeDocs) {
@@ -169,7 +189,7 @@ async function copyMarkdown() {
                 "---",
             ];
 
-            await fse.writeFile(file.dest, header.concat(output).join("\n"));
+            await safeWrite(file.dest, header.concat(output).join("\n"));
         } catch (err) {
             console.error(`Could not process ${file.src}: ${err}`);
         }
@@ -184,14 +204,14 @@ async function copyMarkdown() {
             .join(root, folder.substr(folder.lastIndexOf(path.sep) + 1), filename)
             .replace(`docs${path.sep}docs`, "docs");
 
-        await fse.copyFile(source, dest);
+        await safeCopy(source, dest);
     }
 }
 
 // Copy the api.json files from the web-components packages.
 async function copyAPI() {
     for (const package of packages) {
-        await fse.copyFile(
+        await safeCopy(
             `../../packages/web-components/${package}/dist/${package}.api.json`,
             `./src/docs/api/${package}.api.json`
         );
@@ -278,7 +298,7 @@ async function main() {
                 "---",
             ];
 
-            await fse.writeFile(docPath, header.concat(output).join("\n"));
+            await safeWrite(docPath, header.concat(output).join("\n"));
         } catch (err) {
             console.error(`Could not process ${docFile}: ${err}`);
         }
