@@ -25,9 +25,9 @@ export interface DataGridHeaderRenderConfig {
 }
 
 export interface DataGridRowHeightCallbackParams {
-    rowData: object,
-    rowIndex: number,
-    defaultRowHeight: number
+    rowData: object;
+    rowIndex: number;
+    defaultRowHeight: number;
 }
 
 export interface DataGridColumnDefinition {

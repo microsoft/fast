@@ -309,7 +309,7 @@ describe("data grid", (): void => {
         const row: any = rendered.find("[data-rowid]").first();
         const cell: any = row.find("[data-cellid]").first();
         cell.simulate("keydown", { keyCode: keyCodePageDown });
-        expect((rendered.instance().state as DataGridState).focusRowKey).toBe("id-3");
+        expect((rendered.instance().state as DataGridState).focusRowKey).toBe("id-1");
 
         cell.simulate("keydown", { keyCode: keyCodePageUp });
         expect((rendered.instance().state as DataGridState).focusRowKey).toBe("id-0");
@@ -647,7 +647,7 @@ describe("data grid", (): void => {
         }).not.toThrow();
     });
 
-    test("getIndexOfItemAtScrollPosition returns expected index values", (): void => {
+    test("getIndexOfRowAtScrollPosition returns expected index values", (): void => {
         const heightCallback: any = jest.fn();
         heightCallback.mockReturnValueOnce(50);
         heightCallback.mockReturnValueOnce(300);
@@ -665,22 +665,22 @@ describe("data grid", (): void => {
 
         const rowPositions: any = rendered.state("rowPositions");
         expect(
-            rendered.instance()["getIndexOfItemAtScrollPosition"](0, rowPositions)
+            rendered.instance()["getIndexOfRowAtScrollPosition"](0, rowPositions)
         ).toBe(0);
         expect(
-            rendered.instance()["getIndexOfItemAtScrollPosition"](51, rowPositions)
+            rendered.instance()["getIndexOfRowAtScrollPosition"](51, rowPositions)
         ).toBe(1);
         expect(
-            rendered.instance()["getIndexOfItemAtScrollPosition"](200, rowPositions)
+            rendered.instance()["getIndexOfRowAtScrollPosition"](200, rowPositions)
         ).toBe(1);
         expect(
-            rendered.instance()["getIndexOfItemAtScrollPosition"](349, rowPositions)
+            rendered.instance()["getIndexOfRowAtScrollPosition"](349, rowPositions)
         ).toBe(1);
         expect(
-            rendered.instance()["getIndexOfItemAtScrollPosition"](350, rowPositions)
+            rendered.instance()["getIndexOfRowAtScrollPosition"](350, rowPositions)
         ).toBe(2);
         expect(
-            rendered.instance()["getIndexOfItemAtScrollPosition"](400, rowPositions)
+            rendered.instance()["getIndexOfRowAtScrollPosition"](400, rowPositions)
         ).toBe(2);
     });
 });

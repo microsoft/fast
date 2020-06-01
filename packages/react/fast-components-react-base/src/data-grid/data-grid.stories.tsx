@@ -268,7 +268,7 @@ storiesOf("Data Grid", module)
             virtualizeItems={false}
             dataRowKey="recordId"
             gridData={getDataSet(100)}
-            defaultFocusRowKey="id-100"
+            defaultFocusRowKey="id-50"
             rowHeight={100}
             columnDefinitions={columnDefinitions}
         />
