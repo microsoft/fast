@@ -88,9 +88,17 @@ site-navigation ::part(content) {
   color: var(--neutral-foreground-rest);
 }
 
+.header .logo::part(content) {
+  display: flex;
+  align-items: flex-end;
+  font-size: var(--type-ramp-plus-4-font-size);
+  line-height: var(--type-ramp-plus-4-line-height);
+}
+
 .logo svg {
-  width: auto;
-  height: 38px;
+  width: 45px;
+  height: 40px;
+  margin-inline-end: 10px;
 }
 
 .nav-button {
@@ -200,6 +208,10 @@ fast-divider::after {
 .footer li {
   margin: unset;
   margin-inline-end: 50px;
+}
+
+.footer .logo svg {
+  margin-inline-end: unset;
 }
 
 @media screen and (max-width: 1330px) {
