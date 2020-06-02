@@ -21,6 +21,7 @@ export interface DataGridState {
     focusRowIndex: number;
     focusRowKey: ReactText | null;
     focusColumnKey: ReactText | null;
+    columnDefinitions: DataGridColumnDefinition[];
     currentDataPageStartIndex: number;
     currentDataPageEndIndex: number;
     rowPositions: RowPosition[];
@@ -75,6 +76,22 @@ class DataGrid extends Foundation<
                 {config.title}
             </div>
         );
+    };
+
+    /**
+     *  generates a basic column definition by examining sample row data
+     */
+    public static generateColumnDefinitions = (
+        gridDataRow: object
+    ): DataGridColumnDefinition[] => {
+        const definitions: DataGridColumnDefinition[] = [];
+        const properties: string[] = Object.getOwnPropertyNames(gridDataRow);
+        properties.forEach((property: string) => {
+            definitions.push({
+                columnDataKey: property,
+            });
+        });
+        return definitions;
     };
 
     protected handledProps: HandledProps<DataGridHandledProps> = {
@@ -350,7 +367,10 @@ class DataGrid extends Foundation<
         if (
             this.props.defaultFocusColumnKey !== prevProps.defaultFocusColumnKey &&
             !isNil(this.props.defaultFocusColumnKey) &&
-            this.getColumnIndexByKey(this.props.defaultFocusColumnKey) !== -1
+            this.getColumnIndexByKey(
+                this.props.defaultFocusColumnKey,
+                newState.columnDefinitions
+            ) !== -1
         ) {
             newState.focusColumnKey = this.props.defaultFocusColumnKey;
             shouldUpdateState = true;
@@ -463,17 +483,31 @@ class DataGrid extends Foundation<
             newState.focusRowKey = this.props.defaultFocusRowKey;
             newState.focusRowIndex = this.getRowIndexByKey(newState.focusRowKey);
         }
+
         if (newState.focusRowIndex === -1 && this.props.gridData.length > 0) {
             newState.focusRowIndex = 0;
             newState.focusRowKey = this.props.gridData[0][this.props.dataRowKey];
         }
 
-        if (this.props.columnDefinitions.length > 0) {
+        if (isNil(this.props.columnDefinitions)) {
+            if (this.props.gridData.length > 0) {
+                newState.columnDefinitions = DataGrid.generateColumnDefinitions(
+                    this.props.gridData[0]
+                );
+            }
+        } else {
+            newState.columnDefinitions = this.props.columnDefinitions;
+        }
+
+        if (newState.columnDefinitions.length > 0) {
             newState.focusColumnKey =
                 !isNil(this.props.defaultFocusColumnKey) &&
-                this.getColumnIndexByKey(this.props.defaultFocusColumnKey) !== -1
+                this.getColumnIndexByKey(
+                    this.props.defaultFocusColumnKey,
+                    newState.columnDefinitions
+                ) !== -1
                     ? this.props.defaultFocusColumnKey
-                    : this.props.columnDefinitions[0].columnDataKey;
+                    : newState.columnDefinitions[0].columnDataKey;
         }
 
         newState.desiredVisibleRowIndex = newState.focusRowIndex;
@@ -494,7 +528,7 @@ class DataGrid extends Foundation<
                     gridTemplateColumns: this.currentTemplateColumns,
                 }}
             >
-                {this.props.columnDefinitions.map(this.renderColumnHeader)}
+                {this.state.columnDefinitions.map(this.renderColumnHeader)}
             </div>
         );
     };
@@ -627,7 +661,7 @@ class DataGrid extends Foundation<
         }: DataGridClassNameContract = this.props.managedClasses;
 
         const config: DataGridHeaderRenderConfig = {
-            title: column.title,
+            title: isNil(column.title) ? column.columnDataKey : column.title,
             key: column.columnDataKey,
             columnIndex: index,
             classNames: dataGrid_columnHeader,
@@ -679,7 +713,11 @@ class DataGrid extends Foundation<
 
         this.props.columnDefinitions.forEach(
             (columnDefinition: DataGridColumnDefinition) => {
-                templateColumns = `${templateColumns} ${columnDefinition.columnWidth}`;
+                templateColumns = `${templateColumns} ${
+                    isNil(columnDefinition.columnWidth)
+                        ? "1fr"
+                        : columnDefinition.columnWidth
+                }`;
             }
         );
 
@@ -750,7 +788,7 @@ class DataGrid extends Foundation<
                 if (e.ctrlKey) {
                     this.incrementFocusRow(-this.props.gridData.length);
                 } else {
-                    this.incrementFocusColumn(-this.props.columnDefinitions.length);
+                    this.incrementFocusColumn(-this.state.columnDefinitions.length);
                 }
                 e.preventDefault();
                 break;
@@ -759,7 +797,7 @@ class DataGrid extends Foundation<
                 if (e.ctrlKey) {
                     this.incrementFocusRow(this.props.gridData.length);
                 } else {
-                    this.incrementFocusColumn(this.props.columnDefinitions.length);
+                    this.incrementFocusColumn(this.state.columnDefinitions.length);
                 }
                 e.preventDefault();
                 break;
@@ -1080,7 +1118,8 @@ class DataGrid extends Foundation<
         const directionMod: number = this.direction === Direction.ltr ? 1 : -1;
 
         let currentFocusColumnIndex: number = this.getColumnIndexByKey(
-            this.state.focusColumnKey
+            this.state.focusColumnKey,
+            this.state.columnDefinitions
         );
 
         if (currentFocusColumnIndex === -1) {
@@ -1092,11 +1131,11 @@ class DataGrid extends Foundation<
 
         if (newFocusColumnIndex < 0) {
             newFocusColumnIndex = 0;
-        } else if (newFocusColumnIndex >= this.props.columnDefinitions.length) {
-            newFocusColumnIndex = this.props.columnDefinitions.length - 1;
+        } else if (newFocusColumnIndex >= this.state.columnDefinitions.length) {
+            newFocusColumnIndex = this.state.columnDefinitions.length - 1;
         }
 
-        const newFocusColumnKey: React.ReactText = this.props.columnDefinitions[
+        const newFocusColumnKey: React.ReactText = this.state.columnDefinitions[
             newFocusColumnIndex
         ].columnDataKey;
 
@@ -1223,8 +1262,11 @@ class DataGrid extends Foundation<
     /**
      *  Get column index by key
      */
-    private getColumnIndexByKey = (columnKey: React.ReactText): number => {
-        return this.props.columnDefinitions.findIndex(
+    private getColumnIndexByKey = (
+        columnKey: React.ReactText,
+        columnDefinitions: DataGridColumnDefinition[]
+    ): number => {
+        return columnDefinitions.findIndex(
             (columnDefinition: DataGridColumnDefinition) => {
                 return columnDefinition.columnDataKey === columnKey;
             }
@@ -1326,6 +1368,7 @@ class DataGrid extends Foundation<
             focusRowIndex: -1,
             focusRowKey: null,
             focusColumnKey: null,
+            columnDefinitions: [],
             currentDataPageStartIndex: -1,
             currentDataPageEndIndex: -1,
             rowPositions: [],

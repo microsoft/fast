@@ -38,15 +38,15 @@ export interface DataGridColumnDefinition {
     columnDataKey: React.ReactText;
 
     /**
-     *  Column title
+     *  Column title, if not provided columnDataKey is used as title
      */
-    title: React.ReactNode;
+    title?: React.ReactNode;
 
     /**
      * The width of the column in a form compatible with css grid column widths
-     * (i.e. "50px", "1fr", "20%", etc...)
+     * (i.e. "50px", "1fr", "20%", etc...), defaults to "1fr"
      */
-    columnWidth: string;
+    columnWidth?: string;
 
     /**
      *  Custom render function for the header cell of the column
@@ -75,6 +75,16 @@ export interface DataGridHandledProps extends DataGridManagedClasses {
     gridData: object[];
 
     /**
+     * the field which uniquely identifies each data row
+     */
+    dataRowKey: React.ReactText;
+
+    /**
+     * Array of column definitions specify how to display each column
+     */
+    columnDefinitions?: DataGridColumnDefinition[];
+
+    /**
      * Data page size in number of rows.  This is the maximum number of items that will be converted to data row items passed to the
      * underlying panel display at any one time.
      * default is 1000
@@ -85,16 +95,6 @@ export interface DataGridHandledProps extends DataGridManagedClasses {
      * Whether the underlying display panel renders out of view items or not
      */
     virtualizeItems?: boolean;
-
-    /**
-     * the field which uniquely identifies each data row
-     */
-    dataRowKey: React.ReactText;
-
-    /**
-     * Array of column definitions specify how to display each column
-     */
-    columnDefinitions: DataGridColumnDefinition[];
 
     /**
      *  The default height in pixels of each row

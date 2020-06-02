@@ -190,7 +190,9 @@ describe("data grid", (): void => {
             />
         );
 
-        expect(rendered.instance()["getColumnIndexByKey"]("age")).toBe(1);
+        expect(rendered.instance()["getColumnIndexByKey"]("age", columnDefinitions)).toBe(
+            1
+        );
     });
 
     test("getRowIndexByKey returns correct value", (): void => {
