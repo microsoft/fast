@@ -51,21 +51,21 @@ export const BaseButtonStyles = css`
         opacity: var(--disabled-opacity);
     }
 
-    .start,
-    .end,
+    ::slotted([slot="start"]),
+    ::slotted([slot="end"]),
     ::slotted(svg) {
         ${
-            /* Glyph size and margin-left is temporary - 
+            /* Glyph size and margin-left is temporary -
             replace when adaptive typography is figured out */ ""
         } width: 16px;
         height: 16px;
     }
 
-    .start {
+    ::slotted([slot="start"]) {
         margin-inline-end: 11px;
     }
 
-    .end {
+    ::slotted([slot="end"]) {
         margin-inline-start: 11px;
     }
 `;
@@ -73,7 +73,7 @@ export const BaseButtonStyles = css`
 export const AccentButtonStyles = css`
     :host(.accent) .control {
         background: var(--accent-fill-rest);
-        color: var(--accent-foreground-cut-rest);  
+        color: var(--accent-foreground-cut-rest);
     }
 
     :host(.accent) .control:hover {
