@@ -1,12 +1,13 @@
 import DiscordIcon from "svg/icon-discord.svg";
 import GithubIcon from "svg/icon-github.svg";
 import TwitterIcon from "svg/icon-twitter.svg";
+import MediumIcon from "svg/icon-medium.svg";
 
 export interface CommunityContentPlacementData {
     actionLink: string;
-    actionText: string;
-    body: string;
-    header: string;
+    actionText?: string;
+    body?: string;
+    header?: string;
     icon: string;
 }
 
@@ -34,5 +35,10 @@ export const communityContentPlacementData: CommunityContentPlacementData[] = [
             "Explore the FAST repository on Github and try out our components, utilities, and tools. Or, mix-and-match with your own solutions.",
         header: "Github",
         icon: GithubIcon,
+    },
+    {
+        actionLink: "https://medium.com/fast-dna",
+        header: "Medium",
+        icon: MediumIcon,
     },
 ];

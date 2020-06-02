@@ -7,3 +7,4 @@ export { FastFrame } from "./fast-frame";
 export { SiteFeatureCard } from "./feature-card";
 export { SiteNavigation } from "./navigation";
 export { SiteSectionHeader } from "./section-header";
+export { SiteSideNavigation } from "./side-navigation";
