@@ -10,11 +10,15 @@ export const ContentPlacementStyles = css`
         position: relative;
     }
 
-    :host(.framework_ContentPlacement)::before {
+    :host(.framework_ContentPlacement)::before,
+    :host(.framework_ContentPlacement)::after {
         content: "";
         display: block;
         background-color: currentColor;
         position: absolute;
+    }
+
+    :host(.framework_ContentPlacement)::before {
         width: 1px;
         height: 100%;
         left: -1px;
@@ -22,10 +26,6 @@ export const ContentPlacementStyles = css`
     }
 
     :host(.framework_ContentPlacement)::after {
-        content: "";
-        display: block;
-        background-color: currentColor;
-        position: absolute;
         height: 1px;
         width: 100%;
         top: -1px;

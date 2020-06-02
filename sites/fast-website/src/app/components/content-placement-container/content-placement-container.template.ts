@@ -38,8 +38,7 @@ export const ContentPlacementContainerTemplate = html<ContentPlacementContainer>
                         >
                     </site-feature-card>`
                 )}
-                <site-card-section> </site-card-section
-            ></site-card-section>
+            </site-card-section>
         `
     )}
     ${when(
