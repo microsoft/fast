@@ -9,6 +9,8 @@ import {
 } from "@microsoft/fast-colors";
 import { SiteColorSwatch } from "../color-swatch";
 
+export const drawerBreakpoint: string = "660px";
+
 export class FastFrame extends FASTElement {
     @attr({ attribute: "accent-color" })
     public accentColor: string = "#F33378";
@@ -68,6 +70,9 @@ export class FastFrame extends FASTElement {
 
     @observable
     public lightness: number;
+
+    @observable
+    public expanded: boolean;
 
     public accentChangeHandler = (e: CustomEvent): void => {
         if (e.target instanceof SiteColorSwatch) {
@@ -138,6 +143,10 @@ export class FastFrame extends FASTElement {
         this.updateAccentColor();
     };
 
+    public handleExpandKeypress = (e: KeyboardEvent): void => {
+        this.expanded = !this.expanded;
+    };
+
     private updateAccentColor(): void {
         const accentHSL = new ColorHSL(this.hue, this.saturation, this.lightness);
         const accentRGB = hslToRGB(accentHSL);
@@ -161,6 +170,10 @@ export class FastFrame extends FASTElement {
         this.backgroundColor = this.previewBackgroundPalette[this.lastSelectedIndex];
     };
 
+    private resetExpanded = (): void => {
+        this.expanded = false;
+    };
+
     constructor() {
         super();
 
@@ -168,5 +181,9 @@ export class FastFrame extends FASTElement {
         this.hue = accentColorHSL.h;
         this.saturation = accentColorHSL.s;
         this.lightness = accentColorHSL.l;
+
+        window
+            .matchMedia(`(max-width: ${drawerBreakpoint})`)
+            .addListener(this.resetExpanded);
     }
 }
