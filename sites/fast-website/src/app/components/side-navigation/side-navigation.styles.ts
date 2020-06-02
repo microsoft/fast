@@ -8,7 +8,7 @@ import {
 
 export const SideNavigationStyles = css`
     ${display("flex")}:host {
-        --engaged-height: calc(var(--design-unit) * 10px);
+        --engaged-height: calc(var(--design-unit) * 9px);
         --design-unit-large: calc(var(--design-unit) * 5px);
         contain: content;
         font-family: var(--body-font);
@@ -19,6 +19,14 @@ export const SideNavigationStyles = css`
     ul {
         list-style-type: none;
         padding: 0 var(--design-unit-large);
+        cursor: pointer;
+    }
+
+    li {
+        height: calc(var(--design-unit) * 12px);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
     }
 
     li:hover .icon {
@@ -30,7 +38,7 @@ export const SideNavigationStyles = css`
         width: calc(var(--design-unit) * 1px);
         background-color: var(--neutral-foreground-rest);
         border-radius: calc(var(--corner-radius) * 1px);
-        margin: var(--design-unit-large);
+        margin: 0 var(--design-unit-large);
     }
 
     a:hover .scroll-indicator {

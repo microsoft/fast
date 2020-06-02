@@ -29,12 +29,12 @@ body {
 
 .social-links {
   position: fixed;
-  top: 30%;
+  top: 45%;
 }
 
 .section-scroll {
   position: fixed;
-  top: 25%;
+  top: 40%;
   right: 0%;
 }
 
@@ -104,7 +104,7 @@ fast-divider::after {
 
 .section {
   color: var(--neutral-foreground-rest);
-  min-height: 85vmin;
+  min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -124,6 +124,10 @@ fast-divider::after {
 
 .fast-frame-header {
   padding: 0 20px;
+}
+
+.section-hero {
+  min-height: calc(100vh - 94px)
 }
 
 .section-content {

@@ -20,57 +20,52 @@ export class SideNavigation extends FASTElement {
         x => x.header !== "Github"
     );
 
-    public lastScrollPosition: number = 0;
-    public scrollIncreasing: boolean = true;
-    public tick: boolean = false;
+    private previousRatio: number = 0;
 
-    public updateScrollIncreasing = (): void => {
-        if (!this.tick) {
-            setTimeout((): void => {
-                this.lastScrollPosition = window.scrollY;
-                if (window.scrollY > this.lastScrollPosition) {
-                    this.scrollIncreasing = true;
-                } else {
-                    this.scrollIncreasing = false;
-                }
-                this.tick = false;
-            }, 100);
-        }
-        this.tick = true;
-    };
-
-    public updateCurrentSection = (): void => {
-        const config = {
-            threshold: this.scrollIncreasing ? 0.2 : 0.8,
-        };
-
-        let observer = new IntersectionObserver(entries => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    this.currentSection = entry.target.id;
-                }
-            });
-        }, config);
-
-        this.sectionArray.forEach(section => observer.observe(section));
-    };
-
-    public clickHandler = (event, parent: boolean): void => {
+    public clickHandler = (e, parent: boolean): void => {
         const link = parent
-            ? event.target.getAttribute("href")
-            : event.target.parentElement.getAttribute("href");
+            ? e.target.getAttribute("href")
+            : e.target.parentElement.getAttribute("href");
 
-        event.preventDefault();
+        const selectedSection = document.querySelector(link);
 
-        document.querySelector(link).scrollIntoView({
-            behavior: "smooth",
-        });
+        e.preventDefault();
+
+        if (selectedSection) {
+            selectedSection.scrollIntoView({
+                behavior: "smooth",
+            });
+        }
     };
 
     constructor() {
         super();
 
-        window.addEventListener("scroll", this.updateCurrentSection);
-        window.addEventListener("scroll", this.updateScrollIncreasing);
+        if (this.getAttribute("category") === "scroll") {
+            let observer = new IntersectionObserver(
+                entries => {
+                    entries.forEach(entry => {
+                        const currentRatio = entry.intersectionRatio;
+
+                        if (entry.isIntersecting) {
+                            if (currentRatio > this.previousRatio) {
+                                console.log(
+                                    entry.isIntersecting,
+                                    entry.target.id,
+                                    currentRatio
+                                );
+                                this.currentSection = entry.target.id;
+                            }
+                            this.previousRatio = currentRatio;
+                        }
+                    });
+                },
+                { threshold: [0.4, 0.6] }
+            );
+
+            this.sectionArray.forEach(section => {
+                observer.observe(section);
+            });
+        }
     }
 }
