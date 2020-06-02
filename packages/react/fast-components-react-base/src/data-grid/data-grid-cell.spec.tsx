@@ -6,7 +6,7 @@ import { keyCodeArrowDown } from "@microsoft/fast-web-utilities";
 import { configure, mount, ReactWrapper } from "enzyme";
 import DataGridCell from "./data-grid-cell";
 import { DataGridContext } from "./data-grid-context";
-import { DataGridColumnDefinition, DataGridProps } from "./data-grid.props";
+import { DataGridColumn, DataGridProps } from "./data-grid.props";
 
 /*
  * Configure Enzyme
@@ -33,13 +33,13 @@ describe("data grid cell", (): void => {
         age: 27,
     };
 
-    const columnDefinition1: DataGridColumnDefinition = {
+    const column1: DataGridColumn = {
         columnDataKey: "name",
         title: "Name",
         columnWidth: "200px",
     };
 
-    const columnDefinition2: DataGridColumnDefinition = {
+    const column2: DataGridColumn = {
         columnDataKey: "age",
         title: "Age",
         columnWidth: "200px",
@@ -48,7 +48,7 @@ describe("data grid cell", (): void => {
     const gridProps: DataGridProps = {
         dataRowKey: "name",
         gridData: [rowData1, rowData2, rowData3],
-        columnDefinitions: [columnDefinition1, columnDefinition2],
+        columns: [column1, column2],
         rowHeight: 60,
     };
 
@@ -74,7 +74,7 @@ describe("data grid cell", (): void => {
             >
                 <DataGridCell
                     rowData={rowData1}
-                    columnDefinition={columnDefinition1}
+                    column={column1}
                     columnIndex={0}
                     managedClasses={managedClasses}
                 />
@@ -100,7 +100,7 @@ describe("data grid cell", (): void => {
             >
                 <DataGridCell
                     rowData={rowData1}
-                    columnDefinition={columnDefinition1}
+                    column={column1}
                     columnIndex={0}
                     managedClasses={managedClasses}
                 />
@@ -124,7 +124,7 @@ describe("data grid cell", (): void => {
             >
                 <DataGridCell
                     rowData={rowData1}
-                    columnDefinition={columnDefinition1}
+                    column={column1}
                     columnIndex={0}
                     managedClasses={managedClasses}
                 />
@@ -149,7 +149,7 @@ describe("data grid cell", (): void => {
             >
                 <DataGridCell
                     rowData={rowData1}
-                    columnDefinition={columnDefinition1}
+                    column={column1}
                     columnIndex={0}
                     managedClasses={managedClasses}
                 />
@@ -176,7 +176,7 @@ describe("data grid cell", (): void => {
             >
                 <DataGridCell
                     rowData={rowData1}
-                    columnDefinition={columnDefinition1}
+                    column={column1}
                     columnIndex={0}
                     managedClasses={managedClasses}
                 />
@@ -192,9 +192,9 @@ describe("data grid cell", (): void => {
     test("Custom cell render function is called", (): void => {
         const cellRenderFunction: any = jest.fn();
         cellRenderFunction.mockReturnValue("Test");
-        const updatedColumnDefinition: DataGridColumnDefinition = merge(
+        const updatedColumns: DataGridColumn = merge(
             {},
-            columnDefinition1,
+            column1,
             { cell: cellRenderFunction }
         );
 
@@ -209,7 +209,7 @@ describe("data grid cell", (): void => {
             >
                 <DataGridCell
                     rowData={rowData1}
-                    columnDefinition={updatedColumnDefinition}
+                    column={updatedColumns}
                     columnIndex={0}
                     managedClasses={managedClasses}
                 />

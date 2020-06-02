@@ -3,7 +3,7 @@ import {
     DataGridCellClassNameContract,
     ManagedClasses,
 } from "@microsoft/fast-components-class-name-contracts-base";
-import { DataGridColumnDefinition } from "./data-grid.props";
+import { DataGridColumn } from "./data-grid.props";
 
 export const CellIdKey: string = "data-cellid";
 
@@ -19,7 +19,7 @@ export interface DataGridCellHandledProps extends DataGridCellManagedClasses {
     /**
      * Column definition for this row
      */
-    columnDefinition: DataGridColumnDefinition;
+    column: DataGridColumn;
 
     /**
      * The column index

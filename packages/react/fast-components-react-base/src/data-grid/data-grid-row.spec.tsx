@@ -4,7 +4,7 @@ import { configure, mount, ReactWrapper } from "enzyme";
 import { DataGridRowClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import DataGridRow from "./data-grid-row";
 import { DataGridContext } from "./data-grid-context";
-import { DataGridColumnDefinition } from "./data-grid.props";
+import { DataGridColumn } from "./data-grid.props";
 import { DataGridProps } from "./data-grid";
 
 /*
@@ -33,13 +33,13 @@ describe("data grid row", (): void => {
         age: 27,
     };
 
-    const columnDefinition1: DataGridColumnDefinition = {
+    const column1: DataGridColumn = {
         columnDataKey: "name",
         title: "Name",
         columnWidth: "200px",
     };
 
-    const columnDefinition2: DataGridColumnDefinition = {
+    const column2: DataGridColumn = {
         columnDataKey: "age",
         title: "Age",
         columnWidth: "200px",
@@ -48,7 +48,7 @@ describe("data grid row", (): void => {
     const gridProps: DataGridProps = {
         dataRowKey: "name",
         gridData: [rowData1, rowData2, rowData3],
-        columnDefinitions: [columnDefinition1, columnDefinition2],
+        columns: [column1, column2],
         rowHeight: 60,
     };
 

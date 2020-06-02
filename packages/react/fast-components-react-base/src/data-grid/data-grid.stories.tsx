@@ -4,7 +4,7 @@ import { isEqual, omit } from "lodash-es";
 import { Omit } from "utility-types";
 import DataGrid, {
     DataGridCellRenderConfig,
-    DataGridColumnDefinition,
+    DataGridColumn,
     DataGridProps,
     DataGridRowHeightCallbackParams,
 } from "./index";
@@ -65,7 +65,7 @@ function recordIdCellFn(config: DataGridCellRenderConfig): React.ReactNode {
     );
 }
 
-const columnDefinitions: DataGridColumnDefinition[] = [
+const columns: DataGridColumn[] = [
     {
         columnDataKey: "recordId",
         title: "RecordId",
@@ -148,7 +148,7 @@ class DataGridTest extends React.Component<DataGridTestProps, DataGridTestState>
                     Toggle data
                 </button>
                 <DataGrid
-                    columnDefinitions={this.props.columnDefinitions}
+                    columns={this.props.columns}
                     dataRowKey={this.props.dataRowKey}
                     gridData={this.state.currentDataSet}
                     rowHeight={this.props.rowHeight}
@@ -180,7 +180,7 @@ storiesOf("Data Grid", module)
             dataRowKey="recordId"
             gridData={getDataSet(100)}
             rowHeight={100}
-            columnDefinitions={columnDefinitions}
+            columns={columns}
         />
     ))
     .add("Initially visible row", () => (
@@ -191,7 +191,7 @@ storiesOf("Data Grid", module)
             dataRowKey="recordId"
             gridData={getDataSet(100)}
             rowHeight={100}
-            columnDefinitions={columnDefinitions}
+            columns={columns}
             defaultFocusRowKey="id-50"
             defaultFocusColumnKey="image"
         />
@@ -204,7 +204,7 @@ storiesOf("Data Grid", module)
             dataRowKey="recordId"
             gridData={[]}
             rowHeight={100}
-            columnDefinitions={columnDefinitions}
+            columns={columns}
         />
     ))
     .add("Controlled Height and Width", () => (
@@ -216,7 +216,7 @@ storiesOf("Data Grid", module)
             dataRowKey="recordId"
             gridData={getDataSet(100)}
             rowHeight={100}
-            columnDefinitions={columnDefinitions}
+            columns={columns}
         />
     ))
     .add("Toggle smaller data set", () => (
@@ -229,7 +229,7 @@ storiesOf("Data Grid", module)
             primaryDataSet={getDataSet(10000)}
             secondaryDataSet={getDataSet(2000)}
             rowHeight={100}
-            columnDefinitions={columnDefinitions}
+            columns={columns}
         />
     ))
     .add("Toggle empty data set", () => (
@@ -242,7 +242,7 @@ storiesOf("Data Grid", module)
             primaryDataSet={getDataSet(100)}
             secondaryDataSet={getDataSet(0)}
             rowHeight={100}
-            columnDefinitions={columnDefinitions}
+            columns={columns}
         />
     ))
     .add("Variable height rows", () => (
@@ -254,7 +254,7 @@ storiesOf("Data Grid", module)
             dataRowKey="recordId"
             gridData={getDataSet(10000)}
             rowHeight={100}
-            columnDefinitions={columnDefinitions}
+            columns={columns}
             rowHeightCallback={getRowHeight}
         />
     ))
@@ -268,6 +268,6 @@ storiesOf("Data Grid", module)
             gridData={getDataSet(100)}
             defaultFocusRowKey="id-50"
             rowHeight={100}
-            columnDefinitions={columnDefinitions}
+            columns={columns}
         />
     ));

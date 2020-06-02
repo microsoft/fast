@@ -19,7 +19,7 @@ class DataGridCell extends Foundation<
 > {
     public static defaultProps: Partial<DataGridCellProps> = {
         rowData: null,
-        columnDefinition: null,
+        column: null,
         columnIndex: 0,
         managedClasses: {},
     };
@@ -49,7 +49,7 @@ class DataGridCell extends Foundation<
     protected handledProps: HandledProps<DataGridCellHandledProps> = {
         managedClasses: void 0,
         rowData: void 0,
-        columnDefinition: void 0,
+        column: void 0,
         columnIndex: void 0,
     };
 
@@ -63,7 +63,7 @@ class DataGridCell extends Foundation<
         if (
             isNil(this.context) ||
             isNil(this.context.dataGridProps) ||
-            isNil(this.props.columnDefinition)
+            isNil(this.props.column)
         ) {
             return null;
         }
@@ -77,7 +77,7 @@ class DataGridCell extends Foundation<
 
         const config: DataGridCellRenderConfig = {
             rowData: this.props.rowData,
-            columnDataKey: this.props.columnDefinition.columnDataKey,
+            columnDataKey: this.props.column.columnDataKey,
             columnIndex: this.props.columnIndex,
             classNames: this.generateClassNames(),
             rootElement: this.rootElement,
@@ -85,8 +85,8 @@ class DataGridCell extends Foundation<
             unhandledProps: unhandledProps,
         };
 
-        return !isNil(this.props.columnDefinition.cell)
-            ? this.props.columnDefinition.cell(config)
+        return !isNil(this.props.column.cell)
+            ? this.props.column.cell(config)
             : DataGridCell.renderCell(config);
     }
 
@@ -118,7 +118,7 @@ class DataGridCell extends Foundation<
         return (
             this.props.rowData[this.context.dataGridProps.dataRowKey] ===
                 this.context.desiredFocusRowKey &&
-            this.props.columnDefinition.columnDataKey ===
+            this.props.column.columnDataKey ===
                 this.context.desiredFocusColumnKey
         );
     };
@@ -133,7 +133,7 @@ class DataGridCell extends Foundation<
         return (
             this.props.rowData[this.context.dataGridProps.dataRowKey] ===
                 this.context.focusRowKey &&
-            this.props.columnDefinition.columnDataKey === this.context.focusColumnKey
+            this.props.column.columnDataKey === this.context.focusColumnKey
         );
     };
 

@@ -17,8 +17,8 @@ export default {
             title: "Column index",
             type: "number",
         },
-        columnDefinition: {
-            title: "Column definition",
+        column: {
+            title: "Column",
             type: "object",
             properties: {
                 columnDataKey: {
@@ -36,5 +36,5 @@ export default {
             },
         },
     },
-    required: ["rowData", "columnIndex", "columnDefinition"],
+    required: ["rowData", "columnIndex", "column"],
 };

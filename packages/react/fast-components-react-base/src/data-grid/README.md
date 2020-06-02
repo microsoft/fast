@@ -15,12 +15,12 @@ myData = [
 ]
 ```
 
-What data is displayed in each row is controlled by the component's  `columnDefinitions` prop which consists of an array of columnDefinition objects - one for each column of data to be displayed.  A `columdefinition` requires authors to specify a `columnDataKey` which identifies the particular field in the datarow to be displayed in the column, a `title` which describes what goes in the fixed column header cell, and a `columnWidth` which is string that sets the width of the column as for a css grid column (i.e. "50px", "1fr", "20%", etc...). The order in which columns appear is determined by the order of the `columnDefinitions` in the array.  If `columnDefinitions` are not provided the component will infer uniform width columns from the properties in the row data.
+What data is displayed in each row is controlled by the component's  `columns` prop which consists of an array of `column` objects - one for each column of data to be displayed.  A `column` requires authors to specify a `columnDataKey` which identifies the particular field in the datarow to be displayed in the column, a `title` which describes what goes in the fixed column header cell, and a `columnWidth` which is string that sets the width of the column as for a css grid column (i.e. "50px", "1fr", "20%", etc...). The order in which columns appear is determined by the order of the `columns` in the array.  If `columns` are not provided the component will infer uniform width columns from the properties in the row data.
 
-In order to display the simple data set described previously the `columnDefinitions` could look like this:
+In order to display the simple data set described previously the `columns` could look like this:
 
 ```ts
-myColumnDefinitions: DataGridColumnDefinition[] = [
+myColumns: DataGridColumn[] = [
     {
         columnDataKey: "clientId",
         title: "Client #",
@@ -45,7 +45,7 @@ And the markup for the simple data grid to display the above:
 <DataGrid
     gridData={myData}
     dataRowKey="clientId"
-    columnDefinitions={myColumnDefinitions}
+    columns={myColumns}
 />
 ```
 

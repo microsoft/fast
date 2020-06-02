@@ -30,7 +30,7 @@ export interface DataGridRowHeightCallbackParams {
     defaultRowHeight: number;
 }
 
-export interface DataGridColumnDefinition {
+export interface DataGridColumn {
     /**
      * identifies the data item to be displayed in this column
      * (i.e. how the data item is labelled in each row)
@@ -55,14 +55,6 @@ export interface DataGridColumnDefinition {
 
     /**
      * Custom render function for a data cells in the column
-     * rowdata: data object for the row the cell is in
-     * columnDataKey DataGridColumnDefinition for the column the cell is in
-     * columnIndex: index of the column in the grid
-     * classNames: css classnames for the cell
-     * rootElement: ref to the root element of the cell
-     * focusTarget: authors of custom cell render functions who wish to focus on an internal element should
-     * set the 'ref' attribute of the internal element that should get focus to this value.
-     * unhandledProps: authors will generally want to write these to their custom implementations
      */
     cell?: (DataGridCellRenderConfig) => React.ReactNode;
 }
@@ -82,7 +74,7 @@ export interface DataGridHandledProps extends DataGridManagedClasses {
     /**
      * Array of column definitions specify how to display each column
      */
-    columnDefinitions?: DataGridColumnDefinition[];
+    columns?: DataGridColumn[];
 
     /**
      * Data page size in number of rows.  This is the maximum number of items that will be converted to data row items passed to the

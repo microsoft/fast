@@ -8,7 +8,7 @@ import {
     DataGridRowProps,
     DataGridRowUnhandledProps,
 } from "./data-grid-row.props";
-import { DataGridColumnDefinition } from "./data-grid.props";
+import { DataGridColumn } from "./data-grid.props";
 import DataGridCell from "./data-grid-cell";
 import { DataGridContext, DataGridContextType } from "./data-grid-context";
 
@@ -89,20 +89,20 @@ class DataGridRow extends Foundation<
      *  render all cells
      */
     private renderCells(): React.ReactNode[] {
-        return this.context.dataGridProps.columnDefinitions.map(this.renderCell);
+        return this.context.dataGridProps.columns.map(this.renderCell);
     }
 
     /**
      *  renders a cell
      */
     private renderCell = (
-        columnDefinition: DataGridColumnDefinition,
+        column: DataGridColumn,
         index: number
     ): React.ReactNode => {
         return (
             <DataGridCell
-                key={columnDefinition.columnDataKey}
-                columnDefinition={columnDefinition}
+                key={column.columnDataKey}
+                column={column}
                 rowData={this.props.rowData}
                 columnIndex={index + 1}
                 managedClasses={{

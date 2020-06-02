@@ -33,8 +33,8 @@ export default {
             title: "Data row key",
             type: "string",
         },
-        columnDefinitions: {
-            title: "Array of columndefinitions",
+        columns: {
+            title: "Array of columns",
             type: "array",
         },
         rowHeight: {
@@ -50,5 +50,5 @@ export default {
             type: "string",
         },
     },
-    required: ["gridData", "dataRowKey", "columnDefinitions"],
+    required: ["gridData", "dataRowKey", "columns"],
 };

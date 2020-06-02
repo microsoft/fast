@@ -11,7 +11,7 @@ import {
     keyCodePageUp,
 } from "@microsoft/fast-web-utilities";
 import DataGrid, { DataGridState } from "./data-grid";
-import { DataGridCellRenderConfig, DataGridColumnDefinition } from "./data-grid.props";
+import { DataGridCellRenderConfig, DataGridColumn } from "./data-grid.props";
 
 /*
  * Configure Enzyme
@@ -82,19 +82,19 @@ describe("data grid", (): void => {
         return dataSet;
     }
 
-    const columnDefinition1: DataGridColumnDefinition = {
+    const column1: DataGridColumn = {
         columnDataKey: "name",
         title: "Name",
         columnWidth: "200px",
     };
 
-    const columnDefinition2: DataGridColumnDefinition = {
+    const column2: DataGridColumn = {
         columnDataKey: "age",
         title: "Age",
         columnWidth: "200px",
     };
 
-    const columnDefinitionCustomCell: DataGridColumnDefinition = {
+    const columnCustomCell: DataGridColumn = {
         columnDataKey: "age",
         title: "Age",
         columnWidth: "200px",
@@ -105,14 +105,14 @@ describe("data grid", (): void => {
 
     const gridDataShortened: TestRowData[] = [rowData1, rowData2];
 
-    const columnDefinitions: DataGridColumnDefinition[] = [
-        columnDefinition1,
-        columnDefinition2,
+    const columns: DataGridColumn[] = [
+        column1,
+        column2,
     ];
 
-    const columnDefinitionsCustomCell: DataGridColumnDefinition[] = [
-        columnDefinition1,
-        columnDefinitionCustomCell,
+    const columnsCustomCell: DataGridColumn[] = [
+        column1,
+        columnCustomCell,
     ];
 
     test("should have a displayName that matches the component name", () => {
@@ -124,7 +124,7 @@ describe("data grid", (): void => {
             <DataGrid
                 gridData={gridData}
                 dataRowKey="name"
-                columnDefinitions={columnDefinitions}
+                columns={columns}
                 managedClasses={managedClasses}
             />
         );
@@ -138,7 +138,7 @@ describe("data grid", (): void => {
             <DataGrid
                 gridData={gridData}
                 dataRowKey="name"
-                columnDefinitions={columnDefinitions}
+                columns={columns}
                 managedClasses={managedClasses}
             />
         );
@@ -155,7 +155,7 @@ describe("data grid", (): void => {
             <DataGrid
                 gridData={gridData}
                 dataRowKey="name"
-                columnDefinitions={columnDefinitions}
+                columns={columns}
                 managedClasses={managedClasses}
             />
         );
@@ -171,7 +171,7 @@ describe("data grid", (): void => {
             <DataGrid
                 gridData={gridData}
                 dataRowKey="name"
-                columnDefinitions={columnDefinitions}
+                columns={columns}
                 managedClasses={managedClasses}
             />
         );
@@ -185,12 +185,12 @@ describe("data grid", (): void => {
             <DataGrid
                 gridData={gridData}
                 dataRowKey="name"
-                columnDefinitions={columnDefinitions}
+                columns={columns}
                 managedClasses={managedClasses}
             />
         );
 
-        expect(rendered.instance()["getColumnIndexByKey"]("age", columnDefinitions)).toBe(
+        expect(rendered.instance()["getColumnIndexByKey"]("age", columns)).toBe(
             1
         );
     });
@@ -200,7 +200,7 @@ describe("data grid", (): void => {
             <DataGrid
                 gridData={gridData}
                 dataRowKey="name"
-                columnDefinitions={columnDefinitions}
+                columns={columns}
                 managedClasses={managedClasses}
             />
         );
@@ -215,7 +215,7 @@ describe("data grid", (): void => {
             <DataGrid
                 gridData={getDataSet(20)}
                 dataRowKey="name"
-                columnDefinitions={columnDefinitions}
+                columns={columns}
                 virtualizeItems={false}
                 managedClasses={managedClasses}
             />,
@@ -233,7 +233,7 @@ describe("data grid", (): void => {
             <DataGrid
                 gridData={getDataSet(20)}
                 dataRowKey="name"
-                columnDefinitions={columnDefinitions}
+                columns={columns}
                 virtualizeItems={true}
                 managedClasses={managedClasses}
             />,
@@ -254,7 +254,7 @@ describe("data grid", (): void => {
             <DataGrid
                 gridData={gridData}
                 dataRowKey="name"
-                columnDefinitions={columnDefinitions}
+                columns={columns}
                 virtualizeItems={false}
                 managedClasses={managedClasses}
             />,
@@ -296,7 +296,7 @@ describe("data grid", (): void => {
             <DataGrid
                 gridData={getDataSet(20)}
                 dataRowKey="name"
-                columnDefinitions={columnDefinitions}
+                columns={columns}
                 virtualizeItems={false}
                 managedClasses={managedClasses}
             />,
@@ -327,7 +327,7 @@ describe("data grid", (): void => {
             <DataGrid
                 gridData={gridData}
                 dataRowKey="name"
-                columnDefinitions={columnDefinitions}
+                columns={columns}
                 managedClasses={managedClasses}
             />,
             {
@@ -363,7 +363,7 @@ describe("data grid", (): void => {
                 rowHeightCallback={heightCallback}
                 gridData={gridData}
                 dataRowKey="name"
-                columnDefinitions={columnDefinitions}
+                columns={columns}
                 managedClasses={managedClasses}
             />
         );
@@ -385,7 +385,7 @@ describe("data grid", (): void => {
                 rowHeightCallback={heightCallback}
                 gridData={gridData}
                 dataRowKey="name"
-                columnDefinitions={columnDefinitions}
+                columns={columns}
                 managedClasses={managedClasses}
             />
         );
@@ -415,7 +415,7 @@ describe("data grid", (): void => {
             <DataGrid
                 gridData={gridData}
                 dataRowKey="name"
-                columnDefinitions={columnDefinitions}
+                columns={columns}
                 managedClasses={managedClasses}
             />
         );
@@ -432,7 +432,7 @@ describe("data grid", (): void => {
             <DataGrid
                 gridData={gridData}
                 dataRowKey="name"
-                columnDefinitions={columnDefinitions}
+                columns={columns}
                 managedClasses={managedClasses}
             />
         );
@@ -450,7 +450,7 @@ describe("data grid", (): void => {
             <DataGrid
                 gridData={gridData}
                 dataRowKey="name"
-                columnDefinitions={columnDefinitions}
+                columns={columns}
                 managedClasses={managedClasses}
                 defaultFocusRowKey="Thomas"
                 defaultFocusColumnKey="age"
@@ -476,7 +476,7 @@ describe("data grid", (): void => {
             <DataGrid
                 gridData={gridData}
                 dataRowKey="name"
-                columnDefinitions={columnDefinitionsCustomCell}
+                columns={columnsCustomCell}
                 virtualizeItems={false}
                 managedClasses={managedClasses}
             />,
@@ -508,7 +508,7 @@ describe("data grid", (): void => {
             <DataGrid
                 gridData={gridData}
                 dataRowKey="name"
-                columnDefinitions={columnDefinitions}
+                columns={columns}
                 managedClasses={managedClasses}
                 virtualizeItems={false}
             />,
@@ -596,7 +596,7 @@ describe("data grid", (): void => {
             <DataGrid
                 gridData={gridData}
                 dataRowKey="name"
-                columnDefinitions={columnDefinitions}
+                columns={columns}
                 managedClasses={managedClasses}
             />
         );
@@ -611,7 +611,7 @@ describe("data grid", (): void => {
             <DataGrid
                 gridData={gridData}
                 dataRowKey="name"
-                columnDefinitions={columnDefinitions}
+                columns={columns}
                 managedClasses={managedClasses}
             />
         );
@@ -626,7 +626,7 @@ describe("data grid", (): void => {
             <DataGrid
                 gridData={gridData}
                 dataRowKey="name"
-                columnDefinitions={columnDefinitions}
+                columns={columns}
                 managedClasses={managedClasses}
             />
         );
@@ -639,7 +639,7 @@ describe("data grid", (): void => {
             <DataGrid
                 gridData={gridData}
                 dataRowKey="name"
-                columnDefinitions={columnDefinitions}
+                columns={columns}
                 managedClasses={managedClasses}
             />
         );
@@ -660,7 +660,7 @@ describe("data grid", (): void => {
                 rowHeightCallback={heightCallback}
                 gridData={gridData}
                 dataRowKey="name"
-                columnDefinitions={columnDefinitions}
+                columns={columns}
                 managedClasses={managedClasses}
             />
         );
