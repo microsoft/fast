@@ -35,7 +35,6 @@ const styles: ComponentStyles<LinkedDataControlClassNameContract, {}> = {
         height: "30px",
         marginLeft: "-10px",
         paddingLeft: "10px",
-        fontSize: "12px",
         cursor: "pointer",
         display: "flex",
         alignItems: "center",
