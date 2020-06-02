@@ -16,12 +16,12 @@ npm install @microsoft/fast-element --save
 yarn add @microsoft/fast-element
 ```
 
-:::tip
-Looking for a setup that integrates with a particular front-end framework or bundler? Check out [our integration docs](../fast-foundation/webpack).
-:::
-
 Within your JavaScript or TypeScript code, you can then import library APIs like this:
 
 ```ts
 import { FASTElement } from '@microsoft/fast-element';
 ```
+
+:::tip
+Looking for a setup that integrates with a particular front-end framework or bundler? Check out [our integration docs](../fast-foundation/webpack).
+:::
