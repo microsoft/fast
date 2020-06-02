@@ -1,6 +1,6 @@
 import { ComponentStyles } from "@microsoft/fast-jss-manager-react";
 import { ellipsis } from "@microsoft/fast-jss-utilities";
-import { defaultFontStyle } from "../../style";
+import { defaultFontStyle, errorColorCSSProperty } from "../../style";
 
 /**
  * SectionLink class name contract
@@ -18,7 +18,6 @@ const styles: ComponentStyles<SectionLinkControlClassNameContract, {}> = {
         display: "block",
         width: "100%",
         cursor: "pointer",
-        fontSize: "12px",
         lineHeight: "23px",
         borderBottom: "1px solid transparent",
         "&$sectionLinkControl__default": {
@@ -27,7 +26,7 @@ const styles: ComponentStyles<SectionLinkControlClassNameContract, {}> = {
     },
     sectionLinkControl__disabled: {},
     sectionLinkControl__invalid: {
-        borderColor: "red",
+        borderColor: errorColorCSSProperty,
     },
     sectionLinkControl__default: {},
 };

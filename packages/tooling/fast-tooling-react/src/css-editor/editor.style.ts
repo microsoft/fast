@@ -1,5 +1,5 @@
 import { ComponentStyles } from "@microsoft/fast-jss-manager-react";
-import { foreground300, neutralLayerL4 } from "../style";
+import { L4CSSProperty, textColorCSSProperty } from "../style";
 import { CSSPositionClassNameContract } from "./position/position.style";
 
 export interface CSSEditorClassNameContract extends CSSPositionClassNameContract {
@@ -8,8 +8,8 @@ export interface CSSEditorClassNameContract extends CSSPositionClassNameContract
 
 const styles: ComponentStyles<CSSEditorClassNameContract, {}> = {
     cssEditor: {
-        background: neutralLayerL4,
-        color: foreground300,
+        background: L4CSSProperty,
+        color: textColorCSSProperty,
         height: "100%",
         padding: "0 10px",
     },

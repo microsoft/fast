@@ -1,5 +1,10 @@
 import { ComponentStyles } from "@microsoft/fast-jss-manager-react";
-import { cssKey, cssValue, foreground300, neutralLayerL4 } from "../style";
+import {
+    codeHighlightCSSKeyColor,
+    codeHighlightCSSValueColor,
+    L4CSSProperty,
+    textColorCSSProperty,
+} from "../style";
 
 export interface CSSPropertyEditorClassNameContract {
     cssPropertyEditor?: string;
@@ -11,8 +16,8 @@ export interface CSSPropertyEditorClassNameContract {
 
 const styles: ComponentStyles<CSSPropertyEditorClassNameContract, {}> = {
     cssPropertyEditor: {
-        background: neutralLayerL4,
-        color: foreground300,
+        background: L4CSSProperty,
+        color: textColorCSSProperty,
         height: "100%",
         padding: "0",
         margin: "0",
@@ -44,16 +49,16 @@ const styles: ComponentStyles<CSSPropertyEditorClassNameContract, {}> = {
         fontFamily: "Consolas, monaco, monospace, monospace",
         border: "none",
         "&:focus": {
-            boxShadow: `0 0 1px ${foreground300}`,
+            boxShadow: `0 0 1px ${textColorCSSProperty}`,
             borderRadius: "2px",
             outline: "none",
         },
     },
     cssPropertyEditor_inputKey: {
-        color: cssKey,
+        color: codeHighlightCSSKeyColor,
     },
     cssPropertyEditor_inputValue: {
-        color: cssValue,
+        color: codeHighlightCSSValueColor,
         marginLeft: "5px",
     },
 };

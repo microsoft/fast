@@ -2,9 +2,13 @@ import { ellipsis } from "@microsoft/fast-jss-utilities";
 import { ComponentStyles } from "@microsoft/fast-jss-manager-react";
 import {
     addItemStyle,
+    borderRadiusCSSProperty,
     cleanListStyle,
     defaultFontStyle,
+    errorColorCSSProperty,
+    gutterCSSProperty,
     invalidMessageStyle,
+    L1CSSProperty,
     labelRegionStyle,
     labelStyle,
     removeItemStyle,
@@ -35,7 +39,7 @@ const styles: ComponentStyles<ArrayControlClassNameContract, {}> = {
     arrayControl__invalid: {
         "& $arrayControl_existingItemList": {
             "&::before": {
-                "border-color": "red",
+                "border-color": errorColorCSSProperty,
             },
         },
     },
@@ -57,7 +61,6 @@ const styles: ComponentStyles<ArrayControlClassNameContract, {}> = {
     },
     arrayControl_existingItemList: {
         ...cleanListStyle,
-        "font-size": "12px",
         position: "relative",
         "&::before": {
             content: "''",
@@ -71,27 +74,24 @@ const styles: ComponentStyles<ArrayControlClassNameContract, {}> = {
     },
     arrayControl_existingItemListItem: {
         position: "relative",
-        "padding-left": "10px",
-        "margin-left": "-10px",
         cursor: "pointer",
         height: "30px",
         "line-height": "30px",
         "margin-bottom": "5px",
-        "border-radius": "2px",
+        "border-radius": borderRadiusCSSProperty,
         "&::before": {
             content: "''",
             position: "absolute",
-            "border-radius": "2px",
+            "border-radius": borderRadiusCSSProperty,
             "pointer-events": "none",
             height: "inherit",
-            width: "calc(100% - 40px)",
+            width: `calc(100% - calc(${gutterCSSProperty} + 6px))`,
             border: "1px solid transparent",
         },
     },
     arrayControl_existingItemListItem__invalid: {
         "&::before": {
-            background: "rgba(255,0,0,0.1)",
-            "border-color": "red",
+            "border-color": errorColorCSSProperty,
             "box-sizing": "border-box",
         },
     },
@@ -103,7 +103,7 @@ const styles: ComponentStyles<ArrayControlClassNameContract, {}> = {
         "line-height": "30px",
         width: "calc(100% - 40px)",
         padding: "0 5px",
-        "background-color": "rgba(255, 255, 255, 0.04)",
+        "background-color": L1CSSProperty,
         "&$arrayControl_existingItemListItemLink__default": {
             ...defaultFontStyle,
             cursor: "auto",

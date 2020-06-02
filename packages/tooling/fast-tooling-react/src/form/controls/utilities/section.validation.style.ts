@@ -1,11 +1,11 @@
 import { ComponentStyles } from "@microsoft/fast-jss-manager-react";
 import { ellipsis } from "@microsoft/fast-jss-utilities";
+import { chevronDownStyle, chevronUpStyle, invalidMessageStyle } from "../../../style";
 import {
-    chevronDownStyle,
-    chevronUpStyle,
-    error,
-    invalidMessageStyle,
-} from "../../../style";
+    borderRadiusCSSProperty,
+    errorColorCSSProperty,
+    L1CSSProperty,
+} from "../../../style/css-properties";
 import { SectionValidationClassNameContract } from "./section.validation.props";
 
 const styles: ComponentStyles<SectionValidationClassNameContract, {}> = {
@@ -15,12 +15,12 @@ const styles: ComponentStyles<SectionValidationClassNameContract, {}> = {
     },
     sectionValidation_controlRegion: {
         ...invalidMessageStyle,
-        border: `1px solid ${error}`,
+        border: `1px solid ${errorColorCSSProperty}`,
         padding: "10px",
         margin: "10px 30px 10px 0",
         "margin-right": undefined,
-        "border-radius": "2px",
-        background: "rgba(255,0,0,0.1)",
+        "border-radius": borderRadiusCSSProperty,
+        background: L1CSSProperty,
     },
     sectionValidation_message: {
         ...ellipsis(),

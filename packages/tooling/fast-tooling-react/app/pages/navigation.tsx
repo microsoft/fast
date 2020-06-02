@@ -4,10 +4,30 @@ import childrenSchema from "./navigation/children.schema";
 import { children } from "./navigation/example.data";
 import { MessageSystem, MessageSystemType } from "@microsoft/fast-tooling";
 import noChildrenSchema from "./navigation/no-children.schema";
+import {
+    accentColorName,
+    L1ColorName,
+    L3ColorName,
+    textColorName,
+    L3FillColorName,
+    inactiveTextColorName,
+    L3OutlineColorName,
+} from "../../src/style";
 
 export interface NavigationTestPageState {
     navigation: any;
+    cssPropertyOverrides: boolean;
 }
+
+const CSSpropertyOverrides = {
+    [accentColorName]: "blue",
+    [L1ColorName]: "white",
+    [L3ColorName]: "lightslategray",
+    [textColorName]: "darkred",
+    [L3FillColorName]: "white",
+    [inactiveTextColorName]: "orange",
+    [L3OutlineColorName]: "orange",
+};
 
 let fastMessageSystem: MessageSystem;
 
@@ -32,13 +52,21 @@ class NavigationTestPage extends React.Component<{}, NavigationTestPageState> {
 
         this.state = {
             navigation: null,
+            cssPropertyOverrides: false,
         };
     }
 
     public render(): React.ReactNode {
         return (
-            <div>
+            <div style={this.state.cssPropertyOverrides ? CSSpropertyOverrides : {}}>
                 <ModularNavigation messageSystem={fastMessageSystem} />
+                <input
+                    id={"useCSSOverrides"}
+                    type={"checkbox"}
+                    value={this.state.cssPropertyOverrides.toString()}
+                    onChange={this.handleCSSOverrideUpdate}
+                />
+                <label htmlFor={"useCSSOverrides"}>Show CSS property overrides</label>
                 <pre>{JSON.stringify(this.state.navigation, null, 2)}</pre>
             </div>
         );
@@ -50,6 +78,12 @@ class NavigationTestPage extends React.Component<{}, NavigationTestPageState> {
                 navigation: e.data.navigationDictionary,
             });
         }
+    };
+
+    private handleCSSOverrideUpdate = (): void => {
+        this.setState({
+            cssPropertyOverrides: !this.state.cssPropertyOverrides,
+        });
     };
 }
 

@@ -1,5 +1,14 @@
 import React from "react";
 import { MenuItem, NavigationMenu } from "../../src";
+import {
+    accentColorName,
+    L1ColorName,
+    L4ColorName,
+    textColorName,
+    L3FillColorName,
+    inactiveTextColorName,
+    L3OutlineColorName,
+} from "../../src/style";
 
 const menu: MenuItem[] = [
     {
@@ -37,10 +46,21 @@ const menu: MenuItem[] = [
     },
 ];
 
+const CSSpropertyOverrides = {
+    [accentColorName]: "blue",
+    [L1ColorName]: "white",
+    [L4ColorName]: "lightslategray",
+    [textColorName]: "darkred",
+    [L3FillColorName]: "white",
+    [inactiveTextColorName]: "orange",
+    [L3OutlineColorName]: "orange",
+};
+
 export interface NavigationMenuTestPageState {
     expanded: boolean;
     location?: string;
     triggerLocationUpdate?: boolean;
+    cssPropertyOverrides: boolean;
 }
 
 class NavigationMenuTestPage extends React.Component<{}, NavigationMenuTestPageState> {
@@ -50,12 +70,13 @@ class NavigationMenuTestPage extends React.Component<{}, NavigationMenuTestPageS
         this.state = {
             expanded: void 0,
             triggerLocationUpdate: false,
+            cssPropertyOverrides: false,
         };
     }
 
     public render(): React.ReactNode {
         return (
-            <React.Fragment>
+            <div style={this.state.cssPropertyOverrides ? CSSpropertyOverrides : {}}>
                 <button onClick={this.handleExpandClick}>expand</button>
                 <button onClick={this.handleCollapseClick}>collapse</button>
                 <button
@@ -64,6 +85,13 @@ class NavigationMenuTestPage extends React.Component<{}, NavigationMenuTestPageS
                 >
                     manually trigger location update
                 </button>
+                <input
+                    id={"useCSSOverrides"}
+                    type={"checkbox"}
+                    value={this.state.cssPropertyOverrides.toString()}
+                    onChange={this.handleCSSOverrideUpdate}
+                />
+                <label htmlFor={"useCSSOverrides"}>Show CSS property overrides</label>
                 <NavigationMenu
                     menu={menu}
                     expanded={this.state.expanded}
@@ -76,9 +104,15 @@ class NavigationMenuTestPage extends React.Component<{}, NavigationMenuTestPageS
                 />
                 <pre>location - {this.state.location}</pre>
                 <pre>{JSON.stringify(menu, null, 2)}</pre>
-            </React.Fragment>
+            </div>
         );
     }
+
+    private handleCSSOverrideUpdate = (): void => {
+        this.setState({
+            cssPropertyOverrides: !this.state.cssPropertyOverrides,
+        });
+    };
 
     private handleExpandClick = (): void => {
         this.setState(

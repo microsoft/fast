@@ -1,5 +1,5 @@
 import { ComponentStyleSheet } from "@microsoft/fast-jss-manager-react";
-import { accent, background800, inputBackplateStyle } from "../../style";
+import { accentColorCSSProperty, inputBackplateStyle, L1CSSProperty } from "../../style";
 import { RotateClassNameContract } from "./rotate.class-name-contract";
 
 const landscape: string =
@@ -18,7 +18,7 @@ const styles: ComponentStyleSheet<RotateClassNameContract, {}> = {
     rotate_controlInput: {
         ...inputBackplateStyle,
         "&:checked": {
-            backgroundColor: accent,
+            backgroundColor: accentColorCSSProperty,
         },
     },
     rotate_controlInput__disabled: {
@@ -29,7 +29,7 @@ const styles: ComponentStyleSheet<RotateClassNameContract, {}> = {
     rotate_controlInput__landscape: {
         borderRadius: "2px 0px 0px 2px",
         background: landscape,
-        backgroundColor: background800,
+        backgroundColor: L1CSSProperty,
         "&$rotate_controlInput__disabled": {
             opacity: 0.3,
         },
@@ -37,7 +37,7 @@ const styles: ComponentStyleSheet<RotateClassNameContract, {}> = {
     rotate_controlInput__portrait: {
         borderRadius: "0px 2px 2px 0px",
         background: portrait,
-        backgroundColor: background800,
+        backgroundColor: L1CSSProperty,
         "&$rotate_controlInput__disabled": {
             opacity: 0.3,
         },
