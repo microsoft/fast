@@ -9,7 +9,7 @@ This document presumes you have [NodeJS](https://nodejs.org/) installed as well 
 This section will walk through the quickest way to get up and running using FAST components.
 
 ### Add the script
-Next, add the `fast-components.js` script file to your HTML. This pre-bundled script contains all components and dependencies. Also be sure to add `type="module"` to the script element.
+Next, add the `fast-components.js` script file to your HTML. This pre-bundled script contains all components and dependencies. Also be sure to add [`type="module"`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules) to the script element.
 
 ```html
 <!DOCTYPE html>
@@ -60,7 +60,7 @@ yarn add @microsoft/fast-components
 To use a Web Component as a custom element in HTML, the custom element name must be registered with a backing JavaScript class. Importing the necessary class from `@microsoft/fast-components` into your JavaScript bundle will perform that registration, so long as the imported class **does not get tree shaken**:
 
 ```js
-import { FASTDesignSystemProvider, FASTButton  } from "@microsoft/fast-components";
+import { FASTDesignSystemProvider, FASTButton } from "@microsoft/fast-components";
 
 /*
  * Ensure that tree-shaking doesn't remove these components from the bundle.
