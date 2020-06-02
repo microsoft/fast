@@ -2,10 +2,10 @@ import React from "react";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, ReactWrapper } from "enzyme";
 import { DataGridRowClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
+import { DisplayNamePrefix } from "../utilities";
 import DataGridRow from "./data-grid-row";
 import { DataGridContext } from "./data-grid-context";
 import { DataGridColumn } from "./data-grid.props";
-import { DataGridProps } from "./data-grid";
 
 /*
  * Configure Enzyme
@@ -15,22 +15,12 @@ configure({ adapter: new Adapter() });
 describe("data grid row", (): void => {
     const managedClasses: DataGridRowClassNameContract = {
         dataGridRow: "dataGridRow",
-        dataGridRow__focusWithin: "dataGridRow__focusWithin",
+        dataGridRow__focusedWithin: "dataGridRow__focusWithin",
     };
 
     const rowData1: object = {
         name: "Thomas",
         age: 25,
-    };
-
-    const rowData2: object = {
-        name: "Richard",
-        age: 26,
-    };
-
-    const rowData3: object = {
-        name: "Harold",
-        age: 27,
     };
 
     const column1: DataGridColumn = {
@@ -46,7 +36,9 @@ describe("data grid row", (): void => {
     };
 
     test("should have a displayName that matches the component name", () => {
-        expect((DataGridRow as any).name).toBe(DataGridRow.displayName);
+        expect(`${DisplayNamePrefix}${(DataGridRow as any).name}`).toBe(
+            DataGridRow.displayName
+        );
     });
 
     test("rowId, role and base class gets written to dom element", (): void => {
@@ -96,7 +88,7 @@ describe("data grid row", (): void => {
         );
 
         const row: any = rendered.children();
-        expect(row.prop("className")).toContain(managedClasses.dataGridRow__focusWithin);
+        expect(row.prop("className")).toContain(managedClasses.dataGridRow__focusedWithin);
     });
 
     test("cells are rendered as children", (): void => {
@@ -118,6 +110,6 @@ describe("data grid row", (): void => {
         );
 
         const row: any = rendered.children();
-        expect(row.find("DataGridCell").length).toBe(2);
+        expect(row.find("BaseDataGridCell").length).toBe(2);
     });
 });

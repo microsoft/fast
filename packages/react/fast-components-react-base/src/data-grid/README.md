@@ -43,7 +43,7 @@ And the markup for the simple data grid to display the above:
 
 ```ts
 <DataGrid
-    row={myData}
+    rows={myData}
     dataRowKey="clientId"
     columns={myColumns}
 />

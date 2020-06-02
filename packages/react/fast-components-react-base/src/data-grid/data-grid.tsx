@@ -4,6 +4,7 @@ import { isNil } from "lodash-es";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import { Direction, KeyCodes } from "@microsoft/fast-web-utilities";
 import throttle from "raf-throttle";
+import { DisplayNamePrefix } from "../utilities";
 import StackPanel from "../stack-panel";
 import {
     DataGridColumn,
@@ -56,7 +57,7 @@ class DataGrid extends Foundation<
         managedClasses: {},
     };
 
-    public static displayName: string = "DataGrid";
+    public static displayName: string = `${DisplayNamePrefix}DataGrid`;
 
     /**
      *  default column render function
@@ -695,7 +696,7 @@ class DataGrid extends Foundation<
                 gridTemplateColumns={this.currentTemplateColumns}
                 managedClasses={{
                     dataGridRow: dataGrid_row,
-                    dataGridRow__focusWithin: dataGrid_row__focusedWithin,
+                    dataGridRow__focusedWithin: dataGrid_row__focusedWithin,
                     dataGridRow_cell: dataGrid_cell,
                 }}
             />
@@ -1108,8 +1109,6 @@ class DataGrid extends Foundation<
     private incrementFocusColumn = (direction: number): void => {
         this.updateDirection();
 
-        const directionMod: number = this.direction === Direction.ltr ? 1 : -1;
-
         let currentFocusColumnIndex: number = this.getColumnIndexByKey(
             this.state.focusColumnKey,
             this.state.columns
@@ -1119,14 +1118,13 @@ class DataGrid extends Foundation<
             currentFocusColumnIndex = 0;
         }
 
-        let newFocusColumnIndex: number =
-            currentFocusColumnIndex + direction * directionMod;
-
-        if (newFocusColumnIndex < 0) {
-            newFocusColumnIndex = 0;
-        } else if (newFocusColumnIndex >= this.state.columns.length) {
-            newFocusColumnIndex = this.state.columns.length - 1;
-        }
+        const newFocusColumnIndex: number = Math.min(
+            Math.max(
+                currentFocusColumnIndex + direction * (Direction.ltr ? 1 : -1),
+                0
+            ),
+            this.state.columns.length - 1
+        );
 
         const newFocusColumnKey: React.ReactText = this.state.columns[newFocusColumnIndex]
             .columnDataKey;

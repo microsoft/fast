@@ -4,6 +4,7 @@ import { isNil } from "lodash-es";
 import { classNames } from "@microsoft/fast-web-utilities";
 import { extractHtmlElement } from "@microsoft/fast-react-utilities";
 import { DataGridCellClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
+import { DisplayNamePrefix } from "../utilities";
 import {
     DataGridCellHandledProps,
     DataGridCellProps,
@@ -24,7 +25,7 @@ class DataGridCell extends Foundation<
         managedClasses: {},
     };
 
-    public static displayName: string = "DataGridCell";
+    public static displayName: string = `${DisplayNamePrefix}DataGridCell`;
     public static contextType: React.Context<DataGridContextType> = DataGridContext;
 
     /**

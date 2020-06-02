@@ -5,8 +5,6 @@ import {
 } from "@microsoft/fast-components-class-name-contracts-base";
 import { DataGridColumn } from "./data-grid.props";
 
-export const CellIdKey: string = "data-cellid";
-
 export type DataGridCellManagedClasses = ManagedClasses<DataGridCellClassNameContract>;
 export type DataGridCellUnhandledProps = React.AllHTMLAttributes<HTMLElement>;
 

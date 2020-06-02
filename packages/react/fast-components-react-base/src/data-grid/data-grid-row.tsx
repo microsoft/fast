@@ -3,6 +3,7 @@ import { get, isNil } from "lodash-es";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import { classNames } from "@microsoft/fast-web-utilities";
 import { DataGridRowClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
+import { DisplayNamePrefix } from "../utilities";
 import {
     DataGridRowHandledProps,
     DataGridRowProps,
@@ -21,7 +22,7 @@ class DataGridRow extends Foundation<
         managedClasses: {},
     };
 
-    public static displayName: string = "DataGridRow";
+    public static displayName: string = `${DisplayNamePrefix}DataGridRow`;
 
     public static contextType: React.Context<DataGridContextType> = DataGridContext;
 
@@ -73,12 +74,12 @@ class DataGridRow extends Foundation<
     protected generateClassNames(): string {
         const {
             dataGridRow,
-            dataGridRow__focusWithin,
+            dataGridRow__focusedWithin,
         }: DataGridRowClassNameContract = this.props.managedClasses;
 
         return super.generateClassNames(
             classNames(dataGridRow, [
-                dataGridRow__focusWithin,
+                dataGridRow__focusedWithin,
                 this.props.rowData[this.context.dataRowKey] === this.context.focusRowKey,
             ])
         );

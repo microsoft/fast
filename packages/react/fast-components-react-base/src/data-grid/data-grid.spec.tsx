@@ -10,6 +10,7 @@ import {
     keyCodePageDown,
     keyCodePageUp,
 } from "@microsoft/fast-web-utilities";
+import { DisplayNamePrefix } from "../utilities";
 import DataGrid, { DataGridState } from "./data-grid";
 import { DataGridCellRenderConfig, DataGridColumn } from "./data-grid.props";
 
@@ -110,7 +111,9 @@ describe("data grid", (): void => {
     const columnsCustomCell: DataGridColumn[] = [column1, columnCustomCell];
 
     test("should have a displayName that matches the component name", () => {
-        expect((DataGrid as any).name).toBe(DataGrid.displayName);
+        expect(`${DisplayNamePrefix}${(DataGrid as any).name}`).toBe(
+            DataGrid.displayName
+        );
     });
 
     test("role and base class set correctly", (): void => {

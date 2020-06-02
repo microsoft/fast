@@ -50,7 +50,7 @@ export interface DataGridClassNameContract {
 
 export interface DataGridRowClassNameContract {
     dataGridRow?: string;
-    dataGridRow__focusWithin?: string;
+    dataGridRow__focusedWithin?: string;
     dataGridRow_cell?: string;
 }
 

@@ -4,6 +4,7 @@ import { DataGridCellClassNameContract } from "@microsoft/fast-components-class-
 import { merge } from "lodash-es";
 import { keyCodeArrowDown } from "@microsoft/fast-web-utilities";
 import { configure, mount, ReactWrapper } from "enzyme";
+import { DisplayNamePrefix } from "../utilities";
 import DataGridCell from "./data-grid-cell";
 import { DataGridContext } from "./data-grid-context";
 import { DataGridColumn, DataGridProps } from "./data-grid.props";
@@ -53,7 +54,9 @@ describe("data grid cell", (): void => {
     };
 
     test("should have a displayName that matches the component name", () => {
-        expect((DataGridCell as any).name).toBe(DataGridCell.displayName);
+        expect(`${DisplayNamePrefix}${(DataGridCell as any).name}`).toBe(
+            DataGridCell.displayName
+        );
     });
 
     test("cellId, role and base class gets written to dom element", (): void => {
