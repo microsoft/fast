@@ -1,12 +1,15 @@
 import { ComponentStyles } from "@microsoft/fast-jss-manager-react";
 import { applyFocusVisible } from "@microsoft/fast-jss-utilities";
-import { applyTriggerStyle, insetStrongBoxShadow } from "../style";
 import {
-    accent,
-    foreground300,
-    neutralFillStealthSelected,
-    neutralLayerL4,
-} from "../style/constants";
+    accentColorCSSProperty,
+    applyTriggerStyle,
+    borderRadiusCSSProperty,
+    defaultTextSizeCSSProperty,
+    inactiveTextColorCSSProperty,
+    insetStrongBoxShadow,
+    L4CSSProperty,
+    textColorCSSProperty,
+} from "../style";
 import { NavigationMenuItemClassNameContract } from "./navigation-menu-item.props";
 
 export interface NavigationMenuClassNameContract
@@ -16,9 +19,9 @@ export interface NavigationMenuClassNameContract
 
 const styles: ComponentStyles<NavigationMenuClassNameContract, {}> = {
     navigationMenu: {
-        fontSize: "12px",
-        background: neutralLayerL4,
-        color: foreground300,
+        "font-size": defaultTextSizeCSSProperty,
+        background: L4CSSProperty,
+        color: inactiveTextColorCSSProperty,
         height: "100%",
     },
     navigationMenuItem: {
@@ -34,7 +37,7 @@ const styles: ComponentStyles<NavigationMenuClassNameContract, {}> = {
         },
     },
     navigationMenuItem_listItem: {
-        ...applyTriggerStyle(foreground300),
+        ...applyTriggerStyle(inactiveTextColorCSSProperty),
         display: "block",
         width: "100%",
         textAlign: "start",
@@ -47,32 +50,30 @@ const styles: ComponentStyles<NavigationMenuClassNameContract, {}> = {
         '&[aria-expanded="false"]::before, &[aria-expanded="true"]::before': {
             content: "''",
             display: "inline-block",
-            marginLeft: "-11px",
+            marginLeft: "-13px",
             marginRight: "5px",
         },
-        '&[aria-expanded="false"]::before': {
-            borderTop: "3px solid transparent",
-            borderLeft: `3px solid ${foreground300}`,
-            borderRight: "3px solid transparent",
-            borderBottom: "3px solid transparent",
+        "&::before": {
+            borderTop: "4px solid transparent",
+            borderLeft: `4px solid ${textColorCSSProperty}`,
+            borderRight: "4px solid transparent",
+            borderBottom: "4px solid transparent",
         },
         '&[aria-expanded="true"]::before': {
-            borderTop: `3px solid ${foreground300}`,
-            borderLeft: "3px solid transparent",
-            borderRight: "3px solid transparent",
-            borderBottom: "3px solid transparent",
+            transform: "rotate(45deg)",
         },
         ...applyFocusVisible({
-            ...insetStrongBoxShadow(accent),
+            ...insetStrongBoxShadow(accentColorCSSProperty),
         }),
     },
     navigationMenuItem_listItem__active: {
-        background: neutralFillStealthSelected,
+        "font-weight": "bold",
+        color: textColorCSSProperty,
         "&::after": {
             content: "''",
             position: "absolute",
-            background: accent,
-            borderRadius: "2px",
+            background: accentColorCSSProperty,
+            borderRadius: borderRadiusCSSProperty,
             width: "2px",
             height: "calc(100% - 4px)",
             top: "2px",

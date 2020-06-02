@@ -18,7 +18,7 @@
         {
           "kind": "Interface",
           "canonicalReference": "@microsoft/fast-element!Accessor:interface",
-          "docComment": "",
+          "docComment": "/**\n * Represents a getter/setter property accessor on an object.\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -31,7 +31,7 @@
             {
               "kind": "MethodSignature",
               "canonicalReference": "@microsoft/fast-element!Accessor#getValue:member(1)",
-              "docComment": "",
+              "docComment": "/**\n * Gets the value of the property on the source object.\n *\n * @param source - The source object to access.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -74,7 +74,7 @@
             {
               "kind": "PropertySignature",
               "canonicalReference": "@microsoft/fast-element!Accessor#name:member",
-              "docComment": "",
+              "docComment": "/**\n * The name of the property.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -99,7 +99,7 @@
             {
               "kind": "MethodSignature",
               "canonicalReference": "@microsoft/fast-element!Accessor#setValue:member(1)",
-              "docComment": "",
+              "docComment": "/**\n * Sets the value of the property on the source object.\n *\n * @param source - The source object to access.\n *\n * @param value - The value to set the property to.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -1561,9 +1561,102 @@
           "extendsTokenRanges": []
         },
         {
+          "kind": "TypeAlias",
+          "canonicalReference": "@microsoft/fast-element!Binding:type",
+          "docComment": "/**\n * The signature of an arrow function capable of being evaluated as part of a template binding update.\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "export declare type Binding<TSource = "
+            },
+            {
+              "kind": "Content",
+              "text": "any"
+            },
+            {
+              "kind": "Content",
+              "text": ", TReturn = "
+            },
+            {
+              "kind": "Content",
+              "text": "any"
+            },
+            {
+              "kind": "Content",
+              "text": ", TParent = "
+            },
+            {
+              "kind": "Content",
+              "text": "any"
+            },
+            {
+              "kind": "Content",
+              "text": "> = "
+            },
+            {
+              "kind": "Content",
+              "text": "(source: TSource, context: "
+            },
+            {
+              "kind": "Reference",
+              "text": "ExecutionContext",
+              "canonicalReference": "@microsoft/fast-element!ExecutionContext:class"
+            },
+            {
+              "kind": "Content",
+              "text": "<TParent>) => TReturn"
+            },
+            {
+              "kind": "Content",
+              "text": ";"
+            }
+          ],
+          "releaseTag": "Public",
+          "name": "Binding",
+          "typeParameters": [
+            {
+              "typeParameterName": "TSource",
+              "constraintTokenRange": {
+                "startIndex": 0,
+                "endIndex": 0
+              },
+              "defaultTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
+            },
+            {
+              "typeParameterName": "TReturn",
+              "constraintTokenRange": {
+                "startIndex": 0,
+                "endIndex": 0
+              },
+              "defaultTypeTokenRange": {
+                "startIndex": 3,
+                "endIndex": 4
+              }
+            },
+            {
+              "typeParameterName": "TParent",
+              "constraintTokenRange": {
+                "startIndex": 0,
+                "endIndex": 0
+              },
+              "defaultTypeTokenRange": {
+                "startIndex": 5,
+                "endIndex": 6
+              }
+            }
+          ],
+          "typeTokenRange": {
+            "startIndex": 7,
+            "endIndex": 10
+          }
+        },
+        {
           "kind": "Class",
           "canonicalReference": "@microsoft/fast-element!BindingBehavior:class",
-          "docComment": "",
+          "docComment": "/**\n * A behavior that updates content and attributes based on a configured BindingDirective.\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -1585,7 +1678,7 @@
             {
               "kind": "Constructor",
               "canonicalReference": "@microsoft/fast-element!BindingBehavior:constructor(1)",
-              "docComment": "/**\n * Constructs a new instance of the `BindingBehavior` class\n */\n",
+              "docComment": "/**\n * Constructs a new instance of the `BindingBehavior` class\n *\n * @param target - The target of the data updates.\n *\n * @param binding - The binding that returns the latest value for an update.\n *\n * @param bind - The operation to perform during binding.\n *\n * @param unbind - The operation to perform during unbinding.\n *\n * @param updateTarget - The operation to perform when updating.\n *\n * @param targetName - The name of the target attribute or property to update.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -1597,12 +1690,12 @@
                 },
                 {
                   "kind": "Content",
-                  "text": ", expression: "
+                  "text": ", binding: "
                 },
                 {
                   "kind": "Reference",
-                  "text": "Expression",
-                  "canonicalReference": "@microsoft/fast-element!Expression:type"
+                  "text": "Binding",
+                  "canonicalReference": "@microsoft/fast-element!Binding:type"
                 },
                 {
                   "kind": "Content",
@@ -1667,7 +1760,7 @@
                   }
                 },
                 {
-                  "parameterName": "expression",
+                  "parameterName": "binding",
                   "parameterTypeTokenRange": {
                     "startIndex": 3,
                     "endIndex": 4
@@ -1736,6 +1829,64 @@
             },
             {
               "kind": "Property",
+              "canonicalReference": "@microsoft/fast-element!BindingBehavior#binding:member",
+              "docComment": "",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "binding: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "Binding",
+                  "canonicalReference": "@microsoft/fast-element!Binding:type"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "binding",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@microsoft/fast-element!BindingBehavior#bindingObserver:member",
+              "docComment": "",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "bindingObserver: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "BindingObserver",
+                  "canonicalReference": "@microsoft/fast-element!BindingObserver:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": " | null"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "bindingObserver",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 3
+              },
+              "isStatic": false
+            },
+            {
+              "kind": "Property",
               "canonicalReference": "@microsoft/fast-element!BindingBehavior#classVersions:member",
               "docComment": "",
               "excerptTokens": [
@@ -1790,137 +1941,6 @@
               ],
               "releaseTag": "Public",
               "name": "context",
-              "propertyTypeTokenRange": {
-                "startIndex": 1,
-                "endIndex": 3
-              },
-              "isStatic": false
-            },
-            {
-              "kind": "Property",
-              "canonicalReference": "@microsoft/fast-element!BindingBehavior#expression:member",
-              "docComment": "",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "expression: "
-                },
-                {
-                  "kind": "Reference",
-                  "text": "Expression",
-                  "canonicalReference": "@microsoft/fast-element!Expression:type"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";"
-                }
-              ],
-              "releaseTag": "Public",
-              "name": "expression",
-              "propertyTypeTokenRange": {
-                "startIndex": 1,
-                "endIndex": 2
-              },
-              "isStatic": false
-            },
-            {
-              "kind": "Method",
-              "canonicalReference": "@microsoft/fast-element!BindingBehavior#handleEvent:member(1)",
-              "docComment": "",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "handleEvent(event: "
-                },
-                {
-                  "kind": "Reference",
-                  "text": "Event",
-                  "canonicalReference": "!Event:interface"
-                },
-                {
-                  "kind": "Content",
-                  "text": "): "
-                },
-                {
-                  "kind": "Content",
-                  "text": "void"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";"
-                }
-              ],
-              "isStatic": false,
-              "returnTypeTokenRange": {
-                "startIndex": 3,
-                "endIndex": 4
-              },
-              "releaseTag": "Public",
-              "overloadIndex": 1,
-              "parameters": [
-                {
-                  "parameterName": "event",
-                  "parameterTypeTokenRange": {
-                    "startIndex": 1,
-                    "endIndex": 2
-                  }
-                }
-              ],
-              "name": "handleEvent"
-            },
-            {
-              "kind": "Method",
-              "canonicalReference": "@microsoft/fast-element!BindingBehavior#handleExpressionChange:member(1)",
-              "docComment": "",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "handleExpressionChange(): "
-                },
-                {
-                  "kind": "Content",
-                  "text": "void"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";"
-                }
-              ],
-              "isStatic": false,
-              "returnTypeTokenRange": {
-                "startIndex": 1,
-                "endIndex": 2
-              },
-              "releaseTag": "Public",
-              "overloadIndex": 1,
-              "parameters": [],
-              "name": "handleExpressionChange"
-            },
-            {
-              "kind": "Property",
-              "canonicalReference": "@microsoft/fast-element!BindingBehavior#observableExpression:member",
-              "docComment": "",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "observableExpression: "
-                },
-                {
-                  "kind": "Reference",
-                  "text": "ObservableExpression",
-                  "canonicalReference": "@microsoft/fast-element!ObservableExpression:class"
-                },
-                {
-                  "kind": "Content",
-                  "text": " | null"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";"
-                }
-              ],
-              "releaseTag": "Public",
-              "name": "observableExpression",
               "propertyTypeTokenRange": {
                 "startIndex": 1,
                 "endIndex": 3
@@ -2104,7 +2124,7 @@
         {
           "kind": "Class",
           "canonicalReference": "@microsoft/fast-element!BindingDirective:class",
-          "docComment": "",
+          "docComment": "/**\n * A directive that configures data binding to element content and attributes.\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -2126,16 +2146,16 @@
             {
               "kind": "Constructor",
               "canonicalReference": "@microsoft/fast-element!BindingDirective:constructor(1)",
-              "docComment": "/**\n * Constructs a new instance of the `BindingDirective` class\n */\n",
+              "docComment": "/**\n * Creates an instance of BindingDirective.\n *\n * @param binding - A binding that returns the data used to update the DOM.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
-                  "text": "constructor(expression: "
+                  "text": "constructor(binding: "
                 },
                 {
                   "kind": "Reference",
-                  "text": "Expression",
-                  "canonicalReference": "@microsoft/fast-element!Expression:type"
+                  "text": "Binding",
+                  "canonicalReference": "@microsoft/fast-element!Binding:type"
                 },
                 {
                   "kind": "Content",
@@ -2146,7 +2166,7 @@
               "overloadIndex": 1,
               "parameters": [
                 {
-                  "parameterName": "expression",
+                  "parameterName": "binding",
                   "parameterTypeTokenRange": {
                     "startIndex": 1,
                     "endIndex": 2
@@ -2155,9 +2175,36 @@
               ]
             },
             {
+              "kind": "Property",
+              "canonicalReference": "@microsoft/fast-element!BindingDirective#binding:member",
+              "docComment": "",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "binding: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "Binding",
+                  "canonicalReference": "@microsoft/fast-element!Binding:type"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "binding",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false
+            },
+            {
               "kind": "Method",
               "canonicalReference": "@microsoft/fast-element!BindingDirective#createBehavior:member(1)",
-              "docComment": "",
+              "docComment": "/**\n * Creates the runtime BindingBehavior instance based on the configuration information stored in the BindingDirective.\n *\n * @param target - The target node that the binding behavior should attach to.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -2226,36 +2273,9 @@
               "isStatic": false
             },
             {
-              "kind": "Property",
-              "canonicalReference": "@microsoft/fast-element!BindingDirective#expression:member",
-              "docComment": "",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "expression: "
-                },
-                {
-                  "kind": "Reference",
-                  "text": "Expression",
-                  "canonicalReference": "@microsoft/fast-element!Expression:type"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";"
-                }
-              ],
-              "releaseTag": "Public",
-              "name": "expression",
-              "propertyTypeTokenRange": {
-                "startIndex": 1,
-                "endIndex": 2
-              },
-              "isStatic": false
-            },
-            {
               "kind": "Method",
               "canonicalReference": "@microsoft/fast-element!BindingDirective#targetAtContent:member(1)",
-              "docComment": "",
+              "docComment": "/**\n * Makes this binding target the content of an element rather than a particular attribute or property.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -2283,7 +2303,7 @@
             {
               "kind": "Property",
               "canonicalReference": "@microsoft/fast-element!BindingDirective#targetName:member",
-              "docComment": "",
+              "docComment": "/**\n * Gets the name of the attribute or property that this binding is targeting.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -2318,6 +2338,181 @@
           "implementsTokenRanges": []
         },
         {
+          "kind": "Interface",
+          "canonicalReference": "@microsoft/fast-element!BindingObserver:interface",
+          "docComment": "/**\n * Enables evaluation of and subscription to a binding.\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "export interface BindingObserver<TSource = "
+            },
+            {
+              "kind": "Content",
+              "text": "any"
+            },
+            {
+              "kind": "Content",
+              "text": ", TReturn = "
+            },
+            {
+              "kind": "Content",
+              "text": "any"
+            },
+            {
+              "kind": "Content",
+              "text": ", TParent = "
+            },
+            {
+              "kind": "Content",
+              "text": "any"
+            },
+            {
+              "kind": "Content",
+              "text": "> extends "
+            },
+            {
+              "kind": "Reference",
+              "text": "Notifier",
+              "canonicalReference": "@microsoft/fast-element!Notifier:interface"
+            },
+            {
+              "kind": "Content",
+              "text": " "
+            }
+          ],
+          "releaseTag": "Public",
+          "typeParameters": [
+            {
+              "typeParameterName": "TSource",
+              "constraintTokenRange": {
+                "startIndex": 0,
+                "endIndex": 0
+              },
+              "defaultTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
+            },
+            {
+              "typeParameterName": "TReturn",
+              "constraintTokenRange": {
+                "startIndex": 0,
+                "endIndex": 0
+              },
+              "defaultTypeTokenRange": {
+                "startIndex": 3,
+                "endIndex": 4
+              }
+            },
+            {
+              "typeParameterName": "TParent",
+              "constraintTokenRange": {
+                "startIndex": 0,
+                "endIndex": 0
+              },
+              "defaultTypeTokenRange": {
+                "startIndex": 5,
+                "endIndex": 6
+              }
+            }
+          ],
+          "name": "BindingObserver",
+          "members": [
+            {
+              "kind": "MethodSignature",
+              "canonicalReference": "@microsoft/fast-element!BindingObserver#disconnect:member(1)",
+              "docComment": "/**\n * Unsubscribe from all dependent observables of the binding.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "disconnect(): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "void"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "returnTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "releaseTag": "Public",
+              "overloadIndex": 1,
+              "parameters": [],
+              "name": "disconnect"
+            },
+            {
+              "kind": "MethodSignature",
+              "canonicalReference": "@microsoft/fast-element!BindingObserver#observe:member(1)",
+              "docComment": "/**\n * Begins observing the binding for the source and returns the current value.\n *\n * @param source - The source that the binding is based on.\n *\n * @param context - The execution context to execute the binding within.\n *\n * @returns The value of the binding.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "observe(source: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "TSource"
+                },
+                {
+                  "kind": "Content",
+                  "text": ", context: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "ExecutionContext",
+                  "canonicalReference": "@microsoft/fast-element!ExecutionContext:class"
+                },
+                {
+                  "kind": "Content",
+                  "text": "): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "TReturn"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "returnTypeTokenRange": {
+                "startIndex": 5,
+                "endIndex": 6
+              },
+              "releaseTag": "Public",
+              "overloadIndex": 1,
+              "parameters": [
+                {
+                  "parameterName": "source",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 1,
+                    "endIndex": 2
+                  }
+                },
+                {
+                  "parameterName": "context",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 3,
+                    "endIndex": 4
+                  }
+                }
+              ],
+              "name": "observe"
+            }
+          ],
+          "extendsTokenRanges": [
+            {
+              "startIndex": 7,
+              "endIndex": 9
+            }
+          ]
+        },
+        {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-element!booleanConverter:var",
           "docComment": "",
@@ -2342,7 +2537,7 @@
         {
           "kind": "TypeAlias",
           "canonicalReference": "@microsoft/fast-element!Callable:type",
-          "docComment": "",
+          "docComment": "/**\n * Represents a callable type such as a function or an object with a \"call\" method.\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -2376,7 +2571,7 @@
         {
           "kind": "Interface",
           "canonicalReference": "@microsoft/fast-element!CaptureType:interface",
-          "docComment": "",
+          "docComment": "/**\n * A marker interface used to capture types when interpolating Directive helpers into templates.\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -3784,7 +3979,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-element!defaultExecutionContext:var",
-          "docComment": "",
+          "docComment": "/**\n * The default execution context used in binding expressions.\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -3955,7 +4150,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-element!DOM:var",
-          "docComment": "",
+          "docComment": "/**\n * Common DOM APIs.\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -4022,7 +4217,16 @@
             },
             {
               "kind": "Content",
-              "text": "): void;\n    setAttribute(element: "
+              "text": "): void;\n    nextUpdate(): "
+            },
+            {
+              "kind": "Reference",
+              "text": "Promise",
+              "canonicalReference": "!Promise:interface"
+            },
+            {
+              "kind": "Content",
+              "text": "<void>;\n    setAttribute(element: "
             },
             {
               "kind": "Reference",
@@ -4047,7 +4251,7 @@
           "name": "DOM",
           "variableTypeTokenRange": {
             "startIndex": 1,
-            "endIndex": 19
+            "endIndex": 21
           }
         },
         {
@@ -4346,7 +4550,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-element!emptyArray:var",
-          "docComment": "",
+          "docComment": "/**\n * A readonly, empty array.\n *\n * @remarks\n *\n * Typically returned by APIs that return arrays when there are no actual items to return.\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -4400,34 +4604,8 @@
           "members": [
             {
               "kind": "Property",
-              "canonicalReference": "@microsoft/fast-element!ExecutionContext#even:member",
-              "docComment": "",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "get even(): "
-                },
-                {
-                  "kind": "Content",
-                  "text": "boolean"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";"
-                }
-              ],
-              "releaseTag": "Public",
-              "name": "even",
-              "propertyTypeTokenRange": {
-                "startIndex": 1,
-                "endIndex": 2
-              },
-              "isStatic": false
-            },
-            {
-              "kind": "Property",
               "canonicalReference": "@microsoft/fast-element!ExecutionContext#event:member",
-              "docComment": "",
+              "docComment": "/**\n * The current event within an event handler.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -4453,34 +4631,8 @@
             },
             {
               "kind": "Property",
-              "canonicalReference": "@microsoft/fast-element!ExecutionContext#first:member",
-              "docComment": "",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "get first(): "
-                },
-                {
-                  "kind": "Content",
-                  "text": "boolean"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";"
-                }
-              ],
-              "releaseTag": "Public",
-              "name": "first",
-              "propertyTypeTokenRange": {
-                "startIndex": 1,
-                "endIndex": 2
-              },
-              "isStatic": false
-            },
-            {
-              "kind": "Property",
               "canonicalReference": "@microsoft/fast-element!ExecutionContext#index:member",
-              "docComment": "",
+              "docComment": "/**\n * The index of the current item within a repeat context.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -4505,12 +4657,12 @@
             },
             {
               "kind": "Property",
-              "canonicalReference": "@microsoft/fast-element!ExecutionContext#last:member",
-              "docComment": "",
+              "canonicalReference": "@microsoft/fast-element!ExecutionContext#isEven:member",
+              "docComment": "/**\n * Indicates whether the current item within a repeat context has an even index.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
-                  "text": "get last(): "
+                  "text": "get isEven(): "
                 },
                 {
                   "kind": "Content",
@@ -4522,7 +4674,111 @@
                 }
               ],
               "releaseTag": "Public",
-              "name": "last",
+              "name": "isEven",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@microsoft/fast-element!ExecutionContext#isFirst:member",
+              "docComment": "/**\n * Indicates whether the current item within a repeat context is the first item in the collection.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "get isFirst(): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "boolean"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "isFirst",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@microsoft/fast-element!ExecutionContext#isInMiddle:member",
+              "docComment": "/**\n * Indicates whether the current item within a repeat context is somewhere in the middle of the collection.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "get isInMiddle(): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "boolean"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "isInMiddle",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@microsoft/fast-element!ExecutionContext#isLast:member",
+              "docComment": "/**\n * Indicates whether the current item within a repeat context is the last item in the collection.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "get isLast(): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "boolean"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "isLast",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@microsoft/fast-element!ExecutionContext#isOdd:member",
+              "docComment": "/**\n * Indicates whether the current item within a repeat context has an odd index.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "get isOdd(): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "boolean"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "isOdd",
               "propertyTypeTokenRange": {
                 "startIndex": 1,
                 "endIndex": 2
@@ -4532,7 +4788,7 @@
             {
               "kind": "Property",
               "canonicalReference": "@microsoft/fast-element!ExecutionContext#length:member",
-              "docComment": "",
+              "docComment": "/**\n * The length of the current collection within a repeat context.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -4557,60 +4813,8 @@
             },
             {
               "kind": "Property",
-              "canonicalReference": "@microsoft/fast-element!ExecutionContext#middle:member",
-              "docComment": "",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "get middle(): "
-                },
-                {
-                  "kind": "Content",
-                  "text": "boolean"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";"
-                }
-              ],
-              "releaseTag": "Public",
-              "name": "middle",
-              "propertyTypeTokenRange": {
-                "startIndex": 1,
-                "endIndex": 2
-              },
-              "isStatic": false
-            },
-            {
-              "kind": "Property",
-              "canonicalReference": "@microsoft/fast-element!ExecutionContext#odd:member",
-              "docComment": "",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "get odd(): "
-                },
-                {
-                  "kind": "Content",
-                  "text": "boolean"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";"
-                }
-              ],
-              "releaseTag": "Public",
-              "name": "odd",
-              "propertyTypeTokenRange": {
-                "startIndex": 1,
-                "endIndex": 2
-              },
-              "isStatic": false
-            },
-            {
-              "kind": "Property",
               "canonicalReference": "@microsoft/fast-element!ExecutionContext#parent:member",
-              "docComment": "",
+              "docComment": "/**\n * The parent data object within a repeat context.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -4635,159 +4839,6 @@
             }
           ],
           "implementsTokenRanges": []
-        },
-        {
-          "kind": "TypeAlias",
-          "canonicalReference": "@microsoft/fast-element!Expression:type",
-          "docComment": "/**\n * The signature of an arrow function capable of being evaluated as part of a template update.\n */\n",
-          "excerptTokens": [
-            {
-              "kind": "Content",
-              "text": "export declare type Expression<TScope = "
-            },
-            {
-              "kind": "Content",
-              "text": "any"
-            },
-            {
-              "kind": "Content",
-              "text": ", TReturn = "
-            },
-            {
-              "kind": "Content",
-              "text": "any"
-            },
-            {
-              "kind": "Content",
-              "text": ", TParent = "
-            },
-            {
-              "kind": "Content",
-              "text": "any"
-            },
-            {
-              "kind": "Content",
-              "text": "> = "
-            },
-            {
-              "kind": "Content",
-              "text": "(scope: TScope, context: "
-            },
-            {
-              "kind": "Reference",
-              "text": "ExecutionContext",
-              "canonicalReference": "@microsoft/fast-element!ExecutionContext:class"
-            },
-            {
-              "kind": "Content",
-              "text": "<TParent>) => TReturn"
-            },
-            {
-              "kind": "Content",
-              "text": ";"
-            }
-          ],
-          "releaseTag": "Public",
-          "name": "Expression",
-          "typeParameters": [
-            {
-              "typeParameterName": "TScope",
-              "constraintTokenRange": {
-                "startIndex": 0,
-                "endIndex": 0
-              },
-              "defaultTypeTokenRange": {
-                "startIndex": 1,
-                "endIndex": 2
-              }
-            },
-            {
-              "typeParameterName": "TReturn",
-              "constraintTokenRange": {
-                "startIndex": 0,
-                "endIndex": 0
-              },
-              "defaultTypeTokenRange": {
-                "startIndex": 3,
-                "endIndex": 4
-              }
-            },
-            {
-              "typeParameterName": "TParent",
-              "constraintTokenRange": {
-                "startIndex": 0,
-                "endIndex": 0
-              },
-              "defaultTypeTokenRange": {
-                "startIndex": 5,
-                "endIndex": 6
-              }
-            }
-          ],
-          "typeTokenRange": {
-            "startIndex": 7,
-            "endIndex": 10
-          }
-        },
-        {
-          "kind": "Interface",
-          "canonicalReference": "@microsoft/fast-element!ExpressionObserver:interface",
-          "docComment": "",
-          "excerptTokens": [
-            {
-              "kind": "Content",
-              "text": "export interface ExpressionObserver "
-            }
-          ],
-          "releaseTag": "Public",
-          "name": "ExpressionObserver",
-          "members": [
-            {
-              "kind": "MethodSignature",
-              "canonicalReference": "@microsoft/fast-element!ExpressionObserver#handleExpressionChange:member(1)",
-              "docComment": "",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "handleExpressionChange(expression: "
-                },
-                {
-                  "kind": "Reference",
-                  "text": "ObservableExpression",
-                  "canonicalReference": "@microsoft/fast-element!ObservableExpression:class"
-                },
-                {
-                  "kind": "Content",
-                  "text": "): "
-                },
-                {
-                  "kind": "Content",
-                  "text": "void"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";"
-                }
-              ],
-              "returnTypeTokenRange": {
-                "startIndex": 3,
-                "endIndex": 4
-              },
-              "releaseTag": "Public",
-              "overloadIndex": 1,
-              "parameters": [
-                {
-                  "parameterName": "expression",
-                  "parameterTypeTokenRange": {
-                    "startIndex": 1,
-                    "endIndex": 2
-                  }
-                }
-              ],
-              "name": "handleExpressionChange"
-            }
-          ],
-          "extendsTokenRanges": []
         },
         {
           "kind": "Interface",
@@ -5667,7 +5718,7 @@
             {
               "kind": "Reference",
               "text": "TemplateValue",
-              "canonicalReference": "@microsoft/fast-element!~TemplateValue:type"
+              "canonicalReference": "@microsoft/fast-element!TemplateValue:type"
             },
             {
               "kind": "Content",
@@ -5741,171 +5792,6 @@
         },
         {
           "kind": "Class",
-          "canonicalReference": "@microsoft/fast-element!HTMLTemplateBehavior:class",
-          "docComment": "",
-          "excerptTokens": [
-            {
-              "kind": "Content",
-              "text": "export declare class HTMLTemplateBehavior implements "
-            },
-            {
-              "kind": "Reference",
-              "text": "Behavior",
-              "canonicalReference": "@microsoft/fast-element!Behavior:interface"
-            },
-            {
-              "kind": "Content",
-              "text": " "
-            }
-          ],
-          "releaseTag": "Public",
-          "name": "HTMLTemplateBehavior",
-          "members": [
-            {
-              "kind": "Constructor",
-              "canonicalReference": "@microsoft/fast-element!HTMLTemplateBehavior:constructor(1)",
-              "docComment": "/**\n * Constructs a new instance of the `HTMLTemplateBehavior` class\n */\n",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "constructor(template: "
-                },
-                {
-                  "kind": "Reference",
-                  "text": "SyntheticViewTemplate",
-                  "canonicalReference": "@microsoft/fast-element!SyntheticViewTemplate:interface"
-                },
-                {
-                  "kind": "Content",
-                  "text": ", location: "
-                },
-                {
-                  "kind": "Reference",
-                  "text": "HTMLElement",
-                  "canonicalReference": "!HTMLElement:interface"
-                },
-                {
-                  "kind": "Content",
-                  "text": ");"
-                }
-              ],
-              "releaseTag": "Public",
-              "overloadIndex": 1,
-              "parameters": [
-                {
-                  "parameterName": "template",
-                  "parameterTypeTokenRange": {
-                    "startIndex": 1,
-                    "endIndex": 2
-                  }
-                },
-                {
-                  "parameterName": "location",
-                  "parameterTypeTokenRange": {
-                    "startIndex": 3,
-                    "endIndex": 4
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "Method",
-              "canonicalReference": "@microsoft/fast-element!HTMLTemplateBehavior#bind:member(1)",
-              "docComment": "",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "bind(source: "
-                },
-                {
-                  "kind": "Content",
-                  "text": "unknown"
-                },
-                {
-                  "kind": "Content",
-                  "text": ", context: "
-                },
-                {
-                  "kind": "Reference",
-                  "text": "ExecutionContext",
-                  "canonicalReference": "@microsoft/fast-element!ExecutionContext:class"
-                },
-                {
-                  "kind": "Content",
-                  "text": "): "
-                },
-                {
-                  "kind": "Content",
-                  "text": "void"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";"
-                }
-              ],
-              "isStatic": false,
-              "returnTypeTokenRange": {
-                "startIndex": 5,
-                "endIndex": 6
-              },
-              "releaseTag": "Public",
-              "overloadIndex": 1,
-              "parameters": [
-                {
-                  "parameterName": "source",
-                  "parameterTypeTokenRange": {
-                    "startIndex": 1,
-                    "endIndex": 2
-                  }
-                },
-                {
-                  "parameterName": "context",
-                  "parameterTypeTokenRange": {
-                    "startIndex": 3,
-                    "endIndex": 4
-                  }
-                }
-              ],
-              "name": "bind"
-            },
-            {
-              "kind": "Method",
-              "canonicalReference": "@microsoft/fast-element!HTMLTemplateBehavior#unbind:member(1)",
-              "docComment": "",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "unbind(): "
-                },
-                {
-                  "kind": "Content",
-                  "text": "void"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";"
-                }
-              ],
-              "isStatic": false,
-              "returnTypeTokenRange": {
-                "startIndex": 1,
-                "endIndex": 2
-              },
-              "releaseTag": "Public",
-              "overloadIndex": 1,
-              "parameters": [],
-              "name": "unbind"
-            }
-          ],
-          "implementsTokenRanges": [
-            {
-              "startIndex": 1,
-              "endIndex": 3
-            }
-          ]
-        },
-        {
-          "kind": "Class",
           "canonicalReference": "@microsoft/fast-element!HTMLView:class",
           "docComment": "/**\n * The standard View implementation, which also implements ElementView and SyntheticView.\n */\n",
           "excerptTokens": [
@@ -5938,7 +5824,7 @@
             {
               "kind": "Constructor",
               "canonicalReference": "@microsoft/fast-element!HTMLView:constructor(1)",
-              "docComment": "/**\n * Constructs a new instance of the `HTMLView` class\n */\n",
+              "docComment": "/**\n * Constructs a new instance of the `HTMLView` class\n *\n * @param fragment - The html fragment that contains the nodes for this view.\n *\n * @param behaviors - The behaviors to be applied to this view.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -6327,6 +6213,32 @@
               "name": "remove"
             },
             {
+              "kind": "Property",
+              "canonicalReference": "@microsoft/fast-element!HTMLView#source:member",
+              "docComment": "",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "source: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "any | null"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "source",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false
+            },
+            {
               "kind": "Method",
               "canonicalReference": "@microsoft/fast-element!HTMLView#unbind:member(1)",
               "docComment": "/**\n * Unbinds a view's behaviors from its binding source.\n */\n",
@@ -6593,11 +6505,11 @@
         {
           "kind": "Function",
           "canonicalReference": "@microsoft/fast-element!observable:function(1)",
-          "docComment": "",
+          "docComment": "/**\n * Decorator: Defines an observable property on the target.\n *\n * @param target - The target to define the observable on.\n *\n * @param nameOrAccessor - The property name or accessor to define the observable as.\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
-              "text": "export declare function observable($target: "
+              "text": "export declare function observable(target: "
             },
             {
               "kind": "Content",
@@ -6605,11 +6517,16 @@
             },
             {
               "kind": "Content",
-              "text": ", $prop: "
+              "text": ", nameOrAccessor: "
             },
             {
               "kind": "Content",
-              "text": "string"
+              "text": "string | "
+            },
+            {
+              "kind": "Reference",
+              "text": "Accessor",
+              "canonicalReference": "@microsoft/fast-element!Accessor:interface"
             },
             {
               "kind": "Content",
@@ -6625,24 +6542,24 @@
             }
           ],
           "returnTypeTokenRange": {
-            "startIndex": 5,
-            "endIndex": 6
+            "startIndex": 6,
+            "endIndex": 7
           },
           "releaseTag": "Public",
           "overloadIndex": 1,
           "parameters": [
             {
-              "parameterName": "$target",
+              "parameterName": "target",
               "parameterTypeTokenRange": {
                 "startIndex": 1,
                 "endIndex": 2
               }
             },
             {
-              "parameterName": "$prop",
+              "parameterName": "nameOrAccessor",
               "parameterTypeTokenRange": {
                 "startIndex": 3,
-                "endIndex": 4
+                "endIndex": 5
               }
             }
           ],
@@ -6651,15 +6568,20 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-element!Observable:var",
-          "docComment": "",
+          "docComment": "/**\n * Common Observable APIs.\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
               "text": "Observable: "
             },
             {
+              "kind": "Reference",
+              "text": "Readonly",
+              "canonicalReference": "!Readonly:type"
+            },
+            {
               "kind": "Content",
-              "text": "{\n    createArrayObserver(array: any[]): "
+              "text": "<{\n    setArrayObserverFactory(factory: (collection: any[]) => "
             },
             {
               "kind": "Reference",
@@ -6668,7 +6590,7 @@
             },
             {
               "kind": "Content",
-              "text": ";\n    getNotifier<T extends "
+              "text": "): void;\n    getNotifier(source: any): "
             },
             {
               "kind": "Reference",
@@ -6677,16 +6599,7 @@
             },
             {
               "kind": "Content",
-              "text": " = "
-            },
-            {
-              "kind": "Reference",
-              "text": "Notifier",
-              "canonicalReference": "@microsoft/fast-element!Notifier:interface"
-            },
-            {
-              "kind": "Content",
-              "text": ">(source: any): T;\n    track(source: unknown, propertyName: string): void;\n    notify(source: unknown, args: any): void;\n    defineProperty(target: {}, nameOrAccessor: string | "
+              "text": ";\n    track(source: unknown, propertyName: string): void;\n    notify(source: unknown, args: any): void;\n    defineProperty(target: {}, nameOrAccessor: string | "
             },
             {
               "kind": "Reference",
@@ -6704,166 +6617,42 @@
             },
             {
               "kind": "Content",
-              "text": "[];\n}"
+              "text": "[];\n    binding<TScope = any, TReturn = any, TParent = any>(binding: "
+            },
+            {
+              "kind": "Reference",
+              "text": "Binding",
+              "canonicalReference": "@microsoft/fast-element!Binding:type"
+            },
+            {
+              "kind": "Content",
+              "text": "<any, any, any>, initialSubscriber?: "
+            },
+            {
+              "kind": "Reference",
+              "text": "Subscriber",
+              "canonicalReference": "@microsoft/fast-element!Subscriber:interface"
+            },
+            {
+              "kind": "Content",
+              "text": " | undefined): "
+            },
+            {
+              "kind": "Reference",
+              "text": "BindingObserver",
+              "canonicalReference": "@microsoft/fast-element!BindingObserver:interface"
+            },
+            {
+              "kind": "Content",
+              "text": "<TScope, TReturn, TParent>;\n}>"
             }
           ],
           "releaseTag": "Public",
           "name": "Observable",
           "variableTypeTokenRange": {
             "startIndex": 1,
-            "endIndex": 12
+            "endIndex": 17
           }
-        },
-        {
-          "kind": "Class",
-          "canonicalReference": "@microsoft/fast-element!ObservableExpression:class",
-          "docComment": "",
-          "excerptTokens": [
-            {
-              "kind": "Content",
-              "text": "export declare class ObservableExpression "
-            }
-          ],
-          "releaseTag": "Public",
-          "name": "ObservableExpression",
-          "members": [
-            {
-              "kind": "Constructor",
-              "canonicalReference": "@microsoft/fast-element!ObservableExpression:constructor(1)",
-              "docComment": "/**\n * Constructs a new instance of the `ObservableExpression` class\n */\n",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "constructor(expression: "
-                },
-                {
-                  "kind": "Reference",
-                  "text": "Expression",
-                  "canonicalReference": "@microsoft/fast-element!Expression:type"
-                },
-                {
-                  "kind": "Content",
-                  "text": ", observer: "
-                },
-                {
-                  "kind": "Reference",
-                  "text": "ExpressionObserver",
-                  "canonicalReference": "@microsoft/fast-element!ExpressionObserver:interface"
-                },
-                {
-                  "kind": "Content",
-                  "text": ");"
-                }
-              ],
-              "releaseTag": "Public",
-              "overloadIndex": 1,
-              "parameters": [
-                {
-                  "parameterName": "expression",
-                  "parameterTypeTokenRange": {
-                    "startIndex": 1,
-                    "endIndex": 2
-                  }
-                },
-                {
-                  "parameterName": "observer",
-                  "parameterTypeTokenRange": {
-                    "startIndex": 3,
-                    "endIndex": 4
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "Method",
-              "canonicalReference": "@microsoft/fast-element!ObservableExpression#dispose:member(1)",
-              "docComment": "",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "dispose(): "
-                },
-                {
-                  "kind": "Content",
-                  "text": "void"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";"
-                }
-              ],
-              "isStatic": false,
-              "returnTypeTokenRange": {
-                "startIndex": 1,
-                "endIndex": 2
-              },
-              "releaseTag": "Public",
-              "overloadIndex": 1,
-              "parameters": [],
-              "name": "dispose"
-            },
-            {
-              "kind": "Method",
-              "canonicalReference": "@microsoft/fast-element!ObservableExpression#evaluate:member(1)",
-              "docComment": "",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "evaluate(scope: "
-                },
-                {
-                  "kind": "Content",
-                  "text": "unknown"
-                },
-                {
-                  "kind": "Content",
-                  "text": ", context: "
-                },
-                {
-                  "kind": "Reference",
-                  "text": "ExecutionContext",
-                  "canonicalReference": "@microsoft/fast-element!ExecutionContext:class"
-                },
-                {
-                  "kind": "Content",
-                  "text": "): "
-                },
-                {
-                  "kind": "Content",
-                  "text": "any"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";"
-                }
-              ],
-              "isStatic": false,
-              "returnTypeTokenRange": {
-                "startIndex": 5,
-                "endIndex": 6
-              },
-              "releaseTag": "Public",
-              "overloadIndex": 1,
-              "parameters": [
-                {
-                  "parameterName": "scope",
-                  "parameterTypeTokenRange": {
-                    "startIndex": 1,
-                    "endIndex": 2
-                  }
-                },
-                {
-                  "parameterName": "context",
-                  "parameterTypeTokenRange": {
-                    "startIndex": 3,
-                    "endIndex": 4
-                  }
-                }
-              ],
-              "name": "evaluate"
-            }
-          ],
-          "implementsTokenRanges": []
         },
         {
           "kind": "TypeAlias",
@@ -7043,7 +6832,7 @@
             {
               "kind": "Property",
               "canonicalReference": "@microsoft/fast-element!PropertyChangeNotifier#source:member",
-              "docComment": "",
+              "docComment": "/**\n * The source that property changes are being notified for.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -7434,12 +7223,12 @@
             },
             {
               "kind": "Content",
-              "text": ">(expression: "
+              "text": ">(binding: "
             },
             {
               "kind": "Reference",
-              "text": "Expression",
-              "canonicalReference": "@microsoft/fast-element!Expression:type"
+              "text": "Binding",
+              "canonicalReference": "@microsoft/fast-element!Binding:type"
             },
             {
               "kind": "Content",
@@ -7502,7 +7291,7 @@
           "overloadIndex": 1,
           "parameters": [
             {
-              "parameterName": "expression",
+              "parameterName": "binding",
               "parameterTypeTokenRange": {
                 "startIndex": 5,
                 "endIndex": 7
@@ -7596,12 +7385,12 @@
                 },
                 {
                   "kind": "Content",
-                  "text": ", expression: "
+                  "text": ", binding: "
                 },
                 {
                   "kind": "Reference",
-                  "text": "Expression",
-                  "canonicalReference": "@microsoft/fast-element!Expression:type"
+                  "text": "Binding",
+                  "canonicalReference": "@microsoft/fast-element!Binding:type"
                 },
                 {
                   "kind": "Content",
@@ -7637,7 +7426,7 @@
                   }
                 },
                 {
-                  "parameterName": "expression",
+                  "parameterName": "binding",
                   "parameterTypeTokenRange": {
                     "startIndex": 3,
                     "endIndex": 4
@@ -7785,34 +7574,6 @@
             },
             {
               "kind": "Method",
-              "canonicalReference": "@microsoft/fast-element!RepeatBehavior#handleExpressionChange:member(1)",
-              "docComment": "",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "handleExpressionChange(): "
-                },
-                {
-                  "kind": "Content",
-                  "text": "void"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";"
-                }
-              ],
-              "isStatic": false,
-              "returnTypeTokenRange": {
-                "startIndex": 1,
-                "endIndex": 2
-              },
-              "releaseTag": "Public",
-              "overloadIndex": 1,
-              "parameters": [],
-              "name": "handleExpressionChange"
-            },
-            {
-              "kind": "Method",
               "canonicalReference": "@microsoft/fast-element!RepeatBehavior#unbind:member(1)",
               "docComment": "",
               "excerptTokens": [
@@ -7880,12 +7641,12 @@
               "excerptTokens": [
                 {
                   "kind": "Content",
-                  "text": "constructor(expression: "
+                  "text": "constructor(binding: "
                 },
                 {
                   "kind": "Reference",
-                  "text": "Expression",
-                  "canonicalReference": "@microsoft/fast-element!Expression:type"
+                  "text": "Binding",
+                  "canonicalReference": "@microsoft/fast-element!Binding:type"
                 },
                 {
                   "kind": "Content",
@@ -7914,7 +7675,7 @@
               "overloadIndex": 1,
               "parameters": [
                 {
-                  "parameterName": "expression",
+                  "parameterName": "binding",
                   "parameterTypeTokenRange": {
                     "startIndex": 1,
                     "endIndex": 2
@@ -7935,6 +7696,33 @@
                   }
                 }
               ]
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@microsoft/fast-element!RepeatDirective#binding:member",
+              "docComment": "",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "binding: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "Binding",
+                  "canonicalReference": "@microsoft/fast-element!Binding:type"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "binding",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false
             },
             {
               "kind": "Method",
@@ -8001,33 +7789,6 @@
               ],
               "releaseTag": "Public",
               "name": "createPlaceholder",
-              "propertyTypeTokenRange": {
-                "startIndex": 1,
-                "endIndex": 2
-              },
-              "isStatic": false
-            },
-            {
-              "kind": "Property",
-              "canonicalReference": "@microsoft/fast-element!RepeatDirective#expression:member",
-              "docComment": "",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "expression: "
-                },
-                {
-                  "kind": "Reference",
-                  "text": "Expression",
-                  "canonicalReference": "@microsoft/fast-element!Expression:type"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";"
-                }
-              ],
-              "releaseTag": "Public",
-              "name": "expression",
               "propertyTypeTokenRange": {
                 "startIndex": 1,
                 "endIndex": 2
@@ -8135,54 +7896,6 @@
             }
           ],
           "extendsTokenRanges": []
-        },
-        {
-          "kind": "Function",
-          "canonicalReference": "@microsoft/fast-element!setCurrentEvent:function(1)",
-          "docComment": "",
-          "excerptTokens": [
-            {
-              "kind": "Content",
-              "text": "export declare function setCurrentEvent(event: "
-            },
-            {
-              "kind": "Reference",
-              "text": "Event",
-              "canonicalReference": "!Event:interface"
-            },
-            {
-              "kind": "Content",
-              "text": " | null"
-            },
-            {
-              "kind": "Content",
-              "text": "): "
-            },
-            {
-              "kind": "Content",
-              "text": "void"
-            },
-            {
-              "kind": "Content",
-              "text": ";"
-            }
-          ],
-          "returnTypeTokenRange": {
-            "startIndex": 4,
-            "endIndex": 5
-          },
-          "releaseTag": "Public",
-          "overloadIndex": 1,
-          "parameters": [
-            {
-              "parameterName": "event",
-              "parameterTypeTokenRange": {
-                "startIndex": 1,
-                "endIndex": 3
-              }
-            }
-          ],
-          "name": "setCurrentEvent"
         },
         {
           "kind": "Function",
@@ -9022,7 +8735,7 @@
         {
           "kind": "Class",
           "canonicalReference": "@microsoft/fast-element!SubscriberSet:class",
-          "docComment": "/**\n * An implementation of Notifier that efficiently keeps track of subscribers interested in a specific change notification on an observable source.\n *\n * @remarks\n *\n * This set is optimized for the most common scenario of 1 or 2 subscribers. With this in mind, it can store a subscriber in an internal field, allowing it to avoid Array#push operations. If the set ever exceeds two subscribers, it upgrades to an array automatically.\n */\n",
+          "docComment": "/**\n * An implementation of {@link Notifier} that efficiently keeps track of subscribers interested in a specific change notification on an observable source.\n *\n * @remarks\n *\n * This set is optimized for the most common scenario of 1 or 2 subscribers. With this in mind, it can store a subscriber in an internal field, allowing it to avoid Array#push operations. If the set ever exceeds two subscribers, it upgrades to an array automatically.\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -9044,7 +8757,7 @@
             {
               "kind": "Constructor",
               "canonicalReference": "@microsoft/fast-element!SubscriberSet:constructor(1)",
-              "docComment": "/**\n * Creates an instance of SubscriberSet for the specified source.\n *\n * @param source - The object source that subscribers will receive notifications from.\n */\n",
+              "docComment": "/**\n * Creates an instance of SubscriberSet for the specified source.\n *\n * @param source - The object source that subscribers will receive notifications from.\n *\n * @param initialSubscriber - An initial subscriber to changes.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -9053,6 +8766,15 @@
                 {
                   "kind": "Content",
                   "text": "any"
+                },
+                {
+                  "kind": "Content",
+                  "text": ", initialSubscriber?: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "Subscriber",
+                  "canonicalReference": "@microsoft/fast-element!Subscriber:interface"
                 },
                 {
                   "kind": "Content",
@@ -9067,6 +8789,13 @@
                   "parameterTypeTokenRange": {
                     "startIndex": 1,
                     "endIndex": 2
+                  }
+                },
+                {
+                  "parameterName": "initialSubscriber",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 3,
+                    "endIndex": 4
                   }
                 }
               ]
@@ -9163,7 +8892,7 @@
             {
               "kind": "Property",
               "canonicalReference": "@microsoft/fast-element!SubscriberSet#source:member",
-              "docComment": "",
+              "docComment": "/**\n * The source that this subscriber set is reporting changes for.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -9549,6 +9278,86 @@
           "extendsTokenRanges": []
         },
         {
+          "kind": "TypeAlias",
+          "canonicalReference": "@microsoft/fast-element!TemplateValue:type",
+          "docComment": "/**\n * Represents the types of values that can be interpolated into a template.\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "export declare type TemplateValue<TScope, TParent = "
+            },
+            {
+              "kind": "Content",
+              "text": "any"
+            },
+            {
+              "kind": "Content",
+              "text": "> = "
+            },
+            {
+              "kind": "Reference",
+              "text": "Binding",
+              "canonicalReference": "@microsoft/fast-element!Binding:type"
+            },
+            {
+              "kind": "Content",
+              "text": "<TScope, any, TParent> | string | number | "
+            },
+            {
+              "kind": "Reference",
+              "text": "Directive",
+              "canonicalReference": "@microsoft/fast-element!Directive:class"
+            },
+            {
+              "kind": "Content",
+              "text": " | "
+            },
+            {
+              "kind": "Reference",
+              "text": "CaptureType",
+              "canonicalReference": "@microsoft/fast-element!CaptureType:interface"
+            },
+            {
+              "kind": "Content",
+              "text": "<TScope>"
+            },
+            {
+              "kind": "Content",
+              "text": ";"
+            }
+          ],
+          "releaseTag": "Public",
+          "name": "TemplateValue",
+          "typeParameters": [
+            {
+              "typeParameterName": "TScope",
+              "constraintTokenRange": {
+                "startIndex": 0,
+                "endIndex": 0
+              },
+              "defaultTypeTokenRange": {
+                "startIndex": 0,
+                "endIndex": 0
+              }
+            },
+            {
+              "typeParameterName": "TParent",
+              "constraintTokenRange": {
+                "startIndex": 0,
+                "endIndex": 0
+              },
+              "defaultTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
+            }
+          ],
+          "typeTokenRange": {
+            "startIndex": 3,
+            "endIndex": 9
+          }
+        },
+        {
           "kind": "Interface",
           "canonicalReference": "@microsoft/fast-element!ValueConverter:interface",
           "docComment": "",
@@ -9753,6 +9562,31 @@
               }
             },
             {
+              "kind": "PropertySignature",
+              "canonicalReference": "@microsoft/fast-element!View#source:member",
+              "docComment": "/**\n * The data that the view is bound to.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "readonly source: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "any | null"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "source",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
+            },
+            {
               "kind": "MethodSignature",
               "canonicalReference": "@microsoft/fast-element!View#unbind:member(1)",
               "docComment": "/**\n * Unbinds a view's behaviors from its binding source.\n */\n",
@@ -9805,20 +9639,7 @@
             },
             {
               "kind": "Content",
-              "text": "> extends "
-            },
-            {
-              "kind": "Reference",
-              "text": "Directive",
-              "canonicalReference": "@microsoft/fast-element!Directive:class"
-            },
-            {
-              "kind": "Content",
-              "text": " "
-            },
-            {
-              "kind": "Content",
-              "text": "implements "
+              "text": "> implements "
             },
             {
               "kind": "Reference",
@@ -9977,77 +9798,6 @@
               "name": "create"
             },
             {
-              "kind": "Method",
-              "canonicalReference": "@microsoft/fast-element!ViewTemplate#createBehavior:member(1)",
-              "docComment": "",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "createBehavior(target: "
-                },
-                {
-                  "kind": "Content",
-                  "text": "any"
-                },
-                {
-                  "kind": "Content",
-                  "text": "): "
-                },
-                {
-                  "kind": "Reference",
-                  "text": "HTMLTemplateBehavior",
-                  "canonicalReference": "@microsoft/fast-element!HTMLTemplateBehavior:class"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";"
-                }
-              ],
-              "isStatic": false,
-              "returnTypeTokenRange": {
-                "startIndex": 3,
-                "endIndex": 4
-              },
-              "releaseTag": "Public",
-              "overloadIndex": 1,
-              "parameters": [
-                {
-                  "parameterName": "target",
-                  "parameterTypeTokenRange": {
-                    "startIndex": 1,
-                    "endIndex": 2
-                  }
-                }
-              ],
-              "name": "createBehavior"
-            },
-            {
-              "kind": "Property",
-              "canonicalReference": "@microsoft/fast-element!ViewTemplate#createPlaceholder:member",
-              "docComment": "",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "createPlaceholder: "
-                },
-                {
-                  "kind": "Content",
-                  "text": "(index: number) => string"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";"
-                }
-              ],
-              "releaseTag": "Public",
-              "name": "createPlaceholder",
-              "propertyTypeTokenRange": {
-                "startIndex": 1,
-                "endIndex": 2
-              },
-              "isStatic": false
-            },
-            {
               "kind": "Property",
               "canonicalReference": "@microsoft/fast-element!ViewTemplate#directives:member",
               "docComment": "",
@@ -10184,29 +9934,25 @@
               "name": "render"
             }
           ],
-          "extendsTokenRange": {
-            "startIndex": 5,
-            "endIndex": 7
-          },
           "implementsTokenRanges": [
             {
-              "startIndex": 8,
-              "endIndex": 9
+              "startIndex": 5,
+              "endIndex": 6
             },
             {
-              "startIndex": 10,
-              "endIndex": 12
+              "startIndex": 7,
+              "endIndex": 9
             }
           ]
         },
         {
           "kind": "Function",
           "canonicalReference": "@microsoft/fast-element!when:function(1)",
-          "docComment": "",
+          "docComment": "/**\n * A directive that enables basic conditional rendering in a template.\n *\n * @param binding - The condition to test for rendering.\n *\n * @param templateOrTemplateBinding - The template or a binding that gets the template to render when the condition is true.\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
-              "text": "export declare function when<T = "
+              "text": "export declare function when<TSource = "
             },
             {
               "kind": "Content",
@@ -10214,7 +9960,7 @@
             },
             {
               "kind": "Content",
-              "text": ", K = "
+              "text": ", TReturn = "
             },
             {
               "kind": "Content",
@@ -10222,25 +9968,47 @@
             },
             {
               "kind": "Content",
-              "text": ">(expression: "
+              "text": ">(binding: "
             },
             {
               "kind": "Reference",
-              "text": "Expression",
-              "canonicalReference": "@microsoft/fast-element!Expression:type"
+              "text": "Binding",
+              "canonicalReference": "@microsoft/fast-element!Binding:type"
             },
             {
               "kind": "Content",
-              "text": "<T, K>"
+              "text": "<TSource, TReturn>"
             },
             {
               "kind": "Content",
-              "text": ", template: "
+              "text": ", templateOrTemplateBinding: "
             },
             {
               "kind": "Reference",
               "text": "SyntheticViewTemplate",
               "canonicalReference": "@microsoft/fast-element!SyntheticViewTemplate:interface"
+            },
+            {
+              "kind": "Content",
+              "text": " | "
+            },
+            {
+              "kind": "Reference",
+              "text": "Binding",
+              "canonicalReference": "@microsoft/fast-element!Binding:type"
+            },
+            {
+              "kind": "Content",
+              "text": "<TSource, "
+            },
+            {
+              "kind": "Reference",
+              "text": "SyntheticViewTemplate",
+              "canonicalReference": "@microsoft/fast-element!SyntheticViewTemplate:interface"
+            },
+            {
+              "kind": "Content",
+              "text": ">"
             },
             {
               "kind": "Content",
@@ -10253,7 +10021,7 @@
             },
             {
               "kind": "Content",
-              "text": "<T>"
+              "text": "<TSource>"
             },
             {
               "kind": "Content",
@@ -10261,30 +10029,30 @@
             }
           ],
           "returnTypeTokenRange": {
-            "startIndex": 10,
-            "endIndex": 12
+            "startIndex": 15,
+            "endIndex": 17
           },
           "releaseTag": "Public",
           "overloadIndex": 1,
           "parameters": [
             {
-              "parameterName": "expression",
+              "parameterName": "binding",
               "parameterTypeTokenRange": {
                 "startIndex": 5,
                 "endIndex": 7
               }
             },
             {
-              "parameterName": "template",
+              "parameterName": "templateOrTemplateBinding",
               "parameterTypeTokenRange": {
                 "startIndex": 8,
-                "endIndex": 9
+                "endIndex": 14
               }
             }
           ],
           "typeParameters": [
             {
-              "typeParameterName": "T",
+              "typeParameterName": "TSource",
               "constraintTokenRange": {
                 "startIndex": 0,
                 "endIndex": 0
@@ -10295,7 +10063,7 @@
               }
             },
             {
-              "typeParameterName": "K",
+              "typeParameterName": "TReturn",
               "constraintTokenRange": {
                 "startIndex": 0,
                 "endIndex": 0
@@ -10307,460 +10075,6 @@
             }
           ],
           "name": "when"
-        },
-        {
-          "kind": "Class",
-          "canonicalReference": "@microsoft/fast-element!WhenBehavior:class",
-          "docComment": "",
-          "excerptTokens": [
-            {
-              "kind": "Content",
-              "text": "export declare class WhenBehavior implements "
-            },
-            {
-              "kind": "Reference",
-              "text": "Behavior",
-              "canonicalReference": "@microsoft/fast-element!Behavior:interface"
-            },
-            {
-              "kind": "Content",
-              "text": " "
-            }
-          ],
-          "releaseTag": "Public",
-          "name": "WhenBehavior",
-          "members": [
-            {
-              "kind": "Constructor",
-              "canonicalReference": "@microsoft/fast-element!WhenBehavior:constructor(1)",
-              "docComment": "/**\n * Constructs a new instance of the `WhenBehavior` class\n */\n",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "constructor(location: "
-                },
-                {
-                  "kind": "Reference",
-                  "text": "Node",
-                  "canonicalReference": "!Node:interface"
-                },
-                {
-                  "kind": "Content",
-                  "text": ", expression: "
-                },
-                {
-                  "kind": "Reference",
-                  "text": "Expression",
-                  "canonicalReference": "@microsoft/fast-element!Expression:type"
-                },
-                {
-                  "kind": "Content",
-                  "text": ", template: "
-                },
-                {
-                  "kind": "Reference",
-                  "text": "SyntheticViewTemplate",
-                  "canonicalReference": "@microsoft/fast-element!SyntheticViewTemplate:interface"
-                },
-                {
-                  "kind": "Content",
-                  "text": ");"
-                }
-              ],
-              "releaseTag": "Public",
-              "overloadIndex": 1,
-              "parameters": [
-                {
-                  "parameterName": "location",
-                  "parameterTypeTokenRange": {
-                    "startIndex": 1,
-                    "endIndex": 2
-                  }
-                },
-                {
-                  "parameterName": "expression",
-                  "parameterTypeTokenRange": {
-                    "startIndex": 3,
-                    "endIndex": 4
-                  }
-                },
-                {
-                  "parameterName": "template",
-                  "parameterTypeTokenRange": {
-                    "startIndex": 5,
-                    "endIndex": 6
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "Method",
-              "canonicalReference": "@microsoft/fast-element!WhenBehavior#bind:member(1)",
-              "docComment": "",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "bind(source: "
-                },
-                {
-                  "kind": "Content",
-                  "text": "unknown"
-                },
-                {
-                  "kind": "Content",
-                  "text": ", context: "
-                },
-                {
-                  "kind": "Reference",
-                  "text": "ExecutionContext",
-                  "canonicalReference": "@microsoft/fast-element!ExecutionContext:class"
-                },
-                {
-                  "kind": "Content",
-                  "text": "): "
-                },
-                {
-                  "kind": "Content",
-                  "text": "void"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";"
-                }
-              ],
-              "isStatic": false,
-              "returnTypeTokenRange": {
-                "startIndex": 5,
-                "endIndex": 6
-              },
-              "releaseTag": "Public",
-              "overloadIndex": 1,
-              "parameters": [
-                {
-                  "parameterName": "source",
-                  "parameterTypeTokenRange": {
-                    "startIndex": 1,
-                    "endIndex": 2
-                  }
-                },
-                {
-                  "parameterName": "context",
-                  "parameterTypeTokenRange": {
-                    "startIndex": 3,
-                    "endIndex": 4
-                  }
-                }
-              ],
-              "name": "bind"
-            },
-            {
-              "kind": "Method",
-              "canonicalReference": "@microsoft/fast-element!WhenBehavior#handleExpressionChange:member(1)",
-              "docComment": "",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "handleExpressionChange(): "
-                },
-                {
-                  "kind": "Content",
-                  "text": "void"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";"
-                }
-              ],
-              "isStatic": false,
-              "returnTypeTokenRange": {
-                "startIndex": 1,
-                "endIndex": 2
-              },
-              "releaseTag": "Public",
-              "overloadIndex": 1,
-              "parameters": [],
-              "name": "handleExpressionChange"
-            },
-            {
-              "kind": "Method",
-              "canonicalReference": "@microsoft/fast-element!WhenBehavior#unbind:member(1)",
-              "docComment": "",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "unbind(): "
-                },
-                {
-                  "kind": "Content",
-                  "text": "void"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";"
-                }
-              ],
-              "isStatic": false,
-              "returnTypeTokenRange": {
-                "startIndex": 1,
-                "endIndex": 2
-              },
-              "releaseTag": "Public",
-              "overloadIndex": 1,
-              "parameters": [],
-              "name": "unbind"
-            },
-            {
-              "kind": "Method",
-              "canonicalReference": "@microsoft/fast-element!WhenBehavior#updateTarget:member(1)",
-              "docComment": "",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "updateTarget(show: "
-                },
-                {
-                  "kind": "Content",
-                  "text": "boolean"
-                },
-                {
-                  "kind": "Content",
-                  "text": "): "
-                },
-                {
-                  "kind": "Content",
-                  "text": "void"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";"
-                }
-              ],
-              "isStatic": false,
-              "returnTypeTokenRange": {
-                "startIndex": 3,
-                "endIndex": 4
-              },
-              "releaseTag": "Public",
-              "overloadIndex": 1,
-              "parameters": [
-                {
-                  "parameterName": "show",
-                  "parameterTypeTokenRange": {
-                    "startIndex": 1,
-                    "endIndex": 2
-                  }
-                }
-              ],
-              "name": "updateTarget"
-            }
-          ],
-          "implementsTokenRanges": [
-            {
-              "startIndex": 1,
-              "endIndex": 3
-            }
-          ]
-        },
-        {
-          "kind": "Class",
-          "canonicalReference": "@microsoft/fast-element!WhenDirective:class",
-          "docComment": "",
-          "excerptTokens": [
-            {
-              "kind": "Content",
-              "text": "export declare class WhenDirective extends "
-            },
-            {
-              "kind": "Reference",
-              "text": "Directive",
-              "canonicalReference": "@microsoft/fast-element!Directive:class"
-            },
-            {
-              "kind": "Content",
-              "text": " "
-            }
-          ],
-          "releaseTag": "Public",
-          "name": "WhenDirective",
-          "members": [
-            {
-              "kind": "Constructor",
-              "canonicalReference": "@microsoft/fast-element!WhenDirective:constructor(1)",
-              "docComment": "/**\n * Constructs a new instance of the `WhenDirective` class\n */\n",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "constructor(expression: "
-                },
-                {
-                  "kind": "Reference",
-                  "text": "Expression",
-                  "canonicalReference": "@microsoft/fast-element!Expression:type"
-                },
-                {
-                  "kind": "Content",
-                  "text": ", template: "
-                },
-                {
-                  "kind": "Reference",
-                  "text": "SyntheticViewTemplate",
-                  "canonicalReference": "@microsoft/fast-element!SyntheticViewTemplate:interface"
-                },
-                {
-                  "kind": "Content",
-                  "text": ");"
-                }
-              ],
-              "releaseTag": "Public",
-              "overloadIndex": 1,
-              "parameters": [
-                {
-                  "parameterName": "expression",
-                  "parameterTypeTokenRange": {
-                    "startIndex": 1,
-                    "endIndex": 2
-                  }
-                },
-                {
-                  "parameterName": "template",
-                  "parameterTypeTokenRange": {
-                    "startIndex": 3,
-                    "endIndex": 4
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "Method",
-              "canonicalReference": "@microsoft/fast-element!WhenDirective#createBehavior:member(1)",
-              "docComment": "",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "createBehavior(target: "
-                },
-                {
-                  "kind": "Content",
-                  "text": "any"
-                },
-                {
-                  "kind": "Content",
-                  "text": "): "
-                },
-                {
-                  "kind": "Reference",
-                  "text": "WhenBehavior",
-                  "canonicalReference": "@microsoft/fast-element!WhenBehavior:class"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";"
-                }
-              ],
-              "isStatic": false,
-              "returnTypeTokenRange": {
-                "startIndex": 3,
-                "endIndex": 4
-              },
-              "releaseTag": "Public",
-              "overloadIndex": 1,
-              "parameters": [
-                {
-                  "parameterName": "target",
-                  "parameterTypeTokenRange": {
-                    "startIndex": 1,
-                    "endIndex": 2
-                  }
-                }
-              ],
-              "name": "createBehavior"
-            },
-            {
-              "kind": "Property",
-              "canonicalReference": "@microsoft/fast-element!WhenDirective#createPlaceholder:member",
-              "docComment": "",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "createPlaceholder: "
-                },
-                {
-                  "kind": "Content",
-                  "text": "(index: number) => string"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";"
-                }
-              ],
-              "releaseTag": "Public",
-              "name": "createPlaceholder",
-              "propertyTypeTokenRange": {
-                "startIndex": 1,
-                "endIndex": 2
-              },
-              "isStatic": false
-            },
-            {
-              "kind": "Property",
-              "canonicalReference": "@microsoft/fast-element!WhenDirective#expression:member",
-              "docComment": "",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "expression: "
-                },
-                {
-                  "kind": "Reference",
-                  "text": "Expression",
-                  "canonicalReference": "@microsoft/fast-element!Expression:type"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";"
-                }
-              ],
-              "releaseTag": "Public",
-              "name": "expression",
-              "propertyTypeTokenRange": {
-                "startIndex": 1,
-                "endIndex": 2
-              },
-              "isStatic": false
-            },
-            {
-              "kind": "Property",
-              "canonicalReference": "@microsoft/fast-element!WhenDirective#template:member",
-              "docComment": "",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "template: "
-                },
-                {
-                  "kind": "Reference",
-                  "text": "SyntheticViewTemplate",
-                  "canonicalReference": "@microsoft/fast-element!SyntheticViewTemplate:interface"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";"
-                }
-              ],
-              "releaseTag": "Public",
-              "name": "template",
-              "propertyTypeTokenRange": {
-                "startIndex": 1,
-                "endIndex": 2
-              },
-              "isStatic": false
-            }
-          ],
-          "extendsTokenRange": {
-            "startIndex": 1,
-            "endIndex": 3
-          },
-          "implementsTokenRanges": []
         }
       ]
     }

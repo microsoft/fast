@@ -7,16 +7,18 @@ import {
     toPx,
 } from "@microsoft/fast-jss-utilities";
 import {
-    accent,
-    background800,
-    defaultColor,
-    disabledOpacity,
-    error,
-    foreground200,
-    foreground300,
-    foreground800,
-    neutralLayerL4,
-} from "./constants";
+    accentColorCSSProperty,
+    borderRadiusCSSProperty,
+    defaultTextSizeCSSProperty,
+    disableOpacityCSSProperty,
+    errorColorCSSProperty,
+    gutterCSSProperty,
+    inactiveTextColorCSSProperty,
+    L1CSSProperty,
+    L4CSSProperty,
+    statusMessageTextSizeCSSProperty,
+    textColorCSSProperty,
+} from "./css-properties";
 
 export interface BoxShadowConfig {
     offsetX: number;
@@ -43,7 +45,7 @@ export function localizePadding(
 export function applyTriggerStyle(color: string): CSSRules<{}> {
     return {
         lineHeight: "16px",
-        fontSize: "12px",
+        "font-size": defaultTextSizeCSSProperty,
         ...localizePadding(3, 5, 2, 16),
         border: "none",
         outline: "none",
@@ -86,9 +88,9 @@ export const interactiveFormControlIndicatorStyle: CSSRules<{}> = {
     alignSelf: "center",
     background: "transparent",
     border: "1px solid transparent",
-    borderRadius: "2px",
+    borderRadius: borderRadiusCSSProperty,
     "& svg": {
-        fill: foreground800,
+        fill: textColorCSSProperty,
         "min-height": "18px",
         "min-width": "18px",
         "box-sizing": "border-box",
@@ -96,17 +98,17 @@ export const interactiveFormControlIndicatorStyle: CSSRules<{}> = {
     },
     "&:hover": {
         "& svg": {
-            fill: accent,
+            fill: accentColorCSSProperty,
         },
     },
     ...applyFocusVisible({
-        borderColor: accent,
+        borderColor: accentColorCSSProperty,
         outline: "none",
     }),
 };
 
 export const formControlIndicatorStyle: CSSRules<{}> = {
-    fill: foreground800,
+    fill: textColorCSSProperty,
     padding: "0 4px",
     "align-self": "center",
     "min-width": "14px",
@@ -114,7 +116,7 @@ export const formControlIndicatorStyle: CSSRules<{}> = {
 };
 
 export const formControlDisabledStyle: CSSRules<{}> = {
-    opacity: `${disabledOpacity}`,
+    opacity: disableOpacityCSSProperty,
     cursor: "not-allowed",
     "& label": {
         cursor: "not-allowed",
@@ -129,7 +131,7 @@ export const inputBackplateStyle: CSSRules<{}> = {
     height: "20px",
     width: "20px",
     margin: "0",
-    backgroundColor: background800,
+    backgroundColor: L1CSSProperty,
     "&:focus, &:hover": {
         outline: "none",
     },
@@ -146,44 +148,42 @@ export const selectSpanStyle: CSSRules<{}> = {
         zIndex: "1",
         borderLeft: "3px solid transparent",
         borderRight: "3px solid transparent",
-        borderTop: `3px solid ${foreground300}`,
+        borderTop: `3px solid ${textColorCSSProperty}`,
     },
 };
 
 export const selectInputStyle: CSSRules<{}> = {
     width: "100%",
     lineHeight: "16px",
-    fontSize: "12px",
-    backgroundColor: background800,
-    borderRadius: "2px",
+    "font-size": defaultTextSizeCSSProperty,
+    background: L1CSSProperty,
+    "border-radius": borderRadiusCSSProperty,
     appearance: "none",
     outline: "none",
     ...localizePadding(3, 16, 2, 5),
     ...ellipsis(),
     border: "none",
-    color: foreground300,
+    color: textColorCSSProperty,
     "&:-ms-expand": {
         display: "none",
     },
     "& option": {
-        background: neutralLayerL4,
+        background: L4CSSProperty,
     },
     "&:disabled": {
         cursor: "not-allowed",
     },
     "&:focus": {
-        ...insetStrongBoxShadow(accent),
+        ...insetStrongBoxShadow(accentColorCSSProperty),
     },
     "&:invalid": {
-        border: `1px solid ${error}`,
+        border: `1px solid ${errorColorCSSProperty}`,
     },
 };
 
 export const labelStyle: CSSRules<{}> = {
     flexGrow: "1",
-    lineHeight: "23px",
-    fontSize: "12px",
-    minHeight: "23px",
+    lineHeight: "16px",
     boxSizing: "border-box",
     ...ellipsis(),
 };
@@ -191,26 +191,28 @@ export const labelStyle: CSSRules<{}> = {
 export const labelRegionStyle: CSSRules<{}> = {
     display: "flex",
     maxWidth: "100%",
+    "padding-bottom": "10px",
+    height: "16px",
 };
 
 export const inputStyle: CSSRules<{}> = {
     lineHeight: "16px",
-    fontSize: "12px",
-    backgroundColor: background800,
-    borderRadius: "2px",
+    "font-size": defaultTextSizeCSSProperty,
+    backgroundColor: L1CSSProperty,
+    "border-radius": borderRadiusCSSProperty,
     ...localizePadding(3, 5, 2, 5),
     border: "none",
     outline: "none",
     boxSizing: "border-box",
-    color: foreground300,
+    color: textColorCSSProperty,
     "&:disabled": {
         cursor: "not-allowed",
     },
     "&:focus": {
-        ...insetStrongBoxShadow(accent),
+        ...insetStrongBoxShadow(accentColorCSSProperty),
     },
     "&:invalid": {
-        border: `1px solid ${error}`,
+        border: `1px solid ${errorColorCSSProperty}`,
     },
     "&::placeholder": {
         color: "#767676",
@@ -227,27 +229,8 @@ export const cleanListStyle: CSSRules<{}> = {
     listStylePosition: "outside",
 };
 
-export const globalStyle: CSSRules<{}> = {
-    'body > li[draggable="true"]': {
-        boxShadow: `0 4px 4px 4px rgba(0, 0, 0, 0.15)`,
-        borderColor: "transparent",
-        listStyleType: "none",
-        listStyle: "none",
-        background: foreground200,
-    },
-};
-
-export const ariaHiddenStyle: CSSRules<{}> = {
-    '&[aria-hidden="true"]': {
-        display: "none",
-    },
-    '&[aria-hidden="false"]': {
-        display: "block",
-    },
-};
-
 export const defaultFontStyle: CSSRules<{}> = {
-    color: defaultColor,
+    color: inactiveTextColorCSSProperty,
     "font-style": "italic",
 };
 
@@ -262,9 +245,9 @@ export const removeItemStyle: CSSRules<{}> = {
     width: "20px",
     height: "20px",
     zIndex: "1",
-    borderRadius: "2px",
+    borderRadius: borderRadiusCSSProperty,
     ...applyFocusVisible({
-        ...insetStrongBoxShadow(accent),
+        ...insetStrongBoxShadow(accentColorCSSProperty),
         outline: "none",
     }),
     "&::before": {
@@ -275,7 +258,7 @@ export const removeItemStyle: CSSRules<{}> = {
         height: "1px",
         left: "5.5px",
         top: "9.5px",
-        background: foreground300,
+        background: textColorCSSProperty,
     },
 };
 
@@ -289,16 +272,16 @@ export const addItemStyle: CSSRules<{}> = {
     width: "20px",
     height: "20px",
     zIndex: "1",
-    borderRadius: "2px",
+    borderRadius: borderRadiusCSSProperty,
     ...applyFocusVisible({
-        ...insetStrongBoxShadow(accent),
+        ...insetStrongBoxShadow(accentColorCSSProperty),
         outline: "none",
     }),
     "&::before, &::after": {
         position: "absolute",
         content: "''",
         pointerEvents: "none",
-        background: foreground300,
+        background: textColorCSSProperty,
     },
     "&::before": {
         width: "9px",
@@ -324,16 +307,16 @@ export const chevronDownStyle: CSSRules<{}> = {
     width: "20px",
     height: "20px",
     zIndex: "1",
-    borderRadius: "2px",
+    borderRadius: borderRadiusCSSProperty,
     ...applyFocusVisible({
-        ...insetStrongBoxShadow(accent),
+        ...insetStrongBoxShadow(accentColorCSSProperty),
         outline: "none",
     }),
     "&::before, &::after": {
         position: "absolute",
         content: "''",
         pointerEvents: "none",
-        background: foreground300,
+        background: textColorCSSProperty,
         transform: "rotate(45deg)",
     },
     "&::before": {
@@ -356,7 +339,7 @@ export const chevronUpStyle: CSSRules<{}> = {
 };
 
 export const controlWrapperStyle: CSSRules<{}> = {
-    paddingTop: "7px",
+    paddingTop: "8px",
     marginBottom: "12px",
 };
 
@@ -367,7 +350,7 @@ export const controlSingleLineWrapperStyle: CSSRules<{}> = {
 };
 
 export const controlStyle: CSSRules<{}> = {
-    width: "calc(100% - 30px)",
+    width: `calc(100% - ${gutterCSSProperty})`,
 };
 
 export const controlRegionStyle: CSSRules<{}> = {
@@ -378,10 +361,10 @@ export const controlRegionStyle: CSSRules<{}> = {
 
 export const softRemoveStyle: CSSRules<{}> = {
     display: "flex",
-    height: "23px",
-    minWidth: "30px",
-    justifyContent: "center",
-    alignItems: "center",
+    height: "18px",
+    "min-width": gutterCSSProperty,
+    "justify-content": "center",
+    "align-items": "center",
 };
 
 export const softRemoveInputStyle: CSSRules<{}> = {
@@ -389,27 +372,26 @@ export const softRemoveInputStyle: CSSRules<{}> = {
     background: "none",
     position: "absolute",
     border: "none",
-    width: "20px",
+    width: "18px",
     margin: "0",
-    height: "20px",
+    height: "18px",
     "z-index": "1",
-    "border-radius": "2px",
+    "border-radius": borderRadiusCSSProperty,
     ...applyFocusVisible({
-        ...insetStrongBoxShadow(accent),
+        ...insetStrongBoxShadow(accentColorCSSProperty),
         outline: "none",
     }),
     "& + svg": {
-        fill: foreground800,
-        "padding-top": "1px",
+        fill: textColorCSSProperty,
     },
     "&:disabled + svg": {
-        opacity: `${disabledOpacity}`,
+        opacity: disableOpacityCSSProperty,
     },
 };
 
 export const invalidMessageStyle: CSSRules<{}> = {
-    color: error,
-    fontSize: "11px",
-    marginRight: "10px",
+    color: errorColorCSSProperty,
+    "font-size": statusMessageTextSizeCSSProperty,
+    "margin-right": "10px",
     ...ellipsis(),
 };

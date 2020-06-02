@@ -98,7 +98,7 @@ class FormAndNavigationTestPage extends React.Component<{}, FormTestPageState> {
                 <div>
                     <div
                         style={{
-                            width: "250px",
+                            width: "300px",
                             height: "100vh",
                             float: "left",
                             fontFamily:
@@ -151,7 +151,7 @@ class FormAndNavigationTestPage extends React.Component<{}, FormTestPageState> {
                     </div>
                     <div
                         style={{
-                            width: "250px",
+                            width: "300px",
                             height: "100vh",
                             float: "left",
                             fontFamily:

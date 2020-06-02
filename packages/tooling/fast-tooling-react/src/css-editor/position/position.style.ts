@@ -1,11 +1,11 @@
 import { ComponentStyles } from "@microsoft/fast-jss-manager-react";
 import {
-    background800,
     controlWrapperStyle,
-    foreground800,
     inputStyle,
+    L1CSSProperty,
     selectInputStyle,
     selectSpanStyle,
+    textColorCSSProperty,
 } from "../../style";
 
 export interface CSSPositionClassNameContract {
@@ -55,7 +55,7 @@ const styles: ComponentStyles<CSSPositionClassNameContract, {}> = {
             top: "calc(50% - 1px)",
             width: "5px",
             height: "2px",
-            background: background800,
+            background: L1CSSProperty,
             zIndex: 1,
         },
         "&::before": {
@@ -68,25 +68,25 @@ const styles: ComponentStyles<CSSPositionClassNameContract, {}> = {
     absoluteInput_centerRow__activeTop: {
         "& $absoluteInput_centerRowContent": {
             "&::before": {
-                background: foreground800,
+                background: textColorCSSProperty,
             },
         },
     },
     absoluteInput_centerRow__activeBottom: {
         "& $absoluteInput_centerRowContent": {
             "&::after": {
-                background: foreground800,
+                background: textColorCSSProperty,
             },
         },
     },
     absoluteInput_centerRow__activeLeft: {
         "&::before": {
-            background: foreground800,
+            background: textColorCSSProperty,
         },
     },
     absoluteInput_centerRow__activeRight: {
         "&::after": {
-            background: foreground800,
+            background: textColorCSSProperty,
         },
     },
     absoluteInput_centerRowContent: {
@@ -96,7 +96,7 @@ const styles: ComponentStyles<CSSPositionClassNameContract, {}> = {
             left: "calc(50% - 1px)",
             width: "2px",
             height: "5px",
-            background: background800,
+            background: L1CSSProperty,
             zIndex: 1,
         },
         "&::before": {

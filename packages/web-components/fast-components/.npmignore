@@ -14,15 +14,18 @@ build/
 # config files
 .eslintignore
 .eslintrc.js
+.mocharc.json
 .prettierignore
 .storybook
-tsconfig.json
-tsconfig.build.json
-rollup.config.json
-karma.conf.cjs
 api-extractor.json
-.mocharc.json
+karma.conf.js
+rollup.config.js
+tsconfig.build.json
+tsconfig.json
 
 # cache
 .rollupcache
 temp
+
+# Storybook static site
+storybook-static

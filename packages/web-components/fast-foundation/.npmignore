@@ -12,13 +12,13 @@ images/
 
 # config files
 .eslintignore
-.eslintrc.cjs
-.prettierignore
-tsconfig.json
-rollup.config.js
-karma.conf.cjs
-api-extractor.json
+.eslintrc.js
 .mocharc.json
+.prettierignore
+api-extractor.json
+karma.conf.js
+rollup.config.js
+tsconfig.json
 
 # cache
 .rollupcache
