@@ -101,19 +101,13 @@ describe("data grid", (): void => {
         cell: renderCellWithButton,
     };
 
-    const gridData: TestRowData[] = [rowData1, rowData2, rowData3];
+    const rows: TestRowData[] = [rowData1, rowData2, rowData3];
 
-    const gridDataShortened: TestRowData[] = [rowData1, rowData2];
+    const rowsShortened: TestRowData[] = [rowData1, rowData2];
 
-    const columns: DataGridColumn[] = [
-        column1,
-        column2,
-    ];
+    const columns: DataGridColumn[] = [column1, column2];
 
-    const columnsCustomCell: DataGridColumn[] = [
-        column1,
-        columnCustomCell,
-    ];
+    const columnsCustomCell: DataGridColumn[] = [column1, columnCustomCell];
 
     test("should have a displayName that matches the component name", () => {
         expect((DataGrid as any).name).toBe(DataGrid.displayName);
@@ -122,7 +116,7 @@ describe("data grid", (): void => {
     test("role and base class set correctly", (): void => {
         const rendered: ReactWrapper = mount(
             <DataGrid
-                gridData={gridData}
+                rows={rows}
                 dataRowKey="name"
                 columns={columns}
                 managedClasses={managedClasses}
@@ -136,7 +130,7 @@ describe("data grid", (): void => {
     test("data grid header exists and has two column header cells", (): void => {
         const rendered: ReactWrapper = mount(
             <DataGrid
-                gridData={gridData}
+                rows={rows}
                 dataRowKey="name"
                 columns={columns}
                 managedClasses={managedClasses}
@@ -153,7 +147,7 @@ describe("data grid", (): void => {
     test("scrolling panel element exists", (): void => {
         const rendered: ReactWrapper = mount(
             <DataGrid
-                gridData={gridData}
+                rows={rows}
                 dataRowKey="name"
                 columns={columns}
                 managedClasses={managedClasses}
@@ -169,7 +163,7 @@ describe("data grid", (): void => {
     test("scrolling panel items container element exists", (): void => {
         const rendered: ReactWrapper = mount(
             <DataGrid
-                gridData={gridData}
+                rows={rows}
                 dataRowKey="name"
                 columns={columns}
                 managedClasses={managedClasses}
@@ -183,22 +177,20 @@ describe("data grid", (): void => {
     test("getColumnIndexByKey returns correct value", (): void => {
         const rendered: ReactWrapper = mount(
             <DataGrid
-                gridData={gridData}
+                rows={rows}
                 dataRowKey="name"
                 columns={columns}
                 managedClasses={managedClasses}
             />
         );
 
-        expect(rendered.instance()["getColumnIndexByKey"]("age", columns)).toBe(
-            1
-        );
+        expect(rendered.instance()["getColumnIndexByKey"]("age", columns)).toBe(1);
     });
 
     test("getRowIndexByKey returns correct value", (): void => {
         const rendered: ReactWrapper = mount(
             <DataGrid
-                gridData={gridData}
+                rows={rows}
                 dataRowKey="name"
                 columns={columns}
                 managedClasses={managedClasses}
@@ -213,7 +205,7 @@ describe("data grid", (): void => {
         document.body.appendChild(container);
         let rendered: ReactWrapper = mount(
             <DataGrid
-                gridData={getDataSet(20)}
+                rows={getDataSet(20)}
                 dataRowKey="name"
                 columns={columns}
                 virtualizeItems={false}
@@ -231,7 +223,7 @@ describe("data grid", (): void => {
         document.body.appendChild(container);
         rendered = mount(
             <DataGrid
-                gridData={getDataSet(20)}
+                rows={getDataSet(20)}
                 dataRowKey="name"
                 columns={columns}
                 virtualizeItems={true}
@@ -252,7 +244,7 @@ describe("data grid", (): void => {
 
         const rendered: ReactWrapper = mount(
             <DataGrid
-                gridData={gridData}
+                rows={rows}
                 dataRowKey="name"
                 columns={columns}
                 virtualizeItems={false}
@@ -294,7 +286,7 @@ describe("data grid", (): void => {
 
         const rendered: any = mount(
             <DataGrid
-                gridData={getDataSet(20)}
+                rows={getDataSet(20)}
                 dataRowKey="name"
                 columns={columns}
                 virtualizeItems={false}
@@ -325,7 +317,7 @@ describe("data grid", (): void => {
 
         const rendered: ReactWrapper = mount(
             <DataGrid
-                gridData={gridData}
+                rows={rows}
                 dataRowKey="name"
                 columns={columns}
                 managedClasses={managedClasses}
@@ -342,7 +334,7 @@ describe("data grid", (): void => {
         cell.simulate("focus");
         expect((rendered.instance() as any).isFocused).toBe(true);
 
-        rendered.setProps({ gridData: gridDataShortened });
+        rendered.setProps({ rows: rowsShortened });
         expect(row.prop("className")).toContain(
             managedClasses.dataGrid_row__focusedWithin
         );
@@ -361,7 +353,7 @@ describe("data grid", (): void => {
         const rendered: ReactWrapper = mount(
             <DataGrid
                 rowHeightCallback={heightCallback}
-                gridData={gridData}
+                rows={rows}
                 dataRowKey="name"
                 columns={columns}
                 managedClasses={managedClasses}
@@ -383,7 +375,7 @@ describe("data grid", (): void => {
         const rendered: ReactWrapper = mount(
             <DataGrid
                 rowHeightCallback={heightCallback}
-                gridData={gridData}
+                rows={rows}
                 dataRowKey="name"
                 columns={columns}
                 managedClasses={managedClasses}
@@ -413,7 +405,7 @@ describe("data grid", (): void => {
     test("reducing length of data array does not throw", (): void => {
         const rendered: ReactWrapper = mount(
             <DataGrid
-                gridData={gridData}
+                rows={rows}
                 dataRowKey="name"
                 columns={columns}
                 managedClasses={managedClasses}
@@ -421,16 +413,16 @@ describe("data grid", (): void => {
         );
 
         expect((rendered.instance().state as DataGridState).rowPositions.length).toBe(3);
-        rendered.setProps({ gridData: gridDataShortened });
+        rendered.setProps({ rows: rowsShortened });
         expect((rendered.instance().state as DataGridState).rowPositions.length).toBe(2);
     });
 
     test("empty rowdata does not throw", (): void => {
-        const gridDataEmptyRow: object[] = [{}, rowData1, rowData2, rowData3];
+        const rowsEmptyRow: object[] = [{}, rowData1, rowData2, rowData3];
 
         const rendered: ReactWrapper = mount(
             <DataGrid
-                gridData={gridData}
+                rows={rows}
                 dataRowKey="name"
                 columns={columns}
                 managedClasses={managedClasses}
@@ -438,7 +430,7 @@ describe("data grid", (): void => {
         );
 
         expect(() => {
-            rendered.setProps({ gridData: gridDataEmptyRow });
+            rendered.setProps({ rows: rowsEmptyRow });
         }).not.toThrow();
     });
 
@@ -448,7 +440,7 @@ describe("data grid", (): void => {
 
         const rendered: ReactWrapper = mount(
             <DataGrid
-                gridData={gridData}
+                rows={rows}
                 dataRowKey="name"
                 columns={columns}
                 managedClasses={managedClasses}
@@ -474,7 +466,7 @@ describe("data grid", (): void => {
 
         const rendered: ReactWrapper = mount(
             <DataGrid
-                gridData={gridData}
+                rows={rows}
                 dataRowKey="name"
                 columns={columnsCustomCell}
                 virtualizeItems={false}
@@ -506,7 +498,7 @@ describe("data grid", (): void => {
 
         const rendered: ReactWrapper = mount(
             <DataGrid
-                gridData={gridData}
+                rows={rows}
                 dataRowKey="name"
                 columns={columns}
                 managedClasses={managedClasses}
@@ -525,7 +517,7 @@ describe("data grid", (): void => {
          |   |   |
          ---------
         */
-        const secondRowData: TestRowData = gridData[1];
+        const secondRowData: TestRowData = rows[1];
         const secondRow: ReactWrapper = rendered.find(
             `[data-rowid="${secondRowData.name}"]`
         );
@@ -536,8 +528,8 @@ describe("data grid", (): void => {
             secondRowData.age.toString()
         );
         // Swap the 2nd and 3rd rows, expect focus to follow
-        const swappedRowData: TestRowData[] = [gridData[0], gridData[2], gridData[1]];
-        rendered.setProps({ gridData: swappedRowData });
+        const swappedRowData: TestRowData[] = [rows[0], rows[2], rows[1]];
+        rendered.setProps({ rows: swappedRowData });
         /* Expect focus to be here
          name age
          ---------
@@ -551,8 +543,8 @@ describe("data grid", (): void => {
         );
 
         // Remove the last row
-        const updatedTwoRowData: TestRowData[] = [gridData[0], gridData[2]];
-        rendered.setProps({ gridData: updatedTwoRowData });
+        const updatedTwoRowData: TestRowData[] = [rows[0], rows[2]];
+        rendered.setProps({ rows: updatedTwoRowData });
         /* Expect focus to be here
          name age
          ---------
@@ -566,8 +558,8 @@ describe("data grid", (): void => {
         expect(rendered.state("focusRowKey")).toBe(updatedTwoRowData[1].name);
 
         // Replace the second row, focus should stay there
-        const replacedTwoRowData: TestRowData[] = [gridData[0], gridData[1]];
-        rendered.setProps({ gridData: replacedTwoRowData });
+        const replacedTwoRowData: TestRowData[] = [rows[0], rows[1]];
+        rendered.setProps({ rows: replacedTwoRowData });
         /* Expect focus to be here
          name age
          ---------
@@ -578,8 +570,8 @@ describe("data grid", (): void => {
         expect(rendered.state("focusRowKey")).toBe(replacedTwoRowData[1].name);
 
         // Remove the top row
-        const singleRowData: TestRowData[] = [gridData[1]];
-        rendered.setProps({ gridData: singleRowData });
+        const singleRowData: TestRowData[] = [rows[1]];
+        rendered.setProps({ rows: singleRowData });
         /* Expect focus to be here
          name age
          ---------
@@ -594,7 +586,7 @@ describe("data grid", (): void => {
     test("setting an invalid row key does not throw", (): void => {
         const rendered: ReactWrapper = mount(
             <DataGrid
-                gridData={gridData}
+                rows={rows}
                 dataRowKey="name"
                 columns={columns}
                 managedClasses={managedClasses}
@@ -609,7 +601,7 @@ describe("data grid", (): void => {
     test("setting an invalid focus column does not throw", (): void => {
         const rendered: ReactWrapper = mount(
             <DataGrid
-                gridData={gridData}
+                rows={rows}
                 dataRowKey="name"
                 columns={columns}
                 managedClasses={managedClasses}
@@ -624,7 +616,7 @@ describe("data grid", (): void => {
     test("getRowIndexByKey returns expected index value", (): void => {
         const rendered: ReactWrapper = mount(
             <DataGrid
-                gridData={gridData}
+                rows={rows}
                 dataRowKey="name"
                 columns={columns}
                 managedClasses={managedClasses}
@@ -637,7 +629,7 @@ describe("data grid", (): void => {
     test("getRowIndexByKey does not throw with an invalid index", (): void => {
         const rendered: ReactWrapper = mount(
             <DataGrid
-                gridData={gridData}
+                rows={rows}
                 dataRowKey="name"
                 columns={columns}
                 managedClasses={managedClasses}
@@ -658,7 +650,7 @@ describe("data grid", (): void => {
         const rendered: ReactWrapper = mount(
             <DataGrid
                 rowHeightCallback={heightCallback}
-                gridData={gridData}
+                rows={rows}
                 dataRowKey="name"
                 columns={columns}
                 managedClasses={managedClasses}

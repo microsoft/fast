@@ -9,7 +9,7 @@ export default {
     id: "@microsoft/fast-components-react-base/data-grid",
     formPluginId: "@microsoft/fast-components-react-base/data-grid",
     properties: {
-        gridData: {
+        rows: {
             title: "Array of data (objects by row) to be rendered",
             type: "array",
             items: {
@@ -50,5 +50,5 @@ export default {
             type: "string",
         },
     },
-    required: ["gridData", "dataRowKey", "columns"],
+    required: ["rows", "dataRowKey", "columns"],
 };

@@ -47,7 +47,7 @@ describe("data grid cell", (): void => {
 
     const gridProps: DataGridProps = {
         dataRowKey: "name",
-        gridData: [rowData1, rowData2, rowData3],
+        rows: [rowData1, rowData2, rowData3],
         columns: [column1, column2],
         rowHeight: 60,
     };
@@ -192,11 +192,9 @@ describe("data grid cell", (): void => {
     test("Custom cell render function is called", (): void => {
         const cellRenderFunction: any = jest.fn();
         cellRenderFunction.mockReturnValue("Test");
-        const updatedColumns: DataGridColumn = merge(
-            {},
-            column1,
-            { cell: cellRenderFunction }
-        );
+        const updatedColumns: DataGridColumn = merge({}, column1, {
+            cell: cellRenderFunction,
+        });
 
         /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
         const rendered: ReactWrapper = mount(

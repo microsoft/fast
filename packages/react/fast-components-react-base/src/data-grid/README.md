@@ -3,7 +3,7 @@ The *data grid* component enables a display of tabular data in a scrolling grid 
 
 ## Usage
 
-Authors provide the data the component will display through the `gridData` prop.  This data must take the form of an array of objects, each object in the array corresponds to one row of data in the grid.  Additionally, each object in the array must have a property which uniquely identifies it that is passed to the component through the `dataRowKey` prop. 
+Authors provide the data the component will display through the `rows` prop.  This data must take the form of an array of objects, each object in the array corresponds to one row of data in the grid.  Additionally, each object in the array must have a property which uniquely identifies it that is passed to the component through the `dataRowKey` prop. 
 
 A simple data set using a "clientId" attribute as a unique identifier  could look like this.
 
@@ -43,7 +43,7 @@ And the markup for the simple data grid to display the above:
 
 ```ts
 <DataGrid
-    gridData={myData}
+    row={myData}
     dataRowKey="clientId"
     columns={myColumns}
 />

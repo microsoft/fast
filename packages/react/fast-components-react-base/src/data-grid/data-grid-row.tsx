@@ -95,10 +95,7 @@ class DataGridRow extends Foundation<
     /**
      *  renders a cell
      */
-    private renderCell = (
-        column: DataGridColumn,
-        index: number
-    ): React.ReactNode => {
+    private renderCell = (column: DataGridColumn, index: number): React.ReactNode => {
         return (
             <DataGridCell
                 key={column.columnDataKey}

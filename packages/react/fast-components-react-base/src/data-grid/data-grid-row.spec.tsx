@@ -47,7 +47,7 @@ describe("data grid row", (): void => {
 
     const gridProps: DataGridProps = {
         dataRowKey: "name",
-        gridData: [rowData1, rowData2, rowData3],
+        rows: [rowData1, rowData2, rowData3],
         columns: [column1, column2],
         rowHeight: 60,
     };

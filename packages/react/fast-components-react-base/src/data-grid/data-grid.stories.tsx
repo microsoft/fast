@@ -110,7 +110,7 @@ interface DataGridTestState {
     currentDataSet: object[];
 }
 
-interface DataGridTestProps extends Omit<DataGridProps, "gridData"> {
+interface DataGridTestProps extends Omit<DataGridProps, "rows"> {
     /**
      * Primary data set
      */
@@ -150,7 +150,7 @@ class DataGridTest extends React.Component<DataGridTestProps, DataGridTestState>
                 <DataGrid
                     columns={this.props.columns}
                     dataRowKey={this.props.dataRowKey}
-                    gridData={this.state.currentDataSet}
+                    rows={this.state.currentDataSet}
                     rowHeight={this.props.rowHeight}
                     {...props}
                 />
@@ -178,7 +178,7 @@ storiesOf("Data Grid", module)
                 height: "300px",
             }}
             dataRowKey="recordId"
-            gridData={getDataSet(100)}
+            rows={getDataSet(100)}
             rowHeight={100}
             columns={columns}
         />
@@ -189,7 +189,7 @@ storiesOf("Data Grid", module)
                 height: "300px",
             }}
             dataRowKey="recordId"
-            gridData={getDataSet(100)}
+            rows={getDataSet(100)}
             rowHeight={100}
             columns={columns}
             defaultFocusRowKey="id-50"
@@ -202,7 +202,7 @@ storiesOf("Data Grid", module)
                 height: "300px",
             }}
             dataRowKey="recordId"
-            gridData={[]}
+            rows={[]}
             rowHeight={100}
             columns={columns}
         />
@@ -214,7 +214,7 @@ storiesOf("Data Grid", module)
                 width: "500px",
             }}
             dataRowKey="recordId"
-            gridData={getDataSet(100)}
+            rows={getDataSet(100)}
             rowHeight={100}
             columns={columns}
         />
@@ -252,7 +252,7 @@ storiesOf("Data Grid", module)
                 width: "800px",
             }}
             dataRowKey="recordId"
-            gridData={getDataSet(10000)}
+            rows={getDataSet(10000)}
             rowHeight={100}
             columns={columns}
             rowHeightCallback={getRowHeight}
@@ -265,7 +265,7 @@ storiesOf("Data Grid", module)
             }}
             virtualizeItems={false}
             dataRowKey="recordId"
-            gridData={getDataSet(100)}
+            rows={getDataSet(100)}
             defaultFocusRowKey="id-50"
             rowHeight={100}
             columns={columns}

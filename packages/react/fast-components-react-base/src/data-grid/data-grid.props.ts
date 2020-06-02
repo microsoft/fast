@@ -64,7 +64,7 @@ export interface DataGridHandledProps extends DataGridManagedClasses {
      * Data to be displayed in the grid
      * An array of data items for each row is expected
      */
-    gridData: object[];
+    rows: object[];
 
     /**
      * the field which uniquely identifies each data row
@@ -95,7 +95,7 @@ export interface DataGridHandledProps extends DataGridManagedClasses {
 
     /**
      * This callback function overrides the rowHeight prop and will be called for each
-     * row of data when the gridData is updated in props.  Allows for non-uniform row heights.
+     * row of data when the rows are updated in props.  Allows for non-uniform row heights.
      */
     rowHeightCallback?: (row: DataGridRowHeightCallbackParams) => number;
 

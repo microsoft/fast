@@ -81,11 +81,9 @@ class DataGrid extends Foundation<
     /**
      *  generates a basic column definition by examining sample row data
      */
-    public static generateColumns = (
-        gridDataRow: object
-    ): DataGridColumn[] => {
+    public static generateColumns = (row: object): DataGridColumn[] => {
         const definitions: DataGridColumn[] = [];
-        const properties: string[] = Object.getOwnPropertyNames(gridDataRow);
+        const properties: string[] = Object.getOwnPropertyNames(row);
         properties.forEach((property: string) => {
             definitions.push({
                 columnDataKey: property,
@@ -96,7 +94,7 @@ class DataGrid extends Foundation<
 
     protected handledProps: HandledProps<DataGridHandledProps> = {
         dataRowKey: void 0,
-        gridData: void 0,
+        rows: void 0,
         columns: void 0,
         rowHeight: void 0,
         rowHeightCallback: void 0,
@@ -204,10 +202,10 @@ class DataGrid extends Foundation<
         }
 
         // revalidate when there is new data
-        if (this.props.gridData !== prevProps.gridData) {
+        if (this.props.rows !== prevProps.rows) {
             shouldUpdateState = true;
 
-            if (this.props.gridData.length === 0) {
+            if (this.props.rows.length === 0) {
                 this.getInitialStateObject();
             } else {
                 // ensure focus is still valid
@@ -216,7 +214,7 @@ class DataGrid extends Foundation<
                 // ensure data page conforms to new data length
                 // (not virtualizing, so cover the whole range)
                 newState.currentDataPageStartIndex = 0;
-                newState.currentDataPageEndIndex = this.props.gridData.length - 1;
+                newState.currentDataPageEndIndex = this.props.rows.length - 1;
 
                 // move focus to the new element if necessary
                 if (
@@ -261,10 +259,10 @@ class DataGrid extends Foundation<
         shouldUpdateState = this.applyUpdatedFocusProps(newState, prevProps);
 
         // revalidate when there is new data
-        if (this.props.gridData !== prevProps.gridData) {
+        if (this.props.rows !== prevProps.rows) {
             shouldUpdateState = true;
 
-            if (this.props.gridData.length === 0) {
+            if (this.props.rows.length === 0) {
                 newState = this.getInitialStateObject();
             } else {
                 // if an author tells us nothing has changed before a certain point we keep position data
@@ -290,8 +288,8 @@ class DataGrid extends Foundation<
                     newState.currentDataPageStartIndex + this.props.pageSize;
 
                 newState.currentDataPageEndIndex =
-                    newState.currentDataPageEndIndex > this.props.gridData.length - 1
-                        ? this.props.gridData.length - 1
+                    newState.currentDataPageEndIndex > this.props.rows.length - 1
+                        ? this.props.rows.length - 1
                         : newState.currentDataPageEndIndex;
 
                 this.sizeRowsToIndex(
@@ -342,9 +340,9 @@ class DataGrid extends Foundation<
             // our focus row no longer exists, assign a new one based on previous focus row index
             newState.focusRowIndex = Math.min(
                 Math.max(newState.focusRowIndex, 0),
-                this.props.gridData.length - 1
+                this.props.rows.length - 1
             );
-            newState.focusRowKey = this.props.gridData[newState.focusRowIndex][
+            newState.focusRowKey = this.props.rows[newState.focusRowIndex][
                 this.props.dataRowKey
             ];
         } else {
@@ -395,7 +393,7 @@ class DataGrid extends Foundation<
                 );
                 newState.currentDataPageEndIndex = Math.min(
                     newState.currentDataPageStartIndex + this.props.pageSize,
-                    this.props.gridData.length - 1
+                    this.props.rows.length - 1
                 );
 
                 shouldUpdateState = true;
@@ -425,7 +423,7 @@ class DataGrid extends Foundation<
         this.componentDidUpdate = this.virtualizedComponentUpdateHandler;
         this.renderPanel = this.renderVirtualizingPanel;
 
-        if (this.props.gridData.length > 0) {
+        if (this.props.rows.length > 0) {
             if (!isNil(this.props.defaultFocusRowKey)) {
                 newState.focusRowKey = this.props.defaultFocusRowKey;
                 newState.focusRowIndex = this.getRowIndexByKey(newState.focusRowKey);
@@ -433,7 +431,7 @@ class DataGrid extends Foundation<
 
             if (newState.focusRowIndex === -1) {
                 newState.focusRowIndex = 0;
-                newState.focusRowKey = this.props.gridData[0][this.props.dataRowKey];
+                newState.focusRowKey = this.props.rows[0][this.props.dataRowKey];
             }
 
             newState.currentDataPageStartIndex = Math.max(
@@ -442,7 +440,7 @@ class DataGrid extends Foundation<
             );
 
             newState.currentDataPageEndIndex = Math.min(
-                this.props.gridData.length - 1,
+                this.props.rows.length - 1,
                 newState.currentDataPageStartIndex + this.props.pageSize
             );
 
@@ -466,9 +464,9 @@ class DataGrid extends Foundation<
         this.componentDidUpdate = this.nonVirtualizedComponentUpdateHandler;
         this.renderPanel = this.renderNonVirtualizingPanel;
 
-        newState.currentDataPageStartIndex = this.props.gridData.length > 0 ? 0 : -1;
+        newState.currentDataPageStartIndex = this.props.rows.length > 0 ? 0 : -1;
         newState.currentDataPageEndIndex =
-            this.props.gridData.length > 0 ? this.props.gridData.length - 1 : -1;
+            this.props.rows.length > 0 ? this.props.rows.length - 1 : -1;
         newState.rowPositions = [];
         newState.estimatedTotalHeight = 0;
 
@@ -484,16 +482,14 @@ class DataGrid extends Foundation<
             newState.focusRowIndex = this.getRowIndexByKey(newState.focusRowKey);
         }
 
-        if (newState.focusRowIndex === -1 && this.props.gridData.length > 0) {
+        if (newState.focusRowIndex === -1 && this.props.rows.length > 0) {
             newState.focusRowIndex = 0;
-            newState.focusRowKey = this.props.gridData[0][this.props.dataRowKey];
+            newState.focusRowKey = this.props.rows[0][this.props.dataRowKey];
         }
 
         if (isNil(this.props.columns)) {
-            if (this.props.gridData.length > 0) {
-                newState.columns = DataGrid.generateColumns(
-                    this.props.gridData[0]
-                );
+            if (this.props.rows.length > 0) {
+                newState.columns = DataGrid.generateColumns(this.props.rows[0]);
             }
         } else {
             newState.columns = this.props.columns;
@@ -564,7 +560,7 @@ class DataGrid extends Foundation<
      */
     private renderNonVirtualizedRows = (): React.ReactChild[] => {
         const rowsToRender: React.ReactChild[] = [];
-        this.props.gridData.forEach((row: object, index: number) => {
+        this.props.rows.forEach((row: object, index: number) => {
             rowsToRender.push(this.renderRow(row, index));
         });
         return rowsToRender;
@@ -598,7 +594,7 @@ class DataGrid extends Foundation<
 
         const stackPanelVisibleItemIndex: number | null =
             this.state.desiredVisibleRowIndex !== null
-                ? this.convertGridDataIndexToStackPanelIndex(
+                ? this.convertRowIndexToStackPanelIndex(
                       this.state.desiredVisibleRowIndex,
                       this.state.currentDataPageStartIndex,
                       this.state.currentDataPageEndIndex
@@ -643,7 +639,7 @@ class DataGrid extends Foundation<
             i <= this.state.currentDataPageEndIndex;
             i++
         ) {
-            rowsToRender.push(this.renderRow(this.props.gridData[i], i));
+            rowsToRender.push(this.renderRow(this.props.rows[i], i));
         }
         rowsToRender.push(<div key="backSpacer" />);
         return rowsToRender;
@@ -711,15 +707,11 @@ class DataGrid extends Foundation<
     private getGridTemplateColumns = (): string => {
         let templateColumns: string = "";
 
-        this.props.columns.forEach(
-            (column: DataGridColumn) => {
-                templateColumns = `${templateColumns} ${
-                    isNil(column.columnWidth)
-                        ? "1fr"
-                        : column.columnWidth
-                }`;
-            }
-        );
+        this.props.columns.forEach((column: DataGridColumn) => {
+            templateColumns = `${templateColumns} ${
+                isNil(column.columnWidth) ? "1fr" : column.columnWidth
+            }`;
+        });
 
         return templateColumns;
     };
@@ -786,7 +778,7 @@ class DataGrid extends Foundation<
 
             case KeyCodes.home:
                 if (e.ctrlKey) {
-                    this.incrementFocusRow(-this.props.gridData.length);
+                    this.incrementFocusRow(-this.props.rows.length);
                 } else {
                     this.incrementFocusColumn(-this.state.columns.length);
                 }
@@ -795,7 +787,7 @@ class DataGrid extends Foundation<
 
             case KeyCodes.end:
                 if (e.ctrlKey) {
-                    this.incrementFocusRow(this.props.gridData.length);
+                    this.incrementFocusRow(this.props.rows.length);
                 } else {
                     this.incrementFocusColumn(this.state.columns.length);
                 }
@@ -813,7 +805,7 @@ class DataGrid extends Foundation<
         }
         const estimatedTotalHeight: number =
             rowPositions[rowPositions.length - 1].end +
-            (this.props.gridData.length - rowPositions.length) * this.props.rowHeight;
+            (this.props.rows.length - rowPositions.length) * this.props.rowHeight;
 
         return estimatedTotalHeight;
     };
@@ -829,13 +821,13 @@ class DataGrid extends Foundation<
         if (rowPositions.length - 1 < targetIndex) {
             const startIndex: number = rowPositions.length;
             const endIndex: number =
-                targetIndex > this.props.gridData.length - 1
-                    ? this.props.gridData.length - 1
+                targetIndex > this.props.rows.length - 1
+                    ? this.props.rows.length - 1
                     : targetIndex;
             for (let i: number = startIndex; i <= endIndex; i++) {
                 const thisRowStart: number = i === 0 ? 0 : rowPositions[i - 1].end;
                 const thisRowHeight: number = this.props.rowHeightCallback({
-                    rowData: this.props.gridData[i],
+                    rowData: this.props.rows[i],
                     rowIndex: i,
                     defaultRowHeight: this.props.rowHeight,
                 });
@@ -860,11 +852,11 @@ class DataGrid extends Foundation<
     ): void => {
         if (rowPositions[rowPositions.length - 1].end < targetScrollValue) {
             const startIndex: number = rowPositions.length;
-            const endIndex: number = this.props.gridData.length - 1;
+            const endIndex: number = this.props.rows.length - 1;
             for (let i: number = startIndex; i <= endIndex; i++) {
                 const thisRowStart: number = i === 0 ? 0 : rowPositions[i - 1].end;
                 const thisRowHeight: number = this.props.rowHeightCallback({
-                    rowData: this.props.gridData[i],
+                    rowData: this.props.rows[i],
                     rowIndex: i,
                     defaultRowHeight: this.props.rowHeight,
                 });
@@ -915,7 +907,7 @@ class DataGrid extends Foundation<
                 });
             } else {
                 this.setState({
-                    focusRowKey: this.props.gridData[topVisibleElementIndex][
+                    focusRowKey: this.props.rows[topVisibleElementIndex][
                         this.props.dataRowKey
                     ],
                 });
@@ -944,8 +936,8 @@ class DataGrid extends Foundation<
 
             let newDataPageEndIndex: number =
                 newDataPageStartIndex + this.props.pageSize - 1;
-            if (newDataPageEndIndex > this.props.gridData.length - 1) {
-                newDataPageEndIndex = this.props.gridData.length - 1;
+            if (newDataPageEndIndex > this.props.rows.length - 1) {
+                newDataPageEndIndex = this.props.rows.length - 1;
             }
 
             this.sizeRowsToIndex(newDataPageEndIndex, newRowPositions);
@@ -1059,7 +1051,7 @@ class DataGrid extends Foundation<
 
         // don't get stuck on items that span the viewport
         if (nextItemIndex === this.state.focusRowIndex) {
-            if (direction > 0 && nextItemIndex < this.props.gridData.length - 1) {
+            if (direction > 0 && nextItemIndex < this.props.rows.length - 1) {
                 nextItemIndex++;
             } else if (direction < 0 && nextItemIndex > 0) {
                 nextItemIndex;
@@ -1067,7 +1059,7 @@ class DataGrid extends Foundation<
         }
 
         this.focusOnCell(
-            this.props.gridData[nextItemIndex][this.props.dataRowKey],
+            this.props.rows[nextItemIndex][this.props.dataRowKey],
             this.state.focusColumnKey,
             newRowPositions,
             true
@@ -1082,18 +1074,18 @@ class DataGrid extends Foundation<
 
         if (currentFocusRowIndex === -1) {
             currentFocusRowIndex =
-                this.state.focusRowIndex < this.props.gridData.length
+                this.state.focusRowIndex < this.props.rows.length
                     ? this.state.focusRowIndex
-                    : this.props.gridData.length - 1;
+                    : this.props.rows.length - 1;
         }
 
         let newFocusRowIndex: number = currentFocusRowIndex + direction;
         if (newFocusRowIndex < 0) {
             newFocusRowIndex = 0;
-        } else if (newFocusRowIndex >= this.props.gridData.length) {
-            newFocusRowIndex = this.props.gridData.length - 1;
+        } else if (newFocusRowIndex >= this.props.rows.length) {
+            newFocusRowIndex = this.props.rows.length - 1;
         }
-        const newFocusRowKey: React.ReactText = this.props.gridData[newFocusRowIndex][
+        const newFocusRowKey: React.ReactText = this.props.rows[newFocusRowIndex][
             this.props.dataRowKey
         ];
 
@@ -1135,9 +1127,8 @@ class DataGrid extends Foundation<
             newFocusColumnIndex = this.state.columns.length - 1;
         }
 
-        const newFocusColumnKey: React.ReactText = this.state.columns[
-            newFocusColumnIndex
-        ].columnDataKey;
+        const newFocusColumnKey: React.ReactText = this.state.columns[newFocusColumnIndex]
+            .columnDataKey;
 
         const rowElement: Element = this.getRowElementByKey(this.state.focusRowKey);
 
@@ -1238,8 +1229,8 @@ class DataGrid extends Foundation<
 
             let newDataPageEndIndex: number =
                 newDataPageStartIndex + this.props.pageSize - 1;
-            if (newDataPageEndIndex > this.props.gridData.length - 1) {
-                newDataPageEndIndex = this.props.gridData.length - 1;
+            if (newDataPageEndIndex > this.props.rows.length - 1) {
+                newDataPageEndIndex = this.props.rows.length - 1;
             }
 
             this.sizeRowsToIndex(newDataPageEndIndex, rowPositions);
@@ -1266,18 +1257,16 @@ class DataGrid extends Foundation<
         columnKey: React.ReactText,
         columns: DataGridColumn[]
     ): number => {
-        return columns.findIndex(
-            (column: DataGridColumn) => {
-                return column.columnDataKey === columnKey;
-            }
-        );
+        return columns.findIndex((column: DataGridColumn) => {
+            return column.columnDataKey === columnKey;
+        });
     };
 
     /**
      * Get row index by key
      */
     private getRowIndexByKey = (rowKey: ReactText): number => {
-        const rowIndex: number = this.props.gridData.findIndex((dataRow: object) => {
+        const rowIndex: number = this.props.rows.findIndex((dataRow: object) => {
             return dataRow[this.props.dataRowKey] === rowKey;
         });
         return rowIndex;
@@ -1330,16 +1319,16 @@ class DataGrid extends Foundation<
      * Converts a row index in the base dataset to an index in the current data page
      * passed to the stack panel.  Returns -1 if outside that range.
      */
-    private convertGridDataIndexToStackPanelIndex = (
-        gridDataIndex: number,
+    private convertRowIndexToStackPanelIndex = (
+        rowIndex: number,
         dataPageStartIndex: number,
         dataPageEndIndex: number
     ): number => {
-        if (gridDataIndex < dataPageStartIndex || gridDataIndex > dataPageEndIndex) {
+        if (rowIndex < dataPageStartIndex || rowIndex > dataPageEndIndex) {
             return -1;
         }
 
-        return gridDataIndex - dataPageStartIndex + 1;
+        return rowIndex - dataPageStartIndex + 1;
     };
 
     /**
@@ -1349,7 +1338,7 @@ class DataGrid extends Foundation<
         if (
             !this.props.virtualizeItems &&
             !isNil(this.nonVirtualizedScrollContainer.current) &&
-            this.props.gridData.length > rowIndex
+            this.props.rows.length > rowIndex
         ) {
             const rows: HTMLElement[] = this.getRenderedRows();
             if (rows.length <= rowIndex) {
