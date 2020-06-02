@@ -6,6 +6,7 @@ html,
 body {
   width: 100%;
   overflow-x: hidden;
+  scroll-behavior: smooth;
 }
 
 body {
@@ -24,6 +25,34 @@ body {
   grid-template-columns: minmax(5vw, 1fr) minmax(0px, 1200px) minmax(5vw, 1fr);
   position: relative;
   z-index: 1;
+}
+
+.social-links {
+  position: fixed;
+  top: 45%;
+}
+
+.section-scroll {
+  position: fixed;
+  top: 40%;
+  right: 0%;
+}
+
+@media screen and (max-height: 330px) {
+  .social-links,
+  .section-scroll {
+    display: none;
+  }
+}
+
+@media screen and (max-height: 500px) {
+  .social-links {
+    top: 35%;
+  }
+  
+  .section-scroll {
+    top: 25%;
+  }
 }
 
 .header {
@@ -92,7 +121,7 @@ fast-divider::after {
 
 .section {
   color: var(--neutral-foreground-rest);
-  min-height: 85vmin;
+  min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -112,6 +141,10 @@ fast-divider::after {
 
 .fast-frame-header {
   padding: 0 20px;
+}
+
+.section-hero {
+  min-height: calc(100vh - 94px);
 }
 
 .section-content {
@@ -156,6 +189,13 @@ fast-divider::after {
 @media screen and (max-width: 1330px) {
   .wrapper {
     grid-template-columns: minmax(5vw, 1fr) minmax(0px, 800px) minmax(5vw, 1fr);
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  .social-links,
+  .section-scroll {
+    display: none;
   }
 }
 
