@@ -172,15 +172,14 @@ class DataGridTest extends React.Component<DataGridTestProps, DataGridTestState>
 }
 
 storiesOf("Data Grid", module)
-    .add("Detail View", () => (
+    .add("Default", () => (
         <DataGrid
             style={{
                 height: "300px",
             }}
             dataRowKey="recordId"
             rows={getDataSet(100)}
-            rowHeight={100}
-            columns={columns}
+            rowHeight={60}
         />
     ))
     .add("Initially visible row", () => (

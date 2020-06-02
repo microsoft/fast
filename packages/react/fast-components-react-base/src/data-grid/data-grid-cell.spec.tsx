@@ -94,7 +94,8 @@ describe("data grid cell", (): void => {
                     {
                         focusRowKey: "Thomas",
                         focusColumnKey: "name",
-                        dataGridProps: gridProps,
+                        dataRowKey: "name",
+                        columns: [column1, column2],
                     } as any
                 }
             >
@@ -118,7 +119,8 @@ describe("data grid cell", (): void => {
                     {
                         focusRowKey: "NotThomas",
                         focusColumnKey: "name",
-                        dataGridProps: gridProps,
+                        dataRowKey: "name",
+                        columns: [column1, column2],
                     } as any
                 }
             >
@@ -143,7 +145,8 @@ describe("data grid cell", (): void => {
                 value={
                     {
                         onCellKeyDown,
-                        dataGridProps: gridProps,
+                        dataRowKey: "name",
+                        columns: [column1, column2],
                     } as any
                 }
             >
@@ -170,7 +173,8 @@ describe("data grid cell", (): void => {
                 value={
                     {
                         onCellFocused,
-                        dataGridProps: gridProps,
+                        dataRowKey: "name",
+                        columns: [column1, column2],
                     } as any
                 }
             >
@@ -201,7 +205,8 @@ describe("data grid cell", (): void => {
             <DataGridContext.Provider
                 value={
                     {
-                        dataGridProps: gridProps,
+                        dataRowKey: "name",
+                        columns: [column1, column2],
                     } as any
                 }
             >

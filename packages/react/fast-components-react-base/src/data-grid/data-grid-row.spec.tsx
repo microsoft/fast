@@ -45,13 +45,6 @@ describe("data grid row", (): void => {
         columnWidth: "200px",
     };
 
-    const gridProps: DataGridProps = {
-        dataRowKey: "name",
-        rows: [rowData1, rowData2, rowData3],
-        columns: [column1, column2],
-        rowHeight: 60,
-    };
-
     test("should have a displayName that matches the component name", () => {
         expect((DataGridRow as any).name).toBe(DataGridRow.displayName);
     });
@@ -63,7 +56,8 @@ describe("data grid row", (): void => {
                     {
                         focusRowKey: "Thomas",
                         focusColumnKey: "name",
-                        dataGridProps: gridProps,
+                        dataRowKey: "name",
+                        columns: [column1, column2],
                     } as any
                 }
             >
@@ -88,7 +82,8 @@ describe("data grid row", (): void => {
                     {
                         focusRowKey: "Thomas",
                         focusColumnKey: "name",
-                        dataGridProps: gridProps,
+                        dataRowKey: "name",
+                        columns: [column1, column2],
                     } as any
                 }
             >
@@ -109,7 +104,8 @@ describe("data grid row", (): void => {
             <DataGridContext.Provider
                 value={
                     {
-                        dataGridProps: gridProps,
+                        dataRowKey: "name",
+                        columns: [column1, column2],
                     } as any
                 }
             >

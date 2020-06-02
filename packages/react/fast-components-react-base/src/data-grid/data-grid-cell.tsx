@@ -60,11 +60,7 @@ class DataGridCell extends Foundation<
      * Renders the component
      */
     public render(): React.ReactNode {
-        if (
-            isNil(this.context) ||
-            isNil(this.context.dataGridProps) ||
-            isNil(this.props.column)
-        ) {
+        if (isNil(this.context) || isNil(this.props.column)) {
             return null;
         }
 
@@ -116,7 +112,7 @@ class DataGridCell extends Foundation<
             return false;
         }
         return (
-            this.props.rowData[this.context.dataGridProps.dataRowKey] ===
+            this.props.rowData[this.context.dataRowKey] ===
                 this.context.desiredFocusRowKey &&
             this.props.column.columnDataKey === this.context.desiredFocusColumnKey
         );
@@ -130,8 +126,7 @@ class DataGridCell extends Foundation<
             return false;
         }
         return (
-            this.props.rowData[this.context.dataGridProps.dataRowKey] ===
-                this.context.focusRowKey &&
+            this.props.rowData[this.context.dataRowKey] === this.context.focusRowKey &&
             this.props.column.columnDataKey === this.context.focusColumnKey
         );
     };

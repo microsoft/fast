@@ -1,6 +1,6 @@
 import React, { ReactText } from "react";
 import { DataGridCellProps } from "./data-grid-cell.props";
-import { DataGridProps } from "./data-grid";
+import { DataGridColumn } from "./data-grid.props";
 
 export interface DataGridContextType {
     onCellFocused: (
@@ -16,7 +16,8 @@ export interface DataGridContextType {
     desiredVisibleRowIndex: number | null;
     desiredFocusRowKey: ReactText | null;
     desiredFocusColumnKey: ReactText | null;
-    dataGridProps: DataGridProps;
+    columns: DataGridColumn[] | null;
+    dataRowKey: ReactText | null;
 }
 
 export const DataGridContext: React.Context<DataGridContextType> = React.createContext<
@@ -29,5 +30,6 @@ export const DataGridContext: React.Context<DataGridContextType> = React.createC
     desiredVisibleRowIndex: null,
     desiredFocusRowKey: null,
     desiredFocusColumnKey: null,
-    dataGridProps: null,
+    columns: null,
+    dataRowKey: null,
 });

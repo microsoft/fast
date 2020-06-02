@@ -147,7 +147,8 @@ class DataGrid extends Foundation<
                     desiredFocusColumnKey: this.state.desiredFocusColumnKey,
                     desiredFocusRowKey: this.state.desiredFocusRowKey,
                     desiredVisibleRowIndex: this.state.desiredVisibleRowIndex,
-                    dataGridProps: this.props,
+                    columns: this.state.columns,
+                    dataRowKey: this.props.dataRowKey,
                 }}
             >
                 <div
@@ -707,7 +708,7 @@ class DataGrid extends Foundation<
     private getGridTemplateColumns = (): string => {
         let templateColumns: string = "";
 
-        this.props.columns.forEach((column: DataGridColumn) => {
+        this.state.columns.forEach((column: DataGridColumn) => {
             templateColumns = `${templateColumns} ${
                 isNil(column.columnWidth) ? "1fr" : column.columnWidth
             }`;

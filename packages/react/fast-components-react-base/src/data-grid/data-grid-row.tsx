@@ -36,14 +36,14 @@ class DataGridRow extends Foundation<
      * Renders the component
      */
     public render(): React.ReactNode {
-        if (isNil(this.context) || isNil(this.context.dataGridProps)) {
+        if (isNil(this.context)) {
             return null;
         }
 
         const rowKey: React.ReactText = !isNil(
-            this.props.rowData[this.context.dataGridProps.dataRowKey]
+            this.props.rowData[this.context.dataRowKey]
         )
-            ? this.props.rowData[this.context.dataGridProps.dataRowKey]
+            ? this.props.rowData[this.context.dataRowKey]
             : this.props.rowIndex;
 
         // Check if there is already a style object being passed as props
@@ -79,8 +79,7 @@ class DataGridRow extends Foundation<
         return super.generateClassNames(
             classNames(dataGridRow, [
                 dataGridRow__focusWithin,
-                this.props.rowData[this.context.dataGridProps.dataRowKey] ===
-                    this.context.focusRowKey,
+                this.props.rowData[this.context.dataRowKey] === this.context.focusRowKey,
             ])
         );
     }
@@ -89,7 +88,10 @@ class DataGridRow extends Foundation<
      *  render all cells
      */
     private renderCells(): React.ReactNode[] {
-        return this.context.dataGridProps.columns.map(this.renderCell);
+        if (this.context === null || this.context.columns === null) {
+            return;
+        }
+        return this.context.columns.map(this.renderCell);
     }
 
     /**
