@@ -38,6 +38,23 @@ body {
   right: 0%;
 }
 
+@media screen and (max-height: 330px) {
+  .social-links,
+  .section-scroll {
+    display: none;
+  }
+}
+
+@media screen and (max-height: 500px) {
+  .social-links {
+    top: 35%;
+  }
+  
+  .section-scroll {
+    top: 25%;
+  }
+}
+
 .header {
   grid-column: 2;
 }
@@ -127,7 +144,7 @@ fast-divider::after {
 }
 
 .section-hero {
-  min-height: calc(100vh - 94px)
+  min-height: calc(100vh - 94px);
 }
 
 .section-content {
@@ -176,9 +193,7 @@ fast-divider::after {
 }
 
 @media screen and (max-width: 1000px) {
-  .social-links {
-    display: none;
-  }
+  .social-links,
   .section-scroll {
     display: none;
   }

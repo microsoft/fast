@@ -49,11 +49,6 @@ export class SideNavigation extends FASTElement {
 
                         if (entry.isIntersecting) {
                             if (currentRatio > this.previousRatio) {
-                                console.log(
-                                    entry.isIntersecting,
-                                    entry.target.id,
-                                    currentRatio
-                                );
                                 this.currentSection = entry.target.id;
                             }
                             this.previousRatio = currentRatio;
