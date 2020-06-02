@@ -322,6 +322,7 @@ fast-divider::after {
 
   .footer {
     align-items: flex-end;
+    padding: 0 20px;
   }
 
   .footer site-navigation {
