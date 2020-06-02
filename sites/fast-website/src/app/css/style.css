@@ -97,6 +97,21 @@ fast-divider::after {
   justify-content: center;
   align-items: center;
   grid-column: 2;
+  box-sizing: border-box;
+}
+
+.fast-frame-section {
+  color: var(--neutral-foreground-rest);
+  min-height: 85vmin;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  grid-column: 2;
+  box-sizing: border-box;
+}
+
+.fast-frame-header {
+  padding: 0 20px;
 }
 
 .section-content {
@@ -146,7 +161,11 @@ fast-divider::after {
 
 @media screen and (max-width: 800px) {
   .wrapper {
-    grid-template-columns: minmax(5vw, 1fr) minmax(0px, auto) minmax(5vw, 1fr);
+    grid-template-columns: minmax(0px, auto);
+  }
+
+  .section {
+   padding: 0 20px;
   }
 
   .header {
