@@ -99,6 +99,7 @@ module.exports = {
                 "resources/license",
                 "resources/security",
                 "resources/browser-support",
+                "resources/acknowledgements",
                 "resources/glossary",
                 "resources/faq",
             ],

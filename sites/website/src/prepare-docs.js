@@ -144,7 +144,18 @@ async function copyMarkdown() {
                 title: "Security",
                 sidebar_label: "Security",
                 custom_edit_url:
-                    "https://github.com/microsoft/fast-dna/edit/master/security.md",
+                    "https://github.com/microsoft/fast-dna/edit/master/SECURITY.md",
+            },
+        },
+        {
+            src: "../../packages/web-components/fast-element/docs/ACKNOWLEDGEMENTS.md",
+            dest: "./docs/resources/acknowledgements.md",
+            metadata: {
+                id: "acknowledgements",
+                title: "Acknowledgements",
+                sidebar_label: "Acknowledgements",
+                custom_edit_url:
+                    "https://github.com/microsoft/fast-dna/edit/master/packages/web-components/fast-element/docs/ACKNOWLEDGEMENTS.md",
             },
         },
     ];
