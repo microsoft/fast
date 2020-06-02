@@ -29,6 +29,8 @@ export class FASTButton extends Button {}
 ```
 
 ## Usage
-```html
-<fast-button appearance="primary">Submit</fast-button>
+```html live
+<fast-design-system-provider use-defaults>
+    <fast-button appearance="primary">Submit</fast-button>
+</fast-design-system-provider>
 ```

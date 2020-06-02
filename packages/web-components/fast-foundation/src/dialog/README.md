@@ -23,10 +23,12 @@ export class FASTDialog extends Dialog {}
 
 ## Usage
 
-```html
-<fast-dialog id="simpleDialog" aria-label="Simple modal dialog" modal="true">
-    <h2>Dialog with text and button.</h2>
-    <fast-button>Button A</fast-button>
-    <fast-button autofocus>Should autofocus</fast-button>
-</fast-dialog>
+```html live
+<fast-design-system-provider use-defaults>
+    <fast-dialog id="simpleDialog" aria-label="Simple modal dialog" modal="true">
+        <h2>Dialog with text and button.</h2>
+        <fast-button>Button A</fast-button>
+        <fast-button autofocus>Should autofocus</fast-button>
+    </fast-dialog>
+</fast-design-system-provider>
 ```

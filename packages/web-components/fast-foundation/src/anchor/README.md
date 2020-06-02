@@ -28,6 +28,8 @@ export class FASTAnchor extends Anchor {}
 ```
 
 ## Usage
-```html
-<fast-anchor href="https://fast.design" appearance="hypertext">FAST-DNA</fast-anchor>
+```html live
+<fast-design-system-provider use-defaults>
+    <fast-anchor href="https://fast.design" appearance="hypertext">FAST-DNA</fast-anchor>
+</fast-design-system-provider>
 ```
