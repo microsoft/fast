@@ -7,11 +7,16 @@ Standard Performance, Read-access GEO-Redundant, name with numbers and lowercase
 Ref:
 https://docs.microsoft.com/en-us/azure/cdn/common/cdn-redundancy
 https://docs.microsoft.com/en-us/cli/azure/cdn/account?view=azure-cli-latest#az-cdn-account-create
+https://app.pluralsight.com/player?course=microsoft-azure-storage-cors-access-configuring&author=kamran-ayub&name=13da8493-fb46-4ded-9e9c-b7b2d864c24e&clip=0&mode=live
 '
+
 #TODOs
 # [] Add Get Secret in Key Vault for Microsoft.Azure.Cdn using Azure CLI prior to creating custom domain
 # [] Update to endpoing so that it properly waits for completion before continuing to create custom-domain
 # [] Add certificate usage for CDN as indicated below by issue.
+# [] Configure CORS https://docs.microsoft.com/en-us/azure/cdn/cdn-cors#one-regular-expression-with-all-valid-origins
+# [] Add CORS rule via Azure CLI then purge CDN "az cdn endpoint purge -g your-resource-group -n your-endpoint --profile-name your-cdn-profile --content-paths '/*'""
+# [] Redirect all HTTP traffic to HTTPS https://docs.microsoft.com/en-us/azure/cdn/cdn-standard-rules-engine 
 
 # Configure and set name
 product_name=fast
