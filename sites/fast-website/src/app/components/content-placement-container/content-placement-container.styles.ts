@@ -26,8 +26,13 @@ export const ContentPlacementContainerStyles = css`
 
     /* This creates the color, background, and elevation changes on hover */
 
+    :host([section="feature"]:hover) site-card-section,
     :host([section="community"]:hover) site-content-placement {
         color: var(--neutral-foreground-hint);
+    }
+
+    :host([section="feature"]) site-feature-card:hover {
+        color: var(--neutral-foreground-rest);
     }
 
     :host([section="community"]) site-content-placement:hover {
