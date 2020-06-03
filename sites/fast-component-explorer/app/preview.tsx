@@ -22,7 +22,7 @@ import {
     neutralLayerL1,
     StandardLuminance,
 } from "@microsoft/fast-components-styles-msft";
-import * as componentDefinitions from "./fast-components/configs/component-definitions";
+import { componentDefinitions } from "@microsoft/site-utilities";
 import {
     PreviewHandledProps,
     PreviewProps,

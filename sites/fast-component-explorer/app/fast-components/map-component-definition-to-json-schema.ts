@@ -1,6 +1,6 @@
 import { mapWebComponentDefinitionToJSONSchema } from "@microsoft/fast-tooling";
 import { WebComponentDefinition } from "@microsoft/fast-tooling/dist/data-utilities/web-component";
-import * as componentDefinitions from "./configs/component-definitions";
+import { componentDefinitions } from "@microsoft/site-utilities";
 
 const webComponentSchemas: { [key: string]: any } = {};
 
