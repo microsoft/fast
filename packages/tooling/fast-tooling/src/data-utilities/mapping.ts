@@ -427,7 +427,7 @@ export function mapWebComponentDefinitionToJSONSchema(
                 $schema: "http://json-schema.org/schema#",
                 $id: webComponentDefinition.tags[i].name,
                 id: webComponentDefinition.tags[i].name,
-                title: webComponentDefinition.tags[i].description,
+                title: `<${webComponentDefinition.tags[i].name}>: ${webComponentDefinition.tags[i].description}`,
                 type: "object",
                 version: webComponentDefinition.version,
                 [ReservedElementMappingKeyword.mapsToTagName]:
