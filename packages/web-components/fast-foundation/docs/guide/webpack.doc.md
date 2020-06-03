@@ -128,7 +128,7 @@ To enable easy execution of both our production and development builds, let's ad
 
 ```json
 "scripts": {
-  "build": "rimraf dist && webpack --config webpack.config.js --mode=production",
+  "build": "rimraf dist && webpack --mode=production",
   "dev": "webpack-dev-server"
 }
 ```
