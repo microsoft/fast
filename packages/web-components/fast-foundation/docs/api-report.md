@@ -853,7 +853,6 @@ export class TreeView extends FASTElement {
     handleBlur: (e: FocusEvent) => void;
     // (undocumented)
     handleFocus: (e: FocusEvent) => void;
-    handleFocusOut: (e: FocusEvent) => void;
     // (undocumented)
     handleKeyDown: (e: KeyboardEvent) => boolean | void;
     // (undocumented)

@@ -1,5 +1,5 @@
 import { css } from "@microsoft/fast-element";
-import { display } from "@microsoft/fast-foundation";
+import { display, focusVisible } from "@microsoft/fast-foundation";
 
 import {
     neutralFillStealthActiveBehavior,
@@ -9,6 +9,7 @@ import {
     neutralFocusBehavior,
     heightNumber,
     neutralFocusInnerAccentBehavior,
+    neutralForegroundActiveBehavior,
     neutralForegroundRestBehavior,
 } from "../styles/index";
 
@@ -16,7 +17,6 @@ export const TreeItemStyles = css`
     ${display("block")} :host {
         contain: content;
         position: relative;
-        height: calc(${heightNumber} * 1px);
         color: var(--neutral-foreground-rest);
         background: var(--neutral-fill-stealth-rest);
         cursor: pointer;
@@ -25,12 +25,13 @@ export const TreeItemStyles = css`
         --tree-item-nested-width: 0;
     }
 
-    :host(:focus) {
-        outline: red 1px solid;
+    :host(:focus) > .positioning-region {
+        outline: var(--neutral-focus) 1px solid;
     }
 
-    host:focus-visible > .positioning-region {
+    :host(:${focusVisible}) > .positioning-region {
         border-color: var(--neutral-focus);
+        color: var(--neutral-foreground-active);
     }
 
     .positioning-region {
@@ -62,24 +63,30 @@ export const TreeItemStyles = css`
         align-items: center;
         white-space: nowrap;
         margin-inline-start: calc(var(--design-unit) * 2px + 2px);
-        ${/* Font size, weight and line height are temporary - 
-            replace when adaptive typography is figured out */ ""} font-size: 14px;
+        ${
+            /* Font size, weight and line height are temporary - 
+            replace when adaptive typography is figured out */ ""
+        } font-size: 14px;
         line-height: 20px;
         font-weight: 400;
     }
 
     .items {
         display: none;
-        ${/* Font size should be based off calc(1em + (design-unit + glyph-size-number) * 1px) - 
-            update when density story is figured out */ ""} font-size: calc(1em + 20px);
+        ${
+            /* Font size should be based off calc(1em + (design-unit + glyph-size-number) * 1px) - 
+            update when density story is figured out */ ""
+        } font-size: calc(1em + 20px);
     }
 
     .expand-collapse-button {
         background: none;
         border: none;
         outline: none;
-        ${/* Width and Height should be based off calc(glyph-size-number + (design-unit * 4) * 1px) - 
-            update when density story is figured out */ ""} width: var(--expand-collapse-button-size);
+        ${
+            /* Width and Height should be based off calc(glyph-size-number + (design-unit * 4) * 1px) - 
+            update when density story is figured out */ ""
+        } width: var(--expand-collapse-button-size);
         height: var(--expand-collapse-button-size);
         padding: 0;
         display: flex;
@@ -89,8 +96,10 @@ export const TreeItemStyles = css`
     }
 
     .expand-collapse-glyph {
-        ${/* Glyph size is temporary - 
-            replace when glyph-size var is added */ ""} width: 16px;
+        ${
+            /* Glyph size is temporary - 
+            replace when glyph-size var is added */ ""
+        } width: 16px;
         height: 16px;
         transition: transform 0.1s linear;
         ${/* transform needs to be localized */ ""} transform: rotate(-45deg);
@@ -98,8 +107,10 @@ export const TreeItemStyles = css`
         fill: var(--neutral-foreground-rest);
     }
     .leaf-spacer {
-        ${/* Glyph size is temporary - 
-            replace when glyph-size var is added */ ""} width: 16px;
+        ${
+            /* Glyph size is temporary - 
+            replace when glyph-size var is added */ ""
+        } width: 16px;
         height: 16px;
         pointer-events: none;
         fill: var(--neutral-foreground-rest);
@@ -108,18 +119,24 @@ export const TreeItemStyles = css`
 
     .before-content,
     .after-content {
-        ${/* Glyph size is temporary - 
-            replace when glyph-size var is added */ ""} width: 16px;
+        ${
+            /* Glyph size is temporary - 
+            replace when glyph-size var is added */ ""
+        } width: 16px;
         height: 16px;
         fill: var(--neutral-foreground-rest);
     }
 
     .before-content {
-        ${/* need to swap out once we understand how horizontalSpacing will work */ ""} margin-inline-end: calc(var(--design-unit) * 2px + 2px);
+        ${
+            /* need to swap out once we understand how horizontalSpacing will work */ ""
+        } margin-inline-end: calc(var(--design-unit) * 2px + 2px);
     }
 
     .after-content {
-        ${/* need to swap out once we understand how horizontalSpacing will work */ ""} margin-inline-start: calc(var(--design-unit) * 2px + 2px);
+        ${
+            /* need to swap out once we understand how horizontalSpacing will work */ ""
+        } margin-inline-start: calc(var(--design-unit) * 2px + 2px);
     }
 
     :host(.expanded) > .positioning-region .expand-collapse-glyph {
@@ -138,13 +155,19 @@ export const TreeItemStyles = css`
         content: "";
         display: block;
         position: absolute;
-        ${/* top value should be calculated by variables
-            calc((height-number - var(--scaled-line-height-t7) / 2 * 1px) */ ""} top: 6px;
+        ${
+            /* top value should be calculated by variables
+            calc((height-number - var(--scaled-line-height-t7) / 2 * 1px) */ ""
+        } top: 6px;
         width: 3px;
         ${/* height value should equal var(--scaled-line-height-t7) */ ""} height: 20px;
-        ${/* The french fry background needs to be calculated based on the selected background state for this control.
-            We currently have no way of chaning that, so setting to accent-foreground-rest for the time being */ ""} background: var(--accent-foreground-rest);
-        ${/* value needs to be localized */ ""} left: calc(var(--focus-outline-width) * 1px);
+        ${
+            /* The french fry background needs to be calculated based on the selected background state for this control.
+            We currently have no way of chaning that, so setting to accent-foreground-rest for the time being */ ""
+        } background: var(--accent-foreground-rest);
+        ${
+            /* value needs to be localized */ ""
+        } left: calc(var(--focus-outline-width) * 1px);
         border-radius: calc(var(--corner-radius) * 1px);
     }
 
@@ -155,7 +178,9 @@ export const TreeItemStyles = css`
 
     :host(.nested) .expand-collapse-button {
         ${/*position: absolute;*/ ""}
-        ${/* value needs to be localized   left: var(--expand-collapse-button-nested-width, calc(var(--height-number) * -1px)); */ ""}
+        ${
+            /* value needs to be localized   left: var(--expand-collapse-button-nested-width, calc(var(--height-number) * -1px)); */ ""
+        }
     }
 
     ::slotted(fast-tree-item) {
@@ -169,5 +194,6 @@ export const TreeItemStyles = css`
     neutralFillStealthRestBehavior,
     neutralFocusBehavior,
     neutralFocusInnerAccentBehavior,
+    neutralForegroundActiveBehavior,
     neutralForegroundRestBehavior
 );

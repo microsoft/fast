@@ -43,6 +43,7 @@ export class TreeView extends FASTElement {
     private focusIndex: number = -1;
 
     public handleBlur = (e: FocusEvent): void => {
+        console.log("[treeView] handleBlur e:", e);
         const root: HTMLElement | null = this.treeView;
 
         /**
@@ -51,18 +52,7 @@ export class TreeView extends FASTElement {
         if (isHTMLElement(root) && !root.contains(e.relatedTarget as HTMLElement)) {
             this.focusable = true;
         }
-    };
-
-    /**
-     * if focus is moving out of the menu, reset to a stable initial state
-     */
-    public handleFocusOut = (e: FocusEvent) => {
-        console.log("treeView handleFocusOut e:", e);
-        const isNestedEl = this.contains(e.relatedTarget as Element);
-
-        if (!isNestedEl) {
-            console.log("treeView found isNestedEL");
-        }
+        this.ensureFocusability();
     };
 
     // public handleKeyDown(e: KeyboardEvent): void | boolean {
@@ -147,7 +137,7 @@ export class TreeView extends FASTElement {
         super.connectedCallback();
         this.treeItems = this.getVisibleNodes();
         console.log("treeView connectedCallback this.treeItems:", this.treeItems);
-        //this.ensureFocusability();
+        this.ensureFocusability();
         //const treeItems = this.getVisibleNodes();
         // if (treeItems) {
         //     treeItems.forEach((item: HTMLElement) => {
@@ -185,7 +175,8 @@ export class TreeView extends FASTElement {
     private setItems = (): void => {
         console.log("treeView setItems called...");
         const treeItems: HTMLElement[] = this.getVisibleNodes();
-
+        const allTreeItems: Element[] =
+            getDisplayedNodes(this.treeView, "[role='treeitem']") || [];
         const focusIndex = treeItems.findIndex(this.isFocusableElement);
 
         // if our focus index is not -1 we have items
@@ -200,22 +191,31 @@ export class TreeView extends FASTElement {
 
             treeItems[item].addEventListener("blur", this.handleTreeItemFocus);
         }
+
+        console.log("[treeView] allTreeItems:", allTreeItems);
+        for (let item: number = 0; item < allTreeItems.length; item++) {
+            if (item === focusIndex) {
+                allTreeItems[item].setAttribute("tabindex", "0");
+            }
+
+            allTreeItems[item].addEventListener("blur", this.handleTreeItemFocus);
+        }
     };
 
     private handleTreeItemFocus = (e: KeyboardEvent): void => {
-        console.log("handleTreeItemFocus called, e:", e);
+        console.log("***\n [treeView] handleTreeItemFocus called, e:", e);
         const target = e.currentTarget as Element;
         const treeItems: HTMLElement[] = this.getVisibleNodes();
         const focusIndex: number = treeItems.indexOf(target as HTMLElement);
 
-        if (this.isDisabledElement(target)) {
-            target.blur();
-            return;
-        }
+        // if (this.isDisabledElement(target)) {
+        //     target.blur();
+        //     return;
+        // }
 
-        if (focusIndex !== this.focusIndex && focusIndex !== -1) {
-            this.setFocus(focusIndex, focusIndex > this.focusIndex ? 1 : -1);
-        }
+        // if (focusIndex !== this.focusIndex && focusIndex !== -1) {
+        //     this.setFocus(focusIndex, focusIndex > this.focusIndex ? 1 : -1);
+        // }
     };
 
     /**
@@ -240,10 +240,18 @@ export class TreeView extends FASTElement {
     };
 
     private setFocus(focusIndex: number, adjustment: number): void {
+        console.log(
+            "[treeView] setFocus, focusIndex:",
+            focusIndex,
+            " adjustment:",
+            adjustment
+        );
         const children: Element[] = this.getVisibleNodes();
+        const childNodes: Element[] =
+            getDisplayedNodes(this.treeView, "[role='treeitem']") || [];
 
-        while (inRange(focusIndex, children.length)) {
-            const child: Element = children[focusIndex];
+        while (inRange(focusIndex, childNodes.length)) {
+            const child: Element = childNodes[focusIndex];
 
             if (this.isFocusableElement(child)) {
                 // update the tabindex of next focusable element
@@ -253,7 +261,7 @@ export class TreeView extends FASTElement {
                 child.focus();
 
                 // change the previous index to -1
-                children[this.focusIndex].setAttribute("tabindex", "");
+                childNodes[this.focusIndex].setAttribute("tabindex", "");
 
                 // update the focus index
                 this.focusIndex = focusIndex;
@@ -301,11 +309,11 @@ export class TreeView extends FASTElement {
 
             if (!isHTMLElement(focusableChild)) {
                 console.log("focusableChild not found, so setting first item");
-                const firstItem: HTMLElement = this.getVisibleNodes()[0] as HTMLElement;
-                if (firstItem) {
-                    console.log("setting first item tabindex to 0");
-                    firstItem.setAttribute("tabindex", "0");
-                }
+                // const firstItem: HTMLElement = this.getVisibleNodes()[0] as HTMLElement;
+                // if (firstItem) {
+                //     console.log("setting first item tabindex to 0");
+                //     firstItem.setAttribute("tabindex", "0");
+                // }
                 this.focusable = true;
             } else {
                 console.log("focusableChild was found focusableChild:", focusableChild);

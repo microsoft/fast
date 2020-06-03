@@ -5,14 +5,16 @@ import { endTemplate, startTemplate } from "../patterns/start-end";
 export const TreeItemTemplate = html<TreeItem>`
     <template
         role="treeitem"
-        tabindex="0"
+        tabindex="${x => (x.focusable ? 0 : -1)}"
         class="${x => (x.expanded ? "expanded" : "")} ${x =>
             x.selected ? "selected" : ""} ${x => (x.nested ? "nested" : "")}"
         aria-expanded="${x => (x.hasItems ? x.expanded : void 0)}"
         aria-selected="${x => x.selected}"
         @focus=${(x, c) => x.handleFocus(c.event as FocusEvent)}
+        @blur=${(x, c) => x.handleBlur(c.event as FocusEvent)}
         @keydown=${(x, c) => x.handleKeyDown(c.event as KeyboardEvent)}
         @click=${(x, c) => x.handleTreeItemClick(c.event as MouseEvent)}
+        ${ref("treeItem")}
     >
         ${startTemplate}
         <div
