@@ -1,11 +1,10 @@
 import { ComponentStyles } from "@microsoft/fast-jss-manager-react";
 import { applyFocusVisible } from "@microsoft/fast-jss-utilities";
 import {
-    defaultColor,
-    error,
-    foreground300,
-    foreground800,
+    errorColorCSSProperty,
     insetStrongBoxShadow,
+    L3FillColorProperty,
+    textColorCSSProperty,
 } from "../../style";
 
 /**
@@ -32,18 +31,17 @@ const styles: ComponentStyles<CheckboxControlClassNameContract, {}> = {
         height: "14px",
         boxSizing: "border-box",
         borderRadius: "2px",
-        border: `1px solid ${foreground800}`,
         zIndex: "1",
         margin: "0",
         "&:disabled": {
             cursor: "not-allowed",
         },
         "&:hover": {
-            border: `1px solid ${foreground300}`,
+            border: `1px solid ${textColorCSSProperty}`,
         },
         ...applyFocusVisible({
             outline: "none",
-            ...insetStrongBoxShadow(foreground300),
+            ...insetStrongBoxShadow(textColorCSSProperty),
         }),
         "&:checked": {
             "& + $checkboxControl_checkmark": {
@@ -62,13 +60,12 @@ const styles: ComponentStyles<CheckboxControlClassNameContract, {}> = {
             },
         },
         "&:invalid": {
-            borderColor: error,
+            borderColor: errorColorCSSProperty,
         },
         "&$checkboxControl__default": {
-            "border-color": defaultColor,
             "& + span": {
                 "&::after, &::before": {
-                    background: defaultColor,
+                    background: textColorCSSProperty,
                 },
             },
         },
@@ -78,12 +75,13 @@ const styles: ComponentStyles<CheckboxControlClassNameContract, {}> = {
         left: "0",
         width: "14px",
         height: "14px",
+        background: L3FillColorProperty,
         "&::after, &::before": {
             position: "absolute",
             display: "block",
             content: "''",
             width: "1px",
-            background: foreground300,
+            background: textColorCSSProperty,
         },
     },
     checkboxControl__disabled: {},

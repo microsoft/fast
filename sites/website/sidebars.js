@@ -69,6 +69,7 @@ module.exports = {
                 "fast-element/observables-and-state",
                 "fast-element/working-with-shadow-dom",
                 "fast-element/leveraging-css",
+                "fast-element/next-steps",
             ],
         },
         {
@@ -88,14 +89,20 @@ module.exports = {
                 "community/join",
                 "community/code-of-conduct",
                 "community/contributor-guide",
-                "community/build-and-test",
                 "community/writing-documentation",
             ],
         },
         {
             type: "category",
             label: "Resources",
-            items: ["resources/faq", "resources/browser-support", "resources/glossary"],
+            items: [
+                "resources/license",
+                "resources/security",
+                "resources/browser-support",
+                "resources/acknowledgements",
+                "resources/glossary",
+                "resources/faq",
+            ],
         },
     ],
 };

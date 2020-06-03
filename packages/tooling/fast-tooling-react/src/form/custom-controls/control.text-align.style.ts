@@ -1,5 +1,6 @@
 import { ComponentStyles } from "@microsoft/fast-jss-manager-react";
-import { accent, inputBackplateStyle, neutralLayerL4 } from "../../style";
+import { inputBackplateStyle } from "../../style";
+import { accentColorCSSProperty, L4CSSProperty } from "../../style/css-properties";
 
 const leftLight: string =
     "url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iMTAiIHZpZXdCb3g9IjAgMCAxMiAxMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTAgMEgxMlYxSDBWMFoiIGZpbGw9IiNDNEM0QzQiLz4KPHBhdGggZD0iTTAgNkgxMlY3SDBWNloiIGZpbGw9IiNDNEM0QzQiLz4KPHBhdGggZD0iTTAgM0g4VjRIMFYzWiIgZmlsbD0iI0M0QzRDNCIvPgo8cGF0aCBkPSJNMCA5SDhWMTBIMFY5WiIgZmlsbD0iI0M0QzRDNCIvPgo8L3N2Zz4K) center no-repeat";
@@ -11,6 +12,7 @@ const rightLight: string =
 /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
 const justifyLight: string =
     "url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iMTAiIHZpZXdCb3g9IjAgMCAxMiAxMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTAgMEgxMlYxSDBWMFoiIGZpbGw9IiNDNEM0QzQiLz4KPHBhdGggZD0iTTAgNkgxMlY3SDBWNloiIGZpbGw9IiNDNEM0QzQiLz4KPHBhdGggZD0iTTAgM0gxMlY0SDBWM1oiIGZpbGw9IiNDNEM0QzQiLz4KPHBhdGggZD0iTTAgOUgxMlYxMEgwVjlaIiBmaWxsPSIjQzRDNEM0Ii8+Cjwvc3ZnPgo=) center no-repeat";
+const border = `1px solid ${L4CSSProperty}`;
 
 /**
  * Align horizontal class name contract
@@ -32,7 +34,7 @@ const styles: ComponentStyles<TextAlignControlClassNameContract, {}> = {
     textAlignControl_input: {
         ...inputBackplateStyle,
         "&:checked": {
-            backgroundColor: accent,
+            backgroundColor: accentColorCSSProperty,
         },
     },
     textAlignControl_input__left: {
@@ -40,8 +42,8 @@ const styles: ComponentStyles<TextAlignControlClassNameContract, {}> = {
         background: leftLight,
     },
     textAlignControl_input__center: {
-        borderRight: `1px solid ${neutralLayerL4}`,
-        borderLeft: `1px solid ${neutralLayerL4}`,
+        borderRight: border,
+        borderLeft: border,
         background: centerLight,
     },
     textAlignControl_input__right: {

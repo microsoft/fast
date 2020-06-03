@@ -6,8 +6,6 @@ import {
     FormAttributeSettingsMappingToPropertyNames,
     FormChildOptionItem,
 } from "../../src/form/types";
-
-import { DesignSystemProvider } from "@microsoft/fast-jss-manager-react";
 import React from "react";
 import {
     AjvMapper,
@@ -16,6 +14,14 @@ import {
     MessageSystemType,
     SchemaDictionary,
 } from "@microsoft/fast-tooling";
+import {
+    accentColorName,
+    L1ColorName,
+    L4ColorName,
+    textColorName,
+    L3FillColorName,
+    errorColorName,
+} from "../../src/style";
 
 export type componentDataOnChange = (e: React.ChangeEvent<HTMLFormElement>) => void;
 
@@ -28,6 +34,7 @@ export interface FormTestPageState {
     defaultBrowserErrors?: boolean;
     inlineErrors?: boolean;
     dataSet?: any;
+    cssPropertyOverrides: boolean;
 }
 
 export interface GroupItem {
@@ -39,12 +46,6 @@ export interface DataSet {
     displayName: string;
     data: any;
 }
-
-const designSystemDefaults: any = {
-    foregroundColor: "#000",
-    backgroundColor: "#FFF",
-    brandColor: "#0078D4",
-};
 
 const dataSets: DataSet[] = [
     {
@@ -75,6 +76,15 @@ const dataSets: DataSet[] = [
         data: {},
     },
 ];
+
+const CSSpropertyOverrides = {
+    [accentColorName]: "blue",
+    [L1ColorName]: "white",
+    [L4ColorName]: "lightgray",
+    [textColorName]: "black",
+    [L3FillColorName]: "white",
+    [errorColorName]: "green",
+};
 
 let fastMessageSystem: MessageSystem;
 let ajvMapper: AjvMapper;
@@ -140,79 +150,88 @@ class FormTestPage extends React.Component<{}, FormTestPageState> {
             inlineErrors: void 0,
             defaultBrowserErrors: void 0,
             dataSet: dataSets[0].data,
+            cssPropertyOverrides: false,
         };
     }
 
     public render(): JSX.Element {
         return (
-            <DesignSystemProvider designSystem={designSystemDefaults}>
-                <div>
-                    <div
-                        style={{
-                            width: "250px",
-                            height: "100vh",
-                            float: "left",
-                            fontFamily:
-                                "Segoe UI, SegoeUI, Helvetica Neue, Helvetica, Arial, sans-serif",
-                        }}
-                    >
-                        <Form {...this.coerceFormProps()} />
-                    </div>
-                    <div
-                        style={{
-                            float: "left",
-                            marginLeft: "8px",
-                        }}
-                    >
-                        <div>
-                            <select onChange={this.handleComponentUpdate}>
-                                {this.getComponentOptions()}
-                            </select>
-                            {this.renderDataSetComponentOptions()}
-                            <br />
-                            <br />
-                            <input
-                                id={"showInlineErrors"}
-                                type="checkbox"
-                                value={(!!this.state.inlineErrors).toString()}
-                                onChange={this.handleShowInlineErrors}
-                            />
-                            <label htmlFor={"showInlineErrors"}>Show inline errors</label>
-                            <br />
-                            <input
-                                id={"showBrowserErrors"}
-                                type="checkbox"
-                                value={(!!this.state.defaultBrowserErrors).toString()}
-                                onChange={this.handleShowBrowserErrors}
-                            />
-                            <label htmlFor={"showBrowserErrors"}>
-                                Show default browser errors
-                            </label>
-                            <br />
-                        </div>
-                        <h2>Data</h2>
-                        <pre
-                            style={{
-                                padding: "12px",
-                                background: "rgb(244, 245, 246)",
-                                borderRadius: "4px",
-                            }}
-                        >
-                            {JSON.stringify(this.state.data, null, 2)}
-                        </pre>
-                        <h2>Navigation</h2>
-                        <pre
-                            style={{
-                                padding: "12px",
-                                background: "rgb(244, 245, 246)",
-                                borderRadius: "4px",
-                            }}
-                        >
-                            {JSON.stringify(this.state.navigation, null, 2)}
-                        </pre>
-                    </div>
+            <div style={this.state.cssPropertyOverrides ? CSSpropertyOverrides : {}}>
+                <div
+                    style={{
+                        width: "300px",
+                        height: "100vh",
+                        float: "left",
+                        fontFamily:
+                            "Segoe UI, SegoeUI, Helvetica Neue, Helvetica, Arial, sans-serif",
+                    }}
+                >
+                    <Form {...this.coerceFormProps()} />
                 </div>
-            </DesignSystemProvider>
+                <div
+                    style={{
+                        float: "left",
+                        marginLeft: "8px",
+                    }}
+                >
+                    <div>
+                        <select onChange={this.handleComponentUpdate}>
+                            {this.getComponentOptions()}
+                        </select>
+                        {this.renderDataSetComponentOptions()}
+                        <br />
+                        <br />
+                        <input
+                            id={"useCSSOverrides"}
+                            type={"checkbox"}
+                            value={this.state.cssPropertyOverrides.toString()}
+                            onChange={this.handleCSSOverrideUpdate}
+                        />
+                        <label htmlFor={"useCSSOverrides"}>
+                            Show CSS property overrides
+                        </label>
+                        <br />
+                        <input
+                            id={"showInlineErrors"}
+                            type="checkbox"
+                            value={(!!this.state.inlineErrors).toString()}
+                            onChange={this.handleShowInlineErrors}
+                        />
+                        <label htmlFor={"showInlineErrors"}>Show inline errors</label>
+                        <br />
+                        <input
+                            id={"showBrowserErrors"}
+                            type="checkbox"
+                            value={(!!this.state.defaultBrowserErrors).toString()}
+                            onChange={this.handleShowBrowserErrors}
+                        />
+                        <label htmlFor={"showBrowserErrors"}>
+                            Show default browser errors
+                        </label>
+                        <br />
+                    </div>
+                    <h2>Data</h2>
+                    <pre
+                        style={{
+                            padding: "12px",
+                            background: "rgb(244, 245, 246)",
+                            borderRadius: "4px",
+                        }}
+                    >
+                        {JSON.stringify(this.state.data, null, 2)}
+                    </pre>
+                    <h2>Navigation</h2>
+                    <pre
+                        style={{
+                            padding: "12px",
+                            background: "rgb(244, 245, 246)",
+                            borderRadius: "4px",
+                        }}
+                    >
+                        {JSON.stringify(this.state.navigation, null, 2)}
+                    </pre>
+                </div>
+            </div>
         );
     }
 
@@ -315,6 +334,12 @@ class FormTestPage extends React.Component<{}, FormTestPageState> {
                     });
                 }
         }
+    };
+
+    private handleCSSOverrideUpdate = (): void => {
+        this.setState({
+            cssPropertyOverrides: !this.state.cssPropertyOverrides,
+        });
     };
 
     private handleDataSetUpdate = (e: React.ChangeEvent<HTMLSelectElement>): void => {

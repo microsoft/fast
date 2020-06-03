@@ -1,11 +1,11 @@
 import { WebComponentDefinition } from "@microsoft/fast-tooling/dist/data-utilities/web-component";
 
-export const labelDefinition: WebComponentDefinition = {
+export const paragraphDefinition: WebComponentDefinition = {
     version: 1,
     tags: [
         {
-            name: "label",
-            description: "The label element",
+            name: "p",
+            description: "The paragraph element",
             attributes: [],
             slots: [
                 {

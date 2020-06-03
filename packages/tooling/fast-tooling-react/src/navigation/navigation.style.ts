@@ -1,13 +1,15 @@
 import { ComponentStyles } from "@microsoft/fast-jss-manager-react";
-import { applyFocusVisible } from "@microsoft/fast-jss-utilities";
-import { insetStrongBoxShadow } from "../style";
+import { applyFocusVisible, ellipsis } from "@microsoft/fast-jss-utilities";
 import {
-    accent,
-    foreground300,
-    neutralFillStealthSelected,
-    neutralLayerL4,
-    neutralOutlineActive,
-} from "../style/constants";
+    accentColorCSSProperty,
+    defaultTextSizeCSSProperty,
+    gutterCSSProperty,
+    inactiveTextColorCSSProperty,
+    insetStrongBoxShadow,
+    L3CSSProperty,
+    L3OutlineColorProperty,
+    textColorCSSProperty,
+} from "../style";
 
 export interface NavigationClassNameContract {
     navigation?: string;
@@ -25,17 +27,18 @@ export interface NavigationClassNameContract {
 
 const styles: ComponentStyles<NavigationClassNameContract, {}> = {
     navigation: {
-        "font-size": "12px",
+        "font-size": defaultTextSizeCSSProperty,
+        padding: `0 calc(${gutterCSSProperty} / 2)`,
         "text-indent": "1em",
-        background: neutralLayerL4,
-        color: foreground300,
+        background: L3CSSProperty,
+        color: textColorCSSProperty,
         height: "100%",
         "& $navigation_item::before": {
             content: "''",
             height: "100%",
             position: "absolute",
-            left: "calc(1em - 16px)",
-            "border-right": `1px solid ${neutralOutlineActive}`,
+            left: "calc(1em - 12px)",
+            "border-right": `1px solid ${L3OutlineColorProperty}`,
             "z-index": "1",
         },
     },
@@ -53,16 +56,20 @@ const styles: ComponentStyles<NavigationClassNameContract, {}> = {
         },
     },
     navigation_itemTrigger: {
-        "font-size": "12px",
+        "font-size": defaultTextSizeCSSProperty,
         display: "block",
         cursor: "pointer",
         border: "1px solid transparent",
+        color: inactiveTextColorCSSProperty,
+        ...ellipsis(),
         ...applyFocusVisible({
-            ...insetStrongBoxShadow(accent),
+            ...insetStrongBoxShadow(accentColorCSSProperty),
         }),
         "&::before": {
             content: "''",
             display: "inline-block",
+            "margin-left": "-2px",
+            "margin-right": "2px",
             "border-top": "4px solid transparent",
             "border-left": "4px solid transparent",
             "border-right": "4px solid transparent",
@@ -74,21 +81,22 @@ const styles: ComponentStyles<NavigationClassNameContract, {}> = {
         cursor: "grab",
     },
     navigation_itemTrigger__hover: {
-        "border-color": neutralOutlineActive,
+        "border-color": L3OutlineColorProperty,
     },
     navigation_itemTrigger__hoverAfter: {
-        "border-bottom-color": neutralOutlineActive,
+        "border-bottom-color": L3OutlineColorProperty,
     },
     navigation_itemTrigger__hoverBefore: {
-        "border-top-color": neutralOutlineActive,
+        "border-top-color": L3OutlineColorProperty,
     },
     navigation_itemTrigger__expandable: {
         "&::before": {
-            "border-left": `4px solid ${foreground300}`,
+            "border-left": `4px solid ${textColorCSSProperty}`,
         },
     },
     navigation_itemTrigger__active: {
-        background: neutralFillStealthSelected,
+        color: textColorCSSProperty,
+        "font-weight": "600",
     },
     navigation_itemList: {
         display: "none",
