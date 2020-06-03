@@ -1,5 +1,5 @@
-import { imageDefinition } from "./image.definition";
-export { imageDefinition };
-
-import { labelDefinition } from "./label.definition";
-export { labelDefinition };
+export * from "./heading.definition";
+export * from "./image.definition";
+export * from "./label.definition";
+export * from "./paragraph.definition";
+export * from "./span.definition";
