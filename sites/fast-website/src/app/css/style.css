@@ -156,9 +156,6 @@ fast-divider::after {
   padding: 0 20px;
 }
 
-.section-hero {
-  min-height: calc(100vh - 94px);
-}
 
 .section-content {
   display: flex;
