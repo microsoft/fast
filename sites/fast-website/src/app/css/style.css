@@ -73,6 +73,7 @@ body {
 
 ul {
   display: flex;
+  align-items: center;
   list-style-type: none;
   margin: 0;
   padding: 0;
@@ -83,9 +84,21 @@ li {
   padding: 0;
 }
 
+site-navigation ::part(content) {
+  color: var(--neutral-foreground-rest);
+}
+
+.header .logo::part(content) {
+  display: flex;
+  align-items: flex-end;
+  font-size: var(--type-ramp-plus-4-font-size);
+  line-height: var(--type-ramp-plus-4-line-height);
+}
+
 .logo svg {
-  width: 114px;
+  width: 45px;
   height: 40px;
+  margin-inline-end: 10px;
 }
 
 .nav-button {
@@ -179,11 +192,26 @@ fast-divider::after {
   margin-bottom: 60px;
 }
 
-.site-footer {
+.footer {
   grid-column: 2;
   display: flex;
   align-items: center;
   margin-bottom: 84px;
+}
+
+.footer site-navigation ::part(content),
+.footer site-navigation p {
+  font-size: var(--type-ramp-minus-1-font-size);
+  color: var(--neutral-foreground-rest);
+}
+
+.footer li {
+  margin: unset;
+  margin-inline-end: 50px;
+}
+
+.footer .logo svg {
+  margin-inline-end: unset;
 }
 
 @media screen and (max-width: 1330px) {
@@ -217,6 +245,7 @@ fast-divider::after {
   .header ul {
     flex: 0 0 auto;
     flex-direction: column;
+    align-items: flex-start;
   }
 
   .header .logo {
@@ -260,10 +289,20 @@ fast-divider::after {
     left: 0;
     width: 100%;
     height: calc(100vh - 94px);
-    background-color: rgba(0, 0, 0, 0.95);
+    background-color: var(--background-color);
+    opacity: 0.95;
     transform: translateY(-100%);
     transition: transform 0.1s ease-in-out;
     z-index: 0;
+  }
+
+  site-navigation .anchor-wrapper li {
+    margin-bottom: 20px;
+  }
+
+  site-navigation .anchor-wrapper ::part(content) {
+    font-size:var(--type-ramp-plus-2-font-size);
+    color: var(--neutral-foreground-rest);
   }
 
   .site-navigation.debounce .anchor-wrapper {
@@ -281,16 +320,26 @@ fast-divider::after {
     z-index: 2;
   }
 
-  .site-footer site-navigation {
+  .footer {
+    align-items: flex-end;
+    padding: 0 20px;
+  }
+
+  .footer site-navigation {
     height: 100%;
     justify-content: flex-start;
   }
 
-  .site-footer ul {
+  .footer ul {
     flex-direction: column;
+    align-items: flex-start;
   }
 
-  .site-footer site-navigation::part(nav-button) {
+  .footer li {
+    margin: 0;
+  }
+
+  .footer site-navigation::part(nav-button) {
     display: none;
   }
 }
