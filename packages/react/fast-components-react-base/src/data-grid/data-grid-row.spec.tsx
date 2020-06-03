@@ -88,7 +88,9 @@ describe("data grid row", (): void => {
         );
 
         const row: any = rendered.children();
-        expect(row.prop("className")).toContain(managedClasses.dataGridRow__focusedWithin);
+        expect(row.prop("className")).toContain(
+            managedClasses.dataGridRow__focusedWithin
+        );
     });
 
     test("cells are rendered as children", (): void => {

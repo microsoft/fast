@@ -1119,10 +1119,7 @@ class DataGrid extends Foundation<
         }
 
         const newFocusColumnIndex: number = Math.min(
-            Math.max(
-                currentFocusColumnIndex + direction * (Direction.ltr ? 1 : -1),
-                0
-            ),
+            Math.max(currentFocusColumnIndex + direction * (Direction.ltr ? 1 : -1), 0),
             this.state.columns.length - 1
         );
 
