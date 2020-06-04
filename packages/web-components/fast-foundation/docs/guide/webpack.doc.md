@@ -32,13 +32,13 @@ Follow the prompts from npm, answering each question in turn. You can always acc
 Next, we'll install the FAST-DNA packages, along with supporting libraries. To do that, run this command:
 
 ```shell
-npm install --save @microsoft/fast-components @microsoft/fast-element lodash-es tslib
+npm install --save @microsoft/fast-components @microsoft/fast-element lodash-es
 ```
 
 We also need to install the Webpack build tooling:
 
 ```shell
-npm install --save-dev rimraf ts-loader typescript webpack webpack-cli webpack-dev-server
+npm install --save-dev clean-webpack-plugin ts-loader typescript webpack webpack-cli webpack-dev-server
 ```
 
 ## Adding Configuration and Source
@@ -83,6 +83,8 @@ You can learn more about `tsconfig.json` options in [the official TypeScript doc
 Next, create a `webpack.config.js` file in the root of your project folder with the following source:
 
 ```js
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+
 module.exports = function(env, { mode }) {
   const production = mode === 'production';
   return {
@@ -105,6 +107,9 @@ module.exports = function(env, { mode }) {
       open: !process.env.CI,
       lazy: false
     },
+    plugins: [
+      new CleanWebpackPlugin()
+    ],
     module: {
       rules: [
         {
@@ -128,7 +133,7 @@ To enable easy execution of both our production and development builds, let's ad
 
 ```json
 "scripts": {
-  "build": "rimraf dist && webpack --mode=production",
+  "build": "webpack --mode=production",
   "dev": "webpack-dev-server"
 }
 ```
