@@ -1,27 +1,49 @@
 import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager-react";
 import {
     DesignSystem,
-    neutralLayerFloating,
-    neutralLayerL2,
+    neutralLayerL1,
+    neutralLayerL3,
 } from "@microsoft/fast-components-styles-msft";
+import { PivotClassNameContract } from "@microsoft/fast-components-react-msft";
 
 export interface ExplorerClassNameContract {
     explorer: string;
 }
 
-export function applyScrollbarStyle(): CSSRules<{}> {
-    return {
-        "&::-webkit-scrollbar": {
-            background: neutralLayerL2,
-            width: "8px",
-            height: "8px",
+export const accent: string = "#FB356D";
+
+export const scrollbarStyle: CSSRules<{}> = {
+    "&::-webkit-scrollbar": {
+        background: neutralLayerL1,
+        width: "8px",
+        height: "8px",
+    },
+    "&::-webkit-scrollbar-thumb": {
+        background: neutralLayerL3,
+        borderRadius: "8px",
+    },
+};
+
+export const pivotStyleSheetOverrides: ComponentStyles<
+    PivotClassNameContract,
+    DesignSystem
+> = {
+    pivot: {
+        height: "100%",
+    },
+    pivot_tabList: {
+        padding: "0 16px",
+    },
+    pivot_tabPanels: {
+        padding: "0 24px",
+        overflow: "auto",
+        height: "calc(100% - 36px)",
+        ...scrollbarStyle,
+        "& a": {
+            color: accent,
         },
-        "&::-webkit-scrollbar-thumb": {
-            background: neutralLayerFloating,
-            borderRadius: "8px",
-        },
-    };
-}
+    },
+};
 
 const style: ComponentStyles<ExplorerClassNameContract, DesignSystem> = {
     "@font-face": [
@@ -44,7 +66,7 @@ const style: ComponentStyles<ExplorerClassNameContract, DesignSystem> = {
             fontSize: "12px",
             padding: "0",
             margin: "0",
-            ...applyScrollbarStyle(),
+            overflow: "hidden",
         },
     },
     explorer: {},

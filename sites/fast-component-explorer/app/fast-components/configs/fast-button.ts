@@ -1,11 +1,11 @@
+import { fastComponentSchemas } from "@microsoft/site-utilities";
 import textSchema from "../../utilities/text.schema";
 import Guidance from "../../.tmp/button/guidance";
-import { webComponentSchemas } from "../";
 import { ComponentViewConfig } from "./data.props";
 
 export const fastButtonId = "fast-button";
 const fastButtonConfig: ComponentViewConfig = {
-    schema: webComponentSchemas[fastButtonId],
+    schema: fastComponentSchemas[fastButtonId],
     guidance: Guidance,
     scenarios: [
         {
