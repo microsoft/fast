@@ -1,6 +1,5 @@
 import { html, ref, when } from "@microsoft/fast-element";
 import { TreeItem } from "./tree-item";
-import { endTemplate, startTemplate } from "../patterns/start-end";
 
 export const TreeItemTemplate = html<TreeItem>`
     <template

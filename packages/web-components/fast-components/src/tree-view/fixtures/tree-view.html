@@ -1,7 +1,7 @@
 <fast-design-system-provider style="font-family: var(--body-font)">
 
     <h4>With items (don't render collapsed nodes)</h4>
-    <fast-tree-view>
+    <fast-tree-view render-collapsed-nodes="false">
         <fast-tree-item>
             Root item
             <fast-tree-item slot="item">
@@ -12,6 +12,45 @@
             </fast-tree-item>
             <fast-tree-item slot="item">Nested item 2</fast-tree-item>
             <fast-tree-item slot="item">Nested item 3</fast-tree-item>
+        </fast-tree-item>
+    </fast-tree-view>
+
+
+    <h4>Some expanded</h4>
+    <fast-tree-view>
+        <fast-tree-item expanded>
+            Root item
+            <fast-tree-item slot="item" expanded>
+                Flowers
+                <fast-tree-item slot="item">Daisy</fast-tree-item>
+                <fast-tree-item slot="item">Sunflower</fast-tree-item>
+                <fast-tree-item slot="item">Rose</fast-tree-item>
+            </fast-tree-item>
+            <fast-tree-item slot="item">
+                Planes
+                <fast-tree-item slot="item">Tomcat</fast-tree-item>
+                <fast-tree-item slot="item">Hawker Harrier</fast-tree-item>
+                <fast-tree-item slot="item">Cesna</fast-tree-item>
+            </fast-tree-item>
+        </fast-tree-item>
+    </fast-tree-view>
+
+    <h4>Pre-selected tree item</h4>
+    <fast-tree-view>
+        <fast-tree-item expanded>
+            Root item
+            <fast-tree-item slot="item">
+                Flowers
+                <fast-tree-item slot="item">Daisy</fast-tree-item>
+                <fast-tree-item slot="item">Sunflower</fast-tree-item>
+                <fast-tree-item slot="item">Rose</fast-tree-item>
+            </fast-tree-item>
+            <fast-tree-item slot="item" expanded>
+                Planes
+                <fast-tree-item slot="item" selected>Tomcat</fast-tree-item>
+                <fast-tree-item slot="item">Hawker Harrier</fast-tree-item>
+                <fast-tree-item slot="item">Cesna</fast-tree-item>
+            </fast-tree-item>
         </fast-tree-item>
     </fast-tree-view>
 

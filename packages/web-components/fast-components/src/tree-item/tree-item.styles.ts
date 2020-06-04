@@ -1,13 +1,17 @@
 import { css } from "@microsoft/fast-element";
-import { display, focusVisible } from "@microsoft/fast-foundation";
+import {
+    display,
+    focusVisible,
+    forcedColorsStylesheetBehavior,
+} from "@microsoft/fast-foundation";
 
+import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
     neutralFillStealthActiveBehavior,
     neutralFillStealthHoverBehavior,
     neutralFillStealthRestBehavior,
     neutralFillStealthSelectedBehavior,
     neutralFocusBehavior,
-    heightNumber,
     neutralFocusInnerAccentBehavior,
     neutralForegroundActiveBehavior,
     neutralForegroundRestBehavior,
@@ -203,5 +207,31 @@ export const TreeItemStyles = css`
     neutralFocusBehavior,
     neutralFocusInnerAccentBehavior,
     neutralForegroundActiveBehavior,
-    neutralForegroundRestBehavior
+    neutralForegroundRestBehavior,
+    forcedColorsStylesheetBehavior(
+        css`
+            .control,
+            :host([selected]:enabled) .content-region {
+                forced-color-adjust: none;
+                border-color: ${SystemColors.FieldText};
+                background: ${SystemColors.Field};
+            }
+            :host(:enabled) .content-region:hover {
+                border-color: ${SystemColors.Highlight};
+                background: ${SystemColors.Field};
+            }
+            :host(:${focusVisible}) .content-region {
+                border-color: ${SystemColors.Highlight};
+                box-shadow: 0 0 0 2px ${SystemColors.Field}, 0 0 0 4px ${SystemColors.FieldText};
+            }
+            :host([selected]:${focusVisible}:enabled) .control {
+                border-color: ${SystemColors.Highlight};
+                box-shadow: 0 0 0 2px ${SystemColors.Field}, 0 0 0 4px ${SystemColors.FieldText};
+            }
+            :host(.disabled) {
+                forced-color-adjust: none;
+                opacity: 1;
+            }
+        `
+    )
 );
