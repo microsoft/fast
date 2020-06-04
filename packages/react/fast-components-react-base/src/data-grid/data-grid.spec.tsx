@@ -153,6 +153,7 @@ describe("data grid", (): void => {
                 rows={rows}
                 dataRowKey="name"
                 columns={columns}
+                virtualize={true}
                 managedClasses={managedClasses}
             />
         );
@@ -169,6 +170,7 @@ describe("data grid", (): void => {
                 rows={rows}
                 dataRowKey="name"
                 columns={columns}
+                virtualize={true}
                 managedClasses={managedClasses}
             />
         );
@@ -183,6 +185,7 @@ describe("data grid", (): void => {
                 rows={rows}
                 dataRowKey="name"
                 columns={columns}
+                virtualize={true}
                 managedClasses={managedClasses}
             />
         );
@@ -196,6 +199,7 @@ describe("data grid", (): void => {
                 rows={rows}
                 dataRowKey="name"
                 columns={columns}
+                virtualize={true}
                 managedClasses={managedClasses}
             />
         );
@@ -211,7 +215,7 @@ describe("data grid", (): void => {
                 rows={getDataSet(20)}
                 dataRowKey="name"
                 columns={columns}
-                virtualizeItems={false}
+                virtualize={false}
                 managedClasses={managedClasses}
             />,
             {
@@ -229,7 +233,7 @@ describe("data grid", (): void => {
                 rows={getDataSet(20)}
                 dataRowKey="name"
                 columns={columns}
-                virtualizeItems={true}
+                virtualize={true}
                 managedClasses={managedClasses}
             />,
             {
@@ -250,7 +254,7 @@ describe("data grid", (): void => {
                 rows={rows}
                 dataRowKey="name"
                 columns={columns}
-                virtualizeItems={false}
+                virtualize={false}
                 managedClasses={managedClasses}
             />,
             {
@@ -292,7 +296,7 @@ describe("data grid", (): void => {
                 rows={getDataSet(20)}
                 dataRowKey="name"
                 columns={columns}
-                virtualizeItems={false}
+                virtualize={false}
                 managedClasses={managedClasses}
             />,
             {
@@ -323,6 +327,7 @@ describe("data grid", (): void => {
                 rows={rows}
                 dataRowKey="name"
                 columns={columns}
+                virtualize={true}
                 managedClasses={managedClasses}
             />,
             {
@@ -359,6 +364,7 @@ describe("data grid", (): void => {
                 rows={rows}
                 dataRowKey="name"
                 columns={columns}
+                virtualize={true}
                 managedClasses={managedClasses}
             />
         );
@@ -381,6 +387,7 @@ describe("data grid", (): void => {
                 rows={rows}
                 dataRowKey="name"
                 columns={columns}
+                virtualize={true}
                 managedClasses={managedClasses}
             />
         );
@@ -411,6 +418,7 @@ describe("data grid", (): void => {
                 rows={rows}
                 dataRowKey="name"
                 columns={columns}
+                virtualize={true}
                 managedClasses={managedClasses}
             />
         );
@@ -428,6 +436,7 @@ describe("data grid", (): void => {
                 rows={rows}
                 dataRowKey="name"
                 columns={columns}
+                virtualize={true}
                 managedClasses={managedClasses}
             />
         );
@@ -449,6 +458,7 @@ describe("data grid", (): void => {
                 managedClasses={managedClasses}
                 defaultFocusRowKey="Thomas"
                 defaultFocusColumnKey="age"
+                virtualize={true}
             />,
             {
                 attachTo: container,
@@ -472,7 +482,7 @@ describe("data grid", (): void => {
                 rows={rows}
                 dataRowKey="name"
                 columns={columnsCustomCell}
-                virtualizeItems={false}
+                virtualize={false}
                 managedClasses={managedClasses}
             />,
             {
@@ -505,7 +515,7 @@ describe("data grid", (): void => {
                 dataRowKey="name"
                 columns={columns}
                 managedClasses={managedClasses}
-                virtualizeItems={false}
+                virtualize={false}
             />,
             {
                 attachTo: container,
@@ -656,6 +666,7 @@ describe("data grid", (): void => {
                 rows={rows}
                 dataRowKey="name"
                 columns={columns}
+                virtualize={true}
                 managedClasses={managedClasses}
             />
         );

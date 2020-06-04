@@ -25,8 +25,8 @@ export default {
             title: "Data page size",
             type: "number",
         },
-        virtualizeItems: {
-            title: "Virtualize items",
+        virtualize: {
+            title: "Virtualize",
             type: "boolean",
         },
         dataRowKey: {
@@ -50,5 +50,5 @@ export default {
             type: "string",
         },
     },
-    required: ["rows", "dataRowKey", "columns"],
+    required: ["rows", "dataRowKey"],
 };

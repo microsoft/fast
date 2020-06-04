@@ -59,7 +59,7 @@ There are two mechanisms that govern this in the component:
 
 - the underlying panel also virtualizes nodes that are not currently in view
 
-Both of these features are controlled by the `virtualizeItems` prop of the *data grid* component.  When virtualization is turned off all rows are rendered to the dom and are sized by html/css.
+Both of these features are controlled by the `virtualize` prop of the *data grid* component.  When virtualization is turned off all rows are rendered to the dom and are sized by html/css.
 
 ## Accessibility
 *Data grid* implements the recommended keyboard navigation scheme described [here](https://www.w3.org/TR/wai-aria-practices/#grid)

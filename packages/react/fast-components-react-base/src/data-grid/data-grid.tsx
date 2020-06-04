@@ -53,7 +53,7 @@ class DataGrid extends Foundation<
         rowHeightCallback: (row: DataGridRowHeightCallbackParams) => {
             return row.defaultRowHeight;
         },
-        virtualizeItems: true,
+        virtualize: false,
         managedClasses: {},
     };
 
@@ -104,7 +104,7 @@ class DataGrid extends Foundation<
         defaultFocusRowKey: void 0,
         stableRangeEndIndex: void 0,
         pageSize: void 0,
-        virtualizeItems: void 0,
+        virtualize: void 0,
     };
 
     private currentTemplateColumns: string = "";
@@ -184,7 +184,7 @@ class DataGrid extends Foundation<
      * componentDidUpdate when in non-virtualized mode
      */
     public nonVirtualizedComponentUpdateHandler(prevProps: DataGridProps): void {
-        if (this.props.virtualizeItems) {
+        if (this.props.virtualize) {
             // virtualization mode changed, reset
             this.setState(this.applyInitialState());
             return;
@@ -195,6 +195,11 @@ class DataGrid extends Foundation<
         const newState: DataGridState = Object.assign({}, this.state);
 
         shouldUpdateState = this.applyUpdatedFocusProps(newState, prevProps);
+
+        if (this.props.columns !== prevProps.columns) {
+            newState.columns = this.getColumns();
+            shouldUpdateState = true;
+        }
 
         if (this.state.desiredVisibleRowIndex !== null) {
             // move desired row into view and note that a state update is required
@@ -242,7 +247,7 @@ class DataGrid extends Foundation<
      * componentDidUpdate when in virtualized mode
      */
     public virtualizedComponentUpdateHandler(prevProps: DataGridProps): void {
-        if (!this.props.virtualizeItems) {
+        if (!this.props.virtualize) {
             // virtualization mode changed, reset
             this.setState(this.applyInitialState());
             return;
@@ -259,6 +264,11 @@ class DataGrid extends Foundation<
         }
 
         shouldUpdateState = this.applyUpdatedFocusProps(newState, prevProps);
+
+        if (this.props.columns !== prevProps.columns) {
+            newState.columns = this.getColumns();
+            shouldUpdateState = true;
+        }
 
         // revalidate when there is new data
         if (this.props.rows !== prevProps.rows) {
@@ -412,7 +422,7 @@ class DataGrid extends Foundation<
         const newState: DataGridState = this.applyInitialFocusState(
             this.getInitialStateObject()
         );
-        return this.props.virtualizeItems
+        return this.props.virtualize
             ? this.applyVirtualizedInitialState(newState)
             : this.applyNonVirtualizedInitialState(newState);
     };
@@ -487,14 +497,6 @@ class DataGrid extends Foundation<
         if (newState.focusRowIndex === -1 && this.props.rows.length > 0) {
             newState.focusRowIndex = 0;
             newState.focusRowKey = this.props.rows[0][this.props.dataRowKey];
-        }
-
-        if (isNil(this.props.columns)) {
-            if (this.props.rows.length > 0) {
-                newState.columns = DataGrid.generateColumns(this.props.rows[0]);
-            }
-        } else {
-            newState.columns = this.props.columns;
         }
 
         if (newState.columns.length > 0) {
@@ -614,7 +616,7 @@ class DataGrid extends Foundation<
                 initiallyVisibleItemIndex={stackPanelVisibleItemIndex}
                 onScrollChange={this.throttledScroll}
                 itemSpan={itemSpans}
-                virtualize={this.props.virtualizeItems}
+                virtualize={this.props.virtualize}
                 style={{
                     height: "100%",
                     overflowY: "scroll",
@@ -961,7 +963,7 @@ class DataGrid extends Foundation<
         rowPositions: RowPosition[]
     ): number => {
         // handle virtualizing display
-        if (this.props.virtualizeItems) {
+        if (this.props.virtualize) {
             if (rowPositions.length === 0) {
                 return -1;
             }
@@ -1023,7 +1025,7 @@ class DataGrid extends Foundation<
         const newRowPositions = this.state.rowPositions.slice(0);
         let nextItemIndex: number = -1;
 
-        if (this.props.virtualizeItems) {
+        if (this.props.virtualize) {
             const nextItemScrollPosition: number =
                 direction > 0
                     ? this.lastReportedScrollPosition + this.lastReportedViewportSpan + 1
@@ -1332,9 +1334,10 @@ class DataGrid extends Foundation<
      */
     private scrollNonVirtualizedRowToTop = (rowIndex: number): void => {
         if (
-            !this.props.virtualizeItems &&
+            !this.props.virtualize &&
             !isNil(this.nonVirtualizedScrollContainer.current) &&
-            this.props.rows.length > rowIndex
+            this.props.rows.length > rowIndex &&
+            rowIndex > -1
         ) {
             const rows: HTMLElement[] = this.getRenderedRows();
             if (rows.length <= rowIndex) {
@@ -1349,11 +1352,11 @@ class DataGrid extends Foundation<
      *  gets a state object with initial values
      */
     private getInitialStateObject = (): DataGridState => {
-        return {
+        const newState: DataGridState = {
             focusRowIndex: -1,
             focusRowKey: null,
             focusColumnKey: null,
-            columns: [],
+            columns: this.getColumns(),
             currentDataPageStartIndex: -1,
             currentDataPageEndIndex: -1,
             rowPositions: [],
@@ -1362,6 +1365,19 @@ class DataGrid extends Foundation<
             desiredFocusRowKey: null,
             desiredFocusColumnKey: null,
         };
+
+        return newState;
+    };
+
+    /**
+     *  gets the current column configuration
+     */
+    private getColumns = (): DataGridColumn[] => {
+        return isNil(this.props.columns)
+            ? this.props.rows.length > 0
+                ? DataGrid.generateColumns(this.props.rows[0])
+                : null
+            : this.props.columns;
     };
 }
 
