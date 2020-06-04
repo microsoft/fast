@@ -1,10 +1,10 @@
+import { fastComponentSchemas } from "@microsoft/site-utilities";
 import Guidance from "../../.tmp/text-area/guidance";
-import { webComponentSchemas } from "../";
 import { ComponentViewConfig } from "./data.props";
 
 export const fastTextAreaId = "fast-text-area";
 const fastTextAreaConfig: ComponentViewConfig = {
-    schema: webComponentSchemas[fastTextAreaId],
+    schema: fastComponentSchemas[fastTextAreaId],
     guidance: Guidance,
     scenarios: [
         {

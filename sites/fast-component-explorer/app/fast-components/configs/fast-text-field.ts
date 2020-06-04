@@ -1,10 +1,10 @@
+import { fastComponentSchemas } from "@microsoft/site-utilities";
 import Guidance from "../../.tmp/text-field/guidance";
-import { webComponentSchemas } from "../";
 import { ComponentViewConfig } from "./data.props";
 
 export const fastTextFieldId = "fast-text-field";
 const fastTextFieldConfig: ComponentViewConfig = {
-    schema: webComponentSchemas[fastTextFieldId],
+    schema: fastComponentSchemas[fastTextFieldId],
     guidance: Guidance,
     scenarios: [
         {

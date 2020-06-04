@@ -1,5 +1,6 @@
 import { ComponentStyles } from "@microsoft/fast-jss-manager-react";
 import { DesignSystem } from "@microsoft/fast-components-styles-msft";
+import { scrollbarStyle } from "./explorer.style";
 
 export interface PreviewClassNameContract {
     preview: string;
@@ -22,6 +23,8 @@ const style: ComponentStyles<PreviewClassNameContract, DesignSystem> = {
     },
     preview: {
         boxSizing: "border-box",
+        display: "flex",
+        ...scrollbarStyle,
     },
     preview__transparent: {
         background:

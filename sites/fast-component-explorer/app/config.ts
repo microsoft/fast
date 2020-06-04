@@ -2,31 +2,34 @@ import { get, omit } from "lodash-es";
 import { MenuItem } from "@microsoft/fast-tooling-react";
 import { createBrowserHistory } from "history";
 import { SchemaDictionary } from "@microsoft/fast-tooling";
+import { fastComponentSchemas, nativeElementSchemas } from "@microsoft/site-utilities";
 import textSchema from "./utilities/text.schema";
-import { webComponentSchemas } from "./fast-components";
-import { imageSchema, labelSchema } from "./utilities";
 import { fastMenuItemId } from "./fast-components/configs/fast-menu";
 import { fastSliderLabelId } from "./fast-components/configs/fast-slider";
 import { fastTabId, fastTabPanelId } from "./fast-components/configs/fast-tabs";
 
 const schemaDictionary: SchemaDictionary = {
-    ...webComponentSchemas,
-    [labelSchema.id]: labelSchema,
-    [imageSchema.id]: imageSchema,
+    ...fastComponentSchemas,
+    ...nativeElementSchemas,
     [textSchema.id]: textSchema,
 };
+
+console.log("nativeElementSchemas", nativeElementSchemas);
 
 const history: any = createBrowserHistory();
 /* eslint-disable @typescript-eslint/no-use-before-define */
 const menu: MenuItem[] = generateMenu(
     omit(schemaDictionary, [
         textSchema.id,
-        imageSchema.id,
-        labelSchema.id,
         fastMenuItemId,
         fastSliderLabelId,
         fastTabId,
         fastTabPanelId,
+        ...Object.entries(nativeElementSchemas).map(
+            ([, nativeElementSchema]: [string, any]) => {
+                return nativeElementSchema.id;
+            }
+        ),
         "fast-design-system-provider",
     ])
 );
@@ -38,7 +41,7 @@ function generateMenu(componentSchemas: SchemaDictionary): MenuItem[] {
         ...Object.entries(componentSchemas).map(
             ([id]: [string, any]): MenuItem => {
                 return {
-                    displayName: componentSchemas[id].mapsToTagName,
+                    displayName: componentSchemas[id].title,
                     location: `/components/${id}`,
                 };
             }

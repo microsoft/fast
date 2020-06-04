@@ -19,7 +19,6 @@ import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-
 import {
     neutralLayerL1,
     neutralLayerL2,
-    neutralLayerL3,
     StandardLuminance,
 } from "@microsoft/fast-components-styles-msft";
 import {
@@ -56,9 +55,9 @@ import {
     upChevron,
 } from "@microsoft/site-utilities";
 import { ComponentViewConfig, Scenario } from "./fast-components/configs/data.props";
-import * as componentConfigs from "./fast-components/configs/component-configs";
+import * as componentConfigs from "./fast-components/configs";
 import { history, menu, schemaDictionary } from "./config";
-import style from "./explorer.style";
+import style, { pivotStyleSheetOverrides } from "./explorer.style";
 import {
     ExplorerHandledProps,
     ExplorerProps,
@@ -175,7 +174,7 @@ class Explorer extends Foundation<
                     <Row style={{ flex: "1" }}>
                         <Pane resizable={true} resizeFrom={PaneResizeDirection.east}>
                             <Background
-                                value={neutralLayerL3}
+                                value={"#1B1B1B"}
                                 drawBackground={true}
                                 style={{
                                     display: "flex",
@@ -264,35 +263,45 @@ class Explorer extends Foundation<
                                 resizable={true}
                                 resizeFrom={RowResizeDirection.north}
                                 initialHeight={400}
-                                collapsedHeight={32}
+                                collapsedHeight={36}
                                 collapsed={!this.state.devToolsVisible}
                             >
                                 <Background
-                                    value={neutralLayerL2}
+                                    value={neutralLayerL1}
                                     style={{
                                         width: "100%",
                                         height: "100%",
-                                        overflow: "auto",
                                     }}
                                 >
-                                    <Pivot
-                                        label={"documentation"}
-                                        items={this.renderPivotItems()}
-                                    />
-                                    <ActionToggle
-                                        appearance={ActionToggleAppearance.stealth}
-                                        selectedLabel={"Development tools expanded"}
-                                        selectedGlyph={downChevron}
-                                        unselectedLabel={"Development tools collapsed"}
-                                        unselectedGlyph={upChevron}
-                                        selected={this.state.devToolsVisible}
-                                        onToggle={this.handleDevToolsToggle}
+                                    <div
                                         style={{
-                                            position: "absolute",
-                                            top: 0,
-                                            right: 0,
+                                            marginTop: "12px",
+                                            position: "relative",
+                                            height: "100%",
                                         }}
-                                    />
+                                    >
+                                        <Pivot
+                                            label={"documentation"}
+                                            items={this.renderPivotItems()}
+                                            jssStyleSheet={pivotStyleSheetOverrides}
+                                        />
+                                        <ActionToggle
+                                            appearance={ActionToggleAppearance.stealth}
+                                            selectedLabel={"Development tools expanded"}
+                                            selectedGlyph={downChevron}
+                                            unselectedLabel={
+                                                "Development tools collapsed"
+                                            }
+                                            unselectedGlyph={upChevron}
+                                            selected={this.state.devToolsVisible}
+                                            onToggle={this.handleDevToolsToggle}
+                                            style={{
+                                                position: "absolute",
+                                                top: 0,
+                                                right: 0,
+                                            }}
+                                        />
+                                    </div>
                                 </Background>
                             </Row>
                         </div>
