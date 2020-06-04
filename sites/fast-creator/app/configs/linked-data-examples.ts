@@ -1,8 +1,8 @@
 import { Data } from "@microsoft/fast-tooling";
+import { uniqueId } from "lodash-es";
+import { textSchema } from "../utilities";
 import { webComponentSchemas } from "./map-component-definition-to-json-schema";
 import { nativeElementSchemas } from "./map-native-element-definition-to-json-schema";
-import { textSchema } from "../utilities";
-import { uniqueId } from "lodash-es";
 
 interface ExampleData {
     [key: string]: Array<Data<unknown>>;
@@ -346,9 +346,7 @@ const fastTabsExample = {
     linkedData: [
         { ...fastTabExample, data: { id: uniqueId("Tab") } },
         { ...fastTabExample, data: { id: uniqueId("Tab") } },
-        ,
         { ...fastTabExample, data: { id: uniqueId("Tab") } },
-        ,
         { ...fastTabPanelExample, data: { id: uniqueId("Tabpanel") } },
         { ...fastTabPanelExample, data: { id: uniqueId("Tabpanel") } },
         { ...fastTabPanelExample, data: { id: uniqueId("Tabpanel") } },

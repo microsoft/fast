@@ -4,14 +4,14 @@ import manageJss from "@microsoft/fast-jss-manager-react";
 import {
     DataDictionary,
     DataMessageOutgoing,
+    htmlMapper,
+    htmlResolver,
     InitializeMessageOutgoing,
     mapDataDictionary,
     MessageSystemOutgoing,
     MessageSystemType,
     NavigationMessageOutgoing,
     SchemaDictionary,
-    htmlMapper,
-    htmlResolver,
 } from "@microsoft/fast-tooling";
 import {
     WebComponentDefinition,
@@ -22,13 +22,13 @@ import {
     componentDefinitions,
     nativeElementDefinitions,
 } from "@microsoft/site-utilities";
-import style from "./preview.style";
-import { previewDirection, previewAccentColor, previewTheme } from "./creator";
 import { Direction } from "@microsoft/fast-web-utilities";
 import * as FASTComponents from "@microsoft/fast-components";
 import { fastDesignSystemDefaults } from "@microsoft/fast-components/src/fast-design-system";
 import { createColorPalette } from "@microsoft/fast-components/src/color/create-color-palette";
 import { parseColorHexRGB } from "@microsoft/fast-colors";
+import { previewAccentColor, previewDirection, previewTheme } from "./creator";
+import style from "./preview.style";
 
 // Prevent tree shaking
 FASTComponents;

@@ -23,11 +23,11 @@ import React from "react";
 import ReactDOM from "react-dom";
 import {
     AjvMapper,
+    CustomMessageIncomingOutgoing,
     MessageSystem,
     MessageSystemDataTypeAction,
     MessageSystemType,
     SchemaDictionary,
-    CustomMessageIncomingOutgoing,
 } from "@microsoft/fast-tooling";
 import {
     ControlConfig,
@@ -54,6 +54,8 @@ import {
     DirectionSwitch,
     ThemeSelector,
 } from "@microsoft/site-utilities";
+import { fastDesignSystemDefaults } from "@microsoft/fast-components/src/fast-design-system";
+import { StandardLuminance } from "@microsoft/fast-components";
 import {
     CreatorHandledProps,
     CreatorProps,
@@ -72,8 +74,6 @@ import { selectDeviceOverrideStyles } from "./utilities/style-overrides";
 import { previewReady } from "./preview";
 import { textSchema } from "./utilities";
 import { fastDesignSystemProviderId } from "./configs/fast-design-system-provider.definition";
-import { fastDesignSystemDefaults } from "@microsoft/fast-components/src/fast-design-system";
-import { StandardLuminance } from "@microsoft/fast-components";
 
 const fastMessageSystemWorker = new FASTMessageSystemWorker();
 let fastMessageSystem: MessageSystem;
