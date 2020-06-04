@@ -9,6 +9,7 @@ export * from "./call-to-action";
 export * from "./caption";
 export * from "./carousel";
 export * from "./context-menu-item";
+export * from "./data-grid";
 export * from "./flipper";
 export * from "./flyout";
 export * from "./heading";

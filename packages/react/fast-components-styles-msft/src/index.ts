@@ -45,6 +45,9 @@ export { CheckboxStyles };
 import ContextMenuStyles from "./context-menu";
 export { ContextMenuStyles };
 
+import DataGridStyles from "./data-grid";
+export { DataGridStyles };
+
 import HeadingStyles from "./heading";
 export { HeadingStyles };
 
