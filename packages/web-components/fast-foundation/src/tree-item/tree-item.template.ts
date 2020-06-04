@@ -15,7 +15,6 @@ export const TreeItemTemplate = html<TreeItem>`
         @keydown=${(x, c) => x.handleKeyDown(c.event as KeyboardEvent)}
         ${ref("treeItem")}
     >
-        ${startTemplate}
         <div
             class="positioning-region"
             part="positioning-region"
@@ -79,6 +78,5 @@ export const TreeItemTemplate = html<TreeItem>`
                 </div>
             `
         )}
-        ${endTemplate}
     </template>
 `;

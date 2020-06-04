@@ -17,20 +17,24 @@ export const TreeItemStyles = css`
     ${display("block")} :host {
         contain: content;
         position: relative;
+        outline: none;
         color: var(--neutral-foreground-rest);
         background: var(--neutral-fill-stealth-rest);
         cursor: pointer;
         font-family: var(--body-font);
         --expand-collapse-button-size: calc(var(--height-number) * 1px);
         --tree-item-nested-width: 0;
-        box-sizing: border-box;
     }
 
     :host(:focus) > .positioning-region {
         outline: none;
     }
 
-    :host(:${focusVisible}) > .positioning-region {
+    :host(:focus) .content-region {
+        outline: none;
+    }
+
+    :host(:${focusVisible}) .content-region {
         border: var(--neutral-focus) 1px solid;
         border-radius: calc(var(--corner-radius) * 1px);
         color: var(--neutral-foreground-active);
@@ -39,6 +43,7 @@ export const TreeItemStyles = css`
     .positioning-region {
         display: flex;
         position: relative;
+        box-sizing: border-box;
         height: calc(var(--height-number) * 1px);
     }
 
@@ -59,8 +64,12 @@ export const TreeItemStyles = css`
 
     .content-region {
         display: flex;
+        box-sizing: border-box;
+        border: transparent 1px solid;
         align-items: center;
         white-space: nowrap;
+        width: 100%;
+        height: calc(var(--height-number) * 1px);
         margin-inline-start: calc(var(--design-unit) * 2px + 2px);
         ${
             /* Font size, weight and line height are temporary - 
