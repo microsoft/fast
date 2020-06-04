@@ -20,14 +20,14 @@ export class SideNavigation extends FASTElement {
         x => x.header !== "Github"
     );
 
-    private previousRatio: number = 0;
+    public clickHandler = (e: Event, parent: boolean): void => {
+        const target: HTMLElement = e.target as HTMLElement;
 
-    public clickHandler = (e, parent: boolean): void => {
-        const link = parent
-            ? e.target.getAttribute("href")
-            : e.target.parentElement.getAttribute("href");
+        const link: string = parent
+            ? (target.getAttribute("href") as string)
+            : (target.parentElement?.getAttribute("href") as string);
 
-        const selectedSection = document.querySelector(link);
+        const selectedSection: Element = document.querySelector(link) as Element;
 
         e.preventDefault();
 
@@ -45,19 +45,15 @@ export class SideNavigation extends FASTElement {
             let observer = new IntersectionObserver(
                 entries => {
                     entries.forEach(entry => {
-                        const currentRatio = entry.intersectionRatio;
-
-                        if (entry.isIntersecting) {
-                            if (currentRatio > this.previousRatio) {
-                                this.currentSection = entry.target.id;
-                            }
-                            this.previousRatio = currentRatio;
+                        const areaOnScreen =
+                            entry.intersectionRatio * entry.boundingClientRect.height;
+                        if (areaOnScreen > 0.5 * window.innerHeight) {
+                            this.currentSection = entry.target.id;
                         }
                     });
                 },
-                { threshold: [0.4, 0.6] }
+                { threshold: [0, 0.2, 0.4, 0.6, 0.8] }
             );
-
             this.sectionArray.forEach(section => {
                 observer.observe(section);
             });
