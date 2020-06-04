@@ -73,17 +73,13 @@ With this in place, you can use any component in any of your views. For example,
 
 <fast-card>
   <h2>Hello World!</h2>
-  <fast-button id="button" appearance="accent">Click Me</fast-button>
+  <fast-button appearance="accent">Click Me</fast-button>
 </fast-card>
 ```
 
 For a splash of style, add the following to your `wwwroot/css/app.css` file:
 
 ```css
-:not(:defined) {
-  visibility: hidden;
-}
-
 fast-design-system-provider {
   display: inline-block;
   color: var(--neutral-foreground-rest);
@@ -100,7 +96,7 @@ h2 {
   line-height: var(--type-ramp-plus-5-line-height);
 }
 
-#button {
+fast-card > fast-button {
   align-self: flex-end;
 }
 ```
