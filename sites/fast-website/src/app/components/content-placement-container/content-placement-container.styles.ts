@@ -27,7 +27,8 @@ export const ContentPlacementContainerStyles = css`
     /* This creates the color, background, and elevation changes on hover */
 
     :host([section="feature"]:hover) site-card-section,
-    :host([section="community"]:hover) site-content-placement {
+    :host([section="community"]:hover) site-content-placement,
+    :host([section="community"]:hover) site-content-placement ::part(content) {
         color: var(--neutral-foreground-hint);
     }
 
@@ -40,11 +41,20 @@ export const ContentPlacementContainerStyles = css`
         cursor: pointer;
         background: var(--neutral-fill-active);
         border-radius: calc(var(--corner-radius) * 1px);
-        color: var(--neutral-foreground-hover);
+        color: currentColor;
         ${elevation}
     }
 
+    :host([section="community"]) site-content-placement:hover ::part(content) {
+        color: var(--accent-foreground-rest);
+    }
+
     /* end */
+
+    .headerSubscript {
+        color: var(--neutral-foreground-hint);
+        font-size: var(--type-ramp-minus-1-font-size);
+    }
 
     .icon {
         fill: currentColor;
