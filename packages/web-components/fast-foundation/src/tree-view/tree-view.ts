@@ -21,12 +21,13 @@ export class TreeView extends FASTElement {
     @observable slottedTreeItems: HTMLElement[];
     private slottedTreeItemsChanged(oldValue, newValue): void {
         if (this.$fastController.isConnected) {
+            // filter the tree items until that's done for us in the framework
             this.treeItems = this.getVisibleNodes();
             this.setItems();
         }
     }
 
-    private treeItems: Element[];
+    private treeItems: HTMLElement[];
 
     public handleBlur = (e: FocusEvent): void => {
         const root: HTMLElement | null = this.treeView;
@@ -93,21 +94,21 @@ export class TreeView extends FASTElement {
     }
 
     public handleKeyDown = (e: KeyboardEvent): void | boolean => {
-        const nodes: HTMLElement[] = this.getVisibleNodes();
+        //const nodes: HTMLElement[] = this.getVisibleNodes();
 
-        if (!nodes) {
+        if (!this.treeItems) {
             return true;
         }
 
         switch (e.keyCode) {
             case keyCodeHome:
-                if (nodes && nodes.length) {
-                    nodes[0].focus();
+                if (this.treeItems && this.treeItems.length) {
+                    this.treeItems[0].focus();
                 }
                 break;
             case keyCodeEnd:
-                if (nodes && nodes.length) {
-                    nodes[nodes.length - 1].focus();
+                if (this.treeItems && this.treeItems.length) {
+                    this.treeItems[this.treeItems.length - 1].focus();
                 }
                 break;
             default:
@@ -116,20 +117,12 @@ export class TreeView extends FASTElement {
     };
 
     private setItems = (): void => {
-        const treeItems: HTMLElement[] = this.getVisibleNodes();
-        const allTreeItems: Element[] =
-            getDisplayedNodes(this.treeView, "[role='treeitem']") || [];
-        const focusIndex = treeItems.findIndex(this.isFocusableElement);
+        this.treeItems = this.getVisibleNodes();
+        const focusIndex = this.treeItems.findIndex(this.isFocusableElement);
 
-        for (let item: number = 0; item < treeItems.length; item++) {
+        for (let item: number = 0; item < this.treeItems.length; item++) {
             if (item === focusIndex) {
-                treeItems[item].setAttribute("tabindex", "0");
-            }
-        }
-
-        for (let item: number = 0; item < allTreeItems.length; item++) {
-            if (item === focusIndex) {
-                allTreeItems[item].setAttribute("tabindex", "0");
+                this.treeItems[item].setAttribute("tabindex", "0");
             }
         }
     };
@@ -156,8 +149,6 @@ export class TreeView extends FASTElement {
     };
 
     private getVisibleNodes(): HTMLElement[] {
-        // TODO: marjon which should we use here? displayNodes or slottedTreeItems
-        const displayNodes = getDisplayedNodes(this.treeView, "[role='treeitem']");
         const treeItems: HTMLElement[] = [];
         if (this.slottedTreeItems !== undefined) {
             this.slottedTreeItems.forEach((item: any) => {

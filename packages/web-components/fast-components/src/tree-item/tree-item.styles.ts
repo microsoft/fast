@@ -23,24 +23,23 @@ export const TreeItemStyles = css`
         font-family: var(--body-font);
         --expand-collapse-button-size: calc(var(--height-number) * 1px);
         --tree-item-nested-width: 0;
+        box-sizing: border-box;
     }
 
     :host(:focus) > .positioning-region {
-        outline: var(--neutral-focus) 1px solid;
+        outline: none;
     }
 
     :host(:${focusVisible}) > .positioning-region {
-        border-color: var(--neutral-focus);
+        border: var(--neutral-focus) 1px solid;
+        border-radius: calc(var(--corner-radius) * 1px);
         color: var(--neutral-foreground-active);
     }
 
     .positioning-region {
         display: flex;
         position: relative;
-        box-sizing: border-box;
         height: calc(var(--height-number) * 1px);
-        border: calc(var(--focus-outline-width) * 1px) solid transparent;
-        border-radius: calc(var(--corner-radius) * 1px);
     }
 
     .positioning-region::before {
