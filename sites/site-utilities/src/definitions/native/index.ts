@@ -1,3 +1,4 @@
+export * from "./div.definition";
 export * from "./heading.definition";
 export * from "./image.definition";
 export * from "./label.definition";

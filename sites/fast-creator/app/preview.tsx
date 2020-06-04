@@ -1,25 +1,37 @@
-import { DesignSystem } from "@microsoft/fast-components-styles-msft";
 import React from "react";
-import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
-import manageJss, { DesignSystemProvider } from "@microsoft/fast-jss-manager-react";
+import Foundation from "@microsoft/fast-components-foundation-react";
+import manageJss from "@microsoft/fast-jss-manager-react";
 import {
     DataDictionary,
     DataMessageOutgoing,
+    htmlMapper,
+    htmlResolver,
     InitializeMessageOutgoing,
     mapDataDictionary,
-    MessageSystemNavigationTypeAction,
     MessageSystemOutgoing,
     MessageSystemType,
     NavigationMessageOutgoing,
     SchemaDictionary,
 } from "@microsoft/fast-tooling";
-import { reactMapper, ViewerCustomAction } from "@microsoft/fast-tooling-react";
-import { Background } from "@microsoft/fast-components-react-msft";
-import { StandardLuminance } from "@microsoft/fast-components-styles-msft";
-import { reactResolver } from "./utilities";
-import { componentDictionary } from "./msft-components/dictionary";
+import {
+    WebComponentDefinition,
+    WebComponentDefinitionTag,
+} from "@microsoft/fast-tooling/dist/data-utilities/web-component";
+import { ViewerCustomAction } from "@microsoft/fast-tooling-react";
+import {
+    componentDefinitions,
+    nativeElementDefinitions,
+} from "@microsoft/site-utilities";
+import { Direction } from "@microsoft/fast-web-utilities";
+import * as FASTComponents from "@microsoft/fast-components";
+import { fastDesignSystemDefaults } from "@microsoft/fast-components/src/fast-design-system";
+import { createColorPalette } from "@microsoft/fast-components/src/color/create-color-palette";
+import { parseColorHexRGB } from "@microsoft/fast-colors";
+import { previewAccentColor, previewDirection, previewTheme } from "./creator";
 import style from "./preview.style";
-import { designSystemLinkedDataId } from "./creator";
+
+// Prevent tree shaking
+FASTComponents;
 
 export const previewReady: string = "PREVIEW::READY";
 
@@ -27,18 +39,26 @@ export interface PreviewState {
     activeDictionaryId: string;
     dataDictionary: DataDictionary<unknown> | void;
     schemaDictionary: SchemaDictionary;
-    theme: StandardLuminance;
+    theme: FASTComponents.StandardLuminance;
+    direction: Direction;
+    accentColor: string;
 }
 
 class Preview extends Foundation<{}, {}, PreviewState> {
+    private ref: React.RefObject<HTMLDivElement>;
+
     constructor(props: {}) {
         super(props);
+
+        this.ref = React.createRef();
 
         this.state = {
             activeDictionaryId: "",
             dataDictionary: void 0,
             schemaDictionary: {},
-            theme: StandardLuminance.LightMode,
+            theme: FASTComponents.StandardLuminance.LightMode,
+            direction: Direction.ltr,
+            accentColor: fastDesignSystemDefaults.accentBaseColor,
         };
 
         window.addEventListener("message", this.handleMessage);
@@ -46,22 +66,7 @@ class Preview extends Foundation<{}, {}, PreviewState> {
 
     public render(): React.ReactNode {
         if (this.state.dataDictionary !== undefined) {
-            return (
-                <DesignSystemProvider
-                    designSystem={
-                        this.state.dataDictionary[0][designSystemLinkedDataId].data
-                    }
-                >
-                    <Background
-                        dir={
-                            (this.state.dataDictionary[0][designSystemLinkedDataId]
-                                .data as DesignSystem).direction
-                        }
-                    >
-                        {this.renderMappedComponents()}
-                    </Background>
-                </DesignSystemProvider>
-            );
+            return <div dir={this.state.direction} ref={this.ref} />;
         }
 
         return null;
@@ -78,17 +83,64 @@ class Preview extends Foundation<{}, {}, PreviewState> {
         );
     }
 
-    private renderMappedComponents(): React.ReactNode {
-        if (this.state.dataDictionary !== undefined) {
-            return mapDataDictionary({
-                dataDictionary: this.state.dataDictionary,
-                schemaDictionary: this.state.schemaDictionary,
-                mapper: reactMapper(componentDictionary),
-                resolver: reactResolver(
-                    this.state.activeDictionaryId,
-                    this.handleUpdateDictionaryId
-                ),
-            });
+    private attachMappedComponents(): React.ReactNode {
+        if (this.state.dataDictionary !== undefined && this.ref.current !== null) {
+            const designSystemProvider = document.createElement(
+                "fast-design-system-provider"
+            );
+            this.ref.current.innerHTML = "";
+
+            designSystemProvider.setAttribute(
+                "accent-base-color",
+                this.state.accentColor
+            );
+            const generatedAccentPalette = createColorPalette(
+                parseColorHexRGB(this.state.accentColor)
+            );
+            (designSystemProvider as FASTComponents.FASTDesignSystemProvider).accentPalette = generatedAccentPalette;
+
+            designSystemProvider.setAttribute(
+                "background-color",
+                FASTComponents.neutralLayerL1(
+                    Object.assign({}, fastDesignSystemDefaults, {
+                        baseLayerLuminance: this.state.theme,
+                    })
+                )
+            );
+            designSystemProvider.setAttribute(
+                "style",
+                "background: var(--background-color); height: 100vh;"
+            );
+            designSystemProvider.setAttribute("use-defaults", "");
+            designSystemProvider.appendChild(
+                mapDataDictionary({
+                    dataDictionary: this.state.dataDictionary,
+                    schemaDictionary: this.state.schemaDictionary,
+                    // TODO: add to the mapper the wrapper (may need a refactor)
+                    mapper: htmlMapper({
+                        version: 1,
+                        tags: Object.entries({
+                            ...componentDefinitions,
+                            ...nativeElementDefinitions,
+                        }).reduce(
+                            (
+                                previousValue: WebComponentDefinitionTag[],
+                                currentValue: [string, WebComponentDefinition]
+                            ) => {
+                                if (Array.isArray(currentValue[1].tags)) {
+                                    return previousValue.concat(currentValue[1].tags);
+                                }
+
+                                return previousValue;
+                            },
+                            []
+                        ),
+                    }),
+                    resolver: htmlResolver,
+                })
+            );
+
+            this.ref.current.append(designSystemProvider);
         }
 
         return null;
@@ -106,43 +158,60 @@ class Preview extends Foundation<{}, {}, PreviewState> {
         if (messageData !== undefined) {
             switch ((messageData as MessageSystemOutgoing).type) {
                 case MessageSystemType.initialize:
-                    this.setState({
-                        dataDictionary: (messageData as InitializeMessageOutgoing)
-                            .dataDictionary,
-                        schemaDictionary: (messageData as InitializeMessageOutgoing)
-                            .schemaDictionary,
-                    });
+                    this.setState(
+                        {
+                            dataDictionary: (messageData as InitializeMessageOutgoing)
+                                .dataDictionary,
+                            schemaDictionary: (messageData as InitializeMessageOutgoing)
+                                .schemaDictionary,
+                        },
+                        this.attachMappedComponents
+                    );
                     break;
                 case MessageSystemType.data:
-                    this.setState({
-                        dataDictionary: (messageData as DataMessageOutgoing)
-                            .dataDictionary,
-                    });
+                    this.setState(
+                        {
+                            dataDictionary: (messageData as DataMessageOutgoing)
+                                .dataDictionary,
+                        },
+                        this.attachMappedComponents
+                    );
                     break;
                 case MessageSystemType.navigation:
-                    this.setState({
-                        activeDictionaryId: (messageData as NavigationMessageOutgoing)
-                            .activeDictionaryId,
-                    });
+                    this.setState(
+                        {
+                            activeDictionaryId: (messageData as NavigationMessageOutgoing)
+                                .activeDictionaryId,
+                        },
+                        this.attachMappedComponents
+                    );
+                    break;
+                case MessageSystemType.custom:
+                    if ((messageData as any).id === previewDirection) {
+                        this.setState(
+                            {
+                                direction: (messageData as any).value,
+                            },
+                            this.attachMappedComponents
+                        );
+                    } else if ((messageData as any).id === previewAccentColor) {
+                        this.setState(
+                            {
+                                accentColor: (messageData as any).value,
+                            },
+                            this.attachMappedComponents
+                        );
+                    } else if ((messageData as any).id === previewTheme) {
+                        this.setState(
+                            {
+                                theme: (messageData as any).value,
+                            },
+                            this.attachMappedComponents
+                        );
+                    }
                     break;
             }
         }
-    };
-
-    private handleUpdateDictionaryId = (dictionaryId: string): void => {
-        window.postMessage(
-            {
-                type: MessageSystemType.custom,
-                action: ViewerCustomAction.call,
-                value: {
-                    type: MessageSystemType.navigation,
-                    action: MessageSystemNavigationTypeAction.update,
-                    activeDictionaryId: dictionaryId,
-                    activeNavigationConfigId: "",
-                },
-            },
-            "*"
-        );
     };
 }
 
