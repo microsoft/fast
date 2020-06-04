@@ -113,23 +113,13 @@ export class TreeItem extends FASTElement {
         }
     }
 
-    public handleTreeItemClick = (e: MouseEvent): void => {
-        console.log("treeItem Click handled e:", e);
-    };
-
     public handleFocus = (e: Event): void => {
-        console.log(" *** treeItem handleFocus e:", e);
         if (e.target === e.currentTarget) {
-            console.log(
-                "[treeItem] turning on focusable for this tree item, tab index should be 0 for:",
-                e.currentTarget
-            );
             this.focusable = true;
         }
     };
 
     public handleBlur = (e: FocusEvent): void => {
-        console.log("treeItem handleBlur e:", e);
         if (e.target !== e.currentTarget) {
             return;
         }
@@ -138,7 +128,6 @@ export class TreeItem extends FASTElement {
     };
 
     public handleKeyDown = (e: KeyboardEvent): void | boolean => {
-        console.log("treeItem handleKeyDown e:", e);
         if (e.target !== e.currentTarget) {
             return;
         }
@@ -186,12 +175,7 @@ export class TreeItem extends FASTElement {
         }
     };
 
-    private change = (): void => {
-        this.$emit("change");
-    };
-
     private handleArrowLeft(): void {
-        console.log("treeItem handleArrowLeft");
         if (this.expanded) {
             this.setExpanded(false);
         } else if (isHTMLElement(this.treeItem.parentElement)) {
@@ -210,7 +194,6 @@ export class TreeItem extends FASTElement {
     }
 
     private handleArrowRight(): void {
-        console.log("treeItem handleArrowRight");
         if (typeof this.expanded !== "boolean") {
             return;
         }
@@ -226,7 +209,6 @@ export class TreeItem extends FASTElement {
         console.log("handleSpaceBar() this.expanded:", this.expanded);
 
         if (typeof this.expanded !== "boolean") {
-            console.log("expanded was not a boolean");
             return;
         }
         this.setExpanded(!this.expanded);
@@ -234,7 +216,6 @@ export class TreeItem extends FASTElement {
 
     private focusNextNode(delta: number): void {
         const visibleNodes: HTMLElement[] | void = this.getVisibleNodes();
-        console.log("[treeItem] focusNextNode visibleNodes:", visibleNodes);
         if (!visibleNodes) {
             return;
         }
@@ -245,7 +226,6 @@ export class TreeItem extends FASTElement {
             const nextElement: HTMLElement = visibleNodes[currentIndex + delta];
 
             if (isHTMLElement(nextElement)) {
-                console.log("nextElement is:", nextElement);
                 nextElement.focus();
             }
         }

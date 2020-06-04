@@ -4,13 +4,7 @@ import {
     isHTMLElement,
     keyCodeEnd,
     keyCodeHome,
-    keyCodeArrowDown,
-    keyCodeArrowRight,
-    keyCodeArrowUp,
-    keyCodeArrowLeft,
 } from "@microsoft/fast-web-utilities";
-
-import { inRange } from "lodash-es";
 
 export class TreeView extends FASTElement {
     public treeView: HTMLElement;
@@ -26,24 +20,15 @@ export class TreeView extends FASTElement {
 
     @observable slottedTreeItems: HTMLElement[];
     private slottedTreeItemsChanged(oldValue, newValue): void {
-        console.log("slottedTreeItemsChanged called");
         if (this.$fastController.isConnected) {
             this.treeItems = this.getVisibleNodes();
-            //this.resetItems(oldValue);
             this.setItems();
         }
     }
 
     private treeItems: Element[];
 
-    /**
-     * The index of the focusable element in the items array
-     * defaults to -1
-     */
-    private focusIndex: number = -1;
-
     public handleBlur = (e: FocusEvent): void => {
-        console.log("[treeView] handleBlur e:", e);
         const root: HTMLElement | null = this.treeView;
 
         /**
@@ -55,39 +40,7 @@ export class TreeView extends FASTElement {
         this.ensureFocusability();
     };
 
-    // public handleKeyDown(e: KeyboardEvent): void | boolean {
-    //     console.log("treeView handleKeyDown e:", e);
-    //     switch (e.keyCode) {
-    //         case keyCodeArrowDown:
-    //         case keyCodeArrowRight:
-    //             // go forward one index
-    //             e.preventDefault();
-    //             // this.setFocus(this.focusIndex + 1, 1);
-    //             break;
-    //         case keyCodeArrowUp:
-    //         case keyCodeArrowLeft:
-    //             // go back one index
-    //             e.preventDefault();
-    //             // this.setFocus(this.focusIndex - 1, -1);
-    //             break;
-    //         case keyCodeEnd:
-    //             // set focus on last item
-    //             e.preventDefault();
-    //             // this.setFocus(this.domChildren().length - 1, -1);
-    //             break;
-    //         case keyCodeHome:
-    //             // set focus on first item
-    //             e.preventDefault();
-    //             // this.setFocus(0, 1);
-    //             break;
-    //         default:
-    //             // if we are not handling the event, do not prevent default
-    //             return true;
-    //     }
-    // }
-
     public handleFocus = (e: FocusEvent): void => {
-        console.log("handleFocus e:", e);
         if (!isHTMLElement(this.treeView)) {
             return;
         }
@@ -136,20 +89,10 @@ export class TreeView extends FASTElement {
     public connectedCallback(): void {
         super.connectedCallback();
         this.treeItems = this.getVisibleNodes();
-        console.log("treeView connectedCallback this.treeItems:", this.treeItems);
         this.ensureFocusability();
-        //const treeItems = this.getVisibleNodes();
-        // if (treeItems) {
-        //     treeItems.forEach((item: HTMLElement) => {
-        //         console.log("tree-item item:", item, " marked with tabindex -1");
-        //         item.setAttribute("tabindex", "-1");
-        //     });
-        //     treeItems[0].setAttribute("tabindex", "0");
-        // }
     }
 
     public handleKeyDown = (e: KeyboardEvent): void | boolean => {
-        console.log("treeView handleKeyDown e:", e);
         const nodes: HTMLElement[] = this.getVisibleNodes();
 
         if (!nodes) {
@@ -173,49 +116,22 @@ export class TreeView extends FASTElement {
     };
 
     private setItems = (): void => {
-        console.log("treeView setItems called...");
         const treeItems: HTMLElement[] = this.getVisibleNodes();
         const allTreeItems: Element[] =
             getDisplayedNodes(this.treeView, "[role='treeitem']") || [];
         const focusIndex = treeItems.findIndex(this.isFocusableElement);
 
-        // if our focus index is not -1 we have items
-        if (focusIndex !== -1) {
-            this.focusIndex = focusIndex;
-        }
-
         for (let item: number = 0; item < treeItems.length; item++) {
             if (item === focusIndex) {
                 treeItems[item].setAttribute("tabindex", "0");
             }
-
-            treeItems[item].addEventListener("blur", this.handleTreeItemFocus);
         }
 
-        console.log("[treeView] allTreeItems:", allTreeItems);
         for (let item: number = 0; item < allTreeItems.length; item++) {
             if (item === focusIndex) {
                 allTreeItems[item].setAttribute("tabindex", "0");
             }
-
-            allTreeItems[item].addEventListener("blur", this.handleTreeItemFocus);
         }
-    };
-
-    private handleTreeItemFocus = (e: KeyboardEvent): void => {
-        console.log("***\n [treeView] handleTreeItemFocus called, e:", e);
-        const target = e.currentTarget as Element;
-        const treeItems: HTMLElement[] = this.getVisibleNodes();
-        const focusIndex: number = treeItems.indexOf(target as HTMLElement);
-
-        // if (this.isDisabledElement(target)) {
-        //     target.blur();
-        //     return;
-        // }
-
-        // if (focusIndex !== this.focusIndex && focusIndex !== -1) {
-        //     this.setFocus(focusIndex, focusIndex > this.focusIndex ? 1 : -1);
-        // }
     };
 
     /**
@@ -239,56 +155,14 @@ export class TreeView extends FASTElement {
         return isHTMLElement(el) && (el.getAttribute("role") as string) === "treeitem";
     };
 
-    private setFocus(focusIndex: number, adjustment: number): void {
-        console.log(
-            "[treeView] setFocus, focusIndex:",
-            focusIndex,
-            " adjustment:",
-            adjustment
-        );
-        const children: Element[] = this.getVisibleNodes();
-        const childNodes: Element[] =
-            getDisplayedNodes(this.treeView, "[role='treeitem']") || [];
-
-        while (inRange(focusIndex, childNodes.length)) {
-            const child: Element = childNodes[focusIndex];
-
-            if (this.isFocusableElement(child)) {
-                // update the tabindex of next focusable element
-                child.setAttribute("tabindex", "0");
-
-                // focus the element
-                child.focus();
-
-                // change the previous index to -1
-                childNodes[this.focusIndex].setAttribute("tabindex", "");
-
-                // update the focus index
-                this.focusIndex = focusIndex;
-
-                break;
-            }
-
-            focusIndex += adjustment;
-        }
-    }
-
     private getVisibleNodes(): HTMLElement[] {
+        // TODO: marjon which should we use here? displayNodes or slottedTreeItems
         const displayNodes = getDisplayedNodes(this.treeView, "[role='treeitem']");
-        console.log("displayNodes:", displayNodes);
-        console.log("raw this.slottedTreeItems:", this.slottedTreeItems);
         const treeItems: HTMLElement[] = [];
         if (this.slottedTreeItems !== undefined) {
             this.slottedTreeItems.forEach((item: any) => {
-                console.log("next slottedItem:", item);
                 if (item instanceof HTMLElement) {
-                    console.log("item is an HTMLElement");
-                    console.log("item.getAttribute(role):", item.getAttribute("role"));
-
-                    // if (item.getAttribute("role") as string === "treeitem") {
-                    console.log("pushed item:", item);
                     treeItems.push(item as any);
-                    // }
                 }
             });
         }
@@ -300,23 +174,13 @@ export class TreeView extends FASTElement {
      * If it does not, the tree will begin to accept focus
      */
     private ensureFocusability(): void {
-        console.log("ensureFocusability");
         if (!this.focusable && isHTMLElement(this.treeView)) {
-            console.log("!this.focusable && isHTMLElement(this.treeView)");
             const focusableChild: HTMLElement | null = this.querySelector(
                 "[role='treeitem'][tabindex='0']"
             );
 
             if (!isHTMLElement(focusableChild)) {
-                console.log("focusableChild not found, so setting first item");
-                // const firstItem: HTMLElement = this.getVisibleNodes()[0] as HTMLElement;
-                // if (firstItem) {
-                //     console.log("setting first item tabindex to 0");
-                //     firstItem.setAttribute("tabindex", "0");
-                // }
                 this.focusable = true;
-            } else {
-                console.log("focusableChild was found focusableChild:", focusableChild);
             }
         }
     }

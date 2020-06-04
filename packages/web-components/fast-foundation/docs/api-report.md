@@ -824,8 +824,6 @@ export class TreeItem extends FASTElement {
     // (undocumented)
     handleKeyDown: (e: KeyboardEvent) => boolean | void;
     // (undocumented)
-    handleTreeItemClick: (e: MouseEvent) => void;
-    // (undocumented)
     hasItems: boolean;
     // (undocumented)
     items: HTMLSlotElement;
