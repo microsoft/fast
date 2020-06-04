@@ -4,35 +4,24 @@ title: ASP.NET
 sidebar_label: ASP.NET
 custom_edit_url: https://github.com/microsoft/fast-dna/edit/master/packages/web-components/fast-foundation/docs/guide/aspnet.doc.md
 ---
+
 FAST-DNA works naturally with ASP.NET server-side development, by simply adding a script tag and using the custom HTML elements. Let's take a look at how to set things up.
 
 ## Setting up the ASP.NET Project
 
-First, let's make a directory for our new project. From the terminal:
+First, you'll need to make sure that you have the .NET SDK installed. You can learn more and download that [on the official site](https://dotnet.microsoft.com/download).
+
+With the SDK installed, you have access to the `dotnet` command line interface. This can be used to create a new ASP.NET project. For example, to create a new ASP.NET Core MVC Web App named "fast-aspnet", you would use the following command:
 
 ```shell
-mkdir fast-aspnet
-```
-
-Next, let's move into that directory, where we'll set up our project:
-
-```shell
-cd fast-aspnet
-```
-
-For the next step, you'll need to make sure that you have the .NET SDK installed. You can learn more and download that [on the official site](https://dotnet.microsoft.com/download).
-
-With the SDK installed, you have access to the `dotnet` command line interface. This can be used to create a new ASP.NET project. For example, to create a new ASP.NET Core MVC Web App in your folder, you would use the following command:
-
-```shell
-dotnet new mvc
+dotnet new mvc -o fast-aspnet
 ```
 
 Create a project using the command above if you don't already have one. When the CLI completes, you should have a basic runnable ASP.NET MVC application.
 
 ## Configuring Scripts
 
-Now that we've got our basic project setup, we need to add our web components script and update ASP.NET accordingly. You can either add the script from our CDN directly to a page or layout, or you can install it with NPM and then add that to your page or layout.
+Now that we've got our basic project setup, we need to add our web components script and update ASP.NET accordingly. You can either add the script from our CDN directly, or you can install it with NPM and then add that.
 
 To add a CDN script for `fast-components` use the following markup:
 
