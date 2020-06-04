@@ -211,11 +211,6 @@ This code imports the `<fast-design-system-provider>` component as well as the `
     }
   </style>
   <script src="dist/bundle.js"></script>
-  <script>
-    document
-      .getElementById('button')
-      .addEventListener('click', () => console.log("Clicked!"));
-  </script>
 </body>
 ```
 
