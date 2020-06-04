@@ -8,7 +8,7 @@ import {
     DataGridCellRenderConfig,
     DataGridColumn,
     DataGridProps,
-    DataGridRowHeightCallbackParams
+    DataGridRowHeightCallbackParams,
 } from "./index";
 
 function imageCellFn(config: DataGridCellRenderConfig): React.ReactNode {
