@@ -28,6 +28,7 @@
     "integration-tests:alpha": "node build/testing/sauce-labs/test-browsers.js alpha",
     "integration-tests:beta": "node build/testing/sauce-labs/test-browsers.js beta",
     "integration-tests:release": "node build/testing/sauce-labs/test-browsers.js release",
+    "postpublish": "node build/create-cdn-bundle.js",
     "prepare": "lerna run prepare",
     "test": "yarn eslint && yarn unit-tests",
     "unit-tests": "jest --maxWorkers=4",
