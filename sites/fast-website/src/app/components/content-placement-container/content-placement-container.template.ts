@@ -11,7 +11,9 @@ export const ContentPlacementContainerTemplate = html<ContentPlacementContainer>
                     <site-content-placement class="framework_ContentPlacement">
                         <h3>
                             ${x => (x.headerSubscript ? x.header + " " : x.header)}
-                            <span class="headerSubscript">${x => x.headerSubscript}</span>
+                            <small class="headerSubscript"
+                                >${x => x.headerSubscript}</small
+                            >
                         </h3>
                         <p slot="body">${x => x.body}</p>
                     </site-content-placement>
@@ -27,12 +29,6 @@ export const ContentPlacementContainerTemplate = html<ContentPlacementContainer>
                     x => x.featureCardData,
                     html`
                         <site-feature-card>
-                            <div>
-                                ${(x, c) =>
-                                    c.index.toString.length === 1
-                                        ? "0" + (c.index + 1).toString()
-                                        : c.index + 1}
-                            </div>
                             <h4>${x => x.header}</h4>
                             <p slot="body">${x => x.body}</p>
                             <fast-anchor
