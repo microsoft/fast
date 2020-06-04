@@ -5,19 +5,21 @@ import { display } from "@microsoft/fast-foundation";
 export const FeatureCardStyles = css`
     ${display("grid")} :host {
         contain: layout;
-        grid-template-columns: 150px repeat(2, minmax(120px, 1fr));
+        grid-template-columns: 1fr repeat(2, minmax(120px, 1fr));
         grid-template-areas: "header main main";
+        grid-column-gap: calc(var(--design-unit) * 3px);
         color: inherit;
         box-sizing: border-box;
         padding: calc(var(--design-unit) * 5px);
         box-shadow: unset;
+        position: relative;
     }
 
     :host::before {
         content: "";
         display: block;
         background-color: currentColor;
-        position: fixed;
+        position: absolute;
         height: 1px;
         width: calc(100% - (var(--design-unit) * 10px));
         left: 20px;
