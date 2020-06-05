@@ -27,7 +27,7 @@ const style: ComponentStyles<PreviewClassNameContract, DesignSystem> = {
         background:
             "linear-gradient(45deg, rgba(0, 0, 0, 0.0980392) 25%, transparent 25%, transparent 75%, rgba(0, 0, 0, 0.0980392) 75%, rgba(0, 0, 0, 0.0980392) 0), linear-gradient(45deg, rgba(0, 0, 0, 0.0980392) 25%, transparent 25%, transparent 75%, rgba(0, 0, 0, 0.0980392) 75%, rgba(0, 0, 0, 0.0980392) 0), white",
         "background-repeat": "repeat, repeat",
-        "background-position": "0px 0, 5px 5px",
+        "background-position": "0 0, 5px 5px",
         "transform-origin": "0 0 0",
         "background-origin": "padding-box, padding-box",
         "background-clip": "border-box, border-box",
