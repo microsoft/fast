@@ -23,7 +23,7 @@ First, add the `fast-components.js` script file to your HTML. This pre-bundled s
 </html>
 ```
 
-:::Note
+:::note
 If you are looking to leverage a tool like Webpack, see our [Webpack Guide](./webpack) to learn how to properly get set up.
 :::
 
