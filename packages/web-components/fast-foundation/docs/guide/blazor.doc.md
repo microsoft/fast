@@ -11,7 +11,7 @@ FAST-DNA works seamlessly with ASP.NET Blazor, including integration with Blazor
 
 First, you'll need to make sure that you have the .NET SDK installed. You can learn more and download that [on the official site](https://dotnet.microsoft.com/download).
 
-With the SDK installed, you have access to the `dotnet` command line interface. This can be used to create a new ASP.NET Blazor project. For example, to create a new ASP.NET Blazor App named "fast-blazor", you would use the following command:
+With the SDK installed, you have access to the `dotnet` command line interface. This can be used to create a new Blazor project. For example, to create a new Blazor App named "fast-blazor", you would use the following command:
 
 ```shell
 dotnet new blazorwasm -o fast-blazor
