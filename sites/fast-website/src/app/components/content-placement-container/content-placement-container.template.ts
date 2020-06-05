@@ -44,8 +44,7 @@ export const ContentPlacementContainerTemplate = html<ContentPlacementContainer>
                                 >Read Documentation</fast-anchor
                             >
                         </site-feature-card>
-                    `,
-                    { positioning: true }
+                    `
                 )}
             </site-card-section>
         `
