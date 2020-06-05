@@ -17,7 +17,7 @@ With the SDK installed, you have access to the `dotnet` command line interface. 
 dotnet new mvc -o fast-aspnet
 ```
 
-Create a project using the command above if you don't already have one. When the CLI completes, you should have a basic runnable ASP.NET MVC application.
+Create a project using the command above if you don't already have one. When the CLI completes, you should have a basic runnable ASP.NET Core MVC application.
 
 ## Configuring Scripts
 
