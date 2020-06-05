@@ -101,7 +101,7 @@ Congratulations! You're now setup to use FAST-DNA and Aurelia 2!
 
 ## Aurelia 1
 
-### Setting up the Aurelia 2 Project
+### Setting up the Aurelia 1 Project
 
 First, you'll need to make sure that you have Node.js installed. You can learn more and download that [on the official site](https://nodejs.org/).
 

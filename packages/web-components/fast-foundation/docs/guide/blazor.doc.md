@@ -17,7 +17,7 @@ With the SDK installed, you have access to the `dotnet` command line interface. 
 dotnet new blazorwasm -o fast-blazor
 ```
 
-Create a project using the command above if you don't already have one. When the CLI completes, you should have a basic runnable ASP.NET Blazor application. For more information on setting up and using  Blazor, [see the official Blazor Getting Started guide](https://docs.microsoft.com/en-us/aspnet/core/blazor/get-started).
+Create a project using the command above if you don't already have one. When the CLI completes, you should have a basic runnable ASP.NET Blazor application. For more information on setting up and using Blazor, [see the official Blazor Getting Started guide](https://docs.microsoft.com/en-us/aspnet/core/blazor/get-started).
 
 ## Configuring Scripts
 
