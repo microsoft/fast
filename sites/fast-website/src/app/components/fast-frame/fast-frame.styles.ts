@@ -24,7 +24,7 @@ export const FastFrameStyles = css`
 
     :host {
         --gutter: 20;
-        max-width: 95vw;
+        max-width: 94vw;
     }
 
     .icon {
@@ -329,6 +329,9 @@ export const FastFrameStyles = css`
     
     }
     @media screen and (max-width: 480px) {
+				:host {
+						max-width: 100vw;
+				}
         .preview {
             right: -88%;
             width: 70%;
