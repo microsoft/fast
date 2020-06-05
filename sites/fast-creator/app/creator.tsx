@@ -1,18 +1,14 @@
 import { memoize, uniqueId } from "lodash-es";
 import {
-    ActionTrigger,
     Background,
     Badge,
     Heading,
     HeadingSize,
 } from "@microsoft/fast-components-react-msft";
-import { ColorRGBA64, parseColor } from "@microsoft/fast-colors";
 import {
-    createColorPalette,
     neutralLayerL1,
     neutralLayerL2,
     neutralLayerL3,
-    StandardLuminance,
 } from "@microsoft/fast-components-styles-msft";
 import {
     Canvas,
@@ -27,9 +23,9 @@ import React from "react";
 import ReactDOM from "react-dom";
 import {
     AjvMapper,
+    CustomMessageIncomingOutgoing,
     MessageSystem,
     MessageSystemDataTypeAction,
-    MessageSystemNavigationTypeAction,
     MessageSystemType,
     SchemaDictionary,
 } from "@microsoft/fast-tooling";
@@ -56,10 +52,10 @@ import {
     AccentColorPicker,
     Dimension,
     DirectionSwitch,
-    dotDotDotGlyph,
     ThemeSelector,
 } from "@microsoft/site-utilities";
-import * as schemas from "./msft-components";
+import { fastDesignSystemDefaults } from "@microsoft/fast-components/src/fast-design-system";
+import { StandardLuminance } from "@microsoft/fast-components";
 import {
     CreatorHandledProps,
     CreatorProps,
@@ -67,28 +63,31 @@ import {
     ProjectFile,
     ProjectFileView,
 } from "./creator.props";
-import { exampleData } from "./msft-components/example-data";
+import {
+    divTag,
+    linkedDataExamples,
+    nativeElementSchemas,
+    webComponentSchemas,
+} from "./configs";
 import { ProjectFileTransfer } from "./components";
 import { selectDeviceOverrideStyles } from "./utilities/style-overrides";
-import designSystemSchema from "./msft-component-helpers/design-system.schema";
 import { previewReady } from "./preview";
+import { textSchema } from "./utilities";
+import { fastDesignSystemProviderId } from "./configs/fast-design-system-provider.definition";
 
 const fastMessageSystemWorker = new FASTMessageSystemWorker();
 let fastMessageSystem: MessageSystem;
-let componentLinkedDataId: string = "root";
-let componentNavigationConfigId: string = "";
 const schemaDictionary: SchemaDictionary = {
-    ...Object.entries(schemas).reduce(
-        (dictionary: any, [key, value]: [string, any]): any => {
-            dictionary[value.id] = value;
-            return dictionary;
-        },
-        {}
-    ),
-    [designSystemSchema.id]: designSystemSchema,
+    ...webComponentSchemas,
+    ...nativeElementSchemas,
+    [textSchema.id]: textSchema,
+    [webComponentSchemas[fastDesignSystemProviderId].id]:
+        webComponentSchemas[fastDesignSystemProviderId],
 };
 
-export const designSystemLinkedDataId: string = "designSystem";
+export const previewDirection: string = "PREVIEW::DIRECTION";
+export const previewAccentColor: string = "PREVIEW::ACCENTCOLOR";
+export const previewTheme: string = "PREVIEW::THEME";
 
 class Creator extends Foundation<CreatorHandledProps, {}, CreatorState> {
     public static displayName: string = "Creator";
@@ -117,6 +116,7 @@ class Creator extends Foundation<CreatorHandledProps, {}, CreatorState> {
         super(props);
 
         const initialViewId: string = uniqueId("view");
+        const componentLinkedDataId: string = "root";
 
         this.devices = this.getDevices();
 
@@ -124,11 +124,7 @@ class Creator extends Foundation<CreatorHandledProps, {}, CreatorState> {
             dataDictionary: [
                 {
                     [componentLinkedDataId]: {
-                        schemaId: schemas.cardSchema2.id,
-                        data: {},
-                    },
-                    [designSystemLinkedDataId]: {
-                        schemaId: designSystemSchema.id,
+                        schemaId: divTag,
                         data: {},
                     },
                 },
@@ -145,7 +141,7 @@ class Creator extends Foundation<CreatorHandledProps, {}, CreatorState> {
             activeView: initialViewId,
             theme: StandardLuminance.LightMode,
             direction: Direction.ltr,
-            accentColor: "#0078D4",
+            accentColor: fastDesignSystemDefaults.accentBaseColor,
             views: {
                 [initialViewId]: initialView,
             },
@@ -245,16 +241,6 @@ class Creator extends Foundation<CreatorHandledProps, {}, CreatorState> {
                                             }
                                             disabled={!this.state.previewReady}
                                         />
-                                        <ActionTrigger
-                                            glyph={dotDotDotGlyph}
-                                            style={{
-                                                marginLeft: 4,
-                                                width: "24px",
-                                                padding: "0",
-                                            }}
-                                            onClick={this.handleShowDesignSystemEditor}
-                                            disabled={!this.state.previewReady}
-                                        />
                                     </div>
                                 </Background>
                             </Row>
@@ -314,7 +300,7 @@ class Creator extends Foundation<CreatorHandledProps, {}, CreatorState> {
                 dataLocation,
                 dictionaryId: this.state.activeDictionaryId,
                 index: e.index,
-                linkedData: exampleData[e.value[0].schemaId],
+                linkedData: linkedDataExamples[e.value[0].schemaId],
             });
         };
     };
@@ -329,14 +315,6 @@ class Creator extends Foundation<CreatorHandledProps, {}, CreatorState> {
                     dataDictionary: e.data.dataDictionary,
                 },
             };
-        }
-
-        if (
-            e.data.type === MessageSystemType.navigation &&
-            e.data.activeDictionaryId !== designSystemLinkedDataId
-        ) {
-            componentLinkedDataId = e.data.activeDictionaryId;
-            componentNavigationConfigId = e.data.activeNavigationConfigId;
         }
 
         if (
@@ -371,25 +349,6 @@ class Creator extends Foundation<CreatorHandledProps, {}, CreatorState> {
     public componentDidMount(): void {
         this.setViewerToFullSize();
     }
-
-    private handleShowDesignSystemEditor = (): void => {
-        const isDesignSystem: boolean =
-            this.state.activeDictionaryId === designSystemLinkedDataId;
-        const activeDictionaryId: string = isDesignSystem
-            ? componentLinkedDataId
-            : designSystemLinkedDataId;
-
-        this.setState({
-            activeDictionaryId,
-        });
-
-        fastMessageSystem.postMessage({
-            type: MessageSystemType.navigation,
-            action: MessageSystemNavigationTypeAction.update,
-            activeDictionaryId,
-            activeNavigationConfigId: isDesignSystem ? "" : componentNavigationConfigId,
-        });
-    };
 
     private setViewerToFullSize(): void {
         const viewerContainer: HTMLDivElement | null = this.viewerContainerRef.current;
@@ -491,31 +450,27 @@ class Creator extends Foundation<CreatorHandledProps, {}, CreatorState> {
         });
 
         fastMessageSystem.postMessage({
-            type: MessageSystemType.data,
-            action: MessageSystemDataTypeAction.update,
-            dictionaryId: designSystemLinkedDataId,
-            dataLocation: "direction",
-            data: updatedDirection,
-        });
+            type: MessageSystemType.custom,
+            id: previewDirection,
+            value: updatedDirection,
+        } as CustomMessageIncomingOutgoing);
     };
 
     private handleUpdateTheme = (): void => {
-        const updatedTheme: StandardLuminance =
+        const value: StandardLuminance =
             this.state.theme === StandardLuminance.LightMode
                 ? StandardLuminance.DarkMode
                 : StandardLuminance.LightMode;
 
         this.setState({
-            theme: updatedTheme,
+            theme: value,
         });
 
         fastMessageSystem.postMessage({
-            type: MessageSystemType.data,
-            action: MessageSystemDataTypeAction.update,
-            dictionaryId: designSystemLinkedDataId,
-            dataLocation: "baseLayerLuminance",
-            data: updatedTheme,
-        });
+            type: MessageSystemType.custom,
+            id: previewTheme,
+            value,
+        } as CustomMessageIncomingOutgoing);
     };
 
     /**
@@ -530,24 +485,11 @@ class Creator extends Foundation<CreatorHandledProps, {}, CreatorState> {
             accentColor: value,
         });
 
-        const parsed: ColorRGBA64 | null = parseColor(value);
-        const colorPalette = parsed !== null ? createColorPalette(parsed) : null;
-
         fastMessageSystem.postMessage({
-            type: MessageSystemType.data,
-            action: MessageSystemDataTypeAction.update,
-            dictionaryId: designSystemLinkedDataId,
-            dataLocation: "accentColor",
-            data: value,
-        });
-
-        fastMessageSystem.postMessage({
-            type: MessageSystemType.data,
-            action: MessageSystemDataTypeAction.update,
-            dictionaryId: designSystemLinkedDataId,
-            dataLocation: "accentPalette",
-            data: colorPalette,
-        });
+            type: MessageSystemType.custom,
+            id: previewAccentColor,
+            value,
+        } as CustomMessageIncomingOutgoing);
     };
 }
 
