@@ -5,7 +5,7 @@ sidebar_label: Blazor
 custom_edit_url: https://github.com/microsoft/fast-dna/edit/master/packages/web-components/fast-foundation/docs/guide/blazor.doc.md
 ---
 
-FAST-DNA works seamlessly with ASP.NET Blazor, including integration with Blazor's binding engine and components. Let's take a look at how to set things up.
+FAST-DNA works seamlessly with Blazor, including integration with Blazor's binding engine and components. Let's take a look at how to set things up.
 
 ## Setting up the Blazor Project
 
