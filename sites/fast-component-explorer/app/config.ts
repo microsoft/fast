@@ -14,8 +14,6 @@ const schemaDictionary: SchemaDictionary = {
     [textSchema.id]: textSchema,
 };
 
-console.log("nativeElementSchemas", nativeElementSchemas);
-
 const history: any = createBrowserHistory();
 /* eslint-disable @typescript-eslint/no-use-before-define */
 const menu: MenuItem[] = generateMenu(
