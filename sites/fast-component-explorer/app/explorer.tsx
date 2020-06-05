@@ -1,8 +1,5 @@
-import { CodePreviewChildOption } from "@microsoft/fast-tooling-react/dist/data-utilities/mapping";
-import { camelCase, get, memoize } from "lodash-es";
+import { camelCase, get } from "lodash-es";
 import {
-    Canvas,
-    CanvasClassNamesContract,
     Container,
     Pane,
     PaneResizeDirection,
@@ -10,32 +7,22 @@ import {
     RowResizeDirection,
 } from "@microsoft/fast-layouts-react";
 import {
-    Form,
-    mapDataToCodePreview,
+    ModularForm,
+    ModularViewer,
     NavigationMenu,
-    Viewer,
-    ViewerClassNameContract,
+    ViewerCustomAction,
 } from "@microsoft/fast-tooling-react";
-import manageJss, { ComponentStyleSheet } from "@microsoft/fast-jss-manager-react";
+import manageJss from "@microsoft/fast-jss-manager-react";
 import ReactDOM from "react-dom";
 import React from "react";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import {
-    applyCornerRadius,
-    createColorPalette,
-    DesignSystem,
-    DesignSystemDefaults,
-    designSystemSchema,
-    designUnit,
-    horizontalSpacing,
-    neutralDividerRest,
     neutralLayerL1,
     neutralLayerL2,
     neutralLayerL3,
-    outlineWidth,
+    StandardLuminance,
 } from "@microsoft/fast-components-styles-msft";
 import {
-    LabelClassNameContract,
     ListboxItemProps,
     TabsItem,
     TypographySize,
@@ -43,48 +30,50 @@ import {
 import {
     ActionToggle,
     ActionToggleAppearance,
-    ActionToggleClassNameContract,
     ActionToggleProps,
     Background,
     Heading,
     HeadingSize,
-    Label,
     Pivot,
-    PivotClassNameContract,
     Select,
-    SelectClassNameContract,
     SelectOption,
-    Toggle,
-    ToggleClassNameContract,
     Typography,
 } from "@microsoft/fast-components-react-msft";
-import { FormChildOptionItem } from "@microsoft/fast-tooling-react/dist/form/types";
-import { FormClassNameContract } from "@microsoft/fast-tooling-react/dist/form/form";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { MemoizedFunction, uniqueId } from "lodash";
-import { classNames, Direction } from "@microsoft/fast-web-utilities";
-import { ColorRGBA64, parseColor } from "@microsoft/fast-colors";
-import { format, multiply, toPx } from "@microsoft/fast-jss-utilities";
-import { NavigationMenuClassNameContract } from "@microsoft/fast-tooling-react/dist/navigation-menu/navigation-menu.style";
-import { StandardLuminance } from "@microsoft/fast-components-styles-msft";
-import { ComponentViewConfig, Scenario } from "./utilities/configs/data.props";
-import * as componentViewConfigsWithoutCustomConfig from "./utilities/configs";
-import { childOptions, history, menu } from "./config";
-import syntaxHighlighterStyles from "./syntax-highlighting-style";
-import style, { applyScrollbarStyle, ExplorerClassNameContract } from "./explorer.style";
-import { downChevron, upChevron } from "./icons/chevrons";
+import { Direction } from "@microsoft/fast-web-utilities";
 import {
-    ComponentProps,
+    AjvMapper,
+    CustomMessageIncomingOutgoing,
+    DataDictionary,
+    MessageSystem,
+    MessageSystemType,
+} from "@microsoft/fast-tooling";
+import FASTMessageSystemWorker from "@microsoft/fast-tooling/dist/message-system.min.js";
+import {
+    DirectionSwitch,
+    downChevron,
+    ThemeSelector,
+    TransparencyToggle,
+    upChevron,
+} from "@microsoft/site-utilities";
+import { ComponentViewConfig, Scenario } from "./fast-components/configs/data.props";
+import * as componentConfigs from "./fast-components/configs/component-configs";
+import { history, menu, schemaDictionary } from "./config";
+import style from "./explorer.style";
+import {
     ExplorerHandledProps,
     ExplorerProps,
     ExplorerState,
     ExplorerUnhandledProps,
-    ThemeName,
-    ViewConfig,
 } from "./explorer.props";
+import { previewReady } from "./preview";
+
+export const previewBackgroundTransparency: string = "PREVIEW::TRANSPARENCY";
+export const previewDirection: string = "PREVIEW::DIRECTION";
+export const previewTheme: string = "PREVIEW::THEME";
+let componentLinkedDataId: string = "root";
 
 interface ObjectOfComponentViewConfigs {
-    [key: string]: ComponentViewConfig<any>;
+    [key: string]: ComponentViewConfig;
 }
 
 // Prepends the custom scenario to each components list fo scenarios
@@ -101,7 +90,8 @@ function setViewConfigsWithCustomConfig(
                 scenarios: [
                     {
                         displayName: "Custom",
-                        data: viewConfigs[viewConfigKey].scenarios[0].data,
+                        dataDictionary:
+                            viewConfigs[viewConfigKey].scenarios[0].dataDictionary,
                     },
                 ].concat(viewConfigs[viewConfigKey].scenarios),
             }
@@ -111,8 +101,8 @@ function setViewConfigsWithCustomConfig(
     return componentViewConfigs;
 }
 
-const dark: string = `#333333`;
-const light: string = "#FFFFFF";
+const fastMessageSystemWorker = new FASTMessageSystemWorker();
+let fastMessageSystem: MessageSystem;
 
 class Explorer extends Foundation<
     ExplorerHandledProps,
@@ -128,164 +118,49 @@ class Explorer extends Foundation<
     private viewerContainerRef: React.RefObject<HTMLDivElement> = React.createRef();
     private viewerContentAreaPadding: number = 20;
 
-    private canvasStyleOverrides: ComponentStyleSheet<
-        CanvasClassNamesContract,
-        DesignSystem
-    > = {
-        canvas: {
-            display: "flex",
-            flexDirection: "column",
-        },
-    };
-
-    private checker: string =
-        "url('data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMiAyIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGQ9Ik0xIDJWMGgxdjFIMHYxaDF6IiBmaWxsPSIjMDAwIiBmaWxsLW9wYWNpdHk9Ii4xNSIvPjxwYXRoIGQ9Ik0xIDJWMEgwdjFoMnYxSDF6IiBmaWxsPSIjZmZmIiBmaWxsLW9wYWNpdHk9Ii4xNSIvPjwvc3ZnPg==')";
-
-    private viewerStyleOverrides: (
-        viewConfig: ViewConfig
-    ) => ComponentStyleSheet<Partial<ViewerClassNameContract>, DesignSystem> = memoize(
-        (
-            viewConfig: ViewConfig
-        ): ComponentStyleSheet<Partial<ViewerClassNameContract>, DesignSystem> => ({
-            viewer: {
-                minHeight: "unset",
-                width: "fit-content",
-            },
-            viewer_iframe: {
-                "background-size": "8px 8px",
-                backgroundColor: neutralLayerL1(viewConfig.designSystem),
-                background: viewConfig.transparentBackground
-                    ? `transparent ${toPx(8)}/${toPx(8)} ${this.checker} repeat`
-                    : "unset",
-                ...applyCornerRadius(),
-            },
-        })
-    );
-
-    private formStyleOverrides: ComponentStyleSheet<
-        Partial<FormClassNameContract>,
-        DesignSystem
-    > = {
-        form: {
-            height: "unset",
-            background: "unset",
-            paddingRight: "12px",
-        },
-    };
-
-    private navigationMenuStyleOverrides: ComponentStyleSheet<
-        Partial<NavigationMenuClassNameContract>,
-        DesignSystem
-    > = {
-        navigationMenu: {
-            background: "unset",
-        },
-        navigationMenuItem: {
-            textIndent: "0",
-        },
-        navigationMenuItem_listItem: {
-            paddingLeft: "10px",
-        },
-    };
-
-    private pivotStyleOverrides: ComponentStyleSheet<
-        Partial<PivotClassNameContract>,
-        DesignSystem
-    > = {
-        pivot: {
-            height: "100%",
-            boxSizing: "border-box",
-        },
-        pivot_tabList: {
-            padding: format("{0} {1}", toPx(designUnit), toPx(multiply(designUnit, 2))),
-        },
-        pivot_activeIndicator: {
-            top: "23px",
-        },
-        pivot_tabPanelContent: {
-            padding: format("{0} {1}", toPx(designUnit), toPx(multiply(designUnit, 2))),
-        },
-        pivot_tabPanels: {
-            overflow: "auto",
-            height: "calc(100% - 32px)",
-            borderTop: format<DesignSystem>(
-                "{0} solid {1}",
-                neutralDividerRest,
-                toPx(outlineWidth)
-            ),
-            ...applyScrollbarStyle(),
-        },
-    };
-
-    private devToolsToggleStyles: ComponentStyleSheet<
-        ActionToggleClassNameContract,
-        DesignSystem
-    > = {
-        actionToggle: {
-            position: "absolute",
-            top: toPx(designUnit),
-            right: toPx(multiply(designUnit, 2)),
-        },
-    };
-
-    private toggleStyleOverrides: ComponentStyleSheet<
-        Partial<ToggleClassNameContract>,
-        DesignSystem
-    > = {
-        toggle_toggleButton: {
-            display: "flex",
-        },
-    };
-
-    private labelStyleOverrides: ComponentStyleSheet<
-        Partial<LabelClassNameContract>,
-        DesignSystem
-    > = {
-        label: {
-            margin: format("0 {0} 0 {1}", toPx(designUnit), horizontalSpacing()),
-        },
-    };
-
-    private selectStyleOverrides: ComponentStyleSheet<
-        Partial<SelectClassNameContract>,
-        DesignSystem
-    > = {
-        select: {
-            marginRight: "auto",
-            zIndex: "1",
-        },
-    };
-
-    private resolveSchemaById: ((id: string) => any) & MemoizedFunction;
-
     constructor(props: ExplorerProps) {
         super(props);
 
         const locationPathname: string = get(this.props, "location.pathname", "");
+        const componentName: string = this.getComponentNameSpinalCaseByPath(
+            locationPathname
+        );
+        const componentConfig: any = get(
+            setViewConfigsWithCustomConfig(componentConfigs),
+            `${camelCase(componentName)}Config`
+        );
+        const selectedScenarioIndex: number = 1;
 
-        this.resolveSchemaById = memoize(this.getSchemaById);
+        if ((window as any).Worker) {
+            fastMessageSystem = new MessageSystem({
+                webWorker: fastMessageSystemWorker,
+            });
+            new AjvMapper({
+                messageSystem: fastMessageSystem,
+            });
+            fastMessageSystem.add({
+                onMessage: this.handleMessageSystem,
+            });
+        }
 
         this.state = {
-            dataLocation: "",
             width: 0,
             height: 0,
-            scenario: this.getScenarioData(
-                this.getComponentNameSpinalCaseByPath(locationPathname),
-                1
-            ),
-            selectedScenarioIndex: 1,
+            componentName,
+            componentConfig,
+            selectedScenarioIndex,
             locationPathname,
-            theme: ThemeName.light,
-            viewConfig: {
-                designSystem: DesignSystemDefaults,
-                transparentBackground: false,
-            },
+            transparentBackground: false,
             devToolsVisible: true,
+            direction: Direction.ltr,
+            theme: StandardLuminance.DarkMode,
+            previewReady: false,
+            activeDictionaryId: componentLinkedDataId,
         };
     }
 
     public render(): React.ReactNode {
-        if (typeof get(this.state, "scenario.id") === "undefined") {
+        if (typeof this.state.componentName === "undefined") {
             return (
                 <div>
                     <h1>404 - This page does not exist</h1>
@@ -294,66 +169,95 @@ class Explorer extends Foundation<
             );
         }
 
-        const {
-            explorer,
-            explorer_devToolsPanel,
-            explorer_navigationPanel,
-            explorer_paneTitleContainer,
-            explorer_propertiesPanel,
-            explorer_toolbar,
-            explorer_viewerRegion,
-        }: Partial<ExplorerClassNameContract> = this.props.managedClasses;
-
         return (
-            <Background {...this.unhandledProps()} value={neutralLayerL1}>
-                <Container className={classNames(explorer)}>
+            <Background value={neutralLayerL1}>
+                <Container>
                     <Row style={{ flex: "1" }}>
-                        <Pane
-                            className={classNames(explorer_navigationPanel)}
-                            resizable={true}
-                            resizeFrom={PaneResizeDirection.east}
-                        >
-                            <Background value={neutralLayerL3} drawBackground={false}>
-                                <div className={classNames(explorer_paneTitleContainer)}>
-                                    <Heading size={HeadingSize._6}>FAST Explorer</Heading>
-                                </div>
-                                <NavigationMenu
-                                    menu={menu}
-                                    expanded={true}
-                                    activeLocation={this.state.locationPathname}
-                                    onLocationUpdate={this.handleUpdateRoute}
-                                    jssStyleSheet={this.navigationMenuStyleOverrides}
-                                />
+                        <Pane resizable={true} resizeFrom={PaneResizeDirection.east}>
+                            <Background
+                                value={neutralLayerL3}
+                                drawBackground={true}
+                                style={{
+                                    display: "flex",
+                                    height: "32px",
+                                    alignItems: "center",
+                                    justifyContent: "space-between",
+                                    padding: "0 8px",
+                                }}
+                            >
+                                <Heading size={HeadingSize._6}>FAST Explorer</Heading>
                             </Background>
+                            <NavigationMenu
+                                menu={menu}
+                                expanded={true}
+                                activeLocation={this.state.locationPathname}
+                                onLocationUpdate={this.handleUpdateRoute}
+                            />
                         </Pane>
-                        <Canvas jssStyleSheet={this.canvasStyleOverrides}>
-                            <Row fill={true}>
-                                <div style={{ overflow: "auto", width: "100%" }}>
-                                    <Background
-                                        value={neutralLayerL2}
-                                        className={classNames(explorer_toolbar)}
-                                    >
-                                        {this.renderScenarioSelect()}
-                                        {this.renderTransparencyToggle()}
-                                        {this.renderThemeToggle()}
-                                        {this.renderDirectionToggle()}
-                                        {this.renderAccentColorPicker()}
-                                    </Background>
-                                    <div
-                                        ref={this.viewerContainerRef}
-                                        className={classNames(explorer_viewerRegion)}
-                                    >
-                                        <div
-                                            style={{
-                                                padding: toPx(
-                                                    this.viewerContentAreaPadding
-                                                ),
-                                                minWidth: "fit-content",
-                                            }}
-                                        >
-                                            {this.renderViewer()}
-                                        </div>
+                        <div
+                            style={{
+                                display: "flex",
+                                flex: 1,
+                                flexDirection: "column",
+                            }}
+                        >
+                            <Row style={{ overflow: "visible", zIndex: 1 }}>
+                                <Background
+                                    value={neutralLayerL2}
+                                    drawBackground={true}
+                                    style={{
+                                        width: "100%",
+                                        display: "flex",
+                                        alignItems: "center",
+                                        justifyContent: "space-between",
+                                        padding: "0 8px",
+                                    }}
+                                >
+                                    {this.renderScenarioSelect()}
+                                    <div style={{ display: "flex" }}>
+                                        <TransparencyToggle
+                                            id={"transparency-toggle"}
+                                            transparency={
+                                                this.state.transparentBackground
+                                            }
+                                            onUpdateTransparency={
+                                                this.handleUpdateTransparency
+                                            }
+                                            disabled={!this.state.previewReady}
+                                        />
+                                        <DirectionSwitch
+                                            id={"direction-switch"}
+                                            direction={this.state.direction}
+                                            onUpdateDirection={this.handleUpdateDirection}
+                                            disabled={!this.state.previewReady}
+                                        />
+                                        <ThemeSelector
+                                            id={"theme-selector"}
+                                            theme={this.state.theme}
+                                            onUpdateTheme={this.handleUpdateTheme}
+                                            disabled={!this.state.previewReady}
+                                        />
                                     </div>
+                                </Background>
+                            </Row>
+                            <Row fill={true}>
+                                <div
+                                    ref={this.viewerContainerRef}
+                                    style={{
+                                        padding: `${this.viewerContentAreaPadding}px`,
+                                        width: "100%",
+                                        height: "100%",
+                                    }}
+                                >
+                                    <ModularViewer
+                                        iframeSrc={"/preview"}
+                                        width={this.state.width}
+                                        height={this.state.height}
+                                        onUpdateHeight={this.handleUpdateHeight}
+                                        onUpdateWidth={this.handleUpdateWidth}
+                                        responsive={true}
+                                        messageSystem={fastMessageSystem as MessageSystem}
+                                    />
                                 </div>
                             </Row>
                             <Row
@@ -365,12 +269,15 @@ class Explorer extends Foundation<
                             >
                                 <Background
                                     value={neutralLayerL2}
-                                    className={classNames(explorer_devToolsPanel)}
+                                    style={{
+                                        width: "100%",
+                                        height: "100%",
+                                        overflow: "auto",
+                                    }}
                                 >
                                     <Pivot
                                         label={"documentation"}
                                         items={this.renderPivotItems()}
-                                        jssStyleSheet={this.pivotStyleOverrides}
                                     />
                                     <ActionToggle
                                         appearance={ActionToggleAppearance.stealth}
@@ -379,24 +286,18 @@ class Explorer extends Foundation<
                                         unselectedLabel={"Development tools collapsed"}
                                         unselectedGlyph={upChevron}
                                         selected={this.state.devToolsVisible}
-                                        jssStyleSheet={this.devToolsToggleStyles}
                                         onToggle={this.handleDevToolsToggle}
+                                        style={{
+                                            position: "absolute",
+                                            top: 0,
+                                            right: 0,
+                                        }}
                                     />
                                 </Background>
                             </Row>
-                        </Canvas>
-                        <Pane
-                            className={classNames(explorer_propertiesPanel)}
-                            resizable={true}
-                            resizeFrom={PaneResizeDirection.west}
-                        >
-                            <Background value={neutralLayerL3} drawBackground={false}>
-                                <Pivot
-                                    label={"properties"}
-                                    items={this.renderPropertyItems()}
-                                    jssStyleSheet={this.pivotStyleOverrides}
-                                />
-                            </Background>
+                        </div>
+                        <Pane>
+                            <ModularForm messageSystem={fastMessageSystem} />
                         </Pane>
                     </Row>
                 </Container>
@@ -407,6 +308,33 @@ class Explorer extends Foundation<
     public componentDidMount(): void {
         this.setViewerToFullSize();
     }
+
+    private handleMessageSystem = (e: MessageEvent): void => {
+        const updatedState: Partial<ExplorerState> = {};
+
+        if (e.data.type === MessageSystemType.navigation) {
+            componentLinkedDataId = e.data.activeDictionaryId;
+        }
+
+        if (
+            e.data.type === MessageSystemType.custom &&
+            e.data.action === ViewerCustomAction.response
+        ) {
+            if (e.data.value === previewReady) {
+                fastMessageSystem.postMessage({
+                    type: MessageSystemType.initialize,
+                    dataDictionary: this.getScenarioData(
+                        this.state.componentConfig,
+                        this.state.selectedScenarioIndex
+                    ),
+                    schemaDictionary,
+                });
+                updatedState.previewReady = true;
+            }
+        }
+
+        this.setState(updatedState as ExplorerState);
+    };
 
     private setViewerToFullSize(): void {
         const viewerContainer: HTMLDivElement | null = this.viewerContainerRef.current;
@@ -424,179 +352,14 @@ class Explorer extends Foundation<
                     viewerNode.clientWidth - this.viewerContentAreaPadding * 2;
                 this.setState({
                     width,
-                    height,
+                    height: height - 24, // 24 is height of view label
                 });
             }
         }
     }
 
-    private renderViewer(): React.ReactNode {
-        return (
-            <Viewer
-                iframeSrc={"/preview"}
-                iframePostMessage={this.state.viewConfig.designSystem}
-                width={this.state.width}
-                height={this.state.height}
-                onUpdateHeight={this.handleUpdateHeight}
-                onUpdateWidth={this.handleUpdateWidth}
-                viewerContentProps={this.state.scenario}
-                responsive={true}
-                jssStyleSheet={this.viewerStyleOverrides(this.state.viewConfig)}
-            />
-        );
-    }
-
-    private renderForm(): React.ReactNode {
-        const schema: any = this.resolveSchemaById(get(this.state.scenario, "id"));
-
-        if (typeof schema !== "undefined") {
-            return (
-                <Form
-                    data={get(this.state.scenario, "props")}
-                    onChange={this.handleUpdateData}
-                    schema={schema}
-                    location={{
-                        onChange: this.handleUpdateLocation,
-                        dataLocation: this.state.dataLocation,
-                    }}
-                    childOptions={childOptions}
-                    jssStyleSheet={this.formStyleOverrides}
-                />
-            );
-        }
-    }
-
-    private renderDesignSystemEditor(): React.ReactNode {
-        return (
-            <Form
-                jssStyleSheet={this.formStyleOverrides}
-                schema={designSystemSchema}
-                data={this.state.viewConfig.designSystem}
-                onChange={this.handleUpdateDesignSystem}
-            />
-        );
-    }
-
-    private renderAccentColorPicker(): React.ReactNode {
-        const id: string = uniqueId("accent-color-picker");
-        const {
-            explorer_colorPicker,
-            explorer_viewerControlRegion,
-        }: Partial<ExplorerClassNameContract> = this.props.managedClasses;
-
-        return (
-            <div className={classNames(explorer_viewerControlRegion)}>
-                <Label jssStyleSheet={this.labelStyleOverrides} htmlFor={id}>
-                    Accent color
-                </Label>
-                <input
-                    type={"color"}
-                    id={id}
-                    className={classNames(explorer_colorPicker)}
-                    value={this.state.viewConfig.designSystem.accentBaseColor}
-                    onChange={this.handleAccentColorPickerChange}
-                />
-            </div>
-        );
-    }
-
-    private renderDirectionToggle(): React.ReactNode {
-        const id: string = uniqueId("direction");
-        return (
-            <div
-                className={classNames(
-                    this.props.managedClasses.explorer_viewerControlRegion
-                )}
-            >
-                <Label jssStyleSheet={this.labelStyleOverrides} htmlFor={id}>
-                    RTL
-                </Label>
-                <Toggle
-                    jssStyleSheet={this.toggleStyleOverrides}
-                    inputId={id}
-                    onClick={this.handleUpdateDirection}
-                    selectedMessage={""}
-                    unselectedMessage={""}
-                    statusMessageId={"direction"}
-                />
-            </div>
-        );
-    }
-
-    private renderThemeToggle(): React.ReactNode {
-        const id: string = uniqueId("theme");
-        return (
-            <div
-                className={classNames(
-                    this.props.managedClasses.explorer_viewerControlRegion
-                )}
-            >
-                <Label jssStyleSheet={this.labelStyleOverrides} htmlFor={id}>
-                    Dark mode
-                </Label>
-                <Toggle
-                    jssStyleSheet={this.toggleStyleOverrides}
-                    inputId={id}
-                    onClick={this.handleUpdateTheme}
-                    selectedMessage={""}
-                    unselectedMessage={""}
-                    statusMessageId={"theme"}
-                />
-            </div>
-        );
-    }
-
-    private renderTransparencyToggle(): React.ReactNode {
-        const id: string = uniqueId("transparency");
-        return (
-            <div
-                className={classNames(
-                    this.props.managedClasses.explorer_viewerControlRegion
-                )}
-            >
-                <Label jssStyleSheet={this.labelStyleOverrides} htmlFor={id}>
-                    Transparent
-                </Label>
-                <Toggle
-                    jssStyleSheet={this.toggleStyleOverrides}
-                    inputId={id}
-                    onClick={this.handleUpdateTransparency}
-                    selectedMessage={""}
-                    unselectedMessage={""}
-                    statusMessageId={"transparency"}
-                />
-            </div>
-        );
-    }
-
     private renderPivotItems(): TabsItem[] {
         return [
-            {
-                tab: (className: string): React.ReactNode => {
-                    return (
-                        <Typography
-                            className={className}
-                            size={TypographySize._8}
-                            onClick={this.handleDevToolsTabTriggerClick}
-                        >
-                            Code Preview
-                        </Typography>
-                    );
-                },
-                content: (className: string): React.ReactNode => {
-                    return (
-                        <div className={className}>
-                            <SyntaxHighlighter
-                                language="jsx"
-                                style={syntaxHighlighterStyles}
-                            >
-                                {this.getCodePreview()}
-                            </SyntaxHighlighter>
-                        </div>
-                    );
-                },
-                id: "codePreview",
-            },
             {
                 tab: (className: string): React.ReactNode => {
                     return (
@@ -610,20 +373,9 @@ class Explorer extends Foundation<
                     );
                 },
                 content: (className: string): React.ReactNode => {
-                    const componentName: string = this.getComponentNameSpinalCaseByPath(
-                        this.state.locationPathname
-                    );
-                    const Guidance: React.ComponentClass = get(
-                        setViewConfigsWithCustomConfig(
-                            componentViewConfigsWithoutCustomConfig
-                        ),
-                        `${camelCase(componentName)}Config.guidance`,
-                        null
-                    ) as any;
-
                     return (
                         <div className={className}>
-                            <Guidance />
+                            <this.state.componentConfig.guidance />
                         </div>
                     );
                 },
@@ -642,67 +394,31 @@ class Explorer extends Foundation<
                     );
                 },
                 content: (className: string): React.ReactNode => {
-                    const schema: any = this.resolveSchemaById(
-                        get(this.state.scenario, "id")
-                    );
-
-                    if (typeof schema !== "undefined") {
+                    if (typeof this.state.componentConfig.schema !== "undefined") {
                         return (
                             <div className={className}>
-                                <pre>{JSON.stringify(schema, null, 2)}</pre>
+                                <pre>
+                                    {JSON.stringify(
+                                        this.state.componentConfig.schema,
+                                        null,
+                                        2
+                                    )}
+                                </pre>
                             </div>
                         );
                     }
+
+                    return null;
                 },
                 id: "schema",
             },
         ];
     }
 
-    private renderPropertyItems(): TabsItem[] {
-        return [
-            {
-                tab: (className: string): React.ReactNode => {
-                    return (
-                        <Typography className={className} size={TypographySize._8}>
-                            Properties
-                        </Typography>
-                    );
-                },
-                content: (className: string): React.ReactNode => {
-                    return <div className={className}>{this.renderForm()}</div>;
-                },
-                id: "properties",
-            },
-            {
-                tab: (className: string): React.ReactNode => {
-                    return (
-                        <Typography
-                            className={className}
-                            size={TypographySize._8}
-                            onClick={this.handleDevToolsTabTriggerClick}
-                        >
-                            Design system
-                        </Typography>
-                    );
-                },
-                content: (className: string): React.ReactNode => {
-                    return (
-                        <div className={className}>{this.renderDesignSystemEditor()}</div>
-                    );
-                },
-                id: "designSystem",
-            },
-        ];
-    }
-
     private renderScenarioSelect(): React.ReactNode {
-        const componentName: string = this.getComponentNameSpinalCaseByPath(
-            this.state.locationPathname
-        );
-        const scenarioOptions: Array<Scenario<any>> = get(
-            setViewConfigsWithCustomConfig(componentViewConfigsWithoutCustomConfig)[
-                `${camelCase(componentName)}Config`
+        const scenarioOptions: Array<Scenario> = get(
+            setViewConfigsWithCustomConfig(componentConfigs)[
+                `${camelCase(this.state.componentName)}Config`
             ],
             "scenarios"
         );
@@ -710,7 +426,6 @@ class Explorer extends Foundation<
         if (Array.isArray(scenarioOptions)) {
             return (
                 <Select
-                    jssStyleSheet={this.selectStyleOverrides}
                     onValueChange={this.handleUpdateScenario}
                     defaultSelection={[scenarioOptions[1].displayName]}
                     selectedItems={[
@@ -723,10 +438,8 @@ class Explorer extends Foundation<
         }
     }
 
-    private renderScenarioOptions(
-        scenarioOptions: Array<Scenario<any>>
-    ): React.ReactNode {
-        return scenarioOptions.map((scenarioOption: Scenario<any>, index: number) => {
+    private renderScenarioOptions(scenarioOptions: Array<Scenario>): React.ReactNode {
+        return scenarioOptions.map((scenarioOption: Scenario, index: number) => {
             return (
                 <SelectOption
                     key={index}
@@ -743,108 +456,76 @@ class Explorer extends Foundation<
         return paths[paths.length - 1];
     }
 
-    private getSchemaById(id: string): any | void {
-        const childOption: FormChildOptionItem | void = childOptions.find(
-            (componentOption: any): any => {
-                return get(componentOption, "schema.id") === id;
-            }
-        );
-
-        if (typeof childOption !== "undefined") {
-            return get(childOption, "schema");
-        }
-    }
-
-    private getCodePreview(): string | null {
-        return typeof this.state.scenario !== "undefined" &&
-            Array.isArray(childOptions) &&
-            childOptions.length > 0
-            ? mapDataToCodePreview({
-                  data: this.state.scenario,
-                  childOptions: childOptions as CodePreviewChildOption[],
-              })
-            : null;
-    }
-
-    private getScenarioData<T>(
-        componentName: string,
+    private getScenarioData(
+        componentConfig: ComponentViewConfig,
         index?: number
-    ): ComponentProps<T> | void {
+    ): DataDictionary<unknown> {
         // cloning when the scenario data is fetched as there appears to be
         // a mutation happening in one of the Form
-        return {
-            id: get(
-                setViewConfigsWithCustomConfig(componentViewConfigsWithoutCustomConfig)[
-                    `${camelCase(componentName)}Config`
-                ],
-                "schema.id"
-            ),
-            props:
-                typeof index === "number"
-                    ? (get(
-                          setViewConfigsWithCustomConfig(
-                              componentViewConfigsWithoutCustomConfig
-                          ),
-                          `${camelCase(componentName)}Config.scenarios[${index}].data`,
-                          {}
-                      ) as T)
-                    : (get(
-                          setViewConfigsWithCustomConfig(
-                              componentViewConfigsWithoutCustomConfig
-                          ),
-                          `${camelCase(componentName)}Config.scenarios[0].data`,
-                          {}
-                      ) as T),
-        };
+        const dataDictionary: DataDictionary<unknown> =
+            typeof index === "number"
+                ? componentConfig.scenarios[index].dataDictionary
+                : componentConfig.scenarios[0].dataDictionary;
+
+        return dataDictionary;
     }
 
-    private handleUpdateDirection = (): void => {
+    private handleUpdateTheme = (): void => {
+        const updatedTheme: StandardLuminance =
+            this.state.theme === StandardLuminance.DarkMode
+                ? StandardLuminance.LightMode
+                : StandardLuminance.DarkMode;
+
         this.setState({
-            viewConfig: {
-                designSystem: {
-                    ...this.state.viewConfig.designSystem,
-                    direction:
-                        this.state.viewConfig.designSystem.direction === Direction.ltr
-                            ? Direction.rtl
-                            : Direction.ltr,
-                },
-                transparentBackground: this.state.viewConfig.transparentBackground,
-            },
+            theme: updatedTheme,
         });
+
+        fastMessageSystem.postMessage({
+            type: MessageSystemType.custom,
+            action: ViewerCustomAction.response,
+            id: previewTheme,
+            value: updatedTheme,
+        } as CustomMessageIncomingOutgoing);
+    };
+
+    private handleUpdateDirection = (): void => {
+        const updatedDirection: Direction =
+            this.state.direction === Direction.ltr ? Direction.rtl : Direction.ltr;
+        this.setState({
+            direction: updatedDirection,
+        });
+
+        fastMessageSystem.postMessage({
+            type: MessageSystemType.custom,
+            action: ViewerCustomAction.response,
+            id: previewDirection,
+            value: updatedDirection,
+        } as CustomMessageIncomingOutgoing);
     };
 
     private handleUpdateScenario = (
         newValue: string | string[],
-        selectedItems: ListboxItemProps[],
-        /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
-        displayString: string
+        selectedItems: ListboxItemProps[]
     ): void => {
-        this.setState({
-            scenario: this.getScenarioData(
-                this.getComponentNameSpinalCaseByPath(this.state.locationPathname),
-                parseInt(selectedItems[0].value, 10)
-            ),
-            selectedScenarioIndex: parseInt(selectedItems[0].value, 10),
-        });
-    };
+        const selectedScenarioIndex: number = parseInt(selectedItems[0].value, 10);
 
-    private handleUpdateData = (data: any): void => {
-        this.setState({
-            scenario: {
-                id: get(this.state.scenario, "id"),
-                props: data,
+        this.setState(
+            {
+                selectedScenarioIndex,
             },
-            selectedScenarioIndex: 0,
-        });
-    };
-
-    private handleUpdateDesignSystem = (data: DesignSystem): void => {
-        this.setState({
-            viewConfig: {
-                designSystem: data,
-                transparentBackground: this.state.viewConfig.transparentBackground,
-            },
-        });
+            () => {
+                if ((window as any).Worker && fastMessageSystem) {
+                    fastMessageSystem.postMessage({
+                        type: MessageSystemType.initialize,
+                        data: this.getScenarioData(
+                            this.state.componentConfig,
+                            selectedScenarioIndex
+                        ),
+                        schemaDictionary,
+                    });
+                }
+            }
+        );
     };
 
     private handleUpdateHeight = (updatedHeight: number): void => {
@@ -859,20 +540,26 @@ class Explorer extends Foundation<
         });
     };
 
-    private handleUpdateLocation = (dataLocation: string): void => {
-        this.setState({
-            dataLocation,
-        });
-    };
-
     private handleUpdateRoute = (route: string): void => {
+        const componentName: string = this.getComponentNameSpinalCaseByPath(route);
+        const componentConfig: any = get(
+            setViewConfigsWithCustomConfig(componentConfigs),
+            `${camelCase(componentName)}Config`
+        );
+
+        if ((window as any).Worker && fastMessageSystem) {
+            fastMessageSystem.postMessage({
+                type: MessageSystemType.initialize,
+                dataDictionary: this.getScenarioData(componentConfig, 1),
+                schemaDictionary,
+            });
+        }
+
         this.setState(
             {
                 locationPathname: route,
-                scenario: this.getScenarioData(
-                    this.getComponentNameSpinalCaseByPath(route),
-                    1
-                ),
+                componentName,
+                componentConfig,
                 selectedScenarioIndex: 1,
             },
             () => {
@@ -881,57 +568,17 @@ class Explorer extends Foundation<
         );
     };
 
-    private handleUpdateTheme = (): void => {
-        const isLightMode: boolean = this.state.theme === ThemeName.light;
-        const updatedThemeColor: string = isLightMode ? dark : light;
-        const updatedLuminance: number = isLightMode
-            ? StandardLuminance.DarkMode
-            : StandardLuminance.LightMode;
-        this.setState({
-            theme: isLightMode ? ThemeName.dark : ThemeName.light,
-            viewConfig: {
-                designSystem: {
-                    ...this.state.viewConfig.designSystem,
-                    baseLayerLuminance: updatedLuminance,
-                    backgroundColor: updatedThemeColor,
-                },
-                transparentBackground: this.state.viewConfig.transparentBackground,
-            },
-        });
-    };
-
     private handleUpdateTransparency = (): void => {
         this.setState({
-            viewConfig: {
-                designSystem: {
-                    ...this.state.viewConfig.designSystem,
-                },
-                transparentBackground: !this.state.viewConfig.transparentBackground,
-            },
+            transparentBackground: !this.state.transparentBackground,
         });
-    };
 
-    /**
-     * Event handler for all color input changes
-     */
-    private handleAccentColorPickerChange = (
-        e: React.FormEvent<HTMLInputElement>
-    ): void => {
-        const value: string = e.currentTarget.value;
-        const accentPaletteSource: ColorRGBA64 | null = parseColor(value);
-        if (accentPaletteSource !== null) {
-            const palette: string[] = createColorPalette(accentPaletteSource);
-            this.setState({
-                viewConfig: {
-                    designSystem: {
-                        ...this.state.viewConfig.designSystem,
-                        accentBaseColor: value.toUpperCase(),
-                        accentPalette: palette,
-                    },
-                    transparentBackground: this.state.viewConfig.transparentBackground,
-                },
-            });
-        }
+        fastMessageSystem.postMessage({
+            type: MessageSystemType.custom,
+            action: ViewerCustomAction.response,
+            id: previewBackgroundTransparency,
+            value: !this.state.transparentBackground,
+        } as CustomMessageIncomingOutgoing);
     };
 
     private handleDevToolsToggle = (
