@@ -94,7 +94,7 @@
     "@types/node": "^9.4.7",
     "babel-core": "^7.0.0-bridge.0",
     "babel-preset-env": "^1.6.1",
-    "chalk": "^2.4.2",
+    "chalk": "^4.0.0",
     "docusaurus-init": "^1.11.0",
     "dotenv": "^6.0.0",
     "eyes.selenium": "3.6.2",
@@ -111,7 +111,7 @@
     "typedoc": "^0.14.2",
     "typedoc-plugin-markdown": "^2.2.17",
     "typescript": "3.3.3",
-    "yargs": "^11.0.0"
+    "yargs": "^15.3.1"
   },
   "dependencies": {
     "saucelabs": "^1.5.0",
