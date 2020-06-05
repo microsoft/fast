@@ -17,10 +17,49 @@ FAST makes heavy use of algorithmic colors; named colors are a product of the *d
 Each color recipe expects as its sole argument the FAST *DesignSystem* object, but there are a few core pieces of data from that object that impact color resolution.
 
 ### Palettes
-Each color recipe operates on a palette. A palette in an array of hexadecimal colors ordered from light to dark. By default, FAST components leverage the `neutralPalette` and the `accentPalette`. 
+Each color recipe operates on a palette. A palette in an array of hexadecimal colors ordered from light to dark. By default, FAST components leverage the `neutralPalette` and the `accentPalette`.
+
+See [accentPalette](api/fast-components.fastdesignsystemprovider.accentpalette.md) and [neutralPalette](api/fast-components.fastdesignsystemprovider.neutralpalette.md) for more details.
+
+#### Replacing Palettes
+`@microsoft/fast-components` exposes a convenient function to generate a color palette from an arbitrary source color, and this function is how the default `neutralPalette` and `accentPalette` are generated. You can generate a new palette by choosing a palette source color and invoking the palette generation function:
+
+##### Replacing the Neutral Palette
+```js
+import { parseColorHexRGB } from "@microsoft/fast-colors";
+import { createColorPalette } from "@microsoft/fast-components";
+
+const palette = createColorPalette(parseColorHexRGB("#28EBD7"));
+```
+
+The palette can then be applied to the `FASTDesignSystemProvider` to communicate to components the palette change:
+
+```js
+// ...
+const provider = document.querySelector("fast-design-system-provider");
+
+provider.neutralPalette = palette;
+```
+
+##### Replacing the Accent Palette
+The same approach can be taken for the `accentPalette`, but when doing so the `accentPaletteBaseColor` should *also* be replaced:
+
+```js
+import { parseColorHexRGB } from "@microsoft/fast-colors";
+import { createColorPalette } from "@microsoft/fast-components";
+
+const accent = "#F27D07";
+const palette = createColorPalette(parseColorHexRGB(accent));
+const provider = document.querySelector("fast-design-system-provider");
+
+provider.accentBaseColor = accent;
+provider.accentPalette = palette;
+```
 
 ### Background color
 This is the contextual color that the recipe uses to determine what color it is rendering on. The foreground, outline, and divider recipes will use this color to ensure that the color created is accessible and meets contrast requirements. In fill recipes it is sometimes used as the starting location in the appropriate palette to begin resolution.
+
+See [backgroundColor](api/fast-components.fastdesignsystemprovider.backgroundcolor.md) for more details.
 
 ### Offsets
 Some recipes also leverage offset values, typically for *states* (rest, hovered, active, selected). These offsets are used to retrieve a color at the sum of the offset and some reference index (usually the index of the rest color or the background color in the palette).
