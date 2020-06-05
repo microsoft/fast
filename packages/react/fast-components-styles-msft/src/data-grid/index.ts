@@ -13,9 +13,9 @@ import { DesignSystem } from "../design-system";
 import { applyCornerRadius, applyFocusPlaceholderBorder } from "../utilities/border";
 import { outlineWidth } from "../utilities/design-system";
 import {
-    highContrastOutlineFocus,
     highContrastForeground,
     highContrastOptOutProperty,
+    highContrastOutlineFocus,
     highContrastSelector,
 } from "../utilities/high-contrast";
 
