@@ -387,8 +387,8 @@ const sectionTemplate = html<MyElement>`
 export class MyElement extends FASTElement {
      @attr section: string;
 
-		 // Data imported from an API or from local files
-		 // which can be mapped or filtered as necessary
+    // Data imported from an API or from local files
+    // which can be mapped or filtered as necessary
     customerData: Customer[] = customerData;
     productData: Product[] = productData.filter(
         x => x.status === "inStock"
@@ -404,12 +404,12 @@ export class MyElement extends FASTElement {
         product: this.productData,
     };
 
-		// Returns template based on provided section attribute
+    // Returns template based on provided section attribute
     selectTemplate() {
         return this.templateByType[this.section];
     }
 
-		// Returns data based on provided section attribute
+    // Returns data based on provided section attribute
     selectData() {
         return this.dataByType[this.section];
     }
