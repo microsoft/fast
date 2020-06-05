@@ -4,11 +4,13 @@ import { TreeItem } from "./tree-item";
 export const TreeItemTemplate = html<TreeItem>`
     <template
         role="treeitem"
-        tabindex="${x => (x.focusable ? 0 : -1)}"
+        tabindex="${x => (x.disabled ? null : x.focusable ? 0 : -1)}"
         class="${x => (x.expanded ? "expanded" : "")} ${x =>
-            x.selected ? "selected" : ""} ${x => (x.nested ? "nested" : "")}"
+            x.selected ? "selected" : ""} ${x => (x.nested ? "nested" : "")}
+            ${x => (x.disabled ? "disabled" : "")}"
         aria-expanded="${x => (x.hasItems ? x.expanded : void 0)}"
         aria-selected="${x => x.selected}"
+        aria-disabled="${x => x.disabled}"
         @focus=${(x, c) => x.handleFocus(c.event as FocusEvent)}
         @blur=${(x, c) => x.handleBlur(c.event as FocusEvent)}
         @keydown=${(x, c) => x.handleKeyDown(c.event as KeyboardEvent)}

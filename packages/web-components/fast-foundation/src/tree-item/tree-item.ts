@@ -23,6 +23,9 @@ export class TreeItem extends FASTElement {
     @attr({ mode: "boolean" })
     public selected: boolean;
 
+    @attr({ mode: "boolean" })
+    public disabled: boolean;
+
     public expandCollapseButton: HTMLDivElement;
 
     public treeItem: HTMLElement;
@@ -161,14 +164,17 @@ export class TreeItem extends FASTElement {
     };
 
     public handleExpandCollapseButtonClick = (): void => {
-        this.setExpanded(!this.expanded);
+        if (!this.disabled) {
+            this.setExpanded(!this.expanded);
+        }
     };
 
     public handleContainerClick = (e: MouseEvent): void => {
         const expandButton: HTMLElement | null = this.expandCollapseButton;
         if (
-            !isHTMLElement(expandButton) ||
-            (isHTMLElement(expandButton) && expandButton !== e.target)
+            (!isHTMLElement(expandButton) ||
+                (isHTMLElement(expandButton) && expandButton !== e.target)) &&
+            !this.disabled
         ) {
             this.handleSelected(e);
         }
@@ -218,9 +224,16 @@ export class TreeItem extends FASTElement {
         }
 
         const currentIndex: number = visibleNodes.indexOf(this.treeItem);
-
+        const deltaPositive: boolean = delta >= 0;
         if (currentIndex !== -1) {
-            const nextElement: HTMLElement = visibleNodes[currentIndex + delta];
+            let nextElement: HTMLElement = visibleNodes[currentIndex + delta];
+            while (nextElement.hasAttribute("disabled")) {
+                delta = deltaPositive ? delta + 1 : delta - 1;
+                nextElement = visibleNodes[currentIndex + delta];
+                if (!nextElement) {
+                    break;
+                }
+            }
 
             if (isHTMLElement(nextElement)) {
                 nextElement.focus();

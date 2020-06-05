@@ -159,6 +159,11 @@ export const TreeItemStyles = css`
         display: block;
     }
 
+    ${/* want to use --disable-opacity */ ""}
+    :host([disabled]) .content-region {
+        opacity: 0.3;
+    }
+
     :host([selected]) .content-region {
         background: var(--neutral-fill-stealth-selected);
     }
@@ -210,41 +215,37 @@ export const TreeItemStyles = css`
     neutralForegroundRestBehavior,
     forcedColorsStylesheetBehavior(
         css`
-            .positioning-region:hover {
-                forced-color-adjust: none;
-                background: ${SystemColors.Highlight};
-                color: ${SystemColors.HighlightText};
-            }
-            .expand-collapse-glyph {
-                fill: ${SystemColors.ButtonText}
-            }
-            .positioning-region:hover .expand-collapse-glyph {
-                fill: ${SystemColors.HighlightText}
-            }
-            :host(.selected) > .positioning-region  {
-                background: ${SystemColors.Highlight};
-            }
-            :host([selected]:enabled) .content-region {
-                forced-color-adjust: none;
-                border-color: ${SystemColors.FieldText};
-                background: ${SystemColors.Field};
-            }
-            :host(:enabled) .content-region:hover {
-                border-color: ${SystemColors.Highlight};
-                background: ${SystemColors.Field};
-            }
-            :host(:${focusVisible}) .content-region {
-                border-color: ${SystemColors.Highlight};
-                box-shadow: 0 0 0 2px ${SystemColors.Field}, 0 0 0 4px ${SystemColors.FieldText};
-            }
-            :host(.selected:${focusVisible}:enabled) .content-region {
-                border-color: ${SystemColors.Highlight};
-                box-shadow: 0 0 0 2px ${SystemColors.Field}, 0 0 0 4px ${SystemColors.FieldText};
-            }
-            :host(.disabled) {
-                forced-color-adjust: none;
-                opacity: 1;
-            }
-        `
+
+        :host {
+            forced-color-adjust: none;
+            border-color: transparent;
+            background: ${SystemColors.Field};
+        }
+        :host([selected]) .content-region {
+            background: ${SystemColors.Highlight};
+            color: ${SystemColors.HighlightText};
+        }
+        :host([selected]) .content-region .before-content,
+        :host([selected]) .content-region .after-content,
+        :host([selected]) .content-region .expand-collapse-glyph,
+        .positioning-region:hover .before-content,
+        .positioning-region:hover .after-content,
+        .positioning-region:hover .expand-collapse-glyph,
+        :host(:${focusVisible}:hover) .content-region .expand-collapse-glyph {
+            fill: ${SystemColors.HighlightText};
+        }
+        :host(:${focusVisible}) .content-region {
+            border-color: ${SystemColors.Highlight};
+        }
+        :host([selected]:${focusVisible}) .content-region {
+            border-color: ${SystemColors.FieldText};
+            box-shadow: 0 0 0 2px inset ${SystemColors.Field};
+        }
+        :host(:${focusVisible}:hover) .content-region,
+        .positioning-region:hover {
+            background: ${SystemColors.Highlight};
+            color: ${SystemColors.HighlightText};
+        }
+    `
     )
 );
