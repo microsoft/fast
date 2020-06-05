@@ -55,8 +55,7 @@ This code imports the `<fast-design-system-provider>` component as well as the `
 <fast-design-system-provider use-defaults>
   <fast-card>
     <h2>${message}</h2>
-    <fast-button appearance="accent"
-                 click.trigger="onClick()">Click Me</fast-button>
+    <fast-button appearance="accent" click.trigger="onClick()">Click Me</fast-button>
   </fast-card>
 </fast-design-system-provider>
 ```
@@ -154,8 +153,7 @@ This code imports the `<fast-design-system-provider>` component as well as the `
   <fast-design-system-provider use-defaults>
     <fast-card>
       <h2>${message}</h2>
-      <fast-button appearance="accent"
-                   click.trigger="onClick()">Click Me</fast-button>
+      <fast-button appearance="accent" click.trigger="onClick()">Click Me</fast-button>
     </fast-card>
   </fast-design-system-provider>
 </template>
