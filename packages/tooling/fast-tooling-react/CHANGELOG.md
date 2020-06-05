@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.2.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@2.1.0...@microsoft/fast-tooling-react@2.2.0) (2020-06-05)
+
+
+### Features
+
+* update tooling styles to bring them inline with new guidance ([#3205](https://github.com/Microsoft/fast-dna/issues/3205)) ([ff7eca5](https://github.com/Microsoft/fast-dna/commit/ff7eca52a4ed293932cc9ef0a682e32ebb0901de))
+
+
+
+
+
 # [2.1.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@2.0.4...@microsoft/fast-tooling-react@2.1.0) (2020-05-18)
 
 

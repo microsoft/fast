@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.5.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling@0.4.0...@microsoft/fast-tooling@0.5.0) (2020-06-05)
+
+
+### Bug Fixes
+
+* addresses an issue where a linked data being added could be missing a parent data location ([#3188](https://github.com/Microsoft/fast-dna/issues/3188)) ([7f7bc1e](https://github.com/Microsoft/fast-dna/commit/7f7bc1e1f2edc57e589aa726c6cb0e46c7c3cab7))
+* use the vscode values instead of enum in a web component attribute definition ([#3202](https://github.com/Microsoft/fast-dna/issues/3202)) ([b8aad52](https://github.com/Microsoft/fast-dna/commit/b8aad521255d8bdd2ae5a6d877c85891480fc6e7))
+
+
+### Features
+
+* add enums as an option in an attribute ([#3179](https://github.com/Microsoft/fast-dna/issues/3179)) ([843ca0f](https://github.com/Microsoft/fast-dna/commit/843ca0f9636284d972d92e75a7694e7526155043))
+* adds the tag name to the title to provide better documentation and discoverability when a definition is converted to a JSON schema ([#3219](https://github.com/Microsoft/fast-dna/issues/3219)) ([fa225d2](https://github.com/Microsoft/fast-dna/commit/fa225d29f6b90c3db88f49aebb08c12c0aad0bf7))
+
+
+
+
+
 # [0.4.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling@0.3.1...@microsoft/fast-tooling@0.4.0) (2020-05-18)
 
 
