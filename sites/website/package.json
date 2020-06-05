@@ -3,9 +3,10 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "prepare-docs": "node src/prepare-docs.js",
-    "dev": "npm run prepare-docs & docusaurus start",
-    "build": "npm run prepare-docs & docusaurus build"
+    "clean": "node ../../build/clean.js docs",
+    "prepare-docs": "npm run clean && node src/prepare-docs.js",
+    "dev": "npm run prepare-docs && docusaurus start",
+    "build": "npm run prepare-docs && docusaurus build"
   },
   "dependencies": {
     "@docusaurus/core": "^2.0.0-alpha.50",
