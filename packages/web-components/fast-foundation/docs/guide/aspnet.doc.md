@@ -68,7 +68,6 @@ Regardless of which path you've chosen above, you should be all set to start usi
         @RenderBody()
       </main>
     </div>
-
     <footer>
       ...
     </footer>
