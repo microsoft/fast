@@ -842,9 +842,10 @@ export const TreeItemTemplate: import("@microsoft/fast-element").ViewTemplate<Tr
 
 // @public (undocumented)
 export class TreeView extends FASTElement {
-    constructor();
     // (undocumented)
     connectedCallback(): void;
+    // (undocumented)
+    currentSelected: HTMLElement | null;
     // (undocumented)
     focusable: boolean;
     // (undocumented)

@@ -1,5 +1,6 @@
-import { attr, FASTElement, observable } from "@microsoft/fast-element";
+import { attr, DOM, FASTElement, observable } from "@microsoft/fast-element";
 import { isHTMLElement, keyCodeEnd, keyCodeHome } from "@microsoft/fast-web-utilities";
+import { TreeItem } from "../tree-item";
 
 export class TreeView extends FASTElement {
     public treeView: HTMLElement;
@@ -11,12 +12,16 @@ export class TreeView extends FASTElement {
     public focusable: boolean = true;
 
     @observable
+    public currentSelected: HTMLElement | null;
+
+    @observable
     private lastFocused: HTMLElement;
 
     @observable slottedTreeItems: HTMLElement[];
     private slottedTreeItemsChanged(oldValue, newValue): void {
         if (this.$fastController.isConnected) {
             // filter the tree items until that's done for us in the framework
+            this.resetItems();
             this.treeItems = this.getVisibleNodes();
             this.setItems();
         }
@@ -78,19 +83,23 @@ export class TreeView extends FASTElement {
         }
     };
 
-    constructor() {
-        super();
-    }
-
     public connectedCallback(): void {
         super.connectedCallback();
         this.treeItems = this.getVisibleNodes();
+
+        DOM.queueUpdate(() => {
+            //only supporting single select
+            const node: HTMLElement | null = this.treeView.querySelector(
+                "[aria-selected='true']"
+            );
+            if (node) {
+                this.currentSelected = node;
+            }
+        });
         this.ensureFocusability();
     }
 
     public handleKeyDown = (e: KeyboardEvent): void | boolean => {
-        //const nodes: HTMLElement[] = this.getVisibleNodes();
-
         if (!this.treeItems) {
             return true;
         }
@@ -112,13 +121,36 @@ export class TreeView extends FASTElement {
     };
 
     private setItems = (): void => {
-        this.treeItems = this.getVisibleNodes();
         const focusIndex = this.treeItems.findIndex(this.isFocusableElement);
 
         for (let item: number = 0; item < this.treeItems.length; item++) {
             if (item === focusIndex) {
                 this.treeItems[item].setAttribute("tabindex", "0");
             }
+            this.treeItems[item].addEventListener(
+                "selected-change",
+                this.handleItemSelected
+            );
+        }
+    };
+
+    private resetItems = (): void => {
+        for (let item: number = 0; item < this.treeItems.length; item++) {
+            this.treeItems[item].removeEventListener(
+                "selected-change",
+                this.handleItemSelected
+            );
+        }
+    };
+
+    private handleItemSelected = (e: CustomEvent): void => {
+        const newSelection: HTMLElement = e.target as HTMLElement;
+        if (newSelection !== this.currentSelected) {
+            if (this.currentSelected) {
+                this.currentSelected.removeAttribute("selected");
+                (this.currentSelected as TreeItem).selected = false;
+            }
+            this.currentSelected = newSelection;
         }
     };
 

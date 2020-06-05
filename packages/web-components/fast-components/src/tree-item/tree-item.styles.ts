@@ -159,7 +159,7 @@ export const TreeItemStyles = css`
         display: block;
     }
 
-    :host([selected]) > .positioning-region {
+    :host([selected]) .content-region {
         background: var(--neutral-fill-stealth-selected);
     }
 
@@ -210,7 +210,20 @@ export const TreeItemStyles = css`
     neutralForegroundRestBehavior,
     forcedColorsStylesheetBehavior(
         css`
-            .control,
+            .positioning-region:hover {
+                forced-color-adjust: none;
+                background: ${SystemColors.Highlight};
+                color: ${SystemColors.HighlightText};
+            }
+            .expand-collapse-glyph {
+                fill: ${SystemColors.ButtonText}
+            }
+            .positioning-region:hover .expand-collapse-glyph {
+                fill: ${SystemColors.HighlightText}
+            }
+            :host(.selected) > .positioning-region  {
+                background: ${SystemColors.Highlight};
+            }
             :host([selected]:enabled) .content-region {
                 forced-color-adjust: none;
                 border-color: ${SystemColors.FieldText};
@@ -224,7 +237,7 @@ export const TreeItemStyles = css`
                 border-color: ${SystemColors.Highlight};
                 box-shadow: 0 0 0 2px ${SystemColors.Field}, 0 0 0 4px ${SystemColors.FieldText};
             }
-            :host([selected]:${focusVisible}:enabled) .control {
+            :host(.selected:${focusVisible}:enabled) .content-region {
                 border-color: ${SystemColors.Highlight};
                 box-shadow: 0 0 0 2px ${SystemColors.Field}, 0 0 0 4px ${SystemColors.FieldText};
             }

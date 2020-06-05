@@ -166,7 +166,6 @@ export class TreeItem extends FASTElement {
 
     public handleContainerClick = (e: MouseEvent): void => {
         const expandButton: HTMLElement | null = this.expandCollapseButton;
-
         if (
             !isHTMLElement(expandButton) ||
             (isHTMLElement(expandButton) && expandButton !== e.target)
@@ -206,8 +205,6 @@ export class TreeItem extends FASTElement {
     }
 
     private handleSpaceBar(): void {
-        console.log("handleSpaceBar() this.expanded:", this.expanded);
-
         if (typeof this.expanded !== "boolean") {
             return;
         }
@@ -246,6 +243,7 @@ export class TreeItem extends FASTElement {
     }
 
     private handleSelected(e?: Event): void {
+        this.selected = !this.selected;
         this.$emit("selected-change", e);
     }
 

@@ -174,7 +174,6 @@ export class Menu extends FASTElement {
     };
 
     private handleMenuItemFocus = (e: KeyboardEvent): void => {
-        console.log("menu handleMenuItemFocus e:", e);
         const target = e.currentTarget as Element;
         const focusIndex: number = this.menuItems.indexOf(target);
 
