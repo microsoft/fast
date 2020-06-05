@@ -101,4 +101,4 @@ fast-card > fast-button {
 }
 ```
 
-Congratulations! You're now setup to use FAST-DNA with ASP.NET Blazor!
+Congratulations! You're now setup to use FAST-DNA with Blazor!
