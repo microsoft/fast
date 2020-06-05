@@ -371,6 +371,52 @@ export class MyDerivedElement extends MyElement {
 }
 ```
 
+**Example: Dynamic Template and Data**
+
+```ts
+const template = html`${(x, c) => c.parent.selectTemplate()}`;
+
+const sectionTemplate = html<MyElement>`
+    ${repeat(x => x.selectData(), template)}
+`;
+
+@customElement({
+  name: 'my-element',
+  template
+})
+export class MyElement extends FASTElement {
+     @attr section: string;
+
+		 // Data imported from an API or from local files
+		 // which can be mapped or filtered as necessary
+    customerData: Customer[] = customerData;
+    productData: Product[] = productData.filter(
+        x => x.status === "inStock"
+    );
+
+    templateByType = {
+        customer: customerTemplate,
+        product: productTemplate,
+    };
+
+    dataByType = {
+        customer: this.customerData,
+        product: this.productData,
+    };
+
+		// Returns template based on provided section attribute
+    selectTemplate() {
+        return this.templateByType[this.section];
+    }
+
+		// Returns data based on provided section attribute
+    selectData() {
+        return this.dataByType[this.section];
+    }
+}
+```
+
+
 :::important
 When composing templates, extract the composed template to an external variable. If you define the template inline, within your method, property, or expression, then each time that is invoked, a new instance of the template will be created, rather than reusing the template. This will result in an unnecessary performance cost.
 :::
