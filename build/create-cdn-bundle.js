@@ -7,14 +7,15 @@
  * Unminified location: `$CDN/scripts/package-name/version/package-name.js`
  * Minified location  : `$CDN/scripts/package-name/version/package-name.min.js`
  *
- * Usage        : `node build/create-cdn-bundle.js`
- * Usage (debug): `node build/create-cdn-bundle.js --debug`
+ * Usage        : `$ node build/create-cdn-bundle.js`
+ * Usage (debug): `$ node build/create-cdn-bundle.js --debug`
  */
 
 const chalk = require("chalk");
 const fs = require("fs");
 const glob = require("glob");
 const path = require("path");
+const spawn = require("child_process").spawn;
 const yargs = require("yargs");
 
 const rootDir = path.resolve(process.cwd());
@@ -22,6 +23,7 @@ const srcPath = "packages/web-components/*";
 const dstPath = "sites/site-utilities/statics/assets/scripts/";
 
 var debug = false;
+var version = "1.0.0";
 
 /**
  * Obtain command line aguments
@@ -31,27 +33,39 @@ const argv = yargs.argv;
 var debug = argv.debug;
 
 /**
- * Function to get the latest Git Tag
+ * Get the latest Git Tag then parse out the version number from the end
  */
-function getGetLatestGitTag() {
-    // Works on Master only
-    //git describe --exact-match --abbrev=0
-    return "1.0.0";
-}
+const git = spawn("git", ["describe", "--abbrev=0"]);
+
+git.stdout.on("data", data => {
+    version = data.toString().split("@").slice(-1).pop();
+
+    if (debug) {
+        console.log(chalk.green(`Version: ${version}`));
+    }
+    return;
+});
+
+git.on("error", err => {
+    console.log(chalk.red(`Error retrieving git tag version, ${err})`));
+});
+
+git.on("close", function (code) {
+    console.log(chalk.green(`Git Tag version ${version}`));
+    copyPackageBundles(version);
+});
 
 /**
  * Function to copy package distribution bundles to CDN statics folder
  */
-function copyPackageBundles() {
+function copyPackageBundles(version) {
     const resolvedSrcPath = path.resolve(rootDir, srcPath);
     const resolvedDstPath = path.resolve(rootDir, dstPath);
+    console.log(chalk.green("Preparing package bundles ..."));
 
-    glob(resolvedSrcPath, { realpath: true }, function(error, files) {
+    glob(resolvedSrcPath, { realpath: true }, function (error, files) {
         files.forEach(filePath => {
-            const packagename = filePath
-                .split("/")
-                .slice(-1)
-                .pop();
+            const packagename = filePath.split("/").slice(-1).pop();
 
             // Concatenation to combine source folder/file/name paths
             const distFolder = "/dist/";
@@ -64,7 +78,6 @@ function copyPackageBundles() {
             }
 
             // Concatenation to combine destination folder/file/name paths
-            const version = getGetLatestGitTag();
             const versionFolder = "/" + version + "/";
             const dstNameDirPath = resolvedDstPath + "/" + packagename + versionFolder;
             const dstNamePath = dstNameDirPath + packagename + ".js";
@@ -126,8 +139,3 @@ function copyPackageBundles() {
         });
     });
 }
-
-/**
- * Copy all files
- */
-copyPackageBundles();
