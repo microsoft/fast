@@ -23,6 +23,26 @@ export default [
                     },
                 },
             }),
+        ],
+    },
+    {
+        input: "src/index.ts",
+        output: [
+            {
+                file: "dist/fast-components-msft.min.js",
+                format: "esm",
+            },
+        ],
+        plugins: [
+            resolve(),
+            commonJS(),
+            typescript({
+                tsconfigOverride: {
+                    compilerOptions: {
+                        declaration: false,
+                    },
+                },
+            }),
             terser(),
             filesize(),
         ],
