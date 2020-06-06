@@ -22,7 +22,10 @@ import {
     neutralLayerL1,
     StandardLuminance,
 } from "@microsoft/fast-components-styles-msft";
-import { componentDefinitions } from "@microsoft/site-utilities";
+import {
+    componentDefinitions,
+    nativeElementDefinitions,
+} from "@microsoft/site-utilities";
 import {
     PreviewHandledProps,
     PreviewProps,
@@ -163,8 +166,10 @@ class Preview extends Foundation<
             const designSystemProvider = document.createElement(
                 "fast-design-system-provider"
             );
+            const innerDiv = document.createElement("div");
             this.ref.current.innerHTML = "";
 
+            innerDiv.setAttribute("style", "padding: 20px;");
             designSystemProvider.setAttribute("use-defaults", "");
             designSystemProvider.setAttribute(
                 "background-color",
@@ -177,17 +182,22 @@ class Preview extends Foundation<
             if (!this.state.transparentBackground) {
                 designSystemProvider.setAttribute(
                     "style",
-                    "background: var(--background-color); height: 100vh;"
+                    "background: var(--background-color); min-height: 100vh; min-width: 100vw;"
                 );
             }
 
-            designSystemProvider.appendChild(
+            designSystemProvider.appendChild(innerDiv);
+
+            innerDiv.appendChild(
                 mapDataDictionary({
                     dataDictionary: this.state.dataDictionary,
                     schemaDictionary: this.state.schemaDictionary,
                     mapper: htmlMapper({
                         version: 1,
-                        tags: Object.entries(componentDefinitions)
+                        tags: Object.entries({
+                            ...componentDefinitions,
+                            ...nativeElementDefinitions,
+                        })
                             .reduce(
                                 (
                                     previousValue: WebComponentDefinitionTag[],

@@ -1,11 +1,11 @@
+import { fastComponentSchemas } from "@microsoft/site-utilities";
 import textSchema from "../../utilities/text.schema";
 import Guidance from "../../.tmp/anchor/guidance";
-import { webComponentSchemas } from "../";
 import { ComponentViewConfig } from "./data.props";
 
 export const fastAnchorId = "fast-anchor";
 const fastAnchorConfig: ComponentViewConfig = {
-    schema: webComponentSchemas[fastAnchorId],
+    schema: fastComponentSchemas[fastAnchorId],
     guidance: Guidance,
     scenarios: [
         {

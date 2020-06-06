@@ -8,8 +8,8 @@ import {
 } from "@microsoft/fast-components-styles-msft";
 import { StandardLuminance } from "@microsoft/fast-components-styles-msft";
 import Explorer from "./explorer";
+import { accent } from "./explorer.style";
 
-const accent: string = "#FB356D";
 const accentPaletteSource: ColorRGBA64 | null = parseColor(accent);
 let creatorDesignSystem: DesignSystem = DesignSystemDefaults;
 

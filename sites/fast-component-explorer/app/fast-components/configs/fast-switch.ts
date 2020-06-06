@@ -1,10 +1,10 @@
+import { fastComponentSchemas } from "@microsoft/site-utilities";
 import Guidance from "../../.tmp/switch/guidance";
-import { webComponentSchemas } from "../";
 import { ComponentViewConfig } from "./data.props";
 
 export const fastSwitchId = "fast-switch";
 const fastSwitchConfig: ComponentViewConfig = {
-    schema: webComponentSchemas[fastSwitchId],
+    schema: fastComponentSchemas[fastSwitchId],
     guidance: Guidance,
     scenarios: [
         {

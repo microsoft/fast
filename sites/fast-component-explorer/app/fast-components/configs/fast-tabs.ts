@@ -1,13 +1,13 @@
+import { fastComponentSchemas } from "@microsoft/site-utilities";
 import textSchema from "../../utilities/text.schema";
 import Guidance from "../../.tmp/tabs/guidance";
-import { webComponentSchemas } from "../";
 import { ComponentViewConfig } from "./data.props";
 
 export const fastTabsId = "fast-tabs";
 export const fastTabId = "fast-tab";
 export const fastTabPanelId = "fast-tab-panel";
 const fastTabsConfig: ComponentViewConfig = {
-    schema: webComponentSchemas[fastTabsId],
+    schema: fastComponentSchemas[fastTabsId],
     guidance: Guidance,
     scenarios: [
         {
