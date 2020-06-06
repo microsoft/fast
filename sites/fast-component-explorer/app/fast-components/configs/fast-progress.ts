@@ -1,10 +1,10 @@
+import { fastComponentSchemas } from "@microsoft/site-utilities";
 import Guidance from "../../.tmp/progress/guidance";
-import { webComponentSchemas } from "../";
 import { ComponentViewConfig } from "./data.props";
 
 export const fastProgressId = "fast-progress";
 const fastProgressConfig: ComponentViewConfig = {
-    schema: webComponentSchemas[fastProgressId],
+    schema: fastComponentSchemas[fastProgressId],
     guidance: Guidance,
     scenarios: [
         {

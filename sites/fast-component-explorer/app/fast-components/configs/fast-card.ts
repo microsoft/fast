@@ -1,13 +1,13 @@
+import { fastComponentSchemas } from "@microsoft/site-utilities";
 import textSchema from "../../utilities/text.schema";
 import Guidance from "../../.tmp/card/guidance";
-import { webComponentSchemas } from "../";
 import { imageSchema } from "../../utilities";
 import { ComponentViewConfig } from "./data.props";
-import { fastBadgeId } from "./fast-badge";
+import { fastButtonId } from "./fast-button";
 
 export const fastCardId = "fast-card";
 const fastCardConfig: ComponentViewConfig = {
-    schema: webComponentSchemas[fastCardId],
+    schema: fastComponentSchemas[fastCardId],
     guidance: Guidance,
     scenarios: [
         {
@@ -17,6 +17,7 @@ const fastCardConfig: ComponentViewConfig = {
                     root: {
                         schemaId: fastCardId,
                         data: {
+                            style: "width: 300px;",
                             Slot: [
                                 {
                                     id: "Slot0",
@@ -34,7 +35,7 @@ const fastCardConfig: ComponentViewConfig = {
                         },
                         schemaId: imageSchema.id,
                         data: {
-                            src: "https://placehold.it/300x300/414141",
+                            src: "https://placehold.it/300x200/414141",
                         },
                     },
                     Slot1: {
@@ -42,11 +43,19 @@ const fastCardConfig: ComponentViewConfig = {
                             id: "root",
                             dataLocation: "Slot",
                         },
-                        schemaId: fastBadgeId,
+                        schemaId: "div",
                         data: {
+                            style:
+                                "padding: 0 10px 10px; color: var(--neutral-foreground-rest)",
                             Slot: [
                                 {
                                     id: "Slot10",
+                                },
+                                {
+                                    id: "Slot11",
+                                },
+                                {
+                                    id: "Slot12",
                                 },
                             ],
                         },
@@ -56,8 +65,67 @@ const fastCardConfig: ComponentViewConfig = {
                             id: "Slot1",
                             dataLocation: "Slot",
                         },
+                        schemaId: "h2",
+                        data: {
+                            Slot: [
+                                {
+                                    id: "Slot100",
+                                },
+                            ],
+                        },
+                    },
+                    Slot100: {
+                        parent: {
+                            id: "Slot10",
+                            dataLocation: "Slot",
+                        },
                         schemaId: textSchema.id,
-                        data: "Card",
+                        data: "Heading",
+                    },
+                    Slot11: {
+                        parent: {
+                            id: "Slot1",
+                            dataLocation: "Slot",
+                        },
+                        schemaId: "p",
+                        data: {
+                            Slot: [
+                                {
+                                    id: "Slot110",
+                                },
+                            ],
+                        },
+                    },
+                    Slot110: {
+                        parent: {
+                            id: "Slot11",
+                            dataLocation: "Slot",
+                        },
+                        schemaId: textSchema.id,
+                        data:
+                            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris scelerisque varius ornare. Etiam convallis sollicitudin scelerisque. Maecenas in velit vehicula, aliquet orci et, consequat purus. Donec eget sodales lectus, vel sollicitudin ligula. Suspendisse volutpat auctor diam, vel mattis lorem venenatis in.",
+                    },
+                    Slot12: {
+                        parent: {
+                            id: "Slot1",
+                            dataLocation: "Slot",
+                        },
+                        schemaId: fastButtonId,
+                        data: {
+                            Slot: [
+                                {
+                                    id: "Slot120",
+                                },
+                            ],
+                        },
+                    },
+                    Slot120: {
+                        parent: {
+                            id: "Slot12",
+                            dataLocation: "Slot",
+                        },
+                        schemaId: textSchema.id,
+                        data: "Button",
                     },
                 },
                 "root",

@@ -1,11 +1,12 @@
+import { fastComponentSchemas } from "@microsoft/site-utilities";
 import textSchema from "../../utilities/text.schema";
 import Guidance from "../../.tmp/dialog/guidance";
-import { webComponentSchemas } from "../";
 import { ComponentViewConfig } from "./data.props";
+import { fastButtonId } from "./fast-button";
 
 export const fastDialogId = "fast-dialog";
 const fastDialogConfig: ComponentViewConfig = {
-    schema: webComponentSchemas[fastDialogId],
+    schema: fastComponentSchemas[fastDialogId],
     guidance: Guidance,
     scenarios: [
         {
@@ -27,8 +28,63 @@ const fastDialogConfig: ComponentViewConfig = {
                             id: "root",
                             dataLocation: "Slot",
                         },
+                        schemaId: "div",
+                        data: {
+                            style:
+                                "padding: 0 10px 10px; color: var(--neutral-foreground-rest)",
+                            Slot: [
+                                {
+                                    id: "Slot0",
+                                },
+                                {
+                                    id: "Slot1",
+                                },
+                            ],
+                        },
+                    },
+                    Slot0: {
+                        parent: {
+                            id: "Slot",
+                            dataLocation: "Slot",
+                        },
+                        schemaId: "h2",
+                        data: {
+                            Slot: [
+                                {
+                                    id: "Slot00",
+                                },
+                            ],
+                        },
+                    },
+                    Slot00: {
+                        parent: {
+                            id: "Slot0",
+                            dataLocation: "Slot",
+                        },
                         schemaId: textSchema.id,
-                        data: "Dialog",
+                        data: "Dialog with text and a button.",
+                    },
+                    Slot1: {
+                        parent: {
+                            id: "Slot",
+                            dataLocation: "Slot",
+                        },
+                        schemaId: fastButtonId,
+                        data: {
+                            Slot: [
+                                {
+                                    id: "Slot10",
+                                },
+                            ],
+                        },
+                    },
+                    Slot10: {
+                        parent: {
+                            id: "Slot1",
+                            dataLocation: "Slot",
+                        },
+                        schemaId: textSchema.id,
+                        data: "Button",
                     },
                 },
                 "root",

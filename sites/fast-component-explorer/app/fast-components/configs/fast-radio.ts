@@ -1,11 +1,11 @@
+import { fastComponentSchemas } from "@microsoft/site-utilities";
 import textSchema from "../../utilities/text.schema";
 import Guidance from "../../.tmp/radio/guidance";
-import { webComponentSchemas } from "../";
 import { ComponentViewConfig } from "./data.props";
 
 export const fastRadioId = "fast-radio";
 const fastRadioConfig: ComponentViewConfig = {
-    schema: webComponentSchemas[fastRadioId],
+    schema: fastComponentSchemas[fastRadioId],
     guidance: Guidance,
     scenarios: [
         {

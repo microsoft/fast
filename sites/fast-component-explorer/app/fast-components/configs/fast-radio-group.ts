@@ -1,13 +1,12 @@
+import { fastComponentSchemas } from "@microsoft/site-utilities";
 import textSchema from "../../utilities/text.schema";
 import Guidance from "../../.tmp/radio-group/guidance";
-import { webComponentSchemas } from "../";
-import { labelSchema } from "../../utilities";
 import { ComponentViewConfig } from "./data.props";
 import { fastRadioId } from "./fast-radio";
 
 export const fastRadioGroupId = "fast-radio-group";
 const fastRadioGroupConfig: ComponentViewConfig = {
-    schema: webComponentSchemas[fastRadioGroupId],
+    schema: fastComponentSchemas[fastRadioGroupId],
     guidance: Guidance,
     scenarios: [
         {
@@ -37,8 +36,10 @@ const fastRadioGroupConfig: ComponentViewConfig = {
                             id: "root",
                             dataLocation: "SlotLabel",
                         },
-                        schemaId: labelSchema.id,
+                        schemaId: "label",
                         data: {
+                            style: "color: var(--neutral-foreground-rest);",
+                            slot: "label",
                             Slot: [
                                 {
                                     id: "Slot00",
