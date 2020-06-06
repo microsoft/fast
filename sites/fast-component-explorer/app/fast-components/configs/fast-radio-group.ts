@@ -1,0 +1,109 @@
+import { fastComponentSchemas } from "@microsoft/site-utilities";
+import textSchema from "../../utilities/text.schema";
+import Guidance from "../../.tmp/radio-group/guidance";
+import { ComponentViewConfig } from "./data.props";
+import { fastRadioId } from "./fast-radio";
+
+export const fastRadioGroupId = "fast-radio-group";
+const fastRadioGroupConfig: ComponentViewConfig = {
+    schema: fastComponentSchemas[fastRadioGroupId],
+    guidance: Guidance,
+    scenarios: [
+        {
+            displayName: "Default",
+            dataDictionary: [
+                {
+                    root: {
+                        schemaId: fastRadioGroupId,
+                        data: {
+                            Slot: [
+                                {
+                                    id: "Slot1",
+                                },
+                                {
+                                    id: "Slot2",
+                                },
+                            ],
+                            SlotLabel: [
+                                {
+                                    id: "Slot0",
+                                },
+                            ],
+                        },
+                    },
+                    Slot0: {
+                        parent: {
+                            id: "root",
+                            dataLocation: "SlotLabel",
+                        },
+                        schemaId: "label",
+                        data: {
+                            style: "color: var(--neutral-foreground-rest);",
+                            slot: "label",
+                            Slot: [
+                                {
+                                    id: "Slot00",
+                                },
+                            ],
+                        },
+                    },
+                    Slot00: {
+                        parent: {
+                            id: "Slot0",
+                            dataLocation: "Slot",
+                        },
+                        schemaId: textSchema.id,
+                        data: "Group label",
+                    },
+                    Slot1: {
+                        parent: {
+                            id: "root",
+                            dataLocation: "Slot",
+                        },
+                        schemaId: fastRadioId,
+                        data: {
+                            Slot: [
+                                {
+                                    id: "Slot10",
+                                },
+                            ],
+                        },
+                    },
+                    Slot10: {
+                        parent: {
+                            id: "Slot1",
+                            dataLocation: "Slot",
+                        },
+                        schemaId: textSchema.id,
+                        data: "Radio label 2",
+                    },
+                    Slot2: {
+                        parent: {
+                            id: "root",
+                            dataLocation: "Slot",
+                        },
+                        schemaId: fastRadioId,
+                        data: {
+                            Slot: [
+                                {
+                                    id: "Slot20",
+                                },
+                            ],
+                        },
+                    },
+                    Slot20: {
+                        parent: {
+                            id: "Slot2",
+                            dataLocation: "Slot",
+                        },
+                        schemaId: textSchema.id,
+                        data: "Radio label 2",
+                    },
+                },
+                "root",
+            ],
+        },
+    ],
+};
+
+export default fastRadioGroupConfig;
