@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import HTML5Backend from "react-dnd-html5-backend";
-import { DragDropContext } from "react-dnd";
+import { DndProvider } from "react-dnd";
 import App from "./app";
 
 /**
@@ -11,10 +11,9 @@ const root: HTMLElement = document.createElement("div");
 root.setAttribute("id", "root");
 document.body.appendChild(root);
 
-const DragDropApp: any = DragDropContext(HTML5Backend)(App);
-
-function render(): void {
-    ReactDOM.render(<DragDropApp />, root);
-}
-
-render();
+ReactDOM.render(
+    <DndProvider backend={HTML5Backend}>
+        <App />
+    </DndProvider>,
+    root
+);

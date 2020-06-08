@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-msft@1.0.0...@microsoft/fast-components-msft@1.1.0) (2020-06-05)
+
+
+### Bug Fixes
+
+* outline on flipper ([#3204](https://github.com/Microsoft/fast-dna/issues/3204)) ([a703703](https://github.com/Microsoft/fast-dna/commit/a7037032b8c5c9abc43e98eb115383b792a145a4))
+* slider vertical navigation and value setting bugs ([#3176](https://github.com/Microsoft/fast-dna/issues/3176)) ([f46d87d](https://github.com/Microsoft/fast-dna/commit/f46d87d8d7dfe9101e0d1d8bec7d8a08097751bb))
+
+
+### Features
+
+* add accordion web component ([#3067](https://github.com/Microsoft/fast-dna/issues/3067)) ([f551378](https://github.com/Microsoft/fast-dna/commit/f55137803551711bef9eeb2c55c8d6f01a3eb74f))
+
+
+
+
+
 # 1.0.0 (2020-05-18)
 
 

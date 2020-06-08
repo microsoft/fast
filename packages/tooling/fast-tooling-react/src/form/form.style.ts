@@ -4,6 +4,7 @@ import {
     cleanListStyle,
     defaultTextSizeCSSProperty,
     gutterCSSProperty,
+    L2CSSProperty,
     L4CSSProperty,
     textColorCSSProperty,
 } from "../style";
@@ -17,6 +18,15 @@ const styles: ComponentStyles<FormClassNameContract, {}> = {
         padding: `0 0 0 ${gutterCSSProperty}`,
         overflow: "auto",
         "font-size": defaultTextSizeCSSProperty,
+        "&::-webkit-scrollbar": {
+            background: L4CSSProperty,
+            width: "8px",
+            height: "8px",
+        },
+        "&::-webkit-scrollbar-thumb": {
+            background: L2CSSProperty,
+            borderRadius: "8px",
+        },
     },
     form_breadcrumbs: {
         display: "flex",

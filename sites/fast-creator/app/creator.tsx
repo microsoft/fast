@@ -2,6 +2,7 @@ import { memoize, uniqueId } from "lodash-es";
 import {
     Background,
     Badge,
+    cardSchema2,
     Heading,
     HeadingSize,
 } from "@microsoft/fast-components-react-msft";

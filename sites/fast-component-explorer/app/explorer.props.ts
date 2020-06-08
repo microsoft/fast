@@ -1,27 +1,7 @@
-import { DesignSystem } from "@microsoft/fast-components-styles-msft";
+import { Direction } from "@microsoft/fast-web-utilities";
+import { StandardLuminance } from "@microsoft/fast-components-styles-msft";
 import { ExplorerClassNameContract } from "./explorer.style";
-
-/**
- * The properties of a component
- */
-export interface ComponentProps<T> {
-    id: string;
-    props: T;
-}
-
-/**
- * The view config
- */
-export interface ViewConfig {
-    /**
-     * Viewer design system
-     */
-    designSystem: DesignSystem;
-    /**
-     * Viewer has transparent background
-     */
-    transparentBackground: boolean;
-}
+import { ComponentViewConfig } from "./fast-components/configs/data.props";
 
 export type ExplorerUnhandledProps = React.HTMLAttributes<HTMLDivElement>;
 
@@ -31,23 +11,7 @@ export interface ExplorerHandledProps {
 
 export type ExplorerProps = ExplorerHandledProps & ExplorerUnhandledProps;
 
-export interface Theme {
-    id: string;
-    displayName: string;
-    background?: string;
-}
-
-export enum ThemeName {
-    dark = "dark",
-    light = "light",
-}
-
 export interface ExplorerState {
-    /**
-     * The current data location
-     */
-    dataLocation: string;
-
     /**
      * The current location path based on route
      */
@@ -64,9 +28,14 @@ export interface ExplorerState {
     height: number;
 
     /**
-     * The scenario
+     * The selected component
      */
-    scenario: ComponentProps<unknown> | void;
+    componentName: string;
+
+    /**
+     * The selected components schema ID
+     */
+    componentConfig: ComponentViewConfig;
 
     /**
      * The selected scenario index
@@ -74,17 +43,32 @@ export interface ExplorerState {
     selectedScenarioIndex: number;
 
     /**
-     * The configuration for the view
+     * Viewer has transparent background
      */
-    viewConfig: ViewConfig;
-
-    /**
-     * The explorer theme
-     */
-    theme: ThemeName;
+    transparentBackground: boolean;
 
     /**
      * Dev tools visible
      */
     devToolsVisible: boolean;
+
+    /**
+     * The direction
+     */
+    direction: Direction;
+
+    /**
+     * The theme
+     */
+    theme: StandardLuminance;
+
+    /**
+     * Whether the preview is available
+     */
+    previewReady: boolean;
+
+    /**
+     * The active dictionary ID
+     */
+    activeDictionaryId: string;
 }
