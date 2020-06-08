@@ -1,5 +1,6 @@
 import { css } from "@microsoft/fast-element";
 import {
+    disabledCursor,
     display,
     focusVisible,
     forcedColorsStylesheetBehavior,
@@ -7,6 +8,7 @@ import {
 
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
+    heightNumber,
     neutralFillStealthActiveBehavior,
     neutralFillStealthHoverBehavior,
     neutralFillStealthRestBehavior,
@@ -26,7 +28,7 @@ export const TreeItemStyles = css`
         background: var(--neutral-fill-stealth-rest);
         cursor: pointer;
         font-family: var(--body-font);
-        --expand-collapse-button-size: calc(var(--height-number) * 1px);
+        --expand-collapse-button-size: calc(${heightNumber} * 1px);
         --tree-item-nested-width: 0;
     }
 
@@ -48,7 +50,7 @@ export const TreeItemStyles = css`
         display: flex;
         position: relative;
         box-sizing: border-box;
-        height: calc(var(--height-number) * 1px);
+        height: calc(${heightNumber} * 1px);
     }
 
     .positioning-region::before {
@@ -73,7 +75,7 @@ export const TreeItemStyles = css`
         align-items: center;
         white-space: nowrap;
         width: 100%;
-        height: calc(var(--height-number) * 1px);
+        height: calc(${heightNumber} * 1px);
         margin-inline-start: calc(var(--design-unit) * 2px + 2px);
         ${
             /* Font size, weight and line height are temporary - 
@@ -162,6 +164,7 @@ export const TreeItemStyles = css`
     ${/* want to use --disable-opacity */ ""}
     :host([disabled]) .content-region {
         opacity: 0.3;
+        cursor: ${disabledCursor};
     }
 
     :host([selected]) .content-region {
@@ -202,7 +205,7 @@ export const TreeItemStyles = css`
 
     ::slotted(fast-tree-item) {
         --tree-item-nested-width: 1em;
-        --expand-collapse-button-nested-width: calc(var(--height-number) * -1px);
+        --expand-collapse-button-nested-width: calc(${heightNumber} * -1px);
     }
 `.withBehaviors(
     neutralFillStealthSelectedBehavior,
