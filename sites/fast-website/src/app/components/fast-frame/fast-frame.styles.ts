@@ -92,6 +92,7 @@ export const FastFrameStyles = css`
         padding: calc(var(--gutter) * 2px);
         background: var(--background-color);
         position: relative;
+        border-radius: 0 calc(var(--corner-radius) * 1px) calc(var(--corner-radius) * 1px) 0;
     }
 
     .image-container {
@@ -238,6 +239,18 @@ export const FastFrameStyles = css`
         min-width: unset;
     }
 
+    fast-tabs::before {
+        content: '';
+        position: absolute;
+        right: 0;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        background: var(--accent-fill-rest);
+        border-radius: calc(var(--corner-radius) * 1px);
+        opacity: 0.15;
+    }
+
     fast-tab-panel {
         background: var(--background-color);
         height: 100%;
@@ -269,6 +282,7 @@ export const FastFrameStyles = css`
 
         .preview {
             grid-template-columns: minMax(300px, auto);
+            border-radius: calc(var(--corner-radius) * 1px);
         }
     
     }
@@ -288,6 +302,7 @@ export const FastFrameStyles = css`
             width: 80%;
             transition: right .5s ease-in-out;
             align-self: center;
+            border-radius: calc(var(--corner-radius) * 1px);
         }
 
         .preview__expanded {
@@ -321,6 +336,7 @@ export const FastFrameStyles = css`
         .preview {
             right: -88%;
             width: 70%;
+            border-radius: calc(var(--corner-radius) * 1px);
         }
 
         .preview__expanded {
