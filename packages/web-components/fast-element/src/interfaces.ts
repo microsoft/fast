@@ -4,6 +4,13 @@
 export type Callable = typeof Function.prototype.call | { call(): void };
 
 /**
+ * Reverses all readonly members, making them mutable.
+ */
+export type Mutable<T> = {
+    -readonly [P in keyof T]: T[P];
+};
+
+/**
  * A readonly, empty array.
  * @remarks
  * Typically returned by APIs that return arrays when there are

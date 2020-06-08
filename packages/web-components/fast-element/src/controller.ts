@@ -4,23 +4,55 @@ import { PropertyChangeNotifier } from "./observation/notifier";
 import { defaultExecutionContext, Observable } from "./observation/observable";
 import { Behavior } from "./directives/behavior";
 import { ElementStyles, StyleTarget } from "./styles";
+import { Mutable } from "./interfaces";
 
 const defaultEventOptions: CustomEventInit = {
     bubbles: true,
     composed: true,
 };
 
+/**
+ * Controls the lifecycle and rendering of a {@link FASTElement}.
+ */
 export class Controller extends PropertyChangeNotifier {
-    public view: ElementView | null = null;
-    public isConnected: boolean = false;
     private boundObservables: Record<string, any> | null = null;
     private behaviors: Behavior[] | null = null;
 
-    public constructor(
-        public readonly element: HTMLElement,
-        public readonly definition: FASTElementDefinition
-    ) {
+    /**
+     * The element being controlled by this controller.
+     */
+    public readonly element: HTMLElement;
+
+    /**
+     * The element definition that instructs this controller
+     * in how to handle rendering and other platform integrations.
+     */
+    public readonly definition: FASTElementDefinition;
+
+    /**
+     * The view associated with the custom element.
+     * @remarks
+     * If `null` then the element is managing its own rendering.
+     */
+    public readonly view: ElementView | null = null;
+
+    /**
+     * Indicates whether or not the custom element has been
+     * connected to the document.
+     */
+    public readonly isConnected: boolean = false;
+
+    /**
+     * Creates a Controller to control the specified element.
+     * @param element - The element to be controlled by this controller.
+     * @param definition - The element definition metadata that instructs this
+     * controller in how to handle rendering and other platform integrations.
+     * @internal
+     */
+    public constructor(element: HTMLElement, definition: FASTElementDefinition) {
         super(element);
+        this.element = element;
+        this.definition = definition;
 
         const template = definition.template;
         const styles = definition.styles;
@@ -64,9 +96,13 @@ export class Controller extends PropertyChangeNotifier {
         }
     }
 
+    /**
+     * Adds styles to this element.
+     * @param styles - The styles to add.
+     */
     public addStyles(
         styles: ElementStyles,
-        target: StyleTarget | null = this.element.shadowRoot
+        /** @internal */ target: StyleTarget | null = this.element.shadowRoot
     ): void {
         if (target !== null) {
             styles.addStylesTo(target);
@@ -79,6 +115,10 @@ export class Controller extends PropertyChangeNotifier {
         }
     }
 
+    /**
+     * Removes styles from this element.
+     * @param styles - the styles to remove.
+     */
     public removeStyles(styles: ElementStyles): void {
         const target = this.element.shadowRoot;
 
@@ -93,6 +133,10 @@ export class Controller extends PropertyChangeNotifier {
         }
     }
 
+    /**
+     * Adds behaviors to this element.
+     * @param behaviors - The behaviors to add.
+     */
     public addBehaviors(behaviors: ReadonlyArray<Behavior>): void {
         const targetBehaviors = this.behaviors || (this.behaviors = []);
         const length = behaviors.length;
@@ -110,6 +154,10 @@ export class Controller extends PropertyChangeNotifier {
         }
     }
 
+    /**
+     * Removes behaviors from this element.
+     * @param behaviors - The behaviors to remove.
+     */
     public removeBehaviors(behaviors: ReadonlyArray<Behavior>): void {
         const targetBehaviors = this.behaviors;
 
@@ -136,6 +184,9 @@ export class Controller extends PropertyChangeNotifier {
         }
     }
 
+    /**
+     * Runs connected lifecycle behavior on the associated element.
+     */
     public onConnectedCallback(): void {
         if (this.isConnected) {
             return;
@@ -170,15 +221,18 @@ export class Controller extends PropertyChangeNotifier {
             }
         }
 
-        this.isConnected = true;
+        (this as Mutable<Controller>).isConnected = true;
     }
 
+    /**
+     * Runs disconnected lifecycle behavior on the associated element.
+     */
     public onDisconnectedCallback(): void {
         if (this.isConnected === false) {
             return;
         }
 
-        this.isConnected = false;
+        (this as Mutable<Controller>).isConnected = false;
 
         const view = this.view;
 
@@ -197,6 +251,12 @@ export class Controller extends PropertyChangeNotifier {
         }
     }
 
+    /**
+     * Runs the attribute changed callback for the associated element.
+     * @param name - The name of the attribute that changed.
+     * @param oldValue - The previous value of the attribute.
+     * @param newValue - The new value of the attribute.
+     */
     public onAttributeChangedCallback(
         name: string,
         oldValue: string,
@@ -209,6 +269,14 @@ export class Controller extends PropertyChangeNotifier {
         }
     }
 
+    /**
+     * Emits a custom HTML event.
+     * @param type - The type name of the event.
+     * @param detail - The event detail object to send with the event.
+     * @param options - The event options. By default bubbles and composed.
+     * @remarks
+     * Only emits events if connected.
+     */
     public emit(
         type: string,
         detail?: any,
@@ -223,6 +291,14 @@ export class Controller extends PropertyChangeNotifier {
         return false;
     }
 
+    /**
+     * Locates or creates a controller for the specified element.
+     * @param element - The element to return the controller for.
+     * @remarks
+     * The specified element must have a {@link FASTElementDefinition}
+     * registered either through the use of the {@link customElement}
+     * decorator or a call to {@link FASTElement.define}.
+     */
     public static forCustomElement(element: HTMLElement): Controller {
         const controller: Controller = (element as any).$fastController;
 

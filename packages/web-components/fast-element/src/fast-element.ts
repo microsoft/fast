@@ -15,18 +15,18 @@ const defaultElementOptions: ElementDefinitionOptions = {};
  */
 export interface FASTElement {
     /**
-     * The underlying controller that manages the lifecycle and rendering of
+     * The underlying controller that handles the lifecycle and rendering of
      * this FASTElement.
      */
     readonly $fastController: Controller;
 
     /**
-     *
+     * Emits a custom HTML event.
      * @param type - The type name of the event.
      * @param detail - The event detail object to send with the event.
      * @param options - The event options. By default bubbles and composed.
      * @remarks
-     * Only emits events if the event is connected.
+     * Only emits events if the element is connected.
      */
     $emit(
         type: string,

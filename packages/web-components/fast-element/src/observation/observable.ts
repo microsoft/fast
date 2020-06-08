@@ -19,14 +19,14 @@ export interface Accessor {
 
     /**
      * Gets the value of the property on the source object.
-     * @param source The source object to access.
+     * @param source - The source object to access.
      */
     getValue(source: any): any;
 
     /**
      * Sets the value of the property on the source object.
-     * @param source The source object to access.
-     * @param value The value to set the property to.
+     * @param source - The source object to access.
+     * @param value - The value to set the property to.
      */
     setValue(source: any, value: any): void;
 }
