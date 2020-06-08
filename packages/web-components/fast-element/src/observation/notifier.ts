@@ -4,8 +4,8 @@
 export interface Subscriber {
     /**
      * Called when a source this instance has subscribed to changes.
-     * @param source The source of the change.
-     * @param args The event args detailing the change that occurred.
+     * @param source - The source of the change.
+     * @param args - The event args detailing the change that occurred.
      */
     handleChange(source: any, args: any): void;
 }
@@ -21,7 +21,7 @@ export interface Notifier {
 
     /**
      * Notifies all subscribers, based on the args.
-     * @param args Data passed along to subscribers during notification.
+     * @param args - Data passed along to subscribers during notification.
      * @remarks
      * In some implementations, the args may be used to target specific subscribers.
      * This is usually in the case where a propertyName was passed during subscription.
@@ -30,8 +30,8 @@ export interface Notifier {
 
     /**
      * Subscribes to notification of changes in an object's state.
-     * @param subscriber The object that is subscribing for change notification.
-     * @param propertyToWatch The name of the property that the subscriber is interested in watching for changes.
+     * @param subscriber - The object that is subscribing for change notification.
+     * @param propertyToWatch - The name of the property that the subscriber is interested in watching for changes.
      * @remarks
      * Some implementation may or may not require the propertyToWatch.
      */
@@ -39,8 +39,8 @@ export interface Notifier {
 
     /**
      * Unsubscribes from notification of changes in an object's state.
-     * @param subscriber The object that is unsubscribing from change notification.
-     * @param propertyToUnwatch The name of the property that the subscriber is no longer interested in watching.
+     * @param subscriber - The object that is unsubscribing from change notification.
+     * @param propertyToUnwatch - The name of the property that the subscriber is no longer interested in watching.
      * @remarks
      * Some implementation may or may not require the propertyToUnwatch.
      */
@@ -100,8 +100,8 @@ export class SubscriberSet implements Notifier {
 
     /**
      * Creates an instance of SubscriberSet for the specified source.
-     * @param source The object source that subscribers will receive notifications from.
-     * @param initialSubscriber An initial subscriber to changes.
+     * @param source - The object source that subscribers will receive notifications from.
+     * @param initialSubscriber - An initial subscriber to changes.
      */
     public constructor(source: any, initialSubscriber?: Subscriber) {
         this.source = source;
@@ -110,7 +110,7 @@ export class SubscriberSet implements Notifier {
 
     /**
      * Checks whether the provided subscriber has been added to this set.
-     * @param subscriber The subscriber to test for inclusion in this set.
+     * @param subscriber - The subscriber to test for inclusion in this set.
      */
     public has(subscriber: Subscriber): boolean {
         return this.sub1 === subscriber || this.sub2 === subscriber;
@@ -118,7 +118,7 @@ export class SubscriberSet implements Notifier {
 
     /**
      * Subscribes to notification of changes in an object's state.
-     * @param subscriber The object that is subscribing for change notification.
+     * @param subscriber - The object that is subscribing for change notification.
      */
     public subscribe(subscriber: Subscriber): void {
         if (this.has(subscriber)) {
@@ -147,7 +147,7 @@ export class SubscriberSet implements Notifier {
 
     /**
      * Unsubscribes from notification of changes in an object's state.
-     * @param subscriber The object that is unsubscribing from change notification.
+     * @param subscriber - The object that is unsubscribing from change notification.
      */
     public unsubscribe(subscriber: Subscriber): void {
         if (this.sub1 === subscriber) {
@@ -159,7 +159,7 @@ export class SubscriberSet implements Notifier {
 
     /**
      * Notifies all subscribers.
-     * @param args Data passed along to subscribers during notification.
+     * @param args - Data passed along to subscribers during notification.
      */
     public notify(args: any): void {
         const sub1 = this.sub1;
@@ -190,7 +190,7 @@ export class PropertyChangeNotifier implements Notifier {
 
     /**
      * Creates an instance of PropertyChangeNotifier for the specified source.
-     * @param source The object source that subscribers will receive notifications from.
+     * @param source - The object source that subscribers will receive notifications from.
      */
     public constructor(source: any) {
         this.source = source;
@@ -198,7 +198,7 @@ export class PropertyChangeNotifier implements Notifier {
 
     /**
      * Notifies all subscribers, based on the specified property.
-     * @param propertyName The property name, passed along to subscribers during notification.
+     * @param propertyName - The property name, passed along to subscribers during notification.
      */
     public notify(propertyName: string): void {
         const subscribers = this.subscribers[propertyName];
@@ -210,8 +210,8 @@ export class PropertyChangeNotifier implements Notifier {
 
     /**
      * Subscribes to notification of changes in an object's state.
-     * @param subscriber The object that is subscribing for change notification.
-     * @param propertyToWatch The name of the property that the subscriber is interested in watching for changes.
+     * @param subscriber - The object that is subscribing for change notification.
+     * @param propertyToWatch - The name of the property that the subscriber is interested in watching for changes.
      */
     public subscribe(subscriber: Subscriber, propertyToWatch: string): void {
         let subscribers = this.subscribers[propertyToWatch];
@@ -227,8 +227,8 @@ export class PropertyChangeNotifier implements Notifier {
 
     /**
      * Unsubscribes from notification of changes in an object's state.
-     * @param subscriber The object that is unsubscribing from change notification.
-     * @param propertyToUnwatch The name of the property that the subscriber is no longer interested in watching.
+     * @param subscriber - The object that is unsubscribing from change notification.
+     * @param propertyToUnwatch - The name of the property that the subscriber is no longer interested in watching.
      */
     public unsubscribe(subscriber: Subscriber, propertyToUnwatch: string): void {
         const subscribers = this.subscribers[propertyToUnwatch];
