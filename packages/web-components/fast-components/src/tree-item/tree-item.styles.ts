@@ -124,8 +124,8 @@ export const TreeItemStyles = css`
         ${
             /* Glyph size is temporary - 
             replace when glyph-size var is added */ ""
-        } width: 16px;
-        height: 16px;
+        } width: 10px;
+        height: 10px;
         pointer-events: none;
         fill: var(--neutral-foreground-rest);
         opacity: 0;
@@ -163,7 +163,7 @@ export const TreeItemStyles = css`
 
     ${/* want to use --disable-opacity */ ""}
     :host([disabled]) .content-region {
-        opacity: 0.3;
+        opacity: var(--disabled-opacity);
         cursor: ${disabledCursor};
     }
 
@@ -197,10 +197,11 @@ export const TreeItemStyles = css`
     }
 
     :host(.nested) .expand-collapse-button {
-        ${/*position: absolute;*/ ""}
+        position: absolute;
         ${
             /* value needs to be localized   left: var(--expand-collapse-button-nested-width, calc(var(--height-number) * -1px)); */ ""
         }
+        left: var(--expand-collapse-button-nested-width, calc(var(--height-number) * -1px));
     }
 
     ::slotted(fast-tree-item) {
