@@ -27,14 +27,41 @@ export class SideNavigation extends FASTElement {
             ? (target.getAttribute("href") as string)
             : (target.parentElement?.getAttribute("href") as string);
 
-        const selectedSection: Element = document.querySelector(link) as Element;
+        const selectedSection: HTMLElement = document.querySelector(link) as HTMLElement;
 
         e.preventDefault();
 
-        if (selectedSection) {
+        if (CSS.supports("scroll-behavior: smooth")) {
             selectedSection.scrollIntoView({
                 behavior: "smooth",
             });
+        } else {
+            const startY: number = self.pageYOffset;
+            const stopY: number = selectedSection.offsetTop;
+            const speed: number = Math.round(stopY / 100);
+            const increment: number = Math.round(stopY / 25);
+            let stepY: number = stopY > startY ? startY + increment : startY - increment;
+            let timer: number = 0;
+
+            if (stopY > startY) {
+                for (var i = startY; i < stopY; i += increment) {
+                    setTimeout("window.scrollTo(0, " + stepY + ")", timer * speed);
+                    stepY += increment;
+                    if (stepY > stopY) {
+                        stepY = stopY;
+                    }
+                    timer++;
+                }
+                return;
+            }
+            for (var i = startY; i > stopY; i -= increment) {
+                setTimeout("window.scrollTo(0, " + stepY + ")", timer * speed);
+                stepY -= increment;
+                if (stepY < stopY) {
+                    stepY = stopY;
+                }
+                timer++;
+            }
         }
     };
 
