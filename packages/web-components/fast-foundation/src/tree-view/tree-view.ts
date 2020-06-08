@@ -124,7 +124,7 @@ export class TreeView extends FASTElement {
         const focusIndex = this.treeItems.findIndex(this.isFocusableElement);
 
         for (let item: number = 0; item < this.treeItems.length; item++) {
-            if (item === focusIndex) {
+            if (item === focusIndex && !this.treeItems[item].hasAttribute("disabled")) {
                 this.treeItems[item].setAttribute("tabindex", "0");
             }
             this.treeItems[item].addEventListener(
