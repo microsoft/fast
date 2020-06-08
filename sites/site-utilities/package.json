@@ -1,6 +1,6 @@
 {
   "name": "@microsoft/site-utilities",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Utilities for the Creator and Component Explorer sites",
   "sideEffects": false,
   "private": true,
@@ -46,8 +46,8 @@
     "typescript": "^3.3.3"
   },
   "dependencies": {
-    "@microsoft/fast-components-react-msft": "^4.30.11",
-    "@microsoft/fast-tooling": "^0.4.0",
-    "@microsoft/fast-tooling-react": "^2.1.0"
+    "@microsoft/fast-components-react-msft": "^4.30.12",
+    "@microsoft/fast-tooling": "^0.5.0",
+    "@microsoft/fast-tooling-react": "^2.2.0"
   }
 }

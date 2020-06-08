@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.10.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-element@0.9.0...@microsoft/fast-element@0.10.0) (2020-06-05)
+
+
+### Features
+
+* **fast-element:** add content composition ([#3182](https://github.com/Microsoft/fast-dna/issues/3182)) ([26c59ea](https://github.com/Microsoft/fast-dna/commit/26c59ead7829f9e54f827811cd6aabfb92d0391b))
+* **website:**  new docusaurus v2 setup with launch toc configuration ([#3159](https://github.com/Microsoft/fast-dna/issues/3159)) ([f12ba16](https://github.com/Microsoft/fast-dna/commit/f12ba1687bb46fd3f6717790b1687b441363671e))
+
+
+
+
+
 # [0.9.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-element@0.8.1...@microsoft/fast-element@0.9.0) (2020-05-18)
 
 

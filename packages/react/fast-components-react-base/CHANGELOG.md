@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.26.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@4.25.11...@microsoft/fast-components-react-base@4.26.0) (2020-06-05)
+
+
+### Bug Fixes
+
+* stackpanel should not throw when itemspan list is too short ([#3151](https://github.com/Microsoft/fast-dna/issues/3151)) ([36ff031](https://github.com/Microsoft/fast-dna/commit/36ff031303431285c350dd5bb6ed5c0359aea74f))
+
+
+### Features
+
+* add data grid to base React component set ([#3158](https://github.com/Microsoft/fast-dna/issues/3158)) ([d2e7ead](https://github.com/Microsoft/fast-dna/commit/d2e7ead60e7973cead222843899829f879b67da0))
+* add first class prop for aria-label to radio and checkbox ([#3163](https://github.com/Microsoft/fast-dna/issues/3163)) ([7322b89](https://github.com/Microsoft/fast-dna/commit/7322b896c1a3794eb32f2261a28a522f66f7979f))
+
+
+
+
+
 ## [4.25.11](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@4.25.10...@microsoft/fast-components-react-base@4.25.11) (2020-05-18)
 
 

@@ -16,7 +16,8 @@ module.exports = (env, args) => {
         devtool: isProduction ? "none" : "inline-source-map",
         entry: {
             main: path.resolve(appDir, "index.tsx"),
-            serviceWorker: path.resolve(appDir, "service-worker-registration.ts"),
+            // Due to issues during development, service workers and the WorkboxPlugin are disabled for now
+            // serviceWorker: path.resolve(appDir, "service-worker-registration.ts"),
             focusVisible: path.resolve(
                 rootNodeModules,
                 "focus-visible/dist/focus-visible.min.js"
@@ -39,7 +40,6 @@ module.exports = (env, args) => {
                             const packageName = module.context.match(
                                 /[\\/]node_modules[\\/](.*?)([\\/]|$)/
                             )[1];
-
                             // npm package names are URL-safe, but some servers don't like @ symbols
                             return `npm.${packageName.replace("@", "")}`;
                         },
@@ -64,6 +64,12 @@ module.exports = (env, args) => {
                         loader: "babel-loader",
                     },
                 },
+                {
+                    test: /message\-system\.min\.js/,
+                    use: {
+                        loader: "worker-loader",
+                    },
+                },
             ],
         },
         plugins: [
@@ -79,9 +85,10 @@ module.exports = (env, args) => {
                 // Remove this to inspect bundle sizes.
                 analyzerMode: "disabled",
             }),
-            new WorkboxPlugin.GenerateSW({
-                exclude: [/\.map$/, /^manifest.*\.js(?:on)?$/, /\.html$/],
-            }),
+            // Due to issues during development, service workers and the WorkboxPlugin are disabled for now
+            // new WorkboxPlugin.GenerateSW({
+            //     exclude: [/\.map$/, /^manifest.*\.js(?:on)?$/, /\.html$/],
+            // }),
             new FaviconsWebpackPlugin(path.resolve(__dirname, "favicon.png")),
         ],
         resolve: {
