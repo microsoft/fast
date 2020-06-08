@@ -124,13 +124,13 @@ export class Tabs extends FASTElement {
      */
     public activetab: HTMLElement;
 
-    private prevActiveTabIndex: number = 0;
-    private activeTabIndex: number = 0;
+    public prevActiveTabIndex: number = 0;
+    public activeTabIndex: number = 0;
     private ticking: boolean = false;
-    private tabIds: Array<string | null>;
+    public tabIds: Array<string | null>;
     private tabpanelIds: Array<string | null>;
 
-    private change = (): void => {
+    public change = (): void => {
         this.$emit("change", this.activetab);
     };
 
@@ -153,7 +153,7 @@ export class Tabs extends FASTElement {
         }
     }
 
-    private setTabs = (): void => {
+    public setTabs = (): void => {
         const gridProperty: string = this.isHorizontal() ? "gridColumn" : "gridRow";
         this.tabIds = this.getTabIds();
         this.tabpanelIds = this.getTabPanelIds();
@@ -192,7 +192,7 @@ export class Tabs extends FASTElement {
         });
     };
 
-    private setTabPanels = (): void => {
+    public setTabPanels = (): void => {
         this.tabIds = this.getTabIds();
         this.tabpanelIds = this.getTabPanelIds();
         this.tabpanels.forEach((tabpanel: HTMLElement, index: number) => {
@@ -224,7 +224,7 @@ export class Tabs extends FASTElement {
         });
     }
 
-    private setComponent(): void {
+    public setComponent(): void {
         if (this.activeTabIndex !== this.prevActiveTabIndex) {
             this.activeid = this.tabIds[this.activeTabIndex] as string;
             this.change();
@@ -286,7 +286,7 @@ export class Tabs extends FASTElement {
         }
     };
 
-    private handleActiveIndicatorPosition() {
+    public handleActiveIndicatorPosition() {
         // Ignore if we click twice on the same tab
         if (
             this.showActiveIndicator &&
@@ -391,7 +391,7 @@ export class Tabs extends FASTElement {
         this.setComponent();
     };
 
-    private focusTab(): void {
+    public focusTab(): void {
         this.tabs[this.activeTabIndex].focus();
     }
 

@@ -230,6 +230,83 @@ export class Card extends FASTElement {
 // @public
 export const CardTemplate: import("@microsoft/fast-element").ViewTemplate<Card, any>;
 
+// Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
+// Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "Carousel" because one of its declarations is marked as @internal
+//
+// @public
+export class Carousel extends Tabs {
+    // @internal (undocumented)
+    activeindicator: boolean;
+    activeSlideId: string;
+    // @internal (undocumented)
+    activeSlideIndex: number;
+    // @internal (undocumented)
+    adjust(adjustment: number): void;
+    arialabel: string;
+    arialabelledby: string;
+    autoplay: boolean;
+    autoplayInterval: number;
+    // @internal (undocumented)
+    basicContent: HTMLDivElement;
+    // @internal (undocumented)
+    change: () => void;
+    // @internal (undocumented)
+    connectedCallback(): void;
+    // @internal (undocumented)
+    disconnectedCallback(): void;
+    // @internal (undocumented)
+    focused: boolean;
+    // @internal (undocumented)
+    handleDefaultFlipperKeypress: (direction: 1 | -1, e: KeyboardEvent) => void;
+    // @internal (undocumented)
+    handleFlipperClick(direction: 1 | -1, e: Event): void;
+    // @internal (undocumented)
+    handleFlipperKeypress: (direction: 1 | -1, e: KeyboardEvent) => void;
+    // @internal (undocumented)
+    handleRotationKeyDown: (e: KeyboardEvent) => void;
+    // @internal (undocumented)
+    items: HTMLElement[];
+    loop: boolean;
+    nextButtonAriaLabel: string;
+    // @internal (undocumented)
+    nextFlipperDefault: HTMLElement;
+    // @internal (undocumented)
+    nextFlipperSlottedItem: HTMLElement[];
+    notabfocus: boolean;
+    pattern: string;
+    paused: boolean;
+    previousButtonAriaLabel: string;
+    // @internal (undocumented)
+    previousFlipperDefault: HTMLElement;
+    // @internal (undocumented)
+    previousFlipperSlottedItem: HTMLElement[];
+    // @internal (undocumented)
+    rotationControlContainer: HTMLElement;
+    // @internal (undocumented)
+    rotationControlDefault: HTMLElement;
+    // @internal (undocumented)
+    setComponent(): void;
+    // @internal (undocumented)
+    tablistRef: HTMLElement;
+    // @internal (undocumented)
+    tabPanelsContainerRef: HTMLElement;
+    }
+
+// @internal
+export interface Carousel extends ARIAGlobalStatesAndProperties {
+}
+
+// @public
+export enum CarouselPattern {
+    // (undocumented)
+    basic = "basic",
+    // (undocumented)
+    tabbed = "tabbed"
+}
+
+// @public
+export const CarouselTemplate: ViewTemplate<Carousel, any>;
+
 // Warning: (ae-forgotten-export) The symbol "FormAssociatedCheckbox" needs to be exported by the entry point index.d.ts
 //
 // @public
@@ -1300,12 +1377,30 @@ export class Tabs extends FASTElement {
     // @internal (undocumented)
     activeIndicatorRef: HTMLElement;
     activetab: HTMLElement;
+    // (undocumented)
+    activeTabIndex: number;
     adjust(adjustment: number): void;
+    // (undocumented)
+    change: () => void;
     // @internal (undocumented)
     connectedCallback(): void;
+    // (undocumented)
+    focusTab(): void;
+    // (undocumented)
+    handleActiveIndicatorPosition(): void;
     orientation: TabsOrientation;
+    // (undocumented)
+    prevActiveTabIndex: number;
+    // (undocumented)
+    setComponent(): void;
+    // (undocumented)
+    setTabPanels: () => void;
+    // (undocumented)
+    setTabs: () => void;
     // @internal (undocumented)
     showActiveIndicator: boolean;
+    // (undocumented)
+    tabIds: Array<string | null>;
     // @internal (undocumented)
     tabpanels: HTMLElement[];
     // @internal (undocumented)
