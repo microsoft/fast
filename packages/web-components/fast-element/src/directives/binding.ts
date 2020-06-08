@@ -263,7 +263,7 @@ export class BindingDirective extends Directive {
      * information stored in the BindingDirective.
      * @param target The target node that the binding behavior should attach to.
      */
-    createBehavior(target: any): BindingBehavior {
+    createBehavior(target: Node): BindingBehavior {
         /* eslint-disable-next-line @typescript-eslint/no-use-before-define */
         return new BindingBehavior(
             target,

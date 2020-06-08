@@ -129,7 +129,7 @@ export class ViewTemplate<TSource = any, TParent = any>
             const hostFactories = this.hostBehaviorFactories!;
 
             for (let i = 0, ii = hostFactories.length; i < ii; ++i, ++behaviorIndex) {
-                behaviors[behaviorIndex] = hostFactories[i].createBehavior(host);
+                behaviors[behaviorIndex] = hostFactories[i].createBehavior(host!);
             }
         }
 

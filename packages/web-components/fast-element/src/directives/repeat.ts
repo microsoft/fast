@@ -236,7 +236,7 @@ export class RepeatDirective extends Directive {
         enableArrayObservation();
     }
 
-    public createBehavior(target: any): RepeatBehavior {
+    public createBehavior(target: Node): RepeatBehavior {
         return new RepeatBehavior(target, this.binding, this.template, this.options);
     }
 }
