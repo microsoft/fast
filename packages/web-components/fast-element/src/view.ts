@@ -18,11 +18,12 @@ export interface View {
     /**
      * Binds a view's behaviors to its binding source.
      * @param source The binding source for the view's binding behaviors.
+     * @param context The execution context to run the view within.
      */
     bind(source: unknown, context: ExecutionContext): void;
 
     /**
-     * Unbinds a view's behaviors from its binding source.
+     * Unbinds a view's behaviors from its binding source and context.
      */
     unbind(): void;
 }
@@ -33,19 +34,18 @@ export interface View {
 export interface ElementView extends View {
     /**
      * Appends the view's DOM nodes to the referenced node.
-     * @param node The parent node to append the view's DOM nodes to.
+     * @param node - The parent node to append the view's DOM nodes to.
      */
     appendTo(node: Node): void;
 }
 
 /**
- * A view representing a range of DOM nodes which can be added/removed adhoc.
+ * A view representing a range of DOM nodes which can be added/removed ad hoc.
  */
 export interface SyntheticView extends View {
     /**
      * The first DOM node in the range of nodes that make up the view.
      */
-
     readonly firstChild: Node;
 
     /**
@@ -55,7 +55,7 @@ export interface SyntheticView extends View {
 
     /**
      * Inserts the view's DOM nodes before the referenced node.
-     * @param node The node to insert the view's DOM before.
+     * @param node - The node to insert the view's DOM before.
      */
     insertBefore(node: Node): void;
 
@@ -80,24 +80,42 @@ const range = document.createRange();
  * The standard View implementation, which also implements ElementView and SyntheticView.
  */
 export class HTMLView implements ElementView, SyntheticView {
+    /**
+     * The data that the view is bound to.
+     */
     public source: any | null = null;
+
+    /**
+     * The execution context the view is running within.
+     */
     public context: ExecutionContext | null = null;
+
+    /**
+     * The first DOM node in the range of nodes that make up the view.
+     */
     public firstChild: Node;
+
+    /**
+     * The last DOM node in the range of nodes that make up the view.
+     */
     public lastChild: Node;
 
     /**
-     *
-     * @param fragment The html fragment that contains the nodes for this view.
-     * @param behaviors The behaviors to be applied to this view.
+     * Constructs an instance of HTMLView.
+     * @param fragment - The html fragment that contains the nodes for this view.
+     * @param behaviors - The behaviors to be applied to this view.
      */
-    constructor(private fragment: DocumentFragment, private behaviors: Behavior[]) {
+    public constructor(
+        private fragment: DocumentFragment,
+        private behaviors: Behavior[]
+    ) {
         this.firstChild = fragment.firstChild!;
         this.lastChild = fragment.lastChild!;
     }
 
     /**
      * Appends the view's DOM nodes to the referenced node.
-     * @param node The parent node to append the view's DOM nodes to.
+     * @param node - The parent node to append the view's DOM nodes to.
      */
     public appendTo(node: Node): void {
         node.appendChild(this.fragment);
@@ -105,7 +123,7 @@ export class HTMLView implements ElementView, SyntheticView {
 
     /**
      * Inserts the view's DOM nodes before the referenced node.
-     * @param node The node to insert the view's DOM before.
+     * @param node - The node to insert the view's DOM before.
      */
     public insertBefore(node: Node): void {
         if (this.fragment.hasChildNodes()) {
@@ -173,8 +191,8 @@ export class HTMLView implements ElementView, SyntheticView {
 
     /**
      * Binds a view's behaviors to its binding source.
-     * @param source The binding source for the view's binding behaviors.
-     * @param context The execution context to run the behaviors within.
+     * @param source - The binding source for the view's binding behaviors.
+     * @param context - The execution context to run the behaviors within.
      */
     public bind(source: unknown, context: ExecutionContext): void {
         const behaviors = this.behaviors;
@@ -222,7 +240,7 @@ export class HTMLView implements ElementView, SyntheticView {
 
     /**
      * Efficiently disposes of a contiguous range of synthetic view instances.
-     * @param views A contiguous range of views to be disposed.
+     * @param views - A contiguous range of views to be disposed.
      */
     public static disposeContiguousBatch(views: SyntheticView[]): void {
         if (views.length === 0) {

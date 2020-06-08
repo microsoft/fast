@@ -305,16 +305,12 @@ export class BindingBehavior implements Behavior {
         public targetName?: string
     ) {}
 
-    /**
-     * @internal
-     */
+    /** @internal */
     handleChange(): void {
         this.updateTarget(this.bindingObserver!.observe(this.source, this.context!));
     }
 
-    /**
-     * @internal
-     */
+    /** @internal */
     handleEvent(event: Event): void {
         setCurrentEvent(event);
         const result = this.binding(this.source, this.context!);

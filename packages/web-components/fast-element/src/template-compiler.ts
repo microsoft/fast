@@ -228,7 +228,7 @@ function compileContent(
  */
 export interface CompilationResult {
     /**
-     * A clonable DocumentFragment representing the compiled HTML.
+     * A cloneable DocumentFragment representing the compiled HTML.
      */
     fragment: DocumentFragment;
     /**
@@ -249,10 +249,10 @@ export interface CompilationResult {
 
 /**
  * Compiles a template and associated directives into a raw compilation
- * result which include a clonable DocumentFragment and factories capable
+ * result which include a cloneable DocumentFragment and factories capable
  * of attaching runtime behavior to nodes within the fragment.
- * @param template The template to compile.
- * @param directives The directives referenced by the template.
+ * @param template - The template to compile.
+ * @param directives - The directives referenced by the template.
  * @remarks
  * The template that is provided for compilation is altered in-place
  * and cannot be compiled again. If the original template must be preserved,

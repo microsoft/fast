@@ -1,15 +1,38 @@
 import { Behavior } from "./directives/behavior";
 
+/**
+ * A node that can be targeted by styles.
+ */
 export interface StyleTarget {
+    /**
+     * Stylesheets to be adopted by the node.
+     */
     adoptedStyleSheets?: CSSStyleSheet[];
 
-    prepend(node: Node): void;
-    removeChild(node: Node): void;
+    /**
+     * Adds styles to the target.
+     * @param styles - The styles element to add.
+     */
+    prepend(styles: HTMLStyleElement): void;
+
+    /**
+     * Removes styles from the target.
+     * @param styles - The styles element to remove.
+     */
+    removeChild(styles: HTMLStyleElement): void;
+
+    /**
+     * Returns all element descendants of node that match selectors.
+     * @param selectors - The CSS selector to use for the query.
+     */
     querySelectorAll<E extends Element = Element>(selectors: string): NodeListOf<E>;
 }
 
 const styleLookup = new Map<string, ElementStyles>();
 
+/**
+ * Represents styles that can be applied to a custom element.
+ */
 export abstract class ElementStyles {
     /** @internal */
     public abstract readonly styles: ReadonlyArray<InjectableStyles>;
@@ -23,6 +46,10 @@ export abstract class ElementStyles {
     /** @internal */
     public abstract removeStylesFrom(target: StyleTarget): void;
 
+    /**
+     * Associates behaviors with this set of styles.
+     * @param behaviors - The behaviors to associate.
+     */
     public withBehaviors(...behaviors: Behavior[]): this {
         (this.behaviors as any) =
             this.behaviors === null ? behaviors : this.behaviors.concat(behaviors);
@@ -30,11 +57,19 @@ export abstract class ElementStyles {
         return this;
     }
 
+    /**
+     * Adds these styles to a global cache for easy lookup by a known key.
+     * @param key - The key to use for lookup and retrieval in the cache.
+     */
     public withKey(key: string): this {
         styleLookup.set(key, this);
         return this;
     }
 
+    /**
+     * Attempts to find cached styles by a known key.
+     * @param key - The key to search the style cache for.
+     */
     public static find(key: string): ElementStyles | null {
         return styleLookup.get(key) || null;
     }
@@ -71,7 +106,7 @@ function reduceBehaviors(
 
 // https://wicg.github.io/construct-stylesheets/
 // https://developers.google.com/web/updates/2019/02/constructable-stylesheets
-export class AdoptedStyleSheetsStyles extends ElementStyles {
+class AdoptedStyleSheetsStyles extends ElementStyles {
     private readonly styleSheets: CSSStyleSheet[];
     public readonly behaviors: ReadonlyArray<Behavior> | null = null;
 
@@ -112,11 +147,10 @@ function getNextStyleClass(): string {
     return `fast-style-class-${++styleClassId}`;
 }
 
-export class StyleElementStyles extends ElementStyles {
+class StyleElementStyles extends ElementStyles {
+    private readonly styleSheets: string[];
+    private readonly styleClass: string;
     public readonly behaviors: ReadonlyArray<Behavior> | null = null;
-
-    private styleSheets: string[];
-    private styleClass: string;
 
     public constructor(public styles: InjectableStyles[]) {
         super();
@@ -138,7 +172,9 @@ export class StyleElementStyles extends ElementStyles {
     }
 
     public removeStylesFrom(target: StyleTarget): void {
-        const styles = target.querySelectorAll(`.${this.styleClass}`);
+        const styles: NodeListOf<HTMLStyleElement> = target.querySelectorAll(
+            `.${this.styleClass}`
+        );
 
         for (let i = 0, ii = styles.length; i < ii; ++i) {
             target.removeChild(styles[i]);
@@ -147,7 +183,7 @@ export class StyleElementStyles extends ElementStyles {
 }
 
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
-export const createStyles: ElementStyleFactory = (() => {
+const createStyles: ElementStyleFactory = (() => {
     if ("adoptedStyleSheets" in window.ShadowRoot.prototype) {
         const styleSheetCache = new Map();
         return (styles: InjectableStyles[]) =>
@@ -158,6 +194,13 @@ export const createStyles: ElementStyleFactory = (() => {
 })();
 /* eslint-enable @typescript-eslint/explicit-function-return-type */
 
+/**
+ * Transforms a template literal string into styles.
+ * @param strings - The string fragments that are interpolated with the values.
+ * @param values - The values that are interpolated with the string fragments.
+ * @remarks
+ * The css helper supports interpolation of strings and ElementStyle instances.
+ */
 export function css(
     strings: TemplateStringsArray,
     ...values: InjectableStyles[]
