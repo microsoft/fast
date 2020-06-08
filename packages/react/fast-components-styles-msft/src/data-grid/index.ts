@@ -49,7 +49,7 @@ const styles: ComponentStyles<DataGridClassNameContract, DesignSystem> = {
         overflow: "hidden",
         padding: format<DesignSystem>("0 {0}", horizontalSpacing(0)),
         ...ellipsis(),
-        "line-height": "26px",
+        "line-height": height(),
     },
     dataGrid_scrollingPanel: {},
     dataGrid_scrollingPanel_items: {},
