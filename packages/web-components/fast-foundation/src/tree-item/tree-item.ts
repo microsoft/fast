@@ -57,8 +57,12 @@ export class TreeItem extends FASTElement {
         // we only want to project the slot of there will be items
         this.hasItems = this.querySelectorAll("[slot='item']").length > 0;
 
-        if (this.hasItems) {
-            this.nested = true;
+        if (this.$fastController.isConnected) {
+            this.items.assignedNodes().forEach((node: HTMLElement) => {
+                if (node instanceof TreeItem) {
+                    (node as TreeItem).nested = true;
+                }
+            });
         }
     }
 
@@ -93,10 +97,6 @@ export class TreeItem extends FASTElement {
             this.notifier.subscribe(this, "render-collapsed-nodes");
             this.renderCollapsedChildren =
                 parentTreeNode.getAttribute("render-collapsed-nodes") === "true";
-        }
-
-        if (this.hasItems) {
-            this.nested = true;
         }
     }
 
