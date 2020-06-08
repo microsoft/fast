@@ -17,13 +17,15 @@ As defined by the W3C:
 
 - **Next and Previous Controls:** Simple buttons [aka flippers] that allow for control of displaying the next and previous slides.
 
+- **Rotation Control:** Simple button controlling the start and stop of automatic slide rotation.
+
 - **Slide Picker:** A control or group of controls that allows the specific choice of slide to display, labeled as the tab list. The default for this can be generated using the `slotted` and `repeater` directives.
 
 - **Autoplay:** Allows the carousel to begin rotating through slides automatically after the carousel loads. Autoplay can be toggled on/off with a button, and automatically stops when any element in the carousel receives keyboard focus or is hovered over.
 
 - **Looping:** Allows the user to navigate from the first slide to the last if the previous button is activated. If on the last slide the user can navigate from the last slide to the first when the next button is activated.
 
-- **ActiveSlideElement:** Provides a reference to the currently active slide from the `change` event.
+- **CarouselElement:** Provides a reference to the currently active slide from the `change` event.
 
 - **ActiveSlideId:** Provides a way to set the active slide.
 
@@ -48,67 +50,79 @@ As defined by the W3C:
 - `aria-labelledby` - optional based on implementation**
 - `aria-label` - optional, based on implementation**
 - `paused` - boolean whether the rotation is paused or not
-- `activeslideid` - string
+- `active-slide-id` / `activeid` - string, active id of slide or tab depending on pattern
+- `pattern` - string matching the ARIA pattern the carousel should follow, basic or tabbed pattern per ARIA spec, defaults to `tabbed` (See the [ARIA Carousel Patterns](https://w3c.github.io/aria-practices/#basic-carousel-elements))
+- `previous-button-aria-label` - string, optional to allow for default slotted content aria-label to be changed
+- `next-button-aria-label` - string, optional to allow for default slotted content aria-label to be changed
 
 ** See the [W3C Specification](https://w3c.github.io/aria-practices/#wai-aria-roles-states-and-properties-4) for requirements and details.
 
 
 *Slots:*
-- `default` - use default slot for slide content
+- `items` - slot for slide content for basic pattern
 - `play-toggle` - the control to toggle if the slides rotate or not
 - `next-button` - the control used to rotate to the next slide
 - `previous-button` - the control used to rotate to the previous slide
-- `tab-list` - the control to select a certain slide
+- `tab` - slot used for tabs of tabbed pattern
+- `tabpanel` - slot used for tabpanels of tabbed pattern
 
 *Events*
-- `change` - callback fired when the slide changes. This updates the `activeslideid` and passes a reference to the active slide. The play/pause state and `activeslideid` can then be read by the author from the reference element, e.g. event.target.paused, event.target.activeslideid
+- `change` - callback fired when the slide changes. Passes a reference to the carousel, which allows the play/pause state and `activeslideid` to be read by the author from the reference element, e.g. event.target.paused, event.target.activeslideid
 
 ### Anatomy and Appearance
 **Structure:**
 
-Notes:
-- The host element handleClick() would use event delegation to check what element was clicked on. Example: If the target was an element with a `[slot="next-button"]` it would trigger the controller method for nextSlide(). This way each element passed in via slot would not needs it's own onClick.
-
+Note: The template will use the *when* directive to switch between Basic and Tabbed patterns, patterns per ARIA spec.
 ```html
-<!-- shadow dom -->
+<!-- basic shadow dom -->
 <div
     class="carousel"
     aria-roledescription="carousel"
     tabindex="-1"
 >
-    <slot>Slide content / items go here. Use multiple item slots to add multiple slides.</slot>
-
-    <slot name="play-toggle"> Default Play Toggle </slot>
-    <slot name="next-button">
-        <fast-flipper direction={FlipperDirection.next} />
-    </slot>
-    <div
-        class="carousel-items"
-        aria-live="off"
-    >
-    {Carousel Items would be inserted here after the controller handles them from the default slot}
-    </div>
     <slot name="previous-button">
         <fast-flipper direction={FlipperDirection.previous} />
     </slot>
-    <slot name="tab-list">{A default tab list would be generated using the `slotted` and `repeater` directives to keep the tab-list in sync with the items from the default slot}</slot>
+    <slot name="next-button">
+        <fast-flipper direction={FlipperDirection.next} />
+    </slot>
+    <slot name="rotation-control"> Default Play Toggle </slot>
+    <slot name="items">Slide content / items go here. Use multiple item slots to add multiple slides.</slot>
 </div>
-<!-- shadow dom -->
+<!-- basic shadow dom -->
+
+<!-- tabbed shadow dom -->
+<div
+    class="carousel"
+    aria-roledescription="carousel"
+    tabindex="-1"
+>
+    <slot name="previous-button">
+        <fast-flipper direction={FlipperDirection.previous} />
+    </slot>
+    <slot name="next-button">
+        <fast-flipper direction={FlipperDirection.next} />
+    </slot>
+    <slot name="rotation-control"> Default Play Toggle </slot>
+    <slot name="tab">Tabs go here</slot>
+    <slot name="tabpanel">Tabpanels with *Slide Content* go here</slot>
+</div>
+<!-- tabbed shadow dom -->
 ```
 
 **Implementation**
 Note: Next and previous buttons will use the fast-flipper as default so the slots will not be required unless a custom one is passed. This example shows custom simple buttons being used.
 
 ```html
-<body>
+<!-- basic implementation -->
     <fast-carousel
         autoplay="true"
         autoplay-interval="6500"
-        loop="true"
         paused
-        aria-labelledby
-        aria-label
-
+        aria-labelledby="some element id"
+        aria-label="some label"
+        pattern="basic"
+    >
         <img slot="item" />
         <p slot="item"> Lorem ipsum... </p> 
         <div slot="item"> some elements... </div>
@@ -118,7 +132,7 @@ Note: Next and previous buttons will use the fast-flipper as default so the slot
             class="next-button"
         >
             <svg class="flipper-svg">
-                <path d="example path..."></path>
+                <path d="example path..." />
             </svg>
         </button>
 
@@ -132,24 +146,67 @@ Note: Next and previous buttons will use the fast-flipper as default so the slot
         </button>
 
         <button
-            slot="play-toggle"
+            slot="rotation-control"
             class="previous-button"
         >
             <svg class="play-svg">
             <path d="example path..."></path>
             </svg>
         </button>
-
-        <div role="tab-list" class="tab-list" aria-label="A carousel of items">
-            <div tabindex="0" role="tab" class="tab-list-tab">Tab 1</div>
-            <div tabindex="-1" role="tab" class="tab-list-tab">Tab 2</div>
-            <div tabindex="-1" role="tab" class="tab-list-tab">Tab 3</div>
-            <div tabindex="-1" role="tab" class="tab-list-tab">Tab 4</div>
-            <div tabindex="-1" role="tab" class="tab-list-tab">Tab 5</div>
-        </div>
-    >
     </fast-carousel>
-</body>
+<!-- basic implementation -->
+
+<!-- tabbed implementation -->
+    <fast-carousel
+        autoplay="true"
+        autoplay-interval="6500"
+        loop="true"
+        paused
+        aria-labelledby="some element id"
+        aria-label="some label"
+    >
+        <fast-tab></fast-tab>
+        <fast-tab></fast-tab>
+        <fast-tab></fast-tab>
+        <fast-tab-panel>
+            <img slot="item" />
+        </fast-tab-panel>
+        <fast-tab-panel>
+            <p slot="item"> Lorem ipsum... </p> 
+        </fast-tab-panel>
+        <fast-tab-panel>
+            <div slot="item"> some elements... </div>
+        </fast-tab-panel>
+        <button
+            slot="next-button"
+            class="next-button"
+        >
+            <svg class="flipper-svg">
+                <path d="example path..." />
+            </svg>
+        </button>
+
+        <button
+            slot="previous-button"
+            class="previous-button"
+        >
+            <svg class="flipper-svg">
+                <path d="example path..."></path>
+            </svg>
+        </button>
+
+        <button
+            slot="rotation-control"
+            class="previous-button"
+        >
+            <svg class="play-svg">
+            <path d="example path..."></path>
+            </svg>
+        </button>
+    </fast-carousel>
+<!-- tabbed implementation -->
+
+
 ```
 
 **Appearance:**
@@ -174,12 +231,12 @@ Parts:
 ### States
 
 - `paused` - if the carousel slide rotation is paused
-- `activeSlideElement` - Holds a reference to the HTMLElement that is the active slide.
+- `carouselElement` - Holds a reference to the HTMLElement that is the carousel for paused, activeslideid to be referenced.
 - `activeslideid` - the active slide id, can be passed by author to take control of the focused slide.
 
 ### Accessibility
 
-The carousel should align to the design pattern and interaction model provided by the W3C: https://w3c.github.io/aria-practices/#carousel
+The carousel should align to the basic and tabbed design patterns and interaction models provided by the W3C: https://w3c.github.io/aria-practices/#carousel
 
 ### Globalization
 

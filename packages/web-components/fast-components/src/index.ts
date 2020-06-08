@@ -6,6 +6,8 @@ export * from "./breadcrumb/index";
 export * from "./breadcrumb-item/index";
 export * from "./button/index";
 export * from "./card/index";
+export * from "./combobox/index";
+export * from "./carousel/index";
 export * from "./checkbox/index";
 export * from "./combobox/index";
 export * from "./color/index";
