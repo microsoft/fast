@@ -16,14 +16,14 @@ export class FastFrame extends FASTElement {
     public accentColor: string = "#F33378";
 
     @attr({ attribute: "background-color" })
-    public backgroundColor: string = "#1F1F1F";
+    public backgroundColor: string = "#212121";
 
     @attr
     public darkMode: boolean = true;
 
     @observable
     public previewBackgroundPalette: string[] = [
-        "#1F1F1F",
+        "#212121",
         "#2B2B2B",
         "#333333",
         "#3B3B3B",

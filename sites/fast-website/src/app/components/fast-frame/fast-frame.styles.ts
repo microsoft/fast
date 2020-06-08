@@ -6,6 +6,7 @@ import {
     accentForegroundRestBehavior,
     neutralForegroundHintBehavior,
     neutralForegroundRestBehavior,
+    neutralFillCardRestBehavior,
 } from "@microsoft/fast-components";
 import { drawerBreakpoint } from "./fast-frame";
 
@@ -16,7 +17,9 @@ export const FastFrameStyles = css`
         color: var(--neutral-foreground-rest);
         box-sizing: border-box;
         text-align: center;
-        width: 100%
+        width: 100%;
+        background: var(--background-color);
+        border-radius: calc(var(--corner-radius) * 1px);
     }
 
     :host {
@@ -40,7 +43,7 @@ export const FastFrameStyles = css`
         flex-direction: column;
         width: 100%;
         text-align: start;
-        background: var(--background-color);
+        background: var(--neutral-fill-card-rest);
         padding: calc(var(--gutter) * 2px);
     }
 
@@ -90,8 +93,9 @@ export const FastFrameStyles = css`
         grid-gap: calc(var(--gutter) * 2px);
         grid-template-columns: auto 300px;
         padding: calc(var(--gutter) * 2px);
-        background: var(--background-color);
+        background: var(--neutral-fill-card-rest);
         position: relative;
+        border-radius: 0 calc(var(--corner-radius) * 1px) calc(var(--corner-radius) * 1px) 0;
     }
 
     .image-container {
@@ -239,8 +243,12 @@ export const FastFrameStyles = css`
     }
 
     fast-tab-panel {
-        background: var(--background-color);
+        background: var(--neutral-fill-card-rest);
         height: 100%;
+    }
+
+    fast-tab[aria-selected="true"] {
+        background: transparent;
     }
 
     fast-radio-group::part(positioning-region) {
@@ -269,6 +277,7 @@ export const FastFrameStyles = css`
 
         .preview {
             grid-template-columns: minMax(300px, auto);
+            border-radius: calc(var(--corner-radius) * 1px);
         }
     
     }
@@ -288,6 +297,7 @@ export const FastFrameStyles = css`
             width: 80%;
             transition: right .5s ease-in-out;
             align-self: center;
+            border-radius: calc(var(--corner-radius) * 1px);
         }
 
         .preview__expanded {
@@ -321,6 +331,7 @@ export const FastFrameStyles = css`
         .preview {
             right: -88%;
             width: 70%;
+            border-radius: calc(var(--corner-radius) * 1px);
         }
 
         .preview__expanded {
@@ -352,5 +363,6 @@ export const FastFrameStyles = css`
     accentForegroundCutRestBehavior,
     accentForegroundRestBehavior,
     neutralForegroundHintBehavior,
-    neutralForegroundRestBehavior
+    neutralForegroundRestBehavior,
+    neutralFillCardRestBehavior
 );
