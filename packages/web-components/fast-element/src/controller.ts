@@ -12,7 +12,7 @@ const defaultEventOptions: CustomEventInit = {
 };
 
 /**
- * Controls the lifecycle and rendering of a {@link FASTElement}.
+ * Controls the lifecycle and rendering of a `FASTElement`.
  */
 export class Controller extends PropertyChangeNotifier {
     private boundObservables: Record<string, any> | null = null;
@@ -297,7 +297,7 @@ export class Controller extends PropertyChangeNotifier {
      * @remarks
      * The specified element must have a {@link FASTElementDefinition}
      * registered either through the use of the {@link customElement}
-     * decorator or a call to {@link FASTElement.define}.
+     * decorator or a call to `FASTElement.define`.
      */
     public static forCustomElement(element: HTMLElement): Controller {
         const controller: Controller = (element as any).$fastController;

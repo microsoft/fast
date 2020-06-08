@@ -16,7 +16,7 @@ export interface ValueConverter {
 
     /**
      * Converts a DOM string to a typed value.
-     * @param value The DOM string to convert to a typed value.
+     * @param value - The DOM string to convert to a typed value.
      */
     fromView(value: string): any;
 }

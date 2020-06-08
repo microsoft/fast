@@ -17,8 +17,8 @@ export interface View {
 
     /**
      * Binds a view's behaviors to its binding source.
-     * @param source The binding source for the view's binding behaviors.
-     * @param context The execution context to run the view within.
+     * @param source - The binding source for the view's binding behaviors.
+     * @param context - The execution context to run the view within.
      */
     bind(source: unknown, context: ExecutionContext): void;
 

@@ -186,7 +186,7 @@ export const FASTElement = Object.assign(createFASTElement(HTMLElement), {
     },
 });
 /**
- * Decorator: Defines a platform custom element based on {@link FASTElement}.
+ * Decorator: Defines a platform custom element based on `FASTElement`.
  * @param nameOrDef - The name of the element to define or a definition object
  * that describes the element to define.
  */
