@@ -8,6 +8,7 @@ import { defaultExecutionContext, Binding } from "./observation/observable";
 
 /**
  * A template capable of creating views specifically for rendering custom elements.
+ * @public
  */
 export interface ElementViewTemplate {
     /**
@@ -19,6 +20,7 @@ export interface ElementViewTemplate {
 
 /**
  * A template capable of rendering views not specifically connected to custom elements.
+ * @public
  */
 export interface SyntheticViewTemplate<TSource = any, TParent = any> {
     /**
@@ -29,6 +31,7 @@ export interface SyntheticViewTemplate<TSource = any, TParent = any> {
 
 /**
  * A template capable of creating HTMLView instances or rendering directly to DOM.
+ * @public
  */
 export class ViewTemplate<TSource = any, TParent = any>
     implements ElementViewTemplate, SyntheticViewTemplate {
@@ -163,11 +166,13 @@ const lastAttributeNameRegex =
 /**
  * A marker interface used to capture types when interpolating Directive helpers
  * into templates.
+ * @public
  */
 export interface CaptureType<TSource> {}
 
 /**
  * Represents the types of values that can be interpolated into a template.
+ * @public
  */
 export type TemplateValue<TScope, TParent = any> =
     | Binding<TScope, any, TParent>
@@ -183,6 +188,7 @@ export type TemplateValue<TScope, TParent = any> =
  * @remarks
  * The html helper supports interpolation of strings, numbers, binding expressions,
  * other template instances, and Directive instances.
+ * @public
  */
 export function html<TSource = any, TParent = any>(
     strings: TemplateStringsArray,

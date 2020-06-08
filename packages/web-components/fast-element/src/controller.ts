@@ -13,6 +13,7 @@ const defaultEventOptions: CustomEventInit = {
 
 /**
  * Controls the lifecycle and rendering of a `FASTElement`.
+ * @public
  */
 export class Controller extends PropertyChangeNotifier {
     private boundObservables: Record<string, any> | null = null;

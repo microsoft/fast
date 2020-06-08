@@ -12,6 +12,7 @@ const defaultElementOptions: ElementDefinitionOptions = {};
 
 /**
  * Represents a custom element based on the FASTElement infrastructure.
+ * @public
  */
 export interface FASTElement {
     /**
@@ -104,6 +105,7 @@ function createFASTElement<T extends typeof HTMLElement>(
 /**
  * A minimal base class for FASTElements that also provides
  * static helpers for working with FASTElements.
+ * @public
  */
 export const FASTElement = Object.assign(createFASTElement(HTMLElement), {
     /**
@@ -189,6 +191,7 @@ export const FASTElement = Object.assign(createFASTElement(HTMLElement), {
  * Decorator: Defines a platform custom element based on `FASTElement`.
  * @param nameOrDef - The name of the element to define or a definition object
  * that describes the element to define.
+ * @public
  */
 export function customElement(nameOrDef: string | PartialFASTElementDefinition) {
     /* eslint-disable-next-line @typescript-eslint/explicit-function-return-type */

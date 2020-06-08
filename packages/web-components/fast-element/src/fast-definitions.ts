@@ -4,6 +4,7 @@ import { AttributeConfiguration, AttributeDefinition } from "./attributes";
 
 /**
  * Defines metadata for a FASTElement.
+ * @public
  */
 export class FASTElementDefinition {
     /**
@@ -80,6 +81,7 @@ export class FASTElementDefinition {
 
 /**
  * Represents metadata configuration for a custom element.
+ * @public
  */
 export interface PartialFASTElementDefinition {
     /**

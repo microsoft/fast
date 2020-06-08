@@ -181,6 +181,7 @@ function updateClassTarget(this: BindingBehavior, value: string): void {
 
 /**
  * A directive that configures data binding to element content and attributes.
+ * @public
  */
 export class BindingDirective extends Directive {
     private cleanedTargetName?: string;
@@ -279,6 +280,7 @@ export class BindingDirective extends Directive {
 /**
  * A behavior that updates content and attributes based on a configured
  * BindingDirective.
+ * @public
  */
 export class BindingBehavior implements Behavior {
     /** @internal */

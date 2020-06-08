@@ -225,6 +225,7 @@ function compileContent(
 
 /**
  * The result of compiling a template and its directives.
+ * @beta
  */
 export interface CompilationResult {
     /**
@@ -257,6 +258,7 @@ export interface CompilationResult {
  * The template that is provided for compilation is altered in-place
  * and cannot be compiled again. If the original template must be preserved,
  * it is recommended that you clone the original and pass the clone to this API.
+ * @public
  */
 export function compileTemplate(
     template: HTMLTemplateElement,

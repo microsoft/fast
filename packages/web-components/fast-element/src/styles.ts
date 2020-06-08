@@ -2,6 +2,7 @@ import { Behavior } from "./directives/behavior";
 
 /**
  * A node that can be targeted by styles.
+ * @public
  */
 export interface StyleTarget {
     /**
@@ -32,6 +33,7 @@ const styleLookup = new Map<string, ElementStyles>();
 
 /**
  * Represents styles that can be applied to a custom element.
+ * @public
  */
 export abstract class ElementStyles {
     /** @internal */
@@ -200,6 +202,7 @@ const createStyles: ElementStyleFactory = (() => {
  * @param values - The values that are interpolated with the string fragments.
  * @remarks
  * The css helper supports interpolation of strings and ElementStyle instances.
+ * @public
  */
 export function css(
     strings: TemplateStringsArray,

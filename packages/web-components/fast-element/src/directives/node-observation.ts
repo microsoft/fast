@@ -4,6 +4,7 @@ import { Behavior } from "./behavior";
 
 /**
  * Options for configuring node observation behavior.
+ * @public
  */
 export interface NodeBehaviorBehaviorOptions<T = any> {
     /**

@@ -15,6 +15,7 @@ import { Directive } from "./directive";
 
 /**
  * Options for configuring repeat behavior.
+ * @public
  */
 export interface RepeatOptions {
     /**
@@ -48,6 +49,10 @@ function bindWithPositioning(
     view.bind(items[index], childContext);
 }
 
+/**
+ * A behavior that renders a template for each item in an array.
+ * @public
+ */
 export class RepeatBehavior implements Behavior, Subscriber {
     private source: unknown = void 0;
     private views: SyntheticView[] = [];
@@ -249,6 +254,7 @@ export class RepeatBehavior implements Behavior, Subscriber {
 
 /**
  * A directive that configures list rendering.
+ * @public
  */
 export class RepeatDirective extends Directive {
     /**
@@ -286,6 +292,7 @@ export class RepeatDirective extends Directive {
  * @param binding - The array to render.
  * @param template - The template to render for each item in the array.
  * @param options - Options used to turn on special repeat features.
+ * @public
  */
 export function repeat<TScope = any, TItem = any>(
     binding: Binding<TScope, TItem[]>,

@@ -4,6 +4,7 @@ import { NodeBehaviorBehaviorOptions, NodeObservationBehavior } from "./node-obs
 
 /**
  * The options used to configure slotted node observation.
+ * @public
  */
 export interface SlottedBehaviorOptions<T = any>
     extends NodeBehaviorBehaviorOptions<T>,
@@ -11,6 +12,7 @@ export interface SlottedBehaviorOptions<T = any>
 
 /**
  * The runtime behavior for slotted node observation.
+ * @public
  */
 export class SlottedBehavior extends NodeObservationBehavior<SlottedBehaviorOptions> {
     /**
@@ -48,6 +50,7 @@ export class SlottedBehavior extends NodeObservationBehavior<SlottedBehaviorOpti
  * A directive that observes the `assignedNodes()` of a slot and updates a property
  * whenever they change.
  * @param propertyOrOptions - The options used to configure slotted node observation.
+ * @public
  */
 export function slotted<T = any>(
     propertyOrOptions: (keyof T & string) | SlottedBehaviorOptions<keyof T & string>

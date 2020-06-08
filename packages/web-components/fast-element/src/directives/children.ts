@@ -4,6 +4,7 @@ import { NodeBehaviorBehaviorOptions, NodeObservationBehavior } from "./node-obs
 
 /**
  * The options used to configure child node observation.
+ * @public
  */
 export interface ChildrenBehaviorOptions<T = any>
     extends NodeBehaviorBehaviorOptions<T>,
@@ -11,6 +12,7 @@ export interface ChildrenBehaviorOptions<T = any>
 
 /**
  * The runtime behavior for child node observation.
+ * @public
  */
 export class ChildrenBehavior extends NodeObservationBehavior<ChildrenBehaviorOptions> {
     private observer: MutationObserver | null = null;
@@ -54,6 +56,7 @@ export class ChildrenBehavior extends NodeObservationBehavior<ChildrenBehaviorOp
  * A directive that observes the `childNodes` of an element and updates a property
  * whenever they change.
  * @param propertyOrOptions - The options used to configure child node observation.
+ * @public
  */
 export function children<T = any>(
     propertyOrOptions: (keyof T & string) | ChildrenBehaviorOptions<keyof T & string>

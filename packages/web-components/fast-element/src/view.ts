@@ -3,6 +3,7 @@ import { ExecutionContext } from "./observation/observable";
 
 /**
  * Represents a collection of DOM nodes which can be bound to a data source.
+ * @public
  */
 export interface View {
     /**
@@ -30,6 +31,7 @@ export interface View {
 
 /**
  * A View representing DOM nodes specifically for rendering the view of a custom element.
+ * @public
  */
 export interface ElementView extends View {
     /**
@@ -41,6 +43,7 @@ export interface ElementView extends View {
 
 /**
  * A view representing a range of DOM nodes which can be added/removed ad hoc.
+ * @public
  */
 export interface SyntheticView extends View {
     /**
@@ -78,6 +81,7 @@ const range = document.createRange();
 
 /**
  * The standard View implementation, which also implements ElementView and SyntheticView.
+ * @public
  */
 export class HTMLView implements ElementView, SyntheticView {
     /**

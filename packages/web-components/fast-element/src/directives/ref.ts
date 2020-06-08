@@ -4,6 +4,7 @@ import { AttachedBehaviorDirective } from "./directive";
 
 /**
  * The runtime behavior for template references.
+ * @public
  */
 export class RefBehavior implements Behavior {
     /**
@@ -33,6 +34,7 @@ export class RefBehavior implements Behavior {
 /**
  * A directive that observes the updates a property with a reference to the element.
  * @param propertyName - The name of the property to assign the reference to.
+ * @public
  */
 export function ref<T = any>(propertyName: keyof T & string): CaptureType<T> {
     return new AttachedBehaviorDirective("fast-ref", RefBehavior, propertyName);

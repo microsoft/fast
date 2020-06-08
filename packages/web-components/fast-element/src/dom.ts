@@ -55,6 +55,7 @@ function processQueue(): void {
 
 /**
  * Common DOM APIs.
+ * @public
  */
 export const DOM = Object.freeze({
     /**

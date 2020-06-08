@@ -2,6 +2,7 @@ import { emptyArray } from "../interfaces";
 
 /**
  * Represents a set of splice-based changes against an Array.
+ * @public
  */
 export interface Splice {
     /**

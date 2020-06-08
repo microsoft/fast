@@ -6,6 +6,7 @@ import { Notifier } from "./observation/notifier";
  * Represents objects that can convert values to a string
  * acceptable by the DOM, or from a DOM string into a primitive
  * type appropriate for a property.
+ * @beta
  */
 export interface ValueConverter {
     /**
@@ -30,11 +31,13 @@ export interface ValueConverter {
  * interpreting the presence of the attribute as `true` and the absence as
  * `false`. The `fromView` behavior only updates the  property value based on
  * changes in the DOM, but does not reflect property changes back.
+ * @public
  */
 export type AttributeMode = "reflect" | "boolean" | "fromView";
 
 /**
  * Metadata used to configure a custom attribute's behavior.
+ * @public
  */
 export type AttributeConfiguration = {
     property: string;
@@ -45,6 +48,7 @@ export type AttributeConfiguration = {
 
 /**
  * Metadata used to configure a custom attribute's behavior through a decorator.
+ * @public
  */
 export type DecoratorAttributeConfiguration = Omit<AttributeConfiguration, "property">;
 
@@ -52,6 +56,7 @@ export type DecoratorAttributeConfiguration = Omit<AttributeConfiguration, "prop
  * A {@link ValueConverter} that converts to and from `boolean` values.
  * @remarks
  * Used automatically when the `boolean` {@link AttributeMode} is selected.
+ * @public
  */
 export const booleanConverter: ValueConverter = {
     toView(value: any): string {
@@ -78,6 +83,7 @@ export const booleanConverter: ValueConverter = {
  * @remarks
  * This converter allows for nullable numbers, returning `null` if the
  * input was `null`, `undefined`, or `NaN`.
+ * @public
  */
 export const nullableNumberConverter: ValueConverter = {
     toView(value: any): string | null {
@@ -101,6 +107,7 @@ export const nullableNumberConverter: ValueConverter = {
  * An implementation of {@link Accessor} that supports reactivity,
  * change callbacks, attribute reflection, and type conversion for
  * custom elements.
+ * @public
  */
 export class AttributeDefinition implements Accessor {
     private readonly fieldName: string;
@@ -288,6 +295,7 @@ export class AttributeDefinition implements Accessor {
 /**
  * Decorator: Specifies an HTML attribute.
  * @param config - The configuration for the attribute.
+ * @public
  */
 export function attr(
     config?: DecoratorAttributeConfiguration
@@ -297,6 +305,7 @@ export function attr(
  * Decorator:  Specifies an HTML attribute.
  * @param target - The class to define the attribute on.
  * @param prop - The property name to be associated with the attribute.
+ * @public
  */
 export function attr(target: {}, prop: string): void;
 export function attr(

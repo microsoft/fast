@@ -10,6 +10,7 @@ let createArrayObserver = (array: any[]): Notifier => {
 
 /**
  * Represents a getter/setter property accessor on an object.
+ * @public
  */
 export interface Accessor {
     /**
@@ -69,6 +70,7 @@ class DefaultObservableAccessor implements Accessor {
 
 /**
  * Common Observable APIs.
+ * @public
  */
 export const Observable = Object.freeze({
     /**
@@ -191,6 +193,7 @@ const queueUpdate = DOM.queueUpdate;
  * Decorator: Defines an observable property on the target.
  * @param target - The target to define the observable on.
  * @param nameOrAccessor - The property name or accessor to define the observable as.
+ * @public
  */
 export function observable(target: {}, nameOrAccessor: string | Accessor): void {
     Observable.defineProperty(target, nameOrAccessor);
@@ -199,8 +202,8 @@ export function observable(target: {}, nameOrAccessor: string | Accessor): void 
 let currentEvent: Event | null = null;
 
 /**
- * @internal
  * @param event - The event to set as current for the context.
+ * @internal
  */
 export function setCurrentEvent(event: Event | null): void {
     currentEvent = event;
@@ -208,6 +211,7 @@ export function setCurrentEvent(event: Event | null): void {
 
 /**
  * Provides additional contextual information available to behaviors and expressions.
+ * @public
  */
 export class ExecutionContext<TParent = any> {
     /**
@@ -278,12 +282,14 @@ Observable.defineProperty(ExecutionContext.prototype, "length");
 
 /**
  * The default execution context used in binding expressions.
+ * @public
  */
 export const defaultExecutionContext = new ExecutionContext();
 
 /**
  * The signature of an arrow function capable of being evaluated
  * as part of a template binding update.
+ * @public
  */
 export type Binding<TSource = any, TReturn = any, TParent = any> = (
     source: TSource,
@@ -299,6 +305,7 @@ interface SubscriptionRecord {
 
 /**
  * Enables evaluation of and subscription to a binding.
+ * @public
  */
 export interface BindingObserver<TSource = any, TReturn = any, TParent = any>
     extends Notifier {

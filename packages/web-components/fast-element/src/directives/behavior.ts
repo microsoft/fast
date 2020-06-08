@@ -3,6 +3,7 @@ import { ExecutionContext } from "../observation/observable";
 /**
  * Represents and object that can contribute behavior to a view or
  * element's bind/unbind operations.
+ * @public
  */
 export interface Behavior {
     /**
@@ -22,6 +23,7 @@ export interface Behavior {
 /**
  * A factory that can create a {@link Behavior} associated with a particular
  * location within a DOM fragment.
+ * @public
  */
 export interface BehaviorFactory {
     /**

@@ -3,6 +3,7 @@ import { Behavior, BehaviorFactory } from "./behavior";
 
 /**
  * Instructs the template engine to apply behavior to a node.
+ * @public
  */
 export abstract class Directive implements BehaviorFactory {
     /**
@@ -26,11 +27,13 @@ export abstract class Directive implements BehaviorFactory {
 /**
  * Describes the shape of a behavior constructor that can be created by
  * an {@link AttachedBehaviorDirective}.
+ * @public
  */
 export type AttachedBehaviorType<T = any> = new (target: any, options: T) => Behavior;
 
 /**
  * A directive that attaches special behavior to an element via a custom attribute.
+ * @public
  */
 export class AttachedBehaviorDirective<T = any> extends Directive {
     /**

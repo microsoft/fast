@@ -1,5 +1,6 @@
 /**
  * Implemented by objects that are interested in change notifications.
+ * @public
  */
 export interface Subscriber {
     /**
@@ -12,6 +13,7 @@ export interface Subscriber {
 
 /**
  * Provides change notification for a source object.
+ * @public
  */
 export interface Notifier {
     /**
@@ -87,6 +89,7 @@ function spilloverHas(this: SubscriberSet, subscriber: Subscriber): boolean {
  * This set is optimized for the most common scenario of 1 or 2 subscribers.
  * With this in mind, it can store a subscriber in an internal field, allowing it to avoid Array#push operations.
  * If the set ever exceeds two subscribers, it upgrades to an array automatically.
+ * @public
  */
 export class SubscriberSet implements Notifier {
     private sub1: Subscriber | undefined = void 0;
@@ -179,6 +182,7 @@ export class SubscriberSet implements Notifier {
 /**
  * An implementation of Notifier that allows subscribers to be notified
  * of individual property changes on an object.
+ * @public
  */
 export class PropertyChangeNotifier implements Notifier {
     private subscribers: Record<string, SubscriberSet> = {};
