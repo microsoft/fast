@@ -24,6 +24,10 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
     })
     public backgroundColor: string;
 
+    /**
+     * This color is intended to be the *source color* of the FASTDesignSystem.accentPalette.
+     * When setting this value, you should be sure to *also* update the FASTDesignSystem.accentPalette.
+     */
     @designSystemProperty({
         attribute: "accent-base-color",
         cssCustomProperty: false,
@@ -31,6 +35,10 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
     })
     public accentBaseColor: string;
 
+    /**
+     * Defines the palette that all neutral color recipes are derived from.
+     * This is an array for hexadecimal color strings ordered from light to dark.
+     */
     @designSystemProperty({
         attribute: false,
         cssCustomProperty: false,
@@ -38,6 +46,13 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
     })
     public neutralPalette: string[];
 
+    /**
+     * Defines the palette that all accent color recipes are derived from.
+     * This is an array for hexadecimal color strings ordered from light to dark.
+     *
+     * When setting this property, be sure to *also* set FASTDesignSystem.accentBaseColor to
+     * the base color deriving this palette.
+     */
     @designSystemProperty({
         attribute: false,
         cssCustomProperty: false,
