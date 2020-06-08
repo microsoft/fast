@@ -5,7 +5,6 @@ import {
     focusVisible,
     forcedColorsStylesheetBehavior,
 } from "@microsoft/fast-foundation";
-import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
     accentFillActiveBehavior,
     accentFillHoverBehavior,
@@ -16,6 +15,7 @@ import {
     neutralFocusInnerAccentBehavior,
     neutralForegroundRestBehavior,
 } from "../styles/index";
+import { SystemColors } from "@microsoft/fast-web-utilities";
 
 export const MenuItemStyles = css`
     ${display("grid")} :host {

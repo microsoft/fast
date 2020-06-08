@@ -224,14 +224,15 @@ export class TreeItem extends FASTElement {
         }
 
         const currentIndex: number = visibleNodes.indexOf(this.treeItem);
-        const deltaPositive: boolean = delta >= 0;
         if (currentIndex !== -1) {
-            let nextElement: HTMLElement = visibleNodes[currentIndex + delta];
-            while (nextElement.hasAttribute("disabled")) {
-                delta = deltaPositive ? delta + 1 : delta - 1;
-                nextElement = visibleNodes[currentIndex + delta];
-                if (!nextElement) {
-                    break;
+            let nextElement: HTMLElement | undefined = visibleNodes[currentIndex + delta];
+            if (nextElement !== undefined) {
+                while (nextElement.hasAttribute("disabled")) {
+                    const offset: number = delta >= 0 ? 1 : -1;
+                    nextElement = visibleNodes[currentIndex + delta + offset];
+                    if (!nextElement) {
+                        break;
+                    }
                 }
             }
 
