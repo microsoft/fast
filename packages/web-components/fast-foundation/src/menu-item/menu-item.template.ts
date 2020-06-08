@@ -12,7 +12,6 @@ export const MenuItemTemplate = html<MenuItem>`
         aria-checked=${x => (x.role !== MenuItemRole.menuitem ? x.checked : void 0)}
         aria-disabled=${x => x.disabled}
         @keydown=${(x, c) => x.handleMenuItemKeyDown(c.event as KeyboardEvent)}
-        @focus=${(x, c) => x.handleFocus(c.event as FocusEvent)}
         @click=${(x, c) => x.handleMenuItemClick(c.event as MouseEvent)}
         class="${x => (x.disabled ? "disabled" : "")} ${x =>
             x.expanded ? "expanded" : ""}"

@@ -24,7 +24,6 @@ export class Menu extends FASTElement {
     @observable
     public items: HTMLSlotElement;
     private itemsChanged(oldValue, newValue): void {
-        console.log("menu itemsChanged, newValue:", newValue);
         if (this.$fastController.isConnected) {
             this.menuItems = this.domChildren();
             this.resetItems(oldValue);
@@ -59,7 +58,6 @@ export class Menu extends FASTElement {
      * @public
      */
     public focus(): void {
-        console.log("\n***Menu focus() called");
         this.setFocus(0, 1);
     }
 
@@ -101,7 +99,6 @@ export class Menu extends FASTElement {
      * @internal
      */
     public handleFocusOut = (e: FocusEvent) => {
-        console.log("menu handleFocusOut e:", e);
         const isNestedEl = this.contains(e.relatedTarget as Element);
 
         if (!isNestedEl) {
