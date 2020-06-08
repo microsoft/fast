@@ -12,7 +12,7 @@ export function isHTMLElement(...args: any[]): boolean {
  * Returns all displayed elements inside of a root node that match a provided selector
  */
 export function getDisplayedNodes(
-    rootNode: HTMLElement | null,
+    rootNode: HTMLElement,
     selector: string
 ): HTMLElement[] | void {
     if (!isHTMLElement(rootNode)) {
