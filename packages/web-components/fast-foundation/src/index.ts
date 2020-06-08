@@ -3,6 +3,7 @@ export * from "./anchor/index";
 export * from "./badge/index";
 export * from "./button/index";
 export * from "./card/index";
+export * from "./carousel/index";
 export * from "./checkbox/index";
 export * from "./custom-properties/index";
 export * from "./design-system-provider/index";

@@ -153,7 +153,42 @@ export class Card extends FASTElement {
 // @public
 export const CardTemplate: import("@microsoft/fast-element").ViewTemplate<Card, any>;
 
-// @public
+// @public (undocumented)
+export class Carousel extends FASTElement {
+    // (undocumented)
+    activeId: string;
+    // (undocumented)
+    ariaDescribedby: string;
+    // (undocumented)
+    ariaLabel: string;
+    // (undocumented)
+    ariaLabelledby: string;
+    // (undocumented)
+    autoplay: boolean;
+    // (undocumented)
+    autoplayInterval: number;
+    // (undocumented)
+    carousel: HTMLDivElement;
+    // (undocumented)
+    connectedCallback(): void;
+    // (undocumented)
+    disconnectedCallback(): void;
+    // (undocumented)
+    handleTabClick: (e: Event) => void;
+    // (undocumented)
+    items: HTMLElement[];
+    // (undocumented)
+    itemsChanged: () => void;
+    // (undocumented)
+    loop: boolean;
+    // (undocumented)
+    paused: boolean;
+}
+
+// @public (undocumented)
+export const CarouselTemplate: import("@microsoft/fast-element").ViewTemplate<Carousel, any>;
+
+// @public (undocumented)
 export class Checkbox extends FormAssociated<HTMLInputElement> {
     constructor();
     checked: boolean;
