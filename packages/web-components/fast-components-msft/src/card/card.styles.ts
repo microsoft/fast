@@ -10,7 +10,7 @@ export const CardStyles = css`
         height: var(--card-height, 100%);
         width: var(--card-width, 100%);
         box-sizing: border-box;
-        background: var(--neutral-layer-card);
+        background: ${neutralLayerCardBehavior.var};
         border-radius: calc(var(--elevated-corner-radius) * 1px);
         ${elevation};
         border: calc(var(--outline-width) * 1px) solid transparent;

@@ -8,6 +8,7 @@ export const DividerStyles = css`
         height: 0;
         margin: calc(var(--design-unit) * 1px) 0;
         border: none;
-        border-top: calc(var(--outline-width) * 1px) solid var(--neutral-divider-rest);
+        border-top: calc(var(--outline-width) * 1px) solid
+            ${neutralDividerRestBehavior.var};
     }
 `.withBehaviors(neutralDividerRestBehavior);
