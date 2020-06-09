@@ -5,6 +5,7 @@ import { ComponentViewConfig } from "./data.props";
 export const fastTabsId = "fast-tabs";
 export const fastTabId = "fast-tab";
 export const fastTabPanelId = "fast-tab-panel";
+console.log(fastComponentSchemas[fastTabsId])
 const fastTabsConfig: ComponentViewConfig = {
     schema: fastComponentSchemas[fastTabsId],
     guidance: Guidance,
