@@ -45,6 +45,7 @@ export const ContentPlacementContainerStyles = css`
         display: block;
         content: counter(feature-counter, decimal-leading-zero);
         font-size: var(--type-ramp-base-font-size);
+        margin-bottom: calc(var(--design-unit) * 2px);
     }
 
     :host([section="feature"]) site-feature-card:hover :first-child::before {
@@ -64,12 +65,13 @@ export const ContentPlacementContainerStyles = css`
     :host([section="feature"]) site-feature-card:hover {
         color: var(--neutral-foreground-rest);
         background: var(--neutral-fill-focus);
+        cursor: pointer;
     }
 
     :host([section="community"]) site-content-placement:hover {
         --elevation: 4;
         cursor: pointer;
-        background: var(--neutral-fill-active);
+        background: var(--neutral-fill-focus);
         border-radius: calc(var(--corner-radius) * 1px);
         color: currentColor;
         ${elevation}
