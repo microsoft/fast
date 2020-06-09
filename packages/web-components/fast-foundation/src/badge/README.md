@@ -38,7 +38,7 @@ fast-badge {
 
 ```html live
 <fast-design-system-provider use-defaults>
-    <fast-badge fill="danger" color="light">Danger</fast-badge>
+    <fast-badge appearance="accent">Danger</fast-badge>
 </fast-design-system-provider>
 ```
 

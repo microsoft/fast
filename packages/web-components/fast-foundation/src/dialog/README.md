@@ -24,8 +24,9 @@ export class FASTDialog extends Dialog {}
 ## Usage
 
 ```html live
+<!-- TODO: Need to update this to render and dismiss on click -->
 <fast-design-system-provider use-defaults>
-    <fast-dialog id="simpleDialog" aria-label="Simple modal dialog" modal="true">
+    <fast-dialog id="simpleDialog" aria-label="Simple modal dialog" modal="true" hidden>
         <h2>Dialog with text and button.</h2>
         <fast-button>Button A</fast-button>
         <fast-button autofocus>Should autofocus</fast-button>

@@ -25,7 +25,7 @@ export class FASTRadio extends Radio {}
 ## Usage
 
 ```html live
-<fast-design-system-provider use-defaualts>
+<fast-design-system-provider use-defaults>
     <fast-radio value="mango" required>Mango</fast-radio>
 </fast-design-system-provider>
  ```

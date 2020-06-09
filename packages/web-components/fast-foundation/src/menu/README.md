@@ -35,14 +35,3 @@ export class FASTMenu extends Menu {}
     </fast-menu>
 </fast-design-system-provider>
 ```
-
-__Custom menu items__
-```html live
-<fast-design-system-provider use-defaults>
-    <fast-menu>
-        <div role="menuitem">Menu item 1</div>
-        <div role="menuitem">Menu item 2</div>
-        <div role="menuitem">Menu item 3</div>
-    </fast-menu>
-</fast-design-system-provider>
-```

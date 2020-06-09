@@ -25,8 +25,14 @@ export class FASTCard extends Card {}
 ## Usage
 
 ```html live
+<style>
+    fast-card {
+        --card-height: 300px;
+        --card-width: 350px;
+    }
+</style>
 <fast-design-system-provider use-defaults>
-    <fast-card style="--card-height: 300px; --card-width: 350px">
+    <fast-card>
         <img src="https://placehold.it/300x150" alt="Placeholder image with watermark" />
         <h3>Card title</h3>
         <p>At purus lectus quis habitant commodo, cras. Aliquam malesuada velit a tortor. Felis orci tellus netus risus et ultricies augue aliquet.</p>
