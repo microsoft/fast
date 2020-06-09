@@ -2,6 +2,9 @@ import { css } from "@microsoft/fast-element";
 import { display, focusVisible } from "@microsoft/fast-foundation";
 import { heightNumber } from "../size";
 
+/**
+ * @internal
+ */
 export const BaseButtonStyles = css`
     ${display("inline-block")} :host {
         font-family: var(--body-font);
@@ -70,6 +73,9 @@ export const BaseButtonStyles = css`
     }
 `;
 
+/**
+ * @internal
+ */
 export const AccentButtonStyles = css`
     :host(.accent) .control {
         background: var(--accent-fill-rest);
@@ -89,6 +95,9 @@ export const AccentButtonStyles = css`
     }
 `;
 
+/**
+ * @internal
+ */
 export const HypertextStyles = css`
     :host(.hypertext) .control {
         padding: 0;
@@ -118,6 +127,9 @@ export const HypertextStyles = css`
     }
 `;
 
+/**
+ * @internal
+ */
 export const LightweightButtonStyles = css`
     :host(.lightweight) .control {
         padding: 0;
@@ -163,6 +175,9 @@ export const LightweightButtonStyles = css`
     }
 `;
 
+/**
+ * @internal
+ */
 export const OutlineButtonStyles = css`
     :host(.outline) .control {
         background: transparent;
@@ -183,6 +198,9 @@ export const OutlineButtonStyles = css`
     }
 `;
 
+/**
+ * @internal
+ */
 export const StealthButtonStyles = css`
     :host(.stealth) .control {
         background: var(--neutral-fill-stealth-rest);

@@ -26,22 +26,39 @@ function neutralFillInputAlgorithm(
     };
 }
 
+/**
+ * @internal
+ */
 export const neutralFillInputRest = colorRecipeFactory(
     neutralFillInputAlgorithm(neutralFillInputRestDelta)
 );
+/**
+ * @internal
+ */
 export const neutralFillInputHover = colorRecipeFactory(
     neutralFillInputAlgorithm(neutralFillInputHoverDelta)
 );
+/**
+ * @internal
+ */
 export const neutralFillInputActive = colorRecipeFactory(
     neutralFillInputAlgorithm(neutralFillInputActiveDelta)
 );
+/**
+ * @internal
+ */
 export const neutralFillInputFocus = colorRecipeFactory(
     neutralFillInputAlgorithm(neutralFillInputFocusDelta)
 );
+/**
+ * @internal
+ */
 export const neutralFillInputSelected = colorRecipeFactory(
     neutralFillInputAlgorithm(neutralFillInputSelectedDelta)
 );
-
+/**
+ * @internal
+ */
 export const neutralFillInput = colorRecipeFactory(
     (designSystem: FASTDesignSystem): FillSwatchFamily => {
         return {
