@@ -13,7 +13,14 @@ import { Splice } from "../observation/array-change-records";
 import { Behavior } from "./behavior";
 import { Directive } from "./directive";
 
+/**
+ * Options for configuring repeat behavior.
+ * @public
+ */
 export interface RepeatOptions {
+    /**
+     * Enables index, length, and dependent positioning updates in item templates.
+     */
     positioning: boolean;
 }
 
@@ -42,6 +49,10 @@ function bindWithPositioning(
     view.bind(items[index], childContext);
 }
 
+/**
+ * A behavior that renders a template for each item in an array.
+ * @public
+ */
 export class RepeatBehavior implements Behavior, Subscriber {
     private source: unknown = void 0;
     private views: SyntheticView[] = [];
@@ -52,7 +63,14 @@ export class RepeatBehavior implements Behavior, Subscriber {
     private childContext: ExecutionContext | undefined = void 0;
     private bindView: typeof bindWithoutPositioning = bindWithoutPositioning;
 
-    constructor(
+    /**
+     * Creates an instance of RepeatBehavior.
+     * @param location - The location in the DOM to render the repeat.
+     * @param binding - The array to render.
+     * @param template - The template to render for each item.
+     * @param options - Options used to turn on special repeat features.
+     */
+    public constructor(
         private location: Node,
         private binding: Binding,
         private template: SyntheticViewTemplate,
@@ -65,7 +83,12 @@ export class RepeatBehavior implements Behavior, Subscriber {
         }
     }
 
-    bind(source: unknown, context: ExecutionContext): void {
+    /**
+     * Bind this behavior to the source.
+     * @param source - The source to bind to.
+     * @param context - The execution context that the binding is operating within.
+     */
+    public bind(source: unknown, context: ExecutionContext): void {
         this.source = source;
         this.originalContext = context;
         this.childContext = Object.create(context);
@@ -76,7 +99,11 @@ export class RepeatBehavior implements Behavior, Subscriber {
         this.refreshAllViews();
     }
 
-    unbind(): void {
+    /**
+     * Unbinds this behavior from the source.
+     * @param source - The source to unbind from.
+     */
+    public unbind(): void {
         this.source = null;
         this.items = null;
 
@@ -88,7 +115,8 @@ export class RepeatBehavior implements Behavior, Subscriber {
         this.bindingObserver.disconnect();
     }
 
-    handleChange(source: any, args: Splice[]): void {
+    /** @internal */
+    public handleChange(source: any, args: Splice[]): void {
         if (source === this.binding) {
             this.items = this.bindingObserver.observe(this.source, this.originalContext!);
 
@@ -224,10 +252,24 @@ export class RepeatBehavior implements Behavior, Subscriber {
     }
 }
 
+/**
+ * A directive that configures list rendering.
+ * @public
+ */
 export class RepeatDirective extends Directive {
-    createPlaceholder: (index: number) => string = DOM.createBlockPlaceholder;
+    /**
+     * Creates a placeholder string based on the directive's index within the template.
+     * @param index - The index of the directive within the template.
+     */
+    public createPlaceholder: (index: number) => string = DOM.createBlockPlaceholder;
 
-    constructor(
+    /**
+     * Creates an instance of RepeatDirective.
+     * @param binding - The binding that provides the array to render.
+     * @param template - The template to render for each item in the array.
+     * @param options - Options used to turn on special repeat features.
+     */
+    public constructor(
         public binding: Binding,
         public template: SyntheticViewTemplate,
         public options: RepeatOptions
@@ -236,11 +278,22 @@ export class RepeatDirective extends Directive {
         enableArrayObservation();
     }
 
-    public createBehavior(target: any): RepeatBehavior {
+    /**
+     * Creates a behavior for the provided target node.
+     * @param target - The node instance to create the behavior for.
+     */
+    public createBehavior(target: Node): RepeatBehavior {
         return new RepeatBehavior(target, this.binding, this.template, this.options);
     }
 }
 
+/**
+ * A directive that enables list rendering.
+ * @param binding - The array to render.
+ * @param template - The template to render for each item in the array.
+ * @param options - Options used to turn on special repeat features.
+ * @public
+ */
 export function repeat<TScope = any, TItem = any>(
     binding: Binding<TScope, TItem[]>,
     template: ViewTemplate<Partial<TItem>, TScope>,

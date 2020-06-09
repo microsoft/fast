@@ -15,4 +15,6 @@ Custom Elements that have not been [upgraded](https://developers.google.com/web/
 }
 ```
 
-*Note, the consuming application must apply this, as the components themselves do not.*
+:::important
+The consuming application must apply this, as the components themselves do not.
+:::

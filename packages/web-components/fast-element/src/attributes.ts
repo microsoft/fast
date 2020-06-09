@@ -2,13 +2,43 @@ import { Accessor, Observable } from "./observation/observable";
 import { DOM } from "./dom";
 import { Notifier } from "./observation/notifier";
 
+/**
+ * Represents objects that can convert values to a string
+ * acceptable by the DOM, or from a DOM string into a primitive
+ * type appropriate for a property.
+ * @beta
+ */
 export interface ValueConverter {
+    /**
+     * Converts a value to a DOM string.
+     * @param value - The value to convert to a DOM string.
+     */
     toView(value: any): string | null;
+
+    /**
+     * Converts a DOM string to a typed value.
+     * @param value - The DOM string to convert to a typed value.
+     */
     fromView(value: string): any;
 }
 
+/**
+ * The mode that specifies the runtime behavior of the attribute.
+ * @remarks
+ * By default, attributes run in `reflect` mode, propagating their property
+ * values to the DOM and DOM values to the property. The `boolean` mode also
+ * reflects values, but uses the HTML standard boolean attribute behavior,
+ * interpreting the presence of the attribute as `true` and the absence as
+ * `false`. The `fromView` behavior only updates the  property value based on
+ * changes in the DOM, but does not reflect property changes back.
+ * @public
+ */
 export type AttributeMode = "reflect" | "boolean" | "fromView";
 
+/**
+ * Metadata used to configure a custom attribute's behavior.
+ * @public
+ */
 export type AttributeConfiguration = {
     property: string;
     attribute?: string;
@@ -16,8 +46,18 @@ export type AttributeConfiguration = {
     converter?: ValueConverter;
 };
 
+/**
+ * Metadata used to configure a custom attribute's behavior through a decorator.
+ * @public
+ */
 export type DecoratorAttributeConfiguration = Omit<AttributeConfiguration, "property">;
 
+/**
+ * A {@link ValueConverter} that converts to and from `boolean` values.
+ * @remarks
+ * Used automatically when the `boolean` {@link AttributeMode} is selected.
+ * @public
+ */
 export const booleanConverter: ValueConverter = {
     toView(value: any): string {
         return value ? "true" : "false";
@@ -38,6 +78,13 @@ export const booleanConverter: ValueConverter = {
     },
 };
 
+/**
+ * A {@link ValueConverter} that converts to and from `number` values.
+ * @remarks
+ * This converter allows for nullable numbers, returning `null` if the
+ * input was `null`, `undefined`, or `NaN`.
+ * @public
+ */
 export const nullableNumberConverter: ValueConverter = {
     toView(value: any): string | null {
         if (value === null || value === undefined) {
@@ -56,19 +103,65 @@ export const nullableNumberConverter: ValueConverter = {
     },
 };
 
+/**
+ * An implementation of {@link Accessor} that supports reactivity,
+ * change callbacks, attribute reflection, and type conversion for
+ * custom elements.
+ * @public
+ */
 export class AttributeDefinition implements Accessor {
     private readonly fieldName: string;
     private readonly callbackName: string;
     private readonly hasCallback: boolean;
     private readonly guards: Set<unknown> = new Set();
 
+    /**
+     * The class constructor that owns this attribute.
+     */
+    public readonly Owner: Function;
+
+    /**
+     * The name of the property associated with the attribute.
+     */
+    public readonly name: string;
+
+    /**
+     * The name of the attribute in HTML.
+     */
+    public readonly attribute: string;
+
+    /**
+     * The {@link AttributeMode} that describes the behavior of this attribute.
+     */
+    public readonly mode: AttributeMode;
+
+    /**
+     * A {@link ValueConverter} that integrates with the property getter/setter
+     * to convert values to and from a DOM string.
+     */
+    public readonly converter?: ValueConverter;
+
+    /**
+     * Creates an instance of AttributeDefinition.
+     * @param Owner - The class constructor that owns this attribute.
+     * @param name - The name of the property associated with the attribute.
+     * @param attribute - The name of the attribute in HTML.
+     * @param mode - The {@link AttributeMode} that describes the behavior of this attribute.
+     * @param converter - A {@link ValueConverter} that integrates with the property getter/setter
+     * to convert values to and from a DOM string.
+     */
     public constructor(
-        public readonly Owner: Function,
-        public readonly name: string,
-        public readonly attribute: string = name.toLowerCase(),
-        public readonly mode: AttributeMode = "reflect",
-        public readonly converter?: ValueConverter
+        Owner: Function,
+        name: string,
+        attribute: string = name.toLowerCase(),
+        mode: AttributeMode = "reflect",
+        converter?: ValueConverter
     ) {
+        this.Owner = Owner;
+        this.name = name;
+        this.attribute = attribute;
+        this.mode = mode;
+        this.converter = converter;
         this.fieldName = `_${name}`;
         this.callbackName = `${name}Changed`;
         this.hasCallback = this.callbackName in Owner.prototype;
@@ -78,6 +171,11 @@ export class AttributeDefinition implements Accessor {
         }
     }
 
+    /**
+     * Sets the value of the attribute/property on the source element.
+     * @param source - The source element to access.
+     * @param value - The value to set the attribute/property to.
+     */
     public setValue(source: HTMLElement, newValue: any): void {
         const oldValue = source[this.fieldName];
         const converter = this.converter;
@@ -99,11 +197,16 @@ export class AttributeDefinition implements Accessor {
         }
     }
 
+    /**
+     * Gets the value of the attribute/property on the source element.
+     * @param source - The source element to access.
+     */
     public getValue(source: HTMLElement): any {
         Observable.track(source, this.name);
         return source[this.fieldName];
     }
 
+    /** @internal */
     public onAttributeChangedCallback(element: HTMLElement, value: any): void {
         if (this.guards.has(element)) {
             return;
@@ -145,6 +248,12 @@ export class AttributeDefinition implements Accessor {
         });
     }
 
+    /**
+     * Collects all attribute definitions associated with the owner.
+     * @param Owner - The class constructor to collect attribute for.
+     * @param attributeLists - Any existing attributes to collect and merge with those associated with the owner.
+     * @internal
+     */
     public static collect(
         Owner: Function,
         ...attributeLists: (ReadonlyArray<string | AttributeConfiguration> | undefined)[]
@@ -185,18 +294,18 @@ export class AttributeDefinition implements Accessor {
 
 /**
  * Decorator: Specifies an HTML attribute.
- *
- * @param config - The overrides
+ * @param config - The configuration for the attribute.
+ * @public
  */
 export function attr(
     config?: DecoratorAttributeConfiguration
 ): (target: {}, property: string) => void;
 
 /**
- * Decorator: Specifies an HTML attribute.
- *
- * @param target - The class
- * @param prop - The property name
+ * Decorator:  Specifies an HTML attribute.
+ * @param target - The class to define the attribute on.
+ * @param prop - The property name to be associated with the attribute.
+ * @public
  */
 export function attr(target: {}, prop: string): void;
 export function attr(

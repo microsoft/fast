@@ -181,37 +181,38 @@ function updateClassTarget(this: BindingBehavior, value: string): void {
 
 /**
  * A directive that configures data binding to element content and attributes.
+ * @public
  */
 export class BindingDirective extends Directive {
     private cleanedTargetName?: string;
     private originalTargetName?: string;
-
-    public createPlaceholder: (index: number) => string =
-        DOM.createInterpolationPlaceholder;
     private bind: typeof normalBind = normalBind;
     private unbind: typeof normalUnbind = normalUnbind;
     private updateTarget: typeof updateAttributeTarget = updateAttributeTarget;
 
     /**
-     * Creates an instance of BindingDirective.
-     * @param binding A binding that returns the data used to update the DOM.
+     * Creates a placeholder string based on the directive's index within the template.
+     * @param index - The index of the directive within the template.
      */
-    constructor(public binding: Binding) {
+    public createPlaceholder: (index: number) => string =
+        DOM.createInterpolationPlaceholder;
+
+    /**
+     * Creates an instance of BindingDirective.
+     * @param binding - A binding that returns the data used to update the DOM.
+     */
+    public constructor(public binding: Binding) {
         super();
     }
 
     /**
-     * Gets the name of the attribute or property that this
+     * Gets/sets the name of the attribute or property that this
      * binding is targeting.
      */
     public get targetName(): string | undefined {
         return this.originalTargetName;
     }
 
-    /**
-     * Sets the name of the attribute or property tha this
-     * binding is targeting.
-     */
     public set targetName(value: string | undefined) {
         this.originalTargetName = value;
 
@@ -261,9 +262,9 @@ export class BindingDirective extends Directive {
     /**
      * Creates the runtime BindingBehavior instance based on the configuration
      * information stored in the BindingDirective.
-     * @param target The target node that the binding behavior should attach to.
+     * @param target - The target node that the binding behavior should attach to.
      */
-    createBehavior(target: any): BindingBehavior {
+    createBehavior(target: Node): BindingBehavior {
         /* eslint-disable-next-line @typescript-eslint/no-use-before-define */
         return new BindingBehavior(
             target,
@@ -279,43 +280,81 @@ export class BindingDirective extends Directive {
 /**
  * A behavior that updates content and attributes based on a configured
  * BindingDirective.
+ * @public
  */
 export class BindingBehavior implements Behavior {
+    /** @internal */
     public source: unknown = null;
+
+    /** @internal */
     public context: ExecutionContext | null = null;
+
+    /** @internal */
     public bindingObserver: BindingObserver | null = null;
+
+    /** @internal */
     public classVersions: Record<string, number>;
+
+    /** @internal */
     public version: number;
 
-    /**
-     *
-     * @param target The target of the data updates.
-     * @param binding The binding that returns the latest value for an update.
-     * @param bind The operation to perform during binding.
-     * @param unbind The operation to perform during unbinding.
-     * @param updateTarget The operation to perform when updating.
-     * @param targetName The name of the target attribute or property to update.
-     */
-    constructor(
-        public target: any,
-        public binding: Binding,
-        public bind: typeof normalBind,
-        public unbind: typeof normalUnbind,
-        public updateTarget: typeof updatePropertyTarget,
-        public targetName?: string
-    ) {}
+    /** @internal */
+    public target: any;
+
+    /** @internal */
+    public binding: Binding;
+
+    /** @internal */
+    public updateTarget: typeof updatePropertyTarget;
+
+    /** @internal */
+    public targetName?: string;
 
     /**
-     * @internal
+     * Bind this behavior to the source.
+     * @param source - The source to bind to.
+     * @param context - The execution context that the binding is operating within.
      */
-    handleChange(): void {
+    public bind: typeof normalBind;
+
+    /**
+     * Unbinds this behavior from the source.
+     * @param source - The source to unbind from.
+     */
+    public unbind: typeof normalUnbind;
+
+    /**
+     * Creates an instance of BindingBehavior.
+     * @param target - The target of the data updates.
+     * @param binding - The binding that returns the latest value for an update.
+     * @param bind - The operation to perform during binding.
+     * @param unbind - The operation to perform during unbinding.
+     * @param updateTarget - The operation to perform when updating.
+     * @param targetName - The name of the target attribute or property to update.
+     */
+    public constructor(
+        target: any,
+        binding: Binding,
+        bind: typeof normalBind,
+        unbind: typeof normalUnbind,
+        updateTarget: typeof updatePropertyTarget,
+        targetName?: string
+    ) {
+        this.target = target;
+        this.binding = binding;
+        this.bind = bind;
+        this.unbind = unbind;
+        this.updateTarget = updateTarget;
+        this.targetName = targetName;
+    }
+
+    /** @internal */
+    public handleChange(): void {
         this.updateTarget(this.bindingObserver!.observe(this.source, this.context!));
     }
 
-    /**
-     * @internal
-     */
-    handleEvent(event: Event): void {
+    /** @internal */
+    public handleEvent(event: Event): void {
         setCurrentEvent(event);
         const result = this.binding(this.source, this.context!);
         setCurrentEvent(null);
