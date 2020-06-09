@@ -1,7 +1,7 @@
 {
   "name": "@microsoft/fast-animation",
   "description": "An animation library that simplifies interactions and animations using the Web Animation API.",
-  "version": "4.0.13",
+  "version": "4.0.14",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
