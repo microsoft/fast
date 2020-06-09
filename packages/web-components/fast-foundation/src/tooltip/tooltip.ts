@@ -1,5 +1,5 @@
 import { attr, DOM, FASTElement, observable } from "@microsoft/fast-element";
-import {} from "../anchored-region"
+import {AnchoredRegion} from "../anchored-region"
 
 export type TooltipPosition = "top" | "right" | "bottom | left";
 
@@ -27,7 +27,17 @@ export class Tooltip extends FASTElement {
     //     }
     // }
 
-    // public tooltip: HTMLDivElement;
+    /**
+     * reference to the component root
+     */
+    public root: HTMLDivElement;
+
+    /**
+     * reference to the anchored region
+     */
+    public region: AnchoredRegion;
+
+    public viewport: HTMLElement | null = null;
 
     constructor() {
         super();
@@ -35,6 +45,7 @@ export class Tooltip extends FASTElement {
 
     public connectedCallback(): void {
         super.connectedCallback();
+        this.region.viewportElement = this.root.parentElement;
     }
 
     public disconnectedCallback(): void {
@@ -51,10 +62,4 @@ export class Tooltip extends FASTElement {
         return typeof this.hidden !== "boolean";
     }
 
-    /**
-     * Gets the viewport element 
-     */
-    // public getViewport = (): HTMLElement | null => {
-    //     return this.region.parentElement;
-    // };
 }
