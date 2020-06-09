@@ -23,13 +23,13 @@ export const ProgressRingStyles = css`
     }
 
     .background {
-        stroke: var(--neutral-fill-rest);
+        stroke: ${neutralFillRestBehavior.var};
         fill: none;
         stroke-width: 2px;
     }
 
     .determinate {
-        stroke: var(--accent-fill-rest);
+        stroke: ${accentFillRestBehavior.var};
         fill: none;
         stroke-width: 2px;
         stroke-linecap: round;
@@ -39,7 +39,7 @@ export const ProgressRingStyles = css`
     }
 
     .indeterminate-indicator-1 {
-        stroke: var(--accent-fill-rest);
+        stroke: ${accentFillRestBehavior.var};
         fill: none;
         stroke-width: 2px;
         stroke-linecap: round;
@@ -51,11 +51,11 @@ export const ProgressRingStyles = css`
 
     :host(.paused) .indeterminate-indicator-1 {
         animation-play-state: paused;
-        stroke: var(--neutral-fill-rest);
+        stroke: ${neutralFillRestBehavior.var};
     }
 
     :host(.paused) .determinate {
-        stroke: var(--neutral-foreground-hint);
+        stroke: ${neutralForegroundHintBehavior.var};
     }
 
     @keyframes spin-infinite {

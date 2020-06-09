@@ -192,8 +192,15 @@ export const CheckboxTemplate: import("@microsoft/fast-element").ViewTemplate<Ch
 // @public
 export function composedParent<T extends HTMLElement>(element: T): HTMLElement | null;
 
-// @public (undocumented)
-export type CSSCustomPropertyBehavior = Behavior & CSSCustomPropertyDefinition;
+// @public
+export class CSSCustomPropertyBehavior implements Behavior, CSSCustomPropertyDefinition {
+    constructor(name: string, value: CSSCustomPropertyDefinition["value"], host: (source: typeof FASTElement & HTMLElement) => Partial<CSSCustomPropertyTarget> | null);
+    bind(source: typeof FASTElement & HTMLElement): void;
+    readonly name: CSSCustomPropertyDefinition["name"];
+    unbind(source: typeof FASTElement & HTMLElement): void;
+    readonly value: CSSCustomPropertyDefinition["value"];
+    get var(): string;
+    }
 
 // @public
 export function cssCustomPropertyBehaviorFactory(name: string, value: string | ((...arg: any[]) => string), host: (source: typeof FASTElement & HTMLElement) => Partial<CSSCustomPropertyTarget> | null): CSSCustomPropertyBehavior;
