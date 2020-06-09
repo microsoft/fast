@@ -21,6 +21,13 @@ export const ContentPlacementContainerStyles = css`
         overflow: hidden;
     }
 
+    :host([section="feature"]) {
+        --flow: column;
+        grid-template-rows: repeat(4, min-content);
+        grid-auto-flow: var(--flow);
+        justify-content: center;
+    }
+
     :host([section="community"]) {
         grid-template-columns: repeat(auto-fit, minmax(225px, 1fr));
     }
@@ -56,6 +63,7 @@ export const ContentPlacementContainerStyles = css`
 
     :host([section="feature"]) site-feature-card:hover {
         color: var(--neutral-foreground-rest);
+        background: var(--neutral-fill-focus);
     }
 
     :host([section="community"]) site-content-placement:hover {
@@ -85,6 +93,19 @@ export const ContentPlacementContainerStyles = css`
     h3 {
         margin: 0 0 calc(var(--design-unit) * 5px) 0;
         font-size: var(--type-ramp-plus-2-font-size);
+    }
+
+    site-feature-card:not(:nth-of-type(4n)):hover + site-feature-card::before {
+        opacity: 0;
+    }
+
+    @media screen and (max-width: 1330px) {
+        :host([section="feature"]) {
+            --flow: row;
+        }
+        site-feature-card:hover + site-feature-card::before {
+            opacity: 0;
+        }
     }
 
     @media screen and (max-width: 750px) {
