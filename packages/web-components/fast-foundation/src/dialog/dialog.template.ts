@@ -17,8 +17,8 @@ export const DialogTemplate = html<Dialog>`
         )}
         <div
             role="dialog"
-            class="root"
-            part="root"
+            class="control"
+            part="control"
             aria-modal=${x => x.modal}
             aria-describedby=${x => x.ariaDescribedby}
             aria-labelledby=${x => x.ariaLabelledby}
