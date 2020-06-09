@@ -158,7 +158,7 @@ export class NameTag extends FASTElement {
 }
 ```
 
-The full list of available lifecyle callbacks is:
+The full list of available lifecycle callbacks is:
 
 | Callback | Description |
 | ------------- |-------------|

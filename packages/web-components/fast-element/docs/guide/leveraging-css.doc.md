@@ -157,5 +157,5 @@ const styles = css`
 ```
 
 :::note
-Both slotted and host styles can be overriden by the element user. Think of these as the *default* styles that you are providing, so that your elements look and function correctly out-of-the-box.
+Both slotted and host styles can be overridden by the element user. Think of these as the *default* styles that you are providing, so that your elements look and function correctly out-of-the-box.
 :::

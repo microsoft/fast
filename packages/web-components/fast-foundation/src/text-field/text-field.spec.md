@@ -123,7 +123,7 @@ Extends FAST Element
 
 ### Accessibility
 
-The input element inside the shadow-dom of the checkbox will be a focusable element. With this in mind, so long as the text field recieves focus, assistive technology should treat it as such.
+The input element inside the shadow-dom of the checkbox will be a focusable element. With this in mind, so long as the text field receives focus, assistive technology should treat it as such.
 
 ### Globalization
 

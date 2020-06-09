@@ -44,7 +44,7 @@ export class Dialog extends FASTElement {
         document.addEventListener("keydown", this.handleDocumentKeydown);
 
         // Ensure the DOM is updated
-        // This helps avoid a delay with `autofocus` elements recieving focus
+        // This helps avoid a delay with `autofocus` elements receiving focus
         DOM.queueUpdate(this.trapFocusChanged);
     }
 

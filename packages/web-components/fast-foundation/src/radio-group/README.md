@@ -5,7 +5,7 @@ sidebar_label: fast-radio-group
 custom_edit_url: https://github.com/microsoft/fast-dna/edit/master/packages/web-components/fast-foundation/src/radio-group/README.md
 ---
 
-An implementation of a [radio-group](https://w3c.github.io/aria-practices/#radiobutton). While any DOM content is permissible as a child of the radiogroup, only `fast-radio`'s and slotted content with a role of `radio` will recieve keyboard support.
+An implementation of a [radio-group](https://w3c.github.io/aria-practices/#radiobutton). While any DOM content is permissible as a child of the radiogroup, only `fast-radio`'s and slotted content with a role of `radio` will receive keyboard support.
 
 ## Applying Custom Styles
 

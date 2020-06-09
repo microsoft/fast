@@ -119,7 +119,7 @@ We want general feature-parity between this component and the typical correspond
 
 ### Accessibility
 
-The input element inside the shadow-dom of the checkbox will be a focusable element. With this in mind, so long as the textarea recieves focus, assistive technology should treat it as such.
+The input element inside the shadow-dom of the checkbox will be a focusable element. With this in mind, so long as the textarea receives focus, assistive technology should treat it as such.
 
 ### Globalization
 N/A
