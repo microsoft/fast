@@ -198,9 +198,11 @@ export class CSSCustomPropertyBehavior implements Behavior, CSSCustomPropertyDef
     name: string,
     value: CSSCustomPropertyDefinition["value"],
     host: (source: typeof FASTElement & HTMLElement) => Partial<CSSCustomPropertyTarget> | null);
+    // @internal
     bind(source: typeof FASTElement & HTMLElement): void;
     readonly name: CSSCustomPropertyDefinition["name"];
     readonly propertyName: string;
+    // @internal
     unbind(source: typeof FASTElement & HTMLElement): void;
     readonly value: CSSCustomPropertyDefinition["value"];
     readonly var: string;

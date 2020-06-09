@@ -123,6 +123,7 @@ export class CSSCustomPropertyBehavior implements Behavior, CSSCustomPropertyDef
         }
     }
 }
+
 /**
  * Create a CSS Custom Property behavior.
  * @param name The name of the CSS custom property
