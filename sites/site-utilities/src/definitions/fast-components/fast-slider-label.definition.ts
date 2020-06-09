@@ -29,6 +29,13 @@ export const fastSliderLabelDefinition: WebComponentDefinition = {
                     default: false,
                     required: false,
                 },
+                {
+                    name: "position",
+                    description: "The position value attribute",
+                    type: DataType.string,
+                    default: false,
+                    required: false,
+                },
             ],
             slots: [
                 {

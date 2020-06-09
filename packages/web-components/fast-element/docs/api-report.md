@@ -11,31 +11,14 @@ export interface Accessor {
     setValue(source: any, value: any): void;
 }
 
-// @public (undocumented)
-export class AdoptedStyleSheetsStyles extends ElementStyles {
-    constructor(styles: InjectableStyles[], styleSheetCache: Map<string, CSSStyleSheet>);
-    // (undocumented)
-    addStylesTo(target: StyleTarget): void;
-    // (undocumented)
-    readonly behaviors: ReadonlyArray<Behavior> | null;
-    // (undocumented)
-    removeStylesFrom(target: StyleTarget): void;
-    // Warning: (ae-forgotten-export) The symbol "InjectableStyles" needs to be exported by the entry point index.d.ts
-    //
-    // (undocumented)
-    styles: InjectableStyles[];
-    }
-
-// @public (undocumented)
+// @public
 export class AttachedBehaviorDirective<T = any> extends Directive {
     constructor(name: string, behavior: AttachedBehaviorType<T>, options: T);
-    // (undocumented)
-    createBehavior(target: any): Behavior;
-    // (undocumented)
+    createBehavior(target: Node): Behavior;
     createPlaceholder(index: number): string;
     }
 
-// @public (undocumented)
+// @public
 export type AttachedBehaviorType<T = any> = new (target: any, options: T) => Behavior;
 
 // @public
@@ -44,7 +27,7 @@ export function attr(config?: DecoratorAttributeConfiguration): (target: {}, pro
 // @public
 export function attr(target: {}, prop: string): void;
 
-// @public (undocumented)
+// @public
 export type AttributeConfiguration = {
     property: string;
     attribute?: string;
@@ -52,45 +35,36 @@ export type AttributeConfiguration = {
     converter?: ValueConverter;
 };
 
-// @public (undocumented)
+// @public
 export class AttributeDefinition implements Accessor {
-    constructor(Owner: Function, name: string, attribute?: string, mode?: AttributeMode, converter?: ValueConverter | undefined);
-    // (undocumented)
+    // Warning: (ae-incompatible-release-tags) The symbol "__constructor" is marked as @public, but its signature references "ValueConverter" which is marked as @beta
+    constructor(Owner: Function, name: string, attribute?: string, mode?: AttributeMode, converter?: ValueConverter);
     readonly attribute: string;
-    // (undocumented)
+    // @internal
     static collect(Owner: Function, ...attributeLists: (ReadonlyArray<string | AttributeConfiguration> | undefined)[]): ReadonlyArray<AttributeDefinition>;
-    // (undocumented)
-    readonly converter?: ValueConverter | undefined;
-    // (undocumented)
+    // Warning: (ae-incompatible-release-tags) The symbol "converter" is marked as @public, but its signature references "ValueConverter" which is marked as @beta
+    readonly converter?: ValueConverter;
     getValue(source: HTMLElement): any;
-    // (undocumented)
     readonly mode: AttributeMode;
-    // (undocumented)
     readonly name: string;
-    // (undocumented)
+    // @internal (undocumented)
     onAttributeChangedCallback(element: HTMLElement, value: any): void;
-    // (undocumented)
     readonly Owner: Function;
-    // (undocumented)
     setValue(source: HTMLElement, newValue: any): void;
     }
 
-// @public (undocumented)
+// @public
 export type AttributeMode = "reflect" | "boolean" | "fromView";
 
-// @public (undocumented)
+// @public
 export interface Behavior {
-    // (undocumented)
     bind(source: unknown, context: ExecutionContext): void;
-    // (undocumented)
     unbind(source: unknown): void;
 }
 
-// @public (undocumented)
+// @public
 export interface BehaviorFactory {
-    // (undocumented)
-    createBehavior(target: any): Behavior;
-    // (undocumented)
+    createBehavior(target: Node): Behavior;
     targetIndex: number;
 }
 
@@ -99,38 +73,34 @@ export type Binding<TSource = any, TReturn = any, TParent = any> = (source: TSou
 
 // @public
 export class BindingBehavior implements Behavior {
-    constructor(target: any, binding: Binding, bind: typeof normalBind, unbind: typeof normalUnbind, updateTarget: typeof updatePropertyTarget, targetName?: string | undefined);
+    constructor(target: any, binding: Binding, bind: typeof normalBind, unbind: typeof normalUnbind, updateTarget: typeof updatePropertyTarget, targetName?: string);
     // Warning: (ae-forgotten-export) The symbol "normalBind" needs to be exported by the entry point index.d.ts
-    //
-    // (undocumented)
     bind: typeof normalBind;
-    // (undocumented)
+    // @internal (undocumented)
     binding: Binding;
-    // (undocumented)
+    // @internal (undocumented)
     bindingObserver: BindingObserver | null;
-    // (undocumented)
+    // @internal (undocumented)
     classVersions: Record<string, number>;
-    // (undocumented)
+    // @internal (undocumented)
     context: ExecutionContext | null;
     // @internal (undocumented)
     handleChange(): void;
     // @internal (undocumented)
     handleEvent(event: Event): void;
-    // (undocumented)
+    // @internal (undocumented)
     source: unknown;
-    // (undocumented)
+    // @internal (undocumented)
     target: any;
-    // (undocumented)
-    targetName?: string | undefined;
+    // @internal (undocumented)
+    targetName?: string;
     // Warning: (ae-forgotten-export) The symbol "normalUnbind" needs to be exported by the entry point index.d.ts
-    //
-    // (undocumented)
     unbind: typeof normalUnbind;
     // Warning: (ae-forgotten-export) The symbol "updatePropertyTarget" needs to be exported by the entry point index.d.ts
     //
-    // (undocumented)
+    // @internal (undocumented)
     updateTarget: typeof updatePropertyTarget;
-    // (undocumented)
+    // @internal (undocumented)
     version: number;
 }
 
@@ -139,8 +109,7 @@ export class BindingDirective extends Directive {
     constructor(binding: Binding);
     // (undocumented)
     binding: Binding;
-    createBehavior(target: any): BindingBehavior;
-    // (undocumented)
+    createBehavior(target: Node): BindingBehavior;
     createPlaceholder: (index: number) => string;
     targetAtContent(): void;
     get targetName(): string | undefined;
@@ -153,7 +122,9 @@ export interface BindingObserver<TSource = any, TReturn = any, TParent = any> ex
     observe(source: TSource, context: ExecutionContext): TReturn;
 }
 
-// @public (undocumented)
+// Warning: (ae-incompatible-release-tags) The symbol "booleanConverter" is marked as @public, but its signature references "ValueConverter" which is marked as @beta
+//
+// @public
 export const booleanConverter: ValueConverter;
 
 // @public
@@ -165,29 +136,26 @@ export type Callable = typeof Function.prototype.call | {
 export interface CaptureType<TSource> {
 }
 
-// @public (undocumented)
+// @public
 export function children<T = any>(propertyOrOptions: (keyof T & string) | ChildrenBehaviorOptions<keyof T & string>): CaptureType<T>;
 
 // Warning: (ae-forgotten-export) The symbol "NodeObservationBehavior" needs to be exported by the entry point index.d.ts
 //
-// @public (undocumented)
+// @public
 export class ChildrenBehavior extends NodeObservationBehavior<ChildrenBehaviorOptions> {
     constructor(target: HTMLSlotElement, options: ChildrenBehaviorOptions);
-    // (undocumented)
-    getNodes(): ChildNode[];
-    // (undocumented)
+    disconnect(): void;
+    protected getNodes(): ChildNode[];
     observe(): void;
-    // (undocumented)
-    unobserve(): void;
-}
+    }
 
 // Warning: (ae-forgotten-export) The symbol "NodeBehaviorBehaviorOptions" needs to be exported by the entry point index.d.ts
 //
-// @public (undocumented)
+// @public
 export interface ChildrenBehaviorOptions<T = any> extends NodeBehaviorBehaviorOptions<T>, MutationObserverInit {
 }
 
-// @public
+// @beta
 export interface CompilationResult {
     fragment: DocumentFragment;
     hostBehaviorFactories: BehaviorFactory[];
@@ -195,64 +163,49 @@ export interface CompilationResult {
     viewBehaviorFactories: BehaviorFactory[];
 }
 
+// Warning: (ae-incompatible-release-tags) The symbol "compileTemplate" is marked as @public, but its signature references "CompilationResult" which is marked as @beta
+//
 // @public
 export function compileTemplate(template: HTMLTemplateElement, directives: ReadonlyArray<Directive>): CompilationResult;
 
-// @public (undocumented)
+// @public
 export class Controller extends PropertyChangeNotifier {
+    // @internal
     constructor(element: HTMLElement, definition: FASTElementDefinition);
-    // (undocumented)
     addBehaviors(behaviors: ReadonlyArray<Behavior>): void;
-    // (undocumented)
-    addStyles(styles: ElementStyles, target?: StyleTarget | null): void;
-    // (undocumented)
+    addStyles(styles: ElementStyles,
+    target?: StyleTarget | null): void;
     readonly definition: FASTElementDefinition;
-    // (undocumented)
     readonly element: HTMLElement;
-    // (undocumented)
     emit(type: string, detail?: any, options?: Omit<CustomEventInit, "detail">): void | boolean;
-    // (undocumented)
     static forCustomElement(element: HTMLElement): Controller;
-    // (undocumented)
-    isConnected: boolean;
-    // (undocumented)
+    readonly isConnected: boolean;
     onAttributeChangedCallback(name: string, oldValue: string, newValue: string): void;
-    // (undocumented)
     onConnectedCallback(): void;
-    // (undocumented)
     onDisconnectedCallback(): void;
-    // (undocumented)
     removeBehaviors(behaviors: ReadonlyArray<Behavior>): void;
-    // (undocumented)
     removeStyles(styles: ElementStyles): void;
-    // (undocumented)
-    view: ElementView | null;
+    readonly view: ElementView | null;
 }
 
-// Warning: (ae-forgotten-export) The symbol "ElementStyleFactory" needs to be exported by the entry point index.d.ts
+// Warning: (ae-forgotten-export) The symbol "InjectableStyles" needs to be exported by the entry point index.d.ts
 //
-// @public (undocumented)
-export const createStyles: ElementStyleFactory;
-
-// @public (undocumented)
+// @public
 export function css(strings: TemplateStringsArray, ...values: InjectableStyles[]): ElementStyles;
 
-// @public (undocumented)
+// @public
 export function customElement(nameOrDef: string | PartialFASTElementDefinition): (type: Function) => void;
 
-// @public (undocumented)
+// @public
 export type DecoratorAttributeConfiguration = Omit<AttributeConfiguration, "property">;
 
 // @public
 export const defaultExecutionContext: ExecutionContext<any>;
 
-// @public (undocumented)
+// @public
 export abstract class Directive implements BehaviorFactory {
-    // (undocumented)
-    abstract createBehavior(target: any): Behavior;
-    // (undocumented)
+    abstract createBehavior(target: Node): Behavior;
     abstract createPlaceholder(index: number): string;
-    // (undocumented)
     targetIndex: number;
 }
 
@@ -271,21 +224,18 @@ export const DOM: Readonly<{
     setBooleanAttribute(element: HTMLElement, attributeName: string, value: boolean): void;
 }>;
 
-// @public (undocumented)
+// @public
 export abstract class ElementStyles {
     // @internal (undocumented)
     abstract addStylesTo(target: StyleTarget): void;
     // @internal (undocumented)
     abstract readonly behaviors: ReadonlyArray<Behavior> | null;
-    // (undocumented)
     static find(key: string): ElementStyles | null;
     // @internal (undocumented)
     abstract removeStylesFrom(target: StyleTarget): void;
     // @internal (undocumented)
     abstract readonly styles: ReadonlyArray<InjectableStyles>;
-    // (undocumented)
     withBehaviors(...behaviors: Behavior[]): this;
-    // (undocumented)
     withKey(key: string): this;
 }
 
@@ -299,7 +249,9 @@ export interface ElementViewTemplate {
     create(host: Element): ElementView;
 }
 
-// @public
+// Warning: (ae-internal-missing-underscore) The name "emptyArray" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal
 export const emptyArray: readonly never[];
 
 // @public
@@ -315,49 +267,36 @@ export class ExecutionContext<TParent = any> {
     parent: TParent;
 }
 
-// @public (undocumented)
+// @public
 export interface FASTElement {
-    // (undocumented)
     $emit(type: string, detail?: any, options?: Omit<CustomEventInit, "detail">): boolean | void;
-    // (undocumented)
-    $fastController: Controller;
-    // (undocumented)
+    readonly $fastController: Controller;
     attributeChangedCallback(name: string, oldValue: string, newValue: string): void;
-    // (undocumented)
     connectedCallback(): void;
-    // (undocumented)
     disconnectedCallback(): void;
 }
 
-// @public (undocumented)
+// @public
 export const FASTElement: (new () => HTMLElement & FASTElement) & {
     from<TBase extends {
         new (): HTMLElement;
         prototype: HTMLElement;
     }>(BaseType: TBase): new () => InstanceType<TBase> & FASTElement;
     define<TType extends Function>(Type: TType, nameOrDef?: string | PartialFASTElementDefinition): TType;
-    getDefinition: typeof getDefinition;
+    getDefinition<T extends Function>(Type: T): FASTElementDefinition | undefined;
 };
 
-// @public (undocumented)
+// @public
 export class FASTElementDefinition {
-    constructor(name: string, attributes: ReadonlyArray<AttributeDefinition>, propertyLookup: Record<string, AttributeDefinition>, attributeLookup: Record<string, AttributeDefinition>, template?: ElementViewTemplate | undefined, styles?: ElementStyles | undefined, shadowOptions?: ShadowRootInit | undefined, elementOptions?: ElementDefinitionOptions | undefined);
-    // (undocumented)
+    constructor(name: string, attributes: ReadonlyArray<AttributeDefinition>, propertyLookup: Record<string, AttributeDefinition>, attributeLookup: Record<string, AttributeDefinition>, template?: ElementViewTemplate, styles?: ElementStyles, shadowOptions?: ShadowRootInit, elementOptions?: ElementDefinitionOptions);
     readonly attributeLookup: Record<string, AttributeDefinition>;
-    // (undocumented)
     readonly attributes: ReadonlyArray<AttributeDefinition>;
-    // (undocumented)
-    readonly elementOptions?: ElementDefinitionOptions | undefined;
-    // (undocumented)
+    readonly elementOptions?: ElementDefinitionOptions;
     readonly name: string;
-    // (undocumented)
     readonly propertyLookup: Record<string, AttributeDefinition>;
-    // (undocumented)
-    readonly shadowOptions?: ShadowRootInit | undefined;
-    // (undocumented)
-    readonly styles?: ElementStyles | undefined;
-    // (undocumented)
-    readonly template?: ElementViewTemplate | undefined;
+    readonly shadowOptions?: ShadowRootInit;
+    readonly styles?: ElementStyles;
+    readonly template?: ElementViewTemplate;
 }
 
 // @public
@@ -368,20 +307,23 @@ export class HTMLView implements ElementView, SyntheticView {
     constructor(fragment: DocumentFragment, behaviors: Behavior[]);
     appendTo(node: Node): void;
     bind(source: unknown, context: ExecutionContext): void;
-    // (undocumented)
     context: ExecutionContext | null;
     dispose(): void;
     static disposeContiguousBatch(views: SyntheticView[]): void;
-    // (undocumented)
     firstChild: Node;
     insertBefore(node: Node): void;
-    // (undocumented)
     lastChild: Node;
     remove(): void;
-    // (undocumented)
     source: any | null;
     unbind(): void;
 }
+
+// Warning: (ae-internal-missing-underscore) The name "Mutable" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal
+export type Mutable<T> = {
+    -readonly [P in keyof T]: T[P];
+};
 
 // @public
 export interface Notifier {
@@ -391,7 +333,9 @@ export interface Notifier {
     unsubscribe(subscriber: Subscriber, propertyToUnwatch?: any): void;
 }
 
-// @public (undocumented)
+// Warning: (ae-incompatible-release-tags) The symbol "nullableNumberConverter" is marked as @public, but its signature references "ValueConverter" which is marked as @beta
+//
+// @public
 export const nullableNumberConverter: ValueConverter;
 
 // @public
@@ -408,15 +352,15 @@ export const Observable: Readonly<{
 // @public
 export function observable(target: {}, nameOrAccessor: string | Accessor): void;
 
-// @public (undocumented)
-export type PartialFASTElementDefinition = {
-    readonly name: string;
-    readonly template?: ElementViewTemplate;
-    readonly styles?: ElementStyles;
+// @public
+export interface PartialFASTElementDefinition {
     readonly attributes?: (AttributeConfiguration | string)[];
-    readonly shadowOptions?: Partial<ShadowRootInit> | null;
     readonly elementOptions?: ElementDefinitionOptions;
-};
+    readonly name: string;
+    readonly shadowOptions?: Partial<ShadowRootInit> | null;
+    readonly styles?: ElementStyles;
+    readonly template?: ElementViewTemplate;
+}
 
 // @public
 export class PropertyChangeNotifier implements Notifier {
@@ -427,42 +371,36 @@ export class PropertyChangeNotifier implements Notifier {
     unsubscribe(subscriber: Subscriber, propertyToUnwatch: string): void;
 }
 
-// @public (undocumented)
+// @public
 export function ref<T = any>(propertyName: keyof T & string): CaptureType<T>;
 
-// @public (undocumented)
+// @public
 export class RefBehavior implements Behavior {
     constructor(target: HTMLElement, propertyName: string);
-    // (undocumented)
     bind(source: any): void;
-    // (undocumented)
     unbind(): void;
 }
 
-// @public (undocumented)
+// @public
 export function repeat<TScope = any, TItem = any>(binding: Binding<TScope, TItem[]>, template: ViewTemplate<Partial<TItem>, TScope>, options?: RepeatOptions): CaptureType<TScope>;
 
-// @public (undocumented)
+// @public
 export class RepeatBehavior implements Behavior, Subscriber {
     constructor(location: Node, binding: Binding, template: SyntheticViewTemplate, options: RepeatOptions);
-    // (undocumented)
     bind(source: unknown, context: ExecutionContext): void;
     // Warning: (ae-forgotten-export) The symbol "Splice" needs to be exported by the entry point index.d.ts
     //
-    // (undocumented)
+    // @internal (undocumented)
     handleChange(source: any, args: Splice[]): void;
-    // (undocumented)
     unbind(): void;
     }
 
-// @public (undocumented)
+// @public
 export class RepeatDirective extends Directive {
     constructor(binding: Binding, template: SyntheticViewTemplate, options: RepeatOptions);
     // (undocumented)
     binding: Binding;
-    // (undocumented)
-    createBehavior(target: any): RepeatBehavior;
-    // (undocumented)
+    createBehavior(target: Node): RepeatBehavior;
     createPlaceholder: (index: number) => string;
     // (undocumented)
     options: RepeatOptions;
@@ -470,9 +408,8 @@ export class RepeatDirective extends Directive {
     template: SyntheticViewTemplate;
 }
 
-// @public (undocumented)
+// @public
 export interface RepeatOptions {
-    // (undocumented)
     positioning: boolean;
 }
 
@@ -481,47 +418,27 @@ export interface RepeatOptions {
 // @internal (undocumented)
 export function setCurrentEvent(event: Event | null): void;
 
-// @public (undocumented)
+// @public
 export function slotted<T = any>(propertyOrOptions: (keyof T & string) | SlottedBehaviorOptions<keyof T & string>): CaptureType<T>;
 
-// @public (undocumented)
+// @public
 export class SlottedBehavior extends NodeObservationBehavior<SlottedBehaviorOptions> {
     constructor(target: HTMLSlotElement, options: SlottedBehaviorOptions);
-    // (undocumented)
-    getNodes(): Node[];
-    // (undocumented)
+    disconnect(): void;
+    protected getNodes(): Node[];
     observe(): void;
-    // (undocumented)
-    unobserve(): void;
 }
 
-// @public (undocumented)
+// @public
 export interface SlottedBehaviorOptions<T = any> extends NodeBehaviorBehaviorOptions<T>, AssignedNodesOptions {
 }
 
-// @public (undocumented)
-export class StyleElementStyles extends ElementStyles {
-    constructor(styles: InjectableStyles[]);
-    // (undocumented)
-    addStylesTo(target: StyleTarget): void;
-    // (undocumented)
-    readonly behaviors: ReadonlyArray<Behavior> | null;
-    // (undocumented)
-    removeStylesFrom(target: StyleTarget): void;
-    // (undocumented)
-    styles: InjectableStyles[];
-    }
-
-// @public (undocumented)
+// @public
 export interface StyleTarget {
-    // (undocumented)
     adoptedStyleSheets?: CSSStyleSheet[];
-    // (undocumented)
-    prepend(node: Node): void;
-    // (undocumented)
+    prepend(styles: HTMLStyleElement): void;
     querySelectorAll<E extends Element = Element>(selectors: string): NodeListOf<E>;
-    // (undocumented)
-    removeChild(node: Node): void;
+    removeChild(styles: HTMLStyleElement): void;
 }
 
 // @public
@@ -556,11 +473,9 @@ export interface SyntheticViewTemplate<TSource = any, TParent = any> {
 // @public
 export type TemplateValue<TScope, TParent = any> = Binding<TScope, any, TParent> | string | number | Directive | CaptureType<TScope>;
 
-// @public (undocumented)
+// @beta
 export interface ValueConverter {
-    // (undocumented)
     fromView(value: string): any;
-    // (undocumented)
     toView(value: any): string | null;
 }
 
@@ -576,9 +491,7 @@ export interface View {
 export class ViewTemplate<TSource = any, TParent = any> implements ElementViewTemplate, SyntheticViewTemplate {
     constructor(html: string | HTMLTemplateElement, directives: ReadonlyArray<Directive>);
     create(host?: Element): HTMLView;
-    // (undocumented)
     readonly directives: ReadonlyArray<Directive>;
-    // (undocumented)
     readonly html: string | HTMLTemplateElement;
     render(source: TSource, host: HTMLElement | string): HTMLView;
     }
@@ -589,8 +502,8 @@ export function when<TSource = any, TReturn = any>(binding: Binding<TSource, TRe
 
 // Warnings were encountered during analysis:
 //
-// dist/dts/dom.d.ts:9:5 - (ae-forgotten-export) The symbol "TrustedTypesPolicy" needs to be exported by the entry point index.d.ts
-// dist/dts/fast-element.d.ts:16:5 - (ae-forgotten-export) The symbol "getDefinition" needs to be exported by the entry point index.d.ts
+// dist/dts/attributes.d.ts:40:5 - (ae-incompatible-release-tags) The symbol "converter" is marked as @public, but its signature references "ValueConverter" which is marked as @beta
+// dist/dts/dom.d.ts:17:5 - (ae-forgotten-export) The symbol "TrustedTypesPolicy" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 

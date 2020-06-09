@@ -8,17 +8,19 @@ import { defaultExecutionContext, Binding } from "./observation/observable";
 
 /**
  * A template capable of creating views specifically for rendering custom elements.
+ * @public
  */
 export interface ElementViewTemplate {
     /**
      * Creates an ElementView instance based on this template definition.
-     * @param host The custom element host that this template will be rendered to once created.
+     * @param host - The custom element host that this template will be rendered to once created.
      */
     create(host: Element): ElementView;
 }
 
 /**
  * A template capable of rendering views not specifically connected to custom elements.
+ * @public
  */
 export interface SyntheticViewTemplate<TSource = any, TParent = any> {
     /**
@@ -29,6 +31,7 @@ export interface SyntheticViewTemplate<TSource = any, TParent = any> {
 
 /**
  * A template capable of creating HTMLView instances or rendering directly to DOM.
+ * @public
  */
 export class ViewTemplate<TSource = any, TParent = any>
     implements ElementViewTemplate, SyntheticViewTemplate {
@@ -40,18 +43,32 @@ export class ViewTemplate<TSource = any, TParent = any>
     private hostBehaviorFactories: BehaviorFactory[] | null = null;
 
     /**
-     * Creates an instance of ViewTemplate.
-     * @param html The html representing what this template will instantiate, including placeholders for directives.
-     * @param directives The directives that will be connected to placeholders in the html.
+     * The html representing what this template will
+     * instantiate, including placeholders for directives.
      */
-    constructor(
-        public readonly html: string | HTMLTemplateElement,
-        public readonly directives: ReadonlyArray<Directive>
-    ) {}
+    public readonly html: string | HTMLTemplateElement;
+
+    /**
+     * The directives that will be connected to placeholders in the html.
+     */
+    public readonly directives: ReadonlyArray<Directive>;
+
+    /**
+     * Creates an instance of ViewTemplate.
+     * @param html - The html representing what this template will instantiate, including placeholders for directives.
+     * @param directives - The directives that will be connected to placeholders in the html.
+     */
+    public constructor(
+        html: string | HTMLTemplateElement,
+        directives: ReadonlyArray<Directive>
+    ) {
+        this.html = html;
+        this.directives = directives;
+    }
 
     /**
      * Creates an HTMLView instance based on this template definition.
-     * @param host The host element that this template will be rendered to once created.
+     * @param host - The host element that this template will be rendered to once created.
      */
     public create(host?: Element): HTMLView {
         if (this.fragment === null) {
@@ -115,7 +132,7 @@ export class ViewTemplate<TSource = any, TParent = any>
             const hostFactories = this.hostBehaviorFactories!;
 
             for (let i = 0, ii = hostFactories.length; i < ii; ++i, ++behaviorIndex) {
-                behaviors[behaviorIndex] = hostFactories[i].createBehavior(host);
+                behaviors[behaviorIndex] = hostFactories[i].createBehavior(host!);
             }
         }
 
@@ -124,8 +141,8 @@ export class ViewTemplate<TSource = any, TParent = any>
 
     /**
      * Creates an HTMLView from this template, binds it to the source, and then appends it to the host.
-     * @param source The data source to bind the template to.
-     * @param host The HTMLElement where the template will be rendered.
+     * @param source - The data source to bind the template to.
+     * @param host - The HTMLElement where the template will be rendered.
      */
     public render(source: TSource, host: HTMLElement | string): HTMLView {
         if (typeof host === "string") {
@@ -149,11 +166,13 @@ const lastAttributeNameRegex =
 /**
  * A marker interface used to capture types when interpolating Directive helpers
  * into templates.
+ * @public
  */
 export interface CaptureType<TSource> {}
 
 /**
  * Represents the types of values that can be interpolated into a template.
+ * @public
  */
 export type TemplateValue<TScope, TParent = any> =
     | Binding<TScope, any, TParent>
@@ -164,11 +183,12 @@ export type TemplateValue<TScope, TParent = any> =
 
 /**
  * Transforms a template literal string into a renderable ViewTemplate.
- * @param strings The string fragments that interpolated with the values.
- * @param values The values that are interpolated with the string fragments.
+ * @param strings - The string fragments that are interpolated with the values.
+ * @param values - The values that are interpolated with the string fragments.
  * @remarks
  * The html helper supports interpolation of strings, numbers, binding expressions,
  * other template instances, and Directive instances.
+ * @public
  */
 export function html<TSource = any, TParent = any>(
     strings: TemplateStringsArray,

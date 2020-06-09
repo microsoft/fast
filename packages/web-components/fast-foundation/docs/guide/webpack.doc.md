@@ -182,7 +182,7 @@ This code imports the `<fast-design-system-provider>` component as well as the `
   <fast-design-system-provider use-defaults>
     <fast-card>
       <h2>Hello World!</h2>
-      <fast-button id="button" appearance="accent">Click Me</fast-button>
+      <fast-button appearance="accent">Click Me</fast-button>
     </fast-card>
   </fast-design-system-provider>
   <style>
@@ -206,7 +206,7 @@ This code imports the `<fast-design-system-provider>` component as well as the `
       line-height: var(--type-ramp-plus-5-line-height);
     }
 
-    #button {
+    fast-card > fast-button{
       align-self: flex-end;
     }
   </style>
