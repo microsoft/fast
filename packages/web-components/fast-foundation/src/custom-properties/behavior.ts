@@ -34,7 +34,6 @@ export class CSSCustomPropertyBehavior implements Behavior, CSSCustomPropertyDef
      */
     public readonly value: CSSCustomPropertyDefinition["value"];
 
-    private _propertyName: string;
     /**
      * The name of the CSSCustomPropertyBehavior formatted
      * as a CSS custom property.

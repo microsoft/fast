@@ -365,7 +365,7 @@ export const forcedColorsStylesheetBehavior: (sheet: ElementStyles) => Readonly<
             prototype: HTMLElement;
         }>(BaseType: TBase): new () => InstanceType<TBase> & FASTElement;
         define<TType extends Function>(Type: TType, nameOrDef?: string | import("@microsoft/fast-element").PartialFASTElementDefinition | undefined): TType;
-        getDefinition: <T extends Function>(Type: T) => import("@microsoft/fast-element").FASTElementDefinition | undefined;
+        getDefinition<T extends Function>(Type: T): import("@microsoft/fast-element").FASTElementDefinition | undefined;
     }, ((this: MediaQueryList) => void)[] | ((this: MediaQueryList) => void)>;
     sheet: ElementStyles;
     constructListener(this: MatchMediaStyleSheetBehavior, source: (new () => HTMLElement & FASTElement) & {
@@ -374,7 +374,7 @@ export const forcedColorsStylesheetBehavior: (sheet: ElementStyles) => Readonly<
             prototype: HTMLElement;
         }>(BaseType: TBase): new () => InstanceType<TBase> & FASTElement;
         define<TType extends Function>(Type: TType, nameOrDef?: string | import("@microsoft/fast-element").PartialFASTElementDefinition | undefined): TType;
-        getDefinition: <T extends Function>(Type: T) => import("@microsoft/fast-element").FASTElementDefinition | undefined;
+        getDefinition<T extends Function>(Type: T): import("@microsoft/fast-element").FASTElementDefinition | undefined;
     }, sheet: ElementStyles): MediaQueryListListener;
     bind(this: MatchMediaStyleSheetBehavior, source: (new () => HTMLElement & FASTElement) & {
         from<TBase extends {
@@ -382,7 +382,7 @@ export const forcedColorsStylesheetBehavior: (sheet: ElementStyles) => Readonly<
             prototype: HTMLElement;
         }>(BaseType: TBase): new () => InstanceType<TBase> & FASTElement;
         define<TType extends Function>(Type: TType, nameOrDef?: string | import("@microsoft/fast-element").PartialFASTElementDefinition | undefined): TType;
-        getDefinition: <T extends Function>(Type: T) => import("@microsoft/fast-element").FASTElementDefinition | undefined;
+        getDefinition<T extends Function>(Type: T): import("@microsoft/fast-element").FASTElementDefinition | undefined;
     }): void;
     unbind(this: MatchMediaStyleSheetBehavior, source: (new () => HTMLElement & FASTElement) & {
         from<TBase extends {
@@ -390,7 +390,7 @@ export const forcedColorsStylesheetBehavior: (sheet: ElementStyles) => Readonly<
             prototype: HTMLElement;
         }>(BaseType: TBase): new () => InstanceType<TBase> & FASTElement;
         define<TType extends Function>(Type: TType, nameOrDef?: string | import("@microsoft/fast-element").PartialFASTElementDefinition | undefined): TType;
-        getDefinition: <T extends Function>(Type: T) => import("@microsoft/fast-element").FASTElementDefinition | undefined;
+        getDefinition<T extends Function>(Type: T): import("@microsoft/fast-element").FASTElementDefinition | undefined;
     }): void;
 }>;
 
@@ -409,7 +409,7 @@ export function matchMediaStylesheetBehaviorFactory(query: MediaQueryList): (she
             prototype: HTMLElement;
         }>(BaseType: TBase): new () => InstanceType<TBase> & FASTElement;
         define<TType extends Function>(Type: TType, nameOrDef?: string | import("@microsoft/fast-element").PartialFASTElementDefinition | undefined): TType;
-        getDefinition: <T extends Function>(Type: T) => import("@microsoft/fast-element").FASTElementDefinition | undefined;
+        getDefinition<T extends Function>(Type: T): import("@microsoft/fast-element").FASTElementDefinition | undefined;
     }, ((this: MediaQueryList) => void)[] | ((this: MediaQueryList) => void)>;
     sheet: ElementStyles;
     constructListener(this: MatchMediaStyleSheetBehavior, source: (new () => HTMLElement & FASTElement) & {
@@ -418,7 +418,7 @@ export function matchMediaStylesheetBehaviorFactory(query: MediaQueryList): (she
             prototype: HTMLElement;
         }>(BaseType: TBase): new () => InstanceType<TBase> & FASTElement;
         define<TType extends Function>(Type: TType, nameOrDef?: string | import("@microsoft/fast-element").PartialFASTElementDefinition | undefined): TType;
-        getDefinition: <T extends Function>(Type: T) => import("@microsoft/fast-element").FASTElementDefinition | undefined;
+        getDefinition<T extends Function>(Type: T): import("@microsoft/fast-element").FASTElementDefinition | undefined;
     }, sheet: ElementStyles): MediaQueryListListener;
     bind(this: MatchMediaStyleSheetBehavior, source: (new () => HTMLElement & FASTElement) & {
         from<TBase extends {
@@ -426,7 +426,7 @@ export function matchMediaStylesheetBehaviorFactory(query: MediaQueryList): (she
             prototype: HTMLElement;
         }>(BaseType: TBase): new () => InstanceType<TBase> & FASTElement;
         define<TType extends Function>(Type: TType, nameOrDef?: string | import("@microsoft/fast-element").PartialFASTElementDefinition | undefined): TType;
-        getDefinition: <T extends Function>(Type: T) => import("@microsoft/fast-element").FASTElementDefinition | undefined;
+        getDefinition<T extends Function>(Type: T): import("@microsoft/fast-element").FASTElementDefinition | undefined;
     }): void;
     unbind(this: MatchMediaStyleSheetBehavior, source: (new () => HTMLElement & FASTElement) & {
         from<TBase extends {
@@ -434,7 +434,7 @@ export function matchMediaStylesheetBehaviorFactory(query: MediaQueryList): (she
             prototype: HTMLElement;
         }>(BaseType: TBase): new () => InstanceType<TBase> & FASTElement;
         define<TType extends Function>(Type: TType, nameOrDef?: string | import("@microsoft/fast-element").PartialFASTElementDefinition | undefined): TType;
-        getDefinition: <T extends Function>(Type: T) => import("@microsoft/fast-element").FASTElementDefinition | undefined;
+        getDefinition<T extends Function>(Type: T): import("@microsoft/fast-element").FASTElementDefinition | undefined;
     }): void;
 }>;
 
