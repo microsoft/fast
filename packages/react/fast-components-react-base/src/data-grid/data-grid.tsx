@@ -547,6 +547,7 @@ class DataGrid extends Foundation<
         return (
             <div
                 ref={this.nonVirtualizedScrollContainer}
+                tabIndex={-1}
                 style={{
                     height: "100%",
                     overflowY: "scroll",
@@ -617,6 +618,7 @@ class DataGrid extends Foundation<
                 onScrollChange={this.throttledScroll}
                 itemSpan={itemSpans}
                 virtualize={this.props.virtualize}
+                tabIndex={-1}
                 style={{
                     height: "100%",
                     overflowY: "scroll",
