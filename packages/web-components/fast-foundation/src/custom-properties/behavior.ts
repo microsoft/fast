@@ -70,6 +70,19 @@ export class CSSCustomPropertyBehavior implements Behavior, CSSCustomPropertyDef
         source: typeof FASTElement & HTMLElement
     ) => Partial<CSSCustomPropertyTarget> | null;
 
+    private _propertyName: string;
+    /**
+     * The name of the CSSCustomPropertyBehavior formatted
+     * as a CSS custom property.
+     */
+    public get propertyName() {
+        if (this._propertyName === void 0) {
+            this._propertyName = `--${this.name}`;
+        }
+
+        return this._propertyName;
+    }
+
     private _var: string;
     /**
      * Return the CSS Custom Property formatted
@@ -77,7 +90,7 @@ export class CSSCustomPropertyBehavior implements Behavior, CSSCustomPropertyDef
      */
     public get var() {
         if (this._var === void 0) {
-            this._var = `var(--${this.name})`;
+            this._var = `var(${this.propertyName})`;
         }
 
         return this._var;
