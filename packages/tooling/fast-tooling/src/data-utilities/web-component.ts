@@ -4,7 +4,7 @@ export interface WebComponentAttributeValues {
     /**
      * The value
      */
-    name: string | number | boolean | null;
+    name: string | number;
 }
 
 export interface WebComponentAttribute {
