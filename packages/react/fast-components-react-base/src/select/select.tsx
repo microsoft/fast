@@ -2,6 +2,7 @@ import { SelectClassNameContract } from "@microsoft/fast-components-class-name-c
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import {
     classNames,
+    isHTMLElement,
     keyCodeArrowDown,
     keyCodeArrowLeft,
     keyCodeArrowRight,
@@ -641,7 +642,9 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
             this.state.isMenuOpen &&
             !this.props.multiselectable &&
             this.rootElement.current !== null &&
-            !this.rootElement.current.contains(event.relatedTarget as Element)
+            (!this.rootElement.current.contains(event.relatedTarget as Element) ||
+                (isHTMLElement(event.relatedTarget) &&
+                    (event.relatedTarget as HTMLElement).id === this.triggerId))
         ) {
             this.toggleMenu(false);
         }
