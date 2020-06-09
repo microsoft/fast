@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-tooling-react",
   "description": "A React-specific set of components and utilities to assist in creating web UI",
   "sideEffects": false,
-  "version": "2.2.0",
+  "version": "2.2.1",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
