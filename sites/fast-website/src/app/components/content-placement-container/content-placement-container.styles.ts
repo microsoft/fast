@@ -6,6 +6,7 @@ import {
     neutralForegroundHoverBehavior,
     neutralOutlineRestBehavior,
     neutralFillActiveBehavior,
+    accentForegroundRestBehavior,
 } from "@microsoft/fast-components";
 
 export const ContentPlacementContainerStyles = css`
@@ -24,10 +25,32 @@ export const ContentPlacementContainerStyles = css`
         grid-template-columns: repeat(auto-fit, minmax(225px, 1fr));
     }
 
+    /* this creates the numbering for feature*/
+    :host([section="feature"]) {
+        counter-reset: feature-counter;
+    }
+
+    :host([section="feature"]) site-feature-card {
+        counter-increment: feature-counter;
+    }
+
+    :host([section="feature"]) site-feature-card :first-child::before {
+        display: block;
+        content: counter(feature-counter, decimal-leading-zero);
+        font-size: var(--type-ramp-base-font-size);
+    }
+
+    :host([section="feature"]) site-feature-card:hover :first-child::before {
+        color: var(--accent-foreground-rest);
+    }
+
+    /* end */
+
     /* This creates the color, background, and elevation changes on hover */
 
     :host([section="feature"]:hover) site-card-section,
-    :host([section="community"]:hover) site-content-placement {
+    :host([section="community"]:hover) site-content-placement,
+    :host([section="community"]:hover) site-content-placement ::part(content) {
         color: var(--neutral-foreground-hint);
     }
 
@@ -40,11 +63,20 @@ export const ContentPlacementContainerStyles = css`
         cursor: pointer;
         background: var(--neutral-fill-active);
         border-radius: calc(var(--corner-radius) * 1px);
-        color: var(--neutral-foreground-hover);
+        color: currentColor;
         ${elevation}
     }
 
+    :host([section="community"]) site-content-placement:hover ::part(content) {
+        color: var(--accent-foreground-rest);
+    }
+
     /* end */
+
+    .headerSubscript {
+        color: var(--neutral-foreground-hint);
+        font-size: var(--type-ramp-minus-1-font-size);
+    }
 
     .icon {
         fill: currentColor;
@@ -60,7 +92,19 @@ export const ContentPlacementContainerStyles = css`
             grid-template-columns: unset;
         }
     }
+
+    @media screen and (max-width: 900px) {
+        :host([section="feature"]) site-feature-card :first-child {
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: space-between;
+        }
+        :host([section="feature"]) site-feature-card :first-child::before {
+            color: var(--accent-foreground-rest);
+        }
+    }
 `.withBehaviors(
+    accentForegroundRestBehavior,
     neutralForegroundHintBehavior,
     neutralForegroundHoverBehavior,
     neutralOutlineRestBehavior,

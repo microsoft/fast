@@ -30,10 +30,6 @@ export const FeatureCardStyles = css`
         opacity: 0;
     }
 
-    :host(:hover) ::slotted(:first-child) {
-        color: var(--accent-fill-rest);
-    }
-
     .card_heading {
         grid-area: header;
         padding-bottom: 10px;
@@ -52,7 +48,6 @@ export const FeatureCardStyles = css`
     }
 
     ::slotted(:first-child) {
-        font-weight: bold;
         margin: 0 0 10px 0;
     }
 
@@ -71,16 +66,6 @@ export const FeatureCardStyles = css`
                 "header header header"
                 "main main main";
             max-width: 600px;
-        }
-
-        :host ::slotted(:first-child) {
-            color: var(--accent-fill-rest);
-        }
-
-        .card_heading {
-            display: flex;
-            flex-direction: row-reverse;
-            justify-content: space-between;
         }
     }
 `.withBehaviors(neutralForegroundRestBehavior);
