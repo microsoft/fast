@@ -2,6 +2,7 @@ import { emptyArray } from "../interfaces";
 
 /**
  * Represents a set of splice-based changes against an Array.
+ * @public
  */
 export interface Splice {
     /**
@@ -20,9 +21,7 @@ export interface Splice {
     addedCount: number;
 }
 
-/**
- * @internal
- */
+/** @internal */
 export function newSplice(index: number, removed: any[], addedCount: number): Splice {
     return {
         index: index,
@@ -418,9 +417,7 @@ function createInitialSplices(changeRecords: Splice[]): Splice[] {
     return splices;
 }
 
-/**
- * @internal
- */
+/** @internal */
 export function projectArraySplices(array: any[], changeRecords: any[]): Splice[] {
     let splices: Splice[] = [];
     const initialSplices = createInitialSplices(changeRecords);
