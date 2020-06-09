@@ -88,6 +88,7 @@ export class CSSCustomPropertyBehavior implements Behavior, CSSCustomPropertyDef
     /**
      * Binds the behavior to a source element
      * @param source The source element being bound
+     * @internal
      */
     bind(source: typeof FASTElement & HTMLElement): void {
         const target = this.host(source);
@@ -112,6 +113,7 @@ export class CSSCustomPropertyBehavior implements Behavior, CSSCustomPropertyDef
     /**
      * Unbinds the behavior from the source element.
      * @param source The source element being unbound
+     * @internal
      */
     unbind(source: typeof FASTElement & HTMLElement): void {
         const target = this.host(source);
