@@ -34,8 +34,29 @@ export class CSSCustomPropertyBehavior implements Behavior, CSSCustomPropertyDef
      */
     public readonly value: CSSCustomPropertyDefinition["value"];
     constructor(
+        /**
+         * The name of the custom property.
+         * @remarks
+         * When written as a custom property, the "--" required
+         * by CSS custom properties will be prepended to this value.
+         */
         name: string,
+
+        /**
+         * The value of the custom property or a function that
+         * resolves the value.
+         * @remarks
+         * When a resolver is provided, the resolver will be invoked
+         * by the element returned from the host argument.
+         */
         value: CSSCustomPropertyDefinition["value"],
+
+        /**
+         * The element that registers the behavior.
+         * @remarks
+         * This element should also be responsible for resolving
+         * and function value.
+         */
         host: (
             source: typeof FASTElement & HTMLElement
         ) => Partial<CSSCustomPropertyTarget> | null
