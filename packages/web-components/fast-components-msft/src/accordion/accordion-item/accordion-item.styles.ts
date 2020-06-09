@@ -4,14 +4,15 @@ import {
     focusVisible,
     forcedColorsStylesheetBehavior,
 } from "@microsoft/fast-foundation";
+import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
     neutralDividerRestBehavior,
     neutralFocusBehavior,
     neutralForegroundActiveBehavior,
     neutralForegroundFocusBehavior,
+    neutralForegroundHoverBehavior,
     neutralForegroundRestBehavior,
 } from "../../styles/";
-import { SystemColors } from "@microsoft/fast-web-utilities";
 import { heightNumber } from "../../styles/size";
 
 export const AccordionItemStyles = css`
@@ -127,6 +128,7 @@ export const AccordionItemStyles = css`
     neutralForegroundActiveBehavior,
     neutralForegroundFocusBehavior,
     neutralForegroundRestBehavior,
+    neutralForegroundHoverBehavior,
     neutralFocusBehavior,
     forcedColorsStylesheetBehavior(
         css`

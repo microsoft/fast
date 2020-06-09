@@ -1,6 +1,5 @@
 import { css } from "@microsoft/fast-element";
-import { display, forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
-import { SystemColors } from "@microsoft/fast-web-utilities";
+import { display } from "@microsoft/fast-foundation";
 import { elevation, neutralLayerCardBehavior } from "../styles/index";
 
 export const CardStyles = css`

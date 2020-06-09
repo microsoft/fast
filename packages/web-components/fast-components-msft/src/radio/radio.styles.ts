@@ -9,6 +9,7 @@ import {
 import {
     heightNumber,
     neutralFillActiveBehavior,
+    neutralFillInputActiveBehavior,
     neutralFillInputHoverBehavior,
     neutralFillInputRestBehavior,
     neutralFocusBehavior,
@@ -119,6 +120,7 @@ export const RadioStyles = css`
     neutralOutlineActiveBehavior,
     neutralOutlineHoverBehavior,
     neutralOutlineRestBehavior,
+    neutralFillInputActiveBehavior,
     forcedColorsStylesheetBehavior(
         css`
             .control {
