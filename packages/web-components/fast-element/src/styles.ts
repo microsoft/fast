@@ -138,7 +138,7 @@ class AdoptedStyleSheetsStyles extends ElementStyles {
     public removeStylesFrom(target: StyleTarget): void {
         const sourceSheets = this.styleSheets;
         target.adoptedStyleSheets = target.adoptedStyleSheets!.filter(
-            (x: CSSStyleSheet) => sourceSheets.indexOf(x) !== -1
+            (x: CSSStyleSheet) => sourceSheets.indexOf(x) === -1
         );
     }
 }
