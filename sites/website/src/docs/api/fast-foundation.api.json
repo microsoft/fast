@@ -3482,7 +3482,7 @@
             {
               "kind": "Reference",
               "text": "PartialFASTElementDefinition",
-              "canonicalReference": "@microsoft/fast-element!PartialFASTElementDefinition:type"
+              "canonicalReference": "@microsoft/fast-element!PartialFASTElementDefinition:interface"
             },
             {
               "kind": "Content",
@@ -4489,11 +4489,11 @@
             {
               "kind": "Reference",
               "text": "PartialFASTElementDefinition",
-              "canonicalReference": "@microsoft/fast-element!PartialFASTElementDefinition:type"
+              "canonicalReference": "@microsoft/fast-element!PartialFASTElementDefinition:interface"
             },
             {
               "kind": "Content",
-              "text": " | undefined): TType;\n        getDefinition: <T extends "
+              "text": " | undefined): TType;\n        getDefinition<T extends "
             },
             {
               "kind": "Reference",
@@ -4502,7 +4502,7 @@
             },
             {
               "kind": "Content",
-              "text": ">(Type: T) => import(\"@microsoft/fast-element\")."
+              "text": ">(Type: T): import(\"@microsoft/fast-element\")."
             },
             {
               "kind": "Reference",
@@ -4615,11 +4615,11 @@
             {
               "kind": "Reference",
               "text": "PartialFASTElementDefinition",
-              "canonicalReference": "@microsoft/fast-element!PartialFASTElementDefinition:type"
+              "canonicalReference": "@microsoft/fast-element!PartialFASTElementDefinition:interface"
             },
             {
               "kind": "Content",
-              "text": " | undefined): TType;\n        getDefinition: <T extends "
+              "text": " | undefined): TType;\n        getDefinition<T extends "
             },
             {
               "kind": "Reference",
@@ -4628,7 +4628,7 @@
             },
             {
               "kind": "Content",
-              "text": ">(Type: T) => import(\"@microsoft/fast-element\")."
+              "text": ">(Type: T): import(\"@microsoft/fast-element\")."
             },
             {
               "kind": "Reference",
@@ -4732,11 +4732,11 @@
             {
               "kind": "Reference",
               "text": "PartialFASTElementDefinition",
-              "canonicalReference": "@microsoft/fast-element!PartialFASTElementDefinition:type"
+              "canonicalReference": "@microsoft/fast-element!PartialFASTElementDefinition:interface"
             },
             {
               "kind": "Content",
-              "text": " | undefined): TType;\n        getDefinition: <T extends "
+              "text": " | undefined): TType;\n        getDefinition<T extends "
             },
             {
               "kind": "Reference",
@@ -4745,7 +4745,7 @@
             },
             {
               "kind": "Content",
-              "text": ">(Type: T) => import(\"@microsoft/fast-element\")."
+              "text": ">(Type: T): import(\"@microsoft/fast-element\")."
             },
             {
               "kind": "Reference",
@@ -4831,11 +4831,11 @@
             {
               "kind": "Reference",
               "text": "PartialFASTElementDefinition",
-              "canonicalReference": "@microsoft/fast-element!PartialFASTElementDefinition:type"
+              "canonicalReference": "@microsoft/fast-element!PartialFASTElementDefinition:interface"
             },
             {
               "kind": "Content",
-              "text": " | undefined): TType;\n        getDefinition: <T extends "
+              "text": " | undefined): TType;\n        getDefinition<T extends "
             },
             {
               "kind": "Reference",
@@ -4844,7 +4844,7 @@
             },
             {
               "kind": "Content",
-              "text": ">(Type: T) => import(\"@microsoft/fast-element\")."
+              "text": ">(Type: T): import(\"@microsoft/fast-element\")."
             },
             {
               "kind": "Reference",
@@ -5067,11 +5067,11 @@
             {
               "kind": "Reference",
               "text": "PartialFASTElementDefinition",
-              "canonicalReference": "@microsoft/fast-element!PartialFASTElementDefinition:type"
+              "canonicalReference": "@microsoft/fast-element!PartialFASTElementDefinition:interface"
             },
             {
               "kind": "Content",
-              "text": " | undefined): TType;\n        getDefinition: <T extends "
+              "text": " | undefined): TType;\n        getDefinition<T extends "
             },
             {
               "kind": "Reference",
@@ -5080,7 +5080,7 @@
             },
             {
               "kind": "Content",
-              "text": ">(Type: T) => import(\"@microsoft/fast-element\")."
+              "text": ">(Type: T): import(\"@microsoft/fast-element\")."
             },
             {
               "kind": "Reference",
@@ -5193,11 +5193,11 @@
             {
               "kind": "Reference",
               "text": "PartialFASTElementDefinition",
-              "canonicalReference": "@microsoft/fast-element!PartialFASTElementDefinition:type"
+              "canonicalReference": "@microsoft/fast-element!PartialFASTElementDefinition:interface"
             },
             {
               "kind": "Content",
-              "text": " | undefined): TType;\n        getDefinition: <T extends "
+              "text": " | undefined): TType;\n        getDefinition<T extends "
             },
             {
               "kind": "Reference",
@@ -5206,7 +5206,7 @@
             },
             {
               "kind": "Content",
-              "text": ">(Type: T) => import(\"@microsoft/fast-element\")."
+              "text": ">(Type: T): import(\"@microsoft/fast-element\")."
             },
             {
               "kind": "Reference",
@@ -5310,11 +5310,11 @@
             {
               "kind": "Reference",
               "text": "PartialFASTElementDefinition",
-              "canonicalReference": "@microsoft/fast-element!PartialFASTElementDefinition:type"
+              "canonicalReference": "@microsoft/fast-element!PartialFASTElementDefinition:interface"
             },
             {
               "kind": "Content",
-              "text": " | undefined): TType;\n        getDefinition: <T extends "
+              "text": " | undefined): TType;\n        getDefinition<T extends "
             },
             {
               "kind": "Reference",
@@ -5323,7 +5323,7 @@
             },
             {
               "kind": "Content",
-              "text": ">(Type: T) => import(\"@microsoft/fast-element\")."
+              "text": ">(Type: T): import(\"@microsoft/fast-element\")."
             },
             {
               "kind": "Reference",
@@ -5409,11 +5409,11 @@
             {
               "kind": "Reference",
               "text": "PartialFASTElementDefinition",
-              "canonicalReference": "@microsoft/fast-element!PartialFASTElementDefinition:type"
+              "canonicalReference": "@microsoft/fast-element!PartialFASTElementDefinition:interface"
             },
             {
               "kind": "Content",
-              "text": " | undefined): TType;\n        getDefinition: <T extends "
+              "text": " | undefined): TType;\n        getDefinition<T extends "
             },
             {
               "kind": "Reference",
@@ -5422,7 +5422,7 @@
             },
             {
               "kind": "Content",
-              "text": ">(Type: T) => import(\"@microsoft/fast-element\")."
+              "text": ">(Type: T): import(\"@microsoft/fast-element\")."
             },
             {
               "kind": "Reference",

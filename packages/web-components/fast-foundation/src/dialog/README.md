@@ -24,12 +24,14 @@ export class FASTDialog extends Dialog {}
 ## Usage
 
 ```html live
-<!-- TODO: Need to update this to render and dismiss on click -->
+<div>
 <fast-design-system-provider use-defaults>
-    <fast-dialog id="simpleDialog" aria-label="Simple modal dialog" modal="true" hidden>
-        <h2>Dialog with text and button.</h2>
-        <fast-button>Button A</fast-button>
-        <fast-button autofocus>Should autofocus</fast-button>
+    <fast-button appearance="accent" onclick="document.getElementById('example1').toggleAttribute('hidden');">Open Dialog</fast-button>
+    <fast-dialog id="example1" class="example-dialog" aria-label="Simple modal dialog" modal="true" hidden>
+        <h2>Dialog</h2>
+        <p>This is an example dialog. Click the button below to close</p>
+        <fast-button autofocus onclick="document.getElementById('example1').toggleAttribute('hidden');">Close Dialog</fast-button>
     </fast-dialog>
 </fast-design-system-provider>
+</div>
 ```
