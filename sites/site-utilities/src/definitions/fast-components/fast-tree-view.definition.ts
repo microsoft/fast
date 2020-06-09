@@ -1,13 +1,12 @@
 import { WebComponentDefinition } from "@microsoft/fast-tooling/dist/data-utilities/web-component";
 import { DataType } from "@microsoft/fast-tooling";
-import { Orientation } from "@microsoft/fast-web-utilities";
 
-export const fastSliderDefinition: WebComponentDefinition = {
+export const fastTreeViewDefinition: WebComponentDefinition = {
     version: 1,
     tags: [
         {
-            name: "fast-slider",
-            description: "The FAST slider element",
+            name: "fast-tree-view",
+            description: "The FAST tree view element",
             attributes: [
                 {
                     name: "name",

@@ -1,6 +1,5 @@
 import { WebComponentDefinition } from "@microsoft/fast-tooling/dist/data-utilities/web-component";
 import { DataType } from "@microsoft/fast-tooling";
-import { Orientation } from "@microsoft/fast-web-utilities";
 
 export const fastTreeItemDefinition: WebComponentDefinition = {
     version: 1,
