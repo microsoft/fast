@@ -2,11 +2,10 @@ import { css } from "@microsoft/fast-element";
 import { display } from "@microsoft/fast-foundation";
 import { elevation } from "@microsoft/fast-components/dist/esm/styles/elevation.js";
 import {
-    neutralForegroundHintBehavior,
-    neutralForegroundHoverBehavior,
-    neutralOutlineRestBehavior,
-    neutralFillActiveBehavior,
     accentForegroundRestBehavior,
+    neutralFillFocusBehavior,
+    neutralForegroundHintBehavior,
+    neutralForegroundRestBehavior,
 } from "@microsoft/fast-components";
 
 export const ContentPlacementContainerStyles = css`
@@ -133,8 +132,7 @@ export const ContentPlacementContainerStyles = css`
     }
 `.withBehaviors(
     accentForegroundRestBehavior,
+    neutralFillFocusBehavior,
     neutralForegroundHintBehavior,
-    neutralForegroundHoverBehavior,
-    neutralOutlineRestBehavior,
-    neutralFillActiveBehavior
+    neutralForegroundRestBehavior
 );
