@@ -25,6 +25,7 @@ export const ContentPlacementContainerStyles = css`
         grid-template-rows: repeat(4, min-content);
         grid-auto-flow: var(--flow);
         justify-content: center;
+        counter-reset: feature-counter;
     }
 
     :host([section="community"]) {
@@ -32,9 +33,6 @@ export const ContentPlacementContainerStyles = css`
     }
 
     /* this creates the numbering for feature*/
-    :host([section="feature"]) {
-        counter-reset: feature-counter;
-    }
 
     :host([section="feature"]) site-feature-card {
         counter-increment: feature-counter;
