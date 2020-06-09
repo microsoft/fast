@@ -61,6 +61,10 @@ export const fastRadioGroupDefinition: WebComponentDefinition = {
                     name: "",
                     description: "The default slot",
                 },
+                {
+                    name: "label",
+                    description: "Label slot",
+                },
             ],
         },
     ],
