@@ -1,4 +1,4 @@
-import { nullableNumberConverter } from "@microsoft/fast-element";
+import { nullableNumberConverter, attr } from "@microsoft/fast-element";
 import {
     DensityOffset,
     DesignSystem,
@@ -27,6 +27,18 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
             | "neutralForegroundDarkIndex"
             | "neutralForegroundLightIndex"
         > {
+    @attr({ attribute: "omit-background", mode: "boolean" })
+    public omitBackground = false;
+    private omitBackgroundChanged(prev: boolean) {
+        console.log(prev);
+    }
+
+    @attr({ attribute: "omit-color", mode: "boolean" })
+    public omitColor = false;
+    private omitColorChanged(prev: boolean) {
+        console.log(prev);
+    }
+
     /**
      * Define design system property attributes
      */

@@ -1,4 +1,4 @@
-import { nullableNumberConverter } from "@microsoft/fast-element";
+import { attr, nullableNumberConverter, css } from "@microsoft/fast-element";
 import {
     designSystemProperty,
     designSystemProvider,
@@ -6,7 +6,11 @@ import {
     DesignSystemProviderTemplate as template,
 } from "@microsoft/fast-foundation";
 import { FASTDesignSystem, fastDesignSystemDefaults } from "../fast-design-system";
-import { DesignSystemProviderStyles as styles } from "./design-system-provider.styles";
+import {
+    backgroundStyles,
+    colorStyles,
+    DesignSystemProviderStyles as styles,
+} from "./design-system-provider.styles";
 
 @designSystemProvider({
     name: "fast-design-system-provider",
@@ -15,6 +19,26 @@ import { DesignSystemProviderStyles as styles } from "./design-system-provider.s
 })
 export class FASTDesignSystemProvider extends DesignSystemProvider
     implements FASTDesignSystem {
+    @attr({ attribute: "omit-background", mode: "boolean" })
+    public omitBackground = false;
+    private omitBackgroundChanged(prev: boolean) {
+        if (!this.omitBackground) {
+            this.$fastController.addStyles(backgroundStyles);
+        } else {
+            this.$fastController.removeStyles(backgroundStyles);
+        }
+    }
+
+    @attr({ attribute: "omit-color", mode: "boolean" })
+    public omitColor = false;
+    private omitColorChanged(prev: boolean) {
+        if (!this.omitBackground) {
+            this.$fastController.addStyles(colorStyles);
+        } else {
+            this.$fastController.removeStyles(colorStyles);
+        }
+    }
+
     /**
      * Define design system property attributes
      */
