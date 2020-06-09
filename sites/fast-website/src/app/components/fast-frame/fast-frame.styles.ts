@@ -24,6 +24,7 @@ export const FastFrameStyles = css`
 
     :host {
         --gutter: 20;
+        max-width: 100vw;
     }
 
     .icon {
