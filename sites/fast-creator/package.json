@@ -62,7 +62,7 @@
     "webpack": "4.28.4",
     "webpack-bundle-analyzer": "^3.0.3",
     "webpack-cli": "^3.1.2",
-    "webpack-dev-server": "^3.1.10",
+    "webpack-dev-server": "^3.11.0",
     "workbox-webpack-plugin": "^3.6.3",
     "worker-loader": "^2.0.0"
   },
