@@ -142,7 +142,7 @@ export class AttributeDefinition implements Accessor {
     public readonly converter?: ValueConverter;
 
     /**
-     *
+     * Creates an instance of AttributeDefinition.
      * @param Owner - The class constructor that owns this attribute.
      * @param name - The name of the property associated with the attribute.
      * @param attribute - The name of the attribute in HTML.

@@ -23,7 +23,7 @@ export abstract class NodeObservationBehavior<T extends NodeBehaviorBehaviorOpti
     private shouldUpdate!: boolean;
 
     /**
-     *
+     * Creates an instance of NodeObservationBehavior.
      * @param target - The target to assign the nodes property on.
      * @param options - The options to use in configuring node observation.
      */
