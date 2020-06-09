@@ -3,7 +3,6 @@ export interface FeatureCardData {
     documentationLink: string;
     githubLink: string;
     header: string;
-    item: string;
 }
 
 export const featureCardData: FeatureCardData[] = [
@@ -13,7 +12,6 @@ export const featureCardData: FeatureCardData[] = [
         documentationLink: "#",
         githubLink: "#",
         header: "Composition",
-        item: "01",
     },
     {
         body:
@@ -21,7 +19,6 @@ export const featureCardData: FeatureCardData[] = [
         documentationLink: "#",
         githubLink: "#",
         header: "Design Systems",
-        item: "02",
     },
     {
         body:
@@ -29,7 +26,6 @@ export const featureCardData: FeatureCardData[] = [
         documentationLink: "#",
         githubLink: "#",
         header: "Technology",
-        item: "03",
     },
     {
         body:
@@ -37,7 +33,6 @@ export const featureCardData: FeatureCardData[] = [
         documentationLink: "#",
         githubLink: "#",
         header: "Web Standards",
-        item: "04",
     },
     {
         body:
@@ -45,7 +40,6 @@ export const featureCardData: FeatureCardData[] = [
         documentationLink: "#",
         githubLink: "#",
         header: "Animation",
-        item: "05",
     },
     {
         body:
@@ -53,7 +47,6 @@ export const featureCardData: FeatureCardData[] = [
         documentationLink: "#",
         githubLink: "#",
         header: "Colors",
-        item: "06",
     },
     {
         body:
@@ -61,7 +54,6 @@ export const featureCardData: FeatureCardData[] = [
         documentationLink: "#",
         githubLink: "#",
         header: "Layout / Grid",
-        item: "07",
     },
     {
         body:
@@ -69,6 +61,5 @@ export const featureCardData: FeatureCardData[] = [
         documentationLink: "#",
         githubLink: "#",
         header: "Other",
-        item: "08",
     },
 ];
