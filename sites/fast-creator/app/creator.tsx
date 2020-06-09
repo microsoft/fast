@@ -27,6 +27,7 @@ import {
     CustomMessageIncomingOutgoing,
     MessageSystem,
     MessageSystemDataTypeAction,
+    MessageSystemNavigationTypeAction,
     MessageSystemType,
     SchemaDictionary,
 } from "@microsoft/fast-tooling";
@@ -53,6 +54,9 @@ import {
     AccentColorPicker,
     Dimension,
     DirectionSwitch,
+    fastComponentSchemas,
+    nativeElementSchemas,
+    textSchema,
     ThemeSelector,
 } from "@microsoft/site-utilities";
 import { fastDesignSystemDefaults } from "@microsoft/fast-components/src/fast-design-system";
@@ -64,26 +68,17 @@ import {
     ProjectFile,
     ProjectFileView,
 } from "./creator.props";
-import {
-    divTag,
-    linkedDataExamples,
-    nativeElementSchemas,
-    webComponentSchemas,
-} from "./configs";
+import { divTag, linkedDataExamples } from "./configs";
 import { ProjectFileTransfer } from "./components";
 import { selectDeviceOverrideStyles } from "./utilities/style-overrides";
 import { previewReady } from "./preview";
-import { textSchema } from "./utilities";
-import { fastDesignSystemProviderId } from "./configs/fast-design-system-provider.definition";
 
 const fastMessageSystemWorker = new FASTMessageSystemWorker();
 let fastMessageSystem: MessageSystem;
 const schemaDictionary: SchemaDictionary = {
-    ...webComponentSchemas,
+    ...fastComponentSchemas,
     ...nativeElementSchemas,
     [textSchema.id]: textSchema,
-    [webComponentSchemas[fastDesignSystemProviderId].id]:
-        webComponentSchemas[fastDesignSystemProviderId],
 };
 
 export const previewDirection: string = "PREVIEW::DIRECTION";
@@ -332,6 +327,13 @@ class Creator extends Foundation<CreatorHandledProps, {}, CreatorState> {
             } else if (e.data.value.type === MessageSystemType.navigation) {
                 fastMessageSystem.postMessage(e.data.value);
             }
+        }
+
+        if (
+            e.data.type === MessageSystemType.navigation &&
+            e.data.action === MessageSystemNavigationTypeAction.update
+        ) {
+            updatedState.activeDictionaryId = e.data.activeDictionaryId;
         }
 
         this.setState(updatedState as CreatorState);

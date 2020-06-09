@@ -1,8 +1,10 @@
 import { Data } from "@microsoft/fast-tooling";
 import { uniqueId } from "lodash-es";
-import { textSchema } from "../utilities";
-import { webComponentSchemas } from "./map-component-definition-to-json-schema";
-import { nativeElementSchemas } from "./map-native-element-definition-to-json-schema";
+import {
+    fastComponentSchemas,
+    nativeElementSchemas,
+    textSchema,
+} from "@microsoft/site-utilities";
 
 interface ExampleData {
     [key: string]: Array<Data<unknown>>;
@@ -188,7 +190,7 @@ const labelExample = {
  * FAST examples
  */
 const fastAnchorExample = {
-    schemaId: webComponentSchemas[fastAnchorTag].id,
+    schemaId: fastComponentSchemas[fastAnchorTag].id,
     data: {
         href: "#",
     },
@@ -202,7 +204,7 @@ const fastAnchorExample = {
     ],
 };
 const fastButtonExample = {
-    schemaId: webComponentSchemas[fastButtonTag].id,
+    schemaId: fastComponentSchemas[fastButtonTag].id,
     data: {},
     dataLocation: "Slot",
     linkedData: [
@@ -214,7 +216,7 @@ const fastButtonExample = {
     ],
 };
 const fastBadgeExample = {
-    schemaId: webComponentSchemas[fastBadgeTag].id,
+    schemaId: fastComponentSchemas[fastBadgeTag].id,
     data: {},
     dataLocation: "Slot",
     linkedData: [
@@ -226,7 +228,7 @@ const fastBadgeExample = {
     ],
 };
 const fastCardExample = {
-    schemaId: webComponentSchemas[fastCardTag].id,
+    schemaId: fastComponentSchemas[fastCardTag].id,
     data: {},
     dataLocation: "Slot",
     linkedData: [
@@ -238,27 +240,27 @@ const fastCardExample = {
     ],
 };
 const fastCheckboxExample = {
-    schemaId: webComponentSchemas[fastCheckboxTag].id,
+    schemaId: fastComponentSchemas[fastCheckboxTag].id,
     data: {},
     dataLocation: "Slot",
 };
 const fastDialogExample = {
-    schemaId: webComponentSchemas[fastDialogTag].id,
+    schemaId: fastComponentSchemas[fastDialogTag].id,
     data: {},
     dataLocation: "Slot",
 };
 const fastDividerExample = {
-    schemaId: webComponentSchemas[fastDividerTag].id,
+    schemaId: fastComponentSchemas[fastDividerTag].id,
     data: {},
     dataLocation: "Slot",
 };
 const fastFlipperExample = {
-    schemaId: webComponentSchemas[fastFlipperTag].id,
+    schemaId: fastComponentSchemas[fastFlipperTag].id,
     data: {},
     dataLocation: "Slot",
 };
 const fastMenuItemExample = {
-    schemaId: webComponentSchemas[fastMenuItemTag].id,
+    schemaId: fastComponentSchemas[fastMenuItemTag].id,
     data: {},
     dataLocation: "Slot",
     linkedData: [
@@ -270,48 +272,48 @@ const fastMenuItemExample = {
     ],
 };
 const fastMenuExample = {
-    schemaId: webComponentSchemas[fastMenuTag].id,
+    schemaId: fastComponentSchemas[fastMenuTag].id,
     data: {},
     dataLocation: "Slot",
     linkedData: [fastMenuItemExample, fastMenuItemExample, fastMenuItemExample],
 };
 const fastProgressExample = {
-    schemaId: webComponentSchemas[fastProgressTag].id,
+    schemaId: fastComponentSchemas[fastProgressTag].id,
     data: {},
     dataLocation: "Slot",
 };
 const fastProgressRingExample = {
-    schemaId: webComponentSchemas[fastProgressRingTag].id,
+    schemaId: fastComponentSchemas[fastProgressRingTag].id,
     data: {},
     dataLocation: "Slot",
 };
 const fastRadioGroupExample = {
-    schemaId: webComponentSchemas[fastRadioGroupTag].id,
+    schemaId: fastComponentSchemas[fastRadioGroupTag].id,
     data: {},
     dataLocation: "Slot",
 };
 const fastRadioExample = {
-    schemaId: webComponentSchemas[fastRadioTag].id,
+    schemaId: fastComponentSchemas[fastRadioTag].id,
     data: {},
     dataLocation: "Slot",
 };
 const fastSliderExample = {
-    schemaId: webComponentSchemas[fastSliderTag].id,
+    schemaId: fastComponentSchemas[fastSliderTag].id,
     data: {},
     dataLocation: "Slot",
 };
 const fastSliderLabelExample = {
-    schemaId: webComponentSchemas[fastSliderLabelTag].id,
+    schemaId: fastComponentSchemas[fastSliderLabelTag].id,
     data: {},
     dataLocation: "Slot",
 };
 const fastSwitchExample = {
-    schemaId: webComponentSchemas[fastSwitchTag].id,
+    schemaId: fastComponentSchemas[fastSwitchTag].id,
     data: {},
     dataLocation: "Slot",
 };
 const fastTabExample = {
-    schemaId: webComponentSchemas[fastTabTag].id,
+    schemaId: fastComponentSchemas[fastTabTag].id,
     data: {
         id: uniqueId("Tab"),
     },
@@ -325,7 +327,7 @@ const fastTabExample = {
     ],
 };
 const fastTabPanelExample = {
-    schemaId: webComponentSchemas[fastTabPanelTag].id,
+    schemaId: fastComponentSchemas[fastTabPanelTag].id,
     data: {
         id: uniqueId("TabPanel"),
     },
@@ -340,7 +342,7 @@ const fastTabPanelExample = {
     ],
 };
 const fastTabsExample = {
-    schemaId: webComponentSchemas[fastTabsTag].id,
+    schemaId: fastComponentSchemas[fastTabsTag].id,
     data: {},
     dataLocation: "Slot",
     linkedData: [
@@ -353,12 +355,12 @@ const fastTabsExample = {
     ],
 };
 const fastTextAreaExample = {
-    schemaId: webComponentSchemas[fastTextAreaTag].id,
+    schemaId: fastComponentSchemas[fastTextAreaTag].id,
     data: {},
     dataLocation: "Slot",
 };
 const fastTextFieldExample = {
-    schemaId: webComponentSchemas[fastTextFieldTag].id,
+    schemaId: fastComponentSchemas[fastTextFieldTag].id,
     data: {},
     dataLocation: "Slot",
 };
@@ -367,28 +369,28 @@ const linkedDataExamples: ExampleData = {
     /**
      * FAST components
      */
-    [webComponentSchemas[fastAnchorTag].id]: [fastAnchorExample],
-    [webComponentSchemas[fastButtonTag].id]: [fastButtonExample],
-    [webComponentSchemas[fastBadgeTag].id]: [fastBadgeExample],
-    [webComponentSchemas[fastCardTag].id]: [fastCardExample],
-    [webComponentSchemas[fastCheckboxTag].id]: [fastCheckboxExample],
-    [webComponentSchemas[fastDialogTag].id]: [fastDialogExample],
-    [webComponentSchemas[fastDividerTag].id]: [fastDividerExample],
-    [webComponentSchemas[fastFlipperTag].id]: [fastFlipperExample],
-    [webComponentSchemas[fastMenuTag].id]: [fastMenuExample],
-    [webComponentSchemas[fastMenuItemTag].id]: [fastMenuItemExample],
-    [webComponentSchemas[fastProgressTag].id]: [fastProgressExample],
-    [webComponentSchemas[fastProgressRingTag].id]: [fastProgressRingExample],
-    [webComponentSchemas[fastRadioGroupTag].id]: [fastRadioGroupExample],
-    [webComponentSchemas[fastRadioTag].id]: [fastRadioExample],
-    [webComponentSchemas[fastSliderTag].id]: [fastSliderExample],
-    [webComponentSchemas[fastSliderLabelTag].id]: [fastSliderLabelExample],
-    [webComponentSchemas[fastSwitchTag].id]: [fastSwitchExample],
-    [webComponentSchemas[fastTabsTag].id]: [fastTabsExample],
-    [webComponentSchemas[fastTabTag].id]: [fastTabExample],
-    [webComponentSchemas[fastTabPanelTag].id]: [fastTabPanelExample],
-    [webComponentSchemas[fastTextAreaTag].id]: [fastTextAreaExample],
-    [webComponentSchemas[fastTextFieldTag].id]: [fastTextFieldExample],
+    [fastComponentSchemas[fastAnchorTag].id]: [fastAnchorExample],
+    [fastComponentSchemas[fastButtonTag].id]: [fastButtonExample],
+    [fastComponentSchemas[fastBadgeTag].id]: [fastBadgeExample],
+    [fastComponentSchemas[fastCardTag].id]: [fastCardExample],
+    [fastComponentSchemas[fastCheckboxTag].id]: [fastCheckboxExample],
+    [fastComponentSchemas[fastDialogTag].id]: [fastDialogExample],
+    [fastComponentSchemas[fastDividerTag].id]: [fastDividerExample],
+    [fastComponentSchemas[fastFlipperTag].id]: [fastFlipperExample],
+    [fastComponentSchemas[fastMenuTag].id]: [fastMenuExample],
+    [fastComponentSchemas[fastMenuItemTag].id]: [fastMenuItemExample],
+    [fastComponentSchemas[fastProgressTag].id]: [fastProgressExample],
+    [fastComponentSchemas[fastProgressRingTag].id]: [fastProgressRingExample],
+    [fastComponentSchemas[fastRadioGroupTag].id]: [fastRadioGroupExample],
+    [fastComponentSchemas[fastRadioTag].id]: [fastRadioExample],
+    [fastComponentSchemas[fastSliderTag].id]: [fastSliderExample],
+    [fastComponentSchemas[fastSliderLabelTag].id]: [fastSliderLabelExample],
+    [fastComponentSchemas[fastSwitchTag].id]: [fastSwitchExample],
+    [fastComponentSchemas[fastTabsTag].id]: [fastTabsExample],
+    [fastComponentSchemas[fastTabTag].id]: [fastTabExample],
+    [fastComponentSchemas[fastTabPanelTag].id]: [fastTabPanelExample],
+    [fastComponentSchemas[fastTextAreaTag].id]: [fastTextAreaExample],
+    [fastComponentSchemas[fastTextFieldTag].id]: [fastTextFieldExample],
     /**
      * Native elements
      */
