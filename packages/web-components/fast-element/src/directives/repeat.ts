@@ -67,7 +67,7 @@ export class RepeatBehavior implements Behavior, Subscriber {
      * Creates an instance of RepeatBehavior.
      * @param location - The location in the DOM to render the repeat.
      * @param binding - The array to render.
-     * @param template - The template to render for each i9tem.
+     * @param template - The template to render for each item.
      * @param options - Options used to turn on special repeat features.
      */
     public constructor(
