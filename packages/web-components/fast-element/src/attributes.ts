@@ -172,9 +172,9 @@ export class AttributeDefinition implements Accessor {
     }
 
     /**
-     * Sets the value of the property on the source object.
-     * @param source - The source object to access.
-     * @param value - The value to set the property to.
+     * Sets the value of the attribute/property on the source element.
+     * @param source - The source element to access.
+     * @param value - The value to set the attribute/property to.
      */
     public setValue(source: HTMLElement, newValue: any): void {
         const oldValue = source[this.fieldName];
@@ -198,8 +198,8 @@ export class AttributeDefinition implements Accessor {
     }
 
     /**
-     * Gets the value of the property on the source object.
-     * @param source - The source object to access.
+     * Gets the value of the attribute/property on the source element.
+     * @param source - The source element to access.
      */
     public getValue(source: HTMLElement): any {
         Observable.track(source, this.name);
