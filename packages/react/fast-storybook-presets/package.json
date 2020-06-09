@@ -1,6 +1,6 @@
 {
   "name": "@microsoft/fast-storybook-presets",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "description": "Storybook presets for FAST integration",
   "main": "dist/index.js",
   "author": {
@@ -25,8 +25,8 @@
     "watch": "tsc -p ./tsconfig.json -w --preserveWatchOutput"
   },
   "dependencies": {
-    "@microsoft/fast-components-styles-msft": "^4.28.10",
-    "@microsoft/fast-storybook-design-system-addon": "^1.2.35",
+    "@microsoft/fast-components-styles-msft": "^4.28.11",
+    "@microsoft/fast-storybook-design-system-addon": "^1.2.36",
     "@storybook/addon-a11y": "^5.1.9",
     "@storybook/addon-actions": "^5.1.9",
     "@storybook/addon-viewport": "^5.1.9",

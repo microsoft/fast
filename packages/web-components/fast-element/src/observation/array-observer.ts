@@ -98,6 +98,7 @@ class ArrayObserver extends SubscriberSet {
  * Array observation is enabled automatically when using the
  * {@link RepeatDirective}, so calling this API manually is
  * not typically necessary.
+ * @public
  */
 export function enableArrayObservation(): void {
     if (arrayObservationEnabled) {

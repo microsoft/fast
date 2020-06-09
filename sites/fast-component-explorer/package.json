@@ -1,6 +1,6 @@
 {
   "name": "@microsoft/fast-component-explorer",
-  "version": "0.8.21",
+  "version": "0.8.22",
   "description": "Component exploration",
   "sideEffects": false,
   "private": true,
@@ -8,13 +8,10 @@
     "build:app": "webpack --progress --mode=production",
     "convert:readme": "node ./build/convert-readme.js",
     "clean:tmp": "node ../../build/clean.js app/.tmp",
-    "coverage": "jest --coverage",
     "prettier": "prettier --config ../../.prettierrc --write \"**/*.{ts,tsx}\"",
     "prettier:diff": "prettier --config ../../.prettierrc \"**/*.{ts,tsx}\" --list-different",
     "start": "webpack-dev-server",
-    "test": "yarn convert:readme && yarn eslint && yarn unit-tests && yarn build:app",
-    "unit-tests": "jest --runInBand",
-    "unit-tests:watch": "jest --watch",
+    "test": "yarn convert:readme && yarn eslint && yarn build:app",
     "eslint": "eslint . --ext .ts,.tsx",
     "eslint:fix": "eslint . --ext .ts,.tsx --fix"
   },
@@ -30,61 +27,18 @@
     "url": "https://discord.gg/FcSNfg4"
   },
   "license": "MIT",
-  "jest": {
-    "setupFilesAfterEnv": [
-      "./mock.js"
-    ],
-    "collectCoverage": true,
-    "coverageReporters": [
-      "json",
-      [
-        "lcov",
-        {
-          "projectRoot": "../../"
-        }
-      ]
-    ],
-    "coverageThreshold": {
-      "global": {
-        "statements": 50,
-        "branches": 5,
-        "functions": 15,
-        "lines": 20
-      }
-    },
-    "testURL": "http://localhost",
-    "transform": {
-      "^.+\\.tsx?$": "ts-jest",
-      "^.+\\.jsx?$": "babel-jest"
-    },
-    "transformIgnorePatterns": [
-      "!<rootDir>/node_modules/lodash-es",
-      "node_modules/jss-*",
-      "node_modules/css-vendor"
-    ],
-    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js",
-      "jsx"
-    ],
-    "moduleDirectories": [
-      "node_modules"
-    ]
-  },
   "devDependencies": {
     "@babel/core": "^7.4.5",
     "@babel/plugin-syntax-dynamic-import": "^7.2.0",
     "@babel/preset-env": "^7.4.5",
     "@babel/preset-react": "^7.0.0",
     "@microsoft/eslint-config-fast-dna": "^1.1.2",
-    "@microsoft/fast-components-class-name-contracts-base": "^4.6.5",
-    "@microsoft/fast-components-class-name-contracts-msft": "^4.8.5",
+    "@microsoft/fast-components-class-name-contracts-base": "^4.7.0",
+    "@microsoft/fast-components-class-name-contracts-msft": "^4.8.6",
     "@microsoft/fast-components-foundation-react": "^3.1.9",
-    "@microsoft/fast-jss-utilities": "^4.7.13",
-    "@microsoft/fast-layouts-react": "^4.11.10",
-    "@types/jest": "^25.2.1",
+    "@microsoft/fast-jss-utilities": "^4.7.14",
+    "@microsoft/fast-layouts-react": "^4.11.11",
+    "@microsoft/site-utilities": "^0.0.3",
     "@types/lodash-es": "^4.17.0",
     "@types/node": "^10.12.12",
     "@types/react": "^16.7.17",
@@ -100,36 +54,35 @@
     "favicons-webpack-plugin": "0.0.9",
     "focus-visible": "^4.1.5",
     "html-webpack-plugin": "^3.2.0",
-    "jest": "^25.4.0",
     "jss": "^9.8.7",
     "jss-preset-default": "^4.5.0",
     "lodash-es": "^4.17.11",
     "prettier": "2.0.2",
     "raf-throttle": "^2.0.3",
     "react": "^16.6.3",
-    "react-dnd": "^7.4.5",
+    "react-dnd": "^9.0.0",
     "react-dom": "^16.6.3",
-    "react-router-dom": "^4.3.1",
+    "react-router-dom": "^5.1.2",
     "react-syntax-highlighter": "^10.3.0",
-    "ts-jest": "^25.4.0",
-    "ts-loader": "^4.0.1",
-    "typescript": "^3.2.2",
+    "ts-loader": "^7.0.2",
+    "typescript": "^3.8.3",
     "webpack": "4.28.4",
     "webpack-bundle-analyzer": "^3.0.3",
     "webpack-cli": "^3.1.2",
-    "webpack-dev-server": "^3.1.10",
+    "webpack-dev-server": "^3.11.0",
     "webpack-shell-plugin": "^0.5.0",
-    "workbox-webpack-plugin": "^3.6.3"
+    "workbox-webpack-plugin": "^3.6.3",
+    "worker-loader": "^2.0.0"
   },
   "dependencies": {
     "@microsoft/fast-colors": "^5.0.9",
-    "@microsoft/fast-components-react-base": "^4.25.11",
-    "@microsoft/fast-components-react-msft": "^4.30.11",
-    "@microsoft/fast-components-styles-msft": "^4.28.10",
-    "@microsoft/fast-jss-manager-react": "^4.7.3",
-    "@microsoft/fast-tooling-react": "^1.32.4",
+    "@microsoft/fast-components-react-base": "^4.26.0",
+    "@microsoft/fast-components-react-msft": "^4.30.12",
+    "@microsoft/fast-components-styles-msft": "^4.28.11",
+    "@microsoft/fast-jss-manager-react": "^4.7.4",
+    "@microsoft/fast-tooling-react": "^2.2.0",
+    "@microsoft/fast-tooling": "^0.5.0",
     "@microsoft/fast-web-utilities": "^4.5.0",
-    "react-dnd-html5-backend": "^7.4.4",
-    "react-sortable-hoc": "^1.9.1"
+    "react-dnd-html5-backend": "^9.0.0"
   }
 }

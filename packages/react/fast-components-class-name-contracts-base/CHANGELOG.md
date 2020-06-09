@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.7.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-class-name-contracts-base@4.6.5...@microsoft/fast-components-class-name-contracts-base@4.7.0) (2020-06-05)
+
+
+### Features
+
+* add data grid to base React component set ([#3158](https://github.com/Microsoft/fast-dna/issues/3158)) ([d2e7ead](https://github.com/Microsoft/fast-dna/commit/d2e7ead60e7973cead222843899829f879b67da0))
+
+
+
+
+
 ## [4.6.5](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-class-name-contracts-base@4.6.4...@microsoft/fast-components-class-name-contracts-base@4.6.5) (2020-05-18)
 
 **Note:** Version bump only for package @microsoft/fast-components-class-name-contracts-base

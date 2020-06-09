@@ -22,6 +22,15 @@
 
 <!--- If yes, describe the impact. -->
 
+**Adding or modifying component(s) in `@microsoft/fast-components` checklist**
+
+<!-- Do your changes add or modify components in the @microsoft/fast-components package? Put an x in the box that applies: -->
+
+- [ ] I have added a new component
+- [ ] I have modified an existing component
+- [ ] I have updated the [definition file](https://github.com/Microsoft/fast-dna/blob/master/packages/web-components/fast-components/CONTRIBUTING.md#definition)
+- [ ] I have updated the [configuration file](https://github.com/Microsoft/fast-dna/blob/master/packages/web-components/fast-components/CONTRIBUTING.md#configuration)
+
 ## Process & policy checklist
 
 <!--- Review the list and check the boxes that apply. -->

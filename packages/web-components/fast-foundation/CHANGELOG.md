@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-foundation@1.0.0...@microsoft/fast-foundation@1.1.0) (2020-06-05)
+
+
+### Bug Fixes
+
+* children components not always added to the internal slotted radio control collection ([#3169](https://github.com/Microsoft/fast-dna/issues/3169)) ([1d1ce86](https://github.com/Microsoft/fast-dna/commit/1d1ce861f936800768b706de3b2175019c0cc18c))
+* remove static class from start/end template ([#3225](https://github.com/Microsoft/fast-dna/issues/3225)) ([ea6e790](https://github.com/Microsoft/fast-dna/commit/ea6e7906ef621f1875e7e24e5b79a3ed33189e33))
+* slider vertical navigation and value setting bugs ([#3176](https://github.com/Microsoft/fast-dna/issues/3176)) ([f46d87d](https://github.com/Microsoft/fast-dna/commit/f46d87d8d7dfe9101e0d1d8bec7d8a08097751bb))
+
+
+### Features
+
+* add accordion web component ([#3067](https://github.com/Microsoft/fast-dna/issues/3067)) ([f551378](https://github.com/Microsoft/fast-dna/commit/f55137803551711bef9eeb2c55c8d6f01a3eb74f))
+* **fast-foundation:** add element test helper ([#3184](https://github.com/Microsoft/fast-dna/issues/3184)) ([a27161d](https://github.com/Microsoft/fast-dna/commit/a27161d38526a7fb8cb39fe9b0d4addeb0c9ad11))
+* **website:**  new docusaurus v2 setup with launch toc configuration ([#3159](https://github.com/Microsoft/fast-dna/issues/3159)) ([f12ba16](https://github.com/Microsoft/fast-dna/commit/f12ba1687bb46fd3f6717790b1687b441363671e))
+
+
+
+
+
 # 1.0.0 (2020-05-18)
 
 
