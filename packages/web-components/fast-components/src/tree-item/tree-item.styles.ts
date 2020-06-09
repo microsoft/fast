@@ -120,17 +120,6 @@ export const TreeItemStyles = css`
         pointer-events: none;
         fill: var(--neutral-foreground-rest);
     }
-    .leaf-spacer {
-        ${
-            /* Glyph size is temporary - 
-            replace when glyph-size var is added */ ""
-        } width: 10px;
-        height: 10px;
-        pointer-events: none;
-        fill: var(--neutral-foreground-rest);
-        opacity: 0;
-    }
-
     .before-content,
     .after-content {
         ${

@@ -44,12 +44,6 @@ export const TreeItemTemplate = html<TreeItem>`
                         </div>
                     `
                 )}
-                ${when(
-                    x => !x.hasItems,
-                    html<TreeItem>`
-                        <span class="leaf-spacer">.</div>
-                    `
-                )}
                 <span part="before-content" ${ref("beforeContentContainer")}>
                     <slot
                         name="before-content"
