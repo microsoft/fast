@@ -194,13 +194,17 @@ export function composedParent<T extends HTMLElement>(element: T): HTMLElement |
 
 // @public
 export class CSSCustomPropertyBehavior implements Behavior, CSSCustomPropertyDefinition {
-    constructor(name: string, value: CSSCustomPropertyDefinition["value"], host: (source: typeof FASTElement & HTMLElement) => Partial<CSSCustomPropertyTarget> | null);
+    constructor(
+    name: string,
+    value: CSSCustomPropertyDefinition["value"],
+    host: (source: typeof FASTElement & HTMLElement) => Partial<CSSCustomPropertyTarget> | null);
     bind(source: typeof FASTElement & HTMLElement): void;
     readonly name: CSSCustomPropertyDefinition["name"];
+    readonly propertyName: string;
     unbind(source: typeof FASTElement & HTMLElement): void;
     readonly value: CSSCustomPropertyDefinition["value"];
-    get var(): string;
-    }
+    readonly var: string;
+}
 
 // @public
 export function cssCustomPropertyBehaviorFactory(name: string, value: string | ((...arg: any[]) => string), host: (source: typeof FASTElement & HTMLElement) => Partial<CSSCustomPropertyTarget> | null): CSSCustomPropertyBehavior;
