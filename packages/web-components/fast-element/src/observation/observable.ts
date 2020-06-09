@@ -10,6 +10,7 @@ let createArrayObserver = (array: any[]): Notifier => {
 
 /**
  * Represents a getter/setter property accessor on an object.
+ * @public
  */
 export interface Accessor {
     /**
@@ -19,14 +20,14 @@ export interface Accessor {
 
     /**
      * Gets the value of the property on the source object.
-     * @param source The source object to access.
+     * @param source - The source object to access.
      */
     getValue(source: any): any;
 
     /**
      * Sets the value of the property on the source object.
-     * @param source The source object to access.
-     * @param value The value to set the property to.
+     * @param source - The source object to access.
+     * @param value - The value to set the property to.
      */
     setValue(source: any, value: any): void;
 }
@@ -69,11 +70,12 @@ class DefaultObservableAccessor implements Accessor {
 
 /**
  * Common Observable APIs.
+ * @public
  */
 export const Observable = Object.freeze({
     /**
      * @internal
-     * @param factory The factory used to create array observers.
+     * @param factory - The factory used to create array observers.
      */
     setArrayObserverFactory(factory: (collection: any[]) => Notifier): void {
         createArrayObserver = factory;
@@ -81,7 +83,7 @@ export const Observable = Object.freeze({
 
     /**
      * Gets a notifier for an object or Array.
-     * @param source The object or Array to get the notifier for.
+     * @param source - The object or Array to get the notifier for.
      */
     getNotifier(source: any): Notifier {
         let found = source.$fastController || notifierLookup.get(source);
@@ -99,8 +101,8 @@ export const Observable = Object.freeze({
 
     /**
      * Records a property change for a source object.
-     * @param source The object to record the change against.
-     * @param propertyName The property to track as changed.
+     * @param source - The object to record the change against.
+     * @param propertyName - The property to track as changed.
      */
     track(source: unknown, propertyName: string): void {
         if (watcher !== void 0) {
@@ -110,8 +112,8 @@ export const Observable = Object.freeze({
 
     /**
      * Notifies subscribers of a source object of changes.
-     * @param source the object to notify of changes.
-     * @param args The change args to pass to subscribers.
+     * @param source - the object to notify of changes.
+     * @param args - The change args to pass to subscribers.
      */
     notify(source: unknown, args: any): void {
         /* eslint-disable-next-line @typescript-eslint/no-use-before-define */
@@ -120,8 +122,8 @@ export const Observable = Object.freeze({
 
     /**
      * Defines an observable property on an object or prototype.
-     * @param target The target object to define the observable on.
-     * @param nameOrAccessor The name of the property to define as observable;
+     * @param target - The target object to define the observable on.
+     * @param nameOrAccessor - The name of the property to define as observable;
      * or a custom accessor that specifies the property name and accessor implementation.
      */
     defineProperty(target: {}, nameOrAccessor: string | Accessor): void {
@@ -145,7 +147,7 @@ export const Observable = Object.freeze({
     /**
      * Finds all the observable accessors defined on the target,
      * including its prototype chain.
-     * @param target The target object to search for accessor on.
+     * @param target - The target object to search for accessor on.
      */
     getAccessors(target: {}): Accessor[] {
         let accessors = accessorLookup.get(target);
@@ -173,8 +175,8 @@ export const Observable = Object.freeze({
     /**
      * Creates a {@link BindingObserver} that can watch the
      * provided {@link Binding} for changes.
-     * @param binding The binding to observe.
-     * @param initialSubscriber An initial subscriber to changes in the binding value.
+     * @param binding - The binding to observe.
+     * @param initialSubscriber - An initial subscriber to changes in the binding value.
      */
     binding<TScope = any, TReturn = any, TParent = any>(
         binding: Binding,
@@ -189,8 +191,9 @@ const queueUpdate = DOM.queueUpdate;
 
 /**
  * Decorator: Defines an observable property on the target.
- * @param target The target to define the observable on.
- * @param nameOrAccessor The property name or accessor to define the observable as.
+ * @param target - The target to define the observable on.
+ * @param nameOrAccessor - The property name or accessor to define the observable as.
+ * @public
  */
 export function observable(target: {}, nameOrAccessor: string | Accessor): void {
     Observable.defineProperty(target, nameOrAccessor);
@@ -199,8 +202,8 @@ export function observable(target: {}, nameOrAccessor: string | Accessor): void 
 let currentEvent: Event | null = null;
 
 /**
+ * @param event - The event to set as current for the context.
  * @internal
- * @param event The event to set as current for the context.
  */
 export function setCurrentEvent(event: Event | null): void {
     currentEvent = event;
@@ -208,6 +211,7 @@ export function setCurrentEvent(event: Event | null): void {
 
 /**
  * Provides additional contextual information available to behaviors and expressions.
+ * @public
  */
 export class ExecutionContext<TParent = any> {
     /**
@@ -278,12 +282,14 @@ Observable.defineProperty(ExecutionContext.prototype, "length");
 
 /**
  * The default execution context used in binding expressions.
+ * @public
  */
 export const defaultExecutionContext = new ExecutionContext();
 
 /**
  * The signature of an arrow function capable of being evaluated
  * as part of a template binding update.
+ * @public
  */
 export type Binding<TSource = any, TReturn = any, TParent = any> = (
     source: TSource,
@@ -299,13 +305,14 @@ interface SubscriptionRecord {
 
 /**
  * Enables evaluation of and subscription to a binding.
+ * @public
  */
 export interface BindingObserver<TSource = any, TReturn = any, TParent = any>
     extends Notifier {
     /**
      * Begins observing the binding for the source and returns the current value.
-     * @param source The source that the binding is based on.
-     * @param context The execution context to execute the binding within.
+     * @param source - The source that the binding is based on.
+     * @param context - The execution context to execute the binding within.
      * @returns The value of the binding.
      */
     observe(source: TSource, context: ExecutionContext): TReturn;

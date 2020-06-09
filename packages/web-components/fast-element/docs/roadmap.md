@@ -2,9 +2,7 @@
 
 ## Short-term
 
-* **Doc:** Re-organize the current docs into a series of smaller articles.
-* **Feature**: Transform text binding into a content binding that compose HTML dynamically.
-* **Feature**: Allow `when` and `repeat` to accept an expression that returns the template they generate from.
+* **Feature**: Allow `repeat` to accept an expression that returns the template they generate from.
 
 ## Medium-term
 
