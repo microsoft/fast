@@ -33,6 +33,20 @@ export class CSSCustomPropertyBehavior implements Behavior, CSSCustomPropertyDef
      * the CSS Custom Property.
      */
     public readonly value: CSSCustomPropertyDefinition["value"];
+
+    private _propertyName: string;
+    /**
+     * The name of the CSSCustomPropertyBehavior formatted
+     * as a CSS custom property.
+     */
+    public readonly propertyName: string;
+
+    /**
+     * Return the CSS Custom Property formatted
+     * as a CSS variable.
+     */
+    public readonly var: string;
+
     constructor(
         /**
          * The name of the custom property.
@@ -64,37 +78,13 @@ export class CSSCustomPropertyBehavior implements Behavior, CSSCustomPropertyDef
         this.name = name;
         this.value = value;
         this.host = host;
+        this.propertyName = `--${name}`;
+        this.var = `var(${this.propertyName})`;
     }
 
     private host: (
         source: typeof FASTElement & HTMLElement
     ) => Partial<CSSCustomPropertyTarget> | null;
-
-    private _propertyName: string;
-    /**
-     * The name of the CSSCustomPropertyBehavior formatted
-     * as a CSS custom property.
-     */
-    public get propertyName() {
-        if (this._propertyName === void 0) {
-            this._propertyName = `--${this.name}`;
-        }
-
-        return this._propertyName;
-    }
-
-    private _var: string;
-    /**
-     * Return the CSS Custom Property formatted
-     * as a CSS variable.
-     */
-    public get var() {
-        if (this._var === void 0) {
-            this._var = `var(${this.propertyName})`;
-        }
-
-        return this._var;
-    }
 
     /**
      * Binds the behavior to a source element
