@@ -11,6 +11,7 @@ export const FeatureCardStyles = css`
         color: inherit;
         box-sizing: border-box;
         padding: calc(var(--design-unit) * 5px);
+        border-radius: calc(var(--corner-radius) * 1px);
         box-shadow: unset;
         position: relative;
     }
