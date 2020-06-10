@@ -5,6 +5,7 @@ import { ComponentViewConfig } from "./data.props";
 
 export const fastAccordionId = "fast-accordion";
 export const fastAccordionItemId = "fast-accordion-item";
+console.log(fastComponentSchemas[fastAccordionId]);
 console.log(fastComponentSchemas[fastAccordionItemId]);
 const fastAccordionConfig: ComponentViewConfig = {
     schema: fastComponentSchemas[fastAccordionId],
@@ -19,12 +20,15 @@ const fastAccordionConfig: ComponentViewConfig = {
                         data: {
                             SlotItem: [
                                 {
-                                    id: "Slot0",
+                                    id: "Slot1",
+                                },
+                                {
+                                    id: "Slot2",
                                 },
                             ],
                         },
                     },
-                    Slot0: {
+                    Slot1: {
                         parent: {
                             id: "root",
                             dataLocation: "SlotItem",
@@ -33,18 +37,40 @@ const fastAccordionConfig: ComponentViewConfig = {
                         data: {
                             SlotHeading: [
                                 {
-                                    id: "Slot00",
+                                    id: "Slot10",
                                 },
                             ],
                         },
                     },
-                    Slot00: {
+                    Slot10: {
                         parent: {
-                            id: "Slot0",
+                            id: "Slot1",
                             dataLocation: "SlotHeading",
                         },
                         schemaId: textSchema.id,
                         data: "Accordion one",
+                    },
+                    Slot2: {
+                        parent: {
+                            id: "root",
+                            dataLocation: "SlotItem",
+                        },
+                        schemaId: fastAccordionItemId,
+                        data: {
+                            SlotHeading: [
+                                {
+                                    id: "Slot20",
+                                },
+                            ],
+                        },
+                    },
+                    Slot20: {
+                        parent: {
+                            id: "Slot2",
+                            dataLocation: "SlotHeading",
+                        },
+                        schemaId: textSchema.id,
+                        data: "Accordion two",
                     },
                 },         
                 "root",
