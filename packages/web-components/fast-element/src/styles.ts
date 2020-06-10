@@ -106,9 +106,13 @@ function reduceBehaviors(
         }, null as Behavior[] | null);
 }
 
-// https://wicg.github.io/construct-stylesheets/
-// https://developers.google.com/web/updates/2019/02/constructable-stylesheets
-class AdoptedStyleSheetsStyles extends ElementStyles {
+/**
+ * https://wicg.github.io/construct-stylesheets/
+ * https://developers.google.com/web/updates/2019/02/constructable-stylesheets
+ *
+ * @internal
+ */
+export class AdoptedStyleSheetsStyles extends ElementStyles {
     private readonly styleSheets: CSSStyleSheet[];
     public readonly behaviors: ReadonlyArray<Behavior> | null = null;
 
