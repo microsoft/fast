@@ -15,6 +15,8 @@ import {
     keyCodeEnter,
     keyCodeSpace,
 } from "@microsoft/fast-web-utilities";
+import { StartEnd } from "../patterns/start-end";
+import { applyMixins } from "../utilities/apply-mixins";
 
 export class TreeItem extends FASTElement {
     @attr({ mode: "boolean" })
@@ -268,3 +270,7 @@ export class TreeItem extends FASTElement {
         }
     }
 }
+
+/* eslint-disable-next-line */
+export interface TreeItem extends StartEnd {}
+applyMixins(TreeItem, StartEnd);

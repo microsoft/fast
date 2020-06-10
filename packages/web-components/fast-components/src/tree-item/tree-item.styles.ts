@@ -40,7 +40,7 @@ export const TreeItemStyles = css`
         outline: none;
     }
 
-    :host(:${focusVisible}) .content-region {
+    :host(:${focusVisible}) .positioning-region {
         border: var(--neutral-focus) 1px solid;
         border-radius: calc(var(--corner-radius) * 1px);
         color: var(--neutral-foreground-active);
@@ -50,6 +50,7 @@ export const TreeItemStyles = css`
         display: flex;
         position: relative;
         box-sizing: border-box;
+        border: transparent 1px solid;
         height: calc(${heightNumber} * 1px);
     }
 
@@ -70,8 +71,6 @@ export const TreeItemStyles = css`
 
     .content-region {
         display: flex;
-        box-sizing: border-box;
-        border: transparent 1px solid;
         align-items: center;
         white-space: nowrap;
         width: 100%;
@@ -120,8 +119,8 @@ export const TreeItemStyles = css`
         pointer-events: none;
         fill: var(--neutral-foreground-rest);
     }
-    .before-content,
-    .after-content {
+    .start,
+    .end {
         ${
             /* Glyph size is temporary - 
             replace when glyph-size var is added */ ""
@@ -130,13 +129,13 @@ export const TreeItemStyles = css`
         fill: var(--neutral-foreground-rest);
     }
 
-    .before-content {
+    .start {
         ${
             /* need to swap out once we understand how horizontalSpacing will work */ ""
         } margin-inline-end: calc(var(--design-unit) * 2px + 2px);
     }
 
-    .after-content {
+    .end {
         ${
             /* need to swap out once we understand how horizontalSpacing will work */ ""
         } margin-inline-start: calc(var(--design-unit) * 2px + 2px);
@@ -156,7 +155,7 @@ export const TreeItemStyles = css`
         cursor: ${disabledCursor};
     }
 
-    :host([selected]) .content-region {
+    :host([selected]) .positioning-region {
         background: var(--neutral-fill-stealth-selected);
     }
 
