@@ -2,11 +2,10 @@ import { css } from "@microsoft/fast-element";
 import { display } from "@microsoft/fast-foundation";
 import { elevation } from "@microsoft/fast-components/dist/esm/styles/elevation.js";
 import {
-    neutralForegroundHintBehavior,
-    neutralForegroundHoverBehavior,
-    neutralOutlineRestBehavior,
-    neutralFillActiveBehavior,
     accentForegroundRestBehavior,
+    neutralFillFocusBehavior,
+    neutralForegroundHintBehavior,
+    neutralForegroundRestBehavior,
 } from "@microsoft/fast-components";
 
 export const ContentPlacementContainerStyles = css`
@@ -21,14 +20,19 @@ export const ContentPlacementContainerStyles = css`
         overflow: hidden;
     }
 
+    :host([section="feature"]) {
+        --flow: column;
+        grid-template-rows: repeat(4, min-content);
+        grid-auto-flow: var(--flow);
+        justify-content: center;
+        counter-reset: feature-counter;
+    }
+
     :host([section="community"]) {
         grid-template-columns: repeat(auto-fit, minmax(225px, 1fr));
     }
 
     /* this creates the numbering for feature*/
-    :host([section="feature"]) {
-        counter-reset: feature-counter;
-    }
 
     :host([section="feature"]) site-feature-card {
         counter-increment: feature-counter;
@@ -38,6 +42,7 @@ export const ContentPlacementContainerStyles = css`
         display: block;
         content: counter(feature-counter, decimal-leading-zero);
         font-size: var(--type-ramp-base-font-size);
+        margin-bottom: calc(var(--design-unit) * 2px);
     }
 
     :host([section="feature"]) site-feature-card:hover :first-child::before {
@@ -48,20 +53,27 @@ export const ContentPlacementContainerStyles = css`
 
     /* This creates the color, background, and elevation changes on hover */
 
-    :host([section="feature"]:hover) site-card-section,
+    :host([section="feature"]:hover),
     :host([section="community"]:hover) site-content-placement,
     :host([section="community"]:hover) site-content-placement ::part(content) {
         color: var(--neutral-foreground-hint);
     }
 
+    :host([section="feature"]:hover) site-feature-card {
+        filter: saturate(0);
+    }
+
     :host([section="feature"]) site-feature-card:hover {
         color: var(--neutral-foreground-rest);
+        background: var(--neutral-fill-focus);
+        cursor: pointer;
+        filter: saturate(1);
     }
 
     :host([section="community"]) site-content-placement:hover {
         --elevation: 4;
         cursor: pointer;
-        background: var(--neutral-fill-active);
+        background: var(--neutral-fill-focus);
         border-radius: calc(var(--corner-radius) * 1px);
         color: currentColor;
         ${elevation}
@@ -87,6 +99,19 @@ export const ContentPlacementContainerStyles = css`
         font-size: var(--type-ramp-plus-2-font-size);
     }
 
+    site-feature-card:not(:nth-of-type(4n)):hover + site-feature-card::before {
+        opacity: 0;
+    }
+
+    @media screen and (max-width: 1330px) {
+        :host([section="feature"]) {
+            --flow: row;
+        }
+        site-feature-card:hover + site-feature-card::before {
+            opacity: 0;
+        }
+    }
+
     @media screen and (max-width: 750px) {
         :host([section="community"]) {
             grid-template-columns: unset;
@@ -105,8 +130,7 @@ export const ContentPlacementContainerStyles = css`
     }
 `.withBehaviors(
     accentForegroundRestBehavior,
+    neutralFillFocusBehavior,
     neutralForegroundHintBehavior,
-    neutralForegroundHoverBehavior,
-    neutralOutlineRestBehavior,
-    neutralFillActiveBehavior
+    neutralForegroundRestBehavior
 );
