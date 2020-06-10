@@ -26,8 +26,8 @@ export const FlipperStyles = css`
         align-items: center;
         margin: 0;
         position: relative;
-        fill: var(--neutral-foreground-rest);
-        color: var(--neutral-foreground-rest);
+        fill: ${neutralForegroundRestBehavior.var};
+        color: ${neutralForegroundRestBehavior.var};
         background: transparent;
         border: none;
         outline: none;
@@ -37,8 +37,8 @@ export const FlipperStyles = css`
     :host::before {
         content: "";
         opacity: 0.8;
-        background: var(--neutral-fill-stealth-rest);
-        border: calc(var(--outline-width) * 1px) solid var(--neutral-outline-rest);
+        background: ${neutralFillStealthRestBehavior.var};
+        border: calc(var(--outline-width) * 1px) solid ${neutralOutlineRestBehavior.var};
         border-radius: 50%;
         position: absolute;
         top: 0;
@@ -64,8 +64,8 @@ export const FlipperStyles = css`
     }
 
     :host(:hover)::before {
-        background: var(--neutral-fill-stealth-hover);
-        border-color: var(--neutral-outline-hover);
+        background: ${neutralFillStealthHoverBehavior.var};
+        border-color: ${neutralOutlineHoverBehavior.var};
     }
 
     :host(:${focusVisible}) {
@@ -73,13 +73,13 @@ export const FlipperStyles = css`
     }
 
     :host(:${focusVisible})::before {
-        box-shadow: 0 0 0 1px var(--neutral-focus) inset;
-        border-color: var(--neutral-focus);
+        box-shadow: 0 0 0 1px ${neutralFocusBehavior.var} inset;
+        border-color: ${neutralFocusBehavior.var};
     }
 
     :host(:active)::before {
-        background: var(--neutral-fill-stealth-active);
-        border-color: var(--neutral-outline-active);
+        background: ${neutralFillStealthActiveBehavior.var};
+        border-color: ${neutralOutlineActiveBehavior.var};
     }
 
     :host::-moz-focus-inner {

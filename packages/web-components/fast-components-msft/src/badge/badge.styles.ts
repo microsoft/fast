@@ -22,18 +22,18 @@ export const BadgeStyles = css`
 
     :host(.lightweight) {
         background: transparent;
-        color: var(--neutral-foreground-rest);
+        color: ${neutralForegroundRestBehavior.var};
         font-weight: 600;
     }
 
     :host(.accent) {
-        background: var(--accent-fill-rest);
-        color: var(--accent-foreground-cut-rest);
+        background: ${accentFillRestBehavior.var};
+        color: ${accentForegroundCutRestBehavior.var};
     }
 
     :host(.neutral) {
-        background: var(--neutral-fill-rest);
-        color: var(--neutral-foreground-rest);
+        background: ${neutralFillRestBehavior.var};
+        color: ${neutralForegroundRestBehavior.var};
     }
 `.withBehaviors(
     accentFillRestBehavior,

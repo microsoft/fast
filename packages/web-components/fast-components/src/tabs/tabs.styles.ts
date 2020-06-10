@@ -13,7 +13,7 @@ export const TabsStyles = css`
         font-family: var(--body-font);
         font-size: var(--type-ramp-base-font-size);
         line-height: var(--type-ramp-base-line-height);
-        color: var(--neutral-foreground-rest);
+        color: ${neutralForegroundRestBehavior.var};
         grid-template-columns: auto 1fr auto;
         grid-template-rows: auto 1fr;
     }
@@ -43,7 +43,7 @@ export const TabsStyles = css`
         width: 100%;
         height: 5px;
         justify-self: center;
-        background: var(--accent-fill-rest);
+        background: ${accentFillRestBehavior.var};
         margin-top: 10px;
         border-radius: calc(var(--corner-radius) * 1px) calc(var(--corner-radius) * 1px) 0
             0;
@@ -97,7 +97,7 @@ export const TabsStyles = css`
         height: 100%;
         margin-inline-end: 10px;
         align-self: center;
-        background: var(--accent-fill-rest);
+        background: ${accentFillRestBehavior.var};
         margin-top: 0;
         border-radius: 0 calc(var(--corner-radius) * 1px) calc(var(--corner-radius) * 1px)
             0;

@@ -42,15 +42,15 @@ export const CheckboxStyles = css`
         height: calc((${heightNumber} / 2 + var(--design-unit)) * 1px);
         box-sizing: border-box;
         border-radius: calc(var(--corner-radius) * 1px);
-        border: calc(var(--outline-width) * 1px) solid var(--neutral-outline-rest);
-        background: var(--neutral-fill-input-rest);
+        border: calc(var(--outline-width) * 1px) solid ${neutralOutlineRestBehavior.var};
+        background: ${neutralFillInputRestBehavior.var};
         outline: none;
         cursor: pointer;
     }
 
     .label {
         font-family: var(--body-font);
-        color: var(--neutral-foreground-rest);
+        color: ${neutralForegroundRestBehavior.var};
         ${
             /* Need to discuss with Brian how HorizontalSpacingNumber can work. https://github.com/microsoft/fast-dna/issues/2766 */ ""
         } padding-inline-start: calc(var(--design-unit) * 2px + 2px);
@@ -69,14 +69,14 @@ export const CheckboxStyles = css`
         width: 100%;
         height: 100%;
         display: block;
-        fill: var(--accent-foreground-cut-rest);
+        fill: ${accentForegroundCutRestBehavior.var};
         opacity: 0;
         pointer-events: none;
     }
 
     .indeterminate-indicator {
         border-radius: calc(var(--corner-radius) * 1px);
-        background: var(--accent-foreground-cut-rest);
+        background: ${accentForegroundCutRestBehavior.var};
         position: absolute;
         top: 25%;
         right: 25%;
@@ -86,37 +86,41 @@ export const CheckboxStyles = css`
     }
 
     :host(:enabled) .control:hover {
-        background: var(--neutral-fill-input-hover);
-        border-color: var(--neutral-outline-hover);
+        background: ${neutralFillInputHoverBehavior.var};
+        border-color: ${neutralOutlineHoverBehavior.var};
     }
 
     :host(:enabled) .control:active {
-        background: var(--neutral-fill-input-active);
-        border-color: var(--neutral-outline-active);
+        background: ${neutralFillInputActiveBehavior.var};
+        border-color: ${neutralOutlineActiveBehavior.var};
     }
 
     :host(:${focusVisible}) .control {
-        box-shadow: 0 0 0 2px var(--background-color), 0 0 0 4px var(--neutral-focus);
-        border-color: var(--neutral-focus);
+        box-shadow: 0 0 0 2px var(--background-color), 0 0 0 4px ${
+            neutralFocusBehavior.var
+        };
+        border-color: ${neutralFocusBehavior.var};
     }
 
     :host(.checked) .control {
-        background: var(--accent-fill-rest);
-        border: calc(var(--outline-width) * 1px) solid var(--accent-fill-rest);
+        background: ${accentFillRestBehavior.var};
+        border: calc(var(--outline-width) * 1px) solid ${accentFillRestBehavior.var};
     }
 
     :host(.checked:enabled) .control:hover {
-        background: var(--accent-fill-hover);
-        border: calc(var(--outline-width) * 1px) solid var(--accent-fill-hover);
+        background: ${accentFillHoverBehavior.var};
+        border: calc(var(--outline-width) * 1px) solid ${accentFillHoverBehavior.var};
     }
 
     :host(.checked:enabled) .control:active {
-        background: var(--accent-fill-active);
-        border: calc(var(--outline-width) * 1px) solid var(--accent-fill-active);
+        background: ${accentFillActiveBehavior.var};
+        border: calc(var(--outline-width) * 1px) solid ${accentFillActiveBehavior.var};
     }
 
     :host(.checked:${focusVisible}:enabled) .control {
-        box-shadow: 0 0 0 2px var(--background-color), 0 0 0 4px var(--neutral-focus);
+        box-shadow: 0 0 0 2px var(--background-color), 0 0 0 4px ${
+            neutralFocusBehavior.var
+        };
         border-color: transparent;
     }
 

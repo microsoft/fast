@@ -57,25 +57,27 @@ export const SwitchStyles = css`
         box-sizing: border-box;
         width: calc(((${heightNumber} / 2) + var(--design-unit)) * 2px);
         height: calc(((${heightNumber} / 2) + var(--design-unit)) * 1px);
-        background: var(--neutral-fill-input-rest);
+        background: ${neutralFillInputRestBehavior.var};
         border-radius: calc(${heightNumber} * 1px);
-        border: calc(var(--outline-width) * 1px) solid var(--neutral-outline-rest);
+        border: calc(var(--outline-width) * 1px) solid ${neutralOutlineRestBehavior.var};
     }
 
     :host(:enabled) .switch:hover {
-        background: var(--neutral-fill-input-hover);
-        border-color: var(--neutral-outline-hover);
+        background: ${neutralFillInputHoverBehavior.var};
+        border-color: ${neutralOutlineHoverBehavior.var};
         cursor: pointer;
     }
 
     :host(:enabled) .switch:active {
-        background: var(--neutral-fill-input-active);
-        border-color: var(--neutral-outline-active);
+        background: ${neutralFillInputActiveBehavior.var};
+        border-color: ${neutralOutlineActiveBehavior.var};
     }
 
     :host(:${focusVisible}) .switch {
-        box-shadow: 0 0 0 2px var(--background-color), 0 0 0 4px var(--neutral-focus);
-        border-color: var(--neutral-focus);
+        box-shadow: 0 0 0 2px var(--background-color), 0 0 0 4px ${
+            neutralFocusBehavior.var
+        };
+        border-color: ${neutralFocusBehavior.var};
     }
 
     .checked-indicator {
@@ -84,13 +86,13 @@ export const SwitchStyles = css`
         width: calc((${heightNumber} - (var(--design-unit) * 5.5)) * 1px);
         top: calc(var(--design-unit) * 1px);
         left: calc(var(--design-unit) * 1px);
-        background: var(--neutral-foreground-rest);
+        background: ${neutralForegroundRestBehavior.var};
         border-radius: 50%;
         transition: all 0.2s ease-in-out;
     }
 
     .status-message {
-        color: var(--neutral-foreground-rest);
+        color: ${neutralForegroundRestBehavior.var};
         cursor: pointer;
         font-size: var(--type-ramp-base-font-size);
         line-height: var(--type-ramp-base-line-height);
@@ -102,7 +104,7 @@ export const SwitchStyles = css`
     }
 
     .label {
-        color: var(--neutral-foreground-rest);
+        color: ${neutralForegroundRestBehavior.var};
         font-size: var(--type-ramp-base-font-size);
         line-height: var(--type-ramp-base-line-height);
     }
@@ -115,23 +117,25 @@ export const SwitchStyles = css`
 
     :host(.checked) .checked-indicator {
         left: calc((((${heightNumber} / 2) + var(--design-unit)) + var(--design-unit)) * 1px);
-        background: var(--accent-foreground-cut-rest);
+        background: ${accentForegroundCutRestBehavior.var};
     }
 
     :host(.checked) .switch {
-        background: var(--accent-fill-rest);
+        background: ${accentFillRestBehavior.var};
     }
 
     :host(.checked:enabled) .switch:hover {
-        background: var(--accent-fill-hover);
+        background: ${accentFillHoverBehavior.var};
     }
 
     :host(.checked:enabled) .switch:active {
-        background: var(--accent-fill-active);
+        background: ${accentFillActiveBehavior.var};
     }
 
     :host(.checked:${focusVisible}:enabled) .switch {
-        box-shadow: 0 0 0 2px var(--background-color), 0 0 0 4px var(--neutral-focus);
+        box-shadow: 0 0 0 2px var(--background-color), 0 0 0 4px ${
+            neutralFocusBehavior.var
+        };
         border-color: transparent;
     }
 

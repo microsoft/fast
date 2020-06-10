@@ -48,7 +48,9 @@ export const SliderStyles = css`
         grid-template-columns: calc(var(--thumb-size) * 1px) 1fr;
     }
     :host(:${focusVisible}) .thumb-cursor {
-        box-shadow: 0 0 0 2px var(--background-color), 0 0 0 4px var(--neutral-focus);
+        box-shadow: 0 0 0 2px var(--background-color), 0 0 0 4px ${
+            neutralFocusBehavior.var
+        };
     }
     .thumb-container {
         position: absolute;
@@ -60,15 +62,15 @@ export const SliderStyles = css`
         border: none;
         width: calc(var(--thumb-size) * 1px);
         height: calc(var(--thumb-size) * 1px);
-        background: var(--neutral-foreground-rest);
+        background: ${neutralForegroundRestBehavior.var};
         border-radius: 50%;
     }
     .thumb-cursor:hover {
-        background: var(--neutral-foreground-hover);
-        border-color: var(--neutral-outline-hover);
+        background: ${neutralForegroundHoverBehavior.var};
+        border-color: ${neutralOutlineHoverBehavior.var};
     }
     .thumb-cursor:active {
-        background: var(--neutral-foreground-active);
+        background: ${neutralForegroundActiveBehavior.var};
     }
     :host(.horizontal) .thumb-container {
         transform: translateX(calc(var(--thumb-translate) * 1px));
@@ -95,7 +97,7 @@ export const SliderStyles = css`
         height: 100%;
     }
     .track {
-        background: var(--neutral-outline-rest);
+        background: ${neutralOutlineRestBehavior.var};
         position: absolute;
     }
     :host(.vertical) {

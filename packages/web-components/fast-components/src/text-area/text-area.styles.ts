@@ -30,10 +30,10 @@ export const TextAreaStyles = css`
     .control {
         box-sizing: border-box;
         position: relative;
-        color: var(--neutral-foreground-rest);
-        background: var(--neutral-fill-input-rest);
+        color: ${neutralForegroundRestBehavior.var};
+        background: ${neutralFillInputRestBehavior.var};
         border-radius: calc(var(--corner-radius) * 1px);
-        border: calc(var(--outline-width) * 1px) solid var(--accent-fill-rest);
+        border: calc(var(--outline-width) * 1px) solid ${accentFillRestBehavior.var};
         height: calc(${heightNumber} * 2px);
         font: inherit;
         font-size: var(--type-ramp-base-font-size);
@@ -44,13 +44,13 @@ export const TextAreaStyles = css`
     }
 
     .control:hover:enabled {
-        background: var(--neutral-fill-input-hover);
-        border-color: var(--accent-fill-hover);
+        background: ${neutralFillInputHoverBehavior.var};
+        border-color: ${accentFillHoverBehavior.var};
     }
 
     .control:active:enabled {
-        background: var(--neutral-fill-input-active);
-        border-color: var(--accent-fill-active);
+        background: ${neutralFillInputActiveBehavior.var};
+        border-color: ${accentFillActiveBehavior.var};
     }
 
     .control:hover,
@@ -61,16 +61,16 @@ export const TextAreaStyles = css`
     }
 
     :host(:focus-within) .control {
-        border-color: var(--neutral-focus);
-        box-shadow: 0 0 0 1px var(--neutral-focus) inset;
+        border-color: ${neutralFocusBehavior.var};
+        box-shadow: 0 0 0 1px ${neutralFocusBehavior.var} inset;
     }
 
     :host(.filled) .control {
-        background: var(--neutral-fill-rest);
+        background: ${neutralFillRestBehavior.var};
     }
 
     :host(.filled:hover:not([disabled])) .control {
-        background: var(--neutral-fill-hover);
+        background: ${neutralFillHoverBehavior.var};
     }
 
     :host(.resize-both) .control {
@@ -87,7 +87,7 @@ export const TextAreaStyles = css`
 
     .label {
         display: block;
-        color: var(--neutral-foreground-rest);
+        color: ${neutralForegroundRestBehavior.var};
         cursor: pointer;
         font-size: var(--type-ramp-base-font-size);
         line-height: var(--type-ramp-base-line-height);
@@ -109,7 +109,7 @@ export const TextAreaStyles = css`
         opacity: var(--disabled-opacity);
     }
     :host([disabled]) .control {
-        border-color: var(--neutral-outline-rest);
+        border-color: ${neutralOutlineRestBehavior.var};
     }
  `.withBehaviors(
     accentFillActiveBehavior,
