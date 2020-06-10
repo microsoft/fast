@@ -52,7 +52,6 @@ export class TreeItem extends FASTElement {
         }
     }
 
-    // need to manage if this is a nested tree view item / items How???
     @observable
     public nested: boolean;
 
