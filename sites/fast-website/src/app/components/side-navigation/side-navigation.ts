@@ -20,6 +20,8 @@ export class SideNavigation extends FASTElement {
         x => x.header !== "Github"
     );
 
+    public scrollFunc = (num1: number, num2: number): void => window.scrollTo(num1, num2);
+
     public clickHandler = (e: Event, parent: boolean): void => {
         const target: HTMLElement = e.target as HTMLElement;
 
@@ -45,7 +47,7 @@ export class SideNavigation extends FASTElement {
 
             if (stopY > startY) {
                 for (var i = startY; i < stopY; i += increment) {
-                    setTimeout("window.scrollTo(0, " + stepY + ")", timer * speed);
+                    setTimeout(this.scrollFunc, timer * speed, 0, stepY);
                     stepY += increment;
                     if (stepY > stopY) {
                         stepY = stopY;
@@ -55,7 +57,8 @@ export class SideNavigation extends FASTElement {
                 return;
             }
             for (var i = startY; i > stopY; i -= increment) {
-                setTimeout("window.scrollTo(0, " + stepY + ")", timer * speed);
+                console.log(stepY, timer, speed);
+                setTimeout(this.scrollFunc, timer * speed, 0, stepY);
                 stepY -= increment;
                 if (stepY < stopY) {
                     stepY = stopY;
