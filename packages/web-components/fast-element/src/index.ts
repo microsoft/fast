@@ -5,7 +5,7 @@ export * from "./attributes";
 export * from "./controller";
 export * from "./interfaces";
 export * from "./template-compiler";
-export * from "./styles";
+export { StyleTarget, ElementStyles, css } from "./styles";
 export * from "./view";
 export * from "./observation/observable";
 export * from "./observation/notifier";

@@ -106,9 +106,13 @@ function reduceBehaviors(
         }, null as Behavior[] | null);
 }
 
-// https://wicg.github.io/construct-stylesheets/
-// https://developers.google.com/web/updates/2019/02/constructable-stylesheets
-class AdoptedStyleSheetsStyles extends ElementStyles {
+/**
+ * https://wicg.github.io/construct-stylesheets/
+ * https://developers.google.com/web/updates/2019/02/constructable-stylesheets
+ *
+ * @internal
+ */
+export class AdoptedStyleSheetsStyles extends ElementStyles {
     private readonly styleSheets: CSSStyleSheet[];
     public readonly behaviors: ReadonlyArray<Behavior> | null = null;
 
@@ -138,7 +142,7 @@ class AdoptedStyleSheetsStyles extends ElementStyles {
     public removeStylesFrom(target: StyleTarget): void {
         const sourceSheets = this.styleSheets;
         target.adoptedStyleSheets = target.adoptedStyleSheets!.filter(
-            (x: CSSStyleSheet) => sourceSheets.indexOf(x) !== -1
+            (x: CSSStyleSheet) => sourceSheets.indexOf(x) === -1
         );
     }
 }
