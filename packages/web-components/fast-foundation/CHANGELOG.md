@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-foundation@1.1.0...@microsoft/fast-foundation@1.1.1) (2020-06-09)
+
+
+### Bug Fixes
+
+* correct css part name for dialog component ([6e0c7a0](https://github.com/Microsoft/fast-dna/commit/6e0c7a01fa3d28e0a725eb5e5bbc6462ca0b5d57))
+
+
+
+
+
 # [1.1.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-foundation@1.0.0...@microsoft/fast-foundation@1.1.0) (2020-06-05)
 
 
