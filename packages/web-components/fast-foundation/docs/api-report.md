@@ -174,15 +174,19 @@ export class Carousel extends FASTElement {
     // (undocumented)
     disconnectedCallback(): void;
     // (undocumented)
-    handleTabClick: (e: Event) => void;
+    filteredItems: HTMLElement[];
+    // (undocumented)
+    handleTabClick(e: Event): void;
     // (undocumented)
     items: HTMLElement[];
     // (undocumented)
-    itemsChanged: () => void;
+    itemsChanged(): void;
     // (undocumented)
     loop: boolean;
     // (undocumented)
     paused: boolean;
+    // (undocumented)
+    tabs: HTMLElement[];
 }
 
 // @public (undocumented)
