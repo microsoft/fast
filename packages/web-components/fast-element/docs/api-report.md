@@ -37,12 +37,10 @@ export type AttributeConfiguration = {
 
 // @public
 export class AttributeDefinition implements Accessor {
-    // Warning: (ae-incompatible-release-tags) The symbol "__constructor" is marked as @public, but its signature references "ValueConverter" which is marked as @beta
     constructor(Owner: Function, name: string, attribute?: string, mode?: AttributeMode, converter?: ValueConverter);
     readonly attribute: string;
     // @internal
     static collect(Owner: Function, ...attributeLists: (ReadonlyArray<string | AttributeConfiguration> | undefined)[]): ReadonlyArray<AttributeDefinition>;
-    // Warning: (ae-incompatible-release-tags) The symbol "converter" is marked as @public, but its signature references "ValueConverter" which is marked as @beta
     readonly converter?: ValueConverter;
     getValue(source: HTMLElement): any;
     readonly mode: AttributeMode;
@@ -122,8 +120,6 @@ export interface BindingObserver<TSource = any, TReturn = any, TParent = any> ex
     observe(source: TSource, context: ExecutionContext): TReturn;
 }
 
-// Warning: (ae-incompatible-release-tags) The symbol "booleanConverter" is marked as @public, but its signature references "ValueConverter" which is marked as @beta
-//
 // @public
 export const booleanConverter: ValueConverter;
 
@@ -333,8 +329,6 @@ export interface Notifier {
     unsubscribe(subscriber: Subscriber, propertyToUnwatch?: any): void;
 }
 
-// Warning: (ae-incompatible-release-tags) The symbol "nullableNumberConverter" is marked as @public, but its signature references "ValueConverter" which is marked as @beta
-//
 // @public
 export const nullableNumberConverter: ValueConverter;
 
@@ -473,10 +467,10 @@ export interface SyntheticViewTemplate<TSource = any, TParent = any> {
 // @public
 export type TemplateValue<TScope, TParent = any> = Binding<TScope, any, TParent> | string | number | Directive | CaptureType<TScope>;
 
-// @beta
+// @public
 export interface ValueConverter {
-    fromView(value: string): any;
-    toView(value: any): string | null;
+    fromView(value: any): any;
+    toView(value: any): any;
 }
 
 // @public
@@ -502,7 +496,6 @@ export function when<TSource = any, TReturn = any>(binding: Binding<TSource, TRe
 
 // Warnings were encountered during analysis:
 //
-// dist/dts/attributes.d.ts:40:5 - (ae-incompatible-release-tags) The symbol "converter" is marked as @public, but its signature references "ValueConverter" which is marked as @beta
 // dist/dts/dom.d.ts:17:5 - (ae-forgotten-export) The symbol "TrustedTypesPolicy" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
