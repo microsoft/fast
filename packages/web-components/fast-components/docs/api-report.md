@@ -181,7 +181,6 @@ export class FASTCheckbox extends Checkbox {
 //
 // @public (undocumented)
 export class FASTDesignSystemProvider extends DesignSystemProvider implements FASTDesignSystem {
-    // (undocumented)
     accentBaseColor: string;
     // (undocumented)
     accentFillActiveDelta: number;
@@ -201,7 +200,6 @@ export class FASTDesignSystemProvider extends DesignSystemProvider implements FA
     accentForegroundHoverDelta: number;
     // (undocumented)
     accentForegroundRestDelta: number;
-    // (undocumented)
     accentPalette: string[];
     backgroundColor: string;
     // (undocumented)
@@ -274,7 +272,6 @@ export class FASTDesignSystemProvider extends DesignSystemProvider implements FA
     neutralOutlineHoverDelta: number;
     // (undocumented)
     neutralOutlineRestDelta: number;
-    // (undocumented)
     neutralPalette: string[];
     // (undocumented)
     outlineWidth: number;
