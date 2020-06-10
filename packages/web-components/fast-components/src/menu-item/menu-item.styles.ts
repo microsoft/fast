@@ -30,8 +30,8 @@ export const MenuItemStyles = css`
         margin: 0 calc(var(--design-unit) * 1px);
         white-space: nowrap;
         overflow: hidden;
-        color: var(--neutral-foreground-rest);
-        fill: var(--neutral-foreground-rest);
+        color: ${neutralForegroundRestBehavior.var};
+        fill: ${neutralForegroundRestBehavior.var};
         cursor: pointer;
         font-size: var(--type-ramp-base-font-size);
         line-height: var(--type-ramp-base-line-height);
@@ -40,20 +40,22 @@ export const MenuItemStyles = css`
     }
 
     :host(:${focusVisible}) {
-        box-shadow: 0 0 0 calc(var(--focus-outline-width) * 1px) inset var(--neutral-focus-inner-accent);
-        border-color: var(--neutral-focus);
-        background: var(--accent-fill-hover);
-        color: var(--accent-foreground-cut-rest);
+        box-shadow: 0 0 0 calc(var(--focus-outline-width) * 1px) inset ${
+            neutralFocusInnerAccentBehavior.var
+        };
+        border-color: ${neutralFocusBehavior.var};
+        background: ${accentFillHoverBehavior.var};
+        color: ${accentForegroundCutRestBehavior.var};
     }
 
     :host(:hover) {
-        background: var(--accent-fill-hover);
-        color: var(--accent-foreground-cut-rest);
+        background: ${accentFillHoverBehavior.var};
+        color: ${accentForegroundCutRestBehavior.var};
     }
 
     :host(:active) {
-        background: var(--accent-fill-active);
-        color: var(--accent-foreground-cut-rest);
+        background: ${accentFillActiveBehavior.var};
+        color: ${accentForegroundCutRestBehavior.var};
     }
 
     :host(.disabled) {
@@ -62,15 +64,15 @@ export const MenuItemStyles = css`
     }
 
     :host(.disabled:hover) {
-        color: var(--neutral-foreground-rest);
-        fill: var(--neutral-foreground-rest);
-        background: var(--neutral-fill-stealth-rest)
+        color: ${neutralForegroundRestBehavior.var};
+        fill: ${neutralForegroundRestBehavior.var};
+        background: ${neutralFillStealthRestBehavior.var}
     }
 
     :host(.disabled:hover) .start,
     :host(.disabled:hover) .end,
     :host(.disabled:hover)::slotted(svg) {
-        fill: var(--neutral-foreground-rest);
+        fill: ${neutralForegroundRestBehavior.var};
     }
 
     .content {
@@ -96,7 +98,7 @@ export const MenuItemStyles = css`
     :host(:active) .start,
     :host(:active) .end,
     :host(:active)::slotted(svg) {
-        fill: var(--accent-foreground-cut-rest);
+        fill: ${accentForegroundCutRestBehavior.var};
     }
 `.withBehaviors(
     accentFillActiveBehavior,

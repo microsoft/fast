@@ -17,6 +17,7 @@ function neutralForegroundHintAlgorithm(
 
 /**
  * Hint text for normal sized text, less than 18pt normal weight
+ * @internal
  */
 export const neutralForegroundHint: SwatchRecipe = swatchFamilyToSwatchRecipeFactory(
     SwatchFamilyType.rest,
@@ -25,6 +26,7 @@ export const neutralForegroundHint: SwatchRecipe = swatchFamilyToSwatchRecipeFac
 
 /**
  * Hint text for large sized text, greater than 18pt or 16pt and bold
+ * @internal
  */
 export const neutralForegroundHintLarge: SwatchRecipe = swatchFamilyToSwatchRecipeFactory(
     SwatchFamilyType.rest,

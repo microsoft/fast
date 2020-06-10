@@ -85,7 +85,7 @@ import { neutralFillRestBehavior } from "@microsoft/fast-components";
 
 const styles = css`
     :host {
-        background: var(--neutral-fill-rest);
+        background: ${neutralFillRestBehavior.var};
     }
 `.withBehaviors(
     neutralFillRestBehavior

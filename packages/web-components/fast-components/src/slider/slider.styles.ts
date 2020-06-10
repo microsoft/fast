@@ -59,22 +59,22 @@ export const SliderStyles = css`
         height: calc(var(--thumb-size) * 1px);
         width: calc(var(--thumb-size) * 1px);
         transition: "all 0.2s ease";
-        color: var(--neutral-foreground-rest);
-        fill: var(--neutral-foreground-rest);
+        color: ${neutralForegroundRestBehavior.var};
+        fill: ${neutralForegroundRestBehavior.var};
     }
     .thumb-cursor {
         border: none;
         width: calc(var(--thumb-size) * 1px);
         height: calc(var(--thumb-size) * 1px);
-        background: var(--neutral-foreground-rest);
+        background: ${neutralForegroundRestBehavior.var};
         border-radius: calc(var(--corner-radius) * 1px);
     }
     .thumb-cursor:hover {
-        background: var(--neutral-foreground-hover);
-        border-color: var(--neutral-outline-hover);
+        background: ${neutralForegroundHoverBehavior.var};
+        border-color: ${neutralOutlineHoverBehavior.var};
     }
     .thumb-cursor:active {
-        background: var(--neutral-foreground-active);
+        background: ${neutralForegroundActiveBehavior.var};
     }
     :host(.horizontal) .thumb-container {
         transform: translateX(calc(var(--thumb-translate) * 1px));
@@ -101,7 +101,7 @@ export const SliderStyles = css`
         height: 100%;
     }
     .track {
-        background: var(--neutral-outline-rest);
+        background: ${neutralOutlineRestBehavior.var};
         position: absolute;
         border-radius: calc(var(--corner-radius) * 1px);
     }

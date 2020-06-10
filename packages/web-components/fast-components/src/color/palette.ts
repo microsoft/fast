@@ -34,6 +34,7 @@ export type Palette = Swatch[];
  * Retrieves a palette by name. This function returns a function that accepts
  * a design system, returning a palette a palette or null
  * @deprecated - use neutralPalette and accentPalette functions instead
+ * @internal
  */
 export function palette(paletteType: PaletteType): DesignSystemResolver<Palette> {
     return (designSystem: FASTDesignSystem | undefined): Palette => {
@@ -50,6 +51,8 @@ export function palette(paletteType: PaletteType): DesignSystemResolver<Palette>
 /**
  * A function to find the index of a swatch in a specified palette. If the color is found,
  * otherwise it will return -1
+ *
+ * @internal
  */
 export function findSwatchIndex(
     paletteResolver: Palette | DesignSystemResolver<Palette>,
@@ -80,6 +83,8 @@ export function findSwatchIndex(
 /**
  * Returns the closest swatch in a palette to an input swatch.
  * If the input swatch cannot be converted to a color, 0 will be returned
+ *
+ * @internal
  */
 export function findClosestSwatchIndex(
     paletteResolver: Palette | DesignSystemResolver<Palette>,
@@ -152,6 +157,8 @@ export function isDarkMode(designSystem: FASTDesignSystem): boolean {
 
 /**
  * Determines if the design-system should be considered in "light mode".
+ * @internal
+ * @deprecated
  */
 export function isLightMode(designSystem: FASTDesignSystem): boolean {
     return !isDarkMode(designSystem);
@@ -160,6 +167,7 @@ export function isLightMode(designSystem: FASTDesignSystem): boolean {
 /**
  * Safely retrieves an index of a palette. The index is clamped to valid
  * array indexes so that a swatch is always returned
+ * @internal
  */
 export function getSwatch(index: number, colorPalette: Palette): Swatch;
 export function getSwatch(
@@ -178,6 +186,9 @@ export function getSwatch(index: any, colorPalette: any): any {
     }
 }
 
+/**
+ * @internal
+ */
 export function swatchByMode(
     paletteResolver: DesignSystemResolver<Palette>
 ): (
@@ -249,6 +260,7 @@ function binarySearch<T>(
  *          )(
  *              designSystem // Pass the design-system. The first swatch that passes the previous condition will be returned from this function
  *          )
+ * @internal
  */
 export function swatchByContrast(referenceColor: string | SwatchResolver) {
     /**
@@ -347,6 +359,7 @@ export function swatchByContrast(referenceColor: string | SwatchResolver) {
 
 /**
  * Resolves the index that the contrast search algorithm should start at
+ * @internal
  */
 export function referenceColorInitialIndexResolver(
     referenceColor: string,
@@ -356,6 +369,9 @@ export function referenceColorInitialIndexResolver(
     return findClosestSwatchIndex(sourcePalette, referenceColor)(designSystem);
 }
 
+/**
+ * @internal
+ */
 export function findClosestBackgroundIndex(designSystem: FASTDesignSystem): number {
     return findClosestSwatchIndex(
         neutralPalette,
@@ -363,6 +379,9 @@ export function findClosestBackgroundIndex(designSystem: FASTDesignSystem): numb
     )(designSystem);
 }
 
+/**
+ * @internal
+ */
 export function minContrastTargetFactory(
     targetContrast: number
 ): (instanceContrast: number) => boolean {
