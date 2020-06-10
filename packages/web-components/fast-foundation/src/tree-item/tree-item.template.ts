@@ -1,5 +1,6 @@
 import { html, ref, when } from "@microsoft/fast-element";
 import { TreeItem } from "./tree-item";
+import { endTemplate, startTemplate } from "../patterns/start-end";
 
 export const TreeItemTemplate = html<TreeItem>`
     <template
@@ -44,21 +45,9 @@ export const TreeItemTemplate = html<TreeItem>`
                         </div>
                     `
                 )}
-                <span part="before-content" ${ref("beforeContentContainer")}>
-                    <slot
-                        name="before-content"
-                        ${ref("beforeContent")}
-                        @slotchange=${x => x.handleBeforeContentChange()}
-                    ></slot>
-                </span>
+                ${startTemplate}
                 <slot></slot>
-                <span part="after-content" ${ref("afterContentContainer")}>
-                    <slot
-                        name="after-content"
-                        ${ref("afterContent")}
-                        @slotchange=${x => x.handleAfterContentChange()}
-                    ></slot>
-                </span>
+                ${endTemplate}
             </div>
         </div>
         ${when(
