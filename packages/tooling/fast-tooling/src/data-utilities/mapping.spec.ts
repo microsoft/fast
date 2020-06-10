@@ -920,6 +920,88 @@ describe("htmlMapper", () => {
 
         expect(result).toEqual(mappedElement);
     });
+    test("should map an svg element to data", () => {
+        const dataDictionary: DataDictionary<any> = [
+            {
+                "": {
+                    schemaId: "foo",
+                    data: {},
+                },
+            },
+            "",
+        ];
+        htmlMapper({
+            version: 1,
+            tags: [
+                {
+                    name: "svg",
+                    description: "foobar",
+                    attributes: [],
+                    slots: [],
+                },
+            ],
+        })({
+            dataDictionary,
+            dictionaryId: "",
+            schema: {
+                id: "foo",
+                [ReservedElementMappingKeyword.mapsToTagName]: "svg",
+                type: "object",
+            },
+            mapperPlugins: [],
+        });
+        expect(dataDictionary[0][""].data).toEqual(
+            document.createElementNS("http://www.w3.org/2000/svg", "svg")
+        );
+    });
+    test("should map an svg element with an attribute specifying a URI to data", () => {
+        const dataDictionary: DataDictionary<any> = [
+            {
+                "": {
+                    schemaId: "foo",
+                    data: {},
+                },
+            },
+            "",
+        ];
+        htmlMapper({
+            version: 1,
+            tags: [
+                {
+                    name: "svg",
+                    description: "foobar",
+                    attributes: [
+                        {
+                            name: "foo",
+                            description: "URI override",
+                            type: DataType.string,
+                            default: "http://www.w3.org/2000/svg",
+                            required: true,
+                        },
+                    ],
+                    slots: [],
+                },
+            ],
+        })({
+            dataDictionary,
+            dictionaryId: "",
+            schema: {
+                id: "foo",
+                [ReservedElementMappingKeyword.mapsToTagName]: "svg",
+                type: "object",
+                properties: {
+                    foo: {
+                        title: "URI override",
+                        type: "string",
+                    },
+                },
+            },
+            mapperPlugins: [],
+        });
+        expect(dataDictionary[0][""].data).toEqual(
+            document.createElementNS("http://www.w3.org/2000/svg", "svg")
+        );
+    });
 });
 
 describe("mapWebComponentDefinitionToJSONSchema", () => {

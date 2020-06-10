@@ -179,6 +179,23 @@ export interface ResolverConfig<T> {
     resolverPlugins: MapDataPlugin[];
 }
 
+const nameSpacedURIs = {
+    svg: "http://www.w3.org/2000/svg",
+};
+const nameSpacedTags = {
+    animate: nameSpacedURIs.svg,
+    svg: nameSpacedURIs.svg,
+    path: nameSpacedURIs.svg,
+    defs: nameSpacedURIs.svg,
+    ellipse: nameSpacedURIs.svg,
+    circle: nameSpacedURIs.svg,
+    line: nameSpacedURIs.svg,
+    polygon: nameSpacedURIs.svg,
+    polyline: nameSpacedURIs.svg,
+    rect: nameSpacedURIs.svg,
+    g: nameSpacedURIs.svg,
+};
+
 export function resolveDataInDataDictionary<T>(
     config: ResolveDataInDataDictionaryConfig<T>
 ): void {
@@ -305,7 +322,14 @@ export function htmlMapper(
             );
 
             if (elementDefinition !== undefined) {
-                const newElement = document.createElement(elementDefinition.name);
+                // Due to SVGs being namespaced they must use the createElementNS method instead of createElement
+                const isNameSpaced = Object.keys(nameSpacedTags).includes(
+                    elementDefinition.name
+                );
+                const uri = nameSpacedTags[elementDefinition.name];
+                const newElement = isNameSpaced
+                    ? document.createElementNS(uri, elementDefinition.name)
+                    : document.createElement(elementDefinition.name);
                 // a list of available slots for this element
                 const availableElementSlots = elementDefinition.slots.map(elementSlot => {
                     return elementSlot.name;
