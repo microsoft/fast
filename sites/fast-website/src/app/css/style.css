@@ -145,7 +145,7 @@ fast-divider::after {
 .section {
   color: var(--neutral-foreground-rest);
   display: flex;
-  height: 100vh;
+  min-height: 100vh;
   justify-content: center;
   align-items: center;
   grid-column: 2;
@@ -154,10 +154,12 @@ fast-divider::after {
 
 .hero-section {
   margin-top: calc(var(--navbar-height) * -1);
+  padding-top: var(--navbar-height);
 }
 
 .community-section {
   margin-bottom: calc(var(--navbar-height) * -1);
+  padding-bottom: var(--navbar-height);
 }
 
 .fast-frame-section {
