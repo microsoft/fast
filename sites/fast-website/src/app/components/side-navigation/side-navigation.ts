@@ -20,20 +20,18 @@ export class SideNavigation extends FASTElement {
         x => x.header !== "Github"
     );
 
+    public scrollBehavior: boolean = CSS.supports("scroll-behavior: smooth");
+
     public scrollFunc = (num1: number, num2: number): void => window.scrollTo(num1, num2);
 
-    public clickHandler = (e: Event, parent: boolean): void => {
-        const target: HTMLElement = e.target as HTMLElement;
-
-        const link: string = parent
-            ? (target.getAttribute("href") as string)
-            : (target.parentElement?.getAttribute("href") as string);
-
+    public clickHandler = (e: Event): void => {
+        const target: HTMLElement = e.currentTarget as HTMLElement;
+        const link: string = target.getAttribute("href") as string;
         const selectedSection: HTMLElement = document.querySelector(link) as HTMLElement;
 
         e.preventDefault();
 
-        if (CSS.supports("scroll-behavior: smooth")) {
+        if (this.scrollBehavior) {
             selectedSection.scrollIntoView({
                 behavior: "smooth",
             });
