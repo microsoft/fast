@@ -1,14 +1,16 @@
 /**
- * Utility for copying NPM packages to their CDN drop folder. PR's submitted with revisions the CDN Drop will
- * trigger a GitHub Action to deploy these assets to the CDN located at https://static.fast.design/assets/* which
- * maps to `sites/site-utilities/statics/assets/*` in this project, further known as $CDN.
+ * Utility for copying NPM packages to their CDN drop folder located at `sites/site-utilities/statics/assets/scripts/packages`
+ * in this source repository and maps to `https://static.fast.design/assets/scripts/packages` on the CDN, referenced next with
+ * $CDN.
  *
  * CDN Drop folder exist for the following:
- * Unminified location: `$CDN/scripts/package-name/version/package-name.js`
- * Minified location  : `$CDN/scripts/package-name/version/package-name.min.js`
+ * Unminified location : `$CDN/scripts/package-name/version/package-name.js`
+ * Minified location   : `$CDN/scripts/package-name/version/package-name.min.js`
+ * Unminified location : `$CDN/scripts/package-name/x.x.x/package-name.js`
+ * Minified location   : `$CDN/scripts/package-name/x.x.x/package-name.min.js`
  *
- * Usage        : `$ node build/create-cdn-packages.js`
- * Usage (debug): `$ node build/create-cdn-packages.js --debug`
+ * Usage         : `$ node build/create-cdn-packages.js`
+ * Usage (debug) : `$ node build/create-cdn-packages.js --debug`
  */
 
 const chalk = require("chalk");
