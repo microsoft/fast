@@ -8,13 +8,13 @@ export const fastAccordionItemDefinition: WebComponentDefinition = {
             name: "fast-accordion-item",
             description: "The FAST accordion item element",
             attributes: [
-                // {
-                //     name: "heading-level",
-                //     description: "The heading level attribute",
-                //     type: DataType.number,
-                //     default: 2,
-                //     required: false,
-                // },
+                {
+                    name: "heading-level",
+                    description: "The heading level attribute",
+                    type: DataType.number,
+                    default: 2,
+                    required: false,
+                },
                 {
                     name: "expanded",
                     description: "The expanded attribute",
