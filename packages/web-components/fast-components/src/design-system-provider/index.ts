@@ -19,9 +19,17 @@ import {
 })
 export class FASTDesignSystemProvider extends DesignSystemProvider
     implements FASTDesignSystem {
+    /**
+     * Used to instruct the FASTDesignSystemProvider
+     * that it should not set the CSS
+     * background-color property
+     *
+     * @remarks
+     * HTML boolean attribute: omit-background
+     */
     @attr({ attribute: "omit-background", mode: "boolean" })
     public omitBackground = false;
-    private omitBackgroundChanged(prev: boolean) {
+    private omitBackgroundChanged() {
         if (!this.omitBackground) {
             this.$fastController.addStyles(backgroundStyles);
         } else {
@@ -29,9 +37,16 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
         }
     }
 
+    /**
+     * Used to instruct the FASTDesignSystemProvider
+     * that it should not set the CSS color property
+     *
+     * @remarks
+     * HTML boolean attribute: omit-color
+     */
     @attr({ attribute: "omit-color", mode: "boolean" })
     public omitColor = false;
-    private omitColorChanged(prev: boolean) {
+    private omitColorChanged() {
         if (!this.omitBackground) {
             this.$fastController.addStyles(colorStyles);
         } else {
