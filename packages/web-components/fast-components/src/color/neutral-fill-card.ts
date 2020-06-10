@@ -20,7 +20,9 @@ const neutralCardFillAlgorithm: SwatchResolver = (
         neutralPalette(designSystem)
     );
 };
-
+/**
+ * @internal
+ */
 export function neutralFillCard(designSystem: FASTDesignSystem): Swatch;
 export function neutralFillCard(backgroundResolver: SwatchResolver): SwatchResolver;
 export function neutralFillCard(arg: any): any {
