@@ -28,26 +28,47 @@ export class Carousel extends FASTElement {
 
     @observable
     public items: HTMLElement[];
+    public itemsChanged(): void {
+        this.filteredItems = this.items
+            .filter((item: HTMLElement) => item.nodeType === 1)
+            .map((item: HTMLElement, index: number) => {
+                if (index === this.activeTabIndex) {
+                    item.classList.add("active");
+                }
+                item.classList.add("slide");
+
+                return item;
+            });
+
+        console.log("ITEMS CHANGED: ", this.items, this.filteredItems);
+    }
+
+    @observable
+    public filteredItems: HTMLElement[];
+
+    @observable
+    public tabs: HTMLElement[];
+    public tabsChanged(): void {
+        this.tabs.forEach((tab: HTMLElement, index: number) => {
+            tab.addEventListener("click", this.handleTabClick(index));
+        });
+    }
 
     public carousel: HTMLDivElement;
 
-    public connectedCallback(): void {
-        super.connectedCallback();
+    // public connectedCallback(): void {
+    //     super.connectedCallback();
+    // }
 
-        //TODO: ADD key handlers, observers???
-        this.items = this.items.filter((item: HTMLElement) => item.nodeType === 1);
-        console.log("ITEMS:", this.items);
+    // public disconnectedCallback(): void {
+    //     super.disconnectedCallback();
+    // }
+
+    public handleTabClick(index: number): (e: Event) => void {
+        return (e: Event): void => {
+            console.log("HIT HANDLE TAB CLICK, index: ", index);
+        };
     }
 
-    public disconnectedCallback(): void {
-        super.disconnectedCallback();
-    }
-
-    public itemsChanged = () => {
-        console.log("ITEMS CHANGED");
-    };
-
-    public handleTabClick = (e: Event): void => {
-        console.log("HIT HANDLE TAB CLICK");
-    };
+    private activeTabIndex: number = 0;
 }
