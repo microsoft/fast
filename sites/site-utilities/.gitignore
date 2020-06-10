@@ -1,2 +1,6 @@
 # Generated files using `/build/create-cdn-packages.js`
-statics/assets/scripts
+statics/assets/scripts/packages/fast-components/
+statics/assets/scripts/packages/fast-components-msft/
+statics/assets/scripts/packages/fast-element/
+statics/assets/scripts/packages/fast-foundation/
+
