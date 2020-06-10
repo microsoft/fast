@@ -284,7 +284,7 @@ Observable.defineProperty(ExecutionContext.prototype, "length");
  * The default execution context used in binding expressions.
  * @public
  */
-export const defaultExecutionContext = new ExecutionContext();
+export const defaultExecutionContext = Object.seal(new ExecutionContext());
 
 /**
  * The signature of an arrow function capable of being evaluated
