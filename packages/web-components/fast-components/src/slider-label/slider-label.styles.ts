@@ -9,8 +9,8 @@ import {
 
 export const SliderLabelStyles = css`
     ${display("block")} :host {
-        color: var(--neutral-foreground-rest);
-        fill: var(--neutral-foreground-rest);
+        color: ${neutralForegroundRestBehavior.var};
+        fill: ${neutralForegroundRestBehavior.var};
     }
     .root {
         position: absolute;
@@ -55,7 +55,7 @@ export const SliderLabelStyles = css`
     .mark {
         width: calc((var(--design-unit) / 4) * 1px);
         height: calc(${heightNumber} * 0.25 * 1px);
-        background: var(--neutral-outline-rest);
+        background: ${neutralOutlineRestBehavior.var};
         justify-self: center;
     }
     :host(.vertical) .mark {

@@ -1,6 +1,24 @@
 import { css } from "@microsoft/fast-element";
 import { display, focusVisible } from "@microsoft/fast-foundation";
 import { heightNumber } from "../size";
+import {
+    accentFillActiveBehavior,
+    accentFillHoverBehavior,
+    accentFillRestBehavior,
+    accentForegroundActiveBehavior,
+    accentForegroundCutRestBehavior,
+    accentForegroundHoverBehavior,
+    accentForegroundRestBehavior,
+    neutralFillActiveBehavior,
+    neutralFillHoverBehavior,
+    neutralFillRestBehavior,
+    neutralFillStealthActiveBehavior,
+    neutralFillStealthHoverBehavior,
+    neutralFillStealthRestBehavior,
+    neutralFocusBehavior,
+    neutralFocusInnerAccentBehavior,
+    neutralForegroundRestBehavior,
+} from "../index";
 
 export const BaseButtonStyles = css`
     ${display("inline-block")} :host {
@@ -16,7 +34,7 @@ export const BaseButtonStyles = css`
         display: inline-flex;
         justify-content: center;
         align-items: center;
-        padding: 0 calc((6 + (var(--design-unit) * 2 * var(--density))) * 1px);
+        padding: 0 calc((10 + (var(--design-unit) * 2 * var(--density))) * 1px);
         height: calc(${heightNumber} * 1px);
         min-width: calc(${heightNumber} * 1px);
         white-space: nowrap;
@@ -24,23 +42,25 @@ export const BaseButtonStyles = css`
         text-decoration: none;
         cursor: pointer;
         border-radius: calc(var(--corner-radius) * 1px);
-        background-color: var(--neutral-fill-rest);
-        color: var(--neutral-foreground-rest);
-        fill: var(--neutral-foreground-rest);
+        background-color: ${neutralFillRestBehavior.var};
+        color: ${neutralForegroundRestBehavior.var};
+        fill: ${neutralForegroundRestBehavior.var};
         border: calc(var(--outline-width) * 1px) solid transparent;
     }
 
     .control:hover {
-        background-color: var(--neutral-fill-hover);
+        background-color: ${neutralFillHoverBehavior.var};
     }
 
     .control:active {
-        background-color: var(--neutral-fill-active);
+        background-color: ${neutralFillActiveBehavior.var};
     }
 
     .control:${focusVisible} {
-        border: calc(var(--outline-width) * 1px) solid var(--neutral-focus);
-        box-shadow: 0 0 0 calc((var(--focus-outline-width) - var(--outline-width)) * 1px) var(--neutral-focus);
+        border: calc(var(--outline-width) * 1px) solid ${neutralFocusBehavior.var};
+        box-shadow: 0 0 0 calc((var(--focus-outline-width) - var(--outline-width)) * 1px) ${
+            neutralFocusBehavior.var
+        };
     }
 
     .control::-moz-focus-inner {
@@ -68,26 +88,37 @@ export const BaseButtonStyles = css`
     .end {
         margin-inline-start: 11px;
     }
-`;
+`.withBehaviors(
+    neutralFillRestBehavior,
+    neutralForegroundRestBehavior,
+    neutralFillHoverBehavior,
+    neutralFillActiveBehavior
+);
 
 export const AccentButtonStyles = css`
     :host(.accent) .control {
-        background: var(--accent-fill-rest);
-        color: var(--accent-foreground-cut-rest);  
+        background: ${accentFillRestBehavior.var};
+        color: ${accentForegroundCutRestBehavior.var};
     }
 
     :host(.accent) .control:hover {
-        background: var(--accent-fill-hover);
+        background: ${accentFillHoverBehavior.var};
     }
 
     :host(.accent) .control:active {
-        background: var(--accent-fill-active);
+        background: ${accentFillActiveBehavior.var}${accentFillActiveBehavior.var};
     }
 
     :host(.accent) .control:${focusVisible} {
-        box-shadow: 0 0 0 calc(var(--focus-outline-width) * 1px) inset var(--neutral-focus-inner-accent);
+        box-shadow: 0 0 0 calc(var(--focus-outline-width) * 1px) inset ${neutralFocusInnerAccentBehavior.var};
     }
-`;
+`.withBehaviors(
+    accentFillRestBehavior,
+    accentForegroundCutRestBehavior,
+    accentFillHoverBehavior,
+    accentFillActiveBehavior,
+    neutralFocusInnerAccentBehavior
+);
 
 export const HypertextStyles = css`
     :host(.hypertext) .control {
@@ -97,31 +128,31 @@ export const HypertextStyles = css`
         box-shadow: none;
         border-radius: 0;
     }
-
     :host a.control:not(:link) {
         background-color: transparent;
         cursor: default;
     }
-
     :host(.hypertext) .control:link,
     :host(.hypertext) .control:visited {
         background: transparent;
-        color: var(--accent-foreground-rest);
-        border-bottom: calc(var(--outline-width) * 1px) solid var(--accent-foreground-rest);
+        color: ${accentForegroundRestBehavior.var};
+        border-bottom: calc(var(--outline-width) * 1px) solid ${accentForegroundRestBehavior.var};
     }
-
     :host(.hypertext) .control:hover {
-        border-bottom-color: var(--accent-foreground-hover);
+        border-bottom-color: ${accentForegroundHoverBehavior.var};
     }
-
     :host(.hypertext) .control:active {
-        border-bottom-color: var(--accent-foreground-active);
+        border-bottom-color: ${accentForegroundActiveBehavior.var};
     }
-
     :host(.hypertext) .control:${focusVisible} {
-        border-bottom: calc(var(--focus-outline-width) * 1px) solid var(--neutral-focus);
+        border-bottom: calc(var(--focus-outline-width) * 1px) solid ${neutralFocusBehavior.var};
     }
-`;
+`.withBehaviors(
+    accentForegroundRestBehavior,
+    accentForegroundHoverBehavior,
+    accentForegroundActiveBehavior,
+    neutralFocusBehavior
+);
 
 export const LightweightButtonStyles = css`
     :host(.lightweight) .control {
@@ -130,15 +161,15 @@ export const LightweightButtonStyles = css`
         box-shadow: none;
         border-radius: 0;
         background: transparent;
-        color: var(--accent-foreground-rest);
+        color: ${accentForegroundRestBehavior.var};
     }
 
     :host(.lightweight) .control:hover {
-        color: var(--accent-foreground-hover);
+        color: ${accentForegroundHoverBehavior.var};
     }
 
     :host(.lightweight) .control:active {
-        color: var(--accent-foreground-active);
+        color: ${accentForegroundActiveBehavior.var};
     }
 
     :host(.lightweight) .content {
@@ -155,44 +186,64 @@ export const LightweightButtonStyles = css`
     }
 
     :host(.lightweight) .control:hover .content::before {
-        background: var(--accent-foreground-hover);
+        background: ${accentForegroundHoverBehavior.var};
     }
 
     :host(.lightweight) .control:active .content::before {
-        background: var(--accent-foreground-active);
+        background: ${accentForegroundActiveBehavior.var};
     }
 
     :host(.lightweight) .control:${focusVisible} .content::before {
-        background: var(--neutral-foreground-rest);
+        background: ${neutralForegroundRestBehavior.var};
         height: calc(var(--focus-outline-width) * 1px);
     }
-`;
+`.withBehaviors(
+    accentForegroundRestBehavior,
+    accentForegroundHoverBehavior,
+    accentForegroundActiveBehavior,
+    accentForegroundHoverBehavior,
+    neutralForegroundRestBehavior
+);
 
 export const OutlineButtonStyles = css`
     :host(.outline) .control {
         background: transparent;
-        border-color: var(--neutral-outline-rest);
+        border-color: ${accentFillRestBehavior.var};
     }
 
     :host(.outline) .control:hover {
-        border-color: var(--neutral-outline-hover);
+        border-color: ${accentFillHoverBehavior.var};
     }
 
     :host(.outline) .control:active {
-        border-color: var(--neutral-outline-active);
+        border-color: ${accentFillActiveBehavior.var};
     }
-`;
+
+    :host(.outline) .control:${focusVisible} {
+        border: calc(var(--outline-width) * 1px) solid ${neutralFocusBehavior.var});
+        box-shadow: 0 0 0 calc((var(--focus-outline-width) - var(--outline-width)) * 1px) ${neutralFocusBehavior.var};
+    }
+`.withBehaviors(
+    accentFillRestBehavior,
+    accentFillHoverBehavior,
+    accentFillActiveBehavior,
+    neutralFocusBehavior
+);
 
 export const StealthButtonStyles = css`
     :host(.stealth) .control {
-        background: var(--neutral-fill-stealth-rest);
+        background: ${neutralFillStealthRestBehavior.var};
     }
 
     :host(.stealth) .control:hover {
-        background: var(--neutral-fill-stealth-hover);
+        background: ${neutralFillStealthHoverBehavior.var};
     }
 
     :host(.stealth) .control:active {
-        background: var(--neutral-fill-stealth-active);
+        background: ${neutralFillStealthActiveBehavior.var};
     }
-`;
+`.withBehaviors(
+    neutralFillStealthRestBehavior,
+    neutralFillStealthHoverBehavior,
+    neutralFillStealthActiveBehavior
+);

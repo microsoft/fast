@@ -1,4 +1,4 @@
-import { cloneDeep, get } from "lodash-es";
+import { camelCase, cloneDeep, get } from "lodash-es";
 import { Data, DataDictionary, LinkedData, SchemaDictionary } from "../message-system";
 import { linkedDataSchema } from "../schemas";
 import {
@@ -350,7 +350,11 @@ export function htmlResolver(config: ResolverConfig<any>): HTMLElement | Text {
             }][${ReservedElementMappingKeyword.mapsToSlot}]`
         );
 
-        if (typeof slotName === "string" && slotName !== "") {
+        if (
+            typeof slotName === "string" &&
+            slotName !== "" &&
+            !(config.dataDictionary[0][config.dictionaryId].data instanceof Text)
+        ) {
             config.dataDictionary[0][config.dictionaryId].data.setAttribute(
                 "slot",
                 slotName
@@ -395,9 +399,15 @@ function mapAttributesToJSONSchema(
 function mapSlotsToJSONSchema(slots: WebComponentSlot[]): { [key: string]: any } {
     return slots.reduce(
         (accumulation: { [key: string]: any }, slot: WebComponentSlot) => {
+            const slotName =
+                slot.name === ""
+                    ? ""
+                    : slot.name[1]
+                    ? `${slot.name[0].toUpperCase()}${camelCase(slot.name.substring(1))}`
+                    : slot.name[0].toUpperCase();
             return {
                 ...accumulation,
-                [`Slot${slot.name}`]: {
+                [`Slot${slotName}`]: {
                     title: slot.description,
                     [ReservedElementMappingKeyword.mapsToSlot]: slot.name,
                     ...linkedDataSchema,

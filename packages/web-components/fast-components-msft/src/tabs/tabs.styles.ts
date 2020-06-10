@@ -9,7 +9,7 @@ export const TabsStyles = css`
         font-family: var(--body-font);
         font-size: var(--type-ramp-base-font-size);
         line-height: var(--type-ramp-base-line-height);
-        color: var(--neutral-foreground-rest);
+        color: ${neutralForegroundRestBehavior.var};
         grid-template-columns: auto 1fr auto;
         grid-template-rows: auto 1fr;
     }
@@ -38,7 +38,7 @@ export const TabsStyles = css`
         height: 3px;
         border-radius: calc(var(--corner-radius) * 1px);
         justify-self: center;
-        background: var(--accent-fill-rest);
+        background: ${accentFillRestBehavior.var};
     }
 
     .activeIndicatorTransition {
@@ -86,7 +86,7 @@ export const TabsStyles = css`
         height: 20px;
         border-radius: calc(var(--corner-radius) * 1px);
         align-self: center;
-        background: var(--accent-fill-rest);
+        background: ${accentFillRestBehavior.var};
     }
 
     :host(.vertical) .activeIndicatorTransition {

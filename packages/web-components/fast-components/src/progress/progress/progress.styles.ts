@@ -16,7 +16,7 @@ export const ProgressStyles = css`
     }
 
     .progress {
-        background-color: var(--neutral-fill-rest);
+        background-color: ${neutralFillRestBehavior.var};
         border-radius: calc(var(--design-unit) * 1px);
         width: 100%;
         height: 100%;
@@ -26,7 +26,7 @@ export const ProgressStyles = css`
     }
 
     .determinate {
-        background-color: var(--accent-fill-rest);
+        background-color: ${accentFillRestBehavior.var};
         border-radius: calc(var(--design-unit) * 1px);
         height: 100%;
         transition: all 0.2s ease-in-out;
@@ -46,7 +46,7 @@ export const ProgressStyles = css`
         position: absolute;
         opacity: 0;
         height: 100%;
-        background-color: var(--accent-fill-rest);
+        background-color: ${accentFillRestBehavior.var};
         border-radius: calc(var(--design-unit) * 1px);
         animation-timing-function: cubic-bezier(0.4, 0.0, 0.6, 1.0);
         width: 40%;
@@ -57,7 +57,7 @@ export const ProgressStyles = css`
         position: absolute;
         opacity: 0;
         height: 100%;
-        background-color: var(--accent-fill-rest);
+        background-color: ${accentFillRestBehavior.var};
         border-radius: calc(var(--design-unit) * 1px);
         animation-timing-function: cubic-bezier(0.4, 0.0, 0.6, 1.0);
         width: 60%;
@@ -66,11 +66,11 @@ export const ProgressStyles = css`
 
     :host(.paused) .indeterminate-indicator-1, :host(.paused) .indeterminate-indicator-2 {
         animation-play-state: paused;
-        background-color: var(--neutral-fill-rest);
+        background-color: ${neutralFillRestBehavior.var};
     }
 
     :host(.paused) .determinate {
-        background-color: var(--neutral-foreground-hint);
+        background-color: ${neutralForegroundHintBehavior.var};
     }
 
     @keyframes indeterminate-1 {

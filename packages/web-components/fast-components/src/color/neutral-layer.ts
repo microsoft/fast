@@ -101,6 +101,7 @@ const darkNeutralLayerL4: DesignSystemResolver<number> = (
 
 /**
  * Used as the background color for floating layers like context menus and flyouts.
+ * @internal
  */
 export const neutralLayerFloating: ColorRecipe<Swatch> = colorRecipeFactory(
     luminanceOrBackgroundColor(
@@ -114,6 +115,7 @@ export const neutralLayerFloating: ColorRecipe<Swatch> = colorRecipeFactory(
 
 /**
  * Used as the background color for cards. Pair with `neutralLayerCardContainer` for the container background.
+ * @internal
  */
 export const neutralLayerCard: ColorRecipe<Swatch> = colorRecipeFactory(
     luminanceOrBackgroundColor(
@@ -127,6 +129,7 @@ export const neutralLayerCard: ColorRecipe<Swatch> = colorRecipeFactory(
 
 /**
  * Used as the background color for card containers. Pair with `neutralLayerCard` for the card backgrounds.
+ * @internal
  */
 export const neutralLayerCardContainer: ColorRecipe<Swatch> = colorRecipeFactory(
     luminanceOrBackgroundColor(
@@ -140,6 +143,7 @@ export const neutralLayerCardContainer: ColorRecipe<Swatch> = colorRecipeFactory
 
 /**
  * Used as the background color for the primary content layer (L1).
+ * @internal
  */
 export const neutralLayerL1: ColorRecipe<Swatch> = colorRecipeFactory(
     luminanceOrBackgroundColor(
@@ -154,11 +158,13 @@ export const neutralLayerL1: ColorRecipe<Swatch> = colorRecipeFactory(
 /**
  * Alternate darker color for L1 surfaces. Currently the same as card container, but use
  * the most applicable semantic named recipe.
+ * @internal
  */
 export const neutralLayerL1Alt: ColorRecipe<Swatch> = neutralLayerCardContainer;
 
 /**
  * Used as the background for the top command surface, logically below L1.
+ * @internal
  */
 export const neutralLayerL2: ColorRecipe<Swatch> = colorRecipeFactory(
     luminanceOrBackgroundColor(
@@ -172,6 +178,7 @@ export const neutralLayerL2: ColorRecipe<Swatch> = colorRecipeFactory(
 
 /**
  * Used as the background for secondary command surfaces, logically below L2.
+ * @internal
  */
 export const neutralLayerL3: ColorRecipe<Swatch> = colorRecipeFactory(
     luminanceOrBackgroundColor(
@@ -185,6 +192,7 @@ export const neutralLayerL3: ColorRecipe<Swatch> = colorRecipeFactory(
 
 /**
  * Used as the background for the lowest command surface or title bar, logically below L3.
+ * @internal
  */
 export const neutralLayerL4: ColorRecipe<Swatch> = colorRecipeFactory(
     luminanceOrBackgroundColor(

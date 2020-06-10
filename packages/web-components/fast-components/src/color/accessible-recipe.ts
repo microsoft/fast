@@ -49,6 +49,7 @@ function indexToSwatchFamily(
  * Performs a simple contrast check against the colors and returns
  * the color that has the most contrast against the background. If contrast
  * cannot be retrieved correctly, function returns black.
+ * @internal
  */
 export function accessibleAlgorithm(
     palette: Palette | DesignSystemResolver<Palette>,

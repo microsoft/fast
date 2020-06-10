@@ -45,7 +45,7 @@ export const SliderLabelStyles = css`
     .mark {
         width: calc((var(--design-unit) / 2) * 1px);
         height: calc(${heightNumber} * 0.25 * 1px);
-        background: var(--neutral-outline-rest);
+        background: ${neutralOutlineRestBehavior.var};
         justify-self: center;
     }
     :host(.vertical) .mark {

@@ -66,6 +66,7 @@ export type SwatchFamilyResolver<
  * A function type that resolves a Swatch from a SwatchResolver
  * and applies it to the backgroundColor property of the design system
  * of the returned DesignSystemResolver
+ * @internal
  */
 export type DesignSystemResolverFromSwatchResolver<T> = (
     resolver: SwatchResolver
@@ -73,6 +74,7 @@ export type DesignSystemResolverFromSwatchResolver<T> = (
 
 /**
  * The states that a swatch can have
+ * @internal
  */
 export enum SwatchFamilyType {
     rest = "rest",
@@ -82,9 +84,16 @@ export enum SwatchFamilyType {
     selected = "selected",
 }
 
+/**
+ * A function that resolves a color when provided a design system
+ * or resolves a ColorRecipe when provided a SwatchResolver
+ */
 export type ColorRecipe<T> = DesignSystemResolver<T> &
     DesignSystemResolverFromSwatchResolver<T>;
 
+/**
+ * @internal
+ */
 export function colorRecipeFactory<T>(recipe: DesignSystemResolver<T>): ColorRecipe<T> {
     const memoizedRecipe: typeof recipe = memoize(recipe);
 
@@ -122,6 +131,8 @@ export type SwatchRecipe = ColorRecipe<Swatch>;
 /**
  * Helper function to transform a SwatchFamilyResolver into simple ColorRecipe for simple use
  * use in stylesheets.
+ *
+ * @internal
  */
 export function swatchFamilyToSwatchRecipeFactory<T extends SwatchFamily>(
     type: keyof T,
@@ -146,6 +157,8 @@ export function swatchFamilyToSwatchRecipeFactory<T extends SwatchFamily>(
 /**
  * Converts a color string into a ColorRGBA64 instance.
  * Supports #RRGGBB and rgb(r, g, b) formats
+ *
+ * @internal
  */
 export const parseColorString: (color: string) => ColorRGBA64 = memoize(
     (color: string): ColorRGBA64 => {
@@ -170,6 +183,7 @@ export const parseColorString: (color: string) => ColorRGBA64 = memoize(
 /**
  * Determines if a string value represents a color
  * Supports #RRGGBB and rgb(r, g, b) formats
+ * @internal
  */
 export function isValidColor(color: string): boolean {
     return isColorStringHexRGB(color) || isColorStringWebRGB(color);
@@ -178,6 +192,7 @@ export function isValidColor(color: string): boolean {
 /**
  * Determines if a color string matches another color.
  * Supports #RRGGBB and rgb(r, g, b) formats
+ * @internal
  */
 export function colorMatches(a: string, b: string): boolean {
     return parseColorString(a).equalValue(parseColorString(b));
@@ -186,6 +201,7 @@ export function colorMatches(a: string, b: string): boolean {
 /**
  * Returns the contrast value between two color strings.
  * Supports #RRGGBB and rgb(r, g, b) formats.
+ * @internal
  */
 export const contrast: (a: string, b: string) => number = memoize(
     (a: string, b: string): number => {
@@ -197,11 +213,15 @@ export const contrast: (a: string, b: string) => number = memoize(
 /**
  * Returns the relative luminance of a color. If the value is not a color, -1 will be returned
  * Supports #RRGGBB and rgb(r, g, b) formats
+ * @internal
  */
 export function luminance(color: string): number {
     return rgbToRelativeLuminance(parseColorString(color));
 }
 
+/**
+ * @internal
+ */
 export function designSystemResolverMax(
     ...args: Array<DesignSystemResolver<number>>
 ): DesignSystemResolver<number> {
@@ -212,6 +232,9 @@ export function designSystemResolverMax(
         );
 }
 
+/**
+ * @internal
+ */
 export const clamp: (value: number, min: number, max: number) => number = (
     value: number,
     min: number,

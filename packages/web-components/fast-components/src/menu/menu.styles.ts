@@ -9,7 +9,7 @@ import {
 export const MenuStyles = css`
     ${display("block")} :host {
         --elevation: 11;
-        background: var(--neutral-layer-floating);
+        background: ${neutralLayerFloatingBehavior.var};
         border: calc(var(--outline-width) * 1px) solid transparent;
         border-radius: var(--elevated-corner-radius);
         ${elevation} margin: 0;
