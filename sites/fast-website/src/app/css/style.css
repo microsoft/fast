@@ -99,7 +99,13 @@ site-navigation ::part(content) {
   line-height: var(--type-ramp-plus-4-line-height);
 }
 
+.footer .logo::part(content) {
+  display: flex;
+  overflow: hidden;
+}
+
 .logo svg {
+  display: block;
   width: 45px;
   height: 40px;
   margin-inline-end: 10px;
