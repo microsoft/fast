@@ -35,7 +35,7 @@ export const BackgroundDesignStyles = css`
         width: 100%;
     }
 
-    :host .background-image svg {
+    :host .background-image canvas {
         height: auto;
         min-width: 1440px;
         object-fit: cover;

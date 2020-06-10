@@ -1,3 +1,7 @@
+:root {
+  --navbar-height: 94px;
+}
+
 html {
   font: 16px "Segoe UI", Arial, Helvetica, sans-serif;
 }
@@ -49,7 +53,7 @@ body {
   .social-links {
     top: 35%;
   }
-  
+
   .section-scroll {
     top: 25%;
   }
@@ -61,7 +65,7 @@ body {
 
 .header site-navigation {
   align-items: center;
-  height: 94px;
+  height: var(--navbar-height);
   justify-content: space-between;
 }
 
@@ -134,12 +138,20 @@ fast-divider::after {
 
 .section {
   color: var(--neutral-foreground-rest);
-  min-height: 100vh;
   display: flex;
+  height: 100vh;
   justify-content: center;
   align-items: center;
   grid-column: 2;
   box-sizing: border-box;
+}
+
+.hero-section {
+  margin-top: calc(var(--navbar-height) * -1);
+}
+
+.community-section {
+  margin-bottom: calc(var(--navbar-height) * -1);
 }
 
 .fast-frame-section {
@@ -190,6 +202,7 @@ fast-divider::after {
 }
 
 .footer {
+  min-height: var(--navbar-height);
   grid-column: 2;
   display: flex;
   align-items: center;
