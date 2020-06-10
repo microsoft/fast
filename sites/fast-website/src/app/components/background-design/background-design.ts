@@ -1,4 +1,5 @@
 import { FASTElement } from "@microsoft/fast-element";
+import { DesignSystemProvider } from "@microsoft/fast-foundation";
 import { waveData } from "../../data/wave.data";
 
 type BezierCurveTo = [number, number, number, number, number, number];
@@ -11,8 +12,9 @@ interface PathData {
 }
 
 export class BackgroundDesign extends FASTElement {
-    canvas = this.shadowRoot!.getElementById("wave-canvas") as HTMLCanvasElement;
-    context = this.canvas.getContext("2d", { alpha: false }) as CanvasRenderingContext2D;
+    canvas: HTMLCanvasElement;
+    context: CanvasRenderingContext2D;
+    provider: DesignSystemProvider;
 
     waveSim = {
         scale: 1.0,
@@ -31,7 +33,7 @@ export class BackgroundDesign extends FASTElement {
 
     increments = {
         bg: 20,
-        waves: 40,
+        waves: 30,
     };
 
     steps = {
@@ -46,8 +48,16 @@ export class BackgroundDesign extends FASTElement {
 
     waveData = {};
 
-    constructor() {
-        super();
+    frame: number;
+
+    prevPerf: number = 0;
+
+    connectedCallback() {
+        super.connectedCallback();
+        this.provider = DesignSystemProvider.findProvider(this) as DesignSystemProvider;
+        this.context = this.canvas.getContext("2d", {
+            alpha: false,
+        }) as CanvasRenderingContext2D;
 
         this.setup();
         this.reflowCanvas();
@@ -65,14 +75,13 @@ export class BackgroundDesign extends FASTElement {
             false
         );
 
-        let last = window.performance.now();
-        const performAnimation = () => {
-            let frametime = window.performance.now() - last;
+        const performAnimation = perf => {
+            const frametime = perf - this.prevPerf;
             this.update(frametime);
-            last = window.performance.now();
-            requestAnimationFrame(performAnimation);
+            this.frame = requestAnimationFrame(performAnimation);
+            this.prevPerf = perf;
         };
-        requestAnimationFrame(performAnimation);
+        performAnimation(window.performance.now());
     }
 
     setup() {
@@ -140,8 +149,7 @@ export class BackgroundDesign extends FASTElement {
 
     updateWave(thisWave, startPoints, endPoints, modifier) {
         // sin wave drives animation
-        let time = this.time.total / 2;
-        let blend = this.easeInOut(1)(Math.sin(time + modifier));
+        let blend = this.easeInOut(1)(Math.sin(this.time.total / 2 + modifier));
         for (let i = 0; i < thisWave.C.length; i++) {
             const points = thisWave.C[i];
             for (let j = 0; j < points.length; j++) {
@@ -170,6 +178,11 @@ export class BackgroundDesign extends FASTElement {
     }
 
     update(frametime) {
+        // you're too slow!
+        if (frametime > 33.34) {
+            return;
+        }
+
         this.time.loop = frametime / 1000;
         this.time.scale = this.time.loop * 60.0 * this.time.speed;
         this.time.total += this.time.loop * this.time.scale;
@@ -177,12 +190,8 @@ export class BackgroundDesign extends FASTElement {
         this.steps.bg.length = 0;
         this.steps.waves.length = 0;
 
-        // you're too slow!
-        if (frametime < 14) {
-            return;
-        }
-
-        this.context.clearRect(0, 0, this.waveSim.size.width, this.waveSim.size.height);
+        this.context.fillStyle = this.provider.designSystem["backgroundColor"];
+        this.context.fillRect(0, 0, this.waveSim.size.width, this.waveSim.size.height);
         this.context.save();
         this.context.translate(
             ~~((this.waveSim.size.width - waveData.viewbox.width) / 2),

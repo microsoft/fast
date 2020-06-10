@@ -1,7 +1,6 @@
-// Tool to convert from SVG relative to absolute paths, super helpful
-// https://codepen.io/leaverou/pen/RmwzKv
-
-// imported from illustrator
+// These raw data values are converted from the original Illustrator-exported
+// SVG using Snap.svg's `Snap.path.toAbsolute()` function
+// http://snapsvg.io/docs/#Snap.path.toAbsolute
 
 export interface Coords {
     x: number;
