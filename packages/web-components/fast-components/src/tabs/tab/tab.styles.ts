@@ -31,8 +31,8 @@ export const TabStyles = css`
         line-height: var(--type-ramp-base-line-height);
         height: calc(${heightNumber} * 1px);
         padding: calc(var(--design-unit) * 5px) calc(var(--design-unit) * 4px);
-        color: var(--neutral-foreground-hint);
-        fill: var(--neutral-foreground-hint);
+        color: ${neutralForegroundHintBehavior.var};
+        fill: ${neutralForegroundHintBehavior.var};
         border-radius: calc(var(--corner-radius) * 1px);
         border: calc(var(--outline-width) * 1px) solid transparent;
         align-items: center;
@@ -41,38 +41,38 @@ export const TabStyles = css`
     }
 
     :host(:hover) {
-        color: var(--neutral-foreground-hover);
-        fill: var(--neutral-foreground-hover);
+        color: ${neutralForegroundHoverBehavior.var};
+        fill: ${neutralForegroundHoverBehavior.var};
     }
 
     :host(:active) {
-        color: var(--neutral-foreground-active);
-        fill: var(--neutral-foreground-active);
+        color: ${neutralForegroundActiveBehavior.var};
+        fill: ${neutralForegroundActiveBehavior.var};
     }
 
     :host([aria-selected="true"]) {
-        background: var(--neutral-fill-rest);
-        color: var(--accent-foreground-rest);
-        fill: var(--accent-fill-rest);
+        background: ${neutralFillRestBehavior.var};
+        color: ${accentForegroundRestBehavior.var};
+        fill: ${accentFillRestBehavior.var};
     }
 
     :host([aria-selected="true"]:hover) {
-        background: var(--neutral-fill-hover);
-        color: var(--accent-foreground-hover);
-        fill: var(--accent-fill-hover);
+        background: ${neutralFillHoverBehavior.var};
+        color: ${accentForegroundHoverBehavior.var};
+        fill: ${accentFillHoverBehavior.var};
     }
 
     :host([aria-selected="true"]:active) {
-        background: var(--neutral-fill-active);
-        color: var(--accent-foreground-active);
-        fill: var(--accent-fill-active);
+        background: ${neutralFillActiveBehavior.var};
+        color: ${accentForegroundActiveBehavior.var};
+        fill: ${accentFillActiveBehavior.var};
     }
 
     :host(:${focusVisible}) {
         outline: none;
-        border: calc(var(--outline-width) * 1px) solid var(--neutral-focus);
+        border: calc(var(--outline-width) * 1px) solid ${neutralFocusBehavior.var};
         box-shadow: 0 0 0 calc((var(--focus-outline-width) - var(--outline-width)) * 1px)
-            var(--neutral-focus);
+            ${neutralFocusBehavior.var};
     }
 
     :host(:focus) {
@@ -89,11 +89,11 @@ export const TabStyles = css`
     }
 
     :host(.vertical:hover) {
-        color: var(--neutral-foreground-hover);
+        color: ${neutralForegroundHoverBehavior.var};
     }
 
     :host(.vertical:active) {
-        color: var(--neutral-foreground-active);
+        color: ${neutralForegroundActiveBehavior.var};
     }
 
     :host(.vertical:hover[aria-selected="true"]) {

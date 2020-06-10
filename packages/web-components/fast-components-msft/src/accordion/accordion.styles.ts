@@ -13,8 +13,9 @@ export const AccordionStyles = css`
         font-family: var(--body-font);
         font-size: var(--type-ramp-minus-1-font-size);
         line-height: var(--type-ramp-minus-1-line-height);
-        color: var(--neutral-foreground-rest);
-        border-top: calc(var(--outline-width) * 1px) solid var(--neutral-divider-rest);
+        color: ${neutralForegroundRestBehavior.var};
+        border-top: calc(var(--outline-width) * 1px) solid
+            ${neutralDividerRestBehavior.var};
     }
 `.withBehaviors(
     accentFillRestBehavior,

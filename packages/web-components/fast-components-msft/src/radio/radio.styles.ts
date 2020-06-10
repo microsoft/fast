@@ -9,6 +9,7 @@ import {
 import {
     heightNumber,
     neutralFillActiveBehavior,
+    neutralFillInputActiveBehavior,
     neutralFillInputHoverBehavior,
     neutralFillInputRestBehavior,
     neutralFocusBehavior,
@@ -41,8 +42,8 @@ export const RadioStyles = css`
         height: calc(var(--input-size) * 1px);
         box-sizing: border-box;
         border-radius: 50%;
-        border: calc(var(--outline-width) * 1px) solid var(--neutral-outline-rest);
-        background: var(--neutral-fill-input-rest);
+        border: calc(var(--outline-width) * 1px) solid ${neutralOutlineRestBehavior.var};
+        background: ${neutralFillInputRestBehavior.var};
         outline: none;
         cursor: pointer;
     }
@@ -54,7 +55,7 @@ export const RadioStyles = css`
 
     .label {
         font-family: var(--body-font);
-        color: var(--neutral-foreground-rest);
+        color: ${neutralForegroundRestBehavior.var};
         ${
             /* Need to discuss with Brian how HorizontalSpacingNumber can work. https://github.com/microsoft/fast-dna/issues/2766 */ ""
         } padding-inline-start: calc(var(--design-unit) * 2px + 2px);
@@ -73,25 +74,27 @@ export const RadioStyles = css`
         border-radius: 50%;
         display: inline-block;
         flex-shrink: 0;
-        background: var(--neutral-foreground-rest);
-        fill: var(--neutral-foreground-rest);
+        background: ${neutralForegroundRestBehavior.var};
+        fill: ${neutralForegroundRestBehavior.var};
         opacity: 0;
         pointer-events: none;
     }
 
     :host(:enabled) .control:hover{
-        background: var(--neutral-fill-input-hover);
-        border-color: var(--neutral-outline-hover);
+        background: ${neutralFillInputHoverBehavior.var};
+        border-color: ${neutralOutlineHoverBehavior.var};
     }
 
     :host(:enabled) .control:active {
-        background: var(--neutral-fill-input-active);
-        border-color: var(--neutral-outline-active);
+        background: ${neutralFillInputActiveBehavior.var};
+        border-color: ${neutralOutlineActiveBehavior.var};
     }
 
     :host(:${focusVisible}) .control {
-        box-shadow: 0 0 0 2px var(--background-color), 0 0 0 4px var(--neutral-focus);
-        border-color: var(--neutral-focus);
+        box-shadow: 0 0 0 2px var(--background-color), 0 0 0 4px ${
+            neutralFocusBehavior.var
+        };
+        border-color: ${neutralFocusBehavior.var};
     }
 
     :host(.disabled) .label,
@@ -117,6 +120,7 @@ export const RadioStyles = css`
     neutralOutlineActiveBehavior,
     neutralOutlineHoverBehavior,
     neutralOutlineRestBehavior,
+    neutralFillInputActiveBehavior,
     forcedColorsStylesheetBehavior(
         css`
             .control {

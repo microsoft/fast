@@ -27,10 +27,10 @@ export const TextAreaStyles = css`
     .control {
         box-sizing: border-box;
         position: relative;
-        color: var(--neutral-foreground-rest);
-        background: var(--neutral-fill-input-rest);
+        color: ${neutralForegroundRestBehavior.var};
+        background: ${neutralFillInputRestBehavior.var};
         border-radius: calc(var(--corner-radius) * 1px);
-        border: calc(var(--outline-width) * 1px) solid var(--neutral-outline-rest);
+        border: calc(var(--outline-width) * 1px) solid ${neutralOutlineRestBehavior.var};
         height: calc(${heightNumber} * 2px);
         font: inherit;
         font-size: var(--type-ramp-base-font-size);
@@ -41,8 +41,8 @@ export const TextAreaStyles = css`
     }
 
     .control:hover:enabled {
-        background: var(--neutral-fill-input-hover);
-        border-color: var(--neutral-outline-hover);
+        background: ${neutralFillInputHoverBehavior.var};
+        border-color: ${neutralOutlineHoverBehavior.var};
     }
 
     .control:hover,
@@ -53,17 +53,17 @@ export const TextAreaStyles = css`
     }
 
     :host(:focus-within) .control {
-        border-color: var(--neutral-focus);
-        box-shadow: 0 0 0 1px var(--neutral-focus) inset;
+        border-color: ${neutralFocusBehavior.var};
+        box-shadow: 0 0 0 1px ${neutralFocusBehavior.var} inset;
     }
 
     :host(.filled) .control {
-        background: var(--neutral-fill-rest);
+        background: ${neutralFillRestBehavior.var};
         border-color: transparent;
     }
 
     :host(.filled:hover:not([disabled])) .control {
-        background: var(--neutral-fill-hover);
+        background: ${neutralFillHoverBehavior.var};
         border-color: transparent;
     }
 
@@ -86,7 +86,7 @@ export const TextAreaStyles = css`
 
     .label {
         display: block;
-        color: var(--neutral-foreground-rest);
+        color: ${neutralForegroundRestBehavior.var};
         cursor: pointer;
         $font-size: var(--type-ramp-base-font-size);
         line-height: var(--type-ramp-base-line-height);

@@ -25,7 +25,7 @@ export const TabStyles = css`
         line-height: 18px;
         height: calc(${heightNumber} * 1px);
         padding: 0 calc((6 + (var(--design-unit) * 2 * var(--density))) * 1px);
-        color: var(--neutral-foreground-rest);
+        color: ${neutralForegroundRestBehavior.var};
         border-radius: calc(var(--corner-radius) * 1px);
         border: calc(var(--outline-width) * 1px) solid transparent;
         align-items: center;
@@ -38,18 +38,18 @@ export const TabStyles = css`
     }
 
     :host(:hover) {
-        color: var(--neutral-foreground-hover);
+        color: ${neutralForegroundHoverBehavior.var};
     }
 
     :host(:active) {
-        color: var(--neutral-foreground-active);
+        color: ${neutralForegroundActiveBehavior.var};
     }
 
     :host(:${focusVisible}) {
         outline: none;
-        border: calc(var(--outline-width) * 1px) solid var(--neutral-focus);
+        border: calc(var(--outline-width) * 1px) solid ${neutralFocusBehavior.var};
         box-shadow: 0 0 0 calc((var(--focus-outline-width) - var(--outline-width)) * 1px)
-            var(--neutral-focus);
+            ${neutralFocusBehavior.var};
     }
 
     :host(:focus) {
@@ -66,11 +66,11 @@ export const TabStyles = css`
     }
 
     :host(.vertical:hover) {
-        color: var(--neutral-foreground-hover);
+        color: ${neutralForegroundHoverBehavior.var};
     }
 
     :host(.vertical:active) {
-        color: var(--neutral-foreground-active);
+        color: ${neutralForegroundActiveBehavior.var};
     }
 
     :host(.vertical:hover[aria-selected="true"]) {
