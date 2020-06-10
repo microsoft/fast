@@ -1,12 +1,11 @@
 import { WebComponentDefinition } from "@microsoft/fast-tooling/dist/data-utilities/web-component";
 import { DataType } from "@microsoft/fast-tooling";
 
-export const svgId = "svg";
 export const svgDefinition: WebComponentDefinition = {
     version: 1,
     tags: [
         {
-            name: svgId,
+            name: "svg",
             description: "The svg element",
             attributes: [
                 {

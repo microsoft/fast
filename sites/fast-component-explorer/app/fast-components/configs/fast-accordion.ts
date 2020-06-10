@@ -2,12 +2,9 @@ import { fastComponentSchemas } from "@microsoft/site-utilities";
 import textSchema from "../../utilities/text.schema";
 import Guidance from "../../.tmp/accordion/guidance";
 import { ComponentViewConfig } from "./data.props";
-import { svgSchema, pathSchema } from "../../utilities";
 
 export const fastAccordionId = "fast-accordion";
 export const fastAccordionItemId = "fast-accordion-item";
-console.log(svgSchema);
-console.log(pathSchema);
 const fastAccordionConfig: ComponentViewConfig = {
     schema: fastComponentSchemas[fastAccordionId],
     guidance: Guidance,
@@ -88,8 +85,9 @@ const fastAccordionConfig: ComponentViewConfig = {
                             id: "Slot1",
                             dataLocation: "SlotExpandedIcon",
                         },
-                        schemaId: svgSchema.id,
+                        schemaId: "svg",
                         data: {
+                            style: "stroke: blue",
                             width: "18",
                             height: "18",
                             viewBox: "0 0 18 18",
@@ -113,7 +111,7 @@ const fastAccordionConfig: ComponentViewConfig = {
                             id: "Slot12",
                             dataLocation: "Slot",
                         },
-                        schemaId: pathSchema.id,
+                        schemaId: "path",
                         data: {
                             d: "M15.2222 1H2.77778C1.79594 1 1 1.79594 1 2.77778V15.2222C1 16.2041 1.79594 17 2.77778 17H15.2222C16.2041 17 17 16.2041 17 15.2222V2.77778C17 1.79594 16.2041 1 15.2222 1Z",
                             "stroke-linecap": "round",
@@ -125,7 +123,7 @@ const fastAccordionConfig: ComponentViewConfig = {
                             id: "Slot12",
                             dataLocation: "Slot",
                         },
-                        schemaId: pathSchema.id,
+                        schemaId: "path",
                         data: {
                             d: "M9 5.44446V12.5556",
                             "stroke-linecap": "round",
@@ -137,7 +135,7 @@ const fastAccordionConfig: ComponentViewConfig = {
                             id: "Slot12",
                             dataLocation: "Slot",
                         },
-                        schemaId: pathSchema.id,
+                        schemaId: "path",
                         data: {
                             d: "M5.44446 9H12.5556",
                             "stroke-linecap": "round",

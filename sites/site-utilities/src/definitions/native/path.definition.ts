@@ -1,12 +1,11 @@
 import { WebComponentDefinition } from "@microsoft/fast-tooling/dist/data-utilities/web-component";
 import { DataType } from "@microsoft/fast-tooling";
 
-export const pathId = "path";
 export const pathDefinition: WebComponentDefinition = {
     version: 1,
     tags: [
         {
-            name: pathId,
+            name: "path",
             description: "The path element",
             attributes: [
                 {
