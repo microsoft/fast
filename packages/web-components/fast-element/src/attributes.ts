@@ -3,23 +3,22 @@ import { DOM } from "./dom";
 import { Notifier } from "./observation/notifier";
 
 /**
- * Represents objects that can convert values to a string
- * acceptable by the DOM, or from a DOM string into a primitive
- * type appropriate for a property.
- * @beta
+ * Represents objects that can convert values to and from
+ * view or model representations.
+ * @public
  */
 export interface ValueConverter {
     /**
-     * Converts a value to a DOM string.
-     * @param value - The value to convert to a DOM string.
+     * Converts a value from its representation in the model, to a representation for the view.
+     * @param value - The value to convert to a view representation.
      */
-    toView(value: any): string | null;
+    toView(value: any): any;
 
     /**
-     * Converts a DOM string to a typed value.
-     * @param value - The DOM string to convert to a typed value.
+     * Converts a value from its representation in the view, to a representation for the model.
+     * @param value - The value to convert to a model representation.
      */
-    fromView(value: string): any;
+    fromView(value: any): any;
 }
 
 /**
