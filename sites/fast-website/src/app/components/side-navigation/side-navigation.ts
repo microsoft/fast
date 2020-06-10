@@ -57,7 +57,6 @@ export class SideNavigation extends FASTElement {
                 return;
             }
             for (var i = startY; i > stopY; i -= increment) {
-                console.log(stepY, timer, speed);
                 setTimeout(this.scrollFunc, timer * speed, 0, stepY);
                 stepY -= increment;
                 if (stepY < stopY) {
