@@ -30,10 +30,10 @@ export const TextFieldStyles = css`
         position: relative;
         display: flex;
         flex-direction: row;
-        color: var(--neutral-foreground-rest);
-        background: var(--neutral-fill-input-rest);
+        color: ${neutralForegroundRestBehavior.var};
+        background: ${neutralFillInputRestBehavior.var};
         border-radius: calc(var(--corner-radius) * 1px);
-        border: calc(var(--outline-width) * 1px) solid var(--neutral-outline-rest);
+        border: calc(var(--outline-width) * 1px) solid ${neutralOutlineRestBehavior.var};
         height: calc(${heightNumber} * 1px);
     }
 
@@ -46,7 +46,7 @@ export const TextFieldStyles = css`
         margin-bottom: auto;
         border: none;
         padding: 0 calc(var(--design-unit) * 2px + 1px);
-        color: var(--neutral-foreground-rest);
+        color: ${neutralForegroundRestBehavior.var};
         font-size: var(--type-ramp-base-font-size);
         line-height: var(--type-ramp-base-line-height);
     }
@@ -65,7 +65,7 @@ export const TextFieldStyles = css`
 
     .label {
         display: block;
-        color: var(--neutral-foreground-rest);
+        color: ${neutralForegroundRestBehavior.var};
         cursor: pointer;
         font-size: var(--type-ramp-base-font-size);
         line-height: var(--type-ramp-base-line-height);
@@ -80,7 +80,7 @@ export const TextFieldStyles = css`
         } width: 16px;
         height: 16px;
         margin: auto;
-        fill: var(--neutral-foreground-rest);
+        fill: ${neutralForegroundRestBehavior.var};
     }
 
     .before-content {
@@ -92,22 +92,22 @@ export const TextFieldStyles = css`
     }
 
     :host(:hover:not(.disabled)) .root {
-        background: var(--neutral-fill-input-hover);
-        border-color: var(--neutral-outline-hover);
+        background: ${neutralFillInputHoverBehavior.var};
+        border-color: ${neutralOutlineHoverBehavior.var};
     }
 
     :host(:focus-within:not(.disabled)) .root {
-        border-color: var(--neutral-focus);
-        box-shadow: 0 0 0 1px var(--neutral-focus) inset;
+        border-color: ${neutralFocusBehavior.var};
+        box-shadow: 0 0 0 1px ${neutralFocusBehavior.var} inset;
     }
 
     :host(.filled) .root {
-        background: var(--neutral-fill-rest);
+        background: ${neutralFillRestBehavior.var};
         border-color: transparent;
     }
 
     :host(.filled:hover:not(.disabled)) .root {
-        background: var(--neutral-fill-hover);
+        background: ${neutralFillHoverBehavior.var};
         border-color: transparent;
     }
 

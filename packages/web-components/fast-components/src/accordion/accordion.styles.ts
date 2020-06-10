@@ -1,7 +1,6 @@
 import { css } from "@microsoft/fast-element";
 import { display } from "@microsoft/fast-foundation";
 import {
-    accentFillRestBehavior,
     neutralDividerRestBehavior,
     neutralForegroundRestBehavior,
 } from "../styles/recipes";
@@ -13,11 +12,8 @@ export const AccordionStyles = css`
         font-family: var(--body-font);
         font-size: var(--type-ramp-minus-1-font-size);
         line-height: var(--type-ramp-minus-1-line-height);
-        color: var(--neutral-foreground-rest);
-        border-top: calc(var(--outline-width) * 1px) solid var(--neutral-divider-rest);
+        color: ${neutralForegroundRestBehavior.var};
+        border-top: calc(var(--outline-width) * 1px) solid
+            ${neutralDividerRestBehavior.var};
     }
-`.withBehaviors(
-    accentFillRestBehavior,
-    neutralDividerRestBehavior,
-    neutralForegroundRestBehavior
-);
+`.withBehaviors(neutralDividerRestBehavior, neutralForegroundRestBehavior);

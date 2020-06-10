@@ -4,14 +4,15 @@ import {
     focusVisible,
     forcedColorsStylesheetBehavior,
 } from "@microsoft/fast-foundation";
+import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
     neutralDividerRestBehavior,
     neutralFocusBehavior,
     neutralForegroundActiveBehavior,
     neutralForegroundFocusBehavior,
+    neutralForegroundHoverBehavior,
     neutralForegroundRestBehavior,
 } from "../../styles/";
-import { SystemColors } from "@microsoft/fast-web-utilities";
 import { heightNumber } from "../../styles/size";
 
 export const AccordionItemStyles = css`
@@ -21,7 +22,9 @@ export const AccordionItemStyles = css`
         flex-direction: column;
         font-size: var(--type-ramp-minus-1-font-size);
         line-height: var(--type-ramp-minus-1-line-height);
-        border-bottom: calc(var(--outline-width) * 1px) solid var(--neutral-divider-rest);
+        border-bottom: calc(var(--outline-width) * 1px) solid ${
+            neutralDividerRestBehavior.var
+        };
     }
     
     .region {
@@ -46,16 +49,16 @@ export const AccordionItemStyles = css`
         padding: 0 calc((6 + (var(--design-unit) * 2 * var(--density))) * 1px);
         text-align: left;
         height: calc(${heightNumber} * 1px);
-        color: var(--neutral-foreground-rest);
+        color: ${neutralForegroundRestBehavior.var};
         cursor: pointer;
     }
 
     .button:hover {
-        color: var(--neutral-foreground-hover);
+        color: ${neutralForegroundHoverBehavior.var};
     }
 
     .button:active {
-        color: var(--neutral-foreground-active);
+        color: ${neutralForegroundActiveBehavior.var};
     }
 
     .button::before {
@@ -71,9 +74,9 @@ export const AccordionItemStyles = css`
 
     .button:${focusVisible}::before {
         outline: none;
-        border: calc(var(--outline-width) * 1px) solid var(--neutral-focus);
+        border: calc(var(--outline-width) * 1px) solid ${neutralFocusBehavior.var};
         box-shadow: 0 0 0 calc((var(--focus-outline-width) - var(--outline-width)) * 1px)
-            var(--neutral-focus);
+            ${neutralFocusBehavior.var};
     }
 
     :host(.expanded) .region {
@@ -125,6 +128,7 @@ export const AccordionItemStyles = css`
     neutralForegroundActiveBehavior,
     neutralForegroundFocusBehavior,
     neutralForegroundRestBehavior,
+    neutralForegroundHoverBehavior,
     neutralFocusBehavior,
     forcedColorsStylesheetBehavior(
         css`

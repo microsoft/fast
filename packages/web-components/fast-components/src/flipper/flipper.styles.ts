@@ -27,8 +27,8 @@ export const FlipperStyles = css`
         align-items: center;
         margin: 0;
         position: relative;
-        fill: var(--accent-foreground-cut-rest);
-        color: var(--accent-foreground-cut-rest);
+        fill: ${accentForegroundCutRestBehavior.var};
+        color: ${accentForegroundCutRestBehavior.var};
         background: transparent;
         outline: none;
         border: none;
@@ -37,8 +37,8 @@ export const FlipperStyles = css`
 
     :host::before {
         content: "";
-        background: var(--accent-fill-rest);
-        border: calc(var(--outline-width) * 1px) solid var(--accent-fill-rest);
+        background: ${accentFillRestBehavior.var};
+        border: calc(var(--outline-width) * 1px) solid ${accentFillRestBehavior.var};
         border-radius: 50%;
         position: absolute;
         top: 0;
@@ -61,25 +61,25 @@ export const FlipperStyles = css`
     :host(.disabled) {
         opacity: var(--disabled-opacity);
         cursor: ${disabledCursor};
-        fill: var(--neutral-foreground-rest);
-        color: var(--neutral-foreground-rest);
+        fill: ${neutralForegroundRestBehavior.var};
+        color: ${neutralForegroundRestBehavior.var};
     }
 
     :host(.disabled)::before,
     :host(.disabled:hover)::before,
     :host(.disabled:active)::before {
-        background: var(--neutral-fill-stealth-rest);
-        border: calc(var(--outline-width) * 1px) solid var(--neutral-outline-rest);
+        background: ${neutralFillStealthRestBehavior.var};
+        border: calc(var(--outline-width) * 1px) solid ${neutralOutlineRestBehavior.var};
     }
 
     :host(:hover)::before {
-        background: var(--accent-fill-hover);
-        border-color: var(--accent-fill-hover);
+        background: ${accentFillHoverBehavior.var};
+        border-color: ${accentFillHoverBehavior.var};
     }
 
     :host(:active)::before {
-        background: var(--accent-fill-active);
-        border-color: var(--accent-fill-active);
+        background: ${accentFillActiveBehavior.var};
+        border-color: ${accentFillActiveBehavior.var};
     }
 
     :host(:${focusVisible}) {
@@ -87,8 +87,10 @@ export const FlipperStyles = css`
     }
 
     :host(:${focusVisible})::before {
-        box-shadow: 0 0 0 calc(var(--focus-outline-width) * 1px) inset var(--neutral-focus-inner-accent);
-        border-color: var(--neutral-focus);
+        box-shadow: 0 0 0 calc(var(--focus-outline-width) * 1px) inset ${
+            neutralFocusInnerAccentBehavior.var
+        };
+        border-color: ${neutralFocusBehavior.var};
     }
 
     :host::-moz-focus-inner {

@@ -13,7 +13,7 @@ export const BadgeStyles = css`
     .badge {
         border-radius: calc(var(--corner-radius) * 1px);
         padding: calc(var(--design-unit) * 0.5px) calc(var(--design-unit) * 1px);
-        color: var(--accent-foreground-rest);
+        color: ${accentForegroundRestBehavior.var};
         font-weight: 600;
     }
 
