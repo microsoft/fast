@@ -37,7 +37,7 @@ export const svgDefinition: WebComponentDefinition = {
                     required: false,
                 },
                 {
-                    name: "xmls",
+                    name: "xmlns",
                     description: "The svg xmls",
                     default: "http://www.w3.org/2000/svg",
                     type: DataType.string,

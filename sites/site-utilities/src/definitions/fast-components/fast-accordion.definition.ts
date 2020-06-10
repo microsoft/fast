@@ -19,7 +19,6 @@ export const fastAccordionDefinition: WebComponentDefinition = {
                         {
                             name: "multi",
                         },
-
                     ],
                     default: "multi",
                     required: false,

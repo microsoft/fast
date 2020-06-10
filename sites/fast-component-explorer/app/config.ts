@@ -9,7 +9,7 @@ import {
 } from "@microsoft/site-utilities";
 import { fastMenuItemId } from "./fast-components/configs/fast-menu";
 import { fastSliderLabelId } from "./fast-components/configs/fast-slider";
-import { fastAccordionItemId } from "./fast-components/configs/fast-accordion"
+import { fastAccordionItemId } from "./fast-components/configs/fast-accordion";
 import { fastTabId, fastTabPanelId } from "./fast-components/configs/fast-tabs";
 import { fastDesignSystemProviderId } from "./fast-components/configs/fast-design-system-provider";
 
