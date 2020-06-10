@@ -20,6 +20,9 @@ import {
     neutralForegroundRestBehavior,
 } from "../recipes";
 
+/**
+ * @internal
+ */
 export const BaseButtonStyles = css`
     ${display("inline-block")} :host {
         font-family: var(--body-font);
@@ -95,6 +98,9 @@ export const BaseButtonStyles = css`
     neutralFillActiveBehavior
 );
 
+/**
+ * @internal
+ */
 export const AccentButtonStyles = css`
     :host(.accent) .control {
         background: ${accentFillRestBehavior.var};
@@ -120,6 +126,9 @@ export const AccentButtonStyles = css`
     neutralFocusInnerAccentBehavior
 );
 
+/**
+ * @internal
+ */
 export const HypertextStyles = css`
     :host(.hypertext) .control {
         padding: 0;
@@ -154,6 +163,9 @@ export const HypertextStyles = css`
     neutralFocusBehavior
 );
 
+/**
+ * @internal
+ */
 export const LightweightButtonStyles = css`
     :host(.lightweight) .control {
         padding: 0;
@@ -205,6 +217,9 @@ export const LightweightButtonStyles = css`
     neutralForegroundRestBehavior
 );
 
+/**
+ * @internal
+ */
 export const OutlineButtonStyles = css`
     :host(.outline) .control {
         background: transparent;
@@ -230,6 +245,9 @@ export const OutlineButtonStyles = css`
     neutralFocusBehavior
 );
 
+/**
+ * @internal
+ */
 export const StealthButtonStyles = css`
     :host(.stealth) .control {
         background: ${neutralFillStealthRestBehavior.var};
