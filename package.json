@@ -9,7 +9,7 @@
   "license": "MIT",
   "private": true,
   "workspaces": {
-    "packages": ["packages/**/*", "sites/fast-color-explorer", "sites/fast-component-explorer", "sites/fast-creator", "sites/site-utilities", "sites/fast-tooling-examples", "sites/fast-website"],
+    "packages": ["packages/**/*", "sites/fast-color-explorer", "sites/fast-component-explorer", "sites/fast-creator", "sites/site-utilities", "sites/fast-tooling-examples", "sites/website"],
     "nohoist": ["**/react-syntax-highlighter", "**/@types/chai", "**/@types/jest", "**/@types/karma", "**/@types/mocha"]
   },
   "repository": {

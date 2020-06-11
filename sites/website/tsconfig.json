@@ -3,16 +3,20 @@
         "moduleResolution": "node",
         "module": "ES6",
         "target": "ES6",
-        "baseUrl": "../fast-website",
+        "baseUrl": "./",
         "strictNullChecks": true,
         "esModuleInterop": true,
         "allowSyntheticDefaultImports": true,
-        "resolveJsonModule": true
+        "experimentalDecorators": true,
+        "resolveJsonModule": true,
+        "paths": {
+            "svg": ["src/app/svg"]
+        }
     },
     "include": [
-        "../fast-website/src/**/*"
+        "src/**/*"
     ],
     "exclude": [
-        "../fast-website/node_modules",
+        "node_modules",
     ]
 }
