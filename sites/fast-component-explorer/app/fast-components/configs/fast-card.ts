@@ -1,7 +1,5 @@
-import { fastComponentSchemas } from "@microsoft/site-utilities";
-import textSchema from "../../utilities/text.schema";
+import { fastComponentSchemas, textSchema } from "@microsoft/site-utilities";
 import Guidance from "../../.tmp/card/guidance";
-import { imageSchema } from "../../utilities";
 import { ComponentViewConfig } from "./data.props";
 import { fastButtonId } from "./fast-button";
 
@@ -33,7 +31,7 @@ const fastCardConfig: ComponentViewConfig = {
                             id: "root",
                             dataLocation: "Slot",
                         },
-                        schemaId: imageSchema.id,
+                        schemaId: "img",
                         data: {
                             src: "https://placehold.it/300x200/414141",
                         },
