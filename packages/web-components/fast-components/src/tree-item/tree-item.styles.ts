@@ -8,6 +8,7 @@ import {
 
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
+    accentForegroundRestBehavior,
     heightNumber,
     neutralFillStealthActiveBehavior,
     neutralFillStealthHoverBehavior,
@@ -166,7 +167,7 @@ export const TreeItemStyles = css`
         ${
             /* top value should be calculated by variables
             calc((height-number - var(--scaled-line-height-t7) / 2 * 1px) */ ""
-        } top: 6px;
+        } top: 8px;
         width: 3px;
         ${/* height value should equal var(--scaled-line-height-t7) */ ""} height: 20px;
         ${
@@ -197,6 +198,7 @@ export const TreeItemStyles = css`
         --expand-collapse-button-nested-width: calc(${heightNumber} * -1px);
     }
 `.withBehaviors(
+    accentForegroundRestBehavior,
     neutralFillStealthSelectedBehavior,
     neutralFillStealthActiveBehavior,
     neutralFillStealthHoverBehavior,

@@ -7,6 +7,7 @@ import {
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
+    accentForegroundRestBehavior,
     heightNumber,
     neutralFillStealthActiveBehavior,
     neutralFillStealthHoverBehavior,
@@ -194,6 +195,7 @@ ${/* want to use --disable-opacity */ ""}
     --expand-collapse-button-nested-width: calc(${heightNumber} * -1px);
 }
 `.withBehaviors(
+    accentForegroundRestBehavior,
     neutralFillStealthSelectedBehavior,
     neutralFillStealthActiveBehavior,
     neutralFillStealthHoverBehavior,
