@@ -345,7 +345,15 @@ export function htmlMapper(
                     );
                 });
                 elementAttributes.forEach(elementAttribute => {
-                    newElement.setAttribute(elementAttribute, data[elementAttribute]);
+                    if (typeof data[elementAttribute] === DataType.boolean) {
+                        if (data[elementAttribute]) {
+                            newElement.setAttribute(elementAttribute, "");
+                        } else {
+                            newElement.removeAttribute(elementAttribute);
+                        }
+                    } else {
+                        newElement.setAttribute(elementAttribute, data[elementAttribute]);
+                    }
                 });
 
                 config.dataDictionary[0][config.dictionaryId].data = newElement;
