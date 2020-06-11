@@ -77,11 +77,8 @@ export const TreeItemStyles = css`
         width: 100%;
         height: calc(${heightNumber} * 1px);
         margin-inline-start: calc(var(--design-unit) * 2px + 2px);
-        ${
-            /* Font size, weight and line height are temporary - 
-            replace when adaptive typography is figured out */ ""
-        } font-size: 14px;
-        line-height: 20px;
+        font-size: var(--type-ramp-base-font-size);
+        line-height: var(--type-ramp-base-line-height);
         font-weight: 400;
     }
 
@@ -90,7 +87,7 @@ export const TreeItemStyles = css`
         ${
             /* Font size should be based off calc(1em + (design-unit + glyph-size-number) * 1px) - 
             update when density story is figured out */ ""
-        } font-size: calc(1em + 20px);
+        } font-size: calc(1em + var(--type-ramp-base-font-size));
     }
 
     .expand-collapse-button {
@@ -150,7 +147,6 @@ export const TreeItemStyles = css`
         display: block;
     }
 
-    ${/* want to use --disable-opacity */ ""}
     :host([disabled]) .content-region {
         opacity: var(--disabled-opacity);
         cursor: ${disabledCursor};
@@ -164,12 +160,9 @@ export const TreeItemStyles = css`
         content: "";
         display: block;
         position: absolute;
-        ${
-            /* top value should be calculated by variables
-            calc((height-number - var(--scaled-line-height-t7) / 2 * 1px) */ ""
-        } top: 8px;
+        top: calc((${heightNumber} / 4) * 1px);
         width: 3px;
-        ${/* height value should equal var(--scaled-line-height-t7) */ ""} height: 20px;
+        height: calc((${heightNumber} / 2) * 1px);
         ${
             /* The french fry background needs to be calculated based on the selected background state for this control.
             We currently have no way of chaning that, so setting to accent-foreground-rest for the time being */ ""
@@ -187,9 +180,7 @@ export const TreeItemStyles = css`
 
     :host(.nested) .expand-collapse-button {
         position: absolute;
-        ${
-            /* value needs to be localized   left: var(--expand-collapse-button-nested-width, calc(var(--height-number) * -1px)); */ ""
-        }
+        ${/* value needs to be localized  */ ""}
         left: var(--expand-collapse-button-nested-width, calc(var(--height-number) * -1px));
     }
 

@@ -6,7 +6,7 @@ export class TreeView extends FASTElement {
     public treeView: HTMLElement;
 
     @attr({ attribute: "render-collapsed-nodes" })
-    public renderCollapsedNodes: boolean = true;
+    public renderCollapsedNodes: boolean;
 
     @observable
     public focusable: boolean = true;

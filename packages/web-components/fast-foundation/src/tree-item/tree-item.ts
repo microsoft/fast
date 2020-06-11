@@ -4,6 +4,7 @@ import {
     Notifier,
     Observable,
     observable,
+    DOM,
 } from "@microsoft/fast-element";
 import {
     getDisplayedNodes,
@@ -17,6 +18,7 @@ import {
 } from "@microsoft/fast-web-utilities";
 import { StartEnd } from "../patterns/start-end";
 import { applyMixins } from "../utilities/apply-mixins";
+import { TreeView } from "../tree-view";
 
 export class TreeItem extends FASTElement {
     @attr({ mode: "boolean" })
@@ -54,47 +56,47 @@ export class TreeItem extends FASTElement {
     public nested: boolean;
 
     @observable
-    public renderCollapsedChildren: boolean = false;
+    public renderCollapsedChildren: boolean;
 
     private notifier: Notifier;
 
     constructor() {
         super();
-
         this.handleItemsChange();
     }
 
-    private getParentTreeNode() {
+    private getParentTreeNode(): TreeView | null | undefined {
         const parentNode: Element | null | undefined = this.parentElement!.closest(
             "[role='tree']"
         );
-        return parentNode;
+        return parentNode as TreeView;
     }
 
     public connectedCallback(): void {
         super.connectedCallback();
 
-        const parentTreeNode: any = this.getParentTreeNode();
+        const parentTreeNode: TreeView | null | undefined = this.getParentTreeNode();
         if (parentTreeNode) {
+            if (parentTreeNode.hasAttribute("render-collapsed-nodes")) {
+                this.renderCollapsedChildren =
+                    parentTreeNode.getAttribute("render-collapsed-nodes") === "true";
+            }
             this.notifier = Observable.getNotifier(parentTreeNode);
-            this.notifier.subscribe(this, "render-collapsed-nodes");
-            this.renderCollapsedChildren =
-                parentTreeNode.getAttribute("render-collapsed-nodes") === "true";
+            this.notifier.subscribe(this, "renderCollapsedNodes");
         }
     }
 
     public disconnectedCallback(): void {
         super.disconnectedCallback();
         if (this.notifier) {
-            this.notifier.unsubscribe(this, "render-collapsed-nodes");
+            this.notifier.unsubscribe(this, "renderCollapsedNodes");
         }
     }
 
     public handleChange(source: any, propertyName: string) {
         switch (propertyName) {
-            case "render-collapsed-nodes":
-                this.renderCollapsedChildren =
-                    source.getAttribute("render-collapsed-nodes") === "true";
+            case "renderCollapsedNodes":
+                this.renderCollapsedChildren = (source as TreeView).renderCollapsedNodes;
                 break;
         }
     }
@@ -154,9 +156,10 @@ export class TreeItem extends FASTElement {
 
     public handleContainerClick = (e: MouseEvent): void => {
         const expandButton: HTMLElement | null = this.expandCollapseButton;
+        const isButtonAnHTMLElement: boolean = isHTMLElement(expandButton);
         if (
-            (!isHTMLElement(expandButton) ||
-                (isHTMLElement(expandButton) && expandButton !== e.target)) &&
+            (!isButtonAnHTMLElement ||
+                (isButtonAnHTMLElement && expandButton !== e.target)) &&
             !this.disabled
         ) {
             this.handleSelected(e);
@@ -167,16 +170,13 @@ export class TreeItem extends FASTElement {
         if (this.expanded) {
             this.setExpanded(false);
         } else if (isHTMLElement(this.parentElement)) {
-            const parentElement: HTMLElement | null = this.parentElement;
+            const parentTreeItemNode:
+                | Element
+                | null
+                | undefined = this.parentElement!.closest("[role='treeitem']");
 
-            if (isHTMLElement(parentElement)) {
-                const parentNode: Element | null | undefined = parentElement!.closest(
-                    "[role='treeitem']"
-                );
-
-                if (isHTMLElement(parentNode)) {
-                    (parentNode as HTMLElement).focus();
-                }
+            if (isHTMLElement(parentTreeItemNode)) {
+                (parentTreeItemNode as HTMLElement).focus();
             }
         }
     }
