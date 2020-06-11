@@ -31,12 +31,28 @@ export class Carousel extends FASTElement {
     public itemsChanged(): void {
         this.filteredItems = this.items
             .filter((item: HTMLElement) => item.nodeType === 1)
+            //TODO: NEED TO FILTER BETTER so that i don't remove text nodes that may actually be content
             .map((item: HTMLElement, index: number) => {
-                if (index === this.activeTabIndex) {
-                    item.classList.add("active");
-                }
-                item.classList.add("slide");
+                console.log(
+                    "IN itemsChanged activeTabIndex: ",
+                    this.activeTabIndex,
+                    " index: ",
+                    index
+                );
 
+                if (index === this.activeTabIndex) {
+                    item.classList.add("active-slide");
+                    item.removeAttribute("hidden");
+                } else {
+                    item.setAttribute("hidden", "");
+                }
+                if (index === this.activeTabIndex + 1) {
+                    item.classList.add("next-slide");
+                } else if (index === this.activeTabIndex - 1) {
+                    item.classList.add("previous-slide");
+                }
+
+                item.classList.add("slide");
                 return item;
             });
 
@@ -63,12 +79,15 @@ export class Carousel extends FASTElement {
     // public disconnectedCallback(): void {
     //     super.disconnectedCallback();
     // }
-
+    @observable
     public handleTabClick(index: number): (e: Event) => void {
         return (e: Event): void => {
-            console.log("HIT HANDLE TAB CLICK, index: ", index);
+            console.log("HIT HANDLE TAB CLICK, index: ", index, this.activeTabIndex);
+            this.activeTabIndex = index;
+            this.itemsChanged();
         };
     }
 
+    @observable
     private activeTabIndex: number = 0;
 }
