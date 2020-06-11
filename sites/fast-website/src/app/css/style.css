@@ -34,7 +34,7 @@ body {
 .social-links,
 .section-scroll {
   position: fixed;
-  top: 40%;
+  top: 34%;
 }
 
 .section-scroll {
@@ -44,7 +44,7 @@ body {
 @media screen and (max-height: 500px) {
   .social-links,
   .section-scroll {
-    top: 35%;
+    top: 20%;
   }
 }
 
