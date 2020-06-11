@@ -1,11 +1,10 @@
-import { html } from "@microsoft/fast-element";
-import BackgroundImage from "svg/background.svg";
+import { html, ref } from "@microsoft/fast-element";
 import { BackgroundDesign } from "./background-design";
 
 export const BackgroundDesignTemplate = html<BackgroundDesign>`
     <template>
         <div class="background-image">
-            ${BackgroundImage}
+            <canvas ${ref("canvas")}></canvas>
         </div>
     </template>
 `;
