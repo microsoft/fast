@@ -2,7 +2,7 @@ import React, { ReactText } from "react";
 import { DataGridClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { isNil } from "lodash-es";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
-import { Direction, KeyCodes } from "@microsoft/fast-web-utilities";
+import { classNames, Direction, KeyCodes } from "@microsoft/fast-web-utilities";
 import throttle from "raf-throttle";
 import { DisplayNamePrefix } from "../utilities";
 import StackPanel from "../stack-panel";
@@ -154,7 +154,7 @@ class DataGrid extends Foundation<
             >
                 <div
                     {...this.unhandledProps()}
-                    className={this.props.managedClasses.dataGrid}
+                    className={this.generateClassNames()}
                     role="grid"
                     tabIndex={-1}
                     onFocus={this.handleGridFocus}
@@ -165,6 +165,20 @@ class DataGrid extends Foundation<
                     {this.renderPanel()}
                 </div>
             </DataGridContext.Provider>
+        );
+    }
+
+    /**
+     * Generates class names
+     */
+    protected generateClassNames(): string {
+        const {
+            dataGrid,
+            dataGrid__virtualized,
+        }: DataGridClassNameContract = this.props.managedClasses;
+
+        return super.generateClassNames(
+            classNames(dataGrid, [dataGrid__virtualized, this.props.virtualize])
         );
     }
 
@@ -548,11 +562,10 @@ class DataGrid extends Foundation<
             <div
                 ref={this.nonVirtualizedScrollContainer}
                 tabIndex={-1}
-                style={{
-                    height: "100%",
-                    overflowY: "scroll",
-                    position: "relative",
-                }}
+                // style={{
+                //     height: "100%",
+                //     position: "relative",
+                // }}
                 className={this.props.managedClasses.dataGrid_scrollingPanel}
             >
                 {this.renderNonVirtualizedRows()}
