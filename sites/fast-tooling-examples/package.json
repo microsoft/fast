@@ -24,7 +24,7 @@
     "eslint": "eslint . --ext .ts",
     "eslint:fix": "eslint . --ext .ts --fix",
     "start": "webpack-dev-server",
-    "test": "yarn eslint && yarn build"
+    "test": "yarn convert:readme && yarn eslint && yarn build"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",

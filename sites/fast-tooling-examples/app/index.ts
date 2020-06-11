@@ -6,8 +6,8 @@ import {
 } from "@microsoft/fast-components";
 import "./style.css";
 import examples from "./registry";
-import toolingGuidance from "./tooling-guidance";
-import toolingReactGuidance from "./tooling-react-guidance";
+import toolingGuidance from "./.tmp/tooling-guidance";
+import toolingReactGuidance from "./.tmp/tooling-react-guidance";
 
 // prevent tree shaking
 FASTAnchor;

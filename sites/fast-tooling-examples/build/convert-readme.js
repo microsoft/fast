@@ -45,7 +45,7 @@ const md = new MarkdownIt({
     readmePaths.forEach((readmePath, index) => {
         let guidance = startFile;
         const markdown = fs.readFileSync(readmePath, "utf8");
-        const exportPath = path.resolve(process.cwd(), "app");
+        const exportPath = path.resolve(process.cwd(), "app/.tmp");
 
         if (markdown.length !== 0) {
             guidance += md.render(markdown).replace(/`/g, "'");
