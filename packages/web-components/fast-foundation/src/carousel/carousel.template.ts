@@ -3,28 +3,31 @@ import { Carousel } from "./carousel";
 import { FlipperDirection } from "../flipper";
 
 export const CarouselTemplate = html<Carousel>`
+<template>
     <div
         class="carousel"
         aria-roledescription="carousel"
         tabindex="-1"
-        ${ref("carousel")} // TODO: Needed???
+        ${ref("carousel")}
     >
         <slot ${slotted("items")}></slot>
         <slot name="play-toggle"></slot>
-        <slot name="next-button">
-            <fast-flipper direction=${FlipperDirection.next}>
-        </slot>
-        <slot name="previous-button">
-            <fast-flipper direction=${FlipperDirection.previous}>
-        </slot>
-        <div ${children("tabs")}>${repeat<Carousel>(
+        <div class="previous-flipper">
+            <slot name="previous-button">
+                <fast-flipper direction=${FlipperDirection.previous}>
+            </slot>
+        </div>
+        <div class="next-flipper">
+            <slot name="next-button">
+                <fast-flipper direction=${FlipperDirection.next}>
+            </slot>
+        </div>
+        <div class="slide-tabs" ${children("tabs")}>${repeat<Carousel>(
     x => x.filteredItems,
-    html<Carousel>`<button class="slideTab">
-        ${(x, c) => {
-            return c.index + 1;
-        }}
-    </button>`,
+    html<Carousel>`<div class="slide-tab tab-${(x, c) => c.index + 1}" />`,
     { positioning: true }
-)}</div>
+)}
+        </div>    
     </div>
+</template>
 `;
