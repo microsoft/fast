@@ -111,6 +111,14 @@ export const fastAnchorDefinition: WebComponentDefinition = {
                     name: "",
                     description: "The default slot",
                 },
+                {
+                    name: "start",
+                    description: "The start slot",
+                },
+                {
+                    name: "end",
+                    description: "The end slot",
+                },
             ],
         },
     ],

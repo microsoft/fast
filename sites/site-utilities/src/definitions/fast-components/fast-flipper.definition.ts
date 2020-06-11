@@ -39,7 +39,16 @@ export const fastFlipperDefinition: WebComponentDefinition = {
                     required: false,
                 },
             ],
-            slots: [],
+            slots: [
+                {
+                    name: "previous",
+                    description: "The previous slot",
+                },
+                {
+                    name: "next",
+                    description: "The next slot",
+                },
+            ],
         },
     ],
 };
