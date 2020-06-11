@@ -31,31 +31,27 @@ body {
   z-index: 1;
 }
 
-.social-links {
-  position: fixed;
-  top: 45%;
-}
-
+.social-links,
 .section-scroll {
   position: fixed;
   top: 40%;
+}
+
+.section-scroll {
   right: 0%;
 }
 
-@media screen and (max-height: 330px) {
+@media screen and (max-height: 500px) {
   .social-links,
   .section-scroll {
-    display: none;
+    top: 35%;
   }
 }
 
-@media screen and (max-height: 500px) {
-  .social-links {
-    top: 35%;
-  }
-
+@media screen and (max-height: 390px) {
+  .social-links,
   .section-scroll {
-    top: 25%;
+    display: none;
   }
 }
 

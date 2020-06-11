@@ -2,13 +2,13 @@ import { css } from "@microsoft/fast-element";
 import { display } from "@microsoft/fast-foundation";
 import {
     accentForegroundActiveBehavior,
+    accentForegroundCutRestBehavior,
     accentForegroundHoverBehavior,
-    neutralForegroundRestBehavior,
 } from "@microsoft/fast-components";
 
 export const SideNavigationStyles = css`
     ${display("flex")}:host {
-        --engaged-height: calc(var(--design-unit) * 9px);
+        --engaged-height: calc(var(--design-unit) * 13px);
         --design-unit-large: calc(var(--design-unit) * 5px);
         contain: content;
         font-family: var(--body-font);
@@ -19,14 +19,16 @@ export const SideNavigationStyles = css`
     ul {
         list-style-type: none;
         padding: 0 var(--design-unit-large);
-        cursor: pointer;
     }
 
     li {
-        height: calc(var(--design-unit) * 12px);
         display: flex;
         flex-direction: column;
         justify-content: center;
+    }
+
+    .icon {
+        fill: var(--accent-foreground-cut-rest);
     }
 
     li:hover .icon {
@@ -34,16 +36,12 @@ export const SideNavigationStyles = css`
     }
 
     .scroll-indicator {
-        height: var(--design-unit-large);
-        width: calc(var(--design-unit) * 1px);
-        background-color: var(--neutral-foreground-rest);
+        height: calc(var(--design-unit) * 9px);
+        width: calc(var(--focus-outline-width) * 1px);
+        background-color: var(--accent-foreground-cut-rest);
         border-radius: calc(var(--corner-radius) * 1px);
-        margin: 0 var(--design-unit-large);
-    }
-
-    a:hover .scroll-indicator {
-        height: var(--engaged-height);
-        background-color: var(--accent-foreground-hover);
+        margin: calc(var(--design-unit) * 2px) var(--design-unit-large) 0;
+        transition: all 300ms;
     }
 
     .scroll-indicator-active {
@@ -52,6 +50,6 @@ export const SideNavigationStyles = css`
     }
 `.withBehaviors(
     accentForegroundActiveBehavior,
-    accentForegroundHoverBehavior,
-    neutralForegroundRestBehavior
+    accentForegroundCutRestBehavior,
+    accentForegroundHoverBehavior
 );
