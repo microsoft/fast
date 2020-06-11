@@ -42,4 +42,6 @@ fast-badge {
 </fast-design-system-provider>
 ```
 
-*NOTE: In addition to the color map support detailed above, the `fast-badge` from the Microsoft component implementation (`@microsoft/fast-components-msft`) includes an attribute to set default appearances which ensure WCAG 2.1 AA contrast requirements.*
+:::note
+In addition to the color map support detailed above, the `fast-badge` from the Microsoft component implementation (`@microsoft/fast-components-msft`) includes an attribute to set default appearances which ensure WCAG 2.1 AA contrast requirements.
+:::
