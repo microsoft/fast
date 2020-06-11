@@ -2,11 +2,15 @@ import { get, omit } from "lodash-es";
 import { MenuItem } from "@microsoft/fast-tooling-react";
 import { createBrowserHistory } from "history";
 import { SchemaDictionary } from "@microsoft/fast-tooling";
-import { fastComponentSchemas, nativeElementSchemas } from "@microsoft/site-utilities";
-import textSchema from "./utilities/text.schema";
+import {
+    fastComponentSchemas,
+    nativeElementSchemas,
+    textSchema,
+} from "@microsoft/site-utilities";
 import { fastMenuItemId } from "./fast-components/configs/fast-menu";
 import { fastSliderLabelId } from "./fast-components/configs/fast-slider";
 import { fastTabId, fastTabPanelId } from "./fast-components/configs/fast-tabs";
+import { fastDesignSystemProviderId } from "./fast-components/configs/fast-design-system-provider";
 
 const schemaDictionary: SchemaDictionary = {
     ...fastComponentSchemas,
@@ -23,6 +27,7 @@ const menu: MenuItem[] = generateMenu(
         fastSliderLabelId,
         fastTabId,
         fastTabPanelId,
+        fastDesignSystemProviderId,
         ...Object.entries(nativeElementSchemas).map(
             ([, nativeElementSchema]: [string, any]) => {
                 return nativeElementSchema.id;
