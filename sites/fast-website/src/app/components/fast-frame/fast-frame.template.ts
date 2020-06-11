@@ -318,10 +318,10 @@ export const FastFrameTemplate = html<FastFrame>`
                             <span class="sample-control-icon"></span>
                             <span class="sample-control-text">Label</span>
                             <div class="sample-control-actions">
-                                <fast-button appearance="stealth"
+                                <fast-button appearance="stealth" aria-label="stealth"
                                     >${ShareIcon}</fast-button
                                 >
-                                <fast-button appearance="stealth"
+                                <fast-button appearance="stealth" aria-label="stealth"
                                     >${ContextIcon}</fast-button
                                 >
                             </div>
@@ -329,7 +329,6 @@ export const FastFrameTemplate = html<FastFrame>`
                     </div>
                 </fast-card>
                 <div
-                    aria-hidden="${x => !x.expanded}"
                     class="preview-controls"
                 >
                     <fast-progress></fast-progress>
@@ -370,17 +369,17 @@ export const FastFrameTemplate = html<FastFrame>`
                     <div class="control-container-2">
                         <fast-slider tabIndex="${x =>
                             !x.expanded && x.isResponsive ? "-1" : "0"}"></fast-slider>
-                        <fast-flipper aria-hidden="false" tabIndex="${x =>
+                        <fast-flipper aria-label="flipper" tabIndex="${x =>
                             !x.expanded && x.isResponsive ? "-1" : "0"}"></fast-flipper>
                         <fast-flipper disabled></fast-flipper>
                     </div>
                     <div class="control-container">
-                        <fast-button appearance="accent" tabIndex="${x =>
+                        <fast-button appearance="accent" aria-label="accent" tabIndex="${x =>
                             !x.expanded && x.isResponsive ? "-1" : "0"}">
                             Button
                             <span slot="start">${DownloadIcon}</span>
                         </fast-button>
-                        <fast-button appearance="neutral" tabIndex="${x =>
+                        <fast-button appearance="neutral" aria-label="neutral" tabIndex="${x =>
                             !x.expanded && x.isResponsive ? "-1" : "0"}">
                             Button
                             <span slot="start">${PlayIcon}</span>
