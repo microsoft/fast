@@ -2,7 +2,7 @@ import { css } from "@microsoft/fast-element";
 import { display } from "@microsoft/fast-foundation";
 
 export const TabPanelStyles = css`
-    ${display("flex")} :host {
+    ${display("block")} :host {
         box-sizing: border-box;
         font-family: var(--body-font);
         ${/* Font size, weight, and line height are temporary - 
