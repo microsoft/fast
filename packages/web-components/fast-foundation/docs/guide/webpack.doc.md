@@ -192,7 +192,6 @@ This code imports the `<fast-design-system-provider>` component as well as the `
     
     fast-design-system-provider {
       display: inline-block;
-      color: var(--neutral-foreground-rest);
     }
 
     fast-card {
