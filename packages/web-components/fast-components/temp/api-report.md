@@ -316,6 +316,7 @@ export class FASTDesignSystemProvider extends DesignSystemProvider implements FA
     // (undocumented)
     neutralOutlineRestDelta: number;
     neutralPalette: string[];
+    noPaint: boolean;
     // (undocumented)
     outlineWidth: number;
     // (undocumented)

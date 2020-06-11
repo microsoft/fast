@@ -31,12 +31,10 @@ If you are looking to leverage a tool like Webpack, see our [Webpack Guide](./we
 
 The [Design System Provider](fast-foundation/fast-design-system-provider.md) will provide design information to child FAST components. 
 
-By default, the background color and text color won't be set by the `fast-design-system-provider` ([but there will be a solution soon](https://github.com/microsoft/fast-dna/issues/3213)), so you'll want to apply the CSS *background-color* and *color* properties.
-
 ```html
 <!-- ... -->
 <body>
-    <fast-design-system-provider use-defaults style="background-color: var(--background-color); color: #E5E5E5;">
+    <fast-design-system-provider use-defaults>
     </fast-design-system-provider>
 </body>
 <!-- ... -->
@@ -48,7 +46,7 @@ Add any FAST elements (or any element) as a child of the `fast-design-system-pro
 
 ```html
 <!-- ... -->
-<fast-design-system-provider use-defaults style="background-color: var(--background-color); color: #E5E5E5;">
+<fast-design-system-provider use-defaults>
     <fast-button>Hello world<fast-button>
 </fast-design-system-provider>
 <!-- ... -->
