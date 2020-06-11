@@ -1,8 +1,8 @@
 import { fastComponentSchemas } from "@microsoft/site-utilities";
+import { textSchema } from "@microsoft/site-utilities";
 import Guidance from "../../.tmp/tree-view/guidance";
 import { ComponentViewConfig } from "./data.props";
 import { fastTreeItemId } from "./fast-tree-item";
-import { textSchema } from "@microsoft/site-utilities";
 
 export const fastTreeViewId = "fast-tree-view";
 const fastTreeViewConfig: ComponentViewConfig = {
