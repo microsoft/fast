@@ -71,7 +71,7 @@ export class CSSCustomPropertyBehavior implements Behavior, CSSCustomPropertyDef
          * and function value.
          */
         host: (
-            source: typeof FASTElement & HTMLElement
+            source: HTMLElement
         ) => Partial<CSSCustomPropertyTarget> | null
     ) {
         this.name = name;
@@ -82,7 +82,7 @@ export class CSSCustomPropertyBehavior implements Behavior, CSSCustomPropertyDef
     }
 
     private host: (
-        source: typeof FASTElement & HTMLElement
+        source: HTMLElement
     ) => Partial<CSSCustomPropertyTarget> | null;
 
     /**
@@ -90,7 +90,7 @@ export class CSSCustomPropertyBehavior implements Behavior, CSSCustomPropertyDef
      * @param source The source element being bound
      * @internal
      */
-    bind(source: typeof FASTElement & HTMLElement): void {
+    bind(source: HTMLElement): void {
         const target = this.host(source);
 
         if (target !== null) {
@@ -115,7 +115,7 @@ export class CSSCustomPropertyBehavior implements Behavior, CSSCustomPropertyDef
      * @param source The source element being unbound
      * @internal
      */
-    unbind(source: typeof FASTElement & HTMLElement): void {
+    unbind(source: HTMLElement): void {
         const target = this.host(source);
 
         if (target !== null && typeof target.unregisterCSSCustomProperty === "function") {

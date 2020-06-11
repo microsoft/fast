@@ -1,16 +1,30 @@
-import { attr, nullableNumberConverter, css } from "@microsoft/fast-element";
+import { attr, css, nullableNumberConverter } from "@microsoft/fast-element";
 import {
+    CSSCustomPropertyBehavior,
     designSystemProperty,
-    designSystemProvider,
     DesignSystemProvider,
+    designSystemProvider,
     DesignSystemProviderTemplate as template,
 } from "@microsoft/fast-foundation";
 import { FASTDesignSystem, fastDesignSystemDefaults } from "../fast-design-system";
+import { neutralForegroundRest } from "../color";
 import {
-    backgroundStyles,
-    colorStyles,
     DesignSystemProviderStyles as styles,
 } from "./design-system-provider.styles";
+
+const color = new CSSCustomPropertyBehavior(
+    "neutral-foreground-rest",
+    neutralForegroundRest,
+    (el: FASTDesignSystemProvider) => el
+);
+
+const backgroundStyles = css`
+    :host {
+        background-color: var(--background-color);
+        color: ${color.var};
+    }
+`.withBehaviors(color);
+
 
 @designSystemProvider({
     name: "fast-design-system-provider",
@@ -22,35 +36,18 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
     /**
      * Used to instruct the FASTDesignSystemProvider
      * that it should not set the CSS
-     * background-color property
+     * background-color and color properties
      *
      * @remarks
-     * HTML boolean attribute: omit-background
+     * HTML boolean boolean attribute: no-paint
      */
-    @attr({ attribute: "omit-background", mode: "boolean" })
-    public omitBackground = false;
-    private omitBackgroundChanged() {
-        if (!this.omitBackground) {
+    @attr({ attribute: "no-paint", mode: "boolean" })
+    public noPaint = false;
+    private noPaintChanged() {
+        if (!this.noPaint && this.backgroundColor !== void 0) {
             this.$fastController.addStyles(backgroundStyles);
         } else {
             this.$fastController.removeStyles(backgroundStyles);
-        }
-    }
-
-    /**
-     * Used to instruct the FASTDesignSystemProvider
-     * that it should not set the CSS color property
-     *
-     * @remarks
-     * HTML boolean attribute: omit-color
-     */
-    @attr({ attribute: "omit-color", mode: "boolean" })
-    public omitColor = false;
-    private omitColorChanged() {
-        if (!this.omitBackground) {
-            this.$fastController.addStyles(colorStyles);
-        } else {
-            this.$fastController.removeStyles(colorStyles);
         }
     }
 
@@ -62,6 +59,11 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
         default: fastDesignSystemDefaults.backgroundColor,
     })
     public backgroundColor: string;
+    private backgroundColorChanged() {
+        // If background changes or is removed, we need to
+        // re-evaluate whether we should have paint styles applied
+        this.noPaintChanged();
+    }
 
     /**
      * This color is intended to be the *source color* of the FASTDesignSystem.accentPalette.
