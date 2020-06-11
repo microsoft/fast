@@ -562,10 +562,6 @@ class DataGrid extends Foundation<
             <div
                 ref={this.nonVirtualizedScrollContainer}
                 tabIndex={-1}
-                // style={{
-                //     height: "100%",
-                //     position: "relative",
-                // }}
                 className={this.props.managedClasses.dataGrid_scrollingPanel}
             >
                 {this.renderNonVirtualizedRows()}
