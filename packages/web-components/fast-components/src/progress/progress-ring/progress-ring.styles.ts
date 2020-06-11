@@ -2,7 +2,7 @@ import { css } from "@microsoft/fast-element";
 import { display, forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
-    accentFillRestBehavior,
+    accentForegroundRestBehavior,
     heightNumber,
     neutralFillRestBehavior,
     neutralForegroundHintBehavior,
@@ -29,7 +29,7 @@ export const ProgressRingStyles = css`
     }
 
     .determinate {
-        stroke: ${accentFillRestBehavior.var};
+        stroke: ${accentForegroundRestBehavior.var};
         fill: none;
         stroke-width: 2px;
         stroke-linecap: round;
@@ -39,7 +39,7 @@ export const ProgressRingStyles = css`
     }
 
     .indeterminate-indicator-1 {
-        stroke: ${accentFillRestBehavior.var};
+        stroke: ${accentForegroundRestBehavior.var};
         fill: none;
         stroke-width: 2px;
         stroke-linecap: round;
@@ -73,7 +73,7 @@ export const ProgressRingStyles = css`
         }
     }
 `.withBehaviors(
-    accentFillRestBehavior,
+    accentForegroundRestBehavior,
     neutralFillRestBehavior,
     neutralForegroundHintBehavior,
     forcedColorsStylesheetBehavior(

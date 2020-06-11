@@ -23,6 +23,8 @@ export class FASTDivider extends Divider {}
 ```
 
 ## Usage
-```html
-<fast-divider></fast-divider>
+```html live
+<fast-design-system-provider use-defaults>
+    <fast-divider></fast-divider>
+</fast-design-system-provider>
 ```

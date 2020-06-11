@@ -22,3 +22,23 @@ import { MyAccordionStyles as styles } from "./accordion.styles";
 })
 export class FASTAccordion extends Accordion {}
 ```
+
+## Usage
+```html live
+<fast-design-system-provider use-defaults>
+    <fast-accordion>
+        <fast-accordion-item expanded>
+            <span slot="heading">Panel one</span>
+            Panel one content
+        </fast-accordion-item>
+        <fast-accordion-item>
+            <span slot="heading">Panel two</span>
+            Panel two content
+        </fast-accordion-item>
+        <fast-accordion-item expanded>
+            <span slot="heading">Panel three</span>
+            Panel three content
+        </fast-accordion-item>
+    </fast-accordion>
+</fast-design-system-provider>
+```

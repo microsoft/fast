@@ -96,7 +96,7 @@ async function copyMarkdown() {
         const folder = path.dirname(source);
         const dest = path.join(
             root,
-            `fast-${folder.substr(folder.lastIndexOf(path.sep) + 1)}.md`
+            `fast-${folder.substr(folder.lastIndexOf(path.sep) + 1)}.mdx`
         );
 
         await safeCopy(source, dest);
