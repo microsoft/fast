@@ -30,8 +30,6 @@ export class TreeItem extends FASTElement {
 
     public expandCollapseButton: HTMLDivElement;
 
-    public treeItem: HTMLElement;
-
     @observable
     public focusable: boolean = false;
 
@@ -168,7 +166,7 @@ export class TreeItem extends FASTElement {
     private handleArrowLeft(): void {
         if (this.expanded) {
             this.setExpanded(false);
-        } else if (isHTMLElement(this.treeItem.parentElement)) {
+        } else if (isHTMLElement(this.parentElement)) {
             const parentElement: HTMLElement | null = this.parentElement;
 
             if (isHTMLElement(parentElement)) {
@@ -208,7 +206,7 @@ export class TreeItem extends FASTElement {
             return;
         }
 
-        const currentIndex: number = visibleNodes.indexOf(this.treeItem);
+        const currentIndex: number = visibleNodes.indexOf(this);
         if (currentIndex !== -1) {
             let nextElement: HTMLElement | undefined = visibleNodes[currentIndex + delta];
             if (nextElement !== undefined) {
@@ -232,7 +230,7 @@ export class TreeItem extends FASTElement {
     }
 
     private getTreeRoot(): HTMLElement | null {
-        const currentNode: HTMLElement = this.treeItem;
+        const currentNode: HTMLElement = this;
 
         if (!isHTMLElement(currentNode)) {
             return null;

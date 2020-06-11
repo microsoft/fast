@@ -15,7 +15,6 @@ export const TreeItemTemplate = html<TreeItem>`
         @focus=${(x, c) => x.handleFocus(c.event as FocusEvent)}
         @blur=${(x, c) => x.handleBlur(c.event as FocusEvent)}
         @keydown=${(x, c) => x.handleKeyDown(c.event as KeyboardEvent)}
-        ${ref("treeItem")}
     >
         <div
             class="positioning-region"
