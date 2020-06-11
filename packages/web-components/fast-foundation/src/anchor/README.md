@@ -7,7 +7,9 @@ custom_edit_url: https://github.com/microsoft/fast-dna/edit/master/packages/web-
 
 `fast-anchor` is a web component implementation of an [HTML anchor element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a). The component supports the same visual appearances as the button component (accent, lightweight, neutral, outline, stealth) as well as a hypertext appearance for use inline with text.
 
-*NOTE: This component is built with the expectation that focus is delegated to the anchor element rendered into the shadow DOM.*
+:::note
+This component is built with the expectation that focus is delegated to the anchor element rendered into the shadow DOM.
+:::
 
 ## Applying Custom Styles
 
@@ -28,6 +30,8 @@ export class FASTAnchor extends Anchor {}
 ```
 
 ## Usage
-```html
-<fast-anchor href="https://fast.design" appearance="hypertext">FAST-DNA</fast-anchor>
+```html live
+<fast-design-system-provider use-defaults>
+    <fast-anchor href="https://fast.design" appearance="hypertext">FAST-DNA</fast-anchor>
+</fast-design-system-provider>
 ```

@@ -23,6 +23,8 @@ export class FASTFlipper extends Flipper {}
 ```
 
 ## Usage
-```html
-<fast-flipper direction="previous"></fast-flipper>
+```html live
+<fast-design-system-provider use-defaults>
+    <fast-flipper direction="previous"></fast-flipper>
+</fast-design-system-provider>
 ```
