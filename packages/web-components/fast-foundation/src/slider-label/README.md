@@ -24,6 +24,8 @@ export class FASTSliderLabel extends SliderLabel {}
 
 ## Usage
 
-```html
-<fast-slider-label>Fast</fast-slider-label>
+```html live
+<fast-design-system-provider use-defaults>
+    <fast-slider-label>Fast</fast-slider-label>
+</fast-design-system-provider>
 ```
