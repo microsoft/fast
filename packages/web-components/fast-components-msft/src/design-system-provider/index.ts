@@ -3,14 +3,14 @@ import {
     DensityOffset,
     DesignSystem,
     DesignSystemDefaults,
-    neutralForegroundRest
+    neutralForegroundRest,
 } from "@microsoft/fast-components-styles-msft";
 import {
     CSSCustomPropertyBehavior,
     designSystemProperty,
     DesignSystemProvider,
     designSystemProvider,
-    DesignSystemProviderTemplate as template
+    DesignSystemProviderTemplate as template,
 } from "@microsoft/fast-foundation";
 import { DesignSystemProviderStyles as styles } from "./design-system-provider.styles";
 

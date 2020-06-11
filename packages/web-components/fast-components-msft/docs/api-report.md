@@ -156,6 +156,7 @@ export class FASTDesignSystemProvider extends DesignSystemProvider implements Om
     neutralOutlineRestDelta: number;
     // (undocumented)
     neutralPalette: string[];
+    noPaint: boolean;
     // (undocumented)
     outlineWidth: number;
     // (undocumented)

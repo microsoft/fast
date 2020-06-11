@@ -8,9 +8,7 @@ import {
 } from "@microsoft/fast-foundation";
 import { FASTDesignSystem, fastDesignSystemDefaults } from "../fast-design-system";
 import { neutralForegroundRest } from "../color";
-import {
-    DesignSystemProviderStyles as styles,
-} from "./design-system-provider.styles";
+import { DesignSystemProviderStyles as styles } from "./design-system-provider.styles";
 
 const color = new CSSCustomPropertyBehavior(
     "neutral-foreground-rest",
@@ -24,7 +22,6 @@ const backgroundStyles = css`
         color: ${color.var};
     }
 `.withBehaviors(color);
-
 
 @designSystemProvider({
     name: "fast-design-system-provider",

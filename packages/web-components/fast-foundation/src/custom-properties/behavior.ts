@@ -70,9 +70,7 @@ export class CSSCustomPropertyBehavior implements Behavior, CSSCustomPropertyDef
          * This element should also be responsible for resolving
          * and function value.
          */
-        host: (
-            source: HTMLElement
-        ) => Partial<CSSCustomPropertyTarget> | null
+        host: (source: HTMLElement) => Partial<CSSCustomPropertyTarget> | null
     ) {
         this.name = name;
         this.value = value;
@@ -81,9 +79,7 @@ export class CSSCustomPropertyBehavior implements Behavior, CSSCustomPropertyDef
         this.var = `var(${this.propertyName})`;
     }
 
-    private host: (
-        source: HTMLElement
-    ) => Partial<CSSCustomPropertyTarget> | null;
+    private host: (source: HTMLElement) => Partial<CSSCustomPropertyTarget> | null;
 
     /**
      * Binds the behavior to a source element
