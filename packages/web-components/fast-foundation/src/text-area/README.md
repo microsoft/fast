@@ -27,6 +27,8 @@ export class FASTTextArea extends TextArea {}
 
 ## Usage
 
-```html
-<fast-text-area placeholder="Describe your experience">How was your stay?</fast-text-area>
+```html live
+<fast-design-system-provider use-defaults>
+    <fast-text-area placeholder="Describe your experience">How was your stay?</fast-text-area>
+</fast-design-system-provider>
 ```
