@@ -36,8 +36,12 @@ fast-badge {
 ```
 
 
-```html
-<fast-badge fill="danger" color="light">Danger</fast-badge>
+```html live
+<fast-design-system-provider use-defaults>
+    <fast-badge appearance="accent">Danger</fast-badge>
+</fast-design-system-provider>
 ```
 
-*NOTE: In addition to the color map support detailed above, the `fast-badge` from the Microsoft component implementation (`@microsoft/fast-components-msft`) includes an attribute to set default appearances which ensure WCAG 2.1 AA contrast requirements.*
+:::note
+In addition to the color map support detailed above, the `fast-badge` from the Microsoft component implementation (`@microsoft/fast-components-msft`) includes an attribute to set default appearances which ensure WCAG 2.1 AA contrast requirements.
+:::
