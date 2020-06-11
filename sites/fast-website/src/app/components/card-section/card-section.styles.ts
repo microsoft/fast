@@ -23,7 +23,8 @@ export const CardSectionStyles = css`
         filter: saturate(0);
     }
 
-    :host ::slotted(site-feature-card:hover) {
+    :host ::slotted(site-feature-card:hover),
+    :host ::slotted(site-feature-card:focus-within) {
         cursor: pointer;
         color: currentColor;
         background-color: var(--neutral-fill-hover);
