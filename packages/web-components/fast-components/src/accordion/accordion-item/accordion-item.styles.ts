@@ -4,6 +4,7 @@ import {
     focusVisible,
     forcedColorsStylesheetBehavior,
 } from "@microsoft/fast-foundation";
+import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
     neutralDividerRestBehavior,
     neutralFocusBehavior,
@@ -12,7 +13,6 @@ import {
     neutralForegroundHoverBehavior,
     neutralForegroundRestBehavior,
 } from "../../styles/recipes";
-import { SystemColors } from "@microsoft/fast-web-utilities";
 import { heightNumber } from "../../styles/size";
 
 export const AccordionItemStyles = css`
