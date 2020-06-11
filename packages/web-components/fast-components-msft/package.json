@@ -15,8 +15,9 @@
   "bugs": {
     "url": "https://github.com/Microsoft/fast-dna/issues/new/choose"
   },
-  "main": "./dist/esm/index.js",
-  "types": "./dist/fast-components-msft.d.ts",
+  "main": "dist/esm/index.js",
+  "types": "dist/fast-components-msft.d.ts",
+  "unpkg": "dist/fast-components-msft.min.js",
   "scripts": {
     "clean:dist": "node ../../../build/clean.js dist",
     "doc": "api-extractor run --local",
