@@ -178,10 +178,10 @@ export const Observable = Object.freeze({
      * @param binding - The binding to observe.
      * @param initialSubscriber - An initial subscriber to changes in the binding value.
      */
-    binding<TScope = any, TReturn = any, TParent = any>(
-        binding: Binding,
+    binding<TSource = any, TReturn = any, TParent = any>(
+        binding: Binding<TSource, TReturn, TParent>,
         initialSubscriber?: Subscriber
-    ): BindingObserver<TScope, TReturn, TParent> {
+    ): BindingObserver<TSource, TReturn, TParent> {
         return new BindingObserverImplementation(binding, initialSubscriber);
     },
 });
