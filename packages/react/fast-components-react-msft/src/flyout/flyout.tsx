@@ -121,7 +121,7 @@ class Flyout extends Foundation<FlyoutHandledProps, FlyoutUnhandledProps, {}> {
                 style={{
                     height: this.props.height,
                     width: this.props.width,
-                    display: this.props.visible ? "block" : "none"
+                    display: this.props.visible ? "block" : "none",
                 }}
             >
                 {this.props.children}
