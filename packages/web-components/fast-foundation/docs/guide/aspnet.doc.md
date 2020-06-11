@@ -100,7 +100,6 @@ For a splash of style, add the following to your `wwwroot/css/site.css` file:
 
 fast-design-system-provider {
   display: inline-block;
-  color: var(--neutral-foreground-rest);
 }
 
 fast-card {
