@@ -31,7 +31,7 @@ The easiest way to get up-and-running is to use the `FASTDesignSystemProvider`. 
 import { FASTDesignSystemProvider } from "@microsoft/fast-components";
 ```
 
-```html
+```html live
 <fast-design-system-provider use-defaults>
     Hello World
 </fast-design-system-provider>
@@ -41,7 +41,7 @@ _Design system_ properties can be overridden by setting the property or attribut
 
 **EXAMPLE: Setting design system properties**
 
-```html
+```html live
 <fast-design-system-provider use-defaults background-color="#111111" design-unit="6">
     Hello world!
 </fast-design-system-provider>
@@ -68,7 +68,7 @@ The `use-defaults` boolean attribute exposes a mechanism to apply the default va
 ### Composing Design System Providers
 *Design System Providers* are designed to compose their values with ancestor *Design System Providers* to facilitate changing values for decedents of the provider.
 
-```html
+```html live
 <fast-design-system-provider design-unit="4" background-color="#FFFFFF">
     <p style="height: calc(var(--design-unit) * 1px)">4px</p>
     <p style="background: var(--background-color)">#FFFFFF</p>
@@ -132,7 +132,7 @@ import { MyDesignSystemProviderStyles as styles} from "../design-system-provder.
 class FancyDesignSystemProvider extends DesignSystemProvider {}
 ```
 
-```html
+```html live
 <fancy-design-system-provider use-defaults>
     Hello Fancy World!
 </fancy-design-system-provider>
@@ -154,7 +154,7 @@ class FancyDesignSystemProvider extends DesignSystemProvider {
 }
 ```
 
-```html
+```html live
 <fancy-design-system-provider use-defaults>
     <p style="color: var(--fancy-property)">Red text!</p>
 </fancy-design-system-provider>

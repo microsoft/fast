@@ -42,12 +42,16 @@ export class FASTProgressRing extends BaseProgressRing {}
 
 ### fast-progress
 
-```html
+```html live
+<fast-design-system-provider use-defaults>
     <fast-progress min="0" max="100" value="75"></fast-progress>
+</fast-design-system-provider>
 ```
 
 ### fast-progress-ring
 
-```html
-    <fast-progress-ring paused="true" min="0" max="100" value="75"></fast-progress-ring>
+```html live
+<fast-design-system-provider use-defaults>
+    <fast-progress-ring min="0" max="100" value="75"></fast-progress-ring>
+</fast-design-system-provider>
 ```

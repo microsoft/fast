@@ -24,10 +24,12 @@ export class FASTSwitch extends Switch {}
 
 ## Usage
 
-```html
-<fast-switch>
-    Theme
-    <span slot="checked-message">Dark</span>
-    <span slot="unchecked-message">Light</span>
-</fast-switch>
+```html live
+<fast-design-system-provider use-defaults>
+    <fast-switch>
+        Theme
+        <span slot="checked-message">Dark</span>
+        <span slot="unchecked-message">Light</span>
+    </fast-switch>
+</fast-design-system-provider>
 ```

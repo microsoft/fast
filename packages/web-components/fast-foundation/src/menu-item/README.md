@@ -24,6 +24,8 @@ export class FASTMenuItem extends MenuItem {}
 
 ## Usage
 
-```html
-<fast-menu-item role="menuitemcheckbox" checked>Open in new window</fast-menu-item>
+```html live
+<fast-design-system-provider use-defaults>
+    <fast-menu-item role="menuitemcheckbox" checked>Open in new window</fast-menu-item>
+</fast-design-system-provider>
 ```
