@@ -60,23 +60,29 @@ export class FASTTabPanel extends TabPanel {}
         <fast-tab id="entrees">Entrees</fast-tab>
         <fast-tab id="desserts">Desserts</fast-tab>
         <fast-tab-panel id="appsPanel">
-            <a href="#">Stuffed artichokes</a>
-            <a href="#">Bruschetta</a>
-            <a href="#">Oven-baked polenta</a>
-            <a href="#">Salami and Fig Crostini with Ricotta</a>
-            <a href="#">Rosemary-Potato Focaccia with Goat Cheese</a>
+            <ol>
+                <li><fast-anchor href="#" appearance="lightweight">Stuffed artichokes</fast-anchor></li>
+                <li><fast-anchor href="#" appearance="lightweight">Bruschetta</fast-anchor></li>
+                <li><fast-anchor href="#" appearance="lightweight">Oven-baked polenta</fast-anchor></li>
+                <li><fast-anchor href="#" appearance="lightweight">Salami and Fig Crostini with Ricotta</fast-anchor></li>
+                <li><fast-anchor href="#" appearance="lightweight">Rosemary-Potato Focaccia with Goat Cheese</fast-anchor></li>
+            </ol>
         </fast-tab-panel>
         <fast-tab-panel id="entreesPanel">
-            <a href="#">Mushroom-Sausage Ragù</a>
-            <a href="#">Tomato Bread Soup with Steamed Mussels</a>
-            <a href="#">Grilled Fish with Artichoke Caponata</a>
-            <a href="#">Celery Root and Mushroom Lasagna</a>
-            <a href="#">Osso Buco with Citrus Gremolata</a>
+            <ol>
+                <li><fast-anchor href="#" appearance="lightweight">Mushroom-Sausage Ragù</fast-anchor></li>
+                <li><fast-anchor href="#" appearance="lightweight">Tomato Bread Soup with Steamed Mussels</fast-anchor></li>
+                <li><fast-anchor href="#" appearance="lightweight">Grilled Fish with Artichoke Caponata</fast-anchor></li>
+                <li><fast-anchor href="#" appearance="lightweight">Celery Root and Mushroom Lasagna</fast-anchor></li>
+                <li><fast-anchor href="#" appearance="lightweight">Osso Buco with Citrus Gremolata</fast-anchor></li>
+            </ol>
         </fast-tab-panel>
         <fast-tab-panel id="dessertsPanel">
-            <a href="#">Tiramisu</a>
-            <a href="#">Spumoni</a>
-            <a href="#">Limoncello and Ice Cream with Biscotti</a>
+            <ol>
+                <li><fast-anchor href="#" appearance="lightweight">Tiramisu</fast-anchor></li>
+                <li><fast-anchor href="#" appearance="lightweight">Spumoni</fast-anchor></li>
+                <li><fast-anchor href="#" appearance="lightweight">Limoncello and Ice Cream with Biscotti</fast-anchor></li>
+            </ol>
         </fast-tab-panel>
     </fast-tabs>
 </fast-design-system-provider>
