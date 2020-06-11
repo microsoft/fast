@@ -1,7 +1,6 @@
-import { fastComponentSchemas } from "@microsoft/site-utilities";
+import { fastComponentSchemas, textSchema } from "@microsoft/site-utilities";
 import { uniqueId } from "lodash-es";
 import { DataDictionary } from "@microsoft/fast-tooling";
-import textSchema from "../../utilities/text.schema";
 import Guidance from "../../.tmp/accordion/guidance";
 import { ComponentViewConfig } from "./data.props";
 
