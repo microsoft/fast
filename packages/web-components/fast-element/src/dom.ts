@@ -59,6 +59,13 @@ function processQueue(): void {
  */
 export const DOM = Object.freeze({
     /**
+     * Indicates whether the DOM supports the adoptedStyleSheets feature.
+     */
+    supportsAdoptedStyleSheets:
+        Array.isArray((document as any).adoptedStyleSheets) &&
+        "replace" in CSSStyleSheet.prototype,
+
+    /**
      * Sets the HTML trusted types policy used by the templating engine.
      * @param policy - The policy to set for HTML.
      * @remarks

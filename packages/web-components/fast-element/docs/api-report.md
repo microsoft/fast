@@ -207,6 +207,7 @@ export abstract class Directive implements BehaviorFactory {
 
 // @public
 export const DOM: Readonly<{
+    supportsAdoptedStyleSheets: boolean;
     setHTMLPolicy(policy: TrustedTypesPolicy): void;
     createHTML(html: string): string;
     isMarker(node: Node): node is Comment;
@@ -490,7 +491,7 @@ export function when<TSource = any, TReturn = any>(binding: Binding<TSource, TRe
 
 // Warnings were encountered during analysis:
 //
-// dist/dts/dom.d.ts:17:5 - (ae-forgotten-export) The symbol "TrustedTypesPolicy" needs to be exported by the entry point index.d.ts
+// dist/dts/dom.d.ts:21:5 - (ae-forgotten-export) The symbol "TrustedTypesPolicy" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 
