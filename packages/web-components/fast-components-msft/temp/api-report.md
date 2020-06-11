@@ -5,6 +5,7 @@
 ```ts
 
 import { Accordion } from '@microsoft/fast-foundation';
+import { AccordionItem } from '@microsoft/fast-foundation';
 import { Anchor } from '@microsoft/fast-foundation';
 import { Badge } from '@microsoft/fast-foundation';
 import { BaseProgress } from '@microsoft/fast-foundation';
@@ -33,6 +34,10 @@ export type BadgeAppearance = "accent" | "lightweight" | "neutral" | string;
 
 // @public (undocumented)
 export class FASTAccordion extends Accordion {
+}
+
+// @public (undocumented)
+export class FASTAccordionItem extends AccordionItem {
 }
 
 // @public (undocumented)
