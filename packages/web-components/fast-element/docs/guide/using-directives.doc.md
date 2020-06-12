@@ -139,6 +139,8 @@ Some context properties are opt-in because they are more costly to update. So, f
 </ul>
 ```
 
+In addition to providing a template to render the items with, you can also provide an expression that evaluates to a template. This enables you to dynamically change what you are using to render the items. Each item will still be rendered with the same template, but you can use techniques from "Composing Templates" below to render a different template depending on the item itself.
+
 ### Composing Templates
 
 The `ViewTemplate` returned from the `html` tag helper has special handling when it is used inside of another template. This is done so that you can create templates and compose them into other templates.

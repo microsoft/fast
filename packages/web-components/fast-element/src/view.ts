@@ -251,8 +251,14 @@ export class HTMLView implements ElementView, SyntheticView {
             return;
         }
 
+        // Get the first node of the first view in the range.
         range.setStart(views[0].firstChild, 0);
-        range.setEnd(views[views.length - 1].lastChild, 0);
+
+        // Get the last node of the last view in the range. Then go one further
+        // because the deleteContents operation isn't inclusive of the end node.
+        // In all cases where we use this API, the node after the last node of
+        // the last view is the comment node that we use as a placeholder.
+        range.setEnd(views[views.length - 1].lastChild.nextSibling!, 0);
         range.deleteContents();
 
         for (let i = 0, ii = views.length; i < ii; ++i) {

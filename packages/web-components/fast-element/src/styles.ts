@@ -1,4 +1,5 @@
 import { Behavior } from "./directives/behavior";
+import { DOM } from "./dom";
 
 /**
  * A node that can be targeted by styles.
@@ -190,7 +191,7 @@ class StyleElementStyles extends ElementStyles {
 
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 const createStyles: ElementStyleFactory = (() => {
-    if ("adoptedStyleSheets" in window.ShadowRoot.prototype) {
+    if (DOM.supportsAdoptedStyleSheets) {
         const styleSheetCache = new Map();
         return (styles: InjectableStyles[]) =>
             new AdoptedStyleSheetsStyles(styles, styleSheetCache);
