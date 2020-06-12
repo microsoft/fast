@@ -31,6 +31,7 @@ const styles: ComponentStyles<DataGridClassNameContract, DesignSystem> = {
             ...highContrastForeground,
         },
     },
+    dataGrid__virtualized: {},
     dataGrid_header: {
         color: neutralForegroundRest,
         fill: neutralForegroundRest,
