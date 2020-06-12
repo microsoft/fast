@@ -1,14 +1,17 @@
-import { html } from "@microsoft/fast-element";
+import { html, repeat } from "@microsoft/fast-element";
+
+const linkTemplate = html` <fast-anchor
+    slot="footer"
+    href=${x => x.url}
+    appearance="lightweight"
+>
+    ${x => x.anchorText}
+</fast-anchor>`;
 
 const featureTemplate = html`<site-feature-card>
     <h4>${x => x.header}</h4>
     <p slot="body">${x => x.body}</p>
-    <fast-anchor slot="footer" href=${x => x.githubLink} appearance="lightweight"
-        >View Github</fast-anchor
-    >
-    <fast-anchor slot="footer" href=${x => x.documentationLink} appearance="lightweight"
-        >Read Documentation</fast-anchor
-    >
+    ${repeat(x => x.links, linkTemplate)}
 </site-feature-card> `;
 
 export default featureTemplate;
