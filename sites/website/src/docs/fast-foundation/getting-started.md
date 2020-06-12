@@ -17,7 +17,7 @@ First, add the `fast-components.js` script file to your HTML. This pre-bundled s
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <script src="...TODO..." type="module"></script>
+        <script src="https://unpkg.com/@microsoft/fast-components" type="module"></script>
     </head>
     <!-- ... -->
 </html>
