@@ -27,3 +27,9 @@
 div.react-toggle {
   display: none;
 }
+
+.example-dialog::part(control) {
+  --dialog-width: 400px;
+  --dialog-height: auto;
+  padding: 16px;
+}

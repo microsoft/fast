@@ -70,9 +70,7 @@ export class CSSCustomPropertyBehavior implements Behavior, CSSCustomPropertyDef
          * This element should also be responsible for resolving
          * and function value.
          */
-        host: (
-            source: typeof FASTElement & HTMLElement
-        ) => Partial<CSSCustomPropertyTarget> | null
+        host: (source: HTMLElement) => Partial<CSSCustomPropertyTarget> | null
     ) {
         this.name = name;
         this.value = value;
@@ -81,16 +79,14 @@ export class CSSCustomPropertyBehavior implements Behavior, CSSCustomPropertyDef
         this.var = `var(${this.propertyName})`;
     }
 
-    private host: (
-        source: typeof FASTElement & HTMLElement
-    ) => Partial<CSSCustomPropertyTarget> | null;
+    private host: (source: HTMLElement) => Partial<CSSCustomPropertyTarget> | null;
 
     /**
      * Binds the behavior to a source element
      * @param source The source element being bound
      * @internal
      */
-    bind(source: typeof FASTElement & HTMLElement): void {
+    bind(source: HTMLElement): void {
         const target = this.host(source);
 
         if (target !== null) {
@@ -115,7 +111,7 @@ export class CSSCustomPropertyBehavior implements Behavior, CSSCustomPropertyDef
      * @param source The source element being unbound
      * @internal
      */
-    unbind(source: typeof FASTElement & HTMLElement): void {
+    unbind(source: HTMLElement): void {
         const target = this.host(source);
 
         if (target !== null && typeof target.unregisterCSSCustomProperty === "function") {

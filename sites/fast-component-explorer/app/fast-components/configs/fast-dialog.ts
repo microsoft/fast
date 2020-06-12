@@ -1,5 +1,4 @@
-import { fastComponentSchemas } from "@microsoft/site-utilities";
-import textSchema from "../../utilities/text.schema";
+import { fastComponentSchemas, textSchema } from "@microsoft/site-utilities";
 import Guidance from "../../.tmp/dialog/guidance";
 import { ComponentViewConfig } from "./data.props";
 import { fastButtonId } from "./fast-button";

@@ -2,7 +2,7 @@ import { css } from "@microsoft/fast-element";
 import { display, forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
-    accentFillRestBehavior,
+    accentForegroundRestBehavior,
     neutralFillRestBehavior,
     neutralForegroundHintBehavior,
 } from "../../styles/index";
@@ -26,7 +26,7 @@ export const ProgressStyles = css`
     }
 
     .determinate {
-        background-color: ${accentFillRestBehavior.var};
+        background-color: ${accentForegroundRestBehavior.var};
         border-radius: calc(var(--design-unit) * 1px);
         height: 100%;
         transition: all 0.2s ease-in-out;
@@ -46,7 +46,7 @@ export const ProgressStyles = css`
         position: absolute;
         opacity: 0;
         height: 100%;
-        background-color: ${accentFillRestBehavior.var};
+        background-color: ${accentForegroundRestBehavior.var};
         border-radius: calc(var(--design-unit) * 1px);
         animation-timing-function: cubic-bezier(0.4, 0.0, 0.6, 1.0);
         width: 40%;
@@ -57,7 +57,7 @@ export const ProgressStyles = css`
         position: absolute;
         opacity: 0;
         height: 100%;
-        background-color: ${accentFillRestBehavior.var};
+        background-color: ${accentForegroundRestBehavior.var};
         border-radius: calc(var(--design-unit) * 1px);
         animation-timing-function: cubic-bezier(0.4, 0.0, 0.6, 1.0);
         width: 60%;
@@ -109,7 +109,7 @@ export const ProgressStyles = css`
         },
     },
 `.withBehaviors(
-    accentFillRestBehavior,
+    accentForegroundRestBehavior,
     neutralFillRestBehavior,
     neutralForegroundHintBehavior,
     forcedColorsStylesheetBehavior(

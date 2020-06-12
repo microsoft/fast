@@ -13,6 +13,7 @@ module.exports = {
                     type: "category",
                     label: "Components",
                     items: [
+                        "fast-foundation/fast-accordion",
                         "fast-foundation/fast-anchor",
                         "fast-foundation/fast-badge",
                         "fast-foundation/fast-button",

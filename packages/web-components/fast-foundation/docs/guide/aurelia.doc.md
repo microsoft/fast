@@ -77,7 +77,6 @@ To add a splash of style, replace your `my-app.css` content with this:
 ```css
 fast-design-system-provider {
   display: inline-block;
-  color: var(--neutral-foreground-rest);
 }
 
 fast-card {
