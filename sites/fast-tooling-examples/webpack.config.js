@@ -4,6 +4,7 @@ const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPl
 const CleanWebpackPlugin = require("clean-webpack-plugin");
 const FaviconsWebpackPlugin = require("favicons-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const WebpackShellPlugin = require("webpack-shell-plugin");
 
 const rootNodeModules = path.resolve(__dirname, "../../node_modules");
 const nodeModules = path.resolve(__dirname, "./node_modules");
@@ -102,6 +103,9 @@ module.exports = (env, args) => {
                 title: "FAST Tooling Examples - React",
                 filename: "examples/react-1/index.html",
                 template: path.resolve(appDir, "examples/react-1/index.html"),
+            }),
+            new WebpackShellPlugin({
+                onBuildStart: [`yarn convert:readme`],
             }),
             new MiniCssExtractPlugin({
                 chunkFilename: "[name]-[contenthash].css",

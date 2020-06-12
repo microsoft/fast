@@ -56,7 +56,7 @@ export interface DataGridColumn {
     /**
      * Custom render function for a data cells in the column
      */
-    cell?: (DataGridCellRenderConfig) => React.ReactNode;
+    cell?: (config: DataGridCellRenderConfig) => React.ReactNode;
 }
 
 export interface DataGridHandledProps extends DataGridManagedClasses {
