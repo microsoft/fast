@@ -8,6 +8,11 @@ export interface DataGridClassNameContract {
     dataGrid?: string;
 
     /**
+     * Applied if the datagrid virtualize prop is true
+     */
+    dataGrid__virtualized?: string;
+
+    /**
      * The scrolling container
      */
     dataGrid_scrollingPanel?: string;
