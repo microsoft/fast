@@ -141,9 +141,10 @@ describe("data grid", (): void => {
             />
         );
 
-        expect(rendered.children().prop("className")).not.toContain(managedClasses.dataGrid__virtualized);
+        expect(rendered.children().prop("className")).not.toContain(
+            managedClasses.dataGrid__virtualized
+        );
     });
-
 
     test("virtualized classname applied when in virtualized mode", (): void => {
         const rendered: ReactWrapper = mount(
@@ -156,7 +157,9 @@ describe("data grid", (): void => {
             />
         );
 
-        expect(rendered.children().prop("className")).toContain(managedClasses.dataGrid__virtualized);
+        expect(rendered.children().prop("className")).toContain(
+            managedClasses.dataGrid__virtualized
+        );
     });
 
     test("data grid header exists and has two column header cells", (): void => {
