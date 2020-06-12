@@ -3,8 +3,7 @@ import { Carousel } from "./carousel";
 import { FlipperDirection } from "../flipper";
 
 export const CarouselTemplate = html<Carousel>`
-<template>
-    <div
+<template
         class="carousel"
         aria-roledescription="carousel"
         tabindex="-1"
@@ -28,6 +27,5 @@ export const CarouselTemplate = html<Carousel>`
     { positioning: true }
 )}
         </div>    
-    </div>
 </template>
 `;
