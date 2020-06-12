@@ -32,7 +32,6 @@ export const SideNavigationTemplate = html<SideNavigation>`
                                 href="#${(x, c) => c.parent.sectionArray[c.index].id}"
                                 class="scroll-link"
                                 @click="${(x, c) => c.parent.clickHandler(c.event, true)}"
-                                aria-label=${(x, c) => c.parent.sectionArray[c.index].id}
                             >
                                 <div
                                     @click="${(x, c) =>
