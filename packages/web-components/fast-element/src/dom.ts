@@ -1,7 +1,6 @@
 import { Callable } from "./interfaces";
-const marker = `fast-${Math.random().toString(36).substring(7)}`;
-const updateQueue = [] as Callable[];
 
+const updateQueue = [] as Callable[];
 type TrustedTypesPolicy = { createHTML(html: string): string };
 
 // Tiny API-only polyfill for trustedTypes
@@ -52,6 +51,14 @@ function processQueue(): void {
 
     updateQueue.length = 0;
 }
+
+const marker = `fast-${Math.random().toString(36).substring(7)}`;
+
+/** @internal */
+export const _interpolationStart = `${marker}{`;
+
+/** @internal */
+export const _interpolationEnd = `}${marker}`;
 
 /**
  * Common DOM APIs.
@@ -115,7 +122,7 @@ export const DOM = Object.freeze({
      * Used internally by binding directives.
      */
     createInterpolationPlaceholder(index: number): string {
-        return `@{${index}}`;
+        return `${_interpolationStart}${index}${_interpolationEnd}`;
     },
 
     /**
