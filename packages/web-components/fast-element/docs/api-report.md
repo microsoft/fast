@@ -207,6 +207,7 @@ export abstract class Directive implements BehaviorFactory {
 
 // @public
 export const DOM: Readonly<{
+    supportsAdoptedStyleSheets: boolean;
     setHTMLPolicy(policy: TrustedTypesPolicy): void;
     createHTML(html: string): string;
     isMarker(node: Node): node is Comment;
@@ -340,7 +341,7 @@ export const Observable: Readonly<{
     notify(source: unknown, args: any): void;
     defineProperty(target: {}, nameOrAccessor: string | Accessor): void;
     getAccessors(target: {}): Accessor[];
-    binding<TScope = any, TReturn = any, TParent = any>(binding: Binding<any, any, any>, initialSubscriber?: Subscriber | undefined): BindingObserver<TScope, TReturn, TParent>;
+    binding<TSource = any, TReturn = any, TParent = any>(binding: Binding<TSource, TReturn, TParent>, initialSubscriber?: Subscriber | undefined): BindingObserver<TSource, TReturn, TParent>;
 }>;
 
 // @public
@@ -376,12 +377,12 @@ export class RefBehavior implements Behavior {
 }
 
 // @public
-export function repeat<TScope = any, TItem = any>(binding: Binding<TScope, TItem[]>, template: ViewTemplate<Partial<TItem>, TScope>, options?: RepeatOptions): CaptureType<TScope>;
+export function repeat<TSource = any, TItem = any>(binding: Binding<TSource, TItem[]>, templateOrTemplateBinding: SyntheticViewTemplate | Binding<TSource, SyntheticViewTemplate>, options?: RepeatOptions): CaptureType<TSource>;
 
 // @public
-export class RepeatBehavior implements Behavior, Subscriber {
-    constructor(location: Node, binding: Binding, template: SyntheticViewTemplate, options: RepeatOptions);
-    bind(source: unknown, context: ExecutionContext): void;
+export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
+    constructor(location: Node, itemsBinding: Binding<TSource, any[]>, templateBinding: Binding<TSource, SyntheticViewTemplate>, options: RepeatOptions);
+    bind(source: TSource, context: ExecutionContext): void;
     // Warning: (ae-forgotten-export) The symbol "Splice" needs to be exported by the entry point index.d.ts
     //
     // @internal (undocumented)
@@ -390,17 +391,11 @@ export class RepeatBehavior implements Behavior, Subscriber {
     }
 
 // @public
-export class RepeatDirective extends Directive {
-    constructor(binding: Binding, template: SyntheticViewTemplate, options: RepeatOptions);
-    // (undocumented)
-    binding: Binding;
-    createBehavior(target: Node): RepeatBehavior;
+export class RepeatDirective<TSource = any> extends Directive {
+    constructor(binding: Binding, getTemplate: Binding<TSource, SyntheticViewTemplate>, options: RepeatOptions);
+    createBehavior(target: Node): RepeatBehavior<TSource>;
     createPlaceholder: (index: number) => string;
-    // (undocumented)
-    options: RepeatOptions;
-    // (undocumented)
-    template: SyntheticViewTemplate;
-}
+    }
 
 // @public
 export interface RepeatOptions {
@@ -496,7 +491,7 @@ export function when<TSource = any, TReturn = any>(binding: Binding<TSource, TRe
 
 // Warnings were encountered during analysis:
 //
-// dist/dts/dom.d.ts:17:5 - (ae-forgotten-export) The symbol "TrustedTypesPolicy" needs to be exported by the entry point index.d.ts
+// dist/dts/dom.d.ts:21:5 - (ae-forgotten-export) The symbol "TrustedTypesPolicy" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 
