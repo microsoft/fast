@@ -24,8 +24,8 @@ export const TreeItemStyles = css`
         contain: content;
         position: relative;
         outline: none;
-        color: var(--neutral-foreground-rest);
-        background: var(--neutral-fill-stealth-rest);
+        color: ${neutralForegroundRestBehavior.var};
+        background: ${neutralFillStealthRestBehavior.var};
         cursor: pointer;
         font-family: var(--body-font);
         --expand-collapse-button-size: calc(${heightNumber} * 1px);
@@ -41,9 +41,9 @@ export const TreeItemStyles = css`
     }
 
     :host(:${focusVisible}) .positioning-region {
-        border: var(--neutral-focus) 1px solid;
+        border: ${neutralFocusBehavior.var} 1px solid;
         border-radius: calc(var(--corner-radius) * 1px);
-        color: var(--neutral-foreground-active);
+        color: ${neutralForegroundActiveBehavior.var};
     }
 
     .positioning-region {
@@ -62,11 +62,11 @@ export const TreeItemStyles = css`
     }
 
     .positioning-region:hover {
-        background: var(--neutral-fill-stealth-hover);
+        background: ${neutralFillStealthHoverBehavior.var};
     }
 
     .positioning-region:active {
-        background: var(--neutral-fill-stealth-active);
+        background: ${neutralFillStealthActiveBehavior.var};
     }
 
     .content-region {
@@ -114,7 +114,7 @@ export const TreeItemStyles = css`
         transition: transform 0.1s linear;
         ${/* transform needs to be localized */ ""} transform: rotate(-45deg);
         pointer-events: none;
-        fill: var(--neutral-foreground-rest);
+        fill: ${neutralForegroundRestBehavior.var};
     }
     .start,
     .end {
@@ -123,7 +123,7 @@ export const TreeItemStyles = css`
             replace when glyph-size var is added */ ""
         } width: 16px;
         height: 16px;
-        fill: var(--neutral-foreground-rest);
+        fill: ${neutralForegroundRestBehavior.var};
     }
 
     .start {
@@ -152,7 +152,7 @@ export const TreeItemStyles = css`
     }
 
     :host([selected]) .positioning-region {
-        background: var(--neutral-fill-stealth-selected);
+        background: ${neutralFillStealthSelectedBehavior.var};
     }
 
     :host([selected])::after {
@@ -165,7 +165,7 @@ export const TreeItemStyles = css`
         ${
             /* The french fry background needs to be calculated based on the selected background state for this control.
             We currently have no way of chaning that, so setting to accent-foreground-rest for the time being */ ""
-        } background: var(--accent-foreground-rest);
+        } background: ${accentForegroundRestBehavior.var};
         ${
             /* value needs to be localized */ ""
         } left: calc(var(--focus-outline-width) * 1px);
@@ -180,7 +180,7 @@ export const TreeItemStyles = css`
     :host(.nested) .expand-collapse-button {
         position: absolute;
         ${/* value needs to be localized  */ ""}
-        left: var(--expand-collapse-button-nested-width, calc(var(--height-number) * -1px));
+        left: var(--expand-collapse-button-nested-width, calc(${heightNumber} * -1px));
     }
 
     ::slotted(fast-tree-item) {
