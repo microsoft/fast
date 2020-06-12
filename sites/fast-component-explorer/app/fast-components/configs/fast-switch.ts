@@ -3,7 +3,6 @@ import Guidance from "../../.tmp/switch/guidance";
 import { ComponentViewConfig } from "./data.props";
 
 export const fastSwitchId = "fast-switch";
-console.log(fastComponentSchemas[fastSwitchId]);
 const fastSwitchConfig: ComponentViewConfig = {
     schema: fastComponentSchemas[fastSwitchId],
     guidance: Guidance,

@@ -8,7 +8,6 @@ const endPlaceholderIcon = placeholderIcon("root", "SlotEnd");
 const defaultPlaceholderIcon = placeholderIcon("root", "Slot");
 
 export const fastAnchorId = "fast-anchor";
-console.log(fastComponentSchemas[fastAnchorId]);
 const fastAnchorConfig: ComponentViewConfig = {
     schema: fastComponentSchemas[fastAnchorId],
     guidance: Guidance,

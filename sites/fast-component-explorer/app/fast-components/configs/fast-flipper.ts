@@ -7,8 +7,6 @@ const previousPlaceholderIcon = placeholderIcon("root", "SlotPrevious");
 const nextPlaceholderIcon = placeholderIcon("root", "SlotNext");
 
 export const fastFlipperId = "fast-flipper";
-
-console.log(fastComponentSchemas[fastFlipperId]);
 const fastFlipperConfig: ComponentViewConfig = {
     schema: fastComponentSchemas[fastFlipperId],
     guidance: Guidance,
