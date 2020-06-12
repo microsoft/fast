@@ -27,6 +27,8 @@ export enum AccordionExpandMode {
     single = "single"
 }
 
+// Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "AccordionItem" because one of its declarations is marked as @internal
+//
 // @public
 export class AccordionItem extends FASTElement {
     // @internal (undocumented)
@@ -38,7 +40,7 @@ export class AccordionItem extends FASTElement {
     id: string;
 }
 
-// @public (undocumented)
+// @internal
 export interface AccordionItem extends StartEnd {
 }
 
@@ -48,33 +50,26 @@ export const AccordionItemTemplate: import("@microsoft/fast-element").ViewTempla
 // @public (undocumented)
 export const AccordionTemplate: import("@microsoft/fast-element").ViewTemplate<Accordion, any>;
 
+// Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "Anchor" because one of its declarations is marked as @internal
+//
 // @public
 export class Anchor extends FASTElement {
-    // (undocumented)
     appearance: AnchorAppearance;
-    // (undocumented)
     download: string;
-    // (undocumented)
     href: string;
-    // (undocumented)
     hreflang: string;
-    // (undocumented)
     ping: string;
-    // (undocumented)
     referrerpolicy: string;
-    // (undocumented)
     rel: string;
-    // (undocumented)
     target: "_self" | "_blank" | "_parent" | "_top";
-    // (undocumented)
     type: string;
 }
 
-// @public (undocumented)
+// @internal
 export interface Anchor extends StartEnd {
 }
 
-// @public (undocumented)
+// @public
 export type AnchorAppearance = ButtonAppearance | "hypertext";
 
 // @public (undocumented)
@@ -221,7 +216,7 @@ export interface CSSCustomPropertyTarget {
     unregisterCSSCustomProperty(behavior: CSSCustomPropertyDefinition): void;
 }
 
-// @public (undocumented)
+// @public
 export type CSSDisplayPropertyValue = "block" | "contents" | "flex" | "grid" | "inherit" | "initial" | "inline" | "inline-block" | "inline-flex" | "inline-grid" | "inline-table" | "list-item" | "none" | "run-in" | "table" | "table-caption" | "table-cell" | "table-column" | "table-column-group" | "table-footer-group" | "table-header-group" | "table-row" | "table-row-group";
 
 // @public (undocumented)
@@ -302,7 +297,7 @@ export class Dialog extends FASTElement {
 // @public (undocumented)
 export const DialogTemplate: import("@microsoft/fast-element").ViewTemplate<Dialog, any>;
 
-// @public (undocumented)
+// @public
 export const disabledCursor = "not-allowed";
 
 // @public
@@ -390,7 +385,7 @@ export const forcedColorsStylesheetBehavior: (sheet: ElementStyles) => Readonly<
     }): void;
 }>;
 
-// @public (undocumented)
+// @public
 export const hidden = "\n    :host([hidden]) {\n        display: none;\n    }\n";
 
 // @public
