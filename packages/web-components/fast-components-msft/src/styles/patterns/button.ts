@@ -157,6 +157,7 @@ export const HypertextStyles = css`
 export const LightweightButtonStyles = css`
     :host(.lightweight) .control {
         padding: 0;
+        height: initial;
         border: none;
         box-shadow: none;
         border-radius: 0;
