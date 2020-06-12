@@ -28,7 +28,7 @@ export enum TextFieldType {
      * An email TextField
      */
     email = "email",
-    
+
     /**
      * A password TextField
      */
@@ -61,7 +61,6 @@ export class TextField extends FormAssociated<HTMLInputElement> {
      * The appearance of the element.
      * 
      * @public
-     * @defaultValue - {@link TextFieldAppearance.outline}
      * @remarks
      * HTML Attribute: appearance
      */
@@ -114,7 +113,6 @@ export class TextField extends FormAssociated<HTMLInputElement> {
     /**
      * Allows setting a type or mode of text. 
      * @public
-     * @defaultValue - "text"
      * @remarks
      * HTML Attribute: type
      */

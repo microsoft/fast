@@ -747,69 +747,50 @@ export const TabsTemplate: import("@microsoft/fast-element").ViewTemplate<Tabs, 
 // @public (undocumented)
 export const TabTemplate: import("@microsoft/fast-element").ViewTemplate<Tab, any>;
 
-// @public (undocumented)
+// @public
 export class TextArea extends FormAssociated<HTMLTextAreaElement> {
-    // (undocumented)
     appearance: TextAreaAppearance;
-    // (undocumented)
     autofocus: boolean;
-    // (undocumented)
     cols: number;
-    // (undocumented)
+    // @internal (undocumented)
     connectedCallback(): void;
-    // (undocumented)
+    // @internal (undocumented)
     defaultSlottedNodes: Node[];
-    // (undocumented)
     formId: string;
-    // (undocumented)
+    // @internal (undocumented)
     handleTextInput: () => void;
-    // (undocumented)
     list: string;
-    // (undocumented)
     maxlength: number;
-    // (undocumented)
     minlength: number;
-    // (undocumented)
     name: string;
-    // (undocumented)
     placeholder: string;
     // (undocumented)
     protected proxy: HTMLTextAreaElement;
-    // (undocumented)
     readOnly: boolean;
-    // (undocumented)
     resize: TextAreaResize;
-    // (undocumented)
     rows: number;
-    // (undocumented)
     spellcheck: boolean;
-    // (undocumented)
+    // @internal (undocumented)
     textarea: HTMLTextAreaElement;
-    // (undocumented)
+    // @internal (undocumented)
     valueChanged(): void;
 }
 
-// @public (undocumented)
+// @public
 export enum TextAreaAppearance {
-    // (undocumented)
     filled = "filled",
-    // (undocumented)
     outline = "outline"
 }
 
-// @public (undocumented)
+// @public
 export enum TextAreaResize {
-    // (undocumented)
     both = "both",
-    // (undocumented)
     horizontal = "horizontal",
-    // (undocumented)
     none = "none",
-    // (undocumented)
     vertical = "vertical"
 }
 
-// @public (undocumented)
+// @public
 export const TextAreaTemplate: import("@microsoft/fast-element").ViewTemplate<TextArea, any>;
 
 // Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "TextField" because one of its declarations is marked as @internal
@@ -856,15 +837,10 @@ export const TextFieldTemplate: import("@microsoft/fast-element").ViewTemplate<T
 
 // @public
 export enum TextFieldType {
-    // (undocumented)
     email = "email",
-    // (undocumented)
     password = "password",
-    // (undocumented)
     tel = "tel",
-    // (undocumented)
     text = "text",
-    // (undocumented)
     url = "url"
 }
 
