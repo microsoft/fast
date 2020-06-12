@@ -9,7 +9,7 @@
 </head>
 
 <body>
-    <fast-design-system-provider use-defaults>
+    <fast-design-system-provider id="design-system" use-defaults no-paint>
         <div class="main">
             <div class="toolbar">
                 <div class="toolbar-logo">
@@ -109,7 +109,15 @@
                         Additionally each example is encapsulated in its own folder which can be copied as used as a starting point.
                     </p>
                 </div>
-                <div id="iframe"></div>
+                <div id="tabs">
+                    <fast-tabs>
+                        <fast-tab data-id="iframe-tab"></fast-tab>
+                        <fast-tab data-id="code-sandbox-tab"></fast-tab>
+                        <fast-tab-panel data-id="iframe-panel"></fast-tab-panel>
+                        <fast-tab-panel data-id="code-sandbox-panel"></fast-tab-panel>
+                    </fast-tabs>
+                    </div>
+                </div>
             </div>
         </div>
     </fast-design-system-provider>

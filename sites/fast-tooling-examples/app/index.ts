@@ -3,7 +3,13 @@ import {
     FASTBadge,
     FASTDesignSystemProvider,
     FASTDivider,
+    FASTTab,
+    FASTTabPanel,
+    FASTTabs,
+    neutralLayerL1,
+    StandardLuminance,
 } from "@microsoft/fast-components";
+import { fastDesignSystemDefaults } from "@microsoft/fast-components/dist/esm/fast-design-system";
 import "./style.css";
 import examples from "./registry";
 import toolingGuidance from "./.tmp/tooling-guidance";
@@ -14,11 +20,20 @@ FASTAnchor;
 FASTBadge;
 FASTDivider;
 FASTDesignSystemProvider;
+FASTTabs;
+FASTTab;
+FASTTabPanel;
 
 /**
  * The links to examples
  */
 const exampleIds = Object.keys(examples);
+const iframeAttributes = {
+    style:
+        "width:1000px; height:500px; border:0; border-radius: 4px; overflow:hidden; padding: 20px;",
+    sandbox:
+        "allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts",
+};
 
 enum Guidance {
     tooling = "tooling-guidance",
@@ -27,16 +42,48 @@ enum Guidance {
 
 function initializeExample(id: string) {
     const textContainer = document.getElementById("text");
-    const iframeContainer = document.getElementById("iframe");
+    const tabsContainer = document.getElementById("tabs");
+    const iframeTab = document.querySelector("[data-id='iframe-tab']");
+    const iframePanel = document.querySelector("[data-id='iframe-panel']");
+    const codeSandboxTab = document.querySelector("[data-id='code-sandbox-tab']");
+    const codeSandboxPanel = document.querySelector("[data-id='code-sandbox-panel']");
+
+    if (tabsContainer !== null) {
+        tabsContainer.setAttribute("style", "display: block;");
+
+        if (iframeTab !== null) {
+            iframeTab.innerHTML = "Example";
+        }
+
+        if (iframePanel !== null) {
+            const iframe = document.createElement("iframe");
+            iframe.setAttribute("src", `/examples/${id}`);
+            Object.entries(iframeAttributes).forEach(
+                ([attributeName, attributeValue]: [string, string]) => {
+                    iframe.setAttribute(attributeName, attributeValue);
+                }
+            );
+            iframePanel.append(iframe);
+        }
+
+        if (codeSandboxTab !== null) {
+            codeSandboxTab.innerHTML = "TypeScript";
+        }
+
+        if (codeSandboxPanel !== null) {
+            const codeSandboxIframe = document.createElement("iframe");
+            codeSandboxIframe.setAttribute("src", examples[id].codeSandboxSrc);
+            Object.entries(iframeAttributes).forEach(
+                ([attributeName, attributeValue]: [string, string]) => {
+                    codeSandboxIframe.setAttribute(attributeName, attributeValue);
+                }
+            );
+            codeSandboxPanel.append(codeSandboxIframe);
+        }
+    }
 
     if (textContainer !== null) {
         textContainer.innerHTML = examples[id].text;
-    }
-
-    if (iframeContainer !== null) {
-        const iframe = document.createElement("iframe");
-        iframe.setAttribute("src", `/examples/${id}`);
-        iframeContainer.append(iframe);
     }
 }
 
@@ -56,6 +103,9 @@ function initializeGuidance(id: string) {
 }
 
 function initialize() {
+    // set up the design system provider to be in light theme
+    const designSystemProvider = document.getElementById("design-system");
+
     if (
         exampleIds.find(exampleId => {
             return `/${exampleId}` === window.location.pathname;
@@ -72,6 +122,17 @@ function initialize() {
             })
     ) {
         initializeGuidance(window.location.pathname.slice(1));
+    }
+
+    if (designSystemProvider !== null) {
+        designSystemProvider.setAttribute(
+            "background-color",
+            neutralLayerL1(
+                Object.assign({}, fastDesignSystemDefaults, {
+                    baseLayerLuminance: StandardLuminance.LightMode,
+                })
+            )
+        );
     }
 }
 
