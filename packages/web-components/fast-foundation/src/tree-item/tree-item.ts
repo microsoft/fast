@@ -38,17 +38,26 @@ export class TreeItem extends FASTElement {
     @observable
     public hasItems: boolean;
 
-    public items: HTMLSlotElement;
-    public handleItemsChange(): void {
+    @observable
+    public childItems: Node[];
+    private childItemsChanged(): void {
+        console.log("childItemsChanged ***");
+    }
+
+    @observable
+    public items: HTMLElement[];
+    private itemsChanged(oldValue, newValue): void {
         // we only want to project the slot of there will be items
-        this.hasItems = this.querySelectorAll("[slot='item']").length > 0;
+        //this.hasItems = this.querySelectorAll("[slot='item']").length > 0;
 
         if (this.$fastController.isConnected) {
-            this.items.assignedNodes().forEach((node: HTMLElement) => {
+            this.items.forEach((node: HTMLElement) => {
                 if (node instanceof TreeItem) {
                     (node as TreeItem).nested = true;
                 }
             });
+
+            this.hasItems = this.items.length > 0;
         }
     }
 
@@ -62,7 +71,7 @@ export class TreeItem extends FASTElement {
 
     constructor() {
         super();
-        this.handleItemsChange();
+        //this.handleItemsChange();
     }
 
     private getParentTreeNode(): TreeView | null | undefined {
@@ -91,6 +100,16 @@ export class TreeItem extends FASTElement {
         if (this.notifier) {
             this.notifier.unsubscribe(this, "renderCollapsedNodes");
         }
+    }
+
+    public filteredTreeItems(unfiltered: Node[]): HTMLElement[] {
+        const filteredItems: HTMLElement[] = [];
+        unfiltered.forEach((node: Node) => {
+            if (node instanceof TreeItem) {
+                filteredItems.push(node as TreeItem);
+            }
+        });
+        return filteredItems;
     }
 
     public handleChange(source: any, propertyName: string) {

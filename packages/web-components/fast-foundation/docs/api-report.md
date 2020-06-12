@@ -786,6 +786,8 @@ export enum TextFieldType {
 export class TreeItem extends FASTElement {
     constructor();
     // (undocumented)
+    childItems: Node[];
+    // (undocumented)
     connectedCallback(): void;
     // (undocumented)
     disabled: boolean;
@@ -795,6 +797,8 @@ export class TreeItem extends FASTElement {
     expandCollapseButton: HTMLDivElement;
     // (undocumented)
     expanded: boolean;
+    // (undocumented)
+    filteredTreeItems(unfiltered: Node[]): HTMLElement[];
     // (undocumented)
     focusable: boolean;
     // (undocumented)
@@ -808,13 +812,11 @@ export class TreeItem extends FASTElement {
     // (undocumented)
     handleFocus: (e: Event) => void;
     // (undocumented)
-    handleItemsChange(): void;
-    // (undocumented)
     handleKeyDown: (e: KeyboardEvent) => boolean | void;
     // (undocumented)
     hasItems: boolean;
     // (undocumented)
-    items: HTMLSlotElement;
+    items: HTMLElement[];
     // (undocumented)
     nested: boolean;
     // (undocumented)

@@ -1,4 +1,4 @@
-import { html, ref, when } from "@microsoft/fast-element";
+import { html, ref, when, children, slotted } from "@microsoft/fast-element";
 import { endTemplate, startTemplate } from "../patterns/start-end";
 import { TreeItem } from "./tree-item";
 
@@ -15,6 +15,7 @@ export const TreeItemTemplate = html<TreeItem>`
         @focus=${(x, c) => x.handleFocus(c.event as FocusEvent)}
         @blur=${(x, c) => x.handleBlur(c.event as FocusEvent)}
         @keydown=${(x, c) => x.handleKeyDown(c.event as KeyboardEvent)}
+        ${children("childItems")}
     >
         <div
             class="positioning-region"
@@ -23,7 +24,7 @@ export const TreeItemTemplate = html<TreeItem>`
         >
             <div class="content-region" part="content-region">
                 ${when(
-                    x => !!x.hasItems,
+                    x => x.childItems && x.childItems.length > 0,
                     html<TreeItem>`
                         <div
                             aria-hidden="true"
@@ -50,14 +51,13 @@ export const TreeItemTemplate = html<TreeItem>`
             </div>
         </div>
         ${when(
-            x => x.hasItems && (x.renderCollapsedChildren || x.expanded),
+            x =>
+                x.childItems &&
+                x.childItems.length > 0 &&
+                (x.renderCollapsedChildren || x.expanded),
             html<TreeItem>`
                 <div role="group" class="items" part="items">
-                    <slot
-                        name="item"
-                        ${ref("items")}
-                        @slotchange=${x => x.handleItemsChange()}
-                    ></slot>
+                    <slot name="item" ${slotted("items")}></slot>
                 </div>
             `
         )}
