@@ -16,8 +16,12 @@ interface MatchMediaStyleSheetBehavior extends Behavior {
 }
 
 /**
- * Construct a behavior to conditionally apply a stylesheet based
+ * Construct a behavior factory that will conditionally apply a stylesheet based
  * on a MediaQueryList
+ * 
+ * @param query - The MediaQueryList to subscribe to matches for.
+ * 
+ * @public
  */
 export function matchMediaStylesheetBehaviorFactory(query: MediaQueryList) {
     const cache: WeakMap<
@@ -89,9 +93,9 @@ export function matchMediaStylesheetBehaviorFactory(query: MediaQueryList) {
 }
 
 /**
- * Applies ElementStyles to a FASTElement when the
- * forced-colors media query is matched, removes the
- * ElementStyles when the query is no-longer matched
+ * Implements {@link matchMediaStylesheetBehaviorFactory} for the {@link https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors | forced-colors} query.
+ * This can be used to construct a behavior to apply a forced-colors only stylesheet.
+ * @public
  */
 export const forcedColorsStylesheetBehavior = matchMediaStylesheetBehaviorFactory(
     window.matchMedia("(forced-colors)")

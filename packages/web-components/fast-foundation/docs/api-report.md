@@ -881,8 +881,8 @@ export enum TextFieldType {
 
 // Warnings were encountered during analysis:
 //
-// dist/dts/utilities/match-media-stylesheet-behavior.d.ts:65:5 - (ae-forgotten-export) The symbol "MatchMediaStyleSheetBehavior" needs to be exported by the entry point index.d.ts
-// dist/dts/utilities/match-media-stylesheet-behavior.d.ts:65:5 - (ae-forgotten-export) The symbol "MediaQueryListListener" needs to be exported by the entry point index.d.ts
+// dist/dts/utilities/match-media-stylesheet-behavior.d.ts:69:5 - (ae-forgotten-export) The symbol "MatchMediaStyleSheetBehavior" needs to be exported by the entry point index.d.ts
+// dist/dts/utilities/match-media-stylesheet-behavior.d.ts:69:5 - (ae-forgotten-export) The symbol "MediaQueryListListener" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 
