@@ -53,7 +53,6 @@ export const FastFrameTemplate = html<FastFrame>`
                         <div class="content-control-container" >
                             <label for="background-color-pickers">Background color</label>
                             <fast-radio-group
-                                tabindex="0"
                                 name="background-color-pickers"
                                 value="${x => x.previewBackgroundPalette[0]}"
                                 @change="${(x, c) =>
@@ -64,6 +63,7 @@ export const FastFrameTemplate = html<FastFrame>`
 
                                     html<string>`
                                         <site-color-swatch
+                                            tabindex="0"
                                             value="${x => x}"
                                             background-color="${x => x}"
                                             checked="${(x, c) =>
@@ -75,7 +75,6 @@ export const FastFrameTemplate = html<FastFrame>`
                             </fast-radio-group>
                             <label for="accent-color-pickers">Accent color</label>
                             <fast-radio-group
-                                tabindex="0"
                                 name="accent-color-pickers"
                                 value="${x => x.previewAccentPalette[0]}"
                                 @change="${(x, c) =>
@@ -86,6 +85,7 @@ export const FastFrameTemplate = html<FastFrame>`
 
                                     html<string>`
                                         <site-color-swatch
+                                            tabindex="0"
                                             value="${x => x}"
                                             background-color="${x => x}"
                                             checked="${(x, c) =>
