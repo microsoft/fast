@@ -53,6 +53,7 @@ export const FastFrameTemplate = html<FastFrame>`
                         <div class="content-control-container" >
                             <label for="background-color-pickers">Background color</label>
                             <fast-radio-group
+                                tabindex="0"
                                 name="background-color-pickers"
                                 value="${x => x.previewBackgroundPalette[0]}"
                                 @change="${(x, c) =>
@@ -74,6 +75,7 @@ export const FastFrameTemplate = html<FastFrame>`
                             </fast-radio-group>
                             <label for="accent-color-pickers">Accent color</label>
                             <fast-radio-group
+                                tabindex="0"
                                 name="accent-color-pickers"
                                 value="${x => x.previewAccentPalette[0]}"
                                 @change="${(x, c) =>
@@ -147,7 +149,7 @@ export const FastFrameTemplate = html<FastFrame>`
                                     position="0"
                                 >
                                     0
-                                </fast-slider-label>            
+                                </fast-slider-label>
                                 <fast-slider-label
                                     hide-mark
                                     position="12"
@@ -371,7 +373,7 @@ export const FastFrameTemplate = html<FastFrame>`
                             !x.expanded && x.isResponsive ? "-1" : "0"}"></fast-slider>
                         <fast-flipper aria-label="flipper" tabIndex="${x =>
                             !x.expanded && x.isResponsive ? "-1" : "0"}"></fast-flipper>
-                        <fast-flipper disabled></fast-flipper>
+                        <fast-flipper disabled aria-label="disabled flipper"></fast-flipper>
                     </div>
                     <div class="control-container">
                         <fast-button appearance="accent" aria-label="accent" tabIndex="${x =>
