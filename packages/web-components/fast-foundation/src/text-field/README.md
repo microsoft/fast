@@ -27,6 +27,8 @@ export class FASTTextField extends TextField {}
 
 ## Usage
 
-```html
-<fast-text-field appearance="filled" placeholder="user@email.com">Email</fast-text-field>
+```html live
+<fast-design-system-provider use-defaults>
+    <fast-text-field appearance="filled" placeholder="user@email.com">Email</fast-text-field>
+</fast-design-system-provider>
 ```

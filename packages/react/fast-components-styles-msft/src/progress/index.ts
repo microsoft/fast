@@ -2,7 +2,7 @@ import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { ProgressClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { directionSwitch, format, multiply, toPx } from "@microsoft/fast-jss-utilities";
 import {
-    accentFillRest,
+    accentForegroundRest,
     neutralFillRest,
     neutralForegroundHint,
 } from "../utilities/color";
@@ -40,7 +40,7 @@ const styles: ComponentStyles<ProgressClassNameContract, DesignSystem> = {
             transition: "all 0.2s ease-in-out",
         },
         "& $progress_valueIndicator": {
-            stroke: accentFillRest,
+            stroke: accentForegroundRest,
             transform: directionSwitch("", "scale(1)"),
             [highContrastSelector]: {
                 stroke: HighContrastColor.buttonText,
@@ -88,7 +88,7 @@ const styles: ComponentStyles<ProgressClassNameContract, DesignSystem> = {
         width: toPx(multiply(heightNumber(), 2)),
     },
     progress_valueIndicator: {
-        background: accentFillRest,
+        background: accentForegroundRest,
         "border-radius": "100px",
         height: "100%",
         transition: "all 0.2s ease-in-out",
@@ -132,7 +132,7 @@ const styles: ComponentStyles<ProgressClassNameContract, DesignSystem> = {
         position: "absolute",
         opacity: "0",
         height: "100%",
-        "background-color": accentFillRest,
+        "background-color": accentForegroundRest,
         "border-radius": "100px",
         "animation-timing-function": "cubic-bezier(0.4, 0.0, 0.6, 1.0)",
         [highContrastSelector]: {
