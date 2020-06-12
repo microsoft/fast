@@ -5,13 +5,13 @@ sidebar_label: Introduction
 custom_edit_url: https://github.com/microsoft/fast-dna/edit/master/sites/website/src/docs/introduction.md
 ---
 
-Welcome to the FAST-DNA documentation! We're glad you're here. We can't wait to show you around.
+Welcome to the FAST documentation! We're glad you're here. We can't wait to show you around.
 
-## What is FAST-DNA?
+## What is FAST?
 
-FAST-DNA is a collection of JavaScript packages centered around web standards, designed to help you efficiently tackle some of the most common challenges in website and application development. Have you ever needed a reusable set of UI components that you could drop into your app and have an amazing experience? That's FAST-DNA. Have you ever needed to create your own components, and share them across your company, including across groups that use different, incompatible front-end frameworks? That's FAST-DNA. Have you ever needed to implement a branded experience or a design language like Microsoft's Fluent UI or Google's Material Design? That's FAST-DNA. Have you ever wanted to improve your app's startup time, speed up its rendering, or lower its memory consumption? That's FAST-DNA. Have you ever wanted to adopt more web standards and build your site or app on a native web foundation that's immune to the shifting sands of the modern JavaScript front-end landscape? That's FAST-DNA.
+FAST is a collection of JavaScript packages centered around web standards, designed to help you efficiently tackle some of the most common challenges in website and application development. Have you ever needed a reusable set of UI components that you could drop into your app and have an amazing experience? That's FAST. Have you ever needed to create your own components, and share them across your company, including across groups that use different, incompatible front-end frameworks? That's FAST. Have you ever needed to implement a branded experience or a design language like Microsoft's Fluent UI or Google's Material Design? That's FAST. Have you ever wanted to improve your app's startup time, speed up its rendering, or lower its memory consumption? That's FAST. Have you ever wanted to adopt more web standards and build your site or app on a native web foundation that's immune to the shifting sands of the modern JavaScript front-end landscape? That's FAST.
 
-Let's take a look at what each of FAST-DNA's packages give you today:
+Let's take a look at what each of FAST's packages give you today:
 
 ### fast-element
 
