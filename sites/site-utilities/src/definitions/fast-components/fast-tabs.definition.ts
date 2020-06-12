@@ -37,6 +37,14 @@ export const fastTabsDefinition: WebComponentDefinition = {
                     name: "tabpanel",
                     description: "The tabpanel slot",
                 },
+                {
+                    name: "start",
+                    description: "The start slot",
+                },
+                {
+                    name: "end",
+                    description: "The start slot",
+                },
             ],
         },
     ],
