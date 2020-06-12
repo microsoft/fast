@@ -187,20 +187,39 @@ fast-divider::after {
 }
 
 .section-badge {
-  color: var(--accent-fill-rest);
+  color: var(--accent-foreground-rest);
   font-weight: bold;
+  background: var(--neutral-fill-focus);
+  width: max-content;
+  align-self: center;
+  letter-spacing: calc((var(--design-unit) / 3) * 1px);
+  border-radius: calc(var(--corner-radius) * 1px);
+  padding: calc(var(--design-unit) * 1px) calc(var(--design-unit) * 4px);
+  margin-bottom: calc(var(--base-height-multiplier) * 1px)
 }
 
 .section-heading-hero {
   font-size: var(--type-ramp-plus-6-font-size);
   line-height: var(--type-ramp-plus-6-line-height);
-  margin: 0;
+  margin: 0 0 calc(var(--base-height-multiplier) * 2px)
 }
 
 .section-heading {
   font-size: var(--type-ramp-plus-5-font-size);
   line-height: var(--type-ramp-plus-5-line-height);
-  margin: 0;
+  margin: 0 0 calc(var(--base-height-multiplier) * 2px)
+}
+
+.section-paragraph-hero {
+  font-size: var(--type-ramp-plus-2-font-size);
+  line-height: var(--type-ramp-base-line-height);
+  margin: 0 0 calc(var(--base-height-multiplier) * 4px)
+}
+
+.section-paragraph {
+  font-size: var(--type-ramp-plus-1-font-size);
+  line-height: var(--type-ramp-plus-1-line-height);
+  margin: 0 0 calc(var(--base-height-multiplier) * 2px)
 }
 
 .divider {
