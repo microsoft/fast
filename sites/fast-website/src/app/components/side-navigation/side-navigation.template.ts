@@ -27,18 +27,13 @@ export const SideNavigationTemplate = html<SideNavigation>`
                     x => x.sectionArray,
                     html`
                         <li>
-                            <a
-                                href="#${(x, c) => c.parent.sectionArray[c.index].id}"
-                                class="scroll-link"
-                            >
-                                <div
-                                    class="scroll-indicator ${(x, c) =>
-                                        c.parent.sectionArray[c.index].id ===
-                                        c.parent.currentSection
-                                            ? "scroll-indicator-active"
-                                            : ""}"
-                                ></div>
-                            </a>
+                            <div
+                                class="scroll-indicator ${(x, c) =>
+                                    c.parent.sectionArray[c.index].id ===
+                                    c.parent.currentSection
+                                        ? "scroll-indicator-active"
+                                        : ""}"
+                            ></div>
                         </li>
                     `,
                     { positioning: true }
