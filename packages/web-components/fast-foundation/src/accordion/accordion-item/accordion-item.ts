@@ -2,12 +2,24 @@ import {
     attr,
     FASTElement,
     nullableNumberConverter,
-    observable,
 } from "@microsoft/fast-element";
 import { StartEnd } from "../../patterns/start-end";
 import { applyMixins } from "../../utilities/apply-mixins";
 
+/**
+ * An individual item in an {@link @microsoft/fast-foundation#Accordion }.
+ * @public
+ */
 export class AccordionItem extends FASTElement {
+    /**
+     * Configures the {@link https://www.w3.org/TR/wai-aria-1.1/#aria-level | level} of the
+     * heading element.
+     * 
+     * @defaultValue 2
+     * @public
+     * @remarks
+     * HTML attribute: heading-level
+     */
     @attr({
         attribute: "heading-level",
         mode: "fromView",
@@ -15,15 +27,34 @@ export class AccordionItem extends FASTElement {
     })
     public headinglevel: 1 | 2 | 3 | 4 | 5 | 6 = 2;
 
+    /**
+     * Expands or collapses the item.
+     * 
+     * @public
+     * @remarks
+     * HTML attribute: expanded
+     */
     @attr({ mode: "boolean" })
     public expanded: boolean = false;
 
+    /**
+     * The item ID
+     * 
+     * @public
+     * @remarks
+     * HTML Attribute: id
+     */
     @attr
     public id: string;
 
+    /**
+     * @internal
+     */
     public expandbutton: HTMLElement;
 
-    /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
+    /**
+     * @internal
+     */
     public clickHandler = (e: MouseEvent) => {
         this.expanded = !this.expanded;
         this.change();
@@ -34,6 +65,11 @@ export class AccordionItem extends FASTElement {
     };
 }
 
+/**
+ * Mark internal because exporting class and interface of the same name
+ * confuses API extractor
+ * @internal
+ */
 /* eslint-disable-next-line */
 export interface AccordionItem extends StartEnd {}
 applyMixins(AccordionItem, StartEnd);

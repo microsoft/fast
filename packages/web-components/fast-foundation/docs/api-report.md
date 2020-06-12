@@ -12,35 +12,29 @@ import { FASTElement } from '@microsoft/fast-element';
 import { Orientation } from '@microsoft/fast-web-utilities';
 import { PartialFASTElementDefinition } from '@microsoft/fast-element';
 
-// @public (undocumented)
+// @public
 export class Accordion extends FASTElement {
-    // (undocumented)
+    // @internal (undocumented)
     accordionItems: HTMLElement[];
-    // (undocumented)
+    // @internal (undocumented)
     accordionItemsChanged(oldValue: any, newValue: any): void;
-    // (undocumented)
     expandmode: AccordionExpandMode;
     }
 
-// @public (undocumented)
+// @public
 export enum AccordionExpandMode {
-    // (undocumented)
     multi = "multi",
-    // (undocumented)
     single = "single"
 }
 
-// @public (undocumented)
+// @public
 export class AccordionItem extends FASTElement {
-    // (undocumented)
+    // @internal (undocumented)
     clickHandler: (e: MouseEvent) => void;
-    // (undocumented)
+    // @internal (undocumented)
     expandbutton: HTMLElement;
-    // (undocumented)
     expanded: boolean;
-    // (undocumented)
     headinglevel: 1 | 2 | 3 | 4 | 5 | 6;
-    // (undocumented)
     id: string;
 }
 
@@ -54,7 +48,7 @@ export const AccordionItemTemplate: import("@microsoft/fast-element").ViewTempla
 // @public (undocumented)
 export const AccordionTemplate: import("@microsoft/fast-element").ViewTemplate<Accordion, any>;
 
-// @public (undocumented)
+// @public
 export class Anchor extends FASTElement {
     // (undocumented)
     appearance: AnchorAppearance;

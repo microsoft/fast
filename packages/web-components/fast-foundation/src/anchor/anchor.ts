@@ -3,9 +3,28 @@ import { ButtonAppearance } from "../button/button";
 import { StartEnd } from "../patterns/start-end";
 import { applyMixins } from "../utilities/apply-mixins";
 
+/**
+ * @public
+ */
 export type AnchorAppearance = ButtonAppearance | "hypertext";
+
+/**
+ * Some documentation
+ * @remarks
+ * Some remarkable content
+ * 
+ * @public
+ */
 export class Anchor extends FASTElement {
+    
     @attr
+    /**
+     * Appearance property
+     * 
+     * @test
+     * Test content
+     * @public
+     */
     public appearance: AnchorAppearance = "neutral";
 
     @attr
@@ -34,5 +53,8 @@ export class Anchor extends FASTElement {
 }
 
 /* eslint-disable-next-line */
+/**
+ * @public
+ */
 export interface Anchor extends StartEnd {}
 applyMixins(Anchor, StartEnd);
