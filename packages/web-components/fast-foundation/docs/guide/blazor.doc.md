@@ -82,7 +82,6 @@ For a splash of style, add the following to your `wwwroot/css/app.css` file:
 ```css
 fast-design-system-provider {
   display: inline-block;
-  color: var(--neutral-foreground-rest);
 }
 
 fast-card {

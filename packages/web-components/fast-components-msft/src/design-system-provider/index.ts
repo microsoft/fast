@@ -1,16 +1,31 @@
-import { nullableNumberConverter } from "@microsoft/fast-element";
+import { attr, css, nullableNumberConverter } from "@microsoft/fast-element";
 import {
     DensityOffset,
     DesignSystem,
     DesignSystemDefaults,
+    neutralForegroundRest,
 } from "@microsoft/fast-components-styles-msft";
 import {
+    CSSCustomPropertyBehavior,
     designSystemProperty,
-    designSystemProvider,
     DesignSystemProvider,
+    designSystemProvider,
     DesignSystemProviderTemplate as template,
 } from "@microsoft/fast-foundation";
 import { DesignSystemProviderStyles as styles } from "./design-system-provider.styles";
+
+const color = new CSSCustomPropertyBehavior(
+    "neutral-foreground-rest",
+    neutralForegroundRest,
+    (el: FASTDesignSystemProvider) => el
+);
+
+const backgroundStyles = css`
+    :host {
+        background-color: var(--background-color);
+        color: ${color.var};
+    }
+`.withBehaviors(color);
 
 @designSystemProvider({
     name: "fast-design-system-provider",
@@ -28,6 +43,24 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
             | "neutralForegroundLightIndex"
         > {
     /**
+     * Used to instruct the FASTDesignSystemProvider
+     * that it should not set the CSS
+     * background-color and color properties
+     *
+     * @remarks
+     * HTML boolean boolean attribute: no-paint
+     */
+    @attr({ attribute: "no-paint", mode: "boolean" })
+    public noPaint = false;
+    private noPaintChanged() {
+        if (!this.noPaint && this.backgroundColor !== void 0) {
+            this.$fastController.addStyles(backgroundStyles);
+        } else {
+            this.$fastController.removeStyles(backgroundStyles);
+        }
+    }
+
+    /**
      * Define design system property attributes
      */
     @designSystemProperty({
@@ -35,6 +68,11 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
         default: DesignSystemDefaults.backgroundColor,
     })
     public backgroundColor: string;
+    private backgroundColorChanged() {
+        // If background changes or is removed, we need to
+        // re-evaluate whether we should have paint styles applied
+        this.noPaintChanged();
+    }
 
     @designSystemProperty({
         attribute: "accent-base-color",
