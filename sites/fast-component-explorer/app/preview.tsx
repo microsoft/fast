@@ -38,7 +38,6 @@ import {
     previewDirection,
     previewTheme,
 } from "./explorer";
-import { nativeElementTags } from "./utilities";
 
 // Prevent tree shaking
 FASTComponents;
@@ -197,21 +196,19 @@ class Preview extends Foundation<
                         tags: Object.entries({
                             ...componentDefinitions,
                             ...nativeElementDefinitions,
-                        })
-                            .reduce(
-                                (
-                                    previousValue: WebComponentDefinitionTag[],
-                                    currentValue: [string, WebComponentDefinition]
-                                ) => {
-                                    if (Array.isArray(currentValue[1].tags)) {
-                                        return previousValue.concat(currentValue[1].tags);
-                                    }
+                        }).reduce(
+                            (
+                                previousValue: WebComponentDefinitionTag[],
+                                currentValue: [string, WebComponentDefinition]
+                            ) => {
+                                if (Array.isArray(currentValue[1].tags)) {
+                                    return previousValue.concat(currentValue[1].tags);
+                                }
 
-                                    return previousValue;
-                                },
-                                []
-                            )
-                            .concat(nativeElementTags),
+                                return previousValue;
+                            },
+                            []
+                        ),
                     }),
                     resolver: htmlResolver,
                 })
