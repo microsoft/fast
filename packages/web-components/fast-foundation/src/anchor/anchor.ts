@@ -4,15 +4,14 @@ import { StartEnd } from "../patterns/start-end";
 import { applyMixins } from "../utilities/apply-mixins";
 
 /**
- * Type types of anchor appearance.
+ * Types of anchor appearance.
  * @public
  */
 export type AnchorAppearance = ButtonAppearance | "hypertext";
 
 /**
- * Some documentation
- * @remarks
- * Some remarkable content
+ * An Anchor Custom HTML Element.
+ * Based largely on the {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a | <a> element }.
  * 
  * @public
  */

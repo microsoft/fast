@@ -812,59 +812,49 @@ export enum TextAreaResize {
 // @public (undocumented)
 export const TextAreaTemplate: import("@microsoft/fast-element").ViewTemplate<TextArea, any>;
 
-// @public (undocumented)
+// Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "TextField" because one of its declarations is marked as @internal
+//
+// @public
 export class TextField extends FormAssociated<HTMLInputElement> {
+    // @internal
     constructor();
-    // (undocumented)
     appearance: TextFieldAppearance;
-    // (undocumented)
     autofocus: boolean;
-    // (undocumented)
+    // @internal (undocumented)
     connectedCallback(): void;
-    // (undocumented)
+    // @internal (undocumented)
     control: HTMLInputElement;
-    // (undocumented)
+    // @internal (undocumented)
     defaultSlottedNodes: Node[];
-    // (undocumented)
+    // @internal (undocumented)
     handleTextInput(): void;
-    // (undocumented)
     list: string;
-    // (undocumented)
     maxlength: number;
-    // (undocumented)
     minlength: number;
-    // (undocumented)
     pattern: string;
-    // (undocumented)
     placeholder: string;
     // (undocumented)
     protected proxy: HTMLInputElement;
-    // (undocumented)
     readOnly: boolean;
-    // (undocumented)
     size: number;
-    // (undocumented)
     spellcheck: boolean;
-    // (undocumented)
     type: TextFieldType;
     }
 
-// @public (undocumented)
+// @internal
 export interface TextField extends StartEnd {
 }
 
-// @public (undocumented)
+// @public
 export enum TextFieldAppearance {
-    // (undocumented)
     filled = "filled",
-    // (undocumented)
     outline = "outline"
 }
 
-// @public (undocumented)
+// @public
 export const TextFieldTemplate: import("@microsoft/fast-element").ViewTemplate<TextField, any>;
 
-// @public (undocumented)
+// @public
 export enum TextFieldType {
     // (undocumented)
     email = "email",
