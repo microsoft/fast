@@ -408,7 +408,7 @@ function mapAttributesToJSONSchema(
                 optionalAttributeProperties.enum = attribute.values.map(
                     attributeValue => {
                         return attribute.type === DataType.number
-                            ? parseInt(attributeValue.name, 10)
+                            ? parseInt(attributeValue.name as string, 10)
                             : attributeValue.name;
                     }
                 );
