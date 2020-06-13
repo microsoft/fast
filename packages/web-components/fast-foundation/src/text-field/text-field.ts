@@ -262,9 +262,7 @@ export class TextField extends FormAssociated<HTMLInputElement> {
 }
 
 /**
- * Mark internal because exporting class and interface of the same name
- * confuses API extractor
- * @internal
+ * @public
  */
 /* eslint-disable-next-line */
 export interface TextField extends StartEnd {}

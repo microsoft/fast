@@ -692,40 +692,36 @@ export class Switch extends FormAssociated<HTMLInputElement> {
     value: string;
     }
 
-// @public (undocumented)
+// @public
 export const SwitchTemplate: import("@microsoft/fast-element").ViewTemplate<Switch, any>;
 
-// @public (undocumented)
+// @public
 export class Tab extends FASTElement {
 }
 
-// @public (undocumented)
+// @public
 export class TabPanel extends FASTElement {
 }
 
-// @public (undocumented)
+// @public
 export const TabPanelTemplate: import("@microsoft/fast-element").ViewTemplate<TabPanel, any>;
 
-// @public (undocumented)
+// @public
 export class Tabs extends FASTElement {
     constructor();
-    // (undocumented)
     activeid: string;
-    // (undocumented)
     activeindicator: boolean;
-    // (undocumented)
+    // @internal (undocumented)
     activeIndicatorRef: HTMLElement;
-    // (undocumented)
     activetab: HTMLElement;
-    // (undocumented)
     orientation: TabsOrientation;
-    // (undocumented)
+    // @internal (undocumented)
     tabpanels: HTMLElement[];
-    // (undocumented)
+    // @internal (undocumented)
     tabpanelsChanged(): void;
-    // (undocumented)
+    // @internal (undocumented)
     tabs: HTMLElement[];
-    // (undocumented)
+    // @internal (undocumented)
     tabsChanged(): void;
     }
 
@@ -733,7 +729,7 @@ export class Tabs extends FASTElement {
 export interface Tabs extends StartEnd {
 }
 
-// @public (undocumented)
+// @public
 export enum TabsOrientation {
     // (undocumented)
     horizontal = "horizontal",
@@ -741,10 +737,10 @@ export enum TabsOrientation {
     vertical = "vertical"
 }
 
-// @public (undocumented)
+// @public
 export const TabsTemplate: import("@microsoft/fast-element").ViewTemplate<Tabs, any>;
 
-// @public (undocumented)
+// @public
 export const TabTemplate: import("@microsoft/fast-element").ViewTemplate<Tab, any>;
 
 // @public
@@ -793,8 +789,6 @@ export enum TextAreaResize {
 // @public
 export const TextAreaTemplate: import("@microsoft/fast-element").ViewTemplate<TextArea, any>;
 
-// Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "TextField" because one of its declarations is marked as @internal
-//
 // @public
 export class TextField extends FormAssociated<HTMLInputElement> {
     // @internal
@@ -822,7 +816,7 @@ export class TextField extends FormAssociated<HTMLInputElement> {
     type: TextFieldType;
     }
 
-// @internal
+// @public (undocumented)
 export interface TextField extends StartEnd {
 }
 

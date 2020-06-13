@@ -11,20 +11,49 @@ import {
 import { StartEnd } from "../patterns/start-end";
 import { applyMixins } from "../utilities/apply-mixins";
 
+/**
+ * The orientation of the {@link @microsoft/fast-foundation#(Tabs:class)} component
+ * @public
+ */
 export enum TabsOrientation {
     vertical = "vertical",
     horizontal = "horizontal",
 }
 
+/**
+ * An Tabs Custom HTML Element.
+ * Implements the {@link https://www.w3.org/TR/wai-aria-1.1/#tablist | ARIA tablist }.
+ * 
+ * @public
+ */
 export class Tabs extends FASTElement {
+    /**
+     * The orientation
+     * @public
+     * @remarks
+     * HTML Attribute: orientation
+     */
     @attr
     public orientation: TabsOrientation = TabsOrientation.horizontal;
 
+    /**
+     * The id of the active tab
+     * 
+     * @public
+     * @remarks
+     * HTML Attribute: activeid
+     */
     @attr
     public activeid: string;
 
+    /**
+     * @internal
+     */
     @observable
     public tabs: HTMLElement[];
+    /**
+     * @internal
+     */
     public tabsChanged(): void {
         if (
             this.$fastController.isConnected &&
@@ -36,8 +65,14 @@ export class Tabs extends FASTElement {
         }
     }
 
+    /**
+     * @internal
+     */
     @observable
     public tabpanels: HTMLElement[];
+    /**
+     * @internal
+     */
     public tabpanelsChanged(): void {
         if (
             this.$fastController.isConnected &&
@@ -49,11 +84,25 @@ export class Tabs extends FASTElement {
         }
     }
 
+    /**
+     * Whether or not to show the active indicator
+     * @public
+     * @remarks
+     * HTML Attribute: activeindicator
+     */
     @attr({ mode: "boolean" })
     public activeindicator = true;
 
+    /**
+     * @internal
+     */
     @observable
     public activeIndicatorRef: HTMLElement;
+
+    /**
+     * A reference to the active tab
+     * @public
+     */
     public activetab: HTMLElement;
 
     private prevActiveTabIndex: number = 0;
@@ -277,6 +326,9 @@ export class Tabs extends FASTElement {
     }
 }
 
+/**
+ * @public
+ */
 /* eslint-disable-next-line */
 export interface Tabs extends StartEnd {}
 applyMixins(Tabs, StartEnd);
