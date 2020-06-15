@@ -34,21 +34,15 @@ body {
 .social-links,
 .section-scroll {
   position: fixed;
-  top: 34%;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 .section-scroll {
   right: 0%;
 }
 
-@media screen and (max-height: 500px) {
-  .social-links,
-  .section-scroll {
-    top: 20%;
-  }
-}
-
-@media screen and (max-height: 390px) {
+@media screen and (max-height: 390px), screen and (max-width: 1000px) {
   .social-links,
   .section-scroll {
     display: none;
@@ -231,13 +225,6 @@ fast-divider::after {
 @media screen and (max-width: 1330px) {
   .wrapper {
     grid-template-columns: minmax(5vw, 1fr) minmax(0px, 800px) minmax(5vw, 1fr);
-  }
-}
-
-@media screen and (max-width: 1000px) {
-  .social-links,
-  .section-scroll {
-    display: none;
   }
 }
 
