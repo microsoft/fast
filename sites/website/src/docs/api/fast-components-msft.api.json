@@ -70,6 +70,34 @@
         },
         {
           "kind": "Class",
+          "canonicalReference": "@microsoft/fast-components-msft!FASTAccordionItem:class",
+          "docComment": "",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "export declare class FASTAccordionItem extends "
+            },
+            {
+              "kind": "Reference",
+              "text": "AccordionItem",
+              "canonicalReference": "@microsoft/fast-foundation!AccordionItem:class"
+            },
+            {
+              "kind": "Content",
+              "text": " "
+            }
+          ],
+          "releaseTag": "Public",
+          "name": "FASTAccordionItem",
+          "members": [],
+          "extendsTokenRange": {
+            "startIndex": 1,
+            "endIndex": 3
+          },
+          "implementsTokenRanges": []
+        },
+        {
+          "kind": "Class",
           "canonicalReference": "@microsoft/fast-components-msft!FASTAnchor:class",
           "docComment": "",
           "excerptTokens": [
@@ -1549,6 +1577,32 @@
               ],
               "releaseTag": "Public",
               "name": "neutralPalette",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@microsoft/fast-components-msft!FASTDesignSystemProvider#noPaint:member",
+              "docComment": "/**\n * Used to instruct the FASTDesignSystemProvider that it should not set the CSS background-color and color properties\n *\n * @remarks\n *\n * HTML boolean boolean attribute: no-paint\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "noPaint: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "boolean"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "noPaint",
               "propertyTypeTokenRange": {
                 "startIndex": 1,
                 "endIndex": 2
