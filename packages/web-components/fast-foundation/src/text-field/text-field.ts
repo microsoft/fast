@@ -3,23 +3,76 @@ import { FormAssociated } from "../form-associated/index";
 import { StartEnd } from "../patterns/start-end";
 import { applyMixins } from "../utilities/index";
 
+/**
+ * Text field appearances
+ * @public
+ */
 export enum TextFieldAppearance {
+    /**
+     * A solid, filled appearance.
+     */
     filled = "filled",
+
+    /**
+     * A light, outline appearance.
+     */
     outline = "outline",
 }
 
+/**
+ * Text field sub-types
+ * @public
+ */
 export enum TextFieldType {
+    /**
+     * An email TextField
+     */
     email = "email",
+
+    /**
+     * A password TextField
+     */
     password = "password",
+
+    /**
+     * A telephone TextField
+     */
     tel = "tel",
+
+    /**
+     * A text TextField
+     */
     text = "text",
+
+    /**
+     * A URL TextField
+     */
     url = "url",
 }
 
+/**
+ * An Text Field Custom HTML Element.
+ * Based largely on the {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/text | <input type="text" /> element }.
+ *
+ * @public
+ */
 export class TextField extends FormAssociated<HTMLInputElement> {
+    /**
+     * The appearance of the element.
+     *
+     * @public
+     * @remarks
+     * HTML Attribute: appearance
+     */
     @attr
     public appearance: TextFieldAppearance = TextFieldAppearance.outline;
 
+    /**
+     * When true, the control will be immutable by user interaction. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly | readonly HTML attribute} for more information.
+     * @public
+     * @remarks
+     * HTML Attribute: readonly
+     */
     @attr({ attribute: "readonly", mode: "boolean" })
     public readOnly: boolean;
     private readOnlyChanged(): void {
@@ -28,6 +81,12 @@ export class TextField extends FormAssociated<HTMLInputElement> {
         }
     }
 
+    /**
+     * Indicates that this element should get focus after the page finishes loading. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefautofocus | autofocus HTML attribute} for more information.
+     * @public
+     * @remarks
+     * HTML Attribute: autofocus
+     */
     @attr({ mode: "boolean" })
     public autofocus: boolean;
     private autofocusChanged(): void {
@@ -36,6 +95,13 @@ export class TextField extends FormAssociated<HTMLInputElement> {
         }
     }
 
+    /**
+     * Sets the placeholder value of the element, generally used to provide a hint to the user.
+     * @public
+     * @remarks
+     * HTML Attribute: placeholder
+     * Using this attribute does is not a valid substitute for a labeling element.
+     */
     @attr
     public placeholder: string;
     private placeholderChanged(): void {
@@ -44,6 +110,12 @@ export class TextField extends FormAssociated<HTMLInputElement> {
         }
     }
 
+    /**
+     * Allows setting a type or mode of text.
+     * @public
+     * @remarks
+     * HTML Attribute: type
+     */
     @attr
     public type: TextFieldType = TextFieldType.text;
     private typeChanged(): void {
@@ -52,6 +124,12 @@ export class TextField extends FormAssociated<HTMLInputElement> {
         }
     }
 
+    /**
+     * Allows associating a {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/datalist | datalist} to the element by {@link https://developer.mozilla.org/en-US/docs/Web/API/Element/id}.
+     * @public
+     * @remarks
+     * HTML Attribute: list
+     */
     @attr
     public list: string;
     private listChanged(): void {
@@ -60,6 +138,12 @@ export class TextField extends FormAssociated<HTMLInputElement> {
         }
     }
 
+    /**
+     * The maximum number of characters a user can enter.
+     * @public
+     * @remarks
+     * HTMLAttribute: maxlength
+     */
     @attr({ converter: nullableNumberConverter })
     public maxlength: number;
     private maxlengthChanged(): void {
@@ -68,6 +152,12 @@ export class TextField extends FormAssociated<HTMLInputElement> {
         }
     }
 
+    /**
+     * The minimum number of characters a user can enter.
+     * @public
+     * @remarks
+     * HTMLAttribute: minlength
+     */
     @attr({ converter: nullableNumberConverter })
     public minlength: number;
     private minlengthChanged(): void {
@@ -76,6 +166,12 @@ export class TextField extends FormAssociated<HTMLInputElement> {
         }
     }
 
+    /**
+     * A regular expression that the value must match to pass validation.
+     * @public
+     * @remarks
+     * HTMLAttribute: pattern
+     */
     @attr
     public pattern: string;
     private patternChanged(): void {
@@ -84,6 +180,12 @@ export class TextField extends FormAssociated<HTMLInputElement> {
         }
     }
 
+    /**
+     * Sets the width of the element to a specified number of characters.
+     * @public
+     * @remarks
+     * HTMLAttribute: size
+     */
     @attr({ converter: nullableNumberConverter })
     public size: number;
     private sizeChanged(): void {
@@ -92,6 +194,12 @@ export class TextField extends FormAssociated<HTMLInputElement> {
         }
     }
 
+    /**
+     * Sets the width of the element to a specified number of characters.
+     * @public
+     * @remarks
+     * HTMLAttribute: size
+     */
     @attr({ mode: "boolean" })
     public spellcheck: boolean;
     private spellcheckChanged(): void {
@@ -100,6 +208,9 @@ export class TextField extends FormAssociated<HTMLInputElement> {
         }
     }
 
+    /**
+     * @internal
+     */
     @observable
     public defaultSlottedNodes: Node[];
 
@@ -111,16 +222,25 @@ export class TextField extends FormAssociated<HTMLInputElement> {
         this.$emit("change", this.value);
     }
 
+    /**
+     * @internal
+     */
     public control: HTMLInputElement;
 
     protected proxy = document.createElement("input");
 
+    /**
+     * @internal
+     */
     constructor() {
         super();
 
         this.proxy.setAttribute("type", this.type);
     }
 
+    /**
+     * @internal
+     */
     public connectedCallback(): void {
         super.connectedCallback();
 
@@ -131,12 +251,19 @@ export class TextField extends FormAssociated<HTMLInputElement> {
         this.setFormValue(this.value, this.value);
     }
 
+    /**
+     * @internal
+     */
     public handleTextInput(): void {
         if (this.control && this.control.value) {
             this.value = this.control.value;
         }
     }
 }
+
+/**
+ * @public
+ */
 /* eslint-disable-next-line */
 export interface TextField extends StartEnd {}
 applyMixins(TextField, StartEnd);
