@@ -13,12 +13,19 @@ module.exports = {
             async: true,
         },
     ],
-    themes: ["@docusaurus/theme-live-codeblock"],
+    themes: [require.resolve("@docusaurus/theme-live-codeblock")],
     themeConfig: {
         navbar: {
             logo: {
                 alt: "FAST-DNA",
                 src: "img/logo.svg",
+
+                // FIXME: #3299 Docusaurus displays a blank page when clicking the logo link without workaround
+                target: "_blank",
+                ...(process.env.NODE_ENV === "production" && {
+                    href: "https://www.fast.design",
+                    target: "_self",
+                }),
             },
             links: [
                 {
