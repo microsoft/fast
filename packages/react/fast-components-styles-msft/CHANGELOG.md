@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.28.13](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@4.28.12...@microsoft/fast-components-styles-msft@4.28.13) (2020-06-15)
+
+
+### Bug Fixes
+
+* react datagrid - don't unnecessarily hardcode layout panel ([#3285](https://github.com/Microsoft/fast-dna/issues/3285)) ([c3678f6](https://github.com/Microsoft/fast-dna/commit/c3678f684c09145d194367153c6839280f33730a))
+* update progress from accent fill to accent foreground ([#3277](https://github.com/Microsoft/fast-dna/issues/3277)) ([447c5a3](https://github.com/Microsoft/fast-dna/commit/447c5a3a71e99a6fcfb7cc2ef2e332027c01d96d))
+
+
+
+
+
 ## [4.28.11](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@4.28.10...@microsoft/fast-components-styles-msft@4.28.11) (2020-06-05)
 
 **Note:** Version bump only for package @microsoft/fast-components-styles-msft

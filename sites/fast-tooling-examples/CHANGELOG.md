@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.2.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-examples@0.1.3...@microsoft/fast-tooling-examples@0.2.0) (2020-06-15)
+
+
+### Features
+
+* add a conversion script for fast-tooling and fast-tooling react into the tooling-examples site ([#3288](https://github.com/Microsoft/fast-dna/issues/3288)) ([d7a962d](https://github.com/Microsoft/fast-dna/commit/d7a962db57025370cedce21ec57f48917c4ec4e2))
+
+
+
+
+
 ## [0.1.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-examples@0.1.1...@microsoft/fast-tooling-examples@0.1.2) (2020-06-09)
 
 **Note:** Version bump only for package @microsoft/fast-tooling-examples
