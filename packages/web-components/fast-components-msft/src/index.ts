@@ -17,3 +17,6 @@ export * from "./switch/";
 export * from "./tabs/";
 export * from "./text-area/";
 export * from "./text-field/";
+
+// export styles and utils
+export * from "./styles";

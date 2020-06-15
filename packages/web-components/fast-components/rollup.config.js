@@ -6,7 +6,7 @@ import commonJS from "rollup-plugin-commonjs";
 
 export default [
     {
-        input: "src/index.ts",
+        input: "src/index-rollup.ts",
         output: [
             {
                 file: "dist/fast-components.js",
@@ -26,7 +26,7 @@ export default [
         ],
     },
     {
-        input: "src/index.ts",
+        input: "src/index-rollup.ts",
         output: [
             {
                 file: "dist/fast-components.min.js",

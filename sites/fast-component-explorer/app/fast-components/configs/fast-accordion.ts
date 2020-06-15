@@ -2,10 +2,18 @@ import { fastComponentSchemas, textSchema } from "@microsoft/site-utilities";
 import { uniqueId } from "lodash-es";
 import { DataDictionary } from "@microsoft/fast-tooling";
 import Guidance from "../../.tmp/accordion/guidance";
+import { placeholderIcon } from "../utilities/icons";
 import { ComponentViewConfig } from "./data.props";
 
 export const fastAccordionId = "fast-accordion";
 export const fastAccordionItemId = "fast-accordion-item";
+export const fastCheckboxId = "fast-checkbox";
+export const fastButtonId = "fast-button";
+
+const defaultPlaceholderIcon1 = placeholderIcon("Slot1End", "Slot");
+const defaultPlaceholderIcon2 = placeholderIcon("Slot2End", "Slot");
+const defaultPlaceholderIcon3 = placeholderIcon("Slot3End", "Slot");
+const defaultPlaceholderIcon4 = placeholderIcon("Slot4End", "Slot");
 
 function collapsedIcon(parent: string): DataDictionary<any> {
     const collapsedIconID = uniqueId("CollapsedIcon");
@@ -161,6 +169,685 @@ const fastAccordionConfig: ComponentViewConfig = {
                     root: {
                         schemaId: fastAccordionId,
                         data: {
+                            SlotItem: [
+                                {
+                                    id: "Slot1",
+                                },
+                                {
+                                    id: "Slot2",
+                                },
+                                {
+                                    id: "Slot3",
+                                },
+                                {
+                                    id: "Slot4",
+                                },
+                            ],
+                        },
+                    },
+                    Slot1: {
+                        parent: {
+                            id: "root",
+                            dataLocation: "SlotItem",
+                        },
+                        schemaId: fastAccordionItemId,
+                        data: {
+                            Slot: [
+                                {
+                                    id: "Slot10",
+                                },
+                            ],
+                            SlotHeading: [
+                                {
+                                    id: "Slot11",
+                                },
+                            ],
+                            SlotExpandedIcon: [
+                                {
+                                    id: expandedIcon1[1],
+                                },
+                            ],
+                            SlotCollapsedIcon: [
+                                {
+                                    id: collapsedIcon1[1],
+                                },
+                            ],
+                        },
+                    },
+                    Slot10: {
+                        parent: {
+                            id: "Slot1",
+                            dataLocation: "Slot",
+                        },
+                        schemaId: textSchema.id,
+                        data: "Accordion one content",
+                    },
+                    Slot11: {
+                        parent: {
+                            id: "Slot1",
+                            dataLocation: "SlotHeading",
+                        },
+                        schemaId: "div",
+                        data: {
+                            Slot: [
+                                {
+                                    id: "Slot110",
+                                },
+                            ],
+                        },
+                    },
+                    Slot110: {
+                        parent: {
+                            id: "Slot11",
+                            dataLocation: "Slot",
+                        },
+                        schemaId: textSchema.id,
+                        data: "Accordion one",
+                    },
+                    Slot2: {
+                        parent: {
+                            id: "root",
+                            dataLocation: "SlotItem",
+                        },
+                        schemaId: fastAccordionItemId,
+                        data: {
+                            Slot: [
+                                {
+                                    id: "Slot20",
+                                },
+                            ],
+                            SlotHeading: [
+                                {
+                                    id: "Slot21",
+                                },
+                            ],
+                            SlotExpandedIcon: [
+                                {
+                                    id: expandedIcon2[1],
+                                },
+                            ],
+                            SlotCollapsedIcon: [
+                                {
+                                    id: collapsedIcon2[1],
+                                },
+                            ],
+                        },
+                    },
+                    Slot20: {
+                        parent: {
+                            id: "Slot2",
+                            dataLocation: "Slot",
+                        },
+                        schemaId: textSchema.id,
+                        data: "Accordion two content",
+                    },
+                    Slot21: {
+                        parent: {
+                            id: "Slot2",
+                            dataLocation: "SlotHeading",
+                        },
+                        schemaId: "div",
+                        data: {
+                            Slot: [
+                                {
+                                    id: "Slot210",
+                                },
+                            ],
+                        },
+                    },
+                    Slot210: {
+                        parent: {
+                            id: "Slot21",
+                            dataLocation: "Slot",
+                        },
+                        schemaId: textSchema.id,
+                        data: "Accordion two",
+                    },
+                    Slot3: {
+                        parent: {
+                            id: "root",
+                            dataLocation: "SlotItem",
+                        },
+                        schemaId: fastAccordionItemId,
+                        data: {
+                            Slot: [
+                                {
+                                    id: "Slot30",
+                                },
+                            ],
+                            SlotHeading: [
+                                {
+                                    id: "Slot31",
+                                },
+                            ],
+                            SlotExpandedIcon: [
+                                {
+                                    id: expandedIcon3[1],
+                                },
+                            ],
+                            SlotCollapsedIcon: [
+                                {
+                                    id: collapsedIcon3[1],
+                                },
+                            ],
+                        },
+                    },
+                    Slot30: {
+                        parent: {
+                            id: "Slot3",
+                            dataLocation: "Slot",
+                        },
+                        schemaId: textSchema.id,
+                        data: "Accordion three content",
+                    },
+                    Slot31: {
+                        parent: {
+                            id: "Slot3",
+                            dataLocation: "SlotHeading",
+                        },
+                        schemaId: "div",
+                        data: {
+                            Slot: [
+                                {
+                                    id: "Slot310",
+                                },
+                            ],
+                        },
+                    },
+                    Slot310: {
+                        parent: {
+                            id: "Slot31",
+                            dataLocation: "Slot",
+                        },
+                        schemaId: textSchema.id,
+                        data: "Accordion three",
+                    },
+                    Slot4: {
+                        parent: {
+                            id: "root",
+                            dataLocation: "SlotItem",
+                        },
+                        schemaId: fastAccordionItemId,
+                        data: {
+                            Slot: [
+                                {
+                                    id: "Slot40",
+                                },
+                            ],
+                            SlotHeading: [
+                                {
+                                    id: "Slot41",
+                                },
+                            ],
+                            SlotExpandedIcon: [
+                                {
+                                    id: expandedIcon4[1],
+                                },
+                            ],
+                            SlotCollapsedIcon: [
+                                {
+                                    id: collapsedIcon4[1],
+                                },
+                            ],
+                        },
+                    },
+                    Slot40: {
+                        parent: {
+                            id: "Slot4",
+                            dataLocation: "Slot",
+                        },
+                        schemaId: textSchema.id,
+                        data: "Accordion four content",
+                    },
+                    Slot41: {
+                        parent: {
+                            id: "Slot4",
+                            dataLocation: "SlotHeading",
+                        },
+                        schemaId: "div",
+                        data: {
+                            Slot: [
+                                {
+                                    id: "Slot410",
+                                },
+                            ],
+                        },
+                    },
+                    Slot410: {
+                        parent: {
+                            id: "Slot41",
+                            dataLocation: "Slot",
+                        },
+                        schemaId: textSchema.id,
+                        data: "Accordion four",
+                    },
+                    ...collapsedIcon1[0],
+                    ...collapsedIcon2[0],
+                    ...collapsedIcon3[0],
+                    ...collapsedIcon4[0],
+                    ...expandedIcon1[0],
+                    ...expandedIcon2[0],
+                    ...expandedIcon3[0],
+                    ...expandedIcon4[0],
+                },
+                "root",
+            ],
+        },
+        {
+            displayName: "With start and end",
+            dataDictionary: [
+                {
+                    root: {
+                        schemaId: fastAccordionId,
+                        data: {
+                            SlotItem: [
+                                {
+                                    id: "Slot1",
+                                },
+                                {
+                                    id: "Slot2",
+                                },
+                                {
+                                    id: "Slot3",
+                                },
+                                {
+                                    id: "Slot4",
+                                },
+                            ],
+                        },
+                    },
+                    Slot1: {
+                        parent: {
+                            id: "root",
+                            dataLocation: "SlotItem",
+                        },
+                        schemaId: fastAccordionItemId,
+                        data: {
+                            Slot: [
+                                {
+                                    id: "Slot10",
+                                },
+                            ],
+                            SlotHeading: [
+                                {
+                                    id: "Slot11",
+                                },
+                            ],
+                            SlotExpandedIcon: [
+                                {
+                                    id: expandedIcon1[1],
+                                },
+                            ],
+                            SlotCollapsedIcon: [
+                                {
+                                    id: collapsedIcon1[1],
+                                },
+                            ],
+                            SlotStart: [
+                                {
+                                    id: "Slot1Start",
+                                },
+                            ],
+                            SlotEnd: [
+                                {
+                                    id: "Slot1End",
+                                },
+                            ],
+                        },
+                    },
+                    Slot1Start: {
+                        parent: {
+                            id: "Slot1",
+                            dataLocation: "SlotStart",
+                        },
+                        schemaId: fastCheckboxId,
+                        data: {},
+                    },
+                    Slot1End: {
+                        parent: {
+                            id: "Slot1",
+                            dataLocation: "SlotEnd",
+                        },
+                        schemaId: fastButtonId,
+                        data: {
+                            appearance: "stealth",
+                            Slot: [
+                                {
+                                    id: defaultPlaceholderIcon1[1],
+                                },
+                            ],
+                        },
+                    },
+                    ...defaultPlaceholderIcon1[0],
+                    Slot10: {
+                        parent: {
+                            id: "Slot1",
+                            dataLocation: "Slot",
+                        },
+                        schemaId: textSchema.id,
+                        data: "Accordion one content",
+                    },
+                    Slot11: {
+                        parent: {
+                            id: "Slot1",
+                            dataLocation: "SlotHeading",
+                        },
+                        schemaId: "div",
+                        data: {
+                            Slot: [
+                                {
+                                    id: "Slot110",
+                                },
+                            ],
+                        },
+                    },
+                    Slot110: {
+                        parent: {
+                            id: "Slot11",
+                            dataLocation: "Slot",
+                        },
+                        schemaId: textSchema.id,
+                        data: "Accordion one",
+                    },
+                    Slot2: {
+                        parent: {
+                            id: "root",
+                            dataLocation: "SlotItem",
+                        },
+                        schemaId: fastAccordionItemId,
+                        data: {
+                            Slot: [
+                                {
+                                    id: "Slot20",
+                                },
+                            ],
+                            SlotHeading: [
+                                {
+                                    id: "Slot21",
+                                },
+                            ],
+                            SlotExpandedIcon: [
+                                {
+                                    id: expandedIcon2[1],
+                                },
+                            ],
+                            SlotCollapsedIcon: [
+                                {
+                                    id: collapsedIcon2[1],
+                                },
+                            ],
+                            SlotStart: [
+                                {
+                                    id: "Slot2Start",
+                                },
+                            ],
+                            SlotEnd: [
+                                {
+                                    id: "Slot2End",
+                                },
+                            ],
+                        },
+                    },
+                    Slot2Start: {
+                        parent: {
+                            id: "Slot2",
+                            dataLocation: "SlotStart",
+                        },
+                        schemaId: fastCheckboxId,
+                        data: {},
+                    },
+                    Slot2End: {
+                        parent: {
+                            id: "Slot2",
+                            dataLocation: "SlotEnd",
+                        },
+                        schemaId: fastButtonId,
+                        data: {
+                            appearance: "stealth",
+                            Slot: [
+                                {
+                                    id: defaultPlaceholderIcon2[1],
+                                },
+                            ],
+                        },
+                    },
+                    ...defaultPlaceholderIcon2[0],
+                    Slot20: {
+                        parent: {
+                            id: "Slot2",
+                            dataLocation: "Slot",
+                        },
+                        schemaId: textSchema.id,
+                        data: "Accordion two content",
+                    },
+                    Slot21: {
+                        parent: {
+                            id: "Slot2",
+                            dataLocation: "SlotHeading",
+                        },
+                        schemaId: "div",
+                        data: {
+                            Slot: [
+                                {
+                                    id: "Slot210",
+                                },
+                            ],
+                        },
+                    },
+                    Slot210: {
+                        parent: {
+                            id: "Slot21",
+                            dataLocation: "Slot",
+                        },
+                        schemaId: textSchema.id,
+                        data: "Accordion two",
+                    },
+                    Slot3: {
+                        parent: {
+                            id: "root",
+                            dataLocation: "SlotItem",
+                        },
+                        schemaId: fastAccordionItemId,
+                        data: {
+                            Slot: [
+                                {
+                                    id: "Slot30",
+                                },
+                            ],
+                            SlotHeading: [
+                                {
+                                    id: "Slot31",
+                                },
+                            ],
+                            SlotExpandedIcon: [
+                                {
+                                    id: expandedIcon3[1],
+                                },
+                            ],
+                            SlotCollapsedIcon: [
+                                {
+                                    id: collapsedIcon3[1],
+                                },
+                            ],
+                            SlotStart: [
+                                {
+                                    id: "Slot3Start",
+                                },
+                            ],
+                            SlotEnd: [
+                                {
+                                    id: "Slot3End",
+                                },
+                            ],
+                        },
+                    },
+                    Slot3Start: {
+                        parent: {
+                            id: "Slot3",
+                            dataLocation: "SlotStart",
+                        },
+                        schemaId: fastCheckboxId,
+                        data: {},
+                    },
+                    Slot3End: {
+                        parent: {
+                            id: "Slot3",
+                            dataLocation: "SlotEnd",
+                        },
+                        schemaId: fastButtonId,
+                        data: {
+                            appearance: "stealth",
+                            Slot: [
+                                {
+                                    id: defaultPlaceholderIcon3[1],
+                                },
+                            ],
+                        },
+                    },
+                    ...defaultPlaceholderIcon3[0],
+                    Slot30: {
+                        parent: {
+                            id: "Slot3",
+                            dataLocation: "Slot",
+                        },
+                        schemaId: textSchema.id,
+                        data: "Accordion three content",
+                    },
+                    Slot31: {
+                        parent: {
+                            id: "Slot3",
+                            dataLocation: "SlotHeading",
+                        },
+                        schemaId: "div",
+                        data: {
+                            Slot: [
+                                {
+                                    id: "Slot310",
+                                },
+                            ],
+                        },
+                    },
+                    Slot310: {
+                        parent: {
+                            id: "Slot31",
+                            dataLocation: "Slot",
+                        },
+                        schemaId: textSchema.id,
+                        data: "Accordion three",
+                    },
+                    Slot4: {
+                        parent: {
+                            id: "root",
+                            dataLocation: "SlotItem",
+                        },
+                        schemaId: fastAccordionItemId,
+                        data: {
+                            Slot: [
+                                {
+                                    id: "Slot40",
+                                },
+                            ],
+                            SlotHeading: [
+                                {
+                                    id: "Slot41",
+                                },
+                            ],
+                            SlotExpandedIcon: [
+                                {
+                                    id: expandedIcon4[1],
+                                },
+                            ],
+                            SlotCollapsedIcon: [
+                                {
+                                    id: collapsedIcon4[1],
+                                },
+                            ],
+                            SlotStart: [
+                                {
+                                    id: "Slot4Start",
+                                },
+                            ],
+                            SlotEnd: [
+                                {
+                                    id: "Slot4End",
+                                },
+                            ],
+                        },
+                    },
+                    Slot4Start: {
+                        parent: {
+                            id: "Slot4",
+                            dataLocation: "SlotStart",
+                        },
+                        schemaId: fastCheckboxId,
+                        data: {},
+                    },
+                    Slot4End: {
+                        parent: {
+                            id: "Slot4",
+                            dataLocation: "SlotEnd",
+                        },
+                        schemaId: fastButtonId,
+                        data: {
+                            appearance: "stealth",
+                            Slot: [
+                                {
+                                    id: defaultPlaceholderIcon4[1],
+                                },
+                            ],
+                        },
+                    },
+                    ...defaultPlaceholderIcon4[0],
+                    Slot40: {
+                        parent: {
+                            id: "Slot4",
+                            dataLocation: "Slot",
+                        },
+                        schemaId: textSchema.id,
+                        data: "Accordion four content",
+                    },
+                    Slot41: {
+                        parent: {
+                            id: "Slot4",
+                            dataLocation: "SlotHeading",
+                        },
+                        schemaId: "div",
+                        data: {
+                            Slot: [
+                                {
+                                    id: "Slot410",
+                                },
+                            ],
+                        },
+                    },
+                    Slot410: {
+                        parent: {
+                            id: "Slot41",
+                            dataLocation: "Slot",
+                        },
+                        schemaId: textSchema.id,
+                        data: "Accordion four",
+                    },
+                    ...collapsedIcon1[0],
+                    ...collapsedIcon2[0],
+                    ...collapsedIcon3[0],
+                    ...collapsedIcon4[0],
+                    ...expandedIcon1[0],
+                    ...expandedIcon2[0],
+                    ...expandedIcon3[0],
+                    ...expandedIcon4[0],
+                },
+                "root",
+            ],
+        },
+        {
+            displayName: "Single selection",
+            dataDictionary: [
+                {
+                    root: {
+                        schemaId: fastAccordionId,
+                        data: {
+                            "expand-mode": "single",
                             SlotItem: [
                                 {
                                     id: "Slot1",

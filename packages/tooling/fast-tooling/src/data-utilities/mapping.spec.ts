@@ -247,6 +247,58 @@ describe("htmlMapper", () => {
         });
         expect(dataDictionary[0][""].data).toEqual(document.createElement("div"));
     });
+    test("should map an element to boolean data", () => {
+        const dataDictionary: DataDictionary<any> = [
+            {
+                "": {
+                    schemaId: "foo",
+                    data: {
+                        foo: true,
+                        bar: false,
+                    },
+                },
+            },
+            "",
+        ];
+        htmlMapper({
+            version: 1,
+            tags: [
+                {
+                    name: "div",
+                    description: "foobar",
+                    attributes: [
+                        {
+                            name: "foo",
+                            description: "The foo property",
+                            type: DataType.boolean,
+                            default: "false",
+                            required: false,
+                        },
+                        {
+                            name: "bar",
+                            description: "The bar property",
+                            type: DataType.boolean,
+                            default: "false",
+                            required: false,
+                        },
+                    ],
+                    slots: [],
+                },
+            ],
+        })({
+            dataDictionary,
+            dictionaryId: "",
+            schema: {
+                id: "foo",
+                [ReservedElementMappingKeyword.mapsToTagName]: "div",
+                type: "object",
+            },
+            mapperPlugins: [],
+        });
+        const element = document.createElement("div");
+        element.setAttribute("foo", "");
+        expect(dataDictionary[0][""].data).toEqual(element);
+    });
     test("should not map an element when that element is not an object", () => {
         expect(
             htmlMapper({
