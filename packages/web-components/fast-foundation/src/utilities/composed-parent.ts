@@ -1,8 +1,11 @@
 /**
- * Retrieves the "parent" element of a node, ignoring DOM tree boundries.
- * When the "parent" of a node is a shadow-root, it will return the host
- * element of the shadow root.
- * @param element The element to retrieve the parent element of
+ * Retrieves the "composed parent" element of a node, ignoring DOM tree boundaries.
+ * When the parent of a node is a shadow-root, it will return the host
+ * element of the shadow root. Otherwise it will return the parent node or null if
+ * no parent node exists.
+ * @param element - The element for which to retrieve the composed parent
+ *
+ * @public
  */
 export function composedParent<T extends HTMLElement>(element: T): HTMLElement | null {
     const parentNode = element.parentElement;
