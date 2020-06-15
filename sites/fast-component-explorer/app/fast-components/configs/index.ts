@@ -1,3 +1,6 @@
+import fastAccordionConfig from "./fast-accordion";
+export { fastAccordionConfig };
+
 import fastAnchorConfig from "./fast-anchor";
 export { fastAnchorConfig };
 

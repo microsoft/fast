@@ -5,7 +5,7 @@ sidebar_label: Aurelia
 custom_edit_url: https://github.com/microsoft/fast-dna/edit/master/packages/web-components/fast-foundation/docs/guide/aurelia.doc.md
 ---
 
-FAST-DNA works flawlessly with both Aurelia 1 and Aurelia 2, with full integration into the binding engine and component model. Let's take a look at how you can set up an Aurelia project, starting from scratch.
+FAST works flawlessly with both Aurelia 1 and Aurelia 2, with full integration into the binding engine and component model. Let's take a look at how you can set up an Aurelia project, starting from scratch.
 
 ## Aurelia 2
 
@@ -25,7 +25,7 @@ When the CLI completes, you should have a basic runnable Aurelia 2 application.
 
 ### Configuring Packages
 
-Next, we'll install the FAST-DNA packages, along with supporting libraries. To do that, run this command from your new project folder:
+Next, we'll install the FAST packages, along with supporting libraries. To do that, run this command from your new project folder:
 
 ```shell
 npm install --save @microsoft/fast-components @microsoft/fast-element lodash-es
@@ -77,7 +77,6 @@ To add a splash of style, replace your `my-app.css` content with this:
 ```css
 fast-design-system-provider {
   display: inline-block;
-  color: var(--neutral-foreground-rest);
 }
 
 fast-card {
@@ -96,7 +95,7 @@ fast-card > fast-button {
 }
 ```
 
-Congratulations! You're now setup to use FAST-DNA and Aurelia 2!
+Congratulations! You're now setup to use FAST and Aurelia 2!
 
 ## Aurelia 1
 
@@ -122,7 +121,7 @@ When the CLI completes, you should have a basic runnable Aurelia 1 application.
 
 ### Configuring Packages
 
-Next, we'll install the FAST-DNA packages, along with supporting libraries. To do that, run this command from your new project folder:
+Next, we'll install the FAST packages, along with supporting libraries. To do that, run this command from your new project folder:
 
 ```shell
 npm install --save @microsoft/fast-components @microsoft/fast-element lodash-es
@@ -197,4 +196,4 @@ To add a splash of style, add the following to your `app.html` template:
 </style>
 ```
 
-Congratulations! You're now setup to use FAST-DNA and Aurelia 1!
+Congratulations! You're now setup to use FAST and Aurelia 1!

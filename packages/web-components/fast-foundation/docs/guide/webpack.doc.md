@@ -5,7 +5,7 @@ sidebar_label: Webpack
 custom_edit_url: https://github.com/microsoft/fast-dna/edit/master/packages/web-components/fast-foundation/docs/guide/webpack.doc.md
 ---
 
-FAST-DNA works great with TypeScript and Webpack, using a fairly standard setup. Let's take a look at how you can set up a TypeScript+Webpack project, starting from scratch.
+FAST works great with TypeScript and Webpack, using a fairly standard setup. Let's take a look at how you can set up a TypeScript+Webpack project, starting from scratch.
 
 ## Setting up the Package
 
@@ -29,7 +29,7 @@ npm init
 
 Follow the prompts from npm, answering each question in turn. You can always accept the defaults at first and then make changes later in the package.json file.
 
-Next, we'll install the FAST-DNA packages, along with supporting libraries. To do that, run this command:
+Next, we'll install the FAST packages, along with supporting libraries. To do that, run this command:
 
 ```shell
 npm install --save @microsoft/fast-components @microsoft/fast-element lodash-es
@@ -192,7 +192,6 @@ This code imports the `<fast-design-system-provider>` component as well as the `
     
     fast-design-system-provider {
       display: inline-block;
-      color: var(--neutral-foreground-rest);
     }
 
     fast-card {
@@ -216,4 +215,4 @@ This code imports the `<fast-design-system-provider>` component as well as the `
 
 After saving your `index.html` file, refresh your browser and you should see a card with text and a button.
 
-Congratulations! You're now setup to use FAST-DNA, TypeScript, and Webpack. You can import and use more components, build your own components, and when you are ready, build and deploy your website or app to production.
+Congratulations! You're now setup to use FAST, TypeScript, and Webpack. You can import and use more components, build your own components, and when you are ready, build and deploy your website or app to production.

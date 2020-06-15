@@ -18,12 +18,13 @@
   },
   "scripts": {
     "build": "webpack --progress --mode=production",
+    "convert:readme": "node ./build/convert-readme.js",
     "prettier": "prettier --config ../../.prettierrc --write \"**/*.ts\"",
     "prettier:diff": "prettier --config ../../.prettierrc \"**/*.ts\" --list-different",
     "eslint": "eslint . --ext .ts",
     "eslint:fix": "eslint . --ext .ts --fix",
     "start": "webpack-dev-server",
-    "test": "yarn eslint && yarn build"
+    "test": "yarn convert:readme && yarn eslint && yarn build"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",
@@ -34,6 +35,7 @@
     "favicons-webpack-plugin": "^3.0.1",
     "file-loader": "^6.0.0",
     "html-webpack-plugin": "^4.3.0",
+    "markdown-it-anchor": "^5.3.0",
     "mini-css-extract-plugin": "^0.9.0",
     "prettier": "2.0.2",
     "ts-loader": "^7.0.2",
@@ -42,6 +44,7 @@
     "webpack-bundle-analyzer": "^3.0.3",
     "webpack-cli": "^3.1.2",
     "webpack-dev-server": "^3.11.0",
+    "webpack-shell-plugin": "^0.5.0",
     "worker-loader": "^2.0.0"
   },
   "dependencies": {

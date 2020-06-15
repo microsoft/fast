@@ -345,7 +345,15 @@ export function htmlMapper(
                     );
                 });
                 elementAttributes.forEach(elementAttribute => {
-                    newElement.setAttribute(elementAttribute, data[elementAttribute]);
+                    if (typeof data[elementAttribute] === DataType.boolean) {
+                        if (data[elementAttribute]) {
+                            newElement.setAttribute(elementAttribute, "");
+                        } else {
+                            newElement.removeAttribute(elementAttribute);
+                        }
+                    } else {
+                        newElement.setAttribute(elementAttribute, data[elementAttribute]);
+                    }
                 });
 
                 config.dataDictionary[0][config.dictionaryId].data = newElement;
@@ -400,7 +408,7 @@ function mapAttributesToJSONSchema(
                 optionalAttributeProperties.enum = attribute.values.map(
                     attributeValue => {
                         return attribute.type === DataType.number
-                            ? parseInt(attributeValue.name, 10)
+                            ? parseInt(attributeValue.name as string, 10)
                             : attributeValue.name;
                     }
                 );

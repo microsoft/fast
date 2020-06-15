@@ -1,9 +1,9 @@
 
-![github_readme_logo.svg](https://images.zenhubusercontent.com/5a85d50c4b5806bc2bc7186b/408ec7e2-a641-4802-a6de-b3b3ada0445d)
+![fast_banner_github_914.png](https://static.fast.design/assets/fast_banner_github_914.png)
 
-# FAST-DNA
+# FAST
 
-An unopinionated system of components, development tools, and utilities used à la carte or as a suite to build enterprise-grade websites and applications.
+An unopinionated system of components, tools, and utilities used à la carte or as a suite to build enterprise-grade websites and applications.
 
 [![Maintainability](https://api.codeclimate.com/v1/badges/8a74621e634a6e9b9561/maintainability)](https://codeclimate.com/github/Microsoft/fast-dna/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/8a74621e634a6e9b9561/test_coverage)](https://codeclimate.com/github/Microsoft/fast-dna/test_coverage)
@@ -19,18 +19,18 @@ An unopinionated system of components, development tools, and utilities used à 
 
 ### Unopinionated
 
-There are a million and one great ways to build your next website or application. To support the technologies you choose, creating unopinionated code is at the center of every decision we make in FAST-DNA.
+There are a million and one great ways to build your next website or application. To support the technologies you choose, creating unopinionated code is at the center of every decision we make in FAST.
 
 This principle of being unopinionated manifests in several important ways including:
 
 * A flat component architecture that lets you compose what you need without struggling with rigid patterns and complex objects.
 * Separating base components from styles and design systems to support multiple implementations without re-writing or duplicating styles. Use the design system to customize existing styled components, or build your own styles, with your design system, without having to re-build or duplicate the base components.
 * Framework agnostic tooling that lets you use our development tools with any view framework.
-* The ability to replace almost any FAST-DNA package with your package of choice. Get started with our animation package and add more as you need them. Alternatively, use our suite of packages to build your next project from the ground up; it's your call.
+* The ability to replace almost any FAST package with your package of choice. Get started with our animation package and add more as you need them. Alternatively, use our suite of packages to build your next project from the ground up; it's your call.
 
 ### UI development and style guide tools
 
-When developing components and views, excellent development tooling can make all the difference. FAST-DNA offers development and style guide tools that work with FAST components, components from other frameworks, or your components.
+When developing components and views, excellent development tooling can make all the difference. FAST offers development and style guide tools that work with FAST components, components from other frameworks, or your components.
 
 Try out component properties with an auto-generated property UI, get a live preview of the code based on any property’s configuration, preview localization (RTL/LTR) and themes, and preview component compositing with a transparency grid.
 
@@ -40,11 +40,11 @@ Also, we built FAST development tools from re-usable packages so, if you have sp
 
 Widely available design systems from companies like Microsoft (Fluent), Google (Material), or Salesforce (Lightning) are useful when it is essential to align with a platform or take advantage of a polished system at low cost, but many companies have their design system of their own, and some may have multiple design systems or variations.
 
-Because FAST-DNA has abstracted base components from their style, you get a head start on your design system by building on top of tried and true base components and style libraries like our offerings for color, animation, and elevation.
+Because FAST has abstracted base components from their style, you get a head start on your design system by building on top of tried and true base components and style libraries like our offerings for color, animation, and elevation.
 
 ## Packages
 
-FAST-DNA is a mono repository managed with [Lerna](https://github.com/lerna/lerna). Users choose à la carte which package to use in their project.
+FAST is a mono repository managed with [Lerna](https://github.com/lerna/lerna). Users choose à la carte which package to use in their project.
 
 ### Component Explorer
 ![CD - Component Explorer](https://github.com/microsoft/fast-dna/workflows/CD%20-%20Component%20Explorer/badge.svg?branch=master&event=push)

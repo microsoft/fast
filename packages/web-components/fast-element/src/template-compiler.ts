@@ -1,7 +1,7 @@
 import { BehaviorFactory } from "./directives/behavior";
-import { DOM } from "./dom";
+import { DOM, _interpolationEnd, _interpolationStart } from "./dom";
 import { BindingDirective } from "./directives/binding";
-import { AttachedBehaviorDirective, Directive } from "./directives/directive";
+import { Directive } from "./directives/directive";
 import { ExecutionContext, Binding } from "./observation/observable";
 
 type InlineDirective = Directive & {
@@ -13,6 +13,11 @@ type InlineDirective = Directive & {
 const compilationContext = { locatedDirectives: 0, targetIndex: -1 };
 
 function createAggregateBinding(parts: (string | InlineDirective)[]): BindingDirective {
+    if (parts.length === 1) {
+        compilationContext.locatedDirectives++;
+        return parts[0] as BindingDirective;
+    }
+
     let targetName: string | undefined;
     const partCount = parts.length;
     const finalParts = parts.map((x: string | InlineDirective) => {
@@ -40,98 +45,39 @@ function createAggregateBinding(parts: (string | InlineDirective)[]): BindingDir
     return directive;
 }
 
+const interpolationEndLength = _interpolationEnd.length;
+
 function parseContent(
     value: string,
     directives: ReadonlyArray<Directive>
-): (string | InlineDirective)[] | InlineDirective | AttachedBehaviorDirective | null {
-    let i = value.indexOf("@{", 0);
-    const ii = value.length;
-    let char;
-    let pos = 0;
-    let open = 0;
-    let quote = null;
-    let interpolationStart;
-    let parts: (string | Directive)[] | null;
-    let partIndex = 0;
+): (string | InlineDirective)[] | null {
+    const valueParts = value.split(_interpolationStart);
 
-    while (i >= 0 && i < ii - 2) {
-        open = 1;
-        interpolationStart = i;
-        i += 2;
-
-        do {
-            char = value[i];
-            i++;
-
-            if (char === "'" || char === '"') {
-                if (quote === null) {
-                    quote = char;
-                } else if (quote === char) {
-                    quote = null;
-                }
-                continue;
-            }
-
-            if (char === "\\") {
-                i++;
-                continue;
-            }
-
-            if (quote !== null) {
-                continue;
-            }
-
-            if (char === "{") {
-                open++;
-            } else if (char === "}") {
-                open--;
-            }
-        } while (open > 0 && i < ii);
-
-        if (open === 0) {
-            // lazy allocate array
-            parts = parts! || [];
-            if (
-                value[interpolationStart - 1] === "\\" &&
-                value[interpolationStart - 2] !== "\\"
-            ) {
-                // escaped interpolation
-                parts[partIndex] =
-                    value.substring(pos, interpolationStart - 1) +
-                    value.substring(interpolationStart, i);
-                partIndex++;
-            } else {
-                // standard interpolation
-                parts[partIndex] = value.substring(pos, interpolationStart);
-                partIndex++;
-                const directiveIndex = parseInt(
-                    value.substring(interpolationStart + 2, i - 1)
-                );
-                const directive = directives[directiveIndex];
-                parts[partIndex] = directive;
-                partIndex++;
-            }
-            pos = i;
-            i = value.indexOf("@{", i);
-        } else {
-            break;
-        }
-    }
-
-    // no interpolation.
-    if (partIndex === 0) {
+    if (valueParts.length === 1) {
         return null;
     }
 
-    // literal.
-    parts![partIndex] = value.substr(pos);
-    parts = parts!.filter((x: string | Directive) => x !== "");
+    const bindingParts: any[] = [];
 
-    if (parts.length == 1) {
-        return parts[0] as InlineDirective | AttachedBehaviorDirective;
+    for (let i = 0, ii = valueParts.length; i < ii; ++i) {
+        const current = valueParts[i];
+        const index = current.indexOf(_interpolationEnd);
+        let literal;
+
+        if (index === -1) {
+            literal = current;
+        } else {
+            const directiveIndex = parseInt(current.substring(0, index));
+            bindingParts.push(directives[directiveIndex]);
+            literal = current.substring(index + interpolationEndLength);
+        }
+
+        if (literal !== "") {
+            bindingParts.push(literal);
+        }
     }
 
-    return parts as (string | InlineDirective)[];
+    return bindingParts;
 }
 
 function compileAttributes(
@@ -145,17 +91,16 @@ function compileAttributes(
     for (let i = 0, ii = attributes.length; i < ii; ++i) {
         const attr = attributes[i];
         const attrValue = attr.value;
-        let result = parseContent(attrValue, directives);
+        const parseResult = parseContent(attrValue, directives);
+        let result: BindingDirective | null = null;
 
-        if (result === null) {
+        if (parseResult === null) {
             if (includeBasicValues) {
                 result = new BindingDirective(() => attrValue);
                 result.targetName = attr.name;
             }
-        } else if (Array.isArray(result)) {
-            result = createAggregateBinding(result);
         } else {
-            compilationContext.locatedDirectives++;
+            result = createAggregateBinding(parseResult);
         }
 
         if (result !== null) {
@@ -188,38 +133,33 @@ function compileContent(
     const parseResult = parseContent(node.textContent!, directives);
 
     if (parseResult !== null) {
-        if (Array.isArray(parseResult)) {
-            let lastNode = node;
-            for (let i = 0, ii = parseResult.length; i < ii; ++i) {
-                const currentPart = parseResult[i];
-                const currentNode =
-                    i === 0
-                        ? node
-                        : lastNode.parentNode!.insertBefore(
-                              document.createTextNode(""),
-                              lastNode.nextSibling
-                          );
+        let lastNode = node;
+        for (let i = 0, ii = parseResult.length; i < ii; ++i) {
+            const currentPart = parseResult[i];
+            const currentNode =
+                i === 0
+                    ? node
+                    : lastNode.parentNode!.insertBefore(
+                          document.createTextNode(""),
+                          lastNode.nextSibling
+                      );
 
-                if (typeof currentPart === "string") {
-                    currentNode.textContent = currentPart;
-                } else {
-                    currentNode.textContent = " ";
-                    captureContentBinding(currentPart as BindingDirective, factories);
-                }
-
-                lastNode = currentNode;
-                compilationContext.targetIndex++;
-
-                if (currentNode !== node) {
-                    walker.nextNode();
-                }
+            if (typeof currentPart === "string") {
+                currentNode.textContent = currentPart;
+            } else {
+                currentNode.textContent = " ";
+                captureContentBinding(currentPart as BindingDirective, factories);
             }
 
-            compilationContext.targetIndex--;
-        } else {
-            node.textContent = " ";
-            captureContentBinding(parseResult as BindingDirective, factories);
+            lastNode = currentNode;
+            compilationContext.targetIndex++;
+
+            if (currentNode !== node) {
+                walker.nextNode();
+            }
         }
+
+        compilationContext.targetIndex--;
     }
 }
 

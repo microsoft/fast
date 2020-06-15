@@ -1,3 +1,5 @@
+export * from "./fast-accordion-item.definition";
+export * from "./fast-accordion.definition";
 export * from "./fast-anchor.definition";
 export * from "./fast-badge.definition";
 export * from "./fast-button.definition";
