@@ -31,8 +31,6 @@ import {
     ActionToggleAppearance,
     ActionToggleProps,
     Background,
-    Heading,
-    HeadingSize,
     Pivot,
     Select,
     SelectOption,
@@ -66,7 +64,7 @@ import {
     ExplorerUnhandledProps,
 } from "./explorer.props";
 import { previewReady } from "./preview";
-
+/* eslint-disable-next-line @typescript-eslint/no-var-requires */
 const FASTInlineLogo = require("@microsoft/site-utilities/statics/assets/inline-logo.png");
 export const previewBackgroundTransparency: string = "PREVIEW::TRANSPARENCY";
 export const previewDirection: string = "PREVIEW::DIRECTION";

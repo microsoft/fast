@@ -1,11 +1,5 @@
 import { memoize, uniqueId } from "lodash-es";
-import {
-    Background,
-    Badge,
-    cardSchema2,
-    Heading,
-    HeadingSize,
-} from "@microsoft/fast-components-react-msft";
+import { Background } from "@microsoft/fast-components-react-msft";
 import {
     neutralLayerL1,
     neutralLayerL2,
@@ -73,7 +67,7 @@ import { divTag, linkedDataExamples } from "./configs";
 import { ProjectFileTransfer } from "./components";
 import { selectDeviceOverrideStyles } from "./utilities/style-overrides";
 import { previewReady } from "./preview";
-
+/* eslint-disable-next-line @typescript-eslint/no-var-requires */
 const FASTInlineLogo = require("@microsoft/site-utilities/statics/assets/inline-logo.png");
 const fastMessageSystemWorker = new FASTMessageSystemWorker();
 let fastMessageSystem: MessageSystem;
