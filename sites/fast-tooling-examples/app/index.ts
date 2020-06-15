@@ -31,7 +31,7 @@ const exampleIds = Object.keys(examples);
 const iframeAttributes = {
     style:
         "width:1000px; height:500px; border:0; border-radius: 4px; overflow:hidden; padding: 20px;",
-    sandbox:
+    embed:
         "allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts",
 };
 
@@ -45,8 +45,8 @@ function initializeExample(id: string) {
     const tabsContainer = document.getElementById("tabs");
     const iframeTab = document.querySelector("[data-id='iframe-tab']");
     const iframePanel = document.querySelector("[data-id='iframe-panel']");
-    const codeSandboxTab = document.querySelector("[data-id='code-sandbox-tab']");
-    const codeSandboxPanel = document.querySelector("[data-id='code-sandbox-panel']");
+    const codeEmbedTab = document.querySelector("[data-id='code-embed-tab']");
+    const codeEmbedPanel = document.querySelector("[data-id='code-embed-panel']");
 
     if (tabsContainer !== null) {
         tabsContainer.setAttribute("style", "display: block;");
@@ -66,19 +66,19 @@ function initializeExample(id: string) {
             iframePanel.append(iframe);
         }
 
-        if (codeSandboxTab !== null) {
-            codeSandboxTab.innerHTML = "TypeScript";
+        if (codeEmbedTab !== null) {
+            codeEmbedTab.innerHTML = "TypeScript";
         }
 
-        if (codeSandboxPanel !== null) {
-            const codeSandboxIframe = document.createElement("iframe");
-            codeSandboxIframe.setAttribute("src", examples[id].codeSandboxSrc);
+        if (codeEmbedPanel !== null) {
+            const codeEmbedIframe = document.createElement("iframe");
+            codeEmbedIframe.setAttribute("src", examples[id].codeEmbedSrc);
             Object.entries(iframeAttributes).forEach(
                 ([attributeName, attributeValue]: [string, string]) => {
-                    codeSandboxIframe.setAttribute(attributeName, attributeValue);
+                    codeEmbedIframe.setAttribute(attributeName, attributeValue);
                 }
             );
-            codeSandboxPanel.append(codeSandboxIframe);
+            codeEmbedPanel.append(codeEmbedIframe);
         }
     }
 
