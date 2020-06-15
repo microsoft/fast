@@ -43,6 +43,7 @@
     "eslint-config-prettier": "6.10.1",
     "exenv-es6": "^1.0.0",
     "favicons-webpack-plugin": "0.0.9",
+    "file-loader": "^6.0.0",
     "focus-visible": "^4.1.5",
     "html-webpack-plugin": "^3.2.0",
     "jest": "^25.4.0",

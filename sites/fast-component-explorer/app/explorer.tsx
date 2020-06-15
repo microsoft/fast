@@ -50,6 +50,7 @@ import FASTMessageSystemWorker from "@microsoft/fast-tooling/dist/message-system
 import {
     DirectionSwitch,
     downChevron,
+    Logo,
     ThemeSelector,
     TransparencyToggle,
     upChevron,
@@ -66,6 +67,7 @@ import {
 } from "./explorer.props";
 import { previewReady } from "./preview";
 
+const FASTInlineLogo = require("@microsoft/site-utilities/statics/assets/inline-logo.png");
 export const previewBackgroundTransparency: string = "PREVIEW::TRANSPARENCY";
 export const previewDirection: string = "PREVIEW::DIRECTION";
 export const previewTheme: string = "PREVIEW::THEME";
@@ -173,19 +175,11 @@ class Explorer extends Foundation<
                 <Container>
                     <Row style={{ flex: "1" }}>
                         <Pane resizable={true} resizeFrom={PaneResizeDirection.east}>
-                            <Background
-                                value={"#1B1B1B"}
-                                drawBackground={true}
-                                style={{
-                                    display: "flex",
-                                    height: "32px",
-                                    alignItems: "center",
-                                    justifyContent: "space-between",
-                                    padding: "0 8px",
-                                }}
-                            >
-                                <Heading size={HeadingSize._6}>FAST Explorer</Heading>
-                            </Background>
+                            <Logo
+                                backgroundColor={"#1B1B1B"}
+                                logo={FASTInlineLogo}
+                                title={"Component Explorer"}
+                            />
                             <NavigationMenu
                                 menu={menu}
                                 expanded={true}
@@ -200,7 +194,7 @@ class Explorer extends Foundation<
                                 flexDirection: "column",
                             }}
                         >
-                            <Row style={{ overflow: "visible", zIndex: 1 }}>
+                            <Row style={{ overflow: "visible", zIndex: 1 }} height={46}>
                                 <Background
                                     value={neutralLayerL2}
                                     drawBackground={true}

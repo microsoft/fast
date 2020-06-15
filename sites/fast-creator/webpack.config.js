@@ -64,6 +64,15 @@ module.exports = (env, args) => {
                     },
                 },
                 {
+                    test: /\.(png|jpe?g|gif)$/i,
+                    use: {
+                        loader: "file-loader",
+                        options: {
+                            esModule: false,
+                        },
+                    },
+                },
+                {
                     test: /message\-system\.min\.js/,
                     use: {
                         loader: "worker-loader",
@@ -85,7 +94,12 @@ module.exports = (env, args) => {
             // new WorkboxPlugin.GenerateSW({
             //     exclude: [/\.map$/, /^manifest.*\.js(?:on)?$/, /\.html$/],
             // }),
-            new FaviconsWebpackPlugin(path.resolve(__dirname, "favicon.png")),
+            new FaviconsWebpackPlugin(
+                path.resolve(
+                    rootNodeModules,
+                    "@microsoft/site-utilities/statics/assets/logo.png"
+                )
+            ),
         ],
         resolve: {
             extensions: [".js", ".tsx", ".ts", ".json"],

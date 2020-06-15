@@ -55,6 +55,7 @@ import {
     Dimension,
     DirectionSwitch,
     fastComponentSchemas,
+    Logo,
     nativeElementSchemas,
     textSchema,
     ThemeSelector,
@@ -73,6 +74,7 @@ import { ProjectFileTransfer } from "./components";
 import { selectDeviceOverrideStyles } from "./utilities/style-overrides";
 import { previewReady } from "./preview";
 
+const FASTInlineLogo = require("@microsoft/site-utilities/statics/assets/inline-logo.png");
 const fastMessageSystemWorker = new FASTMessageSystemWorker();
 let fastMessageSystem: MessageSystem;
 const schemaDictionary: SchemaDictionary = {
@@ -162,20 +164,12 @@ class Creator extends Foundation<CreatorHandledProps, {}, CreatorState> {
                 <Container>
                     <Row style={{ flex: "1" }}>
                         <Pane resizable={true} resizeFrom={PaneResizeDirection.east}>
-                            <Background
-                                value={neutralLayerL3}
-                                drawBackground={true}
-                                style={{
-                                    display: "flex",
-                                    height: "32px",
-                                    alignItems: "center",
-                                    justifyContent: "space-between",
-                                    padding: "0 8px",
-                                }}
-                            >
-                                <Heading size={HeadingSize._6}>FAST Creator</Heading>
-                                <Badge>ALPHA</Badge>
-                            </Background>
+                            <Logo
+                                backgroundColor={neutralLayerL3}
+                                logo={FASTInlineLogo}
+                                title={"Creator"}
+                                version={"ALPHA"}
+                            />
                             <ModularNavigation messageSystem={fastMessageSystem} />
                             <ProjectFileTransfer
                                 projectFile={this.state}
@@ -183,7 +177,7 @@ class Creator extends Foundation<CreatorHandledProps, {}, CreatorState> {
                             />
                         </Pane>
                         <Canvas>
-                            <Row fill={true}>
+                            <Row fill={true} height={46}>
                                 <Background
                                     value={neutralLayerL2}
                                     drawBackground={true}
