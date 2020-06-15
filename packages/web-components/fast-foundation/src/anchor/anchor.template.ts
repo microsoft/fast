@@ -6,6 +6,7 @@ export const AnchorTemplate = html<Anchor>`
     <template class="${x => x.appearance}">
         <a
             class="control"
+            part="control"
             download="${x => x.download}"
             href="${x => x.href}"
             hreflang="${x => x.hreflang}"
