@@ -10,18 +10,18 @@ export const BadgeStyles = css`
         line-height: var(--type-ramp-minus-1-height);
     }
 
-    .badge {
+    .control {
         border-radius: calc(var(--corner-radius) * 1px);
         padding: calc(var(--design-unit) * 0.5px) calc(var(--design-unit) * 1px);
         color: ${accentForegroundRestBehavior.var};
         font-weight: 600;
     }
 
-    .badge[style] {
+    .control[style] {
         font-weight: 400;
     }
 
-    :host(.circular) .badge {
+    :host(.circular) .control {
         border-radius: 100px;
         padding: 0 calc(var(--design-unit) * 1px);
         ${

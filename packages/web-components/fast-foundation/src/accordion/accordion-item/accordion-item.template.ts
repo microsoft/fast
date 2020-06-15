@@ -35,6 +35,7 @@ export const AccordionItemTemplate = html<AccordionItem>`
         </div>
         <div
             class="region"
+            part="region"
             id="${x => x.id}-panel"
             role="region"
             aria-labelledby="${x => x.id}"

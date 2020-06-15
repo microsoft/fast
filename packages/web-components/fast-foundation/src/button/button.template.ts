@@ -6,6 +6,7 @@ export const ButtonTemplate = html<Button>`
     <template class="${x => x.appearance}">
         <button
             class="control"
+            part="control"
             ?autofocus=${x => x.autofocus}
             ?disabled=${x => x.disabled}
             form=${x => x.formId}
