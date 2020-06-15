@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.11.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-element@0.10.2...@microsoft/fast-element@0.11.0) (2020-06-15)
+
+
+### Bug Fixes
+
+* correct anchor and button stylesheets ([#3308](https://github.com/Microsoft/fast-dna/issues/3308)) ([78feda2](https://github.com/Microsoft/fast-dna/commit/78feda2460f814c7995f0168a5180bfe54913a5b))
+* **fast-element:** generalize value converter and move out of beta ([#3267](https://github.com/Microsoft/fast-dna/issues/3267)) ([14706c9](https://github.com/Microsoft/fast-dna/commit/14706c9582596e240a201dfc284b37f285c35fed))
+* **fast-element:** seal the default execution context ([#3268](https://github.com/Microsoft/fast-dna/issues/3268)) ([131cacb](https://github.com/Microsoft/fast-dna/commit/131cacbb21db77ba3efcf0791eeff7e11b4960aa))
+* corrects behavior of style removal ([#3261](https://github.com/Microsoft/fast-dna/issues/3261)) ([e37b7ab](https://github.com/Microsoft/fast-dna/commit/e37b7abb911124992bf5fd595ea66cd7459e8bf8))
+
+
+### Features
+
+* **fast-element:** enable repeat template binding ([#3287](https://github.com/Microsoft/fast-dna/issues/3287)) ([00129bc](https://github.com/Microsoft/fast-dna/commit/00129bc9262c5de04df92b421793257d3be9f2d6))
+
+
+
+
+
 ## [0.10.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-element@0.10.0...@microsoft/fast-element@0.10.1) (2020-06-09)
 
 **Note:** Version bump only for package @microsoft/fast-element

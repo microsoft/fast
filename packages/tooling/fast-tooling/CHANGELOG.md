@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.6.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling@0.5.1...@microsoft/fast-tooling@0.6.0) (2020-06-15)
+
+
+### Bug Fixes
+
+* ensure that named slots use pascal case and text nodes do not error from attributes being assigned to them ([#3263](https://github.com/Microsoft/fast-dna/issues/3263)) ([f772fa0](https://github.com/Microsoft/fast-dna/commit/f772fa0685c92027821ef9519f4a88c1d8975e5a))
+* make the web component definition for values more permissable ([#3257](https://github.com/Microsoft/fast-dna/issues/3257)) ([9969834](https://github.com/Microsoft/fast-dna/commit/9969834d7d79e6198f825edc97ba19739fa3304c))
+* set boolean attributes in the htmlMapper and unset them on true/false values ([#3282](https://github.com/Microsoft/fast-dna/issues/3282)) ([d130cd2](https://github.com/Microsoft/fast-dna/commit/d130cd2b184ed2cbf529f92e8a68a83e095a5fdd))
+
+
+### Features
+
+* allow svgs to be rendered in the htmlMapper ([#3274](https://github.com/Microsoft/fast-dna/issues/3274)) ([77ece11](https://github.com/Microsoft/fast-dna/commit/77ece11142dda7550607766f74481e5a38cb8163))
+
+
+
+
+
 # [0.5.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling@0.4.0...@microsoft/fast-tooling@0.5.0) (2020-06-05)
 
 

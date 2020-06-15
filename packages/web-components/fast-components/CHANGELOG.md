@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.2.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components@1.1.2...@microsoft/fast-components@1.2.0) (2020-06-15)
+
+
+### Bug Fixes
+
+* correct anchor and button stylesheets ([#3308](https://github.com/Microsoft/fast-dna/issues/3308)) ([78feda2](https://github.com/Microsoft/fast-dna/commit/78feda2460f814c7995f0168a5180bfe54913a5b))
+* ensure all component internals have part names ([#3306](https://github.com/Microsoft/fast-dna/issues/3306)) ([95360a7](https://github.com/Microsoft/fast-dna/commit/95360a76ccb4ec40b2623dc01b55ea123d522b62))
+* remove inherited height from lightweight button and anchor ([#3281](https://github.com/Microsoft/fast-dna/issues/3281)) ([3aa506e](https://github.com/Microsoft/fast-dna/commit/3aa506e4074f156db2e2eaa29fff8fa956fed53d))
+* update progress from accent fill to accent foreground ([#3277](https://github.com/Microsoft/fast-dna/issues/3277)) ([447c5a3](https://github.com/Microsoft/fast-dna/commit/447c5a3a71e99a6fcfb7cc2ef2e332027c01d96d))
+
+
+### Features
+
+* adds accordion config to component explorer ([#3276](https://github.com/Microsoft/fast-dna/issues/3276)) ([5e972ca](https://github.com/Microsoft/fast-dna/commit/5e972caed89201aecabb861eb49705458b1385eb))
+* design-system-provider now paints CSS color and background color ([#3278](https://github.com/Microsoft/fast-dna/issues/3278)) ([8e97ac4](https://github.com/Microsoft/fast-dna/commit/8e97ac4aae18c8b17b90e61e139ad3fb0b7f7c3d))
+* provides access to the CSS variable created by CSSCustomProprtyBehaviors ([#3256](https://github.com/Microsoft/fast-dna/issues/3256)) ([391f029](https://github.com/Microsoft/fast-dna/commit/391f029da2d5a5502ee484af10aaef771d3c297c))
+
+
+
+
+
 ## [1.1.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components@1.1.0...@microsoft/fast-components@1.1.1) (2020-06-09)
 
 **Note:** Version bump only for package @microsoft/fast-components

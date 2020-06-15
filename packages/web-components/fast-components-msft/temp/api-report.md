@@ -29,8 +29,84 @@ import { Tabs } from '@microsoft/fast-foundation';
 import { TextArea } from '@microsoft/fast-foundation';
 import { TextField } from '@microsoft/fast-foundation';
 
+// Warning: (ae-internal-missing-underscore) The name "AccentButtonStyles" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal (undocumented)
+export const AccentButtonStyles: import("@microsoft/fast-element").ElementStyles;
+
+// @public (undocumented)
+export const accentFillActiveBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
+
+// @public (undocumented)
+export const accentFillFocusBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
+
+// @public (undocumented)
+export const accentFillHoverBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
+
+// @public (undocumented)
+export const accentFillLargeActiveBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
+
+// @public (undocumented)
+export const accentFillLargeFocusBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
+
+// @public (undocumented)
+export const accentFillLargeHoverBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
+
+// @public (undocumented)
+export const accentFillLargeRestBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
+
+// @public (undocumented)
+export const accentFillLargeSelectedBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
+
+// @public (undocumented)
+export const accentFillRestBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
+
+// @public (undocumented)
+export const accentFillSelectedBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
+
+// @public (undocumented)
+export const accentForegroundActiveBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
+
+// @public (undocumented)
+export const accentForegroundCutRestBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
+
+// @public (undocumented)
+export const accentForegroundFocusBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
+
+// @public (undocumented)
+export const accentForegroundHoverBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
+
+// @public (undocumented)
+export const accentForegroundLargeActiveBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
+
+// @public (undocumented)
+export const accentForegroundLargeFocusBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
+
+// @public (undocumented)
+export const accentForegroundLargeHoverBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
+
+// @public (undocumented)
+export const accentForegroundLargeRestBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
+
+// @public (undocumented)
+export const accentForegroundRestBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
+
+// @public
+export const ambientShadow = "0 0 calc((var(--elevation) * 0.225px) + 2px) rgba(0, 0, 0, calc(.11 * (2 - var(--background-luminance, 1))))";
+
 // @public (undocumented)
 export type BadgeAppearance = "accent" | "lightweight" | "neutral" | string;
+
+// Warning: (ae-internal-missing-underscore) The name "BaseButtonStyles" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal (undocumented)
+export const BaseButtonStyles: import("@microsoft/fast-element").ElementStyles;
+
+// @public (undocumented)
+export const directionalShadow = "0 calc(var(--elevation) * 0.4px) calc((var(--elevation) * 0.9px)) rgba(0, 0, 0, calc(.13 * (2 - var(--background-luminance, 1))))";
+
+// @public (undocumented)
+export const elevation: string;
 
 // @public (undocumented)
 export class FASTAccordion extends Accordion {
@@ -261,6 +337,155 @@ export class FASTTextArea extends TextArea {
 // @public (undocumented)
 export class FASTTextField extends TextField {
 }
+
+// @public (undocumented)
+export const heightNumber = "(var(--base-height-multiplier) + var(--density)) * var(--design-unit)";
+
+// Warning: (ae-internal-missing-underscore) The name "HypertextStyles" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal (undocumented)
+export const HypertextStyles: import("@microsoft/fast-element").ElementStyles;
+
+// Warning: (ae-internal-missing-underscore) The name "LightweightButtonStyles" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal (undocumented)
+export const LightweightButtonStyles: import("@microsoft/fast-element").ElementStyles;
+
+// @public (undocumented)
+export const neutralDividerRestBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
+
+// @public (undocumented)
+export const neutralFillActiveBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
+
+// @public (undocumented)
+export const neutralFillCardRestBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
+
+// @public (undocumented)
+export const neutralFillFocusBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
+
+// @public (undocumented)
+export const neutralFillHoverBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
+
+// @public (undocumented)
+export const neutralFillInputActiveBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
+
+// @public (undocumented)
+export const neutralFillInputFocusBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
+
+// @public (undocumented)
+export const neutralFillInputHoverBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
+
+// @public (undocumented)
+export const neutralFillInputRestBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
+
+// @public (undocumented)
+export const neutralFillRestBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
+
+// @public (undocumented)
+export const neutralFillSelectedBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
+
+// @public (undocumented)
+export const neutralFillStealthActiveBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
+
+// @public (undocumented)
+export const neutralFillStealthFocusBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
+
+// @public (undocumented)
+export const neutralFillStealthHoverBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
+
+// @public (undocumented)
+export const neutralFillStealthRestBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
+
+// @public (undocumented)
+export const neutralFillStealthSelectedBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
+
+// @public (undocumented)
+export const neutralFillToggleActiveBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
+
+// @public (undocumented)
+export const neutralFillToggleFocusBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
+
+// @public (undocumented)
+export const neutralFillToggleHoverBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
+
+// @public (undocumented)
+export const neutralFillToggleRestBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
+
+// @public (undocumented)
+export const neutralFocusBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
+
+// @public (undocumented)
+export const neutralFocusInnerAccentBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
+
+// @public (undocumented)
+export const neutralForegroundActiveBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
+
+// @public (undocumented)
+export const neutralForegroundFocusBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
+
+// @public (undocumented)
+export const neutralForegroundHintBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
+
+// @public (undocumented)
+export const neutralForegroundHintLargeBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
+
+// @public (undocumented)
+export const neutralForegroundHoverBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
+
+// @public (undocumented)
+export const neutralForegroundRestBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
+
+// @public (undocumented)
+export const neutralForegroundToggleBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
+
+// @public (undocumented)
+export const neutralForegroundToggleLargeBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
+
+// @public (undocumented)
+export const neutralLayerCardBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
+
+// @public (undocumented)
+export const neutralLayerCardContainerBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
+
+// @public (undocumented)
+export const neutralLayerFloatingBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
+
+// @public (undocumented)
+export const neutralLayerL1AltBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
+
+// @public (undocumented)
+export const neutralLayerL1Behavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
+
+// @public (undocumented)
+export const neutralLayerL2Behavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
+
+// @public (undocumented)
+export const neutralLayerL3Behavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
+
+// @public (undocumented)
+export const neutralLayerL4Behavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
+
+// @public (undocumented)
+export const neutralOutlineActiveBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
+
+// @public (undocumented)
+export const neutralOutlineFocusBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
+
+// @public (undocumented)
+export const neutralOutlineHoverBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
+
+// @public (undocumented)
+export const neutralOutlineRestBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
+
+// Warning: (ae-internal-missing-underscore) The name "OutlineButtonStyles" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal (undocumented)
+export const OutlineButtonStyles: import("@microsoft/fast-element").ElementStyles;
+
+// Warning: (ae-internal-missing-underscore) The name "StealthButtonStyles" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal (undocumented)
+export const StealthButtonStyles: import("@microsoft/fast-element").ElementStyles;
 
 
 // (No @packageDocumentation comment for this package)

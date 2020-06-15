@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.26.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@4.26.1...@microsoft/fast-components-react-base@4.26.2) (2020-06-15)
+
+
+### Bug Fixes
+
+* react datagrid - don't unnecessarily hardcode layout panel ([#3285](https://github.com/Microsoft/fast-dna/issues/3285)) ([c3678f6](https://github.com/Microsoft/fast-dna/commit/c3678f684c09145d194367153c6839280f33730a))
+
+
+
+
+
 # [4.26.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@4.25.11...@microsoft/fast-components-react-base@4.26.0) (2020-06-05)
 
 
