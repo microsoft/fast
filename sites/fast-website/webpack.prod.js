@@ -12,12 +12,12 @@ module.exports = merge(baseConfig, {
         minimizer: [new TerserJSPlugin({}), new OptimizeCSSAssetsPlugin({})],
     },
     output: {
-        filename: "[name].[hash].js",
+        filename: "bundle/[name].[hash].js",
     },
     plugins: [
         new MiniCssExtractPlugin({
-            filename: "[name].[hash].css",
-            chunkFilename: "[id].[hash].css",
+            filename: "bundle/[name].[hash].css",
+            chunkFilename: "bundle/[id].[hash].css",
         }),
     ],
 });

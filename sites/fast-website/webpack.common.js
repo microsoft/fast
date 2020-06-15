@@ -7,7 +7,6 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 const appDir = path.resolve(__dirname, "./src/app");
 const publicDir = path.resolve(__dirname, "./src/public");
-const outDir = path.resolve(__dirname, "./www");
 
 module.exports = {
     entry: {
@@ -16,8 +15,8 @@ module.exports = {
     resolve: {
         extensions: [".svg", ".ts", ".tsx", ".js"],
         alias: {
-            svg: path.resolve(__dirname, "src/app/svg")
-        }
+            svg: path.resolve(__dirname, "src/app/svg"),
+        },
     },
     output: {
         path: path.resolve(__dirname, "dist"),
@@ -59,19 +58,18 @@ module.exports = {
                     {
                         loader: "svg-inline-loader",
                         options: {
-                            removeSVGTagAttrs: false
-                        }
-                    }
-                ]
-            }
+                            removeSVGTagAttrs: false,
+                        },
+                    },
+                ],
+            },
         ],
     },
     plugins: [
         new CleanWebpackPlugin(),
         new HtmlWebpackPlugin({
-            title: "FAST website",
+            title: "FAST",
             template: path.resolve(publicDir, "index.html"),
-            contentBase: outDir,
         }),
     ],
 };
