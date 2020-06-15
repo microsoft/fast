@@ -29,7 +29,9 @@ import { Tabs } from '@microsoft/fast-foundation';
 import { TextArea } from '@microsoft/fast-foundation';
 import { TextField } from '@microsoft/fast-foundation';
 
-// @public (undocumented)
+// Warning: (ae-internal-missing-underscore) The name "AccentButtonStyles" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal (undocumented)
 export const AccentButtonStyles: import("@microsoft/fast-element").ElementStyles;
 
 // @public (undocumented)
@@ -95,7 +97,9 @@ export const ambientShadow = "0 0 calc((var(--elevation) * 0.225px) + 2px) rgba(
 // @public (undocumented)
 export type BadgeAppearance = "accent" | "lightweight" | "neutral" | string;
 
-// @public (undocumented)
+// Warning: (ae-internal-missing-underscore) The name "BaseButtonStyles" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal (undocumented)
 export const BaseButtonStyles: import("@microsoft/fast-element").ElementStyles;
 
 // @public (undocumented)
@@ -337,10 +341,14 @@ export class FASTTextField extends TextField {
 // @public (undocumented)
 export const heightNumber = "(var(--base-height-multiplier) + var(--density)) * var(--design-unit)";
 
-// @public (undocumented)
+// Warning: (ae-internal-missing-underscore) The name "HypertextStyles" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal (undocumented)
 export const HypertextStyles: import("@microsoft/fast-element").ElementStyles;
 
-// @public (undocumented)
+// Warning: (ae-internal-missing-underscore) The name "LightweightButtonStyles" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal (undocumented)
 export const LightweightButtonStyles: import("@microsoft/fast-element").ElementStyles;
 
 // @public (undocumented)
@@ -469,10 +477,14 @@ export const neutralOutlineHoverBehavior: import("@microsoft/fast-foundation").C
 // @public (undocumented)
 export const neutralOutlineRestBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
 
-// @public (undocumented)
+// Warning: (ae-internal-missing-underscore) The name "OutlineButtonStyles" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal (undocumented)
 export const OutlineButtonStyles: import("@microsoft/fast-element").ElementStyles;
 
-// @public (undocumented)
+// Warning: (ae-internal-missing-underscore) The name "StealthButtonStyles" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal (undocumented)
 export const StealthButtonStyles: import("@microsoft/fast-element").ElementStyles;
 
 
