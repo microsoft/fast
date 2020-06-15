@@ -15,7 +15,7 @@ export const BadgeStyles = css`
         line-height: var(--type-ramp-minus-1-height);
     }
 
-    .badge {
+    .control {
         border-radius: calc(var(--corner-radius) * 1px);
         padding: calc(var(--design-unit) * 0.5px) calc(var(--design-unit) * 1px);
     }
