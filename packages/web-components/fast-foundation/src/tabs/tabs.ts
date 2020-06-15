@@ -23,7 +23,7 @@ export enum TabsOrientation {
 /**
  * An Tabs Custom HTML Element.
  * Implements the {@link https://www.w3.org/TR/wai-aria-1.1/#tablist | ARIA tablist }.
- * 
+ *
  * @public
  */
 export class Tabs extends FASTElement {
@@ -38,7 +38,7 @@ export class Tabs extends FASTElement {
 
     /**
      * The id of the active tab
-     * 
+     *
      * @public
      * @remarks
      * HTML Attribute: activeid

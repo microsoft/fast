@@ -53,13 +53,13 @@ export enum TextFieldType {
 /**
  * An Text Field Custom HTML Element.
  * Based largely on the {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/text | <input type="text" /> element }.
- * 
+ *
  * @public
  */
 export class TextField extends FormAssociated<HTMLInputElement> {
     /**
      * The appearance of the element.
-     * 
+     *
      * @public
      * @remarks
      * HTML Attribute: appearance
@@ -111,7 +111,7 @@ export class TextField extends FormAssociated<HTMLInputElement> {
     }
 
     /**
-     * Allows setting a type or mode of text. 
+     * Allows setting a type or mode of text.
      * @public
      * @remarks
      * HTML Attribute: type

@@ -46,13 +46,13 @@ export enum TextAreaResize {
 /**
  * An Text Area Custom HTML Element.
  * Based largely on the {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/textarea | <textarea> element }.
- * 
+ *
  * @public
  */
 export class TextArea extends FormAssociated<HTMLTextAreaElement> {
     /**
      * The appearance of the element.
-     * 
+     *
      * @public
      * @remarks
      * HTML Attribute: appearance
@@ -172,7 +172,7 @@ export class TextArea extends FormAssociated<HTMLTextAreaElement> {
 
     /**
      * Sizes the element horizontally by a number of character columns.
-     * 
+     *
      * @public
      * @remarks
      * HTML Attribute: cols
@@ -180,10 +180,9 @@ export class TextArea extends FormAssociated<HTMLTextAreaElement> {
     @attr({ converter: nullableNumberConverter, mode: "fromView" })
     public cols: number = 20;
 
-
     /**
      * Sizes the element vertically by a number of character columns.
-     * 
+     *
      * @public
      * @remarks
      * HTML Attribute: rows

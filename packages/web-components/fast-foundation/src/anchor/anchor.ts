@@ -12,14 +12,13 @@ export type AnchorAppearance = ButtonAppearance | "hypertext";
 /**
  * An Anchor Custom HTML Element.
  * Based largely on the {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a | <a> element }.
- * 
+ *
  * @public
  */
 export class Anchor extends FASTElement {
-    
     /**
      * The appearance the anchor should have.
-     * 
+     *
      * @public
      * @remarks
      * HTML Attribute: appearance

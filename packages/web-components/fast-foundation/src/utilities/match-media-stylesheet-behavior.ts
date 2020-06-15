@@ -18,9 +18,9 @@ interface MatchMediaStyleSheetBehavior extends Behavior {
 /**
  * Construct a behavior factory that will conditionally apply a stylesheet based
  * on a MediaQueryList
- * 
+ *
  * @param query - The MediaQueryList to subscribe to matches for.
- * 
+ *
  * @public
  */
 export function matchMediaStylesheetBehaviorFactory(query: MediaQueryList) {

@@ -19,7 +19,7 @@ export enum AccordionExpandMode {
     single = "single",
 
     /**
-     * Designates multiple {@link @microsoft/fast-foundation#AccordionItem | AccordionItems} can be open simultaneously. 
+     * Designates multiple {@link @microsoft/fast-foundation#AccordionItem | AccordionItems} can be open simultaneously.
      */
     multi = "multi",
 }
@@ -28,7 +28,7 @@ export enum AccordionExpandMode {
  * An Accordion Custom HTML Element
  * Implements {@link https://www.w3.org/TR/wai-aria-practices-1.1/#accordion | ARIA Accordion}.
  * @public
- * 
+ *
  * @remarks
  * Designed to be used with {@link @microsoft/fast-foundation#AccordionTemplate} and {@link @microsoft/fast-foundation#AccordionItem}.
  */
@@ -37,10 +37,10 @@ export class Accordion extends FASTElement {
      * Controls the expand mode of the Accordion, either allowing
      * single or multiple item expansion.
      * @public
-     * 
+     *
      * @remarks
      * HTML attribute: expand-mode
-     * 
+     *
      * @defaultValue {@link AccordionExpandMode.multi}
      */
     @attr({ attribute: "expand-mode" })

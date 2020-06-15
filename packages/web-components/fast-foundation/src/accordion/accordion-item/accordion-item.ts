@@ -1,8 +1,4 @@
-import {
-    attr,
-    FASTElement,
-    nullableNumberConverter,
-} from "@microsoft/fast-element";
+import { attr, FASTElement, nullableNumberConverter } from "@microsoft/fast-element";
 import { StartEnd } from "../../patterns/start-end";
 import { applyMixins } from "../../utilities/apply-mixins";
 
@@ -14,7 +10,7 @@ export class AccordionItem extends FASTElement {
     /**
      * Configures the {@link https://www.w3.org/TR/wai-aria-1.1/#aria-level | level} of the
      * heading element.
-     * 
+     *
      * @defaultValue 2
      * @public
      * @remarks
@@ -29,7 +25,7 @@ export class AccordionItem extends FASTElement {
 
     /**
      * Expands or collapses the item.
-     * 
+     *
      * @public
      * @remarks
      * HTML attribute: expanded
@@ -39,7 +35,7 @@ export class AccordionItem extends FASTElement {
 
     /**
      * The item ID
-     * 
+     *
      * @public
      * @remarks
      * HTML Attribute: id
