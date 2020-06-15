@@ -1,10 +1,19 @@
 # FAST Components MSFT
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![npm version](https://badge.fury.io/js/%40microsoft%2Ffast-components-msft.svg)](https://badge.fury.io/js/%40microsoft%2Ffast-components-msft)
+
+`fast-components-msft` is another library of Web Components that *composes* `fast-foundation`. `fast-components-msft` uses the same custom element names as `fast-components`, but makes use of different stylesheets that align to the Microsoft design language.
+
 A set of React components which implements the Microsoft styling.
 
 ## Installation
 
 `npm i --save @microsoft/fast-components-msft`
+
+## Development
+
+To start the component development environment, run `yarn start`.
 
 ### Known issue with Storybook site hot-reloading during development
 

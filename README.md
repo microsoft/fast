@@ -1,21 +1,87 @@
 
 ![fast_banner_github_914.png](https://static.fast.design/assets/fast_banner_github_914.png)
 
-# FAST
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![npm version](https://badge.fury.io/js/%40microsoft%2Ffast-components.svg)](https://badge.fury.io/js/%40microsoft%2Ffast-components)
+![workflows](https://github.com/microsoft/fast-dna/workflows/CI%20-%20FAST/badge.svg?branch=master&event=push)
+[![TypeScript](https://img.shields.io/badge/%3C%2F%3E-TypeScript-%230074c1.svg)](http://www.typescriptlang.org/)
+[![Twitter](https://img.shields.io/twitter/follow/fast_dna.svg?style=social&label=Follow)](https://twitter.com/intent/follow?screen_name=fast_dna)
 
-An unopinionated system of components, tools, and utilities used à la carte or as a suite to build enterprise-grade websites and applications.
-
+[![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lerna.js.org/)
+[![code style: prettier](https://img.shields.io/badge/code_style-prettier-f8bc45.svg)](https://github.com/prettier/prettier)
 [![Maintainability](https://api.codeclimate.com/v1/badges/8a74621e634a6e9b9561/maintainability)](https://codeclimate.com/github/Microsoft/fast-dna/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/8a74621e634a6e9b9561/test_coverage)](https://codeclimate.com/github/Microsoft/fast-dna/test_coverage)
-![workflows](https://github.com/microsoft/fast-dna/workflows/CI%20-%20FAST/badge.svg?branch=master&event=push)
-[![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lerna.js.org/)
-[![Discord](https://img.shields.io/badge/support%20with-discord-cc00ff.svg)](https://discord.gg/FcSNfg4)
-[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
-![license](https://img.shields.io/github/license/mashape/apistatus.svg)
+
+[![Discord](https://img.shields.io/badge/chat%20on-discord-7289da.svg)](https://discord.gg/FcSNfg4)
+[![Stack Overflow](https://img.shields.io/badge/ask%20questions%20on-stack%20overflow-f48024.svg)](https://stackoverflow.com/questions/tagged/fast-dna)
+
+# FAST
+
+This is the FAST monorepo, containing web component packages, tools, examples, and documentation. FAST tech can be used à la carte or as a suite to build enterprise-grade websites, applications, components, design systems, and more.
 
 :star: We appreciate your star, it helps!
 
-## Key features & benefits
+## Introduction
+
+FAST is a collection of JavaScript packages centered around web standards, designed to help you efficiently tackle some of the most common challenges in website and application design and development.
+
+Have you ever needed a reusable set of UI components that you could drop into your app and have an amazing experience? _**That's FAST.**_
+
+Have you ever needed to create your own components, and share them across your company, including across groups that use different, incompatible front-end frameworks? _**That's FAST.**_
+
+Have you ever needed to implement a branded experience or a design language like Microsoft's Fluent UI or Google's Material Design? _**That's FAST.**_
+
+Have you ever wanted to improve your app's startup time, render speed, or memory consumption? _**That's FAST.**_
+
+Have you ever wanted to adopt more web standards and build your site or app on a native web foundation that's immune to the shifting sands of the modern JavaScript front-end landscape? _**That's FAST.**_
+
+Let's take a look at what each of FAST's core packages give us today.
+
+### fast-element
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![npm version](https://badge.fury.io/js/%40microsoft%2Ffast-element.svg)](https://badge.fury.io/js/%40microsoft%2Ffast-element)
+
+The `fast-element` library is a lightweight means to easily building performant, memory-efficient, standards-compliant Web Components. FAST Elements work in every major browser and can be used in combination with any front-end framework or even without a framework. To get up and running with `fast-element` see [the Getting Started guide](http://fast.design/docs/fast-element/getting-started).
+
+### fast-foundation
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![npm version](https://badge.fury.io/js/%40microsoft%2Ffast-foundation.svg)](https://badge.fury.io/js/%40microsoft%2Ffast-foundation)
+
+The `fast-foundation` package is a library of Web Component classes, templates, and other utilities intended to be composed into registered Web Components by design systems (e.g. Fluent Design, Material Design, etc.). The exports of this package can generally be thought of as un-styled base components that implement semantic and accessible markup and behavior.
+
+This package does not export Web Components registered as [custom elements](https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_custom_elements) - it exports parts and pieces intended to be *composed* into Web Components, allowing you to implement your own design language by simply applying CSS styles and behaviors without having to write all the JavaScript that's involved in building production-quality component implementations.
+
+### fast-components
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![npm version](https://badge.fury.io/js/%40microsoft%2Ffast-components.svg)](https://badge.fury.io/js/%40microsoft%2Ffast-components)
+
+`fast-components` is a library of Web Components that *composes* the exports of `fast-foundation` with stylesheets aligning to the FAST design language. This composition step registers a custom element. See the [quick start](http://fast.design/fast-foundation/getting-started) to get stared using the components.
+
+### fast-components-msft
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![npm version](https://badge.fury.io/js/%40microsoft%2Ffast-components-msft.svg)](https://badge.fury.io/js/%40microsoft%2Ffast-components-msft)
+
+`fast-components-msft` is another library of Web Components that *composes* `fast-foundation`. `fast-components-msft` uses the same custom element names as `fast-components`, but makes use of different stylesheets that align to the Microsoft design language.
+
+### Component Explorer
+
+Launch our [Component Explorer](https://explore.fast.design) to experience our [Microsoft Components](https://www.npmjs.com/package/@microsoft/fast-components-msft) and development tools.
+
+## Getting Started
+
+If you're looking to get started using our components right away, take a look at [the components quick start](http://fast.design/docs/fast-foundation/getting-started). You'll also want to check out [our integrations](http://fast.design/docs/fast-foundation/webpack) if you're looking to add the components into a Webpack build or incorporate them with another front-end framework. For those interested in implementing their own design system or customizing the styles of the components, after you [have a look at the components](http://fast.design/docs/fast-foundation/getting-started), you'll want to read through [our styling docs](http://fast.design/docs/fast-components/intro). Finally, if your goal is to build your own components or apps with `fast-element`, you can learn all about that in our [guide to building web components with FASTElement](http://fast.design/docs/fast-element/getting-started).
+
+## Joining the Community
+
+Looking to get answers to questions or engage with us in realtime? Our community is most active [on Discord](https://discord.gg/FcSNfg4). You can also ask for help on [Stack Overflow](https://stackoverflow.com/questions/tagged/fast-dna), submit requests and issues on [Github](https://github.com/Microsoft/fast-dna/issues/new/choose), or join us by contributing on [some good first issues via Github](https://github.com/Microsoft/fast-dna/labels/good%20first%20issue).
+
+We look forward to building an amazing open source community with you!
+
+## Features & benefits
 
 ### Unopinionated
 
@@ -34,36 +100,10 @@ When developing components and views, excellent development tooling can make all
 
 Try out component properties with an auto-generated property UI, get a live preview of the code based on any property’s configuration, preview localization (RTL/LTR) and themes, and preview component compositing with a transparency grid.
 
-Also, we built FAST development tools from re-usable packages so, if you have special needs, you can build your tools from the same shared libraries.
+Also, we built FAST development tools from re-usable packages, so if you have special needs, you can build your tools from the same shared libraries.
 
 ### Bring your design system
 
-Widely available design systems from companies like Microsoft (Fluent), Google (Material), or Salesforce (Lightning) are useful when it is essential to align with a platform or take advantage of a polished system at low cost, but many companies have their design system of their own, and some may have multiple design systems or variations.
+Widely available design systems from companies like Microsoft (Fluent), Google (Material), or Salesforce (Lightning) are useful when it is essential to align with a platform or take advantage of a polished system at low cost, but many companies have a design system of their own, and some may have multiple design systems or variations.
 
 Because FAST has abstracted base components from their style, you get a head start on your design system by building on top of tried and true base components and style libraries like our offerings for color, animation, and elevation.
-
-## Packages
-
-FAST is a mono repository managed with [Lerna](https://github.com/lerna/lerna). Users choose à la carte which package to use in their project.
-
-### Component Explorer
-![CD - Component Explorer](https://github.com/microsoft/fast-dna/workflows/CD%20-%20Component%20Explorer/badge.svg?branch=master&event=push)
-
-Launch our [Component Explorer](https://explore.fast.design) to experience our [Microsoft React Components](https://github.com/microsoft/fast-dna/tree/master/packages/react/fast-components-react-msft) package and development tools.
-
-View the [staging site](https://fast-explore-stage.azurewebsites.net/) to see unpublished changes currently staged for release in the master branch.
-
-## Documentation
-
-Visit our [developer documentation](https://www.fast.design/docs/en/contributing/install) to get started.
-
-## Troubleshooting
-
-Experiencing problems? Check our infrastructure [health status](https://www.fast.design/docs/en/contributing/status).
-
-## Contact
-
-* Join the community on [Discord](https://discord.gg/FcSNfg4).
-* Ask for help on [Stack Overflow](https://stackoverflow.com/questions/tagged/fast-dna).
-* Submit requests and issues on [Github](https://github.com/Microsoft/fast-dna/issues/new/choose).
-* Contributors, find good first issues on [Github](https://github.com/Microsoft/fast-dna/labels/good%20first%20issue).
