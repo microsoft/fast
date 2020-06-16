@@ -23,3 +23,7 @@ yarn-error.log*
 
 # Cache
 .docusaurus
+
+# Static files from the homepage
+static/bundle
+static/index.html
