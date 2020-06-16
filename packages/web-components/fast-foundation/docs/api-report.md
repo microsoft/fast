@@ -299,21 +299,18 @@ export const disabledCursor = "not-allowed";
 // @public
 export function display(displayValue: CSSDisplayPropertyValue): string;
 
-// @public (undocumented)
+// @public
 export class Divider extends FASTElement {
-    // (undocumented)
     role: DividerRole;
 }
 
-// @public (undocumented)
+// @public
 export enum DividerRole {
-    // (undocumented)
     presentation = "presentation",
-    // (undocumented)
     separator = "separator"
 }
 
-// @public (undocumented)
+// @public
 export const DividerTemplate: import("@microsoft/fast-element").ViewTemplate<Divider, any>;
 
 // @public
