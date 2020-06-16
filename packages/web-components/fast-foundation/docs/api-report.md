@@ -179,10 +179,7 @@ export function composedParent<T extends HTMLElement>(element: T): HTMLElement |
 
 // @public
 export class CSSCustomPropertyBehavior implements Behavior, CSSCustomPropertyDefinition {
-    constructor(
-    name: string,
-    value: CSSCustomPropertyDefinition["value"],
-    host: (source: HTMLElement) => Partial<CSSCustomPropertyTarget> | null);
+    constructor(name: string, value: CSSCustomPropertyDefinition["value"], host: (source: HTMLElement) => Partial<CSSCustomPropertyTarget> | null);
     // @internal
     bind(source: HTMLElement): void;
     readonly name: CSSCustomPropertyDefinition["name"];
@@ -196,13 +193,13 @@ export class CSSCustomPropertyBehavior implements Behavior, CSSCustomPropertyDef
 // @public
 export function cssCustomPropertyBehaviorFactory(name: string, value: string | ((...arg: any[]) => string), host: (source: typeof FASTElement & HTMLElement) => Partial<CSSCustomPropertyTarget> | null): CSSCustomPropertyBehavior;
 
-// @public (undocumented)
+// @public
 export interface CSSCustomPropertyDefinition {
     name: string;
     value: string | ((...args: any[]) => string);
 }
 
-// @public (undocumented)
+// @public
 export interface CSSCustomPropertyTarget {
     // (undocumented)
     disconnectedCSSCustomPropertyRegistry: CSSCustomPropertyDefinition[] | void;

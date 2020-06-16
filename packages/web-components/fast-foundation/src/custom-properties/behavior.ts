@@ -1,5 +1,9 @@
 import { Behavior, FASTElement } from "@microsoft/fast-element";
 
+/**
+ * A structure representing a {@link https://developer.mozilla.org/en-US/docs/Web/CSS/--* | CSS custom property}.
+ * @public
+ */
 export interface CSSCustomPropertyDefinition {
     /**
      * The custom property name
@@ -12,6 +16,10 @@ export interface CSSCustomPropertyDefinition {
     value: string | ((...args: any[]) => string);
 }
 
+/**
+ * A structure that can register and unregister {@link CSSCustomPropertyDefinition | CSSCustomPropertyDefinitions}.
+ * @public
+ */
 export interface CSSCustomPropertyTarget {
     registerCSSCustomProperty(behavior: CSSCustomPropertyDefinition): void;
     unregisterCSSCustomProperty(behavior: CSSCustomPropertyDefinition): void;
@@ -19,57 +27,48 @@ export interface CSSCustomPropertyTarget {
 }
 
 /**
- * A Behavior that, when bound, will register itself with the nearest
- * CSSCustomPropertyTarget
+ * A Behavior that will register to a {@link CSSCustomPropertyTarget} when bound.
+ * 
+ * @public
  */
 export class CSSCustomPropertyBehavior implements Behavior, CSSCustomPropertyDefinition {
     /**
-     * The name of the CSS Custom Property behavior.
+     * The name of the {@link https://developer.mozilla.org/en-US/docs/Web/CSS/--* | CSS custom property}.
+     * @public
      */
     public readonly name: CSSCustomPropertyDefinition["name"];
 
     /**
      * The value or function that will resolve the value of
-     * the CSS Custom Property.
+     * the {@link https://developer.mozilla.org/en-US/docs/Web/CSS/--* | CSS custom property}.
+     * @public
      */
     public readonly value: CSSCustomPropertyDefinition["value"];
 
     /**
      * The name of the CSSCustomPropertyBehavior formatted
-     * as a CSS custom property.
+     * as a {@link https://developer.mozilla.org/en-US/docs/Web/CSS/--* | CSS custom property}.
+     * @public
      */
     public readonly propertyName: string;
 
     /**
-     * Return the CSS Custom Property formatted
-     * as a CSS variable.
+     * Return the {@link https://developer.mozilla.org/en-US/docs/Web/CSS/--* | CSS custom property} formatted
+     * as a {@link https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties | CSS variable}.
+     * 
+     * @public
      */
     public readonly var: string;
 
+    /**
+     * 
+     * @param name - The name of the custom property, without the prepended "--" required by {@link https://developer.mozilla.org/en-US/docs/Web/CSS/--* | CSS custom properties}.
+     * @param value - The value of the custom property or a function that resolves the value.
+     * @param host - A function that resolves the host element that will register the behavior
+     */
     constructor(
-        /**
-         * The name of the custom property.
-         * @remarks
-         * When written as a custom property, the "--" required
-         * by CSS custom properties will be prepended to this value.
-         */
         name: string,
-
-        /**
-         * The value of the custom property or a function that
-         * resolves the value.
-         * @remarks
-         * When a resolver is provided, the resolver will be invoked
-         * by the element returned from the host argument.
-         */
         value: CSSCustomPropertyDefinition["value"],
-
-        /**
-         * The element that registers the behavior.
-         * @remarks
-         * This element should also be responsible for resolving
-         * and function value.
-         */
         host: (source: HTMLElement) => Partial<CSSCustomPropertyTarget> | null
     ) {
         this.name = name;
@@ -83,7 +82,7 @@ export class CSSCustomPropertyBehavior implements Behavior, CSSCustomPropertyDef
 
     /**
      * Binds the behavior to a source element
-     * @param source The source element being bound
+     * @param source - The source element being bound
      * @internal
      */
     bind(source: HTMLElement): void {
@@ -108,7 +107,7 @@ export class CSSCustomPropertyBehavior implements Behavior, CSSCustomPropertyDef
 
     /**
      * Unbinds the behavior from the source element.
-     * @param source The source element being unbound
+     * @param source - The source element being unbound
      * @internal
      */
     unbind(source: HTMLElement): void {
@@ -122,9 +121,10 @@ export class CSSCustomPropertyBehavior implements Behavior, CSSCustomPropertyDef
 
 /**
  * Create a CSS Custom Property behavior.
- * @param name The name of the CSS custom property
- * @param value The value or value resolver of the custom property
- * @param host A function to resolve the element to host the CSS custom property
+ * @param name - The name of the CSS custom property
+ * @param value - The value or value resolver of the custom property
+ * @param host - A function to resolve the element to host the CSS custom property
+ * @public
  */
 export function cssCustomPropertyBehaviorFactory(
     name: string,
