@@ -31,7 +31,7 @@ Next, we'll install the FAST packages, along with supporting libraries. To do th
 npm install --save @microsoft/fast-components @microsoft/fast-element lodash-es
 ```
 
-## Using the Components
+### Using the Components
 
 With all the basic pieces in place, let's run our app in dev mode with `npm start`. Webpack should build your project and open your default browser with your `index.html` page. Right now, it should only have a hello message, since we haven't added any code or interesting HTML. Let's change that.
 
@@ -127,7 +127,7 @@ Next, we'll install the FAST packages, along with supporting libraries. To do th
 npm install --save @microsoft/fast-components @microsoft/fast-element lodash-es
 ```
 
-## Using the Components
+### Using the Components
 
 With all the basic pieces in place, let's run our app in dev mode with `npm start`. Webpack should build your project and make it available at `http://localhost:8080/`. If you visit this address it should only have a hello message, since we haven't added any code or interesting HTML. Let's change that.
 

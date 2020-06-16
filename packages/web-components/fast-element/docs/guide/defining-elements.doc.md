@@ -87,7 +87,7 @@ Here's how it works:
 * When the DOM attribute value changes, the converter's `fromView` method will be called, allowing custom code to coerce the value to the proper type expected by the property.
 * When the property value changes, the converter's `fromView` method will also be called, ensuring that the type is correct. After this, the `mode` will be determined. If the mode is set to `reflect` then the converter's `toView` method will be called to allow the type to be formatted before writing to the attribute using `setAttribute`.
 
-::important
+:::important
 When the `mode` is set to `boolean`, a built-in `booleanConverter` is automatically used to ensure type correctness so that manual configuration of the converter is not needed in this common scenario.
 :::
 
@@ -177,7 +177,7 @@ import { FASTElement, html, css } from '@microsoft/fast-element';
 
 const template = html`...`;
 const styles = css`...`;
-const numberConverter = { ... };
+const converter = { ... };
 
 export class MyElement extends FASTElement {
   static definition = {
@@ -185,9 +185,9 @@ export class MyElement extends FASTElement {
     template,
     styles,
     attributes: [
-      'value', // same attr/prop name
-      { attribute: 'some-attr', property: 'someAttr' }, // different attr/prop name
-      { property: 'count', converter: numberConverter } // derive attr name from prop; add converter
+      'value', // same attr/prop
+      { attribute: 'some-attr', property: 'someAttr' }, // different attr/prop
+      { property: 'count', converter } // derive attr; add converter
     ]
   };
 
@@ -199,6 +199,6 @@ export class MyElement extends FASTElement {
 FASTElement.define(MyElement);
 ```
 
-::note
+:::note
 The `definition` can also be separated from the class and passed into the `define` call directly if desired. Here's how that would look: `FASTElement.define(MyElement, myDefinition);`
 :::
