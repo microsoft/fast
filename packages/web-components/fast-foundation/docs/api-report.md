@@ -142,11 +142,11 @@ export type ButtonAppearance = "accent" | "lightweight" | "neutral" | "outline" 
 // @public (undocumented)
 export const ButtonTemplate: import("@microsoft/fast-element").ViewTemplate<Button, any>;
 
-// @public (undocumented)
+// @public
 export class Card extends FASTElement {
 }
 
-// @public (undocumented)
+// @public
 export const CardTemplate: import("@microsoft/fast-element").ViewTemplate<Card, any>;
 
 // @public
