@@ -2,35 +2,92 @@ import { attr, DOM, FASTElement } from "@microsoft/fast-element";
 import { keyCodeEscape, keyCodeTab } from "@microsoft/fast-web-utilities";
 import tabbable from "tabbable";
 
+/**
+ * A Switch Custom HTML Element.
+ * Implements the {@link https://www.w3.org/TR/wai-aria-1.1/#dialog | ARIA dialog }.
+ *
+ * @public
+ */
 export class Dialog extends FASTElement {
+    /**
+     * Indicates the element is modal. When modal, user interaction will be limited to the contents of the element.
+     * @public
+     * @defaultValue - true
+     * @remarks
+     * HTML Attribute: modal
+     */
     @attr({ mode: "boolean" })
     public modal: boolean = true;
 
+    /**
+     * The hidden state of the element.
+     * 
+     * @public
+     * @defaultValue - false
+     * @remarks
+     * HTML Attribute: hidden
+     */
     @attr({ mode: "boolean" })
     public hidden: boolean = false;
 
+    /**
+     * Indicates that the dialog should trap focus.
+     * 
+     * @public
+     * @defaultValue - true
+     * @remarks
+     * HTML Attribute: trap-focus
+     */
     @attr({ attribute: "trap-focus", mode: "boolean" })
     public trapFocus: boolean = true;
 
+    /**
+     * The id of the element describing the dialog.
+     * @public
+     * @remarks
+     * HTML Attribute: aria-describedby
+     */
     @attr({ attribute: "aria-describedby" })
     public ariaDescribedby: string;
 
+    /**
+     * The id of the element labeling the dialog.
+     * @public
+     * @remarks
+     * HTML Attribute: aria-labelledby
+     */
     @attr({ attribute: "aria-labelledby" })
     public ariaLabelledby: string;
 
+    /**
+     * The label surfaced to assistive technologies.
+     * 
+     * @public
+     * @remarks
+     * HTML Attribute: aria-label
+     */
     @attr({ attribute: "aria-label" })
     public ariaLabel: string;
 
+    /**
+     * @internal
+     */
     public dialog: HTMLDivElement;
 
     private tabbableElements: HTMLElement[];
 
     private observer: MutationObserver;
 
+    /**
+     * @internal
+     */
     public dismiss(): void {
         this.$emit("dismiss");
     }
 
+    /**
+     * @internal
+     */
     public connectedCallback(): void {
         super.connectedCallback();
 
@@ -48,6 +105,9 @@ export class Dialog extends FASTElement {
         DOM.queueUpdate(this.trapFocusChanged);
     }
 
+    /**
+     * @internal
+     */
     public disconnectedCallback(): void {
         super.disconnectedCallback();
 

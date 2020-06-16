@@ -266,31 +266,25 @@ export function designSystemProvider(nameOrDef: string | PartialFASTElementDefin
 // @public (undocumented)
 export const DesignSystemProviderTemplate: import("@microsoft/fast-element").ViewTemplate<DesignSystemProvider, any>;
 
-// @public (undocumented)
+// @public
 export class Dialog extends FASTElement {
-    // (undocumented)
     ariaDescribedby: string;
-    // (undocumented)
     ariaLabel: string;
-    // (undocumented)
     ariaLabelledby: string;
-    // (undocumented)
+    // @internal (undocumented)
     connectedCallback(): void;
-    // (undocumented)
+    // @internal (undocumented)
     dialog: HTMLDivElement;
-    // (undocumented)
+    // @internal (undocumented)
     disconnectedCallback(): void;
-    // (undocumented)
+    // @internal (undocumented)
     dismiss(): void;
-    // (undocumented)
     hidden: boolean;
-    // (undocumented)
     modal: boolean;
-    // (undocumented)
     trapFocus: boolean;
     }
 
-// @public (undocumented)
+// @public
 export const DialogTemplate: import("@microsoft/fast-element").ViewTemplate<Dialog, any>;
 
 // @public
