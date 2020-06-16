@@ -215,13 +215,10 @@ export interface CSSCustomPropertyTarget {
 // @public
 export type CSSDisplayPropertyValue = "block" | "contents" | "flex" | "grid" | "inherit" | "initial" | "inline" | "inline-block" | "inline-flex" | "inline-grid" | "inline-table" | "list-item" | "none" | "run-in" | "table" | "table-caption" | "table-cell" | "table-column" | "table-column-group" | "table-footer-group" | "table-header-group" | "table-row" | "table-row-group";
 
-// @public (undocumented)
+// @public
 export interface DecoratorDesignSystemPropertyConfiguration extends Omit<DecoratorAttributeConfiguration, "attribute"> {
-    // (undocumented)
     attribute?: string | false;
-    // (undocumented)
     cssCustomProperty?: string | false;
-    // (undocumented)
     default: any;
 }
 
