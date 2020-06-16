@@ -5,8 +5,8 @@ import { SliderStyles as styles } from "./slider.styles";
 /**
  * The FAST Slider Custom Element. Implements {@link @microsoft/fast-foundation#Slider},
  * {@link @microsoft/fast-foundation#SliderTemplate}
- * 
- * 
+ *
+ *
  * @public
  * @remarks
  * HTML Element: \<fast-slider\>

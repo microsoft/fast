@@ -5,8 +5,8 @@ import { TabsStyles as styles } from "./tabs.styles";
 /**
  * The FAST Tabs Custom Element. Implements {@link @microsoft/fast-foundation#Tabs},
  * {@link @microsoft/fast-foundation#TabsTemplate}
- * 
- * 
+ *
+ *
  * @public
  * @remarks
  * HTML Element: \<fast-tabs\>

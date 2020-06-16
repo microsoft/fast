@@ -5,8 +5,8 @@ import { CheckboxStyles as styles } from "./checkbox.styles";
 /**
  * The FAST Checkbox Element. Implements {@link @microsoft/fast-foundation#Checkbox},
  * {@link @microsoft/fast-foundation#CheckboxTemplate}
- * 
- * 
+ *
+ *
  * @public
  * @remarks
  * HTML Element: \<fast-checkbox\>

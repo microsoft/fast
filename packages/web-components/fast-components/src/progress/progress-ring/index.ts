@@ -8,8 +8,8 @@ import { ProgressRingStyles as styles } from "./progress-ring.styles";
 /**
  * The FAST Progress Ring Element. Implements {@link @microsoft/fast-foundation#BaseProgress},
  * {@link @microsoft/fast-foundation#ProgressRingTemplate}
- * 
- * 
+ *
+ *
  * @public
  * @remarks
  * HTML Element: \<fast-progress-ring\>

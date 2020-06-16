@@ -5,8 +5,8 @@ import { SliderLabelStyles as styles } from "./slider-label.styles";
 /**
  * The FAST Slider Label Custom Element. Implements {@link @microsoft/fast-foundation#SliderLabel},
  * {@link @microsoft/fast-foundation#SliderLabelTemplate}
- * 
- * 
+ *
+ *
  * @public
  * @remarks
  * HTML Element: \<fast-slider-label\>

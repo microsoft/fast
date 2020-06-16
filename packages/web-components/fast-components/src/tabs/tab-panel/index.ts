@@ -5,8 +5,8 @@ import { TabPanelStyles as styles } from "./tab-panel.styles";
 /**
  * The FAST Tab Panel Custom Element. Implements {@link @microsoft/fast-foundation#TabPanel},
  * {@link @microsoft/fast-foundation#TabPanelTemplate}
- * 
- * 
+ *
+ *
  * @public
  * @remarks
  * HTML Element: \<fast-tab-panel\>

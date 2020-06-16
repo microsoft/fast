@@ -26,8 +26,8 @@ const backgroundStyles = css`
 /**
  * The FAST DesignSystemProvider Element. Implements {@link @microsoft/fast-foundation#DesignSystemProvider},
  * {@link @microsoft/fast-foundation#DesignSystemProviderTemplate} and {@link @microsoft/fast-components#FASTDesignSystem}
- * 
- * 
+ *
+ *
  * @public
  * @remarks
  * HTML Element: \<fast-design-system-provider\>

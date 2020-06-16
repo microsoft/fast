@@ -5,8 +5,8 @@ import { ButtonStyles as styles } from "./button.styles";
 /**
  * The FAST Button Element. Implements {@link @microsoft/fast-foundation#Button},
  * {@link @microsoft/fast-foundation#ButtonTemplate}
- * 
- * 
+ *
+ *
  * @public
  * @remarks
  * HTML Element: \<fast-button\>

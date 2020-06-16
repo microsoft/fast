@@ -28,7 +28,7 @@ export enum PaletteType {
 
 /**
  * The structure of a color palette
- * 
+ *
  * @public
  */
 export type Palette = Swatch[];
@@ -149,7 +149,7 @@ export function findClosestSwatchIndex(
 
 /**
  * Determines if the design-system should be considered in "dark mode".
- * 
+ *
  * @public
  * @privateRemarks
  * A color is in dark mode if there is more contrast between #000000 and a background

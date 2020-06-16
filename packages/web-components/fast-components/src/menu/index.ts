@@ -5,8 +5,8 @@ import { MenuStyles as styles } from "./menu.styles";
 /**
  * The FAST Menu Element. Implements {@link @microsoft/fast-foundation#Menu},
  * {@link @microsoft/fast-foundation#MenuTemplate}
- * 
- * 
+ *
+ *
  * @public
  * @remarks
  * HTML Element: \<fast-menu\>

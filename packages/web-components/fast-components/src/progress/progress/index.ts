@@ -5,8 +5,8 @@ import { ProgressStyles as styles } from "./progress.styles";
 /**
  * The FAST Progress Element. Implements {@link @microsoft/fast-foundation#BaseProgress},
  * {@link @microsoft/fast-foundation#ProgressTemplate}
- * 
- * 
+ *
+ *
  * @public
  * @remarks
  * HTML Element: \<fast-progress\>

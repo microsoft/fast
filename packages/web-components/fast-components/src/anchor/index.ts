@@ -5,8 +5,8 @@ import { AnchorStyles as styles } from "./anchor.styles";
 /**
  * The FAST Anchor Element. Implements {@link @microsoft/fast-foundation#Anchor},
  * {@link @microsoft/fast-foundation#AnchorTemplate}
- * 
- * 
+ *
+ *
  * @public
  * @remarks
  * HTML Element: \<fast-anchor\>
