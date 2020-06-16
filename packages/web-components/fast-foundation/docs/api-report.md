@@ -50,8 +50,6 @@ export const AccordionItemTemplate: import("@microsoft/fast-element").ViewTempla
 // @public (undocumented)
 export const AccordionTemplate: import("@microsoft/fast-element").ViewTemplate<Accordion, any>;
 
-// Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "Anchor" because one of its declarations is marked as @internal
-//
 // @public
 export class Anchor extends FASTElement {
     appearance: AnchorAppearance;
@@ -65,14 +63,14 @@ export class Anchor extends FASTElement {
     type: string;
 }
 
-// @internal
+// @public (undocumented)
 export interface Anchor extends StartEnd {
 }
 
 // @public
 export type AnchorAppearance = ButtonAppearance | "hypertext";
 
-// @public (undocumented)
+// @public
 export const AnchorTemplate: import("@microsoft/fast-element").ViewTemplate<Anchor, any>;
 
 // @public
