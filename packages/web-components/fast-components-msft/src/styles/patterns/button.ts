@@ -143,6 +143,8 @@ export const AccentButtonStyles = css`
 export const HypertextStyles = css`
     :host(.hypertext) {
         height: auto;
+        font-size: inherit;
+        line-height: inherit;
         background: transparent;
         vertical-align: bottom;
     }
