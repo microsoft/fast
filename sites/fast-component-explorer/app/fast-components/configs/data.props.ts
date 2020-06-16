@@ -1,4 +1,5 @@
 import { DataDictionary } from "@microsoft/fast-tooling";
+import { WebComponentDefinition } from "@microsoft/fast-tooling/dist/data-utilities/web-component";
 
 export interface Scenario {
     /**
@@ -17,6 +18,11 @@ export interface ComponentViewConfig {
      * The JSON schema associated with the component
      */
     schema: any;
+
+    /**
+     * The component definition
+     */
+    definition: WebComponentDefinition;
 
     /**
      * The guidance extrapolated from the components README file

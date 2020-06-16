@@ -1,4 +1,4 @@
-import * as componentDefinitions from "./fast-components";
+import * as fastComponentDefinitions from "./fast-components";
 import * as nativeElementDefinitions from "./native";
 
-export { componentDefinitions, nativeElementDefinitions };
+export { fastComponentDefinitions, nativeElementDefinitions };

@@ -398,6 +398,37 @@ class Explorer extends Foundation<
                             size={TypographySize._8}
                             onClick={this.handleDevToolsTabTriggerClick}
                         >
+                            Definition
+                        </Typography>
+                    );
+                },
+                content: (className: string): React.ReactNode => {
+                    if (typeof this.state.componentConfig.definition !== "undefined") {
+                        return (
+                            <div className={className}>
+                                <pre>
+                                    {JSON.stringify(
+                                        this.state.componentConfig.definition,
+                                        null,
+                                        2
+                                    )}
+                                </pre>
+                            </div>
+                        );
+                    }
+
+                    return null;
+                },
+                id: "definition",
+            },
+            {
+                tab: (className: string): React.ReactNode => {
+                    return (
+                        <Typography
+                            className={className}
+                            size={TypographySize._8}
+                            onClick={this.handleDevToolsTabTriggerClick}
+                        >
                             Schema
                         </Typography>
                     );
