@@ -4,6 +4,7 @@ import { css } from "@microsoft/fast-element";
 
 export const SectionHeaderStyles = css`
     ${display("flex")} :host {
+        align-items: center;
         flex-direction: column;
         font-family: var(--body-font);
         color: var(--neutral-foreground-rest);
