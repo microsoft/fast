@@ -47,7 +47,7 @@ export interface AccordionItem extends StartEnd {
 // @public (undocumented)
 export const AccordionItemTemplate: import("@microsoft/fast-element").ViewTemplate<AccordionItem, any>;
 
-// @public (undocumented)
+// @public
 export const AccordionTemplate: import("@microsoft/fast-element").ViewTemplate<Accordion, any>;
 
 // @public
