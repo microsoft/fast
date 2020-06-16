@@ -91,15 +91,11 @@ export class Badge extends FASTElement {
 // @public (undocumented)
 export const BadgeTemplate: import("@microsoft/fast-element").ViewTemplate<Badge, any>;
 
-// @public (undocumented)
+// @public
 export class BaseProgress extends FASTElement {
-    // (undocumented)
     max: number;
-    // (undocumented)
     min: number;
-    // (undocumented)
     paused: any;
-    // (undocumented)
     value: number;
 }
 
@@ -478,10 +474,10 @@ export const MenuItemTemplate: import("@microsoft/fast-element").ViewTemplate<Me
 // @public (undocumented)
 export const MenuTemplate: import("@microsoft/fast-element").ViewTemplate<Menu, any>;
 
-// @public (undocumented)
+// @public
 export const ProgressRingTemplate: import("@microsoft/fast-element").ViewTemplate<BaseProgress, any>;
 
-// @public (undocumented)
+// @public
 export const ProgressTemplate: import("@microsoft/fast-element").ViewTemplate<BaseProgress, any>;
 
 // @public
@@ -510,30 +506,25 @@ export class Radio extends FormAssociated<HTMLInputElement> implements RadioCont
 // @public
 export type RadioControl = Pick<HTMLInputElement, "checked" | "disabled" | "readOnly" | "focus" | "setAttribute" | "getAttribute">;
 
-// @public (undocumented)
+// @public
 export class RadioGroup extends FASTElement {
     constructor();
-    // (undocumented)
+    // @internal (undocumented)
     connectedCallback(): void;
-    // (undocumented)
     disabled: boolean;
-    // (undocumented)
+    // @internal
     keydownHandler: (e: KeyboardEvent) => void;
-    // (undocumented)
     name: string;
     // (undocumented)
     protected nameChanged(): void;
-    // (undocumented)
     orientation: Orientation;
-    // (undocumented)
     readOnly: boolean;
-    // (undocumented)
+    // @internal (undocumented)
     slottedRadioButtons: RadioControl[];
-    // (undocumented)
     value: string;
 }
 
-// @public (undocumented)
+// @public
 export const RadioGroupTemplate: import("@microsoft/fast-element").ViewTemplate<RadioGroup, any>;
 
 // @public

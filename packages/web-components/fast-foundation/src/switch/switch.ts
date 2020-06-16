@@ -3,7 +3,7 @@ import { keyCodeSpace } from "@microsoft/fast-web-utilities";
 import { FormAssociated } from "../form-associated/index";
 
 /**
- * An Switch Custom HTML Element.
+ * A Switch Custom HTML Element.
  * Implements the {@link https://www.w3.org/TR/wai-aria-1.1/#switch | ARIA switch }.
  *
  * @public
