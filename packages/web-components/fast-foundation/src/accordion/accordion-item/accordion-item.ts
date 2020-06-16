@@ -3,7 +3,7 @@ import { StartEnd } from "../../patterns/start-end";
 import { applyMixins } from "../../utilities/apply-mixins";
 
 /**
- * An individual item in an {@link @microsoft/fast-foundation#Accordion }.
+ * An individual item in an {@link @microsoft/fast-foundation#(Accordion:class) }.
  * @public
  */
 export class AccordionItem extends FASTElement {
@@ -64,7 +64,7 @@ export class AccordionItem extends FASTElement {
 /**
  * Mark internal because exporting class and interface of the same name
  * confuses API extractor
- * @internal
+ * @public
  */
 /* eslint-disable-next-line */
 export interface AccordionItem extends StartEnd {}

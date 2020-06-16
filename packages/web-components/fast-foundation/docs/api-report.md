@@ -27,8 +27,6 @@ export enum AccordionExpandMode {
     single = "single"
 }
 
-// Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "AccordionItem" because one of its declarations is marked as @internal
-//
 // @public
 export class AccordionItem extends FASTElement {
     // @internal (undocumented)
@@ -40,11 +38,11 @@ export class AccordionItem extends FASTElement {
     id: string;
 }
 
-// @internal
+// @public
 export interface AccordionItem extends StartEnd {
 }
 
-// @public (undocumented)
+// @public
 export const AccordionItemTemplate: import("@microsoft/fast-element").ViewTemplate<AccordionItem, any>;
 
 // @public
