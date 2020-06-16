@@ -86,7 +86,7 @@ export class Button extends FormAssociated<HTMLInputElement> {
      *
      * @public
      * @remarks
-     * HTML Attribute: form
+     * HTML Attribute: formmethod
      */
     @attr
     public formmethod: string;
