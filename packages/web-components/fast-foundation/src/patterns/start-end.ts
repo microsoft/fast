@@ -1,5 +1,10 @@
 import { html, ref } from "@microsoft/fast-element";
 
+/**
+ * A mixin class implementing start and end elements. 
+ * These are generally used to decorate text elements with icons or other visual indicators.
+ * @public
+ */
 export class StartEnd {
     public start: HTMLSlotElement;
     public startContainer: HTMLSpanElement;
@@ -17,6 +22,12 @@ export class StartEnd {
     }
 }
 
+/**
+ * The template for the end element.
+ * For use with {@link StartEnd}
+ * 
+ * @public
+ */
 export const endTemplate = html<StartEnd>`
     <span part="end" ${ref("endContainer")}>
         <slot
@@ -27,6 +38,12 @@ export const endTemplate = html<StartEnd>`
     </span>
 `;
 
+/**
+ * The template for the start element.
+ * For use with {@link StartEnd}
+ * 
+ * @public
+ */
 export const startTemplate = html<StartEnd>`
     <span part="start" ${ref("startContainer")}>
         <slot

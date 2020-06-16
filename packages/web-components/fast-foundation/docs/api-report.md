@@ -316,7 +316,7 @@ export enum DividerRole {
 // @public (undocumented)
 export const DividerTemplate: import("@microsoft/fast-element").ViewTemplate<Divider, any>;
 
-// @public (undocumented)
+// @public
 export const endTemplate: import("@microsoft/fast-element").ViewTemplate<StartEnd, any>;
 
 // @public (undocumented)
@@ -621,7 +621,7 @@ export enum SliderMode {
 // @public
 export const SliderTemplate: import("@microsoft/fast-element").ViewTemplate<Slider, any>;
 
-// @public (undocumented)
+// @public
 export class StartEnd {
     // (undocumented)
     end: HTMLSlotElement;
@@ -637,7 +637,7 @@ export class StartEnd {
     startContainer: HTMLSpanElement;
 }
 
-// @public (undocumented)
+// @public
 export const startTemplate: import("@microsoft/fast-element").ViewTemplate<StartEnd, any>;
 
 // @public
