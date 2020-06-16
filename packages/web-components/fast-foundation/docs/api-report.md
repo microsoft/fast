@@ -484,46 +484,31 @@ export const ProgressRingTemplate: import("@microsoft/fast-element").ViewTemplat
 // @public (undocumented)
 export const ProgressTemplate: import("@microsoft/fast-element").ViewTemplate<BaseProgress, any>;
 
-// @public (undocumented)
+// @public
 export class Radio extends FormAssociated<HTMLInputElement> implements RadioControl {
     constructor();
     checked: boolean;
     checkedAttribute: boolean;
-    // (undocumented)
+    // @internal (undocumented)
     clickHandler: (e: MouseEvent) => void;
-    // (undocumented)
+    // @internal (undocumented)
     connectedCallback(): void;
     defaultChecked: boolean;
-    // (undocumented)
+    // @internal (undocumented)
     defaultSlottedNodes: Node[];
-    // (undocumented)
+    // @internal (undocumented)
     keypressHandler: (e: KeyboardEvent) => void;
-    // (undocumented)
     name: string;
     // (undocumented)
     protected nameChanged(): void;
     // (undocumented)
     protected proxy: HTMLInputElement;
-    // (undocumented)
     readOnly: boolean;
     value: string;
     }
 
-// @public (undocumented)
-export interface RadioControl {
-    // (undocumented)
-    checked: boolean;
-    // (undocumented)
-    disabled: boolean;
-    // (undocumented)
-    focus: () => void;
-    // (undocumented)
-    getAttribute: (name: string) => string | null;
-    // (undocumented)
-    readOnly: boolean;
-    // (undocumented)
-    setAttribute: (name: string, value: string) => void;
-}
+// @public
+export type RadioControl = Pick<HTMLInputElement, "checked" | "disabled" | "readOnly" | "focus" | "setAttribute" | "getAttribute">;
 
 // @public (undocumented)
 export class RadioGroup extends FASTElement {
@@ -551,7 +536,7 @@ export class RadioGroup extends FASTElement {
 // @public (undocumented)
 export const RadioGroupTemplate: import("@microsoft/fast-element").ViewTemplate<RadioGroup, any>;
 
-// @public (undocumented)
+// @public
 export const RadioTemplate: import("@microsoft/fast-element").ViewTemplate<Radio, any>;
 
 // @public
