@@ -19,6 +19,7 @@ import {
 /**
  * The named palettes of the MSFT design system
  * @deprecated - use neutralPalette and accentPalette functions instead
+ * @public
  */
 export enum PaletteType {
     neutral = "neutral",
@@ -27,6 +28,8 @@ export enum PaletteType {
 
 /**
  * The structure of a color palette
+ * 
+ * @public
  */
 export type Palette = Swatch[];
 
@@ -146,8 +149,11 @@ export function findClosestSwatchIndex(
 
 /**
  * Determines if the design-system should be considered in "dark mode".
- * We're in dark mode if we have more contrast between #000000 and our background
- * color than #FFFFFF and our background color. That threshold can be expressed as a relative luminance
+ * 
+ * @public
+ * @privateRemarks
+ * A color is in dark mode if there is more contrast between #000000 and a background
+ * color than #FFFFFF and a background color. That threshold can be expressed as a relative luminance
  * using the contrast formula as (1 + 0.5) / (bg + 0.05) === (bg + 0.05) / (0 + 0.05),
  * which reduces to the following, where bg is the relative luminance of the background color
  */

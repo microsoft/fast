@@ -23,6 +23,15 @@ const backgroundStyles = css`
     }
 `.withBehaviors(color);
 
+/**
+ * The FAST DesignSystemProvider Element. Implements {@link @microsoft/fast-foundation#DesignSystemProvider},
+ * {@link @microsoft/fast-foundation#DesignSystemProviderTemplate} and {@link @microsoft/fast-components#FASTDesignSystem}
+ * 
+ * 
+ * @public
+ * @remarks
+ * HTML Element: \<fast-design-system-provider\>
+ */
 @designSystemProvider({
     name: "fast-design-system-provider",
     template,
