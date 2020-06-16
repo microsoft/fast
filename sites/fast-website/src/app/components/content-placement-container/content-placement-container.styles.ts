@@ -45,7 +45,8 @@ export const ContentPlacementContainerStyles = css`
         margin-bottom: calc(var(--design-unit) * 2px);
     }
 
-    :host([section="feature"]) site-feature-card:hover :first-child::before {
+    :host([section="feature"]) site-feature-card:hover :first-child::before,
+    :host([section="feature"]) site-feature-card:focus-within :first-child::before {
         color: var(--accent-foreground-rest);
     }
 
@@ -54,23 +55,29 @@ export const ContentPlacementContainerStyles = css`
     /* This creates the color, background, and elevation changes on hover */
 
     :host([section="feature"]:hover),
+    :host([section="feature"]:focus-within),
     :host([section="community"]:hover) site-content-placement,
-    :host([section="community"]:hover) site-content-placement ::part(content) {
+    :host([section="community"]:focus-within) site-content-placement,
+    :host([section="community"]:hover) site-content-placement ::part(content),
+    :host([section="community"]:focus-within) site-content-placement ::part(content) {
         color: var(--neutral-foreground-hint);
     }
 
-    :host([section="feature"]:hover) site-feature-card {
+    :host([section="feature"]:hover) site-feature-card,
+    :host([section="feature"]:focus-within) site-feature-card {
         filter: saturate(0);
     }
 
-    :host([section="feature"]) site-feature-card:hover {
+    :host([section="feature"]) site-feature-card:hover,
+    :host([section="feature"]) site-feature-card:focus-within {
         color: var(--neutral-foreground-rest);
         background: var(--neutral-fill-focus);
         cursor: pointer;
         filter: saturate(1);
     }
 
-    :host([section="community"]) site-content-placement:hover {
+    :host([section="community"]) site-content-placement:hover,
+    :host([section="community"]) site-content-placement:focus-within {
         --elevation: 4;
         cursor: pointer;
         background: var(--neutral-fill-focus);
@@ -79,7 +86,8 @@ export const ContentPlacementContainerStyles = css`
         ${elevation}
     }
 
-    :host([section="community"]) site-content-placement:hover ::part(content) {
+    :host([section="community"]) site-content-placement:hover ::part(content),
+    :host([section="community"]) site-content-placement:focus-within ::part(content) {
         color: var(--accent-foreground-rest);
     }
 
