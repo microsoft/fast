@@ -32,6 +32,7 @@ export interface DecoratorDesignSystemPropertyConfiguration
 
 /**
  * Decorator to declare a property as a design-system property.
+ * Intended to be used with the {@link @microsoft/fast-foundation#DesignSystemProvider}
  * @param config - {@link DecoratorDesignSystemPropertyConfiguration}
  * 
  * @public
