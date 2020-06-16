@@ -40,7 +40,7 @@ export class RadioGroup extends FASTElement {
 
     /**
      * Disables the radio group and child radios.
-     * 
+     *
      * @public
      * @remarks
      * HTML Attribute: disabled
@@ -59,11 +59,11 @@ export class RadioGroup extends FASTElement {
             });
         }
     }
-    
+
     /**
      * The name of the radio group. Setting this value will set the name value
      * for all child radio elements.
-     * 
+     *
      * @public
      * @remarks
      * HTML Attribute: name
@@ -78,7 +78,7 @@ export class RadioGroup extends FASTElement {
 
     /**
      * The value of the checked radio
-     * 
+     *
      * @public
      * @remarks
      * HTML Attribute: value
@@ -88,7 +88,7 @@ export class RadioGroup extends FASTElement {
 
     /**
      * The orientation of the group
-     * 
+     *
      * @public
      * @remarks
      * HTML Attribute: orientation
@@ -99,7 +99,7 @@ export class RadioGroup extends FASTElement {
     /**
      * @internal
      */
-    @observable 
+    @observable
     public slottedRadioButtons: RadioControl[];
     private selectedRadio: RadioControl | null;
     private focusedRadio: RadioControl | null;
@@ -299,7 +299,7 @@ export class RadioGroup extends FASTElement {
     /**
      * keyboard handling per https://w3c.github.io/aria-practices/#for-radio-groups-not-contained-in-a-toolbar
      * navigation is different when there is an ancestor with role='toolbar'
-     * 
+     *
      * @internal
      */
     public keydownHandler = (e: KeyboardEvent): void => {

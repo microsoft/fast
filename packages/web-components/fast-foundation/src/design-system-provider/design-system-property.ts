@@ -7,12 +7,11 @@ import { DesignSystemProvider } from "./design-system-provider";
 
 /**
  * Configuration object for defining a {@link @microsoft/fast-foundation#DesignSystemProvider} property
- * 
+ *
  * @public
  */
 export interface DecoratorDesignSystemPropertyConfiguration
     extends Omit<DecoratorAttributeConfiguration, "attribute"> {
-
     /**
      * The HTML attribute name to map the property to - defaults to the property name.
      */
@@ -34,7 +33,7 @@ export interface DecoratorDesignSystemPropertyConfiguration
  * Decorator to declare a property as a design-system property.
  * Intended to be used with the {@link @microsoft/fast-foundation#DesignSystemProvider}
  * @param config - {@link DecoratorDesignSystemPropertyConfiguration}
- * 
+ *
  * @public
  */
 export function designSystemProperty<T extends DesignSystemProvider>(

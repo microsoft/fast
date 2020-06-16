@@ -57,7 +57,7 @@ export const designSystemConsumerBehavior: Behavior = {
 /**
  * A element to provide Design System values to consumers via CSS custom properties
  * and to resolve recipe values.
- * 
+ *
  * @public
  */
 export class DesignSystemProvider extends FASTElement
@@ -71,7 +71,7 @@ export class DesignSystemProvider extends FASTElement
     /**
      * Read all tag-names that are associated to
      * design-system-providers
-     * 
+     *
      * @public
      */
     public static get tagNames() {
@@ -81,7 +81,7 @@ export class DesignSystemProvider extends FASTElement
     /**
      * Determines if an element is a DesignSystemProvider
      * @param el - The element to test
-     * 
+     *
      * @public
      */
     public static isDesignSystemProvider(
@@ -96,7 +96,7 @@ export class DesignSystemProvider extends FASTElement
     /**
      * Finds the closest design-system-provider
      * to an element.
-     * 
+     *
      * @param el - The element from which to begin searching.
      * @public
      */
@@ -128,9 +128,9 @@ export class DesignSystemProvider extends FASTElement
      * Registers a tag-name to be associated with
      * the design-system-provider class. All tag-names for DesignSystemProvider elements
      * must be registered for proper property resolution.
-     * 
+     *
      * @param tagName - the HTML Element tag name to register as a DesignSystemProvider.
-     * 
+     *
      * @public
      */
     public static registerTagName(tagName: string) {
@@ -143,7 +143,7 @@ export class DesignSystemProvider extends FASTElement
     /**
      * Allows other components to identify this as a provider.
      * Using instanceof DesignSystemProvider did not seem to work.
-     * 
+     *
      * @public
      */
     public readonly isDesignSystemProvider = true;
@@ -152,7 +152,7 @@ export class DesignSystemProvider extends FASTElement
      * The design-system object.
      * This is "observable" but will notify on object mutation
      * instead of object assignment
-     * 
+     *
      * @public
      */
     public designSystem = {};
@@ -161,7 +161,7 @@ export class DesignSystemProvider extends FASTElement
      * Applies the default design-system values to the instance where properties
      * are not explicitly assigned. This is generally used to set the root design
      * system context.
-     * 
+     *
      * @public
      * @remarks
      * HTML Attribute: use-defaults
@@ -225,7 +225,7 @@ export class DesignSystemProvider extends FASTElement
      * Track all design system property names so we can react to changes
      * in those properties. Do not initialize or it will clobber value stored
      * by the decorator.
-     * 
+     *
      * @internal
      */
     public designSystemProperties: {
@@ -243,7 +243,7 @@ export class DesignSystemProvider extends FASTElement
      * is parsed (and custom element tags exist in the DOM) before the script defining the custom elements
      * is parsed, and when the elements using the CSSCustomPropertyBehaviors
      * are defined before this DesignSystemProvider.
-     * 
+     *
      * @public
      */
     public disconnectedCSSCustomPropertyRegistry: CSSCustomPropertyDefinition[];
@@ -372,7 +372,7 @@ export class DesignSystemProvider extends FASTElement
     /**
      * Register a {@link @microsoft/fast-foundation#CSSCustomPropertyDefinition} with the DeignSystemProvider.
      * Registering a {@link @microsoft/fast-foundation#CSSCustomPropertyDefinition} will create the CSS custom property.
-     * 
+     *
      * @param behavior - The {@link @microsoft/fast-foundation#CSSCustomPropertyDefinition} to register.
      * @public
      */
@@ -393,7 +393,7 @@ export class DesignSystemProvider extends FASTElement
     /**
      * Unregister a {@link @microsoft/fast-foundation#CSSCustomPropertyDefinition} from the DeignSystemProvider.
      * If all registrations of the definition are unregistered, the CSS custom property will be removed.
-     * 
+     *
      * @param behavior - The {@link @microsoft/fast-foundation#CSSCustomPropertyDefinition} to register.
      * @public
      */
@@ -437,7 +437,7 @@ export class DesignSystemProvider extends FASTElement
 
     /**
      * Evaluates a CSSCustomPropertyDefinition with the current design system.
-     * 
+     *
      * @public
      */
     public evaluate(definition: CSSCustomPropertyDefinition): string {
@@ -474,7 +474,7 @@ export class DesignSystemProvider extends FASTElement
 
 /**
  * Defines a design-system-provider custom element, registering the tag-name so that the element can be property resolved by {@link DesignSystemConsumer | DesignSystemConsumers}.
- * 
+ *
  * @param nameOrDef - the name or {@link @microsoft/fast-element#PartialFASTElementDefinition | element definition}
  * @public
  */

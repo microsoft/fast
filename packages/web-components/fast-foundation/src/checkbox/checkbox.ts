@@ -26,7 +26,7 @@ export class Checkbox extends FormAssociated<HTMLInputElement> {
     /**
      * The element's value to be included in form submission when checked.
      * Default to "on" to reach parity with input[type="checkbox"]
-     * 
+     *
      * @public
      */
     public value: string = "on"; // Map to proxy element.
@@ -39,7 +39,7 @@ export class Checkbox extends FormAssociated<HTMLInputElement> {
     /**
      * Provides the default checkedness of the input element
      * Passed down to proxy
-     * 
+     *
      * @public
      * @remarks
      * HTML Attribute: checked
@@ -59,7 +59,7 @@ export class Checkbox extends FormAssociated<HTMLInputElement> {
     /**
      * Initialized to the value of the checked attribute. Can be changed independently of the "checked" attribute,
      * but changing the "checked" attribute always additionally sets this value.
-     * 
+     *
      * @public
      */
     @observable
@@ -76,7 +76,7 @@ export class Checkbox extends FormAssociated<HTMLInputElement> {
 
     /**
      * The checked state of the control.
-     * 
+     *
      * @public
      */
     @observable

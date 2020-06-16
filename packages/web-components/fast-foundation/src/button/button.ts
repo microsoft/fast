@@ -33,7 +33,7 @@ export class Button extends FormAssociated<HTMLInputElement> {
 
     /**
      * Determines if the element should receive document focus on page load.
-     * 
+     *
      * @public
      * @remarks
      * HTML Attribute: autofocus
@@ -43,7 +43,7 @@ export class Button extends FormAssociated<HTMLInputElement> {
 
     /**
      * The id of a form to associate the element to.
-     * 
+     *
      * @public
      * @remarks
      * HTML Attribute: form
@@ -53,7 +53,7 @@ export class Button extends FormAssociated<HTMLInputElement> {
 
     /**
      * See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button | <button> element} for more details.
-     * 
+     *
      * @public
      */
     @attr
@@ -66,7 +66,7 @@ export class Button extends FormAssociated<HTMLInputElement> {
 
     /**
      * See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button | <button> element} for more details.
-     * 
+     *
      * @public
      */
     @attr
@@ -79,7 +79,7 @@ export class Button extends FormAssociated<HTMLInputElement> {
 
     /**
      * See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button | <button> element} for more details.
-     * 
+     *
      * @public
      */
     @attr
@@ -92,7 +92,7 @@ export class Button extends FormAssociated<HTMLInputElement> {
 
     /**
      * See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button | <button> element} for more details.
-     * 
+     *
      * @public
      */
     @attr({ mode: "boolean" })
@@ -105,7 +105,7 @@ export class Button extends FormAssociated<HTMLInputElement> {
 
     /**
      * See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button | <button> element} for more details.
-     * 
+     *
      * @public
      */
     @attr
@@ -118,7 +118,7 @@ export class Button extends FormAssociated<HTMLInputElement> {
 
     /**
      * The name of the button
-     * 
+     *
      * @public
      * @remarks
      * HTML Attribute: name
@@ -128,7 +128,7 @@ export class Button extends FormAssociated<HTMLInputElement> {
 
     /**
      * The button type.
-     * 
+     *
      * @public
      * @remarks
      * HTML Attribute: type
@@ -143,7 +143,7 @@ export class Button extends FormAssociated<HTMLInputElement> {
 
     /**
      * The value of the button.
-     * 
+     *
      * @public
      */
     public value: string;

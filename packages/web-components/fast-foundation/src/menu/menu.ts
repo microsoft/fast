@@ -42,7 +42,7 @@ export class Menu extends FASTElement {
     private static focusableElementRoles: { [key: string]: string } = invert(
         MenuItemRole
     );
-    
+
     /**
      * @internal
      */
@@ -50,11 +50,11 @@ export class Menu extends FASTElement {
         super.connectedCallback();
         this.menuItems = this.domChildren();
         this.setItems();
-    }  
+    }
 
     /**
      * Focuses the first item in the menu.
-     * 
+     *
      * @public
      */
     public focus(): void {

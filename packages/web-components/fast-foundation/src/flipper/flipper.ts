@@ -12,7 +12,7 @@ export enum FlipperDirection {
 /**
  * A Flipper Custom HTML Element.
  * Flippers are a form of button that implies directional content navigation, such as in a carousel.
- * 
+ *
  * @public
  */
 export class Flipper extends FASTElement {
@@ -27,7 +27,7 @@ export class Flipper extends FASTElement {
 
     /**
      * Indicates the flipper should be hidden from assistive technology. Because flippers are often supplementary navigation, they are often hidden from assistive technology.
-     * 
+     *
      * @public
      * @defaultValue - true
      * @remarks
@@ -38,7 +38,7 @@ export class Flipper extends FASTElement {
 
     /**
      * The direction that the flipper implies navigating.
-     * 
+     *
      * @public
      * @remarks
      * HTML Attribute: direction

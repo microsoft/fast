@@ -8,7 +8,7 @@ export enum DividerRole {
      * The divider semantically separates content
      */
     separator = "separator",
-    
+
     /**
      * The divider has no semantic value and is for visual presentation only.
      */
@@ -24,7 +24,7 @@ export enum DividerRole {
 export class Divider extends FASTElement {
     /**
      * The role of the element.
-     * 
+     *
      * @public
      * @defaultValue - {@link DividerRole.separator}
      */

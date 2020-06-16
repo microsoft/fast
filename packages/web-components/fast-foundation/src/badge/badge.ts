@@ -15,11 +15,9 @@ export class Badge extends FASTElement {
     @attr({ attribute: "fill" })
     public fill: string;
 
-
-
     /**
      * Indicates the badge should have a filled style.
-     * 
+     *
      * @public
      * @remarks
      * HTML Attribute: fill
@@ -31,7 +29,7 @@ export class Badge extends FASTElement {
 
     /**
      * Indicates the element should be circular
-     * 
+     *
      * @public
      * @remarks
      * HTML Attribute: circular

@@ -8,7 +8,8 @@ import { FormAssociated } from "../form-associated/index";
  */
 export type RadioControl = Pick<
     HTMLInputElement,
-    "checked" | "disabled" | "readOnly" | "focus" | "setAttribute" | "getAttribute">
+    "checked" | "disabled" | "readOnly" | "focus" | "setAttribute" | "getAttribute"
+>;
 
 /**
  * An Switch Custom HTML Element.
@@ -33,7 +34,7 @@ export class Radio extends FormAssociated<HTMLInputElement> implements RadioCont
 
     /**
      * The name of the radio. See {@link https://developer.mozilla.org/en-US/docs/Web/API/Element/name | name attribute} for more info.
-     * 
+     *
      * @public
      * @remarks
      * HTML Attribute: name
@@ -49,7 +50,7 @@ export class Radio extends FormAssociated<HTMLInputElement> implements RadioCont
     /**
      * The element's value to be included in form submission when checked.
      * Default to "on" to reach parity with input[type="radio"]
-     * 
+     *
      * @public
      */
     public value: string = "on"; // Map to proxy element.
@@ -62,7 +63,7 @@ export class Radio extends FormAssociated<HTMLInputElement> implements RadioCont
     /**
      * Provides the default checkedness of the input element
      * Passed down to proxy
-     * 
+     *
      * @public
      */
     @attr({ attribute: "checked", mode: "boolean" })
@@ -80,7 +81,7 @@ export class Radio extends FormAssociated<HTMLInputElement> implements RadioCont
     /**
      * Initialized to the value of the checked attribute. Can be changed independently of the "checked" attribute,
      * but changing the "checked" attribute always additionally sets this value.
-     * 
+     *
      * @public
      */
     @observable
@@ -97,7 +98,7 @@ export class Radio extends FormAssociated<HTMLInputElement> implements RadioCont
 
     /**
      * The checked state of the control
-     * 
+     *
      * @public
      */
     @observable

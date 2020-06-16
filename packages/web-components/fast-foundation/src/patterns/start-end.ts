@@ -1,7 +1,7 @@
 import { html, ref } from "@microsoft/fast-element";
 
 /**
- * A mixin class implementing start and end elements. 
+ * A mixin class implementing start and end elements.
  * These are generally used to decorate text elements with icons or other visual indicators.
  * @public
  */
@@ -25,7 +25,7 @@ export class StartEnd {
 /**
  * The template for the end element.
  * For use with {@link StartEnd}
- * 
+ *
  * @public
  */
 export const endTemplate = html<StartEnd>`
@@ -41,7 +41,7 @@ export const endTemplate = html<StartEnd>`
 /**
  * The template for the start element.
  * For use with {@link StartEnd}
- * 
+ *
  * @public
  */
 export const startTemplate = html<StartEnd>`

@@ -71,7 +71,7 @@ export class Slider extends FormAssociated<HTMLInputElement>
     @observable
     public direction: Direction = Direction.ltr;
 
-        /**
+    /**
      * @internal
      */
     @observable
@@ -126,7 +126,7 @@ export class Slider extends FormAssociated<HTMLInputElement>
 
     /**
      * The minimum allowed value
-     * 
+     *
      * @defaultValue - 0
      * @public
      * HTML Attribute: min
@@ -141,7 +141,7 @@ export class Slider extends FormAssociated<HTMLInputElement>
 
     /**
      * The maximum allowed value
-     * 
+     *
      * @defaultValue - 10
      * @public
      * HTML Attribute: max
@@ -156,7 +156,7 @@ export class Slider extends FormAssociated<HTMLInputElement>
 
     /**
      * Value to increment or decrement via arrow keys, mouse click or drag
-     * 
+     *
      * @public
      * HTML Attribute: 1
      */
@@ -170,7 +170,7 @@ export class Slider extends FormAssociated<HTMLInputElement>
 
     /**
      * Orientation of the slider
-     * 
+     *
      * @public
      * HTML Attribute: orientation
      */
@@ -184,7 +184,7 @@ export class Slider extends FormAssociated<HTMLInputElement>
 
     /**
      * The selection mode
-     * 
+     *
      * @public
      * HTML Attribute: mode
      */
@@ -222,7 +222,7 @@ export class Slider extends FormAssociated<HTMLInputElement>
 
     /**
      * Increment the value by the step
-     * 
+     *
      * @public
      */
     public increment = (): void => {
@@ -239,7 +239,7 @@ export class Slider extends FormAssociated<HTMLInputElement>
 
     /**
      * Decrement the value by the step
-     * 
+     *
      * @public
      */
     public decrement = (): void => {

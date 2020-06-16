@@ -21,7 +21,7 @@ export enum MenuItemRole {
 export class MenuItem extends FASTElement {
     /**
      * The disabled state of the element.
-     * 
+     *
      * @public
      * @remarks
      * HTML Attribute: disabled
@@ -31,7 +31,7 @@ export class MenuItem extends FASTElement {
 
     /**
      * The expanded state of the element.
-     * 
+     *
      * @public
      * @remarks
      * HTML Attribute: aria-expanded
@@ -41,7 +41,7 @@ export class MenuItem extends FASTElement {
 
     /**
      * The role of the element.
-     * 
+     *
      * @public
      * @remarks
      * HTML Attribute: role
@@ -51,7 +51,7 @@ export class MenuItem extends FASTElement {
 
     /**
      * The checked value of the element.
-     * 
+     *
      * @public
      * @remarks
      * HTML Attribute: checked

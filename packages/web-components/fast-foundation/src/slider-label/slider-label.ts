@@ -47,7 +47,7 @@ export class SliderLabel extends FASTElement {
 
     /**
      * Hides the tick mark.
-     * 
+     *
      * @public
      * HTML Attribute: hide-mark
      */
@@ -56,7 +56,7 @@ export class SliderLabel extends FASTElement {
 
     /**
      * The disabled state of the label. This is generally controlled by the parent {@link @microsoft/fast-foundation#Slider}.
-     * 
+     *
      * @public
      * HTML Attribute: disabled
      */

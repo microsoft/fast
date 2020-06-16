@@ -28,7 +28,7 @@ export interface CSSCustomPropertyTarget {
 
 /**
  * A Behavior that will register to a {@link CSSCustomPropertyTarget} when bound.
- * 
+ *
  * @public
  */
 export class CSSCustomPropertyBehavior implements Behavior, CSSCustomPropertyDefinition {
@@ -55,13 +55,13 @@ export class CSSCustomPropertyBehavior implements Behavior, CSSCustomPropertyDef
     /**
      * Return the {@link https://developer.mozilla.org/en-US/docs/Web/CSS/--* | CSS custom property} formatted
      * as a {@link https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties | CSS variable}.
-     * 
+     *
      * @public
      */
     public readonly var: string;
 
     /**
-     * 
+     *
      * @param name - The name of the custom property, without the prepended "--" required by {@link https://developer.mozilla.org/en-US/docs/Web/CSS/--* | CSS custom properties}.
      * @param value - The value of the custom property or a function that resolves the value.
      * @param host - A function that resolves the host element that will register the behavior

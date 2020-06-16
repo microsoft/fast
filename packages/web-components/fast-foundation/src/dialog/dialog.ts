@@ -21,7 +21,7 @@ export class Dialog extends FASTElement {
 
     /**
      * The hidden state of the element.
-     * 
+     *
      * @public
      * @defaultValue - false
      * @remarks
@@ -32,7 +32,7 @@ export class Dialog extends FASTElement {
 
     /**
      * Indicates that the dialog should trap focus.
-     * 
+     *
      * @public
      * @defaultValue - true
      * @remarks
@@ -61,7 +61,7 @@ export class Dialog extends FASTElement {
 
     /**
      * The label surfaced to assistive technologies.
-     * 
+     *
      * @public
      * @remarks
      * HTML Attribute: aria-label
