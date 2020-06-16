@@ -3014,7 +3014,7 @@
         {
           "kind": "Class",
           "canonicalReference": "@microsoft/fast-components!FASTTextField:class",
-          "docComment": "",
+          "docComment": "/**\n * The FAST text-field Custom Element. Implements {@link @microsoft/fast-foundation#TextField}, {@link @microsoft/fast-foundation#TextFieldTemplate}\n *\n * @remarks\n *\n * HTML Element: \\<fast-text-field\\>\n *\n * {@link https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/delegatesFocus | delegatesFocus}\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",

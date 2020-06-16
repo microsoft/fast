@@ -401,27 +401,27 @@ export class FASTSlider extends Slider {
 export class FASTSliderLabel extends SliderLabel {
 }
 
-// @public (undocumented)
+// @public
 export class FASTSwitch extends Switch {
 }
 
-// @public (undocumented)
+// @public
 export class FASTTab extends Tab {
 }
 
-// @public (undocumented)
+// @public
 export class FASTTabPanel extends TabPanel {
 }
 
-// @public (undocumented)
+// @public
 export class FASTTabs extends Tabs {
 }
 
-// @public (undocumented)
+// @public
 export class FASTTextArea extends TextArea {
 }
 
-// @public (undocumented)
+// @public
 export class FASTTextField extends TextField {
 }
 
