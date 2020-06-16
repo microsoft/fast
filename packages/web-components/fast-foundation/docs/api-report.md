@@ -225,7 +225,7 @@ export interface DecoratorDesignSystemPropertyConfiguration extends Omit<Decorat
     default: any;
 }
 
-// @public (undocumented)
+// @public
 export interface DesignSystemConsumer {
     // (undocumented)
     provider: DesignSystemProvider | null;
@@ -237,12 +237,13 @@ export const designSystemConsumerBehavior: Behavior;
 // @public
 export function designSystemProperty<T extends DesignSystemProvider>(config: DecoratorDesignSystemPropertyConfiguration): (source: T, property: string) => void;
 
-// @public (undocumented)
+// @public
 export class DesignSystemProvider extends FASTElement implements CSSCustomPropertyTarget, DesignSystemConsumer {
     constructor();
-    // (undocumented)
+    // @internal (undocumented)
     connectedCallback(): void;
     designSystem: {};
+    // @internal
     designSystemProperties: {
         [propertyName: string]: Required<Pick<DecoratorDesignSystemPropertyConfiguration, "cssCustomProperty" | "default">>;
     };
@@ -251,7 +252,6 @@ export class DesignSystemProvider extends FASTElement implements CSSCustomProper
     static findProvider(el: HTMLElement & Partial<DesignSystemConsumer>): DesignSystemProvider | null;
     static isDesignSystemProvider(el: HTMLElement | DesignSystemProvider): el is DesignSystemProvider;
     readonly isDesignSystemProvider = true;
-    // (undocumented)
     provider: DesignSystemProvider | null;
     registerCSSCustomProperty(behavior: CSSCustomPropertyDefinition): void;
     static registerTagName(tagName: string): void;
@@ -263,7 +263,7 @@ export class DesignSystemProvider extends FASTElement implements CSSCustomProper
 // @public
 export function designSystemProvider(nameOrDef: string | PartialFASTElementDefinition): <T extends typeof DesignSystemProvider>(providerCtor: T) => void;
 
-// @public (undocumented)
+// @public
 export const DesignSystemProviderTemplate: import("@microsoft/fast-element").ViewTemplate<DesignSystemProvider, any>;
 
 // @public

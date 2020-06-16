@@ -16,13 +16,18 @@ import { DecoratorDesignSystemPropertyConfiguration } from "./design-system-prop
 
 const supportsAdoptedStylesheets = "adoptedStyleSheets" in window.ShadowRoot.prototype;
 
+/**
+ * Defines a structure that consumes from a DesignSystemProvider
+ * @public
+ */
 export interface DesignSystemConsumer {
     provider: DesignSystemProvider | null;
 }
 
 /**
- * Determines if the element has a design-system-provider context
- * @param element
+ * Determines if the element is {@link DesignSystemConsumer}
+ * @param element - the element to test.
+ * @public
  */
 export function isDesignSystemConsumer(
     element: HTMLElement | DesignSystemConsumer
@@ -37,7 +42,8 @@ export function isDesignSystemConsumer(
 }
 
 /**
- * Behavior to connect an element to the nearest design-system provider
+ * Behavior to connect a {@link DesignSystemConsumer} to the nearest {@link DesignSystemProvider}
+ * @public
  */
 export const designSystemConsumerBehavior: Behavior = {
     bind<T extends DesignSystemConsumer & HTMLElement>(source: T) {
@@ -48,6 +54,12 @@ export const designSystemConsumerBehavior: Behavior = {
     unbind<T extends DesignSystemConsumer & HTMLElement>(source: T) {},
 };
 
+/**
+ * A element to provide Design System values to consumers via CSS custom properties
+ * and to resolve recipe values.
+ * 
+ * @public
+ */
 export class DesignSystemProvider extends FASTElement
     implements CSSCustomPropertyTarget, DesignSystemConsumer {
     /**
@@ -59,13 +71,18 @@ export class DesignSystemProvider extends FASTElement
     /**
      * Read all tag-names that are associated to
      * design-system-providers
+     * 
+     * @public
      */
     public static get tagNames() {
         return DesignSystemProvider._tagNames;
     }
+
     /**
      * Determines if an element is a DesignSystemProvider
-     * @param el The element to test
+     * @param el - The element to test
+     * 
+     * @public
      */
     public static isDesignSystemProvider(
         el: HTMLElement | DesignSystemProvider
@@ -79,6 +96,9 @@ export class DesignSystemProvider extends FASTElement
     /**
      * Finds the closest design-system-provider
      * to an element.
+     * 
+     * @param el - The element from which to begin searching.
+     * @public
      */
     public static findProvider(
         el: HTMLElement & Partial<DesignSystemConsumer>
@@ -106,7 +126,12 @@ export class DesignSystemProvider extends FASTElement
 
     /**
      * Registers a tag-name to be associated with
-     * the design-system-provider class
+     * the design-system-provider class. All tag-names for DesignSystemProvider elements
+     * must be registered for proper property resolution.
+     * 
+     * @param tagName - the HTML Element tag name to register as a DesignSystemProvider.
+     * 
+     * @public
      */
     public static registerTagName(tagName: string) {
         const tagNameUpper = tagName.toUpperCase();
@@ -118,6 +143,8 @@ export class DesignSystemProvider extends FASTElement
     /**
      * Allows other components to identify this as a provider.
      * Using instanceof DesignSystemProvider did not seem to work.
+     * 
+     * @public
      */
     public readonly isDesignSystemProvider = true;
 
@@ -125,6 +152,8 @@ export class DesignSystemProvider extends FASTElement
      * The design-system object.
      * This is "observable" but will notify on object mutation
      * instead of object assignment
+     * 
+     * @public
      */
     public designSystem = {};
 
@@ -132,6 +161,10 @@ export class DesignSystemProvider extends FASTElement
      * Applies the default design-system values to the instance where properties
      * are not explicitly assigned. This is generally used to set the root design
      * system context.
+     * 
+     * @public
+     * @remarks
+     * HTML Attribute: use-defaults
      */
     @attr({ attribute: "use-defaults", mode: "boolean" })
     public useDefaults: boolean = false;
@@ -146,6 +179,10 @@ export class DesignSystemProvider extends FASTElement
         }
     }
 
+    /**
+     * The parent provider the the DesignSystemProvider instance.
+     * @public
+     */
     @observable
     public provider: DesignSystemProvider | null = null;
     private providerChanged(
@@ -188,6 +225,8 @@ export class DesignSystemProvider extends FASTElement
      * Track all design system property names so we can react to changes
      * in those properties. Do not initialize or it will clobber value stored
      * by the decorator.
+     * 
+     * @internal
      */
     public designSystemProperties: {
         [propertyName: string]: Required<
@@ -202,8 +241,10 @@ export class DesignSystemProvider extends FASTElement
      * Allows CSSCustomPropertyDefinitions to register on this element *before* the constructor
      * has run and the registration APIs exist. This can manifest when the DOM
      * is parsed (and custom element tags exist in the DOM) before the script defining the custom elements
-     * and elements is parsed, and the elements using the CSSCustomPropertyBehaviors
+     * is parsed, and when the elements using the CSSCustomPropertyBehaviors
      * are defined before this DesignSystemProvider.
+     * 
+     * @public
      */
     public disconnectedCSSCustomPropertyRegistry: CSSCustomPropertyDefinition[];
 
@@ -287,6 +328,9 @@ export class DesignSystemProvider extends FASTElement
         this.$fastController.addBehaviors([designSystemConsumerBehavior]);
     }
 
+    /**
+     * @internal
+     */
     public connectedCallback(): void {
         super.connectedCallback();
         const selfNotifier = Observable.getNotifier(this);
@@ -326,8 +370,11 @@ export class DesignSystemProvider extends FASTElement
     }
 
     /**
-     * Register a CSSCustomPropertyDefinition with the design system provider.
-     * Registering a CSSCustomPropertyDefinition will create the CSS custom property.
+     * Register a {@link @microsoft/fast-foundation#CSSCustomPropertyDefinition} with the DeignSystemProvider.
+     * Registering a {@link @microsoft/fast-foundation#CSSCustomPropertyDefinition} will create the CSS custom property.
+     * 
+     * @param behavior - The {@link @microsoft/fast-foundation#CSSCustomPropertyDefinition} to register.
+     * @public
      */
     public registerCSSCustomProperty(behavior: CSSCustomPropertyDefinition) {
         const cached = this.cssCustomPropertyDefinitions.get(behavior.name);
@@ -344,8 +391,11 @@ export class DesignSystemProvider extends FASTElement
     }
 
     /**
-     * Unregister a CSSCustomPropertyDefinition. If all registrations of the definition
-     * are unregistered, the CSS custom property will be removed.
+     * Unregister a {@link @microsoft/fast-foundation#CSSCustomPropertyDefinition} from the DeignSystemProvider.
+     * If all registrations of the definition are unregistered, the CSS custom property will be removed.
+     * 
+     * @param behavior - The {@link @microsoft/fast-foundation#CSSCustomPropertyDefinition} to register.
+     * @public
      */
     public unregisterCSSCustomProperty(behavior: CSSCustomPropertyDefinition) {
         const cached = this.cssCustomPropertyDefinitions.get(behavior.name);
@@ -387,6 +437,8 @@ export class DesignSystemProvider extends FASTElement
 
     /**
      * Evaluates a CSSCustomPropertyDefinition with the current design system.
+     * 
+     * @public
      */
     public evaluate(definition: CSSCustomPropertyDefinition): string {
         return typeof definition.value === "function"
@@ -421,7 +473,10 @@ export class DesignSystemProvider extends FASTElement
 }
 
 /**
- * Defines a design-system-provider custom element
+ * Defines a design-system-provider custom element, registering the tag-name so that the element can be property resolved by {@link DesignSystemConsumer | DesignSystemConsumers}.
+ * 
+ * @param nameOrDef - the name or {@link @microsoft/fast-element#PartialFASTElementDefinition | element definition}
+ * @public
  */
 export function designSystemProvider(nameOrDef: string | PartialFASTElementDefinition) {
     return <T extends typeof DesignSystemProvider>(providerCtor: T): void => {
