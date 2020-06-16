@@ -101,34 +101,23 @@ export class BaseProgress extends FASTElement {
 
 // Warning: (ae-forgotten-export) The symbol "FormAssociated" needs to be exported by the entry point index.d.ts
 //
-// @public (undocumented)
+// @public
 export class Button extends FormAssociated<HTMLInputElement> {
     constructor();
-    // (undocumented)
     appearance: ButtonAppearance;
-    // (undocumented)
     autofocus: boolean;
-    // (undocumented)
+    // @internal (undocumented)
     connectedCallback(): void;
-    // (undocumented)
     formaction: string;
-    // (undocumented)
     formenctype: string;
-    // (undocumented)
     formId: string;
-    // (undocumented)
     formmethod: string;
-    // (undocumented)
     formnovalidate: boolean;
-    // (undocumented)
     formtarget: "_self" | "_blank" | "_parent" | "_top";
-    // (undocumented)
     name: string;
     // (undocumented)
     protected proxy: HTMLInputElement;
-    // (undocumented)
     type: "submit" | "reset" | "button";
-    // (undocumented)
     value: string;
     }
 
@@ -136,10 +125,10 @@ export class Button extends FormAssociated<HTMLInputElement> {
 export interface Button extends StartEnd {
 }
 
-// @public (undocumented)
+// @public
 export type ButtonAppearance = "accent" | "lightweight" | "neutral" | "outline" | "stealth";
 
-// @public (undocumented)
+// @public
 export const ButtonTemplate: import("@microsoft/fast-element").ViewTemplate<Button, any>;
 
 // @public
