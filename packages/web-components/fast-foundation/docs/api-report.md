@@ -78,17 +78,14 @@ export const AnchorTemplate: import("@microsoft/fast-element").ViewTemplate<Anch
 // @public
 export function applyMixins(derivedCtor: any, ...baseCtors: any[]): void;
 
-// @public (undocumented)
+// @public
 export class Badge extends FASTElement {
-    // (undocumented)
     circular: boolean;
-    // (undocumented)
     color: string;
-    // (undocumented)
     fill: string;
 }
 
-// @public (undocumented)
+// @public
 export const BadgeTemplate: import("@microsoft/fast-element").ViewTemplate<Badge, any>;
 
 // @public
