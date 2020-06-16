@@ -8,6 +8,9 @@ const fs = require("fs");
 const MarkdownIt = require("markdown-it");
 
 const srcDir = "../../packages/web-components/fast-components/src/**/README.md";
+// TODO: update this when the repository is renamed
+const webComponentWorkspacePath =
+    "https://github.com/microsoft/fast-dna/tree/master/packages/web-components/";
 
 /**
  * Start and end file strings
@@ -34,6 +37,18 @@ const md = new MarkdownIt({
 });
 
 /**
+ * Function to determine the correct href path if
+ * it uses a relative path
+ */
+function normalizeLink() {
+    return `href="${webComponentWorkspacePath}`;
+}
+
+function normalizeMarkdown(markdown) {
+    return markdown.replace(/href="\.\.\/\.\.\/\.\.\//gm, normalizeLink);
+}
+
+/**
  * Function to create string exports of a given path
  */
 (function exportReadme() {
@@ -48,7 +63,7 @@ const md = new MarkdownIt({
             const componentFolderName = pathSegments[pathSegments.length - 2];
 
             if (markdown.length !== 0) {
-                guidance += md.render(markdown);
+                guidance += normalizeMarkdown(md.render(markdown));
             } else {
                 guidance += emptyFile;
             }
