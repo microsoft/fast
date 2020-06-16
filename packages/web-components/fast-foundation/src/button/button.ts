@@ -174,7 +174,7 @@ export class Button extends FormAssociated<HTMLInputElement> {
 /**
  * Mark internal because exporting class and interface of the same name
  * confuses API documenter.
- * https://github.com/microsoft/rushstack/issues/1921
+ * TODO: https://github.com/microsoft/fast-dna/issues/3317
  * @internal
  */
 /* eslint-disable-next-line */
