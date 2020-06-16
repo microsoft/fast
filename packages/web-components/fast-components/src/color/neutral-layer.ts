@@ -18,7 +18,9 @@ import {
 } from "./common";
 
 /**
- * Recommended values for light and dark mode for `baseLayerLuminance` in the design system.
+ * Recommended values for light and dark mode for {@link @microsoft/fast-components#FASTDesignSystem.baseLayerLuminance}.
+ *
+ * @public
  */
 export enum StandardLuminance {
     LightMode = 1,

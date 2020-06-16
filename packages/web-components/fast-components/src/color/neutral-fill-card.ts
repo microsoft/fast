@@ -24,7 +24,13 @@ const neutralCardFillAlgorithm: SwatchResolver = (
  * @internal
  */
 export function neutralFillCard(designSystem: FASTDesignSystem): Swatch;
+/**
+ * @internal
+ */
 export function neutralFillCard(backgroundResolver: SwatchResolver): SwatchResolver;
+/**
+ * @internal
+ */
 export function neutralFillCard(arg: any): any {
     if (typeof arg === "function") {
         return (designSystem: FASTDesignSystem): Swatch => {

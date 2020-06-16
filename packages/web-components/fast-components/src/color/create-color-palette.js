@@ -2,8 +2,10 @@ import { ComponentStateColorPalette } from "@microsoft/fast-colors";
 
 /**
  * Creates a color palette from a provided source color
- * @param {ColorRGBA64} baseColor
- * @returns {string[]}
+ * @param baseColor - ColorRGBA64
+ * @returns string[]
+ * 
+ * @public
  */
 export function createColorPalette(baseColor) {
     return new ComponentStateColorPalette({
