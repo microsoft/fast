@@ -319,17 +319,14 @@ export const DividerTemplate: import("@microsoft/fast-element").ViewTemplate<Div
 // @public
 export const endTemplate: import("@microsoft/fast-element").ViewTemplate<StartEnd, any>;
 
-// @public (undocumented)
+// @public
 export class Flipper extends FASTElement {
-    // (undocumented)
     direction: FlipperDirection;
-    // (undocumented)
     disabled: boolean;
-    // (undocumented)
     hiddenFromAT: boolean;
 }
 
-// @public (undocumented)
+// @public
 export enum FlipperDirection {
     // (undocumented)
     next = "next",
@@ -337,7 +334,7 @@ export enum FlipperDirection {
     previous = "previous"
 }
 
-// @public (undocumented)
+// @public
 export const FlipperTemplate: import("@microsoft/fast-element").ViewTemplate<Flipper, any>;
 
 // @public
