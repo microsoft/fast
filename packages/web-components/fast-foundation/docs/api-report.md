@@ -554,20 +554,18 @@ export const RadioGroupTemplate: import("@microsoft/fast-element").ViewTemplate<
 // @public (undocumented)
 export const RadioTemplate: import("@microsoft/fast-element").ViewTemplate<Radio, any>;
 
-// @public (undocumented)
+// @public
 export class Slider extends FormAssociated<HTMLInputElement> implements SliderConfiguration {
     constructor();
-    // (undocumented)
+    // @internal (undocumented)
     connectedCallback(): void;
-    // (undocumented)
     decrement: () => void;
-    // (undocumented)
+    // @internal (undocumented)
     direction: Direction;
-    // (undocumented)
+    // @internal (undocumented)
     disconnectedCallback(): void;
-    // (undocumented)
     increment: () => void;
-    // (undocumented)
+    // @internal (undocumented)
     isDragging: boolean;
     // (undocumented)
     protected keypressHandler: (e: KeyboardEvent) => void;
@@ -575,29 +573,28 @@ export class Slider extends FormAssociated<HTMLInputElement> implements SliderCo
     min: number;
     mode: SliderMode;
     orientation: Orientation;
-    // (undocumented)
+    // @internal (undocumented)
     position: string;
     // (undocumented)
     protected proxy: HTMLInputElement;
-    // (undocumented)
     readOnly: boolean;
     step: number;
-    // (undocumented)
+    // @internal (undocumented)
     thumb: HTMLDivElement;
-    // (undocumented)
+    // @internal (undocumented)
     track: HTMLDivElement;
-    // (undocumented)
+    // @internal (undocumented)
     trackHeight: number;
-    // (undocumented)
+    // @internal (undocumented)
     trackMinHeight: number;
-    // (undocumented)
+    // @internal (undocumented)
     trackMinWidth: number;
-    // (undocumented)
+    // @internal (undocumented)
     trackWidth: number;
     value: string;
     }
 
-// @public (undocumented)
+// @public
 export interface SliderConfiguration {
     // (undocumented)
     direction?: Direction;
@@ -611,44 +608,41 @@ export interface SliderConfiguration {
     orientation?: Orientation;
 }
 
-// @public (undocumented)
+// @public
 export class SliderLabel extends FASTElement {
-    // (undocumented)
+    // @internal (undocumented)
     connectedCallback(): void;
-    // (undocumented)
     disabled: boolean;
-    // (undocumented)
+    // @internal (undocumented)
     disconnectedCallback(): void;
-    // (undocumented)
+    // @internal (undocumented)
     handleChange(source: any, propertyName: string): void;
-    // (undocumented)
     hideMark: boolean;
-    // (undocumented)
     position: string;
-    // (undocumented)
+    // @internal (undocumented)
     positionStyle: string;
-    // (undocumented)
+    // @internal (undocumented)
     root: HTMLDivElement;
-    // (undocumented)
+    // @internal (undocumented)
     sliderDirection: Direction;
-    // (undocumented)
+    // @internal (undocumented)
     sliderMaxPosition: number;
-    // (undocumented)
+    // @internal (undocumented)
     sliderMinPosition: number;
-    // (undocumented)
+    // @internal (undocumented)
     sliderOrientation: Orientation;
 }
 
-// @public (undocumented)
+// @public
 export const SliderLabelTemplate: import("@microsoft/fast-element").ViewTemplate<SliderLabel, any>;
 
-// @public (undocumented)
+// @public
 export enum SliderMode {
     // (undocumented)
     singleValue = "single-value"
 }
 
-// @public (undocumented)
+// @public
 export const SliderTemplate: import("@microsoft/fast-element").ViewTemplate<Slider, any>;
 
 // @public (undocumented)

@@ -17,35 +17,81 @@ const defaultConfig: SliderConfiguration = {
     disabled: false,
 };
 
+/**
+ * A label element intended to be used with the {@link @microsoft/fast-foundation#Slider} component.
+ *
+ * @public
+ */
 export class SliderLabel extends FASTElement {
+    /**
+     * @internal
+     */
     @observable
     public positionStyle: string;
 
+    /**
+     * @internal
+     */
     public root: HTMLDivElement;
 
+    /**
+     * The position of the label relative to the min and max value of the parent {@link @microsoft/fast-foundation#Slider}.
+     * @public
+     * HTML Attribute: position
+     */
     @attr
     public position: string;
     private positionChanged(): void {
         this.positionStyle = this.positionAsStyle();
     }
 
+    /**
+     * Hides the tick mark.
+     * 
+     * @public
+     * HTML Attribute: hide-mark
+     */
     @attr({ attribute: "hide-mark", mode: "boolean" })
     public hideMark: boolean = false;
 
+    /**
+     * The disabled state of the label. This is generally controlled by the parent {@link @microsoft/fast-foundation#Slider}.
+     * 
+     * @public
+     * HTML Attribute: disabled
+     */
     @attr({ attribute: "disabled", mode: "boolean" })
     public disabled: boolean; // Map to proxy element
 
+    /**
+     * @internal
+     */
     @observable
     public sliderOrientation: Orientation;
+
+    /**
+     * @internal
+     */
     @observable
     public sliderMinPosition: number;
+
+    /**
+     * @internal
+     */
     @observable
     public sliderMaxPosition: number;
+
+    /**
+     * @internal
+     */
     @observable
     public sliderDirection: Direction = Direction.ltr;
 
     private notifier: Notifier;
 
+    /**
+     * @internal
+     */
     public connectedCallback(): void {
         super.connectedCallback();
         this.getSliderConfiguration();
@@ -57,6 +103,9 @@ export class SliderLabel extends FASTElement {
         this.notifier.subscribe(this, "min");
     }
 
+    /**
+     * @internal
+     */
     public disconnectedCallback(): void {
         super.disconnectedCallback();
         this.notifier.unsubscribe(this, "orientation");
@@ -65,6 +114,9 @@ export class SliderLabel extends FASTElement {
         this.notifier.unsubscribe(this, "min");
     }
 
+    /**
+     * @internal
+     */
     public handleChange(source: any, propertyName: string) {
         switch (propertyName) {
             case "direction":
