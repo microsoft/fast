@@ -670,24 +670,22 @@ export class StartEnd {
 // @public (undocumented)
 export const startTemplate: import("@microsoft/fast-element").ViewTemplate<StartEnd, any>;
 
-// @public (undocumented)
+// @public
 export class Switch extends FormAssociated<HTMLInputElement> {
     constructor();
     checked: boolean;
-    // (undocumented)
     checkedAttribute: boolean;
-    // (undocumented)
+    // @internal (undocumented)
     clickHandler: (e: MouseEvent) => void;
-    // (undocumented)
+    // @internal (undocumented)
     connectedCallback(): void;
     defaultChecked: boolean;
-    // (undocumented)
+    // @internal (undocumented)
     defaultSlottedNodes: Node[];
-    // (undocumented)
+    // @internal (undocumented)
     keypressHandler: (e: KeyboardEvent) => void;
     // (undocumented)
     protected proxy: HTMLInputElement;
-    // (undocumented)
     readOnly: boolean;
     value: string;
     }
