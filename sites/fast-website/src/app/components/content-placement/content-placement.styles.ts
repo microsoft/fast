@@ -50,7 +50,8 @@ export const ContentPlacementStyles = css`
         margin-top: calc(var(--design-unit) * 2px);
     }
 
-    fast-card:hover .contentPlacement_icon {
+    fast-card:hover .contentPlacement_icon,
+    fast-card:focus-within .contentPlacement_icon {
         visibility: visible;
     }
 
