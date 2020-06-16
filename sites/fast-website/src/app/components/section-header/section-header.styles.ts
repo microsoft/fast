@@ -7,7 +7,7 @@ export const SectionHeaderStyles = css`
         align-items: center;
         flex-direction: column;
         font-family: var(--body-font);
-        color: var(--neutral-foreground-rest);
+        color: ${neutralForegroundRestBehavior.var};
         box-sizing: border-box;
         text-align: center;
     }
