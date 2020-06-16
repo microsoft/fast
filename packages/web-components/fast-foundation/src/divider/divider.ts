@@ -27,6 +27,8 @@ export class Divider extends FASTElement {
      *
      * @public
      * @defaultValue - {@link DividerRole.separator}
+     * @remarks
+     * HTML Attribute: role
      */
     @attr
     public role: DividerRole = DividerRole.separator;

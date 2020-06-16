@@ -55,6 +55,8 @@ export class Button extends FormAssociated<HTMLInputElement> {
      * See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button | <button> element} for more details.
      *
      * @public
+     * @remarks
+     * HTML Attribute: formaction
      */
     @attr
     public formaction: string;
@@ -68,6 +70,8 @@ export class Button extends FormAssociated<HTMLInputElement> {
      * See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button | <button> element} for more details.
      *
      * @public
+     * @remarks
+     * HTML Attribute: formenctype
      */
     @attr
     public formenctype: string;
@@ -81,6 +85,8 @@ export class Button extends FormAssociated<HTMLInputElement> {
      * See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button | <button> element} for more details.
      *
      * @public
+     * @remarks
+     * HTML Attribute: form
      */
     @attr
     public formmethod: string;
@@ -94,6 +100,8 @@ export class Button extends FormAssociated<HTMLInputElement> {
      * See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button | <button> element} for more details.
      *
      * @public
+     * @remarks
+     * HTML Attribute: formnovalidate
      */
     @attr({ mode: "boolean" })
     public formnovalidate: boolean;
@@ -107,6 +115,8 @@ export class Button extends FormAssociated<HTMLInputElement> {
      * See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button | <button> element} for more details.
      *
      * @public
+     * @remarks
+     * HTML Attribute: formtarget
      */
     @attr
     public formtarget: "_self" | "_blank" | "_parent" | "_top";

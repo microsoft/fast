@@ -65,6 +65,8 @@ export class Radio extends FormAssociated<HTMLInputElement> implements RadioCont
      * Passed down to proxy
      *
      * @public
+     * @remarks
+     * HTML Attribute: checked
      */
     @attr({ attribute: "checked", mode: "boolean" })
     public checkedAttribute: boolean;

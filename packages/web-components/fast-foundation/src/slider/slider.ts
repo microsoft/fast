@@ -158,7 +158,7 @@ export class Slider extends FormAssociated<HTMLInputElement>
      * Value to increment or decrement via arrow keys, mouse click or drag
      *
      * @public
-     * HTML Attribute: 1
+     * HTML Attribute: step
      */
     @attr({ converter: nullableNumberConverter })
     public step: number = 1; // Map to proxy element.

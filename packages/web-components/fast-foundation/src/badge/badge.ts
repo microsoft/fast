@@ -20,7 +20,7 @@ export class Badge extends FASTElement {
      *
      * @public
      * @remarks
-     * HTML Attribute: fill
+     * HTML Attribute: color
      * @privateRemarks
      * Revisit this once we have a better story for ensuring proper contrast from author defined `fill`
      */
