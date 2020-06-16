@@ -44,7 +44,7 @@ ${display("inline-flex")} :host {
     cursor: pointer;
 }
 
-.label__hidden {
+.label-hidden {
     display: none;
 }
 

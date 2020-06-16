@@ -301,7 +301,7 @@ export const FastFrameStyles = css`
             border-radius: calc(var(--corner-radius) * 1px);
         }
 
-        .preview__expanded {
+        .preview-expanded {
             transition: right .5s ease-in-out;
             right: -10%;
         }    
@@ -317,7 +317,7 @@ export const FastFrameStyles = css`
             visibility: visible;
         }
         
-        .tab-panel__expanded {
+        .tab-panel-expanded {
             opacity: 0;
             transition: opacity .5s ease-in-out;
         }
@@ -335,7 +335,7 @@ export const FastFrameStyles = css`
             border-radius: calc(var(--corner-radius) * 1px);
         }
 
-        .preview__expanded {
+        .preview-expanded {
             right: -5%;
         }    
 

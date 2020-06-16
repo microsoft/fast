@@ -40,11 +40,7 @@
             {
               "kind": "Property",
               "canonicalReference": "@microsoft/fast-foundation!Accordion#expandmode:member",
-<<<<<<< HEAD
               "docComment": "/**\n * Controls the expand mode of the Accordion, either allowing single or multiple item expansion.\n *\n * @remarks\n *\n * HTML attribute: expand-mode\n *\n * @public\n */\n",
-=======
-              "docComment": "/**\n * Controls the expand mode of the Accordion, either allowing single or multiple item expansion.\n *\n * @remarks\n *\n * HTML attribute: expand-mode\n *\n * @defaultValue\n *\n * {@link AccordionExpandMode.multi}\n *\n * @public\n */\n",
->>>>>>> fix regression where buttons went full width on section headers
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -91,11 +87,7 @@
             {
               "kind": "EnumMember",
               "canonicalReference": "@microsoft/fast-foundation!AccordionExpandMode.multi:member",
-<<<<<<< HEAD
               "docComment": "/**\n * Designates multiple {@link @microsoft/fast-foundation#(AccordionItem:class) | AccordionItems} can be open simultaneously.\n */\n",
-=======
-              "docComment": "/**\n * Designates multiple {@link @microsoft/fast-foundation#AccordionItem | AccordionItems} can be open simultaneously.\n */\n",
->>>>>>> fix regression where buttons went full width on section headers
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -116,11 +108,7 @@
             {
               "kind": "EnumMember",
               "canonicalReference": "@microsoft/fast-foundation!AccordionExpandMode.single:member",
-<<<<<<< HEAD
               "docComment": "/**\n * Designates only a single {@link @microsoft/fast-foundation#(AccordionItem:class)} can be open a time.\n */\n",
-=======
-              "docComment": "/**\n * Designates only a single {@link @microsoft/fast-foundation#AccordionItem} can be open a time.\n */\n",
->>>>>>> fix regression where buttons went full width on section headers
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -143,11 +131,7 @@
         {
           "kind": "Class",
           "canonicalReference": "@microsoft/fast-foundation!AccordionItem:class",
-<<<<<<< HEAD
           "docComment": "/**\n * An individual item in an {@link @microsoft/fast-foundation#(Accordion:class)}.\n *\n * @public\n */\n",
-=======
-          "docComment": "/**\n * An individual item in an {@link @microsoft/fast-foundation#Accordion}.\n *\n * @public\n */\n",
->>>>>>> fix regression where buttons went full width on section headers
           "excerptTokens": [
             {
               "kind": "Content",
@@ -7566,38 +7550,6 @@
           "implementsTokenRanges": []
         },
         {
-<<<<<<< HEAD
-=======
-          "kind": "Interface",
-          "canonicalReference": "@microsoft/fast-foundation!Tabs:interface",
-          "docComment": "/**\n * @public\n */\n",
-          "excerptTokens": [
-            {
-              "kind": "Content",
-              "text": "export interface Tabs extends "
-            },
-            {
-              "kind": "Reference",
-              "text": "StartEnd",
-              "canonicalReference": "@microsoft/fast-foundation!StartEnd:class"
-            },
-            {
-              "kind": "Content",
-              "text": " "
-            }
-          ],
-          "releaseTag": "Public",
-          "name": "Tabs",
-          "members": [],
-          "extendsTokenRanges": [
-            {
-              "startIndex": 1,
-              "endIndex": 3
-            }
-          ]
-        },
-        {
->>>>>>> fix regression where buttons went full width on section headers
           "kind": "Enum",
           "canonicalReference": "@microsoft/fast-foundation!TabsOrientation:enum",
           "docComment": "/**\n * The orientation of the {@link @microsoft/fast-foundation#(Tabs:class)} component\n *\n * @public\n */\n",
@@ -7817,11 +7769,6 @@
               "isStatic": false
             },
             {
-<<<<<<< HEAD
-              "kind": "Property",
-              "canonicalReference": "@microsoft/fast-foundation!TextArea#cols:member",
-              "docComment": "/**\n * Sizes the element horizontally by a number of character columns.\n *\n * @remarks\n *\n * HTML Attribute: cols\n *\n * @public\n */\n",
-=======
               "kind": "Property",
               "canonicalReference": "@microsoft/fast-foundation!TextArea#cols:member",
               "docComment": "/**\n * Sizes the element horizontally by a number of character columns.\n *\n * @remarks\n *\n * HTML Attribute: cols\n *\n * @public\n */\n",
@@ -7849,34 +7796,6 @@
             },
             {
               "kind": "Property",
-              "canonicalReference": "@microsoft/fast-foundation!TextArea#formId:member",
-              "docComment": "/**\n * The {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/id | id} of the {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/form | form} the element is associated to\n *\n * @public\n */\n",
->>>>>>> fix regression where buttons went full width on section headers
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "cols: "
-                },
-                {
-                  "kind": "Content",
-                  "text": "number"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";"
-                }
-              ],
-              "releaseTag": "Public",
-              "name": "cols",
-              "propertyTypeTokenRange": {
-                "startIndex": 1,
-                "endIndex": 2
-              },
-              "isStatic": false
-            },
-            {
-              "kind": "Property",
-<<<<<<< HEAD
               "canonicalReference": "@microsoft/fast-foundation!TextArea#formId:member",
               "docComment": "/**\n * The {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/id | id} of the {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/form | form} the element is associated to\n *\n * @public\n */\n",
               "excerptTokens": [
@@ -7903,8 +7822,6 @@
             },
             {
               "kind": "Property",
-=======
->>>>>>> fix regression where buttons went full width on section headers
               "canonicalReference": "@microsoft/fast-foundation!TextArea#list:member",
               "docComment": "/**\n * Allows associating a {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/datalist | datalist} to the element by {@link https://developer.mozilla.org/en-US/docs/Web/API/Element/id}.\n *\n * @remarks\n *\n * HTML Attribute: list\n *\n * @public\n */\n",
               "excerptTokens": [
@@ -8721,38 +8638,6 @@
           "implementsTokenRanges": []
         },
         {
-<<<<<<< HEAD
-=======
-          "kind": "Interface",
-          "canonicalReference": "@microsoft/fast-foundation!TextField:interface",
-          "docComment": "/**\n * @public\n */\n",
-          "excerptTokens": [
-            {
-              "kind": "Content",
-              "text": "export interface TextField extends "
-            },
-            {
-              "kind": "Reference",
-              "text": "StartEnd",
-              "canonicalReference": "@microsoft/fast-foundation!StartEnd:class"
-            },
-            {
-              "kind": "Content",
-              "text": " "
-            }
-          ],
-          "releaseTag": "Public",
-          "name": "TextField",
-          "members": [],
-          "extendsTokenRanges": [
-            {
-              "startIndex": 1,
-              "endIndex": 3
-            }
-          ]
-        },
-        {
->>>>>>> fix regression where buttons went full width on section headers
           "kind": "Enum",
           "canonicalReference": "@microsoft/fast-foundation!TextFieldAppearance:enum",
           "docComment": "/**\n * Text field appearances\n *\n * @public\n */\n",
