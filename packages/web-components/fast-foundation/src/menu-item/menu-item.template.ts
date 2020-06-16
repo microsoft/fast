@@ -2,6 +2,10 @@ import { html } from "@microsoft/fast-element";
 import { endTemplate, startTemplate } from "../patterns/start-end";
 import { MenuItem, MenuItemRole } from "./menu-item";
 
+/**
+ * The template for the {@link @microsoft/fast-foundation#(MenuItem:class)} component.
+ * @public
+ */
 export const MenuItemTemplate = html<MenuItem>`
     <template
         role=${x => x.role}

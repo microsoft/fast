@@ -11,7 +11,16 @@ import {
 } from "@microsoft/fast-web-utilities";
 import { MenuItemRole } from "../menu-item/index";
 
+/**
+ * A Menu Custom HTML Element.
+ * Implements the {@link https://www.w3.org/TR/wai-aria-1.1/#menu | ARIA menu }.
+ *
+ * @public
+ */
 export class Menu extends FASTElement {
+    /**
+     * @internal
+     */
     @observable
     public items: HTMLSlotElement;
     private itemsChanged(oldValue, newValue): void {
@@ -33,17 +42,28 @@ export class Menu extends FASTElement {
     private static focusableElementRoles: { [key: string]: string } = invert(
         MenuItemRole
     );
-
+    
+    /**
+     * @internal
+     */
     public connectedCallback(): void {
         super.connectedCallback();
         this.menuItems = this.domChildren();
         this.setItems();
-    }
+    }  
 
+    /**
+     * Focuses the first item in the menu.
+     * 
+     * @public
+     */
     public focus(): void {
         this.setFocus(0, 1);
     }
 
+    /**
+     * @internal
+     */
     public handleMenuKeyDown(e: KeyboardEvent): void | boolean {
         switch (e.keyCode) {
             case keyCodeArrowDown:
@@ -76,6 +96,7 @@ export class Menu extends FASTElement {
 
     /**
      * if focus is moving out of the menu, reset to a stable initial state
+     * @internal
      */
     public handleFocusOut = (e: FocusEvent) => {
         const isNestedEl = this.contains(e.relatedTarget as Element);

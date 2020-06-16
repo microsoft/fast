@@ -425,32 +425,28 @@ export function matchMediaStylesheetBehaviorFactory(query: MediaQueryList): (she
     }): void;
 }>;
 
-// @public (undocumented)
+// @public
 export class Menu extends FASTElement {
-    // (undocumented)
+    // @internal (undocumented)
     connectedCallback(): void;
-    // (undocumented)
     focus(): void;
+    // @internal
     handleFocusOut: (e: FocusEvent) => void;
-    // (undocumented)
+    // @internal (undocumented)
     handleMenuKeyDown(e: KeyboardEvent): void | boolean;
-    // (undocumented)
+    // @internal (undocumented)
     items: HTMLSlotElement;
     }
 
-// @public (undocumented)
+// @public
 export class MenuItem extends FASTElement {
-    // (undocumented)
     checked: boolean;
-    // (undocumented)
     disabled: boolean;
-    // (undocumented)
     expanded: boolean;
-    // (undocumented)
+    // @internal (undocumented)
     handleMenuItemClick: (e: MouseEvent) => void;
-    // (undocumented)
+    // @internal (undocumented)
     handleMenuItemKeyDown: (e: KeyboardEvent) => boolean;
-    // (undocumented)
     role: MenuItemRole;
 }
 
@@ -458,7 +454,7 @@ export class MenuItem extends FASTElement {
 export interface MenuItem extends StartEnd {
 }
 
-// @public (undocumented)
+// @public
 export enum MenuItemRole {
     // (undocumented)
     menuitem = "menuitem",
@@ -468,10 +464,10 @@ export enum MenuItemRole {
     menuitemradio = "menuitemradio"
 }
 
-// @public (undocumented)
+// @public
 export const MenuItemTemplate: import("@microsoft/fast-element").ViewTemplate<MenuItem, any>;
 
-// @public (undocumented)
+// @public
 export const MenuTemplate: import("@microsoft/fast-element").ViewTemplate<Menu, any>;
 
 // @public
