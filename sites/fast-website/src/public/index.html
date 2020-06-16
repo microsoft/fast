@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= htmlWebpackPlugin.options.title %></title>
+  </head>
+  <body>
+    <fast-design-system-provider
+      class="body-provider"
+      use-defaults
+      type-ramp-base-font-size="16px"
+    >
+      <background-design></background-design>
+      <div class="wrapper">
+        <header class="header">
+          <site-navigation>
+            <fast-anchor class="logo" slot="start" appearance="lightweight" href="/">
+              <%= require("svg/icon-brand.svg") %>
+              FAST
+            </fast-anchor>
+            <div class="anchor-wrapper">
+              <ul>
+                <li><fast-anchor appearance="lightweight" href="https://explore.fast.design">Components</fast-anchor></li>
+                <li><fast-anchor appearance="lightweight" href="#">Integration</fast-anchor></li>
+                <li><fast-anchor appearance="lightweight" href="/docs/fast-foundation/getting-started">Documentation</fast-anchor></li>
+                <li><fast-anchor appearance="lightweight" href="https://discord.gg/FcSNfg4">Community</fast-anchor></li>
+              </ul>
+              <fast-anchor class="github-link" slot="end" appearance="lightweight" href="https://github.com/microsoft/fast-dna/">
+                Github
+                <span slot="end">
+                  <%= require("svg/icon-github.svg") %>
+                </span>
+              </fast-anchor>
+            </div>
+          </site-navigation>
+        </header>
+
+        <site-side-navigation category="links" class="social-links"></site-side-navigation>
+        <site-side-navigation category="scroll" class="section-scroll"></site-side-navigation>
+
+        <section class="section hero-section" id="hero">
+          <div class="section-content">
+            <site-section-header>
+              <fast-badge slot="badge" class="section-badge">ADAPTIVE UI SYSTEM, UTILITIES, & TOOLS</fast-badge>
+              <h1 class="section-heading-hero">The adaptive interface system for modern web experiences</h1>
+              <p slot="body">Interfaces bult with FAST adapt to your design system and can be used with any modern UI Framework by leveraging industry standard Web Components.</p>
+              <fast-button slot="action" appearance="accent" href="/docs/fast-foundation/getting-started">Get started</fast-button>
+            </site-section-header>
+          </div>
+        </section>
+
+        <section class="fast-frame-section" id="adaptive-ui">
+          <div class="section-content">
+            <site-section-header class="fast-frame-header">
+              <fast-badge slot="badge" class="section-badge">FLEXIBLE AND ADAPTABLE</fast-badge>
+              <h2 class="section-heading">Dynamic themes with Adaptive UI</h2>
+              <p slot="body">FAST provides an innovative theming system called Adaptive UI, which builds design system properties that designers use every day directly into every component.</p>
+              <fast-button slot="action" appearance="accent">Explore components</fast-button>
+            </site-section-header>
+            <fast-divider role="presentation"></fast-divider>
+            <fast-frame></fast-frame>
+          </div>
+        </section>
+
+        <section class="section" id="integration">
+          <div class="section-content">
+            <site-section-header>
+              <fast-badge slot="badge" class="section-badge">FULLY INTEGRATED</fast-badge>
+              <h2 class="section-heading">Works with existing frameworks</h2>
+              <p slot="body">Standards-based Web Components are the foundation of each FAST component, making them compatible with almost any modern web framework.</p>
+              <fast-button slot="action" appearance="accent">Learn More</fast-button>
+            </site-section-header>
+            <fast-divider role="presentation"></fast-divider>
+            <site-content-placement-container section="framework"></site-content-placement-container>
+          </div>
+        </section>
+
+        <section class="section" id="features">
+          <div class="section-content">
+            <site-section-header>
+              <fast-badge slot="badge" class="section-badge">A COMPREHENSIVE TOOLKIT</fast-badge>
+              <h2 class="section-heading">Features and utilities</h2>
+              <p slot="body">There are a million and one great ways to build your next website or application. To support the technologies you choose, creating unopinionated code is at the center of every decision we make in FAST.</p>
+              <fast-button slot="action" appearance="accent" href="/docs/en/contributing/install">Read documentation</fast-button>
+            </site-section-header>
+            <fast-divider role="presentation"></fast-divider>
+            <site-content-placement-container section="feature"></site-content-placement-container>
+          </div>
+        </section>
+
+        <section class="section community-section" id="community">
+          <div class="section-content">
+            <site-section-header>
+              <fast-badge slot="badge" class="section-badge">LEARN, MODIFY AND FOLLOW</fast-badge>
+              <h2 class="section-heading">Join the community</h2>
+              <p slot="body">Our community drives the rhythm and direction of FAST. By taking part, your voice will help shape our future.</p>
+            </site-section-header>
+            <fast-divider role="presentation"></fast-divider>
+            <site-content-placement-container section="community"></site-content-placement-container>
+          </div>
+        </section>
+
+          <footer class="footer">
+            <site-navigation>
+              <ul>
+                <li><fast-anchor appearance="lightweight" href="https://github.com/microsoft/fast-dna/blob/master/LICENSE">License</fast-anchor></li>
+                <li><fast-anchor appearance="lightweight" href="https://privacy.microsoft.com/en-US/privacystatement">Privacy & Cookies</fast-anchor></li>
+                <li><fast-anchor appearance="lightweight" href="https://www.microsoft.com/en-us/legal/intellectualproperty/copyright/default.aspx">Terms of Use</fast-anchor></li>
+                <li><p>&copy; 2020 Microsoft</p></li>
+              </ul>
+            </site-navigation>
+            <fast-anchor class="logo" appearance="lightweight" href="/">
+              <%= require("svg/icon-brand.svg") %>
+            </fast-anchor>
+          </footer>
+      </div>
+    </fast-design-system-provider>
+  </body>
+</html>

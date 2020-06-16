@@ -18,7 +18,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components!accentFillActiveBehavior:var",
-          "docComment": "/**\n * Behavior to resolve and make available the accent-fill-active CSS custom property.\n */\n",
+          "docComment": "/**\n * Behavior to resolve and make available the accent-fill-active CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -44,7 +44,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components!accentFillFocusBehavior:var",
-          "docComment": "/**\n * Behavior to resolve and make available the accent-fill-focus CSS custom property.\n */\n",
+          "docComment": "/**\n * Behavior to resolve and make available the accent-fill-focus CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -70,7 +70,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components!accentFillHoverBehavior:var",
-          "docComment": "/**\n * Behavior to resolve and make available the accent-fill-hover CSS custom property.\n */\n",
+          "docComment": "/**\n * Behavior to resolve and make available the accent-fill-hover CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -96,7 +96,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components!accentFillLargeActiveBehavior:var",
-          "docComment": "/**\n * Behavior to resolve and make available the accent-fill-large-active CSS custom property.\n */\n",
+          "docComment": "/**\n * Behavior to resolve and make available the accent-fill-large-active CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -122,7 +122,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components!accentFillLargeFocusBehavior:var",
-          "docComment": "/**\n * Behavior to resolve and make available the accent-fill-large-focus CSS custom property.\n */\n",
+          "docComment": "/**\n * Behavior to resolve and make available the accent-fill-large-focus CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -148,7 +148,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components!accentFillLargeHoverBehavior:var",
-          "docComment": "/**\n * Behavior to resolve and make available the accent-fill-large-hover CSS custom property.\n */\n",
+          "docComment": "/**\n * Behavior to resolve and make available the accent-fill-large-hover CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -174,7 +174,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components!accentFillLargeRestBehavior:var",
-          "docComment": "/**\n * Behavior to resolve and make available the accent-fill-large-rest CSS custom property.\n */\n",
+          "docComment": "/**\n * Behavior to resolve and make available the accent-fill-large-rest CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -200,7 +200,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components!accentFillLargeSelectedBehavior:var",
-          "docComment": "/**\n * Behavior to resolve and make available the accent-fill-large-selected CSS custom property.\n */\n",
+          "docComment": "/**\n * Behavior to resolve and make available the accent-fill-large-selected CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -226,7 +226,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components!accentFillRestBehavior:var",
-          "docComment": "/**\n * Behavior to resolve and make available the accent-fill-rest CSS custom property.\n */\n",
+          "docComment": "/**\n * Behavior to resolve and make available the accent-fill-rest CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -252,7 +252,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components!accentFillSelectedBehavior:var",
-          "docComment": "/**\n * Behavior to resolve and make available the accent-fill-selected CSS custom property.\n */\n",
+          "docComment": "/**\n * Behavior to resolve and make available the accent-fill-selected CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -278,7 +278,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components!accentForegroundActiveBehavior:var",
-          "docComment": "/**\n * Behavior to resolve and make available the accent-foreground-active CSS custom property.\n */\n",
+          "docComment": "/**\n * Behavior to resolve and make available the accent-foreground-active CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -304,7 +304,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components!accentForegroundCutRestBehavior:var",
-          "docComment": "/**\n * Behavior to resolve and make available the accent-foreground-cut-rest CSS custom property.\n */\n",
+          "docComment": "/**\n * Behavior to resolve and make available the accent-foreground-cut-rest CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -330,7 +330,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components!accentForegroundFocusBehavior:var",
-          "docComment": "/**\n * Behavior to resolve and make available the accent-foreground-focus CSS custom property.\n */\n",
+          "docComment": "/**\n * Behavior to resolve and make available the accent-foreground-focus CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -356,7 +356,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components!accentForegroundHoverBehavior:var",
-          "docComment": "/**\n * Behavior to resolve and make available the accent-foreground-hover CSS custom property.\n */\n",
+          "docComment": "/**\n * Behavior to resolve and make available the accent-foreground-hover CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -382,7 +382,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components!accentForegroundLargeActiveBehavior:var",
-          "docComment": "/**\n * Behavior to resolve and make available the accent-foreground-large-active CSS custom property.\n */\n",
+          "docComment": "/**\n * Behavior to resolve and make available the accent-foreground-large-active CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -408,7 +408,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components!accentForegroundLargeFocusBehavior:var",
-          "docComment": "/**\n * Behavior to resolve and make available the accent-foreground-large-focus CSS custom property.\n */\n",
+          "docComment": "/**\n * Behavior to resolve and make available the accent-foreground-large-focus CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -434,7 +434,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components!accentForegroundLargeHoverBehavior:var",
-          "docComment": "/**\n * Behavior to resolve and make available the accent-foreground-large-hover CSS custom property.\n */\n",
+          "docComment": "/**\n * Behavior to resolve and make available the accent-foreground-large-hover CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -460,7 +460,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components!accentForegroundLargeRestBehavior:var",
-          "docComment": "/**\n * Behavior to resolve and make available the accent-foreground-large-rest CSS custom property.\n */\n",
+          "docComment": "/**\n * Behavior to resolve and make available the accent-foreground-large-rest CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -486,7 +486,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components!accentForegroundRestBehavior:var",
-          "docComment": "/**\n * Behavior to resolve and make available the accent-foreground-rest CSS custom property.\n */\n",
+          "docComment": "/**\n * Behavior to resolve and make available the accent-foreground-rest CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -512,7 +512,7 @@
         {
           "kind": "Function",
           "canonicalReference": "@microsoft/fast-components!createColorPalette:function(1)",
-          "docComment": "/**\n * Creates a color palette from a provided source color\n *\n * @param baseColor - \n *\n * @returns {string[]}\n */\n",
+          "docComment": "/**\n * Creates a color palette from a provided source color\n *\n * @param baseColor - ColorRGBA64\n *\n * @returns string[]\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -555,7 +555,7 @@
         {
           "kind": "Class",
           "canonicalReference": "@microsoft/fast-components!FASTAccordion:class",
-          "docComment": "",
+          "docComment": "/**\n * The FAST Accordion Element. Implements {@link @microsoft/fast-foundation#Accordion}, {@link @microsoft/fast-foundation#AccordionTemplate}\n *\n * @remarks\n *\n * HTML Element: \\<fast-accordion\\>\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -583,7 +583,7 @@
         {
           "kind": "Class",
           "canonicalReference": "@microsoft/fast-components!FASTAccordionItem:class",
-          "docComment": "",
+          "docComment": "/**\n * The FAST Accordion Item Element. Implements {@link @microsoft/fast-foundation#AccordionItem}, {@link @microsoft/fast-foundation#AccordionItemTemplate}\n *\n * @remarks\n *\n * HTML Element: \\<fast-accordion-item\\>\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -611,7 +611,7 @@
         {
           "kind": "Class",
           "canonicalReference": "@microsoft/fast-components!FASTAnchor:class",
-          "docComment": "",
+          "docComment": "/**\n * The FAST Anchor Element. Implements {@link @microsoft/fast-foundation#Anchor}, {@link @microsoft/fast-foundation#AnchorTemplate}\n *\n * @remarks\n *\n * HTML Element: \\<fast-anchor\\>\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -639,7 +639,7 @@
         {
           "kind": "Class",
           "canonicalReference": "@microsoft/fast-components!FASTBadge:class",
-          "docComment": "",
+          "docComment": "/**\n * The FAST Badge Element. Implements {@link @microsoft/fast-foundation#Badge}, {@link @microsoft/fast-foundation#BadgeTemplate}\n *\n * @remarks\n *\n * HTML Element: \\<fast-badge\\>\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -667,7 +667,7 @@
         {
           "kind": "Class",
           "canonicalReference": "@microsoft/fast-components!FASTButton:class",
-          "docComment": "",
+          "docComment": "/**\n * The FAST Button Element. Implements {@link @microsoft/fast-foundation#Button}, {@link @microsoft/fast-foundation#ButtonTemplate}\n *\n * @remarks\n *\n * HTML Element: \\<fast-button\\>\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -695,7 +695,7 @@
         {
           "kind": "Class",
           "canonicalReference": "@microsoft/fast-components!FASTCard:class",
-          "docComment": "",
+          "docComment": "/**\n * The FAST Card Element. Implements {@link @microsoft/fast-foundation#Card}, {@link @microsoft/fast-foundation#CardTemplate}\n *\n * @remarks\n *\n * HTML Element: \\<fast-card\\>\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -723,7 +723,7 @@
         {
           "kind": "Class",
           "canonicalReference": "@microsoft/fast-components!FASTCheckbox:class",
-          "docComment": "",
+          "docComment": "/**\n * The FAST Checkbox Element. Implements {@link @microsoft/fast-foundation#Checkbox}, {@link @microsoft/fast-foundation#CheckboxTemplate}\n *\n * @remarks\n *\n * HTML Element: \\<fast-checkbox\\>\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -749,9 +749,1722 @@
           "implementsTokenRanges": []
         },
         {
+          "kind": "Interface",
+          "canonicalReference": "@microsoft/fast-components!FASTDesignSystem:interface",
+          "docComment": "/**\n * Defines the properties in the FAST Design System\n *\n * @public\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "export interface FASTDesignSystem "
+            }
+          ],
+          "releaseTag": "Public",
+          "name": "FASTDesignSystem",
+          "members": [
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@microsoft/fast-components!FASTDesignSystem#accentBaseColor:member",
+              "docComment": "/**\n * The accent color, which the accent palette is based on. Keep this value in sync with accentPalette.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "accentBaseColor: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "string"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "accentBaseColor",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
+            },
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@microsoft/fast-components!FASTDesignSystem#accentFillActiveDelta:member",
+              "docComment": "",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "accentFillActiveDelta: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "number"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "accentFillActiveDelta",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
+            },
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@microsoft/fast-components!FASTDesignSystem#accentFillFocusDelta:member",
+              "docComment": "",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "accentFillFocusDelta: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "number"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "accentFillFocusDelta",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
+            },
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@microsoft/fast-components!FASTDesignSystem#accentFillHoverDelta:member",
+              "docComment": "",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "accentFillHoverDelta: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "number"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "accentFillHoverDelta",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
+            },
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@microsoft/fast-components!FASTDesignSystem#accentFillRestDelta:member",
+              "docComment": "/**\n * Color swatch deltas for the accent-fill recipe.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "accentFillRestDelta: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "number"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "accentFillRestDelta",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
+            },
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@microsoft/fast-components!FASTDesignSystem#accentFillSelectedDelta:member",
+              "docComment": "",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "accentFillSelectedDelta: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "number"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "accentFillSelectedDelta",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
+            },
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@microsoft/fast-components!FASTDesignSystem#accentForegroundActiveDelta:member",
+              "docComment": "",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "accentForegroundActiveDelta: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "number"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "accentForegroundActiveDelta",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
+            },
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@microsoft/fast-components!FASTDesignSystem#accentForegroundFocusDelta:member",
+              "docComment": "",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "accentForegroundFocusDelta: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "number"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "accentForegroundFocusDelta",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
+            },
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@microsoft/fast-components!FASTDesignSystem#accentForegroundHoverDelta:member",
+              "docComment": "",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "accentForegroundHoverDelta: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "number"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "accentForegroundHoverDelta",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
+            },
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@microsoft/fast-components!FASTDesignSystem#accentForegroundRestDelta:member",
+              "docComment": "/**\n * Color swatch deltas for the accent-foreground recipe.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "accentForegroundRestDelta: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "number"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "accentForegroundRestDelta",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
+            },
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@microsoft/fast-components!FASTDesignSystem#accentPalette:member",
+              "docComment": "/**\n * An array of colors in a ramp from light to dark, used to lookup values for accent color recipes. Keep this value in sync with accentBaseColor. Generate by calling createColorPalette.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "accentPalette: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "string[]"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "accentPalette",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
+            },
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@microsoft/fast-components!FASTDesignSystem#backgroundColor:member",
+              "docComment": "/**\n * The background color of the current context. May be used to draw an actual background or not. Color recipes evaluated within this context will use this as their basis.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "backgroundColor: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "string"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "backgroundColor",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
+            },
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@microsoft/fast-components!FASTDesignSystem#baseHeightMultiplier:member",
+              "docComment": "/**\n * The number of designUnits used for component height at the base density.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "baseHeightMultiplier: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "number"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "baseHeightMultiplier",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
+            },
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@microsoft/fast-components!FASTDesignSystem#baseHorizontalSpacingMultiplier:member",
+              "docComment": "/**\n * The number of designUnits used for horizontal spacing at the base density.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "baseHorizontalSpacingMultiplier: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "number"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "baseHorizontalSpacingMultiplier",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
+            },
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@microsoft/fast-components!FASTDesignSystem#baseLayerLuminance:member",
+              "docComment": "/**\n * The luminance value to base layer recipes on. Sets the luminance value for the L1 layer recipe in a manner that can adjust to variable contrast.\n *\n * Currently defaults to -1 to turn the feature off and use backgroundColor for layer colors instead.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "baseLayerLuminance: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "number"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "baseLayerLuminance",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
+            },
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@microsoft/fast-components!FASTDesignSystem#cornerRadius:member",
+              "docComment": "/**\n * The corner radius applied to controls.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "cornerRadius: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "number"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "cornerRadius",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
+            },
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@microsoft/fast-components!FASTDesignSystem#density:member",
+              "docComment": "/**\n * The density offset, used with designUnit to calculate height and spacing.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "density: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "number"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "density",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
+            },
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@microsoft/fast-components!FASTDesignSystem#designUnit:member",
+              "docComment": "/**\n * The grid-unit that UI dimensions are derived from in pixels.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "designUnit: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "number"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "designUnit",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
+            },
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@microsoft/fast-components!FASTDesignSystem#disabledOpacity:member",
+              "docComment": "/**\n * The opacity to use for disabled component state.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "disabledOpacity: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "number"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "disabledOpacity",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
+            },
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@microsoft/fast-components!FASTDesignSystem#focusOutlineWidth:member",
+              "docComment": "/**\n * The width of the outline for focus state in pixels.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "focusOutlineWidth: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "number"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "focusOutlineWidth",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
+            },
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@microsoft/fast-components!FASTDesignSystem#neutralDividerRestDelta:member",
+              "docComment": "/**\n * Color swatch delta for the neutral-divider recipe.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "neutralDividerRestDelta: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "number"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "neutralDividerRestDelta",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
+            },
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@microsoft/fast-components!FASTDesignSystem#neutralFillActiveDelta:member",
+              "docComment": "",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "neutralFillActiveDelta: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "number"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "neutralFillActiveDelta",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
+            },
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@microsoft/fast-components!FASTDesignSystem#neutralFillCardDelta:member",
+              "docComment": "/**\n * Color swatch deltas for the neutral-fill-card recipe.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "neutralFillCardDelta: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "number"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "neutralFillCardDelta",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
+            },
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@microsoft/fast-components!FASTDesignSystem#neutralFillFocusDelta:member",
+              "docComment": "",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "neutralFillFocusDelta: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "number"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "neutralFillFocusDelta",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
+            },
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@microsoft/fast-components!FASTDesignSystem#neutralFillHoverDelta:member",
+              "docComment": "",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "neutralFillHoverDelta: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "number"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "neutralFillHoverDelta",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
+            },
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@microsoft/fast-components!FASTDesignSystem#neutralFillInputActiveDelta:member",
+              "docComment": "",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "neutralFillInputActiveDelta: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "number"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "neutralFillInputActiveDelta",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
+            },
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@microsoft/fast-components!FASTDesignSystem#neutralFillInputFocusDelta:member",
+              "docComment": "",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "neutralFillInputFocusDelta: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "number"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "neutralFillInputFocusDelta",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
+            },
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@microsoft/fast-components!FASTDesignSystem#neutralFillInputHoverDelta:member",
+              "docComment": "",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "neutralFillInputHoverDelta: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "number"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "neutralFillInputHoverDelta",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
+            },
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@microsoft/fast-components!FASTDesignSystem#neutralFillInputRestDelta:member",
+              "docComment": "/**\n * Color swatch deltas for the neutral-fill-input recipe.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "neutralFillInputRestDelta: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "number"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "neutralFillInputRestDelta",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
+            },
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@microsoft/fast-components!FASTDesignSystem#neutralFillInputSelectedDelta:member",
+              "docComment": "",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "neutralFillInputSelectedDelta: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "number"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "neutralFillInputSelectedDelta",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
+            },
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@microsoft/fast-components!FASTDesignSystem#neutralFillRestDelta:member",
+              "docComment": "",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "neutralFillRestDelta: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "number"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "neutralFillRestDelta",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
+            },
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@microsoft/fast-components!FASTDesignSystem#neutralFillSelectedDelta:member",
+              "docComment": "",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "neutralFillSelectedDelta: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "number"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "neutralFillSelectedDelta",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
+            },
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@microsoft/fast-components!FASTDesignSystem#neutralFillStealthActiveDelta:member",
+              "docComment": "",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "neutralFillStealthActiveDelta: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "number"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "neutralFillStealthActiveDelta",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
+            },
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@microsoft/fast-components!FASTDesignSystem#neutralFillStealthFocusDelta:member",
+              "docComment": "",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "neutralFillStealthFocusDelta: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "number"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "neutralFillStealthFocusDelta",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
+            },
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@microsoft/fast-components!FASTDesignSystem#neutralFillStealthHoverDelta:member",
+              "docComment": "",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "neutralFillStealthHoverDelta: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "number"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "neutralFillStealthHoverDelta",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
+            },
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@microsoft/fast-components!FASTDesignSystem#neutralFillStealthRestDelta:member",
+              "docComment": "/**\n * Color swatch deltas for the neutral-fill-stealth recipe.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "neutralFillStealthRestDelta: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "number"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "neutralFillStealthRestDelta",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
+            },
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@microsoft/fast-components!FASTDesignSystem#neutralFillStealthSelectedDelta:member",
+              "docComment": "",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "neutralFillStealthSelectedDelta: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "number"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "neutralFillStealthSelectedDelta",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
+            },
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@microsoft/fast-components!FASTDesignSystem#neutralFillToggleActiveDelta:member",
+              "docComment": "",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "neutralFillToggleActiveDelta: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "number"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "neutralFillToggleActiveDelta",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
+            },
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@microsoft/fast-components!FASTDesignSystem#neutralFillToggleFocusDelta:member",
+              "docComment": "",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "neutralFillToggleFocusDelta: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "number"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "neutralFillToggleFocusDelta",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
+            },
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@microsoft/fast-components!FASTDesignSystem#neutralFillToggleHoverDelta:member",
+              "docComment": "/**\n * Configuration for the neutral-fill-toggle recipe.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "neutralFillToggleHoverDelta: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "number"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "neutralFillToggleHoverDelta",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
+            },
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@microsoft/fast-components!FASTDesignSystem#neutralForegroundActiveDelta:member",
+              "docComment": "",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "neutralForegroundActiveDelta: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "number"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "neutralForegroundActiveDelta",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
+            },
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@microsoft/fast-components!FASTDesignSystem#neutralForegroundFocusDelta:member",
+              "docComment": "",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "neutralForegroundFocusDelta: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "number"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "neutralForegroundFocusDelta",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
+            },
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@microsoft/fast-components!FASTDesignSystem#neutralForegroundHoverDelta:member",
+              "docComment": "/**\n * Color swatch delta for neutral-foreground recipe.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "neutralForegroundHoverDelta: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "number"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "neutralForegroundHoverDelta",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
+            },
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@microsoft/fast-components!FASTDesignSystem#neutralOutlineActiveDelta:member",
+              "docComment": "",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "neutralOutlineActiveDelta: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "number"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "neutralOutlineActiveDelta",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
+            },
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@microsoft/fast-components!FASTDesignSystem#neutralOutlineFocusDelta:member",
+              "docComment": "",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "neutralOutlineFocusDelta: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "number"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "neutralOutlineFocusDelta",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
+            },
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@microsoft/fast-components!FASTDesignSystem#neutralOutlineHoverDelta:member",
+              "docComment": "",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "neutralOutlineHoverDelta: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "number"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "neutralOutlineHoverDelta",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
+            },
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@microsoft/fast-components!FASTDesignSystem#neutralOutlineRestDelta:member",
+              "docComment": "/**\n * Color swatch deltas for the neutral-outline recipe.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "neutralOutlineRestDelta: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "number"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "neutralOutlineRestDelta",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
+            },
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@microsoft/fast-components!FASTDesignSystem#neutralPalette:member",
+              "docComment": "/**\n * An array of colors in a ramp from light to dark, used to look up values for neutral color recipes. Generate by calling createColorPalette.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "neutralPalette: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "string[]"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "neutralPalette",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
+            },
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@microsoft/fast-components!FASTDesignSystem#outlineWidth:member",
+              "docComment": "/**\n * The width of the outline applied to outline components in pixels.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "outlineWidth: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "number"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "outlineWidth",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
+            },
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@microsoft/fast-components!FASTDesignSystem#typeRampBaseFontSize:member",
+              "docComment": "",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "typeRampBaseFontSize: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "string"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "typeRampBaseFontSize",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
+            },
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@microsoft/fast-components!FASTDesignSystem#typeRampBaseLineHeight:member",
+              "docComment": "",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "typeRampBaseLineHeight: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "string"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "typeRampBaseLineHeight",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
+            },
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@microsoft/fast-components!FASTDesignSystem#typeRampMinus1FontSize:member",
+              "docComment": "",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "typeRampMinus1FontSize: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "string"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "typeRampMinus1FontSize",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
+            },
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@microsoft/fast-components!FASTDesignSystem#typeRampMinus1LineHeight:member",
+              "docComment": "",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "typeRampMinus1LineHeight: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "string"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "typeRampMinus1LineHeight",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
+            },
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@microsoft/fast-components!FASTDesignSystem#typeRampMinus2FontSize:member",
+              "docComment": "/**\n * Type-ramp font-size and line-height values\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "typeRampMinus2FontSize: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "string"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "typeRampMinus2FontSize",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
+            },
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@microsoft/fast-components!FASTDesignSystem#typeRampMinus2LineHeight:member",
+              "docComment": "",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "typeRampMinus2LineHeight: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "string"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "typeRampMinus2LineHeight",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
+            },
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@microsoft/fast-components!FASTDesignSystem#typeRampPlus1FontSize:member",
+              "docComment": "",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "typeRampPlus1FontSize: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "string"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "typeRampPlus1FontSize",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
+            },
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@microsoft/fast-components!FASTDesignSystem#typeRampPlus1LineHeight:member",
+              "docComment": "",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "typeRampPlus1LineHeight: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "string"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "typeRampPlus1LineHeight",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
+            },
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@microsoft/fast-components!FASTDesignSystem#typeRampPlus2FontSize:member",
+              "docComment": "",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "typeRampPlus2FontSize: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "string"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "typeRampPlus2FontSize",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
+            },
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@microsoft/fast-components!FASTDesignSystem#typeRampPlus2LineHeight:member",
+              "docComment": "",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "typeRampPlus2LineHeight: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "string"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "typeRampPlus2LineHeight",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
+            },
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@microsoft/fast-components!FASTDesignSystem#typeRampPlus3FontSize:member",
+              "docComment": "",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "typeRampPlus3FontSize: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "string"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "typeRampPlus3FontSize",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
+            },
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@microsoft/fast-components!FASTDesignSystem#typeRampPlus3LineHeight:member",
+              "docComment": "",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "typeRampPlus3LineHeight: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "string"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "typeRampPlus3LineHeight",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
+            },
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@microsoft/fast-components!FASTDesignSystem#typeRampPlus4FontSize:member",
+              "docComment": "",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "typeRampPlus4FontSize: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "string"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "typeRampPlus4FontSize",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
+            },
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@microsoft/fast-components!FASTDesignSystem#typeRampPlus4LineHeight:member",
+              "docComment": "",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "typeRampPlus4LineHeight: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "string"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "typeRampPlus4LineHeight",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
+            },
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@microsoft/fast-components!FASTDesignSystem#typeRampPlus5FontSize:member",
+              "docComment": "",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "typeRampPlus5FontSize: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "string"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "typeRampPlus5FontSize",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
+            },
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@microsoft/fast-components!FASTDesignSystem#typeRampPlus5LineHeight:member",
+              "docComment": "",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "typeRampPlus5LineHeight: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "string"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "typeRampPlus5LineHeight",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
+            },
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@microsoft/fast-components!FASTDesignSystem#typeRampPlus6FontSize:member",
+              "docComment": "",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "typeRampPlus6FontSize: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "string"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "typeRampPlus6FontSize",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
+            },
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@microsoft/fast-components!FASTDesignSystem#typeRampPlus6LineHeight:member",
+              "docComment": "",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "typeRampPlus6LineHeight: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "string"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "typeRampPlus6LineHeight",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
+            }
+          ],
+          "extendsTokenRanges": []
+        },
+        {
+          "kind": "Variable",
+          "canonicalReference": "@microsoft/fast-components!fastDesignSystemDefaults:var",
+          "docComment": "/**\n * The default values for {@link FASTDesignSystem}\n *\n * @public\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "fastDesignSystemDefaults: "
+            },
+            {
+              "kind": "Reference",
+              "text": "FASTDesignSystem",
+              "canonicalReference": "@microsoft/fast-components!FASTDesignSystem:interface"
+            }
+          ],
+          "releaseTag": "Public",
+          "name": "fastDesignSystemDefaults",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 2
+          }
+        },
+        {
           "kind": "Class",
           "canonicalReference": "@microsoft/fast-components!FASTDesignSystemProvider:class",
-          "docComment": "",
+          "docComment": "/**\n * The FAST DesignSystemProvider Element. Implements {@link @microsoft/fast-foundation#DesignSystemProvider}, {@link @microsoft/fast-foundation#DesignSystemProviderTemplate} and {@link @microsoft/fast-components#FASTDesignSystem}\n *\n * @remarks\n *\n * HTML Element: \\<fast-design-system-provider\\>\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -2566,7 +4279,7 @@
         {
           "kind": "Class",
           "canonicalReference": "@microsoft/fast-components!FASTDialog:class",
-          "docComment": "",
+          "docComment": "/**\n * The FAST Dialog Element. Implements {@link @microsoft/fast-foundation#Dialog}, {@link @microsoft/fast-foundation#DialogTemplate}\n *\n * @remarks\n *\n * HTML Element: \\<fast-dialog\\>\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -2594,7 +4307,7 @@
         {
           "kind": "Class",
           "canonicalReference": "@microsoft/fast-components!FASTDivider:class",
-          "docComment": "",
+          "docComment": "/**\n * The FAST Divider Element. Implements {@link @microsoft/fast-foundation#Divider}, {@link @microsoft/fast-foundation#DividerTemplate}\n *\n * @remarks\n *\n * HTML Element: \\<fast-divider\\>\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -2622,7 +4335,7 @@
         {
           "kind": "Class",
           "canonicalReference": "@microsoft/fast-components!FASTFlipper:class",
-          "docComment": "",
+          "docComment": "/**\n * The FAST Flipper Element. Implements {@link @microsoft/fast-foundation#Flipper}, {@link @microsoft/fast-foundation#FlipperTemplate}\n *\n * @remarks\n *\n * HTML Element: \\<fast-flipper\\>\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -2650,7 +4363,7 @@
         {
           "kind": "Class",
           "canonicalReference": "@microsoft/fast-components!FASTMenu:class",
-          "docComment": "",
+          "docComment": "/**\n * The FAST Menu Element. Implements {@link @microsoft/fast-foundation#Menu}, {@link @microsoft/fast-foundation#MenuTemplate}\n *\n * @remarks\n *\n * HTML Element: \\<fast-menu\\>\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -2678,7 +4391,7 @@
         {
           "kind": "Class",
           "canonicalReference": "@microsoft/fast-components!FASTMenuItem:class",
-          "docComment": "",
+          "docComment": "/**\n * The FAST Menu Item Element. Implements {@link @microsoft/fast-foundation#MenuItem}, {@link @microsoft/fast-foundation#MenuItemTemplate}\n *\n * @remarks\n *\n * HTML Element: \\<fast-menu-item\\>\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -2706,7 +4419,7 @@
         {
           "kind": "Class",
           "canonicalReference": "@microsoft/fast-components!FASTProgress:class",
-          "docComment": "",
+          "docComment": "/**\n * The FAST Progress Element. Implements {@link @microsoft/fast-foundation#BaseProgress}, {@link @microsoft/fast-foundation#ProgressTemplate}\n *\n * @remarks\n *\n * HTML Element: \\<fast-progress\\>\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -2734,7 +4447,7 @@
         {
           "kind": "Class",
           "canonicalReference": "@microsoft/fast-components!FASTProgressRing:class",
-          "docComment": "",
+          "docComment": "/**\n * The FAST Progress Ring Element. Implements {@link @microsoft/fast-foundation#BaseProgress}, {@link @microsoft/fast-foundation#ProgressRingTemplate}\n *\n * @remarks\n *\n * HTML Element: \\<fast-progress-ring\\>\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -2762,7 +4475,7 @@
         {
           "kind": "Class",
           "canonicalReference": "@microsoft/fast-components!FASTRadio:class",
-          "docComment": "",
+          "docComment": "/**\n * The FAST Radio Element. Implements {@link @microsoft/fast-foundation#Radio}, {@link @microsoft/fast-foundation#RadioTemplate}\n *\n * @remarks\n *\n * HTML Element: \\<fast-radio\\>\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -2790,7 +4503,7 @@
         {
           "kind": "Class",
           "canonicalReference": "@microsoft/fast-components!FASTRadioGroup:class",
-          "docComment": "",
+          "docComment": "/**\n * The FAST Radio Group Element. Implements {@link @microsoft/fast-foundation#RadioGroup}, {@link @microsoft/fast-foundation#RadioGroupTemplate}\n *\n * @remarks\n *\n * HTML Element: \\<fast-radio-group\\>\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -2818,7 +4531,7 @@
         {
           "kind": "Class",
           "canonicalReference": "@microsoft/fast-components!FASTSlider:class",
-          "docComment": "",
+          "docComment": "/**\n * The FAST Slider Custom Element. Implements {@link @microsoft/fast-foundation#Slider}, {@link @microsoft/fast-foundation#SliderTemplate}\n *\n * @remarks\n *\n * HTML Element: \\<fast-slider\\>\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -2846,7 +4559,7 @@
         {
           "kind": "Class",
           "canonicalReference": "@microsoft/fast-components!FASTSliderLabel:class",
-          "docComment": "",
+          "docComment": "/**\n * The FAST Slider Label Custom Element. Implements {@link @microsoft/fast-foundation#SliderLabel}, {@link @microsoft/fast-foundation#SliderLabelTemplate}\n *\n * @remarks\n *\n * HTML Element: \\<fast-slider-label\\>\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -2874,7 +4587,7 @@
         {
           "kind": "Class",
           "canonicalReference": "@microsoft/fast-components!FASTSwitch:class",
-          "docComment": "",
+          "docComment": "/**\n * The FAST Switch Custom Element. Implements {@link @microsoft/fast-foundation#Switch}, {@link @microsoft/fast-foundation#SwitchTemplate}\n *\n * @remarks\n *\n * HTML Element: \\<fast-switch\\>\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -2902,7 +4615,7 @@
         {
           "kind": "Class",
           "canonicalReference": "@microsoft/fast-components!FASTTab:class",
-          "docComment": "",
+          "docComment": "/**\n * The FAST Tab Custom Element. Implements {@link @microsoft/fast-foundation#Tab}, {@link @microsoft/fast-foundation#TabTemplate}\n *\n * @remarks\n *\n * HTML Element: \\<fast-tab\\>\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -2930,7 +4643,7 @@
         {
           "kind": "Class",
           "canonicalReference": "@microsoft/fast-components!FASTTabPanel:class",
-          "docComment": "",
+          "docComment": "/**\n * The FAST Tab Panel Custom Element. Implements {@link @microsoft/fast-foundation#TabPanel}, {@link @microsoft/fast-foundation#TabPanelTemplate}\n *\n * @remarks\n *\n * HTML Element: \\<fast-tab-panel\\>\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -2958,7 +4671,7 @@
         {
           "kind": "Class",
           "canonicalReference": "@microsoft/fast-components!FASTTabs:class",
-          "docComment": "",
+          "docComment": "/**\n * The FAST Tabs Custom Element. Implements {@link @microsoft/fast-foundation#Tabs}, {@link @microsoft/fast-foundation#TabsTemplate}\n *\n * @remarks\n *\n * HTML Element: \\<fast-tabs\\>\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -2986,7 +4699,7 @@
         {
           "kind": "Class",
           "canonicalReference": "@microsoft/fast-components!FASTTextArea:class",
-          "docComment": "",
+          "docComment": "/**\n * The FAST Text Area Custom Element. Implements {@link @microsoft/fast-foundation#TextArea}, {@link @microsoft/fast-foundation#TextAreaTemplate}\n *\n * @remarks\n *\n * HTML Element: \\<fast-text-area\\>\n *\n * {@link https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/delegatesFocus | delegatesFocus}\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -3014,7 +4727,7 @@
         {
           "kind": "Class",
           "canonicalReference": "@microsoft/fast-components!FASTTextField:class",
-          "docComment": "",
+          "docComment": "/**\n * The FAST Text Field Custom Element. Implements {@link @microsoft/fast-foundation#TextField}, {@link @microsoft/fast-foundation#TextFieldTemplate}\n *\n * @remarks\n *\n * HTML Element: \\<fast-text-field\\>\n *\n * {@link https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/delegatesFocus | delegatesFocus}\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -3042,7 +4755,7 @@
         {
           "kind": "Function",
           "canonicalReference": "@microsoft/fast-components!isDarkMode:function(1)",
-          "docComment": "/**\n * Determines if the design-system should be considered in \"dark mode\". We're in dark mode if we have more contrast between #000000 and our background color than #FFFFFF and our background color. That threshold can be expressed as a relative luminance using the contrast formula as (1 + 0.5) / (bg + 0.05) === (bg + 0.05) / (0 + 0.05), which reduces to the following, where bg is the relative luminance of the background color\n */\n",
+          "docComment": "/**\n * Determines if the design-system should be considered in \"dark mode\".\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -3086,7 +4799,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components!neutralDividerRestBehavior:var",
-          "docComment": "/**\n * Behavior to resolve and make available the neutral-divider-rest CSS custom property.\n */\n",
+          "docComment": "/**\n * Behavior to resolve and make available the neutral-divider-rest CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -3112,7 +4825,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components!neutralFillActiveBehavior:var",
-          "docComment": "/**\n * Behavior to resolve and make available the neutral-fill-active CSS custom property.\n */\n",
+          "docComment": "/**\n * Behavior to resolve and make available the neutral-fill-active CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -3136,54 +4849,9 @@
           }
         },
         {
-          "kind": "Function",
-          "canonicalReference": "@microsoft/fast-components!neutralFillCard:function(2)",
-          "docComment": "",
-          "excerptTokens": [
-            {
-              "kind": "Content",
-              "text": "export declare function neutralFillCard(backgroundResolver: "
-            },
-            {
-              "kind": "Reference",
-              "text": "SwatchResolver",
-              "canonicalReference": "@microsoft/fast-components!SwatchResolver:type"
-            },
-            {
-              "kind": "Content",
-              "text": "): "
-            },
-            {
-              "kind": "Reference",
-              "text": "SwatchResolver",
-              "canonicalReference": "@microsoft/fast-components!SwatchResolver:type"
-            },
-            {
-              "kind": "Content",
-              "text": ";"
-            }
-          ],
-          "returnTypeTokenRange": {
-            "startIndex": 3,
-            "endIndex": 4
-          },
-          "releaseTag": "Public",
-          "overloadIndex": 2,
-          "parameters": [
-            {
-              "parameterName": "backgroundResolver",
-              "parameterTypeTokenRange": {
-                "startIndex": 1,
-                "endIndex": 2
-              }
-            }
-          ],
-          "name": "neutralFillCard"
-        },
-        {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components!neutralFillCardRestBehavior:var",
-          "docComment": "/**\n * Behavior to resolve and make available the neutral-fill-card-rest CSS custom property.\n */\n",
+          "docComment": "/**\n * Behavior to resolve and make available the neutral-fill-card-rest CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -3209,7 +4877,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components!neutralFillFocusBehavior:var",
-          "docComment": "/**\n * Behavior to resolve and make available the neutral-fill-focus CSS custom property.\n */\n",
+          "docComment": "/**\n * Behavior to resolve and make available the neutral-fill-focus CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -3235,7 +4903,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components!neutralFillHoverBehavior:var",
-          "docComment": "/**\n * Behavior to resolve and make available the neutral-fill-hover CSS custom property.\n */\n",
+          "docComment": "/**\n * Behavior to resolve and make available the neutral-fill-hover CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -3261,7 +4929,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components!neutralFillInputActiveBehavior:var",
-          "docComment": "/**\n * Behavior to resolve and make available the neutral-fill-input-active CSS custom property.\n */\n",
+          "docComment": "/**\n * Behavior to resolve and make available the neutral-fill-input-active CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -3287,7 +4955,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components!neutralFillInputFocusBehavior:var",
-          "docComment": "/**\n * Behavior to resolve and make available the neutral-fill-input-focus CSS custom property.\n */\n",
+          "docComment": "/**\n * Behavior to resolve and make available the neutral-fill-input-focus CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -3313,7 +4981,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components!neutralFillInputHoverBehavior:var",
-          "docComment": "/**\n * Behavior to resolve and make available the neutral-fill-input-hover CSS custom property.\n */\n",
+          "docComment": "/**\n * Behavior to resolve and make available the neutral-fill-input-hover CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -3339,7 +5007,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components!neutralFillInputRestBehavior:var",
-          "docComment": "/**\n * Behavior to resolve and make available the neutral-fill-input-rest CSS custom property.\n */\n",
+          "docComment": "/**\n * Behavior to resolve and make available the neutral-fill-input-rest CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -3365,7 +5033,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components!neutralFillRestBehavior:var",
-          "docComment": "/**\n * Behavior to resolve and make available the neutral-fill-rest CSS custom property.\n */\n",
+          "docComment": "/**\n * Behavior to resolve and make available the neutral-fill-rest CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -3391,7 +5059,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components!neutralFillSelectedBehavior:var",
-          "docComment": "/**\n * Behavior to resolve and make available the neutral-fill-selected CSS custom property.\n */\n",
+          "docComment": "/**\n * Behavior to resolve and make available the neutral-fill-selected CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -3417,7 +5085,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components!neutralFillStealthActiveBehavior:var",
-          "docComment": "/**\n * Behavior to resolve and make available the neutral-fill-stealth-active CSS custom property.\n */\n",
+          "docComment": "/**\n * Behavior to resolve and make available the neutral-fill-stealth-active CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -3443,7 +5111,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components!neutralFillStealthFocusBehavior:var",
-          "docComment": "/**\n * Behavior to resolve and make available the neutral-fill-stealth-focus CSS custom property.\n */\n",
+          "docComment": "/**\n * Behavior to resolve and make available the neutral-fill-stealth-focus CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -3469,7 +5137,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components!neutralFillStealthHoverBehavior:var",
-          "docComment": "/**\n * Behavior to resolve and make available the neutral-fill-stealth-hover CSS custom property.\n */\n",
+          "docComment": "/**\n * Behavior to resolve and make available the neutral-fill-stealth-hover CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -3495,7 +5163,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components!neutralFillStealthRestBehavior:var",
-          "docComment": "/**\n * Behavior to resolve and make available the neutral-fill-stealth-rest CSS custom property.\n */\n",
+          "docComment": "/**\n * Behavior to resolve and make available the neutral-fill-stealth-rest CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -3521,7 +5189,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components!neutralFillStealthSelectedBehavior:var",
-          "docComment": "/**\n * Behavior to resolve and make available the neutral-fill-stealth-selected CSS custom property.\n */\n",
+          "docComment": "/**\n * Behavior to resolve and make available the neutral-fill-stealth-selected CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -3547,7 +5215,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components!neutralFillToggleActiveBehavior:var",
-          "docComment": "/**\n * Behavior to resolve and make available the neutral-fill-toggle-active CSS custom property.\n */\n",
+          "docComment": "/**\n * Behavior to resolve and make available the neutral-fill-toggle-active CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -3573,7 +5241,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components!neutralFillToggleFocusBehavior:var",
-          "docComment": "/**\n * Behavior to resolve and make available the neutral-fill-toggle-focus CSS custom property.\n */\n",
+          "docComment": "/**\n * Behavior to resolve and make available the neutral-fill-toggle-focus CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -3599,7 +5267,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components!neutralFillToggleHoverBehavior:var",
-          "docComment": "/**\n * Behavior to resolve and make available the neutral-fill-toggle-hover CSS custom property.\n */\n",
+          "docComment": "/**\n * Behavior to resolve and make available the neutral-fill-toggle-hover CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -3625,7 +5293,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components!neutralFillToggleRestBehavior:var",
-          "docComment": "/**\n * Behavior to resolve and make available the neutral-fill-toggle-rest CSS custom property.\n */\n",
+          "docComment": "/**\n * Behavior to resolve and make available the neutral-fill-toggle-rest CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -3651,7 +5319,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components!neutralFocusBehavior:var",
-          "docComment": "/**\n * Behavior to resolve and make available the neutral-focus CSS custom property.\n */\n",
+          "docComment": "/**\n * Behavior to resolve and make available the neutral-focus CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -3677,7 +5345,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components!neutralFocusInnerAccentBehavior:var",
-          "docComment": "/**\n * Behavior to resolve and make available the neutral-focus-inner-accent CSS custom property.\n */\n",
+          "docComment": "/**\n * Behavior to resolve and make available the neutral-focus-inner-accent CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -3703,7 +5371,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components!neutralForegroundActiveBehavior:var",
-          "docComment": "/**\n * Behavior to resolve and make available the neutral-foreground-active CSS custom property.\n */\n",
+          "docComment": "/**\n * Behavior to resolve and make available the neutral-foreground-active CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -3729,7 +5397,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components!neutralForegroundFocusBehavior:var",
-          "docComment": "/**\n * Behavior to resolve and make available the neutral-foreground-focus CSS custom property.\n */\n",
+          "docComment": "/**\n * Behavior to resolve and make available the neutral-foreground-focus CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -3755,7 +5423,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components!neutralForegroundHintBehavior:var",
-          "docComment": "/**\n * Behavior to resolve and make available the neutral-foreground-hint CSS custom property.\n */\n",
+          "docComment": "/**\n * Behavior to resolve and make available the neutral-foreground-hint CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -3781,7 +5449,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components!neutralForegroundHintLargeBehavior:var",
-          "docComment": "/**\n * Behavior to resolve and make available the neutral-foreground-hint-large CSS custom property.\n */\n",
+          "docComment": "/**\n * Behavior to resolve and make available the neutral-foreground-hint-large CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -3807,7 +5475,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components!neutralForegroundHoverBehavior:var",
-          "docComment": "/**\n * Behavior to resolve and make available the neutral-foreground-hover CSS custom property.\n */\n",
+          "docComment": "/**\n * Behavior to resolve and make available the neutral-foreground-hover CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -3833,7 +5501,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components!neutralForegroundRestBehavior:var",
-          "docComment": "/**\n * Behavior to resolve and make available the neutral-foreground-rest CSS custom property.\n */\n",
+          "docComment": "/**\n * Behavior to resolve and make available the neutral-foreground-rest CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -3859,7 +5527,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components!neutralForegroundToggleBehavior:var",
-          "docComment": "/**\n * Behavior to resolve and make available the neutral-foreground-toggle CSS custom property.\n */\n",
+          "docComment": "/**\n * Behavior to resolve and make available the neutral-foreground-toggle CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -3885,7 +5553,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components!neutralForegroundToggleLargeBehavior:var",
-          "docComment": "/**\n * Behavior to resolve and make available the neutral-foreground-toggle-large CSS custom property.\n */\n",
+          "docComment": "/**\n * Behavior to resolve and make available the neutral-foreground-toggle-large CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -3911,7 +5579,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components!neutralLayerCardBehavior:var",
-          "docComment": "/**\n * Behavior to resolve and make available the neutral-layer-card CSS custom property.\n */\n",
+          "docComment": "/**\n * Behavior to resolve and make available the neutral-layer-card CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -3937,7 +5605,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components!neutralLayerCardContainerBehavior:var",
-          "docComment": "/**\n * Behavior to resolve and make available the neutral-layer-card-container CSS custom property.\n */\n",
+          "docComment": "/**\n * Behavior to resolve and make available the neutral-layer-card-container CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -3963,7 +5631,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components!neutralLayerFloatingBehavior:var",
-          "docComment": "/**\n * Behavior to resolve and make available the neutral-layer-floating CSS custom property.\n */\n",
+          "docComment": "/**\n * Behavior to resolve and make available the neutral-layer-floating CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -3989,7 +5657,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components!neutralLayerL1AltBehavior:var",
-          "docComment": "/**\n * Behavior to resolve and make available the neutral-layer-l1-alt CSS custom property.\n */\n",
+          "docComment": "/**\n * Behavior to resolve and make available the neutral-layer-l1-alt CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -4015,7 +5683,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components!neutralLayerL1Behavior:var",
-          "docComment": "/**\n * Behavior to resolve and make available the neutral-layer-l1 CSS custom property.\n */\n",
+          "docComment": "/**\n * Behavior to resolve and make available the neutral-layer-l1 CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -4041,7 +5709,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components!neutralLayerL2Behavior:var",
-          "docComment": "/**\n * Behavior to resolve and make available the neutral-layer-l2 CSS custom property.\n */\n",
+          "docComment": "/**\n * Behavior to resolve and make available the neutral-layer-l2 CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -4067,7 +5735,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components!neutralLayerL3Behavior:var",
-          "docComment": "/**\n * Behavior to resolve and make available the neutral-layer-l3 CSS custom property.\n */\n",
+          "docComment": "/**\n * Behavior to resolve and make available the neutral-layer-l3 CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -4093,7 +5761,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components!neutralLayerL4Behavior:var",
-          "docComment": "/**\n * Behavior to resolve and make available the neutral-layer-l4 CSS custom property.\n */\n",
+          "docComment": "/**\n * Behavior to resolve and make available the neutral-layer-l4 CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -4119,7 +5787,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components!neutralOutlineActiveBehavior:var",
-          "docComment": "/**\n * Behavior to resolve and make available the neutral-outline-active CSS custom property.\n */\n",
+          "docComment": "/**\n * Behavior to resolve and make available the neutral-outline-active CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -4145,7 +5813,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components!neutralOutlineFocusBehavior:var",
-          "docComment": "/**\n * Behavior to resolve and make available the neutral-outline-focus CSS custom property.\n */\n",
+          "docComment": "/**\n * Behavior to resolve and make available the neutral-outline-focus CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -4171,7 +5839,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components!neutralOutlineHoverBehavior:var",
-          "docComment": "/**\n * Behavior to resolve and make available the neutral-outline-hover CSS custom property.\n */\n",
+          "docComment": "/**\n * Behavior to resolve and make available the neutral-outline-hover CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -4197,7 +5865,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components!neutralOutlineRestBehavior:var",
-          "docComment": "/**\n * Behavior to resolve and make available the neutral-outline-rest CSS custom property.\n */\n",
+          "docComment": "/**\n * Behavior to resolve and make available the neutral-outline-rest CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -4223,7 +5891,7 @@
         {
           "kind": "TypeAlias",
           "canonicalReference": "@microsoft/fast-components!Palette:type",
-          "docComment": "/**\n * The structure of a color palette\n */\n",
+          "docComment": "/**\n * The structure of a color palette\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -4253,7 +5921,7 @@
         {
           "kind": "Enum",
           "canonicalReference": "@microsoft/fast-components!PaletteType:enum",
-          "docComment": "/**\n * The named palettes of the MSFT design system\n *\n * @deprecated\n *\n * - use neutralPalette and accentPalette functions instead\n */\n",
+          "docComment": "/**\n * The named palettes of the MSFT design system\n *\n * @deprecated\n *\n * - use neutralPalette and accentPalette functions instead\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -4310,7 +5978,7 @@
         {
           "kind": "Enum",
           "canonicalReference": "@microsoft/fast-components!StandardLuminance:enum",
-          "docComment": "/**\n * Recommended values for light and dark mode for `baseLayerLuminance` in the design system.\n */\n",
+          "docComment": "/**\n * Recommended values for light and dark mode for {@link @microsoft/fast-components#FASTDesignSystem.baseLayerLuminance}.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
