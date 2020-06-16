@@ -17,6 +17,11 @@ export interface ContextMenuItemHandledProps
     extends ContextMenuItemManagedClasses,
         Subtract<BaseContextMenuItemHandledProps, BaseContextMenuItemManagedClasses> {
     /**
+     * The element that comes after the primary content
+     */
+    after?: React.ReactNode;
+
+    /**
      * The element that comes before the primary content
      */
     before?: React.ReactNode;
