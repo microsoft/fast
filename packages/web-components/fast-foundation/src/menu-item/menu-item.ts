@@ -81,7 +81,10 @@ export class MenuItem extends FASTElement {
 }
 
 /**
- * @public
+ * Mark internal because exporting class and interface of the same name
+ * confuses API documenter.
+ * https://github.com/microsoft/rushstack/issues/1921
+ * @internal
  */
 /* eslint-disable-next-line */
 export interface MenuItem extends StartEnd {}
