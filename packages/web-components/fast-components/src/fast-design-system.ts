@@ -5,6 +5,10 @@ import {
 
 export type DesignSystemResolver<T, Y = FASTDesignSystem> = (d: Y) => T;
 
+/**
+ * Defines the properties in the FAST Design System
+ * @public
+ */
 export interface FASTDesignSystem {
     /**
      * Type-ramp font-size and line-height values
@@ -178,6 +182,10 @@ export interface FASTDesignSystem {
     neutralOutlineFocusDelta: number;
 }
 
+/**
+ * The default values for {@link FASTDesignSystem}
+ * @public
+ */
 export const fastDesignSystemDefaults: FASTDesignSystem = {
     typeRampMinus2FontSize: "10px",
     typeRampMinus2LineHeight: "16px",
