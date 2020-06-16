@@ -146,10 +146,10 @@ export const HypertextStyles = css`
         font-size: inherit;
         line-height: inherit;
         background: transparent;
-        vertical-align: bottom;
     }
 
     :host(.hypertext) .control {
+        display: inline;
         padding: 0;
         border: none;
         box-shadow: none;
