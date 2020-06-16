@@ -167,3 +167,38 @@ The full list of available lifecyle callbacks is:
 | disconnectedCallback | Runs when the element is removed from the DOM. `FASTElement` will remove template bindings and clean up resources at this time. |
 | attributeChangedCallback(attrName, oldVal, newVal) | Runs any time one of the element's custom attributes changes. `FASTElement` uses this to sync the attribute with its property. When the property updates, a render update is also queued, if there was a template dependency. |
 | adoptedCallback | Runs if the element was moved from its current `document` into a new `document` via a call to the `adoptNode(...)` API. |
+
+## Working without Decorators
+
+The examples above and those throughout our documentation leverage TypeScript, and in particular, the decorators feature of the language. Decorators are an upcoming feature planned for a future version of JavaScript, but their design is not yet finished. While the syntax for decorator usage is not likely to change in the final version of the feature, some of our community members may feel uncomfortable using this feature at this stage. Fortunately, FAST Elements can be completely defined in Vanilla JS, without using decorators, by leveraging a static `definition` field on your class. The `definition` filed only needs to present the same configuration as the `@customElement` decorator. Here's an example that shows the use of the `definition` field along with a manual call to `define` the element:
+
+```js
+import { FASTElement, html, css } from '@microsoft/fast-element';
+
+const template = html`...`;
+const styles = css`...`;
+const numberConverter = { ... };
+
+export class MyElement extends FASTElement {
+  static definition = {
+    name: 'my-element',
+    template,
+    styles,
+    attributes: [
+      'value', // same attr/prop name
+      { attribute: 'some-attr', property: 'someAttr' }, // different attr/prop name
+      { property: 'count', converter: numberConverter } // derive attr name from prop; add converter
+    ]
+  };
+
+  value = '';
+  someAttr = '';
+  count = 0;
+}
+
+FASTElement.define(MyElement);
+```
+
+::note
+The `definition` can also be separated from the class and passed into the `define` call directly if desired. Here's how that would look: `FASTElement.define(MyElement, myDefinition);`
+:::
