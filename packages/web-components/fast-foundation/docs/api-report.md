@@ -149,29 +149,28 @@ export class Card extends FASTElement {
 // @public (undocumented)
 export const CardTemplate: import("@microsoft/fast-element").ViewTemplate<Card, any>;
 
-// @public (undocumented)
+// @public
 export class Checkbox extends FormAssociated<HTMLInputElement> {
     constructor();
     checked: boolean;
     checkedAttribute: boolean;
-    // (undocumented)
+    // @internal (undocumented)
     clickHandler: (e: MouseEvent) => void;
-    // (undocumented)
+    // @internal (undocumented)
     connectedCallback(): void;
     defaultChecked: boolean;
-    // (undocumented)
+    // @internal (undocumented)
     defaultSlottedNodes: Node[];
     indeterminate: boolean;
-    // (undocumented)
+    // @internal (undocumented)
     keypressHandler: (e: KeyboardEvent) => void;
     // (undocumented)
     protected proxy: HTMLInputElement;
-    // (undocumented)
     readOnly: boolean;
     value: string;
     }
 
-// @public (undocumented)
+// @public
 export const CheckboxTemplate: import("@microsoft/fast-element").ViewTemplate<Checkbox, any>;
 
 // @public
