@@ -6,6 +6,7 @@ export * from "./card/index";
 export * from "./checkbox/index";
 export * from "./color/index";
 export * from "./design-system-provider/index";
+export { FASTDesignSystem, fastDesignSystemDefaults } from "./fast-design-system";
 export * from "./dialog/index";
 export * from "./divider/index";
 export * from "./flipper/index";
