@@ -15,7 +15,6 @@ import {
     accentForegroundHoverBehavior,
     accentForegroundRestBehavior,
     BaseButtonStyles,
-    HypertextStyles,
     LightweightButtonStyles,
     neutralFillActiveBehavior,
     neutralFillFocusBehavior,
@@ -37,7 +36,6 @@ import {
 export const ButtonStyles = css`
     ${BaseButtonStyles}
     ${AccentButtonStyles}
-    ${HypertextStyles}
     ${LightweightButtonStyles}
     ${OutlineButtonStyles}
     ${StealthButtonStyles}
