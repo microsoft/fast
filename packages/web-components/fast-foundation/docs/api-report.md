@@ -27,6 +27,7 @@ export enum AccordionExpandMode {
     single = "single"
 }
 
+// Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "AccordionItem" because one of its declarations is marked as @internal
 //
 // @public
@@ -44,14 +45,12 @@ export class AccordionItem extends FASTElement {
 export interface AccordionItem extends StartEnd {
 }
 
-// @public (undocumented)
+// @public
 export const AccordionItemTemplate: import("@microsoft/fast-element").ViewTemplate<AccordionItem, any>;
 
-// @public (undocumented)
+// @public
 export const AccordionTemplate: import("@microsoft/fast-element").ViewTemplate<Accordion, any>;
 
-// Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "Anchor" because one of its declarations is marked as @internal
-//
 // @public
 export class Anchor extends FASTElement {
     appearance: AnchorAppearance;
@@ -65,74 +64,56 @@ export class Anchor extends FASTElement {
     type: string;
 }
 
-// @internal
+// @public (undocumented)
 export interface Anchor extends StartEnd {
 }
 
 // @public
 export type AnchorAppearance = ButtonAppearance | "hypertext";
 
-// @public (undocumented)
+// @public
 export const AnchorTemplate: import("@microsoft/fast-element").ViewTemplate<Anchor, any>;
 
 // @public
 export function applyMixins(derivedCtor: any, ...baseCtors: any[]): void;
 
-// @public (undocumented)
+// @public
 export class Badge extends FASTElement {
-    // (undocumented)
     circular: boolean;
-    // (undocumented)
     color: string;
-    // (undocumented)
     fill: string;
 }
 
-// @public (undocumented)
+// @public
 export const BadgeTemplate: import("@microsoft/fast-element").ViewTemplate<Badge, any>;
 
-// @public (undocumented)
+// @public
 export class BaseProgress extends FASTElement {
-    // (undocumented)
     max: number;
-    // (undocumented)
     min: number;
-    // (undocumented)
     paused: any;
-    // (undocumented)
     value: number;
 }
 
 // Warning: (ae-forgotten-export) The symbol "FormAssociated" needs to be exported by the entry point index.d.ts
 //
-// @public (undocumented)
+// @public
 export class Button extends FormAssociated<HTMLInputElement> {
     constructor();
-    // (undocumented)
     appearance: ButtonAppearance;
-    // (undocumented)
     autofocus: boolean;
-    // (undocumented)
+    // @internal (undocumented)
     connectedCallback(): void;
-    // (undocumented)
     formaction: string;
-    // (undocumented)
     formenctype: string;
-    // (undocumented)
     formId: string;
-    // (undocumented)
     formmethod: string;
-    // (undocumented)
     formnovalidate: boolean;
-    // (undocumented)
     formtarget: "_self" | "_blank" | "_parent" | "_top";
-    // (undocumented)
     name: string;
     // (undocumented)
     protected proxy: HTMLInputElement;
-    // (undocumented)
     type: "submit" | "reset" | "button";
-    // (undocumented)
     value: string;
     }
 
@@ -140,42 +121,41 @@ export class Button extends FormAssociated<HTMLInputElement> {
 export interface Button extends StartEnd {
 }
 
-// @public (undocumented)
+// @public
 export type ButtonAppearance = "accent" | "lightweight" | "neutral" | "outline" | "stealth";
 
-// @public (undocumented)
+// @public
 export const ButtonTemplate: import("@microsoft/fast-element").ViewTemplate<Button, any>;
 
-// @public (undocumented)
+// @public
 export class Card extends FASTElement {
 }
 
-// @public (undocumented)
+// @public
 export const CardTemplate: import("@microsoft/fast-element").ViewTemplate<Card, any>;
 
-// @public (undocumented)
+// @public
 export class Checkbox extends FormAssociated<HTMLInputElement> {
     constructor();
     checked: boolean;
     checkedAttribute: boolean;
-    // (undocumented)
+    // @internal (undocumented)
     clickHandler: (e: MouseEvent) => void;
-    // (undocumented)
+    // @internal (undocumented)
     connectedCallback(): void;
     defaultChecked: boolean;
-    // (undocumented)
+    // @internal (undocumented)
     defaultSlottedNodes: Node[];
     indeterminate: boolean;
-    // (undocumented)
+    // @internal (undocumented)
     keypressHandler: (e: KeyboardEvent) => void;
     // (undocumented)
     protected proxy: HTMLInputElement;
-    // (undocumented)
     readOnly: boolean;
     value: string;
     }
 
-// @public (undocumented)
+// @public
 export const CheckboxTemplate: import("@microsoft/fast-element").ViewTemplate<Checkbox, any>;
 
 // @public
@@ -183,10 +163,7 @@ export function composedParent<T extends HTMLElement>(element: T): HTMLElement |
 
 // @public
 export class CSSCustomPropertyBehavior implements Behavior, CSSCustomPropertyDefinition {
-    constructor(
-    name: string,
-    value: CSSCustomPropertyDefinition["value"],
-    host: (source: HTMLElement) => Partial<CSSCustomPropertyTarget> | null);
+    constructor(name: string, value: CSSCustomPropertyDefinition["value"], host: (source: HTMLElement) => Partial<CSSCustomPropertyTarget> | null);
     // @internal
     bind(source: HTMLElement): void;
     readonly name: CSSCustomPropertyDefinition["name"];
@@ -200,13 +177,13 @@ export class CSSCustomPropertyBehavior implements Behavior, CSSCustomPropertyDef
 // @public
 export function cssCustomPropertyBehaviorFactory(name: string, value: string | ((...arg: any[]) => string), host: (source: typeof FASTElement & HTMLElement) => Partial<CSSCustomPropertyTarget> | null): CSSCustomPropertyBehavior;
 
-// @public (undocumented)
+// @public
 export interface CSSCustomPropertyDefinition {
     name: string;
     value: string | ((...args: any[]) => string);
 }
 
-// @public (undocumented)
+// @public
 export interface CSSCustomPropertyTarget {
     // (undocumented)
     disconnectedCSSCustomPropertyRegistry: CSSCustomPropertyDefinition[] | void;
@@ -219,17 +196,14 @@ export interface CSSCustomPropertyTarget {
 // @public
 export type CSSDisplayPropertyValue = "block" | "contents" | "flex" | "grid" | "inherit" | "initial" | "inline" | "inline-block" | "inline-flex" | "inline-grid" | "inline-table" | "list-item" | "none" | "run-in" | "table" | "table-caption" | "table-cell" | "table-column" | "table-column-group" | "table-footer-group" | "table-header-group" | "table-row" | "table-row-group";
 
-// @public (undocumented)
+// @public
 export interface DecoratorDesignSystemPropertyConfiguration extends Omit<DecoratorAttributeConfiguration, "attribute"> {
-    // (undocumented)
     attribute?: string | false;
-    // (undocumented)
     cssCustomProperty?: string | false;
-    // (undocumented)
     default: any;
 }
 
-// @public (undocumented)
+// @public
 export interface DesignSystemConsumer {
     // (undocumented)
     provider: DesignSystemProvider | null;
@@ -241,12 +215,13 @@ export const designSystemConsumerBehavior: Behavior;
 // @public
 export function designSystemProperty<T extends DesignSystemProvider>(config: DecoratorDesignSystemPropertyConfiguration): (source: T, property: string) => void;
 
-// @public (undocumented)
+// @public
 export class DesignSystemProvider extends FASTElement implements CSSCustomPropertyTarget, DesignSystemConsumer {
     constructor();
-    // (undocumented)
+    // @internal (undocumented)
     connectedCallback(): void;
     designSystem: {};
+    // @internal
     designSystemProperties: {
         [propertyName: string]: Required<Pick<DecoratorDesignSystemPropertyConfiguration, "cssCustomProperty" | "default">>;
     };
@@ -255,7 +230,6 @@ export class DesignSystemProvider extends FASTElement implements CSSCustomProper
     static findProvider(el: HTMLElement & Partial<DesignSystemConsumer>): DesignSystemProvider | null;
     static isDesignSystemProvider(el: HTMLElement | DesignSystemProvider): el is DesignSystemProvider;
     readonly isDesignSystemProvider = true;
-    // (undocumented)
     provider: DesignSystemProvider | null;
     registerCSSCustomProperty(behavior: CSSCustomPropertyDefinition): void;
     static registerTagName(tagName: string): void;
@@ -267,34 +241,28 @@ export class DesignSystemProvider extends FASTElement implements CSSCustomProper
 // @public
 export function designSystemProvider(nameOrDef: string | PartialFASTElementDefinition): <T extends typeof DesignSystemProvider>(providerCtor: T) => void;
 
-// @public (undocumented)
+// @public
 export const DesignSystemProviderTemplate: import("@microsoft/fast-element").ViewTemplate<DesignSystemProvider, any>;
 
-// @public (undocumented)
+// @public
 export class Dialog extends FASTElement {
-    // (undocumented)
     ariaDescribedby: string;
-    // (undocumented)
     ariaLabel: string;
-    // (undocumented)
     ariaLabelledby: string;
-    // (undocumented)
+    // @internal (undocumented)
     connectedCallback(): void;
-    // (undocumented)
+    // @internal (undocumented)
     dialog: HTMLDivElement;
-    // (undocumented)
+    // @internal (undocumented)
     disconnectedCallback(): void;
-    // (undocumented)
+    // @internal (undocumented)
     dismiss(): void;
-    // (undocumented)
     hidden: boolean;
-    // (undocumented)
     modal: boolean;
-    // (undocumented)
     trapFocus: boolean;
     }
 
-// @public (undocumented)
+// @public
 export const DialogTemplate: import("@microsoft/fast-element").ViewTemplate<Dialog, any>;
 
 // @public
@@ -303,37 +271,31 @@ export const disabledCursor = "not-allowed";
 // @public
 export function display(displayValue: CSSDisplayPropertyValue): string;
 
-// @public (undocumented)
+// @public
 export class Divider extends FASTElement {
-    // (undocumented)
     role: DividerRole;
 }
 
-// @public (undocumented)
+// @public
 export enum DividerRole {
-    // (undocumented)
     presentation = "presentation",
-    // (undocumented)
     separator = "separator"
 }
 
-// @public (undocumented)
+// @public
 export const DividerTemplate: import("@microsoft/fast-element").ViewTemplate<Divider, any>;
 
-// @public (undocumented)
+// @public
 export const endTemplate: import("@microsoft/fast-element").ViewTemplate<StartEnd, any>;
 
-// @public (undocumented)
+// @public
 export class Flipper extends FASTElement {
-    // (undocumented)
     direction: FlipperDirection;
-    // (undocumented)
     disabled: boolean;
-    // (undocumented)
     hiddenFromAT: boolean;
 }
 
-// @public (undocumented)
+// @public
 export enum FlipperDirection {
     // (undocumented)
     next = "next",
@@ -341,7 +303,7 @@ export enum FlipperDirection {
     previous = "previous"
 }
 
-// @public (undocumented)
+// @public
 export const FlipperTemplate: import("@microsoft/fast-element").ViewTemplate<Flipper, any>;
 
 // @public
@@ -429,32 +391,28 @@ export function matchMediaStylesheetBehaviorFactory(query: MediaQueryList): (she
     }): void;
 }>;
 
-// @public (undocumented)
+// @public
 export class Menu extends FASTElement {
-    // (undocumented)
+    // @internal (undocumented)
     connectedCallback(): void;
-    // (undocumented)
     focus(): void;
+    // @internal
     handleFocusOut: (e: FocusEvent) => void;
-    // (undocumented)
+    // @internal (undocumented)
     handleMenuKeyDown(e: KeyboardEvent): void | boolean;
-    // (undocumented)
+    // @internal (undocumented)
     items: HTMLSlotElement;
     }
 
-// @public (undocumented)
+// @public
 export class MenuItem extends FASTElement {
-    // (undocumented)
     checked: boolean;
-    // (undocumented)
     disabled: boolean;
-    // (undocumented)
     expanded: boolean;
-    // (undocumented)
+    // @internal (undocumented)
     handleMenuItemClick: (e: MouseEvent) => void;
-    // (undocumented)
+    // @internal (undocumented)
     handleMenuItemKeyDown: (e: KeyboardEvent) => boolean;
-    // (undocumented)
     role: MenuItemRole;
 }
 
@@ -462,7 +420,7 @@ export class MenuItem extends FASTElement {
 export interface MenuItem extends StartEnd {
 }
 
-// @public (undocumented)
+// @public
 export enum MenuItemRole {
     // (undocumented)
     menuitem = "menuitem",
@@ -472,102 +430,80 @@ export enum MenuItemRole {
     menuitemradio = "menuitemradio"
 }
 
-// @public (undocumented)
+// @public
 export const MenuItemTemplate: import("@microsoft/fast-element").ViewTemplate<MenuItem, any>;
 
-// @public (undocumented)
+// @public
 export const MenuTemplate: import("@microsoft/fast-element").ViewTemplate<Menu, any>;
 
-// @public (undocumented)
+// @public
 export const ProgressRingTemplate: import("@microsoft/fast-element").ViewTemplate<BaseProgress, any>;
 
-// @public (undocumented)
+// @public
 export const ProgressTemplate: import("@microsoft/fast-element").ViewTemplate<BaseProgress, any>;
 
-// @public (undocumented)
+// @public
 export class Radio extends FormAssociated<HTMLInputElement> implements RadioControl {
     constructor();
     checked: boolean;
     checkedAttribute: boolean;
-    // (undocumented)
+    // @internal (undocumented)
     clickHandler: (e: MouseEvent) => void;
-    // (undocumented)
+    // @internal (undocumented)
     connectedCallback(): void;
     defaultChecked: boolean;
-    // (undocumented)
+    // @internal (undocumented)
     defaultSlottedNodes: Node[];
-    // (undocumented)
+    // @internal (undocumented)
     keypressHandler: (e: KeyboardEvent) => void;
-    // (undocumented)
     name: string;
     // (undocumented)
     protected nameChanged(): void;
     // (undocumented)
     protected proxy: HTMLInputElement;
-    // (undocumented)
     readOnly: boolean;
     value: string;
     }
 
-// @public (undocumented)
-export interface RadioControl {
-    // (undocumented)
-    checked: boolean;
-    // (undocumented)
-    disabled: boolean;
-    // (undocumented)
-    focus: () => void;
-    // (undocumented)
-    getAttribute: (name: string) => string | null;
-    // (undocumented)
-    readOnly: boolean;
-    // (undocumented)
-    setAttribute: (name: string, value: string) => void;
-}
+// @public
+export type RadioControl = Pick<HTMLInputElement, "checked" | "disabled" | "readOnly" | "focus" | "setAttribute" | "getAttribute">;
 
-// @public (undocumented)
+// @public
 export class RadioGroup extends FASTElement {
     constructor();
-    // (undocumented)
+    // @internal (undocumented)
     connectedCallback(): void;
-    // (undocumented)
     disabled: boolean;
-    // (undocumented)
+    // @internal
     keydownHandler: (e: KeyboardEvent) => void;
-    // (undocumented)
     name: string;
     // (undocumented)
     protected nameChanged(): void;
-    // (undocumented)
     orientation: Orientation;
-    // (undocumented)
     readOnly: boolean;
-    // (undocumented)
+    // @internal (undocumented)
     slottedRadioButtons: RadioControl[];
-    // (undocumented)
     value: string;
 }
 
-// @public (undocumented)
+// @public
 export const RadioGroupTemplate: import("@microsoft/fast-element").ViewTemplate<RadioGroup, any>;
 
-// @public (undocumented)
+// @public
 export const RadioTemplate: import("@microsoft/fast-element").ViewTemplate<Radio, any>;
 
-// @public (undocumented)
+// @public
 export class Slider extends FormAssociated<HTMLInputElement> implements SliderConfiguration {
     constructor();
-    // (undocumented)
+    // @internal (undocumented)
     connectedCallback(): void;
-    // (undocumented)
     decrement: () => void;
-    // (undocumented)
+    // @internal (undocumented)
     direction: Direction;
-    // (undocumented)
+    // @internal (undocumented)
     disconnectedCallback(): void;
-    // (undocumented)
     increment: () => void;
-    // (undocumented)
+    // @internal (undocumented)
     isDragging: boolean;
     // (undocumented)
     protected keypressHandler: (e: KeyboardEvent) => void;
@@ -575,29 +511,28 @@ export class Slider extends FormAssociated<HTMLInputElement> implements SliderCo
     min: number;
     mode: SliderMode;
     orientation: Orientation;
-    // (undocumented)
+    // @internal (undocumented)
     position: string;
     // (undocumented)
     protected proxy: HTMLInputElement;
-    // (undocumented)
     readOnly: boolean;
     step: number;
-    // (undocumented)
+    // @internal (undocumented)
     thumb: HTMLDivElement;
-    // (undocumented)
+    // @internal (undocumented)
     track: HTMLDivElement;
-    // (undocumented)
+    // @internal (undocumented)
     trackHeight: number;
-    // (undocumented)
+    // @internal (undocumented)
     trackMinHeight: number;
-    // (undocumented)
+    // @internal (undocumented)
     trackMinWidth: number;
-    // (undocumented)
+    // @internal (undocumented)
     trackWidth: number;
     value: string;
     }
 
-// @public (undocumented)
+// @public
 export interface SliderConfiguration {
     // (undocumented)
     direction?: Direction;
@@ -611,47 +546,44 @@ export interface SliderConfiguration {
     orientation?: Orientation;
 }
 
-// @public (undocumented)
+// @public
 export class SliderLabel extends FASTElement {
-    // (undocumented)
+    // @internal (undocumented)
     connectedCallback(): void;
-    // (undocumented)
     disabled: boolean;
-    // (undocumented)
+    // @internal (undocumented)
     disconnectedCallback(): void;
-    // (undocumented)
+    // @internal (undocumented)
     handleChange(source: any, propertyName: string): void;
-    // (undocumented)
     hideMark: boolean;
-    // (undocumented)
     position: string;
-    // (undocumented)
+    // @internal (undocumented)
     positionStyle: string;
-    // (undocumented)
+    // @internal (undocumented)
     root: HTMLDivElement;
-    // (undocumented)
+    // @internal (undocumented)
     sliderDirection: Direction;
-    // (undocumented)
+    // @internal (undocumented)
     sliderMaxPosition: number;
-    // (undocumented)
+    // @internal (undocumented)
     sliderMinPosition: number;
-    // (undocumented)
+    // @internal (undocumented)
     sliderOrientation: Orientation;
 }
 
-// @public (undocumented)
+// @public
 export const SliderLabelTemplate: import("@microsoft/fast-element").ViewTemplate<SliderLabel, any>;
 
-// @public (undocumented)
+// @public
 export enum SliderMode {
     // (undocumented)
     singleValue = "single-value"
 }
 
-// @public (undocumented)
+// @public
 export const SliderTemplate: import("@microsoft/fast-element").ViewTemplate<Slider, any>;
 
-// @public (undocumented)
+// @public
 export class StartEnd {
     // (undocumented)
     end: HTMLSlotElement;
@@ -667,27 +599,25 @@ export class StartEnd {
     startContainer: HTMLSpanElement;
 }
 
-// @public (undocumented)
+// @public
 export const startTemplate: import("@microsoft/fast-element").ViewTemplate<StartEnd, any>;
 
-// @public (undocumented)
+// @public
 export class Switch extends FormAssociated<HTMLInputElement> {
     constructor();
     checked: boolean;
-    // (undocumented)
     checkedAttribute: boolean;
-    // (undocumented)
+    // @internal (undocumented)
     clickHandler: (e: MouseEvent) => void;
-    // (undocumented)
+    // @internal (undocumented)
     connectedCallback(): void;
     defaultChecked: boolean;
-    // (undocumented)
+    // @internal (undocumented)
     defaultSlottedNodes: Node[];
-    // (undocumented)
+    // @internal (undocumented)
     keypressHandler: (e: KeyboardEvent) => void;
     // (undocumented)
     protected proxy: HTMLInputElement;
-    // (undocumented)
     readOnly: boolean;
     value: string;
     }
