@@ -23,7 +23,7 @@ export interface NodeBehaviorBehaviorOptions<T = any> {
 }
 
 /**
- * Filters an array of nodes to only elements.
+ * Creates a function that can be used to filter a Node array, selecting only elements.
  * @param tagName - An optional tag name to restrict the filter to.
  */
 export function elements(tagName?: string) {
