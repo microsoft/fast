@@ -12,7 +12,7 @@ jobs:
       AZURE_WEBAPP_ACTIVE_STAGE_NAME: www-west-app
       AZURE_WEBAPP_PASSIVE_STAGE_NAME: www-east-app
       AZURE_WEBAPP_BUILD_PATH: sites/website
-      AZURE_WEBAPP_DIST_PATH: sites/website/static
+      AZURE_WEBAPP_DIST_PATH: sites/website/build
       AZURE_WEBAPP_SLOT_NAME: stage
 
     steps:
@@ -30,8 +30,8 @@ jobs:
         cd ${{ env.AZURE_WEBAPP_BUILD_PATH }}
         npm i
         yarn build
-        cp ../site-utilities/statics/server/package.json ../site-utilities/statics/server/server.js static 
-        cd static
+        cp ../site-utilities/statics/server/package.json ../site-utilities/statics/server/server.js build 
+        cd build
         npm i
         ls -lta
 
