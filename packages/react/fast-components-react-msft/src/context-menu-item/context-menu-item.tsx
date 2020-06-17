@@ -20,6 +20,7 @@ class ContextMenuItem extends Foundation<
     };
 
     protected handledProps: HandledProps<ContextMenuItemHandledProps> = {
+        after: void 0,
         before: void 0,
     };
 
@@ -34,6 +35,7 @@ class ContextMenuItem extends Foundation<
                 >
                     {this.props.children}
                 </span>
+                {this.props.after !== undefined ? this.props.after : undefined}
             </BaseContextMenuItem>
         );
     }

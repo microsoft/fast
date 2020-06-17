@@ -1,6 +1,10 @@
 import { html, ref, slotted } from "@microsoft/fast-element";
 import { TextArea, TextAreaResize } from "./text-area";
 
+/**
+ * The template for the {@link @microsoft/fast-foundation#TextArea} component.
+ * @public
+ */
 export const TextAreaTemplate = html<TextArea>`
     <template
         class="

@@ -5,7 +5,7 @@ sidebar_label: Blazor
 custom_edit_url: https://github.com/microsoft/fast-dna/edit/master/packages/web-components/fast-foundation/docs/guide/blazor.doc.md
 ---
 
-FAST-DNA works seamlessly with Blazor, including integration with Blazor's binding engine and components. Let's take a look at how to set things up.
+FAST works seamlessly with Blazor, including integration with Blazor's binding engine and components. Let's take a look at how to set things up.
 
 ## Setting up the Blazor Project
 
@@ -26,7 +26,7 @@ Now that we've got our basic project setup, we need to add our web components sc
 To add a CDN script for `fast-components` use the following markup:
 
 ```html
-<script type="module" src="...TODO..."></script>
+<script type="module" src="https://unpkg.com/@microsoft/fast-components"></script>
 ```
 
 The best place to put this is typically in your `index.html` file in the script section at the bottom of the `<body>`.
@@ -100,4 +100,4 @@ fast-card > fast-button {
 }
 ```
 
-Congratulations! You're now setup to use FAST-DNA with Blazor!
+Congratulations! You're now setup to use FAST with Blazor!

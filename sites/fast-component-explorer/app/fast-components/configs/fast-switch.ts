@@ -1,4 +1,4 @@
-import { fastComponentSchemas } from "@microsoft/site-utilities";
+import { fastComponentSchemas, textSchema } from "@microsoft/site-utilities";
 import Guidance from "../../.tmp/switch/guidance";
 import { ComponentViewConfig } from "./data.props";
 
@@ -14,6 +14,112 @@ const fastSwitchConfig: ComponentViewConfig = {
                     root: {
                         schemaId: fastSwitchId,
                         data: {},
+                    },
+                },
+                "root",
+            ],
+        },
+        {
+            displayName: "With slot",
+            dataDictionary: [
+                {
+                    root: {
+                        schemaId: fastSwitchId,
+                        data: {
+                            Slot: [
+                                {
+                                    id: "Slot",
+                                },
+                            ],
+                        },
+                    },
+                    Slot: {
+                        parent: {
+                            id: "root",
+                            dataLocation: "Slot",
+                        },
+                        schemaId: textSchema.id,
+                        data: "Dark Mode",
+                    },
+                },
+                "root",
+            ],
+        },
+        {
+            displayName: "With slot, checked and unchecked message",
+            dataDictionary: [
+                {
+                    root: {
+                        schemaId: fastSwitchId,
+                        data: {
+                            Slot: [
+                                {
+                                    id: "Slot",
+                                },
+                            ],
+                            SlotCheckedMessage: [
+                                {
+                                    id: "CheckedMessageDiv",
+                                },
+                            ],
+                            SlotUncheckedMessage: [
+                                {
+                                    id: "UncheckedMessageDiv",
+                                },
+                            ],
+                        },
+                    },
+                    Slot: {
+                        parent: {
+                            id: "root",
+                            dataLocation: "Slot",
+                        },
+                        schemaId: textSchema.id,
+                        data: "Theme",
+                    },
+                    CheckedMessageDiv: {
+                        parent: {
+                            id: "root",
+                            dataLocation: "SlotCheckedMessage",
+                        },
+                        schemaId: "div",
+                        data: {
+                            Slot: [
+                                {
+                                    id: "CheckedMessage",
+                                },
+                            ],
+                        },
+                    },
+                    CheckedMessage: {
+                        parent: {
+                            id: "CheckedMessageDiv",
+                            dataLocation: "Slot",
+                        },
+                        schemaId: textSchema.id,
+                        data: "Light",
+                    },
+                    UncheckedMessageDiv: {
+                        parent: {
+                            id: "root",
+                            dataLocation: "SlotUncheckedMessage",
+                        },
+                        schemaId: "div",
+                        data: {
+                            Slot: [
+                                {
+                                    id: "UncheckedMessage",
+                                },
+                            ],
+                        },
+                    },
+                    UncheckedMessage: {
+                        parent: {
+                            id: "UncheckedMessageDiv",
+                            dataLocation: "Slot",
+                        },
+                        schemaId: textSchema.id,
+                        data: "Dark",
                     },
                 },
                 "root",

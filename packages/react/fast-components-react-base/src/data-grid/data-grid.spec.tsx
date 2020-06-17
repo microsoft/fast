@@ -45,6 +45,7 @@ describe("data grid", (): void => {
 
     const managedClasses: DataGridClassNameContract = {
         dataGrid: "dataGrid",
+        dataGrid__virtualized: "dataGrid__virtualized",
         dataGrid_scrollingPanel: "dataGrid_scrollingPanel",
         dataGrid_scrollingPanelItems: "dataGrid_scrollingPanelItems",
         dataGrid_scrollingPanel__scrollable: "dataGrid_scrollingPanel__scrollable",
@@ -128,6 +129,37 @@ describe("data grid", (): void => {
 
         expect(rendered.children().prop("className")).toContain(managedClasses.dataGrid);
         expect(rendered.children().prop("role")).toEqual("grid");
+    });
+
+    test("virtualized classname not applied when in not virtualized mode", (): void => {
+        const rendered: ReactWrapper = mount(
+            <DataGrid
+                rows={rows}
+                dataRowKey="name"
+                columns={columns}
+                managedClasses={managedClasses}
+            />
+        );
+
+        expect(rendered.children().prop("className")).not.toContain(
+            managedClasses.dataGrid__virtualized
+        );
+    });
+
+    test("virtualized classname applied when in virtualized mode", (): void => {
+        const rendered: ReactWrapper = mount(
+            <DataGrid
+                rows={rows}
+                virtualize={true}
+                dataRowKey="name"
+                columns={columns}
+                managedClasses={managedClasses}
+            />
+        );
+
+        expect(rendered.children().prop("className")).toContain(
+            managedClasses.dataGrid__virtualized
+        );
     });
 
     test("data grid header exists and has two column header cells", (): void => {

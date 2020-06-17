@@ -2,6 +2,10 @@ import { html, ref, slotted, when } from "@microsoft/fast-element";
 import { endTemplate, startTemplate } from "../patterns/start-end";
 import { Tabs } from "./tabs";
 
+/**
+ * The template for the {@link @microsoft/fast-foundation#(Tabs:class)} component.
+ * @public
+ */
 export const TabsTemplate = html<Tabs>`
     <template role="tabs" class="${x => x.orientation}">
         ${startTemplate}

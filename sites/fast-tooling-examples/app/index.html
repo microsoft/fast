@@ -9,7 +9,7 @@
 </head>
 
 <body>
-    <fast-design-system-provider use-defaults>
+    <fast-design-system-provider id="design-system" use-defaults no-paint>
         <div class="main">
             <div class="toolbar">
                 <div class="toolbar-logo">
@@ -44,6 +44,14 @@
                     <ul>
                         <li>
                             <fast-anchor
+                                href="/tooling-guidance"
+                                appearance="hypertext"
+                            >
+                                Guidance
+                            </fast-anchor>
+                        </li>
+                        <li>
+                            <fast-anchor
                                 href="/native-element-1"
                                 appearance="hypertext"
                             >
@@ -58,6 +66,14 @@
                     </h2>
                     <!-- examples using @microsoft/fast-tooling-react -->
                     <ul>
+                        <li>
+                            <fast-anchor
+                                href="/tooling-react-guidance"
+                                appearance="hypertext"
+                            >
+                                Guidance
+                            </fast-anchor>
+                        </li>
                         <li>
                             <fast-anchor
                                 href="/react-1"
@@ -93,7 +109,15 @@
                         Additionally each example is encapsulated in its own folder which can be copied as used as a starting point.
                     </p>
                 </div>
-                <div id="iframe"></div>
+                <div id="tabs">
+                    <fast-tabs>
+                        <fast-tab data-id="iframe-tab"></fast-tab>
+                        <fast-tab data-id="code-embed-tab"></fast-tab>
+                        <fast-tab-panel data-id="iframe-panel"></fast-tab-panel>
+                        <fast-tab-panel data-id="code-embed-panel"></fast-tab-panel>
+                    </fast-tabs>
+                    </div>
+                </div>
             </div>
         </div>
     </fast-design-system-provider>

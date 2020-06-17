@@ -1,6 +1,10 @@
 import { html, slotted } from "@microsoft/fast-element";
 import { Switch } from "./switch";
 
+/**
+ * The template for the {@link @microsoft/fast-foundation#Switch} component.
+ * @public
+ */
 export const SwitchTemplate = html<Switch>`
     <template
         role="switch"

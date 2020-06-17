@@ -16,6 +16,517 @@
       "name": "",
       "members": [
         {
+          "kind": "Variable",
+          "canonicalReference": "@microsoft/fast-components-msft!accentFillActiveBehavior:var",
+          "docComment": "",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "accentFillActiveBehavior: "
+            },
+            {
+              "kind": "Content",
+              "text": "import(\"@microsoft/fast-foundation\")."
+            },
+            {
+              "kind": "Reference",
+              "text": "CSSCustomPropertyBehavior",
+              "canonicalReference": "@microsoft/fast-foundation!CSSCustomPropertyBehavior:class"
+            }
+          ],
+          "releaseTag": "Public",
+          "name": "accentFillActiveBehavior",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 3
+          }
+        },
+        {
+          "kind": "Variable",
+          "canonicalReference": "@microsoft/fast-components-msft!accentFillFocusBehavior:var",
+          "docComment": "",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "accentFillFocusBehavior: "
+            },
+            {
+              "kind": "Content",
+              "text": "import(\"@microsoft/fast-foundation\")."
+            },
+            {
+              "kind": "Reference",
+              "text": "CSSCustomPropertyBehavior",
+              "canonicalReference": "@microsoft/fast-foundation!CSSCustomPropertyBehavior:class"
+            }
+          ],
+          "releaseTag": "Public",
+          "name": "accentFillFocusBehavior",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 3
+          }
+        },
+        {
+          "kind": "Variable",
+          "canonicalReference": "@microsoft/fast-components-msft!accentFillHoverBehavior:var",
+          "docComment": "",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "accentFillHoverBehavior: "
+            },
+            {
+              "kind": "Content",
+              "text": "import(\"@microsoft/fast-foundation\")."
+            },
+            {
+              "kind": "Reference",
+              "text": "CSSCustomPropertyBehavior",
+              "canonicalReference": "@microsoft/fast-foundation!CSSCustomPropertyBehavior:class"
+            }
+          ],
+          "releaseTag": "Public",
+          "name": "accentFillHoverBehavior",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 3
+          }
+        },
+        {
+          "kind": "Variable",
+          "canonicalReference": "@microsoft/fast-components-msft!accentFillLargeActiveBehavior:var",
+          "docComment": "",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "accentFillLargeActiveBehavior: "
+            },
+            {
+              "kind": "Content",
+              "text": "import(\"@microsoft/fast-foundation\")."
+            },
+            {
+              "kind": "Reference",
+              "text": "CSSCustomPropertyBehavior",
+              "canonicalReference": "@microsoft/fast-foundation!CSSCustomPropertyBehavior:class"
+            }
+          ],
+          "releaseTag": "Public",
+          "name": "accentFillLargeActiveBehavior",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 3
+          }
+        },
+        {
+          "kind": "Variable",
+          "canonicalReference": "@microsoft/fast-components-msft!accentFillLargeFocusBehavior:var",
+          "docComment": "",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "accentFillLargeFocusBehavior: "
+            },
+            {
+              "kind": "Content",
+              "text": "import(\"@microsoft/fast-foundation\")."
+            },
+            {
+              "kind": "Reference",
+              "text": "CSSCustomPropertyBehavior",
+              "canonicalReference": "@microsoft/fast-foundation!CSSCustomPropertyBehavior:class"
+            }
+          ],
+          "releaseTag": "Public",
+          "name": "accentFillLargeFocusBehavior",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 3
+          }
+        },
+        {
+          "kind": "Variable",
+          "canonicalReference": "@microsoft/fast-components-msft!accentFillLargeHoverBehavior:var",
+          "docComment": "",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "accentFillLargeHoverBehavior: "
+            },
+            {
+              "kind": "Content",
+              "text": "import(\"@microsoft/fast-foundation\")."
+            },
+            {
+              "kind": "Reference",
+              "text": "CSSCustomPropertyBehavior",
+              "canonicalReference": "@microsoft/fast-foundation!CSSCustomPropertyBehavior:class"
+            }
+          ],
+          "releaseTag": "Public",
+          "name": "accentFillLargeHoverBehavior",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 3
+          }
+        },
+        {
+          "kind": "Variable",
+          "canonicalReference": "@microsoft/fast-components-msft!accentFillLargeRestBehavior:var",
+          "docComment": "",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "accentFillLargeRestBehavior: "
+            },
+            {
+              "kind": "Content",
+              "text": "import(\"@microsoft/fast-foundation\")."
+            },
+            {
+              "kind": "Reference",
+              "text": "CSSCustomPropertyBehavior",
+              "canonicalReference": "@microsoft/fast-foundation!CSSCustomPropertyBehavior:class"
+            }
+          ],
+          "releaseTag": "Public",
+          "name": "accentFillLargeRestBehavior",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 3
+          }
+        },
+        {
+          "kind": "Variable",
+          "canonicalReference": "@microsoft/fast-components-msft!accentFillLargeSelectedBehavior:var",
+          "docComment": "",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "accentFillLargeSelectedBehavior: "
+            },
+            {
+              "kind": "Content",
+              "text": "import(\"@microsoft/fast-foundation\")."
+            },
+            {
+              "kind": "Reference",
+              "text": "CSSCustomPropertyBehavior",
+              "canonicalReference": "@microsoft/fast-foundation!CSSCustomPropertyBehavior:class"
+            }
+          ],
+          "releaseTag": "Public",
+          "name": "accentFillLargeSelectedBehavior",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 3
+          }
+        },
+        {
+          "kind": "Variable",
+          "canonicalReference": "@microsoft/fast-components-msft!accentFillRestBehavior:var",
+          "docComment": "",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "accentFillRestBehavior: "
+            },
+            {
+              "kind": "Content",
+              "text": "import(\"@microsoft/fast-foundation\")."
+            },
+            {
+              "kind": "Reference",
+              "text": "CSSCustomPropertyBehavior",
+              "canonicalReference": "@microsoft/fast-foundation!CSSCustomPropertyBehavior:class"
+            }
+          ],
+          "releaseTag": "Public",
+          "name": "accentFillRestBehavior",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 3
+          }
+        },
+        {
+          "kind": "Variable",
+          "canonicalReference": "@microsoft/fast-components-msft!accentFillSelectedBehavior:var",
+          "docComment": "",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "accentFillSelectedBehavior: "
+            },
+            {
+              "kind": "Content",
+              "text": "import(\"@microsoft/fast-foundation\")."
+            },
+            {
+              "kind": "Reference",
+              "text": "CSSCustomPropertyBehavior",
+              "canonicalReference": "@microsoft/fast-foundation!CSSCustomPropertyBehavior:class"
+            }
+          ],
+          "releaseTag": "Public",
+          "name": "accentFillSelectedBehavior",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 3
+          }
+        },
+        {
+          "kind": "Variable",
+          "canonicalReference": "@microsoft/fast-components-msft!accentForegroundActiveBehavior:var",
+          "docComment": "",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "accentForegroundActiveBehavior: "
+            },
+            {
+              "kind": "Content",
+              "text": "import(\"@microsoft/fast-foundation\")."
+            },
+            {
+              "kind": "Reference",
+              "text": "CSSCustomPropertyBehavior",
+              "canonicalReference": "@microsoft/fast-foundation!CSSCustomPropertyBehavior:class"
+            }
+          ],
+          "releaseTag": "Public",
+          "name": "accentForegroundActiveBehavior",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 3
+          }
+        },
+        {
+          "kind": "Variable",
+          "canonicalReference": "@microsoft/fast-components-msft!accentForegroundCutRestBehavior:var",
+          "docComment": "",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "accentForegroundCutRestBehavior: "
+            },
+            {
+              "kind": "Content",
+              "text": "import(\"@microsoft/fast-foundation\")."
+            },
+            {
+              "kind": "Reference",
+              "text": "CSSCustomPropertyBehavior",
+              "canonicalReference": "@microsoft/fast-foundation!CSSCustomPropertyBehavior:class"
+            }
+          ],
+          "releaseTag": "Public",
+          "name": "accentForegroundCutRestBehavior",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 3
+          }
+        },
+        {
+          "kind": "Variable",
+          "canonicalReference": "@microsoft/fast-components-msft!accentForegroundFocusBehavior:var",
+          "docComment": "",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "accentForegroundFocusBehavior: "
+            },
+            {
+              "kind": "Content",
+              "text": "import(\"@microsoft/fast-foundation\")."
+            },
+            {
+              "kind": "Reference",
+              "text": "CSSCustomPropertyBehavior",
+              "canonicalReference": "@microsoft/fast-foundation!CSSCustomPropertyBehavior:class"
+            }
+          ],
+          "releaseTag": "Public",
+          "name": "accentForegroundFocusBehavior",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 3
+          }
+        },
+        {
+          "kind": "Variable",
+          "canonicalReference": "@microsoft/fast-components-msft!accentForegroundHoverBehavior:var",
+          "docComment": "",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "accentForegroundHoverBehavior: "
+            },
+            {
+              "kind": "Content",
+              "text": "import(\"@microsoft/fast-foundation\")."
+            },
+            {
+              "kind": "Reference",
+              "text": "CSSCustomPropertyBehavior",
+              "canonicalReference": "@microsoft/fast-foundation!CSSCustomPropertyBehavior:class"
+            }
+          ],
+          "releaseTag": "Public",
+          "name": "accentForegroundHoverBehavior",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 3
+          }
+        },
+        {
+          "kind": "Variable",
+          "canonicalReference": "@microsoft/fast-components-msft!accentForegroundLargeActiveBehavior:var",
+          "docComment": "",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "accentForegroundLargeActiveBehavior: "
+            },
+            {
+              "kind": "Content",
+              "text": "import(\"@microsoft/fast-foundation\")."
+            },
+            {
+              "kind": "Reference",
+              "text": "CSSCustomPropertyBehavior",
+              "canonicalReference": "@microsoft/fast-foundation!CSSCustomPropertyBehavior:class"
+            }
+          ],
+          "releaseTag": "Public",
+          "name": "accentForegroundLargeActiveBehavior",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 3
+          }
+        },
+        {
+          "kind": "Variable",
+          "canonicalReference": "@microsoft/fast-components-msft!accentForegroundLargeFocusBehavior:var",
+          "docComment": "",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "accentForegroundLargeFocusBehavior: "
+            },
+            {
+              "kind": "Content",
+              "text": "import(\"@microsoft/fast-foundation\")."
+            },
+            {
+              "kind": "Reference",
+              "text": "CSSCustomPropertyBehavior",
+              "canonicalReference": "@microsoft/fast-foundation!CSSCustomPropertyBehavior:class"
+            }
+          ],
+          "releaseTag": "Public",
+          "name": "accentForegroundLargeFocusBehavior",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 3
+          }
+        },
+        {
+          "kind": "Variable",
+          "canonicalReference": "@microsoft/fast-components-msft!accentForegroundLargeHoverBehavior:var",
+          "docComment": "",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "accentForegroundLargeHoverBehavior: "
+            },
+            {
+              "kind": "Content",
+              "text": "import(\"@microsoft/fast-foundation\")."
+            },
+            {
+              "kind": "Reference",
+              "text": "CSSCustomPropertyBehavior",
+              "canonicalReference": "@microsoft/fast-foundation!CSSCustomPropertyBehavior:class"
+            }
+          ],
+          "releaseTag": "Public",
+          "name": "accentForegroundLargeHoverBehavior",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 3
+          }
+        },
+        {
+          "kind": "Variable",
+          "canonicalReference": "@microsoft/fast-components-msft!accentForegroundLargeRestBehavior:var",
+          "docComment": "",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "accentForegroundLargeRestBehavior: "
+            },
+            {
+              "kind": "Content",
+              "text": "import(\"@microsoft/fast-foundation\")."
+            },
+            {
+              "kind": "Reference",
+              "text": "CSSCustomPropertyBehavior",
+              "canonicalReference": "@microsoft/fast-foundation!CSSCustomPropertyBehavior:class"
+            }
+          ],
+          "releaseTag": "Public",
+          "name": "accentForegroundLargeRestBehavior",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 3
+          }
+        },
+        {
+          "kind": "Variable",
+          "canonicalReference": "@microsoft/fast-components-msft!accentForegroundRestBehavior:var",
+          "docComment": "",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "accentForegroundRestBehavior: "
+            },
+            {
+              "kind": "Content",
+              "text": "import(\"@microsoft/fast-foundation\")."
+            },
+            {
+              "kind": "Reference",
+              "text": "CSSCustomPropertyBehavior",
+              "canonicalReference": "@microsoft/fast-foundation!CSSCustomPropertyBehavior:class"
+            }
+          ],
+          "releaseTag": "Public",
+          "name": "accentForegroundRestBehavior",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 3
+          }
+        },
+        {
+          "kind": "Variable",
+          "canonicalReference": "@microsoft/fast-components-msft!ambientShadow:var",
+          "docComment": "/**\n * Define shadow algorithms.\n *\n * TODO: The --background-luminance will need to be derived from JavaScript. For now this is hard-coded to a 1, the relative luminance of pure white. https://github.com/microsoft/fast-dna/issues/2778\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "ambientShadow = \"0 0 calc((var(--elevation) * 0.225px) + 2px) rgba(0, 0, 0, calc(.11 * (2 - var(--background-luminance, 1))))\""
+            }
+          ],
+          "releaseTag": "Public",
+          "name": "ambientShadow",
+          "variableTypeTokenRange": {
+            "startIndex": 0,
+            "endIndex": 0
+          }
+        },
+        {
           "kind": "TypeAlias",
           "canonicalReference": "@microsoft/fast-components-msft!BadgeAppearance:type",
           "docComment": "",
@@ -41,6 +552,44 @@
           }
         },
         {
+          "kind": "Variable",
+          "canonicalReference": "@microsoft/fast-components-msft!directionalShadow:var",
+          "docComment": "",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "directionalShadow = \"0 calc(var(--elevation) * 0.4px) calc((var(--elevation) * 0.9px)) rgba(0, 0, 0, calc(.13 * (2 - var(--background-luminance, 1))))\""
+            }
+          ],
+          "releaseTag": "Public",
+          "name": "directionalShadow",
+          "variableTypeTokenRange": {
+            "startIndex": 0,
+            "endIndex": 0
+          }
+        },
+        {
+          "kind": "Variable",
+          "canonicalReference": "@microsoft/fast-components-msft!elevation:var",
+          "docComment": "",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "elevation: "
+            },
+            {
+              "kind": "Content",
+              "text": "string"
+            }
+          ],
+          "releaseTag": "Public",
+          "name": "elevation",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 2
+          }
+        },
+        {
           "kind": "Class",
           "canonicalReference": "@microsoft/fast-components-msft!FASTAccordion:class",
           "docComment": "",
@@ -61,6 +610,34 @@
           ],
           "releaseTag": "Public",
           "name": "FASTAccordion",
+          "members": [],
+          "extendsTokenRange": {
+            "startIndex": 1,
+            "endIndex": 3
+          },
+          "implementsTokenRanges": []
+        },
+        {
+          "kind": "Class",
+          "canonicalReference": "@microsoft/fast-components-msft!FASTAccordionItem:class",
+          "docComment": "",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "export declare class FASTAccordionItem extends "
+            },
+            {
+              "kind": "Reference",
+              "text": "AccordionItem",
+              "canonicalReference": "@microsoft/fast-foundation!AccordionItem:class"
+            },
+            {
+              "kind": "Content",
+              "text": " "
+            }
+          ],
+          "releaseTag": "Public",
+          "name": "FASTAccordionItem",
           "members": [],
           "extendsTokenRange": {
             "startIndex": 1,
@@ -1557,6 +2134,32 @@
             },
             {
               "kind": "Property",
+              "canonicalReference": "@microsoft/fast-components-msft!FASTDesignSystemProvider#noPaint:member",
+              "docComment": "/**\n * Used to instruct the FASTDesignSystemProvider that it should not set the CSS background-color and color properties\n *\n * @remarks\n *\n * HTML boolean boolean attribute: no-paint\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "noPaint: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "boolean"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "noPaint",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false
+            },
+            {
+              "kind": "Property",
               "canonicalReference": "@microsoft/fast-components-msft!FASTDesignSystemProvider#outlineWidth:member",
               "docComment": "",
               "excerptTokens": [
@@ -2480,6 +3083,1115 @@
             "endIndex": 3
           },
           "implementsTokenRanges": []
+        },
+        {
+          "kind": "Variable",
+          "canonicalReference": "@microsoft/fast-components-msft!heightNumber:var",
+          "docComment": "",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "heightNumber = \"(var(--base-height-multiplier) + var(--density)) * var(--design-unit)\""
+            }
+          ],
+          "releaseTag": "Public",
+          "name": "heightNumber",
+          "variableTypeTokenRange": {
+            "startIndex": 0,
+            "endIndex": 0
+          }
+        },
+        {
+          "kind": "Variable",
+          "canonicalReference": "@microsoft/fast-components-msft!neutralDividerRestBehavior:var",
+          "docComment": "",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "neutralDividerRestBehavior: "
+            },
+            {
+              "kind": "Content",
+              "text": "import(\"@microsoft/fast-foundation\")."
+            },
+            {
+              "kind": "Reference",
+              "text": "CSSCustomPropertyBehavior",
+              "canonicalReference": "@microsoft/fast-foundation!CSSCustomPropertyBehavior:class"
+            }
+          ],
+          "releaseTag": "Public",
+          "name": "neutralDividerRestBehavior",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 3
+          }
+        },
+        {
+          "kind": "Variable",
+          "canonicalReference": "@microsoft/fast-components-msft!neutralFillActiveBehavior:var",
+          "docComment": "",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "neutralFillActiveBehavior: "
+            },
+            {
+              "kind": "Content",
+              "text": "import(\"@microsoft/fast-foundation\")."
+            },
+            {
+              "kind": "Reference",
+              "text": "CSSCustomPropertyBehavior",
+              "canonicalReference": "@microsoft/fast-foundation!CSSCustomPropertyBehavior:class"
+            }
+          ],
+          "releaseTag": "Public",
+          "name": "neutralFillActiveBehavior",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 3
+          }
+        },
+        {
+          "kind": "Variable",
+          "canonicalReference": "@microsoft/fast-components-msft!neutralFillCardRestBehavior:var",
+          "docComment": "",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "neutralFillCardRestBehavior: "
+            },
+            {
+              "kind": "Content",
+              "text": "import(\"@microsoft/fast-foundation\")."
+            },
+            {
+              "kind": "Reference",
+              "text": "CSSCustomPropertyBehavior",
+              "canonicalReference": "@microsoft/fast-foundation!CSSCustomPropertyBehavior:class"
+            }
+          ],
+          "releaseTag": "Public",
+          "name": "neutralFillCardRestBehavior",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 3
+          }
+        },
+        {
+          "kind": "Variable",
+          "canonicalReference": "@microsoft/fast-components-msft!neutralFillFocusBehavior:var",
+          "docComment": "",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "neutralFillFocusBehavior: "
+            },
+            {
+              "kind": "Content",
+              "text": "import(\"@microsoft/fast-foundation\")."
+            },
+            {
+              "kind": "Reference",
+              "text": "CSSCustomPropertyBehavior",
+              "canonicalReference": "@microsoft/fast-foundation!CSSCustomPropertyBehavior:class"
+            }
+          ],
+          "releaseTag": "Public",
+          "name": "neutralFillFocusBehavior",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 3
+          }
+        },
+        {
+          "kind": "Variable",
+          "canonicalReference": "@microsoft/fast-components-msft!neutralFillHoverBehavior:var",
+          "docComment": "",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "neutralFillHoverBehavior: "
+            },
+            {
+              "kind": "Content",
+              "text": "import(\"@microsoft/fast-foundation\")."
+            },
+            {
+              "kind": "Reference",
+              "text": "CSSCustomPropertyBehavior",
+              "canonicalReference": "@microsoft/fast-foundation!CSSCustomPropertyBehavior:class"
+            }
+          ],
+          "releaseTag": "Public",
+          "name": "neutralFillHoverBehavior",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 3
+          }
+        },
+        {
+          "kind": "Variable",
+          "canonicalReference": "@microsoft/fast-components-msft!neutralFillInputActiveBehavior:var",
+          "docComment": "",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "neutralFillInputActiveBehavior: "
+            },
+            {
+              "kind": "Content",
+              "text": "import(\"@microsoft/fast-foundation\")."
+            },
+            {
+              "kind": "Reference",
+              "text": "CSSCustomPropertyBehavior",
+              "canonicalReference": "@microsoft/fast-foundation!CSSCustomPropertyBehavior:class"
+            }
+          ],
+          "releaseTag": "Public",
+          "name": "neutralFillInputActiveBehavior",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 3
+          }
+        },
+        {
+          "kind": "Variable",
+          "canonicalReference": "@microsoft/fast-components-msft!neutralFillInputFocusBehavior:var",
+          "docComment": "",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "neutralFillInputFocusBehavior: "
+            },
+            {
+              "kind": "Content",
+              "text": "import(\"@microsoft/fast-foundation\")."
+            },
+            {
+              "kind": "Reference",
+              "text": "CSSCustomPropertyBehavior",
+              "canonicalReference": "@microsoft/fast-foundation!CSSCustomPropertyBehavior:class"
+            }
+          ],
+          "releaseTag": "Public",
+          "name": "neutralFillInputFocusBehavior",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 3
+          }
+        },
+        {
+          "kind": "Variable",
+          "canonicalReference": "@microsoft/fast-components-msft!neutralFillInputHoverBehavior:var",
+          "docComment": "",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "neutralFillInputHoverBehavior: "
+            },
+            {
+              "kind": "Content",
+              "text": "import(\"@microsoft/fast-foundation\")."
+            },
+            {
+              "kind": "Reference",
+              "text": "CSSCustomPropertyBehavior",
+              "canonicalReference": "@microsoft/fast-foundation!CSSCustomPropertyBehavior:class"
+            }
+          ],
+          "releaseTag": "Public",
+          "name": "neutralFillInputHoverBehavior",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 3
+          }
+        },
+        {
+          "kind": "Variable",
+          "canonicalReference": "@microsoft/fast-components-msft!neutralFillInputRestBehavior:var",
+          "docComment": "",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "neutralFillInputRestBehavior: "
+            },
+            {
+              "kind": "Content",
+              "text": "import(\"@microsoft/fast-foundation\")."
+            },
+            {
+              "kind": "Reference",
+              "text": "CSSCustomPropertyBehavior",
+              "canonicalReference": "@microsoft/fast-foundation!CSSCustomPropertyBehavior:class"
+            }
+          ],
+          "releaseTag": "Public",
+          "name": "neutralFillInputRestBehavior",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 3
+          }
+        },
+        {
+          "kind": "Variable",
+          "canonicalReference": "@microsoft/fast-components-msft!neutralFillRestBehavior:var",
+          "docComment": "",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "neutralFillRestBehavior: "
+            },
+            {
+              "kind": "Content",
+              "text": "import(\"@microsoft/fast-foundation\")."
+            },
+            {
+              "kind": "Reference",
+              "text": "CSSCustomPropertyBehavior",
+              "canonicalReference": "@microsoft/fast-foundation!CSSCustomPropertyBehavior:class"
+            }
+          ],
+          "releaseTag": "Public",
+          "name": "neutralFillRestBehavior",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 3
+          }
+        },
+        {
+          "kind": "Variable",
+          "canonicalReference": "@microsoft/fast-components-msft!neutralFillSelectedBehavior:var",
+          "docComment": "",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "neutralFillSelectedBehavior: "
+            },
+            {
+              "kind": "Content",
+              "text": "import(\"@microsoft/fast-foundation\")."
+            },
+            {
+              "kind": "Reference",
+              "text": "CSSCustomPropertyBehavior",
+              "canonicalReference": "@microsoft/fast-foundation!CSSCustomPropertyBehavior:class"
+            }
+          ],
+          "releaseTag": "Public",
+          "name": "neutralFillSelectedBehavior",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 3
+          }
+        },
+        {
+          "kind": "Variable",
+          "canonicalReference": "@microsoft/fast-components-msft!neutralFillStealthActiveBehavior:var",
+          "docComment": "",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "neutralFillStealthActiveBehavior: "
+            },
+            {
+              "kind": "Content",
+              "text": "import(\"@microsoft/fast-foundation\")."
+            },
+            {
+              "kind": "Reference",
+              "text": "CSSCustomPropertyBehavior",
+              "canonicalReference": "@microsoft/fast-foundation!CSSCustomPropertyBehavior:class"
+            }
+          ],
+          "releaseTag": "Public",
+          "name": "neutralFillStealthActiveBehavior",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 3
+          }
+        },
+        {
+          "kind": "Variable",
+          "canonicalReference": "@microsoft/fast-components-msft!neutralFillStealthFocusBehavior:var",
+          "docComment": "",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "neutralFillStealthFocusBehavior: "
+            },
+            {
+              "kind": "Content",
+              "text": "import(\"@microsoft/fast-foundation\")."
+            },
+            {
+              "kind": "Reference",
+              "text": "CSSCustomPropertyBehavior",
+              "canonicalReference": "@microsoft/fast-foundation!CSSCustomPropertyBehavior:class"
+            }
+          ],
+          "releaseTag": "Public",
+          "name": "neutralFillStealthFocusBehavior",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 3
+          }
+        },
+        {
+          "kind": "Variable",
+          "canonicalReference": "@microsoft/fast-components-msft!neutralFillStealthHoverBehavior:var",
+          "docComment": "",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "neutralFillStealthHoverBehavior: "
+            },
+            {
+              "kind": "Content",
+              "text": "import(\"@microsoft/fast-foundation\")."
+            },
+            {
+              "kind": "Reference",
+              "text": "CSSCustomPropertyBehavior",
+              "canonicalReference": "@microsoft/fast-foundation!CSSCustomPropertyBehavior:class"
+            }
+          ],
+          "releaseTag": "Public",
+          "name": "neutralFillStealthHoverBehavior",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 3
+          }
+        },
+        {
+          "kind": "Variable",
+          "canonicalReference": "@microsoft/fast-components-msft!neutralFillStealthRestBehavior:var",
+          "docComment": "",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "neutralFillStealthRestBehavior: "
+            },
+            {
+              "kind": "Content",
+              "text": "import(\"@microsoft/fast-foundation\")."
+            },
+            {
+              "kind": "Reference",
+              "text": "CSSCustomPropertyBehavior",
+              "canonicalReference": "@microsoft/fast-foundation!CSSCustomPropertyBehavior:class"
+            }
+          ],
+          "releaseTag": "Public",
+          "name": "neutralFillStealthRestBehavior",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 3
+          }
+        },
+        {
+          "kind": "Variable",
+          "canonicalReference": "@microsoft/fast-components-msft!neutralFillStealthSelectedBehavior:var",
+          "docComment": "",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "neutralFillStealthSelectedBehavior: "
+            },
+            {
+              "kind": "Content",
+              "text": "import(\"@microsoft/fast-foundation\")."
+            },
+            {
+              "kind": "Reference",
+              "text": "CSSCustomPropertyBehavior",
+              "canonicalReference": "@microsoft/fast-foundation!CSSCustomPropertyBehavior:class"
+            }
+          ],
+          "releaseTag": "Public",
+          "name": "neutralFillStealthSelectedBehavior",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 3
+          }
+        },
+        {
+          "kind": "Variable",
+          "canonicalReference": "@microsoft/fast-components-msft!neutralFillToggleActiveBehavior:var",
+          "docComment": "",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "neutralFillToggleActiveBehavior: "
+            },
+            {
+              "kind": "Content",
+              "text": "import(\"@microsoft/fast-foundation\")."
+            },
+            {
+              "kind": "Reference",
+              "text": "CSSCustomPropertyBehavior",
+              "canonicalReference": "@microsoft/fast-foundation!CSSCustomPropertyBehavior:class"
+            }
+          ],
+          "releaseTag": "Public",
+          "name": "neutralFillToggleActiveBehavior",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 3
+          }
+        },
+        {
+          "kind": "Variable",
+          "canonicalReference": "@microsoft/fast-components-msft!neutralFillToggleFocusBehavior:var",
+          "docComment": "",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "neutralFillToggleFocusBehavior: "
+            },
+            {
+              "kind": "Content",
+              "text": "import(\"@microsoft/fast-foundation\")."
+            },
+            {
+              "kind": "Reference",
+              "text": "CSSCustomPropertyBehavior",
+              "canonicalReference": "@microsoft/fast-foundation!CSSCustomPropertyBehavior:class"
+            }
+          ],
+          "releaseTag": "Public",
+          "name": "neutralFillToggleFocusBehavior",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 3
+          }
+        },
+        {
+          "kind": "Variable",
+          "canonicalReference": "@microsoft/fast-components-msft!neutralFillToggleHoverBehavior:var",
+          "docComment": "",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "neutralFillToggleHoverBehavior: "
+            },
+            {
+              "kind": "Content",
+              "text": "import(\"@microsoft/fast-foundation\")."
+            },
+            {
+              "kind": "Reference",
+              "text": "CSSCustomPropertyBehavior",
+              "canonicalReference": "@microsoft/fast-foundation!CSSCustomPropertyBehavior:class"
+            }
+          ],
+          "releaseTag": "Public",
+          "name": "neutralFillToggleHoverBehavior",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 3
+          }
+        },
+        {
+          "kind": "Variable",
+          "canonicalReference": "@microsoft/fast-components-msft!neutralFillToggleRestBehavior:var",
+          "docComment": "",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "neutralFillToggleRestBehavior: "
+            },
+            {
+              "kind": "Content",
+              "text": "import(\"@microsoft/fast-foundation\")."
+            },
+            {
+              "kind": "Reference",
+              "text": "CSSCustomPropertyBehavior",
+              "canonicalReference": "@microsoft/fast-foundation!CSSCustomPropertyBehavior:class"
+            }
+          ],
+          "releaseTag": "Public",
+          "name": "neutralFillToggleRestBehavior",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 3
+          }
+        },
+        {
+          "kind": "Variable",
+          "canonicalReference": "@microsoft/fast-components-msft!neutralFocusBehavior:var",
+          "docComment": "",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "neutralFocusBehavior: "
+            },
+            {
+              "kind": "Content",
+              "text": "import(\"@microsoft/fast-foundation\")."
+            },
+            {
+              "kind": "Reference",
+              "text": "CSSCustomPropertyBehavior",
+              "canonicalReference": "@microsoft/fast-foundation!CSSCustomPropertyBehavior:class"
+            }
+          ],
+          "releaseTag": "Public",
+          "name": "neutralFocusBehavior",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 3
+          }
+        },
+        {
+          "kind": "Variable",
+          "canonicalReference": "@microsoft/fast-components-msft!neutralFocusInnerAccentBehavior:var",
+          "docComment": "",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "neutralFocusInnerAccentBehavior: "
+            },
+            {
+              "kind": "Content",
+              "text": "import(\"@microsoft/fast-foundation\")."
+            },
+            {
+              "kind": "Reference",
+              "text": "CSSCustomPropertyBehavior",
+              "canonicalReference": "@microsoft/fast-foundation!CSSCustomPropertyBehavior:class"
+            }
+          ],
+          "releaseTag": "Public",
+          "name": "neutralFocusInnerAccentBehavior",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 3
+          }
+        },
+        {
+          "kind": "Variable",
+          "canonicalReference": "@microsoft/fast-components-msft!neutralForegroundActiveBehavior:var",
+          "docComment": "",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "neutralForegroundActiveBehavior: "
+            },
+            {
+              "kind": "Content",
+              "text": "import(\"@microsoft/fast-foundation\")."
+            },
+            {
+              "kind": "Reference",
+              "text": "CSSCustomPropertyBehavior",
+              "canonicalReference": "@microsoft/fast-foundation!CSSCustomPropertyBehavior:class"
+            }
+          ],
+          "releaseTag": "Public",
+          "name": "neutralForegroundActiveBehavior",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 3
+          }
+        },
+        {
+          "kind": "Variable",
+          "canonicalReference": "@microsoft/fast-components-msft!neutralForegroundFocusBehavior:var",
+          "docComment": "",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "neutralForegroundFocusBehavior: "
+            },
+            {
+              "kind": "Content",
+              "text": "import(\"@microsoft/fast-foundation\")."
+            },
+            {
+              "kind": "Reference",
+              "text": "CSSCustomPropertyBehavior",
+              "canonicalReference": "@microsoft/fast-foundation!CSSCustomPropertyBehavior:class"
+            }
+          ],
+          "releaseTag": "Public",
+          "name": "neutralForegroundFocusBehavior",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 3
+          }
+        },
+        {
+          "kind": "Variable",
+          "canonicalReference": "@microsoft/fast-components-msft!neutralForegroundHintBehavior:var",
+          "docComment": "",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "neutralForegroundHintBehavior: "
+            },
+            {
+              "kind": "Content",
+              "text": "import(\"@microsoft/fast-foundation\")."
+            },
+            {
+              "kind": "Reference",
+              "text": "CSSCustomPropertyBehavior",
+              "canonicalReference": "@microsoft/fast-foundation!CSSCustomPropertyBehavior:class"
+            }
+          ],
+          "releaseTag": "Public",
+          "name": "neutralForegroundHintBehavior",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 3
+          }
+        },
+        {
+          "kind": "Variable",
+          "canonicalReference": "@microsoft/fast-components-msft!neutralForegroundHintLargeBehavior:var",
+          "docComment": "",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "neutralForegroundHintLargeBehavior: "
+            },
+            {
+              "kind": "Content",
+              "text": "import(\"@microsoft/fast-foundation\")."
+            },
+            {
+              "kind": "Reference",
+              "text": "CSSCustomPropertyBehavior",
+              "canonicalReference": "@microsoft/fast-foundation!CSSCustomPropertyBehavior:class"
+            }
+          ],
+          "releaseTag": "Public",
+          "name": "neutralForegroundHintLargeBehavior",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 3
+          }
+        },
+        {
+          "kind": "Variable",
+          "canonicalReference": "@microsoft/fast-components-msft!neutralForegroundHoverBehavior:var",
+          "docComment": "",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "neutralForegroundHoverBehavior: "
+            },
+            {
+              "kind": "Content",
+              "text": "import(\"@microsoft/fast-foundation\")."
+            },
+            {
+              "kind": "Reference",
+              "text": "CSSCustomPropertyBehavior",
+              "canonicalReference": "@microsoft/fast-foundation!CSSCustomPropertyBehavior:class"
+            }
+          ],
+          "releaseTag": "Public",
+          "name": "neutralForegroundHoverBehavior",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 3
+          }
+        },
+        {
+          "kind": "Variable",
+          "canonicalReference": "@microsoft/fast-components-msft!neutralForegroundRestBehavior:var",
+          "docComment": "",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "neutralForegroundRestBehavior: "
+            },
+            {
+              "kind": "Content",
+              "text": "import(\"@microsoft/fast-foundation\")."
+            },
+            {
+              "kind": "Reference",
+              "text": "CSSCustomPropertyBehavior",
+              "canonicalReference": "@microsoft/fast-foundation!CSSCustomPropertyBehavior:class"
+            }
+          ],
+          "releaseTag": "Public",
+          "name": "neutralForegroundRestBehavior",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 3
+          }
+        },
+        {
+          "kind": "Variable",
+          "canonicalReference": "@microsoft/fast-components-msft!neutralForegroundToggleBehavior:var",
+          "docComment": "",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "neutralForegroundToggleBehavior: "
+            },
+            {
+              "kind": "Content",
+              "text": "import(\"@microsoft/fast-foundation\")."
+            },
+            {
+              "kind": "Reference",
+              "text": "CSSCustomPropertyBehavior",
+              "canonicalReference": "@microsoft/fast-foundation!CSSCustomPropertyBehavior:class"
+            }
+          ],
+          "releaseTag": "Public",
+          "name": "neutralForegroundToggleBehavior",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 3
+          }
+        },
+        {
+          "kind": "Variable",
+          "canonicalReference": "@microsoft/fast-components-msft!neutralForegroundToggleLargeBehavior:var",
+          "docComment": "",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "neutralForegroundToggleLargeBehavior: "
+            },
+            {
+              "kind": "Content",
+              "text": "import(\"@microsoft/fast-foundation\")."
+            },
+            {
+              "kind": "Reference",
+              "text": "CSSCustomPropertyBehavior",
+              "canonicalReference": "@microsoft/fast-foundation!CSSCustomPropertyBehavior:class"
+            }
+          ],
+          "releaseTag": "Public",
+          "name": "neutralForegroundToggleLargeBehavior",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 3
+          }
+        },
+        {
+          "kind": "Variable",
+          "canonicalReference": "@microsoft/fast-components-msft!neutralLayerCardBehavior:var",
+          "docComment": "",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "neutralLayerCardBehavior: "
+            },
+            {
+              "kind": "Content",
+              "text": "import(\"@microsoft/fast-foundation\")."
+            },
+            {
+              "kind": "Reference",
+              "text": "CSSCustomPropertyBehavior",
+              "canonicalReference": "@microsoft/fast-foundation!CSSCustomPropertyBehavior:class"
+            }
+          ],
+          "releaseTag": "Public",
+          "name": "neutralLayerCardBehavior",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 3
+          }
+        },
+        {
+          "kind": "Variable",
+          "canonicalReference": "@microsoft/fast-components-msft!neutralLayerCardContainerBehavior:var",
+          "docComment": "",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "neutralLayerCardContainerBehavior: "
+            },
+            {
+              "kind": "Content",
+              "text": "import(\"@microsoft/fast-foundation\")."
+            },
+            {
+              "kind": "Reference",
+              "text": "CSSCustomPropertyBehavior",
+              "canonicalReference": "@microsoft/fast-foundation!CSSCustomPropertyBehavior:class"
+            }
+          ],
+          "releaseTag": "Public",
+          "name": "neutralLayerCardContainerBehavior",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 3
+          }
+        },
+        {
+          "kind": "Variable",
+          "canonicalReference": "@microsoft/fast-components-msft!neutralLayerFloatingBehavior:var",
+          "docComment": "",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "neutralLayerFloatingBehavior: "
+            },
+            {
+              "kind": "Content",
+              "text": "import(\"@microsoft/fast-foundation\")."
+            },
+            {
+              "kind": "Reference",
+              "text": "CSSCustomPropertyBehavior",
+              "canonicalReference": "@microsoft/fast-foundation!CSSCustomPropertyBehavior:class"
+            }
+          ],
+          "releaseTag": "Public",
+          "name": "neutralLayerFloatingBehavior",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 3
+          }
+        },
+        {
+          "kind": "Variable",
+          "canonicalReference": "@microsoft/fast-components-msft!neutralLayerL1AltBehavior:var",
+          "docComment": "",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "neutralLayerL1AltBehavior: "
+            },
+            {
+              "kind": "Content",
+              "text": "import(\"@microsoft/fast-foundation\")."
+            },
+            {
+              "kind": "Reference",
+              "text": "CSSCustomPropertyBehavior",
+              "canonicalReference": "@microsoft/fast-foundation!CSSCustomPropertyBehavior:class"
+            }
+          ],
+          "releaseTag": "Public",
+          "name": "neutralLayerL1AltBehavior",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 3
+          }
+        },
+        {
+          "kind": "Variable",
+          "canonicalReference": "@microsoft/fast-components-msft!neutralLayerL1Behavior:var",
+          "docComment": "",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "neutralLayerL1Behavior: "
+            },
+            {
+              "kind": "Content",
+              "text": "import(\"@microsoft/fast-foundation\")."
+            },
+            {
+              "kind": "Reference",
+              "text": "CSSCustomPropertyBehavior",
+              "canonicalReference": "@microsoft/fast-foundation!CSSCustomPropertyBehavior:class"
+            }
+          ],
+          "releaseTag": "Public",
+          "name": "neutralLayerL1Behavior",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 3
+          }
+        },
+        {
+          "kind": "Variable",
+          "canonicalReference": "@microsoft/fast-components-msft!neutralLayerL2Behavior:var",
+          "docComment": "",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "neutralLayerL2Behavior: "
+            },
+            {
+              "kind": "Content",
+              "text": "import(\"@microsoft/fast-foundation\")."
+            },
+            {
+              "kind": "Reference",
+              "text": "CSSCustomPropertyBehavior",
+              "canonicalReference": "@microsoft/fast-foundation!CSSCustomPropertyBehavior:class"
+            }
+          ],
+          "releaseTag": "Public",
+          "name": "neutralLayerL2Behavior",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 3
+          }
+        },
+        {
+          "kind": "Variable",
+          "canonicalReference": "@microsoft/fast-components-msft!neutralLayerL3Behavior:var",
+          "docComment": "",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "neutralLayerL3Behavior: "
+            },
+            {
+              "kind": "Content",
+              "text": "import(\"@microsoft/fast-foundation\")."
+            },
+            {
+              "kind": "Reference",
+              "text": "CSSCustomPropertyBehavior",
+              "canonicalReference": "@microsoft/fast-foundation!CSSCustomPropertyBehavior:class"
+            }
+          ],
+          "releaseTag": "Public",
+          "name": "neutralLayerL3Behavior",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 3
+          }
+        },
+        {
+          "kind": "Variable",
+          "canonicalReference": "@microsoft/fast-components-msft!neutralLayerL4Behavior:var",
+          "docComment": "",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "neutralLayerL4Behavior: "
+            },
+            {
+              "kind": "Content",
+              "text": "import(\"@microsoft/fast-foundation\")."
+            },
+            {
+              "kind": "Reference",
+              "text": "CSSCustomPropertyBehavior",
+              "canonicalReference": "@microsoft/fast-foundation!CSSCustomPropertyBehavior:class"
+            }
+          ],
+          "releaseTag": "Public",
+          "name": "neutralLayerL4Behavior",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 3
+          }
+        },
+        {
+          "kind": "Variable",
+          "canonicalReference": "@microsoft/fast-components-msft!neutralOutlineActiveBehavior:var",
+          "docComment": "",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "neutralOutlineActiveBehavior: "
+            },
+            {
+              "kind": "Content",
+              "text": "import(\"@microsoft/fast-foundation\")."
+            },
+            {
+              "kind": "Reference",
+              "text": "CSSCustomPropertyBehavior",
+              "canonicalReference": "@microsoft/fast-foundation!CSSCustomPropertyBehavior:class"
+            }
+          ],
+          "releaseTag": "Public",
+          "name": "neutralOutlineActiveBehavior",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 3
+          }
+        },
+        {
+          "kind": "Variable",
+          "canonicalReference": "@microsoft/fast-components-msft!neutralOutlineFocusBehavior:var",
+          "docComment": "",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "neutralOutlineFocusBehavior: "
+            },
+            {
+              "kind": "Content",
+              "text": "import(\"@microsoft/fast-foundation\")."
+            },
+            {
+              "kind": "Reference",
+              "text": "CSSCustomPropertyBehavior",
+              "canonicalReference": "@microsoft/fast-foundation!CSSCustomPropertyBehavior:class"
+            }
+          ],
+          "releaseTag": "Public",
+          "name": "neutralOutlineFocusBehavior",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 3
+          }
+        },
+        {
+          "kind": "Variable",
+          "canonicalReference": "@microsoft/fast-components-msft!neutralOutlineHoverBehavior:var",
+          "docComment": "",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "neutralOutlineHoverBehavior: "
+            },
+            {
+              "kind": "Content",
+              "text": "import(\"@microsoft/fast-foundation\")."
+            },
+            {
+              "kind": "Reference",
+              "text": "CSSCustomPropertyBehavior",
+              "canonicalReference": "@microsoft/fast-foundation!CSSCustomPropertyBehavior:class"
+            }
+          ],
+          "releaseTag": "Public",
+          "name": "neutralOutlineHoverBehavior",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 3
+          }
+        },
+        {
+          "kind": "Variable",
+          "canonicalReference": "@microsoft/fast-components-msft!neutralOutlineRestBehavior:var",
+          "docComment": "",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "neutralOutlineRestBehavior: "
+            },
+            {
+              "kind": "Content",
+              "text": "import(\"@microsoft/fast-foundation\")."
+            },
+            {
+              "kind": "Reference",
+              "text": "CSSCustomPropertyBehavior",
+              "canonicalReference": "@microsoft/fast-foundation!CSSCustomPropertyBehavior:class"
+            }
+          ],
+          "releaseTag": "Public",
+          "name": "neutralOutlineRestBehavior",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 3
+          }
         }
       ]
     }

@@ -53,12 +53,14 @@ function bindWithPositioning(
  * A behavior that renders a template for each item in an array.
  * @public
  */
-export class RepeatBehavior implements Behavior, Subscriber {
-    private source: unknown = void 0;
+export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
+    private source: TSource | null = null;
     private views: SyntheticView[] = [];
+    private template: SyntheticViewTemplate;
+    private templateBindingObserver: BindingObserver<TSource, SyntheticViewTemplate>;
     private items: any[] | null = null;
-    private itemsObserver?: Notifier = void 0;
-    private bindingObserver: BindingObserver;
+    private itemsObserver: Notifier | null = null;
+    private itemsBindingObserver: BindingObserver<TSource, any[]>;
     private originalContext: ExecutionContext | undefined = void 0;
     private childContext: ExecutionContext | undefined = void 0;
     private bindView: typeof bindWithoutPositioning = bindWithoutPositioning;
@@ -66,17 +68,18 @@ export class RepeatBehavior implements Behavior, Subscriber {
     /**
      * Creates an instance of RepeatBehavior.
      * @param location - The location in the DOM to render the repeat.
-     * @param binding - The array to render.
+     * @param itemsBinding - The array to render.
      * @param template - The template to render for each item.
      * @param options - Options used to turn on special repeat features.
      */
     public constructor(
         private location: Node,
-        private binding: Binding,
-        private template: SyntheticViewTemplate,
+        private itemsBinding: Binding<TSource, any[]>,
+        private templateBinding: Binding<TSource, SyntheticViewTemplate>,
         private options: RepeatOptions
     ) {
-        this.bindingObserver = Observable.binding(binding, this);
+        this.itemsBindingObserver = Observable.binding(itemsBinding, this);
+        this.templateBindingObserver = Observable.binding(templateBinding, this);
 
         if (options.positioning) {
             this.bindView = bindWithPositioning;
@@ -88,13 +91,17 @@ export class RepeatBehavior implements Behavior, Subscriber {
      * @param source - The source to bind to.
      * @param context - The execution context that the binding is operating within.
      */
-    public bind(source: unknown, context: ExecutionContext): void {
+    public bind(source: TSource, context: ExecutionContext): void {
         this.source = source;
         this.originalContext = context;
         this.childContext = Object.create(context);
         this.childContext!.parent = source;
 
-        this.items = this.bindingObserver.observe(source, this.originalContext);
+        this.items = this.itemsBindingObserver.observe(source, this.originalContext);
+        this.template = this.templateBindingObserver.observe(
+            source,
+            this.originalContext
+        );
         this.observeItems();
         this.refreshAllViews();
     }
@@ -107,21 +114,30 @@ export class RepeatBehavior implements Behavior, Subscriber {
         this.source = null;
         this.items = null;
 
-        if (this.itemsObserver !== void 0) {
+        if (this.itemsObserver !== null) {
             this.itemsObserver.unsubscribe(this);
         }
 
         this.unbindAllViews();
-        this.bindingObserver.disconnect();
+        this.itemsBindingObserver.disconnect();
+        this.templateBindingObserver.disconnect();
     }
 
     /** @internal */
     public handleChange(source: any, args: Splice[]): void {
-        if (source === this.binding) {
-            this.items = this.bindingObserver.observe(this.source, this.originalContext!);
-
+        if (source === this.itemsBinding) {
+            this.items = this.itemsBindingObserver.observe(
+                this.source!,
+                this.originalContext!
+            );
             this.observeItems();
             this.refreshAllViews();
+        } else if (source === this.templateBinding) {
+            this.template = this.templateBindingObserver.observe(
+                this.source!,
+                this.originalContext!
+            );
+            this.refreshAllViews(true);
         } else {
             this.updateViews(args);
         }
@@ -136,7 +152,7 @@ export class RepeatBehavior implements Behavior, Subscriber {
         const newObserver = (this.itemsObserver = Observable.getNotifier(this.items));
 
         if (oldObserver !== newObserver) {
-            if (oldObserver !== void 0) {
+            if (oldObserver !== null) {
                 oldObserver.unsubscribe(this);
             }
 
@@ -195,21 +211,23 @@ export class RepeatBehavior implements Behavior, Subscriber {
         }
     }
 
-    private refreshAllViews(): void {
+    private refreshAllViews(templateChanged: boolean = false): void {
         const items = this.items!;
         const childContext = this.childContext!;
-        let itemsLength = items.length;
-        let views = this.views;
-        const viewsLength = views.length;
         const template = this.template;
         const location = this.location;
         const bindView = this.bindView;
+        let itemsLength = items.length;
+        let views = this.views;
+        let viewsLength = views.length;
 
-        if (itemsLength === 0) {
+        if (itemsLength === 0 || templateChanged) {
             // all views need to be removed
-            HTMLView.disposeContiguousBatch(this.views);
-            this.views = [];
-        } else if (viewsLength === 0) {
+            HTMLView.disposeContiguousBatch(views);
+            viewsLength = 0;
+        }
+
+        if (viewsLength === 0) {
             // all views need to be created
             this.views = views = new Array(itemsLength);
 
@@ -256,7 +274,7 @@ export class RepeatBehavior implements Behavior, Subscriber {
  * A directive that configures list rendering.
  * @public
  */
-export class RepeatDirective extends Directive {
+export class RepeatDirective<TSource = any> extends Directive {
     /**
      * Creates a placeholder string based on the directive's index within the template.
      * @param index - The index of the directive within the template.
@@ -266,13 +284,13 @@ export class RepeatDirective extends Directive {
     /**
      * Creates an instance of RepeatDirective.
      * @param binding - The binding that provides the array to render.
-     * @param template - The template to render for each item in the array.
+     * @param getTemplate - The template binding used to obtain a template to render for each item in the array.
      * @param options - Options used to turn on special repeat features.
      */
     public constructor(
-        public binding: Binding,
-        public template: SyntheticViewTemplate,
-        public options: RepeatOptions
+        private binding: Binding,
+        private getTemplate: Binding<TSource, SyntheticViewTemplate>,
+        private options: RepeatOptions
     ) {
         super();
         enableArrayObservation();
@@ -282,22 +300,35 @@ export class RepeatDirective extends Directive {
      * Creates a behavior for the provided target node.
      * @param target - The node instance to create the behavior for.
      */
-    public createBehavior(target: Node): RepeatBehavior {
-        return new RepeatBehavior(target, this.binding, this.template, this.options);
+    public createBehavior(target: Node): RepeatBehavior<TSource> {
+        return new RepeatBehavior<TSource>(
+            target,
+            this.binding,
+            this.getTemplate,
+            this.options
+        );
     }
 }
 
 /**
  * A directive that enables list rendering.
  * @param binding - The array to render.
- * @param template - The template to render for each item in the array.
+ * @param templateOrTemplateBinding - The template or a template binding used obtain a template
+ * to render for each item in the array.
  * @param options - Options used to turn on special repeat features.
  * @public
  */
-export function repeat<TScope = any, TItem = any>(
-    binding: Binding<TScope, TItem[]>,
-    template: ViewTemplate<Partial<TItem>, TScope>,
+export function repeat<TSource = any, TItem = any>(
+    binding: Binding<TSource, TItem[]>,
+    templateOrTemplateBinding:
+        | SyntheticViewTemplate
+        | Binding<TSource, SyntheticViewTemplate>,
     options: RepeatOptions = defaultRepeatOptions
-): CaptureType<TScope> {
-    return new RepeatDirective(binding, template, options);
+): CaptureType<TSource> {
+    const getTemplate =
+        typeof templateOrTemplateBinding === "function"
+            ? templateOrTemplateBinding
+            : (): SyntheticViewTemplate => templateOrTemplateBinding;
+
+    return new RepeatDirective<TSource>(binding, getTemplate, options);
 }

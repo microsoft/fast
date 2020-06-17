@@ -1,10 +1,12 @@
 import { DataType } from "./types";
 
+export type WebComponentAttributeValueType = string | number;
+
 export interface WebComponentAttributeValues {
     /**
      * The value
      */
-    name: string;
+    name: WebComponentAttributeValueType;
 }
 
 export interface WebComponentAttribute {
