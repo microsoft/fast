@@ -474,6 +474,22 @@ In the example above, the `listItems` property will be populated with all child 
 Like `ref`, the child nodes are not available until the `connectedCallback` lifecycle event.
 :::
 
+You can also provide a `filter` function to control which child nodes are synchronized to your property. As a convenience, we provide an `elements` filter that lets you optionally specify the element tag name. Taking the above example, if we wanted to ensure that our `listItems` array only included `li` elements (and not any text nodes or other potential child nodes), we could author our template like this:
+
+**Example: Filtering Child Nodes**
+
+```ts
+import { FASTElement, customElement, html, children, repeat, elements } from '@microsoft/fast-element';
+
+const template = html<FriendList>`
+  <ul ${children({ property: 'listItems', filter: elements('li') })}>
+    ${repeat(x => x.friends, html<string>`
+      <li>${x => x}</li>
+    `)}
+  </ul>
+`;
+```
+
 ### The Slotted Directive
 
 Sometimes you may want references to all nodes that are assigned to a particular slot. To accomplish this, use the `slotted` directive. (For more on slots, see [Working with Shadow DOM](./working-with-shadow-dom).)
@@ -501,7 +517,7 @@ export class MyElement extends FASTElement {
 }
 ```
 
-Similar to the `children` directive, the `slotted` directive will populate the `slottedNodes` property with nodes assigned to the slot. If `slottedNodes` is decorated with `@observable` then it will be updated dynamically as the assigned nodes change. Like any observable, you can optionally implement a *propertyName*Changed method to be notified when the nodes change. Additionally, you can provide an `options` object to the `slotted` directive to specify customized configuration for the underlying [assignedNodes() API call](https://developer.mozilla.org/en-US/docs/Web/API/HTMLSlotElement/assignedNodes).
+Similar to the `children` directive, the `slotted` directive will populate the `slottedNodes` property with nodes assigned to the slot. If `slottedNodes` is decorated with `@observable` then it will be updated dynamically as the assigned nodes change. Like any observable, you can optionally implement a *propertyName*Changed method to be notified when the nodes change. Additionally, you can provide an `options` object to the `slotted` directive to specify customized configuration for the underlying [assignedNodes() API call](https://developer.mozilla.org/en-US/docs/Web/API/HTMLSlotElement/assignedNodes) or specify a `filter`.
 
 ## Host Directives
 
