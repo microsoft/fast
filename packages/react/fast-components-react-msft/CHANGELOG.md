@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.31.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@4.30.14...@microsoft/fast-components-react-msft@4.31.0) (2020-06-17)
+
+
+### Features
+
+* add "after" prop to context-menu-item ([#3310](https://github.com/Microsoft/fast-dna/issues/3310)) ([9ffcc68](https://github.com/Microsoft/fast-dna/commit/9ffcc68fe2dd69f756c4f3bdf319b2d5f976d0cf))
+
+
+
+
+
 ## [4.30.14](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@4.30.13...@microsoft/fast-components-react-msft@4.30.14) (2020-06-15)
 
 **Note:** Version bump only for package @microsoft/fast-components-react-msft
