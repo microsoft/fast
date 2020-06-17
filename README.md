@@ -106,3 +106,10 @@ Also, we built FAST development tools from re-usable packages, so if you have sp
 Widely available design systems from companies like Microsoft (Fluent), Google (Material), or Salesforce (Lightning) are useful when it is essential to align with a platform or take advantage of a polished system at low cost, but many companies have a design system of their own, and some may have multiple design systems or variations.
 
 Because FAST has abstracted base components from their style, you get a head start on your design system by building on top of tried and true base components and style libraries like our offerings for color, animation, and elevation.
+
+## Contact
+
+* Join the community and chat with us in realtime on [Discord](https://discord.gg/FcSNfg4).
+* Ask questions on [Stack Overflow](https://stackoverflow.com/questions/tagged/fast-dna).	
+* Submit requests and issues on [Github](https://github.com/Microsoft/fast-dna/issues/new/choose).	
+* Contribute by helping out on some of our recommended first issues on [Github](https://github.com/Microsoft/fast-dna/labels/good%20first%20issue).
