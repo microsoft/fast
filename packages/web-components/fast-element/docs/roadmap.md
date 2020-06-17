@@ -2,12 +2,11 @@
 
 ## Short-term
 
-* **Feature**: Allow `repeat` to accept an expression that returns the template they generate from.
+* **Feature**: Enable event delegation through a syntax like `@click.delegate=...`
 
 ## Medium-term
 
 * **Experiment**: See if it's possible combine template instantiate and bind, and if that improves initial render time.
-* **Feature**: Improve `when` to enable if/else scenarios.
 * **Feature**: Dependency injection infrastructure, including simple decorator-based property injection for `FASTElement`.
 * **Refactor:** Create abstraction for `ElementInternals`.
 * **Test:** Include perf benchmarks in the automated build process and track changes over time.
