@@ -1,21 +1,20 @@
 
 ![fast_banner_github_914.png](https://static.fast.design/assets/fast_banner_github_914.png)
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![npm version](https://badge.fury.io/js/%40microsoft%2Ffast-components.svg)](https://badge.fury.io/js/%40microsoft%2Ffast-components)
-![workflows](https://github.com/microsoft/fast-dna/workflows/CI%20-%20FAST/badge.svg?branch=master&event=push)
-[![TypeScript](https://img.shields.io/badge/%3C%2F%3E-TypeScript-%230074c1.svg)](http://www.typescriptlang.org/)
-[![Twitter](https://img.shields.io/twitter/follow/fast_dna.svg?style=social&label=Follow)](https://twitter.com/intent/follow?screen_name=fast_dna)
+# FAST
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lerna.js.org/)
+[![TypeScript](https://img.shields.io/badge/%3C%2F%3E-TypeScript-%230074c1.svg)](http://www.typescriptlang.org/)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-f8bc45.svg)](https://github.com/prettier/prettier)
+
 [![Maintainability](https://api.codeclimate.com/v1/badges/8a74621e634a6e9b9561/maintainability)](https://codeclimate.com/github/Microsoft/fast-dna/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/8a74621e634a6e9b9561/test_coverage)](https://codeclimate.com/github/Microsoft/fast-dna/test_coverage)
+![workflows](https://github.com/microsoft/fast-dna/workflows/CI%20-%20FAST/badge.svg?branch=master&event=push)
 
 [![Discord](https://img.shields.io/badge/chat%20on-discord-7289da.svg)](https://discord.gg/FcSNfg4)
 [![Stack Overflow](https://img.shields.io/badge/ask%20questions%20on-stack%20overflow-f48024.svg)](https://stackoverflow.com/questions/tagged/fast-dna)
-
-# FAST
+[![Twitter](https://img.shields.io/twitter/follow/fast_dna.svg?style=social&label=Follow)](https://twitter.com/intent/follow?screen_name=fast_dna)
 
 This is the FAST monorepo, containing web component packages, tools, examples, and documentation. FAST tech can be used à la carte or as a suite to build enterprise-grade websites, applications, components, design systems, and more.
 
