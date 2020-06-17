@@ -2,8 +2,6 @@ import { Accessor, Observable } from "../observation/observable";
 import { emptyArray } from "../interfaces";
 import { Behavior } from "./behavior";
 
-const trueFilter = () => true;
-
 /**
  * Options for configuring node observation behavior.
  * @public
@@ -56,11 +54,7 @@ export abstract class NodeObservationBehavior<T extends NodeBehaviorBehaviorOpti
      * @param target - The target to assign the nodes property on.
      * @param options - The options to use in configuring node observation.
      */
-    constructor(protected target: HTMLElement, protected options: T) {
-        if (!options.filter) {
-            options.filter = trueFilter;
-        }
-    }
+    constructor(protected target: HTMLElement, protected options: T) {}
 
     /**
      * Begins observation of the nodes.
@@ -88,7 +82,7 @@ export abstract class NodeObservationBehavior<T extends NodeBehaviorBehaviorOpti
             (x: Accessor) => x.name === name
         );
         this.source = source;
-        this.updateTarget(this.getNodes().filter(this.options.filter!));
+        this.updateTarget(this.computeNodes());
 
         if (this.shouldUpdate) {
             this.observe();
@@ -110,7 +104,17 @@ export abstract class NodeObservationBehavior<T extends NodeBehaviorBehaviorOpti
 
     /** @internal */
     public handleEvent(): void {
-        this.updateTarget(this.getNodes().filter(this.options.filter!));
+        this.updateTarget(this.computeNodes());
+    }
+
+    private computeNodes() {
+        let nodes = this.getNodes();
+
+        if (this.options.filter !== void 0) {
+            nodes = nodes.filter(this.options.filter!);
+        }
+
+        return nodes;
     }
 
     private updateTarget(value: ReadonlyArray<any>): void {
