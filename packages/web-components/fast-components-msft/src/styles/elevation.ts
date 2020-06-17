@@ -20,7 +20,7 @@ export const directionalShadow =
  * Applies the box-shadow CSS rule set to the elevation formula.
  * Control this formula with the --elevation CSS Custom Property
  * by setting --elevation to a number.
- * 
+ *
  * @public
  */
 export const elevation = `box-shadow: ${ambientShadow}, ${directionalShadow};`;
