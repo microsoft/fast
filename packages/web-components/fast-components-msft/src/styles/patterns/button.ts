@@ -18,6 +18,9 @@ import {
     neutralFocusBehavior,
     neutralFocusInnerAccentBehavior,
     neutralForegroundRestBehavior,
+    neutralOutlineActiveBehavior,
+    neutralOutlineHoverBehavior,
+    neutralOutlineRestBehavior,
 } from "../index";
 
 /**
@@ -250,15 +253,15 @@ export const LightweightButtonStyles = css`
 export const OutlineButtonStyles = css`
     :host(.outline) {
         background: transparent;
-        border-color: ${accentFillRestBehavior.var};
+        border-color: ${neutralOutlineRestBehavior.var};
     }
 
     :host(.outline:hover) {
-        border-color: ${accentFillHoverBehavior.var};
+        border-color: ${neutralOutlineHoverBehavior.var};
     }
 
     :host(.outline:active) {
-        border-color: ${accentFillActiveBehavior.var};
+        border-color: ${neutralOutlineActiveBehavior.var};
     }
 
     :host(.outline) .control {
@@ -271,12 +274,12 @@ export const OutlineButtonStyles = css`
     }
 
     :host(.outline.disabled) {
-        border-color: ${accentFillRestBehavior.var};
+        border-color: ${neutralOutlineRestBehavior.var};
     }
 `.withBehaviors(
-    accentFillRestBehavior,
-    accentFillHoverBehavior,
-    accentFillActiveBehavior,
+    neutralOutlineRestBehavior,
+    neutralOutlineHoverBehavior,
+    neutralOutlineActiveBehavior,
     neutralFocusBehavior
 );
 

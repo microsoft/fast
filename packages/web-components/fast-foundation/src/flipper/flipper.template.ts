@@ -1,6 +1,10 @@
 import { html, when } from "@microsoft/fast-element";
 import { Flipper, FlipperDirection } from "./flipper";
 
+/**
+ * The template for the {@link @microsoft/fast-foundation#Flipper} component.
+ * @public
+ */
 export const FlipperTemplate = html<Flipper>`
     <template
         role="button"

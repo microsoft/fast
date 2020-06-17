@@ -47,20 +47,10 @@ storybook-static
 # npm package-locks
 package-lock.json
 
-# Docusaurus dependencies
-lib/core/metadata.js
-lib/core/MetadataBlog.js
-
-# Docusaurus files to be ignored (legacy structure)
-website/translated_docs
-website/build/
-website/yarn.lock
-website/node_modules
-website/i18n/
-
 # Docusaurus files to ignore
-sites/website/translated_docs
 sites/website/build/
+sites/website/docs/
+sites/website/src/docs/api/
 sites/website/yarn.lock
 sites/website/node_modules
 sites/website/i18n/

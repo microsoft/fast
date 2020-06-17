@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.8](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-creator@0.0.7...@microsoft/fast-creator@0.0.8) (2020-06-17)
+
+**Note:** Version bump only for package @microsoft/fast-creator
+
+
+
+
+
 ## [0.0.7](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-creator@0.0.6...@microsoft/fast-creator@0.0.7) (2020-06-15)
 
 **Note:** Version bump only for package @microsoft/fast-creator

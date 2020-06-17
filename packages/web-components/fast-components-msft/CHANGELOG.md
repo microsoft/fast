@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-msft@1.2.0...@microsoft/fast-components-msft@1.2.1) (2020-06-17)
+
+
+### Bug Fixes
+
+* inherit font size and line height in hypertext styles ([#3320](https://github.com/Microsoft/fast-dna/issues/3320)) ([98348cb](https://github.com/Microsoft/fast-dna/commit/98348cbfceb35f95cfdba4f9a1706ad985a60540))
+* outline button should use outline color recipes ([#3327](https://github.com/Microsoft/fast-dna/issues/3327)) ([70330e4](https://github.com/Microsoft/fast-dna/commit/70330e443e6cc470a3a8d7fa0948d9eaf45127c3))
+* remove hypertext styles from button ([#3319](https://github.com/Microsoft/fast-dna/issues/3319)) ([788e299](https://github.com/Microsoft/fast-dna/commit/788e299ffed8fe965212079a01dd53d42a80b894))
+
+
+
+
+
 # [1.2.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-msft@1.1.2...@microsoft/fast-components-msft@1.2.0) (2020-06-15)
 
 

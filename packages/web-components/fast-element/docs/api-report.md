@@ -139,7 +139,7 @@ export function children<T = any>(propertyOrOptions: (keyof T & string) | Childr
 //
 // @public
 export class ChildrenBehavior extends NodeObservationBehavior<ChildrenBehaviorOptions> {
-    constructor(target: HTMLSlotElement, options: ChildrenBehaviorOptions);
+    constructor(target: HTMLElement, options: ChildrenBehaviorOptions);
     disconnect(): void;
     protected getNodes(): ChildNode[];
     observe(): void;
@@ -220,6 +220,9 @@ export const DOM: Readonly<{
     setAttribute(element: HTMLElement, attributeName: string, value: any): void;
     setBooleanAttribute(element: HTMLElement, attributeName: string, value: boolean): void;
 }>;
+
+// @public
+export function elements(tagName?: string): (value: Node, index: number, array: Node[]) => boolean;
 
 // @public
 export abstract class ElementStyles {
