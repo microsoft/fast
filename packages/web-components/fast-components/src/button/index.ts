@@ -10,6 +10,8 @@ import { ButtonStyles as styles } from "./button.styles";
  * @public
  * @remarks
  * HTML Element: \<fast-button\>
+ * 
+ * {@link https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/delegatesFocus | delegatesFocus}
  */
 @customElement({
     name: "fast-button",
