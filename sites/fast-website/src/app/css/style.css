@@ -186,15 +186,18 @@ fast-divider::after {
   margin: 20px 0;
 }
 
-.section-badge {
-  color: var(--accent-foreground-rest);
+fast-badge {
+  --badge-fill-primary: var(--neutral-fill-focus);
+  --badge-color-accent: var(--accent-foreground-rest);
   font-weight: bold;
-  background: var(--neutral-fill-focus);
+  letter-spacing: 0.12em;
+  padding: calc(var(--design-unit) * 1px) calc(var(--design-unit) * 4px);
+}
+
+.section-badge {
   width: max-content;
   align-self: center;
-  letter-spacing: 0.12em;
   border-radius: calc(var(--corner-radius) * 1px);
-  padding: calc(var(--design-unit) * 1px) calc(var(--design-unit) * 4px);
   margin-bottom: calc(var(--base-height-multiplier) * 1px);
 }
 

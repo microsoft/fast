@@ -11,4 +11,11 @@ export const SectionHeaderStyles = css`
         box-sizing: border-box;
         text-align: center;
     }
+
+    fast-badge ::slotted([slot="badge"]) {
+        background-color: green;
+        font-weight: bold;
+        letter-spacing: 0.12em;
+        padding: calc(var(--design-unit) * 1px) calc(var(--design-unit) * 4px);
+    }
 `.withBehaviors(neutralForegroundRestBehavior);
