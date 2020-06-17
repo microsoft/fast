@@ -1,6 +1,6 @@
 module.exports = {
-    title: "FAST-DNA",
-    tagline: "The tagline of my site",
+    title: "FAST",
+    tagline: "The adaptive interface system for modern web experiences",
     url: "https://www.fast.design",
     baseUrl: "/",
     favicon: "img/favicon/favicon.ico",
@@ -8,7 +8,7 @@ module.exports = {
     projectName: "fast-dna",
     scripts: [
         {
-            src: "https://static.fast.design/assets/scripts/packages/fast-components.js",
+            src: "https://unpkg.com/@microsoft/fast-components",
             type: "module",
             async: true,
         },
