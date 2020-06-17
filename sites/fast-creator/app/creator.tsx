@@ -68,7 +68,7 @@ import { ProjectFileTransfer } from "./components";
 import { selectDeviceOverrideStyles } from "./utilities/style-overrides";
 import { previewReady } from "./preview";
 /* eslint-disable-next-line @typescript-eslint/no-var-requires */
-const FASTInlineLogo = require("@microsoft/site-utilities/statics/assets/inline-logo.png");
+const FASTInlineLogo = require("@microsoft/site-utilities/statics/assets/fast-inline-logo.png");
 const fastMessageSystemWorker = new FASTMessageSystemWorker();
 let fastMessageSystem: MessageSystem;
 const schemaDictionary: SchemaDictionary = {

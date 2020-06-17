@@ -126,7 +126,7 @@ module.exports = (env, args) => {
             new FaviconsWebpackPlugin(
                 path.resolve(
                     rootNodeModules,
-                    "@microsoft/site-utilities/statics/assets/logo.png"
+                    "@microsoft/site-utilities/statics/assets/fast-logo.png"
                 )
             ),
         ],
