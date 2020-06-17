@@ -139,7 +139,7 @@ export function children<T = any>(propertyOrOptions: (keyof T & string) | Childr
 //
 // @public
 export class ChildrenBehavior extends NodeObservationBehavior<ChildrenBehaviorOptions> {
-    constructor(target: HTMLSlotElement, options: ChildrenBehaviorOptions);
+    constructor(target: HTMLElement, options: ChildrenBehaviorOptions);
     disconnect(): void;
     protected getNodes(): ChildNode[];
     observe(): void;
