@@ -1,15 +1,17 @@
-import { html, ref, when } from "@microsoft/fast-element";
+import { html, ref } from "@microsoft/fast-element";
 import { Tooltip } from "./tooltip";
 
 export const TooltipTemplate = html<Tooltip>`
-<template ${ref("root")}>
+<template ${ref("tooltipRoot")}>
     <fast-anchored-region
-        anchor=${x => x.anchor}
         ${ref("region")}
-        vertical-positioning-mode="dynamic"
-        horizontal-positioning-mode="dynamic"
-        vertical-inset="true"
-        horizontal-inset="false"
+        anchor=${x => x.anchor}
+        vertical-positioning-mode=${x => x.verticalPositioningMode}
+        horizontal-positioning-mode=${x => x.horizontalPositioningMode}
+        vertical-inset=${x => x.verticalInset}
+        horizontal-inset=${x => x.horizontalInset}
+        vertical-default-position=${x => x.verticalDefaultPosition}
+        horizontal-default-position=${x => x.horizontalDefaultPosition}
     >
     <div class="tooltip" part="tooltip">
         <slot></slot>
