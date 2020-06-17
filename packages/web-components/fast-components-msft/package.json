@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-components-msft",
   "description": "A library of Web Components with Microsoft styles",
   "sideEffects": false,
-  "version": "1.2.0",
+  "version": "1.2.1",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -89,8 +89,8 @@
   },
   "dependencies": {
     "@microsoft/fast-components-styles-msft": "^4.28.13",
-    "@microsoft/fast-element": "^0.11.0",
-    "@microsoft/fast-foundation": "^1.2.0",
+    "@microsoft/fast-element": "^0.12.0",
+    "@microsoft/fast-foundation": "^1.2.1",
     "tslib": "^1.13.0"
   }
 }
