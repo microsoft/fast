@@ -1,4 +1,4 @@
-import { attr, observable } from "@microsoft/fast-element";
+import { attr, observable, FASTElement } from "@microsoft/fast-element";
 import { FASTRadio } from "@microsoft/fast-components";
 
 export class ColorSwatch extends FASTRadio {
