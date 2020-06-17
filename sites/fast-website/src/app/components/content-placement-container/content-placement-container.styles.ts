@@ -47,7 +47,7 @@ export const ContentPlacementContainerStyles = css`
 
     :host([section="feature"]) site-feature-card:hover :first-child::before,
     :host([section="feature"]) site-feature-card:focus-within :first-child::before {
-        color: var(--accent-foreground-rest);
+        color: ${accentForegroundRestBehavior.var};
     }
 
     /* end */
@@ -60,7 +60,7 @@ export const ContentPlacementContainerStyles = css`
     :host([section="community"]:focus-within) site-content-placement,
     :host([section="community"]:hover) site-content-placement ::part(content),
     :host([section="community"]:focus-within) site-content-placement ::part(content) {
-        color: var(--neutral-foreground-hint);
+        color: ${neutralForegroundHintBehavior.var};
     }
 
     :host([section="feature"]:hover) site-feature-card,
@@ -70,8 +70,8 @@ export const ContentPlacementContainerStyles = css`
 
     :host([section="feature"]) site-feature-card:hover,
     :host([section="feature"]) site-feature-card:focus-within {
-        color: var(--neutral-foreground-rest);
-        background: var(--neutral-fill-focus);
+        color: ${neutralForegroundRestBehavior.var};
+        background: ${neutralFillFocusBehavior.var};
         cursor: pointer;
         filter: saturate(1);
     }
@@ -80,7 +80,7 @@ export const ContentPlacementContainerStyles = css`
     :host([section="community"]) site-content-placement:focus-within {
         --elevation: 4;
         cursor: pointer;
-        background: var(--neutral-fill-focus);
+        background: ${neutralFillFocusBehavior.var};
         border-radius: calc(var(--corner-radius) * 1px);
         color: currentColor;
         ${elevation}
@@ -88,13 +88,13 @@ export const ContentPlacementContainerStyles = css`
 
     :host([section="community"]) site-content-placement:hover ::part(content),
     :host([section="community"]) site-content-placement:focus-within ::part(content) {
-        color: var(--accent-foreground-rest);
+        color: ${accentForegroundRestBehavior.var};
     }
 
     /* end */
 
     .headerSubscript {
-        color: var(--neutral-foreground-hint);
+        color: ${neutralForegroundHintBehavior.var};
         font-size: var(--type-ramp-minus-1-font-size);
     }
 
@@ -133,7 +133,7 @@ export const ContentPlacementContainerStyles = css`
             justify-content: space-between;
         }
         :host([section="feature"]) site-feature-card :first-child::before {
-            color: var(--accent-foreground-rest);
+            color: ${accentForegroundRestBehavior.var};
         }
     }
 `.withBehaviors(

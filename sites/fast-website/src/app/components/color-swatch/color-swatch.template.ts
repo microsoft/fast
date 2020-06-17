@@ -23,7 +23,7 @@ export const ColorSwatchTemplate = html<ColorSwatch>`
             class="${x =>
                 x.defaultSlottedNodes && x.defaultSlottedNodes.length
                     ? "label"
-                    : "label label__hidden"}"
+                    : "label label-hidden"}"
         >
             <slot ${slotted("defaultSlottedNodes")}></slot>
         </label>
