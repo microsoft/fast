@@ -10,9 +10,9 @@
     "build": "yarn build-homepage && yarn prepare-docs && docusaurus build"
   },
   "dependencies": {
-    "@docusaurus/core": "2.0.0-alpha.56",
-    "@docusaurus/preset-classic": "2.0.0-alpha.56",
-    "@docusaurus/theme-live-codeblock": "2.0.0-alpha.56",
+    "@docusaurus/core": "2.0.0-alpha.48",
+    "@docusaurus/preset-classic": "2.0.0-alpha.48",
+    "@docusaurus/theme-live-codeblock": "2.0.0-alpha.39",
     "classnames": "^2.2.6",
     "copyfiles": "^2.3.0",
     "react": "^16.8.4",

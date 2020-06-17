@@ -4181,11 +4181,6 @@
     source-map "~0.6.1"
     typescript "~3.7.2"
 
-"@microsoft/fast-element@^0.10.2":
-  version "0.10.2"
-  resolved "https://registry.yarnpkg.com/@microsoft/fast-element/-/fast-element-0.10.2.tgz#8d38c09c7d54fd017bb0b2e7a26755f3a414753f"
-  integrity sha512-VdnjhaG/nJ3JRgwEo22exyV83HAI8H3Gz5ZmCriMiQb9hENWVwtLsTeakRLBKDg433KFOwaGcYFsHZtpuNcNWw==
-
 "@microsoft/tsdoc-config@^0.13.4":
   version "0.13.4"
   resolved "https://registry.yarnpkg.com/@microsoft/tsdoc-config/-/tsdoc-config-0.13.4.tgz#84ad92b88d3899683376224de91567b01d447d18"

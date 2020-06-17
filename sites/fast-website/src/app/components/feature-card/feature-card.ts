@@ -1,3 +1,3 @@
-import { FASTCard as Card } from "@microsoft/fast-components";
+import { FASTElement } from "@microsoft/fast-element";
 
-export class FeatureCard extends Card {}
+export class FeatureCard extends FASTElement {}

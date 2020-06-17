@@ -20,7 +20,7 @@ export const FastFrameTemplate = html<FastFrame>`
                 <fast-tab id="swatches-tab" title="Styles">${SwatchesIcon}</fast-tab>
                 <fast-tab id="density-tab" title="Density">${ScreenIcon}</fast-tab>
                 <fast-tab-panel id="contrast-tab-panel" class="${x =>
-                    x.expanded ? "tab-panel__expanded" : ""}">
+                    x.expanded ? "tab-panel-expanded" : ""}">
                     <div class="content">
                         <h1><span class="content-heading-highlight">Fast Frame</span> Dark Mode</h4>
                         <h2>Pre-built for both light and dark modes</h2>
@@ -42,7 +42,7 @@ export const FastFrameTemplate = html<FastFrame>`
                     </div>
                 </fast-tab-panel>
                 <fast-tab-panel id="palette-tab-panel" class="${x =>
-                    x.expanded ? "tab-panel__expanded" : ""}">
+                    x.expanded ? "tab-panel-expanded" : ""}">
                     <div class="content">
                         <h1><span class="content-heading-highlight">Fast Frame</span> Colors</h4>
                         <h2>Pre-existing color you can customize</h2>
@@ -124,7 +124,7 @@ export const FastFrameTemplate = html<FastFrame>`
                     </div>
                 </fast-tab-panel>
                 <fast-tab-panel id="swatches-tab-panel" class="${x =>
-                    x.expanded ? "tab-panel__expanded" : ""}">
+                    x.expanded ? "tab-panel-expanded" : ""}">
                     <div class="content">
                         <h1><span class="content-heading-highlight">Fast Frame</span> Styles</h4>
                         <h2>Adjust style settings on the fly</h2>
@@ -182,7 +182,7 @@ export const FastFrameTemplate = html<FastFrame>`
                     </div>
                 </fast-tab-panel>
                 <fast-tab-panel id="density-tab-panel" class="${x =>
-                    x.expanded ? "tab-panel__expanded" : ""}">
+                    x.expanded ? "tab-panel-expanded" : ""}">
                     <div class="content">
                         <h1><span class="content-heading-highlight">Fast Frame</span> Density</h4>
                         <h2>Quickly change and modify your layout</h2>
@@ -268,7 +268,7 @@ export const FastFrameTemplate = html<FastFrame>`
                 </fast-tab-panel>
             </fast-tabs>
             <fast-design-system-provider
-                class="${x => (x.expanded ? "preview preview__expanded" : "preview")}"
+                class="${x => (x.expanded ? "preview preview-expanded" : "preview")}"
                 base-layer-luminance="${x =>
                     x.darkMode
                         ? StandardLuminance.DarkMode
@@ -318,10 +318,10 @@ export const FastFrameTemplate = html<FastFrame>`
                             <span class="sample-control-icon"></span>
                             <span class="sample-control-text">Label</span>
                             <div class="sample-control-actions">
-                                <fast-button appearance="stealth"
+                                <fast-button appearance="stealth" aria-label="Example 'share' button"
                                     >${ShareIcon}</fast-button
                                 >
-                                <fast-button appearance="stealth"
+                                <fast-button appearance="stealth" aria-label="Example 'more' button"
                                     >${ContextIcon}</fast-button
                                 >
                             </div>
