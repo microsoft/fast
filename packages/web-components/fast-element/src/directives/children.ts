@@ -22,7 +22,7 @@ export class ChildrenBehavior extends NodeObservationBehavior<ChildrenBehaviorOp
      * @param target - The element target to observe children on.
      * @param options - The options to use when observing the element children.
      */
-    public constructor(target: HTMLSlotElement, options: ChildrenBehaviorOptions) {
+    public constructor(target: HTMLElement, options: ChildrenBehaviorOptions) {
         super(target, options);
     }
 
@@ -66,6 +66,8 @@ export function children<T = any>(
             property: propertyOrOptions,
             childList: true,
         };
+    } else {
+        (propertyOrOptions as MutationObserverInit).childList = true;
     }
 
     return new AttachedBehaviorDirective(
