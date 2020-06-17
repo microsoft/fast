@@ -74,6 +74,9 @@ export class FastFrame extends FASTElement {
     @observable
     public expanded: boolean;
 
+    @observable
+    public isResponsive: boolean = false;
+
     public accentChangeHandler = (e: CustomEvent): void => {
         if (e.target instanceof SiteColorSwatch) {
             if (e.target.checked) {
@@ -170,8 +173,8 @@ export class FastFrame extends FASTElement {
         this.backgroundColor = this.previewBackgroundPalette[this.lastSelectedIndex];
     };
 
-    private resetExpanded = (): void => {
-        this.expanded = false;
+    private resetExpandedResponsive = (): void => {
+        (this.expanded = false), (this.isResponsive = !this.isResponsive);
     };
 
     constructor() {
@@ -184,6 +187,6 @@ export class FastFrame extends FASTElement {
 
         window
             .matchMedia(`(max-width: ${drawerBreakpoint})`)
-            .addListener(this.resetExpanded);
+            .addListener(this.resetExpandedResponsive);
     }
 }

@@ -63,6 +63,7 @@ export const FastFrameTemplate = html<FastFrame>`
 
                                     html<string>`
                                         <site-color-swatch
+                                            tabindex="0"
                                             value="${x => x}"
                                             background-color="${x => x}"
                                             checked="${(x, c) =>
@@ -84,6 +85,7 @@ export const FastFrameTemplate = html<FastFrame>`
 
                                     html<string>`
                                         <site-color-swatch
+                                            tabindex="0"
                                             value="${x => x}"
                                             background-color="${x => x}"
                                             checked="${(x, c) =>
@@ -255,7 +257,7 @@ export const FastFrameTemplate = html<FastFrame>`
                                     position="0"
                                 >
                                     0
-                                </fast-slider-label>            
+                                </fast-slider-label>
                                 <fast-slider-label
                                     hide-mark
                                     position="6"
@@ -329,11 +331,11 @@ export const FastFrameTemplate = html<FastFrame>`
                     </div>
                 </fast-card>
                 <div
-                    aria-hidden="${x => !x.expanded}"
                     class="preview-controls"
                 >
                     <fast-progress></fast-progress>
-                    <fast-menu tabIndex="${x => (x.expanded ? "0" : "-1")}">
+                    <fast-menu tabIndex="${x =>
+                        !x.expanded && x.isResponsive ? "-1" : "0"}">
                         <fast-menu-item role="menuitem">Menu item 1</fast-menu-item>
                         <fast-menu-item role="menuitem">Menu item 2</fast-menu-item>
                         <fast-menu-item role="menuitem">Menu item 3</fast-menu-item>
@@ -343,39 +345,44 @@ export const FastFrameTemplate = html<FastFrame>`
                     <div class="control-container">
                         <div class="control-container-column">
                             <fast-radio tabIndex="${x =>
-                                x.expanded ? "0" : "-1"}">Radio 1</fast-radio>
+                                !x.expanded && x.isResponsive
+                                    ? "-1"
+                                    : "0"}">Radio 1</fast-radio>
                             <fast-radio tabIndex="${x =>
-                                x.expanded ? "0" : "-1"}">Radio 2</fast-radio>
+                                !x.expanded && x.isResponsive
+                                    ? "-1"
+                                    : "0"}">Radio 2</fast-radio>
                         </div>
                         <div class="control-container-grid">
                             <fast-switch tabIndex="${x =>
-                                x.expanded ? "0" : "-1"}"></fast-switch>
+                                !x.expanded && x.isResponsive
+                                    ? "-1"
+                                    : "0"}"></fast-switch>
                             <p>Toggle</p>
                             <fast-checkbox tabIndex="${x =>
-                                x.expanded
-                                    ? "0"
-                                    : "-1"}" class="checkbox"></fast-checkbox>
+                                !x.expanded && x.isResponsive
+                                    ? "-1"
+                                    : "0"}" class="checkbox"></fast-checkbox>
                             <p class="checkbox-label">Checkbox</p>
                         </div>
                     </div>
                     <fast-text-field placeholder="Text field" tabIndex="${x =>
-                        x.expanded ? "0" : "-1"}"></fast-text-field>
+                        !x.expanded && x.isResponsive ? "-1" : "0"}"></fast-text-field>
                     <div class="control-container-2">
                         <fast-slider tabIndex="${x =>
-                            x.expanded ? "0" : "-1"}"></fast-slider>
-                        <fast-flipper aria-hidden="false" tabIndex="${x =>
-                            x.expanded ? "0" : "-1"}"></fast-flipper>
-                        <fast-flipper disabled tabIndex="${x =>
-                            x.expanded ? "0" : "-1"}"></fast-flipper>
+                            !x.expanded && x.isResponsive ? "-1" : "0"}"></fast-slider>
+                        <fast-flipper aria-label="Example 'flipper' button" tabIndex="${x =>
+                            !x.expanded && x.isResponsive ? "-1" : "0"}"></fast-flipper>
+                        <fast-flipper disabled aria-label="Example disabled 'flipper' button"></fast-flipper>
                     </div>
                     <div class="control-container">
-                        <fast-button appearance="accent" tabIndex="${x =>
-                            x.expanded ? "0" : "-1"}">
+                        <fast-button appearance="accent" aria-label="Example 'download' button" tabIndex="${x =>
+                            !x.expanded && x.isResponsive ? "-1" : "0"}">
                             Button
                             <span slot="start">${DownloadIcon}</span>
                         </fast-button>
-                        <fast-button appearance="neutral" tabIndex="${x =>
-                            x.expanded ? "0" : "-1"}">
+                        <fast-button appearance="neutral" aria-label="Example 'play' button" tabIndex="${x =>
+                            !x.expanded && x.isResponsive ? "-1" : "0"}">
                             Button
                             <span slot="start">${PlayIcon}</span>
                         </fast-button>
