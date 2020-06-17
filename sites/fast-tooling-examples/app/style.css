@@ -101,3 +101,7 @@ iframe {
     color: white;
     padding: 10px;
 }
+
+#tabs {
+    display: none;
+}
