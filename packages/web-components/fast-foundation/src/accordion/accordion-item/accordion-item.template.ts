@@ -2,6 +2,10 @@ import { html, ref } from "@microsoft/fast-element";
 import { endTemplate, startTemplate } from "../../patterns/start-end";
 import { AccordionItem } from "./accordion-item";
 
+/**
+ * The template for the {@link @microsoft/fast-foundation#(AccordionItem:class)} component.
+ * @public
+ */
 export const AccordionItemTemplate = html<AccordionItem>`
     <template
         class="${x => (x.expanded ? "expanded" : "")}"

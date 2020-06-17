@@ -1,6 +1,10 @@
 import { html, when } from "@microsoft/fast-element";
 import { BaseProgress } from "../base-progress";
 
+/**
+ * The template for the {@link @microsoft/fast-foundation#BaseProgress} component.
+ * @public
+ */
 export const ProgressTemplate = html<BaseProgress>`
     <template
         role="progressbar"
