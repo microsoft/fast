@@ -113,3 +113,7 @@ Because FAST has abstracted base components from their style, you get a head sta
 * Ask questions on [Stack Overflow](https://stackoverflow.com/questions/tagged/fast-dna).	
 * Submit requests and issues on [Github](https://github.com/Microsoft/fast-dna/issues/new/choose).	
 * Contribute by helping out on some of our recommended first issues on [Github](https://github.com/Microsoft/fast-dna/labels/good%20first%20issue).
+
+## Status
+
+Experiencing problems with our site? Check our infrastructure [health status](https://www.fast.design/docs/en/contributing/status) and feel free to contact us through the channels listed above.
