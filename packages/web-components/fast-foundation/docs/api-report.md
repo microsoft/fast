@@ -12,39 +12,35 @@ import { FASTElement } from '@microsoft/fast-element';
 import { Orientation } from '@microsoft/fast-web-utilities';
 import { PartialFASTElementDefinition } from '@microsoft/fast-element';
 
-// @public (undocumented)
+// @public
 export class Accordion extends FASTElement {
-    // (undocumented)
+    // @internal (undocumented)
     accordionItems: HTMLElement[];
-    // (undocumented)
+    // @internal (undocumented)
     accordionItemsChanged(oldValue: any, newValue: any): void;
-    // (undocumented)
     expandmode: AccordionExpandMode;
     }
 
-// @public (undocumented)
+// @public
 export enum AccordionExpandMode {
-    // (undocumented)
     multi = "multi",
-    // (undocumented)
     single = "single"
 }
 
-// @public (undocumented)
+// Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "AccordionItem" because one of its declarations is marked as @internal
+//
+// @public
 export class AccordionItem extends FASTElement {
-    // (undocumented)
+    // @internal (undocumented)
     clickHandler: (e: MouseEvent) => void;
-    // (undocumented)
+    // @internal (undocumented)
     expandbutton: HTMLElement;
-    // (undocumented)
     expanded: boolean;
-    // (undocumented)
     headinglevel: 1 | 2 | 3 | 4 | 5 | 6;
-    // (undocumented)
     id: string;
 }
 
-// @public (undocumented)
+// @internal
 export interface AccordionItem extends StartEnd {
 }
 
@@ -54,33 +50,26 @@ export const AccordionItemTemplate: import("@microsoft/fast-element").ViewTempla
 // @public (undocumented)
 export const AccordionTemplate: import("@microsoft/fast-element").ViewTemplate<Accordion, any>;
 
-// @public (undocumented)
+// Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "Anchor" because one of its declarations is marked as @internal
+//
+// @public
 export class Anchor extends FASTElement {
-    // (undocumented)
     appearance: AnchorAppearance;
-    // (undocumented)
     download: string;
-    // (undocumented)
     href: string;
-    // (undocumented)
     hreflang: string;
-    // (undocumented)
     ping: string;
-    // (undocumented)
     referrerpolicy: string;
-    // (undocumented)
     rel: string;
-    // (undocumented)
     target: "_self" | "_blank" | "_parent" | "_top";
-    // (undocumented)
     type: string;
 }
 
-// @public (undocumented)
+// @internal
 export interface Anchor extends StartEnd {
 }
 
-// @public (undocumented)
+// @public
 export type AnchorAppearance = ButtonAppearance | "hypertext";
 
 // @public (undocumented)
@@ -227,7 +216,7 @@ export interface CSSCustomPropertyTarget {
     unregisterCSSCustomProperty(behavior: CSSCustomPropertyDefinition): void;
 }
 
-// @public (undocumented)
+// @public
 export type CSSDisplayPropertyValue = "block" | "contents" | "flex" | "grid" | "inherit" | "initial" | "inline" | "inline-block" | "inline-flex" | "inline-grid" | "inline-table" | "list-item" | "none" | "run-in" | "table" | "table-caption" | "table-cell" | "table-column" | "table-column-group" | "table-footer-group" | "table-header-group" | "table-row" | "table-row-group";
 
 // @public (undocumented)
@@ -308,7 +297,7 @@ export class Dialog extends FASTElement {
 // @public (undocumented)
 export const DialogTemplate: import("@microsoft/fast-element").ViewTemplate<Dialog, any>;
 
-// @public (undocumented)
+// @public
 export const disabledCursor = "not-allowed";
 
 // @public
@@ -396,7 +385,7 @@ export const forcedColorsStylesheetBehavior: (sheet: ElementStyles) => Readonly<
     }): void;
 }>;
 
-// @public (undocumented)
+// @public
 export const hidden = "\n    :host([hidden]) {\n        display: none;\n    }\n";
 
 // @public
@@ -703,40 +692,36 @@ export class Switch extends FormAssociated<HTMLInputElement> {
     value: string;
     }
 
-// @public (undocumented)
+// @public
 export const SwitchTemplate: import("@microsoft/fast-element").ViewTemplate<Switch, any>;
 
-// @public (undocumented)
+// @public
 export class Tab extends FASTElement {
 }
 
-// @public (undocumented)
+// @public
 export class TabPanel extends FASTElement {
 }
 
-// @public (undocumented)
+// @public
 export const TabPanelTemplate: import("@microsoft/fast-element").ViewTemplate<TabPanel, any>;
 
-// @public (undocumented)
+// @public
 export class Tabs extends FASTElement {
     constructor();
-    // (undocumented)
     activeid: string;
-    // (undocumented)
     activeindicator: boolean;
-    // (undocumented)
+    // @internal (undocumented)
     activeIndicatorRef: HTMLElement;
-    // (undocumented)
     activetab: HTMLElement;
-    // (undocumented)
     orientation: TabsOrientation;
-    // (undocumented)
+    // @internal (undocumented)
     tabpanels: HTMLElement[];
-    // (undocumented)
+    // @internal (undocumented)
     tabpanelsChanged(): void;
-    // (undocumented)
+    // @internal (undocumented)
     tabs: HTMLElement[];
-    // (undocumented)
+    // @internal (undocumented)
     tabsChanged(): void;
     }
 
@@ -744,7 +729,7 @@ export class Tabs extends FASTElement {
 export interface Tabs extends StartEnd {
 }
 
-// @public (undocumented)
+// @public
 export enum TabsOrientation {
     // (undocumented)
     horizontal = "horizontal",
@@ -752,111 +737,82 @@ export enum TabsOrientation {
     vertical = "vertical"
 }
 
-// @public (undocumented)
+// @public
 export const TabsTemplate: import("@microsoft/fast-element").ViewTemplate<Tabs, any>;
 
-// @public (undocumented)
+// @public
 export const TabTemplate: import("@microsoft/fast-element").ViewTemplate<Tab, any>;
 
-// @public (undocumented)
+// @public
 export class TextArea extends FormAssociated<HTMLTextAreaElement> {
-    // (undocumented)
     appearance: TextAreaAppearance;
-    // (undocumented)
     autofocus: boolean;
-    // (undocumented)
     cols: number;
-    // (undocumented)
+    // @internal (undocumented)
     connectedCallback(): void;
-    // (undocumented)
+    // @internal (undocumented)
     defaultSlottedNodes: Node[];
-    // (undocumented)
     formId: string;
-    // (undocumented)
+    // @internal (undocumented)
     handleTextInput: () => void;
-    // (undocumented)
     list: string;
-    // (undocumented)
     maxlength: number;
-    // (undocumented)
     minlength: number;
-    // (undocumented)
     name: string;
-    // (undocumented)
     placeholder: string;
     // (undocumented)
     protected proxy: HTMLTextAreaElement;
-    // (undocumented)
     readOnly: boolean;
-    // (undocumented)
     resize: TextAreaResize;
-    // (undocumented)
     rows: number;
-    // (undocumented)
     spellcheck: boolean;
-    // (undocumented)
+    // @internal (undocumented)
     textarea: HTMLTextAreaElement;
-    // (undocumented)
+    // @internal (undocumented)
     valueChanged(): void;
 }
 
-// @public (undocumented)
+// @public
 export enum TextAreaAppearance {
-    // (undocumented)
     filled = "filled",
-    // (undocumented)
     outline = "outline"
 }
 
-// @public (undocumented)
+// @public
 export enum TextAreaResize {
-    // (undocumented)
     both = "both",
-    // (undocumented)
     horizontal = "horizontal",
-    // (undocumented)
     none = "none",
-    // (undocumented)
     vertical = "vertical"
 }
 
-// @public (undocumented)
+// @public
 export const TextAreaTemplate: import("@microsoft/fast-element").ViewTemplate<TextArea, any>;
 
-// @public (undocumented)
+// @public
 export class TextField extends FormAssociated<HTMLInputElement> {
+    // @internal
     constructor();
-    // (undocumented)
     appearance: TextFieldAppearance;
-    // (undocumented)
     autofocus: boolean;
-    // (undocumented)
+    // @internal (undocumented)
     connectedCallback(): void;
-    // (undocumented)
+    // @internal (undocumented)
     control: HTMLInputElement;
-    // (undocumented)
+    // @internal (undocumented)
     defaultSlottedNodes: Node[];
-    // (undocumented)
+    // @internal (undocumented)
     handleTextInput(): void;
-    // (undocumented)
     list: string;
-    // (undocumented)
     maxlength: number;
-    // (undocumented)
     minlength: number;
-    // (undocumented)
     pattern: string;
-    // (undocumented)
     placeholder: string;
     // (undocumented)
     protected proxy: HTMLInputElement;
-    // (undocumented)
     readOnly: boolean;
-    // (undocumented)
     size: number;
-    // (undocumented)
     spellcheck: boolean;
-    // (undocumented)
     type: TextFieldType;
     }
 
@@ -864,36 +820,29 @@ export class TextField extends FormAssociated<HTMLInputElement> {
 export interface TextField extends StartEnd {
 }
 
-// @public (undocumented)
+// @public
 export enum TextFieldAppearance {
-    // (undocumented)
     filled = "filled",
-    // (undocumented)
     outline = "outline"
 }
 
-// @public (undocumented)
+// @public
 export const TextFieldTemplate: import("@microsoft/fast-element").ViewTemplate<TextField, any>;
 
-// @public (undocumented)
+// @public
 export enum TextFieldType {
-    // (undocumented)
     email = "email",
-    // (undocumented)
     password = "password",
-    // (undocumented)
     tel = "tel",
-    // (undocumented)
     text = "text",
-    // (undocumented)
     url = "url"
 }
 
 
 // Warnings were encountered during analysis:
 //
-// dist/dts/utilities/match-media-stylesheet-behavior.d.ts:65:5 - (ae-forgotten-export) The symbol "MatchMediaStyleSheetBehavior" needs to be exported by the entry point index.d.ts
-// dist/dts/utilities/match-media-stylesheet-behavior.d.ts:65:5 - (ae-forgotten-export) The symbol "MediaQueryListListener" needs to be exported by the entry point index.d.ts
+// dist/dts/utilities/match-media-stylesheet-behavior.d.ts:69:5 - (ae-forgotten-export) The symbol "MatchMediaStyleSheetBehavior" needs to be exported by the entry point index.d.ts
+// dist/dts/utilities/match-media-stylesheet-behavior.d.ts:69:5 - (ae-forgotten-export) The symbol "MediaQueryListListener" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 

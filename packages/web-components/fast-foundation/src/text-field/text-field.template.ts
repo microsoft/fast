@@ -2,6 +2,10 @@ import { html, ref, slotted } from "@microsoft/fast-element";
 import { endTemplate, startTemplate } from "../patterns/start-end";
 import { TextField } from "./text-field";
 
+/**
+ * The template for the {@link @microsoft/fast-foundation#(TextField:class)} component.
+ * @public
+ */
 export const TextFieldTemplate = html<TextField>`
     <template
         role="textbox"

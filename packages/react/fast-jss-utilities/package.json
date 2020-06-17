@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-jss-utilities",
   "description": "Utilities for use with JSS",
   "sideEffects": false,
-  "version": "4.7.15",
+  "version": "4.7.16",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -79,7 +79,7 @@
   },
   "dependencies": {
     "@microsoft/fast-colors": "^5.0.10",
-    "@microsoft/fast-jss-manager": "^4.1.19",
+    "@microsoft/fast-jss-manager": "^4.1.20",
     "@microsoft/fast-web-utilities": "^4.5.1",
     "csstype": "^2.3.0",
     "exenv-es6": "^1.0.0"

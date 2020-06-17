@@ -1,0 +1,4 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-close" width="21" height="21" viewBox="0 0 21 21">
+    <rect x="3" width="25" height="3" rx="1.5" transform="rotate(45 3 0)"/>
+    <rect x="1" y="18" width="25" height="3" rx="1.5" transform="rotate(-45 1 18)"/>
+</svg>

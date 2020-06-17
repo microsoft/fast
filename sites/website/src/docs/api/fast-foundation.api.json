@@ -18,7 +18,7 @@
         {
           "kind": "Class",
           "canonicalReference": "@microsoft/fast-foundation!Accordion:class",
-          "docComment": "",
+          "docComment": "/**\n * An Accordion Custom HTML Element Implements {@link https://www.w3.org/TR/wai-aria-practices-1.1/#accordion | ARIA Accordion}.\n *\n * @remarks\n *\n * Designed to be used with {@link @microsoft/fast-foundation#AccordionTemplate} and {@link @microsoft/fast-foundation#AccordionItem}.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -39,98 +39,8 @@
           "members": [
             {
               "kind": "Property",
-              "canonicalReference": "@microsoft/fast-foundation!Accordion#accordionItems:member",
-              "docComment": "",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "accordionItems: "
-                },
-                {
-                  "kind": "Reference",
-                  "text": "HTMLElement",
-                  "canonicalReference": "!HTMLElement:interface"
-                },
-                {
-                  "kind": "Content",
-                  "text": "[]"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";"
-                }
-              ],
-              "releaseTag": "Public",
-              "name": "accordionItems",
-              "propertyTypeTokenRange": {
-                "startIndex": 1,
-                "endIndex": 3
-              },
-              "isStatic": false
-            },
-            {
-              "kind": "Method",
-              "canonicalReference": "@microsoft/fast-foundation!Accordion#accordionItemsChanged:member(1)",
-              "docComment": "",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "accordionItemsChanged(oldValue: "
-                },
-                {
-                  "kind": "Content",
-                  "text": "any"
-                },
-                {
-                  "kind": "Content",
-                  "text": ", newValue: "
-                },
-                {
-                  "kind": "Content",
-                  "text": "any"
-                },
-                {
-                  "kind": "Content",
-                  "text": "): "
-                },
-                {
-                  "kind": "Content",
-                  "text": "void"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";"
-                }
-              ],
-              "isStatic": false,
-              "returnTypeTokenRange": {
-                "startIndex": 5,
-                "endIndex": 6
-              },
-              "releaseTag": "Public",
-              "overloadIndex": 1,
-              "parameters": [
-                {
-                  "parameterName": "oldValue",
-                  "parameterTypeTokenRange": {
-                    "startIndex": 1,
-                    "endIndex": 2
-                  }
-                },
-                {
-                  "parameterName": "newValue",
-                  "parameterTypeTokenRange": {
-                    "startIndex": 3,
-                    "endIndex": 4
-                  }
-                }
-              ],
-              "name": "accordionItemsChanged"
-            },
-            {
-              "kind": "Property",
               "canonicalReference": "@microsoft/fast-foundation!Accordion#expandmode:member",
-              "docComment": "",
+              "docComment": "/**\n * Controls the expand mode of the Accordion, either allowing single or multiple item expansion.\n *\n * @remarks\n *\n * HTML attribute: expand-mode\n *\n * @defaultValue\n *\n * {@link AccordionExpandMode.multi}\n *\n * @public\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -164,7 +74,7 @@
         {
           "kind": "Enum",
           "canonicalReference": "@microsoft/fast-foundation!AccordionExpandMode:enum",
-          "docComment": "",
+          "docComment": "/**\n * Expand mode for {@link Accordion}\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -177,7 +87,7 @@
             {
               "kind": "EnumMember",
               "canonicalReference": "@microsoft/fast-foundation!AccordionExpandMode.multi:member",
-              "docComment": "",
+              "docComment": "/**\n * Designates multiple {@link @microsoft/fast-foundation#AccordionItem | AccordionItems} can be open simultaneously.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -198,7 +108,7 @@
             {
               "kind": "EnumMember",
               "canonicalReference": "@microsoft/fast-foundation!AccordionExpandMode.single:member",
-              "docComment": "",
+              "docComment": "/**\n * Designates only a single {@link @microsoft/fast-foundation#AccordionItem} can be open a time.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -221,7 +131,7 @@
         {
           "kind": "Class",
           "canonicalReference": "@microsoft/fast-foundation!AccordionItem:class",
-          "docComment": "",
+          "docComment": "/**\n * An individual item in an {@link @microsoft/fast-foundation#Accordion}.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -242,70 +152,8 @@
           "members": [
             {
               "kind": "Property",
-              "canonicalReference": "@microsoft/fast-foundation!AccordionItem#clickHandler:member",
-              "docComment": "",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "clickHandler: "
-                },
-                {
-                  "kind": "Content",
-                  "text": "(e: "
-                },
-                {
-                  "kind": "Reference",
-                  "text": "MouseEvent",
-                  "canonicalReference": "!MouseEvent:interface"
-                },
-                {
-                  "kind": "Content",
-                  "text": ") => void"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";"
-                }
-              ],
-              "releaseTag": "Public",
-              "name": "clickHandler",
-              "propertyTypeTokenRange": {
-                "startIndex": 1,
-                "endIndex": 4
-              },
-              "isStatic": false
-            },
-            {
-              "kind": "Property",
-              "canonicalReference": "@microsoft/fast-foundation!AccordionItem#expandbutton:member",
-              "docComment": "",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "expandbutton: "
-                },
-                {
-                  "kind": "Reference",
-                  "text": "HTMLElement",
-                  "canonicalReference": "!HTMLElement:interface"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";"
-                }
-              ],
-              "releaseTag": "Public",
-              "name": "expandbutton",
-              "propertyTypeTokenRange": {
-                "startIndex": 1,
-                "endIndex": 2
-              },
-              "isStatic": false
-            },
-            {
-              "kind": "Property",
               "canonicalReference": "@microsoft/fast-foundation!AccordionItem#expanded:member",
-              "docComment": "",
+              "docComment": "/**\n * Expands or collapses the item.\n *\n * @remarks\n *\n * HTML attribute: expanded\n *\n * @public\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -331,7 +179,7 @@
             {
               "kind": "Property",
               "canonicalReference": "@microsoft/fast-foundation!AccordionItem#headinglevel:member",
-              "docComment": "",
+              "docComment": "/**\n * Configures the {@link https://www.w3.org/TR/wai-aria-1.1/#aria-level | level} of the heading element.\n *\n * @remarks\n *\n * HTML attribute: heading-level\n *\n * @defaultValue\n *\n * 2\n *\n * @public\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -357,7 +205,7 @@
             {
               "kind": "Property",
               "canonicalReference": "@microsoft/fast-foundation!AccordionItem#id:member",
-              "docComment": "",
+              "docComment": "/**\n * The item ID\n *\n * @remarks\n *\n * HTML Attribute: id\n *\n * @public\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -386,35 +234,6 @@
             "endIndex": 3
           },
           "implementsTokenRanges": []
-        },
-        {
-          "kind": "Interface",
-          "canonicalReference": "@microsoft/fast-foundation!AccordionItem:interface",
-          "docComment": "",
-          "excerptTokens": [
-            {
-              "kind": "Content",
-              "text": "export interface AccordionItem extends "
-            },
-            {
-              "kind": "Reference",
-              "text": "StartEnd",
-              "canonicalReference": "@microsoft/fast-foundation!StartEnd:class"
-            },
-            {
-              "kind": "Content",
-              "text": " "
-            }
-          ],
-          "releaseTag": "Public",
-          "name": "AccordionItem",
-          "members": [],
-          "extendsTokenRanges": [
-            {
-              "startIndex": 1,
-              "endIndex": 3
-            }
-          ]
         },
         {
           "kind": "Variable",
@@ -497,7 +316,7 @@
         {
           "kind": "Class",
           "canonicalReference": "@microsoft/fast-foundation!Anchor:class",
-          "docComment": "",
+          "docComment": "/**\n * An Anchor Custom HTML Element. Based largely on the {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a | <a> element}.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -519,7 +338,7 @@
             {
               "kind": "Property",
               "canonicalReference": "@microsoft/fast-foundation!Anchor#appearance:member",
-              "docComment": "",
+              "docComment": "/**\n * The appearance the anchor should have.\n *\n * @remarks\n *\n * HTML Attribute: appearance\n *\n * @public\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -546,7 +365,7 @@
             {
               "kind": "Property",
               "canonicalReference": "@microsoft/fast-foundation!Anchor#download:member",
-              "docComment": "",
+              "docComment": "/**\n * Prompts the user to save the linked URL. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a | <a> element} for more information.\n *\n * @remarks\n *\n * HTML Attribute: download\n *\n * @public\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -572,7 +391,7 @@
             {
               "kind": "Property",
               "canonicalReference": "@microsoft/fast-foundation!Anchor#href:member",
-              "docComment": "",
+              "docComment": "/**\n * The URL the hyperlink references. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a | <a> element} for more information.\n *\n * @remarks\n *\n * HTML Attribute: href\n *\n * @public\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -598,7 +417,7 @@
             {
               "kind": "Property",
               "canonicalReference": "@microsoft/fast-foundation!Anchor#hreflang:member",
-              "docComment": "",
+              "docComment": "/**\n * Hints at the language of the referenced resource. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a | <a> element} for more information.\n *\n * @remarks\n *\n * HTML Attribute: hreflang\n *\n * @public\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -624,7 +443,7 @@
             {
               "kind": "Property",
               "canonicalReference": "@microsoft/fast-foundation!Anchor#ping:member",
-              "docComment": "",
+              "docComment": "/**\n * See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a | <a> element} for more information.\n *\n * @remarks\n *\n * HTML Attribute: ping\n *\n * @public\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -650,7 +469,7 @@
             {
               "kind": "Property",
               "canonicalReference": "@microsoft/fast-foundation!Anchor#referrerpolicy:member",
-              "docComment": "",
+              "docComment": "/**\n * See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a | <a> element} for more information.\n *\n * @remarks\n *\n * HTML Attribute: referrerpolicy\n *\n * @public\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -676,7 +495,7 @@
             {
               "kind": "Property",
               "canonicalReference": "@microsoft/fast-foundation!Anchor#rel:member",
-              "docComment": "",
+              "docComment": "/**\n * See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a | <a> element} for more information.\n *\n * @remarks\n *\n * HTML Attribute: rel\n *\n * @public\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -702,7 +521,7 @@
             {
               "kind": "Property",
               "canonicalReference": "@microsoft/fast-foundation!Anchor#target:member",
-              "docComment": "",
+              "docComment": "/**\n * See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a | <a> element} for more information.\n *\n * @remarks\n *\n * HTML Attribute: target\n *\n * @public\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -728,7 +547,7 @@
             {
               "kind": "Property",
               "canonicalReference": "@microsoft/fast-foundation!Anchor#type:member",
-              "docComment": "",
+              "docComment": "/**\n * See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a | <a> element} for more information.\n *\n * @remarks\n *\n * HTML Attribute: type\n *\n * @public\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -759,38 +578,9 @@
           "implementsTokenRanges": []
         },
         {
-          "kind": "Interface",
-          "canonicalReference": "@microsoft/fast-foundation!Anchor:interface",
-          "docComment": "",
-          "excerptTokens": [
-            {
-              "kind": "Content",
-              "text": "export interface Anchor extends "
-            },
-            {
-              "kind": "Reference",
-              "text": "StartEnd",
-              "canonicalReference": "@microsoft/fast-foundation!StartEnd:class"
-            },
-            {
-              "kind": "Content",
-              "text": " "
-            }
-          ],
-          "releaseTag": "Public",
-          "name": "Anchor",
-          "members": [],
-          "extendsTokenRanges": [
-            {
-              "startIndex": 1,
-              "endIndex": 3
-            }
-          ]
-        },
-        {
           "kind": "TypeAlias",
           "canonicalReference": "@microsoft/fast-foundation!AnchorAppearance:type",
-          "docComment": "",
+          "docComment": "/**\n * Types of anchor appearance.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -859,7 +649,7 @@
         {
           "kind": "Function",
           "canonicalReference": "@microsoft/fast-foundation!applyMixins:function(1)",
-          "docComment": "/**\n * Apply mixins to a constructor.\n *\n * https://www.typescriptlang.org/docs/handbook/mixins.html\n */\n",
+          "docComment": "/**\n * Apply mixins to a constructor. Sourced from {@link https://www.typescriptlang.org/docs/handbook/mixins.html | TypeScript Documentation}.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -2153,7 +1943,7 @@
         {
           "kind": "Function",
           "canonicalReference": "@microsoft/fast-foundation!composedParent:function(1)",
-          "docComment": "/**\n * Retrieves the \"parent\" element of a node, ignoring DOM tree boundries. When the \"parent\" of a node is a shadow-root, it will return the host element of the shadow root.\n *\n * @param element - The element to retrieve the parent element of\n */\n",
+          "docComment": "/**\n * Retrieves the \"composed parent\" element of a node, ignoring DOM tree boundaries. When the parent of a node is a shadow-root, it will return the host element of the shadow root. Otherwise it will return the parent node or null if no parent node exists.\n *\n * @param element - The element for which to retrieve the composed parent\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -2221,13 +2011,13 @@
           "name": "composedParent"
         },
         {
-          "kind": "TypeAlias",
-          "canonicalReference": "@microsoft/fast-foundation!CSSCustomPropertyBehavior:type",
-          "docComment": "",
+          "kind": "Class",
+          "canonicalReference": "@microsoft/fast-foundation!CSSCustomPropertyBehavior:class",
+          "docComment": "/**\n * A Behavior that, when bound, will register itself with the nearest CSSCustomPropertyTarget\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
-              "text": "export declare type CSSCustomPropertyBehavior = "
+              "text": "export declare class CSSCustomPropertyBehavior implements "
             },
             {
               "kind": "Reference",
@@ -2236,7 +2026,7 @@
             },
             {
               "kind": "Content",
-              "text": " & "
+              "text": ", "
             },
             {
               "kind": "Reference",
@@ -2245,15 +2035,229 @@
             },
             {
               "kind": "Content",
-              "text": ";"
+              "text": " "
             }
           ],
           "releaseTag": "Public",
           "name": "CSSCustomPropertyBehavior",
-          "typeTokenRange": {
-            "startIndex": 1,
-            "endIndex": 4
-          }
+          "members": [
+            {
+              "kind": "Constructor",
+              "canonicalReference": "@microsoft/fast-foundation!CSSCustomPropertyBehavior:constructor(1)",
+              "docComment": "/**\n * Constructs a new instance of the `CSSCustomPropertyBehavior` class\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "constructor(\n    name: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "string"
+                },
+                {
+                  "kind": "Content",
+                  "text": ", \n    value: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "CSSCustomPropertyDefinition",
+                  "canonicalReference": "@microsoft/fast-foundation!CSSCustomPropertyDefinition:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": "[\"value\"]"
+                },
+                {
+                  "kind": "Content",
+                  "text": ", \n    host: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "(source: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "HTMLElement",
+                  "canonicalReference": "!HTMLElement:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": ") => "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "Partial",
+                  "canonicalReference": "!Partial:type"
+                },
+                {
+                  "kind": "Content",
+                  "text": "<"
+                },
+                {
+                  "kind": "Reference",
+                  "text": "CSSCustomPropertyTarget",
+                  "canonicalReference": "@microsoft/fast-foundation!CSSCustomPropertyTarget:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": "> | null"
+                },
+                {
+                  "kind": "Content",
+                  "text": ");"
+                }
+              ],
+              "releaseTag": "Public",
+              "overloadIndex": 1,
+              "parameters": [
+                {
+                  "parameterName": "name",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 1,
+                    "endIndex": 2
+                  }
+                },
+                {
+                  "parameterName": "value",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 3,
+                    "endIndex": 5
+                  }
+                },
+                {
+                  "parameterName": "host",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 6,
+                    "endIndex": 13
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@microsoft/fast-foundation!CSSCustomPropertyBehavior#name:member",
+              "docComment": "/**\n * The name of the CSS Custom Property behavior.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "readonly name: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "CSSCustomPropertyDefinition",
+                  "canonicalReference": "@microsoft/fast-foundation!CSSCustomPropertyDefinition:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": "[\"name\"]"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "name",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 3
+              },
+              "isStatic": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@microsoft/fast-foundation!CSSCustomPropertyBehavior#propertyName:member",
+              "docComment": "/**\n * The name of the CSSCustomPropertyBehavior formatted as a CSS custom property.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "readonly propertyName: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "string"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "propertyName",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@microsoft/fast-foundation!CSSCustomPropertyBehavior#value:member",
+              "docComment": "/**\n * The value or function that will resolve the value of the CSS Custom Property.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "readonly value: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "CSSCustomPropertyDefinition",
+                  "canonicalReference": "@microsoft/fast-foundation!CSSCustomPropertyDefinition:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": "[\"value\"]"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "value",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 3
+              },
+              "isStatic": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@microsoft/fast-foundation!CSSCustomPropertyBehavior#var:member",
+              "docComment": "/**\n * Return the CSS Custom Property formatted as a CSS variable.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "readonly var: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "string"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "var",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false
+            }
+          ],
+          "implementsTokenRanges": [
+            {
+              "startIndex": 1,
+              "endIndex": 2
+            },
+            {
+              "startIndex": 3,
+              "endIndex": 5
+            }
+          ]
         },
         {
           "kind": "Function",
@@ -2327,7 +2331,7 @@
             {
               "kind": "Reference",
               "text": "CSSCustomPropertyBehavior",
-              "canonicalReference": "@microsoft/fast-foundation!CSSCustomPropertyBehavior:type"
+              "canonicalReference": "@microsoft/fast-foundation!CSSCustomPropertyBehavior:class"
             },
             {
               "kind": "Content",
@@ -2568,7 +2572,7 @@
         {
           "kind": "TypeAlias",
           "canonicalReference": "@microsoft/fast-foundation!CSSDisplayPropertyValue:type",
-          "docComment": "",
+          "docComment": "/**\n * Define all possible CSS display values.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -3900,7 +3904,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-foundation!disabledCursor:var",
-          "docComment": "",
+          "docComment": "/**\n * The CSS value for disabled cursors.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -3917,7 +3921,7 @@
         {
           "kind": "Function",
           "canonicalReference": "@microsoft/fast-foundation!display:function(1)",
-          "docComment": "/**\n * Apply the common styles for every component\n *\n * @param display - The CSS display property value\n */\n",
+          "docComment": "/**\n * Applies a CSS display property. Also adds CSS rules to not display the element when the [hidden] attribute is applied to the element.\n *\n * @param display - The CSS display property value\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -4356,7 +4360,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-foundation!focusVisible:var",
-          "docComment": "/**\n * The string representing the focus selector to be used. Value will be \"focus-visible\" when https://drafts.csswg.org/selectors-4/#the-focus-visible-pseudo is supported and \"focus\" when it is not.\n */\n",
+          "docComment": "/**\n * The string representing the focus selector to be used. Value will be \"focus-visible\" when https://drafts.csswg.org/selectors-4/#the-focus-visible-pseudo is supported and \"focus\" when it is not.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -4377,7 +4381,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-foundation!forcedColorsStylesheetBehavior:var",
-          "docComment": "/**\n * Applies ElementStyles to a FASTElement when the forced-colors media query is matched, removes the ElementStyles when the query is no-longer matched\n */\n",
+          "docComment": "/**\n * Implements {@link matchMediaStylesheetBehaviorFactory} for the {@link https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors | forced-colors} query. This can be used to construct a behavior to apply a forced-colors only stylesheet.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -4866,7 +4870,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-foundation!hidden:var",
-          "docComment": "",
+          "docComment": "/**\n * A CSS fragment to set `display: none;` when the host is hidden using the [hidden] attribute.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -4946,7 +4950,7 @@
         {
           "kind": "Function",
           "canonicalReference": "@microsoft/fast-foundation!matchMediaStylesheetBehaviorFactory:function(1)",
-          "docComment": "/**\n * Construct a behavior to conditionally apply a stylesheet based on a MediaQueryList\n */\n",
+          "docComment": "/**\n * Construct a behavior factory that will conditionally apply a stylesheet based on a MediaQueryList\n *\n * @param query - The MediaQueryList to subscribe to matches for.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -8923,7 +8927,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-foundation!SwitchTemplate:var",
-          "docComment": "",
+          "docComment": "/**\n * The template for the {@link @microsoft/fast-foundation#Switch} component.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -8962,7 +8966,7 @@
         {
           "kind": "Class",
           "canonicalReference": "@microsoft/fast-foundation!Tab:class",
-          "docComment": "",
+          "docComment": "/**\n * A Tab Component to be used with {@link @microsoft/fast-foundation#(Tabs:class)}\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -8990,7 +8994,7 @@
         {
           "kind": "Class",
           "canonicalReference": "@microsoft/fast-foundation!TabPanel:class",
-          "docComment": "",
+          "docComment": "/**\n * A TabPanel Component to be used with {@link @microsoft/fast-foundation#(Tabs:class)}\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -9018,7 +9022,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-foundation!TabPanelTemplate:var",
-          "docComment": "",
+          "docComment": "/**\n * The template for the {@link @microsoft/fast-foundation#TabPanel} component.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -9057,7 +9061,7 @@
         {
           "kind": "Class",
           "canonicalReference": "@microsoft/fast-foundation!Tabs:class",
-          "docComment": "",
+          "docComment": "/**\n * An Tabs Custom HTML Element. Implements the {@link https://www.w3.org/TR/wai-aria-1.1/#tablist | ARIA tablist}.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -9093,7 +9097,7 @@
             {
               "kind": "Property",
               "canonicalReference": "@microsoft/fast-foundation!Tabs#activeid:member",
-              "docComment": "",
+              "docComment": "/**\n * The id of the active tab\n *\n * @remarks\n *\n * HTML Attribute: activeid\n *\n * @public\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -9119,7 +9123,7 @@
             {
               "kind": "Property",
               "canonicalReference": "@microsoft/fast-foundation!Tabs#activeindicator:member",
-              "docComment": "",
+              "docComment": "/**\n * Whether or not to show the active indicator\n *\n * @remarks\n *\n * HTML Attribute: activeindicator\n *\n * @public\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -9144,35 +9148,8 @@
             },
             {
               "kind": "Property",
-              "canonicalReference": "@microsoft/fast-foundation!Tabs#activeIndicatorRef:member",
-              "docComment": "",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "activeIndicatorRef: "
-                },
-                {
-                  "kind": "Reference",
-                  "text": "HTMLElement",
-                  "canonicalReference": "!HTMLElement:interface"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";"
-                }
-              ],
-              "releaseTag": "Public",
-              "name": "activeIndicatorRef",
-              "propertyTypeTokenRange": {
-                "startIndex": 1,
-                "endIndex": 2
-              },
-              "isStatic": false
-            },
-            {
-              "kind": "Property",
               "canonicalReference": "@microsoft/fast-foundation!Tabs#activetab:member",
-              "docComment": "",
+              "docComment": "/**\n * A reference to the active tab\n *\n * @public\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -9199,7 +9176,7 @@
             {
               "kind": "Property",
               "canonicalReference": "@microsoft/fast-foundation!Tabs#orientation:member",
-              "docComment": "",
+              "docComment": "/**\n * The orientation\n *\n * @remarks\n *\n * HTML Attribute: orientation\n *\n * @public\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -9222,124 +9199,6 @@
                 "endIndex": 2
               },
               "isStatic": false
-            },
-            {
-              "kind": "Property",
-              "canonicalReference": "@microsoft/fast-foundation!Tabs#tabpanels:member",
-              "docComment": "",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "tabpanels: "
-                },
-                {
-                  "kind": "Reference",
-                  "text": "HTMLElement",
-                  "canonicalReference": "!HTMLElement:interface"
-                },
-                {
-                  "kind": "Content",
-                  "text": "[]"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";"
-                }
-              ],
-              "releaseTag": "Public",
-              "name": "tabpanels",
-              "propertyTypeTokenRange": {
-                "startIndex": 1,
-                "endIndex": 3
-              },
-              "isStatic": false
-            },
-            {
-              "kind": "Method",
-              "canonicalReference": "@microsoft/fast-foundation!Tabs#tabpanelsChanged:member(1)",
-              "docComment": "",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "tabpanelsChanged(): "
-                },
-                {
-                  "kind": "Content",
-                  "text": "void"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";"
-                }
-              ],
-              "isStatic": false,
-              "returnTypeTokenRange": {
-                "startIndex": 1,
-                "endIndex": 2
-              },
-              "releaseTag": "Public",
-              "overloadIndex": 1,
-              "parameters": [],
-              "name": "tabpanelsChanged"
-            },
-            {
-              "kind": "Property",
-              "canonicalReference": "@microsoft/fast-foundation!Tabs#tabs:member",
-              "docComment": "",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "tabs: "
-                },
-                {
-                  "kind": "Reference",
-                  "text": "HTMLElement",
-                  "canonicalReference": "!HTMLElement:interface"
-                },
-                {
-                  "kind": "Content",
-                  "text": "[]"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";"
-                }
-              ],
-              "releaseTag": "Public",
-              "name": "tabs",
-              "propertyTypeTokenRange": {
-                "startIndex": 1,
-                "endIndex": 3
-              },
-              "isStatic": false
-            },
-            {
-              "kind": "Method",
-              "canonicalReference": "@microsoft/fast-foundation!Tabs#tabsChanged:member(1)",
-              "docComment": "",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "tabsChanged(): "
-                },
-                {
-                  "kind": "Content",
-                  "text": "void"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";"
-                }
-              ],
-              "isStatic": false,
-              "returnTypeTokenRange": {
-                "startIndex": 1,
-                "endIndex": 2
-              },
-              "releaseTag": "Public",
-              "overloadIndex": 1,
-              "parameters": [],
-              "name": "tabsChanged"
             }
           ],
           "extendsTokenRange": {
@@ -9351,7 +9210,7 @@
         {
           "kind": "Interface",
           "canonicalReference": "@microsoft/fast-foundation!Tabs:interface",
-          "docComment": "",
+          "docComment": "/**\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -9380,7 +9239,7 @@
         {
           "kind": "Enum",
           "canonicalReference": "@microsoft/fast-foundation!TabsOrientation:enum",
-          "docComment": "",
+          "docComment": "/**\n * The orientation of the {@link @microsoft/fast-foundation#(Tabs:class)} component\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -9437,7 +9296,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-foundation!TabsTemplate:var",
-          "docComment": "",
+          "docComment": "/**\n * The template for the {@link @microsoft/fast-foundation#(Tabs:class)} component.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -9476,7 +9335,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-foundation!TabTemplate:var",
-          "docComment": "",
+          "docComment": "/**\n * The template for the {@link @microsoft/fast-foundation#Tab} component.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -9515,7 +9374,7 @@
         {
           "kind": "Class",
           "canonicalReference": "@microsoft/fast-foundation!TextArea:class",
-          "docComment": "",
+          "docComment": "/**\n * An Text Area Custom HTML Element. Based largely on the {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/textarea | <textarea> element}.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -9546,7 +9405,7 @@
             {
               "kind": "Property",
               "canonicalReference": "@microsoft/fast-foundation!TextArea#appearance:member",
-              "docComment": "",
+              "docComment": "/**\n * The appearance of the element.\n *\n * @remarks\n *\n * HTML Attribute: appearance\n *\n * @public\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -9573,7 +9432,7 @@
             {
               "kind": "Property",
               "canonicalReference": "@microsoft/fast-foundation!TextArea#autofocus:member",
-              "docComment": "",
+              "docComment": "/**\n * Indicates that this element should get focus after the page finishes loading.\n *\n * @remarks\n *\n * HTML Attribute: autofocus\n *\n * @public\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -9599,7 +9458,7 @@
             {
               "kind": "Property",
               "canonicalReference": "@microsoft/fast-foundation!TextArea#cols:member",
-              "docComment": "",
+              "docComment": "/**\n * Sizes the element horizontally by a number of character columns.\n *\n * @remarks\n *\n * HTML Attribute: cols\n *\n * @public\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -9623,68 +9482,9 @@
               "isStatic": false
             },
             {
-              "kind": "Method",
-              "canonicalReference": "@microsoft/fast-foundation!TextArea#connectedCallback:member(1)",
-              "docComment": "",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "connectedCallback(): "
-                },
-                {
-                  "kind": "Content",
-                  "text": "void"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";"
-                }
-              ],
-              "isStatic": false,
-              "returnTypeTokenRange": {
-                "startIndex": 1,
-                "endIndex": 2
-              },
-              "releaseTag": "Public",
-              "overloadIndex": 1,
-              "parameters": [],
-              "name": "connectedCallback"
-            },
-            {
-              "kind": "Property",
-              "canonicalReference": "@microsoft/fast-foundation!TextArea#defaultSlottedNodes:member",
-              "docComment": "",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "defaultSlottedNodes: "
-                },
-                {
-                  "kind": "Reference",
-                  "text": "Node",
-                  "canonicalReference": "!Node:interface"
-                },
-                {
-                  "kind": "Content",
-                  "text": "[]"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";"
-                }
-              ],
-              "releaseTag": "Public",
-              "name": "defaultSlottedNodes",
-              "propertyTypeTokenRange": {
-                "startIndex": 1,
-                "endIndex": 3
-              },
-              "isStatic": false
-            },
-            {
               "kind": "Property",
               "canonicalReference": "@microsoft/fast-foundation!TextArea#formId:member",
-              "docComment": "",
+              "docComment": "/**\n * The {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/id | id} of the {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/form | form} the element is associated to\n *\n * @public\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -9709,34 +9509,8 @@
             },
             {
               "kind": "Property",
-              "canonicalReference": "@microsoft/fast-foundation!TextArea#handleTextInput:member",
-              "docComment": "",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "handleTextInput: "
-                },
-                {
-                  "kind": "Content",
-                  "text": "() => void"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";"
-                }
-              ],
-              "releaseTag": "Public",
-              "name": "handleTextInput",
-              "propertyTypeTokenRange": {
-                "startIndex": 1,
-                "endIndex": 2
-              },
-              "isStatic": false
-            },
-            {
-              "kind": "Property",
               "canonicalReference": "@microsoft/fast-foundation!TextArea#list:member",
-              "docComment": "",
+              "docComment": "/**\n * Allows associating a {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/datalist | datalist} to the element by {@link https://developer.mozilla.org/en-US/docs/Web/API/Element/id}.\n *\n * @remarks\n *\n * HTML Attribute: list\n *\n * @public\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -9762,7 +9536,7 @@
             {
               "kind": "Property",
               "canonicalReference": "@microsoft/fast-foundation!TextArea#maxlength:member",
-              "docComment": "",
+              "docComment": "/**\n * The maximum number of characters a user can enter.\n *\n * @remarks\n *\n * HTMLAttribute: maxlength\n *\n * @public\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -9788,7 +9562,7 @@
             {
               "kind": "Property",
               "canonicalReference": "@microsoft/fast-foundation!TextArea#minlength:member",
-              "docComment": "",
+              "docComment": "/**\n * The minimum number of characters a user can enter.\n *\n * @remarks\n *\n * HTMLAttribute: minlength\n *\n * @public\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -9814,7 +9588,7 @@
             {
               "kind": "Property",
               "canonicalReference": "@microsoft/fast-foundation!TextArea#name:member",
-              "docComment": "",
+              "docComment": "/**\n * The name of the element.\n *\n * @remarks\n *\n * HTML Attribute: name\n *\n * @public\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -9840,7 +9614,7 @@
             {
               "kind": "Property",
               "canonicalReference": "@microsoft/fast-foundation!TextArea#placeholder:member",
-              "docComment": "",
+              "docComment": "/**\n * Sets the placeholder value of the element, generally used to provide a hint to the user.\n *\n * @remarks\n *\n * HTML Attribute: placeholder Using this attribute does is not a valid substitute for a labeling element.\n *\n * @public\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -9893,7 +9667,7 @@
             {
               "kind": "Property",
               "canonicalReference": "@microsoft/fast-foundation!TextArea#readOnly:member",
-              "docComment": "",
+              "docComment": "/**\n * When true, the control will be immutable by user interaction. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly | readonly HTML attribute} for more information.\n *\n * @remarks\n *\n * HTML Attribute: readonly\n *\n * @public\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -9919,7 +9693,7 @@
             {
               "kind": "Property",
               "canonicalReference": "@microsoft/fast-foundation!TextArea#resize:member",
-              "docComment": "",
+              "docComment": "/**\n * The resize mode of the element.\n *\n * @remarks\n *\n * HTML Attribute: resize\n *\n * @public\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -9946,7 +9720,7 @@
             {
               "kind": "Property",
               "canonicalReference": "@microsoft/fast-foundation!TextArea#rows:member",
-              "docComment": "",
+              "docComment": "/**\n * Sizes the element vertically by a number of character columns.\n *\n * @remarks\n *\n * HTML Attribute: rows\n *\n * @public\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -9972,7 +9746,7 @@
             {
               "kind": "Property",
               "canonicalReference": "@microsoft/fast-foundation!TextArea#spellcheck:member",
-              "docComment": "",
+              "docComment": "/**\n * Sets if the element is eligible for spell checking but the UA.\n *\n * @remarks\n *\n * HTML Attribute: spellcheck\n *\n * @public\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -9994,61 +9768,6 @@
                 "endIndex": 2
               },
               "isStatic": false
-            },
-            {
-              "kind": "Property",
-              "canonicalReference": "@microsoft/fast-foundation!TextArea#textarea:member",
-              "docComment": "",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "textarea: "
-                },
-                {
-                  "kind": "Reference",
-                  "text": "HTMLTextAreaElement",
-                  "canonicalReference": "!HTMLTextAreaElement:interface"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";"
-                }
-              ],
-              "releaseTag": "Public",
-              "name": "textarea",
-              "propertyTypeTokenRange": {
-                "startIndex": 1,
-                "endIndex": 2
-              },
-              "isStatic": false
-            },
-            {
-              "kind": "Method",
-              "canonicalReference": "@microsoft/fast-foundation!TextArea#valueChanged:member(1)",
-              "docComment": "",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "valueChanged(): "
-                },
-                {
-                  "kind": "Content",
-                  "text": "void"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";"
-                }
-              ],
-              "isStatic": false,
-              "returnTypeTokenRange": {
-                "startIndex": 1,
-                "endIndex": 2
-              },
-              "releaseTag": "Public",
-              "overloadIndex": 1,
-              "parameters": [],
-              "name": "valueChanged"
             }
           ],
           "extendsTokenRange": {
@@ -10060,7 +9779,7 @@
         {
           "kind": "Enum",
           "canonicalReference": "@microsoft/fast-foundation!TextAreaAppearance:enum",
-          "docComment": "",
+          "docComment": "/**\n * Text area appearances\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -10073,7 +9792,7 @@
             {
               "kind": "EnumMember",
               "canonicalReference": "@microsoft/fast-foundation!TextAreaAppearance.filled:member",
-              "docComment": "",
+              "docComment": "/**\n * A solid, filled appearance.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -10094,7 +9813,7 @@
             {
               "kind": "EnumMember",
               "canonicalReference": "@microsoft/fast-foundation!TextAreaAppearance.outline:member",
-              "docComment": "",
+              "docComment": "/**\n * A light, outline appearance.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -10117,7 +9836,7 @@
         {
           "kind": "Enum",
           "canonicalReference": "@microsoft/fast-foundation!TextAreaResize:enum",
-          "docComment": "",
+          "docComment": "/**\n * Resize mode for a TextArea\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -10130,7 +9849,7 @@
             {
               "kind": "EnumMember",
               "canonicalReference": "@microsoft/fast-foundation!TextAreaResize.both:member",
-              "docComment": "",
+              "docComment": "/**\n * Resize vertically and horizontally.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -10151,7 +9870,7 @@
             {
               "kind": "EnumMember",
               "canonicalReference": "@microsoft/fast-foundation!TextAreaResize.horizontal:member",
-              "docComment": "",
+              "docComment": "/**\n * Resize horizontally.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -10172,7 +9891,7 @@
             {
               "kind": "EnumMember",
               "canonicalReference": "@microsoft/fast-foundation!TextAreaResize.none:member",
-              "docComment": "",
+              "docComment": "/**\n * No resize.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -10193,7 +9912,7 @@
             {
               "kind": "EnumMember",
               "canonicalReference": "@microsoft/fast-foundation!TextAreaResize.vertical:member",
-              "docComment": "",
+              "docComment": "/**\n * Resize vertically.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -10216,7 +9935,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-foundation!TextAreaTemplate:var",
-          "docComment": "",
+          "docComment": "/**\n * The template for the {@link @microsoft/fast-foundation#TextArea} component.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -10255,7 +9974,7 @@
         {
           "kind": "Class",
           "canonicalReference": "@microsoft/fast-foundation!TextField:class",
-          "docComment": "",
+          "docComment": "/**\n * An Text Field Custom HTML Element. Based largely on the {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/text | <input type=\"text\" /> element}.\n *\n * @remarks\n *\n * The constructor for this class is marked as internal. Third-party code should not call the constructor directly or create subclasses that extend the `TextField` class.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -10284,23 +10003,9 @@
           "name": "TextField",
           "members": [
             {
-              "kind": "Constructor",
-              "canonicalReference": "@microsoft/fast-foundation!TextField:constructor(1)",
-              "docComment": "/**\n * Constructs a new instance of the `TextField` class\n */\n",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "constructor();"
-                }
-              ],
-              "releaseTag": "Public",
-              "overloadIndex": 1,
-              "parameters": []
-            },
-            {
               "kind": "Property",
               "canonicalReference": "@microsoft/fast-foundation!TextField#appearance:member",
-              "docComment": "",
+              "docComment": "/**\n * The appearance of the element.\n *\n * @remarks\n *\n * HTML Attribute: appearance\n *\n * @public\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -10327,7 +10032,7 @@
             {
               "kind": "Property",
               "canonicalReference": "@microsoft/fast-foundation!TextField#autofocus:member",
-              "docComment": "",
+              "docComment": "/**\n * Indicates that this element should get focus after the page finishes loading. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefautofocus | autofocus HTML attribute} for more information.\n *\n * @remarks\n *\n * HTML Attribute: autofocus\n *\n * @public\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -10351,123 +10056,9 @@
               "isStatic": false
             },
             {
-              "kind": "Method",
-              "canonicalReference": "@microsoft/fast-foundation!TextField#connectedCallback:member(1)",
-              "docComment": "",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "connectedCallback(): "
-                },
-                {
-                  "kind": "Content",
-                  "text": "void"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";"
-                }
-              ],
-              "isStatic": false,
-              "returnTypeTokenRange": {
-                "startIndex": 1,
-                "endIndex": 2
-              },
-              "releaseTag": "Public",
-              "overloadIndex": 1,
-              "parameters": [],
-              "name": "connectedCallback"
-            },
-            {
-              "kind": "Property",
-              "canonicalReference": "@microsoft/fast-foundation!TextField#control:member",
-              "docComment": "",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "control: "
-                },
-                {
-                  "kind": "Reference",
-                  "text": "HTMLInputElement",
-                  "canonicalReference": "!HTMLInputElement:interface"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";"
-                }
-              ],
-              "releaseTag": "Public",
-              "name": "control",
-              "propertyTypeTokenRange": {
-                "startIndex": 1,
-                "endIndex": 2
-              },
-              "isStatic": false
-            },
-            {
-              "kind": "Property",
-              "canonicalReference": "@microsoft/fast-foundation!TextField#defaultSlottedNodes:member",
-              "docComment": "",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "defaultSlottedNodes: "
-                },
-                {
-                  "kind": "Reference",
-                  "text": "Node",
-                  "canonicalReference": "!Node:interface"
-                },
-                {
-                  "kind": "Content",
-                  "text": "[]"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";"
-                }
-              ],
-              "releaseTag": "Public",
-              "name": "defaultSlottedNodes",
-              "propertyTypeTokenRange": {
-                "startIndex": 1,
-                "endIndex": 3
-              },
-              "isStatic": false
-            },
-            {
-              "kind": "Method",
-              "canonicalReference": "@microsoft/fast-foundation!TextField#handleTextInput:member(1)",
-              "docComment": "",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "handleTextInput(): "
-                },
-                {
-                  "kind": "Content",
-                  "text": "void"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";"
-                }
-              ],
-              "isStatic": false,
-              "returnTypeTokenRange": {
-                "startIndex": 1,
-                "endIndex": 2
-              },
-              "releaseTag": "Public",
-              "overloadIndex": 1,
-              "parameters": [],
-              "name": "handleTextInput"
-            },
-            {
               "kind": "Property",
               "canonicalReference": "@microsoft/fast-foundation!TextField#list:member",
-              "docComment": "",
+              "docComment": "/**\n * Allows associating a {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/datalist | datalist} to the element by {@link https://developer.mozilla.org/en-US/docs/Web/API/Element/id}.\n *\n * @remarks\n *\n * HTML Attribute: list\n *\n * @public\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -10493,7 +10084,7 @@
             {
               "kind": "Property",
               "canonicalReference": "@microsoft/fast-foundation!TextField#maxlength:member",
-              "docComment": "",
+              "docComment": "/**\n * The maximum number of characters a user can enter.\n *\n * @remarks\n *\n * HTMLAttribute: maxlength\n *\n * @public\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -10519,7 +10110,7 @@
             {
               "kind": "Property",
               "canonicalReference": "@microsoft/fast-foundation!TextField#minlength:member",
-              "docComment": "",
+              "docComment": "/**\n * The minimum number of characters a user can enter.\n *\n * @remarks\n *\n * HTMLAttribute: minlength\n *\n * @public\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -10545,7 +10136,7 @@
             {
               "kind": "Property",
               "canonicalReference": "@microsoft/fast-foundation!TextField#pattern:member",
-              "docComment": "",
+              "docComment": "/**\n * A regular expression that the value must match to pass validation.\n *\n * @remarks\n *\n * HTMLAttribute: pattern\n *\n * @public\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -10571,7 +10162,7 @@
             {
               "kind": "Property",
               "canonicalReference": "@microsoft/fast-foundation!TextField#placeholder:member",
-              "docComment": "",
+              "docComment": "/**\n * Sets the placeholder value of the element, generally used to provide a hint to the user.\n *\n * @remarks\n *\n * HTML Attribute: placeholder Using this attribute does is not a valid substitute for a labeling element.\n *\n * @public\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -10624,7 +10215,7 @@
             {
               "kind": "Property",
               "canonicalReference": "@microsoft/fast-foundation!TextField#readOnly:member",
-              "docComment": "",
+              "docComment": "/**\n * When true, the control will be immutable by user interaction. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly | readonly HTML attribute} for more information.\n *\n * @remarks\n *\n * HTML Attribute: readonly\n *\n * @public\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -10650,7 +10241,7 @@
             {
               "kind": "Property",
               "canonicalReference": "@microsoft/fast-foundation!TextField#size:member",
-              "docComment": "",
+              "docComment": "/**\n * Sets the width of the element to a specified number of characters.\n *\n * @remarks\n *\n * HTMLAttribute: size\n *\n * @public\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -10676,7 +10267,7 @@
             {
               "kind": "Property",
               "canonicalReference": "@microsoft/fast-foundation!TextField#spellcheck:member",
-              "docComment": "",
+              "docComment": "/**\n * Sets the width of the element to a specified number of characters.\n *\n * @remarks\n *\n * HTMLAttribute: size\n *\n * @public\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -10702,7 +10293,7 @@
             {
               "kind": "Property",
               "canonicalReference": "@microsoft/fast-foundation!TextField#type:member",
-              "docComment": "",
+              "docComment": "/**\n * Allows setting a type or mode of text.\n *\n * @remarks\n *\n * HTML Attribute: type\n *\n * @public\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -10736,7 +10327,7 @@
         {
           "kind": "Interface",
           "canonicalReference": "@microsoft/fast-foundation!TextField:interface",
-          "docComment": "",
+          "docComment": "/**\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -10765,7 +10356,7 @@
         {
           "kind": "Enum",
           "canonicalReference": "@microsoft/fast-foundation!TextFieldAppearance:enum",
-          "docComment": "",
+          "docComment": "/**\n * Text field appearances\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -10778,7 +10369,7 @@
             {
               "kind": "EnumMember",
               "canonicalReference": "@microsoft/fast-foundation!TextFieldAppearance.filled:member",
-              "docComment": "",
+              "docComment": "/**\n * A solid, filled appearance.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -10799,7 +10390,7 @@
             {
               "kind": "EnumMember",
               "canonicalReference": "@microsoft/fast-foundation!TextFieldAppearance.outline:member",
-              "docComment": "",
+              "docComment": "/**\n * A light, outline appearance.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -10822,7 +10413,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-foundation!TextFieldTemplate:var",
-          "docComment": "",
+          "docComment": "/**\n * The template for the {@link @microsoft/fast-foundation#(TextField:class)} component.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -10861,7 +10452,7 @@
         {
           "kind": "Enum",
           "canonicalReference": "@microsoft/fast-foundation!TextFieldType:enum",
-          "docComment": "",
+          "docComment": "/**\n * Text field sub-types\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -10874,7 +10465,7 @@
             {
               "kind": "EnumMember",
               "canonicalReference": "@microsoft/fast-foundation!TextFieldType.email:member",
-              "docComment": "",
+              "docComment": "/**\n * An email TextField\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -10895,7 +10486,7 @@
             {
               "kind": "EnumMember",
               "canonicalReference": "@microsoft/fast-foundation!TextFieldType.password:member",
-              "docComment": "",
+              "docComment": "/**\n * A password TextField\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -10916,7 +10507,7 @@
             {
               "kind": "EnumMember",
               "canonicalReference": "@microsoft/fast-foundation!TextFieldType.tel:member",
-              "docComment": "",
+              "docComment": "/**\n * A telephone TextField\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -10937,7 +10528,7 @@
             {
               "kind": "EnumMember",
               "canonicalReference": "@microsoft/fast-foundation!TextFieldType.text:member",
-              "docComment": "",
+              "docComment": "/**\n * A text TextField\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -10958,7 +10549,7 @@
             {
               "kind": "EnumMember",
               "canonicalReference": "@microsoft/fast-foundation!TextFieldType.url:member",
-              "docComment": "",
+              "docComment": "/**\n * A URL TextField\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",

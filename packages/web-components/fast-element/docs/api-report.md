@@ -139,7 +139,7 @@ export function children<T = any>(propertyOrOptions: (keyof T & string) | Childr
 //
 // @public
 export class ChildrenBehavior extends NodeObservationBehavior<ChildrenBehaviorOptions> {
-    constructor(target: HTMLSlotElement, options: ChildrenBehaviorOptions);
+    constructor(target: HTMLElement, options: ChildrenBehaviorOptions);
     disconnect(): void;
     protected getNodes(): ChildNode[];
     observe(): void;
@@ -491,7 +491,7 @@ export function when<TSource = any, TReturn = any>(binding: Binding<TSource, TRe
 
 // Warnings were encountered during analysis:
 //
-// dist/dts/dom.d.ts:21:5 - (ae-forgotten-export) The symbol "TrustedTypesPolicy" needs to be exported by the entry point index.d.ts
+// dist/dts/dom.d.ts:25:5 - (ae-forgotten-export) The symbol "TrustedTypesPolicy" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 

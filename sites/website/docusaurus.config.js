@@ -1,6 +1,6 @@
 module.exports = {
-    title: "FAST-DNA",
-    tagline: "The tagline of my site",
+    title: "FAST",
+    tagline: "The adaptive interface system for modern web experiences",
     url: "https://www.fast.design",
     baseUrl: "/",
     favicon: "img/favicon/favicon.ico",
@@ -8,17 +8,25 @@ module.exports = {
     projectName: "fast-dna",
     scripts: [
         {
-            src: "https://static.fast.design/assets/scripts/packages/fast-components.js",
+            src: "https://unpkg.com/@microsoft/fast-components",
             type: "module",
             async: true,
         },
     ],
-    themes: ["@docusaurus/theme-live-codeblock"],
+    themes: [require.resolve("@docusaurus/theme-live-codeblock")],
     themeConfig: {
         navbar: {
             logo: {
-                alt: "FAST-DNA",
+                alt:
+                    "Line drawing of a small moon orbiting around a planet with the words FAST next to it",
                 src: "img/logo.svg",
+
+                // FIXME: #3299 Docusaurus displays a blank page when clicking the logo link without workaround
+                target: "_blank",
+                ...(process.env.NODE_ENV === "production" && {
+                    href: "https://www.fast.design",
+                    target: "_self",
+                }),
             },
             links: [
                 {

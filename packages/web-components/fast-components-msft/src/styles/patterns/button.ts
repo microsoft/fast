@@ -1,5 +1,5 @@
 import { css } from "@microsoft/fast-element";
-import { display, focusVisible } from "@microsoft/fast-foundation";
+import { disabledCursor, display, focusVisible } from "@microsoft/fast-foundation";
 import { heightNumber } from "../size";
 import {
     accentFillActiveBehavior,
@@ -20,39 +20,47 @@ import {
     neutralForegroundRestBehavior,
 } from "../index";
 
+/**
+ * @internal
+ */
 export const BaseButtonStyles = css`
-    ${display("inline-block")} :host {
+    ${display("inline-flex")} :host {
         font-family: var(--body-font);
         outline: none;
+        font-size: var(--type-ramp-base-font-size);
+        line-height: var(--type-ramp-base-line-height);
+        height: calc(${heightNumber} * 1px);
+        min-width: calc(${heightNumber} * 1px);
+        background-color: ${neutralFillRestBehavior.var};
+        color: ${neutralForegroundRestBehavior.var};
+        border-radius: calc(var(--corner-radius) * 1px);
+        fill: currentColor;
+        cursor: pointer;
     }
 
     .control {
-        font-size: var(--type-ramp-base-font-size);
-        line-height: var(--type-ramp-base-line-height);
-        line-height: 1;
+        background: transparent;
+        flex-grow: 1;
         box-sizing: border-box;
         display: inline-flex;
         justify-content: center;
         align-items: center;
         padding: 0 calc((10 + (var(--design-unit) * 2 * var(--density))) * 1px);
-        height: calc(${heightNumber} * 1px);
-        min-width: calc(${heightNumber} * 1px);
         white-space: nowrap;
         outline: none;
         text-decoration: none;
-        cursor: pointer;
-        border-radius: calc(var(--corner-radius) * 1px);
-        background-color: ${neutralFillRestBehavior.var};
-        color: ${neutralForegroundRestBehavior.var};
-        fill: ${neutralForegroundRestBehavior.var};
         border: calc(var(--outline-width) * 1px) solid transparent;
+        color: inherit;
+        border-radius: inherit;
+        fill: inherit;
+        cursor: inherit;
     }
 
-    .control:hover {
+    :host(:hover) {
         background-color: ${neutralFillHoverBehavior.var};
     }
 
-    .control:active {
+    :host(:active) {
         background-color: ${neutralFillActiveBehavior.var};
     }
 
@@ -69,6 +77,8 @@ export const BaseButtonStyles = css`
 
     :host(.disabled) {
         opacity: var(--disabled-opacity);
+        background-color: ${neutralFillRestBehavior.var};
+        cursor: ${disabledCursor};
     }
 
     .start,
@@ -95,22 +105,29 @@ export const BaseButtonStyles = css`
     neutralFillActiveBehavior
 );
 
+/**
+ * @internal
+ */
 export const AccentButtonStyles = css`
-    :host(.accent) .control {
+    :host(.accent) {
         background: ${accentFillRestBehavior.var};
         color: ${accentForegroundCutRestBehavior.var};
     }
 
-    :host(.accent) .control:hover {
+    :host(.accent:hover) {
         background: ${accentFillHoverBehavior.var};
     }
 
-    :host(.accent) .control:active {
+    :host(.accent:active) .control:active {
         background: ${accentFillActiveBehavior.var}${accentFillActiveBehavior.var};
     }
 
     :host(.accent) .control:${focusVisible} {
         box-shadow: 0 0 0 calc(var(--focus-outline-width) * 1px) inset ${neutralFocusInnerAccentBehavior.var};
+    }
+
+    :host(.accent.disabled) {
+        background: ${accentFillRestBehavior.var};
     }
 `.withBehaviors(
     accentFillRestBehavior,
@@ -120,13 +137,24 @@ export const AccentButtonStyles = css`
     neutralFocusInnerAccentBehavior
 );
 
+/**
+ * @internal
+ */
 export const HypertextStyles = css`
-    :host(.hypertext) .control {
-        padding: 0;
+    :host(.hypertext) {
         height: auto;
+        font-size: inherit;
+        line-height: inherit;
+        background: transparent;
+    }
+
+    :host(.hypertext) .control {
+        display: inline;
+        padding: 0;
         border: none;
         box-shadow: none;
         border-radius: 0;
+        line-height: 1;
     }
     :host a.control:not(:link) {
         background-color: transparent;
@@ -154,22 +182,28 @@ export const HypertextStyles = css`
     neutralFocusBehavior
 );
 
+/**
+ * @internal
+ */
 export const LightweightButtonStyles = css`
+    :host(.lightweight) {
+        background: transparent;
+        color: ${accentForegroundRestBehavior.var};
+    }
+
     :host(.lightweight) .control {
         padding: 0;
         height: initial;
         border: none;
         box-shadow: none;
         border-radius: 0;
-        background: transparent;
-        color: ${accentForegroundRestBehavior.var};
     }
 
-    :host(.lightweight) .control:hover {
+    :host(.lightweight:hover) {
         color: ${accentForegroundHoverBehavior.var};
     }
 
-    :host(.lightweight) .control:active {
+    :host(.lightweight:active) {
         color: ${accentForegroundActiveBehavior.var};
     }
 
@@ -182,21 +216,25 @@ export const LightweightButtonStyles = css`
         display: block;
         height: calc(var(--outline-width) * 1px);
         position: absolute;
-        bottom: -3px;
+        top: calc(1em + 3px);
         width: 100%;
     }
 
-    :host(.lightweight) .control:hover .content::before {
+    :host(.lightweight:hover) .content::before {
         background: ${accentForegroundHoverBehavior.var};
     }
 
-    :host(.lightweight) .control:active .content::before {
+    :host(.lightweight:active) .content::before {
         background: ${accentForegroundActiveBehavior.var};
     }
 
     :host(.lightweight) .control:${focusVisible} .content::before {
         background: ${neutralForegroundRestBehavior.var};
         height: calc(var(--focus-outline-width) * 1px);
+    }
+
+    :host(.lightweight.disabled) .content::before {
+        background: transparent;
     }
 `.withBehaviors(
     accentForegroundRestBehavior,
@@ -206,23 +244,34 @@ export const LightweightButtonStyles = css`
     neutralForegroundRestBehavior
 );
 
+/**
+ * @internal
+ */
 export const OutlineButtonStyles = css`
-    :host(.outline) .control {
+    :host(.outline) {
         background: transparent;
         border-color: ${accentFillRestBehavior.var};
     }
 
-    :host(.outline) .control:hover {
+    :host(.outline:hover) {
         border-color: ${accentFillHoverBehavior.var};
     }
 
-    :host(.outline) .control:active {
+    :host(.outline:active) {
         border-color: ${accentFillActiveBehavior.var};
+    }
+
+    :host(.outline) .control {
+        border-color: inherit;
     }
 
     :host(.outline) .control:${focusVisible} {
         border: calc(var(--outline-width) * 1px) solid ${neutralFocusBehavior.var});
         box-shadow: 0 0 0 calc((var(--focus-outline-width) - var(--outline-width)) * 1px) ${neutralFocusBehavior.var};
+    }
+
+    :host(.outline.disabled) {
+        border-color: ${accentFillRestBehavior.var};
     }
 `.withBehaviors(
     accentFillRestBehavior,
@@ -231,17 +280,24 @@ export const OutlineButtonStyles = css`
     neutralFocusBehavior
 );
 
+/**
+ * @internal
+ */
 export const StealthButtonStyles = css`
-    :host(.stealth) .control {
+    :host(.stealth) {
         background: ${neutralFillStealthRestBehavior.var};
     }
 
-    :host(.stealth) .control:hover {
+    :host(.stealth:hover) {
         background: ${neutralFillStealthHoverBehavior.var};
     }
 
-    :host(.stealth) .control:active {
+    :host(.stealth:active) {
         background: ${neutralFillStealthActiveBehavior.var};
+    }
+
+    :host(.stealth.disabled) {
+        background: ${neutralFillStealthRestBehavior.var};
     }
 `.withBehaviors(
     neutralFillStealthRestBehavior,

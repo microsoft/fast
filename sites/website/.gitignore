@@ -1,25 +1,18 @@
 # Dependencies
-/node_modules
-
-# Production
-/build
-/docs
-/src/docs/api
+node_modules
 
 # Generated files
 .docusaurus
 .cache-loader
 
-# Misc
-.DS_Store
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-
+# Log files
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
 # Cache
 .docusaurus
+
+# Static files from the homepage
+static/bundle
+static/index.html

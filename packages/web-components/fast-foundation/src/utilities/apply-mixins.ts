@@ -1,7 +1,7 @@
 /**
  * Apply mixins to a constructor.
- *
- * https://www.typescriptlang.org/docs/handbook/mixins.html
+ * Sourced from {@link https://www.typescriptlang.org/docs/handbook/mixins.html | TypeScript Documentation }.
+ * @public
  */
 export function applyMixins(derivedCtor: any, ...baseCtors: any[]) {
     baseCtors.forEach(baseCtor => {

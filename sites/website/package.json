@@ -1,18 +1,20 @@
 {
-  "name": "fast-dna-site",
-  "version": "0.0.0",
+  "name": "fast-site",
+  "version": "0.1.0",
   "private": true,
   "scripts": {
     "clean": "node ../../build/clean.js docs",
-    "prepare-docs": "npm run clean && node src/prepare-docs.js",
-    "dev": "npm run prepare-docs && docusaurus start",
-    "build": "npm run prepare-docs && docusaurus build"
+    "prepare-docs": "yarn clean && node src/prepare-docs.js",
+    "build-homepage": "node src/build-homepage.js",
+    "dev": "yarn build-homepage && yarn prepare-docs && docusaurus start",
+    "build": "yarn build-homepage && yarn prepare-docs && docusaurus build"
   },
   "dependencies": {
     "@docusaurus/core": "2.0.0-alpha.48",
     "@docusaurus/preset-classic": "2.0.0-alpha.48",
     "@docusaurus/theme-live-codeblock": "2.0.0-alpha.39",
     "classnames": "^2.2.6",
+    "copyfiles": "^2.3.0",
     "react": "^16.8.4",
     "react-dom": "^16.8.4"
   },
