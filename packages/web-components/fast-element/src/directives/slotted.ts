@@ -42,7 +42,7 @@ export class SlottedBehavior extends NodeObservationBehavior<SlottedBehaviorOpti
      * Retrieves the nodes that should be assigned to the target.
      */
     protected getNodes(): Node[] {
-        return this.target.assignedNodes(this.options);
+        return (this.target as HTMLSlotElement).assignedNodes(this.options);
     }
 }
 
