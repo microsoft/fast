@@ -51,6 +51,9 @@ export const AccordionItemTemplate: import("@microsoft/fast-element").ViewTempla
 // @public
 export const AccordionTemplate: import("@microsoft/fast-element").ViewTemplate<Accordion, any>;
 
+// Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
+// Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "Anchor" because one of its declarations is marked as @internal
+//
 // @public
 export class Anchor extends FASTElement {
     appearance: AnchorAppearance;
@@ -64,7 +67,7 @@ export class Anchor extends FASTElement {
     type: string;
 }
 
-// @public (undocumented)
+// @internal
 export interface Anchor extends StartEnd {
 }
 
@@ -95,7 +98,9 @@ export class BaseProgress extends FASTElement {
     value: number;
 }
 
+// Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-forgotten-export) The symbol "FormAssociated" needs to be exported by the entry point index.d.ts
+// Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "Button" because one of its declarations is marked as @internal
 //
 // @public
 export class Button extends FormAssociated<HTMLInputElement> {
@@ -117,7 +122,7 @@ export class Button extends FormAssociated<HTMLInputElement> {
     value: string;
     }
 
-// @public (undocumented)
+// @internal
 export interface Button extends StartEnd {
 }
 
@@ -404,6 +409,9 @@ export class Menu extends FASTElement {
     items: HTMLSlotElement;
     }
 
+// Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
+// Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "MenuItem" because one of its declarations is marked as @internal
+//
 // @public
 export class MenuItem extends FASTElement {
     checked: boolean;
@@ -416,7 +424,7 @@ export class MenuItem extends FASTElement {
     role: MenuItemRole;
 }
 
-// @public (undocumented)
+// @internal
 export interface MenuItem extends StartEnd {
 }
 
@@ -636,6 +644,9 @@ export class TabPanel extends FASTElement {
 // @public
 export const TabPanelTemplate: import("@microsoft/fast-element").ViewTemplate<TabPanel, any>;
 
+// Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
+// Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "Tabs" because one of its declarations is marked as @internal
+//
 // @public
 export class Tabs extends FASTElement {
     constructor();
@@ -655,7 +666,7 @@ export class Tabs extends FASTElement {
     tabsChanged(): void;
     }
 
-// @public (undocumented)
+// @internal
 export interface Tabs extends StartEnd {
 }
 
@@ -719,6 +730,9 @@ export enum TextAreaResize {
 // @public
 export const TextAreaTemplate: import("@microsoft/fast-element").ViewTemplate<TextArea, any>;
 
+// Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
+// Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "TextField" because one of its declarations is marked as @internal
+//
 // @public
 export class TextField extends FormAssociated<HTMLInputElement> {
     // @internal
@@ -746,7 +760,7 @@ export class TextField extends FormAssociated<HTMLInputElement> {
     type: TextFieldType;
     }
 
-// @public (undocumented)
+// @internal
 export interface TextField extends StartEnd {
 }
 
