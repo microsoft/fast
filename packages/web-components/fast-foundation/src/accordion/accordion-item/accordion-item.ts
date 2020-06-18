@@ -3,7 +3,7 @@ import { StartEnd } from "../../patterns/start-end";
 import { applyMixins } from "../../utilities/apply-mixins";
 
 /**
- * An individual item in an {@link @microsoft/fast-foundation#Accordion }.
+ * An individual item in an {@link @microsoft/fast-foundation#(Accordion:class) }.
  * @public
  */
 export class AccordionItem extends FASTElement {
@@ -63,7 +63,8 @@ export class AccordionItem extends FASTElement {
 
 /**
  * Mark internal because exporting class and interface of the same name
- * confuses API extractor
+ * confuses API documenter.
+ * TODO: https://github.com/microsoft/fast-dna/issues/3317
  * @internal
  */
 /* eslint-disable-next-line */

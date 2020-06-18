@@ -10,7 +10,19 @@ import {
 } from "@microsoft/fast-web-utilities";
 import { RadioControl } from "../radio/index";
 
+/**
+ * An Radio Group Custom HTML Element.
+ * Implements the {@link https://www.w3.org/TR/wai-aria-1.1/#radiogroup | ARIA radiogroup }.
+ *
+ * @public
+ */
 export class RadioGroup extends FASTElement {
+    /**
+     * When true, the child radios will be immutable by user interaction. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly | readonly HTML attribute} for more information.
+     * @public
+     * @remarks
+     * HTML Attribute: readonly
+     */
     @attr({ attribute: "readonly", mode: "boolean" })
     public readOnly: boolean;
     private readOnlyChanged(): void {
@@ -26,6 +38,13 @@ export class RadioGroup extends FASTElement {
         }
     }
 
+    /**
+     * Disables the radio group and child radios.
+     *
+     * @public
+     * @remarks
+     * HTML Attribute: disabled
+     */
     @attr({ attribute: "disabled", mode: "boolean" })
     public disabled: boolean;
     private disabledChanged(): void {
@@ -41,6 +60,14 @@ export class RadioGroup extends FASTElement {
         }
     }
 
+    /**
+     * The name of the radio group. Setting this value will set the name value
+     * for all child radio elements.
+     *
+     * @public
+     * @remarks
+     * HTML Attribute: name
+     */
     @attr
     public name: string;
     protected nameChanged(): void {
@@ -49,13 +76,31 @@ export class RadioGroup extends FASTElement {
         });
     }
 
+    /**
+     * The value of the checked radio
+     *
+     * @public
+     * @remarks
+     * HTML Attribute: value
+     */
     @attr
     public value: string;
 
+    /**
+     * The orientation of the group
+     *
+     * @public
+     * @remarks
+     * HTML Attribute: orientation
+     */
     @attr
     public orientation: Orientation = Orientation.horizontal;
 
-    @observable slottedRadioButtons: RadioControl[];
+    /**
+     * @internal
+     */
+    @observable
+    public slottedRadioButtons: RadioControl[];
     private selectedRadio: RadioControl | null;
     private focusedRadio: RadioControl | null;
     private parentToolbar: HTMLElement | null | undefined;
@@ -70,6 +115,9 @@ export class RadioGroup extends FASTElement {
         this.addEventListener("focusout", this.focusOutHandler);
     }
 
+    /**
+     * @internal
+     */
     public connectedCallback(): void {
         super.connectedCallback();
         const radioButtons: RadioControl[] = this.getFilteredRadioButtons();
@@ -248,8 +296,12 @@ export class RadioGroup extends FASTElement {
         }
     };
 
-    /* keyboard handling per https://w3c.github.io/aria-practices/#for-radio-groups-not-contained-in-a-toolbar */
-    /* navigation is different when there is an ancestor with role='toolbar' */
+    /**
+     * keyboard handling per https://w3c.github.io/aria-practices/#for-radio-groups-not-contained-in-a-toolbar
+     * navigation is different when there is an ancestor with role='toolbar'
+     *
+     * @internal
+     */
     public keydownHandler = (e: KeyboardEvent): void => {
         const group: RadioControl[] = this.getFilteredRadioButtons();
         let index: number = 0;

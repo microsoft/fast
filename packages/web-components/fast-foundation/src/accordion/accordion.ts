@@ -14,12 +14,12 @@ import { AccordionItem } from "./accordion-item";
  */
 export enum AccordionExpandMode {
     /**
-     * Designates only a single {@link @microsoft/fast-foundation#AccordionItem } can be open a time.
+     * Designates only a single {@link @microsoft/fast-foundation#(AccordionItem:class) } can be open a time.
      */
     single = "single",
 
     /**
-     * Designates multiple {@link @microsoft/fast-foundation#AccordionItem | AccordionItems} can be open simultaneously.
+     * Designates multiple {@link @microsoft/fast-foundation#(AccordionItem:class) | AccordionItems} can be open simultaneously.
      */
     multi = "multi",
 }
@@ -30,7 +30,7 @@ export enum AccordionExpandMode {
  * @public
  *
  * @remarks
- * Designed to be used with {@link @microsoft/fast-foundation#AccordionTemplate} and {@link @microsoft/fast-foundation#AccordionItem}.
+ * Designed to be used with {@link @microsoft/fast-foundation#AccordionTemplate} and {@link @microsoft/fast-foundation#(AccordionItem:class)}.
  */
 export class Accordion extends FASTElement {
     /**
@@ -40,8 +40,6 @@ export class Accordion extends FASTElement {
      *
      * @remarks
      * HTML attribute: expand-mode
-     *
-     * @defaultValue {@link AccordionExpandMode.multi}
      */
     @attr({ attribute: "expand-mode" })
     public expandmode: AccordionExpandMode = AccordionExpandMode.multi;

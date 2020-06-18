@@ -6,7 +6,7 @@ export const NavigationStyles = css`
     ${display("grid")} :host {
         grid-template-columns: auto 1fr auto;
         font-family: var(--body-font);
-        color: var(--neutral-foreground-rest);
+        color: ${neutralForegroundRestBehavior.var};
         box-sizing: border-box;
         width: 100%;
     }

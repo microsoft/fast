@@ -101,7 +101,8 @@ export class Anchor extends FASTElement {
 
 /**
  * Mark internal because exporting class and interface of the same name
- * confuses API extractor
+ * confuses API documenter.
+ * TODO: https://github.com/microsoft/fast-dna/issues/3317
  * @internal
  */
 /* eslint-disable-next-line */

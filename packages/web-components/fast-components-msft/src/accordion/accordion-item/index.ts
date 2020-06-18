@@ -5,6 +5,15 @@ import {
 } from "@microsoft/fast-foundation";
 import { AccordionItemStyles as styles } from "./accordion-item.styles";
 
+/**
+ * The FAST Accordion Item Element. Implements {@link @microsoft/fast-foundation#AccordionItem},
+ * {@link @microsoft/fast-foundation#AccordionItemTemplate}
+ *
+ *
+ * @public
+ * @remarks
+ * HTML Element: \<fast-accordion-item\>
+ */
 @customElement({
     name: "fast-accordion-item",
     template,
