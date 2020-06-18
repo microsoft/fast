@@ -1,6 +1,6 @@
+import { neutralFillRestBehavior } from "@microsoft/fast-components";
 import { css } from "@microsoft/fast-element";
 import { display } from "@microsoft/fast-foundation";
-import { neutralFillRestBehavior } from "@microsoft/fast-components";
 
 export const BackgroundDesignStyles = css`
     ${display("block")} :host {
@@ -33,6 +33,11 @@ export const BackgroundDesignStyles = css`
         position: absolute;
         top: 0;
         width: 100%;
+        transition: opacity 450ms ease-in-out;
+    }
+
+    :host .background-image.is-faded::after {
+        opacity: 0.75;
     }
 
     :host .background-image canvas {

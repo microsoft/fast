@@ -1,4 +1,4 @@
-import { FASTElement } from "@microsoft/fast-element";
+import { FASTElement, observable } from "@microsoft/fast-element";
 import { DesignSystemProvider } from "@microsoft/fast-foundation";
 import { waveData } from "../../data/wave.data";
 
@@ -12,6 +12,9 @@ interface PathData {
 }
 
 export class BackgroundDesign extends FASTElement {
+    @observable
+    public faded: boolean = false;
+
     canvas: HTMLCanvasElement;
     context: CanvasRenderingContext2D;
     provider: DesignSystemProvider;
@@ -82,6 +85,23 @@ export class BackgroundDesign extends FASTElement {
             this.prevPerf = perf;
         };
         performAnimation(window.performance.now());
+
+        this.setupFadeObserver();
+    }
+
+    setupFadeObserver() {
+        const observer = new IntersectionObserver(
+            entries => {
+                entries.forEach(entry => {
+                    this.faded = entry.intersectionRatio < 0.5;
+                });
+            },
+            { threshold: 0.5, root: null }
+        );
+
+        const heroSection: HTMLElement = document.getElementById("hero") as HTMLElement;
+
+        observer.observe(heroSection);
     }
 
     setup() {
