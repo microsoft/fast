@@ -32,7 +32,7 @@ function triggerBind(
 ): void {
     this.source = source;
     this.context = context;
-    this.target.addEventListener(this.targetName!, this, true);
+    this.target.addEventListener(this.targetName!, this);
 }
 
 function normalUnbind(this: BindingBehavior): void {
@@ -60,7 +60,7 @@ function contentUnbind(this: BindingBehavior): void {
 }
 
 function triggerUnbind(this: BindingBehavior): void {
-    this.target.removeEventListener(this.targetName!, this, true);
+    this.target.removeEventListener(this.targetName!, this);
     this.source = null;
     this.context = null;
 }

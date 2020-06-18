@@ -611,7 +611,7 @@
         {
           "kind": "Class",
           "canonicalReference": "@microsoft/fast-components!FASTAnchor:class",
-          "docComment": "/**\n * The FAST Anchor Element. Implements {@link @microsoft/fast-foundation#Anchor}, {@link @microsoft/fast-foundation#AnchorTemplate}\n *\n * @remarks\n *\n * HTML Element: \\<fast-anchor\\>\n *\n * @public\n */\n",
+          "docComment": "/**\n * The FAST Anchor Element. Implements {@link @microsoft/fast-foundation#Anchor}, {@link @microsoft/fast-foundation#AnchorTemplate}\n *\n * @remarks\n *\n * HTML Element: \\<fast-anchor\\>\n *\n * {@link https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/delegatesFocus | delegatesFocus}\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -667,7 +667,7 @@
         {
           "kind": "Class",
           "canonicalReference": "@microsoft/fast-components!FASTButton:class",
-          "docComment": "/**\n * The FAST Button Element. Implements {@link @microsoft/fast-foundation#Button}, {@link @microsoft/fast-foundation#ButtonTemplate}\n *\n * @remarks\n *\n * HTML Element: \\<fast-button\\>\n *\n * @public\n */\n",
+          "docComment": "/**\n * The FAST Button Element. Implements {@link @microsoft/fast-foundation#Button}, {@link @microsoft/fast-foundation#ButtonTemplate}\n *\n * @remarks\n *\n * HTML Element: \\<fast-button\\>\n *\n * {@link https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/delegatesFocus | delegatesFocus}\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
