@@ -334,7 +334,7 @@ export const FastFrameTemplate = html<FastFrame>`
                     class="preview-controls"
                 >
                     <fast-progress></fast-progress>
-                    <fast-menu tabIndex="${x =>
+                    <fast-menu tabindex="${x =>
                         !x.expanded && x.isResponsive ? "-1" : "0"}">
                         <fast-menu-item role="menuitem">Menu item 1</fast-menu-item>
                         <fast-menu-item role="menuitem">Menu item 2</fast-menu-item>
@@ -344,44 +344,43 @@ export const FastFrameTemplate = html<FastFrame>`
                     </fast-menu>
                     <div class="control-container">
                         <div class="control-container-column">
-                            <fast-radio tabIndex="${x =>
+                            <fast-radio tabindex="${x =>
                                 !x.expanded && x.isResponsive
                                     ? "-1"
                                     : "0"}">Radio 1</fast-radio>
-                            <fast-radio tabIndex="${x =>
+                            <fast-radio tabindex="${x =>
                                 !x.expanded && x.isResponsive
                                     ? "-1"
                                     : "0"}">Radio 2</fast-radio>
                         </div>
                         <div class="control-container-grid">
-                            <fast-switch tabIndex="${x =>
+                            <fast-switch tabindex="${x =>
                                 !x.expanded && x.isResponsive
                                     ? "-1"
                                     : "0"}"></fast-switch>
                             <p>Toggle</p>
-                            <fast-checkbox tabIndex="${x =>
+                            <fast-checkbox tabindex="${x =>
                                 !x.expanded && x.isResponsive
                                     ? "-1"
                                     : "0"}" class="checkbox"></fast-checkbox>
                             <p class="checkbox-label">Checkbox</p>
                         </div>
                     </div>
-                    <fast-text-field placeholder="Text field" tabIndex="${x =>
+                    <fast-text-field placeholder="Text field" tabindex="${x =>
                         !x.expanded && x.isResponsive ? "-1" : "0"}"></fast-text-field>
                     <div class="control-container-2">
-                        <fast-slider tabIndex="${x =>
+                        <fast-slider tabindex="${x =>
                             !x.expanded && x.isResponsive ? "-1" : "0"}"></fast-slider>
-                        <fast-flipper aria-label="Example 'flipper' button" tabIndex="${x =>
-                            !x.expanded && x.isResponsive ? "-1" : "0"}"></fast-flipper>
-                        <fast-flipper disabled aria-label="Example disabled 'flipper' button"></fast-flipper>
+                        <fast-flipper></fast-flipper>
+                        <fast-flipper disabled></fast-flipper>
                     </div>
                     <div class="control-container">
-                        <fast-button appearance="accent" aria-label="Example 'download' button" tabIndex="${x =>
+                        <fast-button appearance="accent" aria-label="Example 'download' button" tabindex="${x =>
                             !x.expanded && x.isResponsive ? "-1" : "0"}">
                             Button
                             <span slot="start">${DownloadIcon}</span>
                         </fast-button>
-                        <fast-button appearance="neutral" aria-label="Example 'play' button" tabIndex="${x =>
+                        <fast-button appearance="neutral" aria-label="Example 'play' button" tabindex="${x =>
                             !x.expanded && x.isResponsive ? "-1" : "0"}">
                             Button
                             <span slot="start">${PlayIcon}</span>
