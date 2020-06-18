@@ -188,7 +188,7 @@ fast-divider::after {
 
 fast-badge {
   --badge-fill-primary: var(--neutral-fill-focus);
-  --badge-color-accent: var(--accent-foreground-rest);
+  --badge-color-primary: var(--accent-foreground-rest);
 }
 
 fast-badge::part(control) {
