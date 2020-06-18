@@ -298,6 +298,7 @@ fast-badge::part(control) {
 
   .github-link {
     margin-inline-start: 30px;
+    display: inline-block;
   }
 
   site-navigation {
