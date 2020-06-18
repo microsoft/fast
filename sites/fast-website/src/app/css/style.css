@@ -31,20 +31,18 @@ body {
   z-index: 1;
 }
 
-.social-links,
-.section-scroll {
+.side-nav-container {
+  width: 100%;
+  height: min-content;
   position: fixed;
   top: 50%;
   transform: translateY(-50%);
-}
-
-.section-scroll {
-  right: 0%;
+  display: flex;
+  justify-content: space-between;
 }
 
 @media screen and (max-height: 390px), screen and (max-width: 1000px) {
-  .social-links,
-  .section-scroll {
+  .side-nav-container {
     display: none;
   }
 }

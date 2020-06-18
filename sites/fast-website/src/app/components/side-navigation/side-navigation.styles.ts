@@ -12,8 +12,6 @@ export const SideNavigationStyles = css`
         --design-unit-large: calc(var(--design-unit) * 5px);
         contain: content;
         font-family: var(--body-font);
-        flex-direction: column;
-        justify-content: center;
     }
 
     ul {
