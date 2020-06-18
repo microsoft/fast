@@ -159,7 +159,6 @@ fast-divider::after {
 
 .community-section {
   margin-bottom: calc(var(--navbar-height) * -1);
-  padding-bottom: var(--navbar-height);
 }
 
 .fast-frame-section {
@@ -385,4 +384,10 @@ fast-badge::part(control) {
   .footer site-navigation::part(nav-button) {
     display: none;
   }
+}
+
+@media screen and (max-width: 750px) {
+	.community-section {
+		padding-bottom: var(--navbar-height);
+	}
 }
