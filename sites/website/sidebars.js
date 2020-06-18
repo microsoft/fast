@@ -72,6 +72,7 @@ module.exports = {
             type: "category",
             label: "Integrations",
             items: [
+                "integrations/introduction",
                 "integrations/aspnet",
                 "integrations/aurelia",
                 "integrations/blazor",

@@ -6,7 +6,7 @@
     "clean": "node ../../build/clean.js docs",
     "prepare-docs": "yarn clean && node src/prepare-docs.js",
     "build-homepage": "node src/build-homepage.js",
-    "dev": "yarn build-homepage && yarn prepare-docs && docusaurus start",
+    "dev": "yarn prepare-docs && docusaurus start",
     "build": "yarn build-homepage && yarn prepare-docs && docusaurus build"
   },
   "dependencies": {

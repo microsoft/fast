@@ -1,8 +1,11 @@
 ---
-title: Getting Started
+title: Getting Started with FAST Components
 sidebar_label: Getting Started
 custom_edit_url: https://github.com/microsoft/fast-dna/edit/master/sites/website/src/docs/fast-foundation/getting-started.md
 ---
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![npm version](https://badge.fury.io/js/%40microsoft%2Ffast-components.svg)](https://badge.fury.io/js/%40microsoft%2Ffast-components)
+
 This document presumes you have [NodeJS](https://nodejs.org/) installed as well as some way to run an HTTP server locally, such as [http-server](https://www.npmjs.com/package/http-server).
 
 ## Quick-start

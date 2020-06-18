@@ -179,6 +179,17 @@ async function copyArticleMarkdown() {
                     "https://github.com/microsoft/fast-dna/edit/master/packages/web-components/fast-element/docs/ACKNOWLEDGEMENTS.md",
             },
         },
+        {
+            src: "../../packages/web-components/fast-element/README.md",
+            dest: "./docs/fast-element/getting-started.md",
+            metadata: {
+                id: "getting-started",
+                title: "Getting Started with FAST Element",
+                sidebar_label: "Getting Started",
+                custom_edit_url:
+                    "https://github.com/microsoft/fast-dna/edit/master/packages/web-components/fast-element/README.md",
+            },
+        },
     ];
 
     for (const file of mergeDocs) {
