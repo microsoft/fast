@@ -18,7 +18,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components-msft!accentFillActiveBehavior:var",
-          "docComment": "",
+          "docComment": "/**\n * Behavior to resolve and make available the accent-fill-active CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -44,7 +44,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components-msft!accentFillFocusBehavior:var",
-          "docComment": "",
+          "docComment": "/**\n * Behavior to resolve and make available the accent-fill-focus CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -70,7 +70,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components-msft!accentFillHoverBehavior:var",
-          "docComment": "",
+          "docComment": "/**\n * Behavior to resolve and make available the accent-fill-hover CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -96,7 +96,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components-msft!accentFillLargeActiveBehavior:var",
-          "docComment": "",
+          "docComment": "/**\n * Behavior to resolve and make available the accent-fill-large-active CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -122,7 +122,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components-msft!accentFillLargeFocusBehavior:var",
-          "docComment": "",
+          "docComment": "/**\n * Behavior to resolve and make available the accent-fill-large-focus CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -148,7 +148,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components-msft!accentFillLargeHoverBehavior:var",
-          "docComment": "",
+          "docComment": "/**\n * Behavior to resolve and make available the accent-fill-large-hover CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -174,7 +174,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components-msft!accentFillLargeRestBehavior:var",
-          "docComment": "",
+          "docComment": "/**\n * Behavior to resolve and make available the accent-fill-large-rest CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -200,7 +200,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components-msft!accentFillLargeSelectedBehavior:var",
-          "docComment": "",
+          "docComment": "/**\n * Behavior to resolve and make available the accent-fill-large-selected CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -226,7 +226,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components-msft!accentFillRestBehavior:var",
-          "docComment": "",
+          "docComment": "/**\n * Behavior to resolve and make available the accent-fill-rest CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -252,7 +252,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components-msft!accentFillSelectedBehavior:var",
-          "docComment": "",
+          "docComment": "/**\n * Behavior to resolve and make available the accent-fill-selected CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -278,7 +278,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components-msft!accentForegroundActiveBehavior:var",
-          "docComment": "",
+          "docComment": "/**\n * Behavior to resolve and make available the accent-foreground-active CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -304,7 +304,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components-msft!accentForegroundCutRestBehavior:var",
-          "docComment": "",
+          "docComment": "/**\n * Behavior to resolve and make available the accent-foreground-cut-rest CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -330,7 +330,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components-msft!accentForegroundFocusBehavior:var",
-          "docComment": "",
+          "docComment": "/**\n * Behavior to resolve and make available the accent-foreground-focus CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -356,7 +356,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components-msft!accentForegroundHoverBehavior:var",
-          "docComment": "",
+          "docComment": "/**\n * Behavior to resolve and make available the accent-foreground-hover CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -382,7 +382,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components-msft!accentForegroundLargeActiveBehavior:var",
-          "docComment": "",
+          "docComment": "/**\n * Behavior to resolve and make available the accent-foreground-large-active CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -408,7 +408,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components-msft!accentForegroundLargeFocusBehavior:var",
-          "docComment": "",
+          "docComment": "/**\n * Behavior to resolve and make available the accent-foreground-large-focus CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -434,7 +434,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components-msft!accentForegroundLargeHoverBehavior:var",
-          "docComment": "",
+          "docComment": "/**\n * Behavior to resolve and make available the accent-foreground-large-hover CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -460,7 +460,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components-msft!accentForegroundLargeRestBehavior:var",
-          "docComment": "",
+          "docComment": "/**\n * Behavior to resolve and make available the accent-foreground-large-rest CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -486,7 +486,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components-msft!accentForegroundRestBehavior:var",
-          "docComment": "",
+          "docComment": "/**\n * Behavior to resolve and make available the accent-foreground-rest CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -510,26 +510,9 @@
           }
         },
         {
-          "kind": "Variable",
-          "canonicalReference": "@microsoft/fast-components-msft!ambientShadow:var",
-          "docComment": "/**\n * Define shadow algorithms.\n *\n * TODO: The --background-luminance will need to be derived from JavaScript. For now this is hard-coded to a 1, the relative luminance of pure white. https://github.com/microsoft/fast-dna/issues/2778\n */\n",
-          "excerptTokens": [
-            {
-              "kind": "Content",
-              "text": "ambientShadow = \"0 0 calc((var(--elevation) * 0.225px) + 2px) rgba(0, 0, 0, calc(.11 * (2 - var(--background-luminance, 1))))\""
-            }
-          ],
-          "releaseTag": "Public",
-          "name": "ambientShadow",
-          "variableTypeTokenRange": {
-            "startIndex": 0,
-            "endIndex": 0
-          }
-        },
-        {
           "kind": "TypeAlias",
           "canonicalReference": "@microsoft/fast-components-msft!BadgeAppearance:type",
-          "docComment": "",
+          "docComment": "/**\n * Badge appearance options.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -553,25 +536,8 @@
         },
         {
           "kind": "Variable",
-          "canonicalReference": "@microsoft/fast-components-msft!directionalShadow:var",
-          "docComment": "",
-          "excerptTokens": [
-            {
-              "kind": "Content",
-              "text": "directionalShadow = \"0 calc(var(--elevation) * 0.4px) calc((var(--elevation) * 0.9px)) rgba(0, 0, 0, calc(.13 * (2 - var(--background-luminance, 1))))\""
-            }
-          ],
-          "releaseTag": "Public",
-          "name": "directionalShadow",
-          "variableTypeTokenRange": {
-            "startIndex": 0,
-            "endIndex": 0
-          }
-        },
-        {
-          "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components-msft!elevation:var",
-          "docComment": "",
+          "docComment": "/**\n * Applies the box-shadow CSS rule set to the elevation formula. Control this formula with the --elevation CSS Custom Property by setting --elevation to a number.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -592,7 +558,7 @@
         {
           "kind": "Class",
           "canonicalReference": "@microsoft/fast-components-msft!FASTAccordion:class",
-          "docComment": "",
+          "docComment": "/**\n * The FAST Accordion Element. Implements {@link @microsoft/fast-foundation#Accordion}, {@link @microsoft/fast-foundation#AccordionTemplate}\n *\n * @remarks\n *\n * HTML Element: \\<fast-accordion\\>\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -620,7 +586,7 @@
         {
           "kind": "Class",
           "canonicalReference": "@microsoft/fast-components-msft!FASTAccordionItem:class",
-          "docComment": "",
+          "docComment": "/**\n * The FAST Accordion Item Element. Implements {@link @microsoft/fast-foundation#AccordionItem}, {@link @microsoft/fast-foundation#AccordionItemTemplate}\n *\n * @remarks\n *\n * HTML Element: \\<fast-accordion-item\\>\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -648,7 +614,7 @@
         {
           "kind": "Class",
           "canonicalReference": "@microsoft/fast-components-msft!FASTAnchor:class",
-          "docComment": "",
+          "docComment": "/**\n * The FAST Anchor Element. Implements {@link @microsoft/fast-foundation#Anchor}, {@link @microsoft/fast-foundation#AnchorTemplate}\n *\n * @remarks\n *\n * HTML Element: \\<fast-anchor\\>\n *\n * {@link https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/delegatesFocus | delegatesFocus}\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -676,7 +642,7 @@
         {
           "kind": "Class",
           "canonicalReference": "@microsoft/fast-components-msft!FASTBadge:class",
-          "docComment": "",
+          "docComment": "/**\n * The FAST Badge Element. Implements {@link @microsoft/fast-foundation#Badge}, {@link @microsoft/fast-foundation#BadgeTemplate}\n *\n * @remarks\n *\n * HTML Element: \\<fast-badge\\>\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -732,7 +698,7 @@
         {
           "kind": "Class",
           "canonicalReference": "@microsoft/fast-components-msft!FASTButton:class",
-          "docComment": "",
+          "docComment": "/**\n * The FAST Button Element. Implements {@link @microsoft/fast-foundation#Button}, {@link @microsoft/fast-foundation#ButtonTemplate}\n *\n * @remarks\n *\n * HTML Element: \\<fast-button\\>\n *\n * {@link https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/delegatesFocus | delegatesFocus}\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -760,7 +726,7 @@
         {
           "kind": "Class",
           "canonicalReference": "@microsoft/fast-components-msft!FASTCard:class",
-          "docComment": "",
+          "docComment": "/**\n * The FAST Card Element. Implements {@link @microsoft/fast-foundation#Card}, {@link @microsoft/fast-foundation#CardTemplate}\n *\n * @remarks\n *\n * HTML Element: \\<fast-card\\>\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -788,7 +754,7 @@
         {
           "kind": "Class",
           "canonicalReference": "@microsoft/fast-components-msft!FASTCheckbox:class",
-          "docComment": "",
+          "docComment": "/**\n * The FAST Checkbox Element. Implements {@link @microsoft/fast-foundation#Checkbox}, {@link @microsoft/fast-foundation#CheckboxTemplate}\n *\n * @remarks\n *\n * HTML Element: \\<fast-checkbox\\>\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -816,7 +782,7 @@
         {
           "kind": "Class",
           "canonicalReference": "@microsoft/fast-components-msft!FASTDesignSystemProvider:class",
-          "docComment": "",
+          "docComment": "/**\n * The FAST DesignSystemProvider Element. Implements {@link @microsoft/fast-foundation#DesignSystemProvider}, {@link @microsoft/fast-foundation#DesignSystemProviderTemplate}\n *\n * @remarks\n *\n * HTML Element: \\<fast-design-system-provider\\>\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -2667,7 +2633,7 @@
         {
           "kind": "Class",
           "canonicalReference": "@microsoft/fast-components-msft!FASTDialog:class",
-          "docComment": "",
+          "docComment": "/**\n * The FAST Dialog Element. Implements {@link @microsoft/fast-foundation#Dialog}, {@link @microsoft/fast-foundation#DialogTemplate}\n *\n * @remarks\n *\n * HTML Element: \\<fast-dialog\\>\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -2695,7 +2661,7 @@
         {
           "kind": "Class",
           "canonicalReference": "@microsoft/fast-components-msft!FASTDivider:class",
-          "docComment": "",
+          "docComment": "/**\n * The FAST Divider Element. Implements {@link @microsoft/fast-foundation#Divider}, {@link @microsoft/fast-foundation#DividerTemplate}\n *\n * @remarks\n *\n * HTML Element: \\<fast-divider\\>\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -2723,7 +2689,7 @@
         {
           "kind": "Class",
           "canonicalReference": "@microsoft/fast-components-msft!FASTFlipper:class",
-          "docComment": "",
+          "docComment": "/**\n * The FAST Flipper Element. Implements {@link @microsoft/fast-foundation#Flipper}, {@link @microsoft/fast-foundation#FlipperTemplate}\n *\n * @remarks\n *\n * HTML Element: \\<fast-flipper\\>\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -2751,7 +2717,7 @@
         {
           "kind": "Class",
           "canonicalReference": "@microsoft/fast-components-msft!FASTProgress:class",
-          "docComment": "",
+          "docComment": "/**\n * The FAST Progress Element. Implements {@link @microsoft/fast-foundation#BaseProgress}, {@link @microsoft/fast-foundation#ProgressTemplate}\n *\n * @remarks\n *\n * HTML Element: \\<fast-progress\\>\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -2779,7 +2745,7 @@
         {
           "kind": "Class",
           "canonicalReference": "@microsoft/fast-components-msft!FASTProgressRing:class",
-          "docComment": "",
+          "docComment": "/**\n * The FAST Progress Ring Element. Implements {@link @microsoft/fast-foundation#BaseProgress}, {@link @microsoft/fast-foundation#ProgressRingTemplate}\n *\n * @remarks\n *\n * HTML Element: \\<fast-progress-ring\\>\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -2807,7 +2773,7 @@
         {
           "kind": "Class",
           "canonicalReference": "@microsoft/fast-components-msft!FASTRadio:class",
-          "docComment": "",
+          "docComment": "/**\n * The FAST Radio Element. Implements {@link @microsoft/fast-foundation#Radio}, {@link @microsoft/fast-foundation#RadioTemplate}\n *\n * @remarks\n *\n * HTML Element: \\<fast-radio\\>\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -2835,7 +2801,7 @@
         {
           "kind": "Class",
           "canonicalReference": "@microsoft/fast-components-msft!FASTRadioGroup:class",
-          "docComment": "",
+          "docComment": "/**\n * The FAST Radio Group Element. Implements {@link @microsoft/fast-foundation#RadioGroup}, {@link @microsoft/fast-foundation#RadioGroupTemplate}\n *\n * @remarks\n *\n * HTML Element: \\<fast-radio-group\\>\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -2863,7 +2829,7 @@
         {
           "kind": "Class",
           "canonicalReference": "@microsoft/fast-components-msft!FASTSlider:class",
-          "docComment": "",
+          "docComment": "/**\n * The FAST Slider Custom Element. Implements {@link @microsoft/fast-foundation#Slider}, {@link @microsoft/fast-foundation#SliderTemplate}\n *\n * @remarks\n *\n * HTML Element: \\<fast-slider\\>\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -2891,7 +2857,7 @@
         {
           "kind": "Class",
           "canonicalReference": "@microsoft/fast-components-msft!FASTSliderLabel:class",
-          "docComment": "",
+          "docComment": "/**\n * The FAST Slider Label Custom Element. Implements {@link @microsoft/fast-foundation#SliderLabel}, {@link @microsoft/fast-foundation#SliderLabelTemplate}\n *\n * @remarks\n *\n * HTML Element: \\<fast-slider-label\\>\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -2919,7 +2885,7 @@
         {
           "kind": "Class",
           "canonicalReference": "@microsoft/fast-components-msft!FASTSwitch:class",
-          "docComment": "",
+          "docComment": "/**\n * The FAST Switch Custom Element. Implements {@link @microsoft/fast-foundation#Switch}, {@link @microsoft/fast-foundation#SwitchTemplate}\n *\n * @remarks\n *\n * HTML Element: \\<fast-switch\\>\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -2947,7 +2913,7 @@
         {
           "kind": "Class",
           "canonicalReference": "@microsoft/fast-components-msft!FASTTab:class",
-          "docComment": "",
+          "docComment": "/**\n * The FAST Tab Custom Element. Implements {@link @microsoft/fast-foundation#Tab}, {@link @microsoft/fast-foundation#TabTemplate}\n *\n * @remarks\n *\n * HTML Element: \\<fast-tab\\>\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -2975,7 +2941,7 @@
         {
           "kind": "Class",
           "canonicalReference": "@microsoft/fast-components-msft!FASTTabPanel:class",
-          "docComment": "",
+          "docComment": "/**\n * The FAST Tab Panel Custom Element. Implements {@link @microsoft/fast-foundation#TabPanel}, {@link @microsoft/fast-foundation#TabPanelTemplate}\n *\n * @remarks\n *\n * HTML Element: \\<fast-tab-panel\\>\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -3003,7 +2969,7 @@
         {
           "kind": "Class",
           "canonicalReference": "@microsoft/fast-components-msft!FASTTabs:class",
-          "docComment": "",
+          "docComment": "/**\n * The FAST Tabs Custom Element. Implements {@link @microsoft/fast-foundation#Tabs}, {@link @microsoft/fast-foundation#TabsTemplate}\n *\n * @remarks\n *\n * HTML Element: \\<fast-tabs\\>\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -3031,7 +2997,7 @@
         {
           "kind": "Class",
           "canonicalReference": "@microsoft/fast-components-msft!FASTTextArea:class",
-          "docComment": "",
+          "docComment": "/**\n * The FAST Text Area Custom Element. Implements {@link @microsoft/fast-foundation#TextArea}, {@link @microsoft/fast-foundation#TextAreaTemplate}\n *\n * @remarks\n *\n * HTML Element: \\<fast-text-area\\>\n *\n * {@link https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/delegatesFocus | delegatesFocus}\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -3059,7 +3025,7 @@
         {
           "kind": "Class",
           "canonicalReference": "@microsoft/fast-components-msft!FASTTextField:class",
-          "docComment": "",
+          "docComment": "/**\n * The FAST Text Field Custom Element. Implements {@link @microsoft/fast-foundation#TextField}, {@link @microsoft/fast-foundation#TextFieldTemplate}\n *\n * @remarks\n *\n * HTML Element: \\<fast-text-field\\>\n *\n * {@link https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/delegatesFocus | delegatesFocus}\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -3087,7 +3053,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components-msft!heightNumber:var",
-          "docComment": "",
+          "docComment": "/**\n * The height of height of a standard control (expressed as a number) to be used in CSS.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -3104,7 +3070,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components-msft!neutralDividerRestBehavior:var",
-          "docComment": "",
+          "docComment": "/**\n * Behavior to resolve and make available the neutral-divider-rest CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -3130,7 +3096,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components-msft!neutralFillActiveBehavior:var",
-          "docComment": "",
+          "docComment": "/**\n * Behavior to resolve and make available the neutral-fill-active CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -3156,7 +3122,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components-msft!neutralFillCardRestBehavior:var",
-          "docComment": "",
+          "docComment": "/**\n * Behavior to resolve and make available the neutral-fill-card-rest CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -3182,7 +3148,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components-msft!neutralFillFocusBehavior:var",
-          "docComment": "",
+          "docComment": "/**\n * Behavior to resolve and make available the neutral-fill-focus CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -3208,7 +3174,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components-msft!neutralFillHoverBehavior:var",
-          "docComment": "",
+          "docComment": "/**\n * Behavior to resolve and make available the neutral-fill-hover CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -3234,7 +3200,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components-msft!neutralFillInputActiveBehavior:var",
-          "docComment": "",
+          "docComment": "/**\n * Behavior to resolve and make available the neutral-fill-input-active CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -3260,7 +3226,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components-msft!neutralFillInputFocusBehavior:var",
-          "docComment": "",
+          "docComment": "/**\n * Behavior to resolve and make available the neutral-fill-input-focus CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -3286,7 +3252,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components-msft!neutralFillInputHoverBehavior:var",
-          "docComment": "",
+          "docComment": "/**\n * Behavior to resolve and make available the neutral-fill-input-hover CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -3312,7 +3278,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components-msft!neutralFillInputRestBehavior:var",
-          "docComment": "",
+          "docComment": "/**\n * Behavior to resolve and make available the neutral-fill-input-rest CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -3338,7 +3304,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components-msft!neutralFillRestBehavior:var",
-          "docComment": "",
+          "docComment": "/**\n * Behavior to resolve and make available the neutral-fill-rest CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -3364,7 +3330,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components-msft!neutralFillSelectedBehavior:var",
-          "docComment": "",
+          "docComment": "/**\n * Behavior to resolve and make available the neutral-fill-selected CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -3390,7 +3356,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components-msft!neutralFillStealthActiveBehavior:var",
-          "docComment": "",
+          "docComment": "/**\n * Behavior to resolve and make available the neutral-fill-stealth-active CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -3416,7 +3382,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components-msft!neutralFillStealthFocusBehavior:var",
-          "docComment": "",
+          "docComment": "/**\n * Behavior to resolve and make available the neutral-fill-stealth-focus CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -3442,7 +3408,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components-msft!neutralFillStealthHoverBehavior:var",
-          "docComment": "",
+          "docComment": "/**\n * Behavior to resolve and make available the neutral-fill-stealth-hover CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -3468,7 +3434,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components-msft!neutralFillStealthRestBehavior:var",
-          "docComment": "",
+          "docComment": "/**\n * Behavior to resolve and make available the neutral-fill-stealth-rest CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -3494,7 +3460,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components-msft!neutralFillStealthSelectedBehavior:var",
-          "docComment": "",
+          "docComment": "/**\n * Behavior to resolve and make available the neutral-fill-stealth-selected CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -3520,7 +3486,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components-msft!neutralFillToggleActiveBehavior:var",
-          "docComment": "",
+          "docComment": "/**\n * Behavior to resolve and make available the neutral-fill-toggle-active CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -3546,7 +3512,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components-msft!neutralFillToggleFocusBehavior:var",
-          "docComment": "",
+          "docComment": "/**\n * Behavior to resolve and make available the neutral-fill-toggle-focus CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -3572,7 +3538,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components-msft!neutralFillToggleHoverBehavior:var",
-          "docComment": "",
+          "docComment": "/**\n * Behavior to resolve and make available the neutral-fill-toggle-hover CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -3598,7 +3564,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components-msft!neutralFillToggleRestBehavior:var",
-          "docComment": "",
+          "docComment": "/**\n * Behavior to resolve and make available the neutral-fill-toggle-rest CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -3624,7 +3590,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components-msft!neutralFocusBehavior:var",
-          "docComment": "",
+          "docComment": "/**\n * Behavior to resolve and make available the neutral-focus CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -3650,7 +3616,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components-msft!neutralFocusInnerAccentBehavior:var",
-          "docComment": "",
+          "docComment": "/**\n * Behavior to resolve and make available the neutral-focus-inner-accent CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -3676,7 +3642,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components-msft!neutralForegroundActiveBehavior:var",
-          "docComment": "",
+          "docComment": "/**\n * Behavior to resolve and make available the neutral-foreground-active CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -3702,7 +3668,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components-msft!neutralForegroundFocusBehavior:var",
-          "docComment": "",
+          "docComment": "/**\n * Behavior to resolve and make available the neutral-foreground-focus CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -3728,7 +3694,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components-msft!neutralForegroundHintBehavior:var",
-          "docComment": "",
+          "docComment": "/**\n * Behavior to resolve and make available the neutral-foreground-hint CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -3754,7 +3720,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components-msft!neutralForegroundHintLargeBehavior:var",
-          "docComment": "",
+          "docComment": "/**\n * Behavior to resolve and make available the neutral-foreground-hint-large CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -3780,7 +3746,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components-msft!neutralForegroundHoverBehavior:var",
-          "docComment": "",
+          "docComment": "/**\n * Behavior to resolve and make available the neutral-foreground-hover CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -3806,7 +3772,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components-msft!neutralForegroundRestBehavior:var",
-          "docComment": "",
+          "docComment": "/**\n * Behavior to resolve and make available the neutral-foreground-rest CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -3832,7 +3798,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components-msft!neutralForegroundToggleBehavior:var",
-          "docComment": "",
+          "docComment": "/**\n * Behavior to resolve and make available the neutral-foreground-toggle CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -3858,7 +3824,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components-msft!neutralForegroundToggleLargeBehavior:var",
-          "docComment": "",
+          "docComment": "/**\n * Behavior to resolve and make available the neutral-foreground-toggle-large CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -3884,7 +3850,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components-msft!neutralLayerCardBehavior:var",
-          "docComment": "",
+          "docComment": "/**\n * Behavior to resolve and make available the neutral-layer-card CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -3910,7 +3876,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components-msft!neutralLayerCardContainerBehavior:var",
-          "docComment": "",
+          "docComment": "/**\n * Behavior to resolve and make available the neutral-layer-card-container CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -3936,7 +3902,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components-msft!neutralLayerFloatingBehavior:var",
-          "docComment": "",
+          "docComment": "/**\n * Behavior to resolve and make available the neutral-layer-floating CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -3962,7 +3928,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components-msft!neutralLayerL1AltBehavior:var",
-          "docComment": "",
+          "docComment": "/**\n * Behavior to resolve and make available the neutral-layer-l1-alt CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -3988,7 +3954,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components-msft!neutralLayerL1Behavior:var",
-          "docComment": "",
+          "docComment": "/**\n * Behavior to resolve and make available the neutral-layer-l1 CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -4014,7 +3980,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components-msft!neutralLayerL2Behavior:var",
-          "docComment": "",
+          "docComment": "/**\n * Behavior to resolve and make available the neutral-layer-l2 CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -4040,7 +4006,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components-msft!neutralLayerL3Behavior:var",
-          "docComment": "",
+          "docComment": "/**\n * Behavior to resolve and make available the neutral-layer-l3 CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -4066,7 +4032,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components-msft!neutralLayerL4Behavior:var",
-          "docComment": "",
+          "docComment": "/**\n * Behavior to resolve and make available the neutral-layer-l4 CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -4092,7 +4058,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components-msft!neutralOutlineActiveBehavior:var",
-          "docComment": "",
+          "docComment": "/**\n * Behavior to resolve and make available the neutral-outline-active CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -4118,7 +4084,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components-msft!neutralOutlineFocusBehavior:var",
-          "docComment": "",
+          "docComment": "/**\n * Behavior to resolve and make available the neutral-outline-focus CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -4144,7 +4110,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components-msft!neutralOutlineHoverBehavior:var",
-          "docComment": "",
+          "docComment": "/**\n * Behavior to resolve and make available the neutral-outline-hover CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -4170,7 +4136,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-components-msft!neutralOutlineRestBehavior:var",
-          "docComment": "",
+          "docComment": "/**\n * Behavior to resolve and make available the neutral-outline-rest CSS custom property.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
