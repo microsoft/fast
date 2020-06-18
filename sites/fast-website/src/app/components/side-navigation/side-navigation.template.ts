@@ -14,7 +14,7 @@ export const SideNavigationTemplate = html<SideNavigation>`
                                 href=${x => x.actionLink}
                                 appearance="lightweight"
                                 :innerHTML=${x => x.icon}
-                                aria-label=${x => x.header}
+                                aria-label=${x => x.actionText}
                             ></fast-anchor>
                         </li>
                     `
