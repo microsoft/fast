@@ -2,7 +2,7 @@
 id: using-directives
 title: Using Directives
 sidebar_label: Using Directives
-custom_edit_url: https://github.com/microsoft/fast-dna/edit/master/packages/web-components/fast-element/docs/guide/using-directives.doc.md
+custom_edit_url: https://github.com/microsoft/fast-dna/edit/master/packages/web-components/fast-element/docs/guide/using-directives.md
 ---
 
 In addition to declaring dynamic parts of templates with expressions, you also have access to several powerful *directives*, which aid in common scenarios.

@@ -2,7 +2,7 @@
 id: defining-elements
 title: Defining Elements
 sidebar_label: Defining Elements
-custom_edit_url: https://github.com/microsoft/fast-dna/edit/master/packages/web-components/fast-element/docs/guide/defining-elements.doc.md
+custom_edit_url: https://github.com/microsoft/fast-dna/edit/master/packages/web-components/fast-element/docs/guide/defining-elements.md
 ---
 
 ## Basic Elements
