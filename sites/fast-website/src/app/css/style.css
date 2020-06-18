@@ -387,7 +387,7 @@ fast-badge::part(control) {
 }
 
 @media screen and (max-width: 750px) {
-	.community-section {
-		padding-bottom: var(--navbar-height);
-	}
+  .community-section {
+    padding-bottom: var(--navbar-height);
+  }
 }
