@@ -61,12 +61,8 @@ export const featureCardData: FeatureCardData[] = [
             "All FAST components follow WCAG 2.1, are W3C spec-compliant and use the W3C interaction models when available.",
         links: [
             {
-                anchorText: "WCAG",
+                anchorText: "Visit WCAG",
                 url: "https://www.w3.org/WAI/standards-guidelines/wcag/",
-            },
-            {
-                anchorText: "Web Accessibility Initiative",
-                url: "https://www.w3.org/WAI/",
             },
         ],
     },
@@ -77,11 +73,8 @@ export const featureCardData: FeatureCardData[] = [
         links: [
             {
                 anchorText: "View GitHub",
-                url: "#",
-            },
-            {
-                anchorText: "Read Documentation",
-                url: "#",
+                url:
+                    "https://github.com/microsoft/fast-dna/tree/master/packages/utilities/fast-animation",
             },
         ],
     },
@@ -92,41 +85,8 @@ export const featureCardData: FeatureCardData[] = [
         links: [
             {
                 anchorText: "View GitHub",
-                url: "#",
-            },
-            {
-                anchorText: "Read Documentation",
-                url: "#",
-            },
-        ],
-    },
-    {
-        header: "Layout / Grid",
-        body:
-            "Build layouts such as a 12 column grid for content or an application grid with resizable panels.",
-        links: [
-            {
-                anchorText: "View GitHub",
-                url: "#",
-            },
-            {
-                anchorText: "Read Documentation",
-                url: "#",
-            },
-        ],
-    },
-    {
-        header: "Other",
-        body:
-            "Leverage a toolkit of general utilities such as keyboarding, Right-To-Left (RTL), number, and string manipulation.",
-        links: [
-            {
-                anchorText: "View GitHub",
-                url: "#",
-            },
-            {
-                anchorText: "Read Documentation",
-                url: "#",
+                url:
+                    "https://github.com/microsoft/fast-dna/tree/master/packages/utilities/fast-colors",
             },
         ],
     },

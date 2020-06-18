@@ -1,6 +1,6 @@
 import { html, repeat } from "@microsoft/fast-element";
 
-const linkTemplate = html` <fast-anchor
+const linkTemplate = html`<fast-anchor
     slot="footer"
     href=${x => x.url}
     appearance="lightweight"
