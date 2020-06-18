@@ -8,7 +8,6 @@ import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
     AccentButtonStyles,
     BaseButtonStyles,
-    HypertextStyles,
     LightweightButtonStyles,
     OutlineButtonStyles,
     StealthButtonStyles,
@@ -17,7 +16,6 @@ import {
 export const ButtonStyles = css`
     ${BaseButtonStyles}
     ${AccentButtonStyles}
-    ${HypertextStyles}
     ${LightweightButtonStyles}
     ${OutlineButtonStyles}
     ${StealthButtonStyles}

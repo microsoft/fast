@@ -222,6 +222,9 @@ export const DOM: Readonly<{
 }>;
 
 // @public
+export function elements(tagName?: string): (value: Node, index: number, array: Node[]) => boolean;
+
+// @public
 export abstract class ElementStyles {
     // @internal (undocumented)
     abstract addStylesTo(target: StyleTarget): void;
