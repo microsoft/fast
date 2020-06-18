@@ -15,7 +15,16 @@ export const NavigationStyles = css`
         display: none;
     }
 
+    .nav-button::part(control) {
+        height: 100%;
+    }
+
+    .nav-button::part(content) {
+        display: inline-block;
+    }
+
     .nav-button svg {
+        display: block;
         width: 35px;
         height: 19px;
     }
