@@ -1,6 +1,6 @@
 {
   "name": "@microsoft/fast-color-explorer",
-  "version": "1.5.34",
+  "version": "1.5.35",
   "description": "Color explorations",
   "sideEffects": false,
   "private": true,
@@ -68,7 +68,7 @@
   "dependencies": {
     "@microsoft/fast-colors": "^5.0.10",
     "@microsoft/fast-components-react-base": "^4.26.2",
-    "@microsoft/fast-components-react-msft": "^4.30.14",
+    "@microsoft/fast-components-react-msft": "^4.31.0",
     "@microsoft/fast-components-styles-msft": "^4.28.13",
     "@microsoft/fast-jss-manager-react": "^4.7.6",
     "@microsoft/fast-jss-utilities": "^4.7.16",

@@ -1,7 +1,10 @@
 import { html } from "@microsoft/fast-element";
 import { endTemplate, startTemplate } from "../patterns/start-end";
 import { Button } from "./button";
-
+/**
+ * The template for the {@link @microsoft/fast-foundation#(Button:class)} component.
+ * @public
+ */
 export const ButtonTemplate = html<Button>`
     <template class="${x => x.appearance}">
         <button

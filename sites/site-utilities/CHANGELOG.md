@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.1.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/site-utilities@0.1.0...@microsoft/site-utilities@0.1.1) (2020-06-17)
+
+**Note:** Version bump only for package @microsoft/site-utilities
+
+
+
+
+
 # [0.1.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/site-utilities@0.0.5...@microsoft/site-utilities@0.1.0) (2020-06-15)
 
 

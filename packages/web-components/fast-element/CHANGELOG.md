@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.12.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-element@0.11.0...@microsoft/fast-element@0.12.0) (2020-06-17)
+
+
+### Features
+
+* **fast-element:** enable children and slotted filters ([#3323](https://github.com/Microsoft/fast-dna/issues/3323)) ([224df54](https://github.com/Microsoft/fast-dna/commit/224df5474c2ee4a6f2c1582204f8947e65a931dc))
+
+
+
+
+
 # [0.11.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-element@0.10.2...@microsoft/fast-element@0.11.0) (2020-06-15)
 
 

@@ -13,10 +13,18 @@ import {
 import { FormAssociated } from "../form-associated/index";
 import { convertPixelToPercent } from "./slider-utilities";
 
+/**
+ * The selection modes of a {@link Slider}
+ * @public
+ */
 export enum SliderMode {
     singleValue = "single-value",
 }
 
+/**
+ * The configuration structure of {@link Slider}.
+ * @public
+ */
 export interface SliderConfiguration {
     max: number;
     min: number;
@@ -25,8 +33,20 @@ export interface SliderConfiguration {
     disabled?: boolean;
 }
 
+/**
+ * An Switch Custom HTML Element.
+ * Implements the {@link https://www.w3.org/TR/wai-aria-1.1/#slider | ARIA slider }.
+ *
+ * @public
+ */
 export class Slider extends FormAssociated<HTMLInputElement>
     implements SliderConfiguration {
+    /**
+     * When true, the control will be immutable by user interaction. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly | readonly HTML attribute} for more information.
+     * @public
+     * @remarks
+     * HTML Attribute: readonly
+     */
     @attr({ attribute: "readonly", mode: "boolean" })
     public readOnly: boolean; // Map to proxy element
     private readOnlyChanged(): void {
@@ -35,28 +55,61 @@ export class Slider extends FormAssociated<HTMLInputElement>
         }
     }
 
+    /**
+     * @internal
+     */
     public track: HTMLDivElement;
+
+    /**
+     * @internal
+     */
     public thumb: HTMLDivElement;
 
+    /**
+     * @internal
+     */
     @observable
     public direction: Direction = Direction.ltr;
 
+    /**
+     * @internal
+     */
     @observable
     public isDragging: boolean = false;
 
+    /**
+     * @internal
+     */
     @observable
     public position: string;
+
+    /**
+     * @internal
+     */
     @observable
     public trackWidth: number = 0;
+
+    /**
+     * @internal
+     */
     @observable
     public trackMinWidth: number = 0;
+
+    /**
+     * @internal
+     */
     @observable
     public trackHeight: number = 0;
+
+    /**
+     * @internal
+     */
     @observable
     public trackMinHeight: number = 0;
 
     /**
      * The element's value to be included in form submission changed.
+     * @public
      */
     public value: string; // Map to proxy element.
     private valueChanged(): void {
@@ -72,7 +125,11 @@ export class Slider extends FormAssociated<HTMLInputElement>
     }
 
     /**
-     * Min allowed value default is 0
+     * The minimum allowed value
+     *
+     * @defaultValue - 0
+     * @public
+     * HTML Attribute: min
      */
     @attr({ converter: nullableNumberConverter })
     public min: number = 0; // Map to proxy element.
@@ -83,7 +140,11 @@ export class Slider extends FormAssociated<HTMLInputElement>
     }
 
     /**
-     * Max allowed value default is 10
+     * The maximum allowed value
+     *
+     * @defaultValue - 10
+     * @public
+     * HTML Attribute: max
      */
     @attr({ converter: nullableNumberConverter })
     public max: number = 10; // Map to proxy element.
@@ -95,6 +156,9 @@ export class Slider extends FormAssociated<HTMLInputElement>
 
     /**
      * Value to increment or decrement via arrow keys, mouse click or drag
+     *
+     * @public
+     * HTML Attribute: step
      */
     @attr({ converter: nullableNumberConverter })
     public step: number = 1; // Map to proxy element.
@@ -105,7 +169,10 @@ export class Slider extends FormAssociated<HTMLInputElement>
     }
 
     /**
-     * Orientation value, horizontal | vertical
+     * Orientation of the slider
+     *
+     * @public
+     * HTML Attribute: orientation
      */
     @attr
     public orientation: Orientation = Orientation.horizontal;
@@ -114,8 +181,12 @@ export class Slider extends FormAssociated<HTMLInputElement>
             this.setThumbPositionForOrientation(this.direction);
         }
     }
+
     /**
-     * mode value, default singleValue
+     * The selection mode
+     *
+     * @public
+     * HTML Attribute: mode
      */
     @attr
     public mode: SliderMode = SliderMode.singleValue;
@@ -127,6 +198,9 @@ export class Slider extends FormAssociated<HTMLInputElement>
         this.proxy.setAttribute("type", "range");
     }
 
+    /**
+     * @internal
+     */
     public connectedCallback(): void {
         super.connectedCallback();
         this.direction = this.getDirection();
@@ -137,12 +211,20 @@ export class Slider extends FormAssociated<HTMLInputElement>
         this.setThumbPositionForOrientation(this.direction);
     }
 
+    /**
+     * @internal
+     */
     public disconnectedCallback(): void {
         this.removeEventListener("keydown", this.keypressHandler);
         this.removeEventListener("mousedown", this.clickHandler);
         this.thumb.removeEventListener("mousedown", this.handleThumbMouseDown);
     }
 
+    /**
+     * Increment the value by the step
+     *
+     * @public
+     */
     public increment = (): void => {
         const newVal: number =
             this.direction !== Direction.rtl && this.orientation !== Orientation.vertical
@@ -155,6 +237,11 @@ export class Slider extends FormAssociated<HTMLInputElement>
         this.updateForm();
     };
 
+    /**
+     * Decrement the value by the step
+     *
+     * @public
+     */
     public decrement = (): void => {
         const newVal =
             this.direction !== Direction.rtl && this.orientation !== Orientation.vertical

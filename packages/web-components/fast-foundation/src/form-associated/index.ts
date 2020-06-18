@@ -290,9 +290,9 @@ export abstract class FormAssociated<
      * available (and the proxy element is used to report validity), this function will
      * do nothing unless a message is provided, at which point the setCustomValidity method
      * of the proxy element will be invoked with the provided message.
-     * @param flags Validity flags
-     * @param message Optional message to supply
-     * @param anchor Optional element used by UA to display an interactive validation UI
+     * @param flags - Validity flags
+     * @param message - Optional message to supply
+     * @param anchor - Optional element used by UA to display an interactive validation UI
      */
     public setValidity(
         flags: ValidityStateFlags,
@@ -309,7 +309,7 @@ export abstract class FormAssociated<
     /**
      * Invoked when a connected component's form or fieldset has it's disabled
      * state changed.
-     * @param disabled the disabled value of the form / fieldset
+     * @param disabled - the disabled value of the form / fieldset
      */
     public formDisabledCallback(disabled: boolean): void {
         this.disabled = disabled;
@@ -317,8 +317,8 @@ export abstract class FormAssociated<
 
     /**
      *
-     * @param value The value to set
-     * @param state The state object provided to during session restores and when autofilling.
+     * @param value - The value to set
+     * @param state - The state object provided to during session restores and when autofilling.
      */
     protected setFormValue(
         value: File | string | FormData | null,
@@ -343,7 +343,7 @@ export abstract class FormAssociated<
 
     /**
      * Used to stop propagation of proxy element events
-     * @param e Event object
+     * @param e - Event object
      */
     private stopPropagation(e: Event): void {
         e.stopPropagation();

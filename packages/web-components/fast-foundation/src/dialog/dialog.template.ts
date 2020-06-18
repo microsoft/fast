@@ -1,6 +1,10 @@
 import { html, ref, when } from "@microsoft/fast-element";
 import { Dialog } from "./dialog";
 
+/**
+ * The template for the {@link @microsoft/fast-foundation#Dialog} component.
+ * @public
+ */
 export const DialogTemplate = html<Dialog>`
     <div class="positioning-region" part="positioning-region">
         ${when(

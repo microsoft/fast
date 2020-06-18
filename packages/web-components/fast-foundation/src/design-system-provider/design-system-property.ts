@@ -4,27 +4,37 @@ import {
     observable,
 } from "@microsoft/fast-element";
 import { DesignSystemProvider } from "./design-system-provider";
+
+/**
+ * Configuration object for defining a {@link @microsoft/fast-foundation#DesignSystemProvider} property
+ *
+ * @public
+ */
+export interface DecoratorDesignSystemPropertyConfiguration
+    extends Omit<DecoratorAttributeConfiguration, "attribute"> {
+    /**
+     * The HTML attribute name to map the property to - defaults to the property name.
+     */
+    attribute?: string | false;
+
+    /**
+     * An optional property to control the name of the css custom property being created.
+     * If omitted, the css custom property will share a name with attribute if specified, otherwise the property name being decorated.
+     * If assigned a false value, no css custom property will be created.
+     */
+    cssCustomProperty?: string | false;
+    /**
+     * The default value of the property. Will be assigned when the use-defaults attribute is used.
+     */
+    default: any;
+}
+
 /**
  * Decorator to declare a property as a design-system property.
- * Accepts a config object with the following:
+ * Intended to be used with the {@link @microsoft/fast-foundation#DesignSystemProvider}
+ * @param config - {@link DecoratorDesignSystemPropertyConfiguration}
  *
- * default:
- * The default value of the property. Will be assigned when the use-defaults attribute is used.
- *
- * attribute?:
- * The HTML attribute to map the property to - defaults to the property name.
- *
- * mode?:
- * The attr mode - see https://github.com/microsoft/fast-dna/blob/master/packages/web-components/fast-element/docs/guide/building-components.md#customizing-attributes
- * Defaults to "fromView"
- *
- * converter?:
- * The attr converter - see https://github.com/microsoft/fast-dna/blob/master/packages/web-components/fast-element/docs/guide/building-components.md#customizing-attributes
- *
- * cssCustomProperty?:
- * An optional property to control the name of the css custom property being created.
- * If omitted, the css custom property will share a name with attribute if specified, otherwise the property name being decorated.
- * If assigned a false value, no css custom property will be created.
+ * @public
  */
 export function designSystemProperty<T extends DesignSystemProvider>(
     config: DecoratorDesignSystemPropertyConfiguration
@@ -69,11 +79,4 @@ export function designSystemProperty<T extends DesignSystemProvider>(
     return (source: T, prop: string) => {
         decorator(source, prop, config);
     };
-}
-
-export interface DecoratorDesignSystemPropertyConfiguration
-    extends Omit<DecoratorAttributeConfiguration, "attribute"> {
-    attribute?: string | false;
-    cssCustomProperty?: string | false;
-    default: any;
 }
