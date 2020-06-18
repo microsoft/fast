@@ -2,16 +2,28 @@ import { attr, observable } from "@microsoft/fast-element";
 import { keyCodeSpace } from "@microsoft/fast-web-utilities";
 import { FormAssociated } from "../form-associated/index";
 
-export interface RadioControl {
-    checked: boolean;
-    disabled: boolean;
-    readOnly: boolean;
-    focus: () => void;
-    setAttribute: (name: string, value: string) => void;
-    getAttribute: (name: string) => string | null;
-}
+/**
+ * A structure representing a Radio element
+ * @public
+ */
+export type RadioControl = Pick<
+    HTMLInputElement,
+    "checked" | "disabled" | "readOnly" | "focus" | "setAttribute" | "getAttribute"
+>;
 
+/**
+ * An Switch Custom HTML Element.
+ * Implements the {@link https://www.w3.org/TR/wai-aria-1.1/#switch | ARIA switch }.
+ *
+ * @public
+ */
 export class Radio extends FormAssociated<HTMLInputElement> implements RadioControl {
+    /**
+     * When true, the control will be immutable by user interaction. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly | readonly HTML attribute} for more information.
+     * @public
+     * @remarks
+     * HTML Attribute: readonly
+     */
     @attr({ attribute: "readonly", mode: "boolean" })
     public readOnly: boolean; // Map to proxy element
     private readOnlyChanged(): void {
@@ -20,6 +32,13 @@ export class Radio extends FormAssociated<HTMLInputElement> implements RadioCont
         }
     }
 
+    /**
+     * The name of the radio. See {@link https://developer.mozilla.org/en-US/docs/Web/API/Element/name | name attribute} for more info.
+     *
+     * @public
+     * @remarks
+     * HTML Attribute: name
+     */
     @attr
     public name: string; // Map to proxy element
     protected nameChanged(): void {
@@ -31,6 +50,8 @@ export class Radio extends FormAssociated<HTMLInputElement> implements RadioCont
     /**
      * The element's value to be included in form submission when checked.
      * Default to "on" to reach parity with input[type="radio"]
+     *
+     * @public
      */
     public value: string = "on"; // Map to proxy element.
     private valueChanged(): void {
@@ -42,6 +63,10 @@ export class Radio extends FormAssociated<HTMLInputElement> implements RadioCont
     /**
      * Provides the default checkedness of the input element
      * Passed down to proxy
+     *
+     * @public
+     * @remarks
+     * HTML Attribute: checked
      */
     @attr({ attribute: "checked", mode: "boolean" })
     public checkedAttribute: boolean;
@@ -49,12 +74,17 @@ export class Radio extends FormAssociated<HTMLInputElement> implements RadioCont
         this.defaultChecked = this.checkedAttribute;
     }
 
+    /**
+     * @internal
+     */
     @observable
     public defaultSlottedNodes: Node[];
 
     /**
      * Initialized to the value of the checked attribute. Can be changed independently of the "checked" attribute,
      * but changing the "checked" attribute always additionally sets this value.
+     *
+     * @public
      */
     @observable
     public defaultChecked: boolean = !!this.checkedAttribute;
@@ -70,6 +100,8 @@ export class Radio extends FormAssociated<HTMLInputElement> implements RadioCont
 
     /**
      * The checked state of the control
+     *
+     * @public
      */
     @observable
     public checked: boolean = this.defaultChecked;
@@ -101,6 +133,9 @@ export class Radio extends FormAssociated<HTMLInputElement> implements RadioCont
         this.proxy.setAttribute("type", "radio");
     }
 
+    /**
+     * @internal
+     */
     public connectedCallback(): void {
         super.connectedCallback();
         if (
@@ -119,6 +154,9 @@ export class Radio extends FormAssociated<HTMLInputElement> implements RadioCont
         this.setFormValue(value, value);
     }
 
+    /**
+     * @internal
+     */
     public keypressHandler = (e: KeyboardEvent): void => {
         super.keypressHandler(e);
         switch (e.keyCode) {
@@ -130,7 +168,9 @@ export class Radio extends FormAssociated<HTMLInputElement> implements RadioCont
         }
     };
 
-    /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
+    /**
+     * @internal
+     */
     public clickHandler = (e: MouseEvent): void => {
         if (!this.disabled && !this.readOnly) {
             this.checked = !this.checked;

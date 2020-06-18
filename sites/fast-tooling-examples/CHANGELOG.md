@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.3.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-examples@0.2.0...@microsoft/fast-tooling-examples@0.3.0) (2020-06-17)
+
+
+### Features
+
+* add codesandbox examples to the tooling examples site ([#3303](https://github.com/Microsoft/fast-dna/issues/3303)) ([38cb821](https://github.com/Microsoft/fast-dna/commit/38cb8211161a2abadb3fe43aae65cd1e6ce76ff2))
+
+
+
+
+
 # [0.2.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-examples@0.1.3...@microsoft/fast-tooling-examples@0.2.0) (2020-06-15)
 
 

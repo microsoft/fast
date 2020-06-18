@@ -39,6 +39,16 @@ iframe {
     grid-column-end: 1;
 }
 
+.toolbar-logo img,
+.toolbar-logo span {
+    vertical-align: middle;
+}
+
+.toolbar-logo span {
+    display: inline-block;
+    margin: 0 10px;
+}
+
 .toolbar-links {
     grid-column-start: 2;
     grid-column-end: 2;
@@ -89,7 +99,7 @@ iframe {
 .toolbar-links,
 .menu,
 .content {
-    padding: 5px 10px;
+    padding: 2px 10px;
 }
 
 .guidance {

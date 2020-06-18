@@ -2,6 +2,10 @@ import { html, slotted } from "@microsoft/fast-element";
 import { Orientation } from "@microsoft/fast-web-utilities";
 import { RadioGroup } from "./radio-group";
 
+/**
+ * The template for the {@link @microsoft/fast-foundation#RadioGroup} component.
+ * @public
+ */
 export const RadioGroupTemplate = html<RadioGroup>`
     <template
         role="radiogroup"
