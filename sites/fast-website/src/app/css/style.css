@@ -229,7 +229,7 @@ fast-badge::part(control) {
 
 .footer-divider {
   grid-column: 2;
-  margin-top: 300px;
+  margin-top: var(--navbar-height);
 }
 
 .footer {
