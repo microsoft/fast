@@ -55,7 +55,7 @@ This package does not export Web Components registered as [custom elements](http
 
 ### Component Explorer
 
-Launch our [Component Explorer](https://explore.fast.design) to experience our [Microsoft Components](https://www.npmjs.com/package/@microsoft/fast-components-msft) and development tools.
+Launch our [Component Explorer](https://explore.fast.design) to experience our [FAST Components](https://www.npmjs.com/package/@microsoft/fast-components) and development tools.
 
 ## Getting Started
 
