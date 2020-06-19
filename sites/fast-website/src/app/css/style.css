@@ -60,7 +60,7 @@ body {
 }
 
 .header {
-  grid-column: 1/4;
+  grid-column: 1/-1;
   padding: 0 40px;
 }
 
