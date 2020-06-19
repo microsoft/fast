@@ -1,7 +1,7 @@
 ---
 id: match-media-stylesheets
 title: MatchMedia Stylesheets
-custom_edit_url: https://github.com/microsoft/fast-dna/edit/master/packages/web-components/fast-components/docs/design/styling-components.md
+custom_edit_url: https://github.com/microsoft/fast-dna/edit/master/packages/web-components/fast-components/docs/design/match-media-stylesheets.md
 ---
 
 FAST exposes a mechanism to attach stylesheets conditionally based on a [MatchMedia](https://developer.mozilla.org/en-US/docs/Web/API/Window/matchMedia) query.
