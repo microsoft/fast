@@ -1,6 +1,6 @@
 # Acknowledgements
 
-There are many great open source projects that have inspired us and enabled us to build the `fast-element` library. Below are a few that stand out.
+There are many great open source projects that have inspired us and enabled us to build the FAST. Below are a few that stand out.
 
 * [Aurelia 1 and Aurelia 2](https://aurelia.io/) - Various details of Aurelia 2's decorator and metadata model inspired us in the design of `fast-element`. Additionally, Aurelia 1's mechanisms for array observation, binding, and template compilation also guided us in our work.
 * [faastjs](https://github.com/faastjs) - A project with a similar name but a very different purpose. Their API documentation approach leveraging [api-extractor](https://api-extractor.com/) was a huge help to us.
