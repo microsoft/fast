@@ -60,7 +60,8 @@ body {
 }
 
 .header {
-  grid-column: 2;
+  grid-column: 1/4;
+  padding: 0 40px;
 }
 
 .header site-navigation {
@@ -268,7 +269,7 @@ fast-badge::part(control) {
   }
 }
 
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 900px) {
   .wrapper {
     grid-template-columns: minmax(0px, auto);
   }
@@ -281,6 +282,7 @@ fast-badge::part(control) {
     box-shadow: 0px 1.5px 1px rgba(0, 0, 0, 0.08), 0px 1.6px 5px rgba(0, 0, 0, 0.15);
     grid-column: 1/4;
     z-index: 3;
+    padding: unset;
   }
 
   .header ul {
