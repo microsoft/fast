@@ -1,15 +1,19 @@
 ---
-id: fast-button
+id: button
 title: fast-button
-sidebar_label: fast-button
+sidebar_label: button
 custom_edit_url: https://github.com/microsoft/fast-dna/edit/master/packages/web-components/fast-foundation/src/button/README.md
 ---
 
 `fast-button` is a web component implementation of an [HTML button element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button). The component supports several visual apperances (accent, lightweight, neutral, outline, stealth).
 
-:::note
-This component is built with the expectation that focus is delegated to the button element rendered into the shadow DOM.
-:::
+## Usage
+
+```html live
+<fast-design-system-provider use-defaults>
+    <fast-button appearance="primary">Submit</fast-button>
+</fast-design-system-provider>
+```
 
 ## Applying Custom Styles
 
@@ -30,9 +34,6 @@ import { ButtonStyles as styles } from "./button.styles";
 export class FASTButton extends Button {}
 ```
 
-## Usage
-```html live
-<fast-design-system-provider use-defaults>
-    <fast-button appearance="primary">Submit</fast-button>
-</fast-design-system-provider>
-```
+:::note
+This component is built with the expectation that focus is delegated to the button element rendered into the shadow DOM.
+:::
