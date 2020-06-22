@@ -15,6 +15,12 @@ export const TooltipStyles = css`
         height: fit-content;
         width: fit-content;
     }
+
+    .wrapper {
+        overflow: visible;
+        height: 0;
+        width: 0;
+    }
     
     :host(.top) .tooltip {
         margin-bottom: 10px;
