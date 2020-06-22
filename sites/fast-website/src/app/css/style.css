@@ -115,7 +115,7 @@ site-navigation ::part(content) {
   display: none;
 }
 
-fast-divider {
+.section-decoration {
   border: none;
   display: flex;
   flex-direction: column;
@@ -125,19 +125,19 @@ fast-divider {
   width: 3px;
 }
 
-fast-divider::before,
-fast-divider::after {
+.section-decoration::before,
+.section-decoration::after {
   background-color: var(--accent-fill-rest);
   content: '';
   width: 3px;
 }
 
-fast-divider::before {
+.section-decoration::before {
   border-radius: 50%;
   height: 3px;
 }
 
-fast-divider::after {
+.section-decoration::after {
   border-radius: calc(var(--corner-radius) * 1px);
   height: calc(var(--type-ramp-plus-5-font-size) + var(--design-unit) * 1px);
 }
@@ -227,10 +227,9 @@ fast-badge::part(control) {
   line-height: var(--type-ramp-plus-1-line-height);
 }
 
-.divider {
+.footer-divider {
   grid-column: 2;
-  margin-top: 100px;
-  margin-bottom: 60px;
+  margin-top: var(--navbar-height);
 }
 
 .footer {
@@ -244,7 +243,7 @@ fast-badge::part(control) {
 .footer site-navigation ::part(content),
 .footer site-navigation p {
   font-size: var(--type-ramp-minus-1-font-size);
-  color: var(--neutral-foreground-rest);
+  color: var(--neutral-foreground-hint);
 }
 
 .footer li {
