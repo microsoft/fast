@@ -432,6 +432,19 @@ export const MenuItemTemplate: import("@microsoft/fast-element").ViewTemplate<Me
 // @public
 export const MenuTemplate: import("@microsoft/fast-element").ViewTemplate<Menu, any>;
 
+// @public (undocumented)
+export class MockUi extends FASTElement {
+    // (undocumented)
+    connectedCallback(): void;
+    // (undocumented)
+    disconnectedCallback(): void;
+    // (undocumented)
+    dismiss(): void;
+}
+
+// @public (undocumented)
+export const MockUiTemplate: import("@microsoft/fast-element").ViewTemplate<MockUi, any>;
+
 // @public
 export const ProgressRingTemplate: import("@microsoft/fast-element").ViewTemplate<BaseProgress, any>;
 
