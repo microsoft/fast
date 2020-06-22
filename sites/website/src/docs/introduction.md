@@ -21,7 +21,7 @@ Have you ever wanted to improve your app's startup time, render speed, or memory
 
 Have you ever wanted to adopt more web standards and build your site or app on a native web foundation that's immune to the shifting sands of the modern JavaScript front-end landscape? _**That's FAST.**_
 
-Let's take a look at what each of FAST's core packages give us today.
+Let's take a look at what each of FAST's core packages gives us today.
 
 ### fast-element
 
@@ -44,7 +44,7 @@ This package does not export Web Components registered as [custom elements](http
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![npm version](https://badge.fury.io/js/%40microsoft%2Ffast-components.svg)](https://badge.fury.io/js/%40microsoft%2Ffast-components)
 
-`fast-components` is a library of Web Components that *composes* the exports of `fast-foundation` with stylesheets aligning to the FAST design language. This composition step registers a custom element. See the [quick start](./fast-foundation/getting-started) to get stared using the components.
+`fast-components` is a library of Web Components that *composes* the exports of `fast-foundation` with stylesheets aligning to the FAST design language. This composition step registers a custom element. See the [quick start](./fast-foundation/getting-started) to get started using the components.
 
 ### fast-components-msft
 

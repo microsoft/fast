@@ -12,7 +12,7 @@ The `fast-components` and `fast-components-msft` libraries contain Web Component
 
 ### From NPM
 
-To install the components, first choose between `fast-components` and `fast-components-msft`. Assuming a selection of `fast-components`, you would use either `npm` or `yarn` as follows:
+To install the components, first, choose between `fast-components` and `fast-components-msft`. Assuming a selection of `fast-components`, you would use either `npm` or `yarn` as follows:
 
 ```shell
 npm install --save @microsoft/fast-components
@@ -76,7 +76,7 @@ The [Design System Provider](./design-system-provider) provides design informati
 
 ## Add Components
 
-With the provide in place, add any components as a child of the `fast-design-system-provider`. That's it! For a comprehensive list of all elements, see the Components section.
+With the provider in place, add any components as a child of the `fast-design-system-provider`. That's it! For a comprehensive list of all elements, see the Components section.
 
 ```html
 <!-- ... -->
