@@ -17,10 +17,12 @@ export const featureCardData: FeatureCardData[] = [
         links: [
             {
                 anchorText: "View GitHub",
+                // TODO: add url
                 url: "#",
             },
             {
                 anchorText: "Read Documentation",
+                // TODO: add url
                 url: "#",
             },
         ],
@@ -32,10 +34,12 @@ export const featureCardData: FeatureCardData[] = [
         links: [
             {
                 anchorText: "View GitHub",
+                // TODO: add url
                 url: "#",
             },
             {
                 anchorText: "Read Documentation",
+                // TODO: add url
                 url: "#",
             },
         ],
@@ -47,10 +51,12 @@ export const featureCardData: FeatureCardData[] = [
         links: [
             {
                 anchorText: "View GitHub",
+                // TODO: add url
                 url: "#",
             },
             {
                 anchorText: "Read Documentation",
+                // TODO: add url
                 url: "#",
             },
         ],
