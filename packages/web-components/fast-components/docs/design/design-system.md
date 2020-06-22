@@ -1,7 +1,7 @@
 ---
 id: design-system
 title: Design System
-custom_edit_url: https://github.com/microsoft/fast-dna/edit/master/packages/web-components/fast-components/docs/guide/design-system.doc.md
+custom_edit_url: https://github.com/microsoft/fast-dna/edit/master/packages/web-components/fast-components/docs/design/design-system.md
 ---
 
 In FAST, the *design system* is a collection of properties and values that inform the visual design language of the components. These properties are managed and provided through implementations of the [*DesignSystemProvider*](fast-foundation/fast-design-system-provider.md).

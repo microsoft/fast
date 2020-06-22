@@ -1,26 +1,11 @@
 ---
-id: fast-slider
+id: slider
 title: fast-slider
-sidebar_label: fast-slider
+sidebar_label: slider
 custom_edit_url: https://github.com/microsoft/fast-dna/edit/master/packages/web-components/fast-foundation/src/slider/README.md
 ---
 
 An implementation of a [range slider](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/Input/range) as a form-connected web-component.
-
-## Applying Custom Styles
-
-```ts
-import { customElement } from "@microsoft/fast-element";
-import { Slider, SliderTemplate as template } from "@microsoft/fast-foundation";
-import { SliderStyles as styles } from "./slider.styles";
-
-@customElement({
-    name: "fast-slider",
-    template,
-    styles,
-})
-export class FASTSlider extends Slider {}
-```
 
 ## Usage
 
@@ -49,4 +34,19 @@ export class FASTSlider extends Slider {}
         </fast-slider-label>
     </fast-slider>
 </fast-design-system-provider>
+```
+
+## Applying Custom Styles
+
+```ts
+import { customElement } from "@microsoft/fast-element";
+import { Slider, SliderTemplate as template } from "@microsoft/fast-foundation";
+import { SliderStyles as styles } from "./slider.styles";
+
+@customElement({
+    name: "fast-slider",
+    template,
+    styles,
+})
+export class FASTSlider extends Slider {}
 ```

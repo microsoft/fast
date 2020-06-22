@@ -62,16 +62,37 @@ async function safeWrite(dest, content) {
     }
 }
 
-async function copyMarkdown() {
-    const markdownGuides = findFiles("../../packages/web-components", ".doc.md");
-    for (const source of markdownGuides) {
-        const filename = path.basename(source).replace(".doc.md", ".md");
+async function moveMarkdownFiles(src, docsFolderDest) {
+    const files = findFiles(src, ".md");
+    for (const source of files) {
+        const filename = path.basename(source);
         const root = "./docs";
-        const folder = identifyPackage(source);
-        const dest = path.join(root, folder, filename);
+        const dest = path.join(root, docsFolderDest, filename);
 
         await safeCopy(source, dest);
     }
+}
+
+async function copyArticleMarkdown() {
+    await moveMarkdownFiles(
+        "../../packages/web-components/fast-foundation/docs/integrations",
+        "integrations"
+    );
+
+    await moveMarkdownFiles(
+        "../../packages/web-components/fast-foundation/docs/tools",
+        "tools"
+    );
+
+    await moveMarkdownFiles(
+        "../../packages/web-components/fast-element/docs/guide",
+        "fast-element"
+    );
+
+    await moveMarkdownFiles(
+        "../../packages/web-components/fast-components/docs/design",
+        "design"
+    );
 
     function isComponentExcluded(source) {
         for (const exclude of ["anchored-region"]) {
@@ -92,7 +113,7 @@ async function copyMarkdown() {
             continue;
         }
 
-        const root = "./docs/fast-foundation";
+        const root = "./docs/components";
         const folder = path.dirname(source);
         const dest = path.join(
             root,
@@ -156,6 +177,17 @@ async function copyMarkdown() {
                 sidebar_label: "Acknowledgements",
                 custom_edit_url:
                     "https://github.com/microsoft/fast-dna/edit/master/packages/web-components/fast-element/docs/ACKNOWLEDGEMENTS.md",
+            },
+        },
+        {
+            src: "../../packages/web-components/fast-element/README.md",
+            dest: "./docs/fast-element/getting-started.md",
+            metadata: {
+                id: "getting-started",
+                title: "Getting Started with FAST Element",
+                sidebar_label: "Getting Started",
+                custom_edit_url:
+                    "https://github.com/microsoft/fast-dna/edit/master/packages/web-components/fast-element/README.md",
             },
         },
     ];
@@ -229,9 +261,9 @@ async function copyAPI() {
     }
 }
 
-async function main() {
-    await copyMarkdown();
+async function buildAPIMarkdown() {
     await copyAPI();
+
     await new Promise((resolve, reject) =>
         exec(
             "api-documenter markdown -i src/docs/api -o docs/api",
@@ -314,6 +346,11 @@ async function main() {
             console.error(`Could not process ${docFile}: ${err}`);
         }
     }
+}
+
+async function main() {
+    await copyArticleMarkdown();
+    await buildAPIMarkdown();
 }
 
 main();
