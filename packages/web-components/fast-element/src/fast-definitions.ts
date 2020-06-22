@@ -1,5 +1,5 @@
 import { ElementViewTemplate } from "./template";
-import { ElementStyles } from "./styles";
+import { ElementStyles, css, ComposableStyles } from "./styles";
 import { AttributeConfiguration, AttributeDefinition } from "./attributes";
 
 /**
@@ -64,7 +64,7 @@ export class FASTElementDefinition {
         propertyLookup: Record<string, AttributeDefinition>,
         attributeLookup: Record<string, AttributeDefinition>,
         template?: ElementViewTemplate,
-        styles?: ElementStyles,
+        styles?: ComposableStyles,
         shadowOptions?: ShadowRootInit,
         elementOptions?: ElementDefinitionOptions
     ) {
@@ -73,9 +73,14 @@ export class FASTElementDefinition {
         this.propertyLookup = propertyLookup;
         this.attributeLookup = attributeLookup;
         this.template = template;
-        this.styles = styles;
         this.shadowOptions = shadowOptions;
         this.elementOptions = elementOptions;
+        this.styles =
+            styles !== void 0 && !(styles instanceof ElementStyles)
+                ? css`
+                      ${styles}
+                  `
+                : styles;
     }
 }
 
@@ -97,7 +102,7 @@ export interface PartialFASTElementDefinition {
     /**
      * The styles to associated with the custom element.
      */
-    readonly styles?: ElementStyles;
+    readonly styles?: ComposableStyles;
 
     /**
      * The custom attributes of the custom element.
