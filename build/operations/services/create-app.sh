@@ -5,12 +5,18 @@ A fully managed compute platform that is optimized for hosting websites and web 
 Customers can use App Service on Linux to host web apps natively on Linux for supported 
 application stacks.
 
+Note: This backend service is only accessible through the Front Door or through Staging 
+sites which are locked down with Azure Active Directory.
+
 Ref:
 https://docs.microsoft.com/en-us/azure/app-service/containers/app-service-linux-intro
+
 '
 # TODO's
 # [] Configure diagnostics for all apps https://ms.portal.azure.com/#@microsoft.onmicrosoft.com/resource/subscriptions/07b166d9-9849-4c8e-8df4-3f039daf5a05/resourceGroups/fast-eastus-rg/providers/Microsoft.Web/sites/www-east-app/diagnosticsLogs
 # [] Configure logs with "www-east-app-log" as the name and sent everything to Log Analytics
+# [] Test blocking back door with Network Access Restrictions to see if it prevents AAD for Staging sites
+# [] - Validate the solution from Product team https://github.com/MicrosoftDocs/azure-docs/issues/36141
 
 
 # Configure and set name pattern
@@ -100,8 +106,19 @@ for name in ${names[@]}; do
         az webapp config appsettings set --resource-group $resource_group --name $new_name \
             --settings PORT="7001" APPINSIGHTS_INSTRUMENTATIONKEY="$web_app_insights_instrumentation_key" APPINSIGHTS_PROFILERFEATURE_VERSION="1.0.0" APPINSIGHTS_SNAPSHOTFEATURE_VERSION="1.0.0" APPLICATIONINSIGHTS_CONNECTION_STRING="InstrumentationKey=$web_app_insights_instrumentation_key" ApplicationInsightsAgent_EXTENSION_VERSION="~2" DiagnosticServices_EXTENSION_VERSION="~3" InstrumentationEngine_EXTENSION_VERSION="~1" SnapshotDebugger_EXTENSION_VERSION="disabled" XDT_MicrosoftApplicationInsights_BaseExtensions="~1" XDT_MicrosoftApplicationInsights_Mode="recommended" WEBSITE_HTTPLOGGING_RETENTION_DAYS="7"
 
+
+    echo "configuring network access restrictions ..."
+    echo "configuring IPv4 restrictions ..."
+        az webapp config access-restriction add --resource-group $resource_group --name $new_name --rule-name "Front Door IPv4" --action Allow --ip-address 147.243.0.0/16 --priority 100
+
+    echo "configuring IPv6 restrictions ..."
+        az webapp config access-restriction add --resource-group $resource_group --name $new_name --rule-name "Front Door IPv6" --action Allow --ip-address 2a01:111:2050::/44 --priority 200
+
     echo "internal|external web sites: http://$new_name.azurewebsites.net => https://$name.$dns_zone"
 
 done
 
 echo "success !!!"
+
+
+# 
