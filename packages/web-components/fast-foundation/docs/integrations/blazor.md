@@ -11,7 +11,7 @@ FAST works seamlessly with Blazor, including integration with Blazor's binding e
 
 First, you'll need to make sure that you have the .NET SDK installed. You can learn more and download that [on the official site](https://dotnet.microsoft.com/download).
 
-With the SDK installed, you have access to the `dotnet` command line interface. This can be used to create a new Blazor project. For example, to create a new Blazor App named "fast-blazor", you would use the following command:
+With the SDK installed, you have access to the `dotnet` command-line interface. This can be used to create a new Blazor project. For example, to create a new Blazor App named "fast-blazor", you would use the following command:
 
 ```shell
 dotnet new blazorwasm -o fast-blazor
@@ -100,4 +100,4 @@ fast-card > fast-button {
 }
 ```
 
-Congratulations! You're now setup to use FAST with Blazor!
+Congratulations! You're now set up to use FAST with Blazor!

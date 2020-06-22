@@ -43,7 +43,7 @@ npm install --save-dev clean-webpack-plugin ts-loader typescript webpack webpack
 
 ## Adding Configuration and Source
 
-Now that we've got our basic package and dependencies setup, let's create some source files and get things configured. Since we're going to be writing a bit of code, now is a great time to involve a code editor in the process. If you're looking for a great editor for TypeScript and front-end in general, we highly recommend [VS Code](https://code.visualstudio.com/).
+Now that we've got our basic package and dependencies set up, let's create some source files and get things configured. Since we're going to be writing a bit of code, now is a great time to involve a code editor in the process. If you're looking for a great editor for TypeScript and front-end in general, we highly recommend [VS Code](https://code.visualstudio.com/).
 
 Open the `fast-webpack` folder in your favorite editor. You should see your `package.json` along with a `package-lock.json` and a `node_modules` folder.
 
@@ -219,4 +219,4 @@ This code imports the `<fast-design-system-provider>` component as well as the `
 
 After saving your `index.html` file, refresh your browser and you should see a card with text and a button.
 
-Congratulations! You're now setup to use FAST, TypeScript, and Webpack. You can import and use more components, build your own components, and when you are ready, build and deploy your website or app to production.
+Congratulations! You're now set up to use FAST, TypeScript, and Webpack. You can import and use more components, build your own components, and when you are ready, build and deploy your website or app to production.

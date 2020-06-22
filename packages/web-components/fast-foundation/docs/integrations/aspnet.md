@@ -11,7 +11,7 @@ FAST works naturally with ASP.NET server-side development, by simply adding a sc
 
 First, you'll need to make sure that you have the .NET SDK installed. You can learn more and download that [on the official site](https://dotnet.microsoft.com/download).
 
-With the SDK installed, you have access to the `dotnet` command line interface. This can be used to create a new ASP.NET project. For example, to create a new ASP.NET Core MVC Web App named "fast-aspnet", you would use the following command:
+With the SDK installed, you have access to the `dotnet` command-line interface. This can be used to create a new ASP.NET project. For example, to create a new ASP.NET Core MVC Web App named "fast-aspnet", you would use the following command:
 
 ```shell
 dotnet new mvc -o fast-aspnet
@@ -118,4 +118,4 @@ h2 {
 }
 ```
 
-Congratulations! You're now setup to use FAST with ASP.NET. You can use more components, build your own components, and when you are ready, build and deploy your website or app to production.
+Congratulations! You're now set up to use FAST with ASP.NET. You can use more components, build your own components, and when you are ready, build and deploy your website or app to production.

@@ -19,7 +19,7 @@ With Node.js installed, you can run the following command to create a new Aureli
 npx makes Aurelia
 ```
 
-Follow the prompts, answering each question in turn. It is recommended that you select the "Default TypeScript Aurelia 2 App" when prompted, unless you have previous experience with the CLI. Be sure to choose to install dependencies when asked.
+Follow the prompts, answering each question in turn. It is recommended that you select the "Default TypeScript Aurelia 2 App" when prompted unless you have previous experience with the CLI. Be sure to choose to install dependencies when asked.
 
 When the CLI completes, you should have a basic runnable Aurelia 2 application.
 
@@ -99,7 +99,7 @@ fast-card > fast-button {
 }
 ```
 
-Congratulations! You're now setup to use FAST and Aurelia 2!
+Congratulations! You're now set up to use FAST and Aurelia 2!
 
 ## Aurelia 1
 
@@ -119,7 +119,7 @@ And then use the CLI like this:
 au new fast-aurelia
 ```
 
-Follow the prompts, answering each question in turn. It is recommended that you select the "Default TypeScript App" when prompted, unless you have previous experience with the CLI. Be sure to choose to install dependencies when asked.
+Follow the prompts, answering each question in turn. It is recommended that you select the "Default TypeScript App" when prompted unless you have previous experience with the CLI. Be sure to choose to install dependencies when asked.
 
 When the CLI completes, you should have a basic runnable Aurelia 1 application.
 
@@ -204,4 +204,4 @@ To add a splash of style, add the following to your `app.html` template:
 </style>
 ```
 
-Congratulations! You're now setup to use FAST and Aurelia 1!
+Congratulations! You're now set up to use FAST and Aurelia 1!
