@@ -39,6 +39,7 @@ body {
   transform: translateY(-50%);
   display: flex;
   justify-content: space-between;
+  z-index: -1;
 }
 
 @media screen and (max-height: 390px), screen and (max-width: 1000px) {

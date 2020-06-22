@@ -7,19 +7,19 @@ import {
 } from "@microsoft/fast-components";
 
 export const SideNavigationStyles = css`
-    ${display("flex")}:host {
-        --engaged-height: calc(var(--design-unit) * 13px);
+    ${display("flex")} :host {
+        --active-height: calc(var(--design-unit) * 13px);
         --design-unit-large: calc(var(--design-unit) * 5px);
         contain: content;
         font-family: var(--body-font);
     }
 
-    ul {
+    .item-list {
         list-style-type: none;
         padding: 0 var(--design-unit-large);
     }
 
-    li {
+    .list-item {
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -29,7 +29,7 @@ export const SideNavigationStyles = css`
         fill: var(--accent-foreground-cut-rest);
     }
 
-    li:hover .icon {
+    .list-item:hover .icon {
         fill: var(--accent-fill-hover);
     }
 
@@ -39,12 +39,12 @@ export const SideNavigationStyles = css`
         background-color: ${accentForegroundCutRestBehavior.var};
         border-radius: calc(var(--corner-radius) * 1px);
         margin: calc(var(--design-unit) * 2px) var(--design-unit-large) 0;
-        transition: 300ms ease-in-out;
+        transition: 150ms ease-in-out;
         transition-property: background-color, height;
     }
 
     .scroll-indicator-active {
-        height: var(--engaged-height);
+        height: var(--active-height);
         background-color: ${accentForegroundActiveBehavior.var};
     }
 `.withBehaviors(
