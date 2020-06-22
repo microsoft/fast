@@ -1,4 +1,9 @@
-import { fastComponentSchemas, textSchema } from "@microsoft/site-utilities";
+import {
+    fastComponentDefinitions,
+    fastComponentSchemas,
+    textSchema,
+} from "@microsoft/site-utilities";
+import { camelCase } from "lodash-es";
 import Guidance from "../../.tmp/slider/guidance";
 import { ComponentViewConfig } from "./data.props";
 
@@ -6,6 +11,7 @@ export const fastSliderId = "fast-slider";
 export const fastSliderLabelId = "fast-slider-label";
 const fastSliderConfig: ComponentViewConfig = {
     schema: fastComponentSchemas[fastSliderId],
+    definition: fastComponentDefinitions[`${camelCase(fastSliderId)}Definition`],
     guidance: Guidance,
     scenarios: [
         {

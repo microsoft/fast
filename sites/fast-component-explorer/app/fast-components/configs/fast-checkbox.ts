@@ -1,10 +1,16 @@
-import { fastComponentSchemas, textSchema } from "@microsoft/site-utilities";
+import {
+    fastComponentDefinitions,
+    fastComponentSchemas,
+    textSchema,
+} from "@microsoft/site-utilities";
+import { camelCase } from "lodash-es";
 import Guidance from "../../.tmp/checkbox/guidance";
 import { ComponentViewConfig } from "./data.props";
 
 export const fastCheckboxId = "fast-checkbox";
 const fastCheckboxConfig: ComponentViewConfig = {
     schema: fastComponentSchemas[fastCheckboxId],
+    definition: fastComponentDefinitions[`${camelCase(fastCheckboxId)}Definition`],
     guidance: Guidance,
     scenarios: [
         {
