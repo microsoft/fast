@@ -74,7 +74,7 @@ To make this clear, let's look at how the `name-tag` element would be used with 
 The text "John Doe" exists in the "Light DOM", but it gets *projected* into the location of the `slot` within the "Shadow DOM".
 
 :::note
-If you find the terms "Light DOM" and "Shadow DOM" unintuitive, you're not alone. Another way to think of "Light DOM" is as the "Semantic DOM". It represents your semantic content model, without any concern for rendering. Another way to think of "Shadow DOM" is as the "Render DOM". It represents how your element is rendered, independent of content or semantics.
+If you find the terms "Light DOM" and "Shadow DOM" unintuitive, you're not alone. Another way to think of "Light DOM" is as the "Semantic DOM". It represents your semantic content model, without any concern for rendering. Another way to think of "Shadow DOM" is as the "Render DOM". It represents how your element is rendered, independent of content, or semantics.
 :::
 
 With slots at our disposal, we now unlock the full compositional model of HTML for use in our own elements. However, there's even more that slots can do.
@@ -150,7 +150,7 @@ If an element declares named slots, its content can then leverage the `slot` *at
 Here are a couple of quick notes on slots:
 
 * You can have any number of content nodes project into the same slot.
-* You can only place `slot` attributes on direct content of the containing element.
+* You can only place `slot` attributes on the direct content of the containing element.
   ```html
   <name-tag>
     <div> <!--Projected to default slot-->
@@ -201,7 +201,7 @@ In addition to the declarative means of using slots described so far, the browse
 | API | Description |
 | ------------- |-------------|
 | `slotchange` | By adding an event listener for the `slotchange` event on a `slot` element, you can receive notifications any time the slotted nodes of a particular slot change. |
-| `assignedNodes()` | The `slot` element provides an `assignedNodes()` method that can be called to get a list of all nodes that a particular slot currently renders. You can pass an option object with `{ flatten: true }` if you wish to also see fallback content nodes. |
+| `assignedNodes()` | The `slot` element provides an `assignedNodes()` method that can be called to get a list of all nodes that a particular slot currently renders. You can pass an options object with `{ flatten: true }` if you wish to also see fallback content nodes. |
 | `assignedSlot` | The `assignedSlot` property is present on any element that has been projected to a slot so that you can determine where it is projected. |
 
 :::tip
@@ -285,7 +285,7 @@ export class NameTag extends FASTElement {
 ```
 
 :::important
-If you choose to render to the Light DOM, you will not be able to compose content, use slots, or leverage encapsulated styles. Light DOM rendering is not recommended for re-usable components. It may have some limited use as the root component of a small app.
+If you choose to render to the Light DOM, you will not be able to compose the content, use slots, or leverage encapsulated styles. Light DOM rendering is not recommended for reusable components. It may have some limited use as the root component of a small app.
 :::
 
 In addition to the Shadow DOM mode, `shadowOptions` exposes all the options that can be set through the standard `attachShadow` API. This means that you can also use it to specify new options such as `delegatesFocus: true`. You only need to specify options that are different from the defaults mentioned above.

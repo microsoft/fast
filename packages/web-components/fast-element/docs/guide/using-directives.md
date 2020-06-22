@@ -119,13 +119,13 @@ Similar to event handlers, within a `repeat` block you have access to a special 
 
 * `event` - The event object when inside an event handler.
 * `parent` - The parent scope when inside a `repeat` block.
-* `index` - The index of the current item when inside a `repeat` block (opt in).
-* `length` - The length of the array when inside a `repeat` block (opt in).
-* `isEven` - True if the index of the current item is even when inside a `repeat` block (opt in).
-* `isOdd` - True if the index of the current item is odd when inside a `repeat` block (opt in).
-* `isFirst` - True if the current item is first in the array inside a `repeat` block (opt in).
-* `isInMiddle` - True if the current item is somewhere in the middle of the the array inside a `repeat` block (opt in).
-* `isLast` - True if the current item is last in the array inside a `repeat` block (opt in).
+* `index` - The index of the current item when inside a `repeat` block (opt-in).
+* `length` - The length of the array when inside a `repeat` block (opt-in).
+* `isEven` - True if the index of the current item is even when inside a `repeat` block (opt-in).
+* `isOdd` - True if the index of the current item is odd when inside a `repeat` block (opt-in).
+* `isFirst` - True if the current item is first in the array inside a `repeat` block (opt-in).
+* `isInMiddle` - True if the current item is somewhere in the middle of the array inside a `repeat` block (opt-in).
+* `isLast` - True if the current item is last in the array inside a `repeat` block (opt-in).
 
 Some context properties are opt-in because they are more costly to update. So, for performance reasons, they are not available by default. To opt into the positioning properties, pass options to the repeat directive, with the setting `positioning: true`. For example, here's how we would use the `index` in our friends template from above:
 
@@ -212,7 +212,7 @@ export class FriendList extends FASTElement {
 
 In the above example, we create an independent `nameTemplate` and then use it in two different places. First inside of a `when` template and then later inside of a `repeat` template.
 
-But content composition is actually more powerful than that, because you aren't limited to *static composition* of templates. You can also provide any expression that returns a template. As a result, when the `@observable` dependencies of the expression change, you can dynamically change which template is selected for rendering. If you don't want to render anything, you can also handle that by returning `null` or `undefined`. Here are a few examples of what you can do with content composition:
+But content composition is actually more powerful than that because you aren't limited to *static composition* of templates. You can also provide any expression that returns a template. As a result, when the `@observable` dependencies of the expression change, you can dynamically change which template is selected for rendering. If you don't want to render anything, you can also handle that by returning `null` or `undefined`. Here are a few examples of what you can do with content composition:
 
 **Example: Dynamic Composition**
 
@@ -402,7 +402,7 @@ Referential directives allow you to easily get references to DOM nodes in variou
 
 ### The Ref Directive
 
-Sometimes you need a direct reference to a single DOM node from your template. This might be because you want to control playback of a `video` element, use the drawing context of a `canvas` element, or pass an element to a 3rd party library. Whatever the reason, you can get a reference to the DOM node by using the `ref` directive.
+Sometimes you need a direct reference to a single DOM node from your template. This might be because you want to control the playback of a `video` element, use the drawing context of a `canvas` element, or pass an element to a 3rd party library. Whatever the reason, you can get a reference to the DOM node by using the `ref` directive.
 
 **Example: Referencing an Element**
 
@@ -468,7 +468,7 @@ export class FriendList extends FASTElement {
 }
 ```
 
-In the example above, the `listItems` property will be populated with all child nodes of the `ul` element. If `listItems` is decorated with `@observable` then it will be updated dynamically as the child nodes change. Like any observable, you can optionally implement a *propertyName*Changed method to be notified when the nodes change. Additionally, you can provide an `options` object to the `children` directive to specify customized configuration for the underlying [MutationObserver](https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver).
+In the example above, the `listItems` property will be populated with all child nodes of the `ul` element. If `listItems` is decorated with `@observable` then it will be updated dynamically as the child nodes change. Like any observable, you can optionally implement a *propertyName*Changed method to be notified when the nodes change. Additionally, you can provide an `options` object to the `children` directive to specify a customized configuration for the underlying [MutationObserver](https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver).
 
 :::important
 Like `ref`, the child nodes are not available until the `connectedCallback` lifecycle event.
@@ -517,7 +517,7 @@ export class MyElement extends FASTElement {
 }
 ```
 
-Similar to the `children` directive, the `slotted` directive will populate the `slottedNodes` property with nodes assigned to the slot. If `slottedNodes` is decorated with `@observable` then it will be updated dynamically as the assigned nodes change. Like any observable, you can optionally implement a *propertyName*Changed method to be notified when the nodes change. Additionally, you can provide an `options` object to the `slotted` directive to specify customized configuration for the underlying [assignedNodes() API call](https://developer.mozilla.org/en-US/docs/Web/API/HTMLSlotElement/assignedNodes) or specify a `filter`.
+Similar to the `children` directive, the `slotted` directive will populate the `slottedNodes` property with nodes assigned to the slot. If `slottedNodes` is decorated with `@observable` then it will be updated dynamically as the assigned nodes change. Like any observable, you can optionally implement a *propertyName*Changed method to be notified when the nodes change. Additionally, you can provide an `options` object to the `slotted` directive to specify a customized configuration for the underlying [assignedNodes() API call](https://developer.mozilla.org/en-US/docs/Web/API/HTMLSlotElement/assignedNodes) or specify a `filter`.
 
 ## Host Directives
 

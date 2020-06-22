@@ -57,7 +57,7 @@ provider.accentPalette = palette;
 ```
 
 ### Background color
-This is the contextual color that the recipe uses to determine what color it is rendering on. The foreground, outline, and divider recipes will use this color to ensure that the color created is accessible and meets contrast requirements. In fill recipes it is sometimes used as the starting location in the appropriate palette to begin resolution.
+This is the contextual color that the recipe uses to determine what color it is rendering on. The foreground, outline, and divider recipes will use this color to ensure that the color created is accessible and meets contrast requirements. In fill recipes, it is sometimes used as the starting location in the appropriate palette to begin resolution.
 
 See [backgroundColor](api/fast-components.fastdesignsystemprovider.backgroundcolor.md) for more details.
 

@@ -55,14 +55,14 @@ const styles = css`
     letter-spacing: 4px;
     font-size: 32px;
     margin: 0;
-	  padding: 0;
+    padding: 0;
   }
 
   h4 {
     font-family: sans-serif;
     font-size: 18px;
     margin: 0;
-	  padding: 0;
+    padding: 0;
   }
 
   .body {
@@ -161,7 +161,7 @@ const styles = css`
 ```
 
 :::note
-Both slotted and host styles can be overriden by the element user. Think of these as the *default* styles that you are providing, so that your elements look and function correctly out-of-the-box.
+Both slotted and host styles can be overridden by the element user. Think of these as the *default* styles that you are providing, so that your elements look and function correctly out-of-the-box.
 :::
 
 ## Hiding Undefined Elements

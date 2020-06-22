@@ -88,7 +88,7 @@ Here's how it works:
 * When the property value changes, the converter's `fromView` method will also be called, ensuring that the type is correct. After this, the `mode` will be determined. If the mode is set to `reflect` then the converter's `toView` method will be called to allow the type to be formatted before writing to the attribute using `setAttribute`.
 
 :::important
-When the `mode` is set to `boolean`, a built-in `booleanConverter` is automatically used to ensure type correctness so that manual configuration of the converter is not needed in this common scenario.
+When the `mode` is set to `boolean`, a built-in `booleanConverter` is automatically used to ensure type correctness so that the manual configuration of the converter is not needed in this common scenario.
 :::
 
 **Example: An Attribute in Reflect Mode with No Special Conversion**
@@ -158,7 +158,7 @@ export class NameTag extends FASTElement {
 }
 ```
 
-The full list of available lifecyle callbacks is:
+The full list of available lifecycle callbacks is:
 
 | Callback | Description |
 | ------------- |-------------|
