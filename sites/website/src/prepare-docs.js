@@ -4,6 +4,7 @@ const path = require("path"),
 const { createInterface } = require("readline");
 const { join, parse } = require("path");
 const { exec } = require("child_process");
+const glob = require("glob");
 
 function findFiles(startPath, filter, paths = []) {
     if (!fs.existsSync(startPath)) {
@@ -28,6 +29,7 @@ function findFiles(startPath, filter, paths = []) {
 }
 
 const packages = [
+    "fast-animation",
     "fast-element",
     "fast-foundation",
     "fast-components",
@@ -254,8 +256,10 @@ async function copyArticleMarkdown() {
 // Copy the api.json files from the web-components packages.
 async function copyAPI() {
     for (const package of packages) {
+        const packageDir = glob.sync(path.resolve(`../../packages/**/${package}`))[0];
+
         await safeCopy(
-            `../../packages/web-components/${package}/dist/${package}.api.json`,
+            path.resolve(packageDir, `dist/${package}.api.json`),
             `./src/docs/api/${package}.api.json`
         );
     }

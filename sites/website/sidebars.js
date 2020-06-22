@@ -83,6 +83,7 @@ module.exports = {
             type: "category",
             label: "API Reference",
             items: [
+                "api/fast-animation",
                 "api/fast-element",
                 "api/fast-foundation",
                 "api/fast-components",
