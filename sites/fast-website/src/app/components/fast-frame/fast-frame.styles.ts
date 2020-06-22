@@ -69,7 +69,7 @@ export const FastFrameStyles = css`
 
     .content h1 {
         font-size: var(--type-ramp-minus-1-font-size);
-        line-height: var(--type-ramp-base-line-height);
+        line-height: var(--type-ramp-minus-1-line-height);
         color: ${neutralForegroundHintBehavior.var};
         margin: 0;
         margin-bottom: 15px;

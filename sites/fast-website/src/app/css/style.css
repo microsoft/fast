@@ -219,7 +219,7 @@ fast-badge::part(control) {
 
 .section-paragraph-hero {
   font-size: var(--type-ramp-plus-2-font-size);
-  line-height: var(--type-ramp-base-line-height);
+  line-height: var(--type-ramp-plus-2-line-height);
   margin: 0 0 calc(var(--base-height-multiplier) * 4px);
 }
 
