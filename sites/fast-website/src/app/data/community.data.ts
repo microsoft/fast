@@ -38,6 +38,7 @@ export const communityContentPlacementData: CommunityContentPlacementData[] = [
     },
     {
         actionLink: "https://medium.com/fast-dna",
+        actionText: "Read more on Medium",
         header: "Medium",
         icon: MediumIcon,
     },

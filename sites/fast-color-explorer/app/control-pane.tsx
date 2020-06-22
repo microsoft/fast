@@ -143,6 +143,7 @@ const styles: any = (
             maxWidth: "300px",
             borderLeft: `1px solid ${neutralDividerRest(designSystem)}`,
             background: backgroundColor,
+            overflow: "auto",
         },
     };
 };

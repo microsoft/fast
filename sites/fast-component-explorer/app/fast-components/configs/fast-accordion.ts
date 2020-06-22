@@ -1,5 +1,9 @@
-import { fastComponentSchemas, textSchema } from "@microsoft/site-utilities";
-import { uniqueId } from "lodash-es";
+import {
+    fastComponentDefinitions,
+    fastComponentSchemas,
+    textSchema,
+} from "@microsoft/site-utilities";
+import { camelCase, uniqueId } from "lodash-es";
 import { DataDictionary } from "@microsoft/fast-tooling";
 import Guidance from "../../.tmp/accordion/guidance";
 import { placeholderIcon } from "../utilities/icons";
@@ -160,6 +164,7 @@ const expandedIcon4 = expandedIcon("Slot4");
 
 const fastAccordionConfig: ComponentViewConfig = {
     schema: fastComponentSchemas[fastAccordionId],
+    definition: fastComponentDefinitions[`${camelCase(fastAccordionId)}Definition`],
     guidance: Guidance,
     scenarios: [
         {

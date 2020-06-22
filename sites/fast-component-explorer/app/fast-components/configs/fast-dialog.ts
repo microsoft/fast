@@ -1,4 +1,9 @@
-import { fastComponentSchemas, textSchema } from "@microsoft/site-utilities";
+import {
+    fastComponentDefinitions,
+    fastComponentSchemas,
+    textSchema,
+} from "@microsoft/site-utilities";
+import { camelCase } from "lodash-es";
 import Guidance from "../../.tmp/dialog/guidance";
 import { ComponentViewConfig } from "./data.props";
 import { fastButtonId } from "./fast-button";
@@ -6,6 +11,7 @@ import { fastButtonId } from "./fast-button";
 export const fastDialogId = "fast-dialog";
 const fastDialogConfig: ComponentViewConfig = {
     schema: fastComponentSchemas[fastDialogId],
+    definition: fastComponentDefinitions[`${camelCase(fastDialogId)}Definition`],
     guidance: Guidance,
     scenarios: [
         {
