@@ -1,7 +1,7 @@
 ---
 id: color
 title: Color
-custom_edit_url: https://github.com/microsoft/fast-dna/edit/master/packages/web-components/fast-components/docs/guide/color.doc.md
+custom_edit_url: https://github.com/microsoft/fast-dna/edit/master/packages/web-components/fast-components/docs/design/color.md
 ---
 
 FAST utilizes an adaptive color system that provides some unique advantages:

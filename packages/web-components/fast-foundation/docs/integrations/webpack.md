@@ -2,7 +2,7 @@
 id: webpack
 title: Webpack
 sidebar_label: Webpack
-custom_edit_url: https://github.com/microsoft/fast-dna/edit/master/packages/web-components/fast-foundation/docs/guide/webpack.doc.md
+custom_edit_url: https://github.com/microsoft/fast-dna/edit/master/packages/web-components/fast-foundation/docs/integrations/webpack.md
 ---
 
 FAST works great with TypeScript and Webpack, using a fairly standard setup. Let's take a look at how you can set up a TypeScript+Webpack project, starting from scratch.
@@ -170,6 +170,10 @@ import {
   FASTButton 
 } from '@microsoft/fast-components';
 
+/*
+ * Ensure that tree-shaking doesn't remove these components from the bundle.
+ * There are multiple ways to prevent tree shaking, of which this is one.
+ */
 FASTDesignSystemProvider;
 FASTCard;
 FASTButton;
