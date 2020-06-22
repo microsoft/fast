@@ -33,7 +33,7 @@ Have you ever wanted to improve your app's startup time, render speed, or memory
 
 Have you ever wanted to adopt more web standards and build your site or app on a native web foundation that's immune to the shifting sands of the modern JavaScript front-end landscape? _**That's FAST.**_
 
-Let's take a look at what each of FAST's core packages give us today.
+Let's take a look at what each of FAST's core packages gives us today.
 
 ### fast-element
 
@@ -56,7 +56,7 @@ This package does not export Web Components registered as [custom elements](http
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![npm version](https://badge.fury.io/js/%40microsoft%2Ffast-components.svg)](https://badge.fury.io/js/%40microsoft%2Ffast-components)
 
-`fast-components` is a library of Web Components that *composes* the exports of `fast-foundation` with stylesheets aligning to the FAST design language. This composition step registers a custom element. See the [quick start](http://fast.design/components/getting-started) to get stared using the components.
+`fast-components` is a library of Web Components that *composes* the exports of `fast-foundation` with stylesheets aligning to the FAST design language. This composition step registers a custom element. See the [quick start](http://fast.design/components/getting-started) to get started using the components.
 
 ### fast-components-msft
 
@@ -88,7 +88,7 @@ There are a million and one great ways to build your next website or application
 This principle of being unopinionated manifests in several important ways including:
 
 * A flat component architecture that lets you compose what you need without struggling with rigid patterns and complex objects.
-* Separating base components from styles and design systems to support multiple implementations without re-writing or duplicating styles. Use the design system to customize existing styled components, or build your own styles, with your design system, without having to re-build or duplicate the base components.
+* Separating base components from styles and design systems to support multiple implementations without re-writing or duplicating styles. Use the design system to customize existing styled components, or build your own styles, with your design system, without having to rebuild or duplicate the base components.
 * Framework agnostic tooling that lets you use our development tools with any view framework.
 * The ability to replace almost any FAST package with your package of choice. Get started with our animation package and add more as you need them. Alternatively, use our suite of packages to build your next project from the ground up; it's your call.
 
@@ -108,9 +108,9 @@ Because FAST has abstracted base components from their style, you get a head sta
 
 ## Contact
 
-* Join the community and chat with us in realtime on [Discord](https://discord.gg/FcSNfg4).
-* Ask questions on [Stack Overflow](https://stackoverflow.com/questions/tagged/fast-dna).	
-* Submit requests and issues on [Github](https://github.com/Microsoft/fast-dna/issues/new/choose).	
+* Join the community and chat with us in real-time on [Discord](https://discord.gg/FcSNfg4).
+* Ask questions on [Stack Overflow](https://stackoverflow.com/questions/tagged/fast-dna). 
+* Submit requests and issues on [Github](https://github.com/Microsoft/fast-dna/issues/new/choose).  
 * Contribute by helping out on some of our recommended first issues on [Github](https://github.com/Microsoft/fast-dna/labels/good%20first%20issue).
 
 ## Status
