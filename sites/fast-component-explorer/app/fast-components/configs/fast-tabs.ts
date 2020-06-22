@@ -1,4 +1,9 @@
-import { fastComponentSchemas, textSchema } from "@microsoft/site-utilities";
+import {
+    fastComponentDefinitions,
+    fastComponentSchemas,
+    textSchema,
+} from "@microsoft/site-utilities";
+import { camelCase } from "lodash-es";
 import Guidance from "../../.tmp/tabs/guidance";
 import { placeholderIcon } from "../utilities/icons";
 import { ComponentViewConfig } from "./data.props";
@@ -12,6 +17,7 @@ export const fastTabPanelId = "fast-tab-panel";
 export const fastButtonId = "fast-button";
 const fastTabsConfig: ComponentViewConfig = {
     schema: fastComponentSchemas[fastTabsId],
+    definition: fastComponentDefinitions[`${camelCase(fastTabsId)}Definition`],
     guidance: Guidance,
     scenarios: [
         {

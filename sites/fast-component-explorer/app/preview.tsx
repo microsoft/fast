@@ -23,7 +23,7 @@ import {
     StandardLuminance,
 } from "@microsoft/fast-components-styles-msft";
 import {
-    componentDefinitions,
+    fastComponentDefinitions,
     nativeElementDefinitions,
 } from "@microsoft/site-utilities";
 import {
@@ -194,7 +194,7 @@ class Preview extends Foundation<
                     mapper: htmlMapper({
                         version: 1,
                         tags: Object.entries({
-                            ...componentDefinitions,
+                            ...fastComponentDefinitions,
                             ...nativeElementDefinitions,
                         }).reduce(
                             (

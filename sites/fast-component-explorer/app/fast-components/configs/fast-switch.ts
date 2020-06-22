@@ -1,10 +1,16 @@
-import { fastComponentSchemas, textSchema } from "@microsoft/site-utilities";
+import {
+    fastComponentDefinitions,
+    fastComponentSchemas,
+    textSchema,
+} from "@microsoft/site-utilities";
+import { camelCase } from "lodash-es";
 import Guidance from "../../.tmp/switch/guidance";
 import { ComponentViewConfig } from "./data.props";
 
 export const fastSwitchId = "fast-switch";
 const fastSwitchConfig: ComponentViewConfig = {
     schema: fastComponentSchemas[fastSwitchId],
+    definition: fastComponentDefinitions[`${camelCase(fastSwitchId)}Definition`],
     guidance: Guidance,
     scenarios: [
         {

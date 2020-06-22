@@ -1,4 +1,9 @@
-import { fastComponentSchemas, textSchema } from "@microsoft/site-utilities";
+import {
+    fastComponentDefinitions,
+    fastComponentSchemas,
+    textSchema,
+} from "@microsoft/site-utilities";
+import { camelCase } from "lodash-es";
 import Guidance from "../../.tmp/card/guidance";
 import { ComponentViewConfig } from "./data.props";
 import { fastButtonId } from "./fast-button";
@@ -6,6 +11,7 @@ import { fastButtonId } from "./fast-button";
 export const fastCardId = "fast-card";
 const fastCardConfig: ComponentViewConfig = {
     schema: fastComponentSchemas[fastCardId],
+    definition: fastComponentDefinitions[`${camelCase(fastCardId)}Definition`],
     guidance: Guidance,
     scenarios: [
         {

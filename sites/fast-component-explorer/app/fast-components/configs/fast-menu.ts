@@ -1,4 +1,9 @@
-import { fastComponentSchemas, textSchema } from "@microsoft/site-utilities";
+import {
+    fastComponentDefinitions,
+    fastComponentSchemas,
+    textSchema,
+} from "@microsoft/site-utilities";
+import { camelCase } from "lodash-es";
 import Guidance from "../../.tmp/menu/guidance";
 import { placeholderIcon } from "../utilities/icons";
 import { ComponentViewConfig } from "./data.props";
@@ -15,6 +20,7 @@ export const fastMenuItemId = "fast-menu-item";
 export const fastDividerId = "fast-divider";
 const fastMenuConfig: ComponentViewConfig = {
     schema: fastComponentSchemas[fastMenuId],
+    definition: fastComponentDefinitions[`${camelCase(fastMenuId)}Definition`],
     guidance: Guidance,
     scenarios: [
         {

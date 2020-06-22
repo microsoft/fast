@@ -43,6 +43,7 @@ export const BaseButtonStyles = css`
 
     .control {
         background: transparent;
+        height: inherit;
         flex-grow: 1;
         box-sizing: border-box;
         display: inline-flex;

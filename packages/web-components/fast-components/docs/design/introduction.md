@@ -1,7 +1,7 @@
 ---
-id: intro
-title: Intro
-custom_edit_url: https://github.com/microsoft/fast-dna/edit/master/packages/web-components/fast-components/docs/guide/intro.doc.md
+id: introduction
+title: Introduction
+custom_edit_url: https://github.com/microsoft/fast-dna/edit/master/packages/web-components/fast-components/docs/design/introduction.md
 ---
 
 `@microsoft/fast-components` leverages `@microsoft/fast-element` to style components. For details on how to apply CSS, see [leveraging CSS](fast-element/leveraging-css.md).
