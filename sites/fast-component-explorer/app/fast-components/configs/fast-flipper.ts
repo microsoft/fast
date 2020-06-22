@@ -1,4 +1,8 @@
-import { fastComponentSchemas } from "@microsoft/site-utilities";
+import {
+    fastComponentDefinitions,
+    fastComponentSchemas,
+} from "@microsoft/site-utilities";
+import { camelCase } from "lodash-es";
 import Guidance from "../../.tmp/flipper/guidance";
 import { placeholderIcon } from "../utilities/icons";
 import { ComponentViewConfig } from "./data.props";
@@ -9,6 +13,7 @@ const nextPlaceholderIcon = placeholderIcon("root", "SlotNext");
 export const fastFlipperId = "fast-flipper";
 const fastFlipperConfig: ComponentViewConfig = {
     schema: fastComponentSchemas[fastFlipperId],
+    definition: fastComponentDefinitions[`${camelCase(fastFlipperId)}Definition`],
     guidance: Guidance,
     scenarios: [
         {

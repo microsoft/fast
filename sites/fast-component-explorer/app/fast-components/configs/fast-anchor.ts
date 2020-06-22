@@ -1,4 +1,9 @@
-import { fastComponentSchemas, textSchema } from "@microsoft/site-utilities";
+import {
+    fastComponentDefinitions,
+    fastComponentSchemas,
+    textSchema,
+} from "@microsoft/site-utilities";
+import { camelCase } from "lodash-es";
 import Guidance from "../../.tmp/anchor/guidance";
 import { placeholderIcon } from "../utilities/icons";
 import { ComponentViewConfig } from "./data.props";
@@ -10,6 +15,7 @@ const defaultPlaceholderIcon = placeholderIcon("root", "Slot");
 export const fastAnchorId = "fast-anchor";
 const fastAnchorConfig: ComponentViewConfig = {
     schema: fastComponentSchemas[fastAnchorId],
+    definition: fastComponentDefinitions[`${camelCase(fastAnchorId)}Definition`],
     guidance: Guidance,
     scenarios: [
         {

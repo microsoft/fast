@@ -1,4 +1,9 @@
-import { fastComponentSchemas, textSchema } from "@microsoft/site-utilities";
+import {
+    fastComponentDefinitions,
+    fastComponentSchemas,
+    textSchema,
+} from "@microsoft/site-utilities";
+import { camelCase } from "lodash-es";
 import Guidance from "../../.tmp/radio-group/guidance";
 import { ComponentViewConfig } from "./data.props";
 import { fastRadioId } from "./fast-radio";
@@ -6,6 +11,7 @@ import { fastRadioId } from "./fast-radio";
 export const fastRadioGroupId = "fast-radio-group";
 const fastRadioGroupConfig: ComponentViewConfig = {
     schema: fastComponentSchemas[fastRadioGroupId],
+    definition: fastComponentDefinitions[`${camelCase(fastRadioGroupId)}Definition`],
     guidance: Guidance,
     scenarios: [
         {
