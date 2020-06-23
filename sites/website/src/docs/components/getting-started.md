@@ -6,7 +6,7 @@ custom_edit_url: https://github.com/microsoft/fast-dna/edit/master/sites/website
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![npm version](https://badge.fury.io/js/%40microsoft%2Ffast-components.svg)](https://badge.fury.io/js/%40microsoft%2Ffast-components)
 
-The `fast-components` and `fast-components-msft` libraries contain Web Components built on top of our standard component and design system foundation. `fast-components` express the FAST design language while `fast-components-msft` express the Microsoft design language, currently known as Fluent.
+The `fast-components` and `fast-components-msft` libraries contain Web Components built on top of our standard component and design system foundation. `fast-components` express the FAST design language while `fast-components-msft` expresses Microsoft's Fluent design language.
 
 ## Installation
 
