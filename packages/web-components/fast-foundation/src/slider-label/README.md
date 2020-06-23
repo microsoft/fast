@@ -15,7 +15,7 @@ The `fast-slider-label` component provides a default styled label to be placed i
 </fast-design-system-provider>
 ```
 
-## Applying Custom Styles
+## Applying custom styles
 
 ```ts
 import { customElement } from "@microsoft/fast-element";

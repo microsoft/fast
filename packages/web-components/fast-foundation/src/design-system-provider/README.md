@@ -5,13 +5,13 @@ sidebar_label: design-system-provider
 custom_edit_url: https://github.com/microsoft/fast-dna/edit/master/packages/web-components/fast-foundation/src/design-system-provider/README.md
 ---
 
-## What is a Design System
+## What is a design system?
 
 The _design system_ can generally be thought of as a collection of named values that inform visual rendering. It quantifies concepts such as type-ramp, color palettes, design units, etc to be used in UI components. Other common names for this concept are _design variables_, _design tokens_ or _theme_.
 
 These values are mutable throughout a UI tree. Where UI tree _A_ may see their contextual _design-unit_ as `4px`, tree _B_ may have its scale increased by providing a _design-unit_ of `6px`. Or, tree _C_ may see a contextual _background color_ of `#FFF` where tree _D_ may see a contextual _background color_ as `#000`.
 
-## Design System Provider
+## Design system provider
 
 A _design system_ isn't much use without convenient mechanisms to surface the _design system_ values to UI components and change values where desired. This is where the _Design System Provider_ comes in. `@microsoft/fast-components` exports the `FASTDesignSystemProvider` and `DesignSystemProvider` Web Components to help with:
 
@@ -21,7 +21,7 @@ A _design system_ isn't much use without convenient mechanisms to surface the _d
 4. Facilitate _design system_ composition in _document order_.
 5. Registering CSS Custom Property definitions to create arbitrary CSS Custom Properties as a function of the _design system_.
 
-### FAST Design System Provider
+### FAST design system provider
 
 The easiest way to get up-and-running is to use the `FASTDesignSystemProvider`. This Web Component is an implementation of the `DesignSystemProvider` that is configured with _design system_ properties used by the Web Components in the `@microsoft/fast-components` library.
 
@@ -65,7 +65,8 @@ class ExampleClass {
 
 The `use-defaults` boolean attribute exposes a mechanism to apply the default values to an element while still allowing nested design system elements to intentionally override specific values. For details on how to set default values, see [Declaring Design System Properties](#Declaring-Design-System-Properties)
 
-### Composing Design System Providers
+### Composing design system providers
+
 *Design System Providers* are designed to compose their values with ancestor *Design System Providers* to facilitate changing values for decedents of the provider.
 
 ```html
@@ -118,7 +119,7 @@ const styles = css`
 )
 ```
 
-### Creating a Design System Provider
+### Creating a design system provider
 
 To create a new _Design System Provider_, extend the `DesignSystemProvider` class and decorate it with the `@designSystemProvider` decorator, providing the decorator the element _tag name_ you wish to use:
 
@@ -138,7 +139,7 @@ class FancyDesignSystemProvider extends DesignSystemProvider {}
 </fancy-design-system-provider>
 ```
 
-#### Declaring Design System Properties
+#### Declaring design system properties
 
 Building off the above, _design system_ properties can be declared using the `@designSystemProperty` decorator.
 

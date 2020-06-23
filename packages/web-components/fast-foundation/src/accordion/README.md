@@ -26,7 +26,7 @@ custom_edit_url: https://github.com/microsoft/fast-dna/edit/master/packages/web-
 </fast-design-system-provider>
 ```
 
-## Applying Custom Styles
+## Applying custom styles
 
 ```ts
 import { customElement } from "@microsoft/fast-element";

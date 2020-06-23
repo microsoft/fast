@@ -7,11 +7,11 @@ custom_edit_url: https://github.com/microsoft/fast-dna/edit/master/packages/web-
 
 FAST works seamlessly with Blazor, including integration with Blazor's binding engine and components. Let's take a look at how to set things up.
 
-## Setting up the Blazor Project
+## Setting up the Blazor project
 
 First, you'll need to make sure that you have the .NET SDK installed. You can learn more and download that [on the official site](https://dotnet.microsoft.com/download).
 
-With the SDK installed, you have access to the `dotnet` command line interface. This can be used to create a new Blazor project. For example, to create a new Blazor App named "fast-blazor", you would use the following command:
+With the SDK installed, you have access to the `dotnet` command-line interface. This can be used to create a new Blazor project. For example, to create a new Blazor App named "fast-blazor", you would use the following command:
 
 ```shell
 dotnet new blazorwasm -o fast-blazor
@@ -19,7 +19,7 @@ dotnet new blazorwasm -o fast-blazor
 
 Create a project using the command above if you don't already have one. When the CLI completes, you should have a basic runnable Blazor application. For more information on setting up and using Blazor, [see the official Blazor Getting Started guide](https://docs.microsoft.com/en-us/aspnet/core/blazor/get-started).
 
-## Configuring Scripts
+## Configuring scripts
 
 Now that we've got our basic project setup, we need to add our web components script and update Blazor accordingly. You can either add the script from our CDN directly, or you can install it with NPM and then add that.
 
@@ -45,7 +45,7 @@ node_modules/@microsoft/fast-components/dist/fast-components.min.js
 
 Copy this to your `wwwroot/script` folder and reference it with a script tag as described above.
 
-## Using the Components
+## Using the components
 
 Regardless of which path you've chosen above, you should be all set to start using the components. The first component we want to set up is the `<fast-design-system-provider>` component. This configures the design system that will govern the appearance of all of the components. The best place to put this is at the root of your app, wrapping all your HTML. Here's an example of what your `index.html` `<body>` might look like:
 
@@ -100,4 +100,4 @@ fast-card > fast-button {
 }
 ```
 
-Congratulations! You're now setup to use FAST with Blazor!
+Congratulations! You're now set up to use FAST with Blazor!

@@ -36,7 +36,7 @@ An implementation of a [range slider](https://developer.mozilla.org/en-US/docs/W
 </fast-design-system-provider>
 ```
 
-## Applying Custom Styles
+## Applying custom styles
 
 ```ts
 import { customElement } from "@microsoft/fast-element";
