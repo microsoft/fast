@@ -5,7 +5,7 @@ sidebar_label: fast-anchored-region
 custom_edit_url: https://github.com/microsoft/fast-dna/edit/master/packages/web-components/fast-foundation/src/anchored-region/README.md
 ---
 
-##  Applying Custom Styles
+##  Applying custom styles
 
 ```ts
 import { customElement } from "@microsoft/fast-element";

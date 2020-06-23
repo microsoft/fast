@@ -15,7 +15,7 @@ The flipper component is most often used to page through blocks of content or co
 </fast-design-system-provider>
 ```
 
-## Applying Custom Styles
+## Applying custom styles
 
 ```ts
 import { customElement } from "@microsoft/fast-element";
