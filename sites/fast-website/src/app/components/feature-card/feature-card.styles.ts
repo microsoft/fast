@@ -19,6 +19,7 @@ export const FeatureCardStyles = css`
         content: "";
         display: block;
         background-color: currentColor;
+        opacity: 0.5;
         position: absolute;
         height: 1px;
         width: calc(100% - (var(--design-unit) * 10px));
