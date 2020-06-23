@@ -46,6 +46,11 @@ background-design,
   justify-content: space-between;
 }
 
+.icon-github {
+  height: 20px;
+  width: 18px;
+}
+
 @media screen and (max-height: 390px), screen and (max-width: 1000px) {
   .side-nav-container {
     display: none;
