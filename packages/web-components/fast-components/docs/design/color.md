@@ -10,21 +10,26 @@ FAST utilizes an adaptive color system that provides some unique advantages:
 - Color themeing through palette tinting.
 - Perceptually uniform UI across different background colors.
 
-## Algorithmic Colors (Recipes)
+## Algorithmic colors (recipes)
+
 FAST makes heavy use of algorithmic colors; named colors are a product of the *designSystem* object in which they are calculated. In the documentation below, these algorithmic colors will be referred to as *recipes*.
 
 ### Inputs
+
 Each color recipe expects as its sole argument the FAST *DesignSystem* object, but there are a few core pieces of data from that object that impact color resolution.
 
 ### Palettes
+
 Each color recipe operates on a palette. A palette in an array of hexadecimal colors ordered from light to dark. By default, FAST components leverage the `neutralPalette` and the `accentPalette`.
 
 See [accentPalette](api/fast-components.fastdesignsystemprovider.accentpalette.md) and [neutralPalette](api/fast-components.fastdesignsystemprovider.neutralpalette.md) for more details.
 
-#### Replacing Palettes
+#### Replacing palettes
+
 `@microsoft/fast-components` exposes a convenient function to generate a color palette from an arbitrary source color, and this function is how the default `neutralPalette` and `accentPalette` are generated. You can generate a new palette by choosing a palette source color and invoking the palette generation function:
 
-##### Replacing the Neutral Palette
+##### Replacing the neutral palette
+
 ```js
 import { parseColorHexRGB } from "@microsoft/fast-colors";
 import { createColorPalette } from "@microsoft/fast-components";
@@ -41,7 +46,8 @@ const provider = document.querySelector("fast-design-system-provider");
 provider.neutralPalette = palette;
 ```
 
-##### Replacing the Accent Palette
+##### Replacing the accent palette
+
 The same approach can be taken for the `accentPalette`, but when doing so the `accentPaletteBaseColor` should *also* be replaced:
 
 ```js
@@ -57,15 +63,18 @@ provider.accentPalette = palette;
 ```
 
 ### Background color
-This is the contextual color that the recipe uses to determine what color it is rendering on. The foreground, outline, and divider recipes will use this color to ensure that the color created is accessible and meets contrast requirements. In fill recipes it is sometimes used as the starting location in the appropriate palette to begin resolution.
+
+This is the contextual color that the recipe uses to determine what color it is rendering on. The foreground, outline, and divider recipes will use this color to ensure that the color created is accessible and meets contrast requirements. In fill recipes, it is sometimes used as the starting location in the appropriate palette to begin resolution.
 
 See [backgroundColor](api/fast-components.fastdesignsystemprovider.backgroundcolor.md) for more details.
 
 ### Offsets
 Some recipes also leverage offset values, typically for *states* (rest, hovered, active, selected). These offsets are used to retrieve a color at the sum of the offset and some reference index (usually the index of the rest color or the background color in the palette).
 
-## Color Recipes
-### Using Color Recipes
+## Color recipes
+
+### Using color recipes
+
 First, ensure the UI element has a *FASTDesignSystemProvider* ancestor element - this element will *resolve* the recipe for a component within it that declares a dependency on the recipe.
 
 ```html
@@ -92,8 +101,10 @@ const styles = css`
 );
 ```
 
-### Neutral Recipes
-#### Layer Recipes
+### Neutral recipes
+
+#### Layer recipes
+
 Layer recipes represent the UI layers and surfaces that individual UI elements are contained within. They are applied to primary regions such as toolbars, sidebars, canvas regions, fly-outs, dialogs, and cards.
 
 | Behavior Name | CSS Custom Property | Description |
@@ -108,6 +119,7 @@ Layer recipes represent the UI layers and surfaces that individual UI elements a
 | `neutralLayerL4Behavior` | `--neutral-layer-l4`| Used as the background for the lowest command surface or title bar, logically below L3. |
 
 #### Text
+
 Neutral text recipes address *most* cases of text used in a UI, from interactive element text, headings, and body text.
 
 | Behavior Name | CSS Custom Property | Description |
@@ -118,7 +130,8 @@ Neutral text recipes address *most* cases of text used in a UI, from interactive
 | `neutralForegroundHintBehavior` | `--neutral-foreground-hint`| Secondary *hinting* text to be used with [non-large text](https://www.w3.org/TR/WCAG/#contrast-minimum) to meet a 4.5:1 contrast ratioBehavior to the background. |
 | `neutralForegroundHintLargeBehavior` | `--neutral-foreground-hint-large`| Secondary *hinting* text to be used with [large text](https://www.w3.org/TR/WCAG/#contrast-minimum) to meet a 3:1 contrast ratio to the background. |
 
-#### Fills (Backgrounds)
+#### Fills (backgrounds)
+
 Neutral fills are indented to be used as fill colors (background) to UI elements to distinguish them from the background. 
 
 | Behavior Name | CSS Custom Property | Description |
@@ -132,7 +145,8 @@ Neutral fills are indented to be used as fill colors (background) to UI elements
 | `neutralFillStealthActiveBehavior`| `--neutral-fill-stealth-active` | Used as the fill of a `neutralFillStealth` element when active. |
 | `neutralFillStealthSelectedBehavior`| `--neutral-fill-stealth-selected` | Used as the fill of a `neutralFillStealth` element when selected. |
 
-#### Outlines and Dividers
+#### Outlines and dividers
+
 Neutral outlines are used to construct outline controls and dividers.
 
 | Behavior Name | CSS Custom Property | Description |
@@ -143,6 +157,7 @@ Neutral outlines are used to construct outline controls and dividers.
 | `neutralDividerRestBehavior` | `--neutral-divider-rest` | Used as the color for divider elements. |
 
 #### Toggles
+
 Toggle elements such as checkboxes and switches use a specific set of recipes.
 
 | Behavior Name | CSS Custom Property | Description |
@@ -154,6 +169,7 @@ Toggle elements such as checkboxes and switches use a specific set of recipes.
 | `neutralFillToggleActiveBehavior` | `--neutral-foreground-active` | Used as the fill of a `neutralFillToggle` element when active. |
 
 #### Inputs
+
 Text input elements also have a set of recipes specifically tailored.
 
 | Behavior Name | CSS Custom Property | Description |
@@ -163,13 +179,15 @@ Text input elements also have a set of recipes specifically tailored.
 | `neutralFillInputActiveBehavior` | `--neutral-fill-input-active` | Used as the fill of the text input when active. |
 | `neutralFillInputSelectedBehavior` | `--neutral-fill-input-selected` | Used as the fill of the text input when selected. |
 
-#### Document Focus
+#### Document focus
+
 | Behavior Name | CSS Custom Property | Description |
 |---------------|---------------------|-------------|
 | `neutralFocusBehavior` | `--neutral-focus` | The color of the focus indicator when the element has document focus. |
 | `neutralFocusInnerAccentBehavior` | `--neutral-focus-inner-accent` | The color of the inner focus-indicator when an *accent fill* element has document focus. |
 
-### Accent Recipes
+### Accent recipes
+
 Accent recipes use the accent palette and are intended to bring attention or otherwise distinguish the element on the page. 
 
 | Behavior Name | CSS Custom Property | Description |

@@ -21,7 +21,7 @@ Have you ever wanted to improve your app's startup time, render speed, or memory
 
 Have you ever wanted to adopt more web standards and build your site or app on a native web foundation that's immune to the shifting sands of the modern JavaScript front-end landscape? _**That's FAST.**_
 
-Let's take a look at what each of FAST's core packages give us today.
+Let's take a look at what each of FAST's core packages gives us today.
 
 ### fast-element
 
@@ -44,24 +44,24 @@ This package does not export Web Components registered as [custom elements](http
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![npm version](https://badge.fury.io/js/%40microsoft%2Ffast-components.svg)](https://badge.fury.io/js/%40microsoft%2Ffast-components)
 
-`fast-components` is a library of Web Components that *composes* the exports of `fast-foundation` with stylesheets aligning to the FAST design language. This composition step registers a custom element. See the [quick start](./fast-foundation/getting-started) to get stared using the components.
+`fast-components` is a library of Web Components that *composes* the exports of `fast-foundation` with stylesheets aligning to the FAST design language. This composition step registers a custom element. See the [quick start](./fast-foundation/getting-started) to get started using the components.
 
 ### fast-components-msft
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![npm version](https://badge.fury.io/js/%40microsoft%2Ffast-components-msft.svg)](https://badge.fury.io/js/%40microsoft%2Ffast-components-msft)
 
-`fast-components-msft` is another library of Web Components that *composes* `fast-foundation`. `fast-components-msft` uses the same custom element names as `fast-components`, but makes use of different stylesheets that align to the Microsoft design language.
+`fast-components-msft` is a library of Web Components that *composes* `fast-foundation`. `fast-components-msft` uses the same custom element names as `fast-components`, but makes use of different stylesheets that support Microsoft's Fluent design language.
 
 ### Component Explorer
 
 Launch our [Component Explorer](https://explore.fast.design) to experience our [FAST Components](https://www.npmjs.com/package/@microsoft/fast-components) and development tools.
 
-## Getting Started
+## Getting started
 
 If you're looking to get started using our components right away, take a look at [the components quick start](./fast-foundation/getting-started). You'll also want to check out [our integrations](./fast-foundation/webpack) if you're looking to add the components into a Webpack build or incorporate them with another front-end framework. For those interested in implementing their own design system or customizing the styles of the components, after you [have a look at the components](./fast-foundation/getting-started), you'll want to read through [our styling docs](./fast-components/intro). Finally, if your goal is to build your own components or apps with `fast-element`, you can learn all about that in our [guide to building web components with FASTElement](./fast-element/getting-started).
 
-## Joining the Community
+## Joining the community
 
 Looking to get answers to questions or engage with us in realtime? Our community is most active [on Discord](https://discord.gg/FcSNfg4). You can also ask for help on [Stack Overflow](https://stackoverflow.com/questions/tagged/fast-dna), submit requests and issues on [Github](https://github.com/Microsoft/fast-dna/issues/new/choose), or join us by contributing on [some good first issues via Github](https://github.com/Microsoft/fast-dna/labels/good%20first%20issue).
 

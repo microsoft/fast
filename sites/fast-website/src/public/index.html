@@ -15,9 +15,9 @@
       <div class="wrapper">
         <header class="header">
           <site-navigation>
-            <fast-anchor class="logo" slot="start" appearance="lightweight" href="/" aria-label="Home">
+            <fast-anchor class="logo" slot="start" appearance="lightweight" href="/" aria-label="Home" alt="FAST">
               <%= require("svg/icon-brand.svg") %>
-              FAST
+              <%= require("svg/icon-brand-fast.svg") %>
             </fast-anchor>
             <div class="anchor-wrapper">
               <ul>
@@ -36,8 +36,10 @@
           </site-navigation>
         </header>
 
-        <site-side-navigation category="links" class="social-links"></site-side-navigation>
-        <site-side-navigation category="scroll" class="section-scroll"></site-side-navigation>
+        <div class="side-nav-container">
+          <site-side-navigation category="links" class="social-links"></site-side-navigation>
+          <site-side-navigation category="scroll" class="section-scroll"></site-side-navigation>
+        </div>
 
         <section class="section hero-section" id="hero">
           <div class="section-content">
