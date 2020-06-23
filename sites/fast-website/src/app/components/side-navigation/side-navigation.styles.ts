@@ -8,7 +8,6 @@ import {
 
 export const SideNavigationStyles = css`
     ${display("flex")} :host {
-        --active-height: calc(var(--design-unit) * 13px);
         --design-unit-large: calc(var(--design-unit) * 5px);
         contain: content;
         font-family: var(--body-font);
@@ -35,7 +34,7 @@ export const SideNavigationStyles = css`
     }
 
     .scroll-indicator {
-        height: calc(var(--design-unit) * 9px);
+        height: 36px;
         width: calc(var(--focus-outline-width) * 1px);
         background-color: ${accentForegroundCutRestBehavior.var};
         border-radius: calc(var(--corner-radius) * 1px);
@@ -45,7 +44,7 @@ export const SideNavigationStyles = css`
     }
 
     .scroll-indicator-active {
-        height: var(--active-height);
+        height: 52px;
         background-color: ${accentForegroundActiveBehavior.var};
     }
 `.withBehaviors(
