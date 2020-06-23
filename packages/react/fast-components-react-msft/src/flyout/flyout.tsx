@@ -97,7 +97,7 @@ class Flyout extends Foundation<FlyoutHandledProps, FlyoutUnhandledProps, {}> {
                         FlyoutVerticalPosition[this.props.defaultVerticalPosition]
                     ]
                 }
-                disabled={false}
+                disabled={!this.props.visible}
                 fixedAfterInitialPlacement={this.props.fixedAfterInitialPlacement}
                 horizontalAlwaysInView={this.props.horizontalAlwaysInView}
                 horizontalPositioningMode={
@@ -121,6 +121,7 @@ class Flyout extends Foundation<FlyoutHandledProps, FlyoutUnhandledProps, {}> {
                 style={{
                     height: this.props.height,
                     width: this.props.width,
+                    display: this.props.visible ? "block" : "none",
                 }}
             >
                 {this.props.children}
