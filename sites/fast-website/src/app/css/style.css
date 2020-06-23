@@ -31,31 +31,20 @@ body {
   z-index: 1;
 }
 
-.social-links {
+.side-nav-container {
+  width: 100%;
+  height: min-content;
   position: fixed;
-  top: 45%;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  justify-content: space-between;
+  z-index: -1;
 }
 
-.section-scroll {
-  position: fixed;
-  top: 40%;
-  right: 0%;
-}
-
-@media screen and (max-height: 330px) {
-  .social-links,
-  .section-scroll {
+@media screen and (max-height: 390px), screen and (max-width: 1000px) {
+  .side-nav-container {
     display: none;
-  }
-}
-
-@media screen and (max-height: 500px) {
-  .social-links {
-    top: 35%;
-  }
-
-  .section-scroll {
-    top: 25%;
   }
 }
 
@@ -259,13 +248,6 @@ fast-badge::part(control) {
 @media screen and (max-width: 1330px) {
   .wrapper {
     grid-template-columns: minmax(5vw, 1fr) minmax(0px, 800px) minmax(5vw, 1fr);
-  }
-}
-
-@media screen and (max-width: 1000px) {
-  .social-links,
-  .section-scroll {
-    display: none;
   }
 }
 
