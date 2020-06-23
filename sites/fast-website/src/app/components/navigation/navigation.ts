@@ -18,16 +18,37 @@ export class Navigation extends FASTElement {
         }
     };
 
-    constructor() {
-        super();
+    connectedCallback() {
+        super.connectedCallback();
 
         this.mediaQueryList = window.matchMedia("screen and (max-width: 800px)");
         this.mediaQueryList.addListener(this.mqlListener);
     }
 
-    public handleOpenNavClick = (e: Event): void => {
+    public toggleOpened(): void {
         this.opened = !this.opened;
         this.debounce = false;
+    }
+
+    public handleFocusOut = (e: FocusEvent): void => {
+        let captured = e.relatedTarget as Node;
+        let contains = this.contains(captured);
+
+        if (!captured) {
+            captured = e.target as Node;
+            contains = this.contains(captured);
+
+            if (!this.isSameNode(captured) && !contains && this.opened) {
+                this.toggleOpened();
+                return;
+            }
+        }
+
+        if (contains || (!contains && !this.opened)) {
+            return;
+        }
+
+        this.toggleOpened();
     };
 }
 

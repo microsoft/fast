@@ -14,11 +14,11 @@
       <background-design></background-design>
       <div class="wrapper">
         <header class="header">
+          <fast-anchor class="logo" slot="start" appearance="lightweight" href="/" aria-label="Home" alt="FAST">
+            <%= require("svg/icon-brand.svg") %>
+            <%= require("svg/icon-brand-fast.svg") %>
+          </fast-anchor>
           <site-navigation>
-            <fast-anchor class="logo" slot="start" appearance="lightweight" href="/" aria-label="Home" alt="FAST">
-              <%= require("svg/icon-brand.svg") %>
-              <%= require("svg/icon-brand-fast.svg") %>
-            </fast-anchor>
             <div class="anchor-wrapper">
               <ul>
                 <li><fast-anchor appearance="lightweight" href="https://explore.fast.design">Components</fast-anchor></li>

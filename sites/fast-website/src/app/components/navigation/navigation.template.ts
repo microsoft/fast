@@ -8,13 +8,14 @@ export const NavigationTemplate = html<Navigation>`
     <template
         class="site-navigation ${x => (x.opened ? "opened" : "")}
         ${x => (x.debounce ? "debounce" : "")}"
+        @focusout=${(x, c) => x.handleFocusOut(c.event as FocusEvent)}
     >
         ${startTemplate}
         <fast-button
             class="nav-button"
             part="nav-button"
             appearance="stealth"
-            @click="${(x, c) => x.handleOpenNavClick(c.event)}"
+            @click="${x => x.toggleOpened()}"
         >
             ${when(x => !x.opened, html` ${MenuIcon} `)}
             ${when(x => x.opened, html` ${CloseIcon} `)}

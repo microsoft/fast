@@ -49,14 +49,19 @@ body {
 }
 
 .header {
-  grid-column: 1/-1;
+  display: grid;
+  grid-column: 1 / -1;
   padding: 0 40px;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
 }
 
-.header site-navigation {
+.header .site-navigation {
   align-items: center;
   height: var(--navbar-height);
   justify-content: space-between;
+  grid-column: 2;
+  grid-row: 1;
 }
 
 .anchor-wrapper {
@@ -82,9 +87,24 @@ site-navigation ::part(content) {
   color: var(--neutral-foreground-rest);
 }
 
+.header .logo,
+.header .github-link {
+  width: 110px;
+}
+
+.header .logo {
+  grid-column: 1;
+  grid-row: 1;
+  z-index: 2;
+}
+
 .header .logo::part(content) {
   display: flex;
   align-items: flex-end;
+}
+
+.header .github-link::part(control) {
+  justify-content: flex-end;
 }
 
 .footer .logo::part(content) {
@@ -278,8 +298,6 @@ fast-badge::part(control) {
 
   .header .logo {
     margin-inline-start: 20px;
-    position: relative;
-    z-index: 1;
   }
 
   .github-link {
@@ -293,7 +311,11 @@ fast-badge::part(control) {
     align-items: center;
   }
 
-  .header site-navigation::before {
+  .header .site-navigation {
+    grid-column: span 3 / -1;
+  }
+
+  .header .site-navigation::before {
     background: var(--background-color);
     content: "";
     position: absolute;
