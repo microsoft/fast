@@ -69,6 +69,7 @@ module.exports = {
         new CleanWebpackPlugin(),
         new HtmlWebpackPlugin({
             title: "FAST",
+            inject: "head",
             template: path.resolve(publicDir, "index.html"),
         }),
     ],
