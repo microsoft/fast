@@ -9,7 +9,7 @@ Thank you for your interest in contributing to our documentation. We put togethe
 
 ## Documentation types
 
-There are two type of documentation: articles and API reference. Articles are documents written using [GitHub-flavored Markdown syntax](https://github.github.com/gfm/) and located throughout our packages, while API reference details classes, methods, etc. and is written inline within the code itself.
+There are two types of documentation: articles and API reference. Articles are documents written using [GitHub-flavored Markdown syntax](https://github.github.com/gfm/) and located throughout our packages, while API reference details classes, methods, etc. and is written inline within the code itself.
 
 ## Writing articles
 
@@ -31,7 +31,7 @@ The required fields are as follows:
 * **sidebar_label**: The label that will be displayed in the left-side table of contents.
 * **custom_edit_url**: A URL where the document source can be edited by contributors.
 
-Beneath the Yaml metadata block, the body of the article is written primarily with [GitHub-flavored Markdown syntax](https://github.github.com/gfm/). Since our documentation system will turn the `title` metadata into an appropriate article header, your content should begin immediately with a short introductory paragraph, followed by h2 headers for each section of the document. You may use use h3 headers beneath the h2s but try to avoid further sub-sections.
+Beneath the Yaml metadata block, the body of the article is written primarily with [GitHub-flavored Markdown syntax](https://github.github.com/gfm/). Since our documentation system will turn the `title` metadata into an appropriate article header, your content should begin immediately with a short introductory paragraph, followed by h2 headers for each section of the document. You may use h3 headers beneath the h2s but try to avoid further sub-sections.
 
 In addition to [GitHub-flavored Markdown syntax](https://github.github.com/gfm/), you may also use the admonitions `note`, `tip`, `important`, `caution`, and `warning`. Here's an example of the syntax of a `note`:
 
@@ -77,7 +77,7 @@ export class Statistics {
 
 ## Building and testing the docs
 
-To test your documentation changes, first begin by cloning and building the documentation as described in [the contributor guide](./contributor-guide). Next, open a terminal and navigate to `sites/website`. From here, you can run the documentation site in developer mode with the following command: `yarn dev`. This will allow you to preview the site and validate that your documentation changes are rendering as expected.
+To test your documentation changes, first, begin by cloning and building the documentation as described in [the contributor guide](./contributor-guide). Next, open a terminal and navigate to `sites/website`. From here, you can run the documentation site in developer mode with the following command: `yarn dev`. This will allow you to preview the site and validate that your documentation changes are rendering as expected.
 
 ## Style guide
 
@@ -238,7 +238,7 @@ You can find a list of supported languages [here](https://github.com/github/ling
 
 **Testing examples**: Test your code examples to verify they are working as expected.
 
-**Code guidelines**: Verify that code examples follow the projects coding guidelines. For example, four spaces for indenting.
+**Code guidelines**: Verify that code examples follow the project's coding guidelines. For example, four spaces for indenting.
 
 #### Code comments
 
@@ -251,7 +251,7 @@ Code comments in **sentence** format:
 
 Code comments in **fragment** format:
 
-* Are formatted as single line syntax.
+* Are formatted as single-line syntax.
 * Do *not* have periods or question marks at the end.
 
 [CMoS]: https://www.amazon.com/Chicago-Manual-Style-16th/dp/0226104206/ref=pd_lpo_sbs_14_t_0?_encoding=UTF8&psc=1&refRID=2QG7JEGM9PVNQJR5V00Y

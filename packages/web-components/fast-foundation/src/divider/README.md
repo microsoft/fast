@@ -15,7 +15,7 @@ A web component implementation of a [horizontal rule](https://developer.mozilla.
 </fast-design-system-provider>
 ```
 
-##  Applying Custom Styles
+##  Applying custom styles
 
 ```ts
 import { customElement } from "@microsoft/fast-element";

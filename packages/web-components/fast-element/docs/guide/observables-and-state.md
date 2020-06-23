@@ -27,11 +27,11 @@ Properties with only a getter, that function as a computed property over other o
 
 ### Features
 
-#### Access Tracking
+#### Access tracking
 
 When decorated properties are accessed during template rendering, they are tracked, allowing the engine to deeply understand the relationship between your model and view.
 
-#### Internal Observation
+#### Internal observation
 
 On the class where the attr/observable is defined, you can optionally implement a *propertyName*Changed method to easily respond to changes in your own state.
 
@@ -47,7 +47,7 @@ export class Person {
 }
 ```
 
-#### External Observation
+#### External observation
 
 Decorated properties can be subscribed to, to receive notification of changes in the property. The templating engine uses this, but you can also directly subscribe as well. Here's how you would subscribe to changes in the `name` property pf a `Person` class:
 

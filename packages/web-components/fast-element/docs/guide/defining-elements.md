@@ -5,7 +5,7 @@ sidebar_label: Defining Elements
 custom_edit_url: https://github.com/microsoft/fast-dna/edit/master/packages/web-components/fast-element/docs/guide/defining-elements.md
 ---
 
-## Basic Elements
+## Basic elements
 
 To define a custom element, begin by creating a class that extends `FASTElement` and decorate it with the `@customElement` decorator, providing the element name.
 
@@ -65,7 +65,7 @@ To see it in action, you can use the same HTML as above, or change the default `
 <name-tag greeting="Hola"></name-tag>
 ```
 
-## Customizing Attributes
+## Customizing attributes
 
 By default, any attribute created with `@attr` will perform no explicit type coercion other than when it reflects its value to the HTML DOM via the `setAttribute` API. However, you can convert DOM attribute string values to and from arbitrary types as well as control the `mode` that is used to reflect property values to the DOM. There are three modes available through the `mode` property of the attribute configuration:
 
@@ -88,7 +88,7 @@ Here's how it works:
 * When the property value changes, the converter's `fromView` method will also be called, ensuring that the type is correct. After this, the `mode` will be determined. If the mode is set to `reflect` then the converter's `toView` method will be called to allow the type to be formatted before writing to the attribute using `setAttribute`.
 
 :::important
-When the `mode` is set to `boolean`, a built-in `booleanConverter` is automatically used to ensure type correctness so that manual configuration of the converter is not needed in this common scenario.
+When the `mode` is set to `boolean`, a built-in `booleanConverter` is automatically used to ensure type correctness so that the manual configuration of the converter is not needed in this common scenario.
 :::
 
 **Example: An Attribute in Reflect Mode with No Special Conversion**
@@ -134,7 +134,7 @@ export class MyCounter extends FASTElement {
 }
 ```
 
-## The Element Lifecycle
+## The element lifecycle
 
 All Web Components support a series of lifecycle events that you can tap into to execute custom code at specific points in time. `FASTElement` implements several of these callbacks automatically in order to enable features of its templating engine (described in [declaring templates](./declaring-templates)). However, you can override them to provide your own code. Here's an example of how you would execute custom code when your element is inserted into the DOM.
 
@@ -158,7 +158,7 @@ export class NameTag extends FASTElement {
 }
 ```
 
-The full list of available lifecyle callbacks is:
+The full list of available lifecycle callbacks is:
 
 | Callback | Description |
 | ------------- |-------------|
@@ -168,7 +168,7 @@ The full list of available lifecyle callbacks is:
 | attributeChangedCallback(attrName, oldVal, newVal) | Runs any time one of the element's custom attributes changes. `FASTElement` uses this to sync the attribute with its property. When the property updates, a render update is also queued, if there was a template dependency. |
 | adoptedCallback | Runs if the element was moved from its current `document` into a new `document` via a call to the `adoptNode(...)` API. |
 
-## Working without Decorators
+## Working without decorators
 
 The examples above and those throughout our documentation leverage TypeScript, and in particular, the decorators feature of the language. Decorators are an upcoming feature planned for a future version of JavaScript, but their design is not yet finished. While the syntax for decorator usage is not likely to change in the final version of the feature, some of our community members may feel uncomfortable using this feature at this stage. Fortunately, FAST Elements can be completely defined in Vanilla JS, without using decorators, by leveraging a static `definition` field on your class. The `definition` filed only needs to present the same configuration as the `@customElement` decorator. Here's an example that shows the use of the `definition` field along with a manual call to `define` the element:
 

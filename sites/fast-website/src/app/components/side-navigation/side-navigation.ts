@@ -20,24 +20,6 @@ export class SideNavigation extends FASTElement {
         x => x.header !== "Github"
     );
 
-    public clickHandler = (e: Event, parent: boolean): void => {
-        const target: HTMLElement = e.target as HTMLElement;
-
-        const link: string = parent
-            ? (target.getAttribute("href") as string)
-            : (target.parentElement?.getAttribute("href") as string);
-
-        const selectedSection: Element = document.querySelector(link) as Element;
-
-        e.preventDefault();
-
-        if (selectedSection) {
-            selectedSection.scrollIntoView({
-                behavior: "smooth",
-            });
-        }
-    };
-
     constructor() {
         super();
 
