@@ -14,16 +14,37 @@ export const featureCardData: FeatureCardData[] = [
         header: "Composition",
         body:
             "Create new component compositions by nesting, styling base components, and passing unhandled props. The combinations are endless.",
+        links: [
+            {
+                anchorText: "View GitHub",
+                // TODO: add url
+                url: "#",
+            },
+        ],
     },
     {
         header: "Design Systems",
         body:
             "Use Fluent by default or customize design system properties to make it your own. Or, create your own design system to use with FAST components.",
+        links: [
+            {
+                anchorText: "View GitHub",
+                // TODO: add url
+                url: "#",
+            },
+        ],
     },
     {
         header: "Technology",
         body:
             "Out of the box, FAST components are built on React, but you can build components on any modern framework using the FAST system.",
+        links: [
+            {
+                anchorText: "View GitHub",
+                // TODO: add url
+                url: "#",
+            },
+        ],
     },
     {
         header: "Web Standards",
