@@ -6,11 +6,26 @@ import { ColorHSL } from "./color-hsl";
 import { ColorInterpolationSpace } from "./color-interpolation";
 import { parseColorHexRGB } from "./parse-color";
 
+/**
+ * Configuration for {@link ComponentStateColorPalette}
+ * @public
+ */
 export interface ComponentStateColorPaletteConfig {
+    /**
+     * The color to create the palette from
+     */
     baseColor?: ColorRGBA64;
+
+    /**
+     * The number of steps in the palette
+     */
     steps?: number;
 }
 
+/**
+ * Creates a color palette for UI components
+ * @public
+ */
 export class ComponentStateColorPalette {
     public static readonly defaultPaletteConfig: ComponentStateColorPaletteConfig = {
         baseColor: parseColorHexRGB("#808080"),

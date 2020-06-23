@@ -4,49 +4,49 @@
 
 ```ts
 
-// @public (undocumented)
+// @public
 export function blend(mode: ColorBlendMode, bottom: ColorRGBA64, top: ColorRGBA64): ColorRGBA64;
 
-// @public (undocumented)
+// @public
 export function blendBurn(bottom: ColorRGBA64, top: ColorRGBA64): ColorRGBA64;
 
 // @public (undocumented)
 export function blendBurnChannel(bottom: number, top: number): number;
 
-// @public (undocumented)
+// @public
 export function blendColor(bottom: ColorRGBA64, top: ColorRGBA64): ColorRGBA64;
 
-// @public (undocumented)
+// @public
 export function blendDarken(bottom: ColorRGBA64, top: ColorRGBA64): ColorRGBA64;
 
 // @public (undocumented)
 export function blendDarkenChannel(bottom: number, top: number): number;
 
-// @public (undocumented)
+// @public
 export function blendDodge(bottom: ColorRGBA64, top: ColorRGBA64): ColorRGBA64;
 
 // @public (undocumented)
 export function blendDodgeChannel(bottom: number, top: number): number;
 
-// @public (undocumented)
+// @public
 export function blendLighten(bottom: ColorRGBA64, top: ColorRGBA64): ColorRGBA64;
 
 // @public (undocumented)
 export function blendLightenChannel(bottom: number, top: number): number;
 
-// @public (undocumented)
+// @public
 export function blendMultiply(bottom: ColorRGBA64, top: ColorRGBA64): ColorRGBA64;
 
 // @public (undocumented)
 export function blendMultiplyChannel(bottom: number, top: number): number;
 
-// @public (undocumented)
+// @public
 export function blendOverlay(bottom: ColorRGBA64, top: ColorRGBA64): ColorRGBA64;
 
 // @public (undocumented)
 export function blendOverlayChannel(bottom: number, top: number): number;
 
-// @public (undocumented)
+// @public
 export function blendScreen(bottom: ColorRGBA64, top: ColorRGBA64): ColorRGBA64;
 
 // @public (undocumented)
@@ -70,10 +70,10 @@ export interface CenteredRescaleConfig {
     targetSize: number;
 }
 
-// @public (undocumented)
+// @public
 export function clamp(i: number, min: number, max: number): number;
 
-// @public (undocumented)
+// @public
 export enum ColorBlendMode {
     // (undocumented)
     Burn = 0,
@@ -93,12 +93,10 @@ export enum ColorBlendMode {
     Screen = 7
 }
 
-// @public (undocumented)
+// @public
 export class ColorHSL {
     constructor(hue: number, sat: number, lum: number);
-    // (undocumented)
     equalValue(rhs: ColorHSL): boolean;
-    // (undocumented)
     static fromObject(data: {
         h: number;
         s: number;
@@ -108,11 +106,9 @@ export class ColorHSL {
     readonly h: number;
     // (undocumented)
     readonly l: number;
-    // (undocumented)
     roundToPrecision(precision: number): ColorHSL;
     // (undocumented)
     readonly s: number;
-    // (undocumented)
     toObject(): {
         h: number;
         s: number;
@@ -120,12 +116,10 @@ export class ColorHSL {
     };
 }
 
-// @public (undocumented)
+// @public
 export class ColorHSV {
     constructor(hue: number, sat: number, val: number);
-    // (undocumented)
     equalValue(rhs: ColorHSV): boolean;
-    // (undocumented)
     static fromObject(data: {
         h: number;
         s: number;
@@ -133,11 +127,9 @@ export class ColorHSV {
     }): ColorHSV | null;
     // (undocumented)
     readonly h: number;
-    // (undocumented)
     roundToPrecision(precision: number): ColorHSV;
     // (undocumented)
     readonly s: number;
-    // (undocumented)
     toObject(): {
         h: number;
         s: number;
@@ -147,7 +139,7 @@ export class ColorHSV {
     readonly v: number;
 }
 
-// @public (undocumented)
+// @public
 export enum ColorInterpolationSpace {
     // (undocumented)
     HSL = 1,
@@ -163,7 +155,7 @@ export enum ColorInterpolationSpace {
     XYZ = 3
 }
 
-// @public (undocumented)
+// @public
 export class ColorLAB {
     constructor(l: number, a: number, b: number);
     // (undocumented)
@@ -172,9 +164,7 @@ export class ColorLAB {
     readonly b: number;
     // (undocumented)
     static readonly epsilon: number;
-    // (undocumented)
     equalValue(rhs: ColorLAB): boolean;
-    // (undocumented)
     static fromObject(data: {
         l: number;
         a: number;
@@ -184,9 +174,7 @@ export class ColorLAB {
     static readonly kappa: number;
     // (undocumented)
     readonly l: number;
-    // (undocumented)
     roundToPrecision(precision: number): ColorLAB;
-    // (undocumented)
     toObject(): {
         l: number;
         a: number;
@@ -194,14 +182,12 @@ export class ColorLAB {
     };
 }
 
-// @public (undocumented)
+// @public
 export class ColorLCH {
     constructor(l: number, c: number, h: number);
     // (undocumented)
     readonly c: number;
-    // (undocumented)
     equalValue(rhs: ColorLCH): boolean;
-    // (undocumented)
     static fromObject(data: {
         l: number;
         c: number;
@@ -211,9 +197,7 @@ export class ColorLCH {
     readonly h: number;
     // (undocumented)
     readonly l: number;
-    // (undocumented)
     roundToPrecision(precision: number): ColorLCH;
-    // (undocumented)
     toObject(): {
         l: number;
         c: number;
@@ -221,7 +205,7 @@ export class ColorLCH {
     };
 }
 
-// @public (undocumented)
+// @public
 export class ColorPalette {
     constructor(config: ColorPaletteConfig);
     // (undocumented)
@@ -270,40 +254,26 @@ export interface ColorPaletteConfig {
     steps?: number;
 }
 
-// @public (undocumented)
+// @public
 export class ColorRGBA64 {
     constructor(red: number, green: number, blue: number, alpha?: number);
-    // (undocumented)
     readonly a: number;
-    // (undocumented)
     readonly b: number;
-    // (undocumented)
     clamp(): ColorRGBA64;
-    // (undocumented)
     equalValue(rhs: ColorRGBA64): boolean;
-    // (undocumented)
     static fromObject(data: ColorRGBA64Config): ColorRGBA64 | null;
-    // (undocumented)
     readonly g: number;
-    // (undocumented)
     readonly r: number;
-    // (undocumented)
     roundToPrecision(precision: number): ColorRGBA64;
-    // (undocumented)
     toObject(): Required<ColorRGBA64Config>;
-    // (undocumented)
     toStringHexARGB(): string;
-    // (undocumented)
     toStringHexRGB(): string;
-    // (undocumented)
     toStringHexRGBA(): string;
-    // (undocumented)
     toStringWebRGB(): string;
-    // (undocumented)
     toStringWebRGBA(): string;
 }
 
-// @public (undocumented)
+// @public
 export interface ColorRGBA64Config {
     // (undocumented)
     a?: number;
@@ -315,7 +285,7 @@ export interface ColorRGBA64Config {
     r: number;
 }
 
-// @public (undocumented)
+// @public
 export class ColorScale {
     constructor(stops: ColorScaleStop[]);
     // (undocumented)
@@ -338,26 +308,21 @@ export interface ColorScaleStop {
     position: number;
 }
 
-// @public (undocumented)
+// @public
 export class ColorXYZ {
     constructor(x: number, y: number, z: number);
-    // (undocumented)
     equalValue(rhs: ColorXYZ): boolean;
-    // (undocumented)
     static fromObject(data: {
         x: number;
         y: number;
         z: number;
     }): ColorXYZ | null;
-    // (undocumented)
     roundToPrecision(precision: number): ColorXYZ;
-    // (undocumented)
     toObject(): {
         x: number;
         y: number;
         z: number;
     };
-    // (undocumented)
     static readonly whitePoint: ColorXYZ;
     // (undocumented)
     readonly x: number;
@@ -367,7 +332,7 @@ export class ColorXYZ {
     readonly z: number;
 }
 
-// @public (undocumented)
+// @public
 export class ComponentStateColorPalette {
     constructor(config?: ComponentStateColorPaletteConfig);
     // (undocumented)
@@ -376,42 +341,40 @@ export class ComponentStateColorPalette {
     palette: ColorRGBA64[];
     }
 
-// @public (undocumented)
+// @public
 export interface ComponentStateColorPaletteConfig {
-    // (undocumented)
     baseColor?: ColorRGBA64;
-    // (undocumented)
     steps?: number;
 }
 
-// @public (undocumented)
+// @public
 export function computeAlphaBlend(bottom: ColorRGBA64, top: ColorRGBA64): ColorRGBA64;
 
-// @public (undocumented)
+// @public
 export function contrastRatio(a: ColorRGBA64, b: ColorRGBA64): number;
 
-// @public (undocumented)
+// @public
 export function darkenViaLAB(input: ColorRGBA64, amount: number, darkenConstant?: number): ColorRGBA64;
 
 // @public (undocumented)
 export const defaultCenteredRescaleConfig: CenteredRescaleConfig;
 
-// @public (undocumented)
+// @public
 export const defaultPaletteExtractionConfig: PaletteExtractionConfig;
 
-// @public (undocumented)
+// @public
 export const defaultQuantizeConfig: QuantizeConfig;
 
-// @public (undocumented)
+// @public
 export function degreesToRadians(i: number): number;
 
-// @public (undocumented)
+// @public
 export function denormalize(i: number, min: number, max: number): number;
 
-// @public (undocumented)
+// @public
 export function desaturateViaLCH(input: ColorRGBA64, saturation: number, saturationConstant?: number): ColorRGBA64;
 
-// @public (undocumented)
+// @public
 export function extractPalette(colors: QuantizedColor[], config?: PaletteExtractionConfig): PaletteEntry[];
 
 // @public
@@ -423,7 +386,7 @@ export function generateScaledPalettes(input: ColorRGBA64, shortPaletteLength?: 
     long: ColorRGBA64[];
 };
 
-// @public (undocumented)
+// @public
 export function getHexStringForByte(i: number): string;
 
 // @public
@@ -455,13 +418,13 @@ export class Histogram {
     readonly total: number;
 }
 
-// @public (undocumented)
+// @public
 export function hslToRGB(hsl: ColorHSL, alpha?: number): ColorRGBA64;
 
-// @public (undocumented)
+// @public
 export function hsvToRGB(hsv: ColorHSV, alpha?: number): ColorRGBA64;
 
-// @public (undocumented)
+// @public
 export class ImageDataPixelBlob implements PixelBlob {
     constructor(image: ImageData);
     // (undocumented)
@@ -479,30 +442,28 @@ export class ImageDataPixelBlob implements PixelBlob {
 // @public
 export function insertIntoSortedList(list: PixelBox[], newItem: PixelBox, sortPriority: (box: PixelBox) => number): void;
 
-// @public (undocumented)
+// @public
 export function interpolateByColorSpace(position: number, space: ColorInterpolationSpace, left: ColorRGBA64, right: ColorRGBA64): ColorRGBA64;
 
-// @public (undocumented)
+// @public
 export function interpolateHSL(position: number, left: ColorHSL, right: ColorHSL): ColorHSL;
 
-// @public (undocumented)
+// @public
 export function interpolateHSV(position: number, left: ColorHSV, right: ColorHSV): ColorHSV;
 
-// @public (undocumented)
+// @public
 export function interpolateLAB(position: number, left: ColorLAB, right: ColorLAB): ColorLAB;
 
-// @public (undocumented)
+// @public
 export function interpolateLCH(position: number, left: ColorLCH, right: ColorLCH): ColorLCH;
 
-// @public (undocumented)
+// @public
 export function interpolateRGB(position: number, left: ColorRGBA64, right: ColorRGBA64): ColorRGBA64;
 
-// @public (undocumented)
+// @public
 export function interpolateXYZ(position: number, left: ColorXYZ, right: ColorXYZ): ColorXYZ;
 
-// Warning: (ae-forgotten-export) The symbol "NamedColors" needs to be exported by the entry point index.d.ts
-//
-// @public (undocumented)
+// @public
 export function isColorNamed(raw: string | NamedColors): raw is NamedColors;
 
 // @public
@@ -520,31 +481,31 @@ export function isColorStringWebRGB(raw: string): boolean;
 // @public
 export function isColorStringWebRGBA(raw: string): boolean;
 
-// @public (undocumented)
+// @public
 export function labToLCH(lab: ColorLAB): ColorLCH;
 
-// @public (undocumented)
+// @public
 export function labToRGB(lab: ColorLAB, alpha?: number): ColorRGBA64;
 
-// @public (undocumented)
+// @public
 export function labToXYZ(lab: ColorLAB): ColorXYZ;
 
-// @public (undocumented)
+// @public
 export function lchToLAB(lch: ColorLCH): ColorLAB;
 
-// @public (undocumented)
+// @public
 export function lchToRGB(lch: ColorLCH, alpha?: number): ColorRGBA64;
 
-// @public (undocumented)
+// @public
 export function lerp(i: number, min: number, max: number): number;
 
-// @public (undocumented)
+// @public
 export function lerpAnglesInDegrees(i: number, min: number, max: number): number;
 
-// @public (undocumented)
+// @public
 export function lerpAnglesInRadians(i: number, min: number, max: number): number;
 
-// @public (undocumented)
+// @public
 export function lightenViaLAB(input: ColorRGBA64, amount: number, darkenConstant?: number): ColorRGBA64;
 
 // @public
@@ -553,7 +514,10 @@ export function loadImageData(source: string): Promise<ImageData>;
 // @public
 export function matchLightnessIndex(input: ColorRGBA64, reference: ColorRGBA64[]): number;
 
-// @public (undocumented)
+// @public
+export type NamedColors = "aliceblue" | "antiquewhite" | "aqua" | "aquamarine" | "azure" | "beige" | "bisque" | "black" | "blanchedalmond" | "blue" | "blueviolet" | "brown" | "burlywood" | "cadetblue" | "chartreuse" | "chocolate" | "coral" | "cornflowerblue" | "cornsilk" | "crimson" | "cyan" | "darkblue" | "darkcyan" | "darkgoldenrod" | "darkgray" | "darkgreen" | "darkgrey" | "darkkhaki" | "darkmagenta" | "darkolivegreen" | "darkorange" | "darkorchid" | "darkred" | "darksalmon" | "darkseagreen" | "darkslateblue" | "darkslategray" | "darkslategrey" | "darkturquoise" | "darkviolet" | "deeppink" | "deepskyblue" | "dimgray" | "dimgrey" | "dodgerblue" | "firebrick" | "floralwhite" | "forestgreen" | "fuchsia" | "gainsboro" | "ghostwhite" | "gold" | "goldenrod" | "gray" | "green" | "greenyellow" | "grey" | "honeydew" | "hotpink" | "indianred" | "indigo" | "ivory" | "khaki" | "lavender" | "lavenderblush" | "lawngreen" | "lemonchiffon" | "lightblue" | "lightcoral" | "lightcyan" | "lightgoldenrodyellow" | "lightgray" | "lightgreen" | "lightgrey" | "lightpink" | "lightsalmon" | "lightseagreen" | "lightskyblue" | "lightslategray" | "lightslategrey" | "lightsteelblue" | "lightyellow" | "lime" | "limegreen" | "linen" | "magenta" | "maroon" | "mediumaquamarine" | "mediumblue" | "mediumorchid" | "mediumpurple" | "mediumseagreen" | "mediumslateblue" | "mediumspringgreen" | "mediumturquoise" | "mediumvioletred" | "midnightblue" | "mintcream" | "mistyrose" | "moccasin" | "navajowhite" | "navy" | "oldlace" | "olive" | "olivedrab" | "orange" | "orangered" | "orchid" | "palegoldenrod" | "palegreen" | "paleturquoise" | "palevioletred" | "papayawhip" | "peachpuff" | "peru" | "pink" | "plum" | "powderblue" | "purple" | "red" | "rosybrown" | "royalblue" | "saddlebrown" | "salmon" | "sandybrown" | "seagreen" | "seashell" | "sienna" | "silver" | "skyblue" | "slateblue" | "slategray" | "slategrey" | "snow" | "springgreen" | "steelblue" | "tan" | "teal" | "thistle" | "tomato" | "transparent" | "turquoise" | "violet" | "wheat" | "white" | "whitesmoke" | "yellow" | "yellowgreen";
+
+// @public
 export function normalize(i: number, min: number, max: number): number;
 
 // @public (undocumented)
@@ -584,7 +548,7 @@ export interface PaletteEntryConstraint {
     targetSaturation: number;
 }
 
-// @public (undocumented)
+// @public
 export interface PaletteExtractionConfig {
     // (undocumented)
     constraints: PaletteEntryConstraint[];
@@ -598,30 +562,30 @@ export interface PaletteExtractionConfig {
     volumeWeight: number;
 }
 
-// @public (undocumented)
+// @public
 export function parseColor(raw: string): ColorRGBA64 | null;
 
-// @public (undocumented)
+// @public
 export function parseColorHexARGB(raw: string): ColorRGBA64 | null;
 
-// @public (undocumented)
+// @public
 export function parseColorHexRGB(raw: string): ColorRGBA64 | null;
 
-// @public (undocumented)
+// @public
 export function parseColorHexRGBA(raw: string): ColorRGBA64 | null;
 
 // Warning: (ae-forgotten-export) The symbol "namedColorsConfigs" needs to be exported by the entry point index.d.ts
 //
-// @public (undocumented)
+// @public
 export function parseColorNamed(raw: keyof typeof namedColorsConfigs): ColorRGBA64 | null;
 
-// @public (undocumented)
+// @public
 export function parseColorWebRGB(raw: string): ColorRGBA64 | null;
 
-// @public (undocumented)
+// @public
 export function parseColorWebRGBA(raw: string): ColorRGBA64 | null;
 
-// @public (undocumented)
+// @public
 export interface PixelBlob {
     // (undocumented)
     getPixel(x: number, y: number): ColorRGBA64;
@@ -669,7 +633,7 @@ export class PixelBox {
 // @public
 export function quantize(source: PixelBlob, config?: QuantizeConfig): QuantizedColor[];
 
-// @public (undocumented)
+// @public
 export interface QuantizeConfig {
     fractionByPopulation: number;
     isBoxValid: ((box: PixelBox) => boolean) | null;
@@ -680,7 +644,7 @@ export interface QuantizeConfig {
     targetPaletteSize: number;
 }
 
-// @public (undocumented)
+// @public
 export interface QuantizedColor {
     // (undocumented)
     color: ColorRGBA64;
@@ -690,22 +654,22 @@ export interface QuantizedColor {
     pixelCount: number;
 }
 
-// @public (undocumented)
+// @public
 export function radiansToDegrees(i: number): number;
 
 // @public
 export function rescale(input: ColorRGBA64[], targetSize: number, preserveInputColors: boolean): ColorRGBA64[];
 
-// @public (undocumented)
+// @public
 export function rgbToHSL(rgb: ColorRGBA64): ColorHSL;
 
-// @public (undocumented)
+// @public
 export function rgbToHSV(rgb: ColorRGBA64): ColorHSV;
 
-// @public (undocumented)
+// @public
 export function rgbToLAB(rgb: ColorRGBA64): ColorLAB;
 
-// @public (undocumented)
+// @public
 export function rgbToLCH(rgb: ColorRGBA64): ColorLCH;
 
 // @public
@@ -714,25 +678,25 @@ export function rgbToLinearLuminance(rgb: ColorRGBA64): number;
 // @public
 export function rgbToRelativeLuminance(rgb: ColorRGBA64): number;
 
-// @public (undocumented)
+// @public
 export function rgbToTemperature(rgb: ColorRGBA64): number;
 
-// @public (undocumented)
+// @public
 export function rgbToXYZ(rgb: ColorRGBA64): ColorXYZ;
 
-// @public (undocumented)
+// @public
 export function roundToPrecisionSmall(i: number, precision: number): number;
 
-// @public (undocumented)
+// @public
 export function saturateViaLCH(input: ColorRGBA64, saturation: number, saturationConstant?: number): ColorRGBA64;
 
-// @public (undocumented)
+// @public
 export function temperatureToRGB(tempKelvin: number, alpha?: number): ColorRGBA64;
 
-// @public (undocumented)
+// @public
 export function xyzToLAB(xyz: ColorXYZ): ColorLAB;
 
-// @public (undocumented)
+// @public
 export function xyzToRGB(xyz: ColorXYZ, alpha?: number): ColorRGBA64;
 
 
