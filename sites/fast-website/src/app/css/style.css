@@ -321,7 +321,11 @@ fast-badge::part(control) {
     background-color: var(--background-color);
     opacity: 0.95;
     transform: translateY(-100%);
-    transition: transform 0.1s ease-in-out;
+    transition:
+      transform 300ms ease-in-out 0s,
+      visibility 0s linear 300ms;
+
+    visibility: hidden;
     z-index: 0;
   }
 
@@ -340,6 +344,8 @@ fast-badge::part(control) {
 
   site-navigation.opened .anchor-wrapper {
     transform: translateY(0);
+    transition-delay: 0s;
+    visibility: visible;
   }
 
   site-navigation::part(nav-button) {

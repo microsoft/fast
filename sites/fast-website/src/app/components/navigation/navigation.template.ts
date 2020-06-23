@@ -10,10 +10,6 @@ export const NavigationTemplate = html<Navigation>`
         ${x => (x.debounce ? "debounce" : "")}"
     >
         ${startTemplate}
-        <nav>
-            <slot></slot>
-        </nav>
-        ${endTemplate}
         <fast-button
             class="nav-button"
             part="nav-button"
@@ -23,5 +19,9 @@ export const NavigationTemplate = html<Navigation>`
             ${when(x => !x.opened, html` ${MenuIcon} `)}
             ${when(x => x.opened, html` ${CloseIcon} `)}
         </fast-button>
+        <nav>
+            <slot></slot>
+        </nav>
+        ${endTemplate}
     </template>
 `;
