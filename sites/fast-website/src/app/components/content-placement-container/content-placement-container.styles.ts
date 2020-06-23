@@ -23,6 +23,7 @@ export const ContentPlacementContainerStyles = css`
     :host([section="feature"]) {
         --flow: column;
         grid-template-rows: repeat(3, min-content);
+        grid-template-columns: repeat(2, 1fr);
         grid-auto-flow: var(--flow);
         justify-content: center;
         counter-reset: feature-counter;
@@ -110,6 +111,7 @@ export const ContentPlacementContainerStyles = css`
     @media screen and (max-width: 1330px) {
         :host([section="feature"]) {
             --flow: row;
+            grid-template-columns: unset;
         }
         site-feature-card:hover + site-feature-card::before {
             opacity: 0;
