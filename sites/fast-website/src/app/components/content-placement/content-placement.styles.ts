@@ -15,6 +15,7 @@ export const ContentPlacementStyles = css`
         content: "";
         display: block;
         background-color: currentColor;
+        opacity: 0.5;
         position: absolute;
     }
 
