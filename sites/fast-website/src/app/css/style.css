@@ -96,8 +96,6 @@ site-navigation ::part(content) {
 .header .logo::part(content) {
   display: flex;
   align-items: flex-end;
-  font-size: var(--type-ramp-plus-4-font-size);
-  line-height: var(--type-ramp-plus-4-line-height);
 }
 
 .footer .logo::part(content) {
@@ -105,11 +103,16 @@ site-navigation ::part(content) {
   overflow: hidden;
 }
 
+.logo::part(content)::before {
+  top: calc(100% - (var(--outline-width) * 1px));
+}
+
 .logo svg {
   display: block;
   width: 45px;
   height: 40px;
   margin-inline-end: 10px;
+  shape-rendering: geometricPrecision;
 }
 
 .nav-button {
