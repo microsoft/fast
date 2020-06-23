@@ -1,6 +1,5 @@
 import { css } from "@microsoft/fast-element";
 import { display } from "@microsoft/fast-foundation";
-import { neutralDividerRestBehavior } from "@microsoft/fast-components";
 
 export const ContentPlacementStyles = css`
     ${display("grid")} :host {
@@ -15,7 +14,8 @@ export const ContentPlacementStyles = css`
     :host(.framework_ContentPlacement)::after {
         content: "";
         display: block;
-        background-color: ${neutralDividerRestBehavior.var};
+        background-color: currentColor;
+        opacity: 0.5;
         position: absolute;
     }
 
@@ -61,4 +61,4 @@ export const ContentPlacementStyles = css`
         visibility: hidden;
         margin-bottom: calc(var(--design-unit) * 5px);
     }
-`.withBehaviors(neutralDividerRestBehavior);
+`;
