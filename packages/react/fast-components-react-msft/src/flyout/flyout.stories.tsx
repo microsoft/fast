@@ -83,14 +83,10 @@ class FlyoutTest extends React.Component<Omit<FlyoutProps, "anchor">, FlyoutTest
     }
 
     private renderFlyout(): JSX.Element {
-        if (!this.state.visible) {
-            return;
-        }
-
-        const { children, visible, ...props }: Partial<FlyoutProps> = this.props;
+        const { children, ...props }: Partial<FlyoutProps> = this.props;
 
         return (
-            <Flyout anchor={this.anchor} visible={visible} {...props}>
+            <Flyout anchor={this.anchor} visible={this.state.visible} {...props}>
                 {children}
             </Flyout>
         );
@@ -133,7 +129,7 @@ storiesOf("Flyout", module)
     .add("Flyout aligned horizontally", () => (
         <div>
             <Heading size={HeadingSize._4}>
-                Setting the verical axis positioning mode to "inset" and the horizontal
+                Setting the vertical axis positioning mode to "inset" and the horizontal
                 mode to "adjacent" places the flyout beside the anchor
             </Heading>
             <FlyoutTest

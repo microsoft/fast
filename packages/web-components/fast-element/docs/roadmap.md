@@ -2,7 +2,9 @@
 
 ## Short-term
 
+* **Feature** Enable simple function converters for `@attr`
 * **Feature**: Enable event delegation through a syntax like `@click.delegate=...`
+* **Feature**: Enable event capture through a syntax like `@click.capture=...`
 
 ## Medium-term
 
@@ -15,5 +17,4 @@
 
 ## Long-term
 
-* **Feature:** Support interpolating `StyleSheet` instances into the `css` string (prepare for CSS Modules)
 * **Feature:** Support interpolating `Document` instances into the `html` string (prepare for HTML modules).

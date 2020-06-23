@@ -7,11 +7,11 @@ custom_edit_url: https://github.com/microsoft/fast-dna/edit/master/packages/web-
 
 In addition to declaring dynamic parts of templates with expressions, you also have access to several powerful *directives*, which aid in common scenarios.
 
-## Structural Directives
+## Structural directives
 
 Structural directives change the shape of the DOM itself by adding and removing nodes based on the state of your element.
 
-### The When Directive
+### The `when` directive
 
 The `when` directive enables you to conditionally render blocks of HTML. When you provide an expression to `when` it will render the child template into the DOM when the expression evaluates to `true` and remove the child template when it evaluates to `false` (or if it is never `true`, the rendering will be skipped entirely).
 
@@ -69,7 +69,7 @@ const template = html<MyApp>`
 `;
 ```
 
-### The Repeat Directive
+### The `repeat` directive
 
 To render a list of data, use the `repeat` directive, providing the list to render and a template to use in rendering each item.
 
@@ -119,13 +119,13 @@ Similar to event handlers, within a `repeat` block you have access to a special 
 
 * `event` - The event object when inside an event handler.
 * `parent` - The parent scope when inside a `repeat` block.
-* `index` - The index of the current item when inside a `repeat` block (opt in).
-* `length` - The length of the array when inside a `repeat` block (opt in).
-* `isEven` - True if the index of the current item is even when inside a `repeat` block (opt in).
-* `isOdd` - True if the index of the current item is odd when inside a `repeat` block (opt in).
-* `isFirst` - True if the current item is first in the array inside a `repeat` block (opt in).
-* `isInMiddle` - True if the current item is somewhere in the middle of the the array inside a `repeat` block (opt in).
-* `isLast` - True if the current item is last in the array inside a `repeat` block (opt in).
+* `index` - The index of the current item when inside a `repeat` block (opt-in).
+* `length` - The length of the array when inside a `repeat` block (opt-in).
+* `isEven` - True if the index of the current item is even when inside a `repeat` block (opt-in).
+* `isOdd` - True if the index of the current item is odd when inside a `repeat` block (opt-in).
+* `isFirst` - True if the current item is first in the array inside a `repeat` block (opt-in).
+* `isInMiddle` - True if the current item is somewhere in the middle of the array inside a `repeat` block (opt-in).
+* `isLast` - True if the current item is last in the array inside a `repeat` block (opt-in).
 
 Some context properties are opt-in because they are more costly to update. So, for performance reasons, they are not available by default. To opt into the positioning properties, pass options to the repeat directive, with the setting `positioning: true`. For example, here's how we would use the `index` in our friends template from above:
 
@@ -141,7 +141,7 @@ Some context properties are opt-in because they are more costly to update. So, f
 
 In addition to providing a template to render the items with, you can also provide an expression that evaluates to a template. This enables you to dynamically change what you are using to render the items. Each item will still be rendered with the same template, but you can use techniques from "Composing Templates" below to render a different template depending on the item itself.
 
-### Composing Templates
+### Composing templates
 
 The `ViewTemplate` returned from the `html` tag helper has special handling when it is used inside of another template. This is done so that you can create templates and compose them into other templates.
 
@@ -212,7 +212,7 @@ export class FriendList extends FASTElement {
 
 In the above example, we create an independent `nameTemplate` and then use it in two different places. First inside of a `when` template and then later inside of a `repeat` template.
 
-But content composition is actually more powerful than that, because you aren't limited to *static composition* of templates. You can also provide any expression that returns a template. As a result, when the `@observable` dependencies of the expression change, you can dynamically change which template is selected for rendering. If you don't want to render anything, you can also handle that by returning `null` or `undefined`. Here are a few examples of what you can do with content composition:
+But content composition is actually more powerful than that because you aren't limited to *static composition* of templates. You can also provide any expression that returns a template. As a result, when the `@observable` dependencies of the expression change, you can dynamically change which template is selected for rendering. If you don't want to render anything, you can also handle that by returning `null` or `undefined`. Here are a few examples of what you can do with content composition:
 
 **Example: Dynamic Composition**
 
@@ -396,13 +396,13 @@ export function when(condition, templateOrTemplateExpression) {
 
 As you can see, all that `when` does is compose a new function that checks your condition. If it's `true,` it invokes your template provider function; if `false`, it returns `null`, indicating nothing should be rendered.
 
-## Referential Directives
+## Referential directives
 
 Referential directives allow you to easily get references to DOM nodes in various scenarios.
 
-### The Ref Directive
+### The `ref` directive
 
-Sometimes you need a direct reference to a single DOM node from your template. This might be because you want to control playback of a `video` element, use the drawing context of a `canvas` element, or pass an element to a 3rd party library. Whatever the reason, you can get a reference to the DOM node by using the `ref` directive.
+Sometimes you need a direct reference to a single DOM node from your template. This might be because you want to control the playback of a `video` element, use the drawing context of a `canvas` element, or pass an element to a 3rd party library. Whatever the reason, you can get a reference to the DOM node by using the `ref` directive.
 
 **Example: Referencing an Element**
 
@@ -436,7 +436,7 @@ Place the `ref` directive on the element you want to reference and provide it wi
 If you provide a type for your HTML template, TypeScript will type check the property name you provide to ensure that it actually exists on your element.
 :::
 
-### The Children Directive
+### The `children` directive
 
 Besides using `ref` to reference a single DOM node, you can use `children` to get references to all child nodes of a particular element.
 
@@ -468,7 +468,7 @@ export class FriendList extends FASTElement {
 }
 ```
 
-In the example above, the `listItems` property will be populated with all child nodes of the `ul` element. If `listItems` is decorated with `@observable` then it will be updated dynamically as the child nodes change. Like any observable, you can optionally implement a *propertyName*Changed method to be notified when the nodes change. Additionally, you can provide an `options` object to the `children` directive to specify customized configuration for the underlying [MutationObserver](https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver).
+In the example above, the `listItems` property will be populated with all child nodes of the `ul` element. If `listItems` is decorated with `@observable` then it will be updated dynamically as the child nodes change. Like any observable, you can optionally implement a *propertyName*Changed method to be notified when the nodes change. Additionally, you can provide an `options` object to the `children` directive to specify a customized configuration for the underlying [MutationObserver](https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver).
 
 :::important
 Like `ref`, the child nodes are not available until the `connectedCallback` lifecycle event.
@@ -490,7 +490,7 @@ const template = html<FriendList>`
 `;
 ```
 
-### The Slotted Directive
+### The `slotted` directive
 
 Sometimes you may want references to all nodes that are assigned to a particular slot. To accomplish this, use the `slotted` directive. (For more on slots, see [Working with Shadow DOM](./working-with-shadow-dom).)
 
@@ -517,9 +517,9 @@ export class MyElement extends FASTElement {
 }
 ```
 
-Similar to the `children` directive, the `slotted` directive will populate the `slottedNodes` property with nodes assigned to the slot. If `slottedNodes` is decorated with `@observable` then it will be updated dynamically as the assigned nodes change. Like any observable, you can optionally implement a *propertyName*Changed method to be notified when the nodes change. Additionally, you can provide an `options` object to the `slotted` directive to specify customized configuration for the underlying [assignedNodes() API call](https://developer.mozilla.org/en-US/docs/Web/API/HTMLSlotElement/assignedNodes) or specify a `filter`.
+Similar to the `children` directive, the `slotted` directive will populate the `slottedNodes` property with nodes assigned to the slot. If `slottedNodes` is decorated with `@observable` then it will be updated dynamically as the assigned nodes change. Like any observable, you can optionally implement a *propertyName*Changed method to be notified when the nodes change. Additionally, you can provide an `options` object to the `slotted` directive to specify a customized configuration for the underlying [assignedNodes() API call](https://developer.mozilla.org/en-US/docs/Web/API/HTMLSlotElement/assignedNodes) or specify a `filter`.
 
-## Host Directives
+## Host directives
 
 So far, our bindings and directives have only affected elements within the Shadow DOM of the component. However, sometimes you want to affect the host element itself, based on property state. For example, a progress component might want to write various `aria` attributes to the host, based on the progress state. In order to facilitate scenarios like this, you can use a `template` element as the root of your template, and it will represent the host element. Any attribute or directive you place on the `template` element will be applied to the host itself.
 

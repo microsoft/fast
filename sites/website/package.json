@@ -10,9 +10,9 @@
     "build": "yarn build-homepage && yarn prepare-docs && docusaurus build"
   },
   "dependencies": {
-    "@docusaurus/core": "2.0.0-alpha.48",
-    "@docusaurus/preset-classic": "2.0.0-alpha.48",
-    "@docusaurus/theme-live-codeblock": "2.0.0-alpha.39",
+    "@docusaurus/core": "2.0.0-alpha.58",
+    "@docusaurus/preset-classic": "2.0.0-alpha.58",
+    "@docusaurus/theme-live-codeblock": "2.0.0-alpha.58",
     "classnames": "^2.2.6",
     "copyfiles": "^2.3.0",
     "react": "^16.8.4",
@@ -31,6 +31,6 @@
     ]
   },
   "devDependencies": {
-    "@microsoft/api-documenter": "^7.7.20"
+    "@microsoft/api-documenter": "7.8.13"
   }
 }

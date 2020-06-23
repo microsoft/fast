@@ -20,7 +20,7 @@ The `fast-card` component is a visual container without semantics that takes chi
 </fast-design-system-provider>
 ```
 
-## Applying Custom Styles
+## Applying custom styles
 
 ```ts
 import { customElement } from "@microsoft/fast-element";

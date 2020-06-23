@@ -208,7 +208,7 @@ export class Tabs extends FASTElement {
     }
 
     private handleTabClick = (event: MouseEvent): void => {
-        const selectedTab = event.target as HTMLElement;
+        const selectedTab = event.currentTarget as HTMLElement;
         this.prevActiveTabIndex = this.activeTabIndex;
         this.activeTabIndex = Array.from(this.tabs).indexOf(selectedTab);
         if (selectedTab.nodeType === 1) {

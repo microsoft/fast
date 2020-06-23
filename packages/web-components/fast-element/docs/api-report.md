@@ -184,10 +184,10 @@ export class Controller extends PropertyChangeNotifier {
     readonly view: ElementView | null;
 }
 
-// Warning: (ae-forgotten-export) The symbol "InjectableStyles" needs to be exported by the entry point index.d.ts
+// Warning: (ae-forgotten-export) The symbol "ComposableStyles" needs to be exported by the entry point index.d.ts
 //
 // @public
-export function css(strings: TemplateStringsArray, ...values: InjectableStyles[]): ElementStyles;
+export function css(strings: TemplateStringsArray, ...values: ComposableStyles[]): ElementStyles;
 
 // @public
 export function customElement(nameOrDef: string | PartialFASTElementDefinition): (type: Function) => void;
@@ -234,7 +234,7 @@ export abstract class ElementStyles {
     // @internal (undocumented)
     abstract removeStylesFrom(target: StyleTarget): void;
     // @internal (undocumented)
-    abstract readonly styles: ReadonlyArray<InjectableStyles>;
+    abstract readonly styles: ReadonlyArray<ComposableStyles>;
     withBehaviors(...behaviors: Behavior[]): this;
     withKey(key: string): this;
 }
@@ -288,7 +288,7 @@ export const FASTElement: (new () => HTMLElement & FASTElement) & {
 
 // @public
 export class FASTElementDefinition {
-    constructor(name: string, attributes: ReadonlyArray<AttributeDefinition>, propertyLookup: Record<string, AttributeDefinition>, attributeLookup: Record<string, AttributeDefinition>, template?: ElementViewTemplate, styles?: ElementStyles, shadowOptions?: ShadowRootInit, elementOptions?: ElementDefinitionOptions);
+    constructor(name: string, attributes: ReadonlyArray<AttributeDefinition>, propertyLookup: Record<string, AttributeDefinition>, attributeLookup: Record<string, AttributeDefinition>, template?: ElementViewTemplate, styles?: ComposableStyles, shadowOptions?: ShadowRootInit, elementOptions?: ElementDefinitionOptions);
     readonly attributeLookup: Record<string, AttributeDefinition>;
     readonly attributes: ReadonlyArray<AttributeDefinition>;
     readonly elementOptions?: ElementDefinitionOptions;
@@ -356,7 +356,7 @@ export interface PartialFASTElementDefinition {
     readonly elementOptions?: ElementDefinitionOptions;
     readonly name: string;
     readonly shadowOptions?: Partial<ShadowRootInit> | null;
-    readonly styles?: ElementStyles;
+    readonly styles?: ComposableStyles;
     readonly template?: ElementViewTemplate;
 }
 

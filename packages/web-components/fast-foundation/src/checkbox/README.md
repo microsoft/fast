@@ -21,7 +21,7 @@ An implementation of a [checkbox](https://developer.mozilla.org/en-US/docs/Web/H
 </fast-design-system-provider>
 ```
 
-## Applying Custom Styles
+## Applying custom styles
 
 ```ts
 import { customElement } from "@microsoft/fast-element";

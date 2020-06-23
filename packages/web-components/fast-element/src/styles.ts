@@ -38,7 +38,7 @@ const styleLookup = new Map<string, ElementStyles>();
  */
 export abstract class ElementStyles {
     /** @internal */
-    public abstract readonly styles: ReadonlyArray<InjectableStyles>;
+    public abstract readonly styles: ReadonlyArray<ComposableStyles>;
 
     /** @internal */
     public abstract readonly behaviors: ReadonlyArray<Behavior> | null = null;
@@ -78,22 +78,29 @@ export abstract class ElementStyles {
     }
 }
 
-type InjectableStyles = string | ElementStyles;
-type ElementStyleFactory = (styles: ReadonlyArray<InjectableStyles>) => ElementStyles;
+/**
+ * Represents styles that can be composed into the ShadowDOM of a custom element.
+ * @public
+ */
+export type ComposableStyles = string | ElementStyles | CSSStyleSheet;
 
-function reduceStyles(styles: ReadonlyArray<InjectableStyles>): string[] {
+type ElementStyleFactory = (styles: ReadonlyArray<ComposableStyles>) => ElementStyles;
+
+function reduceStyles(
+    styles: ReadonlyArray<ComposableStyles>
+): (string | CSSStyleSheet)[] {
     return styles
-        .map((x: InjectableStyles) =>
+        .map((x: ComposableStyles) =>
             x instanceof ElementStyles ? reduceStyles(x.styles) : [x]
         )
         .reduce((prev: string[], curr: string[]) => prev.concat(curr), []);
 }
 
 function reduceBehaviors(
-    styles: ReadonlyArray<InjectableStyles>
+    styles: ReadonlyArray<ComposableStyles>
 ): ReadonlyArray<Behavior> | null {
     return styles
-        .map((x: InjectableStyles) => (x instanceof ElementStyles ? x.behaviors : null))
+        .map((x: ComposableStyles) => (x instanceof ElementStyles ? x.behaviors : null))
         .reduce((prev: Behavior[] | null, curr: Behavior[] | null) => {
             if (curr === null) {
                 return prev;
@@ -118,12 +125,16 @@ export class AdoptedStyleSheetsStyles extends ElementStyles {
     public readonly behaviors: ReadonlyArray<Behavior> | null = null;
 
     public constructor(
-        public styles: InjectableStyles[],
+        public styles: ComposableStyles[],
         styleSheetCache: Map<string, CSSStyleSheet>
     ) {
         super();
         this.behaviors = reduceBehaviors(styles);
-        this.styleSheets = reduceStyles(styles).map((x: string) => {
+        this.styleSheets = reduceStyles(styles).map((x: string | CSSStyleSheet) => {
+            if (x instanceof CSSStyleSheet) {
+                return x;
+            }
+
             let sheet = styleSheetCache.get(x);
 
             if (sheet === void 0) {
@@ -159,10 +170,10 @@ class StyleElementStyles extends ElementStyles {
     private readonly styleClass: string;
     public readonly behaviors: ReadonlyArray<Behavior> | null = null;
 
-    public constructor(public styles: InjectableStyles[]) {
+    public constructor(public styles: ComposableStyles[]) {
         super();
         this.behaviors = reduceBehaviors(styles);
-        this.styleSheets = reduceStyles(styles);
+        this.styleSheets = reduceStyles(styles) as string[];
         this.styleClass = getNextStyleClass();
     }
 
@@ -193,11 +204,11 @@ class StyleElementStyles extends ElementStyles {
 const createStyles: ElementStyleFactory = (() => {
     if (DOM.supportsAdoptedStyleSheets) {
         const styleSheetCache = new Map();
-        return (styles: InjectableStyles[]) =>
+        return (styles: ComposableStyles[]) =>
             new AdoptedStyleSheetsStyles(styles, styleSheetCache);
     }
 
-    return (styles: InjectableStyles[]) => new StyleElementStyles(styles);
+    return (styles: ComposableStyles[]) => new StyleElementStyles(styles);
 })();
 /* eslint-enable @typescript-eslint/explicit-function-return-type */
 
@@ -211,16 +222,16 @@ const createStyles: ElementStyleFactory = (() => {
  */
 export function css(
     strings: TemplateStringsArray,
-    ...values: InjectableStyles[]
+    ...values: ComposableStyles[]
 ): ElementStyles {
-    const styles: InjectableStyles[] = [];
+    const styles: ComposableStyles[] = [];
     let cssString = "";
 
     for (let i = 0, ii = strings.length - 1; i < ii; ++i) {
         cssString += strings[i];
         const value = values[i];
 
-        if (value instanceof ElementStyles) {
+        if (value instanceof ElementStyles || value instanceof CSSStyleSheet) {
             if (cssString.trim() !== "") {
                 styles.push(cssString);
                 cssString = "";
