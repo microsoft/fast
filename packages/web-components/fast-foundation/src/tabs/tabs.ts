@@ -45,6 +45,12 @@ export class Tabs extends FASTElement {
      */
     @attr
     public activeid: string;
+    public activeidChanged(): void {
+        if (this.tabIds) {
+            this.activeTabIndex = this.tabIds.indexOf(this.activeid);
+            this.setComponent();
+        }
+    }
 
     /**
      * @internal
