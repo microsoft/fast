@@ -84,6 +84,7 @@ module.exports = {
             label: "API Reference",
             items: [
                 "api/fast-animation",
+                "api/fast-colors",
                 "api/fast-element",
                 "api/fast-foundation",
                 "api/fast-components",

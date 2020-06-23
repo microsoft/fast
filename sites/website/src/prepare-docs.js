@@ -30,6 +30,7 @@ function findFiles(startPath, filter, paths = []) {
 
 const packages = [
     "fast-animation",
+    "fast-colors",
     "fast-element",
     "fast-foundation",
     "fast-components",

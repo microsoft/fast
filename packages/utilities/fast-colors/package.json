@@ -18,9 +18,11 @@
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {
-    "build": "tsc -p ./tsconfig.build.json",
+    "build": "tsc -p ./tsconfig.build.json && ",
     "clean:dist": "node ../../../build/clean.js dist",
     "coverage": "jest --coverage",
+    "doc": "api-extractor run --local",
+    "doc:ci": "api-extractor run",
     "prepare": "yarn clean:dist && yarn build",
     "prettier": "prettier --config ../../../.prettierrc --write \"**/*.ts\"",
     "prettier:diff": "prettier --config ../../../.prettierrc \"**/*.ts\" --list-different",
