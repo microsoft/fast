@@ -15,7 +15,7 @@ An implementation of an [HTML textarea element](https://developer.mozilla.org/en
 </fast-design-system-provider>
 ```
 
-## Applying Custom Styles
+## Applying custom styles
 
 ```ts
 import { customElement } from "@microsoft/fast-element";

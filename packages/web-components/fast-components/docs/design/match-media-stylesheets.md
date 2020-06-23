@@ -6,7 +6,8 @@ custom_edit_url: https://github.com/microsoft/fast-dna/edit/master/packages/web-
 
 FAST exposes a mechanism to attach stylesheets conditionally based on a [MatchMedia](https://developer.mozilla.org/en-US/docs/Web/API/Window/matchMedia) query.
 
-### MatchMedia Stylesheets
+### MatchMedia stylesheets
+
 `matchMediaStylesheetBehaviorFactory` can be used to construct a Behavior that will conditionally attach stylesheets based on the `matches` property of a [MediaQueryList](https://developer.mozilla.org/en-US/docs/Web/API/MediaQueryList).
 
 __Example: Using the `matchMediaStylesheetBehaviorFactory`__
@@ -25,7 +26,8 @@ const styles = css`
 )
 ```
 
-### Forced-colors Stylesheets
+### Forced-colors stylesheets
+
 FAST has a commitment to facilitating accessible web experiences and [forced-colors](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors) support is a core tenant of that commitment. `@microsoft/fast-components` exports the `forcedColorsStylesheetBehavior` utility to provide a simple mechanism to apply forced-color stylesheets without bloating the component stylesheet in non-forced-color environments. This Behavior is built using [MatchMedia Stylesheets](#matchmedia-stylesheets).
 
 __Example: Forced-colors stylesheets__

@@ -15,7 +15,7 @@ An implementation of a [radio](https://developer.mozilla.org/en-US/docs/Web/HTML
 </fast-design-system-provider>
  ```
 
-## Applying Custom Styles
+## Applying custom styles
 
 ```ts
 import { customElement } from "@microsoft/fast-element";

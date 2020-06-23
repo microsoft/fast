@@ -31,7 +31,7 @@ fast-badge {
 In addition to the color map support detailed above, the `fast-badge` from the Microsoft component implementation (`@microsoft/fast-components-msft`) includes an attribute to set default appearances which ensure WCAG 2.1 AA contrast requirements.
 :::
 
-## Applying Custom Styles
+## Applying custom styles
 
 ```ts
 import { customElement } from "@microsoft/fast-element";
