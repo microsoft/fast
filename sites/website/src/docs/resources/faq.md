@@ -19,7 +19,7 @@ Fluent is Microsoft's design language, independent of any particular implementat
 
 ### What's the difference between FAST and Fluent UI?
 
-Fluent UI refers to a particular implementation of the Fluent Design language, implemented natively in React. FAST is a tech stack that enables implementing components, design systems, and apps (see "What's the difference between FAST and Fluent"). The FAST team provides an implementation of Fluent, built with web components, via its `fast-components-msft` package.
+Fluent UI refers to a particular implementation of the Fluent Design language, implemented natively in React. FAST is a tech stack that enables implementing components, design systems, and apps (see "What's the difference between FAST and Fluent?"). The FAST team provides an implementation of Fluent, built with web components, via its `fast-components-msft` package.
 
 #### How does `fast-element` compare to "Framework X"?
 
