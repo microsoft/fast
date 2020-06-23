@@ -1,3 +1,7 @@
+/**
+ * Describes the animation properties
+ * @public
+ */
 export interface AnimateConfig {
     /**
      * The x position change of the animation
@@ -92,6 +96,26 @@ export interface PropertyMap {
     right: string[];
 }
 
+/**
+ *
+ */
+export interface Animation {
+    options: AnimateConfig;
+    effectTiming: EffectTiming;
+    keyframes: Keyframe[];
+    keyframeEffect: KeyframeEffect;
+    play: () => void;
+    pause: () => void;
+    finish: () => void;
+    reverse: () => void;
+    addKeyframes: (keyframes: Array<Partial<Keyframe>>) => void;
+    onCancel?: () => void;
+    onFinish?: () => void;
+}
+
+/**
+ * Base animate type
+ */
 export default abstract class Animate {
     /**
      * A mapping between animation options and the css property names they apply to

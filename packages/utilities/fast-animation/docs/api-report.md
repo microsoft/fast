@@ -5,16 +5,17 @@
 ```ts
 
 // Warning: (ae-forgotten-export) The symbol "Animate" needs to be exported by the entry point index.d.ts
+// Warning: (ae-unresolved-inheritdoc-reference) The @inheritDoc reference could not be resolved: The package "@microsoft/fast-animation" does not have an export "Animate"
 //
 // @public (undocumented)
-export class extends Animate {
+export class AnimateFrom extends Animate {
     // Warning: (ae-forgotten-export) The symbol "AnimationMode" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
     protected mode: AnimationMode;
 }
 
-// @public (undocumented)
+// @public
 export class AnimateGroup {
     constructor(animations: Array<AnimateTo | AnimateFrom>);
     cancel: () => void;
@@ -25,7 +26,7 @@ export class AnimateGroup {
     reverse(): void;
 }
 
-// @public (undocumented)
+// @public
 export class AnimateSequence {
     constructor(animations: Array<AnimateTo | AnimateFrom>);
     cancel: () => void;
@@ -36,14 +37,14 @@ export class AnimateSequence {
     reverse: () => void;
 }
 
-// @public (undocumented)
-export class extends Animate {
+// @public
+export class AnimateTo extends Animate {
     // (undocumented)
     protected mode: AnimationMode;
 }
 
-// @public (undocumented)
-export function cubicBezier(name: string): string;
+// @public
+export function cubicBezier(name: "linear" | "easeOut" | "easeOutSmooth" | "easeIn" | "drillIn" | "backToApp" | "appToApp" | "fastIn" | "fastOut" | "fastInOut" | "exponential" | "fastInFortySevenPercent" | "exponentialReversed" | "navPane" | /* @deprecated */ string): string;
 
 // @public
 export function fadeIn(element: HTMLElement, effectTiming?: EffectTiming): AnimateTo;
