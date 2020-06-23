@@ -216,6 +216,19 @@ class LinkedDataControl extends React.Component<
             e.preventDefault();
 
             this.addLinkedData(e.currentTarget.value);
+
+            /**
+             * Adding items to the linked data causes the items to
+             * move the input down while the datalist remains in the same location,
+             * to prevent the datalist from overlapping the input
+             * the datalist is dismissed by defocusing and refocusing the input
+             */
+            (e.target as HTMLElement).blur();
+            (e.target as HTMLElement).focus();
+
+            this.setState({
+                searchTerm: "",
+            });
         }
     };
 
@@ -234,8 +247,6 @@ class LinkedDataControl extends React.Component<
         this.setState({
             searchTerm: e.target.value,
         });
-
-        this.addLinkedData(e.currentTarget.value);
     };
 
     private addLinkedData(value: string): void {
