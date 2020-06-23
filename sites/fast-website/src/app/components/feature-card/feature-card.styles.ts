@@ -1,5 +1,6 @@
 import { css } from "@microsoft/fast-element";
 import { display } from "@microsoft/fast-foundation";
+import { neutralDividerRestBehavior } from "@microsoft/fast-components";
 
 export const FeatureCardStyles = css`
     ${display("grid")} :host {
@@ -18,7 +19,7 @@ export const FeatureCardStyles = css`
     :host::before {
         content: "";
         display: block;
-        background-color: currentColor;
+        background-color: ${neutralDividerRestBehavior.var};
         position: absolute;
         height: 1px;
         width: calc(100% - (var(--design-unit) * 10px));
@@ -68,4 +69,4 @@ export const FeatureCardStyles = css`
             max-width: 600px;
         }
     }
-`;
+`.withBehaviors(neutralDividerRestBehavior);
