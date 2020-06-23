@@ -8,14 +8,10 @@ import { highContrastBorder } from "../utilities/high-contrast";
 
 const styles: ComponentStyles<FlyoutClassNameContract, DesignSystem> = {
     flyout: {
-        display: "none",
         background: backgroundColor,
         ...applyFloatingCornerRadius(),
         ...applyElevation(ElevationMultiplier.e14),
         "z-index": "1",
-        '&[aria-hidden="false"]': {
-            display: "block",
-        },
         ...highContrastBorder,
     },
     flyout__top: {},
