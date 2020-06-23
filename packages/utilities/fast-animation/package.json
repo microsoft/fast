@@ -16,7 +16,7 @@
   },
   "main": "dist/index.js",
   "scripts": {
-    "build": "tsc -p ./lib/tsconfig.json",
+    "build": "tsc -p ./lib/tsconfig.json && yarn doc",
     "build:app": "webpack --mode=production",
     "coverage": "jest --coverage",
     "doc": "api-extractor run --local",
@@ -25,7 +25,7 @@
     "prettier": "prettier --config ../../../.prettierrc --write \"**/*.{ts,tsx}\"",
     "prettier:diff": "prettier --config ../../../.prettierrc \"**/*.{ts,tsx}\" --list-different",
     "start": "node_modules/.bin/webpack-dev-server --progress",
-    "test": "yarn unit-tests && yarn build:app",
+    "test": "yarn unit-tests && yarn build:app && yarn doc:ci",
     "eslint": "eslint . --ext .ts,.tsx",
     "eslint:fix": "eslint . --ext .ts,.tsx --fix",
     "unit-tests": "jest --runInBand",
