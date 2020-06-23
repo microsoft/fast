@@ -41,7 +41,7 @@ export interface AnimateConfig {
     /**
      * The scale factor of the animation
      */
-    scale?: ScaleFactor;
+    scale?: number | [number, number];
 
     /**
      * The opacity after the animation
@@ -61,6 +61,7 @@ export interface AnimateConfig {
 
 /**
  * Enumerates all properties that can be animated, outside of properties supplied directly via Animate.addKeyframes()
+ * @public
  */
 export interface AnimationProperties {
     top?: string;
@@ -72,12 +73,9 @@ export interface AnimationProperties {
 }
 
 /**
- * Scale factor is either a single number that scales both x and y dependently, or two numbers that scale x and y respectively
- */
-export type ScaleFactor = number | [number, number];
-
-/**
  * Animation mode describes if an animation should animate toward an elements natural position or away from it
+ *
+ * @internal
  */
 export enum AnimationMode {
     animateTo,
@@ -87,7 +85,7 @@ export enum AnimationMode {
 /**
  * Maps css property names to animation options
  */
-export interface PropertyMap {
+interface PropertyMap {
     opacity: string[];
     transform: string[];
     top: string[];
@@ -97,24 +95,9 @@ export interface PropertyMap {
 }
 
 /**
+ * Base animate type. This is extended by {@link @microsoft/fast-animation#AnimateTo} and {@link @microsoft/fast-animation#AnimateFrom}.
  *
- */
-export interface Animation {
-    options: AnimateConfig;
-    effectTiming: EffectTiming;
-    keyframes: Keyframe[];
-    keyframeEffect: KeyframeEffect;
-    play: () => void;
-    pause: () => void;
-    finish: () => void;
-    reverse: () => void;
-    addKeyframes: (keyframes: Array<Partial<Keyframe>>) => void;
-    onCancel?: () => void;
-    onFinish?: () => void;
-}
-
-/**
- * Base animate type
+ * @public
  */
 export default abstract class Animate {
     /**

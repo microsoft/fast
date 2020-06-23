@@ -4,13 +4,29 @@
 
 ```ts
 
-// Warning: (ae-forgotten-export) The symbol "Animate" needs to be exported by the entry point index.d.ts
-// Warning: (ae-unresolved-inheritdoc-reference) The @inheritDoc reference could not be resolved: The package "@microsoft/fast-animation" does not have an export "Animate"
-//
-// @public (undocumented)
-export class AnimateFrom extends Animate {
+// @public
+export abstract class Animate {
+    constructor(element: HTMLElement, options?: AnimateConfig, effectTiming?: EffectTiming);
+    addKeyframes: (keyframes: Partial<Keyframe>[]) => void;
+    cancel: () => void;
+    effectTiming: EffectTiming;
+    finish: () => void;
+    readonly keyframeEffect: KeyframeEffect;
+    readonly keyframes: Keyframe[];
     // Warning: (ae-forgotten-export) The symbol "AnimationMode" needs to be exported by the entry point index.d.ts
-    //
+    protected mode: AnimationMode;
+    onCancel: () => void;
+    // (undocumented)
+    onFinish: () => void;
+    // Warning: (ae-forgotten-export) The symbol "AnimateConfig" needs to be exported by the entry point index.d.ts
+    options: AnimateConfig;
+    pause: () => void;
+    play: () => void;
+    reverse: () => void;
+    }
+
+// @public
+export class AnimateFrom extends Animate {
     // (undocumented)
     protected mode: AnimationMode;
 }
