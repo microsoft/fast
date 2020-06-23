@@ -208,7 +208,7 @@ export class Tabs extends FASTElement {
     }
 
     private handleTabClick = (event: MouseEvent): void => {
-        const selectedTab = event.target as HTMLElement;
+        const selectedTab = event.currentTarget as HTMLElement;
         this.prevActiveTabIndex = this.activeTabIndex;
         this.activeTabIndex = Array.from(this.tabs).indexOf(selectedTab);
         if (selectedTab.nodeType === 1) {
@@ -327,7 +327,10 @@ export class Tabs extends FASTElement {
 }
 
 /**
- * @public
+ * Mark internal because exporting class and interface of the same name
+ * confuses API documenter.
+ * TODO: https://github.com/microsoft/fast-dna/issues/3317
+ * @internal
  */
 /* eslint-disable-next-line */
 export interface Tabs extends StartEnd {}

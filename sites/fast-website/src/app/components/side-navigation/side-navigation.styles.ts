@@ -36,19 +36,19 @@ export const SideNavigationStyles = css`
     .scroll-indicator {
         height: var(--design-unit-large);
         width: calc(var(--design-unit) * 1px);
-        background-color: var(--neutral-foreground-rest);
+        background-color: ${neutralForegroundRestBehavior.var};
         border-radius: calc(var(--corner-radius) * 1px);
         margin: 0 var(--design-unit-large);
     }
 
     a:hover .scroll-indicator {
         height: var(--engaged-height);
-        background-color: var(--accent-foreground-hover);
+        background-color: ${accentForegroundHoverBehavior.var};
     }
 
     .scroll-indicator-active {
         height: var(--engaged-height);
-        background-color: var(--accent-foreground-active);
+        background-color: ${accentForegroundActiveBehavior.var};
     }
 `.withBehaviors(
     accentForegroundActiveBehavior,

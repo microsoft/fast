@@ -2,7 +2,7 @@
 id: aurelia
 title: Aurelia
 sidebar_label: Aurelia
-custom_edit_url: https://github.com/microsoft/fast-dna/edit/master/packages/web-components/fast-foundation/docs/guide/aurelia.doc.md
+custom_edit_url: https://github.com/microsoft/fast-dna/edit/master/packages/web-components/fast-foundation/docs/integrations/aurelia.md
 ---
 
 FAST works flawlessly with both Aurelia 1 and Aurelia 2, with full integration into the binding engine and component model. Let's take a look at how you can set up an Aurelia project, starting from scratch.
@@ -31,7 +31,7 @@ Next, we'll install the FAST packages, along with supporting libraries. To do th
 npm install --save @microsoft/fast-components @microsoft/fast-element lodash-es
 ```
 
-## Using the Components
+### Using the Components
 
 With all the basic pieces in place, let's run our app in dev mode with `npm start`. Webpack should build your project and open your default browser with your `index.html` page. Right now, it should only have a hello message, since we haven't added any code or interesting HTML. Let's change that.
 
@@ -44,6 +44,10 @@ import {
   FASTButton 
 } from '@microsoft/fast-components';
 
+/*
+ * Ensure that tree-shaking doesn't remove these components from the bundle.
+ * There are multiple ways to prevent tree shaking, of which this is one.
+ */
 FASTDesignSystemProvider;
 FASTCard;
 FASTButton;
@@ -127,7 +131,7 @@ Next, we'll install the FAST packages, along with supporting libraries. To do th
 npm install --save @microsoft/fast-components @microsoft/fast-element lodash-es
 ```
 
-## Using the Components
+### Using the Components
 
 With all the basic pieces in place, let's run our app in dev mode with `npm start`. Webpack should build your project and make it available at `http://localhost:8080/`. If you visit this address it should only have a hello message, since we haven't added any code or interesting HTML. Let's change that.
 
@@ -140,6 +144,10 @@ import {
   FASTButton 
 } from '@microsoft/fast-components';
 
+/*
+ * Ensure that tree-shaking doesn't remove these components from the bundle.
+ * There are multiple ways to prevent tree shaking, of which this is one.
+ */
 FASTDesignSystemProvider;
 FASTCard;
 FASTButton;

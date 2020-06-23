@@ -31,8 +31,6 @@ import {
     ActionToggleAppearance,
     ActionToggleProps,
     Background,
-    Heading,
-    HeadingSize,
     Pivot,
     Select,
     SelectOption,
@@ -50,6 +48,7 @@ import FASTMessageSystemWorker from "@microsoft/fast-tooling/dist/message-system
 import {
     DirectionSwitch,
     downChevron,
+    Logo,
     ThemeSelector,
     TransparencyToggle,
     upChevron,
@@ -65,7 +64,8 @@ import {
     ExplorerUnhandledProps,
 } from "./explorer.props";
 import { previewReady } from "./preview";
-
+/* eslint-disable-next-line @typescript-eslint/no-var-requires */
+const FASTInlineLogo = require("@microsoft/site-utilities/statics/assets/fast-inline-logo.png");
 export const previewBackgroundTransparency: string = "PREVIEW::TRANSPARENCY";
 export const previewDirection: string = "PREVIEW::DIRECTION";
 export const previewTheme: string = "PREVIEW::THEME";
@@ -173,19 +173,11 @@ class Explorer extends Foundation<
                 <Container>
                     <Row style={{ flex: "1" }}>
                         <Pane resizable={true} resizeFrom={PaneResizeDirection.east}>
-                            <Background
-                                value={"#1B1B1B"}
-                                drawBackground={true}
-                                style={{
-                                    display: "flex",
-                                    height: "32px",
-                                    alignItems: "center",
-                                    justifyContent: "space-between",
-                                    padding: "0 8px",
-                                }}
-                            >
-                                <Heading size={HeadingSize._6}>FAST Explorer</Heading>
-                            </Background>
+                            <Logo
+                                backgroundColor={"#1B1B1B"}
+                                logo={FASTInlineLogo}
+                                title={"Component Explorer"}
+                            />
                             <NavigationMenu
                                 menu={menu}
                                 expanded={true}
@@ -200,7 +192,7 @@ class Explorer extends Foundation<
                                 flexDirection: "column",
                             }}
                         >
-                            <Row style={{ overflow: "visible", zIndex: 1 }}>
+                            <Row style={{ overflow: "visible", zIndex: 1 }} height={46}>
                                 <Background
                                     value={neutralLayerL2}
                                     drawBackground={true}
@@ -389,6 +381,37 @@ class Explorer extends Foundation<
                     );
                 },
                 id: "guidance",
+            },
+            {
+                tab: (className: string): React.ReactNode => {
+                    return (
+                        <Typography
+                            className={className}
+                            size={TypographySize._8}
+                            onClick={this.handleDevToolsTabTriggerClick}
+                        >
+                            Definition
+                        </Typography>
+                    );
+                },
+                content: (className: string): React.ReactNode => {
+                    if (typeof this.state.componentConfig.definition !== "undefined") {
+                        return (
+                            <div className={className}>
+                                <pre>
+                                    {JSON.stringify(
+                                        this.state.componentConfig.definition,
+                                        null,
+                                        2
+                                    )}
+                                </pre>
+                            </div>
+                        );
+                    }
+
+                    return null;
+                },
+                id: "definition",
             },
             {
                 tab: (className: string): React.ReactNode => {

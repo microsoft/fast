@@ -1,5 +1,4 @@
 import { css } from "@microsoft/fast-element";
-import { neutralForegroundRestBehavior } from "@microsoft/fast-components";
 import { display } from "@microsoft/fast-foundation";
 
 export const FeatureCardStyles = css`
@@ -20,6 +19,7 @@ export const FeatureCardStyles = css`
         content: "";
         display: block;
         background-color: currentColor;
+        opacity: 0.5;
         position: absolute;
         height: 1px;
         width: calc(100% - (var(--design-unit) * 10px));
@@ -69,4 +69,4 @@ export const FeatureCardStyles = css`
             max-width: 600px;
         }
     }
-`.withBehaviors(neutralForegroundRestBehavior);
+`;

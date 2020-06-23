@@ -15,6 +15,7 @@ export const ContentPlacementStyles = css`
         content: "";
         display: block;
         background-color: currentColor;
+        opacity: 0.5;
         position: absolute;
     }
 
@@ -48,6 +49,7 @@ export const ContentPlacementStyles = css`
 
     fast-card ::slotted([slot="action"]) {
         margin-top: calc(var(--design-unit) * 2px);
+        align-self: start;
     }
 
     fast-card:hover .contentPlacement_icon,

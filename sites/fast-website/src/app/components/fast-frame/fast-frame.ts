@@ -41,6 +41,8 @@ export class FastFrame extends FASTElement {
 
     private darkPallette: string[] = this.previewBackgroundPalette;
 
+    private mql: MediaQueryList = window.matchMedia(`(max-width: ${drawerBreakpoint})`);
+
     @observable
     public lastSelectedIndex: number = 0;
 
@@ -72,7 +74,10 @@ export class FastFrame extends FASTElement {
     public lightness: number;
 
     @observable
-    public expanded: boolean;
+    public expanded: boolean = false;
+
+    @observable
+    public isMobile: boolean = this.mql.matches;
 
     public accentChangeHandler = (e: CustomEvent): void => {
         if (e.target instanceof SiteColorSwatch) {
@@ -170,9 +175,12 @@ export class FastFrame extends FASTElement {
         this.backgroundColor = this.previewBackgroundPalette[this.lastSelectedIndex];
     };
 
-    private resetExpanded = (): void => {
+    private resetExpandedResponsive = (e): void => {
         this.expanded = false;
+        this.isMobile = e.matches;
     };
+
+    public setTabIndex = (): string => (!this.expanded && this.isMobile ? "-1" : "0");
 
     constructor() {
         super();
@@ -182,8 +190,6 @@ export class FastFrame extends FASTElement {
         this.saturation = accentColorHSL.s;
         this.lightness = accentColorHSL.l;
 
-        window
-            .matchMedia(`(max-width: ${drawerBreakpoint})`)
-            .addListener(this.resetExpanded);
+        this.mql.addListener(this.resetExpandedResponsive);
     }
 }

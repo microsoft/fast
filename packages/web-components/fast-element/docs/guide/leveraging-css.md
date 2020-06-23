@@ -2,7 +2,7 @@
 id: leveraging-css
 title: Leveraging CSS
 sidebar_label: Leveraging CSS
-custom_edit_url: https://github.com/microsoft/fast-dna/edit/master/packages/web-components/fast-element/docs/guide/leveraging-css.doc.md
+custom_edit_url: https://github.com/microsoft/fast-dna/edit/master/packages/web-components/fast-element/docs/guide/leveraging-css.md
 ---
 
 ## Basic Styles
@@ -124,6 +124,10 @@ const styles = css`
 
 Rather than simply concatenating CSS strings, the `css` helper understands that `normalize` is `ElementStyles` and is able to re-use the same Constructable StyleSheet instance as any other component that uses `normalize`. 
 
+:::note
+You can also pass a CSS string or a [CSSStyleSheet](https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleSheet) instance directly to the element definition, without needing to use the `css` helper and it will automatically be converted into `ElementStyles`. The advantage of using the `css` helper is that it enables the rich composition and reuse of styles described above, with automatic runtime caching for memory efficiency and performance.
+:::
+
 ## Shadow DOM Styling
 
 You may have noticed the `:host` selector we used in our `name-tag` styles. This selector allows us to apply styles directly to our custom element. Here are a few things to consider always configuring for your host element:
@@ -158,4 +162,18 @@ const styles = css`
 
 :::note
 Both slotted and host styles can be overriden by the element user. Think of these as the *default* styles that you are providing, so that your elements look and function correctly out-of-the-box.
+:::
+
+## Hiding Undefined Elements
+
+Custom Elements that have not been [upgraded](https://developers.google.com/web/fundamentals/web-components/customelements#upgrades) and don't have styles attached can still be rendered by the browser but they likely do not look how they are supposed to. To avoid a *flash of un-styled content* (FOUC), visually hide Custom Elements if they have not been *defined*:
+
+```CSS
+:not(:defined) {
+  visibility: hidden;
+}
+```
+
+:::important
+The consuming application must apply this, as the components themselves do not.
 :::

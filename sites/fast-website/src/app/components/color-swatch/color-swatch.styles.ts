@@ -2,6 +2,7 @@ import { css } from "@microsoft/fast-element";
 import {
     neutralFillInputHoverBehavior,
     neutralFillInputRestBehavior,
+    neutralFocusBehavior,
     neutralOutlineHoverBehavior,
     neutralOutlineRestBehavior,
 } from "@microsoft/fast-components";
@@ -38,18 +39,18 @@ ${display("inline-flex")} :host {
     height: calc(var(--input-size) * 1px);
     box-sizing: border-box;
     border-radius: calc(var(--corner-radius) * 1px);
-    border: calc(var(--outline-width) * 1px) solid var(--neutral-outline-rest);
+    border: calc(var(--outline-width) * 1px) solid ${neutralOutlineRestBehavior.var};
     outline: none;
     cursor: pointer;
 }
 
-.label__hidden {
+.label-hidden {
     display: none;
 }
 
 .label {
     font-family: var(--body-font);
-    color: var(--neutral-foreground-rest);
+    color: ${neutralForegroundRestBehavior.var};
     ${
         /* Need to discuss with Brian how HorizontalSpacingNumber can work. https://github.com/microsoft/fast-dna/issues/2766 */ ""
     } padding-inline-start: calc(var(--design-unit) * 2px + 2px);
@@ -69,18 +70,18 @@ ${display("inline-flex")} :host {
     border-radius: calc(var(--corner-radius) * 1px);
     display: inline-block;
     flex-shrink: 0;
-    border: 1px solid var(--neutral-foreground-rest);
+    border: 1px solid ${neutralForegroundRestBehavior.var};
     opacity: 0;
     pointer-events: none;
 }
 
 .control:hover {
-    border-color: var(--neutral-outline-hover);
+    border-color: ${neutralOutlineHoverBehavior.var};
 }
 
 :host(:${focusVisible}) .control {
-    box-shadow: 0 0 0 1px var(--neutral-focus) inset;
-    border-color: var(--neutral-focus);
+    box-shadow: 0 0 0 1px ${neutralFocusBehavior.var} inset;
+    border-color: ${neutralFocusBehavior.var};
 }
 
 :host(.disabled) .label,

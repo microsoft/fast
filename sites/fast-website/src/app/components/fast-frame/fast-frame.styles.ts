@@ -14,7 +14,7 @@ export const FastFrameStyles = css`
     ${display("block")} :host {
         flex-direction: column;
         font-family: var(--body-font);
-        color: var(--neutral-foreground-rest);
+        color: ${neutralForegroundRestBehavior.var};
         box-sizing: border-box;
         text-align: center;
         width: 100%;
@@ -44,7 +44,7 @@ export const FastFrameStyles = css`
         flex-direction: column;
         width: 100%;
         text-align: start;
-        background: var(--neutral-fill-card-rest);
+        background: ${neutralFillCardRestBehavior.var};
         padding: calc(var(--gutter) * 2px);
     }
 
@@ -69,8 +69,8 @@ export const FastFrameStyles = css`
 
     .content h1 {
         font-size: var(--type-ramp-minus-1-font-size);
-        line-height: var(--type-ramp-base-line-height);
-        color: var(--neutral-foreground-hint);
+        line-height: var(--type-ramp-minus-1-line-height);
+        color: ${neutralForegroundHintBehavior.var};
         margin: 0;
         margin-bottom: 15px;
         font-weight: bold;
@@ -78,7 +78,7 @@ export const FastFrameStyles = css`
     }
 
     .content-heading-highlight {
-        color: var(--accent-foreground-rest);
+        color: ${accentForegroundRestBehavior.var};
     }
 
     .content h2 {
@@ -94,7 +94,7 @@ export const FastFrameStyles = css`
         grid-gap: calc(var(--gutter) * 2px);
         grid-template-columns: auto 300px;
         padding: calc(var(--gutter) * 2px);
-        background: var(--neutral-fill-card-rest);
+        background: ${neutralFillCardRestBehavior.var};
         position: relative;
         border-radius: 0 calc(var(--corner-radius) * 1px) calc(var(--corner-radius) * 1px) 0;
     }
@@ -112,7 +112,7 @@ export const FastFrameStyles = css`
         flex-direction: column;
         padding: calc(var(--gutter) * 1px);
         text-align: start;
-        color: var(--neutral-foreground-rest);
+        color: ${neutralForegroundRestBehavior.var};
     }
 
     .badge {
@@ -150,7 +150,7 @@ export const FastFrameStyles = css`
         display: grid;
         grid-template-columns: auto 1fr;
         text-align: start;
-        color: var(--neutral-foreground-rest);
+        color: ${neutralForegroundRestBehavior.var};
     }
 
     .checkbox {
@@ -183,7 +183,7 @@ export const FastFrameStyles = css`
     .sample-control-icon {
         width: 21px;
         height: 21px;
-        background-color: var(--accent-fill-rest);
+        background-color: ${accentFillRestBehavior.var};
         border-radius: calc(var(--corner-radius) * 1px);
     }
 
@@ -235,8 +235,8 @@ export const FastFrameStyles = css`
     }
 
     fast-badge {
-        --badge-fill-primary: var(--accent-fill-rest);
-        --badge-color-primary: var(--neutral-foreground-rest);
+        --badge-fill-primary: ${accentFillRestBehavior.var};
+        --badge-color-primary: ${neutralForegroundRestBehavior.var};
     }
 
     fast-slider {
@@ -244,7 +244,7 @@ export const FastFrameStyles = css`
     }
 
     fast-tab-panel {
-        background: var(--neutral-fill-card-rest);
+        background: ${neutralFillCardRestBehavior.var};
         height: 100%;
     }
 
@@ -264,7 +264,7 @@ export const FastFrameStyles = css`
 
     fast-slider-label {
         font-size: var(--type-ramp-minus-2-font-size);
-        color: var(--neutral-foreground-hint);
+        color: ${neutralForegroundHintBehavior.var};
     }
     
     @media screen and (max-width: 1330px) {
@@ -301,7 +301,7 @@ export const FastFrameStyles = css`
             border-radius: calc(var(--corner-radius) * 1px);
         }
 
-        .preview__expanded {
+        .preview-expanded {
             transition: right .5s ease-in-out;
             right: -10%;
         }    
@@ -317,7 +317,7 @@ export const FastFrameStyles = css`
             visibility: visible;
         }
         
-        .tab-panel__expanded {
+        .tab-panel-expanded {
             opacity: 0;
             transition: opacity .5s ease-in-out;
         }
@@ -335,7 +335,7 @@ export const FastFrameStyles = css`
             border-radius: calc(var(--corner-radius) * 1px);
         }
 
-        .preview__expanded {
+        .preview-expanded {
             right: -5%;
         }    
 

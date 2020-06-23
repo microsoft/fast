@@ -10,6 +10,8 @@ import { AnchorStyles as styles } from "./anchor.styles";
  * @public
  * @remarks
  * HTML Element: \<fast-anchor\>
+ *
+ * {@link https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/delegatesFocus | delegatesFocus}
  */
 @customElement({
     name: "fast-anchor",

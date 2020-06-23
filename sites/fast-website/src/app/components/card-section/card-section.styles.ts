@@ -27,7 +27,7 @@ export const CardSectionStyles = css`
     :host ::slotted(site-feature-card:focus-within) {
         cursor: pointer;
         color: currentColor;
-        background-color: var(--neutral-fill-hover);
+        background-color: ${neutralFillHoverBehavior.var};
         filter: saturate(1);
     }
 `.withBehaviors(neutralFillHoverBehavior);

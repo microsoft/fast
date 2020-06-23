@@ -3,6 +3,10 @@ import { ref } from "@microsoft/fast-element";
 import { Orientation } from "@microsoft/fast-web-utilities";
 import { Slider } from "./slider";
 
+/**
+ * The template for the {@link @microsoft/fast-foundation#Slider} component.
+ * @public
+ */
 export const SliderTemplate = html<Slider>`
     <template
         role="slider"

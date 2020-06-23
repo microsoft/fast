@@ -755,7 +755,7 @@
             {
               "kind": "Property",
               "canonicalReference": "@microsoft/fast-foundation!Badge#color:member",
-              "docComment": "/**\n * Indicates the badge should have a filled style.\n *\n * @remarks\n *\n * HTML Attribute: fill\n *\n * @public\n */\n",
+              "docComment": "/**\n * Indicates the badge should have a filled style.\n *\n * @remarks\n *\n * HTML Attribute: color\n *\n * @public\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -1084,7 +1084,7 @@
             {
               "kind": "Property",
               "canonicalReference": "@microsoft/fast-foundation!Button#formaction:member",
-              "docComment": "/**\n * See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button | <button> element} for more details.\n *\n * @public\n */\n",
+              "docComment": "/**\n * See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button | <button> element} for more details.\n *\n * @remarks\n *\n * HTML Attribute: formaction\n *\n * @public\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -1110,7 +1110,7 @@
             {
               "kind": "Property",
               "canonicalReference": "@microsoft/fast-foundation!Button#formenctype:member",
-              "docComment": "/**\n * See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button | <button> element} for more details.\n *\n * @public\n */\n",
+              "docComment": "/**\n * See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button | <button> element} for more details.\n *\n * @remarks\n *\n * HTML Attribute: formenctype\n *\n * @public\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -1162,7 +1162,7 @@
             {
               "kind": "Property",
               "canonicalReference": "@microsoft/fast-foundation!Button#formmethod:member",
-              "docComment": "/**\n * See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button | <button> element} for more details.\n *\n * @public\n */\n",
+              "docComment": "/**\n * See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button | <button> element} for more details.\n *\n * @remarks\n *\n * HTML Attribute: formmethod\n *\n * @public\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -1188,7 +1188,7 @@
             {
               "kind": "Property",
               "canonicalReference": "@microsoft/fast-foundation!Button#formnovalidate:member",
-              "docComment": "/**\n * See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button | <button> element} for more details.\n *\n * @public\n */\n",
+              "docComment": "/**\n * See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button | <button> element} for more details.\n *\n * @remarks\n *\n * HTML Attribute: formnovalidate\n *\n * @public\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -1214,7 +1214,7 @@
             {
               "kind": "Property",
               "canonicalReference": "@microsoft/fast-foundation!Button#formtarget:member",
-              "docComment": "/**\n * See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button | <button> element} for more details.\n *\n * @public\n */\n",
+              "docComment": "/**\n * See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button | <button> element} for more details.\n *\n * @remarks\n *\n * HTML Attribute: formtarget\n *\n * @public\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -3609,7 +3609,7 @@
             {
               "kind": "Property",
               "canonicalReference": "@microsoft/fast-foundation!Divider#role:member",
-              "docComment": "/**\n * The role of the element.\n *\n * @defaultValue\n *\n * - {@link DividerRole.separator}\n *\n * @public\n */\n",
+              "docComment": "/**\n * The role of the element.\n *\n * @remarks\n *\n * HTML Attribute: role\n *\n * @defaultValue\n *\n * - {@link DividerRole.separator}\n *\n * @public\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -5593,7 +5593,7 @@
             {
               "kind": "Property",
               "canonicalReference": "@microsoft/fast-foundation!Radio#checkedAttribute:member",
-              "docComment": "/**\n * Provides the default checkedness of the input element Passed down to proxy\n *\n * @public\n */\n",
+              "docComment": "/**\n * Provides the default checkedness of the input element Passed down to proxy\n *\n * @remarks\n *\n * HTML Attribute: checked\n *\n * @public\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -6413,7 +6413,7 @@
             {
               "kind": "Property",
               "canonicalReference": "@microsoft/fast-foundation!Slider#step:member",
-              "docComment": "/**\n * Value to increment or decrement via arrow keys, mouse click or drag\n *\n * HTML Attribute: 1\n *\n * @public\n */\n",
+              "docComment": "/**\n * Value to increment or decrement via arrow keys, mouse click or drag\n *\n * HTML Attribute: step\n *\n * @public\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
