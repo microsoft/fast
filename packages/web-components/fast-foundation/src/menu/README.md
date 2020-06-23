@@ -22,7 +22,7 @@ The menu is a widget that offers a list of choices to the user, such as a set of
 </fast-design-system-provider>
 ```
 
-## Applying Custom Styles
+## Applying custom styles
 
 ```ts
 import { customElement } from "@microsoft/fast-element";

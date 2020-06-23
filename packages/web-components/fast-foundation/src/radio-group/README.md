@@ -21,7 +21,7 @@ An implementation of a [radio-group](https://w3c.github.io/aria-practices/#radio
 </fast-design-system-provider>
 ```
 
-## Applying Custom Styles
+## Applying custom styles
 
 ```ts
 import { customElement } from "@microsoft/fast-element";

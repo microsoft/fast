@@ -61,7 +61,7 @@ The above CDN location points to the latest release of `fast-components`. It is 
 For simplicity, examples throughout the documentation will assume the library has been installed from NPM, but you can always replace the import location with the CDN URL.
 :::
 
-## Add the Design System Provider
+## Add the design system provider
 
 The [Design System Provider](./design-system-provider) provides design information to child components. So, we must always wrap the portion of our site or app that uses the components with a provider element:
 
@@ -74,7 +74,7 @@ The [Design System Provider](./design-system-provider) provides design informati
 <!-- ... -->
 ```
 
-## Add Components
+## Add components
 
 With the provider in place, add any components as a child of the `fast-design-system-provider`. That's it! For a comprehensive list of all elements, see the Components section.
 

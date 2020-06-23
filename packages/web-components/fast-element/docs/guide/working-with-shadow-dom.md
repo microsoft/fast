@@ -7,7 +7,7 @@ custom_edit_url: https://github.com/microsoft/fast-dna/edit/master/packages/web-
 
 So far we've looked at how to define elements, how to define attributes on those elements, and how to control element rendering through declarative templates. However, we haven't yet seen how our custom elements can be composed together with standard HTML or other custom elements.
 
-## The Default Slot
+## The default slot
 
 To enable composition, `FASTElement` leverages the Shadow DOM standard. Previously, we've seen how `FASTElement` automatically attaches a `ShadowRoot`, and when your element declares a template, it renders that template into the Shadow DOM. To enable element composition, all we need to do is make use of the standard `<slot>` element within our template.
 
@@ -79,7 +79,7 @@ If you find the terms "Light DOM" and "Shadow DOM" unintuitive, you're not alone
 
 With slots at our disposal, we now unlock the full compositional model of HTML for use in our own elements. However, there's even more that slots can do.
 
-## Named Slots
+## Named slots
 
 In the example above, we use a single `slot` element to render *all* content placed between the start and end tags of the `name-tag`. However, we're not limited to only having a default slot. We can also have *named slots* that declare other locations to which we can render content. To demonstrate this, let's add a named slot to our `name-tag`'s template where we can display the person's avatar.
 
@@ -178,7 +178,7 @@ Here are a couple of quick notes on slots:
   ```
 * You do not need to provide content for every declared slot. In the above example, just because the `name-tag` has an "avatar" slot does not mean we must provide content for that slot. If no content is provided for a slot, then nothing will be rendered at that location, unless the slot declared fallback content...
 
-## Fallback Content
+## Fallback content
 
 There are several scenarios for using slots in your elements. So far, we've been showing how to use slots for content projection. However, another major use case is to enable various parts of your element's rendering to be replaced by the software using your element. To enable this, you can provide *fallback content* for any slot. This content will render if the element consumer provides no content for that slot, but if they do, their own content will override the fallback content.
 
@@ -229,7 +229,7 @@ Here are some events which do not compose and are only visible from within the S
 
 To get the fully composed event path from an event object, invoke the `composedPath()` method on the event itself. This will return an array of targets representing the path through which the event bubbled. If your custom element uses `closed` Shadow DOM mode, targets within the Shadow DOM will not be present in the composed path, and it will appear as if the custom element itself was the first target.
 
-### Custom Events
+### Custom events
 
 In various scenarios, it may be appropriate for a custom element to publish its own element-specific events. To do this, you can use the `$emit` helper on `FASTElement`. It's a convenience method that creates an instance of `CustomEvent` and uses the `dispatchEvent` API on `FASTElement` with the `bubbles: true` and `composed: true` options. It also ensures that the event is only emitted if the custom element is fully connected to the DOM. Here's an example:
 
@@ -250,7 +250,7 @@ export class MyInput extends FASTElement {
 When emitting custom events, ensure that your event name is always lower-case, so that your Web Components stay compatible with various front-end frameworks that attach events through DOM binding patterns (the DOM is case insensitive).
 :::
 
-## Shadow DOM Configuration
+## Shadow DOM configuration
 
 In all the examples we've seen so far `FASTElement` automatically creates a Shadow Root for your element and attaches it in `open` mode. However, if desired, you can specify `closed` mode or make the element render into the Light DOM instead. These choices can be made by using the `shadowOptions` setting with your `@customElement` decorator.
 

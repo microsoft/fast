@@ -15,7 +15,7 @@ The `fast-menu-item` is a custom element meant to be used with `fast-menu` and s
 </fast-design-system-provider>
 ```
 
-## Applying Custom Styles
+## Applying custom styles
 
 ```ts
 import { customElement } from "@microsoft/fast-element";

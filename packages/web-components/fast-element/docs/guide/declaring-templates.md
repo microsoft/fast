@@ -5,7 +5,7 @@ sidebar_label: Declaring Templates
 custom_edit_url: https://github.com/microsoft/fast-dna/edit/master/packages/web-components/fast-element/docs/guide/declaring-templates.md
 ---
 
-## Basic Templates
+## Basic templates
 
 While you can create and update nodes in the Shadow DOM manually, `FASTElement` provides a streamlined templating system for the most common rendering scenarios. To create an HTML template for an element, import and use the `html` tagged template helper and pass the template to the `@customElement` decorator.
 
@@ -46,7 +46,7 @@ Finally, we associate the template with our custom element by using a new form o
 
 With this in place, we now have a `name-tag` element that will render its template into the Shadow DOM and automatically update the `h3` content whenever the name tag's `greeting` attribute changes. Give it a try!
 
-## Understanding Bindings
+## Understanding bindings
 
 We've seen how arrow functions can be used to declare dynamic parts of templates. Let's look at a few more examples to see the breadth of what is available to you.
 

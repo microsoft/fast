@@ -9,7 +9,7 @@ FAST works flawlessly with both Aurelia 1 and Aurelia 2, with full integration i
 
 ## Aurelia 2
 
-### Setting up the Aurelia 2 Project
+### Setting up the Aurelia 2 project
 
 First, you'll need to make sure that you have Node.js installed. You can learn more and download that [on the official site](https://nodejs.org/).
 
@@ -23,7 +23,7 @@ Follow the prompts, answering each question in turn. It is recommended that you 
 
 When the CLI completes, you should have a basic runnable Aurelia 2 application.
 
-### Configuring Packages
+### Configuring packages
 
 Next, we'll install the FAST packages, along with supporting libraries. To do that, run this command from your new project folder:
 
@@ -31,7 +31,7 @@ Next, we'll install the FAST packages, along with supporting libraries. To do th
 npm install --save @microsoft/fast-components @microsoft/fast-element lodash-es
 ```
 
-### Using the Components
+### Using the components
 
 With all the basic pieces in place, let's run our app in dev mode with `npm start`. Webpack should build your project and open your default browser with your `index.html` page. Right now, it should only have a hello message, since we haven't added any code or interesting HTML. Let's change that.
 
@@ -103,7 +103,7 @@ Congratulations! You're now set up to use FAST and Aurelia 2!
 
 ## Aurelia 1
 
-### Setting up the Aurelia 1 Project
+### Setting up the Aurelia 1 project
 
 First, you'll need to make sure that you have Node.js installed. You can learn more and download that [on the official site](https://nodejs.org/).
 
@@ -123,7 +123,7 @@ Follow the prompts, answering each question in turn. It is recommended that you 
 
 When the CLI completes, you should have a basic runnable Aurelia 1 application.
 
-### Configuring Packages
+### Configuring packages
 
 Next, we'll install the FAST packages, along with supporting libraries. To do that, run this command from your new project folder:
 
@@ -131,7 +131,7 @@ Next, we'll install the FAST packages, along with supporting libraries. To do th
 npm install --save @microsoft/fast-components @microsoft/fast-element lodash-es
 ```
 
-### Using the Components
+### Using the components
 
 With all the basic pieces in place, let's run our app in dev mode with `npm start`. Webpack should build your project and make it available at `http://localhost:8080/`. If you visit this address it should only have a hello message, since we haven't added any code or interesting HTML. Let's change that.
 

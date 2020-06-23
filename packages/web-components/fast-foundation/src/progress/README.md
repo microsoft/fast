@@ -25,7 +25,7 @@ Progress components are used to indicate the length of time a process will take.
 </fast-design-system-provider>
 ```
 
-## Applying Custom Styles
+## Applying custom styles
 
 ### fast-progress
 

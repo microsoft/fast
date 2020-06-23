@@ -7,7 +7,7 @@ custom_edit_url: https://github.com/microsoft/fast-dna/edit/master/packages/web-
 
 FAST works great with TypeScript and Webpack, using a fairly standard setup. Let's take a look at how you can set up a TypeScript+Webpack project, starting from scratch.
 
-## Setting up the Package
+## Setting up the package
 
 First, let's make a directory for our new project. From the terminal:
 
@@ -41,7 +41,7 @@ We also need to install the Webpack build tooling:
 npm install --save-dev clean-webpack-plugin ts-loader typescript webpack webpack-cli webpack-dev-server
 ```
 
-## Adding Configuration and Source
+## Adding configuration and source
 
 Now that we've got our basic package and dependencies set up, let's create some source files and get things configured. Since we're going to be writing a bit of code, now is a great time to involve a code editor in the process. If you're looking for a great editor for TypeScript and front-end in general, we highly recommend [VS Code](https://code.visualstudio.com/).
 
@@ -157,7 +157,7 @@ To complete our setup, we need to add an `index.html` file to the root of our pr
 
 There's nothing special about the HTML yet other than the `script` tag in the `body` that references the `bundle.js` file that our Webpack build will produce.
 
-## Using the Components
+## Using the components
 
 With all the basic pieces in place, let's run our app in dev mode with `npm run dev`. Webpack should build your project and open your default browser with your `index.html` page. Right now, it should be blank, since we haven't added any code or interesting HTML. Let's change that.
 
