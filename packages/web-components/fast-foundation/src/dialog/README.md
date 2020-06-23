@@ -22,7 +22,7 @@ A web component implementation of a [dialog](https://w3c.github.io/aria-practice
 </div>
 ```
 
-## Applying Custom Styles
+## Applying custom styles
 
 ```ts
 import { customElement } from "@microsoft/fast-element";

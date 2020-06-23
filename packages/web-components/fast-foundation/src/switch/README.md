@@ -19,7 +19,7 @@ An implementation of a [switch](https://w3c.github.io/aria/#switch) as a form-co
 </fast-design-system-provider>
 ```
 
-## Applying Custom Styles
+## Applying custom styles
 
 ```ts
 import { customElement } from "@microsoft/fast-element";

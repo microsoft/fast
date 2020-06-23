@@ -6,13 +6,13 @@ custom_edit_url: https://github.com/microsoft/fast-dna/edit/master/sites/website
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![npm version](https://badge.fury.io/js/%40microsoft%2Ffast-components.svg)](https://badge.fury.io/js/%40microsoft%2Ffast-components)
 
-The `fast-components` and `fast-components-msft` libraries contain Web Components built on top of our standard component and design system foundation. `fast-components` express the FAST design language while `fast-components-msft` express the Microsoft design language, currently known as Fluent.
+The `fast-components` and `fast-components-msft` libraries contain Web Components built on top of our standard component and design system foundation. `fast-components` express the FAST design language while `fast-components-msft` expresses Microsoft's Fluent design language.
 
 ## Installation
 
 ### From NPM
 
-To install the components, first choose between `fast-components` and `fast-components-msft`. Assuming a selection of `fast-components`, you would use either `npm` or `yarn` as follows:
+To install the components, first, choose between `fast-components` and `fast-components-msft`. Assuming a selection of `fast-components`, you would use either `npm` or `yarn` as follows:
 
 ```shell
 npm install --save @microsoft/fast-components
@@ -61,7 +61,7 @@ The above CDN location points to the latest release of `fast-components`. It is 
 For simplicity, examples throughout the documentation will assume the library has been installed from NPM, but you can always replace the import location with the CDN URL.
 :::
 
-## Add the Design System Provider
+## Add the design system provider
 
 The [Design System Provider](./design-system-provider) provides design information to child components. So, we must always wrap the portion of our site or app that uses the components with a provider element:
 
@@ -74,9 +74,9 @@ The [Design System Provider](./design-system-provider) provides design informati
 <!-- ... -->
 ```
 
-## Add Components
+## Add components
 
-With the provide in place, add any components as a child of the `fast-design-system-provider`. That's it! For a comprehensive list of all elements, see the Components section.
+With the provider in place, add any components as a child of the `fast-design-system-provider`. That's it! For a comprehensive list of all elements, see the Components section.
 
 ```html
 <!-- ... -->

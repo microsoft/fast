@@ -8,7 +8,8 @@ In FAST, the *design system* is a collection of properties and values that infor
 
 For the purposes of this section, just know the *DesignSystemProvider* is a Custom Element that will create CSS Custom Properties that can be consumed by component stylesheets and provide mechanisms to synchronize, update, and consume those properties programmatically.
 
-### Design System Properties
+### Design system properties
+
 The following properties are provided by the `FASTDesignSystemProvider` and should be used as appropriate.
 
 | Name                                   | Type | Description   |

@@ -5,7 +5,7 @@ sidebar_label: Declaring Templates
 custom_edit_url: https://github.com/microsoft/fast-dna/edit/master/packages/web-components/fast-element/docs/guide/declaring-templates.md
 ---
 
-## Basic Templates
+## Basic templates
 
 While you can create and update nodes in the Shadow DOM manually, `FASTElement` provides a streamlined templating system for the most common rendering scenarios. To create an HTML template for an element, import and use the `html` tagged template helper and pass the template to the `@customElement` decorator.
 
@@ -46,13 +46,13 @@ Finally, we associate the template with our custom element by using a new form o
 
 With this in place, we now have a `name-tag` element that will render its template into the Shadow DOM and automatically update the `h3` content whenever the name tag's `greeting` attribute changes. Give it a try!
 
-## Understanding Bindings
+## Understanding bindings
 
 We've seen how arrow functions can be used to declare dynamic parts of templates. Let's look at a few more examples to see the breadth of what is available to you.
 
 ### Content
 
-To bind the content of an element, simply provide the expression within the start and end tags of the element. It can be the sole content of the element, or interwoven with other elements and text.
+To bind the content of an element, simply provide the expression within the start and end tags of the element. It can be the sole content of the element or interwoven with other elements and text.
 
 **Example: Basic Text Content**
 
@@ -81,7 +81,7 @@ Dynamic content is set via the `textContent` HTML property for security reasons.
 
 ### Attributes
 
-You can also use an expression to set an attribute value on an HTML Element. Simply place the expression where the value of the HTML attribute would go. The template engine will then use your expression to set the value using `setAttribute(...)`, whenever it needs to be updated. Additionally, some attributes are known as [boolean attributes](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes#Boolean_Attributes) (e.g. required, readonly, disabled). These attributes behave differently from normal attributes, and need special value handling. The templating engine will handle this for you if you prepend the attribute name with a `?`.
+You can also use an expression to set an attribute value on an HTML Element. Simply place the expression where the value of the HTML attribute would go. The template engine will then use your expression to set the value using `setAttribute(...)`, whenever it needs to be updated. Additionally, some attributes are known as [boolean attributes](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes#Boolean_Attributes) (e.g. required, readonly, disabled). These attributes behave differently from normal attributes and need special value handling. The templating engine will handle this for you if you prepend the attribute name with a `?`.
 
 **Example: Basic Attribute Values**
 
@@ -104,7 +104,7 @@ You can also use an expression to set an attribute value on an HTML Element. Sim
 ```
 
 :::tip
-When binding to `class`, the underlying engine will not over-write classes added to the element via other mechanisms. It only adds and removes classes that result directly from the binding. This "safe by default" behavior does come at a slight performance cost. To opt out of this feature and squeeze out every ounce of performance by always overwriting all classes, use a property binding (see below) on the `className` property. e.g. `:className="list-item ${x => x.type}"`.
+When binding to `class`, the underlying engine will not over-write classes added to the element via other mechanisms. It only adds and removes classes that result directly from the binding. This "safe by default" behavior does come at a slight performance cost. To opt-out of this feature and squeeze out every ounce of performance by always overwriting all classes, use a property binding (see below) on the `className` property. e.g. `:className="list-item ${x => x.type}"`.
 :::
 
 ```html
@@ -187,7 +187,7 @@ Besides rendering content, attributes, and properties, you'll often want to add 
 ```
 
 :::important
-In both examples above, after your event handler is executed, `preventDefault()` will be called on the event object by default. You can return `true` from your handler to opt out of this behavior.
+In both examples above, after your event handler is executed, `preventDefault()` will be called on the event object by default. You can return `true` from your handler to opt-out of this behavior.
 :::
 
 The second example demonstrates an important characteristic of the templating engine: it only supports *unidirectional data flow* (model => view). It does not support *two-way data binding* (model <=> view). As shown above, pushing data from the view back to the model should be handled with explicit events that call into your model's API.
