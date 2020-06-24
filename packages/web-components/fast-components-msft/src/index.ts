@@ -20,3 +20,4 @@ export * from "./text-field/";
 
 // export styles and utils
 export * from "./styles";
+export { parseColorString } from "./color";

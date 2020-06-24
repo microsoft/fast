@@ -5614,10 +5614,18 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react@*", "@types/react@^16.3.0", "@types/react@^16.4.18", "@types/react@^16.7.17", "@types/react@^16.8.0", "@types/react@^16.8.19", "@types/react@^16.9.17":
+"@types/react@*", "@types/react@^16.3.0", "@types/react@^16.4.18", "@types/react@^16.7.17", "@types/react@^16.8.0", "@types/react@^16.8.19":
   version "16.9.11"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-16.9.11.tgz#70e0b7ad79058a7842f25ccf2999807076ada120"
   integrity sha512-UBT4GZ3PokTXSWmdgC/GeCGEJXE5ofWyibCcecRLUVN2ZBpXQGVgQGtG2foS7CrTKFKlQVVswLvf7Js6XA/CVQ==
+  dependencies:
+    "@types/prop-types" "*"
+    csstype "^2.2.0"
+
+"@types/react@^16.9.17":
+  version "16.9.38"
+  resolved "https://registry.yarnpkg.com/@types/react/-/react-16.9.38.tgz#868405dace93a4095d3e054f4c4a1de7a1ac0680"
+  integrity sha512-pHAeZbjjNRa/hxyNuLrvbxhhnKyKNiLC6I5fRF2Zr/t/S6zS41MiyzH4+c+1I9vVfvuRt1VS2Lodjr4ZWnxrdA==
   dependencies:
     "@types/prop-types" "*"
     csstype "^2.2.0"
