@@ -158,7 +158,7 @@ export function swatchFamilyToSwatchRecipeFactory<T extends SwatchFamily>(
  * Converts a color string into a ColorRGBA64 instance.
  * Supports #RRGGBB and rgb(r, g, b) formats
  *
- * @internal
+ * @public
  */
 export const parseColorString: (color: string) => ColorRGBA64 = memoize(
     (color: string): ColorRGBA64 => {
