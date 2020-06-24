@@ -51,6 +51,16 @@ background-design,
   width: 18px;
 }
 
+.header .github-link span,
+.header .github-link::part(end) {
+  display: flex;
+}
+
+.header .github-link::part(end) {
+  width: auto;
+  height: auto;
+}
+
 @media screen and (max-height: 390px), screen and (max-width: 1000px) {
   .side-nav-container {
     display: none;
