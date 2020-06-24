@@ -4,7 +4,7 @@ import { elevation } from "@microsoft/fast-components/dist/esm/styles/elevation.
 import {
     accentForegroundRestBehavior,
     neutralFillFocusBehavior,
-    neutralForegroundHintBehavior,
+    neutralForegroundRestBehavior,
 } from "@microsoft/fast-components";
 
 export const ContentPlacementContainerStyles = css`
@@ -60,20 +60,20 @@ export const ContentPlacementContainerStyles = css`
         opacity: 0.6;
     }
 
-    :host([section="feature"]) site-feature-card:hover,
-    :host([section="feature"]) site-feature-card:focus-within,
-    :host([section="framework"]) site-content-placement:hover,
-    :host([section="framework"]) site-content-placement:focus-within,
-    :host([section="community"]) site-content-placement:hover,
-    :host([section="community"]) site-content-placement:focus-within {
+    :host site-feature-card:hover,
+    :host site-feature-card:focus-within,
+    :host site-content-placement:hover,
+    :host site-content-placement:focus-within {
         --elevation: 4;
         background: ${neutralFillFocusBehavior.var};
         border-radius: calc(var(--corner-radius) * 1px);
         color: currentColor;
         opacity: 1;
-        ${elevation}
+        ${elevation};
     }
 
+    :host([section="framework"]) site-content-placement:hover h3,
+    :host([section="framework"]) site-content-placement:focus-within h3,
     :host([section="feature"]) site-feature-card:hover :first-child::before,
     :host([section="feature"]) site-feature-card:focus-within :first-child::before,
     :host([section="feature"]) site-feature-card:hover fast-anchor,
@@ -83,10 +83,14 @@ export const ContentPlacementContainerStyles = css`
         color: ${accentForegroundRestBehavior.var};
     }
 
+    :host([section="framework"]) site-content-placement:hover h3 .headerSubscript,
+    :host([section="framework"]) site-content-placement:focus-within h3 .headerSubscript {
+        color: ${neutralForegroundRestBehavior.var};
+    }
+
     /* end */
 
     .headerSubscript {
-        color: ${neutralForegroundHintBehavior.var};
         font-size: var(--type-ramp-minus-1-font-size);
     }
 
@@ -134,5 +138,5 @@ export const ContentPlacementContainerStyles = css`
 `.withBehaviors(
     accentForegroundRestBehavior,
     neutralFillFocusBehavior,
-    neutralForegroundHintBehavior
+    neutralForegroundRestBehavior
 );
