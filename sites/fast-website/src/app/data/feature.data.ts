@@ -37,7 +37,7 @@ export const featureCardData: FeatureCardData[] = [
     {
         header: "Technology",
         body:
-            "Out of the box, FAST components are built on React, but you can build components on any modern framework using the FAST system.",
+            "FAST web components are built on the core technologies of the web to work in any scenario. Use them on their own or with your favorite framework.",
         links: [
             {
                 anchorText: "View GitHub",
