@@ -26,6 +26,8 @@ export const SideNavigationStyles = css`
     }
 
     .icon {
+        width: 20px;
+        height: 20px;
         fill: var(--accent-foreground-cut-rest);
     }
 
