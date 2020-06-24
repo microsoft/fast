@@ -29,6 +29,7 @@ export const FeatureCardStyles = css`
 
     :host(:hover)::before {
         opacity: 0;
+        transition: all 0.1s ease-in-out;
     }
 
     .card_heading {
