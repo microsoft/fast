@@ -1,7 +1,13 @@
 import { attr, DOM, FASTElement, observable } from "@microsoft/fast-element";
 import { isHTMLElement, keyCodeEnd, keyCodeHome } from "@microsoft/fast-web-utilities";
-import { TreeItem } from "../tree-item";
+import { isTreeItemElement, TreeItem } from "../tree-item";
 
+/**
+ * A Tree view Custom HTML Element.
+ * Implements the {@link https://w3c.github.io/aria-practices/#TreeView | ARIA TreeView }.
+ *
+ * @public
+ */
 export class TreeView extends FASTElement {
     public treeView: HTMLElement;
 
@@ -159,21 +165,14 @@ export class TreeView extends FASTElement {
      * check if the item is focusable
      */
     private isFocusableElement = (el: Element): el is HTMLElement => {
-        return this.isTreeItemElement(el) && !this.isDisabledElement(el);
+        return isTreeItemElement(el) && !this.isDisabledElement(el);
     };
 
     /**
      * check if the item is disabled
      */
     private isDisabledElement = (el: Element): el is HTMLElement => {
-        return this.isTreeItemElement(el) && el.getAttribute("aria-disabled") === "true";
-    };
-
-    /**
-     * check if the item is a menu item
-     */
-    private isTreeItemElement = (el: Element): el is HTMLElement => {
-        return isHTMLElement(el) && (el.getAttribute("role") as string) === "treeitem";
+        return isTreeItemElement(el) && el.getAttribute("aria-disabled") === "true";
     };
 
     private getVisibleNodes(): HTMLElement[] {

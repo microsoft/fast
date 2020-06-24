@@ -359,6 +359,9 @@ export const hidden = "\n    :host([hidden]) {\n        display: none;\n    }\n"
 export function isDesignSystemConsumer(element: HTMLElement | DesignSystemConsumer): element is DesignSystemConsumer;
 
 // @public
+export function isTreeItemElement(el: Element): el is HTMLElement;
+
+// @public
 export function matchMediaStylesheetBehaviorFactory(query: MediaQueryList): (sheet: ElementStyles) => Readonly<{
     query: MediaQueryList;
     cache: WeakMap<(new () => HTMLElement & FASTElement) & {
@@ -782,19 +785,17 @@ export enum TextFieldType {
     url = "url"
 }
 
-// @public (undocumented)
+// @public
 export class TreeItem extends FASTElement {
     // (undocumented)
     childItems: HTMLElement[];
     // (undocumented)
     connectedCallback(): void;
-    // (undocumented)
     disabled: boolean;
     // (undocumented)
     disconnectedCallback(): void;
     // (undocumented)
     expandCollapseButton: HTMLDivElement;
-    // (undocumented)
     expanded: boolean;
     // (undocumented)
     filteredTreeItems(items: Node[]): HTMLElement[];
@@ -813,18 +814,13 @@ export class TreeItem extends FASTElement {
     // (undocumented)
     handleKeyDown: (e: KeyboardEvent) => boolean | void;
     // (undocumented)
-    hasItems: boolean;
-    // (undocumented)
     items: HTMLElement[];
     // (undocumented)
     nested: boolean;
     // (undocumented)
     renderCollapsedChildren: boolean;
-    // (undocumented)
     selected: boolean;
-    // (undocumented)
-    showNodes: boolean;
-}
+    }
 
 // @public (undocumented)
 export interface TreeItem extends StartEnd {
@@ -833,7 +829,7 @@ export interface TreeItem extends StartEnd {
 // @public (undocumented)
 export const TreeItemTemplate: import("@microsoft/fast-element").ViewTemplate<TreeItem, any>;
 
-// @public (undocumented)
+// @public
 export class TreeView extends FASTElement {
     // (undocumented)
     connectedCallback(): void;

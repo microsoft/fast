@@ -1,4 +1,4 @@
-import { html, ref, when, children, slotted } from "@microsoft/fast-element";
+import { children, html, ref, slotted, when } from "@microsoft/fast-element";
 import { endTemplate, startTemplate } from "../patterns/start-end";
 import { TreeItem } from "./tree-item";
 
@@ -51,7 +51,7 @@ export const TreeItemTemplate = html<TreeItem>`
             </div>
         </div>
         ${when(
-            x => x.filteredTreeItems(x.childItems).length > 0 && x.expanded,
+            x => x.filteredTreeItems(x.childItems).length > 0,
             html<TreeItem>`
                 <div role="group" class="items" part="items">
                     <slot name="item" ${slotted("items")}></slot>

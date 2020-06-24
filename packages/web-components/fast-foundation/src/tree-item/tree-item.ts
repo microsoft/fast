@@ -2,9 +2,8 @@ import {
     attr,
     FASTElement,
     Notifier,
-    Observable,
     observable,
-    DOM,
+    Observable,
 } from "@microsoft/fast-element";
 import {
     getDisplayedNodes,
@@ -20,13 +19,44 @@ import { StartEnd } from "../patterns/start-end";
 import { applyMixins } from "../utilities/apply-mixins";
 import { TreeView } from "../tree-view";
 
+/**
+ * check if the item is a tree item
+ */
+export function isTreeItemElement(el: Element): el is HTMLElement {
+    return isHTMLElement(el) && (el.getAttribute("role") as string) === "treeitem";
+}
+
+/**
+ * A Tree item Custom HTML Element.
+ * Implements the {@link https://w3c.github.io/aria-practices/#TreeView | ARIA TreeView }.
+ *
+ * @public
+ */
 export class TreeItem extends FASTElement {
+    /**
+     * When true, the control will be appear expanded by user interaction.
+     * @public
+     * @remarks
+     * HTML Attribute: expanded
+     */
     @attr({ mode: "boolean" })
     public expanded: boolean = false;
 
+    /**
+     * When true, the control will appear selected by user interaction.
+     * @public
+     * @remarks
+     * HTML Attribute: selected
+     */
     @attr({ mode: "boolean" })
     public selected: boolean;
 
+    /**
+     * When true, the control will be immutable by user interaction. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/disabled | disabled HTML attribute} for more information.
+     * @public
+     * @remarks
+     * HTML Attribute: disabled
+     */
     @attr({ mode: "boolean" })
     public disabled: boolean;
 
@@ -36,20 +66,15 @@ export class TreeItem extends FASTElement {
     public focusable: boolean = false;
 
     @observable
-    public hasItems: boolean;
-
-    @observable
     public childItems: HTMLElement[];
 
     @observable
     public items: HTMLElement[];
     private itemsChanged(oldValue, newValue): void {
-        // we only want to project the slot of there will be items
-        //this.hasItems = this.querySelectorAll("[slot='item']").length > 0;
-        console.log("slotted itemsChanged newVaue:", newValue);
         if (this.$fastController.isConnected) {
             this.items.forEach((node: HTMLElement) => {
                 if (node instanceof TreeItem) {
+                    // TODO: maybe not require it to be a TreeItem?
                     (node as TreeItem).nested = true;
                 }
             });
@@ -64,19 +89,19 @@ export class TreeItem extends FASTElement {
 
     private notifier: Notifier;
 
-    private getParentTreeNode(): TreeView | null | undefined {
+    private getParentTreeNode(): HTMLElement | null | undefined {
         const parentNode: Element | null | undefined = this.parentElement!.closest(
             "[role='tree']"
         );
-        return parentNode as TreeView;
+        return parentNode as HTMLElement;
     }
 
     public filteredTreeItems(items: Node[]): HTMLElement[] {
         const htmlNodes: HTMLElement[] = [];
         if (items) {
             items.forEach((item: Node) => {
-                if (item instanceof HTMLElement) {
-                    htmlNodes.push(item);
+                if (isTreeItemElement(item as Element)) {
+                    htmlNodes.push(item as HTMLElement);
                 }
             });
         }
@@ -86,7 +111,7 @@ export class TreeItem extends FASTElement {
     public connectedCallback(): void {
         super.connectedCallback();
 
-        const parentTreeNode: TreeView | null | undefined = this.getParentTreeNode();
+        const parentTreeNode: HTMLElement | null | undefined = this.getParentTreeNode();
         if (parentTreeNode) {
             if (parentTreeNode.hasAttribute("render-collapsed-nodes")) {
                 this.renderCollapsedChildren =
@@ -241,6 +266,7 @@ export class TreeItem extends FASTElement {
     }
 
     private getTreeRoot(): HTMLElement | null {
+        /* eslint-disable-next-line  @typescript-eslint/no-this-alias */
         const currentNode: HTMLElement = this;
 
         if (!isHTMLElement(currentNode)) {
