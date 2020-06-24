@@ -5976,6 +5976,32 @@
           ]
         },
         {
+          "kind": "Variable",
+          "canonicalReference": "@microsoft/fast-components!parseColorString:var",
+          "docComment": "/**\n * Converts a color string into a ColorRGBA64 instance. Supports #RRGGBB and rgb(r, g, b) formats\n *\n * @public\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "parseColorString: "
+            },
+            {
+              "kind": "Content",
+              "text": "(color: string) => "
+            },
+            {
+              "kind": "Reference",
+              "text": "ColorRGBA64",
+              "canonicalReference": "@microsoft/fast-colors!ColorRGBA64:class"
+            }
+          ],
+          "releaseTag": "Public",
+          "name": "parseColorString",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 3
+          }
+        },
+        {
           "kind": "Enum",
           "canonicalReference": "@microsoft/fast-components!StandardLuminance:enum",
           "docComment": "/**\n * Recommended values for light and dark mode for {@link @microsoft/fast-components#FASTDesignSystem.baseLayerLuminance}.\n *\n * @public\n */\n",
