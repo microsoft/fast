@@ -22,14 +22,11 @@ export const ContentPlacementContainerStyles = css`
 
     :host([section="feature"]) {
         --flow: column;
-        grid-template-rows: repeat(4, min-content);
+        grid-template-rows: repeat(3, min-content);
+        grid-template-columns: repeat(2, 1fr);
         grid-auto-flow: var(--flow);
         justify-content: center;
         counter-reset: feature-counter;
-    }
-
-    :host([section="community"]) {
-        grid-template-columns: repeat(auto-fit, minmax(225px, 1fr));
     }
 
     /* this creates the numbering for feature*/
@@ -114,15 +111,16 @@ export const ContentPlacementContainerStyles = css`
     @media screen and (max-width: 1330px) {
         :host([section="feature"]) {
             --flow: row;
+            grid-template-columns: unset;
         }
         site-feature-card:hover + site-feature-card::before {
             opacity: 0;
         }
     }
 
-    @media screen and (max-width: 750px) {
+    @media screen and (min-width: 750px) {
         :host([section="community"]) {
-            grid-template-columns: unset;
+            grid-template-columns: repeat(auto-fit, minmax(225px, 1fr));
         }
     }
 
