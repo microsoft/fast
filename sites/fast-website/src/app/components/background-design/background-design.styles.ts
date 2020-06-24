@@ -8,7 +8,6 @@ export const BackgroundDesignStyles = css`
         height: 99vh; /* https://developers.google.com/web/updates/2016/12/url-bar-resizing */
         isolation: isolate;
         position: fixed;
-        z-index: 0;
         left: 0;
         top: 0;
         width: 100%;
