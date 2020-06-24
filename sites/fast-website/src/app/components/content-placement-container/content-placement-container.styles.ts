@@ -69,14 +69,12 @@ export const ContentPlacementContainerStyles = css`
     :host([section="feature"]) site-feature-card:focus-within {
         color: ${neutralForegroundRestBehavior.var};
         background: ${neutralFillFocusBehavior.var};
-        cursor: pointer;
         filter: saturate(1);
     }
 
     :host([section="community"]) site-content-placement:hover,
     :host([section="community"]) site-content-placement:focus-within {
         --elevation: 4;
-        cursor: pointer;
         background: ${neutralFillFocusBehavior.var};
         border-radius: calc(var(--corner-radius) * 1px);
         color: currentColor;
