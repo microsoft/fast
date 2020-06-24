@@ -12,6 +12,7 @@ import { BaseProgress } from '@microsoft/fast-foundation';
 import { Button } from '@microsoft/fast-foundation';
 import { Card } from '@microsoft/fast-foundation';
 import { Checkbox } from '@microsoft/fast-foundation';
+import { ColorRGBA64 } from '@microsoft/fast-colors';
 import { DensityOffset } from '@microsoft/fast-components-styles-msft';
 import { DesignSystem } from '@microsoft/fast-components-styles-msft';
 import { DesignSystemProvider } from '@microsoft/fast-foundation';
@@ -485,6 +486,9 @@ export const neutralOutlineRestBehavior: import("@microsoft/fast-foundation").CS
 //
 // @internal (undocumented)
 export const OutlineButtonStyles: import("@microsoft/fast-element").ElementStyles;
+
+// @public
+export function parseColorString(color: string): ColorRGBA64;
 
 // Warning: (ae-internal-missing-underscore) The name "StealthButtonStyles" should be prefixed with an underscore because the declaration is marked as @internal
 //
