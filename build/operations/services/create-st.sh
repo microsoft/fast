@@ -4,10 +4,22 @@ source config.sh
 : 'AZURE STORAGE
 Standard Performance, Read-access GEO-Redundant, name with numbers and lowercase letters only
 
+Security Attributes
+- Requires secure transfer
+- Stores business critical data with immutable storage
+- Advanced threat protection is enabled
+- Blob public access is enabled as required by continuous delivery process
+
+Disaster Recovery
+- Data redundancy through copies in secondary region (RA-GRS)
+
 Ref:
 https://docs.microsoft.com/en-us/azure/storage/common/storage-redundancy
+https://docs.microsoft.com/en-us/azure/storage/common/storage-disaster-recovery-guidance
 https://docs.microsoft.com/en-us/cli/azure/storage/account?view=azure-cli-latest#az-storage-account-create
 https://docs.microsoft.com/en-us/azure/azure-monitor/insights/storage-insights-overview
+https://docs.microsoft.com/en-us/azure/storage/common/storage-require-secure-transfer
+https://docs.microsoft.com/en-us/cli/azure/storage/blob/service-properties?view=azure-cli-latest
 '
 # Configure and set name
 product_name=fast
@@ -32,12 +44,13 @@ az storage container create --name "assets" \
     --account-name $storage_name \
     --public-access blob 
 
+echo "enabling soft delete ..."
+az storage blob service-properties delete-policy update --days-retained 30 --account-name $storage_name --enable true
+
 # TODOs
-# [] How to deploy CDN Assets to Storage Account
-# [] Enable soft delete by Azure CLI
 # [] How to enable advanced threat protection on azure storage with Azure CLI
 # [] Manage storage account keys in key vault. https://docs.microsoft.com/en-us/azure/key-vault/secrets/overview-storage-keys
 # [] Secure: https://docs.microsoft.com/en-us/azure/storage/common/storage-network-security#scenarios
 # [] Configure FireWall Rules https://docs.microsoft.com/en-us/azure/storage/common/storage-network-security#cliv2
-# [] Enable advanced threat protection
 # [] Create another storage account for logging
+# [] Convert to use VNET to control Network Restrictions including Storage
