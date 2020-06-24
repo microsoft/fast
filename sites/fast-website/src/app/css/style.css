@@ -22,13 +22,18 @@ body {
 
 .body-provider {
   background-color: var(--background-color);
+  isolation: isolate;
 }
 
 .wrapper {
   display: grid;
   grid-template-columns: minmax(5vw, 1fr) minmax(0px, 1200px) minmax(5vw, 1fr);
-  position: relative;
-  z-index: 1;
+  isolation: isolate;
+}
+
+background-design,
+.side-nav-container {
+  z-index: -1;
 }
 
 .side-nav-container {
@@ -39,7 +44,6 @@ body {
   transform: translateY(-50%);
   display: flex;
   justify-content: space-between;
-  z-index: -1;
 }
 
 @media screen and (max-height: 390px), screen and (max-width: 1000px) {

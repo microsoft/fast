@@ -10,9 +10,12 @@ module.exports = merge(baseConfig, {
     mode: "production",
     optimization: {
         minimizer: [new TerserJSPlugin({}), new OptimizeCSSAssetsPlugin({})],
+        splitChunks: {
+            chunks: "all",
+        },
     },
     output: {
-        filename: "bundle/[name].[hash].js",
+        filename: "bundle/[name].[contenthash].js",
     },
     plugins: [
         new MiniCssExtractPlugin({

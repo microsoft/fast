@@ -12,33 +12,37 @@ export class SideNavigation extends FASTElement {
     public currentSection: string = "hero";
 
     @observable
-    public sectionArray: HTMLElement[] = Array.from(
-        document.querySelectorAll("section[id]")
-    );
+    public sectionArray: HTMLElement[] = [];
 
     public socialData: CommunityContentPlacementData[] = communityContentPlacementData.filter(
         x => x.header !== "Github"
     );
 
-    constructor() {
-        super();
+    loadScrollers() {
+        this.sectionArray = Array.from(document.querySelectorAll("section[id]"));
+
+        let observer = new IntersectionObserver(
+            entries => {
+                entries.forEach(entry => {
+                    const areaOnScreen =
+                        entry.intersectionRatio * entry.boundingClientRect.height;
+                    if (areaOnScreen > 0.5 * window.innerHeight) {
+                        this.currentSection = entry.target.id;
+                    }
+                });
+            },
+            { threshold: [0, 0.2, 0.4, 0.6, 0.8] }
+        );
+        this.sectionArray.forEach(section => {
+            observer.observe(section);
+        });
+    }
+
+    connectedCallback() {
+        super.connectedCallback();
 
         if (this.getAttribute("category") === "scroll") {
-            let observer = new IntersectionObserver(
-                entries => {
-                    entries.forEach(entry => {
-                        const areaOnScreen =
-                            entry.intersectionRatio * entry.boundingClientRect.height;
-                        if (areaOnScreen > 0.5 * window.innerHeight) {
-                            this.currentSection = entry.target.id;
-                        }
-                    });
-                },
-                { threshold: [0, 0.2, 0.4, 0.6, 0.8] }
-            );
-            this.sectionArray.forEach(section => {
-                observer.observe(section);
-            });
+            window.addEventListener("DOMContentLoaded", () => this.loadScrollers());
         }
     }
 }

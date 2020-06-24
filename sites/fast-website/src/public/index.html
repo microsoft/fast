@@ -11,7 +11,6 @@
       use-defaults
       type-ramp-base-font-size="16px"
     >
-      <background-design></background-design>
       <div class="wrapper">
         <header class="header">
           <fast-anchor class="logo" slot="start" appearance="lightweight" href="/" aria-label="Home" alt="FAST">
@@ -35,11 +34,6 @@
             </div>
           </site-navigation>
         </header>
-
-        <div class="side-nav-container">
-          <site-side-navigation category="links" class="social-links"></site-side-navigation>
-          <site-side-navigation category="scroll" class="section-scroll"></site-side-navigation>
-        </div>
 
         <section class="section hero-section" id="hero">
           <div class="section-content">
@@ -103,22 +97,27 @@
           </div>
         </section>
 
-        <fast-divider class="footer-divider" role="seperator"></fast-divider>
+        <aside class="side-nav-container">
+          <site-side-navigation category="links" class="social-links"></site-side-navigation>
+          <site-side-navigation category="scroll" class="section-scroll"></site-side-navigation>
+        </aside>
 
-          <footer class="footer">
-            <site-navigation>
-              <ul>
-                <li><fast-anchor appearance="lightweight" href="https://github.com/microsoft/fast-dna/blob/master/LICENSE">License</fast-anchor></li>
-                <li><fast-anchor appearance="lightweight" href="https://privacy.microsoft.com/en-US/privacystatement">Privacy & Cookies</fast-anchor></li>
-                <li><fast-anchor appearance="lightweight" href="https://www.microsoft.com/en-us/legal/intellectualproperty/copyright/default.aspx">Terms of Use</fast-anchor></li>
-                <li><p>&copy; 2020 Microsoft</p></li>
-              </ul>
-            </site-navigation>
-            <fast-anchor class="logo" appearance="lightweight" href="/" aria-label="Home">
-              <%= require("svg/icon-brand.svg") %>
-            </fast-anchor>
-          </footer>
+        <fast-divider class="footer-divider" role="seperator"></fast-divider>
+        <footer class="footer">
+          <site-navigation>
+            <ul>
+              <li><fast-anchor appearance="lightweight" href="https://github.com/microsoft/fast-dna/blob/master/LICENSE">License</fast-anchor></li>
+              <li><fast-anchor appearance="lightweight" href="https://privacy.microsoft.com/en-US/privacystatement">Privacy & Cookies</fast-anchor></li>
+              <li><fast-anchor appearance="lightweight" href="https://www.microsoft.com/en-us/legal/intellectualproperty/copyright/default.aspx">Terms of Use</fast-anchor></li>
+              <li><p>&copy; 2020 Microsoft</p></li>
+            </ul>
+          </site-navigation>
+          <fast-anchor class="logo" appearance="lightweight" href="/" aria-label="Home">
+            <%= require("svg/icon-brand.svg") %>
+          </fast-anchor>
+        </footer>
       </div>
+      <background-design></background-design>
     </fast-design-system-provider>
   </body>
 </html>
