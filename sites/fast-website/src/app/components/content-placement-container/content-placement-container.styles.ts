@@ -64,7 +64,7 @@ export const ContentPlacementContainerStyles = css`
     :host site-feature-card:focus-within,
     :host site-content-placement:hover,
     :host site-content-placement:focus-within {
-        --elevation: 4;
+        --elevation: 16;
         background: ${neutralFillFocusBehavior.var};
         border-radius: calc(var(--corner-radius) * 1px);
         color: currentColor;
