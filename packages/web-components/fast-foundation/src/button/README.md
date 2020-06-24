@@ -5,7 +5,7 @@ sidebar_label: button
 custom_edit_url: https://github.com/microsoft/fast-dna/edit/master/packages/web-components/fast-foundation/src/button/README.md
 ---
 
-`fast-button` is a web component implementation of an [HTML button element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button). The component supports several visual apperances (accent, lightweight, neutral, outline, stealth).
+`fast-button` is a web component implementation of an [HTML button element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button). The component supports several visual appearances (accent, lightweight, neutral, outline, stealth).
 
 ## Usage
 
@@ -15,7 +15,7 @@ custom_edit_url: https://github.com/microsoft/fast-dna/edit/master/packages/web-
 </fast-design-system-provider>
 ```
 
-## Applying Custom Styles
+## Applying custom styles
 
 ```ts
 import { customElement } from "@microsoft/fast-element";
