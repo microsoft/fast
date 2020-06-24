@@ -417,7 +417,7 @@ export class MenuItem extends FASTElement {
     checked: boolean;
     disabled: boolean;
     expanded: boolean;
-    // (undocumented)
+    // @internal (undocumented)
     handleMenuItemClick: (e: MouseEvent) => void;
     // @internal (undocumented)
     handleMenuItemKeyDown: (e: KeyboardEvent) => boolean;
@@ -784,9 +784,8 @@ export enum TextFieldType {
 
 // @public (undocumented)
 export class TreeItem extends FASTElement {
-    constructor();
     // (undocumented)
-    childItems: Node[];
+    childItems: HTMLElement[];
     // (undocumented)
     connectedCallback(): void;
     // (undocumented)
@@ -798,7 +797,7 @@ export class TreeItem extends FASTElement {
     // (undocumented)
     expanded: boolean;
     // (undocumented)
-    filteredTreeItems(unfiltered: Node[]): HTMLElement[];
+    filteredTreeItems(items: Node[]): HTMLElement[];
     // (undocumented)
     focusable: boolean;
     // (undocumented)
@@ -823,7 +822,9 @@ export class TreeItem extends FASTElement {
     renderCollapsedChildren: boolean;
     // (undocumented)
     selected: boolean;
-    }
+    // (undocumented)
+    showNodes: boolean;
+}
 
 // @public (undocumented)
 export interface TreeItem extends StartEnd {
@@ -837,7 +838,7 @@ export class TreeView extends FASTElement {
     // (undocumented)
     connectedCallback(): void;
     // (undocumented)
-    currentSelected: HTMLElement | null;
+    currentSelected: HTMLElement | TreeItem | null;
     // (undocumented)
     focusable: boolean;
     // (undocumented)

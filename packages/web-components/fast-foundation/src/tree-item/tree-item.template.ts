@@ -9,7 +9,7 @@ export const TreeItemTemplate = html<TreeItem>`
         class="${x => (x.expanded ? "expanded" : "")} ${x =>
             x.selected ? "selected" : ""} ${x => (x.nested ? "nested" : "")}
             ${x => (x.disabled ? "disabled" : "")}"
-        aria-expanded="${x => (x.hasItems ? x.expanded : void 0)}"
+        aria-expanded="${x => (x.expanded ? x.expanded : void 0)}"
         aria-selected="${x => x.selected}"
         aria-disabled="${x => x.disabled}"
         @focus=${(x, c) => x.handleFocus(c.event as FocusEvent)}
@@ -24,7 +24,7 @@ export const TreeItemTemplate = html<TreeItem>`
         >
             <div class="content-region" part="content-region">
                 ${when(
-                    x => x.childItems && x.childItems.length > 0,
+                    x => x.filteredTreeItems(x.childItems).length > 0,
                     html<TreeItem>`
                         <div
                             aria-hidden="true"
@@ -51,10 +51,7 @@ export const TreeItemTemplate = html<TreeItem>`
             </div>
         </div>
         ${when(
-            x =>
-                x.childItems &&
-                x.childItems.length > 0 &&
-                (x.renderCollapsedChildren || x.expanded),
+            x => x.filteredTreeItems(x.childItems).length > 0 && x.expanded,
             html<TreeItem>`
                 <div role="group" class="items" part="items">
                     <slot name="item" ${slotted("items")}></slot>

@@ -39,25 +39,20 @@ export class TreeItem extends FASTElement {
     public hasItems: boolean;
 
     @observable
-    public childItems: Node[];
-    private childItemsChanged(): void {
-        console.log("childItemsChanged ***");
-    }
+    public childItems: HTMLElement[];
 
     @observable
     public items: HTMLElement[];
     private itemsChanged(oldValue, newValue): void {
         // we only want to project the slot of there will be items
         //this.hasItems = this.querySelectorAll("[slot='item']").length > 0;
-
+        console.log("slotted itemsChanged newVaue:", newValue);
         if (this.$fastController.isConnected) {
             this.items.forEach((node: HTMLElement) => {
                 if (node instanceof TreeItem) {
                     (node as TreeItem).nested = true;
                 }
             });
-
-            this.hasItems = this.items.length > 0;
         }
     }
 
@@ -69,16 +64,23 @@ export class TreeItem extends FASTElement {
 
     private notifier: Notifier;
 
-    constructor() {
-        super();
-        //this.handleItemsChange();
-    }
-
     private getParentTreeNode(): TreeView | null | undefined {
         const parentNode: Element | null | undefined = this.parentElement!.closest(
             "[role='tree']"
         );
         return parentNode as TreeView;
+    }
+
+    public filteredTreeItems(items: Node[]): HTMLElement[] {
+        const htmlNodes: HTMLElement[] = [];
+        if (items) {
+            items.forEach((item: Node) => {
+                if (item instanceof HTMLElement) {
+                    htmlNodes.push(item);
+                }
+            });
+        }
+        return htmlNodes;
     }
 
     public connectedCallback(): void {
@@ -100,16 +102,6 @@ export class TreeItem extends FASTElement {
         if (this.notifier) {
             this.notifier.unsubscribe(this, "renderCollapsedNodes");
         }
-    }
-
-    public filteredTreeItems(unfiltered: Node[]): HTMLElement[] {
-        const filteredItems: HTMLElement[] = [];
-        unfiltered.forEach((node: Node) => {
-            if (node instanceof TreeItem) {
-                filteredItems.push(node as TreeItem);
-            }
-        });
-        return filteredItems;
     }
 
     public handleChange(source: any, propertyName: string) {
@@ -264,10 +256,8 @@ export class TreeItem extends FASTElement {
     }
 
     private setExpanded(expanded: boolean): void {
-        if (this.hasItems) {
-            this.expanded = expanded;
-            this.$emit("expanded-change", this);
-        }
+        this.expanded = expanded;
+        this.$emit("expanded-change", this);
     }
 }
 

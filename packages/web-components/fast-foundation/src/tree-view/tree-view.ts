@@ -12,7 +12,7 @@ export class TreeView extends FASTElement {
     public focusable: boolean = true;
 
     @observable
-    public currentSelected: HTMLElement | null;
+    public currentSelected: HTMLElement | TreeItem | null;
 
     @observable
     private lastFocused: HTMLElement;
@@ -147,7 +147,8 @@ export class TreeView extends FASTElement {
         const newSelection: HTMLElement = e.target as HTMLElement;
         if (newSelection !== this.currentSelected) {
             if (this.currentSelected) {
-                this.currentSelected.removeAttribute("selected");
+                // TODO: fix this below, shouldn't need both
+                (this.currentSelected as HTMLElement).removeAttribute("selected");
                 (this.currentSelected as TreeItem).selected = false;
             }
             this.currentSelected = newSelection;
