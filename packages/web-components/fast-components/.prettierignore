@@ -1,4 +1,5 @@
 coverage/*
 dist/*
 src/default-palette.ts
+src/mock-ui/fixtures/wasm/*
 *.spec.ts

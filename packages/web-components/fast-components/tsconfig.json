@@ -18,5 +18,8 @@
             "ES2015"
         ]
     },
-    "include": ["src"]
+    "include": ["src"],
+    "exclude": [
+        "src/mock-ui/fixtures/wasm/**/*"
+    ]
 }

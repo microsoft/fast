@@ -8,3 +8,5 @@ coverage
 .storybook
 # don't lint tests
 *.spec.*
+# don't lint wasm
+wasm

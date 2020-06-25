@@ -6,3 +6,6 @@ dist
 
 # Never lint coverage output
 coverage
+
+# Never lint wasm
+wasm
