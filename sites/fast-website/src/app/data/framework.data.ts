@@ -7,12 +7,6 @@ export interface FrameworkContentPlacementData {
 export const frameworkContentPlacementData: FrameworkContentPlacementData[] = [
     {
         body:
-            "FAST works flawlessly with both Aurelia 1 and Aurelia 2, with full integration into the binding engine and component model.",
-        header: "Aurelia",
-        headerSubscript: "1 & 2",
-    },
-    {
-        body:
             "Angular supports binding syntax for setting both attributes and properties, though the default binding syntax will always set properties on an element.",
         header: "Angular",
         headerSubscript: "8.2.14",
@@ -24,8 +18,9 @@ export const frameworkContentPlacementData: FrameworkContentPlacementData[] = [
     },
     {
         body:
-            "Vue fully supports custom elements and by default passes all data to them as attributes. The framework also provides a special syntax to bind properties.",
-        header: "Vue",
+            "FAST works flawlessly with both Aurelia 1 and Aurelia 2, with full integration into the binding engine and component model.",
+        header: "Aurelia",
+        headerSubscript: "1 & 2",
     },
     {
         body:
@@ -37,5 +32,10 @@ export const frameworkContentPlacementData: FrameworkContentPlacementData[] = [
             "While the React team works to fully support custom elements in v17, we're working hard to provide a wrapper to seamlessly support integration for v16.x.x.",
         header: "React",
         headerSubscript: "Coming soon",
+    },
+    {
+        body:
+            "Vue fully supports custom elements and by default passes all data to them as attributes. The framework also provides a special syntax to bind properties.",
+        header: "Vue",
     },
 ];
