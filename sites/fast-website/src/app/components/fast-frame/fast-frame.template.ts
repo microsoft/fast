@@ -283,7 +283,8 @@ export const FastFrameTemplate = html<FastFrame>`
                 base-height-multiplier="${x => x.baseHeightMultiplier}"
                 base-horizontal-spacing-multiplier="${x =>
                     x.baseHorizontalSpacingMultiplier}"
-                :accentPalette=${x => x.accentPalette}
+                :accentPalette=${x =>
+                    Array.isArray(x.accentPalette) ? x.accentPalette : null}
             >
                 <fast-design-system-provider
                     density="0"
