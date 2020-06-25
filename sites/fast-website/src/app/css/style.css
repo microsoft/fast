@@ -337,16 +337,20 @@ fast-badge::part(control) {
     align-items: center;
   }
 
-  .header .site-navigation {
+  .header .site-navigation{
     grid-column: span 3 / -1;
+  }
+
+  .header {
     position: fixed;
+    width: 100%;
   }
 
   .header .site-navigation.opened {
     padding-right: calc(var(--width-offset) * 1px);
   }
 
-  .header site-navigation::before {
+  .header::before {
     background: var(--background-color);
     content: "";
     position: absolute;
@@ -377,7 +381,6 @@ fast-badge::part(control) {
     transition:
       transform 300ms ease-in-out 0s,
       visibility 0s linear 300ms;
-
     visibility: hidden;
     z-index: 0;
   }
