@@ -178,11 +178,13 @@ class Preview extends Foundation<
                     })
                 )
             );
-            if (!this.state.transparentBackground) {
-                designSystemProvider.setAttribute(
-                    "style",
-                    "background: var(--background-color); min-height: 100vh; min-width: 100vw;"
-                );
+            designSystemProvider.setAttribute(
+                "style",
+                "min-height: 100vh; min-width: 100vw;"
+            );
+
+            if (this.state.transparentBackground) {
+                designSystemProvider.setAttribute("no-paint", "");
             }
 
             designSystemProvider.appendChild(innerDiv);
