@@ -112,13 +112,13 @@ Vertical:
 
 > In vertical toolbars, Up Arrow and Down Arrow navigate among controls. Left Arrow and Right Arrow can duplicate Up Arrow and Down Arrow, respectively, or can be reserved for operating controls, such as horizontal sliders that require horizontal arrow keys to operate.
 
-While affordances are given for secondary navigation methods, the initial stance of FAST-DNA is to not support the methods mentioned above in order to not complicate/convolute the API or cause conflict with interaction models for controls contained within the toolbar (such as a select or dropdown). As we gain feedback on the control, we can look at how we may want to support the above if/when it is requested.
+While affordances are given for secondary navigation methods, the initial stance of FAST is to not support the methods mentioned above in order to not complicate/convolute the API or cause conflict with interaction models for controls contained within the toolbar (such as a select or dropdown). As we gain feedback on the control, we can look at how we may want to support the above if/when it is requested.
 
 #### Disabled controls
 
 > Typically, disabled elements are not focusable when navigating with a keyboard. However, in circumstances where discoverability of a function is crucial, it may be helpful if disabled controls are focusable so screen reader users are more likely to be aware of their presence.
 
-Following the "flexible" principle of FAST-DNA, I think we should support an API which enables exposing disabled controls to users. This allows implementors to decide if their circumstances warrant exposing that functionality or not. A simple solution here is that if an author wants to expose a disabled control, they would simply add it to the tabindex:
+Following the "flexible" principle of FAST, I think we should support an API which enables exposing disabled controls to users. This allows implementors to decide if their circumstances warrant exposing that functionality or not. A simple solution here is that if an author wants to expose a disabled control, they would simply add it to the tabindex:
 
 ```html
 <fast-button disabled tabindex="0">Disabled</fast-button>

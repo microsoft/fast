@@ -7,7 +7,7 @@ As defined by the W3C:
 
 ### Use Cases
 
-- Frank finds a spelling error in the FAST-DNA documentation. He submits a pull request (PR) to fix the error and goes to eat lunch while waiting for the maintainers to review his PR. Upon returning from lunch he notices a widget on the screen saying certain status checks failed. He clicks on the headline of the widget and it reveals additional information stating that he needs to run prettier to ensure proper formatting. He clicks the headline again and the additional information collapses. Frank runs prettier and his PR is completed successfully.
+- Frank finds a spelling error in the FAST documentation. He submits a pull request (PR) to fix the error and goes to eat lunch while waiting for the maintainers to review his PR. Upon returning from lunch he notices a widget on the screen saying certain status checks failed. He clicks on the headline of the widget and it reveals additional information stating that he needs to run prettier to ensure proper formatting. He clicks the headline again and the additional information collapses. Frank runs prettier and his PR is completed successfully.
 
 - On April 16th Randy wakes up in a cold sweat because he realized he made a mistake in filing his taxes with the IRS. He opens his laptop and goes to the IRS website and sees a link to "frequently asked questions". Randy sees a list of questions on the page with an arrow next to it indicating that answers are hidden. He sees a question titled, "What should I do if I made a mistake on my federal turn that I've already filed?" Randy clicks the question and sees a section detailing out the exact steps to take. With his anxiety eased, Randy goes back to bed and falls asleep.
 

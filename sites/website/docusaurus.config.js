@@ -5,7 +5,7 @@ module.exports = {
     baseUrl: "/",
     favicon: "img/favicon/favicon.ico",
     organizationName: "microsoft",
-    projectName: "fast-dna",
+    projectName: "fast",
     scripts: [
         {
             src: "https://unpkg.com/@microsoft/fast-components",
@@ -30,7 +30,7 @@ module.exports = {
             },
             links: [
                 {
-                    href: "https://github.com/microsoft/fast-dna",
+                    href: "https://github.com/microsoft/fast",
                     label: "GitHub",
                     position: "right",
                 },
@@ -56,10 +56,6 @@ module.exports = {
                     title: "Community",
                     items: [
                         {
-                            label: "Stack Overflow",
-                            href: "http://stackoverflow.com/questions/tagged/fast-dna",
-                        },
-                        {
                             label: "Discord",
                             href: "https://discord.gg/FcSNfg4",
                         },
@@ -70,11 +66,11 @@ module.exports = {
                     items: [
                         {
                             label: "Blog",
-                            href: "https://medium.com/fast-dna",
+                            href: "https://medium.com/fast",
                         },
                         {
                             label: "GitHub",
-                            href: "https://github.com/microsoft/fast-dna",
+                            href: "https://github.com/microsoft/fast",
                         },
                         {
                             label: "Twitter",
@@ -92,7 +88,7 @@ module.exports = {
             {
                 docs: {
                     sidebarPath: require.resolve("./sidebars.js"),
-                    editUrl: "https://github.com/microsoft/fast-dna",
+                    editUrl: "https://github.com/microsoft/fast",
                 },
                 theme: {
                     customCss: require.resolve("./src/css/custom.css"),

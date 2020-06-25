@@ -118,7 +118,7 @@ export const DraggableNavigationTreeItem: React.FC<NavigationTreeItemProps> = ({
         },
         end(): void {
             // TODO: investigate why when not dropped on a drop target this takes extra time to respond
-            // see issue: https://github.com/microsoft/fast-dna/issues/2867
+            // see issue: https://github.com/microsoft/fast/issues/2867
             dragEnd();
         },
     });

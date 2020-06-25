@@ -2,7 +2,7 @@
 id: introduction
 title: Introduction
 sidebar_label: Introduction
-custom_edit_url: https://github.com/microsoft/fast-dna/edit/master/sites/website/src/docs/introduction.md
+custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/src/docs/introduction.md
 ---
 
 Welcome to the FAST documentation! We're glad you're here. We can't wait to show you around.
@@ -63,6 +63,6 @@ If you're looking to get started using our components right away, take a look at
 
 ## Joining the community
 
-Looking to get answers to questions or engage with us in realtime? Our community is most active [on Discord](https://discord.gg/FcSNfg4). You can also ask for help on [Stack Overflow](https://stackoverflow.com/questions/tagged/fast-dna), submit requests and issues on [Github](https://github.com/Microsoft/fast-dna/issues/new/choose), or join us by contributing on [some good first issues via Github](https://github.com/Microsoft/fast-dna/labels/good%20first%20issue).
+Looking to get answers to questions or engage with us in realtime? Our community is most active [on Discord](https://discord.gg/FcSNfg4). Submit requests and issues on [Github](https://github.com/Microsoft/fast/issues/new/choose), or join us by contributing on [some good first issues via Github](https://github.com/Microsoft/fast/labels/good%20first%20issue).
 
 We look forward to building an amazing open source community with you!

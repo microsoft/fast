@@ -9,7 +9,7 @@ As defined by the W3C:
 
 ### Background
 
-Currently, a react implementation exists which supports a `defaultExpanded` value which sets the default expanded or collapsed state. In the event that the `defaultExpanded` value is false, but there is a selected child the tree will expand automatically. [Issue #2597](https://github.com/microsoft/fast-dna/issues/2597) requests an expanded prop to fully control the expanded/collapsed state.
+Currently, a react implementation exists which supports a `defaultExpanded` value which sets the default expanded or collapsed state. In the event that the `defaultExpanded` value is false, but there is a selected child the tree will expand automatically. [Issue #2597](https://github.com/microsoft/fast/issues/2597) requests an expanded prop to fully control the expanded/collapsed state.
 
 ### Use Cases
 
@@ -48,7 +48,7 @@ Drag & Drop support poses a unique set of challenges, especially if our goal is 
 **Considering the challenge that drag & drop would present for any given component, I think it's worth holding on that feature, and taking it up seperately.*
 
 ### Prior Art/Examples
-- [FAST-DNA (React)](https://explore.fast.design/components/tree-view)
+- [FAST (React)](https://explore.fast.design/components/tree-view)
 - [Material UI](https://material-ui.com/components/tree-view/)
 - [Lightning Design](https://www.lightningdesignsystem.com/components/trees/)
 - [Ant Design](https://ant.design/components/tree/)

@@ -135,7 +135,7 @@ async function copyArticleMarkdown() {
                 title: "Code of Conduct",
                 sidebar_label: "Code of Conduct",
                 custom_edit_url:
-                    "https://github.com/microsoft/fast-dna/edit/master/CODE_OF_CONDUCT.md",
+                    "https://github.com/microsoft/fast/edit/master/CODE_OF_CONDUCT.md",
             },
         },
         {
@@ -146,7 +146,7 @@ async function copyArticleMarkdown() {
                 title: "Contributor Guide",
                 sidebar_label: "Contributor Guide",
                 custom_edit_url:
-                    "https://github.com/microsoft/fast-dna/edit/master/CONTRIBUTING.md",
+                    "https://github.com/microsoft/fast/edit/master/CONTRIBUTING.md",
             },
         },
         {
@@ -156,8 +156,7 @@ async function copyArticleMarkdown() {
                 id: "license",
                 title: "License",
                 sidebar_label: "License",
-                custom_edit_url:
-                    "https://github.com/microsoft/fast-dna/edit/master/LICENSE",
+                custom_edit_url: "https://github.com/microsoft/fast/edit/master/LICENSE",
             },
         },
         {
@@ -168,7 +167,7 @@ async function copyArticleMarkdown() {
                 title: "Security",
                 sidebar_label: "Security",
                 custom_edit_url:
-                    "https://github.com/microsoft/fast-dna/edit/master/SECURITY.md",
+                    "https://github.com/microsoft/fast/edit/master/SECURITY.md",
             },
         },
         {
@@ -179,7 +178,7 @@ async function copyArticleMarkdown() {
                 title: "Acknowledgements",
                 sidebar_label: "Acknowledgements",
                 custom_edit_url:
-                    "https://github.com/microsoft/fast-dna/edit/master/packages/web-components/fast-element/docs/ACKNOWLEDGEMENTS.md",
+                    "https://github.com/microsoft/fast/edit/master/packages/web-components/fast-element/docs/ACKNOWLEDGEMENTS.md",
             },
         },
         {
@@ -190,7 +189,7 @@ async function copyArticleMarkdown() {
                 title: "Getting Started with FAST Element",
                 sidebar_label: "Getting Started",
                 custom_edit_url:
-                    "https://github.com/microsoft/fast-dna/edit/master/packages/web-components/fast-element/README.md",
+                    "https://github.com/microsoft/fast/edit/master/packages/web-components/fast-element/README.md",
             },
         },
     ];

@@ -2,7 +2,7 @@
 id: slider-label
 title: fast-slider-label
 sidebar_label: slider-label
-custom_edit_url: https://github.com/microsoft/fast-dna/edit/master/packages/web-components/fast-foundation/src/slider-label/README.md
+custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-foundation/src/slider-label/README.md
 ---
 
 The `fast-slider-label` component provides a default styled label to be placed inside a `fast-slider`. Users can choose to hide the mark as well as provide custom label content.

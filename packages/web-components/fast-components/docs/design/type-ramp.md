@@ -1,7 +1,7 @@
 ---
 id: type-ramp
 title: Type ramp
-custom_edit_url: https://github.com/microsoft/fast-dna/edit/master/packages/web-components/fast-components/docs/design/type-ramp.md
+custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-components/docs/design/type-ramp.md
 ---
 
 The FAST type ramp is exposed by the `FASTDesignSystemProvider` as CSS Custom Properties. It organizes the ramp around a _base_ font size and line-height, ascending and descending from the _base_. The CSS Custom Properties that can be used are:

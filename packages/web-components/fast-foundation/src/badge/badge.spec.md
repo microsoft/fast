@@ -15,7 +15,7 @@ A badge should allow the following properties:
 - `circular`, if circular styling is desired.
 
 ### Prior Art/Examples
-- [FAST-DNA (React)](https://explore.fast.design/components/badge)
+- [FAST (React)](https://explore.fast.design/components/badge)
 - [Material UI](https://material-ui.com/components/badges/)
 - [Lightning Design](https://www.lightningdesignsystem.com/components/badges/)
 - [Ant Design Badge](https://ant.design/components/badge/)

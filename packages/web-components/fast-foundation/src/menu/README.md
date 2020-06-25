@@ -2,7 +2,7 @@
 id: menu
 title: fast-menu
 sidebar_label: menu
-custom_edit_url: https://github.com/microsoft/fast-dna/edit/master/packages/web-components/fast-foundation/src/menu/README.md
+custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-foundation/src/menu/README.md
 ---
 
 The menu is a widget that offers a list of choices to the user, such as a set of actions or functions. While any DOM content is permissible as a child of the menu, only `fast-menu-item`'s and slotted content with a role of `menuitem`, `menuitemcheckbox`, or `menuitemradio` will receive keyboard support.

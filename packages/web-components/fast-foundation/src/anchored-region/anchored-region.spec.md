@@ -6,7 +6,7 @@ An *anchored region* is a container component which enables authors to create la
 
 ### Background
 
-This component is inspired by the ["Viewport positioner"](https://github.com/microsoft/fast-dna/tree/master/packages/fast-components-react-base/src/viewport-positioner)  component in the React component set.  It is used as a building block in other components to enable responsive flyouts, or positionable/scaling menus in the [select](https://github.com/microsoft/fast-dna/tree/master/packages/fast-components-react-base/src/select) component. 
+This component is inspired by the ["Viewport positioner"](https://github.com/microsoft/fast/tree/master/packages/fast-components-react-base/src/viewport-positioner)  component in the React component set.  It is used as a building block in other components to enable responsive flyouts, or positionable/scaling menus in the [select](https://github.com/microsoft/fast/tree/master/packages/fast-components-react-base/src/select) component. 
 
 A primary goal of the component was to enable authors to create responsive layouts without resorting to expensive [getBoundingClientRect()](https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect) calls. It instead depends on the more performant [IntersectionObserver](https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver) and [ResizeObserver](https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver) interfaces.
 
@@ -56,7 +56,7 @@ Also, nested scrolling containers can be a problem.  For one, the component assu
 It is worth noting that one of the main goals of this component is to be a performant layout widget, so while we may be able to technically make the component cover more corner cases we should not necessarily do so if the perf impact is too high.
 
 ### Prior Art/Examples
-- [FAST-DNA React Viewport positioner component](https://github.com/microsoft/fast-dna/tree/master/packages/fast-components-react-base/src/viewport-positioner)
+- [FAST React Viewport positioner component](https://github.com/microsoft/fast/tree/master/packages/fast-components-react-base/src/viewport-positioner)
 
 ---
 

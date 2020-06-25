@@ -8,9 +8,9 @@
 [![TypeScript](https://img.shields.io/badge/%3C%2F%3E-TypeScript-%230074c1.svg)](http://www.typescriptlang.org/)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-f8bc45.svg)](https://github.com/prettier/prettier)
 
-[![Maintainability](https://api.codeclimate.com/v1/badges/8a74621e634a6e9b9561/maintainability)](https://codeclimate.com/github/Microsoft/fast-dna/maintainability)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/8a74621e634a6e9b9561/test_coverage)](https://codeclimate.com/github/Microsoft/fast-dna/test_coverage)
-![workflows](https://github.com/microsoft/fast-dna/workflows/CI%20-%20FAST/badge.svg?branch=master&event=push)
+[![Maintainability](https://api.codeclimate.com/v1/badges/8a74621e634a6e9b9561/maintainability)](https://codeclimate.com/github/Microsoft/fast/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/8a74621e634a6e9b9561/test_coverage)](https://codeclimate.com/github/Microsoft/fast/test_coverage)
+![workflows](https://github.com/microsoft/fast/workflows/CI%20-%20FAST/badge.svg?branch=master&event=push)
 
 [![Discord](https://img.shields.io/badge/chat%20on-discord-7289da.svg)](https://discord.gg/FcSNfg4)
 [![Twitter](https://img.shields.io/twitter/follow/fast_dna.svg?style=social&label=Follow)](https://twitter.com/intent/follow?screen_name=fast_dna)
@@ -75,7 +75,7 @@ If you're looking to get started using our components right away, take a look at
 
 ## Joining the Community
 
-Looking to get answers to questions or engage with us in realtime? Our community is most active [on Discord](https://discord.gg/FcSNfg4). You can also ask for help on [Stack Overflow](https://stackoverflow.com/questions/tagged/fast-dna), submit requests and issues on [Github](https://github.com/Microsoft/fast-dna/issues/new/choose), or join us by contributing on [some good first issues via Github](https://github.com/Microsoft/fast-dna/labels/good%20first%20issue).
+Looking to get answers to questions or engage with us in realtime? Our community is most active [on Discord](https://discord.gg/FcSNfg4). Submit requests and issues on [Github](https://github.com/Microsoft/fast/issues/new/choose), or join us by contributing on [some good first issues via Github](https://github.com/Microsoft/fast/labels/good%20first%20issue).
 
 We look forward to building an amazing open source community with you!
 
@@ -109,9 +109,8 @@ Because FAST has abstracted base components from their style, you get a head sta
 ## Contact
 
 * Join the community and chat with us in real-time on [Discord](https://discord.gg/FcSNfg4).
-* Ask questions on [Stack Overflow](https://stackoverflow.com/questions/tagged/fast-dna). 
-* Submit requests and issues on [Github](https://github.com/Microsoft/fast-dna/issues/new/choose).  
-* Contribute by helping out on some of our recommended first issues on [Github](https://github.com/Microsoft/fast-dna/labels/good%20first%20issue).
+* Submit requests and issues on [Github](https://github.com/Microsoft/fast/issues/new/choose).  
+* Contribute by helping out on some of our recommended first issues on [Github](https://github.com/Microsoft/fast/labels/good%20first%20issue).
 
 ## Status
 

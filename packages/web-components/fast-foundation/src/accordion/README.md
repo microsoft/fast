@@ -2,7 +2,7 @@
 id: accordion
 title: fast-accordion
 sidebar_label: accordion
-custom_edit_url: https://github.com/microsoft/fast-dna/edit/master/packages/web-components/fast-foundation/src/accordion/README.md
+custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-foundation/src/accordion/README.md
 ---
 
 ## Usage

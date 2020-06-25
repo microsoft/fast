@@ -14,11 +14,11 @@ Used anywhere an author might otherwise use `<textarea></textarea>`.
 
 ### Risks and Challenges
 
-We want general feature-parity between this component and the typical corresponding element. Most of these concerns are addressed by https://github.com/microsoft/fast-dna/pull/2723, but some stateful nuance will need to be handled by this component.
+We want general feature-parity between this component and the typical corresponding element. Most of these concerns are addressed by https://github.com/microsoft/fast/pull/2723, but some stateful nuance will need to be handled by this component.
 
 ### Prior Art/Examples
 
-- [FAST-DNA (React)](https://explore.fast.design/components/text-area)
+- [FAST (React)](https://explore.fast.design/components/text-area)
 - [Lightning Design](https://www.lightningdesignsystem.com/components/textarea/)
 - [Atlassian](https://atlaskit.atlassian.com/packages/core/textarea)
 - [Evergreen](https://evergreen.segment.com/components/textarea/)

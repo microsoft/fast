@@ -65,7 +65,7 @@ export const featureCardData: FeatureCardData[] = [
             {
                 anchorText: "View GitHub",
                 url:
-                    "https://github.com/microsoft/fast-dna/tree/master/packages/utilities/fast-animation",
+                    "https://github.com/microsoft/fast/tree/master/packages/utilities/fast-animation",
             },
         ],
     },
@@ -77,7 +77,7 @@ export const featureCardData: FeatureCardData[] = [
             {
                 anchorText: "View GitHub",
                 url:
-                    "https://github.com/microsoft/fast-dna/tree/master/packages/utilities/fast-colors",
+                    "https://github.com/microsoft/fast/tree/master/packages/utilities/fast-colors",
             },
         ],
     },

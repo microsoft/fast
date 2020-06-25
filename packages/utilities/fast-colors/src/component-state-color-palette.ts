@@ -95,7 +95,7 @@ export class ComponentStateColorPalette {
         );
         const darkPercent: number = darkRefIndex / (steps - 1);
 
-        // Issue https://github.com/microsoft/fast-dna/issues/1904
+        // Issue https://github.com/microsoft/fast/issues/1904
         // Creating a color from H, S, and a known L value is not the inverse of getting the relative
         // luminace as above. Need to derive a relative luminance version of the color to better match on the dark end.
 

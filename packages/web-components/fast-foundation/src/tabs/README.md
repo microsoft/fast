@@ -2,7 +2,7 @@
 id: tabs
 title: fast-tabs
 sidebar_label: tabs
-custom_edit_url: https://github.com/microsoft/fast-dna/edit/master/packages/web-components/fast-foundation/src/tabs/README.md
+custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-foundation/src/tabs/README.md
 ---
 
 ## Usage

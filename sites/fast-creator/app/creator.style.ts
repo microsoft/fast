@@ -28,7 +28,7 @@ const style: ComponentStyles<{}, DesignSystem> = {
         {
             fontFamily: "SegoeUIVF",
             src:
-                "url(https://res.cloudinary.com/fast-dna/raw/upload/v1558051831/SegoeUI-Roman-VF_web.ttf) format('truetype')",
+                "url(https://res.cloudinary.com/fast/raw/upload/v1558051831/SegoeUI-Roman-VF_web.ttf) format('truetype')",
             fontWeight: "1 1000",
         },
         {

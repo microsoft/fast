@@ -1,6 +1,6 @@
 ---
 name: Report a bug
-about: Report a bug to help us improve FAST-DNA.
+about: Report a bug to help us improve FAST.
 title: "[what is the issue?] in [where is the issue?]"
 labels: ''
 assignees: ''
