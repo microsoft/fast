@@ -88,6 +88,10 @@ export const ContentPlacementContainerStyles = css`
         color: ${neutralForegroundRestBehavior.var};
     }
 
+    fast-anchor::part(content)::before {
+        background: ${neutralForegroundRestBehavior.var};
+    }
+
     /* end */
 
     .headerSubscript {
