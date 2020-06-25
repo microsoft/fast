@@ -92,6 +92,13 @@ export const ContentPlacementContainerStyles = css`
         background: ${neutralForegroundRestBehavior.var};
     }
 
+    site-feature-card:hover fast-anchor::part(content)::before,
+    site-feature-card:focus-within fast-anchor::part(content)::before,
+    site-content-placement:hover fast-anchor::part(content)::before,
+    site-content-placement:focus-within fast-anchor::part(content)::before {
+        background: ${accentForegroundRestBehavior.var};
+    }
+
     /* end */
 
     .headerSubscript {
