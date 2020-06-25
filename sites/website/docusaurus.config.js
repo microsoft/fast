@@ -3,7 +3,7 @@ module.exports = {
     tagline: "The adaptive interface system for modern web experiences",
     url: "https://www.fast.design",
     baseUrl: "/",
-    favicon: "img/favicon/favicon.ico",
+    favicon: "bundle/favicon.ico",
     organizationName: "microsoft",
     projectName: "fast-dna",
     scripts: [
