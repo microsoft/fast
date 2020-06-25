@@ -83,7 +83,11 @@ export class FastFrame extends FASTElement {
                 this.lightness = accentColorHSL.l;
                 const parsedColor = parseColorHexRGB(this.accentColor);
                 this.accentPalette = createColorPalette(parsedColor as ColorRGBA64);
-                console.log(this.accentColor, this.accentPalette, createColorPalette(parsedColor as ColorRGBA64));
+                console.log(
+                    this.accentColor,
+                    this.accentPalette,
+                    createColorPalette(parsedColor as ColorRGBA64)
+                );
             }
         }
     };
