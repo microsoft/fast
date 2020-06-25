@@ -98,18 +98,6 @@ export class TreeItem extends FASTElement {
         return parentNode as HTMLElement;
     }
 
-    public filteredTreeItems(items: Node[]): HTMLElement[] {
-        const htmlNodes: HTMLElement[] = [];
-        if (items) {
-            items.forEach((item: Node) => {
-                if (isTreeItemElement(item as Element)) {
-                    htmlNodes.push(item as HTMLElement);
-                }
-            });
-        }
-        return htmlNodes;
-    }
-
     /**
      * @internal
      */
