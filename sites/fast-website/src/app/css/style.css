@@ -120,11 +120,11 @@ li {
   color: var(--neutral-foreground-rest);
 }
 
-.header .site-navigation li fast-anchor::part(content)::before {
+.header .site-navigation fast-anchor::part(content)::before {
   background: transparent;
 }
 
-.header .site-navigation li fast-anchor:focus::part(content)::before {
+.header .site-navigation fast-anchor:focus::part(content)::before {
   background: var(--neutral-foreground-rest);
 }
 
@@ -427,7 +427,7 @@ fast-badge::part(control) {
   }
 
   .header .site-navigation fast-anchor:hover::part(content)::before {
-    background: var(--accent-foreground-rest);
+    background: var(--neutral-foreground-rest);
   }
 
   site-navigation::part(nav-button) {
