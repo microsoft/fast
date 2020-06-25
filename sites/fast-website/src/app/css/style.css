@@ -337,7 +337,7 @@ fast-badge::part(control) {
     align-items: center;
   }
 
-  .header .site-navigation{
+  .header .site-navigation {
     grid-column: span 3 / -1;
   }
 
