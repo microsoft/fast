@@ -112,7 +112,7 @@ li {
 }
 
 site-navigation ::part(content) {
-  color: var(--neutral-foreground-rest);
+  color: var(--neutral-foreground-hint);
 }
 
 .header .logo,
@@ -137,6 +137,10 @@ site-navigation ::part(content) {
 
 .header .github-link::part(control) {
   justify-content: flex-end;
+}
+
+.header .github-link::part(content) {
+  color: var(--neutral-foreground-rest);
 }
 
 .footer .logo::part(content) {
