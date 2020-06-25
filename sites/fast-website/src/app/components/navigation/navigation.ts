@@ -26,8 +26,14 @@ export class Navigation extends FASTElement {
     }
 
     public toggleOpened(): void {
+        const htmlElement = document.body.parentElement as HTMLElement;
+        const widthOffset = window.innerWidth - document.body.clientWidth;
+
         this.opened = !this.opened;
         this.debounce = false;
+
+        htmlElement.style.setProperty("--width-offset", `${widthOffset}`);
+        htmlElement.classList.toggle("menu-opened", this.opened);
     }
 
     public handleFocusOut = (e: FocusEvent): void => {
