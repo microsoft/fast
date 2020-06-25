@@ -1,6 +1,10 @@
 import { html, ref, slotted } from "@microsoft/fast-element";
 import { TreeView } from "./tree-view";
 
+/**
+ * The template for the {@link @microsoft/fast-foundation#TreeView} component.
+ * @public
+ */
 export const TreeViewTemplate = html<TreeView>`
     <template
         role="tree"

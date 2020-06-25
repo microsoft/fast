@@ -2,6 +2,10 @@ import { children, html, ref, slotted, when } from "@microsoft/fast-element";
 import { endTemplate, startTemplate } from "../patterns/start-end";
 import { TreeItem } from "./tree-item";
 
+/**
+ * The template for the {@link @microsoft/fast-foundation#TreeItem} component.
+ * @public
+ */
 export const TreeItemTemplate = html<TreeItem>`
     <template
         role="treeitem"

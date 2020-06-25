@@ -21,6 +21,9 @@ import { TreeView } from "../tree-view";
 
 /**
  * check if the item is a tree item
+ * @public
+ * @remarks
+ * determines if element is an HTMLElement and if it has the role treeitem
  */
 export function isTreeItemElement(el: Element): el is HTMLElement {
     return isHTMLElement(el) && (el.getAttribute("role") as string) === "treeitem";
