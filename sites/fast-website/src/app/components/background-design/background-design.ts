@@ -86,7 +86,7 @@ export class BackgroundDesign extends FASTElement {
         };
         performAnimation(window.performance.now());
 
-        this.setupFadeObserver();
+        window.addEventListener("DOMContentLoaded", () => this.setupFadeObserver());
     }
 
     setupFadeObserver() {
@@ -99,9 +99,10 @@ export class BackgroundDesign extends FASTElement {
             { threshold: 0.5, root: null }
         );
 
-        const heroSection: HTMLElement = document.getElementById("hero") as HTMLElement;
-
-        observer.observe(heroSection);
+        const heroSection = document.getElementById("hero");
+        if (heroSection) {
+            observer.observe(heroSection);
+        }
     }
 
     setup() {
