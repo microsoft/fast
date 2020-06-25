@@ -801,8 +801,6 @@ export class TreeItem extends FASTElement {
     expandCollapseButton: HTMLDivElement;
     expanded: boolean;
     // (undocumented)
-    filteredTreeItems(items: Node[]): HTMLElement[];
-    // (undocumented)
     focusable: boolean;
     // (undocumented)
     handleBlur: (e: FocusEvent) => void;
