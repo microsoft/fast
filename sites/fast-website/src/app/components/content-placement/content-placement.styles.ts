@@ -10,28 +10,6 @@ export const ContentPlacementStyles = css`
         position: relative;
     }
 
-    :host(.framework_ContentPlacement)::before,
-    :host(.framework_ContentPlacement)::after {
-        content: "";
-        display: block;
-        background-color: currentColor;
-        opacity: 0.5;
-        position: absolute;
-    }
-
-    :host(.framework_ContentPlacement)::before {
-        width: 1px;
-        height: 100%;
-        left: -1px;
-        top: 0;
-    }
-
-    :host(.framework_ContentPlacement)::after {
-        height: 1px;
-        width: 100%;
-        top: -1px;
-    }
-
     fast-card {
         background: transparent;
         padding: calc(var(--design-unit) * 5px);

@@ -4,6 +4,8 @@ import { ColorRGBA64 } from "./color-rgba-64";
 /**
  * Adds a newItem to an already sorted list without needing to do a full re-sort.
  * Higher sort priority puts the newItem closer to the start (index 0) of the list.
+ *
+ * @public
  */
 export function insertIntoSortedList(
     list: PixelBox[],
@@ -37,6 +39,8 @@ export function insertIntoSortedList(
 
 /**
  * Represents a range of colors in RGB color space.
+ *
+ * @public
  */
 export class PixelBox {
     constructor(

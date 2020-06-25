@@ -12,7 +12,14 @@ import { ColorLCH } from "./color-lch";
 import { ColorRGBA64 } from "./color-rgba-64";
 import { clamp } from "./math-utilities";
 
-// The alpha channel of the input is ignored
+/**
+ * Saturate a color using LCH color space
+ *
+ * @remarks
+ * The alpha channel of the input is ignored
+ *
+ * @public
+ */
 export function saturateViaLCH(
     input: ColorRGBA64,
     saturation: number,
@@ -26,7 +33,14 @@ export function saturateViaLCH(
     return lchToRGB(new ColorLCH(lch.l, sat, lch.h));
 }
 
-// The alpha channel of the input is ignored
+/**
+ * De-saturate a color using LCH color space
+ *
+ * @remarks
+ * The alpha channel of the input is ignored
+ *
+ * @public
+ */
 export function desaturateViaLCH(
     input: ColorRGBA64,
     saturation: number,
@@ -35,7 +49,14 @@ export function desaturateViaLCH(
     return saturateViaLCH(input, -1 * saturation, saturationConstant);
 }
 
-// The alpha channel of the input is ignored
+/**
+ * Darken a color using LAB color space
+ *
+ * @remarks
+ * The alpha channel of the input is ignored
+ *
+ * @public
+ */
 export function darkenViaLAB(
     input: ColorRGBA64,
     amount: number,
@@ -46,7 +67,14 @@ export function darkenViaLAB(
     return labToRGB(new ColorLAB(darkened, lab.a, lab.b));
 }
 
-// The alpha channel of the input is ignored
+/**
+ * Lighten a color using LAB color space
+ *
+ * @remarks
+ * The alpha channel of the input is ignored
+ *
+ * @public
+ */
 export function lightenViaLAB(
     input: ColorRGBA64,
     amount: number,
@@ -55,6 +83,9 @@ export function lightenViaLAB(
     return darkenViaLAB(input, -1 * amount, darkenConstant);
 }
 
+/**
+ * @public
+ */
 export function blendBurnChannel(bottom: number, top: number): number {
     if (top === 0.0) {
         // Despite the discontinuity, other sources seem to use 0.0 here instead of 1
@@ -63,7 +94,14 @@ export function blendBurnChannel(bottom: number, top: number): number {
     return 1.0 - (1.0 - bottom) / top;
 }
 
-// The alpha channel of the input is ignored
+/**
+ * Blends two colors with the burn mode
+ *
+ * @remarks
+ * The alpha channel of the input is ignored
+ *
+ * @public
+ */
 export function blendBurn(bottom: ColorRGBA64, top: ColorRGBA64): ColorRGBA64 {
     return new ColorRGBA64(
         blendBurnChannel(bottom.r, top.r),
@@ -73,7 +111,14 @@ export function blendBurn(bottom: ColorRGBA64, top: ColorRGBA64): ColorRGBA64 {
     );
 }
 
-// The alpha channel of the input is ignored
+/**
+ * Blends two colors
+ *
+ * @remarks
+ * The alpha channel of the input is ignored
+ *
+ * @public
+ */
 export function blendColor(bottom: ColorRGBA64, top: ColorRGBA64): ColorRGBA64 {
     const bottomHSL: ColorHSL = rgbToHSL(bottom);
     const topHSL: ColorHSL = rgbToHSL(top);
@@ -85,11 +130,21 @@ export function blendColor(bottom: ColorRGBA64, top: ColorRGBA64): ColorRGBA64 {
     return hslToRGB(new ColorHSL(topHSL.h, topHSL.s, bottomHSL.l));
 }
 
+/**
+ * @public
+ */
 export function blendDarkenChannel(bottom: number, top: number): number {
     return Math.min(bottom, top);
 }
 
-// The alpha channel of the input is ignored
+/**
+ * Blends two colors with the darken mode
+ *
+ * @remarks
+ * The alpha channel of the input is ignored
+ *
+ * @public
+ */
 export function blendDarken(bottom: ColorRGBA64, top: ColorRGBA64): ColorRGBA64 {
     return new ColorRGBA64(
         blendDarkenChannel(bottom.r, top.r),
@@ -99,6 +154,9 @@ export function blendDarken(bottom: ColorRGBA64, top: ColorRGBA64): ColorRGBA64 
     );
 }
 
+/**
+ * @public
+ */
 export function blendDodgeChannel(bottom: number, top: number): number {
     if (top >= 1.0) {
         return 1.0;
@@ -110,7 +168,14 @@ export function blendDodgeChannel(bottom: number, top: number): number {
     return retVal;
 }
 
-// The alpha channel of the input is ignored
+/**
+ * Blends two colors with the dodge mode
+ *
+ * @remarks
+ * The alpha channel of the input is ignored
+ *
+ * @public
+ */
 export function blendDodge(bottom: ColorRGBA64, top: ColorRGBA64): ColorRGBA64 {
     return new ColorRGBA64(
         blendDodgeChannel(bottom.r, top.r),
@@ -120,11 +185,21 @@ export function blendDodge(bottom: ColorRGBA64, top: ColorRGBA64): ColorRGBA64 {
     );
 }
 
+/**
+ * @public
+ */
 export function blendLightenChannel(bottom: number, top: number): number {
     return Math.max(bottom, top);
 }
 
-// The alpha channel of the input is ignored
+/**
+ * Blends two colors with the lighten mode
+ *
+ * @remarks
+ * The alpha channel of the input is ignored
+ *
+ * @public
+ */
 export function blendLighten(bottom: ColorRGBA64, top: ColorRGBA64): ColorRGBA64 {
     return new ColorRGBA64(
         blendLightenChannel(bottom.r, top.r),
@@ -134,11 +209,21 @@ export function blendLighten(bottom: ColorRGBA64, top: ColorRGBA64): ColorRGBA64
     );
 }
 
+/**
+ * @public
+ */
 export function blendMultiplyChannel(bottom: number, top: number): number {
     return bottom * top;
 }
 
-// The alpha channel of the input is ignored
+/**
+ * Blends two colors with the multiply mode
+ *
+ * @remarks
+ * The alpha channel of the input is ignored
+ *
+ * @public
+ */
 export function blendMultiply(bottom: ColorRGBA64, top: ColorRGBA64): ColorRGBA64 {
     return new ColorRGBA64(
         blendMultiplyChannel(bottom.r, top.r),
@@ -148,6 +233,9 @@ export function blendMultiply(bottom: ColorRGBA64, top: ColorRGBA64): ColorRGBA6
     );
 }
 
+/**
+ * @public
+ */
 export function blendOverlayChannel(bottom: number, top: number): number {
     if (bottom < 0.5) {
         return clamp(2.0 * top * bottom, 0, 1);
@@ -155,7 +243,14 @@ export function blendOverlayChannel(bottom: number, top: number): number {
     return clamp(1.0 - 2.0 * (1.0 - top) * (1.0 - bottom), 0, 1);
 }
 
-// The alpha channel of the input is ignored
+/**
+ * Blends two colors with the overlay mode
+ *
+ * @remarks
+ * The alpha channel of the input is ignored
+ *
+ * @public
+ */
 export function blendOverlay(bottom: ColorRGBA64, top: ColorRGBA64): ColorRGBA64 {
     return new ColorRGBA64(
         blendOverlayChannel(bottom.r, top.r),
@@ -165,11 +260,21 @@ export function blendOverlay(bottom: ColorRGBA64, top: ColorRGBA64): ColorRGBA64
     );
 }
 
+/**
+ * @public
+ */
 export function blendScreenChannel(bottom: number, top: number): number {
     return 1.0 - (1.0 - top) * (1.0 - bottom);
 }
 
-// The alpha channel of the input is ignored
+/**
+ * Blends two colors with the screen mode
+ *
+ * @remarks
+ * The alpha channel of the input is ignored
+ *
+ * @public
+ */
 export function blendScreen(bottom: ColorRGBA64, top: ColorRGBA64): ColorRGBA64 {
     return new ColorRGBA64(
         blendScreenChannel(bottom.r, top.r),
@@ -179,6 +284,10 @@ export function blendScreen(bottom: ColorRGBA64, top: ColorRGBA64): ColorRGBA64 
     );
 }
 
+/**
+ * Color blend modes.
+ * @public
+ */
 export enum ColorBlendMode {
     Burn,
     Color,
@@ -190,7 +299,14 @@ export enum ColorBlendMode {
     Screen,
 }
 
-// The alpha channel of the input is ignored
+/**
+ * Blend two colors.
+ *
+ * @remarks
+ * The alpha channel of the input is ignored
+ *
+ * @public
+ */
 export function blend(
     mode: ColorBlendMode,
     bottom: ColorRGBA64,
@@ -217,10 +333,13 @@ export function blend(
             throw new Error("Unknown blend mode");
     }
 }
-
-// Alpha channel of bottom is ignored
-// The returned color always has an alpha channel of 1
-// Different programs (eg: paint.net, photoshop) will give different answers than this occasionally but within +/- 1/255 in each channel. Just depends on the details of how they round off decimals
+/**
+ * Alpha channel of bottom is ignored
+ * The returned color always has an alpha channel of 1
+ * Different programs (eg: paint.net, photoshop) will give different answers than this occasionally but within +/- 1/255 in each channel. Just depends on the details of how they round off decimals
+ *
+ * @public
+ */
 export function computeAlphaBlend(bottom: ColorRGBA64, top: ColorRGBA64): ColorRGBA64 {
     if (top.a >= 1) {
         return top;

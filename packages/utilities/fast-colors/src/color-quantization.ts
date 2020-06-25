@@ -22,12 +22,20 @@ function countValidBoxes(
     return retVal;
 }
 
+/**
+ * A quantized color
+ * @public
+ */
 export interface QuantizedColor {
     color: ColorRGBA64;
     pixelCount: number;
     colorVolume: number;
 }
 
+/**
+ * A quantize configuration object.
+ * @public
+ */
 export interface QuantizeConfig {
     /**
      * Must be in the range [1,8]. Memory use increases as 4*2^(3*significantBits). Setting significantBits to 8 requires a 64 megabyte histogram.
@@ -60,6 +68,10 @@ export interface QuantizeConfig {
     maxIterations: number;
 }
 
+/**
+ * The default quantize configuration.
+ * @public
+ */
 export const defaultQuantizeConfig: QuantizeConfig = {
     significantBits: 5,
     pixelSkipping: 5,
@@ -85,6 +97,8 @@ export const defaultQuantizeConfig: QuantizeConfig = {
 /**
  * The image stored in the source PixelBlob is reduced down to a small set of colors.
  * Based on the Modified Median Cut Quantization implementation from https://github.com/DanBloomberg/leptonica/blob/master/src/colorquant2.c
+ *
+ * @public
  */
 export function quantize(
     source: PixelBlob,
