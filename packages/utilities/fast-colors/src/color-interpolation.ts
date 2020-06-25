@@ -18,6 +18,11 @@ import { ColorRGBA64 } from "./color-rgba-64";
 import { ColorXYZ } from "./color-xyz";
 import { lerp, lerpAnglesInDegrees } from "./math-utilities";
 
+/**
+ * Interpolate by RGB color space
+ *
+ * @public
+ */
 export function interpolateRGB(
     position: number,
     left: ColorRGBA64,
@@ -36,6 +41,11 @@ export function interpolateRGB(
     );
 }
 
+/**
+ * Interpolate by HSL color space
+ *
+ * @public
+ */
 export function interpolateHSL(
     position: number,
     left: ColorHSL,
@@ -53,6 +63,11 @@ export function interpolateHSL(
     );
 }
 
+/**
+ * Interpolate by HSV color space
+ *
+ * @public
+ */
 export function interpolateHSV(
     position: number,
     left: ColorHSV,
@@ -70,6 +85,11 @@ export function interpolateHSV(
     );
 }
 
+/**
+ * Interpolate by XYZ color space
+ *
+ * @public
+ */
 export function interpolateXYZ(
     position: number,
     left: ColorXYZ,
@@ -87,6 +107,11 @@ export function interpolateXYZ(
     );
 }
 
+/**
+ * Interpolate by LAB color space
+ *
+ * @public
+ */
 export function interpolateLAB(
     position: number,
     left: ColorLAB,
@@ -104,6 +129,11 @@ export function interpolateLAB(
     );
 }
 
+/**
+ * Interpolate by LCH color space
+ *
+ * @public
+ */
 export function interpolateLCH(
     position: number,
     left: ColorLCH,
@@ -121,6 +151,11 @@ export function interpolateLCH(
     );
 }
 
+/**
+ * Color interpolation spaces
+ *
+ * @public
+ */
 export enum ColorInterpolationSpace {
     RGB,
     HSL,
@@ -130,6 +165,11 @@ export enum ColorInterpolationSpace {
     LCH,
 }
 
+/**
+ * Interpolate by color space
+ *
+ * @public
+ */
 export function interpolateByColorSpace(
     position: number,
     space: ColorInterpolationSpace,

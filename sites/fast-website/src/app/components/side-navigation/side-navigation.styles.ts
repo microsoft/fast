@@ -27,6 +27,8 @@ export const SideNavigationStyles = css`
 
     .icon {
         fill: var(--accent-foreground-cut-rest);
+        width: 20px;
+        height: 20px;
     }
 
     .list-item:hover .icon {

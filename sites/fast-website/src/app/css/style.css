@@ -3,7 +3,7 @@
 }
 
 html {
-  font: 16px "Segoe UI", Arial, Helvetica, sans-serif;
+  font: 16px "aktiv-grotesk", "Segoe UI", Arial, Helvetica, sans-serif;
 }
 
 html,
@@ -22,13 +22,18 @@ body {
 
 .body-provider {
   background-color: var(--background-color);
+  isolation: isolate;
 }
 
 .wrapper {
   display: grid;
   grid-template-columns: minmax(5vw, 1fr) minmax(0px, 1200px) minmax(5vw, 1fr);
-  position: relative;
-  z-index: 1;
+  isolation: isolate;
+}
+
+background-design,
+.side-nav-container {
+  z-index: -1;
 }
 
 .side-nav-container {
@@ -39,7 +44,21 @@ body {
   transform: translateY(-50%);
   display: flex;
   justify-content: space-between;
-  z-index: -1;
+}
+
+.icon-github {
+  height: 20px;
+  width: 18px;
+}
+
+.header .github-link span,
+.header .github-link::part(end) {
+  display: flex;
+}
+
+.header .github-link::part(end) {
+  width: auto;
+  height: auto;
 }
 
 @media screen and (max-height: 390px), screen and (max-width: 1000px) {
@@ -49,14 +68,19 @@ body {
 }
 
 .header {
-  grid-column: 1/-1;
+  display: grid;
+  grid-column: 1 / -1;
   padding: 0 40px;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
 }
 
-.header site-navigation {
+.header .site-navigation {
   align-items: center;
   height: var(--navbar-height);
   justify-content: space-between;
+  grid-column: 2;
+  grid-row: 1;
 }
 
 .anchor-wrapper {
@@ -82,9 +106,24 @@ site-navigation ::part(content) {
   color: var(--neutral-foreground-rest);
 }
 
+.header .logo,
+.header .github-link {
+  width: 110px;
+}
+
+.header .logo {
+  grid-column: 1;
+  grid-row: 1;
+  z-index: 2;
+}
+
 .header .logo::part(content) {
   display: flex;
   align-items: flex-end;
+}
+
+.header .github-link::part(control) {
+  justify-content: flex-end;
 }
 
 .footer .logo::part(content) {
@@ -278,8 +317,6 @@ fast-badge::part(control) {
 
   .header .logo {
     margin-inline-start: 20px;
-    position: relative;
-    z-index: 1;
   }
 
   .github-link {
@@ -293,7 +330,11 @@ fast-badge::part(control) {
     align-items: center;
   }
 
-  .header site-navigation::before {
+  .header .site-navigation {
+    grid-column: span 3 / -1;
+  }
+
+  .header .site-navigation::before {
     background: var(--background-color);
     content: "";
     position: absolute;
@@ -321,7 +362,11 @@ fast-badge::part(control) {
     background-color: var(--background-color);
     opacity: 0.95;
     transform: translateY(-100%);
-    transition: transform 0.1s ease-in-out;
+    transition:
+      transform 300ms ease-in-out 0s,
+      visibility 0s linear 300ms;
+
+    visibility: hidden;
     z-index: 0;
   }
 
@@ -340,6 +385,8 @@ fast-badge::part(control) {
 
   site-navigation.opened .anchor-wrapper {
     transform: translateY(0);
+    transition-delay: 0s;
+    visibility: visible;
   }
 
   site-navigation::part(nav-button) {

@@ -2,6 +2,10 @@ import AnimateTo from "../animateTo";
 import AnimateFrom from "../animateFrom";
 import { invokeFunctionForEach } from "../utilities/invokeFunctionForEach";
 
+/**
+ * Groups {@link @microsoft/fast-animation#AnimateTo} and {@link @microsoft/fast-animation#AnimateFrom} instances, providing a single API to operate on all of them.
+ * @public
+ */
 class AnimateGroup {
     /**
      * Stores the onFinish callback

@@ -17,3 +17,4 @@ export * from "./palette-extractor";
 export * from "./parse-color";
 export * from "./pixel-blob";
 export * from "./pixel-box";
+export { NamedColors } from "./named-colors";

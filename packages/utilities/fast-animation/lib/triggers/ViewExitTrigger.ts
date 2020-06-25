@@ -2,7 +2,9 @@ import isElementInView from "../utilities/isElementInView";
 import ScrollBase, { ScrollTriggerSubscription } from "./ScrollBase";
 
 /**
- * Utility for registering element/callback pairs where the callback will be called when the element exits the view-port
+ * Utility for registering element/callback pairs where the callback will be invoked when the element exits the view-port
+ *
+ * @public
  */
 export default class ViewExitTrigger extends ScrollBase {
     /**
