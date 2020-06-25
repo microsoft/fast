@@ -13,6 +13,7 @@ const hexRGBARegex: RegExp = /^#((?:[0-9a-f]{8}|[0-9a-f]{4}))$/i;
 
 /**
  * Test if a color matches #RRGGBB or #RGB
+ * @public
  */
 export function isColorStringHexRGB(raw: string): boolean {
     return hexRGBRegex.test(raw);
@@ -20,6 +21,7 @@ export function isColorStringHexRGB(raw: string): boolean {
 
 /**
  * Test if a color matches #AARRGGBB or #ARGB
+ * @public
  */
 export function isColorStringHexARGB(raw: string): boolean {
     return hexRGBARegex.test(raw);
@@ -27,6 +29,7 @@ export function isColorStringHexARGB(raw: string): boolean {
 
 /**
  * Test if a color matches #RRGGBBAA or #RGBA
+ * @public
  */
 export function isColorStringHexRGBA(raw: string): boolean {
     return isColorStringHexARGB(raw); // No way to differentiate these two formats, so just use the same test
@@ -34,6 +37,7 @@ export function isColorStringHexRGBA(raw: string): boolean {
 
 /**
  * Test if a color matches rgb(rr, gg, bb)
+ * @public
  */
 export function isColorStringWebRGB(raw: string): boolean {
     return webRGBRegex.test(raw);
@@ -41,16 +45,32 @@ export function isColorStringWebRGB(raw: string): boolean {
 
 /**
  * Test if a color matches rgba(rr, gg, bb, aa)
+ *
+ * @public
  */
 export function isColorStringWebRGBA(raw: string): boolean {
     return webRGBARegex.test(raw);
 }
 
+/**
+ * Tests whether a color is in {@link @microsoft/fast-colors#NamedColors}.
+ * @param raw - the color name to test
+ * @public
+ */
 export function isColorNamed(raw: string | NamedColors): raw is NamedColors {
     return namedColorsConfigs.hasOwnProperty(raw);
 }
 
-// Expects format #RRGGBB or #RGB
+/**
+ * Converts a hexadecimal color string to a {@link @microsoft/fast-colors#ColorRGBA64}.
+ * @param raw - a color string in the form of "#RRGGBB" or "#RGB"
+ * @example
+ * ```ts
+ * parseColorHexRGBA("#FF0000");
+ * parseColorHexRGBA("#F00");
+ * ```
+ * @public
+ */
 export function parseColorHexRGB(raw: string): ColorRGBA64 | null {
     const result: string[] | null = hexRGBRegex.exec(raw);
 
@@ -83,7 +103,16 @@ export function parseColorHexRGB(raw: string): ColorRGBA64 | null {
     );
 }
 
-// Expects format #AARRGGBB
+/**
+ * Converts a hexadecimal color string to a {@link @microsoft/fast-colors#ColorRGBA64}.
+ * @param raw - a color string in the form of "#AARRGGBB" or "#ARGB"
+ * @example
+ * ```ts
+ * parseColorHexRGBA("#AAFF0000");
+ * parseColorHexRGBA("#AF00");
+ * ```
+ * @public
+ */
 export function parseColorHexARGB(raw: string): ColorRGBA64 | null {
     const result: string[] | null = hexRGBARegex.exec(raw);
 
@@ -117,7 +146,16 @@ export function parseColorHexARGB(raw: string): ColorRGBA64 | null {
     );
 }
 
-// Expects format #RRGGBBAA or #RGBA
+/**
+ * Converts a hexadecimal color string to a {@link @microsoft/fast-colors#ColorRGBA64}.
+ * @param raw - a color string in the form of "#RRGGBBAA" or "#RGBA"
+ * @example
+ * ```ts
+ * parseColorHexRGBA("#FF0000AA");
+ * parseColorHexRGBA("#F00A");
+ * ```
+ * @public
+ */
 export function parseColorHexRGBA(raw: string): ColorRGBA64 | null {
     const result: string[] | null = hexRGBARegex.exec(raw);
 
@@ -151,7 +189,15 @@ export function parseColorHexRGBA(raw: string): ColorRGBA64 | null {
     );
 }
 
-// Expects format rgb(RR,GG,BB) where RR,GG,BB are [0,255]
+/**
+ * Converts a rgb color string to a {@link @microsoft/fast-colors#ColorRGBA64}.
+ * @param raw - a color string format "rgba(RR,GG,BB)" where RR,GG,BB are [0,255]
+ * @example
+ * ```ts
+ * parseColorWebRGB("rgba(255, 0, 0");
+ * ```
+ * @public
+ */
 export function parseColorWebRGB(raw: string): ColorRGBA64 | null {
     const result: string[] | null = webRGBRegex.exec(raw);
 
@@ -169,7 +215,15 @@ export function parseColorWebRGB(raw: string): ColorRGBA64 | null {
     );
 }
 
-// Expects format rgba(RR,GG,BB,a) where RR,GG,BB are [0,255] and a is [0,1]
+/**
+ * Converts a rgba color string to a {@link @microsoft/fast-colors#ColorRGBA64}.
+ * @param raw - a color string format "rgba(RR,GG,BB,a)" where RR,GG,BB are [0,255] and a is [0,1]
+ * @example
+ * ```ts
+ * parseColorWebRGBA("rgba(255, 0, 0, 1");
+ * ```
+ * @public
+ */
 export function parseColorWebRGBA(raw: string): ColorRGBA64 | null {
     const result: string[] | null = webRGBARegex.exec(raw);
 
@@ -190,7 +244,15 @@ export function parseColorWebRGBA(raw: string): ColorRGBA64 | null {
     return null;
 }
 
-// Expects any of the CSS color names https://www.w3schools.com/colors/colors_names.asp
+/**
+ * Converts a named color to a {@link @microsoft/fast-colors#ColorRGBA64}.
+ * @param raw - a {@link https://www.w3schools.com/colors/colors_names.asp | CSS color name}.
+ * @example
+ * ```ts
+ * parseColorNamed("red");
+ * ```
+ * @public
+ */
 export function parseColorNamed(
     raw: keyof typeof namedColorsConfigs
 ): ColorRGBA64 | null {
@@ -208,12 +270,14 @@ export function parseColorNamed(
         : null;
 }
 
-// Expects any of the following and attempts to determine which is being used
-// #RRGGBB
-// #AARRGGBB
-// rgb(RR,GG,BB)
-// rgba(RR,GG,BB,a)
-// or any of the CSS color names https://www.w3schools.com/colors/colors_names.asp
+/**
+ * 
+  Expects any of the following and attempts to determine which is being used
+ * #RRGGBB, #AARRGGBB, rgb(RR,GG,BB) rgba(RR,GG,BB,a),
+ * or any of the {@link https://www.w3schools.com/colors/colors_names.asp | CSS color names}.
+ * @param raw - the color string to parse
+ * @public
+ */
 export function parseColor(raw: string): ColorRGBA64 | null {
     const rawLower: string = raw.toLowerCase();
 

@@ -2,6 +2,9 @@ import { QuantizedColor } from "./color-quantization";
 import { ColorHSL } from "./color-hsl";
 import { rgbToHSL } from "./color-converters";
 
+/**
+ * @public
+ */
 export interface PaletteEntryConstraint {
     id: string;
     targetSaturation: number;
@@ -12,12 +15,19 @@ export interface PaletteEntryConstraint {
     maxLuminosity: number;
 }
 
+/**
+ * @public
+ */
 export interface PaletteEntry {
     found: boolean;
     constraint: PaletteEntryConstraint;
     color?: QuantizedColor;
 }
 
+/**
+ * Configuration structure for palette extraction.
+ * @public
+ */
 export interface PaletteExtractionConfig {
     saturationWeight: number;
     luminosityWeight: number;
@@ -26,6 +36,10 @@ export interface PaletteExtractionConfig {
     constraints: PaletteEntryConstraint[];
 }
 
+/**
+ * The default configuration for palette extraction.
+ * @public
+ */
 export const defaultPaletteExtractionConfig: PaletteExtractionConfig = {
     saturationWeight: 6,
     luminosityWeight: 3,
@@ -89,6 +103,12 @@ export const defaultPaletteExtractionConfig: PaletteExtractionConfig = {
     ],
 };
 
+/**
+ * Extracts a palette.
+ * @param colors - the quantized colors
+ * @param config - the extraction config
+ * @public
+ */
 export function extractPalette(
     colors: QuantizedColor[],
     config: PaletteExtractionConfig = defaultPaletteExtractionConfig

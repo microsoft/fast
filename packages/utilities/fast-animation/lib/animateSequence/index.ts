@@ -2,6 +2,10 @@ import AnimateTo from "../animateTo";
 import AnimateFrom from "../animateFrom";
 import { invokeFunctionForEach } from "../utilities/invokeFunctionForEach";
 
+/**
+ * Animate a collection of {@link @microsoft/fast-animation#AnimateTo} and {@link @microsoft/fast-animation#AnimateFrom} in sequence.
+ * @public
+ */
 class AnimateSequence {
     /**
      * onFinish callback method

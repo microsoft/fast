@@ -1,8 +1,12 @@
 import * as bezierCurves from "./config";
-
+/**
+ * Coordinates for a cubic bezier curve.
+ * @public
+ */
 export type BezierCurvePoint = [number, number];
 /**
  * Defines interface for a cubic bezier curve
+ * @public
  */
 export interface BezierCurve {
     /**
@@ -18,6 +22,8 @@ export interface BezierCurve {
 
 /**
  * Formats a cubic bezier config into a cubic bezier string
+ *
+ * @public
  */
 export function formatCubicBezier(points: BezierCurve): string {
     if (
@@ -34,6 +40,29 @@ export function formatCubicBezier(points: BezierCurve): string {
     return `cubic-bezier(${p0[0]}, ${p0[1]}, ${p1[0]}, ${p1[1]})`;
 }
 
-export function cubicBezier(name: string): string {
+/**
+ * Get a cubic bezier curve, formatted as a string, by name.
+ * @param name - the name of the bezier curve to use.
+ *
+ * @public
+ */
+export function cubicBezier(
+    name:
+        | "linear"
+        | "easeOut"
+        | "easeOutSmooth"
+        | "easeIn"
+        | "drillIn"
+        | "backToApp"
+        | "appToApp"
+        | "fastIn"
+        | "fastOut"
+        | "fastInOut"
+        | "exponential"
+        | "fastInFortySevenPercent"
+        | "exponentialReversed"
+        | "navPane"
+        | /* @deprecated */ string
+): string {
     return bezierCurves.hasOwnProperty(name) ? formatCubicBezier(bezierCurves[name]) : "";
 }

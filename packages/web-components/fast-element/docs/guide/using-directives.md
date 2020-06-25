@@ -474,7 +474,7 @@ In the example above, the `listItems` property will be populated with all child 
 Like `ref`, the child nodes are not available until the `connectedCallback` lifecycle event.
 :::
 
-You can also provide a `filter` function to control which child nodes are synchronized to your property. As a convenience, we provide an `elements` filter that lets you optionally specify the element tag name. Taking the above example, if we wanted to ensure that our `listItems` array only included `li` elements (and not any text nodes or other potential child nodes), we could author our template like this:
+You can also provide a `filter` function to control which child nodes are synchronized to your property. As a convenience, we provide an `elements` filter that lets you optionally specify a selector. Taking the above example, if we wanted to ensure that our `listItems` array only included `li` elements (and not any text nodes or other potential child nodes), we could author our template like this:
 
 **Example: Filtering Child Nodes**
 
