@@ -785,14 +785,17 @@ export enum TextFieldType {
     url = "url"
 }
 
+// Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
+// Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "TreeItem" because one of its declarations is marked as @internal
+//
 // @public
 export class TreeItem extends FASTElement {
     // (undocumented)
     childItems: HTMLElement[];
-    // (undocumented)
+    // @internal (undocumented)
     connectedCallback(): void;
     disabled: boolean;
-    // (undocumented)
+    // @internal (undocumented)
     disconnectedCallback(): void;
     // (undocumented)
     expandCollapseButton: HTMLDivElement;
@@ -822,7 +825,7 @@ export class TreeItem extends FASTElement {
     selected: boolean;
     }
 
-// @public (undocumented)
+// @internal
 export interface TreeItem extends StartEnd {
 }
 

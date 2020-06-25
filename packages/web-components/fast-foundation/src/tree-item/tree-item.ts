@@ -110,6 +110,9 @@ export class TreeItem extends FASTElement {
         return htmlNodes;
     }
 
+    /**
+     * @internal
+     */
     public connectedCallback(): void {
         super.connectedCallback();
 
@@ -124,6 +127,9 @@ export class TreeItem extends FASTElement {
         }
     }
 
+    /**
+     * @internal
+     */
     public disconnectedCallback(): void {
         super.disconnectedCallback();
         if (this.notifier) {
@@ -289,6 +295,12 @@ export class TreeItem extends FASTElement {
     }
 }
 
+/**
+ * Mark internal because exporting class and interface of the same name
+ * confuses API documenter.
+ * TODO: https://github.com/microsoft/fast-dna/issues/3317
+ * @internal
+ */
 /* eslint-disable-next-line */
 export interface TreeItem extends StartEnd {}
 applyMixins(TreeItem, StartEnd);
