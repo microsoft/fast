@@ -8,6 +8,7 @@ const FaviconsWebpackPlugin = require("favicons-webpack-plugin");
 
 const appDir = path.resolve(__dirname, "./src/app");
 const publicDir = path.resolve(__dirname, "./src/public");
+const rootNodeModules = path.resolve(__dirname, "../../node_modules");
 
 module.exports = {
     entry: {
@@ -73,6 +74,12 @@ module.exports = {
             inject: "head",
             template: path.resolve(publicDir, "index.html"),
         }),
-        new FaviconsWebpackPlugin("./src/public/favicon.png"),
+        new FaviconsWebpackPlugin({
+            logo: path.resolve(
+                rootNodeModules,
+                "@microsoft/site-utilities/statics/assets/fast-logo.png"
+            ),
+            prefix: "bundle/",
+        }),
     ],
 };
