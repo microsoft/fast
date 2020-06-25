@@ -1,2 +1,2 @@
-export * from "./tree-item.template.js";
-export * from "./tree-item.js";
+export * from "./tree-item.template";
+export * from "./tree-item";

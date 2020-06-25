@@ -31,7 +31,6 @@ export function isTreeItemElement(el: Element): el is HTMLElement {
 
 /**
  * A Tree item Custom HTML Element.
- * Implements the {@link https://w3c.github.io/aria-practices/#TreeView | ARIA TreeView }.
  *
  * @public
  */

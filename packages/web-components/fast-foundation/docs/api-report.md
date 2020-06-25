@@ -826,7 +826,7 @@ export class TreeItem extends FASTElement {
 export interface TreeItem extends StartEnd {
 }
 
-// @public (undocumented)
+// @public
 export const TreeItemTemplate: import("@microsoft/fast-element").ViewTemplate<TreeItem, any>;
 
 // @public
@@ -851,7 +851,7 @@ export class TreeView extends FASTElement {
     treeView: HTMLElement;
 }
 
-// @public (undocumented)
+// @public
 export const TreeViewTemplate: import("@microsoft/fast-element").ViewTemplate<TreeView, any>;
 
 

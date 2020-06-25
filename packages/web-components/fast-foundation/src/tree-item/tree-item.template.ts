@@ -3,7 +3,7 @@ import { endTemplate, startTemplate } from "../patterns/start-end";
 import { TreeItem } from "./tree-item";
 
 /**
- * The template for the {@link @microsoft/fast-foundation#TreeItem} component.
+ * The template for the {@link @microsoft/fast-foundation#(TreeItem:class)} component.
  * @public
  */
 export const TreeItemTemplate = html<TreeItem>`
