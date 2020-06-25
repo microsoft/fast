@@ -4,7 +4,6 @@ import { elevation } from "@microsoft/fast-components/dist/esm/styles/elevation.
 import {
     accentForegroundRestBehavior,
     neutralFillFocusBehavior,
-    neutralForegroundHintBehavior,
     neutralForegroundRestBehavior,
 } from "@microsoft/fast-components";
 
@@ -12,6 +11,14 @@ export const ContentPlacementContainerStyles = css`
     ${display("grid")}:host {
         justify-content: center;
         position: relative;
+    }
+
+    fast-anchor {
+        color: currentColor;
+    }
+
+    :host * {
+        transition: all 0.3s ease-out;
     }
 
     :host([section="framework"]) {
@@ -42,54 +49,48 @@ export const ContentPlacementContainerStyles = css`
         margin-bottom: calc(var(--design-unit) * 2px);
     }
 
-    :host([section="feature"]) site-feature-card:hover :first-child::before,
-    :host([section="feature"]) site-feature-card:focus-within :first-child::before {
-        color: ${accentForegroundRestBehavior.var};
-    }
-
     /* end */
 
     /* This creates the color, background, and elevation changes on hover */
 
-    :host([section="feature"]:hover),
-    :host([section="feature"]:focus-within),
-    :host([section="community"]:hover) site-content-placement,
-    :host([section="community"]:focus-within) site-content-placement,
-    :host([section="community"]:hover) site-content-placement ::part(content),
-    :host([section="community"]:focus-within) site-content-placement ::part(content) {
-        color: ${neutralForegroundHintBehavior.var};
+    :host(:hover) site-feature-card,
+    :host(:focus-within) site-feature-card,
+    :host(:hover) site-content-placement,
+    :host(:focus-within) site-content-placement {
+        opacity: 0.6;
     }
 
-    :host([section="feature"]:hover) site-feature-card,
-    :host([section="feature"]:focus-within) site-feature-card {
-        filter: saturate(0);
-    }
-
-    :host([section="feature"]) site-feature-card:hover,
-    :host([section="feature"]) site-feature-card:focus-within {
-        color: ${neutralForegroundRestBehavior.var};
-        background: ${neutralFillFocusBehavior.var};
-        filter: saturate(1);
-    }
-
-    :host([section="community"]) site-content-placement:hover,
-    :host([section="community"]) site-content-placement:focus-within {
-        --elevation: 4;
+    :host site-feature-card:hover,
+    :host site-feature-card:focus-within,
+    :host site-content-placement:hover,
+    :host site-content-placement:focus-within {
+        --elevation: 16;
         background: ${neutralFillFocusBehavior.var};
         border-radius: calc(var(--corner-radius) * 1px);
         color: currentColor;
-        ${elevation}
+        opacity: 1;
+        ${elevation};
     }
 
+    :host([section="framework"]) site-content-placement:hover h3,
+    :host([section="framework"]) site-content-placement:focus-within h3,
+    :host([section="feature"]) site-feature-card:hover :first-child::before,
+    :host([section="feature"]) site-feature-card:focus-within :first-child::before,
+    :host([section="feature"]) site-feature-card:hover fast-anchor,
+    :host([section="feature"]) site-feature-card:focus-within fast-anchor,
     :host([section="community"]) site-content-placement:hover ::part(content),
     :host([section="community"]) site-content-placement:focus-within ::part(content) {
         color: ${accentForegroundRestBehavior.var};
     }
 
+    :host([section="framework"]) site-content-placement:hover h3 .headerSubscript,
+    :host([section="framework"]) site-content-placement:focus-within h3 .headerSubscript {
+        color: ${neutralForegroundRestBehavior.var};
+    }
+
     /* end */
 
     .headerSubscript {
-        color: ${neutralForegroundHintBehavior.var};
         font-size: var(--type-ramp-minus-1-font-size);
     }
 
@@ -137,6 +138,5 @@ export const ContentPlacementContainerStyles = css`
 `.withBehaviors(
     accentForegroundRestBehavior,
     neutralFillFocusBehavior,
-    neutralForegroundHintBehavior,
     neutralForegroundRestBehavior
 );

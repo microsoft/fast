@@ -3,7 +3,8 @@
 }
 
 html {
-  font: 16px "Segoe UI", Arial, Helvetica, sans-serif;
+  font: 16px "aktiv-grotesk", "Segoe UI", Arial, Helvetica, sans-serif;
+  box-sizing: border-box;
 }
 
 html,
@@ -34,6 +35,12 @@ body {
 background-design,
 .side-nav-container {
   z-index: -1;
+}
+
+.menu-opened {
+  --width-offset: 0;
+  padding-right: calc(var(--width-offset) * 1px);
+  overflow: hidden;
 }
 
 .side-nav-container {
@@ -299,7 +306,7 @@ fast-badge::part(control) {
   }
 
   .section {
-   padding: 0 20px;
+    padding: 0 20px;
   }
 
   .header {
@@ -334,7 +341,16 @@ fast-badge::part(control) {
     grid-column: span 3 / -1;
   }
 
-  .header .site-navigation::before {
+  .header {
+    position: fixed;
+    width: 100%;
+  }
+
+  .header .site-navigation.opened {
+    padding-right: calc(var(--width-offset) * 1px);
+  }
+
+  .header::before {
     background: var(--background-color);
     content: "";
     position: absolute;
@@ -365,7 +381,6 @@ fast-badge::part(control) {
     transition:
       transform 300ms ease-in-out 0s,
       visibility 0s linear 300ms;
-
     visibility: hidden;
     z-index: 0;
   }
@@ -421,7 +436,7 @@ fast-badge::part(control) {
 }
 
 .section-header {
-	max-width: 900px;
+  max-width: 900px;
 }
 
 @media screen and (max-width: 750px) {

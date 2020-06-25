@@ -24,15 +24,13 @@ export interface NodeBehaviorBehaviorOptions<T = any> {
 
 /**
  * Creates a function that can be used to filter a Node array, selecting only elements.
- * @param tagName - An optional tag name to restrict the filter to.
+ * @param selector - An optional selector to restrict the filter to.
  * @public
  */
-export function elements(tagName?: string) {
-    if (tagName) {
-        tagName = tagName.toUpperCase();
-
+export function elements(selector?: string) {
+    if (selector) {
         return function (value: Node, index: number, array: Node[]): boolean {
-            return value.nodeType === 1 && (value as HTMLElement).tagName === tagName;
+            return value.nodeType === 1 && (value as HTMLElement).matches(selector);
         };
     }
 

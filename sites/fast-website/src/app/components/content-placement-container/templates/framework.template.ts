@@ -1,6 +1,6 @@
 import { html } from "@microsoft/fast-element";
 
-const frameworkTemplate = html`<site-content-placement class="framework_ContentPlacement">
+const frameworkTemplate = html`<site-content-placement>
     <h3>
         ${x => (x.headerSubscript ? x.header + " " : x.header)}
         <small class="headerSubscript">${x => x.headerSubscript}</small>
