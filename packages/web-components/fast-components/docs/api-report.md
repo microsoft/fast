@@ -544,11 +544,11 @@ export class FASTTextArea extends TextArea {
 export class FASTTextField extends TextField {
 }
 
-// @public (undocumented)
+// @public
 export class FASTTreeItem extends TreeItem {
 }
 
-// @public (undocumented)
+// @public
 export class FASTTreeView extends TreeView {
 }
 
