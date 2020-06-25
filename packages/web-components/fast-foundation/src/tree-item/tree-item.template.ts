@@ -19,7 +19,7 @@ export const TreeItemTemplate = html<TreeItem>`
         @focus=${(x, c) => x.handleFocus(c.event as FocusEvent)}
         @blur=${(x, c) => x.handleBlur(c.event as FocusEvent)}
         @keydown=${(x, c) => x.handleKeyDown(c.event as KeyboardEvent)}
-        ${children({ property: "childItems", filter: elements("[role='treeitem']") })}
+        ${children("childItems")}
     >
         <div
             class="positioning-region"
@@ -28,7 +28,7 @@ export const TreeItemTemplate = html<TreeItem>`
         >
             <div class="content-region" part="content-region">
                 ${when(
-                    x => x.childItems.length > 0,
+                    x => x.filteredTreeItems(x.childItems).length > 0,
                     html<TreeItem>`
                         <div
                             aria-hidden="true"
@@ -55,7 +55,7 @@ export const TreeItemTemplate = html<TreeItem>`
             </div>
         </div>
         ${when(
-            x => x.childItems.length > 0,
+            x => x.filteredTreeItems(x.childItems).length > 0,
             html<TreeItem>`
                 <div role="group" class="items" part="items">
                     <slot name="item" ${slotted("items")}></slot>
