@@ -3,6 +3,8 @@ import ScrollBase, { ScrollTriggerSubscription } from "./ScrollBase";
 
 /**
  * Utility for registering element/callback pairs where the callback will be called on scroll while the element is in view.
+ *
+ * @public
  */
 export default class ScrollTrigger extends ScrollBase {
     /**

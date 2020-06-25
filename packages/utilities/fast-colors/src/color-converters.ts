@@ -19,7 +19,9 @@ import { degreesToRadians, radiansToDegrees } from "./math-utilities";
 /**
  * Get the luminance of a color in the linear RGB space.
  * This is not the same as the relative luminance in the sRGB space for WCAG contrast calculations. Use rgbToRelativeLuminance instead.
- * @param rgb The input color
+ * @param rgb - The input color
+ *
+ * @public
  */
 export function rgbToLinearLuminance(rgb: ColorRGBA64): number {
     return rgb.r * 0.2126 + rgb.g * 0.7152 + rgb.b * 0.0722;
@@ -29,7 +31,9 @@ export function rgbToLinearLuminance(rgb: ColorRGBA64): number {
  * Get the relative luminance of a color.
  * Adjusts the color to sRGB space, which is necessary for the WCAG contrast spec.
  * The alpha channel of the input is ignored.
- * @param rgb The input color
+ * @param rgb - The input color
+ *
+ * @public
  */
 export function rgbToRelativeLuminance(rgb: ColorRGBA64): number {
     function luminanceHelper(i: number): number {
@@ -54,7 +58,14 @@ const calculateContrastRatio: (a: number, b: number) => number = (
     b: number
 ): number => (a + 0.05) / (b + 0.05);
 
-// The alpha channel of the input is ignored
+/**
+ * Calculate the contrast ratio between two colors. Uses the formula described by {@link https://www.w3.org/TR/WCAG20-TECHS/G17.html | WCAG 2.0}.
+ *
+ * @remarks
+ * The alpha channel of the input is ignored
+ *
+ * @public
+ */
 export function contrastRatio(a: ColorRGBA64, b: ColorRGBA64): number {
     const luminanceA: number = rgbToRelativeLuminance(a);
     const luminanceB: number = rgbToRelativeLuminance(b);
@@ -65,10 +76,12 @@ export function contrastRatio(a: ColorRGBA64, b: ColorRGBA64): number {
 
 /**
  * Calculate an overlay color that uses rgba (rgb + alpha) that matches the appareance of a given solid color when placed on the same background
- * @param rgbMatch The solid color the overlay should match in appearance when placed over the rgbBackground
- * @param rgbBackground The background on which the overlay rests
- * @param rgbOverlay The rgb color of the overlay. Typically this is either pure white or pure black. This color will be used in the returned output
+ * @param rgbMatch - The solid color the overlay should match in appearance when placed over the rgbBackground
+ * @param rgbBackground - The background on which the overlay rests
+ * @param rgbOverlay - The rgb color of the overlay. Typically this is either pure white or pure black. This color will be used in the returned output
  * @returns The rgba (rgb + alpha) color of the overlay
+ *
+ * @public
  */
 export function calculateOverlayColor(
     rgbMatch: ColorRGBA64,
@@ -85,7 +98,15 @@ export function calculateOverlayColor(
     return new ColorRGBA64(rgbOverlay.r, rgbOverlay.g, rgbOverlay.b, alpha);
 }
 
-// The alpha channel of the input is ignored
+/**
+ * Converts a {@link @microsoft/fast-colors#ColorRGBA64} to a {@link @microsoft/fast-colors#ColorHSL}
+ * @param rgb - the rgb color to convert
+ *
+ * @remarks
+ * The alpha channel of the input is ignored
+ *
+ * @public
+ */
 export function rgbToHSL(rgb: ColorRGBA64): ColorHSL {
     const max: number = Math.max(rgb.r, rgb.g, rgb.b);
     const min: number = Math.min(rgb.r, rgb.g, rgb.b);
@@ -115,6 +136,13 @@ export function rgbToHSL(rgb: ColorRGBA64): ColorHSL {
     return new ColorHSL(hue, sat, lum);
 }
 
+/**
+ * Converts a {@link @microsoft/fast-colors#ColorHSL} to a {@link @microsoft/fast-colors#ColorRGBA64}
+ * @param hsl - the hsl color to convert
+ * @param alpha - the alpha value
+ *
+ * @public
+ */
 export function hslToRGB(hsl: ColorHSL, alpha: number = 1): ColorRGBA64 {
     const c: number = (1 - Math.abs(2 * hsl.l - 1)) * hsl.s;
     const x: number = c * (1 - Math.abs(((hsl.h / 60) % 2) - 1));
@@ -153,7 +181,15 @@ export function hslToRGB(hsl: ColorHSL, alpha: number = 1): ColorRGBA64 {
     return new ColorRGBA64(r + m, g + m, b + m, alpha);
 }
 
-// The alpha channel of the input is ignored
+/**
+ * Converts a {@link @microsoft/fast-colors#ColorRGBA64} to a {@link @microsoft/fast-colors#ColorHSV}
+ * @param rgb - the rgb color to convert
+ *
+ * @remarks
+ * The alpha channel of the input is ignored
+ *
+ * @public
+ */
 export function rgbToHSV(rgb: ColorRGBA64): ColorHSV {
     const max: number = Math.max(rgb.r, rgb.g, rgb.b);
     const min: number = Math.min(rgb.r, rgb.g, rgb.b);
@@ -181,6 +217,13 @@ export function rgbToHSV(rgb: ColorRGBA64): ColorHSV {
     return new ColorHSV(hue, sat, max);
 }
 
+/**
+ * Converts a {@link @microsoft/fast-colors#ColorHSV} to a {@link @microsoft/fast-colors#ColorRGBA64}
+ * @param hsv - the hsv color to convert
+ * @param alpha - the alpha value
+ *
+ * @public
+ */
 export function hsvToRGB(hsv: ColorHSV, alpha: number = 1): ColorRGBA64 {
     const c: number = hsv.s * hsv.v;
     const x: number = c * (1 - Math.abs(((hsv.h / 60) % 2) - 1));
@@ -218,6 +261,12 @@ export function hsvToRGB(hsv: ColorHSV, alpha: number = 1): ColorRGBA64 {
     return new ColorRGBA64(r + m, g + m, b + m, alpha);
 }
 
+/**
+ * Converts a {@link @microsoft/fast-colors#ColorLCH} to a {@link @microsoft/fast-colors#ColorLAB}
+ * @param lch - the lch color to convert
+ *
+ * @public
+ */
 export function lchToLAB(lch: ColorLCH): ColorLAB {
     let a: number = 0;
     let b: number = 0;
@@ -229,9 +278,16 @@ export function lchToLAB(lch: ColorLCH): ColorLAB {
     return new ColorLAB(lch.l, a, b);
 }
 
-// The discontinuity in the C parameter at 0 means that floating point errors will often result in values near 0 giving unpredictable results.
-// EG: 0.0000001 gives a very different result than -0.0000001
-// More info about the atan2 function: https://en.wikipedia.org/wiki/Atan2
+/**
+ * Converts a {@link @microsoft/fast-colors#ColorLAB} to a {@link @microsoft/fast-colors#ColorLCH}
+ * @param lab - the lab color to convert
+ *
+ * @remarks
+ * The discontinuity in the C parameter at 0 means that floating point errors will often result in values near 0 giving unpredictable results.
+ * EG: 0.0000001 gives a very different result than -0.0000001
+ * More info about the atan2 function: {@link https://en.wikipedia.org/wiki/Atan2}
+ * @public
+ */
 export function labToLCH(lab: ColorLAB): ColorLCH {
     let h: number = 0;
     if (lab.b !== 0 || lab.a !== 0) {
@@ -245,6 +301,12 @@ export function labToLCH(lab: ColorLAB): ColorLCH {
     return new ColorLCH(lab.l, c, h);
 }
 
+/**
+ * Converts a {@link @microsoft/fast-colors#ColorLAB} to a {@link @microsoft/fast-colors#ColorXYZ}
+ * @param lab - the lab color to convert
+ *
+ * @public
+ */
 export function labToXYZ(lab: ColorLAB): ColorXYZ {
     const fy: number = (lab.l + 16) / 116;
     const fx: number = fy + lab.a / 500;
@@ -282,6 +344,12 @@ export function labToXYZ(lab: ColorLAB): ColorXYZ {
     return new ColorXYZ(x, y, z);
 }
 
+/**
+ * Converts a {@link @microsoft/fast-colors#ColorXYZ} to a {@link @microsoft/fast-colors#ColorLAB}
+ * @param xyz - the xyz color to convert
+ *
+ * @public
+ */
 export function xyzToLAB(xyz: ColorXYZ): ColorLAB {
     function xyzToLABHelper(i: number): number {
         if (i > ColorLAB.epsilon) {
@@ -301,7 +369,14 @@ export function xyzToLAB(xyz: ColorXYZ): ColorLAB {
     return new ColorLAB(l, a, b);
 }
 
-// The alpha channel of the input is ignored
+/**
+ * Converts a {@link @microsoft/fast-colors#ColorRGBA64} to a {@link @microsoft/fast-colors#ColorXYZ}
+ * @param rgb - the rgb color to convert
+ *
+ * @remarks
+ * The alpha channel of the input is ignored
+ * @public
+ */
 export function rgbToXYZ(rgb: ColorRGBA64): ColorXYZ {
     function rgbToXYZHelper(i: number): number {
         if (i <= 0.04045) {
@@ -321,7 +396,15 @@ export function rgbToXYZ(rgb: ColorRGBA64): ColorXYZ {
     return new ColorXYZ(x, y, z);
 }
 
-// Note that the xyz color space is significantly larger than sRGB. As such, this can return colors rgb values greater than 1 or less than 0
+/**
+ * Converts a {@link @microsoft/fast-colors#ColorXYZ} to a {@link @microsoft/fast-colors#ColorRGBA64}
+ * @param xyz - the xyz color to convert
+ * @param alpha - the alpha value
+ *
+ * @remarks
+ * Note that the xyz color space is significantly larger than sRGB. As such, this can return colors rgb values greater than 1 or less than 0
+ * @public
+ */
 export function xyzToRGB(xyz: ColorXYZ, alpha: number = 1): ColorRGBA64 {
     function xyzToRGBHelper(i: number): number {
         if (i <= 0.0031308) {
@@ -343,25 +426,65 @@ export function xyzToRGB(xyz: ColorXYZ, alpha: number = 1): ColorRGBA64 {
     return new ColorRGBA64(r, g, b, alpha);
 }
 
-// The alpha channel of the input is ignored
+/**
+ * Converts a {@link @microsoft/fast-colors#ColorRGBA64} to a {@link @microsoft/fast-colors#ColorLAB}
+ * @param rgb - the rgb color to convert
+ *
+ * @remarks
+ * The alpha channel of the input is ignored
+ *
+ * @public
+ */
 export function rgbToLAB(rgb: ColorRGBA64): ColorLAB {
     return xyzToLAB(rgbToXYZ(rgb));
 }
 
-// Note that the xyz color space (which the conversion from LAB uses) is significantly larger than sRGB. As such, this can return colors rgb values greater than 1 or less than 0
+/**
+ * Converts a {@link @microsoft/fast-colors#ColorLAB} to a {@link @microsoft/fast-colors#ColorRGBA64}
+ * @param lab - the LAB color to convert
+ * @param alpha - the alpha value
+ *
+ * @remarks
+ * Note that the xyz color space (which the conversion from LAB uses) is significantly larger than sRGB. As such, this can return colors rgb values greater than 1 or less than 0
+ *
+ * @public
+ */
 export function labToRGB(lab: ColorLAB, alpha: number = 1): ColorRGBA64 {
     return xyzToRGB(labToXYZ(lab), alpha);
 }
 
-// The alpha channel of the input is ignored
+/**
+ * Convert a {@link @microsoft/fast-colors#ColorRGBA64} to a {@link @microsoft/fast-colors#ColorLCH}
+ *
+ * @param rgb - the rgb color to convert
+ *
+ * @remarks
+ * The alpha channel of the input is ignored
+ *
+ * @public
+ */
 export function rgbToLCH(rgb: ColorRGBA64): ColorLCH {
     return labToLCH(rgbToLAB(rgb));
 }
 
+/**
+ * Convert a {@link @microsoft/fast-colors#ColorLCH} to a {@link @microsoft/fast-colors#ColorRGBA64}
+ * @param lch - the LCH color to convert
+ * @param alpha - the alpha value
+ *
+ * @public
+ */
 export function lchToRGB(lch: ColorLCH, alpha: number = 1): ColorRGBA64 {
     return labToRGB(lchToLAB(lch), alpha);
 }
 
+/**
+ * Converts a color temperature to a {@link @microsoft/fast-colors#ColorRGBA64}
+ * @param tempKelvin - the temperature to convert
+ * @param alpha - the alpha value
+ *
+ * @public
+ */
 export function temperatureToRGB(tempKelvin: number, alpha: number = 1): ColorRGBA64 {
     // The constants I could find assumed a decimal range of [0,255] for each channel. Just going to put a /255.0 at the end
     let r: number = 0;
@@ -405,7 +528,15 @@ export function temperatureToRGB(tempKelvin: number, alpha: number = 1): ColorRG
     return new ColorRGBA64(r / 255, g / 255, b / 255, alpha);
 }
 
-// The alpha channel of the input is ignored
+/**
+ * Convert a rgb color to a color temperature
+ * @param rgb - the color to convert
+ *
+ * @remarks
+ * The alpha channel of the input is ignored
+ *
+ * @public
+ */
 export function rgbToTemperature(rgb: ColorRGBA64): number {
     let t: number = 0;
     let min: number = 1000;

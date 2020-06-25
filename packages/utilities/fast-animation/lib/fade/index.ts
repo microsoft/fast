@@ -39,6 +39,8 @@ export function applyFade(
 
 /**
  * Creates an animation to fade an element into view
+ *
+ * @public
  */
 export function fadeIn(element: HTMLElement, effectTiming: EffectTiming = {}): AnimateTo {
     return applyFade(element, fadeInKeyframes, effectTiming);
@@ -46,6 +48,8 @@ export function fadeIn(element: HTMLElement, effectTiming: EffectTiming = {}): A
 
 /**
  * Creates an animation to fade an element out of view
+ *
+ * @public
  */
 export function fadeOut(
     element: HTMLElement,
