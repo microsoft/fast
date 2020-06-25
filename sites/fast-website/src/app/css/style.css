@@ -131,6 +131,10 @@ site-navigation ::part(content) {
   align-items: flex-end;
 }
 
+.logo::part(content)::before {
+  background: transparent;
+}
+
 .header .github-link::part(control) {
   justify-content: flex-end;
 }

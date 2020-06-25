@@ -59,12 +59,6 @@ export class FastFrame extends FASTElement {
     public outlineWidth: number = 1;
 
     @observable
-    public baseHeightMultiplier: number = 10;
-
-    @observable
-    public baseHorizontalSpacingMultiplier: number = 3;
-
-    @observable
     public saturation: number;
 
     @observable
@@ -119,18 +113,6 @@ export class FastFrame extends FASTElement {
     public outlineWidthChangeHandler = (e: CustomEvent): void => {
         if (e.target instanceof FASTSlider) {
             this.outlineWidth = parseInt(e.target.value);
-        }
-    };
-
-    public baseHeightMultiplierChangeHandler = (e: CustomEvent): void => {
-        if (e.target instanceof FASTSlider) {
-            this.baseHeightMultiplier = parseInt(e.target.value);
-        }
-    };
-
-    public baseHorizontalSpacingMultiplierChangeHandler = (e: CustomEvent): void => {
-        if (e.target instanceof FASTSlider) {
-            this.baseHorizontalSpacingMultiplier = parseInt(e.target.value);
         }
     };
 
