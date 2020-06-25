@@ -95,6 +95,8 @@ export const ContentPlacementContainerStyles = css`
 
     .icon {
         fill: currentColor;
+        width: 16px;
+        height: 16px;
     }
 
     h3 {
