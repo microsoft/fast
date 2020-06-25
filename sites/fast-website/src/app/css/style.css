@@ -115,16 +115,16 @@ li {
   color: var(--neutral-foreground-hint);
 }
 
-.header .site-navigation li fast-anchor:hover::part(content),
-.header .site-navigation li fast-anchor:focus::part(content) {
+.site-navigation li fast-anchor:hover::part(content),
+.site-navigation li fast-anchor:focus::part(content) {
   color: var(--neutral-foreground-rest);
 }
 
-.header .site-navigation fast-anchor::part(content)::before {
+.site-navigation fast-anchor::part(content)::before {
   background: transparent;
 }
 
-.header .site-navigation fast-anchor:focus::part(content)::before {
+.site-navigation fast-anchor:focus::part(content)::before {
   background: var(--neutral-foreground-rest);
 }
 
