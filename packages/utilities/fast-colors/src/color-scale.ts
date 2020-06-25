@@ -2,11 +2,18 @@ import { contrastRatio } from "./color-converters";
 import { ColorInterpolationSpace, interpolateByColorSpace } from "./color-interpolation";
 import { ColorRGBA64 } from "./color-rgba-64";
 
+/**
+ * @public
+ */
 export interface ColorScaleStop {
     color: ColorRGBA64;
     position: number;
 }
 
+/**
+ * A color scale created from linear stops
+ * @public
+ */
 export class ColorScale {
     public static createBalancedColorScale(colors: ColorRGBA64[]): ColorScale {
         if (colors == null || colors.length === 0) {

@@ -6,6 +6,9 @@ import { ColorRGBA64 } from "./color-rgba-64";
 import { ColorScale, ColorScaleStop } from "./color-scale";
 import { parseColorHexRGB } from "./parse-color";
 
+/**
+ * @public
+ */
 export interface ColorPaletteConfig {
     baseColor?: ColorRGBA64;
     steps?: number;
@@ -24,6 +27,10 @@ export interface ColorPaletteConfig {
     baseScalePosition?: number;
 }
 
+/**
+ * Generates a color palette
+ * @public
+ */
 export class ColorPalette {
     public static readonly defaultPaletteConfig: ColorPaletteConfig = {
         baseColor: parseColorHexRGB("#808080"),
@@ -209,6 +216,7 @@ export class ColorPalette {
 
 /**
  * Takes the input color and compares it to each color in the reference array to find the index with the closest Lightness value in HSL color space
+ * @public
  */
 export function matchLightnessIndex(
     input: ColorRGBA64,
@@ -230,6 +238,7 @@ export function matchLightnessIndex(
 
 /**
  * Generates a greyscale palette using greyscaleConfig. The Lightness (in HSL) of the input color is then compared to the greyscale palette to determine how far off center the input color should be placed. The output palette is then generated with outputSteps number of steps using colorConfig.
+ * @public
  */
 export function generateOffCenterPalette(
     input: ColorRGBA64,
@@ -253,6 +262,8 @@ export function generateOffCenterPalette(
 
 /**
  * Take the input array of colors and extrapolates them to a larger palette of size targetSize. If preserveInputColors is false the input colors are evenly distributed into the output. Otherwise, the positions of the input colors are adjusted from a perfectly even distribution in order to ensure that the exact color values appearing in the input array also appear in the output array. The larger targetSize is compared to input.length the smaller those adjustments will be.
+ *
+ * @public
  */
 export function rescale(
     input: ColorRGBA64[],
@@ -306,6 +317,9 @@ export function rescale(
     return retVal;
 }
 
+/**
+ * @public
+ */
 export interface CenteredRescaleConfig {
     targetSize: number;
     spacing: number;
@@ -313,6 +327,9 @@ export interface CenteredRescaleConfig {
     scaleColorDark: ColorRGBA64;
 }
 
+/**
+ * @public
+ */
 export const defaultCenteredRescaleConfig: CenteredRescaleConfig = {
     targetSize: 63,
     spacing: 4,
@@ -322,7 +339,8 @@ export const defaultCenteredRescaleConfig: CenteredRescaleConfig = {
 
 /**
  * Takes an input array of colors and extrapolates them to a larger palette. The mapping first takes the input array and extrapolates between each color so that they are separated by spacing-1 slots. Then it adds to either end enough new colors to make up the desired targetSize. All output color slots between the defined stops are interpolated.
- * EXAMPLE: For an input array with length 5, a targetSize of 17 and spacing of 3 the output would be:
+ * @example
+ * For an input array with length 5, a targetSize of 17 and spacing of 3 the output would be:
  *  0: scaleColorLight
  *  1:
  *  2: input 0
@@ -340,6 +358,8 @@ export const defaultCenteredRescaleConfig: CenteredRescaleConfig = {
  * 14: input 4
  * 15:
  * 16: scaleColorDark
+ *
+ * @public
  */
 export function centeredRescale(
     input: ColorRGBA64[],
@@ -383,6 +403,7 @@ export function centeredRescale(
 
 /**
  * Generates two palettes of length shortPaletteLength and longPaletteLength from a base color. The base color is compared to the default greyscale palette to determine where it should be placed. The short palette is then fed into centeredRescale to create the long palette. The colors in the short palette are always contained within the long.
+ * @public
  */
 export function generateScaledPalettes(
     input: ColorRGBA64,

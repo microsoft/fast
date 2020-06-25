@@ -3,6 +3,8 @@ import ScrollBase, { ScrollTriggerSubscription } from "./ScrollBase";
 
 /**
  * Utility for registering element/callback pairs where the callback will be called when the element enters the view-port
+ *
+ * @public
  */
 export default class ViewEnterTrigger extends ScrollBase {
     /**
