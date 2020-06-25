@@ -94,7 +94,6 @@ export const FastFrameStyles = css`
         grid-gap: calc(var(--gutter) * 2px);
         grid-template-columns: auto 300px;
         padding: calc(var(--gutter) * 2px);
-        background: ${neutralFillCardRestBehavior.var};
         position: relative;
         border-radius: 0 calc(var(--corner-radius) * 1px) calc(var(--corner-radius) * 1px) 0;
     }
@@ -188,12 +187,12 @@ export const FastFrameStyles = css`
     }
 
     .saturation-slider-track {
-        height: calc(var(--track-size) * 1px);
+        height: 100%;
         border-radius: calc(var(--corner-radius) * 1px);
     }
 
     .hue-slider-track {
-        height: calc(var(--track-size) * 1px);
+        height: 100%;
         border-radius: calc(var(--corner-radius) * 1px);
         background-image: 
             linear-gradient(
