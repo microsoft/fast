@@ -23,6 +23,12 @@ export class UnityHost extends FASTElement {
     @observable
     public hostStyle: string = "";
 
+    @observable
+    public contentLoaded: boolean = false;
+
+    @observable
+    public loadProgress: number = 0;
+
     public hostElement: HTMLElement;
 
     private unityContent: UnityContent;
@@ -48,6 +54,18 @@ export class UnityHost extends FASTElement {
         this.uniqueId = this.targetid;
         this.unityConfig.id = this.uniqueId;
 
+        this.unityContent.on("ShowMessage", (message: string) => {});
+
+        this.unityContent.on("progress", (progression: number) => {
+            this.loadProgress = progression;
+            // todo: event
+        });
+
+        this.unityContent.on("loaded", () => {
+            this.contentLoaded = true;
+            // todo: event
+        });
+
         window.addEventListener("resize", this.onWindowResizeBinding);
         // prettier-ignore
         this.unityLoaderService.append(this.unityContent.unityLoaderJsPath, () => {
@@ -69,6 +87,32 @@ export class UnityHost extends FASTElement {
         super.disconnectedCallback();
         this.unityContent.remove();
         window.removeEventListener("resize", this.onWindowResizeBinding);
+    }
+
+    // todo: constrain (convert?) param types
+    public messageUnity(
+        targetGameObject: string,
+        targetFunction: string,
+        param: any
+    ): void {
+        if (this.unityContent === null) {
+            return;
+        }
+        this.unityContent.send(targetGameObject, targetFunction, param);
+    }
+
+    public subscribeEvent(eventName: string, callback: Function): void {
+        if (this.unityContent === null) {
+            return;
+        }
+        this.unityContent.on(eventName, callback);
+    }
+
+    public unsubscribeEvent(eventName: string, callback: Function): void {
+        if (this.unityContent === null) {
+            return;
+        }
+        // todo: unsubscribe? cleanup?
     }
 
     private onUnityLoad(): void {
