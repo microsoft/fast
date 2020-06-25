@@ -36,6 +36,6 @@ export const frameworkContentPlacementData: FrameworkContentPlacementData[] = [
         body:
             "While the React team works to fully support custom elements in v17, we're working hard to provide a wrapper to seamlessly support integration for v16.x.x.",
         header: "React",
-        headerSubscript: "Coming Soon",
+        headerSubscript: "Coming soon",
     },
 ];

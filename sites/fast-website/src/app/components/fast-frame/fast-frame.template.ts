@@ -46,7 +46,7 @@ export const FastFrameTemplate = html<FastFrame>`
                         <h1><span class="content-heading-highlight">Fast Frame</span> Colors</h4>
                         <h2>Pre-existing color you can customize</h2>
                         <p>
-                            Color recipes are the core of the how color is applied in FAST. There are two core color palettes that are exposed by the design system that are used to derive color for the recipes; the neutral palette and the accent palette. Both can be customized to fit your needs.
+                            Color is applied by using color recipes which require two color palettes, neutral and accent, applied to the design system. These palettes are customizable which allows for a wide range of styles.
                         </p>
                         <div class="content-control-container" >
                             <label for="background-color-pickers">Background color</label>
@@ -129,7 +129,7 @@ export const FastFrameTemplate = html<FastFrame>`
                         <h1><span class="content-heading-highlight">Fast Frame</span> Styles</h4>
                         <h2>Adjust style settings on the fly</h2>
                         <p>
-                            Adjust things like border radius, outline width, or density by changing design system values.
+                            Update design system values for border radius, outline width, or density.
                         </p>
                         <div class="content-control-container-2">
                             <label for="border-radius-slider">Border radius</label>

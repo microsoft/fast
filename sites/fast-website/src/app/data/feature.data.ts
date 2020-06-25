@@ -24,7 +24,7 @@ export const featureCardData: FeatureCardData[] = [
     {
         header: "Design Systems",
         body:
-            "Use FAST or Microsoft's Fluent by default or customize design system properties to make it your own. Or, create your own design system to use with FAST foundation components.",
+            "Use FAST, Microsoft's Fluent or customize design system properties to make it your own. You can also create your own design system to use with FAST foundation components.",
         links: [
             {
                 anchorText: "Learn more",
