@@ -148,7 +148,7 @@ li {
   background: transparent;
 }
 
-.logo:focus::part(content)::before {
+.logo:focus-visible::part(content)::before {
   background: var(--neutral-foreground-rest);
 }
 
