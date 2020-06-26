@@ -14,7 +14,7 @@ export const frameworkContentPlacementData: FrameworkContentPlacementData[] = [
     {
         body:
             "FAST works naturally with ASP.NET server-side development. Start building immediately by adding a script tag and using the custom HTML elements.",
-        header: "ASP.net",
+        header: "ASP.NET",
     },
     {
         body:
