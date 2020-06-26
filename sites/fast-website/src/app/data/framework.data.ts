@@ -7,7 +7,7 @@ export interface FrameworkContentPlacementData {
 export const frameworkContentPlacementData: FrameworkContentPlacementData[] = [
     {
         body:
-            "Angular supports binding syntax for setting both attributes and properties, though the default binding syntax will always set properties on an element.",
+            "Angular works great with FAST due to its binding system's support for setting both attributes and properties on custom elements.",
         header: "Angular",
         headerSubscript: "8.2.14",
     },
