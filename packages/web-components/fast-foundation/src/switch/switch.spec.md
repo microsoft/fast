@@ -21,7 +21,7 @@ A switch should allow the following properties:
 Typically it's best to include a checked and unchecked message but it is not required. It's common to see *Switch* without a message but there are accessibility concerns since it's not necessarily obvious what is **on** and what is **off**. The visual representation of **on** tends to show the state indicator to the right with the background filled and **off** tends to show the state indicator to the left and the background unfilled or as a muted or neutral color. However, this pattern is not always consistent.
 
 ### Prior Art/Examples
-- [FAST (React)](https://explore.fast.design/components/toggle)
+- [FAST Toggle (React)](https://www.npmjs.com/package/@microsoft/fast-components-react-msft)
 - [Material UI](https://material-ui.com/components/switches/)
 - [Lightning Design](https://www.lightningdesignsystem.com/components/checkbox-toggle/)
 - [Ant Design](https://ant.design/components/switch/)

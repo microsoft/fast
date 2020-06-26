@@ -30,7 +30,7 @@ Further typography-related specs build on the underlying principles and resource
 
 ### Prior Art / Examples
 
-- [FAST (React)](https://explore.fast.design/components/typography)
+- [FAST Typography (React)](https://www.npmjs.com/package/@microsoft/fast-components-react-msft)
 - [Material Design](https://material.io/design/typography/the-type-system.html)
 - [Bootstrap](https://getbootstrap.com/docs/4.4/content/typography)
 - [Ant Design](https://ant.design/components/typography)

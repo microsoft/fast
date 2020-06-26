@@ -26,7 +26,7 @@ A progress should allow the following attributes:
 - `paused`, whether the progress is paused or not.
 
 ### Prior Art/Examples
-- [FAST (React)](https://explore.fast.design/components/progress)
+- [FAST Progress (React)](https://www.npmjs.com/package/@microsoft/fast-components-react-msft)
 - [Material UI](https://material-ui.com/components/progress/)
 - [Lightning Design / Linear](https://www.lightningdesignsystem.com/components/progress-bar/)
 - [Lightning Design / Circular](https://www.lightningdesignsystem.com/components/progress-ring/)

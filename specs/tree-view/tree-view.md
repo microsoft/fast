@@ -48,7 +48,7 @@ Drag & Drop support poses a unique set of challenges, especially if our goal is 
 **Considering the challenge that drag & drop would present for any given component, I think it's worth holding on that feature, and taking it up seperately.*
 
 ### Prior Art/Examples
-- [FAST (React)](https://explore.fast.design/components/tree-view)
+- [FAST Tree View (React)](https://www.npmjs.com/package/@microsoft/fast-components-react-msft)
 - [Material UI](https://material-ui.com/components/tree-view/)
 - [Lightning Design](https://www.lightningdesignsystem.com/components/trees/)
 - [Ant Design](https://ant.design/components/tree/)
