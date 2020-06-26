@@ -44,7 +44,7 @@ This package does not export Web Components registered as [custom elements](http
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![npm version](https://badge.fury.io/js/%40microsoft%2Ffast-components.svg)](https://badge.fury.io/js/%40microsoft%2Ffast-components)
 
-`fast-components` is a library of Web Components that *composes* the exports of `fast-foundation` with stylesheets aligning to the FAST design language. This composition step registers a custom element. See the [quick start](./fast-foundation/getting-started) to get started using the components.
+`fast-components` is a library of Web Components that *composes* the exports of `fast-foundation` with stylesheets aligning to the FAST design language. This composition step registers a custom element. See the [quick start](./components/getting-started) to get started using the components.
 
 ### fast-components-msft
 
@@ -59,7 +59,7 @@ Launch our [Component Explorer](https://explore.fast.design) to experience our [
 
 ## Getting started
 
-If you're looking to get started using our components right away, take a look at [the components quick start](./fast-foundation/getting-started). You'll also want to check out [our integrations](./fast-foundation/webpack) if you're looking to add the components into a Webpack build or incorporate them with another front-end framework. For those interested in implementing their own design system or customizing the styles of the components, after you [have a look at the components](./fast-foundation/getting-started), you'll want to read through [our styling docs](./fast-components/intro). Finally, if your goal is to build your own components or apps with `fast-element`, you can learn all about that in our [guide to building web components with FASTElement](./fast-element/getting-started).
+If you're looking to get started using our components right away, take a look at [the components quick start](./components/getting-started). You'll also want to check out [our integrations](./integrations/introduction) if you're looking to add the components into a Webpack build or incorporate them with another front-end framework. For those interested in implementing their own design system or customizing the styles of the components, after you [have a look at the components](./components/getting-started), you'll want to read through [our styling docs](./design/introduction). Finally, if your goal is to build your own components or apps with `fast-element`, you can learn all about that in our [guide to building web components with FASTElement](./fast-element/getting-started).
 
 ## Joining the community
 
