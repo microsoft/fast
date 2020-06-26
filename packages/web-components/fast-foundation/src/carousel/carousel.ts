@@ -11,6 +11,7 @@
 // TODO: Sort how to stop tabs adjust from setting
 
 // TODO: Since this is a new component you will have to add the definition to the definitions folder in site-utilities
+// TODO: ADD change $emit, for active slide and paused?
 import { attr, DOM, FASTElement, observable } from "@microsoft/fast-element";
 import { KeyCodes, wrapInBounds, limit } from "@microsoft/fast-web-utilities";
 import { isNil } from "lodash-es";
@@ -43,7 +44,7 @@ export class Carousel extends FASTElement {
     @attr({ attribute: "slidepicker", mode: "boolean" })
     public slidePicker: boolean = true;
 
-    // TODO: ADD logic to change roles per ARIA spec via tabbed attr, does not change if slide picker is available or not
+    // TODO: ADD logic to change roles per ARIA spec via tabbed attr (this attr does not change if slide picker is available or not)
     @attr({ attribute: "tabbed", mode: "boolean" })
     public tabbed: boolean = true;
 
@@ -62,29 +63,20 @@ export class Carousel extends FASTElement {
         //     item.setAttribute("slot", "tabpanel");
         //     return item;
         // });
-        console.log("filteredItems: ", this.filteredItems, this.tabPanelIds);
     }
 
     @observable
     public filteredItems: HTMLElement[];
 
-    // @observable
-    // public tabs: HTMLElement[];
-    // public tabsChanged(): void {
-    //     this.tabs.forEach((tab: HTMLElement, index: number) => {
-    //         tab.addEventListener("click", this.handleTabClick(index));
-    //         tab.setAttribute("role", "tab");
-    //         if (this.activeTabIndex === index) {
-    //             tab.setAttribute("aria-selected", "true");
-    //         } else {
-    //             tab.setAttribute("aria-selected", "false");
-    //         }
-    //         //TODO: ADD class for when activeIndex matches this tab index so the tab is highlighted properly.
-    //     });
-    // }
+    // TODO: ADD class for when activeIndex matches this tab index so the tab is highlighted properly.
 
     public handleFlipperClick(direction: 1 | -1, e: Event): void {
         this.incrementSlide(direction);
+    }
+
+    public handlePlayClick(e: Event): void {
+        e.preventDefault();
+        this.togglePlay();
     }
 
     private tabPanelIds: string[] = [];
@@ -100,7 +92,6 @@ export class Carousel extends FASTElement {
     };
 
     private autoplayNextItem = (): void => {
-        console.log("HIT AUTO PLAY NEXT ITEM");
         this.incrementSlide(1);
     };
 
@@ -108,6 +99,31 @@ export class Carousel extends FASTElement {
         this.tabPanelIds = [];
         for (let i = 0; i < this.filteredItems.length; i++) {
             this.tabPanelIds.push(`tab-${i + 1}`);
+        }
+    }
+
+    private togglePlay(): void {
+        this.paused = !this.paused;
+
+        if (!this.paused) {
+            this.startAutoPlay();
+        } else {
+            this.stopAutoPlay();
+        }
+    }
+
+    private startAutoPlay(): void {
+        if (this.autoplay) {
+            this.autoplayTimer = window.setInterval(
+                this.autoplayNextItem,
+                this.autoplayInterval
+            );
+        }
+    }
+
+    private stopAutoPlay(): void {
+        if (!isNil(this.autoplayTimer)) {
+            this.autoplayTimer = window.clearInterval(this.autoplayTimer as number);
         }
     }
 
@@ -124,19 +140,12 @@ export class Carousel extends FASTElement {
 
     public connectedCallback(): void {
         super.connectedCallback();
-        if (this.autoplay) {
-            this.autoplayTimer = window.setInterval(
-                this.autoplayNextItem,
-                this.autoplayInterval
-            );
-        }
+        this.startAutoPlay();
     }
 
     public disconnectedCallback(): void {
         super.disconnectedCallback();
-        if (!isNil(this.autoplayTimer)) {
-            this.autoplayTimer = window.clearInterval(this.autoplayTimer as number);
-        }
+        this.stopAutoPlay();
     }
 
     private autoplayTimer: number | void;
