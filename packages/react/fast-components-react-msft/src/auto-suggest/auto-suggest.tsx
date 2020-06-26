@@ -85,7 +85,7 @@ class AutoSuggest extends Foundation<
 
     /**
      * Gets the search glyph
-     * TODO: scomea - replace with ref to a glyph resource (https://github.com/Microsoft/fast-dna/issues/1488)
+     * TODO: scomea - replace with ref to a glyph resource (https://github.com/Microsoft/fast/issues/1488)
      */
     private generateGlyph = (className: string): React.ReactNode => {
         return (

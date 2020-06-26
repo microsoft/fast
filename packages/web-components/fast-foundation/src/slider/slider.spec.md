@@ -29,7 +29,7 @@ A designer can override any internal styling applied to the slotted labels, the 
 **proposing that for the initial spec we start with supporting `single-value` only.*
 
 ### Prior Art/Examples
-- [FAST-DNA (React)](https://explore.fast.design/components/slider)
+- [FAST (React)](https://explore.fast.design/components/slider)
 - [Material UI](https://material-ui.com/components/slider/)
 - [Atlassian UI](https://atlaskit.atlassian.com/packages/core/range)
 - [Lightning Design System](https://www.lightningdesignsystem.com/components/slider/)

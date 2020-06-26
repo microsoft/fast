@@ -2,7 +2,7 @@
 id: writing-documentation
 title: Writing Documentation
 sidebar_label: Writing Documentation
-custom_edit_url: https://github.com/microsoft/fast-dna/edit/master/sites/website/src/docs/community/writing-documentation.md
+custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/src/docs/community/writing-documentation.md
 ---
 
 Thank you for your interest in contributing to our documentation. We put together this guide to help you get started, whether you just want to fix minor spelling/grammar issues or have the more ambitious goal of writing a new article.
@@ -20,7 +20,7 @@ Each article begins with a Yaml metadata block that is followed by a body writte
 id: writing-documentation
 title: Writing Documentation
 sidebar_label: Writing Documentation
-custom_edit_url: https://github.com/microsoft/fast-dna/edit/master/sites/website/src/docs/community/writing-documentation.md
+custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/src/docs/community/writing-documentation.md
 ---
 ```
 

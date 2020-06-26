@@ -55,7 +55,7 @@ export const RadioStyles = css`
         font-family: var(--body-font);
         color: ${neutralForegroundRestBehavior.var};
         ${
-            /* Need to discuss with Brian how HorizontalSpacingNumber can work. https://github.com/microsoft/fast-dna/issues/2766 */ ""
+            /* Need to discuss with Brian how HorizontalSpacingNumber can work. https://github.com/microsoft/fast/issues/2766 */ ""
         } padding-inline-start: calc(var(--design-unit) * 2px + 2px);
         margin-inline-end: calc(var(--design-unit) * 2px + 2px);
         cursor: pointer;

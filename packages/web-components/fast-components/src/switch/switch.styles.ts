@@ -102,7 +102,7 @@ export const SwitchStyles = css`
         color: ${neutralForegroundRestBehavior.var};
 
         ${
-            /* Need to discuss with Brian how HorizontalSpacingNumber can work. https://github.com/microsoft/fast-dna/issues/2766 */ ""
+            /* Need to discuss with Brian how HorizontalSpacingNumber can work. https://github.com/microsoft/fast/issues/2766 */ ""
         } margin-inline-end: calc(var(--design-unit) * 2px + 2px);
         font-size: var(--type-ramp-base-font-size);
         line-height: var(--type-ramp-base-line-height);
@@ -115,7 +115,7 @@ export const SwitchStyles = css`
 
     ::slotted(*) {
         ${
-            /* Need to discuss with Brian how HorizontalSpacingNumber can work. https://github.com/microsoft/fast-dna/issues/2766 */ ""
+            /* Need to discuss with Brian how HorizontalSpacingNumber can work. https://github.com/microsoft/fast/issues/2766 */ ""
         } margin-inline-start: calc(var(--design-unit) * 2px + 2px);
     }
 

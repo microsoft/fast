@@ -2,7 +2,7 @@
 id: card
 title: fast-card
 sidebar_label: card
-custom_edit_url: https://github.com/microsoft/fast-dna/edit/master/packages/web-components/fast-foundation/src/card/README.md
+custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-foundation/src/card/README.md
 ---
 
 The `fast-card` component is a visual container without semantics that takes children. Cards are snapshots of content that are typically used in a group to present collections of related information.

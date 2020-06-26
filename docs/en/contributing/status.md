@@ -6,7 +6,7 @@ sidebar_label: Status
 
 # Status
 
-This page can be used to display the health of FAST-DNA systems.
+This page can be used to display the health of FAST systems.
 
 * [Circle CI - Status](https://status.circleci.com/)
 * [Code Climate - Status](https://status.codeclimate.com/)

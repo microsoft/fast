@@ -2,7 +2,7 @@
 id: design-system-provider
 title: fast-design-system-provider
 sidebar_label: design-system-provider
-custom_edit_url: https://github.com/microsoft/fast-dna/edit/master/packages/web-components/fast-foundation/src/design-system-provider/README.md
+custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-foundation/src/design-system-provider/README.md
 ---
 
 ## What is a design system?
@@ -99,7 +99,7 @@ DesignSystemProvider.registerCSSCustomProperty({
 
 In the above example, the value function will be re-evaluated if the _design system_ ever changes.
 
-The above API is made especially useful when defining a [component stylesheet](https://github.com/microsoft/fast-dna/blob/master/packages/web-components/fast-element/docs/building-components.md#defining-css) - individual stylesheets can declare dependencies on CSS custom properties that are functions of the element instance's *design system*.
+The above API is made especially useful when defining a [component stylesheet](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-element/docs/building-components.md#defining-css) - individual stylesheets can declare dependencies on CSS custom properties that are functions of the element instance's *design system*.
 
 **EXAMPLE: creating a recipe dependency**
 ```ts

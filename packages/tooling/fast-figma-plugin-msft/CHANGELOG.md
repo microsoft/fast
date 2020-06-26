@@ -3,7 +3,7 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-## [0.6.8](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-figma-plugin-msft@0.6.7...@microsoft/fast-figma-plugin-msft@0.6.8) (2020-06-17)
+## [0.6.8](https://github.com/Microsoft/fast/compare/@microsoft/fast-figma-plugin-msft@0.6.7...@microsoft/fast-figma-plugin-msft@0.6.8) (2020-06-17)
 
 **Note:** Version bump only for package @microsoft/fast-figma-plugin-msft
 
@@ -11,7 +11,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-## [0.6.7](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-figma-plugin-msft@0.6.6...@microsoft/fast-figma-plugin-msft@0.6.7) (2020-06-15)
+## [0.6.7](https://github.com/Microsoft/fast/compare/@microsoft/fast-figma-plugin-msft@0.6.6...@microsoft/fast-figma-plugin-msft@0.6.7) (2020-06-15)
 
 **Note:** Version bump only for package @microsoft/fast-figma-plugin-msft
 
@@ -19,7 +19,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-## [0.6.5](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-figma-plugin-msft@0.6.4...@microsoft/fast-figma-plugin-msft@0.6.5) (2020-06-09)
+## [0.6.5](https://github.com/Microsoft/fast/compare/@microsoft/fast-figma-plugin-msft@0.6.4...@microsoft/fast-figma-plugin-msft@0.6.5) (2020-06-09)
 
 **Note:** Version bump only for package @microsoft/fast-figma-plugin-msft
 
@@ -27,7 +27,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-## [0.6.4](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-figma-plugin-msft@0.6.3...@microsoft/fast-figma-plugin-msft@0.6.4) (2020-06-05)
+## [0.6.4](https://github.com/Microsoft/fast/compare/@microsoft/fast-figma-plugin-msft@0.6.3...@microsoft/fast-figma-plugin-msft@0.6.4) (2020-06-05)
 
 **Note:** Version bump only for package @microsoft/fast-figma-plugin-msft
 
@@ -35,7 +35,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-## [0.6.3](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-figma-plugin-msft@0.6.2...@microsoft/fast-figma-plugin-msft@0.6.3) (2020-05-18)
+## [0.6.3](https://github.com/Microsoft/fast/compare/@microsoft/fast-figma-plugin-msft@0.6.2...@microsoft/fast-figma-plugin-msft@0.6.3) (2020-05-18)
 
 **Note:** Version bump only for package @microsoft/fast-figma-plugin-msft
 
@@ -43,7 +43,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-## [0.6.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-figma-plugin-msft@0.6.1...@microsoft/fast-figma-plugin-msft@0.6.2) (2020-04-29)
+## [0.6.2](https://github.com/Microsoft/fast/compare/@microsoft/fast-figma-plugin-msft@0.6.1...@microsoft/fast-figma-plugin-msft@0.6.2) (2020-04-29)
 
 **Note:** Version bump only for package @microsoft/fast-figma-plugin-msft
 
@@ -51,7 +51,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-## [0.6.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-figma-plugin-msft@0.6.0...@microsoft/fast-figma-plugin-msft@0.6.1) (2020-04-27)
+## [0.6.1](https://github.com/Microsoft/fast/compare/@microsoft/fast-figma-plugin-msft@0.6.0...@microsoft/fast-figma-plugin-msft@0.6.1) (2020-04-27)
 
 **Note:** Version bump only for package @microsoft/fast-figma-plugin-msft
 
@@ -59,139 +59,112 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-# [0.6.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-figma-plugin-msft@0.5.0...@microsoft/fast-figma-plugin-msft@0.6.0) (2020-04-22)
+# [0.6.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-figma-plugin-msft@0.5.0...@microsoft/fast-figma-plugin-msft@0.6.0) (2020-04-22)
 
 
 ### Bug Fixes
 
-* align Fast to FAST ([#2950](https://github.com/Microsoft/fast-dna/issues/2950)) ([94c8744](https://github.com/Microsoft/fast-dna/commit/94c874455eccbb8609715c7fa96095a226428813))
+* align Fast to FAST ([#2950](https://github.com/Microsoft/fast/issues/2950)) ([94c8744](https://github.com/Microsoft/fast/commit/94c874455eccbb8609715c7fa96095a226428813))
 
 
 ### Features
 
-* refactor recipe implementation to use behaviors ([#2947](https://github.com/Microsoft/fast-dna/issues/2947)) ([e8834e5](https://github.com/Microsoft/fast-dna/commit/e8834e5c1d322ce0681e53e5d4cbba1ec112d76d))
+* refactor recipe implementation to use behaviors ([#2947](https://github.com/Microsoft/fast/issues/2947)) ([e8834e5](https://github.com/Microsoft/fast/commit/e8834e5c1d322ce0681e53e5d4cbba1ec112d76d))
 
 
 
 
 
-# [0.5.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-figma-plugin-msft@0.4.7...@microsoft/fast-figma-plugin-msft@0.5.0) (2020-04-13)
-
-
-### Features
-
-* update figma plugin UI ([#2912](https://github.com/Microsoft/fast-dna/issues/2912)) ([aa4f57d](https://github.com/Microsoft/fast-dna/commit/aa4f57de6660924dcb910352f21e78d7fe2bba34))
-
-
-
-
-
-## [0.4.7](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-figma-plugin-msft@0.4.6...@microsoft/fast-figma-plugin-msft@0.4.7) (2020-04-10)
-
-**Note:** Version bump only for package @microsoft/fast-figma-plugin-msft
-
-
-
-
-
-## [0.4.6](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-figma-plugin-msft@0.4.5...@microsoft/fast-figma-plugin-msft@0.4.6) (2020-04-02)
-
-**Note:** Version bump only for package @microsoft/fast-figma-plugin-msft
-
-
-
-
-
-## [0.4.5](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-figma-plugin-msft@0.4.4...@microsoft/fast-figma-plugin-msft@0.4.5) (2020-03-30)
-
-**Note:** Version bump only for package @microsoft/fast-figma-plugin-msft
-
-
-
-
-
-## [0.4.4](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-figma-plugin-msft@0.4.3...@microsoft/fast-figma-plugin-msft@0.4.4) (2020-03-25)
-
-**Note:** Version bump only for package @microsoft/fast-figma-plugin-msft
-
-
-
-
-
-## [0.4.3](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-figma-plugin-msft@0.4.2...@microsoft/fast-figma-plugin-msft@0.4.3) (2020-03-25)
-
-**Note:** Version bump only for package @microsoft/fast-figma-plugin-msft
-
-
-
-
-
-## [0.4.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-figma-plugin-msft@0.4.1...@microsoft/fast-figma-plugin-msft@0.4.2) (2020-03-18)
-
-**Note:** Version bump only for package @microsoft/fast-figma-plugin-msft
-
-
-
-
-
-## [0.4.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-figma-plugin-msft@0.4.0...@microsoft/fast-figma-plugin-msft@0.4.1) (2020-03-13)
-
-**Note:** Version bump only for package @microsoft/fast-figma-plugin-msft
-
-
-
-
-
-# [0.4.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-figma-plugin-msft@0.3.0...@microsoft/fast-figma-plugin-msft@0.4.0) (2020-02-28)
+# [0.5.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-figma-plugin-msft@0.4.7...@microsoft/fast-figma-plugin-msft@0.5.0) (2020-04-13)
 
 
 ### Features
 
-* adds general extensibility and component syncing ([#2666](https://github.com/Microsoft/fast-dna/issues/2666)) ([bf13b15](https://github.com/Microsoft/fast-dna/commit/bf13b15))
+* update figma plugin UI ([#2912](https://github.com/Microsoft/fast/issues/2912)) ([aa4f57d](https://github.com/Microsoft/fast/commit/aa4f57de6660924dcb910352f21e78d7fe2bba34))
 
 
 
 
 
-# [0.3.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-figma-plugin-msft@0.2.2...@microsoft/fast-figma-plugin-msft@0.3.0) (2020-02-07)
+## [0.4.7](https://github.com/Microsoft/fast/compare/@microsoft/fast-figma-plugin-msft@0.4.6...@microsoft/fast-figma-plugin-msft@0.4.7) (2020-04-10)
+
+**Note:** Version bump only for package @microsoft/fast-figma-plugin-msft
+
+
+
+
+
+## [0.4.6](https://github.com/Microsoft/fast/compare/@microsoft/fast-figma-plugin-msft@0.4.5...@microsoft/fast-figma-plugin-msft@0.4.6) (2020-04-02)
+
+**Note:** Version bump only for package @microsoft/fast-figma-plugin-msft
+
+
+
+
+
+## [0.4.5](https://github.com/Microsoft/fast/compare/@microsoft/fast-figma-plugin-msft@0.4.4...@microsoft/fast-figma-plugin-msft@0.4.5) (2020-03-30)
+
+**Note:** Version bump only for package @microsoft/fast-figma-plugin-msft
+
+
+
+
+
+## [0.4.4](https://github.com/Microsoft/fast/compare/@microsoft/fast-figma-plugin-msft@0.4.3...@microsoft/fast-figma-plugin-msft@0.4.4) (2020-03-25)
+
+**Note:** Version bump only for package @microsoft/fast-figma-plugin-msft
+
+
+
+
+
+## [0.4.3](https://github.com/Microsoft/fast/compare/@microsoft/fast-figma-plugin-msft@0.4.2...@microsoft/fast-figma-plugin-msft@0.4.3) (2020-03-25)
+
+**Note:** Version bump only for package @microsoft/fast-figma-plugin-msft
+
+
+
+
+
+## [0.4.2](https://github.com/Microsoft/fast/compare/@microsoft/fast-figma-plugin-msft@0.4.1...@microsoft/fast-figma-plugin-msft@0.4.2) (2020-03-18)
+
+**Note:** Version bump only for package @microsoft/fast-figma-plugin-msft
+
+
+
+
+
+## [0.4.1](https://github.com/Microsoft/fast/compare/@microsoft/fast-figma-plugin-msft@0.4.0...@microsoft/fast-figma-plugin-msft@0.4.1) (2020-03-13)
+
+**Note:** Version bump only for package @microsoft/fast-figma-plugin-msft
+
+
+
+
+
+# [0.4.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-figma-plugin-msft@0.3.0...@microsoft/fast-figma-plugin-msft@0.4.0) (2020-02-28)
 
 
 ### Features
 
-* add light / dark theme support to Figma plugin ([#2648](https://github.com/Microsoft/fast-dna/issues/2648)) ([f850ef3](https://github.com/Microsoft/fast-dna/commit/f850ef379cc814540a55b228858adcd70a881d15))
+* adds general extensibility and component syncing ([#2666](https://github.com/Microsoft/fast/issues/2666)) ([bf13b15](https://github.com/Microsoft/fast/commit/bf13b15))
 
 
 
 
 
-## [0.2.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-figma-plugin-msft@0.2.1...@microsoft/fast-figma-plugin-msft@0.2.2) (2020-01-29)
-
-**Note:** Version bump only for package @microsoft/fast-figma-plugin-msft
-
-
-
-
-
-## [0.2.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-figma-plugin-msft@0.2.0...@microsoft/fast-figma-plugin-msft@0.2.1) (2020-01-27)
-
-**Note:** Version bump only for package @microsoft/fast-figma-plugin-msft
-
-
-
-
-
-# [0.2.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-figma-plugin-msft@0.1.2...@microsoft/fast-figma-plugin-msft@0.2.0) (2020-01-24)
+# [0.3.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-figma-plugin-msft@0.2.2...@microsoft/fast-figma-plugin-msft@0.3.0) (2020-02-07)
 
 
 ### Features
 
-* adds background fill, text fill, and stroke fill capabilities to Figma plugin ([#2587](https://github.com/Microsoft/fast-dna/issues/2587)) ([a008ab2](https://github.com/Microsoft/fast-dna/commit/a008ab295d975f167db481c417ac1bf9f6cc2002))
+* add light / dark theme support to Figma plugin ([#2648](https://github.com/Microsoft/fast/issues/2648)) ([f850ef3](https://github.com/Microsoft/fast/commit/f850ef379cc814540a55b228858adcd70a881d15))
 
 
 
 
 
-## [0.1.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-figma-plugin-msft@0.1.1...@microsoft/fast-figma-plugin-msft@0.1.2) (2020-01-21)
+## [0.2.2](https://github.com/Microsoft/fast/compare/@microsoft/fast-figma-plugin-msft@0.2.1...@microsoft/fast-figma-plugin-msft@0.2.2) (2020-01-29)
 
 **Note:** Version bump only for package @microsoft/fast-figma-plugin-msft
 
@@ -199,7 +172,34 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-## [0.1.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-figma-plugin-msft@0.1.0...@microsoft/fast-figma-plugin-msft@0.1.1) (2020-01-09)
+## [0.2.1](https://github.com/Microsoft/fast/compare/@microsoft/fast-figma-plugin-msft@0.2.0...@microsoft/fast-figma-plugin-msft@0.2.1) (2020-01-27)
+
+**Note:** Version bump only for package @microsoft/fast-figma-plugin-msft
+
+
+
+
+
+# [0.2.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-figma-plugin-msft@0.1.2...@microsoft/fast-figma-plugin-msft@0.2.0) (2020-01-24)
+
+
+### Features
+
+* adds background fill, text fill, and stroke fill capabilities to Figma plugin ([#2587](https://github.com/Microsoft/fast/issues/2587)) ([a008ab2](https://github.com/Microsoft/fast/commit/a008ab295d975f167db481c417ac1bf9f6cc2002))
+
+
+
+
+
+## [0.1.2](https://github.com/Microsoft/fast/compare/@microsoft/fast-figma-plugin-msft@0.1.1...@microsoft/fast-figma-plugin-msft@0.1.2) (2020-01-21)
+
+**Note:** Version bump only for package @microsoft/fast-figma-plugin-msft
+
+
+
+
+
+## [0.1.1](https://github.com/Microsoft/fast/compare/@microsoft/fast-figma-plugin-msft@0.1.0...@microsoft/fast-figma-plugin-msft@0.1.1) (2020-01-09)
 
 **Note:** Version bump only for package @microsoft/fast-figma-plugin-msft
 
@@ -212,4 +212,4 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ### Features
 
-* adds figma plugin boilerplate ([#2548](https://github.com/Microsoft/fast-dna/issues/2548)) ([a7b53f1](https://github.com/Microsoft/fast-dna/commit/a7b53f199f6750c8cf1abfff888a7245482b2e33))
+* adds figma plugin boilerplate ([#2548](https://github.com/Microsoft/fast/issues/2548)) ([a7b53f1](https://github.com/Microsoft/fast/commit/a7b53f199f6750c8cf1abfff888a7245482b2e33))

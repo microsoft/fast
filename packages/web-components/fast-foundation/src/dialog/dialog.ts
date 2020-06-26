@@ -213,7 +213,7 @@ export class Dialog extends FASTElement {
     };
 
     /**
-     * TODO: Issue #2742 - https://github.com/microsoft/fast-dna/issues/2742
+     * TODO: Issue #2742 - https://github.com/microsoft/fast/issues/2742
      * This is a placeholder function to check if the hidden attribute is present
      * Currently there is not support for boolean attributes.
      * Once support is added, we will simply use this.hidden.
@@ -223,7 +223,7 @@ export class Dialog extends FASTElement {
     }
 
     /**
-     * TODO: Issue #2742 - https://github.com/microsoft/fast-dna/issues/2742
+     * TODO: Issue #2742 - https://github.com/microsoft/fast/issues/2742
      * This is a placeholder function to check if the trapFocus attribute is present
      * Currently there is not support for boolean attributes.
      * Once support is added, we will simply use this.trapFocus.

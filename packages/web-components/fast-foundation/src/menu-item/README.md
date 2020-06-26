@@ -2,7 +2,7 @@
 id: menu-item
 title: fast-menu-item
 sidebar_label: menu-item
-custom_edit_url: https://github.com/microsoft/fast-dna/edit/master/packages/web-components/fast-foundation/src/menu-item/README.md
+custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-foundation/src/menu-item/README.md
 ---
 
 The `fast-menu-item` is a custom element meant to be used with `fast-menu` and supports roles of `menuitem`, `menuitemcheckbox`, and `menuitemradio`.

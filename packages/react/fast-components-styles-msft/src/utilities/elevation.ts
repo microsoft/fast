@@ -80,7 +80,7 @@ export function elevationShadow(
             blurMultiplier,
             blurBase = 0,
         }: ShadowConfig = shadowConfig;
-        // TODO: (Breaking) Remove default https://github.com/microsoft/fast-dna/issues/2469
+        // TODO: (Breaking) Remove default https://github.com/microsoft/fast/issues/2469
 
         const lum: number = rgbToRelativeLuminance(
             parseColorString(backgroundColor(config))

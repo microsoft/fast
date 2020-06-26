@@ -1,7 +1,7 @@
 ---
 title: Getting Started with FAST Components
 sidebar_label: Getting Started
-custom_edit_url: https://github.com/microsoft/fast-dna/edit/master/sites/website/src/docs/fast-foundation/getting-started.md
+custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/src/docs/fast-foundation/getting-started.md
 ---
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![npm version](https://badge.fury.io/js/%40microsoft%2Ffast-components.svg)](https://badge.fury.io/js/%40microsoft%2Ffast-components)

@@ -1,5 +1,5 @@
 {
-  "name": "@microsoft/fast-dna",
+  "name": "@microsoft/fast",
   "description": "An unopinionated system of components, development tools, and utilities used à la carte or as a suite to build enterprise-grade websites and applications.",
   "version": "1.8.0",
   "author": {
@@ -14,10 +14,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Microsoft/fast-dna.git"
+    "url": "git+https://github.com/Microsoft/fast.git"
   },
   "bugs": {
-    "url": "https://github.com/Microsoft/fast-dna/issues/new/choose"
+    "url": "https://github.com/Microsoft/fast/issues/new/choose"
   },
   "scripts": {
     "docs:build": "node build/documentation/generate-typedocs.js",

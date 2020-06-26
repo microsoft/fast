@@ -22,7 +22,7 @@ As defined by the W3C:
 - **Focus management:** In all circumstances, focus should move to an element contained in the dialog. Per the W3C, "Unless a condition where doing otherwise is advisable, focus is initially set on the *first* focusable element" (emphasis mine). If an element within the dialog is set to be focused by an app author, our control should not override that behavior. In both modal and non-modal dialogs, tab focus should remain within the dialog content region and not move outside it. When the dialog is closed, users may also want a way to return focus to the element which invoked the dialog.
 
 ### Prior Art/Examples
-- [FAST-DNA (React)](https://explore.fast.design/components/dialog)
+- [FAST (React)](https://explore.fast.design/components/dialog)
 - [Material UI](https://material-ui.com/components/dialogs/)
 - [Lightning Design](https://www.lightningdesignsystem.com/components/modals/)
 - [Carbon Design](https://www.carbondesignsystem.com/components/modal/code/)
