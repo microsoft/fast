@@ -41,6 +41,9 @@ export const CarouselStyles = css`
         right: 20px;
     }
 
+    .slide-container {
+    }
+
     .slide-tabs {
         position: absolute;
         bottom: 40px;
