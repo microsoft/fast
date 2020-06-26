@@ -52,21 +52,9 @@ export const CarouselStyles = css`
     .slide-tab {
         display: inline-block;
         padding: 4px;
-        border: 1px solid #999;
         border-radius: 40px;
         border: none;
         outline: none;
-    }
-
-    .slide-tab:hover:before {
-        border-color: #fff;
-    }
-
-    ${/*TODO: GET THIS TAB SELECTOR WORKING*/ ""};
-
-    fast-tabs::part(tab) {
-        color: red;
-        outline: 1px dotted green;
     }
 
     .slide-tab:before {
@@ -80,6 +68,38 @@ export const CarouselStyles = css`
         transition: all 0.05s ease-in-out;
         height: 4px;
         background-color: #101010;
+    }
+
+    .slide-tab[aria-selected="true"]:before {
+        opacity: 1;
+    }
+
+    .slide-tab:hover:before {
+        border-color: #fff;
+    }
+
+    .play-control {
+        position: absolute;
+        left: 10px;
+        top: 10px;
+    }
+
+    ${/*TODO: GET THIS TAB SELECTOR WORKING*/ ""};
+
+    fast-tabs::part(tab) {
+        color: red;
+        outline: 1px dotted green;
+    }
+
+    fast-tabs::part(tablist) {
+        position: absolute;
+        bottom: 10px;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 1;
+    }
+
+    fast-tabs::part(tabpanelcontainer) {
     }
 `.withBehaviors(
     accentFillRestBehavior,

@@ -1,15 +1,11 @@
-// TODO: ADD animations and classes to previous, current, next slides
+// TODO: ADD animations and classes to previous, current, next slides???
 // TODO: CHECK for error states, compare with other components
 // TODO: ADD more examples to test timer, loop, etc...
 // TODO: ADD keyboard controls
+// TODO: CHECK tab index of all controls
 // TODO: ADD accessibility features, compare to SPEC and other components
 
 // TODO: ADD check to stop autoplay when carousel is hovered, clicked, or keydowned, anything else???
-
-// TODO: ADD default tabs repeater to TABS class
-// TODO: ADD tabs based on repeat directive
-// TODO: Sort how to stop tabs adjust from setting
-
 // TODO: Since this is a new component you will have to add the definition to the definitions folder in site-utilities
 // TODO: ADD change $emit, for active slide and paused?
 import { attr, DOM, FASTElement, observable } from "@microsoft/fast-element";
@@ -38,8 +34,8 @@ export class Carousel extends FASTElement {
     @attr({ mode: "boolean" })
     public paused: boolean = false;
 
-    @attr({ attribute: "activeid" })
-    public activeid: string;
+    @attr({ attribute: "activeId" })
+    public activeId: string;
 
     @attr({ attribute: "slidepicker", mode: "boolean" })
     public slidePicker: boolean = true;
@@ -82,13 +78,17 @@ export class Carousel extends FASTElement {
     private tabPanelIds: string[] = [];
     private activeIndex: number = 0;
 
+    private change = (): void => {
+        this.$emit("change", this.activeId);
+    };
+
     private incrementSlide = (direction: 1 | -1): void => {
         this.activeIndex = wrapInBounds(
             0,
             this.tabPanelIds.length - 1,
             this.activeIndex + direction
         );
-        this.activeid = this.tabPanelIds[this.activeIndex];
+        this.activeId = this.tabPanelIds[this.activeIndex];
     };
 
     private autoplayNextItem = (): void => {
@@ -129,13 +129,6 @@ export class Carousel extends FASTElement {
 
     // constructor() {
     // super();
-
-    // if (this.autoplay) {
-    //     this.autoplayTimer = window.setInterval(
-    //         this.autoplayNextItem,
-    //         this.autoplayInterval
-    //     );
-    // }
     // }
 
     public connectedCallback(): void {

@@ -111,6 +111,14 @@ export class Tabs extends FASTElement {
      */
     public activetab: HTMLElement;
 
+    /**
+     * Whether or not to focus the tab on change
+     * @public
+     * HTML Attribute: notabfocus
+     */
+    @attr({ mode: "boolean" })
+    public notabfocus: boolean = false;
+
     private prevActiveTabIndex: number = 0;
     private activeTabIndex: number = 0;
     private ticking: boolean = false;
@@ -209,7 +217,9 @@ export class Tabs extends FASTElement {
         this.setTabs();
         this.handleActiveIndicatorPosition();
         this.setTabPanels();
-        this.focusTab();
+        if (!this.notabfocus) {
+            this.focusTab();
+        }
         this.change();
     }
 

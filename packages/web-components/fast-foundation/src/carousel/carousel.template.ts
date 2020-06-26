@@ -13,7 +13,11 @@ import { FlipperDirection } from "../flipper";
 // TODO: ADD play/pause controls
 
 const slidePickerTemplate: ViewTemplate = html<Carousel>`
-    <fast-tabs activeindicator="false" activeid="${(x, c) => x.activeid}">
+    <fast-tabs
+        activeindicator="false"
+        activeid="${(x, c) => x.activeId}"
+        notabfocus="true"
+    >
         ${repeat(
             x => x.filteredItems,
             html`<div
@@ -58,7 +62,7 @@ const pauseIcon: string = `<svg viewBox="0 0 16 16" width="16px" height="16px" x
 const playIcon: string = `<svg viewBox="0 0 16 16" width="16px" height="16px" xmlns="http://www.w3.org/2000/svg"><path d="M1 0V16L15.0083 8L1 0Z"></path></svg>`;
 
 export const CarouselTemplate = html<Carousel>`
-<template>
+<template ${ref("carousel")}>
     <slot style="display: none;" ${slotted("items")}></slot>
     
     ${when(x => x.slidePicker, slidePickerTemplate)}
