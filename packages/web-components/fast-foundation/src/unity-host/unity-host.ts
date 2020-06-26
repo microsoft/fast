@@ -6,6 +6,15 @@ import UnityContent from "./unity-content";
 import IUnityConfig from "./interfaces/i-unity-config";
 import UnityLoaderService from "./services/unity-loader-service";
 import "./declarations/unity-loader";
+// TODO: the Resize Observer related files are a temporary stopgap measure until
+// Resize Observer types are pulled into TypeScript, which seems imminent
+// At that point these files should be deleted.
+// https://github.com/microsoft/TypeScript/issues/37861
+import {
+    ConstructibleResizeObserver,
+    ResizeObserverClassDefinition,
+} from "../anchored-region/resize-observer";
+import { ResizeObserverEntry } from "../anchored-region/resize-observer-entry";
 
 export class UnityHost extends FASTElement {
     @attr
@@ -34,7 +43,8 @@ export class UnityHost extends FASTElement {
     private unityContent: UnityContent;
     private unityLoaderService: UnityLoaderService;
     private unityConfig: IUnityConfig = {};
-    private onWindowResizeBinding: () => void;
+
+    private resizeDetector: ResizeObserverClassDefinition;
 
     constructor() {
         super();
@@ -44,7 +54,6 @@ export class UnityHost extends FASTElement {
     public connectedCallback(): void {
         super.connectedCallback();
 
-        this.onWindowResizeBinding = this.onWindowResize.bind(this);
         this.unityContent = new UnityContent(
             this.buildjsonpath,
             this.unityloaderpath,
@@ -52,6 +61,7 @@ export class UnityHost extends FASTElement {
         );
         this.unityContent.setComponentInstance(this);
         this.uniqueId = this.targetid;
+        this.unityConfig.adjustOnWindowResize = true;
         this.unityConfig.id = this.uniqueId;
 
         this.unityContent.on("ShowMessage", (message: string) => {});
@@ -66,7 +76,6 @@ export class UnityHost extends FASTElement {
             // todo: event
         });
 
-        window.addEventListener("resize", this.onWindowResizeBinding);
         // prettier-ignore
         this.unityLoaderService.append(this.unityContent.unityLoaderJsPath, () => {
           UnityLoader.Error.handler = _message => {
@@ -78,73 +87,82 @@ export class UnityHost extends FASTElement {
         );
 
         this.hostStyle = `
-            height: 1080px;
-            width: 1920px;
+            height: 100%;
+            width: 100%;
         `;
+
+        this.resizeDetector = new ((window as unknown) as WindowWithResizeObserver).ResizeObserver(
+            this.handleResize
+        );
+        this.resizeDetector.observe(this.hostElement);
     }
 
     public disconnectedCallback(): void {
         super.disconnectedCallback();
         this.unityContent.remove();
-        window.removeEventListener("resize", this.onWindowResizeBinding);
+        if (this.resizeDetector) {
+            this.resizeDetector.disconnect();
+        }
     }
 
     // todo: constrain (convert?) param types
-    public messageUnity(
+    public messageUnity = (
         targetGameObject: string,
         targetFunction: string,
         param: any
-    ): void {
+    ): void => {
         if (this.unityContent === null) {
             return;
         }
         this.unityContent.send(targetGameObject, targetFunction, param);
-    }
+    };
 
-    public subscribeEvent(eventName: string, callback: Function): void {
+    public subscribeEvent = (eventName: string, callback: Function): void => {
         if (this.unityContent === null) {
             return;
         }
         this.unityContent.on(eventName, callback);
-    }
+    };
 
-    public unsubscribeEvent(eventName: string, callback: Function): void {
+    public unsubscribeEvent = (eventName: string, callback: Function): void => {
         if (this.unityContent === null) {
             return;
         }
         // todo: unsubscribe? cleanup?
-    }
+    };
 
-    private onUnityLoad(): void {
+    private onUnityLoad = (): void => {
         this.unityContent.setUnityInstance(
             UnityLoader.instantiate(this.uniqueId, this.unityContent.buildJsonPath, {
                 onProgress: this.onProgress.bind(this),
                 Module: this.unityContent.unityConfig.modules,
-                width: "1080px",
-                height: "1920px",
+                width: this.hostElement.clientWidth,
+                height: this.hostElement.clientHeight,
             })
         );
-    }
+    };
 
     /**
      * An event that is triggered by the Unity player. This tracks
      * the loading progression of the player. It will send '1' when
      * the loading is completed.
      */
-    private onProgress(unityInstance: UnityInstance, progression: number): void {
+    private onProgress = (unityInstance: UnityInstance, progression: number): void => {
         this.unityContent.triggerUnityEvent("progress", progression);
         if (progression === 1) this.unityContent.triggerUnityEvent("loaded");
-    }
+    };
 
     /**
-     * When the window is resized.
+     *  Handle resize events
      */
-    private onWindowResize(): void {
-        if (this.unityContent.unityConfig.adjustOnWindowResize === true) {
-            this.unityContent.triggerUnityEvent("resized");
-            this.adjustCanvasToContainer();
-        }
-    }
+    private handleResize = (entries: ResizeObserverEntry[]): void => {
+        entries.forEach((entry: ResizeObserverEntry) => {
+            if (entry.target === this.hostElement) {
+                this.unityContent.triggerUnityEvent("resized");
+                this.adjustCanvasToContainer();
+            }
+        });
+    };
 
     /**
      * Since the Unity canvas itself does not respond to the resizing
@@ -152,7 +170,7 @@ export class UnityHost extends FASTElement {
      * of 100% does not seem to work, so we have to fetch it's parent's
      * size to adject the canvas.
      */
-    private adjustCanvasToContainer(): void {
+    private adjustCanvasToContainer = (): void => {
         if (typeof this.hostElement !== "undefined") {
             const _width = this.hostElement.offsetWidth;
             const _height = this.hostElement.offsetHeight;
@@ -162,5 +180,5 @@ export class UnityHost extends FASTElement {
             if (typeof _canvas !== "undefined" && _canvas.width !== _width)
                 _canvas.width = _width;
         }
-    }
+    };
 }

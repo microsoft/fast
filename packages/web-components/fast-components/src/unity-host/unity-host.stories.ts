@@ -17,22 +17,22 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
 
 function configureUi(): void {
     document.querySelectorAll("fast-switch").forEach(el => {
-        switch (el.id) {
-            case "switch-default":
-                (el as FASTSwitch).onchange = event => {
-                    const host: HTMLElement | null = document.getElementById(
-                        "unity-host-default"
-                    );
-                    if (host === null) {
-                        return;
-                    }
-                    (host.parentNode as FASTUnityHost).messageUnity(
-                        "Background",
-                        "SetEnableUFOs",
-                        boolToNumber((el as FASTSwitch).checked)
-                    );
-                };
-                break;
+        if (el.id.startsWith("switch-")) {
+            const instanceId: string = el.id.slice(7);
+
+            (el as FASTSwitch).onchange = event => {
+                const host: HTMLElement | null = document.getElementById(
+                    `unity-host-${instanceId}`
+                );
+                if (host === null) {
+                    return;
+                }
+                (host.parentNode as FASTUnityHost).messageUnity(
+                    "Background",
+                    "SetEnableUFOs",
+                    boolToNumber((el as FASTSwitch).checked)
+                );
+            };
         }
     });
 }
