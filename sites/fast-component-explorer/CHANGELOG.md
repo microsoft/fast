@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.9.2](https://github.com/Microsoft/fast/compare/@microsoft/fast-component-explorer@0.9.1...@microsoft/fast-component-explorer@0.9.2) (2020-06-26)
+
+
+### Bug Fixes
+
+* update standard luminance values for fast-components ([#3400](https://github.com/Microsoft/fast/issues/3400)) ([5ccfea7](https://github.com/Microsoft/fast/commit/5ccfea7bb2825b0ccc5a3a8af2c5e0a7dfe152fb))
+* updates the background of the design system provider when transparency is set ([#3372](https://github.com/Microsoft/fast/issues/3372)) ([d2b9d65](https://github.com/Microsoft/fast/commit/d2b9d65f34f779a4fedd464f939bb0b1a74f9949))
+* updates the current component when the browser back button is pressed ([#3373](https://github.com/Microsoft/fast/issues/3373)) ([7e675fc](https://github.com/Microsoft/fast/commit/7e675fc8663e684b716f71269aa2287c3fc8bb97))
+
+
+
+
+
 ## [0.9.1](https://github.com/Microsoft/fast/compare/@microsoft/fast-component-explorer@0.9.0...@microsoft/fast-component-explorer@0.9.1) (2020-06-17)
 
 **Note:** Version bump only for package @microsoft/fast-component-explorer

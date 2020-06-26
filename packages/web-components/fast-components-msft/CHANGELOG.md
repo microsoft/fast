@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.3.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-components-msft@1.2.1...@microsoft/fast-components-msft@1.3.0) (2020-06-26)
+
+
+### Bug Fixes
+
+* correct css selector for dialog control ([#3398](https://github.com/Microsoft/fast/issues/3398)) ([f9aff7c](https://github.com/Microsoft/fast/commit/f9aff7cf2c455fb132b6dbcc02e451edb628c1aa))
+* ensure button control height matches wc root height ([#3340](https://github.com/Microsoft/fast/issues/3340)) ([3c9429e](https://github.com/Microsoft/fast/commit/3c9429e28b8c1008f1971a12d36646e57b85a576))
+* selected tab becoming undefined when tab slot pass anything except icon or text node ([#3350](https://github.com/Microsoft/fast/issues/3350)) ([eda1aef](https://github.com/Microsoft/fast/commit/eda1aef79aeb612b05ea73b3861a93f5241c382f))
+
+
+### Features
+
+* export parseColorString from components and components-msft ([#3356](https://github.com/Microsoft/fast/issues/3356)) ([c4db7b8](https://github.com/Microsoft/fast/commit/c4db7b832c3787be1ec6181e39b79f1304c5cae9))
+
+
+
+
+
 ## [1.2.1](https://github.com/Microsoft/fast/compare/@microsoft/fast-components-msft@1.2.0...@microsoft/fast-components-msft@1.2.1) (2020-06-17)
 
 
