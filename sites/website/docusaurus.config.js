@@ -76,7 +76,7 @@ module.exports = {
                         },
                         {
                             label: "Twitter",
-                            href: "https://twitter.com/FAST_DNA",
+                            href: "https://twitter.com/FAST_UI",
                         },
                     ],
                 },
