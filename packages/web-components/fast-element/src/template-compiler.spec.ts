@@ -177,9 +177,9 @@ describe("The template compiler", () => {
         const scenarios = [
             {
                 type: "no",
-                html: `<a href="https://www.fast.design/">FAST-DNA</a>`,
+                html: `<a href="https://www.fast.design/">FAST</a>`,
                 directives: [],
-                fragment: `<a href="https://www.fast.design/">FAST-DNA</a>`,
+                fragment: `<a href="https://www.fast.design/">FAST</a>`,
             },
             {
                 type: "a single",

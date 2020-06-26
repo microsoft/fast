@@ -29,7 +29,7 @@ As defined by the W3C:
 
 
 ### Prior Art/Examples
-- [FAST-DNA (React)](https://explore.fast.design/components/carousel)
+- [FAST (React)](https://explore.fast.design/components/carousel)
 - [W3C](https://w3c.github.io/aria-practices/examples/carousel/carousel-1.html)
 
 ---

@@ -62,7 +62,7 @@ When the base component renders, it will apply classes to elements from the *cla
 ```
 
 #### How are components styled?
-Base components are styled using [JSS](https://cssinjs.org/?v=v10.0.0) - a tool for generating stylesheets from JavaScript objects. Each JSS stylesheet conforms the the class-name contract defined by the component. [@microsoft/fast-jss-manager-react](https://github.com/microsoft/fast-dna/tree/master/packages/fast-jss-manager-react) is used to compose a component stylesheet with a base component, and will manage CSS creation, update, and removal processes during the component lifecycle.
+Base components are styled using [JSS](https://cssinjs.org/?v=v10.0.0) - a tool for generating stylesheets from JavaScript objects. Each JSS stylesheet conforms the the class-name contract defined by the component. [@microsoft/fast-jss-manager-react](https://github.com/microsoft/fast/tree/master/packages/fast-jss-manager-react) is used to compose a component stylesheet with a base component, and will manage CSS creation, update, and removal processes during the component lifecycle.
 
 #### What is the design system?
 The *design-system* is all of the design data - it captures design thinking into a configuration object that informs components how to render. This can include information about color, font-weights, UI density, motion, and more. In practice, this object is provided to JSS stylesheets so that the resulting CSS is a product of the *design-system*.

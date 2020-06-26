@@ -82,10 +82,10 @@ function test(branchName) {
     console.log("Testing Git branch:", branchName);
 
     // Execute Selenium/Appium Web Drivers on Sauce Labs for each browser configuration
-    var flows = browsers.map(function(browser) {
+    var flows = browsers.map(function (browser) {
         // Setup capabilities
         let capabilities = {
-            name: "FAST-DNA Documentation",
+            name: "FAST Documentation",
             build: branchName,
             tags: "msft-docs",
             appiumVersion: browser.appiumVersion,
@@ -111,7 +111,7 @@ function test(branchName) {
             .build();
 
         // Start session and execute test cases
-        driver.getSession().then(async function() {
+        driver.getSession().then(async function () {
             try {
                 await driver.get(domain);
 
@@ -180,7 +180,7 @@ function test(branchName) {
 /**
  * Run tests on the current branch and use the branch name as the unique identifier on Sauce Labs
  */
-new Promise(function(resolve, reject) {
+new Promise(function (resolve, reject) {
     const git = spawn("git", ["rev-parse", "--abbrev-ref", "HEAD"]);
 
     git.stdout.on("data", data => {
@@ -189,6 +189,6 @@ new Promise(function(resolve, reject) {
     git.stderr.on("data", data => {
         reject("Unable to get branch name", data);
     });
-}).then(function(branchName) {
+}).then(function (branchName) {
     test(branchName);
 });

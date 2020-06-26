@@ -10,7 +10,7 @@ const MarkdownIt = require("markdown-it");
 const srcDir = "../../packages/web-components/fast-components/src/**/README.md";
 // TODO: update this when the repository is renamed
 const webComponentWorkspacePath =
-    "https://github.com/microsoft/fast-dna/tree/master/packages/web-components/";
+    "https://github.com/microsoft/fast/tree/master/packages/web-components/";
 
 /**
  * Start and end file strings

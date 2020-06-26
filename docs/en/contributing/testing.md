@@ -64,21 +64,21 @@ lt --port 8000
 
 [Sauce Labs](https://saucelabs.com/beta/dashboard/builds) lets collaborators and contributors execute automated tests against Selenium WebDriver on pre-configured browser matrix's.
 
-The cross-browser testing strategy focuses on the differences between browser rendering engines. There are three different [configuration files](https://github.com/Microsoft/fast-dna/tree/master/build/testing) based on feature maturity of ongoing work.
+The cross-browser testing strategy focuses on the differences between browser rendering engines. There are three different [configuration files](https://github.com/Microsoft/fast/tree/master/build/testing) based on feature maturity of ongoing work.
 
-[Alpha](https://github.com/Microsoft/fast-dna/blob/master/build/testing/config-browsers.alpha.js) - immature feature development:
+[Alpha](https://github.com/Microsoft/fast/blob/master/build/testing/config-browsers.alpha.js) - immature feature development:
 
 ```bash
 node build/testing/sauce-labs/test-browsers.js alpha
 ```
 
-[Beta](https://github.com/Microsoft/fast-dna/blob/master/build/testing/config-browsers.beta.js) - stable feature development:
+[Beta](https://github.com/Microsoft/fast/blob/master/build/testing/config-browsers.beta.js) - stable feature development:
 
 ```bash
 node build/testing/sauce-labs/test-browsers.js beta
 ```
 
-[Release](https://github.com/Microsoft/fast-dna/blob/master/build/testing/config-browsers.release.js) - mature feature development:
+[Release](https://github.com/Microsoft/fast/blob/master/build/testing/config-browsers.release.js) - mature feature development:
 
 ```bash
 node build/testing/sauce-labs/test-browsers.js release

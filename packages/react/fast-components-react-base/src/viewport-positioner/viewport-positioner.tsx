@@ -492,7 +492,7 @@ class ViewportPositioner extends Foundation<
             this.collisionDetector = null;
         }
 
-        // TODO #1142 https://github.com/Microsoft/fast-dna/issues/1142
+        // TODO #1142 https://github.com/Microsoft/fast/issues/1142
         // Full browser support imminent
         // Revisit usage once Safari and Firefox adapt
         // https://bugzilla.mozilla.org/show_bug.cgi?id=1272409

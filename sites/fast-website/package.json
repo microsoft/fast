@@ -34,7 +34,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Microsoft/fast-dna.git"
+    "url": "git+https://github.com/Microsoft/fast.git"
   },
   "author": "Microsoft"
 }

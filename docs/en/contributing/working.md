@@ -8,7 +8,7 @@ sidebar_label: Working
 
 ## Managing issues
 
-Well crafted issues improve the speed that work can be triaged, understood, and completed. To help guide this process [issue templates](https://github.com/Microsoft/fast-dna/tree/master/.github/ISSUE_TEMPLATE) exist to allow users to choose an appropriate [bug report](https://github.com/Microsoft/fast-dna/blob/master/.github/ISSUE_TEMPLATE/report-a-bug.md) or [feature request](https://github.com/Microsoft/fast-dna/blob/master/.github/ISSUE_TEMPLATE/request-a-feature.md).
+Well crafted issues improve the speed that work can be triaged, understood, and completed. To help guide this process [issue templates](https://github.com/Microsoft/fast/tree/master/.github/ISSUE_TEMPLATE) exist to allow users to choose an appropriate [bug report](https://github.com/Microsoft/fast/blob/master/.github/ISSUE_TEMPLATE/report-a-bug.md) or [feature request](https://github.com/Microsoft/fast/blob/master/.github/ISSUE_TEMPLATE/request-a-feature.md).
 
 Here's an excellent resource for [do's and don'ts](https://hackernoon.com/45-github-issues-dos-and-donts-dfec9ab4b612) when working with bugs, issues, and requests.
 
@@ -20,9 +20,9 @@ When landing a pull request (PR), individuals must modify the original commit me
 
 PR commit messages should include the issue number per the [github closing issue keywords](https://help.github.com/articles/closing-issues-using-keywords/) documentation.
 
-One or more collaborators are automatically assigned to review each PR based on areas of [ownership](https://github.com/Microsoft/fast-dna/blob/master/.github/CODEOWNERS).
+One or more collaborators are automatically assigned to review each PR based on areas of [ownership](https://github.com/Microsoft/fast/blob/master/.github/CODEOWNERS).
 
-When a peer review is created, a [template](https://github.com/Microsoft/fast-dna/blob/master/.github/pull_request_template.md) is provided that includes the best practices and processes for a review message.
+When a peer review is created, a [template](https://github.com/Microsoft/fast/blob/master/.github/pull_request_template.md) is provided that includes the best practices and processes for a review message.
 
 ### Interim commits
 
@@ -84,7 +84,7 @@ yarn watch
 
 If you run into any errors and they seem unrelated to your work try the following procedure:
 
-Delete root node_modules (`fast-dna/node_modules`) then:
+Delete root node_modules (`fast/node_modules`) then:
 
 ```bash
 lerna clean
