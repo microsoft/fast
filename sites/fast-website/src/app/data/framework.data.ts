@@ -7,37 +7,35 @@ export interface FrameworkContentPlacementData {
 export const frameworkContentPlacementData: FrameworkContentPlacementData[] = [
     {
         body:
-            "Angular's default binding syntax will always set properties on an element. This works well for rich data, like objects and arrays, and also works well for primitive values so long as the Custom Element author has mapped any exposed attributes to corresponding properties.",
+            "Angular works great with FAST due to its binding system's support for setting both attributes and properties on custom elements.",
         header: "Angular",
         headerSubscript: "8.2.14",
     },
     {
         body:
-            "DIO uses a runtime heuristic to determine if it should pass data to Custom Elements as either properties or attributes. If a property is already defined on the element instance, DIO will use properties, otherwise it will fallback to attributes.",
-        header: "DIO",
+            "FAST works naturally with ASP.NET server-side development. Start building immediately by adding a script tag and using the custom HTML elements.",
+        header: "ASP.NET",
     },
     {
         body:
-            "hyperHTML will pass data to an element as properties, as long as the property is defined on the element's prototype. Otherwise it will fallback to passing data as attributes.",
-        header: "hyperHTML",
-        headerSubscript: "2.32.2",
+            "FAST works flawlessly with both Aurelia 1 and Aurelia 2, with full integration into the binding engine and component model.",
+        header: "Aurelia",
+        headerSubscript: "1 & 2",
     },
     {
         body:
-            "Dojo will pass data as attributes only when the data is a type of string, otherwise it is set as a property.",
-        header: "Dojo",
-        headerSubscript: "6.0.4",
+            "FAST integrates nicely with Blazor, a feature of ASP.NET which lets you build interactive web UIs using C# instead of JavaScript.",
+        header: "Blazor",
     },
     {
         body:
-            "Hybrids will pass data to an element as properties, as long as the property is defined on the element's prototype. Otherwise it will fallback to passing data as attributes.",
-        header: "hybrids",
-        headerSubscript: "4.1.7",
+            "While the React team works to fully support custom elements in v17, we're working hard to provide a wrapper to seamlessly support integration for v16.x.x.",
+        header: "React",
+        headerSubscript: "Coming soon",
     },
     {
         body:
-            "AngularJS can declaratively pass data to attributes using ng-attr, or to properties using ng-prop.",
-        header: "AngularJS (1.x)",
-        headerSubscript: "1.7.9",
+            "Vue fully supports custom elements and by default passes all data to them as attributes. The framework also provides a special syntax to bind properties.",
+        header: "Vue",
     },
 ];

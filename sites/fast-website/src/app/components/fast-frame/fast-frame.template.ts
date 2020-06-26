@@ -24,7 +24,7 @@ export const FastFrameTemplate = html<FastFrame>`
                         <h1><span class="content-heading-highlight">Fast Frame</span> Dark Mode</h4>
                         <h2>Pre-built for both light and dark modes</h2>
                         <p>
-                            Sem viverra fringilla at magna turpis in. Nullam adipiscing fusce auctor semper arcu felis. Purus et enim feugiat arcu. Lectus neque sem est ridiculus tempus urna.
+                            Switching between dark and light mode is as easy as changing the background color of the design system.
                         </p>
                         <div class="content-control-container" >
                             <label for="dark-mode-switch">Dark mode</label>
@@ -46,8 +46,7 @@ export const FastFrameTemplate = html<FastFrame>`
                         <h1><span class="content-heading-highlight">Fast Frame</span> Colors</h4>
                         <h2>Pre-existing color you can customize</h2>
                         <p>
-                            Ultrices nibh nunc vestibulum fames. At lacus nunc lacus eget
-                            neque.
+                            Color is applied by using color recipes which require two color palettes, neutral and accent, applied to the design system. These palettes are customizable which allows for a wide range of styles.
                         </p>
                         <div class="content-control-container" >
                             <label for="background-color-pickers">Background color</label>
@@ -130,7 +129,7 @@ export const FastFrameTemplate = html<FastFrame>`
                         <h1><span class="content-heading-highlight">Fast Frame</span> Styles</h4>
                         <h2>Adjust style settings on the fly</h2>
                         <p>
-                            Ultrices nibh nunc vestibulum fames. At lacus nunc lacus eget neque.
+                            Update design system values for border radius, outline width, or density.
                         </p>
                         <div class="content-control-container-2">
                             <label for="border-radius-slider">Border radius</label>
@@ -244,7 +243,7 @@ export const FastFrameTemplate = html<FastFrame>`
                         </fast-badge>
                     </div>
                     <div class="text-container">
-                        <h3>Card Options</h3>
+                        <h3>Example card</h3>
                         <p>
                             At purus lectus quis habitant commodo, cras. Aliquam malesuada
                             velit a tortor. Felis orci tellus netus risus et ultricies
@@ -255,9 +254,6 @@ export const FastFrameTemplate = html<FastFrame>`
                             <span class="sample-control-icon"></span>
                             <span class="sample-control-text">Label</span>
                             <div class="sample-control-actions">
-                                <fast-button appearance="stealth" aria-label="Example 'share' button"
-                                    >${ShareIcon}</fast-button
-                                >
                                 <fast-button appearance="stealth" aria-label="Example 'more' button"
                                     >${ContextIcon}</fast-button
                                 >
