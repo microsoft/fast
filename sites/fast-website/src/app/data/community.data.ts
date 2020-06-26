@@ -21,7 +21,7 @@ export const communityContentPlacementData: CommunityContentPlacementData[] = [
         icon: DiscordIcon,
     },
     {
-        actionLink: "https://twitter.com/fast_dna",
+        actionLink: "https://twitter.com/FAST_UI",
         actionText: "Follow us on Twitter",
         body:
             "Follow along as we share out the latest happenings on Twitter. You will find important updates, announcements, and sneak peeks.",
@@ -37,7 +37,7 @@ export const communityContentPlacementData: CommunityContentPlacementData[] = [
         icon: GithubIcon,
     },
     {
-        actionLink: "https://medium.com/fast-dna",
+        actionLink: "https://medium.com/fast-design",
         actionText: "Read more on Medium",
         header: "Medium",
         icon: MediumIcon,
