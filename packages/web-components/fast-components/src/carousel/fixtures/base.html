@@ -3,23 +3,34 @@
 
     </style>
     <h1>Carousel</h1>
-    <h4>Default</h4>
-    <fast-carousel>
-        <img src="https://placehold.it/1399x600/" alt="Place Holder Image"/>
-        <img src="https://placehold.it/300x300/3E3E3E/171717" alt="Place Holder Image"/>
-        <span style="width: 100px; height: 100px; background-color: white; color: black">Test SPAN TEXT Content</span>
-        <img src="https://placehold.it/300x300/3E3E3E/171717" alt="Place Holder Image"/>
-        <!-- Test TEXT Content -->
-    </fast-carousel>
-    <h4>Controlled Height & Width</h4>
+    <h4>Height 300px & Width 700px</h4>
         <div style="width: 700px; height: 300px; align-items: center;">
-    <fast-carousel>
-        <img src="https://placehold.it/1399x600/" alt="Place Holder Image"/>
-        <img src="https://placehold.it/300x300/3E3E3E/171717" alt="Place Holder Image"/>
-        <span style="width: 100px; height: 100px; background-color: white; color: black">Test SPAN TEXT Content</span>
-        <img src="https://placehold.it/300x300/3E3E3E/171717" alt="Place Holder Image"/>
-        <!-- Test TEXT Content -->
+            <fast-carousel>
+                    <img src="https://placehold.it/100x100/" alt="Place Holder Image"/>
+                    <img src="https://placehold.it/100x100/3E3E3E/171717" alt="Place Holder Image"/>
+                    <span style="width: 100px; height: 100px; background-color: white; color: black">Test SPAN TEXT Content</span>
+                    <img src="https://placehold.it/100x100/3E3E3E/171717" alt="Place Holder Image"/ >
+            </fast-carousel>
+        </div>
+
+    <h4>Active Id Slide 3, No Autoplay</h4>
+    <div style="width: 700px; height: 300px; align-items: center;">
+        <fast-carousel autoplay="false" activeId="tab-3">
+                <span style="display: inline-flex; flex-direction: column; align-items: center;">
+                Slide 1
+                <img src="https://placehold.it/100x100/" alt="Place Holder Image"/>
+            </span>
+<span style="display: inline-flex; flex-direction: column; align-items: center;">
+                Slide 2
+                <img src="https://placehold.it/100x100/3E3E3E/171717" alt="Place Holder Image"/>
+            </span>
+<span style="width: 100px; height: 100px; background-color: white; color: black">Slide 3</span>
+<span style="display: inline-flex; flex-direction: column; align-items: center;">
+                Slide 4
+                <img src="https://placehold.it/100x100/3E3E3E/171717" alt="Place Holder Image"/>
+            </span>
     </fast-carousel>
+    </div>
     <h4>Non-Looping</h4>
         <div style="width: 700px; height: 300px; align-items: center;">
     <fast-carousel loop="false">
@@ -27,28 +38,6 @@
         <img src="https://placehold.it/300x300/3E3E3E/171717" alt="Place Holder Image"/>
         <span style="width: 100px; height: 100px; background-color: white; color: black">Test SPAN TEXT Content</span>
         <img src="https://placehold.it/300x300/3E3E3E/171717" alt="Place Holder Image"/>
-        <!-- Test TEXT Content -->
+        Test TEXT Content
     </fast-carousel>
-    <h4>No Autoplay</h4>
-        <div style="width: 700px; height: 300px; align-items: center;">
-    <fast-carousel autoplay="false">
-        <img src="https://placehold.it/1399x600/" alt="Place Holder Image"/>
-        <img src="https://placehold.it/300x300/3E3E3E/171717" alt="Place Holder Image"/>
-        <span style="width: 100px; height: 100px; background-color: white; color: black">Test SPAN TEXT Content</span>
-        <img src="https://placehold.it/300x300/3E3E3E/171717" alt="Place Holder Image"/>
-        <!-- Test TEXT Content -->
-    </fast-carousel>
-    </div>
-    <!-- <h4>Autoplay</h4>
-    <fast-carousel>
-        
-    </fast-carousel>
-    <h4>No Loop</h4>
-    <fast-carousel>
-        
-    </fast-carousel>
-    <h4>Paused</h4>
-    <fast-carousel>
-        
-    </fast-carousel> -->
 </fast-design-system-provider>
