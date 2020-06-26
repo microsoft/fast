@@ -18,10 +18,7 @@ import {
     WebComponentDefinition,
     WebComponentDefinitionTag,
 } from "@microsoft/fast-tooling/dist/data-utilities/web-component";
-import {
-    neutralLayerL1,
-    StandardLuminance,
-} from "@microsoft/fast-components-styles-msft";
+import { neutralLayerL1 } from "@microsoft/fast-components";
 import {
     fastComponentDefinitions,
     nativeElementDefinitions,
@@ -31,6 +28,7 @@ import {
     PreviewProps,
     PreviewState,
     PreviewUnhandledProps,
+    StandardLuminance,
 } from "./preview.props";
 import style from "./preview.style";
 import {

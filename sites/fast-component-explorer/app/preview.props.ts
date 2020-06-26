@@ -1,6 +1,5 @@
 import { DataDictionary, SchemaDictionary } from "@microsoft/fast-tooling";
 import { Direction } from "@microsoft/fast-web-utilities";
-import { StandardLuminance } from "@microsoft/fast-components-styles-msft";
 import { PreviewClassNameContract } from "./preview.style";
 
 export type PreviewUnhandledProps = React.HTMLAttributes<HTMLDivElement>;
@@ -10,6 +9,11 @@ export interface PreviewHandledProps {
 }
 
 export type PreviewProps = PreviewHandledProps & PreviewUnhandledProps;
+
+export enum StandardLuminance {
+    LightMode = 1,
+    DarkMode = 0.1,
+}
 
 export interface PreviewState {
     dataDictionary: DataDictionary<unknown> | void;
