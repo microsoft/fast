@@ -148,6 +148,10 @@ li {
   background: transparent;
 }
 
+.logo:focus-visible::part(content)::before {
+  background: var(--neutral-foreground-rest);
+}
+
 .header .github-link::part(control) {
   justify-content: flex-end;
 }
