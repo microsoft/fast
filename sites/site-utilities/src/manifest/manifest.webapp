@@ -1,0 +1,14 @@
+{
+  "version": "1.0",
+  "name": null,
+  "description": null,
+  "icons": {
+    "60": "https://static.fast.design/assets/manifest/firefox_app_60x60.png",
+    "128": "https://static.fast.design/assets/manifest/firefox_app_128x128.png",
+    "512": "https://static.fast.design/assets/manifest/firefox_app_512x512.png"
+  },
+  "developer": {
+    "name": null,
+    "url": null
+  }
+}
