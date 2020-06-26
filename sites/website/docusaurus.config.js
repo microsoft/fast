@@ -68,7 +68,7 @@ module.exports = {
                     items: [
                         {
                             label: "Blog",
-                            href: "https://medium.com/fast-dna",
+                            href: "https://medium.com/fast-design",
                         },
                         {
                             label: "GitHub",
