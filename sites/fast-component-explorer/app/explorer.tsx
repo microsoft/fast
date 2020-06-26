@@ -142,6 +142,8 @@ class Explorer extends Foundation<
             });
         }
 
+        window.onpopstate = this.handlePopState;
+
         this.state = {
             width: 0,
             height: 0,
@@ -309,6 +311,12 @@ class Explorer extends Foundation<
     public componentDidMount(): void {
         this.setViewerToFullSize();
     }
+
+    private handlePopState = (): void => {
+        if (window.location.pathname !== this.state.locationPathname) {
+            this.handleUpdateRoute(window.location.pathname);
+        }
+    };
 
     private handleMessageSystem = (e: MessageEvent): void => {
         const updatedState: Partial<ExplorerState> = {};
