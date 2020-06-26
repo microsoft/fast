@@ -4,11 +4,9 @@ const path = require("path");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const FaviconsWebpackPlugin = require("favicons-webpack-plugin");
 
 const appDir = path.resolve(__dirname, "./src/app");
 const publicDir = path.resolve(__dirname, "./src/public");
-const rootNodeModules = path.resolve(__dirname, "../../node_modules");
 
 module.exports = {
     entry: {
@@ -73,13 +71,6 @@ module.exports = {
             title: "FAST",
             inject: "head",
             template: path.resolve(publicDir, "index.html"),
-        }),
-        new FaviconsWebpackPlugin({
-            logo: path.resolve(
-                rootNodeModules,
-                "@microsoft/site-utilities/statics/assets/fast-logo.png"
-            ),
-            prefix: "bundle/",
         }),
     ],
 };
