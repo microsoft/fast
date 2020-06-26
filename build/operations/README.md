@@ -82,13 +82,13 @@ This hierarchy uses the Workload separation strategy.
 
 * Fast Design Management Group
   * Production Management Group
-    * Fast Subscription 1
+    * Fast Production
       * Front Door West US
       * Active Resource Group (Primary Region - West US)  
       * Standby Resource Group (Secondary Region - East US)
       * Back Door East US
   * Development Management Group
-    * Fast Subscription 3
+    * Fast Development
       * Front Door West US
       * Active Resource Group (Primary Region - West US)  
       * Standby Resource Group (Secondary Region - East US)
@@ -104,16 +104,23 @@ Front Door is a globally distributed multi-tenant platform with huge volumes of 
 
 The FAST Front Door will perform caching for web files.
 
-### Risks
+#### Limitations
+Front Door does not support using Azure Active Directory for more than one Web App running in the same backend pool. It creates a round robin issue bouncing between services eventually failing the request. This limitation was discovered on staging sites which use Azure Active Directory.
+
+* Front Door does not support using Response rewriting
+
+The work around is to disable the web app in the passive region and add a custom domain name for the staging slot with http as the probing protocol. Validation of the custom domain can be accomplished with DNS TXT records. Application Gateway has this capability. A new feature request has been sent to Azure Front Door.
+
+* Front Door is limited to 100 resources per subscription, 50 backend pools per resource, and 100 backends per back-end pool. 
+* MIME Types: There are certain limitations on fonts, images, an data files.
+
+For additional limitations visit [details](https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/azure-subscription-service-limits#azure-front-door-service-limits) https://docs.microsoft.com/en-us/azure/frontdoor/front-door-caching
+
+
+#### Risks
 * Failure Points: Front Door is a possible failure point in the system. If the service fails, clients cannot access your application during the downtime. Review the Front Door service level agreement (SLA) and determine whether using Front Door alone meets your business requirements for high availability. If not, consider adding another traffic management solution as a fallback. If the Front Door service fails, change your canonical name (CNAME) records in DNS to point to the other traffic management service. This step must be performed manually, and your application will be unavailable until the DNS changes are propagated.
 
 * Certification Autorotation: For our custom TLS/SSL certificate, autorotation isn't supported and must setup new prior to expiration, and updated across Key Vaults and backend microservices. Updates to certifictes is atomic and does not cause any downtime.
-
-* Scale Limitations: There are several primary limitations to consider as FAST grows over time including 100 resources per subscription, 50 backend pools per resource, and 100 backends per back-end pool. For additional limitations visit [details](https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/azure-subscription-service-limits#azure-front-door-service-limits)
-
-* MIME Types: There are certain limitations on fonts, images, an data files.
-
-https://docs.microsoft.com/en-us/azure/frontdoor/front-door-caching
 
 
 ### Resource Groups / Locations
