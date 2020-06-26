@@ -24,7 +24,7 @@ export const TabsTemplate = html<Tabs>`
             )}
         </div>
         ${endTemplate}
-        <div class="tabpanel">
+        <div class="tabpanel" part="tabpanelcontainer">
             <slot name="tabpanel" part="tabpanel" ${slotted("tabpanels")}></slot>
         </div>
     </template>
