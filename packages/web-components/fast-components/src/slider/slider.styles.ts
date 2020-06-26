@@ -49,9 +49,7 @@ export const SliderStyles = css`
     }
 
     :host(:${focusVisible}) .thumb-cursor {
-        background: ${SystemColors.Highlight};
-        border-color: ${SystemColors.Highlight};
-        box-shadow: 0 0 0 2px ${SystemColors.Field}, 0 0 0 4px ${SystemColors.FieldText};
+        box-shadow: 0 0 0 2px var(--background-color), 0 0 0 4px var(--neutral-focus);
     }
     
     .thumb-container {
@@ -153,6 +151,12 @@ export const SliderStyles = css`
             :host(.disabled) .thumb-cursor {
                 forced-color-adjust: none;
                 background: ${SystemColors.GrayText};
+            }
+
+            :host(:${focusVisible}) .thumb-cursor {
+                background: ${SystemColors.Highlight};
+                border-color: ${SystemColors.Highlight};
+                box-shadow: 0 0 0 2px ${SystemColors.Field}, 0 0 0 4px ${SystemColors.FieldText};    
             }
         `
     )
