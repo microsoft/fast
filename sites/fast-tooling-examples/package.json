@@ -27,7 +27,7 @@
     "test": "yarn convert:readme && yarn eslint && yarn build"
   },
   "devDependencies": {
-    "@microsoft/site-utilities": "^0.1.1",
+    "@microsoft/site-utilities": "^0.2.0",
     "babel-core": "^6.26.3",
     "babel-loader": "^8.1.0",
     "babel-preset-env": "^1.7.0",
