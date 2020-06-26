@@ -1,0 +1,9 @@
+{
+  "version": "1.0",
+  "api_version": 1,
+  "layout": {
+    "logo": "https://static.fast.design/assets/manifest/yandex-browser-50x50.png",
+    "color": "#fff",
+    "show_title": true
+  }
+}
