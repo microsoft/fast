@@ -327,6 +327,10 @@ fast-badge::part(control) {
    margin: var(--section-height-spacing-mobile);
   }
 
+  .hero-section {
+    margin-top: 150px;
+  }
+
   .fast-frame-section {
     margin: var(--section-height-spacing-mobile);
   }
