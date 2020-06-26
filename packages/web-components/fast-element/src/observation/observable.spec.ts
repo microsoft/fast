@@ -21,7 +21,7 @@ describe("The Observable", () => {
         }
 
         get ifConditional() {
-            Observable.notifyVolatile();
+            Observable.trackVolatile();
 
             if (this.trigger < 1) {
                 return 42;

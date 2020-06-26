@@ -115,7 +115,7 @@ export const Observable = Object.freeze({
      * Notifies watchers that the currently executing property getter or function is volatile
      * with respect to its observable dependencies.
      */
-    notifyVolatile(): void {
+    trackVolatile(): void {
         if (watcher !== void 0) {
             watcher.needsRefresh = true;
         }
@@ -215,7 +215,7 @@ export const Observable = Object.freeze({
 });
 
 const getNotifier = Observable.getNotifier;
-const notifyVolatile = Observable.notifyVolatile;
+const trackVolatile = Observable.trackVolatile;
 const queueUpdate = DOM.queueUpdate;
 
 /**
@@ -238,7 +238,7 @@ export function observable(target: {}, nameOrAccessor: string | Accessor): void 
 export function volatile(target: {}, name, descriptor) {
     return Object.assign({}, descriptor, {
         get: function (this: any) {
-            notifyVolatile();
+            trackVolatile();
             return descriptor.get?.apply(this);
         },
     });

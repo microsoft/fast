@@ -343,7 +343,7 @@ export const Observable: Readonly<{
     setArrayObserverFactory(factory: (collection: any[]) => Notifier): void;
     getNotifier(source: any): Notifier;
     track(source: unknown, propertyName: string): void;
-    notifyVolatile(): void;
+    trackVolatile(): void;
     notify(source: unknown, args: any): void;
     defineProperty(target: {}, nameOrAccessor: string | Accessor): void;
     getAccessors(target: {}): Accessor[];
