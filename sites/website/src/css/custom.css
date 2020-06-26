@@ -24,10 +24,6 @@
   padding: 0 var(--ifm-pre-padding);
 }
 
-div.react-toggle {
-  display: none;
-}
-
 .example-dialog::part(control) {
   --dialog-width: 400px;
   --dialog-height: auto;

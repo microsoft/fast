@@ -17,15 +17,14 @@ export const FastFrameTemplate = html<FastFrame>`
             <fast-tabs orientation="vertical" id="myTab" activeId="TabTwo">
                 <fast-tab id="contrast-tab" title="Mode">${ContrastIcon}</fast-tab>
                 <fast-tab id="palette-tab" title="Color">${PaletteIcon}</fast-tab>
-                <fast-tab id="swatches-tab" title="Styles">${SwatchesIcon}</fast-tab>
-                <fast-tab id="density-tab" title="Density">${ScreenIcon}</fast-tab>
+                <fast-tab id="style-tab" title="Styles">${SwatchesIcon}</fast-tab>
                 <fast-tab-panel id="contrast-tab-panel" class="${x =>
                     x.expanded ? "tab-panel-expanded" : ""}">
                     <div class="content">
                         <h1><span class="content-heading-highlight">Fast Frame</span> Dark Mode</h4>
                         <h2>Pre-built for both light and dark modes</h2>
                         <p>
-                            Sem viverra fringilla at magna turpis in. Nullam adipiscing fusce auctor semper arcu felis. Purus et enim feugiat arcu. Lectus neque sem est ridiculus tempus urna.
+                            Switching between dark and light mode is as easy as changing the background color of the design system.
                         </p>
                         <div class="content-control-container" >
                             <label for="dark-mode-switch">Dark mode</label>
@@ -47,8 +46,7 @@ export const FastFrameTemplate = html<FastFrame>`
                         <h1><span class="content-heading-highlight">Fast Frame</span> Colors</h4>
                         <h2>Pre-existing color you can customize</h2>
                         <p>
-                            Ultrices nibh nunc vestibulum fames. At lacus nunc lacus eget
-                            neque.
+                            Color is applied by using color recipes which require two color palettes, neutral and accent, applied to the design system. These palettes are customizable which allows for a wide range of styles.
                         </p>
                         <div class="content-control-container" >
                             <label for="background-color-pickers">Background color</label>
@@ -125,13 +123,13 @@ export const FastFrameTemplate = html<FastFrame>`
                         </div>
                     </div>
                 </fast-tab-panel>
-                <fast-tab-panel id="swatches-tab-panel" class="${x =>
+                <fast-tab-panel id="style-tab-panel" class="${x =>
                     x.expanded ? "tab-panel-expanded" : ""}">
                     <div class="content">
                         <h1><span class="content-heading-highlight">Fast Frame</span> Styles</h4>
                         <h2>Adjust style settings on the fly</h2>
                         <p>
-                            Ultrices nibh nunc vestibulum fames. At lacus nunc lacus eget neque.
+                            Update design system values for border radius, outline width, or density.
                         </p>
                         <div class="content-control-container-2">
                             <label for="border-radius-slider">Border radius</label>
@@ -180,18 +178,6 @@ export const FastFrameTemplate = html<FastFrame>`
                                     6PX
                                 </fast-slider-label>
                             </fast-slider>
-                        </div>
-                    </div>
-                </fast-tab-panel>
-                <fast-tab-panel id="density-tab-panel" class="${x =>
-                    x.expanded ? "tab-panel-expanded" : ""}">
-                    <div class="content">
-                        <h1><span class="content-heading-highlight">Fast Frame</span> Density</h4>
-                        <h2>Quickly change and modify your layout</h2>
-                        <p>
-                            Ultrices nibh nunc vestibulum fames. At lacus nunc lacus eget neque.
-                        </p>
-                        <div class="content-control-container-2">
                             <label for="density-slider">Density</label>
                             <fast-slider
                                 id="density-slider"
@@ -215,56 +201,6 @@ export const FastFrameTemplate = html<FastFrame>`
                                     3
                                 </fast-slider-label>
                             </fast-slider>
-                            <label for="base-height-multiplier-slider">Base height multiplier</label>
-                            <fast-slider
-                                id="base-height-multiplier-slider"
-                                min="5"
-                                max="15"
-                                step="1"
-                                value="10"
-                                @change="${(x, c) =>
-                                    x.baseHeightMultiplierChangeHandler(
-                                        c.event as CustomEvent
-                                    )}"
-                            >
-                                <fast-slider-label
-                                    hide-mark
-                                    position="0"
-                                >
-                                    5PX
-                                </fast-slider-label>            
-                                <fast-slider-label
-                                    hide-mark
-                                    position="15"
-                                >
-                                    15PX
-                                </fast-slider-label>
-                            </fast-slider>
-                            <label for="base-horizontal-spacing-multiplier-slider">Base horizontal<br/> spacing multiplier</label>
-                            <fast-slider
-                                id="base-horizontal-spacing-multiplier-slider"
-                                min="0"
-                                max="6"
-                                step="1"
-                                value="3"
-                                @change="${(x, c) =>
-                                    x.baseHorizontalSpacingMultiplierChangeHandler(
-                                        c.event as CustomEvent
-                                    )}"
-                            >
-                                <fast-slider-label
-                                    hide-mark
-                                    position="0"
-                                >
-                                    0
-                                </fast-slider-label>
-                                <fast-slider-label
-                                    hide-mark
-                                    position="6"
-                                >
-                                    6PX
-                                </fast-slider-label>
-                            </fast-slider>
                         </div>
                     </div>
                 </fast-tab-panel>
@@ -280,10 +216,8 @@ export const FastFrameTemplate = html<FastFrame>`
                 density="${x => x.density}"
                 corner-radius="${x => x.borderRadius}"
                 outline-width="${x => x.outlineWidth}"
-                base-height-multiplier="${x => x.baseHeightMultiplier}"
-                base-horizontal-spacing-multiplier="${x =>
-                    x.baseHorizontalSpacingMultiplier}"
-                :accentPalette=${x => x.accentPalette}
+                :accentPalette=${x =>
+                    Array.isArray(x.accentPalette) ? x.accentPalette : null}
             >
                 <fast-design-system-provider
                     density="0"
@@ -309,7 +243,7 @@ export const FastFrameTemplate = html<FastFrame>`
                         </fast-badge>
                     </div>
                     <div class="text-container">
-                        <h3>Card Options</h3>
+                        <h3>Example card</h3>
                         <p>
                             At purus lectus quis habitant commodo, cras. Aliquam malesuada
                             velit a tortor. Felis orci tellus netus risus et ultricies
@@ -320,9 +254,6 @@ export const FastFrameTemplate = html<FastFrame>`
                             <span class="sample-control-icon"></span>
                             <span class="sample-control-text">Label</span>
                             <div class="sample-control-actions">
-                                <fast-button appearance="stealth" aria-label="Example 'share' button"
-                                    >${ShareIcon}</fast-button
-                                >
                                 <fast-button appearance="stealth" aria-label="Example 'more' button"
                                     >${ContextIcon}</fast-button
                                 >

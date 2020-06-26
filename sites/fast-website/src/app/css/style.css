@@ -1,5 +1,7 @@
 :root {
   --navbar-height: 94px;
+  --section-height-spacing: 100px 0px;
+  --section-height-spacing-mobile: 50px 0px;
 }
 
 html {
@@ -109,8 +111,21 @@ li {
   padding: 0;
 }
 
-site-navigation ::part(content) {
+.header .site-navigation li fast-anchor::part(content) {
+  color: var(--neutral-foreground-hint);
+}
+
+.site-navigation li fast-anchor:hover::part(content),
+.site-navigation li fast-anchor:focus::part(content) {
   color: var(--neutral-foreground-rest);
+}
+
+.site-navigation fast-anchor::part(content)::before {
+  background: transparent;
+}
+
+.site-navigation fast-anchor:focus::part(content)::before {
+  background: var(--neutral-foreground-rest);
 }
 
 .header .logo,
@@ -129,8 +144,16 @@ site-navigation ::part(content) {
   align-items: flex-end;
 }
 
+.logo::part(content)::before {
+  background: transparent;
+}
+
 .header .github-link::part(control) {
   justify-content: flex-end;
+}
+
+.header .github-link::part(content) {
+  color: var(--neutral-foreground-rest);
 }
 
 .footer .logo::part(content) {
@@ -184,20 +207,11 @@ site-navigation ::part(content) {
 .section {
   color: var(--neutral-foreground-rest);
   display: flex;
-  min-height: 100vh;
   justify-content: center;
   align-items: center;
   grid-column: 2;
   box-sizing: border-box;
-}
-
-.hero-section {
-  margin-top: calc(var(--navbar-height) * -1);
-  padding-top: var(--navbar-height);
-}
-
-.community-section {
-  margin-bottom: calc(var(--navbar-height) * -1);
+  margin: var(--section-height-spacing);
 }
 
 .fast-frame-section {
@@ -208,12 +222,12 @@ site-navigation ::part(content) {
   align-items: center;
   grid-column: 2;
   box-sizing: border-box;
+  margin: var(--section-height-spacing);
 }
 
 .fast-frame-header {
   padding: 0 20px;
 }
-
 
 .section-content {
   display: flex;
@@ -268,7 +282,6 @@ fast-badge::part(control) {
 
 .footer-divider {
   grid-column: 2;
-  margin-top: var(--navbar-height);
 }
 
 .footer {
@@ -306,7 +319,12 @@ fast-badge::part(control) {
   }
 
   .section {
-    padding: 0 20px;
+   padding: 0 20px;
+   margin: var(--section-height-spacing-mobile);
+  }
+
+  .fast-frame-section {
+    margin: var(--section-height-spacing-mobile);
   }
 
   .header {
@@ -402,6 +420,14 @@ fast-badge::part(control) {
     transform: translateY(0);
     transition-delay: 0s;
     visibility: visible;
+  }
+
+  .header .site-navigation li fast-anchor::part(content) {
+    color: var(--neutral-foreground-rest);
+  }
+
+  .header .site-navigation fast-anchor:hover::part(content)::before {
+    background: var(--neutral-foreground-rest);
   }
 
   site-navigation::part(nav-button) {

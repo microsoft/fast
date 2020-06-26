@@ -7,7 +7,8 @@
   "scripts": {
     "build": "tsc -p ./tsconfig.json",
     "clean:dist": "node ../../build/clean.js dist",
-    "prepare": "yarn clean:dist && yarn build",
+    "generate:manifest": "node ./build/manifest.js",
+    "prepare": "yarn clean:dist && yarn build && yarn run generate:manifest",
     "prettier": "prettier --config ../../.prettierrc --write \"**/*.{ts,tsx}\"",
     "prettier:diff": "prettier --config ../../.prettierrc \"**/*.{ts,tsx}\" --list-different",
     "test": "yarn eslint && yarn build",
@@ -35,6 +36,7 @@
     "babel-loader": "^8.0.6",
     "csstype": "^2.5.8",
     "eslint-config-prettier": "6.10.1",
+    "favicons": "^6.1.0",
     "jest": "^25.4.0",
     "jss": "^9.8.7",
     "jss-preset-default": "^4.5.0",
@@ -48,6 +50,7 @@
   "dependencies": {
     "@microsoft/fast-components-react-msft": "^4.31.0",
     "@microsoft/fast-tooling": "^0.6.0",
-    "@microsoft/fast-tooling-react": "^2.2.3"
+    "@microsoft/fast-tooling-react": "^2.2.3",
+    "chalk": "^4.1.0"
   }
 }
