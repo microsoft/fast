@@ -20,7 +20,7 @@ For TypeScript projects, export all relevant files from the `index.ts` or `index
 
 When a testing application is needed, it should be created in an `app` directory at the root of the package.
 
-![Example of tracked folder structure with fast-package at the top and __tests__, app and src inside.](https://res.cloudinary.com/fast/image/upload/v1546297640/creating_packages_tracked_folders.webp "")
+![Example of tracked folder structure with fast-package at the top and __tests__, app and src inside.](https://res.cloudinary.com/fast-dna/image/upload/v1546297640/creating_packages_tracked_folders.webp "")
 *Example structure for tracked folders.*
 
 ### Untracked folders
