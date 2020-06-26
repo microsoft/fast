@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.2.0](https://github.com/Microsoft/fast/compare/@microsoft/site-utilities@0.1.1...@microsoft/site-utilities@0.2.0) (2020-06-26)
+
+
+### Features
+
+* add icon files to be sent to CDN and importable manifest files ([#3383](https://github.com/Microsoft/fast/issues/3383)) ([7cc3b42](https://github.com/Microsoft/fast/commit/7cc3b42d5e28e52ab1fa0bd9376bd039b8e064c1))
+
+
+
+
+
 ## [0.1.1](https://github.com/Microsoft/fast/compare/@microsoft/site-utilities@0.1.0...@microsoft/site-utilities@0.1.1) (2020-06-17)
 
 **Note:** Version bump only for package @microsoft/site-utilities

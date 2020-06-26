@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.7.7](https://github.com/Microsoft/fast/compare/@microsoft/fast-jss-manager-react@4.7.6...@microsoft/fast-jss-manager-react@4.7.7) (2020-06-26)
+
+**Note:** Version bump only for package @microsoft/fast-jss-manager-react
+
+
+
+
+
 ## [4.7.6](https://github.com/Microsoft/fast/compare/@microsoft/fast-jss-manager-react@4.7.5...@microsoft/fast-jss-manager-react@4.7.6) (2020-06-15)
 
 **Note:** Version bump only for package @microsoft/fast-jss-manager-react
