@@ -4,6 +4,11 @@ import {
     communityContentPlacementData,
 } from "../../data/community.data";
 
+export interface sectionData {
+    section: string;
+    value: number;
+}
+
 export class SideNavigation extends FASTElement {
     @attr
     public category: string;
@@ -14,6 +19,9 @@ export class SideNavigation extends FASTElement {
     @observable
     public sectionArray: HTMLElement[] = [];
 
+    @observable
+    public objArray: sectionData[];
+
     public socialData: CommunityContentPlacementData[] = communityContentPlacementData.filter(
         x => x.header !== "Github"
     );
@@ -21,14 +29,20 @@ export class SideNavigation extends FASTElement {
     loadScrollers() {
         this.sectionArray = Array.from(document.querySelectorAll("section[id]"));
 
+        this.objArray = this.sectionArray.map(x => {
+            return { section: x.id, value: 0 };
+        });
+
         let observer = new IntersectionObserver(
             entries => {
                 entries.forEach(entry => {
-                    const areaOnScreen =
-                        entry.intersectionRatio * entry.boundingClientRect.height;
-                    if (areaOnScreen > 0.5 * window.innerHeight) {
-                        this.currentSection = entry.target.id;
-                    }
+                    const intersectingSection: sectionData = this.objArray.find(
+                        ({ section }) => section === entry.target.id
+                    ) as sectionData;
+                    intersectingSection.value = entry.intersectionRatio;
+                    this.currentSection = this.objArray.reduce((prev, current) =>
+                        prev.value > current.value ? prev : current
+                    ).section;
                 });
             },
             { threshold: [0, 0.2, 0.4, 0.6, 0.8] }
