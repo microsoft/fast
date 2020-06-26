@@ -27,12 +27,12 @@
     "test": "yarn convert:readme && yarn eslint && yarn build"
   },
   "devDependencies": {
+    "@microsoft/site-utilities": "^0.1.1",
     "babel-core": "^6.26.3",
     "babel-loader": "^8.1.0",
     "babel-preset-env": "^1.7.0",
     "clean-webpack-plugin": "^1.0.0",
     "css-loader": "^3.5.3",
-    "favicons-webpack-plugin": "^3.0.1",
     "file-loader": "^6.0.0",
     "html-webpack-plugin": "^4.3.0",
     "markdown-it-anchor": "^5.3.0",

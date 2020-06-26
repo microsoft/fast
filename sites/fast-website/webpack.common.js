@@ -4,6 +4,8 @@ const path = require("path");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const FASTManifest = require("@microsoft/site-utilities/src/manifest/html.json");
+const FASTCuratedManifest = require("@microsoft/site-utilities/src/curated-html.json");
 
 const appDir = path.resolve(__dirname, "./src/app");
 const publicDir = path.resolve(__dirname, "./src/public");
@@ -69,6 +71,12 @@ module.exports = {
         new CleanWebpackPlugin(),
         new HtmlWebpackPlugin({
             title: "FAST",
+            manifest: FASTCuratedManifest.concat(FASTManifest).reduce(
+                (manifestItems, manifestItem) => {
+                    return manifestItems + manifestItem;
+                },
+                ""
+            ),
             template: path.resolve(publicDir, "index.html"),
         }),
     ],

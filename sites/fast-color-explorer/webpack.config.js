@@ -3,7 +3,8 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 const CleanWebpackPlugin = require("clean-webpack-plugin");
 const WorkboxPlugin = require("workbox-webpack-plugin");
-const FaviconsWebpackPlugin = require("favicons-webpack-plugin");
+const FASTManifest = require("@microsoft/site-utilities/src/manifest/html.json");
+const FASTCuratedManifest = require("@microsoft/site-utilities/src/curated-html.json");
 
 const appDir = path.resolve(__dirname, "./app");
 const outDir = path.resolve(__dirname, "./www");
@@ -62,7 +63,14 @@ module.exports = (env, args) => {
             new CleanWebpackPlugin([outDir]),
             new HtmlWebpackPlugin({
                 title: "FAST color explorer",
-                contentBase: outDir,
+                manifest: FASTCuratedManifest.concat(FASTManifest).reduce(
+                    (manifestItems, manifestItem) => {
+                        return manifestItems + manifestItem;
+                    },
+                    ""
+                ),
+                inject: "body",
+                template: path.resolve(appDir, "index.html"),
             }),
             new BundleAnalyzerPlugin({
                 // Remove this to inspect bundle sizes.
@@ -71,7 +79,6 @@ module.exports = (env, args) => {
             new WorkboxPlugin.GenerateSW({
                 exclude: [/.html$/],
             }),
-            new FaviconsWebpackPlugin(path.resolve(__dirname, "favicon.png")),
         ],
         resolve: {
             extensions: [".js", ".tsx", ".ts", ".json"],

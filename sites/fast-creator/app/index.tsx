@@ -5,11 +5,8 @@ import { DndProvider } from "react-dnd";
 import App from "./app";
 
 /**
- * Create the root node
+ * Create the a style override
  */
-const root: HTMLElement = document.createElement("div");
-root.setAttribute("id", "root");
-document.body.appendChild(root);
 const style: HTMLStyleElement = document.createElement("style");
 style.innerText =
     "@font-face { font-family: SegoeUIVF; src: url(https://res.cloudinary.com/fast-dna/raw/upload/v1558051831/SegoeUI-Roman-VF_web.ttf) format(\"truetype\"); font-weight: \"1 1000\"; } @font-face { font-family: Segoe UI; src: url('//c.s-microsoft.com/static/fonts/segoe-ui/west-european/Normal/latest.woff2') format('woff2'); } body, html { font-family: SegoeUIVF, Segoe UI, SegoeUI, Helvetica Neue, Helvetica, Arial, sans-serif; font-size: 12px; padding: 0; margin: 0; }";
