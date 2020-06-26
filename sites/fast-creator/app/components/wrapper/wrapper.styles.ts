@@ -10,9 +10,6 @@ const leftBottom: string = ".tick:nth-child(7)";
 const leftTop: string = ".tick:nth-child(8)";
 
 export const WrapperStyles = css`
-    :host {
-    }
-
     .control {
         position: fixed;
         border: 1px solid #FB356D;
