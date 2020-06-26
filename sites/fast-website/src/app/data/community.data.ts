@@ -29,7 +29,7 @@ export const communityContentPlacementData: CommunityContentPlacementData[] = [
         icon: TwitterIcon,
     },
     {
-        actionLink: "https://github.com/microsoft/fast-dna",
+        actionLink: "https://github.com/microsoft/fast",
         actionText: "Get Started on Github",
         body:
             "Explore the FAST repository on Github and try out our components, utilities, and tools. Or, mix-and-match with your own solutions.",

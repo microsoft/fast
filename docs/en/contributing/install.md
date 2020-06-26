@@ -8,15 +8,15 @@ sidebar_label: Install
 
 ## Prerequisites
 
-Before setting up FAST-DNA, install Git and <a href="https://yarnpkg.com/en/docs/install" target="_blank">Yarn</a>.
+Before setting up FAST, install Git and <a href="https://yarnpkg.com/en/docs/install" target="_blank">Yarn</a>.
 
 ## Setup the source repository
 
 Clone the repository, `cd` into the project, install <a href="https://github.com/lerna/lerna" target="_blank">Lerna</a> and install dependencies:
 
 ```shell
-git clone https://github.com/Microsoft/fast-dna.git
-cd fast-dna
+git clone https://github.com/Microsoft/fast.git
+cd fast
 yarn global add lerna
 ```
 
@@ -44,7 +44,7 @@ lerna run test
 
 ## Understanding packages
 
-All packages can be found in the repository [packages](https://github.com/Microsoft/fast-dna/tree/master/packages) folder. Each package includes a `README.md` at its root for documentation.
+All packages can be found in the repository [packages](https://github.com/Microsoft/fast/tree/master/packages) folder. Each package includes a `README.md` at its root for documentation.
 
 ## Dependencies
 

@@ -118,7 +118,7 @@ To make a custom control, use the secondary export `StandardControlPlugin` which
 When the plugin instance is passed to the `<Form />` 
 either the id or the type is then referenced and will cause the control to render.
 
-A config is passed to the control, the specifications of this can be found [here](https://github.com/microsoft/fast-dna/blob/master/packages/fast-tooling-react/src/form/templates/template.control.utilities.props.tsx). Note that the `ControlConfig` interface may include extra properties depending on the control type being used.
+A config is passed to the control, the specifications of this can be found [here](https://github.com/microsoft/fast/blob/master/packages/fast-tooling-react/src/form/templates/template.control.utilities.props.tsx). Note that the `ControlConfig` interface may include extra properties depending on the control type being used.
 
 Example id plugin:
 

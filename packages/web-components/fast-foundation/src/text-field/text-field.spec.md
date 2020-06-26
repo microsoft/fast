@@ -19,11 +19,11 @@ Used anywhere an author might otherwise use:
 
 ### Risks and Challenges
 
-We want general feature-parity between this component and the typical corresponding inputs. Most of these concerns are addressed by https://github.com/microsoft/fast-dna/pull/2723, but some stateful nuance will need to be handled by this component.
+We want general feature-parity between this component and the typical corresponding inputs. Most of these concerns are addressed by https://github.com/microsoft/fast/pull/2723, but some stateful nuance will need to be handled by this component.
 
 ### Prior Art/Examples
 
-- [FAST-DNA (React)](https://explore.fast.design/components/text-field)
+- [FAST (React)](https://explore.fast.design/components/text-field)
 - [Material UI](https://material-ui.com/components/text-fields/)
 - [Lightning Design](https://www.lightningdesignsystem.com/components/input/)
 - [Carbon Design](https://www.carbondesignsystem.com/components/text-input/code)

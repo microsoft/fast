@@ -65,7 +65,7 @@ Consider a scenario where we have the following menu - some menu items have glyp
 The third item in the menu has a glyph, which would inset the text from the other menu items. To ensure that the content of this menu item aligns with the rest of the items, all items need to visually shift to ensure alignment of the menu content. This presents an interesting challenge for how we will communicate these changes to ensure the styling is appropriately applied. Ultimately, the parent just needs to know that *one* of the items below has a menu item with the glyph.
 
 ### Prior Art/Examples
-- [FAST-DNA (React)](https://explore.fast.design/components/context-menu)
+- [FAST (React)](https://explore.fast.design/components/context-menu)
 - [Material UI](https://material-ui.com/components/menus/)
 - [Lightning Design](https://www.lightningdesignsystem.com/components/menus/)
 - [Ant Design - menu](https://ant.design/components/menu/)

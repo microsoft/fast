@@ -18,7 +18,7 @@ export enum TextActionButtonPosition {
 }
 
 export type TextActionManagedClasses = ManagedClasses<TextActionClassNameContract>;
-/* TODO: #1416 - https://github.com/Microsoft/fast-dna/issues/1416 */
+/* TODO: #1416 - https://github.com/Microsoft/fast/issues/1416 */
 export type TextActionUnhandledProps = Omit<
     React.InputHTMLAttributes<HTMLInputElement>,
     "type"

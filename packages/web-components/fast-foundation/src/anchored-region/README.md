@@ -2,7 +2,7 @@
 id: fast-anchored-region
 title: fast-anchored-region
 sidebar_label: fast-anchored-region
-custom_edit_url: https://github.com/microsoft/fast-dna/edit/master/packages/web-components/fast-foundation/src/anchored-region/README.md
+custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-foundation/src/anchored-region/README.md
 ---
 
 ##  Applying custom styles

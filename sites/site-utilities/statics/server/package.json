@@ -4,7 +4,7 @@
   "description": "These packages are required to run node server on Azure\"",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/microsoft/fast-dna.git"
+    "url": "git+https://github.com/microsoft/fast.git"
   },
   "author": "Microsoft Corporation",
   "license": "MIT",

@@ -2,7 +2,7 @@
 id: switch
 title: fast-switch
 sidebar_label: switch
-custom_edit_url: https://github.com/microsoft/fast-dna/edit/master/packages/web-components/fast-foundation/src/switch/README.md
+custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-foundation/src/switch/README.md
 ---
 
 An implementation of a [switch](https://w3c.github.io/aria/#switch) as a form-connected web-component.

@@ -53,7 +53,7 @@ const managedClasses: HorizontalOverflowClassNameContract = {
     horizontalOverflow_previous: "horizontal-overflow-previous-class",
 };
 
-// TODO #746: https://github.com/Microsoft/fast-dna/issues/746
+// TODO #746: https://github.com/Microsoft/fast/issues/746
 
 describe("horizontal overflow", (): void => {
     test("should have a displayName that matches the component name", () => {

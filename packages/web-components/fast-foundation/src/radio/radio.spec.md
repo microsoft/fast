@@ -14,7 +14,7 @@ Used anywhere an author might otherwise use an `input[type="radio"]`. Used to fa
 We want general feature-parity between this component and an `input[type="radio"]`.
 
 ### Prior Art/Examples
-- [FAST-DNA (React)](https://explore.fast.design/components/radio)
+- [FAST (React)](https://explore.fast.design/components/radio)
 - [Material UI](https://material-ui.com/components/radio-buttons/)
 - [Lightning Design](https://www.lightningdesignsystem.com/components/radio-group/)
 - [Carbon Design](https://www.carbondesignsystem.com/components/radio-button/code)

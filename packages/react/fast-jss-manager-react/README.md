@@ -259,7 +259,7 @@ const instanceStyles = { fancyButton: { color: "red" } };
 
 Style element order is determined by rendering order, where components higher in the React tree will have style elements defined later in the DOM (giving them higher specificity). In general, parent components will have a style element defined later in the DOM than a child component, giving the parent component greater specificity than a child.
 
-While in general this works, there is a known issue being tracked [here](https://github.com/microsoft/fast-dna/issues/1279) where parents can lose their ability to override child components. This is an unintended side-effect of memozing stylesheets. While not ideal, specificity can usually be added to the selector to mitigate the issue, as the issue only manifests when document order is determining selector specificity.
+While in general this works, there is a known issue being tracked [here](https://github.com/microsoft/fast/issues/1279) where parents can lose their ability to override child components. This is an unintended side-effect of memozing stylesheets. While not ideal, specificity can usually be added to the selector to mitigate the issue, as the issue only manifests when document order is determining selector specificity.
 
 ### Custom JSS instance
 

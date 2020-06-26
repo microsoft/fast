@@ -1,16 +1,16 @@
-# Contributing to FAST-DNA
+# Contributing to FAST
 
 ## Getting started
 
 ### Machine setup
 
-To work with the FAST-DNA [monorepo](https://en.wikipedia.org/wiki/Monorepo) you'll need Git, Node.js, Yarn, and Lerna setup on your machine.
+To work with the FAST [monorepo](https://en.wikipedia.org/wiki/Monorepo) you'll need Git, Node.js, Yarn, and Lerna setup on your machine.
 
-FAST-DNA uses Git as its source control system. If you haven't already installed it, you can download it [here](https://git-scm.com/downloads) or if you prefer a GUI-based approach, try [GitHub Desktop](https://desktop.github.com/).
+FAST uses Git as its source control system. If you haven't already installed it, you can download it [here](https://git-scm.com/downloads) or if you prefer a GUI-based approach, try [GitHub Desktop](https://desktop.github.com/).
 
-Once Git is installed, you'll also need Node.js, which FAST-DNA uses as its JavaScript runtime, enabling its build and test scripts. Node.js instructions and downloads for your preferred OS can be found [here](https://nodejs.org/en/).
+Once Git is installed, you'll also need Node.js, which FAST uses as its JavaScript runtime, enabling its build and test scripts. Node.js instructions and downloads for your preferred OS can be found [here](https://nodejs.org/en/).
 
-Because the FAST-DNA repository is structured as a monorepo, we'll need a couple of tools to manage that. The first is Yarn, which can be installed by executing the following command at the terminal:
+Because the FAST repository is structured as a monorepo, we'll need a couple of tools to manage that. The first is Yarn, which can be installed by executing the following command at the terminal:
 
 ```shell
 npm install -g yarn
@@ -28,15 +28,15 @@ The above steps are a one-time setup for your machine and do not need to be repe
 
 ### Cloning the repository
 
-Now that your machine is setup, you can clone the FAST-DNA repository. Open a terminal and run this command:
+Now that your machine is setup, you can clone the FAST repository. Open a terminal and run this command:
 
 ```shell
-git clone https://github.com/microsoft/fast-dna.git
+git clone https://github.com/microsoft/fast.git
 ```
 
 ### Installing and building
 
-From within the `fast-dna` folder where you've cloned the repo, install all package dependencies and build all workspaces (local dependencies) with this command:
+From within the `fast` folder where you've cloned the repo, install all package dependencies and build all workspaces (local dependencies) with this command:
 
 ```bash
 yarn
@@ -91,7 +91,7 @@ When you submit a pull request, a CLA-bot automatically determines if you need t
 
 ## Guiding principle
 
-Owners, the steering committee, collaborators, code owners, and contributors work in concert with one another on behalf of the FAST-DNA community and prioritize the communities interests over their own.
+Owners, the steering committee, collaborators, code owners, and contributors work in concert with one another on behalf of the FAST community and prioritize the communities interests over their own.
 
 The development, release, and work management processes must reflect this principle. Accepting contributions to the project requires a review by collaborators.
 
@@ -99,11 +99,11 @@ The development, release, and work management processes must reflect this princi
 
 ### Owners
 
-*Owners* have admin access and are responsible for the management, maintenance, and operations of the FAST-DNA repository.
+*Owners* have admin access and are responsible for the management, maintenance, and operations of the FAST repository.
 
 ### Steering committee
 
-*Steering committee* members are key *collaborators* who have demonstrated design or technical expertise critical to the driving the FAST-DNA project and community forward.
+*Steering committee* members are key *collaborators* who have demonstrated design or technical expertise critical to the driving the FAST project and community forward.
 
 ### Collaborators
 
@@ -119,7 +119,7 @@ As subject matter experts, *code owners* approve pull requests on the packages t
 
 ### Nominations & appointments
 
-* To become a *contributor*, a community member must have a pull request approved and merged into the FAST-DNA project master branch.
+* To become a *contributor*, a community member must have a pull request approved and merged into the FAST project master branch.
 * To become a *collaborator*, a *contributor* will petition the *steering committee* who will approve or deny the request.
 * To become a *code owner*, a *collaborator* will be (a) nominated by a *steering committee* member or (b) petition the *steering committee* who will approve or deny the request.
 * To join the *steering committee*, a *collaborator* will be nominated by a *steering committee* member and the *steering committee* who will approve or deny the request.

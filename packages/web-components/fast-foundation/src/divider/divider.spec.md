@@ -11,7 +11,7 @@ It would be ideal to be able to use the [`is` global attribute](https://develope
 Used anywhere a horizontal rule might be used.
 
 ### Prior Art/Examples
-- [FAST-DNA (React)](https://explore.fast.design/components/divider)
+- [FAST (React)](https://explore.fast.design/components/divider)
 - [Ant Design](https://ant.design/components/divider/)
 - [Semantic UI](https://semantic-ui.com/elements/divider.html)
 - [Fluent UI](https://fluentsite.z22.web.core.windows.net/components/divider/definition)

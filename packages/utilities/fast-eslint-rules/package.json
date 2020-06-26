@@ -14,10 +14,10 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/microsoft/fast-dna.git"
+    "url": "git+https://github.com/microsoft/fast.git"
   },
   "bugs": {
-    "url": "https://github.com/microsoft/fast-dna/issues"
+    "url": "https://github.com/microsoft/fast/issues"
   },
   "main": ".eslintrc.js",
   "homepage": "https://github.com/Microsoft/fast-eslint-rules#readme",

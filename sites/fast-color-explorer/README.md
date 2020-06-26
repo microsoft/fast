@@ -2,7 +2,7 @@
 Application for testing UI color system.
 
 ## Getting Started
-Follow setup instructions in (https://github.com/Microsoft/fast-dna/blob/master/CONTRIBUTING.md)(https://github.com/Microsoft/fast-dna/blob/master/CONTRIBUTING.md)
+Follow setup instructions in (https://github.com/Microsoft/fast/blob/master/CONTRIBUTING.md)(https://github.com/Microsoft/fast/blob/master/CONTRIBUTING.md)
 
 - Running the app locally: `yarn start`
 - Build production app: `yarn build`

@@ -3,7 +3,7 @@
  *
  * TODO: The --background-luminance will need to be derived from JavaScript. For now
  * this is hard-coded to a 1, the relative luminance of pure white.
- * https://github.com/microsoft/fast-dna/issues/2778
+ * https://github.com/microsoft/fast/issues/2778
  *
  * @internal
  */

@@ -59,7 +59,7 @@ class SelectOption extends Foundation<
     private renderGlyph(): React.ReactNode {
         if (typeof this.props.glyph === "function") {
             return this.props.glyph(
-                // TODO: https://github.com/microsoft/fast-dna/issues/2125
+                // TODO: https://github.com/microsoft/fast/issues/2125
                 classNames((this.props.managedClasses as any).selectOption_glyph)
             );
         }

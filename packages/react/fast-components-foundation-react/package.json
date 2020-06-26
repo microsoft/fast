@@ -10,10 +10,10 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Microsoft/fast-dna.git"
+    "url": "git+https://github.com/Microsoft/fast.git"
   },
   "bugs": {
-    "url": "https://github.com/Microsoft/fast-dna/issues/new/choose"
+    "url": "https://github.com/Microsoft/fast/issues/new/choose"
   },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

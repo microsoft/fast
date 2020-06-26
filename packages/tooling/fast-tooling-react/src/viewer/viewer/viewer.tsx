@@ -28,7 +28,7 @@ export {
     // When drag and drop becomes available for this component,
     // this export should not include the wrapped DndProvider from react-dnd
     // as it is intended to work with the other Modular prefixed components
-    // See: https://github.com/microsoft/fast-dna/issues/2774
+    // See: https://github.com/microsoft/fast/issues/2774
     Viewer as ModularViewer,
     ViewerCustomAction,
     ViewerProps,
