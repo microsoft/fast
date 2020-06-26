@@ -32,11 +32,11 @@ export const ContentPlacementStyles = css`
 
     fast-card:hover .contentPlacement_icon,
     fast-card:focus-within .contentPlacement_icon {
-        visibility: visible;
+        opacity: 1;
     }
 
     fast-card .contentPlacement_icon {
-        visibility: hidden;
+        opacity: 0;
         margin-bottom: calc(var(--design-unit) * 5px);
     }
 `;
