@@ -530,4 +530,54 @@ describe("auto suggest", (): void => {
         expect(document.activeElement.getAttribute("role")).toBe("combobox");
         document.body.removeChild(container);
     });
+
+    test("down arrow key on input element with menu open focuses on menu item", (): void => {
+        const container: HTMLDivElement = document.createElement("div");
+        document.body.appendChild(container);
+
+        const rendered: any = mount(
+            <AutoSuggest listboxId="listboxId" initialValue="search">
+                {itemA}
+                {itemB}
+                {itemC}
+            </AutoSuggest>,
+            { attachTo: container }
+        );
+        const input: any = rendered.find("input");
+        expect(rendered.state("isMenuOpen")).toBe(false);
+        input.simulate("click");
+        input.simulate("keydown", { key: "a" });
+        expect(rendered.state("isMenuOpen")).toBe(true);
+        expect(document.activeElement.getAttribute("role")).toBe("combobox");
+
+        input.simulate("keydown", { keyCode: keyCodeArrowDown });
+        expect(document.activeElement.id).toBe("a");
+
+        document.body.removeChild(container);
+    });
+
+    test("up arrow key on input element with menu open focuses on menu item", (): void => {
+        const container: HTMLDivElement = document.createElement("div");
+        document.body.appendChild(container);
+
+        const rendered: any = mount(
+            <AutoSuggest listboxId="listboxId" initialValue="search">
+                {itemA}
+                {itemB}
+                {itemC}
+            </AutoSuggest>,
+            { attachTo: container }
+        );
+        const input: any = rendered.find("input");
+        expect(rendered.state("isMenuOpen")).toBe(false);
+        input.simulate("click");
+        input.simulate("keydown", { key: "a" });
+        expect(rendered.state("isMenuOpen")).toBe(true);
+        expect(document.activeElement.getAttribute("role")).toBe("combobox");
+
+        input.simulate("keydown", { keyCode: keyCodeArrowUp });
+        expect(document.activeElement.id).toBe("c");
+
+        document.body.removeChild(container);
+    });
 });

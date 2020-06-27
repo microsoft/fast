@@ -12,6 +12,7 @@ import React from "react";
 import { isNil } from "lodash-es";
 import { Listbox, ListboxItemProps, TextField, TextFieldType } from "../index";
 import { DisplayNamePrefix } from "../utilities";
+import ListboxItem from "../listbox-item";
 import { AutoSuggestContext, AutoSuggestContextType } from "./auto-suggest-context";
 import {
     AutoSuggestHandledProps,
@@ -523,9 +524,6 @@ class AutoSuggest extends Foundation<
         const startIndex: number = increment > -1 ? 0 : childrenAsArray.length - 1;
         const endIndex: number = increment > -1 ? childrenAsArray.length - 1 : 0;
         this.focusFirstItemInRange(startIndex, endIndex, childrenAsArray, increment);
-
-        this.toggleMenu(true);
-        this.shouldFocusMenuOnNextRender = true;
     };
 
     /**
@@ -545,6 +543,21 @@ class AutoSuggest extends Foundation<
         );
         if (validOption !== null) {
             this.updateFocusedItem([(validOption as React.ReactElement<any>).props]);
+        }
+
+        if (!this.state.isMenuOpen) {
+            this.toggleMenu(true);
+            this.shouldFocusMenuOnNextRender = true;
+            return;
+        }
+
+        if (validOption !== null) {
+            const element: HTMLElement = document.getElementById(
+                (validOption as React.ReactElement<ListboxItem>).props["id"]
+            );
+            if (element !== null) {
+                element.focus();
+            }
         }
     };
 
