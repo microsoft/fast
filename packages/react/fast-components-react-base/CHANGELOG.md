@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.26.3](https://github.com/Microsoft/fast/compare/@microsoft/fast-components-react-base@4.26.2...@microsoft/fast-components-react-base@4.26.3) (2020-06-26)
+
+**Note:** Version bump only for package @microsoft/fast-components-react-base
+
+
+
+
+
 ## [4.26.2](https://github.com/Microsoft/fast/compare/@microsoft/fast-components-react-base@4.26.1...@microsoft/fast-components-react-base@4.26.2) (2020-06-15)
 
 
