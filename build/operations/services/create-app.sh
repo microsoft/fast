@@ -41,7 +41,7 @@ for name in ${names[@]}; do
         az webapp config set --name $new_name \
             --always-on true \
             --auto-heal-enabled true \
-            --ftps-state FtpsOnly \
+            --ftps-state Disabled \
             --http20-enabled true \
             --linux-fx-version "NODE|lts" \
             --min-tls-version "1.2" \

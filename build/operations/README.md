@@ -254,3 +254,22 @@ Execute swap to production:
 ```bash
 $ az webapp deployment slot swap --resource-group fast-eastus-rg --name www-east-app --slot stage  --action swap  --target-slot production
 ```
+
+### Adding Network Restrictions
+This code will add network restrictions to apps.
+
+        az webapp config access-restriction add --priority 100 \
+            --resource-group fast-westus-rg \
+            --name www-west-app-stage \
+            --description "Deny access to all except Front Door" \
+            --rule-name "Front Door IPv4" \
+            --action Allow \
+            --ip-address 147.243.0.0/16
+
+        az webapp config access-restriction add --priority 200 \
+            --resource-group $resource_group \
+            --name $new_name-stage \
+            --description "Deny access to all except Front Door" \
+            --rule-name "Front Door IPv6" \
+            --action Allow \
+            --ip-address 2a01:111:2050::/44
