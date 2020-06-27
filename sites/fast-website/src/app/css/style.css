@@ -160,6 +160,10 @@ li {
   color: var(--neutral-foreground-rest);
 }
 
+.header .github-link:hover::part(end) {
+  color: var(--accent-foreground-rest);
+}
+
 .footer .logo::part(content) {
   display: flex;
   overflow: hidden;
