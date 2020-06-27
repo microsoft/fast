@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.31.1](https://github.com/Microsoft/fast/compare/@microsoft/fast-components-react-msft@4.31.0...@microsoft/fast-components-react-msft@4.31.1) (2020-06-26)
+
+
+### Bug Fixes
+
+* react flyout visibility prop should show/hide flyout  ([#3272](https://github.com/Microsoft/fast/issues/3272)) ([45b4654](https://github.com/Microsoft/fast/commit/45b46547536fa467d7ceb60eb8d89c60844391a1))
+
+
+
+
+
 # [4.31.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-components-react-msft@4.30.14...@microsoft/fast-components-react-msft@4.31.0) (2020-06-17)
 
 

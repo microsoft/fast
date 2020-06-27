@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.4](https://github.com/microsoft/fast/compare/@microsoft/eslint-config-fast-dna@1.1.3...@microsoft/eslint-config-fast-dna@1.1.4) (2020-06-26)
+
+**Note:** Version bump only for package @microsoft/eslint-config-fast-dna
+
+
+
+
+
 ## [1.1.2](https://github.com/microsoft/fast/compare/@microsoft/eslint-config-fast@1.1.1...@microsoft/eslint-config-fast@1.1.2) (2020-05-18)
 
 

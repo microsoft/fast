@@ -1,6 +1,6 @@
 {
   "name": "@microsoft/site-utilities",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Utilities for the Creator and Component Explorer sites",
   "sideEffects": false,
   "private": true,
@@ -28,7 +28,7 @@
     "@babel/plugin-syntax-dynamic-import": "^7.2.0",
     "@babel/preset-env": "^7.1.0",
     "@babel/preset-react": "^7.0.0",
-    "@microsoft/eslint-config-fast-dna": "^1.1.3",
+    "@microsoft/eslint-config-fast-dna": "^1.1.4",
     "@types/node": "^9.6.7",
     "@types/react": "^16.8.0",
     "babel-core": "^7.0.0-bridge.0",
@@ -48,9 +48,9 @@
     "typescript": "^3.3.3"
   },
   "dependencies": {
-    "@microsoft/fast-components-react-msft": "^4.31.0",
-    "@microsoft/fast-tooling": "^0.6.0",
-    "@microsoft/fast-tooling-react": "^2.2.3",
+    "@microsoft/fast-components-react-msft": "^4.31.1",
+    "@microsoft/fast-tooling": "^0.6.1",
+    "@microsoft/fast-tooling-react": "^2.2.4",
     "chalk": "^4.1.0"
   }
 }
