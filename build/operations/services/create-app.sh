@@ -161,6 +161,3 @@ for name in ${names[@]}; do
 done
 
 echo "success !!!"
-
-
-# 

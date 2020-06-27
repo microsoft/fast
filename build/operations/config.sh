@@ -19,4 +19,5 @@ debug=true
 dir=$(PWD)
 
 # Requirements
+echo ""
 echo "Scripts are required to run from inside 'fast-dna/build/operations'"
