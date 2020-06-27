@@ -11,7 +11,7 @@ Begin by [installing](https://docs.microsoft.com/en-us/cli/azure/install-azure-c
 Sign in happens interactively with Azure CLI upon executing `bash login.sh`. Leverages the security groups within the Azure tenent by launching the user into a web browser for authentication, then perfoms FAST configuration.
 
 ```bash
-bash login.sh
+bash recipes/login.sh
 ```
 
 When using Bash scripts it's not necessary to manually login and perform CLI commands. Each script includes detailed description, notes, and references on it's purpose organized as recipes that execute services for installation and configuration.
@@ -156,3 +156,101 @@ AzureDiagnostics
 
 ### Status
 Azure Status https://status.azure.com/en-us/status
+
+
+## Deploying from Stage to Production
+Prerequisites to swap staging into production using the Azure CLI.
+
+1. Change directory to operations folder: $ cd operations
+2. Login: $ bash recipes/login.sh 
+3. Validate subscription: $ az account show
+4. change deployment slot for passive (east) region: 
+$ az webapp deployment slot swap --slot stage -g fast-westus-rg --action swap --name www-west-app --target-slot production
+5. validate configuration
+6. todo: how to delete all files prior to deployment
+7. test in each web browser including Safari.
+
+
+### Swap Passive (East) Region and Test 
+Using (Azure Portal)[https://portal.azure.com] navigate to Azure Front Door (AFD) to control load balancing and routing for testing and validation scenarios.  AFD is located in "fast-ops-rg" resource group and named "fast-front".
+
+
+#### Validate Staging (East)
+1. In the Front Door Designer's Backend Pool named "stage-www-fast-design"
+  1. disable "www-west-app-stage.azurewebsites.net"
+  1. enable "www-east-app-stage.azurewebsites.net" 
+2. Validate staging website at https://stage.www.fast.design (visually/functionally new)
+
+#### Validate Production (East)
+1. In the Front Door Designer's Backend Pool named "www-fast-design"
+  1. disable "www-west-app.azurewebsites.net"
+  1. enable "www-east-app.azurewebsites.net" 
+2. Validate old production website at https://www.fast.design (visually/functionally old)
+
+#### Execute Swap using Azure CLI
+This will swap staging source code with production source code. 
+
+Execute swap to production:
+```bash
+$ az webapp deployment slot swap --resource-group fast-eastus-rg --name www-east-app --slot stage  --action swap  --target-slot production
+```
+
+#### Validate Production (East)
+1. Validate staging website at https://stage.www.fast.design reflects old production
+2. Validate production website at https://www.fast.design reflects new production
+3. Note: Any PRs that merge to master will trigger a new deploy to staging, so depending on time between validation staging may actually reflect the lastest site in master from source code.
+
+
+### Swap Active (West) Region and Test
+#### Validate Staging (West)
+1. In the Front Door Designer's Backend Pool named "stage-www-fast-design"
+  1. disable "www-east-app-stage.azurewebsites.net"
+  1. enable "www-west-app-stage.azurewebsites.net" 
+2. Validate staging website at https://stage.www.fast.design 
+
+#### Validate Production (West)
+1. In the Front Door Designer's Backend Pool named "www-fast-design"
+  1. disable "www-east-app.azurewebsites.net"
+  1. enable "www-west-app.azurewebsites.net" 
+2. Validate production website at https://www.fast.design 
+
+#### Execute Swap using Azure CLI
+This will swap staging source code with production source code. 
+
+Execute swap to production:
+```bash
+$ az webapp deployment slot swap --resource-group fast-westus-rg --name www-west-app --slot stage  --action swap  --target-slot production
+```
+
+#### Validate Production (East)
+1. Validate staging website at https://stage.www.fast.design reflects old production
+2. Validate production website at https://www.fast.design reflects new production
+3. Note: Any PRs that merge to master will trigger a new deploy to staging, so depending on time between validation staging may actually reflect the lastest site in master from source code.
+
+### Enable Backend Pooling
+Now that we have cautiously deployed and tested both passive (east) and active (west) in isolation it's safe to turn on both backends for redundancy.
+
+1. In the Front Door Designer's Backend Pool named "www-fast-design"
+  1. enable "www-east-app-stage.azurewebsites.net"
+  1. enable "www-west-app-stage.azurewebsites.net" 
+2. Validate production website at https://www.fast.design 
+3. Validate staging website at https://stage.fast.design
+
+### Testing Complete
+Now that we've completed the test, evaluate that all steps are accurate and if any deviation update the notes to reflect such.
+
+1. Validate the production has Application Insights turned On.
+1. Explore-east-app and explore-west-app needs network restrictions added (use CLI)
+1. make sure the front door has frontends/domain + backend pool + routing rules before making DNS updates
+1. need to change AFD 'state-explore-fast-design' to rename to 'stage-explore-fast-design'
+1. www-east-app-stage needs networking restrictions
+1. app insights needed turned on again (wth) is this a bug?
+
+
+### Reverting Deployment
+This will swap staging source code with production source code.
+
+Execute swap to production:
+```bash
+$ az webapp deployment slot swap --resource-group fast-eastus-rg --name www-east-app --slot stage  --action swap  --target-slot production
+```
