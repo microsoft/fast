@@ -306,6 +306,7 @@ export class Tooltip extends FASTElement {
         this.regionStyle = hiddenRegionStyle;
         this.region.viewportElement = null;
         this.region.anchorElement = null;
+        this.region.regionStyle = "old";
     };
 
     private showRegion = (): void => {
