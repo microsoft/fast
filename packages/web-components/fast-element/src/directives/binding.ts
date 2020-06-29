@@ -19,10 +19,14 @@ function normalBind(
     this.context = context;
 
     if (this.bindingObserver === null) {
-        this.bindingObserver = Observable.binding(this.binding, this);
+        this.bindingObserver = Observable.binding(
+            this.binding,
+            this,
+            this.isBindingVolatile
+        );
     }
 
-    this.updateTarget(this.bindingObserver.observe(source, context));
+    this.updateTarget(this.bindingObserver!.observe(source, context));
 }
 
 function triggerBind(
@@ -189,6 +193,7 @@ export class BindingDirective extends Directive {
     private bind: typeof normalBind = normalBind;
     private unbind: typeof normalUnbind = normalUnbind;
     private updateTarget: typeof updateAttributeTarget = updateAttributeTarget;
+    private isBindingVolatile: boolean;
 
     /**
      * Creates a placeholder string based on the directive's index within the template.
@@ -203,6 +208,7 @@ export class BindingDirective extends Directive {
      */
     public constructor(public binding: Binding) {
         super();
+        this.isBindingVolatile = Observable.isVolatileBinding(this.bind);
     }
 
     /**
@@ -269,6 +275,7 @@ export class BindingDirective extends Directive {
         return new BindingBehavior(
             target,
             this.binding,
+            this.isBindingVolatile,
             this.bind,
             this.unbind,
             this.updateTarget,
@@ -305,6 +312,9 @@ export class BindingBehavior implements Behavior {
     public binding: Binding;
 
     /** @internal */
+    public isBindingVolatile: boolean;
+
+    /** @internal */
     public updateTarget: typeof updatePropertyTarget;
 
     /** @internal */
@@ -327,6 +337,7 @@ export class BindingBehavior implements Behavior {
      * Creates an instance of BindingBehavior.
      * @param target - The target of the data updates.
      * @param binding - The binding that returns the latest value for an update.
+     * @param isBindingVolatile - Indicates whether the binding has volatile dependencies.
      * @param bind - The operation to perform during binding.
      * @param unbind - The operation to perform during unbinding.
      * @param updateTarget - The operation to perform when updating.
@@ -335,6 +346,7 @@ export class BindingBehavior implements Behavior {
     public constructor(
         target: any,
         binding: Binding,
+        isBindingVolatile: boolean,
         bind: typeof normalBind,
         unbind: typeof normalUnbind,
         updateTarget: typeof updatePropertyTarget,
@@ -342,6 +354,7 @@ export class BindingBehavior implements Behavior {
     ) {
         this.target = target;
         this.binding = binding;
+        this.isBindingVolatile = isBindingVolatile;
         this.bind = bind;
         this.unbind = unbind;
         this.updateTarget = updateTarget;
