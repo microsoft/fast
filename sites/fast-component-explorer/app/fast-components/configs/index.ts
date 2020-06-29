@@ -54,3 +54,9 @@ export { fastTextAreaConfig };
 
 import fastTextFieldConfig from "./fast-text-field";
 export { fastTextFieldConfig };
+
+import fastTreeItemConfig from "./fast-tree-item";
+export { fastTreeItemConfig };
+
+import fastTreeViewConfig from "./fast-tree-view";
+export { fastTreeViewConfig };

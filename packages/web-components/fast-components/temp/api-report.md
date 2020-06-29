@@ -12,7 +12,6 @@ import { BaseProgress } from '@microsoft/fast-foundation';
 import { Button } from '@microsoft/fast-foundation';
 import { Card } from '@microsoft/fast-foundation';
 import { Checkbox } from '@microsoft/fast-foundation';
-import { ColorRGBA64 } from '@microsoft/fast-colors';
 import { DesignSystemProvider } from '@microsoft/fast-foundation';
 import { Dialog } from '@microsoft/fast-foundation';
 import { Divider } from '@microsoft/fast-foundation';
@@ -195,153 +194,37 @@ export const accentForegroundRestBehavior: import("@microsoft/fast-foundation").
 // @public
 export function createColorPalette(baseColor: any): string[];
 
-// @public
+// @public (undocumented)
 export class FASTAccordion extends Accordion {
 }
 
-// @public
+// @public (undocumented)
 export class FASTAccordionItem extends AccordionItem {
 }
 
-// @public
+// @public (undocumented)
 export class FASTAnchor extends Anchor {
 }
 
-// @public
+// @public (undocumented)
 export class FASTBadge extends Badge {
 }
 
-// @public
+// @public (undocumented)
 export class FASTButton extends Button {
 }
 
-// @public
+// @public (undocumented)
 export class FASTCard extends Card {
 }
 
-// @public
+// @public (undocumented)
 export class FASTCheckbox extends Checkbox {
 }
 
-// @public
-export interface FASTDesignSystem {
-    accentBaseColor: string;
-    // (undocumented)
-    accentFillActiveDelta: number;
-    // (undocumented)
-    accentFillFocusDelta: number;
-    // (undocumented)
-    accentFillHoverDelta: number;
-    accentFillRestDelta: number;
-    // (undocumented)
-    accentFillSelectedDelta: number;
-    // (undocumented)
-    accentForegroundActiveDelta: number;
-    // (undocumented)
-    accentForegroundFocusDelta: number;
-    // (undocumented)
-    accentForegroundHoverDelta: number;
-    accentForegroundRestDelta: number;
-    accentPalette: string[];
-    backgroundColor: string;
-    baseHeightMultiplier: number;
-    baseHorizontalSpacingMultiplier: number;
-    baseLayerLuminance: number;
-    cornerRadius: number;
-    density: number;
-    designUnit: number;
-    disabledOpacity: number;
-    focusOutlineWidth: number;
-    neutralDividerRestDelta: number;
-    // (undocumented)
-    neutralFillActiveDelta: number;
-    neutralFillCardDelta: number;
-    // (undocumented)
-    neutralFillFocusDelta: number;
-    // (undocumented)
-    neutralFillHoverDelta: number;
-    // (undocumented)
-    neutralFillInputActiveDelta: number;
-    // (undocumented)
-    neutralFillInputFocusDelta: number;
-    // (undocumented)
-    neutralFillInputHoverDelta: number;
-    neutralFillInputRestDelta: number;
-    // (undocumented)
-    neutralFillInputSelectedDelta: number;
-    // (undocumented)
-    neutralFillRestDelta: number;
-    // (undocumented)
-    neutralFillSelectedDelta: number;
-    // (undocumented)
-    neutralFillStealthActiveDelta: number;
-    // (undocumented)
-    neutralFillStealthFocusDelta: number;
-    // (undocumented)
-    neutralFillStealthHoverDelta: number;
-    neutralFillStealthRestDelta: number;
-    // (undocumented)
-    neutralFillStealthSelectedDelta: number;
-    // (undocumented)
-    neutralFillToggleActiveDelta: number;
-    // (undocumented)
-    neutralFillToggleFocusDelta: number;
-    neutralFillToggleHoverDelta: number;
-    // (undocumented)
-    neutralForegroundActiveDelta: number;
-    // (undocumented)
-    neutralForegroundFocusDelta: number;
-    neutralForegroundHoverDelta: number;
-    // (undocumented)
-    neutralOutlineActiveDelta: number;
-    // (undocumented)
-    neutralOutlineFocusDelta: number;
-    // (undocumented)
-    neutralOutlineHoverDelta: number;
-    neutralOutlineRestDelta: number;
-    neutralPalette: string[];
-    outlineWidth: number;
-    // (undocumented)
-    typeRampBaseFontSize: string;
-    // (undocumented)
-    typeRampBaseLineHeight: string;
-    // (undocumented)
-    typeRampMinus1FontSize: string;
-    // (undocumented)
-    typeRampMinus1LineHeight: string;
-    typeRampMinus2FontSize: string;
-    // (undocumented)
-    typeRampMinus2LineHeight: string;
-    // (undocumented)
-    typeRampPlus1FontSize: string;
-    // (undocumented)
-    typeRampPlus1LineHeight: string;
-    // (undocumented)
-    typeRampPlus2FontSize: string;
-    // (undocumented)
-    typeRampPlus2LineHeight: string;
-    // (undocumented)
-    typeRampPlus3FontSize: string;
-    // (undocumented)
-    typeRampPlus3LineHeight: string;
-    // (undocumented)
-    typeRampPlus4FontSize: string;
-    // (undocumented)
-    typeRampPlus4LineHeight: string;
-    // (undocumented)
-    typeRampPlus5FontSize: string;
-    // (undocumented)
-    typeRampPlus5LineHeight: string;
-    // (undocumented)
-    typeRampPlus6FontSize: string;
-    // (undocumented)
-    typeRampPlus6LineHeight: string;
-}
-
-// @public
-export const fastDesignSystemDefaults: FASTDesignSystem;
-
-// @public
+// Warning: (ae-forgotten-export) The symbol "FASTDesignSystem" needs to be exported by the entry point index.d.ts
+//
+// @public (undocumented)
 export class FASTDesignSystemProvider extends DesignSystemProvider implements FASTDesignSystem {
     accentBaseColor: string;
     // (undocumented)
@@ -476,79 +359,79 @@ export class FASTDesignSystemProvider extends DesignSystemProvider implements FA
     typeRampPlus6LineHeight: string;
 }
 
-// @public
+// @public (undocumented)
 export class FASTDialog extends Dialog {
 }
 
-// @public
+// @public (undocumented)
 export class FASTDivider extends Divider {
 }
 
-// @public
+// @public (undocumented)
 export class FASTFlipper extends Flipper {
 }
 
-// @public
+// @public (undocumented)
 export class FASTMenu extends Menu {
 }
 
-// @public
+// @public (undocumented)
 export class FASTMenuItem extends MenuItem {
 }
 
-// @public
+// @public (undocumented)
 export class FASTProgress extends BaseProgress {
 }
 
-// @public
+// @public (undocumented)
 export class FASTProgressRing extends BaseProgress {
 }
 
-// @public
+// @public (undocumented)
 export class FASTRadio extends Radio {
 }
 
-// @public
+// @public (undocumented)
 export class FASTRadioGroup extends RadioGroup {
 }
 
-// @public
+// @public (undocumented)
 export class FASTSlider extends Slider {
 }
 
-// @public
+// @public (undocumented)
 export class FASTSliderLabel extends SliderLabel {
 }
 
-// @public
+// @public (undocumented)
 export class FASTSwitch extends Switch {
 }
 
-// @public
+// @public (undocumented)
 export class FASTTab extends Tab {
 }
 
-// @public
+// @public (undocumented)
 export class FASTTabPanel extends TabPanel {
 }
 
-// @public
+// @public (undocumented)
 export class FASTTabs extends Tabs {
 }
 
-// @public
+// @public (undocumented)
 export class FASTTextArea extends TextArea {
 }
 
-// @public
+// @public (undocumented)
 export class FASTTextField extends TextField {
 }
 
-// @public
+// @public (undocumented)
 export class FASTTreeItem extends TreeItem {
 }
 
-// @public
+// @public (undocumented)
 export class FASTTreeView extends TreeView {
 }
 
@@ -578,14 +461,14 @@ export const neutralFillActive: SwatchRecipe;
 export const neutralFillActiveBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
 
 // Warning: (ae-forgotten-export) The symbol "Swatch" needs to be exported by the entry point index.d.ts
-// Warning: (ae-internal-missing-underscore) The name "neutralFillCard" should be prefixed with an underscore because the declaration is marked as @internal
+// Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "neutralFillCard" because one of its declarations is marked as @internal
 //
 // @internal (undocumented)
 export function neutralFillCard(designSystem: FASTDesignSystem): Swatch;
 
 // Warning: (ae-forgotten-export) The symbol "SwatchResolver" needs to be exported by the entry point index.d.ts
 //
-// @internal (undocumented)
+// @public (undocumented)
 export function neutralFillCard(backgroundResolver: SwatchResolver): SwatchResolver;
 
 // @public
@@ -920,9 +803,6 @@ export enum PaletteType {
     // (undocumented)
     neutral = "neutral"
 }
-
-// @public
-export const parseColorString: (color: string) => ColorRGBA64;
 
 // @public
 export enum StandardLuminance {

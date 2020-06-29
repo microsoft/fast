@@ -359,6 +359,9 @@ export const hidden = "\n    :host([hidden]) {\n        display: none;\n    }\n"
 export function isDesignSystemConsumer(element: HTMLElement | DesignSystemConsumer): element is DesignSystemConsumer;
 
 // @public
+export function isTreeItemElement(el: Element): el is HTMLElement;
+
+// @public
 export function matchMediaStylesheetBehaviorFactory(query: MediaQueryList): (sheet: ElementStyles) => Readonly<{
     query: MediaQueryList;
     cache: WeakMap<(new () => HTMLElement & FASTElement) & {
@@ -781,6 +784,76 @@ export enum TextFieldType {
     text = "text",
     url = "url"
 }
+
+// Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
+// Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "TreeItem" because one of its declarations is marked as @internal
+//
+// @public
+export class TreeItem extends FASTElement {
+    // (undocumented)
+    childItems: HTMLElement[];
+    // @internal (undocumented)
+    connectedCallback(): void;
+    disabled: boolean;
+    // @internal (undocumented)
+    disconnectedCallback(): void;
+    // (undocumented)
+    expandCollapseButton: HTMLDivElement;
+    expanded: boolean;
+    // (undocumented)
+    focusable: boolean;
+    // (undocumented)
+    handleBlur: (e: FocusEvent) => void;
+    // (undocumented)
+    handleChange(source: any, propertyName: string): void;
+    // (undocumented)
+    handleContainerClick: (e: MouseEvent) => void;
+    // (undocumented)
+    handleExpandCollapseButtonClick: () => void;
+    // (undocumented)
+    handleFocus: (e: Event) => void;
+    // (undocumented)
+    handleKeyDown: (e: KeyboardEvent) => boolean | void;
+    // (undocumented)
+    items: HTMLElement[];
+    // (undocumented)
+    nested: boolean;
+    // (undocumented)
+    renderCollapsedChildren: boolean;
+    selected: boolean;
+    }
+
+// @internal
+export interface TreeItem extends StartEnd {
+}
+
+// @public
+export const TreeItemTemplate: import("@microsoft/fast-element").ViewTemplate<TreeItem, any>;
+
+// @public
+export class TreeView extends FASTElement {
+    // (undocumented)
+    connectedCallback(): void;
+    // (undocumented)
+    currentSelected: HTMLElement | TreeItem | null;
+    // (undocumented)
+    focusable: boolean;
+    // (undocumented)
+    handleBlur: (e: FocusEvent) => void;
+    // (undocumented)
+    handleFocus: (e: FocusEvent) => void;
+    // (undocumented)
+    handleKeyDown: (e: KeyboardEvent) => boolean | void;
+    // (undocumented)
+    renderCollapsedNodes: boolean;
+    // (undocumented)
+    slottedTreeItems: HTMLElement[];
+    // (undocumented)
+    treeView: HTMLElement;
+}
+
+// @public
+export const TreeViewTemplate: import("@microsoft/fast-element").ViewTemplate<TreeView, any>;
 
 
 // Warnings were encountered during analysis:
