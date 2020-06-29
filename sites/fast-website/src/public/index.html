@@ -6,6 +6,11 @@
     <title><%= htmlWebpackPlugin.options.title %></title>
     <link rel="shortcut icon" href="https://static.fast.design/assets/manifest/favicon.ico">
     <link href="https://use.typekit.net/spx2dgm.css" rel="stylesheet">
+    <style type="text/css">
+      *:not(:defined) {
+        visibility: hidden;
+      }
+    </style>
   </head>
   <body>
     <fast-design-system-provider
@@ -100,7 +105,8 @@
 
         <aside class="side-nav-container">
           <site-side-navigation category="links" class="social-links"></site-side-navigation>
-          <site-side-navigation category="scroll" class="section-scroll"></site-side-navigation>
+          <!-- TODO #3404: https://github.com/microsoft/fast/issues/3404 -->
+          <!-- <site-side-navigation category="scroll" class="section-scroll"></site-side-navigation> -->
         </aside>
 
         <fast-divider class="footer-divider" role="seperator"></fast-divider>

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.2.4](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling-react@2.2.3...@microsoft/fast-tooling-react@2.2.4) (2020-06-26)
+
+
+### Bug Fixes
+
+* only add linked data on enter and reset focus to remove the datalist ([#3343](https://github.com/Microsoft/fast/issues/3343)) ([6262e0e](https://github.com/Microsoft/fast/commit/6262e0e35c17553b0e521c354fc85fb7993b20ae))
+
+
+
+
+
 ## [2.2.3](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling-react@2.2.2...@microsoft/fast-tooling-react@2.2.3) (2020-06-15)
 
 **Note:** Version bump only for package @microsoft/fast-tooling-react

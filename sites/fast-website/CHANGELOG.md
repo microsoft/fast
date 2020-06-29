@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.1](https://github.com/Microsoft/fast/compare/fast-website@1.1.0...fast-website@1.1.1) (2020-06-26)
+
+
+### Bug Fixes
+
+* accent color selection, slider backgrounds and tab reorganization ([#3385](https://github.com/Microsoft/fast/issues/3385)) ([3d1094a](https://github.com/Microsoft/fast/commit/3d1094aa1a33926c943bbc02c169577f90fc99f9))
+* add aria label for screen reader on anchors and buttons and fix tab focus inside fast-frame component  ([#3334](https://github.com/Microsoft/fast/issues/3334)) ([c1b5d15](https://github.com/Microsoft/fast/commit/c1b5d15db403afa4e129baf95987b671d82877dc))
+* add focus to header and footer logo ([#3390](https://github.com/Microsoft/fast/issues/3390)) ([c6d0bcb](https://github.com/Microsoft/fast/commit/c6d0bcbc97c089bda8306ff4bbd61efda74cee82))
+* display underline in anchors ([#3382](https://github.com/Microsoft/fast/issues/3382)) ([182e36a](https://github.com/Microsoft/fast/commit/182e36a6379029d598b8e1e79a555b60f7d21676))
+* fix nav-menu content scroll issue and fix nav-bar to top of the screen on mobile ([#3342](https://github.com/Microsoft/fast/issues/3342)) ([5127352](https://github.com/Microsoft/fast/commit/51273525c24de93de58ffe910606189a74287e5d))
+* fixing link to documentation ([#3362](https://github.com/Microsoft/fast/issues/3362)) ([c776557](https://github.com/Microsoft/fast/commit/c776557af04b4ee5aabeba617807d9caedc3ad4d))
+* footer overlap below 750px wide ([#3339](https://github.com/Microsoft/fast/issues/3339)) ([ce2d7f6](https://github.com/Microsoft/fast/commit/ce2d7f65b51292b28b499271142ee22f38b9fcbe))
+* resolve the issue where navigation overlaps with the window and extend logo and GitHub link out ([#3344](https://github.com/Microsoft/fast/issues/3344)) ([fc7c1ff](https://github.com/Microsoft/fast/commit/fc7c1ff21836f7ad980fc8336a76b98f3aad3e09))
+* site nav accessibility ([#3360](https://github.com/Microsoft/fast/issues/3360)) ([c19b06a](https://github.com/Microsoft/fast/commit/c19b06a9b02049023bb60b970efa197874a8319e))
+* update the color on the navigation links ([#3378](https://github.com/Microsoft/fast/issues/3378)) ([1be6fe1](https://github.com/Microsoft/fast/commit/1be6fe16afd657f281492a00e9cd28ad9562e6e9))
+* update to left align github link inside the navigation flyout ([#3336](https://github.com/Microsoft/fast/issues/3336)) ([9dcbc50](https://github.com/Microsoft/fast/commit/9dcbc50e3aa8a2d76638739354d858e888de3599))
+
+
+
+
+
 # 1.1.0 (2020-06-17)
 
 

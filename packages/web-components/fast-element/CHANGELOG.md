@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.13.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-element@0.12.0...@microsoft/fast-element@0.13.0) (2020-06-26)
+
+
+### Bug Fixes
+
+* **fast-element:** default event handler behavior should be no capture ([#3337](https://github.com/Microsoft/fast/issues/3337)) ([a59e4df](https://github.com/Microsoft/fast/commit/a59e4df10457ff84cba0697cc8f1649c136ac848))
+* **fast-element:** export missing elements filter helper ([#3331](https://github.com/Microsoft/fast/issues/3331)) ([46de565](https://github.com/Microsoft/fast/commit/46de5652508092a37a83c17c99be0ca2e3653589))
+
+
+### Features
+
+* **fast-element:** enable CSSStyleSheet and string to be used as styles ([#3345](https://github.com/Microsoft/fast/issues/3345)) ([70e2f7f](https://github.com/Microsoft/fast/commit/70e2f7f0fc33d658b9e52eb50c9dc1af26816515))
+* **fast-element:** expand element filter to support selectors ([#3374](https://github.com/Microsoft/fast/issues/3374)) ([f275366](https://github.com/Microsoft/fast/commit/f2753668fe6e9981c1de9280e6edeaab37de25d6))
+
+
+
+
+
 # [0.12.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-element@0.11.0...@microsoft/fast-element@0.12.0) (2020-06-17)
 
 

@@ -160,6 +160,10 @@ li {
   color: var(--neutral-foreground-rest);
 }
 
+.header .github-link:hover::part(end) {
+  color: var(--accent-foreground-rest);
+}
+
 .footer .logo::part(content) {
   display: flex;
   overflow: hidden;
@@ -325,6 +329,10 @@ fast-badge::part(control) {
   .section {
    padding: 0 20px;
    margin: var(--section-height-spacing-mobile);
+  }
+
+  .hero-section {
+    margin-top: 150px;
   }
 
   .fast-frame-section {

@@ -1,6 +1,7 @@
 import { DOM } from "../dom";
 import { Notifier, PropertyChangeNotifier, SubscriberSet, Subscriber } from "./notifier";
 
+const volatileRegex = /(\:|\&\&|\|\||if)/;
 const notifierLookup = new WeakMap<any, Notifier>();
 const accessorLookup = new WeakMap<any, Accessor[]>();
 let watcher: BindingObserverImplementation | undefined = void 0;
@@ -111,6 +112,16 @@ export const Observable = Object.freeze({
     },
 
     /**
+     * Notifies watchers that the currently executing property getter or function is volatile
+     * with respect to its observable dependencies.
+     */
+    trackVolatile(): void {
+        if (watcher !== void 0) {
+            watcher.needsRefresh = true;
+        }
+    },
+
+    /**
      * Notifies subscribers of a source object of changes.
      * @param source - the object to notify of changes.
      * @param args - The change args to pass to subscribers.
@@ -177,16 +188,34 @@ export const Observable = Object.freeze({
      * provided {@link Binding} for changes.
      * @param binding - The binding to observe.
      * @param initialSubscriber - An initial subscriber to changes in the binding value.
+     * @param isVolatileBinding - Indicates whether the binding's dependency list must be re-evaluated on every value evaluation.
      */
     binding<TSource = any, TReturn = any, TParent = any>(
         binding: Binding<TSource, TReturn, TParent>,
-        initialSubscriber?: Subscriber
+        initialSubscriber?: Subscriber,
+        isVolatileBinding: boolean = this.isVolatileBinding(binding)
     ): BindingObserver<TSource, TReturn, TParent> {
-        return new BindingObserverImplementation(binding, initialSubscriber);
+        return new BindingObserverImplementation(
+            binding,
+            initialSubscriber,
+            isVolatileBinding
+        );
+    },
+
+    /**
+     * Determines whether a binding expression is volatile and needs to have its dependency list re-evaluated
+     * on every evaluation of the value.
+     * @param binding - The binding to inspect.
+     */
+    isVolatileBinding<TSource = any, TReturn = any, TParent = any>(
+        binding: Binding<TSource, TReturn, TParent>
+    ): boolean {
+        return volatileRegex.test(binding.toString());
     },
 });
 
 const getNotifier = Observable.getNotifier;
+const trackVolatile = Observable.trackVolatile;
 const queueUpdate = DOM.queueUpdate;
 
 /**
@@ -197,6 +226,22 @@ const queueUpdate = DOM.queueUpdate;
  */
 export function observable(target: {}, nameOrAccessor: string | Accessor): void {
     Observable.defineProperty(target, nameOrAccessor);
+}
+
+/**
+ * Decorator: Marks a property getter as having volatile observable dependencies.
+ * @param target - The target that the property is defined on.
+ * @param name - The property name.
+ * @param name - The existing descriptor.
+ * @public
+ */
+export function volatile(target: {}, name, descriptor) {
+    return Object.assign({}, descriptor, {
+        get: function (this: any) {
+            trackVolatile();
+            return descriptor.get?.apply(this);
+        },
+    });
 }
 
 let currentEvent: Event | null = null;
@@ -326,7 +371,7 @@ export interface BindingObserver<TSource = any, TReturn = any, TParent = any>
 class BindingObserverImplementation<TSource = any, TReturn = any, TParent = any>
     extends SubscriberSet
     implements BindingObserver<TSource, TReturn, TParent> {
-    private needsRefresh: boolean = true;
+    public needsRefresh: boolean = true;
     private needsQueue: boolean = true;
 
     private first: SubscriptionRecord = this as any;
@@ -338,7 +383,8 @@ class BindingObserverImplementation<TSource = any, TReturn = any, TParent = any>
 
     constructor(
         private binding: Binding<TSource, TReturn, TParent>,
-        initialSubscriber?: Subscriber
+        initialSubscriber?: Subscriber,
+        private isVolatileBinding: boolean = false
     ) {
         super(binding, initialSubscriber);
     }
@@ -350,7 +396,7 @@ class BindingObserverImplementation<TSource = any, TReturn = any, TParent = any>
 
         const previousWatcher = watcher;
         watcher = this.needsRefresh ? this : void 0;
-        this.needsRefresh = false;
+        this.needsRefresh = this.isVolatileBinding;
         const result = this.binding(source, context);
         watcher = previousWatcher;
 
