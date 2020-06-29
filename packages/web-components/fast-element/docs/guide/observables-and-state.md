@@ -88,10 +88,12 @@ export class MyClass {
 Here's how you would do it without a decorator:
 
 ```ts
-import { Observable } from '@microsoft/fast-element';
+import { Observable, observable } from '@microsoft/fast-element';
 
 export class MyClass {
-  // elided
+  @observable someBoolean = false;
+  @observable valueA = 0;
+  @observable valueB = 42;
 
   get computedValue() {
     Observable.trackVolatile();
