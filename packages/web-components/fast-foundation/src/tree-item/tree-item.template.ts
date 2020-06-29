@@ -56,9 +56,9 @@ export const TreeItemTemplate = html<TreeItem>`
         </div>
         ${when(
             x =>
-                (x.expanded || x.renderCollapsedChildren) &&
                 x.childItems &&
-                x.childItems.length > 0,
+                x.childItems.length > 0 &&
+                (x.expanded || x.renderCollapsedChildren),
             html<TreeItem>`
                 <div role="group" class="items" part="items">
                     <slot name="item" ${slotted("items")}></slot>
