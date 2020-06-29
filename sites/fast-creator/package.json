@@ -25,8 +25,6 @@
     "@babel/preset-env": "^7.1.0",
     "@babel/preset-react": "^7.0.0",
     "@microsoft/eslint-config-fast-dna": "^1.1.4",
-    "@microsoft/fast-components-class-name-contracts-base": "^4.7.3",
-    "@microsoft/fast-components-class-name-contracts-msft": "^4.8.9",
     "@microsoft/fast-components-foundation-react": "^3.1.11",
     "@microsoft/fast-jss-manager-react": "^4.7.7",
     "@microsoft/fast-jss-utilities": "^4.7.17",
@@ -67,7 +65,7 @@
     "worker-loader": "^2.0.0"
   },
   "dependencies": {
-    "@microsoft/fast-components-react-msft": "^4.31.1",
+    "@microsoft/fast-components": "^1.3.0",
     "@microsoft/fast-tooling": "^0.6.1",
     "@microsoft/fast-tooling-react": "^2.2.4"
   }
