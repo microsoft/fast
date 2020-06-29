@@ -15,6 +15,10 @@ describe("The Observable", () => {
             this.trigger++;
         }
 
+        decrementTrigger() {
+            this.trigger--;
+        }
+
         @volatile
         get ternaryConditional() {
             return this.trigger < 1 ? 42 : this.value;
@@ -257,7 +261,6 @@ describe("The Observable", () => {
             let value = observer.observe(model, defaultExecutionContext);
             expect(value).to.equal(binding(model));
 
-            // change child.value
             expect(wasNotified).to.be.false;
             model.incrementTrigger();
 
@@ -293,7 +296,6 @@ describe("The Observable", () => {
             let value = observer.observe(model, defaultExecutionContext);
             expect(value).to.equal(binding(model));
 
-            // change child.value
             expect(wasNotified).to.be.false;
             model.incrementTrigger();
 
@@ -335,7 +337,6 @@ describe("The Observable", () => {
             let value = observer.observe(model, defaultExecutionContext);
             expect(value).to.equal(binding(model));
 
-            // change child.value
             expect(wasNotified).to.be.false;
             model.incrementTrigger();
 
@@ -371,7 +372,6 @@ describe("The Observable", () => {
             let value = observer.observe(model, defaultExecutionContext);
             expect(value).to.equal(binding(model));
 
-            // change child.value
             expect(wasNotified).to.be.false;
             model.incrementTrigger();
 
@@ -407,7 +407,6 @@ describe("The Observable", () => {
             let value = observer.observe(model, defaultExecutionContext);
             expect(value).to.equal(binding(model));
 
-            // change child.value
             expect(wasNotified).to.be.false;
             model.incrementTrigger();
 
@@ -443,7 +442,85 @@ describe("The Observable", () => {
             let value = observer.observe(model, defaultExecutionContext);
             expect(value).to.equal(binding(model));
 
-            // change child.value
+            expect(wasNotified).to.be.false;
+            model.incrementTrigger();
+
+            await DOM.nextUpdate();
+
+            expect(wasNotified).to.be.true;
+
+            value = observer.observe(model, defaultExecutionContext);
+            expect(value).to.equal(binding(model));
+
+            wasNotified = false;
+            model.value = 20;
+
+            await DOM.nextUpdate();
+
+            expect(wasNotified).to.be.true;
+
+            value = observer.observe(model, defaultExecutionContext);
+            expect(value).to.equal(binding(model));
+        });
+
+        it("notifies on changes in an || expression", async () => {
+            const binding = (x: Model) => x.trigger || x.value;
+
+            let wasNotified = false;
+            const observer = Observable.binding(binding, {
+                handleChange() {
+                    wasNotified = true;
+                },
+            });
+
+            const model = new Model();
+            model.incrementTrigger();
+
+            let value = observer.observe(model, defaultExecutionContext);
+            expect(value).to.equal(binding(model));
+
+            expect(wasNotified).to.be.false;
+            model.decrementTrigger();
+
+            await DOM.nextUpdate();
+
+            expect(wasNotified).to.be.true;
+
+            value = observer.observe(model, defaultExecutionContext);
+            expect(value).to.equal(binding(model));
+
+            wasNotified = false;
+            model.value = 20;
+
+            await DOM.nextUpdate();
+
+            expect(wasNotified).to.be.true;
+
+            value = observer.observe(model, defaultExecutionContext);
+            expect(value).to.equal(binding(model));
+        });
+
+        it("notifies on changes in a switch/case expression", async () => {
+            const binding = (x: Model) => {
+                switch (x.trigger) {
+                    case 0:
+                        return 42;
+                    default:
+                        return x.value;
+                }
+            };
+
+            let wasNotified = false;
+            const observer = Observable.binding(binding, {
+                handleChange() {
+                    wasNotified = true;
+                },
+            });
+
+            const model = new Model();
+            let value = observer.observe(model, defaultExecutionContext);
+            expect(value).to.equal(binding(model));
+
             expect(wasNotified).to.be.false;
             model.incrementTrigger();
 

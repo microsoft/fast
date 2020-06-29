@@ -1,7 +1,7 @@
 import { DOM } from "../dom";
 import { Notifier, PropertyChangeNotifier, SubscriberSet, Subscriber } from "./notifier";
 
-const volatileRegex = /(\?|\&\&|if)/;
+const volatileRegex = /(\:|\&\&|\|\||if)/;
 const notifierLookup = new WeakMap<any, Notifier>();
 const accessorLookup = new WeakMap<any, Accessor[]>();
 let watcher: BindingObserverImplementation | undefined = void 0;
