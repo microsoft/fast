@@ -3,7 +3,6 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 const CleanWebpackPlugin = require("clean-webpack-plugin");
 const WorkboxPlugin = require("workbox-webpack-plugin");
-const FASTManifest = require("@microsoft/site-utilities/src/manifest/html.json");
 const FASTCuratedManifest = require("@microsoft/site-utilities/src/curated-html.json");
 
 const rootNodeModules = path.resolve(__dirname, "../../node_modules");
@@ -85,12 +84,9 @@ module.exports = (env, args) => {
             new CleanWebpackPlugin([outDir]),
             new HtmlWebpackPlugin({
                 title: "FAST Creator",
-                manifest: FASTCuratedManifest.concat(FASTManifest).reduce(
-                    (manifestItems, manifestItem) => {
-                        return manifestItems + manifestItem;
-                    },
-                    ""
-                ),
+                manifest: FASTCuratedManifest.reduce((manifestItems, manifestItem) => {
+                    return manifestItems + manifestItem;
+                }, ""),
                 inject: "body",
                 template: path.resolve(appDir, "index.html"),
             }),
