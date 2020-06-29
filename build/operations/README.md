@@ -139,6 +139,8 @@ FAST CDN, leverages Blob Storage to cache infrequently updated application asset
 
 In code, GitHub Actions pulls assets from within `/site-utilities/statics/assets`. Any site that has CDN dependencies, should store these files in this folder. These files are deployed to the CDN upon `push` to `master` from any daily pull request. CDN resources can be referenced using `https://static.fast.design/assets/` matching the folder name in source code. For example, `https://static.fast.design/assets/cdn-test.png`.
 
+A CORS policy exists for allowing all production and staging sites for `*.*.fast.design` to accept requests for `.json` and `.js` files.  
+
 ### Building for Resiliency
 https://docs.microsoft.com/en-us/azure/architecture/framework/resiliency/overview
 
