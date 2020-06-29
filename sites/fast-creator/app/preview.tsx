@@ -4,7 +4,6 @@ import manageJss from "@microsoft/fast-jss-manager-react";
 import {
     DataDictionary,
     DataMessageOutgoing,
-    htmlMapper,
     htmlResolver,
     InitializeMessageOutgoing,
     mapDataDictionary,
@@ -19,7 +18,7 @@ import {
 } from "@microsoft/fast-tooling/dist/data-utilities/web-component";
 import { ViewerCustomAction } from "@microsoft/fast-tooling-react";
 import {
-    componentDefinitions,
+    fastComponentDefinitions,
     nativeElementDefinitions,
 } from "@microsoft/site-utilities";
 import { Direction } from "@microsoft/fast-web-utilities";
@@ -28,7 +27,9 @@ import { fastDesignSystemDefaults } from "@microsoft/fast-components/src/fast-de
 import { createColorPalette } from "@microsoft/fast-components/src/color/create-color-palette";
 import { parseColorHexRGB } from "@microsoft/fast-colors";
 import { previewAccentColor, previewDirection, previewTheme } from "./creator";
+import { dataSetDictionaryId, htmlMapper } from "./utilities";
 import style from "./preview.style";
+import { createWrapper } from "./utilities/wrapper";
 
 // Prevent tree shaking
 FASTComponents;
@@ -46,11 +47,13 @@ export interface PreviewState {
 
 class Preview extends Foundation<{}, {}, PreviewState> {
     private ref: React.RefObject<HTMLDivElement>;
+    private activeDictionaryItemWrapperRef: React.RefObject<HTMLDivElement>;
 
     constructor(props: {}) {
         super(props);
 
         this.ref = React.createRef();
+        this.activeDictionaryItemWrapperRef = React.createRef();
 
         this.state = {
             activeDictionaryId: "",
@@ -66,7 +69,12 @@ class Preview extends Foundation<{}, {}, PreviewState> {
 
     public render(): React.ReactNode {
         if (this.state.dataDictionary !== undefined) {
-            return <div dir={this.state.direction} ref={this.ref} />;
+            return (
+                <React.Fragment>
+                    <div dir={this.state.direction} ref={this.ref} />
+                    <div ref={this.activeDictionaryItemWrapperRef} />
+                </React.Fragment>
+            );
         }
 
         return null;
@@ -83,7 +91,7 @@ class Preview extends Foundation<{}, {}, PreviewState> {
         );
     }
 
-    private attachMappedComponents(): React.ReactNode {
+    private attachMappedComponents(): void {
         if (this.state.dataDictionary !== undefined && this.ref.current !== null) {
             const designSystemProvider = document.createElement(
                 "fast-design-system-provider"
@@ -116,11 +124,10 @@ class Preview extends Foundation<{}, {}, PreviewState> {
                 mapDataDictionary({
                     dataDictionary: this.state.dataDictionary,
                     schemaDictionary: this.state.schemaDictionary,
-                    // TODO: add to the mapper the wrapper (may need a refactor)
                     mapper: htmlMapper({
                         version: 1,
                         tags: Object.entries({
-                            ...componentDefinitions,
+                            ...fastComponentDefinitions,
                             ...nativeElementDefinitions,
                         }).reduce(
                             (
@@ -141,9 +148,18 @@ class Preview extends Foundation<{}, {}, PreviewState> {
             );
 
             this.ref.current.append(designSystemProvider);
+            this.attachActiveDictionaryIdWrapper();
         }
+    }
 
-        return null;
+    private attachActiveDictionaryIdWrapper(): void {
+        const activeElement = this.ref.current?.querySelector(
+            `[${dataSetDictionaryId}="${this.state.activeDictionaryId}"]`
+        );
+
+        if (activeElement) {
+            createWrapper(this.activeDictionaryItemWrapperRef, activeElement);
+        }
     }
 
     private handleMessage = (message: MessageEvent): void => {
@@ -164,6 +180,8 @@ class Preview extends Foundation<{}, {}, PreviewState> {
                                 .dataDictionary,
                             schemaDictionary: (messageData as InitializeMessageOutgoing)
                                 .schemaDictionary,
+                            activeDictionaryId: (messageData as InitializeMessageOutgoing)
+                                .activeDictionaryId,
                         },
                         this.attachMappedComponents
                     );
