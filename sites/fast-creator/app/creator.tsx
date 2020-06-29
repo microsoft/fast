@@ -259,7 +259,7 @@ class Creator extends Foundation<CreatorHandledProps, {}, CreatorState> {
                                                 <LinkedDataControl
                                                     {...config}
                                                     onChange={this.handleAddLinkedData(
-                                                        config.dataLocation
+                                                        config.onChange
                                                     )}
                                                 />
                                             );
@@ -274,17 +274,11 @@ class Creator extends Foundation<CreatorHandledProps, {}, CreatorState> {
         );
     }
 
-    private handleAddLinkedData = (
-        dataLocation: string
-    ): ((e: ControlOnChangeConfig) => void) => {
+    private handleAddLinkedData = (onChange): ((e: ControlOnChangeConfig) => void) => {
         return (e: ControlOnChangeConfig): void => {
-            fastMessageSystem.postMessage({
-                type: MessageSystemType.data,
-                action: MessageSystemDataTypeAction.addLinkedData,
-                dataLocation,
-                dictionaryId: this.state.activeDictionaryId,
-                index: e.index,
-                linkedData: linkedDataExamples[e.value[0].schemaId],
+            onChange({
+                ...e,
+                value: linkedDataExamples[e.value[0].schemaId] || e.value,
             });
         };
     };
