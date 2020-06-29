@@ -317,6 +317,7 @@ export class Slider extends FormAssociated<HTMLInputElement>
         this.addEventListener("keydown", this.keypressHandler);
         this.addEventListener("mousedown", this.clickHandler);
         this.thumb.addEventListener("mousedown", this.handleThumbMouseDown);
+        this.thumb.addEventListener("touchstart", this.handleThumbMouseDown);
     };
 
     private setupDefaultValue = (): void => {
@@ -341,6 +342,8 @@ export class Slider extends FormAssociated<HTMLInputElement>
         (event.target as HTMLElement).focus();
         window.addEventListener("mouseup", this.handleWindowMouseUp);
         window.addEventListener("mousemove", this.handleMouseMove);
+        window.addEventListener("touchmove", this.handleMouseMove);
+        window.addEventListener("touchend", this.handleWindowMouseUp);
         this.isDragging = true;
     };
 
