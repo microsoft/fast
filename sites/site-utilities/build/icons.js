@@ -1,3 +1,6 @@
+/**
+ * This file builds the icons required for the manifest
+ */
 var favicons = require("favicons"),
     path = require("path"),
     fs = require("fs"),
@@ -12,8 +15,8 @@ var favicons = require("favicons"),
         developerURL: null, // Your (or your developer's) URL. `string`
         dir: "auto", // Primary text direction for name, short_name, and description
         lang: "en-US", // Primary language for name and short_name
-        background: "#fff", // Background colour for flattened icons. `string`
-        theme_color: "#fff", // Theme color user for example in Android's task switcher. `string`
+        background: "#181818", // Background colour for flattened icons. `string`
+        theme_color: "#181818", // Theme color user for example in Android's task switcher. `string`
         appleStatusBarStyle: "black-translucent", // Style for Apple status bar: "black-translucent", "default", "black". `string`
         display: "standalone", // Preferred display mode: "fullscreen", "standalone", "minimal-ui" or "browser". `string`
         orientation: "any", // Default orientation: "any", "natural", "portrait" or "landscape". `string`
@@ -38,13 +41,13 @@ var favicons = require("favicons"),
             appleIcon: true, // Create Apple touch icons. `boolean` or `{ offset, background, mask, overlayGlow, overlayShadow }`
             appleStartup: true, // Create Apple startup images. `boolean` or `{ offset, background, mask, overlayGlow, overlayShadow }`
             coast: true, // Create Opera Coast icon. `boolean` or `{ offset, background, mask, overlayGlow, overlayShadow }`
-            favicons: true, // Create regular favicons. `boolean` or `{ offset, background, mask, overlayGlow, overlayShadow }`
+            favicons: false, // These are manually curated, see the site-utilities/src/curated-html.json - Create regular favicons. `boolean` or `{ offset, background, mask, overlayGlow, overlayShadow }`
             firefox: true, // Create Firefox OS icons. `boolean` or `{ offset, background, mask, overlayGlow, overlayShadow }`
             windows: true, // Create Windows 8 tile icons. `boolean` or `{ offset, background, mask, overlayGlow, overlayShadow }`
             yandex: true, // Create Yandex browser icon. `boolean` or `{ offset, background, mask, overlayGlow, overlayShadow }`
         },
     },
-    callback = function(error, response) {
+    callback = function (error, response) {
         if (error) {
             console.log(error.message); // Error description e.g. "An unknown error has occurred"
             return;
