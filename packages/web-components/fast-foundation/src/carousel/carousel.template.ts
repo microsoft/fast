@@ -10,13 +10,11 @@ import {
 import { Carousel } from "./carousel";
 import { FlipperDirection } from "../flipper";
 
-// TODO: ADD play/pause controls
-
 const slidePickerTemplate: ViewTemplate = html<Carousel>`
     <fast-tabs
         activeindicator="false"
         activeid="${(x, c) => x.activeId}"
-        notabfocus="true"
+        notabfocus="${x => (!x.paused ? "true" : "false")}"
     >
         ${repeat(
             x => x.filteredItems,
@@ -64,16 +62,11 @@ const playIcon: string = `<svg viewBox="0 0 16 16" width="16px" height="16px" xm
 export const CarouselTemplate = html<Carousel>`
 <template ${ref("carousel")}>
     <slot style="display: none;" ${slotted("items")}></slot>
-    
-    ${when(x => x.slidePicker, slidePickerTemplate)}
-
     <div
         class="play-control"
         @click="${(x, c) => x.handlePlayClick(c.event)}"
     >
-        <slot
-            name="play-toggle"
-        >
+        <slot name="play-toggle">
             <fast-button appearance="neutral">
                 ${
                     /* TODO: ASK how can we do these icons without using the html directive?? */ ""
@@ -82,13 +75,15 @@ export const CarouselTemplate = html<Carousel>`
             </fast-button>
         </slot>
     </div>
-
     <div class="previous-flipper" @click="${(x, c) =>
         x.handleFlipperClick(-1, c.event as MouseEvent)}">
         <slot name="previous-button">
             <fast-flipper direction=${FlipperDirection.previous}>
         </slot>
     </div>
+
+    ${when(x => x.slidePicker, slidePickerTemplate)}
+
     <div class="next-flipper" @click="${(x, c) =>
         x.handleFlipperClick(1, c.event as MouseEvent)}">
         <slot name="next-button">
