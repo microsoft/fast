@@ -113,7 +113,8 @@ export class Carousel extends FASTElement {
     }
 
     private startAutoPlay(): void {
-        if (this.autoplay) {
+        if (isNil(this.autoplayTimer)) {
+            this.autoplay = true;
             this.autoplayTimer = window.setInterval(
                 this.autoplayNextItem,
                 this.autoplayInterval
@@ -123,6 +124,7 @@ export class Carousel extends FASTElement {
 
     private stopAutoPlay(): void {
         if (!isNil(this.autoplayTimer)) {
+            this.autoplay = false;
             this.autoplayTimer = window.clearInterval(this.autoplayTimer as number);
         }
     }
@@ -133,7 +135,11 @@ export class Carousel extends FASTElement {
 
     public connectedCallback(): void {
         super.connectedCallback();
-        this.startAutoPlay();
+        if (this.autoplay) {
+            this.startAutoPlay();
+        } else {
+            this.paused = true;
+        }
     }
 
     public disconnectedCallback(): void {
