@@ -14,7 +14,7 @@ Used anywhere an author might otherwise use an `input[type="checkbox"]`
 We want general feature-parity between this component and an `input[type="checkbox"]`. Most of these concerns are addressed by https://github.com/microsoft/fast/pull/2723, but some stateful nuance will need to be handled by this component.
 
 ### Prior Art/Examples
-- [FAST (React)](https://explore.fast.design/components/checkbox)
+- [FAST Checkbox (React)](https://www.npmjs.com/package/@microsoft/fast-components-react-msft)
 - [Material UI](https://material-ui.com/components/checkboxes/)
 - [Lightning Design](https://www.lightningdesignsystem.com/components/checkbox/)
 - [Carbon Design](https://www.carbondesignsystem.com/components/checkbox/code)
