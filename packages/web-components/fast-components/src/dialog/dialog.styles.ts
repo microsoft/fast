@@ -34,7 +34,7 @@ export const DialogStyles = css`
         overflow: auto;
     }
 
-    .root {
+    .control {
         ${elevation} margin-top: auto;
         margin-bottom: auto;
         width: var(--dialog-width);

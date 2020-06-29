@@ -176,7 +176,7 @@ class Explorer extends Foundation<
                     <Row style={{ flex: "1" }}>
                         <Pane resizable={true} resizeFrom={PaneResizeDirection.east}>
                             <Logo
-                                backgroundColor={"#1B1B1B"}
+                                backgroundColor={"#181818"}
                                 logo={FASTInlineLogo}
                                 title={"Component Explorer"}
                             />

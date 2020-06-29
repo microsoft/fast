@@ -136,7 +136,7 @@ export const FastFrameTemplate = html<FastFrame>`
                             <fast-slider
                                 id="border-radius-slider"
                                 min="0"
-                                max="12"
+                                max="20"
                                 step="1"
                                 value="3"
                                 @change="${(x, c) =>
@@ -150,16 +150,16 @@ export const FastFrameTemplate = html<FastFrame>`
                                 </fast-slider-label>            
                                 <fast-slider-label
                                     hide-mark
-                                    position="12"
+                                    position="20"
                                 >
-                                    12PX
+                                    20PX
                                 </fast-slider-label>
                             </fast-slider>
                             <label for="outline-width-slider">Outline width</label>
                             <fast-slider
                                 id="outline-width-slider"
-                                min="0"
-                                max="6"
+                                min="1"
+                                max="4"
                                 step="1"
                                 value="1"
                                 @change="${(x, c) =>
@@ -167,15 +167,15 @@ export const FastFrameTemplate = html<FastFrame>`
                             >
                                 <fast-slider-label
                                     hide-mark
-                                    position="0"
+                                    position="1"
                                 >
-                                    0
+                                    1PX
                                 </fast-slider-label>            
                                 <fast-slider-label
                                     hide-mark
                                     position="6"
                                 >
-                                    6PX
+                                    4PX
                                 </fast-slider-label>
                             </fast-slider>
                             <label for="density-slider">Density</label>

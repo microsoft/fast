@@ -13,7 +13,7 @@
 ![workflows](https://github.com/microsoft/fast/workflows/CI%20-%20FAST/badge.svg?branch=master&event=push)
 
 [![Discord](https://img.shields.io/badge/chat%20on-discord-7289da.svg)](https://discord.gg/FcSNfg4)
-[![Twitter](https://img.shields.io/twitter/follow/fast_dna.svg?style=social&label=Follow)](https://twitter.com/intent/follow?screen_name=fast_dna)
+[![Twitter](https://img.shields.io/twitter/follow/fast_ui.svg?style=social&label=Follow)](https://twitter.com/intent/follow?screen_name=fast_ui)
 
 This is the FAST monorepo, containing web component packages, tools, examples, and documentation. FAST tech can be used à la carte or as a suite to build enterprise-grade websites, applications, components, design systems, and more.
 
