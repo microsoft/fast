@@ -456,7 +456,9 @@ class BindingObserverImplementation<TSource = any, TReturn = any, TParent = any>
 
     /** @internal */
     call(): void {
-        this.needsQueue = true;
-        this.notify(this);
+        if (this.last !== null) {
+            this.needsQueue = true;
+            this.notify(this);
+        }
     }
 }
