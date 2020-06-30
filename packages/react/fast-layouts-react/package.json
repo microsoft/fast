@@ -117,6 +117,6 @@
     "@microsoft/fast-web-utilities": "^4.5.2",
     "exenv-es6": "^1.0.0",
     "raf-throttle": "^2.0.3",
-    "utility-types": "^2.1.0"
+    "utility-types": "^3.7.0"
   }
 }
