@@ -47,7 +47,7 @@ A pre-bundled script that contains all APIs needed to use the components is avai
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <script type="module" src="https://unpkg.com/@microsoft/fast-components">
+        <script type="module" src="https://unpkg.com/@microsoft/fast-components"></script>
     </head>
     <!-- ... -->
 </html>
