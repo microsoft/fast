@@ -411,6 +411,12 @@ export class Slider extends FormAssociated<HTMLInputElement>
                     ? e.pageX - this.getBoundingClientRect().left
                     : e.pageY;
 
+            if (this.orientation === Orientation.vertical) {
+                const clientRect: DOMRect = this.track.getBoundingClientRect();
+                this.trackHeight = clientRect.bottom;
+                this.trackMinHeight = clientRect.top;
+            }
+
             this.value = `${this.calculateNewValue(controlValue)}`;
             this.updateForm();
         }
