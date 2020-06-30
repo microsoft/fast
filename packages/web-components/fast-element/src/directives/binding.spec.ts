@@ -133,15 +133,12 @@ describe("The binding directive", () => {
 
             expect(toHTML(parentNode)).to.equal(`This is a template. value`);
 
-            const newTemplate = html<Model>`This is a new template, different from before.
-            ${x => x.knownValue}`;
+            const newTemplate = html<Model>`This is a new template ${x => x.knownValue}`;
             model.value = newTemplate;
 
             await DOM.nextUpdate();
 
-            expect(toHTML(parentNode)).to.equal(
-                `This is a new template, different from before. value`
-            );
+            expect(toHTML(parentNode)).to.equal(`This is a new template value`);
         });
 
         it("reuses a previous view when the value changes back from a string", async () => {
