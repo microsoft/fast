@@ -6,7 +6,7 @@
             <square150x150logo src="https://static.fast.design/assets/manifest/mstile-150x150.png"/>
             <wide310x150logo src="https://static.fast.design/assets/manifest/mstile-310x150.png"/>
             <square310x310logo src="https://static.fast.design/assets/manifest/mstile-310x310.png"/>
-            <TileColor>#fff</TileColor>
+            <TileColor>#181818</TileColor>
 
         </tile>
 

@@ -8,8 +8,8 @@
   "orientation": "any",
   "scope": "/",
   "start_url": "/",
-  "background_color": "#fff",
-  "theme_color": "#fff",
+  "background_color": "#181818",
+  "theme_color": "#181818",
   "icons": [
     {
       "src": "https://static.fast.design/assets/manifest/android-chrome-36x36.png",

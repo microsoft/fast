@@ -23,3 +23,5 @@ export * from "./fast-tab-panel.definition";
 export * from "./fast-tabs.definition";
 export * from "./fast-text-area.definition";
 export * from "./fast-text-field.definition";
+export * from "./fast-tree-item.definition";
+export * from "./fast-tree-view.definition";

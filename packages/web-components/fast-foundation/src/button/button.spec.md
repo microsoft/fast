@@ -24,7 +24,7 @@ Prior implementations of button provide the opportunity to create a `button` ele
 Button also supports a number of appearance options. Ideally these using one of these appearances does not incur the debt of the others, including recipe registrations and CSS bloat.
 
 ### Prior Art/Examples
-- [FAST DNA React](https://explore.fast.design/components/button)
+- [FAST Button & FAST Anchor (React)](https://www.npmjs.com/package/@microsoft/fast-components-react-msft)
 - [Material UI](https://material-ui.com/components/buttons/)
 - [Lightning Design System](https://www.lightningdesignsystem.com/components/buttons/)
 - [Carbon Design](https://www.carbondesignsystem.com/components/button/code)

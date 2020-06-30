@@ -4,7 +4,7 @@ const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPl
 const WebpackShellPlugin = require("webpack-shell-plugin");
 const CleanWebpackPlugin = require("clean-webpack-plugin");
 const WorkboxPlugin = require("workbox-webpack-plugin");
-const FaviconsWebpackPlugin = require("favicons-webpack-plugin");
+const FASTCuratedManifest = require("@microsoft/site-utilities/src/curated-html.json");
 
 const rootNodeModules = path.resolve(__dirname, "../../node_modules");
 const appDir = path.resolve(__dirname, "./app");
@@ -85,7 +85,11 @@ module.exports = (env, args) => {
             new CleanWebpackPlugin([outDir]),
             new HtmlWebpackPlugin({
                 title: "FAST Component explorer",
-                contentBase: outDir,
+                manifest: FASTCuratedManifest.reduce((manifestItems, manifestItem) => {
+                    return manifestItems + manifestItem;
+                }, ""),
+                inject: "body",
+                template: path.resolve(appDir, "index.html"),
             }),
             new WebpackShellPlugin({
                 onBuildStart: [`yarn convert:readme`],
@@ -98,12 +102,6 @@ module.exports = (env, args) => {
             // new WorkboxPlugin.GenerateSW({
             //     exclude: [/\.map$/, /^manifest.*\.js(?:on)?$/, /\.html$/],
             // }),
-            new FaviconsWebpackPlugin(
-                path.resolve(
-                    rootNodeModules,
-                    "@microsoft/site-utilities/statics/assets/fast-logo.png"
-                )
-            ),
         ],
         resolve: {
             extensions: [".js", ".tsx", ".ts", ".json"],
