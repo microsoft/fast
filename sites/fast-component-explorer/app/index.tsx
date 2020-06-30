@@ -7,13 +7,9 @@ import App from "./app";
 /**
  * Create the root node
  */
-const root: HTMLElement = document.createElement("div");
-root.setAttribute("id", "root");
-document.body.appendChild(root);
-
 ReactDOM.render(
     <DndProvider backend={HTML5Backend}>
         <App />
     </DndProvider>,
-    root
+    document.getElementById("root")
 );

@@ -18,7 +18,7 @@ We want general feature-parity between this component and the typical correspond
 
 ### Prior Art/Examples
 
-- [FAST (React)](https://explore.fast.design/components/text-area)
+- [FAST Text Area (React)](https://www.npmjs.com/package/@microsoft/fast-components-react-msft)
 - [Lightning Design](https://www.lightningdesignsystem.com/components/textarea/)
 - [Atlassian](https://atlaskit.atlassian.com/packages/core/textarea)
 - [Evergreen](https://evergreen.segment.com/components/textarea/)

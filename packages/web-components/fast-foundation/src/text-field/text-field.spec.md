@@ -23,7 +23,7 @@ We want general feature-parity between this component and the typical correspond
 
 ### Prior Art/Examples
 
-- [FAST (React)](https://explore.fast.design/components/text-field)
+- [FAST Text Field (React)](https://www.npmjs.com/package/@microsoft/fast-components-react-msft)
 - [Material UI](https://material-ui.com/components/text-fields/)
 - [Lightning Design](https://www.lightningdesignsystem.com/components/input/)
 - [Carbon Design](https://www.carbondesignsystem.com/components/text-input/code)
