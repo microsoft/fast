@@ -224,6 +224,7 @@ export class Slider extends FormAssociated<HTMLInputElement>
         this.removeEventListener("keydown", this.keypressHandler);
         this.removeEventListener("mousedown", this.handleMouseDown);
         this.thumb.removeEventListener("mousedown", this.handleThumbMouseDown);
+        this.thumb.removeEventListener("touchstart", this.handleThumbMouseDown);
     }
 
     /**
@@ -403,6 +404,8 @@ export class Slider extends FormAssociated<HTMLInputElement>
         this.isDragging = false;
         window.removeEventListener("mouseup", this.handleWindowMouseUp);
         window.removeEventListener("mousemove", this.handleMouseMove);
+        window.removeEventListener("touchmove", this.handleMouseMove);
+        window.removeEventListener("touchend", this.handleWindowMouseUp);
     };
 
     private handleMouseDown = (e: MouseEvent) => {
