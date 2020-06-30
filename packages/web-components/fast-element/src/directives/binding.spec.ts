@@ -14,6 +14,7 @@ describe("The binding directive", () => {
 
         @observable value: any = null;
         @observable private trigger = 0;
+        @observable knownValue = "value";
 
         forceComputedUpdate() {
             this.trigger++;
@@ -67,22 +68,22 @@ describe("The binding directive", () => {
     context("when binding template content", () => {
         it("initially inserts a view based on the template", () => {
             const { behavior, parentNode } = contentBinding();
-            const template = html`This is a template.`;
+            const template = html<Model>`This is a template. ${x => x.knownValue}`;
             const model = new Model(template);
 
             behavior.bind(model, defaultExecutionContext);
 
-            expect(toHTML(parentNode)).to.equal(`This is a template.`);
+            expect(toHTML(parentNode)).to.equal(`This is a template. value`);
         });
 
         it("removes an inserted view when the value changes to plain text", async () => {
             const { behavior, parentNode } = contentBinding();
-            const template = html`This is a template.`;
+            const template = html`This is a template. ${x => x.knownValue}`;
             const model = new Model(template);
 
             behavior.bind(model, defaultExecutionContext);
 
-            expect(toHTML(parentNode)).to.equal(`This is a template.`);
+            expect(toHTML(parentNode)).to.equal(`This is a template. value`);
 
             model.value = "This is a test.";
 
@@ -93,12 +94,12 @@ describe("The binding directive", () => {
 
         it("removes an inserted view when the value changes to null", async () => {
             const { behavior, parentNode } = contentBinding();
-            const template = html`This is a template.`;
+            const template = html`This is a template. ${x => x.knownValue}`;
             const model = new Model(template);
 
             behavior.bind(model, defaultExecutionContext);
 
-            expect(toHTML(parentNode)).to.equal(`This is a template.`);
+            expect(toHTML(parentNode)).to.equal(`This is a template. value`);
 
             model.value = null;
 
@@ -109,12 +110,12 @@ describe("The binding directive", () => {
 
         it("removes an inserted view when the value changes to undefined", async () => {
             const { behavior, parentNode } = contentBinding();
-            const template = html`This is a template.`;
+            const template = html`This is a template. ${x => x.knownValue}`;
             const model = new Model(template);
 
             behavior.bind(model, defaultExecutionContext);
 
-            expect(toHTML(parentNode)).to.equal(`This is a template.`);
+            expect(toHTML(parentNode)).to.equal(`This is a template. value`);
 
             model.value = void 0;
 
@@ -125,26 +126,24 @@ describe("The binding directive", () => {
 
         it("updates an inserted view when the value changes to a new template", async () => {
             const { behavior, parentNode } = contentBinding();
-            const template = html`This is a template.`;
+            const template = html`This is a template. ${x => x.knownValue}`;
             const model = new Model(template);
 
             behavior.bind(model, defaultExecutionContext);
 
-            expect(toHTML(parentNode)).to.equal(`This is a template.`);
+            expect(toHTML(parentNode)).to.equal(`This is a template. value`);
 
-            const newTemplate = html`This is a new template, different from before.`;
+            const newTemplate = html<Model>`This is a new template ${x => x.knownValue}`;
             model.value = newTemplate;
 
             await DOM.nextUpdate();
 
-            expect(toHTML(parentNode)).to.equal(
-                `This is a new template, different from before.`
-            );
+            expect(toHTML(parentNode)).to.equal(`This is a new template value`);
         });
 
         it("reuses a previous view when the value changes back from a string", async () => {
             const { behavior, parentNode, node } = contentBinding();
-            const template = html`This is a template.`;
+            const template = html`This is a template. ${x => x.knownValue}`;
             const model = new Model(template);
 
             behavior.bind(model, defaultExecutionContext);
@@ -154,7 +153,7 @@ describe("The binding directive", () => {
 
             expect(view).to.be.instanceOf(HTMLView);
             expect(capturedTemplate).to.equal(template);
-            expect(toHTML(parentNode)).to.equal(`This is a template.`);
+            expect(toHTML(parentNode)).to.equal(`This is a template. value`);
 
             model.value = "This is a test string.";
 
@@ -171,38 +170,38 @@ describe("The binding directive", () => {
 
             expect(newView).to.equal(view);
             expect(newCapturedTemplate).to.equal(capturedTemplate);
-            expect(toHTML(parentNode)).to.equal(`This is a template.`);
+            expect(toHTML(parentNode)).to.equal(`This is a template. value`);
         });
 
         it("doesn't compose an already composed view", async () => {
             const { behavior, parentNode } = contentBinding("computedValue");
-            const template = html`This is a template.`;
+            const template = html`This is a template. ${x => x.knownValue}`;
             const model = new Model(template);
 
             behavior.bind(model, defaultExecutionContext);
 
-            expect(toHTML(parentNode)).to.equal(`This is a template.`);
+            expect(toHTML(parentNode)).to.equal(`This is a template. value`);
 
             model.value = template;
             model.forceComputedUpdate();
 
             await DOM.nextUpdate();
 
-            expect(toHTML(parentNode)).to.equal(`This is a template.`);
+            expect(toHTML(parentNode)).to.equal(`This is a template. value`);
         });
     });
 
     context("when unbinding template content", () => {
         it("unbinds a composed view", () => {
             const { behavior, node, parentNode } = contentBinding();
-            const template = html`This is a template.`;
+            const template = html`This is a template. ${x => x.knownValue}`;
             const model = new Model(template);
 
             behavior.bind(model, defaultExecutionContext);
 
             const newView = (node as any).$fastView as SyntheticView;
             expect(newView.source).to.equal(model);
-            expect(toHTML(parentNode)).to.equal(`This is a template.`);
+            expect(toHTML(parentNode)).to.equal(`This is a template. value`);
 
             behavior.unbind();
 
@@ -211,14 +210,14 @@ describe("The binding directive", () => {
 
         it("rebinds a previously unbound composed view", () => {
             const { behavior, node, parentNode } = contentBinding();
-            const template = html`This is a template.`;
+            const template = html`This is a template. ${x => x.knownValue}`;
             const model = new Model(template);
 
             behavior.bind(model, defaultExecutionContext);
 
             const view = (node as any).$fastView as SyntheticView;
             expect(view.source).to.equal(model);
-            expect(toHTML(parentNode)).to.equal(`This is a template.`);
+            expect(toHTML(parentNode)).to.equal(`This is a template. value`);
 
             behavior.unbind();
 
@@ -228,7 +227,7 @@ describe("The binding directive", () => {
 
             const newView = (node as any).$fastView as SyntheticView;
             expect(newView.source).to.equal(model);
-            expect(toHTML(parentNode)).to.equal(`This is a template.`);
+            expect(toHTML(parentNode)).to.equal(`This is a template. value`);
         });
     });
 });

@@ -541,5 +541,28 @@ describe("The Observable", () => {
             value = observer.observe(model, defaultExecutionContext);
             expect(value).to.equal(binding(model));
         });
+
+        it("does not notify if disconnected", async () => {
+            let wasCalled = false;
+            const binding = (x: Model) => x.value;
+            const observer = Observable.binding(binding, {
+                handleChange() {
+                    wasCalled = true;
+                },
+            });
+
+            const model = new Model();
+
+            const value = observer.observe(model, defaultExecutionContext);
+            expect(value).to.equal(model.value);
+            expect(wasCalled).to.equal(false);
+
+            model.value++;
+            observer.disconnect();
+
+            await DOM.nextUpdate();
+
+            expect(wasCalled).to.equal(false);
+        });
     });
 });
