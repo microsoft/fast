@@ -7,7 +7,7 @@ import { Anchor } from "./anchor";
  * @public
  */
 export const AnchorTemplate = html<Anchor>`
-    <template class="${x => x.appearance}">
+    <template>
         <a
             class="control"
             part="control"

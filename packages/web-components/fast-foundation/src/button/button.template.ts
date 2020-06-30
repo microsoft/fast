@@ -6,7 +6,7 @@ import { Button } from "./button";
  * @public
  */
 export const ButtonTemplate = html<Button>`
-    <template class="${x => x.appearance}">
+    <template>
         <button
             class="control"
             part="control"

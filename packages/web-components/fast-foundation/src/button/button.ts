@@ -4,33 +4,12 @@ import { StartEnd } from "../patterns/start-end";
 import { applyMixins } from "../utilities/apply-mixins";
 
 /**
- * Types of button appearance.
- * @public
- */
-export type ButtonAppearance =
-    | "accent"
-    | "lightweight"
-    | "neutral"
-    | "outline"
-    | "stealth";
-
-/**
  * An Button Custom HTML Element.
  * Based largely on the {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button | <button> element }.
  *
  * @public
  */
 export class Button extends FormAssociated<HTMLInputElement> {
-    /**
-     * The appearance the button should have.
-     *
-     * @public
-     * @remarks
-     * HTML Attribute: appearance
-     */
-    @attr
-    public appearance: ButtonAppearance = "neutral";
-
     /**
      * Determines if the element should receive document focus on page load.
      *
