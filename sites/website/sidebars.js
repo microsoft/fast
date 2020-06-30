@@ -73,6 +73,7 @@ module.exports = {
             label: "Integrations",
             items: [
                 "integrations/introduction",
+                "integrations/angular",
                 "integrations/aspnet",
                 "integrations/aurelia",
                 "integrations/blazor",
