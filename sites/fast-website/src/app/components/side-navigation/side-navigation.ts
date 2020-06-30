@@ -34,7 +34,7 @@ export class SideNavigation extends FASTElement {
 
     scrollDirectionFunc = () => {
         const currentY: number = window.pageYOffset;
-        const scrollArray: sectionData[] = this.sectionDataArray;
+        const scrollArray: sectionData[] = this.sectionDataArray.concat();
 
         if (currentY < this.previousY) {
             scrollArray.reverse();
