@@ -26,11 +26,6 @@ export const CarouselStyles = css`
         display: none;
     }
 
-    ::slotted(.slide) {
-        max-width: 100%;
-        max-height: 100%;
-    }
-
     .previous-flipper {
         position: absolute;
         left: 20px;
@@ -44,17 +39,16 @@ export const CarouselStyles = css`
     .slide-container {
     }
 
-    .slide-tabs {
-        position: absolute;
-        bottom: 40px;
-    }
-
     .slide-tab {
         display: inline-block;
         padding: 4px;
         border-radius: 40px;
         border: none;
         outline: none;
+    }
+
+    *:focus {
+        outline: 3px dotted orange;
     }
 
     .slide-tab:before {

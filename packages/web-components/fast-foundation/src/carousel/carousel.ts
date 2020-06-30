@@ -5,9 +5,11 @@
 // TODO: CHECK tab index of all controls
 // TODO: ADD accessibility features, compare to SPEC and other components
 
-// TODO: ADD check to stop autoplay when carousel is hovered, clicked, or keydowned, anything else???
 // TODO: Since this is a new component you will have to add the definition to the definitions folder in site-utilities
 // TODO: ADD change $emit, for active slide and paused?
+
+// TODO: BUTTON controls ( next, previous, rotate start/stop) do not move focus
+// TODO: HIDE flippers when not hovering over carousel
 import { attr, DOM, FASTElement, observable } from "@microsoft/fast-element";
 import { KeyCodes, wrapInBounds, limit } from "@microsoft/fast-web-utilities";
 import { isNil } from "lodash-es";
@@ -37,9 +39,6 @@ export class Carousel extends FASTElement {
     @attr({ attribute: "activeId" })
     public activeId: string;
 
-    @attr({ attribute: "slidepicker", mode: "boolean" })
-    public slidePicker: boolean = true;
-
     // TODO: ADD logic to change roles per ARIA spec via tabbed attr (this attr does not change if slide picker is available or not)
     @attr({ attribute: "tabbed", mode: "boolean" })
     public tabbed: boolean = true;
@@ -52,13 +51,35 @@ export class Carousel extends FASTElement {
         this.filteredItems = this.items.filter(
             (item: HTMLElement) => item.nodeType === 1
         );
-        this.generateTabPanelIds();
+        if (this.tabbed) {
+            this.generateTabPanelIds();
+        } else {
+            this.filteredItems = this.filteredItems.map(
+                (item: HTMLElement, index: number) => {
+                    if (index === this.activeIndex) {
+                        item.classList.add("active-slide");
+                        item.setAttribute("aria-hidden", "false");
+                        item.removeAttribute("hidden");
+                    } else {
+                        item.setAttribute("hidden", "");
+                        item.setAttribute("aria-hidden", "true");
+                    }
+                    // if (index === this.activeIndex + 1) {
+                    //     item.classList.add("next-slide");
+                    // } else if (index === this.activeIndex - 1) {
+                    //     item.classList.add("previous-slide");
+                    //     // TODO: ADD class for looped slides, if -1 doesn't exist then use length -1 slide.
+                    // }
+
+                    item.classList.add("slide");
+                    item.setAttribute("role", "tabpanel");
+                    // TODO: ASK add aria-labelledby?
+                    return item;
+                }
+            );
+        }
         //TODO: NEED TO FILTER BETTER so that i don't remove text nodes that may actually be content
         //  - text nodes are not stylable though...
-        // .map((item: HTMLElement) => {
-        //     item.setAttribute("slot", "tabpanel");
-        //     return item;
-        // });
     }
 
     @observable
@@ -76,19 +97,28 @@ export class Carousel extends FASTElement {
     }
 
     private tabPanelIds: string[] = [];
-    private activeIndex: number = 0;
+    public activeIndex: number = 0;
 
     private change = (): void => {
         this.$emit("change", this.activeId);
     };
 
     private incrementSlide = (direction: 1 | -1): void => {
-        this.activeIndex = wrapInBounds(
-            0,
-            this.tabPanelIds.length - 1,
-            this.activeIndex + direction
-        );
-        this.activeId = this.tabPanelIds[this.activeIndex];
+        if (this.tabbed) {
+            this.activeIndex = wrapInBounds(
+                0,
+                this.tabPanelIds.length - 1,
+                this.activeIndex + direction
+            );
+            this.activeId = this.tabPanelIds[this.activeIndex];
+        } else {
+            this.activeIndex = wrapInBounds(
+                0,
+                this.filteredItems.length - 1,
+                this.activeIndex + direction
+            );
+            this.itemsChanged();
+        }
     };
 
     private autoplayNextItem = (): void => {
@@ -114,7 +144,7 @@ export class Carousel extends FASTElement {
 
     private startAutoPlay(): void {
         if (isNil(this.autoplayTimer)) {
-            this.autoplay = true;
+            // this.autoplay = true;
             this.autoplayTimer = window.setInterval(
                 this.autoplayNextItem,
                 this.autoplayInterval
@@ -124,9 +154,32 @@ export class Carousel extends FASTElement {
 
     private stopAutoPlay(): void {
         if (!isNil(this.autoplayTimer)) {
-            this.autoplay = false;
+            // this.autoplay = false;
             this.autoplayTimer = window.clearInterval(this.autoplayTimer as number);
         }
+    }
+
+    private pause(): void {
+        if (!this.paused && this.autoplay) {
+            this.paused = true;
+        }
+        if (this.autoplay) {
+            this.stopAutoPlay();
+        }
+    }
+
+    private play(): void {
+        if (this.paused && this.autoplay) {
+            this.paused = false;
+        }
+        if (this.autoplay) {
+            this.startAutoPlay();
+        }
+    }
+
+    private handleFocusIn(e: Event): void {
+        this.pause();
+        this.autoplay = false;
     }
 
     // constructor() {
@@ -140,6 +193,13 @@ export class Carousel extends FASTElement {
         } else {
             this.paused = true;
         }
+
+        // sethdonohue - per ARIA autoplay must stop when mouse is hovering over the carousel
+        this.carousel.addEventListener("mouseover", this.pause);
+        this.carousel.addEventListener("mouseleave", this.play);
+
+        // sethdonohue - per ARIA rotating must stop when keyboard focus enters the carousel and not restart unless the user explicitly requests it to.
+        this.carousel.addEventListener("focusin", this.handleFocusIn);
     }
 
     public disconnectedCallback(): void {

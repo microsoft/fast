@@ -10,7 +10,7 @@ import {
 import { Carousel } from "./carousel";
 import { FlipperDirection } from "../flipper";
 
-const slidePickerTemplate: ViewTemplate = html<Carousel>`
+const tabbedTemplate: ViewTemplate = html<Carousel>`
     <fast-tabs
         activeindicator="false"
         activeid="${(x, c) => x.activeId}"
@@ -18,7 +18,7 @@ const slidePickerTemplate: ViewTemplate = html<Carousel>`
     >
         ${repeat(
             x => x.filteredItems,
-            html`<div
+            html<Carousel>` <div
                 slot="tab"
                 id="tab-${(x, c) => c.index + 1}"
                 class="slide-tab"
@@ -61,7 +61,7 @@ const playIcon: string = `<svg viewBox="0 0 16 16" width="16px" height="16px" xm
 
 export const CarouselTemplate = html<Carousel>`
 <template ${ref("carousel")}>
-    <slot style="display: none;" ${slotted("items")}></slot>
+    <slot style="${x => (x.tabbed ? "display: none;" : "")}" ${slotted("items")}></slot>
     <div
         class="play-control"
         @click="${(x, c) => x.handlePlayClick(c.event)}"
@@ -69,23 +69,31 @@ export const CarouselTemplate = html<Carousel>`
         <slot name="play-toggle">
             <fast-button appearance="neutral">
                 ${
-                    /* TODO: ASK how can we do these icons without using the html directive?? */ ""
+                    /* TODO: ASK how can we do these icons without using the html directive?? */
+                    // sethdonohue - per ARIA a carousel must have a button for stopping and starting rotation.
+                    ""
                 }
             ${x => (x.paused ? html`${playIcon}` : html`${pauseIcon}`)}
             </fast-button>
         </slot>
     </div>
-    <div class="previous-flipper" @click="${(x, c) =>
-        x.handleFlipperClick(-1, c.event as MouseEvent)}">
+    <div 
+        class="previous-flipper"
+        @click="${(x, c) => x.handleFlipperClick(-1, c.event as MouseEvent)}"
+        tabindex="${x => (x.tabbed ? "-1" : "0")}"
+    >
         <slot name="previous-button">
             <fast-flipper direction=${FlipperDirection.previous}>
         </slot>
     </div>
 
-    ${when(x => x.slidePicker, slidePickerTemplate)}
+    ${when(x => x.tabbed, tabbedTemplate)}
 
-    <div class="next-flipper" @click="${(x, c) =>
-        x.handleFlipperClick(1, c.event as MouseEvent)}">
+    <div
+        class="next-flipper"
+        @click="${(x, c) => x.handleFlipperClick(1, c.event as MouseEvent)}"
+        tabindex="${x => (x.tabbed ? "-1" : "0")}"
+    >
         <slot name="next-button">
             <fast-flipper direction=${FlipperDirection.next}>
         </slot>
