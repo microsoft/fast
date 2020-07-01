@@ -85,15 +85,14 @@ export default class NavigationMenuItem extends Foundation<
             );
         } else if (typeof this.props.onLocationUpdate === "function") {
             return (
-                <span
+                <button
                     onClick={this.handleLocationUpdate}
                     aria-controls={this.id}
                     role={"menuitem"}
-                    tabIndex={0}
                     className={this.generateListItemClassNames()}
                 >
                     {this.props.displayName}
-                </span>
+                </button>
             );
         }
 
