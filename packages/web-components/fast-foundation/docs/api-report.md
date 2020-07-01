@@ -660,6 +660,8 @@ export class Tabs extends FASTElement {
     // @internal (undocumented)
     activeIndicatorRef: HTMLElement;
     activetab: HTMLElement;
+    // (undocumented)
+    adjust(adjustment: number): void;
     orientation: TabsOrientation;
     // @internal (undocumented)
     tabpanels: HTMLElement[];

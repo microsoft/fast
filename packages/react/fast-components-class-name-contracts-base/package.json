@@ -32,6 +32,6 @@
     "@microsoft/eslint-config-fast-dna": "^1.1.4",
     "eslint-config-prettier": "^6.10.1",
     "prettier": "2.0.2",
-    "typescript": "3.3.3"
+    "typescript": "^3.3.3"
   }
 }

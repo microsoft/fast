@@ -100,7 +100,7 @@
     "require-dir": "^0.3.2",
     "style-loader": "^0.13.2",
     "ts-jest": "^25.4.0",
-    "typescript": "3.3.3",
+    "typescript": "^3.3.3",
     "webpack": "^4.28.4",
     "webpack-bundle-analyzer": "^3.5.2",
     "webpack-cli": "^3.2.1",

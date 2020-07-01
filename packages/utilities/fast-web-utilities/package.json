@@ -83,7 +83,7 @@
     "prettier": "2.0.2",
     "ts-jest": "^25.4.0",
     "ts-loader": "^4.0.1",
-    "typescript": "3.3.3"
+    "typescript": "^3.3.3"
   },
   "peerDependencies": {
     "lodash-es": "^4.17.10"
