@@ -105,16 +105,15 @@ Front Door is a globally distributed multi-tenant platform with huge volumes of 
 The FAST Front Door will perform caching for web files.
 
 #### Limitations
-Front Door does not support using Azure Active Directory for more than one Web App running in the same backend pool. It creates a round robin issue bouncing between services eventually failing the request. This limitation was discovered on staging sites which use Azure Active Directory.
+Several limitations exist between Azure Front Door and Azure Active Directory (AAD).
 
+* Limitations exist on staging sites protected by AAD. Front Door does not support AAD for more than one Web App running in the same backend pool. It creates a round robin issue bouncing between services eventually failing the request. A work around exists by running a single backend web app at a time, passive region, with a custom domain name added each staging slot using HTTP as the probing protocol. Validation of the custom domain can be accomplished with DNS TXT records and requires no SSL binding.
 * Front Door does not support using Response rewriting
-
-The work around is to disable the web app in the passive region and add a custom domain name for the staging slot with http as the probing protocol. Validation of the custom domain can be accomplished with DNS TXT records. Application Gateway has this capability. A new feature request has been sent to Azure Front Door.
-
-* Front Door is limited to 100 resources per subscription, 50 backend pools per resource, and 100 backends per back-end pool. 
 * MIME Types: There are certain limitations on fonts, images, an data files.
 
 For additional limitations visit [details](https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/azure-subscription-service-limits#azure-front-door-service-limits) https://docs.microsoft.com/en-us/azure/frontdoor/front-door-caching
+
+_Note_ that Application Gateway has this capability. A new feature request has been sent to Azure Front Door.
 
 
 #### Risks
@@ -137,7 +136,7 @@ For Azure CDN Standard from Microsoft profiles, propagation usually completes in
 
 FAST CDN, leverages Blob Storage to cache infrequently updated application assets (logos, images, fonts, etc). This technique has greater durability, though does require more maintenance as assets must be deployed separately from Web Applications.
 
-In code, GitHub Actions pulls assets from within `/site-utilities/statics/assets`. Any site that has CDN dependencies, should store these files in this folder. These files are deployed to the CDN upon `push` to `master` from any daily pull request. CDN resources can be referenced using `https://static.fast.design/assets/` matching the folder name in source code. For example, `https://static.fast.design/assets/cdn-test.png`.
+In code, GitHub Actions pulls assets from within `/site-utilities/statics/assets`. Any site that has CDN dependencies, should store these files in this folder. These files are deployed to the CDN upon `push` to `master` from any daily pull request. CDN resources can be referenced using `https://static.fast.design/assets/` matching the folder name in source code. For example, `https://static.fast.design/assets/favicon.ico.
 
 A CORS policy exists for allowing all production and staging sites for `*.*.fast.design` to accept requests for `.json` and `.js` files.  
 
