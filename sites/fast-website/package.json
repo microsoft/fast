@@ -32,7 +32,8 @@
     "start": "webpack-dev-server --config=./webpack.dev.js --history-api-fallback --progress",
     "build": "webpack --config=./webpack.prod.js",
     "prettier": "prettier --config ../../.prettierrc --write \"**/*.ts\"",
-    "prettier:diff": "prettier --config ../../.prettierrc \"**/*.ts\" --list-different"
+    "prettier:diff": "prettier --config ../../.prettierrc \"**/*.ts\" --list-different",
+    "test": "yarn build"
   },
   "repository": {
     "type": "git",
