@@ -83,7 +83,7 @@ module.exports = {
                         __dirname,
                         "../site-utilities/statics/assets/favicon.ico"
                     ),
-                    to: outDir,
+                    to: publicDir,
                 },
             ],
         }),
