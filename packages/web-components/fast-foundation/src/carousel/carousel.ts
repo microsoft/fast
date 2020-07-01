@@ -14,6 +14,8 @@ import { attr, DOM, FASTElement, observable } from "@microsoft/fast-element";
 import { KeyCodes, wrapInBounds, limit } from "@microsoft/fast-web-utilities";
 import { isNil } from "lodash-es";
 
+export const panelPrefix: string = "tabpanel-";
+
 export class Carousel extends FASTElement {
     @attr({ mode: "boolean" })
     public autoplay: boolean = true;
@@ -51,18 +53,18 @@ export class Carousel extends FASTElement {
         this.filteredItems = this.items.filter(
             (item: HTMLElement) => item.nodeType === 1
         );
-        if (this.tabbed) {
-            this.generateTabPanelIds();
-        } else {
+        this.generateTabPanelIds();
+
+        if (!this.tabbed) {
             this.filteredItems = this.filteredItems.map(
                 (item: HTMLElement, index: number) => {
+                    item.setAttribute("id", `${panelPrefix}${index + 1}`);
+                    item.setAttribute("aria-hidden", "false");
                     if (index === this.activeIndex) {
                         item.classList.add("active-slide");
-                        item.setAttribute("aria-hidden", "false");
                         item.removeAttribute("hidden");
                     } else {
                         item.setAttribute("hidden", "");
-                        item.setAttribute("aria-hidden", "true");
                     }
                     // if (index === this.activeIndex + 1) {
                     //     item.classList.add("next-slide");
@@ -85,8 +87,6 @@ export class Carousel extends FASTElement {
     @observable
     public filteredItems: HTMLElement[];
 
-    // TODO: ADD class for when activeIndex matches this tab index so the tab is highlighted properly.
-
     public handleFlipperClick(direction: 1 | -1, e: Event): void {
         this.incrementSlide(direction);
     }
@@ -104,21 +104,18 @@ export class Carousel extends FASTElement {
     };
 
     private incrementSlide = (direction: 1 | -1): void => {
-        if (this.tabbed) {
-            this.activeIndex = wrapInBounds(
-                0,
-                this.tabPanelIds.length - 1,
-                this.activeIndex + direction
-            );
-            this.activeId = this.tabPanelIds[this.activeIndex];
-        } else {
-            this.activeIndex = wrapInBounds(
-                0,
-                this.filteredItems.length - 1,
-                this.activeIndex + direction
-            );
+        this.activeIndex = wrapInBounds(
+            0,
+            this.filteredItems.length - 1,
+            this.activeIndex + direction
+        );
+        this.activeId = this.tabPanelIds[this.activeIndex];
+
+        if (!this.tabbed) {
             this.itemsChanged();
         }
+
+        this.change();
     };
 
     private autoplayNextItem = (): void => {
@@ -144,7 +141,6 @@ export class Carousel extends FASTElement {
 
     private startAutoPlay(): void {
         if (isNil(this.autoplayTimer)) {
-            // this.autoplay = true;
             this.autoplayTimer = window.setInterval(
                 this.autoplayNextItem,
                 this.autoplayInterval
@@ -154,7 +150,6 @@ export class Carousel extends FASTElement {
 
     private stopAutoPlay(): void {
         if (!isNil(this.autoplayTimer)) {
-            // this.autoplay = false;
             this.autoplayTimer = window.clearInterval(this.autoplayTimer as number);
         }
     }
@@ -181,10 +176,6 @@ export class Carousel extends FASTElement {
         this.pause();
         this.autoplay = false;
     }
-
-    // constructor() {
-    // super();
-    // }
 
     public connectedCallback(): void {
         super.connectedCallback();
