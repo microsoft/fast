@@ -301,6 +301,12 @@ export class Tabs extends FASTElement {
         });
     }
 
+    /**
+     * The adjust method for FASTTabs
+     * @public
+     * @remarks
+     * This method allows the active index to be adjusted by numerical increments
+     */
     public adjust(adjustment: number): void {
         this.prevActiveTabIndex = this.activeTabIndex;
         this.activeTabIndex = wrapInBounds(
