@@ -121,6 +121,6 @@
     "exenv-es6": "^1.0.0",
     "raf-throttle": "^2.0.3",
     "react-dnd": "^9.0.0",
-    "utility-types": "^3.4.1"
+    "utility-types": "^3.7.0"
   }
 }
