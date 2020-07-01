@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>FAST web component gallery</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+  <fast-design-system-provider use-defaults>
+
+      <!-- Design system properties pallet -->
+      <fast-card id="designPalletteOn">
+        <h5>Design System Properties</h5>
+        <p>cornerRadius: <label id="currentCorner">0</label>px
+          <fast-slider id="cornerControl" orientation="horizontal" min="0" max="50" step="1">
+            <fast-slider-label position="0">
+              0px
+            </fast-slider-label>
+            <fast-slider-label position="50">
+              50px
+            </fast-slider-label>
+          </fast-slider>
+        </p>
+        <br />
+        <p>disabledOpacity: <label id="currentOpacity">0</label>%
+          <fast-slider id="opacityControl" orientation="horizontal" min="0" max="1" step="0.01">
+            <fast-slider-label position="0">
+              0%
+            </fast-slider-label>
+            <fast-slider-label position="100">
+              100%
+            </fast-slider-label>
+          </fast-slider>
+        </p>
+        <br />
+        <p>baseLayerLuminance: <label id="currentbaseLayerLuminance">0</label>
+          <fast-slider id="baseLayerLuminanceControl" orientation="horizontal" min="0" max="1" step="0.01" value="0.23">
+            <fast-slider-label position="0">
+              Black
+            </fast-slider-label>
+            <fast-slider-label position="0.23">
+              Dark
+            </fast-slider-label>
+            <fast-slider-label position="1">
+              Light
+            </fast-slider-label>
+          </fast-slider>
+        </p>
+        <br />
+        <p><label>Accent color picker: <input type="color"></label></p>
+        <br />
+        <fast-text-field type="number" id="designUnit">designUnit:</fast-text-field>
+        <fast-text-field type="number" id="density">density:</fast-text-field>
+        <fast-text-field type="number" id="heightMultiplier">baseHeightMultiplier:</fast-text-field>
+        <fast-text-field type="number" id="baseHorizontalSpacingMultiplier">baseHorizontalSpacingMultiplier:
+        </fast-text-field>
+        <fast-text-field type="number" id="outlineWidth">outlineWidth:</fast-text-field>
+        <fast-progress min="0" max="100" value="100"></fast-progress>
+        <br />
+        <fast-switch id="hidePanel" checked>
+          Controls&nbsp;
+          <span slot="checked-message">Hide</span>
+          <span slot="unchecked-message">Show</span>
+        </fast-switch>
+      </fast-card>
+
+      <!-- Design system properties pallet -->
+      <fast-card style="float: right; width: 600px; padding: 50px; margin-right: 200px; margin-top:20px;">
+        <p>Slider
+          <fast-slider id="cornerControl" orientation="horizontal" min="0" max="11" step="1" value="11">
+            <fast-slider-label position="0">
+              0
+            </fast-slider-label>
+            <fast-slider-label position="11">
+              11
+            </fast-slider-label>
+          </fast-slider>
+        </p>
+        <fast-button appearance="accent" style="margin-bottom: 20px;">Button</fast-button>
+        <br/>
+        <fast-anchor href="#" appearance="accent" style="margin-bottom: 20px;">Anchor</fast-anchor>
+        <br/>
+        <fast-badge appearance="lightweight" style="margin-bottom: 20px;">
+          Badge
+        </fast-badge>
+        <br/>
+        <fast-checkbox checked style="margin-bottom: 20px;">Checkbox</fast-checkbox>
+        <fast-divider role="presentation" style="margin-bottom: 20px;"></fast-divider>
+        <fast-flipper direction="next" style="margin-bottom: 20px;"></fast-flipper>
+        <p>Progress
+          <fast-progress min="0" max="100" value="75" style="margin-bottom: 20px;"></fast-progress>
+        </p>
+      </fast-card>
+
+    </main>
+
+    <!-- Add FAST Web Components -->
+    <script type="module" src="https://unpkg.com/@microsoft/fast-components"></script>
+    <script type="module" src="https://unpkg.com/@microsoft/fast-colors" crossorigin="anonymous" ></script>
+
+    <!-- connect Web Components -->
+    <script type="module">
+      // To reference the FAST components loaded you'll need to import them to your inline JavaScript module
+      import { FASTDesignSystemProvider, neutralLayerL1Behavior, neutralForegroundRestBehavior, createColorPalette }
+        from "https://unpkg.com/@microsoft/fast-components";
+
+        import {  parseColorHexRGB }
+        from "https://unpkg.com/@microsoft/fast-colors";
+
+                
+
+      const designSystemProvider = document.querySelector("fast-design-system-provider");
+      const cornerSlider = document.getElementById("cornerControl");
+      const opacitySlider = document.getElementById("opacityControl");
+      const themeSwitch = document.getElementById("baseLayerLuminanceControl");
+      const accentSwitcher = document.querySelector("input[type='color']");
+
+      // Tells the design-system-provider to create the layer CSS custom property
+      designSystemProvider.registerCSSCustomProperty(neutralLayerL1Behavior);
+      // Tells the design-system-provider to use the above as the CSS background for the region
+      designSystemProvider.style.setProperty("background-color", `var(--${neutralLayerL1Behavior.name})`);
+      // Set the background *property* to the value of the product of the recipe, for other recipes to use
+      designSystemProvider.backgroundColor = (neutralLayerL1Behavior.value)(designSystemProvider.designSystem);
+
+      // Hook up corner
+      cornerSlider.value = designSystemProvider.cornerRadius;
+      cornerSlider.addEventListener("change", (e) => {
+        designSystemProvider.cornerRadius = e.target.value;
+        document.getElementById('currentCorner').textContent = e.target.value;
+      });
+
+      // Hook up pacity
+      opacitySlider.value = designSystemProvider.disabledOpacity;
+      opacitySlider.addEventListener("change", (e) => {
+        designSystemProvider.disabledOpacity = e.target.value;
+        document.getElementById('currentOpacity').textContent = Math.round(e.target.value * 100);
+      });
+
+      // Hook up theme switcher
+      themeSwitch.addEventListener("change", (e) => {
+        // When the "baseLayerLuminosity" changes, set the new value
+        designSystemProvider.baseLayerLuminance = parseFloat(e.target.value);
+        // Re-evaluate the layer recipe and set the backgroundColor *property* to the result
+        designSystemProvider.backgroundColor = (neutralLayerL1Behavior.value)({ ...designSystemProvider.designSystem });
+        document.getElementById("currentbaseLayerLuminance").textContent = parseFloat(e.target.value).toFixed(2);
+      });
+
+      // Control the accent color
+      accentSwitcher.value = designSystemProvider.accentBaseColor;
+      accentSwitcher.addEventListener("change", (e) => {
+        if (e.target instanceof HTMLInputElement) {
+          // Change both the base color and the palette
+          designSystemProvider.accentBaseColor = e.target.value;
+          designSystemProvider.accentPalette = createColorPalette(parseColorHexRGB(e.target.value));
+        }
+      });
+
+      // Load the design system properties
+      document.getElementById("currentCorner").textContent = designSystemProvider.cornerRadius;
+      document.getElementById("currentOpacity").textContent = Math.round(designSystemProvider.disabledOpacity * 100);
+      document.getElementById("currentbaseLayerLuminance").textContent = themeSwitch.value;
+      document.getElementById("density").value = designSystemProvider.density;
+      document.getElementById("heightMultiplier").value = designSystemProvider.baseHeightMultiplier;
+      document.getElementById("designUnit").value = designSystemProvider.designUnit;
+      document.getElementById("baseHorizontalSpacingMultiplier").value = designSystemProvider.baseHorizontalSpacingMultiplier;
+      document.getElementById("outlineWidth").value = designSystemProvider.outlineWidth;
+
+      // Connect design system properties to the FAST controls
+      document.getElementById("density").addEventListener("keypress", (e) => {
+        designSystemProvider.density = e.target.value;
+      });
+      document.getElementById("outlineWidth").addEventListener("keypress", (e) => {
+        designSystemProvider.outlineWidth = e.target.value;
+      });
+      document.getElementById("designUnit").addEventListener("keypress", (e) => {
+        designSystemProvider.designUnit = e.target.value;
+      });
+      document.getElementById("baseHorizontalSpacingMultiplier").addEventListener("keypress", (e) => {
+        designSystemProvider.baseHorizontalSpacingMultiplier = e.target.value;
+      });
+      document.getElementById("heightMultiplier").addEventListener("keypress", (e) => {
+        designSystemProvider.baseHeightMultiplier = e.target.value;
+      });
+
+
+    </script>
+  </fast-design-system-provider>
+</body>
+
+</html>
