@@ -19,4 +19,4 @@ export const ListboxContext: React.Context<ListboxContextType> = React.createCon
     listboxItemFocused: null,
     listboxSelectedItems: [],
     listboxMultiselectable: false,
-});
+} as ListboxContextType);

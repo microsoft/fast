@@ -383,10 +383,7 @@ class ViewportPositioner extends Foundation<
             return;
         }
 
-        if (
-            !(window as WindowWithIntersectionObserver).IntersectionObserver ||
-            !(window as WindowWithResizeObserver).ResizeObserver
-        ) {
+        if (!(window as any).IntersectionObserver || !(window as any).ResizeObserver) {
             this.setNoObserverMode();
             return;
         }
@@ -397,7 +394,7 @@ class ViewportPositioner extends Foundation<
             validRefChecksRemaining: 0,
         });
 
-        this.collisionDetector = new (window as WindowWithIntersectionObserver).IntersectionObserver(
+        this.collisionDetector = new (window as any).IntersectionObserver(
             this.handleCollision,
             {
                 root: viewportElement,
@@ -408,9 +405,7 @@ class ViewportPositioner extends Foundation<
         this.collisionDetector.observe(this.rootElement.current);
         this.collisionDetector.observe(anchorElement);
 
-        this.resizeDetector = new (window as WindowWithResizeObserver).ResizeObserver(
-            this.handleResize
-        );
+        this.resizeDetector = new (window as any).ResizeObserver(this.handleResize);
         this.resizeDetector.observe(anchorElement);
         this.resizeDetector.observe(this.rootElement.current);
 

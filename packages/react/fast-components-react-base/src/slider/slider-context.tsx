@@ -19,4 +19,4 @@ export const SliderContext: React.Context<SliderContextType> = React.createConte
     sliderState: null,
     sliderValueAsPercent: null,
     sliderDirection: Direction.ltr,
-});
+} as SliderContextType);

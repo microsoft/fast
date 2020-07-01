@@ -220,8 +220,8 @@ class HorizontalOverflow extends Foundation<
             // Revisit usage once Safari and Firefox adapt
             // https://bugzilla.mozilla.org/show_bug.cgi?id=1272409
             // https://bugs.webkit.org/show_bug.cgi?id=157743
-            if ((window as WindowWithResizeObserver).ResizeObserver) {
-                this.resizeObserver = new (window as WindowWithResizeObserver).ResizeObserver(
+            if ((window as any).ResizeObserver) {
+                this.resizeObserver = new (window as any).ResizeObserver(
                     /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
                     (entries: ResizeObserverEntry[]): void => {
                         if (this.overflow !== this.isOverflow()) {
