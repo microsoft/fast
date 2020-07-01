@@ -2,7 +2,6 @@ import React from "react";
 import { ProgressClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { DesignSystem, ProgressStyles } from "@microsoft/fast-components-styles-msft";
-import { Subtract } from "utility-types";
 import MSFTProgress, {
     ProgressHandledProps as MSFTProgressHandledProps,
     ProgressProps as MSFTProgressProps,

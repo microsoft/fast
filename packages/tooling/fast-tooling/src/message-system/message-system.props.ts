@@ -1,4 +1,3 @@
-import { Omit } from "utility-types";
 import { DataDictionary } from "./data.props";
 import { SchemaDictionary } from "./schema.props";
 import { InitializeMessageIncoming } from "./message-system.utilities.props";

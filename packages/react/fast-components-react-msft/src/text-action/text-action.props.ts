@@ -5,7 +5,6 @@ import {
     TextFieldHandledProps,
     TextFieldManagedClasses,
 } from "@microsoft/fast-components-react-base";
-import { Omit, Subtract } from "utility-types";
 
 export enum TextActionAppearance {
     filled = "filled",

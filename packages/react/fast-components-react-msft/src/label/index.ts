@@ -11,7 +11,6 @@ import {
 } from "@microsoft/fast-components-react-base";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { DesignSystem, LabelStyles } from "@microsoft/fast-components-styles-msft";
-import { Subtract } from "utility-types";
 import labelSchema from "./label.schema";
 import labelSchema2 from "./label.schema.2";
 

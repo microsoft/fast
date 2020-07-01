@@ -1,5 +1,4 @@
 import React from "react";
-import { Subtract } from "utility-types";
 import {
     TabsHandledProps as BaseTabsHandledProps,
     TabsManagedClasses as BaseTabsManagedClasses,

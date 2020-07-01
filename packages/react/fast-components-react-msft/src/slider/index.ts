@@ -2,7 +2,6 @@ import React from "react";
 import { SliderClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { DesignSystem, SliderStyles } from "@microsoft/fast-components-styles-msft";
-import { Subtract } from "utility-types";
 import MSFTSlider, {
     SliderHandledProps as MSFTSliderHandledProps,
     SliderProps as MSFTSliderProps,

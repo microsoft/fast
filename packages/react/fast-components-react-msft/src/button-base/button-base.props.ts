@@ -1,5 +1,4 @@
 import React from "react";
-import { Subtract } from "utility-types";
 import {
     ButtonHandledProps,
     ButtonManagedClasses,

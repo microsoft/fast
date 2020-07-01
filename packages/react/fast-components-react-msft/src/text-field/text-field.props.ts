@@ -1,4 +1,3 @@
-import { Subtract } from "utility-types";
 import {
     TextFieldHandledProps as BaseTextFieldHandledProps,
     TextFieldManagedClasses as BaseTextFieldManagedClasses,

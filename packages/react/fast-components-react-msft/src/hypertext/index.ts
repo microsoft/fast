@@ -9,7 +9,6 @@ import {
 } from "@microsoft/fast-components-react-base";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { DesignSystem, HypertextStyles } from "@microsoft/fast-components-styles-msft";
-import { Subtract } from "utility-types";
 import hypertextSchema from "./hypertext.schema";
 import hypertextSchema2 from "./hypertext.schema.2";
 

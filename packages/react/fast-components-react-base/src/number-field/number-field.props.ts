@@ -3,7 +3,6 @@ import {
     ManagedClasses,
     NumberFieldClassNameContract,
 } from "@microsoft/fast-components-class-name-contracts-base";
-import { Omit } from "utility-types";
 
 export type NumberFieldManagedClasses = ManagedClasses<NumberFieldClassNameContract>;
 export type NumberFieldUnhandledProps = Omit<

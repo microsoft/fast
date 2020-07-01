@@ -5,7 +5,6 @@ import {
     ActionTriggerStyles,
     DesignSystem,
 } from "@microsoft/fast-components-styles-msft";
-import { Subtract } from "utility-types";
 import MSFTActionTrigger, {
     ActionTriggerAppearance,
     ActionTriggerManagedClasses,

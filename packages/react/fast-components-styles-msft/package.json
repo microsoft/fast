@@ -87,7 +87,7 @@
     "rollup-plugin-typescript": "^1.0.1",
     "ts-jest": "^25.4.0",
     "tslib": "^1.10.0",
-    "typescript": "3.3.3"
+    "typescript": "^3.9.0"
   },
   "dependencies": {
     "@microsoft/fast-colors": "^5.0.12",

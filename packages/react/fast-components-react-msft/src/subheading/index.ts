@@ -3,7 +3,6 @@ import { FoundationProps } from "@microsoft/fast-components-foundation-react";
 import { SubheadingClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { DesignSystem, SubheadingStyles } from "@microsoft/fast-components-styles-msft";
-import { Subtract } from "utility-types";
 import subheadingSchema from "./subheading.schema";
 import subheadingSchema2 from "./subheading.schema.2";
 import MSFTSubheading, {

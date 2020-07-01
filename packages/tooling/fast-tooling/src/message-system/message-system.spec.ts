@@ -28,6 +28,7 @@ describe("MessageSystem", () => {
             }
             public postMessage: undefined;
             public onmessage: undefined;
+            public onmessageerror: undefined;
             public onerror: undefined;
             public terminate: undefined;
             public removeEventListener: undefined;

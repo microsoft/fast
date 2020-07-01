@@ -3,7 +3,6 @@ import manageJss, {
     ComponentStyleSheet,
     DesignSystemConsumer,
 } from "@microsoft/fast-jss-manager-react";
-import { Omit } from "utility-types";
 import classnames from "classnames";
 import {
     applyElevation,

@@ -3,7 +3,6 @@ import {
     ContextMenuItemClassNameContract,
     ManagedClasses,
 } from "@microsoft/fast-components-class-name-contracts-base";
-import { Omit } from "utility-types";
 import { ContextMenuItemRole } from "./context-menu-item";
 
 export type ContextMenuItemManagedClasses = ManagedClasses<

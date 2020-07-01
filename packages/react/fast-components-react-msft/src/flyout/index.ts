@@ -3,7 +3,6 @@ import { FoundationProps } from "@microsoft/fast-components-foundation-react";
 import { FlyoutClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { DesignSystem, FlyoutStyles } from "@microsoft/fast-components-styles-msft";
-import { Subtract } from "utility-types";
 import MSFTFlyout, {
     FlyoutAxisPositioningMode,
     FlyoutHorizontalPosition,

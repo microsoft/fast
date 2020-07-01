@@ -11,7 +11,6 @@ import {
 } from "@microsoft/fast-jss-manager-react";
 import { get, has, memoize } from "lodash-es";
 import React from "react";
-import { Omit } from "utility-types";
 import { BackgroundHandledProps, BackgroundUnhandledProps } from "./background.props";
 
 export default class Background extends Foundation<
