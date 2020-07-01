@@ -1,3 +1,10 @@
+<video controls width="720">
+    <source src="intro-video.mp4"
+            type="video/mp4">
+
+    ![]()
+</video>
+
 # Walkthrough of FAST web components
 
 If you've ever tried to build consistent custom markup structures for a website or an app, you might have looked at web components. As they're standards compliant and supported by all the main evergreen browsers, web components allow you to define reusable and encapsulated HTML tags.

@@ -250,13 +250,13 @@
     <script src="js/scroll.js"></script>
 
     <!-- Add FAST Web Components -->
-    <script type="module" src="https://unpkg.com/@microsoft/fast-components"></script>
+    <script type="module" src="https://unpkg.com/@microsoft/fast-components-msft"></script>
 
     <!-- connect Web Components -->
     <script type="module">
       // To reference the FAST components loaded you'll need to import them to your inline JavaScript module
       import { FASTDesignSystemProvider, neutralLayerL1Behavior, neutralForegroundRestBehavior, createColorPalette, parseColorString }
-        from "https://unpkg.com/@microsoft/fast-components";
+        from "https://unpkg.com/@microsoft/fast-components-msft";
 
       const designSystemProvider = document.querySelector("fast-design-system-provider");
       const cornerSlider = document.getElementById("cornerControl");
