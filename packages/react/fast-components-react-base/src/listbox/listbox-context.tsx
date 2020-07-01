@@ -18,5 +18,5 @@ export const ListboxContext: React.Context<ListboxContextType> = React.createCon
     listboxItemInvoked: null,
     listboxItemFocused: null,
     listboxSelectedItems: [],
-    listboxMultiselectable: false,
+    listboxMultiselectable: false as boolean,
 });

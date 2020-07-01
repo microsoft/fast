@@ -111,7 +111,7 @@
     "rimraf": "^2.6.2",
     "ts-jest": "^25.4.0",
     "ts-loader": "^4.0.1",
-    "typescript": "3.3.3",
+    "typescript": "^3.9.0",
     "yargs": "^11.0.0"
   },
   "peerDependencies": {
