@@ -48,6 +48,6 @@
     "eslint-config-prettier": "^6.10.1",
     "prettier": "2.0.2",
     "react": "^16.8.6",
-    "typescript": "^3.5.3"
+    "typescript": "^3.9.0"
   }
 }

@@ -83,7 +83,7 @@
     "lodash-es": "^4.0.0",
     "prettier": "2.0.2",
     "ts-jest": "^25.4.0",
-    "typescript": "^3.5.1"
+    "typescript": "^3.9.0"
   },
   "peerDependencies": {
     "@microsoft/fast-jss-manager-react": "^4.3.5",
