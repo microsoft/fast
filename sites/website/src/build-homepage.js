@@ -11,6 +11,7 @@ const copyfiles = require("copyfiles");
 const projectPath = path.resolve(__dirname, "../../fast-website");
 const staticPath = path.resolve(__dirname, "../static");
 const indexPath = path.resolve(projectPath, "dist/index.html");
+const utilitiesPath = path.resolve(__dirname, "../../site-utilities");
 
 const copyConfig = { flat: true, verbose: true, up: true };
 
@@ -24,6 +25,14 @@ function copyBundle() {
         copyConfig,
         () => {
             console.log("Copied homepage files to static");
+        }
+    );
+
+    copyfiles(
+        [`${utilitiesPath}/statics/assets/favicon.ico`, staticPath],
+        copyConfig,
+        () => {
+            console.log("Copied favicon to static");
         }
     );
 }

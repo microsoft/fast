@@ -105,6 +105,12 @@ export class Slider extends FormAssociated<HTMLInputElement>
      * @internal
      */
     @observable
+    public trackLeft: number = 0;
+
+    /**
+     * @internal
+     */
+    @observable
     public trackMinHeight: number = 0;
 
     /**
@@ -216,8 +222,9 @@ export class Slider extends FormAssociated<HTMLInputElement>
      */
     public disconnectedCallback(): void {
         this.removeEventListener("keydown", this.keypressHandler);
-        this.removeEventListener("mousedown", this.clickHandler);
+        this.removeEventListener("mousedown", this.handleMouseDown);
         this.thumb.removeEventListener("mousedown", this.handleThumbMouseDown);
+        this.thumb.removeEventListener("touchstart", this.handleThumbMouseDown);
     }
 
     /**
@@ -285,7 +292,7 @@ export class Slider extends FormAssociated<HTMLInputElement>
             Number(this.max),
             direction
         );
-        const percentage: number = (1 - newPct) * 100;
+        const percentage: number = Math.round((1 - newPct) * 100);
         if (this.orientation === Orientation.horizontal) {
             this.position = this.isDragging
                 ? `right: ${percentage}%; transition: all 0.1s ease;`
@@ -306,17 +313,22 @@ export class Slider extends FormAssociated<HTMLInputElement>
     };
 
     private setupTrackConstraints = (): void => {
+        const clientRect: DOMRect = this.track.getBoundingClientRect();
         this.trackWidth = this.track.clientWidth;
         this.trackMinWidth = this.track.clientLeft;
-        const clientRect: DOMRect = this.track.getBoundingClientRect();
         this.trackHeight = clientRect.bottom;
         this.trackMinHeight = clientRect.top;
+        this.trackLeft = this.getBoundingClientRect().left;
+        if (this.trackWidth === 0) {
+            this.trackWidth = 1;
+        }
     };
 
     private setupListeners = (): void => {
         this.addEventListener("keydown", this.keypressHandler);
-        this.addEventListener("mousedown", this.clickHandler);
+        this.addEventListener("mousedown", this.handleMouseDown);
         this.thumb.addEventListener("mousedown", this.handleThumbMouseDown);
+        this.thumb.addEventListener("touchstart", this.handleThumbMouseDown);
     };
 
     private setupDefaultValue = (): void => {
@@ -341,6 +353,8 @@ export class Slider extends FormAssociated<HTMLInputElement>
         (event.target as HTMLElement).focus();
         window.addEventListener("mouseup", this.handleWindowMouseUp);
         window.addEventListener("mousemove", this.handleMouseMove);
+        window.addEventListener("touchmove", this.handleMouseMove);
+        window.addEventListener("touchend", this.handleWindowMouseUp);
         this.isDragging = true;
     };
 
@@ -355,7 +369,7 @@ export class Slider extends FormAssociated<HTMLInputElement>
         // update the value based on current position
         const eventValue: number =
             this.orientation === Orientation.horizontal
-                ? e.pageX - this.getBoundingClientRect().left
+                ? e.pageX - this.trackLeft
                 : e.pageY;
 
         this.value = `${this.calculateNewValue(eventValue)}`;
@@ -390,22 +404,21 @@ export class Slider extends FormAssociated<HTMLInputElement>
         this.isDragging = false;
         window.removeEventListener("mouseup", this.handleWindowMouseUp);
         window.removeEventListener("mousemove", this.handleMouseMove);
+        window.removeEventListener("touchmove", this.handleMouseMove);
+        window.removeEventListener("touchend", this.handleWindowMouseUp);
     };
 
-    private clickHandler = (e: MouseEvent) => {
+    private handleMouseDown = (e: MouseEvent) => {
         e.preventDefault();
         if (!this.disabled && !this.readOnly) {
-            this.trackWidth = this.track.clientWidth;
-            if (this.trackWidth === 0) {
-                this.trackWidth = 1;
-            }
+            this.setupTrackConstraints();
             (e.target as HTMLElement).focus();
             window.addEventListener("mouseup", this.handleWindowMouseUp);
             window.addEventListener("mousemove", this.handleMouseMove);
 
             const controlValue: number =
                 this.orientation === Orientation.horizontal
-                    ? e.pageX - this.getBoundingClientRect().left
+                    ? e.pageX - this.trackLeft
                     : e.pageY;
 
             this.value = `${this.calculateNewValue(controlValue)}`;

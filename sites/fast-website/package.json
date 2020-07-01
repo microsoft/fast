@@ -15,6 +15,7 @@
     "babel-loader": "^8.1.0",
     "babel-preset-env": "^1.7.0",
     "clean-webpack-plugin": "^3.0.0",
+    "copy-webpack-plugin": "^6.0.3",
     "html-webpack-plugin": "^4.3.0",
     "mini-css-extract-plugin": "^0.9.0",
     "optimize-css-assets-webpack-plugin": "^5.0.3",
@@ -31,7 +32,8 @@
     "start": "webpack-dev-server --config=./webpack.dev.js --history-api-fallback --progress",
     "build": "webpack --config=./webpack.prod.js",
     "prettier": "prettier --config ../../.prettierrc --write \"**/*.ts\"",
-    "prettier:diff": "prettier --config ../../.prettierrc \"**/*.ts\" --list-different"
+    "prettier:diff": "prettier --config ../../.prettierrc \"**/*.ts\" --list-different",
+    "test": "yarn build"
   },
   "repository": {
     "type": "git",
