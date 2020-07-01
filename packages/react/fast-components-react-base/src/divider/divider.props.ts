@@ -3,7 +3,6 @@ import {
     DividerClassNameContract,
     ManagedClasses,
 } from "@microsoft/fast-components-class-name-contracts-base";
-import { Omit } from "utility-types";
 
 /**
  * Divider HTML Roles

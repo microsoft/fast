@@ -8,7 +8,6 @@ import {
     ManagedClasses,
     ProgressClassNameContract,
 } from "@microsoft/fast-components-class-name-contracts-msft";
-import { Subtract } from "utility-types";
 
 export enum ProgressSize {
     control = "control",

@@ -5,7 +5,6 @@ import {
     DesignSystem,
     StealthButtonStyles,
 } from "@microsoft/fast-components-styles-msft";
-import { Subtract } from "utility-types";
 import {
     ButtonBase,
     ButtonBaseHandledProps,

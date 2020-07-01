@@ -2,7 +2,6 @@ import React from "react";
 import { ContextMenuClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { ContextMenuStyles, DesignSystem } from "@microsoft/fast-components-styles-msft";
-import { Subtract } from "utility-types";
 import contextMenuSchema from "./context-menu.schema";
 import contextMenuSchema2 from "./context-menu.schema.2";
 import MSFTContextMenu, {

@@ -3,7 +3,6 @@ import { FoundationProps } from "@microsoft/fast-components-foundation-react";
 import { ParagraphClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { DesignSystem, ParagraphStyles } from "@microsoft/fast-components-styles-msft";
-import { Subtract } from "utility-types";
 import paragraphSchema from "./paragraph.schema";
 import paragraphSchema2 from "./paragraph.schema.2";
 import MSFTParagraph, {

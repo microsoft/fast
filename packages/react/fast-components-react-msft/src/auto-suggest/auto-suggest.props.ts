@@ -1,5 +1,4 @@
 import React from "react";
-import { Subtract } from "utility-types";
 import {
     AutoSuggestHandledProps as BaseAutoSuggestHandledProps,
     AutoSuggestManagedClasses as BaseAutoSuggestManagedClasses,

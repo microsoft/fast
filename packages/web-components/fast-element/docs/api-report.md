@@ -285,7 +285,7 @@ export const FASTElement: (new () => HTMLElement & FASTElement) & {
         prototype: HTMLElement;
     }>(BaseType: TBase): new () => InstanceType<TBase> & FASTElement;
     define<TType extends Function>(Type: TType, nameOrDef?: string | PartialFASTElementDefinition): TType;
-    getDefinition<T extends Function>(Type: T): FASTElementDefinition | undefined;
+    getDefinition<T_1 extends Function>(Type: T_1): FASTElementDefinition | undefined;
 };
 
 // @public

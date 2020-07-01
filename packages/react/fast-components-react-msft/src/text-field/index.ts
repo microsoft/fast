@@ -3,7 +3,6 @@ import { TextFieldClassNameContract } from "@microsoft/fast-components-class-nam
 import { TextFieldType } from "@microsoft/fast-components-react-base";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { DesignSystem, TextFieldStyles } from "@microsoft/fast-components-styles-msft";
-import { Subtract } from "utility-types";
 import textFieldSchema from "./text-field.schema";
 import MSFTTextField, {
     TextFieldHandledProps as MSFTTextFieldHandledProps,

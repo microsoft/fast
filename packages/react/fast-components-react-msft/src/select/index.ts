@@ -2,7 +2,6 @@ import React from "react";
 import { SelectClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { DesignSystem, SelectStyles } from "@microsoft/fast-components-styles-msft";
-import { Subtract } from "utility-types";
 import MSFTSelect, {
     SelectHandledProps as MSFTSelectHandledProps,
     SelectProps as MSFTSelectProps,

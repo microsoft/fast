@@ -10,7 +10,6 @@ import {
 } from "@microsoft/fast-components-react-base";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { DesignSystem, RadioStyles } from "@microsoft/fast-components-styles-msft";
-import { Subtract } from "utility-types";
 import radioSchema from "./radio.schema";
 import radioSchema2 from "./radio.schema.2";
 

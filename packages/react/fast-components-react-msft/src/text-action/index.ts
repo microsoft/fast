@@ -2,7 +2,6 @@ import React from "react";
 import { TextActionClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { DesignSystem, TextActionStyles } from "@microsoft/fast-components-styles-msft";
-import { Subtract } from "utility-types";
 import textActionSchema from "./text-action.schema";
 import textActionSchema2 from "./text-action.schema.2";
 import {
