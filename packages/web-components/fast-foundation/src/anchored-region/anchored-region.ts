@@ -18,6 +18,7 @@ declare global {
 }
 
 export type AxisPositioningMode = "uncontrolled" | "locktodefault" | "dynamic";
+export type AxisScalingMode = "anchor" | "availablespace" | "content";
 
 export type HorizontalPosition = "start" | "end" | "left" | "right" | "unset";
 
@@ -60,9 +61,7 @@ export class AnchoredRegion extends FASTElement {
     public anchor: string = "";
     private anchorChanged(): void {
         if (this.initialLayoutComplete) {
-            this.initialLayoutComplete = false;
             this.anchorElement = this.getAnchor();
-            this.reset();
         }
     }
 
@@ -70,10 +69,7 @@ export class AnchoredRegion extends FASTElement {
     public viewport: string = "";
     private viewportChanged(): void {
         if (this.initialLayoutComplete) {
-            this.initialLayoutComplete = false;
-            this.disconnectViewport(this.viewportElement);
             this.viewportElement = this.getViewport();
-            this.reset();
         }
     }
 
@@ -101,8 +97,8 @@ export class AnchoredRegion extends FASTElement {
         this.updateLayoutForAttributeChange();
     }
 
-    @attr({ attribute: "horizontal-scaling", mode: "boolean" })
-    public horizontalScaling: boolean = false;
+    @attr({ attribute: "horizontal-scaling" })
+    public horizontalScaling: AxisScalingMode = "content";
     private horizontalScalingChanged(): void {
         this.updateLayoutForAttributeChange();
     }
@@ -131,8 +127,8 @@ export class AnchoredRegion extends FASTElement {
         this.updateLayoutForAttributeChange();
     }
 
-    @attr({ attribute: "vertical-scaling", mode: "boolean" })
-    public verticalScaling: boolean = false;
+    @attr({ attribute: "vertical-scaling" })
+    public verticalScaling: AxisScalingMode = "content";
     private verticalScalingChanged(): void {
         this.updateLayoutForAttributeChange();
     }
@@ -149,8 +145,7 @@ export class AnchoredRegion extends FASTElement {
     @observable
     public anchorElement: HTMLElement | null = null;
     private anchorElementChanged(): void {
-        if (this.initialLayoutComplete) {
-            this.initialLayoutComplete = false;
+        if ((this as any).$fastController.isConnected) {
             this.reset();
         }
     }
@@ -158,8 +153,7 @@ export class AnchoredRegion extends FASTElement {
     @observable
     public viewportElement: HTMLElement | null = null;
     private viewportElementChanged(): void {
-        if (this.initialLayoutComplete) {
-            this.initialLayoutComplete = false;
+        if ((this as any).$fastController.isConnected) {
             this.reset();
         }
     }
@@ -217,10 +211,16 @@ export class AnchoredRegion extends FASTElement {
     /**
      * reference to the actual anchored container
      */
-    public region: HTMLDivElement;
+    public region: HTMLDivElement | null;
+
+    /**
+     * reference to the component root
+     */
+    public root: HTMLDivElement | null;
 
     private openRequestAnimationFrame: boolean = false;
     private currentDirection: Direction = Direction.ltr;
+    private observersConnected = false;
 
     constructor() {
         super();
@@ -230,18 +230,6 @@ export class AnchoredRegion extends FASTElement {
     connectedCallback() {
         super.connectedCallback();
 
-        if (this.viewportElement === null) {
-            this.viewportElement = this.getViewport();
-        }
-
-        if (this.anchorElement === null) {
-            this.anchorElement = this.getAnchor();
-        }
-
-        if (this.anchorElement === null || this.viewportElement === null) {
-            return;
-        }
-
         this.currentDirection = this.getDirection();
 
         this.connectObservers();
@@ -249,11 +237,11 @@ export class AnchoredRegion extends FASTElement {
 
     public disconnectedCallback(): void {
         super.disconnectedCallback();
-
         this.disconnectObservers();
+        this.region = null;
     }
 
-    adoptedCallback() {
+    public adoptedCallback() {
         this.reset();
     }
 
@@ -273,6 +261,7 @@ export class AnchoredRegion extends FASTElement {
         this.disconnectObservers();
         this.setInitialState();
         this.connectObservers();
+        this.requestLayoutUpdate();
     }
 
     /**
@@ -317,7 +306,21 @@ export class AnchoredRegion extends FASTElement {
      * connects observers and event handlers
      */
     private connectObservers = (): void => {
-        if (this.anchorElement === null || this.viewportElement === null) {
+        if (this.viewportElement === null) {
+            this.viewportElement = this.getViewport();
+        }
+
+        if (this.anchorElement === null) {
+            this.anchorElement = this.getAnchor();
+        }
+
+        if (
+            this.anchorElement === null ||
+            this.viewportElement === null ||
+            this.region === null ||
+            this.region.offsetParent === null ||
+            !this.viewportElement.contains(this.anchorElement)
+        ) {
             return;
         }
 
@@ -337,12 +340,18 @@ export class AnchoredRegion extends FASTElement {
         this.resizeDetector.observe(this.region);
 
         this.viewportElement.addEventListener("scroll", this.handleScroll);
+
+        this.observersConnected = true;
     };
 
     /**
      * disconnect observers and event handlers
      */
     private disconnectObservers = (): void => {
+        if (!this.observersConnected) {
+            return;
+        }
+
         // ensure the collisionDetector exists before disconnecting
         if (this.collisionDetector) {
             this.collisionDetector.disconnect();
@@ -354,6 +363,8 @@ export class AnchoredRegion extends FASTElement {
         }
 
         this.disconnectViewport(this.viewportElement);
+
+        this.observersConnected = false;
     };
 
     private disconnectViewport = (viewport: HTMLElement | null): void => {
@@ -366,8 +377,8 @@ export class AnchoredRegion extends FASTElement {
      * Gets the viewport element by id, or defaults to component parent
      */
     public getViewport = (): HTMLElement | null => {
-        if (typeof this.viewport !== "string") {
-            return this.region.parentElement;
+        if (typeof this.viewport !== "string" || this.viewport === "") {
+            return this.root === null ? null : this.root.parentElement;
         }
 
         return document.getElementById(this.viewport);
@@ -507,11 +518,11 @@ export class AnchoredRegion extends FASTElement {
                 (this.positionerDimension.width - entry.contentRect.width);
         }
 
-        if (!this.horizontalScaling) {
+        if (this.horizontalScaling === "content") {
             this.positionerDimension.width = entry.contentRect.width;
         }
 
-        if (!this.verticalScaling) {
+        if (this.verticalScaling === "content") {
             this.positionerDimension.height = entry.contentRect.height;
         }
     };
@@ -685,10 +696,9 @@ export class AnchoredRegion extends FASTElement {
             desiredVerticalPosition
         );
 
-        const positionChanged: boolean = !(
-            this.horizontalPosition === desiredHorizontalPosition &&
-            this.verticalPosition === desiredVerticalPosition
-        );
+        const positionChanged: boolean =
+            this.horizontalPosition !== desiredHorizontalPosition ||
+            this.verticalPosition !== desiredVerticalPosition;
 
         this.setHorizontalPosition(desiredHorizontalPosition, nextPositionerDimension);
         this.setVerticalPosition(desiredVerticalPosition, nextPositionerDimension);
@@ -708,12 +718,15 @@ export class AnchoredRegion extends FASTElement {
      *  to the root element
      */
     private updateRegionStyle = (): void => {
-        this.classList.toggle("horizontalInset", this.horizontalInset);
-        this.classList.toggle("verticalInset", this.verticalInset);
         this.classList.toggle("top", this.verticalPosition === "top");
         this.classList.toggle("bottom", this.verticalPosition === "bottom");
+        this.classList.toggle("inset-top", this.verticalPosition === "insetTop");
+        this.classList.toggle("inset-bottom", this.verticalPosition === "insetBottom");
+
         this.classList.toggle("left", this.horizontalPosition === "left");
         this.classList.toggle("right", this.horizontalPosition === "right");
+        this.classList.toggle("inset-left", this.horizontalPosition === "insetLeft");
+        this.classList.toggle("inset-right", this.horizontalPosition === "insetRight");
 
         this.regionStyle = `
             height: ${this.regionHeight};
@@ -767,9 +780,20 @@ export class AnchoredRegion extends FASTElement {
         this.regionRight = right === null ? "unset" : `${Math.floor(right).toString()}px`;
         this.regionLeft = left === null ? "unset" : `${Math.floor(left).toString()}px`;
         this.horizontalPosition = desiredHorizontalPosition;
-        this.regionWidth = this.horizontalScaling
-            ? `${Math.floor(nextPositionerDimension.width)}px`
-            : "fit-content";
+
+        switch (this.horizontalScaling) {
+            case "anchor":
+                this.regionWidth = `${Math.floor(this.anchorWidth)}px`;
+                break;
+
+            case "availablespace":
+                this.regionWidth = `${Math.floor(nextPositionerDimension.width)}px`;
+                break;
+
+            case "content":
+                this.regionWidth = "fit-content";
+                break;
+        }
     };
 
     /**
@@ -813,9 +837,20 @@ export class AnchoredRegion extends FASTElement {
         this.regionBottom =
             bottom === null ? "unset" : `${Math.floor(bottom).toString()}px`;
         this.verticalPosition = desiredVerticalPosition;
-        this.regionHeight = this.verticalScaling
-            ? `${Math.floor(nextPositionerDimension.height)}px`
-            : "fit-content";
+
+        switch (this.verticalScaling) {
+            case "anchor":
+                this.regionHeight = `${Math.floor(this.anchorHeight)}px`;
+                break;
+
+            case "availablespace":
+                this.regionHeight = `${Math.floor(nextPositionerDimension.height)}px`;
+                break;
+
+            case "content":
+                this.regionHeight = "fit-content";
+                break;
+        }
     };
 
     /**
@@ -1012,11 +1047,11 @@ export class AnchoredRegion extends FASTElement {
             width: this.positionerDimension.width,
         };
 
-        if (this.horizontalScaling) {
+        if (this.horizontalScaling === "availablespace") {
             newRegionDimension.width = this.getAvailableWidth(desiredHorizontalPosition);
         }
 
-        if (this.verticalScaling) {
+        if (this.verticalScaling === "availablespace") {
             newRegionDimension.height = this.getAvailableHeight(desiredVerticalPosition);
         }
 
