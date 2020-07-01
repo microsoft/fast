@@ -45,7 +45,7 @@
     "raf-throttle": "^2.0.3",
     "react": "^16.8.0",
     "ts-jest": "^25.4.0",
-    "typescript": "^3.3.3"
+    "typescript": "^3.9.0"
   },
   "dependencies": {
     "@microsoft/fast-components-react-msft": "^4.31.2",

@@ -57,7 +57,7 @@
     "react-router-dom": "^5.1.2",
     "ts-jest": "^25.4.0",
     "ts-loader": "^7.0.2",
-    "typescript": "^3.8.3",
+    "typescript": "^3.9.0",
     "webpack": "4.28.4",
     "webpack-bundle-analyzer": "^3.0.3",
     "webpack-cli": "^3.1.2",
