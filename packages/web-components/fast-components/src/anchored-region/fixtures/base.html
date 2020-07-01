@@ -65,9 +65,9 @@
                 anchor="anchor-scaling" 
                 viewport="viewport-scaling"
                 vertical-positioning-mode="dynamic"
-                vertical-scaling="true"
+                vertical-scaling="availablespace"
                 horizontal-positioning-mode="dynamic"
-                horizontal-scaling="true"
+                horizontal-scaling="availablespace"
             >
                 <div style="height:100%; width: 100%; background: yellow">
                 </div>
@@ -219,6 +219,32 @@
         </div>
     </div>
 
+    <h4>Size to anchor</h4>
+    <div 
+        id="viewport-anchor-sized"
+        style="position: relative; height:400px; width: 400px; background: lightgray; overflow: scroll;"
+    >
+        <div
+            style="height:1000px; width: 1000px;"
+        >
+            <fast-anchored-region 
+                anchor="anchor-anchor-sized" 
+                viewport="viewport-anchor-sized"
+                vertical-positioning-mode="dynamic"
+                vertical-scaling="anchor"
+                horizontal-positioning-mode="dynamic"
+                horizontal-scaling="anchor"
+                horizontal-inset="true"
+            >
+                <div style="height:100%; width: 100%; background: yellow">
+                </div>
+            </fast-anchored-region>
+            <button id="anchor-anchor-sized" style="margin-left: 500px; margin-top: 500px;">
+                anchor
+            </button>
+        </div>
+    </div>
+
     <h4>RTL-scaling</h4>
     <div 
         id="viewport-rtl-scaling"
@@ -235,9 +261,9 @@
                 anchor="anchor-rtl-scaling" 
                 viewport="viewport-rtl-scaling"
                 vertical-positioning-mode="dynamic"
-                vertical-scaling="true"
+                vertical-scaling="availablespace"
                 horizontal-positioning-mode="dynamic"
-                horizontal-scaling="true"
+                horizontal-scaling="availablespace"
             >
                 <div style="height:100%; width: 100%; background: yellow">
                 </div>
