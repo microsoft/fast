@@ -535,6 +535,8 @@ export class Slider extends FormAssociated<HTMLInputElement> implements SliderCo
     // @internal (undocumented)
     trackHeight: number;
     // @internal (undocumented)
+    trackLeft: number;
+    // @internal (undocumented)
     trackMinHeight: number;
     // @internal (undocumented)
     trackMinWidth: number;
