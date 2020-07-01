@@ -7,7 +7,7 @@ import {
 } from "../styles/recipes";
 
 export const CarouselStyles = css`
-    :host {
+    ${/* TODO: ADD Focus visible*/ ""} :host {
         box-sizing: border-box;
         font-family: var(--body-font);
         font-size: var(--type-ramp-minus-1-font-size);
@@ -19,20 +19,34 @@ export const CarouselStyles = css`
         height: 100%;
         width: 100%;
         position: relative;
-        overflow: auto;
+        overflow: hidden;
     }
 
     :host([hidden]) {
         display: none;
     }
 
-    .previous-flipper {
+    :host([tabbed]) .flipper {
+        opacity: 0;
+    }
+
+    :host([tabbed]:hover) .flipper {
+        opacity: 1;
+    }
+
+    ::slotted(.slide) {
+    }
+
+    .flipper {
         position: absolute;
+        z-index: 1;
+    }
+
+    .previous-flipper {
         left: 20px;
     }
 
     .next-flipper {
-        position: absolute;
         right: 20px;
     }
 
@@ -47,45 +61,35 @@ export const CarouselStyles = css`
         outline: none;
     }
 
-    *:focus {
-        outline: 3px dotted orange;
-    }
-
     .slide-tab:before {
         opacity: 0.5;
         width: 32px;
         border: 1px solid #bebebe;
         border-radius: 40px;
         opacity: 0.45;
-        content: " ";
+        content: "";
         display: block;
         transition: all 0.05s ease-in-out;
         height: 4px;
         background-color: #101010;
     }
 
-    .slide-tab[aria-selected="true"]:before {
+    .slide-tab:hover:before {
         opacity: 1;
     }
 
-    .slide-tab:hover:before {
-        border-color: #fff;
+    .slide-tab[aria-selected="true"]:before {
+        opacity: 1;
     }
 
     .play-control {
         position: absolute;
         left: 10px;
         top: 10px;
+        z-index: 1;
     }
 
-    ${/*TODO: GET THIS TAB SELECTOR WORKING*/ ""};
-
-    fast-tabs::part(tab) {
-        color: red;
-        outline: 1px dotted green;
-    }
-
-    fast-tabs::part(tablist) {
+    ::part(tablist) {
         position: absolute;
         bottom: 10px;
         left: 50%;
@@ -93,7 +97,10 @@ export const CarouselStyles = css`
         z-index: 1;
     }
 
-    fast-tabs::part(tabpanelcontainer) {
+    ::part(tabpanel) {
+    }
+
+    ::part(tabpanelcontainer) {
     }
 `.withBehaviors(
     accentFillRestBehavior,
