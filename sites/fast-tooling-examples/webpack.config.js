@@ -4,6 +4,7 @@ const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPl
 const CleanWebpackPlugin = require("clean-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const WebpackShellPlugin = require("webpack-shell-plugin");
+const CopyPlugin = require("copy-webpack-plugin");
 const FASTCuratedManifest = require("@microsoft/site-utilities/src/curated-html.json");
 
 const rootNodeModules = path.resolve(__dirname, "../../node_modules");
@@ -131,6 +132,17 @@ module.exports = (env, args) => {
             new BundleAnalyzerPlugin({
                 // Remove this to inspect bundle sizes.
                 analyzerMode: "disabled",
+            }),
+            new CopyPlugin({
+                patterns: [
+                    {
+                        from: path.resolve(
+                            __dirname,
+                            "../site-utilities/statics/assets/favicon.ico"
+                        ),
+                        to: outDir,
+                    },
+                ],
             }),
         ],
         resolve: {

@@ -37,6 +37,7 @@
     "babel-core": "^7.0.0-bridge.0",
     "babel-loader": "^8.0.6",
     "clean-webpack-plugin": "^1.0.0",
+    "copy-webpack-plugin": "^6.0.3",
     "csstype": "^2.5.8",
     "eslint-config-prettier": "6.10.1",
     "exenv-es6": "^1.0.0",
