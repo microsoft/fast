@@ -5,6 +5,7 @@ import { keyCodeEscape } from "@microsoft/fast-web-utilities";
 export type TooltipPosition = "top" | "right" | "bottom" | "left";
 
 const hiddenRegionStyle: string = `
+     display: none;
      pointer-events: none;
 `;
 
@@ -61,6 +62,14 @@ export class Tooltip extends FASTElement {
                     this.handleAnchorMouseOut,
                     { passive: true }
                 );
+
+                const anchorId: string = this.anchorElement.id;
+
+                document.querySelectorAll(":hover").forEach(element => {
+                    if (element.id === anchorId) {
+                        this.startHoverTimer();
+                    }
+                });
             }
 
             if (
@@ -70,6 +79,7 @@ export class Tooltip extends FASTElement {
             ) {
                 this.region.anchorElement = this.anchorElement;
             }
+
             this.updateLayout();
         }
     }
@@ -176,6 +186,18 @@ export class Tooltip extends FASTElement {
     }
 
     public handleAnchorMouseOver = (ev: Event): void => {
+        this.startHoverTimer();
+    };
+
+    public handleAnchorMouseOut = (ev: Event): void => {
+        if (this.isAnchorHovered) {
+            this.isAnchorHovered = false;
+            this.updateTooltipVisibility();
+        }
+        this.clearDelayTimer();
+    };
+
+    private startHoverTimer = (): void => {
         if (this.isAnchorHovered) {
             return;
         }
@@ -189,14 +211,6 @@ export class Tooltip extends FASTElement {
         }
 
         this.startHover();
-    };
-
-    public handleAnchorMouseOut = (ev: Event): void => {
-        if (this.isAnchorHovered) {
-            this.isAnchorHovered = false;
-            this.updateTooltipVisibility();
-        }
-        this.clearDelayTimer();
     };
 
     private clearDelayTimer = (): void => {
@@ -290,9 +304,9 @@ export class Tooltip extends FASTElement {
     };
 
     private updateTooltipVisibility = (): void => {
-        if (this.visible === true) {
+        if (this.visible === false) {
             this.hideTooltip();
-        } else if (this.visible === false) {
+        } else if (this.visible === true) {
             this.showTooltip();
         } else {
             if (this.isAnchorHovered) {
@@ -316,17 +330,16 @@ export class Tooltip extends FASTElement {
         }
         if (this.region !== null && this.region !== undefined) {
             (this.region as any).removeEventListener("change", this.handlePositionChange);
+            this.region.viewportElement = null;
+            this.region.anchorElement = null;
         }
         document.removeEventListener("keydown", this.handleDocumentKeydown);
         this.tooltipVisible = false;
         this.regionStyle = hiddenRegionStyle;
-        this.region.viewportElement = null;
-        this.region.anchorElement = null;
     };
 
     private showRegion = (): void => {
         document.addEventListener("keydown", this.handleDocumentKeydown);
-        this.viewportElement = this.tooltipRoot.parentElement;
         this.tooltipVisible = true;
         this.regionStyle = visibleRegionStyle;
         DOM.queueUpdate(this.setRegionProps);

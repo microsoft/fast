@@ -1,19 +1,19 @@
-<fast-design-system-provider>
+<fast-design-system-provider use-defaults>
     <h1>Tooltip</h1>
 
     <h4>Default</h4>
     <div
-        style="position: relative; height:400px; width: 400px; overflow: scroll;"
+        style="position: relative; height:400px; width: 400px; background: lightgray; overflow: scroll;"
     >
         <fast-tooltip
             anchor="anchor-default"
         >
-            Tooltip
+            Helpful text is helpful
         </fast-tooltip>
 
-        <button id="anchor-default" style="margin: 200px">
+        <fast-button id="anchor-default" style="margin: 200px">
             anchor
-        </button>
+        </fast-button>
     </div>
 
     <h4>Top</h4>
@@ -23,13 +23,14 @@
         <fast-tooltip
             anchor="anchor-top"
             position="top"
+            visible="true"
         >
-            Tooltip
+            Helpful text is helpful
         </fast-tooltip>
 
-        <button id="anchor-top" style="margin: 200px">
+        <fast-button id="anchor-top" style="margin: 200px">
             anchor
-        </button>
+        </fast-button>
     </div>
 
     <h4>Right</h4>
@@ -39,13 +40,14 @@
         <fast-tooltip
             anchor="anchor-right"
             position="right"
+            visible="true"
         >
-            Tooltip
+            Helpful text is helpful
         </fast-tooltip>
 
-        <button id="anchor-right" style="margin: 200px">
+        <fast-button id="anchor-right" style="margin: 200px">
             anchor
-        </button>
+        </fast-button>
     </div>
 
     <h4>Bottom</h4>
@@ -55,13 +57,14 @@
         <fast-tooltip
             anchor="anchor-bottom"
             position="bottom"
+            visible="true"
         >
-            Tooltip
+            Helpful text is helpful
         </fast-tooltip>
 
-        <button id="anchor-bottom" style="margin: 200px">
+        <fast-button id="anchor-bottom" style="margin: 200px">
             anchor
-        </button>
+        </fast-button>
     </div>
 
     <h4>Left</h4>
@@ -71,12 +74,56 @@
         <fast-tooltip
             anchor="anchor-left"
             position="left"
+            visible="true"
         >
-            Tooltip
+            Helpful text is helpful
         </fast-tooltip>
 
-        <button id="anchor-left" style="margin: 200px">
+        <fast-button id="anchor-left" style="margin: 200px">
             anchor
-        </button>
+        </fast-button>
+    </div>
+
+    <h4>Switch anchors</h4>
+    <div
+        style="position: relative; height:400px; width: 400px; background: lightgray; overflow: scroll;"
+    >
+        <fast-tooltip
+            id="tooltip-anchor-switch"
+        >
+            Helpful text is helpful
+        </fast-tooltip>
+
+        <fast-button id="anchor-anchor-switch-1" style="margin: 40px">
+            anchor
+        </fast-button>
+
+        <fast-button id="anchor-anchor-switch-2" style="margin: 40px">
+            anchor
+        </fast-button>
+
+        <fast-button id="anchor-anchor-switch-3" style="margin: 40px">
+            anchor
+        </fast-button>
+
+        <fast-button id="anchor-anchor-switch-4" style="margin: 40px">
+            anchor
+        </fast-button>
+
+        <fast-button id="anchor-anchor-switch-5" style="margin: 40px">
+            anchor
+        </fast-button>
+
+        <fast-button id="anchor-anchor-switch-6" style="margin: 40px">
+            anchor
+        </fast-button>
+
+        <fast-button id="anchor-anchor-switch-7" style="margin: 40px">
+            anchor
+        </fast-button>
+
+        <fast-button id="anchor-anchor-switch-8" style="margin: 40px">
+            anchor
+        </fast-button>
     </div>
 </fast-design-system-provider>

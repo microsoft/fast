@@ -37,12 +37,29 @@ export const TooltipStyles = css`
         background: ${neutralFillRestBehavior.var};
         color: ${neutralForegroundRestBehavior.var};
         padding: 4px;
-        display: inline-block;
         height: fit-content;
         width: fit-content;
         font: inherit;
         font-size: var(--type-ramp-base-font-size);
         line-height: var(--type-ramp-base-line-height);
+        white-space: nowrap;
+    }
+
+    fast-anchored-region::part(region) {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: visible;
+    }
+
+    :host(.top) fast-anchored-region::part(region),
+    :host(.bottom) fast-anchored-region::part(region) {
+        flex-direction: row;
+    }
+
+    :host(.right) fast-anchored-region::part(region),
+    :host(.left) fast-anchored-region::part(region) {
+        flex-direction: column;
     }
 
     :host(.top) .tooltip {
