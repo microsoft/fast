@@ -38,7 +38,7 @@ class DefaultIntersectionObserver {
 }
 
 ((window as unknown) as WindowWithResizeObserver).ResizeObserver = DefaultResizeObserver;
-(window as WindowWithIntersectionObserver).IntersectionObserver = DefaultIntersectionObserver;
+((window as unknown) as WindowWithIntersectionObserver).IntersectionObserver = DefaultIntersectionObserver;
 
 const anchorElement: HTMLDivElement = document.createElement("div");
 
