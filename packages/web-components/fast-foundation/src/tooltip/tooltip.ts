@@ -1,5 +1,5 @@
 import { attr, DOM, FASTElement, observable } from "@microsoft/fast-element";
-import { AnchoredRegion } from "../anchored-region";
+import { AnchoredRegion, AxisPositioningMode, AxisScalingMode } from "../anchored-region";
 import { keyCodeEscape } from "@microsoft/fast-web-utilities";
 
 export type TooltipPosition = "top" | "right" | "bottom" | "left";
@@ -84,16 +84,22 @@ export class Tooltip extends FASTElement {
     }
 
     @observable
-    public verticalPositioningMode: string = "dynamic";
+    public verticalPositioningMode: AxisPositioningMode = "dynamic";
 
     @observable
-    public horizontalPositioningMode: string = "dynamic";
+    public horizontalPositioningMode: AxisPositioningMode = "dynamic";
 
     @observable
-    public horizontalInset: string = "false";
+    public horizontalInset: string = "true";
 
     @observable
     public verticalInset: string = "false";
+
+    @observable
+    public horizontalScaling: AxisScalingMode = "anchor";
+
+    @observable
+    public verticalScaling: AxisScalingMode = "content";
 
     @observable
     public verticalDefaultPosition: string | undefined = undefined;
@@ -209,6 +215,8 @@ export class Tooltip extends FASTElement {
                 this.horizontalDefaultPosition = undefined;
                 this.horizontalInset = "true";
                 this.verticalInset = "false";
+                this.horizontalScaling = "anchor";
+                this.verticalScaling = "content";
                 break;
 
             case "bottom":
@@ -218,6 +226,8 @@ export class Tooltip extends FASTElement {
                 this.horizontalDefaultPosition = undefined;
                 this.horizontalInset = "true";
                 this.verticalInset = "false";
+                this.horizontalScaling = "anchor";
+                this.verticalScaling = "content";
                 break;
 
             case "right":
@@ -227,6 +237,8 @@ export class Tooltip extends FASTElement {
                 this.horizontalDefaultPosition = "right";
                 this.horizontalInset = "false";
                 this.verticalInset = "true";
+                this.horizontalScaling = "content";
+                this.verticalScaling = "anchor";
                 break;
 
             case "left":
@@ -236,6 +248,8 @@ export class Tooltip extends FASTElement {
                 this.horizontalDefaultPosition = "left";
                 this.horizontalInset = "false";
                 this.verticalInset = "true";
+                this.horizontalScaling = "content";
+                this.verticalScaling = "anchor";
                 break;
 
             case null:
@@ -243,8 +257,10 @@ export class Tooltip extends FASTElement {
                 this.horizontalPositioningMode = "dynamic";
                 this.verticalDefaultPosition = undefined;
                 this.horizontalDefaultPosition = undefined;
-                this.horizontalInset = "false";
+                this.horizontalInset = "true";
                 this.verticalInset = "false";
+                this.horizontalScaling = "anchor";
+                this.verticalScaling = "content";
                 break;
         }
     }
@@ -306,7 +322,6 @@ export class Tooltip extends FASTElement {
         this.regionStyle = hiddenRegionStyle;
         this.region.viewportElement = null;
         this.region.anchorElement = null;
-        this.region.regionStyle = "old";
     };
 
     private showRegion = (): void => {
