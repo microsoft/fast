@@ -8,12 +8,11 @@ import {
     ButtonBaseClassNameContract,
     ManagedClasses,
 } from "@microsoft/fast-components-class-name-contracts-msft";
-import { Subtract } from "utility-types";
 
 export type ButtonBaseManagedClasses = ManagedClasses<ButtonBaseClassNameContract>;
 export interface ButtonBaseHandledProps
     extends ButtonBaseManagedClasses,
-        Subtract<ButtonHandledProps, ButtonManagedClasses> {
+        Omit<ButtonHandledProps, keyof ButtonManagedClasses> {
     /**
      * The preceding content
      */

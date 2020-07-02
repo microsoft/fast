@@ -8,12 +8,11 @@ import {
     ManagedClasses,
     TreeViewItemClassNameContract,
 } from "@microsoft/fast-components-class-name-contracts-msft";
-import { Subtract } from "utility-types";
 
 export type TreeViewItemManagedClasses = ManagedClasses<TreeViewItemClassNameContract>;
 export interface TreeViewItemHandledProps
     extends TreeViewItemManagedClasses,
-        Subtract<BaseTreeViewItemHandledProps, BaseTreeViewItemManagedClasses> {
+        Omit<BaseTreeViewItemHandledProps, keyof BaseTreeViewItemManagedClasses> {
     /**
      * The preceding content
      */

@@ -13,7 +13,6 @@ import MSFTSubheading, {
     SubheadingTag,
     SubheadingUnhandledProps,
 } from "./subheading";
-import { Subtract } from "utility-types";
 
 /*
  * The type returned by manageJss type is very complicated so we'll let the
@@ -22,9 +21,9 @@ import { Subtract } from "utility-types";
 const Subheading = manageJss(SubheadingStyles)(MSFTSubheading);
 type Subheading = InstanceType<typeof MSFTSubheading>;
 
-type SubheadingHandledProps = Subtract<
+type SubheadingHandledProps = Omit<
     MSFTSubheadingHandledProps,
-    SubheadingManagedClasses
+    keyof SubheadingManagedClasses
 >;
 type SubheadingProps = ManagedJSSProps<
     MSFTSubheadingProps,

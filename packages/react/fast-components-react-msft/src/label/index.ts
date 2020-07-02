@@ -13,7 +13,6 @@ import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { DesignSystem, LabelStyles } from "@microsoft/fast-components-styles-msft";
 import labelSchema from "./label.schema";
 import labelSchema2 from "./label.schema.2";
-import { Subtract } from "utility-types";
 
 /*
  * The type returned by manageJss type is very complicated so we'll let the
@@ -22,7 +21,7 @@ import { Subtract } from "utility-types";
 const Label = manageJss(LabelStyles)(BaseLabel);
 type Label = InstanceType<typeof Label>;
 
-type LabelHandledProps = Subtract<BaseLabelHandledProps, LabelManagedClasses>;
+type LabelHandledProps = Omit<BaseLabelHandledProps, keyof LabelManagedClasses>;
 type LabelProps = ManagedJSSProps<BaseLabelProps, LabelClassNameContract, DesignSystem>;
 
 export {

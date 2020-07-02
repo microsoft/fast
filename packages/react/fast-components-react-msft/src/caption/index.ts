@@ -12,7 +12,6 @@ import MSFTCaption, {
     CaptionHandledProps as MSFTCaptionHandledProps,
     CaptionProps as MSFTCaptionProps,
 } from "./caption";
-import { Subtract } from "utility-types";
 
 /*
  * The type returned by manageJss type is very complicated so we'll let the
@@ -21,7 +20,7 @@ import { Subtract } from "utility-types";
 const Caption = manageJss(CaptionStyles)(MSFTCaption);
 type Caption = InstanceType<typeof Caption>;
 
-type CaptionHandledProps = Subtract<MSFTCaptionHandledProps, CaptionManagedClasses>;
+type CaptionHandledProps = Omit<MSFTCaptionHandledProps, keyof CaptionManagedClasses>;
 type CaptionProps = ManagedJSSProps<
     MSFTCaptionProps,
     CaptionClassNameContract,

@@ -12,7 +12,6 @@ import MSFTMetatext, {
     MetatextHandledProps as MSFTMetatextHandledProps,
     MetatextProps as MSFTMetatextProps,
 } from "./metatext";
-import { Subtract } from "utility-types";
 
 /*
  * The type returned by manageJss type is very complicated so we'll let the
@@ -21,7 +20,7 @@ import { Subtract } from "utility-types";
 const Metatext = manageJss(MetatextStyles)(MSFTMetatext);
 type Metatext = InstanceType<typeof Metatext>;
 
-type MetatextHandledProps = Subtract<MSFTMetatextHandledProps, MetatextManagedClasses>;
+type MetatextHandledProps = Omit<MSFTMetatextHandledProps, keyof MetatextManagedClasses>;
 type MetatextProps = ManagedJSSProps<
     MSFTMetatextProps,
     MetatextClassNameContract,

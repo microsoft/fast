@@ -11,7 +11,6 @@ import {
     FlyoutClassNameContract,
     ManagedClasses,
 } from "@microsoft/fast-components-class-name-contracts-msft";
-import { Subtract } from "utility-types";
 
 export enum FlyoutHorizontalPosition {
     left = ViewportPositionerHorizontalPosition.left,
@@ -42,7 +41,7 @@ interface ViewportPositionerSubtractedProps extends ViewportPositionerManagedCla
 
 export type FlyoutManagedClasses = ManagedClasses<FlyoutClassNameContract>;
 export interface FlyoutHandledProps
-    extends Subtract<ViewportPositionerHandledProps, ViewportPositionerSubtractedProps>,
+    extends Omit<ViewportPositionerHandledProps, keyof ViewportPositionerSubtractedProps>,
         FlyoutManagedClasses {
     /**
      *  Reference to the element the positioner is anchored to

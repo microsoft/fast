@@ -8,7 +8,6 @@ import {
     ButtonClassNameContract,
     ManagedClasses,
 } from "@microsoft/fast-components-class-name-contracts-msft";
-import { Subtract } from "utility-types";
 
 export enum ButtonAppearance {
     justified = "justified",
@@ -21,7 +20,7 @@ export enum ButtonAppearance {
 export type ButtonManagedClasses = ManagedClasses<ButtonClassNameContract>;
 export interface ButtonHandledProps
     extends ButtonManagedClasses,
-        Subtract<BaseButtonHandledProps, BaseButtonManagedClasses> {
+        Omit<BaseButtonHandledProps, keyof BaseButtonManagedClasses> {
     /**
      * The Button appearance
      */

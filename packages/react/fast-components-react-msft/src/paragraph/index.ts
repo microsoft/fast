@@ -12,7 +12,6 @@ import MSFTParagraph, {
     ParagraphSize,
     ParagraphUnhandledProps,
 } from "./paragraph";
-import { Subtract } from "utility-types";
 
 /*
  * The type returned by manageJss type is very complicated so we'll let the
@@ -21,7 +20,10 @@ import { Subtract } from "utility-types";
 const Paragraph = manageJss(ParagraphStyles)(MSFTParagraph);
 type Paragraph = InstanceType<typeof Paragraph>;
 
-type ParagraphHandledProps = Subtract<MSFTParagraphHandledProps, ParagraphManagedClasses>;
+type ParagraphHandledProps = Omit<
+    MSFTParagraphHandledProps,
+    keyof ParagraphManagedClasses
+>;
 type ParagraphProps = ManagedJSSProps<
     MSFTParagraphProps,
     ParagraphClassNameContract,

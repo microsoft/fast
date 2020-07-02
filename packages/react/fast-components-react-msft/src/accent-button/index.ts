@@ -12,7 +12,6 @@ import {
 import { DisplayNamePrefix } from "../utilities";
 import accentButtonSchema from "./accent-button.schema";
 import accentButtonSchema2 from "./accent-button.schema.2";
-import { Subtract } from "utility-types";
 
 /*
  * The type returned by manageJss type is very complicated so we'll let the
@@ -21,9 +20,9 @@ import { Subtract } from "utility-types";
 const AccentButton = manageJss(AccentButtonStyles)(ButtonBase);
 type AccentButton = InstanceType<typeof AccentButton>;
 
-type AccentButtonHandledProps = Subtract<
+type AccentButtonHandledProps = Omit<
     ButtonBaseHandledProps,
-    ButtonBaseManagedClasses
+    keyof ButtonBaseManagedClasses
 >;
 type AccentButtonProps = ManagedJSSProps<
     ButtonBaseProps,

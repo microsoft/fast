@@ -9,7 +9,6 @@ import {
 import { SelectDeviceClassNameContract } from "./select-device.class-name-contract";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import SelectDeviceStyles from "./select-device.style";
-import { Subtract } from "utility-types";
 
 /*
  * The type returned by manageJss type is very complicated so we'll let the
@@ -19,7 +18,7 @@ const SelectDevice = manageJss(SelectDeviceStyles)(BaseSelectDevice);
 type SelectDevice = InstanceType<typeof SelectDevice>;
 
 interface SelectDeviceHandledProps
-    extends Subtract<BaseSelectDeviceHandledProps, SelectDeviceManagedClasses> {}
+    extends Omit<BaseSelectDeviceHandledProps, keyof SelectDeviceManagedClasses> {}
 type SelectDeviceProps = ManagedJSSProps<
     BaseSelectDeviceProps,
     SelectDeviceClassNameContract,

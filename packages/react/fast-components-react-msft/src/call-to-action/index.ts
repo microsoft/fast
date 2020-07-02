@@ -11,7 +11,6 @@ import MSFTCallToAction, {
 } from "./call-to-action";
 import callToActionSchema from "./call-to-action.schema";
 import callToActionSchema2 from "./call-to-action.schema.2";
-import { Subtract } from "utility-types";
 
 /*
  * The type returned by manageJss type is very complicated so we'll let the
@@ -20,9 +19,9 @@ import { Subtract } from "utility-types";
 const CallToAction = manageJss(CallToActionStyles)(MSFTCallToAction);
 type CallToAction = InstanceType<typeof CallToAction>;
 
-type CallToActionHandledProps = Subtract<
+type CallToActionHandledProps = Omit<
     MSFTCallToActionHandledProps,
-    CallToActionManagedClasses
+    keyof CallToActionManagedClasses
 >;
 type CallToActionProps = ManagedJSSProps<
     MSFTCallToActionProps,

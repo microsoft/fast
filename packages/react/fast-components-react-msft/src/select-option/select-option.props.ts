@@ -8,12 +8,11 @@ import {
     ManagedClasses,
     SelectOptionClassNameContract,
 } from "@microsoft/fast-components-class-name-contracts-msft";
-import { Subtract } from "utility-types";
 
 export type SelectOptionManagedClasses = ManagedClasses<SelectOptionClassNameContract>;
 export interface SelectOptionHandledProps
     extends SelectOptionManagedClasses,
-        Subtract<BaseListboxItemHandledProps, BaseListboxItemManagedClasses> {
+        Omit<BaseListboxItemHandledProps, keyof BaseListboxItemManagedClasses> {
     /**
      * The select option item glyph render prop
      */

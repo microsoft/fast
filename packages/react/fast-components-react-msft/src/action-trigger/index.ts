@@ -14,7 +14,6 @@ import MSFTActionTrigger, {
 } from "./action-trigger";
 import actionTriggerSchema from "./action-trigger.schema";
 import actionTriggerSchema2 from "./action-trigger.schema.2";
-import { Subtract } from "utility-types";
 
 /*
  * The type returned by manageJss type is very complicated so we'll let the
@@ -23,9 +22,9 @@ import { Subtract } from "utility-types";
 const ActionTrigger = manageJss(ActionTriggerStyles)(MSFTActionTrigger);
 type ActionTrigger = InstanceType<typeof ActionTrigger>;
 
-type ActionTriggerHandledProps = Subtract<
+type ActionTriggerHandledProps = Omit<
     MSFTActionTriggerHandledProps,
-    ActionTriggerManagedClasses
+    keyof ActionTriggerManagedClasses
 >;
 type ActionTriggerProps = ManagedJSSProps<
     MSFTActionTriggerProps,

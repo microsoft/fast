@@ -10,7 +10,6 @@ import MSFTSelect, {
 } from "./select";
 import selectSchema from "./select.schema";
 import selectSchema2 from "./select.schema.2";
-import { Subtract } from "utility-types";
 
 /*
  * The type returned by manageJss type is very complicated so we'll let the
@@ -19,7 +18,7 @@ import { Subtract } from "utility-types";
 const Select = manageJss(SelectStyles)(MSFTSelect);
 type Select = InstanceType<typeof Select>;
 
-type SelectHandledProps = Subtract<MSFTSelectHandledProps, SelectManagedClasses>;
+type SelectHandledProps = Omit<MSFTSelectHandledProps, keyof SelectManagedClasses>;
 type SelectProps = ManagedJSSProps<
     MSFTSelectProps,
     SelectClassNameContract,

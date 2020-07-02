@@ -15,7 +15,6 @@ import {
 import { DisplayNamePrefix } from "../utilities";
 import stealthButtonSchema from "./stealth-button.schema";
 import stealthButtonSchema2 from "./stealth-button.schema.2";
-import { Subtract } from "utility-types";
 
 /*
  * The type returned by manageJss type is very complicated so we'll let the
@@ -24,9 +23,9 @@ import { Subtract } from "utility-types";
 const StealthButton = manageJss(StealthButtonStyles)(ButtonBase);
 type StealthButton = InstanceType<typeof StealthButton>;
 
-type StealthButtonHandledProps = Subtract<
+type StealthButtonHandledProps = Omit<
     ButtonBaseHandledProps,
-    ButtonBaseManagedClasses
+    keyof ButtonBaseManagedClasses
 >;
 type StealthButtonProps = ManagedJSSProps<
     ButtonBaseProps,

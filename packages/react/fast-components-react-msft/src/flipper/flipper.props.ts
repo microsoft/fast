@@ -8,7 +8,6 @@ import {
     FlipperClassNameContract,
     ManagedClasses,
 } from "@microsoft/fast-components-class-name-contracts-msft";
-import { Subtract } from "utility-types";
 
 export enum FlipperDirection {
     next = "next",
@@ -17,7 +16,7 @@ export enum FlipperDirection {
 
 export type FlipperManagedClasses = ManagedClasses<FlipperClassNameContract>;
 export interface FlipperHandledProps
-    extends Subtract<ButtonHandledProps, ButtonManagedClasses>,
+    extends Omit<ButtonHandledProps, keyof ButtonManagedClasses>,
         FlipperManagedClasses {
     /**
      * The flipper direction

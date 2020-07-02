@@ -10,7 +10,6 @@ import MSFTSlider, {
 } from "./slider";
 import sliderSchema from "./slider.schema";
 import sliderSchema2 from "./slider.schema.2";
-import { Subtract } from "utility-types";
 
 /*
  * The type returned by manageJss type is very complicated so we'll let the
@@ -19,7 +18,7 @@ import { Subtract } from "utility-types";
 const Slider = manageJss(SliderStyles)(MSFTSlider);
 type Slider = InstanceType<typeof Slider>;
 
-type SliderHandledProps = Subtract<MSFTSliderHandledProps, SliderManagedClasses>;
+type SliderHandledProps = Omit<MSFTSliderHandledProps, keyof SliderManagedClasses>;
 type SliderProps = ManagedJSSProps<
     MSFTSliderProps,
     SliderClassNameContract,

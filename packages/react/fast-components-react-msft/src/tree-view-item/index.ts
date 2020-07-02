@@ -10,7 +10,6 @@ import MSFTTreeViewItem, {
     TreeViewItemManagedClasses,
     TreeViewItemUnhandledProps,
 } from "./tree-view-item";
-import { Subtract } from "utility-types";
 
 /*
  * The type returned by manageJss type is very complicated so we'll let the
@@ -19,9 +18,9 @@ import { Subtract } from "utility-types";
 const TreeViewItem = manageJss(TreeViewItemStyles)(MSFTTreeViewItem);
 type TreeViewItem = InstanceType<typeof TreeViewItem>;
 
-type TreeViewItemHandledProps = Subtract<
+type TreeViewItemHandledProps = Omit<
     MSFTTreeViewItemHandledProps,
-    TreeViewItemManagedClasses
+    keyof TreeViewItemManagedClasses
 >;
 type TreeViewItemProps = ManagedJSSProps<
     MSFTTreeViewItemProps,

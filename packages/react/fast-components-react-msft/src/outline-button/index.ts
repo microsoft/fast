@@ -15,7 +15,6 @@ import {
 import { DisplayNamePrefix } from "../utilities";
 import outlineButtonSchema from "./outline-button.schema";
 import outlineButtonSchema2 from "./outline-button.schema.2";
-import { Subtract } from "utility-types";
 
 /*
  * The type returned by manageJss type is very complicated so we'll let the
@@ -24,9 +23,9 @@ import { Subtract } from "utility-types";
 const OutlineButton = manageJss(OutlineButtonStyles)(ButtonBase);
 type OutlineButton = InstanceType<typeof OutlineButton>;
 
-type OutlineButtonHandledProps = Subtract<
+type OutlineButtonHandledProps = Omit<
     ButtonBaseHandledProps,
-    ButtonBaseManagedClasses
+    keyof ButtonBaseManagedClasses
 >;
 type OutlineButtonProps = ManagedJSSProps<
     ButtonBaseProps,

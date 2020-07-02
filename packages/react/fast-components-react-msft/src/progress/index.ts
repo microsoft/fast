@@ -11,7 +11,6 @@ import MSFTProgress, {
 } from "./progress";
 import progressSchema from "./progress.schema";
 import progressSchema2 from "./progress.schema.2";
-import { Subtract } from "utility-types";
 
 /*
  * The type returned by manageJss type is very complicated so we'll let the
@@ -20,7 +19,7 @@ import { Subtract } from "utility-types";
 const Progress = manageJss(ProgressStyles)(MSFTProgress);
 type Progress = InstanceType<typeof Progress>;
 
-type ProgressHandledProps = Subtract<MSFTProgressHandledProps, ProgressManagedClasses>;
+type ProgressHandledProps = Omit<MSFTProgressHandledProps, keyof ProgressManagedClasses>;
 type ProgressProps = ManagedJSSProps<
     MSFTProgressProps,
     ProgressClassNameContract,

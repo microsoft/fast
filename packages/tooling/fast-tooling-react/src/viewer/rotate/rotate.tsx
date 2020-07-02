@@ -10,7 +10,6 @@ import {
 import { RotateClassNameContract } from "./rotate.class-name-contract";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import RotateStyles from "./rotate.style";
-import { Subtract } from "utility-types";
 
 /*
  * The type returned by manageJss type is very complicated so we'll let the
@@ -20,7 +19,7 @@ const Rotate = manageJss(RotateStyles)(BaseRotate);
 type Rotate = InstanceType<typeof Rotate>;
 
 interface RotateHandledProps
-    extends Subtract<BaseRotateHandledProps, RotateManagedClasses> {}
+    extends Omit<BaseRotateHandledProps, keyof RotateManagedClasses> {}
 type RotateProps = ManagedJSSProps<BaseRotateProps, RotateClassNameContract, {}>;
 
 export {

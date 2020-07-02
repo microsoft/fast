@@ -15,7 +15,6 @@ import {
 import { DisplayNamePrefix } from "../utilities";
 import neutralButtonSchema from "./neutral-button.schema";
 import neutralButtonSchema2 from "./neutral-button.schema.2";
-import { Subtract } from "utility-types";
 
 /*
  * The type returned by manageJss type is very complicated so we'll let the
@@ -24,9 +23,9 @@ import { Subtract } from "utility-types";
 const NeutralButton = manageJss(NeutralButtonStyles)(ButtonBase);
 type NeutralButton = InstanceType<typeof NeutralButton>;
 
-type NeutralButtonHandledProps = Subtract<
+type NeutralButtonHandledProps = Omit<
     ButtonBaseHandledProps,
-    ButtonBaseManagedClasses
+    keyof ButtonBaseManagedClasses
 >;
 type NeutralButtonProps = ManagedJSSProps<
     ButtonBaseProps,
