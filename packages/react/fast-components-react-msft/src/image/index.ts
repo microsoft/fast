@@ -12,6 +12,7 @@ import {
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { DesignSystem, ImageStyles } from "@microsoft/fast-components-styles-msft";
 import imageSchema from "./image.schema";
+import { Subtract } from "utility-types";
 
 /*
  * The type returned by manageJss type is very complicated so we'll let the

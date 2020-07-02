@@ -13,6 +13,7 @@ import {
     TextActionUnhandledProps,
 } from "./text-action.props";
 import MSFTTextAction from "./text-action";
+import { Subtract } from "utility-types";
 
 /*
  * The type returned by manageJss type is very complicated so we'll let the

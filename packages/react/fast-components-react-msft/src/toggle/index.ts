@@ -12,6 +12,7 @@ import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { DesignSystem, ToggleStyles } from "@microsoft/fast-components-styles-msft";
 import toggleSchema from "./toggle.schema";
 import toggleSchema2 from "./toggle.schema.2";
+import { Subtract } from "utility-types";
 
 /*
  * The type returned by manageJss type is very complicated so we'll let the

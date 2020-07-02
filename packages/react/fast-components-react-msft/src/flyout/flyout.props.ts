@@ -11,6 +11,7 @@ import {
     FlyoutClassNameContract,
     ManagedClasses,
 } from "@microsoft/fast-components-class-name-contracts-msft";
+import { Subtract } from "utility-types";
 
 export enum FlyoutHorizontalPosition {
     left = ViewportPositionerHorizontalPosition.left,

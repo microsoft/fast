@@ -10,6 +10,7 @@ import MSFTContextMenu, {
     ContextMenuHandledProps as MSFTContextMenuHandledProps,
     ContextMenuProps as MSFTContextMenuProps,
 } from "./context-menu";
+import { Subtract } from "utility-types";
 
 const ContextMenu = manageJss(ContextMenuStyles)(MSFTContextMenu);
 type ContextMenu = InstanceType<typeof ContextMenu>;

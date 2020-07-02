@@ -131,6 +131,7 @@
     "@microsoft/fast-jss-utilities": "^4.7.17",
     "@microsoft/fast-tooling": "^0.6.1",
     "@microsoft/fast-web-utilities": "^4.5.2",
-    "exenv-es6": "^1.0.0"
+    "exenv-es6": "^1.0.0",
+    "utility-types": "^3.7.0"
   }
 }

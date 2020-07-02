@@ -8,6 +8,7 @@ import {
     ManagedClasses,
     SelectOptionClassNameContract,
 } from "@microsoft/fast-components-class-name-contracts-msft";
+import { Subtract } from "utility-types";
 
 export type SelectOptionManagedClasses = ManagedClasses<SelectOptionClassNameContract>;
 export interface SelectOptionHandledProps

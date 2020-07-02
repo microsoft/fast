@@ -12,6 +12,7 @@ import {
 import { DisplayNamePrefix } from "../utilities";
 import accentButtonSchema from "./accent-button.schema";
 import accentButtonSchema2 from "./accent-button.schema.2";
+import { Subtract } from "utility-types";
 
 /*
  * The type returned by manageJss type is very complicated so we'll let the

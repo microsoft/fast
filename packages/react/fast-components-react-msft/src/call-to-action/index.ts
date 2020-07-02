@@ -11,6 +11,7 @@ import MSFTCallToAction, {
 } from "./call-to-action";
 import callToActionSchema from "./call-to-action.schema";
 import callToActionSchema2 from "./call-to-action.schema.2";
+import { Subtract } from "utility-types";
 
 /*
  * The type returned by manageJss type is very complicated so we'll let the

@@ -10,6 +10,7 @@ import MSFTSlider, {
 } from "./slider";
 import sliderSchema from "./slider.schema";
 import sliderSchema2 from "./slider.schema.2";
+import { Subtract } from "utility-types";
 
 /*
  * The type returned by manageJss type is very complicated so we'll let the

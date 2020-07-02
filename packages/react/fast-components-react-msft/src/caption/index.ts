@@ -12,6 +12,7 @@ import MSFTCaption, {
     CaptionHandledProps as MSFTCaptionHandledProps,
     CaptionProps as MSFTCaptionProps,
 } from "./caption";
+import { Subtract } from "utility-types";
 
 /*
  * The type returned by manageJss type is very complicated so we'll let the

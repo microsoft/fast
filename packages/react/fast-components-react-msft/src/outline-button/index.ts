@@ -15,6 +15,7 @@ import {
 import { DisplayNamePrefix } from "../utilities";
 import outlineButtonSchema from "./outline-button.schema";
 import outlineButtonSchema2 from "./outline-button.schema.2";
+import { Subtract } from "utility-types";
 
 /*
  * The type returned by manageJss type is very complicated so we'll let the

@@ -14,6 +14,7 @@ import MSFTFlyout, {
 } from "./flyout";
 import flyoutSchema from "./flyout.schema";
 import flyoutSchema2 from "./flyout.schema.2";
+import { Subtract } from "utility-types";
 
 /*
  * The type returned by manageJss type is very complicated so we'll let the
