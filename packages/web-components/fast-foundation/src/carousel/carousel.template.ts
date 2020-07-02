@@ -64,7 +64,9 @@ const tabbedTemplate: ViewTemplate = html<Carousel>`
 
 export const CarouselTemplate = html<Carousel>`
 <template ${ref("carousel")}>
-    <slot style="${x => (x.tabbed ? "display: none;" : "")}" ${slotted("items")}></slot>
+    <div style="${x => (x.tabbed ? "display: none;" : "")}">
+        <slot ${slotted("items")}></slot>
+    </div>
     <div
         class="play-control"
         @click="${(x, c) => x.handlePlayClick(c.event)}"
@@ -78,10 +80,12 @@ export const CarouselTemplate = html<Carousel>`
     <div 
         class="previous-flipper flipper"
         @click="${(x, c) => x.handleFlipperClick(-1, c.event as MouseEvent)}"
-        tabindex="${x => (x.tabbed ? "-1" : "0")}"
+        @keypress="${(x, c) => x.handleKeypress(-1, c.event as KeyboardEvent)}"
     >
         <slot name="previous-button" part="previous-button">
-            <fast-flipper direction=${FlipperDirection.previous}>
+            <fast-flipper tabindex="${x => (x.tabbed ? "-1" : "0")}" direction=${
+    FlipperDirection.previous
+}>
         </slot>
     </div>
 
@@ -90,10 +94,12 @@ export const CarouselTemplate = html<Carousel>`
     <div
         class="next-flipper flipper"
         @click="${(x, c) => x.handleFlipperClick(1, c.event as MouseEvent)}"
-        tabindex="${x => (x.tabbed ? "-1" : "0")}"
+        @keypress="${(x, c) => x.handleKeypress(1, c.event as KeyboardEvent)}"
     >
         <slot name="next-button" part="next-button">
-            <fast-flipper direction=${FlipperDirection.next}>
+            <fast-flipper tabindex="${x => (x.tabbed ? "-1" : "0")}" direction=${
+    FlipperDirection.next
+}>
         </slot>
     </div>
 </template>`;

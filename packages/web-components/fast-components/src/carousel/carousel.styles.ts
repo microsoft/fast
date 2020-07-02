@@ -13,7 +13,7 @@ export const CarouselStyles = css`
         font-size: var(--type-ramp-minus-1-font-size);
         line-height: var(--type-ramp-minus-1-font-size);
         color: var(--neutral-foreground-rest);
-        display: flex;
+        display: inline-flex;
         align-items: center;
         justify-content: space-evenly;
         height: 100%;
@@ -38,6 +38,7 @@ export const CarouselStyles = css`
     }
 
     .flipper {
+        transition: all 0.2s ease-in-out;
         position: absolute;
         z-index: 1;
     }
