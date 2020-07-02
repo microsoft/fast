@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.1.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-creator@0.0.9...@microsoft/fast-creator@0.1.0) (2020-07-02)
+
+
+### Bug Fixes
+
+* update the sites to use the same favicon, update the logo ([#3406](https://github.com/Microsoft/fast/issues/3406)) ([ad8d258](https://github.com/Microsoft/fast/commit/ad8d25899f075d137eb23e77f046016b512f0893))
+
+
+### Features
+
+* adds a wrapper to the active component ([#3371](https://github.com/Microsoft/fast/issues/3371)) ([39383c8](https://github.com/Microsoft/fast/commit/39383c89a25750095fdfd1fd48b8ccfa8446b80e))
+
+
+
+
+
 ## [0.0.9](https://github.com/Microsoft/fast/compare/@microsoft/fast-creator@0.0.8...@microsoft/fast-creator@0.0.9) (2020-06-26)
 
 **Note:** Version bump only for package @microsoft/fast-creator

@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.14.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-element@0.13.0...@microsoft/fast-element@0.14.0) (2020-07-02)
+
+
+### Bug Fixes
+
+* **fast-element:** do not notify when binding observer is disconnected ([#3418](https://github.com/Microsoft/fast/issues/3418)) ([dbf3093](https://github.com/Microsoft/fast/commit/dbf3093ddf3e45295c67e1b63260a9d68bf2f307))
+
+
+### Features
+
+* **fast-element:** support bindings and observables with volatile dependencies ([#3402](https://github.com/Microsoft/fast/issues/3402)) ([a00a907](https://github.com/Microsoft/fast/commit/a00a9070de4f454f477bfa1feada9cacc9b10284))
+
+
+
+
+
 # [0.13.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-element@0.12.0...@microsoft/fast-element@0.13.0) (2020-06-26)
 
 
