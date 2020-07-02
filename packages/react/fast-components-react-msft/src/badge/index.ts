@@ -11,7 +11,6 @@ import MSFTBadge, {
 } from "./badge";
 import badgeSchema from "./badge.schema";
 import badgeSchema2 from "./badge.schema.2";
-import { Subtract } from "utility-types";
 
 /*
  * The type returned by manageJss type is very complicated so we'll let the
@@ -20,7 +19,7 @@ import { Subtract } from "utility-types";
 const Badge = manageJss(BadgeStyles)(MSFTBadge);
 type Badge = InstanceType<typeof Badge>;
 
-type BadgeHandledProps = Subtract<MSFTBadgeHandledProps, BadgeManagedClasses>;
+type BadgeHandledProps = Omit<MSFTBadgeHandledProps, keyof BadgeManagedClasses>;
 type BadgeProps = ManagedJSSProps<MSFTBadgeProps, BadgeClassNameContract, DesignSystem>;
 
 export {

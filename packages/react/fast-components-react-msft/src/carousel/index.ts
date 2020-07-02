@@ -13,7 +13,6 @@ import MSFTCarousel, {
     CarouselHandledProps as MSFTCarouselHandledProps,
     CarouselProps as MSFTCarouselProps,
 } from "./carousel";
-import { Subtract } from "utility-types";
 
 /*
  * The type returned by manageJss type is very complicated so we'll let the
@@ -22,7 +21,7 @@ import { Subtract } from "utility-types";
 const Carousel = manageJss(CarouselStyles)(MSFTCarousel);
 type Carousel = InstanceType<typeof Carousel>;
 
-type CarouselHandledProps = Subtract<MSFTCarouselHandledProps, CarouselManagedClasses>;
+type CarouselHandledProps = Omit<MSFTCarouselHandledProps, keyof CarouselManagedClasses>;
 type CarouselProps = ManagedJSSProps<
     MSFTCarouselProps,
     CarouselClassNameContract,

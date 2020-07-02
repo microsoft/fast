@@ -12,7 +12,6 @@ import MSFTButton, {
 } from "./button";
 import buttonSchema from "./button.schema";
 import buttonSchema2 from "./button.schema.2";
-import { Subtract } from "utility-types";
 
 /*
  * The type returned by manageJss type is very complicated so we'll let the
@@ -21,7 +20,7 @@ import { Subtract } from "utility-types";
 const Button = manageJss(ButtonStyles)(MSFTButton);
 type Button = InstanceType<typeof Button>;
 
-type ButtonHandledProps = Subtract<MSFTButtonHandledProps, ButtonManagedClasses>;
+type ButtonHandledProps = Omit<MSFTButtonHandledProps, keyof ButtonManagedClasses>;
 type ButtonProps = ManagedJSSProps<
     MSFTButtonProps,
     ButtonClassNameContract,

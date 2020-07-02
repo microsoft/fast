@@ -8,14 +8,13 @@ import {
     AutoSuggestOptionClassNameContract,
     ManagedClasses,
 } from "@microsoft/fast-components-class-name-contracts-msft";
-import { Subtract } from "utility-types";
 
 export type AutoSuggestOptionManagedClasses = ManagedClasses<
     AutoSuggestOptionClassNameContract
 >;
 export interface AutoSuggestOptionHandledProps
     extends AutoSuggestOptionManagedClasses,
-        Subtract<BaseListboxItemHandledProps, BaseListboxItemManagedClasses> {
+        Omit<BaseListboxItemHandledProps, keyof BaseListboxItemManagedClasses> {
     /**
      * The function that formats the display based on current search string
      */

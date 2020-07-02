@@ -11,14 +11,13 @@ import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { BreadcrumbStyles, DesignSystem } from "@microsoft/fast-components-styles-msft";
 import breadcrumbSchema from "./breadcrumb.schema";
 import breadcrumbSchema2 from "./breadcrumb.schema.2";
-import { Subtract } from "utility-types";
 
 const Breadcrumb = manageJss(BreadcrumbStyles)(BaseBreadcrumb);
 type Breadcrumb = InstanceType<typeof Breadcrumb>;
 
-type BreadcrumbHandledProps = Subtract<
+type BreadcrumbHandledProps = Omit<
     BaseBreadcrumbHandledProps,
-    BreadcrumbManagedClasses
+    keyof BreadcrumbManagedClasses
 >;
 type BreadcrumbProps = ManagedJSSProps<
     BaseBreadcrumbProps,

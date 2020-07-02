@@ -1,6 +1,5 @@
 import React from "react";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
-import { Subtract } from "utility-types";
 import {
     Canvas as BaseCanvas,
     CanvasHandledProps as BaseCanvasHandledProps,
@@ -14,7 +13,7 @@ import {
 const Canvas = manageJss(canvasStyleSheet)(BaseCanvas);
 type Canvas = typeof Canvas;
 
-type CanvasHandledProps = Subtract<BaseCanvasHandledProps, CanvasManagedClasses>;
+type CanvasHandledProps = Omit<BaseCanvasHandledProps, keyof CanvasManagedClasses>;
 type CanvasProps = ManagedJSSProps<BaseCanvasProps, CanvasClassNamesContract, undefined>;
 
 export {

@@ -10,14 +10,13 @@ import MSFTSliderLabel, {
     SliderLabelManagedClasses,
     SliderLabelUnhandledProps,
 } from "./slider-label";
-import { Subtract } from "utility-types";
 
 const SliderLabel = manageJss(SliderLabelStyles)(MSFTSliderLabel);
 type SliderLabel = InstanceType<typeof SliderLabel>;
 
-type SliderLabelHandledProps = Subtract<
+type SliderLabelHandledProps = Omit<
     MSFTSliderLabelHandledProps,
-    SliderLabelManagedClasses
+    keyof SliderLabelManagedClasses
 >;
 type SliderLabelProps = ManagedJSSProps<
     MSFTSliderLabelProps,

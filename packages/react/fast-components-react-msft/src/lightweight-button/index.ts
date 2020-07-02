@@ -15,7 +15,6 @@ import {
 import { DisplayNamePrefix } from "../utilities";
 import lightweightButtonSchema from "./lightweight-button.schema";
 import lightweightButtonSchema2 from "./lightweight-button.schema.2";
-import { Subtract } from "utility-types";
 
 /*
  * The type returned by manageJss type is very complicated so we'll let the
@@ -24,9 +23,9 @@ import { Subtract } from "utility-types";
 const LightweightButton = manageJss(LightweightButtonStyles)(ButtonBase);
 type LightweightButton = InstanceType<typeof LightweightButton>;
 
-type LightweightButtonHandledProps = Subtract<
+type LightweightButtonHandledProps = Omit<
     ButtonBaseHandledProps,
-    ButtonBaseManagedClasses
+    keyof ButtonBaseManagedClasses
 >;
 type LightweightButtonProps = ManagedJSSProps<
     ButtonBaseProps,

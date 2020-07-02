@@ -8,12 +8,11 @@ import {
     ManagedClasses,
     SliderClassNameContract,
 } from "@microsoft/fast-components-class-name-contracts-msft";
-import { Subtract } from "utility-types";
 
 export type SliderManagedClasses = ManagedClasses<SliderClassNameContract>;
 export interface SliderHandledProps
     extends SliderManagedClasses,
-        Subtract<BaseSliderHandledProps, BaseSliderManagedClasses> {}
+        Omit<BaseSliderHandledProps, keyof BaseSliderManagedClasses> {}
 
 export type SliderUnhandledProps = BaseSliderUnhandledProps;
 export type SliderProps = SliderHandledProps & SliderUnhandledProps;

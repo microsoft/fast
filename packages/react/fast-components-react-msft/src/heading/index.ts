@@ -14,7 +14,6 @@ import MSFTHeading, {
     HeadingHandledProps as MSFTHeadingHandledProps,
     HeadingProps as MSFTHeadingProps,
 } from "./heading";
-import { Subtract } from "utility-types";
 
 /*
  * The type returned by manageJss type is very complicated so we'll let the
@@ -23,7 +22,7 @@ import { Subtract } from "utility-types";
 const Heading = manageJss(HeadingStyles)(MSFTHeading);
 type Heading = InstanceType<typeof Heading>;
 
-type HeadingHandledProps = Subtract<MSFTHeadingHandledProps, HeadingManagedClasses>;
+type HeadingHandledProps = Omit<MSFTHeadingHandledProps, keyof HeadingManagedClasses>;
 type HeadingProps = ManagedJSSProps<
     MSFTHeadingProps,
     HeadingClassNameContract,

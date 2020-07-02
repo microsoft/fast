@@ -12,7 +12,6 @@ import MSFTFlipper, {
 } from "./flipper";
 import flipperSchema from "./flipper.schema";
 import flipperSchema2 from "./flipper.schema.2";
-import { Subtract } from "utility-types";
 
 /*
  * The type returned by manageJss type is very complicated so we'll let the
@@ -21,7 +20,7 @@ import { Subtract } from "utility-types";
 const Flipper = manageJss(FlipperStyles)(MSFTFlipper);
 type Flipper = InstanceType<typeof Flipper>;
 
-type FlipperHandledProps = Subtract<MSFTFlipperHandledProps, FlipperManagedClasses>;
+type FlipperHandledProps = Omit<MSFTFlipperHandledProps, keyof FlipperManagedClasses>;
 type FlipperProps = ManagedJSSProps<
     MSFTFlipperProps,
     FlipperClassNameContract,

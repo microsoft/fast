@@ -14,7 +14,6 @@ import MSFTFlyout, {
 } from "./flyout";
 import flyoutSchema from "./flyout.schema";
 import flyoutSchema2 from "./flyout.schema.2";
-import { Subtract } from "utility-types";
 
 /*
  * The type returned by manageJss type is very complicated so we'll let the
@@ -23,7 +22,7 @@ import { Subtract } from "utility-types";
 const Flyout = manageJss(FlyoutStyles)(MSFTFlyout);
 type Flyout = InstanceType<typeof Flyout>;
 
-type FlyoutHandledProps = Subtract<MSFTFlyoutHandledProps, FlyoutManagedClasses>;
+type FlyoutHandledProps = Omit<MSFTFlyoutHandledProps, keyof FlyoutManagedClasses>;
 type FlyoutProps = ManagedJSSProps<
     MSFTFlyoutProps,
     FlyoutClassNameContract,

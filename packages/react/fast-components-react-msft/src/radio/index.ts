@@ -12,7 +12,6 @@ import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { DesignSystem, RadioStyles } from "@microsoft/fast-components-styles-msft";
 import radioSchema from "./radio.schema";
 import radioSchema2 from "./radio.schema.2";
-import { Subtract } from "utility-types";
 
 /*
  * The type returned by manageJss type is very complicated so we'll let the
@@ -21,7 +20,7 @@ import { Subtract } from "utility-types";
 const Radio = manageJss(RadioStyles)(BaseRadio);
 type Radio = InstanceType<typeof Radio>;
 
-type RadioHandledProps = Subtract<BaseRadioHandledProps, RadioManagedClasses>;
+type RadioHandledProps = Omit<BaseRadioHandledProps, keyof RadioManagedClasses>;
 type RadioProps = ManagedJSSProps<BaseRadioProps, RadioClassNameContract, DesignSystem>;
 
 export {

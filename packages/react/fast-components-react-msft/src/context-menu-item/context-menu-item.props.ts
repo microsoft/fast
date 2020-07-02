@@ -8,14 +8,13 @@ import {
     ContextMenuItemClassNameContract,
     ManagedClasses,
 } from "@microsoft/fast-components-class-name-contracts-msft";
-import { Subtract } from "utility-types";
 
 export type ContextMenuItemManagedClasses = ManagedClasses<
     ContextMenuItemClassNameContract
 >;
 export interface ContextMenuItemHandledProps
     extends ContextMenuItemManagedClasses,
-        Subtract<BaseContextMenuItemHandledProps, BaseContextMenuItemManagedClasses> {
+        Omit<BaseContextMenuItemHandledProps, keyof BaseContextMenuItemManagedClasses> {
     /**
      * The element that comes after the primary content
      */

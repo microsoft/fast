@@ -11,7 +11,6 @@ import MSFTActionToggle, {
 } from "./action-toggle";
 import actionToggleSchema from "./action-toggle.schema";
 import actionToggleSchema2 from "./action-toggle.schema.2";
-import { Subtract } from "utility-types";
 
 /*
  * The type returned by manageJss type is very complicated so we'll let the
@@ -20,9 +19,9 @@ import { Subtract } from "utility-types";
 const ActionToggle = manageJss(ActionToggleStyles)(MSFTActionToggle);
 type ActionToggle = InstanceType<typeof ActionToggle>;
 
-type ActionToggleHandledProps = Subtract<
+type ActionToggleHandledProps = Omit<
     MSFTActionToggleHandledProps,
-    ActionToggleManagedClasses
+    keyof ActionToggleManagedClasses
 >;
 type ActionToggleProps = ManagedJSSProps<
     MSFTActionToggleProps,
