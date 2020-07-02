@@ -71,13 +71,13 @@ describe("NavigationMenu", () => {
 
         expect(rendered.find("a")).toHaveLength(2);
     });
-    test("should show items as spans if the `onLocationUpdate` callback has been included", () => {
+    test("should show items as buttons if the `onLocationUpdate` callback has been included", () => {
         const callback: any = jest.fn();
         const rendered: any = mount(
             <NavigationMenu {...navigationMenuPropsShallow} onLocationUpdate={callback} />
         );
 
-        expect(rendered.find("span")).toHaveLength(2);
+        expect(rendered.find("button")).toHaveLength(2);
     });
     test("should show items as buttons if the item contains its own items", () => {
         const rendered: any = mount(<NavigationMenu {...navigationMenuPropsNested} />);
@@ -136,7 +136,7 @@ describe("NavigationMenu", () => {
 
         expect(callback).toBeCalledTimes(0);
 
-        rendered.find("span").at(0).simulate("click");
+        rendered.find("button").at(0).simulate("click");
 
         expect(callback).toBeCalledTimes(1);
         expect(callback.mock.calls[0][0]).toBe("foo-location");
