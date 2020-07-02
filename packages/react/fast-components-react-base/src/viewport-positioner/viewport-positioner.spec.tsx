@@ -37,7 +37,7 @@ class DefaultIntersectionObserver {
     public takeRecords: any = null;
 }
 
-(window as WindowWithResizeObserver).ResizeObserver = DefaultResizeObserver;
+((window as unknown) as WindowWithResizeObserver).ResizeObserver = DefaultResizeObserver;
 (window as WindowWithIntersectionObserver).IntersectionObserver = DefaultIntersectionObserver;
 
 const anchorElement: HTMLDivElement = document.createElement("div");
@@ -1391,7 +1391,7 @@ describe("viewport positioner", (): void => {
         const container: HTMLDivElement = document.createElement("div");
         document.body.appendChild(container);
 
-        const ActualObserver: ConstructibleResizeObserver = (window as WindowWithResizeObserver)
+        const ActualObserver: ConstructibleResizeObserver = ((window as unknown) as WindowWithResizeObserver)
             .ResizeObserver;
         const construct: jest.Mock<any, any> = jest.fn();
         // Mock the resize observer
@@ -1403,7 +1403,7 @@ describe("viewport positioner", (): void => {
                 construct();
             }
         }
-        (window as WindowWithResizeObserver).ResizeObserver = MockResizeObserver;
+        ((window as unknown) as WindowWithResizeObserver).ResizeObserver = MockResizeObserver;
 
         // Render the component
         /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
@@ -1418,7 +1418,7 @@ describe("viewport positioner", (): void => {
 
         expect(construct).toBeCalledTimes(1);
         // Replace the window to it's original state
-        (window as WindowWithResizeObserver).ResizeObserver = ActualObserver;
+        ((window as unknown) as WindowWithResizeObserver).ResizeObserver = ActualObserver;
 
         document.body.removeChild(container);
     });
@@ -1427,7 +1427,7 @@ describe("viewport positioner", (): void => {
         const container: HTMLDivElement = document.createElement("div");
         document.body.appendChild(container);
 
-        const ActualObserver: ConstructibleResizeObserver = (window as WindowWithResizeObserver)
+        const ActualObserver: ConstructibleResizeObserver = ((window as unknown) as WindowWithResizeObserver)
             .ResizeObserver;
         const disconnect: jest.Mock<any, any> = jest.fn();
         // Mock the resize observer
@@ -1436,7 +1436,7 @@ describe("viewport positioner", (): void => {
             public unobserve: jest.Mock<any, any> = jest.fn();
             public disconnect: jest.Mock<any, any> = disconnect;
         }
-        (window as WindowWithResizeObserver).ResizeObserver = MockResizeObserver;
+        ((window as unknown) as WindowWithResizeObserver).ResizeObserver = MockResizeObserver;
 
         // Render the component
         const rendered: any = mount(
@@ -1451,7 +1451,7 @@ describe("viewport positioner", (): void => {
         rendered.unmount();
         expect(disconnect).toBeCalledTimes(1);
         // Replace the window to it's original state
-        (window as WindowWithResizeObserver).ResizeObserver = ActualObserver;
+        ((window as unknown) as WindowWithResizeObserver).ResizeObserver = ActualObserver;
 
         document.body.removeChild(container);
     });
