@@ -6,5 +6,5 @@ export const AnchoredRegionTemplate = html<AnchoredRegion>`
         <div class="region" part="region" ${ref("region")} style=${x => x.regionStyle}>
             ${when(x => x.initialLayoutComplete, html<AnchoredRegion>`<slot></slot>`)}
         </div>
-    ></template>
+    </template>
 `;
