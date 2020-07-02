@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.4.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-components@1.3.0...@microsoft/fast-components@1.4.0) (2020-07-02)
+
+
+### Bug Fixes
+
+* slider thumb does not respond to touch events, vertical sliders track parameters incorrect after scrolling page ([#3414](https://github.com/Microsoft/fast/issues/3414)) ([02f9ac4](https://github.com/Microsoft/fast/commit/02f9ac4306031aab1702e98083effc0ce858dec5))
+
+
+### Features
+
+* add tree-vew and tree-item components ([#3240](https://github.com/Microsoft/fast/issues/3240)) ([57eaa83](https://github.com/Microsoft/fast/commit/57eaa83293358383d03cbd3c5b6a9e6ffa797254))
+
+
+
+
+
 # [1.3.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-components@1.2.1...@microsoft/fast-components@1.3.0) (2020-06-26)
 
 

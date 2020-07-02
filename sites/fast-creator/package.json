@@ -1,6 +1,6 @@
 {
   "name": "@microsoft/fast-creator",
-  "version": "0.0.9",
+  "version": "0.1.0",
   "description": "Creator app for composing UIs and general UI development",
   "sideEffects": false,
   "private": true,
@@ -27,9 +27,9 @@
     "@microsoft/eslint-config-fast-dna": "^1.1.4",
     "@microsoft/fast-components-foundation-react": "^3.1.11",
     "@microsoft/fast-jss-manager-react": "^4.7.7",
-    "@microsoft/fast-jss-utilities": "^4.7.17",
-    "@microsoft/fast-layouts-react": "^4.11.15",
-    "@microsoft/site-utilities": "^0.2.0",
+    "@microsoft/fast-jss-utilities": "^4.7.18",
+    "@microsoft/fast-layouts-react": "^4.11.16",
+    "@microsoft/site-utilities": "^0.3.0",
     "@types/jest": "^25.2.1",
     "@types/node": "^9.6.7",
     "@types/react": "^16.8.0",
@@ -66,8 +66,8 @@
     "worker-loader": "^2.0.0"
   },
   "dependencies": {
-    "@microsoft/fast-components": "^1.3.0",
+    "@microsoft/fast-components": "^1.4.0",
     "@microsoft/fast-tooling": "^0.6.1",
-    "@microsoft/fast-tooling-react": "^2.2.4"
+    "@microsoft/fast-tooling-react": "^2.2.5"
   }
 }
