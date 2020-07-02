@@ -191,6 +191,11 @@ A region that renders below the anchor until that space is less than 100px.
 </div>
 ```
 
+The anchored region can be configured to scale to either the size of the content in it's slot, to the size of the element it is anchored to, or the available space between the anchor and the edge of the viewport element by setting the vertical/horizontal scaling attribute:
+- "anchor" - size to match anchor
+- "availablespace" - size to match space between the anchor and the viewport edge
+- "content" - the default, matches the size of the content in the region's slot. 
+
 The dimensions of the anchored region will match the dimensions of the content unless scaling is enabled on a particular axis (verticalscalingenabled & horizontalscalingenabled) in which case it will fill all available space between the anchor and viewport.
 
 The component allows users to set a "Positioning Mode" on each axis which defines how the component will behave:
@@ -214,13 +219,13 @@ NOTE: this component api will not be exposed outside of the fast-components pack
 - horizontal-default-position - Can be 'start', 'end', 'left', 'right' or 'unset'.  Default is 'unset'
 - horizontal-inset - Boolean that indicates whether the region should overlap the anchor on the horizontal axis. Default is false which places the region adjacent to the anchor element.
 - horizontal-threshold - Numeric value that defines how small in pixels the region must be to the edge of the viewport to switch to the opposite side of the anchor. The component favors the default position until this value is crossed.  When there is not enough space on either side or the value is unset the side with the most space is chosen.
-- horizontal-scaling-enabled - The region is sized from code to match available space, in other scenarios the region gets sized via content size.
+- horizontal-scaling - Can be "anchor", "availablespace" or "content". Default is "content" 
 
 - vertical-positioning-mode - Can be 'uncontrolled', 'locktodefault' or 'dynamic'.  Default is 'uncontrolled'.
 - vertical-default-position - Can be 'top', 'bottom' or 'unset'. Default is unset.
 - vertical-inset - Boolean that indicates whether the region should overlap the anchor on the vertical axis. Default is false which places the region adjacent to the anchor element.
 - vertical-threshold - Numeric value that defines how small the region must be to the edge of the viewport to switch to the opposite side of the anchor. The component favors the default position until this value is crossed.  When there is not enough space on either side or the value is unset the side with the most space is chosen.
-- vertical-scaling-enabled - The region is sized from code to match available space, in other scenarios the region gets sized via content size.
+- vertical-scaling - Can be "anchor", "availablespace" or "content". Default is "content" 
 
 - horizontal-position - read only, the current horizontal position of the component. Possible values are 'left', 'right' or 'unset'.
 - vertical-position - read only, the current vertical position of the component. Possible values are 'top', 'bottom' or 'unset'.
