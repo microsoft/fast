@@ -7,7 +7,7 @@ import {
 } from "../styles/recipes";
 
 export const CarouselStyles = css`
-    ${/* TODO: ADD Focus visible*/ ""} :host {
+    :host {
         box-sizing: border-box;
         font-family: var(--body-font);
         font-size: var(--type-ramp-minus-1-font-size);
@@ -17,6 +17,7 @@ export const CarouselStyles = css`
         align-items: center;
         justify-content: space-evenly;
         height: 100%;
+        min-height: 50px;
         width: 100%;
         position: relative;
         overflow: hidden;
@@ -34,9 +35,6 @@ export const CarouselStyles = css`
         opacity: 1;
     }
 
-    ::slotted(.slide) {
-    }
-
     .flipper {
         transition: all 0.2s ease-in-out;
         position: absolute;
@@ -51,28 +49,32 @@ export const CarouselStyles = css`
         right: 20px;
     }
 
-    .slide-container {
-    }
-
     .slide-tab {
         display: inline-block;
         padding: 4px;
-        border-radius: 40px;
+        margin: 4px;
+        position: relative;
         border: none;
         outline: none;
+        max-width: 32px;
+        min-width: 10px;
     }
 
     .slide-tab:before {
         opacity: 0.5;
-        width: 32px;
         border: 1px solid #bebebe;
-        border-radius: 40px;
+        border-radius: calc(var(--corner-radius) * 1px);
         opacity: 0.45;
         content: "";
         display: block;
         transition: all 0.05s ease-in-out;
         height: 4px;
-        background-color: #101010;
+        background-color: var(--background-color);
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
     }
 
     .slide-tab:hover:before {
@@ -91,17 +93,16 @@ export const CarouselStyles = css`
     }
 
     ::part(tablist) {
+        display: "inline-flex";
         position: absolute;
-        bottom: 10px;
+        padding: 0;
+        bottom: 15px;
         left: 50%;
         transform: translate(-50%, -50%);
-        z-index: 1;
-    }
-
-    ::part(tabpanel) {
-    }
-
-    ::part(tabpanelcontainer) {
+        z-index: 100;
+        max-width: 100%;
+        min-width: 25%;
+        overflow: hidden;
     }
 `.withBehaviors(
     accentFillRestBehavior,

@@ -11,6 +11,7 @@ import { ElementStyles } from '@microsoft/fast-element';
 import { FASTElement } from '@microsoft/fast-element';
 import { Orientation } from '@microsoft/fast-web-utilities';
 import { PartialFASTElementDefinition } from '@microsoft/fast-element';
+import { ViewTemplate } from '@microsoft/fast-element';
 
 // @public
 export class Accordion extends FASTElement {
@@ -153,10 +154,12 @@ export class Card extends FASTElement {
 // @public
 export const CardTemplate: import("@microsoft/fast-element").ViewTemplate<Card, any>;
 
-// @public (undocumented)
+// @public
 export class Carousel extends FASTElement {
     // (undocumented)
     activeId: string;
+    // (undocumented)
+    activeIdChanged(): void;
     // (undocumented)
     ariaDescribedby: string;
     // (undocumented)
@@ -170,9 +173,17 @@ export class Carousel extends FASTElement {
     // (undocumented)
     carousel: HTMLDivElement;
     // (undocumented)
+    connectedCallback(): void;
+    // (undocumented)
+    disconnectedCallback(): void;
+    // (undocumented)
     filteredItems: HTMLElement[];
     // (undocumented)
-    handleTabClick(index: number): (e: Event) => void;
+    handleFlipperClick(direction: 1 | -1, e: Event): void;
+    // (undocumented)
+    handleKeypress: (direction: 1 | -1, e: KeyboardEvent) => void;
+    // (undocumented)
+    handlePlayClick(e: Event): void;
     // (undocumented)
     items: HTMLElement[];
     // (undocumented)
@@ -182,15 +193,20 @@ export class Carousel extends FASTElement {
     // (undocumented)
     paused: boolean;
     // (undocumented)
-    tabs: HTMLElement[];
-    // (undocumented)
-    tabsChanged(): void;
+    tabbed: boolean;
+    }
+
+// @public
+export class CarouselSlide extends FASTElement {
 }
 
-// @public (undocumented)
-export const CarouselTemplate: import("@microsoft/fast-element").ViewTemplate<Carousel, any>;
+// @public
+export const CarouselSlideTemplate: import("@microsoft/fast-element").ViewTemplate<CarouselSlide, any>;
 
-// @public (undocumented)
+// @public
+export const CarouselTemplate: ViewTemplate<Carousel, any>;
+
+// @public
 export class Checkbox extends FormAssociated<HTMLInputElement> {
     constructor();
     checked: boolean;
@@ -666,6 +682,9 @@ export class TabPanel extends FASTElement {
 }
 
 // @public
+export const tabPanelPrefix: string;
+
+// @public
 export const TabPanelTemplate: import("@microsoft/fast-element").ViewTemplate<TabPanel, any>;
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
@@ -675,11 +694,14 @@ export const TabPanelTemplate: import("@microsoft/fast-element").ViewTemplate<Ta
 export class Tabs extends FASTElement {
     constructor();
     activeid: string;
+    // (undocumented)
+    activeidChanged(): void;
     activeindicator: boolean;
     // @internal (undocumented)
     activeIndicatorRef: HTMLElement;
     activetab: HTMLElement;
     adjust(adjustment: number): void;
+    notabfocus: boolean;
     orientation: TabsOrientation;
     // @internal (undocumented)
     tabpanels: HTMLElement[];

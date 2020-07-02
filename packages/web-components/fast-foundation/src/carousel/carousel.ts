@@ -1,22 +1,33 @@
-// TODO: ADD animations and classes to previous, current, next slides???
 // TODO: CHECK for error states, compare with other components
-// TODO: ADD more examples to test timer, loop, etc...
-// TODO: ADD keyboard controls
 // TODO: CHECK tab index of all controls
 // TODO: ADD accessibility features, compare to SPEC and other components
 
 // TODO: Since this is a new component you will have to add the definition to the definitions folder in site-utilities
 // TODO: ADD change $emit, for active slide and paused?
 
-// TODO: BUTTON controls ( next, previous, rotate start/stop) do not move focus
-// TODO: HIDE flippers when not hovering over carousel
-import { attr, DOM, FASTElement, observable } from "@microsoft/fast-element";
-import { KeyCodes, wrapInBounds, limit } from "@microsoft/fast-web-utilities";
+import { attr, FASTElement, observable } from "@microsoft/fast-element";
+import {
+    keyCodeSpace,
+    keyCodeEnter,
+    wrapInBounds,
+    limit,
+} from "@microsoft/fast-web-utilities";
 import { isNil } from "lodash-es";
-import { keyCodeSpace, keyCodeEnter } from "@microsoft/fast-web-utilities";
 
-export const panelPrefix: string = "tabpanel-";
+/**
+ * The panel id prefix
+ * @public
+ */
+export const tabPanelPrefix: string = "panel-";
 
+const tabPrefix: string = "tab-";
+
+/**
+ * An Carousel Custom HTML Element.
+ * Implements the {@link https://www.w3.org/TR/wai-aria-1.1/#carousel | ARIA carousel }.
+ *
+ * @public
+ */
 export class Carousel extends FASTElement {
     @attr({ mode: "boolean" })
     public autoplay: boolean = true;
@@ -39,8 +50,11 @@ export class Carousel extends FASTElement {
     @attr({ mode: "boolean" })
     public paused: boolean = false;
 
-    @attr({ attribute: "activeId" })
+    @attr({ attribute: "activeid" })
     public activeId: string;
+    public activeIdChanged(): void {
+        this.activeIndex = this.tabIds.indexOf(this.activeId);
+    }
 
     // TODO: ADD logic to change roles per ARIA spec via tabbed attr (this attr does not change if slide picker is available or not)
     @attr({ attribute: "tabbed", mode: "boolean" })
@@ -54,12 +68,19 @@ export class Carousel extends FASTElement {
         this.filteredItems = this.items.filter(
             (item: HTMLElement) => item.nodeType === 1
         );
-        this.generateTabPanelIds();
+        this.generateTabIds();
+
+        //sethdonohue - if activeid attribute was set by implementation then we need to sync the activeIndex for incrementing to work
+        if (this.activeId) {
+            this.activeIndex = this.tabIds.indexOf(this.activeId);
+        } else {
+            this.activeId = this.tabIds[this.activeIndex] as string;
+        }
 
         if (!this.tabbed) {
             this.filteredItems = this.filteredItems.map(
                 (item: HTMLElement, index: number) => {
-                    item.setAttribute("id", `${panelPrefix}${index + 1}`);
+                    item.setAttribute("id", `${tabPanelPrefix}${index + 1}`);
                     item.setAttribute("aria-hidden", "false");
                     if (index === this.activeIndex) {
                         item.classList.add("active-slide");
@@ -67,13 +88,6 @@ export class Carousel extends FASTElement {
                     } else {
                         item.setAttribute("hidden", "");
                     }
-                    // if (index === this.activeIndex + 1) {
-                    //     item.classList.add("next-slide");
-                    // } else if (index === this.activeIndex - 1) {
-                    //     item.classList.add("previous-slide");
-                    //     // TODO: ADD class for looped slides, if -1 doesn't exist then use length -1 slide.
-                    // }
-
                     item.classList.add("slide");
                     item.setAttribute("role", "tabpanel");
                     // TODO: ASK add aria-labelledby?
@@ -106,20 +120,29 @@ export class Carousel extends FASTElement {
         this.togglePlay();
     }
 
-    private tabPanelIds: string[] = [];
-    public activeIndex: number = 0;
+    private tabIds: string[] = [];
+    private activeIndex: number = 0;
 
     private change = (): void => {
         this.$emit("change", this.activeId);
     };
 
     private incrementSlide = (direction: 1 | -1): void => {
-        this.activeIndex = wrapInBounds(
-            0,
-            this.filteredItems.length - 1,
-            this.activeIndex + direction
-        );
-        this.activeId = this.tabPanelIds[this.activeIndex];
+        if (this.loop) {
+            this.activeIndex = wrapInBounds(
+                0,
+                this.filteredItems.length - 1,
+                this.activeIndex + direction
+            );
+        } else {
+            this.activeIndex = limit(
+                0,
+                this.filteredItems.length - 1,
+                this.activeIndex + direction
+            );
+        }
+
+        this.activeId = this.tabIds[this.activeIndex];
 
         if (!this.tabbed) {
             this.itemsChanged();
@@ -132,10 +155,10 @@ export class Carousel extends FASTElement {
         this.incrementSlide(1);
     };
 
-    private generateTabPanelIds(): void {
-        this.tabPanelIds = [];
+    private generateTabIds(): void {
+        this.tabIds = [];
         for (let i = 0; i < this.filteredItems.length; i++) {
-            this.tabPanelIds.push(`tab-${i + 1}`);
+            this.tabIds.push(`${tabPrefix}${i + 1}`);
         }
     }
 
