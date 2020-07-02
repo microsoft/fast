@@ -37,6 +37,7 @@ export class AnimateGroup {
     constructor(animations: Array<AnimateTo | AnimateFrom>);
     cancel: () => void;
     finish: () => void;
+    get onFinish(): () => void;
     set onFinish(callback: () => void);
     pause: () => void;
     play(): void;
