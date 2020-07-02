@@ -15,6 +15,7 @@ import {
 import { DisplayNamePrefix } from "../utilities";
 import neutralButtonSchema from "./neutral-button.schema";
 import neutralButtonSchema2 from "./neutral-button.schema.2";
+import { Subtract } from "utility-types";
 
 /*
  * The type returned by manageJss type is very complicated so we'll let the

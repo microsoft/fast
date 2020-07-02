@@ -10,6 +10,7 @@ import MSFTSelect, {
 } from "./select";
 import selectSchema from "./select.schema";
 import selectSchema2 from "./select.schema.2";
+import { Subtract } from "utility-types";
 
 /*
  * The type returned by manageJss type is very complicated so we'll let the

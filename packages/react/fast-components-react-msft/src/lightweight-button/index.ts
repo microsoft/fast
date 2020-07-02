@@ -15,6 +15,7 @@ import {
 import { DisplayNamePrefix } from "../utilities";
 import lightweightButtonSchema from "./lightweight-button.schema";
 import lightweightButtonSchema2 from "./lightweight-button.schema.2";
+import { Subtract } from "utility-types";
 
 /*
  * The type returned by manageJss type is very complicated so we'll let the

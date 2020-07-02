@@ -13,6 +13,7 @@ import MSFTAutoSuggestOption, {
     AutoSuggestOptionHandledProps as MSFTAutoSuggestOptionHandledProps,
     AutoSuggestOptionProps as MSFTAutoSuggestOptionProps,
 } from "./auto-suggest-option";
+import { Subtract } from "utility-types";
 
 const AutoSuggestOption = manageJss(AutoSuggestOptionStyles)(MSFTAutoSuggestOption);
 type AutoSuggestOption = InstanceType<typeof AutoSuggestOption>;

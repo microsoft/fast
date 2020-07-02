@@ -10,6 +10,7 @@ import MSFTTreeViewItem, {
     TreeViewItemManagedClasses,
     TreeViewItemUnhandledProps,
 } from "./tree-view-item";
+import { Subtract } from "utility-types";
 
 /*
  * The type returned by manageJss type is very complicated so we'll let the

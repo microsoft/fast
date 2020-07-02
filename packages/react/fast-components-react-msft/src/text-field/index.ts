@@ -11,6 +11,7 @@ import MSFTTextField, {
     TextFieldManagedClasses,
     TextFieldUnhandledProps,
 } from "./text-field";
+import { Subtract } from "utility-types";
 
 /*
  * The type returned by manageJss type is very complicated so we'll let the

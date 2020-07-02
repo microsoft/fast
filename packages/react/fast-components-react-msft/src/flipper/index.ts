@@ -12,6 +12,7 @@ import MSFTFlipper, {
 } from "./flipper";
 import flipperSchema from "./flipper.schema";
 import flipperSchema2 from "./flipper.schema.2";
+import { Subtract } from "utility-types";
 
 /*
  * The type returned by manageJss type is very complicated so we'll let the

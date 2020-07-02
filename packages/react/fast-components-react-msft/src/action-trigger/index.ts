@@ -14,6 +14,7 @@ import MSFTActionTrigger, {
 } from "./action-trigger";
 import actionTriggerSchema from "./action-trigger.schema";
 import actionTriggerSchema2 from "./action-trigger.schema.2";
+import { Subtract } from "utility-types";
 
 /*
  * The type returned by manageJss type is very complicated so we'll let the

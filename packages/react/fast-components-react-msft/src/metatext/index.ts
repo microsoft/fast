@@ -12,6 +12,7 @@ import MSFTMetatext, {
     MetatextHandledProps as MSFTMetatextHandledProps,
     MetatextProps as MSFTMetatextProps,
 } from "./metatext";
+import { Subtract } from "utility-types";
 
 /*
  * The type returned by manageJss type is very complicated so we'll let the

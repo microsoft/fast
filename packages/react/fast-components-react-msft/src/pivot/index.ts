@@ -10,6 +10,7 @@ import MSFTPivot, {
     PivotManagedClasses,
     PivotUnhandledProps,
 } from "./pivot";
+import { Subtract } from "utility-types";
 
 const Pivot = manageJss(PivotStyles)(MSFTPivot);
 type Pivot = InstanceType<typeof Pivot>;

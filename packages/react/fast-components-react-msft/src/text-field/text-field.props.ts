@@ -7,6 +7,7 @@ import {
     ManagedClasses,
     TextFieldClassNameContract,
 } from "@microsoft/fast-components-class-name-contracts-msft";
+import { Subtract } from "utility-types";
 
 export enum TextFieldAppearance {
     filled = "filled",

@@ -12,6 +12,7 @@ import MSFTButton, {
 } from "./button";
 import buttonSchema from "./button.schema";
 import buttonSchema2 from "./button.schema.2";
+import { Subtract } from "utility-types";
 
 /*
  * The type returned by manageJss type is very complicated so we'll let the

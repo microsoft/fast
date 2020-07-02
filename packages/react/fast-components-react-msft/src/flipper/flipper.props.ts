@@ -8,6 +8,7 @@ import {
     FlipperClassNameContract,
     ManagedClasses,
 } from "@microsoft/fast-components-class-name-contracts-msft";
+import { Subtract } from "utility-types";
 
 export enum FlipperDirection {
     next = "next",

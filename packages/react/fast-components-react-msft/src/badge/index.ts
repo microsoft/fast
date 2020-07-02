@@ -11,6 +11,7 @@ import MSFTBadge, {
 } from "./badge";
 import badgeSchema from "./badge.schema";
 import badgeSchema2 from "./badge.schema.2";
+import { Subtract } from "utility-types";
 
 /*
  * The type returned by manageJss type is very complicated so we'll let the

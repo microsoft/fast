@@ -10,6 +10,7 @@ import MSFTSelectOption, {
     SelectOptionManagedClasses,
     SelectOptionUnhandledProps,
 } from "./select-option";
+import { Subtract } from "utility-types";
 
 const SelectOption = manageJss(SelectOptionStyles)(MSFTSelectOption);
 type SelectOption = InstanceType<typeof SelectOption>;

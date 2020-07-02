@@ -9,6 +9,7 @@ import {
     ManagedClasses,
     PivotClassNameContract,
 } from "@microsoft/fast-components-class-name-contracts-msft";
+import { Subtract } from "utility-types";
 
 export type PivotManagedClasses = ManagedClasses<PivotClassNameContract>;
 export interface PivotHandledProps

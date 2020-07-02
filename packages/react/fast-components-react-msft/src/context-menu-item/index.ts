@@ -14,6 +14,7 @@ import MSFTContextMenuItem, {
     ContextMenuItemHandledProps as MSFTContextMenuItemHandledProps,
     ContextMenuItemProps as MSFTContextMenuItemProps,
 } from "./context-menu-item";
+import { Subtract } from "utility-types";
 
 const ContextMenuItem = manageJss(ContextMenuItemStyles)(MSFTContextMenuItem);
 type ContextMenuItem = InstanceType<typeof ContextMenuItem>;
