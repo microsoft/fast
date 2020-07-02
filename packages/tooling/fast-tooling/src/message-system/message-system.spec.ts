@@ -42,7 +42,7 @@ describe("MessageSystem", () => {
             const myWorker: Worker = new Worker("");
 
             new MessageSystem({
-                webWorker: myWorker,
+                webWorker: myWorker as any,
             });
         }).not.toThrow();
 
