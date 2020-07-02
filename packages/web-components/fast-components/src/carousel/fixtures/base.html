@@ -3,71 +3,127 @@
 
     </style>
     <h1>Carousel</h1>
-    <h4>Height 300px & Width 700px</h4>
-    <div style="width: 700px; height: 300px; align-items: center;">
+    <h4>Default</h4>
+    <div>
         <fast-carousel>
-                <img src="https://placehold.it/100x100/" alt="Place Holder Image"/>
-                <img src="https://placehold.it/300x300/3E3E3E/171717" alt="Place Holder Image"/>
-                <span style="width: 100px; height: 100px; background-color: white; color: black">Test SPAN TEXT Content</span>
-                <img src="https://placehold.it/400x400/3E3E3E/171717" alt="Place Holder Image"/ >
+            <span style="justify-content: center; width: 100%; height: 100%; align-items: flex-end; overflow: hidden; display: inline-flex; flex-direction: column; align-items: center; position: relative; top: 0; bottom: 0; left: 0;"
+            >
+                <span style="position: absolute; top: 30%; left: 50%; transform: translate(-50%, -50%); background-color: black; padding: 10px; border-radius: 5px; font-size: 24px;">
+                    Slide 1
+                </span>
+                <img style="max-width: 100%;" src="https://placehold.it/1300x600/" alt="Place Holder Image"/>
+            </span>
+            <span style="justify-content: center; width: 100%; height: 100%; align-items: flex-end; overflow: hidden; display: inline-flex; flex-direction: column; align-items: center; position: relative; top: 0; bottom: 0; left: 0;"
+            >
+                <span style="position: absolute; top: 30%; left: 50%; transform: translate(-50%, -50%); background-color: black; padding: 10px; border-radius: 5px; font-size: 24px;">
+                    Slide 2
+                </span>
+                <img style="max-width: 100%;" src="https://placehold.it/1300x600/3E3E3E/171717" alt="Place Holder Image"/>
+            </span>
+            <span style="justify-content: center; width: 100%; height: 100%; align-items: flex-end; overflow: hidden; display: inline-flex; flex-direction: column; align-items: center; position: relative; top: 0; bottom: 0; left: 0;"
+            >
+                <span style="position: absolute; top: 30%; left: 50%; transform: translate(-50%, -50%); background-color: black; padding: 10px; border-radius: 5px; font-size: 24px;">
+                    Slide 3
+                </span>
+                <img style="max-width: 100%;" src="https://placehold.it/1300x600/" alt="Place Holder Image"/>
+            </span>
+            <span style="justify-content: center; width: 100%; height: 100%; align-items: flex-end; overflow: hidden; display: inline-flex; flex-direction: column; align-items: center; position: relative; top: 0; bottom: 0; left: 0;"
+            >
+                <span style="position: absolute; top: 30%; left: 50%; transform: translate(-50%, -50%); background-color: black; padding: 10px; border-radius: 5px; font-size: 24px;">
+                    Slide 4
+                </span>
+                <img style="max-width: 100%;" src="https://placehold.it/1300x600/3E3E3E/171717" alt="Place Holder Image"/>
+            </span>
+            <span style="justify-content: center; width: 100%; height: 100%; align-items: flex-end; overflow: hidden; display: inline-flex; flex-direction: column; align-items: center; position: relative; top: 0; bottom: 0; left: 0;"
+            >
+                <span style="position: absolute; top: 30%; left: 50%; transform: translate(-50%, -50%); background-color: black; padding: 10px; border-radius: 5px; font-size: 24px;">
+                    Slide 5
+                </span>
+                <img style="max-width: 100%;" src="https://placehold.it/1300x600/" alt="Place Holder Image"/>
+            </span>
         </fast-carousel>
     </div>
 
-    <h4>Active Id Slide 3, No Autoplay</h4>
-    <div style="width: 700px; height: 300px; align-items: center;">
-        <fast-carousel autoplay="false" activeId="tab-3">
-            <span style="display: inline-flex; flex-direction: column; align-items: center;">
-            Slide 1
-                <img src="https://placehold.it/100x100/" alt="Place Holder Image"/>
-            </span>
-            <span style="display: inline-flex; flex-direction: column; align-items: center;">
-                Slide 2
-                <img src="https://placehold.it/100x100/3E3E3E/171717" alt="Place Holder Image"/>
-            </span>
-            <span style="width: 100px; height: 100px; background-color: white; color: black">Slide 3</span>
-            <span style="display: inline-flex; flex-direction: column; align-items: center;">
-                Slide 4
-                <img src="https://placehold.it/100x100/3E3E3E/171717" alt="Place Holder Image"/>
-            </span>
-        </fast-carousel>
-    </div>
-
-    <h4>Basic (Not Tabbed)</h4>
-    <div style="width: 700px; height: 300px; align-items: center;">
-        <fast-carousel tabbed="false">
-            <span>
+    <h4>Active Id Slide 3, No Autoplay, Width 800px</h4>
+    <div>
+    <fast-carousel style="width: 800px;"  autoplay="false" activeId="tab-3">
+        <span style="justify-content: center; width: 100%; height: 100%; align-items: flex-end; overflow: hidden; display: inline-flex; flex-direction: column; align-items: center; position: relative; top: 0; bottom: 0; left: 0;"
+        >
+            <span style="position: absolute; top: 30%; left: 50%; transform: translate(-50%, -50%); background-color: black; padding: 10px; border-radius: 5px; font-size: 24px;">
                 Slide 1
-                <img src="https://placehold.it/100x100/" alt="Place Holder Image"/>
             </span>
-            <span>
+            <img style="max-width: 100%;" src="https://placehold.it/1200x500/" alt="Place Holder Image"/>
+        </span>
+        <span style="justify-content: center; width: 100%; height: 100%; align-items: flex-end; overflow: hidden; display: inline-flex; flex-direction: column; align-items: center; position: relative; top: 0; bottom: 0; left: 0;"
+        >
+            <span style="position: absolute; top: 30%; left: 50%; transform: translate(-50%, -50%); background-color: black; padding: 10px; border-radius: 5px; font-size: 24px;">
                 Slide 2
-                <img src="https://placehold.it/100x100/3E3E3E/171717" alt="Place Holder Image"/>
             </span>
-            <span style="width: 100px; height: 100px; background-color: white; color: black">Slide 3</span>
-            <span>
+            <img style="max-width: 100%;" src="https://placehold.it/1200x500/3E3E3E/171717" alt="Place Holder Image"/>
+        </span>
+        <span style="justify-content: center; width: 100%; height: 100%; align-items: flex-end; overflow: hidden; display: inline-flex; flex-direction: column; align-items: center; position: relative; top: 0; bottom: 0; left: 0;"
+        >
+            <span style="position: absolute; top: 30%; left: 50%; transform: translate(-50%, -50%); background-color: black; padding: 10px; border-radius: 5px; font-size: 24px;">
+                Slide 3
+            </span>
+            <img style="max-width: 100%;" src="https://placehold.it/1200x500/" alt="Place Holder Image"/>
+        </span>
+        <span style="justify-content: center; width: 100%; height: 100%; align-items: flex-end; overflow: hidden; display: inline-flex; flex-direction: column; align-items: center; position: relative; top: 0; bottom: 0; left: 0;"
+        >
+            <span style="position: absolute; top: 30%; left: 50%; transform: translate(-50%, -50%); background-color: black; padding: 10px; border-radius: 5px; font-size: 24px;">
                 Slide 4
-                <img src="https://placehold.it/100x100/3E3E3E/171717" alt="Place Holder Image"/>
             </span>
-        </fast-carousel>
+            <img style="max-width: 100%;" src="https://placehold.it/1200x500/3E3E3E/171717" alt="Place Holder Image"/>
+        </span>
+        <span style="justify-content: center; width: 100%; height: 100%; align-items: flex-end; overflow: hidden; display: inline-flex; flex-direction: column; align-items: center; position: relative; top: 0; bottom: 0; left: 0;"
+        >
+            <span style="position: absolute; top: 30%; left: 50%; transform: translate(-50%, -50%); background-color: black; padding: 10px; border-radius: 5px; font-size: 24px;">
+                Slide 5
+            </span>
+            <img style="max-width: 100%;" src="https://placehold.it/1200x500/" alt="Place Holder Image"/>
+        </span>
+    </fast-carousel>
     </div>
 
-    <h4>Height 300px & Width 700px, Oversized Slide Content</h4>
-    <div style="width: 700px; height: 300px; align-items: center;">
-        <fast-carousel>
-                <img src="https://placehold.it/1200x900/" alt="Place Holder Image"/>
-                <img src="https://placehold.it/300x300/3E3E3E/171717" alt="Place Holder Image"/>
-                <span style="width: 100px; height: 100px; background-color: white; color: black">Test SPAN TEXT Content</span>
-                <img src="https://placehold.it/400x400/3E3E3E/171717" alt="Place Holder Image"/ >
+    <h4>Basic (Not Tabbed), Width 700px, Height 300px</h4>
+    <div>
+        <fast-carousel style="width: 700px; height: 300px;" tabbed="false">
+            <div>
+                <span style="justify-content: center; width: 100%; height: 100%; align-items: flex-end; overflow: hidden; display: inline-flex; flex-direction: column; align-items: center; position: relative; top: 0; bottom: 0; left: 0;"
+                >
+                    <span style="position: absolute; top: 30%; left: 50%; transform: translate(-50%, -50%); background-color: black; padding: 10px; border-radius: 5px; font-size: 24px;">
+                        Slide 1
+                    </span>
+                    <img style="max-width: 100%;" src="https://placehold.it/1300x600/" alt="Place Holder Image">
+                </span>
+            </div>
+            <div>
+                <span style="justify-content: center; width: 100%; height: 100%; align-items: flex-end; overflow: hidden; display: inline-flex; flex-direction: column; align-items: center; position: relative; top: 0; bottom: 0; left: 0;"
+                >
+                        <span style="position: absolute; top: 30%; left: 50%; transform: translate(-50%, -50%); background-color: black; padding: 10px; border-radius: 5px; font-size: 24px;">
+                        Slide 2
+                    </span>
+                    <img style="max-width: 100%;" src="https://placehold.it/1300x600/3E3E3E/171717" alt="Place Holder Image"/>
+                </span>
+            </div>
+            <div>
+                <span style="justify-content: center; width: 100%; height: 100%; align-items: flex-end; overflow: hidden; display: inline-flex; flex-direction: column; align-items: center; position: relative; top: 0; bottom: 0; left: 0;"
+                >
+                        <span style="position: absolute; top: 30%; left: 50%; transform: translate(-50%, -50%); background-color: black; padding: 10px; border-radius: 5px; font-size: 24px;">
+                        Slide 3
+                    </span>
+                    <img style="max-width: 100%;" src="https://placehold.it/1300x600/" alt="Place Holder Image"/>
+                </span>
+            </div>
+            <div>
+                <span style="justify-content: center; width: 100%; height: 100%; align-items: flex-end; overflow: hidden; display: inline-flex; flex-direction: column; align-items: center; position: relative; top: 0; bottom: 0; left: 0;"
+                >
+                        <span style="position: absolute; top: 30%; left: 50%; transform: translate(-50%, -50%); background-color: black; padding: 10px; border-radius: 5px; font-size: 24px;">
+                        Slide 4
+                    </span>
+                    <img style="max-width: 100%;" src="https://placehold.it/1300x600/3E3E3E/171717" alt="Place Holder Image"/>
+                </span>
+            </div>
         </fast-carousel>
     </div>
-
-    <!-- <h4>Non-Looping</h4>
-        <div style="width: 700px; height: 300px; align-items: center;">
-    <fast-carousel loop="false">
-        <img src="https://placehold.it/1399x600/" alt="Place Holder Image"/>
-        <img src="https://placehold.it/300x300/3E3E3E/171717" alt="Place Holder Image"/>
-        <span style="width: 100px; height: 100px; background-color: white; color: black">Test SPAN TEXT Content</span>
-        <img src="https://placehold.it/300x300/3E3E3E/171717" alt="Place Holder Image"/>
-        Test TEXT Content
-    </fast-carousel> -->
 </fast-design-system-provider>

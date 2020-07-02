@@ -13,6 +13,7 @@
 import { attr, DOM, FASTElement, observable } from "@microsoft/fast-element";
 import { KeyCodes, wrapInBounds, limit } from "@microsoft/fast-web-utilities";
 import { isNil } from "lodash-es";
+import { keyCodeSpace, keyCodeEnter } from "@microsoft/fast-web-utilities";
 
 export const panelPrefix: string = "tabpanel-";
 
@@ -90,6 +91,15 @@ export class Carousel extends FASTElement {
     public handleFlipperClick(direction: 1 | -1, e: Event): void {
         this.incrementSlide(direction);
     }
+
+    public handleKeypress = (direction: 1 | -1, e: KeyboardEvent): void => {
+        switch (e.keyCode) {
+            case keyCodeSpace:
+            case keyCodeEnter:
+                this.incrementSlide(direction);
+                break;
+        }
+    };
 
     public handlePlayClick(e: Event): void {
         e.preventDefault();
