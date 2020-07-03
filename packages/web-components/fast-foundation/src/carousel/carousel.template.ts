@@ -36,21 +36,24 @@ const tabbedTemplate: ViewTemplate = html<Carousel>`
             )}
         `}
         ${/*
-        // TODO: ASK This did not work as it interprets the outerHTML as a string and not as HTML. Should it work?
-        repeat(
-             x => x.filteredItems,
-            html<Carousel>`<div
-                    slot="tabpanel"
-                    id="panel-${ (x, c) =>c.index + 1}"
-                    class="slide-container"
-                    role="${x => (x.tabbed ? "tab-panel" : "group")}"
-                    aria-roledescription="${x => x.tabbed ? undefined : "slide" }"
-                    >
-                        ${ x => x.outerHTML}
+            // TODO: ASK This did not work as it shows 'x => x.outHTML' as a string as the child of the <div> when rendered. Should it work?
+
+        x => html<Carousel>`
+            ${repeat(
+                x => x.filteredItems,
+                html<Carousel>`<div slot="tabpanel" aria-hidden="true" id="${tabPanelPrefix}${
+                    (x,c) => c.index + 1
+                }" class="slide-container" role="${
+                    x => x.tabbed ? "tab-panel" : "group"
+                }" ${
+                    x => x.tabbed ? "" : "aria-roledescription='slide'"
+                    }
+                >
+                    ${x => x.outerHTML}
                 </div>`,
-            { positioning: true }
-        )
-        */ ""}
+                { positioning: true }
+            )}
+                `*/ ""}
     </fast-tabs>
 `;
 

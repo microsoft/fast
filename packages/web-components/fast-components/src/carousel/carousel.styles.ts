@@ -3,7 +3,9 @@ import {
     accentFillRestBehavior,
     neutralDividerRestBehavior,
     neutralForegroundRestBehavior,
+    neutralFocusBehavior,
 } from "../styles/recipes";
+import { focusVisible } from "@microsoft/fast-foundation";
 
 export const CarouselStyles = css`
     :host {
@@ -79,6 +81,14 @@ export const CarouselStyles = css`
     .slide-tab:hover:before {
         opacity: 1;
     }
+
+    .slide-tab:${focusVisible}:before {
+        outline: none;
+        box-shadow: 0 0 0 calc((var(--focus-outline-width) - var(--outline-width)) * 1px)
+            rgba(0,0,0,1), 0 0 0 calc((var(--focus-outline-width) + var(--outline-width)) * 1px)
+            ${neutralFocusBehavior.var};;
+    }
+
 
     .slide-tab[aria-selected="true"]:before {
         opacity: 1;

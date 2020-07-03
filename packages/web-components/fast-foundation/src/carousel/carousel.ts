@@ -1,7 +1,6 @@
 // TODO: CHECK for error states
 // TODO: Double CHECK ALL accessibility features, compare to SPEC and other components
 // TODO: ADD to the definitions folder in site-utilities
-// TODO: ADDRESS best way to show focus is on a tab without stealing focus when in autoplay?
 
 import { attr, FASTElement, observable } from "@microsoft/fast-element";
 import {
