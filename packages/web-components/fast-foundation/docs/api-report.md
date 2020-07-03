@@ -198,6 +198,8 @@ export class Carousel extends FASTElement {
 
 // @public
 export class CarouselSlide extends FASTElement {
+    // (undocumented)
+    even: boolean;
 }
 
 // @public
@@ -862,7 +864,7 @@ export class TreeItem extends FASTElement {
     // (undocumented)
     handleFocus: (e: Event) => void;
     // (undocumented)
-    handleKeyDown: (e: KeyboardEvent) => void | boolean;
+    handleKeyDown: (e: KeyboardEvent) => boolean | void;
     // (undocumented)
     items: HTMLElement[];
     // (undocumented)
@@ -892,7 +894,7 @@ export class TreeView extends FASTElement {
     // (undocumented)
     handleFocus: (e: FocusEvent) => void;
     // (undocumented)
-    handleKeyDown: (e: KeyboardEvent) => void | boolean;
+    handleKeyDown: (e: KeyboardEvent) => boolean | void;
     // (undocumented)
     renderCollapsedNodes: boolean;
     // (undocumented)
@@ -905,6 +907,14 @@ export class TreeView extends FASTElement {
 export const TreeViewTemplate: import("@microsoft/fast-element").ViewTemplate<TreeView, any>;
 
 
+<<<<<<< HEAD
+=======
+// Warnings were encountered during analysis:
+//
+// dist/dts/utilities/match-media-stylesheet-behavior.d.ts:69:5 - (ae-forgotten-export) The symbol "MatchMediaStyleSheetBehavior" needs to be exported by the entry point index.d.ts
+// dist/dts/utilities/match-media-stylesheet-behavior.d.ts:69:5 - (ae-forgotten-export) The symbol "MediaQueryListListener" needs to be exported by the entry point index.d.ts
+
+>>>>>>> 2d3d849c... removed fast-components-msft empty files
 // (No @packageDocumentation comment for this package)
 
 ```
