@@ -18,7 +18,7 @@ declare global {
 }
 
 export type AxisPositioningMode = "uncontrolled" | "locktodefault" | "dynamic";
-export type AxisScalingMode = "anchor" | "availablespace" | "content";
+export type AxisScalingMode = "anchor" | "fill" | "content";
 
 export type HorizontalPosition = "start" | "end" | "left" | "right" | "unset";
 
@@ -213,11 +213,6 @@ export class AnchoredRegion extends FASTElement {
      */
     public region: HTMLDivElement | null;
 
-    /**
-     * reference to the component root
-     */
-    public root: HTMLDivElement | null;
-
     private openRequestAnimationFrame: boolean = false;
     private currentDirection: Direction = Direction.ltr;
     private observersConnected = false;
@@ -378,7 +373,7 @@ export class AnchoredRegion extends FASTElement {
      */
     public getViewport = (): HTMLElement | null => {
         if (typeof this.viewport !== "string" || this.viewport === "") {
-            return this.root === null ? null : this.root.parentElement;
+            return this.parentElement;
         }
 
         return document.getElementById(this.viewport);
@@ -798,7 +793,7 @@ export class AnchoredRegion extends FASTElement {
                 this.regionWidth = `${this.anchorWidth}px`;
                 break;
 
-            case "availablespace":
+            case "fill":
                 this.regionWidth = `${nextPositionerDimension.width}px`;
                 break;
 
@@ -854,7 +849,7 @@ export class AnchoredRegion extends FASTElement {
                 this.regionHeight = `${this.anchorHeight}px`;
                 break;
 
-            case "availablespace":
+            case "fill":
                 this.regionHeight = `${nextPositionerDimension.height}px`;
                 break;
 
@@ -1051,11 +1046,11 @@ export class AnchoredRegion extends FASTElement {
             width: this.regionDimension.width,
         };
 
-        if (this.horizontalScaling === "availablespace") {
+        if (this.horizontalScaling === "fill") {
             newRegionDimension.width = this.getAvailableWidth(desiredHorizontalPosition);
         }
 
-        if (this.verticalScaling === "availablespace") {
+        if (this.verticalScaling === "fill") {
             newRegionDimension.height = this.getAvailableHeight(desiredVerticalPosition);
         }
 
