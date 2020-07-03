@@ -35,8 +35,9 @@ const tabbedTemplate: ViewTemplate = html<Carousel>`
                     </div>`
             )}
         `}
-        ${/*<slot slot="items" ${slotted('carouselItems')}></slot>*/ ""}
-        ${/*repeat(
+        ${/*
+        // TODO: ASK This did not work as it interprets the outerHTML as a string and not as HTML. Should it work?
+        repeat(
              x => x.filteredItems,
             html<Carousel>`<div
                     slot="tabpanel"
@@ -49,7 +50,6 @@ const tabbedTemplate: ViewTemplate = html<Carousel>`
                 </div>`,
             { positioning: true }
         )
-        // TODO: ASK This did not work as it interprets the outerHTML as a string and not as HTML. Should it work?
         */ ""}
     </fast-tabs>
 `;

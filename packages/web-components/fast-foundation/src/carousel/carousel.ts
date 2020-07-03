@@ -1,9 +1,7 @@
-// TODO: CHECK for error states, compare with other components
-// TODO: CHECK tab index of all controls
-// TODO: ADD accessibility features, compare to SPEC and other components
-
-// TODO: Since this is a new component you will have to add the definition to the definitions folder in site-utilities
-// TODO: ADD change $emit, for active slide and paused?
+// TODO: CHECK for error states
+// TODO: Double CHECK ALL accessibility features, compare to SPEC and other components
+// TODO: ADD to the definitions folder in site-utilities
+// TODO: ADDRESS best way to show focus is on a tab without stealing focus when in autoplay?
 
 import { attr, FASTElement, observable } from "@microsoft/fast-element";
 import {
@@ -56,7 +54,6 @@ export class Carousel extends FASTElement {
         this.activeIndex = this.tabIds.indexOf(this.activeId);
     }
 
-    // TODO: ADD logic to change roles per ARIA spec via tabbed attr (this attr does not change if slide picker is available or not)
     @attr({ attribute: "tabbed", mode: "boolean" })
     public tabbed: boolean = true;
 
@@ -90,13 +87,10 @@ export class Carousel extends FASTElement {
                     }
                     item.classList.add("slide");
                     item.setAttribute("role", "tabpanel");
-                    // TODO: ASK add aria-labelledby?
                     return item;
                 }
             );
         }
-        //TODO: NEED TO FILTER BETTER so that i don't remove text nodes that may actually be content
-        //  - text nodes are not stylable though...
     }
 
     @observable
