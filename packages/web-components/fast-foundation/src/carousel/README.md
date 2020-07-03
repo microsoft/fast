@@ -24,9 +24,14 @@ export class FASTCarousel extends carousel {}
 ## Usage
 
 ```html
-<fast-carousel id="simpleCarousel" aria-label="Simple modal carousel" modal="true">
-    <h2>carousel with text and button.</h2>
-    <fast-button>Button A</fast-button>
-    <fast-button autofocus>Should autofocus</fast-button>
+<fast-carousel autoplay="false">
+        <span class="outer-span">
+            <span class="inner-span">
+                <slot></slot>
+            </span>
+            <img src="https://placehold.it/1300x600/" alt="Place Holder Image"/>
+        </span>
+        <img src="https://placehold.it/1300x600/3E3E3E/171717" alt="Place Holder Image"/>
+        <img src="https://placehold.it/1300x600/" alt="Place Holder Image"/>
 </fast-carousel>
 ```
