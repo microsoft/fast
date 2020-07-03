@@ -11,7 +11,6 @@ import {
 } from "@microsoft/fast-components-react-base";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { DesignSystem, TypographyStyles } from "@microsoft/fast-components-styles-msft";
-import { Subtract } from "utility-types";
 import typographySchema from "./typography.schema";
 import typographySchema2 from "./typography.schema.2";
 
@@ -22,9 +21,9 @@ import typographySchema2 from "./typography.schema.2";
 const Typography = manageJss(TypographyStyles)(BaseTypography);
 type Typography = InstanceType<typeof Typography>;
 
-type TypographyHandledProps = Subtract<
+type TypographyHandledProps = Omit<
     BaseTypographyHandledProps,
-    TypographyManagedClasses
+    keyof TypographyManagedClasses
 >;
 type TypographyProps = ManagedJSSProps<
     BaseTypographyProps,

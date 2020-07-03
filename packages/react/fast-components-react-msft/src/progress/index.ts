@@ -2,7 +2,6 @@ import React from "react";
 import { ProgressClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { DesignSystem, ProgressStyles } from "@microsoft/fast-components-styles-msft";
-import { Subtract } from "utility-types";
 import MSFTProgress, {
     ProgressHandledProps as MSFTProgressHandledProps,
     ProgressProps as MSFTProgressProps,
@@ -20,7 +19,7 @@ import progressSchema2 from "./progress.schema.2";
 const Progress = manageJss(ProgressStyles)(MSFTProgress);
 type Progress = InstanceType<typeof Progress>;
 
-type ProgressHandledProps = Subtract<MSFTProgressHandledProps, ProgressManagedClasses>;
+type ProgressHandledProps = Omit<MSFTProgressHandledProps, keyof ProgressManagedClasses>;
 type ProgressProps = ManagedJSSProps<
     MSFTProgressProps,
     ProgressClassNameContract,

@@ -55,7 +55,7 @@
       "global": {
         "statements": 95,
         "branches": 84,
-        "functions": 95,
+        "functions": 85,
         "lines": 95
       }
     },
@@ -113,7 +113,7 @@
     "react-dom": "^16.8.0",
     "rimraf": "^2.6.2",
     "ts-jest": "^25.4.0",
-    "typescript": "3.3.3",
+    "typescript": "^3.9.0",
     "yargs": "^11.0.0"
   },
   "peerDependencies": {
@@ -131,7 +131,6 @@
     "@microsoft/fast-jss-utilities": "^4.7.18",
     "@microsoft/fast-tooling": "^0.6.1",
     "@microsoft/fast-web-utilities": "^4.5.2",
-    "exenv-es6": "^1.0.0",
-    "utility-types": "^2.1.0"
+    "exenv-es6": "^1.0.0"
   }
 }

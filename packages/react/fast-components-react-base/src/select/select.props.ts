@@ -3,7 +3,6 @@ import {
     ManagedClasses,
     SelectClassNameContract,
 } from "@microsoft/fast-components-class-name-contracts-base";
-import { Omit } from "utility-types";
 import { ListboxItemProps } from "../listbox-item";
 import { ViewportPositionerProps } from "../viewport-positioner";
 import { SelectState } from "./select";

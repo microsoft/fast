@@ -1,5 +1,4 @@
 import React from "react";
-import { Subtract } from "utility-types";
 import {
     ListboxItemHandledProps as BaseListboxItemHandledProps,
     ListboxItemManagedClasses as BaseListboxItemManagedClasses,
@@ -15,7 +14,7 @@ export type AutoSuggestOptionManagedClasses = ManagedClasses<
 >;
 export interface AutoSuggestOptionHandledProps
     extends AutoSuggestOptionManagedClasses,
-        Subtract<BaseListboxItemHandledProps, BaseListboxItemManagedClasses> {
+        Omit<BaseListboxItemHandledProps, keyof BaseListboxItemManagedClasses> {
     /**
      * The function that formats the display based on current search string
      */

@@ -28,6 +28,7 @@ describe("MessageSystem", () => {
             }
             public postMessage: undefined;
             public onmessage: undefined;
+            public onmessageerror: undefined;
             public onerror: undefined;
             public terminate: undefined;
             public removeEventListener: undefined;
@@ -41,7 +42,7 @@ describe("MessageSystem", () => {
             const myWorker: Worker = new Worker("");
 
             new MessageSystem({
-                webWorker: myWorker,
+                webWorker: myWorker as any,
             });
         }).not.toThrow();
 

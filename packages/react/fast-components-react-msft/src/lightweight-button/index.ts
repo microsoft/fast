@@ -5,7 +5,6 @@ import {
     DesignSystem,
     LightweightButtonStyles,
 } from "@microsoft/fast-components-styles-msft";
-import { Subtract } from "utility-types";
 import {
     ButtonBase,
     ButtonBaseHandledProps,
@@ -24,9 +23,9 @@ import lightweightButtonSchema2 from "./lightweight-button.schema.2";
 const LightweightButton = manageJss(LightweightButtonStyles)(ButtonBase);
 type LightweightButton = InstanceType<typeof LightweightButton>;
 
-type LightweightButtonHandledProps = Subtract<
+type LightweightButtonHandledProps = Omit<
     ButtonBaseHandledProps,
-    ButtonBaseManagedClasses
+    keyof ButtonBaseManagedClasses
 >;
 type LightweightButtonProps = ManagedJSSProps<
     ButtonBaseProps,

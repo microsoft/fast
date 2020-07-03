@@ -3,7 +3,6 @@ import {
     ManagedClasses,
     RadioClassNameContract,
 } from "@microsoft/fast-components-class-name-contracts-base";
-import { Omit } from "utility-types";
 
 export interface RadioHandledProps extends RadioManagedClasses {
     /**

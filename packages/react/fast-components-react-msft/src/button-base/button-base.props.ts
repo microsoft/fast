@@ -1,5 +1,4 @@
 import React from "react";
-import { Subtract } from "utility-types";
 import {
     ButtonHandledProps,
     ButtonManagedClasses,
@@ -13,7 +12,7 @@ import {
 export type ButtonBaseManagedClasses = ManagedClasses<ButtonBaseClassNameContract>;
 export interface ButtonBaseHandledProps
     extends ButtonBaseManagedClasses,
-        Subtract<ButtonHandledProps, ButtonManagedClasses> {
+        Omit<ButtonHandledProps, keyof ButtonManagedClasses> {
     /**
      * The preceding content
      */

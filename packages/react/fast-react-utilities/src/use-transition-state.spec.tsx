@@ -1,5 +1,6 @@
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
+import { act } from "react-dom/test-utils";
 import { configure, mount, ReactWrapper } from "enzyme";
 import {
     getTransitionState,
@@ -81,12 +82,12 @@ describe("useTransitionState", (): void => {
         );
 
         expect(rendered.find("div").text()).toBe(TransitionStates.inactive.toString());
-        jest.runAllTimers();
+        act(() => jest.runAllTimers());
 
         rendered.setProps({ active: true });
         expect(rendered.find("div").text()).toBe(TransitionStates.activating.toString());
 
-        jest.runAllTimers();
+        act(() => jest.runAllTimers());
         expect(rendered.find("div").text()).toBe(TransitionStates.active.toString());
     });
 
@@ -102,12 +103,13 @@ describe("useTransitionState", (): void => {
             )
         );
 
-        jest.runAllTimers();
+        act(() => jest.runAllTimers());
         expect(rendered.find("div").text()).toBe(TransitionStates.inactive.toString());
 
         rendered.setProps({ active: true });
         expect(rendered.find("div").text()).toBe(TransitionStates.activating.toString());
-        jest.runAllTimers();
+
+        act(() => jest.runAllTimers());
         expect(rendered.find("div").text()).toBe(TransitionStates.active.toString());
     });
 
@@ -123,7 +125,7 @@ describe("useTransitionState", (): void => {
             )
         );
 
-        jest.runAllTimers();
+        act(() => jest.runAllTimers());
         expect(rendered.find("div").text()).toBe(TransitionStates.active.toString());
 
         rendered.setProps({ active: false });
@@ -131,7 +133,7 @@ describe("useTransitionState", (): void => {
         expect(rendered.find("div").text()).toBe(
             TransitionStates.deactivating.toString()
         );
-        jest.runAllTimers();
+        act(() => jest.runAllTimers());
         expect(rendered.find("div").text()).toBe(TransitionStates.inactive.toString());
     });
 
@@ -151,7 +153,7 @@ describe("useTransitionState", (): void => {
         rendered.setProps({ active: true });
         expect(rendered.find("div").text()).toBe(TransitionStates.activating.toString());
 
-        jest.advanceTimersByTime(1000);
+        act(() => jest.advanceTimersByTime(1000));
         expect(rendered.find("div").text()).toBe(TransitionStates.active.toString());
 
         rendered.setProps({ active: false });
@@ -159,7 +161,7 @@ describe("useTransitionState", (): void => {
             TransitionStates.deactivating.toString()
         );
 
-        jest.advanceTimersByTime(500);
+        act(() => jest.advanceTimersByTime(500));
         expect(rendered.find("div").text()).toBe(TransitionStates.inactive.toString());
     });
 });

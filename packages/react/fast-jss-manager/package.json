@@ -44,7 +44,7 @@
     "lodash-es": "^4.17.11",
     "prettier": "2.0.2",
     "ts-jest": "^25.4.0",
-    "typescript": "3.3.3"
+    "typescript": "^3.9.0"
   },
   "dependencies": {
     "@microsoft/fast-components-class-name-contracts-base": "^4.7.3",

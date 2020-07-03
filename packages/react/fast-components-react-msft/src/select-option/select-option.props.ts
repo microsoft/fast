@@ -1,5 +1,4 @@
 import React from "react";
-import { Subtract } from "utility-types";
 import {
     ListboxItemHandledProps as BaseListboxItemHandledProps,
     ListboxItemManagedClasses as BaseListboxItemManagedClasses,
@@ -13,7 +12,7 @@ import {
 export type SelectOptionManagedClasses = ManagedClasses<SelectOptionClassNameContract>;
 export interface SelectOptionHandledProps
     extends SelectOptionManagedClasses,
-        Subtract<BaseListboxItemHandledProps, BaseListboxItemManagedClasses> {
+        Omit<BaseListboxItemHandledProps, keyof BaseListboxItemManagedClasses> {
     /**
      * The select option item glyph render prop
      */

@@ -1,5 +1,4 @@
 import React from "react";
-import { Subtract } from "utility-types";
 import {
     SelectHandledProps as BaseSelectHandledProps,
     SelectManagedClasses as BaseSelectManagedClasses,
@@ -13,7 +12,7 @@ import {
 export type SelectManagedClasses = ManagedClasses<SelectClassNameContract>;
 export interface SelectHandledProps
     extends SelectManagedClasses,
-        Subtract<BaseSelectHandledProps, BaseSelectManagedClasses> {}
+        Omit<BaseSelectHandledProps, keyof BaseSelectManagedClasses> {}
 
 export type SelectUnhandledProps = BaseSelectUnhandledProps;
 export type SelectProps = SelectHandledProps & SelectUnhandledProps;

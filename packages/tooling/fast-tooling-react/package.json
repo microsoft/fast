@@ -99,7 +99,7 @@
     "rimraf": "^2.6.2",
     "ts-jest": "^25.4.0",
     "ts-loader": "^4.0.1",
-    "typescript": "^3.3.3",
+    "typescript": "^3.9.0",
     "webpack": "^4.1.0",
     "webpack-cli": "^3.1.1",
     "webpack-dev-server": "^3.11.0",
@@ -120,7 +120,6 @@
     "@microsoft/fast-web-utilities": "^4.5.2",
     "exenv-es6": "^1.0.0",
     "raf-throttle": "^2.0.3",
-    "react-dnd": "^9.0.0",
-    "utility-types": "^3.4.1"
+    "react-dnd": "^9.0.0"
   }
 }

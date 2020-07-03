@@ -10,7 +10,6 @@ import {
 } from "@microsoft/fast-components-react-base";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { DesignSystem, ToggleStyles } from "@microsoft/fast-components-styles-msft";
-import { Subtract } from "utility-types";
 import toggleSchema from "./toggle.schema";
 import toggleSchema2 from "./toggle.schema.2";
 
@@ -21,7 +20,7 @@ import toggleSchema2 from "./toggle.schema.2";
 const Toggle = manageJss(ToggleStyles)(BaseToggle);
 type Toggle = InstanceType<typeof Toggle>;
 
-type ToggleHandledProps = Subtract<BaseToggleHandledProps, ToggleManagedClasses>;
+type ToggleHandledProps = Omit<BaseToggleHandledProps, keyof ToggleManagedClasses>;
 type ToggleProps = ManagedJSSProps<
     BaseToggleProps,
     ToggleClassNameContract,
