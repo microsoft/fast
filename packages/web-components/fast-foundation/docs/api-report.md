@@ -197,16 +197,16 @@ export class Carousel extends FASTElement {
     }
 
 // @public
-export class CarouselSlide extends FASTElement {
+export const CarouselTemplate: ViewTemplate<Carousel, any>;
+
+// @public
+export class CarouselTestSlide extends FASTElement {
     // (undocumented)
     even: boolean;
 }
 
 // @public
-export const CarouselSlideTemplate: import("@microsoft/fast-element").ViewTemplate<CarouselSlide, any>;
-
-// @public
-export const CarouselTemplate: ViewTemplate<Carousel, any>;
+export const CarouselTestSlideTemplate: import("@microsoft/fast-element").ViewTemplate<CarouselTestSlide, any>;
 
 // @public
 export class Checkbox extends FormAssociated<HTMLInputElement> {

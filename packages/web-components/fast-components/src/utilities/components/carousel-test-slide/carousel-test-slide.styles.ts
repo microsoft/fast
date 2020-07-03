@@ -1,6 +1,6 @@
 import { css } from "@microsoft/fast-element";
 
-export const CarouselSlideStyles = css`
+export const CarouselTestSlideStyles = css`
     .outer-span {
         justify-content: center;
         width: 100%;

@@ -1,13 +1,13 @@
 import { customElement } from "@microsoft/fast-element";
 import {
-    CarouselSlide,
-    CarouselSlideTemplate as template,
+    CarouselTestSlide,
+    CarouselTestSlideTemplate as template,
 } from "@microsoft/fast-foundation";
-import { CarouselSlideStyles as styles } from "./carousel-slide.styles";
+import { CarouselTestSlideStyles as styles } from "./carousel-test-slide.styles";
 
 @customElement({
     name: "fast-carousel-test-slide",
     template,
     styles,
 })
-export class FASTCarouselTestSlide extends CarouselSlide {}
+export class FASTCarouselTestSlide extends CarouselTestSlide {}

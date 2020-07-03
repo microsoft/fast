@@ -1,11 +1,11 @@
 import { html, repeat } from "@microsoft/fast-element";
-import { CarouselSlide } from "./carousel-slide";
+import { CarouselTestSlide } from "./carousel-test-slide";
 
 /**
- * The template for the {@link @microsoft/fast-foundation#CarouselSlide} testing component.
+ * The template for the {@link @microsoft/fast-foundation#CarouselTestSlide} testing component.
  * @public
  */
-export const CarouselSlideTemplate = html<CarouselSlide>`
+export const CarouselTestSlideTemplate = html<CarouselTestSlide>`
     <div>
         <span class="outer-span">
             <span class="inner-span">
