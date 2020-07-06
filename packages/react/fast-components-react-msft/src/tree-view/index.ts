@@ -9,7 +9,6 @@ import {
 } from "@microsoft/fast-components-react-base";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { DesignSystem, TreeViewStyles } from "@microsoft/fast-components-styles-msft";
-import { Subtract } from "utility-types";
 import treeViewSchema from "./tree-view.schema";
 import treeViewSchema2 from "./tree-view.schema.2";
 
@@ -20,7 +19,7 @@ import treeViewSchema2 from "./tree-view.schema.2";
 const TreeView = manageJss(TreeViewStyles)(BaseTreeView);
 type TreeView = InstanceType<typeof TreeView>;
 
-type TreeViewHandledProps = Subtract<BaseTreeViewHandledProps, TreeViewManagedClasses>;
+type TreeViewHandledProps = Omit<BaseTreeViewHandledProps, keyof TreeViewManagedClasses>;
 type TreeViewProps = ManagedJSSProps<
     BaseTreeViewProps,
     TreeViewClassNameContract,

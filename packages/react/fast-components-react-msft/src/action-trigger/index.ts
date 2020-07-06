@@ -5,7 +5,6 @@ import {
     ActionTriggerStyles,
     DesignSystem,
 } from "@microsoft/fast-components-styles-msft";
-import { Subtract } from "utility-types";
 import MSFTActionTrigger, {
     ActionTriggerAppearance,
     ActionTriggerManagedClasses,
@@ -23,9 +22,9 @@ import actionTriggerSchema2 from "./action-trigger.schema.2";
 const ActionTrigger = manageJss(ActionTriggerStyles)(MSFTActionTrigger);
 type ActionTrigger = InstanceType<typeof ActionTrigger>;
 
-type ActionTriggerHandledProps = Subtract<
+type ActionTriggerHandledProps = Omit<
     MSFTActionTriggerHandledProps,
-    ActionTriggerManagedClasses
+    keyof ActionTriggerManagedClasses
 >;
 type ActionTriggerProps = ManagedJSSProps<
     MSFTActionTriggerProps,

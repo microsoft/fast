@@ -626,7 +626,7 @@ describe("horizontal overflow", (): void => {
         expect(resizeCallback.mock.calls[0][0]).not.toBe("resize");
     });
     test("should create a resize observer if it is available", (): void => {
-        const ActualObserver: ConstructibleResizeObserver = (window as WindowWithResizeObserver)
+        const ActualObserver: ConstructibleResizeObserver = ((window as unknown) as WindowWithResizeObserver)
             .ResizeObserver;
         const construct: jest.Mock<any, any> = jest.fn();
         // Mock the resize observer
@@ -638,7 +638,7 @@ describe("horizontal overflow", (): void => {
                 construct();
             }
         }
-        (window as WindowWithResizeObserver).ResizeObserver = MockObserver;
+        ((window as unknown) as WindowWithResizeObserver).ResizeObserver = MockObserver;
 
         // Render the component
         /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
@@ -650,10 +650,10 @@ describe("horizontal overflow", (): void => {
 
         expect(construct).toBeCalledTimes(1);
         // Replace the window to it's original state
-        (window as WindowWithResizeObserver).ResizeObserver = ActualObserver;
+        ((window as unknown) as WindowWithResizeObserver).ResizeObserver = ActualObserver;
     });
     test("should disconnect the resize observer when unmounted", (): void => {
-        const ActualObserver: ConstructibleResizeObserver = (window as WindowWithResizeObserver)
+        const ActualObserver: ConstructibleResizeObserver = ((window as unknown) as WindowWithResizeObserver)
             .ResizeObserver;
         const disconnect: jest.Mock<any, any> = jest.fn();
         // Mock the resize observer
@@ -663,7 +663,7 @@ describe("horizontal overflow", (): void => {
             public unobserve: jest.Mock<any, any> = jest.fn();
             public disconnect: jest.Mock<any, any> = disconnect;
         }
-        (window as WindowWithResizeObserver).ResizeObserver = MockObserver;
+        ((window as unknown) as WindowWithResizeObserver).ResizeObserver = MockObserver;
 
         const rendered: any = mount(
             <HorizontalOverflow managedClasses={managedClasses}>
@@ -675,7 +675,7 @@ describe("horizontal overflow", (): void => {
 
         expect(disconnect).toBeCalledTimes(1);
         // Replace the window to it's original state
-        (window as WindowWithResizeObserver).ResizeObserver = ActualObserver;
+        ((window as unknown) as WindowWithResizeObserver).ResizeObserver = ActualObserver;
     });
     test("should cancel any queued callbacks on unmount", (): void => {
         const actualRafThrottle: typeof rafThrottle = rafThrottle;

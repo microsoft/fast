@@ -1,6 +1,6 @@
 {
   "name": "@microsoft/fast-creator",
-  "version": "0.0.9",
+  "version": "0.1.0",
   "description": "Creator app for composing UIs and general UI development",
   "sideEffects": false,
   "private": true,
@@ -27,9 +27,9 @@
     "@microsoft/eslint-config-fast-dna": "^1.1.4",
     "@microsoft/fast-components-foundation-react": "^3.1.11",
     "@microsoft/fast-jss-manager-react": "^4.7.7",
-    "@microsoft/fast-jss-utilities": "^4.7.17",
-    "@microsoft/fast-layouts-react": "^4.11.15",
-    "@microsoft/site-utilities": "^0.2.0",
+    "@microsoft/fast-jss-utilities": "^4.7.18",
+    "@microsoft/fast-layouts-react": "^4.11.16",
+    "@microsoft/site-utilities": "^0.3.0",
     "@types/jest": "^25.2.1",
     "@types/node": "^9.6.7",
     "@types/react": "^16.8.0",
@@ -37,6 +37,7 @@
     "babel-core": "^7.0.0-bridge.0",
     "babel-loader": "^8.0.6",
     "clean-webpack-plugin": "^1.0.0",
+    "copy-webpack-plugin": "^6.0.3",
     "csstype": "^2.5.8",
     "eslint-config-prettier": "6.10.1",
     "exenv-es6": "^1.0.0",
@@ -56,7 +57,7 @@
     "react-router-dom": "^5.1.2",
     "ts-jest": "^25.4.0",
     "ts-loader": "^7.0.2",
-    "typescript": "^3.8.3",
+    "typescript": "^3.9.0",
     "webpack": "4.28.4",
     "webpack-bundle-analyzer": "^3.0.3",
     "webpack-cli": "^3.1.2",
@@ -65,8 +66,8 @@
     "worker-loader": "^2.0.0"
   },
   "dependencies": {
-    "@microsoft/fast-components": "^1.3.0",
+    "@microsoft/fast-components": "^1.4.0",
     "@microsoft/fast-tooling": "^0.6.1",
-    "@microsoft/fast-tooling-react": "^2.2.4"
+    "@microsoft/fast-tooling-react": "^2.2.5"
   }
 }

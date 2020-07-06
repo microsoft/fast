@@ -1,5 +1,4 @@
 import React from "react";
-import { Subtract } from "utility-types";
 import {
     ContextMenuItemHandledProps as BaseContextMenuItemHandledProps,
     ContextMenuItemManagedClasses as BaseContextMenuItemManagedClasses,
@@ -15,7 +14,7 @@ export type ContextMenuItemManagedClasses = ManagedClasses<
 >;
 export interface ContextMenuItemHandledProps
     extends ContextMenuItemManagedClasses,
-        Subtract<BaseContextMenuItemHandledProps, BaseContextMenuItemManagedClasses> {
+        Omit<BaseContextMenuItemHandledProps, keyof BaseContextMenuItemManagedClasses> {
     /**
      * The element that comes after the primary content
      */

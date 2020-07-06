@@ -10,7 +10,6 @@ import {
 import { ViewerClassNameContract } from "./viewer.class-name-contract";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import ViewerStyles from "./viewer.style";
-import { Subtract } from "utility-types";
 
 /*
  * The type returned by manageJss type is very complicated so we'll let the
@@ -20,7 +19,7 @@ const Viewer = manageJss(ViewerStyles)(BaseViewer);
 type Viewer = InstanceType<typeof Viewer>;
 
 interface ViewerHandledProps
-    extends Subtract<BaseViewerHandledProps, ViewerManagedClasses> {}
+    extends Omit<BaseViewerHandledProps, keyof ViewerManagedClasses> {}
 type ViewerProps = ManagedJSSProps<BaseViewerProps, ViewerClassNameContract, {}>;
 
 export {

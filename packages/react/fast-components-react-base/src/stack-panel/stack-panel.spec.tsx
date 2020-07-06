@@ -123,7 +123,7 @@ describe("stack panel", (): void => {
     });
 
     test("should create a resize observer if it is available", (): void => {
-        const ActualObserver: ConstructibleResizeObserver = (window as WindowWithResizeObserver)
+        const ActualObserver: ConstructibleResizeObserver = ((window as unknown) as WindowWithResizeObserver)
             .ResizeObserver;
         const construct: jest.Mock<any, any> = jest.fn();
         // Mock the resize observer
@@ -135,18 +135,18 @@ describe("stack panel", (): void => {
                 construct();
             }
         }
-        (window as WindowWithResizeObserver).ResizeObserver = MockObserver;
+        ((window as unknown) as WindowWithResizeObserver).ResizeObserver = MockObserver;
 
         // Render the component
         mount(<StackPanel>{sampleStackPanelItems}</StackPanel>);
 
         expect(construct).toBeCalledTimes(1);
         // Replace the window to it's original state
-        (window as WindowWithResizeObserver).ResizeObserver = ActualObserver;
+        ((window as unknown) as WindowWithResizeObserver).ResizeObserver = ActualObserver;
     });
 
     test("should disconnect the resize observer when unmounted", (): void => {
-        const ActualObserver: ConstructibleResizeObserver = (window as WindowWithResizeObserver)
+        const ActualObserver: ConstructibleResizeObserver = ((window as unknown) as WindowWithResizeObserver)
             .ResizeObserver;
         const disconnect: jest.Mock<any, any> = jest.fn();
         // Mock the resize observer
@@ -156,7 +156,7 @@ describe("stack panel", (): void => {
             public unobserve: jest.Mock<any, any> = jest.fn();
             public disconnect: jest.Mock<any, any> = disconnect;
         }
-        (window as WindowWithResizeObserver).ResizeObserver = MockObserver;
+        ((window as unknown) as WindowWithResizeObserver).ResizeObserver = MockObserver;
 
         const rendered: any = mount(<StackPanel>{sampleStackPanelItems}</StackPanel>);
         // Unmount the component to trigger lifecycle methods
@@ -164,7 +164,7 @@ describe("stack panel", (): void => {
 
         expect(disconnect).toBeCalledTimes(1);
         // Replace the window to it's original state
-        (window as WindowWithResizeObserver).ResizeObserver = ActualObserver;
+        ((window as unknown) as WindowWithResizeObserver).ResizeObserver = ActualObserver;
     });
 
     test("getDirection should return direction value when the ltr prop is passed", (): void => {

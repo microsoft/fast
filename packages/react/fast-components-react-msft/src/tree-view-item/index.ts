@@ -2,7 +2,6 @@ import React from "react";
 import { TreeViewItemClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { DesignSystem, TreeViewItemStyles } from "@microsoft/fast-components-styles-msft";
-import { Subtract } from "utility-types";
 import treeViewItemSchema from "./tree-view-item.schema";
 import treeViewItemSchema2 from "./tree-view-item.schema.2";
 import MSFTTreeViewItem, {
@@ -19,9 +18,9 @@ import MSFTTreeViewItem, {
 const TreeViewItem = manageJss(TreeViewItemStyles)(MSFTTreeViewItem);
 type TreeViewItem = InstanceType<typeof TreeViewItem>;
 
-type TreeViewItemHandledProps = Subtract<
+type TreeViewItemHandledProps = Omit<
     MSFTTreeViewItemHandledProps,
-    TreeViewItemManagedClasses
+    keyof TreeViewItemManagedClasses
 >;
 type TreeViewItemProps = ManagedJSSProps<
     MSFTTreeViewItemProps,

@@ -1,6 +1,5 @@
 import React from "react";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
-import { Subtract } from "utility-types";
 import {
     Column as BaseColumn,
     ColumnHandledProps as BaseColumnHandledProps,
@@ -13,7 +12,7 @@ import {
 const Column = manageJss()(BaseColumn);
 type Column = typeof Column;
 
-type ColumnHandledProps = Subtract<BaseColumnHandledProps, ColumnManagedClasses>;
+type ColumnHandledProps = Omit<BaseColumnHandledProps, keyof ColumnManagedClasses>;
 type ColumnProps = ManagedJSSProps<BaseColumnProps, ColumnClassNamesContract, undefined>;
 
 export {

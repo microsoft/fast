@@ -1,4 +1,3 @@
-import { Subtract } from "utility-types";
 import {
     TextFieldHandledProps as BaseTextFieldHandledProps,
     TextFieldManagedClasses as BaseTextFieldManagedClasses,
@@ -17,7 +16,7 @@ export enum TextFieldAppearance {
 export type TextFieldManagedClasses = ManagedClasses<TextFieldClassNameContract>;
 export interface TextFieldHandledProps
     extends TextFieldManagedClasses,
-        Subtract<BaseTextFieldHandledProps, BaseTextFieldManagedClasses> {
+        Omit<BaseTextFieldHandledProps, keyof BaseTextFieldManagedClasses> {
     /**
      * The TextField appearance
      */

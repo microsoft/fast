@@ -3,7 +3,6 @@ import { FoundationProps } from "@microsoft/fast-components-foundation-react";
 import { FlipperClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { DesignSystem, FlipperStyles } from "@microsoft/fast-components-styles-msft";
-import { Subtract } from "utility-types";
 import MSFTFlipper, {
     FlipperDirection,
     FlipperManagedClasses,
@@ -21,7 +20,7 @@ import flipperSchema2 from "./flipper.schema.2";
 const Flipper = manageJss(FlipperStyles)(MSFTFlipper);
 type Flipper = InstanceType<typeof Flipper>;
 
-type FlipperHandledProps = Subtract<MSFTFlipperHandledProps, FlipperManagedClasses>;
+type FlipperHandledProps = Omit<MSFTFlipperHandledProps, keyof FlipperManagedClasses>;
 type FlipperProps = ManagedJSSProps<
     MSFTFlipperProps,
     FlipperClassNameContract,

@@ -1,5 +1,4 @@
 import React from "react";
-import { Subtract } from "utility-types";
 import {
     ButtonHandledProps as BaseButtonHandledProps,
     ButtonManagedClasses as BaseButtonManagedClasses,
@@ -21,7 +20,7 @@ export enum ButtonAppearance {
 export type ButtonManagedClasses = ManagedClasses<ButtonClassNameContract>;
 export interface ButtonHandledProps
     extends ButtonManagedClasses,
-        Subtract<BaseButtonHandledProps, BaseButtonManagedClasses> {
+        Omit<BaseButtonHandledProps, keyof BaseButtonManagedClasses> {
     /**
      * The Button appearance
      */

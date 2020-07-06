@@ -10,7 +10,6 @@ import {
 } from "@microsoft/fast-components-react-base";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { DesignSystem, DividerStyles } from "@microsoft/fast-components-styles-msft";
-import { Subtract } from "utility-types";
 import dividerSchema from "./divider.schema";
 
 /*
@@ -20,7 +19,7 @@ import dividerSchema from "./divider.schema";
 const Divider = manageJss(DividerStyles)(BaseDivider);
 type Divider = InstanceType<typeof Divider>;
 
-type DividerHandledProps = Subtract<BaseDividerHandledProps, DividerManagedClasses>;
+type DividerHandledProps = Omit<BaseDividerHandledProps, keyof DividerManagedClasses>;
 type DividerProps = ManagedJSSProps<
     BaseDividerProps,
     DividerClassNameContract,

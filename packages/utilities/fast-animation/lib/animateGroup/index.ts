@@ -22,8 +22,11 @@ class AnimateGroup {
     }
 
     /**
-     * Expose onFinish callback
+     * The onFinish callback.
      */
+    public get onFinish(): () => void {
+        return this._onFinish;
+    }
     public set onFinish(callback: () => void) {
         this._onFinish = callback;
         const longestRunning: AnimateTo | AnimateFrom = this.getLongestAnimation();

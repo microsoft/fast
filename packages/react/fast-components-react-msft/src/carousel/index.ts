@@ -2,7 +2,6 @@ import React from "react";
 import { CarouselClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { CarouselStyles, DesignSystem } from "@microsoft/fast-components-styles-msft";
-import { Subtract } from "utility-types";
 import carouselSchema from "./carousel.schema";
 import carouselSchema2 from "./carousel.schema.2";
 import MSFTCarousel, {
@@ -22,7 +21,7 @@ import MSFTCarousel, {
 const Carousel = manageJss(CarouselStyles)(MSFTCarousel);
 type Carousel = InstanceType<typeof Carousel>;
 
-type CarouselHandledProps = Subtract<MSFTCarouselHandledProps, CarouselManagedClasses>;
+type CarouselHandledProps = Omit<MSFTCarouselHandledProps, keyof CarouselManagedClasses>;
 type CarouselProps = ManagedJSSProps<
     MSFTCarouselProps,
     CarouselClassNameContract,

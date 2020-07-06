@@ -3,7 +3,6 @@ import {
     CheckboxClassNameContract,
     ManagedClasses,
 } from "@microsoft/fast-components-class-name-contracts-base";
-import { Omit } from "utility-types";
 
 /**
  * @deprecated

@@ -3,7 +3,6 @@ import { FoundationProps } from "@microsoft/fast-components-foundation-react";
 import { HeadingClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { DesignSystem, HeadingStyles } from "@microsoft/fast-components-styles-msft";
-import { Subtract } from "utility-types";
 import headingSchema from "./heading.schema";
 import headingSchema2 from "./heading.schema.2";
 import MSFTHeading, {
@@ -23,7 +22,7 @@ import MSFTHeading, {
 const Heading = manageJss(HeadingStyles)(MSFTHeading);
 type Heading = InstanceType<typeof Heading>;
 
-type HeadingHandledProps = Subtract<MSFTHeadingHandledProps, HeadingManagedClasses>;
+type HeadingHandledProps = Omit<MSFTHeadingHandledProps, keyof HeadingManagedClasses>;
 type HeadingProps = ManagedJSSProps<
     MSFTHeadingProps,
     HeadingClassNameContract,
