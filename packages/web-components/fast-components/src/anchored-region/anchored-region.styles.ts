@@ -10,6 +10,5 @@ export const AnchoredRegionStyles = css`
     }
 
     .region {
-        position: relative;
     }
 `;

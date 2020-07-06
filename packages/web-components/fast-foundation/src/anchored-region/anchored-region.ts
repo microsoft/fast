@@ -216,6 +216,7 @@ export class AnchoredRegion extends FASTElement {
     private openRequestAnimationFrame: boolean = false;
     private currentDirection: Direction = Direction.ltr;
     private observersConnected = false;
+    private noCollisionMode = false;
 
     constructor() {
         super();
@@ -264,6 +265,7 @@ export class AnchoredRegion extends FASTElement {
      */
     private setInitialState = (): void => {
         this.initialLayoutComplete = false;
+        this.noCollisionMode = false;
         this.transformOrigin = "top left";
         this.regionTop = "unset";
         this.regionRight = "unset";
@@ -294,7 +296,7 @@ export class AnchoredRegion extends FASTElement {
         this.baseHorizontalOffset = 0;
         this.baseVerticalOffset = 0;
 
-        this.regionStyle = "";
+        this.regionStyle = "{position: absolute}";
     };
 
     /**
@@ -387,9 +389,41 @@ export class AnchoredRegion extends FASTElement {
     };
 
     /**
+     *
+     */
+    private isValidCollision = (entry: IntersectionObserverEntry): boolean => {
+        return (
+            entry.rootBounds !== null &&
+            this.viewportElement !== null &&
+            Math.round(entry.rootBounds.height) ===
+                Math.round(this.viewportElement.clientHeight)
+        );
+    };
+
+    /**
      *  Handle collisions
      */
     private handleCollision = (entries: IntersectionObserverEntry[]): void => {
+        if (
+            !this.initialLayoutComplete &&
+            entries.length === 2 &&
+            this.viewportElement !== null &&
+            this.region !== null &&
+            this.anchorElement !== null
+        ) {
+            if (
+                !this.isValidCollision(entries[0]) ||
+                !this.isValidCollision(entries[1])
+            ) {
+                const regionRect: DOMRect = this.region.getBoundingClientRect();
+                const anchorRect: DOMRect = this.anchorElement.getBoundingClientRect();
+                const viewportRect: DOMRect = this.viewportElement.getBoundingClientRect();
+
+                this.noCollisionMode = true;
+                return;
+            }
+        }
+
         let regionRect: DOMRect | ClientRect | null = null;
         entries.forEach((entry: IntersectionObserverEntry) => {
             if (entry.target === this.region) {
@@ -506,13 +540,6 @@ export class AnchoredRegion extends FASTElement {
      *  Handle region resize events
      */
     private handleRegionResize = (entry: ResizeObserverEntry): void => {
-        // correct for rtl
-        if (this.currentDirection === Direction.rtl) {
-            this.baseHorizontalOffset =
-                this.baseHorizontalOffset -
-                (this.regionDimension.width - entry.contentRect.width);
-        }
-
         switch (this.horizontalScaling) {
             case "content":
                 this.regionDimension.width = entry.contentRect.width;
@@ -736,6 +763,7 @@ export class AnchoredRegion extends FASTElement {
         this.classList.toggle("inset-right", this.horizontalPosition === "insetRight");
 
         this.regionStyle = `
+            position: ${this.noCollisionMode ? "absolute" : "absolute"};
             height: ${this.regionHeight};
             width: ${this.regionWidth};
             top: ${this.regionTop};
@@ -761,15 +789,12 @@ export class AnchoredRegion extends FASTElement {
         switch (desiredHorizontalPosition) {
             case AnchoredRegionHorizontalPositionLabel.left:
                 xTransformOrigin = Location.right;
-                right = nextPositionerDimension.width - this.baseHorizontalOffset;
+                right = -this.baseHorizontalOffset;
                 break;
 
             case AnchoredRegionHorizontalPositionLabel.insetLeft:
                 xTransformOrigin = Location.right;
-                right =
-                    nextPositionerDimension.width -
-                    this.anchorWidth -
-                    this.baseHorizontalOffset;
+                right = -this.anchorWidth - this.baseHorizontalOffset;
                 break;
 
             case AnchoredRegionHorizontalPositionLabel.insetRight:
@@ -817,15 +842,12 @@ export class AnchoredRegion extends FASTElement {
         switch (desiredVerticalPosition) {
             case AnchoredRegionVerticalPositionLabel.top:
                 yTransformOrigin = Location.bottom;
-                bottom =
-                    nextPositionerDimension.height +
-                    this.anchorHeight -
-                    this.baseVerticalOffset;
+                bottom = this.anchorHeight - this.baseVerticalOffset;
                 break;
 
             case AnchoredRegionVerticalPositionLabel.insetTop:
                 yTransformOrigin = Location.bottom;
-                bottom = nextPositionerDimension.height - this.baseVerticalOffset;
+                bottom = -this.baseVerticalOffset;
                 break;
 
             case AnchoredRegionVerticalPositionLabel.insetBottom:
@@ -938,14 +960,8 @@ export class AnchoredRegion extends FASTElement {
         if (this.viewportScrollLeft !== scrollLeft) {
             const horizontalScrollDelta: number = this.viewportScrollLeft - scrollLeft;
             this.viewportScrollLeft = scrollLeft;
-            this.anchorLeft =
-                this.currentDirection === Direction.ltr
-                    ? this.anchorLeft + horizontalScrollDelta
-                    : this.anchorLeft - horizontalScrollDelta;
-            this.anchorRight =
-                this.currentDirection === Direction.ltr
-                    ? this.anchorRight + horizontalScrollDelta
-                    : this.anchorRight - horizontalScrollDelta;
+            this.anchorLeft = this.anchorLeft + horizontalScrollDelta;
+            this.anchorRight = this.anchorRight + horizontalScrollDelta;
         }
     };
 
