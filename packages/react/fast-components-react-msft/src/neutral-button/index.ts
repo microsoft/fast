@@ -5,7 +5,6 @@ import {
     DesignSystem,
     NeutralButtonStyles,
 } from "@microsoft/fast-components-styles-msft";
-import { Subtract } from "utility-types";
 import {
     ButtonBase,
     ButtonBaseHandledProps,
@@ -24,9 +23,9 @@ import neutralButtonSchema2 from "./neutral-button.schema.2";
 const NeutralButton = manageJss(NeutralButtonStyles)(ButtonBase);
 type NeutralButton = InstanceType<typeof NeutralButton>;
 
-type NeutralButtonHandledProps = Subtract<
+type NeutralButtonHandledProps = Omit<
     ButtonBaseHandledProps,
-    ButtonBaseManagedClasses
+    keyof ButtonBaseManagedClasses
 >;
 type NeutralButtonProps = ManagedJSSProps<
     ButtonBaseProps,

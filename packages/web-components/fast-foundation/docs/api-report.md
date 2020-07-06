@@ -56,7 +56,6 @@ export const AccordionTemplate: import("@microsoft/fast-element").ViewTemplate<A
 //
 // @public
 export class Anchor extends FASTElement {
-    appearance: AnchorAppearance;
     download: string;
     href: string;
     hreflang: string;
@@ -70,9 +69,6 @@ export class Anchor extends FASTElement {
 // @internal
 export interface Anchor extends StartEnd {
 }
-
-// @public
-export type AnchorAppearance = ButtonAppearance | "hypertext";
 
 // @public
 export const AnchorTemplate: import("@microsoft/fast-element").ViewTemplate<Anchor, any>;
@@ -105,7 +101,6 @@ export class BaseProgress extends FASTElement {
 // @public
 export class Button extends FormAssociated<HTMLInputElement> {
     constructor();
-    appearance: ButtonAppearance;
     autofocus: boolean;
     // @internal (undocumented)
     connectedCallback(): void;
@@ -125,9 +120,6 @@ export class Button extends FormAssociated<HTMLInputElement> {
 // @internal
 export interface Button extends StartEnd {
 }
-
-// @public
-export type ButtonAppearance = "accent" | "lightweight" | "neutral" | "outline" | "stealth";
 
 // @public
 export const ButtonTemplate: import("@microsoft/fast-element").ViewTemplate<Button, any>;
@@ -323,33 +315,12 @@ export const forcedColorsStylesheetBehavior: (sheet: ElementStyles) => Readonly<
             prototype: HTMLElement;
         }>(BaseType: TBase): new () => InstanceType<TBase> & FASTElement;
         define<TType extends Function>(Type: TType, nameOrDef?: string | import("@microsoft/fast-element").PartialFASTElementDefinition | undefined): TType;
-        getDefinition<T extends Function>(Type: T): import("@microsoft/fast-element").FASTElementDefinition | undefined;
+        getDefinition<T_1 extends Function>(Type: T_1): import("@microsoft/fast-element").FASTElementDefinition | undefined;
     }, ((this: MediaQueryList) => void)[] | ((this: MediaQueryList) => void)>;
     sheet: ElementStyles;
-    constructListener(this: MatchMediaStyleSheetBehavior, source: (new () => HTMLElement & FASTElement) & {
-        from<TBase extends {
-            new (): HTMLElement;
-            prototype: HTMLElement;
-        }>(BaseType: TBase): new () => InstanceType<TBase> & FASTElement;
-        define<TType extends Function>(Type: TType, nameOrDef?: string | import("@microsoft/fast-element").PartialFASTElementDefinition | undefined): TType;
-        getDefinition<T extends Function>(Type: T): import("@microsoft/fast-element").FASTElementDefinition | undefined;
-    }, sheet: ElementStyles): MediaQueryListListener;
-    bind(this: MatchMediaStyleSheetBehavior, source: (new () => HTMLElement & FASTElement) & {
-        from<TBase extends {
-            new (): HTMLElement;
-            prototype: HTMLElement;
-        }>(BaseType: TBase): new () => InstanceType<TBase> & FASTElement;
-        define<TType extends Function>(Type: TType, nameOrDef?: string | import("@microsoft/fast-element").PartialFASTElementDefinition | undefined): TType;
-        getDefinition<T extends Function>(Type: T): import("@microsoft/fast-element").FASTElementDefinition | undefined;
-    }): void;
-    unbind(this: MatchMediaStyleSheetBehavior, source: (new () => HTMLElement & FASTElement) & {
-        from<TBase extends {
-            new (): HTMLElement;
-            prototype: HTMLElement;
-        }>(BaseType: TBase): new () => InstanceType<TBase> & FASTElement;
-        define<TType extends Function>(Type: TType, nameOrDef?: string | import("@microsoft/fast-element").PartialFASTElementDefinition | undefined): TType;
-        getDefinition<T extends Function>(Type: T): import("@microsoft/fast-element").FASTElementDefinition | undefined;
-    }): void;
+    constructListener(this: MatchMediaStyleSheetBehavior, source: typeof FASTElement, sheet: ElementStyles): MediaQueryListListener;
+    bind(this: MatchMediaStyleSheetBehavior, source: typeof FASTElement): void;
+    unbind(this: MatchMediaStyleSheetBehavior, source: typeof FASTElement): void;
 }>;
 
 // @public
@@ -357,6 +328,9 @@ export const hidden = "\n    :host([hidden]) {\n        display: none;\n    }\n"
 
 // @public
 export function isDesignSystemConsumer(element: HTMLElement | DesignSystemConsumer): element is DesignSystemConsumer;
+
+// @public
+export function isTreeItemElement(el: Element): el is HTMLElement;
 
 // @public
 export function matchMediaStylesheetBehaviorFactory(query: MediaQueryList): (sheet: ElementStyles) => Readonly<{
@@ -367,33 +341,12 @@ export function matchMediaStylesheetBehaviorFactory(query: MediaQueryList): (she
             prototype: HTMLElement;
         }>(BaseType: TBase): new () => InstanceType<TBase> & FASTElement;
         define<TType extends Function>(Type: TType, nameOrDef?: string | import("@microsoft/fast-element").PartialFASTElementDefinition | undefined): TType;
-        getDefinition<T extends Function>(Type: T): import("@microsoft/fast-element").FASTElementDefinition | undefined;
+        getDefinition<T_1 extends Function>(Type: T_1): import("@microsoft/fast-element").FASTElementDefinition | undefined;
     }, ((this: MediaQueryList) => void)[] | ((this: MediaQueryList) => void)>;
     sheet: ElementStyles;
-    constructListener(this: MatchMediaStyleSheetBehavior, source: (new () => HTMLElement & FASTElement) & {
-        from<TBase extends {
-            new (): HTMLElement;
-            prototype: HTMLElement;
-        }>(BaseType: TBase): new () => InstanceType<TBase> & FASTElement;
-        define<TType extends Function>(Type: TType, nameOrDef?: string | import("@microsoft/fast-element").PartialFASTElementDefinition | undefined): TType;
-        getDefinition<T extends Function>(Type: T): import("@microsoft/fast-element").FASTElementDefinition | undefined;
-    }, sheet: ElementStyles): MediaQueryListListener;
-    bind(this: MatchMediaStyleSheetBehavior, source: (new () => HTMLElement & FASTElement) & {
-        from<TBase extends {
-            new (): HTMLElement;
-            prototype: HTMLElement;
-        }>(BaseType: TBase): new () => InstanceType<TBase> & FASTElement;
-        define<TType extends Function>(Type: TType, nameOrDef?: string | import("@microsoft/fast-element").PartialFASTElementDefinition | undefined): TType;
-        getDefinition<T extends Function>(Type: T): import("@microsoft/fast-element").FASTElementDefinition | undefined;
-    }): void;
-    unbind(this: MatchMediaStyleSheetBehavior, source: (new () => HTMLElement & FASTElement) & {
-        from<TBase extends {
-            new (): HTMLElement;
-            prototype: HTMLElement;
-        }>(BaseType: TBase): new () => InstanceType<TBase> & FASTElement;
-        define<TType extends Function>(Type: TType, nameOrDef?: string | import("@microsoft/fast-element").PartialFASTElementDefinition | undefined): TType;
-        getDefinition<T extends Function>(Type: T): import("@microsoft/fast-element").FASTElementDefinition | undefined;
-    }): void;
+    constructListener(this: MatchMediaStyleSheetBehavior, source: typeof FASTElement, sheet: ElementStyles): MediaQueryListListener;
+    bind(this: MatchMediaStyleSheetBehavior, source: typeof FASTElement): void;
+    unbind(this: MatchMediaStyleSheetBehavior, source: typeof FASTElement): void;
 }>;
 
 // @public
@@ -532,6 +485,8 @@ export class Slider extends FormAssociated<HTMLInputElement> implements SliderCo
     // @internal (undocumented)
     trackHeight: number;
     // @internal (undocumented)
+    trackLeft: number;
+    // @internal (undocumented)
     trackMinHeight: number;
     // @internal (undocumented)
     trackMinWidth: number;
@@ -655,6 +610,7 @@ export class Tabs extends FASTElement {
     // @internal (undocumented)
     activeIndicatorRef: HTMLElement;
     activetab: HTMLElement;
+    adjust(adjustment: number): void;
     orientation: TabsOrientation;
     // @internal (undocumented)
     tabpanels: HTMLElement[];
@@ -782,11 +738,81 @@ export enum TextFieldType {
     url = "url"
 }
 
+// Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
+// Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "TreeItem" because one of its declarations is marked as @internal
+//
+// @public
+export class TreeItem extends FASTElement {
+    // (undocumented)
+    childItems: HTMLElement[];
+    // @internal (undocumented)
+    connectedCallback(): void;
+    disabled: boolean;
+    // @internal (undocumented)
+    disconnectedCallback(): void;
+    // (undocumented)
+    expandCollapseButton: HTMLDivElement;
+    expanded: boolean;
+    // (undocumented)
+    focusable: boolean;
+    // (undocumented)
+    handleBlur: (e: FocusEvent) => void;
+    // (undocumented)
+    handleChange(source: any, propertyName: string): void;
+    // (undocumented)
+    handleContainerClick: (e: MouseEvent) => void;
+    // (undocumented)
+    handleExpandCollapseButtonClick: () => void;
+    // (undocumented)
+    handleFocus: (e: Event) => void;
+    // (undocumented)
+    handleKeyDown: (e: KeyboardEvent) => void | boolean;
+    // (undocumented)
+    items: HTMLElement[];
+    // (undocumented)
+    nested: boolean;
+    // (undocumented)
+    renderCollapsedChildren: boolean;
+    selected: boolean;
+    }
+
+// @internal
+export interface TreeItem extends StartEnd {
+}
+
+// @public
+export const TreeItemTemplate: import("@microsoft/fast-element").ViewTemplate<TreeItem, any>;
+
+// @public
+export class TreeView extends FASTElement {
+    // (undocumented)
+    connectedCallback(): void;
+    // (undocumented)
+    currentSelected: HTMLElement | TreeItem | null;
+    // (undocumented)
+    focusable: boolean;
+    // (undocumented)
+    handleBlur: (e: FocusEvent) => void;
+    // (undocumented)
+    handleFocus: (e: FocusEvent) => void;
+    // (undocumented)
+    handleKeyDown: (e: KeyboardEvent) => void | boolean;
+    // (undocumented)
+    renderCollapsedNodes: boolean;
+    // (undocumented)
+    slottedTreeItems: HTMLElement[];
+    // (undocumented)
+    treeView: HTMLElement;
+}
+
+// @public
+export const TreeViewTemplate: import("@microsoft/fast-element").ViewTemplate<TreeView, any>;
+
 
 // Warnings were encountered during analysis:
 //
-// dist/dts/utilities/match-media-stylesheet-behavior.d.ts:69:5 - (ae-forgotten-export) The symbol "MatchMediaStyleSheetBehavior" needs to be exported by the entry point index.d.ts
-// dist/dts/utilities/match-media-stylesheet-behavior.d.ts:69:5 - (ae-forgotten-export) The symbol "MediaQueryListListener" needs to be exported by the entry point index.d.ts
+// dist/dts/utilities/match-media-stylesheet-behavior.d.ts:48:5 - (ae-forgotten-export) The symbol "MatchMediaStyleSheetBehavior" needs to be exported by the entry point index.d.ts
+// dist/dts/utilities/match-media-stylesheet-behavior.d.ts:48:5 - (ae-forgotten-export) The symbol "MediaQueryListListener" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 

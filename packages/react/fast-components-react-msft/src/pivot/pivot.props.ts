@@ -1,5 +1,4 @@
 import React from "react";
-import { Subtract } from "utility-types";
 import {
     TabsHandledProps as BaseTabsHandledProps,
     TabsManagedClasses as BaseTabsManagedClasses,
@@ -14,7 +13,7 @@ import {
 export type PivotManagedClasses = ManagedClasses<PivotClassNameContract>;
 export interface PivotHandledProps
     extends PivotManagedClasses,
-        Subtract<BaseTabsHandledProps, BaseTabsManagedClasses> {
+        Omit<BaseTabsHandledProps, keyof BaseTabsManagedClasses> {
     /**
      * Items that will make up the pivot and pivot content
      */

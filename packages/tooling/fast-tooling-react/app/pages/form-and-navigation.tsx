@@ -259,6 +259,7 @@ class FormAndNavigationTestPage extends React.Component<{}, FormTestPageState> {
                         navigation: e.data.navigation,
                     });
                 }
+                break;
             case MessageSystemType.data:
                 if (e.data.data) {
                     this.setState({
@@ -266,6 +267,7 @@ class FormAndNavigationTestPage extends React.Component<{}, FormTestPageState> {
                         dataDictionary: e.data.dataDictionary,
                     });
                 }
+                break;
             case MessageSystemType.navigation:
                 if (e.data.navigation) {
                     this.setState({
@@ -273,6 +275,7 @@ class FormAndNavigationTestPage extends React.Component<{}, FormTestPageState> {
                         dataDictionary: e.data.dataDictionary,
                     });
                 }
+                break;
         }
     };
 

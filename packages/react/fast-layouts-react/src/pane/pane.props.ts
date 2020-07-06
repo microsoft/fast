@@ -30,6 +30,21 @@ export interface PaneResizeControlProps {
      * The accessible role for the resize handler
      */
     role?: string;
+
+    /**
+     * The minimum resize value
+     */
+    valueMin?: number;
+
+    /**
+     * The maximum resize value
+     */
+    valueMax?: number;
+
+    /**
+     * The current resize value
+     */
+    valueNow?: number;
 }
 
 export type PaneManagedClasses = ManagedClasses<PaneClassNamesContract>;

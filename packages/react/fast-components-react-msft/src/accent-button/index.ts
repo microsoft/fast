@@ -2,7 +2,6 @@ import React from "react";
 import { ButtonBaseClassNameContract as AccentButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { AccentButtonStyles, DesignSystem } from "@microsoft/fast-components-styles-msft";
-import { Subtract } from "utility-types";
 import {
     ButtonBaseUnhandledProps as AccentButtonUnhandledProps,
     ButtonBase,
@@ -21,9 +20,9 @@ import accentButtonSchema2 from "./accent-button.schema.2";
 const AccentButton = manageJss(AccentButtonStyles)(ButtonBase);
 type AccentButton = InstanceType<typeof AccentButton>;
 
-type AccentButtonHandledProps = Subtract<
+type AccentButtonHandledProps = Omit<
     ButtonBaseHandledProps,
-    ButtonBaseManagedClasses
+    keyof ButtonBaseManagedClasses
 >;
 type AccentButtonProps = ManagedJSSProps<
     ButtonBaseProps,

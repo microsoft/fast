@@ -619,7 +619,7 @@ export class PixelBox {
     readonly minGreen: number;
     // (undocumented)
     readonly minRed: number;
-    modifiedMedianCut: () => [PixelBox, PixelBox];
+    modifiedMedianCut: () => [PixelBox | null, PixelBox | null];
     // (undocumented)
     readonly pixelCount: number;
     // (undocumented)

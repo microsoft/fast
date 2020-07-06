@@ -11,7 +11,7 @@
 - **Elevation:** Users may want to set different elevations of a single card or a set of cards based on context, state (such as hover), etc.
 
 ### Prior Art/Examples
-- [FAST (React)](https://explore.fast.design/components/card)
+- [FAST Card (React)](https://www.npmjs.com/package/@microsoft/fast-components-react-msft)
 
 **Cards are a building block used to compose examples like those below:
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.3.2](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling-examples@0.3.1...@microsoft/fast-tooling-examples@0.3.2) (2020-07-02)
+
+
+### Bug Fixes
+
+* update the sites to use the same favicon, update the logo ([#3406](https://github.com/Microsoft/fast/issues/3406)) ([ad8d258](https://github.com/Microsoft/fast/commit/ad8d25899f075d137eb23e77f046016b512f0893))
+
+
+
+
+
 ## [0.3.1](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling-examples@0.3.0...@microsoft/fast-tooling-examples@0.3.1) (2020-06-26)
 
 **Note:** Version bump only for package @microsoft/fast-tooling-examples

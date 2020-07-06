@@ -10,6 +10,9 @@ describe("getClientRectWithMargin", () => {
         left: 0,
         bottom: 0,
         right: 0,
+        x: undefined,
+        y: undefined,
+        toJSON: undefined,
     };
 
     beforeEach(() => {

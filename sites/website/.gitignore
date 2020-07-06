@@ -15,4 +15,5 @@ yarn-error.log*
 
 # Static files from the homepage
 static/bundle
+static/favicon.ico
 static/index.html

@@ -4,7 +4,7 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= htmlWebpackPlugin.options.title %></title>
-    <link rel="shortcut icon" href="https://static.fast.design/assets/manifest/favicon.ico">
+    <%= htmlWebpackPlugin.options.manifest %>
     <link href="https://use.typekit.net/spx2dgm.css" rel="stylesheet">
     <style type="text/css">
       *:not(:defined) {
@@ -105,8 +105,7 @@
 
         <aside class="side-nav-container">
           <site-side-navigation category="links" class="social-links"></site-side-navigation>
-          <!-- TODO #3404: https://github.com/microsoft/fast/issues/3404 -->
-          <!-- <site-side-navigation category="scroll" class="section-scroll"></site-side-navigation> -->
+          <site-side-navigation category="scroll" class="section-scroll"></site-side-navigation>
         </aside>
 
         <fast-divider class="footer-divider" role="seperator"></fast-divider>

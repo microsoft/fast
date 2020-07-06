@@ -55,7 +55,6 @@ import classnames from "classnames";
 import { get, isEqual, uniqueId } from "lodash-es";
 import { DividerClassNameContract } from "@microsoft/fast-components-react-base";
 import { connect } from "react-redux";
-import { Omit } from "utility-types";
 import { ColorsDesignSystem } from "./design-system";
 import { StealthIcon } from "./icons";
 import { AppState, ComponentTypes } from "./state";

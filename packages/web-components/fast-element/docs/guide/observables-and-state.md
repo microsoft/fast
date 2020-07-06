@@ -22,22 +22,95 @@ The `@attr` decorator can only be used in a `FASTElement` but the `@observable` 
 :::
 
 :::important
-Properties with only a getter, that function as a computed property over other observables, should not be decorated with `@attr` or `@observable`.
+Properties with only a getter, that function as a computed property over other observables, should not be decorated with `@attr` or `@observable`. However, they may need to be decorated with `@volatile`, depending on the internal logic.
 :::
 
-### Features
+## Observable Features
 
-#### Access tracking
+### Access tracking
 
-When decorated properties are accessed during template rendering, they are tracked, allowing the engine to deeply understand the relationship between your model and view.
+When `@attr` and `@observable` decorated properties are accessed during template rendering, they are tracked, allowing the engine to deeply understand the relationship between your model and view. These decorators serves to meta-program the property for you, injecting code to enable the observation system. However, if you do not like this approach, for `@observable`, you can always implement notification manually. Here's what that would look like:
 
-#### Internal observation
+**Example: Manual Observer Implementation**
 
-On the class where the attr/observable is defined, you can optionally implement a *propertyName*Changed method to easily respond to changes in your own state.
+```ts
+import { Observable } from '@microsoft/fast-element';
+
+export class Person {
+  private _firstName: string;
+  private _lastName: string;
+
+  get firstName() {
+    Observable.track(this, 'firstName');
+    return this._firstName;
+  }
+
+  set firstName(value: string) {
+    this._firstName = value;
+    Observable.notify(this, 'firstName');
+  }
+
+  get lastName() {
+    Observable.track(this, 'lastName');
+    return this._lastName;
+  }
+
+  set lastName(value: string) {
+    this._lastName = value;
+    Observable.notify(this, 'lastName');
+  }
+
+  get fullName() {
+    return `${this.firstName} ${this.lastName}`;
+  }
+}
+```
+
+Notice that the `fullName` property does not need any special code, since it's computing based on properties that are already observable. There is one special exception to this: if you have a computed property with branching code paths, such as ternary operators, if/else conditions, etc, then you must tell the observation system that your computed property has *volatile* dependencies. In other words, which properties need to be observed may change from invocation to invocation based on which code path executes. 
+
+Here's how you would do that with a decorator:
+
+```ts
+import { observable, volatile } from '@microsoft/fast-element';
+
+export class MyClass {
+  @observable someBoolean = false;
+  @observable valueA = 0;
+  @observable valueB = 42;
+
+  @volatile
+  get computedValue() {
+    return this.someBoolean ? this.valueA : this.valueB;
+  }
+}
+```
+
+Here's how you would do it without a decorator:
+
+```ts
+import { Observable, observable } from '@microsoft/fast-element';
+
+export class MyClass {
+  @observable someBoolean = false;
+  @observable valueA = 0;
+  @observable valueB = 42;
+
+  get computedValue() {
+    Observable.trackVolatile();
+    return this.someBoolean ? this.valueA : this.valueB;
+  }
+}
+```
+
+### Internal observation
+
+On the class where the `@attr` or `@observable` is defined, you can optionally implement a *propertyName*Changed method to easily respond to changes in your own state.
 
 **Example: Property Change Callbacks**
 
 ```ts
+import { observable } from '@microsoft/fast-element';
+
 export class Person {
   @observable name: string;
 
@@ -47,14 +120,16 @@ export class Person {
 }
 ```
 
-#### External observation
+### External observation
 
-Decorated properties can be subscribed to, to receive notification of changes in the property. The templating engine uses this, but you can also directly subscribe as well. Here's how you would subscribe to changes in the `name` property pf a `Person` class:
+Decorated properties can be subscribed to, to receive notification of changes in the property value. The templating engine uses this, but you can also directly subscribe as well. Here's how you would subscribe to changes in the `name` property pf a `Person` class:
 
 **Example: Subscribing to an Observable**
 
 ```ts
-const person = new Person('John');
+import { Observable } from '@microsoft/fast-element';
+
+const person = new Person();
 const notifier = Observable.getNotifier(person);
 const handler = {
   handleChange(source: any, propertyName: string) {
@@ -64,6 +139,27 @@ const handler = {
   }
 };
 
-notifier.subscribe(handler, 'name')
-notifier.unsubscribe(handler, 'name');
+notifier.subscribe(handler, 'firstName')
+notifier.unsubscribe(handler, 'lastName');
+```
+
+## Bindings
+
+In addition to watching basic properties, you can also watch arbitrary bindings.
+
+**Example: Subscribing to a Binding**
+
+```ts
+import { Observable } from '@microsoft/fast-element';
+
+const binding = (x: MyClass) => x.someBoolean ? x.valueA : x.valueB;
+const bindingObserver = Observable.binding(binding);
+const handler = {
+  handleChange(source: any) {
+    // respond to the change here
+    // the source is the bindingObserver itself
+  }
+};
+
+bindingObserver.subscribe(handler);
 ```

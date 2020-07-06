@@ -1,5 +1,4 @@
 import React from "react";
-import { Omit } from "utility-types";
 import {
     CallToActionClassNameContract,
     ManagedClasses,

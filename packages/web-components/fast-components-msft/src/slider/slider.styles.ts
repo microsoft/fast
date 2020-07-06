@@ -25,6 +25,7 @@ export const SliderStyles = css`
         --thumb-size: calc(${heightNumber} * 0.5);
         --thumb-translate: calc(var(--thumb-size) * 0.5);
         --track-overhang: calc((var(--design-unit) / 2) * -1);
+        --track-width: var(--design-unit);
         align-items: center;
         width: 100%;
         margin: calc(var(--design-unit) * 1px) 0;
@@ -85,15 +86,14 @@ export const SliderStyles = css`
         right: calc(var(--track-overhang) * 1px);
         left: calc(var(--track-overhang) * 1px);
         align-self: start;
-        margin-top: 6px;
-        height: 4px;
+        margin-top: calc((var(--design-unit) + 2) * 1px);
+        height: calc(var(--track-width) * 1px);
     }
     :host(.vertical) .track {
         top: calc(var(--track-overhang) * 1px);
         bottom: calc(var(--track-overhang) * 1px);
-        justify-self: start;
-        margin-left: 6px;
-        width: 4px;
+        margin-left: calc((var(--design-unit) + 2) * 1px);
+        width: calc(var(--track-width) * 1px);
         height: 100%;
     }
     .track {

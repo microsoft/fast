@@ -25,7 +25,7 @@
 Some scenarios require an indicator that highlights the currently active tab then animates to the next activated tab. Most solutions rely on finding active tab's position on screen and then preforming some math to get the position. This works for most cases but if the tab list repositions itself either by window resizing or other layout changes the active indicator is no longer aligned properly.
 
 ### Prior Art/Examples
-- [FAST Pivot (React)](https://explore.fast.design/components/pivot)
+- [FAST Pivot (React)](https://www.npmjs.com/package/@microsoft/fast-components-react-msft)
 - [Material UI](https://material-ui.com/components/tabs/)
 - [Lightning Design](https://www.lightningdesignsystem.com/components/tabs/)
 - [Ant Design](https://ant.design/components/tabs/)

@@ -2,7 +2,6 @@ import React from "react";
 import { SliderClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { DesignSystem, SliderStyles } from "@microsoft/fast-components-styles-msft";
-import { Subtract } from "utility-types";
 import MSFTSlider, {
     SliderHandledProps as MSFTSliderHandledProps,
     SliderProps as MSFTSliderProps,
@@ -19,7 +18,7 @@ import sliderSchema2 from "./slider.schema.2";
 const Slider = manageJss(SliderStyles)(MSFTSlider);
 type Slider = InstanceType<typeof Slider>;
 
-type SliderHandledProps = Subtract<MSFTSliderHandledProps, SliderManagedClasses>;
+type SliderHandledProps = Omit<MSFTSliderHandledProps, keyof SliderManagedClasses>;
 type SliderProps = ManagedJSSProps<
     MSFTSliderProps,
     SliderClassNameContract,

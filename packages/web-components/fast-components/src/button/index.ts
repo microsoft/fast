@@ -1,6 +1,17 @@
-import { customElement } from "@microsoft/fast-element";
+import { attr, customElement } from "@microsoft/fast-element";
 import { Button, ButtonTemplate as template } from "@microsoft/fast-foundation";
 import { ButtonStyles as styles } from "./button.styles";
+
+/**
+ * Types of button appearance.
+ * @public
+ */
+export type ButtonAppearance =
+    | "accent"
+    | "lightweight"
+    | "neutral"
+    | "outline"
+    | "stealth";
 
 /**
  * The FAST Button Element. Implements {@link @microsoft/fast-foundation#Button},
@@ -21,4 +32,23 @@ import { ButtonStyles as styles } from "./button.styles";
         delegatesFocus: true,
     },
 })
-export class FASTButton extends Button {}
+export class FASTButton extends Button {
+    /**
+     * The appearance the button should have.
+     *
+     * @public
+     * @remarks
+     * HTML Attribute: appearance
+     */
+    @attr
+    public appearance: ButtonAppearance = "neutral";
+    public appearanceChanged(
+        oldValue: ButtonAppearance,
+        newValue: ButtonAppearance
+    ): void {
+        if (oldValue !== newValue) {
+            this.classList.add(newValue);
+            this.classList.remove(oldValue);
+        }
+    }
+}

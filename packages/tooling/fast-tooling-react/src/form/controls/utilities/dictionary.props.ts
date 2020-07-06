@@ -1,4 +1,3 @@
-import { Omit } from "utility-types";
 import { ValidationError } from "@microsoft/fast-tooling";
 import { ControlTemplateUtilitiesProps, StandardControlPlugin } from "../../templates";
 import { Controls } from "./types";

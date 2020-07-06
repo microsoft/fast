@@ -247,12 +247,25 @@ export class Pane extends Foundation<PaneHandledProps, PaneUnhandledProps, PaneS
             onMouseDown: this.onMouseDown,
             onKeyDown: this.onKeyDown,
             role: "separator",
+            valueMin: this.props.minWidth,
+            valueMax: this.props.maxWidth,
+            valueNow: this.state.width,
         };
 
         if (typeof this.props.resizeControl === "function") {
             return this.props.resizeControl(resizeProps);
         } else {
-            return <button {...resizeProps} />;
+            return (
+                <button
+                    className={resizeProps.className}
+                    onMouseDown={resizeProps.onMouseDown}
+                    onKeyDown={resizeProps.onKeyDown}
+                    role={resizeProps.role}
+                    aria-valuemin={resizeProps.valueMin}
+                    aria-valuemax={resizeProps.valueMax}
+                    aria-valuenow={resizeProps.valueNow}
+                />
+            );
         }
     }
 
@@ -317,14 +330,16 @@ export class Pane extends Foundation<PaneHandledProps, PaneUnhandledProps, PaneS
         }
 
         const offset: number = this.state.dragReference - e.pageX;
-        const updatedWidth: number =
+        let updatedWidth: number =
             this.props.resizeFrom === west
                 ? this.width() + offset
                 : this.width() - offset;
 
-        if (updatedWidth <= this.props.minWidth || updatedWidth >= this.props.maxWidth) {
-            return;
-        }
+        // constrain results
+        updatedWidth = Math.max(
+            Math.min(updatedWidth, this.props.maxWidth),
+            this.props.minWidth
+        );
 
         // Fire the resize callback
         this.onResize(e, updatedWidth);

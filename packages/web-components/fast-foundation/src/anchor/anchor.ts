@@ -1,13 +1,6 @@
 import { attr, FASTElement } from "@microsoft/fast-element";
-import { ButtonAppearance } from "../button/button";
 import { StartEnd } from "../patterns/start-end";
 import { applyMixins } from "../utilities/apply-mixins";
-
-/**
- * Types of anchor appearance.
- * @public
- */
-export type AnchorAppearance = ButtonAppearance | "hypertext";
 
 /**
  * An Anchor Custom HTML Element.
@@ -16,16 +9,6 @@ export type AnchorAppearance = ButtonAppearance | "hypertext";
  * @public
  */
 export class Anchor extends FASTElement {
-    /**
-     * The appearance the anchor should have.
-     *
-     * @public
-     * @remarks
-     * HTML Attribute: appearance
-     */
-    @attr
-    public appearance: AnchorAppearance = "neutral";
-
     /**
      * Prompts the user to save the linked URL. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a | <a> element } for more information.
      * @public

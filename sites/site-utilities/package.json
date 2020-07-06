@@ -1,14 +1,14 @@
 {
   "name": "@microsoft/site-utilities",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Utilities for the Creator and Component Explorer sites",
   "sideEffects": false,
   "private": true,
   "scripts": {
     "build": "tsc -p ./tsconfig.json",
     "clean:dist": "node ../../build/clean.js dist",
-    "generate:manifest": "node ./build/manifest.js",
-    "prepare": "yarn clean:dist && yarn build && yarn run generate:manifest",
+    "generate:icons": "node ./build/icons.js",
+    "prepare": "yarn clean:dist && yarn build && yarn run generate:icons",
     "prettier": "prettier --config ../../.prettierrc --write \"**/*.{ts,tsx}\"",
     "prettier:diff": "prettier --config ../../.prettierrc \"**/*.{ts,tsx}\" --list-different",
     "test": "yarn eslint && yarn build",
@@ -45,12 +45,12 @@
     "raf-throttle": "^2.0.3",
     "react": "^16.8.0",
     "ts-jest": "^25.4.0",
-    "typescript": "^3.3.3"
+    "typescript": "^3.9.0"
   },
   "dependencies": {
-    "@microsoft/fast-components-react-msft": "^4.31.1",
+    "@microsoft/fast-components-react-msft": "^4.31.2",
     "@microsoft/fast-tooling": "^0.6.1",
-    "@microsoft/fast-tooling-react": "^2.2.4",
+    "@microsoft/fast-tooling-react": "^2.2.5",
     "chalk": "^4.1.0"
   }
 }

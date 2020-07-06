@@ -16,7 +16,7 @@ Used anywhere an author might otherwise use input[type="number"].
 
 ### Prior Art/Examples
 
-- [FAST (React)](https://explore.fast.design/components/number-field)
+- [FAST Number Field (React)](https://www.npmjs.com/package/@microsoft/fast-components-react-msft)
 - [Carbon Design](https://www.carbondesignsystem.com/components/number-input/code)
 - [Ant Design](https://ant.design/components/input-number/)
 - [Office Fabric](https://developer.microsoft.com/en-us/fabric#/controls/web/spinbutton)

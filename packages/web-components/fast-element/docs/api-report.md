@@ -71,7 +71,7 @@ export type Binding<TSource = any, TReturn = any, TParent = any> = (source: TSou
 
 // @public
 export class BindingBehavior implements Behavior {
-    constructor(target: any, binding: Binding, bind: typeof normalBind, unbind: typeof normalUnbind, updateTarget: typeof updatePropertyTarget, targetName?: string);
+    constructor(target: any, binding: Binding, isBindingVolatile: boolean, bind: typeof normalBind, unbind: typeof normalUnbind, updateTarget: typeof updatePropertyTarget, targetName?: string);
     // Warning: (ae-forgotten-export) The symbol "normalBind" needs to be exported by the entry point index.d.ts
     bind: typeof normalBind;
     // @internal (undocumented)
@@ -86,6 +86,8 @@ export class BindingBehavior implements Behavior {
     handleChange(): void;
     // @internal (undocumented)
     handleEvent(event: Event): void;
+    // @internal (undocumented)
+    isBindingVolatile: boolean;
     // @internal (undocumented)
     source: unknown;
     // @internal (undocumented)
@@ -283,7 +285,7 @@ export const FASTElement: (new () => HTMLElement & FASTElement) & {
         prototype: HTMLElement;
     }>(BaseType: TBase): new () => InstanceType<TBase> & FASTElement;
     define<TType extends Function>(Type: TType, nameOrDef?: string | PartialFASTElementDefinition): TType;
-    getDefinition<T extends Function>(Type: T): FASTElementDefinition | undefined;
+    getDefinition<T_1 extends Function>(Type: T_1): FASTElementDefinition | undefined;
 };
 
 // @public
@@ -341,10 +343,12 @@ export const Observable: Readonly<{
     setArrayObserverFactory(factory: (collection: any[]) => Notifier): void;
     getNotifier(source: any): Notifier;
     track(source: unknown, propertyName: string): void;
+    trackVolatile(): void;
     notify(source: unknown, args: any): void;
     defineProperty(target: {}, nameOrAccessor: string | Accessor): void;
     getAccessors(target: {}): Accessor[];
-    binding<TSource = any, TReturn = any, TParent = any>(binding: Binding<TSource, TReturn, TParent>, initialSubscriber?: Subscriber | undefined): BindingObserver<TSource, TReturn, TParent>;
+    binding<TSource = any, TReturn = any, TParent = any>(binding: Binding<TSource, TReturn, TParent>, initialSubscriber?: Subscriber | undefined, isVolatileBinding?: boolean): BindingObserver<TSource, TReturn, TParent>;
+    isVolatileBinding<TSource_1 = any, TReturn_1 = any, TParent_1 = any>(binding: Binding<TSource_1, TReturn_1, TParent_1>): boolean;
 }>;
 
 // @public
@@ -380,11 +384,11 @@ export class RefBehavior implements Behavior {
 }
 
 // @public
-export function repeat<TSource = any, TItem = any>(binding: Binding<TSource, TItem[]>, templateOrTemplateBinding: SyntheticViewTemplate | Binding<TSource, SyntheticViewTemplate>, options?: RepeatOptions): CaptureType<TSource>;
+export function repeat<TSource = any, TItem = any>(itemsBinding: Binding<TSource, TItem[]>, templateOrTemplateBinding: SyntheticViewTemplate | Binding<TSource, SyntheticViewTemplate>, options?: RepeatOptions): CaptureType<TSource>;
 
 // @public
 export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
-    constructor(location: Node, itemsBinding: Binding<TSource, any[]>, templateBinding: Binding<TSource, SyntheticViewTemplate>, options: RepeatOptions);
+    constructor(location: Node, itemsBinding: Binding<TSource, any[]>, isItemsBindingVolatile: boolean, templateBinding: Binding<TSource, SyntheticViewTemplate>, isTemplateBindingVolatile: boolean, options: RepeatOptions);
     bind(source: TSource, context: ExecutionContext): void;
     // Warning: (ae-forgotten-export) The symbol "Splice" needs to be exported by the entry point index.d.ts
     //
@@ -395,7 +399,7 @@ export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
 
 // @public
 export class RepeatDirective<TSource = any> extends Directive {
-    constructor(binding: Binding, getTemplate: Binding<TSource, SyntheticViewTemplate>, options: RepeatOptions);
+    constructor(itemsBinding: Binding, templateBinding: Binding<TSource, SyntheticViewTemplate>, options: RepeatOptions);
     createBehavior(target: Node): RepeatBehavior<TSource>;
     createPlaceholder: (index: number) => string;
     }
@@ -487,6 +491,9 @@ export class ViewTemplate<TSource = any, TParent = any> implements ElementViewTe
     readonly html: string | HTMLTemplateElement;
     render(source: TSource, host: HTMLElement | string): HTMLView;
     }
+
+// @public
+export function volatile(target: {}, name: any, descriptor: any): any;
 
 // @public
 export function when<TSource = any, TReturn = any>(binding: Binding<TSource, TReturn>, templateOrTemplateBinding: SyntheticViewTemplate | Binding<TSource, SyntheticViewTemplate>): CaptureType<TSource>;

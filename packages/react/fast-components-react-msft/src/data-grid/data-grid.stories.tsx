@@ -1,7 +1,6 @@
 import { storiesOf } from "@storybook/react";
 import React from "react";
 import { isEqual, omit } from "lodash-es";
-import { Omit } from "utility-types";
 import {
     DataGrid,
     DataGridCellProps,
