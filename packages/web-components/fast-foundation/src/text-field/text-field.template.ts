@@ -8,11 +8,7 @@ import { TextField } from "./text-field";
  */
 export const TextFieldTemplate = html<TextField>`
     <template
-        role="textbox"
         appearance="${x => x.appearance}"
-        aria-required="${x => x.required}"
-        aria-disabled="${x => x.disabled}"
-        aria-readonly="${x => x.readOnly}"
         tabindex="${x => (x.disabled ? null : 0)}"
         class="
             ${x => x.appearance}
@@ -41,6 +37,7 @@ export const TextFieldTemplate = html<TextField>`
                 ?disabled=${x => x.disabled}
                 ?readonly=${x => x.readOnly}
                 value=${x => x.value}
+                type=${x => x.type}
                 ${ref("control")}
             />
             ${endTemplate}
