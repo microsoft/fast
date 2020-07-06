@@ -8,6 +8,7 @@ import {
     keyCodeEnter,
     wrapInBounds,
     limit,
+    KeyCodes,
 } from "@microsoft/fast-web-utilities";
 import { isNil } from "lodash-es";
 
@@ -46,6 +47,13 @@ export class Carousel extends FASTElement {
 
     @attr({ mode: "boolean" })
     public paused: boolean = false;
+    public pausedChanged(): void {
+        if (!this.paused) {
+            this.startAutoPlay();
+        } else {
+            this.stopAutoPlay();
+        }
+    }
 
     @attr({ attribute: "activeid" })
     public activeId: string;
@@ -99,10 +107,11 @@ export class Carousel extends FASTElement {
         this.incrementSlide(direction);
     }
 
-    public handleKeypress = (direction: 1 | -1, e: KeyboardEvent): void => {
+    public handleFlipperKeypress = (direction: 1 | -1, e: KeyboardEvent): void => {
         switch (e.keyCode) {
             case keyCodeSpace:
             case keyCodeEnter:
+                this.paused = true;
                 this.incrementSlide(direction);
                 break;
         }
@@ -110,11 +119,13 @@ export class Carousel extends FASTElement {
 
     public handlePlayClick(e: Event): void {
         e.preventDefault();
+        e.stopPropagation();
         this.togglePlay();
     }
 
     private tabIds: string[] = [];
     private activeIndex: number = 0;
+    private autoplayTimer: number | void;
 
     private change = (): void => {
         this.$emit("change", this.activeId);
@@ -140,7 +151,6 @@ export class Carousel extends FASTElement {
         if (!this.tabbed) {
             this.itemsChanged();
         }
-
         this.change();
     };
 
@@ -157,50 +167,53 @@ export class Carousel extends FASTElement {
 
     private togglePlay(): void {
         this.paused = !this.paused;
-
-        if (!this.paused) {
-            this.startAutoPlay();
-        } else {
-            this.stopAutoPlay();
-        }
+        this.autoplay = false;
     }
 
     private startAutoPlay(): void {
-        if (isNil(this.autoplayTimer)) {
-            this.autoplayTimer = window.setInterval(
-                this.autoplayNextItem,
-                this.autoplayInterval
-            );
-        }
+        this.stopAutoPlay();
+        this.autoplayTimer = window.setInterval(
+            this.autoplayNextItem,
+            this.autoplayInterval
+        );
     }
 
     private stopAutoPlay(): void {
-        if (!isNil(this.autoplayTimer)) {
-            this.autoplayTimer = window.clearInterval(this.autoplayTimer as number);
-        }
-    }
-
-    private pause(): void {
-        if (!this.paused && this.autoplay) {
-            this.paused = true;
-        }
-        if (this.autoplay) {
-            this.stopAutoPlay();
-        }
-    }
-
-    private play(): void {
-        if (this.paused && this.autoplay) {
-            this.paused = false;
-        }
-        if (this.autoplay) {
-            this.startAutoPlay();
-        }
+        this.autoplayTimer = window.clearInterval(this.autoplayTimer as number);
     }
 
     private handleFocusIn(e: Event): void {
-        this.pause();
+        this.paused = true;
         this.autoplay = false;
+    }
+
+    private handleMouseOver(E: Event) {
+        if (this.autoplay) {
+            this.paused = true;
+        }
+    }
+
+    private handleMouseLeave(E: Event) {
+        if (this.autoplay) {
+            this.paused = false;
+        }
+    }
+
+    private handleTabChange(e: any): void {
+        if (e.detail.id) {
+            this.activeIndex = this.tabIds.indexOf(e.detail.id);
+            this.activeId = e.detail.id;
+        }
+    }
+
+    private handleCarouselKeypress(e: KeyboardEvent): void {
+        // sethdonohue - pause the carousel if the right or left arrows are pressed in the case of when autoplay has been restarted by the user and the  focus is on the tabs.
+        switch (e.keyCode) {
+            case KeyCodes.arrowLeft:
+            case KeyCodes.arrowRight:
+                this.paused = true;
+                break;
+        }
     }
 
     public connectedCallback(): void {
@@ -212,17 +225,19 @@ export class Carousel extends FASTElement {
         }
 
         // sethdonohue - per ARIA autoplay must stop when mouse is hovering over the carousel
-        this.carousel.addEventListener("mouseover", this.pause);
-        this.carousel.addEventListener("mouseleave", this.play);
+        this.carousel.addEventListener("mouseover", this.handleMouseOver);
+        this.carousel.addEventListener("mouseleave", this.handleMouseLeave);
 
         // sethdonohue - per ARIA rotating must stop when keyboard focus enters the carousel and not restart unless the user explicitly requests it to.
         this.carousel.addEventListener("focusin", this.handleFocusIn);
+
+        this.carousel.addEventListener("change", this.handleTabChange);
+
+        this.carousel.addEventListener("keydown", this.handleCarouselKeypress);
     }
 
     public disconnectedCallback(): void {
         super.disconnectedCallback();
         this.stopAutoPlay();
     }
-
-    private autoplayTimer: number | void;
 }
