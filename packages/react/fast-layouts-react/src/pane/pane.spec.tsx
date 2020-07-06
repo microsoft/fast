@@ -310,7 +310,7 @@ describe("Pane", (): void => {
         test("should render a custom `resize` control when passed via the `resizeControl` prop", () => {
             const customControl: (props: PaneResizeControlProps) => React.ReactNode = (
                 props: PaneResizeControlProps
-            ): React.ReactNode => <button id={"foo"} {...props} />;
+            ): React.ReactNode => <button id={"foo"} />;
             const rendered: any = mount(
                 <Pane
                     managedClasses={managedClasses}
@@ -351,6 +351,17 @@ describe("Pane", (): void => {
             expect(
                 rendered.find(`.${managedClasses.pane_resizeHandle}`).props().role
             ).toBe("separator");
+        });
+
+        test("separator should have aria-value attributes populated", () => {
+            const rendered: any = mount(
+                <Pane resizable={true} managedClasses={managedClasses} />
+            );
+
+            const separator: any = rendered.find(`.${managedClasses.pane_resizeHandle}`);
+            expect(separator.prop("aria-valuemin")).toBe(100);
+            expect(separator.prop("aria-valuemax")).toBe(800);
+            expect(separator.prop("aria-valuenow")).toBe(300);
         });
 
         test("should fire an onResize callback on keydown of the `resize control` when `onResize` prop is passed", (): void => {
