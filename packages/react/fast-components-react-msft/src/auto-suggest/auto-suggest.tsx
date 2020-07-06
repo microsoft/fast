@@ -77,6 +77,7 @@ class AutoSuggest extends Foundation<
                 aria-label={props.label || null}
                 aria-autocomplete="both"
                 aria-activedescendant={activedescendantId || null}
+                aria-expanded={state.isMenuOpen}
                 aria-owns={listboxId || null}
                 aria-controls={listboxId || null}
             />
