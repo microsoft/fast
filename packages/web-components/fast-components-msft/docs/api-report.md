@@ -98,12 +98,18 @@ export const accentForegroundRestBehavior: import("@microsoft/fast-foundation").
 export const ambientShadow = "0 0 calc((var(--elevation) * 0.225px) + 2px) rgba(0, 0, 0, calc(.11 * (2 - var(--background-luminance, 1))))";
 
 // @public
+export type AnchorAppearance = ButtonAppearance | "hypertext";
+
+// @public
 export type BadgeAppearance = "accent" | "lightweight" | "neutral" | string;
 
 // Warning: (ae-internal-missing-underscore) The name "BaseButtonStyles" should be prefixed with an underscore because the declaration is marked as @internal
 //
 // @internal (undocumented)
 export const BaseButtonStyles: import("@microsoft/fast-element").ElementStyles;
+
+// @public
+export type ButtonAppearance = "accent" | "lightweight" | "neutral" | "outline" | "stealth";
 
 // Warning: (ae-internal-missing-underscore) The name "directionalShadow" should be prefixed with an underscore because the declaration is marked as @internal
 //
@@ -123,6 +129,9 @@ export class FASTAccordionItem extends AccordionItem {
 
 // @public
 export class FASTAnchor extends Anchor {
+    appearance: AnchorAppearance;
+    // (undocumented)
+    appearanceChanged(oldValue: AnchorAppearance, newValue: AnchorAppearance): void;
 }
 
 // @public
@@ -133,6 +142,9 @@ export class FASTBadge extends Badge {
 
 // @public
 export class FASTButton extends Button {
+    appearance: ButtonAppearance;
+    // (undocumented)
+    appearanceChanged(oldValue: ButtonAppearance, newValue: ButtonAppearance): void;
 }
 
 // @public
