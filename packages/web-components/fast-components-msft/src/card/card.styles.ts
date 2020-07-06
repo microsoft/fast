@@ -15,15 +15,4 @@ export const CardStyles = css`
         border-radius: calc(var(--elevated-corner-radius) * 1px);
         ${elevation};
     }
-`.withBehaviors(
-    neutralLayerCardBehavior,
-    forcedColorsStylesheetBehavior(
-        css`
-            :host {
-                forced-color-adjust: none;
-                background: ${SystemColors.Canvas};
-                box-shadow: 0 0 0 1px ${SystemColors.CanvasText};
-            }
-        `
-    )
-);
+`.withBehaviors(neutralLayerCardBehavior);
