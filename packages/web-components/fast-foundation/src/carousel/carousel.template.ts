@@ -79,7 +79,7 @@ export const CarouselTemplate = html<Carousel>`
     <div 
         class="previous-flipper flipper"
         @click="${(x, c) => x.handleFlipperClick(-1, c.event as MouseEvent)}"
-        @keypress="${(x, c) => x.handleKeypress(-1, c.event as KeyboardEvent)}"
+        @keypress="${(x, c) => x.handleFlipperKeypress(-1, c.event as KeyboardEvent)}"
     >
         <slot name="previous-button" part="previous-button">
             <fast-flipper tabindex="${x => (x.tabbed ? "-1" : "0")}" direction=${
@@ -93,7 +93,7 @@ export const CarouselTemplate = html<Carousel>`
     <div
         class="next-flipper flipper"
         @click="${(x, c) => x.handleFlipperClick(1, c.event as MouseEvent)}"
-        @keypress="${(x, c) => x.handleKeypress(1, c.event as KeyboardEvent)}"
+        @keypress="${(x, c) => x.handleFlipperKeypress(1, c.event as KeyboardEvent)}"
     >
         <slot name="next-button" part="next-button">
             <fast-flipper tabindex="${x => (x.tabbed ? "-1" : "0")}" direction=${
