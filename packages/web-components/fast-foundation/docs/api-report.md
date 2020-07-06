@@ -56,7 +56,6 @@ export const AccordionTemplate: import("@microsoft/fast-element").ViewTemplate<A
 //
 // @public
 export class Anchor extends FASTElement {
-    appearance: AnchorAppearance;
     download: string;
     href: string;
     hreflang: string;
@@ -70,9 +69,6 @@ export class Anchor extends FASTElement {
 // @internal
 export interface Anchor extends StartEnd {
 }
-
-// @public
-export type AnchorAppearance = ButtonAppearance | "hypertext";
 
 // @public
 export const AnchorTemplate: import("@microsoft/fast-element").ViewTemplate<Anchor, any>;
@@ -105,7 +101,6 @@ export class BaseProgress extends FASTElement {
 // @public
 export class Button extends FormAssociated<HTMLInputElement> {
     constructor();
-    appearance: ButtonAppearance;
     autofocus: boolean;
     // @internal (undocumented)
     connectedCallback(): void;
@@ -125,9 +120,6 @@ export class Button extends FormAssociated<HTMLInputElement> {
 // @internal
 export interface Button extends StartEnd {
 }
-
-// @public
-export type ButtonAppearance = "accent" | "lightweight" | "neutral" | "outline" | "stealth";
 
 // @public
 export const ButtonTemplate: import("@microsoft/fast-element").ViewTemplate<Button, any>;
