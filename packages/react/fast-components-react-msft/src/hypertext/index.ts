@@ -9,7 +9,6 @@ import {
 } from "@microsoft/fast-components-react-base";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { DesignSystem, HypertextStyles } from "@microsoft/fast-components-styles-msft";
-import { Subtract } from "utility-types";
 import hypertextSchema from "./hypertext.schema";
 import hypertextSchema2 from "./hypertext.schema.2";
 
@@ -20,7 +19,10 @@ import hypertextSchema2 from "./hypertext.schema.2";
 const Hypertext = manageJss(HypertextStyles)(BaseHypertext);
 type Hypertext = InstanceType<typeof Hypertext>;
 
-type HypertextHandledProps = Subtract<BaseHypertextHandledProps, HypertextManagedClasses>;
+type HypertextHandledProps = Omit<
+    BaseHypertextHandledProps,
+    keyof HypertextManagedClasses
+>;
 type HypertextProps = ManagedJSSProps<
     BaseHypertextProps,
     HypertextClassNameContract,

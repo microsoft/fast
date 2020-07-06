@@ -111,8 +111,7 @@
     "rimraf": "^2.6.2",
     "ts-jest": "^25.4.0",
     "ts-loader": "^4.0.1",
-    "typescript": "3.3.3",
-    "utility-types": "^2.1.0",
+    "typescript": "^3.9.0",
     "yargs": "^11.0.0"
   },
   "peerDependencies": {
@@ -128,7 +127,6 @@
     "@microsoft/fast-web-utilities": "^4.5.2",
     "exenv-es6": "^1.0.0",
     "raf-throttle": "^2.0.3",
-    "tabbable": "^4.0.0",
-    "utility-types": "^2.1.0"
+    "tabbable": "^4.0.0"
   }
 }

@@ -1,7 +1,6 @@
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
-import { Omit } from "utility-types";
 import { keyCodeEscape } from "@microsoft/fast-web-utilities";
 import { DisplayNamePrefix } from "../utilities";
 import MSFTFlyout from "./flyout";

@@ -8,7 +8,7 @@ import {
     neutralPalette,
 } from "../fast-design-system";
 import { findClosestBackgroundIndex, getSwatch, isDarkMode } from "./palette";
-import { colorRecipeFactory, FillSwatchFamily, Swatch } from "./common";
+import { ColorRecipe, colorRecipeFactory, FillSwatchFamily, Swatch } from "./common";
 
 /**
  * Algorithm for determining neutral backplate colors
@@ -29,37 +29,37 @@ function neutralFillInputAlgorithm(
 /**
  * @internal
  */
-export const neutralFillInputRest = colorRecipeFactory(
+export const neutralFillInputRest: ColorRecipe<string> = colorRecipeFactory(
     neutralFillInputAlgorithm(neutralFillInputRestDelta)
 );
 /**
  * @internal
  */
-export const neutralFillInputHover = colorRecipeFactory(
+export const neutralFillInputHover: ColorRecipe<string> = colorRecipeFactory(
     neutralFillInputAlgorithm(neutralFillInputHoverDelta)
 );
 /**
  * @internal
  */
-export const neutralFillInputActive = colorRecipeFactory(
+export const neutralFillInputActive: ColorRecipe<string> = colorRecipeFactory(
     neutralFillInputAlgorithm(neutralFillInputActiveDelta)
 );
 /**
  * @internal
  */
-export const neutralFillInputFocus = colorRecipeFactory(
+export const neutralFillInputFocus: ColorRecipe<string> = colorRecipeFactory(
     neutralFillInputAlgorithm(neutralFillInputFocusDelta)
 );
 /**
  * @internal
  */
-export const neutralFillInputSelected = colorRecipeFactory(
+export const neutralFillInputSelected: ColorRecipe<string> = colorRecipeFactory(
     neutralFillInputAlgorithm(neutralFillInputSelectedDelta)
 );
 /**
  * @internal
  */
-export const neutralFillInput = colorRecipeFactory(
+export const neutralFillInput: ColorRecipe<FillSwatchFamily> = colorRecipeFactory(
     (designSystem: FASTDesignSystem): FillSwatchFamily => {
         return {
             rest: neutralFillInputRest(designSystem),

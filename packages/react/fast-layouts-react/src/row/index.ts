@@ -1,6 +1,5 @@
 import React from "react";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
-import { Subtract } from "utility-types";
 import {
     Row as BaseRow,
     RowHandledProps as BaseRowHandledProps,
@@ -20,7 +19,7 @@ import {
 const Row = manageJss(rowStyleSheet)(BaseRow);
 type Row = typeof Row;
 
-type RowHandledProps = Subtract<BaseRowHandledProps, RowManagedClasses>;
+type RowHandledProps = Omit<BaseRowHandledProps, keyof RowManagedClasses>;
 type RowProps = ManagedJSSProps<BaseRowProps, RowClassNamesContract, undefined>;
 
 export {

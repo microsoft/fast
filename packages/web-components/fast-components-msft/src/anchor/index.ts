@@ -1,6 +1,13 @@
-import { customElement } from "@microsoft/fast-element";
+import { attr, customElement } from "@microsoft/fast-element";
 import { Anchor, AnchorTemplate as template } from "@microsoft/fast-foundation";
 import { AnchorStyles as styles } from "./anchor.styles";
+import { ButtonAppearance } from "../button";
+
+/**
+ * Types of anchor appearance.
+ * @public
+ */
+export type AnchorAppearance = ButtonAppearance | "hypertext";
 
 /**
  * The FAST Anchor Element. Implements {@link @microsoft/fast-foundation#Anchor},
@@ -21,4 +28,23 @@ import { AnchorStyles as styles } from "./anchor.styles";
         delegatesFocus: true,
     },
 })
-export class FASTAnchor extends Anchor {}
+export class FASTAnchor extends Anchor {
+    /**
+     * The appearance the anchor should have.
+     *
+     * @public
+     * @remarks
+     * HTML Attribute: appearance
+     */
+    @attr
+    public appearance: AnchorAppearance = "neutral";
+    public appearanceChanged(
+        oldValue: AnchorAppearance,
+        newValue: AnchorAppearance
+    ): void {
+        if (oldValue !== newValue) {
+            this.classList.add(newValue);
+            this.classList.remove(oldValue);
+        }
+    }
+}

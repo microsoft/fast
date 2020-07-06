@@ -5,7 +5,6 @@ import {
     TextFieldHandledProps,
     TextFieldManagedClasses,
 } from "@microsoft/fast-components-react-base";
-import { Omit, Subtract } from "utility-types";
 
 export enum TextActionAppearance {
     filled = "filled",
@@ -24,7 +23,7 @@ export type TextActionUnhandledProps = Omit<
     "type"
 >;
 export interface TextActionHandledProps
-    extends Subtract<TextFieldHandledProps, TextFieldManagedClasses>,
+    extends Omit<TextFieldHandledProps, keyof TextFieldManagedClasses>,
         TextActionManagedClasses {
     /**
      * The text action appearance

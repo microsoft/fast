@@ -1,4 +1,3 @@
-import { Omit } from "utility-types";
 import { ControlTemplateUtilitiesProps, StandardControlPlugin } from "../../templates";
 import { AttributeSettingsMappingToPropertyNames } from "../../types";
 import { Controls } from "./types";

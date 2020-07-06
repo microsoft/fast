@@ -2,7 +2,6 @@ import React from "react";
 import { AutoSuggestClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { AutoSuggestStyles, DesignSystem } from "@microsoft/fast-components-styles-msft";
-import { Subtract } from "utility-types";
 import MSFTAutoSuggest, {
     AutoSuggestManagedClasses,
     AutoSuggestUnhandledProps,
@@ -19,9 +18,9 @@ import autoSuggestSchema2 from "./auto-suggest.schema.2";
 const AutoSuggest = manageJss(AutoSuggestStyles)(MSFTAutoSuggest);
 type AutoSuggest = InstanceType<typeof AutoSuggest>;
 
-type AutoSuggestHandledProps = Subtract<
+type AutoSuggestHandledProps = Omit<
     MSFTAutoSuggestHandledProps,
-    AutoSuggestManagedClasses
+    keyof AutoSuggestManagedClasses
 >;
 type AutoSuggestProps = ManagedJSSProps<
     MSFTAutoSuggestProps,

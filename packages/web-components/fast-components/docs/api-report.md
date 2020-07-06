@@ -193,6 +193,12 @@ export const accentForegroundRest: SwatchRecipe;
 export const accentForegroundRestBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
 
 // @public
+export type AnchorAppearance = ButtonAppearance | "hypertext";
+
+// @public
+export type ButtonAppearance = "accent" | "lightweight" | "neutral" | "outline" | "stealth";
+
+// @public
 export function createColorPalette(baseColor: any): string[];
 
 // @public
@@ -205,6 +211,9 @@ export class FASTAccordionItem extends AccordionItem {
 
 // @public
 export class FASTAnchor extends Anchor {
+    appearance: AnchorAppearance;
+    // (undocumented)
+    appearanceChanged(oldValue: AnchorAppearance, newValue: AnchorAppearance): void;
 }
 
 // @public
@@ -213,6 +222,9 @@ export class FASTBadge extends Badge {
 
 // @public
 export class FASTButton extends Button {
+    appearance: ButtonAppearance;
+    // (undocumented)
+    appearanceChanged(oldValue: ButtonAppearance, newValue: ButtonAppearance): void;
 }
 
 // @public
@@ -605,12 +617,12 @@ export const neutralFillHoverBehavior: import("@microsoft/fast-foundation").CSSC
 // Warning: (ae-internal-missing-underscore) The name "neutralFillInput" should be prefixed with an underscore because the declaration is marked as @internal
 //
 // @internal (undocumented)
-export const neutralFillInput: import("./common").ColorRecipe<FillSwatchFamily>;
+export const neutralFillInput: ColorRecipe<FillSwatchFamily>;
 
 // Warning: (ae-internal-missing-underscore) The name "neutralFillInputActive" should be prefixed with an underscore because the declaration is marked as @internal
 //
 // @internal (undocumented)
-export const neutralFillInputActive: import("./common").ColorRecipe<string>;
+export const neutralFillInputActive: ColorRecipe<string>;
 
 // @public
 export const neutralFillInputActiveBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
@@ -621,7 +633,7 @@ export const neutralFillInputFocusBehavior: import("@microsoft/fast-foundation")
 // Warning: (ae-internal-missing-underscore) The name "neutralFillInputHover" should be prefixed with an underscore because the declaration is marked as @internal
 //
 // @internal (undocumented)
-export const neutralFillInputHover: import("./common").ColorRecipe<string>;
+export const neutralFillInputHover: ColorRecipe<string>;
 
 // @public
 export const neutralFillInputHoverBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
@@ -629,7 +641,7 @@ export const neutralFillInputHoverBehavior: import("@microsoft/fast-foundation")
 // Warning: (ae-internal-missing-underscore) The name "neutralFillInputRest" should be prefixed with an underscore because the declaration is marked as @internal
 //
 // @internal (undocumented)
-export const neutralFillInputRest: import("./common").ColorRecipe<string>;
+export const neutralFillInputRest: ColorRecipe<string>;
 
 // @public
 export const neutralFillInputRestBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
@@ -637,7 +649,7 @@ export const neutralFillInputRestBehavior: import("@microsoft/fast-foundation").
 // Warning: (ae-internal-missing-underscore) The name "neutralFillInputSelected" should be prefixed with an underscore because the declaration is marked as @internal
 //
 // @internal (undocumented)
-export const neutralFillInputSelected: import("./common").ColorRecipe<string>;
+export const neutralFillInputSelected: ColorRecipe<string>;
 
 // Warning: (ae-internal-missing-underscore) The name "neutralFillRest" should be prefixed with an underscore because the declaration is marked as @internal
 //
