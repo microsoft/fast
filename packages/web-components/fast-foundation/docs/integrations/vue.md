@@ -23,7 +23,7 @@ With the CLI installed, you have access to the `vue` command-line interface. Thi
 vue create fast-vue
 ```
 
-When prompted to select options, choose "Manually select features". Follow the prompts, answering each question in turn. It is recommended that you select "TypeScript" when prompted. Be sure to choose to install dependencies when asked.
+When prompted to select options, choose "Manually select features". Follow the prompts, answering each question in turn. It is recommended that you select "TypeScript" when prompted.
 
 When the CLI completes, you should have a basic runnable Vue application.
 

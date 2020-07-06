@@ -5,7 +5,6 @@ import {
     DesignSystem,
     StealthButtonStyles,
 } from "@microsoft/fast-components-styles-msft";
-import { Subtract } from "utility-types";
 import {
     ButtonBase,
     ButtonBaseHandledProps,
@@ -24,9 +23,9 @@ import stealthButtonSchema2 from "./stealth-button.schema.2";
 const StealthButton = manageJss(StealthButtonStyles)(ButtonBase);
 type StealthButton = InstanceType<typeof StealthButton>;
 
-type StealthButtonHandledProps = Subtract<
+type StealthButtonHandledProps = Omit<
     ButtonBaseHandledProps,
-    ButtonBaseManagedClasses
+    keyof ButtonBaseManagedClasses
 >;
 type StealthButtonProps = ManagedJSSProps<
     ButtonBaseProps,

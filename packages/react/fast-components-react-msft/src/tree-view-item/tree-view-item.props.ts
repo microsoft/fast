@@ -1,5 +1,4 @@
 import React from "react";
-import { Subtract } from "utility-types";
 import {
     TreeViewItemHandledProps as BaseTreeViewItemHandledProps,
     TreeViewItemManagedClasses as BaseTreeViewItemManagedClasses,
@@ -13,7 +12,7 @@ import {
 export type TreeViewItemManagedClasses = ManagedClasses<TreeViewItemClassNameContract>;
 export interface TreeViewItemHandledProps
     extends TreeViewItemManagedClasses,
-        Subtract<BaseTreeViewItemHandledProps, BaseTreeViewItemManagedClasses> {
+        Omit<BaseTreeViewItemHandledProps, keyof BaseTreeViewItemManagedClasses> {
     /**
      * The preceding content
      */

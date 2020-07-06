@@ -292,7 +292,8 @@ class Navigation extends Foundation<
                 (navigationConfigItemId: string, index: number) => {
                     if (
                         navigationConfig.schema[dictionaryLink] &&
-                        Array.isArray(navigationConfig.data)
+                        Array.isArray(navigationConfig.data) &&
+                        navigationConfig.data[index]
                     ) {
                         return this.renderDictionaryItem(
                             navigationConfig.data[index].id,

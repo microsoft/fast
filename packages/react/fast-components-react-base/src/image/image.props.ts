@@ -3,7 +3,6 @@ import {
     ImageClassNameContract,
     ManagedClasses,
 } from "@microsoft/fast-components-class-name-contracts-base";
-import { Omit } from "utility-types";
 
 export type ImageUnhandledProps = Omit<
     React.HTMLAttributes<HTMLImageElement | HTMLPictureElement>,

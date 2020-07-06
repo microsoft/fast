@@ -1,5 +1,4 @@
 import React from "react";
-import { Subtract } from "utility-types";
 import {
     AutoSuggestHandledProps as BaseAutoSuggestHandledProps,
     AutoSuggestManagedClasses as BaseAutoSuggestManagedClasses,
@@ -13,7 +12,7 @@ import {
 export type AutoSuggestManagedClasses = ManagedClasses<AutoSuggestClassNameContract>;
 export interface AutoSuggestHandledProps
     extends AutoSuggestManagedClasses,
-        Subtract<BaseAutoSuggestHandledProps, BaseAutoSuggestManagedClasses> {}
+        Omit<BaseAutoSuggestHandledProps, keyof BaseAutoSuggestManagedClasses> {}
 
 export type AutoSuggestUnhandledProps = BaseAutoSuggestUnhandledProps;
 export type AutoSuggestProps = AutoSuggestHandledProps & AutoSuggestUnhandledProps;

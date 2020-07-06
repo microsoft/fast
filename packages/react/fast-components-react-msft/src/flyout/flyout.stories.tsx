@@ -1,7 +1,6 @@
 import { storiesOf } from "@storybook/react";
 import React from "react";
 import { ViewportContext } from "@microsoft/fast-components-react-base";
-import { Omit } from "utility-types";
 import { Heading, HeadingSize } from "../heading";
 import { AccentButton } from "../accent-button";
 import { FlyoutAxisPositioningMode } from "./flyout.props";

@@ -9,7 +9,6 @@ import {
 } from "@microsoft/fast-components-react-base";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { DesignSystem, TextAreaStyles } from "@microsoft/fast-components-styles-msft";
-import { Subtract } from "utility-types";
 import textAreaSchema from "./text-area.schema";
 
 /*
@@ -19,7 +18,7 @@ import textAreaSchema from "./text-area.schema";
 const TextArea = manageJss(TextAreaStyles)(BaseTextArea);
 type TextArea = InstanceType<typeof TextArea>;
 
-type TextAreaHandledProps = Subtract<BaseTextAreaHandledProps, TextAreaManagedClasses>;
+type TextAreaHandledProps = Omit<BaseTextAreaHandledProps, keyof TextAreaManagedClasses>;
 type TextAreaProps = ManagedJSSProps<
     BaseTextAreaProps,
     TextAreaClassNameContract,

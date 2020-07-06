@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.2.5](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling-react@2.2.4...@microsoft/fast-tooling-react@2.2.5) (2020-07-02)
+
+
+### Bug Fixes
+
+* checks for the presence of an index before rendering it ([#3423](https://github.com/Microsoft/fast/issues/3423)) ([cb1f126](https://github.com/Microsoft/fast/commit/cb1f126418f1a1b377dacfca6e64a83bcef24bf0))
+* render buttons instead of spans for navigation-menu-item ([#3429](https://github.com/Microsoft/fast/issues/3429)) ([200512b](https://github.com/Microsoft/fast/commit/200512b577e85f4590723ef44406e997bb4c2aa5))
+
+
+
+
+
 ## [2.2.4](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling-react@2.2.3...@microsoft/fast-tooling-react@2.2.4) (2020-06-26)
 
 

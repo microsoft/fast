@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.2](https://github.com/Microsoft/fast/compare/fast-website@1.1.1...fast-website@1.1.2) (2020-07-02)
+
+
+### Bug Fixes
+
+* addresses an issue where website will not show on safari ([#3409](https://github.com/Microsoft/fast/issues/3409)) ([26aa09f](https://github.com/Microsoft/fast/commit/26aa09f7d3ca54317d34ab39d0fefd3207d3f9e4))
+* for scroll indicator [#3404](https://github.com/Microsoft/fast/issues/3404) ([#3407](https://github.com/Microsoft/fast/issues/3407)) ([34742de](https://github.com/Microsoft/fast/commit/34742de3806300e703cd22cd1e0ddef006c1d51f))
+* update the sites to use the same favicon, update the logo ([#3406](https://github.com/Microsoft/fast/issues/3406)) ([ad8d258](https://github.com/Microsoft/fast/commit/ad8d25899f075d137eb23e77f046016b512f0893))
+
+
+
+
+
 ## [1.1.1](https://github.com/Microsoft/fast/compare/fast-website@1.1.0...fast-website@1.1.1) (2020-06-26)
 
 

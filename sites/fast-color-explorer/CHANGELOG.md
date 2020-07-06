@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.5.37](https://github.com/Microsoft/fast/compare/@microsoft/fast-color-explorer@1.5.36...@microsoft/fast-color-explorer@1.5.37) (2020-07-02)
+
+
+### Bug Fixes
+
+* update the sites to use the same favicon, update the logo ([#3406](https://github.com/Microsoft/fast/issues/3406)) ([ad8d258](https://github.com/Microsoft/fast/commit/ad8d25899f075d137eb23e77f046016b512f0893))
+
+
+
+
+
 ## [1.5.36](https://github.com/Microsoft/fast/compare/@microsoft/fast-color-explorer@1.5.35...@microsoft/fast-color-explorer@1.5.36) (2020-06-26)
 
 

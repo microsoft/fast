@@ -1,5 +1,4 @@
 import React from "react";
-import { Subtract } from "utility-types";
 import {
     SliderHandledProps as BaseSliderHandledProps,
     SliderManagedClasses as BaseSliderManagedClasses,
@@ -13,7 +12,7 @@ import {
 export type SliderManagedClasses = ManagedClasses<SliderClassNameContract>;
 export interface SliderHandledProps
     extends SliderManagedClasses,
-        Subtract<BaseSliderHandledProps, BaseSliderManagedClasses> {}
+        Omit<BaseSliderHandledProps, keyof BaseSliderManagedClasses> {}
 
 export type SliderUnhandledProps = BaseSliderUnhandledProps;
 export type SliderProps = SliderHandledProps & SliderUnhandledProps;

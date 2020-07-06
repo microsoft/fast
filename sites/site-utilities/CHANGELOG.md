@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.3.0](https://github.com/Microsoft/fast/compare/@microsoft/site-utilities@0.2.0...@microsoft/site-utilities@0.3.0) (2020-07-02)
+
+
+### Bug Fixes
+
+* update the sites to use the same favicon, update the logo ([#3406](https://github.com/Microsoft/fast/issues/3406)) ([ad8d258](https://github.com/Microsoft/fast/commit/ad8d25899f075d137eb23e77f046016b512f0893))
+
+
+### Features
+
+* add tree-vew and tree-item components ([#3240](https://github.com/Microsoft/fast/issues/3240)) ([57eaa83](https://github.com/Microsoft/fast/commit/57eaa83293358383d03cbd3c5b6a9e6ffa797254))
+
+
+
+
+
 # [0.2.0](https://github.com/Microsoft/fast/compare/@microsoft/site-utilities@0.1.1...@microsoft/site-utilities@0.2.0) (2020-06-26)
 
 

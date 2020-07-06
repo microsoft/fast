@@ -5,7 +5,6 @@ import {
     DesignSystem,
     OutlineButtonStyles,
 } from "@microsoft/fast-components-styles-msft";
-import { Subtract } from "utility-types";
 import {
     ButtonBase,
     ButtonBaseHandledProps,
@@ -24,9 +23,9 @@ import outlineButtonSchema2 from "./outline-button.schema.2";
 const OutlineButton = manageJss(OutlineButtonStyles)(ButtonBase);
 type OutlineButton = InstanceType<typeof OutlineButton>;
 
-type OutlineButtonHandledProps = Subtract<
+type OutlineButtonHandledProps = Omit<
     ButtonBaseHandledProps,
-    ButtonBaseManagedClasses
+    keyof ButtonBaseManagedClasses
 >;
 type OutlineButtonProps = ManagedJSSProps<
     ButtonBaseProps,

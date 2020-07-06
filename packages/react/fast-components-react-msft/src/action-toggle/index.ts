@@ -2,7 +2,6 @@ import React from "react";
 import { ActionToggleClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { ActionToggleStyles, DesignSystem } from "@microsoft/fast-components-styles-msft";
-import { Subtract } from "utility-types";
 import MSFTActionToggle, {
     ActionToggleAppearance,
     ActionToggleManagedClasses,
@@ -20,9 +19,9 @@ import actionToggleSchema2 from "./action-toggle.schema.2";
 const ActionToggle = manageJss(ActionToggleStyles)(MSFTActionToggle);
 type ActionToggle = InstanceType<typeof ActionToggle>;
 
-type ActionToggleHandledProps = Subtract<
+type ActionToggleHandledProps = Omit<
     MSFTActionToggleHandledProps,
-    ActionToggleManagedClasses
+    keyof ActionToggleManagedClasses
 >;
 type ActionToggleProps = ManagedJSSProps<
     MSFTActionToggleProps,

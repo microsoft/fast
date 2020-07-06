@@ -3,7 +3,6 @@ import {
     ManagedClasses,
     TextFieldClassNameContract,
 } from "@microsoft/fast-components-class-name-contracts-base";
-import { Omit } from "utility-types";
 
 export enum TextFieldType {
     email = "email",

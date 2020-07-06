@@ -2,7 +2,6 @@ import React from "react";
 import { BadgeClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { BadgeStyles, DesignSystem } from "@microsoft/fast-components-styles-msft";
-import { Subtract } from "utility-types";
 import MSFTBadge, {
     BadgeManagedClasses,
     BadgeSize,
@@ -20,7 +19,7 @@ import badgeSchema2 from "./badge.schema.2";
 const Badge = manageJss(BadgeStyles)(MSFTBadge);
 type Badge = InstanceType<typeof Badge>;
 
-type BadgeHandledProps = Subtract<MSFTBadgeHandledProps, BadgeManagedClasses>;
+type BadgeHandledProps = Omit<MSFTBadgeHandledProps, keyof BadgeManagedClasses>;
 type BadgeProps = ManagedJSSProps<MSFTBadgeProps, BadgeClassNameContract, DesignSystem>;
 
 export {

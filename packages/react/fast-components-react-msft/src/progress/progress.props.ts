@@ -8,7 +8,6 @@ import {
     ManagedClasses,
     ProgressClassNameContract,
 } from "@microsoft/fast-components-class-name-contracts-msft";
-import { Subtract } from "utility-types";
 
 export enum ProgressSize {
     control = "control",
@@ -18,7 +17,7 @@ export enum ProgressSize {
 
 export type ProgressManagedClasses = ManagedClasses<ProgressClassNameContract>;
 export interface ProgressHandledProps
-    extends Subtract<BaseProgressHandledProps, BaseProgressManagedClasses>,
+    extends Omit<BaseProgressHandledProps, keyof BaseProgressManagedClasses>,
         ProgressManagedClasses {
     /**
      * The progress circular prop

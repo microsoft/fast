@@ -5,7 +5,6 @@ import {
     AutoSuggestOptionStyles,
     DesignSystem,
 } from "@microsoft/fast-components-styles-msft";
-import { Subtract } from "utility-types";
 import autoSuggestOptionSchema from "./auto-suggest-option.schema";
 import autoSuggestOptionSchema2 from "./auto-suggest-option.schema.2";
 import MSFTAutoSuggestOption, {
@@ -18,9 +17,9 @@ import MSFTAutoSuggestOption, {
 const AutoSuggestOption = manageJss(AutoSuggestOptionStyles)(MSFTAutoSuggestOption);
 type AutoSuggestOption = InstanceType<typeof AutoSuggestOption>;
 
-type AutoSuggestOptionHandledProps = Subtract<
+type AutoSuggestOptionHandledProps = Omit<
     MSFTAutoSuggestOptionHandledProps,
-    AutoSuggestOptionManagedClasses
+    keyof AutoSuggestOptionManagedClasses
 >;
 type AutoSuggestOptionProps = ManagedJSSProps<
     MSFTAutoSuggestOptionProps,

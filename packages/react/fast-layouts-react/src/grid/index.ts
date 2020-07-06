@@ -1,6 +1,5 @@
 import React from "react";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
-import { Subtract } from "utility-types";
 import {
     Grid as BaseGrid,
     GridHandledProps as BaseGridHandledProps,
@@ -16,7 +15,7 @@ import {
 const Grid = manageJss()(BaseGrid);
 type Grid = typeof Grid;
 
-type GridHandledProps = Subtract<BaseGridHandledProps, GridManagedClasses>;
+type GridHandledProps = Omit<BaseGridHandledProps, keyof GridManagedClasses>;
 type GridProps = ManagedJSSProps<BaseGridProps, GridClassNamesContract, undefined>;
 
 export {

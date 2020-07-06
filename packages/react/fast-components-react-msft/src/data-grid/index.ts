@@ -13,7 +13,6 @@ import {
 } from "@microsoft/fast-components-react-base";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { DataGridStyles, DesignSystem } from "@microsoft/fast-components-styles-msft";
-import { Subtract } from "utility-types";
 import dataGridSchema from "./data-grid.schema";
 
 /*
@@ -23,7 +22,7 @@ import dataGridSchema from "./data-grid.schema";
 const DataGrid = manageJss(DataGridStyles)(BaseDataGrid);
 type DataGrid = InstanceType<typeof DataGrid>;
 
-type DataGridHandledProps = Subtract<BaseDataGridHandledProps, DataGridManagedClasses>;
+type DataGridHandledProps = Omit<BaseDataGridHandledProps, keyof DataGridManagedClasses>;
 type DataGridProps = ManagedJSSProps<
     BaseDataGridProps,
     DataGridClassNameContract,

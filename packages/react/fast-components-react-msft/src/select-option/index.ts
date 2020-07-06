@@ -2,7 +2,6 @@ import React from "react";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { SelectOptionClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { DesignSystem, SelectOptionStyles } from "@microsoft/fast-components-styles-msft";
-import { Subtract } from "utility-types";
 import selectOptionSchema from "./select-option.schema";
 import selectOptionSchema2 from "./select-option.schema.2";
 import MSFTSelectOption, {
@@ -15,9 +14,9 @@ import MSFTSelectOption, {
 const SelectOption = manageJss(SelectOptionStyles)(MSFTSelectOption);
 type SelectOption = InstanceType<typeof SelectOption>;
 
-type SelectOptionHandledProps = Subtract<
+type SelectOptionHandledProps = Omit<
     MSFTSelectOptionHandledProps,
-    SelectOptionManagedClasses
+    keyof SelectOptionManagedClasses
 >;
 type SelectOptionProps = ManagedJSSProps<
     MSFTSelectOptionProps,

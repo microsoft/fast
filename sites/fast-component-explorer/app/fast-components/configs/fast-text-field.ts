@@ -18,7 +18,9 @@ const fastTextFieldConfig: ComponentViewConfig = {
                 {
                     root: {
                         schemaId: fastTextFieldId,
-                        data: {},
+                        data: {
+                            placeholder: "name",
+                        },
                     },
                 },
                 "root",

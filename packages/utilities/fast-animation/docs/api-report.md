@@ -7,17 +7,18 @@
 // @public
 export abstract class Animate {
     constructor(element: HTMLElement, options?: AnimateConfig, effectTiming?: EffectTiming);
-    addKeyframes: (keyframes: Partial<Keyframe>[]) => void;
+    addKeyframes: (keyframes: Array<Partial<Keyframe>>) => void;
     cancel: () => void;
     effectTiming: EffectTiming;
     finish: () => void;
-    readonly keyframeEffect: KeyframeEffect;
-    readonly keyframes: Keyframe[];
+    get keyframeEffect(): KeyframeEffect;
+    get keyframes(): Keyframe[];
     // Warning: (ae-forgotten-export) The symbol "AnimationMode" needs to be exported by the entry point index.d.ts
     protected mode: AnimationMode;
     onCancel: () => void;
     // (undocumented)
-    onFinish: () => void;
+    get onFinish(): () => void;
+    set onFinish(callback: () => void);
     // Warning: (ae-forgotten-export) The symbol "AnimateConfig" needs to be exported by the entry point index.d.ts
     options: AnimateConfig;
     pause: () => void;
@@ -36,7 +37,8 @@ export class AnimateGroup {
     constructor(animations: Array<AnimateTo | AnimateFrom>);
     cancel: () => void;
     finish: () => void;
-    onFinish: () => void;
+    get onFinish(): () => void;
+    set onFinish(callback: () => void);
     pause: () => void;
     play(): void;
     reverse(): void;

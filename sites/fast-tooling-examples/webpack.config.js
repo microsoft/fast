@@ -4,7 +4,7 @@ const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPl
 const CleanWebpackPlugin = require("clean-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const WebpackShellPlugin = require("webpack-shell-plugin");
-const FASTManifest = require("@microsoft/site-utilities/src/manifest/html.json");
+const CopyPlugin = require("copy-webpack-plugin");
 const FASTCuratedManifest = require("@microsoft/site-utilities/src/curated-html.json");
 
 const rootNodeModules = path.resolve(__dirname, "../../node_modules");
@@ -101,36 +101,27 @@ module.exports = (env, args) => {
                 inject: false,
                 title: "FAST Tooling Examples",
                 template: path.resolve(appDir, "index.html"),
-                manifest: FASTCuratedManifest.concat(FASTManifest).reduce(
-                    (manifestItems, manifestItem) => {
-                        return manifestItems + manifestItem;
-                    },
-                    ""
-                ),
+                manifest: FASTCuratedManifest.reduce((manifestItems, manifestItem) => {
+                    return manifestItems + manifestItem;
+                }, ""),
             }),
             new HtmlWebpackPlugin({
                 inject: false,
                 title: "FAST Tooling Examples - Native elements",
                 filename: "examples/native-element-1/index.html",
                 template: path.resolve(appDir, "examples/native-element-1/index.html"),
-                manifest: FASTCuratedManifest.concat(FASTManifest).reduce(
-                    (manifestItems, manifestItem) => {
-                        return manifestItems + manifestItem;
-                    },
-                    ""
-                ),
+                manifest: FASTCuratedManifest.reduce((manifestItems, manifestItem) => {
+                    return manifestItems + manifestItem;
+                }, ""),
             }),
             new HtmlWebpackPlugin({
                 inject: false,
                 title: "FAST Tooling Examples - React",
                 filename: "examples/react-1/index.html",
                 template: path.resolve(appDir, "examples/react-1/index.html"),
-                manifest: FASTCuratedManifest.concat(FASTManifest).reduce(
-                    (manifestItems, manifestItem) => {
-                        return manifestItems + manifestItem;
-                    },
-                    ""
-                ),
+                manifest: FASTCuratedManifest.reduce((manifestItems, manifestItem) => {
+                    return manifestItems + manifestItem;
+                }, ""),
             }),
             new WebpackShellPlugin({
                 onBuildStart: [`yarn convert:readme`],
@@ -141,6 +132,17 @@ module.exports = (env, args) => {
             new BundleAnalyzerPlugin({
                 // Remove this to inspect bundle sizes.
                 analyzerMode: "disabled",
+            }),
+            new CopyPlugin({
+                patterns: [
+                    {
+                        from: path.resolve(
+                            __dirname,
+                            "../site-utilities/statics/assets/favicon.ico"
+                        ),
+                        to: outDir,
+                    },
+                ],
             }),
         ],
         resolve: {
