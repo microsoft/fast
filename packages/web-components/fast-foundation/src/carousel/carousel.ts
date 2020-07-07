@@ -36,14 +36,11 @@ export class Carousel extends FASTElement {
     @attr({ mode: "boolean" })
     public loop: boolean = true;
 
-    @attr({ attribute: "aria-describedby" })
-    public ariaDescribedby: string;
-
     @attr({ attribute: "aria-labelledby" })
-    public ariaLabelledby: string;
+    public arialabelledby: string;
 
     @attr({ attribute: "aria-label" })
-    public ariaLabel: string;
+    public arialabel: string;
 
     @attr({ mode: "boolean" })
     public paused: boolean = false;
@@ -56,15 +53,17 @@ export class Carousel extends FASTElement {
     }
 
     @attr({ attribute: "activeid" })
-    public activeId: string;
-    public activeIdChanged(): void {
-        this.activeIndex = this.tabIds.indexOf(this.activeId);
+    public activeid: string;
+    public activeidChanged(): void {
+        this.activeIndex = this.tabIds.indexOf(this.activeid);
     }
 
     @attr({ attribute: "tabbed", mode: "boolean" })
     public tabbed: boolean = true;
 
     public carousel: HTMLDivElement;
+    public tabs: HTMLElement;
+    public activeSlide: HTMLElement;
 
     @observable
     public items: HTMLElement[];
@@ -75,25 +74,38 @@ export class Carousel extends FASTElement {
         this.generateTabIds();
 
         //sethdonohue - if activeid attribute was set by implementation then we need to sync the activeIndex for incrementing to work
-        if (this.activeId) {
-            this.activeIndex = this.tabIds.indexOf(this.activeId);
+        if (this.activeid) {
+            this.activeIndex = this.tabIds.indexOf(this.activeid);
         } else {
-            this.activeId = this.tabIds[this.activeIndex] as string;
+            this.activeid = this.tabIds[this.activeIndex] as string;
         }
 
         if (!this.tabbed) {
             this.filteredItems = this.filteredItems.map(
                 (item: HTMLElement, index: number) => {
-                    item.setAttribute("id", `${tabPanelPrefix}${index + 1}`);
-                    item.setAttribute("aria-hidden", "false");
                     if (index === this.activeIndex) {
                         item.classList.add("active-slide");
                         item.removeAttribute("hidden");
+                        this.activeSlide = item;
                     } else {
                         item.setAttribute("hidden", "");
                     }
+                    if (
+                        !item.getAttribute("aria-label") ||
+                        !item.getAttribute("aria-labelledby")
+                    ) {
+                        item.setAttribute(
+                            "aria-label",
+                            `${index + 1} of ${this.filteredItems.length}`
+                        );
+                    }
+
+                    item.setAttribute("id", `${tabPanelPrefix}${index + 1}`);
                     item.classList.add("slide");
-                    item.setAttribute("role", "tabpanel");
+                    // sethdonohue - per ARIA spec role=group and roledescription=slide must be on the slide container for basic (not tabbed) implementation
+                    item.setAttribute("role", "group");
+                    item.setAttribute("aria-roledescription", "slide");
+
                     return item;
                 }
             );
@@ -128,7 +140,7 @@ export class Carousel extends FASTElement {
     private autoplayTimer: number | void;
 
     private change = (): void => {
-        this.$emit("change", this.activeId);
+        this.$emit("change", this.activeSlide);
     };
 
     private incrementSlide = (direction: 1 | -1): void => {
@@ -146,7 +158,7 @@ export class Carousel extends FASTElement {
             );
         }
 
-        this.activeId = this.tabIds[this.activeIndex];
+        this.activeid = this.tabIds[this.activeIndex];
 
         if (!this.tabbed) {
             this.itemsChanged();
@@ -171,6 +183,7 @@ export class Carousel extends FASTElement {
     }
 
     private startAutoPlay(): void {
+        // sethdonohue - need to clear the timer before starting a new one
         this.stopAutoPlay();
         this.autoplayTimer = window.setInterval(
             this.autoplayNextItem,
@@ -187,27 +200,27 @@ export class Carousel extends FASTElement {
         this.autoplay = false;
     }
 
-    private handleMouseOver(E: Event) {
+    private handleMouseOver = (e: Event) => {
         if (this.autoplay) {
             this.paused = true;
         }
-    }
+    };
 
-    private handleMouseLeave(E: Event) {
+    private handleMouseLeave = (e: Event) => {
         if (this.autoplay) {
             this.paused = false;
         }
-    }
+    };
 
-    private handleTabChange(e: any): void {
-        if (e.detail.id) {
-            this.activeIndex = this.tabIds.indexOf(e.detail.id);
-            this.activeId = e.detail.id;
+    private handleTabChange = (e: any): void => {
+        if (e.target.activeid) {
+            this.activeid = e.target.activeid;
+            this.activeIndex = this.tabIds.indexOf(this.activeid);
         }
-    }
+    };
 
     private handleCarouselKeypress(e: KeyboardEvent): void {
-        // sethdonohue - pause the carousel if the right or left arrows are pressed in the case of when autoplay has been restarted by the user and the  focus is on the tabs.
+        // sethdonohue - pause the carousel if the right or left arrows are pressed in the case of when autoplay has been restarted by the user and the focus is on the tabs.
         switch (e.keyCode) {
             case KeyCodes.arrowLeft:
             case KeyCodes.arrowRight:
@@ -224,14 +237,17 @@ export class Carousel extends FASTElement {
             this.paused = true;
         }
 
-        // sethdonohue - per ARIA autoplay must stop when mouse is hovering over the carousel
+        // sethdonohue - per ARIA autoplay must pause when mouse is hovering over the carousel
         this.carousel.addEventListener("mouseover", this.handleMouseOver);
         this.carousel.addEventListener("mouseleave", this.handleMouseLeave);
 
         // sethdonohue - per ARIA rotating must stop when keyboard focus enters the carousel and not restart unless the user explicitly requests it to.
         this.carousel.addEventListener("focusin", this.handleFocusIn);
 
-        this.carousel.addEventListener("change", this.handleTabChange);
+        // sethdonohue - get the id of the tab change based on the change event emitted from tabs to keep carousel in sync with tabs
+        if (this.tabbed) {
+            this.tabs.addEventListener("change", this.handleTabChange);
+        }
 
         this.carousel.addEventListener("keydown", this.handleCarouselKeypress);
     }

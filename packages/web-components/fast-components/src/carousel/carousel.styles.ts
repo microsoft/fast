@@ -94,7 +94,7 @@ export const CarouselStyles = css`
         opacity: 1;
     }
 
-    .play-control {
+    .rotation-control {
         position: absolute;
         left: 10px;
         top: 10px;

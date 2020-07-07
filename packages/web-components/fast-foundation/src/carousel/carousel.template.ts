@@ -10,8 +10,9 @@ const tabbedTemplate: ViewTemplate = html<Carousel>`
     <fast-tabs
         class="carousel-tabs"
         activeindicator="false"
-        activeid="${(x, c) => x.activeId}"
+        activeid="${(x, c) => x.activeid}"
         notabfocus="${x => (!x.paused ? "true" : "false")}"
+        ${ref("tabs")}
     >
         ${repeat(
             x => x.filteredItems,
@@ -23,17 +24,18 @@ const tabbedTemplate: ViewTemplate = html<Carousel>`
             { positioning: true }
         )}
         ${x => html<Carousel>`
-            ${x.filteredItems.map(
-                (item: HTMLElement, index) =>
-                    `<div slot="tabpanel" aria-hidden="true" id="${tabPanelPrefix}${
-                        index + 1
-                    }" class="slide-container" role="${
-                        x.tabbed ? "tab-panel" : "group"
-                    }" ${x.tabbed ? "" : "aria-roledescription='slide'"}
+            ${x.filteredItems.map((item: HTMLElement, index) => {
+                // sethdonohue - per ARIA role=tabpanel for tabbed implementation
+                return `<div
+                    slot="tabpanel"
+                    id="${tabPanelPrefix}${index + 1}"
+                    class="slide"
+                    role="tabpanel"
+                    ${ref("activeSlide")}
                     >
-                        ${item.outerHTML}
-                    </div>`
-            )}
+                    ${item.outerHTML}
+                    </div>`;
+            })}
         `}
         ${/*
             // TODO: ASK This did not work as it shows 'x => x.outHTML' as a string as the child of the <div> when rendered. Should it work?
@@ -62,15 +64,24 @@ const tabbedTemplate: ViewTemplate = html<Carousel>`
  * @public
  */
 export const CarouselTemplate = html<Carousel>`
-<template ${ref("carousel")}>
-    <div style="${x => (x.tabbed ? "display: none;" : "")}">
+<template
+    ${ref("carousel")}
+    role="group"
+    aria-roledescription="carousel"
+>
+    <div
+        style="${x => (x.tabbed ? "display: none;" : "")}"
+        aria-atomic="false"
+        aria-live="${x => (x.autoplay && !x.paused ? "off" : "polite")}"
+    >
         <slot ${slotted("items")}></slot>
     </div>
     <div
-        class="play-control"
+        class="rotation-control"
+        aria-label="${x => (x.paused ? "start slide rotation" : "stop slide rotation")}"
         @click="${(x, c) => x.handlePlayClick(c.event)}"
     >
-        <slot name="play-toggle" part="play-toggle">
+        <slot name="rotation-control" part="rotation-control">
             <fast-button appearance="neutral">
                 ${x => (x.paused ? html`${playIcon}` : html`${pauseIcon}`)}
             </fast-button>
