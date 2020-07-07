@@ -4003,7 +4003,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-foundation!forcedColorsStylesheetBehavior:var",
-          "docComment": "/**\n * Implements {@link matchMediaStylesheetBehaviorFactory} for the {@link https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors | forced-colors} query. This can be used to construct a behavior to apply a forced-colors only stylesheet.\n *\n * @public\n */\n",
+          "docComment": "/**\n * This can be used to construct a behavior to apply a forced-colors only stylesheet.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -4011,7 +4011,7 @@
             },
             {
               "kind": "Content",
-              "text": "(sheet: "
+              "text": "(styles: "
             },
             {
               "kind": "Reference",
@@ -4024,469 +4024,15 @@
             },
             {
               "kind": "Reference",
-              "text": "Readonly",
-              "canonicalReference": "!Readonly:type"
-            },
-            {
-              "kind": "Content",
-              "text": "<{\n    query: "
-            },
-            {
-              "kind": "Reference",
-              "text": "MediaQueryList",
-              "canonicalReference": "!MediaQueryList:interface"
-            },
-            {
-              "kind": "Content",
-              "text": ";\n    cache: "
-            },
-            {
-              "kind": "Reference",
-              "text": "WeakMap",
-              "canonicalReference": "!WeakMap:interface"
-            },
-            {
-              "kind": "Content",
-              "text": "<(new () => "
-            },
-            {
-              "kind": "Reference",
-              "text": "HTMLElement",
-              "canonicalReference": "!HTMLElement:interface"
-            },
-            {
-              "kind": "Content",
-              "text": " & "
-            },
-            {
-              "kind": "Reference",
-              "text": "FASTElement",
-              "canonicalReference": "@microsoft/fast-element!FASTElement:interface"
-            },
-            {
-              "kind": "Content",
-              "text": ") & {\n        from<TBase extends {\n            new (): "
-            },
-            {
-              "kind": "Reference",
-              "text": "HTMLElement",
-              "canonicalReference": "!HTMLElement:interface"
-            },
-            {
-              "kind": "Content",
-              "text": ";\n            prototype: "
-            },
-            {
-              "kind": "Reference",
-              "text": "HTMLElement",
-              "canonicalReference": "!HTMLElement:interface"
-            },
-            {
-              "kind": "Content",
-              "text": ";\n        }>(BaseType: TBase): new () => "
-            },
-            {
-              "kind": "Reference",
-              "text": "InstanceType",
-              "canonicalReference": "!InstanceType:type"
-            },
-            {
-              "kind": "Content",
-              "text": "<TBase> & "
-            },
-            {
-              "kind": "Reference",
-              "text": "FASTElement",
-              "canonicalReference": "@microsoft/fast-element!FASTElement:interface"
-            },
-            {
-              "kind": "Content",
-              "text": ";\n        define<TType extends "
-            },
-            {
-              "kind": "Reference",
-              "text": "Function",
-              "canonicalReference": "!Function:interface"
-            },
-            {
-              "kind": "Content",
-              "text": ">(Type: TType, nameOrDef?: string | import(\"@microsoft/fast-element\")."
-            },
-            {
-              "kind": "Reference",
-              "text": "PartialFASTElementDefinition",
-              "canonicalReference": "@microsoft/fast-element!PartialFASTElementDefinition:interface"
-            },
-            {
-              "kind": "Content",
-              "text": " | undefined): TType;\n        getDefinition<T extends "
-            },
-            {
-              "kind": "Reference",
-              "text": "Function",
-              "canonicalReference": "!Function:interface"
-            },
-            {
-              "kind": "Content",
-              "text": ">(Type: T): import(\"@microsoft/fast-element\")."
-            },
-            {
-              "kind": "Reference",
-              "text": "FASTElementDefinition",
-              "canonicalReference": "@microsoft/fast-element!FASTElementDefinition:class"
-            },
-            {
-              "kind": "Content",
-              "text": " | undefined;\n    }, ((this: "
-            },
-            {
-              "kind": "Reference",
-              "text": "MediaQueryList",
-              "canonicalReference": "!MediaQueryList:interface"
-            },
-            {
-              "kind": "Content",
-              "text": ") => void)[] | ((this: "
-            },
-            {
-              "kind": "Reference",
-              "text": "MediaQueryList",
-              "canonicalReference": "!MediaQueryList:interface"
-            },
-            {
-              "kind": "Content",
-              "text": ") => void)>;\n    sheet: "
-            },
-            {
-              "kind": "Reference",
-              "text": "ElementStyles",
-              "canonicalReference": "@microsoft/fast-element!ElementStyles:class"
-            },
-            {
-              "kind": "Content",
-              "text": ";\n    constructListener(this: "
-            },
-            {
-              "kind": "Reference",
               "text": "MatchMediaStyleSheetBehavior",
-              "canonicalReference": "@microsoft/fast-foundation!~MatchMediaStyleSheetBehavior:interface"
-            },
-            {
-              "kind": "Content",
-              "text": ", source: (new () => "
-            },
-            {
-              "kind": "Reference",
-              "text": "HTMLElement",
-              "canonicalReference": "!HTMLElement:interface"
-            },
-            {
-              "kind": "Content",
-              "text": " & "
-            },
-            {
-              "kind": "Reference",
-              "text": "FASTElement",
-              "canonicalReference": "@microsoft/fast-element!FASTElement:interface"
-            },
-            {
-              "kind": "Content",
-              "text": ") & {\n        from<TBase extends {\n            new (): "
-            },
-            {
-              "kind": "Reference",
-              "text": "HTMLElement",
-              "canonicalReference": "!HTMLElement:interface"
-            },
-            {
-              "kind": "Content",
-              "text": ";\n            prototype: "
-            },
-            {
-              "kind": "Reference",
-              "text": "HTMLElement",
-              "canonicalReference": "!HTMLElement:interface"
-            },
-            {
-              "kind": "Content",
-              "text": ";\n        }>(BaseType: TBase): new () => "
-            },
-            {
-              "kind": "Reference",
-              "text": "InstanceType",
-              "canonicalReference": "!InstanceType:type"
-            },
-            {
-              "kind": "Content",
-              "text": "<TBase> & "
-            },
-            {
-              "kind": "Reference",
-              "text": "FASTElement",
-              "canonicalReference": "@microsoft/fast-element!FASTElement:interface"
-            },
-            {
-              "kind": "Content",
-              "text": ";\n        define<TType extends "
-            },
-            {
-              "kind": "Reference",
-              "text": "Function",
-              "canonicalReference": "!Function:interface"
-            },
-            {
-              "kind": "Content",
-              "text": ">(Type: TType, nameOrDef?: string | import(\"@microsoft/fast-element\")."
-            },
-            {
-              "kind": "Reference",
-              "text": "PartialFASTElementDefinition",
-              "canonicalReference": "@microsoft/fast-element!PartialFASTElementDefinition:interface"
-            },
-            {
-              "kind": "Content",
-              "text": " | undefined): TType;\n        getDefinition<T extends "
-            },
-            {
-              "kind": "Reference",
-              "text": "Function",
-              "canonicalReference": "!Function:interface"
-            },
-            {
-              "kind": "Content",
-              "text": ">(Type: T): import(\"@microsoft/fast-element\")."
-            },
-            {
-              "kind": "Reference",
-              "text": "FASTElementDefinition",
-              "canonicalReference": "@microsoft/fast-element!FASTElementDefinition:class"
-            },
-            {
-              "kind": "Content",
-              "text": " | undefined;\n    }, sheet: "
-            },
-            {
-              "kind": "Reference",
-              "text": "ElementStyles",
-              "canonicalReference": "@microsoft/fast-element!ElementStyles:class"
-            },
-            {
-              "kind": "Content",
-              "text": "): "
-            },
-            {
-              "kind": "Reference",
-              "text": "MediaQueryListListener",
-              "canonicalReference": "@microsoft/fast-foundation!~MediaQueryListListener:type"
-            },
-            {
-              "kind": "Content",
-              "text": ";\n    bind(this: "
-            },
-            {
-              "kind": "Reference",
-              "text": "MatchMediaStyleSheetBehavior",
-              "canonicalReference": "@microsoft/fast-foundation!~MatchMediaStyleSheetBehavior:interface"
-            },
-            {
-              "kind": "Content",
-              "text": ", source: (new () => "
-            },
-            {
-              "kind": "Reference",
-              "text": "HTMLElement",
-              "canonicalReference": "!HTMLElement:interface"
-            },
-            {
-              "kind": "Content",
-              "text": " & "
-            },
-            {
-              "kind": "Reference",
-              "text": "FASTElement",
-              "canonicalReference": "@microsoft/fast-element!FASTElement:interface"
-            },
-            {
-              "kind": "Content",
-              "text": ") & {\n        from<TBase extends {\n            new (): "
-            },
-            {
-              "kind": "Reference",
-              "text": "HTMLElement",
-              "canonicalReference": "!HTMLElement:interface"
-            },
-            {
-              "kind": "Content",
-              "text": ";\n            prototype: "
-            },
-            {
-              "kind": "Reference",
-              "text": "HTMLElement",
-              "canonicalReference": "!HTMLElement:interface"
-            },
-            {
-              "kind": "Content",
-              "text": ";\n        }>(BaseType: TBase): new () => "
-            },
-            {
-              "kind": "Reference",
-              "text": "InstanceType",
-              "canonicalReference": "!InstanceType:type"
-            },
-            {
-              "kind": "Content",
-              "text": "<TBase> & "
-            },
-            {
-              "kind": "Reference",
-              "text": "FASTElement",
-              "canonicalReference": "@microsoft/fast-element!FASTElement:interface"
-            },
-            {
-              "kind": "Content",
-              "text": ";\n        define<TType extends "
-            },
-            {
-              "kind": "Reference",
-              "text": "Function",
-              "canonicalReference": "!Function:interface"
-            },
-            {
-              "kind": "Content",
-              "text": ">(Type: TType, nameOrDef?: string | import(\"@microsoft/fast-element\")."
-            },
-            {
-              "kind": "Reference",
-              "text": "PartialFASTElementDefinition",
-              "canonicalReference": "@microsoft/fast-element!PartialFASTElementDefinition:interface"
-            },
-            {
-              "kind": "Content",
-              "text": " | undefined): TType;\n        getDefinition<T extends "
-            },
-            {
-              "kind": "Reference",
-              "text": "Function",
-              "canonicalReference": "!Function:interface"
-            },
-            {
-              "kind": "Content",
-              "text": ">(Type: T): import(\"@microsoft/fast-element\")."
-            },
-            {
-              "kind": "Reference",
-              "text": "FASTElementDefinition",
-              "canonicalReference": "@microsoft/fast-element!FASTElementDefinition:class"
-            },
-            {
-              "kind": "Content",
-              "text": " | undefined;\n    }): void;\n    unbind(this: "
-            },
-            {
-              "kind": "Reference",
-              "text": "MatchMediaStyleSheetBehavior",
-              "canonicalReference": "@microsoft/fast-foundation!~MatchMediaStyleSheetBehavior:interface"
-            },
-            {
-              "kind": "Content",
-              "text": ", source: (new () => "
-            },
-            {
-              "kind": "Reference",
-              "text": "HTMLElement",
-              "canonicalReference": "!HTMLElement:interface"
-            },
-            {
-              "kind": "Content",
-              "text": " & "
-            },
-            {
-              "kind": "Reference",
-              "text": "FASTElement",
-              "canonicalReference": "@microsoft/fast-element!FASTElement:interface"
-            },
-            {
-              "kind": "Content",
-              "text": ") & {\n        from<TBase extends {\n            new (): "
-            },
-            {
-              "kind": "Reference",
-              "text": "HTMLElement",
-              "canonicalReference": "!HTMLElement:interface"
-            },
-            {
-              "kind": "Content",
-              "text": ";\n            prototype: "
-            },
-            {
-              "kind": "Reference",
-              "text": "HTMLElement",
-              "canonicalReference": "!HTMLElement:interface"
-            },
-            {
-              "kind": "Content",
-              "text": ";\n        }>(BaseType: TBase): new () => "
-            },
-            {
-              "kind": "Reference",
-              "text": "InstanceType",
-              "canonicalReference": "!InstanceType:type"
-            },
-            {
-              "kind": "Content",
-              "text": "<TBase> & "
-            },
-            {
-              "kind": "Reference",
-              "text": "FASTElement",
-              "canonicalReference": "@microsoft/fast-element!FASTElement:interface"
-            },
-            {
-              "kind": "Content",
-              "text": ";\n        define<TType extends "
-            },
-            {
-              "kind": "Reference",
-              "text": "Function",
-              "canonicalReference": "!Function:interface"
-            },
-            {
-              "kind": "Content",
-              "text": ">(Type: TType, nameOrDef?: string | import(\"@microsoft/fast-element\")."
-            },
-            {
-              "kind": "Reference",
-              "text": "PartialFASTElementDefinition",
-              "canonicalReference": "@microsoft/fast-element!PartialFASTElementDefinition:interface"
-            },
-            {
-              "kind": "Content",
-              "text": " | undefined): TType;\n        getDefinition<T extends "
-            },
-            {
-              "kind": "Reference",
-              "text": "Function",
-              "canonicalReference": "!Function:interface"
-            },
-            {
-              "kind": "Content",
-              "text": ">(Type: T): import(\"@microsoft/fast-element\")."
-            },
-            {
-              "kind": "Reference",
-              "text": "FASTElementDefinition",
-              "canonicalReference": "@microsoft/fast-element!FASTElementDefinition:class"
-            },
-            {
-              "kind": "Content",
-              "text": " | undefined;\n    }): void;\n}>"
+              "canonicalReference": "@microsoft/fast-foundation!MatchMediaStyleSheetBehavior:class"
             }
           ],
           "releaseTag": "Public",
           "name": "forcedColorsStylesheetBehavior",
           "variableTypeTokenRange": {
             "startIndex": 1,
-            "endIndex": 106
+            "endIndex": 5
           }
         },
         {
@@ -4571,8 +4117,505 @@
         },
         {
           "kind": "Function",
+          "canonicalReference": "@microsoft/fast-foundation!isTreeItemElement:function(1)",
+          "docComment": "/**\n * check if the item is a tree item\n *\n * @remarks\n *\n * determines if element is an HTMLElement and if it has the role treeitem\n *\n * @public\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "export declare function isTreeItemElement(el: "
+            },
+            {
+              "kind": "Reference",
+              "text": "Element",
+              "canonicalReference": "!Element:interface"
+            },
+            {
+              "kind": "Content",
+              "text": "): "
+            },
+            {
+              "kind": "Reference",
+              "text": "el",
+              "canonicalReference": "@microsoft/fast-foundation!~el"
+            },
+            {
+              "kind": "Content",
+              "text": " is "
+            },
+            {
+              "kind": "Reference",
+              "text": "HTMLElement",
+              "canonicalReference": "!HTMLElement:interface"
+            },
+            {
+              "kind": "Content",
+              "text": ";"
+            }
+          ],
+          "returnTypeTokenRange": {
+            "startIndex": 3,
+            "endIndex": 6
+          },
+          "releaseTag": "Public",
+          "overloadIndex": 1,
+          "parameters": [
+            {
+              "parameterName": "el",
+              "parameterTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
+            }
+          ],
+          "name": "isTreeItemElement"
+        },
+        {
+          "kind": "Class",
+          "canonicalReference": "@microsoft/fast-foundation!MatchMediaBehavior:class",
+          "docComment": "/**\n * An abstract behavior to react to media query changes in the document. Implementations should implement the `constructListener` method to perform some action based on media query changes.\n *\n * @public\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "export declare abstract class MatchMediaBehavior implements "
+            },
+            {
+              "kind": "Reference",
+              "text": "Behavior",
+              "canonicalReference": "@microsoft/fast-element!Behavior:interface"
+            },
+            {
+              "kind": "Content",
+              "text": " "
+            }
+          ],
+          "releaseTag": "Public",
+          "name": "MatchMediaBehavior",
+          "members": [
+            {
+              "kind": "Constructor",
+              "canonicalReference": "@microsoft/fast-foundation!MatchMediaBehavior:constructor(1)",
+              "docComment": "/**\n * Constructs a new instance of the `MatchMediaBehavior` class\n *\n * @param query - The media query to operate from.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "constructor(query: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "MediaQueryList",
+                  "canonicalReference": "!MediaQueryList:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": ");"
+                }
+              ],
+              "releaseTag": "Public",
+              "overloadIndex": 1,
+              "parameters": [
+                {
+                  "parameterName": "query",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 1,
+                    "endIndex": 2
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "Method",
+              "canonicalReference": "@microsoft/fast-foundation!MatchMediaBehavior#bind:member(1)",
+              "docComment": "/**\n * Binds the behavior to the element.\n *\n * @param source - The element for which the behavior is bound.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "bind(source: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "typeof "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "FASTElement",
+                  "canonicalReference": "@microsoft/fast-element!FASTElement:var"
+                },
+                {
+                  "kind": "Content",
+                  "text": " & "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "HTMLElement",
+                  "canonicalReference": "!HTMLElement:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": "): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "void"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isStatic": false,
+              "returnTypeTokenRange": {
+                "startIndex": 6,
+                "endIndex": 7
+              },
+              "releaseTag": "Public",
+              "overloadIndex": 1,
+              "parameters": [
+                {
+                  "parameterName": "source",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 1,
+                    "endIndex": 5
+                  }
+                }
+              ],
+              "name": "bind"
+            },
+            {
+              "kind": "Method",
+              "canonicalReference": "@microsoft/fast-foundation!MatchMediaBehavior#constructListener:member(1)",
+              "docComment": "/**\n * Constructs a function that will be invoked with the MediaQueryList context\n *\n * @param source - the element the behavior is acting on.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "protected abstract constructListener(source: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "typeof "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "FASTElement",
+                  "canonicalReference": "@microsoft/fast-element!FASTElement:var"
+                },
+                {
+                  "kind": "Content",
+                  "text": "): "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "MediaQueryListListener",
+                  "canonicalReference": "@microsoft/fast-foundation!MediaQueryListListener:type"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isStatic": false,
+              "returnTypeTokenRange": {
+                "startIndex": 4,
+                "endIndex": 5
+              },
+              "releaseTag": "Public",
+              "overloadIndex": 1,
+              "parameters": [
+                {
+                  "parameterName": "source",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 1,
+                    "endIndex": 3
+                  }
+                }
+              ],
+              "name": "constructListener"
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@microsoft/fast-foundation!MatchMediaBehavior#query:member",
+              "docComment": "/**\n * The media query that the behavior operates on.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "readonly query: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "MediaQueryList",
+                  "canonicalReference": "!MediaQueryList:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "query",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false
+            },
+            {
+              "kind": "Method",
+              "canonicalReference": "@microsoft/fast-foundation!MatchMediaBehavior#unbind:member(1)",
+              "docComment": "/**\n * Unbinds the behavior from the element.\n *\n * @param source - The element for which the behavior is unbinding.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "unbind(source: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "typeof "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "FASTElement",
+                  "canonicalReference": "@microsoft/fast-element!FASTElement:var"
+                },
+                {
+                  "kind": "Content",
+                  "text": " & "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "HTMLElement",
+                  "canonicalReference": "!HTMLElement:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": "): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "void"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isStatic": false,
+              "returnTypeTokenRange": {
+                "startIndex": 6,
+                "endIndex": 7
+              },
+              "releaseTag": "Public",
+              "overloadIndex": 1,
+              "parameters": [
+                {
+                  "parameterName": "source",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 1,
+                    "endIndex": 5
+                  }
+                }
+              ],
+              "name": "unbind"
+            }
+          ],
+          "implementsTokenRanges": [
+            {
+              "startIndex": 1,
+              "endIndex": 3
+            }
+          ]
+        },
+        {
+          "kind": "Class",
+          "canonicalReference": "@microsoft/fast-foundation!MatchMediaStyleSheetBehavior:class",
+          "docComment": "/**\n * A behavior to add or remove a stylesheet from an element based on a media query. The behavior ensures that styles are applied while the a query matches the environment and that styles are not applied if the query does not match the environment.\n *\n * @public\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "export declare class MatchMediaStyleSheetBehavior extends "
+            },
+            {
+              "kind": "Reference",
+              "text": "MatchMediaBehavior",
+              "canonicalReference": "@microsoft/fast-foundation!MatchMediaBehavior:class"
+            },
+            {
+              "kind": "Content",
+              "text": " "
+            }
+          ],
+          "releaseTag": "Public",
+          "name": "MatchMediaStyleSheetBehavior",
+          "members": [
+            {
+              "kind": "Constructor",
+              "canonicalReference": "@microsoft/fast-foundation!MatchMediaStyleSheetBehavior:constructor(1)",
+              "docComment": "/**\n * Constructs a {@link MatchMediaStyleSheetBehavior} instance.\n *\n * @param query - The media query to operate from.\n *\n * @param styles - The styles to coordinate with the query.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "constructor(query: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "MediaQueryList",
+                  "canonicalReference": "!MediaQueryList:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": ", styles: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "ElementStyles",
+                  "canonicalReference": "@microsoft/fast-element!ElementStyles:class"
+                },
+                {
+                  "kind": "Content",
+                  "text": ");"
+                }
+              ],
+              "releaseTag": "Public",
+              "overloadIndex": 1,
+              "parameters": [
+                {
+                  "parameterName": "query",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 1,
+                    "endIndex": 2
+                  }
+                },
+                {
+                  "parameterName": "styles",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 3,
+                    "endIndex": 4
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@microsoft/fast-foundation!MatchMediaStyleSheetBehavior#query:member",
+              "docComment": "/**\n * The media query that the behavior operates on.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "readonly query: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "MediaQueryList",
+                  "canonicalReference": "!MediaQueryList:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "query",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@microsoft/fast-foundation!MatchMediaStyleSheetBehavior#styles:member",
+              "docComment": "/**\n * The styles object to be managed by the behavior.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "readonly styles: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "ElementStyles",
+                  "canonicalReference": "@microsoft/fast-element!ElementStyles:class"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "styles",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false
+            },
+            {
+              "kind": "Method",
+              "canonicalReference": "@microsoft/fast-foundation!MatchMediaStyleSheetBehavior.with:member(1)",
+              "docComment": "/**\n * Defines a function to construct {@link MatchMediaStyleSheetBehavior | MatchMediaStyleSheetBehaviors} for a provided query.\n *\n * @param query - The media query to operate from.\n *\n * @example\n * ```ts\n * import { css } from \"@microsoft/fast-element\";\n * import { MatchMediaStyleSheetBehavior } from \"@microsoft/fast-foundation\";\n * const landscapeBehavior = MatchMediaStyleSheetBehavior.with(window.matchMedia(\"(orientation: landscape)\"));\n *\n * const styles = css`\n *   :host {\n *     width: 200px;\n *     height: 400px;\n *   }\n * `\n * .withBehaviors(landscapeBehavior(css`\n *   :host {\n *           width: 400px;\n *     height: 200px;\n *   }\n * `))\n * ```\n *\n * @public\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "static with(query: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "MediaQueryList",
+                  "canonicalReference": "!MediaQueryList:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": "): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "(styles: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "ElementStyles",
+                  "canonicalReference": "@microsoft/fast-element!ElementStyles:class"
+                },
+                {
+                  "kind": "Content",
+                  "text": ") => "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "MatchMediaStyleSheetBehavior",
+                  "canonicalReference": "@microsoft/fast-foundation!MatchMediaStyleSheetBehavior:class"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isStatic": true,
+              "returnTypeTokenRange": {
+                "startIndex": 3,
+                "endIndex": 7
+              },
+              "releaseTag": "Public",
+              "overloadIndex": 1,
+              "parameters": [
+                {
+                  "parameterName": "query",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 1,
+                    "endIndex": 2
+                  }
+                }
+              ],
+              "name": "with"
+            }
+          ],
+          "extendsTokenRange": {
+            "startIndex": 1,
+            "endIndex": 3
+          },
+          "implementsTokenRanges": []
+        },
+        {
+          "kind": "Function",
           "canonicalReference": "@microsoft/fast-foundation!matchMediaStylesheetBehaviorFactory:function(1)",
-          "docComment": "/**\n * Construct a behavior factory that will conditionally apply a stylesheet based on a MediaQueryList\n *\n * @param query - The MediaQueryList to subscribe to matches for.\n *\n * @public\n */\n",
+          "docComment": "/**\n * Construct a behavior factory that will conditionally apply a stylesheet based on a MediaQueryList\n *\n * @deprecated\n *\n * - use {@link MatchMediaStyleSheetBehavior.with}\n *\n * @param query - The MediaQueryList to subscribe to matches for.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -4589,7 +4632,7 @@
             },
             {
               "kind": "Content",
-              "text": "(sheet: "
+              "text": "(styles: "
             },
             {
               "kind": "Reference",
@@ -4602,462 +4645,8 @@
             },
             {
               "kind": "Reference",
-              "text": "Readonly",
-              "canonicalReference": "!Readonly:type"
-            },
-            {
-              "kind": "Content",
-              "text": "<{\n    query: "
-            },
-            {
-              "kind": "Reference",
-              "text": "MediaQueryList",
-              "canonicalReference": "!MediaQueryList:interface"
-            },
-            {
-              "kind": "Content",
-              "text": ";\n    cache: "
-            },
-            {
-              "kind": "Reference",
-              "text": "WeakMap",
-              "canonicalReference": "!WeakMap:interface"
-            },
-            {
-              "kind": "Content",
-              "text": "<(new () => "
-            },
-            {
-              "kind": "Reference",
-              "text": "HTMLElement",
-              "canonicalReference": "!HTMLElement:interface"
-            },
-            {
-              "kind": "Content",
-              "text": " & "
-            },
-            {
-              "kind": "Reference",
-              "text": "FASTElement",
-              "canonicalReference": "@microsoft/fast-element!FASTElement:interface"
-            },
-            {
-              "kind": "Content",
-              "text": ") & {\n        from<TBase extends {\n            new (): "
-            },
-            {
-              "kind": "Reference",
-              "text": "HTMLElement",
-              "canonicalReference": "!HTMLElement:interface"
-            },
-            {
-              "kind": "Content",
-              "text": ";\n            prototype: "
-            },
-            {
-              "kind": "Reference",
-              "text": "HTMLElement",
-              "canonicalReference": "!HTMLElement:interface"
-            },
-            {
-              "kind": "Content",
-              "text": ";\n        }>(BaseType: TBase): new () => "
-            },
-            {
-              "kind": "Reference",
-              "text": "InstanceType",
-              "canonicalReference": "!InstanceType:type"
-            },
-            {
-              "kind": "Content",
-              "text": "<TBase> & "
-            },
-            {
-              "kind": "Reference",
-              "text": "FASTElement",
-              "canonicalReference": "@microsoft/fast-element!FASTElement:interface"
-            },
-            {
-              "kind": "Content",
-              "text": ";\n        define<TType extends "
-            },
-            {
-              "kind": "Reference",
-              "text": "Function",
-              "canonicalReference": "!Function:interface"
-            },
-            {
-              "kind": "Content",
-              "text": ">(Type: TType, nameOrDef?: string | import(\"@microsoft/fast-element\")."
-            },
-            {
-              "kind": "Reference",
-              "text": "PartialFASTElementDefinition",
-              "canonicalReference": "@microsoft/fast-element!PartialFASTElementDefinition:interface"
-            },
-            {
-              "kind": "Content",
-              "text": " | undefined): TType;\n        getDefinition<T extends "
-            },
-            {
-              "kind": "Reference",
-              "text": "Function",
-              "canonicalReference": "!Function:interface"
-            },
-            {
-              "kind": "Content",
-              "text": ">(Type: T): import(\"@microsoft/fast-element\")."
-            },
-            {
-              "kind": "Reference",
-              "text": "FASTElementDefinition",
-              "canonicalReference": "@microsoft/fast-element!FASTElementDefinition:class"
-            },
-            {
-              "kind": "Content",
-              "text": " | undefined;\n    }, ((this: "
-            },
-            {
-              "kind": "Reference",
-              "text": "MediaQueryList",
-              "canonicalReference": "!MediaQueryList:interface"
-            },
-            {
-              "kind": "Content",
-              "text": ") => void)[] | ((this: "
-            },
-            {
-              "kind": "Reference",
-              "text": "MediaQueryList",
-              "canonicalReference": "!MediaQueryList:interface"
-            },
-            {
-              "kind": "Content",
-              "text": ") => void)>;\n    sheet: "
-            },
-            {
-              "kind": "Reference",
-              "text": "ElementStyles",
-              "canonicalReference": "@microsoft/fast-element!ElementStyles:class"
-            },
-            {
-              "kind": "Content",
-              "text": ";\n    constructListener(this: "
-            },
-            {
-              "kind": "Reference",
               "text": "MatchMediaStyleSheetBehavior",
-              "canonicalReference": "@microsoft/fast-foundation!~MatchMediaStyleSheetBehavior:interface"
-            },
-            {
-              "kind": "Content",
-              "text": ", source: (new () => "
-            },
-            {
-              "kind": "Reference",
-              "text": "HTMLElement",
-              "canonicalReference": "!HTMLElement:interface"
-            },
-            {
-              "kind": "Content",
-              "text": " & "
-            },
-            {
-              "kind": "Reference",
-              "text": "FASTElement",
-              "canonicalReference": "@microsoft/fast-element!FASTElement:interface"
-            },
-            {
-              "kind": "Content",
-              "text": ") & {\n        from<TBase extends {\n            new (): "
-            },
-            {
-              "kind": "Reference",
-              "text": "HTMLElement",
-              "canonicalReference": "!HTMLElement:interface"
-            },
-            {
-              "kind": "Content",
-              "text": ";\n            prototype: "
-            },
-            {
-              "kind": "Reference",
-              "text": "HTMLElement",
-              "canonicalReference": "!HTMLElement:interface"
-            },
-            {
-              "kind": "Content",
-              "text": ";\n        }>(BaseType: TBase): new () => "
-            },
-            {
-              "kind": "Reference",
-              "text": "InstanceType",
-              "canonicalReference": "!InstanceType:type"
-            },
-            {
-              "kind": "Content",
-              "text": "<TBase> & "
-            },
-            {
-              "kind": "Reference",
-              "text": "FASTElement",
-              "canonicalReference": "@microsoft/fast-element!FASTElement:interface"
-            },
-            {
-              "kind": "Content",
-              "text": ";\n        define<TType extends "
-            },
-            {
-              "kind": "Reference",
-              "text": "Function",
-              "canonicalReference": "!Function:interface"
-            },
-            {
-              "kind": "Content",
-              "text": ">(Type: TType, nameOrDef?: string | import(\"@microsoft/fast-element\")."
-            },
-            {
-              "kind": "Reference",
-              "text": "PartialFASTElementDefinition",
-              "canonicalReference": "@microsoft/fast-element!PartialFASTElementDefinition:interface"
-            },
-            {
-              "kind": "Content",
-              "text": " | undefined): TType;\n        getDefinition<T extends "
-            },
-            {
-              "kind": "Reference",
-              "text": "Function",
-              "canonicalReference": "!Function:interface"
-            },
-            {
-              "kind": "Content",
-              "text": ">(Type: T): import(\"@microsoft/fast-element\")."
-            },
-            {
-              "kind": "Reference",
-              "text": "FASTElementDefinition",
-              "canonicalReference": "@microsoft/fast-element!FASTElementDefinition:class"
-            },
-            {
-              "kind": "Content",
-              "text": " | undefined;\n    }, sheet: "
-            },
-            {
-              "kind": "Reference",
-              "text": "ElementStyles",
-              "canonicalReference": "@microsoft/fast-element!ElementStyles:class"
-            },
-            {
-              "kind": "Content",
-              "text": "): "
-            },
-            {
-              "kind": "Reference",
-              "text": "MediaQueryListListener",
-              "canonicalReference": "@microsoft/fast-foundation!~MediaQueryListListener:type"
-            },
-            {
-              "kind": "Content",
-              "text": ";\n    bind(this: "
-            },
-            {
-              "kind": "Reference",
-              "text": "MatchMediaStyleSheetBehavior",
-              "canonicalReference": "@microsoft/fast-foundation!~MatchMediaStyleSheetBehavior:interface"
-            },
-            {
-              "kind": "Content",
-              "text": ", source: (new () => "
-            },
-            {
-              "kind": "Reference",
-              "text": "HTMLElement",
-              "canonicalReference": "!HTMLElement:interface"
-            },
-            {
-              "kind": "Content",
-              "text": " & "
-            },
-            {
-              "kind": "Reference",
-              "text": "FASTElement",
-              "canonicalReference": "@microsoft/fast-element!FASTElement:interface"
-            },
-            {
-              "kind": "Content",
-              "text": ") & {\n        from<TBase extends {\n            new (): "
-            },
-            {
-              "kind": "Reference",
-              "text": "HTMLElement",
-              "canonicalReference": "!HTMLElement:interface"
-            },
-            {
-              "kind": "Content",
-              "text": ";\n            prototype: "
-            },
-            {
-              "kind": "Reference",
-              "text": "HTMLElement",
-              "canonicalReference": "!HTMLElement:interface"
-            },
-            {
-              "kind": "Content",
-              "text": ";\n        }>(BaseType: TBase): new () => "
-            },
-            {
-              "kind": "Reference",
-              "text": "InstanceType",
-              "canonicalReference": "!InstanceType:type"
-            },
-            {
-              "kind": "Content",
-              "text": "<TBase> & "
-            },
-            {
-              "kind": "Reference",
-              "text": "FASTElement",
-              "canonicalReference": "@microsoft/fast-element!FASTElement:interface"
-            },
-            {
-              "kind": "Content",
-              "text": ";\n        define<TType extends "
-            },
-            {
-              "kind": "Reference",
-              "text": "Function",
-              "canonicalReference": "!Function:interface"
-            },
-            {
-              "kind": "Content",
-              "text": ">(Type: TType, nameOrDef?: string | import(\"@microsoft/fast-element\")."
-            },
-            {
-              "kind": "Reference",
-              "text": "PartialFASTElementDefinition",
-              "canonicalReference": "@microsoft/fast-element!PartialFASTElementDefinition:interface"
-            },
-            {
-              "kind": "Content",
-              "text": " | undefined): TType;\n        getDefinition<T extends "
-            },
-            {
-              "kind": "Reference",
-              "text": "Function",
-              "canonicalReference": "!Function:interface"
-            },
-            {
-              "kind": "Content",
-              "text": ">(Type: T): import(\"@microsoft/fast-element\")."
-            },
-            {
-              "kind": "Reference",
-              "text": "FASTElementDefinition",
-              "canonicalReference": "@microsoft/fast-element!FASTElementDefinition:class"
-            },
-            {
-              "kind": "Content",
-              "text": " | undefined;\n    }): void;\n    unbind(this: "
-            },
-            {
-              "kind": "Reference",
-              "text": "MatchMediaStyleSheetBehavior",
-              "canonicalReference": "@microsoft/fast-foundation!~MatchMediaStyleSheetBehavior:interface"
-            },
-            {
-              "kind": "Content",
-              "text": ", source: (new () => "
-            },
-            {
-              "kind": "Reference",
-              "text": "HTMLElement",
-              "canonicalReference": "!HTMLElement:interface"
-            },
-            {
-              "kind": "Content",
-              "text": " & "
-            },
-            {
-              "kind": "Reference",
-              "text": "FASTElement",
-              "canonicalReference": "@microsoft/fast-element!FASTElement:interface"
-            },
-            {
-              "kind": "Content",
-              "text": ") & {\n        from<TBase extends {\n            new (): "
-            },
-            {
-              "kind": "Reference",
-              "text": "HTMLElement",
-              "canonicalReference": "!HTMLElement:interface"
-            },
-            {
-              "kind": "Content",
-              "text": ";\n            prototype: "
-            },
-            {
-              "kind": "Reference",
-              "text": "HTMLElement",
-              "canonicalReference": "!HTMLElement:interface"
-            },
-            {
-              "kind": "Content",
-              "text": ";\n        }>(BaseType: TBase): new () => "
-            },
-            {
-              "kind": "Reference",
-              "text": "InstanceType",
-              "canonicalReference": "!InstanceType:type"
-            },
-            {
-              "kind": "Content",
-              "text": "<TBase> & "
-            },
-            {
-              "kind": "Reference",
-              "text": "FASTElement",
-              "canonicalReference": "@microsoft/fast-element!FASTElement:interface"
-            },
-            {
-              "kind": "Content",
-              "text": ";\n        define<TType extends "
-            },
-            {
-              "kind": "Reference",
-              "text": "Function",
-              "canonicalReference": "!Function:interface"
-            },
-            {
-              "kind": "Content",
-              "text": ">(Type: TType, nameOrDef?: string | import(\"@microsoft/fast-element\")."
-            },
-            {
-              "kind": "Reference",
-              "text": "PartialFASTElementDefinition",
-              "canonicalReference": "@microsoft/fast-element!PartialFASTElementDefinition:interface"
-            },
-            {
-              "kind": "Content",
-              "text": " | undefined): TType;\n        getDefinition<T extends "
-            },
-            {
-              "kind": "Reference",
-              "text": "Function",
-              "canonicalReference": "!Function:interface"
-            },
-            {
-              "kind": "Content",
-              "text": ">(Type: T): import(\"@microsoft/fast-element\")."
-            },
-            {
-              "kind": "Reference",
-              "text": "FASTElementDefinition",
-              "canonicalReference": "@microsoft/fast-element!FASTElementDefinition:class"
-            },
-            {
-              "kind": "Content",
-              "text": " | undefined;\n    }): void;\n}>"
+              "canonicalReference": "@microsoft/fast-foundation!MatchMediaStyleSheetBehavior:class"
             },
             {
               "kind": "Content",
@@ -5066,7 +4655,7 @@
           ],
           "returnTypeTokenRange": {
             "startIndex": 3,
-            "endIndex": 108
+            "endIndex": 7
           },
           "releaseTag": "Public",
           "overloadIndex": 1,
@@ -5080,6 +4669,49 @@
             }
           ],
           "name": "matchMediaStylesheetBehaviorFactory"
+        },
+        {
+          "kind": "TypeAlias",
+          "canonicalReference": "@microsoft/fast-foundation!MediaQueryListListener:type",
+          "docComment": "/**\n * @public\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "export declare type MediaQueryListListener = "
+            },
+            {
+              "kind": "Content",
+              "text": "(this: "
+            },
+            {
+              "kind": "Reference",
+              "text": "MediaQueryList",
+              "canonicalReference": "!MediaQueryList:interface"
+            },
+            {
+              "kind": "Content",
+              "text": ", ev?: "
+            },
+            {
+              "kind": "Reference",
+              "text": "MediaQueryListEvent",
+              "canonicalReference": "!MediaQueryListEvent:interface"
+            },
+            {
+              "kind": "Content",
+              "text": ") => void"
+            },
+            {
+              "kind": "Content",
+              "text": ";"
+            }
+          ],
+          "releaseTag": "Public",
+          "name": "MediaQueryListListener",
+          "typeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 6
+          }
         },
         {
           "kind": "Class",
@@ -7516,6 +7148,50 @@
               "isStatic": false
             },
             {
+              "kind": "Method",
+              "canonicalReference": "@microsoft/fast-foundation!Tabs#adjust:member(1)",
+              "docComment": "/**\n * The adjust method for FASTTabs\n *\n * @remarks\n *\n * This method allows the active index to be adjusted by numerical increments\n *\n * @public\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "adjust(adjustment: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "number"
+                },
+                {
+                  "kind": "Content",
+                  "text": "): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "void"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isStatic": false,
+              "returnTypeTokenRange": {
+                "startIndex": 3,
+                "endIndex": 4
+              },
+              "releaseTag": "Public",
+              "overloadIndex": 1,
+              "parameters": [
+                {
+                  "parameterName": "adjustment",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 1,
+                    "endIndex": 2
+                  }
+                }
+              ],
+              "name": "adjust"
+            },
+            {
               "kind": "Property",
               "canonicalReference": "@microsoft/fast-foundation!Tabs#orientation:member",
               "docComment": "/**\n * The orientation\n *\n * @remarks\n *\n * HTML Attribute: orientation\n *\n * @public\n */\n",
@@ -8852,6 +8528,895 @@
               }
             }
           ]
+        },
+        {
+          "kind": "Class",
+          "canonicalReference": "@microsoft/fast-foundation!TreeItem:class",
+          "docComment": "/**\n * A Tree item Custom HTML Element.\n *\n * @public\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "export declare class TreeItem extends "
+            },
+            {
+              "kind": "Reference",
+              "text": "FASTElement",
+              "canonicalReference": "@microsoft/fast-element!FASTElement:interface"
+            },
+            {
+              "kind": "Content",
+              "text": " "
+            }
+          ],
+          "releaseTag": "Public",
+          "name": "TreeItem",
+          "members": [
+            {
+              "kind": "Property",
+              "canonicalReference": "@microsoft/fast-foundation!TreeItem#childItems:member",
+              "docComment": "",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "childItems: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "HTMLElement",
+                  "canonicalReference": "!HTMLElement:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": "[]"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "childItems",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 3
+              },
+              "isStatic": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@microsoft/fast-foundation!TreeItem#disabled:member",
+              "docComment": "/**\n * When true, the control will be immutable by user interaction. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/disabled | disabled HTML attribute} for more information.\n *\n * @remarks\n *\n * HTML Attribute: disabled\n *\n * @public\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "disabled: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "boolean"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "disabled",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@microsoft/fast-foundation!TreeItem#expandCollapseButton:member",
+              "docComment": "",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "expandCollapseButton: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "HTMLDivElement",
+                  "canonicalReference": "!HTMLDivElement:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "expandCollapseButton",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@microsoft/fast-foundation!TreeItem#expanded:member",
+              "docComment": "/**\n * When true, the control will be appear expanded by user interaction.\n *\n * @remarks\n *\n * HTML Attribute: expanded\n *\n * @public\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "expanded: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "boolean"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "expanded",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@microsoft/fast-foundation!TreeItem#focusable:member",
+              "docComment": "",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "focusable: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "boolean"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "focusable",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@microsoft/fast-foundation!TreeItem#handleBlur:member",
+              "docComment": "",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "handleBlur: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "(e: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "FocusEvent",
+                  "canonicalReference": "!FocusEvent:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": ") => void"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "handleBlur",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 4
+              },
+              "isStatic": false
+            },
+            {
+              "kind": "Method",
+              "canonicalReference": "@microsoft/fast-foundation!TreeItem#handleChange:member(1)",
+              "docComment": "",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "handleChange(source: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "any"
+                },
+                {
+                  "kind": "Content",
+                  "text": ", propertyName: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "string"
+                },
+                {
+                  "kind": "Content",
+                  "text": "): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "void"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isStatic": false,
+              "returnTypeTokenRange": {
+                "startIndex": 5,
+                "endIndex": 6
+              },
+              "releaseTag": "Public",
+              "overloadIndex": 1,
+              "parameters": [
+                {
+                  "parameterName": "source",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 1,
+                    "endIndex": 2
+                  }
+                },
+                {
+                  "parameterName": "propertyName",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 3,
+                    "endIndex": 4
+                  }
+                }
+              ],
+              "name": "handleChange"
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@microsoft/fast-foundation!TreeItem#handleContainerClick:member",
+              "docComment": "",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "handleContainerClick: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "(e: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "MouseEvent",
+                  "canonicalReference": "!MouseEvent:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": ") => void"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "handleContainerClick",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 4
+              },
+              "isStatic": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@microsoft/fast-foundation!TreeItem#handleExpandCollapseButtonClick:member",
+              "docComment": "",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "handleExpandCollapseButtonClick: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "() => void"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "handleExpandCollapseButtonClick",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@microsoft/fast-foundation!TreeItem#handleFocus:member",
+              "docComment": "",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "handleFocus: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "(e: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "Event",
+                  "canonicalReference": "!Event:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": ") => void"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "handleFocus",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 4
+              },
+              "isStatic": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@microsoft/fast-foundation!TreeItem#handleKeyDown:member",
+              "docComment": "",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "handleKeyDown: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "(e: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "KeyboardEvent",
+                  "canonicalReference": "!KeyboardEvent:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": ") => void | boolean"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "handleKeyDown",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 4
+              },
+              "isStatic": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@microsoft/fast-foundation!TreeItem#items:member",
+              "docComment": "",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "items: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "HTMLElement",
+                  "canonicalReference": "!HTMLElement:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": "[]"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "items",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 3
+              },
+              "isStatic": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@microsoft/fast-foundation!TreeItem#nested:member",
+              "docComment": "",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "nested: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "boolean"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "nested",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@microsoft/fast-foundation!TreeItem#renderCollapsedChildren:member",
+              "docComment": "",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "renderCollapsedChildren: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "boolean"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "renderCollapsedChildren",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@microsoft/fast-foundation!TreeItem#selected:member",
+              "docComment": "/**\n * When true, the control will appear selected by user interaction.\n *\n * @remarks\n *\n * HTML Attribute: selected\n *\n * @public\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "selected: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "boolean"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "selected",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false
+            }
+          ],
+          "extendsTokenRange": {
+            "startIndex": 1,
+            "endIndex": 3
+          },
+          "implementsTokenRanges": []
+        },
+        {
+          "kind": "Variable",
+          "canonicalReference": "@microsoft/fast-foundation!TreeItemTemplate:var",
+          "docComment": "/**\n * The template for the {@link @microsoft/fast-foundation#(TreeItem:class)} component.\n *\n * @public\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "TreeItemTemplate: "
+            },
+            {
+              "kind": "Content",
+              "text": "import(\"@microsoft/fast-element\")."
+            },
+            {
+              "kind": "Reference",
+              "text": "ViewTemplate",
+              "canonicalReference": "@microsoft/fast-element!ViewTemplate:class"
+            },
+            {
+              "kind": "Content",
+              "text": "<"
+            },
+            {
+              "kind": "Reference",
+              "text": "TreeItem",
+              "canonicalReference": "@microsoft/fast-foundation!TreeItem:class"
+            },
+            {
+              "kind": "Content",
+              "text": ", any>"
+            }
+          ],
+          "releaseTag": "Public",
+          "name": "TreeItemTemplate",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 6
+          }
+        },
+        {
+          "kind": "Class",
+          "canonicalReference": "@microsoft/fast-foundation!TreeView:class",
+          "docComment": "/**\n * A Tree view Custom HTML Element. Implements the {@link https://w3c.github.io/aria-practices/#TreeView | ARIA TreeView}.\n *\n * @public\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "export declare class TreeView extends "
+            },
+            {
+              "kind": "Reference",
+              "text": "FASTElement",
+              "canonicalReference": "@microsoft/fast-element!FASTElement:interface"
+            },
+            {
+              "kind": "Content",
+              "text": " "
+            }
+          ],
+          "releaseTag": "Public",
+          "name": "TreeView",
+          "members": [
+            {
+              "kind": "Method",
+              "canonicalReference": "@microsoft/fast-foundation!TreeView#connectedCallback:member(1)",
+              "docComment": "",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "connectedCallback(): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "void"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isStatic": false,
+              "returnTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "releaseTag": "Public",
+              "overloadIndex": 1,
+              "parameters": [],
+              "name": "connectedCallback"
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@microsoft/fast-foundation!TreeView#currentSelected:member",
+              "docComment": "",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "currentSelected: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "HTMLElement",
+                  "canonicalReference": "!HTMLElement:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": " | "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "TreeItem",
+                  "canonicalReference": "@microsoft/fast-foundation!TreeItem:class"
+                },
+                {
+                  "kind": "Content",
+                  "text": " | null"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "currentSelected",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 5
+              },
+              "isStatic": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@microsoft/fast-foundation!TreeView#focusable:member",
+              "docComment": "",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "focusable: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "boolean"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "focusable",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@microsoft/fast-foundation!TreeView#handleBlur:member",
+              "docComment": "",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "handleBlur: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "(e: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "FocusEvent",
+                  "canonicalReference": "!FocusEvent:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": ") => void"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "handleBlur",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 4
+              },
+              "isStatic": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@microsoft/fast-foundation!TreeView#handleFocus:member",
+              "docComment": "",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "handleFocus: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "(e: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "FocusEvent",
+                  "canonicalReference": "!FocusEvent:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": ") => void"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "handleFocus",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 4
+              },
+              "isStatic": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@microsoft/fast-foundation!TreeView#handleKeyDown:member",
+              "docComment": "",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "handleKeyDown: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "(e: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "KeyboardEvent",
+                  "canonicalReference": "!KeyboardEvent:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": ") => void | boolean"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "handleKeyDown",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 4
+              },
+              "isStatic": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@microsoft/fast-foundation!TreeView#renderCollapsedNodes:member",
+              "docComment": "",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "renderCollapsedNodes: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "boolean"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "renderCollapsedNodes",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@microsoft/fast-foundation!TreeView#slottedTreeItems:member",
+              "docComment": "",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "slottedTreeItems: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "HTMLElement",
+                  "canonicalReference": "!HTMLElement:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": "[]"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "slottedTreeItems",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 3
+              },
+              "isStatic": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@microsoft/fast-foundation!TreeView#treeView:member",
+              "docComment": "",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "treeView: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "HTMLElement",
+                  "canonicalReference": "!HTMLElement:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "treeView",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false
+            }
+          ],
+          "extendsTokenRange": {
+            "startIndex": 1,
+            "endIndex": 3
+          },
+          "implementsTokenRanges": []
+        },
+        {
+          "kind": "Variable",
+          "canonicalReference": "@microsoft/fast-foundation!TreeViewTemplate:var",
+          "docComment": "/**\n * The template for the {@link @microsoft/fast-foundation#TreeView} component.\n *\n * @public\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "TreeViewTemplate: "
+            },
+            {
+              "kind": "Content",
+              "text": "import(\"@microsoft/fast-element\")."
+            },
+            {
+              "kind": "Reference",
+              "text": "ViewTemplate",
+              "canonicalReference": "@microsoft/fast-element!ViewTemplate:class"
+            },
+            {
+              "kind": "Content",
+              "text": "<"
+            },
+            {
+              "kind": "Reference",
+              "text": "TreeView",
+              "canonicalReference": "@microsoft/fast-foundation!TreeView:class"
+            },
+            {
+              "kind": "Content",
+              "text": ", any>"
+            }
+          ],
+          "releaseTag": "Public",
+          "name": "TreeViewTemplate",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 6
+          }
         }
       ]
     }

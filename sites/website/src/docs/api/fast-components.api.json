@@ -4753,6 +4753,62 @@
           "implementsTokenRanges": []
         },
         {
+          "kind": "Class",
+          "canonicalReference": "@microsoft/fast-components!FASTTreeItem:class",
+          "docComment": "/**\n * The FAST tree item Custom Element. Implements, {@link @microsoft/fast-foundation#TreeItem} {@link @microsoft/fast-foundation#TreeItemTemplate}\n *\n * @remarks\n *\n * HTML Element: \\<fast-tree-item\\>\n *\n * @public\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "export declare class FASTTreeItem extends "
+            },
+            {
+              "kind": "Reference",
+              "text": "TreeItem",
+              "canonicalReference": "@microsoft/fast-foundation!TreeItem:class"
+            },
+            {
+              "kind": "Content",
+              "text": " "
+            }
+          ],
+          "releaseTag": "Public",
+          "name": "FASTTreeItem",
+          "members": [],
+          "extendsTokenRange": {
+            "startIndex": 1,
+            "endIndex": 3
+          },
+          "implementsTokenRanges": []
+        },
+        {
+          "kind": "Class",
+          "canonicalReference": "@microsoft/fast-components!FASTTreeView:class",
+          "docComment": "/**\n * The FAST tree view Custom Element. Implements, {@link @microsoft/fast-foundation#TreeView} {@link @microsoft/fast-foundation#TreeViewTemplate}\n *\n * @remarks\n *\n * HTML Element: \\<fast-tree-view\\>\n *\n * @public\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "export declare class FASTTreeView extends "
+            },
+            {
+              "kind": "Reference",
+              "text": "TreeView",
+              "canonicalReference": "@microsoft/fast-foundation!TreeView:class"
+            },
+            {
+              "kind": "Content",
+              "text": " "
+            }
+          ],
+          "releaseTag": "Public",
+          "name": "FASTTreeView",
+          "members": [],
+          "extendsTokenRange": {
+            "startIndex": 1,
+            "endIndex": 3
+          },
+          "implementsTokenRanges": []
+        },
+        {
           "kind": "Function",
           "canonicalReference": "@microsoft/fast-components!isDarkMode:function(1)",
           "docComment": "/**\n * Determines if the design-system should be considered in \"dark mode\".\n *\n * @public\n */\n",
