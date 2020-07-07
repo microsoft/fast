@@ -65,9 +65,9 @@ export abstract class MatchMediaBehavior implements Behavior {
     }
 
     /**
-     * The behavior needs to operate on element instances but elements might share a stylesheet and thus a
-     * behavior instance. To circumvent this and ensure proper attachment / detachment per instance, we construct
-     * a listener for each bind invocation and cache the listeners by element reference.
+     * The behavior needs to operate on element instances but elements might share a behavior instance.
+     * To ensure proper attachment / detachment per instance, we construct a listener for
+     * each bind invocation and cache the listeners by element reference.
      */
     private listenerCache = new WeakMap();
 }

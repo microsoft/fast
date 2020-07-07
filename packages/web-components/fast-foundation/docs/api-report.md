@@ -350,7 +350,7 @@ export class MatchMediaStyleSheetBehavior extends MatchMediaBehavior {
 // @public @deprecated
 export function matchMediaStylesheetBehaviorFactory(query: MediaQueryList): (styles: ElementStyles) => MatchMediaStyleSheetBehavior;
 
-// @public (undocumented)
+// @public
 export type MediaQueryListListener = (this: MediaQueryList, ev?: MediaQueryListEvent) => void;
 
 // @public
