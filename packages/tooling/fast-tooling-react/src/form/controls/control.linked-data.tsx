@@ -1,6 +1,6 @@
 import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 import React from "react";
-import { keyCodeEnter } from "@microsoft/fast-web-utilities";
+import { keyCodeEnter, keyCodeTab } from "@microsoft/fast-web-utilities";
 import { getDataFromSchema } from "@microsoft/fast-tooling";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import styles, { LinkedDataControlClassNameContract } from "./control.linked-data.style";
@@ -212,27 +212,71 @@ class LinkedDataControl extends React.Component<
     private handleLinkedDataKeydown = (
         e: React.KeyboardEvent<HTMLInputElement>
     ): void => {
-        if (e.keyCode === keyCodeEnter && e.target === e.currentTarget) {
-            e.preventDefault();
+        if (e.target === e.currentTarget) {
+            // Enter adds linked data if the input value matches a schema lazily or exactly
+            if (e.keyCode === keyCodeEnter) {
+                e.preventDefault();
 
-            this.addLinkedData(e.currentTarget.value);
+                const normalizedValue = e.currentTarget.value.toLowerCase();
 
-            /**
-             * Adding items to the linked data causes the items to
-             * move the input down while the datalist remains in the same location,
-             * to prevent the datalist from overlapping the input
-             * the datalist is dismissed by defocusing and refocusing the input
-             */
-            (e.target as HTMLElement).blur();
-            (e.target as HTMLElement).focus();
+                if (
+                    this.lazyMatchValueWithASingleSchema(normalizedValue) ||
+                    this.matchExactValueWithASingleSchema(e.currentTarget.value)
+                ) {
+                    this.addLinkedData(normalizedValue, e.currentTarget.value);
 
-            this.setState({
-                searchTerm: "",
-            });
+                    /**
+                     * Adding items to the linked data causes the items to
+                     * move the input down while the datalist remains in the same location,
+                     * to prevent the datalist from overlapping the input
+                     * the datalist is dismissed by defocusing and refocusing the input
+                     */
+                    (e.target as HTMLElement).blur();
+                    (e.target as HTMLElement).focus();
+
+                    this.setState({
+                        searchTerm: "",
+                    });
+                }
+                // Tab performs an autocompete if there is a single schema it can match to
+            } else if (e.keyCode === keyCodeTab) {
+                e.preventDefault();
+
+                const normalizedValue = e.currentTarget.value.toLowerCase();
+                const matchedSchema = this.lazyMatchValueWithASingleSchema(
+                    normalizedValue
+                );
+
+                if (typeof matchedSchema === "string") {
+                    this.setState({
+                        searchTerm: this.props.schemaDictionary[matchedSchema].title,
+                    });
+                }
+            }
         }
     };
 
-    private matchValueWithSchema(value: string): string | void {
+    private lazyMatchValueWithASingleSchema(value: string): string | void {
+        const matchingSchemas: string[] = Object.keys(this.props.schemaDictionary).reduce<
+            string[]
+        >((previousValue: string[], currentValue: string): string[] => {
+            if (
+                this.props.schemaDictionary[currentValue].title
+                    .toLowerCase()
+                    .includes(value)
+            ) {
+                return previousValue.concat([currentValue]);
+            }
+
+            return previousValue;
+        }, []);
+
+        if (matchingSchemas.length === 1) {
+            return matchingSchemas[0];
+        }
+    }
+
+    private matchExactValueWithASingleSchema(value: string): string | void {
         return Object.keys(this.props.schemaDictionary).find(
             (schemaDictionaryKey: string) => {
                 return value === this.props.schemaDictionary[schemaDictionaryKey].title;
@@ -244,13 +288,29 @@ class LinkedDataControl extends React.Component<
      * Change handler for editing the search term filter
      */
     private handleSearchTermUpdate = (e: React.ChangeEvent<HTMLInputElement>): void => {
+        const normalizedValue: string = e.target.value.toLowerCase();
+        const hasSingleMatchedValue = this.matchExactValueWithASingleSchema(
+            e.target.value
+        );
+
+        // If an exact match is available, the linked data will be added
+        if (hasSingleMatchedValue) {
+            this.addLinkedData(normalizedValue, e.target.value);
+        }
+
         this.setState({
-            searchTerm: e.target.value,
+            searchTerm: hasSingleMatchedValue ? "" : e.target.value,
         });
     };
 
-    private addLinkedData(value: string): void {
-        const schemaId: string | void = this.matchValueWithSchema(value);
+    private addLinkedData(normalizedValue: string, originalValue: string): void {
+        const matchedNormalizedValue:
+            | string
+            | void = this.lazyMatchValueWithASingleSchema(normalizedValue);
+        const matchedOriginalValue: string | void = this.matchExactValueWithASingleSchema(
+            originalValue
+        );
+        const schemaId: string | void = matchedNormalizedValue || matchedOriginalValue;
 
         if (typeof schemaId !== "undefined") {
             this.props.onChange({

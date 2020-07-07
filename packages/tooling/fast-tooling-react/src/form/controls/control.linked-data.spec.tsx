@@ -166,7 +166,7 @@ describe("LinkedDataControl", () => {
 
         expect(renderedWithOneChild.find("DragItem")).toHaveLength(1);
     });
-    test("should fire a callback to update the data when the value is changed", () => {
+    test("should fire a callback to update the data when the value is an exact match", () => {
         const callback: any = jest.fn();
         const rendered: any = mount(
             <LinkedDataFormControlWithDragAndDrop
@@ -176,10 +176,8 @@ describe("LinkedDataControl", () => {
             />
         );
         const targetValue: any = { value: "omega" };
-        rendered
-            .find("input")
-            .simulate("change", { target: targetValue, currentTarget: targetValue });
-        rendered.find("input").simulate("keydown", { keyCode: keyCodeEnter });
+        const input: any = rendered.find("input");
+        input.simulate("change", { target: targetValue });
 
         expect(callback).toHaveBeenCalled();
         expect(callback.mock.calls[0][0]).toEqual({
