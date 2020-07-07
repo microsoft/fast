@@ -1,5 +1,5 @@
 import { attr, DOM, FASTElement, observable } from "@microsoft/fast-element";
-import { Direction, RtlScrollConverter } from "@microsoft/fast-web-utilities";
+import { Direction } from "@microsoft/fast-web-utilities";
 
 // TODO: the Resize Observer related files are a temporary stopgap measure until
 // Resize Observer types are pulled into TypeScript, which seems imminent
@@ -133,6 +133,12 @@ export class AnchoredRegion extends FASTElement {
         this.updateLayoutForAttributeChange();
     }
 
+    @attr({ attribute: "fixed-placement", mode: "boolean" })
+    public fixedPlacement: boolean = false;
+    private fixedPlacementChanged(): void {
+        this.updateLayoutForAttributeChange();
+    }
+
     @observable
     public regionStyle: string = "";
 
@@ -198,9 +204,6 @@ export class AnchoredRegion extends FASTElement {
     private anchorLeft: number;
     private anchorHeight: number;
     private anchorWidth: number;
-
-    private viewportScrollTop: number;
-    private viewportScrollLeft: number;
 
     /**
      * base offsets between the positioner's base position and the anchor's
@@ -287,9 +290,6 @@ export class AnchoredRegion extends FASTElement {
         this.anchorHeight = 0;
         this.anchorWidth = 0;
 
-        this.viewportScrollTop = 0;
-        this.viewportScrollLeft = 0;
-
         this.verticalPosition = AnchoredRegionVerticalPositionLabel.undefined;
         this.horizontalPosition = AnchoredRegionHorizontalPositionLabel.undefined;
 
@@ -335,8 +335,7 @@ export class AnchoredRegion extends FASTElement {
         );
         this.resizeDetector.observe(this.anchorElement);
         this.resizeDetector.observe(this.region);
-
-        this.viewportElement.addEventListener("scroll", this.handleScroll);
+        // TODO: viewport resize?
 
         this.observersConnected = true;
     };
@@ -359,15 +358,7 @@ export class AnchoredRegion extends FASTElement {
             this.resizeDetector.disconnect();
         }
 
-        this.disconnectViewport(this.viewportElement);
-
         this.observersConnected = false;
-    };
-
-    private disconnectViewport = (viewport: HTMLElement | null): void => {
-        if (viewport !== null) {
-            viewport.removeEventListener("scroll", this.handleScroll);
-        }
     };
 
     /**
@@ -391,7 +382,24 @@ export class AnchoredRegion extends FASTElement {
     /**
      *
      */
-    private isValidCollision = (entry: IntersectionObserverEntry): boolean => {
+    public updateAnchorOffset = (
+        horizontalOffsetDelta: number,
+        verticalOffsetDelta: number
+    ): void => {
+        this.anchorLeft = this.anchorLeft + horizontalOffsetDelta;
+        this.anchorRight = this.anchorRight + horizontalOffsetDelta;
+
+        this.anchorTop = this.anchorTop + verticalOffsetDelta;
+        this.anchorBottom = this.anchorBottom + verticalOffsetDelta;
+
+        this.requestLayoutUpdate();
+    };
+
+    /**
+     *  Confirms that there is a valid relationship between the viewport and the intersection entry
+     *  ie. that the data is useful
+     */
+    private isValidIntersection = (entry: IntersectionObserverEntry): boolean => {
         return (
             entry.rootBounds !== null &&
             this.viewportElement !== null &&
@@ -408,11 +416,6 @@ export class AnchoredRegion extends FASTElement {
             return;
         }
 
-        this.viewportScrollTop = this.viewportElement.scrollTop;
-        this.viewportScrollLeft = RtlScrollConverter.getScrollLeft(
-            this.viewportElement,
-            this.currentDirection
-        );
         let regionRect: DOMRect | ClientRect | null = null;
 
         if (
@@ -422,8 +425,8 @@ export class AnchoredRegion extends FASTElement {
             this.anchorElement !== null
         ) {
             if (
-                !this.isValidCollision(entries[0]) ||
-                !this.isValidCollision(entries[1])
+                !this.isValidIntersection(entries[0]) ||
+                !this.isValidIntersection(entries[1])
             ) {
                 regionRect = this.region.getBoundingClientRect();
                 this.regionDimension = {
@@ -605,13 +608,6 @@ export class AnchoredRegion extends FASTElement {
     };
 
     /**
-     *  Handle scroll events
-     */
-    private handleScroll = (): void => {
-        this.requestLayoutUpdate();
-    };
-
-    /**
      * Request's an animation frame if there are currently no open animation frame requests
      */
     private requestLayoutUpdate = (): void => {
@@ -638,8 +634,6 @@ export class AnchoredRegion extends FASTElement {
             this.reset();
             return;
         }
-
-        this.updateForScrolling();
 
         let desiredVerticalPosition: AnchoredRegionVerticalPositionLabel =
             AnchoredRegionVerticalPositionLabel.undefined;
@@ -780,7 +774,7 @@ export class AnchoredRegion extends FASTElement {
         this.classList.toggle("inset-right", this.horizontalPosition === "insetRight");
 
         this.regionStyle = `
-            position: ${this.noCollisionMode ? "absolute" : "absolute"};
+            position: ${this.fixedPlacement ? "fixed" : "absolute"};
             height: ${this.regionHeight};
             width: ${this.regionWidth};
             top: ${this.regionTop};
@@ -952,33 +946,6 @@ export class AnchoredRegion extends FASTElement {
                         this.baseVerticalOffset + (this.anchorBottom - regionRect.top);
                     break;
             }
-        }
-    };
-
-    /**
-     * Check for scroll changes in viewport and adjust position data
-     */
-    private updateForScrolling = (): void => {
-        if (this.viewportElement === null || isNaN(this.viewportElement.scrollTop)) {
-            return;
-        }
-        const scrollTop: number = this.viewportElement.scrollTop;
-        const scrollLeft: number = RtlScrollConverter.getScrollLeft(
-            this.viewportElement,
-            this.currentDirection
-        );
-
-        if (this.viewportScrollTop !== scrollTop) {
-            const verticalScrollDelta: number = this.viewportScrollTop - scrollTop;
-            this.viewportScrollTop = scrollTop;
-            this.anchorTop = this.anchorTop + verticalScrollDelta;
-            this.anchorBottom = this.anchorBottom + verticalScrollDelta;
-        }
-        if (this.viewportScrollLeft !== scrollLeft) {
-            const horizontalScrollDelta: number = this.viewportScrollLeft - scrollLeft;
-            this.viewportScrollLeft = scrollLeft;
-            this.anchorLeft = this.anchorLeft + horizontalScrollDelta;
-            this.anchorRight = this.anchorRight + horizontalScrollDelta;
         }
     };
 

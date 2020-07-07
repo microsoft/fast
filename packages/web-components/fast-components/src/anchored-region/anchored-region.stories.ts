@@ -3,16 +3,26 @@ import addons from "@storybook/addons";
 import { Direction, RtlScrollConverter } from "@microsoft/fast-web-utilities";
 import { FASTDesignSystemProvider } from "../design-system-provider";
 import AnchoreRegionTemplate from "./fixtures/base.html";
-import { FASTAnchoredRegion } from "./";
+import { FASTAnchoredRegion } from "../anchored-region";
 
 // Prevent tree-shaking
 FASTAnchoredRegion;
 FASTDesignSystemProvider;
 
+let scalingViewportPreviousXValue: number = 250;
+let scalingViewportPreviousYValue: number = 250;
+
 addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
     if (name.toLowerCase().startsWith("anchored-region")) {
         scrollViewports();
         setButtonActions();
+
+        const scalingViewport: HTMLElement | null = document.getElementById(
+            "viewport-scaling"
+        );
+        if (scalingViewport !== null) {
+            scalingViewport.addEventListener("scroll", handleScalingViewportScroll);
+        }
     }
 });
 
@@ -27,6 +37,25 @@ function scrollViewports(): void {
             );
         }
     });
+}
+
+function handleScalingViewportScroll(ev: Event): void {
+    if (ev.target instanceof HTMLElement) {
+        const scroller: HTMLElement = ev.target as HTMLElement;
+
+        const scalingRegion: HTMLElement | null = document.getElementById(
+            "region-scaling"
+        );
+        if (scalingRegion instanceof FASTAnchoredRegion) {
+            (scalingRegion as any).updateAnchorOffset(
+                scalingViewportPreviousXValue - scroller.scrollLeft,
+                scalingViewportPreviousYValue - scroller.scrollTop
+            );
+        }
+
+        scalingViewportPreviousXValue = scroller.scrollLeft;
+        scalingViewportPreviousYValue = scroller.scrollTop;
+    }
 }
 
 function setButtonActions(): void {
