@@ -5,7 +5,7 @@
     <h1>Carousel</h1>
     <h4>Default</h4>
     <div>
-        <fast-carousel>
+        <fast-carousel aria-label="test images">
             <fast-carousel-test-slide even>Slide 1</fast-carousel-test-slide>
             <fast-carousel-test-slide>Slide 2</fast-carousel-test-slide>
             <fast-carousel-test-slide even>Slide 3</fast-carousel-test-slide>
@@ -17,7 +17,7 @@
 
     <h4>Active Id Slide 4, No Autoplay, Width 800px</h4>
     <div>
-    <fast-carousel style="width: 800px;"  autoplay="false" activeid="tab-4">
+    <fast-carousel style="width: 800px;"  autoplay="false" activeid="tab-4" aria-label="test images">
         <fast-carousel-test-slide even>Slide 1</fast-carousel-test-slide>
         <fast-carousel-test-slide>Slide 2</fast-carousel-test-slide>
         <fast-carousel-test-slide even>Slide 3</fast-carousel-test-slide>
@@ -27,19 +27,19 @@
 </fast-carousel>
     </div>
 
-    <h4>Basic (Not Tabbed), Width 700px, Height 300px</h4>
+    <h4>Basic (Not Tabbed), Width 700px, Height 300px, ARIA label tests</h4>
     <div>
-        <fast-carousel style="width: 700px; height: 300px;" tabbed="false">
-            <fast-carousel-test-slide even>Slide 1</fast-carousel-test-slide>
-            <fast-carousel-test-slide>Slide 2</fast-carousel-test-slide>
+        <fast-carousel style="width: 700px; height: 300px;" tabbed="false" aria-label="test images">
+            <fast-carousel-test-slide even aria-labelledby="slide-one-span-aria-test"><span id="slide-one-span-aria-test">Slide 1</span></fast-carousel-test-slide>
+            <fast-carousel-test-slide aria-label="slide two">Slide 2</fast-carousel-test-slide>
             <fast-carousel-test-slide even>Slide 3</fast-carousel-test-slide>
             <fast-carousel-test-slide>Slide 4</fast-carousel-test-slide>
         </fast-carousel>
     </div>
 
-    <h4>Basic (Not Tabbed), No Looping, No Autoplay</h4>
+    <h4 id="labelledby-test">Basic (Not Tabbed), No Looping, No Autoplay</h4>
     <div>
-        <fast-carousel loop="false" tabbed="false" autoplay="false">
+        <fast-carousel loop="false" tabbed="false" autoplay="false" aria-labelledby="labelledby-test">
             <fast-carousel-test-slide even>Slide 1</fast-carousel-test-slide>
             <fast-carousel-test-slide>Slide 2</fast-carousel-test-slide>
             <fast-carousel-test-slide even>Slide 3</fast-carousel-test-slide>
@@ -51,7 +51,7 @@
 
     <h4>Default 10 Slides</h4>
     <div>
-        <fast-carousel>
+        <fast-carousel aria-label="test images">
             <fast-carousel-test-slide even>Slide 1</fast-carousel-test-slide>
             <fast-carousel-test-slide>Slide 2</fast-carousel-test-slide>
             <fast-carousel-test-slide even>Slide 3</fast-carousel-test-slide>
@@ -67,7 +67,7 @@
 
     <h4>Default 20 Slides</h4>
     <div>
-        <fast-carousel>
+        <fast-carousel aria-label="test images">
             <fast-carousel-test-slide even>Slide 1</fast-carousel-test-slide>
             <fast-carousel-test-slide>Slide 2</fast-carousel-test-slide>
             <fast-carousel-test-slide even>Slide 3</fast-carousel-test-slide>
@@ -92,7 +92,7 @@
     </div>
     <h4>Default 40 Slides, No Loop</h4>
     <div>
-        <fast-carousel loop="false">
+        <fast-carousel loop="false" aria-label="test images">
             <fast-carousel-test-slide even>Slide 1</fast-carousel-test-slide>
             <fast-carousel-test-slide>Slide 2</fast-carousel-test-slide>
             <fast-carousel-test-slide even>Slide 3</fast-carousel-test-slide>
