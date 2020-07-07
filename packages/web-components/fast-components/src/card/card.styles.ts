@@ -13,6 +13,5 @@ export const CardStyles = css`
         background: ${neutralLayerCardBehavior.var};
         border-radius: calc(var(--corner-radius) * 1px);
         ${elevation};
-        border: calc(var(--outline-width) * 1px) solid transparent;
     }
 `.withBehaviors(neutralLayerCardBehavior);
