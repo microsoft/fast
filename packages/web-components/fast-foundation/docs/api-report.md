@@ -315,21 +315,7 @@ export const FlipperTemplate: import("@microsoft/fast-element").ViewTemplate<Fli
 export const focusVisible: string;
 
 // @public
-export const forcedColorsStylesheetBehavior: (sheet: ElementStyles) => Readonly<{
-    query: MediaQueryList;
-    cache: WeakMap<(new () => HTMLElement & FASTElement) & {
-        from<TBase extends {
-            new (): HTMLElement;
-            prototype: HTMLElement;
-        }>(BaseType: TBase): new () => InstanceType<TBase> & FASTElement;
-        define<TType extends Function>(Type: TType, nameOrDef?: string | import("@microsoft/fast-element").PartialFASTElementDefinition | undefined): TType;
-        getDefinition<T_1 extends Function>(Type: T_1): import("@microsoft/fast-element").FASTElementDefinition | undefined;
-    }, ((this: MediaQueryList) => void)[] | ((this: MediaQueryList) => void)>;
-    sheet: ElementStyles;
-    constructListener(this: MatchMediaStyleSheetBehavior, source: typeof FASTElement, sheet: ElementStyles): MediaQueryListListener;
-    bind(this: MatchMediaStyleSheetBehavior, source: typeof FASTElement): void;
-    unbind(this: MatchMediaStyleSheetBehavior, source: typeof FASTElement): void;
-}>;
+export const forcedColorsStylesheetBehavior: (styles: ElementStyles) => MatchMediaStyleSheetBehavior;
 
 // @public
 export const hidden = "\n    :host([hidden]) {\n        display: none;\n    }\n";
@@ -341,21 +327,31 @@ export function isDesignSystemConsumer(element: HTMLElement | DesignSystemConsum
 export function isTreeItemElement(el: Element): el is HTMLElement;
 
 // @public
-export function matchMediaStylesheetBehaviorFactory(query: MediaQueryList): (sheet: ElementStyles) => Readonly<{
-    query: MediaQueryList;
-    cache: WeakMap<(new () => HTMLElement & FASTElement) & {
-        from<TBase extends {
-            new (): HTMLElement;
-            prototype: HTMLElement;
-        }>(BaseType: TBase): new () => InstanceType<TBase> & FASTElement;
-        define<TType extends Function>(Type: TType, nameOrDef?: string | import("@microsoft/fast-element").PartialFASTElementDefinition | undefined): TType;
-        getDefinition<T_1 extends Function>(Type: T_1): import("@microsoft/fast-element").FASTElementDefinition | undefined;
-    }, ((this: MediaQueryList) => void)[] | ((this: MediaQueryList) => void)>;
-    sheet: ElementStyles;
-    constructListener(this: MatchMediaStyleSheetBehavior, source: typeof FASTElement, sheet: ElementStyles): MediaQueryListListener;
-    bind(this: MatchMediaStyleSheetBehavior, source: typeof FASTElement): void;
-    unbind(this: MatchMediaStyleSheetBehavior, source: typeof FASTElement): void;
-}>;
+export abstract class MatchMediaBehavior implements Behavior {
+    constructor(query: MediaQueryList);
+    bind(source: typeof FASTElement & HTMLElement): void;
+    protected abstract constructListener(source: typeof FASTElement): MediaQueryListListener;
+    readonly query: MediaQueryList;
+    unbind(source: typeof FASTElement & HTMLElement): void;
+}
+
+// @public
+export class MatchMediaStyleSheetBehavior extends MatchMediaBehavior {
+    constructor(query: MediaQueryList, styles: ElementStyles);
+    // @internal
+    protected constructListener(source: typeof FASTElement): MediaQueryListListener;
+    readonly query: MediaQueryList;
+    readonly styles: ElementStyles;
+    // @internal
+    unbind(source: typeof FASTElement & HTMLElement): void;
+    static with(query: MediaQueryList): (styles: ElementStyles) => MatchMediaStyleSheetBehavior;
+}
+
+// @public @deprecated
+export function matchMediaStylesheetBehaviorFactory(query: MediaQueryList): (styles: ElementStyles) => MatchMediaStyleSheetBehavior;
+
+// @public (undocumented)
+export type MediaQueryListListener = (this: MediaQueryList, ev?: MediaQueryListEvent) => void;
 
 // @public
 export class Menu extends FASTElement {
@@ -816,11 +812,6 @@ export class TreeView extends FASTElement {
 // @public
 export const TreeViewTemplate: import("@microsoft/fast-element").ViewTemplate<TreeView, any>;
 
-
-// Warnings were encountered during analysis:
-//
-// dist/dts/utilities/match-media-stylesheet-behavior.d.ts:48:5 - (ae-forgotten-export) The symbol "MatchMediaStyleSheetBehavior" needs to be exported by the entry point index.d.ts
-// dist/dts/utilities/match-media-stylesheet-behavior.d.ts:48:5 - (ae-forgotten-export) The symbol "MediaQueryListListener" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 
