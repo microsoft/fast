@@ -404,10 +404,20 @@ export class AnchoredRegion extends FASTElement {
      *  Handle collisions
      */
     private handleCollision = (entries: IntersectionObserverEntry[]): void => {
+        if (this.viewportElement === null) {
+            return;
+        }
+
+        this.viewportScrollTop = this.viewportElement.scrollTop;
+        this.viewportScrollLeft = RtlScrollConverter.getScrollLeft(
+            this.viewportElement,
+            this.currentDirection
+        );
+        let regionRect: DOMRect | ClientRect | null = null;
+
         if (
             !this.initialLayoutComplete &&
             entries.length === 2 &&
-            this.viewportElement !== null &&
             this.region !== null &&
             this.anchorElement !== null
         ) {
@@ -415,36 +425,43 @@ export class AnchoredRegion extends FASTElement {
                 !this.isValidCollision(entries[0]) ||
                 !this.isValidCollision(entries[1])
             ) {
-                const regionRect: DOMRect = this.region.getBoundingClientRect();
+                regionRect = this.region.getBoundingClientRect();
+                this.regionDimension = {
+                    height: regionRect.height,
+                    width: regionRect.width,
+                };
+
+                this.viewportRect = this.viewportElement.getBoundingClientRect();
+
                 const anchorRect: DOMRect = this.anchorElement.getBoundingClientRect();
-                const viewportRect: DOMRect = this.viewportElement.getBoundingClientRect();
+                this.anchorTop = anchorRect.top;
+                this.anchorRight = anchorRect.right;
+                this.anchorBottom = anchorRect.bottom;
+                this.anchorLeft = anchorRect.left;
+                this.anchorHeight = anchorRect.height;
+                this.anchorWidth = anchorRect.width;
 
                 this.noCollisionMode = true;
-                return;
-            }
-        }
-
-        let regionRect: DOMRect | ClientRect | null = null;
-        entries.forEach((entry: IntersectionObserverEntry) => {
-            if (entry.target === this.region) {
-                this.handleRegionCollision(entry, entries.length === 1);
-                regionRect = entry.boundingClientRect;
             } else {
-                this.handleAnchorCollision(entry);
+                entries.forEach((entry: IntersectionObserverEntry) => {
+                    if (entry.target === this.region) {
+                        this.handleRegionCollision(entry, entries.length === 1);
+                        regionRect = entry.boundingClientRect;
+                    } else {
+                        this.handleAnchorCollision(entry);
+                    }
+                });
             }
-        });
 
-        if (this.viewportElement !== null) {
-            this.viewportScrollTop = this.viewportElement.scrollTop;
-            this.viewportScrollLeft = RtlScrollConverter.getScrollLeft(
-                this.viewportElement,
-                this.currentDirection
-            );
+            if (
+                entries.length === 2 &&
+                regionRect !== null &&
+                !this.initialLayoutComplete
+            ) {
+                this.updateRegionOffset(regionRect);
+            }
+            this.requestLayoutUpdate();
         }
-        if (entries.length === 2 && regionRect !== null && !this.initialLayoutComplete) {
-            this.updateRegionOffset(regionRect);
-        }
-        this.requestLayoutUpdate();
     };
 
     /**
