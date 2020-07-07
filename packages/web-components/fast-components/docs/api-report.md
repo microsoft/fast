@@ -193,6 +193,12 @@ export const accentForegroundRest: SwatchRecipe;
 export const accentForegroundRestBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
 
 // @public
+export type AnchorAppearance = ButtonAppearance | "hypertext";
+
+// @public
+export type ButtonAppearance = "accent" | "lightweight" | "neutral" | "outline" | "stealth";
+
+// @public
 export function createColorPalette(baseColor: any): string[];
 
 // @public
@@ -205,6 +211,9 @@ export class FASTAccordionItem extends AccordionItem {
 
 // @public
 export class FASTAnchor extends Anchor {
+    appearance: AnchorAppearance;
+    // (undocumented)
+    appearanceChanged(oldValue: AnchorAppearance, newValue: AnchorAppearance): void;
 }
 
 // @public
@@ -213,6 +222,9 @@ export class FASTBadge extends Badge {
 
 // @public
 export class FASTButton extends Button {
+    appearance: ButtonAppearance;
+    // (undocumented)
+    appearanceChanged(oldValue: ButtonAppearance, newValue: ButtonAppearance): void;
 }
 
 // @public
