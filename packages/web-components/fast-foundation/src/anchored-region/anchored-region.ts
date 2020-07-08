@@ -192,8 +192,8 @@ export class AnchoredRegion extends FASTElement {
     private xTransformOrigin: string;
     private yTransformOrigin: string;
 
-    private collisionDetector: IntersectionObserver | null;
-    private resizeDetector: ResizeObserverClassDefinition | null;
+    private collisionDetector: IntersectionObserver | null = null;
+    private resizeDetector: ResizeObserverClassDefinition | null = null;
 
     private viewportRect: ClientRect | DOMRect | null;
     private regionDimension: Dimension;
@@ -227,9 +227,7 @@ export class AnchoredRegion extends FASTElement {
 
     connectedCallback() {
         super.connectedCallback();
-
         this.currentDirection = this.getDirection();
-
         this.connectObservers();
     }
 
@@ -256,7 +254,6 @@ export class AnchoredRegion extends FASTElement {
      * resets the component
      */
     private reset = (): void => {
-        // TODO: don't commpletely reset observers
         this.disconnectObservers();
         this.setInitialState();
         this.connectObservers();
@@ -321,6 +318,7 @@ export class AnchoredRegion extends FASTElement {
             return;
         }
 
+        this.disconnectCollisionDetector();
         this.collisionDetector = new IntersectionObserver(this.handleCollision, {
             root: this.viewportElement,
             rootMargin: "0px",
@@ -330,6 +328,7 @@ export class AnchoredRegion extends FASTElement {
         this.collisionDetector.observe(this.region);
         this.collisionDetector.observe(this.anchorElement);
 
+        this.disconnectResizeDetector();
         this.resizeDetector = new ((window as unknown) as WindowWithResizeObserver).ResizeObserver(
             this.handleResize
         );
@@ -341,14 +340,14 @@ export class AnchoredRegion extends FASTElement {
      * disconnect observers
      */
     private disconnectObservers = (): void => {
-        this.disconnectResizeObserver();
-        this.disconnecIntersectionObserver();
+        this.disconnectResizeDetector();
+        this.disconnectCollisionDetector();
     };
 
     /**
      * disconnect resize observer
      */
-    private disconnectResizeObserver = (): void => {
+    private disconnectResizeDetector = (): void => {
         if (this.resizeDetector === null) {
             return;
         }
@@ -360,7 +359,7 @@ export class AnchoredRegion extends FASTElement {
     /**
      * disconnect intersection observer
      */
-    private disconnecIntersectionObserver = (): void => {
+    private disconnectCollisionDetector = (): void => {
         if (this.collisionDetector === null) {
             return;
         }
@@ -442,7 +441,7 @@ export class AnchoredRegion extends FASTElement {
                 !this.isValidIntersection(entries[1])
             ) {
                 this.noCollisionMode = true;
-                this.disconnecIntersectionObserver();
+                this.disconnectCollisionDetector();
                 regionRect = this.region.getBoundingClientRect();
                 this.regionDimension = {
                     height: regionRect.height,
