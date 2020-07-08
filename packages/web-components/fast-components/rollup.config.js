@@ -1,8 +1,13 @@
-import resolve from "rollup-plugin-node-resolve";
-import typescript from "rollup-plugin-typescript2";
-import { terser } from "rollup-plugin-terser";
-import filesize from "rollup-plugin-filesize";
 import commonJS from "rollup-plugin-commonjs";
+import filesize from "rollup-plugin-filesize";
+import minifyTaggedCSSTemplate from "rollup-plugin-minify-tagged-css-template";
+import resolve from "rollup-plugin-node-resolve";
+import { terser } from "rollup-plugin-terser";
+import transformTaggedTemplate from "rollup-plugin-transform-tagged-template";
+import typescript from "rollup-plugin-typescript2";
+import transformHTMLFragment from "../../../build/transform-html-fragment";
+
+const parserOptions = { sourceType: "module" };
 
 export default [
     {
@@ -12,25 +17,10 @@ export default [
                 file: "dist/fast-components.js",
                 format: "esm",
             },
-        ],
-        plugins: [
-            resolve(),
-            commonJS(),
-            typescript({
-                tsconfigOverride: {
-                    compilerOptions: {
-                        declaration: false,
-                    },
-                },
-            }),
-        ],
-    },
-    {
-        input: "src/index-rollup.ts",
-        output: [
             {
                 file: "dist/fast-components.min.js",
                 format: "esm",
+                plugins: [terser()],
             },
         ],
         plugins: [
@@ -43,8 +33,13 @@ export default [
                     },
                 },
             }),
-            terser(),
-            filesize(),
+            minifyTaggedCSSTemplate({ parserOptions }),
+            transformTaggedTemplate({
+                tagsToProcess: ["html"],
+                transformer: transformHTMLFragment,
+                parserOptions,
+            }),
+            filesize({ showMinifiedSize: false }),
         ],
     },
 ];

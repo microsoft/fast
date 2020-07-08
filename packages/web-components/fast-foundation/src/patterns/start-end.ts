@@ -33,7 +33,7 @@ export const endTemplate = html<StartEnd>`
         <slot
             name="end"
             ${ref("end")}
-            @slotchange=${x => x.handleEndContentChange()}
+            @slotchange="${x => x.handleEndContentChange()}"
         ></slot>
     </span>
 `;
@@ -49,7 +49,7 @@ export const startTemplate = html<StartEnd>`
         <slot
             name="start"
             ${ref("start")}
-            @slotchange=${x => x.handleStartContentChange()}
+            @slotchange="${x => x.handleStartContentChange()}"
         ></slot>
     </span>
 `;

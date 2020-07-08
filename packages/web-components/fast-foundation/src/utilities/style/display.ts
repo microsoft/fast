@@ -31,11 +31,7 @@ export type CSSDisplayPropertyValue =
  * A CSS fragment to set `display: none;` when the host is hidden using the [hidden] attribute.
  * @public
  */
-export const hidden = `
-    :host([hidden]) {
-        display: none;
-    }
-`;
+export const hidden = `:host([hidden]){display:none}`;
 
 /**
  * Applies a CSS display property.
@@ -44,9 +40,5 @@ export const hidden = `
  * @public
  */
 export function display(displayValue: CSSDisplayPropertyValue): string {
-    return `
-        ${hidden} :host {
-            display: ${displayValue};
-        }
-    `;
+    return `${hidden}:host{display:${displayValue}}`;
 }
