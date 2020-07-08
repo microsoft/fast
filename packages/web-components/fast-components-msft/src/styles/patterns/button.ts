@@ -122,7 +122,7 @@ export const AccentButtonStyles = css`
     }
 
     :host(.accent:active) .control:active {
-        background: ${accentFillActiveBehavior.var}${accentFillActiveBehavior.var};
+        background: ${accentFillActiveBehavior.var};
     }
 
     :host(.accent) .control:${focusVisible} {
