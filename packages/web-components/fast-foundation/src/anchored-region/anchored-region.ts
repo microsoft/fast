@@ -151,7 +151,7 @@ export class AnchoredRegion extends FASTElement {
     @observable
     public anchorElement: HTMLElement | null = null;
     private anchorElementChanged(): void {
-        if ((this as any).$fastController.isConnected) {
+        if ((this as any).$fastController.isConnected && this.initialLayoutComplete) {
             this.reset();
         }
     }
@@ -159,7 +159,7 @@ export class AnchoredRegion extends FASTElement {
     @observable
     public viewportElement: HTMLElement | null = null;
     private viewportElementChanged(): void {
-        if ((this as any).$fastController.isConnected) {
+        if ((this as any).$fastController.isConnected && this.initialLayoutComplete) {
             this.reset();
         }
     }
@@ -192,8 +192,8 @@ export class AnchoredRegion extends FASTElement {
     private xTransformOrigin: string;
     private yTransformOrigin: string;
 
-    private collisionDetector: IntersectionObserver;
-    private resizeDetector: ResizeObserverClassDefinition;
+    private collisionDetector: IntersectionObserver | null;
+    private resizeDetector: ResizeObserverClassDefinition | null;
 
     private viewportRect: ClientRect | DOMRect | null;
     private regionDimension: Dimension;
@@ -218,7 +218,6 @@ export class AnchoredRegion extends FASTElement {
 
     private openRequestAnimationFrame: boolean = false;
     private currentDirection: Direction = Direction.ltr;
-    private observersConnected = false;
     private noCollisionMode = false;
 
     constructor() {
@@ -247,7 +246,7 @@ export class AnchoredRegion extends FASTElement {
     /**
      * event thrown when the region's position changes
      */
-    private updateLayoutForAttributeChange() {
+    private updateLayoutForAttributeChange(): void {
         if (this.initialLayoutComplete) {
             this.requestLayoutUpdate();
         }
@@ -256,12 +255,13 @@ export class AnchoredRegion extends FASTElement {
     /**
      * resets the component
      */
-    private reset() {
+    private reset = (): void => {
+        // TODO: don't commpletely reset observers
         this.disconnectObservers();
         this.setInitialState();
         this.connectObservers();
         this.requestLayoutUpdate();
-    }
+    };
 
     /**
      * sets the starting configuration for component internal values
@@ -300,7 +300,7 @@ export class AnchoredRegion extends FASTElement {
     };
 
     /**
-     * connects observers and event handlers
+     * connects observers
      */
     private connectObservers = (): void => {
         if (this.viewportElement === null) {
@@ -335,30 +335,38 @@ export class AnchoredRegion extends FASTElement {
         );
         this.resizeDetector.observe(this.anchorElement);
         this.resizeDetector.observe(this.region);
-        // TODO: viewport resize?
-
-        this.observersConnected = true;
     };
 
     /**
-     * disconnect observers and event handlers
+     * disconnect observers
      */
     private disconnectObservers = (): void => {
-        if (!this.observersConnected) {
+        this.disconnectResizeObserver();
+        this.disconnecIntersectionObserver();
+    };
+
+    /**
+     * disconnect resize observer
+     */
+    private disconnectResizeObserver = (): void => {
+        if (this.resizeDetector === null) {
             return;
         }
 
-        // ensure the collisionDetector exists before disconnecting
-        if (this.collisionDetector) {
-            this.collisionDetector.disconnect();
+        this.resizeDetector.disconnect();
+        this.resizeDetector = null;
+    };
+
+    /**
+     * disconnect intersection observer
+     */
+    private disconnecIntersectionObserver = (): void => {
+        if (this.collisionDetector === null) {
+            return;
         }
 
-        // ensure the resizeDetector exists before disconnecting
-        if (this.resizeDetector) {
-            this.resizeDetector.disconnect();
-        }
-
-        this.observersConnected = false;
+        this.collisionDetector.disconnect();
+        this.collisionDetector = null;
     };
 
     /**
@@ -380,7 +388,9 @@ export class AnchoredRegion extends FASTElement {
     };
 
     /**
-     *
+     * Public function to enable authors to update the layout based on changes in anchor offset
+     * allows "fill" regions to scale as parent viewports scroll, or to provoke positioning to change
+     * without a collision with the viewport
      */
     public updateAnchorOffset = (
         horizontalOffsetDelta: number,
@@ -412,22 +422,27 @@ export class AnchoredRegion extends FASTElement {
      *  Handle collisions
      */
     private handleCollision = (entries: IntersectionObserverEntry[]): void => {
-        if (this.viewportElement === null) {
+        if (
+            this.viewportElement === null ||
+            this.region === null ||
+            this.anchorElement === null
+        ) {
             return;
         }
 
         let regionRect: DOMRect | ClientRect | null = null;
 
-        if (
-            !this.initialLayoutComplete &&
-            entries.length === 2 &&
-            this.region !== null &&
-            this.anchorElement !== null
-        ) {
+        if (!this.initialLayoutComplete) {
+            if (entries.length !== 2) {
+                return;
+            }
+
             if (
                 !this.isValidIntersection(entries[0]) ||
                 !this.isValidIntersection(entries[1])
             ) {
+                this.noCollisionMode = true;
+                this.disconnecIntersectionObserver();
                 regionRect = this.region.getBoundingClientRect();
                 this.regionDimension = {
                     height: regionRect.height,
@@ -443,28 +458,39 @@ export class AnchoredRegion extends FASTElement {
                 this.anchorLeft = anchorRect.left;
                 this.anchorHeight = anchorRect.height;
                 this.anchorWidth = anchorRect.width;
-
-                this.noCollisionMode = true;
             } else {
-                entries.forEach((entry: IntersectionObserverEntry) => {
-                    if (entry.target === this.region) {
-                        this.handleRegionCollision(entry, entries.length === 1);
-                        regionRect = entry.boundingClientRect;
-                    } else {
-                        this.handleAnchorCollision(entry);
-                    }
-                });
+                regionRect = this.applyCollisionEntries(entries);
             }
 
-            if (
-                entries.length === 2 &&
-                regionRect !== null &&
-                !this.initialLayoutComplete
-            ) {
+            if (regionRect !== null) {
                 this.updateRegionOffset(regionRect);
             }
+
             this.requestLayoutUpdate();
+        } else {
+            if (!this.noCollisionMode) {
+                this.applyCollisionEntries(entries);
+                this.requestLayoutUpdate();
+            }
         }
+    };
+
+    /**
+     *  iterate through intersection entries and apply data
+     */
+    private applyCollisionEntries = (
+        entries: IntersectionObserverEntry[]
+    ): DOMRect | ClientRect | null => {
+        let regionRect: DOMRect | ClientRect | null = null;
+        entries.forEach((entry: IntersectionObserverEntry) => {
+            if (entry.target === this.region) {
+                this.handleRegionCollision(entry, entries.length === 1);
+                regionRect = entry.boundingClientRect;
+            } else {
+                this.handleAnchorCollision(entry);
+            }
+        });
+        return regionRect;
     };
 
     /**
