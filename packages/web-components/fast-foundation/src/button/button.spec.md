@@ -53,9 +53,11 @@ All "anchor" components will support all methods and attributes of the [anchor](
 #### Button
 ```html
 <host>
-  <slot name="start"></slot>
-  <slot></slot>
-  <slot name="end"></slot>
+  <button> <!-- focus defered to this element -->
+    <slot name="start"></slot>
+    <slot></slot>
+    <slot name="end"></slot>
+  </button>
 </host>
 ```
 #### Anchor
@@ -75,6 +77,4 @@ All "anchor" components will support all methods and attributes of the [anchor](
   - end: the content to place at the end of the the primary content
 
 ### Accessibility
-Button elements will appear utilize the button role and will behave as the native `button` element.
-
-Anchor elements will function slightly differently to preserve some of the native capabilities that come from anchors like opening anchors in new tabs, opening anchors in new tabs without navigating to them, and the augmented command menu that gets opened when right+clicking an anchor. They will create an *internal* anchor element to which attributes will get reflected. Focus will also be defered to this internal element.
+Both components create *internal* native elements to which attributes will get reflected. Focus will also be deferred to these internal elements.
