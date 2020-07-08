@@ -176,7 +176,7 @@ export class Tabs extends FASTElement {
                 typeof tabpanelId !== "string" ? `panel-${index + 1}` : tabpanelId
             );
             tabpanel.setAttribute(
-                "aria-labeledby",
+                "aria-labelledby",
                 typeof tabId !== "string" ? `tab-${index + 1}` : tabId
             );
             this.activeTabIndex !== index
