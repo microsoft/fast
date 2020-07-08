@@ -16,9 +16,9 @@ export const TreeItemTemplate = html<TreeItem>`
         aria-expanded="${x => (x.expanded ? x.expanded : void 0)}"
         aria-selected="${x => x.selected}"
         aria-disabled="${x => x.disabled}"
-        @focus=${(x, c) => x.handleFocus(c.event as FocusEvent)}
-        @blur=${(x, c) => x.handleBlur(c.event as FocusEvent)}
-        @keydown=${(x, c) => x.handleKeyDown(c.event as KeyboardEvent)}
+        @focus="${(x, c) => x.handleFocus(c.event as FocusEvent)}"
+        @blur="${(x, c) => x.handleBlur(c.event as FocusEvent)}"
+        @keydown="${(x, c) => x.handleKeyDown(c.event as KeyboardEvent)}"
         ${children({ property: "childItems", filter: elements("[slot='item']") })}
     >
         <div
