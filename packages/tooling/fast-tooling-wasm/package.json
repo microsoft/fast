@@ -18,8 +18,7 @@
   "scripts": {
     "build": "yarn build:permutator",
     "build:permutator": "cd permutator && emcc wasm.c -Os -s WASM=1 -s EXPORTED_FUNCTIONS='[\"_permutate\"]' -s EXTRA_EXPORTED_RUNTIME_METHODS='[\"cwrap\"]' -o permutator.js",
-    "start": "webpack-dev-server",
-    "test": "yarn build"
+    "start": "webpack-dev-server"
   },
   "devDependencies": {
     "copy-webpack-plugin": "^6.0.3",
