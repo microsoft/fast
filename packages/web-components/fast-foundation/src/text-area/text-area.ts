@@ -1,5 +1,9 @@
 import { attr, nullableNumberConverter, observable } from "@microsoft/fast-element";
 import { FormAssociated } from "../form-associated/index";
+import { DelegatesFocus } from "../patterns/index";
+import { applyMixins } from "../utilities";
+
+export interface TextArea extends DelegatesFocus {}
 
 /**
  * Text area appearances
@@ -246,3 +250,13 @@ export class TextArea extends FormAssociated<HTMLTextAreaElement> {
         this.$emit("change", this.textarea.value);
     };
 }
+
+/**
+ * Mark internal because exporting class and interface of the same name
+ * confuses API documenter.
+ * TODO: https://github.com/microsoft/fast/issues/3317
+ * @internal
+ */
+/* eslint-disable-next-line */
+export interface TextArea extends DelegatesFocus {}
+applyMixins(TextArea, DelegatesFocus);

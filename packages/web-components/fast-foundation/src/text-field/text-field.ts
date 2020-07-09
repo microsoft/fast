@@ -1,7 +1,9 @@
 import { attr, nullableNumberConverter, observable } from "@microsoft/fast-element";
 import { FormAssociated } from "../form-associated/index";
-import { StartEnd } from "../patterns/start-end";
+import { DelegatesFocus, StartEnd } from "../patterns/index";
 import { applyMixins } from "../utilities/index";
+
+export interface TextField extends DelegatesFocus {}
 
 /**
  * Text field appearances
@@ -261,5 +263,5 @@ export class TextField extends FormAssociated<HTMLInputElement> {
  * @internal
  */
 /* eslint-disable-next-line */
-export interface TextField extends StartEnd {}
-applyMixins(TextField, StartEnd);
+export interface TextField extends StartEnd, DelegatesFocus {}
+applyMixins(TextField, StartEnd, DelegatesFocus);

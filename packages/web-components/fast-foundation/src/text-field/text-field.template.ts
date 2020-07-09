@@ -1,5 +1,5 @@
 import { html, ref, slotted } from "@microsoft/fast-element";
-import { endTemplate, startTemplate } from "../patterns/start-end";
+import { endTemplate, startTemplate } from "../patterns";
 import { TextField } from "./text-field";
 
 /**
@@ -38,6 +38,25 @@ export const TextFieldTemplate = html<TextField>`
                 ?readonly="${x => x.readOnly}"
                 value="${x => x.value}"
                 type="${x => x.type}"
+                ariaAtomic="${x => x.ariaAtomic}"
+                ariaBusy="${x => x.ariaBusy}"
+                ariaControls="${x => x.ariaControls}"
+                ariaCurrent="${x => x.ariaCurrent}"
+                ariaDescribedBy="${x => x.ariaDescribedby}"
+                ariaDetails="${x => x.ariaDetails}"
+                ariaDisabled="${x => x.ariaDisabled}"
+                ariaErrormessage="${x => x.ariaErrormessage}"
+                ariaFlowto="${x => x.ariaDisabled}"
+                ariaHaspopup="${x => x.ariaHaspopup}"
+                ariaHidden="${x => x.ariaHidden}"
+                ariaInvalid="${x => x.ariaInvalid}"
+                ariaKeyshortcuts="${x => x.ariaKeyshortcuts}"
+                ariaLabel="${x => x.ariaLabel}"
+                ariaLabelledby="${x => x.ariaLabelledby}"
+                ariaLive="${x => x.ariaLive}"
+                ariaOwns="${x => x.ariaOwns}"
+                ariaRelevant="${x => x.ariaRelevant}"
+                ariaRoledescription="${x => x.ariaRoledescription}"
                 ${ref("control")}
             />
             ${endTemplate}
