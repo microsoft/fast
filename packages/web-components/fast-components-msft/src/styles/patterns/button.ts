@@ -21,7 +21,7 @@ import {
     neutralOutlineActiveBehavior,
     neutralOutlineHoverBehavior,
     neutralOutlineRestBehavior,
-} from "../index";
+} from "../behaviors";
 
 /**
  * @internal
@@ -88,10 +88,9 @@ export const BaseButtonStyles = css`
     .start,
     .end,
     ::slotted(svg) {
-        ${
-            /* Glyph size and margin-left is temporary - 
-            replace when adaptive typography is figured out */ ""
-        } width: 16px;
+        /* Glyph size and margin-left is temporary -
+        replace when adaptive typography is figured out */
+        width: 16px;
         height: 16px;
     }
 
@@ -123,7 +122,7 @@ export const AccentButtonStyles = css`
     }
 
     :host(.accent:active) .control:active {
-        background: ${accentFillActiveBehavior.var}${accentFillActiveBehavior.var};
+        background: ${accentFillActiveBehavior.var};
     }
 
     :host(.accent) .control:${focusVisible} {

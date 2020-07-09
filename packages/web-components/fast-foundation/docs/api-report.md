@@ -310,7 +310,7 @@ export const focusVisible: string;
 export const forcedColorsStylesheetBehavior: (styles: ElementStyles) => MatchMediaStyleSheetBehavior;
 
 // @public
-export const hidden = "\n    :host([hidden]) {\n        display: none;\n    }\n";
+export const hidden = ":host([hidden]){display:none}";
 
 // @public
 export function isDesignSystemConsumer(element: HTMLElement | DesignSystemConsumer): element is DesignSystemConsumer;

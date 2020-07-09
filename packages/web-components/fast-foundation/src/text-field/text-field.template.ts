@@ -31,13 +31,13 @@ export const TextFieldTemplate = html<TextField>`
                 class="control"
                 part="control"
                 id="control"
-                @input=${x => x.handleTextInput()}
-                placeholder=${x => x.placeholder}
-                ?required=${x => x.required}
-                ?disabled=${x => x.disabled}
-                ?readonly=${x => x.readOnly}
-                value=${x => x.value}
-                type=${x => x.type}
+                @input="${x => x.handleTextInput()}"
+                placeholder="${x => x.placeholder}"
+                ?required="${x => x.required}"
+                ?disabled="${x => x.disabled}"
+                ?readonly="${x => x.readOnly}"
+                value="${x => x.value}"
+                type="${x => x.type}"
                 ${ref("control")}
             />
             ${endTemplate}

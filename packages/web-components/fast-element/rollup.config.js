@@ -1,6 +1,7 @@
-import typescript from "rollup-plugin-typescript2";
-import { terser } from "rollup-plugin-terser";
 import filesize from "rollup-plugin-filesize";
+import minifyTaggedCSSTemplate from "rollup-plugin-minify-tagged-css-template";
+import { terser } from "rollup-plugin-terser";
+import typescript from "rollup-plugin-typescript2";
 
 export default [
     {
@@ -10,23 +11,10 @@ export default [
                 file: "dist/fast-element.js",
                 format: "esm",
             },
-        ],
-        plugins: [
-            typescript({
-                tsconfigOverride: {
-                    compilerOptions: {
-                        declaration: false,
-                    },
-                },
-            }),
-        ],
-    },
-    {
-        input: "src/index.ts",
-        output: [
             {
                 file: "dist/fast-element.min.js",
                 format: "esm",
+                plugins: [terser()],
             },
         ],
         plugins: [
@@ -37,8 +25,14 @@ export default [
                     },
                 },
             }),
-            terser(),
-            filesize(),
+            minifyTaggedCSSTemplate({
+                parserOptions: {
+                    sourceType: "module",
+                },
+            }),
+            filesize({
+                showMinifiedSize: false,
+            }),
         ],
     },
 ];

@@ -12,10 +12,14 @@ export const TextAreaTemplate = html<TextArea>`
             ${x => (x.readOnly ? "readonly" : "")}
             ${x => (x.resize !== TextAreaResize.none ? `resize-${x.resize}` : "")}"
     >
-        <label part="label" for="control" class="${x =>
-            x.defaultSlottedNodes && x.defaultSlottedNodes.length
-                ? "label"
-                : "label label__hidden"}">
+        <label
+            part="label"
+            for="control"
+            class="${x =>
+                x.defaultSlottedNodes && x.defaultSlottedNodes.length
+                    ? "label"
+                    : "label label__hidden"}"
+        >
             <slot ${slotted("defaultSlottedNodes")}></slot>
         </label>
         <textarea
@@ -36,7 +40,7 @@ export const TextAreaTemplate = html<TextArea>`
             rows="${x => x.rows}"
             ?spellcheck="${x => x.spellcheck}"
             value="${x => x.value}"
-            @input=${x => x.handleTextInput()}"
+            @input="${x => x.handleTextInput()}"
             ${ref("textarea")}
         ></textarea>
     </template>

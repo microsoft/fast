@@ -164,109 +164,109 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
 
     @designSystemProperty({
         attribute: "type-ramp-minus-2-font-size",
-        default: "10px",
+        default: fastDesignSystemDefaults.typeRampMinus2FontSize,
     })
     public typeRampMinus2FontSize: string;
 
     @designSystemProperty({
         attribute: "type-ramp-minus-2-line-height",
-        default: "16px",
+        default: fastDesignSystemDefaults.typeRampMinus2LineHeight,
     })
     public typeRampMinus2LineHeight: string;
 
     @designSystemProperty({
         attribute: "type-ramp-minus-1-font-size",
-        default: "12px",
+        default: fastDesignSystemDefaults.typeRampMinus1FontSize,
     })
     public typeRampMinus1FontSize: string;
 
     @designSystemProperty({
         attribute: "type-ramp-minus-1-line-height",
-        default: "16px",
+        default: fastDesignSystemDefaults.typeRampMinus1LineHeight,
     })
     public typeRampMinus1LineHeight: string;
 
     @designSystemProperty({
         attribute: "type-ramp-base-font-size",
-        default: "14px",
+        default: fastDesignSystemDefaults.typeRampBaseFontSize,
     })
     public typeRampBaseFontSize: string;
 
     @designSystemProperty({
         attribute: "type-ramp-base-line-height",
-        default: "20px",
+        default: fastDesignSystemDefaults.typeRampBaseLineHeight,
     })
     public typeRampBaseLineHeight: string;
 
     @designSystemProperty({
         attribute: "type-ramp-plus-1-font-size",
-        default: "16px",
+        default: fastDesignSystemDefaults.typeRampPlus1FontSize,
     })
     public typeRampPlus1FontSize: string;
 
     @designSystemProperty({
         attribute: "type-ramp-plus-1-line-height",
-        default: "24px",
+        default: fastDesignSystemDefaults.typeRampPlus1LineHeight,
     })
     public typeRampPlus1LineHeight: string;
 
     @designSystemProperty({
         attribute: "type-ramp-plus-2-font-size",
-        default: "20px",
+        default: fastDesignSystemDefaults.typeRampPlus2FontSize,
     })
     public typeRampPlus2FontSize: string;
 
     @designSystemProperty({
         attribute: "type-ramp-plus-2-line-height",
-        default: "28px",
+        default: fastDesignSystemDefaults.typeRampPlus2LineHeight,
     })
     public typeRampPlus2LineHeight: string;
 
     @designSystemProperty({
         attribute: "type-ramp-plus-3-font-size",
-        default: "28px",
+        default: fastDesignSystemDefaults.typeRampPlus3FontSize,
     })
     public typeRampPlus3FontSize: string;
 
     @designSystemProperty({
         attribute: "type-ramp-plus-3-line-height",
-        default: "36px",
+        default: fastDesignSystemDefaults.typeRampPlus3LineHeight,
     })
     public typeRampPlus3LineHeight: string;
 
     @designSystemProperty({
         attribute: "type-ramp-plus-4-font-size",
-        default: "34px",
+        default: fastDesignSystemDefaults.typeRampPlus4FontSize,
     })
     public typeRampPlus4FontSize: string;
 
     @designSystemProperty({
         attribute: "type-ramp-plus-4-line-height",
-        default: "44px",
+        default: fastDesignSystemDefaults.typeRampPlus4LineHeight,
     })
     public typeRampPlus4LineHeight: string;
 
     @designSystemProperty({
         attribute: "type-ramp-plus-5-font-size",
-        default: "46px",
+        default: fastDesignSystemDefaults.typeRampPlus5FontSize,
     })
     public typeRampPlus5FontSize: string;
 
     @designSystemProperty({
         attribute: "type-ramp-plus-5-line-height",
-        default: "56px",
+        default: fastDesignSystemDefaults.typeRampPlus5LineHeight,
     })
     public typeRampPlus5LineHeight: string;
 
     @designSystemProperty({
         attribute: "type-ramp-plus-6-font-size",
-        default: "60px",
+        default: fastDesignSystemDefaults.typeRampPlus6FontSize,
     })
     public typeRampPlus6FontSize: string;
 
     @designSystemProperty({
         attribute: "type-ramp-plus-6-line-height",
-        default: "72px",
+        default: fastDesignSystemDefaults.typeRampPlus6LineHeight,
     })
     public typeRampPlus6LineHeight: string;
 
