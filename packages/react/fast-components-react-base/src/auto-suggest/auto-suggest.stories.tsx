@@ -131,4 +131,22 @@ storiesOf("AutoSuggest", module)
                 Turtle
             </ListboxItem>
         </AutoSuggest>
+    ))
+    .add("Menu open", () => (
+        <AutoSuggest
+            {...favoriteAnimalProps}
+            onValueChange={action("onValueChange")}
+            onInvoked={action("onInvoked")}
+            isMenuOpen={true}
+        >
+            <ListboxItem id={uniqueId()} value="Cat">
+                Cat
+            </ListboxItem>
+            <ListboxItem id={uniqueId()} value="Dog">
+                Dog
+            </ListboxItem>
+            <ListboxItem id={uniqueId()} value="Turtle">
+                Turtle
+            </ListboxItem>
+        </AutoSuggest>
     ));
