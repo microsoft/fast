@@ -7,6 +7,7 @@ import { Flipper, FlipperDirection } from "./flipper";
  */
 export const FlipperTemplate = html<Flipper>`
     <template
+        role="button"
         aria-disabled="${x => (x.disabled ? true : void 0)}"
         tabindex="${x => (x.hiddenFromAT ? -1 : 0)}"
         class="${x => x.direction} ${x => (x.disabled ? "disabled" : "")}"

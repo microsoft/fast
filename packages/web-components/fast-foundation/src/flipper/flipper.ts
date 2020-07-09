@@ -33,13 +33,8 @@ export class Flipper extends FASTElement {
      * @remarks
      * HTML Attribute: aria-hidden
      */
-    @attr({ attribute: "aria-hidden", mode: "fromView", converter: booleanConverter })
+    @attr({ attribute: "aria-hidden", converter: booleanConverter })
     public hiddenFromAT: boolean = true;
-    private hiddenFromATChanged(): void {
-        if (!this.hiddenFromAT) {
-            this.setAttribute("role", "button");
-        }
-    }
 
     /**
      * The direction that the flipper implies navigating.
