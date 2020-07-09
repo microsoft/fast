@@ -30,10 +30,10 @@ export const communityContentPlacementData: CommunityContentPlacementData[] = [
     },
     {
         actionLink: "https://github.com/microsoft/fast",
-        actionText: "Get Started on Github",
+        actionText: "Get Started on GitHub",
         body:
-            "Explore the FAST repository on Github and try out our components, utilities, and tools. Or, mix-and-match with your own solutions.",
-        header: "Github",
+            "Explore the FAST repository on GitHub and try out our components, utilities, and tools. Or, mix-and-match with your own solutions.",
+        header: "GitHub",
         icon: GithubIcon,
     },
     {
