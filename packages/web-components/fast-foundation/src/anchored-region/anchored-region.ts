@@ -211,11 +211,6 @@ export class AnchoredRegion extends FASTElement {
     private baseHorizontalOffset: number;
     private baseVerticalOffset: number;
 
-    /**
-     * reference to the actual anchored container
-     */
-    public region: HTMLDivElement | null;
-
     private openRequestAnimationFrame: boolean = false;
     private currentDirection: Direction = Direction.ltr;
     private noCollisionMode = false;
@@ -234,7 +229,6 @@ export class AnchoredRegion extends FASTElement {
     public disconnectedCallback(): void {
         super.disconnectedCallback();
         this.disconnectObservers();
-        this.region = null;
     }
 
     public adoptedCallback() {
@@ -293,7 +287,7 @@ export class AnchoredRegion extends FASTElement {
         this.baseHorizontalOffset = 0;
         this.baseVerticalOffset = 0;
 
-        this.regionStyle = "{position: absolute}";
+        this.regionStyle = "{position: absolute;}";
     };
 
     /**
@@ -311,8 +305,7 @@ export class AnchoredRegion extends FASTElement {
         if (
             this.anchorElement === null ||
             this.viewportElement === null ||
-            this.region === null ||
-            this.region.offsetParent === null ||
+            this.offsetParent === null ||
             !this.viewportElement.contains(this.anchorElement)
         ) {
             return;
@@ -325,7 +318,7 @@ export class AnchoredRegion extends FASTElement {
             threshold: [0, 1],
         });
 
-        this.collisionDetector.observe(this.region);
+        this.collisionDetector.observe(this);
         this.collisionDetector.observe(this.anchorElement);
 
         this.disconnectResizeDetector();
@@ -333,7 +326,7 @@ export class AnchoredRegion extends FASTElement {
             this.handleResize
         );
         this.resizeDetector.observe(this.anchorElement);
-        this.resizeDetector.observe(this.region);
+        this.resizeDetector.observe(this);
     };
 
     /**
@@ -421,11 +414,7 @@ export class AnchoredRegion extends FASTElement {
      *  Handle collisions
      */
     private handleCollision = (entries: IntersectionObserverEntry[]): void => {
-        if (
-            this.viewportElement === null ||
-            this.region === null ||
-            this.anchorElement === null
-        ) {
+        if (this.viewportElement === null || this.anchorElement === null) {
             return;
         }
 
@@ -442,7 +431,7 @@ export class AnchoredRegion extends FASTElement {
             ) {
                 this.noCollisionMode = true;
                 this.disconnectCollisionDetector();
-                regionRect = this.region.getBoundingClientRect();
+                regionRect = this.getBoundingClientRect();
                 this.regionDimension = {
                     height: regionRect.height,
                     width: regionRect.width,
@@ -482,7 +471,7 @@ export class AnchoredRegion extends FASTElement {
     ): DOMRect | ClientRect | null => {
         let regionRect: DOMRect | ClientRect | null = null;
         entries.forEach((entry: IntersectionObserverEntry) => {
-            if (entry.target === this.region) {
+            if (entry.target === this) {
                 this.handleRegionCollision(entry, entries.length === 1);
                 regionRect = entry.boundingClientRect;
             } else {
@@ -571,7 +560,7 @@ export class AnchoredRegion extends FASTElement {
      */
     private handleResize = (entries: ResizeObserverEntry[]): void => {
         entries.forEach((entry: ResizeObserverEntry) => {
-            if (entry.target === this.region) {
+            if (entry.target === this) {
                 this.handleRegionResize(entry);
             } else {
                 this.handleAnchorResize(entry);
@@ -818,6 +807,10 @@ export class AnchoredRegion extends FASTElement {
         desiredHorizontalPosition: AnchoredRegionHorizontalPositionLabel,
         nextPositionerDimension: Dimension
     ): void => {
+        if (this.offsetParent === null) {
+            return;
+        }
+
         let right: number | null = null;
         let left: number | null = null;
         let xTransformOrigin: string = Location.left;
@@ -825,12 +818,15 @@ export class AnchoredRegion extends FASTElement {
         switch (desiredHorizontalPosition) {
             case AnchoredRegionHorizontalPositionLabel.left:
                 xTransformOrigin = Location.right;
-                right = -this.baseHorizontalOffset;
+                right = this.offsetParent.clientWidth - this.baseHorizontalOffset;
                 break;
 
             case AnchoredRegionHorizontalPositionLabel.insetLeft:
                 xTransformOrigin = Location.right;
-                right = -this.anchorWidth - this.baseHorizontalOffset;
+                right =
+                    this.offsetParent.clientWidth -
+                    this.anchorWidth -
+                    this.baseHorizontalOffset;
                 break;
 
             case AnchoredRegionHorizontalPositionLabel.insetRight:
@@ -871,6 +867,10 @@ export class AnchoredRegion extends FASTElement {
         desiredVerticalPosition: AnchoredRegionVerticalPositionLabel,
         nextPositionerDimension: Dimension
     ): void => {
+        if (this.offsetParent === null) {
+            return;
+        }
+
         let top: number | null = null;
         let bottom: number | null = null;
         let yTransformOrigin: string = Location.top;
@@ -878,12 +878,12 @@ export class AnchoredRegion extends FASTElement {
         switch (desiredVerticalPosition) {
             case AnchoredRegionVerticalPositionLabel.top:
                 yTransformOrigin = Location.bottom;
-                bottom = this.anchorHeight - this.baseVerticalOffset;
+                bottom = this.offsetParent.clientHeight;
                 break;
 
             case AnchoredRegionVerticalPositionLabel.insetTop:
                 yTransformOrigin = Location.bottom;
-                bottom = -this.baseVerticalOffset;
+                bottom = -this.offsetParent.clientHeight - this.baseVerticalOffset;
                 break;
 
             case AnchoredRegionVerticalPositionLabel.insetBottom:
@@ -948,11 +948,11 @@ export class AnchoredRegion extends FASTElement {
         }
 
         if (this.verticalPositioningMode === "uncontrolled") {
-            this.baseVerticalOffset = this.anchorBottom - regionRect.top;
+            this.baseVerticalOffset = this.anchorTop - regionRect.top;
         } else {
             switch (this.verticalPosition) {
                 case AnchoredRegionVerticalPositionLabel.undefined:
-                    this.baseVerticalOffset = this.anchorBottom - regionRect.top;
+                    this.baseVerticalOffset = this.anchorTop - regionRect.top;
                     break;
                 case AnchoredRegionVerticalPositionLabel.top:
                     this.baseVerticalOffset =

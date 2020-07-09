@@ -27,16 +27,16 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
 });
 
 function scrollViewports(): void {
-    document.querySelectorAll("div[id^='viewport']").forEach(el => {
-        if (el instanceof HTMLDivElement) {
-            el.scrollTop = 280;
-            RtlScrollConverter.setScrollLeft(
-                el,
-                el.dir === Direction.rtl ? -250 : 250,
-                el.dir === Direction.rtl ? Direction.rtl : Direction.ltr
-            );
-        }
-    });
+    // document.querySelectorAll("div[id^='viewport']").forEach(el => {
+    //     if (el instanceof HTMLDivElement) {
+    //         el.scrollTop = 280;
+    //         RtlScrollConverter.setScrollLeft(
+    //             el,
+    //             el.dir === Direction.rtl ? -250 : 250,
+    //             el.dir === Direction.rtl ? Direction.rtl : Direction.ltr
+    //         );
+    //     }
+    // });
 }
 
 function handleScalingViewportScroll(ev: Event): void {

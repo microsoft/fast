@@ -1,7 +1,8 @@
 <fast-design-system-provider id="pageroot"
-    style="height:100%; overflow: hidden; display: flex; flex-direction: column;">
+    style="height:100%;">
+    <!-- style="height:100%; overflow: hidden; display: flex; flex-direction: column;"> -->
 
-    <fast-anchored-region anchor="anchor-fixed" viewport="pageroot" vertical-positioning-mode="dynamic"
+    <!-- <fast-anchored-region anchor="anchor-fixed" viewport="pageroot" vertical-positioning-mode="dynamic"
         vertical-scaling="anchor" vertical-inset="true" horizontal-positioning-mode="locktodefault"
         horizontal-default-position="right" horizontal-scaling="anchor" style="z-index: 11;">
         <div style="height:100%; width: 100%; background: blue">
@@ -22,41 +23,45 @@
                 inside
             </div>
         </fast-anchored-region>
-    </div>
+    </div> -->
 
-    <div style="margin-top: 80px; overflow: auto; height: 100%;">
+    <!-- <div style="margin-top: 80px; overflow: auto; height: 100%;">
         <h4>Dynamic - default</h4>
         <div id="viewport-default"
             style="position: relative; height:400px; width: 400px; background: lightgray; overflow: scroll;">
             <div style="height:1000px; width: 1000px;">
-                <fast-anchored-region anchor="anchor-default" viewport="viewport-default"
-                    vertical-positioning-mode="dynamic" horizontal-positioning-mode="dynamic">
-                    <div style="height:100px; width: 100px; background: yellow">
-                    </div>
-                </fast-anchored-region>
                 <button id="anchor-default" style="margin-left: 500px; margin-top: 500px;">
                     anchor
                 </button>
+                <fast-anchored-region 
+                    anchor="anchor-default" 
+                    viewport="viewport-default"
+                    vertical-positioning-mode="dynamic" 
+                    horizontal-positioning-mode="dynamic"
+                >
+                    <div style="height:100px; width: 100px; background: yellow">
+                    </div>
+                </fast-anchored-region>
             </div>
-        </div>
+        </div> -->
 
         <h4>Lock to default</h4>
         <div id="viewport-locked"
             style="position: relative; height:400px; width: 400px; background: lightgray; overflow: scroll;">
+            <fast-anchored-region anchor="anchor-locked" viewport="viewport-locked"
+            vertical-positioning-mode="locktodefault" vertical-default-position="bottom"
+            horizontal-positioning-mode="locktodefault" horizontal-default-position="right">
+            <div style="height:100px; width: 100px; background: yellow">
+            </div>
+        </fast-anchored-region>
             <div style="height:1000px; width: 1000px;">
-                <fast-anchored-region anchor="anchor-locked" viewport="viewport-locked"
-                    vertical-positioning-mode="locktodefault" vertical-default-position="top" vertical-inset="true"
-                    horizontal-positioning-mode="locktodefault" horizontal-default-position="left">
-                    <div style="height:100px; width: 100px; background: yellow">
-                    </div>
-                </fast-anchored-region>
                 <button id="anchor-locked" style="margin-left: 500px; margin-top: 500px;">
                     anchor
                 </button>
             </div>
         </div>
 
-        <h4>Scaling</h4>
+        <!-- <h4>Scaling</h4>
         <div id="viewport-scaling" style="height:400px; width: 400px; background: lightgray; overflow: scroll;">
             <div style="height:1000px; width: 1000px; overflow: hidden;">
                 <button id="anchor-scaling" style="margin-left: 500px; margin-top: 500px;">
@@ -199,13 +204,13 @@
                     </div>
                 </fast-anchored-region>
             </div>
-        </div>
+        </div> -->
     </div>
-    <fast-anchored-region anchor="anchor-fixed" viewport="pageroot" vertical-positioning-mode="dynamic"
+    <!-- <fast-anchored-region anchor="anchor-fixed" viewport="pageroot" vertical-positioning-mode="dynamic"
     vertical-scaling="anchor" vertical-inset="true" horizontal-positioning-mode="locktodefault"
     horizontal-default-position="left" horizontal-scaling="anchor" fixed-placement="true" style="z-index: 11;">
     <div style="height:100%; width: 100%; background: blue">
         outside & fixed
     </div>
-   </fast-anchored-region>
+   </fast-anchored-region> -->
 </fast-design-system-provider>
