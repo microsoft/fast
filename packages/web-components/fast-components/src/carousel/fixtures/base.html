@@ -17,15 +17,46 @@
 
     <h4>Active Id Slide 4, No Autoplay, Width 800px</h4>
     <div>
-    <fast-carousel style="width: 800px;"  autoplay="false" activeid="tab-4" aria-label="test images">
-        <fast-carousel-test-slide even>Slide 1</fast-carousel-test-slide>
-        <fast-carousel-test-slide>Slide 2</fast-carousel-test-slide>
-        <fast-carousel-test-slide even>Slide 3</fast-carousel-test-slide>
-        <fast-carousel-test-slide>Slide 4</fast-carousel-test-slide>
-        <fast-carousel-test-slide even>Slide 5</fast-carousel-test-slide>
-        <fast-carousel-test-slide>Slide 6</fast-carousel-test-slide>
-</fast-carousel>
+        <fast-carousel style="width: 800px;"  autoplay="false" activeid="tab-4" aria-label="test images">
+            <fast-carousel-test-slide even>Slide 1</fast-carousel-test-slide>
+            <fast-carousel-test-slide>Slide 2</fast-carousel-test-slide>
+            <fast-carousel-test-slide even>Slide 3</fast-carousel-test-slide>
+            <fast-carousel-test-slide>Slide 4</fast-carousel-test-slide>
+            <fast-carousel-test-slide even>Slide 5</fast-carousel-test-slide>
+            <fast-carousel-test-slide>Slide 6</fast-carousel-test-slide>
+        </fast-carousel>
     </div>
+
+    <h4>Slotted Rotation, Previous, and Next Controls</h4>
+    <div>
+        <fast-carousel aria-label="test images">
+            <fast-carousel-test-slide even>Slide 1</fast-carousel-test-slide>
+            <fast-carousel-test-slide>Slide 2</fast-carousel-test-slide>
+            <fast-carousel-test-slide even>Slide 3</fast-carousel-test-slide>
+            <fast-carousel-test-slide>Slide 4</fast-carousel-test-slide>
+            <fast-carousel-test-slide even>Slide 5</fast-carousel-test-slide>
+            <fast-carousel-test-slide>Slide 6</fast-carousel-test-slide>
+            <fast-button appearance="accent" slot="rotation-control">
+                    <svg viewBox="0 0 16 16" width="16px" height="16px" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M14 8L4 15V1L14 8ZM5 13.0781L12.2578 8L5 2.92188V13.0781Z"></path>
+                    </svg>
+                    <svg viewBox="0 0 16 16" width="16px" height="16px" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M5 2H6V14H5V2ZM11 2V14H10V2H11Z"></path>
+                    </svg>
+            </fast-button>    
+            <fast-button appearance="accent" slot="next-button">
+                    <svg viewBox="0 0 16 16" width="16px" height="16px" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M15.9531 8L8.60156 15.3516L7.89844 14.6484L14.0469 8.5H0V7.5H14.0469L7.89844 1.35156L8.60156 0.648438L15.9531 8Z"></path>
+                    </svg>
+                </fast-button>    
+            <fast-button appearance="accent" slot="previous-button">
+                    <svg viewBox="0 0 16 16" width="16px" height="16px" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M16 8.5H1.95312L8.10156 14.6484L7.39844 15.3516L0.046875 8L7.39844 0.648438L8.10156 1.35156L1.95312 7.5H16V8.5Z"></path>
+                    </svg>
+            </fast-button>    
+        </fast-carousel>
+    </div>
+
 
     <h4>Basic (Not Tabbed), Width 700px, Height 300px, ARIA label tests</h4>
     <div>

@@ -1,6 +1,5 @@
 // TODO: CHECK for error states
 // TODO: Double CHECK ALL accessibility features, compare to SPEC and other components
-// TODO: ADD to the definitions folder in site-utilities
 
 import { attr, FASTElement, observable } from "@microsoft/fast-element";
 import {
@@ -10,7 +9,6 @@ import {
     limit,
     KeyCodes,
 } from "@microsoft/fast-web-utilities";
-import { isNil } from "lodash-es";
 
 /**
  * The panel id prefix
@@ -58,12 +56,17 @@ export class Carousel extends FASTElement {
         this.activeIndex = this.tabIds.indexOf(this.activeid);
     }
 
-    @attr({ attribute: "tabbed", mode: "boolean" })
+    @attr({ mode: "boolean" })
     public tabbed: boolean = true;
+
+    @observable
+    public focused: boolean = false;
 
     public carousel: HTMLDivElement;
     public tabs: HTMLElement;
     public activeSlide: HTMLElement;
+    public previousButton: HTMLElement[];
+    public nextButton: HTMLElement[];
 
     @observable
     public items: HTMLElement[];
@@ -129,7 +132,7 @@ export class Carousel extends FASTElement {
         }
     };
 
-    public handlePlayClick(e: Event): void {
+    public handleRotationClick(e: Event): void {
         e.preventDefault();
         e.stopPropagation();
         this.togglePlay();
@@ -179,7 +182,12 @@ export class Carousel extends FASTElement {
 
     private togglePlay(): void {
         this.paused = !this.paused;
-        this.autoplay = false;
+        if (this.paused) {
+            // sethdonohue - the user has specifically stopped rotation, so autoplay should be turned off
+            this.autoplay = false;
+        } else {
+            this.focused = false;
+        }
     }
 
     private startAutoPlay(): void {
@@ -195,20 +203,28 @@ export class Carousel extends FASTElement {
         this.autoplayTimer = window.clearInterval(this.autoplayTimer as number);
     }
 
-    private handleFocusIn(e: Event): void {
-        this.paused = true;
-        this.autoplay = false;
+    private handleFocus(e: Event): void {
+        if (this.autoplay) {
+            this.stopAutoPlay();
+        }
+        this.focused = true;
+    }
+
+    private handleBlur(e: Event): void {
+        this.focused = false;
     }
 
     private handleMouseOver = (e: Event) => {
         if (this.autoplay) {
-            this.paused = true;
+            // this.paused = true;
+            this.stopAutoPlay();
         }
     };
 
     private handleMouseLeave = (e: Event) => {
         if (this.autoplay) {
-            this.paused = false;
+            // this.paused = false;
+            this.startAutoPlay();
         }
     };
 
@@ -220,7 +236,7 @@ export class Carousel extends FASTElement {
     };
 
     private handleCarouselKeypress(e: KeyboardEvent): void {
-        // sethdonohue - pause the carousel if the right or left arrows are pressed in the case of when autoplay has been restarted by the user and the focus is on the tabs.
+        // sethdonohue - pause the carousel if the right or left arrows are pressed in the case of when autoplay has been restarted by the user and the focus is on the tabs
         switch (e.keyCode) {
             case KeyCodes.arrowLeft:
             case KeyCodes.arrowRight:
@@ -236,20 +252,26 @@ export class Carousel extends FASTElement {
         } else {
             this.paused = true;
         }
+        this.carousel.addEventListener("keydown", this.handleCarouselKeypress);
 
         // sethdonohue - per ARIA autoplay must pause when mouse is hovering over the carousel
         this.carousel.addEventListener("mouseover", this.handleMouseOver);
         this.carousel.addEventListener("mouseleave", this.handleMouseLeave);
 
         // sethdonohue - per ARIA rotating must stop when keyboard focus enters the carousel and not restart unless the user explicitly requests it to.
-        this.carousel.addEventListener("focusin", this.handleFocusIn);
+        this.carousel.addEventListener("focus", this.handleFocus);
+        this.carousel.addEventListener("blur", this.handleBlur);
 
-        // sethdonohue - get the id of the tab change based on the change event emitted from tabs to keep carousel in sync with tabs
         if (this.tabbed) {
+            // sethdonohue - get the id of the tab change based on the change event emitted from tabs to keep carousel in sync with tabs
             this.tabs.addEventListener("change", this.handleTabChange);
-        }
 
-        this.carousel.addEventListener("keydown", this.handleCarouselKeypress);
+            // sethdonohue - when tabbed the next and previous buttons should not be tabbable
+            if (this.previousButton.length && this.nextButton.length) {
+                this.previousButton[0].setAttribute("tabindex", "-1");
+                this.nextButton[0].setAttribute("tabindex", "-1");
+            }
+        }
     }
 
     public disconnectedCallback(): void {

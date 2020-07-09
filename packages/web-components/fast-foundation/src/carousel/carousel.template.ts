@@ -11,7 +11,7 @@ const tabbedTemplate: ViewTemplate = html<Carousel>`
         class="carousel-tabs"
         activeindicator="false"
         activeid="${(x, c) => x.activeid}"
-        notabfocus="${x => (!x.paused ? "true" : "false")}"
+        notabfocus="${x => (x.focused || x.paused ? "false" : "true")}"
         ${ref("tabs")}
     >
         ${repeat(
@@ -25,7 +25,6 @@ const tabbedTemplate: ViewTemplate = html<Carousel>`
         )}
         ${x => html<Carousel>`
             ${x.filteredItems.map((item: HTMLElement, index) => {
-                // sethdonohue - per ARIA role=tabpanel for tabbed implementation
                 return `<div
                     slot="tabpanel"
                     id="${tabPanelPrefix}${index + 1}"
@@ -33,29 +32,10 @@ const tabbedTemplate: ViewTemplate = html<Carousel>`
                     role="tabpanel"
                     ${ref("activeSlide")}
                     >
-                    ${item.outerHTML}
+                        ${item.outerHTML}
                     </div>`;
             })}
         `}
-        ${/*
-            // TODO: ASK This did not work as it shows 'x => x.outHTML' as a string as the child of the <div> when rendered. Should it work?
-
-        x => html<Carousel>`
-            ${repeat(
-                x => x.filteredItems,
-                html<Carousel>`<div slot="tabpanel" aria-hidden="true" id="${tabPanelPrefix}${
-                    (x,c) => c.index + 1
-                }" class="slide-container" role="${
-                    x => x.tabbed ? "tab-panel" : "group"
-                }" ${
-                    x => x.tabbed ? "" : "aria-roledescription='slide'"
-                    }
-                >
-                    ${x => x.outerHTML}
-                </div>`,
-                { positioning: true }
-            )}
-                `*/ ""}
     </fast-tabs>
 `;
 
@@ -65,9 +45,9 @@ const tabbedTemplate: ViewTemplate = html<Carousel>`
  */
 export const CarouselTemplate = html<Carousel>`
 <template
-    ${ref("carousel")}
     role="group"
     aria-roledescription="carousel"
+    ${ref("carousel")}
 >
     <div
         style="${x => (x.tabbed ? "display: none;" : "")}"
@@ -76,10 +56,14 @@ export const CarouselTemplate = html<Carousel>`
     >
         <slot ${slotted("items")}></slot>
     </div>
+
     <div
         class="rotation-control"
-        aria-label="${x => (x.paused ? "start slide rotation" : "stop slide rotation")}"
-        @click="${(x, c) => x.handlePlayClick(c.event)}"
+        aria-label="${x =>
+            x.paused
+                ? "start automatic slide rotation"
+                : "stop automatic slide rotation"}"
+        @click="${(x, c) => x.handleRotationClick(c.event)}"
     >
         <slot name="rotation-control" part="rotation-control">
             <fast-button appearance="neutral">
@@ -92,24 +76,22 @@ export const CarouselTemplate = html<Carousel>`
         @click="${(x, c) => x.handleFlipperClick(-1, c.event as MouseEvent)}"
         @keypress="${(x, c) => x.handleFlipperKeypress(-1, c.event as KeyboardEvent)}"
     >
-        <slot name="previous-button" part="previous-button">
+        <slot name="previous-button" part="previous-button" ${slotted("previousButton")}>
             <fast-flipper tabindex="${x => (x.tabbed ? "-1" : "0")}" direction=${
     FlipperDirection.previous
 }>
         </slot>
     </div>
-
-    ${when(x => x.tabbed, tabbedTemplate)}
-
     <div
         class="next-flipper flipper"
         @click="${(x, c) => x.handleFlipperClick(1, c.event as MouseEvent)}"
         @keypress="${(x, c) => x.handleFlipperKeypress(1, c.event as KeyboardEvent)}"
     >
-        <slot name="next-button" part="next-button">
+        <slot name="next-button" part="next-button" ${slotted("nextButton")}>
             <fast-flipper tabindex="${x => (x.tabbed ? "-1" : "0")}" direction=${
     FlipperDirection.next
 }>
         </slot>
     </div>
+    ${when(x => x.tabbed, tabbedTemplate)}
 </template>`;
