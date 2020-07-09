@@ -1,13 +1,15 @@
 import { attr } from "@microsoft/fast-element";
 
 /**
- * A mixin class for components which delegate focus.
- * When focus is delegated, assistive technology (AT) ignores the host element.
- * The AT looks for these attributes on the element to which focus has been delegated.
- * This class applies global aria-* attributes to ensure the attributes are observed & applied to the focusable element.
+ * Some states and properties are applicable to all host language elements regardless of whether a role is applied.
+ * The following global states and properties are supported by all roles and by all base markup elements.
+ * {@link https://www.w3.org/TR/wai-aria-1.1/#global_states}
+ *
+ * This is intended to be used as a mixin. Be sure you extend FASTElement.
+ *
  * @public
  */
-export class DelegatesFocus {
+export class ARIAGlobalStatesAndProperties {
     /**
      * Indicates whether assistive technologies will present all, or only parts of,
      * the changed region based on the change notifications defined by the aria-relevant attribute.

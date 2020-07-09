@@ -1,5 +1,5 @@
 import { attr, FASTElement } from "@microsoft/fast-element";
-import { DelegatesFocus, StartEnd } from "../patterns/index";
+import { ARIAGlobalStatesAndProperties, StartEnd } from "../patterns/index";
 import { applyMixins } from "../utilities/apply-mixins";
 
 /**
@@ -80,7 +80,9 @@ export class Anchor extends FASTElement {
      */
     @attr
     public type: string;
+}
 
+export class DelegatesARIALink extends ARIAGlobalStatesAndProperties {
     /**
      * See {@link https://www.w3.org/WAI/PF/aria/roles#link} for more information
      * @public
@@ -98,5 +100,5 @@ export class Anchor extends FASTElement {
  * @internal
  */
 /* eslint-disable-next-line */
-export interface Anchor extends StartEnd, DelegatesFocus {}
-applyMixins(Anchor, StartEnd, DelegatesFocus);
+export interface Anchor extends StartEnd, DelegatesARIALink {}
+applyMixins(Anchor, StartEnd, DelegatesARIALink);

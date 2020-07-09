@@ -1,2 +1,2 @@
-export * from "./delegates-focus";
+export * from "./aria-global";
 export * from "./start-end";

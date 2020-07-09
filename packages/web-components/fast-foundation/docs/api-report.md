@@ -101,12 +101,9 @@ export class BaseProgress extends FASTElement {
 //
 // @public
 export class Button extends FormAssociated<HTMLInputElement> {
-<<<<<<< HEAD
-=======
     constructor();
     ariaExpanded: "true" | "false" | undefined;
     ariaPressed: "true" | "false" | "mixed" | undefined;
->>>>>>> feat: adds mixin to support global aria-* attributes for components delegating focus
     autofocus: boolean;
     // @internal (undocumented)
     connectedCallback(): void;

@@ -1,9 +1,7 @@
 import { attr, nullableNumberConverter, observable } from "@microsoft/fast-element";
 import { FormAssociated } from "../form-associated/index";
-import { DelegatesFocus } from "../patterns/index";
+import { DelegatesARIATextbox } from "../text-field/index";
 import { applyMixins } from "../utilities";
-
-export interface TextArea extends DelegatesFocus {}
 
 /**
  * Text area appearances
@@ -258,5 +256,5 @@ export class TextArea extends FormAssociated<HTMLTextAreaElement> {
  * @internal
  */
 /* eslint-disable-next-line */
-export interface TextArea extends DelegatesFocus {}
-applyMixins(TextArea, DelegatesFocus);
+export interface TextArea extends DelegatesARIATextbox {}
+applyMixins(TextArea, DelegatesARIATextbox);

@@ -1,6 +1,6 @@
 import { attr } from "@microsoft/fast-element";
 import { FormAssociated } from "../form-associated/index";
-import { DelegatesFocus, StartEnd } from "../patterns/index";
+import { ARIAGlobalStatesAndProperties, StartEnd } from "../patterns/index";
 import { applyMixins } from "../utilities/apply-mixins";
 
 /**
@@ -19,24 +19,6 @@ export class Button extends FormAssociated<HTMLInputElement> {
      */
     @attr({ mode: "boolean" })
     public autofocus: boolean;
-
-    /**
-     * See {@link https://www.w3.org/WAI/PF/aria/roles#button} for more information
-     * @public
-     * @remarks
-     * HTML Attribute: aria-expanded
-     */
-    @attr({ attribute: "aria-expanded", mode: "fromView" })
-    public ariaExpanded: "true" | "false" | undefined;
-
-    /**
-     * See {@link https://www.w3.org/WAI/PF/aria/roles#button} for more information
-     * @public
-     * @remarks
-     * HTML Attribute: aria-pressed
-     */
-    @attr({ attribute: "aria-pressed", mode: "fromView" })
-    public ariaPressed: "true" | "false" | "mixed" | undefined;
 
     /**
      * The id of a form to associate the element to.
@@ -174,6 +156,26 @@ export class Button extends FormAssociated<HTMLInputElement> {
     }
 }
 
+export class DelegatesARIAButton extends ARIAGlobalStatesAndProperties {
+    /**
+     * See {@link https://www.w3.org/WAI/PF/aria/roles#button} for more information
+     * @public
+     * @remarks
+     * HTML Attribute: aria-expanded
+     */
+    @attr({ attribute: "aria-expanded", mode: "fromView" })
+    public ariaExpanded: "true" | "false" | undefined;
+
+    /**
+     * See {@link https://www.w3.org/WAI/PF/aria/roles#button} for more information
+     * @public
+     * @remarks
+     * HTML Attribute: aria-pressed
+     */
+    @attr({ attribute: "aria-pressed", mode: "fromView" })
+    public ariaPressed: "true" | "false" | "mixed" | undefined;
+}
+
 /**
  * Mark internal because exporting class and interface of the same name
  * confuses API documenter.
@@ -181,5 +183,5 @@ export class Button extends FormAssociated<HTMLInputElement> {
  * @internal
  */
 /* eslint-disable-next-line */
-export interface Button extends StartEnd, DelegatesFocus {}
-applyMixins(Button, StartEnd, DelegatesFocus);
+export interface Button extends StartEnd, DelegatesARIAButton {}
+applyMixins(Button, StartEnd, DelegatesARIAButton);

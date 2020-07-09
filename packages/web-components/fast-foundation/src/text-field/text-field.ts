@@ -1,9 +1,7 @@
 import { attr, nullableNumberConverter, observable } from "@microsoft/fast-element";
 import { FormAssociated } from "../form-associated/index";
-import { DelegatesFocus, StartEnd } from "../patterns/index";
+import { ARIAGlobalStatesAndProperties, StartEnd } from "../patterns/index";
 import { applyMixins } from "../utilities/index";
-
-export interface TextField extends DelegatesFocus {}
 
 /**
  * Text field appearances
@@ -256,6 +254,9 @@ export class TextField extends FormAssociated<HTMLInputElement> {
     }
 }
 
+/* eslint-disable-next-line */
+export class DelegatesARIATextbox extends ARIAGlobalStatesAndProperties {}
+
 /**
  * Mark internal because exporting class and interface of the same name
  * confuses API documenter.
@@ -263,5 +264,5 @@ export class TextField extends FormAssociated<HTMLInputElement> {
  * @internal
  */
 /* eslint-disable-next-line */
-export interface TextField extends StartEnd, DelegatesFocus {}
-applyMixins(TextField, StartEnd, DelegatesFocus);
+export interface TextField extends StartEnd, DelegatesARIATextbox {}
+applyMixins(TextField, StartEnd, DelegatesARIATextbox);
