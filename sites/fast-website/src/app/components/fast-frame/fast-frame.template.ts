@@ -5,8 +5,6 @@ import ContrastIcon from "svg/icon-contrast.svg";
 import DownloadIcon from "svg/icon-download.svg";
 import PaletteIcon from "svg/icon-palette.svg";
 import PlayIcon from "svg/icon-play.svg";
-import ScreenIcon from "svg/icon-screen.svg";
-import ShareIcon from "svg/icon-share.svg";
 import SwatchesIcon from "svg/icon-swatches.svg";
 import { FastFrame } from "./fast-frame";
 import { ColorHSL, hslToRGB } from "@microsoft/fast-colors";
@@ -15,7 +13,7 @@ export const FastFrameTemplate = html<FastFrame>`
     <template>
         <div class="wrapper">
             <fast-tabs orientation="vertical" id="myTab" activeId="TabTwo">
-                <fast-tab id="contrast-tab" title="Mode">${ContrastIcon}</fast-tab>
+                <fast-tab id="contrast-tab" title="Dark Mode">${ContrastIcon}</fast-tab>
                 <fast-tab id="palette-tab" title="Color">${PaletteIcon}</fast-tab>
                 <fast-tab id="style-tab" title="Styles">${SwatchesIcon}</fast-tab>
                 <fast-tab-panel id="contrast-tab-panel" class="${x =>
@@ -62,6 +60,7 @@ export const FastFrameTemplate = html<FastFrame>`
                                     html<string>`
                                         <site-color-swatch
                                             tabindex="0"
+                                            aria-label="background color"
                                             value="${x => x}"
                                             background-color="${x => x}"
                                             checked="${(x, c) =>
@@ -84,6 +83,7 @@ export const FastFrameTemplate = html<FastFrame>`
                                     html<string>`
                                         <site-color-swatch
                                             tabindex="0"
+                                            aria-label="accent color"
                                             value="${x => x}"
                                             background-color="${x => x}"
                                             checked="${(x, c) =>
@@ -147,7 +147,7 @@ export const FastFrameTemplate = html<FastFrame>`
                                     position="0"
                                 >
                                     0
-                                </fast-slider-label>            
+                                </fast-slider-label>
                                 <fast-slider-label
                                     hide-mark
                                     position="20"
@@ -170,7 +170,7 @@ export const FastFrameTemplate = html<FastFrame>`
                                     position="1"
                                 >
                                     1PX
-                                </fast-slider-label>            
+                                </fast-slider-label>
                                 <fast-slider-label
                                     hide-mark
                                     position="6"
@@ -193,7 +193,7 @@ export const FastFrameTemplate = html<FastFrame>`
                                     position="-3"
                                 >
                                     -3
-                                </fast-slider-label>            
+                                </fast-slider-label>
                                 <fast-slider-label
                                     hide-mark
                                     position="3"
@@ -264,33 +264,36 @@ export const FastFrameTemplate = html<FastFrame>`
                 <div
                     class="preview-controls"
                 >
-                    <fast-progress></fast-progress>
-                    <fast-menu tabindex="${x => x.setTabIndex()}">
-                        <fast-menu-item role="menuitem">Menu item 1</fast-menu-item>
-                        <fast-menu-item role="menuitem">Menu item 2</fast-menu-item>
-                        <fast-menu-item role="menuitem">Menu item 3</fast-menu-item>
+                    <fast-progress aria-label="Example progress bar"></fast-progress>
+                    <fast-menu tabindex="${x =>
+                        x.setTabIndex()}" aria-label="Example menu">
+                        <fast-menu-item role="menuitem" aria-label="Example menu item">Menu item 1</fast-menu-item>
+                        <fast-menu-item role="menuitem" aria-label="Example menu item">Menu item 2</fast-menu-item>
+                        <fast-menu-item role="menuitem" aria-label="Example menu item">Menu item 3</fast-menu-item>
                         <hr />
-                        <fast-menu-item role="menuitem">Menu item 4</fast-menu-item>
+                        <fast-menu-item role="menuitem" aria-label="Example menu item">Menu item 4</fast-menu-item>
                     </fast-menu>
                     <div class="control-container">
                         <div class="control-container-column">
                             <fast-radio tabindex="${x =>
-                                x.setTabIndex()}">Radio 1</fast-radio>
+                                x.setTabIndex()}" aria-label="Example radio 1">Radio 1</fast-radio>
                             <fast-radio tabindex="${x =>
-                                x.setTabIndex()}">Radio 2</fast-radio>
+                                x.setTabIndex()}" aria-label="Example radio 2">Radio 2</fast-radio>
                         </div>
                         <div class="control-container-grid">
-                            <fast-switch tabindex="${x => x.setTabIndex()}"></fast-switch>
+                            <fast-switch tabindex="${x =>
+                                x.setTabIndex()}" aria-label="Example toggle"></fast-switch>
                             <p>Toggle</p>
                             <fast-checkbox tabindex="${x =>
-                                x.setTabIndex()}" class="checkbox"></fast-checkbox>
+                                x.setTabIndex()}" class="checkbox" aria-label="Example checkbox"></fast-checkbox>
                             <p class="checkbox-label">Checkbox</p>
                         </div>
                     </div>
                     <fast-text-field placeholder="Text field" tabindex="${x =>
-                        x.setTabIndex()}"></fast-text-field>
+                        x.setTabIndex()}" aria-label="Example text field"></fast-text-field>
                     <div class="control-container-2">
-                        <fast-slider tabindex="${x => x.setTabIndex()}"></fast-slider>
+                        <fast-slider tabindex="${x =>
+                            x.setTabIndex()}" aria-label="Example slider"></fast-slider>
                         <fast-flipper></fast-flipper>
                         <fast-flipper disabled></fast-flipper>
                     </div>
