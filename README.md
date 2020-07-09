@@ -75,7 +75,7 @@ If you're looking to get started using our components right away, take a look at
 
 ## Joining the Community
 
-Looking to get answers to questions or engage with us in realtime? Our community is most active [on Discord](https://discord.gg/FcSNfg4). Submit requests and issues on [Github](https://github.com/Microsoft/fast/issues/new/choose), or join us by contributing on [some good first issues via Github](https://github.com/Microsoft/fast/labels/good%20first%20issue).
+Looking to get answers to questions or engage with us in realtime? Our community is most active [on Discord](https://discord.gg/FcSNfg4). Submit requests and issues on [GitHub](https://github.com/Microsoft/fast/issues/new/choose), or join us by contributing on [some good first issues via GitHub](https://github.com/Microsoft/fast/labels/good%20first%20issue).
 
 We look forward to building an amazing open source community with you!
 
@@ -109,8 +109,8 @@ Because FAST has abstracted base components from their style, you get a head sta
 ## Contact
 
 * Join the community and chat with us in real-time on [Discord](https://discord.gg/FcSNfg4).
-* Submit requests and issues on [Github](https://github.com/Microsoft/fast/issues/new/choose).  
-* Contribute by helping out on some of our recommended first issues on [Github](https://github.com/Microsoft/fast/labels/good%20first%20issue).
+* Submit requests and issues on [GitHub](https://github.com/Microsoft/fast/issues/new/choose).
+* Contribute by helping out on some of our recommended first issues on [GitHub](https://github.com/Microsoft/fast/labels/good%20first%20issue).
 
 ## Status
 
