@@ -263,6 +263,28 @@ describe("auto suggest", (): void => {
         expect(input.prop("aria-expanded")).toBe(false);
     });
 
+    test("menu should open and close as the isMenuOpen prop changes", (): void => {
+        const rendered: any = mount(
+            <AutoSuggest listboxId="listboxId" isMenuOpen={false}>
+                {itemA}
+                {itemB}
+                {itemC}
+            </AutoSuggest>
+        );
+
+        expect(rendered.state("isMenuOpen")).toBe(false);
+
+        rendered.setProps({
+            isMenuOpen: true,
+        });
+        expect(rendered.state("isMenuOpen")).toBe(true);
+
+        rendered.setProps({
+            isMenuOpen: false,
+        });
+        expect(rendered.state("isMenuOpen")).toBe(false);
+    });
+
     // Test is incompatible with Jest 25.x, refer to issue #2882
     xtest("arrow keys properly traverse the listbox and input region and cause focus and value to changes appropriately", (): void => {
         const container: HTMLDivElement = document.createElement("div");
