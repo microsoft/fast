@@ -9,7 +9,6 @@ export const SwitchTemplate = html<Switch>`
     <template
         role="switch"
         aria-checked="${x => x.checked}"
-        aria-required="${x => x.required}"
         aria-disabled="${x => x.disabled}"
         aria-readonly="${x => x.readOnly}"
         tabindex="${x => (x.disabled ? null : 0)}"

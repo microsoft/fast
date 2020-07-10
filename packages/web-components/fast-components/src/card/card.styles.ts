@@ -13,7 +13,7 @@ export const CardStyles = css`
         box-sizing: border-box;
         background: ${neutralLayerCardBehavior.var};
         border-radius: calc(var(--corner-radius) * 1px);
-        ${elevation};
+        ${elevation}
     }
 `.withBehaviors(
     neutralLayerCardBehavior,

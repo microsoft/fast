@@ -35,7 +35,8 @@ export const DialogStyles = css`
     }
 
     .control {
-        ${elevation} margin-top: auto;
+        ${elevation}
+        margin-top: auto;
         margin-bottom: auto;
         border-radius: calc(var(--elevated-corner-radius));
         width: var(--dialog-width);
