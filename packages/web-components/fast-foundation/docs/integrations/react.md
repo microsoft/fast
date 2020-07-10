@@ -62,7 +62,7 @@ With all the basic pieces in place, let's run our app in dev mode with `npm star
 
 First, open your `src/app.js` file and add the following code:
 
-```ts
+```js
 import { 
   FASTDesignSystemProvider, 
   FASTCard, 
