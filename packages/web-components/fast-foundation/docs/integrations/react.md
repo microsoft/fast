@@ -9,7 +9,7 @@ FAST can be used in React applications. Let's take a look at how you can set up 
 
 ## Setting up the React project
 
-First, you'll need to make sure that you have Node.js >= 8.2 and npm >= 5.6 are installed. You can learn more and download that [on the official site](https://nodejs.org/).
+First, you'll need to make sure that you have Node.js >= 8.2 and npm >= 5.6 installed. You can learn more and download that [on the official site](https://nodejs.org/).
 
 With Node.js installed, you can use [create-react-app](https://reactjs.org/docs/create-a-new-react-app.html#create-react-app) to create a new React project.
 
