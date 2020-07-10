@@ -165,7 +165,10 @@ function getNextStyleClass(): string {
     return `fast-style-class-${++styleClassId}`;
 }
 
-class StyleElementStyles extends ElementStyles {
+/**
+ * @internal
+ */
+export class StyleElementStyles extends ElementStyles {
     private readonly styleSheets: string[];
     private readonly styleClass: string;
     public readonly behaviors: ReadonlyArray<Behavior> | null = null;
@@ -181,6 +184,10 @@ class StyleElementStyles extends ElementStyles {
         const styleSheets = this.styleSheets;
         const styleClass = this.styleClass;
 
+        if (target === document) {
+            target = document.body;
+        }
+
         for (let i = styleSheets.length - 1; i > -1; --i) {
             const element = document.createElement("style");
             element.innerHTML = styleSheets[i];
@@ -190,6 +197,10 @@ class StyleElementStyles extends ElementStyles {
     }
 
     public removeStylesFrom(target: StyleTarget): void {
+        if (target === document) {
+            target = document.body;
+        }
+
         const styles: NodeListOf<HTMLStyleElement> = target.querySelectorAll(
             `.${this.styleClass}`
         );
