@@ -26,7 +26,7 @@ npm install --save @microsoft/fast-components @microsoft/fast-element lodash-es
 ```
 
 ## Configure create-react-app
-[create-react-app](https://reactjs.org/docs/create-a-new-react-app.html#create-react-app) ships with a [eslint](https://eslint.org/) rule that makes working with FAST components difficult. There are two changes that will need to be made in the `package.json`:
+[create-react-app](https://reactjs.org/docs/create-a-new-react-app.html#create-react-app) ships with an [eslint](https://eslint.org/) rule that makes working with FAST components difficult. There are two changes that will need to be made in the `package.json`:
 
 **Set the EXTEND_ESLINT environment variable in start, build, and test scripts**
 ```jsonc
