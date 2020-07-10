@@ -12,7 +12,7 @@
 *.md @awentzel @chrisdholt @falkicon @EisenbergEffect
 /docs/ @awentzel @chrisdholt @falkicon @EisenbergEffect
 
-# Github management
+# GitHub management
 .github/ @awentzel @janechu @chrisdholt @nicholasrice
 .github/workflows/ @awentzel @chrisdholt @nicholasrice
 

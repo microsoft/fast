@@ -64,7 +64,7 @@ Packages are located within the `packages` folder of the repository. Each packag
 
 ### Submitting a pull request
 
-If you'd like to contribute by fixing a bug, implementing a feature, or even correcting typos in our documentation, you'll want to submit a pull request. Before submitting a pull request, be sure to [rebase](https://www.atlassian.com/git/tutorials/merging-vs-rebasing) your branch from master. Do not use ``git merge`` or the *merge* button provided by Github.
+If you'd like to contribute by fixing a bug, implementing a feature, or even correcting typos in our documentation, you'll want to submit a pull request. Before submitting a pull request, be sure to [rebase](https://www.atlassian.com/git/tutorials/merging-vs-rebasing) your branch from master. Do not use ``git merge`` or the *merge* button provided by GitHub.
 
 ### Documenting breaking changes
 
@@ -157,5 +157,5 @@ Several open source projects have influenced our contribution policy:
 
 * [Project Governance @Node](https://nodejs.org/en/about/governance/)
 * [Contributions @Node](https://github.com/nodejs/node/blob/master/CONTRIBUTING.md)
-* [Open Source @Github](https://github.com/blog/2039-adopting-the-open-code-of-conduct)
+* [Open Source @GitHub](https://github.com/blog/2039-adopting-the-open-code-of-conduct)
 * [Open Source exmaples @todogroup](https://github.com/todogroup/policies)
