@@ -35,7 +35,7 @@ npm install --save @microsoft/fast-components @microsoft/fast-element lodash-es
     "scripts": {
         "start": "EXTEND_ESLINT=true react-scripts start",
         "build": "EXTEND_ESLINT=true react-scripts build",
-        "test": "EXTEND_ESLINT=true react-scripts test"
+        "test": "EXTEND_ESLINT=true react-scripts test",
     }
     // ...
 }
@@ -117,3 +117,34 @@ fast-card > fast-button {
 ```
 
 Congratulations! You're now set up to use FAST and React!
+
+## Additional Notes
+### HTML Attributes
+React is capable of rendering custom HTML elements and binding data to them, but it is beneficial to understand *how* React does this. React will apply all *props* to a custom HTML element as *HTML attributes* - including non-primitive types such as arrays and objects. Where some UI libraries provide binding syntaxes to distinguish setting properties, attributes, and events, React does not. This means that it can be very easy to end up with `my-prop="[object Object]"` in your HTML. React is exploring solutions [in this issue](https://github.com/facebook/react/issues/11347). See the section on [interop layers](#interop-layers-skatejsval-and-reactify-wc) for a work-around for this issue.
+
+### Custom events
+React's synthetic eventing system comes with an unfortunate side-effect of being incapable of declaratively applying [`CustomEvent`](https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent) listeners. [interop layers](#interop-layers-skatejsval-and-reactify-wc) can be used to address this issue. Alternatively, a `ref` can be used on the custom element to imperatively apply the event listener to the HTML element directly.
+
+
+#### Interop layers: @skatejs/val and reactify-wc
+[@skatejs/val](https://github.com/skatejs/val) is a small library that wraps React's `createElement` function and provides the ability direct React *props* explicitly to HTML attributes, DOM properties, or to declarative event listeners. It is our recommendation for an interop layer between React and any Custom Element.
+
+Another good option is [reactify-wc](https://github.com/BBKolton/reactify-wc). It provides similar capabilities as `@skatejs/val` but does so by creating component wrappers.
+
+### TypeScript and TSX support
+If you're using TypeScript, you'll need to augment the `JSX.IntrinsicElements` interface to use custom elements in JSX. To do so, create a `custom-elements.d.ts` file in your source directly and add the following:
+
+```ts
+// custom-elements.d.ts
+declare namespace JSX {
+    interface IntrinsicElements {
+        /**
+         *  React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> allows setting standard HTML attributes on the element
+         */
+        "my-element": React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & {
+            "my-attribute-name": string;
+        };
+    }
+}
+
+```
