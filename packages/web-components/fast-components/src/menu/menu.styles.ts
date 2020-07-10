@@ -12,7 +12,7 @@ export const MenuStyles = css`
         background: ${neutralLayerFloatingBehavior.var};
         border: calc(var(--outline-width) * 1px) solid transparent;
         border-radius: var(--elevated-corner-radius);
-        ${elevation};
+        ${elevation}
         margin: 0;
         border-radius: calc(var(--corner-radius) * 1px);
         padding: calc(var(--design-unit) * 1px) 0;
