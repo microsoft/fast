@@ -21,11 +21,10 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Install n
-      run: npm install -g n
-
-    - name: Downgrade to Node v10.21.0
-      run: sudo n 10.21.0
+    - name: Setup Node.js environment
+      uses: actions/setup-node@v2.1.0
+      with:
+        node-version: '10'
 
     - name: Install Lerna
       run: sudo yarn global add lerna 
