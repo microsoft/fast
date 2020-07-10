@@ -24,8 +24,8 @@ jobs:
     - name: Install n
       run: npm install -g n
 
-    - name: Update to latest Node
-      run: sudo n latest
+    - name: Downgrade to Node v10.21.0
+      run: sudo n 10.21.0
 
     - name: Install Lerna
       run: sudo yarn global add lerna 
