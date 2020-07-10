@@ -69,7 +69,7 @@ export const ContentPlacementContainerStyles = css`
         border-radius: calc(var(--corner-radius) * 1px);
         color: currentColor;
         opacity: 1;
-        ${elevation};
+        ${elevation}
     }
 
     :host([section="framework"]) site-content-placement:hover h3,
