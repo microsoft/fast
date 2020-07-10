@@ -13,6 +13,9 @@ export { fastButtonConfig };
 import fastCardConfig from "./fast-card";
 export { fastCardConfig };
 
+import fastCarouselConfig from "./fast-carousel";
+export { fastCarouselConfig };
+
 import fastCheckboxConfig from "./fast-checkbox";
 export { fastCheckboxConfig };
 

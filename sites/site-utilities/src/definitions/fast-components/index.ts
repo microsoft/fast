@@ -4,6 +4,7 @@ export * from "./fast-anchor.definition";
 export * from "./fast-badge.definition";
 export * from "./fast-button.definition";
 export * from "./fast-card.definition";
+export * from "./fast-carousel.definition";
 export * from "./fast-checkbox.definition";
 export * from "./fast-design-system-provider.definition";
 export * from "./fast-dialog.definition";
