@@ -38,7 +38,7 @@ class ViewerContent extends React.Component<{}, ViewerContentState> {
     };
 
     private handlePostMessage = (e: MessageEvent): void => {
-        if (typeof e.data === "string") {
+        if (e.origin === location.origin && typeof e.data === "string") {
             try {
                 this.setState({
                     message: JSON.stringify(JSON.parse(e.data), null, 2),
