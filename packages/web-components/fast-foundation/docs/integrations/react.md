@@ -58,7 +58,7 @@ See [configuring eslint](https://create-react-app.dev/docs/setting-up-your-edito
 
 ## Using the components
 
-With all the basic pieces in place, let's run our app in dev mode with `npm start`. Right now, it displays the React logo and some editing instructions, since we haven't added any code or interesting HTML.Let's change that.
+With all the basic pieces in place, let's run our app in dev mode with `npm start`. Right now, it displays the React logo and some editing instructions, since we haven't added any code or interesting HTML. Let's change that.
 
 First, open your `src/app.js` file and add the following code:
 
@@ -119,20 +119,27 @@ fast-card > fast-button {
 Congratulations! You're now set up to use FAST and React!
 
 ## Additional Notes
-### HTML Attributes
+### create-react-app
+FAST makes use of decorators to define components. At this time, `create-react-app` [does not support decorators](https://create-react-app.dev/docs/can-i-use-decorators/). This won't be a problem when using components *imported* from FAST because they have already been transpiled by TypeScript - but to *create* components in a `create-react-app` application you'll need to do one of the following:
+- [Define components without decorators](https://fast.design/docs/fast-element/defining-elements#working-without-decorators)
+- [Eject](https://create-react-app.dev/docs/available-scripts#npm-run-eject)`create-react-app` and change Babel to support decorators 
+- Use an intermediary like [react-app-rewired](https://www.npmjs.com/package/react-app-rewired)
+  
+### Data Binding
+#### HTML Attributes
 React is capable of rendering custom HTML elements and binding data to them, but it is beneficial to understand *how* React does this. React will apply all *props* to a custom HTML element as *HTML attributes* - including non-primitive types such as arrays and objects. Where some UI libraries provide binding syntaxes to distinguish setting properties, attributes, and events, React does not. This means that it can be very easy to end up with `my-prop="[object Object]"` in your HTML. React is exploring solutions [in this issue](https://github.com/facebook/react/issues/11347). See the section on [interop layers](#interop-layers-skatejsval-and-reactify-wc) for a work-around for this issue.
 
-### Custom events
+#### Custom events
 React's synthetic eventing system comes with an unfortunate side-effect of being incapable of declaratively applying [`CustomEvent`](https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent) listeners. [interop layers](#interop-layers-skatejsval-and-reactify-wc) can be used to address this issue. Alternatively, a `ref` can be used on the custom element to imperatively apply the event listener to the HTML element directly.
 
 
 #### Interop layers: @skatejs/val and reactify-wc
-[@skatejs/val](https://github.com/skatejs/val) is a small library that wraps React's `createElement` function and provides the ability direct React *props* explicitly to HTML attributes, DOM properties, or to declarative event listeners. It is our recommendation for an interop layer between React and any Custom Element.
+[@skatejs/val](https://github.com/skatejs/val) is a small library that wraps React's `createElement` function and provides the ability direct React *props* explicitly to HTML attributes, DOM properties, or to declarative event listeners.
 
 Another good option is [reactify-wc](https://github.com/BBKolton/reactify-wc). It provides similar capabilities as `@skatejs/val` but does so by creating component wrappers.
 
 ### TypeScript and TSX support
-If you're using TypeScript, you'll need to augment the `JSX.IntrinsicElements` interface to use custom elements in JSX. To do so, create a `custom-elements.d.ts` file in your source directly and add the following:
+If you're using TypeScript, you'll need to augment the `JSX.IntrinsicElements` interface to use custom elements in TSX. To do so, create a `custom-elements.d.ts` file in your source directory and add the following:
 
 ```ts
 // custom-elements.d.ts
