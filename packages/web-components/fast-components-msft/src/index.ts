@@ -18,7 +18,7 @@ export * from "./tabs/";
 export * from "./text-area/";
 export * from "./text-field/";
 export * from "./tree-item/";
-export * from "./tree-view";
+export * from "./tree-view/";
 
 // export styles and utils
 export * from "./styles";
