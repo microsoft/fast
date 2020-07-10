@@ -1,4 +1,4 @@
-name: "PR - Lint title"
+name: "PR - FAST"
 on:
   pull_request:
     types:
@@ -8,7 +8,7 @@ on:
       - synchronize
 
 jobs:
-  lint_pr_title:
+  lint_title:
     runs-on: ubuntu-latest
 
     steps:
