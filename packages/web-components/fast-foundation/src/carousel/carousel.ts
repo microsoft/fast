@@ -1,7 +1,4 @@
-// TODO: CHECK for error states
-// TODO: Double CHECK ALL accessibility features, compare to SPEC and other components
-
-import { attr, FASTElement, observable } from "@microsoft/fast-element";
+import { attr, FASTElement, observable, DOM } from "@microsoft/fast-element";
 import {
     keyCodeSpace,
     keyCodeEnter,
@@ -48,6 +45,9 @@ export class Carousel extends FASTElement {
         } else {
             this.stopAutoPlay();
         }
+        if (this.change) {
+            this.change();
+        }
     }
 
     @attr({ attribute: "activeid" })
@@ -64,9 +64,9 @@ export class Carousel extends FASTElement {
 
     public carousel: HTMLDivElement;
     public tabs: HTMLElement;
-    public activeSlide: HTMLElement;
-    public previousButton: HTMLElement[];
-    public nextButton: HTMLElement[];
+    public rotationControl: HTMLElement;
+    public previousButtonItem: HTMLElement[];
+    public nextButtonItem: HTMLElement[];
 
     @observable
     public items: HTMLElement[];
@@ -89,7 +89,6 @@ export class Carousel extends FASTElement {
                     if (index === this.activeIndex) {
                         item.classList.add("active-slide");
                         item.removeAttribute("hidden");
-                        this.activeSlide = item;
                     } else {
                         item.setAttribute("hidden", "");
                     }
@@ -132,18 +131,21 @@ export class Carousel extends FASTElement {
         }
     };
 
-    public handleRotationClick(e: Event): void {
-        e.preventDefault();
-        e.stopPropagation();
+    private handleRotationMouseDown = (e: Event): void => {
         this.togglePlay();
-    }
+    };
 
     private tabIds: string[] = [];
     private activeIndex: number = 0;
     private autoplayTimer: number | void;
+    private pausedTimeout: number | void;
+    private firstFocus: boolean = true;
+    private startTime: number = 0;
+    private stopTime: number = 0;
 
     private change = (): void => {
-        this.$emit("change", this.activeSlide);
+        // sethdonohue - reference to carousel is passed for the author to get access to the paused, activeid, and other states
+        this.$emit("change", this.carousel);
     };
 
     private incrementSlide = (direction: 1 | -1): void => {
@@ -170,6 +172,7 @@ export class Carousel extends FASTElement {
     };
 
     private autoplayNextItem = (): void => {
+        this.startTime = Date.now();
         this.incrementSlide(1);
     };
 
@@ -203,29 +206,45 @@ export class Carousel extends FASTElement {
         this.autoplayTimer = window.clearInterval(this.autoplayTimer as number);
     }
 
-    private handleFocus(e: Event): void {
+    private handleFocusIn = (e: Event): void => {
         if (this.autoplay) {
             this.stopAutoPlay();
         }
+        if (this.firstFocus) {
+            if (this.autoplay) {
+                this.paused = true;
+            }
+            this.firstFocus = false;
+        }
         this.focused = true;
-    }
+        this.change();
+    };
 
     private handleBlur(e: Event): void {
         this.focused = false;
     }
 
     private handleMouseOver = (e: Event) => {
-        if (this.autoplay) {
-            // this.paused = true;
+        if (!this.paused) {
+            this.stopTime = Date.now();
+            window.clearTimeout(this.pausedTimeout as number);
             this.stopAutoPlay();
         }
     };
 
     private handleMouseLeave = (e: Event) => {
-        if (this.autoplay) {
-            // this.paused = false;
-            this.startAutoPlay();
+        if (!this.paused) {
+            // sethdonohue - timer for proper pause of rotation
+            const timeDiff: number =
+                this.autoplayInterval - (this.stopTime - this.startTime);
+            if (timeDiff) {
+                this.pausedTimeout = setTimeout(() => {
+                    this.autoplayNextItem();
+                    this.startAutoPlay();
+                }, timeDiff);
+            }
         }
+        this.focused = false;
     };
 
     private handleTabChange = (e: any): void => {
@@ -235,15 +254,34 @@ export class Carousel extends FASTElement {
         }
     };
 
-    private handleCarouselKeypress(e: KeyboardEvent): void {
-        // sethdonohue - pause the carousel if the right or left arrows are pressed in the case of when autoplay has been restarted by the user and the focus is on the tabs
+    private handleTabsKeypress = (e: KeyboardEvent): void => {
+        // sethdonohue - pause the carousel if the right, left, home, end keys are pressed in the case of when autoplay has been restarted by the user and the focus is on the tabs
         switch (e.keyCode) {
             case KeyCodes.arrowLeft:
             case KeyCodes.arrowRight:
+            case KeyCodes.home:
+            case KeyCodes.end:
                 this.paused = true;
                 break;
         }
-    }
+    };
+
+    private handleTabsFocusIn = (e: FocusEvent): void => {
+        // sethdonohue - when keyboard navigating from the rotation control or a tab we do not want the rotation to be stopped in the case of when a keyboard user restarts the rotation with the rotation control and then has to tab through/past the tabs
+        if (
+            !this.rotationControl.contains(e.relatedTarget as Node) &&
+            !this.tabs.contains(e.relatedTarget as Node)
+        ) {
+            // sethdonohue - we do want to run the focus in the case where the user is reverse tabbing (shift-tab) back to a carousel and hits the tabs first, as this should stop the auto rotation on first focus per ARIA spec
+            this.handleFocusIn(e);
+        }
+        this.focused = true;
+    };
+    private handleTabsFocusOut = (e: FocusEvent): void => {
+        // sethdonohue - if we focus out of tabs or any tabs children we need to ensure tabs doesn't steal focus
+        this.focused = false;
+        this.firstFocus = true;
+    };
 
     public connectedCallback(): void {
         super.connectedCallback();
@@ -252,24 +290,37 @@ export class Carousel extends FASTElement {
         } else {
             this.paused = true;
         }
-        this.carousel.addEventListener("keydown", this.handleCarouselKeypress);
 
         // sethdonohue - per ARIA autoplay must pause when mouse is hovering over the carousel
         this.carousel.addEventListener("mouseover", this.handleMouseOver);
         this.carousel.addEventListener("mouseleave", this.handleMouseLeave);
 
         // sethdonohue - per ARIA rotating must stop when keyboard focus enters the carousel and not restart unless the user explicitly requests it to.
-        this.carousel.addEventListener("focus", this.handleFocus);
+        this.carousel.addEventListener("focusin", this.handleFocusIn);
         this.carousel.addEventListener("blur", this.handleBlur);
 
+        // sethdonohue - using mousedown as this fires before focus so we can account for the first click on the rotation control and the focus immediately following click. This also requires the use on keydown since click is not used
+        this.rotationControl.addEventListener("mousedown", this.handleRotationMouseDown);
+        this.rotationControl.addEventListener("keydown", e => {
+            if (e.keyCode === keyCodeSpace || e.keyCode === keyCodeEnter) {
+                this.handleRotationMouseDown(e);
+            }
+        });
+
         if (this.tabbed) {
+            this.tabs.addEventListener("keydown", this.handleTabsKeypress);
+            this.tabs.addEventListener("focusin", this.handleTabsFocusIn);
+            this.tabs.addEventListener("focusout", this.handleTabsFocusOut);
+
             // sethdonohue - get the id of the tab change based on the change event emitted from tabs to keep carousel in sync with tabs
             this.tabs.addEventListener("change", this.handleTabChange);
 
-            // sethdonohue - when tabbed the next and previous buttons should not be tabbable
-            if (this.previousButton.length && this.nextButton.length) {
-                this.previousButton[0].setAttribute("tabindex", "-1");
-                this.nextButton[0].setAttribute("tabindex", "-1");
+            if (this.previousButtonItem.length && this.nextButtonItem.length) {
+                // sethdonohue - when tabbed the next and previous buttons should not be in the tab sequence
+                DOM.queueUpdate(() => {
+                    this.previousButtonItem[0].setAttribute("tabindex", "-1");
+                    this.nextButtonItem[0].setAttribute("tabindex", "-1");
+                });
             }
         }
     }

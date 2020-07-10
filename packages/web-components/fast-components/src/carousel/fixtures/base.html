@@ -27,7 +27,7 @@
         </fast-carousel>
     </div>
 
-    <h4>Slotted Rotation, Previous, and Next Controls</h4>
+    <h4>All Slotted Items</h4>
     <div>
         <fast-carousel aria-label="test images">
             <fast-carousel-test-slide even>Slide 1</fast-carousel-test-slide>
@@ -57,6 +57,49 @@
         </fast-carousel>
     </div>
 
+    <h4>Slotted Items and Tabbable Content</h4>
+    <div>
+        <fast-carousel aria-label="test images">
+            <fast-carousel-test-slide even><button>Slide 1</button></fast-carousel-test-slide>
+            <fast-carousel-test-slide><button>Slide 2</button></fast-carousel-test-slide>
+            <fast-carousel-test-slide even><button>Slide 3</button></fast-carousel-test-slide>
+            <fast-carousel-test-slide><button>Slide 4</button></fast-carousel-test-slide>
+            <fast-carousel-test-slide even><button>Slide 5</button></fast-carousel-test-slide>
+            <fast-carousel-test-slide><button>Slide 6</button></fast-carousel-test-slide>
+            <fast-button appearance="accent" slot="next-button">
+                    <svg viewBox="0 0 16 16" width="16px" height="16px" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M15.9531 8L8.60156 15.3516L7.89844 14.6484L14.0469 8.5H0V7.5H14.0469L7.89844 1.35156L8.60156 0.648438L15.9531 8Z"></path>
+                    </svg>
+                </fast-button>    
+            <fast-button appearance="accent" slot="previous-button">
+                    <svg viewBox="0 0 16 16" width="16px" height="16px" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M16 8.5H1.95312L8.10156 14.6484L7.39844 15.3516L0.046875 8L7.39844 0.648438L8.10156 1.35156L1.95312 7.5H16V8.5Z"></path>
+                    </svg>
+            </fast-button>    
+        </fast-carousel>
+    </div>
+
+    <h4>Slotted Items, Tabbable Content, Basic (Not Tabbed)</h4>
+    <div>
+        <fast-carousel aria-label="test images" tabbed="false">
+            <fast-carousel-test-slide even><button>Slide 1</button></fast-carousel-test-slide>
+            <fast-carousel-test-slide><button>Slide 2</button></fast-carousel-test-slide>
+            <fast-carousel-test-slide even><button>Slide 3</button></fast-carousel-test-slide>
+            <fast-carousel-test-slide><button>Slide 4</button></fast-carousel-test-slide>
+            <fast-carousel-test-slide even><button>Slide 5</button></fast-carousel-test-slide>
+            <fast-carousel-test-slide><button>Slide 6</button></fast-carousel-test-slide>
+            <fast-button appearance="accent" slot="next-button">
+                    <svg viewBox="0 0 16 16" width="16px" height="16px" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M15.9531 8L8.60156 15.3516L7.89844 14.6484L14.0469 8.5H0V7.5H14.0469L7.89844 1.35156L8.60156 0.648438L15.9531 8Z"></path>
+                    </svg>
+                </fast-button>    
+            <fast-button appearance="accent" slot="previous-button">
+                    <svg viewBox="0 0 16 16" width="16px" height="16px" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M16 8.5H1.95312L8.10156 14.6484L7.39844 15.3516L0.046875 8L7.39844 0.648438L8.10156 1.35156L1.95312 7.5H16V8.5Z"></path>
+                    </svg>
+            </fast-button>    
+        </fast-carousel>
+    </div>
 
     <h4>Basic (Not Tabbed), Width 700px, Height 300px, ARIA label tests</h4>
     <div>
@@ -166,5 +209,4 @@
             <fast-carousel-test-slide>Slide 40</fast-carousel-test-slide>
         </fast-carousel>
     </div>
-
 </fast-design-system-provider>

@@ -26,14 +26,13 @@ const tabbedTemplate: ViewTemplate = html<Carousel>`
         ${x => html<Carousel>`
             ${x.filteredItems.map((item: HTMLElement, index) => {
                 return `<div
-                    slot="tabpanel"
-                    id="${tabPanelPrefix}${index + 1}"
-                    class="slide"
-                    role="tabpanel"
-                    ${ref("activeSlide")}
-                    >
-                        ${item.outerHTML}
-                    </div>`;
+                slot="tabpanel"
+                id="${tabPanelPrefix}${index + 1}"
+                class="slide"
+                role="tabpanel"
+                >
+                    ${item.outerHTML}
+                </div>`;
             })}
         `}
     </fast-tabs>
@@ -50,20 +49,12 @@ export const CarouselTemplate = html<Carousel>`
     ${ref("carousel")}
 >
     <div
-        style="${x => (x.tabbed ? "display: none;" : "")}"
-        aria-atomic="false"
-        aria-live="${x => (x.autoplay && !x.paused ? "off" : "polite")}"
-    >
-        <slot ${slotted("items")}></slot>
-    </div>
-
-    <div
         class="rotation-control"
         aria-label="${x =>
             x.paused
                 ? "start automatic slide rotation"
                 : "stop automatic slide rotation"}"
-        @click="${(x, c) => x.handleRotationClick(c.event)}"
+        ${ref("rotationControl")}
     >
         <slot name="rotation-control" part="rotation-control">
             <fast-button appearance="neutral">
@@ -73,21 +64,31 @@ export const CarouselTemplate = html<Carousel>`
     </div>
     <div 
         class="previous-flipper flipper"
-        @click="${(x, c) => x.handleFlipperClick(-1, c.event as MouseEvent)}"
-        @keypress="${(x, c) => x.handleFlipperKeypress(-1, c.event as KeyboardEvent)}"
+        @click=${(x, c) => x.handleFlipperClick(-1, c.event as MouseEvent)}
+        @keypress=${(x, c) => x.handleFlipperKeypress(-1, c.event as KeyboardEvent)}
     >
-        <slot name="previous-button" part="previous-button" ${slotted("previousButton")}>
+        <slot name="previous-button" part="previous-button" ${slotted(
+            "previousButtonItem"
+        )}>
             <fast-flipper tabindex="${x => (x.tabbed ? "-1" : "0")}" direction=${
     FlipperDirection.previous
 }>
         </slot>
     </div>
     <div
-        class="next-flipper flipper"
-        @click="${(x, c) => x.handleFlipperClick(1, c.event as MouseEvent)}"
-        @keypress="${(x, c) => x.handleFlipperKeypress(1, c.event as KeyboardEvent)}"
+        style="${x => (x.tabbed ? "display: none;" : "")}"
+        aria-atomic="false"
+        aria-live="${x => (x.autoplay && !x.paused ? "off" : "polite")}"
     >
-        <slot name="next-button" part="next-button" ${slotted("nextButton")}>
+        <slot ${slotted("items")}></slot>
+    </div>
+
+    <div
+        class="next-flipper flipper"
+        @click=${(x, c) => x.handleFlipperClick(1, c.event as MouseEvent)}
+        @keypress=${(x, c) => x.handleFlipperKeypress(1, c.event as KeyboardEvent)}
+    >
+        <slot name="next-button" part="next-button" ${slotted("nextButtonItem")}>
             <fast-flipper tabindex="${x => (x.tabbed ? "-1" : "0")}" direction=${
     FlipperDirection.next
 }>
