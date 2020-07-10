@@ -98,7 +98,8 @@ export const MenuItemStyles = css`
         css`
             :host {
                 border-color: transparent;
-                forced-color-adjust: none;
+                color: ${SystemColors.ButtonText};
+                fill: ${SystemColors.ButtonText};
             }
             :host(:hover) {
                 background: ${SystemColors.Highlight};
