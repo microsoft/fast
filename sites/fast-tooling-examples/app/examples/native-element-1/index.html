@@ -1,33 +1,21 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <%= htmlWebpackPlugin.tags.headTags %>
+        <title><%= htmlWebpackPlugin.options.title %></title>
+        <%= htmlWebpackPlugin.options.manifest %>
+    </head>
 
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <%= htmlWebpackPlugin.tags.headTags %>
-    <title><%= htmlWebpackPlugin.options.title %></title>
-    <%= htmlWebpackPlugin.options.manifest %>
-</head>
-
-<body>
-    <div id="root">
-        <input id="text" />
-        <pre id="data-dictionary"></pre>
-    </div>
-    <%= htmlWebpackPlugin
-        .tags
-        .bodyTags
-        .filter(
-            (tag) => 
-                tag.attributes.src.includes('exampleNativeElement1')
-                || !(
-                    tag.attributes.src.startsWith('main')
-                    || tag.attributes.src.startsWith('/example')
-                    || tag.attributes.src.startsWith('/vendors~example')
-                )
-        )
-        .join('')
-    %>
-</body>
-
+    <body>
+        <div id="root">
+            <input id="text" />
+            <pre id="data-dictionary"></pre>
+        </div>
+        <%= htmlWebpackPlugin .tags .bodyTags .filter( (tag) =>
+        tag.attributes.src.includes('exampleNativeElement1') || !(
+        tag.attributes.src.startsWith('main') || tag.attributes.src.startsWith('/example')
+        || tag.attributes.src.startsWith('/vendors~example') ) ) .join('') %>
+    </body>
 </html>

@@ -1,142 +1,125 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <%= htmlWebpackPlugin.tags.headTags %>
+        <title><%= htmlWebpackPlugin.options.title %></title>
+        <%= htmlWebpackPlugin.options.manifest %>
+    </head>
 
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <%= htmlWebpackPlugin.tags.headTags %>
-    <title><%= htmlWebpackPlugin.options.title %></title>
-    <%= htmlWebpackPlugin.options.manifest %>
-</head>
-
-<body>
-    <fast-design-system-provider id="design-system" use-defaults no-paint>
-        <div class="main">
-            <div class="toolbar">
-                <div class="toolbar-logo">
-                    <fast-anchor
-                        href="/"
-                        appearance="lightweight"
-                    >
-
-                        <img src="<%= require('@microsoft/site-utilities/statics/assets/fast-inline-logo.png') %>" />
-                        <span>Tooling Examples</span>
-                    </fast-anchor>
+    <body>
+        <fast-design-system-provider id="design-system" use-defaults no-paint>
+            <div class="main">
+                <div class="toolbar">
+                    <div class="toolbar-logo">
+                        <fast-anchor href="/" appearance="lightweight">
+                            <img
+                                src="<%= require('@microsoft/site-utilities/statics/assets/fast-inline-logo.png') %>"
+                            />
+                            <span>Tooling Examples</span>
+                        </fast-anchor>
+                    </div>
+                    <div class="toolbar-links">
+                        <fast-anchor
+                            href="https://github.com/microsoft/fast/tree/master/packages/tooling"
+                            appearance="lightweight"
+                        >
+                            GitHub
+                        </fast-anchor>
+                    </div>
                 </div>
-                <div class="toolbar-links">
-                    <fast-anchor
-                        href="https://github.com/microsoft/fast/tree/master/packages/tooling"
-                        appearance="lightweight"
-                    >
-                        GitHub
-                    </fast-anchor>
+                <div class="menu">
+                    <fast-badge fill="primary" color="text">
+                        ALPHA
+                    </fast-badge>
+                    <div>
+                        <h2 class="category-title">
+                            Tooling
+                        </h2>
+                        <!-- examples using @microsoft/fast-tooling -->
+                        <ul>
+                            <li>
+                                <fast-anchor
+                                    href="/tooling-guidance"
+                                    appearance="hypertext"
+                                >
+                                    Guidance
+                                </fast-anchor>
+                            </li>
+                            <li>
+                                <fast-anchor
+                                    href="/native-element-1"
+                                    appearance="hypertext"
+                                >
+                                    Simple Message System
+                                </fast-anchor>
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h2 class="category-title">
+                            React Tooling
+                        </h2>
+                        <!-- examples using @microsoft/fast-tooling-react -->
+                        <ul>
+                            <li>
+                                <fast-anchor
+                                    href="/tooling-react-guidance"
+                                    appearance="hypertext"
+                                >
+                                    Guidance
+                                </fast-anchor>
+                            </li>
+                            <li>
+                                <fast-anchor href="/react-1" appearance="hypertext">
+                                    Simple Form
+                                </fast-anchor>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-            </div>
-            <div class="menu">
-                <fast-badge
-                    fill="primary"
-                    color="text"
-                >
-                    ALPHA
-                </fast-badge>
-                <div>
-                    <h2 class="category-title">
-                        Tooling
-                    </h2>
-                    <!-- examples using @microsoft/fast-tooling -->
-                    <ul>
-                        <li>
-                            <fast-anchor
-                                href="/tooling-guidance"
-                                appearance="hypertext"
-                            >
-                                Guidance
-                            </fast-anchor>
-                        </li>
-                        <li>
-                            <fast-anchor
-                                href="/native-element-1"
-                                appearance="hypertext"
-                            >
-                                Simple Message System
-                            </fast-anchor>
-                        </li>
-                    </ul>
-                </div>
-                <div>
-                    <h2 class="category-title">
-                        React Tooling
-                    </h2>
-                    <!-- examples using @microsoft/fast-tooling-react -->
-                    <ul>
-                        <li>
-                            <fast-anchor
-                                href="/tooling-react-guidance"
-                                appearance="hypertext"
-                            >
-                                Guidance
-                            </fast-anchor>
-                        </li>
-                        <li>
-                            <fast-anchor
-                                href="/react-1"
-                                appearance="hypertext"
-                            >
-                                Simple Form
-                            </fast-anchor>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <div class="content">
-                <div id="text">
-                    <h1 class="content-title">
-                        Tooling Examples
-                    </h1>
-                    <fast-divider role="presentation"></fast-divider>
-                    <h2 class="content-subtitle">
-                        Showcasing common use cases for <code>@microsoft/fast-tooling</code> and <code>@microsoft/fast-tooling-react</code>
-                    </h2>
-                    <p class="content-paragraph">
-                        The examples in this site serve to better illustrate:
-                    </p>
-                    <ul class="content-list">
-                        <li>
-                            How to use the message system
-                        </li>
-                        <li>
-                            How to use the available React components
-                        </li>
-                    </ul>
-                    <p class="content-paragraph">
-                        Additionally each example is encapsulated in its own folder which can be copied as used as a starting point.
-                    </p>
-                </div>
-                <div id="tabs">
-                    <fast-tabs>
-                        <fast-tab data-id="iframe-tab"></fast-tab>
-                        <fast-tab data-id="code-embed-tab"></fast-tab>
-                        <fast-tab-panel data-id="iframe-panel"></fast-tab-panel>
-                        <fast-tab-panel data-id="code-embed-panel"></fast-tab-panel>
-                    </fast-tabs>
+                <div class="content">
+                    <div id="text">
+                        <h1 class="content-title">
+                            Tooling Examples
+                        </h1>
+                        <fast-divider role="presentation"></fast-divider>
+                        <h2 class="content-subtitle">
+                            Showcasing common use cases for
+                            <code>@microsoft/fast-tooling</code> and
+                            <code>@microsoft/fast-tooling-react</code>
+                        </h2>
+                        <p class="content-paragraph">
+                            The examples in this site serve to better illustrate:
+                        </p>
+                        <ul class="content-list">
+                            <li>
+                                How to use the message system
+                            </li>
+                            <li>
+                                How to use the available React components
+                            </li>
+                        </ul>
+                        <p class="content-paragraph">
+                            Additionally each example is encapsulated in its own folder
+                            which can be copied as used as a starting point.
+                        </p>
+                    </div>
+                    <div id="tabs">
+                        <fast-tabs>
+                            <fast-tab data-id="iframe-tab"></fast-tab>
+                            <fast-tab data-id="code-embed-tab"></fast-tab>
+                            <fast-tab-panel data-id="iframe-panel"></fast-tab-panel>
+                            <fast-tab-panel data-id="code-embed-panel"></fast-tab-panel>
+                        </fast-tabs>
                     </div>
                 </div>
             </div>
-        </div>
-    </fast-design-system-provider>
-    <%= htmlWebpackPlugin
-        .tags
-        .bodyTags
-        .filter(
-            (tag) => 
-                tag.attributes.src.includes('main')
-                || !(
-                    tag.attributes.src.startsWith('/example')
-                    || tag.attributes.src.startsWith('/vendors~example')
-                )
-        )
-        .join('')
-    %>
-</body>
-
+        </fast-design-system-provider>
+        <%= htmlWebpackPlugin .tags .bodyTags .filter( (tag) =>
+        tag.attributes.src.includes('main') || !(
+        tag.attributes.src.startsWith('/example') ||
+        tag.attributes.src.startsWith('/vendors~example') ) ) .join('') %>
+    </body>
 </html>

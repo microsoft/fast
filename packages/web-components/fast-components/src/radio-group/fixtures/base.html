@@ -4,7 +4,9 @@
     <h4>Defaults</h4>
     <div>
         <fast-radio-group name="numbers">
-            <label style="color: ${neutralForegroundRestBehavior.var};" slot="label">Numbers</label>
+            <label style="color: ${neutralForegroundRestBehavior.var};" slot="label"
+                >Numbers</label
+            >
             <fast-radio value="one">One</fast-radio>
             <fast-radio value="two">Two</fast-radio>
         </fast-radio-group>
@@ -12,7 +14,9 @@
 
     <div>
         <fast-radio-group orientation="vertical" name="trees">
-            <label style="color: ${neutralForegroundRestBehavior.var};" slot="label">Trees</label>
+            <label style="color: ${neutralForegroundRestBehavior.var};" slot="label"
+                >Trees</label
+            >
             <fast-radio value="fir">Fir</fast-radio>
             <fast-radio value="juniper">Juniper</fast-radio>
             <fast-radio value="hemlock">Hemlock</fast-radio>
@@ -20,20 +24,26 @@
         </fast-radio-group>
     </div>
 
-    <div style="display: flex; flex-direction: column;margin-top: 12px;">
+    <div style="display: flex; flex-direction: column; margin-top: 12px;">
         <fast-radio-group name="players">
-            <label style="color: ${neutralForegroundRestBehavior.var};" slot="label">Best basketball players</label>
+            <label style="color: ${neutralForegroundRestBehavior.var};" slot="label"
+                >Best basketball players</label
+            >
             <fast-radio value="airjordan">Michael Jordan</fast-radio>
         </fast-radio-group>
     </div>
 
-    <div style="display: flex; flex-direction: column;margin-top: 12px;">
-        <label style="color: ${neutralForegroundRestBehavior.var};">Single radio (no group)</label>
+    <div style="display: flex; flex-direction: column; margin-top: 12px;">
+        <label style="color: ${neutralForegroundRestBehavior.var};"
+            >Single radio (no group)</label
+        >
         <fast-radio value="single-life">Single life</fast-radio>
     </div>
 
-    <div style="display: flex; flex-direction: column;margin-top: 12px;">
-        <label style="color: ${neutralForegroundRestBehavior.var};" id="label1">Outside label</label>
+    <div style="display: flex; flex-direction: column; margin-top: 12px;">
+        <label style="color: ${neutralForegroundRestBehavior.var};" id="label1"
+            >Outside label</label
+        >
         <fast-radio-group required="true" aria-labelledby="label1" name="fruits">
             <fast-radio value="apples">Apples</fast-radio>
             <fast-radio value="oranges">Oranges</fast-radio>
@@ -47,36 +57,44 @@
         </fast-radio-group>
     </div>
 
-    <div role="toolbar" style="display: flex; flex-direction: column;margin-top: 12px;">
-        <div style="display: flex; flex-direction: row; align-items: stretch; width: 100%">
-            <button style="width: 40px;margin-right: 4px;">go</button>
+    <div role="toolbar" style="display: flex; flex-direction: column; margin-top: 12px;">
+        <div
+            style="display: flex; flex-direction: row; align-items: stretch; width: 100%;"
+        >
+            <button style="width: 40px; margin-right: 4px;">go</button>
             <fast-radio-group required="true" name="navigation">
                 <fast-radio value="back">back</fast-radio>
                 <fast-radio value="forward">forward</fast-radio>
                 <fast-radio value="refresh">refresh</fast-radio>
             </fast-radio-group>
-            <button style="width: 40px;margin-left: 4px;">stop</button>            
+            <button style="width: 40px; margin-left: 4px;">stop</button>
         </div>
     </div>
 
-    <div style="display: flex; flex-direction: column;margin-top: 12px;">
-        <label style="color: ${neutralForegroundRestBehavior.var};" id="label2">Disabled radio group</label>
+    <div style="display: flex; flex-direction: column; margin-top: 12px;">
+        <label style="color: ${neutralForegroundRestBehavior.var};" id="label2"
+            >Disabled radio group</label
+        >
         <fast-radio-group disabled aria-labelledby="label2" name="cars">
             <fast-radio value="lambo">Lamborghini</fast-radio>
             <fast-radio value="ferari">Ferari</fast-radio>
         </fast-radio-group>
     </div>
 
-    <div style="display: flex; flex-direction: column;margin-top: 12px;">
-        <label style="color: ${neutralForegroundRestBehavior.var};" id="label3">readonly radio group</label>
+    <div style="display: flex; flex-direction: column; margin-top: 12px;">
+        <label style="color: ${neutralForegroundRestBehavior.var};" id="label3"
+            >readonly radio group</label
+        >
         <fast-radio-group readonly aria-labelledby="label3" name="office">
             <fast-radio value="word">Word</fast-radio>
             <fast-radio value="excel">Excel</fast-radio>
         </fast-radio-group>
     </div>
 
-    <div style="display: flex; flex-direction: column;margin-top: 12px;">
-        <label style="color: ${neutralForegroundRestBehavior.var};" id="label4">Preset selected-value</label>
+    <div style="display: flex; flex-direction: column; margin-top: 12px;">
+        <label style="color: ${neutralForegroundRestBehavior.var};" id="label4"
+            >Preset selected-value</label
+        >
         <fast-radio-group value="maverick" aria-labelledby="label4" name="best-pilot">
             <fast-radio value="ice-man">Ice Man</fast-radio>
             <fast-radio value="maverick">Maverick</fast-radio>

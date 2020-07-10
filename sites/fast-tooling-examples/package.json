@@ -19,8 +19,8 @@
   "scripts": {
     "build": "webpack --progress --mode=production",
     "convert:readme": "node ./build/convert-readme.js",
-    "prettier": "prettier --config ../../.prettierrc --write \"**/*.ts\"",
-    "prettier:diff": "prettier --config ../../.prettierrc \"**/*.ts\" --list-different",
+    "prettier": "prettier --config ../../.prettierrc --write \"**/*.{ts,html}\"",
+    "prettier:diff": "prettier --config ../../.prettierrc \"**/*.{ts,html}\" --list-different",
     "eslint": "eslint . --ext .ts",
     "eslint:fix": "eslint . --ext .ts --fix",
     "start": "webpack-dev-server",
