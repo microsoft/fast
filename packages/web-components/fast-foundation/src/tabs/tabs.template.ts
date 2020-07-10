@@ -7,7 +7,7 @@ import { Tabs } from "./tabs";
  * @public
  */
 export const TabsTemplate = html<Tabs>`
-    <template role="tabs" class="${x => x.orientation}">
+    <template class="${x => x.orientation}">
         ${startTemplate}
         <div class="tablist" part="tablist" role="tablist">
             <slot class="tab" name="tab" part="tab" ${slotted("tabs")}></slot>
