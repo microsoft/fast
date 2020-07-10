@@ -37,9 +37,6 @@ import { MyAccordionStyles as styles } from "./accordion.styles";
     name: "fast-accordion",
     template,
     styles,
-    shadowOptions: {
-        delegatesFocus: true,
-    },
 })
 export class FASTAccordion extends Accordion {}
 ```
@@ -55,9 +52,6 @@ import { MyAccordionItemStyles as styles } from "./accordion-item.styles";
     name: "fast-accordion-item",
     template,
     styles,
-    shadowOptions: {
-        delegatesFocus: true,
-    },
 })
 export class FASTAccordionItem extends AccordionItem {}
 ```
