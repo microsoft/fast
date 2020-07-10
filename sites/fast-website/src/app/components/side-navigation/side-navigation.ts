@@ -26,7 +26,7 @@ export class SideNavigation extends FASTElement {
     public previousY: number = 0;
 
     public socialData: CommunityContentPlacementData[] = communityContentPlacementData.filter(
-        x => x.header !== "Github"
+        x => x.header !== "GitHub"
     );
 
     reduceFunc = (prev: sectionData, current: sectionData) =>
