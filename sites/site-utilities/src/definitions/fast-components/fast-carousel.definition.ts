@@ -59,7 +59,14 @@ export const fastCarouselDefinition: WebComponentDefinition = {
                 },
                 {
                     name: "tabbed",
-                    description: "The tabbbed attribute",
+                    description: "The tabbed attribute",
+                    type: DataType.boolean,
+                    default: true,
+                    required: false,
+                },
+                {
+                    name: "focused",
+                    description: "The focused attribute",
                     type: DataType.boolean,
                     default: true,
                     required: false,
