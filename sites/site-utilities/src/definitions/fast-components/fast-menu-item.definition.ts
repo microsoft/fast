@@ -17,9 +17,9 @@ export const fastMenuItemDefinition: WebComponentDefinition = {
                     required: false,
                 },
                 {
-                    name: "aria-expanded",
+                    name: "expanded",
                     type: DataType.boolean,
-                    description: "The aria-expanded attribute",
+                    description: "The expanded attribute",
                     default: true,
                     required: false,
                 },
