@@ -60,7 +60,7 @@ export const FastFrameTemplate = html<FastFrame>`
                                     html<string>`
                                         <site-color-swatch
                                             tabindex="0"
-                                            aria-label="${x => x}"
+                                            aria-label="background color ${x => x}"
                                             value="${x => x}"
                                             background-color="${x => x}"
                                             checked="${(x, c) =>
@@ -83,7 +83,7 @@ export const FastFrameTemplate = html<FastFrame>`
                                     html<string>`
                                         <site-color-swatch
                                             tabindex="0"
-                                            aria-label="${x => x}"
+                                            aria-label="accent color ${x => x}"
                                             value="${x => x}"
                                             background-color="${x => x}"
                                             checked="${(x, c) =>
