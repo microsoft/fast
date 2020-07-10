@@ -8,17 +8,41 @@ FAST exposes a mechanism to attach stylesheets conditionally based on a [MatchMe
 
 ### MatchMedia stylesheets
 
-`matchMediaStylesheetBehaviorFactory` can be used to construct a Behavior that will conditionally attach stylesheets based on the `matches` property of a [MediaQueryList](https://developer.mozilla.org/en-US/docs/Web/API/MediaQueryList).
+`matchMediaStylesheetBehavior` can be used to attach a stylesheet when a [MediaQueryList](https://developer.mozilla.org/en-US/docs/Web/API/MediaQueryList) matches and detach it when the query un-matches.
 
-__Example: Using the `matchMediaStylesheetBehaviorFactory`__
-```js
-import { matchMediaStylesheetBehaviorFactory } from "@microsoft/fast-foundation";
-const query = Window.matchMedia('(max-width: 600px)');
-const maxWidthStylesheetBehavior = matchMediaStylesheetBehaviorFactory(query)
+__Example: Constructing the `MatchMediaStyleSheetBehavior`__
+```ts
+import { MatchMediaStyleSheetBehavior } from "@microsoft/fast-foundation";
+
+const behavior = new MatchMediaStyleSheetBehavior(
+    Window.matchMedia('(max-width: 600px)'),
+    css`
+        body {
+            color: red;
+        }
+    `
+));
+
 const styles = css`
     /* ... */
 `.withBehaviors(
-    maxWidthStylesheetBehavior(css`
+    behavior    
+)
+```
+
+`MatchMediaStyleSheetBehavior` can also be used to curry the [MediaQueryList](https://developer.mozilla.org/en-US/docs/Web/API/MediaQueryList). This can be useful for defining commonly-used `MatchMediaStyleSheetBehavior`:
+
+__Example: Re-using a commonly used query__
+```js
+import { MatchMediaStyleSheetBehavior } from "@microsoft/fast-foundation";
+
+const mobileStylesheetBehavior = MatchMediaStyleSheetBehavior.with(
+    Window.matchMedia('(max-width: 600px)')
+);
+const styles = css`
+    /* ... */
+`.withBehaviors(
+    mobileBehavior(css`
         body {
             color: red;
         }
@@ -46,5 +70,3 @@ const styles = css`
     `)
 )
 ```
-
-
