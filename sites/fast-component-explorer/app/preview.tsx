@@ -99,61 +99,63 @@ class Preview extends Foundation<
     }
 
     private handleMessage = (message: MessageEvent): void => {
-        let messageData: unknown;
+        if (message.origin === location.origin) {
+            let messageData: unknown;
 
-        try {
-            messageData = JSON.parse(message.data);
+            try {
+                messageData = JSON.parse(message.data);
 
-            /* eslint-disable-next-line no-empty */
-        } catch (e) {}
+                /* eslint-disable-next-line no-empty */
+            } catch (e) {}
 
-        if (messageData !== undefined) {
-            switch ((messageData as MessageSystemOutgoing).type) {
-                case MessageSystemType.initialize:
-                    this.setState(
-                        {
-                            dataDictionary: (messageData as InitializeMessageOutgoing)
-                                .dataDictionary,
-                            schemaDictionary: (messageData as InitializeMessageOutgoing)
-                                .schemaDictionary,
-                        },
-                        this.attachMappedComponents
-                    );
-                    break;
-                case MessageSystemType.data:
-                    this.setState(
-                        {
-                            dataDictionary: (messageData as DataMessageOutgoing)
-                                .dataDictionary,
-                        },
-                        this.attachMappedComponents
-                    );
-                    break;
-                case MessageSystemType.custom:
-                    if ((messageData as any).id === previewBackgroundTransparency) {
+            if (messageData !== undefined) {
+                switch ((messageData as MessageSystemOutgoing).type) {
+                    case MessageSystemType.initialize:
                         this.setState(
                             {
-                                transparentBackground: (messageData as any).value,
+                                dataDictionary: (messageData as InitializeMessageOutgoing)
+                                    .dataDictionary,
+                                schemaDictionary: (messageData as InitializeMessageOutgoing)
+                                    .schemaDictionary,
                             },
                             this.attachMappedComponents
                         );
-                    } else if ((messageData as any).id === previewDirection) {
+                        break;
+                    case MessageSystemType.data:
                         this.setState(
                             {
-                                direction: (messageData as any).value,
+                                dataDictionary: (messageData as DataMessageOutgoing)
+                                    .dataDictionary,
                             },
                             this.attachMappedComponents
                         );
-                    } else if ((messageData as any).id === previewTheme) {
-                        this.setState(
-                            {
-                                theme: (messageData as any).value,
-                            },
-                            this.attachMappedComponents
-                        );
-                    }
+                        break;
+                    case MessageSystemType.custom:
+                        if ((messageData as any).id === previewBackgroundTransparency) {
+                            this.setState(
+                                {
+                                    transparentBackground: (messageData as any).value,
+                                },
+                                this.attachMappedComponents
+                            );
+                        } else if ((messageData as any).id === previewDirection) {
+                            this.setState(
+                                {
+                                    direction: (messageData as any).value,
+                                },
+                                this.attachMappedComponents
+                            );
+                        } else if ((messageData as any).id === previewTheme) {
+                            this.setState(
+                                {
+                                    theme: (messageData as any).value,
+                                },
+                                this.attachMappedComponents
+                            );
+                        }
 
-                    break;
+                        break;
+                }
             }
         }
     };

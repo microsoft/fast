@@ -49,7 +49,7 @@ class WebComponentViewerContent extends React.Component<
     }
 
     private handlePostMessage = (e: MessageEvent): void => {
-        if (typeof e.data === "string") {
+        if (e.origin === location.origin && typeof e.data === "string") {
             try {
                 const parsedJSON = JSON.parse(e.data);
 
