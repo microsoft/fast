@@ -29,6 +29,8 @@ import { TabPanel } from '@microsoft/fast-foundation';
 import { Tabs } from '@microsoft/fast-foundation';
 import { TextArea } from '@microsoft/fast-foundation';
 import { TextField } from '@microsoft/fast-foundation';
+import { TreeItem } from '@microsoft/fast-foundation';
+import { TreeView } from '@microsoft/fast-foundation';
 
 // Warning: (ae-internal-missing-underscore) The name "AccentButtonStyles" should be prefixed with an underscore because the declaration is marked as @internal
 //
@@ -353,6 +355,14 @@ export class FASTTextArea extends TextArea {
 
 // @public
 export class FASTTextField extends TextField {
+}
+
+// @public (undocumented)
+export class FASTTreeItem extends TreeItem {
+}
+
+// @public (undocumented)
+export class FASTTreeView extends TreeView {
 }
 
 // @public

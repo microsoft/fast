@@ -100,7 +100,6 @@ export class BaseProgress extends FASTElement {
 //
 // @public
 export class Button extends FormAssociated<HTMLInputElement> {
-    constructor();
     autofocus: boolean;
     // @internal (undocumented)
     connectedCallback(): void;
@@ -401,7 +400,6 @@ export const ProgressTemplate: import("@microsoft/fast-element").ViewTemplate<Ba
 
 // @public
 export class Radio extends FormAssociated<HTMLInputElement> implements RadioControl {
-    constructor();
     checked: boolean;
     checkedAttribute: boolean;
     // @internal (undocumented)
@@ -451,7 +449,6 @@ export const RadioTemplate: import("@microsoft/fast-element").ViewTemplate<Radio
 
 // @public
 export class Slider extends FormAssociated<HTMLInputElement> implements SliderConfiguration {
-    constructor();
     // @internal (undocumented)
     connectedCallback(): void;
     decrement: () => void;
@@ -563,7 +560,6 @@ export const startTemplate: import("@microsoft/fast-element").ViewTemplate<Start
 
 // @public
 export class Switch extends FormAssociated<HTMLInputElement> {
-    constructor();
     checked: boolean;
     checkedAttribute: boolean;
     // @internal (undocumented)
@@ -687,8 +683,6 @@ export const TextAreaTemplate: import("@microsoft/fast-element").ViewTemplate<Te
 //
 // @public
 export class TextField extends FormAssociated<HTMLInputElement> {
-    // @internal
-    constructor();
     appearance: TextFieldAppearance;
     autofocus: boolean;
     // @internal (undocumented)
