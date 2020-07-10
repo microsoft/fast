@@ -21,6 +21,12 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
+    - name: Install n
+      run: npm install -g n
+
+    - name: Update to latest Node
+      run: sudo n latest
+
     - name: Install Lerna
       run: sudo yarn global add lerna 
 
