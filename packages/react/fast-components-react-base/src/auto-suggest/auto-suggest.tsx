@@ -89,6 +89,11 @@ class AutoSuggest extends Foundation<
 
     public componentDidUpdate(prevProps: AutoSuggestProps): void {
         if (
+            this.props.isMenuOpen !== undefined &&
+            this.props.isMenuOpen !== prevProps.isMenuOpen
+        ) {
+            this.toggleMenu(this.props.isMenuOpen);
+        } else if (
             !this.state.isMenuOpen &&
             React.Children.count(this.renderChildren(prevProps.children)) === 0 &&
             React.Children.count(this.renderChildren()) > 0 &&

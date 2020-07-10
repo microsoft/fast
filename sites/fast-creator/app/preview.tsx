@@ -163,71 +163,73 @@ class Preview extends Foundation<{}, {}, PreviewState> {
     }
 
     private handleMessage = (message: MessageEvent): void => {
-        let messageData: unknown;
+        if (message.origin === location.origin) {
+            let messageData: unknown;
 
-        try {
-            messageData = JSON.parse(message.data);
-        } catch (e) {
-            return;
-        }
+            try {
+                messageData = JSON.parse(message.data);
+            } catch (e) {
+                return;
+            }
 
-        if (messageData !== undefined) {
-            switch ((messageData as MessageSystemOutgoing).type) {
-                case MessageSystemType.initialize:
-                    this.setState(
-                        {
-                            dataDictionary: (messageData as InitializeMessageOutgoing)
-                                .dataDictionary,
-                            schemaDictionary: (messageData as InitializeMessageOutgoing)
-                                .schemaDictionary,
-                            activeDictionaryId: (messageData as InitializeMessageOutgoing)
-                                .activeDictionaryId,
-                        },
-                        this.attachMappedComponents
-                    );
-                    break;
-                case MessageSystemType.data:
-                    this.setState(
-                        {
-                            dataDictionary: (messageData as DataMessageOutgoing)
-                                .dataDictionary,
-                        },
-                        this.attachMappedComponents
-                    );
-                    break;
-                case MessageSystemType.navigation:
-                    this.setState(
-                        {
-                            activeDictionaryId: (messageData as NavigationMessageOutgoing)
-                                .activeDictionaryId,
-                        },
-                        this.attachMappedComponents
-                    );
-                    break;
-                case MessageSystemType.custom:
-                    if ((messageData as any).id === previewDirection) {
+            if (messageData !== undefined) {
+                switch ((messageData as MessageSystemOutgoing).type) {
+                    case MessageSystemType.initialize:
                         this.setState(
                             {
-                                direction: (messageData as any).value,
+                                dataDictionary: (messageData as InitializeMessageOutgoing)
+                                    .dataDictionary,
+                                schemaDictionary: (messageData as InitializeMessageOutgoing)
+                                    .schemaDictionary,
+                                activeDictionaryId: (messageData as InitializeMessageOutgoing)
+                                    .activeDictionaryId,
                             },
                             this.attachMappedComponents
                         );
-                    } else if ((messageData as any).id === previewAccentColor) {
+                        break;
+                    case MessageSystemType.data:
                         this.setState(
                             {
-                                accentColor: (messageData as any).value,
+                                dataDictionary: (messageData as DataMessageOutgoing)
+                                    .dataDictionary,
                             },
                             this.attachMappedComponents
                         );
-                    } else if ((messageData as any).id === previewTheme) {
+                        break;
+                    case MessageSystemType.navigation:
                         this.setState(
                             {
-                                theme: (messageData as any).value,
+                                activeDictionaryId: (messageData as NavigationMessageOutgoing)
+                                    .activeDictionaryId,
                             },
                             this.attachMappedComponents
                         );
-                    }
-                    break;
+                        break;
+                    case MessageSystemType.custom:
+                        if ((messageData as any).id === previewDirection) {
+                            this.setState(
+                                {
+                                    direction: (messageData as any).value,
+                                },
+                                this.attachMappedComponents
+                            );
+                        } else if ((messageData as any).id === previewAccentColor) {
+                            this.setState(
+                                {
+                                    accentColor: (messageData as any).value,
+                                },
+                                this.attachMappedComponents
+                            );
+                        } else if ((messageData as any).id === previewTheme) {
+                            this.setState(
+                                {
+                                    theme: (messageData as any).value,
+                                },
+                                this.attachMappedComponents
+                            );
+                        }
+                        break;
+                }
             }
         }
     };
