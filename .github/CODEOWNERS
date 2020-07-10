@@ -46,9 +46,10 @@ build/ @janechu @nicholasrice @chrisdholt @awentzel @EisenbergEffect
 /packages/react/fast-storybook-presets/ @nicholasrice @chrisdholt @janechu
 
 # Tooling
-/packages/tooling/fast-figma-plugin-msft/ @nicholasrice @bheston @janechu
-/packages/tooling/fast-tooling-react/ @janechu @nicholasrice @chrisdholt
-/packages/tooling/fast-tooling/ @janechu @nicholasrice @chrisdholt
+/packages/tooling/fast-figma-plugin-msft/ @nicholasrice @bheston @janechu @EisenbergEffect
+/packages/tooling/fast-tooling-react/ @janechu @nicholasrice @chrisdholt @EisenbergEffect
+/packages/tooling/fast-tooling-wasm/ @janechu @nicholasrice @chrisdholt @EisenbergEffect
+/packages/tooling/fast-tooling/ @janechu @nicholasrice @chrisdholt @EisenbergEffect
 
 # Utilities
 /packages/utilities/fast-animation/ @nicholasrice @chrisdholt
