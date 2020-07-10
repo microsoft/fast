@@ -41,7 +41,7 @@ export class FASTButton extends Button {
      * HTML Attribute: appearance
      */
     @attr
-    public appearance: ButtonAppearance = "neutral";
+    public appearance: ButtonAppearance;
     public appearanceChanged(
         oldValue: ButtonAppearance,
         newValue: ButtonAppearance
@@ -49,6 +49,14 @@ export class FASTButton extends Button {
         if (oldValue !== newValue) {
             this.classList.add(newValue);
             this.classList.remove(oldValue);
+        }
+    }
+
+    public connectedCallback() {
+        super.connectedCallback();
+
+        if (!this.appearance) {
+            this.appearance = "neutral";
         }
     }
 }
