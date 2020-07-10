@@ -49,7 +49,14 @@ export class Menu extends FASTElement {
     public connectedCallback(): void {
         super.connectedCallback();
         this.menuItems = this.domChildren();
-        this.setItems();
+    }
+
+    /**
+     * @internal
+     */
+    public disconnectedCallback(): void {
+        super.disconnectedCallback();
+        this.menuItems = [];
     }
 
     /**
@@ -64,7 +71,10 @@ export class Menu extends FASTElement {
     /**
      * @internal
      */
-    public handleMenuKeyDown(e: KeyboardEvent): void | boolean {
+    public handleMenuKeyDown(e: KeyboardEvent): void {
+        if (e.defaultPrevented) {
+            return;
+        }
         switch (e.keyCode) {
             case keyCodeArrowDown:
             case keyCodeArrowRight:
@@ -88,9 +98,6 @@ export class Menu extends FASTElement {
                 e.preventDefault();
                 this.setFocus(0, 1);
                 break;
-            default:
-                // if we are not handling the event, do not prevent default
-                return true;
         }
     }
 
