@@ -51,7 +51,7 @@ export abstract class Controller {
         this._selectedNode = ids;
 
         // Queue update
-        this.setPluginUIState(this.getPluginUIState());
+        this.sync(ids);
     }
 
     /**
@@ -103,6 +103,11 @@ export abstract class Controller {
         };
     }
 
+    public sync(nodeIds: string[]): void {
+        nodeIds.forEach(id => this.paintTree(id));
+        this.setPluginUIState(this.getPluginUIState());
+    }
+
     public handleMessage(message: UIMessage): void {
         switch (message.type) {
             case MessageTypes.recipe:
@@ -131,8 +136,7 @@ export abstract class Controller {
 
                 break;
             case MessageTypes.sync:
-                message.nodeIds.forEach(id => this.paintTree(id));
-                this.setPluginUIState(this.getPluginUIState());
+                this.sync(message.nodeIds);
                 break;
         }
     }
