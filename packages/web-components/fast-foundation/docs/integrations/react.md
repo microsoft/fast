@@ -5,7 +5,7 @@ sidebar_label: React
 custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-foundation/docs/integrations/react.md
 ---
 
-FAST can be used in React applications. Let's take a look at how you can set up an Project project, starting from scratch.
+FAST can be used in React applications. Let's take a look at how you can set up a project, starting from scratch.
 
 ## Setting up the React project
 
