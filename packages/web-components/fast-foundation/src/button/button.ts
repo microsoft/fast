@@ -144,17 +144,13 @@ export class Button extends FormAssociated<HTMLInputElement> {
 
     protected proxy: HTMLInputElement = document.createElement("input");
 
-    constructor() {
-        super();
-
-        this.proxy.setAttribute("type", `${this.type}`);
-    }
-
     /**
      * @internal
      */
     public connectedCallback(): void {
         super.connectedCallback();
+
+        this.proxy.setAttribute("type", `${this.type}`);
 
         this.setFormValue(this.value, this.value);
     }
