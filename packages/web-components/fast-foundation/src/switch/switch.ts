@@ -110,17 +110,13 @@ export class Switch extends FormAssociated<HTMLInputElement> {
      */
     private dirtyChecked: boolean = false;
 
-    constructor() {
-        super();
-
-        this.proxy.setAttribute("type", "checkbox");
-    }
-
     /**
      * @internal
      */
     public connectedCallback(): void {
         super.connectedCallback();
+
+        this.proxy.setAttribute("type", "checkbox");
 
         this.updateForm();
     }
