@@ -8,7 +8,7 @@
     "build": "tsc -p ./tsconfig.json",
     "clean:dist": "node ../../build/clean.js dist",
     "generate:icons": "node ./build/icons.js",
-    "prepare": "yarn clean:dist && yarn build && yarn run generate:icons",
+    "prepare": "yarn clean:dist && yarn build",
     "prettier": "prettier --config ../../.prettierrc --write \"**/*.{ts,tsx}\"",
     "prettier:diff": "prettier --config ../../.prettierrc \"**/*.{ts,tsx}\" --list-different",
     "test": "yarn eslint && yarn build",
