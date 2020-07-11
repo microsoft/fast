@@ -14,6 +14,7 @@ export const TreeViewTemplate = html<TreeView>`
         @focus="${(x, c) => x.handleFocus(c.event as FocusEvent)}"
         @blur="${(x, c) => x.handleBlur(c.event as FocusEvent)}"
     >
-        <slot ${slotted("slottedTreeItems")}></slot>
+        <slot></slot>
+        <slot name="item" ${slotted("slottedTreeItems")}></slot>
     </template>
 `;

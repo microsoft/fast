@@ -1,7 +1,7 @@
 <fast-design-system-provider use-defaults>
     <h4>With items (don't render collapsed nodes)</h4>
     <fast-tree-view render-collapsed-nodes="false">
-        <fast-tree-item>
+        <fast-tree-item slot="item">
             Root item
             <fast-tree-item slot="item">
                 Flowers
@@ -16,7 +16,7 @@
 
     <h4>Some expanded</h4>
     <fast-tree-view>
-        <fast-tree-item expanded>
+        <fast-tree-item slot="item" expanded>
             Root item
             <fast-tree-item slot="item" expanded>
                 Flowers
@@ -35,7 +35,7 @@
 
     <h4>Pre-selected tree item</h4>
     <fast-tree-view>
-        <fast-tree-item expanded>
+        <fast-tree-item slot="item" expanded>
             Root item
             <fast-tree-item slot="item">
                 Flowers
@@ -54,7 +54,7 @@
 
     <h4>With several nested items (expanded)</h4>
     <fast-tree-view>
-        <fast-tree-item expanded>
+        <fast-tree-item slot="item" expanded>
             Root item
             <svg
                 slot="start"
