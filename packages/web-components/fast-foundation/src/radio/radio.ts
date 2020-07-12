@@ -128,16 +128,14 @@ export class Radio extends FormAssociated<HTMLInputElement> implements RadioCont
      */
     private dirtyChecked: boolean = false;
 
-    constructor() {
-        super();
-        this.proxy.setAttribute("type", "radio");
-    }
-
     /**
      * @internal
      */
     public connectedCallback(): void {
         super.connectedCallback();
+
+        this.proxy.setAttribute("type", "radio");
+
         if (
             this.parentElement?.getAttribute("role") !== "radiogroup" &&
             this.getAttribute("tabindex") === null

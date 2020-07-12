@@ -120,7 +120,6 @@ export class Checkbox extends FormAssociated<HTMLInputElement> {
     constructor() {
         super();
 
-        this.proxy.setAttribute("type", "checkbox");
         this.constructed = true;
     }
 
@@ -129,6 +128,8 @@ export class Checkbox extends FormAssociated<HTMLInputElement> {
      */
     public connectedCallback(): void {
         super.connectedCallback();
+
+        this.proxy.setAttribute("type", "checkbox");
 
         this.updateForm();
     }
