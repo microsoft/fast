@@ -19,6 +19,8 @@ import { DesignSystemProvider } from '@microsoft/fast-foundation';
 import { Dialog } from '@microsoft/fast-foundation';
 import { Divider } from '@microsoft/fast-foundation';
 import { Flipper } from '@microsoft/fast-foundation';
+import { Menu } from '@microsoft/fast-foundation';
+import { MenuItem } from '@microsoft/fast-foundation';
 import { Radio } from '@microsoft/fast-foundation';
 import { RadioGroup } from '@microsoft/fast-foundation';
 import { Slider } from '@microsoft/fast-foundation';
@@ -307,6 +309,14 @@ export class FASTDivider extends Divider {
 
 // @public
 export class FASTFlipper extends Flipper {
+}
+
+// @public
+export class FASTMenu extends Menu {
+}
+
+// @public
+export class FASTMenuItem extends MenuItem {
 }
 
 // @public

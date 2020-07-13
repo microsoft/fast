@@ -67,7 +67,7 @@ export class Anchor extends FASTElement {
 }
 
 // @internal
-export interface Anchor extends StartEnd {
+export interface Anchor extends StartEnd, DelegatesARIALink {
 }
 
 // @public
@@ -75,6 +75,29 @@ export const AnchorTemplate: import("@microsoft/fast-element").ViewTemplate<Anch
 
 // @public
 export function applyMixins(derivedCtor: any, ...baseCtors: any[]): void;
+
+// @public
+export class ARIAGlobalStatesAndProperties {
+    ariaAtomic: "true" | "false";
+    ariaBusy: "true" | "false";
+    ariaControls: string;
+    ariaCurrent: "page" | "step" | "location" | "date" | "time" | "true" | "false" | string;
+    ariaDescribedby: string;
+    ariaDetails: string;
+    ariaDisabled: "true" | "false";
+    ariaErrormessage: string;
+    ariaFlowto: string;
+    ariaHaspopup: "false" | "true" | "menu" | "listbox" | "tree" | "grid" | "dialog";
+    ariaHidden: "false" | "true" | undefined;
+    ariaInvalid: "false" | "true" | "grammar" | "spelling";
+    ariaKeyshortcuts: string;
+    ariaLabel: string;
+    ariaLabelledby: string;
+    ariaLive: "assertive" | "off" | "polite";
+    ariaOwns: string;
+    ariaRelevant: "additions" | "additions text" | "all" | "removals" | "text";
+    ariaRoledescription: string;
+}
 
 // @public
 export class Badge extends FASTElement {
@@ -117,7 +140,7 @@ export class Button extends FormAssociated<HTMLInputElement> {
     }
 
 // @internal
-export interface Button extends StartEnd {
+export interface Button extends StartEnd, DelegatesARIAButton {
 }
 
 // @public
@@ -197,6 +220,21 @@ export interface DecoratorDesignSystemPropertyConfiguration extends Omit<Decorat
     attribute?: string | false;
     cssCustomProperty?: string | false;
     default: any;
+}
+
+// @public
+export class DelegatesARIAButton extends ARIAGlobalStatesAndProperties {
+    ariaExpanded: "true" | "false" | undefined;
+    ariaPressed: "true" | "false" | "mixed" | undefined;
+}
+
+// @public
+export class DelegatesARIALink extends ARIAGlobalStatesAndProperties {
+    ariaExpanded: "true" | "false" | undefined;
+}
+
+// @public
+export class DelegatesARIATextbox extends ARIAGlobalStatesAndProperties {
 }
 
 // @public
@@ -632,6 +670,9 @@ export const TabsTemplate: import("@microsoft/fast-element").ViewTemplate<Tabs, 
 // @public
 export const TabTemplate: import("@microsoft/fast-element").ViewTemplate<Tab, any>;
 
+// Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
+// Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "TextArea" because one of its declarations is marked as @internal
+//
 // @public
 export class TextArea extends FormAssociated<HTMLTextAreaElement> {
     appearance: TextAreaAppearance;
@@ -659,6 +700,10 @@ export class TextArea extends FormAssociated<HTMLTextAreaElement> {
     textarea: HTMLTextAreaElement;
     // @internal (undocumented)
     valueChanged(): void;
+}
+
+// @internal
+export interface TextArea extends DelegatesARIATextbox {
 }
 
 // @public
@@ -707,7 +752,7 @@ export class TextField extends FormAssociated<HTMLInputElement> {
     }
 
 // @internal
-export interface TextField extends StartEnd {
+export interface TextField extends StartEnd, DelegatesARIATextbox {
 }
 
 // @public

@@ -1,5 +1,5 @@
 import { attr, FASTElement } from "@microsoft/fast-element";
-import { StartEnd } from "../patterns/start-end";
+import { ARIAGlobalStatesAndProperties, StartEnd } from "../patterns/index";
 import { applyMixins } from "../utilities/apply-mixins";
 
 /**
@@ -83,11 +83,27 @@ export class Anchor extends FASTElement {
 }
 
 /**
+ * Includes ARIA states and properties relating to the ARIA link role
+ *
+ * @public
+ */
+export class DelegatesARIALink extends ARIAGlobalStatesAndProperties {
+    /**
+     * See {@link https://www.w3.org/WAI/PF/aria/roles#link} for more information
+     * @public
+     * @remarks
+     * HTML Attribute: aria-expanded
+     */
+    @attr({ attribute: "aria-expanded", mode: "fromView" })
+    public ariaExpanded: "true" | "false" | undefined;
+}
+
+/**
  * Mark internal because exporting class and interface of the same name
  * confuses API documenter.
  * TODO: https://github.com/microsoft/fast/issues/3317
  * @internal
  */
 /* eslint-disable-next-line */
-export interface Anchor extends StartEnd {}
-applyMixins(Anchor, StartEnd);
+export interface Anchor extends StartEnd, DelegatesARIALink {}
+applyMixins(Anchor, StartEnd, DelegatesARIALink);
