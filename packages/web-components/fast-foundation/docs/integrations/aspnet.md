@@ -86,7 +86,7 @@ With this in place, you can use any component in any of your views. For example,
 }
 
 <fast-card>
-  <h2>ViewData["Title"]</h2>
+  <h2>@ViewData["Title"]</h2>
   <fast-button id="button" appearance="accent">Click Me</fast-button>
 </fast-card>
 ```
