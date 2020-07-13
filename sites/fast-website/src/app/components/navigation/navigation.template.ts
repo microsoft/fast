@@ -17,8 +17,18 @@ export const NavigationTemplate = html<Navigation>`
             appearance="stealth"
             @click="${x => x.toggleOpened()}"
         >
-            ${when(x => !x.opened, html` ${MenuIcon} `)}
-            ${when(x => x.opened, html` ${CloseIcon} `)}
+            ${when(
+                x => !x.opened,
+                html`
+                    ${MenuIcon}
+                `
+            )}
+            ${when(
+                x => x.opened,
+                html`
+                    ${CloseIcon}
+                `
+            )}
         </fast-button>
         <nav>
             <slot></slot>

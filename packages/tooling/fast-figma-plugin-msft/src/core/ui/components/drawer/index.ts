@@ -42,8 +42,8 @@ const template = html`
         <div class="collapsed-content" role="region" id="collapsed-content">
             <slot name="collapsed-content"></slot>
         </div>
-        <template> </template
-    ></template>
+        <template></template>
+    </template>
 `;
 
 const styles = css`
