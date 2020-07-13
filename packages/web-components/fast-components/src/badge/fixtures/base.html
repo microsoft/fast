@@ -1,11 +1,11 @@
 <fast-design-system-provider use-defaults>
     <style>
         fast-badge {
-            --badge-fill-primary: #D223CB;
-            --badge-fill-secondary: #3278CD;
-            --badge-fill-tertiary: #DFDFDF;
-            --badge-fill-foo: #EE1010;
-            --badge-fill-bar: rgba(238,6,16,0.7);
+            --badge-fill-primary: #d223cb;
+            --badge-fill-secondary: #3278cd;
+            --badge-fill-tertiary: #dfdfdf;
+            --badge-fill-foo: #ee1010;
+            --badge-fill-bar: rgba(238, 6, 16, 0.7);
             --badge-color-foo: white;
             --badge-color-bar: black;
         }
@@ -15,7 +15,7 @@
             display: inline-flex;
             width: 50px;
             height: 50px;
-            background: #DFDFDF;
+            background: #dfdfdf;
             margin: 12px;
         }
 
@@ -40,13 +40,23 @@
     <h4>Default</h4>
     <fast-badge>Accent</fast-badge>
     <h4>Default with color map</h4>
-    <fast-badge fill="primary" style="font-size: 10px; line-height: 16px;" color="foo" id="foo">
+    <fast-badge
+        fill="primary"
+        style="font-size: 10px; line-height: 16px;"
+        color="foo"
+        id="foo"
+    >
         Badge
     </fast-badge>
     <fast-badge fill="secondary" color="foo" id="foo">
         Badge
     </fast-badge>
-    <fast-badge fill="tertiary" style="font-size: 14px; line-height: 20px;" color="bar" id="foo">
+    <fast-badge
+        fill="tertiary"
+        style="font-size: 14px; line-height: 20px;"
+        color="bar"
+        id="foo"
+    >
         Badge
     </fast-badge>
     <h4>Circular</h4>
@@ -62,13 +72,13 @@
     <h4>Examples</h4>
     <div>
         <div class="image-container">
-            <img src="https://placehold.it/120x140/DFDFDF/171717">
+            <img src="https://placehold.it/120x140/DFDFDF/171717" />
             <fast-badge class="image-badge" fill="foo" color="foo" id="foo">
                 Sale
             </fast-badge>
         </div>
         <div class="image-container">
-            <img src="https://placehold.it/140x140/DFDFDF/171717">
+            <img src="https://placehold.it/140x140/DFDFDF/171717" />
             <fast-badge class="image-badge" fill="secondary" color="foo" id="foo">
                 App of the day
             </fast-badge>
@@ -76,22 +86,46 @@
     </div>
     <div>
         <div class="icon">
-            <fast-badge class="icon-badge" circular="true" fill="bar" color="foo" id="foo">
+            <fast-badge
+                class="icon-badge"
+                circular="true"
+                fill="bar"
+                color="foo"
+                id="foo"
+            >
                 3
             </fast-badge>
         </div>
         <div class="icon">
-            <fast-badge class="icon-badge" circular="true" fill="bar" color="foo" id="foo">
+            <fast-badge
+                class="icon-badge"
+                circular="true"
+                fill="bar"
+                color="foo"
+                id="foo"
+            >
                 35000
             </fast-badge>
         </div>
         <div class="icon">
-            <fast-badge class="icon-badge" circular="true" fill="bar" color="foo" id="foo">
+            <fast-badge
+                class="icon-badge"
+                circular="true"
+                fill="bar"
+                color="foo"
+                id="foo"
+            >
                 999
             </fast-badge>
         </div>
         <div class="icon">
-            <fast-badge class="icon-badge" circular="true" fill="bar" color="foo" id="foo">
+            <fast-badge
+                class="icon-badge"
+                circular="true"
+                fill="bar"
+                color="foo"
+                id="foo"
+            >
                 15
             </fast-badge>
         </div>

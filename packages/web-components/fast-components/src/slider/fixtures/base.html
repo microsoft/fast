@@ -1,31 +1,40 @@
 <fast-design-system-provider use-defaults>
-    <div style="display: flex; flex-direction: column; justify-content: space-evenly; width: 500px;">
+    <div
+        style="
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+            width: 500px;
+        "
+    >
         <h4>Toggle orientation</h4>
         <div style="margin-bottom: 60px;">
-            <button style="width: 90px;margin: 10px;" onclick="const slider = document.getElementById('switcher'); slider.getAttribute('orientation') === 'horizontal' ? slider.setAttribute('orientation', 'vertical') : slider.setAttribute('orientation', 'horizontal');">
+            <button
+                style="width: 90px; margin: 10px;"
+                onclick="const slider = document.getElementById('switcher'); slider.getAttribute('orientation') === 'horizontal' ? slider.setAttribute('orientation', 'vertical') : slider.setAttribute('orientation', 'horizontal');"
+            >
                 Toggle orientation
             </button>
-            <fast-slider id="switcher" orientation="vertical" min="0" max="100" step="10" value="70">
-                <fast-slider-label
-                    position="0"
-                >
+            <fast-slider
+                id="switcher"
+                orientation="vertical"
+                min="0"
+                max="100"
+                step="10"
+                value="70"
+            >
+                <fast-slider-label position="0">
                     0&#8451;
                 </fast-slider-label>
-                <fast-slider-label
-                    position="10"
-                >
+                <fast-slider-label position="10">
                     10&#8451;
                 </fast-slider-label>
-                <fast-slider-label
-                    position="90"
-                >
+                <fast-slider-label position="90">
                     90&#8451;
                 </fast-slider-label>
-                <fast-slider-label
-                position="100"
-            >
-                100&#8451;
-            </fast-slider-label>
+                <fast-slider-label position="100">
+                    100&#8451;
+                </fast-slider-label>
             </fast-slider>
         </div>
         <!-- No max or min -->
@@ -34,99 +43,65 @@
 
         <!-- Margin offsets -->
         <h4>horizontal with left offset</h4>
-        <fast-slider style="margin-left:100px"></fast-slider>
+        <fast-slider style="margin-left: 100px;"></fast-slider>
 
         <!-- Margin offsets vertical -->
         <h4>Vertical with top offset</h4>
-        <fast-slider orientation="vertical", style="margin-left:100px"></fast-slider>
+        <fast-slider orientation="vertical" , style="margin-left: 100px;"></fast-slider>
 
         <!-- Negative positions -->
         <h4>Negative positions</h4>
-        <fast-slider
-            min="-3"
-            max="3"
-            step="1"
-        >
-                <fast-slider-label
-                    position="-3"
-                >
-                    -3
-                </fast-slider-label>
-                <fast-slider-label
-                position="-2"
-                >
-                    -2
-                </fast-slider-label>
-                <fast-slider-label
-                    position="-1"
-                >
-                    -1
-                </fast-slider-label>
-                <fast-slider-label
-                    position="0"
-                >
-                    0
-                </fast-slider-label>
-                <fast-slider-label
-                    position="1"
-                >
-                    1
-                </fast-slider-label>
-                <fast-slider-label
-                    position="2"
-                >
-                    2
-                </fast-slider-label>
-                <fast-slider-label
-                    position="3"
-                >
-                    3
-                </fast-slider-label>          
+        <fast-slider min="-3" max="3" step="1">
+            <fast-slider-label position="-3">
+                -3
+            </fast-slider-label>
+            <fast-slider-label position="-2">
+                -2
+            </fast-slider-label>
+            <fast-slider-label position="-1">
+                -1
+            </fast-slider-label>
+            <fast-slider-label position="0">
+                0
+            </fast-slider-label>
+            <fast-slider-label position="1">
+                1
+            </fast-slider-label>
+            <fast-slider-label position="2">
+                2
+            </fast-slider-label>
+            <fast-slider-label position="3">
+                3
+            </fast-slider-label>
         </fast-slider>
 
         <!-- Min above 0 -->
         <h4>Min value greater than 0</h4>
         <div style="width: 160px;">
-            <fast-slider
-                min="5"
-                max="15"
-                step="1"
-                value="10"
-                style="min-width: unset;"
-            >
-                    <fast-slider-label
-                        hide-mark="true"
-                        position="5"
-                    >
-                        5
-                    </fast-slider-label>
-                    <fast-slider-label
-                        hide-mark="true"
-                        position="15"
-                    >
-                        15
-                    </fast-slider-label>
+            <fast-slider min="5" max="15" step="1" value="10" style="min-width: unset;">
+                <fast-slider-label hide-mark="true" position="5">
+                    5
+                </fast-slider-label>
+                <fast-slider-label hide-mark="true" position="15">
+                    15
+                </fast-slider-label>
             </fast-slider>
         </div>
 
         <!-- Text Labels -->
         <h4>Text labels</h4>
-        <div style="display: flex; flex-direction: column; height:min-content">
-            <label for="slider1" style="margin-left: 8px; color: ${neutralForegroundRestBehavior.var};">Temperature:</label>
-            <fast-slider
-                id="slider1"
-                min="0"
-                max="100"
-                step="10"
+        <div style="display: flex; flex-direction: column; height: min-content;">
+            <label
+                for="slider1"
+                style="margin-left: 8px; color: ${neutralForegroundRestBehavior.var};"
             >
-                <fast-slider-label
-                    position="10"
-                >
+                Temperature:
+            </label>
+            <fast-slider id="slider1" min="0" max="100" step="10">
+                <fast-slider-label position="10">
                     10&#8451;
                 </fast-slider-label>
-                <fast-slider-label
-                    position="90"
-                >
+                <fast-slider-label position="90">
                     90&#8451;
                 </fast-slider-label>
             </fast-slider>
@@ -134,39 +109,35 @@
 
         <!-- Custom labels (rtl) -->
         <h4>Custom labels (rtl)</h4>
-        <div style="display: flex; flex-direction: column; align-items: flex-start; height:min-content">
-            <label for="rtl-slider" style="margin-left: 8px; color: ${neutralForegroundRestBehavior.var};">rtl support</label>
+        <div
+            style="
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                height: min-content;
+            "
+        >
+            <label
+                for="rtl-slider"
+                style="margin-left: 8px; color: ${neutralForegroundRestBehavior.var};"
+            >
+                rtl support
+            </label>
             <div dir="rtl" style="width: 100%;">
-                <fast-slider
-                    id="rtl-slider"
-                    min="0"
-                    max="100"
-                    step="10"
-                    value="80"
-                >
-                    <fast-slider-label
-                        position="10"
-                    >
+                <fast-slider id="rtl-slider" min="0" max="100" step="10" value="80">
+                    <fast-slider-label position="10">
                         10
                     </fast-slider-label>
-                    <fast-slider-label
-                        position="20"
-                    >
+                    <fast-slider-label position="20">
                         20
                     </fast-slider-label>
-                    <fast-slider-label
-                        position="40"
-                    >
+                    <fast-slider-label position="40">
                         40
                     </fast-slider-label>
-                    <fast-slider-label
-                        position="60"
-                    >
+                    <fast-slider-label position="60">
                         60
                     </fast-slider-label>
-                    <fast-slider-label
-                        position="80"
-                    >
+                    <fast-slider-label position="80">
                         80
                     </fast-slider-label>
                 </fast-slider>
@@ -175,64 +146,38 @@
 
         <!-- Using slot for custom thumb -->
         <h4>Custom thumb</h4>
-        <fast-slider
-            min="0"
-            max="100"
-            step="10"
-        >
-            <fast-slider-label
-                position="0"
-            >
+        <fast-slider min="0" max="100" step="10">
+            <fast-slider-label position="0">
                 0
             </fast-slider-label>
-            <fast-slider-label
-                position="10"
-            >
+            <fast-slider-label position="10">
                 10
             </fast-slider-label>
-            <fast-slider-label
-                position="20"
-            >
+            <fast-slider-label position="20">
                 20
             </fast-slider-label>
-            <fast-slider-label
-                position="30"
-            >
+            <fast-slider-label position="30">
                 30
             </fast-slider-label>
-            <fast-slider-label
-                position="40"
-            >
+            <fast-slider-label position="40">
                 40
             </fast-slider-label>
-            <fast-slider-label
-                position="50"
-            >
+            <fast-slider-label position="50">
                 50
             </fast-slider-label>
-            <fast-slider-label
-                position="60"
-            >
+            <fast-slider-label position="60">
                 60
             </fast-slider-label>
-            <fast-slider-label
-                position="70"
-            >
+            <fast-slider-label position="70">
                 70
             </fast-slider-label>
-            <fast-slider-label
-                position="80"
-            >
+            <fast-slider-label position="80">
                 80
             </fast-slider-label>
-            <fast-slider-label
-                position="90"
-            >
+            <fast-slider-label position="90">
                 90
             </fast-slider-label>
-            <fast-slider-label
-                position="100"
-            >
+            <fast-slider-label position="100">
                 100
             </fast-slider-label>
             <svg
@@ -250,41 +195,32 @@
 
         <!-- vertical orientation -->
         <h4>Vertical</h4>
-        <fast-slider orientation="vertical" min="0" max="100" step="10" value="50" style="height: 300px; width: 50px;">
-            <fast-slider-label
-                position="0"
-            >
+        <fast-slider
+            orientation="vertical"
+            min="0"
+            max="100"
+            step="10"
+            value="50"
+            style="height: 300px; width: 50px;"
+        >
+            <fast-slider-label position="0">
                 0&#8451;
-            </fast-slider-label>            
-            <fast-slider-label
-                position="10"
-            >
+            </fast-slider-label>
+            <fast-slider-label position="10">
                 10&#8451;
             </fast-slider-label>
-            <fast-slider-label
-                position="90"
-            >
+            <fast-slider-label position="90">
                 90&#8451;
             </fast-slider-label>
-            <fast-slider-label
-                position="100"
-            >
+            <fast-slider-label position="100">
                 100&#8451;
             </fast-slider-label>
         </fast-slider>
 
-
         <!-- Custom labels and thumb hide marks on labels -->
         <h4>Custom labels and thumb, hide marks on labels</h4>
-        <fast-slider
-            min="0"
-            max="100"
-            step="10"
-        >
-            <fast-slider-label
-                position="0"
-                hide-mark="true"
-            >
+        <fast-slider min="0" max="100" step="10">
+            <fast-slider-label position="0" hide-mark="true">
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     height="16"
@@ -296,16 +232,10 @@
                     />
                 </svg>
             </fast-slider-label>
-            <fast-slider-label
-                position="50"
-                hide-mark="true"
-            >
+            <fast-slider-label position="50" hide-mark="true">
                 50
             </fast-slider-label>
-            <fast-slider-label
-                position="100"
-                hide-mark="true"
-            >
+            <fast-slider-label position="100" hide-mark="true">
                 <svg
                     width="14px"
                     height="14px"
@@ -333,65 +263,38 @@
 
         <!-- Disabled -->
         <h4>Disabled</h4>
-        <fast-slider
-            min="0"
-            max="100"
-            step="5"
-            disabled
-        >
-            <fast-slider-label
-                position="0"
-            >
+        <fast-slider min="0" max="100" step="5" disabled>
+            <fast-slider-label position="0">
                 0
             </fast-slider-label>
-            <fast-slider-label
-                position="10"
-            >
+            <fast-slider-label position="10">
                 10
             </fast-slider-label>
-            <fast-slider-label
-                position="20"
-            >
+            <fast-slider-label position="20">
                 20
             </fast-slider-label>
-            <fast-slider-label
-                position="30"
-            >
+            <fast-slider-label position="30">
                 30
             </fast-slider-label>
-            <fast-slider-label
-                position="40"
-            >
+            <fast-slider-label position="40">
                 40
             </fast-slider-label>
-            <fast-slider-label
-                position="50"
-            >
+            <fast-slider-label position="50">
                 50
             </fast-slider-label>
-            <fast-slider-label
-                position="60"
-            >
+            <fast-slider-label position="60">
                 60
             </fast-slider-label>
-            <fast-slider-label
-                position="70"
-            >
+            <fast-slider-label position="70">
                 70
             </fast-slider-label>
-            <fast-slider-label
-                position="80"
-            >
+            <fast-slider-label position="80">
                 80
             </fast-slider-label>
-            <fast-slider-label
-                position="90"
-            >
+            <fast-slider-label position="90">
                 90
             </fast-slider-label>
-            <fast-slider-label
-                position="100"
-            >
+            <fast-slider-label position="100">
                 100
             </fast-slider-label>
         </fast-slider>

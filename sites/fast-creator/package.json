@@ -6,8 +6,8 @@
   "private": true,
   "scripts": {
     "build": "webpack --progress --mode=production",
-    "prettier": "prettier --config ../../.prettierrc --write \"**/*.{ts,tsx}\"",
-    "prettier:diff": "prettier --config ../../.prettierrc \"**/*.{ts,tsx}\" --list-different",
+    "prettier": "prettier --config ../../.prettierrc --write \"**/*.{ts,tsx,html}\"",
+    "prettier:diff": "prettier --config ../../.prettierrc \"**/*.{ts,tsx,html}\" --list-different",
     "start": "webpack-dev-server",
     "test": "yarn eslint && yarn build",
     "eslint": "eslint . --ext .ts,.tsx",
