@@ -10,7 +10,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Microsoft/fast.git"
+    "url": "git+https://github.com/microsoft/fast-react.git"
   },
   "bugs": {
     "url": "https://github.com/Microsoft/fast/issues/new/choose"
