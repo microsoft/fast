@@ -1,4 +1,4 @@
-import { children, html, ref, slotted, when, elements } from "@microsoft/fast-element";
+import { children, elements, html, ref, slotted, when } from "@microsoft/fast-element";
 import { endTemplate, startTemplate } from "../patterns/start-end";
 import { TreeItem } from "./tree-item";
 
