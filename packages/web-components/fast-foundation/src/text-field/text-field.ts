@@ -1,6 +1,6 @@
 import { attr, nullableNumberConverter, observable } from "@microsoft/fast-element";
 import { FormAssociated } from "../form-associated/index";
-import { StartEnd } from "../patterns/start-end";
+import { ARIAGlobalStatesAndProperties, StartEnd } from "../patterns/index";
 import { applyMixins } from "../utilities/index";
 
 /**
@@ -255,11 +255,19 @@ export class TextField extends FormAssociated<HTMLInputElement> {
 }
 
 /**
+ * Includes ARIA states and properties relating to the ARIA link role
+ *
+ * @public
+ */
+/* eslint-disable-next-line */
+export class DelegatesARIATextbox extends ARIAGlobalStatesAndProperties {}
+
+/**
  * Mark internal because exporting class and interface of the same name
  * confuses API documenter.
  * TODO: https://github.com/microsoft/fast/issues/3317
  * @internal
  */
 /* eslint-disable-next-line */
-export interface TextField extends StartEnd {}
-applyMixins(TextField, StartEnd);
+export interface TextField extends StartEnd, DelegatesARIATextbox {}
+applyMixins(TextField, StartEnd, DelegatesARIATextbox);

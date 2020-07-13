@@ -80,7 +80,7 @@
     ]
   },
   "lint-staged": {
-    "*.{ts,tsx,js}": [
+    "*.{ts,tsx,js,html}": [
       "prettier --write"
     ]
   },

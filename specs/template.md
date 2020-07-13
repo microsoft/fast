@@ -75,7 +75,7 @@
 - *Keyboard Navigation and Focus*
 - *Form Input*
 - *Use with Assistive Technology*
-  - e.g. The implications shadow dom might have on how roles are presented to the AT.
+  - e.g. The implications shadow dom might have on how roles and attributes are presented to the AT. Components which delegate focus require all global aria-* attributes to be enumerated.
 
 ### Globalization
 

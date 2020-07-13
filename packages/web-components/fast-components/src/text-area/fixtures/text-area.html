@@ -59,14 +59,22 @@
     <h5>Disabled</h5>
     <fast-text-area appearance="filled" disabled></fast-text-area>
     <fast-text-area appearance="filled" disabled>
-        <span >label</span>
+        <span>label</span>
     </fast-text-area>
-    <fast-text-area appearance="filled" disabled placeholder="placeholder"></fast-text-area>
+    <fast-text-area
+        appearance="filled"
+        disabled
+        placeholder="placeholder"
+    ></fast-text-area>
 
     <!-- Read only -->
     <h5>Read only</h5>
-    <fast-text-area appearance="filled" value="Readonly text area" readonly>label</fast-text-area>
-    <fast-text-area appearance="filled" value="Readonly text area" readonly>label</fast-text-area>
+    <fast-text-area appearance="filled" value="Readonly text area" readonly>
+        label
+    </fast-text-area>
+    <fast-text-area appearance="filled" value="Readonly text area" readonly>
+        label
+    </fast-text-area>
 
     <!-- With label -->
     <h4>Visual vs audio label</h4>
@@ -74,10 +82,7 @@
         <span aria-label="Audio label">Visible label</span>
     </fast-text-area>
 
-    <!-- With hidden label -->
-    <h4>Audio label only</h4>
-    <fast-text-area>
-        <span aria-label="Audio label only"></span>
-    </fast-text-area>
-
+    <!-- With aria label -->
+    <h4>With aria-label</h4>
+    <fast-text-area aria-label="Text area with aria-label"></fast-text-area>
 </fast-design-system-provider>

@@ -31,8 +31,8 @@
   "scripts": {
     "start": "webpack-dev-server --config=./webpack.dev.js --history-api-fallback --progress",
     "build": "webpack --config=./webpack.prod.js",
-    "prettier": "prettier --config ../../.prettierrc --write \"**/*.ts\"",
-    "prettier:diff": "prettier --config ../../.prettierrc \"**/*.ts\" --list-different",
+    "prettier": "prettier --config ../../.prettierrc --write \"**/*.{ts,html}\"",
+    "prettier:diff": "prettier --config ../../.prettierrc \"**/*.{ts,html}\" --list-different",
     "test": "yarn build"
   },
   "repository": {
