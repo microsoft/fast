@@ -254,6 +254,11 @@ export class TextField extends FormAssociated<HTMLInputElement> {
     }
 }
 
+/**
+ * Includes ARIA states and properties relating to the ARIA link role
+ *
+ * @public
+ */
 /* eslint-disable-next-line */
 export class DelegatesARIATextbox extends ARIAGlobalStatesAndProperties {}
 
