@@ -9,6 +9,7 @@ import { TreeItem } from "./tree-item";
 export const TreeItemTemplate = html<TreeItem>`
     <template
         role="treeitem"
+        slot="item"
         tabindex="${x => (x.disabled ? null : x.focusable ? 0 : -1)}"
         class="${x => (x.expanded ? "expanded" : "")} ${x =>
             x.selected ? "selected" : ""} ${x => (x.nested ? "nested" : "")}
