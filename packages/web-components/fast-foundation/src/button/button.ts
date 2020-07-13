@@ -156,6 +156,11 @@ export class Button extends FormAssociated<HTMLInputElement> {
     }
 }
 
+/**
+ * Includes ARIA states and properties relating to the ARIA button role
+ *
+ * @public
+ */
 export class DelegatesARIAButton extends ARIAGlobalStatesAndProperties {
     /**
      * See {@link https://www.w3.org/WAI/PF/aria/roles#button} for more information

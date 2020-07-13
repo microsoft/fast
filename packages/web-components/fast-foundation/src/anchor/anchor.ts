@@ -82,6 +82,11 @@ export class Anchor extends FASTElement {
     public type: string;
 }
 
+/**
+ * Includes ARIA states and properties relating to the ARIA link role
+ *
+ * @public
+ */
 export class DelegatesARIALink extends ARIAGlobalStatesAndProperties {
     /**
      * See {@link https://www.w3.org/WAI/PF/aria/roles#link} for more information

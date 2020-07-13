@@ -56,7 +56,6 @@ export const AccordionTemplate: import("@microsoft/fast-element").ViewTemplate<A
 //
 // @public
 export class Anchor extends FASTElement {
-    ariaExpanded: "true" | "false" | undefined;
     download: string;
     href: string;
     hreflang: string;
@@ -68,7 +67,7 @@ export class Anchor extends FASTElement {
 }
 
 // @internal
-export interface Anchor extends StartEnd, DelegatesFocus {
+export interface Anchor extends StartEnd, DelegatesARIALink {
 }
 
 // @public
@@ -76,6 +75,29 @@ export const AnchorTemplate: import("@microsoft/fast-element").ViewTemplate<Anch
 
 // @public
 export function applyMixins(derivedCtor: any, ...baseCtors: any[]): void;
+
+// @public
+export class ARIAGlobalStatesAndProperties {
+    ariaAtomic: "true" | "false";
+    ariaBusy: "true" | "false";
+    ariaControls: string;
+    ariaCurrent: "page" | "step" | "location" | "date" | "time" | "true" | "false" | string;
+    ariaDescribedby: string;
+    ariaDetails: string;
+    ariaDisabled: "true" | "false";
+    ariaErrormessage: string;
+    ariaFlowto: string;
+    ariaHaspopup: "false" | "true" | "menu" | "listbox" | "tree" | "grid" | "dialog";
+    ariaHidden: "false" | "true" | undefined;
+    ariaInvalid: "false" | "true" | "grammar" | "spelling";
+    ariaKeyshortcuts: string;
+    ariaLabel: string;
+    ariaLabelledby: string;
+    ariaLive: "assertive" | "off" | "polite";
+    ariaOwns: string;
+    ariaRelevant: "additions" | "additions text" | "all" | "removals" | "text";
+    ariaRoledescription: string;
+}
 
 // @public
 export class Badge extends FASTElement {
@@ -101,9 +123,6 @@ export class BaseProgress extends FASTElement {
 //
 // @public
 export class Button extends FormAssociated<HTMLInputElement> {
-    constructor();
-    ariaExpanded: "true" | "false" | undefined;
-    ariaPressed: "true" | "false" | "mixed" | undefined;
     autofocus: boolean;
     // @internal (undocumented)
     connectedCallback(): void;
@@ -121,7 +140,7 @@ export class Button extends FormAssociated<HTMLInputElement> {
     }
 
 // @internal
-export interface Button extends StartEnd, DelegatesFocus {
+export interface Button extends StartEnd, DelegatesARIAButton {
 }
 
 // @public
@@ -204,26 +223,18 @@ export interface DecoratorDesignSystemPropertyConfiguration extends Omit<Decorat
 }
 
 // @public
-export class DelegatesFocus {
-    ariaAtomic: "true" | "false";
-    ariaBusy: "true" | "false";
-    ariaControls: string;
-    ariaCurrent: "page" | "step" | "location" | "date" | "time" | "true" | "false" | string;
-    ariaDescribedby: string;
-    ariaDetails: string;
-    ariaDisabled: "true" | "false";
-    ariaErrormessage: string;
-    ariaFlowto: string;
-    ariaHaspopup: "false" | "true" | "menu" | "listbox" | "tree" | "grid" | "dialog";
-    ariaHidden: "false" | "true" | undefined;
-    ariaInvalid: "false" | "true" | "grammar" | "spelling";
-    ariaKeyshortcuts: string;
-    ariaLabel: string;
-    ariaLabelledby: string;
-    ariaLive: "assertive" | "off" | "polite";
-    ariaOwns: string;
-    ariaRelevant: "additions" | "additions text" | "all" | "removals" | "text";
-    ariaRoledescription: string;
+export class DelegatesARIAButton extends ARIAGlobalStatesAndProperties {
+    ariaExpanded: "true" | "false" | undefined;
+    ariaPressed: "true" | "false" | "mixed" | undefined;
+}
+
+// @public
+export class DelegatesARIALink extends ARIAGlobalStatesAndProperties {
+    ariaExpanded: "true" | "false" | undefined;
+}
+
+// @public (undocumented)
+export class DelegatesARIATextbox extends ARIAGlobalStatesAndProperties {
 }
 
 // @public
@@ -662,10 +673,6 @@ export const TabTemplate: import("@microsoft/fast-element").ViewTemplate<Tab, an
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "TextArea" because one of its declarations is marked as @internal
 //
-// @public (undocumented)
-export interface TextArea extends DelegatesFocus {
-}
-
 // @public
 export class TextArea extends FormAssociated<HTMLTextAreaElement> {
     appearance: TextAreaAppearance;
@@ -696,7 +703,7 @@ export class TextArea extends FormAssociated<HTMLTextAreaElement> {
 }
 
 // @internal
-export interface TextArea extends DelegatesFocus {
+export interface TextArea extends DelegatesARIATextbox {
 }
 
 // @public
@@ -719,10 +726,6 @@ export const TextAreaTemplate: import("@microsoft/fast-element").ViewTemplate<Te
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "TextField" because one of its declarations is marked as @internal
 //
-// @public (undocumented)
-export interface TextField extends DelegatesFocus {
-}
-
 // @public
 export class TextField extends FormAssociated<HTMLInputElement> {
     appearance: TextFieldAppearance;
@@ -749,7 +752,7 @@ export class TextField extends FormAssociated<HTMLInputElement> {
     }
 
 // @internal
-export interface TextField extends StartEnd, DelegatesFocus {
+export interface TextField extends StartEnd, DelegatesARIATextbox {
 }
 
 // @public
