@@ -233,7 +233,7 @@ export class DelegatesARIALink extends ARIAGlobalStatesAndProperties {
     ariaExpanded: "true" | "false" | undefined;
 }
 
-// @public (undocumented)
+// @public
 export class DelegatesARIATextbox extends ARIAGlobalStatesAndProperties {
 }
 
