@@ -38,7 +38,6 @@ export const SliderLabelStyles = css`
         justify-self: center;
         align-self: center;
         white-space: nowrap;
-        justify-self: center;
         max-width: 30px;
         margin: 2px 0;
     }
