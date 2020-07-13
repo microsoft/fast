@@ -18,7 +18,7 @@ export const RadioGroupTemplate = html<RadioGroup>`
                 x.orientation === Orientation.horizontal ? "horizontal" : "vertical"}"
             part="positioning-region"
         >
-            <slot ${slotted("slottedRadioButtons")}>&nbsp;</slot>
+            <slot ${slotted("slottedRadioButtons")}></slot>
         </div>
     </template>
 `;

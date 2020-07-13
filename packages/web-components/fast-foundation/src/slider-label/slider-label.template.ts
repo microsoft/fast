@@ -17,9 +17,7 @@ export const SliderLabelTemplate = html<SliderLabel>`
                 ${when(
                     x => !x.hideMark,
                     html`
-                        &nbsp;
                         <div class="mark"></div>
-                        &nbsp;
                     `
                 )}
                 <div class="label">
