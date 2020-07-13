@@ -38,7 +38,6 @@ const fastTreeViewConfig: ComponentViewConfig = {
                         },
                         schemaId: fastTreeItemId,
                         data: {
-                            slot: "item",
                             Slot: [
                                 {
                                     id: "Slot10",
@@ -61,7 +60,6 @@ const fastTreeViewConfig: ComponentViewConfig = {
                         },
                         schemaId: fastTreeItemId,
                         data: {
-                            slot: "item",
                             Slot: [
                                 {
                                     id: "Slot11",
