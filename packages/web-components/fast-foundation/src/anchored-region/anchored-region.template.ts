@@ -3,6 +3,11 @@ import { AnchoredRegion } from "./anchored-region";
 
 export const AnchoredRegionTemplate = html<AnchoredRegion>`
     <div class="region" part="region" ${ref("region")} style="${x => x.regionStyle}">
-        ${when(x => x.initialLayoutComplete, html`<slot></slot>`)}
+        ${when(
+            x => x.initialLayoutComplete,
+            html`
+                <slot></slot>
+            `
+        )}
     </div>
 `;
