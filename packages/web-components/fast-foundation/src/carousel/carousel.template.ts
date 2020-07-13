@@ -70,7 +70,7 @@ export const CarouselTemplate = html<Carousel>`
         <slot name="previous-button" part="previous-button" ${slotted(
             "previousButtonItem"
         )}>
-            <fast-flipper tabindex="${x => (x.tabbed ? "-1" : "0")}" direction=${
+            <fast-flipper aria-hidden="${x => (x.tabbed ? "true" : "false")}" direction=${
     FlipperDirection.previous
 }>
         </slot>
@@ -89,7 +89,7 @@ export const CarouselTemplate = html<Carousel>`
         @keypress=${(x, c) => x.handleFlipperKeypress(1, c.event as KeyboardEvent)}
     >
         <slot name="next-button" part="next-button" ${slotted("nextButtonItem")}>
-            <fast-flipper tabindex="${x => (x.tabbed ? "-1" : "0")}" direction=${
+            <fast-flipper aria-hidden="${x => (x.tabbed ? "true" : "false")}" direction=${
     FlipperDirection.next
 }>
         </slot>

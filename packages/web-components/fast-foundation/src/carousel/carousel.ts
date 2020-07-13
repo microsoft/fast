@@ -41,6 +41,7 @@ export class Carousel extends FASTElement {
     public paused: boolean = false;
     public pausedChanged(): void {
         if (!this.paused) {
+            this.focused = false;
             this.startAutoPlay();
         } else {
             this.stopAutoPlay();
@@ -132,6 +133,9 @@ export class Carousel extends FASTElement {
     };
 
     private handleRotationMouseDown = (e: Event): void => {
+        if (this.firstFocus) {
+            this.firstFocus = false;
+        }
         this.togglePlay();
     };
 
@@ -185,21 +189,18 @@ export class Carousel extends FASTElement {
 
     private togglePlay(): void {
         this.paused = !this.paused;
-        if (this.paused) {
-            // sethdonohue - the user has specifically stopped rotation, so autoplay should be turned off
-            this.autoplay = false;
-        } else {
-            this.focused = false;
-        }
     }
 
     private startAutoPlay(): void {
-        // sethdonohue - need to clear the timer before starting a new one
-        this.stopAutoPlay();
-        this.autoplayTimer = window.setInterval(
-            this.autoplayNextItem,
-            this.autoplayInterval
-        );
+        if (!this.paused) {
+            // sethdonohue - need to clear the timer before starting a new one
+            this.stopAutoPlay();
+            this.startTime = Date.now();
+            this.autoplayTimer = window.setInterval(
+                this.autoplayNextItem,
+                this.autoplayInterval
+            );
+        }
     }
 
     private stopAutoPlay(): void {
@@ -207,9 +208,11 @@ export class Carousel extends FASTElement {
     }
 
     private handleFocusIn = (e: Event): void => {
+        // sethdonohue - per ARIA spec we need to stop rotation whenever keyboard focus is brought to the carousel
         if (this.autoplay) {
             this.stopAutoPlay();
         }
+        // sethdonohue - is the case of a mouse click on rotation controls we want
         if (this.firstFocus) {
             if (this.autoplay) {
                 this.paused = true;
@@ -217,7 +220,6 @@ export class Carousel extends FASTElement {
             this.firstFocus = false;
         }
         this.focused = true;
-        this.change();
     };
 
     private handleBlur(e: Event): void {
@@ -238,6 +240,8 @@ export class Carousel extends FASTElement {
             const timeDiff: number =
                 this.autoplayInterval - (this.stopTime - this.startTime);
             if (timeDiff) {
+                window.clearTimeout(this.pausedTimeout as number);
+                window.clearInterval(this.autoplayTimer as number);
                 this.pausedTimeout = setTimeout(() => {
                     this.autoplayNextItem();
                     this.startAutoPlay();
@@ -267,7 +271,7 @@ export class Carousel extends FASTElement {
     };
 
     private handleTabsFocusIn = (e: FocusEvent): void => {
-        // sethdonohue - when keyboard navigating from the rotation control or a tab we do not want the rotation to be stopped in the case of when a keyboard user restarts the rotation with the rotation control and then has to tab through/past the tabs
+        // sethdonohue - when keyboard navigating from the rotation control or a tab we do not want the rotation to be stopped in the case of when a keyboard user restarts the rotation with the rotation control and then has to tab through/past the tablist/slidepicker
         if (
             !this.rotationControl.contains(e.relatedTarget as Node) &&
             !this.tabs.contains(e.relatedTarget as Node)
@@ -277,6 +281,7 @@ export class Carousel extends FASTElement {
         }
         this.focused = true;
     };
+
     private handleTabsFocusOut = (e: FocusEvent): void => {
         // sethdonohue - if we focus out of tabs or any tabs children we need to ensure tabs doesn't steal focus
         this.focused = false;
