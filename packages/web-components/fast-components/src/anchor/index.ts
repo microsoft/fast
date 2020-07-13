@@ -37,7 +37,7 @@ export class FASTAnchor extends Anchor {
      * HTML Attribute: appearance
      */
     @attr
-    public appearance: AnchorAppearance = "neutral";
+    public appearance: AnchorAppearance;
     public appearanceChanged(
         oldValue: AnchorAppearance,
         newValue: AnchorAppearance
@@ -45,6 +45,14 @@ export class FASTAnchor extends Anchor {
         if (oldValue !== newValue) {
             this.classList.add(newValue);
             this.classList.remove(oldValue);
+        }
+    }
+
+    public connectedCallback() {
+        super.connectedCallback();
+
+        if (!this.appearance) {
+            this.appearance = "neutral";
         }
     }
 }

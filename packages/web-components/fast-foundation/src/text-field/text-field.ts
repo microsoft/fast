@@ -232,17 +232,10 @@ export class TextField extends FormAssociated<HTMLInputElement> {
     /**
      * @internal
      */
-    constructor() {
-        super();
-
-        this.proxy.setAttribute("type", this.type);
-    }
-
-    /**
-     * @internal
-     */
     public connectedCallback(): void {
         super.connectedCallback();
+
+        this.proxy.setAttribute("type", this.type);
 
         if (this.autofocus) {
             this.focus();

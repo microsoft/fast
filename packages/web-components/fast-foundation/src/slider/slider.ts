@@ -199,16 +199,14 @@ export class Slider extends FormAssociated<HTMLInputElement>
 
     protected proxy = document.createElement("input");
 
-    constructor() {
-        super();
-        this.proxy.setAttribute("type", "range");
-    }
-
     /**
      * @internal
      */
     public connectedCallback(): void {
         super.connectedCallback();
+
+        this.proxy.setAttribute("type", "range");
+
         this.direction = this.getDirection();
         this.updateForm();
         this.setupTrackConstraints();
