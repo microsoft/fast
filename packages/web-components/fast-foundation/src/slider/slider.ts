@@ -197,6 +197,15 @@ export class Slider extends FormAssociated<HTMLInputElement>
     @attr
     public mode: SliderMode = SliderMode.singleValue;
 
+    /**
+     * The value unit on the slider for aria readout
+     *
+     * @public
+     * HTML Attribute: aria-valueunit
+     */
+    @attr({ attribute: "aria-valueunit" })
+    public ariaValueUnit: string;
+
     protected proxy = document.createElement("input");
 
     /**
