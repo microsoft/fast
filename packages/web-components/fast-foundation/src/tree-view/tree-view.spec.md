@@ -33,7 +33,7 @@ Infinite nesting combined with the current visual design presents a styling chal
     <fast-tree-item>Root node two</fast-tree-item>
     <fast-tree-item>
         Parent Node && Root node
-        <fast-tree-item slot="item">Nested node one</fast-tree-item slot="item">
+        <fast-tree-item slot="item">Nested node one</fast-tree-item>
         <fast-tree-item slot="item">Nested node two</fast-tree-item>
     </fast-tree-item>
     <fast-tree-item>Root node three</fast-tree-item>
@@ -125,8 +125,8 @@ Nested tree:
     <fast-tree-item>Root node one</fast-tree-item>
     <fast-tree-item>Root node two</fast-tree-item>
     <fast-tree-item>
-        <fast-tree-item>Nested node one</fast-tree-item>
-        <fast-tree-item>Nested node two</fast-tree-item>
+        <fast-tree-item slot="item">Nested node one</fast-tree-item>
+        <fast-tree-item slot="item">Nested node two</fast-tree-item>
     </fast-tree-item>
     <fast-tree-item>Root node three</fast-tree-item>
 </fast-tree-view>

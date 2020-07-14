@@ -12,6 +12,7 @@ import { fastSliderLabelId } from "./fast-components/configs/fast-slider";
 import { fastAccordionItemId } from "./fast-components/configs/fast-accordion";
 import { fastTabId, fastTabPanelId } from "./fast-components/configs/fast-tabs";
 import { fastDesignSystemProviderId } from "./fast-components/configs/fast-design-system-provider";
+import { fastTreeItemId } from "./fast-components/configs/fast-tree-view";
 
 const schemaDictionary: SchemaDictionary = {
     ...fastComponentSchemas,
@@ -29,6 +30,7 @@ const menu: MenuItem[] = generateMenu(
         fastSliderLabelId,
         fastTabId,
         fastTabPanelId,
+        fastTreeItemId,
         fastDesignSystemProviderId,
         ...Object.entries(nativeElementSchemas).map(
             ([, nativeElementSchema]: [string, any]) => {
