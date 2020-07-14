@@ -811,8 +811,7 @@ export class TreeItem extends FASTElement {
     // (undocumented)
     renderCollapsedChildren: boolean;
     selected: boolean;
-    slot: string;
-}
+    }
 
 // @internal
 export interface TreeItem extends StartEnd {
