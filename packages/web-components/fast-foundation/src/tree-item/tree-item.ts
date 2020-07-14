@@ -68,7 +68,7 @@ export class TreeItem extends FASTElement {
      * @remarks
      * HTMLAttribute: slot
      */
-    @attr()
+    @attr
     public slot: string;
 
     public expandCollapseButton: HTMLDivElement;
