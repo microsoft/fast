@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.3.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling-react@2.2.5...@microsoft/fast-tooling-react@2.3.0) (2020-07-14)
+
+
+### Features
+
+* allow the autocompletion of a linked data value ([#3437](https://github.com/Microsoft/fast/issues/3437)) ([dff0e5a](https://github.com/Microsoft/fast/commit/dff0e5a9caedca9e052e4536624c7452b2cc22ba))
+* update typescript version and remove utility types dependencies for react packages ([#3422](https://github.com/Microsoft/fast/issues/3422)) ([09d07b5](https://github.com/Microsoft/fast/commit/09d07b580cda3bcc5d28f83d3568521f710c9576))
+
+
+
+
+
 ## [2.2.5](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling-react@2.2.4...@microsoft/fast-tooling-react@2.2.5) (2020-07-02)
 
 

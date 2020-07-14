@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-jss-manager",
   "description": "Provides common code to all JSS manager implementations.",
   "sideEffects": false,
-  "version": "4.1.21",
+  "version": "4.2.0",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -32,7 +32,7 @@
   "devDependencies": {
     "@babel/core": "^7.0.0",
     "@babel/preset-env": "^7.1.0",
-    "@microsoft/eslint-config-fast-dna": "^1.1.4",
+    "@microsoft/eslint-config-fast-dna": "^1.2.0",
     "@types/jest": "^25.2.1",
     "@types/lodash-es": "^4.17.0",
     "@types/node": "^9.4.6",
@@ -47,7 +47,7 @@
     "typescript": "^3.9.0"
   },
   "dependencies": {
-    "@microsoft/fast-components-class-name-contracts-base": "^4.7.3",
+    "@microsoft/fast-components-class-name-contracts-base": "^4.8.0",
     "csstype": "^2.3.0"
   },
   "peerDependencies": {

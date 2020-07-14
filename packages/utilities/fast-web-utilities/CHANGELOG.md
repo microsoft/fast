@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.6.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-web-utilities@4.5.2...@microsoft/fast-web-utilities@4.6.0) (2020-07-14)
+
+
+### Features
+
+* update typescript version and remove utility types dependencies for react packages ([#3422](https://github.com/Microsoft/fast/issues/3422)) ([09d07b5](https://github.com/Microsoft/fast/commit/09d07b580cda3bcc5d28f83d3568521f710c9576))
+
+
+
+
+
 ## [4.5.2](https://github.com/Microsoft/fast/compare/@microsoft/fast-web-utilities@4.5.1...@microsoft/fast-web-utilities@4.5.2) (2020-06-26)
 
 **Note:** Version bump only for package @microsoft/fast-web-utilities

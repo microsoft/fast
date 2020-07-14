@@ -3,6 +3,31 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.5.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-components@1.4.0...@microsoft/fast-components@1.5.0) (2020-07-14)
+
+
+### Bug Fixes
+
+* add explicit typings to color recipes  ([#3435](https://github.com/Microsoft/fast/issues/3435)) ([037608c](https://github.com/Microsoft/fast/commit/037608cf725dce977eb73bb2774cb60bcebed3b9))
+* correct web component menu keyboarding and aria-expanded ([#3496](https://github.com/Microsoft/fast/issues/3496)) ([0530a42](https://github.com/Microsoft/fast/commit/0530a4230946d2aee39861001f3deea3b8816038))
+* move setAttribute calls for proxy elements to connectedCallback ([#3494](https://github.com/Microsoft/fast/issues/3494)) ([cdaf0ba](https://github.com/Microsoft/fast/commit/cdaf0bae4de3c995611e2e02313cc19e8e259b27))
+* removed extra padding around fast card component ([#3441](https://github.com/Microsoft/fast/issues/3441)) ([f3f06ed](https://github.com/Microsoft/fast/commit/f3f06ed25f288b884f6e6c31af2b8489ef8886c1))
+* removing un-needed nbsp; in slider-label and radio-group templates ([#3506](https://github.com/Microsoft/fast/issues/3506)) ([7cd003e](https://github.com/Microsoft/fast/commit/7cd003e5877d34ad926ee8268852176158cafc4b))
+* type ramp should use design system defaults ([#3472](https://github.com/Microsoft/fast/issues/3472)) ([ac2fbe0](https://github.com/Microsoft/fast/commit/ac2fbe0ad67a10574bbc4111c35fc40cd8cd8682))
+
+
+### Features
+
+* adds menu and menu item styling to MSFT web component package ([#3484](https://github.com/Microsoft/fast/issues/3484)) ([13b883d](https://github.com/Microsoft/fast/commit/13b883d91b28acdd9fe397d4751a6d6133152303))
+* adds mixin to support global aria-* attributes for components delegating focus ([#3470](https://github.com/Microsoft/fast/issues/3470)) ([054c890](https://github.com/Microsoft/fast/commit/054c89000d8931d9e203cb7f831c1e7f11c9038a))
+* move appearance attributes of anchor and button out of fast-foundation ([#3420](https://github.com/Microsoft/fast/issues/3420)) ([069e1ee](https://github.com/Microsoft/fast/commit/069e1ee000fc2f8e184919b16df0cb84bc610838))
+* simplify rollup configs and compress tagged template literals ([#3452](https://github.com/Microsoft/fast/issues/3452)) ([7533e92](https://github.com/Microsoft/fast/commit/7533e927f2467dd6f8dd46c1d3cef6c0df773fc4))
+* update typescript version and remove utility types dependencies for react packages ([#3422](https://github.com/Microsoft/fast/issues/3422)) ([09d07b5](https://github.com/Microsoft/fast/commit/09d07b580cda3bcc5d28f83d3568521f710c9576))
+
+
+
+
+
 # [1.4.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-components@1.3.0...@microsoft/fast-components@1.4.0) (2020-07-02)
 
 

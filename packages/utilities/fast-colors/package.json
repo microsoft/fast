@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-colors",
   "description": "A color utility for generating a range of colors from a single color",
   "sideEffects": false,
-  "version": "5.0.12",
+  "version": "5.1.0",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -71,7 +71,7 @@
   "devDependencies": {
     "@babel/core": "^7.0.0",
     "@babel/preset-env": "^7.1.0",
-    "@microsoft/eslint-config-fast-dna": "^1.1.4",
+    "@microsoft/eslint-config-fast-dna": "^1.2.0",
     "@types/jest": "^25.2.1",
     "babel-core": "^7.0.0-bridge.0",
     "eslint-config-prettier": "^6.10.1",

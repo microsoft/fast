@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.6.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-color-explorer@1.5.37...@microsoft/fast-color-explorer@1.6.0) (2020-07-14)
+
+
+### Features
+
+* update typescript version and remove utility types dependencies for react packages ([#3422](https://github.com/Microsoft/fast/issues/3422)) ([09d07b5](https://github.com/Microsoft/fast/commit/09d07b580cda3bcc5d28f83d3568521f710c9576))
+
+
+
+
+
 ## [1.5.37](https://github.com/Microsoft/fast/compare/@microsoft/fast-color-explorer@1.5.36...@microsoft/fast-color-explorer@1.5.37) (2020-07-02)
 
 

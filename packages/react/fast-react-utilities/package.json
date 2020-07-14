@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-react-utilities",
   "description": "Utilities and tools for React development",
   "sideEffects": false,
-  "version": "1.1.8",
+  "version": "1.2.0",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -73,7 +73,7 @@
     "@babel/core": "^7.0.0",
     "@babel/preset-env": "^7.1.0",
     "@babel/preset-react": "^7.0.0",
-    "@microsoft/eslint-config-fast-dna": "^1.1.4",
+    "@microsoft/eslint-config-fast-dna": "^1.2.0",
     "@types/jest": "^25.2.1",
     "@types/lodash-es": "^4.17.0",
     "@types/node": "^9.4.6",

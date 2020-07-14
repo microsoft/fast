@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.7.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling@0.6.1...@microsoft/fast-tooling@0.7.0) (2020-07-14)
+
+
+### Bug Fixes
+
+* removed the description from the title in the component explorer pane ([#3450](https://github.com/Microsoft/fast/issues/3450)) ([33aadb1](https://github.com/Microsoft/fast/commit/33aadb1e7b1ba96170f5682fbd8db668bf0b22b7))
+
+
+### Features
+
+* add default values to the schema when mapping from a component definition ([#3509](https://github.com/Microsoft/fast/issues/3509)) ([5c37742](https://github.com/Microsoft/fast/commit/5c3774258c2edf2af6fd8f2bdbb1ea07a59adee2))
+* update typescript version and remove utility types dependencies for react packages ([#3422](https://github.com/Microsoft/fast/issues/3422)) ([09d07b5](https://github.com/Microsoft/fast/commit/09d07b580cda3bcc5d28f83d3568521f710c9576))
+
+
+
+
+
 ## [0.6.1](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling@0.6.0...@microsoft/fast-tooling@0.6.1) (2020-06-26)
 
 **Note:** Version bump only for package @microsoft/fast-tooling

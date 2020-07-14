@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.15.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-element@0.14.0...@microsoft/fast-element@0.15.0) (2020-07-14)
+
+
+### Bug Fixes
+
+* **fast-element:** style element styles should work with the document ([#3489](https://github.com/Microsoft/fast/issues/3489)) ([d288390](https://github.com/Microsoft/fast/commit/d28839059313f5bab9eabeb561dc50b64ca8340f))
+
+
+### Features
+
+* simplify rollup configs and compress tagged template literals ([#3452](https://github.com/Microsoft/fast/issues/3452)) ([7533e92](https://github.com/Microsoft/fast/commit/7533e927f2467dd6f8dd46c1d3cef6c0df773fc4))
+* update typescript version and remove utility types dependencies for react packages ([#3422](https://github.com/Microsoft/fast/issues/3422)) ([09d07b5](https://github.com/Microsoft/fast/commit/09d07b580cda3bcc5d28f83d3568521f710c9576))
+
+
+
+
+
 # [0.14.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-element@0.13.0...@microsoft/fast-element@0.14.0) (2020-07-02)
 
 

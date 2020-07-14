@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.4.0](https://github.com/Microsoft/fast/compare/@microsoft/site-utilities@0.3.0...@microsoft/site-utilities@0.4.0) (2020-07-14)
+
+
+### Bug Fixes
+
+* correct web component menu keyboarding and aria-expanded ([#3496](https://github.com/Microsoft/fast/issues/3496)) ([0530a42](https://github.com/Microsoft/fast/commit/0530a4230946d2aee39861001f3deea3b8816038))
+* update the favicon to use an svg ([#3430](https://github.com/Microsoft/fast/issues/3430)) ([683cada](https://github.com/Microsoft/fast/commit/683cadafdcc8a0ca7a0d310cd5fe1cfdeca1957c))
+
+
+### Features
+
+* update typescript version and remove utility types dependencies for react packages ([#3422](https://github.com/Microsoft/fast/issues/3422)) ([09d07b5](https://github.com/Microsoft/fast/commit/09d07b580cda3bcc5d28f83d3568521f710c9576))
+
+
+
+
+
 # [0.3.0](https://github.com/Microsoft/fast/compare/@microsoft/site-utilities@0.2.0...@microsoft/site-utilities@0.3.0) (2020-07-02)
 
 

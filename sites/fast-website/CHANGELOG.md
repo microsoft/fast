@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.2.0](https://github.com/Microsoft/fast/compare/fast-website@1.1.2...fast-website@1.2.0) (2020-07-14)
+
+
+### Bug Fixes
+
+* add aria label to the components in fast frame section on the website ([#3482](https://github.com/Microsoft/fast/issues/3482)) ([cdb871e](https://github.com/Microsoft/fast/commit/cdb871e07564752bb0bb31ca2a9e849069037478))
+* rename role attribute value of fast-divider from seperator to separator ([#3492](https://github.com/Microsoft/fast/issues/3492)) ([1984b80](https://github.com/Microsoft/fast/commit/1984b806d91a72b5659a471c143185d03dcd4513))
+* update the favicon to use an svg ([#3430](https://github.com/Microsoft/fast/issues/3430)) ([683cada](https://github.com/Microsoft/fast/commit/683cadafdcc8a0ca7a0d310cd5fe1cfdeca1957c))
+
+
+### Features
+
+* adds menu and menu item styling to MSFT web component package ([#3484](https://github.com/Microsoft/fast/issues/3484)) ([13b883d](https://github.com/Microsoft/fast/commit/13b883d91b28acdd9fe397d4751a6d6133152303))
+* update typescript version and remove utility types dependencies for react packages ([#3422](https://github.com/Microsoft/fast/issues/3422)) ([09d07b5](https://github.com/Microsoft/fast/commit/09d07b580cda3bcc5d28f83d3568521f710c9576))
+
+
+
+
+
 ## [1.1.2](https://github.com/Microsoft/fast/compare/fast-website@1.1.1...fast-website@1.1.2) (2020-07-02)
 
 

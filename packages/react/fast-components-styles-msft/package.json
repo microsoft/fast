@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-components-styles-msft",
   "description": "Javascript style sheets for FAST components",
   "sideEffects": false,
-  "version": "4.28.15",
+  "version": "4.29.0",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -75,7 +75,7 @@
   "devDependencies": {
     "@babel/core": "^7.0.0",
     "@babel/preset-env": "^7.1.0",
-    "@microsoft/eslint-config-fast-dna": "^1.1.4",
+    "@microsoft/eslint-config-fast-dna": "^1.2.0",
     "@types/jest": "^25.2.1",
     "babel-core": "^7.0.0-bridge.0",
     "eslint-config-prettier": "^6.10.1",
@@ -90,12 +90,12 @@
     "typescript": "^3.9.0"
   },
   "dependencies": {
-    "@microsoft/fast-colors": "^5.0.12",
-    "@microsoft/fast-components-class-name-contracts-base": "^4.7.3",
-    "@microsoft/fast-components-class-name-contracts-msft": "^4.8.9",
-    "@microsoft/fast-jss-manager": "^4.1.21",
-    "@microsoft/fast-jss-utilities": "^4.7.18",
-    "@microsoft/fast-web-utilities": "^4.5.2"
+    "@microsoft/fast-colors": "^5.1.0",
+    "@microsoft/fast-components-class-name-contracts-base": "^4.8.0",
+    "@microsoft/fast-components-class-name-contracts-msft": "^4.9.0",
+    "@microsoft/fast-jss-manager": "^4.2.0",
+    "@microsoft/fast-jss-utilities": "^4.8.0",
+    "@microsoft/fast-web-utilities": "^4.6.0"
   },
   "peerDependencies": {
     "lodash-es": "^4.0.0"

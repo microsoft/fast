@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.1.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-colors@5.0.12...@microsoft/fast-colors@5.1.0) (2020-07-14)
+
+
+### Features
+
+* update typescript version and remove utility types dependencies for react packages ([#3422](https://github.com/Microsoft/fast/issues/3422)) ([09d07b5](https://github.com/Microsoft/fast/commit/09d07b580cda3bcc5d28f83d3568521f710c9576))
+
+
+
+
+
 ## [5.0.12](https://github.com/Microsoft/fast/compare/@microsoft/fast-colors@5.0.11...@microsoft/fast-colors@5.0.12) (2020-07-02)
 
 **Note:** Version bump only for package @microsoft/fast-colors

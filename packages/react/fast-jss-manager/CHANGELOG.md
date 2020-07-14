@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.2.0](https://github.com/microsoft/fast-react/compare/@microsoft/fast-jss-manager@4.1.21...@microsoft/fast-jss-manager@4.2.0) (2020-07-14)
+
+
+### Bug Fixes
+
+* update repo URL to be the soon-to-be archived repo for React packages ([#3498](https://github.com/microsoft/fast-react/issues/3498)) ([693d7fd](https://github.com/microsoft/fast-react/commit/693d7fd70823fbc9cc13d502764dbef8faf27e6f))
+
+
+### Features
+
+* update typescript version and remove utility types dependencies for react packages ([#3422](https://github.com/microsoft/fast-react/issues/3422)) ([09d07b5](https://github.com/microsoft/fast-react/commit/09d07b580cda3bcc5d28f83d3568521f710c9576))
+
+
+
+
+
 ## [4.1.21](https://github.com/Microsoft/fast/compare/@microsoft/fast-jss-manager@4.1.20...@microsoft/fast-jss-manager@4.1.21) (2020-06-26)
 
 **Note:** Version bump only for package @microsoft/fast-jss-manager
