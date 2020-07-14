@@ -191,6 +191,8 @@ export class Carousel extends FASTElement {
     // (undocumented)
     nextButtonItem: HTMLElement[];
     // (undocumented)
+    notTabbedPattern: boolean;
+    // (undocumented)
     paused: boolean;
     // (undocumented)
     pausedChanged(): void;
@@ -198,8 +200,6 @@ export class Carousel extends FASTElement {
     previousButtonItem: HTMLElement[];
     // (undocumented)
     rotationControl: HTMLElement;
-    // (undocumented)
-    tabbed: boolean;
     // (undocumented)
     tabs: HTMLElement;
     }

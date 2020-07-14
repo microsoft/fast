@@ -28,12 +28,16 @@ export const CarouselStyles = css`
         display: none;
     }
 
-    :host([tabbed]) .flipper {
-        opacity: 0;
+    :host([nottabbedpattern]) .flipper {
+        opacity: 1;
     }
 
-    :host([tabbed]:hover) .flipper {
+    :host(:hover) .flipper {
         opacity: 1;
+    }
+
+    .flipper {
+        opacity: 0;
     }
 
     .flipper {

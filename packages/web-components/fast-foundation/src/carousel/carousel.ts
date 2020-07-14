@@ -22,20 +22,11 @@ const tabPrefix: string = "tab-";
  * @public
  */
 export class Carousel extends FASTElement {
-    @attr({ mode: "boolean" })
+    @attr({ mode: "fromView" })
     public autoplay: boolean = true;
 
-    @attr({ attribute: "autoplay-interval" })
-    public autoplayInterval: number = 6000;
-
-    @attr({ mode: "boolean" })
+    @attr({ mode: "fromView" })
     public loop: boolean = true;
-
-    @attr({ attribute: "aria-labelledby" })
-    public arialabelledby: string;
-
-    @attr({ attribute: "aria-label" })
-    public arialabel: string;
 
     @attr({ mode: "boolean" })
     public paused: boolean = false;
@@ -51,18 +42,25 @@ export class Carousel extends FASTElement {
         }
     }
 
+    @attr({ attribute: "nottabbedpattern", mode: "boolean" })
+    public notTabbedPattern: boolean = false;
+
+    @attr({ attribute: "autoplay-interval" })
+    public autoplayInterval: number = 6000;
+
     @attr({ attribute: "activeid" })
     public activeid: string;
     public activeidChanged(): void {
         this.activeIndex = this.tabIds.indexOf(this.activeid);
     }
 
-    @attr({ mode: "boolean" })
-    public tabbed: boolean = true;
+    @attr({ attribute: "aria-labelledby" })
+    public arialabelledby: string;
 
-    @observable
+    @attr({ attribute: "aria-label" })
+    public arialabel: string;
+
     public focused: boolean = false;
-
     public carousel: HTMLDivElement;
     public tabs: HTMLElement;
     public rotationControl: HTMLElement;
@@ -84,7 +82,7 @@ export class Carousel extends FASTElement {
             this.activeid = this.tabIds[this.activeIndex] as string;
         }
 
-        if (!this.tabbed) {
+        if (this.notTabbedPattern) {
             this.filteredItems = this.filteredItems.map(
                 (item: HTMLElement, index: number) => {
                     if (index === this.activeIndex) {
@@ -105,7 +103,7 @@ export class Carousel extends FASTElement {
 
                     item.setAttribute("id", `${tabPanelPrefix}${index + 1}`);
                     item.classList.add("slide");
-                    // sethdonohue - per ARIA spec role=group and roledescription=slide must be on the slide container for basic (not tabbed) implementation
+                    // sethdonohue - per ARIA spec role=group and roledescription=slide must be on the slide container for notTabbedPattern (not tabbed) implementation
                     item.setAttribute("role", "group");
                     item.setAttribute("aria-roledescription", "slide");
 
@@ -124,7 +122,6 @@ export class Carousel extends FASTElement {
 
     public handleFlipperKeypress = (direction: 1 | -1, e: KeyboardEvent): void => {
         switch (e.keyCode) {
-            case keyCodeSpace:
             case keyCodeEnter:
                 this.paused = true;
                 this.incrementSlide(direction);
@@ -169,7 +166,7 @@ export class Carousel extends FASTElement {
 
         this.activeid = this.tabIds[this.activeIndex];
 
-        if (!this.tabbed) {
+        if (this.notTabbedPattern) {
             this.itemsChanged();
         }
         this.change();
@@ -312,7 +309,7 @@ export class Carousel extends FASTElement {
             }
         });
 
-        if (this.tabbed) {
+        if (!this.notTabbedPattern) {
             this.tabs.addEventListener("keydown", this.handleTabsKeypress);
             this.tabs.addEventListener("focusin", this.handleTabsFocusIn);
             this.tabs.addEventListener("focusout", this.handleTabsFocusOut);
