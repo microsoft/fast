@@ -1,14 +1,18 @@
 #include <emscripten.h>
+#include "permutate.h"
 
-int main(int argc, char *argv[])
+/**
+ * Define the callback function on the Module object
+ * TODO: this should be changed to use custom messages or
+ * a global var assigned by the user
+ */
+EM_JS(void, permutate_callback, (char* permutation),
+    {
+        Module.onPermutate(UTF8ToString(permutation));
+    }
+);
+
+void permutate(char* permutatorConfig)
 {
-    return 0;
-}
-
-int permutate(int n){
-    EM_ASM({
-        console.log("supplied number", $0, "\n");
-    }, n);
-
-    return n * 2;
+    permutator(permutatorConfig, permutate_callback);
 }
