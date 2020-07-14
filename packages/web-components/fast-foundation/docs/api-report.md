@@ -386,6 +386,8 @@ export type MediaQueryListListener = (this: MediaQueryList, ev?: MediaQueryListE
 export class Menu extends FASTElement {
     // @internal (undocumented)
     connectedCallback(): void;
+    // @internal (undocumented)
+    disconnectedCallback(): void;
     focus(): void;
     // @internal
     handleFocusOut: (e: FocusEvent) => void;

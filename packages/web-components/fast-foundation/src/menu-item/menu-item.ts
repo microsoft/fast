@@ -34,10 +34,10 @@ export class MenuItem extends FASTElement {
      *
      * @public
      * @remarks
-     * HTML Attribute: aria-expanded
+     * HTML Attribute: expanded
      */
-    @attr({ attribute: "aria-expanded", mode: "reflect", converter: booleanConverter })
-    public expanded: boolean = false;
+    @attr({ attribute: "expanded" })
+    public expanded: boolean;
 
     /**
      * The role of the element.
