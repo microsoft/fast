@@ -71,7 +71,7 @@ export class Menu extends FASTElement {
     /**
      * @internal
      */
-    public handleMenuKeyDown(e: KeyboardEvent): void {
+    public handleMenuKeyDown(e: KeyboardEvent): void | boolean {
         if (e.defaultPrevented) {
             return;
         }
@@ -98,6 +98,10 @@ export class Menu extends FASTElement {
                 e.preventDefault();
                 this.setFocus(0, 1);
                 break;
+
+            default:
+                // if we are not handling the event, do not prevent default
+                return true;
         }
     }
 

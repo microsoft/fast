@@ -392,7 +392,7 @@ export class Menu extends FASTElement {
     // @internal
     handleFocusOut: (e: FocusEvent) => void;
     // @internal (undocumented)
-    handleMenuKeyDown(e: KeyboardEvent): void;
+    handleMenuKeyDown(e: KeyboardEvent): void | boolean;
     // @internal (undocumented)
     items: HTMLSlotElement;
     }
