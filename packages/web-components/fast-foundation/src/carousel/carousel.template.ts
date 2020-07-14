@@ -70,29 +70,30 @@ export const CarouselTemplate = html<Carousel>`
         <slot name="previous-button" part="previous-button" ${slotted(
             "previousButtonItem"
         )}>
-            <fast-flipper aria-hidden="${x => (x.tabbed ? "true" : "false")}" direction=${
+            <fast-flipper aria-hidden="${x =>
+                !x.notTabbedPattern ? "true" : "false"}" direction=${
     FlipperDirection.previous
 }>
         </slot>
     </div>
-    <div
-        style="${x => (x.tabbed ? "display: none;" : "")}"
-        aria-atomic="false"
-        aria-live="${x => (x.autoplay && !x.paused ? "off" : "polite")}"
-    >
-        <slot ${slotted("items")}></slot>
-    </div>
-
     <div
         class="next-flipper flipper"
         @click=${(x, c) => x.handleFlipperClick(1, c.event as MouseEvent)}
         @keypress=${(x, c) => x.handleFlipperKeypress(1, c.event as KeyboardEvent)}
     >
         <slot name="next-button" part="next-button" ${slotted("nextButtonItem")}>
-            <fast-flipper aria-hidden="${x => (x.tabbed ? "true" : "false")}" direction=${
+            <fast-flipper aria-hidden="${x =>
+                !x.notTabbedPattern ? "true" : "false"}" direction=${
     FlipperDirection.next
 }>
         </slot>
     </div>
-    ${when(x => x.tabbed, tabbedTemplate)}
+    <div
+        style="${x => (!x.notTabbedPattern ? "display: none;" : "")}"
+        aria-atomic="false"
+        aria-live="${x => (x.autoplay && !x.paused ? "off" : "polite")}"
+    >
+        <slot ${slotted("items")}></slot>
+    </div>
+    ${when(x => !x.notTabbedPattern, tabbedTemplate)}
 </template>`;
