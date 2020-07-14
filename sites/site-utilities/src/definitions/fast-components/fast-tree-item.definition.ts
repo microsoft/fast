@@ -13,7 +13,7 @@ export const fastTreeItemDefinition: WebComponentDefinition = {
                     description: "Indicates whether tree item is expanded or not",
                     default: false,
                     required: false,
-                    type: DataType.number,
+                    type: DataType.boolean,
                 },
                 {
                     name: "selected",
@@ -34,6 +34,10 @@ export const fastTreeItemDefinition: WebComponentDefinition = {
                 {
                     name: "",
                     description: "The default slot used for content",
+                },
+                {
+                    name: "item",
+                    description: "The item slot used for nested tree-item components",
                 },
                 {
                     name: "expand-collapse-glyph",

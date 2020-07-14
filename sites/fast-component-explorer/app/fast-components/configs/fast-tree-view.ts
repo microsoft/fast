@@ -1,13 +1,13 @@
 import {
     fastComponentDefinitions,
     fastComponentSchemas,
+    textSchema,
 } from "@microsoft/site-utilities";
 import { camelCase } from "lodash-es";
-import { textSchema } from "@microsoft/site-utilities";
 import Guidance from "../../.tmp/tree-view/guidance";
 import { ComponentViewConfig } from "./data.props";
-import { fastTreeItemId } from "./fast-tree-item";
 
+export const fastTreeItemId = "fast-tree-item";
 export const fastTreeViewId = "fast-tree-view";
 const fastTreeViewConfig: ComponentViewConfig = {
     schema: fastComponentSchemas[fastTreeViewId],
@@ -38,21 +38,47 @@ const fastTreeViewConfig: ComponentViewConfig = {
                         },
                         schemaId: fastTreeItemId,
                         data: {
-                            slot: "Slot",
                             Slot: [
                                 {
-                                    id: "Slot10",
+                                    id: "Slot00",
+                                },
+                            ],
+                            SlotItem: [
+                                {
+                                    id: "Slot01",
                                 },
                             ],
                         },
                     },
-                    Slot10: {
+                    Slot00: {
                         parent: {
                             id: "Slot0",
                             dataLocation: "Slot",
                         },
                         schemaId: textSchema.id,
                         data: "Tree item 1",
+                    },
+                    Slot01: {
+                        parent: {
+                            id: "Slot0",
+                            dataLocation: "SlotItem",
+                        },
+                        schemaId: fastTreeItemId,
+                        data: {
+                            Slot: [
+                                {
+                                    id: "Slot010",
+                                },
+                            ],
+                        },
+                    },
+                    Slot010: {
+                        parent: {
+                            id: "Slot01",
+                            dataLocation: "Slot",
+                        },
+                        schemaId: textSchema.id,
+                        data: "Tree item 1 - 1",
                     },
                     Slot1: {
                         parent: {
@@ -61,15 +87,14 @@ const fastTreeViewConfig: ComponentViewConfig = {
                         },
                         schemaId: fastTreeItemId,
                         data: {
-                            slot: "Slot",
                             Slot: [
                                 {
-                                    id: "Slot11",
+                                    id: "Slot10",
                                 },
                             ],
                         },
                     },
-                    Slot11: {
+                    Slot10: {
                         parent: {
                             id: "Slot1",
                             dataLocation: "Slot",
