@@ -402,7 +402,10 @@ function mapAttributesToJSONSchema(
 ): { [key: string]: any } {
     return attributes.reduce(
         (accumulation: { [key: string]: any }, attribute: WebComponentAttribute) => {
-            const optionalAttributeProperties: { enum?: Array<string | number> } = {};
+            const optionalAttributeProperties: {
+                enum?: Array<string | number>;
+                default?: any;
+            } = {};
 
             if (attribute.values) {
                 optionalAttributeProperties.enum = attribute.values.map(
@@ -412,6 +415,10 @@ function mapAttributesToJSONSchema(
                             : attributeValue.name;
                     }
                 );
+            }
+
+            if (attribute.default) {
+                optionalAttributeProperties.default = attribute.default;
             }
 
             return {
