@@ -104,10 +104,6 @@ export class TreeItem extends FASTElement {
     public connectedCallback(): void {
         super.connectedCallback();
 
-        if (this.parentElement instanceof TreeItem) {
-            this.setAttribute("slot", "item");
-        }
-
         const parentTreeNode: HTMLElement | null | undefined = this.getParentTreeNode();
         if (parentTreeNode) {
             if (parentTreeNode.hasAttribute("render-collapsed-nodes")) {
