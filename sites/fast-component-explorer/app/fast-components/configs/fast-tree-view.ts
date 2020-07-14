@@ -40,18 +40,43 @@ const fastTreeViewConfig: ComponentViewConfig = {
                         data: {
                             Slot: [
                                 {
-                                    id: "Slot10",
+                                    id: "Slot00",
+                                },
+                                {
+                                    id: "Slot01",
                                 },
                             ],
                         },
                     },
-                    Slot10: {
+                    Slot00: {
                         parent: {
                             id: "Slot0",
                             dataLocation: "Slot",
                         },
                         schemaId: textSchema.id,
                         data: "Tree item 1",
+                    },
+                    Slot01: {
+                        parent: {
+                            id: "Slot0",
+                            dataLocation: "Slot",
+                        },
+                        schemaId: fastTreeItemId,
+                        data: {
+                            Slot: [
+                                {
+                                    id: "Slot010",
+                                },
+                            ],
+                        },
+                    },
+                    Slot010: {
+                        parent: {
+                            id: "Slot01",
+                            dataLocation: "Slot",
+                        },
+                        schemaId: textSchema.id,
+                        data: "Tree item 1 - 1",
                     },
                     Slot1: {
                         parent: {
@@ -62,12 +87,12 @@ const fastTreeViewConfig: ComponentViewConfig = {
                         data: {
                             Slot: [
                                 {
-                                    id: "Slot11",
+                                    id: "Slot10",
                                 },
                             ],
                         },
                     },
-                    Slot11: {
+                    Slot10: {
                         parent: {
                             id: "Slot1",
                             dataLocation: "Slot",

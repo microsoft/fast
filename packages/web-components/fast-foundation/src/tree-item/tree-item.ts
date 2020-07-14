@@ -62,6 +62,15 @@ export class TreeItem extends FASTElement {
     @attr({ mode: "boolean" })
     public disabled: boolean;
 
+    /**
+     * When true, the control will assign the slot name "item"
+     * @public
+     * @remarks
+     * HTMLAttribute: slot
+     */
+    @attr()
+    public slot: string;
+
     public expandCollapseButton: HTMLDivElement;
 
     @observable
@@ -103,6 +112,8 @@ export class TreeItem extends FASTElement {
      */
     public connectedCallback(): void {
         super.connectedCallback();
+
+        this.slot = this.parentElement instanceof TreeItem ? "item" : "";
 
         const parentTreeNode: HTMLElement | null | undefined = this.getParentTreeNode();
         if (parentTreeNode) {
