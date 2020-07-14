@@ -79,25 +79,21 @@ export class Menu extends FASTElement {
             case keyCodeArrowDown:
             case keyCodeArrowRight:
                 // go forward one index
-                e.preventDefault();
                 this.setFocus(this.focusIndex + 1, 1);
-                break;
+                return;
             case keyCodeArrowUp:
             case keyCodeArrowLeft:
                 // go back one index
-                e.preventDefault();
                 this.setFocus(this.focusIndex - 1, -1);
-                break;
+                return;
             case keyCodeEnd:
                 // set focus on last item
-                e.preventDefault();
                 this.setFocus(this.domChildren().length - 1, -1);
-                break;
+                return;
             case keyCodeHome:
                 // set focus on first item
-                e.preventDefault();
                 this.setFocus(0, 1);
-                break;
+                return;
 
             default:
                 // if we are not handling the event, do not prevent default
