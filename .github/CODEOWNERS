@@ -30,21 +30,6 @@ build/ @janechu @nicholasrice @chrisdholt @awentzel @EisenbergEffect
 
 # Package specific owners
 
-# React
-/packages/react/fast-components-class-name-contracts-base/ @chrisdholt @janechu @nicholasrice
-/packages/react/fast-components-class-name-contracts-msft/ @chrisdholt @janechu @nicholasrice
-/packages/react/fast-components-foundation-react/ @chrisdholt @janechu @nicholasrice
-/packages/react/fast-components-react-base/ @chrisdholt @janechu @nicholasrice
-/packages/react/fast-components-react-msft/ @chrisdholt @janechu @nicholasrice
-/packages/react/fast-components-styles-msft/ @chrisdholt @janechu @nicholasrice
-/packages/react/fast-jss-manager/ @nicholasrice @janechu @chrisdholt
-/packages/react/fast-jss-manager-react/ @nicholasrice @janechu @chrisdholt
-/packages/react/fast-jss-utilities/ @nicholasrice @janechu @chrisdholt
-/packages/react/fast-layouts-react/ @chrisdholt @nicholasrice
-/packages/react/fast-react-utilities/ @chrisdholt @nicholasrice
-/packages/react/fast-storybook-design-system-addon/ @nicholasrice @chrisdholt @janechu
-/packages/react/fast-storybook-presets/ @nicholasrice @chrisdholt @janechu
-
 # Tooling
 /packages/tooling/fast-figma-plugin-msft/ @nicholasrice @bheston @janechu @EisenbergEffect
 /packages/tooling/fast-tooling-react/ @janechu @nicholasrice @chrisdholt @EisenbergEffect

@@ -5,6 +5,7 @@
         "baseUrl": ".",
         "outDir": "./dist",
         "declaration": false,
+        "jsx": "react",
         "strictNullChecks": true,
         "experimentalDecorators": true
     },

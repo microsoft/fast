@@ -35,15 +35,6 @@ jobs:
       with:
         coverageCommand: lerna run coverage
         coverageLocations: |
-          ${{github.workspace}}/packages/react/fast-components-foundation-react/coverage/lcov.info:lcov
-          ${{github.workspace}}/packages/react/fast-components-react-base/coverage/lcov.info:lcov
-          ${{github.workspace}}/packages/react/fast-components-react-msft/coverage/lcov.info:lcov
-          ${{github.workspace}}/packages/react/fast-components-styles-msft/coverage/lcov.info:lcov
-          ${{github.workspace}}/packages/react/fast-jss-manager/coverage/lcov.info:lcov
-          ${{github.workspace}}/packages/react/fast-jss-manager-react/coverage/lcov.info:lcov
-          ${{github.workspace}}/packages/react/fast-jss-utilities/coverage/lcov.info:lcov
-          ${{github.workspace}}/packages/react/fast-layouts-react/coverage/lcov.info:lcov
-          ${{github.workspace}}/packages/react/fast-react-utilities/coverage/lcov.info:lcov
           ${{github.workspace}}/packages/tooling/fast-tooling/coverage/lcov.info:lcov
           ${{github.workspace}}/packages/tooling/fast-tooling-react/coverage/lcov.info:lcov
           ${{github.workspace}}/packages/utilities/fast-animation/coverage/lcov.info:lcov

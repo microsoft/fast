@@ -1,6 +1,0 @@
-# Source files
-src/
-
-# babel config
-babel.config.js
-tsconfig.json
