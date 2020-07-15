@@ -3,6 +3,7 @@
     "compilerOptions": {
         "baseUrl": ".",
         "outDir": "./dist",
+        "jsx": "react",
         "resolveJsonModule": true
     }
   }
