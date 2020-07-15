@@ -261,10 +261,10 @@ export class AnchoredRegion extends FASTElement {
         this.initialLayoutComplete = false;
         this.noCollisionMode = false;
         this.transformOrigin = "top left";
-        this.regionTop = "unset";
+        this.regionTop = "0";
         this.regionRight = "unset";
         this.regionBottom = "unset";
-        this.regionLeft = "unset";
+        this.regionLeft = "0";
         this.regionWidth = "fit-content";
         this.regionHeight = "fit-content";
 
@@ -287,7 +287,16 @@ export class AnchoredRegion extends FASTElement {
         this.baseHorizontalOffset = 0;
         this.baseVerticalOffset = 0;
 
-        this.regionStyle = "{position: absolute;}";
+        this.regionStyle = `
+        position: ${this.fixedPlacement ? "fixed" : "absolute"};
+        display: block;
+        height: ${this.regionHeight};
+        width: ${this.regionWidth};
+        top: ${this.regionTop};;
+        left: ${this.regionLeft}; 
+        transform-origin: ${this.transformOrigin};
+        opacity: 0;
+        `;
     };
 
     /**
@@ -789,6 +798,7 @@ export class AnchoredRegion extends FASTElement {
 
         this.regionStyle = `
             position: ${this.fixedPlacement ? "fixed" : "absolute"};
+            display: block;
             height: ${this.regionHeight};
             width: ${this.regionWidth};
             top: ${this.regionTop};
@@ -878,22 +888,25 @@ export class AnchoredRegion extends FASTElement {
         switch (desiredVerticalPosition) {
             case AnchoredRegionVerticalPositionLabel.top:
                 yTransformOrigin = Location.bottom;
-                bottom = this.offsetParent.clientHeight;
+                bottom = this.offsetParent.clientHeight - this.baseVerticalOffset;
                 break;
 
             case AnchoredRegionVerticalPositionLabel.insetTop:
                 yTransformOrigin = Location.bottom;
-                bottom = -this.offsetParent.clientHeight - this.baseVerticalOffset;
+                bottom =
+                    -this.offsetParent.clientHeight -
+                    this.baseVerticalOffset +
+                    this.anchorHeight;
                 break;
 
             case AnchoredRegionVerticalPositionLabel.insetBottom:
                 yTransformOrigin = Location.top;
-                top = this.baseVerticalOffset - this.anchorHeight;
+                top = this.baseVerticalOffset;
                 break;
 
             case AnchoredRegionVerticalPositionLabel.bottom:
                 yTransformOrigin = Location.top;
-                top = this.baseVerticalOffset;
+                top = this.baseVerticalOffset + this.anchorHeight;
                 break;
         }
 
