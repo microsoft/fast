@@ -16,6 +16,7 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
     if (name.toLowerCase().startsWith("anchored-region")) {
         scrollViewports();
         setButtonActions();
+        showRegions();
 
         const scalingViewportUpdate: HTMLElement | null = document.getElementById(
             "viewport-scaling-update"
@@ -34,16 +35,22 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
 });
 
 function scrollViewports(): void {
-    // document.querySelectorAll("div[id^='viewport']").forEach(el => {
-    //     if (el instanceof HTMLDivElement) {
-    //         el.scrollTop = 280;
-    //         RtlScrollConverter.setScrollLeft(
-    //             el,
-    //             el.dir === Direction.rtl ? -250 : 250,
-    //             el.dir === Direction.rtl ? Direction.rtl : Direction.ltr
-    //         );
-    //     }
-    // });
+    document.querySelectorAll("div[id^='viewport']").forEach(el => {
+        if (el instanceof HTMLDivElement) {
+            el.scrollTop = 280;
+            RtlScrollConverter.setScrollLeft(
+                el,
+                el.dir === Direction.rtl ? -250 : 250,
+                el.dir === Direction.rtl ? Direction.rtl : Direction.ltr
+            );
+        }
+    });
+}
+
+function showRegions(): void {
+    document.querySelectorAll("anchored-region").forEach(el => {
+        //(el as HTMLElement).hidden = false;
+    });
 }
 
 function handleScrollViaUpdate(ev: Event): void {
