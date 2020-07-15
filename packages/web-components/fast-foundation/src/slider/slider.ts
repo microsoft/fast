@@ -114,6 +114,18 @@ export class Slider extends FormAssociated<HTMLInputElement>
     public trackMinHeight: number = 0;
 
     /**
+     * @internal
+     */
+    @observable
+    public valueText: string | null;
+
+    /**
+     * @internal
+     */
+    @observable
+    public valueTextFormatter: (value: string) => string | null;
+
+    /**
      * The element's value to be included in form submission changed.
      * @public
      */
@@ -121,6 +133,10 @@ export class Slider extends FormAssociated<HTMLInputElement>
     private valueChanged(): void {
         if (this.proxy instanceof HTMLElement) {
             this.updateForm();
+        }
+
+        if (typeof this.valueTextFormatter === "function") {
+            this.valueText = this.valueTextFormatter(this.value);
         }
 
         if (this.$fastController.isConnected) {
@@ -196,15 +212,6 @@ export class Slider extends FormAssociated<HTMLInputElement>
      */
     @attr
     public mode: SliderMode = SliderMode.singleValue;
-
-    /**
-     * The value unit on the slider for aria readout
-     *
-     * @public
-     * HTML Attribute: aria-valueunit
-     */
-    @attr({ attribute: "aria-valueunit" })
-    public ariaValueUnit: string;
 
     protected proxy = document.createElement("input");
 
