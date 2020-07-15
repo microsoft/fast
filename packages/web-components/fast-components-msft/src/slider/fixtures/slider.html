@@ -22,7 +22,6 @@
                 max="100"
                 step="10"
                 value="70"
-                aria-valueunit="&#8451;"
             >
                 <fast-slider-label position="0">
                     0&#8451;
@@ -48,13 +47,13 @@
             "
         >
             <fast-slider
+                id="switcher2"
                 orientation="vertical"
                 min="0"
                 max="100"
                 step="10"
                 value="50"
                 style="height: 300px; width: 50px;"
-                aria-valueunit="&#8451;"
             >
                 <fast-slider-label position="0">
                     0&#8451;
@@ -78,13 +77,7 @@
             <h4>Text labels</h4>
             <div style="display: flex; flex-direction: column; height: min-content;">
                 <label for="slider1" style="margin-left: 8px;">Temperature:</label>
-                <fast-slider
-                    id="slider1"
-                    min="0"
-                    max="100"
-                    step="10"
-                    aria-valueunit="&#8451;"
-                >
+                <fast-slider id="slider1" min="0" max="100" step="10">
                     <fast-slider-label position="10">
                         10&#8451;
                     </fast-slider-label>
