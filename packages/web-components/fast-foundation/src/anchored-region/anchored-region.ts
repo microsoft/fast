@@ -894,8 +894,8 @@ export class AnchoredRegion extends FASTElement {
             case AnchoredRegionVerticalPositionLabel.insetTop:
                 yTransformOrigin = Location.bottom;
                 bottom =
-                    -this.offsetParent.clientHeight -
-                    this.baseVerticalOffset +
+                    this.offsetParent.clientHeight -
+                    this.baseVerticalOffset -
                     this.anchorHeight;
                 break;
 
