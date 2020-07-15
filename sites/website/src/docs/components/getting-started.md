@@ -81,7 +81,7 @@ With the provider in place, add any components as a child of the `fast-design-sy
 ```html
 <!-- ... -->
 <fast-design-system-provider use-defaults>
-    <fast-button>Hello world<fast-button>
+    <fast-button>Hello world</fast-button>
 </fast-design-system-provider>
 <!-- ... -->
 ```
