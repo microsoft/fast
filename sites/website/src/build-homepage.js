@@ -3,52 +3,43 @@
 /* eslint-env node */
 /* eslint-disable @typescript-eslint/typedef */
 /* eslint-disable @typescript-eslint/no-var-requires */
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
-const { spawn } = require("child_process");
 const path = require("path");
 const copyfiles = require("copyfiles");
+const webpack = require("webpack");
+const fastWebsiteConfig = require("fast-website/webpack.prod.js");
 
-const projectPath = path.resolve(__dirname, "../../fast-website");
 const staticPath = path.resolve(__dirname, "../static");
-const indexPath = path.resolve(projectPath, "dist/index.html");
 const utilitiesPath = path.resolve(__dirname, "../../site-utilities");
 
-const copyConfig = { flat: true, verbose: true, up: true };
+// Set the webpack output path
+fastWebsiteConfig.output.path = staticPath;
 
-function copyBundle() {
-    copyfiles([indexPath, staticPath], copyConfig, () => {
-        console.log("Copied homepage files to static");
-    });
-
-    copyfiles(
-        [`${projectPath}/dist/bundle/*`, `${staticPath}/bundle`],
-        copyConfig,
-        () => {
-            console.log("Copied homepage files to static");
+console.info("Building fast-website with webpack...");
+webpack(fastWebsiteConfig, (err, stats) => {
+    if (err) {
+        console.error(err.stack || err);
+        if (err.details) {
+            console.error(err.details);
         }
-    );
+        process.exit(1);
+    }
+
+    const info = stats.toJson();
+
+    if (stats.hasErrors()) {
+        info.errors.forEach(e => console.error(e));
+        process.exit(1);
+    }
+
+    if (stats.hasWarnings()) {
+        info.warnings.forEach(w => console.warn(w));
+    }
+
+    console.info("Built fast-website to static");
 
     copyfiles(
         [`${utilitiesPath}/statics/assets/favicon.ico`, staticPath],
-        copyConfig,
-        () => {
-            console.log("Copied favicon to static");
-        }
+        { flat: true, verbose: true, up: true },
+        () => console.info("Copied favicon to static")
     );
-}
-
-// Run `yarn build` in the fast-website project
-const yarnBuild = spawn("yarn", ["build"], { cwd: projectPath });
-
-yarnBuild.stdout.on("data", data => console.log(`stdout: ${data}`));
-yarnBuild.stderr.on("data", data => console.log(`stderr: ${data}`));
-yarnBuild.on("error", error => console.log(`error: ${error.message}`));
-
-yarnBuild.on("close", exitCode => {
-    console.log(`child process exited with code ${exitCode}`);
-    if (exitCode !== 0) {
-        process.exit(exitCode);
-    }
-
-    copyBundle();
 });
