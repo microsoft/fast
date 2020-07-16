@@ -9,7 +9,7 @@ An implementation of a [tree-item](https://w3c.github.io/aria/#treeitem) as a we
 
 ## Usage
 
-```html live
+```html
 <fast-design-system-provider use-defaults>
     <fast-tree-view>
         Root

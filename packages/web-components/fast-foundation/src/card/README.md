@@ -9,7 +9,7 @@ The `fast-card` component is a visual container without semantics that takes chi
 
 ## Usage
 
-```html live
+```html
 <fast-design-system-provider use-defaults>
     <fast-card>
         <img src="https://placehold.it/300x150" alt="Placeholder image with watermark" />

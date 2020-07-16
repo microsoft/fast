@@ -9,7 +9,7 @@ A web component implementation of a [dialog](https://w3c.github.io/aria-practice
 
 ## Usage
 
-```html live
+```html
 <div>
 <fast-design-system-provider use-defaults>
     <fast-button appearance="accent" onclick="document.getElementById('example1').toggleAttribute('hidden');">Open Dialog</fast-button>

@@ -9,7 +9,7 @@ An implementation of a [switch](https://w3c.github.io/aria/#switch) as a form-co
 
 ## Usage
 
-```html live
+```html
 <fast-design-system-provider use-defaults>
     <fast-switch>
         Theme

@@ -9,7 +9,7 @@ An implementation of a [tree](https://w3c.github.io/aria/#tree) as a web-compone
 
 ## Usage
 
-```html live
+```html
 <fast-design-system-provider use-defaults>
     <fast-tree-view>
         Root

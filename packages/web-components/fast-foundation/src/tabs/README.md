@@ -7,7 +7,7 @@ custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-comp
 
 ## Usage
 
-```html live
+```html
 <fast-design-system-provider use-defaults>
     <fast-tabs activeId="entrees">
         <fast-tab id="apps">Appetizers</fast-tab>

@@ -9,7 +9,7 @@ custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-comp
 
 ## Usage
 
-```html live
+```html
 <fast-design-system-provider use-defaults>
     <fast-anchor href="https://fast.design" appearance="hypertext">FAST</fast-anchor>
 </fast-design-system-provider>

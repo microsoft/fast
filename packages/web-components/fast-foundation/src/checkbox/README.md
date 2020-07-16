@@ -9,7 +9,7 @@ An implementation of a [checkbox](https://developer.mozilla.org/en-US/docs/Web/H
 
 ## Usage
 
-```html live
+```html
 <fast-design-system-provider use-defaults>
     <fieldset>
         <legend>Fruits</legend>

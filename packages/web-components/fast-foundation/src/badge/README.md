@@ -21,7 +21,7 @@ fast-badge {
 }
 ```
 
-```html live
+```html
 <fast-design-system-provider use-defaults>
     <fast-badge appearance="accent">Danger</fast-badge>
 </fast-design-system-provider>

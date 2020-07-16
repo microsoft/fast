@@ -11,7 +11,7 @@ Progress components are used to indicate the length of time a process will take.
 
 ### fast-progress
 
-```html live
+```html
 <fast-design-system-provider use-defaults>
     <fast-progress min="0" max="100" value="75"></fast-progress>
 </fast-design-system-provider>
@@ -19,7 +19,7 @@ Progress components are used to indicate the length of time a process will take.
 
 ### fast-progress-ring
 
-```html live
+```html
 <fast-design-system-provider use-defaults>
     <fast-progress-ring min="0" max="100" value="75"></fast-progress-ring>
 </fast-design-system-provider>

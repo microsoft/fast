@@ -9,7 +9,7 @@ An implementation of a [text field](https://developer.mozilla.org/en-US/docs/Web
 
 ## Usage
 
-```html live
+```html
 <fast-design-system-provider use-defaults>
     <fast-text-field appearance="filled" placeholder="user@email.com">Email</fast-text-field>
 </fast-design-system-provider>

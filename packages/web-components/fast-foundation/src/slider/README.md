@@ -9,7 +9,7 @@ An implementation of a [range slider](https://developer.mozilla.org/en-US/docs/W
 
 ## Usage
 
-```html live
+```html
 <fast-design-system-provider use-defaults>
     <fast-slider min="0" max="100" step="10" value="70">
         <fast-slider-label

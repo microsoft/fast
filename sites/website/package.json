@@ -12,7 +12,6 @@
   "dependencies": {
     "@docusaurus/core": "2.0.0-alpha.58",
     "@docusaurus/preset-classic": "2.0.0-alpha.58",
-    "@docusaurus/theme-live-codeblock": "2.0.0-alpha.58",
     "classnames": "^2.2.6",
     "copyfiles": "^2.3.0",
     "react": "^16.8.4",

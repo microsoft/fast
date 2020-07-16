@@ -9,7 +9,7 @@ An implementation of an [HTML textarea element](https://developer.mozilla.org/en
 
 ## Usage
 
-```html live
+```html
 <fast-design-system-provider use-defaults>
     <fast-text-area placeholder="Describe your experience">How was your stay?</fast-text-area>
 </fast-design-system-provider>

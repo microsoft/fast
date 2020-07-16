@@ -9,7 +9,7 @@ An implementation of a [radio-group](https://w3c.github.io/aria-practices/#radio
 
 ## Usage
 
-```html live
+```html
 <fast-design-system-provider use-defaults>
     <label id="radiogroup">Preset selected-value</label>
     <fast-radio-group value="maverick" aria-labelledby="radiogroup" name="best-pilot">

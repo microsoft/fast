@@ -6,14 +6,6 @@ module.exports = {
     favicon: "/favicon.ico",
     organizationName: "microsoft",
     projectName: "fast",
-    scripts: [
-        {
-            src: "https://unpkg.com/@microsoft/fast-components",
-            type: "module",
-            async: true,
-        },
-    ],
-    themes: [require.resolve("@docusaurus/theme-live-codeblock")],
     themeConfig: {
         defaultDarkMode: true,
         navbar: {

@@ -9,7 +9,7 @@ A web component implementation of a [horizontal rule](https://developer.mozilla.
 
 ## Usage
 
-```html live
+```html
 <fast-design-system-provider use-defaults>
     <fast-divider></fast-divider>
 </fast-design-system-provider>
