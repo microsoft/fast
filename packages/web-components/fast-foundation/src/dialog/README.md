@@ -9,17 +9,12 @@ A web component implementation of a [dialog](https://w3c.github.io/aria-practice
 
 ## Usage
 
-```html live
-<div>
-<fast-design-system-provider use-defaults>
-    <fast-button appearance="accent" onclick="document.getElementById('example1').toggleAttribute('hidden');">Open Dialog</fast-button>
-    <fast-dialog id="example1" class="example-dialog" aria-label="Simple modal dialog" modal="true" hidden>
-        <h2>Dialog</h2>
-        <p>This is an example dialog. Click the button below to close</p>
-        <fast-button autofocus onclick="document.getElementById('example1').toggleAttribute('hidden');">Close Dialog</fast-button>
-    </fast-dialog>
-</fast-design-system-provider>
-</div>
+```html
+<fast-dialog id="example1" class="example-dialog" aria-label="Simple modal dialog" modal="true" hidden>
+    <h2>Dialog</h2>
+    <p>This is an example dialog.</p>
+    <fast-button>Close Dialog</fast-button>
+</fast-dialog>
 ```
 
 ## Applying custom styles
