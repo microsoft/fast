@@ -511,6 +511,36 @@
         },
         {
           "kind": "TypeAlias",
+          "canonicalReference": "@microsoft/fast-components-msft!AnchorAppearance:type",
+          "docComment": "/**\n * Types of anchor appearance.\n *\n * @public\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "export declare type AnchorAppearance = "
+            },
+            {
+              "kind": "Reference",
+              "text": "ButtonAppearance",
+              "canonicalReference": "@microsoft/fast-components-msft!ButtonAppearance:type"
+            },
+            {
+              "kind": "Content",
+              "text": " | \"hypertext\""
+            },
+            {
+              "kind": "Content",
+              "text": ";"
+            }
+          ],
+          "releaseTag": "Public",
+          "name": "AnchorAppearance",
+          "typeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 3
+          }
+        },
+        {
+          "kind": "TypeAlias",
           "canonicalReference": "@microsoft/fast-components-msft!BadgeAppearance:type",
           "docComment": "/**\n * Badge appearance options.\n *\n * @public\n */\n",
           "excerptTokens": [
@@ -529,6 +559,31 @@
           ],
           "releaseTag": "Public",
           "name": "BadgeAppearance",
+          "typeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 2
+          }
+        },
+        {
+          "kind": "TypeAlias",
+          "canonicalReference": "@microsoft/fast-components-msft!ButtonAppearance:type",
+          "docComment": "/**\n * Types of button appearance.\n *\n * @public\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "export declare type ButtonAppearance = "
+            },
+            {
+              "kind": "Content",
+              "text": "\"accent\" | \"lightweight\" | \"neutral\" | \"outline\" | \"stealth\""
+            },
+            {
+              "kind": "Content",
+              "text": ";"
+            }
+          ],
+          "releaseTag": "Public",
+          "name": "ButtonAppearance",
           "typeTokenRange": {
             "startIndex": 1,
             "endIndex": 2
@@ -632,7 +687,96 @@
           ],
           "releaseTag": "Public",
           "name": "FASTAnchor",
-          "members": [],
+          "members": [
+            {
+              "kind": "Property",
+              "canonicalReference": "@microsoft/fast-components-msft!FASTAnchor#appearance:member",
+              "docComment": "/**\n * The appearance the anchor should have.\n *\n * @remarks\n *\n * HTML Attribute: appearance\n *\n * @public\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "appearance: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "AnchorAppearance",
+                  "canonicalReference": "@microsoft/fast-components-msft!AnchorAppearance:type"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "appearance",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false
+            },
+            {
+              "kind": "Method",
+              "canonicalReference": "@microsoft/fast-components-msft!FASTAnchor#appearanceChanged:member(1)",
+              "docComment": "",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "appearanceChanged(oldValue: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "AnchorAppearance",
+                  "canonicalReference": "@microsoft/fast-components-msft!AnchorAppearance:type"
+                },
+                {
+                  "kind": "Content",
+                  "text": ", newValue: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "AnchorAppearance",
+                  "canonicalReference": "@microsoft/fast-components-msft!AnchorAppearance:type"
+                },
+                {
+                  "kind": "Content",
+                  "text": "): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "void"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isStatic": false,
+              "returnTypeTokenRange": {
+                "startIndex": 5,
+                "endIndex": 6
+              },
+              "releaseTag": "Public",
+              "overloadIndex": 1,
+              "parameters": [
+                {
+                  "parameterName": "oldValue",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 1,
+                    "endIndex": 2
+                  }
+                },
+                {
+                  "parameterName": "newValue",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 3,
+                    "endIndex": 4
+                  }
+                }
+              ],
+              "name": "appearanceChanged"
+            }
+          ],
           "extendsTokenRange": {
             "startIndex": 1,
             "endIndex": 3
@@ -716,7 +860,96 @@
           ],
           "releaseTag": "Public",
           "name": "FASTButton",
-          "members": [],
+          "members": [
+            {
+              "kind": "Property",
+              "canonicalReference": "@microsoft/fast-components-msft!FASTButton#appearance:member",
+              "docComment": "/**\n * The appearance the button should have.\n *\n * @remarks\n *\n * HTML Attribute: appearance\n *\n * @public\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "appearance: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "ButtonAppearance",
+                  "canonicalReference": "@microsoft/fast-components-msft!ButtonAppearance:type"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "appearance",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false
+            },
+            {
+              "kind": "Method",
+              "canonicalReference": "@microsoft/fast-components-msft!FASTButton#appearanceChanged:member(1)",
+              "docComment": "",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "appearanceChanged(oldValue: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "ButtonAppearance",
+                  "canonicalReference": "@microsoft/fast-components-msft!ButtonAppearance:type"
+                },
+                {
+                  "kind": "Content",
+                  "text": ", newValue: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "ButtonAppearance",
+                  "canonicalReference": "@microsoft/fast-components-msft!ButtonAppearance:type"
+                },
+                {
+                  "kind": "Content",
+                  "text": "): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "void"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isStatic": false,
+              "returnTypeTokenRange": {
+                "startIndex": 5,
+                "endIndex": 6
+              },
+              "releaseTag": "Public",
+              "overloadIndex": 1,
+              "parameters": [
+                {
+                  "parameterName": "oldValue",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 1,
+                    "endIndex": 2
+                  }
+                },
+                {
+                  "parameterName": "newValue",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 3,
+                    "endIndex": 4
+                  }
+                }
+              ],
+              "name": "appearanceChanged"
+            }
+          ],
           "extendsTokenRange": {
             "startIndex": 1,
             "endIndex": 3
@@ -2716,6 +2949,62 @@
         },
         {
           "kind": "Class",
+          "canonicalReference": "@microsoft/fast-components-msft!FASTMenu:class",
+          "docComment": "/**\n * The FAST Menu Element. Implements {@link @microsoft/fast-foundation#Menu}, {@link @microsoft/fast-foundation#MenuTemplate}\n *\n * @remarks\n *\n * HTML Element: \\<fast-menu\\>\n *\n * @public\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "export declare class FASTMenu extends "
+            },
+            {
+              "kind": "Reference",
+              "text": "Menu",
+              "canonicalReference": "@microsoft/fast-foundation!Menu:class"
+            },
+            {
+              "kind": "Content",
+              "text": " "
+            }
+          ],
+          "releaseTag": "Public",
+          "name": "FASTMenu",
+          "members": [],
+          "extendsTokenRange": {
+            "startIndex": 1,
+            "endIndex": 3
+          },
+          "implementsTokenRanges": []
+        },
+        {
+          "kind": "Class",
+          "canonicalReference": "@microsoft/fast-components-msft!FASTMenuItem:class",
+          "docComment": "/**\n * The FAST Menu Item Element. Implements {@link @microsoft/fast-foundation#MenuItem}, {@link @microsoft/fast-foundation#MenuItemTemplate}\n *\n * @remarks\n *\n * HTML Element: \\<fast-menu-item\\>\n *\n * @public\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "export declare class FASTMenuItem extends "
+            },
+            {
+              "kind": "Reference",
+              "text": "MenuItem",
+              "canonicalReference": "@microsoft/fast-foundation!MenuItem:class"
+            },
+            {
+              "kind": "Content",
+              "text": " "
+            }
+          ],
+          "releaseTag": "Public",
+          "name": "FASTMenuItem",
+          "members": [],
+          "extendsTokenRange": {
+            "startIndex": 1,
+            "endIndex": 3
+          },
+          "implementsTokenRanges": []
+        },
+        {
+          "kind": "Class",
           "canonicalReference": "@microsoft/fast-components-msft!FASTProgress:class",
           "docComment": "/**\n * The FAST Progress Element. Implements {@link @microsoft/fast-foundation#BaseProgress}, {@link @microsoft/fast-foundation#ProgressTemplate}\n *\n * @remarks\n *\n * HTML Element: \\<fast-progress\\>\n *\n * @public\n */\n",
           "excerptTokens": [
@@ -3043,6 +3332,62 @@
           ],
           "releaseTag": "Public",
           "name": "FASTTextField",
+          "members": [],
+          "extendsTokenRange": {
+            "startIndex": 1,
+            "endIndex": 3
+          },
+          "implementsTokenRanges": []
+        },
+        {
+          "kind": "Class",
+          "canonicalReference": "@microsoft/fast-components-msft!FASTTreeItem:class",
+          "docComment": "",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "export declare class FASTTreeItem extends "
+            },
+            {
+              "kind": "Reference",
+              "text": "TreeItem",
+              "canonicalReference": "@microsoft/fast-foundation!TreeItem:class"
+            },
+            {
+              "kind": "Content",
+              "text": " "
+            }
+          ],
+          "releaseTag": "Public",
+          "name": "FASTTreeItem",
+          "members": [],
+          "extendsTokenRange": {
+            "startIndex": 1,
+            "endIndex": 3
+          },
+          "implementsTokenRanges": []
+        },
+        {
+          "kind": "Class",
+          "canonicalReference": "@microsoft/fast-components-msft!FASTTreeView:class",
+          "docComment": "",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "export declare class FASTTreeView extends "
+            },
+            {
+              "kind": "Reference",
+              "text": "TreeView",
+              "canonicalReference": "@microsoft/fast-foundation!TreeView:class"
+            },
+            {
+              "kind": "Content",
+              "text": " "
+            }
+          ],
+          "releaseTag": "Public",
+          "name": "FASTTreeView",
           "members": [],
           "extendsTokenRange": {
             "startIndex": 1,

@@ -10,13 +10,11 @@ An implementation of a [switch](https://w3c.github.io/aria/#switch) as a form-co
 ## Usage
 
 ```html
-<fast-design-system-provider use-defaults>
-    <fast-switch>
-        Theme
-        <span slot="checked-message">Dark</span>
-        <span slot="unchecked-message">Light</span>
-    </fast-switch>
-</fast-design-system-provider>
+<fast-switch>
+    Theme
+    <span slot="checked-message">Dark</span>
+    <span slot="unchecked-message">Light</span>
+</fast-switch>
 ```
 
 ## Applying custom styles

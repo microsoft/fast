@@ -10,9 +10,7 @@ An implementation of a [radio](https://developer.mozilla.org/en-US/docs/Web/HTML
 ## Usage
 
 ```html
-<fast-design-system-provider use-defaults>
-    <fast-radio value="mango" required>Mango</fast-radio>
-</fast-design-system-provider>
+<fast-radio value="mango" required>Mango</fast-radio>
  ```
 
 ## Applying custom styles

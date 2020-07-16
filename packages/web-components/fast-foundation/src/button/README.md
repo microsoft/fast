@@ -10,9 +10,7 @@ custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-comp
 ## Usage
 
 ```html
-<fast-design-system-provider use-defaults>
-    <fast-button appearance="primary">Submit</fast-button>
-</fast-design-system-provider>
+<fast-button appearance="primary">Submit</fast-button>
 ```
 
 ## Applying custom styles

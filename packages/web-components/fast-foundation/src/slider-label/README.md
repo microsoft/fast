@@ -10,9 +10,7 @@ The `fast-slider-label` component provides a default styled label to be placed i
 ## Usage
 
 ```html
-<fast-design-system-provider use-defaults>
-    <fast-slider-label>Fast</fast-slider-label>
-</fast-design-system-provider>
+<fast-slider-label>Fast</fast-slider-label>
 ```
 
 ## Applying custom styles

@@ -22,9 +22,7 @@ fast-badge {
 ```
 
 ```html
-<fast-design-system-provider use-defaults>
-    <fast-badge appearance="accent">Danger</fast-badge>
-</fast-design-system-provider>
+<fast-badge appearance="accent">Danger</fast-badge>
 ```
 
 :::note

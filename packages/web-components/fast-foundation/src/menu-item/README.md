@@ -10,9 +10,7 @@ The `fast-menu-item` is a custom element meant to be used with `fast-menu` and s
 ## Usage
 
 ```html
-<fast-design-system-provider use-defaults>
-    <fast-menu-item role="menuitemcheckbox" checked>Open in new window</fast-menu-item>
-</fast-design-system-provider>
+<fast-menu-item role="menuitemcheckbox" checked>Open in new window</fast-menu-item>
 ```
 
 ## Applying custom styles

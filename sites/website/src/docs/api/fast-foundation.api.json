@@ -337,33 +337,6 @@
           "members": [
             {
               "kind": "Property",
-              "canonicalReference": "@microsoft/fast-foundation!Anchor#appearance:member",
-              "docComment": "/**\n * The appearance the anchor should have.\n *\n * @remarks\n *\n * HTML Attribute: appearance\n *\n * @public\n */\n",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "appearance: "
-                },
-                {
-                  "kind": "Reference",
-                  "text": "AnchorAppearance",
-                  "canonicalReference": "@microsoft/fast-foundation!AnchorAppearance:type"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";"
-                }
-              ],
-              "releaseTag": "Public",
-              "name": "appearance",
-              "propertyTypeTokenRange": {
-                "startIndex": 1,
-                "endIndex": 2
-              },
-              "isStatic": false
-            },
-            {
-              "kind": "Property",
               "canonicalReference": "@microsoft/fast-foundation!Anchor#download:member",
               "docComment": "/**\n * Prompts the user to save the linked URL. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a | <a> element} for more information.\n *\n * @remarks\n *\n * HTML Attribute: download\n *\n * @public\n */\n",
               "excerptTokens": [
@@ -578,36 +551,6 @@
           "implementsTokenRanges": []
         },
         {
-          "kind": "TypeAlias",
-          "canonicalReference": "@microsoft/fast-foundation!AnchorAppearance:type",
-          "docComment": "/**\n * Types of anchor appearance.\n *\n * @public\n */\n",
-          "excerptTokens": [
-            {
-              "kind": "Content",
-              "text": "export declare type AnchorAppearance = "
-            },
-            {
-              "kind": "Reference",
-              "text": "ButtonAppearance",
-              "canonicalReference": "@microsoft/fast-foundation!ButtonAppearance:type"
-            },
-            {
-              "kind": "Content",
-              "text": " | \"hypertext\""
-            },
-            {
-              "kind": "Content",
-              "text": ";"
-            }
-          ],
-          "releaseTag": "Public",
-          "name": "AnchorAppearance",
-          "typeTokenRange": {
-            "startIndex": 1,
-            "endIndex": 3
-          }
-        },
-        {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-foundation!AnchorTemplate:var",
           "docComment": "/**\n * The template for the {@link @microsoft/fast-foundation#(Anchor:class)} component.\n *\n * @public\n */\n",
@@ -703,6 +646,516 @@
             }
           ],
           "name": "applyMixins"
+        },
+        {
+          "kind": "Class",
+          "canonicalReference": "@microsoft/fast-foundation!ARIAGlobalStatesAndProperties:class",
+          "docComment": "/**\n * Some states and properties are applicable to all host language elements regardless of whether a role is applied. The following global states and properties are supported by all roles and by all base markup elements. {@link https://www.w3.org/TR/wai-aria-1.1/#global_states}\n *\n * This is intended to be used as a mixin. Be sure you extend FASTElement.\n *\n * @public\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "export declare class ARIAGlobalStatesAndProperties "
+            }
+          ],
+          "releaseTag": "Public",
+          "name": "ARIAGlobalStatesAndProperties",
+          "members": [
+            {
+              "kind": "Property",
+              "canonicalReference": "@microsoft/fast-foundation!ARIAGlobalStatesAndProperties#ariaAtomic:member",
+              "docComment": "/**\n * Indicates whether assistive technologies will present all, or only parts of, the changed region based on the change notifications defined by the aria-relevant attribute. {@link https://www.w3.org/TR/wai-aria-1.1/#aria-atomic}\n *\n * @remarks\n *\n * HTML Attribute: aria-atomic\n *\n * @public\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "ariaAtomic: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "\"true\" | \"false\""
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "ariaAtomic",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@microsoft/fast-foundation!ARIAGlobalStatesAndProperties#ariaBusy:member",
+              "docComment": "/**\n * Indicates an element is being modified and that assistive technologies MAY want to wait until the modifications are complete before exposing them to the user. {@link https://www.w3.org/TR/wai-aria-1.1/#aria-busy}\n *\n * @remarks\n *\n * HTML Attribute: aria-busy\n *\n * @public\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "ariaBusy: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "\"true\" | \"false\""
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "ariaBusy",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@microsoft/fast-foundation!ARIAGlobalStatesAndProperties#ariaControls:member",
+              "docComment": "/**\n * Identifies the element (or elements) whose contents or presence are controlled by the current element.\n *\n * {@link https://www.w3.org/TR/wai-aria-1.1/#aria-controls}\n *\n * @remarks\n *\n * HTML Attribute: aria-controls\n *\n * @public\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "ariaControls: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "string"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "ariaControls",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@microsoft/fast-foundation!ARIAGlobalStatesAndProperties#ariaCurrent:member",
+              "docComment": "/**\n * Indicates the element that represents the current item within a container or set of related elements.\n *\n * {@link https://www.w3.org/TR/wai-aria-1.1/#aria-current}\n *\n * @remarks\n *\n * HTML Attribute: aria-current\n *\n * @public\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "ariaCurrent: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "\"page\" | \"step\" | \"location\" | \"date\" | \"time\" | \"true\" | \"false\" | string"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "ariaCurrent",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@microsoft/fast-foundation!ARIAGlobalStatesAndProperties#ariaDescribedby:member",
+              "docComment": "/**\n * Identifies the element (or elements) that describes the object.\n *\n * {@link https://www.w3.org/TR/wai-aria-1.1/#aria-describedby}\n *\n * @remarks\n *\n * HTML Attribute: aria-describedby\n *\n * @public\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "ariaDescribedby: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "string"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "ariaDescribedby",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@microsoft/fast-foundation!ARIAGlobalStatesAndProperties#ariaDetails:member",
+              "docComment": "/**\n * Identifies the element that provides a detailed, extended description for the object.\n *\n * {@link https://www.w3.org/TR/wai-aria-1.1/#aria-details}\n *\n * @remarks\n *\n * HTML Attribute: aria-details\n *\n * @public\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "ariaDetails: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "string"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "ariaDetails",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@microsoft/fast-foundation!ARIAGlobalStatesAndProperties#ariaDisabled:member",
+              "docComment": "/**\n * Identifies the element that provides a detailed, extended description for the object.\n *\n * {@link https://www.w3.org/TR/wai-aria-1.1/#aria-disabled}\n *\n * @remarks\n *\n * HTML Attribute: aria-disabled\n *\n * @public\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "ariaDisabled: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "\"true\" | \"false\""
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "ariaDisabled",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@microsoft/fast-foundation!ARIAGlobalStatesAndProperties#ariaErrormessage:member",
+              "docComment": "/**\n * Identifies the element that provides an error message for the object.\n *\n * {@link https://www.w3.org/TR/wai-aria-1.1/#aria-errormessage}\n *\n * @remarks\n *\n * HTML Attribute: aria-errormessage\n *\n * @public\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "ariaErrormessage: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "string"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "ariaErrormessage",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@microsoft/fast-foundation!ARIAGlobalStatesAndProperties#ariaFlowto:member",
+              "docComment": "/**\n * Identifies the next element (or elements) in an alternate reading order of content which, at the user's discretion, allows assistive technology to override the general default of reading in document source order.\n *\n * {@link https://www.w3.org/TR/wai-aria-1.1/#aria-flowto}\n *\n * @remarks\n *\n * HTML Attribute: aria-flowto\n *\n * @public\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "ariaFlowto: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "string"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "ariaFlowto",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@microsoft/fast-foundation!ARIAGlobalStatesAndProperties#ariaHaspopup:member",
+              "docComment": "/**\n * Indicates the availability and type of interactive popup element, such as menu or dialog, that can be triggered by an element.\n *\n * {@link https://www.w3.org/TR/wai-aria-1.1/#aria-haspopup}\n *\n * @remarks\n *\n * HTML Attribute: aria-haspopup\n *\n * @public\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "ariaHaspopup: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "\"false\" | \"true\" | \"menu\" | \"listbox\" | \"tree\" | \"grid\" | \"dialog\""
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "ariaHaspopup",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@microsoft/fast-foundation!ARIAGlobalStatesAndProperties#ariaHidden:member",
+              "docComment": "/**\n * Indicates whether the element is exposed to an accessibility API\n *\n * {@link https://www.w3.org/TR/wai-aria-1.1/#aria-hidden}\n *\n * @remarks\n *\n * HTML Attribute: aria-hidden\n *\n * @public\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "ariaHidden: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "\"false\" | \"true\" | undefined"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "ariaHidden",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@microsoft/fast-foundation!ARIAGlobalStatesAndProperties#ariaInvalid:member",
+              "docComment": "/**\n * Indicates the entered value does not conform to the format expected by the application.\n *\n * {@link https://www.w3.org/TR/wai-aria-1.1/#aria-invalid}\n *\n * @remarks\n *\n * HTML Attribute: aria-invalid\n *\n * @public\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "ariaInvalid: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "\"false\" | \"true\" | \"grammar\" | \"spelling\""
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "ariaInvalid",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@microsoft/fast-foundation!ARIAGlobalStatesAndProperties#ariaKeyshortcuts:member",
+              "docComment": "/**\n * Indicates keyboard shortcuts that an author has implemented to activate or give focus to an element.\n *\n * {@link https://www.w3.org/TR/wai-aria-1.1/#aria-keyshortcuts}\n *\n * @remarks\n *\n * HTML Attribute: aria-keyshortcuts\n *\n * @public\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "ariaKeyshortcuts: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "string"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "ariaKeyshortcuts",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@microsoft/fast-foundation!ARIAGlobalStatesAndProperties#ariaLabel:member",
+              "docComment": "/**\n * Defines a string value that labels the current element.\n *\n * {@link https://www.w3.org/TR/wai-aria-1.1/#aria-label}\n *\n * @remarks\n *\n * HTML Attribute: aria-label\n *\n * @public\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "ariaLabel: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "string"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "ariaLabel",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@microsoft/fast-foundation!ARIAGlobalStatesAndProperties#ariaLabelledby:member",
+              "docComment": "/**\n * Identifies the element (or elements) that labels the current element.\n *\n * {@link https://www.w3.org/TR/wai-aria-1.1/#aria-labelledby}\n *\n * @remarks\n *\n * HTML Attribute: aria-labelledby\n *\n * @public\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "ariaLabelledby: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "string"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "ariaLabelledby",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@microsoft/fast-foundation!ARIAGlobalStatesAndProperties#ariaLive:member",
+              "docComment": "/**\n * Indicates that an element will be updated, and describes the types of updates the user agents, assistive technologies, and user can expect from the live region.\n *\n * {@link https://www.w3.org/TR/wai-aria-1.1/#aria-live}\n *\n * @remarks\n *\n * HTML Attribute: aria-live\n *\n * @public\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "ariaLive: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "\"assertive\" | \"off\" | \"polite\""
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "ariaLive",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@microsoft/fast-foundation!ARIAGlobalStatesAndProperties#ariaOwns:member",
+              "docComment": "/**\n * Identifies an element (or elements) in order to define a visual, functional, or contextual parent/child relationship between DOM elements where the DOM hierarchy cannot be used to represent the relationship.\n *\n * {@link https://www.w3.org/TR/wai-aria-1.1/#aria-owns}\n *\n * @remarks\n *\n * HTML Attribute: aria-owns\n *\n * @public\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "ariaOwns: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "string"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "ariaOwns",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@microsoft/fast-foundation!ARIAGlobalStatesAndProperties#ariaRelevant:member",
+              "docComment": "/**\n * Indicates what notifications the user agent will trigger when the accessibility tree within a live region is modified.\n *\n * {@link https://www.w3.org/TR/wai-aria-1.1/#aria-relevant}\n *\n * @remarks\n *\n * HTML Attribute: aria-relevant\n *\n * @public\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "ariaRelevant: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "\"additions\" | \"additions text\" | \"all\" | \"removals\" | \"text\""
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "ariaRelevant",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@microsoft/fast-foundation!ARIAGlobalStatesAndProperties#ariaRoledescription:member",
+              "docComment": "/**\n * Defines a human-readable, author-localized description for the role of an element.\n *\n * {@link https://www.w3.org/TR/wai-aria-1.1/#aria-roledescription}\n *\n * @remarks\n *\n * HTML Attribute: aria-roledescription\n *\n * @public\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "ariaRoledescription: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "string"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "ariaRoledescription",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false
+            }
+          ],
+          "implementsTokenRanges": []
         },
         {
           "kind": "Class",
@@ -1015,47 +1468,6 @@
           "name": "Button",
           "members": [
             {
-              "kind": "Constructor",
-              "canonicalReference": "@microsoft/fast-foundation!Button:constructor(1)",
-              "docComment": "/**\n * Constructs a new instance of the `Button` class\n */\n",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "constructor();"
-                }
-              ],
-              "releaseTag": "Public",
-              "overloadIndex": 1,
-              "parameters": []
-            },
-            {
-              "kind": "Property",
-              "canonicalReference": "@microsoft/fast-foundation!Button#appearance:member",
-              "docComment": "/**\n * The appearance the button should have.\n *\n * @remarks\n *\n * HTML Attribute: appearance\n *\n * @public\n */\n",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "appearance: "
-                },
-                {
-                  "kind": "Reference",
-                  "text": "ButtonAppearance",
-                  "canonicalReference": "@microsoft/fast-foundation!ButtonAppearance:type"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";"
-                }
-              ],
-              "releaseTag": "Public",
-              "name": "appearance",
-              "propertyTypeTokenRange": {
-                "startIndex": 1,
-                "endIndex": 2
-              },
-              "isStatic": false
-            },
-            {
               "kind": "Property",
               "canonicalReference": "@microsoft/fast-foundation!Button#autofocus:member",
               "docComment": "/**\n * Determines if the element should receive document focus on page load.\n *\n * @remarks\n *\n * HTML Attribute: autofocus\n *\n * @public\n */\n",
@@ -1348,31 +1760,6 @@
             "endIndex": 5
           },
           "implementsTokenRanges": []
-        },
-        {
-          "kind": "TypeAlias",
-          "canonicalReference": "@microsoft/fast-foundation!ButtonAppearance:type",
-          "docComment": "/**\n * Types of button appearance.\n *\n * @public\n */\n",
-          "excerptTokens": [
-            {
-              "kind": "Content",
-              "text": "export declare type ButtonAppearance = "
-            },
-            {
-              "kind": "Content",
-              "text": "\"accent\" | \"lightweight\" | \"neutral\" | \"outline\" | \"stealth\""
-            },
-            {
-              "kind": "Content",
-              "text": ";"
-            }
-          ],
-          "releaseTag": "Public",
-          "name": "ButtonAppearance",
-          "typeTokenRange": {
-            "startIndex": 1,
-            "endIndex": 2
-          }
         },
         {
           "kind": "Variable",
@@ -2521,6 +2908,170 @@
               "endIndex": 5
             }
           ]
+        },
+        {
+          "kind": "Class",
+          "canonicalReference": "@microsoft/fast-foundation!DelegatesARIAButton:class",
+          "docComment": "/**\n * Includes ARIA states and properties relating to the ARIA button role\n *\n * @public\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "export declare class DelegatesARIAButton extends "
+            },
+            {
+              "kind": "Reference",
+              "text": "ARIAGlobalStatesAndProperties",
+              "canonicalReference": "@microsoft/fast-foundation!ARIAGlobalStatesAndProperties:class"
+            },
+            {
+              "kind": "Content",
+              "text": " "
+            }
+          ],
+          "releaseTag": "Public",
+          "name": "DelegatesARIAButton",
+          "members": [
+            {
+              "kind": "Property",
+              "canonicalReference": "@microsoft/fast-foundation!DelegatesARIAButton#ariaExpanded:member",
+              "docComment": "/**\n * See {@link https://www.w3.org/WAI/PF/aria/roles#button} for more information\n *\n * @remarks\n *\n * HTML Attribute: aria-expanded\n *\n * @public\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "ariaExpanded: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "\"true\" | \"false\" | undefined"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "ariaExpanded",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@microsoft/fast-foundation!DelegatesARIAButton#ariaPressed:member",
+              "docComment": "/**\n * See {@link https://www.w3.org/WAI/PF/aria/roles#button} for more information\n *\n * @remarks\n *\n * HTML Attribute: aria-pressed\n *\n * @public\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "ariaPressed: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "\"true\" | \"false\" | \"mixed\" | undefined"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "ariaPressed",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false
+            }
+          ],
+          "extendsTokenRange": {
+            "startIndex": 1,
+            "endIndex": 3
+          },
+          "implementsTokenRanges": []
+        },
+        {
+          "kind": "Class",
+          "canonicalReference": "@microsoft/fast-foundation!DelegatesARIALink:class",
+          "docComment": "/**\n * Includes ARIA states and properties relating to the ARIA link role\n *\n * @public\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "export declare class DelegatesARIALink extends "
+            },
+            {
+              "kind": "Reference",
+              "text": "ARIAGlobalStatesAndProperties",
+              "canonicalReference": "@microsoft/fast-foundation!ARIAGlobalStatesAndProperties:class"
+            },
+            {
+              "kind": "Content",
+              "text": " "
+            }
+          ],
+          "releaseTag": "Public",
+          "name": "DelegatesARIALink",
+          "members": [
+            {
+              "kind": "Property",
+              "canonicalReference": "@microsoft/fast-foundation!DelegatesARIALink#ariaExpanded:member",
+              "docComment": "/**\n * See {@link https://www.w3.org/WAI/PF/aria/roles#link} for more information\n *\n * @remarks\n *\n * HTML Attribute: aria-expanded\n *\n * @public\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "ariaExpanded: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "\"true\" | \"false\" | undefined"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "releaseTag": "Public",
+              "name": "ariaExpanded",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false
+            }
+          ],
+          "extendsTokenRange": {
+            "startIndex": 1,
+            "endIndex": 3
+          },
+          "implementsTokenRanges": []
+        },
+        {
+          "kind": "Class",
+          "canonicalReference": "@microsoft/fast-foundation!DelegatesARIATextbox:class",
+          "docComment": "/**\n * Includes ARIA states and properties relating to the ARIA link role\n *\n * @public\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "export declare class DelegatesARIATextbox extends "
+            },
+            {
+              "kind": "Reference",
+              "text": "ARIAGlobalStatesAndProperties",
+              "canonicalReference": "@microsoft/fast-foundation!ARIAGlobalStatesAndProperties:class"
+            },
+            {
+              "kind": "Content",
+              "text": " "
+            }
+          ],
+          "releaseTag": "Public",
+          "name": "DelegatesARIATextbox",
+          "members": [],
+          "extendsTokenRange": {
+            "startIndex": 1,
+            "endIndex": 3
+          },
+          "implementsTokenRanges": []
         },
         {
           "kind": "Interface",
@@ -4042,7 +4593,7 @@
           "excerptTokens": [
             {
               "kind": "Content",
-              "text": "hidden = \"\\n    :host([hidden]) {\\n        display: none;\\n    }\\n\""
+              "text": "hidden = \":host([hidden]){display:none}\""
             }
           ],
           "releaseTag": "Public",
@@ -4172,7 +4723,7 @@
         {
           "kind": "Class",
           "canonicalReference": "@microsoft/fast-foundation!MatchMediaBehavior:class",
-          "docComment": "/**\n * An abstract behavior to react to media query changes in the document. Implementations should implement the `constructListener` method to perform some action based on media query changes.\n *\n * @public\n */\n",
+          "docComment": "/**\n * An abstract behavior to react to media queries. Implementations should implement the `constructListener` method to perform some action based on media query changes.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -4549,7 +5100,7 @@
             {
               "kind": "Method",
               "canonicalReference": "@microsoft/fast-foundation!MatchMediaStyleSheetBehavior.with:member(1)",
-              "docComment": "/**\n * Defines a function to construct {@link MatchMediaStyleSheetBehavior | MatchMediaStyleSheetBehaviors} for a provided query.\n *\n * @param query - The media query to operate from.\n *\n * @example\n * ```ts\n * import { css } from \"@microsoft/fast-element\";\n * import { MatchMediaStyleSheetBehavior } from \"@microsoft/fast-foundation\";\n * const landscapeBehavior = MatchMediaStyleSheetBehavior.with(window.matchMedia(\"(orientation: landscape)\"));\n *\n * const styles = css`\n *   :host {\n *     width: 200px;\n *     height: 400px;\n *   }\n * `\n * .withBehaviors(landscapeBehavior(css`\n *   :host {\n *           width: 400px;\n *     height: 200px;\n *   }\n * `))\n * ```\n *\n * @public\n */\n",
+              "docComment": "/**\n * Defines a function to construct {@link MatchMediaStyleSheetBehavior | MatchMediaStyleSheetBehaviors} for a provided query.\n *\n * @param query - The media query to operate from.\n *\n * @example\n * ```ts\n * import { css } from \"@microsoft/fast-element\";\n * import { MatchMediaStyleSheetBehavior } from \"@microsoft/fast-foundation\";\n *\n * const landscapeBehavior = MatchMediaStyleSheetBehavior.with(\n *   window.matchMedia(\"(orientation: landscape)\")\n * );\n * const styles = css`\n *   :host {\n *     width: 200px;\n *     height: 400px;\n *   }\n * `\n * .withBehaviors(landscapeBehavior(css`\n *   :host {\n *     width: 400px;\n *     height: 200px;\n *   }\n * `))\n * ```\n *\n * @public\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -4673,7 +5224,7 @@
         {
           "kind": "TypeAlias",
           "canonicalReference": "@microsoft/fast-foundation!MediaQueryListListener:type",
-          "docComment": "/**\n * @public\n */\n",
+          "docComment": "/**\n * An event listener fired by a {@link https://developer.mozilla.org/en-US/docs/Web/API/MediaQueryList | MediaQueryList}.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -4847,7 +5398,7 @@
             {
               "kind": "Property",
               "canonicalReference": "@microsoft/fast-foundation!MenuItem#expanded:member",
-              "docComment": "/**\n * The expanded state of the element.\n *\n * @remarks\n *\n * HTML Attribute: aria-expanded\n *\n * @public\n */\n",
+              "docComment": "/**\n * The expanded state of the element.\n *\n * @remarks\n *\n * HTML Attribute: expanded\n *\n * @public\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -5182,20 +5733,6 @@
           "releaseTag": "Public",
           "name": "Radio",
           "members": [
-            {
-              "kind": "Constructor",
-              "canonicalReference": "@microsoft/fast-foundation!Radio:constructor(1)",
-              "docComment": "/**\n * Constructs a new instance of the `Radio` class\n */\n",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "constructor();"
-                }
-              ],
-              "releaseTag": "Public",
-              "overloadIndex": 1,
-              "parameters": []
-            },
             {
               "kind": "Property",
               "canonicalReference": "@microsoft/fast-foundation!Radio#checked:member",
@@ -5782,20 +6319,6 @@
           "releaseTag": "Public",
           "name": "Slider",
           "members": [
-            {
-              "kind": "Constructor",
-              "canonicalReference": "@microsoft/fast-foundation!Slider:constructor(1)",
-              "docComment": "/**\n * Constructs a new instance of the `Slider` class\n */\n",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "constructor();"
-                }
-              ],
-              "releaseTag": "Public",
-              "overloadIndex": 1,
-              "parameters": []
-            },
             {
               "kind": "Property",
               "canonicalReference": "@microsoft/fast-foundation!Slider#decrement:member",
@@ -6720,20 +7243,6 @@
           "releaseTag": "Public",
           "name": "Switch",
           "members": [
-            {
-              "kind": "Constructor",
-              "canonicalReference": "@microsoft/fast-foundation!Switch:constructor(1)",
-              "docComment": "/**\n * Constructs a new instance of the `Switch` class\n */\n",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "constructor();"
-                }
-              ],
-              "releaseTag": "Public",
-              "overloadIndex": 1,
-              "parameters": []
-            },
             {
               "kind": "Property",
               "canonicalReference": "@microsoft/fast-foundation!Switch#checked:member",
@@ -7924,7 +8433,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@microsoft/fast-foundation!TextAreaTemplate:var",
-          "docComment": "/**\n * The template for the {@link @microsoft/fast-foundation#TextArea} component.\n *\n * @public\n */\n",
+          "docComment": "/**\n * The template for the {@link @microsoft/fast-foundation#(TextArea:class)} component.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -7963,7 +8472,7 @@
         {
           "kind": "Class",
           "canonicalReference": "@microsoft/fast-foundation!TextField:class",
-          "docComment": "/**\n * An Text Field Custom HTML Element. Based largely on the {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/text | <input type=\"text\" /> element}.\n *\n * @remarks\n *\n * The constructor for this class is marked as internal. Third-party code should not call the constructor directly or create subclasses that extend the `TextField` class.\n *\n * @public\n */\n",
+          "docComment": "/**\n * An Text Field Custom HTML Element. Based largely on the {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/text | <input type=\"text\" /> element}.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",

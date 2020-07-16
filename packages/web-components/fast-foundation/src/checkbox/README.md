@@ -10,15 +10,13 @@ An implementation of a [checkbox](https://developer.mozilla.org/en-US/docs/Web/H
 ## Usage
 
 ```html
-<fast-design-system-provider use-defaults>
-    <fieldset>
-        <legend>Fruits</legend>
-        <fast-checkbox checked>Apple</fast-checkbox>
-        <fast-checkbox checked>Banana</fast-checkbox>
-        <fast-checkbox>Honeydew</fast-checkbox>
-        <fast-checkbox checked>Mango</fast-checkbox>
-    </fieldset>
-</fast-design-system-provider>
+<fieldset>
+    <legend>Fruits</legend>
+    <fast-checkbox checked>Apple</fast-checkbox>
+    <fast-checkbox checked>Banana</fast-checkbox>
+    <fast-checkbox>Honeydew</fast-checkbox>
+    <fast-checkbox checked>Mango</fast-checkbox>
+</fieldset>
 ```
 
 ## Applying custom styles

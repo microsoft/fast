@@ -10,14 +10,12 @@ The `fast-card` component is a visual container without semantics that takes chi
 ## Usage
 
 ```html
-<fast-design-system-provider use-defaults>
-    <fast-card>
-        <img src="https://placehold.it/300x150" alt="Placeholder image with watermark" />
-        <h3>Card title</h3>
-        <p>At purus lectus quis habitant commodo, cras. Aliquam malesuada velit a tortor. Felis orci tellus netus risus et ultricies augue aliquet.</p>
-        <fast-button>Learn more</fast-button>
-    </fast-card>
-</fast-design-system-provider>
+<fast-card>
+    <img src="https://placehold.it/300x150" alt="Placeholder image with watermark" />
+    <h3>Card title</h3>
+    <p>At purus lectus quis habitant commodo, cras. Aliquam malesuada velit a tortor. Felis orci tellus netus risus et ultricies augue aliquet.</p>
+    <fast-button>Learn more</fast-button>
+</fast-card>
 ```
 
 ## Applying custom styles

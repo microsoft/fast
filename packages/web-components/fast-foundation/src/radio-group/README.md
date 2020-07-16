@@ -10,15 +10,13 @@ An implementation of a [radio-group](https://w3c.github.io/aria-practices/#radio
 ## Usage
 
 ```html
-<fast-design-system-provider use-defaults>
-    <label id="radiogroup">Preset selected-value</label>
-    <fast-radio-group value="maverick" aria-labelledby="radiogroup" name="best-pilot">
-        <fast-radio value="ice-man">Ice Man</fast-radio>
-        <fast-radio value="maverick">Maverick</fast-radio>
-        <fast-radio value="viper">Viper</fast-radio>
-        <fast-radio value="jester">Jester</fast-radio>
-    </fast-radio-group>
-</fast-design-system-provider>
+<label id="radiogroup">Preset selected-value</label>
+<fast-radio-group value="maverick" aria-labelledby="radiogroup" name="best-pilot">
+    <fast-radio value="ice-man">Ice Man</fast-radio>
+    <fast-radio value="maverick">Maverick</fast-radio>
+    <fast-radio value="viper">Viper</fast-radio>
+    <fast-radio value="jester">Jester</fast-radio>
+</fast-radio-group>
 ```
 
 ## Applying custom styles

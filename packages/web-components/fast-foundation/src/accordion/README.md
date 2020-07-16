@@ -8,22 +8,20 @@ custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-comp
 ## Usage
 
 ```html
-<fast-design-system-provider use-defaults>
-    <fast-accordion>
-        <fast-accordion-item expanded>
-            <span slot="heading">Panel one</span>
-            Panel one content
-        </fast-accordion-item>
-        <fast-accordion-item>
-            <span slot="heading">Panel two</span>
-            Panel two content
-        </fast-accordion-item>
-        <fast-accordion-item expanded>
-            <span slot="heading">Panel three</span>
-            Panel three content
-        </fast-accordion-item>
-    </fast-accordion>
-</fast-design-system-provider>
+<fast-accordion>
+    <fast-accordion-item expanded>
+        <span slot="heading">Panel one</span>
+        Panel one content
+    </fast-accordion-item>
+    <fast-accordion-item>
+        <span slot="heading">Panel two</span>
+        Panel two content
+    </fast-accordion-item>
+    <fast-accordion-item expanded>
+        <span slot="heading">Panel three</span>
+        Panel three content
+    </fast-accordion-item>
+</fast-accordion>
 ```
 
 ## Applying custom styles

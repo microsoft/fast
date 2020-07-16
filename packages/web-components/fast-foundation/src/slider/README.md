@@ -10,30 +10,28 @@ An implementation of a [range slider](https://developer.mozilla.org/en-US/docs/W
 ## Usage
 
 ```html
-<fast-design-system-provider use-defaults>
-    <fast-slider min="0" max="100" step="10" value="70">
-        <fast-slider-label
-            position="0"
-        >
-            0
-        </fast-slider-label>
-        <fast-slider-label
-            position="10"
-        >
-            10
-        </fast-slider-label>
-        <fast-slider-label
-            position="90"
-        >
-            90
-        </fast-slider-label>
-        <fast-slider-label
-            position="100"
-        >
-            100
-        </fast-slider-label>
-    </fast-slider>
-</fast-design-system-provider>
+<fast-slider min="0" max="100" step="10" value="70">
+    <fast-slider-label
+        position="0"
+    >
+        0
+    </fast-slider-label>
+    <fast-slider-label
+        position="10"
+    >
+        10
+    </fast-slider-label>
+    <fast-slider-label
+        position="90"
+    >
+        90
+    </fast-slider-label>
+    <fast-slider-label
+        position="100"
+    >
+        100
+    </fast-slider-label>
+</fast-slider>
 ```
 
 ## Applying custom styles

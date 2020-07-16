@@ -10,9 +10,7 @@ The flipper component is most often used to page through blocks of content or co
 ## Usage
 
 ```html
-<fast-design-system-provider use-defaults>
-    <fast-flipper direction="previous"></fast-flipper>
-</fast-design-system-provider>
+<fast-flipper direction="previous"></fast-flipper>
 ```
 
 ## Applying custom styles
