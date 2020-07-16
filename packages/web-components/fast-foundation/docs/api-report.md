@@ -175,8 +175,6 @@ export class Carousel extends FASTElement {
     // (undocumented)
     disconnectedCallback(): void;
     // (undocumented)
-    filteredItems: HTMLElement[];
-    // (undocumented)
     focused: boolean;
     // (undocumented)
     handleFlipperClick(direction: 1 | -1, e: Event): void;
