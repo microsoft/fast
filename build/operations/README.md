@@ -115,6 +115,25 @@ For additional limitations visit [details](https://docs.microsoft.com/en-us/azur
 
 _Note_ that Application Gateway has this capability. A new feature request has been sent to Azure Front Door.
 
+Issue:
+We use Front Door to route traffic between two regions for web traffic across multiple subdomains.  We have subdomains for https://stage.www.fast.design, for example, that we want to protect behind AAD.  This works great when configuring AAD Reply URLs to match the backend server name/url.  In this example, https://www-west-app.azurewebsites.net//.auth/login/aad/callback.  However, we want users to return back to the original URL of https://stage.www.fast.design not the backend URL.  
+
+How can this be achieved through the Azure Portal, not web app code?
+ 
+Cause:
+-Issue happens because of URL string within one of the paremeters of the HTTP redirect pointing to AAD, which then uses such parameter for redirecting the user accordingly.
+-Such URL was the one configured on the WebApp.
+ 
+Resolution:
+-We managed to configure custom domain on both the WebApp and FrontDoor, so they both listen on same hostname. Such Hostname or FQDN, would CNAME to FrontDoor's domain.
+-This custom domain was now used on the URL string within the AAD redirect so would work as expected. Nevertheless, since such AAD module responds with 302 to every unathenticated user-agent, the FrontDoor probes would mark backend as unhealthy:
+
+https://docs.microsoft.com/en-us/azure/frontdoor/front-door-health-probes
+
+-When having multiple backends, it would round-robin requests, making it unusable.
+-Usually a dummy path is setup in application for the 200 OK probes, but verified with AppServices it cannot be made with the pre-built AAD authentication module. To customize AAD, it's then suggested to implement it a code.
+
+-This scenario doesn't happen with AppGW, since it can just re-write the URL parameter and also allow non-200 OK health responses.
 
 #### Risks
 * Failure Points: Front Door is a possible failure point in the system. If the service fails, clients cannot access your application during the downtime. Review the Front Door service level agreement (SLA) and determine whether using Front Door alone meets your business requirements for high availability. If not, consider adding another traffic management solution as a fallback. If the Front Door service fails, change your canonical name (CNAME) records in DNS to point to the other traffic management service. This step must be performed manually, and your application will be unavailable until the DNS changes are propagated.

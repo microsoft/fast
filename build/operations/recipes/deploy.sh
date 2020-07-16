@@ -21,10 +21,10 @@ source inputs.sh --debug true --subscription $subscription
 
 ## JOBS
 echo "deploying from staging to production in west region ..."
-az webapp deployment slot swap --resource-group fast-westus-rg --name www-west-app --slot stage  --action swap  --target-slot production
+az webapp deployment slot swap --resource-group fast-westus-rg --name www-west-app --slot stage --action swap --target-slot production
 
 echo "deploying from staging to production in east region ..."
-az webapp deployment slot swap --resource-group fast-eastus-rg --name www-east-app --slot stage  --action swap  --target-slot production
+az webapp deployment slot swap --resource-group fast-eastus-rg --name www-east-app --slot stage --action swap --target-slot production
 
 
 echo "${bold}${green}Success !!!${reset}${unbold}"
