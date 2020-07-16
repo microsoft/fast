@@ -116,19 +116,7 @@ export class Slider extends FormAssociated<HTMLInputElement>
     /**
      * @internal
      */
-    @observable
-    public valueText: string | null;
-
-    /**
-     * @internal
-     */
-    @observable
-    public valueTextFormatter: (value: string) => string | null;
-    private valueTextFormatterChanged(): void {
-        if (this.$fastController.isConnected) {
-            this.updateValueText();
-        }
-    }
+    @observable valueTextFormatter: (value: string) => string | null = () => null;
 
     /**
      * The element's value to be included in form submission changed.
@@ -139,8 +127,6 @@ export class Slider extends FormAssociated<HTMLInputElement>
         if (this.proxy instanceof HTMLElement) {
             this.updateForm();
         }
-
-        this.updateValueText();
 
         if (this.$fastController.isConnected) {
             this.setThumbPositionForOrientation(this.direction);
@@ -232,7 +218,6 @@ export class Slider extends FormAssociated<HTMLInputElement>
         this.setupListeners();
         this.setupDefaultValue();
         this.setThumbPositionForOrientation(this.direction);
-        this.updateValueText();
     }
 
     /**
@@ -355,16 +340,6 @@ export class Slider extends FormAssociated<HTMLInputElement>
             this.updateForm();
         }
     };
-
-    private updateValueText(): void {
-        if ((this as any).$fastController.isConnected) {
-            if (typeof this.valueTextFormatter === "function") {
-                this.valueText = this.valueTextFormatter(this.value);
-            } else {
-                this.valueText = null;
-            }
-        }
-    }
 
     private updateForm = (): void => {
         this.setFormValue(this.value, this.value);

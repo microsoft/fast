@@ -13,7 +13,7 @@ export const SliderTemplate = html<Slider>`
         class="${x => (x.readOnly ? "readonly" : "")} 
         ${x => x.orientation || Orientation.horizontal}"
         tabindex="${x => (x.disabled ? null : 0)}"
-        aria-valuetext="${x => x.valueText}"
+        aria-valuetext="${x => x.valueTextFormatter(x.value)}"
         aria-valuenow="${x => x.value}"
         aria-valuemin="${x => x.min}"
         aria-valuemax="${x => x.max}"
