@@ -1,4 +1,12 @@
-import { html, ref, repeat, slotted, when, ViewTemplate } from "@microsoft/fast-element";
+import {
+    html,
+    ref,
+    repeat,
+    slotted,
+    when,
+    ViewTemplate,
+    elements,
+} from "@microsoft/fast-element";
 import { Carousel, tabPanelPrefix } from "./carousel";
 import { FlipperDirection } from "../flipper";
 
@@ -15,26 +23,17 @@ const tabbedTemplate: ViewTemplate = html<Carousel>`
         ${ref("tabs")}
     >
         ${repeat(
-            x => x.filteredItems,
-            html<Carousel>`<span
-                slot="tab"
-                id="tab-${(x, c) => c.index + 1}"
-                class="slide-tab"
-            ></span>`,
+            x => x.items,
+            html<Carousel>`
+                <span
+                    slot="tab"
+                    id="tab-${(x, c) => c.index + 1}"
+                    class="slide-tab"
+                ></span>
+            `,
             { positioning: true }
         )}
-        ${x => html<Carousel>`
-            ${x.filteredItems.map((item: HTMLElement, index) => {
-                return `<div
-                slot="tabpanel"
-                id="${tabPanelPrefix}${index + 1}"
-                class="slide"
-                role="tabpanel"
-                >
-                    ${item.outerHTML}
-                </div>`;
-            })}
-        `}
+        <slot name="tabpanel" slot="tabpanel"></slot>
     </fast-tabs>
 `;
 
@@ -58,7 +57,14 @@ export const CarouselTemplate = html<Carousel>`
     >
         <slot name="rotation-control" part="rotation-control">
             <fast-button appearance="neutral">
-                ${x => (x.paused ? html`${playIcon}` : html`${pauseIcon}`)}
+                ${x =>
+                    x.paused
+                        ? html`
+                              ${playIcon}
+                          `
+                        : html`
+                              ${pauseIcon}
+                          `}
             </fast-button>
         </slot>
     </div>
@@ -93,7 +99,7 @@ export const CarouselTemplate = html<Carousel>`
         aria-atomic="false"
         aria-live="${x => (x.autoplay && !x.paused ? "off" : "polite")}"
     >
-        <slot ${slotted("items")}></slot>
+        <slot ${slotted({ property: "items", filter: elements() })}></slot>
     </div>
     ${when(x => !x.notTabbedPattern, tabbedTemplate)}
 </template>`;

@@ -51,6 +51,7 @@ export class Carousel extends FASTElement {
     @attr({ attribute: "activeid" })
     public activeid: string;
     public activeidChanged(): void {
+        // console.log("HIT ACTIVE ID CHANGE CAR")
         this.activeIndex = this.tabIds.indexOf(this.activeid);
     }
 
@@ -60,6 +61,7 @@ export class Carousel extends FASTElement {
     @attr({ attribute: "aria-label" })
     public arialabel: string;
 
+    @observable
     public focused: boolean = false;
     public carousel: HTMLDivElement;
     public tabs: HTMLElement;
@@ -70,9 +72,10 @@ export class Carousel extends FASTElement {
     @observable
     public items: HTMLElement[];
     public itemsChanged(): void {
-        this.filteredItems = this.items.filter(
-            (item: HTMLElement) => item.nodeType === 1
-        );
+        console.log("HIT ITEMS CHANGED");
+        // this.filteredItems = this.items.filter(
+        //     (item: HTMLElement) => item.nodeType === 1
+        // );
         this.generateTabIds();
 
         //sethdonohue - if activeid attribute was set by implementation then we need to sync the activeIndex for incrementing to work
@@ -82,39 +85,39 @@ export class Carousel extends FASTElement {
             this.activeid = this.tabIds[this.activeIndex] as string;
         }
 
-        if (this.notTabbedPattern) {
-            this.filteredItems = this.filteredItems.map(
-                (item: HTMLElement, index: number) => {
-                    if (index === this.activeIndex) {
-                        item.classList.add("active-slide");
-                        item.removeAttribute("hidden");
-                    } else {
-                        item.setAttribute("hidden", "");
-                    }
-                    if (
-                        !item.getAttribute("aria-label") ||
-                        !item.getAttribute("aria-labelledby")
-                    ) {
-                        item.setAttribute(
-                            "aria-label",
-                            `${index + 1} of ${this.filteredItems.length}`
-                        );
-                    }
+        // if (this.notTabbedPattern) {
+        //     this.filteredItems = this.filteredItems.map(
+        //         (item: HTMLElement, index: number) => {
+        //             if (index === this.activeIndex) {
+        //                 item.classList.add("active-slide");
+        //                 item.removeAttribute("hidden");
+        //             } else {
+        //                 item.setAttribute("hidden", "");
+        //             }
+        //             if (
+        //                 !item.getAttribute("aria-label") ||
+        //                 !item.getAttribute("aria-labelledby")
+        //             ) {
+        //                 item.setAttribute(
+        //                     "aria-label",
+        //                     `${index + 1} of ${this.filteredItems.length}`
+        //                 );
+        //             }
 
-                    item.setAttribute("id", `${tabPanelPrefix}${index + 1}`);
-                    item.classList.add("slide");
-                    // sethdonohue - per ARIA spec role=group and roledescription=slide must be on the slide container for notTabbedPattern (not tabbed) implementation
-                    item.setAttribute("role", "group");
-                    item.setAttribute("aria-roledescription", "slide");
+        //             item.setAttribute("id", `${tabPanelPrefix}${index + 1}`);
+        //             item.classList.add("slide");
+        //             // sethdonohue - per ARIA spec role=group and roledescription=slide must be on the slide container for notTabbedPattern (not tabbed) implementation
+        //             item.setAttribute("role", "group");
+        //             item.setAttribute("aria-roledescription", "slide");
 
-                    return item;
-                }
-            );
-        }
+        //             return item;
+        //         }
+        //     );
+        // }
     }
 
-    @observable
-    public filteredItems: HTMLElement[];
+    // @observable
+    // public filteredItems: HTMLElement[];
 
     public handleFlipperClick(direction: 1 | -1, e: Event): void {
         this.incrementSlide(direction);
@@ -150,21 +153,23 @@ export class Carousel extends FASTElement {
     };
 
     private incrementSlide = (direction: 1 | -1): void => {
+        this.focused = false;
         if (this.loop) {
             this.activeIndex = wrapInBounds(
                 0,
-                this.filteredItems.length - 1,
+                this.items.length - 1,
                 this.activeIndex + direction
             );
         } else {
             this.activeIndex = limit(
                 0,
-                this.filteredItems.length - 1,
+                this.items.length - 1,
                 this.activeIndex + direction
             );
         }
 
         this.activeid = this.tabIds[this.activeIndex];
+        this.focused = true;
 
         if (this.notTabbedPattern) {
             this.itemsChanged();
@@ -179,7 +184,7 @@ export class Carousel extends FASTElement {
 
     private generateTabIds(): void {
         this.tabIds = [];
-        for (let i = 0; i < this.filteredItems.length; i++) {
+        for (let i = 0; i < this.items.length; i++) {
             this.tabIds.push(`${tabPrefix}${i + 1}`);
         }
     }
@@ -216,7 +221,7 @@ export class Carousel extends FASTElement {
             }
             this.firstFocus = false;
         }
-        this.focused = true;
+        // this.focused = true;
     };
 
     private handleBlur(e: Event): void {
@@ -256,6 +261,8 @@ export class Carousel extends FASTElement {
     };
 
     private handleTabsKeypress = (e: KeyboardEvent): void => {
+        // console.log("HIT CAR KEYPRESS")
+
         // sethdonohue - pause the carousel if the right, left, home, end keys are pressed in the case of when autoplay has been restarted by the user and the focus is on the tabs
         switch (e.keyCode) {
             case KeyCodes.arrowLeft:
@@ -287,11 +294,11 @@ export class Carousel extends FASTElement {
 
     public connectedCallback(): void {
         super.connectedCallback();
-        if (this.autoplay) {
-            this.startAutoPlay();
-        } else {
-            this.paused = true;
-        }
+        // if (this.autoplay) {
+        //     this.startAutoPlay();
+        // } else {
+        //     this.paused = true;
+        // }
 
         // sethdonohue - per ARIA autoplay must pause when mouse is hovering over the carousel
         this.carousel.addEventListener("mouseover", this.handleMouseOver);

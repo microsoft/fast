@@ -61,6 +61,7 @@ export class Tabs extends FASTElement {
      * @internal
      */
     public tabsChanged(): void {
+        console.log("HIT TABS CHANGED: ", this.tabs);
         if (
             this.$fastController.isConnected &&
             this.tabs.length <= this.tabpanels.length
@@ -80,6 +81,8 @@ export class Tabs extends FASTElement {
      * @internal
      */
     public tabpanelsChanged(): void {
+        console.log("HIT TABPANELS CHANGED: ", this.tabpanels);
+
         if (
             this.$fastController.isConnected &&
             this.tabpanels.length <= this.tabs.length
