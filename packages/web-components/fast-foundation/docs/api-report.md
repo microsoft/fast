@@ -781,6 +781,8 @@ export enum TextFieldType {
 // @public
 export class TreeItem extends FASTElement {
     // (undocumented)
+    childItemLength(): number;
+    // (undocumented)
     childItems: HTMLElement[];
     // @internal (undocumented)
     connectedCallback(): void;

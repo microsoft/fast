@@ -12,14 +12,20 @@ export const TreeItemTemplate = html<TreeItem>`
         tabindex="${x => (x.disabled ? null : x.focusable ? 0 : -1)}"
         class="${x => (x.expanded ? "expanded" : "")} ${x =>
             x.selected ? "selected" : ""} ${x => (x.nested ? "nested" : "")}
-            ${x => (x.disabled ? "disabled" : "")}"
+            ${x => (x.disabled ? "disabled" : "")}
+            ${x => (x.childItems && x.childItems.length > 0 ? "" : "leaf")}"
         aria-expanded="${x => (x.expanded ? x.expanded : void 0)}"
         aria-selected="${x => x.selected}"
         aria-disabled="${x => x.disabled}"
         @focus="${(x, c) => x.handleFocus(c.event as FocusEvent)}"
         @blur="${(x, c) => x.handleBlur(c.event as FocusEvent)}"
         @keydown="${(x, c) => x.handleKeyDown(c.event as KeyboardEvent)}"
-        ${children({ property: "childItems", filter: elements("[slot='item']") })}
+        ${children({
+            property: "childItems",
+            filter: (value: Node, index: number, array: Node[]) => {
+                return value instanceof HTMLElement;
+            },
+        })}
     >
         <div
             class="positioning-region"

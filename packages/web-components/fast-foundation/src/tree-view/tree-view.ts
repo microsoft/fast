@@ -179,7 +179,7 @@ export class TreeView extends FASTElement {
         const treeItems: HTMLElement[] = [];
         if (this.slottedTreeItems !== undefined) {
             this.slottedTreeItems.forEach((item: any) => {
-                if (item instanceof HTMLElement) {
+                if (isTreeItemElement(item)) {
                     treeItems.push(item as any);
                 }
             });

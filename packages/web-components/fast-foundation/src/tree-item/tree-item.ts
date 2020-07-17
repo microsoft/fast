@@ -75,7 +75,7 @@ export class TreeItem extends FASTElement {
     private itemsChanged(oldValue, newValue): void {
         if (this.$fastController.isConnected) {
             this.items.forEach((node: HTMLElement) => {
-                if (node instanceof TreeItem) {
+                if (isTreeItemElement(node)) {
                     // TODO: maybe not require it to be a TreeItem?
                     (node as TreeItem).nested = true;
                 }
@@ -197,6 +197,15 @@ export class TreeItem extends FASTElement {
             this.handleSelected(e);
         }
     };
+
+    public childItemLength(): number {
+        const treeChildrens: HTMLElement[] = this.childItems.filter(
+            (item: HTMLElement) => {
+                return isTreeItemElement(item);
+            }
+        );
+        return treeChildrens ? treeChildrens.length : 0;
+    }
 
     private handleArrowLeft(): void {
         if (this.expanded) {

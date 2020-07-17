@@ -184,6 +184,11 @@ export const TreeItemStyles = css`
         left: var(--expand-collapse-button-nested-width, calc(${heightNumber} * -1px));
     }
 
+    :host(.leaf) .content-region {
+        position: relative;
+        margin-inline-start: calc((${heightNumber} + (var(--design-unit) * 2) + 2) * 1px);
+    }
+
     ::slotted(fast-tree-item) {
         --tree-item-nested-width: 1em;
         --expand-collapse-button-nested-width: calc(${heightNumber} * -1px);

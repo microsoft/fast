@@ -1,8 +1,10 @@
 <fast-design-system-provider use-defaults>
     <h4>With items (don't render collapsed nodes)</h4>
     <fast-tree-view render-collapsed-nodes="false">
+        <fast-divider></fast-divider>
         <fast-tree-item>
-            Root item
+            Root item 1
+            <fast-divider slot="item"></fast-divider>
             <fast-tree-item slot="item" expanded>
                 Flowers
                 <fast-tree-item slot="item">Daisy</fast-tree-item>
@@ -16,6 +18,21 @@
             </fast-tree-item>
             <fast-tree-item slot="item">Nested item 2</fast-tree-item>
             <fast-tree-item slot="item">Nested item 3</fast-tree-item>
+        </fast-tree-item>
+        <fast-tree-item>
+            Root item 2
+            <fast-tree-item slot="item">
+                Flowers
+                <fast-tree-item slot="item" disabled>Daisy</fast-tree-item>
+                <fast-tree-item slot="item">Sunflower</fast-tree-item>
+                <fast-tree-item slot="item">Rose</fast-tree-item>
+            </fast-tree-item>
+            <fast-tree-item slot="item">Nested item 2</fast-tree-item>
+            <fast-tree-item slot="item">Nested item 3</fast-tree-item>
+        </fast-tree-item>
+        <fast-tree-item>
+            Root item 3
+            <button>Test</button>
         </fast-tree-item>
     </fast-tree-view>
 
