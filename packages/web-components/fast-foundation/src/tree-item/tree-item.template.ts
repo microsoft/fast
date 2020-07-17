@@ -23,9 +23,7 @@ export const TreeItemTemplate = html<TreeItem>`
         @keydown="${(x, c) => x.handleKeyDown(c.event as KeyboardEvent)}"
         ${children({
             property: "childItems",
-            filter: (value: Node, index: number, array: Node[]) => {
-                return value instanceof HTMLElement;
-            },
+            filter: elements(),
         })}
     >
         <div
