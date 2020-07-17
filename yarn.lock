@@ -20496,13 +20496,6 @@ rollup-plugin-filesize@^8.0.2:
     pacote "^11.1.6"
     terser "^4.6.12"
 
-rollup-plugin-minify-tagged-css-template@^0.0.2:
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/rollup-plugin-minify-tagged-css-template/-/rollup-plugin-minify-tagged-css-template-0.0.2.tgz#72d0890c1d97c0022ad4b1e10f41526e1cecdff5"
-  integrity sha512-0RgsTGTV83AWcDHoRsdAOydtOXkZOoF5XqcixvcxzIgjRmTD19htplR241C7Q1fBnK7aVtJXAWqkRAsdXpCxcQ==
-  dependencies:
-    rollup-plugin-transform-tagged-template "^0.0.3"
-
 rollup-plugin-node-resolve@^5.2.0:
   version "5.2.0"
   resolved "https://registry.yarnpkg.com/rollup-plugin-node-resolve/-/rollup-plugin-node-resolve-5.2.0.tgz#730f93d10ed202473b1fb54a5997a7db8c6d8523"
