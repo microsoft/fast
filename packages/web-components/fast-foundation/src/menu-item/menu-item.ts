@@ -1,4 +1,5 @@
 import { attr, booleanConverter, FASTElement } from "@microsoft/fast-element";
+import { keyCodeEnter, keyCodeSpace } from "@microsoft/fast-web-utilities";
 import { StartEnd } from "../patterns/start-end";
 import { applyMixins } from "../utilities/apply-mixins";
 
@@ -63,7 +64,12 @@ export class MenuItem extends FASTElement {
      * @internal
      */
     public handleMenuItemKeyDown = (e: KeyboardEvent): boolean => {
-        this.change();
+        switch (e.keyCode) {
+            case keyCodeEnter:
+            case keyCodeSpace:
+                this.invoke();
+                return false;
+        }
 
         return true;
     };
@@ -72,10 +78,21 @@ export class MenuItem extends FASTElement {
      * @internal
      */
     public handleMenuItemClick = (e: MouseEvent): void => {
-        this.change();
+        this.invoke();
     };
 
-    private change = (): void => {
+    private invoke = (): void => {
+        if (this.disabled) {
+            return;
+        }
+
+        switch (this.role) {
+            case MenuItemRole.menuitemcheckbox:
+            case MenuItemRole.menuitemradio:
+                this.checked = !this.checked;
+                break;
+        }
+
         this.$emit("change");
     };
 }
