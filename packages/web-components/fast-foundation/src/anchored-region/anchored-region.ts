@@ -332,7 +332,18 @@ export class AnchoredRegion extends FASTElement {
         );
         this.resizeDetector.observe(this.anchorElement);
         this.resizeDetector.observe(this);
-        this.resizeDetector.observe(this.offsetParent);
+        if (this.offsetParent !== null || this.offsetParent !== document.body) {
+            this.resizeDetector.observe(this.offsetParent);
+        }
+
+        window.addEventListener("resize", this.handleWindowResize);
+    };
+
+    /**
+     * handle window resizes
+     */
+    private handleWindowResize = (ev: Event): void => {
+        this.requestLayoutUpdate();
     };
 
     /**
@@ -341,6 +352,7 @@ export class AnchoredRegion extends FASTElement {
     private disconnectObservers = (): void => {
         this.disconnectResizeDetector();
         this.disconnectCollisionDetector();
+        window.removeEventListener("resize", this.handleWindowResize);
     };
 
     /**
@@ -568,10 +580,7 @@ export class AnchoredRegion extends FASTElement {
         entries.forEach((entry: ResizeObserverEntry) => {
             if (entry.target === this) {
                 this.handleRegionResize(entry);
-            } else if (entry.target === this.offsetParent) {
-                // reposition based on new layout area
-                this.requestLayoutUpdate();
-            } else {
+            } else if (entry.target === this.anchorElement) {
                 this.handleAnchorResize(entry);
             }
         });
@@ -814,8 +823,11 @@ export class AnchoredRegion extends FASTElement {
         desiredHorizontalPosition: AnchoredRegionHorizontalPositionLabel,
         nextPositionerDimension: Dimension
     ): void => {
-        if (this.offsetParent === null) {
-            return;
+        let layoutParentWidth = 0;
+        if (this.offsetParent !== null) {
+            layoutParentWidth = this.offsetParent.clientWidth;
+        } else {
+            layoutParentWidth = document.body.clientWidth;
         }
 
         let right: number | null = null;
@@ -825,15 +837,12 @@ export class AnchoredRegion extends FASTElement {
         switch (desiredHorizontalPosition) {
             case AnchoredRegionHorizontalPositionLabel.left:
                 xTransformOrigin = Location.right;
-                right = this.offsetParent.clientWidth - this.baseHorizontalOffset;
+                right = layoutParentWidth - this.baseHorizontalOffset;
                 break;
 
             case AnchoredRegionHorizontalPositionLabel.insetLeft:
                 xTransformOrigin = Location.right;
-                right =
-                    this.offsetParent.clientWidth -
-                    this.anchorWidth -
-                    this.baseHorizontalOffset;
+                right = layoutParentWidth - this.anchorWidth - this.baseHorizontalOffset;
                 break;
 
             case AnchoredRegionHorizontalPositionLabel.insetRight:
@@ -874,8 +883,11 @@ export class AnchoredRegion extends FASTElement {
         desiredVerticalPosition: AnchoredRegionVerticalPositionLabel,
         nextPositionerDimension: Dimension
     ): void => {
-        if (this.offsetParent === null) {
-            return;
+        let layoutParentHeight = 0;
+        if (this.offsetParent !== null) {
+            layoutParentHeight = this.offsetParent.clientHeight;
+        } else {
+            layoutParentHeight = document.body.clientHeight;
         }
 
         let top: number | null = null;
@@ -885,15 +897,12 @@ export class AnchoredRegion extends FASTElement {
         switch (desiredVerticalPosition) {
             case AnchoredRegionVerticalPositionLabel.top:
                 yTransformOrigin = Location.bottom;
-                bottom = this.offsetParent.clientHeight - this.baseVerticalOffset;
+                bottom = layoutParentHeight - this.baseVerticalOffset;
                 break;
 
             case AnchoredRegionVerticalPositionLabel.insetTop:
                 yTransformOrigin = Location.bottom;
-                bottom =
-                    this.offsetParent.clientHeight -
-                    this.baseVerticalOffset -
-                    this.anchorHeight;
+                bottom = layoutParentHeight - this.baseVerticalOffset - this.anchorHeight;
                 break;
 
             case AnchoredRegionVerticalPositionLabel.insetBottom:
