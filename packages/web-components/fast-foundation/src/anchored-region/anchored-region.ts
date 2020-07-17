@@ -139,9 +139,6 @@ export class AnchoredRegion extends FASTElement {
         this.updateLayoutForAttributeChange();
     }
 
-    @observable
-    public regionStyle: string = "";
-
     /**
      * indicates that an initial positioning pass on layout has completed
      */
@@ -287,16 +284,15 @@ export class AnchoredRegion extends FASTElement {
         this.baseHorizontalOffset = 0;
         this.baseVerticalOffset = 0;
 
-        this.regionStyle = `
-        position: ${this.fixedPlacement ? "fixed" : "absolute"};
-        display: block;
-        height: ${this.regionHeight};
-        width: ${this.regionWidth};
-        top: ${this.regionTop};;
-        left: ${this.regionLeft}; 
-        transform-origin: ${this.transformOrigin};
-        opacity: 0;
-        `;
+        this.style.position = this.fixedPlacement ? "fixed" : "absolute";
+        this.style.height = this.regionHeight;
+        this.style.width = this.regionWidth;
+        this.style.top = this.regionTop;
+        this.style.right = this.regionRight;
+        this.style.bottom = this.regionBottom;
+        this.style.left = this.regionLeft;
+        this.style.transformOrigin = this.transformOrigin;
+        this.style.opacity = "0";
     };
 
     /**
@@ -336,6 +332,7 @@ export class AnchoredRegion extends FASTElement {
         );
         this.resizeDetector.observe(this.anchorElement);
         this.resizeDetector.observe(this);
+        this.resizeDetector.observe(this.offsetParent);
     };
 
     /**
@@ -571,6 +568,9 @@ export class AnchoredRegion extends FASTElement {
         entries.forEach((entry: ResizeObserverEntry) => {
             if (entry.target === this) {
                 this.handleRegionResize(entry);
+            } else if (entry.target === this.offsetParent) {
+                // reposition based on new layout area
+                this.requestLayoutUpdate();
             } else {
                 this.handleAnchorResize(entry);
             }
@@ -796,18 +796,15 @@ export class AnchoredRegion extends FASTElement {
         this.classList.toggle("inset-left", this.horizontalPosition === "insetLeft");
         this.classList.toggle("inset-right", this.horizontalPosition === "insetRight");
 
-        this.regionStyle = `
-            position: ${this.fixedPlacement ? "fixed" : "absolute"};
-            display: block;
-            height: ${this.regionHeight};
-            width: ${this.regionWidth};
-            top: ${this.regionTop};
-            right: ${this.regionRight}; 
-            bottom: ${this.regionBottom};
-            left: ${this.regionLeft}; 
-            transform-origin: ${this.transformOrigin};
-            opacity: ${this.initialLayoutComplete ? 1 : 0}
-        `;
+        this.style.position = this.fixedPlacement ? "fixed" : "absolute";
+        this.style.height = this.regionHeight;
+        this.style.width = this.regionWidth;
+        this.style.top = this.regionTop;
+        this.style.right = this.regionRight;
+        this.style.bottom = this.regionBottom;
+        this.style.left = this.regionLeft;
+        this.style.transformOrigin = this.transformOrigin;
+        this.style.opacity = this.initialLayoutComplete ? "1" : "0";
     };
 
     /**

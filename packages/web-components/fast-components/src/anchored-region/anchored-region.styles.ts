@@ -4,6 +4,5 @@ export const AnchoredRegionStyles = css`
     :host {
         contain: layout;
         display: block;
-        position: absolute;
     }
 `;

@@ -2,8 +2,7 @@
     id="pageroot"
     style="height: 100%; overflow: hidden; display: flex; flex-direction: column;"
 >
-    <!-- 
-    <fast-anchored-region anchor="anchor-fixed" viewport="pageroot" vertical-positioning-mode="dynamic"
+    <!-- <fast-anchored-region anchor="anchor-fixed" viewport="pageroot" vertical-positioning-mode="dynamic"
         vertical-scaling="anchor" vertical-inset="true" horizontal-positioning-mode="locktodefault"
         horizontal-default-position="right" horizontal-scaling="anchor" style="z-index: 11;">
         <div style="height:100%; width: 100%; background: blue">
@@ -11,22 +10,35 @@
         </div>
     </fast-anchored-region> -->
 
-    <!-- <div style="position: fixed; height:80px; width: 100%; background: darkgray; overflow: hidden; display: flex; z-index: 10;"
-        id="fixed-header">
+    <div
+        style="
+            position: fixed;
+            height: 80px;
+            width: 100%;
+            background: darkgray;
+            overflow: hidden;
+            display: flex;
+            z-index: 10;
+        "
+        id="fixed-header"
+    >
         <h1>Anchored region</h1>
-        <button id="anchor-fixed" style="margin-left: 200px; margin-top: 20px; height: fit-content;">
+        <button
+            id="anchor-fixed"
+            style="margin-left: 200px; margin-top: 20px; height: fit-content;"
+        >
             anchor in fixed container
         </button>
-        <fast-anchored-region anchor="anchor-fixed" viewport="pageroot" vertical-positioning-mode="dynamic"
+        <!-- <fast-anchored-region anchor="anchor-fixed" viewport="pageroot" vertical-positioning-mode="dynamic"
             vertical-scaling="anchor" horizontal-positioning-mode="dynamic" horizontal-scaling="anchor"
             horizontal-inset="true">
             <div style="height:100%; width: 100%; background: yellow">
                 inside
             </div>
-        </fast-anchored-region>
-    </div> -->
+        </fast-anchored-region> -->
+    </div>
 
-    <div style="margin-top: 80px; overflow: auto; height: 100%;">
+    <!-- <div style="margin-top: 80px; overflow: auto; height: 100%;">
         <h4>Dynamic - default</h4>
         <div
             id="viewport-default"
@@ -393,7 +405,7 @@
                 </fast-anchored-region>
             </div>
         </div>
-    </div>
+    </div> -->
     <fast-anchored-region
         anchor="anchor-fixed"
         viewport="pageroot"
@@ -406,7 +418,7 @@
         fixed-placement="true"
         style="z-index: 11;"
     >
-        <div style="height: 100%; width: 100%; background: blue;">
+        <div style="height: 100%; width: 100%; background: blue; z-index: 11;">
             outside & fixed
         </div>
     </fast-anchored-region>
