@@ -87,8 +87,8 @@ export class MenuItem extends FASTElement {
         }
 
         switch (this.role) {
-            case "menuitemcheckbox":
-            case "menuitemradio":
+            case MenuItemRole.menuitemcheckbox:
+            case MenuItemRole.menuitemradio:
                 this.checked = !this.checked;
                 break;
         }
