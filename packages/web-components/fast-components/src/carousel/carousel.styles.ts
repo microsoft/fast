@@ -54,7 +54,21 @@ export const CarouselStyles = css`
         right: 20px;
     }
 
-    .slide-tab {
+    .tablist {
+        display: inline-flex;
+        position: absolute;
+        padding: 0;
+        bottom: 15px;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 100;
+        max-width: 100%;
+        min-width: 25%;
+        overflow: hidden;
+    }
+
+    .tablist ::slotted(*) {
+        all: initial;
         display: inline-block;
         padding: 4px;
         margin: 4px;
@@ -63,9 +77,12 @@ export const CarouselStyles = css`
         outline: none;
         max-width: 32px;
         min-width: 10px;
+        flex-grow: 1;
+        height: unset;
+        line-height: unset;
     }
 
-    .slide-tab:before {
+    .tablist ::slotted(*):before {
         opacity: 0.5;
         border: 1px solid #bebebe;
         border-radius: calc(var(--corner-radius) * 1px);
@@ -82,11 +99,11 @@ export const CarouselStyles = css`
         left: 0;
     }
 
-    .slide-tab:hover:before {
+    .tablist ::slotted(*):hover:before {
         opacity: 1;
     }
 
-    .slide-tab:${focusVisible}:before {
+    .tablist ::slotted(*):${focusVisible}:before {
         outline: none;
         box-shadow: 0 0 0 calc((var(--focus-outline-width) - var(--outline-width)) * 1px)
             rgba(0,0,0,1), 0 0 0 calc((var(--focus-outline-width) + var(--outline-width)) * 1px)
@@ -94,7 +111,7 @@ export const CarouselStyles = css`
     }
 
 
-    .slide-tab[aria-selected="true"]:before {
+    .tablist ::slotted(*)[aria-selected="true"]:before {
         opacity: 1;
     }
 
@@ -103,19 +120,6 @@ export const CarouselStyles = css`
         left: 10px;
         top: 10px;
         z-index: 1;
-    }
-
-    ::part(tablist) {
-        display: "inline-flex";
-        position: absolute;
-        padding: 0;
-        bottom: 15px;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        z-index: 100;
-        max-width: 100%;
-        min-width: 25%;
-        overflow: hidden;
     }
 `.withBehaviors(
     accentFillRestBehavior,

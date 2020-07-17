@@ -61,7 +61,6 @@ export class Tabs extends FASTElement {
      * @internal
      */
     public tabsChanged(): void {
-        console.log("HIT TABS CHANGED: ", this.tabs);
         if (
             this.$fastController.isConnected &&
             this.tabs.length <= this.tabpanels.length
@@ -81,8 +80,6 @@ export class Tabs extends FASTElement {
      * @internal
      */
     public tabpanelsChanged(): void {
-        console.log("HIT TABPANELS CHANGED: ", this.tabpanels);
-
         if (
             this.$fastController.isConnected &&
             this.tabpanels.length <= this.tabs.length
@@ -114,21 +111,13 @@ export class Tabs extends FASTElement {
      */
     public activetab: HTMLElement;
 
-    /**
-     * Whether or not to focus the tab on change
-     * @public
-     * HTML Attribute: notabfocus
-     */
-    @attr({ mode: "boolean" })
-    public notabfocus: boolean = false;
-
-    private prevActiveTabIndex: number = 0;
-    private activeTabIndex: number = 0;
+    public prevActiveTabIndex: number = 0;
+    public activeTabIndex: number = 0;
     private ticking: boolean = false;
-    private tabIds: Array<string | null>;
+    public tabIds: Array<string | null>;
     private tabpanelIds: Array<string | null>;
 
-    private change = (): void => {
+    public change = (): void => {
         this.$emit("change", this.activetab);
     };
 
@@ -143,7 +132,7 @@ export class Tabs extends FASTElement {
         }
     }
 
-    private setTabs = (): void => {
+    public setTabs = (): void => {
         this.tabIds = this.getTabIds();
         this.tabpanelIds = this.getTabPanelIds();
         this.activeTabIndex = this.getActiveIndex();
@@ -182,7 +171,7 @@ export class Tabs extends FASTElement {
         });
     };
 
-    private setTabPanels = (): void => {
+    public setTabPanels = (): void => {
         this.tabIds = this.getTabIds();
         this.tabpanelIds = this.getTabPanelIds();
         this.tabpanels.forEach((tabpanel: HTMLElement, index: number) => {
@@ -214,15 +203,13 @@ export class Tabs extends FASTElement {
         });
     }
 
-    private setComponent(): void {
+    public setComponent(): void {
         this.activeid = this.tabIds[this.activeTabIndex] as string;
         this.change();
         this.setTabs();
         this.handleActiveIndicatorPosition();
         this.setTabPanels();
-        if (!this.notabfocus) {
-            this.focusTab();
-        }
+        this.focusTab();
         this.change();
     }
 
@@ -278,7 +265,7 @@ export class Tabs extends FASTElement {
         }
     };
 
-    private handleActiveIndicatorPosition() {
+    public handleActiveIndicatorPosition() {
         if (this.activeindicator) {
             if (this.ticking) {
                 this.activeIndicatorRef.style.transform = "translateX(0px)";
@@ -336,7 +323,7 @@ export class Tabs extends FASTElement {
         this.setComponent();
     }
 
-    private focusTab(): void {
+    public focusTab(): void {
         this.tabs[this.activeTabIndex].focus();
     }
 
