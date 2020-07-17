@@ -17,6 +17,14 @@
 
 This is the FAST monorepo, containing web component packages, tools, examples, and documentation. FAST tech can be used à la carte or as a suite to build enterprise-grade websites, applications, components, design systems, and more.
 
+**tl;dr;**
+
+* Create reusable UI components based on web component standards.
+* Use our standard library of pre-built web components in your apps.
+* Choose between two *adaptive* design systems: Fluent Design and FAST Frame.
+* Build your own design system without re-implementing component logic.
+* Integrate with any front-end framework or build system.
+
 :star: We appreciate your star, it helps!
 
 ## Introduction
