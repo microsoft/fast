@@ -99,7 +99,7 @@ export const CarouselTemplate = html<Carousel>`
         aria-atomic="false"
         aria-live="${x => (x.autoplay && !x.paused ? "off" : "polite")}"
     >
-        <slot ${slotted({ property: "items", filter: elements() })}></slot>
+        <slot ${slotted({ property: "items" })}></slot>
     </div>
     ${when(x => !x.notTabbedPattern, tabbedTemplate)}
 </template>`;
