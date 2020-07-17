@@ -8,3 +8,4 @@ import { CarouselStyles as styles } from "./carousel.styles";
     styles,
 })
 export class FASTCarousel extends Carousel {}
+export * from "./carousel-slide";

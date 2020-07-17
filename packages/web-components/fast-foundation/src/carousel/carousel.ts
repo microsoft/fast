@@ -72,7 +72,7 @@ export class Carousel extends FASTElement {
     @observable
     public items: HTMLElement[];
     public itemsChanged(): void {
-        console.log("HIT ITEMS CHANGED");
+        console.log("HIT ITEMS CHANGED: ", this.items);
         // this.filteredItems = this.items.filter(
         //     (item: HTMLElement) => item.nodeType === 1
         // );
