@@ -14,15 +14,15 @@ const pauseIcon: string = `<svg viewBox="0 0 16 16" width="16px" height="16px" x
 
 const playIcon: string = `<svg viewBox="0 0 16 16" width="16px" height="16px" xmlns="http://www.w3.org/2000/svg"><path d="M1 0V16L15.0083 8L1 0Z"></path></svg>`;
 
+const basicTemplate: ViewTemplate = html<Carousel>`
+    <div class="carousel-content">
+        <slot ${slotted({ property: "items", filter: elements() })}></slot>
+    </div>
+`;
+
 const tabbedTemplate: ViewTemplate = html<Carousel>`
-    <fast-tabs
-        class="carousel-tabs"
-        activeindicator="false"
-        activeid="${(x, c) => x.activeid}"
-        notabfocus="${x => (x.focused || x.paused ? "false" : "true")}"
-        ${ref("tabs")}
-    >
-        ${repeat(
+    <div class="carousel-content" ${ref("tabsRef")}>
+        ${/*repeat(
             x => x.items,
             html<Carousel>`
                 <span
@@ -32,9 +32,14 @@ const tabbedTemplate: ViewTemplate = html<Carousel>`
                 ></span>
             `,
             { positioning: true }
-        )}
-        <slot name="tabpanel" slot="tabpanel"></slot>
-    </fast-tabs>
+        )*/ ""}
+        <div class="tablist" part="tablist" role="tablist">
+            <slot class="tab" name="tab" part="tab" ${slotted("tabs")}></slot>
+        </div>
+        <div class="tabpanel">
+            <slot name="tabpanel" part="tabpanel" ${slotted("tabpanels")}></slot>
+        </div>
+    </div>
 `;
 
 /**
@@ -94,12 +99,6 @@ export const CarouselTemplate = html<Carousel>`
 }>
         </slot>
     </div>
-    <div
-        style="${x => (!x.notTabbedPattern ? "display: none;" : "")}"
-        aria-atomic="false"
-        aria-live="${x => (x.autoplay && !x.paused ? "off" : "polite")}"
-    >
-        <slot ${slotted({ property: "items" })}></slot>
-    </div>
     ${when(x => !x.notTabbedPattern, tabbedTemplate)}
+    ${when(x => x.notTabbedPattern, basicTemplate)}
 </template>`;
