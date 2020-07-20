@@ -111,7 +111,3 @@ Because FAST has abstracted base components from their style, you get a head sta
 * Join the community and chat with us in real-time on [Discord](https://discord.gg/FcSNfg4).
 * Submit requests and issues on [GitHub](https://github.com/Microsoft/fast/issues/new/choose).
 * Contribute by helping out on some of our recommended first issues on [GitHub](https://github.com/Microsoft/fast/labels/good%20first%20issue).
-
-## Status
-
-Experiencing problems with our site? Check our infrastructure [health status](https://www.fast.design/docs/en/contributing/status) and feel free to contact us through the channels listed above.
