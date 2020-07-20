@@ -99,20 +99,15 @@ export const CarouselStyles = css`
         left: 0;
     }
 
-    .tablist ::slotted(*):hover:before {
+    .tablist ::slotted(*:hover):before, .tablist ::slotted([aria-selected="true"]):before {
         opacity: 1;
     }
 
-    .tablist ::slotted(*):${focusVisible}:before {
+    .tablist ::slotted(*:${focusVisible}):before {
         outline: none;
         box-shadow: 0 0 0 calc((var(--focus-outline-width) - var(--outline-width)) * 1px)
             rgba(0,0,0,1), 0 0 0 calc((var(--focus-outline-width) + var(--outline-width)) * 1px)
-            ${neutralFocusBehavior.var};;
-    }
-
-
-    .tablist ::slotted(*)[aria-selected="true"]:before {
-        opacity: 1;
+            ${neutralFocusBehavior.var};
     }
 
     .rotation-control {
