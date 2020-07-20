@@ -48,7 +48,7 @@ export const ProgressStyles = css`
         height: 100%;
         background-color: ${accentForegroundRestBehavior.var};
         border-radius: calc(var(--design-unit) * 1px);
-        animation-timing-function: cubic-bezier(0.4, 0.0, 0.6, 1.0);
+        animation-timing-function: cubic-bezier(0.4, 0, 0.6, 1);
         width: 40%;
         animation: indeterminate-1 2s infinite;
     }
@@ -59,12 +59,13 @@ export const ProgressStyles = css`
         height: 100%;
         background-color: ${accentForegroundRestBehavior.var};
         border-radius: calc(var(--design-unit) * 1px);
-        animation-timing-function: cubic-bezier(0.4, 0.0, 0.6, 1.0);
+        animation-timing-function: cubic-bezier(0.4, 0, 0.6, 1);
         width: 60%;
         animation: indeterminate-2 2s infinite;
     }
 
-    :host(.paused) .indeterminate-indicator-1, :host(.paused) .indeterminate-indicator-2 {
+    :host(.paused) .indeterminate-indicator-1,
+    :host(.paused) .indeterminate-indicator-2 {
         animation-play-state: paused;
         background-color: ${neutralFillRestBehavior.var};
     }
@@ -88,7 +89,7 @@ export const ProgressStyles = css`
         100% {
             opacity: 0;
             transform: translateX(300%);
-        },
+        }
     }
 
     @keyframes indeterminate-2 {
@@ -106,8 +107,8 @@ export const ProgressStyles = css`
         100% {
             transform: translateX(166.66%);
             opacity: 1;
-        },
-    },
+        }
+    }
 `.withBehaviors(
     accentForegroundRestBehavior,
     neutralFillRestBehavior,
