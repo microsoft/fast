@@ -1,13 +1,17 @@
 import commonJS from "rollup-plugin-commonjs";
 import filesize from "rollup-plugin-filesize";
-import minifyTaggedCSSTemplate from "rollup-plugin-minify-tagged-css-template";
 import resolve from "rollup-plugin-node-resolve";
 import { terser } from "rollup-plugin-terser";
 import transformTaggedTemplate from "rollup-plugin-transform-tagged-template";
 import typescript from "rollup-plugin-typescript2";
-import transformHTMLFragment from "../../../build/transform-html-fragment";
+import {
+    transformCSSFragment,
+    transformHTMLFragment,
+} from "../../../build/transform-fragments";
 
-const parserOptions = { sourceType: "module" };
+const parserOptions = {
+    sourceType: "module",
+};
 
 export default [
     {
@@ -33,7 +37,11 @@ export default [
                     },
                 },
             }),
-            minifyTaggedCSSTemplate({ parserOptions }),
+            transformTaggedTemplate({
+                tagsToProcess: ["css"],
+                transformer: transformCSSFragment,
+                parserOptions,
+            }),
             transformTaggedTemplate({
                 tagsToProcess: ["html"],
                 transformer: transformHTMLFragment,
@@ -41,6 +49,7 @@ export default [
             }),
             filesize({
                 showMinifiedSize: false,
+                showBrotliSize: true,
             }),
         ],
     },
