@@ -16,7 +16,7 @@ pulls:
   limitPerRun: 5
   
   # Label to use when marking a pull request as stale.
-  staleLabel: "reason : stale"
+  staleLabel: "warning:stale"
 
   # Comment to post when removing the stale label.
   # unmarkComment: >
@@ -46,7 +46,7 @@ issues:
     - "feature request"
 
   # Label to use when marking as stale.
-  staleLabel: "reason : stale"
+  staleLabel: "warning:stale"
 
   # Limit the number of actions per hour, from 1-30. The default is 30.
   limitPerRun: 25
