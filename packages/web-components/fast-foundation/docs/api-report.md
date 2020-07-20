@@ -526,7 +526,8 @@ export class Slider extends FormAssociated<HTMLInputElement> implements SliderCo
     // @internal (undocumented)
     trackWidth: number;
     value: string;
-    }
+    valueTextFormatter: (value: string) => string | null;
+}
 
 // @public
 export interface SliderConfiguration {
