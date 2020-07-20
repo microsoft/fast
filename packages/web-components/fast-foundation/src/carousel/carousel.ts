@@ -1,6 +1,4 @@
-// TODO: get FOcus working on tabs
-
-import { attr, FASTElement, observable, DOM } from "@microsoft/fast-element";
+import { attr, observable, DOM } from "@microsoft/fast-element";
 import { Tabs } from "../tabs";
 import {
     keyCodeSpace,
@@ -98,12 +96,15 @@ export class Carousel extends Tabs {
 
     @observable
     public activeSlideIndex: number = 0;
+    public activeindicator = false;
+    public basicContentRef: HTMLDivElement;
     public carousel: HTMLDivElement;
-    public tabsRef: HTMLElement;
-    public rotationControl: HTMLElement;
     public previousButtonItem: HTMLElement[];
     public nextButtonItem: HTMLElement[];
-    public activeindicator = false;
+    public rotationControl: HTMLElement;
+    public rotationControlItem: HTMLElement[];
+    public tabsRef: HTMLElement;
+    public tabPanelsRef: HTMLElement;
 
     @observable
     public items: HTMLElement[];
@@ -161,7 +162,7 @@ export class Carousel extends Tabs {
     };
 
     public change = (): void => {
-        // sethdonohue - reference to carousel is passed for the author to get access to the paused, activeSlideId, and other states
+        // sethdonohue - reference to carousel is passed for the author to get access to the paused, activeSlideId, and other states.
         this.$emit("change", this.carousel);
     };
 
@@ -234,7 +235,6 @@ export class Carousel extends Tabs {
 
     private startAutoPlay(): void {
         if (!this.paused) {
-            // sethdonohue - need to clear the timer before starting a new one
             this.stopAutoPlay();
             this.startTime = Date.now();
             this.autoplayTimer = window.setInterval(
@@ -255,26 +255,31 @@ export class Carousel extends Tabs {
         this.togglePlay();
     };
 
-    private handleFocusIn = (e: Event): void => {
-        // sethdonohue - per ARIA spec we need to stop rotation whenever keyboard focus is brought to the carousel
-        if (this.autoplay) {
-            this.stopAutoPlay();
+    private handleRotationKeyDown = (e: KeyboardEvent) => {
+        switch (e.keyCode) {
+            case keyCodeEnter:
+            case keyCodeSpace:
+                this.handleRotationMouseDown(e);
+                break;
         }
-        // sethdonohue - is the case of a mouse click on rotation controls we want
+    };
+
+    private handleFocusIn = (e: FocusEvent): void => {
+        // sethdonohue - per ARIA spec we need to stop rotation whenever keyboard focus is brought to the carousel unless the user specifically requests it to start again
+        // sethdonohue - if firstFocus is true then we are focusing in with the keyboard and not the mousedown fired off of the rotation control so we can still pause. This prevents toggle being fired twice if the rotation control click event is also the first focus event on the carousel
         if (this.firstFocus) {
             if (this.autoplay) {
                 this.paused = true;
             }
             this.firstFocus = false;
         }
-        // this.focused = true;
     };
 
     private handleBlur(e: Event): void {
         this.focused = false;
     }
 
-    private handleMouseOver = (e: Event) => {
+    private handleMouseOver = () => {
         if (!this.paused) {
             this.stopTime = Date.now();
             window.clearTimeout(this.pausedTimeout as number);
@@ -282,7 +287,7 @@ export class Carousel extends Tabs {
         }
     };
 
-    private handleMouseLeave = (e: Event) => {
+    private handleMouseLeave = () => {
         if (!this.paused) {
             // sethdonohue - timer for proper pause of rotation
             const timeDiff: number =
@@ -299,13 +304,6 @@ export class Carousel extends Tabs {
         this.focused = false;
     };
 
-    private handleTabChange = (e: any): void => {
-        if (e.target.activeid) {
-            this.activeid = e.target.activeid;
-            // this.activeSlideIndex = this.slideIds.indexOf(this.activeSlideId);
-        }
-    };
-
     private handleTabsKeypress = (e: KeyboardEvent): void => {
         // sethdonohue - pause the carousel if the right, left, home, end keys are pressed in the case of when autoplay has been restarted by the user and the focus is on the tabs
         switch (e.keyCode) {
@@ -319,23 +317,19 @@ export class Carousel extends Tabs {
     };
 
     private handleTabsFocusIn = (e: FocusEvent): void => {
-        e.stopPropagation();
-        // sethdonohue - when keyboard navigating from the rotation control or a tab we do not want the rotation to be stopped in the case of when a keyboard user restarts the rotation with the rotation control and then has to tab through/past the tablist/slidepicker
-        if (
-            !this.rotationControl.contains(e.relatedTarget as Node) &&
-            !this.tabsRef.contains(e.relatedTarget as Node)
-        ) {
-            // sethdonohue - we do want to run the focus in the case where the user is reverse tabbing (shift-tab) back to a carousel and hits the tabs first, as this should stop the auto rotation on first focus per ARIA spec
-            this.handleFocusIn(e);
-        }
         this.focused = true;
+        e.stopPropagation();
+        if (this.firstFocus) {
+            this.paused = true;
+        }
+        this.firstFocus = false;
     };
 
     private handleTabsFocusOut = (e: FocusEvent): void => {
         // sethdonohue - if we focus out of tabs or any tabs children we need to ensure tabs doesn't steal focus
         this.focused = false;
         // sethdonohue - if we focus outside of the carousel then first focus needs to be reset
-        if (!this.carousel.contains(e.target as Node)) {
+        if (!this.carousel.contains(e.relatedTarget as Node)) {
             this.firstFocus = true;
         }
     };
@@ -356,21 +350,17 @@ export class Carousel extends Tabs {
         this.carousel.addEventListener("focusin", this.handleFocusIn);
         this.carousel.addEventListener("blur", this.handleBlur);
 
-        // sethdonohue - using mousedown as this fires before focus so we can account for the first click on the rotation control and the focus immediately following click. This also requires the use on keydown since click is not used
+        // sethdonohue - using mousedown as this fires before focusin so we can account for the first click on the rotation control and the focus immediately following click. This also requires the use of keydown since click is not used
         this.rotationControl.addEventListener("mousedown", this.handleRotationMouseDown);
-        this.rotationControl.addEventListener("keydown", e => {
-            if (e.keyCode === keyCodeSpace || e.keyCode === keyCodeEnter) {
-                this.handleRotationMouseDown(e);
-            }
-        });
+        this.rotationControl.addEventListener("keydown", this.handleRotationKeyDown);
 
         if (!this.basicpattern) {
             this.tabsRef.addEventListener("keydown", this.handleTabsKeypress);
             this.tabsRef.addEventListener("focusin", this.handleTabsFocusIn);
             this.tabsRef.addEventListener("focusout", this.handleTabsFocusOut);
 
-            // sethdonohue - get the id of the tab change based on the change event emitted from tabs to keep carousel in sync with tabs
-            this.tabsRef.addEventListener("change", this.handleTabChange);
+            this.tabPanelsRef.addEventListener("focusin", this.handleMouseOver);
+            this.tabPanelsRef.addEventListener("focusout", this.handleMouseLeave);
 
             if (this.previousButtonItem.length && this.nextButtonItem.length) {
                 // sethdonohue - when tabbed the next and previous buttons should not be in the tab sequence
@@ -379,6 +369,9 @@ export class Carousel extends Tabs {
                     this.nextButtonItem[0].setAttribute("tabindex", "-1");
                 });
             }
+        } else {
+            this.basicContentRef.addEventListener("focusin", this.handleMouseOver);
+            this.basicContentRef.addEventListener("focusout", this.handleMouseLeave);
         }
     }
 

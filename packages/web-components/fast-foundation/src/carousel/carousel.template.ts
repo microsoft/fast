@@ -15,28 +15,17 @@ const pauseIcon: string = `<svg viewBox="0 0 16 16" width="16px" height="16px" x
 const playIcon: string = `<svg viewBox="0 0 16 16" width="16px" height="16px" xmlns="http://www.w3.org/2000/svg"><path d="M1 0V16L15.0083 8L1 0Z"></path></svg>`;
 
 const basicTemplate: ViewTemplate = html<Carousel>`
-    <div class="carousel-content">
+    <div class="carousel-content" ${ref("basicContentRef")}>
         <slot ${slotted({ property: "items", filter: elements() })}></slot>
     </div>
 `;
 
 const tabbedTemplate: ViewTemplate = html<Carousel>`
-    <div class="carousel-content" ${ref("tabsRef")}>
-        ${/*repeat(
-            x => x.items,
-            html<Carousel>`
-                <span
-                    slot="tab"
-                    id="tab-${(x, c) => c.index + 1}"
-                    class="slide-tab"
-                ></span>
-            `,
-            { positioning: true }
-        )*/ ""}
-        <div class="tablist" part="tablist" role="tablist">
+    <div class="carousel-content">
+        <div class="tablist" part="tablist" role="tablist" ${ref("tabsRef")}>
             <slot class="tab" name="tab" part="tab" ${slotted("tabs")}></slot>
         </div>
-        <div class="tabpanel">
+        <div class="tabpanel" ${ref("tabPanelsRef")}>
             <slot name="tabpanel" part="tabpanel" ${slotted("tabpanels")}></slot>
         </div>
     </div>
@@ -60,7 +49,11 @@ export const CarouselTemplate = html<Carousel>`
                 : "stop automatic slide rotation"}"
         ${ref("rotationControl")}
     >
-        <slot name="rotation-control" part="rotation-control">
+        <slot
+            name="rotation-control"
+            part="rotation-control"
+            ${slotted("rotationControlItem")}
+        >
             <fast-button appearance="neutral">
                 ${x =>
                     x.paused
