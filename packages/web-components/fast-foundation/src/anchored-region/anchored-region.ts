@@ -111,24 +111,53 @@ export class AnchoredRegion extends FASTElement {
         this.reset();
     }
 
+    /**
+     * The default horizontal position of the region relative to the anchor element
+     *
+     * @public
+     * @remarks
+     * HTML Attribute: horizontal-default-position
+     */
     @attr({ attribute: "horizontal-default-position" })
     public horizontalDefaultPosition: HorizontalPosition = "unset";
     private horizontalDefaultPositionChanged(): void {
         this.updateLayoutForAttributeChange();
     }
 
+    /**
+     * Whether the region overlaps the anchor on the horizontal axis
+     *
+     * @public
+     * @remarks
+     * HTML Attribute: horizontal-inset
+     */
     @attr({ attribute: "horizontal-inset", mode: "boolean" })
     public horizontalInset: boolean = false;
     private horizontalInsetChanged(): void {
         this.updateLayoutForAttributeChange();
     }
 
+    /**
+     * How narrow the space allocated to the default position has to be before the widest area
+     * is selected for layout
+     *
+     * @public
+     * @remarks
+     * HTML Attribute: horizontal-threshold
+     */
     @attr({ attribute: "horizontal-threshold" })
     public horizontalThreshold: string = "";
     private horizontalThresholdChanged(): void {
         this.updateLayoutForAttributeChange();
     }
 
+    /**
+     * Defines how the width of the region is calculated
+     *
+     * @public
+     * @remarks
+     * HTML Attribute: horizontal-scaling
+     */
     @attr({ attribute: "horizontal-scaling" })
     public horizontalScaling: AxisScalingMode = "content";
     private horizontalScalingChanged(): void {
@@ -151,30 +180,68 @@ export class AnchoredRegion extends FASTElement {
         this.reset();
     }
 
+    /**
+     * The default vertical position of the region relative to the anchor element
+     *
+     * @public
+     * @remarks
+     * HTML Attribute: vertical-default-position
+     */
     @attr({ attribute: "vertical-default-position" })
     public verticalDefaultPosition: VerticalPosition = "unset";
     private verticalDefaultPositionChanged(): void {
         this.updateLayoutForAttributeChange();
     }
 
+    /**
+     * Whether the region overlaps the anchor on the vertical axis
+     *
+     * @public
+     * @remarks
+     * HTML Attribute: vertical-inset
+     */
     @attr({ attribute: "vertical-inset", mode: "boolean" })
     public verticalInset: boolean = false;
     private verticalInsetChanged(): void {
         this.updateLayoutForAttributeChange();
     }
 
+    /**
+     * How short the space allocated to the default position has to be before the tallest area
+     * is selected for layout
+     *
+     * @public
+     * @remarks
+     * HTML Attribute: vertical-threshold
+     */
     @attr({ attribute: "vertical-threshold" })
     public verticalThreshold: string = "";
     private verticalThresholdChanged(): void {
         this.updateLayoutForAttributeChange();
     }
 
+    /**
+     * Defines how the height of the region is calculated
+     *
+     * @public
+     * @remarks
+     * HTML Attribute: vertical-scaling
+     */
     @attr({ attribute: "vertical-scaling" })
     public verticalScaling: AxisScalingMode = "content";
     private verticalScalingChanged(): void {
         this.updateLayoutForAttributeChange();
     }
 
+    /**
+     * Whether the region is positioned using css "position: fixed".
+     * Otherwise the region uses "position: absolute".
+     * Fixed placement allows the region to break out of parent containers,
+     *
+     * @public
+     * @remarks
+     * HTML Attribute: fixed placement
+     */
     @attr({ attribute: "fixed-placement", mode: "boolean" })
     public fixedPlacement: boolean = false;
     private fixedPlacementChanged(): void {
@@ -184,17 +251,21 @@ export class AnchoredRegion extends FASTElement {
     }
 
     /**
-     * indicates that an initial positioning pass on layout has completed
+     * The HTML element being used as the anchor
+     *
+     * @ public
      */
-    @observable
-    public initialLayoutComplete: boolean = false;
-
     @observable
     public anchorElement: HTMLElement | null = null;
     private anchorElementChanged(): void {
         this.reset();
     }
 
+    /**
+     * The HTML element being used as the viewport
+     *
+     * @ public
+     */
     @observable
     public viewportElement: HTMLElement | null = null;
     private viewportElementChanged(): void {
@@ -204,10 +275,18 @@ export class AnchoredRegion extends FASTElement {
     }
 
     /**
+     * indicates that an initial positioning pass on layout has completed
+     *
+     * @internal
+     */
+    @observable
+    public initialLayoutComplete: boolean = false;
+
+    /**
      * the positions currently being applied to layout
      */
-    public verticalPosition: AnchoredRegionVerticalPositionLabel;
-    public horizontalPosition: AnchoredRegionHorizontalPositionLabel;
+    private verticalPosition: AnchoredRegionVerticalPositionLabel;
+    private horizontalPosition: AnchoredRegionHorizontalPositionLabel;
 
     /**
      * values to be applied to the component's positioning attributes on render
@@ -249,12 +328,17 @@ export class AnchoredRegion extends FASTElement {
     private currentDirection: Direction = Direction.ltr;
     private noCollisionMode = false;
 
+    /**
+     * @internal
+     */
     connectedCallback() {
         super.connectedCallback();
-
         this.initialize();
     }
 
+    /**
+     * @internal
+     */
     public disconnectedCallback(): void {
         super.disconnectedCallback();
 
@@ -263,10 +347,16 @@ export class AnchoredRegion extends FASTElement {
         this.disconnectCollisionDetector();
     }
 
+    /**
+     * @internal
+     */
     public adoptedCallback() {
         this.initialize();
     }
 
+    /**
+     * destroys the instance's resize observer
+     */
     private disconnectResizeDetector(): void {
         if (this.resizeDetector !== null) {
             this.resizeDetector.disconnect();
@@ -275,6 +365,9 @@ export class AnchoredRegion extends FASTElement {
         window.removeEventListener("resize", this.handleWindowResize);
     }
 
+    /**
+     * initializes the instance's resize observer
+     */
     private initializeResizeDetector(): void {
         this.disconnectResizeDetector();
         this.resizeDetector = new ((window as unknown) as WindowWithResizeObserver).ResizeObserver(
@@ -522,7 +615,7 @@ export class AnchoredRegion extends FASTElement {
     };
 
     /**
-     *
+     *  use getBoundingClientRect when intersection observer fails
      */
     private applyNoCollisionMode = (): ClientRect | null => {
         this.noCollisionMode = true;
@@ -732,15 +825,6 @@ export class AnchoredRegion extends FASTElement {
             return;
         }
 
-        // if direction changes we need to reset the layout
-        // todo: scomea - can we do this less?
-        const newDirection: Direction = this.getDirection();
-        if (newDirection !== this.currentDirection) {
-            this.currentDirection = newDirection;
-            this.initialize();
-            return;
-        }
-
         let desiredVerticalPosition: AnchoredRegionVerticalPositionLabel =
             AnchoredRegionVerticalPositionLabel.undefined;
         let desiredHorizontalPosition: AnchoredRegionHorizontalPositionLabel =
@@ -757,6 +841,14 @@ export class AnchoredRegion extends FASTElement {
                     dirCorrectedHorizontalDefaultPosition === "start" ||
                     dirCorrectedHorizontalDefaultPosition === "end"
                 ) {
+                    // if direction changes we reset the layout
+                    const newDirection: Direction = this.getDirection();
+                    if (newDirection !== this.currentDirection) {
+                        this.currentDirection = newDirection;
+                        this.initialize();
+                        return;
+                    }
+
                     if (this.currentDirection === Direction.ltr) {
                         dirCorrectedHorizontalDefaultPosition =
                             dirCorrectedHorizontalDefaultPosition === "start"
