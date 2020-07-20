@@ -6,9 +6,9 @@ An *anchored region* is a container component which enables authors to create la
 
 ### Background
 
-This component is inspired by the ["Viewport positioner"](https://github.com/microsoft/fast/tree/master/packages/fast-components-react-base/src/viewport-positioner)  component in the React component set.  It is used as a building block in other components to enable responsive flyouts, or positionable/scaling menus in the [select](https://github.com/microsoft/fast/tree/master/packages/fast-components-react-base/src/select) component. 
+This component is used as a building block in other components to enable responsive flyouts, tooltips, or positionable/scaling menus in a Select component. 
 
-A primary goal of the component was to enable authors to create responsive layouts without resorting to expensive [getBoundingClientRect()](https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect) calls. It instead depends on the more performant [IntersectionObserver](https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver) and [ResizeObserver](https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver) interfaces.
+It instead depends on the more performant [IntersectionObserver](https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver) and [ResizeObserver](https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver) interfaces.
 
 For a more in-depth understanding of how this component works under the covers please refer to the [intersection observer api](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API). 
 
@@ -288,5 +288,5 @@ Layout logic could called frequently during scrolling and resize operations so e
 TBD
 
 ## Next Steps
-- add support for passing references for anchor and viewport as HTMLElements through javascript.
+- investigate perf improvements
 

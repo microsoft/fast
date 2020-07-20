@@ -136,7 +136,7 @@ export class AnchoredRegion extends FASTElement {
     @attr({ attribute: "fixed-placement", mode: "boolean" })
     public fixedPlacement: boolean = false;
     private fixedPlacementChanged(): void {
-        this.updateLayoutForAttributeChange();
+        this.initialize();
     }
 
     /**
@@ -157,7 +157,7 @@ export class AnchoredRegion extends FASTElement {
     public viewportElement: HTMLElement | null = null;
     private viewportElementChanged(): void {
         if ((this as any).$fastController.isConnected && this.initialLayoutComplete) {
-            this.reset();
+            this.initialize();
         }
     }
 
@@ -212,24 +212,38 @@ export class AnchoredRegion extends FASTElement {
     private currentDirection: Direction = Direction.ltr;
     private noCollisionMode = false;
 
-    constructor() {
-        super();
-        this.setInitialState();
-    }
-
     connectedCallback() {
         super.connectedCallback();
-        this.currentDirection = this.getDirection();
-        this.connectObservers();
+
+        this.initialize();
     }
 
     public disconnectedCallback(): void {
         super.disconnectedCallback();
-        this.disconnectObservers();
+
+        this.disconnectResizeDetector();
+
+        this.disconnectCollisionDetector();
     }
 
     public adoptedCallback() {
-        this.reset();
+        this.initialize();
+    }
+
+    private disconnectResizeDetector(): void {
+        if (this.resizeDetector !== null) {
+            this.resizeDetector.disconnect();
+            this.resizeDetector = null;
+        }
+        window.removeEventListener("resize", this.handleWindowResize);
+    }
+
+    private initializeResizeDetector(): void {
+        this.disconnectResizeDetector();
+        this.resizeDetector = new ((window as unknown) as WindowWithResizeObserver).ResizeObserver(
+            this.handleResize
+        );
+        window.addEventListener("resize", this.handleWindowResize);
     }
 
     /**
@@ -242,12 +256,24 @@ export class AnchoredRegion extends FASTElement {
     }
 
     /**
+     * fully initializes the component
+     */
+    private initialize = (): void => {
+        if (this.anchorElement === null) {
+            this.anchorElement = this.getAnchor();
+        }
+        this.currentDirection = this.getDirection();
+        this.initializeResizeDetector();
+        this.initializeCollisionDetector();
+        this.reset();
+    };
+
+    /**
      * resets the component
      */
     private reset = (): void => {
-        this.disconnectObservers();
         this.setInitialState();
-        this.connectObservers();
+        this.startObservers();
         this.requestLayoutUpdate();
     };
 
@@ -284,7 +310,7 @@ export class AnchoredRegion extends FASTElement {
         this.baseHorizontalOffset = 0;
         this.baseVerticalOffset = 0;
 
-        this.style.position = this.fixedPlacement ? "fixed" : "absolute";
+        this.style.position = "absolute";
         this.style.height = this.regionHeight;
         this.style.width = this.regionWidth;
         this.style.top = this.regionTop;
@@ -296,16 +322,31 @@ export class AnchoredRegion extends FASTElement {
     };
 
     /**
-     * connects observers
+     * initialize collision detector
      */
-    private connectObservers = (): void => {
+    private initializeCollisionDetector = (): void => {
+        this.disconnectCollisionDetector();
+
         if (this.viewportElement === null) {
             this.viewportElement = this.getViewport();
         }
 
-        if (this.anchorElement === null) {
-            this.anchorElement = this.getAnchor();
+        if (this.viewportElement === null) {
+            return;
         }
+
+        this.collisionDetector = new IntersectionObserver(this.handleCollision, {
+            root: this.viewportElement,
+            rootMargin: "0px",
+            threshold: [0, 1],
+        });
+    };
+
+    /**
+     * starts observers
+     */
+    private startObservers = (): void => {
+        this.stopObservers();
 
         if (
             this.anchorElement === null ||
@@ -316,27 +357,31 @@ export class AnchoredRegion extends FASTElement {
             return;
         }
 
-        this.disconnectCollisionDetector();
-        this.collisionDetector = new IntersectionObserver(this.handleCollision, {
-            root: this.viewportElement,
-            rootMargin: "0px",
-            threshold: [0, 1],
-        });
-
-        this.collisionDetector.observe(this);
-        this.collisionDetector.observe(this.anchorElement);
-
-        this.disconnectResizeDetector();
-        this.resizeDetector = new ((window as unknown) as WindowWithResizeObserver).ResizeObserver(
-            this.handleResize
-        );
-        this.resizeDetector.observe(this.anchorElement);
-        this.resizeDetector.observe(this);
-        if (this.offsetParent !== null || this.offsetParent !== document.body) {
-            this.resizeDetector.observe(this.offsetParent);
+        if (this.collisionDetector !== null) {
+            this.collisionDetector.observe(this);
+            this.collisionDetector.observe(this.anchorElement);
         }
 
-        window.addEventListener("resize", this.handleWindowResize);
+        if (this.resizeDetector !== null) {
+            this.resizeDetector.observe(this.anchorElement);
+            this.resizeDetector.observe(this);
+            if (this.offsetParent !== null || this.offsetParent !== document.body) {
+                this.resizeDetector.observe(this.offsetParent);
+            }
+        }
+    };
+
+    /**
+     * stops observers
+     */
+    private stopObservers = (): void => {
+        if (this.collisionDetector !== null) {
+            this.collisionDetector.disconnect();
+        }
+
+        if (this.resizeDetector !== null) {
+            this.resizeDetector.disconnect();
+        }
     };
 
     /**
@@ -344,27 +389,6 @@ export class AnchoredRegion extends FASTElement {
      */
     private handleWindowResize = (ev: Event): void => {
         this.requestLayoutUpdate();
-    };
-
-    /**
-     * disconnect observers
-     */
-    private disconnectObservers = (): void => {
-        this.disconnectResizeDetector();
-        this.disconnectCollisionDetector();
-        window.removeEventListener("resize", this.handleWindowResize);
-    };
-
-    /**
-     * disconnect resize observer
-     */
-    private disconnectResizeDetector = (): void => {
-        if (this.resizeDetector === null) {
-            return;
-        }
-
-        this.resizeDetector.disconnect();
-        this.resizeDetector = null;
     };
 
     /**
@@ -447,23 +471,7 @@ export class AnchoredRegion extends FASTElement {
                 !this.isValidIntersection(entries[0]) ||
                 !this.isValidIntersection(entries[1])
             ) {
-                this.noCollisionMode = true;
-                this.disconnectCollisionDetector();
-                regionRect = this.getBoundingClientRect();
-                this.regionDimension = {
-                    height: regionRect.height,
-                    width: regionRect.width,
-                };
-
-                this.viewportRect = this.viewportElement.getBoundingClientRect();
-
-                const anchorRect: DOMRect = this.anchorElement.getBoundingClientRect();
-                this.anchorTop = anchorRect.top;
-                this.anchorRight = anchorRect.right;
-                this.anchorBottom = anchorRect.bottom;
-                this.anchorLeft = anchorRect.left;
-                this.anchorHeight = anchorRect.height;
-                this.anchorWidth = anchorRect.width;
+                regionRect = this.applyNoCollisionMode();
             } else {
                 regionRect = this.applyCollisionEntries(entries);
             }
@@ -479,6 +487,30 @@ export class AnchoredRegion extends FASTElement {
                 this.requestLayoutUpdate();
             }
         }
+    };
+
+    /**
+     *
+     */
+    private applyNoCollisionMode = (): ClientRect | null => {
+        this.noCollisionMode = true;
+        let regionRect: DOMRect | ClientRect | null = this.getBoundingClientRect();
+        this.regionDimension = {
+            height: regionRect.height,
+            width: regionRect.width,
+        };
+
+        // todo: scomea, try to avoid getting viewportRect when it is document root
+        this.viewportRect = this.viewportElement.getBoundingClientRect();
+        const anchorRect: DOMRect = this.anchorElement.getBoundingClientRect();
+
+        this.anchorTop = anchorRect.top;
+        this.anchorRight = anchorRect.right;
+        this.anchorBottom = anchorRect.bottom;
+        this.anchorLeft = anchorRect.left;
+        this.anchorHeight = anchorRect.height;
+        this.anchorWidth = anchorRect.width;
+        return regionRect;
     };
 
     /**
@@ -663,7 +695,7 @@ export class AnchoredRegion extends FASTElement {
         const newDirection: Direction = this.getDirection();
         if (newDirection !== this.currentDirection) {
             this.currentDirection = newDirection;
-            this.reset();
+            this.initialize();
             return;
         }
 
@@ -795,15 +827,39 @@ export class AnchoredRegion extends FASTElement {
      *  to the root element
      */
     private updateRegionStyle = (): void => {
-        this.classList.toggle("top", this.verticalPosition === "top");
-        this.classList.toggle("bottom", this.verticalPosition === "bottom");
-        this.classList.toggle("inset-top", this.verticalPosition === "insetTop");
-        this.classList.toggle("inset-bottom", this.verticalPosition === "insetBottom");
+        this.classList.toggle(
+            "top",
+            this.verticalPosition === AnchoredRegionVerticalPositionLabel.top
+        );
+        this.classList.toggle(
+            "bottom",
+            this.verticalPosition === AnchoredRegionVerticalPositionLabel.bottom
+        );
+        this.classList.toggle(
+            "inset-top",
+            this.verticalPosition === AnchoredRegionVerticalPositionLabel.insetTop
+        );
+        this.classList.toggle(
+            "inset-bottom",
+            this.verticalPosition === AnchoredRegionVerticalPositionLabel.insetBottom
+        );
 
-        this.classList.toggle("left", this.horizontalPosition === "left");
-        this.classList.toggle("right", this.horizontalPosition === "right");
-        this.classList.toggle("inset-left", this.horizontalPosition === "insetLeft");
-        this.classList.toggle("inset-right", this.horizontalPosition === "insetRight");
+        this.classList.toggle(
+            "left",
+            this.horizontalPosition === AnchoredRegionHorizontalPositionLabel.left
+        );
+        this.classList.toggle(
+            "right",
+            this.horizontalPosition === AnchoredRegionHorizontalPositionLabel.right
+        );
+        this.classList.toggle(
+            "inset-left",
+            this.horizontalPosition === AnchoredRegionHorizontalPositionLabel.insetLeft
+        );
+        this.classList.toggle(
+            "inset-right",
+            this.horizontalPosition === AnchoredRegionHorizontalPositionLabel.insetRight
+        );
 
         this.style.position = this.fixedPlacement ? "fixed" : "absolute";
         this.style.height = this.regionHeight;
@@ -1105,11 +1161,7 @@ export class AnchoredRegion extends FASTElement {
      *  gets the current direction
      */
     private getDirection = (): Direction => {
-        if (this.viewportElement === null) {
-            return Direction.ltr;
-        }
-
-        const closest: Element | null = this.viewportElement.closest(
+        const closest: Element | null = this.closest(
             `[${AnchoredRegion.DirectionAttributeName}]`
         );
 
