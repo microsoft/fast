@@ -28,6 +28,10 @@ export interface Dimension {
     width: number;
 }
 
+/**
+ * describes the possible horizontal positions of the region relative
+ * to it's anchor
+ */
 enum AnchoredRegionHorizontalPositionLabel {
     left = "left",
     insetLeft = "insetLeft",
@@ -36,6 +40,10 @@ enum AnchoredRegionHorizontalPositionLabel {
     undefined = "undefined",
 }
 
+/**
+ * describes the possible vertical positions of the region relative
+ * to it's anchor
+ */
 enum AnchoredRegionVerticalPositionLabel {
     top = "top",
     insetTop = "insetTop",
@@ -57,6 +65,13 @@ enum Location {
 export class AnchoredRegion extends FASTElement {
     private static DirectionAttributeName: string = "dir";
 
+    /**
+     * The HTML id of the anchor element this region is positioned relative to
+     *
+     * @public
+     * @remarks
+     * HTML Attribute: anchor
+     */
     @attr
     public anchor: string = "";
     private anchorChanged(): void {
@@ -65,6 +80,13 @@ export class AnchoredRegion extends FASTElement {
         }
     }
 
+    /**
+     * The HTML id of the viewport element this region is positioned relative to
+     *
+     * @public
+     * @remarks
+     * HTML Attribute: anchor
+     */
     @attr
     public viewport: string = "";
     private viewportChanged(): void {
@@ -73,10 +95,20 @@ export class AnchoredRegion extends FASTElement {
         }
     }
 
+    /**
+     * Sets what logic the component uses to determine horizontal placement.
+     * 'locktodefault' forces the default position
+     * 'dynamic' decides placement based on available space
+     * 'uncontrolled' does not control placement on the horizontal axis
+     *
+     * @public
+     * @remarks
+     * HTML Attribute: horizontal-positioning-mode
+     */
     @attr({ attribute: "horizontal-positioning-mode" })
     public horizontalPositioningMode: AxisPositioningMode = "uncontrolled";
     private horizontalPositioningModeChanged(): void {
-        this.updateLayoutForAttributeChange();
+        this.reset();
     }
 
     @attr({ attribute: "horizontal-default-position" })
@@ -103,10 +135,20 @@ export class AnchoredRegion extends FASTElement {
         this.updateLayoutForAttributeChange();
     }
 
+    /**
+     * Sets what logic the component uses to determine vertical placement.
+     * 'locktodefault' forces the default position
+     * 'dynamic' decides placement based on available space
+     * 'uncontrolled' does not control placement on the vertical axis
+     *
+     * @public
+     * @remarks
+     * HTML Attribute: vertical-positioning-mode
+     */
     @attr({ attribute: "vertical-positioning-mode" })
     public verticalPositioningMode: AxisPositioningMode = "uncontrolled";
     private verticalPositioningModeChanged(): void {
-        this.updateLayoutForAttributeChange();
+        this.reset();
     }
 
     @attr({ attribute: "vertical-default-position" })
@@ -136,7 +178,9 @@ export class AnchoredRegion extends FASTElement {
     @attr({ attribute: "fixed-placement", mode: "boolean" })
     public fixedPlacement: boolean = false;
     private fixedPlacementChanged(): void {
-        this.initialize();
+        if ((this as any).$fastController.isConnected && this.initialLayoutComplete) {
+            this.initialize();
+        }
     }
 
     /**
@@ -148,9 +192,7 @@ export class AnchoredRegion extends FASTElement {
     @observable
     public anchorElement: HTMLElement | null = null;
     private anchorElementChanged(): void {
-        if ((this as any).$fastController.isConnected && this.initialLayoutComplete) {
-            this.reset();
-        }
+        this.reset();
     }
 
     @observable
@@ -166,11 +208,6 @@ export class AnchoredRegion extends FASTElement {
      */
     public verticalPosition: AnchoredRegionVerticalPositionLabel;
     public horizontalPosition: AnchoredRegionHorizontalPositionLabel;
-
-    /**
-     * values to be applied to the component's transform origin attribute on render
-     */
-    private transformOrigin: string;
 
     /**
      * values to be applied to the component's positioning attributes on render
@@ -250,7 +287,7 @@ export class AnchoredRegion extends FASTElement {
      * event thrown when the region's position changes
      */
     private updateLayoutForAttributeChange(): void {
-        if (this.initialLayoutComplete) {
+        if ((this as any).$fastController.isConnected && this.initialLayoutComplete) {
             this.requestLayoutUpdate();
         }
     }
@@ -258,32 +295,35 @@ export class AnchoredRegion extends FASTElement {
     /**
      * fully initializes the component
      */
-    private initialize = (): void => {
+    private initialize(): void {
+        this.setInitialState();
         if (this.anchorElement === null) {
             this.anchorElement = this.getAnchor();
         }
         this.currentDirection = this.getDirection();
         this.initializeResizeDetector();
         this.initializeCollisionDetector();
-        this.reset();
-    };
+        this.startObservers();
+        this.requestLayoutUpdate();
+    }
 
     /**
      * resets the component
      */
-    private reset = (): void => {
-        this.setInitialState();
-        this.startObservers();
-        this.requestLayoutUpdate();
-    };
+    private reset(): void {
+        if ((this as any).$fastController.isConnected && this.initialLayoutComplete) {
+            this.setInitialState();
+            this.startObservers();
+            this.requestLayoutUpdate();
+        }
+    }
 
     /**
      * sets the starting configuration for component internal values
      */
-    private setInitialState = (): void => {
+    private setInitialState(): void {
         this.initialLayoutComplete = false;
         this.noCollisionMode = false;
-        this.transformOrigin = "top left";
         this.regionTop = "0";
         this.regionRight = "unset";
         this.regionBottom = "unset";
@@ -310,16 +350,8 @@ export class AnchoredRegion extends FASTElement {
         this.baseHorizontalOffset = 0;
         this.baseVerticalOffset = 0;
 
-        this.style.position = "absolute";
-        this.style.height = this.regionHeight;
-        this.style.width = this.regionWidth;
-        this.style.top = this.regionTop;
-        this.style.right = this.regionRight;
-        this.style.bottom = this.regionBottom;
-        this.style.left = this.regionLeft;
-        this.style.transformOrigin = this.transformOrigin;
-        this.style.opacity = "0";
-    };
+        this.updateRegionStyle();
+    }
 
     /**
      * initialize collision detector
@@ -495,6 +527,15 @@ export class AnchoredRegion extends FASTElement {
     private applyNoCollisionMode = (): ClientRect | null => {
         this.noCollisionMode = true;
         let regionRect: DOMRect | ClientRect | null = this.getBoundingClientRect();
+
+        if (
+            this.viewportElement === null ||
+            this.anchorElement === null ||
+            regionRect === null
+        ) {
+            return null;
+        }
+
         this.regionDimension = {
             height: regionRect.height,
             width: regionRect.width,
@@ -692,6 +733,7 @@ export class AnchoredRegion extends FASTElement {
         }
 
         // if direction changes we need to reset the layout
+        // todo: scomea - can we do this less?
         const newDirection: Direction = this.getDirection();
         if (newDirection !== this.currentDirection) {
             this.currentDirection = newDirection;
@@ -811,7 +853,6 @@ export class AnchoredRegion extends FASTElement {
 
         this.setHorizontalPosition(desiredHorizontalPosition, nextPositionerDimension);
         this.setVerticalPosition(desiredVerticalPosition, nextPositionerDimension);
-        this.transformOrigin = `${this.yTransformOrigin} ${this.xTransformOrigin}`;
 
         this.updateRegionStyle();
 
@@ -861,15 +902,30 @@ export class AnchoredRegion extends FASTElement {
             this.horizontalPosition === AnchoredRegionHorizontalPositionLabel.insetRight
         );
 
-        this.style.position = this.fixedPlacement ? "fixed" : "absolute";
-        this.style.height = this.regionHeight;
-        this.style.width = this.regionWidth;
-        this.style.top = this.regionTop;
-        this.style.right = this.regionRight;
-        this.style.bottom = this.regionBottom;
-        this.style.left = this.regionLeft;
-        this.style.transformOrigin = this.transformOrigin;
+        this.style.position =
+            this.fixedPlacement && this.initialLayoutComplete ? "fixed" : "absolute";
+        this.style.transformOrigin = `${this.yTransformOrigin} ${this.xTransformOrigin}`;
         this.style.opacity = this.initialLayoutComplete ? "1" : "0";
+
+        if (this.horizontalPositioningMode === "uncontrolled") {
+            this.style.width = "unset";
+            this.style.right = "unset";
+            this.style.left = "unset";
+        } else {
+            this.style.width = this.regionWidth;
+            this.style.right = this.regionRight;
+            this.style.left = this.regionLeft;
+        }
+
+        if (this.verticalPositioningMode === "uncontrolled") {
+            this.style.height = "unset";
+            this.style.top = "unset";
+            this.style.bottom = "unset";
+        } else {
+            this.style.height = this.regionHeight;
+            this.style.top = this.regionTop;
+            this.style.bottom = this.regionBottom;
+        }
     };
 
     /**
