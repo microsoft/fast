@@ -1,3 +1,5 @@
+// TODO: get FOcus working on tabs
+
 import { attr, FASTElement, observable, DOM } from "@microsoft/fast-element";
 import { Tabs } from "../tabs";
 import {
@@ -32,7 +34,6 @@ export class Carousel extends Tabs {
     @attr({ mode: "boolean" })
     public paused: boolean = false;
     public pausedChanged(): void {
-        console.log("Paused Changes: ", this.paused);
         if (!this.paused) {
             this.focused = false;
             this.notabfocus = true;
@@ -46,8 +47,8 @@ export class Carousel extends Tabs {
         }
     }
 
-    @attr({ attribute: "nottabbedpattern", mode: "boolean" })
-    public notTabbedPattern: boolean = false;
+    @attr({ attribute: "basicpattern", mode: "boolean" })
+    public basicpattern: boolean = false;
 
     @attr({ attribute: "autoplay-interval" })
     public autoplayInterval: number = 6000;
@@ -55,7 +56,6 @@ export class Carousel extends Tabs {
     @attr({ attribute: "activeSlideId" })
     public activeSlideId: string;
     public activeSlideIdChanged(): void {
-        // console.log("HIT ACTIVE ID CHANGE CAR")
         this.activeSlideIndex = this.slideIds.indexOf(this.activeSlideId);
     }
 
@@ -73,7 +73,6 @@ export class Carousel extends Tabs {
         } else {
             this.notabfocus = true;
         }
-        console.log("Focused Changed: ", this.focused);
     }
 
     /**
@@ -83,9 +82,7 @@ export class Carousel extends Tabs {
      */
     @observable
     public notabfocus: boolean = true;
-    public nottabfocusChanged(): void {
-        console.log("HIT not tab focus change");
-    }
+    public nottabfocusChanged(): void {}
 
     public setComponent(): void {
         this.activeid = this.tabIds[this.activeTabIndex] as string;
@@ -99,18 +96,19 @@ export class Carousel extends Tabs {
         this.change();
     }
 
-    public activeindicator = false;
+    @observable
+    public activeSlideIndex: number = 0;
     public carousel: HTMLDivElement;
     public tabsRef: HTMLElement;
     public rotationControl: HTMLElement;
     public previousButtonItem: HTMLElement[];
     public nextButtonItem: HTMLElement[];
+    public activeindicator = false;
 
     @observable
     public items: HTMLElement[];
     public itemsChanged(): void {
-        console.log("HIT ITEMS CHANGED: ", this.items);
-        if (this.items.length && this.notTabbedPattern) {
+        if (this.items.length && this.basicpattern) {
             this.generateSlideIds();
 
             //sethdonohue - if activeSlideId attribute was set by implementation then we need to sync the activeSlideIndex for incrementing to work
@@ -122,11 +120,6 @@ export class Carousel extends Tabs {
 
             this.items.forEach((item: HTMLElement, index: number) => {
                 if (index === this.activeSlideIndex) {
-                    console.log(
-                        "HIT active slide class add",
-                        index,
-                        this.activeSlideIndex
-                    );
                     item.classList.add("active-slide");
                     item.removeAttribute("hidden");
                 } else {
@@ -144,7 +137,7 @@ export class Carousel extends Tabs {
 
                 item.setAttribute("id", `${tabPanelPrefix}${index + 1}`);
                 item.classList.add("slide");
-                // sethdonohue - per ARIA spec role=group and roledescription=slide must be on the slide container for notTabbedPattern (not tabbed) implementation
+                // sethdonohue - per ARIA spec role=group and roledescription=slide must be on the slide container for basicpattern (not tabbed) implementation
                 item.setAttribute("role", "group");
                 item.setAttribute("aria-roledescription", "slide");
 
@@ -160,33 +153,14 @@ export class Carousel extends Tabs {
     public handleFlipperKeypress = (direction: 1 | -1, e: KeyboardEvent): void => {
         switch (e.keyCode) {
             case keyCodeEnter:
+            case keyCodeSpace:
                 this.paused = true;
                 this.incrementSlide(direction);
                 break;
         }
     };
 
-    private handleRotationMouseDown = (e: Event): void => {
-        if (this.firstFocus) {
-            this.firstFocus = false;
-        }
-        this.togglePlay();
-    };
-
-    private slideIds: string[] = [];
-    @observable
-    public activeSlideIndex: number = 0;
-    public activeSlideIndexChanged(): void {
-        console.log("ACTIVE SLIDE INDEX CHANGED: ", this.activeSlideIndex);
-    }
-    private autoplayTimer: number | void;
-    private pausedTimeout: number | void;
-    private firstFocus: boolean = true;
-    private startTime: number = 0;
-    private stopTime: number = 0;
-
     public change = (): void => {
-        console.log("hit carousel change");
         // sethdonohue - reference to carousel is passed for the author to get access to the paused, activeSlideId, and other states
         this.$emit("change", this.carousel);
     };
@@ -209,19 +183,24 @@ export class Carousel extends Tabs {
         this.setComponent();
     }
 
+    private slideIds: string[] = [];
+    private autoplayTimer: number | void;
+    private pausedTimeout: number | void;
+    private firstFocus: boolean = true;
+    private startTime: number = 0;
+    private stopTime: number = 0;
+
     private incrementSlide = (direction: 1 | -1): void => {
-        const tempLength: number = this.notTabbedPattern
+        const tempLength: number = this.basicpattern
             ? this.items.length
             : this.tabs.length;
-        const tempIndex: number = this.notTabbedPattern
+        const tempIndex: number = this.basicpattern
             ? this.activeSlideIndex
             : this.activeTabIndex;
         this.focused = false;
         let adjustment: number = 0;
 
-        console.log(tempLength, tempIndex);
-
-        if (this.notTabbedPattern) {
+        if (this.basicpattern) {
             if (this.loop) {
                 adjustment = wrapInBounds(0, tempLength - 1, tempIndex + direction);
             } else {
@@ -257,7 +236,6 @@ export class Carousel extends Tabs {
         if (!this.paused) {
             // sethdonohue - need to clear the timer before starting a new one
             this.stopAutoPlay();
-            console.log(" hit start auto past !paused");
             this.startTime = Date.now();
             this.autoplayTimer = window.setInterval(
                 this.autoplayNextItem,
@@ -267,12 +245,17 @@ export class Carousel extends Tabs {
     }
 
     private stopAutoPlay(): void {
-        console.log(" hit stop auto");
         this.autoplayTimer = window.clearInterval(this.autoplayTimer as number);
     }
 
+    private handleRotationMouseDown = (e: Event): void => {
+        if (this.firstFocus) {
+            this.firstFocus = false;
+        }
+        this.togglePlay();
+    };
+
     private handleFocusIn = (e: Event): void => {
-        console.log("hit focus in carousel", document.activeElement);
         // sethdonohue - per ARIA spec we need to stop rotation whenever keyboard focus is brought to the carousel
         if (this.autoplay) {
             this.stopAutoPlay();
@@ -324,8 +307,6 @@ export class Carousel extends Tabs {
     };
 
     private handleTabsKeypress = (e: KeyboardEvent): void => {
-        // console.log("HIT CAR KEYPRESS")
-
         // sethdonohue - pause the carousel if the right, left, home, end keys are pressed in the case of when autoplay has been restarted by the user and the focus is on the tabs
         switch (e.keyCode) {
             case KeyCodes.arrowLeft:
@@ -338,14 +319,11 @@ export class Carousel extends Tabs {
     };
 
     private handleTabsFocusIn = (e: FocusEvent): void => {
-        console.log("hit focus in Tabs");
-
+        e.stopPropagation();
         // sethdonohue - when keyboard navigating from the rotation control or a tab we do not want the rotation to be stopped in the case of when a keyboard user restarts the rotation with the rotation control and then has to tab through/past the tablist/slidepicker
         if (
-            !this.rotationControl.contains(
-                e.relatedTarget as Node
-            ) /*&&
-            !this.tabs.contains(e.relatedTarget as Node)*/
+            !this.rotationControl.contains(e.relatedTarget as Node) &&
+            !this.tabsRef.contains(e.relatedTarget as Node)
         ) {
             // sethdonohue - we do want to run the focus in the case where the user is reverse tabbing (shift-tab) back to a carousel and hits the tabs first, as this should stop the auto rotation on first focus per ARIA spec
             this.handleFocusIn(e);
@@ -356,7 +334,10 @@ export class Carousel extends Tabs {
     private handleTabsFocusOut = (e: FocusEvent): void => {
         // sethdonohue - if we focus out of tabs or any tabs children we need to ensure tabs doesn't steal focus
         this.focused = false;
-        this.firstFocus = true;
+        // sethdonohue - if we focus outside of the carousel then first focus needs to be reset
+        if (!this.carousel.contains(e.target as Node)) {
+            this.firstFocus = true;
+        }
     };
 
     public connectedCallback(): void {
@@ -383,13 +364,13 @@ export class Carousel extends Tabs {
             }
         });
 
-        if (!this.notTabbedPattern) {
-            // this.tabs.addEventListener("keydown", this.handleTabsKeypress);
-            // this.tabs.addEventListener("focusin", this.handleTabsFocusIn);
-            // this.tabs.addEventListener("focusout", this.handleTabsFocusOut);
+        if (!this.basicpattern) {
+            this.tabsRef.addEventListener("keydown", this.handleTabsKeypress);
+            this.tabsRef.addEventListener("focusin", this.handleTabsFocusIn);
+            this.tabsRef.addEventListener("focusout", this.handleTabsFocusOut);
 
             // sethdonohue - get the id of the tab change based on the change event emitted from tabs to keep carousel in sync with tabs
-            // this.tabs.addEventListener("change", this.handleTabChange);
+            this.tabsRef.addEventListener("change", this.handleTabChange);
 
             if (this.previousButtonItem.length && this.nextButtonItem.length) {
                 // sethdonohue - when tabbed the next and previous buttons should not be in the tab sequence

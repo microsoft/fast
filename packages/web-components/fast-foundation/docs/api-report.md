@@ -157,11 +157,15 @@ export const CardTemplate: import("@microsoft/fast-element").ViewTemplate<Card, 
 // @public
 export class Carousel extends Tabs {
     // (undocumented)
-    activeid: string;
-    // (undocumented)
-    activeidChanged(): void;
-    // (undocumented)
     activeindicator: boolean;
+    // (undocumented)
+    activeSlideId: string;
+    // (undocumented)
+    activeSlideIdChanged(): void;
+    // (undocumented)
+    activeSlideIndex: number;
+    // (undocumented)
+    adjust(adjustment: number): void;
     // (undocumented)
     arialabel: string;
     // (undocumented)
@@ -170,6 +174,8 @@ export class Carousel extends Tabs {
     autoplay: boolean;
     // (undocumented)
     autoplayInterval: number;
+    // (undocumented)
+    basicpattern: boolean;
     // (undocumented)
     carousel: HTMLDivElement;
     // (undocumented)
@@ -180,6 +186,8 @@ export class Carousel extends Tabs {
     disconnectedCallback(): void;
     // (undocumented)
     focused: boolean;
+    // (undocumented)
+    focusedChanged(): void;
     // (undocumented)
     handleFlipperClick(direction: 1 | -1, e: Event): void;
     // (undocumented)
@@ -192,8 +200,9 @@ export class Carousel extends Tabs {
     loop: boolean;
     // (undocumented)
     nextButtonItem: HTMLElement[];
+    notabfocus: boolean;
     // (undocumented)
-    notTabbedPattern: boolean;
+    nottabfocusChanged(): void;
     // (undocumented)
     paused: boolean;
     // (undocumented)
@@ -203,17 +212,10 @@ export class Carousel extends Tabs {
     // (undocumented)
     rotationControl: HTMLElement;
     // (undocumented)
-    tabsChanged(): void;
+    setComponent(): void;
     // (undocumented)
     tabsRef: HTMLElement;
     }
-
-// @public
-export class CarouselSlide extends FASTElement {
-}
-
-// @public
-export const CarouselSlideTemplate: import("@microsoft/fast-element").ViewTemplate<CarouselSlide, any>;
 
 // @public
 export const CarouselTemplate: ViewTemplate<Carousel, any>;
@@ -721,11 +723,26 @@ export class Tabs extends FASTElement {
     // @internal (undocumented)
     activeIndicatorRef: HTMLElement;
     activetab: HTMLElement;
+    // (undocumented)
+    activeTabIndex: number;
     adjust(adjustment: number): void;
     // (undocumented)
     change: () => void;
-    notabfocus: boolean;
+    // (undocumented)
+    focusTab(): void;
+    // (undocumented)
+    handleActiveIndicatorPosition(): void;
     orientation: TabsOrientation;
+    // (undocumented)
+    prevActiveTabIndex: number;
+    // (undocumented)
+    setComponent(): void;
+    // (undocumented)
+    setTabPanels: () => void;
+    // (undocumented)
+    setTabs: () => void;
+    // (undocumented)
+    tabIds: Array<string | null>;
     // @internal (undocumented)
     tabpanels: HTMLElement[];
     // @internal (undocumented)

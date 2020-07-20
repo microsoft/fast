@@ -82,7 +82,7 @@ export const CarouselTemplate = html<Carousel>`
             "previousButtonItem"
         )}>
             <fast-flipper aria-hidden="${x =>
-                !x.notTabbedPattern ? "true" : "false"}" direction=${
+                !x.basicpattern ? "true" : "false"}" direction=${
     FlipperDirection.previous
 }>
         </slot>
@@ -94,11 +94,9 @@ export const CarouselTemplate = html<Carousel>`
     >
         <slot name="next-button" part="next-button" ${slotted("nextButtonItem")}>
             <fast-flipper aria-hidden="${x =>
-                !x.notTabbedPattern ? "true" : "false"}" direction=${
-    FlipperDirection.next
-}>
+                !x.basicpattern ? "true" : "false"}" direction=${FlipperDirection.next}>
         </slot>
     </div>
-    ${when(x => !x.notTabbedPattern, tabbedTemplate)}
-    ${when(x => x.notTabbedPattern, basicTemplate)}
+    ${when(x => !x.basicpattern, tabbedTemplate)}
+    ${when(x => x.basicpattern, basicTemplate)}
 </template>`;
