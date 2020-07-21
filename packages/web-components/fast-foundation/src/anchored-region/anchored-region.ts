@@ -303,12 +303,12 @@ export class AnchoredRegion extends FASTElement {
     /**
      * indicates the current horizontal position of the region
      */
-    private verticalPosition: AnchoredRegionVerticalPositionLabel;
+    public verticalPosition: AnchoredRegionVerticalPositionLabel;
 
     /**
      * indicates the current vertical position of the region
      */
-    private horizontalPosition: AnchoredRegionHorizontalPositionLabel;
+    public horizontalPosition: AnchoredRegionHorizontalPositionLabel;
 
     /**
      * values to be applied to the component's positioning attributes on render
