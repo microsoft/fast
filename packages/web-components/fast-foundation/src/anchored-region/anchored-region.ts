@@ -559,11 +559,11 @@ export class AnchoredRegion extends FASTElement {
     };
 
     /**
-     * Gets the viewport element by id, or defaults to component parent
+     * Gets the viewport element by id, or defaults to document root
      */
     public getViewport = (): HTMLElement | null => {
         if (typeof this.viewport !== "string" || this.viewport === "") {
-            return this.parentElement;
+            return document.body;
         }
 
         return document.getElementById(this.viewport);
