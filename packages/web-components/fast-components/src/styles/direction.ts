@@ -10,6 +10,17 @@ import { FASTDesignSystemProvider } from "../design-system-provider";
  * when the native value is not supported.
  *
  * @public
+ * @example
+ * ```ts
+ * import { css } from "@microsoft/fast-element";
+ * import { inlineStartBehavior } from "@microsoft/fast-components";
+ *
+ * css`
+ *   :host {
+ *     float: ${inlineStartBehavior.var};
+ *   }
+ * `.withBehaviors(inlineStartBehavior)
+ * ```
  */
 export const inlineStartBehavior = cssCustomPropertyBehaviorFactory(
     "inline-start",
@@ -26,6 +37,17 @@ export const inlineStartBehavior = cssCustomPropertyBehaviorFactory(
  * when the native value is not supported.
  *
  * @public
+ * @example
+ * ```ts
+ * import { css } from "@microsoft/fast-element";
+ * import { inlineEndBehavior } from "@microsoft/fast-components";
+ *
+ * css`
+ *   :host {
+ *     float: ${inlineEndBehavior.var};
+ *   }
+ * `.withBehaviors(inlineEndBehavior)
+ * ```
  */
 export const inlineEndBehavior = cssCustomPropertyBehaviorFactory(
     "inline-end",
