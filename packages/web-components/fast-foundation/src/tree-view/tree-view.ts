@@ -37,7 +37,6 @@ export class TreeView extends FASTElement {
             // check if any tree items have nested items
             // if they do, apply the nested attribute
             if (this.checkForNestedItems()) {
-                console.log("yes nested items!");
                 this.slottedTreeItems.forEach(node => {
                     if (isTreeItemElement(node)) {
                         node.setAttribute("nested", "true");
