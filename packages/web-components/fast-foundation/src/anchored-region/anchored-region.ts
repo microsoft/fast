@@ -301,9 +301,13 @@ export class AnchoredRegion extends FASTElement {
     public initialLayoutComplete: boolean = false;
 
     /**
-     * the positions currently being applied to layout
+     * indicates the current horizontal position of the region
      */
     private verticalPosition: AnchoredRegionVerticalPositionLabel;
+
+    /**
+     * indicates the current vertical position of the region
+     */
     private horizontalPosition: AnchoredRegionHorizontalPositionLabel;
 
     /**
@@ -370,6 +374,24 @@ export class AnchoredRegion extends FASTElement {
     public adoptedCallback() {
         this.initialize();
     }
+
+    /**
+     * Public function to enable authors to update the layout based on changes in anchor offset
+     * allows "fill" regions to scale as parent viewports scroll, or to provoke positioning to change
+     * without an intersection event with the viewport
+     */
+    public updateAnchorOffset = (
+        horizontalOffsetDelta: number,
+        verticalOffsetDelta: number
+    ): void => {
+        this.anchorLeft = this.anchorLeft + horizontalOffsetDelta;
+        this.anchorRight = this.anchorRight + horizontalOffsetDelta;
+
+        this.anchorTop = this.anchorTop + verticalOffsetDelta;
+        this.anchorBottom = this.anchorBottom + verticalOffsetDelta;
+
+        this.requestLayoutUpdate();
+    };
 
     /**
      * destroys the instance's resize observer
@@ -561,7 +583,7 @@ export class AnchoredRegion extends FASTElement {
     /**
      * Gets the viewport element by id, or defaults to document root
      */
-    public getViewport = (): HTMLElement | null => {
+    private getViewport = (): HTMLElement | null => {
         if (typeof this.viewport !== "string" || this.viewport === "") {
             return document.body;
         }
@@ -572,26 +594,8 @@ export class AnchoredRegion extends FASTElement {
     /**
      *  Gets the anchor element by id
      */
-    public getAnchor = (): HTMLElement | null => {
+    private getAnchor = (): HTMLElement | null => {
         return document.getElementById(this.anchor);
-    };
-
-    /**
-     * Public function to enable authors to update the layout based on changes in anchor offset
-     * allows "fill" regions to scale as parent viewports scroll, or to provoke positioning to change
-     * without an intersection event with the viewport
-     */
-    public updateAnchorOffset = (
-        horizontalOffsetDelta: number,
-        verticalOffsetDelta: number
-    ): void => {
-        this.anchorLeft = this.anchorLeft + horizontalOffsetDelta;
-        this.anchorRight = this.anchorRight + horizontalOffsetDelta;
-
-        this.anchorTop = this.anchorTop + verticalOffsetDelta;
-        this.anchorBottom = this.anchorBottom + verticalOffsetDelta;
-
-        this.requestLayoutUpdate();
     };
 
     /**
