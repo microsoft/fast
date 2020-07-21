@@ -17,6 +17,7 @@ import { DensityOffset } from '@microsoft/fast-components-styles-msft';
 import { DesignSystem } from '@microsoft/fast-components-styles-msft';
 import { DesignSystemProvider } from '@microsoft/fast-foundation';
 import { Dialog } from '@microsoft/fast-foundation';
+import { Direction } from '@microsoft/fast-web-utilities';
 import { Divider } from '@microsoft/fast-foundation';
 import { Flipper } from '@microsoft/fast-foundation';
 import { Menu } from '@microsoft/fast-foundation';
@@ -136,6 +137,8 @@ export class FASTAnchor extends Anchor {
     appearance: AnchorAppearance;
     // (undocumented)
     appearanceChanged(oldValue: AnchorAppearance, newValue: AnchorAppearance): void;
+    // @internal (undocumented)
+    connectedCallback(): void;
 }
 
 // @public
@@ -149,6 +152,8 @@ export class FASTButton extends Button {
     appearance: ButtonAppearance;
     // (undocumented)
     appearanceChanged(oldValue: ButtonAppearance, newValue: ButtonAppearance): void;
+    // @internal (undocumented)
+    connectedCallback(): void;
 }
 
 // @public
@@ -160,7 +165,7 @@ export class FASTCheckbox extends Checkbox {
 }
 
 // @public
-export class FASTDesignSystemProvider extends DesignSystemProvider implements Omit<DesignSystem, "contrast" | "direction" | "fontWeight" | "neutralForegroundDarkIndex" | "neutralForegroundLightIndex"> {
+export class FASTDesignSystemProvider extends DesignSystemProvider implements Omit<DesignSystem, "contrast" | "fontWeight" | "neutralForegroundDarkIndex" | "neutralForegroundLightIndex"> {
     // (undocumented)
     accentBaseColor: string;
     // (undocumented)
@@ -196,6 +201,8 @@ export class FASTDesignSystemProvider extends DesignSystemProvider implements Om
     density: DensityOffset;
     // (undocumented)
     designUnit: number;
+    // (undocumented)
+    direction: Direction;
     // (undocumented)
     disabledOpacity: number;
     // (undocumented)
@@ -382,6 +389,12 @@ export const heightNumber = "(var(--base-height-multiplier) + var(--density)) * 
 //
 // @internal (undocumented)
 export const HypertextStyles: import("@microsoft/fast-element").ElementStyles;
+
+// @public
+export const inlineEndBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
+
+// @public
+export const inlineStartBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
 
 // Warning: (ae-internal-missing-underscore) The name "LightweightButtonStyles" should be prefixed with an underscore because the declaration is marked as @internal
 //
