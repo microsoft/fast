@@ -30,8 +30,9 @@ export const fastCarouselDefinition: WebComponentDefinition = {
                     required: false,
                 },
                 {
-                    name: "notTabbedPattern",
-                    description: "The nottabbedpattern attribute",
+                    name: "basicpattern",
+                    description:
+                        "The basicpattern attribute controlling if the caoursle uses the Tabbed or Basic ARIA pattern",
                     type: DataType.boolean,
                     default: false,
                     required: false,
@@ -44,7 +45,7 @@ export const fastCarouselDefinition: WebComponentDefinition = {
                     required: false,
                 },
                 {
-                    name: "activeid",
+                    name: "activeslideid",
                     description: "The activeid attribute",
                     type: DataType.string,
                     default: undefined,
@@ -68,7 +69,15 @@ export const fastCarouselDefinition: WebComponentDefinition = {
             slots: [
                 {
                     name: "",
-                    description: "The default slot",
+                    description: "The default slot used in the basic pattern",
+                },
+                {
+                    name: "tab",
+                    description: "The slot for the tabs used in the tabbed patten",
+                },
+                {
+                    name: "tabpanel",
+                    description: "The slot for the tabpanels used in the tabbed pattern",
                 },
                 {
                     name: "rotation-control",

@@ -8,11 +8,7 @@ import {
     KeyCodes,
 } from "@microsoft/fast-web-utilities";
 
-/**
- * The panel id prefix
- * @public
- */
-export const tabPanelPrefix: string = "panel-";
+const tabPanelPrefix: string = "panel-";
 
 const tabPrefix: string = "tab-";
 
@@ -46,12 +42,12 @@ export class Carousel extends Tabs {
     }
 
     @attr({ attribute: "basicpattern", mode: "boolean" })
-    public basicpattern: boolean = false;
+    public basicPattern: boolean = false;
 
     @attr({ attribute: "autoplay-interval" })
     public autoplayInterval: number = 6000;
 
-    @attr({ attribute: "activeSlideId" })
+    @attr({ attribute: "activeslideid" })
     public activeSlideId: string;
     public activeSlideIdChanged(): void {
         this.activeSlideIndex = this.slideIds.indexOf(this.activeSlideId);
@@ -95,8 +91,8 @@ export class Carousel extends Tabs {
     }
 
     @observable
-    public activeSlideIndex: number = 0;
     public activeindicator = false;
+    public activeSlideIndex: number = 0;
     public basicContentRef: HTMLDivElement;
     public carousel: HTMLDivElement;
     public previousButtonItem: HTMLElement[];
@@ -109,7 +105,7 @@ export class Carousel extends Tabs {
     @observable
     public items: HTMLElement[];
     public itemsChanged(): void {
-        if (this.items.length && this.basicpattern) {
+        if (this.items.length && this.basicPattern) {
             this.generateSlideIds();
 
             //sethdonohue - if activeSlideId attribute was set by implementation then we need to sync the activeSlideIndex for incrementing to work
@@ -136,9 +132,15 @@ export class Carousel extends Tabs {
                     );
                 }
 
-                item.setAttribute("id", `${tabPanelPrefix}${index + 1}`);
+                item.setAttribute(
+                    "id",
+                    item.getAttribute("id")
+                        ? (item.getAttribute("id") as string)
+                        : `slide-${index + 1}`
+                );
+
                 item.classList.add("slide");
-                // sethdonohue - per ARIA spec role=group and roledescription=slide must be on the slide container for basicpattern (not tabbed) implementation
+                // sethdonohue - per ARIA spec role=group and roledescription=slide must be on the slide container for basicPattern (not tabbed) implementation
                 item.setAttribute("role", "group");
                 item.setAttribute("aria-roledescription", "slide");
 
@@ -192,16 +194,16 @@ export class Carousel extends Tabs {
     private stopTime: number = 0;
 
     private incrementSlide = (direction: 1 | -1): void => {
-        const tempLength: number = this.basicpattern
+        const tempLength: number = this.basicPattern
             ? this.items.length
             : this.tabs.length;
-        const tempIndex: number = this.basicpattern
+        const tempIndex: number = this.basicPattern
             ? this.activeSlideIndex
             : this.activeTabIndex;
         this.focused = false;
         let adjustment: number = 0;
 
-        if (this.basicpattern) {
+        if (this.basicPattern) {
             if (this.loop) {
                 adjustment = wrapInBounds(0, tempLength - 1, tempIndex + direction);
             } else {
@@ -224,9 +226,14 @@ export class Carousel extends Tabs {
 
     private generateSlideIds(): void {
         this.slideIds = [];
-        for (let i = 0; i < this.items.length; i++) {
-            this.slideIds.push(`${tabPrefix}${i + 1}`);
-        }
+        // for (let i = 0; i < this.items.length; i++) {
+        //     this.slideIds.push(`slide-${i + 1}`);
+        // }
+        this.slideIds = this.items.map((item: HTMLElement, index: number) => {
+            return item.getAttribute("id")
+                ? (item.getAttribute("id") as string)
+                : `slide-${index + 1}`;
+        });
     }
 
     private togglePlay(): void {
@@ -354,7 +361,7 @@ export class Carousel extends Tabs {
         this.rotationControl.addEventListener("mousedown", this.handleRotationMouseDown);
         this.rotationControl.addEventListener("keydown", this.handleRotationKeyDown);
 
-        if (!this.basicpattern) {
+        if (!this.basicPattern) {
             this.tabsRef.addEventListener("keydown", this.handleTabsKeypress);
             this.tabsRef.addEventListener("focusin", this.handleTabsFocusIn);
             this.tabsRef.addEventListener("focusout", this.handleTabsFocusOut);

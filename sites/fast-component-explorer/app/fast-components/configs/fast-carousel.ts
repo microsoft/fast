@@ -145,14 +145,14 @@ const fastCarouselConfig: ComponentViewConfig = {
             ],
         },
         {
-            displayName: "Not Tabbed Pattern (Basic)",
+            displayName: "Basic Pattern (Not Tabbed)",
             dataDictionary: [
                 {
                     root: {
                         schemaId: fastCarouselId,
                         data: {
                             autoplay: false,
-                            notTabbedPattern: true,
+                            basicPattern: true,
                             Slot: [...slotIds],
                         },
                     },
