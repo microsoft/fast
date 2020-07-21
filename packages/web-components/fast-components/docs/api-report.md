@@ -15,6 +15,7 @@ import { Checkbox } from '@microsoft/fast-foundation';
 import { ColorRGBA64 } from '@microsoft/fast-colors';
 import { DesignSystemProvider } from '@microsoft/fast-foundation';
 import { Dialog } from '@microsoft/fast-foundation';
+import { Direction } from '@microsoft/fast-web-utilities';
 import { Divider } from '@microsoft/fast-foundation';
 import { Flipper } from '@microsoft/fast-foundation';
 import { Menu } from '@microsoft/fast-foundation';
@@ -266,6 +267,7 @@ export interface FASTDesignSystem {
     cornerRadius: number;
     density: number;
     designUnit: number;
+    direction: Direction;
     disabledOpacity: number;
     focusOutlineWidth: number;
     neutralDividerRestDelta: number;
@@ -392,6 +394,8 @@ export class FASTDesignSystemProvider extends DesignSystemProvider implements FA
     density: 0;
     // (undocumented)
     designUnit: number;
+    // (undocumented)
+    direction: Direction;
     // (undocumented)
     disabledOpacity: number;
     // (undocumented)
@@ -567,6 +571,12 @@ export class FASTTreeItem extends TreeItem {
 // @public
 export class FASTTreeView extends TreeView {
 }
+
+// @public
+export const inlineEndBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
+
+// @public
+export const inlineStartBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
 
 // @public
 export function isDarkMode(designSystem: FASTDesignSystem): boolean;

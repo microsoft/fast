@@ -5,6 +5,7 @@ import {
     DesignSystemDefaults,
     neutralForegroundRest,
 } from "@microsoft/fast-components-styles-msft";
+import { Direction } from "@microsoft/fast-web-utilities";
 import {
     CSSCustomPropertyBehavior,
     designSystemProperty,
@@ -46,7 +47,6 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
         Omit<
             DesignSystem,
             | "contrast"
-            | "direction"
             | "fontWeight"
             | "neutralForegroundDarkIndex"
             | "neutralForegroundLightIndex"
@@ -116,6 +116,13 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
         default: DesignSystemDefaults.designUnit,
     })
     public designUnit: number;
+
+    @designSystemProperty({
+        attribute: "direction",
+        cssCustomProperty: false,
+        default: DesignSystemDefaults.direction,
+    })
+    public direction: Direction;
 
     @designSystemProperty({
         attribute: "base-height-multiplier",
