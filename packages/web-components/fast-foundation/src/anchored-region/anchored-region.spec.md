@@ -4,17 +4,15 @@
 
 An *anchored region* is a container component which enables authors to create layouts where the contents of the anchored region can be positioned relative to another "anchor" element.  Additionally, the *anchored region* can react to the available space between the anchor and a parent ["viewport"](https://developer.mozilla.org/en-US/docs/Glossary/viewport) element such that the region is placed on the side of the anchor with the most available space, or even resize itself based on that space.
 
-### Background
+### Use Cases
 
-This component is used as a building block in other components to enable responsive flyouts, tooltips, or positionable/scaling menus in a Select component. 
+It is envisioned that this component would be used as a building block for other components in this library who need to position elements relative to another HTMLElement(select, flyout, tooltip, etc) as well as being available for standalone use in responsive layouts.
+
+
 
 It instead depends on the more performant [IntersectionObserver](https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver) and [ResizeObserver](https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver) interfaces.
 
 For a more in-depth understanding of how this component works under the covers please refer to the [intersection observer api](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API). 
-
-### Use Cases
-
-It is envisioned that this component would be used as a building block for other components in this library (select, flyout, tooltip, etc) as well as being available for standalone use in responsive layouts.
 
 ### Features
 
