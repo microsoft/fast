@@ -9,6 +9,7 @@ import {
 import { FASTDesignSystem, fastDesignSystemDefaults } from "../fast-design-system";
 import { neutralForegroundRest } from "../color";
 import { DesignSystemProviderStyles as styles } from "./design-system-provider.styles";
+import { Direction } from "@microsoft/fast-web-utilities";
 
 const color = new CSSCustomPropertyBehavior(
     "neutral-foreground-rest",
@@ -119,6 +120,13 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
         default: fastDesignSystemDefaults.designUnit,
     })
     public designUnit: number;
+
+    @designSystemProperty({
+        attribute: "direction",
+        cssCustomProperty: false,
+        default: fastDesignSystemDefaults.direction,
+    })
+    public direction: Direction;
 
     @designSystemProperty({
         attribute: "base-height-multiplier",
