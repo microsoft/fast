@@ -14,7 +14,6 @@ An implementation of a [tree-item](https://w3c.github.io/aria/#treeitem) as a we
     <fast-tree-view>
         Root
         <fast-tree-item>Item 1</fast-tree-item>
-        <fast-divider slot="item"></fast-divider>
         <fast-tree-item>Item 2</fast-tree-item>
     </fast-tree-view>
 </fast-design-system-provider>
