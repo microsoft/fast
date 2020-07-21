@@ -375,10 +375,17 @@ export const focusOutlineWidth: DesignSystemResolver<number> = getDesignSystemVa
     "focusOutlineWidth"
 );
 /**
- * Retrieve the direction from the design system
+ * Retrieve the disabledOpacity from the design system
  */
 export const disabledOpacity: DesignSystemResolver<number> = getDesignSystemValue(
     "disabledOpacity"
+);
+
+/**
+ * Retrieve the disabledOpacity from the design system
+ */
+export const direction: DesignSystemResolver<Direction> = getDesignSystemValue(
+    "direction"
 );
 
 export const accentFillRestDelta: DesignSystemResolver<number> = getDesignSystemValue(
