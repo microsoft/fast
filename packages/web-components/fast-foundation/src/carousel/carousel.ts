@@ -8,10 +8,6 @@ import {
     KeyCodes,
 } from "@microsoft/fast-web-utilities";
 
-const tabPanelPrefix: string = "panel-";
-
-const tabPrefix: string = "tab-";
-
 /**
  * An Carousel Custom HTML Element.
  * Implements the {@link https://www.w3.org/TR/wai-aria-1.1/#carousel | ARIA carousel }.
@@ -226,9 +222,6 @@ export class Carousel extends Tabs {
 
     private generateSlideIds(): void {
         this.slideIds = [];
-        // for (let i = 0; i < this.items.length; i++) {
-        //     this.slideIds.push(`slide-${i + 1}`);
-        // }
         this.slideIds = this.items.map((item: HTMLElement, index: number) => {
             return item.getAttribute("id")
                 ? (item.getAttribute("id") as string)
