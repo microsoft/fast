@@ -74,12 +74,12 @@ export class TreeItem extends FASTElement {
     public items: HTMLElement[];
     private itemsChanged(oldValue, newValue): void {
         if (this.$fastController.isConnected) {
-            // this.items.forEach((node: HTMLElement) => {
-            //     if (isTreeItemElement(node)) {
-            //         // TODO: maybe not require it to be a TreeItem?
-            //         (node as TreeItem).nested = true;
-            //     }
-            // });
+            this.items.forEach((node: HTMLElement) => {
+                if (isTreeItemElement(node)) {
+                    // TODO: maybe not require it to be a TreeItem?
+                    (node as TreeItem).nested = true;
+                }
+            });
         }
     }
 
@@ -198,6 +198,15 @@ export class TreeItem extends FASTElement {
             this.handleSelected(e);
         }
     };
+
+    public childItemLength(): number {
+        const treeChildrens: HTMLElement[] = this.childItems.filter(
+            (item: HTMLElement) => {
+                return isTreeItemElement(item);
+            }
+        );
+        return treeChildrens ? treeChildrens.length : 0;
+    }
 
     public isNestedItem(): null | boolean {
         return (

@@ -86,7 +86,7 @@ export const TreeItemStyles = css`
         ${
             /* Font size should be based off calc(1em + (design-unit + glyph-size-number) * 1px) - 
             update when density story is figured out */ ""
-        } font-size: calc(1em + var(--type-ramp-base-font-size));
+        } font-size: calc(1em + (var(--design-unit) + 16) * 1px);
     }
 
     .expand-collapse-button {
@@ -181,11 +181,6 @@ export const TreeItemStyles = css`
         position: absolute;
         ${/* value needs to be localized  */ ""}
         left: var(--expand-collapse-button-nested-width, calc(${heightNumber} * -1px));
-    }
-
-    :host(.leaf) .content-region {
-        position: relative;
-        margin-inline-start: calc((${heightNumber} + (var(--design-unit) * 2) + 2) * 1px);
     }
 
     ::slotted(fast-tree-item) {

@@ -32,7 +32,7 @@ export const TreeItemTemplate = html<TreeItem>`
         >
             <div class="content-region" part="content-region">
                 ${when(
-                    x => x.childItems && x.childItems.length > 0,
+                    x => x.childItems && x.childItemLength() > 0,
                     html<TreeItem>`
                         <div
                             aria-hidden="true"
@@ -61,7 +61,7 @@ export const TreeItemTemplate = html<TreeItem>`
         ${when(
             x =>
                 x.childItems &&
-                x.childItems.length > 0 &&
+                x.childItemLength() > 0 &&
                 (x.expanded || x.renderCollapsedChildren),
             html<TreeItem>`
                 <div role="group" class="items" part="items">
