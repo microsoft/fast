@@ -41,12 +41,10 @@ exec(
     `${changeDir} && emcc ${files} -Os ${settings} -o permutator.js`,
     (error, stdout, stderr) => {
         if (error) {
-            console.log(`error: ${error.message}`);
-            return;
+            throw new Error(`error: ${error.message}`);
         }
         if (stderr) {
-            console.log(`stderr: ${stderr}`);
-            return;
+            throw new Error(`stderr: ${stderr}`);
         }
         if (stdout) {
             console.log(`stdout: ${stdout}`);
