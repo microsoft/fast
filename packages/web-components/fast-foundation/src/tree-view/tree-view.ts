@@ -23,6 +23,9 @@ export class TreeView extends FASTElement {
     @observable
     private lastFocused: HTMLElement;
 
+    @observable
+    private nested: boolean;
+
     @observable slottedTreeItems: HTMLElement[];
     private slottedTreeItemsChanged(oldValue, newValue): void {
         if (this.$fastController.isConnected) {
@@ -30,7 +33,24 @@ export class TreeView extends FASTElement {
             this.resetItems();
             this.treeItems = this.getVisibleNodes();
             this.setItems();
+
+            // check if any tree items have nested items
+            // if they do, apply the nested attribute
+            if (this.checkForNestedItems()) {
+                console.log("yes nested items!");
+                this.slottedTreeItems.forEach(node => {
+                    if (isTreeItemElement(node)) {
+                        node.setAttribute("nested", "true");
+                    }
+                });
+            }
         }
+    }
+
+    private checkForNestedItems(): boolean {
+        return this.slottedTreeItems.some((node: HTMLElement) => {
+            return isTreeItemElement(node) && node.querySelector("[role='treeitem'");
+        });
     }
 
     private treeItems: HTMLElement[];

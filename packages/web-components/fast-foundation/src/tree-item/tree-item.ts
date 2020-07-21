@@ -74,16 +74,16 @@ export class TreeItem extends FASTElement {
     public items: HTMLElement[];
     private itemsChanged(oldValue, newValue): void {
         if (this.$fastController.isConnected) {
-            this.items.forEach((node: HTMLElement) => {
-                if (isTreeItemElement(node)) {
-                    // TODO: maybe not require it to be a TreeItem?
-                    (node as TreeItem).nested = true;
-                }
-            });
+            // this.items.forEach((node: HTMLElement) => {
+            //     if (isTreeItemElement(node)) {
+            //         // TODO: maybe not require it to be a TreeItem?
+            //         (node as TreeItem).nested = true;
+            //     }
+            // });
         }
     }
 
-    @observable
+    @attr
     public nested: boolean;
 
     @observable
@@ -105,6 +105,7 @@ export class TreeItem extends FASTElement {
         super.connectedCallback();
 
         const parentTreeNode: HTMLElement | null | undefined = this.getParentTreeNode();
+
         if (parentTreeNode) {
             if (parentTreeNode.hasAttribute("render-collapsed-nodes")) {
                 this.renderCollapsedChildren =
@@ -198,13 +199,10 @@ export class TreeItem extends FASTElement {
         }
     };
 
-    public childItemLength(): number {
-        const treeChildrens: HTMLElement[] = this.childItems.filter(
-            (item: HTMLElement) => {
-                return isTreeItemElement(item);
-            }
+    public isNestedItem(): null | boolean {
+        return (
+            this.parentElement && this.parentElement.getAttribute("role") === "treeitem"
         );
-        return treeChildrens ? treeChildrens.length : 0;
     }
 
     private handleArrowLeft(): void {

@@ -9,12 +9,11 @@ import { TreeItem } from "./tree-item";
 export const TreeItemTemplate = html<TreeItem>`
     <template
         role="treeitem"
-        slot="item"
-        tabindex="${x => (x.disabled ? null : x.focusable ? 0 : -1)}"
+        slot="${x => (x.isNestedItem() ? "item" : void 0)}"
+        tabindex="${x => (x.disabled ? void 0 : x.focusable ? 0 : -1)}"
         class="${x => (x.expanded ? "expanded" : "")} ${x =>
             x.selected ? "selected" : ""} ${x => (x.nested ? "nested" : "")}
-            ${x => (x.disabled ? "disabled" : "")}
-            ${x => (x.childItems && x.childItems.length > 0 ? "" : "leaf")}"
+            ${x => (x.disabled ? "disabled" : "")}"
         aria-expanded="${x => (x.expanded ? x.expanded : void 0)}"
         aria-selected="${x => x.selected}"
         aria-disabled="${x => x.disabled}"
