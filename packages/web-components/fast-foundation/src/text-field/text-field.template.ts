@@ -8,10 +8,8 @@ import { TextField } from "./text-field";
  */
 export const TextFieldTemplate = html<TextField>`
     <template
-        appearance="${x => x.appearance}"
         tabindex="${x => (x.disabled ? null : 0)}"
         class="
-            ${x => x.appearance}
             ${x => (x.readOnly ? "readonly" : "")}
         "
     >
