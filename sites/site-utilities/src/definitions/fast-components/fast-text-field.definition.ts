@@ -1,7 +1,6 @@
 import { WebComponentDefinition } from "@microsoft/fast-tooling/dist/data-utilities/web-component";
 import { DataType } from "@microsoft/fast-tooling";
-import { TextFieldAppearance } from "@microsoft/fast-foundation";
-import { TextFieldType } from "@microsoft/fast-components-react-base";
+import { TextFieldType } from "@microsoft/fast-foundation";
 
 export const fastTextFieldDefinition: WebComponentDefinition = {
     version: 1,
@@ -20,11 +19,8 @@ export const fastTextFieldDefinition: WebComponentDefinition = {
                 {
                     name: "appearance",
                     description: "The appearance attribute",
-                    default: TextFieldAppearance.outline,
-                    values: [
-                        { name: TextFieldAppearance.outline },
-                        { name: TextFieldAppearance.filled },
-                    ],
+                    default: "outline",
+                    values: [{ name: "outline" }, { name: "filled" }],
                     type: DataType.string,
                     required: false,
                 },
