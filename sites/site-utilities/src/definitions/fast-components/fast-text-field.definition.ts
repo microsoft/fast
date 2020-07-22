@@ -44,9 +44,7 @@ export const fastTextFieldDefinition: WebComponentDefinition = {
                     default: TextFieldType.text,
                     values: [
                         { name: TextFieldType.email },
-                        { name: TextFieldType.number },
                         { name: TextFieldType.password },
-                        { name: TextFieldType.search },
                         { name: TextFieldType.tel },
                         { name: TextFieldType.text },
                         { name: TextFieldType.url },
