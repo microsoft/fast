@@ -487,6 +487,36 @@ export const RadioGroupTemplate: import("@microsoft/fast-element").ViewTemplate<
 // @public
 export const RadioTemplate: import("@microsoft/fast-element").ViewTemplate<Radio, any>;
 
+// @public (undocumented)
+export class Share extends FASTElement {
+    // (undocumented)
+    items: HTMLElement[];
+    title: string;
+}
+
+// @public (undocumented)
+export class ShareGroup extends FASTElement {
+    // (undocumented)
+    items: HTMLElement[];
+    title: string;
+}
+
+// @public
+export const ShareGroupTemplate: import("@microsoft/fast-element").ViewTemplate<ShareGroup, any>;
+
+// @public (undocumented)
+export class ShareLink extends FASTElement {
+    // (undocumented)
+    items: HTMLElement[];
+    title: string;
+}
+
+// @public
+export const ShareLinkTemplate: import("@microsoft/fast-element").ViewTemplate<ShareLink, any>;
+
+// @public
+export const ShareTemplate: import("@microsoft/fast-element").ViewTemplate<Share, any>;
+
 // @public
 export class Slider extends FormAssociated<HTMLInputElement> implements SliderConfiguration {
     // @internal (undocumented)

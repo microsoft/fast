@@ -15,6 +15,7 @@ export * from "./patterns/index";
 export * from "./progress/index";
 export * from "./radio/index";
 export * from "./radio-group/index";
+export * from "./share/index";
 export * from "./slider/index";
 export * from "./slider-label/index";
 export * from "./switch/index";
