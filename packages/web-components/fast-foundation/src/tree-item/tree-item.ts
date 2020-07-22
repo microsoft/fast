@@ -212,7 +212,7 @@ export class TreeItem extends FASTElement {
     }
 
     public readonly isNestedItem = (): boolean => {
-        return !!isTreeItemElement(this.parentElement as Element);
+        return isTreeItemElement(this.parentElement as Element);
     };
 
     private handleArrowLeft(): void {
