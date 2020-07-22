@@ -83,7 +83,13 @@ export class TreeItem extends FASTElement {
         }
     }
 
-    @attr
+    /**
+     * Tracks the nested state of the item
+     * @public
+     * @remarks
+     * HTML Attribute: nested
+     */
+    @attr({ mode: "boolean" })
     public nested: boolean;
 
     @observable
@@ -200,12 +206,12 @@ export class TreeItem extends FASTElement {
     };
 
     public childItemLength(): number {
-        const treeChildrens: HTMLElement[] = this.childItems.filter(
+        const treeChildren: HTMLElement[] = this.childItems.filter(
             (item: HTMLElement) => {
                 return isTreeItemElement(item);
             }
         );
-        return treeChildrens ? treeChildrens.length : 0;
+        return treeChildren ? treeChildren.length : 0;
     }
 
     public isNestedItem(): null | boolean {

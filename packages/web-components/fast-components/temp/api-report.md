@@ -573,6 +573,12 @@ export class FASTTreeView extends TreeView {
 }
 
 // @public
+export const inlineEndBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
+
+// @public
+export const inlineStartBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
+
+// @public
 export function isDarkMode(designSystem: FASTDesignSystem): boolean;
 
 // Warning: (ae-internal-missing-underscore) The name "neutralDividerRest" should be prefixed with an underscore because the declaration is marked as @internal

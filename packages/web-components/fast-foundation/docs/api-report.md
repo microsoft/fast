@@ -810,7 +810,6 @@ export class TreeItem extends FASTElement {
     isNestedItem(): null | boolean;
     // (undocumented)
     items: HTMLElement[];
-    // (undocumented)
     nested: boolean;
     // (undocumented)
     renderCollapsedChildren: boolean;
