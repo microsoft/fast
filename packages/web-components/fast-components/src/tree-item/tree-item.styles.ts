@@ -87,7 +87,7 @@ export const TreeItemStyles = css`
         ${
             /* Font size should be based off calc(1em + (design-unit + glyph-size-number) * 1px) - 
             update when density story is figured out */ ""
-        } font-size: calc(1em + var(--type-ramp-base-font-size));
+        } font-size: calc(1em + (var(--design-unit) + 16) * 1px);
     }
 
     .expand-collapse-button {

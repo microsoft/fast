@@ -13,8 +13,12 @@ An implementation of a [tree](https://w3c.github.io/aria/#tree) as a web-compone
 <fast-design-system-provider use-defaults>
     <fast-tree-view>
         Root
-        <fast-tree-item slot="item">Item 1</fast-tree-item>
-        <fast-tree-item slot="item">Item 2</fast-tree-item>
+        <fast-tree-item>
+            Item 1
+            <fast-tree-item>Sub-item 1</fast-tree-item>
+            <fast-tree-item>Sub-item 2</fast-tree-item>
+        </fast-tree-item>
+        <fast-tree-item>Item 2</fast-tree-item>
     </fast-tree-view>
 </fast-design-system-provider>
 ```

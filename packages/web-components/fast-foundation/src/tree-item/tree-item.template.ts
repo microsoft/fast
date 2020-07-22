@@ -9,7 +9,8 @@ import { TreeItem } from "./tree-item";
 export const TreeItemTemplate = html<TreeItem>`
     <template
         role="treeitem"
-        tabindex="${x => (x.disabled ? null : x.focusable ? 0 : -1)}"
+        slot="${x => (x.isNestedItem() ? "item" : void 0)}"
+        tabindex="${x => (x.disabled ? void 0 : x.focusable ? 0 : -1)}"
         class="${x => (x.expanded ? "expanded" : "")} ${x =>
             x.selected ? "selected" : ""} ${x => (x.nested ? "nested" : "")}
             ${x => (x.disabled ? "disabled" : "")}"
@@ -19,7 +20,10 @@ export const TreeItemTemplate = html<TreeItem>`
         @focus="${(x, c) => x.handleFocus(c.event as FocusEvent)}"
         @blur="${(x, c) => x.handleBlur(c.event as FocusEvent)}"
         @keydown="${(x, c) => x.handleKeyDown(c.event as KeyboardEvent)}"
-        ${children({ property: "childItems", filter: elements("[slot='item']") })}
+        ${children({
+            property: "childItems",
+            filter: elements(),
+        })}
     >
         <div
             class="positioning-region"
@@ -28,7 +32,7 @@ export const TreeItemTemplate = html<TreeItem>`
         >
             <div class="content-region" part="content-region">
                 ${when(
-                    x => x.childItems && x.childItems.length > 0,
+                    x => x.childItems && x.childItemLength() > 0,
                     html<TreeItem>`
                         <div
                             aria-hidden="true"
@@ -57,7 +61,7 @@ export const TreeItemTemplate = html<TreeItem>`
         ${when(
             x =>
                 x.childItems &&
-                x.childItems.length > 0 &&
+                x.childItemLength() > 0 &&
                 (x.expanded || x.renderCollapsedChildren),
             html<TreeItem>`
                 <div role="group" class="items" part="items">
