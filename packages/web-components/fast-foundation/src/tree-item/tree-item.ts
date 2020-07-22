@@ -84,12 +84,9 @@ export class TreeItem extends FASTElement {
     }
 
     /**
-     * Tracks the nested state of the item
-     * @public
-     * @remarks
-     * HTML Attribute: nested
+     * @internal
      */
-    @attr({ mode: "boolean" })
+    @observable
     public nested: boolean;
 
     @observable
@@ -214,11 +211,9 @@ export class TreeItem extends FASTElement {
         return treeChildren ? treeChildren.length : 0;
     }
 
-    public isNestedItem(): null | boolean {
-        return (
-            this.parentElement && this.parentElement.getAttribute("role") === "treeitem"
-        );
-    }
+    public readonly isNestedItem = (): boolean => {
+        return isTreeItemElement(this.parentElement as Element);
+    };
 
     private handleArrowLeft(): void {
         if (this.expanded) {
