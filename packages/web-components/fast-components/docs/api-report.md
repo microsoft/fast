@@ -559,7 +559,7 @@ export class FASTTabs extends Tabs {
 // @public
 export class FASTTextArea extends TextArea {
     appearance: TextAreaAppearance;
-    // (undocumented)
+    // @internal (undocumented)
     appearanceChanged(oldValue: TextAreaAppearance, newValue: TextAreaAppearance): void;
     // @internal (undocumented)
     connectedCallback(): void;
@@ -568,7 +568,7 @@ export class FASTTextArea extends TextArea {
 // @public
 export class FASTTextField extends TextField {
     appearance: TextFieldAppearance;
-    // (undocumented)
+    // @internal (undocumented)
     appearanceChanged(oldValue: TextFieldAppearance, newValue: TextFieldAppearance): void;
     // @internal (undocumented)
     connectedCallback(): void;

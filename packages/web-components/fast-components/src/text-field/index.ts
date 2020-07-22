@@ -37,6 +37,10 @@ export class FASTTextField extends TextField {
      */
     @attr
     public appearance: TextFieldAppearance;
+
+    /**
+     * @internal
+     */
     public appearanceChanged(
         oldValue: TextFieldAppearance,
         newValue: TextFieldAppearance

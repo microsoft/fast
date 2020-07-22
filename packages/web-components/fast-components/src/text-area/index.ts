@@ -37,6 +37,10 @@ export class FASTTextArea extends TextArea {
      */
     @attr
     public appearance: TextAreaAppearance;
+
+    /**
+     * @internal
+     */
     public appearanceChanged(
         oldValue: TextAreaAppearance,
         newValue: TextAreaAppearance
