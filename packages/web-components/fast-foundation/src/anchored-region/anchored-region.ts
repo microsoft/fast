@@ -108,7 +108,7 @@ export class AnchoredRegion extends FASTElement {
     @attr({ attribute: "horizontal-positioning-mode" })
     public horizontalPositioningMode: AxisPositioningMode = "uncontrolled";
     private horizontalPositioningModeChanged(): void {
-        this.reset();
+        this.requestReset();
     }
 
     /**
@@ -177,7 +177,7 @@ export class AnchoredRegion extends FASTElement {
     @attr({ attribute: "vertical-positioning-mode" })
     public verticalPositioningMode: AxisPositioningMode = "uncontrolled";
     private verticalPositioningModeChanged(): void {
-        this.reset();
+        this.requestReset();
     }
 
     /**
@@ -271,18 +271,18 @@ export class AnchoredRegion extends FASTElement {
     /**
      * The HTML element being used as the anchor
      *
-     * @ public
+     * @public
      */
     @observable
     public anchorElement: HTMLElement | null = null;
     private anchorElementChanged(): void {
-        this.reset();
+        this.requestReset();
     }
 
     /**
      * The HTML element being used as the viewport
      *
-     * @ public
+     * @public
      */
     @observable
     public viewportElement: HTMLElement | null = null;
@@ -346,7 +346,8 @@ export class AnchoredRegion extends FASTElement {
     private baseHorizontalOffset: number;
     private baseVerticalOffset: number;
 
-    private openRequestAnimationFrame: boolean = false;
+    private pendingLayoutUpdate: boolean = false;
+    private pendingReset: boolean = false;
     private currentDirection: Direction = Direction.ltr;
     private noIntersectionMode = false;
 
@@ -428,33 +429,30 @@ export class AnchoredRegion extends FASTElement {
      * fully initializes the component
      */
     private initialize(): void {
-        this.setInitialState();
-        if (this.anchorElement === null) {
-            this.anchorElement = this.getAnchor();
-        }
-        this.currentDirection = this.getDirection();
         this.initializeResizeDetector();
         this.initializeIntersectionDetector();
-        this.startObservers();
-        if (this.useGbcr === "never") {
-            DOM.queueUpdate(this.updateGeometry);
-            return;
-        }
-        this.requestLayoutUpdate();
+        this.requestReset();
     }
 
     /**
-     * resets the component
+     * Request a layout update if there are currently no open requests
      */
-    private reset(): void {
-        if ((this as any).$fastController.isConnected && this.initialLayoutComplete) {
+    private requestLayoutUpdate(): void {
+        if (this.pendingLayoutUpdate === false && this.pendingReset === false) {
+            this.pendingLayoutUpdate = true;
+            DOM.queueUpdate(this.updateLayout);
+        }
+    }
+
+    /**
+     * Request a reset if there are currently no open requests
+     */
+    private requestReset(): void {
+        if (this.pendingReset === false) {
+            this.pendingLayoutUpdate = false;
+            this.pendingReset = true;
             this.setInitialState();
-            this.startObservers();
-            if (this.useGbcr === "never") {
-                DOM.queueUpdate(this.updateGeometry);
-                return;
-            }
-            this.requestLayoutUpdate();
+            DOM.queueUpdate(this.reset);
         }
     }
 
@@ -841,21 +839,10 @@ export class AnchoredRegion extends FASTElement {
     };
 
     /**
-     * Request's an animation frame if there are currently no open animation frame requests
-     */
-    private requestLayoutUpdate = (): void => {
-        if (this.openRequestAnimationFrame === false) {
-            this.openRequestAnimationFrame = true;
-            DOM.queueUpdate(this.updateLayout);
-        }
-    };
-
-    /**
      * when there is not intersection observer this function is queued to update layout
      * on the first pass
      */
     private updateGeometry = (): void => {
-        this.openRequestAnimationFrame = false;
         let regionRect: DOMRect | ClientRect | null = this.applyNoIntersectionMode();
         if (regionRect !== null) {
             this.updateRegionOffset(regionRect);
@@ -864,10 +851,35 @@ export class AnchoredRegion extends FASTElement {
     };
 
     /**
+     * resets the component
+     */
+    private reset = (): void => {
+        if (!this.pendingReset) {
+            return;
+        }
+
+        this.pendingReset = false;
+        if (this.anchorElement === null) {
+            this.anchorElement = this.getAnchor();
+        }
+        this.currentDirection = this.getDirection();
+        this.startObservers();
+        if (this.useGbcr === "never") {
+            DOM.queueUpdate(this.updateGeometry);
+            return;
+        }
+        this.requestLayoutUpdate();
+    };
+
+    /**
      *  Recalculate layout related state values
      */
     private updateLayout = (): void => {
-        this.openRequestAnimationFrame = false;
+        if (!this.pendingLayoutUpdate) {
+            return;
+        }
+
+        this.pendingLayoutUpdate = false;
 
         if (this.viewportRect === null || this.regionDimension === null) {
             return;
