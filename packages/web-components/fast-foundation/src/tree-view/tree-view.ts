@@ -39,7 +39,7 @@ export class TreeView extends FASTElement {
             if (this.checkForNestedItems()) {
                 this.slottedTreeItems.forEach(node => {
                     if (isTreeItemElement(node)) {
-                        node.setAttribute("nested", "");
+                        (node as TreeItem).nested = true;
                     }
                 });
             }
