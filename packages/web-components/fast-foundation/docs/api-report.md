@@ -847,6 +847,68 @@ export enum TextFieldType {
     url = "url"
 }
 
+// @public (undocumented)
+export class Tooltip extends FASTElement {
+    constructor();
+    // (undocumented)
+    anchor: string;
+    // (undocumented)
+    anchorElement: HTMLElement | null;
+    // (undocumented)
+    connectedCallback(): void;
+    // (undocumented)
+    delay: number;
+    // (undocumented)
+    disconnectedCallback(): void;
+    // (undocumented)
+    handleAnchorMouseOut: (ev: Event) => void;
+    // (undocumented)
+    handleAnchorMouseOver: (ev: Event) => void;
+    // (undocumented)
+    handlePositionChange: (ev: Event) => void;
+    // (undocumented)
+    horizontalDefaultPosition: string | undefined;
+    // (undocumented)
+    horizontalInset: string;
+    // (undocumented)
+    horizontalPositioningMode: AxisPositioningMode;
+    // Warning: (ae-forgotten-export) The symbol "AxisScalingMode" needs to be exported by the entry point index.d.ts
+    //
+    // (undocumented)
+    horizontalScaling: AxisScalingMode;
+    // (undocumented)
+    position: TooltipPosition | null;
+    // Warning: (ae-forgotten-export) The symbol "AnchoredRegion" needs to be exported by the entry point index.d.ts
+    region: AnchoredRegion;
+    // (undocumented)
+    regionStyle: string;
+    tooltipElement: HTMLDivElement;
+    // (undocumented)
+    tooltipVisible: boolean;
+    // (undocumented)
+    upDatePositionCSS(): void;
+    // (undocumented)
+    verticalDefaultPosition: string | undefined;
+    // (undocumented)
+    verticalInset: string;
+    // Warning: (ae-forgotten-export) The symbol "AxisPositioningMode" needs to be exported by the entry point index.d.ts
+    //
+    // (undocumented)
+    verticalPositioningMode: AxisPositioningMode;
+    // (undocumented)
+    verticalScaling: AxisScalingMode;
+    // (undocumented)
+    viewportElement: HTMLElement | null;
+    // (undocumented)
+    visible: boolean;
+    }
+
+// @public (undocumented)
+export type TooltipPosition = "top" | "right" | "bottom" | "left";
+
+// @public (undocumented)
+export const TooltipTemplate: import("@microsoft/fast-element").ViewTemplate<Tooltip, any>;
+
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "TreeItem" because one of its declarations is marked as @internal
 //

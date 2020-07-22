@@ -124,11 +124,6 @@ export class Tooltip extends FASTElement {
     public regionStyle: string = hiddenRegionStyle;
 
     /**
-     * reference to the component root
-     */
-    public tooltipRoot: HTMLDivElement;
-
-    /**
      * reference to the tooltip container
      */
     public tooltipElement: HTMLDivElement;
@@ -349,7 +344,7 @@ export class Tooltip extends FASTElement {
         if (!this.tooltipVisible) {
             return;
         }
-        this.viewportElement = this.tooltipRoot.parentElement;
+        this.viewportElement = document.body;
         this.region.viewportElement = this.viewportElement;
         this.region.anchorElement = this.anchorElement;
         (this.region as any).addEventListener("change", this.handlePositionChange);
