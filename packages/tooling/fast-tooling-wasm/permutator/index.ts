@@ -7,7 +7,7 @@ declare var Module: any;
 export interface PermutatorConfig {
     schema: object;
     /**
-     * The number of sets to provide
+     * The number of data sets to provide
      */
     setSize: number;
 }

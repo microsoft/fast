@@ -5,7 +5,7 @@
 #include "permutate_number.h"
 
 /**
- * This function permutates over the root type
+ * Permutates over the JSON schemas root type
  */
 void permutator(
     char* permutatorConfig,

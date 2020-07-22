@@ -12,6 +12,9 @@ EM_JS(void, permutate_callback, (char* permutation),
     }
 );
 
+/**
+ * Calls the permutator function
+ */
 void permutate(char* permutatorConfig)
 {
     permutator(permutatorConfig, permutate_callback);

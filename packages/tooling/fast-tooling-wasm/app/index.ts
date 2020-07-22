@@ -9,7 +9,7 @@ Number;
 declare var Module: any;
 
 function receivePermutation(e) {
-    console.log("permutation recieved", e);
+    console.log("permutation received", e);
 }
 
 Module["onPermutate"] = receivePermutation;

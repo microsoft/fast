@@ -2,6 +2,10 @@
 #include "cjson/cJSON.h"
 #include "type.h"
 
+/**
+ * Gets a random number that fits within the JSON schema
+ * constraints
+ */
 double get_random_number(cJSON *configSchema)
 {
     cJSON *multipleOf = cJSON_GetObjectItemCaseSensitive(configSchema, "multipleOf");
@@ -29,6 +33,11 @@ double get_random_number(cJSON *configSchema)
     return randomNumber - remainder;
 }
 
+/**
+ * Gets a number using an iteration with the following caveats:
+ * - if enums exist only use those
+ * - if default and/or examples exist, use these before generating any random numbers
+ */
 double get_number_iteration_value(
     int iteration,
     enum Type type,
@@ -70,6 +79,9 @@ double get_number_iteration_value(
     }
 }
 
+/**
+ * Create a permutation of a number
+ */
 struct PermutatedType permutate_number(
     int iteration,
     cJSON *configSchema

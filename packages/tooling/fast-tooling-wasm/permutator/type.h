@@ -3,6 +3,9 @@
 #ifndef _type_h
 #define _type_h
 
+/**
+ * An enum representing all possible JSON schema types
+ */
 enum Type {
     Number,
     String,
@@ -14,6 +17,11 @@ enum Type {
 
 extern enum Type type;
 
+/**
+ * A union type assigned to PermutatedType
+ * which allows for a number of different type
+ * assignments
+ */
 union Types
 {
     double number;
@@ -21,6 +29,10 @@ union Types
     bool *boolean;
 };
 
+/**
+ * A type which can represent any simple data type
+ * such as string, boolean, number etc.
+ */
 struct PermutatedType
 {
     enum Type type;

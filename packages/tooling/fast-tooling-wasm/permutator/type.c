@@ -1,5 +1,11 @@
 #include "type.h"
 
+enum Type type;
+
+/**
+ * When given a Type returns the corresponding string
+ * used in JSON schema for data type
+ */
 char* get_type_as_string(enum Type type)
 {
     switch (type)
