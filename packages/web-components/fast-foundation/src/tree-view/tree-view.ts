@@ -48,7 +48,7 @@ export class TreeView extends FASTElement {
 
     private checkForNestedItems(): boolean {
         return this.slottedTreeItems.some((node: HTMLElement) => {
-            return isTreeItemElement(node) && node.querySelector("[role='treeitem'");
+            return isTreeItemElement(node) && node.querySelector("[role='treeitem']");
         });
     }
 
