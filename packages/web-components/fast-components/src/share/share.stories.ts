@@ -1,5 +1,6 @@
 import { FASTDesignSystemProvider } from "../design-system-provider";
-import Examples from "./fixtures/base.html";
+import DefaultExamples from "./fixtures/base.html";
+import NoTabExamples from "./fixtures/no-tab-info.html";
 import { FASTShareGroup } from "./share-group";
 import { FASTShareLink } from "./share-link";
 import { FASTShare } from ".";
@@ -14,4 +15,5 @@ export default {
     title: "Share",
 };
 
-export const Base = () => Examples;
+export const Default = () => DefaultExamples;
+export const NoTabInfo = () => NoTabExamples;

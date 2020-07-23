@@ -1,19 +1,15 @@
 <fast-design-system-provider use-defaults>
     <style>
-        :host {
-            --dialog-height: 600px;
-            --dialog-width: 400px;
-        }
         fast-dialog::part(control) {
-            width: var(--dialog-width);
-            height: var(--dialog-height);
+            width: 400px;
+            height: 600px;
         }
     </style>
+
     <h1>Share</h1>
-    <h4>Default</h4>
+    <h4>No Tab Info, Width: 400px</h4>
     <fast-dialog>
-        <fast-share title="Share">
-            <span slot="tab-info">Meet the new Surface Headphones</span>
+        <fast-share title="Share" style="width: 400px;">
             <fast-share-group title="Share with myself">
                 <fast-share-link title="jon.doe@gmail.com">
                     <svg

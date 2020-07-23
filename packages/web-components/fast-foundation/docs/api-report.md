@@ -491,6 +491,8 @@ export const RadioTemplate: import("@microsoft/fast-element").ViewTemplate<Radio
 export class Share extends FASTElement {
     // (undocumented)
     items: HTMLElement[];
+    // (undocumented)
+    tabItem: HTMLElement[];
     title: string;
 }
 
@@ -506,6 +508,8 @@ export const ShareGroupTemplate: import("@microsoft/fast-element").ViewTemplate<
 
 // @public (undocumented)
 export class ShareLink extends FASTElement {
+    // (undocumented)
+    color: string;
     // (undocumented)
     items: HTMLElement[];
     title: string;
