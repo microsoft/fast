@@ -17,10 +17,10 @@ const emccFiles = ["wasm.c", "permutate.c"].concat(commonFiles).join(" ");
  * Test file needed for compilation
  */
 const staticTestFilesCompile = `gcc __tests__/test.c -o __tests__/test`;
-const dynamicTestFilesSetup = `gcc -c permutate.c -o ./__tests__/libPermutate.o`;
-const dynamicTestFilesCompile = `gcc -shared -o ./__tests__/libPermutate.so ${commonFiles.join(
+const dynamicTestFilesSetup = `gcc -c permutate.c -o ./__tests__/libpermutate.o`;
+const dynamicTestFilesCompile = `gcc -shared -o ./__tests__/libpermutate.so ${commonFiles.join(
     " "
-)} ./__tests__/libPermutate.o`;
+)} ./__tests__/libpermutate.o`;
 
 /**
  * Settings for emscripten

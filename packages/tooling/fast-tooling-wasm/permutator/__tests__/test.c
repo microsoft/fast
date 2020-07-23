@@ -4,7 +4,7 @@
 #include <dlfcn.h>
 
 typedef int (*lib_function) (const char *data);
-char *lib_file = "libPermutate.so";
+char *lib_file = "libpermutate.so";
 void *lib = NULL;
 
 int check_function(const char *func_to_run, const char *data, int expected)
