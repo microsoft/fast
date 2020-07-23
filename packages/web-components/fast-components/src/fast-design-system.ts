@@ -2,6 +2,7 @@ import {
     accentPalette as defaultAccentPalette,
     neutralPalette as defaultNeutralPalette,
 } from "./default-palette";
+import { Direction } from "@microsoft/fast-web-utilities";
 
 export type DesignSystemResolver<T, Y = FASTDesignSystem> = (d: Y) => T;
 
@@ -66,6 +67,11 @@ export interface FASTDesignSystem {
      * The grid-unit that UI dimensions are derived from in pixels.
      */
     designUnit: number;
+
+    /**
+     * The primary document direction.
+     */
+    direction: Direction;
 
     /**
      * The number of designUnits used for component height at the base density.
@@ -206,18 +212,19 @@ export const fastDesignSystemDefaults: FASTDesignSystem = {
     typeRampPlus6FontSize: "60px",
     typeRampPlus6LineHeight: "72px",
 
+    accentBaseColor: "#DA1A5F",
+    accentPalette: defaultAccentPalette,
     backgroundColor: "#181818",
-    density: 0,
-    designUnit: 4,
     baseHeightMultiplier: 10,
     baseHorizontalSpacingMultiplier: 3,
     cornerRadius: 3,
-    focusOutlineWidth: 2,
+    density: 0,
+    designUnit: 4,
+    direction: Direction.ltr,
     disabledOpacity: 0.3,
-    outlineWidth: 1,
+    focusOutlineWidth: 2,
     neutralPalette: defaultNeutralPalette,
-    accentPalette: defaultAccentPalette,
-    accentBaseColor: "#DA1A5F",
+    outlineWidth: 1,
 
     /**
      * Recipe Deltas
@@ -368,10 +375,17 @@ export const focusOutlineWidth: DesignSystemResolver<number> = getDesignSystemVa
     "focusOutlineWidth"
 );
 /**
- * Retrieve the direction from the design system
+ * Retrieve the disabledOpacity from the design system
  */
 export const disabledOpacity: DesignSystemResolver<number> = getDesignSystemValue(
     "disabledOpacity"
+);
+
+/**
+ * Retrieve the disabledOpacity from the design system
+ */
+export const direction: DesignSystemResolver<Direction> = getDesignSystemValue(
+    "direction"
 );
 
 export const accentFillRestDelta: DesignSystemResolver<number> = getDesignSystemValue(

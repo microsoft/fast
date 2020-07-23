@@ -28,8 +28,11 @@ import {
     neutralLayerL3,
     neutralLayerL4,
     neutralOutline,
+    DesignSystem,
+    direction,
 } from "@microsoft/fast-components-styles-msft";
 import { FASTDesignSystemProvider } from "../design-system-provider";
+import { Direction } from "@microsoft/fast-web-utilities";
 
 /**
  * Behavior to resolve and make available the neutral-foreground-rest CSS custom property.
@@ -578,5 +581,59 @@ export const neutralFocusBehavior = cssCustomPropertyBehaviorFactory(
 export const neutralFocusInnerAccentBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-focus-inner-accent",
     neutralFocusInnerAccent(accentBaseColor),
+    FASTDesignSystemProvider.findProvider
+);
+
+/**
+ * Behavior to resolve and make available the inline-start CSS custom property.
+ *
+ * @remarks
+ * Replaces the inline-start value for the {@link https://developer.mozilla.org/en-US/docs/Web/CSS/float | float} property
+ * when the native value is not supported.
+ *
+ * @public
+ * @example
+ * ```ts
+ * import { css } from "@microsoft/fast-element";
+ * import { inlineStartBehavior } from "@microsoft/fast-components-msft";
+ *
+ * css`
+ *   :host {
+ *     float: ${inlineStartBehavior.var};
+ *   }
+ * `.withBehaviors(inlineStartBehavior)
+ * ```
+ */
+export const inlineStartBehavior = cssCustomPropertyBehaviorFactory(
+    "inline-start",
+    (designSystem: DesignSystem) =>
+        direction(designSystem) === Direction.ltr ? "left" : "right",
+    FASTDesignSystemProvider.findProvider
+);
+
+/**
+ * Behavior to resolve and make available the inline-end CSS custom property.
+ *
+ * @remarks
+ * Replaces the inline-end value for the {@link https://developer.mozilla.org/en-US/docs/Web/CSS/float | float} property
+ * when the native value is not supported.
+ *
+ * @public
+ * @example
+ * ```ts
+ * import { css } from "@microsoft/fast-element";
+ * import { inlineEndBehavior } from "@microsoft/fast-components-msft";
+ *
+ * css`
+ *   :host {
+ *     float: ${inlineEndBehavior.var};
+ *   }
+ * `.withBehaviors(inlineEndBehavior)
+ * ```
+ */
+export const inlineEndBehavior = cssCustomPropertyBehaviorFactory(
+    "inline-end",
+    (designSystem: DesignSystem) =>
+        direction(designSystem) === Direction.ltr ? "right" : "left",
     FASTDesignSystemProvider.findProvider
 );
