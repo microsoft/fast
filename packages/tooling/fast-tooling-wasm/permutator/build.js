@@ -2,6 +2,8 @@ const { exec } = require("child_process");
 const { argv } = require("yargs");
 
 const changeDir = "cd permutator";
+const moveLib = "mv ../libpermutate.so libpermutate.so";
+const changeTestDir = "cd __tests__";
 
 /**
  * Common files needed for compilation
@@ -16,11 +18,11 @@ const emccFiles = ["wasm.c", "permutate.c"].concat(commonFiles).join(" ");
 /**
  * Test file needed for compilation
  */
-const staticTestFilesCompile = `gcc -Wall ./__tests__/test.c -ldl -L. -o __tests__/test`;
-const dynamicTestFilesSetup = `gcc -Wall -c -fPIC permutate.c -o ./__tests__/libpermutate.o`;
-const dynamicTestFilesCompile = `gcc -Wall -shared -fPIC -o ./__tests__/libpermutate.so ${commonFiles.join(
+const staticTestFilesCompile = `gcc -Wall -L. "-Wl,-rpath,." -o test test.c -ldl -lpermutate -o test`;
+const dynamicTestFilesSetup = `gcc -Wall -c -fPIC permutate.c -o libpermutate.o`;
+const dynamicTestFilesCompile = `gcc -Wall -shared -fPIC -o libpermutate.so ${commonFiles.join(
     " "
-)} ./__tests__/libpermutate.o`;
+)} libpermutate.o`;
 
 /**
  * Settings for emscripten
@@ -47,7 +49,7 @@ if (argv.test) {
      * Execute gcc commands to produce dynamic .so files for testing
      */
     exec(
-        `${changeDir} && ${dynamicTestFilesSetup} && ${staticTestFilesCompile} && ${dynamicTestFilesCompile}`,
+        `${changeDir} && ${dynamicTestFilesSetup} && ${dynamicTestFilesCompile} && ${changeTestDir} && ${moveLib} && ${staticTestFilesCompile}`,
         (error, stdout, stderr) => {
             if (error) {
                 throw new Error(`error: ${error.message}`);

@@ -4,15 +4,6 @@
 #include <dlfcn.h>
 #include "../permutate.h"
 
-// char* permutatorConfig = "{schema:{type: \"number\"},setSize: 1}";
-
-// void callback(char* permutation)
-// {
-
-// }
-
-// permutator(permutatorConfig, callback);
-
 typedef int (*lib_function) (const char *data);
 char *lib_file = "libpermutate.so";
 void *lib = NULL;
