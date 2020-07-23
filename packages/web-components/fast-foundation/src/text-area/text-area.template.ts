@@ -8,7 +8,6 @@ import { TextArea, TextAreaResize } from "./text-area";
 export const TextAreaTemplate = html<TextArea>`
     <template
         class="
-            ${x => x.appearance}
             ${x => (x.readOnly ? "readonly" : "")}
             ${x => (x.resize !== TextAreaResize.none ? `resize-${x.resize}` : "")}"
     >
