@@ -19,8 +19,8 @@ const emccFiles = ["wasm.c", "permutate.c"].concat(commonFiles).join(" ");
  * Test file needed for compilation
  */
 const staticTestFilesCompile = `gcc -Wall -L. "-Wl,-rpath,." -o test test.c -ldl -lpermutate -o test`;
-const dynamicTestFilesSetup = `gcc -Wall -c -fPIC permutate.c -o libpermutate.o`;
-const dynamicTestFilesCompile = `gcc -Wall -shared -fPIC -o libpermutate.so ${commonFiles.join(
+const sharedLibSetup = `gcc -Wall -c -fPIC permutate.c -o libpermutate.o`;
+const sharedLibCompile = `gcc -Wall -shared -fPIC -o libpermutate.so ${commonFiles.join(
     " "
 )} libpermutate.o`;
 
@@ -47,9 +47,12 @@ const emccSettings = [
 if (argv.test) {
     /**
      * Execute gcc commands to produce dynamic .so files for testing
+     * keep in mind that pathing is an issue, so these are created at the
+     * project directory and then moved to the testing directory to run
+     * the tests against
      */
     exec(
-        `${changeDir} && ${dynamicTestFilesSetup} && ${dynamicTestFilesCompile} && ${changeTestDir} && ${moveLib} && ${staticTestFilesCompile}`,
+        `${changeDir} && ${sharedLibSetup} && ${sharedLibCompile} && ${changeTestDir} && ${moveLib} && ${staticTestFilesCompile}`,
         (error, stdout, stderr) => {
             if (error) {
                 throw new Error(`error: ${error.message}`);
