@@ -171,8 +171,7 @@ export class Controller extends PropertyChangeNotifier {
     // @internal
     constructor(element: HTMLElement, definition: FASTElementDefinition);
     addBehaviors(behaviors: ReadonlyArray<Behavior>): void;
-    addStyles(styles: ElementStyles,
-    target?: StyleTarget | null): void;
+    addStyles(styles: ElementStyles): void;
     readonly definition: FASTElementDefinition;
     readonly element: HTMLElement;
     emit(type: string, detail?: any, options?: Omit<CustomEventInit, "detail">): void | boolean;
@@ -192,7 +191,7 @@ export class Controller extends PropertyChangeNotifier {
 export function css(strings: TemplateStringsArray, ...values: ComposableStyles[]): ElementStyles;
 
 // @public
-export function customElement(nameOrDef: string | PartialFASTElementDefinition): (type: Function) => void;
+export function customElement(nameOrDef: string | PartialFASTElementDefinition): (type: Function) => Function;
 
 // @public
 export type DecoratorAttributeConfiguration = Omit<AttributeConfiguration, "property">;
@@ -284,21 +283,24 @@ export const FASTElement: (new () => HTMLElement & FASTElement) & {
         new (): HTMLElement;
         prototype: HTMLElement;
     }>(BaseType: TBase): new () => InstanceType<TBase> & FASTElement;
-    define<TType extends Function>(Type: TType, nameOrDef?: string | PartialFASTElementDefinition): TType;
-    getDefinition<T_1 extends Function>(Type: T_1): FASTElementDefinition | undefined;
+    define<TType extends Function>(type: TType, nameOrDef?: string | PartialFASTElementDefinition | undefined): TType;
 };
 
 // @public
-export class FASTElementDefinition {
-    constructor(name: string, attributes: ReadonlyArray<AttributeDefinition>, propertyLookup: Record<string, AttributeDefinition>, attributeLookup: Record<string, AttributeDefinition>, template?: ElementViewTemplate, styles?: ComposableStyles, shadowOptions?: ShadowRootInit, elementOptions?: ElementDefinitionOptions);
+export class FASTElementDefinition<TType extends Function = Function> {
+    constructor(type: TType, nameOrConfig?: PartialFASTElementDefinition | string);
     readonly attributeLookup: Record<string, AttributeDefinition>;
     readonly attributes: ReadonlyArray<AttributeDefinition>;
+    define(registry?: CustomElementRegistry): this;
     readonly elementOptions?: ElementDefinitionOptions;
+    static forType<TType extends Function>(type: TType): FASTElementDefinition | undefined;
+    readonly isDefined: boolean;
     readonly name: string;
     readonly propertyLookup: Record<string, AttributeDefinition>;
     readonly shadowOptions?: ShadowRootInit;
     readonly styles?: ElementStyles;
     readonly template?: ElementViewTemplate;
+    readonly type: TType;
 }
 
 // @public

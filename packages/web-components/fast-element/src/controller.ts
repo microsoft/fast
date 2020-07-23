@@ -1,15 +1,20 @@
-import { FASTElementDefinition, fastDefinitions } from "./fast-definitions";
+import { FASTElementDefinition } from "./fast-definitions";
 import { ElementView } from "./view";
 import { PropertyChangeNotifier } from "./observation/notifier";
 import { defaultExecutionContext, Observable } from "./observation/observable";
 import { Behavior } from "./directives/behavior";
-import { ElementStyles, StyleTarget } from "./styles";
+import { ElementStyles } from "./styles";
 import { Mutable } from "./interfaces";
 
+const shadowRoots = new WeakMap<HTMLElement, ShadowRoot>();
 const defaultEventOptions: CustomEventInit = {
     bubbles: true,
     composed: true,
 };
+
+function getShadowRoot(element: HTMLElement): ShadowRoot | null {
+    return element.shadowRoot || shadowRoots.get(element) || null;
+}
 
 /**
  * Controls the lifecycle and rendering of a `FASTElement`.
@@ -18,6 +23,7 @@ const defaultEventOptions: CustomEventInit = {
 export class Controller extends PropertyChangeNotifier {
     private boundObservables: Record<string, any> | null = null;
     private behaviors: Behavior[] | null = null;
+    private needsInitialization = true;
 
     /**
      * The element being controlled by this controller.
@@ -55,25 +61,14 @@ export class Controller extends PropertyChangeNotifier {
         this.element = element;
         this.definition = definition;
 
-        const template = definition.template;
-        const styles = definition.styles;
-        const shadowRoot =
-            definition.shadowOptions === void 0
-                ? void 0
-                : element.attachShadow(definition.shadowOptions);
+        const shadowOptions = definition.shadowOptions;
 
-        if (template !== void 0) {
-            const view = (this.view = template.create(this.element));
+        if (shadowOptions !== void 0) {
+            const shadowRoot = element.attachShadow(shadowOptions);
 
-            if (shadowRoot === void 0) {
-                view.appendTo(element);
-            } else {
-                view.appendTo(shadowRoot);
+            if (shadowOptions.mode === "closed") {
+                shadowRoots.set(element, shadowRoot);
             }
-        }
-
-        if (styles !== void 0) {
-            this.addStyles(styles, shadowRoot);
         }
 
         // Capture any observable values that were set by the binding engine before
@@ -101,10 +96,9 @@ export class Controller extends PropertyChangeNotifier {
      * Adds styles to this element.
      * @param styles - The styles to add.
      */
-    public addStyles(
-        styles: ElementStyles,
-        /** @internal */ target: StyleTarget | null = this.element.shadowRoot
-    ): void {
+    public addStyles(styles: ElementStyles): void {
+        const target = getShadowRoot(this.element);
+
         if (target !== null) {
             styles.addStylesTo(target);
         }
@@ -121,7 +115,7 @@ export class Controller extends PropertyChangeNotifier {
      * @param styles - the styles to remove.
      */
     public removeStyles(styles: ElementStyles): void {
-        const target = this.element.shadowRoot;
+        const target = getShadowRoot(this.element);
 
         if (target !== null) {
             styles.removeStylesFrom(target);
@@ -194,21 +188,45 @@ export class Controller extends PropertyChangeNotifier {
         }
 
         const element = this.element;
-        const boundObservables = this.boundObservables;
+        let view: ElementView | null = this.view;
 
-        // If we have any observables that were bound, re-apply their values.
-        if (boundObservables !== null) {
-            const propertyNames = Object.keys(boundObservables);
+        if (this.needsInitialization) {
+            const boundObservables = this.boundObservables;
 
-            for (let i = 0, ii = propertyNames.length; i < ii; ++i) {
-                const propertyName = propertyNames[i];
-                (element as any)[propertyName] = boundObservables[propertyName];
+            // If we have any observables that were bound, re-apply their values.
+            if (boundObservables !== null) {
+                const propertyNames = Object.keys(boundObservables);
+
+                for (let i = 0, ii = propertyNames.length; i < ii; ++i) {
+                    const propertyName = propertyNames[i];
+                    (element as any)[propertyName] = boundObservables[propertyName];
+                }
+
+                this.boundObservables = null;
             }
 
-            this.boundObservables = null;
-        }
+            const definition = this.definition;
+            const template = definition.template;
+            const styles = definition.styles;
 
-        const view = this.view;
+            if (template !== void 0) {
+                view = (this as Mutable<this>).view = template.create(this.element);
+
+                const shadowRoot = getShadowRoot(element);
+
+                if (shadowRoot === null) {
+                    view.appendTo(element);
+                } else {
+                    view.appendTo(shadowRoot);
+                }
+            }
+
+            if (styles !== void 0) {
+                this.addStyles(styles);
+            }
+
+            this.needsInitialization = false;
+        }
 
         if (view !== null) {
             view.bind(element, defaultExecutionContext);
@@ -307,7 +325,7 @@ export class Controller extends PropertyChangeNotifier {
             return controller;
         }
 
-        const definition = fastDefinitions.get(element.constructor as any);
+        const definition = FASTElementDefinition.forType(element.constructor);
 
         if (definition === void 0) {
             throw new Error("Missing FASTElement definition.");
