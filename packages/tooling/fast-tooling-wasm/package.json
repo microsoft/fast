@@ -18,7 +18,7 @@
   "scripts": {
     "build": "yarn build:permutator",
     "build:permutator": "node ./permutator/build.js",
-    "test:permutator": "node ./permutator/build.js --test && ./permutator/__tests__/test",
+    "test:permutator": "node ./permutator/build.js --test && DYLD_FALLBACK_LIBRARY_PATH=\"./permutator/__tests__/\" ./permutator/__tests__/test",
     "start": "webpack-dev-server"
   },
   "devDependencies": {

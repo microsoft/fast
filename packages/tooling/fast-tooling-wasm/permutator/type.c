@@ -14,7 +14,9 @@ char* get_type_as_string(enum Type type)
         case String: return "string";
         case Boolean: return "boolean";
         case Null: return "null";
-        case Object: return "object";
         case Array: return "array";
+        case Object: return "object";
     }
+
+    return 0;
 }
