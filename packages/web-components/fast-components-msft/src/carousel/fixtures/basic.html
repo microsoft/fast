@@ -1,0 +1,231 @@
+<fast-design-system-provider use-defaults>
+    <style></style>
+    <h1>Carousel Basic</h1>
+    <h4>Default</h4>
+    <div>
+        <fast-carousel aria-label="test images" basicpattern>
+            <fast-carousel-test-slide>Slide 1</fast-carousel-test-slide>
+            <fast-carousel-test-slide even>Slide 2</fast-carousel-test-slide>
+            <fast-carousel-test-slide>Slide 3</fast-carousel-test-slide>
+            <fast-carousel-test-slide even>Slide 4</fast-carousel-test-slide>
+            <fast-carousel-test-slide>Slide 5</fast-carousel-test-slide>
+            <fast-carousel-test-slide even>Slide 6</fast-carousel-test-slide>
+        </fast-carousel>
+    </div>
+
+    <h4>Paused</h4>
+    <div>
+        <fast-carousel aria-label="test images" paused basicpattern>
+            <fast-carousel-test-slide>Slide 1</fast-carousel-test-slide>
+            <fast-carousel-test-slide even>Slide 2</fast-carousel-test-slide>
+            <fast-carousel-test-slide>Slide 3</fast-carousel-test-slide>
+            <fast-carousel-test-slide even>Slide 4</fast-carousel-test-slide>
+            <fast-carousel-test-slide>Slide 5</fast-carousel-test-slide>
+            <fast-carousel-test-slide even>Slide 6</fast-carousel-test-slide>
+        </fast-carousel>
+    </div>
+
+    <h4>Active Id Slide 3, No Autoplay, Width 700px</h4>
+    <div>
+        <fast-carousel
+            style="width: 700px;"
+            autoplay="false"
+            activeid="slide-3"
+            aria-label="test images"
+            basicpattern
+        >
+            <fast-carousel-test-slide>Slide 1</fast-carousel-test-slide>
+            <fast-carousel-test-slide even>Slide 2</fast-carousel-test-slide>
+            <fast-carousel-test-slide>Slide 3</fast-carousel-test-slide>
+            <fast-carousel-test-slide even>Slide 4</fast-carousel-test-slide>
+            <fast-carousel-test-slide>Slide 5</fast-carousel-test-slide>
+            <fast-carousel-test-slide even>Slide 6</fast-carousel-test-slide>
+        </fast-carousel>
+    </div>
+
+    <h4>All Slotted Items</h4>
+    <div>
+        <fast-carousel aria-label="test images" basicpattern>
+            <fast-carousel-test-slide>Slide 1</fast-carousel-test-slide>
+            <fast-carousel-test-slide even>Slide 2</fast-carousel-test-slide>
+            <fast-carousel-test-slide>Slide 3</fast-carousel-test-slide>
+            <fast-carousel-test-slide even>Slide 4</fast-carousel-test-slide>
+            <fast-carousel-test-slide>Slide 5</fast-carousel-test-slide>
+            <fast-carousel-test-slide even>Slide 6</fast-carousel-test-slide>
+            <fast-button appearance="accent" slot="rotation-control">
+                <svg
+                    viewBox="0 0 16 16"
+                    width="16px"
+                    height="16px"
+                    xmlns="http://www.w3.org/2000/svg"
+                >
+                    <path
+                        d="M14 8L4 15V1L14 8ZM5 13.0781L12.2578 8L5 2.92188V13.0781Z"
+                    ></path>
+                </svg>
+                <svg
+                    viewBox="0 0 16 16"
+                    width="16px"
+                    height="16px"
+                    xmlns="http://www.w3.org/2000/svg"
+                >
+                    <path d="M5 2H6V14H5V2ZM11 2V14H10V2H11Z"></path>
+                </svg>
+            </fast-button>
+            <fast-button appearance="accent" slot="next-button">
+                <svg
+                    viewBox="0 0 16 16"
+                    width="16px"
+                    height="16px"
+                    xmlns="http://www.w3.org/2000/svg"
+                >
+                    <path
+                        d="M15.9531 8L8.60156 15.3516L7.89844 14.6484L14.0469 8.5H0V7.5H14.0469L7.89844 1.35156L8.60156 0.648438L15.9531 8Z"
+                    ></path>
+                </svg>
+            </fast-button>
+            <fast-button appearance="accent" slot="previous-button">
+                <svg
+                    viewBox="0 0 16 16"
+                    width="16px"
+                    height="16px"
+                    xmlns="http://www.w3.org/2000/svg"
+                >
+                    <path
+                        d="M16 8.5H1.95312L8.10156 14.6484L7.39844 15.3516L0.046875 8L7.39844 0.648438L8.10156 1.35156L1.95312 7.5H16V8.5Z"
+                    ></path>
+                </svg>
+            </fast-button>
+        </fast-carousel>
+    </div>
+
+    <h4>Slotted Items, Tabbable Content</h4>
+    <div>
+        <fast-carousel aria-label="test images" basicpattern>
+            <fast-carousel-test-slide>
+                <button>Slide 1</button>
+            </fast-carousel-test-slide>
+            <fast-carousel-test-slide even>
+                <button>Slide 2</button>
+            </fast-carousel-test-slide>
+            <fast-carousel-test-slide>
+                <button>Slide 3</button>
+            </fast-carousel-test-slide>
+            <fast-carousel-test-slide even>
+                <button>Slide 4</button>
+            </fast-carousel-test-slide>
+            <fast-carousel-test-slide>
+                <button>Slide 5</button>
+            </fast-carousel-test-slide>
+            <fast-carousel-test-slide even>
+                <button>Slide 6</button>
+            </fast-carousel-test-slide>
+            <fast-button appearance="accent" slot="next-button">
+                <svg
+                    viewBox="0 0 16 16"
+                    width="16px"
+                    height="16px"
+                    xmlns="http://www.w3.org/2000/svg"
+                >
+                    <path
+                        d="M15.9531 8L8.60156 15.3516L7.89844 14.6484L14.0469 8.5H0V7.5H14.0469L7.89844 1.35156L8.60156 0.648438L15.9531 8Z"
+                    ></path>
+                </svg>
+            </fast-button>
+            <fast-button appearance="accent" slot="previous-button">
+                <svg
+                    viewBox="0 0 16 16"
+                    width="16px"
+                    height="16px"
+                    xmlns="http://www.w3.org/2000/svg"
+                >
+                    <path
+                        d="M16 8.5H1.95312L8.10156 14.6484L7.39844 15.3516L0.046875 8L7.39844 0.648438L8.10156 1.35156L1.95312 7.5H16V8.5Z"
+                    ></path>
+                </svg>
+            </fast-button>
+        </fast-carousel>
+    </div>
+
+    <h4>Width 700px, Height 300px, ARIA label tests</h4>
+    <div>
+        <fast-carousel
+            style="width: 700px; height: 300px;"
+            basicpattern
+            aria-label="test images"
+            basicpattern
+        >
+            <fast-carousel-test-slide aria-labelledby="slide-one-span-aria-test">
+                <span id="slide-one-span-aria-test">Slide 1</span>
+            </fast-carousel-test-slide>
+            <fast-carousel-test-slide even aria-label="slide two">
+                Slide 2
+            </fast-carousel-test-slide>
+            <fast-carousel-test-slide>Slide 3</fast-carousel-test-slide>
+            <fast-carousel-test-slide even>Slide 4</fast-carousel-test-slide>
+        </fast-carousel>
+    </div>
+
+    <h4 id="labelledby-test">No Looping, No Autoplay</h4>
+    <div>
+        <fast-carousel
+            loop="false"
+            basicpattern
+            autoplay="false"
+            aria-labelledby="labelledby-test"
+            basicpattern
+        >
+            <fast-carousel-test-slide>Slide 1</fast-carousel-test-slide>
+            <fast-carousel-test-slide even>Slide 2</fast-carousel-test-slide>
+            <fast-carousel-test-slide>Slide 3</fast-carousel-test-slide>
+            <fast-carousel-test-slide even>Slide 4</fast-carousel-test-slide>
+            <fast-carousel-test-slide>Slide 5</fast-carousel-test-slide>
+            <fast-carousel-test-slide even>Slide 6</fast-carousel-test-slide>
+        </fast-carousel>
+    </div>
+    <h4>Default 40 Slides</h4>
+    <div>
+        <fast-carousel aria-label="test images" basicpattern>
+            <fast-carousel-test-slide>Slide 1</fast-carousel-test-slide>
+            <fast-carousel-test-slide even>Slide 2</fast-carousel-test-slide>
+            <fast-carousel-test-slide>Slide 3</fast-carousel-test-slide>
+            <fast-carousel-test-slide even>Slide 4</fast-carousel-test-slide>
+            <fast-carousel-test-slide>Slide 5</fast-carousel-test-slide>
+            <fast-carousel-test-slide even>Slide 6</fast-carousel-test-slide>
+            <fast-carousel-test-slide>Slide 7</fast-carousel-test-slide>
+            <fast-carousel-test-slide even>Slide 8</fast-carousel-test-slide>
+            <fast-carousel-test-slide>Slide 9</fast-carousel-test-slide>
+            <fast-carousel-test-slide even>Slide 10</fast-carousel-test-slide>
+            <fast-carousel-test-slide>Slide 11</fast-carousel-test-slide>
+            <fast-carousel-test-slide even>Slide 12</fast-carousel-test-slide>
+            <fast-carousel-test-slide>Slide 13</fast-carousel-test-slide>
+            <fast-carousel-test-slide even>Slide 14</fast-carousel-test-slide>
+            <fast-carousel-test-slide>Slide 15</fast-carousel-test-slide>
+            <fast-carousel-test-slide even>Slide 16</fast-carousel-test-slide>
+            <fast-carousel-test-slide>Slide 17</fast-carousel-test-slide>
+            <fast-carousel-test-slide even>Slide 18</fast-carousel-test-slide>
+            <fast-carousel-test-slide>Slide 19</fast-carousel-test-slide>
+            <fast-carousel-test-slide even>Slide 20</fast-carousel-test-slide>
+            <fast-carousel-test-slide>Slide 31</fast-carousel-test-slide>
+            <fast-carousel-test-slide even>Slide 32</fast-carousel-test-slide>
+            <fast-carousel-test-slide>Slide 33</fast-carousel-test-slide>
+            <fast-carousel-test-slide even>Slide 34</fast-carousel-test-slide>
+            <fast-carousel-test-slide>Slide 35</fast-carousel-test-slide>
+            <fast-carousel-test-slide even>Slide 36</fast-carousel-test-slide>
+            <fast-carousel-test-slide>Slide 37</fast-carousel-test-slide>
+            <fast-carousel-test-slide even>Slide 38</fast-carousel-test-slide>
+            <fast-carousel-test-slide>Slide 39</fast-carousel-test-slide>
+            <fast-carousel-test-slide even>Slide 40</fast-carousel-test-slide>
+            <fast-carousel-test-slide>Slide 31</fast-carousel-test-slide>
+            <fast-carousel-test-slide even>Slide 32</fast-carousel-test-slide>
+            <fast-carousel-test-slide>Slide 33</fast-carousel-test-slide>
+            <fast-carousel-test-slide even>Slide 34</fast-carousel-test-slide>
+            <fast-carousel-test-slide>Slide 35</fast-carousel-test-slide>
+            <fast-carousel-test-slide even>Slide 36</fast-carousel-test-slide>
+            <fast-carousel-test-slide>Slide 37</fast-carousel-test-slide>
+            <fast-carousel-test-slide even>Slide 38</fast-carousel-test-slide>
+            <fast-carousel-test-slide>Slide 39</fast-carousel-test-slide>
+            <fast-carousel-test-slide even>Slide 40</fast-carousel-test-slide>
+        </fast-carousel>
+    </div>
+</fast-design-system-provider>
