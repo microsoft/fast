@@ -10,7 +10,7 @@ Here you'll find specifications for custom elements and other library features.
 | [Accordion](../packages/web-components/fast-foundation/src/accordion/accordion-spec.md) | :white_check_mark: | :white_check_mark: |
 | Alert | -- | -- |
 | [Anchored region](../packages/web-components/fast-foundation/src/anchored-region/anchored-region.spec.md) | :white_check_mark: | :white_check_mark: |
-| Avatar | -- | -- |
+| [Avatar](./avatar.md) | :white_check_mark: | -- |
 | [Badge](../packages/web-components/fast-foundation/src/badge/badge.spec.md) | :white_check_mark: | :white_check_mark: |
 | Breadcrumb | -- | -- |
 | [Card](../packages/web-components/fast-foundation/src/card/card.spec.md) | :white_check_mark: | :white_check_mark: |
