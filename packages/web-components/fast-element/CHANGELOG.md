@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.15.1](https://github.com/Microsoft/fast/compare/@microsoft/fast-element@0.15.0...@microsoft/fast-element@0.15.1) (2020-07-23)
+
+
+### Bug Fixes
+
+* rollup minify selectors should retain spaces ([#3524](https://github.com/Microsoft/fast/issues/3524)) ([cbdfc45](https://github.com/Microsoft/fast/commit/cbdfc45c2543fe9f94e0edc7687cc9f04a38e118))
+
+
+
+
+
 # [0.15.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-element@0.14.0...@microsoft/fast-element@0.15.0) (2020-07-14)
 
 
