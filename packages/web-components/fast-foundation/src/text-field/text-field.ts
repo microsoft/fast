@@ -4,22 +4,6 @@ import { ARIAGlobalStatesAndProperties, StartEnd } from "../patterns/index";
 import { applyMixins } from "../utilities/index";
 
 /**
- * Text field appearances
- * @public
- */
-export enum TextFieldAppearance {
-    /**
-     * A solid, filled appearance.
-     */
-    filled = "filled",
-
-    /**
-     * A light, outline appearance.
-     */
-    outline = "outline",
-}
-
-/**
  * Text field sub-types
  * @public
  */
@@ -57,16 +41,6 @@ export enum TextFieldType {
  * @public
  */
 export class TextField extends FormAssociated<HTMLInputElement> {
-    /**
-     * The appearance of the element.
-     *
-     * @public
-     * @remarks
-     * HTML Attribute: appearance
-     */
-    @attr
-    public appearance: TextFieldAppearance = TextFieldAppearance.outline;
-
     /**
      * When true, the control will be immutable by user interaction. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly | readonly HTML attribute} for more information.
      * @public

@@ -558,10 +558,20 @@ export class FASTTabs extends Tabs {
 
 // @public
 export class FASTTextArea extends TextArea {
+    appearance: TextAreaAppearance;
+    // @internal (undocumented)
+    appearanceChanged(oldValue: TextAreaAppearance, newValue: TextAreaAppearance): void;
+    // @internal (undocumented)
+    connectedCallback(): void;
 }
 
 // @public
 export class FASTTextField extends TextField {
+    appearance: TextFieldAppearance;
+    // @internal (undocumented)
+    appearanceChanged(oldValue: TextFieldAppearance, newValue: TextFieldAppearance): void;
+    // @internal (undocumented)
+    connectedCallback(): void;
 }
 
 // @public
@@ -957,6 +967,12 @@ export enum StandardLuminance {
     // (undocumented)
     LightMode = 1
 }
+
+// @public
+export type TextAreaAppearance = "filled" | "outline";
+
+// @public
+export type TextFieldAppearance = "filled" | "outline";
 
 
 // (No @packageDocumentation comment for this package)
