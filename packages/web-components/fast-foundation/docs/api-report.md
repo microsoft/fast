@@ -807,9 +807,10 @@ export class TreeItem extends FASTElement {
     // (undocumented)
     handleKeyDown: (e: KeyboardEvent) => void | boolean;
     // (undocumented)
-    isNestedItem(): null | boolean;
+    readonly isNestedItem: () => boolean;
     // (undocumented)
     items: HTMLElement[];
+    // @internal (undocumented)
     nested: boolean;
     // (undocumented)
     renderCollapsedChildren: boolean;
