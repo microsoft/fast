@@ -118,7 +118,8 @@ export class Slider extends FormAssociated<HTMLInputElement>
      *
      * @public
      */
-    @observable valueTextFormatter: (value: string) => string | null = () => null;
+    @observable
+    public valueTextFormatter: (value: string) => string | null = () => null;
 
     /**
      * The element's value to be included in form submission changed.
