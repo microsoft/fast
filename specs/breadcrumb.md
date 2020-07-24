@@ -37,7 +37,7 @@ He clicks on `Kitchen and Dining` to go back to the category of kitchen items, s
 ```
 
 *Slot Names*
-- default slot for items
+- default slot for items.
 
 ---
 
@@ -46,10 +46,10 @@ He clicks on `Kitchen and Dining` to go back to the category of kitchen items, s
 ```html
 <fast-breadcrumb>
     <fast-breadcrumb-item>
-        <fast-anchor appearance="lightweight">Home</fast-anchor>
+        <fast-anchor appearance="lightweight" href="#">Home</fast-anchor>
     </fast-breadcrumb-item>
     <fast-breadcrumb-item>
-        <fast-anchor appearance="lightweight">Templates</fast-anchor>
+        <fast-anchor appearance="lightweight" href="#">Templates</fast-anchor>
     </fast-breadcrumb-item>
     <fast-breadcrumb-item aria-current="page">
         <fast-anchor appearance="lightweight">Template Prices</fast-anchor>
@@ -82,12 +82,16 @@ The `fast-breadcrumb-item` is placed inside the `fast-breadcrumb` component. It 
 *Component Name*
 - `fast-breadcrumb-item`
 
+ *Attributes:*
+- `aria-current` - aria attribute set on the last item of breadcrumb.
+- `separator` - a divider between two breadcrumb items. The default of this attribute is `/`.
+
 *Slots*
-- default slot for element
+- default slot for element.
 - `separator` - used as part of the visual presentation that signifies the breadcrumb trail. The separator is defaulted to a `/`, but authors can override to use an `svg`.
 
 *CSS Parts*
-- `separator` - there is a style to adjust margin and another to hide the separator when a breadrumb item is set to `aria-current="page"`
+- `separator` - there is a style to adjust margin and another to hide the separator when a breadrumb item is set to `aria-current="page"`.
 
 ### Anatomy and Appearance
 
@@ -96,7 +100,6 @@ The `fast-breadcrumb-item` is placed inside the `fast-breadcrumb` component. It 
     role="listitem"
     class="content"
     part="content"
-    tabindex="0"
     aria-current="${x => x.ariaCurrent}"
 >
     <slot></slot>
@@ -114,15 +117,15 @@ The `fast-breadcrumb-item` is placed inside the `fast-breadcrumb` component. It 
 
 ```html
 <fast-breadcrumb-item>
-    <fast-anchor appearance="lightweight">Home</fast-anchor>
+    <fast-anchor appearance="lightweight" href="#">Home</fast-anchor>
 </fast-breadcrumb-item>
 ```
 
-*Overriding separator*
+*Overriding default separator*
 
 ```html
 <fast-breadcrumb-item>
-    <fast-anchor appearance="lightweight">Home</fast-anchor>
+    <fast-anchor appearance="lightweight" href="#">Home</fast-anchor>
     <span slot="separator">
         <svg>
             <path .../>
