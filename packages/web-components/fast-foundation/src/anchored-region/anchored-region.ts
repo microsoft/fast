@@ -377,21 +377,16 @@ export class AnchoredRegion extends FASTElement {
     }
 
     /**
-     * Public function to enable authors to update the layout based on changes in anchor offset
-     * allows "fill" regions to scale as parent viewports scroll, or to provoke positioning to change
-     * without an intersection event with the viewport
+     * update position
      */
-    public updateAnchorOffset = (
-        horizontalOffsetDelta: number,
-        verticalOffsetDelta: number
-    ): void => {
-        this.anchorLeft = this.anchorLeft + horizontalOffsetDelta;
-        this.anchorRight = this.anchorRight + horizontalOffsetDelta;
+    public update = (): void => {
+        if (this.useGbcr === "always" || this.noIntersectionMode) {
+            this.updateGeometry();
+            return;
+        }
 
-        this.anchorTop = this.anchorTop + verticalOffsetDelta;
-        this.anchorBottom = this.anchorBottom + verticalOffsetDelta;
-
-        this.requestLayoutUpdate();
+        this.stopObservers();
+        this.startObservers();
     };
 
     /**
@@ -641,8 +636,12 @@ export class AnchoredRegion extends FASTElement {
             this.requestLayoutUpdate();
         } else {
             if (!this.noIntersectionMode) {
-                this.applyIntersectionEntries(entries);
-                this.requestLayoutUpdate();
+                if (entries.length === 2) {
+                    this.applyIntersectionEntries(entries);
+                    this.requestLayoutUpdate();
+                } else {
+                    this.update();
+                }
             }
         }
     };
@@ -791,7 +790,6 @@ export class AnchoredRegion extends FASTElement {
 
     /**
      * when there is not intersection observer this function is queued to update layout
-     * on the first pass
      */
     private updateGeometry = (): void => {
         let regionRect: DOMRect | ClientRect | null = this.applyNoIntersectionMode();

@@ -48,20 +48,12 @@ function showRegions(): void {
 
 function handleScalingViewportScroll(ev: Event): void {
     if (ev.target instanceof HTMLElement) {
-        const scroller: HTMLElement = ev.target as HTMLElement;
-
         const scalingRegion: HTMLElement | null = document.getElementById(
             "region-scaling"
         );
         if (scalingRegion instanceof FASTAnchoredRegion) {
-            (scalingRegion as any).updateAnchorOffset(
-                scalingViewportPreviousXValue - scroller.scrollLeft,
-                scalingViewportPreviousYValue - scroller.scrollTop
-            );
+            (scalingRegion as any).update();
         }
-
-        scalingViewportPreviousXValue = scroller.scrollLeft;
-        scalingViewportPreviousYValue = scroller.scrollTop;
     }
 }
 
