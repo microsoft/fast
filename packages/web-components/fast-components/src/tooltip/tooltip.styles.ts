@@ -1,15 +1,9 @@
 import { css } from "@microsoft/fast-element";
-import {
-    disabledCursor,
-    display,
-    focusVisible,
-    forcedColorsStylesheetBehavior,
-} from "@microsoft/fast-foundation";
+import { forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
 import {
     accentFillActiveBehavior,
     accentFillHoverBehavior,
     accentFillRestBehavior,
-    heightNumber,
     neutralFillHoverBehavior,
     neutralFillInputActiveBehavior,
     neutralFillInputHoverBehavior,
@@ -43,22 +37,23 @@ export const TooltipStyles = css`
         font-size: var(--type-ramp-base-font-size);
         line-height: var(--type-ramp-base-line-height);
         white-space: nowrap;
+        z-index: 10000;
     }
 
-    fast-anchored-region::part(region) {
+    fast-anchored-region {
         display: flex;
         justify-content: center;
         align-items: center;
         overflow: visible;
     }
 
-    :host(.top) fast-anchored-region::part(region),
-    :host(.bottom) fast-anchored-region::part(region) {
+    :host(.top) fast-anchored-region,
+    :host(.bottom) fast-anchored-region {
         flex-direction: row;
     }
 
-    :host(.right) fast-anchored-region::part(region),
-    :host(.left) fast-anchored-region::part(region) {
+    :host(.right) fast-anchored-region,
+    :host(.left) fast-anchored-region {
         flex-direction: column;
     }
 
