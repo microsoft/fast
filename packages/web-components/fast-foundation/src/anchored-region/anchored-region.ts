@@ -431,6 +431,7 @@ export class AnchoredRegion extends FASTElement {
     private initialize(): void {
         this.initializeResizeDetector();
         this.initializeIntersectionDetector();
+        this.setInitialState();
         this.requestReset();
     }
 
@@ -526,7 +527,6 @@ export class AnchoredRegion extends FASTElement {
         if (
             this.anchorElement === null ||
             this.viewportElement === null ||
-            this.offsetParent === null ||
             !this.viewportElement.contains(this.anchorElement)
         ) {
             return;
@@ -540,7 +540,7 @@ export class AnchoredRegion extends FASTElement {
         if (this.resizeDetector !== null) {
             this.resizeDetector.observe(this.anchorElement);
             this.resizeDetector.observe(this);
-            if (this.offsetParent !== null || this.offsetParent !== document.body) {
+            if (this.offsetParent !== null && this.offsetParent !== document.body) {
                 this.resizeDetector.observe(this.offsetParent);
             }
         }
@@ -689,7 +689,7 @@ export class AnchoredRegion extends FASTElement {
         let regionRect: DOMRect | ClientRect | null = null;
         entries.forEach((entry: IntersectionObserverEntry) => {
             if (entry.target === this) {
-                this.handleRegionIntersection(entry, entries.length === 1);
+                this.handleRegionIntersection(entry);
                 regionRect = entry.boundingClientRect;
             } else {
                 this.handleAnchorIntersection(entry);
@@ -714,62 +714,13 @@ export class AnchoredRegion extends FASTElement {
     /**
      *  Update data based on positioner intersections
      */
-    private handleRegionIntersection = (
-        regionEntry: IntersectionObserverEntry,
-        shouldDeriveAnchorPosition: boolean
-    ): void => {
+    private handleRegionIntersection = (regionEntry: IntersectionObserverEntry): void => {
         this.viewportRect = regionEntry.rootBounds;
         const regionRect: ClientRect | DOMRect = regionEntry.boundingClientRect;
         this.regionDimension = {
             height: regionRect.height,
             width: regionRect.width,
         };
-
-        if (shouldDeriveAnchorPosition) {
-            switch (this.verticalPosition) {
-                case AnchoredRegionVerticalPositionLabel.top:
-                    this.anchorTop = regionRect.bottom;
-                    this.anchorBottom = this.anchorTop + this.anchorHeight;
-                    break;
-
-                case AnchoredRegionVerticalPositionLabel.insetTop:
-                    this.anchorBottom = regionRect.bottom;
-                    this.anchorTop = this.anchorBottom - this.anchorHeight;
-                    break;
-
-                case AnchoredRegionVerticalPositionLabel.insetBottom:
-                    this.anchorTop = regionRect.top;
-                    this.anchorBottom = this.anchorTop + this.anchorHeight;
-                    break;
-
-                case AnchoredRegionVerticalPositionLabel.bottom:
-                    this.anchorBottom = regionRect.top;
-                    this.anchorTop = this.anchorBottom - this.anchorHeight;
-                    break;
-            }
-
-            switch (this.horizontalPosition) {
-                case AnchoredRegionHorizontalPositionLabel.left:
-                    this.anchorLeft = regionRect.right;
-                    this.anchorRight = this.anchorLeft + this.anchorWidth;
-                    break;
-
-                case AnchoredRegionHorizontalPositionLabel.insetLeft:
-                    this.anchorRight = regionRect.right;
-                    this.anchorLeft = this.anchorRight - this.anchorWidth;
-                    break;
-
-                case AnchoredRegionHorizontalPositionLabel.insetRight:
-                    this.anchorLeft = regionRect.left;
-                    this.anchorRight = this.anchorLeft + this.anchorWidth;
-                    break;
-
-                case AnchoredRegionHorizontalPositionLabel.right:
-                    this.anchorRight = regionRect.left;
-                    this.anchorLeft = this.anchorRight - this.anchorWidth;
-                    break;
-            }
-        }
     };
 
     /**
@@ -1054,8 +1005,7 @@ export class AnchoredRegion extends FASTElement {
             this.horizontalPosition === AnchoredRegionHorizontalPositionLabel.insetRight
         );
 
-        this.style.position =
-            this.fixedPlacement && this.initialLayoutComplete ? "fixed" : "absolute";
+        this.style.position = this.fixedPlacement ? "fixed" : "absolute";
         this.style.transformOrigin = `${this.yTransformOrigin} ${this.xTransformOrigin}`;
         this.style.opacity = this.initialLayoutComplete ? "1" : "0";
 
