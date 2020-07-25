@@ -44,8 +44,19 @@ A common use case would be to display an image or text (usually initials) of a u
 *Template*
 ```
 <div class="coin">
-  <slot></slot>
+  <a href="${ x => x.link}">
+    <span class="name">
+      ${x => x.name}
+    </span>
+    ${when(x => x.imgSrc, html<TestAvatar>`
+      <img class="photo"
+        alt="${ x => x.altText }" 
+        src="${ x => x.imgSrc }" />
+    `)}
+
+  </a>
 </div>
+<slot class="badge" name="badge"></slot>
 ```
 
 ---
@@ -53,17 +64,22 @@ A common use case would be to display an image or text (usually initials) of a u
 ## Implementation
 
 ```
-<fast-avatar>
-  <img alt="..." src="..." />
-</fast-avatar>
+<test-avatar 
+  imgSrc=""
+  altText="Jenny's profile image"
+  link="">
+</test-avatar>
 ```
 
 With `fast-badge` Component:
 ```
-<fast-avatar>
-  <img alt="..." src="..." />
-  <fast-badge></fast-badge>
-</fast-avatar>
+<test-avatar 
+  altText="Jenny's profile image"
+  link="">
+  <fast-badge slot="badge" 
+    fill="primary"
+    circular=>C</fast-badge>
+</test-avatar>
 ```
 
 ### Accessibility
