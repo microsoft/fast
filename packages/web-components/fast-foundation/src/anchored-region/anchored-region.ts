@@ -390,6 +390,23 @@ export class AnchoredRegion extends FASTElement {
     };
 
     /**
+     * Public function to enable authors to update the layout based on changes in anchor offset without resorting
+     * to a more epensive update call
+     */
+    public updateAnchorOffset = (
+        horizontalOffsetDelta: number,
+        verticalOffsetDelta: number
+    ): void => {
+        this.anchorLeft = this.anchorLeft + horizontalOffsetDelta;
+        this.anchorRight = this.anchorRight + horizontalOffsetDelta;
+
+        this.anchorTop = this.anchorTop + verticalOffsetDelta;
+        this.anchorBottom = this.anchorBottom + verticalOffsetDelta;
+
+        this.requestLayoutUpdate();
+    };
+
+    /**
      * destroys the instance's resize observer
      */
     private disconnectResizeDetector(): void {
@@ -729,12 +746,10 @@ export class AnchoredRegion extends FASTElement {
         entries.forEach((entry: ResizeObserverEntry) => {
             if (entry.target === this) {
                 this.handleRegionResize(entry);
-            } else if (entry.target === this.anchorElement) {
-                this.handleAnchorResize(entry);
+            } else {
+                this.update();
             }
         });
-
-        this.requestLayoutUpdate();
     };
 
     /**
@@ -759,32 +774,6 @@ export class AnchoredRegion extends FASTElement {
             case "anchor":
                 this.regionDimension.height = this.anchorHeight;
                 break;
-        }
-    };
-
-    /**
-     *  Handle anchor resize events
-     */
-    private handleAnchorResize = (entry: ResizeObserverEntry): void => {
-        this.anchorHeight = entry.contentRect.height;
-        this.anchorWidth = entry.contentRect.width;
-
-        if (
-            this.verticalPosition === AnchoredRegionVerticalPositionLabel.top ||
-            this.verticalPosition === AnchoredRegionVerticalPositionLabel.insetTop
-        ) {
-            this.anchorBottom = this.anchorTop + this.anchorHeight;
-        } else {
-            this.anchorTop = this.anchorBottom - this.anchorHeight;
-        }
-
-        if (
-            this.horizontalPosition === AnchoredRegionHorizontalPositionLabel.left ||
-            this.horizontalPosition === AnchoredRegionHorizontalPositionLabel.insetLeft
-        ) {
-            this.anchorRight = this.anchorLeft + this.anchorWidth;
-        } else {
-            this.anchorLeft = this.anchorRight - this.anchorWidth;
         }
     };
 

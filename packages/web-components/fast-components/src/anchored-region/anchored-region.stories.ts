@@ -16,13 +16,19 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
     if (name.toLowerCase().startsWith("anchored-region")) {
         scrollViewports();
         setButtonActions();
-        showRegions();
 
-        const scalingViewport: HTMLElement | null = document.getElementById(
-            "viewport-scaling"
+        const scalingViewportUpdate: HTMLElement | null = document.getElementById(
+            "viewport-scaling-update"
         );
-        if (scalingViewport !== null) {
-            scalingViewport.addEventListener("scroll", handleScalingViewportScroll);
+        if (scalingViewportUpdate !== null) {
+            scalingViewportUpdate.addEventListener("scroll", handleScrollViaUpdate);
+        }
+
+        const scalingViewportOffset: HTMLElement | null = document.getElementById(
+            "viewport-scaling-offset"
+        );
+        if (scalingViewportUpdate !== null) {
+            scalingViewportUpdate.addEventListener("scroll", handleScrollViaOffset);
         }
     }
 });
@@ -40,20 +46,33 @@ function scrollViewports(): void {
     });
 }
 
-function showRegions(): void {
-    document.querySelectorAll("anchored-region").forEach(el => {
-        //(el as HTMLElement).hidden = false;
-    });
+function handleScrollViaUpdate(ev: Event): void {
+    if (ev.target instanceof HTMLElement) {
+        const scalingRegionUpdate: HTMLElement | null = document.getElementById(
+            "region-scaling-update"
+        );
+        if (scalingRegionUpdate instanceof FASTAnchoredRegion) {
+            (scalingRegionUpdate as any).update();
+        }
+    }
 }
 
-function handleScalingViewportScroll(ev: Event): void {
+function handleScrollViaOffset(ev: Event): void {
     if (ev.target instanceof HTMLElement) {
-        const scalingRegion: HTMLElement | null = document.getElementById(
-            "region-scaling"
+        const scroller: HTMLElement = ev.target as HTMLElement;
+
+        const scalingRegionOffset: HTMLElement | null = document.getElementById(
+            "region-scaling-offset"
         );
-        if (scalingRegion instanceof FASTAnchoredRegion) {
-            (scalingRegion as any).update();
+        if (scalingRegionOffset instanceof FASTAnchoredRegion) {
+            (scalingRegionOffset as any).updateAnchorOffset(
+                scalingViewportPreviousXValue - scroller.scrollLeft,
+                scalingViewportPreviousYValue - scroller.scrollTop
+            );
         }
+
+        scalingViewportPreviousXValue = scroller.scrollLeft;
+        scalingViewportPreviousYValue = scroller.scrollTop;
     }
 }
 
