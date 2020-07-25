@@ -74,8 +74,12 @@ class Preview extends Foundation<{}, {}, PreviewState> {
         if (this.state.dataDictionary !== undefined) {
             return (
                 <React.Fragment>
-                    <div dir={this.state.direction} ref={this.ref}><div /></div>
-                    <div ref={this.activeDictionaryItemWrapperRef}><div /></div>
+                    <div dir={this.state.direction} ref={this.ref}>
+                        <div />
+                    </div>
+                    <div ref={this.activeDictionaryItemWrapperRef}>
+                        <div />
+                    </div>
                 </React.Fragment>
             );
         }
@@ -160,7 +164,10 @@ class Preview extends Foundation<{}, {}, PreviewState> {
             );
 
             if (this.ref.current.lastChild) {
-                this.ref.current.replaceChild(designSystemProvider, this.ref.current.lastChild);
+                this.ref.current.replaceChild(
+                    designSystemProvider,
+                    this.ref.current.lastChild
+                );
             }
             this.attachActiveDictionaryIdWrapper();
         }
@@ -178,7 +185,7 @@ class Preview extends Foundation<{}, {}, PreviewState> {
         if (activeElement) {
             createWrapper(this.activeDictionaryItemWrapperRef, activeElement);
         }
-    }
+    };
 
     private handleMessage = (message: MessageEvent): void => {
         if (message.origin === location.origin) {
