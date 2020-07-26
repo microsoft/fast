@@ -848,6 +848,40 @@ export class TreeView extends FASTElement {
 // @public
 export const TreeViewTemplate: import("@microsoft/fast-element").ViewTemplate<TreeView, any>;
 
+// @public (undocumented)
+export class UnityHost extends FASTElement {
+    constructor();
+    // (undocumented)
+    buildjsonpath: string;
+    // (undocumented)
+    connectedCallback(): void;
+    // (undocumented)
+    contentLoaded: boolean;
+    // (undocumented)
+    disconnectedCallback(): void;
+    // (undocumented)
+    hostElement: HTMLElement;
+    // (undocumented)
+    hostStyle: string;
+    // (undocumented)
+    loadProgress: number;
+    // (undocumented)
+    messageUnity: (targetGameObject: string, targetFunction: string, param: any) => void;
+    // (undocumented)
+    subscribeEvent: (eventName: string, callback: Function) => void;
+    // (undocumented)
+    targetid: string;
+    // (undocumented)
+    uniqueId: string;
+    // (undocumented)
+    unityloaderpath: string;
+    // (undocumented)
+    unsubscribeEvent: (eventName: string, callback: Function) => void;
+}
+
+// @public (undocumented)
+export const UnityHostTemplate: import("@microsoft/fast-element").ViewTemplate<UnityHost, any>;
+
 
 // (No @packageDocumentation comment for this package)
 
