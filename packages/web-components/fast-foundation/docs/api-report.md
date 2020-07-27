@@ -537,7 +537,8 @@ export class Slider extends FormAssociated<HTMLInputElement> implements SliderCo
     // @internal (undocumented)
     trackWidth: number;
     value: string;
-    }
+    valueTextFormatter: (value: string) => string | null;
+}
 
 // @public
 export interface SliderConfiguration {
@@ -688,7 +689,6 @@ export const TabTemplate: import("@microsoft/fast-element").ViewTemplate<Tab, an
 //
 // @public
 export class TextArea extends FormAssociated<HTMLTextAreaElement> {
-    appearance: TextAreaAppearance;
     autofocus: boolean;
     cols: number;
     // @internal (undocumented)
@@ -720,12 +720,6 @@ export interface TextArea extends DelegatesARIATextbox {
 }
 
 // @public
-export enum TextAreaAppearance {
-    filled = "filled",
-    outline = "outline"
-}
-
-// @public
 export enum TextAreaResize {
     both = "both",
     horizontal = "horizontal",
@@ -741,7 +735,6 @@ export const TextAreaTemplate: import("@microsoft/fast-element").ViewTemplate<Te
 //
 // @public
 export class TextField extends FormAssociated<HTMLInputElement> {
-    appearance: TextFieldAppearance;
     autofocus: boolean;
     // @internal (undocumented)
     connectedCallback(): void;
@@ -766,12 +759,6 @@ export class TextField extends FormAssociated<HTMLInputElement> {
 
 // @internal
 export interface TextField extends StartEnd, DelegatesARIATextbox {
-}
-
-// @public
-export enum TextFieldAppearance {
-    filled = "filled",
-    outline = "outline"
 }
 
 // @public
@@ -818,9 +805,10 @@ export class TreeItem extends FASTElement {
     // (undocumented)
     handleKeyDown: (e: KeyboardEvent) => void | boolean;
     // (undocumented)
-    isNestedItem(): null | boolean;
+    readonly isNestedItem: () => boolean;
     // (undocumented)
     items: HTMLElement[];
+    // @internal (undocumented)
     nested: boolean;
     // (undocumented)
     renderCollapsedChildren: boolean;

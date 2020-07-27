@@ -4,22 +4,6 @@ import { DelegatesARIATextbox } from "../text-field/index";
 import { applyMixins } from "../utilities";
 
 /**
- * Text area appearances
- * @public
- */
-export enum TextAreaAppearance {
-    /**
-     * A solid, filled appearance.
-     */
-    filled = "filled",
-
-    /**
-     * A light, outline appearance.
-     */
-    outline = "outline",
-}
-
-/**
  * Resize mode for a TextArea
  * @public
  */
@@ -52,16 +36,6 @@ export enum TextAreaResize {
  * @public
  */
 export class TextArea extends FormAssociated<HTMLTextAreaElement> {
-    /**
-     * The appearance of the element.
-     *
-     * @public
-     * @remarks
-     * HTML Attribute: appearance
-     */
-    @attr
-    public appearance: TextAreaAppearance = TextAreaAppearance.outline;
-
     /**
      * When true, the control will be immutable by user interaction. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly | readonly HTML attribute} for more information.
      * @public

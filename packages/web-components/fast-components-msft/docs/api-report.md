@@ -368,10 +368,20 @@ export class FASTTabs extends Tabs {
 
 // @public
 export class FASTTextArea extends TextArea {
+    appearance: TextAreaAppearance;
+    // @internal (undocumented)
+    appearanceChanged(oldValue: TextAreaAppearance, newValue: TextAreaAppearance): void;
+    // @internal (undocumented)
+    connectedCallback(): void;
 }
 
 // @public
 export class FASTTextField extends TextField {
+    appearance: TextFieldAppearance;
+    // @internal (undocumented)
+    appearanceChanged(oldValue: TextFieldAppearance, newValue: TextFieldAppearance): void;
+    // @internal (undocumented)
+    connectedCallback(): void;
 }
 
 // @public (undocumented)
@@ -539,6 +549,12 @@ export function parseColorString(color: string): ColorRGBA64;
 //
 // @internal (undocumented)
 export const StealthButtonStyles: import("@microsoft/fast-element").ElementStyles;
+
+// @public
+export type TextAreaAppearance = "filled" | "outline";
+
+// @public
+export type TextFieldAppearance = "filled" | "outline";
 
 
 // (No @packageDocumentation comment for this package)

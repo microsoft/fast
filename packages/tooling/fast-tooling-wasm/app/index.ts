@@ -1,4 +1,6 @@
-import NumberSchema from "./schemas/number.schema.json";
+import * as Number from "./number";
+
+Number;
 
 /**
  * Ensure the global Module variable is known
@@ -6,15 +8,8 @@ import NumberSchema from "./schemas/number.schema.json";
  */
 declare var Module: any;
 
-console.log("JSONSchema", NumberSchema);
-
-var permutate = Module.cwrap("permutate", "number", ["number"]);
-
-function getPemutation() {
-    console.log("Expect 10: ", permutate(5));
+function receivePermutation(e) {
+    console.log("permutation received", e);
 }
 
-const button = document.createElement("button");
-button.innerText = "Get Permutation";
-button.onclick = getPemutation;
-document.body.appendChild(button);
+Module["onPermutate"] = receivePermutation;

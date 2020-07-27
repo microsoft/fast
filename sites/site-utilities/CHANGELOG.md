@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.4.1](https://github.com/Microsoft/fast/compare/@microsoft/site-utilities@0.4.0...@microsoft/site-utilities@0.4.1) (2020-07-23)
+
+
+### Bug Fixes
+
+* move text field and text area appearances from foundation to components ([#3540](https://github.com/Microsoft/fast/issues/3540)) ([ca8ac76](https://github.com/Microsoft/fast/commit/ca8ac760cdf666fc79a47ba9a21c5f964556dbab))
+
+
+
+
+
 # [0.4.0](https://github.com/Microsoft/fast/compare/@microsoft/site-utilities@0.3.0...@microsoft/site-utilities@0.4.0) (2020-07-14)
 
 

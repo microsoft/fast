@@ -4,5 +4,6 @@
     "type": "number",
     "examples": [
         42
-    ]
+    ],
+    "default": 23
 }

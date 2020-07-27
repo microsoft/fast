@@ -2,7 +2,7 @@
 name: Request a feature
 about: Suggest a feature or share an idea for FAST.
 title: Add [what] to/in [where]
-labels: ''
+labels: 'status:triage'
 assignees: ''
 
 ---

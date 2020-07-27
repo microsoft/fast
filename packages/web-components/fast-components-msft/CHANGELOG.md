@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.6.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-components-msft@1.5.0...@microsoft/fast-components-msft@1.6.0) (2020-07-23)
+
+
+### Bug Fixes
+
+* address nested styling issues and provide a more intuitive API for nesting ([#3528](https://github.com/Microsoft/fast/issues/3528)) ([4fe0dd3](https://github.com/Microsoft/fast/commit/4fe0dd38ce8f2b43be0f13c7efac2f12ada6cd78))
+* ensure setAttribute is not called during construction ([#3523](https://github.com/Microsoft/fast/issues/3523)) ([a0b8658](https://github.com/Microsoft/fast/commit/a0b86589317127d1b541cd10e087f9aaf93a0c5f))
+* move text field and text area appearances from foundation to components ([#3540](https://github.com/Microsoft/fast/issues/3540)) ([ca8ac76](https://github.com/Microsoft/fast/commit/ca8ac760cdf666fc79a47ba9a21c5f964556dbab))
+* rollup minify selectors should retain spaces ([#3524](https://github.com/Microsoft/fast/issues/3524)) ([cbdfc45](https://github.com/Microsoft/fast/commit/cbdfc45c2543fe9f94e0edc7687cc9f04a38e118))
+* update nested to be observable and set isNestedItem method to readonly ([#3539](https://github.com/Microsoft/fast/issues/3539)) ([9e67f52](https://github.com/Microsoft/fast/commit/9e67f52a8fd3e1736e3882ef7e2fa3f25e63a396))
+
+
+### Features
+
+* adds direction property to design system ([#3535](https://github.com/Microsoft/fast/issues/3535)) ([492f5e7](https://github.com/Microsoft/fast/commit/492f5e766610a6cae51c9c90a18b83252a67f9d3))
+
+
+
+
+
 # [1.5.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-components-msft@1.4.0...@microsoft/fast-components-msft@1.5.0) (2020-07-14)
 
 
