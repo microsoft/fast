@@ -435,12 +435,12 @@ export const MenuTemplate: import("@microsoft/fast-element").ViewTemplate<Menu, 
 // @public (undocumented)
 export class MockUi extends FASTElement {
     // (undocumented)
+    addButton(buttonParams: any): void;
+    // (undocumented)
     connectedCallback(): void;
     // (undocumented)
     disconnectedCallback(): void;
-    // (undocumented)
-    dismiss(): void;
-}
+    }
 
 // @public (undocumented)
 export const MockUiTemplate: import("@microsoft/fast-element").ViewTemplate<MockUi, any>;

@@ -1,12 +1,10 @@
 import { attr, DOM, FASTElement } from "@microsoft/fast-element";
-import { keyCodeEscape, keyCodeTab } from "@microsoft/fast-web-utilities";
-import tabbable from "tabbable";
 
 export class MockUi extends FASTElement {
-   
+    private testParams: any;
 
-    public dismiss(): void {
-        this.$emit("dismiss");
+    public addButton(buttonParams: any): void {
+        this.testParams = buttonParams;
     }
 
     public connectedCallback(): void {
@@ -15,6 +13,5 @@ export class MockUi extends FASTElement {
 
     public disconnectedCallback(): void {
         super.disconnectedCallback();
-
     }
 }
