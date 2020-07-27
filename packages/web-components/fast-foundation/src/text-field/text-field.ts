@@ -2,7 +2,6 @@ import { attr, nullableNumberConverter, observable } from "@microsoft/fast-eleme
 import { FormAssociated } from "../form-associated/index";
 import { ARIAGlobalStatesAndProperties, StartEnd } from "../patterns/index";
 import { applyMixins } from "../utilities/index";
-import { keyCodeEnter } from "@microsoft/fast-web-utilities";
 
 /**
  * Text field sub-types
@@ -193,14 +192,16 @@ export class TextField extends FormAssociated<HTMLInputElement> {
         if (this.proxy instanceof HTMLElement) {
             this.proxy.value = this.value;
         }
+
+        if (this.control) {
+            this.control.value = this.value;
+        }
     }
 
     /**
      * @internal
      */
     public control: HTMLInputElement;
-
-    private focusValue: string;
 
     protected proxy = document.createElement("input");
 
@@ -223,30 +224,11 @@ export class TextField extends FormAssociated<HTMLInputElement> {
      * @internal
      */
     public handleTextInput(): void {
-        if (this.control && this.control.value) {
+        if (this.control) {
             this.value = this.control.value;
         }
         this.$emit("input", this.value);
     }
-
-    public handleKeyDown = (e: KeyboardEvent): boolean => {
-        if (e.keyCode === keyCodeEnter && this.focusValue !== this.value) {
-            this.focusValue = this.value;
-            this.$emit("change", this.value);
-            return false;
-        }
-        return true;
-    };
-
-    public handleBlur = (e: FocusEvent): void => {
-        if (this.focusValue !== this.value) {
-            this.$emit("change", this.value);
-        }
-    };
-
-    public handleFocus = (e: FocusEvent): void => {
-        this.focusValue = this.value;
-    };
 }
 
 /**
