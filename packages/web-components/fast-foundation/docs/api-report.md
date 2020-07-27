@@ -259,7 +259,9 @@ export class DesignSystemProvider extends FASTElement implements CSSCustomProper
     designSystemProperties: {
         [propertyName: string]: Required<Pick<DecoratorDesignSystemPropertyConfiguration, "cssCustomProperty" | "default">>;
     };
+    // @deprecated
     disconnectedCSSCustomPropertyRegistry: CSSCustomPropertyDefinition[];
+    disconnectedRegistry: Array<(provider: DesignSystemProvider) => void> | void;
     evaluate(definition: CSSCustomPropertyDefinition): string;
     static findProvider(el: HTMLElement & Partial<DesignSystemConsumer>): DesignSystemProvider | null;
     static isDesignSystemProvider(el: HTMLElement | DesignSystemProvider): el is DesignSystemProvider;
@@ -298,6 +300,15 @@ export class Dialog extends FASTElement {
 
 // @public
 export const DialogTemplate: import("@microsoft/fast-element").ViewTemplate<Dialog, any>;
+
+// @public
+export class DirectionalStyleSheetBehavior implements Behavior {
+    constructor(ltr: ElementStyles | null, rtl: ElementStyles | null);
+    // (undocumented)
+    bind(source: typeof FASTElement & HTMLElement): void;
+    // (undocumented)
+    unbind(source: typeof FASTElement & HTMLElement): void;
+}
 
 // @public
 export const disabledCursor = "not-allowed";
