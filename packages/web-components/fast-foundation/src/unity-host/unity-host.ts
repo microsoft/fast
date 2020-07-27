@@ -1,7 +1,7 @@
 // this is derived from
 // "https://github.com/elraccoone/react-unity-webgl"
 
-import { attr, DOM, FASTElement, observable } from "@microsoft/fast-element";
+import { attr, FASTElement, observable } from "@microsoft/fast-element";
 import UnityContent from "./unity-content";
 import IUnityConfig from "./interfaces/i-unity-config";
 import UnityLoaderService from "./services/unity-loader-service";
@@ -87,8 +87,20 @@ export class UnityHost extends FASTElement {
             // todo: event
         });
 
-        this.unityContent.on("AddButton", (buttonParams: any) => {
-            this.contentLoaded = true;
+        this.unityContent.on("AddButton", (buttonParams: string) => {
+            // this.contentLoaded = true;
+            try {
+                buttonParams = JSON.parse(buttonParams);
+                this.dispatchEvent(
+                    new CustomEvent("add-button", {
+                        bubbles: true,
+                        detail: buttonParams,
+                    })
+                );
+            } catch (err) {
+                console.log("Error: Couldn't parse message as Object", err);
+            }
+
             // todo: event
         });
 
