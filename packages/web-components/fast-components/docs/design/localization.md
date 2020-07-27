@@ -26,7 +26,7 @@ const styles = css`
 ```
 
 ### DirectionalStyleSheetBehavior
-[`DirectionalStyleSheetBehavior`](/docs/api/fast-foundation.directionalstylesheetbehavior/) can be used to apply arbitrary LTR and RTL stylesheets, depending on the nearest [`FASTDesignSystemProvider's direction`](/docs/api/fast-components-msft.fastdesignsystemprovider.direction/)` property.
+[`DirectionalStyleSheetBehavior`](/docs/api/fast-foundation.directionalstylesheetbehavior/) can be used to apply arbitrary LTR and RTL stylesheets, depending on the nearest [`FASTDesignSystemProvider`s direction](/docs/api/fast-components-msft.fastdesignsystemprovider.direction/) property.
 
 **Example: Using `DirectionalStyleSheetBehavior`**
 ```ts
