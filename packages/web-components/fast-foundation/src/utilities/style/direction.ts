@@ -39,6 +39,9 @@ export class DirectionalStyleSheetBehavior implements Behavior {
         this.rtl = rtl;
     }
 
+    /**
+     * @internal
+     */
     public bind(source: typeof FASTElement & HTMLElement) {
         const provider = DesignSystemProvider.findProvider(source);
 
@@ -55,6 +58,9 @@ export class DirectionalStyleSheetBehavior implements Behavior {
         }
     }
 
+    /**
+     * @internal
+     */
     public unbind(source: typeof FASTElement & HTMLElement) {
         const cache = this.cache.get(source);
 
