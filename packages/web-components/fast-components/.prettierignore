@@ -1,5 +1,6 @@
 coverage/*
 dist/*
 src/default-palette.ts
+src/unity-host/fixtures/wasm/*
 src/mock-ui/fixtures/wasm/*
 *.spec.ts

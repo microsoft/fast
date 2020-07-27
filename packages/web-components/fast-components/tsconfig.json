@@ -20,6 +20,7 @@
     },
     "include": ["src"],
     "exclude": [
+        "src/unity-host/fixtures/wasm/**/*",
         "src/mock-ui/fixtures/wasm/**/*"
     ]
 }

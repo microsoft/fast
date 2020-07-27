@@ -24,6 +24,10 @@ module.exports = {
                     from: "src/unity-host/fixtures/wasm/build",
                     to: "src/unity-host/fixtures/wasm/build",
                 },
+                {
+                    from: "src/mock-ui/fixtures/wasm/build",
+                    to: "src/mock-ui/fixtures/wasm/build",
+                },
             ])
         );
 
