@@ -856,6 +856,8 @@ export class UnityHost extends FASTElement {
     // (undocumented)
     connectedCallback(): void;
     // (undocumented)
+    contentEnabled: boolean;
+    // (undocumented)
     contentLoaded: boolean;
     // (undocumented)
     disconnectedCallback(): void;

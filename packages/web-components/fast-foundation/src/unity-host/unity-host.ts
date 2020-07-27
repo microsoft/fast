@@ -26,6 +26,15 @@ export class UnityHost extends FASTElement {
     @attr
     public targetid: string;
 
+    @attr({ attribute: "content-enabled", mode: "boolean" })
+    public contentEnabled: boolean;
+    private contentEnabledChanged(): void {
+        // todo: disableing not covered yet
+        if (this.contentEnabled && !this.isInitialized) {
+            this.initialize();
+        }
+    }
+
     @observable
     public uniqueId: string = "";
 
@@ -45,6 +54,8 @@ export class UnityHost extends FASTElement {
     private unityConfig: IUnityConfig = {};
 
     private resizeDetector: ResizeObserverClassDefinition;
+
+    private isInitialized: boolean = false;
 
     constructor() {
         super();
@@ -81,16 +92,6 @@ export class UnityHost extends FASTElement {
             // todo: event
         });
 
-        // prettier-ignore
-        this.unityLoaderService.append(this.unityContent.unityLoaderJsPath, () => {
-          UnityLoader.Error.handler = _message => {
-            this.unityContent.triggerUnityEvent("error", _message);
-            console.error("Fast Unity Host", _message);
-          };
-          this.onUnityLoad();
-          }
-        );
-
         this.hostStyle = `
             height: 100%;
             width: 100%;
@@ -100,6 +101,10 @@ export class UnityHost extends FASTElement {
             this.handleResize
         );
         this.resizeDetector.observe(this.hostElement);
+
+        if (this.contentEnabled !== false) {
+            this.initialize();
+        }
     }
 
     public disconnectedCallback(): void {
@@ -134,6 +139,22 @@ export class UnityHost extends FASTElement {
             return;
         }
         // todo: unsubscribe? cleanup?
+    };
+
+    private initialize = (): void => {
+        if (this.isInitialized) {
+            return;
+        }
+        // prettier-ignore
+        this.unityLoaderService.append(this.unityContent.unityLoaderJsPath, () => {
+            UnityLoader.Error.handler = _message => {
+                this.unityContent.triggerUnityEvent("error", _message);
+                console.error("Fast Unity Host", _message);
+            };
+            this.onUnityLoad();
+        });
+
+        this.isInitialized = true;
     };
 
     private onUnityLoad = (): void => {

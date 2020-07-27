@@ -3,6 +3,7 @@ import { STORY_RENDERED } from "@storybook/core-events";
 import addons from "@storybook/addons";
 import MockUiTemplate from "./fixtures/mock-ui.html";
 import { FASTMockUi } from "./";
+import { UnityHost } from "@microsoft/fast-foundation";
 
 // Prevent tree-shaking
 FASTMockUi;
@@ -10,13 +11,13 @@ FASTDesignSystemProvider;
 
 addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
     if (name.toLowerCase().startsWith("mock-ui")) {
-        const mockUiInstance: HTMLElement | null = document.getElementById(
-            "mock-ui-default"
-        );
-        if (mockUiInstance === null) {
+        const unityInstance: HTMLElement | null = document.getElementById("unity-host-1");
+        if (unityInstance === null) {
             return;
         }
-        // const gameInstance = UnityLoader.instantiate("mock-ui-default", "build/ActiveBackground.json");
+        // TODO: hook up mock ui to unity host here
+
+        unityInstance.setAttribute("content-enabled", "true");
     }
 });
 
