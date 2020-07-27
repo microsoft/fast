@@ -76,6 +76,11 @@ export class UnityHost extends FASTElement {
             // todo: event
         });
 
+        this.unityContent.on("AddButton", (buttonParams: any) => {
+            this.contentLoaded = true;
+            // todo: event
+        });
+
         // prettier-ignore
         this.unityLoaderService.append(this.unityContent.unityLoaderJsPath, () => {
           UnityLoader.Error.handler = _message => {
