@@ -35,7 +35,7 @@ export const TextFieldTemplate = html<TextField>`
                 ?required="${x => x.required}"
                 ?disabled="${x => x.disabled}"
                 ?readonly="${x => x.readOnly}"
-                value="${x => x.value}"
+                :value="${x => x.value}"
                 type="${x => x.type}"
                 aria-atomic="${x => x.ariaAtomic}"
                 aria-busy="${x => x.ariaBusy}"
