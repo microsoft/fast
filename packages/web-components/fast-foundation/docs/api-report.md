@@ -683,6 +683,8 @@ export const TabTemplate: import("@microsoft/fast-element").ViewTemplate<Tab, an
 export class TextArea extends FormAssociated<HTMLTextAreaElement> {
     autofocus: boolean;
     cols: number;
+    // @internal
+    control: HTMLTextAreaElement;
     // @internal (undocumented)
     defaultSlottedNodes: Node[];
     formId: string;
@@ -695,7 +697,7 @@ export class TextArea extends FormAssociated<HTMLTextAreaElement> {
     minlength: number;
     name: string;
     placeholder: string;
-    // @internal (undocumented)
+    // (undocumented)
     protected proxy: HTMLTextAreaElement;
     readOnly: boolean;
     resize: TextAreaResize;
@@ -726,12 +728,14 @@ export class TextField extends FormAssociated<HTMLInputElement> {
     autofocus: boolean;
     // @internal (undocumented)
     connectedCallback(): void;
+    // @internal
+    control: HTMLInputElement;
     // @internal (undocumented)
     defaultSlottedNodes: Node[];
     // @internal
     handleChange(): void;
     // @internal
-    handleTextInput(e: Event): void;
+    handleTextInput(): void;
     list: string;
     maxlength: number;
     minlength: number;
