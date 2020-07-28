@@ -84,7 +84,6 @@ export class UnityHost extends FASTElement {
 
         this.unityContent.on("loaded", () => {
             this.contentLoaded = true;
-            // todo: event
         });
 
         this.unityContent.on("AddButton", (buttonParams: string) => {

@@ -4,6 +4,7 @@
 "dataUrl": "SampleMenu.data.unityweb",
 "wasmCodeUrl": "SampleMenu.wasm.code.unityweb",
 "wasmFrameworkUrl": "SampleMenu.wasm.framework.unityweb",
+"wasmSymbolsUrl": "SampleMenu.wasm.symbols.unityweb",
 "TOTAL_MEMORY": 268435456,
 "graphicsAPI": ["WebGL 2.0", "WebGL 1.0"],
 "webglContextAttributes": {"preserveDrawingBuffer": false},
