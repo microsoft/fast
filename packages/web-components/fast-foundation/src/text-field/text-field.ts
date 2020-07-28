@@ -189,6 +189,7 @@ export class TextField extends FormAssociated<HTMLInputElement> {
     public defaultSlottedNodes: Node[];
 
     /**
+     * A reference to the internal input element
      * @internal
      */
     public control: HTMLInputElement;
@@ -206,17 +207,27 @@ export class TextField extends FormAssociated<HTMLInputElement> {
         if (this.autofocus) {
             this.focus();
         }
-
-        this.setFormValue(this.value, this.value);
     }
 
     /**
+     * Handles the internal control's `input` event
      * @internal
      */
     public handleTextInput(): void {
-        if (this.control && this.control.value) {
-            this.value = this.control.value;
-        }
+        this.value = this.control.value;
+    }
+
+    /**
+     * Change event handler for inner control.
+     * @remarks
+     * "Change" events are not `composable` so they will not
+     * permeate the shadow DOM boundary. This fn effectively proxies
+     * the change event, emitting a `change` event whenever the internal
+     * control emits a `change` event
+     * @internal
+     */
+    public handleChange(): void {
+        this.$emit("change");
     }
 }
 

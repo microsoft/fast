@@ -38,7 +38,7 @@ export const TextAreaTemplate = html<TextArea>`
             ?required="${x => x.required}"
             rows="${x => x.rows}"
             ?spellcheck="${x => x.spellcheck}"
-            value="${x => x.value}"
+            :value="${x => x.value}"
             aria-atomic="${x => x.ariaAtomic}"
             aria-busy="${x => x.ariaBusy}"
             aria-controls="${x => x.ariaControls}"
@@ -58,8 +58,9 @@ export const TextAreaTemplate = html<TextArea>`
             aria-owns="${x => x.ariaOwns}"
             aria-relevant="${x => x.ariaRelevant}"
             aria-roledescription="${x => x.ariaRoledescription}"
-            @input="${x => x.handleTextInput()}"
-            ${ref("textarea")}
+            @input="${(x, c) => x.handleTextInput()}"
+            @change="${x => x.handleChange()}"
+            ${ref("control")}
         ></textarea>
     </template>
 `;

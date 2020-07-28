@@ -60,9 +60,10 @@ export class TextArea extends FormAssociated<HTMLTextAreaElement> {
     public resize: TextAreaResize = TextAreaResize.none;
 
     /**
+     * A reference to the internal textarea element
      * @internal
      */
-    public textarea: HTMLTextAreaElement;
+    public control: HTMLTextAreaElement;
 
     /**
      * Indicates that this element should get focus after the page finishes loading.
@@ -187,40 +188,27 @@ export class TextArea extends FormAssociated<HTMLTextAreaElement> {
     @observable
     public defaultSlottedNodes: Node[];
 
-    /**
-     * @internal
-     */
-    public valueChanged(): void {
-        if (this.textarea && this.value !== this.textarea.value) {
-            this.textarea.value = this.value;
-        }
-
-        if (this.proxy instanceof HTMLElement) {
-            this.proxy.value = this.value;
-        }
-    }
-
     protected proxy: HTMLTextAreaElement = document.createElement("textarea");
 
     /**
      * @internal
      */
-    public connectedCallback(): void {
-        super.connectedCallback();
-
-        if (this.value) {
-            this.textarea.value = this.value;
-
-            this.setFormValue(this.value, this.value);
-        }
-    }
+    public handleTextInput = (): void => {
+        this.value = this.control.value;
+    };
 
     /**
+     * Change event handler for inner control.
+     * @remarks
+     * "Change" events are not `composable` so they will not
+     * permeate the shadow DOM boundary. This fn effectively proxies
+     * the change event, emitting a `change` event whenever the internal
+     * control emits a `change` event
      * @internal
      */
-    public handleTextInput = (): void => {
-        this.$emit("change", this.textarea.value);
-    };
+    public handleChange(): void {
+        this.$emit("change");
+    }
 }
 
 /**
