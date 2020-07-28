@@ -65,14 +65,21 @@ class Preview extends Foundation<{}, {}, PreviewState> {
         };
 
         window.addEventListener("message", this.handleMessage);
+        document.body.addEventListener("load", this.attachActiveDictionaryIdWrapper, {
+            capture: true,
+        });
     }
 
     public render(): React.ReactNode {
         if (this.state.dataDictionary !== undefined) {
             return (
                 <React.Fragment>
-                    <div dir={this.state.direction} ref={this.ref} />
-                    <div ref={this.activeDictionaryItemWrapperRef} />
+                    <div dir={this.state.direction} ref={this.ref}>
+                        <div />
+                    </div>
+                    <div ref={this.activeDictionaryItemWrapperRef}>
+                        <div />
+                    </div>
                 </React.Fragment>
             );
         }
@@ -91,12 +98,21 @@ class Preview extends Foundation<{}, {}, PreviewState> {
         );
     }
 
+    public componentWillUnmount(): void {
+        document.body.removeEventListener("load", this.attachActiveDictionaryIdWrapper, {
+            capture: true,
+        });
+    }
+
+    /**
+     * Sets up the DOM with quick exit cases
+     * if another request is performed.
+     */
     private attachMappedComponents(): void {
         if (this.state.dataDictionary !== undefined && this.ref.current !== null) {
             const designSystemProvider = document.createElement(
                 "fast-design-system-provider"
             );
-            this.ref.current.innerHTML = "";
 
             designSystemProvider.setAttribute(
                 "accent-base-color",
@@ -147,12 +163,21 @@ class Preview extends Foundation<{}, {}, PreviewState> {
                 })
             );
 
-            this.ref.current.append(designSystemProvider);
+            if (this.ref.current.lastChild) {
+                this.ref.current.replaceChild(
+                    designSystemProvider,
+                    this.ref.current.lastChild
+                );
+            }
             this.attachActiveDictionaryIdWrapper();
         }
     }
 
-    private attachActiveDictionaryIdWrapper(): void {
+    private updateDOM(messageData: MessageSystemOutgoing): () => void {
+        return this.attachMappedComponents;
+    }
+
+    private attachActiveDictionaryIdWrapper = (): void => {
         const activeElement = this.ref.current?.querySelector(
             `[${dataSetDictionaryId}="${this.state.activeDictionaryId}"]`
         );
@@ -160,7 +185,7 @@ class Preview extends Foundation<{}, {}, PreviewState> {
         if (activeElement) {
             createWrapper(this.activeDictionaryItemWrapperRef, activeElement);
         }
-    }
+    };
 
     private handleMessage = (message: MessageEvent): void => {
         if (message.origin === location.origin) {
@@ -184,7 +209,7 @@ class Preview extends Foundation<{}, {}, PreviewState> {
                                 activeDictionaryId: (messageData as InitializeMessageOutgoing)
                                     .activeDictionaryId,
                             },
-                            this.attachMappedComponents
+                            this.updateDOM(messageData as MessageSystemOutgoing)
                         );
                         break;
                     case MessageSystemType.data:
@@ -193,7 +218,7 @@ class Preview extends Foundation<{}, {}, PreviewState> {
                                 dataDictionary: (messageData as DataMessageOutgoing)
                                     .dataDictionary,
                             },
-                            this.attachMappedComponents
+                            this.updateDOM(messageData as MessageSystemOutgoing)
                         );
                         break;
                     case MessageSystemType.navigation:
@@ -202,7 +227,7 @@ class Preview extends Foundation<{}, {}, PreviewState> {
                                 activeDictionaryId: (messageData as NavigationMessageOutgoing)
                                     .activeDictionaryId,
                             },
-                            this.attachMappedComponents
+                            this.updateDOM(messageData as MessageSystemOutgoing)
                         );
                         break;
                     case MessageSystemType.custom:
@@ -211,21 +236,21 @@ class Preview extends Foundation<{}, {}, PreviewState> {
                                 {
                                     direction: (messageData as any).value,
                                 },
-                                this.attachMappedComponents
+                                this.updateDOM(messageData as MessageSystemOutgoing)
                             );
                         } else if ((messageData as any).id === previewAccentColor) {
                             this.setState(
                                 {
                                     accentColor: (messageData as any).value,
                                 },
-                                this.attachMappedComponents
+                                this.updateDOM(messageData as MessageSystemOutgoing)
                             );
                         } else if ((messageData as any).id === previewTheme) {
                             this.setState(
                                 {
                                     theme: (messageData as any).value,
                                 },
-                                this.attachMappedComponents
+                                this.updateDOM(messageData as MessageSystemOutgoing)
                             );
                         }
                         break;
