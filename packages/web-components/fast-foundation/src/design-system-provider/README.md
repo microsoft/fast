@@ -13,7 +13,7 @@ These values are mutable throughout a UI tree. Where UI tree _A_ may see their c
 
 ## Design system provider
 
-A _design system_ isn't much use without convenient mechanisms to surface the _design system_ values to UI components and change values where desired. This is where the _Design System Provider_ comes in. `@microsoft/fast-components` exports the `FASTDesignSystemProvider` and `DesignSystemProvider` Web Components to help with:
+A _design system_ isn't much use without convenient mechanisms to surface the _design system_ values to UI components and change values where desired. This is where the _Design System Provider_ comes in. `@microsoft/fast-components` exports the `FASTDesignSystemProvider` Web Components to help with:
 
 1. Declaring _design system_ properties and default values.
 2. Surfacing _design system_ values as [CSS Custom Properties](https://developer.mozilla.org/en-US/docs/Web/CSS/--*).
@@ -126,10 +126,10 @@ To create a new _Design System Provider_, extend the `DesignSystemProvider` clas
 **EXAMPLE: Creating a custom Design System Provider**
 
 ```ts
-import { DesignSystemProvider, designSystemProvider, DesignSystemProviderTemplate as template } from "@microsoft/fast-components";
+import { DesignSystemProvider, designSystemProvider, DesignSystemProviderTemplate as template } from "@microsoft/fast-foundation";
 import { MyDesignSystemProviderStyles as styles} from "../design-system-provder.styles.ts";
 
-@designSystemProvider("fancy-design-system-provider", template, styles)
+@designSystemProvider({name: "fancy-design-system-provider", template, styles})
 class FancyDesignSystemProvider extends DesignSystemProvider {}
 ```
 
@@ -149,7 +149,7 @@ Building off the above, _design system_ properties can be declared using the `@d
 // ..
 @designSystemProvider({name: "fancy-design-system-provider", template, styles})
 class FancyDesignSystemProvider extends DesignSystemProvider {
-    @attr("fancy-property")
+    @attr({attribute: "fancy-property"})
     @designSystemProperty({ cssCustomProperty: "fancy-property", default: "red" })
     public fancyProperty;
 }
