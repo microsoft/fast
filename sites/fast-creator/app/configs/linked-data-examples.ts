@@ -57,7 +57,7 @@ export const labelTag = "label";
 const imageExample = {
     schemaId: nativeElementSchemas[imageTag].id,
     data: {
-        src: "https://placehold.it/300x160",
+        src: "https://placehold.it/320x180",
     },
     dataLocation: "Slot",
 };
@@ -148,7 +148,7 @@ const paragraphExample = {
         {
             schemaId: textSchema.id,
             data:
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut id ante non massa vulputate facilisis. Vestibulum ac consequat sem. Etiam sodales turpis nec ante hendrerit, ut cursus risus sollicitudin. Curabitur et suscipit ex, sit amet faucibus neque. In ac nunc elementum, porta purus sed, scelerisque dui. Nullam ut tincidunt mi, id imperdiet risus. Curabitur a metus in ligula pellentesque pellentesque. Vivamus porta velit sollicitudin turpis aliquam, sit amet accumsan purus gravida. Etiam euismod ex neque, vel lobortis ligula semper ac. Proin eget metus vel turpis tempus accumsan. Aenean rhoncus ex lectus, a tincidunt justo volutpat quis. Sed id tincidunt purus. Phasellus ultrices, magna id viverra pellentesque, nisl turpis ullamcorper metus, sed varius nunc magna ut lacus.",
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut id ante non massa vulputate facilisis. Vestibulum ac consequat sem. Etiam sodales turpis nec ante hendrerit, ut cursus risus sollicitudin. Curabitur et suscipit ex, sit amet faucibus neque. In ac nunc elementum, porta purus sed, scelerisque dui. Nullam ut tincidunt mi, id imperdiet risus. Curabitur a metus in ligula pellentesque pellentesque. Vivamus porta velit sollicitudin turpis aliquam, sit amet accumsan purus gravida. Etiam euismod ex neque, vel lobortis ligula semper ac.",
             dataLocation: "Slot",
         },
     ],
@@ -229,14 +229,38 @@ const fastBadgeExample = {
 };
 const fastCardExample = {
     schemaId: fastComponentSchemas[fastCardTag].id,
-    data: {},
+    data: {
+        style: "width: 320px"
+    },
     dataLocation: "Slot",
     linkedData: [
         imageExample,
-        fastBadgeExample,
-        heading2Example,
-        paragraphExample,
-        fastButtonExample,
+        {
+            ...fastBadgeExample,
+            data: {
+                style: "margin: 5px 10px; --badge-fill-fill: #3278cd; --badge-color-color: white;",
+                fill: "fill",
+                color: "color"
+            }
+        },
+        {
+            ...heading2Example,
+            data: {
+                style: "margin: 5px 10px"
+            }
+        },
+        {
+            ...paragraphExample,
+            data: {
+                style: "margin: 0 10px"
+            }
+        },
+        {
+            ...fastButtonExample,
+            data: {
+                style: "margin: 10px"
+            }
+        },
     ],
 };
 const fastCheckboxExample = {
