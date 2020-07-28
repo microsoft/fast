@@ -28,8 +28,6 @@ export class FASTMockUi extends MockUi {
         newButton.id = buttonData.id;
         newButton.style.width = `${buttonData.width}px`;
         newButton.style.height = `${buttonData.height}px`;
-        newButton.addEventListener("focus", this.handleButtonFocus);
-        newButton.addEventListener("click", this.handleButtonClick);
         return newButton;
     };
 }

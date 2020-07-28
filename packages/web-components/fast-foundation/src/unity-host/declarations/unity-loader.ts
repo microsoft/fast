@@ -23,7 +23,7 @@ declare class UnityLoader {
         /**
          * The error event handler.
          */
-        handler: (error: string) => void;
+        handler: (error: Error) => void;
     };
 
     /**

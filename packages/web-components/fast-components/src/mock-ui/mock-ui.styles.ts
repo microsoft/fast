@@ -1,7 +1,12 @@
 import { css } from "@microsoft/fast-element";
-import { elevation } from "../styles/elevation";
+import { display } from "@microsoft/fast-foundation";
 
 export const MockUiStyles = css`
-    :host {
+    ${display("flex")} :host {
+        justify-content: center;
+    }
+
+    div {
+        display: block;
     }
 `;

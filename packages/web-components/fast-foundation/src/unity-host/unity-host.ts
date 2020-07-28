@@ -103,6 +103,23 @@ export class UnityHost extends FASTElement {
             // todo: event
         });
 
+        this.unityContent.on("RemoveButton", (buttonParams: string) => {
+            // this.contentLoaded = true;
+            try {
+                buttonParams = JSON.parse(buttonParams);
+                this.dispatchEvent(
+                    new CustomEvent("remove-button", {
+                        bubbles: true,
+                        detail: buttonParams,
+                    })
+                );
+            } catch (err) {
+                console.log("Error: Couldn't parse message as Object", err);
+            }
+
+            // todo: event
+        });
+
         this.unityContent.on("ClearUI", () => {
             // this.contentLoaded = true;
             try {
@@ -173,9 +190,13 @@ export class UnityHost extends FASTElement {
         }
         // prettier-ignore
         this.unityLoaderService.append(this.unityContent.unityLoaderJsPath, () => {
-            UnityLoader.Error.handler = _message => {
-                this.unityContent.triggerUnityEvent("error", _message);
-                console.error("Fast Unity Host", _message);
+            UnityLoader.Error.handler = err => {
+                this.unityContent.triggerUnityEvent("error", err);
+                if (err.message === "ResizeObserver loop limit exceeded") {
+                    console.warn("Fast Unity Host", err);
+                    return;
+                }
+                console.error("Fast Unity Host", err);
             };
             this.onUnityLoad();
         });
