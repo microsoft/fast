@@ -1,5 +1,5 @@
 import { attr, nullableNumberConverter, observable } from "@microsoft/fast-element";
-import { FormAssociated } from "../form-associated/index";
+import { FormAssociated } from "../form-associated/form-associated";
 import { ARIAGlobalStatesAndProperties, StartEnd } from "../patterns/index";
 import { applyMixins } from "../utilities/index";
 
@@ -187,14 +187,6 @@ export class TextField extends FormAssociated<HTMLInputElement> {
      */
     @observable
     public defaultSlottedNodes: Node[];
-
-    private valueChanged(): void {
-        if (this.proxy instanceof HTMLElement) {
-            this.proxy.value = this.value;
-        }
-
-        this.$emit("change", this.value);
-    }
 
     /**
      * @internal

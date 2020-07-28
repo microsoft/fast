@@ -1,5 +1,5 @@
 import { attr, nullableNumberConverter, observable } from "@microsoft/fast-element";
-import { FormAssociated } from "../form-associated/index";
+import { FormAssociated } from "../form-associated/form-associated";
 import { DelegatesARIATextbox } from "../text-field/index";
 import { applyMixins } from "../utilities";
 
