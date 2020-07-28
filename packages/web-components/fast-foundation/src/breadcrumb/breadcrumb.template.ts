@@ -1,4 +1,4 @@
-import { html } from "@microsoft/fast-element";
+import { html, slotted, elements } from "@microsoft/fast-element";
 import { Breadcrumb } from "./breadcrumb";
 
 /**
@@ -8,7 +8,8 @@ import { Breadcrumb } from "./breadcrumb";
 export const BreadcrumbTemplate = html<Breadcrumb>`
     <template role="navigation" aria-label="breadcrumb">
         <div role="list">
-            <slot></slot>
+            <slot ${slotted({ property: "slottedBreadcrumbItems", filter: elements() })}
+            </slot>
         </div>
     </template>
 `;

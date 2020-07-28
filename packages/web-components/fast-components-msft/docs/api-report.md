@@ -136,6 +136,8 @@ export class FASTAnchor extends Anchor {
     appearance: AnchorAppearance;
     // (undocumented)
     appearanceChanged(oldValue: AnchorAppearance, newValue: AnchorAppearance): void;
+    // @internal (undocumented)
+    connectedCallback(): void;
 }
 
 // @public
@@ -149,6 +151,8 @@ export class FASTButton extends Button {
     appearance: ButtonAppearance;
     // (undocumented)
     appearanceChanged(oldValue: ButtonAppearance, newValue: ButtonAppearance): void;
+    // @internal (undocumented)
+    connectedCallback(): void;
 }
 
 // @public

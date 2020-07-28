@@ -13,23 +13,6 @@ export class BreadcrumbItem extends FASTElement {
      * @remarks
      * HTML Attribute: aria-current
      */
-    @attr({ attribute: "aria-current" })
-    public ariaCurrent: string;
-
-    /**
-     * @internal
-     */
     @observable
-    public slottedBreadcrumbItems: HTMLElement[];
-    public slottedBreadcrumbItemsChanged() {
-        if (this.$fastController.isConnected) {
-            this.setItems;
-        }
-    }
-
-    private setItems = (): void => {
-        this.slottedBreadcrumbItems.forEach((item: HTMLElement, index: number) => {
-            item.setAttribute("aria-current", "page");
-        });
-    };
+    public showSeparator: boolean = true;
 }

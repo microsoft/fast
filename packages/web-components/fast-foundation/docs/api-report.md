@@ -117,6 +117,25 @@ export class BaseProgress extends FASTElement {
     value: number;
 }
 
+// @public
+export class Breadcrumb extends FASTElement {
+    // (undocumented)
+    slottedBreadcrumbItems: HTMLElement[];
+    // (undocumented)
+    slottedBreadcrumbItemsChanged(): void;
+}
+
+// @public
+export class BreadcrumbItem extends FASTElement {
+    showSeparator: boolean;
+}
+
+// @public
+export const BreadcrumbItemTemplate: import("@microsoft/fast-element").ViewTemplate<BreadcrumbItem, any>;
+
+// @public
+export const BreadcrumbTemplate: import("@microsoft/fast-element").ViewTemplate<Breadcrumb, any>;
+
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-forgotten-export) The symbol "FormAssociated" needs to be exported by the entry point index.d.ts
 // Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "Button" because one of its declarations is marked as @internal
