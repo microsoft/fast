@@ -1,4 +1,5 @@
 import { DataType } from "../data-utilities/types";
+import { linkedDataSchema } from "../schemas";
 import {
     AddDataMessageOutgoing,
     AddLinkedDataDataMessageOutgoing,
@@ -586,6 +587,85 @@ describe("getMessage", () => {
             }) as AddLinkedDataDataMessageOutgoing;
 
             expect((message.dataDictionary[0].data.data as any).linkedData).toEqual([]);
+        });
+        test("should remove linkedData and linked data items from the data and the data dictionary", () => {
+            getMessage({
+                type: MessageSystemType.initialize,
+                data: [
+                    {
+                        data: {
+                            schemaId: "foo",
+                            data: {
+                                linkedData: [
+                                    {
+                                        id: "data2",
+                                    },
+                                ],
+                            },
+                        },
+                        data2: {
+                            parent: {
+                                dataLocation: "linkedData",
+                                id: "data"
+                            },
+                            schemaId: "foo",
+                            data: {
+                                hello: "world",
+                                linkedData: [
+                                    {
+                                        id: "data3"
+                                    }
+                                ]
+                            },
+                        },
+                        data3: {
+                            parent: {
+                                dataLocation: "linkedData",
+                                id: "data2"
+                            },
+                            schemaId: "foo",
+                            data: {
+                                foo: "bar"
+                            }
+                        }
+                    },
+                    "data",
+                ],
+                schemaDictionary: {
+                    foo: {
+                        id: "foo",
+                        type: "object",
+                        properties: {
+                            linkedData: linkedDataSchema
+                        }
+                    },
+                },
+            });
+            const linkedData: LinkedData[] = [
+                {
+                    id: "data2",
+                },
+            ];
+            const message: AddLinkedDataDataMessageOutgoing = getMessage({
+                type: MessageSystemType.data,
+                action: MessageSystemDataTypeAction.removeLinkedData,
+                linkedData,
+                dataLocation: "linkedData",
+            }) as AddLinkedDataDataMessageOutgoing;
+
+            expect((message.data as any).linkedData).toEqual([]);
+            expect((message.dataDictionary)).toEqual([
+                {
+                    data: {
+                        schemaId: "foo",
+                        data: {
+                            linkedData: [],
+                        },
+                    },
+                },
+                "data"
+            ]);
+            expect((message.linkedDataIds)).toEqual(["data2", "data3"]);
         });
         test("should reorder linkedData in the exist array of linkedData items", () => {
             getMessage({

@@ -1,4 +1,4 @@
-import { getLinkedDataDictionary } from "./data";
+import { getLinkedData, getLinkedDataDictionary, getLinkedDataList } from "./data";
 import { LinkedDataDictionaryUpdate, LinkedDataPromise } from "./data.props";
 
 describe("getLinkedDataDictionary", () => {
@@ -218,5 +218,213 @@ describe("getLinkedDataDictionary", () => {
             ],
             dictionaryId,
         } as LinkedDataDictionaryUpdate);
+    });
+});
+
+describe("getLinkedData", () => {
+    test("should get a linked data set", () => {
+        expect(getLinkedData(
+            [
+                {
+                    root: {
+                        schemaId: "foo",
+                        data: {}
+                    }
+                },
+                "root"
+            ],
+            ["root"]
+        )).toEqual([
+            {
+                data: {},
+                linkedData: [],
+                schemaId: "foo",
+            },
+        ]);
+    });
+    test("should get a nested linked data set", () => {
+        expect(getLinkedData(
+            [
+                {
+                    root: {
+                        schemaId: "foo",
+                        data: {
+                            hello: "world"
+                        }
+                    },
+                    nestedItem: {
+                        parent: {
+                            id: "root",
+                            dataLocation: "linkedData"
+                        },
+                        schemaId: "bar",
+                        data: {
+                            hello: "pluto"
+                        }
+                    }
+                },
+                "root"
+            ],
+            ["root"]
+        )).toEqual([
+            {
+                schemaId: "foo",
+                data: {
+                    hello: "world"
+                },
+                linkedData: [
+                    {
+                        schemaId: "bar",
+                        data: {
+                            hello: "pluto"
+                        },
+                        linkedData: []
+                    }
+                ],
+            },
+        ]);
+    });
+});
+
+describe("getLinkedDataList", () => {
+    test("should get an empty list if an item does not contain linked data", () => {
+        expect(getLinkedDataList([
+            {
+                "foo": {
+                    data: {
+                        bat: [
+                            {
+                                id: "bar"
+                            }
+                        ],
+                    },
+                    schemaId: "foo"
+                },
+                "bar": {
+                    parent: {
+                        id: "foo",
+                        dataLocation: "bat"
+                    },
+                    data: {},
+                    schemaId: "bar"
+                }
+            },
+            "foo"
+        ], "bar")).toEqual([]);
+    });
+    test("should get a single key if the provided dictionary item contains a single linked data item", () => {
+        expect(getLinkedDataList([
+            {
+                "foo": {
+                    data: {
+                        bat: [
+                            {
+                                id: "bar"
+                            }
+                        ],
+                    },
+                    schemaId: "foo"
+                },
+                "bar": {
+                    parent: {
+                        id: "foo",
+                        dataLocation: "bat"
+                    },
+                    data: {},
+                    schemaId: "bar"
+                },
+                "bat": {
+                    parent: {
+                        id: "bar",
+                        dataLocation: "bat"
+                    },
+                    data: {},
+                    schemaId: "bar"
+                }
+            },
+            "foo"
+        ], "bar")).toEqual(["bat"]);
+    });
+    test("should get multiple keys if the provided dictionary item contains multiple linked data items", () => {
+        expect(getLinkedDataList([
+            {
+                "foo": {
+                    data: {
+                        bat: [
+                            {
+                                id: "bar"
+                            }
+                        ],
+                    },
+                    schemaId: "foo"
+                },
+                "bar": {
+                    parent: {
+                        id: "foo",
+                        dataLocation: "bat"
+                    },
+                    data: {},
+                    schemaId: "bar"
+                },
+                "bat": {
+                    parent: {
+                        id: "bar",
+                        dataLocation: "bat"
+                    },
+                    data: {},
+                    schemaId: "bar"
+                },
+                "baz": {
+                    parent: {
+                        id: "bar",
+                        dataLocation: "bat"
+                    },
+                    data: {},
+                    schemaId: "bar"
+                }
+            },
+            "foo"
+        ], "bar")).toEqual(["bat", "baz"]);
+    });
+    test("should get multiple keys if the provided dictionary item contains a single linked data item that contains another linked data item", () => {
+        expect(getLinkedDataList([
+            {
+                "foo": {
+                    data: {
+                        bat: [
+                            {
+                                id: "bar"
+                            }
+                        ],
+                    },
+                    schemaId: "foo"
+                },
+                "bar": {
+                    parent: {
+                        id: "foo",
+                        dataLocation: "bat"
+                    },
+                    data: {},
+                    schemaId: "bar"
+                },
+                "bat": {
+                    parent: {
+                        id: "bar",
+                        dataLocation: "bat"
+                    },
+                    data: {},
+                    schemaId: "bar"
+                },
+                "baz": {
+                    parent: {
+                        id: "bat",
+                        dataLocation: "bat"
+                    },
+                    data: {},
+                    schemaId: "bar"
+                }
+            },
+            "foo"
+        ], "bar")).toEqual(["bat", "baz"]);
     });
 });
