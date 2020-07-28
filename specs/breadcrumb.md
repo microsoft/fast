@@ -83,32 +83,31 @@ The `fast-breadcrumb-item` is placed inside the `fast-breadcrumb` component. It 
 - `fast-breadcrumb-item`
 
  *Attributes:*
-- `aria-current` - aria attribute set on the last item of breadcrumb.
-- `separator` - a divider between two breadcrumb items. The default of this attribute is `/`.
+- `aria-current` - aria attribute set on the last item of breadcrumb, which will always be `aria-current="page"`.
 
 *Slots*
 - default slot for element.
 - `separator` - used as part of the visual presentation that signifies the breadcrumb trail. The separator is defaulted to a `/`, but authors can override to use an `svg`.
 
 *CSS Parts*
-- `separator` - there is a style to adjust margin and another to hide the separator when a breadrumb item is set to `aria-current="page"`.
+- `content` - class style to align the slotted element and the separator.
+- `separator` - class style to adjust margin and another to hide the separator when a breadrumb item is set to `aria-current="page"`.
 
 ### Anatomy and Appearance
 
 ```ts
 <div
     role="listitem"
-    class="content"
-    part="content"
+    class="listitem-container"
+    part="listitem-container"
     aria-current="${x => x.ariaCurrent}"
 >
     <slot></slot>
     <span
-        class="separator ${x => (x.ariaCurrent ? "hide" : "")}
-        part="separator"
+        class="${x => (x.ariaCurrent ? "separator separator-hidden" : "separator")}"
         aria-hidden="true"
     >
-        <slot name="separator">${x => x.separator}</slot>
+        <slot name="separator" part="separator">/</slot>"
     </span>
 </div>
 ```
@@ -121,7 +120,7 @@ The `fast-breadcrumb-item` is placed inside the `fast-breadcrumb` component. It 
 </fast-breadcrumb-item>
 ```
 
-*Overriding default separator*
+*Overriding default separator with an SVG*
 
 ```html
 <fast-breadcrumb-item>
