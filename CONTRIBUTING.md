@@ -115,7 +115,7 @@ The development, release, and work management processes must reflect this princi
 
 ### Code owners
 
-As subject matter experts, *code owners* approve pull requests on the packages they own. There is a required minimum of one code owner for each package. *Code owners* are listed in [CODEOWNERS](.github/CODEOWNERS).
+As subject matter experts, *code owners* approve pull requests on the packages they own. There is a required minimum of one code owner for each package. *Code owners* are listed in [CODEOWNERS](https://github.com/microsoft/fast/blob/master/.github/CODEOWNERS).
 
 ### Contributors
 
