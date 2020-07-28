@@ -22,7 +22,7 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
         // TODO
         // (unityInstance as UnityHost).subscribeEvent("addButton", (mockUIInstance as MockUi).addButton);
 
-        (unityInstance as UnityHost).contentEnabled = true;
+        (unityInstance as UnityHost).contentEnabled = true
     }
 });
 

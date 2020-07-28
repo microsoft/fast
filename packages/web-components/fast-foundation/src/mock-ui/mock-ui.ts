@@ -1,4 +1,5 @@
 import { FASTElement, observable } from "@microsoft/fast-element";
+import { UnityHost } from "../unity-host"
 
 export interface MockButton {
     id: string;
@@ -27,6 +28,9 @@ export class MockUi extends FASTElement {
         newButton.style.width = `${buttonData.width}px`;
         newButton.style.height = `${buttonData.height}px`;
 
+        newButton.addEventListener("focus", this.handleButtonFocus);
+        newButton.addEventListener("click", this.handleButtonClick);
+   
         return newButton;
     };
 
@@ -46,5 +50,15 @@ export class MockUi extends FASTElement {
     public disconnectedCallback(): void {
         super.disconnectedCallback();
         this.removeEventListener("add-button", this.attachButton, true);
+    }
+
+    public handleButtonFocus(): void {
+        const host: UnityHost = document.getElementById("fast-unity-host-1") as UnityHost;
+        host.messageUnity("MenuManager", "focusButton", "settingsbutton");
+    }
+
+    public handleButtonClick(): void {
+        const host: UnityHost = document.getElementById("fast-unity-host-1") as UnityHost;
+        host.messageUnity("MenuManager", "clickButton", "settingsbutton");
     }
 }
