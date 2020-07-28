@@ -9,7 +9,7 @@ export const BreadcrumbItemStyles = css`
         line-height: var(--type-ramp-minus-1-height);
     }
 
-    .content {
+    .listitem-container {
         display: flex;
         align-items: center;
     }
@@ -18,7 +18,7 @@ export const BreadcrumbItemStyles = css`
         margin: 0 6px;
     }
 
-    .separator.hide {
+    .separator.separator-hidden {
         display: none;
     }
 `;

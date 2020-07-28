@@ -1,4 +1,4 @@
-import { html } from "@microsoft/fast-element";
+import { html, slotted, elements } from "@microsoft/fast-element";
 import { BreadcrumbItem } from "./breadcrumb-item";
 
 /**
@@ -6,20 +6,15 @@ import { BreadcrumbItem } from "./breadcrumb-item";
  * @public
  */
 export const BreadcrumbItemTemplate = html<BreadcrumbItem>`
-    <div
-        role="listitem"
-        class="content"
-        part="content"
-        tabindex="0"
-        aria-current="${x => x.ariaCurrent}"
-    >
-        <slot></slot>
+    <div role="listitem" class="listitem-container" part="listitem-container">
+        <slot
+            ${slotted({ property: "slottedBreadcrumbItems", filter: elements() })}
+        ></slot>
         <span
-            class="separator ${x => (x.ariaCurrent ? "hide" : "")}
-            part="separator"
+            class="${x => (x.ariaCurrent ? "separator separator-hidden" : "separator")}"
             aria-hidden="true"
         >
-            <slot name="separator">${x => x.separator}</slot>
+            <slot name="separator" part="separator">/</slot>
         </span>
     </div>
 `;
