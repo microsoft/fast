@@ -75,7 +75,7 @@ describe("The value property:", () => {
     });
 
     describe("changes:", () => {
-        it("setting value attribute should set value if no explicit value is set", () => {
+        it("setting value attribute should set value if value property has not been explicitly set", () => {
             const el: TestElement = document.createElement("test-element") as TestElement;
             document.body.appendChild(el);
 
@@ -86,7 +86,7 @@ describe("The value property:", () => {
             expect(el.value).to.equal("barbat");
         });
 
-        it("setting value attribute should not set value if value has been explicitly set", () => {
+        it("setting value attribute should not set value if value property has been explicitly set", () => {
             const el: TestElement = document.createElement("test-element") as TestElement;
             document.body.appendChild(el);
 
@@ -95,6 +95,22 @@ describe("The value property:", () => {
 
             el.setAttribute("value", "barbat");
             expect(el.value).to.equal("foobar");
+        });
+
+        it("setting value attribute should set parent form value if value property has not been explicitly set", () => {
+            const el: TestElement = document.createElement("test-element") as TestElement;
+            el.setAttribute("name", "test");
+
+            const form: HTMLFormElement = document.createElement("form");
+            form.appendChild(el);
+            document.body.appendChild(form);
+
+            let formData = new FormData(form);
+            expect(formData.get("test")).to.equal("");
+
+            el.setAttribute("value", "foobar");
+            formData = new FormData(form);
+            expect(formData.get("test")).to.equal("foobar");
         });
 
         it("setting value property should set parent form value", () => {
