@@ -57,7 +57,7 @@ export const labelTag = "label";
 const imageExample = {
     schemaId: nativeElementSchemas[imageTag].id,
     data: {
-        src: "http://placehold.it/300x160",
+        src: "https://placehold.it/300x160",
     },
     dataLocation: "Slot",
 };

@@ -114,6 +114,14 @@ export class Slider extends FormAssociated<HTMLInputElement>
     public trackMinHeight: number = 0;
 
     /**
+     * Custom function that generates a string for the component's "aria-valuetext" attribute based on the currrent value.
+     *
+     * @public
+     */
+    @observable
+    public valueTextFormatter: (value: string) => string | null = () => null;
+
+    /**
      * The element's value to be included in form submission changed.
      * @public
      */
