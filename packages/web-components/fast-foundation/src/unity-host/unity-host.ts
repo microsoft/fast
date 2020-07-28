@@ -103,6 +103,21 @@ export class UnityHost extends FASTElement {
             // todo: event
         });
 
+        this.unityContent.on("ClearUI", () => {
+            // this.contentLoaded = true;
+            try {
+                this.dispatchEvent(
+                    new CustomEvent("clear-ui", {
+                        bubbles: true,
+                    })
+                );
+            } catch (err) {
+                console.log("Error: Couldn't parse message as Object", err);
+            }
+
+            // todo: event
+        });
+
         this.hostStyle = `
             height: 100%;
             width: 100%;
