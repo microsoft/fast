@@ -20,6 +20,7 @@ import { Divider } from '@microsoft/fast-foundation';
 import { Flipper } from '@microsoft/fast-foundation';
 import { Menu } from '@microsoft/fast-foundation';
 import { MenuItem } from '@microsoft/fast-foundation';
+import { MockButton } from '@microsoft/fast-foundation';
 import { MockUi } from '@microsoft/fast-foundation';
 import { Radio } from '@microsoft/fast-foundation';
 import { RadioGroup } from '@microsoft/fast-foundation';
@@ -519,6 +520,8 @@ export class FASTMenuItem extends MenuItem {
 
 // @public
 export class FASTMockUi extends MockUi {
+    // (undocumented)
+    addButton: (buttonData: MockButton) => FASTButton;
 }
 
 // @public

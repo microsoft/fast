@@ -433,13 +433,43 @@ export const MenuItemTemplate: import("@microsoft/fast-element").ViewTemplate<Me
 export const MenuTemplate: import("@microsoft/fast-element").ViewTemplate<Menu, any>;
 
 // @public (undocumented)
+export interface MockButton {
+    // (undocumented)
+    disabled: boolean;
+    // (undocumented)
+    height: number;
+    // (undocumented)
+    id: string;
+    // (undocumented)
+    name: string;
+    // (undocumented)
+    width: number;
+    // (undocumented)
+    x: number;
+    // (undocumented)
+    y: number;
+}
+
+// @public (undocumented)
 export class MockUi extends FASTElement {
     // (undocumented)
-    addButton(buttonParams: any): void;
+    addButton: (buttonData: MockButton) => HTMLElement;
+    // (undocumented)
+    attachButton: (e: any) => void;
+    // (undocumented)
+    attachEvents(): void;
+    // (undocumented)
+    clearAll: (e: any) => void;
     // (undocumented)
     connectedCallback(): void;
     // (undocumented)
+    controlContainer: HTMLElement;
+    // (undocumented)
     disconnectedCallback(): void;
+    // (undocumented)
+    host: UnityHost;
+    // (undocumented)
+    mockElements: Node[];
     }
 
 // @public (undocumented)
