@@ -162,4 +162,4 @@ Several open source projects have influenced our contribution policy:
 * [Project Governance @Node](https://nodejs.org/en/about/governance/)
 * [Contributions @Node](https://github.com/nodejs/node/blob/master/CONTRIBUTING.md)
 * [Open Source @GitHub](https://github.com/blog/2039-adopting-the-open-code-of-conduct)
-* [Open Source exmaples @todogroup](https://github.com/todogroup/policies)
+* [Open Source examples @todogroup](https://github.com/todogroup/policies)
