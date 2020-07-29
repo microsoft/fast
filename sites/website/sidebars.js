@@ -44,6 +44,7 @@ module.exports = {
                         "design/design-system",
                         "design/type-ramp",
                         "design/color",
+                        "design/localization",
                         "design/match-media-stylesheets",
                     ],
                 },
