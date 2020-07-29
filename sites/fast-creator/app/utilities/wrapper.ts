@@ -26,18 +26,6 @@ function updateWrapper(
     };
 }
 
-function removeEventListeners(
-    ref: React.RefObject<HTMLDivElement>,
-    element: Element
-): void {
-    element.removeEventListener("transitionstart", updateWrapper(ref, element));
-    element.removeEventListener("resize", updateWrapper(ref, element));
-    element.removeEventListener("transitionend", updateWrapper(ref, element));
-    document.body.removeEventListener("load", updateWrapper(ref, element), {
-        capture: true,
-    });
-}
-
 function attachEventListeners(
     ref: React.RefObject<HTMLDivElement>,
     element: Element
@@ -45,9 +33,6 @@ function attachEventListeners(
     element.addEventListener("transitionstart", updateWrapper(ref, element));
     element.addEventListener("resize", updateWrapper(ref, element));
     element.addEventListener("transitionend", updateWrapper(ref, element));
-    document.body.addEventListener("load", updateWrapper(ref, element), {
-        capture: true,
-    });
 }
 
 function getWrapperAttributes(element: Element): any {
@@ -76,9 +61,9 @@ function createSelectedElementIndicator(
         wrapper.setAttribute(key, value.toString());
     });
 
-    ref.current.innerHTML = "";
-    ref.current.appendChild(wrapper);
-    removeEventListeners(ref, element);
+    if (ref.current.lastChild) {
+        ref.current.replaceChild(wrapper, ref.current.lastChild);
+    }
     attachEventListeners(ref, element);
 }
 
