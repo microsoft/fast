@@ -7,7 +7,6 @@ export const MockUiTemplate = html<MockUi>`
             <slot name="ui-host"></slot>
         </div>
         <div
-            tabindex="0"
             aria-label="${x => x.heading}"
             class="accessibility-root"
             part="accessibility-root"

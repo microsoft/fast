@@ -52,9 +52,6 @@ export class MockUi extends FASTElement {
     };
 
     public removeMockElements() {
-        if (document.activeElement && this.contains(document.activeElement)) {
-            this.accessibilityRoot.focus();
-        }
         if (this.mockElements.length) {
             this.mockElements.forEach(el => this.removeChild(el));
         }
@@ -78,6 +75,37 @@ export class MockUi extends FASTElement {
     public attachButton = (e: CustomEvent): void => {
         const newButton = this.addButton(e.detail);
         this.attachElement(newButton);
+        newButton.addEventListener(
+            "keydown",
+            e => {
+                e.stopPropagation();
+                let thisIndex = this.mockElements.indexOf(e.target as HTMLElement);
+                switch (e.key) {
+                    case "ArrowDown":
+                        if (thisIndex < this.mockElements.length - 1) {
+                            (this.mockElements[thisIndex + 1] as HTMLElement).focus();
+                        }
+                        break;
+
+                    case "ArrowUp":
+                        if (thisIndex > 0) {
+                            (this.mockElements[thisIndex - 1] as HTMLElement).focus();
+                        }
+                        break;
+
+                    default:
+                    // nope
+                }
+            },
+            true
+        );
+    };
+
+    public setFocus = (e: CustomEvent): void => {
+        const el = document.getElementById(e.detail);
+        if (el) {
+            el.focus();
+        }
     };
 
     public attachEvents(): void {
@@ -109,6 +137,7 @@ export class MockUi extends FASTElement {
         this.addEventListener("add-button", this.attachButton, true);
         this.addEventListener("clear-ui", this.clearAll, true);
         this.addEventListener("add-header", this.setHeader, true);
+        this.addEventListener("element-focused", this.setFocus, true);
     }
 
     public connectedCallback(): void {
@@ -122,5 +151,6 @@ export class MockUi extends FASTElement {
         this.removeEventListener("add-button", this.attachButton, true);
         this.removeEventListener("clear-ui", this.clearAll, true);
         this.removeEventListener("add-header", this.setHeader, true);
+        this.removeEventListener("element-focused", this.setFocus, true);
     }
 }
