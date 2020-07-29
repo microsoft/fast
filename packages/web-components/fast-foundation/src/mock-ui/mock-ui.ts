@@ -36,6 +36,7 @@ export class MockUi extends FASTElement {
         newButton.id = buttonData.id;
         newButton.style.width = `${buttonData.width}px`;
         newButton.style.height = `${buttonData.height}px`;
+        newButton.setAttribute("aria-label", buttonData.name);
 
         return newButton;
     };
