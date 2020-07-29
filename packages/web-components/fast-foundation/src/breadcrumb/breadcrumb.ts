@@ -11,19 +11,28 @@ export class Breadcrumb extends FASTElement {
     public slottedBreadcrumbItems: HTMLElement[];
     public slottedBreadcrumbItemsChanged() {
         if (this.$fastController.isConnected) {
-            // don't show separator on last item
-            (this.slottedBreadcrumbItems[
+            const lastNode: HTMLElement = this.slottedBreadcrumbItems[
                 this.slottedBreadcrumbItems.length - 1
-            ] as BreadcrumbItem).showSeparator = false;
+            ];
+
+            // don't show separator on last item
+            if (lastNode instanceof BreadcrumbItem) {
+                (lastNode as BreadcrumbItem).showSeparator = false;
+            }
+
             // if we have a child node inside the last breadcrumb item and it has
             // an href then set aria-current to page
-            this.slottedBreadcrumbItems[
-                this.slottedBreadcrumbItems.length - 1
-            ].childNodes.forEach((item: HTMLElement) => {
-                if (item instanceof HTMLElement && item.hasAttribute("href")) {
-                    item.setAttribute("aria-current", "page");
+            if (lastNode.childElementCount > 0) {
+                lastNode.childNodes.forEach((item: HTMLElement) => {
+                    if (item instanceof HTMLElement && item.hasAttribute("href")) {
+                        item.setAttribute("aria-current", "page");
+                    }
+                });
+            } else {
+                if (lastNode.hasAttribute("href")) {
+                    lastNode.setAttribute("aria-current", "page");
                 }
-            });
+            }
         }
     }
 }
