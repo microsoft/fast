@@ -100,6 +100,19 @@ export class UnityHost extends FASTElement {
             }
         });
 
+        this.unityContent.on("AddHeader", (header: string) => {
+            try {
+                this.dispatchEvent(
+                    new CustomEvent("add-header", {
+                        bubbles: true,
+                        detail: header,
+                    })
+                );
+            } catch (err) {
+                console.log("Error: Couldn't parse message as Object", err);
+            }
+        });
+
         this.unityContent.on("RemoveButton", (buttonParams: string) => {
             try {
                 buttonParams = JSON.parse(buttonParams);
