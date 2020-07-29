@@ -87,7 +87,6 @@ export class UnityHost extends FASTElement {
         });
 
         this.unityContent.on("AddButton", (buttonParams: string) => {
-            // this.contentLoaded = true;
             try {
                 buttonParams = JSON.parse(buttonParams);
                 this.dispatchEvent(
@@ -99,12 +98,9 @@ export class UnityHost extends FASTElement {
             } catch (err) {
                 console.log("Error: Couldn't parse message as Object", err);
             }
-
-            // todo: event
         });
 
         this.unityContent.on("RemoveButton", (buttonParams: string) => {
-            // this.contentLoaded = true;
             try {
                 buttonParams = JSON.parse(buttonParams);
                 this.dispatchEvent(
@@ -116,12 +112,9 @@ export class UnityHost extends FASTElement {
             } catch (err) {
                 console.log("Error: Couldn't parse message as Object", err);
             }
-
-            // todo: event
         });
 
         this.unityContent.on("ClearUI", () => {
-            // this.contentLoaded = true;
             try {
                 this.dispatchEvent(
                     new CustomEvent("clear-ui", {
@@ -131,8 +124,19 @@ export class UnityHost extends FASTElement {
             } catch (err) {
                 console.log("Error: Couldn't parse message as Object", err);
             }
+        });
 
-            // todo: event
+        this.unityContent.on("ElementFocused", (elementId: string) => {
+            try {
+                this.dispatchEvent(
+                    new CustomEvent("element-focused", {
+                        bubbles: true,
+                        detail: elementId,
+                    })
+                );
+            } catch (err) {
+                console.log("Error: Couldn't parse message as Object", err);
+            }
         });
 
         this.hostStyle = `
