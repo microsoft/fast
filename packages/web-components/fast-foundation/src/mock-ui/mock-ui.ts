@@ -16,15 +16,23 @@ interface EventsMap {
 }
 
 export class MockUi extends FASTElement {
-    private testParams: any;
+    @observable
+    public mockElements: Node[];
 
-    @observable mockElements: Node[];
-
-    public controlContainer: HTMLElement;
+    @observable
+    public heading: string;
 
     public host: UnityHost;
 
-    private lastCalled: string;
+    public accessibilityRoot: HTMLElement;
+
+    private shouldClear: boolean;
+
+    public addHeader = (headerData: string): HTMLElement => {
+        const newHeader = document.createElement("p");
+        newHeader.textContent = headerData;
+        return newHeader;
+    };
 
     public addButton = (buttonData: MockButton): HTMLElement => {
         const newButton = document.createElement("button");
@@ -34,32 +42,42 @@ export class MockUi extends FASTElement {
 
         newButton.textContent = buttonData.name;
         newButton.id = buttonData.id;
-        newButton.style.width = `${buttonData.width}px`;
-        newButton.style.height = `${buttonData.height}px`;
         newButton.setAttribute("aria-label", buttonData.name);
 
         return newButton;
     };
 
     public clearAll = (e): void => {
-        this.lastCalled = "clear-ui";
+        this.shouldClear = true;
     };
 
-    public attachButton = (e): void => {
-        if (this.lastCalled === "clear-ui") {
-            if (this.mockElements.length) {
-                this.mockElements.map(el => this.removeChild(el));
-                this.controlContainer.focus();
-            }
+    public removeMockElements() {
+        if (document.activeElement && this.contains(document.activeElement)) {
+            this.accessibilityRoot.focus();
+        }
+        if (this.mockElements.length) {
+            this.mockElements.forEach(el => this.removeChild(el));
+        }
+    }
+
+    public attachElement = (el): void => {
+        if (this.shouldClear) {
+            this.removeMockElements();
         }
 
-        const { detail }: { detail: MockButton } = e;
-        const newButton = this.addButton(detail);
+        this.shouldClear = false;
 
-        newButton.slot = "mock-elements";
-        this.appendChild(newButton);
+        el.slot = "mock-elements";
+        this.appendChild(el);
+    };
 
-        this.lastCalled = "add-button";
+    public setHeader = (e): void => {
+        this.heading = e.detail;
+    };
+
+    public attachButton = (e: CustomEvent): void => {
+        const newButton = this.addButton(e.detail);
+        this.attachElement(newButton);
     };
 
     public attachEvents(): void {
@@ -90,6 +108,7 @@ export class MockUi extends FASTElement {
 
         this.addEventListener("add-button", this.attachButton, true);
         this.addEventListener("clear-ui", this.clearAll, true);
+        this.addEventListener("add-header", this.setHeader, true);
     }
 
     public connectedCallback(): void {
@@ -102,5 +121,6 @@ export class MockUi extends FASTElement {
         super.disconnectedCallback();
         this.removeEventListener("add-button", this.attachButton, true);
         this.removeEventListener("clear-ui", this.clearAll, true);
+        this.removeEventListener("add-header", this.setHeader, true);
     }
 }
