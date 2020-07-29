@@ -6,7 +6,7 @@ export const MockUiStyles = css`
         justify-content: center;
     }
 
-    div {
+    .accessibility-root {
         display: block;
     }
 `;

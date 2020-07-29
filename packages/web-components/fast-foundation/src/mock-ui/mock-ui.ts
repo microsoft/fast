@@ -24,7 +24,7 @@ export class MockUi extends FASTElement {
 
     public host: UnityHost;
 
-    private lastCalled: string;
+    private shouldClear: boolean;
 
     public addButton = (buttonData: MockButton): HTMLElement => {
         const newButton = document.createElement("button");
@@ -42,24 +42,32 @@ export class MockUi extends FASTElement {
     };
 
     public clearAll = (e): void => {
-        this.lastCalled = "clear-ui";
+        this.shouldClear = true;
     };
 
+    public appendButton(newButton: HTMLElement, shouldFocus: boolean = false): void {}
+
+    public removeMockElements() {
+        if (this.mockElements.length) {
+            this.mockElements.map(el => this.removeChild(el));
+        }
+    }
+
     public attachButton = (e): void => {
-        if (this.lastCalled === "clear-ui") {
-            if (this.mockElements.length) {
-                this.mockElements.map(el => this.removeChild(el));
-                this.controlContainer.focus();
-            }
+        const newButton = this.addButton(e.detail);
+        newButton.slot = "mock-elements";
+
+        if (this.shouldClear) {
+            this.removeMockElements();
         }
 
-        const { detail }: { detail: MockButton } = e;
-        const newButton = this.addButton(detail);
-
-        newButton.slot = "mock-elements";
         this.appendChild(newButton);
 
-        this.lastCalled = "add-button";
+        if (this.shouldClear) {
+            newButton.focus();
+        }
+
+        this.shouldClear = false;
     };
 
     public attachEvents(): void {
