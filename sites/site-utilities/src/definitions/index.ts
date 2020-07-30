@@ -1,4 +1,49 @@
+import { WebComponentDefinition } from "@microsoft/fast-tooling/dist/data-utilities/web-component";
+import { commonHTMLAttributes } from "./native/common.definition";
 import * as fastComponentDefinitions from "./fast-components";
 import * as nativeElementDefinitions from "./native";
 
-export { fastComponentDefinitions, nativeElementDefinitions };
+function extendElementDefinitions(definitions: {
+    [key: string]: WebComponentDefinition;
+}): { [key: string]: WebComponentDefinition } {
+    return Object.entries(definitions)
+        .map(([definitionKey, definitionValue]: [string, WebComponentDefinition]): [
+            string,
+            WebComponentDefinition
+        ] => {
+            return [
+                definitionKey,
+                {
+                    ...definitionValue,
+                    tags: definitionValue.tags?.map(tag => {
+                        return {
+                            ...tag,
+                            attributes: (tag.attributes || []).concat(
+                                commonHTMLAttributes
+                            ),
+                        };
+                    }),
+                },
+            ];
+        })
+        .reduce((previousValue, currentValue: [string, WebComponentDefinition]) => {
+            return {
+                ...previousValue,
+                [currentValue[0]]: currentValue[1],
+            };
+        }, {});
+}
+
+const fastComponentExtendedDefinitions = extendElementDefinitions(
+    fastComponentDefinitions
+);
+const nativeElementExtendedDefinitions = extendElementDefinitions(
+    nativeElementDefinitions
+);
+
+export {
+    fastComponentDefinitions,
+    nativeElementDefinitions,
+    fastComponentExtendedDefinitions,
+    nativeElementExtendedDefinitions,
+};
