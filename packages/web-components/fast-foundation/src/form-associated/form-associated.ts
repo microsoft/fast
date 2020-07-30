@@ -267,25 +267,7 @@ export abstract class FormAssociated<
         this.dirtyValue = false;
 
         if (!supportsElementInternals) {
-            this.proxy.style.display = "none";
-            this.appendChild(this.proxy);
-
-            this.proxyEventsToBlock.forEach(name =>
-                this.proxy.addEventListener(name, this.stopPropagation)
-            );
-
-            // These are typically mapped to the proxy during
-            // property change callbacks, but during initialization
-            // on the initial call of the callback, the proxy is
-            // still undefined. We should find a better way to address this.
-            this.proxy.disabled = this.disabled;
-            this.proxy.required = this.required;
-            if (typeof this.name === "string") {
-                this.proxy.name = this.name;
-            }
-            if (typeof this.value === "string") {
-                this.proxy.value = this.value;
-            }
+            this.attachProxy();
         }
     }
 
@@ -342,6 +324,44 @@ export abstract class FormAssociated<
      */
     public formDisabledCallback(disabled: boolean): void {
         this.disabled = disabled;
+    }
+
+    private proxyInitialized: boolean = false;
+
+    /**
+     * Attach the proxy element to the DOM
+     */
+    protected attachProxy() {
+        if (!this.proxyInitialized) {
+            this.proxyInitialized = true;
+            this.proxy.style.display = "none";
+            this.proxyEventsToBlock.forEach(name =>
+                this.proxy.addEventListener(name, this.stopPropagation)
+            );
+
+            // These are typically mapped to the proxy during
+            // property change callbacks, but during initialization
+            // on the initial call of the callback, the proxy is
+            // still undefined. We should find a better way to address this.
+            this.proxy.disabled = this.disabled;
+            this.proxy.required = this.required;
+            if (typeof this.name === "string") {
+                this.proxy.name = this.name;
+            }
+
+            if (typeof this.value === "string") {
+                this.proxy.value = this.value;
+            }
+        }
+
+        this.appendChild(this.proxy);
+    }
+
+    /**
+     * Detach the proxy element from the DOM
+     */
+    protected detachProxy() {
+        this.removeChild(this.proxy);
     }
 
     /**

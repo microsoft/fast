@@ -1,4 +1,4 @@
-import { attr } from "@microsoft/fast-element";
+import { attr, observable } from "@microsoft/fast-element";
 import { FormAssociated } from "../form-associated/form-associated";
 import { ARIAGlobalStatesAndProperties, StartEnd } from "../patterns/index";
 import { applyMixins } from "../utilities/apply-mixins";
@@ -106,16 +106,6 @@ export class Button extends FormAssociated<HTMLInputElement> {
     }
 
     /**
-     * The name of the button
-     *
-     * @public
-     * @remarks
-     * HTML Attribute: name
-     */
-    @attr
-    public name: string;
-
-    /**
      * The button type.
      *
      * @public
@@ -124,10 +114,18 @@ export class Button extends FormAssociated<HTMLInputElement> {
      */
     @attr
     public type: "submit" | "reset" | "button";
-    private typeChanged(): void {
+    private typeChanged(
+        previous: "submit" | "reset" | "button" | void,
+        next: "submit" | "reset" | "button"
+    ): void {
         if (this.proxy instanceof HTMLElement) {
             this.proxy.type = this.type;
         }
+
+        next === "submit" && this.addEventListener("click", this.handleSubmission);
+        previous === "submit" && this.removeEventListener("click", this.handleSubmission);
+        next === "reset" && this.addEventListener("click", this.handleFormReset);
+        previous === "reset" && this.removeEventListener("click", this.handleFormReset);
     }
 
     protected proxy: HTMLInputElement = document.createElement("input");
@@ -138,10 +136,40 @@ export class Button extends FormAssociated<HTMLInputElement> {
     public connectedCallback(): void {
         super.connectedCallback();
 
-        this.proxy.setAttribute("type", `${this.type}`);
-
-        this.setFormValue(this.value, this.value);
+        this.proxy.setAttribute("type", this.type);
     }
+
+    /**
+     * Submits the parent form
+     */
+    private handleSubmission = () => {
+        if (!this.form) {
+            return;
+        }
+
+        const attached = this.proxy.isConnected;
+
+        if (!attached) {
+            super.attachProxy();
+        }
+
+        // Browser support for requestSubmit is not comprehensive
+        // so click the proxy if it isn't supported
+        typeof this.form.requestSubmit === "function"
+            ? this.form.requestSubmit(this.proxy)
+            : this.proxy.click();
+
+        if (!attached) {
+            super.detachProxy();
+        }
+    };
+
+    /**
+     * Resets the parent form
+     */
+    private handleFormReset = () => {
+        this.form?.reset();
+    };
 }
 
 /**
