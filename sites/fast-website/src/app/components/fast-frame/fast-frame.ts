@@ -1,5 +1,12 @@
 import { FASTElement, attr, observable } from "@microsoft/fast-element";
-import { createColorPalette, FASTSlider } from "@microsoft/fast-components";
+import {
+    createColorPalette,
+    FASTSlider,
+    FASTDesignSystem,
+    fastDesignSystemDefaults,
+    StandardLuminance,
+    neutralLayerCardContainer,
+} from "@microsoft/fast-components";
 import {
     ColorHSL,
     ColorRGBA64,
@@ -16,18 +23,21 @@ export class FastFrame extends FASTElement {
     public accentColor: string = "#F33378";
 
     @attr({ attribute: "background-color" })
-    public backgroundColor: string = "#212121";
+    public backgroundColor: string;
 
     @attr
     public darkMode: boolean = true;
 
+    @attr
+    public baseLayerLuminance: number = StandardLuminance.DarkMode;
+
     @observable
-    public previewBackgroundPalette: string[] = [
-        "#212121",
-        "#2B2B2B",
-        "#333333",
-        "#3B3B3B",
-        "#424242",
+    public previewNeutralPalette: string[] = [
+        "#808080",
+        "#35719F",
+        "#2D5F2D",
+        "#5D437C",
+        "#A35436",
     ];
 
     @observable
@@ -39,12 +49,10 @@ export class FastFrame extends FASTElement {
         "#E1A054",
     ];
 
-    private darkPallette: string[] = this.previewBackgroundPalette;
-
     private mql: MediaQueryList = window.matchMedia(`(max-width: ${drawerBreakpoint})`);
 
     @observable
-    public lastSelectedIndex: number = 0;
+    public neutralPalette: string[];
 
     @observable
     public accentPalette: string[];
@@ -87,13 +95,12 @@ export class FastFrame extends FASTElement {
         }
     };
 
-    public backgroundChangeHandler = (e: CustomEvent): void => {
+    public neutralChangeHandler = (e: CustomEvent): void => {
         if (e.target instanceof SiteColorSwatch) {
             if (e.target.checked) {
-                this.backgroundColor = e.target.value;
-                this.lastSelectedIndex = Array.from(
-                    this.previewBackgroundPalette
-                ).indexOf(e.target.value);
+                const parsedColor = parseColorHexRGB(e.target.value);
+                this.neutralPalette = createColorPalette(parsedColor as ColorRGBA64);
+                this.updateBackgroundColor();
             }
         }
     };
@@ -141,20 +148,25 @@ export class FastFrame extends FASTElement {
         this.accentPalette = createColorPalette(accentRGB);
     }
 
-    public themeChange = (e: CustomEvent): void => {
+    private updateBackgroundColor(): void {
+        const designSystem: FASTDesignSystem = Object.assign(
+            {},
+            fastDesignSystemDefaults,
+            {
+                baseLayerLuminance: this.baseLayerLuminance,
+                neutralPalette: this.neutralPalette,
+            }
+        );
+
+        this.backgroundColor = neutralLayerCardContainer(designSystem);
+    }
+
+    public modeChange = (e: CustomEvent): void => {
         this.darkMode = !this.darkMode;
-        if (!this.darkMode) {
-            this.previewBackgroundPalette = [
-                "#FFFFFF",
-                "#F0F0F0",
-                "#DEDEDE",
-                "#D6D6D6",
-                "#C4C4C4",
-            ];
-        } else {
-            this.previewBackgroundPalette = this.darkPallette;
-        }
-        this.backgroundColor = this.previewBackgroundPalette[this.lastSelectedIndex];
+        this.baseLayerLuminance = this.darkMode
+            ? StandardLuminance.DarkMode
+            : StandardLuminance.LightMode;
+        this.updateBackgroundColor();
     };
 
     private resetExpandedResponsive = (e): void => {
@@ -173,5 +185,14 @@ export class FastFrame extends FASTElement {
         this.lightness = accentColorHSL.l;
 
         this.mql.addListener(this.resetExpandedResponsive);
+    }
+
+    /**
+     * @internal
+     */
+    public connectedCallback() {
+        super.connectedCallback();
+
+        this.updateBackgroundColor();
     }
 }

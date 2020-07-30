@@ -34,7 +34,6 @@ const packages = [
     "fast-element",
     "fast-foundation",
     "fast-components",
-    "fast-components-msft",
 ];
 
 function identifyPackage(path) {
