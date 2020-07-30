@@ -4,7 +4,7 @@ title: Design System
 custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-components/docs/design/design-system.md
 ---
 
-In FAST, the *design system* is a collection of properties and values that inform the visual design language of the components. These properties are managed and provided through implementations of the [*DesignSystemProvider*](components/design-system-provider.md).
+In FAST, the *design system* is a collection of properties and values that inform the visual design language of the components. These properties are managed and provided through implementations of the [*DesignSystemProvider*](/docs/components/design-system-provider).
 
 For the purposes of this section, just know the *DesignSystemProvider* is a Custom Element that will create CSS Custom Properties that can be consumed by component stylesheets and provide mechanisms to synchronize, update, and consume those properties programmatically.
 
