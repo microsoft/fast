@@ -34,7 +34,8 @@ He clicks on `Kitchen and Dining` to go back to the category of kitchen items, s
 ```html
 <template
     role="navigation"
-    aria-label="breadcrumb"
+    aria-label="${x => x.ariaLabel}"
+    aria-labelledby="${x => x.ariaLabelledby}"
 >
     <div role="list">
         <slot ${slotted({ property: "slottedBreadcrumbItems", filter: elements() })}></slot>
@@ -99,8 +100,8 @@ The `fast-breadcrumb-item` is placed inside the `fast-breadcrumb` component. It 
 ```html
 <div
     role="listitem"
-    class="listitem-container"
-    part="listitem-container"
+    class="listitem"
+    part="listitem"
 >
     <slot>
         <a class="control" part="control" href="${x => x.href}">
@@ -112,8 +113,8 @@ The `fast-breadcrumb-item` is placed inside the `fast-breadcrumb` component. It 
     ${when(
         x => x.showSeparator,
         html<BreadcrumbItem>`
-            <span class="separator" aria-hidden="true">
-                <slot name="separator" part="separator">/</slot>"
+            <span class="separator" part="separator" aria-hidden="true">
+                <slot name="separator">/</slot>"
             </span>
         `
     )}
