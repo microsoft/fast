@@ -1,6 +1,6 @@
 import { attr, observable } from "@microsoft/fast-element";
 import { keyCodeSpace } from "@microsoft/fast-web-utilities";
-import { FormAssociated } from "../form-associated/index";
+import { FormAssociated } from "../form-associated/form-associated";
 
 /**
  * A Switch Custom HTML Element.
@@ -31,16 +31,9 @@ export class Switch extends FormAssociated<HTMLInputElement> {
      * The element's value to be included in form submission when checked.
      * Default to "on" to reach parity with input[type="checkbox"]
      *
-     * @public
-     * HTML Attribute: value
+     * @internal
      */
-    @attr
-    public value: string = "on"; // Map to proxy element.
-    private valueChanged(): void {
-        if (this.proxy instanceof HTMLElement) {
-            this.proxy.value = this.value;
-        }
-    }
+    protected initialValue: string = "on";
 
     /**
      * The checked attribute value. This sets the initial checked value.
