@@ -6,15 +6,15 @@ An avatar is a graphical represention of a user or object.
 
 ### Use Cases
 
-A common use case would be to display an image or text (usually initials) of a user or an object.
+A common use case would be to display an image or text (usually initials) of a user or an object, such as in a user profile.
 
 ### Features
-- Image slot: Able to slot in an avatar image
+- A URL for an image can be passed to the component to be displayed in the coin
+  - When no image is provided, the initials of the provided name will be displayed in the coin
 - Badge slot: Able to slot in a badge component
-- `size`, a numeric value that determines the size of the avatar
-- `shape`, a circle or square shape can be chosen
+- `shape`, a circle or square shape can be chosen. Any border radius for square shaped coins should be determined by the users design system values or stylesheet
 - `color`, a hexadecimal color can be provided to determine the coin background color
-- If no image is provided, the initials of the provided name will be displayed
+- When a `link` is provided an `aria-link` attribute is added
 
 ### Prior Art/Examples
 
@@ -31,32 +31,52 @@ A common use case would be to display an image or text (usually initials) of a u
 - `fast-avatar`
 
 #### Attributes
-|   Name    | Description                                  | Type                |
-|-----------|----------------------------------------------|---------------------|
-| `name`    | Accepts name string for coin display         | `string`            |
-| `shape`   | Determines the avatar coin shape.            | `circle | square`   |
-| `fill`    | Sets the background fill of the avatar coin. | `string: hex color` |
-| `color`   | Sets the color of the avatar coin text.      | `string: hex color` |
-| `size`    | Sets the size of avatar coin.                | `number`            |
+|   Name    | Description                                                 | Type                                |
+|-----------|-------------------------------------------------------------|-------------------------------------|
+| `name`    | Accepts name string for coin display                        | `string`                            |
+| `img-src` | Accepts URL string of image to be displayed                 | `string`                            |
+| `alt-text`| Accepts alt text for image                                  | `string`                            |
+| `link`    | Accepts a URL for the anchor source                         | `string`                            |
+| `shape`   | Determines the avatar coin shape. Default will be a circle. | `string: default | circle | square` |
+| `fill`    | Sets the background fill of the avatar coin.                | `string: hex color`                 |
+| `color`   | Sets the color of the avatar coin text.                     | `string: hex color`                 |
 
 ### Anatomy and Appearance
 
 *Template*
 ```
-<div class="coin">
-  <a href="${ x => x.link}">
-    <span class="name">
-      ${x => x.name}
-    </span>
-    ${when(x => x.imgSrc, html<TestAvatar>`
-      <img class="photo"
-        alt="${ x => x.altText }" 
-        src="${ x => x.imgSrc }" />
-    `)}
+${when(x => x.link, html`
+  <template 
+    role="aria-link">
+    <div class="avatar-coin">
+      <a class="avatar-link" href="${ x => x.link}">
+        ${when(x => x.imgSrc, html`
+          <img 
+            class="avatar-image" 
+            alt="${ x => x.alt }" 
+            src="${ x => x.imgSrc }" />
+        `)}
+        <span class="avatar-name">${x => x.name}</span>
+      </a>
+    </div>
+    <slot class="avatar-badge" name="badge"></slot>
+  </template> 
+`)}   
 
-  </a>
-</div>
-<slot class="badge" name="badge"></slot>
+${when(x => !x.link, html`
+  <template>
+    <div class="avatar-coin">
+      ${when(x => x.imgSrc, html`
+        <img 
+          class="avatar-image" 
+          alt="${ x => x.alt }" 
+          src="${ x => x.imgSrc }" />
+      `)}
+      <span class="avatar-name">${x => x.name}</span>
+    </div>
+    <slot class="avatar-badge" name="badge"></slot>
+  </template> 
+`)}
 ```
 
 ---
@@ -64,42 +84,39 @@ A common use case would be to display an image or text (usually initials) of a u
 ## Implementation
 
 ```
-<test-avatar 
-  imgSrc=""
-  altText="Jenny's profile image"
+<fast-avatar 
+  img-src="..."
+  alt-text="..."
   link="">
-</test-avatar>
+</fast-avatar>
 ```
 
 With `fast-badge` Component:
 ```
-<test-avatar 
-  altText="Jenny's profile image"
-  link="">
-  <fast-badge slot="badge" 
-    fill="primary"
-    circular=>C</fast-badge>
-</test-avatar>
+<fast-avatar 
+  alt-text="..."
+  link="...">
+  <fast-badge slot="badge">&nbsp</fast-badge>
+</fast-avatar>
 ```
 
 ### Accessibility
 
 It is important to ensure that when the contrast of text in the coin meets [1.4.3 Contrast (Minimum)](https://www.w3.org/TR/UNDERSTANDING-WCAG20/visual-audio-contrast-contrast.html).
 
+If there is a link the component should have an `aria-link` attribute.
+
 ### Globalization
 
 If a badge is used it should appear on the appropriate side of the coin.
-
-### Documentation
-
-*What additions or changes are needed for user documentation and demos? Are there any architectural/engineering docs we should create as well, perhaps due to some interesting technical challenge or design decisions related to this component?*
 
 ---
 
 ## Resources
 
 - [WCAG - 1.4.3 Contrast (Minimum)](https://www.w3.org/TR/UNDERSTANDING-WCAG20/visual-audio-contrast-contrast.html)
+- When a link source URL is provided an `aria-link` attribute should be conditionally added
 
 ## Next Steps
 
-I believe some feature validation will be needed to determine whether some features should be natively added to this component or if they should be added by the developer party for their particular use case.
+Some validation will be needed to determine whether a component sizing feature should be natively added to this component or if that should be controlled by the design system's sizing model.
