@@ -223,18 +223,20 @@ describe("getLinkedDataDictionary", () => {
 
 describe("getLinkedData", () => {
     test("should get a linked data set", () => {
-        expect(getLinkedData(
-            [
-                {
-                    root: {
-                        schemaId: "foo",
-                        data: {}
-                    }
-                },
-                "root"
-            ],
-            ["root"]
-        )).toEqual([
+        expect(
+            getLinkedData(
+                [
+                    {
+                        root: {
+                            schemaId: "foo",
+                            data: {},
+                        },
+                    },
+                    "root",
+                ],
+                ["root"]
+            )
+        ).toEqual([
             {
                 data: {},
                 linkedData: [],
@@ -243,43 +245,45 @@ describe("getLinkedData", () => {
         ]);
     });
     test("should get a nested linked data set", () => {
-        expect(getLinkedData(
-            [
-                {
-                    root: {
-                        schemaId: "foo",
-                        data: {
-                            hello: "world"
-                        }
-                    },
-                    nestedItem: {
-                        parent: {
-                            id: "root",
-                            dataLocation: "linkedData"
+        expect(
+            getLinkedData(
+                [
+                    {
+                        root: {
+                            schemaId: "foo",
+                            data: {
+                                hello: "world",
+                            },
                         },
-                        schemaId: "bar",
-                        data: {
-                            hello: "pluto"
-                        }
-                    }
-                },
-                "root"
-            ],
-            ["root"]
-        )).toEqual([
+                        nestedItem: {
+                            parent: {
+                                id: "root",
+                                dataLocation: "linkedData",
+                            },
+                            schemaId: "bar",
+                            data: {
+                                hello: "pluto",
+                            },
+                        },
+                    },
+                    "root",
+                ],
+                ["root"]
+            )
+        ).toEqual([
             {
                 schemaId: "foo",
                 data: {
-                    hello: "world"
+                    hello: "world",
                 },
                 linkedData: [
                     {
                         schemaId: "bar",
                         data: {
-                            hello: "pluto"
+                            hello: "pluto",
                         },
-                        linkedData: []
-                    }
+                        linkedData: [],
+                    },
                 ],
             },
         ]);
@@ -288,143 +292,163 @@ describe("getLinkedData", () => {
 
 describe("getLinkedDataList", () => {
     test("should get an empty list if an item does not contain linked data", () => {
-        expect(getLinkedDataList([
-            {
-                "foo": {
-                    data: {
-                        bat: [
-                            {
-                                id: "bar"
-                            }
-                        ],
+        expect(
+            getLinkedDataList(
+                [
+                    {
+                        foo: {
+                            data: {
+                                bat: [
+                                    {
+                                        id: "bar",
+                                    },
+                                ],
+                            },
+                            schemaId: "foo",
+                        },
+                        bar: {
+                            parent: {
+                                id: "foo",
+                                dataLocation: "bat",
+                            },
+                            data: {},
+                            schemaId: "bar",
+                        },
                     },
-                    schemaId: "foo"
-                },
-                "bar": {
-                    parent: {
-                        id: "foo",
-                        dataLocation: "bat"
-                    },
-                    data: {},
-                    schemaId: "bar"
-                }
-            },
-            "foo"
-        ], "bar")).toEqual([]);
+                    "foo",
+                ],
+                "bar"
+            )
+        ).toEqual([]);
     });
     test("should get a single key if the provided dictionary item contains a single linked data item", () => {
-        expect(getLinkedDataList([
-            {
-                "foo": {
-                    data: {
-                        bat: [
-                            {
-                                id: "bar"
-                            }
-                        ],
+        expect(
+            getLinkedDataList(
+                [
+                    {
+                        foo: {
+                            data: {
+                                bat: [
+                                    {
+                                        id: "bar",
+                                    },
+                                ],
+                            },
+                            schemaId: "foo",
+                        },
+                        bar: {
+                            parent: {
+                                id: "foo",
+                                dataLocation: "bat",
+                            },
+                            data: {},
+                            schemaId: "bar",
+                        },
+                        bat: {
+                            parent: {
+                                id: "bar",
+                                dataLocation: "bat",
+                            },
+                            data: {},
+                            schemaId: "bar",
+                        },
                     },
-                    schemaId: "foo"
-                },
-                "bar": {
-                    parent: {
-                        id: "foo",
-                        dataLocation: "bat"
-                    },
-                    data: {},
-                    schemaId: "bar"
-                },
-                "bat": {
-                    parent: {
-                        id: "bar",
-                        dataLocation: "bat"
-                    },
-                    data: {},
-                    schemaId: "bar"
-                }
-            },
-            "foo"
-        ], "bar")).toEqual(["bat"]);
+                    "foo",
+                ],
+                "bar"
+            )
+        ).toEqual(["bat"]);
     });
     test("should get multiple keys if the provided dictionary item contains multiple linked data items", () => {
-        expect(getLinkedDataList([
-            {
-                "foo": {
-                    data: {
-                        bat: [
-                            {
-                                id: "bar"
-                            }
-                        ],
+        expect(
+            getLinkedDataList(
+                [
+                    {
+                        foo: {
+                            data: {
+                                bat: [
+                                    {
+                                        id: "bar",
+                                    },
+                                ],
+                            },
+                            schemaId: "foo",
+                        },
+                        bar: {
+                            parent: {
+                                id: "foo",
+                                dataLocation: "bat",
+                            },
+                            data: {},
+                            schemaId: "bar",
+                        },
+                        bat: {
+                            parent: {
+                                id: "bar",
+                                dataLocation: "bat",
+                            },
+                            data: {},
+                            schemaId: "bar",
+                        },
+                        baz: {
+                            parent: {
+                                id: "bar",
+                                dataLocation: "bat",
+                            },
+                            data: {},
+                            schemaId: "bar",
+                        },
                     },
-                    schemaId: "foo"
-                },
-                "bar": {
-                    parent: {
-                        id: "foo",
-                        dataLocation: "bat"
-                    },
-                    data: {},
-                    schemaId: "bar"
-                },
-                "bat": {
-                    parent: {
-                        id: "bar",
-                        dataLocation: "bat"
-                    },
-                    data: {},
-                    schemaId: "bar"
-                },
-                "baz": {
-                    parent: {
-                        id: "bar",
-                        dataLocation: "bat"
-                    },
-                    data: {},
-                    schemaId: "bar"
-                }
-            },
-            "foo"
-        ], "bar")).toEqual(["bat", "baz"]);
+                    "foo",
+                ],
+                "bar"
+            )
+        ).toEqual(["bat", "baz"]);
     });
     test("should get multiple keys if the provided dictionary item contains a single linked data item that contains another linked data item", () => {
-        expect(getLinkedDataList([
-            {
-                "foo": {
-                    data: {
-                        bat: [
-                            {
-                                id: "bar"
-                            }
-                        ],
+        expect(
+            getLinkedDataList(
+                [
+                    {
+                        foo: {
+                            data: {
+                                bat: [
+                                    {
+                                        id: "bar",
+                                    },
+                                ],
+                            },
+                            schemaId: "foo",
+                        },
+                        bar: {
+                            parent: {
+                                id: "foo",
+                                dataLocation: "bat",
+                            },
+                            data: {},
+                            schemaId: "bar",
+                        },
+                        bat: {
+                            parent: {
+                                id: "bar",
+                                dataLocation: "bat",
+                            },
+                            data: {},
+                            schemaId: "bar",
+                        },
+                        baz: {
+                            parent: {
+                                id: "bat",
+                                dataLocation: "bat",
+                            },
+                            data: {},
+                            schemaId: "bar",
+                        },
                     },
-                    schemaId: "foo"
-                },
-                "bar": {
-                    parent: {
-                        id: "foo",
-                        dataLocation: "bat"
-                    },
-                    data: {},
-                    schemaId: "bar"
-                },
-                "bat": {
-                    parent: {
-                        id: "bar",
-                        dataLocation: "bat"
-                    },
-                    data: {},
-                    schemaId: "bar"
-                },
-                "baz": {
-                    parent: {
-                        id: "bat",
-                        dataLocation: "bat"
-                    },
-                    data: {},
-                    schemaId: "bar"
-                }
-            },
-            "foo"
-        ], "bar")).toEqual(["bat", "baz"]);
+                    "foo",
+                ],
+                "bar"
+            )
+        ).toEqual(["bat", "baz"]);
     });
 });

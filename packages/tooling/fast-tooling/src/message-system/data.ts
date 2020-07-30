@@ -100,19 +100,21 @@ export function getLinkedData(
     dataDictionary: DataDictionary<unknown>,
     dictionaryIds: string[]
 ): Data<unknown>[] {
-    return dictionaryIds.map((dictionaryId) => {
+    return dictionaryIds.map(dictionaryId => {
         // Retrieve all direct linked data for each data item
-        const linkedDataKeys: string[] = Object.keys(dataDictionary[0]).filter((dataDictionaryKey: string) => {
-            return get(dataDictionary[0][dataDictionaryKey], "parent.id") === dictionaryId;
-        });
+        const linkedDataKeys: string[] = Object.keys(dataDictionary[0]).filter(
+            (dataDictionaryKey: string) => {
+                return (
+                    get(dataDictionary[0][dataDictionaryKey], "parent.id") ===
+                    dictionaryId
+                );
+            }
+        );
 
         return {
             schemaId: dataDictionary[0][dictionaryId].schemaId,
             data: dataDictionary[0][dictionaryId].data,
-            linkedData: getLinkedData(
-                dataDictionary,
-                linkedDataKeys
-            ),
+            linkedData: getLinkedData(dataDictionary, linkedDataKeys),
         };
     });
 }
@@ -126,13 +128,17 @@ export function getLinkedDataList(
 ): string[] {
     let linkedDataIds: string[] = [];
 
-    Object.entries(dataDictionary[0]).forEach(([key, dataDictionaryItem]: [string, Data<unknown>]) => {
-        if (get(dataDictionaryItem, "parent.id") === dictionaryId) {
-            linkedDataIds.push(key);
+    Object.entries(dataDictionary[0]).forEach(
+        ([key, dataDictionaryItem]: [string, Data<unknown>]) => {
+            if (get(dataDictionaryItem, "parent.id") === dictionaryId) {
+                linkedDataIds.push(key);
 
-            linkedDataIds = linkedDataIds.concat(getLinkedDataList(dataDictionary, key));
+                linkedDataIds = linkedDataIds.concat(
+                    getLinkedDataList(dataDictionary, key)
+                );
+            }
         }
-    });
+    );
 
     return linkedDataIds;
 }

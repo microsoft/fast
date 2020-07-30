@@ -606,28 +606,28 @@ describe("getMessage", () => {
                         data2: {
                             parent: {
                                 dataLocation: "linkedData",
-                                id: "data"
+                                id: "data",
                             },
                             schemaId: "foo",
                             data: {
                                 hello: "world",
                                 linkedData: [
                                     {
-                                        id: "data3"
-                                    }
-                                ]
+                                        id: "data3",
+                                    },
+                                ],
                             },
                         },
                         data3: {
                             parent: {
                                 dataLocation: "linkedData",
-                                id: "data2"
+                                id: "data2",
                             },
                             schemaId: "foo",
                             data: {
-                                foo: "bar"
-                            }
-                        }
+                                foo: "bar",
+                            },
+                        },
                     },
                     "data",
                 ],
@@ -636,8 +636,8 @@ describe("getMessage", () => {
                         id: "foo",
                         type: "object",
                         properties: {
-                            linkedData: linkedDataSchema
-                        }
+                            linkedData: linkedDataSchema,
+                        },
                     },
                 },
             });
@@ -654,7 +654,7 @@ describe("getMessage", () => {
             }) as AddLinkedDataDataMessageOutgoing;
 
             expect((message.data as any).linkedData).toEqual([]);
-            expect((message.dataDictionary)).toEqual([
+            expect(message.dataDictionary).toEqual([
                 {
                     data: {
                         schemaId: "foo",
@@ -663,9 +663,9 @@ describe("getMessage", () => {
                         },
                     },
                 },
-                "data"
+                "data",
             ]);
-            expect((message.linkedDataIds)).toEqual(["data2", "data3"]);
+            expect(message.linkedDataIds).toEqual(["data2", "data3"]);
         });
         test("should reorder linkedData in the exist array of linkedData items", () => {
             getMessage({
