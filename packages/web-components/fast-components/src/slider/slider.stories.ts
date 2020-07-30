@@ -9,15 +9,21 @@ FASTSlider;
 FASTDesignSystemProvider;
 
 addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
-    if (name.toLowerCase().startsWith("slider")) {
+    if (name.toLowerCase().endsWith("slider")) {
         const slider1: HTMLElement | null = document.getElementById("switcher");
-        (slider1 as FASTSlider).valueTextFormatter = valueTextFormatter;
+        if (slider1) {
+            (slider1 as FASTSlider).valueTextFormatter = valueTextFormatter;
+        }
 
         const slider2: HTMLElement | null = document.getElementById("switcher2");
-        (slider2 as FASTSlider).valueTextFormatter = valueTextFormatter;
+        if (slider2) {
+            (slider2 as FASTSlider).valueTextFormatter = valueTextFormatter;
+        }
 
         const slider3: HTMLElement | null = document.getElementById("slider1");
-        (slider3 as FASTSlider).valueTextFormatter = valueTextFormatter;
+        if (slider3) {
+            (slider3 as FASTSlider).valueTextFormatter = valueTextFormatter;
+        }
     }
 });
 
