@@ -141,9 +141,8 @@ export class Button extends FormAssociated<HTMLInputElement> {
 
     /**
      * Submits the parent form
-     * @internal
      */
-    public handleSubmission = () => {
+    private handleSubmission = () => {
         if (!this.form) {
             return;
         }
@@ -167,9 +166,8 @@ export class Button extends FormAssociated<HTMLInputElement> {
 
     /**
      * Resets the parent form
-     * @internal
      */
-    public handleFormReset = () => {
+    private handleFormReset = () => {
         this.form?.reset();
     };
 }
