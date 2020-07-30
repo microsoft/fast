@@ -132,7 +132,10 @@ export class Button extends FormAssociated<HTMLInputElement> {
     formmethod: string;
     formnovalidate: boolean;
     formtarget: "_self" | "_blank" | "_parent" | "_top";
-    name: string;
+    // @internal
+    handleFormReset: () => void;
+    // @internal
+    handleSubmission: () => void;
     // (undocumented)
     protected proxy: HTMLInputElement;
     type: "submit" | "reset" | "button";
