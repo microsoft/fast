@@ -90,7 +90,6 @@ module.exports = {
                 "api/fast-animation",
                 "api/fast-colors",
                 "api/fast-components",
-                "api/fast-components-msft",
                 "api/fast-element",
                 "api/fast-foundation",
             ],
