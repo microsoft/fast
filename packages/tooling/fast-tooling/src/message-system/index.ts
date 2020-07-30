@@ -1,6 +1,7 @@
 import MessageSystem from "./message-system";
 export { MessageSystem };
 
+export * from "./data";
 export * from "./data.props";
 export * from "./navigation";
 export * from "./navigation.props";

@@ -67,11 +67,11 @@ This package does not export Web Components registered as [custom elements](http
 `fast-components` is a library of Web Components that *composes* the exports of `fast-foundation` with stylesheets aligning to the FAST design language. This composition step registers a custom element. See the [quick start](http://fast.design/components/getting-started) to get started using the components.
 
 ### fast-components-msft
-
+**This package has been moved to [FluentUI](https://github.com/microsoft/fluentui/)**
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![npm version](https://badge.fury.io/js/%40microsoft%2Ffast-components-msft.svg)](https://badge.fury.io/js/%40microsoft%2Ffast-components-msft)
 
-`fast-components-msft` is a library of Web Components that *composes* `fast-foundation`. `fast-components-msft` uses the same custom element names as `fast-components`, but makes use of different stylesheets that support Microsoft's Fluent design language.
+`fast-components-msft` is a library of Web Components that *composes* `fast-foundation`. `fast-components-msft` uses the same custom element names as `fast-components`, but makes use of different stylesheets and may include components that specifically support Microsoft's Fluent design language.
 
 ### Component Explorer
 
@@ -83,7 +83,7 @@ If you're looking to get started using our components right away, take a look at
 
 ## Joining the Community
 
-Looking to get answers to questions or engage with us in realtime? Our community is most active [on Discord](https://discord.gg/FcSNfg4). Submit requests and issues on [GitHub](https://github.com/Microsoft/fast/issues/new/choose), or join us by contributing on [some good first issues via GitHub](https://github.com/Microsoft/fast/labels/good%20first%20issue).
+Looking to get answers to questions or engage with us in realtime? Our community is most active [on Discord](https://discord.gg/FcSNfg4). Submit requests and issues on [GitHub](https://github.com/Microsoft/fast/issues/new/choose), or join us by contributing on [some good first issues via GitHub](https://github.com/Microsoft/fast/labels/community:good-first-issue).
 
 We look forward to building an amazing open source community with you!
 
@@ -118,4 +118,4 @@ Because FAST has abstracted base components from their style, you get a head sta
 
 * Join the community and chat with us in real-time on [Discord](https://discord.gg/FcSNfg4).
 * Submit requests and issues on [GitHub](https://github.com/Microsoft/fast/issues/new/choose).
-* Contribute by helping out on some of our recommended first issues on [GitHub](https://github.com/Microsoft/fast/labels/good%20first%20issue).
+* Contribute by helping out on some of our recommended first issues on [GitHub](https://github.com/Microsoft/fast/labels/community:good-first-issue).
