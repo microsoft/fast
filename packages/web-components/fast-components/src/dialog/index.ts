@@ -1,6 +1,7 @@
 import { customElement } from "@microsoft/fast-element";
 import { Dialog, DialogTemplate as template } from "@microsoft/fast-foundation";
 import { DialogStyles as styles } from "./dialog.styles";
+export { DialogStyles } from "./dialog.styles";
 
 /**
  * The FAST Dialog Element. Implements {@link @microsoft/fast-foundation#Dialog},

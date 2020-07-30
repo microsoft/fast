@@ -1,6 +1,7 @@
 import { customElement } from "@microsoft/fast-element";
 import { Card, CardTemplate as template } from "@microsoft/fast-foundation";
 import { CardStyles as styles } from "./card.styles";
+export { CardStyles } from "./card.styles";
 
 /**
  * The FAST Card Element. Implements {@link @microsoft/fast-foundation#Card},

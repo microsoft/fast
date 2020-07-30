@@ -193,14 +193,38 @@ export const accentForegroundRest: SwatchRecipe;
 // @public
 export const accentForegroundRestBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
 
+// @public (undocumented)
+export const AccordionStyles: import("@microsoft/fast-element").ElementStyles;
+
 // @public
 export type AnchorAppearance = ButtonAppearance | "hypertext";
+
+// @public (undocumented)
+export const AnchorStyles: import("@microsoft/fast-element").ElementStyles;
+
+// @public (undocumented)
+export const BadgeStyles: import("@microsoft/fast-element").ElementStyles;
 
 // @public
 export type ButtonAppearance = "accent" | "lightweight" | "neutral" | "outline" | "stealth";
 
+// @public (undocumented)
+export const ButtonStyles: import("@microsoft/fast-element").ElementStyles;
+
+// @public (undocumented)
+export const CardStyles: import("@microsoft/fast-element").ElementStyles;
+
+// @public (undocumented)
+export const CheckboxStyles: import("@microsoft/fast-element").ElementStyles;
+
 // @public
 export function createColorPalette(baseColor: any): string[];
+
+// @public (undocumented)
+export const DialogStyles: import("@microsoft/fast-element").ElementStyles;
+
+// @public (undocumented)
+export const DividerStyles: import("@microsoft/fast-element").ElementStyles;
 
 // @public
 export class FASTAccordion extends Accordion {
@@ -582,6 +606,9 @@ export class FASTTreeItem extends TreeItem {
 export class FASTTreeView extends TreeView {
 }
 
+// @public (undocumented)
+export const FlipperStyles: import("@microsoft/fast-element").ElementStyles;
+
 // @public
 export const inlineEndBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
 
@@ -590,6 +617,12 @@ export const inlineStartBehavior: import("@microsoft/fast-foundation").CSSCustom
 
 // @public
 export function isDarkMode(designSystem: FASTDesignSystem): boolean;
+
+// @public (undocumented)
+export const MenuItemStyles: import("@microsoft/fast-element").ElementStyles;
+
+// @public (undocumented)
+export const MenuStyles: import("@microsoft/fast-element").ElementStyles;
 
 // Warning: (ae-internal-missing-underscore) The name "neutralDividerRest" should be prefixed with an underscore because the declaration is marked as @internal
 //
@@ -960,6 +993,24 @@ export enum PaletteType {
 // @public
 export const parseColorString: (color: string) => ColorRGBA64;
 
+// @public (undocumented)
+export const ProgressRingStyles: import("@microsoft/fast-element").ElementStyles;
+
+// @public (undocumented)
+export const ProgressStyles: import("@microsoft/fast-element").ElementStyles;
+
+// @public (undocumented)
+export const RadioGroupStyles: import("@microsoft/fast-element").ElementStyles;
+
+// @public (undocumented)
+export const RadioStyles: import("@microsoft/fast-element").ElementStyles;
+
+// @public (undocumented)
+export const SliderLabelStyles: import("@microsoft/fast-element").ElementStyles;
+
+// @public (undocumented)
+export const SliderStyles: import("@microsoft/fast-element").ElementStyles;
+
 // @public
 export enum StandardLuminance {
     // (undocumented)
@@ -968,11 +1019,35 @@ export enum StandardLuminance {
     LightMode = 1
 }
 
+// @public (undocumented)
+export const SwitchStyles: import("@microsoft/fast-element").ElementStyles;
+
+// @public (undocumented)
+export const TabPanelStyles: import("@microsoft/fast-element").ElementStyles;
+
+// @public (undocumented)
+export const TabsStyles: import("@microsoft/fast-element").ElementStyles;
+
+// @public (undocumented)
+export const TabStyles: import("@microsoft/fast-element").ElementStyles;
+
 // @public
 export type TextAreaAppearance = "filled" | "outline";
 
+// @public (undocumented)
+export const TextAreaStyles: import("@microsoft/fast-element").ElementStyles;
+
 // @public
 export type TextFieldAppearance = "filled" | "outline";
+
+// @public (undocumented)
+export const TextFieldStyles: import("@microsoft/fast-element").ElementStyles;
+
+// @public (undocumented)
+export const TreeItemStyles: import("@microsoft/fast-element").ElementStyles;
+
+// @public (undocumented)
+export const TreeViewStyles: import("@microsoft/fast-element").ElementStyles;
 
 
 // (No @packageDocumentation comment for this package)
