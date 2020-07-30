@@ -144,7 +144,6 @@ export class Button extends FormAssociated<HTMLInputElement> {
      * @internal
      */
     public handleSubmission = () => {
-        debugger;
         if (!this.form) {
             return;
         }
@@ -171,7 +170,6 @@ export class Button extends FormAssociated<HTMLInputElement> {
      * @internal
      */
     public handleFormReset = () => {
-        debugger;
         this.form?.reset();
     };
 }
