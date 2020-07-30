@@ -53,7 +53,7 @@ export interface NavigationState {
     /**
      * The linked data currently being dragged
      */
-    linkedData: Data<unknown>;
+    linkedData: Data<unknown>[];
 
     /**
      * The linked datas location
