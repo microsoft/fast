@@ -49,6 +49,20 @@ const children: DataDictionary<any> = [
                 dataLocation: "children",
             },
             schemaId: childrenSchema.id,
+            data: {
+                children: [
+                    {
+                        id: "bax",
+                    },
+                ],
+            },
+        },
+        bax: {
+            parent: {
+                id: "baz",
+                dataLocation: "children",
+            },
+            schemaId: noChildrenSchema.id,
             data: {},
         },
     },

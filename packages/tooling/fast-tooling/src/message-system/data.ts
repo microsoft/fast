@@ -1,4 +1,4 @@
-import { get, uniqueId } from "lodash-es";
+import { cloneDeep, get, uniqueId, unset } from "lodash-es";
 import {
     Data,
     DataDictionary,
@@ -101,19 +101,29 @@ export function getLinkedData(
     dictionaryIds: string[]
 ): Data<unknown>[] {
     return dictionaryIds.map(dictionaryId => {
+        const data = cloneDeep(dataDictionary[0][dictionaryId].data);
         // Retrieve all direct linked data for each data item
+        // and removes it from the original parent linked data item
         const linkedDataKeys: string[] = Object.keys(dataDictionary[0]).filter(
             (dataDictionaryKey: string) => {
-                return (
+                const isLinkedData =
                     get(dataDictionary[0][dataDictionaryKey], "parent.id") ===
-                    dictionaryId
-                );
+                    dictionaryId;
+
+                if (isLinkedData) {
+                    unset(
+                        data,
+                        get(dataDictionary[0][dataDictionaryKey], "parent.dataLocation")
+                    );
+                }
+
+                return isLinkedData;
             }
         );
 
         return {
             schemaId: dataDictionary[0][dictionaryId].schemaId,
-            data: dataDictionary[0][dictionaryId].data,
+            data,
             linkedData: getLinkedData(dataDictionary, linkedDataKeys),
         };
     });
