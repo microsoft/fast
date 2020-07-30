@@ -31,7 +31,7 @@ He clicks on `Kitchen and Dining` to go back to the category of kitchen items, s
 
 ### Anatomy and Appearance
 
-```ts
+```html
 <template
     role="navigation"
     aria-label="breadcrumb"
@@ -51,21 +51,16 @@ He clicks on `Kitchen and Dining` to go back to the category of kitchen items, s
 
 ```html
 <fast-breadcrumb>
-    <fast-breadcrumb-item>
-        <fast-anchor appearance="lightweight" href="#">Home</fast-anchor>
-    </fast-breadcrumb-item>
-    <fast-breadcrumb-item>
-        <fast-anchor appearance="lightweight" href="#">Templates</fast-anchor>
-    </fast-breadcrumb-item>
-    <fast-breadcrumb-item>
-        <fast-anchor appearance="lightweight">Template Prices</fast-anchor>
-    </fast-breadcrumb-item>
+    <fast-breadcrumb-item name="Home" href="#"></fast-breadcrumb-item>
+    <fast-breadcrumb-item name="Template" href="#"></fast-breadcrumb-item>
+    <fast-breadcrumb-item name="Template Prices" href="#"></fast-breadcrumb-item>
 </fast-breadcrumb>
 ```
 
 ### Accessibility
 
 The breadcrumb should align to the interaction model provided by the [W3C](https://www.w3.org/TR/wai-aria-practices/#breadcrumb)
+- `aria-current` - W3 specs says when using `aria-current="page"` the element should be a link. `fast-breadcrumb` will set `aria-current="page"` to the last element if there is an href attribute.
 
 ### Globalization
 
@@ -81,7 +76,7 @@ While testing is still TBD for our web components, I would expect this to align 
 
 ## Overview
 
-The `fast-breadcrumb-item` is placed inside the `fast-breadcrumb` component. It provides a default slot to implement any element. There is also a slot for a separator that defaults using a `/`.
+The `fast-breadcrumb-item` is placed inside the `fast-breadcrumb` component. It provides a slot with a default anchor. The component also provides a slot for a separator that defaults using a `/`.
 
 ### API
 
@@ -92,7 +87,7 @@ The `fast-breadcrumb-item` is placed inside the `fast-breadcrumb` component. It 
 - `showSeparator` - is a boolean to show and hide the separator.
 
 *Slots*
-- default slot for element.
+- a slot that has an `<a></a>` as a default control.
 - `separator` - used as part of the visual presentation that signifies the breadcrumb trail. The separator is defaulted to a `/`. To override the default separator, add an element with an attribute of `slot="separator"`.
 
 *CSS Parts*
@@ -101,13 +96,19 @@ The `fast-breadcrumb-item` is placed inside the `fast-breadcrumb` component. It 
 
 ### Anatomy and Appearance
 
-```ts
+```html
 <div
     role="listitem"
     class="listitem-container"
     part="listitem-container"
 >
-    <slot></slot>
+    <slot>
+        <a class="control" part="control" href="${x => x.href}">
+            <span class="content" part="content">
+                ${x => x.name}
+            </span>
+        </a>
+    </slot>
     ${when(
         x => x.showSeparator,
         html<BreadcrumbItem>`
@@ -122,19 +123,16 @@ The `fast-breadcrumb-item` is placed inside the `fast-breadcrumb` component. It 
 ## Implementation
 
 ```html
-<fast-breadcrumb-item>
-    <fast-anchor appearance="lightweight" href="#">Home</fast-anchor>
-</fast-breadcrumb-item>
+<fast-breadcrumb-item name="Home" href="#"></fast-breadcrumb-item>
 ```
 
 *Overriding default separator with an SVG*
 
 ```html
-<fast-breadcrumb-item>
-    <fast-anchor appearance="lightweight" href="#">Home</fast-anchor>
+<fast-breadcrumb-item name="Home" href="#">
     <span slot="separator">
         <svg>
-            <path .../>
+            <path ... />
         </svg>
     </span>
 </fast-breadcrumb-item>
