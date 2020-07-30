@@ -83,7 +83,7 @@ First, ensure the UI element has a *FASTDesignSystemProvider* ancestor element -
 </fast-design-system-provider>
 ```
 
-*For more information on the DesignSystemProvider, see the [DesignSystemProvider documentation](fast-foundation/fast-design-system-provider.md)*
+*For more information on the DesignSystemProvider, see the [DesignSystemProvider documentation](components/design-system-provider.md)*
 
 
 Next - declare the recipe as a dependent *behavior* of a Web Component's stylesheet. Then use the recipe as a CSS Custom Property in the stylesheet:
