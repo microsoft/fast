@@ -11,7 +11,7 @@ import {
     CSSCustomPropertyDefinition,
     CSSCustomPropertyTarget,
 } from "../custom-properties/index";
-import { composedParent } from "../utilities/index";
+import { composedParent } from "../utilities/composed-parent";
 import { DecoratorDesignSystemPropertyConfiguration } from "./design-system-property";
 
 const supportsAdoptedStylesheets = "adoptedStyleSheets" in window.ShadowRoot.prototype;
@@ -245,8 +245,18 @@ export class DesignSystemProvider extends FASTElement
      * are defined before this DesignSystemProvider.
      *
      * @public
+     * @deprecated - use disconnectedRegistry
      */
     public disconnectedCSSCustomPropertyRegistry: CSSCustomPropertyDefinition[];
+
+    /**
+     * Allows arbitrary registration to the provider before the constructor runs.
+     * When the constructor runs, all registration functions in the disconnectedRegistry
+     * will be invoked with the provider instance.
+     *
+     * @public
+     */
+    public disconnectedRegistry: Array<(provider: DesignSystemProvider) => void> | void;
 
     /**
      * The target of CSSCustomPropertyDefinitions registered
@@ -367,6 +377,14 @@ export class DesignSystemProvider extends FASTElement
 
             delete this.disconnectedCSSCustomPropertyRegistry;
         }
+
+        if (Array.isArray(this.disconnectedRegistry)) {
+            for (let i = 0; i < this.disconnectedRegistry.length; i++) {
+                this.disconnectedRegistry[i](this);
+            }
+
+            delete this.disconnectedRegistry;
+        }
     }
 
     /**
@@ -450,6 +468,7 @@ export class DesignSystemProvider extends FASTElement
               definition.value({ ...this.designSystem })
             : definition.value;
     }
+
     /**
      * Synchronize the provider's design system with the local
      * overrides. Any value defined on the instance will take priority
