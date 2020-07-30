@@ -267,26 +267,7 @@ export abstract class FormAssociated<
         this.dirtyValue = false;
 
         if (!supportsElementInternals) {
-            this.proxy.style.display = "none";
-            this.appendChild(this.proxy);
-
-            this.proxyEventsToBlock.forEach(name =>
-                this.proxy.addEventListener(name, this.stopPropagation)
-            );
-
-            // These are typically mapped to the proxy during
-            // property change callbacks, but during initialization
-            // on the initial call of the callback, the proxy is
-            // still undefined. We should find a better way to address this.
-            this.proxy.disabled = this.disabled;
-            this.proxy.required = this.required;
-            if (typeof this.name === "string") {
-                this.proxy.name = this.name;
-            }
-
-            if (typeof this.value === "string") {
-                this.proxy.value = this.value;
-            }
+            this.attachProxy();
         }
     }
 
