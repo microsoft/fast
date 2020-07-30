@@ -230,7 +230,7 @@ const fastBadgeExample = {
 const fastCardExample = {
     schemaId: fastComponentSchemas[fastCardTag].id,
     data: {
-        style: "width: 320px"
+        style: "width: 320px",
     },
     dataLocation: "Slot",
     linkedData: [
@@ -238,28 +238,29 @@ const fastCardExample = {
         {
             ...fastBadgeExample,
             data: {
-                style: "margin: 5px 10px; --badge-fill-fill: #3278cd; --badge-color-color: white;",
+                style:
+                    "margin: 5px 10px; --badge-fill-fill: #3278cd; --badge-color-color: white;",
                 fill: "fill",
-                color: "color"
-            }
+                color: "color",
+            },
         },
         {
             ...heading2Example,
             data: {
-                style: "margin: 5px 10px"
-            }
+                style: "margin: 5px 10px",
+            },
         },
         {
             ...paragraphExample,
             data: {
-                style: "margin: 0 10px"
-            }
+                style: "margin: 0 10px",
+            },
         },
         {
             ...fastButtonExample,
             data: {
-                style: "margin: 10px"
-            }
+                style: "margin: 10px",
+            },
         },
     ],
 };
