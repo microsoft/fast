@@ -31,6 +31,7 @@ import {
     MessageSystemType,
     Register,
     TreeNavigationItem,
+    getLinkedData,
 } from "@microsoft/fast-tooling";
 import manageJss, { ManagedClasses } from "@microsoft/fast-jss-manager-react";
 import styles, { NavigationClassNameContract } from "./navigation.style";
@@ -401,7 +402,7 @@ class Navigation extends Foundation<
     private handleDragStart = (index: number): ((dictionaryId: string) => void) => {
         return (dictionaryId: string): void => {
             this.setState({
-                linkedData: this.state.dataDictionary[0][dictionaryId],
+                linkedData: getLinkedData(this.state.dataDictionary, [dictionaryId]),
                 linkedDataLocation: [
                     this.state.navigationDictionary[0][dictionaryId][0][
                         this.state.navigationDictionary[0][dictionaryId][1]
@@ -441,7 +442,7 @@ class Navigation extends Foundation<
         this.props.messageSystem.postMessage({
             type: MessageSystemType.data,
             action: MessageSystemDataTypeAction.addLinkedData,
-            linkedData: [this.state.linkedData],
+            linkedData: this.state.linkedData,
             dictionaryId: this.state.linkedDataLocation[0],
             dataLocation: this.state.linkedDataLocation[1],
             index: this.state.linkedDataLocation[2],
@@ -466,7 +467,11 @@ class Navigation extends Foundation<
         const isLinkedDataContainer: boolean =
             type === DragDropItemType.linkedDataContainer;
 
-        if (!isLinkedDataContainer) {
+        if (
+            !isLinkedDataContainer &&
+            this.state.navigationDictionary[0][dictionaryId][0][navigationConfigId]
+                .parentDictionaryItem !== undefined
+        ) {
             parentDataLocation = this.state.navigationDictionary[0][dictionaryId][0][
                 navigationConfigId
             ].parentDictionaryItem.dataLocation;
@@ -486,13 +491,6 @@ class Navigation extends Foundation<
                     ? index
                     : index + 1,
             ],
-            linkedData: {
-                ...this.state.linkedData,
-                parent: {
-                    id: parentDictionaryId,
-                    dataLocation: parentDataLocation,
-                },
-            },
         });
     };
 
