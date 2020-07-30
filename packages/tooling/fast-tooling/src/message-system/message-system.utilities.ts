@@ -4,7 +4,7 @@ import {
     getDataUpdatedWithoutSourceData,
     getDataUpdatedWithSourceData,
 } from "../data-utilities/relocate";
-import { getLinkedDataDictionary } from "./data";
+import { getLinkedDataDictionary, getLinkedDataList } from "./data";
 import { MessageSystemType } from "./types";
 import {
     DataDictionaryMessageIncoming,
@@ -298,9 +298,18 @@ function getDataMessage(data: DataMessageIncoming): DataMessageOutgoing {
             const removeLinkedDataDictionaryId: string = data.dictionaryId
                 ? data.dictionaryId
                 : activeDictionaryId;
+            const linkedDataIds: string[] = [];
             // remove linkedData from the dictionary
             data.linkedData.forEach((linkedData: LinkedData) => {
                 delete dataDictionary[0][linkedData.id];
+                linkedDataIds.push(linkedData.id);
+
+                // remove references from the linkedData to any other
+                // piece of linkedData
+                getLinkedDataList(dataDictionary, linkedData.id).forEach((id: string) => {
+                    delete dataDictionary[0][id];
+                    linkedDataIds.push(id);
+                });
             });
 
             let filteredLinkedDataRefs: LinkedData[] = get(
@@ -339,6 +348,7 @@ function getDataMessage(data: DataMessageIncoming): DataMessageOutgoing {
                 dataDictionary,
                 navigation: navigationDictionary[0][activeDictionaryId],
                 navigationDictionary,
+                linkedDataIds,
             };
         }
         case MessageSystemDataTypeAction.reorderLinkedData:

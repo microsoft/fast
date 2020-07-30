@@ -265,6 +265,11 @@ export interface RemoveLinkedDataDataMessageOutgoing {
     dataDictionary: DataDictionary<unknown>;
     navigation: NavigationConfig;
     navigationDictionary: NavigationConfigDictionary;
+    /**
+     * An array of linked data ids that were removed from
+     * the data dictionary
+     */
+    linkedDataIds: string[];
 }
 
 /**
