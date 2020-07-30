@@ -1,4 +1,3 @@
-import { StandardLuminance } from "@microsoft/fast-components-styles-msft";
 import { html, repeat } from "@microsoft/fast-element";
 import ContextIcon from "svg/icon-context.svg";
 import ContrastIcon from "svg/icon-contrast.svg";
