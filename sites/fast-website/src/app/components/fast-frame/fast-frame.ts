@@ -184,8 +184,15 @@ export class FastFrame extends FASTElement {
         this.saturation = accentColorHSL.s;
         this.lightness = accentColorHSL.l;
 
-        this.updateBackgroundColor();
-
         this.mql.addListener(this.resetExpandedResponsive);
+    }
+
+    /**
+     * @internal
+     */
+    public connectedCallback() {
+        super.connectedCallback();
+
+        this.updateBackgroundColor();
     }
 }
