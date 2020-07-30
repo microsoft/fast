@@ -65,7 +65,7 @@ The breadcrumb should align to the interaction model provided by the [W3C](https
 
 ### Globalization
 
-The first and last element inside the breadcrumb will be reversed when switching in LTR/RTL.
+The overall order inside the breadcrumb will be reversed when switching in LTR/RTL.
 
 ### Test Plan
 
