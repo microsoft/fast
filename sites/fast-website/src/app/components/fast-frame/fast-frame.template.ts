@@ -30,7 +30,7 @@ export const FastFrameTemplate = html<FastFrame>`
                                 id="dark-mode-switch"
                                 :checked="${x => x.darkMode}"
                                 @change="${(x, c) =>
-                                    x.themeChange(c.event as CustomEvent)}"
+                                    x.modeChange(c.event as CustomEvent)}"
                             >
                                 <span slot="checked-message">On</span>
                                 <span slot="unchecked-message">Off</span>
@@ -47,25 +47,24 @@ export const FastFrameTemplate = html<FastFrame>`
                             Color is applied by using color recipes which require two color palettes, neutral and accent, applied to the design system. These palettes are customizable which allows for a wide range of styles.
                         </p>
                         <div class="content-control-container" >
-                            <label for="background-color-pickers">Background color</label>
+                            <label for="neutral-color-pickers">Neutral color</label>
                             <fast-radio-group
-                                name="background-color-pickers"
-                                value="${x => x.previewBackgroundPalette[0]}"
+                                name="neutral-color-pickers"
+                                value="${x => x.previewNeutralPalette[0]}"
                                 @change="${(x, c) =>
-                                    x.backgroundChangeHandler(c.event as CustomEvent)}"
+                                    x.neutralChangeHandler(c.event as CustomEvent)}"
                             >
                                 ${repeat(
-                                    x => x.previewBackgroundPalette,
+                                    x => x.previewNeutralPalette,
 
                                     html<string>`
                                         <site-color-swatch
                                             tabindex="0"
-                                            aria-label="background color ${x => x}"
+                                            aria-label="neutral color ${x => x}"
                                             value="${x => x}"
                                             background-color="${x => x}"
                                             checked="${(x, c) =>
-                                                x ===
-                                                c.parent.previewBackgroundPalette[0]}"
+                                                x === c.parent.previewNeutralPalette[0]}"
                                         ></site-color-swatch>
                                     `
                                 )}
@@ -207,10 +206,7 @@ export const FastFrameTemplate = html<FastFrame>`
             </fast-tabs>
             <fast-design-system-provider
                 class="${x => (x.expanded ? "preview preview-expanded" : "preview")}"
-                base-layer-luminance="${x =>
-                    x.darkMode
-                        ? StandardLuminance.DarkMode
-                        : StandardLuminance.LightMode}"
+                base-layer-luminance="${x => x.baseLayerLuminance}"
                 background-color="${x => x.backgroundColor}"
                 accent-base-color="${x => x.accentColor}"
                 density="${x => x.density}"
@@ -218,6 +214,8 @@ export const FastFrameTemplate = html<FastFrame>`
                 outline-width="${x => x.outlineWidth}"
                 :accentPalette=${x =>
                     Array.isArray(x.accentPalette) ? x.accentPalette : null}
+                :neutralPalette=${x =>
+                    Array.isArray(x.neutralPalette) ? x.neutralPalette : null}
             >
                 <fast-design-system-provider
                     density="0"
