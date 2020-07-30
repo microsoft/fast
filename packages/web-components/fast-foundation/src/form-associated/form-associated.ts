@@ -1,4 +1,4 @@
-import { attr, DOM, emptyArray, FASTElement } from "@microsoft/fast-element";
+import { attr, DOM, emptyArray, FASTElement, observable } from "@microsoft/fast-element";
 import { keyCodeEnter } from "@microsoft/fast-web-utilities";
 
 /**
@@ -88,8 +88,7 @@ interface HTMLElement {
 export const supportsElementInternals = "ElementInternals" in window;
 
 /**
- * Disable member ordering to keep property callbacks
- * grouped with property declaration
+ * Base class for providing Custom Element Form Association
  */
 export abstract class FormAssociated<
     T extends HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
@@ -103,7 +102,7 @@ export abstract class FormAssociated<
     }
 
     /**
-     * Returns the validty state of the element
+     * Returns the validity state of the element
      */
     public get validity(): ValidityState {
         return supportsElementInternals
@@ -150,7 +149,7 @@ export abstract class FormAssociated<
             this.proxy.ownerDocument &&
             this.id
         ) {
-            // Labels associated by wraping the element: <label><custom-element></custom-element></label>
+            // Labels associated by wrapping the element: <label><custom-element></custom-element></label>
             const parentLabels = this.proxy.labels;
             // Labels associated using the `for` attribute
             const forLabels = Array.from(
@@ -170,10 +169,38 @@ export abstract class FormAssociated<
     }
 
     /**
+     * Track whether the value has been changed from the initial value
+     */
+    private dirtyValue: boolean = false;
+
+    /**
      * The value of the element to be associated with the form
      */
-    @attr
-    public value: string = "";
+    @observable
+    public value: string;
+    protected valueChanged(previous: string, next: string) {
+        this.dirtyValue = true;
+
+        if (this.proxy instanceof HTMLElement) {
+            this.proxy.value = this.value;
+        }
+
+        this.setFormValue(this.value);
+    }
+
+    /**
+     * The initial value of the form.
+     */
+    @attr({ mode: "fromView", attribute: "value" })
+    protected initialValue: string = "";
+    protected initialValueChanged(previous: string, next: string) {
+        // If the value is clean and the component is connected to the DOM
+        // then set value equal to the attribute value.
+        if (!this.dirtyValue && this.$fastController.isConnected) {
+            this.value = this.initialValue;
+            this.dirtyValue = false;
+        }
+    }
 
     @attr({ mode: "boolean" })
     public disabled: boolean = false;
@@ -236,6 +263,8 @@ export abstract class FormAssociated<
 
     public connectedCallback(): void {
         super.connectedCallback();
+        this.value = this.initialValue;
+        this.dirtyValue = false;
 
         if (!supportsElementInternals) {
             this.proxy.style.display = "none";
@@ -247,7 +276,7 @@ export abstract class FormAssociated<
 
             // These are typically mapped to the proxy during
             // property change callbacks, but during initialization
-            // on the intial call of the callback, the proxy is
+            // on the initial call of the callback, the proxy is
             // still undefined. We should find a better way to address this.
             this.proxy.disabled = this.disabled;
             this.proxy.required = this.required;
@@ -324,7 +353,7 @@ export abstract class FormAssociated<
         value: File | string | FormData | null,
         state?: File | string | FormData | null
     ): void {
-        if (supportsElementInternals) {
+        if (supportsElementInternals && this.elementInternals) {
             this.elementInternals.setFormValue(value, state);
         }
     }
