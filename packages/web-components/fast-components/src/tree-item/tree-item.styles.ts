@@ -1,5 +1,6 @@
 import { css } from "@microsoft/fast-element";
 import {
+    DirectionalStyleSheetBehavior,
     disabledCursor,
     display,
     focusVisible,
@@ -19,6 +20,18 @@ import {
     neutralForegroundActiveBehavior,
     neutralForegroundRestBehavior,
 } from "../styles/index";
+
+const ltr = css`
+    :host(.nested) .expand-collapse-button {
+        left: var(--expand-collapse-button-nested-width, calc(${heightNumber} * -1px));
+    }
+`;
+
+const rtl = css`
+    :host(.nested) .expand-collapse-button {
+        right: var(--expand-collapse-button-nested-width, calc(${heightNumber} * -1px));
+    }
+`;
 
 export const TreeItemStyles = css`
     ${display("block")} :host {
@@ -180,8 +193,6 @@ export const TreeItemStyles = css`
 
     :host(.nested) .expand-collapse-button {
         position: absolute;
-        ${/* value needs to be localized  */ ""}
-        left: var(--expand-collapse-button-nested-width, calc(${heightNumber} * -1px));
     }
 
     ::slotted(fast-tree-item) {
@@ -198,6 +209,7 @@ export const TreeItemStyles = css`
     neutralFocusInnerAccentBehavior,
     neutralForegroundActiveBehavior,
     neutralForegroundRestBehavior,
+    new DirectionalStyleSheetBehavior(ltr, rtl),
     forcedColorsStylesheetBehavior(
         css`
         :host {
