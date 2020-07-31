@@ -1,4 +1,7 @@
-import { WebComponentDefinition } from "@microsoft/fast-tooling/dist/data-utilities/web-component";
+import {
+    WebComponentDefinition,
+    WebComponentDefinitionTag,
+} from "@microsoft/fast-tooling/dist/data-utilities/web-component";
 import { commonHTMLAttributes } from "./native/common.definition";
 import * as fastComponentDefinitions from "./fast-components";
 import * as nativeElementDefinitions from "./native";
@@ -15,7 +18,7 @@ function extendElementDefinitions(definitions: {
                 definitionKey,
                 {
                     ...definitionValue,
-                    tags: definitionValue.tags?.map(tag => {
+                    tags: definitionValue.tags?.map((tag: WebComponentDefinitionTag) => {
                         return {
                             ...tag,
                             attributes: (tag.attributes || []).concat(
@@ -26,12 +29,18 @@ function extendElementDefinitions(definitions: {
                 },
             ];
         })
-        .reduce((previousValue, currentValue: [string, WebComponentDefinition]) => {
-            return {
-                ...previousValue,
-                [currentValue[0]]: currentValue[1],
-            };
-        }, {});
+        .reduce(
+            (
+                previousValue: { [key: string]: WebComponentDefinition },
+                currentValue: [string, WebComponentDefinition]
+            ) => {
+                return {
+                    ...previousValue,
+                    [currentValue[0]]: currentValue[1],
+                };
+            },
+            {}
+        );
 }
 
 const fastComponentExtendedDefinitions = extendElementDefinitions(
