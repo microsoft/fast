@@ -497,6 +497,103 @@ describe("getMessage", () => {
             ).not.toEqual(-1);
             expect(dictionary.dataDictionary[0][id].data).toEqual(linkedData[0].data);
         });
+        test("should add nested linked data to the data dictionary", () => {
+            getMessage({
+                type: MessageSystemType.initialize,
+                data: [
+                    {
+                        data: {
+                            schemaId: "foo",
+                            data: {},
+                        },
+                    },
+                    "data",
+                ],
+                schemaDictionary: {
+                    foo: { id: "foo" },
+                },
+            });
+            const linkedData: Data<unknown>[] = [
+                {
+                    schemaId: "foo",
+                    data: {
+                        hello: "world",
+                    },
+                    dataLocation: "linkedData",
+                    linkedData: [
+                        {
+                            schemaId: "foo",
+                            data: {
+                                hello: "pluto",
+                            },
+                        },
+                    ],
+                },
+            ];
+            const message: AddLinkedDataDataMessageOutgoing = getMessage({
+                type: MessageSystemType.data,
+                action: MessageSystemDataTypeAction.addLinkedData,
+                linkedData,
+                dataLocation: "linkedData",
+            }) as AddLinkedDataDataMessageOutgoing;
+
+            expect(Array.isArray((message.data as any).linkedData)).toEqual(true);
+            expect((message.data as any).linkedData.length).toEqual(1);
+
+            const id: string = (message.data as any).linkedData[0].id;
+            const nestedId: string = (message.dataDictionary[0][id].data as any)
+                .linkedData[0].id;
+            const dictionary: GetDataDictionaryMessageOutgoing = getMessage({
+                type: MessageSystemType.dataDictionary,
+                action: MessageSystemDataDictionaryTypeAction.get,
+            }) as GetDataDictionaryMessageOutgoing;
+
+            expect(
+                Object.keys(dictionary.dataDictionary[0]).findIndex(
+                    (dictionaryKey: string) => {
+                        return dictionaryKey === id;
+                    }
+                )
+            ).not.toEqual(-1);
+            expect(dictionary.dataDictionary[0]).toEqual({
+                data: {
+                    data: {
+                        linkedData: [
+                            {
+                                id: "fast5",
+                            },
+                        ],
+                    },
+                    schemaId: "foo",
+                },
+                fast5: {
+                    data: {
+                        hello: "world",
+                        linkedData: [
+                            {
+                                id: "fast6",
+                            },
+                        ],
+                    },
+                    parent: {
+                        dataLocation: "linkedData",
+                        id: "data",
+                    },
+                    schemaId: "foo",
+                },
+                fast6: {
+                    data: {
+                        hello: "pluto",
+                    },
+                    parent: {
+                        dataLocation: "linkedData",
+                        id: "fast5",
+                    },
+                    schemaId: "foo",
+                },
+            });
+            expect(message.linkedDataIds).toEqual([{ id: nestedId }, { id }]);
+        });
         test("should remove linkedData from the data and the data dictionary", () => {
             getMessage({
                 type: MessageSystemType.initialize,

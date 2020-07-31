@@ -12,3 +12,9 @@ import { AnchoredRegionStyles as styles } from "./anchored-region.styles";
     styles,
 })
 export class FASTAnchoredRegion extends AnchoredRegion {}
+
+/**
+ * Styles for AnchoredRegion
+ * @public
+ */
+export const AnchoredRegionStyles = styles;

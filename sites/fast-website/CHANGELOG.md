@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.2](https://github.com/Microsoft/fast/compare/fast-website@1.2.1...fast-website@1.2.2) (2020-07-31)
+
+
+### Bug Fixes
+
+* update fast-card and component sampler color handling ([#3597](https://github.com/Microsoft/fast/issues/3597)) ([9d32aa1](https://github.com/Microsoft/fast/commit/9d32aa15cd5c18d51c90e35100b0284c5ebb3ca6))
+
+
+
+
+
 ## [1.2.1](https://github.com/Microsoft/fast/compare/fast-website@1.2.0...fast-website@1.2.1) (2020-07-23)
 
 **Note:** Version bump only for package fast-website

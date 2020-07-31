@@ -132,11 +132,9 @@ export class Button extends FormAssociated<HTMLInputElement> {
     formmethod: string;
     formnovalidate: boolean;
     formtarget: "_self" | "_blank" | "_parent" | "_top";
-    name: string;
     // (undocumented)
     protected proxy: HTMLInputElement;
     type: "submit" | "reset" | "button";
-    value: string;
     }
 
 // @internal
@@ -166,12 +164,13 @@ export class Checkbox extends FormAssociated<HTMLInputElement> {
     // @internal (undocumented)
     defaultSlottedNodes: Node[];
     indeterminate: boolean;
+    // @internal
+    protected initialValue: string;
     // @internal (undocumented)
     keypressHandler: (e: KeyboardEvent) => void;
     // (undocumented)
     protected proxy: HTMLInputElement;
     readOnly: boolean;
-    value: string;
     }
 
 // @public
@@ -460,6 +459,8 @@ export class Radio extends FormAssociated<HTMLInputElement> implements RadioCont
     defaultChecked: boolean;
     // @internal (undocumented)
     defaultSlottedNodes: Node[];
+    // @internal
+    protected initialValue: string;
     // @internal (undocumented)
     keypressHandler: (e: KeyboardEvent) => void;
     name: string;
@@ -468,7 +469,6 @@ export class Radio extends FormAssociated<HTMLInputElement> implements RadioCont
     // (undocumented)
     protected proxy: HTMLInputElement;
     readOnly: boolean;
-    value: string;
     }
 
 // @public
@@ -536,7 +536,8 @@ export class Slider extends FormAssociated<HTMLInputElement> implements SliderCo
     trackMinWidth: number;
     // @internal (undocumented)
     trackWidth: number;
-    value: string;
+    // @internal
+    protected valueChanged(previous: string, next: string): void;
     valueTextFormatter: (value: string) => string | null;
 }
 
@@ -621,12 +622,13 @@ export class Switch extends FormAssociated<HTMLInputElement> {
     defaultChecked: boolean;
     // @internal (undocumented)
     defaultSlottedNodes: Node[];
+    // @internal
+    protected initialValue: string;
     // @internal (undocumented)
     keypressHandler: (e: KeyboardEvent) => void;
     // (undocumented)
     protected proxy: HTMLInputElement;
     readOnly: boolean;
-    value: string;
     }
 
 // @public
@@ -691,11 +693,13 @@ export const TabTemplate: import("@microsoft/fast-element").ViewTemplate<Tab, an
 export class TextArea extends FormAssociated<HTMLTextAreaElement> {
     autofocus: boolean;
     cols: number;
-    // @internal (undocumented)
-    connectedCallback(): void;
+    // @internal
+    control: HTMLTextAreaElement;
     // @internal (undocumented)
     defaultSlottedNodes: Node[];
     formId: string;
+    // @internal
+    handleChange(): void;
     // @internal (undocumented)
     handleTextInput: () => void;
     list: string;
@@ -709,11 +713,7 @@ export class TextArea extends FormAssociated<HTMLTextAreaElement> {
     resize: TextAreaResize;
     rows: number;
     spellcheck: boolean;
-    // @internal (undocumented)
-    textarea: HTMLTextAreaElement;
-    // @internal (undocumented)
-    valueChanged(): void;
-}
+    }
 
 // @internal
 export interface TextArea extends DelegatesARIATextbox {
@@ -738,11 +738,13 @@ export class TextField extends FormAssociated<HTMLInputElement> {
     autofocus: boolean;
     // @internal (undocumented)
     connectedCallback(): void;
-    // @internal (undocumented)
+    // @internal
     control: HTMLInputElement;
     // @internal (undocumented)
     defaultSlottedNodes: Node[];
-    // @internal (undocumented)
+    // @internal
+    handleChange(): void;
+    // @internal
     handleTextInput(): void;
     list: string;
     maxlength: number;

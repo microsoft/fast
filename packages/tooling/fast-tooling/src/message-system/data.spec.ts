@@ -253,6 +253,11 @@ describe("getLinkedData", () => {
                             schemaId: "foo",
                             data: {
                                 hello: "world",
+                                linkedData: [
+                                    {
+                                        id: "nestedItem",
+                                    },
+                                ],
                             },
                         },
                         nestedItem: {
