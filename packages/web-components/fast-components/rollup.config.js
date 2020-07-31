@@ -26,6 +26,11 @@ export default [
                 format: "esm",
                 plugins: [terser()],
             },
+            {
+                file: "dist/fast-components.iife.min.js",
+                format: "iife",
+                plugins: [terser()],
+            },
         ],
         plugins: [
             resolve(),

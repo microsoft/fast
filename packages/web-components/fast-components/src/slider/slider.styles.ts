@@ -57,7 +57,7 @@ export const SliderStyles = css`
         position: absolute;
         height: calc(var(--thumb-size) * 1px);
         width: calc(var(--thumb-size) * 1px);
-        transition: "all 0.2s ease";
+        transition: all 0.2s ease;
         color: ${neutralForegroundRestBehavior.var};
         fill: ${neutralForegroundRestBehavior.var};
     }

@@ -83,7 +83,7 @@ First, ensure the UI element has a *FASTDesignSystemProvider* ancestor element -
 </fast-design-system-provider>
 ```
 
-*For more information on the DesignSystemProvider, see the [DesignSystemProvider documentation](fast-foundation/fast-design-system-provider.md)*
+*For more information on the DesignSystemProvider, see the [DesignSystemProvider documentation](/docs/components/design-system-provider)*
 
 
 Next - declare the recipe as a dependent *behavior* of a Web Component's stylesheet. Then use the recipe as a CSS Custom Property in the stylesheet:
@@ -132,7 +132,7 @@ Neutral text recipes address *most* cases of text used in a UI, from interactive
 
 #### Fills (backgrounds)
 
-Neutral fills are indented to be used as fill colors (background) to UI elements to distinguish them from the background. 
+Neutral fills are indented to be used as fill colors (background) to UI elements to distinguish them from the background.
 
 | Behavior Name | CSS Custom Property | Description |
 |---------------|---------------------|-------------|
@@ -188,7 +188,7 @@ Text input elements also have a set of recipes specifically tailored.
 
 ### Accent recipes
 
-Accent recipes use the accent palette and are intended to bring attention or otherwise distinguish the element on the page. 
+Accent recipes use the accent palette and are intended to bring attention or otherwise distinguish the element on the page.
 
 | Behavior Name | CSS Custom Property | Description |
 |---------------|---------------------|-------------|
