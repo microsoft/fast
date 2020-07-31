@@ -62,3 +62,9 @@ export class FASTTextArea extends TextArea {
         }
     }
 }
+
+/**
+ * Styles for TextArea
+ * @public
+ */
+export const TextAreaStyles = styles;
