@@ -38,7 +38,7 @@ export class TodoForm extends FASTElement {
     @observable public description: string = "";
 
     get canSubmitTodo() {
-        return this.description;
+        return !!this.description;
     }
 
     public submitTodo() {
