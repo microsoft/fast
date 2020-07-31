@@ -34,6 +34,7 @@ module.exports = {
                         "components/tabs",
                         "components/text-area",
                         "components/text-field",
+                        "components/tree-view",
                     ],
                 },
                 {
