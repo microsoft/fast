@@ -1,7 +1,6 @@
 import { customElement } from "@microsoft/fast-element";
 import { Switch, SwitchTemplate as template } from "@microsoft/fast-foundation";
 import { SwitchStyles as styles } from "./switch.styles";
-export { SwitchStyles } from "./switch.styles";
 
 /**
  * The FAST Switch Custom Element. Implements {@link @microsoft/fast-foundation#Switch},
@@ -18,3 +17,9 @@ export { SwitchStyles } from "./switch.styles";
     styles,
 })
 export class FASTSwitch extends Switch {}
+
+/**
+ * Styles for Switch
+ * @public
+ */
+export const SwitchStyles = styles;

@@ -1,7 +1,6 @@
 import { customElement } from "@microsoft/fast-element";
 import { Divider, DividerTemplate as template } from "@microsoft/fast-foundation";
 import { DividerStyles as styles } from "./divider.styles";
-export { DividerStyles } from "./divider.styles";
 
 /**
  * The FAST Divider Element. Implements {@link @microsoft/fast-foundation#Divider},
@@ -18,3 +17,9 @@ export { DividerStyles } from "./divider.styles";
     styles,
 })
 export class FASTDivider extends Divider {}
+
+/**
+ * Styles for Divider
+ * @public
+ */
+export const DividerStyles = styles;

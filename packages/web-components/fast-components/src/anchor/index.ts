@@ -2,7 +2,6 @@ import { attr, customElement } from "@microsoft/fast-element";
 import { Anchor, AnchorTemplate as template } from "@microsoft/fast-foundation";
 import { AnchorStyles as styles } from "./anchor.styles";
 import { ButtonAppearance } from "../button";
-export { AnchorStyles } from "./anchor.styles";
 
 /**
  * Types of anchor appearance.
@@ -57,3 +56,9 @@ export class FASTAnchor extends Anchor {
         }
     }
 }
+
+/**
+ * Styles for Anchor
+ * @public
+ */
+export const AnchorStyles = styles;

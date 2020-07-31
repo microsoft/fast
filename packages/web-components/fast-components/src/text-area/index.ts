@@ -1,7 +1,6 @@
 import { attr, customElement } from "@microsoft/fast-element";
 import { TextAreaTemplate as template, TextArea } from "@microsoft/fast-foundation";
 import { TextAreaStyles as styles } from "./text-area.styles";
-export { TextAreaStyles } from "./text-area.styles";
 
 /**
  * Text area appearances
@@ -63,3 +62,9 @@ export class FASTTextArea extends TextArea {
         }
     }
 }
+
+/**
+ * Styles for TextArea
+ * @public
+ */
+export const TextAreaStyles = styles;

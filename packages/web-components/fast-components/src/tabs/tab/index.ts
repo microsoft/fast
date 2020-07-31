@@ -1,7 +1,6 @@
 import { customElement } from "@microsoft/fast-element";
 import { Tab, TabTemplate as template } from "@microsoft/fast-foundation";
 import { TabStyles as styles } from "./tab.styles";
-export { TabStyles } from "./tab.styles";
 
 /**
  * The FAST Tab Custom Element. Implements {@link @microsoft/fast-foundation#Tab},
@@ -18,3 +17,9 @@ export { TabStyles } from "./tab.styles";
     styles,
 })
 export class FASTTab extends Tab {}
+
+/**
+ * Styles for Tab
+ * @public
+ */
+export const TabStyles = styles;

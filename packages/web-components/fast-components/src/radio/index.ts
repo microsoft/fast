@@ -1,7 +1,6 @@
 import { customElement } from "@microsoft/fast-element";
 import { Radio, RadioTemplate as template } from "@microsoft/fast-foundation";
 import { RadioStyles as styles } from "./radio.styles";
-export { RadioStyles } from "./radio.styles";
 
 /**
  * The FAST Radio Element. Implements {@link @microsoft/fast-foundation#Radio},
@@ -18,3 +17,9 @@ export { RadioStyles } from "./radio.styles";
     styles,
 })
 export class FASTRadio extends Radio {}
+
+/**
+ * Styles for Radio
+ * @public
+ */
+export const RadioStyles = styles;

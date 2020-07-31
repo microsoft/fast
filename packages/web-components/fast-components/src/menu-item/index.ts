@@ -1,7 +1,6 @@
 import { customElement } from "@microsoft/fast-element";
 import { MenuItem, MenuItemTemplate as template } from "@microsoft/fast-foundation";
 import { MenuItemStyles as styles } from "./menu-item.styles";
-export { MenuItemStyles } from "./menu-item.styles";
 
 /**
  * The FAST Menu Item Element. Implements {@link @microsoft/fast-foundation#MenuItem},
@@ -18,3 +17,9 @@ export { MenuItemStyles } from "./menu-item.styles";
     styles,
 })
 export class FASTMenuItem extends MenuItem {}
+
+/**
+ * Styles for MenuItem
+ * @public
+ */
+export const MenuItemStyles = styles;

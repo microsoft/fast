@@ -4,7 +4,6 @@ import {
     ProgressRingTemplate as template,
 } from "@microsoft/fast-foundation";
 import { ProgressRingStyles as styles } from "./progress-ring.styles";
-export { ProgressRingStyles } from "./progress-ring.styles";
 
 /**
  * The FAST Progress Ring Element. Implements {@link @microsoft/fast-foundation#BaseProgress},
@@ -21,3 +20,9 @@ export { ProgressRingStyles } from "./progress-ring.styles";
     styles,
 })
 export class FASTProgressRing extends BaseProgress {}
+
+/**
+ * Styles for ProgressRing
+ * @public
+ */
+export const ProgressRingStyles = styles;

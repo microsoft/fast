@@ -1,7 +1,6 @@
 import { customElement } from "@microsoft/fast-element";
 import { TabPanel, TabPanelTemplate as template } from "@microsoft/fast-foundation";
 import { TabPanelStyles as styles } from "./tab-panel.styles";
-export { TabPanelStyles } from "./tab-panel.styles";
 
 /**
  * The FAST Tab Panel Custom Element. Implements {@link @microsoft/fast-foundation#TabPanel},
@@ -18,3 +17,9 @@ export { TabPanelStyles } from "./tab-panel.styles";
     styles,
 })
 export class FASTTabPanel extends TabPanel {}
+
+/**
+ * Styles for TabPanel
+ * @public
+ */
+export const TabPanelStyles = styles;

@@ -5,7 +5,6 @@ import {
     AnchoredRegionTemplate as template,
 } from "@microsoft/fast-foundation/dist/esm/anchored-region/index";
 import { AnchoredRegionStyles as styles } from "./anchored-region.styles";
-export { AnchoredRegionStyles } from "./anchored-region.styles";
 
 @customElement({
     name: "fast-anchored-region",
@@ -13,3 +12,9 @@ export { AnchoredRegionStyles } from "./anchored-region.styles";
     styles,
 })
 export class FASTAnchoredRegion extends AnchoredRegion {}
+
+/**
+ * Styles for AnchoredRegion
+ * @public
+ */
+export const AnchoredRegionStyles = styles;
