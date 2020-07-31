@@ -25,11 +25,17 @@ const ltr = css`
     :host(.nested) .expand-collapse-button {
         left: var(--expand-collapse-button-nested-width, calc(${heightNumber} * -1px));
     }
+    :host([selected])::after {
+        left: calc(var(--focus-outline-width) * 1px);
+    }
 `;
 
 const rtl = css`
     :host(.nested) .expand-collapse-button {
         right: var(--expand-collapse-button-nested-width, calc(${heightNumber} * -1px));
+    }
+    :host([selected])::after {
+        right: calc(var(--focus-outline-width) * 1px);
     }
 `;
 
@@ -178,11 +184,8 @@ export const TreeItemStyles = css`
         height: calc((${heightNumber} / 2) * 1px);
         ${
             /* The french fry background needs to be calculated based on the selected background state for this control.
-            We currently have no way of chaning that, so setting to accent-foreground-rest for the time being */ ""
+            We currently have no way of changing that, so setting to accent-foreground-rest for the time being */ ""
         } background: ${accentForegroundRestBehavior.var};
-        ${
-            /* value needs to be localized */ ""
-        } left: calc(var(--focus-outline-width) * 1px);
         border-radius: calc(var(--corner-radius) * 1px);
     }
 
