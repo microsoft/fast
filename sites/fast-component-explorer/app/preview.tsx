@@ -183,6 +183,8 @@ class Preview extends Foundation<
                 "min-height: 100vh; min-width: 100vw;"
             );
 
+            designSystemProvider.setAttribute("direction", this.state.direction);
+
             if (this.state.transparentBackground) {
                 designSystemProvider.setAttribute("no-paint", "");
             }
