@@ -34,7 +34,7 @@ const template = html<TodoApp>`
                     </span>
                     <fast-button
                         @click=${(x, c) => c.parent.removeTodo(x)}
-                        aria-label="${x => x.ariaLabel}"
+                        aria-label="Remove item"
                     >
                         &times;
                     </fast-button>
