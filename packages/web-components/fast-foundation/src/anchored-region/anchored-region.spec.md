@@ -234,7 +234,7 @@ The anchored region is essentially a container around the slotted items.
 ### States
 Layout update checks in the component happen when:
 - intersection observer reports a collision with the viewport
-- resize observer reports a resize event on the anchor, the viewport, the component's offsetParent or the component itself.
+- resize observer reports a resize event on the anchor, the viewport, the component's `offsetParent` or the component itself.
 
 These layout checks analyse the DOM geometry based on callbacks and repositions the anchored region appropriately: top/bottom/unset for the vertical axis and left/right/unset for the horizontal axis. 
 
@@ -247,11 +247,11 @@ None required.  Basically a positioned div that authors can decorate for accessi
 Authors may want to change default position from left to right or vice versa based on rtl settings, but that can't be predicted by the component itself.
 
 ### Performance
-The component needs information about the geometry of the surrounding dom in order to function and it acquires this through either [IntersectionObserver](https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver) events or calls to `getBoundingClientRect`.  
+The component needs information about the geometry of the surrounding DOM in order to function and it acquires this through either [IntersectionObserver](https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver) events or calls to `getBoundingClientRect`.  
 
-By default the component relies on observer events, but in some cases that data may not be usable such as when there is an intervening element in the dom hierarchy between the viewport and the anchor or the region itself.  When the component detects this condition it is able to fall back to expensive calls to `getBoundingClientRect`.
+By default the component relies on observer events, but in some cases that data may not be usable such as when there is an intervening element in the DOM hierarchy between the viewport and the anchor or the region itself.  When the component detects this condition it is able to fall back to expensive calls to `getBoundingClientRect`.
 
-Developers can use the "use-gbcr" attribute to limit this behavior to either always use calls to `getBoundingClientRect` to skip the cost of even trying to use the observer to begin with, or "never" to block gbcr completely (presumably changing other aspects of their layout to allow the observer to function).
+Developers can use the "use-gbcr" attribute to limit this behavior to either always use calls to `getBoundingClientRect` to skip the cost of even trying to use the observer to begin with, or 'never' to block gbcr completely (presumably changing other aspects of their layout to allow the observer to function).
 
 ### Dependencies
 [IntersectionObserver api](https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver) is unsupported on IE, and [ResizeObserver](https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver) is unsupported on IE, Safari and Firefox.  Both are required by the component.  Authors who wish to use this component on these platforms will need to use polyfills.
