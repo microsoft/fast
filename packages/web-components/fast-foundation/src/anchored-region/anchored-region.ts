@@ -30,7 +30,7 @@ export interface Dimension {
 
 /**
  * describes the possible horizontal positions of the region relative
- * to it's anchor
+ * to its anchor
  */
 enum AnchoredRegionHorizontalPositionLabel {
     left = "left",
@@ -42,7 +42,7 @@ enum AnchoredRegionHorizontalPositionLabel {
 
 /**
  * describes the possible vertical positions of the region relative
- * to it's anchor
+ * to its anchor
  */
 enum AnchoredRegionVerticalPositionLabel {
     top = "top",
@@ -245,7 +245,10 @@ export class AnchoredRegion extends FASTElement {
     @attr({ attribute: "fixed-placement", mode: "boolean" })
     public fixedPlacement: boolean = false;
     private fixedPlacementChanged(): void {
-        if ((this as any).$fastController.isConnected && this.initialLayoutComplete) {
+        if (
+            (this as FASTElement).$fastController.isConnected &&
+            this.initialLayoutComplete
+        ) {
             this.initialize();
         }
     }
@@ -263,7 +266,10 @@ export class AnchoredRegion extends FASTElement {
     @attr({ attribute: "use-gbcr" })
     public useGbcr: GbcrUsage = "default";
     private useGbcrChanged(): void {
-        if ((this as any).$fastController.isConnected && this.initialLayoutComplete) {
+        if (
+            (this as FASTElement).$fastController.isConnected &&
+            this.initialLayoutComplete
+        ) {
             this.initialize();
         }
     }
@@ -287,7 +293,10 @@ export class AnchoredRegion extends FASTElement {
     @observable
     public viewportElement: HTMLElement | null = null;
     private viewportElementChanged(): void {
-        if ((this as any).$fastController.isConnected && this.initialLayoutComplete) {
+        if (
+            (this as FASTElement).$fastController.isConnected &&
+            this.initialLayoutComplete
+        ) {
             this.initialize();
         }
     }
@@ -432,7 +441,10 @@ export class AnchoredRegion extends FASTElement {
      * event thrown when the region's position changes
      */
     private updateLayoutForAttributeChange(): void {
-        if ((this as any).$fastController.isConnected && this.initialLayoutComplete) {
+        if (
+            (this as FASTElement).$fastController.isConnected &&
+            this.initialLayoutComplete
+        ) {
             this.requestLayoutUpdate();
         }
     }
@@ -1024,12 +1036,10 @@ export class AnchoredRegion extends FASTElement {
         desiredHorizontalPosition: AnchoredRegionHorizontalPositionLabel,
         nextPositionerDimension: Dimension
     ): void => {
-        let layoutParentWidth = 0;
-        if (this.offsetParent !== null) {
-            layoutParentWidth = this.offsetParent.clientWidth;
-        } else {
-            layoutParentWidth = document.body.clientWidth;
-        }
+        const layoutParentWidth =
+            this.offsetParent !== null
+                ? this.offsetParent.clientWidth
+                : document.body.clientWidth;
 
         let right: number | null = null;
         let left: number | null = null;
@@ -1084,12 +1094,10 @@ export class AnchoredRegion extends FASTElement {
         desiredVerticalPosition: AnchoredRegionVerticalPositionLabel,
         nextPositionerDimension: Dimension
     ): void => {
-        let layoutParentHeight = 0;
-        if (this.offsetParent !== null) {
-            layoutParentHeight = this.offsetParent.clientHeight;
-        } else {
-            layoutParentHeight = document.body.clientHeight;
-        }
+        const layoutParentHeight =
+            this.offsetParent !== null
+                ? this.offsetParent.clientHeight
+                : document.body.clientHeight;
 
         let top: number | null = null;
         let bottom: number | null = null;
