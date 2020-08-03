@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.3.2](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling-react@2.3.1...@microsoft/fast-tooling-react@2.3.2) (2020-07-31)
+
+
+### Bug Fixes
+
+* the Navigation component can now drag and drop nested component ([#3598](https://github.com/Microsoft/fast/issues/3598)) ([f2a3948](https://github.com/Microsoft/fast/commit/f2a39489015be38f2372060a7898b0ef1cf96702))
+
+
+
+
+
 ## [2.3.1](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling-react@2.3.0...@microsoft/fast-tooling-react@2.3.1) (2020-07-23)
 
 **Note:** Version bump only for package @microsoft/fast-tooling-react
