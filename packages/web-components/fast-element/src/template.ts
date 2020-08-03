@@ -16,6 +16,15 @@ export interface ElementViewTemplate {
      * @param host - The custom element host that this template will be rendered to once created.
      */
     create(host: Element): ElementView;
+
+    /**
+     * Creates an HTMLView from this template, binds it to the source, and then appends it to the host.
+     * @param source - The data source to bind the template to.
+     * @param host - The Element where the template will be rendered.
+     * @param hostBindingTarget - An HTML element to target the host bindings at if different from the
+     * host that the template is being attached to.
+     */
+    render(source: any, host: Node, hostBindingTarget?: Element): HTMLView;
 }
 
 /**
@@ -142,14 +151,24 @@ export class ViewTemplate<TSource = any, TParent = any>
     /**
      * Creates an HTMLView from this template, binds it to the source, and then appends it to the host.
      * @param source - The data source to bind the template to.
-     * @param host - The HTMLElement where the template will be rendered.
+     * @param host - The Element where the template will be rendered.
+     * @param hostBindingTarget - An HTML element to target the host bindings at if different from the
+     * host that the template is being attached to.
      */
-    public render(source: TSource, host: HTMLElement | string): HTMLView {
+    public render(
+        source: TSource,
+        host: Node | string,
+        hostBindingTarget?: Element
+    ): HTMLView {
         if (typeof host === "string") {
             host = document.getElementById(host)!;
         }
 
-        const view = this.create(host);
+        if (hostBindingTarget === void 0) {
+            hostBindingTarget = host as Element;
+        }
+
+        const view = this.create(hostBindingTarget);
         view.bind(source, defaultExecutionContext);
         view.appendTo(host);
 

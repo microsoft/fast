@@ -5,6 +5,7 @@ import { defaultExecutionContext, Observable } from "./observation/observable";
 import { Behavior } from "./directives/behavior";
 import { ElementStyles } from "./styles";
 import { Mutable } from "./interfaces";
+import { ElementViewTemplate } from "./template";
 
 const shadowRoots = new WeakMap<HTMLElement, ShadowRoot>();
 const defaultEventOptions: CustomEventInit = {
@@ -24,6 +25,7 @@ export class Controller extends PropertyChangeNotifier {
     private boundObservables: Record<string, any> | null = null;
     private behaviors: Behavior[] | null = null;
     private needsInitialization = true;
+    private _template: ElementViewTemplate | null = null;
 
     /**
      * The element being controlled by this controller.
@@ -48,6 +50,22 @@ export class Controller extends PropertyChangeNotifier {
      * connected to the document.
      */
     public readonly isConnected: boolean = false;
+
+    get template() {
+        return this._template;
+    }
+
+    set template(value: ElementViewTemplate | null) {
+        if (this._template === value) {
+            return;
+        }
+
+        this._template = value;
+
+        if (!this.needsInitialization) {
+            this.renderTemplate(value);
+        }
+    }
 
     /**
      * Creates a Controller to control the specified element.
@@ -188,48 +206,11 @@ export class Controller extends PropertyChangeNotifier {
         }
 
         const element = this.element;
-        let view: ElementView | null = this.view;
 
         if (this.needsInitialization) {
-            const boundObservables = this.boundObservables;
-
-            // If we have any observables that were bound, re-apply their values.
-            if (boundObservables !== null) {
-                const propertyNames = Object.keys(boundObservables);
-
-                for (let i = 0, ii = propertyNames.length; i < ii; ++i) {
-                    const propertyName = propertyNames[i];
-                    (element as any)[propertyName] = boundObservables[propertyName];
-                }
-
-                this.boundObservables = null;
-            }
-
-            const definition = this.definition;
-            const template = definition.template;
-            const styles = definition.styles;
-
-            if (template !== void 0) {
-                view = (this as Mutable<this>).view = template.create(this.element);
-
-                const shadowRoot = getShadowRoot(element);
-
-                if (shadowRoot === null) {
-                    view.appendTo(element);
-                } else {
-                    view.appendTo(shadowRoot);
-                }
-            }
-
-            if (styles !== void 0) {
-                this.addStyles(styles);
-            }
-
-            this.needsInitialization = false;
-        }
-
-        if (view !== null) {
-            view.bind(element, defaultExecutionContext);
+            this.finalizeInitialization();
+        } else if (this.view !== null) {
+            this.view.bind(element, defaultExecutionContext);
         }
 
         const behaviors = this.behaviors;
@@ -308,6 +289,61 @@ export class Controller extends PropertyChangeNotifier {
         }
 
         return false;
+    }
+
+    private finalizeInitialization() {
+        const element = this.element;
+        const boundObservables = this.boundObservables;
+
+        // If we have any observables that were bound, re-apply their values.
+        if (boundObservables !== null) {
+            const propertyNames = Object.keys(boundObservables);
+
+            for (let i = 0, ii = propertyNames.length; i < ii; ++i) {
+                const propertyName = propertyNames[i];
+                (element as any)[propertyName] = boundObservables[propertyName];
+            }
+
+            this.boundObservables = null;
+        }
+
+        const definition = this.definition;
+        const styles = definition.styles;
+
+        if (this._template === null) {
+            if ((this.element as any).resolveTemplate) {
+                this._template = (this.element as any).resolveTemplate();
+            } else if (definition.template) {
+                this._template = definition.template || null;
+            }
+        }
+
+        if (this._template !== null) {
+            this.renderTemplate(this._template);
+        }
+
+        if (styles !== void 0) {
+            this.addStyles(styles);
+        }
+
+        this.needsInitialization = false;
+    }
+
+    private renderTemplate(template: ElementViewTemplate | null | undefined) {
+        const element = this.element;
+        const host = getShadowRoot(element) || element;
+
+        if (this.view !== null) {
+            this.view.dispose();
+            (this as Mutable<this>).view = null;
+        } else if (!this.needsInitialization) {
+            host.innerHTML = "";
+        }
+
+        if (template) {
+            // we have a new template to render to the Light
+            (this as Mutable<this>).view = template.render(element, host, element);
+        }
     }
 
     /**

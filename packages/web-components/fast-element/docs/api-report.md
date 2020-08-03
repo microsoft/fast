@@ -182,6 +182,9 @@ export class Controller extends PropertyChangeNotifier {
     onDisconnectedCallback(): void;
     removeBehaviors(behaviors: ReadonlyArray<Behavior>): void;
     removeStyles(styles: ElementStyles): void;
+    // (undocumented)
+    get template(): ElementViewTemplate | null;
+    set template(value: ElementViewTemplate | null);
     readonly view: ElementView | null;
 }
 
@@ -191,7 +194,7 @@ export class Controller extends PropertyChangeNotifier {
 export function css(strings: TemplateStringsArray, ...values: ComposableStyles[]): ElementStyles;
 
 // @public
-export function customElement(nameOrDef: string | PartialFASTElementDefinition): (type: Function) => Function;
+export function customElement(nameOrDef: string | PartialFASTElementDefinition): (type: Function) => void;
 
 // @public
 export type DecoratorAttributeConfiguration = Omit<AttributeConfiguration, "property">;
@@ -248,6 +251,7 @@ export interface ElementView extends View {
 // @public
 export interface ElementViewTemplate {
     create(host: Element): ElementView;
+    render(source: any, host: Node, hostBindingTarget?: Element): HTMLView;
 }
 
 // Warning: (ae-internal-missing-underscore) The name "emptyArray" should be prefixed with an underscore because the declaration is marked as @internal
@@ -481,6 +485,7 @@ export interface ValueConverter {
 export interface View {
     bind(source: unknown, context: ExecutionContext): void;
     readonly context: ExecutionContext | null;
+    dispose(): void;
     readonly source: any | null;
     unbind(): void;
 }
@@ -491,7 +496,7 @@ export class ViewTemplate<TSource = any, TParent = any> implements ElementViewTe
     create(host?: Element): HTMLView;
     readonly directives: ReadonlyArray<Directive>;
     readonly html: string | HTMLTemplateElement;
-    render(source: TSource, host: HTMLElement | string): HTMLView;
+    render(source: TSource, host: Node | string, hostBindingTarget?: Element): HTMLView;
     }
 
 // @public
