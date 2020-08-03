@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.8.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling@0.7.0...@microsoft/fast-tooling@0.8.0) (2020-07-31)
+
+
+### Bug Fixes
+
+* the Navigation component can now drag and drop nested component ([#3598](https://github.com/Microsoft/fast/issues/3598)) ([f2a3948](https://github.com/Microsoft/fast/commit/f2a39489015be38f2372060a7898b0ef1cf96702))
+
+
+### Features
+
+* add data utilities to retrieve linked data from a data dictionary and ids of linked data items ([#3583](https://github.com/Microsoft/fast/issues/3583)) ([8629041](https://github.com/Microsoft/fast/commit/862904104393fc1c2212d345f7063e8f420e2b36))
+
+
+
+
+
 # [0.7.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling@0.6.1...@microsoft/fast-tooling@0.7.0) (2020-07-14)
 
 
