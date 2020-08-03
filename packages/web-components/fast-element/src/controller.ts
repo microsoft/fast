@@ -3,7 +3,7 @@ import { ElementView } from "./view";
 import { PropertyChangeNotifier } from "./observation/notifier";
 import { defaultExecutionContext, Observable } from "./observation/observable";
 import { Behavior } from "./directives/behavior";
-import { ElementStyles } from "./styles";
+import { ElementStyles, StyleTarget } from "./styles";
 import { Mutable } from "./interfaces";
 import { ElementViewTemplate } from "./template";
 
@@ -26,6 +26,7 @@ export class Controller extends PropertyChangeNotifier {
     private behaviors: Behavior[] | null = null;
     private needsInitialization = true;
     private _template: ElementViewTemplate | null = null;
+    private _styles: ElementStyles | null = null;
 
     /**
      * The element being controlled by this controller.
@@ -51,6 +52,11 @@ export class Controller extends PropertyChangeNotifier {
      */
     public readonly isConnected: boolean = false;
 
+    /**
+     * Gets/sets the template used to render the component.
+     * @remarks
+     * This value can only be accurately read after connect but can be set at any time.
+     */
     get template() {
         return this._template;
     }
@@ -64,6 +70,31 @@ export class Controller extends PropertyChangeNotifier {
 
         if (!this.needsInitialization) {
             this.renderTemplate(value);
+        }
+    }
+
+    /**
+     * Gets/sets the primary styles used for the component.
+     * @remarks
+     * This value can only be accurately read after connect but can be set at any time.
+     */
+    get styles() {
+        return this._styles;
+    }
+
+    set styles(value: ElementStyles | null) {
+        if (this._styles === value) {
+            return;
+        }
+
+        if (this._styles !== null) {
+            this.removeStyles(this._styles);
+        }
+
+        this._styles = value;
+
+        if (!this.needsInitialization && value !== null) {
+            this.addStyles(value);
         }
     }
 
@@ -115,13 +146,12 @@ export class Controller extends PropertyChangeNotifier {
      * @param styles - The styles to add.
      */
     public addStyles(styles: ElementStyles): void {
-        const target = getShadowRoot(this.element);
-
-        if (target !== null) {
-            styles.addStylesTo(target);
-        }
-
         const sourceBehaviors = styles.behaviors;
+        const target =
+            getShadowRoot(this.element) ||
+            ((this.element.getRootNode() as any) as StyleTarget);
+
+        styles.addStylesTo(target);
 
         if (sourceBehaviors !== null) {
             this.addBehaviors(sourceBehaviors);
@@ -133,13 +163,12 @@ export class Controller extends PropertyChangeNotifier {
      * @param styles - the styles to remove.
      */
     public removeStyles(styles: ElementStyles): void {
-        const target = getShadowRoot(this.element);
-
-        if (target !== null) {
-            styles.removeStylesFrom(target);
-        }
-
         const sourceBehaviors = styles.behaviors;
+        const target =
+            getShadowRoot(this.element) ||
+            ((this.element.getRootNode() as any) as StyleTarget);
+
+        styles.removeStylesFrom(target);
 
         if (sourceBehaviors !== null) {
             this.removeBehaviors(sourceBehaviors);
@@ -208,7 +237,7 @@ export class Controller extends PropertyChangeNotifier {
         const element = this.element;
 
         if (this.needsInitialization) {
-            this.finalizeInitialization();
+            this.finishInitialization();
         } else if (this.view !== null) {
             this.view.bind(element, defaultExecutionContext);
         }
@@ -291,7 +320,7 @@ export class Controller extends PropertyChangeNotifier {
         return false;
     }
 
-    private finalizeInitialization() {
+    private finishInitialization() {
         const element = this.element;
         const boundObservables = this.boundObservables;
 
@@ -308,7 +337,6 @@ export class Controller extends PropertyChangeNotifier {
         }
 
         const definition = this.definition;
-        const styles = definition.styles;
 
         if (this._template === null) {
             if ((this.element as any).resolveTemplate) {
@@ -322,8 +350,16 @@ export class Controller extends PropertyChangeNotifier {
             this.renderTemplate(this._template);
         }
 
-        if (styles !== void 0) {
-            this.addStyles(styles);
+        if (this._styles === null) {
+            if ((this.element as any).resolveStyles) {
+                this._styles = (this.element as any).resolveStyles();
+            } else if (definition.styles) {
+                this._styles = definition.styles || null;
+            }
+        }
+
+        if (this._styles !== null) {
+            this.addStyles(this._styles);
         }
 
         this.needsInitialization = false;

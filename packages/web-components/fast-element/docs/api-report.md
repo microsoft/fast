@@ -182,7 +182,8 @@ export class Controller extends PropertyChangeNotifier {
     onDisconnectedCallback(): void;
     removeBehaviors(behaviors: ReadonlyArray<Behavior>): void;
     removeStyles(styles: ElementStyles): void;
-    // (undocumented)
+    get styles(): ElementStyles | null;
+    set styles(value: ElementStyles | null);
     get template(): ElementViewTemplate | null;
     set template(value: ElementViewTemplate | null);
     readonly view: ElementView | null;
