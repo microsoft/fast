@@ -13,9 +13,9 @@ import { defaultExecutionContext, Binding } from "./observation/observable";
 export interface ElementViewTemplate {
     /**
      * Creates an ElementView instance based on this template definition.
-     * @param host - The custom element host that this template will be rendered to once created.
+     * @param hostBindingTarget - The element that host behaviors will be bound to.
      */
-    create(host: Element): ElementView;
+    create(hostBindingTarget: Element): ElementView;
 
     /**
      * Creates an HTMLView from this template, binds it to the source, and then appends it to the host.
@@ -77,9 +77,9 @@ export class ViewTemplate<TSource = any, TParent = any>
 
     /**
      * Creates an HTMLView instance based on this template definition.
-     * @param host - The host element that this template will be rendered to once created.
+     * @param hostBindingTarget - The element that host behaviors will be bound to.
      */
-    public create(host?: Element): HTMLView {
+    public create(hostBindingTarget?: Element): HTMLView {
         if (this.fragment === null) {
             let template: HTMLTemplateElement;
             const html = this.html;
@@ -141,7 +141,9 @@ export class ViewTemplate<TSource = any, TParent = any>
             const hostFactories = this.hostBehaviorFactories!;
 
             for (let i = 0, ii = hostFactories.length; i < ii; ++i, ++behaviorIndex) {
-                behaviors[behaviorIndex] = hostFactories[i].createBehavior(host!);
+                behaviors[behaviorIndex] = hostFactories[i].createBehavior(
+                    hostBindingTarget!
+                );
             }
         }
 

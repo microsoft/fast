@@ -251,7 +251,7 @@ export interface ElementView extends View {
 
 // @public
 export interface ElementViewTemplate {
-    create(host: Element): ElementView;
+    create(hostBindingTarget: Element): ElementView;
     render(source: any, host: Node, hostBindingTarget?: Element): HTMLView;
 }
 
@@ -494,7 +494,7 @@ export interface View {
 // @public
 export class ViewTemplate<TSource = any, TParent = any> implements ElementViewTemplate, SyntheticViewTemplate {
     constructor(html: string | HTMLTemplateElement, directives: ReadonlyArray<Directive>);
-    create(host?: Element): HTMLView;
+    create(hostBindingTarget?: Element): HTMLView;
     readonly directives: ReadonlyArray<Directive>;
     readonly html: string | HTMLTemplateElement;
     render(source: TSource, host: Node | string, hostBindingTarget?: Element): HTMLView;
