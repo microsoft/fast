@@ -17,7 +17,7 @@ export class Tooltip extends FASTElement {
     @attr({ mode: "boolean" })
     public visible: boolean;
     private visibleChanged(): void {
-        if ((this as any).$fastController.isConnected) {
+        if ((this as FASTElement).$fastController.isConnected) {
             this.updateTooltipVisibility();
             this.updateLayout();
         }
@@ -26,7 +26,7 @@ export class Tooltip extends FASTElement {
     @attr
     public anchor: string = "";
     private anchorChanged(): void {
-        if ((this as any).$fastController.isConnected) {
+        if ((this as FASTElement).$fastController.isConnected) {
             this.updateLayout();
         }
     }
@@ -37,7 +37,7 @@ export class Tooltip extends FASTElement {
     @attr
     public position: TooltipPosition | null = null;
     private positionChanged(): void {
-        if ((this as any).$fastController.isConnected) {
+        if ((this as FASTElement).$fastController.isConnected) {
             this.updateLayout();
         }
     }
@@ -45,7 +45,7 @@ export class Tooltip extends FASTElement {
     @observable
     public anchorElement: HTMLElement | null = null;
     private anchorElementChanged(oldValue: HTMLElement | null): void {
-        if ((this as any).$fastController.isConnected) {
+        if ((this as FASTElement).$fastController.isConnected) {
             if (oldValue !== null && oldValue !== undefined) {
                 oldValue.removeEventListener("mouseover", this.handleAnchorMouseOver);
                 oldValue.removeEventListener("mouseout", this.handleAnchorMouseOut);
@@ -65,11 +65,13 @@ export class Tooltip extends FASTElement {
 
                 const anchorId: string = this.anchorElement.id;
 
-                document.querySelectorAll(":hover").forEach(element => {
-                    if (element.id === anchorId) {
-                        this.startHoverTimer();
-                    }
-                });
+                if (this.anchorElement.parentElement !== null){
+                    this.anchorElement.parentElement.querySelectorAll(":hover").forEach(element => {
+                        if (element.id === anchorId) {
+                            this.startHoverTimer();
+                        }
+                    });
+                }
             }
 
             if (
