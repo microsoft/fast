@@ -32,7 +32,10 @@ const template = html<TodoApp>`
                     <span class="list-text ${x => (x.done ? "done" : "")}">
                         ${x => x.description}
                     </span>
-                    <fast-button @click=${(x, c) => c.parent.removeTodo(x)}>
+                    <fast-button
+                        @click=${(x, c) => c.parent.removeTodo(x)}
+                        aria-label="Remove item"
+                    >
                         &times;
                     </fast-button>
                 </li>
