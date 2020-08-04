@@ -6,10 +6,10 @@ custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/src
 ---
 The following browsers have native support for the Web Components features used by `fast-element` and our components:
 
-* Edge 79+
-* Firefox 63+
-* Chrome 67+
-* Safari 10.1+
+* Microsoft Edge 79+
+* Mozilla Firefox 63+
+* Google Chrome 67+
+* Apple Safari 10.1+
 * Opera 41+
 * iOS Safari 10.3+
 * Android Browser 81+
