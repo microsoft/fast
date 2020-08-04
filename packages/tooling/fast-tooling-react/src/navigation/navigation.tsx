@@ -480,18 +480,25 @@ class Navigation extends Foundation<
             ].parentDictionaryItem.id;
         }
 
-        this.setState({
-            hoveredItem: [type, dictionaryId, navigationConfigId, location],
-            linkedDataLocation: [
-                parentDictionaryId,
-                parentDataLocation,
-                isLinkedDataContainer
-                    ? undefined
-                    : location === HoverLocation.before
-                    ? index
-                    : index + 1,
-            ],
-        });
+        if (
+            this.state.hoveredItem === null
+            || dictionaryId !== this.state.hoveredItem[1]
+            || navigationConfigId !== this.state.hoveredItem[2]
+            || location !== this.state.hoveredItem[3]
+        ) {
+            this.setState({
+                hoveredItem: [type, dictionaryId, navigationConfigId, location],
+                linkedDataLocation: [
+                    parentDictionaryId,
+                    parentDataLocation,
+                    isLinkedDataContainer
+                        ? undefined
+                        : location === HoverLocation.before
+                        ? index
+                        : index + 1,
+                ],
+            });
+        }
     };
 
     /**
