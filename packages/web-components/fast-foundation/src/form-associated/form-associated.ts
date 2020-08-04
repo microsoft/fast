@@ -85,6 +85,9 @@ interface HTMLElement {
     attachInternals?(): ElementInternals;
 }
 
+/**
+ * @alpha
+ */
 export const supportsElementInternals = "ElementInternals" in window;
 
 /**

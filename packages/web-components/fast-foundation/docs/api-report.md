@@ -657,7 +657,7 @@ export class StartEnd {
 // @public
 export const startTemplate: import("@microsoft/fast-element").ViewTemplate<StartEnd, any>;
 
-// @public (undocumented)
+// @alpha (undocumented)
 export const supportsElementInternals: boolean;
 
 // Warning: (ae-incompatible-release-tags) The symbol "Switch" is marked as @public, but its signature references "FormAssociated" which is marked as @alpha
