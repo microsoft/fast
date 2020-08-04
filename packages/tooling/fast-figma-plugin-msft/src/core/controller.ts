@@ -51,7 +51,7 @@ export abstract class Controller {
         this._selectedNode = ids;
 
         // Queue update
-        this.sync(ids);
+        this.syncNodes(ids);
     }
 
     /**
