@@ -8,6 +8,21 @@ import { DOM } from "./dom";
 import { css } from "./styles";
 
 describe("The Controller", () => {
+    const templateA = html`
+        a
+    `;
+    const templateB = html`
+        b
+    `;
+    const cssA = "class-a { color: red; }";
+    const stylesA = css`
+        ${cssA}
+    `;
+    const cssB = "class-b { color: blue; }";
+    const stylesB = css`
+        ${cssB}
+    `;
+
     function createController(
         config: Omit<PartialFASTElementDefinition, "name"> = {},
         BaseClass = FASTElement
@@ -63,13 +78,6 @@ describe("The Controller", () => {
     });
 
     context("during connect", () => {
-        const templateA = html`
-            a
-        `;
-        const templateB = html`
-            b
-        `;
-
         it("renders nothing to shadow dom in shadow dom mode when there's no template", () => {
             const { shadowRoot, controller } = createController();
 
@@ -193,15 +201,6 @@ describe("The Controller", () => {
         });
 
         if (DOM.supportsAdoptedStyleSheets) {
-            const cssA = "class-a { color: red; }";
-            const stylesA = css`
-                ${cssA}
-            `;
-            const cssB = "class-b { color: blue; }";
-            const stylesB = css`
-                ${cssB}
-            `;
-
             it("sets no styles when none are provided", () => {
                 const { shadowRoot, controller } = createController();
 
@@ -263,6 +262,51 @@ describe("The Controller", () => {
                 controller.styles = stylesB;
                 expect(shadowRoot.adoptedStyleSheets.length).to.equal(0);
                 controller.onConnectedCallback();
+                expect(shadowRoot.adoptedStyleSheets[0].cssRules[0].cssText).to.equal(
+                    cssB
+                );
+            });
+        }
+    });
+
+    context("after connect", () => {
+        it("can dynamically change the template in shadow dom mode", () => {
+            const { shadowRoot, controller } = createController({ template: templateA });
+
+            expect(toHTML(shadowRoot)).to.equal("");
+            controller.onConnectedCallback();
+            expect(toHTML(shadowRoot)).to.equal("a");
+
+            controller.template = templateB;
+            expect(toHTML(shadowRoot)).to.equal("b");
+        });
+
+        it("can dynamically change the template in light dom mode", () => {
+            const { controller, element } = createController({
+                shadowOptions: null,
+                template: templateA,
+            });
+
+            expect(toHTML(element)).to.equal("");
+            controller.onConnectedCallback();
+            expect(toHTML(element)).to.equal("a");
+
+            controller.template = templateB;
+            expect(toHTML(element)).to.equal("b");
+        });
+
+        if (DOM.supportsAdoptedStyleSheets) {
+            it("can dynamically change the styles", () => {
+                const { shadowRoot, controller } = createController({ styles: stylesA });
+
+                expect(shadowRoot.adoptedStyleSheets.length).to.equal(0);
+                controller.onConnectedCallback();
+                expect(shadowRoot.adoptedStyleSheets[0].cssRules[0].cssText).to.equal(
+                    cssA
+                );
+
+                controller.styles = stylesB;
+                expect(shadowRoot.adoptedStyleSheets.length).to.equal(1);
                 expect(shadowRoot.adoptedStyleSheets[0].cssRules[0].cssText).to.equal(
                     cssB
                 );
