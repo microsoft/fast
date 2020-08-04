@@ -478,6 +478,84 @@
                 </fast-anchored-region>
             </div>
         </div>
+
+        <h4>Start & End</h4>
+        <div
+            id="viewport-se"
+            style="
+                position: relative;
+                height: 400px;
+                width: 400px;
+                background: lightgray;
+                overflow: scroll;
+            "
+        >
+            <div style="height: 1000px; width: 1000px;">
+                <button
+                    id="anchor-se"
+                    style="margin-left: 500px; margin-top: 500px;"
+                >
+                    anchor
+                </button>
+                <fast-anchored-region
+                    anchor="anchor-se"
+                    viewport="viewport-se"
+                    horizontal-positioning-mode="locktodefault"
+                    horizontal-default-position="start"
+                >
+                    <div style="height: 100px; width: 100px; background: yellow;"></div>
+                </fast-anchored-region>
+
+                <fast-anchored-region
+                    anchor="anchor-se"
+                    viewport="viewport-se"
+                    horizontal-positioning-mode="locktodefault"
+                    horizontal-default-position="end"
+                >
+                    <div style="height: 100px; width: 100px; background: green;"></div>
+                </fast-anchored-region>
+            </div>
+        </div>
+
+        <h4>RTL-Start & End</h4>
+        <div
+            id="viewport-rtl-se"
+            dir="rtl"
+            style="
+                position: relative;
+                height: 400px;
+                width: 400px;
+                background: lightgray;
+                overflow: scroll;
+            "
+        >
+            <div style="height: 1000px; width: 1000px;">
+                <button
+                    id="anchor-rtl-se"
+                    style="margin-right: 500px; margin-top: 500px;"
+                >
+                    anchor
+                </button>
+                <fast-anchored-region
+                    anchor="anchor-rtl-se"
+                    viewport="viewport-rtl-se"
+                    horizontal-positioning-mode="locktodefault"
+                    horizontal-default-position="start"
+                    
+                >
+                    <div style="height: 100px; width: 100px; background: yellow;"></div>
+                </fast-anchored-region>
+
+                <fast-anchored-region
+                    anchor="anchor-rtl-se"
+                    viewport="viewport-rtl-se"
+                    horizontal-positioning-mode="locktodefault"
+                    horizontal-default-position="end"
+                >
+                    <div style="height: 100px; width: 100px; background: green;"></div>
+                </fast-anchored-region>
+            </div>
+        </div>
     </div>
     <fast-anchored-region
         anchor="anchor-fixed"
