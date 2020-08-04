@@ -6,19 +6,19 @@ The `select` is a component that provides a list of options for the user to sele
 
 ### Background
 
-There is a standard select html control, `<fast-select>` and `<fast-option>`, but it doesn't support the full level of detail, styling, etc that most design systems need or require. For context please see [MDN Docs](https://developer.mozilla.org/en-US/docs/web/html/element/select).
+There is a standard select html control, `<select>` and `<option>`, but it doesn't support the full level of detail, styling, etc that most design systems need or require. For context please see [MDN Docs](https://developer.mozilla.org/en-US/docs/web/html/element/select).
 
 ### Use Cases
 
 - *A customer using the component on a web page.*
-On a web page the customer is shopping for a new shirt in size medium. The customer opens the size `select` and selects size medium.
+On a web page a customer is shopping for a new shirt in size medium. The customer opens the size `select` and sees a list of `<option>`s and selects size medium.
 
 ### Features
 - form association
 - focus delegation
 
 ### Features
-- Select one or multiple `<fast-option/>` using the `multiple` attribute
+- Select one or multiple `<fast-option/>`(s) using the `multiple` attribute
 - When Dropdown does not have enough screen real estate to open below `<fast-select>` it will open above.
 
 ### Prior Art/Examples
