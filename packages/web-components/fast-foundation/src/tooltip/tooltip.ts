@@ -2,7 +2,7 @@ import { attr, DOM, FASTElement, observable } from "@microsoft/fast-element";
 import { AnchoredRegion, AxisPositioningMode, AxisScalingMode } from "../anchored-region";
 import { keyCodeEscape } from "@microsoft/fast-web-utilities";
 
-export type TooltipPosition = "top" | "right" | "bottom" | "left";
+export type TooltipPosition = "top" | "right" | "bottom" | "left" | "start" | "end";
 
 export class Tooltip extends FASTElement {
     @attr({ mode: "boolean" })
@@ -208,20 +208,10 @@ export class Tooltip extends FASTElement {
     private updateLayout(): void {
         switch (this.position) {
             case "top":
-                this.verticalPositioningMode = "locktodefault";
-                this.horizontalPositioningMode = "dynamic";
-                this.verticalDefaultPosition = "top";
-                this.horizontalDefaultPosition = undefined;
-                this.horizontalInset = "true";
-                this.verticalInset = "false";
-                this.horizontalScaling = "anchor";
-                this.verticalScaling = "content";
-                break;
-
             case "bottom":
                 this.verticalPositioningMode = "locktodefault";
                 this.horizontalPositioningMode = "dynamic";
-                this.verticalDefaultPosition = "bottom";
+                this.verticalDefaultPosition = this.position;
                 this.horizontalDefaultPosition = undefined;
                 this.horizontalInset = "true";
                 this.verticalInset = "false";
@@ -230,21 +220,13 @@ export class Tooltip extends FASTElement {
                 break;
 
             case "right":
-                this.verticalPositioningMode = "dynamic";
-                this.horizontalPositioningMode = "locktodefault";
-                this.verticalDefaultPosition = undefined;
-                this.horizontalDefaultPosition = "right";
-                this.horizontalInset = "false";
-                this.verticalInset = "true";
-                this.horizontalScaling = "content";
-                this.verticalScaling = "anchor";
-                break;
-
             case "left":
+            case "start":
+            case "end":
                 this.verticalPositioningMode = "dynamic";
                 this.horizontalPositioningMode = "locktodefault";
                 this.verticalDefaultPosition = undefined;
-                this.horizontalDefaultPosition = "left";
+                this.horizontalDefaultPosition = this.position;
                 this.horizontalInset = "false";
                 this.verticalInset = "true";
                 this.horizontalScaling = "content";

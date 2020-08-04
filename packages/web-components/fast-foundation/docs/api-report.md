@@ -902,7 +902,7 @@ export class Tooltip extends FASTElement {
     }
 
 // @public (undocumented)
-export type TooltipPosition = "top" | "right" | "bottom" | "left";
+export type TooltipPosition = "top" | "right" | "bottom" | "left" | "start" | "end";
 
 // @public (undocumented)
 export const TooltipTemplate: import("@microsoft/fast-element").ViewTemplate<Tooltip, any>;
