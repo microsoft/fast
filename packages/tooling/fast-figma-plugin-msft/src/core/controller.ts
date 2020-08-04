@@ -103,6 +103,10 @@ export abstract class Controller {
         };
     }
 
+    /**
+     * Forces the component tree to evaluate recipes and repaint.
+     * @param nodeIds the node IDs
+     */
     public sync(nodeIds: string[]): void {
         nodeIds.forEach(id => this.paintTree(id));
         this.setPluginUIState(this.getPluginUIState());
