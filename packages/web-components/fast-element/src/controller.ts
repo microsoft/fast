@@ -338,26 +338,36 @@ export class Controller extends PropertyChangeNotifier {
 
         const definition = this.definition;
 
+        // 1. Template overrides take top precedence.
         if (this._template === null) {
             if ((this.element as any).resolveTemplate) {
+                // 2. Allow for element instance overrides next.
                 this._template = (this.element as any).resolveTemplate();
             } else if (definition.template) {
+                // 3. Default to the static definition.
                 this._template = definition.template || null;
             }
         }
 
+        // If we have a template after the above process, render it.
+        // If there's no template, then the element author has opted into
+        // custom rendering and they will managed the shadow root's content themselves.
         if (this._template !== null) {
             this.renderTemplate(this._template);
         }
 
+        // 1. Styles overrides take top precedence.
         if (this._styles === null) {
             if ((this.element as any).resolveStyles) {
+                // 2. Allow for element instance overrides next.
                 this._styles = (this.element as any).resolveStyles();
             } else if (definition.styles) {
+                // 3. Default to the static definition.
                 this._styles = definition.styles || null;
             }
         }
 
+        // If we have styles after the above process, add them.
         if (this._styles !== null) {
             this.addStyles(this._styles);
         }
@@ -367,17 +377,22 @@ export class Controller extends PropertyChangeNotifier {
 
     private renderTemplate(template: ElementViewTemplate | null | undefined) {
         const element = this.element;
+        // When getting the host to render to, we start by looking
+        // up the shadow root. If there isn't one, then that means
+        // we're doing a Light DOM render to the element's direct children.
         const host = getShadowRoot(element) || element;
 
         if (this.view !== null) {
+            // If there's already a view, we need to unbind and remove through dispose.
             this.view.dispose();
             (this as Mutable<this>).view = null;
         } else if (!this.needsInitialization) {
+            // If there was previous custom rendering, we need to clear out the host.
             host.innerHTML = "";
         }
 
         if (template) {
-            // we have a new template to render to the Light
+            // If a new template was provided, render it.
             (this as Mutable<this>).view = template.render(element, host, element);
         }
     }
