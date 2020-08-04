@@ -37,13 +37,12 @@ export class FigmaController extends Controller {
         }
     }
 
-    public sync(nodeIds: string[]): void {
-        nodeIds
-            .map((id: string) => figma.getNodeById(id))
+    public syncNodes(ids: string[]): void {
+        ids.map((id: string) => figma.getNodeById(id))
             .filter(isInstanceNode)
             .map(this.syncInstanceWithMaster);
 
-        super.sync(nodeIds);
+        super.syncNodes(ids);
     }
 
     public setPluginUIState(message: PluginUIProps): void {
