@@ -2,9 +2,15 @@ import { mapWebComponentDefinitionToJSONSchema } from "@microsoft/fast-tooling";
 import { WebComponentDefinition } from "@microsoft/fast-tooling/dist/data-utilities/web-component";
 import * as fastComponentDefinitions from "../definitions/fast-components";
 import * as nativeElementDefinitions from "../definitions/native";
+import {
+    fastComponentExtendedDefinitions,
+    nativeElementExtendedDefinitions,
+} from "../definitions";
 
 const fastComponentSchemas: { [key: string]: any } = {};
 const nativeElementSchemas: { [key: string]: any } = {};
+const fastComponentExtendedSchemas: { [key: string]: any } = {};
+const nativeElementExtendedSchemas: { [key: string]: any } = {};
 
 function mapToJSONSchemas(
     definitions: { [key: string]: WebComponentDefinition },
@@ -24,5 +30,12 @@ function mapToJSONSchemas(
 
 mapToJSONSchemas(fastComponentDefinitions, fastComponentSchemas);
 mapToJSONSchemas(nativeElementDefinitions, nativeElementSchemas);
+mapToJSONSchemas(fastComponentExtendedDefinitions, fastComponentExtendedSchemas);
+mapToJSONSchemas(nativeElementExtendedDefinitions, nativeElementExtendedSchemas);
 
-export { fastComponentSchemas, nativeElementSchemas };
+export {
+    fastComponentSchemas,
+    nativeElementSchemas,
+    fastComponentExtendedSchemas,
+    nativeElementExtendedSchemas,
+};
