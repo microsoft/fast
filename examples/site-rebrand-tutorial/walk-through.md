@@ -542,14 +542,14 @@ As the design system and components are all defined in the pre-bundled FAST Java
 Change line 247 to:
 
 ```html
-  <script type="module" src="https://unpkg.com/@microsoft/fast-components-msft"></script>
+  <script type="module" src="https://unpkg.com/@fluentui/web-components"></script>
   
 ```
 
 And the import statement at line 253 to:
 
 ```javascript
-    from "https://unpkg.com/@microsoft/fast-components-msft";
+    from "https://unpkg.com/@fluentui/web-components";
 ```
 
 ![The website using the Fluent design system versus FAST](side-by-side.png)

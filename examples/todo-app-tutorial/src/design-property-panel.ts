@@ -6,10 +6,7 @@ import {
     customElement,
     ExecutionContext,
 } from "@microsoft/fast-element";
-import {
-    neutralLayerL1Behavior,
-    parseColorString,
-} from "@microsoft/fast-components-msft";
+import { neutralLayerL1Behavior, parseColorString } from "@fluentui/web-components";
 import { ComponentStateColorPalette, ColorRGBA64 } from "@microsoft/fast-colors";
 import { typography } from "./typography";
 
