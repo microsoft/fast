@@ -880,8 +880,6 @@ export class Tooltip extends FASTElement {
     position: TooltipPosition | null;
     // Warning: (ae-forgotten-export) The symbol "AnchoredRegion" needs to be exported by the entry point index.d.ts
     region: AnchoredRegion;
-    // (undocumented)
-    regionStyle: string;
     tooltipElement: HTMLDivElement;
     // (undocumented)
     tooltipVisible: boolean;

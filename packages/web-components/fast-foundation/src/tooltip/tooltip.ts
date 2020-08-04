@@ -4,15 +4,6 @@ import { keyCodeEscape } from "@microsoft/fast-web-utilities";
 
 export type TooltipPosition = "top" | "right" | "bottom" | "left";
 
-const hiddenRegionStyle: string = `
-     display: none;
-     pointer-events: none;
-`;
-
-const visibleRegionStyle: string = `
-     pointer-events: none;
-`;
-
 export class Tooltip extends FASTElement {
     @attr({ mode: "boolean" })
     public visible: boolean;
@@ -121,9 +112,6 @@ export class Tooltip extends FASTElement {
 
     @observable
     public tooltipVisible: boolean = false;
-
-    @observable
-    public regionStyle: string = hiddenRegionStyle;
 
     /**
      * reference to the tooltip container
@@ -332,13 +320,11 @@ export class Tooltip extends FASTElement {
         }
         document.removeEventListener("keydown", this.handleDocumentKeydown);
         this.tooltipVisible = false;
-        this.regionStyle = hiddenRegionStyle;
     };
 
     private showRegion = (): void => {
         document.addEventListener("keydown", this.handleDocumentKeydown);
         this.tooltipVisible = true;
-        this.regionStyle = visibleRegionStyle;
         DOM.queueUpdate(this.setRegionProps);
     };
 
