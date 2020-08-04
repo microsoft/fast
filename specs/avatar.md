@@ -44,46 +44,29 @@ A common use case would be to display an image or text (usually initials) of a u
 ### Anatomy and Appearance
 
 *Template*
-```
-${when(x => x.link, html`
-  <template 
-    role="aria-link">
-    <div class="avatar-coin">
-      <a class="avatar-link" href="${ x => x.link}">
-        ${when(x => x.imgSrc, html`
-          <img 
-            class="avatar-image" 
-            alt="${ x => x.alt }" 
-            src="${ x => x.imgSrc }" />
-        `)}
-        <span class="avatar-name">${x => x.name}</span>
-      </a>
-    </div>
-    <slot class="avatar-badge" name="badge"></slot>
-  </template> 
-`)}   
-
-${when(x => !x.link, html`
-  <template>
-    <div class="avatar-coin">
+```js
+<template>
+  <div class="avatar-coin">
+    <a href="${x => (x.link ? x.link : void 0)}">
       ${when(x => x.imgSrc, html`
         <img 
-          class="avatar-image" 
-          alt="${ x => x.alt }" 
-          src="${ x => x.imgSrc }" />
+          src="${x => x.imgSrc}"
+          alt="${x => x.alt}"
+          tabindex="${x => (!x.link ? "0" : void 0)}"
+        />
       `)}
       <span class="avatar-name">${x => x.name}</span>
-    </div>
-    <slot class="avatar-badge" name="badge"></slot>
-  </template> 
-`)}
+    </a>
+  </div>
+  <slot class="avatar-badge" name="badge"></slot>
+</template> 
 ```
 
 ---
 
 ## Implementation
 
-```
+```html
 <fast-avatar 
   img-src="..."
   alt-text="..."
@@ -92,7 +75,7 @@ ${when(x => !x.link, html`
 ```
 
 With `fast-badge` Component:
-```
+```html
 <fast-avatar 
   alt-text="..."
   link="...">
