@@ -7,6 +7,7 @@ export const TooltipTemplate = html<Tooltip>`
         html<Tooltip>`
             <fast-anchored-region
                 ${ref("region")}
+                dir=${x => x.currentDirection}
                 vertical-positioning-mode=${x => x.verticalPositioningMode}
                 vertical-default-position=${x => x.verticalDefaultPosition}
                 vertical-inset=${x => x.verticalInset}

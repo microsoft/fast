@@ -857,6 +857,8 @@ export class Tooltip extends FASTElement {
     // (undocumented)
     connectedCallback(): void;
     // (undocumented)
+    currentDirection: Direction;
+    // (undocumented)
     delay: number;
     // (undocumented)
     disconnectedCallback(): void;

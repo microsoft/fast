@@ -1,10 +1,12 @@
 import { attr, DOM, FASTElement, observable } from "@microsoft/fast-element";
 import { AnchoredRegion, AxisPositioningMode, AxisScalingMode } from "../anchored-region";
-import { keyCodeEscape } from "@microsoft/fast-web-utilities";
+import { Direction, keyCodeEscape } from "@microsoft/fast-web-utilities";
 
 export type TooltipPosition = "top" | "right" | "bottom" | "left" | "start" | "end";
 
 export class Tooltip extends FASTElement {
+    private static DirectionAttributeName: string = "dir";
+
     @attr({ mode: "boolean" })
     public visible: boolean;
     private visibleChanged(): void {
@@ -56,12 +58,14 @@ export class Tooltip extends FASTElement {
 
                 const anchorId: string = this.anchorElement.id;
 
-                if (this.anchorElement.parentElement !== null){
-                    this.anchorElement.parentElement.querySelectorAll(":hover").forEach(element => {
-                        if (element.id === anchorId) {
-                            this.startHoverTimer();
-                        }
-                    });
+                if (this.anchorElement.parentElement !== null) {
+                    this.anchorElement.parentElement
+                        .querySelectorAll(":hover")
+                        .forEach(element => {
+                            if (element.id === anchorId) {
+                                this.startHoverTimer();
+                            }
+                        });
                 }
             }
 
@@ -112,6 +116,9 @@ export class Tooltip extends FASTElement {
 
     @observable
     public tooltipVisible: boolean = false;
+
+    @observable
+    public currentDirection: Direction = Direction.ltr;
 
     /**
      * reference to the tooltip container
@@ -288,6 +295,7 @@ export class Tooltip extends FASTElement {
         if (this.tooltipVisible) {
             return;
         }
+        this.currentDirection = this.getDirection();
         DOM.queueUpdate(this.showRegion);
     };
 
@@ -318,5 +326,19 @@ export class Tooltip extends FASTElement {
         this.region.viewportElement = this.viewportElement;
         this.region.anchorElement = this.anchorElement;
         (this.region as any).addEventListener("change", this.handlePositionChange);
+    };
+
+    /**
+     *  gets the current direction
+     */
+    private getDirection = (): Direction => {
+        const closest: Element | null = this.closest(
+            `[${Tooltip.DirectionAttributeName}]`
+        );
+
+        return closest === null ||
+            closest.getAttribute(Tooltip.DirectionAttributeName) === Direction.ltr
+            ? Direction.ltr
+            : Direction.rtl;
     };
 }
