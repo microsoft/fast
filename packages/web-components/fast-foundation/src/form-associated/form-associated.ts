@@ -85,10 +85,15 @@ interface HTMLElement {
     attachInternals?(): ElementInternals;
 }
 
+/**
+ * @alpha
+ */
 export const supportsElementInternals = "ElementInternals" in window;
 
 /**
- * Base class for providing Custom Element Form Association
+ * Base class for providing Custom Element Form Association.
+ *
+ * @alpha
  */
 export abstract class FormAssociated<
     T extends HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
@@ -96,6 +101,8 @@ export abstract class FormAssociated<
     /**
      * Must evaluate to true to enable elementInternals.
      * Feature detects API support and resolve respectively
+     *
+     * @internal
      */
     public static get formAssociated(): boolean {
         return supportsElementInternals;
@@ -174,10 +181,21 @@ export abstract class FormAssociated<
     private dirtyValue: boolean = false;
 
     /**
-     * The value of the element to be associated with the form
+     * The value of the element to be associated with the form.
      */
     @observable
     public value: string;
+
+    /**
+     * Invoked when the `value` property changes
+     * @param previous - the previous value
+     * @param next - the new value
+     *
+     * @remarks
+     * If elmements extending `FormAssociated` impelemnt a `valueChanged` method
+     * They must be sure to invoke `super.valueChanged(previous, next)` to ensure
+     * proper functioning of `FormAssociated`
+     */
     protected valueChanged(previous: string, next: string) {
         this.dirtyValue = true;
 
@@ -189,10 +207,26 @@ export abstract class FormAssociated<
     }
 
     /**
-     * The initial value of the form.
+     * The initial value of the form. This value sets the `value` property
+     * only when the `value` property has not been explicitly set.
+     *
+     * @remarks
+     * HTML Attribute: value
      */
     @attr({ mode: "fromView", attribute: "value" })
     protected initialValue: string = "";
+
+    /**
+     * Invoked when the `initialValue` property changes
+     *
+     * @param previous - the previous value
+     * @param next - the new value
+     *
+     * @remarks
+     * If elmements extending `FormAssociated` impelemnt a `initialValueChanged` method
+     * They must be sure to invoke `super.initialValueChanged(previous, next)` to ensure
+     * proper functioning of `FormAssociated`
+     */
     protected initialValueChanged(previous: string, next: string) {
         // If the value is clean and the component is connected to the DOM
         // then set value equal to the attribute value.
@@ -202,9 +236,27 @@ export abstract class FormAssociated<
         }
     }
 
+    /**
+     * Sets the element's disabled state. A disabled element will not be included during form submission.
+     *
+     * @remarks
+     * HTML Attribute: disabled
+     */
     @attr({ mode: "boolean" })
     public disabled: boolean = false;
-    protected disabledChanged(): void {
+
+    /**
+     * Invoked when the `disabled` property changes
+     *
+     * @param previous - the previous value
+     * @param next - the new value
+     *
+     * @remarks
+     * If elmements extending `FormAssociated` impelemnt a `disabledChanged` method
+     * They must be sure to invoke `super.disabledChanged(previous, next)` to ensure
+     * proper functioning of `FormAssociated`
+     */
+    protected disabledChanged(previous: boolean, next: boolean): void {
         if (this.proxy instanceof HTMLElement) {
             this.proxy.disabled = this.disabled;
         }
@@ -212,8 +264,26 @@ export abstract class FormAssociated<
         DOM.queueUpdate(() => this.classList.toggle("disabled", this.disabled));
     }
 
+    /**
+     * The name of the element. This element's value will be surfaced during form submission under the provided name.
+     *
+     * @remarks
+     * HTML Attribute: name
+     */
     @attr
     public name: string;
+
+    /**
+     * Invoked when the `name` property changes
+     *
+     * @param previous - the previous value
+     * @param next - the new value
+     *
+     * @remarks
+     * If elmements extending `FormAssociated` impelemnt a `nameChanged` method
+     * They must be sure to invoke `super.nameChanged(previous, next)` to ensure
+     * proper functioning of `FormAssociated`
+     */
     protected nameChanged(): void {
         if (this.proxy instanceof HTMLElement) {
             this.proxy.name = this.name;
@@ -221,10 +291,25 @@ export abstract class FormAssociated<
     }
 
     /**
-     * Require the field prior to form submission
+     * Require the field to be completed prior to form submission.
+     *
+     * @remarks
+     * HTML Attribute: required
      */
     @attr({ mode: "boolean" })
     public required: boolean = false;
+
+    /**
+     * Invoked when the `required` property changes
+     *
+     * @param previous - the previous value
+     * @param next - the new value
+     *
+     * @remarks
+     * If elmements extending `FormAssociated` impelemnt a `requiredChanged` method
+     * They must be sure to invoke `super.requiredChanged(previous, next)` to ensure
+     * proper functioning of `FormAssociated`
+     */
     protected requiredChanged(): void {
         if (this.proxy instanceof HTMLElement) {
             this.proxy.required = this.required;
@@ -234,7 +319,8 @@ export abstract class FormAssociated<
     }
 
     /**
-     * The proxy element provided by
+     * The proxy element - this element serves as the communication layer with the parent form
+     * when form association is not supported by the browser.
      */
     protected abstract proxy: T;
 
@@ -261,6 +347,9 @@ export abstract class FormAssociated<
         }
     }
 
+    /**
+     * @internal
+     */
     public connectedCallback(): void {
         super.connectedCallback();
         this.value = this.initialValue;
@@ -271,6 +360,9 @@ export abstract class FormAssociated<
         }
     }
 
+    /**
+     * @internal
+     */
     public disconnectedCallback(): void {
         this.proxyEventsToBlock.forEach(name =>
             this.proxy.removeEventListener(name, this.stopPropagation)
@@ -278,7 +370,7 @@ export abstract class FormAssociated<
     }
 
     /**
-     * Return the current validity of the element
+     * Return the current validity of the element.
      */
     public checkValidity(): boolean {
         return supportsElementInternals
@@ -365,7 +457,7 @@ export abstract class FormAssociated<
     }
 
     /**
-     *
+     * Associates the provided value (and optional state) with the parent form.
      * @param value - The value to set
      * @param state - The state object provided to during session restores and when autofilling.
      */

@@ -118,7 +118,7 @@ export class BaseProgress extends FASTElement {
 }
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
-// Warning: (ae-forgotten-export) The symbol "FormAssociated" needs to be exported by the entry point index.d.ts
+// Warning: (ae-incompatible-release-tags) The symbol "Button" is marked as @public, but its signature references "FormAssociated" which is marked as @alpha
 // Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "Button" because one of its declarations is marked as @internal
 //
 // @public
@@ -151,6 +151,8 @@ export class Card extends FASTElement {
 // @public
 export const CardTemplate: import("@microsoft/fast-element").ViewTemplate<Card, any>;
 
+// Warning: (ae-incompatible-release-tags) The symbol "Checkbox" is marked as @public, but its signature references "FormAssociated" which is marked as @alpha
+//
 // @public
 export class Checkbox extends FormAssociated<HTMLInputElement> {
     constructor();
@@ -356,6 +358,46 @@ export const focusVisible: string;
 // @public
 export const forcedColorsStylesheetBehavior: (styles: ElementStyles) => MatchMediaStyleSheetBehavior;
 
+// @alpha
+export abstract class FormAssociated<T extends HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement> extends FASTElement {
+    constructor();
+    protected attachProxy(): void;
+    checkValidity(): boolean;
+    // @internal (undocumented)
+    connectedCallback(): void;
+    protected detachProxy(): void;
+    disabled: boolean;
+    protected disabledChanged(previous: boolean, next: boolean): void;
+    // @internal (undocumented)
+    disconnectedCallback(): void;
+    // Warning: (ae-forgotten-export) The symbol "ElementInternals" needs to be exported by the entry point index.d.ts
+    protected elementInternals: ElementInternals;
+    get form(): HTMLFormElement | null;
+    // @internal
+    static get formAssociated(): boolean;
+    formDisabledCallback(disabled: boolean): void;
+    protected initialValue: string;
+    protected initialValueChanged(previous: string, next: string): void;
+    // (undocumented)
+    protected keypressHandler(e: KeyboardEvent): void;
+    get labels(): ReadonlyArray<Node>;
+    name: string;
+    protected nameChanged(): void;
+    protected abstract proxy: T;
+    reportValidity(): boolean;
+    required: boolean;
+    protected requiredChanged(): void;
+    protected setFormValue(value: File | string | FormData | null, state?: File | string | FormData | null): void;
+    // Warning: (ae-forgotten-export) The symbol "ValidityStateFlags" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "HTMLElement" needs to be exported by the entry point index.d.ts
+    setValidity(flags: ValidityStateFlags, message?: string, anchor?: HTMLElement_2): void;
+    get validationMessage(): string;
+    get validity(): ValidityState;
+    value: string;
+    protected valueChanged(previous: string, next: string): void;
+    get willValidate(): boolean;
+}
+
 // @public
 export const hidden = ":host([hidden]){display:none}";
 
@@ -448,6 +490,8 @@ export const ProgressRingTemplate: import("@microsoft/fast-element").ViewTemplat
 // @public
 export const ProgressTemplate: import("@microsoft/fast-element").ViewTemplate<BaseProgress, any>;
 
+// Warning: (ae-incompatible-release-tags) The symbol "Radio" is marked as @public, but its signature references "FormAssociated" which is marked as @alpha
+//
 // @public
 export class Radio extends FormAssociated<HTMLInputElement> implements RadioControl {
     checked: boolean;
@@ -498,6 +542,8 @@ export const RadioGroupTemplate: import("@microsoft/fast-element").ViewTemplate<
 // @public
 export const RadioTemplate: import("@microsoft/fast-element").ViewTemplate<Radio, any>;
 
+// Warning: (ae-incompatible-release-tags) The symbol "Slider" is marked as @public, but its signature references "FormAssociated" which is marked as @alpha
+//
 // @public
 export class Slider extends FormAssociated<HTMLInputElement> implements SliderConfiguration {
     // @internal (undocumented)
@@ -611,6 +657,11 @@ export class StartEnd {
 // @public
 export const startTemplate: import("@microsoft/fast-element").ViewTemplate<StartEnd, any>;
 
+// @alpha (undocumented)
+export const supportsElementInternals: boolean;
+
+// Warning: (ae-incompatible-release-tags) The symbol "Switch" is marked as @public, but its signature references "FormAssociated" which is marked as @alpha
+//
 // @public
 export class Switch extends FormAssociated<HTMLInputElement> {
     checked: boolean;
@@ -687,6 +738,7 @@ export const TabsTemplate: import("@microsoft/fast-element").ViewTemplate<Tabs, 
 export const TabTemplate: import("@microsoft/fast-element").ViewTemplate<Tab, any>;
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
+// Warning: (ae-incompatible-release-tags) The symbol "TextArea" is marked as @public, but its signature references "FormAssociated" which is marked as @alpha
 // Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "TextArea" because one of its declarations is marked as @internal
 //
 // @public
@@ -731,6 +783,7 @@ export enum TextAreaResize {
 export const TextAreaTemplate: import("@microsoft/fast-element").ViewTemplate<TextArea, any>;
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
+// Warning: (ae-incompatible-release-tags) The symbol "TextField" is marked as @public, but its signature references "FormAssociated" which is marked as @alpha
 // Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "TextField" because one of its declarations is marked as @internal
 //
 // @public
