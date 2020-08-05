@@ -40,8 +40,6 @@ On a web page a customer is shopping for a new shirt in size medium. The custome
 - `autocomplete` - Allows the developer to provide a hint on how to search the content within the `<fast-option>`(s)
 - `autofocus` - automatically focuses the control
 - `disabled` - disables the control
-- `form` - ???
-- `labels` - ???
 - `length` - The number of `<fast-option>` elements in the `<fast-select>` element
 - `multiple` - Allows user to select more than one `<fast-option>`
 - `name` - the name of the control
