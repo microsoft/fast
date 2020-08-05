@@ -1,26 +1,28 @@
 import { css } from "@microsoft/fast-element";
-import { display, focusVisible } from "@microsoft/fast-foundation";
+import {
+    display,
+    focusVisible,
+    forcedColorsStylesheetBehavior,
+} from "@microsoft/fast-foundation";
 import {
     accentForegroundActiveBehavior,
     accentForegroundHoverBehavior,
     accentForegroundRestBehavior,
     neutralForegroundRestBehavior,
+    heightNumber,
 } from "../styles/index";
+import { SystemColors } from "@microsoft/fast-web-utilities";
 
 export const BreadcrumbItemStyles = css`
-    ${display("inline-block")} :host {
+    ${display("inline-flex")} :host {
         background: transparent;
         box-sizing: border-box;
         font-family: var(--body-font);
         font-size: var(--type-ramp-base-font-size);
         fill: currentColor;
         line-height: var(--type-ramp-base-line-height);
+        min-width: calc(${heightNumber} * 1px);
         outline: none;
-    }
-
-    .listitem {
-        align-items: center;
-        display: flex;
     }
 
     .separator {
@@ -54,7 +56,9 @@ export const BreadcrumbItemStyles = css`
         content: "";
         display: block;
         height: calc(var(--outline-width) * 1px);
+        left: 0;
         position: absolute;
+        right: 0;
         top: calc(1em + 4px);
         width: 100%;
     }
@@ -94,5 +98,12 @@ export const BreadcrumbItemStyles = css`
     accentForegroundHoverBehavior,
     accentForegroundActiveBehavior,
     accentForegroundHoverBehavior,
-    neutralForegroundRestBehavior
+    neutralForegroundRestBehavior,
+    forcedColorsStylesheetBehavior(
+        css`
+            .control:hover .content::before {
+                background: ${SystemColors.LinkText};
+            }
+        `
+    )
 );

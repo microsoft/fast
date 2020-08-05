@@ -12,8 +12,9 @@ export const BreadcrumbTemplate = html<Breadcrumb>`
         aria-labelledby="${x => x.ariaLabelledby}"
     >
         <div role="list">
-            <slot ${slotted({ property: "slottedBreadcrumbItems", filter: elements() })}
-            </slot>
+            <slot
+                ${slotted({ property: "slottedBreadcrumbItems", filter: elements() })}
+            ></slot>
         </div>
     </template>
 `;
