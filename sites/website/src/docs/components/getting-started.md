@@ -6,13 +6,13 @@ custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/src
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![npm version](https://badge.fury.io/js/%40microsoft%2Ffast-components.svg)](https://badge.fury.io/js/%40microsoft%2Ffast-components)
 
-The `fast-components` and `fast-components-msft` libraries contain Web Components built on top of our standard component and design system foundation. `fast-components` express the FAST design language while `fast-components-msft` expresses Microsoft's Fluent design language.
+The `fast-components` and `@fluentui/web-components` libraries contain Web Components built on top of our standard component and design system foundation. `fast-components` express the FAST design language while `@fluentui/web-components` expresses Microsoft's Fluent design language.
 
 ## Installation
 
 ### From NPM
 
-To install the components, first, choose between `fast-components` and `fast-components-msft`. Assuming a selection of `fast-components`, you would use either `npm` or `yarn` as follows:
+To install the components, first, choose between `fast-components` and `@fluentui/web-components`. Assuming a selection of `fast-components`, you would use either `npm` or `yarn` as follows:
 
 ```shell
 npm install --save @microsoft/fast-components
