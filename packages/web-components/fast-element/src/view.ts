@@ -27,6 +27,12 @@ export interface View {
      * Unbinds a view's behaviors from its binding source and context.
      */
     unbind(): void;
+
+    /**
+     * Removes the view and unbinds its behaviors, disposing of DOM nodes afterward.
+     * Once a view has been disposed, it cannot be inserted or bound again.
+     */
+    dispose(): void;
 }
 
 /**

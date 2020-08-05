@@ -5,3 +5,8 @@ export function toHTML(node: Node): string {
         })
         .join("");
 }
+
+let counter = 0;
+export function uniqueElementName() {
+    return `test-element-${++counter}`;
+}
