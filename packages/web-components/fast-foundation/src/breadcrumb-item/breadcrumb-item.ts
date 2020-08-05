@@ -38,6 +38,12 @@ export class BreadcrumbItem extends FASTElement {
      */
     @observable
     public isCurrent: boolean = false;
+
+    /**
+     * @internal
+     */
+    @observable
+    public defaultSlottedNodes: Node[];
 }
 
 /**
