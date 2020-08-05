@@ -6,7 +6,7 @@ An *anchored region* is a container component which enables authors to create la
 
 ### Use Cases
 
-It is envisioned that this component would be used as a building block for other components in this library who need to position elements relative to another HTMLElement(select, flyout, tooltip, etc) as well as being available for standalone use in responsive layouts.
+It is envisioned that this component would be used as a building block for other components in this library that need to position elements relative to another HTMLElement(select, flyout, tooltip, etc) as well as being available for standalone use in responsive layouts.
 
 ### Features
 
