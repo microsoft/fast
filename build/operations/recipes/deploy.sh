@@ -8,17 +8,22 @@ This will deploy from staging to production via Azure Web App Slot swapping.
 # GLOBAL Configurations
     source config.sh
 
-    # Web Apps: Valid values
+    # Web App valid values
     declare -a subscriptions=("production" "development")
-    declare -a names=("create" "explore" "www")
-    #declare -a names=("app" "color" "create" "explore" "motion" "www")
+    declare -a names=("app" "color" "create" "explore" "motion" "www")
     declare -a locations=("west" "east")
 
+    # Defaults
     product=fast
     subscription=production
+    application=ask
 
 ## SHELL Arguments
-source inputs.sh --debug true --subscription $subscription
+echo "${bold}${green}DEPLOYMENT started ...${reset}"
+echo "${green}Predefined defaults found${reset}" && echo ""
+source inputs.sh --debug false --subscription $subscription --application $application
+
+exit;
 
 ## JOBS
 for location in ${locations[@]}; do

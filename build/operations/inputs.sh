@@ -1,42 +1,64 @@
 #!/bin/bash
 
-# Set arguments passed in from command line
+# Set arguments passed in from command line to overwrite the default configurations
+
 while (( $# > 1 )); do 
     case $1 in 
-        --debug)
+        --application) 
             
+            application=$2
+      
+            if [ $application == "ask" ];
+            then
+                echo "${bold}${green}Application${reset} Select an application to deploy:"
+                select application in app color create explore motion www done
+                do
+                    
+                    case $application in
+
+                        app | color | create | explore | motion | www)
+                            echo "Deploying ${bold}$application${reset} now ..."
+                            application=$application ;;
+
+                        done)
+                            echo "DEPLOYMENT is finished. [Enter] Ctrl+c to quit" ;;
+                        *)
+                            echo "${red}invalid entry, try again${reset}" ;;
+                    esac
+                done
+            fi ;;
+
+        --debug)
+            [[ $debug == true ]] && echo "${bold}${green}Debug"${reset} $debug
             debug=$2 ;;
 
         --location) 
             
-            #Overwrite default
             location=$2
             location_abbr=${location:0:4}
-            [[ $debug == true ]] && echo "${bold}${green}Location"${reset}${unbold} && echo $location ;;
+            echo "${bold}${green}Location"${reset} $location ;;
 
         --name)
             
-            #Overwrite default
             name=$2
-            [[ $debug == true ]] && echo "${bold}${green}Name"${reset}${unbold} echo $name ;;
+            echo "${bold}${green}Name"${reset} $name ;;
 
         --product) 
 
-            #Overwrite default
             product=$2
-            [[ $debug == true ]] && echo "${bold}${green}Product"${reset}${unbold} && echo $product ;;
+            echo "${bold}${green}Product"${reset} $product ;;
      
         --resource-group) 
             
-            # Overwrite default
             resource_group=$2
-            [[ $debug == true ]] && echo "${bold}${green}Resource Group"${reset}${unbold} && echo $resource_group ;;
+            echo "${bold}${green}Resource Group"${reset} $resource_group ;;
 
         --subscription)
-            [[ $debug == true ]] && echo "${bold}${green}Subscription"${reset}${unbold} && echo $2
+            subscription=$2
+            echo "${bold}${green}Subscription"${reset} $subscription
             
-            # Retrieve subscription from Global Key Vault
-            case "$2" in 
+            # Retrieve subscription from Global Azure Key Vault
+            case "$subscription" in 
                 production) 
                     subscription=$(az keyvault secret show --name "subscription-production" --vault-name "fast-ops-kv" --query "value" -o tsv) ;;
                 development)
@@ -44,9 +66,12 @@ while (( $# > 1 )); do
             esac
             
             az account set --subscription $subscription
-            az account show --subscription $subscription ;;
-           
+
+            if [ $debug == true ];
+            then
+                az account show --subscription $subscription
+            fi 
+            echo "" ;;
         *) ;;
     esac; shift 2
 done
-
