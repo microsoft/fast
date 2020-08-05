@@ -191,3 +191,15 @@ In both examples above, after your event handler is executed, `preventDefault()`
 :::
 
 The second example demonstrates an important characteristic of the templating engine: it only supports *unidirectional data flow* (model => view). It does not support *two-way data binding* (model <=> view). As shown above, pushing data from the view back to the model should be handled with explicit events that call into your model's API.
+
+## Templating and the element lifecycle
+
+It is during the `connectedCallback` phase of the Custom Element lifecycle that `FASTElement` creates templates and binds the resulting view. The creation of the template only occurs the first time the element is connected, while binding happens every time the element is connected (with unbinding happening during the `disconnectedCallback` for symmetry).
+
+:::note
+In the future we're planning new optimizations that will enable us to safely determine when we do not need to unbind/rebind certain views.
+:::
+
+In most cases, the template that `FASTElement` renders is determined by the `template` property of the Custom Element's configuration. However, you can also implement a method on your Custom Element class named `resolveTemplate()` that returns a template instance. If this method is present, it will be called during `connectedCallback` to obtain the template to use. This allows the element author to dynamically select completely different templates based on the state of the element at the time of connection.
+
+In addition to dynamic template selection during the `connectedCallback`, the `$fastController` property of `FASTElement` enables dynamically changing the template at any time though setting the controller's `template` property to any valid template.

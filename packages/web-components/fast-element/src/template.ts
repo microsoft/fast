@@ -13,9 +13,18 @@ import { defaultExecutionContext, Binding } from "./observation/observable";
 export interface ElementViewTemplate {
     /**
      * Creates an ElementView instance based on this template definition.
-     * @param host - The custom element host that this template will be rendered to once created.
+     * @param hostBindingTarget - The element that host behaviors will be bound to.
      */
-    create(host: Element): ElementView;
+    create(hostBindingTarget: Element): ElementView;
+
+    /**
+     * Creates an HTMLView from this template, binds it to the source, and then appends it to the host.
+     * @param source - The data source to bind the template to.
+     * @param host - The Element where the template will be rendered.
+     * @param hostBindingTarget - An HTML element to target the host bindings at if different from the
+     * host that the template is being attached to.
+     */
+    render(source: any, host: Node, hostBindingTarget?: Element): HTMLView;
 }
 
 /**
@@ -68,9 +77,9 @@ export class ViewTemplate<TSource = any, TParent = any>
 
     /**
      * Creates an HTMLView instance based on this template definition.
-     * @param host - The host element that this template will be rendered to once created.
+     * @param hostBindingTarget - The element that host behaviors will be bound to.
      */
-    public create(host?: Element): HTMLView {
+    public create(hostBindingTarget?: Element): HTMLView {
         if (this.fragment === null) {
             let template: HTMLTemplateElement;
             const html = this.html;
@@ -102,12 +111,7 @@ export class ViewTemplate<TSource = any, TParent = any>
         const fragment = this.fragment.cloneNode(true) as DocumentFragment;
         const viewFactories = this.viewBehaviorFactories!;
         const behaviors = new Array<Behavior>(this.behaviorCount);
-        const walker = document.createTreeWalker(
-            fragment,
-            133, // element, text, comment
-            null,
-            false
-        );
+        const walker = DOM.createTemplateWalker(fragment);
 
         let behaviorIndex = 0;
         let targetIndex = this.targetOffset;
@@ -132,7 +136,9 @@ export class ViewTemplate<TSource = any, TParent = any>
             const hostFactories = this.hostBehaviorFactories!;
 
             for (let i = 0, ii = hostFactories.length; i < ii; ++i, ++behaviorIndex) {
-                behaviors[behaviorIndex] = hostFactories[i].createBehavior(host!);
+                behaviors[behaviorIndex] = hostFactories[i].createBehavior(
+                    hostBindingTarget!
+                );
             }
         }
 
@@ -142,14 +148,24 @@ export class ViewTemplate<TSource = any, TParent = any>
     /**
      * Creates an HTMLView from this template, binds it to the source, and then appends it to the host.
      * @param source - The data source to bind the template to.
-     * @param host - The HTMLElement where the template will be rendered.
+     * @param host - The Element where the template will be rendered.
+     * @param hostBindingTarget - An HTML element to target the host bindings at if different from the
+     * host that the template is being attached to.
      */
-    public render(source: TSource, host: HTMLElement | string): HTMLView {
+    public render(
+        source: TSource,
+        host: Node | string,
+        hostBindingTarget?: Element
+    ): HTMLView {
         if (typeof host === "string") {
             host = document.getElementById(host)!;
         }
 
-        const view = this.create(host);
+        if (hostBindingTarget === void 0) {
+            hostBindingTarget = host as Element;
+        }
+
+        const view = this.create(hostBindingTarget);
         view.bind(source, defaultExecutionContext);
         view.appendTo(host);
 

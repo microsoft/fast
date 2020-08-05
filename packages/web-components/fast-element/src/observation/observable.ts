@@ -239,7 +239,7 @@ export function volatile(target: {}, name, descriptor) {
     return Object.assign({}, descriptor, {
         get: function (this: any) {
             trackVolatile();
-            return descriptor.get?.apply(this);
+            return descriptor.get!.apply(this);
         },
     });
 }
