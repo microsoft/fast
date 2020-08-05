@@ -100,7 +100,7 @@ export const FastFrameStyles = css`
 
     .image-container {
         /** Temp background */
-        background: #c8c8c8;
+        background: #D6D6D6;
         width: 100%;
         height: 215px;
         display: flex;
@@ -234,8 +234,8 @@ export const FastFrameStyles = css`
     }
 
     fast-badge {
-        --badge-fill-primary: ${accentFillRestBehavior.var};
-        --badge-color-primary: ${neutralForegroundRestBehavior.var};
+        --badge-fill-primary: #E4BC11;
+        --badge-color-primary: #000000;
     }
 
     fast-slider {

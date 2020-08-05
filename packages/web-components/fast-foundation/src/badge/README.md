@@ -28,7 +28,7 @@ fast-badge {
 ```
 
 :::note
-In addition to the color map support detailed above, the `fast-badge` from the Microsoft component implementation (`@microsoft/fast-components-msft`) includes an attribute to set default appearances which ensure WCAG 2.1 AA contrast requirements.
+In addition to the color map support detailed above, the `fast-badge` from the Microsoft component implementation (`@fluentui/web-components`) includes an attribute to set default appearances which ensure WCAG 2.1 AA contrast requirements.
 :::
 
 ## Applying custom styles

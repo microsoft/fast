@@ -17,3 +17,9 @@ import { BadgeStyles as styles } from "./badge.styles";
     styles,
 })
 export class FASTBadge extends Badge {}
+
+/**
+ * Styles for Badge
+ * @public
+ */
+export const BadgeStyles = styles;

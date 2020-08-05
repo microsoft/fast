@@ -1,6 +1,6 @@
 {
   "name": "@microsoft/fast-color-explorer",
-  "version": "1.6.0",
+  "version": "1.6.2",
   "description": "Color explorations",
   "sideEffects": false,
   "private": true,
@@ -30,7 +30,7 @@
     "@babel/preset-env": "^7.2.0",
     "@babel/preset-react": "^7.0.0",
     "@microsoft/eslint-config-fast-dna": "^1.2.0",
-    "@microsoft/site-utilities": "^0.4.0",
+    "@microsoft/site-utilities": "^0.4.2",
     "@types/lodash": "^4.14.120",
     "@types/node": "^10.12.12",
     "@types/react": "^16.7.17",

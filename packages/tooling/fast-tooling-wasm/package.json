@@ -1,7 +1,7 @@
 {
   "name": "@microsoft/fast-tooling-wasm",
   "description": "A set of tooling utilities which has a WASM compile target",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "private": true,
   "author": {
     "name": "Microsoft",
@@ -17,7 +17,8 @@
   },
   "scripts": {
     "build": "yarn build:permutator",
-    "build:permutator": "cd permutator && emcc wasm.c -Os -s WASM=1 -s EXPORTED_FUNCTIONS='[\"_permutate\"]' -s EXTRA_EXPORTED_RUNTIME_METHODS='[\"cwrap\"]' -o permutator.js",
+    "build:permutator": "node ./permutator/build.js",
+    "test:permutator": "node ./permutator/build.js --test && cd permutator/__tests__/ && ./test",
     "start": "webpack-dev-server"
   },
   "devDependencies": {
@@ -27,6 +28,7 @@
     "typescript": "^3.9.0",
     "webpack": "^4.1.0",
     "webpack-cli": "^3.1.1",
-    "webpack-dev-server": "^3.11.0"
+    "webpack-dev-server": "^3.11.0",
+    "yargs": "^11.0.0"
   }
 }

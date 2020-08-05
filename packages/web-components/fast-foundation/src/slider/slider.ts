@@ -10,7 +10,7 @@ import {
     keyCodeTab,
     Orientation,
 } from "@microsoft/fast-web-utilities";
-import { FormAssociated } from "../form-associated/index";
+import { FormAssociated } from "../form-associated/form-associated";
 import { convertPixelToPercent } from "./slider-utilities";
 
 /**
@@ -114,15 +114,19 @@ export class Slider extends FormAssociated<HTMLInputElement>
     public trackMinHeight: number = 0;
 
     /**
-     * The element's value to be included in form submission changed.
+     * Custom function that generates a string for the component's "aria-valuetext" attribute based on the currrent value.
+     *
      * @public
      */
-    public value: string; // Map to proxy element.
-    private valueChanged(): void {
-        if (this.proxy instanceof HTMLElement) {
-            this.updateForm();
-        }
+    @observable
+    public valueTextFormatter: (value: string) => string | null = () => null;
 
+    /**
+     * The element's value to be included in form submission changed.
+     * @internal
+     */
+    protected valueChanged(previous: string, next: string): void {
+        super.valueChanged(previous, next);
         if (this.$fastController.isConnected) {
             this.setThumbPositionForOrientation(this.direction);
         }
@@ -208,7 +212,6 @@ export class Slider extends FormAssociated<HTMLInputElement>
         this.proxy.setAttribute("type", "range");
 
         this.direction = this.getDirection();
-        this.updateForm();
         this.setupTrackConstraints();
         this.setupListeners();
         this.setupDefaultValue();
@@ -239,7 +242,6 @@ export class Slider extends FormAssociated<HTMLInputElement>
         const incrementedValString: string =
             incrementedVal < Number(this.max) ? `${incrementedVal}` : `${this.max}`;
         this.value = incrementedValString;
-        this.updateForm();
     };
 
     /**
@@ -256,7 +258,6 @@ export class Slider extends FormAssociated<HTMLInputElement>
         const decrementedValString: string =
             decrementedVal > Number(this.min) ? `${decrementedVal}` : `${this.min}`;
         this.value = decrementedValString;
-        this.updateForm();
     };
 
     protected keypressHandler = (e: KeyboardEvent) => {
@@ -332,12 +333,7 @@ export class Slider extends FormAssociated<HTMLInputElement>
     private setupDefaultValue = (): void => {
         if (this.value === "") {
             this.value = `${this.convertToConstrainedValue((this.max + this.min) / 2)}`;
-            this.updateForm();
         }
-    };
-
-    private updateForm = (): void => {
-        this.setFormValue(this.value, this.value);
     };
 
     /**
@@ -371,7 +367,6 @@ export class Slider extends FormAssociated<HTMLInputElement>
                 : e.pageY;
 
         this.value = `${this.calculateNewValue(eventValue)}`;
-        this.updateForm();
     };
 
     private calculateNewValue = (rawValue: number): number => {
@@ -420,7 +415,6 @@ export class Slider extends FormAssociated<HTMLInputElement>
                     : e.pageY;
 
             this.value = `${this.calculateNewValue(controlValue)}`;
-            this.updateForm();
         }
     };
 

@@ -6,16 +6,18 @@ module.exports = {
     favicon: "/favicon.ico",
     organizationName: "microsoft",
     projectName: "fast",
+    onBrokenLinks: "log",
     scripts: [
         {
-            src: "https://unpkg.com/@microsoft/fast-components",
-            type: "module",
+            src: "/fast-components.iife.min.js",
             async: true,
         },
     ],
     themes: [require.resolve("@docusaurus/theme-live-codeblock")],
     themeConfig: {
-        defaultDarkMode: true,
+        colorMode: {
+            defaultMode: "dark",
+        },
         navbar: {
             logo: {
                 alt:
@@ -30,7 +32,7 @@ module.exports = {
                     target: "_self",
                 }),
             },
-            links: [
+            items: [
                 {
                     href: "https://github.com/microsoft/fast",
                     label: "GitHub",

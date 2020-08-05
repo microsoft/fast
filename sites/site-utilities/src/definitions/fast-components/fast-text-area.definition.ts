@@ -1,6 +1,6 @@
 import { WebComponentDefinition } from "@microsoft/fast-tooling/dist/data-utilities/web-component";
 import { DataType } from "@microsoft/fast-tooling";
-import { TextAreaAppearance, TextAreaResize } from "@microsoft/fast-foundation";
+import { TextAreaResize } from "@microsoft/fast-foundation";
 
 export const fastTextAreaDefinition: WebComponentDefinition = {
     version: 1,
@@ -12,13 +12,10 @@ export const fastTextAreaDefinition: WebComponentDefinition = {
                 {
                     name: "appearance",
                     description: "The appearance attribute",
-                    default: TextAreaAppearance.outline,
+                    default: "outline",
                     required: false,
                     type: DataType.string,
-                    values: [
-                        { name: TextAreaAppearance.outline },
-                        { name: TextAreaAppearance.filled },
-                    ],
+                    values: [{ name: "outline" }, { name: "filled" }],
                 },
                 {
                     name: "resize",

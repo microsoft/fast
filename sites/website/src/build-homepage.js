@@ -10,6 +10,9 @@ const fastWebsiteConfig = require("fast-website/webpack.prod.js");
 
 const staticPath = path.resolve(__dirname, "../static");
 const utilitiesPath = path.resolve(__dirname, "../../site-utilities");
+const componentsPath = require.resolve(
+    "@microsoft/fast-components/dist/fast-components.iife.min.js"
+);
 
 // Set the webpack output path
 fastWebsiteConfig.output.path = staticPath;
@@ -38,7 +41,7 @@ webpack(fastWebsiteConfig, (err, stats) => {
     console.info("Built fast-website to static");
 
     copyfiles(
-        [`${utilitiesPath}/statics/assets/favicon.ico`, staticPath],
+        [`${utilitiesPath}/statics/assets/favicon.ico`, componentsPath, staticPath],
         { flat: true, verbose: true, up: true },
         () => console.info("Copied favicon to static")
     );

@@ -18,3 +18,9 @@ import { TreeViewStyles as styles } from "./tree-view.styles";
     styles,
 })
 export class FASTTreeView extends TreeView {}
+
+/**
+ * Styles for TreeView
+ * @public
+ */
+export const TreeViewStyles = styles;

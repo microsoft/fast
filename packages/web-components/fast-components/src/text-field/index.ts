@@ -1,6 +1,12 @@
-import { customElement } from "@microsoft/fast-element";
+import { attr, customElement } from "@microsoft/fast-element";
 import { TextFieldTemplate as template, TextField } from "@microsoft/fast-foundation";
 import { TextFieldStyles as styles } from "./text-field.styles";
+
+/**
+ * Text field appearances
+ * @public
+ */
+export type TextFieldAppearance = "filled" | "outline";
 
 /**
  * The FAST Text Field Custom Element. Implements {@link @microsoft/fast-foundation#TextField},
@@ -21,4 +27,44 @@ import { TextFieldStyles as styles } from "./text-field.styles";
         delegatesFocus: true,
     },
 })
-export class FASTTextField extends TextField {}
+export class FASTTextField extends TextField {
+    /**
+     * The appearance of the element.
+     *
+     * @public
+     * @remarks
+     * HTML Attribute: appearance
+     */
+    @attr
+    public appearance: TextFieldAppearance;
+
+    /**
+     * @internal
+     */
+    public appearanceChanged(
+        oldValue: TextFieldAppearance,
+        newValue: TextFieldAppearance
+    ): void {
+        if (oldValue !== newValue) {
+            this.classList.add(newValue);
+            this.classList.remove(oldValue);
+        }
+    }
+
+    /**
+     * @internal
+     */
+    public connectedCallback() {
+        super.connectedCallback();
+
+        if (!this.appearance) {
+            this.appearance = "outline";
+        }
+    }
+}
+
+/**
+ * Styles for TextField
+ * @public
+ */
+export const TextFieldStyles = styles;

@@ -60,3 +60,9 @@ export class FASTButton extends Button {
         }
     }
 }
+
+/**
+ * Styles for Button
+ * @public
+ */
+export const ButtonStyles = styles;

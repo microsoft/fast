@@ -8,10 +8,8 @@ import { TextField } from "./text-field";
  */
 export const TextFieldTemplate = html<TextField>`
     <template
-        appearance="${x => x.appearance}"
         tabindex="${x => (x.disabled ? null : 0)}"
         class="
-            ${x => x.appearance}
             ${x => (x.readOnly ? "readonly" : "")}
         "
     >
@@ -32,11 +30,12 @@ export const TextFieldTemplate = html<TextField>`
                 part="control"
                 id="control"
                 @input="${x => x.handleTextInput()}"
+                @change="${x => x.handleChange()}"
                 placeholder="${x => x.placeholder}"
                 ?required="${x => x.required}"
                 ?disabled="${x => x.disabled}"
                 ?readonly="${x => x.readOnly}"
-                value="${x => x.value}"
+                :value="${x => x.value}"
                 type="${x => x.type}"
                 aria-atomic="${x => x.ariaAtomic}"
                 aria-busy="${x => x.ariaBusy}"

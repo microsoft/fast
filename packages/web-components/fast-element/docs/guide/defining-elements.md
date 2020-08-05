@@ -170,7 +170,7 @@ The full list of available lifecycle callbacks is:
 
 ## Working without decorators
 
-The examples above and those throughout our documentation leverage TypeScript, and in particular, the decorators feature of the language. Decorators are an upcoming feature planned for a future version of JavaScript, but their design is not yet finished. While the syntax for decorator usage is not likely to change in the final version of the feature, some of our community members may feel uncomfortable using this feature at this stage. Fortunately, FAST Elements can be completely defined in Vanilla JS, without using decorators, by leveraging a static `definition` field on your class. The `definition` filed only needs to present the same configuration as the `@customElement` decorator. Here's an example that shows the use of the `definition` field along with a manual call to `define` the element:
+The examples above and those throughout our documentation leverage TypeScript, and in particular, the decorators feature of the language. Decorators are an upcoming feature planned for a future version of JavaScript, but their design is not yet finished. While the syntax for decorator usage is not likely to change in the final version of the feature, some of our community members may feel uncomfortable using this feature at this stage. Fortunately, FAST Elements can be completely defined in Vanilla JS, without using decorators, by leveraging a static `definition` field on your class. The `definition` field only needs to present the same configuration as the `@customElement` decorator. Here's an example that shows the use of the `definition` field along with a manual call to `define` the element:
 
 ```js
 import { FASTElement, html, css } from '@microsoft/fast-element';

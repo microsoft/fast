@@ -3,6 +3,43 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.6.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-foundation@1.5.0...@microsoft/fast-foundation@1.6.0) (2020-07-31)
+
+
+### Bug Fixes
+
+* add form submission and reset behavior to Button ([#3603](https://github.com/Microsoft/fast/issues/3603)) ([f646343](https://github.com/Microsoft/fast/commit/f6463436a001d07a7cfbd5d87460c76cf8584e65))
+* various fixes for form-associated custom elements ([#3581](https://github.com/Microsoft/fast/issues/3581)) ([ccba229](https://github.com/Microsoft/fast/commit/ccba229c6c1133485d0fac92eae88cb3a6369495))
+
+
+### Features
+
+* adding directional stylesheet behavior ([#3559](https://github.com/Microsoft/fast/issues/3559)) ([74c19af](https://github.com/Microsoft/fast/commit/74c19af79cb6b9c015ab3a454a3e69d453f1a217))
+* create an observable function to support aria-valuetext on slider component ([#3508](https://github.com/Microsoft/fast/issues/3508)) ([b4ac369](https://github.com/Microsoft/fast/commit/b4ac369e37ba591a5bb1d8c7bcbfde6dffcadeef)), closes [#3504](https://github.com/Microsoft/fast/issues/3504)
+
+
+
+
+
+# [1.5.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-foundation@1.4.0...@microsoft/fast-foundation@1.5.0) (2020-07-23)
+
+
+### Bug Fixes
+
+* address nested styling issues and provide a more intuitive API for nesting ([#3528](https://github.com/Microsoft/fast/issues/3528)) ([4fe0dd3](https://github.com/Microsoft/fast/commit/4fe0dd38ce8f2b43be0f13c7efac2f12ada6cd78))
+* move text field and text area appearances from foundation to components ([#3540](https://github.com/Microsoft/fast/issues/3540)) ([ca8ac76](https://github.com/Microsoft/fast/commit/ca8ac760cdf666fc79a47ba9a21c5f964556dbab))
+* rollup minify selectors should retain spaces ([#3524](https://github.com/Microsoft/fast/issues/3524)) ([cbdfc45](https://github.com/Microsoft/fast/commit/cbdfc45c2543fe9f94e0edc7687cc9f04a38e118))
+* update nested to be observable and set isNestedItem method to readonly ([#3539](https://github.com/Microsoft/fast/issues/3539)) ([9e67f52](https://github.com/Microsoft/fast/commit/9e67f52a8fd3e1736e3882ef7e2fa3f25e63a396))
+
+
+### Features
+
+* basic menu item check state toggling ([#3512](https://github.com/Microsoft/fast/issues/3512)) ([ea84cbd](https://github.com/Microsoft/fast/commit/ea84cbd125b16de0ff2ae888f82163178af8da69))
+
+
+
+
+
 # [1.4.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-foundation@1.3.0...@microsoft/fast-foundation@1.4.0) (2020-07-14)
 
 

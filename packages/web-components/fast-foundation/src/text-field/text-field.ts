@@ -1,23 +1,7 @@
 import { attr, nullableNumberConverter, observable } from "@microsoft/fast-element";
-import { FormAssociated } from "../form-associated/index";
+import { FormAssociated } from "../form-associated/form-associated";
 import { ARIAGlobalStatesAndProperties, StartEnd } from "../patterns/index";
 import { applyMixins } from "../utilities/index";
-
-/**
- * Text field appearances
- * @public
- */
-export enum TextFieldAppearance {
-    /**
-     * A solid, filled appearance.
-     */
-    filled = "filled",
-
-    /**
-     * A light, outline appearance.
-     */
-    outline = "outline",
-}
 
 /**
  * Text field sub-types
@@ -57,16 +41,6 @@ export enum TextFieldType {
  * @public
  */
 export class TextField extends FormAssociated<HTMLInputElement> {
-    /**
-     * The appearance of the element.
-     *
-     * @public
-     * @remarks
-     * HTML Attribute: appearance
-     */
-    @attr
-    public appearance: TextFieldAppearance = TextFieldAppearance.outline;
-
     /**
      * When true, the control will be immutable by user interaction. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly | readonly HTML attribute} for more information.
      * @public
@@ -214,15 +188,8 @@ export class TextField extends FormAssociated<HTMLInputElement> {
     @observable
     public defaultSlottedNodes: Node[];
 
-    private valueChanged(): void {
-        if (this.proxy instanceof HTMLElement) {
-            this.proxy.value = this.value;
-        }
-
-        this.$emit("change", this.value);
-    }
-
     /**
+     * A reference to the internal input element
      * @internal
      */
     public control: HTMLInputElement;
@@ -240,17 +207,27 @@ export class TextField extends FormAssociated<HTMLInputElement> {
         if (this.autofocus) {
             this.focus();
         }
-
-        this.setFormValue(this.value, this.value);
     }
 
     /**
+     * Handles the internal control's `input` event
      * @internal
      */
     public handleTextInput(): void {
-        if (this.control && this.control.value) {
-            this.value = this.control.value;
-        }
+        this.value = this.control.value;
+    }
+
+    /**
+     * Change event handler for inner control.
+     * @remarks
+     * "Change" events are not `composable` so they will not
+     * permeate the shadow DOM boundary. This fn effectively proxies
+     * the change event, emitting a `change` event whenever the internal
+     * control emits a `change` event
+     * @internal
+     */
+    public handleChange(): void {
+        this.$emit("change");
     }
 }
 

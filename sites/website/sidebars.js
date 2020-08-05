@@ -34,6 +34,7 @@ module.exports = {
                         "components/tabs",
                         "components/text-area",
                         "components/text-field",
+                        "components/tree-view",
                     ],
                 },
                 {
@@ -44,6 +45,7 @@ module.exports = {
                         "design/design-system",
                         "design/type-ramp",
                         "design/color",
+                        "design/localization",
                         "design/match-media-stylesheets",
                     ],
                 },
@@ -89,7 +91,6 @@ module.exports = {
                 "api/fast-animation",
                 "api/fast-colors",
                 "api/fast-components",
-                "api/fast-components-msft",
                 "api/fast-element",
                 "api/fast-foundation",
             ],

@@ -1,6 +1,6 @@
 {
   "name": "@microsoft/fast-component-explorer",
-  "version": "0.11.0",
+  "version": "0.11.2",
   "description": "Component exploration",
   "sideEffects": false,
   "private": true,
@@ -38,7 +38,7 @@
     "@microsoft/fast-components-foundation-react": "^3.2.0",
     "@microsoft/fast-jss-utilities": "^4.8.0",
     "@microsoft/fast-layouts-react": "^4.12.0",
-    "@microsoft/site-utilities": "^0.4.0",
+    "@microsoft/site-utilities": "^0.4.2",
     "@types/lodash-es": "^4.17.0",
     "@types/node": "^10.12.12",
     "@types/react": "^16.7.17",
@@ -81,8 +81,8 @@
     "@microsoft/fast-components-react-msft": "^4.32.0",
     "@microsoft/fast-components-styles-msft": "^4.29.0",
     "@microsoft/fast-jss-manager-react": "^4.8.0",
-    "@microsoft/fast-tooling": "^0.7.0",
-    "@microsoft/fast-tooling-react": "^2.3.0",
+    "@microsoft/fast-tooling": "^0.8.0",
+    "@microsoft/fast-tooling-react": "^2.3.2",
     "@microsoft/fast-web-utilities": "^4.6.0",
     "react-dnd-html5-backend": "^9.0.0"
   }

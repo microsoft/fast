@@ -1,0 +1,6 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "$id": "number-default-schema",
+    "type": "number",
+    "default": 23
+}
