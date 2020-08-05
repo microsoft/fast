@@ -36,7 +36,6 @@ for location in ${locations[@]}; do
         new_app_name=$name-$location-app
         echo "deploying production server name $new_app_name ..."
 
-        # Create IP address network access restriction exception for this IP address
         echo "configuring network access exception for testing from $public_ip ..."
         az webapp config access-restriction add --priority 300 \
             --resource-group $resource_group \
@@ -46,6 +45,9 @@ for location in ${locations[@]}; do
             --action Allow \
             --ip-address ${public_ip}
 
+        echo "deploying from staging to production in east region ..."
+        az webapp deployment slot swap --resource-group $resource_group --name $new_app_name --slot stage --action swap --target-slot production
+
         echo "Verify website => http://$new_app_name.azurewebsites.net"
 
         read -p "Press [Enter] key to resume ..."
@@ -53,20 +55,6 @@ for location in ${locations[@]}; do
         echo "removing network access exception for testing from $public_ip ..."
         az webapp config access-restriction remove -g $resource_group -n $new_app_name --rule-name "$rule_name"
 
+        echo "${bold}${green}Success !!!${reset}${unbold}"
     done
 done
-exit 
-echo "deploying from staging to production in east region ..."
-az webapp deployment slot swap --resource-group fast-eastus-rg --name create-east-app --slot stage --action swap --target-slot production
-
-# Validate updated succeedeed.  Prompt user to choose yes or no based on success to proceed to primary
-# Set IP address exception to match local IP address of the person running the script
-# Test access at https://www-west-app.azurewebsites.net 
-
-echo "deploying from staging to production in west region ..."
-az webapp deployment slot swap --resource-group fast-westus-rg --name create-west-app --slot stage --action swap --target-slot production
-
-# Validate updated succeedeed.  Prompt user to choose yes or no based on success to proceed to primary
-
-echo "${bold}${green}Success !!!${reset}${unbold}"
-
