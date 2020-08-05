@@ -6,6 +6,7 @@ import { Behavior } from "./directives/behavior";
 import { ElementStyles, StyleTarget } from "./styles";
 import { Mutable } from "./interfaces";
 import { ElementViewTemplate } from "./template";
+import { DOM } from "./dom";
 
 const shadowRoots = new WeakMap<HTMLElement, ShadowRoot>();
 const defaultEventOptions: CustomEventInit = {
@@ -388,7 +389,7 @@ export class Controller extends PropertyChangeNotifier {
             (this as Mutable<this>).view = null;
         } else if (!this.needsInitialization) {
             // If there was previous custom rendering, we need to clear out the host.
-            host.innerHTML = "";
+            DOM.removeChildNodes(host);
         }
 
         if (template) {

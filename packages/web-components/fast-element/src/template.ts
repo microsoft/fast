@@ -111,12 +111,7 @@ export class ViewTemplate<TSource = any, TParent = any>
         const fragment = this.fragment.cloneNode(true) as DocumentFragment;
         const viewFactories = this.viewBehaviorFactories!;
         const behaviors = new Array<Behavior>(this.behaviorCount);
-        const walker = document.createTreeWalker(
-            fragment,
-            133, // element, text, comment
-            null,
-            false
-        );
+        const walker = DOM.createTemplateWalker(fragment);
 
         let behaviorIndex = 0;
         let targetIndex = this.targetOffset;

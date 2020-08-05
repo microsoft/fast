@@ -198,4 +198,27 @@ export const DOM = Object.freeze({
             ? element.setAttribute(attributeName, "")
             : element.removeAttribute(attributeName);
     },
+
+    /**
+     * Removes all the child nodes of the provided parent node.
+     * @param parent - The node to remove the children from.
+     */
+    removeChildNodes(parent: Node) {
+        for (let child = parent.firstChild; child !== null; child = parent.firstChild) {
+            parent.removeChild(child);
+        }
+    },
+
+    /**
+     * Creates a TreeWalker configured to walk a template fragment.
+     * @param fragment - The fragment to walk.
+     */
+    createTemplateWalker(fragment: DocumentFragment): TreeWalker {
+        return document.createTreeWalker(
+            fragment,
+            133, // element, text, comment
+            null,
+            false
+        );
+    },
 });
