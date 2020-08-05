@@ -7,7 +7,7 @@ custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/src
 
 ### Who is behind FAST?
 
-The Microsoft FAST team, part of the Edge organization, builds and maintains all the `@microsoft/fast-*` packages. We are a collection of UX Engineers and Designers who are passionate about solving real-world UX challenges using web standard technologies. You can find us on GitHub [here](https://github.com/microsoft/fast).
+The Microsoft FAST team builds and maintains all the `@microsoft/fast-*` packages. We are a collection of UX Engineers and Designers who are passionate about solving real-world UX challenges using web standard technologies. You can find us on GitHub [here](https://github.com/microsoft/fast).
 
 ### What does FAST stand for?
 
