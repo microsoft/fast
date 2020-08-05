@@ -25,6 +25,11 @@ export const BreadcrumbItemStyles = css`
         outline: none;
     }
 
+    .listitem {
+        display: flex;
+        align-items: center;
+    }
+
     .separator {
         margin: 0 12px;
     }
@@ -59,7 +64,7 @@ export const BreadcrumbItemStyles = css`
         left: 0;
         position: absolute;
         right: 0;
-        top: calc(1em + 4px);
+        top: calc(1em + 2px);
         width: 100%;
     }
 
