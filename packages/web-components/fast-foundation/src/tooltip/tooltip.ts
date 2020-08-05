@@ -7,6 +7,14 @@ export type TooltipPosition = "top" | "right" | "bottom" | "left" | "start" | "e
 export class Tooltip extends FASTElement {
     private static DirectionAttributeName: string = "dir";
 
+    /**
+     * Whether the tooltip is visible or not. 
+     * If undefined tooltip is shown when anchor element is hovered
+     *
+     * @defaultValue - undefined
+     * @public
+     * HTML Attribute: visible
+     */
     @attr({ mode: "boolean" })
     public visible: boolean;
     private visibleChanged(): void {
@@ -16,6 +24,13 @@ export class Tooltip extends FASTElement {
         }
     }
 
+    /**
+     * The id of the element the tooltip is anchored to
+     *
+     * @defaultValue - undefined
+     * @public
+     * HTML Attribute: anchor
+     */
     @attr
     public anchor: string = "";
     private anchorChanged(): void {
@@ -24,9 +39,24 @@ export class Tooltip extends FASTElement {
         }
     }
 
+    /**
+     * The delay in milliseconds before a tooltip is shown after a hover event
+     *
+     * @defaultValue - 300
+     * @public
+     * HTML Attribute: delay
+     */
     @attr
     public delay: number = 300;
 
+    /**
+     * Controls the placement of the tooltip relative to the anchor. 
+     * When the position is undefined the tooltip is placed above or below the anchor based on available space.
+     *
+     * @defaultValue - undefined
+     * @public
+     * HTML Attribute: position
+     */
     @attr
     public position: TooltipPosition | null = null;
     private positionChanged(): void {
@@ -35,6 +65,12 @@ export class Tooltip extends FASTElement {
         }
     }
 
+    /**
+     * the html element currently being used as anchor.  
+     * Setting this directly overrides the anchor attribute. 
+     *
+     * @public
+     */
     @observable
     public anchorElement: HTMLElement | null = null;
     private anchorElementChanged(oldValue: HTMLElement | null): void {
@@ -81,6 +117,11 @@ export class Tooltip extends FASTElement {
         }
     }
 
+    /**
+     * The current viewport element instance
+     * 
+     * @internal
+     */
     @observable
     public viewportElement: HTMLElement | null = null;
     private viewportElementChanged(): void {
@@ -90,43 +131,73 @@ export class Tooltip extends FASTElement {
         this.updateLayout();
     }
 
+    /**
+     * @internal
+     */
     @observable
     public verticalPositioningMode: AxisPositioningMode = "dynamic";
 
+    /**
+     * @internal
+     */  
     @observable
     public horizontalPositioningMode: AxisPositioningMode = "dynamic";
 
+    /**
+     * @internal
+     */
     @observable
     public horizontalInset: string = "true";
 
+    /**
+     * @internal
+     */
     @observable
     public verticalInset: string = "false";
 
+    /**
+     * @internal
+     */
     @observable
     public horizontalScaling: AxisScalingMode = "anchor";
 
+    /**
+     * @internal
+     */
     @observable
     public verticalScaling: AxisScalingMode = "content";
 
+    /**
+     * @internal
+     */
     @observable
     public verticalDefaultPosition: string | undefined = undefined;
 
+    /**
+     * @internal
+     */
     @observable
     public horizontalDefaultPosition: string | undefined = undefined;
 
+    /**
+     * @internal
+     */
     @observable
     public tooltipVisible: boolean = false;
 
+    /**
+     * Track current direction to pass to the anchored region
+     * updated when tooltip is shown
+     * 
+     * @internal
+     */
     @observable
     public currentDirection: Direction = Direction.ltr;
 
     /**
-     * reference to the tooltip container
-     */
-    public tooltipElement: HTMLDivElement;
-
-    /**
      * reference to the anchored region
+     * 
+     * @internal
      */
     public region: AnchoredRegion;
 
@@ -152,11 +223,12 @@ export class Tooltip extends FASTElement {
         super.disconnectedCallback();
     }
 
+    /**
+     * invoked when the anchored region's position relative to the anchor changes
+     * 
+     * @internal
+     */
     public handlePositionChange = (ev: Event): void => {
-        this.upDatePositionCSS();
-    };
-
-    public upDatePositionCSS(): void {
         this.classList.toggle("top", this.region.verticalPosition === "top");
         this.classList.toggle("bottom", this.region.verticalPosition === "bottom");
         this.classList.toggle("inset-top", this.region.verticalPosition === "insetTop");
@@ -177,11 +249,17 @@ export class Tooltip extends FASTElement {
         );
     }
 
-    public handleAnchorMouseOver = (ev: Event): void => {
+    /**
+     * mouse enters anchor
+     */
+    private handleAnchorMouseOver = (ev: Event): void => {
         this.startHoverTimer();
     };
 
-    public handleAnchorMouseOut = (ev: Event): void => {
+    /**
+     * mouse leaves anchor
+     */
+    private handleAnchorMouseOut = (ev: Event): void => {
         if (this.isAnchorHovered) {
             this.isAnchorHovered = false;
             this.updateTooltipVisibility();

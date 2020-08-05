@@ -21,7 +21,6 @@ export const TooltipTemplate = html<Tooltip>`
                 <div
                     class="tooltip"
                     part="tooltip"
-                    ${ref("tooltipElement")}
                     role="tooltip"
                 >
                     <slot></slot>

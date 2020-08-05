@@ -850,56 +850,48 @@ export enum TextFieldType {
 // @public (undocumented)
 export class Tooltip extends FASTElement {
     constructor();
-    // (undocumented)
     anchor: string;
-    // (undocumented)
     anchorElement: HTMLElement | null;
     // (undocumented)
     connectedCallback(): void;
-    // (undocumented)
+    // @internal
     currentDirection: Direction;
-    // (undocumented)
     delay: number;
     // (undocumented)
     disconnectedCallback(): void;
-    // (undocumented)
+    // @internal (undocumented)
     handleAnchorMouseOut: (ev: Event) => void;
-    // (undocumented)
-    handleAnchorMouseOver: (ev: Event) => void;
-    // (undocumented)
+    // @internal
     handlePositionChange: (ev: Event) => void;
-    // (undocumented)
+    // @internal (undocumented)
     horizontalDefaultPosition: string | undefined;
-    // (undocumented)
+    // @internal (undocumented)
     horizontalInset: string;
-    // (undocumented)
+    // @internal (undocumented)
     horizontalPositioningMode: AxisPositioningMode;
     // Warning: (ae-forgotten-export) The symbol "AxisScalingMode" needs to be exported by the entry point index.d.ts
     //
-    // (undocumented)
+    // @internal (undocumented)
     horizontalScaling: AxisScalingMode;
-    // (undocumented)
     position: TooltipPosition | null;
     // Warning: (ae-forgotten-export) The symbol "AnchoredRegion" needs to be exported by the entry point index.d.ts
+    //
+    // @internal
     region: AnchoredRegion;
-    tooltipElement: HTMLDivElement;
-    // (undocumented)
+    // @internal (undocumented)
     tooltipVisible: boolean;
-    // (undocumented)
-    upDatePositionCSS(): void;
-    // (undocumented)
+    // @internal (undocumented)
     verticalDefaultPosition: string | undefined;
-    // (undocumented)
+    // @internal (undocumented)
     verticalInset: string;
     // Warning: (ae-forgotten-export) The symbol "AxisPositioningMode" needs to be exported by the entry point index.d.ts
     //
-    // (undocumented)
+    // @internal (undocumented)
     verticalPositioningMode: AxisPositioningMode;
-    // (undocumented)
+    // @internal (undocumented)
     verticalScaling: AxisScalingMode;
-    // (undocumented)
+    // @internal
     viewportElement: HTMLElement | null;
-    // (undocumented)
     visible: boolean;
     }
 

@@ -31,16 +31,16 @@ Tooltip widgets do not receive focus. A hover that contains focusable elements c
 - `anchor` - The html id of the HTMLElement which the tooltip is attached to.
 - `delay` - time in milliseconds to wait before showing and hiding the tooltip. Defaults to 300.
 - `visible` - boolean value to toggle the visibility of the tooltip (defaults to undefined).
-- `position` - enum; where the tooltip should appear relative to its target. When the position is undefined the tooltip is placed above or below the anchor based on available space.
+- `position` - enum; where the tooltip should appear relative to its target. 'start' and 'end' are like 'left' and 'right' but are inverted when the direction is 'rtl' When the position is undefined the tooltip is placed above or below the anchor based on available space.
     - top
     - bottom
     - left
     - right
+    - start
+    - end
 
 *Properties:*
 - `anchorElement` - Holds a reference to the HTMLElement currently being used as the anchor. Can be set directly or be populated by setting the anchor attribute.
-
-- `viewportElement` - Holds a reference to the HTMLElement currently being used as the viewport. Can be set directly or be populated by setting the 'viewport' attribute.
 
 *Slots:*
 - `default`
