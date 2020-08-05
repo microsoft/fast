@@ -6,6 +6,15 @@ import {
 } from "@microsoft/fast-foundation/dist/esm/anchored-region/index";
 import { AnchoredRegionStyles as styles } from "./anchored-region.styles";
 
+/**
+ * The FAST AnchoredRegion Element. Implements {@link @microsoft/fast-foundation#AnchoredRegion},
+ * {@link @microsoft/fast-foundation#AnchoredRegionTemplate}
+ *
+ *
+ * @public
+ * @remarks
+ * HTML Element: \<fast-anchored-region\>
+ */
 @customElement({
     name: "fast-anchored-region",
     template,
