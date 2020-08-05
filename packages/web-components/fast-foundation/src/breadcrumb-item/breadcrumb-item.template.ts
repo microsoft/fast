@@ -4,7 +4,7 @@ import { Breadcrumb } from "../breadcrumb";
 import { endTemplate, startTemplate } from "../patterns/start-end";
 
 /**
- * The template for the {@link @microsoft/fast-foundation#BreadcrumbItem} component.
+ * The template for the {@link @microsoft/fast-foundation#(BreadcrumbItem:class)} component.
  * @public
  */
 export const BreadcrumbItemTemplate = html<BreadcrumbItem>`
