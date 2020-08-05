@@ -31,6 +31,8 @@ for location in ${locations[@]}; do
     echo "performing release deployment into $resource_group ..."
     for name in ${names[@]}; do
 
+        rule_name="Front Door IPv4 IP Testing"
+        rule_description="Allow public IP access for testing from local system"
         new_app_name=$name-$location-app
         echo "deploying production server name $new_app_name ..."
 
@@ -39,14 +41,17 @@ for location in ${locations[@]}; do
         az webapp config access-restriction add --priority 300 \
             --resource-group $resource_group \
             --name $new_app_name \
-            --description "Allow public IP access for testing from local system" \
-            --rule-name "Front Door IPv4 IP Testing" \
+            --description "$rule_description" \
+            --rule-name "$rule_name" \
             --action Allow \
             --ip-address ${public_ip}
 
         echo "Verify website => http://$new_app_name.azurewebsites.net"
 
         read -p "Press [Enter] key to resume ..."
+
+        echo "removing network access exception for testing from $public_ip ..."
+        az webapp config access-restriction remove -g $resource_group -n $new_app_name --rule-name "$rule_name"
 
     done
 done
