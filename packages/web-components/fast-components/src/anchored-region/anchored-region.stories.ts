@@ -16,7 +16,6 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
     if (name.toLowerCase().startsWith("anchored-region")) {
         scrollViewports();
         setButtonActions();
-        showRegions();
 
         const scalingViewportUpdate: HTMLElement | null = document.getElementById(
             "viewport-scaling-update"
@@ -44,12 +43,6 @@ function scrollViewports(): void {
                 el.dir === Direction.rtl ? Direction.rtl : Direction.ltr
             );
         }
-    });
-}
-
-function showRegions(): void {
-    document.querySelectorAll("anchored-region").forEach(el => {
-        //(el as HTMLElement).hidden = false;
     });
 }
 
