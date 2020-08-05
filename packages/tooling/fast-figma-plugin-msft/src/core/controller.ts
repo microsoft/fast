@@ -140,7 +140,7 @@ export abstract class Controller {
 
                 break;
             case MessageTypes.sync:
-                this.sync(message.nodeIds);
+                this.syncNodes(message.nodeIds);
                 break;
         }
     }
