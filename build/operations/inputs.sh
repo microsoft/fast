@@ -4,29 +4,6 @@
 
 while (( $# > 1 )); do 
     case $1 in 
-        --application) 
-            
-            application=$2
-      
-            if [ $application == "ask" ];
-            then
-                echo "${bold}${green}Application${reset} Select an application to deploy:"
-                select application in app color create explore motion www done
-                do
-                    
-                    case $application in
-
-                        app | color | create | explore | motion | www)
-                            echo "Deploying ${bold}$application${reset} now ..."
-                            application=$application ;;
-
-                        done)
-                            echo "DEPLOYMENT is finished. [Enter] Ctrl+c to quit" ;;
-                        *)
-                            echo "${red}invalid entry, try again${reset}" ;;
-                    esac
-                done
-            fi ;;
 
         --debug)
             [[ $debug == true ]] && echo "${bold}${green}Debug"${reset} $debug

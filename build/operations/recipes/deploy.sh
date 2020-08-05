@@ -10,20 +10,16 @@ This will deploy from staging to production via Azure Web App Slot swapping.
 
     # Web App valid values
     declare -a subscriptions=("production" "development")
-    declare -a names=("app" "color" "create" "explore" "motion" "www")
     declare -a locations=("west" "east")
 
     # Defaults
     product=fast
     subscription=production
-    application=ask
 
 ## SHELL Arguments
 echo "${bold}${green}DEPLOYMENT started ...${reset}"
 echo "${green}Predefined defaults found${reset}" && echo ""
-source inputs.sh --debug false --subscription $subscription --application $application
-
-exit;
+source inputs.sh --debug false --subscription $subscription
 
 ## JOBS
 for location in ${locations[@]}; do
@@ -31,35 +27,53 @@ for location in ${locations[@]}; do
     # configure resource group and IP address
     resource_group=fast-$location'us'-rg
     public_ip="$(wget -qO- ipinfo.io/ip)"/16
-    echo "public IP: ${public_ip}"
+    [[ $debug == true ]] && echo "public IP: ${public_ip}" && echo "performing release deployment into $resource_group ..."
 
-    echo "performing release deployment into $resource_group ..."
-    for name in ${names[@]}; do
+    echo "${bold}${green}Application${reset} Select an application to deploy:"
+    select application in app color create explore motion www exit
+    do
+        case $application in
 
-        rule_name="Front Door IPv4 IP Testing"
-        rule_description="Allow public IP access for testing from local system"
-        new_app_name=$name-$location-app
-        echo "deploying production server name $new_app_name ..."
+            app | color | create | explore | motion | www)
 
-        echo "configuring network access exception for testing from $public_ip ..."
-        az webapp config access-restriction add --priority 300 \
-            --resource-group $resource_group \
-            --name $new_app_name \
-            --description "$rule_description" \
-            --rule-name "$rule_name" \
-            --action Allow \
-            --ip-address ${public_ip}
+                echo ""
+                echo "Deploying ${bold}$application${reset} now ..."
+            
+                rule_name="Front Door IPv4 IP Testing"
+                rule_description="Allow public IP access for testing from local system"
+                new_app_name=$application-$location-app
+                echo ". to $new_app_name instance ..."
 
-        echo "deploying from staging to production in east region ..."
-        az webapp deployment slot swap --resource-group $resource_group --name $new_app_name --slot stage --action swap --target-slot production
+                echo ". open network access for $public_ip ..."
+                az webapp config access-restriction add --priority 300 \
+                    --resource-group $resource_group \
+                    --name $new_app_name \
+                    --description "$rule_description" \
+                    --rule-name "$rule_name" \
+                    --action Allow \
+                    --ip-address ${public_ip}
 
-        echo "Verify website => http://$new_app_name.azurewebsites.net"
+                echo ".. swapping from staging to production in $resource_group ..."
+                #az webapp deployment slot swap --resource-group $resource_group --name $new_app_name --slot stage --action swap --target-slot production
 
-        read -p "Press [Enter] key to resume ..."
+                echo ".. test to verify website at http://$new_app_name.azurewebsites.net"
 
-        echo "removing network access exception for testing from $public_ip ..."
-        az webapp config access-restriction remove -g $resource_group -n $new_app_name --rule-name "$rule_name"
+                read -p ".. press [enter] key to resume ..."
 
-        echo "${bold}${green}Success !!!${reset}${unbold}"
+                echo ".. close network access for $public_ip ..."
+                az webapp config access-restriction remove -g $resource_group -n $new_app_name --rule-name "$rule_name"
+                
+                echo "${bold}${green}Deployment succeeded !!!${reset}${unbold}"
+                echo ""
+                    
+                break
+                ;;
+            exit)
+                echo "DEPLOYMENT finished." 
+                break
+                ;;
+            *)
+                echo "${red}invalid entry, try again${reset}" ;;
+        esac
     done
 done
