@@ -5,7 +5,7 @@ sidebar_label: button
 custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-foundation/src/button/README.md
 ---
 
-`fast-button` is a web component implementation of an [HTML button element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button). The `fast-components` and `fast-components-msft` components supports several visual appearances (accent, lightweight, neutral, outline, stealth).
+`fast-button` is a web component implementation of an [HTML button element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button). The `fast-components` button supports several visual appearances (accent, lightweight, neutral, outline, stealth).
 
 ## Usage
 

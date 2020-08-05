@@ -5,7 +5,7 @@ import {
     customElement,
     css,
 } from "@microsoft/fast-element";
-import { FASTTextField } from "@microsoft/fast-components-msft";
+import { FASTTextField } from "@fluentui/web-components";
 
 const template = html<TodoForm>`
     <form @submit=${x => x.submitTodo()}>

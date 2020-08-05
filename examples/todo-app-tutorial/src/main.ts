@@ -6,7 +6,7 @@ import {
     FASTCard,
     FASTSlider,
     FASTSliderLabel,
-} from "@microsoft/fast-components-msft";
+} from "@fluentui/web-components";
 import { TodoApp } from "./todo-app";
 import { TodoForm } from "./todo-form";
 import { DesignPropertyPanel } from "./design-property-panel";
