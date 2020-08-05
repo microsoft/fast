@@ -289,3 +289,7 @@ If you choose to render to the Light DOM, you will not be able to compose the co
 :::
 
 In addition to the Shadow DOM mode, `shadowOptions` exposes all the options that can be set through the standard `attachShadow` API. This means that you can also use it to specify new options such as `delegatesFocus: true`. You only need to specify options that are different from the defaults mentioned above.
+
+## Shadow DOM and the element lifecycle
+
+It is during the constructor that `FASTElement` attaches the Shadow DOM for an element. The `shadowRoot` is then available directly as a property on your Custom Element, assuming that the element uses `open` mode.

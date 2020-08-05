@@ -164,7 +164,15 @@ const styles = css`
 Both slotted and host styles can be overridden by the element user. Think of these as the *default* styles that you are providing, so that your elements look and function correctly out-of-the-box.
 :::
 
-## Hiding undefined elements
+## Styles and the element lifecycle
+
+It is during the `connectedCallback` phase of the Custom Element lifecycle that `FASTElement` adds the element's styles. The styles are only added the first time the element is connected.
+
+In most cases, the styles that `FASTElement` renders are determined by the `styles` property of the Custom Element's configuration. However, you can also implement a method on your Custom Element class named `resolveStyles()` that returns an `ElementStyles` instance. If this method is present, it will be called during `connectedCallback` to obtain the styles to use. This allows the element author to dynamically select completely different styles based on the state of the element at the time of connection.
+
+In addition to dynamic style selection during the `connectedCallback`, the `$fastController` property of `FASTElement` enables dynamically changing the styles at any time through setting the controller's `styles` property to any valid styles.
+
+### Hiding undefined elements
 
 Custom Elements that have not been [upgraded](https://developers.google.com/web/fundamentals/web-components/customelements#upgrades) and don't have styles attached can still be rendered by the browser but they likely do not look how they are supposed to. To avoid a *flash of un-styled content* (FOUC), visually hide Custom Elements if they have not been *defined*:
 

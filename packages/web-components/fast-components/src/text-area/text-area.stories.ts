@@ -7,7 +7,7 @@ FASTTextArea;
 FASTDesignSystemProvider;
 
 export default {
-    title: "Text area",
+    title: "Text Area",
 };
 
-export const TextField = () => TextAreaTemplate;
+export const TextArea = () => TextAreaTemplate;

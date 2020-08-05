@@ -162,8 +162,8 @@ The full list of available lifecycle callbacks is:
 
 | Callback | Description |
 | ------------- |-------------|
-| constructor | Runs when the element is created or upgraded. `FASTElement` will attach the shadow DOM at this time and hydrate it with the HTML template, if one was provided. |
-| connectedCallback | Runs when the element is inserted into the DOM. `FASTElement` will connect template bindings in order to finalize the initial render at this time. |
+| constructor | Runs when the element is created or upgraded. `FASTElement` will attach the shadow DOM at this time. |
+| connectedCallback | Runs when the element is inserted into the DOM. On first connect, `FASTElement` hydrates the HTML template, connects template bindings, and adds the styles. |
 | disconnectedCallback | Runs when the element is removed from the DOM. `FASTElement` will remove template bindings and clean up resources at this time. |
 | attributeChangedCallback(attrName, oldVal, newVal) | Runs any time one of the element's custom attributes changes. `FASTElement` uses this to sync the attribute with its property. When the property updates, a render update is also queued, if there was a template dependency. |
 | adoptedCallback | Runs if the element was moved from its current `document` into a new `document` via a call to the `adoptNode(...)` API. |
