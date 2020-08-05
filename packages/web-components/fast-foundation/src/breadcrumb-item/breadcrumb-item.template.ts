@@ -10,7 +10,7 @@ import { endTemplate, startTemplate } from "../patterns/start-end";
 export const BreadcrumbItemTemplate = html<BreadcrumbItem>`
     <div role="listitem" class="listitem" part="listitem">
         ${startTemplate}
-        <slot>
+        <slot name="control">
             <a
                 class="control"
                 part="control"
