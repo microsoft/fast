@@ -58,7 +58,7 @@ On a web page a customer is shopping for a new shirt in size medium. The custome
 - content - the content of the button
 - start - often times a glyph, icon, or button precedes the content
 - end - often times a glyph, icon, or button follows the content
-- expand-glyph - glyph that indicates the select is expandable often a chevron.
+- expand-glyph - glyph that indicates the select is expandable, often represented by a downward chevron.
 
 ### Anatomy and Appearance
 **Structure:**
@@ -117,7 +117,7 @@ While testing is still TBD for our web components, I would expect this to align 
 
 ## Overview
 
-The `option` component is an option to select from that renders inside the `<fast-select>` listbox dropdown.
+The `option` component is an option that is meant to be used with `<fast-select>`. `option` renders inside the `<fast-select>` listbox dropdown.
 
 ### API
 *Component Name*:
