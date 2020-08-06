@@ -130,7 +130,6 @@ export class Slider extends FormAssociated<HTMLInputElement>
         if (this.$fastController.isConnected) {
             this.setThumbPositionForOrientation(this.direction);
         }
-
         this.$emit("change");
     }
 
@@ -332,7 +331,9 @@ export class Slider extends FormAssociated<HTMLInputElement>
 
     private setupDefaultValue = (): void => {
         if (this.value === "") {
-            this.value = `${this.convertToConstrainedValue((this.max + this.min) / 2)}`;
+            this.initialValue = `${this.convertToConstrainedValue(
+                (this.max + this.min) / 2
+            )}`;
         }
     };
 
