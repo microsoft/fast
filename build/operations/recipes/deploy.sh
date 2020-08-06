@@ -4,6 +4,8 @@
 This will deploy from staging to production via Azure Web App Slot swapping.
 
 '
+# TODOs
+# [] if deployment fails, add revert logic. Probably easiest to include as another select option
 
 # GLOBAL Configurations
     source config.sh
