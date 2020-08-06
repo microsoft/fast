@@ -24,10 +24,15 @@ He clicks on `Kitchen and Dining` to go back to the category of kitchen items, s
 - `fast-breadcrumb`
 
 *Properties*
-- `slottedBreadcrumbItems` - an HTMLElement[] used in the slotted directive.
+- `slottedBreadcrumbItems` - HTMLElement[] used in the slotted directive.
 
 *Attribute*
-- aria-current - attribute set on the last breadcrumb item, if it has an `href` set. It will always be `aria-current="page"`.
+- `aria-labelledby`
+- `aria-label`
+- `separator` - used as part of the visual presentation that signifies the breadcrumb trail. The separator is defaulted to a `/`.
+
+*Slot Names*
+- slotted directive, with a property called `slottedBreadcrumbItems`.
 
 ### Anatomy and Appearance
 
@@ -42,9 +47,6 @@ He clicks on `Kitchen and Dining` to go back to the category of kitchen items, s
     </div>
 </template>
 ```
-
-*Slot Names*
-- slotted directive, with a property called `slottedBreadcrumbItems`.
 
 ---
 
@@ -86,35 +88,61 @@ The `fast-breadcrumb-item` is placed inside the `fast-breadcrumb` component. It 
 
 *Properties*
 - `showSeparator` - is a boolean to show and hide the separator.
+- `isCurrent` - is a boolean that checks if it is the last item set `aria-current`.
+- `defaultSlottedNodes` - Node[] used in the slotted directive.
 
 *Slots*
 - a slot that has an `<a></a>` as a default control.
-- `separator` - used as part of the visual presentation that signifies the breadcrumb trail. The separator is defaulted to a `/`. To override the default separator, add an element with an attribute of `slot="separator"`.
 
 *CSS Parts*
-- `listitem-container` - class style to align the default slot content and the separator.
-- `separator` - class style to adjust margin layout
+- `listitem` - class style to align the default slot content and the separator.
+- `separator` - class style to adjust margin layout.
+- `control`
+- `content`
 
 ### Anatomy and Appearance
 
 ```html
-<div
-    role="listitem"
-    class="listitem"
-    part="listitem"
->
-    <slot>
-        <a class="control" part="control" href="${x => x.href}">
-            <span class="content" part="content">
-                ${x => x.name}
-            </span>
-        </a>
+<div role="listitem" class="listitem" part="listitem">
+    ${startTemplate}
+    <slot
+        ${slotted({
+            property: "defaultSlottedNodes",
+            filter: value =>
+                (value.nodeType === 3 && value.textContent!.trim().length !== 0) ||
+                value.nodeType === 1 ||
+                false,
+        })}
+    >
     </slot>
+    <slot name="control">
+        ${when(
+            x => x.defaultSlottedNodes.length === 0,
+            html<BreadcrumbItem>`
+                <a
+                    class="control"
+                    part="control"
+                    href="${x => x.href}"
+                    aria-current="${x => (x.isCurrent ? "page" : void 0)}"
+                >
+                    <span class="content" part="content">
+                        ${x => x.name}
+                    </span>
+                </a>
+            `
+        )}
+    </slot>
+    ${endTemplate}
     ${when(
         x => x.showSeparator,
         html<BreadcrumbItem>`
             <span class="separator" part="separator" aria-hidden="true">
-                <slot name="separator">/</slot>"
+                <slot name="separator">
+                    ${x =>
+                        x.parentElement
+                            ? (x.parentElement as Breadcrumb).separator
+                            : void 0}
+                </slot>
             </span>
         `
     )}
@@ -125,16 +153,4 @@ The `fast-breadcrumb-item` is placed inside the `fast-breadcrumb` component. It 
 
 ```html
 <fast-breadcrumb-item name="Home" href="#"></fast-breadcrumb-item>
-```
-
-*Overriding default separator with an SVG*
-
-```html
-<fast-breadcrumb-item name="Home" href="#">
-    <span slot="separator">
-        <svg>
-            <path ... />
-        </svg>
-    </span>
-</fast-breadcrumb-item>
 ```
