@@ -82,7 +82,7 @@ export const SliderStyles = css`
         transform: translateY(calc(var(--thumb-translate) * 1px));
     }
     :host(.horizontal) {
-        min-width: calc(var(--design-unit) * 1px);
+        min-width: calc(var(--thumb-size) * 1px);
     }
     :host(.horizontal) .track {
         right: calc(var(--track-overhang) * 1px);
