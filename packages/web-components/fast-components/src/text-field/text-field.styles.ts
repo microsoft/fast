@@ -44,6 +44,7 @@ export const TextFieldStyles = css`
         background: transparent;
         border: 0;
         height: calc(100% - 4px);
+        width: 100%;
         margin-top: auto;
         margin-bottom: auto;
         border: none;
@@ -74,8 +75,8 @@ export const TextFieldStyles = css`
         visibility: hidden;
     }
 
-    .before-content,
-    .after-content {
+    .start,
+    .end {
         ${
             /* Glyph size and margin-left is temporary - 
             replace when adaptive typography is figured out */ ""
@@ -85,11 +86,11 @@ export const TextFieldStyles = css`
         fill: ${neutralForegroundRestBehavior.var};
     }
 
-    .before-content {
+    .start {
         margin-inline-start: 11px;
     }
 
-    .after-content {
+    .end {
         margin-inline-end: 11px;
     }
 
@@ -155,8 +156,8 @@ export const TextFieldStyles = css`
                 background: ${SystemColors.Field};
                 border-color: ${SystemColors.Highlight};
             }
-            .before-content,
-            .after-content {
+            .start,
+            .end {
                 fill: ${SystemColors.ButtonText};
             }
             :host(.disabled) {

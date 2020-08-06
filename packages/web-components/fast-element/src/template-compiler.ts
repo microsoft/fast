@@ -212,12 +212,7 @@ export function compileTemplate(
     const fragment = template.content;
     const viewBehaviorFactories: BehaviorFactory[] = [];
     const directiveCount = directives.length;
-    const walker = document.createTreeWalker(
-        fragment,
-        133, // element, text, comment
-        null,
-        false
-    );
+    const walker = DOM.createTemplateWalker(fragment);
 
     compilationContext.targetIndex = -1;
 

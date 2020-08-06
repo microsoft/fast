@@ -1,14 +1,5 @@
-import { AttributeDefinition } from "./attributes";
 import { Controller } from "./controller";
-import { Observable } from "./observation/observable";
-import {
-    fastDefinitions,
-    FASTElementDefinition,
-    PartialFASTElementDefinition,
-} from "./fast-definitions";
-
-const defaultShadowOptions: ShadowRootInit = { mode: "open" };
-const defaultElementOptions: ElementDefinitionOptions = {};
+import { FASTElementDefinition, PartialFASTElementDefinition } from "./fast-definitions";
 
 /**
  * Represents a custom element based on the FASTElement infrastructure.
@@ -119,74 +110,18 @@ export const FASTElement = Object.assign(createFASTElement(HTMLElement), {
 
     /**
      * Defines a platform custom element based on the provided type and definition.
-     * @param Type - The custom element type to define.
+     * @param type - The custom element type to define.
      * @param nameOrDef - The name of the element to define or a definition object
      * that describes the element to define.
      */
     define<TType extends Function>(
-        Type: TType,
-        nameOrDef: string | PartialFASTElementDefinition = (Type as any).definition
+        type: TType,
+        nameOrDef?: string | PartialFASTElementDefinition
     ): TType {
-        if (typeof nameOrDef === "string") {
-            nameOrDef = { name: nameOrDef };
-        }
-
-        const name = nameOrDef.name;
-        const attributes = AttributeDefinition.collect(Type, nameOrDef.attributes);
-        const shadowOptions =
-            nameOrDef.shadowOptions === void 0
-                ? defaultShadowOptions
-                : nameOrDef.shadowOptions === null
-                ? void 0
-                : { ...defaultShadowOptions, ...nameOrDef.shadowOptions };
-
-        const elementOptions =
-            nameOrDef.elementOptions === void 0
-                ? defaultElementOptions
-                : { ...defaultElementOptions, ...nameOrDef.shadowOptions };
-
-        const observedAttributes = new Array<string>(attributes.length);
-        const proto = Type.prototype;
-        const propertyLookup = {};
-        const attributeLookup = {};
-
-        for (let i = 0, ii = attributes.length; i < ii; ++i) {
-            const current = attributes[i];
-            observedAttributes[i] = current.attribute;
-            propertyLookup[current.name] = current;
-            attributeLookup[current.attribute] = current;
-            Observable.defineProperty(proto, current);
-        }
-
-        Reflect.defineProperty(Type, "observedAttributes", {
-            value: observedAttributes,
-            enumerable: true,
-        });
-
-        const definition = new FASTElementDefinition(
-            name,
-            attributes,
-            propertyLookup,
-            attributeLookup,
-            nameOrDef.template,
-            nameOrDef.styles,
-            shadowOptions,
-            elementOptions
-        );
-
-        fastDefinitions.set(Type, definition);
-        customElements.define(name, Type as any, definition.elementOptions);
-        return Type;
-    },
-
-    /**
-     * Gets the element definition associated with the specified type.
-     * @param Type - The custom element type to retrieve the definition for.
-     */
-    getDefinition<T extends Function>(Type: T): FASTElementDefinition | undefined {
-        return fastDefinitions.get(Type);
+        return new FASTElementDefinition(type, nameOrDef).define().type;
     },
 });
+
 /**
  * Decorator: Defines a platform custom element based on `FASTElement`.
  * @param nameOrDef - The name of the element to define or a definition object
@@ -196,6 +131,6 @@ export const FASTElement = Object.assign(createFASTElement(HTMLElement), {
 export function customElement(nameOrDef: string | PartialFASTElementDefinition) {
     /* eslint-disable-next-line @typescript-eslint/explicit-function-return-type */
     return function (type: Function) {
-        FASTElement.define(type, nameOrDef);
+        new FASTElementDefinition(type, nameOrDef).define();
     };
 }

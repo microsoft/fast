@@ -3,16 +3,33 @@ import addons from "@storybook/addons";
 import { Direction, RtlScrollConverter } from "@microsoft/fast-web-utilities";
 import { FASTDesignSystemProvider } from "../design-system-provider";
 import AnchoreRegionTemplate from "./fixtures/base.html";
-import { FASTAnchoredRegion } from "./";
+import { FASTAnchoredRegion } from "../anchored-region";
 
 // Prevent tree-shaking
 FASTAnchoredRegion;
 FASTDesignSystemProvider;
 
+let scalingViewportPreviousXValue: number = 250;
+let scalingViewportPreviousYValue: number = 250;
+
 addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
     if (name.toLowerCase().startsWith("anchored-region")) {
         scrollViewports();
         setButtonActions();
+
+        const scalingViewportUpdate: HTMLElement | null = document.getElementById(
+            "viewport-scaling-update"
+        );
+        if (scalingViewportUpdate !== null) {
+            scalingViewportUpdate.addEventListener("scroll", handleScrollViaUpdate);
+        }
+
+        const scalingViewportOffset: HTMLElement | null = document.getElementById(
+            "viewport-scaling-offset"
+        );
+        if (scalingViewportUpdate !== null) {
+            scalingViewportUpdate.addEventListener("scroll", handleScrollViaOffset);
+        }
     }
 });
 
@@ -27,6 +44,36 @@ function scrollViewports(): void {
             );
         }
     });
+}
+
+function handleScrollViaUpdate(ev: Event): void {
+    if (ev.target instanceof HTMLElement) {
+        const scalingRegionUpdate: HTMLElement | null = document.getElementById(
+            "region-scaling-update"
+        );
+        if (scalingRegionUpdate instanceof FASTAnchoredRegion) {
+            (scalingRegionUpdate as any).update();
+        }
+    }
+}
+
+function handleScrollViaOffset(ev: Event): void {
+    if (ev.target instanceof HTMLElement) {
+        const scroller: HTMLElement = ev.target as HTMLElement;
+
+        const scalingRegionOffset: HTMLElement | null = document.getElementById(
+            "region-scaling-offset"
+        );
+        if (scalingRegionOffset instanceof FASTAnchoredRegion) {
+            (scalingRegionOffset as any).updateAnchorOffset(
+                scalingViewportPreviousXValue - scroller.scrollLeft,
+                scalingViewportPreviousYValue - scroller.scrollTop
+            );
+        }
+
+        scalingViewportPreviousXValue = scroller.scrollLeft;
+        scalingViewportPreviousYValue = scroller.scrollTop;
+    }
 }
 
 function setButtonActions(): void {
@@ -128,6 +175,9 @@ function setButtonActions(): void {
                         largeContent.hidden = false;
                     };
                     break;
+
+                default:
+                    el.onclick;
             }
         }
     });

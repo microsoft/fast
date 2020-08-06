@@ -48,9 +48,9 @@ import {
     AccentColorPicker,
     Dimension,
     DirectionSwitch,
-    fastComponentSchemas,
+    fastComponentExtendedSchemas,
     Logo,
-    nativeElementSchemas,
+    nativeElementExtendedSchemas,
     textSchema,
     ThemeSelector,
 } from "@microsoft/site-utilities";
@@ -72,8 +72,8 @@ const FASTInlineLogo = require("@microsoft/site-utilities/statics/assets/fast-in
 const fastMessageSystemWorker = new FASTMessageSystemWorker();
 let fastMessageSystem: MessageSystem;
 const schemaDictionary: SchemaDictionary = {
-    ...fastComponentSchemas,
-    ...nativeElementSchemas,
+    ...fastComponentExtendedSchemas,
+    ...nativeElementExtendedSchemas,
     [textSchema.id]: textSchema,
 };
 

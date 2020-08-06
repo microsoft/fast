@@ -171,8 +171,7 @@ export class Controller extends PropertyChangeNotifier {
     // @internal
     constructor(element: HTMLElement, definition: FASTElementDefinition);
     addBehaviors(behaviors: ReadonlyArray<Behavior>): void;
-    addStyles(styles: ElementStyles,
-    target?: StyleTarget | null): void;
+    addStyles(styles: ElementStyles): void;
     readonly definition: FASTElementDefinition;
     readonly element: HTMLElement;
     emit(type: string, detail?: any, options?: Omit<CustomEventInit, "detail">): void | boolean;
@@ -183,6 +182,10 @@ export class Controller extends PropertyChangeNotifier {
     onDisconnectedCallback(): void;
     removeBehaviors(behaviors: ReadonlyArray<Behavior>): void;
     removeStyles(styles: ElementStyles): void;
+    get styles(): ElementStyles | null;
+    set styles(value: ElementStyles | null);
+    get template(): ElementViewTemplate | null;
+    set template(value: ElementViewTemplate | null);
     readonly view: ElementView | null;
 }
 
@@ -221,6 +224,8 @@ export const DOM: Readonly<{
     nextUpdate(): Promise<void>;
     setAttribute(element: HTMLElement, attributeName: string, value: any): void;
     setBooleanAttribute(element: HTMLElement, attributeName: string, value: boolean): void;
+    removeChildNodes(parent: Node): void;
+    createTemplateWalker(fragment: DocumentFragment): TreeWalker;
 }>;
 
 // @public
@@ -248,7 +253,8 @@ export interface ElementView extends View {
 
 // @public
 export interface ElementViewTemplate {
-    create(host: Element): ElementView;
+    create(hostBindingTarget: Element): ElementView;
+    render(source: any, host: Node, hostBindingTarget?: Element): HTMLView;
 }
 
 // Warning: (ae-internal-missing-underscore) The name "emptyArray" should be prefixed with an underscore because the declaration is marked as @internal
@@ -284,21 +290,24 @@ export const FASTElement: (new () => HTMLElement & FASTElement) & {
         new (): HTMLElement;
         prototype: HTMLElement;
     }>(BaseType: TBase): new () => InstanceType<TBase> & FASTElement;
-    define<TType extends Function>(Type: TType, nameOrDef?: string | PartialFASTElementDefinition): TType;
-    getDefinition<T_1 extends Function>(Type: T_1): FASTElementDefinition | undefined;
+    define<TType extends Function>(type: TType, nameOrDef?: string | PartialFASTElementDefinition | undefined): TType;
 };
 
 // @public
-export class FASTElementDefinition {
-    constructor(name: string, attributes: ReadonlyArray<AttributeDefinition>, propertyLookup: Record<string, AttributeDefinition>, attributeLookup: Record<string, AttributeDefinition>, template?: ElementViewTemplate, styles?: ComposableStyles, shadowOptions?: ShadowRootInit, elementOptions?: ElementDefinitionOptions);
+export class FASTElementDefinition<TType extends Function = Function> {
+    constructor(type: TType, nameOrConfig?: PartialFASTElementDefinition | string);
     readonly attributeLookup: Record<string, AttributeDefinition>;
     readonly attributes: ReadonlyArray<AttributeDefinition>;
+    define(registry?: CustomElementRegistry): this;
     readonly elementOptions?: ElementDefinitionOptions;
+    static forType<TType extends Function>(type: TType): FASTElementDefinition | undefined;
+    readonly isDefined: boolean;
     readonly name: string;
     readonly propertyLookup: Record<string, AttributeDefinition>;
     readonly shadowOptions?: ShadowRootInit;
     readonly styles?: ElementStyles;
     readonly template?: ElementViewTemplate;
+    readonly type: TType;
 }
 
 // @public
@@ -479,6 +488,7 @@ export interface ValueConverter {
 export interface View {
     bind(source: unknown, context: ExecutionContext): void;
     readonly context: ExecutionContext | null;
+    dispose(): void;
     readonly source: any | null;
     unbind(): void;
 }
@@ -486,10 +496,10 @@ export interface View {
 // @public
 export class ViewTemplate<TSource = any, TParent = any> implements ElementViewTemplate, SyntheticViewTemplate {
     constructor(html: string | HTMLTemplateElement, directives: ReadonlyArray<Directive>);
-    create(host?: Element): HTMLView;
+    create(hostBindingTarget?: Element): HTMLView;
     readonly directives: ReadonlyArray<Directive>;
     readonly html: string | HTMLTemplateElement;
-    render(source: TSource, host: HTMLElement | string): HTMLView;
+    render(source: TSource, host: Node | string, hostBindingTarget?: Element): HTMLView;
     }
 
 // @public

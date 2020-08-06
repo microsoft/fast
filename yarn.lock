@@ -4116,6 +4116,11 @@
   resolved "https://registry.yarnpkg.com/@microsoft/fast-react-utilities/-/fast-react-utilities-1.2.0.tgz#438d97bfd5a500d0293b5bdb5f4c93895ab8375b"
   integrity sha512-jO5o96QlnVz/cceIaaPlrQCugNXSIWRky4kasTbHL9RhBDpCK0WK/HvKf8gMRf11BmaWW4wOdkEon7uvqBR34Q==
 
+"@microsoft/fast-tooling@^0.7.0":
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/@microsoft/fast-tooling/-/fast-tooling-0.7.0.tgz#a8487eb5ca85fc796c1b9149496f6fa7b4763e47"
+  integrity sha512-fclz9DF6nxyEgj/h2hONM8s+49CQBEGaXA+dfZzhUpGUJJLcZRHoBA/e/Xxf8Qoot5fxiTqpU9wJqgxg7gR13A==
+
 "@microsoft/tsdoc-config@^0.13.4":
   version "0.13.4"
   resolved "https://registry.yarnpkg.com/@microsoft/tsdoc-config/-/tsdoc-config-0.13.4.tgz#84ad92b88d3899683376224de91567b01d447d18"

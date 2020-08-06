@@ -4,59 +4,23 @@
 
 An *anchored region* is a container component which enables authors to create layouts where the contents of the anchored region can be positioned relative to another "anchor" element.  Additionally, the *anchored region* can react to the available space between the anchor and a parent ["viewport"](https://developer.mozilla.org/en-US/docs/Glossary/viewport) element such that the region is placed on the side of the anchor with the most available space, or even resize itself based on that space.
 
-### Background
-
-This component is inspired by the ["Viewport positioner"](https://github.com/microsoft/fast/tree/master/packages/fast-components-react-base/src/viewport-positioner)  component in the React component set.  It is used as a building block in other components to enable responsive flyouts, or positionable/scaling menus in the [select](https://github.com/microsoft/fast/tree/master/packages/fast-components-react-base/src/select) component. 
-
-A primary goal of the component was to enable authors to create responsive layouts without resorting to expensive [getBoundingClientRect()](https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect) calls. It instead depends on the more performant [IntersectionObserver](https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver) and [ResizeObserver](https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver) interfaces.
-
-For a more in-depth understanding of how this component works under the covers please refer to the [intersection observer api](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API). 
-
 ### Use Cases
 
-It is envisioned that this component would be used as a building block for other components in this library (select, flyout, tooltip, etc) as well as being available for standalone use in responsive layouts.
+It is envisioned that this component would be used as a building block for other components in this library that need to position elements relative to another HTMLElement(select, flyout, tooltip, etc) as well as being available for standalone use in responsive layouts.
 
 ### Features
 
-- **Relative positioning:** Users can use it to position an element relative to another another element directly, like enabling a menu to open above or below a trigger button. Additonally, the same anchored region can change which element it is anchored to dynamically.  For example a single tooltip instance in a page could be positioned next to any other element on the page by switching the anchor property of the anchored region that contains it.
+- **Relative positioning:** Users can use it to position an element relative to another another element, like enabling a menu to open above or below a trigger button. Additonally, the same anchored region can change which element it is anchored to dynamically, for example a single tooltip instance in a page could be positioned next to any other element on the page by switching the anchor property of the anchored region that contains it.
 
 - **Responsive positioning:** Users can use it to position an element relative to another element based on available space, for example a menu could open upwards if the trigger button is near the bottom of the page, and downwards if it is nearer the top.
 
 - **Responsive scaling:** Users can use it to create a layout region that dynamically sizes depending on space between the anchor and the viewport elements.
 
-Note that the "always in view" functionality that existed in Viewport Positioner has been removed as this can be replicated through other means (such as a scaling region with grids, for example).
+
+For a more in-depth understanding of how this component works under the covers please refer to the [intersection observer api](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API). 
 
 ### Risks and Challenges
-
-This component depends on getting accurate positioning data about the DOM surrounding the component from the[Intersection Observer API](https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver) in order to place elements correctly and some configurations can interfere with that.
-
-For example, using css to set 'position:fixed' on an HTMLElement in the hierarchy between the viewport element and the anchor or anchored-region as in the example below is problematic. It effectively places those elements in a different coordinate system from the viewport, and as a result the values reported by [Intersection Observer](https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver) entries can't be used to make required calculations for positioning relative to the viewport (assuming collision events even generate as expected).
-
-```
-<div id="viewport">
-    <div style="{{position:fixed}}">
-        <button id="anchor">
-            Button is an anchor
-        </button>
-        <fast-anchored-region
-            viewport="viewport"
-            anchor="anchor"
-            verticalPositioningMode="locktodefault"
-            verticalDefaultPosition="top"
-        >
-            This won't work because of the fixed element
-        </fast-anchored-region>
-    <div>
-</div>
-```
-A common place this issue has come up is when authors want to add a flyout menu in a toolbar that has a fixed position but they also want the menu to react to the size of the parent window. Workarounds for this involve not using fixed positioning on the toolbar, or authors can control the placement of the menu directly based on window size.
-
-Also, nested scrolling containers can be a problem.  For one, the component assumes that the anchor and anchored region are within the same scrolling container. This should be thought of as "by design". Second, for the scaling feature to work properly there must not be any active scrolling surfaces in the DOM hierarchy between the viewport and the anchor/region.  This is because in the scaling scenario we rely on scrolling events from the viewport to recalculate the size of the scaled region as not all scroll events generate an intersection observer event.  Note that most scenarios we'd want this component to solve don't involve multiple nested scrolling regions.
-
-It is worth noting that one of the main goals of this component is to be a performant layout widget, so while we may be able to technically make the component cover more corner cases we should not necessarily do so if the perf impact is too high.
-
-### Prior Art/Examples
-- [FAST React Viewport positioner component](https://github.com/microsoft/fast/tree/master/packages/fast-components-react-base/src/viewport-positioner)
+- see discussion of `getBoundingClientRect` usage in the "Performance" section below.
 
 ---
 
@@ -191,6 +155,11 @@ A region that renders below the anchor until that space is less than 100px.
 </div>
 ```
 
+The anchored region can be configured to scale to either the size of the content in its slot, to the size of the element it is anchored to, or the available space between the anchor and the edge of the viewport element by setting the vertical/horizontal scaling attribute:
+- "anchor" - size to match anchor
+- "fill" - size to match space between the anchor and the viewport edge
+- "content" - the default, matches the size of the content in the region's slot. 
+
 The dimensions of the anchored region will match the dimensions of the content unless scaling is enabled on a particular axis (verticalscalingenabled & horizontalscalingenabled) in which case it will fill all available space between the anchor and viewport.
 
 The component allows users to set a "Positioning Mode" on each axis which defines how the component will behave:
@@ -214,16 +183,14 @@ NOTE: this component api will not be exposed outside of the fast-components pack
 - horizontal-default-position - Can be 'start', 'end', 'left', 'right' or 'unset'.  Default is 'unset'
 - horizontal-inset - Boolean that indicates whether the region should overlap the anchor on the horizontal axis. Default is false which places the region adjacent to the anchor element.
 - horizontal-threshold - Numeric value that defines how small in pixels the region must be to the edge of the viewport to switch to the opposite side of the anchor. The component favors the default position until this value is crossed.  When there is not enough space on either side or the value is unset the side with the most space is chosen.
-- horizontal-scaling-enabled - The region is sized from code to match available space, in other scenarios the region gets sized via content size.
+- horizontal-scaling - Can be "anchor", "fill" or "content". Default is "content" 
 
 - vertical-positioning-mode - Can be 'uncontrolled', 'locktodefault' or 'dynamic'.  Default is 'uncontrolled'.
 - vertical-default-position - Can be 'top', 'bottom' or 'unset'. Default is unset.
 - vertical-inset - Boolean that indicates whether the region should overlap the anchor on the vertical axis. Default is false which places the region adjacent to the anchor element.
 - vertical-threshold - Numeric value that defines how small the region must be to the edge of the viewport to switch to the opposite side of the anchor. The component favors the default position until this value is crossed.  When there is not enough space on either side or the value is unset the side with the most space is chosen.
-- vertical-scaling-enabled - The region is sized from code to match available space, in other scenarios the region gets sized via content size.
-
-- horizontal-position - read only, the current horizontal position of the component. Possible values are 'left', 'right' or 'unset'.
-- vertical-position - read only, the current vertical position of the component. Possible values are 'top', 'bottom' or 'unset'.
+- vertical-scaling - Can be 'anchor', 'fill' or 'content'. Default is 'content' 
+- use-gbcr - Whether the component uses calls to `getBoundingClientRect` to calculate positioning. Can be 'default', 'always' or 'never'.  Default behavior attempts to use gbcr if the initial attempt to use [IntersectionObserver](https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver) fails to return usable data. 
 
 *Properties:*
 - anchorElement - Holds a reference to the HTMLElement currently being used as the anchor.  Can be set directly or be populated by setting the anchor attribute.
@@ -233,34 +200,41 @@ NOTE: this component api will not be exposed outside of the fast-components pack
 *Slots:*
 - default slot for content
 
+*functions:*
+- default slot for content
+
 *Events:*
-- change - event is thrown whenever the placement of the region relative to the anchor changes (top/bottom and left/right). 
+- updateAnchorOffset = (
+    horizontalOffsetDelta: number,
+    verticalOffsetDelta: number
+) 
+
+Enables developers to update the offset between the anchor and the region as it changes,  for example to promt layout recalculations as a result of scrolling so a scaling region tracks the viewport boundary.  
+
 
 
 ### Anatomy and Appearance
 **Structure:**
 
-The host template by default has a height and width of 0, although authors can override this.  Generally having a fixed size wrapper around the anchored region is useful to prevent changes in the dimensions of the region from causing changes to the parent layout.
+The anchored region is essentially a container around the slotted items.
 
 ```
-  <template>
-      <div
-          class="region"
-          ${ref("region")}
-          style="...positioning styles..."
-    >
-    <slot>Custom content</slot>
-    </div>
-  </template>
+    <template>
+        ${when(
+            x => x.initialLayoutComplete,
+            html<AnchoredRegion>`
+                <slot></slot>
+            `
+        )}
+    </template>
 ```
 
 ## Implementation
 
 ### States
 Layout update checks in the component happen when:
-- the viewport scrolls
 - intersection observer reports a collision with the viewport
-- resize observer reports a resize event on the anchor, the viewport or the component itself.
+- resize observer reports a resize event on the anchor, the viewport, the component's `offsetParent` or the component itself.
 
 These layout checks analyse the DOM geometry based on callbacks and repositions the anchored region appropriately: top/bottom/unset for the vertical axis and left/right/unset for the horizontal axis. 
 
@@ -273,7 +247,11 @@ None required.  Basically a positioned div that authors can decorate for accessi
 Authors may want to change default position from left to right or vice versa based on rtl settings, but that can't be predicted by the component itself.
 
 ### Performance
-Layout logic could called frequently during scrolling and resize operations so efficient code is a priority here. At a minimum layout recalculations should be limited to once per frame.
+The component needs information about the geometry of the surrounding DOM in order to function and it acquires this through either [IntersectionObserver](https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver) events or calls to `getBoundingClientRect`.  
+
+By default the component relies on observer events, but in some cases that data may not be usable such as when there is an intervening element in the DOM hierarchy between the viewport and the anchor or the region itself.  When the component detects this condition it is able to fall back to expensive calls to `getBoundingClientRect`.
+
+Developers can use the "use-gbcr" attribute to limit this behavior to either always use calls to `getBoundingClientRect` to skip the cost of even trying to use the observer to begin with, or 'never' to block gbcr completely (presumably changing other aspects of their layout to allow the observer to function).
 
 ### Dependencies
 [IntersectionObserver api](https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver) is unsupported on IE, and [ResizeObserver](https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver) is unsupported on IE, Safari and Firefox.  Both are required by the component.  Authors who wish to use this component on these platforms will need to use polyfills.
@@ -283,5 +261,5 @@ Layout logic could called frequently during scrolling and resize operations so e
 TBD
 
 ## Next Steps
-- add support for passing references for anchor and viewport as HTMLElements through javascript.
+- investigate perf improvements
 
