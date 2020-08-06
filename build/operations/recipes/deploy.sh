@@ -58,7 +58,7 @@ This will deploy from staging to production via Azure Web App Slot swapping.
                         --ip-address ${public_ip}
 
                     echo ".. swapping from staging to production in $resource_group ..."
-                    #az webapp deployment slot swap --resource-group $resource_group --name $new_app_name --slot stage --action swap --target-slot production
+                    az webapp deployment slot swap --resource-group $resource_group --name $new_app_name --slot stage --action swap --target-slot production
 
                     echo ""
                     echo "${yellow}begin testing ..."
