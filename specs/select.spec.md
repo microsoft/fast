@@ -77,6 +77,7 @@ On a web page a customer is shopping for a new shirt in size medium. The custome
     <ul
         part="listbox"
         class="listbox"
+        role="listbox"
     >
         <slot></slot>
     </ul>
