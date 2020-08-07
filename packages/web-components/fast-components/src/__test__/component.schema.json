@@ -41,25 +41,28 @@
             },
             "uniqueItems": true
         },
-        "implementation": {
-            "oneOf": [
-                {
-                    "type": "object",
-                    "properties": {
-                        "type": {
-                            "type": "string",
-                            "const": "web-component"
+        "implementations": {
+            "type": "array",
+            "items": {
+                "oneOf": [
+                    {
+                        "type": "object",
+                        "properties": {
+                            "type": {
+                                "type": "string",
+                                "const": "web-component"
+                            },
+                            "implementation": {
+                                "$ref": "custom-element-definition"
+                            }
                         },
-                        "definition": {
-                            "$ref": "custom-element-definition"
-                        }
-                    },
-                    "required": [
-                        "type",
-                        "definition"
-                    ]
-                }
-            ]
+                        "required": [
+                            "type",
+                            "implementation"
+                        ]
+                    }
+                ]
+            }
         },
         "concepts": {
             "type": "array",
