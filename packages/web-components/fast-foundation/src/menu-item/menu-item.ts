@@ -1,4 +1,4 @@
-import { attr, booleanConverter, FASTElement } from "@microsoft/fast-element";
+import { attr, FASTElement } from "@microsoft/fast-element";
 import { keyCodeEnter, keyCodeSpace } from "@microsoft/fast-web-utilities";
 import { StartEnd } from "../patterns/start-end";
 import { applyMixins } from "../utilities/apply-mixins";
