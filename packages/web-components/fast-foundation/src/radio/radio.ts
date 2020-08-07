@@ -154,6 +154,7 @@ export class Radio extends FormAssociated<HTMLInputElement> implements RadioCont
         super.keypressHandler(e);
         switch (e.keyCode) {
             case keyCodeSpace:
+                console.log("radio button hit space bar");
                 if (!this.checked && !this.readOnly) {
                     this.checked = true;
                 }

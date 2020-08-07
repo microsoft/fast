@@ -1,5 +1,5 @@
 import { attr, FASTElement, observable } from "@microsoft/fast-element";
-import { Orientation } from "@microsoft/fast-web-utilities";
+import { Orientation, isHTMLElement } from "@microsoft/fast-web-utilities";
 import {
     keyCodeArrowDown,
     keyCodeArrowLeft,
@@ -10,6 +10,9 @@ import {
 } from "@microsoft/fast-web-utilities";
 import { RadioControl } from "../radio/index";
 
+function isRadioElement(el: Element): el is HTMLElement {
+    return isHTMLElement(el) && (el.getAttribute("role") as string) === "radio";
+}
 /**
  * An Radio Group Custom HTML Element.
  * Implements the {@link https://www.w3.org/TR/wai-aria-1.1/#radiogroup | ARIA radiogroup }.
@@ -96,11 +99,21 @@ export class RadioGroup extends FASTElement {
     @attr
     public orientation: Orientation = Orientation.horizontal;
 
+    @observable
+    public childItems: HTMLElement[];
+
     /**
      * @internal
      */
     @observable
-    public slottedRadioButtons: RadioControl[];
+    public slottedRadioButtons: HTMLElement[];
+    private slottedRadioButtonsChanged(oldValue, newValue): void {
+        console.log("slottedRadioButtons now:", newValue);
+        if (this.slottedRadioButtons && this.slottedRadioButtons.length > 0) {
+            this.setupRadioButtons();
+        }
+    }
+
     private selectedRadio: RadioControl | null;
     private focusedRadio: RadioControl | null;
     private parentToolbar: HTMLElement | null | undefined;
@@ -120,6 +133,13 @@ export class RadioGroup extends FASTElement {
      */
     public connectedCallback(): void {
         super.connectedCallback();
+        this.setupRadioButtons();
+        this.parentToolbar = this.parentElement?.closest('[role="toolbar"]');
+        this.isInsideToolbar =
+            this.parentToolbar !== undefined && this.parentToolbar !== null;
+    }
+
+    private setupRadioButtons(): void {
         const radioButtons: RadioControl[] = this.getFilteredRadioButtons();
         radioButtons.forEach((radio: RadioControl) => {
             if (this.name !== undefined) {
@@ -135,9 +155,14 @@ export class RadioGroup extends FASTElement {
             }
 
             if (this.value && this.value === radio.getAttribute("value")) {
+                console.log(
+                    "found the item that should be selected and have focus set value:",
+                    this.value
+                );
                 this.selectedRadio = radio;
                 this.focusedRadio = radio;
                 radio.checked = true;
+                console.log("setting radio to tabindex 0 radio:", radio);
                 radio.setAttribute("tabindex", "0");
             } else {
                 radio.setAttribute("tabindex", "-1");
@@ -145,20 +170,18 @@ export class RadioGroup extends FASTElement {
         });
 
         if (this.value === undefined && radioButtons.length > 0) {
+            console.log("setting the first radio button to have tabindex 0");
             radioButtons[0].setAttribute("tabindex", "0");
             this.focusedRadio = radioButtons[0];
         }
-
-        this.parentToolbar = this.parentElement?.closest('[role="toolbar"]');
-        this.isInsideToolbar =
-            this.parentToolbar !== undefined && this.parentToolbar !== null;
     }
 
     private getFilteredRadioButtons = (): RadioControl[] => {
         const radioButtons: RadioControl[] = [];
         if (this.slottedRadioButtons !== undefined) {
             this.slottedRadioButtons.forEach((item: any) => {
-                if (item instanceof HTMLElement) {
+                console.log("next slotted item:", item);
+                if (isRadioElement(item)) {
                     radioButtons.push(item as any);
                 }
             });
