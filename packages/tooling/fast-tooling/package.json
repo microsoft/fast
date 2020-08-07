@@ -60,13 +60,9 @@
             "^.+\\.js$": "babel-jest"
         },
         "transformIgnorePatterns": [
-            "!<rootDir>/node_modules/lodash-es",
-            "!<rootDir>/node_modules/monaco-editor"
+            "!<rootDir>/node_modules/lodash-es"
         ],
         "testRegex": "(\\.|/)(test|spec)\\.(js|ts)$",
-        "moduleNameMapper": {
-            "monaco-editor": "<rootDir>/node_modules/monaco-editor/esm/vs/editor/editor.api.d.ts"
-        },
         "moduleFileExtensions": [
             "ts",
             "js",
@@ -81,7 +77,6 @@
         "eslint-config-prettier": "^6.10.1",
         "jest": "^25.4.0",
         "lodash-es": "^4.0.0",
-        "monaco-editor": "^0.20.0",
         "prettier": "2.0.2",
         "ts-jest": "^25.4.0",
         "ts-loader": "^4.0.1",
