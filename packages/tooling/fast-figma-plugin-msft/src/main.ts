@@ -1,4 +1,4 @@
-import { PluginNode, PluginNodeData } from "./core/node";
+import { PluginNode } from "./core/node";
 import {
     cornerRadiusRecipe,
     fillRecipes,
@@ -8,8 +8,7 @@ import {
 } from "./core/recipes";
 import { FigmaController } from "./figma/controller";
 import { RecipeDefinition, RecipeTypes } from "./core/recipe-registry";
-import { canHaveChildren, FigmaPluginNode, isInstanceNode } from "./figma/node";
-import { MessageTypes, UIMessage } from "./core/messaging";
+import { UIMessage } from "./core/messaging";
 
 const controller = new FigmaController();
 
@@ -36,28 +35,6 @@ function registerColorRecipe(type: RecipeTypes, recipes: RecipeStore): void {
 
         controller.recipeRegistry.register(definition);
     });
-}
-
-function syncInstanceWithMaster(target: InstanceNode): void {
-    const source = target.masterComponent;
-
-    function sync(_source: BaseNode, _target: BaseNode): void {
-        const pluginDataKeys: Array<keyof PluginNodeData> = ["recipes", "designSystem"];
-        pluginDataKeys.forEach((key: "recipes" | "designSystem") => {
-            _target.setPluginData(key, _source.getPluginData(key));
-        });
-
-        if (canHaveChildren(_source) && canHaveChildren(_target)) {
-            _source.children.forEach((child: any, index: number) => {
-                sync(child, _target.children[index]);
-            });
-        }
-    }
-
-    sync(source, target);
-
-    // Invalidate the cache
-    new FigmaPluginNode(target.id).invalidateDesignSystemCache();
 }
 
 /**
@@ -100,15 +77,8 @@ figma.on("selectionchange", () => {
     );
 });
 
-figma.ui.onmessage = (value: UIMessage): void => {
-    if (value.type === MessageTypes.sync) {
-        value.nodeIds
-            .map((id: string) => figma.getNodeById(id))
-            .filter(isInstanceNode)
-            .map(syncInstanceWithMaster);
-    }
-
-    controller.handleMessage(value);
+figma.ui.onmessage = (message: UIMessage): void => {
+    controller.handleMessage(message);
 };
 
 controller.setSelectedNodes(
