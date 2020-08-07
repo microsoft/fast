@@ -1,4 +1,4 @@
-import { children, elements, html, slotted } from "@microsoft/fast-element";
+import { elements, html, slotted } from "@microsoft/fast-element";
 import { Orientation } from "@microsoft/fast-web-utilities";
 import { RadioGroup } from "./radio-group";
 

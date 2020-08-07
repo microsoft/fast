@@ -1,5 +1,5 @@
 import { attr, FASTElement, observable } from "@microsoft/fast-element";
-import { Orientation, isHTMLElement } from "@microsoft/fast-web-utilities";
+import { Orientation, isHTMLElement, keyCodeSpace } from "@microsoft/fast-web-utilities";
 import {
     keyCodeArrowDown,
     keyCodeArrowLeft,
@@ -108,7 +108,6 @@ export class RadioGroup extends FASTElement {
     @observable
     public slottedRadioButtons: HTMLElement[];
     private slottedRadioButtonsChanged(oldValue, newValue): void {
-        console.log("slottedRadioButtons now:", newValue);
         if (this.slottedRadioButtons && this.slottedRadioButtons.length > 0) {
             this.setupRadioButtons();
         }
@@ -155,14 +154,9 @@ export class RadioGroup extends FASTElement {
             }
 
             if (this.value && this.value === radio.getAttribute("value")) {
-                console.log(
-                    "found the item that should be selected and have focus set value:",
-                    this.value
-                );
                 this.selectedRadio = radio;
                 this.focusedRadio = radio;
                 radio.checked = true;
-                console.log("setting radio to tabindex 0 radio:", radio);
                 radio.setAttribute("tabindex", "0");
             } else {
                 radio.setAttribute("tabindex", "-1");
@@ -170,7 +164,6 @@ export class RadioGroup extends FASTElement {
         });
 
         if (this.value === undefined && radioButtons.length > 0) {
-            console.log("setting the first radio button to have tabindex 0");
             radioButtons[0].setAttribute("tabindex", "0");
             this.focusedRadio = radioButtons[0];
         }
@@ -180,7 +173,6 @@ export class RadioGroup extends FASTElement {
         const radioButtons: RadioControl[] = [];
         if (this.slottedRadioButtons !== undefined) {
             this.slottedRadioButtons.forEach((item: any) => {
-                console.log("next slotted item:", item);
                 if (isRadioElement(item)) {
                     radioButtons.push(item as any);
                 }
@@ -328,7 +320,7 @@ export class RadioGroup extends FASTElement {
     public keydownHandler = (e: KeyboardEvent): void => {
         const group: RadioControl[] = this.getFilteredRadioButtons();
         let index: number = 0;
-        if (e.keyCode !== keyCodeTab) {
+        if (e.keyCode !== keyCodeTab && e.keyCode !== keyCodeSpace) {
             e.preventDefault();
         }
         switch (e.keyCode) {
