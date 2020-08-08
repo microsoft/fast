@@ -18,5 +18,5 @@ char* get_type_as_string(enum Type type)
         case Object: return "object";
     }
 
-    return 0;
+    return "\0";
 }
