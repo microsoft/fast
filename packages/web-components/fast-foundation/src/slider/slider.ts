@@ -293,11 +293,11 @@ export class Slider extends FormAssociated<HTMLInputElement>
         const percentage: number = Math.round((1 - newPct) * 100);
         if (this.orientation === Orientation.horizontal) {
             this.position = this.isDragging
-                ? `right: ${percentage}%; transition: all 0.1s ease;`
+                ? `right: ${percentage}%; transition: none;`
                 : `right: ${percentage}%; transition: all 0.2s ease;`;
         } else {
             this.position = this.isDragging
-                ? `bottom: ${percentage}%; transition: all 0.1s ease;`
+                ? `bottom: ${percentage}%; transition: none;`
                 : `bottom: ${percentage}%; transition: all 0.2s ease;`;
         }
     };
