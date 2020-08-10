@@ -1,4 +1,4 @@
-# Breadcrumb + Breadccrumb Item
+# Breadcrumb + Breadcrumb Item
 
 ## Overview
 A `fast-breadcrumb` component is used as a navigational aid, allowing users to maintain awareness of their locations within a program, app, or a website.

@@ -31,14 +31,16 @@ export const BreadcrumbItemStyles = css`
     }
 
     .separator {
-        margin: 0 12px;
+        margin: 0 6px;
     }
 
     .control {
+        align-items: center;
         background: transparent;
         box-sizing: border-box;
         color: ${accentForegroundRestBehavior.var};
         cursor: pointer;
+        display: flex;
         fill: inherit;
         outline: none;
         text-decoration: none;
@@ -64,7 +66,7 @@ export const BreadcrumbItemStyles = css`
         left: 0;
         position: absolute;
         right: 0;
-        top: calc(1em + 2px);
+        top: calc(1em + 4px);
         width: 100%;
     }
 
@@ -81,6 +83,15 @@ export const BreadcrumbItemStyles = css`
         height: calc(var(--focus-outline-width) * 1px);
     }
 
+    .control:not([href]) {
+        color: ${neutralForegroundRestBehavior.var};
+        cursor: default;
+    }
+
+    .control:not([href]) .content::before {
+        background: none;
+    }
+
     .start,
     .end,
     ::slotted(svg) {
@@ -92,11 +103,11 @@ export const BreadcrumbItemStyles = css`
     }
 
     .start {
-        margin-inline-end: 4px;
+        margin-inline-end: 6px;
     }
 
     .end {
-        margin-inline-start: 4px;
+        margin-inline-start: 6px;
     }
 `.withBehaviors(
     accentForegroundRestBehavior,

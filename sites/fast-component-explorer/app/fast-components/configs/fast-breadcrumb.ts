@@ -71,7 +71,7 @@ const fastBreadcrumbConfig: ComponentViewConfig = {
                         },
                         schemaId: fastBreadcrumbItemId,
                         data: {
-                            name: "Breadccrumb item 3",
+                            name: "Breadcrumb item 3",
                         },
                     },
                 },
@@ -139,7 +139,7 @@ const fastBreadcrumbConfig: ComponentViewConfig = {
                         },
                         schemaId: fastBreadcrumbItemId,
                         data: {
-                            name: "Breadccrumb item 3",
+                            name: "Breadcrumb item 3",
                             SlotStart: [
                                 {
                                     id: startPlaceholderIcon3[1],
@@ -213,7 +213,7 @@ const fastBreadcrumbConfig: ComponentViewConfig = {
                         },
                         schemaId: fastBreadcrumbItemId,
                         data: {
-                            name: "Breadccrumb item 3",
+                            name: "Breadcrumb item 3",
                             SlotEnd: [
                                 {
                                     id: endPlaceholderIcon3[1],
@@ -275,7 +275,7 @@ const fastBreadcrumbConfig: ComponentViewConfig = {
                         },
                         schemaId: fastBreadcrumbItemId,
                         data: {
-                            name: "Breadccrumb item 3",
+                            name: "Breadcrumb item 3",
                             href: "#",
                         },
                     },
