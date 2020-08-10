@@ -1,4 +1,4 @@
-import { html, slotted } from "@microsoft/fast-element";
+import { elements, html, slotted } from "@microsoft/fast-element";
 import { Orientation } from "@microsoft/fast-web-utilities";
 import { RadioGroup } from "./radio-group";
 
@@ -18,7 +18,12 @@ export const RadioGroupTemplate = html<RadioGroup>`
                 x.orientation === Orientation.horizontal ? "horizontal" : "vertical"}"
             part="positioning-region"
         >
-            <slot ${slotted("slottedRadioButtons")}></slot>
+            <slot
+                ${slotted({
+                    property: "slottedRadioButtons",
+                    filter: elements("[role=radio]"),
+                })}
+            ></slot>
         </div>
     </template>
 `;
