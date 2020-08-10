@@ -37,7 +37,7 @@ Example JSON Schema with linked data properties:
 import { linkedDataSchema } from "@microsoft/fast-tooling";
 
 export default {
-    $schema: "http://json-schema.org/schema#",
+    $schema: "https://json-schema.org/schema#",
     title: "Component with nested properties",
     type: "object",
     id: "nestable-component",
