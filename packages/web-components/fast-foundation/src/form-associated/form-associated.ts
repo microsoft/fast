@@ -192,7 +192,7 @@ export abstract class FormAssociated<
      * @param next - the new value
      *
      * @remarks
-     * If elmements extending `FormAssociated` impelemnt a `valueChanged` method
+     * If elmements extending `FormAssociated` implement a `valueChanged` method
      * They must be sure to invoke `super.valueChanged(previous, next)` to ensure
      * proper functioning of `FormAssociated`
      */
@@ -223,7 +223,7 @@ export abstract class FormAssociated<
      * @param next - the new value
      *
      * @remarks
-     * If elmements extending `FormAssociated` impelemnt a `initialValueChanged` method
+     * If elements extending `FormAssociated` implement a `initialValueChanged` method
      * They must be sure to invoke `super.initialValueChanged(previous, next)` to ensure
      * proper functioning of `FormAssociated`
      */
@@ -252,7 +252,7 @@ export abstract class FormAssociated<
      * @param next - the new value
      *
      * @remarks
-     * If elmements extending `FormAssociated` impelemnt a `disabledChanged` method
+     * If elements extending `FormAssociated` implement a `disabledChanged` method
      * They must be sure to invoke `super.disabledChanged(previous, next)` to ensure
      * proper functioning of `FormAssociated`
      */
@@ -280,7 +280,7 @@ export abstract class FormAssociated<
      * @param next - the new value
      *
      * @remarks
-     * If elmements extending `FormAssociated` impelemnt a `nameChanged` method
+     * If elements extending `FormAssociated` implement a `nameChanged` method
      * They must be sure to invoke `super.nameChanged(previous, next)` to ensure
      * proper functioning of `FormAssociated`
      */
@@ -306,7 +306,7 @@ export abstract class FormAssociated<
      * @param next - the new value
      *
      * @remarks
-     * If elmements extending `FormAssociated` impelemnt a `requiredChanged` method
+     * If elements extending `FormAssociated` implement a `requiredChanged` method
      * They must be sure to invoke `super.requiredChanged(previous, next)` to ensure
      * proper functioning of `FormAssociated`
      */
