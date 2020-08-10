@@ -1,5 +1,5 @@
 {
-  "name": "fast-website",
+  "name": "@microsoft/fast-website",
   "version": "1.2.2",
   "description": "fast website",
   "main": "index.js",
