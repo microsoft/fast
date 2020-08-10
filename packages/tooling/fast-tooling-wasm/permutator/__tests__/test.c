@@ -52,38 +52,37 @@ error:
     return 0;
 }
 
-bool testMinimum(double data)
+bool test_minimum(double data)
 {
-    
     return data >= 99;
 }
 
-bool testExclusiveMinimum(double data)
+bool test_exclusive_minimum(double data)
 {
     return data > 99;
 }
 
-bool testMaximum(double data)
+bool test_maximum(double data)
 {
     return data <= 1;
 }
 
-bool testExclusiveMaximum(double data)
+bool test_exclusive_maximum(double data)
 {
     return data < 1;
 }
 
-bool testMinimumAndMaximum(double data)
+bool test_minimum_and_maximum(double data)
 {
     return data >= 6 && data <= 7;
 }
 
-bool testExclusiveMinimumAndMaximum(double data)
+bool test_exclusive_minimum_and_maximum(double data)
 {
     return data > 6 && data < 8;
 }
 
-bool testMultipleOf(double data)
+bool test_multiple_of(double data)
 {
     return fmod(data,10) == 0;
 }
@@ -96,6 +95,9 @@ char *test_dlopen()
     return NULL;
 }
 
+/**
+ * Tests the function called when JSON schema is type "number"
+ */
 char *test_number_type()
 {
     /**
@@ -213,7 +215,7 @@ char *test_number_type()
             "permutate_number",
             0,
             minimumConfig,
-            testMinimum
+            test_minimum
         ),
         "Failed: should have supplied a random value above a minimum"
     );
@@ -227,7 +229,7 @@ char *test_number_type()
             "permutate_number",
             0,
             maximumConfig,
-            testMaximum
+            test_maximum
         ),
         "Failed: should have supplied a random value below a maximum"
     );
@@ -241,7 +243,7 @@ char *test_number_type()
             "permutate_number",
             0,
             minimumAndMaximumConfig,
-            testMinimumAndMaximum
+            test_minimum_and_maximum
         ),
         "Failed: should have supplied a random value between a minimum and a maximum"
     );
@@ -255,7 +257,7 @@ char *test_number_type()
             "permutate_number",
             0,
             exclusiveMinimumConfig,
-            testExclusiveMinimum
+            test_exclusive_minimum
         ),
         "Failed: should have supplied a random value above an exclusive minimum"
     );
@@ -269,7 +271,7 @@ char *test_number_type()
             "permutate_number",
             0,
             exclusiveMaximumConfig,
-            testExclusiveMaximum
+            test_exclusive_maximum
         ),
         "Failed: should have supplied a random value below an exclusive maximum"
     );
@@ -283,7 +285,7 @@ char *test_number_type()
             "permutate_number",
             0,
             exclusiveMinimumAndMaximumConfig,
-            testExclusiveMinimumAndMaximum
+            test_exclusive_minimum_and_maximum
         ),
         "Failed: should have supplied a random value between an exclusive minimum and an exclusive maximum"
     );
@@ -297,7 +299,7 @@ char *test_number_type()
             "permutate_number",
             0,
             multipleOfConfig,
-            testMultipleOf
+            test_multiple_of
         ),
         "Failed: should have supplied a random value that was a multiple of"
     );
