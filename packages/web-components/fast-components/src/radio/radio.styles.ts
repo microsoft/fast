@@ -68,6 +68,10 @@ export const RadioStyles = css`
         visibility: hidden;
     }
 
+    .control, .checked-indicator {
+        flex-shrink: 0;
+    }
+
     .checked-indicator {
         position: absolute;
         top: 5px;
@@ -76,7 +80,6 @@ export const RadioStyles = css`
         bottom: 5px;
         border-radius: 999px;
         display: inline-block;
-        flex-shrink: 0;
         background: ${accentForegroundCutRestBehavior.var};
         fill: ${accentForegroundCutRestBehavior.var};
         opacity: 0;
