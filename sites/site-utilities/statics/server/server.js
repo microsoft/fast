@@ -1,7 +1,7 @@
-var path = require("path");
 var express = require("express");
 var fallback = require("express-history-api-fallback");
 var helmet = require("helmet");
+var path = require("path");
 
 // Create application
 var app = express();
