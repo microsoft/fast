@@ -8,11 +8,7 @@ import {
     keyCodeEnter,
     keyCodeTab,
 } from "@microsoft/fast-web-utilities";
-import { RadioControl } from "../radio/index";
 
-function isRadioElement(el: Element): el is HTMLElement {
-    return isHTMLElement(el) && (el.getAttribute("role") as string) === "radio";
-}
 /**
  * An Radio Group Custom HTML Element.
  * Implements the {@link https://www.w3.org/TR/wai-aria-1.1/#radiogroup | ARIA radiogroup }.
@@ -29,9 +25,8 @@ export class RadioGroup extends FASTElement {
     @attr({ attribute: "readonly", mode: "boolean" })
     public readOnly: boolean;
     private readOnlyChanged(): void {
-        const filteredRadios = this.getFilteredRadioButtons();
-        if (filteredRadios !== undefined) {
-            filteredRadios.forEach((radio: HTMLInputElement) => {
+        if (this.slottedRadioButtons !== undefined) {
+            this.slottedRadioButtons.forEach((radio: HTMLInputElement) => {
                 if (this.readOnly) {
                     radio.readOnly = true;
                 } else {
@@ -51,9 +46,8 @@ export class RadioGroup extends FASTElement {
     @attr({ attribute: "disabled", mode: "boolean" })
     public disabled: boolean;
     private disabledChanged(): void {
-        const filteredRadios = this.getFilteredRadioButtons();
-        if (filteredRadios !== undefined) {
-            filteredRadios.forEach((radio: HTMLInputElement) => {
+        if (this.slottedRadioButtons !== undefined) {
+            this.slottedRadioButtons.forEach((radio: HTMLInputElement) => {
                 if (this.disabled) {
                     radio.disabled = true;
                 } else {
@@ -74,9 +68,11 @@ export class RadioGroup extends FASTElement {
     @attr
     public name: string;
     protected nameChanged(): void {
-        this.getFilteredRadioButtons().forEach((radio: HTMLInputElement) => {
-            radio.setAttribute("name", this.name);
-        });
+        if (this.slottedRadioButtons) {
+            this.slottedRadioButtons.forEach((radio: HTMLInputElement) => {
+                radio.setAttribute("name", this.name);
+            });
+        }
     }
 
     /**
@@ -113,8 +109,8 @@ export class RadioGroup extends FASTElement {
         }
     }
 
-    private selectedRadio: RadioControl | null;
-    private focusedRadio: RadioControl | null;
+    private selectedRadio: HTMLInputElement | null;
+    private focusedRadio: HTMLInputElement | null;
     private parentToolbar: HTMLElement | null | undefined;
     private isInsideToolbar: boolean = false;
 
@@ -139,8 +135,7 @@ export class RadioGroup extends FASTElement {
     }
 
     private setupRadioButtons(): void {
-        const radioButtons: RadioControl[] = this.getFilteredRadioButtons();
-        radioButtons.forEach((radio: RadioControl) => {
+        this.slottedRadioButtons.forEach((radio: HTMLInputElement) => {
             if (this.name !== undefined) {
                 radio.setAttribute("name", this.name);
             }
@@ -163,23 +158,11 @@ export class RadioGroup extends FASTElement {
             }
         });
 
-        if (this.value === undefined && radioButtons.length > 0) {
-            radioButtons[0].setAttribute("tabindex", "0");
-            this.focusedRadio = radioButtons[0];
+        if (this.value === undefined && this.slottedRadioButtons.length > 0) {
+            this.slottedRadioButtons[0].setAttribute("tabindex", "0");
+            this.focusedRadio = this.slottedRadioButtons[0] as HTMLInputElement;
         }
     }
-
-    private getFilteredRadioButtons = (): RadioControl[] => {
-        const radioButtons: RadioControl[] = [];
-        if (this.slottedRadioButtons !== undefined) {
-            this.slottedRadioButtons.forEach((item: any) => {
-                if (isRadioElement(item)) {
-                    radioButtons.push(item as any);
-                }
-            });
-        }
-        return radioButtons;
-    };
 
     private keypressHandler = (e: KeyboardEvent): void => {
         const radio: HTMLInputElement | null = e.target as HTMLInputElement;
@@ -191,7 +174,7 @@ export class RadioGroup extends FASTElement {
     private radioChangeHandler = (e: CustomEvent): void => {
         const changedRadio: HTMLInputElement = e.target as HTMLInputElement;
         if (changedRadio.checked) {
-            this.getFilteredRadioButtons().forEach((radio: HTMLInputElement) => {
+            this.slottedRadioButtons.forEach((radio: HTMLInputElement) => {
                 if (radio !== changedRadio) {
                     radio.checked = false;
                     radio.setAttribute("tabindex", "-1");
@@ -202,12 +185,12 @@ export class RadioGroup extends FASTElement {
         }
     };
 
-    private moveToRadioByIndex = (group: RadioControl[], index: number) => {
-        const radio: RadioControl = group[index];
+    private moveToRadioByIndex = (group: HTMLElement[], index: number) => {
+        const radio: HTMLInputElement = group[index] as HTMLInputElement;
         if (!this.isInsideToolbar) {
             radio.setAttribute("tabindex", "0");
             if (radio.readOnly) {
-                this.getFilteredRadioButtons().forEach((nextRadio: HTMLInputElement) => {
+                this.slottedRadioButtons.forEach((nextRadio: HTMLInputElement) => {
                     if (nextRadio !== radio) {
                         nextRadio.setAttribute("tabindex", "-1");
                     }
@@ -231,7 +214,7 @@ export class RadioGroup extends FASTElement {
 
     /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
     private focusOutHandler = (e: FocusEvent) => {
-        const group: RadioControl[] = this.getFilteredRadioButtons();
+        const group: HTMLElement[] = this.slottedRadioButtons;
         const radio: HTMLInputElement | null = e.target as HTMLInputElement;
         const index: number = radio !== null ? group.indexOf(radio) : 0;
         const focusedIndex: number = this.focusedRadio
@@ -243,7 +226,7 @@ export class RadioGroup extends FASTElement {
             (focusedIndex === group.length - 1 && focusedIndex === index)
         ) {
             if (!this.selectedRadio) {
-                this.focusedRadio = group[0];
+                this.focusedRadio = group[0] as HTMLInputElement;
                 this.focusedRadio.setAttribute("tabindex", "0");
                 group.forEach((nextRadio: HTMLInputElement) => {
                     if (nextRadio !== this.focusedRadio) {
@@ -265,7 +248,7 @@ export class RadioGroup extends FASTElement {
     private clickHandler = (e: MouseEvent): void => {
         const radio: HTMLInputElement | null = e.target as HTMLInputElement;
         if (radio) {
-            const group: RadioControl[] = this.getFilteredRadioButtons();
+            const group: HTMLElement[] = this.slottedRadioButtons;
             if (radio.checked || group.indexOf(radio) === 0) {
                 radio.setAttribute("tabindex", "0");
                 this.selectedRadio = radio;
@@ -280,7 +263,7 @@ export class RadioGroup extends FASTElement {
 
     private shouldMoveOffGroupToTheRight = (
         index: number,
-        group: RadioControl[],
+        group: HTMLElement[],
         keyCode: number
     ): boolean => {
         return (
@@ -291,7 +274,7 @@ export class RadioGroup extends FASTElement {
     };
 
     private shouldMoveOffGroupToTheLeft = (
-        group: RadioControl[],
+        group: HTMLElement[],
         keyCode: number
     ): boolean => {
         const index = this.focusedRadio ? group.indexOf(this.focusedRadio) - 1 : 0;
@@ -318,7 +301,7 @@ export class RadioGroup extends FASTElement {
      * @internal
      */
     public keydownHandler = (e: KeyboardEvent): void => {
-        const group: RadioControl[] = this.getFilteredRadioButtons();
+        const group: HTMLElement[] = this.slottedRadioButtons;
         let index: number = 0;
         if (e.keyCode !== keyCodeTab && e.keyCode !== keyCodeSpace) {
             e.preventDefault();
@@ -339,7 +322,7 @@ export class RadioGroup extends FASTElement {
                 /* looping to get to next radio that is not disabled */
                 /* matching native radio/radiogroup which does not select an item if there is only 1 in the group */
                 while (index < group.length && group.length > 1) {
-                    if (!group[index].disabled) {
+                    if (!(group[index] as HTMLInputElement).disabled) {
                         this.moveToRadioByIndex(group, index);
                         break;
                     } else if (
@@ -369,7 +352,7 @@ export class RadioGroup extends FASTElement {
 
                 /* looping to get to next radio that is not disabled */
                 while (index >= 0 && group.length > 1) {
-                    if (!group[index].disabled) {
+                    if (!(group[index] as HTMLInputElement).disabled) {
                         this.moveToRadioByIndex(group, index);
                         break;
                     } else if (

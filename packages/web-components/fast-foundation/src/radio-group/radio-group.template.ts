@@ -19,7 +19,10 @@ export const RadioGroupTemplate = html<RadioGroup>`
             part="positioning-region"
         >
             <slot
-                ${slotted({ property: "slottedRadioButtons", filter: elements() })}
+                ${slotted({
+                    property: "slottedRadioButtons",
+                    filter: elements("[role=radio]"),
+                })}
             ></slot>
         </div>
     </template>
