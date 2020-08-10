@@ -1,4 +1,4 @@
-import { attr, observable } from "@microsoft/fast-element";
+import { attr } from "@microsoft/fast-element";
 import { FormAssociated } from "../form-associated/form-associated";
 import { ARIAGlobalStatesAndProperties, StartEnd } from "../patterns/index";
 import { applyMixins } from "../utilities/apply-mixins";

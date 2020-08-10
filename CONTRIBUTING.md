@@ -33,6 +33,11 @@ Now that your machine is setup, you can clone the FAST repository. Open a termin
 ```shell
 git clone https://github.com/microsoft/fast.git
 ```
+Cloning via SSH:
+
+```shell
+git clone git@github.com:microsoft/fast.git
+```
 
 ### Installing and building
 
@@ -47,6 +52,15 @@ After the initial install, you can re-build all workspaces in the future with:
 ```bash
 lerna run prepare
 ```
+
+### Developing in `fast-components`
+If you're interested in contributing changes to the `fast-component` design system start by navigating to the `fast-components` directory and starting the Storybook local server there.
+
+```bash
+cd packages/web-components/fast-components
+yarn start
+```
+Storybook will automatically open in a browser window at `localhost:6006`.
 
 ### Testing
 
