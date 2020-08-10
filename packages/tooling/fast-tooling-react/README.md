@@ -321,7 +321,7 @@ Example:
 
 ```json
 {
-    "$schema": "http://json-schema.org/schema#",
+    "$schema": "https://json-schema.org/schema#",
     "id": "my-component",
     "title": "My component",
     "type": "object",
@@ -353,7 +353,7 @@ Example:
 
 ```json
 {
-    "$schema": "http://json-schema.org/schema#",
+    "$schema": "https://json-schema.org/schema#",
     "id": "my-component",
     "title": "My component",
     "type": "object",
@@ -387,7 +387,7 @@ Example:
 
 ```json
 {
-    "$schema": "http://json-schema.org/schema#",
+    "$schema": "https://json-schema.org/schema#",
     "id": "my-component",
     "title": "My component",
     "type": "object",
@@ -413,7 +413,7 @@ Example:
 
 ```json
 {
-    "$schema": "http://json-schema.org/schema#",
+    "$schema": "https://json-schema.org/schema#",
     "id": "my-component",
     "title": "My component",
     "type": "object",
@@ -493,7 +493,7 @@ Example:
 
 ```json
 {
-    "$schema": "http://json-schema.org/schema#",
+    "$schema": "https://json-schema.org/schema#",
     "id": "my-component",
     "title": "My component",
     "oneOf": [
@@ -529,7 +529,7 @@ Any enums will be converted to a select dropdown.
 
 ```json
 {
-    "$schema": "http://json-schema.org/schema#",
+    "$schema": "https://json-schema.org/schema#",
     "id": "my-component",
     "title": "My component",
     "type": "object",

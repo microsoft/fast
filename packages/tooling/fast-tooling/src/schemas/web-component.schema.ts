@@ -4,7 +4,7 @@
  * Important: if it is updated, also update the "../data-utilities/web-component.ts" file
  */
 export default {
-    $schema: "http://json-schema.org/schema#",
+    $schema: "https://json-schema.org/schema#",
     id: "custom-element-definition",
     title: "A definition for web components",
     type: "object",
