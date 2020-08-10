@@ -1,5 +1,5 @@
 import { attr, FASTElement, observable } from "@microsoft/fast-element";
-import { Orientation, isHTMLElement, keyCodeSpace } from "@microsoft/fast-web-utilities";
+import { Orientation, keyCodeSpace } from "@microsoft/fast-web-utilities";
 import {
     keyCodeArrowDown,
     keyCodeArrowLeft,
