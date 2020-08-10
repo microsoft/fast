@@ -19,70 +19,10 @@ const defaultPlaceholderIcon2 = placeholderIcon("Slot2End", "Slot");
 const defaultPlaceholderIcon3 = placeholderIcon("Slot3End", "Slot");
 const defaultPlaceholderIcon4 = placeholderIcon("Slot4End", "Slot");
 
-function collapsedIcon(parent: string): DataDictionary<any> {
-    const collapsedIconID = uniqueId("CollapsedIcon");
-    const collapsedIconPath1 = uniqueId("CollapsedIconPath1");
-    const collapsedIconPath2 = uniqueId("CollapsedIconPath2");
-    return [
-        {
-            [collapsedIconID]: {
-                parent: {
-                    id: parent,
-                    dataLocation: "SlotCollapsedIcon",
-                },
-                schemaId: "svg",
-                data: {
-                    style: "stroke: #E62F63",
-                    width: "18",
-                    height: "18",
-                    viewBox: "0 0 18 18",
-                    fill: "none",
-                    xmlns: "https://www.w3.org/2000/svg",
-                    Slot: [
-                        {
-                            id: collapsedIconPath1,
-                        },
-                        {
-                            id: collapsedIconPath2,
-                        },
-                    ],
-                },
-            },
-            [collapsedIconPath1]: {
-                parent: {
-                    id: collapsedIconID,
-                    dataLocation: "Slot",
-                },
-                schemaId: "path",
-                data: {
-                    d:
-                        "M15.2222 1H2.77778C1.79594 1 1 1.79594 1 2.77778V15.2222C1 16.2041 1.79594 17 2.77778 17H15.2222C16.2041 17 17 16.2041 17 15.2222V2.77778C17 1.79594 16.2041 1 15.2222 1Z",
-                    "stroke-linecap": "round",
-                    "stroke-linejoin": "round",
-                },
-            },
-            [collapsedIconPath2]: {
-                parent: {
-                    id: collapsedIconID,
-                    dataLocation: "Slot",
-                },
-                schemaId: "path",
-                data: {
-                    d: "M5.44446 9H12.5556",
-                    "stroke-linecap": "round",
-                    "stroke-linejoin": "round",
-                },
-            },
-        },
-        collapsedIconID,
-    ];
-}
-
 function expandedIcon(parent: string): DataDictionary<any> {
     const expandedIconID = uniqueId("ExpandedIcon");
     const expandedIconPath1 = uniqueId("ExpandedIconPath1");
     const expandedIconPath2 = uniqueId("ExpandedIconPath2");
-    const expandedIconPath3 = uniqueId("ExpandedIconPath3");
     return [
         {
             [expandedIconID]: {
@@ -104,9 +44,6 @@ function expandedIcon(parent: string): DataDictionary<any> {
                         },
                         {
                             id: expandedIconPath2,
-                        },
-                        {
-                            id: expandedIconPath3,
                         },
                     ],
                 },
@@ -131,14 +68,77 @@ function expandedIcon(parent: string): DataDictionary<any> {
                 },
                 schemaId: "path",
                 data: {
+                    d: "M5.44446 9H12.5556",
+                    "stroke-linecap": "round",
+                    "stroke-linejoin": "round",
+                },
+            },
+        },
+        expandedIconID,
+    ];
+}
+
+function collapsedIcon(parent: string): DataDictionary<any> {
+    const collapsedIconID = uniqueId("Collapsed");
+    const collapsedIconPath1 = uniqueId("CollapsedPath1");
+    const collapsedIconPath2 = uniqueId("CollapsedPath2");
+    const collapsedIconPath3 = uniqueId("CollapsedPath3");
+    return [
+        {
+            [collapsedIconID]: {
+                parent: {
+                    id: parent,
+                    dataLocation: "SlotCollapsedIcon",
+                },
+                schemaId: "svg",
+                data: {
+                    style: "stroke: #E62F63",
+                    width: "18",
+                    height: "18",
+                    viewBox: "0 0 18 18",
+                    fill: "none",
+                    xmlns: "https://www.w3.org/2000/svg",
+                    Slot: [
+                        {
+                            id: collapsedIconPath1,
+                        },
+                        {
+                            id: collapsedIconPath2,
+                        },
+                        {
+                            id: collapsedIconPath3,
+                        },
+                    ],
+                },
+            },
+            [collapsedIconPath1]: {
+                parent: {
+                    id: collapsedIconID,
+                    dataLocation: "Slot",
+                },
+                schemaId: "path",
+                data: {
+                    d:
+                        "M15.2222 1H2.77778C1.79594 1 1 1.79594 1 2.77778V15.2222C1 16.2041 1.79594 17 2.77778 17H15.2222C16.2041 17 17 16.2041 17 15.2222V2.77778C17 1.79594 16.2041 1 15.2222 1Z",
+                    "stroke-linecap": "round",
+                    "stroke-linejoin": "round",
+                },
+            },
+            [collapsedIconPath2]: {
+                parent: {
+                    id: collapsedIconID,
+                    dataLocation: "Slot",
+                },
+                schemaId: "path",
+                data: {
                     d: "M9 5.44446V12.5556",
                     "stroke-linecap": "round",
                     "stroke-linejoin": "round",
                 },
             },
-            [expandedIconPath3]: {
+            [collapsedIconPath3]: {
                 parent: {
-                    id: expandedIconID,
+                    id: collapsedIconID,
                     dataLocation: "Slot",
                 },
                 schemaId: "path",
@@ -149,7 +149,7 @@ function expandedIcon(parent: string): DataDictionary<any> {
                 },
             },
         },
-        expandedIconID,
+        collapsedIconID,
     ];
 }
 
