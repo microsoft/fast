@@ -51,7 +51,7 @@ class SoftRemove extends React.Component<SoftRemoveProps, {}> {
                     width={"12"}
                     height={"14"}
                     viewBox={"0 0 10 16"}
-                    xmlns={"http://www.w3.org/2000/svg"}
+                    xmlns={"https://www.w3.org/2000/svg"}
                 >
                     <path
                         d="M9.4,6.8c0.2-0.5,0.3-1.1,0.3-1.6c0-0.4-0.1-0.8-0.2-1.1C9.4,3.6,9.3,3.3,9.1,3C8.9,2.6,8.7,2.4,8.4,2.1S7.9,1.6,7.5,1.4
@@ -72,7 +72,7 @@ class SoftRemove extends React.Component<SoftRemoveProps, {}> {
                 width={"12"}
                 height={"14"}
                 viewBox={"0 0 10 16"}
-                xmlns={"http://www.w3.org/2000/svg"}
+                xmlns={"https://www.w3.org/2000/svg"}
             >
                 <path
                     d="M9.5,0.8H8.8H8.5V1v2C8.5,2.9,8.4,2.8,8.3,2.7l0,0C8.1,2.5,7.9,2.3,7.7,2.1l0,0c0,0,0,0,0,0c0,0,0,0,0,0l0,0

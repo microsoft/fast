@@ -14,7 +14,7 @@ class DefaultValue extends React.Component<DefaultValueProps, {}> {
                     height={"14"}
                     width={"14"}
                     fill={"none"}
-                    xmlns={"http://www.w3.org/2000/svg"}
+                    xmlns={"https://www.w3.org/2000/svg"}
                 >
                     <title>This is the default value, click to set it as the value</title>
                     <path

@@ -27,7 +27,7 @@ export const Dimension: React.FC<DimensionProps> = ({
                 height="14"
                 viewBox="0 0 14 14"
                 fill="none"
-                xmlns="http://www.w3.org/2000/svg"
+                xmlns="https://www.w3.org/2000/svg"
                 aria-hidden={true}
                 style={{ marginRight: 4, marginLeft: 4 }}
             >
