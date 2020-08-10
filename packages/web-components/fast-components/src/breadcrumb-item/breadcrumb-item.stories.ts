@@ -7,7 +7,7 @@ FASTBreadcrumbItem;
 FASTDesignSystemProvider;
 
 export default {
-    title: "BreadcrumbItem",
+    title: "Breadcrumb Item",
 };
 
 export const BreadcrumbItem = () => BreadcrumbItemTemplate;

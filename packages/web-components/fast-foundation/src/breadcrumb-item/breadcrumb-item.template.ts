@@ -9,7 +9,6 @@ import { endTemplate, startTemplate } from "../patterns/start-end";
  */
 export const BreadcrumbItemTemplate = html<BreadcrumbItem>`
     <div role="listitem" class="listitem" part="listitem">
-        ${startTemplate}
         <slot
             ${slotted({
                 property: "defaultSlottedNodes",
@@ -29,14 +28,15 @@ export const BreadcrumbItemTemplate = html<BreadcrumbItem>`
                         href="${x => x.href}"
                         aria-current="${x => (x.isCurrent ? "page" : void 0)}"
                     >
+                        ${startTemplate}
                         <span class="content" part="content">
                             ${x => x.name}
                         </span>
+                        ${endTemplate}
                     </a>
                 `
             )}
         </slot>
-        ${endTemplate}
         ${when(
             x => x.showSeparator,
             html<BreadcrumbItem>`
