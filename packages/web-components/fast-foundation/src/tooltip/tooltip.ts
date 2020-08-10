@@ -8,7 +8,7 @@ export class Tooltip extends FASTElement {
     private static DirectionAttributeName: string = "dir";
 
     /**
-     * Whether the tooltip is visible or not. 
+     * Whether the tooltip is visible or not.
      * If undefined tooltip is shown when anchor element is hovered
      *
      * @defaultValue - undefined
@@ -50,7 +50,7 @@ export class Tooltip extends FASTElement {
     public delay: number = 300;
 
     /**
-     * Controls the placement of the tooltip relative to the anchor. 
+     * Controls the placement of the tooltip relative to the anchor.
      * When the position is undefined the tooltip is placed above or below the anchor based on available space.
      *
      * @defaultValue - undefined
@@ -66,8 +66,8 @@ export class Tooltip extends FASTElement {
     }
 
     /**
-     * the html element currently being used as anchor.  
-     * Setting this directly overrides the anchor attribute. 
+     * the html element currently being used as anchor.
+     * Setting this directly overrides the anchor attribute.
      *
      * @public
      */
@@ -119,7 +119,7 @@ export class Tooltip extends FASTElement {
 
     /**
      * The current viewport element instance
-     * 
+     *
      * @internal
      */
     @observable
@@ -139,7 +139,7 @@ export class Tooltip extends FASTElement {
 
     /**
      * @internal
-     */  
+     */
     @observable
     public horizontalPositioningMode: AxisPositioningMode = "dynamic";
 
@@ -188,7 +188,7 @@ export class Tooltip extends FASTElement {
     /**
      * Track current direction to pass to the anchored region
      * updated when tooltip is shown
-     * 
+     *
      * @internal
      */
     @observable
@@ -196,13 +196,20 @@ export class Tooltip extends FASTElement {
 
     /**
      * reference to the anchored region
-     * 
+     *
      * @internal
      */
     public region: AnchoredRegion;
 
+    /**
+     * The timer that tracks delay time before the tooltip is shown on hover
+     */
     private delayTimer: number | null = null;
 
+    
+    /**
+     * Indicates whether the anchor is currently being hovered
+     */
     private isAnchorHovered: boolean = false;
 
     constructor() {
@@ -225,7 +232,7 @@ export class Tooltip extends FASTElement {
 
     /**
      * invoked when the anchored region's position relative to the anchor changes
-     * 
+     *
      * @internal
      */
     public handlePositionChange = (ev: Event): void => {
@@ -247,7 +254,7 @@ export class Tooltip extends FASTElement {
             "inset-right",
             this.region.horizontalPosition === "insetRight"
         );
-    }
+    };
 
     /**
      * mouse enters anchor
@@ -267,6 +274,9 @@ export class Tooltip extends FASTElement {
         this.clearDelayTimer();
     };
 
+    /**
+     * starts the hover timer if not currently running
+     */
     private startHoverTimer = (): void => {
         if (this.isAnchorHovered) {
             return;
@@ -283,6 +293,18 @@ export class Tooltip extends FASTElement {
         this.startHover();
     };
 
+
+    /**
+     * starts the hover delay timer
+     */
+    private startHover = (): void => {
+        this.isAnchorHovered = true;
+        this.updateTooltipVisibility();
+    };
+
+    /**
+     * clears the hover delay
+     */
     private clearDelayTimer = (): void => {
         if (this.delayTimer !== null) {
             clearTimeout(this.delayTimer);
@@ -290,6 +312,9 @@ export class Tooltip extends FASTElement {
         }
     };
 
+    /**
+     * updated the properties being passed to the anchored region
+     */
     private updateLayout(): void {
         switch (this.position) {
             case "top":
@@ -338,6 +363,10 @@ export class Tooltip extends FASTElement {
         return document.getElementById(this.anchor);
     };
 
+
+    /**
+     * handles key down events to check for dismiss
+     */
     private handleDocumentKeydown = (e: KeyboardEvent): void => {
         if (!e.defaultPrevented && this.tooltipVisible) {
             switch (e.keyCode) {
@@ -350,11 +379,9 @@ export class Tooltip extends FASTElement {
         }
     };
 
-    private startHover = (): void => {
-        this.isAnchorHovered = true;
-        this.updateTooltipVisibility();
-    };
-
+    /**
+     * determines whether to show or hide the tooltip based on current state
+     */
     private updateTooltipVisibility = (): void => {
         if (this.visible === false) {
             this.hideTooltip();
@@ -368,15 +395,23 @@ export class Tooltip extends FASTElement {
             this.hideTooltip();
         }
     };
-
+    
+    /**
+     * shows the tooltip
+     */
     private showTooltip = (): void => {
         if (this.tooltipVisible) {
             return;
         }
         this.currentDirection = this.getDirection();
-        DOM.queueUpdate(this.showRegion);
+        this.tooltipVisible = true;
+        document.addEventListener("keydown", this.handleDocumentKeydown);
+        DOM.queueUpdate(this.setRegionProps);
     };
 
+    /**
+     * hides the tooltip
+     */
     private hideTooltip = (): void => {
         if (!this.tooltipVisible) {
             return;
@@ -390,12 +425,10 @@ export class Tooltip extends FASTElement {
         this.tooltipVisible = false;
     };
 
-    private showRegion = (): void => {
-        document.addEventListener("keydown", this.handleDocumentKeydown);
-        this.tooltipVisible = true;
-        DOM.queueUpdate(this.setRegionProps);
-    };
-
+    /**
+     * updates the tooltip anchored region props after it has been
+     * added to the DOM
+     */
     private setRegionProps = (): void => {
         if (!this.tooltipVisible) {
             return;

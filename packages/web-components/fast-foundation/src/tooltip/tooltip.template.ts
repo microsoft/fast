@@ -18,11 +18,7 @@ export const TooltipTemplate = html<Tooltip>`
                 horizontal-inset=${x => x.horizontalInset}
                 fixed-placement="true"
             >
-                <div
-                    class="tooltip"
-                    part="tooltip"
-                    role="tooltip"
-                >
+                <div class="tooltip" part="tooltip" role="tooltip">
                     <slot></slot>
                 </div>
             </fast-anchored-region>
