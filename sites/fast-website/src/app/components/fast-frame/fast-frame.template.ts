@@ -271,12 +271,10 @@ export const FastFrameTemplate = html<FastFrame>`
                         <fast-menu-item role="menuitem" aria-label="Example menu item">Menu item 4</fast-menu-item>
                     </fast-menu>
                     <div class="control-container">
-                        <div class="control-container-column">
-                            <fast-radio tabindex="${x =>
-                                x.setTabIndex()}" aria-label="Example radio 1">Radio 1</fast-radio>
-                            <fast-radio tabindex="${x =>
-                                x.setTabIndex()}" aria-label="Example radio 2">Radio 2</fast-radio>
-                        </div>
+                        <fast-radio-group name="example radio group" orientation="vertical">
+                            <fast-radio aria-label="Example radio 1">Radio 1</fast-radio>
+                            <fast-radio aria-label="Example radio 2">Radio 2</fast-radio>
+                        </fast-radio-group>
                         <div class="control-container-grid">
                             <fast-switch tabindex="${x =>
                                 x.setTabIndex()}" aria-label="Example toggle"></fast-switch>
