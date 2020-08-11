@@ -210,6 +210,14 @@ export class TextField extends FormAssociated<HTMLInputElement> {
     }
 
     /**
+     * @internal
+     */
+    public keypressHandler = (e: KeyboardEvent): boolean => {
+        super.keypressHandler(e);
+        return true;
+    };
+
+    /**
      * Handles the internal control's `input` event
      * @internal
      */
