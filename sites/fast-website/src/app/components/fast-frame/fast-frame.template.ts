@@ -48,6 +48,7 @@ export const FastFrameTemplate = html<FastFrame>`
                         <div class="content-control-container" >
                             <label for="neutral-color-pickers">Neutral color</label>
                             <fast-radio-group
+                                class="swatches"
                                 name="neutral-color-pickers"
                                 value="${x => x.previewNeutralPalette[0]}"
                                 @change="${(x, c) =>
@@ -70,6 +71,7 @@ export const FastFrameTemplate = html<FastFrame>`
                             </fast-radio-group>
                             <label for="accent-color-pickers">Accent color</label>
                             <fast-radio-group
+                                class="swatches"
                                 name="accent-color-pickers"
                                 value="${x => x.previewAccentPalette[0]}"
                                 @change="${(x, c) =>
@@ -271,12 +273,10 @@ export const FastFrameTemplate = html<FastFrame>`
                         <fast-menu-item role="menuitem" aria-label="Example menu item">Menu item 4</fast-menu-item>
                     </fast-menu>
                     <div class="control-container">
-                        <div class="control-container-column">
-                            <fast-radio tabindex="${x =>
-                                x.setTabIndex()}" aria-label="Example radio 1">Radio 1</fast-radio>
-                            <fast-radio tabindex="${x =>
-                                x.setTabIndex()}" aria-label="Example radio 2">Radio 2</fast-radio>
-                        </div>
+                        <fast-radio-group class="example-radios" name="example radio group" orientation="vertical">
+                            <fast-radio aria-label="Example radio 1">Radio 1</fast-radio>
+                            <fast-radio aria-label="Example radio 2">Radio 2</fast-radio>
+                        </fast-radio-group>
                         <div class="control-container-grid">
                             <fast-switch tabindex="${x =>
                                 x.setTabIndex()}" aria-label="Example toggle"></fast-switch>

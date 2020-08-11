@@ -141,10 +141,6 @@ export const FastFrameStyles = css`
         margin-inline-start: calc(var(--design-unit) * 2px + 2px);
     }
 
-    .control-container-column {
-        display: grid;
-    }
-
     .control-container-grid {
         display: grid;
         grid-template-columns: auto 1fr;
@@ -251,7 +247,17 @@ export const FastFrameStyles = css`
         background: transparent;
     }
 
-    fast-radio-group::part(positioning-region) {
+    fast-radio-group.example-radios {
+        margin: 0;
+    }
+
+    fast-radio-group.example-radios::part(positioning-region) {
+        display: grid;
+        grid-template-columns: auto;
+        height: 100%;
+    }
+
+    fast-radio-group.swatches::part(positioning-region) {
         display: grid;
         grid-gap: 10px;
         grid-auto-flow: column;
