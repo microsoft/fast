@@ -22,8 +22,8 @@ module.exports = {
             logo: {
                 alt:
                     "Line drawing of a small moon orbiting around a planet with the words FAST next to it",
-                srcDark: "https://static.fast.design/assets/fast-inline-logo.png",
-                src: "https://static.fast.design/assets/fast-inline-logo-light.png",
+                srcDark: "https://static.fast.design/assets/fast-inline-logo.svg",
+                src: "https://static.fast.design/assets/fast-inline-logo-light.svg",
 
                 // FIXME: #3299 Docusaurus displays a blank page when clicking the logo link without workaround
                 target: "_blank",
