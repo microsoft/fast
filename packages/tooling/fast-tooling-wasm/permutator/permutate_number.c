@@ -1,4 +1,6 @@
 #include <stdlib.h>
+#include <stdbool.h>
+#include <math.h>
 #include "cjson/cJSON.h"
 #include "type.h"
 
@@ -14,21 +16,41 @@ double get_random_number(cJSON *configSchema)
     cJSON *maximum = cJSON_GetObjectItemCaseSensitive(configSchema, "maximum");
     cJSON *exclusiveMaximum = cJSON_GetObjectItemCaseSensitive(configSchema, "exclusiveMaximum");
 
-    const int multipleOfValue = multipleOf->valueint
-        ? multipleOf->valueint
+    const bool minimumDefined = (minimum && minimum->valuedouble) || (exclusiveMinimum && exclusiveMinimum->valuedouble);
+
+    const bool maximumDefined = (maximum && maximum->valuedouble) || (exclusiveMaximum && exclusiveMaximum->valuedouble);
+
+    const double multipleOfValue = multipleOf && multipleOf->valuedouble
+        ? multipleOf->valuedouble
         : 1;
-    const int minimumValue = minimum->valueint
-        ? minimum->valueint
-        : exclusiveMinimum->valueint
-        ? exclusiveMinimum->valueint + 1
+    double minimumValue = minimum && minimum->valuedouble
+        ? minimum->valuedouble
+        : exclusiveMinimum && exclusiveMinimum->valuedouble
+        ? exclusiveMinimum->valuedouble + 1
         : 0;
-    const int maximumValue = maximum->valueint
-        ? maximum->valueint + 1
-        : exclusiveMaximum->valueint
-        ? exclusiveMaximum->valueint
+    double maximumValue = maximum && maximum->valuedouble
+        ? maximum->valuedouble + 1
+        : exclusiveMaximum && exclusiveMaximum->valuedouble
+        ? exclusiveMaximum->valuedouble
         : 101;
-    const int randomNumber = (rand() % (maximumValue - minimumValue)) + minimumValue;
-    const int remainder = randomNumber % multipleOfValue;
+
+    if (maximumDefined && !minimumDefined)
+    {
+        minimumValue = maximumValue - 100;
+    }
+
+    if (!maximumDefined && minimumDefined)
+    {
+        maximumValue = minimumValue + 100; 
+    }
+
+    if (minimumValue > maximumValue)
+    {
+        return 0;
+    }
+
+    const double randomNumber = fmod(rand(), (maximumValue - minimumValue)) + minimumValue;
+    const double remainder = fmod(randomNumber, multipleOfValue);
 
     return randomNumber - remainder;
 }
@@ -39,21 +61,21 @@ double get_random_number(cJSON *configSchema)
  * - if default and/or examples exist, use these before generating any random numbers
  */
 double get_number_iteration_value(
-    int iteration,
+    double iteration,
     enum Type type,
     cJSON *configSchema
 )
 {
-    int count = 0;
+    double count = 0;
     cJSON *defaultValue = cJSON_GetObjectItemCaseSensitive(configSchema, "default");
     cJSON *enumValues = cJSON_GetObjectItemCaseSensitive(configSchema, "enum");
     cJSON *exampleValues = cJSON_GetObjectItemCaseSensitive(configSchema, "examples");
 
     if (enumValues != NULL)
     {
-        const int arraySize = cJSON_GetArraySize(enumValues);
+        const double arraySize = cJSON_GetArraySize(enumValues);
 
-        return cJSON_GetArrayItem(enumValues, iteration % arraySize)->valuedouble;
+        return cJSON_GetArrayItem(enumValues, fmod(iteration, arraySize))->valuedouble;
     } else {
         if (defaultValue != NULL)
         {
@@ -67,7 +89,7 @@ double get_number_iteration_value(
 
         if (exampleValues != NULL)
         {
-            const int arraySize = cJSON_GetArraySize(exampleValues);
+            const double arraySize = cJSON_GetArraySize(exampleValues);
 
             if (arraySize + count > iteration)
             {
@@ -91,7 +113,7 @@ struct PermutatedType permutate_number(
 
     permutation.type = type;
     permutation.t.number = get_number_iteration_value(
-        iteration,
+        (double) iteration,
         Number,
         configSchema
     );
