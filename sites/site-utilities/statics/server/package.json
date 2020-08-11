@@ -1,7 +1,7 @@
 {
   "name": "@microsoft/fast-production-sites",
   "version": "1.0.0",
-  "description": "These packages are required to run node server on Azure\"",
+  "description": "Required to install NPM packages on Azure running Node/Express.",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/microsoft/fast.git"
