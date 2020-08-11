@@ -30,7 +30,7 @@ const template = html<DesignPropertyPanel>`
                 min="0"
                 max="50"
                 step="1"
-                value=${x => x.provider?.cornerRadius}
+                :value=${x => x.provider?.cornerRadius}
                 @change=${(x, c) => (x.provider.cornerRadius = targetValue(c))}
             >
                 <fluent-slider-label position="0">0px</fluent-slider-label>
@@ -45,7 +45,7 @@ const template = html<DesignPropertyPanel>`
                 min="0"
                 max="1"
                 step="0.01"
-                value=${x => x.provider?.disabledOpacity}
+                :value=${x => x.provider?.disabledOpacity}
                 @change=${(x, c) =>
                     (x.provider.disabledOpacity = parseFloat(targetValue(c)).toFixed(2))}
             >
@@ -61,7 +61,7 @@ const template = html<DesignPropertyPanel>`
                 min="0"
                 max="1"
                 step="0.01"
-                value=${x => parseFloat(x.provider?.baseLayerLuminance)}
+                :value=${x => parseFloat(x.provider?.baseLayerLuminance)}
                 @change=${(x, c) => {
                     x.provider.backgroundColor = (neutralLayerL1Behavior.value as any)({
                         ...x.provider.designSystem,
