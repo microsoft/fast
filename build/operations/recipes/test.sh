@@ -11,29 +11,50 @@ completion, disables access and resumes normal operations.
 
     # Web App valid values
     declare -a subscriptions=("production" "development")
-    declare -a locations=("west")
-
-    # Defaults
+    declare -a locations=("west" "east")
     product=fast
-    subscription=production
-
-## SHELL Arguments
+        
+## CONFIG Options
     echo "${bold}${green}TESTING started ...${reset}"
     echo "${green}Predefined defaults found${reset}" && echo ""
-    source inputs.sh --debug false --subscription $subscription
+    echo "Select an ${bold}${green}Environment${reset}:"
+    select environment in production staging development exit
+    do
+        case $environment in
+            production)
+                subscription=$environment
+                environment=$environment
+                break ;;
+            staging | development)
+                # there is no staging subscription, so use development
+                subscription=development
+                environment=staging
+                env_path=/slots/stage
+                break ;;
+            exit)
+                break ;;
+            *)
+                echo "${red}invalid entry, try again${reset}" ;;
+        esac
+    done
+    echo "${green}Environment ${bold}$environment${reset} ${green}set ...${reset}"
+    echo ""
+
+## SHELL Arguments
+   source inputs.sh --debug false --subscription $subscription
 
 ## TASK Process
-    echo "${bold}${green}Application${reset} Select an application to test:"
     status=false
+    echo "Select an ${bold}${green}Application${reset}:"
     select application in app color create explore motion www exit
     do
         case $application in
 
             app | color | create | explore | motion | www)
 
+                echo "${green}Application ${bold}$application${reset} ${green}set ...${reset}"
                 echo ""
-                echo "${green}Testing ${bold}$application${reset} ${green}now ...${reset}"
-            
+
                 for location in ${locations[@]}; do
                     status=true
 
@@ -41,12 +62,12 @@ completion, disables access and resumes normal operations.
                     resource_group=fast-$location'us'-rg
                     public_ip="$(wget -qO- ipinfo.io/ip)"/16
                     [[ $debug == true ]] && echo "public IP: ${public_ip}" && echo "performing testing into $resource_group ..."
-                    echo "${green}.. testing on $location region started ...${reset}"
+                    echo ".. start testing on $location region ..."
 
                     rule_name="Front Door IPv4 IP Testing"
                     rule_description="Allow public IP access for testing from local system"
-                    new_app_name=$application-$location-app
-                    echo ".. to $new_app_name instance ..."
+                    new_app_name=$application-$location-app$env_path
+                    echo ".. for $new_app_name instance ..."
 
                     echo ".. open network access for $public_ip ..."
                     echo ""
@@ -59,10 +80,13 @@ completion, disables access and resumes normal operations.
                         --ip-address ${public_ip}
 
                     echo ""
-                    echo "${yellow}begin testing ..."
+                    echo "begin testing ..."
+                    echo ".. verify website on production at https://$new_app_name.azurewebsites.net"
+                    echo ".. verify files on production at https://$new_app_name.scm.azurewebsites.net/webssh/host"
+                    echo ""
                     echo ".. verify website on staging at https://$new_app_name-stage.azurewebsites.net"
                     echo ".. verify files on staging at https://$new_app_name-stage.scm.azurewebsites.net/webssh/host"
-                    echo "end testing ...${reset}"
+                    echo "end testing ..."
                     echo ""
                     read -p ".. press [enter] key to resume if testing is complete ..."
 
@@ -71,7 +95,8 @@ completion, disables access and resumes normal operations.
                     
                     echo "${green}.. testing on $location region finished ...${reset}"
                     echo ""
-
+                    echo "${green}----- NEXT -----${reset}"
+                    echo ""
                 done
                 echo "${bold}${green}TESTING finished. Continue with another?${reset}" 
                 ;;
