@@ -147,6 +147,7 @@ To complete our setup, we need to add an `index.html` file to the root of our pr
 <html lang="en">
   <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
     <title>FAST Webpack</title>
   </head>
   <body>
@@ -215,6 +216,13 @@ This code imports the `<fast-design-system-provider>` component as well as the `
   </style>
   <script src="dist/bundle.js"></script>
 </body>
+```
+
+Create a `.babelrc` in your project root and put the following content to mitigate decorator tag error on compilation within webpack.
+```json
+"plugins": [
+    ["@babel/plugin-proposal-decorators", { "legacy": true }]
+  ]
 ```
 
 After saving your `index.html` file, refresh your browser and you should see a card with text and a button.
