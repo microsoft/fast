@@ -13,7 +13,7 @@ app.use(helmet());
 var publicDir = path.resolve(__dirname);
 
 // Set static application options
-app.use("/", express.static(publicDir));
+app.use("/", express.static(publicDir), { maxAge: "3d" });
 
 // Set fallback application options
 app.use(fallback("index.html", { root: publicDir }));
