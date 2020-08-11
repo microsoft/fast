@@ -34,6 +34,21 @@ module.exports = {
             },
             items: [
                 {
+                    href: "https://www.fast.design",
+                    label: "Home",
+                    position: "right",
+                },
+                {
+                    href: "https://explore.fast.design/",
+                    label: "Components",
+                    position: "right",
+                },
+                {
+                    href: "https://discord.com/invite/FcSNfg4",
+                    label: "Community",
+                    position: "right",
+                },
+                {
                     href: "https://github.com/microsoft/fast",
                     label: "GitHub",
                     position: "right",
