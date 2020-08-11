@@ -9,7 +9,7 @@ import { get } from "lodash-es";
 
 export const dataSetDictionaryId = "data-creator-wrapper-dictionary-id";
 const nameSpacedURIs = {
-    svg: "http://www.w3.org/2000/svg",
+    svg: "https://www.w3.org/2000/svg",
 };
 const nameSpacedTags = {
     animate: nameSpacedURIs.svg,

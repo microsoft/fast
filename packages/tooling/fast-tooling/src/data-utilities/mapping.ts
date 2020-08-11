@@ -180,7 +180,7 @@ export interface ResolverConfig<T> {
 }
 
 const nameSpacedURIs = {
-    svg: "http://www.w3.org/2000/svg",
+    svg: "https://www.w3.org/2000/svg",
 };
 const nameSpacedTags = {
     animate: nameSpacedURIs.svg,
@@ -473,7 +473,7 @@ export function mapWebComponentDefinitionToJSONSchema(
             i++
         ) {
             schemas.push({
-                $schema: "http://json-schema.org/schema#",
+                $schema: "https://json-schema.org/schema#",
                 $id: webComponentDefinition.tags[i].name,
                 id: webComponentDefinition.tags[i].name,
                 title: `<${webComponentDefinition.tags[i].name}>`,

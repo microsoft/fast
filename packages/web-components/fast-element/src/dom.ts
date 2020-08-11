@@ -52,7 +52,7 @@ function processQueue(): void {
     updateQueue.length = 0;
 }
 
-const marker = `fast-${Math.random().toString(36).substring(7)}`;
+const marker = `fast-${Math.random().toString(36).substring(2, 8)}`;
 
 /** @internal */
 export const _interpolationStart = `${marker}{`;
