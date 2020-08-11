@@ -1,23 +1,23 @@
 import {
-    FASTDesignSystemProvider,
-    FASTButton,
-    FASTCheckbox,
-    FASTTextField,
-    FASTCard,
-    FASTSlider,
-    FASTSliderLabel,
+    FluentDesignSystemProvider,
+    FluentButton,
+    FluentCheckbox,
+    FluentTextField,
+    FluentCard,
+    FluentSlider,
+    FluentSliderLabel,
 } from "@fluentui/web-components";
 import { TodoApp } from "./todo-app";
 import { TodoForm } from "./todo-form";
 import { DesignPropertyPanel } from "./design-property-panel";
 
-FASTDesignSystemProvider;
-FASTButton;
-FASTCheckbox;
-FASTTextField;
-FASTCard;
-FASTSlider;
-FASTSliderLabel;
+FluentDesignSystemProvider;
+FluentButton;
+FluentCheckbox;
+FluentTextField;
+FluentCard;
+FluentSlider;
+FluentSliderLabel;
 
 TodoForm;
 TodoApp;

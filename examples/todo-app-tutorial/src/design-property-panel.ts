@@ -21,11 +21,11 @@ function targetValue(ctx: ExecutionContext) {
 }
 
 const template = html<DesignPropertyPanel>`
-    <fast-card>
+    <fluent-card>
         <h2>Design System Properties</h2>
         <div class="row">
             <h4>Corner Radius: ${x => x.provider?.cornerRadius}px</h4>
-            <fast-slider
+            <fluent-slider
                 orientation="horizontal"
                 min="0"
                 max="50"
@@ -33,14 +33,14 @@ const template = html<DesignPropertyPanel>`
                 value=${x => x.provider?.cornerRadius}
                 @change=${(x, c) => (x.provider.cornerRadius = targetValue(c))}
             >
-                <fast-slider-label position="0">0px</fast-slider-label>
-                <fast-slider-label position="50">50px</fast-slider-label>
-            </fast-slider>
+                <fluent-slider-label position="0">0px</fluent-slider-label>
+                <fluent-slider-label position="50">50px</fluent-slider-label>
+            </fluent-slider>
         </div>
 
         <div class="row">
             <h4>Disabled Opacity: ${x => x.provider?.disabledOpacity}%</h4>
-            <fast-slider
+            <fluent-slider
                 orientation="horizontal"
                 min="0"
                 max="1"
@@ -49,14 +49,14 @@ const template = html<DesignPropertyPanel>`
                 @change=${(x, c) =>
                     (x.provider.disabledOpacity = parseFloat(targetValue(c)).toFixed(2))}
             >
-                <fast-slider-label position="0">0%</fast-slider-label>
-                <fast-slider-label position="100">100%</fast-slider-label>
-            </fast-slider>
+                <fluent-slider-label position="0">0%</fluent-slider-label>
+                <fluent-slider-label position="100">100%</fluent-slider-label>
+            </fluent-slider>
         </div>
 
         <div class="row">
             <h4>Base Layer Luminance: ${x => x.provider?.baseLayerLuminance}</h4>
-            <fast-slider
+            <fluent-slider
                 orientation="horizontal"
                 min="0"
                 max="1"
@@ -69,10 +69,10 @@ const template = html<DesignPropertyPanel>`
                     x.provider.baseLayerLuminance = parseFloat(targetValue(c)).toFixed(2);
                 }}
             >
-                <fast-slider-label position="0">Black</fast-slider-label>
-                <fast-slider-label position="0.23">Dark</fast-slider-label>
-                <fast-slider-label position="1">Light</fast-slider-label>
-            </fast-slider>
+                <fluent-slider-label position="0">Black</fluent-slider-label>
+                <fluent-slider-label position="0.23">Dark</fluent-slider-label>
+                <fluent-slider-label position="1">Light</fluent-slider-label>
+            </fluent-slider>
         </div>
 
         <div class="row tight">
@@ -91,22 +91,22 @@ const template = html<DesignPropertyPanel>`
 
         <div class="row tight">
             <h4>Design Unit</h4>
-            <fast-text-field
+            <fluent-text-field
                 type="number"
                 :value=${x => x.provider?.designUnit}
                 @change=${(x, c) => (x.provider.designUnit = targetValue(c))}
-            ></fast-text-field>
+            ></fluent-text-field>
         </div>
 
         <div class="row tight">
             <h4>Outline Width</h4>
-            <fast-text-field
+            <fluent-text-field
                 type="number"
                 :value=${x => x.provider?.outlineWidth}
                 @input=${(x, c) => (x.provider.outlineWidth = targetValue(c))}
-            ></fast-text-field>
+            ></fluent-text-field>
         </div>
-    </fast-card>
+    </fluent-card>
 `;
 
 const styles = css`
@@ -118,7 +118,7 @@ const styles = css`
         height: 100%;
     }
 
-    fast-card {
+    fluent-card {
         --card-width: 300px;
         border-radius: 0px;
         padding: 4px 16px;

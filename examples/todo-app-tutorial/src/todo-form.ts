@@ -5,17 +5,21 @@ import {
     customElement,
     css,
 } from "@microsoft/fast-element";
-import { FASTTextField } from "@fluentui/web-components";
+import { FluentTextField } from "@fluentui/web-components";
 
 const template = html<TodoForm>`
     <form @submit=${x => x.submitTodo()}>
-        <fast-text-field
+        <fluent-text-field
             :value=${x => x.description}
             @input=${(x, c) => x.onDescriptionInput(c.event)}
-        ></fast-text-field>
-        <fast-button type="submit" appearance="accent" ?disabled=${x => !x.canSubmitTodo}>
+        ></fluent-text-field>
+        <fluent-button
+            type="submit"
+            appearance="accent"
+            ?disabled=${x => !x.canSubmitTodo}
+        >
             Add Todo
-        </fast-button>
+        </fluent-button>
     </form>
 `;
 
@@ -24,7 +28,7 @@ const styles = css`
         display: flex;
     }
 
-    fast-button {
+    fluent-button {
         margin: 4px;
     }
 `;
@@ -49,6 +53,6 @@ export class TodoForm extends FASTElement {
     }
 
     public onDescriptionInput(event: Event) {
-        this.description = (event.target! as FASTTextField).value;
+        this.description = (event.target! as FluentTextField).value;
     }
 }
