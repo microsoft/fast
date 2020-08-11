@@ -46,7 +46,7 @@ export const TextFieldTemplate = html<TextField>`
                 aria-details="${x => x.ariaDetails}"
                 aria-disabled="${x => x.ariaDisabled}"
                 aria-errormessage="${x => x.ariaErrormessage}"
-                aria-flowto="${x => x.ariaDisabled}"
+                aria-flowto="${x => x.ariaFlowto}"
                 aria-haspopup="${x => x.ariaHaspopup}"
                 aria-hidden="${x => x.ariaHidden}"
                 aria-invalid="${x => x.ariaInvalid}"
