@@ -18,7 +18,7 @@ const emccFiles = ["wasm.c", "permutate.c"].concat(commonFiles).join(" ");
 /**
  * Test file needed for compilation
  */
-const staticTestFilesCompile = `gcc -Wall -L. "-Wl,-rpath,." -o test test.c -ldl -lpermutate -o test`;
+const staticTestFilesCompile = `gcc -Wall -L. "-Wl,-rpath,." -o test test.c -ldl -lpermutate -lm -o test`;
 const sharedLibSetup = `gcc -Wall -c -fPIC permutate.c -o libpermutate.o`;
 const sharedLibCompile = `gcc -Wall -shared -fPIC -o libpermutate.so ${commonFiles.join(
     " "
