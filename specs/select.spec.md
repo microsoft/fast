@@ -37,8 +37,7 @@ On a web page a customer is shopping for a new shirt in size medium. The custome
 - `fast-select`
 
 *Attributes:*
-- `autocomplete` - Allows the developer to provide a hint on how to search the content within the `<fast-option>`(s)
-- `autofocus` - Automatically focuses the control
+- `auto-focus` - Automatically focuses the control
 - `disabled` - Disables the control
 - `length` - Number of `<fast-option>` elements in the `<fast-select>` element
 - `menu-open` -If the menu of the `<fast-option>` is open or not
@@ -46,8 +45,8 @@ On a web page a customer is shopping for a new shirt in size medium. The custome
 - `name` - Name of the control
 - `options` - Returns an array of the `<fast-option>` elements contained by the `<fast-select>` element
 - `required` - Boolean value that sets the field as required
-- `selectedIndex` - index of the first or last selected `<fast-option>` element, depending on the value of `multiple`
-- `selectedOptions` - An array of the selected `<fast-option>` elements
+- `selected-index` - index of the first or last selected `<fast-option>` element, depending on the value of `multiple`
+- `selected-options` - An array of the selected `<fast-option>` elements
 - `size` - If the `<fast-select>` is shown with a scrollbar, this represents how many `<fast-option>`s are visible.
 - `value` - The value of select is typed as `any`
 
@@ -107,6 +106,9 @@ On a web page a customer is shopping for a new shirt in size medium. The custome
 
 **invalid**: The `<fast-select>` does not meet its validation constraints, and is therefore considered to be invalid.
 
+**disabled**: `true` or `false` - when disabled, the value will not be changeable through user interaction.
+
+
 ### Accessibility
 
 *Select* are RTL compliant and support the following aria best practices for listbox [W3C aria-practices](https://www.w3.org/TR/wai-aria-practices-1.1/#Listbox)
@@ -156,3 +158,6 @@ The `option` component is an option that is meant to be used with `<fast-select>
   Option
 </fast-option>
 ```
+
+## Next Steps
+- investigate adding auto-complete
