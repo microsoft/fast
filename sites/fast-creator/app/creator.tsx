@@ -143,7 +143,7 @@ class Creator extends Foundation<CreatorHandledProps, {}, CreatorState> {
             },
             activeDictionaryId: componentLinkedDataId,
             previewReady: false,
-            devToolsVisible: false,
+            devToolsVisible: true,
         };
 
         monaco.editor.onDidCreateModel((listener: monaco.editor.ITextModel) => {
