@@ -39,7 +39,6 @@ On a web page a customer is shopping for a new shirt in size medium. The custome
 *Attributes:*
 - `auto-focus` - Automatically focuses the control
 - `disabled` - Disables the control
-- `length` - Number of `<fast-option>` elements in the `<fast-select>` element
 - `menu-open` -If the menu of the `<fast-option>` is open or not
 - `multiple` - Allows user to select more than one `<fast-option>`
 - `name` - Name of the control
@@ -47,7 +46,6 @@ On a web page a customer is shopping for a new shirt in size medium. The custome
 - `required` - Boolean value that sets the field as required
 - `selected-index` - index of the first or last selected `<fast-option>` element, depending on the value of `multiple`
 - `selected-options` - An array of the selected `<fast-option>` elements
-- `size` - If the `<fast-select>` is shown with a scrollbar, this represents how many `<fast-option>`s are visible.
 - `value` - The value of select is typed as `any`
 
 *Events*
