@@ -32,7 +32,7 @@ He clicks on `Kitchen and Dining` to go back to the category of kitchen items, s
 - `separator` - used as part of the visual presentation that signifies the breadcrumb trail. The separator is defaulted to a `/`.
 
 *Slot Names*
-- slotted directive, with a property called `slottedBreadcrumbItems`.
+- `slottedBreadcrumbItems` - a property used in a slotted directive.
 
 ### Anatomy and Appearance
 
@@ -54,9 +54,9 @@ He clicks on `Kitchen and Dining` to go back to the category of kitchen items, s
 
 ```html
 <fast-breadcrumb>
-    <fast-breadcrumb-item name="Home" href="#"></fast-breadcrumb-item>
-    <fast-breadcrumb-item name="Template" href="#"></fast-breadcrumb-item>
-    <fast-breadcrumb-item name="Template Prices" href="#"></fast-breadcrumb-item>
+    <fast-breadcrumb-item name="Breadcrumb item 1" href="#"></fast-breadcrumb-item>
+    <fast-breadcrumb-item name="Breadcrumb item 2" href="#"></fast-breadcrumb-item>
+    <fast-breadcrumb-item name="Breadcrumb item 3"></fast-breadcrumb-item>
 </fast-breadcrumb>
 ```
 
@@ -92,19 +92,19 @@ The `fast-breadcrumb-item` is placed inside the `fast-breadcrumb` component. It 
 - `defaultSlottedNodes` - Node[] used in the slotted directive.
 
 *Slots*
-- a slot that has an `<a></a>` as a default control.
+- `defaultSlottedNodes` - a slotted directive that is the default slot.
+- `control` - a anchor control used when no custom element is used as a breadcrumb item.
 
 *CSS Parts*
-- `listitem` - class style to align the default slot content and the separator.
+- `listitem` - class style to align the control and the separator.
 - `separator` - class style to adjust margin layout.
-- `control`
-- `content`
+- `control` - class styles for the default anchor control.
+- `content`- class style for the content inside the control.
 
 ### Anatomy and Appearance
 
 ```html
 <div role="listitem" class="listitem" part="listitem">
-    ${startTemplate}
     <slot
         ${slotted({
             property: "defaultSlottedNodes",
@@ -113,8 +113,7 @@ The `fast-breadcrumb-item` is placed inside the `fast-breadcrumb` component. It 
                 value.nodeType === 1 ||
                 false,
         })}
-    >
-    </slot>
+    ></slot>
     <slot name="control">
         ${when(
             x => x.defaultSlottedNodes.length === 0,
@@ -123,16 +122,36 @@ The `fast-breadcrumb-item` is placed inside the `fast-breadcrumb` component. It 
                     class="control"
                     part="control"
                     href="${x => x.href}"
+                    aria-atomic="${x => x.ariaAtomic}"
+                    aria-busy="${x => x.ariaBusy}"
+                    aria-controls="${x => x.ariaControls}"
                     aria-current="${x => (x.isCurrent ? "page" : void 0)}"
+                    aria-describedBy="${x => x.ariaDescribedby}"
+                    aria-details="${x => x.ariaDetails}"
+                    aria-disabled="${x => x.ariaDisabled}"
+                    aria-errormessage="${x => x.ariaErrormessage}"
+                    aria-expanded="${x => x.ariaExpanded}"
+                    aria-flowto="${x => x.ariaFlowto}"
+                    aria-haspopup="${x => x.ariaHaspopup}"
+                    aria-hidden="${x => x.ariaHidden}"
+                    aria-invalid="${x => x.ariaInvalid}"
+                    aria-keyshortcuts="${x => x.ariaKeyshortcuts}"
+                    aria-label="${x => x.ariaLabel}"
+                    aria-labelledby="${x => x.ariaLabelledby}"
+                    aria-live="${x => x.ariaLive}"
+                    aria-owns="${x => x.ariaOwns}"
+                    aria-relevant="${x => x.ariaRelevant}"
+                    aria-roledescription="${x => x.ariaRoledescription}"
                 >
+                    ${startTemplate}
                     <span class="content" part="content">
                         ${x => x.name}
                     </span>
+                    ${endTemplate}
                 </a>
             `
         )}
     </slot>
-    ${endTemplate}
     ${when(
         x => x.showSeparator,
         html<BreadcrumbItem>`
@@ -152,5 +171,5 @@ The `fast-breadcrumb-item` is placed inside the `fast-breadcrumb` component. It 
 ## Implementation
 
 ```html
-<fast-breadcrumb-item name="Home" href="#"></fast-breadcrumb-item>
+<fast-breadcrumb-item name="Breadcrumb item" href="#"></fast-breadcrumb-item>
 ```
