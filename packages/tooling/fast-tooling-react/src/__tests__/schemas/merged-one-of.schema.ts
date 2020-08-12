@@ -1,5 +1,5 @@
 export default {
-    $schema: "https://json-schema.org/schema#",
+    $schema: "http://json-schema.org/schema#",
     type: "object",
     id: "mergedOneOf",
     title: "Merged oneOf",

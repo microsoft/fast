@@ -1,5 +1,5 @@
 {
-    "$schema": "https://json-schema.org/schema#",
+    "$schema": "http://json-schema.org/schema#",
     "title": "CSS border radius",
     "description": "A CSS border radius component's schema definition.",
     "id": "@microsoft/fast-tooling-react/css-border-radius",

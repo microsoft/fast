@@ -1,5 +1,5 @@
 {
-    "$schema": "https://json-schema.org/draft-07/schema",
+    "$schema": "http://json-schema.org/draft-07/schema",
     "$id": "number-exclusive-maximum-schema",
     "type": "number",
     "exclusiveMaximum": 10
