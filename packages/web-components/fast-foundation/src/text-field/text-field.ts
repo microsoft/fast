@@ -204,11 +204,11 @@ export class TextField extends FormAssociated<HTMLInputElement> {
 
         this.proxy.setAttribute("type", this.type);
 
-        DOM.queueUpdate(() => {
-            if (this.autofocus) {
+        if (this.autofocus) {
+            DOM.queueUpdate(() => {
                 this.focus();
-            }
-        });
+            });
+        }
     }
 
     /**
