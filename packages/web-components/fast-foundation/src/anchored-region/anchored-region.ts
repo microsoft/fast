@@ -567,7 +567,7 @@ export class AnchoredRegion extends FASTElement {
             return;
         }
 
-       this.startIntersectionObserver();
+        this.startIntersectionObserver();
 
         if (this.resizeDetector !== null) {
             this.resizeDetector.observe(this.anchorElement);
@@ -579,24 +579,20 @@ export class AnchoredRegion extends FASTElement {
     };
 
     private startIntersectionObserver = (): void => {
-        if (
-            this.anchorElement === null ||
-            this.viewportElement === null
-        ) {
+        if (this.anchorElement === null || this.viewportElement === null) {
             return;
         }
         if (this.intersectionDetector !== null) {
             this.intersectionDetector.observe(this);
             this.intersectionDetector.observe(this.anchorElement);
         }
-    }
-
+    };
 
     private stopIntersectionObserver = (): void => {
         if (this.intersectionDetector !== null) {
             this.intersectionDetector.disconnect();
         }
-    }
+    };
 
     /**
      * stops observers
@@ -783,10 +779,11 @@ export class AnchoredRegion extends FASTElement {
         entries.forEach((entry: ResizeObserverEntry) => {
             if (entry.target === this) {
                 this.handleRegionResize(entry);
-            } if (entry.target === this.anchorElement) {
+            }
+            if (entry.target === this.anchorElement) {
                 if (
                     entry.contentRect.height !== this.anchorHeight ||
-                    entry.contentRect.width !== this.anchorWidth 
+                    entry.contentRect.width !== this.anchorWidth
                 ) {
                     this.update();
                 }
@@ -796,7 +793,7 @@ export class AnchoredRegion extends FASTElement {
                     this.offsetParent !== null &&
                     this.viewportRect !== null &&
                     (entry.contentRect.height !== this.viewportRect.height ||
-                    entry.contentRect.width !== this.viewportRect.height)
+                        entry.contentRect.width !== this.viewportRect.height)
                 ) {
                     this.update();
                 }
