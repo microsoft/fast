@@ -176,7 +176,7 @@ class Creator extends Foundation<CreatorHandledProps, {}, CreatorState> {
     public render(): React.ReactNode {
         return (
             <Background value={neutralLayerL1}>
-                <Container>
+                <Container style={{ overflow: "hidden" }}>
                     <Row style={{ flex: "1" }}>
                         <Pane width={260}>
                             <Logo
