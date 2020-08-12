@@ -159,6 +159,20 @@ export type AxisPositioningMode = "uncontrolled" | "locktodefault" | "dynamic";
 export type AxisScalingMode = "anchor" | "fill" | "content";
 
 // @public
+export class Avatar extends FASTElement {
+    alt: string;
+    color: string;
+    fill: string;
+    imgSrc: string;
+    link: string;
+    name: string;
+    shape: string;
+}
+
+// @public
+export const AvatarTemplate: import("@microsoft/fast-element").ViewTemplate<Avatar, any>;
+
+// @public
 export class Badge extends FASTElement {
     circular: boolean;
     color: string;

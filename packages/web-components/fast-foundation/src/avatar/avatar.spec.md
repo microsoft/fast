@@ -34,8 +34,8 @@ A common use case would be to display an image or text (usually initials) of a u
 |   Name    | Description                                                 | Type                                |
 |-----------|-------------------------------------------------------------|-------------------------------------|
 | `name`    | Accepts name string for coin display                        | `string`                            |
-| `img-src` | Accepts URL string of image to be displayed                 | `string`                            |
-| `alt-text`| Accepts alt text for image                                  | `string`                            |
+| `src` | Accepts URL string of image to be displayed                 | `string`                            |
+| `alt`| Accepts alt text for image                                  | `string`                            |
 | `link`    | Accepts a URL for the anchor source                         | `string`                            |
 | `shape`   | Determines the avatar coin shape. Default will be a circle. | `string: default | circle | square` |
 | `fill`    | Sets the background fill of the avatar coin.                | `string: hex color`                 |
@@ -68,8 +68,8 @@ A common use case would be to display an image or text (usually initials) of a u
 
 ```html
 <fast-avatar 
-  img-src="..."
-  alt-text="..."
+  src="..."
+  alt="..."
   link="">
 </fast-avatar>
 ```
@@ -77,7 +77,7 @@ A common use case would be to display an image or text (usually initials) of a u
 With `fast-badge` Component:
 ```html
 <fast-avatar 
-  alt-text="..."
+  alt="..."
   link="...">
   <fast-badge slot="badge">&nbsp</fast-badge>
 </fast-avatar>
