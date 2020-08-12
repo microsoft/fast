@@ -1,17 +1,21 @@
 ---
-id: breadcrumb-item
-title: fast-breadcrumb-item
-sidebar_label: breadcrumb-item
-custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-foundation/src/breadcrumb-item/README.md
+id: breadcrumb
+title: fast-breadcrumb
+sidebar_label: breadcrumb
+custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-foundation/src/breadcrumb/README.md
 ---
 
-The `fast-breadcrumb-item` is a widget meant to be used with `fast-breadcrumb`.
+A `fast-breadcrumb` widget is used as a navigational aid, allowing users to maintain awareness of their locations within a program, app, or a website.
 
 ## Usage
 
 ```html live
 <fast-design-system-provider use-defaults>
-    <fast-breadcrumb-item name="Home" href="#"></fast-breadcrumb-item>
+    <fast-breadcrumb>
+        <fast-breadcrumb-item name="Breadcrumb item 1" href="#"></fast-breadcrumb-item>
+        <fast-breadcrumb-item name="Breadcrumb item 2" href="#"></fast-breadcrumb-item>
+        <fast-breadcrumb-item name="Breadcrumb item 3"></fast-breadcrumb-item>
+    </fast-breadcrumb>
 </fast-design-system-provider>
 ```
 
@@ -19,13 +23,13 @@ The `fast-breadcrumb-item` is a widget meant to be used with `fast-breadcrumb`.
 
 ```ts
 import { customElement } from "@microsoft/fast-element";
-import { BreadcrumbItem, BreadcrumbItemTemplate as template } from "@microsoft/fast-foundation";
-import { BreadcrumbItemStyles as styles } from "./breadcrumb-item.styles";
+import { Breadcrumb, BreadcrumbTemplate as template } from "@microsoft/fast-foundation";
+import { BreadcrumbStyles as styles } from "./breadcrumb.styles";
 
 @customElement({
-    name: "fast-breadcrumb-item",
+    name: "fast-breadcrumb",
     template,
     styles,
 })
-export class FASTBreadcrumbItem extends BreadcrumbItem {}
+export class FASTBreadcrumb extends Breadcrumb {}
 ```

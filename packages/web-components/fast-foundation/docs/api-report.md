@@ -146,7 +146,7 @@ export class BreadcrumbItem extends FASTElement {
 }
 
 // @internal
-export interface BreadcrumbItem extends StartEnd {
+export interface BreadcrumbItem extends StartEnd, DelegatesARIABreadcrumbItem {
 }
 
 // @public

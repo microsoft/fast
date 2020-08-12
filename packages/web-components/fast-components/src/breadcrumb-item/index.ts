@@ -18,5 +18,8 @@ import { BreadcrumbItemStyles as styles } from "./breadcrumb-item.styles";
     name: "fast-breadcrumb-item",
     template,
     styles,
+    shadowOptions: {
+        delegatesFocus: true,
+    },
 })
 export class FASTBreadcrumbItem extends BreadcrumbItem {}
