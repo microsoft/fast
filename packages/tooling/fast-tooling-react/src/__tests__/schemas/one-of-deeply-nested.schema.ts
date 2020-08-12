@@ -1,5 +1,5 @@
 export default {
-    $schema: "https://json-schema.org/schema#",
+    $schema: "http://json-schema.org/draft-07/schema#",
     title: "Complex nesting arrays with oneOf",
     type: "object",
     id: "oneOfArrays",

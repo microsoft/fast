@@ -1,7 +1,7 @@
 import { linkedDataSchema } from "@microsoft/fast-tooling";
 
 export default {
-    $schema: "https://json-schema.org/schema#",
+    $schema: "http://json-schema.org/draft-07/schema#",
     title: "Component with all disabled types",
     description: "A test component's schema definition.",
     type: "object",

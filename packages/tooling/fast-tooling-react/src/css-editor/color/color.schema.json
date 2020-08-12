@@ -1,5 +1,5 @@
 {
-    "$schema": "https://json-schema.org/schema#",
+    "$schema": "http://json-schema.org/draft-07/schema#",
     "title": "CSS Color",
     "description": "A CSS color component's schema definition.",
     "id": "@microsoft/fast-tooling-react/css-color",

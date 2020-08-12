@@ -473,7 +473,7 @@ export function mapWebComponentDefinitionToJSONSchema(
             i++
         ) {
             schemas.push({
-                $schema: "https://json-schema.org/schema#",
+                $schema: "http://json-schema.org/draft-07/schema#",
                 $id: webComponentDefinition.tags[i].name,
                 id: webComponentDefinition.tags[i].name,
                 title: `<${webComponentDefinition.tags[i].name}>`,

@@ -1,5 +1,5 @@
 export default {
-    $schema: "https://json-schema.org/schema#",
+    $schema: "http://json-schema.org/draft-07/schema#",
     title: "Component with objects",
     description: "A test component's schema definition.",
     type: "object",
