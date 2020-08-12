@@ -399,8 +399,8 @@ export class AnchoredRegion extends FASTElement {
             return;
         }
 
-        this.stopObservers();
-        this.startObservers();
+        this.stopIntersectionObserver();
+        this.startIntersectionObserver();
     };
 
     /**
@@ -567,10 +567,7 @@ export class AnchoredRegion extends FASTElement {
             return;
         }
 
-        if (this.intersectionDetector !== null) {
-            this.intersectionDetector.observe(this);
-            this.intersectionDetector.observe(this.anchorElement);
-        }
+       this.startIntersectionObserver();
 
         if (this.resizeDetector !== null) {
             this.resizeDetector.observe(this.anchorElement);
@@ -581,14 +578,31 @@ export class AnchoredRegion extends FASTElement {
         }
     };
 
+    private startIntersectionObserver = (): void => {
+        if (
+            this.anchorElement === null ||
+            this.viewportElement === null
+        ) {
+            return;
+        }
+        if (this.intersectionDetector !== null) {
+            this.intersectionDetector.observe(this);
+            this.intersectionDetector.observe(this.anchorElement);
+        }
+    }
+
+
+    private stopIntersectionObserver = (): void => {
+        if (this.intersectionDetector !== null) {
+            this.intersectionDetector.disconnect();
+        }
+    }
+
     /**
      * stops observers
      */
     private stopObservers = (): void => {
-        if (this.intersectionDetector !== null) {
-            this.intersectionDetector.disconnect();
-        }
-
+        this.stopIntersectionObserver();
         if (this.resizeDetector !== null) {
             this.resizeDetector.disconnect();
         }
