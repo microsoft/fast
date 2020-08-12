@@ -31,9 +31,7 @@ import {
     MessageSystemType,
     SchemaDictionary,
 } from "@microsoft/fast-tooling";
-import {
-    mapDataDictionaryToMonacoEditorHTML
-} from "@microsoft/fast-tooling/dist/data-utilities/monaco";
+import { mapDataDictionaryToMonacoEditorHTML } from "@microsoft/fast-tooling/dist/data-utilities/monaco";
 import {
     ControlConfig,
     ControlType,
@@ -156,8 +154,10 @@ class Creator extends Foundation<CreatorHandledProps, {}, CreatorState> {
             devToolsVisible: false,
         };
 
-        monaco.editor.onDidCreateModel((listener) => {
-            (monaco.editor.getModel(listener.uri) as monaco.editor.ITextModel).onDidChangeContent((event) => {
+        monaco.editor.onDidCreateModel(listener => {
+            (monaco.editor.getModel(
+                listener.uri
+            ) as monaco.editor.ITextModel).onDidChangeContent(event => {
                 this.editor.getAction("editor.action.formatDocument").run();
             });
         });
@@ -299,7 +299,7 @@ class Creator extends Foundation<CreatorHandledProps, {}, CreatorState> {
                                     >
                                         <div
                                             ref={this.editorContainerRef}
-                                            style={{height: "340px"}}
+                                            style={{ height: "340px" }}
                                         />
                                         <ActionToggle
                                             appearance={ActionToggleAppearance.stealth}
@@ -370,7 +370,10 @@ class Creator extends Foundation<CreatorHandledProps, {}, CreatorState> {
                 },
             };
             this.editor.setValue(
-                mapDataDictionaryToMonacoEditorHTML(e.data.dataDictionary, schemaDictionary)
+                mapDataDictionaryToMonacoEditorHTML(
+                    e.data.dataDictionary,
+                    schemaDictionary
+                )
             );
         }
 
@@ -433,7 +436,7 @@ class Creator extends Foundation<CreatorHandledProps, {}, CreatorState> {
                 automaticLayout: true,
                 wrappingIndent: "same",
                 minimap: {
-                    showSlider: "mouseover"
+                    showSlider: "mouseover",
                 },
             });
 
@@ -441,15 +444,15 @@ class Creator extends Foundation<CreatorHandledProps, {}, CreatorState> {
              * Stop all keyboard events from bubbling
              * this prevents typing in the Monaco editor
              */
-            this.editorContainerRef.current.onkeyup = (e) => {
+            this.editorContainerRef.current.onkeyup = e => {
                 return false;
-            }
-            this.editorContainerRef.current.onkeypress = (e) => {
+            };
+            this.editorContainerRef.current.onkeypress = e => {
                 return false;
-            }
-            this.editorContainerRef.current.onkeydown = (e) => {
+            };
+            this.editorContainerRef.current.onkeydown = e => {
                 return false;
-            }
+            };
         }
     }
 

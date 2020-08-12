@@ -1,10 +1,5 @@
 import { camelCase, get } from "lodash-es";
-import {
-    Container,
-    Pane,
-    Row,
-    RowResizeDirection,
-} from "@microsoft/fast-layouts-react";
+import { Container, Pane, Row, RowResizeDirection } from "@microsoft/fast-layouts-react";
 import {
     ModularForm,
     ModularViewer,
@@ -43,9 +38,7 @@ import {
     MessageSystem,
     MessageSystemType,
 } from "@microsoft/fast-tooling";
-import {
-    mapDataDictionaryToMonacoEditorHTML
-} from "@microsoft/fast-tooling/dist/data-utilities/monaco";
+import { mapDataDictionaryToMonacoEditorHTML } from "@microsoft/fast-tooling/dist/data-utilities/monaco";
 import FASTMessageSystemWorker from "@microsoft/fast-tooling/dist/message-system.min.js";
 import {
     DirectionSwitch,
@@ -149,8 +142,10 @@ class Explorer extends Foundation<
 
         window.onpopstate = this.handlePopState;
 
-        monaco.editor.onDidCreateModel((listener) => {
-            (monaco.editor.getModel(listener.uri) as monaco.editor.ITextModel).onDidChangeContent((event) => {
+        monaco.editor.onDidCreateModel(listener => {
+            (monaco.editor.getModel(
+                listener.uri
+            ) as monaco.editor.ITextModel).onDidChangeContent(event => {
                 this.editor.getAction("editor.action.formatDocument").run();
             });
         });
@@ -168,10 +163,7 @@ class Explorer extends Foundation<
             theme: StandardLuminance.DarkMode,
             previewReady: false,
             activeDictionaryId: componentLinkedDataId,
-            dataDictionary: this.getScenarioData(
-                componentConfig,
-                selectedScenarioIndex
-            )
+            dataDictionary: this.getScenarioData(componentConfig, selectedScenarioIndex),
         };
     }
 
@@ -340,7 +332,7 @@ class Explorer extends Foundation<
                 automaticLayout: true,
                 wrappingIndent: "same",
                 minimap: {
-                    showSlider: "mouseover"
+                    showSlider: "mouseover",
                 },
             });
 
@@ -348,15 +340,15 @@ class Explorer extends Foundation<
              * Stop all keyboard events from bubbling
              * this prevents typing in the Monaco editor
              */
-            this.editorContainerRef.current.onkeyup = (e) => {
+            this.editorContainerRef.current.onkeyup = e => {
                 return false;
-            }
-            this.editorContainerRef.current.onkeypress = (e) => {
+            };
+            this.editorContainerRef.current.onkeypress = e => {
                 return false;
-            }
-            this.editorContainerRef.current.onkeydown = (e) => {
+            };
+            this.editorContainerRef.current.onkeydown = e => {
                 return false;
-            }
+            };
         }
     }
 
@@ -384,13 +376,26 @@ class Explorer extends Foundation<
                     schemaDictionary,
                 });
                 updatedState.previewReady = true;
-                this.editor.setValue(mapDataDictionaryToMonacoEditorHTML(this.state.dataDictionary, schemaDictionary));
+                this.editor.setValue(
+                    mapDataDictionaryToMonacoEditorHTML(
+                        this.state.dataDictionary,
+                        schemaDictionary
+                    )
+                );
             }
         }
 
-        if (e.data.type === MessageSystemType.data || e.data.type === MessageSystemType.initialize) {
+        if (
+            e.data.type === MessageSystemType.data ||
+            e.data.type === MessageSystemType.initialize
+        ) {
             updatedState.dataDictionary = e.data.dataDictionary;
-            this.editor.setValue(mapDataDictionaryToMonacoEditorHTML(e.data.dataDictionary, schemaDictionary));
+            this.editor.setValue(
+                mapDataDictionaryToMonacoEditorHTML(
+                    e.data.dataDictionary,
+                    schemaDictionary
+                )
+            );
         }
 
         this.setState(updatedState as ExplorerState);
@@ -430,14 +435,18 @@ class Explorer extends Foundation<
                         >
                             Code
                         </Typography>
-                    )
+                    );
                 },
                 content: (className: string): React.ReactNode => {
                     return (
-                        <div ref={this.editorContainerRef} className={className} style={{height: "340px"}} />
+                        <div
+                            ref={this.editorContainerRef}
+                            className={className}
+                            style={{ height: "340px" }}
+                        />
                     );
                 },
-                id: "code"
+                id: "code",
             },
             {
                 tab: (className: string): React.ReactNode => {
