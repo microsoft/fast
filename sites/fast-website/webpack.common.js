@@ -9,7 +9,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
 const manifest = require("@microsoft/site-utilities/src/curated-html.json");
 
-const appDir = path.resolve(__dirname, "./src/app");
+const appDir = path.resolve(__dirname, "src/app");
 const distDir = path.resolve(__dirname, "dist");
 
 module.exports = {
@@ -86,7 +86,7 @@ module.exports = {
         new HtmlWebpackPlugin({
             title: "FAST",
             manifest,
-            template: "./src/public/index.ejs",
+            template: path.resolve(__dirname, "src/public/index.ejs"),
         }),
         new CopyPlugin({
             patterns: [
