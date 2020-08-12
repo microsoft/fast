@@ -44,7 +44,7 @@ export const RadioStyles = css`
         width: calc((${heightNumber} / 2 + var(--design-unit)) * 1px);
         height: calc((${heightNumber} / 2 + var(--design-unit)) * 1px);
         box-sizing: border-box;
-        border-radius: calc(var(--corner-radius) * 1px);
+        border-radius: 999px;
         border: calc(var(--outline-width) * 1px) solid ${neutralOutlineRestBehavior.var};
         background: ${neutralFillInputRestBehavior.var};
         outline: none;
@@ -68,15 +68,18 @@ export const RadioStyles = css`
         visibility: hidden;
     }
 
+    .control, .checked-indicator {
+        flex-shrink: 0;
+    }
+
     .checked-indicator {
         position: absolute;
         top: 5px;
         left: 5px;
         right: 5px;
         bottom: 5px;
-        border-radius: calc(var(--corner-radius) * 1px);
+        border-radius: 999px;
         display: inline-block;
-        flex-shrink: 0;
         background: ${accentForegroundCutRestBehavior.var};
         fill: ${accentForegroundCutRestBehavior.var};
         opacity: 0;

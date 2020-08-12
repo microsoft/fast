@@ -24,7 +24,7 @@ import {
  * @internal
  */
 export const BaseButtonStyles = css`
-    ${display("inline-flex")} :host {
+    ${display("inline-block")} :host {
         font-family: var(--body-font);
         outline: none;
         font-size: var(--type-ramp-base-font-size);

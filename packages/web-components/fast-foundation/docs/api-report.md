@@ -521,6 +521,8 @@ export type RadioControl = Pick<HTMLInputElement, "checked" | "disabled" | "read
 // @public
 export class RadioGroup extends FASTElement {
     constructor();
+    // (undocumented)
+    childItems: HTMLElement[];
     // @internal (undocumented)
     connectedCallback(): void;
     disabled: boolean;
@@ -532,7 +534,7 @@ export class RadioGroup extends FASTElement {
     orientation: Orientation;
     readOnly: boolean;
     // @internal (undocumented)
-    slottedRadioButtons: RadioControl[];
+    slottedRadioButtons: HTMLElement[];
     value: string;
 }
 
@@ -799,6 +801,8 @@ export class TextField extends FormAssociated<HTMLInputElement> {
     handleChange(): void;
     // @internal
     handleTextInput(): void;
+    // @internal (undocumented)
+    keypressHandler: (e: KeyboardEvent) => boolean;
     list: string;
     maxlength: number;
     minlength: number;

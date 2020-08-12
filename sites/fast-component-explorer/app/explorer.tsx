@@ -65,7 +65,7 @@ import {
 } from "./explorer.props";
 import { previewReady } from "./preview";
 /* eslint-disable-next-line @typescript-eslint/no-var-requires */
-const FASTInlineLogo = require("@microsoft/site-utilities/statics/assets/fast-inline-logo.png");
+const FASTInlineLogo = require("@microsoft/site-utilities/statics/assets/fast-inline-logo.svg");
 export const previewBackgroundTransparency: string = "PREVIEW::TRANSPARENCY";
 export const previewDirection: string = "PREVIEW::DIRECTION";
 export const previewTheme: string = "PREVIEW::THEME";

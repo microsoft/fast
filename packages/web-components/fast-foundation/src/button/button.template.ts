@@ -30,7 +30,7 @@ export const ButtonTemplate = html<Button>`
         aria-disabled="${x => x.ariaDisabled}"
         aria-errormessage="${x => x.ariaErrormessage}"
         aria-expanded="${x => x.ariaExpanded}"
-        aria-flowto="${x => x.ariaDisabled}"
+        aria-flowto="${x => x.ariaFlowto}"
         aria-haspopup="${x => x.ariaHaspopup}"
         aria-hidden="${x => x.ariaHidden}"
         aria-invalid="${x => x.ariaInvalid}"

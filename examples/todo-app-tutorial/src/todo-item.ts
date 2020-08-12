@@ -1,4 +1,4 @@
-import { observable, attr } from "@microsoft/fast-element";
+import { observable } from "@microsoft/fast-element";
 
 export class TodoItem {
     @observable description: string;
