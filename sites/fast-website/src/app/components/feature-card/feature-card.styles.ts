@@ -61,7 +61,7 @@ export const FeatureCardStyles = css`
         margin-right: 20px;
     }
 
-    @media screen and (max-width: 900px) {
+    @media screen and (max-width: 899px) {
         ${display("grid")} :host {
             grid-template-columns: repeat(3, minmax(50px, 1fr));
             grid-template-areas:

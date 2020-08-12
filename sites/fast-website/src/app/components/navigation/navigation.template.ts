@@ -1,4 +1,4 @@
-import { html, when } from "@microsoft/fast-element";
+import { html, when, elements, slotted } from "@microsoft/fast-element";
 import { endTemplate, startTemplate } from "@microsoft/fast-foundation";
 import CloseIcon from "svg/icon-close.svg";
 import MenuIcon from "svg/icon-menu.svg";
@@ -30,9 +30,13 @@ export const NavigationTemplate = html<Navigation>`
                 `
             )}
         </fast-button>
-        <nav>
-            <slot></slot>
+        <nav class="anchor-wrapper">
+            <ul class="nav-list">
+                <slot
+                    ${slotted({ property: "slottedNavigationItems", filter: elements() })}
+                ></slot>
+            </ul>
+            ${endTemplate}
         </nav>
-        ${endTemplate}
     </template>
 `;
