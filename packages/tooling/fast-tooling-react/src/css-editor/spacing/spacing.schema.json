@@ -1,5 +1,5 @@
 {
-    "$schema": "https://json-schema.org/schema#",
+    "$schema": "http://json-schema.org/schema#",
     "title": "CSS Spacing",
     "description": "A CSS spacing component's schema definition.",
     "id": "@microsoft/fast-tooling-react/css-spacing",

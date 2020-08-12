@@ -1003,7 +1003,7 @@ describe("htmlMapper", () => {
             mapperPlugins: [],
         });
         expect(dataDictionary[0][""].data).toEqual(
-            document.createElementNS("https://www.w3.org/2000/svg", "svg")
+            document.createElementNS("http://www.w3.org/2000/svg", "svg")
         );
     });
     test("should map an svg element with an attribute specifying a URI to data", () => {
@@ -1027,7 +1027,7 @@ describe("htmlMapper", () => {
                             name: "foo",
                             description: "URI override",
                             type: DataType.string,
-                            default: "https://www.w3.org/2000/svg",
+                            default: "http://www.w3.org/2000/svg",
                             required: true,
                         },
                     ],
@@ -1051,7 +1051,7 @@ describe("htmlMapper", () => {
             mapperPlugins: [],
         });
         expect(dataDictionary[0][""].data).toEqual(
-            document.createElementNS("https://www.w3.org/2000/svg", "svg")
+            document.createElementNS("http://www.w3.org/2000/svg", "svg")
         );
     });
 });
@@ -1095,7 +1095,7 @@ describe("mapWebComponentDefinitionToJSONSchema", () => {
             })
         ).toEqual([
             {
-                $schema: "https://json-schema.org/schema#",
+                $schema: "http://json-schema.org/schema#",
                 $id: name,
                 id: name,
                 title: `<${name}>`,
@@ -1143,7 +1143,7 @@ describe("mapWebComponentDefinitionToJSONSchema", () => {
             })
         ).toEqual([
             {
-                $schema: "https://json-schema.org/schema#",
+                $schema: "http://json-schema.org/schema#",
                 $id: name,
                 id: name,
                 title: `<${name}>`,
@@ -1186,7 +1186,7 @@ describe("mapWebComponentDefinitionToJSONSchema", () => {
             })
         ).toEqual([
             {
-                $schema: "https://json-schema.org/schema#",
+                $schema: "http://json-schema.org/schema#",
                 $id: name,
                 id: name,
                 title: `<${name}>`,
@@ -1229,7 +1229,7 @@ describe("mapWebComponentDefinitionToJSONSchema", () => {
             })
         ).toEqual([
             {
-                $schema: "https://json-schema.org/schema#",
+                $schema: "http://json-schema.org/schema#",
                 $id: name,
                 id: name,
                 title: `<${name}>`,
@@ -1284,7 +1284,7 @@ describe("mapWebComponentDefinitionToJSONSchema", () => {
             })
         ).toEqual([
             {
-                $schema: "https://json-schema.org/schema#",
+                $schema: "http://json-schema.org/schema#",
                 $id: name,
                 id: name,
                 title: `<${name}>`,
@@ -1341,7 +1341,7 @@ describe("mapWebComponentDefinitionToJSONSchema", () => {
             })
         ).toEqual([
             {
-                $schema: "https://json-schema.org/schema#",
+                $schema: "http://json-schema.org/schema#",
                 $id: name,
                 id: name,
                 title: `<${name}>`,

@@ -7,7 +7,7 @@ export function refresh(className: string): JSX.Element {
             height="16"
             viewBox="0 0 16 16"
             fill="none"
-            xmlns="https://www.w3.org/2000/svg"
+            xmlns="http://www.w3.org/2000/svg"
             className={className}
         >
             <path
@@ -25,7 +25,7 @@ export function revertChanges(className: string): JSX.Element {
             height="16"
             viewBox="0 0 15 16"
             fill="none"
-            xmlns="https://www.w3.org/2000/svg"
+            xmlns="http://www.w3.org/2000/svg"
             className={className}
         >
             <path
@@ -43,7 +43,7 @@ export function detach(className: string): JSX.Element {
             height="15"
             viewBox="0 0 14 15"
             fill="none"
-            xmlns="https://www.w3.org/2000/svg"
+            xmlns="http://www.w3.org/2000/svg"
             className={className}
         >
             <path

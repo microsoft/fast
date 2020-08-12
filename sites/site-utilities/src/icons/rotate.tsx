@@ -7,7 +7,7 @@ export function rotateGlyph(className?: string): JSX.Element {
             height="16"
             viewBox="0 0 16 16"
             fill="none"
-            xmlns="https://www.w3.org/2000/svg"
+            xmlns="http://www.w3.org/2000/svg"
             className={className}
         >
             <mask
