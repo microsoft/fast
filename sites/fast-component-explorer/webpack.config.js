@@ -1,5 +1,6 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const MonacoWebpackPlugin = require("monaco-editor-webpack-plugin");
 const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 const WebpackShellPlugin = require("webpack-shell-plugin");
 const CleanWebpackPlugin = require("clean-webpack-plugin");
@@ -8,6 +9,7 @@ const CopyPlugin = require("copy-webpack-plugin");
 const FASTCuratedManifest = require("@microsoft/site-utilities/src/curated-html.json");
 
 const rootNodeModules = path.resolve(__dirname, "../../node_modules");
+const nodeModules = path.resolve(__dirname, "node_modules");
 const appDir = path.resolve(__dirname, "./app");
 const outDir = path.resolve(__dirname, "./www");
 
@@ -66,7 +68,7 @@ module.exports = (env, args) => {
                     },
                 },
                 {
-                    test: /\.(svg|png|jpe?g|gif)$/i,
+                    test: /\.(svg|png|jpe?g|gif|ttf)$/i,
                     use: {
                         loader: "file-loader",
                         options: {
@@ -75,7 +77,11 @@ module.exports = (env, args) => {
                     },
                 },
                 {
-                    test: /message\-system\.min\.js/,
+                    test: /\.css$/,
+                    use: ["style-loader", "css-loader"]
+                },
+                {
+                    test: /(message\-system\.min\.js)$/,
                     use: {
                         loader: "worker-loader",
                     },
@@ -114,6 +120,11 @@ module.exports = (env, args) => {
                     },
                 ],
             }),
+            new MonacoWebpackPlugin({
+                // available options are documented at https://github.com/Microsoft/monaco-editor-webpack-plugin#options
+                languages: ["html"],
+                features: ["format", "coreCommands", "codeAction"]
+            })
         ],
         resolve: {
             extensions: [".js", ".tsx", ".ts", ".json"],
