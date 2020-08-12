@@ -578,6 +578,9 @@ export class AnchoredRegion extends FASTElement {
         }
     };
 
+    /**
+     * starts intersection observer
+     */
     private startIntersectionObserver = (): void => {
         if (this.anchorElement === null || this.viewportElement === null) {
             return;
@@ -588,6 +591,9 @@ export class AnchoredRegion extends FASTElement {
         }
     };
 
+    /**
+     * stops intersection observer
+     */
     private stopIntersectionObserver = (): void => {
         if (this.intersectionDetector !== null) {
             this.intersectionDetector.disconnect();
