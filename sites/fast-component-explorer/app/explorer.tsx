@@ -48,6 +48,7 @@ import {
     TransparencyToggle,
     upChevron,
 } from "@microsoft/site-utilities";
+import * as monaco from "monaco-editor";
 import { ComponentViewConfig, Scenario } from "./fast-components/configs/data.props";
 import * as componentConfigs from "./fast-components/configs";
 import { history, menu, schemaDictionary } from "./config";
@@ -59,7 +60,6 @@ import {
     ExplorerUnhandledProps,
 } from "./explorer.props";
 import { previewReady } from "./preview";
-import * as monaco from "monaco-editor";
 /* eslint-disable-next-line @typescript-eslint/no-var-requires */
 const FASTInlineLogo = require("@microsoft/site-utilities/statics/assets/fast-inline-logo.svg");
 export const previewBackgroundTransparency: string = "PREVIEW::TRANSPARENCY";
@@ -142,12 +142,14 @@ class Explorer extends Foundation<
 
         window.onpopstate = this.handlePopState;
 
-        monaco.editor.onDidCreateModel(listener => {
+        monaco.editor.onDidCreateModel((listener: monaco.editor.ITextModel) => {
             (monaco.editor.getModel(
                 listener.uri
-            ) as monaco.editor.ITextModel).onDidChangeContent(event => {
-                this.editor.getAction("editor.action.formatDocument").run();
-            });
+            ) as monaco.editor.ITextModel).onDidChangeContent(
+                (event: monaco.editor.IModelContentChangedEvent) => {
+                    this.editor.getAction("editor.action.formatDocument").run();
+                }
+            );
         });
 
         this.state = {
@@ -340,13 +342,13 @@ class Explorer extends Foundation<
              * Stop all keyboard events from bubbling
              * this prevents typing in the Monaco editor
              */
-            this.editorContainerRef.current.onkeyup = e => {
+            this.editorContainerRef.current.onkeyup = (e: KeyboardEvent): boolean => {
                 return false;
             };
-            this.editorContainerRef.current.onkeypress = e => {
+            this.editorContainerRef.current.onkeypress = (e: KeyboardEvent): boolean => {
                 return false;
             };
-            this.editorContainerRef.current.onkeydown = e => {
+            this.editorContainerRef.current.onkeydown = (e: KeyboardEvent): boolean => {
                 return false;
             };
         }

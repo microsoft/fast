@@ -1,8 +1,8 @@
 import { Direction } from "@microsoft/fast-web-utilities";
 import { StandardLuminance } from "@microsoft/fast-components-styles-msft";
+import { DataDictionary } from "@microsoft/fast-tooling";
 import { ExplorerClassNameContract } from "./explorer.style";
 import { ComponentViewConfig } from "./fast-components/configs/data.props";
-import { DataDictionary } from "@microsoft/fast-tooling";
 
 export type ExplorerUnhandledProps = React.HTMLAttributes<HTMLDivElement>;
 

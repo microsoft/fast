@@ -10,14 +10,7 @@ import {
     neutralLayerL2,
     neutralLayerL3,
 } from "@microsoft/fast-components-styles-msft";
-import {
-    Canvas,
-    Container,
-    Pane,
-    PaneResizeDirection,
-    Row,
-    RowResizeDirection,
-} from "@microsoft/fast-layouts-react";
+import { Container, Pane, Row, RowResizeDirection } from "@microsoft/fast-layouts-react";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import { Direction } from "@microsoft/fast-web-utilities";
 import React from "react";
@@ -26,7 +19,6 @@ import {
     AjvMapper,
     CustomMessageIncomingOutgoing,
     MessageSystem,
-    MessageSystemDataTypeAction,
     MessageSystemNavigationTypeAction,
     MessageSystemType,
     SchemaDictionary,
@@ -56,15 +48,16 @@ import {
     Dimension,
     DirectionSwitch,
     downChevron,
-    upChevron,
     fastComponentExtendedSchemas,
     Logo,
     nativeElementExtendedSchemas,
     textSchema,
     ThemeSelector,
+    upChevron,
 } from "@microsoft/site-utilities";
 import { fastDesignSystemDefaults } from "@microsoft/fast-components/src/fast-design-system";
 import { StandardLuminance } from "@microsoft/fast-components";
+import * as monaco from "monaco-editor";
 import {
     CreatorHandledProps,
     CreatorProps,
@@ -76,7 +69,6 @@ import { divTag, linkedDataExamples } from "./configs";
 import { ProjectFileTransfer } from "./components";
 import { selectDeviceOverrideStyles } from "./utilities/style-overrides";
 import { previewReady } from "./preview";
-import * as monaco from "monaco-editor";
 /* eslint-disable-next-line @typescript-eslint/no-var-requires */
 const FASTInlineLogo = require("@microsoft/site-utilities/statics/assets/fast-inline-logo.svg");
 const fastMessageSystemWorker = new FASTMessageSystemWorker();
@@ -154,12 +146,14 @@ class Creator extends Foundation<CreatorHandledProps, {}, CreatorState> {
             devToolsVisible: false,
         };
 
-        monaco.editor.onDidCreateModel(listener => {
+        monaco.editor.onDidCreateModel((listener: monaco.editor.ITextModel) => {
             (monaco.editor.getModel(
                 listener.uri
-            ) as monaco.editor.ITextModel).onDidChangeContent(event => {
-                this.editor.getAction("editor.action.formatDocument").run();
-            });
+            ) as monaco.editor.ITextModel).onDidChangeContent(
+                (event: monaco.editor.IModelContentChangedEvent) => {
+                    this.editor.getAction("editor.action.formatDocument").run();
+                }
+            );
         });
 
         if ((window as any).Worker) {
@@ -444,13 +438,13 @@ class Creator extends Foundation<CreatorHandledProps, {}, CreatorState> {
              * Stop all keyboard events from bubbling
              * this prevents typing in the Monaco editor
              */
-            this.editorContainerRef.current.onkeyup = e => {
+            this.editorContainerRef.current.onkeyup = (e: KeyboardEvent): boolean => {
                 return false;
             };
-            this.editorContainerRef.current.onkeypress = e => {
+            this.editorContainerRef.current.onkeypress = (e: KeyboardEvent): boolean => {
                 return false;
             };
-            this.editorContainerRef.current.onkeydown = e => {
+            this.editorContainerRef.current.onkeydown = (e: KeyboardEvent): boolean => {
                 return false;
             };
         }
