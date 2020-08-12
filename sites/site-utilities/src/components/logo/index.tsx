@@ -14,7 +14,7 @@ const backgroundStyle = {
     justifyContent: "space-between",
     padding: "8px",
 };
-const imageStyle = { verticalAlign: "middle" };
+const imageStyle = { verticalAlign: "middle", height: "32px" };
 const spanStyle = { verticalAlign: "middle", margin: "0 10px" };
 
 export const Logo: React.FC<LogoProps> = ({

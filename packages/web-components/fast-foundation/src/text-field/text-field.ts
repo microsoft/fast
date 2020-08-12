@@ -1,4 +1,4 @@
-import { attr, nullableNumberConverter, observable } from "@microsoft/fast-element";
+import { attr, DOM, nullableNumberConverter, observable } from "@microsoft/fast-element";
 import { FormAssociated } from "../form-associated/form-associated";
 import { ARIAGlobalStatesAndProperties, StartEnd } from "../patterns/index";
 import { applyMixins } from "../utilities/index";
@@ -205,7 +205,9 @@ export class TextField extends FormAssociated<HTMLInputElement> {
         this.proxy.setAttribute("type", this.type);
 
         if (this.autofocus) {
-            this.focus();
+            DOM.queueUpdate(() => {
+                this.focus();
+            });
         }
     }
 
