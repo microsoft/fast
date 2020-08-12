@@ -151,7 +151,16 @@ class Creator extends Foundation<CreatorHandledProps, {}, CreatorState> {
                 listener.uri
             ) as monaco.editor.ITextModel).onDidChangeContent(
                 (event: monaco.editor.IModelContentChangedEvent) => {
-                    this.editor.getAction("editor.action.formatDocument").run();
+                    this.editor
+                        .getAction("editor.action.formatDocument")
+                        .run()
+                        .then((value: void) => {
+                            if (event.changes.length > 1) {
+                                this.editor.updateOptions({
+                                    readOnly: true,
+                                });
+                            }
+                        });
                 }
             );
         });
@@ -363,6 +372,9 @@ class Creator extends Foundation<CreatorHandledProps, {}, CreatorState> {
                     dataDictionary: e.data.dataDictionary,
                 },
             };
+            this.editor.updateOptions({
+                readOnly: false,
+            });
             this.editor.setValue(
                 mapDataDictionaryToMonacoEditorHTML(
                     e.data.dataDictionary,
@@ -382,6 +394,9 @@ class Creator extends Foundation<CreatorHandledProps, {}, CreatorState> {
                     schemaDictionary,
                 });
                 updatedState.previewReady = true;
+                this.editor.updateOptions({
+                    readOnly: false,
+                });
                 this.editor.setValue(
                     mapDataDictionaryToMonacoEditorHTML(
                         this.state.views[this.state.activeView].dataDictionary,
@@ -432,21 +447,8 @@ class Creator extends Foundation<CreatorHandledProps, {}, CreatorState> {
                 minimap: {
                     showSlider: "mouseover",
                 },
+                readOnly: true,
             });
-
-            /**
-             * Stop all keyboard events from bubbling
-             * this prevents typing in the Monaco editor
-             */
-            this.editorContainerRef.current.onkeyup = (e: KeyboardEvent): boolean => {
-                return false;
-            };
-            this.editorContainerRef.current.onkeypress = (e: KeyboardEvent): boolean => {
-                return false;
-            };
-            this.editorContainerRef.current.onkeydown = (e: KeyboardEvent): boolean => {
-                return false;
-            };
         }
     }
 
