@@ -25,12 +25,19 @@ completion, disables access and resumes normal operations.
                 subscription=$environment
                 environment=$environment
                 env_path=""
+                site-path=""
                 break ;;
-            staging | development)
-                # there is no staging subscription, so use development
-                subscription=development
+            staging)
+                # there is no staging subscription, is's on production
+                subscription=production
                 environment=staging
                 env_path=/slots/stage
+                break ;;
+             development)
+                # sandbox to freely create and destroy services with scripts
+                subscription=development
+                environment=development
+                env_path=
                 break ;;
             exit)
                 break ;;
