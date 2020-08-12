@@ -38,6 +38,7 @@ export const TabStyles = css`
         align-items: center;
         justify-content: center;
         grid-row: 1;
+        cursor: pointer;
     }
 
     :host(:hover) {
