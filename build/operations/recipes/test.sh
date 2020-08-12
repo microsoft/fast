@@ -13,7 +13,7 @@ completion, disables access and resumes normal operations.
     declare -a subscriptions=("production" "development")
     declare -a locations=("west" "east")
     product=fast
-        
+    
 ## CONFIG Options
     echo "${bold}${green}TESTING started ...${reset}"
     echo "${green}Predefined defaults found${reset}" && echo ""
@@ -24,6 +24,7 @@ completion, disables access and resumes normal operations.
             production)
                 subscription=$environment
                 environment=$environment
+                env_path=""
                 break ;;
             staging | development)
                 # there is no staging subscription, so use development
@@ -73,7 +74,7 @@ completion, disables access and resumes normal operations.
                     echo ""
                     az webapp config access-restriction add --priority 300 \
                         --resource-group $resource_group \
-                        --name $new_app_name/slots/stage \
+                        --name $new_app_name \
                         --description "$rule_description" \
                         --rule-name "$rule_name" \
                         --action Allow \
@@ -81,11 +82,16 @@ completion, disables access and resumes normal operations.
 
                     echo ""
                     echo "begin testing ..."
-                    echo ".. verify website on production at https://$new_app_name.azurewebsites.net"
-                    echo ".. verify files on production at https://$new_app_name.scm.azurewebsites.net/webssh/host"
-                    echo ""
-                    echo ".. verify website on staging at https://$new_app_name-stage.azurewebsites.net"
-                    echo ".. verify files on staging at https://$new_app_name-stage.scm.azurewebsites.net/webssh/host"
+                    if [ $environment == "production" ];
+                    then
+                        echo ".. verify website on production at https://$new_app_name.azurewebsites.net"
+                        echo ".. verify files on production at https://$new_app_name.scm.azurewebsites.net/webssh/host"
+                    fi                    
+                    if [ $environment == "staging" ];
+                    then                    
+                        echo ".. verify website on staging at https://$new_app_name-stage.azurewebsites.net"
+                        echo ".. verify files on staging at https://$new_app_name-stage.scm.azurewebsites.net/webssh/host"
+                    fi
                     echo "end testing ..."
                     echo ""
                     read -p ".. press [enter] key to resume if testing is complete ..."
@@ -93,9 +99,9 @@ completion, disables access and resumes normal operations.
                     az webapp config access-restriction remove -g $resource_group -n $new_app_name --rule-name "$rule_name"
                     echo ".. close network access for $public_ip ..."
                     
-                    echo "${green}.. testing on $location region finished ...${reset}"
+                    echo ".. testing on $location region finished ..."
                     echo ""
-                    echo "${green}----- NEXT -----${reset}"
+                    echo "${green}----- next region -----${reset}"
                     echo ""
                 done
                 echo "${bold}${green}TESTING finished. Continue with another?${reset}" 
