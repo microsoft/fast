@@ -1,0 +1,88 @@
+<fast-design-system-provider use-defaults>
+    <style>
+        * {
+            font-size: 18px;
+        }
+        .tooltip {
+            width: 50px;
+            height: 50px;
+            outline: 2px solid white;
+        }
+
+        .container {
+            padding: 50px;
+            width: auto;
+            height: 250px;
+        }
+
+        fast-flyout::part(content) {
+            padding: 5px;
+            border: 3px solid white;
+            text-align: center;
+            overflow: visible;
+        }
+
+        .test {
+            width: 150px;
+            border: 2px solid green;
+            margin: auto;
+            text-align: center;
+            padding: 5px;
+        }
+
+        fast-flyout::part(anchored-region) {
+            white-space: nowrap;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: visible;
+        }
+    </style>
+
+    <div class="container">
+        <h4>Right Edge Aligned, Above & Below</h4>
+        <div class="test" id="anchor3">Anchor</div>
+        <fast-flyout
+            anchor="anchor3"
+            horizontal-default-position="left"
+            horizontal-inset="true"
+            vertical-default-position="top"
+            vertical-inset="false"
+        >
+            Above Right Edge Aligned
+        </fast-flyout>
+
+        <fast-flyout
+            anchor="anchor3"
+            horizontal-default-position="start"
+            horizontal-inset="true"
+            vertical-default-position="bottom"
+            vertical-inset="false"
+        >
+            Below Right Edge Aligned
+        </fast-flyout>
+    </div>
+    <div class="container">
+        <h4>Centered</h4>
+        <div class="test" id="anchor4">Anchor</div>
+        <fast-flyout
+            anchor="anchor4"
+            horizontal-inset="true"
+            horizontal-scaling="anchor"
+            vertical-default-position="top"
+            vertical-scaling="anchor"
+        >
+            Above Centered Above Centered
+        </fast-flyout>
+
+        <fast-flyout
+            anchor="anchor4"
+            horizontal-inset="true"
+            horizontal-scaling="anchor"
+            vertical-default-position="bottom"
+            vertical-scaling="anchor"
+        >
+            Below Centered
+        </fast-flyout>
+    </div>
+</fast-design-system-provider>

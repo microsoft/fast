@@ -46,18 +46,28 @@ A Flyout can be less intrusive to the user experience than a Dialog and should b
 - `visible` - boolean, whether or not the Flyout is visible, defaults to undefined, as this is controlled by the author
 - `responsive` - boolean, whether or not the positioning is responsive based on available space, defaults to true, uses Anchored Region logic
 - `position` - enum, where the tooltip should appear relative to its target, uses Anchored Region logic
-    - top-centered
-    - right-centered
-    - bottom-centered
-    - left-centered
-    - top-left-corner
-    - top-right-corner
-    - bottom-right-corner
-    - bottom-left-corner
-    - top-left-aligned
-    - right-top-aligned
-    - bottom-left-aligned
-    - left-top-aligned
+
+    - above-centered, below-centered
+    ![X](./images/ab-centered.png)
+
+    - right-centered, left-centered
+    ![X](./images/rl-centered.png)
+
+    - top-left-corner, top-right-corner, bottom-right-corner, bottom-left-corner
+    ![X](./images/corner-positions.png)
+
+    - above-left-aligned, below-left-aligned
+    ![X](./images/ab-left-aligned.png)
+    - above-right-aligned, below-right-aligned
+    ![X](./images/ab-right-aligned.png)
+
+    - left-top-aligned, right-top-aligned
+    ![X](./images/rl-top-aligned.png)
+
+    - left-bottom-aligned, right-bottom-aligned
+    ![X](./images/rl-bottom-aligned.png)
+
+
         - **ASK (1)**
 - `aria-labelledby` - optional based on implementation**
 - `aria-describedby` - optional based on implementation**

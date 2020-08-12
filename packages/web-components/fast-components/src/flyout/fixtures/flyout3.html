@@ -1,0 +1,137 @@
+<fast-design-system-provider use-defaults>
+    <style>
+        * {
+            font-size: 18px;
+        }
+        .tooltip {
+            width: 50px;
+            height: 50px;
+            outline: 2px solid white;
+        }
+
+        .container {
+            padding: 50px;
+            width: auto;
+            height: 150px;
+        }
+
+        fast-flyout::part(content) {
+            padding: 5px;
+            border: 3px solid white;
+            text-align: center;
+            overflow: visible;
+        }
+
+        .test {
+            width: 150px;
+            border: 2px solid green;
+            margin: auto;
+            text-align: center;
+            padding: 5px;
+        }
+
+        fast-flyout::part(anchored-region) {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow: visible;
+            max-width: 100px;
+        }
+
+        .topAligned::part(anchored-region) {
+            flex-direction: row;
+            align-items: flex-start;
+            max-width: unset;
+        }
+        .bottomAligned::part(anchored-region) {
+            flex-direction: row;
+            align-items: flex-end;
+            max-width: unset;
+        }
+    </style>
+
+    <div class="container">
+        <h4>Right & Left Centered</h4>
+        <div class="test" id="anchor3">Anchor</div>
+        <fast-flyout
+            anchor="anchor3"
+            horizontal-default-position="left"
+            horizontal-inset="false"
+            horizontal-scaling="content"
+            vertical-default-position="top"
+            vertical-inset="true"
+            vertical-scaling="anchor"
+        >
+            Left Centered
+        </fast-flyout>
+
+        <fast-flyout
+            anchor="anchor3"
+            horizontal-default-position="right"
+            horizontal-inset="false"
+            horizontal-scaling="content"
+            vertical-default-position="top"
+            vertical-inset="true"
+            vertical-scaling="anchor"
+        >
+            Right Centered
+        </fast-flyout>
+    </div>
+    <div class="container">
+        <h4>Centered</h4>
+        <div class="test" id="anchor4" style="height: 75px;">Anchor</div>
+        <fast-flyout
+            class="topAligned"
+            anchor="anchor4"
+            horizontal-default-position="right"
+            horizontal-inset="false"
+            horizontal-scaling="content"
+            vertical-default-position="top"
+            vertical-inset="true"
+            vertical-scaling="anchor"
+        >
+            Right Top Aligned
+        </fast-flyout>
+        <fast-flyout
+            class="topAligned"
+            anchor="anchor4"
+            horizontal-default-position="left"
+            horizontal-inset="false"
+            horizontal-scaling="content"
+            vertical-default-position="top"
+            vertical-inset="true"
+            vertical-scaling="anchor"
+        >
+            Left Top Aligned
+        </fast-flyout>
+    </div>
+    <div class="container">
+        <h4>Centered</h4>
+        <div class="test" id="anchor5" style="height: 75px;">Anchor</div>
+        <fast-flyout
+            class="bottomAligned"
+            anchor="anchor5"
+            horizontal-default-position="right"
+            horizontal-inset="false"
+            horizontal-scaling="content"
+            vertical-default-position="top"
+            vertical-inset="true"
+            vertical-scaling="anchor"
+        >
+            Right Top Aligned
+        </fast-flyout>
+        <fast-flyout
+            class="bottomAligned"
+            anchor="anchor5"
+            horizontal-default-position="left"
+            horizontal-inset="false"
+            horizontal-scaling="content"
+            vertical-default-position="top"
+            vertical-inset="true"
+            vertical-scaling="anchor"
+        >
+            Left Top Aligned
+        </fast-flyout>
+    </div>
+</fast-design-system-provider>

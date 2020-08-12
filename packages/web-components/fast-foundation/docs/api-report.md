@@ -352,6 +352,68 @@ export enum FlipperDirection {
 // @public
 export const FlipperTemplate: import("@microsoft/fast-element").ViewTemplate<Flipper, any>;
 
+// Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
+// Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "Flyout" because one of its declarations is marked as @internal
+//
+// @public
+export class Flyout extends FASTElement {
+    anchor: string;
+    // (undocumented)
+    horizontalDefaultPosition: any;
+    // (undocumented)
+    horizontalInset: any;
+    // (undocumented)
+    horizontalScaling: any;
+    // @internal (undocumented)
+    isNonFocusableContent: () => void;
+    lightDismiss: boolean;
+    overlay: boolean;
+    position: FlyoutPosition;
+    responsive: boolean;
+    // (undocumented)
+    verticalDefaultPosition: any;
+    // (undocumented)
+    verticalInset: any;
+    // (undocumented)
+    verticalScaling: any;
+    visible: boolean;
+}
+
+// @internal
+export interface Flyout extends ARIAGlobalStatesAndProperties {
+}
+
+// @public
+export enum FlyoutPosition {
+    // (undocumented)
+    bottomCentered = "bottomCentered",
+    // (undocumented)
+    bottomLeftAligned = "bottomLeftAligned",
+    // (undocumented)
+    bottomLeftCorner = "bottomLeftCorner",
+    // (undocumented)
+    bottomRightCorner = "bottomRightCorner",
+    // (undocumented)
+    leftCentered = "leftCentered",
+    // (undocumented)
+    leftTopAligned = "leftTopAligned",
+    // (undocumented)
+    rightCentered = "rightCentered",
+    // (undocumented)
+    rightTopAligned = "rightTopAligned",
+    // (undocumented)
+    topCentered = "topCentered",
+    // (undocumented)
+    topLeftAligned = "topLeftAligned",
+    // (undocumented)
+    topLeftCorner = "topLeftCorner",
+    // (undocumented)
+    topRightCorner = "topRightCorner"
+}
+
+// @public
+export const FlyoutTemplate: import("@microsoft/fast-element").ViewTemplate<Flyout, any>;
+
 // @public
 export const focusVisible: string;
 

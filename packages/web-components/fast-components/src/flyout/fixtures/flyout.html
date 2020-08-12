@@ -1,0 +1,88 @@
+<fast-design-system-provider use-defaults>
+    <style>
+        * {
+            font-size: 18px;
+        }
+
+        .container {
+            padding: 50px;
+            width: auto;
+            height: 250px;
+        }
+
+        fast-flyout::part(content) {
+            padding: 5px;
+            border: 3px solid white;
+        }
+
+        .test {
+            width: 150px;
+            border: 2px solid green;
+            margin: auto;
+            text-align: center;
+            padding: 5px;
+        }
+
+        fast-flyout span {
+            display: inline;
+        }
+    </style>
+    <div class="container">
+        <h1>Flyout</h1>
+        <h4>Corners</h4>
+        <div class="test" id="anchor">Anchor</div>
+        <fast-flyout
+            anchor="anchor"
+            horizontal-default-position="end"
+            vertical-default-position="bottom"
+        >
+            Bottom Right Corner
+        </fast-flyout>
+
+        <fast-flyout
+            anchor="anchor"
+            horizontal-default-position="end"
+            vertical-default-position="top"
+        >
+            Top Right Corner
+        </fast-flyout>
+
+        <fast-flyout
+            anchor="anchor"
+            horizontal-default-position="start"
+            vertical-default-position="top"
+        >
+            Top Left Corner
+        </fast-flyout>
+        <fast-flyout
+            anchor="anchor"
+            horizontal-default-position="start"
+            vertical-default-position="bottom"
+        >
+            Bottom Left Corner
+        </fast-flyout>
+    </div>
+    <div class="container">
+        <h4>Left Edge Aligned, Above & Below</h4>
+        <div class="test" id="anchor2">Anchor</div>
+        <fast-flyout
+            anchor="anchor2"
+            horizontal-default-position="unset"
+            horizontal-inset="true"
+            vertical-default-position="bottom"
+            vertical-inset="false"
+        >
+            Below Left Edge Aligned
+        </fast-flyout>
+
+        <fast-flyout
+            anchor="anchor2"
+            horizontal-default-position="unset"
+            horizontal-inset="true"
+            vertical-default-position="top"
+            vertical-inset="false"
+        >
+            Above Left Edge Aligned
+        </fast-flyout>
+    </div>
+</fast-design-system-provider>
