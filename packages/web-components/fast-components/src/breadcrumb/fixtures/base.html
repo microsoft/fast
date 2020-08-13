@@ -2,9 +2,9 @@
     <h1>Breadcrumb</h1>
     <h4>Default</h4>
     <fast-breadcrumb>
-        <fast-breadcrumb-item name="Breadcrumb item 1" href="#"></fast-breadcrumb-item>
-        <fast-breadcrumb-item name="Breadcrumb item 2" href="#"></fast-breadcrumb-item>
-        <fast-breadcrumb-item name="Breadcrumb item 3"></fast-breadcrumb-item>
+        <fast-breadcrumb-item href="#">Breadcrumb item 1</fast-breadcrumb-item>
+        <fast-breadcrumb-item href="#">Breadcrumb item 2</fast-breadcrumb-item>
+        <fast-breadcrumb-item>Breadcrumb item 3</fast-breadcrumb-item>
     </fast-breadcrumb>
 
     <h4>With a custom component</h4>
@@ -22,17 +22,19 @@
 
     <h4>Combined default and custom component</h4>
     <fast-breadcrumb>
-        <fast-breadcrumb-item name="Breadcrumb item 1" href="#"></fast-breadcrumb-item>
-        <fast-breadcrumb-item name="Breadcrumb item 2" href="#"></fast-breadcrumb-item>
+        <fast-breadcrumb-item href="#">Breadcrumb item 1</fast-breadcrumb-item>
+        <fast-breadcrumb-item href="#">Breadcrumb item 2</fast-breadcrumb-item>
         <fast-breadcrumb-item>
-            <fast-anchor appearance="lightweight" href="#">Breadcrumb item 3</fast-anchor>
+            <fast-button>Breadcrumb item 3</fast-button>
         </fast-breadcrumb-item>
-        <fast-breadcrumb-item name="Breadcrumb item 4"></fast-breadcrumb-item>
+        <fast-breadcrumb-item href="#">Breadcrumb item 4</fast-breadcrumb-item>
+        <fast-breadcrumb-item>Breadcrumb item 5</fast-breadcrumb-item>
     </fast-breadcrumb>
 
     <h4>With an SVG separator</h4>
     <fast-breadcrumb>
-        <fast-breadcrumb-item name="Breadcrumb item 1" href="#">
+        <fast-breadcrumb-item href="#">
+            Breadcrumb item 1
             <svg
                 slot="separator"
                 width="16"
@@ -45,7 +47,8 @@
                 />
             </svg>
         </fast-breadcrumb-item>
-        <fast-breadcrumb-item name="Breadcrumb item 2" href="#">
+        <fast-breadcrumb-item href="#">
+            Breadcrumb item 2
             <svg
                 slot="separator"
                 width="16"
@@ -58,7 +61,8 @@
                 />
             </svg>
         </fast-breadcrumb-item>
-        <fast-breadcrumb-item name="Breadcrumb item 3">
+        <fast-breadcrumb-item>
+            Breadcrumb item 3
             <svg
                 slot="separator"
                 width="16"
@@ -75,7 +79,8 @@
 
     <h4>With start</h4>
     <fast-breadcrumb>
-        <fast-breadcrumb-item name="Breadcrumb item 1" href="#">
+        <fast-breadcrumb-item href="#">
+            Breadcrumb item 1
             <svg
                 slot="start"
                 width="16"
@@ -88,7 +93,8 @@
                 />
             </svg>
         </fast-breadcrumb-item>
-        <fast-breadcrumb-item name="Breadcrumb item 2" href="#">
+        <fast-breadcrumb-item href="#">
+            Breadcrumb item 2
             <svg
                 slot="start"
                 width="16"
@@ -101,7 +107,8 @@
                 />
             </svg>
         </fast-breadcrumb-item>
-        <fast-breadcrumb-item name="Breadcrumb item 3">
+        <fast-breadcrumb-item>
+            Breadcrumb item 3
             <svg
                 slot="start"
                 width="16"
@@ -118,7 +125,8 @@
 
     <h4>With end</h4>
     <fast-breadcrumb>
-        <fast-breadcrumb-item name="Breadcrumb item 1" href="#">
+        <fast-breadcrumb-item href="#">
+            Breadcrumb item 1
             <svg
                 slot="end"
                 width="16"
@@ -131,7 +139,8 @@
                 />
             </svg>
         </fast-breadcrumb-item>
-        <fast-breadcrumb-item name="Breadcrumb item 2" href="#">
+        <fast-breadcrumb-item href="#">
+            Breadcrumb item 2
             <svg
                 slot="end"
                 width="16"
@@ -144,7 +153,8 @@
                 />
             </svg>
         </fast-breadcrumb-item>
-        <fast-breadcrumb-item name="Breadcrumb item 3">
+        <fast-breadcrumb-item>
+            Breadcrumb item 3
             <svg
                 slot="end"
                 width="16"
@@ -161,8 +171,8 @@
 
     <h4>With aria-current</h4>
     <fast-breadcrumb>
-        <fast-breadcrumb-item name="Breadcrumb item 1" href="#"></fast-breadcrumb-item>
-        <fast-breadcrumb-item name="Breadcrumb item 2" href="#"></fast-breadcrumb-item>
-        <fast-breadcrumb-item name="Breadcrumb item 3" href="#"></fast-breadcrumb-item>
+        <fast-breadcrumb-item href="#">Breadcrumb item 1</fast-breadcrumb-item>
+        <fast-breadcrumb-item href="#">Breadcrumb item 2</fast-breadcrumb-item>
+        <fast-breadcrumb-item href="#">Breadcrumb item 3</fast-breadcrumb-item>
     </fast-breadcrumb>
 </fast-design-system-provider>
