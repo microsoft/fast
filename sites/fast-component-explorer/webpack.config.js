@@ -76,10 +76,6 @@ module.exports = (env, args) => {
                     },
                 },
                 {
-                    test: /\.css$/,
-                    use: ["style-loader", "css-loader"]
-                },
-                {
                     test: /(message\-system\.min\.js)$/,
                     use: {
                         loader: "worker-loader",
@@ -87,7 +83,6 @@ module.exports = (env, args) => {
                 },
                 {
                     test: /\.css$/,
-                    exclude: /node_modules/,
                     use: [
                         {
                             loader: MiniCssExtractPlugin.loader,
@@ -138,8 +133,8 @@ module.exports = (env, args) => {
             new MonacoWebpackPlugin({
                 // available options are documented at https://github.com/Microsoft/monaco-editor-webpack-plugin#options
                 languages: ["html"],
-                features: ["format", "coreCommands", "codeAction"]
-            })
+                features: ["format", "coreCommands", "codeAction"],
+            }),
         ],
         resolve: {
             extensions: [".js", ".tsx", ".ts", ".json"],
