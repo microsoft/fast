@@ -24,7 +24,7 @@ import {
  * @internal
  */
 export const BaseButtonStyles = css`
-    ${display("inline-block")} :host {
+    ${display("inline-flex")} :host {
         font-family: var(--body-font);
         outline: none;
         font-size: var(--type-ramp-base-font-size);
@@ -86,7 +86,7 @@ export const BaseButtonStyles = css`
     .end,
     ::slotted(svg) {
         ${
-            /* Glyph size and margin-left is temporary - 
+            /* Glyph size and margin-left is temporary -
             replace when adaptive typography is figured out */ ""
         } width: 16px;
         height: 16px;
@@ -146,6 +146,7 @@ export const HypertextStyles = css`
         font-size: inherit;
         line-height: inherit;
         height: auto;
+        min-width: 0;
         background: transparent;
     }
 
