@@ -36,7 +36,6 @@ export const BreadcrumbItemStyles = css`
 
     .control {
         align-items: center;
-        background: transparent;
         box-sizing: border-box;
         color: ${accentForegroundRestBehavior.var};
         cursor: pointer;
