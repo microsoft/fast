@@ -33,7 +33,7 @@ export const TooltipStyles = css`
         padding: 4px;
         height: fit-content;
         width: fit-content;
-        font: inherit;
+        font-family: var(--body-font);
         font-size: var(--type-ramp-base-font-size);
         line-height: var(--type-ramp-base-line-height);
         white-space: nowrap;
