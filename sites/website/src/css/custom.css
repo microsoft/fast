@@ -17,6 +17,10 @@
   --ifm-code-font-size: 95%;
 }
 
+html {
+  overflow-x: hidden;
+}
+
 .docusaurus-highlight-code-line {
   background-color: #212121;
   display: block;
@@ -33,4 +37,23 @@
 .button.button--secondary.button--sm.menu__button {
   background: var(--ifm-color-primary);
   color: var(--ifm-color-secondary);
+}
+
+.site-wrapper * {
+  box-sizing: content-box;
+}
+
+.site-wrapper .footer {
+  background-color: var(--background-color);
+}
+
+.site-wrapper .footer site-navigation-item p {
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+}
+
+@media screen and (max-width: 899px) {
+  .site-wrapper .footer {
+    box-sizing: border-box;
+  }
 }
