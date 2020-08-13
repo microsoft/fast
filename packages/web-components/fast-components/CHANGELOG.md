@@ -3,6 +3,40 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.8.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-components@1.7.0...@microsoft/fast-components@1.8.0) (2020-08-13)
+
+
+### Bug Fixes
+
+* add full width to text-area and text-field controls ([ba6a848](https://github.com/Microsoft/fast/commit/ba6a848035755285eccba33f00880fa01f172d93))
+* add high contrast link color for underline on anchor ([#3715](https://github.com/Microsoft/fast/issues/3715)) ([44dd511](https://github.com/Microsoft/fast/commit/44dd511bf4e7ac444b18003cc387938a8bce346b))
+* anchor (hypertext) line extends beyond its bounds ([#3674](https://github.com/Microsoft/fast/issues/3674)) ([2879571](https://github.com/Microsoft/fast/commit/2879571796f210da49be8df90a74faee429bd34b))
+* anchored region fails on firefox ([#3701](https://github.com/Microsoft/fast/issues/3701)) ([1fd02e0](https://github.com/Microsoft/fast/commit/1fd02e013fc3798da8686ad2923d3bfcdeb796d7))
+* changed setupDefault to set initialValue which will set dirtyValue false after changing ([#3642](https://github.com/Microsoft/fast/issues/3642)) ([0b30fdf](https://github.com/Microsoft/fast/commit/0b30fdf78ebc6635ffb63e6b083f072871945d8c))
+* correct radio corner radius value ([#3655](https://github.com/Microsoft/fast/issues/3655)) ([ce6aca9](https://github.com/Microsoft/fast/commit/ce6aca998760545d9bcdf980c737747cf654274a))
+* correct slider track margin to react to density level ([#3607](https://github.com/Microsoft/fast/issues/3607)) ([b7bafea](https://github.com/Microsoft/fast/commit/b7bafea174cc63ae3528394912facbebb3081c0c))
+* ensure radios do not shrink ([#3682](https://github.com/Microsoft/fast/issues/3682)) ([e9dab9f](https://github.com/Microsoft/fast/commit/e9dab9f67952b081ff8edca8741602bf210dda91))
+* hitting enter key when in the text-field did not submit form ([#3687](https://github.com/Microsoft/fast/issues/3687)) ([3bc4384](https://github.com/Microsoft/fast/commit/3bc4384190af70ca082ef4e24a10f030e22a09e0))
+* hyperlink and lightweight style adjustments ([#3708](https://github.com/Microsoft/fast/issues/3708)) ([22e904d](https://github.com/Microsoft/fast/commit/22e904db990168b13e1f480fac9629701bdf83f2))
+* tab should have pointer as cursor ([#3702](https://github.com/Microsoft/fast/issues/3702)) ([aeb7530](https://github.com/Microsoft/fast/commit/aeb7530993b8918cd9792178baa2f6958642be0e))
+* update min-width of fast-slider to design-unit * 1px ([#3640](https://github.com/Microsoft/fast/issues/3640)) ([0785592](https://github.com/Microsoft/fast/commit/07855923e1a70bcd448cc26da8e6221b75740b96))
+* use design system direction support for glyph in treeview ([#3608](https://github.com/Microsoft/fast/issues/3608)) ([fbc312d](https://github.com/Microsoft/fast/commit/fbc312df5cd4e46b0142a3cc56b3441d9b4245e0))
+
+
+### Features
+
+* anchored region revision ([#3527](https://github.com/Microsoft/fast/issues/3527)) ([63f3658](https://github.com/Microsoft/fast/commit/63f3658659a113bdc304f32e22b958e0d56ab7bf))
+* export form-associated under alpha flag ([#3618](https://github.com/Microsoft/fast/issues/3618)) ([cbcb217](https://github.com/Microsoft/fast/commit/cbcb2177c81740f6d6fc0be98973217dbb001e00))
+
+
+### Reverts
+
+* Revert "chore: update all http to https to resolve WS1262 security vulnerability (#3658)" (#3699) ([0cac64a](https://github.com/Microsoft/fast/commit/0cac64a869e1b65a94ef14ed50b1324d0e15be46)), closes [#3658](https://github.com/Microsoft/fast/issues/3658) [#3699](https://github.com/Microsoft/fast/issues/3699)
+
+
+
+
+
 # [1.7.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-components@1.6.0...@microsoft/fast-components@1.7.0) (2020-07-31)
 
 

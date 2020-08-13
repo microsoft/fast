@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.4.3](https://github.com/Microsoft/fast/compare/@microsoft/site-utilities@0.4.2...@microsoft/site-utilities@0.4.3) (2020-08-13)
+
+
+### Bug Fixes
+
+* addresses an issue with the inline logo sizing ([#3698](https://github.com/Microsoft/fast/issues/3698)) ([68daabb](https://github.com/Microsoft/fast/commit/68daabb1e0fc1860af0caeaf8f12001950729ef1))
+* update logo on documentation pages ([#3686](https://github.com/Microsoft/fast/issues/3686)) ([5c5e785](https://github.com/Microsoft/fast/commit/5c5e7851c4c4b7713552a03f20a5b2bbdbe5f840))
+* updates the imports of component definitions (3707) ([6c9a23c](https://github.com/Microsoft/fast/commit/6c9a23c7355b10e36179dab68ccb71771226091c))
+
+
+### Reverts
+
+* Revert "chore: update all http to https to resolve WS1262 security vulnerability (#3658)" (#3699) ([0cac64a](https://github.com/Microsoft/fast/commit/0cac64a869e1b65a94ef14ed50b1324d0e15be46)), closes [#3658](https://github.com/Microsoft/fast/issues/3658) [#3699](https://github.com/Microsoft/fast/issues/3699)
+
+
+
+
+
 ## [0.4.2](https://github.com/Microsoft/fast/compare/@microsoft/site-utilities@0.4.1...@microsoft/site-utilities@0.4.2) (2020-07-31)
 
 **Note:** Version bump only for package @microsoft/site-utilities

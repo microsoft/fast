@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.9.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling@0.8.0...@microsoft/fast-tooling@0.9.0) (2020-08-13)
+
+
+### Features
+
+* add a utility that interprets a data dictionary into HTML for monaco ([#3645](https://github.com/Microsoft/fast/issues/3645)) ([b3d4657](https://github.com/Microsoft/fast/commit/b3d4657e6dfbf56e1b0b6b3f42962881289b9776))
+
+
+### Reverts
+
+* Revert "chore: update all http to https to resolve WS1262 security vulnerability (#3658)" (#3699) ([0cac64a](https://github.com/Microsoft/fast/commit/0cac64a869e1b65a94ef14ed50b1324d0e15be46)), closes [#3658](https://github.com/Microsoft/fast/issues/3658) [#3699](https://github.com/Microsoft/fast/issues/3699)
+
+
+
+
+
 # [0.8.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling@0.7.0...@microsoft/fast-tooling@0.8.0) (2020-07-31)
 
 

@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.12.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-component-explorer@0.11.2...@microsoft/fast-component-explorer@0.12.0) (2020-08-13)
+
+
+### Bug Fixes
+
+* update logo on documentation pages ([#3686](https://github.com/Microsoft/fast/issues/3686)) ([5c5e785](https://github.com/Microsoft/fast/commit/5c5e7851c4c4b7713552a03f20a5b2bbdbe5f840))
+* use design system direction support for glyph in treeview ([#3608](https://github.com/Microsoft/fast/issues/3608)) ([fbc312d](https://github.com/Microsoft/fast/commit/fbc312df5cd4e46b0142a3cc56b3441d9b4245e0))
+
+
+### Features
+
+* add the Monaco editor to the Component explorer and Creator sites ([#3696](https://github.com/Microsoft/fast/issues/3696)) ([6d90f0c](https://github.com/Microsoft/fast/commit/6d90f0c8231016eca3c93b7310c997cf011e1b31))
+
+
+### Reverts
+
+* Revert "chore: update all http to https to resolve WS1262 security vulnerability (#3658)" (#3699) ([0cac64a](https://github.com/Microsoft/fast/commit/0cac64a869e1b65a94ef14ed50b1324d0e15be46)), closes [#3658](https://github.com/Microsoft/fast/issues/3658) [#3699](https://github.com/Microsoft/fast/issues/3699)
+
+
+
+
+
 ## [0.11.2](https://github.com/Microsoft/fast/compare/@microsoft/fast-component-explorer@0.11.1...@microsoft/fast-component-explorer@0.11.2) (2020-07-31)
 
 **Note:** Version bump only for package @microsoft/fast-component-explorer

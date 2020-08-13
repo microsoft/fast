@@ -3,6 +3,35 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.7.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-foundation@1.6.0...@microsoft/fast-foundation@1.7.0) (2020-08-13)
+
+
+### Bug Fixes
+
+* anchored region fails on firefox ([#3701](https://github.com/Microsoft/fast/issues/3701)) ([1fd02e0](https://github.com/Microsoft/fast/commit/1fd02e013fc3798da8686ad2923d3bfcdeb796d7))
+* changed setupDefault to set initialValue which will set dirtyValue false after changing ([#3642](https://github.com/Microsoft/fast/issues/3642)) ([0b30fdf](https://github.com/Microsoft/fast/commit/0b30fdf78ebc6635ffb63e6b083f072871945d8c))
+* correct tabs animation when using home/end touch ([#3718](https://github.com/Microsoft/fast/issues/3718)) ([24ed0e5](https://github.com/Microsoft/fast/commit/24ed0e5262f8201f465db8798f7b01bcbbb21135))
+* correct typos on aria attributes ([#3690](https://github.com/Microsoft/fast/issues/3690)) ([d1c9ba4](https://github.com/Microsoft/fast/commit/d1c9ba4903dabe16487389917ad762d744356060))
+* fix radiogroup tabfocus ([#3650](https://github.com/Microsoft/fast/issues/3650)) ([59536fe](https://github.com/Microsoft/fast/commit/59536fe959c6d4ab2b48fa7636e11f8e68ecc0eb))
+* hitting enter key when in the text-field did not submit form ([#3687](https://github.com/Microsoft/fast/issues/3687)) ([3bc4384](https://github.com/Microsoft/fast/commit/3bc4384190af70ca082ef4e24a10f030e22a09e0))
+* turn off animation when dragging ([#3664](https://github.com/Microsoft/fast/issues/3664)) ([49e9d02](https://github.com/Microsoft/fast/commit/49e9d0294e3a98b0da443b4194d0006aaf5ff422))
+* wrapping set focus in dom.queueupdate ([#3703](https://github.com/Microsoft/fast/issues/3703)) ([7cb4616](https://github.com/Microsoft/fast/commit/7cb4616a9947639d6fb7a06e56db3d3900841674))
+
+
+### Features
+
+* anchored region revision ([#3527](https://github.com/Microsoft/fast/issues/3527)) ([63f3658](https://github.com/Microsoft/fast/commit/63f3658659a113bdc304f32e22b958e0d56ab7bf))
+* export form-associated under alpha flag ([#3618](https://github.com/Microsoft/fast/issues/3618)) ([cbcb217](https://github.com/Microsoft/fast/commit/cbcb2177c81740f6d6fc0be98973217dbb001e00))
+
+
+### Reverts
+
+* Revert "chore: update all http to https to resolve WS1262 security vulnerability (#3658)" (#3699) ([0cac64a](https://github.com/Microsoft/fast/commit/0cac64a869e1b65a94ef14ed50b1324d0e15be46)), closes [#3658](https://github.com/Microsoft/fast/issues/3658) [#3699](https://github.com/Microsoft/fast/issues/3699)
+
+
+
+
+
 # [1.6.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-foundation@1.5.0...@microsoft/fast-foundation@1.6.0) (2020-07-31)
 
 

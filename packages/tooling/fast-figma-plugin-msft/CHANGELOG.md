@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.8.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-figma-plugin-msft@0.7.2...@microsoft/fast-figma-plugin-msft@0.8.0) (2020-08-13)
+
+
+### Features
+
+* update sync logic to fire on node selection ([#3497](https://github.com/Microsoft/fast/issues/3497)) ([17e5c8c](https://github.com/Microsoft/fast/commit/17e5c8cba30a2384e54ebb54c692911b71f3daec))
+
+
+### Reverts
+
+* Revert "chore: update all http to https to resolve WS1262 security vulnerability (#3658)" (#3699) ([0cac64a](https://github.com/Microsoft/fast/commit/0cac64a869e1b65a94ef14ed50b1324d0e15be46)), closes [#3658](https://github.com/Microsoft/fast/issues/3658) [#3699](https://github.com/Microsoft/fast/issues/3699)
+
+
+
+
+
 ## [0.7.2](https://github.com/Microsoft/fast/compare/@microsoft/fast-figma-plugin-msft@0.7.1...@microsoft/fast-figma-plugin-msft@0.7.2) (2020-07-31)
 
 **Note:** Version bump only for package @microsoft/fast-figma-plugin-msft
