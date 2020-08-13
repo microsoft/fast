@@ -13,7 +13,6 @@ module.exports = {
             async: true,
         },
     ],
-    stylesheets: ["https://use.typekit.net/spx2dgm.css"],
     themes: [require.resolve("@docusaurus/theme-live-codeblock")],
     themeConfig: {
         colorMode: {
@@ -95,6 +94,29 @@ module.exports = {
                         {
                             label: "Twitter",
                             href: "https://twitter.com/FAST_UI",
+                        },
+                    ],
+                },
+                {
+                    title: " ",
+                    items: [
+                        {
+                            label: "License",
+                            href: "https://github.com/microsoft/fast/blob/master/LICENSE",
+                        },
+                        {
+                            label: "Privacy & Cookies",
+                            href: "https://privacy.microsoft.com/en-US/privacystatement",
+                        },
+                        {
+                            label: "Terms of Use",
+                            href:
+                                "https://www.microsoft.com/en-us/legal/intellectualproperty/copyright/default.aspx",
+                        },
+                        {
+                            label: "Trademarks",
+                            href:
+                                "https://www.microsoft.com/en-us/legal/intellectualproperty/trademarks/usage/general",
                         },
                     ],
                 },
