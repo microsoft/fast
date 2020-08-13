@@ -5,61 +5,42 @@ sidebar_label: Introduction
 custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/src/docs/introduction.md
 ---
 
-Welcome to the FAST documentation! We're glad you're here. We can't wait to show you around.
+Welcome to the FAST documentation! We're glad you're here and can't wait to show you around.
 
 ## What is FAST?
 
-FAST is a collection of JavaScript packages centered around web standards, designed to help you efficiently tackle some of the most common challenges in website and application design and development.
+FAST is a collection of technologies built on Web Components and modern Web Standards, designed to help you efficiently tackle some of the most common challenges in website and application design and development.
 
-Have you ever needed a reusable set of UI components that you could drop into your app and have an amazing experience? _**That's FAST.**_
+### What are Web Components?
 
-Have you ever needed to create your own components, and share them across your company, including across groups that use different, incompatible front-end frameworks? _**That's FAST.**_
+"Web Components" is an umbrella term that refers to a collection of web standards focused on enabling the creation of custom HTML elements. Some of the standards that are under the umbrella include the ability to define new HTML tags, plug into a standard component lifecycle, encapsulate HTML rendering and CSS, parameterize CSS, skin components, and more. Each of these platform features is defined by the W3C and has shipped in every major browser today.
 
-Have you ever needed to implement a branded experience or a design language like Microsoft's Fluent UI or Google's Material Design? _**That's FAST.**_
+### How does FAST leverage Web Components?
 
-Have you ever wanted to improve your app's startup time, render speed, or memory consumption? _**That's FAST.**_
+One of FAST's driving principals is "strive to adopt open, web standards-based approaches as much as possible." To that end, FAST is built directly on the W3C Web Component standards mentioned above, and does not create its own component model. This allows components built with FAST to function the same as built-in, native HTML elements. You do not need a framework to use FAST components but you can use them in combination with any framework or library of your choice.
 
-Have you ever wanted to adopt more web standards and build your site or app on a native web foundation that's immune to the shifting sands of the modern JavaScript front-end landscape? _**That's FAST.**_
+### How can FAST help me?
 
-Let's take a look at what each of FAST's core packages gives us today.
+To understand how FAST can help you, let's take a look at the FAST tech stack from top to bottom.
 
-### fast-element
+At the top of the stack FAST provides two sets of Web Components: `@fluentui/web-components` and `@microsoft/fast-components`. Both of these libraries include a common set of components found in many websites and apps. Example components include button, menu, tree-view, tab, card, modal, and more. So, what is the difference between these two libraries? The answer is that each library implements a different *design system*. `@fluentui/web-components` implements Microsoft's Fluent Design System. They look and feel like the components found in products like Windows, Office, Teams, and Edge. If you like the Fluent Design System or are building experiences designed to fit naturally into the Microsoft ecosystem, this is the component set you'll want to use. Alternatively, `@microsoft/fast-components` provides an industry-focused design system with more customization options. We call this system "FAST Frame". If you're looking to integrate FAST components into an existing site or app, or if you need more control over the theme of the components, this is the option you'll want to start with.
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![npm version](https://badge.fury.io/js/%40microsoft%2Ffast-element.svg)](https://badge.fury.io/js/%40microsoft%2Ffast-element)
+What if you're not just looking for a set of components to use, but you also need to implement a custom *design system*? This is where the second level of the stack comes into play. `@microsoft/fast-foundation` provides foundational building blocks that can be assembled to create new design systems and component libraries. For example, if you wanted to implement Google's Material Design, you could do that using `@microsoft/fast-foundation`. You could also implement something like Twitter Bootstrap. Both `@fluentui/web-components` and `@microsoft/fast-components` assemble the building blocks of `@microsoft/fast-foundation` to create their component sets. What types of building blocks are we talking about though? Perhaps the most valuable feature of the foundation is that it provides base component behaviors and templates for the standard components. So, if you want to implement a tree-view in your design system, for example, you would use the foundation base component behavior and template, but combine it with your own styles. The foundation components implement the state management, accessibility, keyboard navigation, and extensibility/composition model so you don't have to write that code. Additionally, foundation provides facilities for dynamic style behaviors, CSS property management, algorithmic color, RTL, high contract, and more. You don't have to write any of that. Just assemble the building blocks and add your styles to create your own component library, expressing your own design system.
 
-The `@microsoft/fast-element` library is a lightweight means to easily building performant, memory-efficient, standards-compliant Web Components. FAST Elements work in every major browser and can be used in combination with any front-end framework or even without a framework. To get up and running with `@microsoft/fast-element` see [the Getting Started guide](/docs/fast-element/getting-started).
+So far we've talked about using existing components and creating new design systems and component libraries from existing pieces. But FAST enables you to create completely new web components as well. Enter `@microsoft/fast-element`, the lowest level part of the FAST tech stack. `@microsoft/fast-element` provides a thin layer of opinions on top of Web Components, lifting the level of abstraction just enough to make it easier and FASTer to build components. `@microsoft/fast-element` helps by providing attribute/property syncing, rich Model-View-ViewModel (MVVM), efficient template rendering/update, style composition, and much more. The entire `@microsoft/fast-element` library, *without* tree-shaking, is around 10kb minified and GZipped. It was designed for tree-shaking from the beginning, so any feature you don't use when building a component will be removed during build, allowing for highly efficient optimized payloads.
 
-### fast-foundation
+## Where should I start?
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![npm version](https://badge.fury.io/js/%40microsoft%2Ffast-foundation.svg)](https://badge.fury.io/js/%40microsoft%2Ffast-foundation)
+We hope you're excited by the possibilities that FAST presents. But, you may be wondering where to start. Here are a few statements that describe various members of our community. We recommend that you pick the statement you most identify with and follow the links where they lead. You can always come back and explore another topic at any time.
 
-The `@microsoft/fast-foundation` package is a library of Web Component classes, templates, and other utilities intended to be composed into registered Web Components by design systems (e.g. Fluent Design, Material Design, etc.). The exports of this package can generally be thought of as un-styled base components that implement semantic and accessible markup and behavior.
-
-This package does not export Web Components registered as [custom elements](https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_custom_elements) - it exports parts and pieces intended to be *composed* into Web Components, allowing you to implement your own design language by simply applying CSS styles and behaviors without having to write all the JavaScript that's involved in building production-quality component implementations.
-
-### fast-components
-
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![npm version](https://badge.fury.io/js/%40microsoft%2Ffast-components.svg)](https://badge.fury.io/js/%40microsoft%2Ffast-components)
-
-`@microsoft/fast-components` is a library of Web Components that *composes* the exports of `@microsoft/fast-foundation` with stylesheets aligning to the FAST design language. This composition step registers a custom element. See the [quick start](/docs/components/getting-started) to get started using the components.
-
-### fast-components-msft
-**This package has been moved to [FluentUI](https://github.com/microsoft/fluentui/) and has been renamed to `@fluentui/web-components`**
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![npm version](https://badge.fury.io/js/%40microsoft%2Ffast-components-msft.svg)](https://badge.fury.io/js/%40microsoft%2Ffast-components-msft)
-
-`@fluentui/web-components` is a library of Web Components that *composes* `@microsoft/fast-foundation`. `@fluentui/web-components` makes use of different stylesheets and may include components that specifically support Microsoft's Fluent design language.
-
-### Component Explorer
-
-Launch our [Component Explorer](https://explore.fast.design) to experience our [FAST Components](https://www.npmjs.com/package/@microsoft/fast-components) and development tools.
-
-## Getting started
-
-If you're looking to get started using our components right away, take a look at [the components quick start](/docs/components/getting-started). You'll also want to check out [our integrations](/docs/integrations/introduction) if you're looking to add the components into a Webpack build or incorporate them with another front-end framework. For those interested in implementing their own design system or customizing the styles of the components, after you [have a look at the components](/docs/components/getting-started), you'll want to read through [our styling docs](/docs/design/introduction). Finally, if your goal is to build your own components or apps with `@microsoft/fast-element`, you can learn all about that in our [guide to building web components with FASTElement](/docs/fast-element/getting-started).
+* "I just want ready-made components!"
+  * [Jump to the component docs.](/docs/components/getting-started)
+* "I want to build my own design system."
+  * [Jump to the design system docs.](/docs/design/introduction)
+* "I want to build my own components."
+  * [Jump to the fast-element docs.](/docs/fast-element/getting-started)
+* "I need to integrate FAST with another framework or build system."
+  * [Jump to the integration docs.](/docs/integrations/introduction)
 
 ## Joining the community
 

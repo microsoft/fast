@@ -32,6 +32,10 @@ With this in place, you can now use your `name-tag` element anywhere in HTML wit
 Web Component names must contain a `-` in order to prevent future conflicts with built-in elements and to namespace components from different libraries. For more information on the basics of Web Components [see this set of articles](https://developers.google.com/web/fundamentals/web-components).
 :::
 
+:::note
+HTML has a few special tags known as "self-closing tags". Common examples include `<input>` and `<img>`. However, most HTML elements and **all** web components must have an explicit closing tag.
+:::
+
 We've got a basic Web Component in place, but it doesn't do much. So, let's add an attribute and make it render something. 
 
 **Example: Adding Attributes to a `FASTElement`**
