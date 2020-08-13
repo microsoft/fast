@@ -1,14 +1,16 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 /* eslint-disable no-undef */
+const _ = require("lodash");
 const path = require("path");
+const webpack = require("webpack");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
-const FASTCuratedManifest = require("@microsoft/site-utilities/src/curated-html.json");
+const manifest = require("@microsoft/site-utilities/src/curated-html.json");
 
-const appDir = path.resolve(__dirname, "./src/app");
-const publicDir = path.resolve(__dirname, "./src/public");
+const appDir = path.resolve(__dirname, "src/app");
+const distDir = path.resolve(__dirname, "dist");
 
 module.exports = {
     entry: {
@@ -17,11 +19,11 @@ module.exports = {
     resolve: {
         extensions: [".svg", ".ts", ".tsx", ".js"],
         alias: {
-            svg: path.resolve(__dirname, "src/app/svg"),
+            svg: path.resolve(appDir, "svg"),
         },
     },
     output: {
-        path: path.resolve(__dirname, "dist"),
+        path: distDir,
         publicPath: "/", // public URL of the output directory when referenced in a browser
     },
     module: {
@@ -65,25 +67,34 @@ module.exports = {
                     },
                 ],
             },
+            {
+                test: /\.ejs$/,
+                use: [
+                    {
+                        loader: "ejs-loader",
+                        options: {
+                            esModule: false,
+                        },
+                    },
+                ],
+            },
         ],
     },
     plugins: [
         new CleanWebpackPlugin(),
+        new webpack.ProvidePlugin({ _: "lodash-es" }),
         new HtmlWebpackPlugin({
             title: "FAST",
-            manifest: FASTCuratedManifest.reduce((manifestItems, manifestItem) => {
-                return manifestItems + manifestItem;
-            }, ""),
-            template: path.resolve(publicDir, "index.html"),
+            manifest,
+            template: path.resolve(__dirname, "src/public/index.ejs"),
         }),
         new CopyPlugin({
             patterns: [
                 {
-                    from: path.resolve(
-                        __dirname,
-                        "../site-utilities/statics/assets/favicon.ico"
+                    from: require.resolve(
+                        "@microsoft/site-utilities/statics/assets/favicon.ico"
                     ),
-                    to: publicDir,
+                    to: distDir,
                 },
             ],
         }),

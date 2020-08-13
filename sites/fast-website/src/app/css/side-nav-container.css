@@ -1,0 +1,16 @@
+.side-nav-container {
+    display: none;
+    height: min-content;
+    justify-content: space-between;
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 100%;
+    z-index: -1;
+}
+
+@media screen and (min-height: 390px) and (min-width: 1000px) {
+    .side-nav-container {
+        display: flex;
+    }
+}

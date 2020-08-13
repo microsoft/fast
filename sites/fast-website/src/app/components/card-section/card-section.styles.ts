@@ -4,13 +4,7 @@ import { neutralFillHoverBehavior } from "@microsoft/fast-components";
 
 export const CardSectionStyles = css`
     :host {
-        --flow: column;
-    }
-
-    @media screen and (max-width: 900px) {
-        :host {
-            --flow: row;
-        }
+        --flow: row;
     }
 
     ${display("grid")} :host {
@@ -29,5 +23,11 @@ export const CardSectionStyles = css`
         color: currentColor;
         background-color: ${neutralFillHoverBehavior.var};
         filter: saturate(1);
+    }
+
+    @media screen and (min-width: 900px) {
+        :host {
+            --flow: column;
+        }
     }
 `.withBehaviors(neutralFillHoverBehavior);

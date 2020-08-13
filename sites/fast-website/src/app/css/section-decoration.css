@@ -1,0 +1,26 @@
+.section-decoration {
+    border: none;
+    display: flex;
+    flex-direction: column;
+    height: 58px;
+    justify-content: space-between;
+    margin: calc(var(--design-unit) * 5px) calc(50% - 1.5px);
+    width: 3px;
+}
+
+.section-decoration::before,
+.section-decoration::after {
+    background-color: var(--accent-fill-rest);
+    content: '';
+    width: 3px;
+}
+
+.section-decoration::before {
+    border-radius: 50%;
+    height: 3px;
+}
+
+.section-decoration::after {
+    border-radius: calc(var(--corner-radius) * 1px);
+    height: calc(var(--type-ramp-plus-5-font-size) + var(--design-unit) * 1px);
+}

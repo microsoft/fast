@@ -1,16 +1,13 @@
+<% const include = name => require(`./${name}.ejs`)(); %>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title><%= htmlWebpackPlugin.options.title %></title>
-        <%= htmlWebpackPlugin.options.manifest %>
+        <%= htmlWebpackPlugin.options.manifest.join("") %>
         <link href="https://use.typekit.net/spx2dgm.css" rel="stylesheet" />
-        <style type="text/css">
-            *:not(:defined) {
-                visibility: hidden;
-            }
-        </style>
+        <style type="text/css">*:not(:defined){visibility:hidden}</style>
     </head>
     <body>
         <fast-design-system-provider
@@ -18,62 +15,8 @@
             use-defaults
             type-ramp-base-font-size="16px"
         >
-            <div class="wrapper">
-                <header class="header">
-                    <fast-anchor
-                        class="logo"
-                        slot="start"
-                        appearance="lightweight"
-                        href="/"
-                        aria-label="Home"
-                        alt="FAST"
-                    >
-                        <%= require("svg/icon-brand.svg") %> <%=
-                        require("svg/icon-brand-fast.svg") %>
-                    </fast-anchor>
-                    <site-navigation>
-                        <div class="anchor-wrapper">
-                            <ul>
-                                <li>
-                                    <fast-anchor
-                                        appearance="lightweight"
-                                        href="https://explore.fast.design"
-                                    >
-                                        Components
-                                    </fast-anchor>
-                                </li>
-                                <li>
-                                    <fast-anchor
-                                        appearance="lightweight"
-                                        href="/docs/introduction"
-                                    >
-                                        Documentation
-                                    </fast-anchor>
-                                </li>
-                                <li>
-                                    <fast-anchor
-                                        appearance="lightweight"
-                                        href="https://discord.gg/FcSNfg4"
-                                    >
-                                        Community
-                                    </fast-anchor>
-                                </li>
-                            </ul>
-                            <fast-anchor
-                                class="github-link"
-                                slot="end"
-                                appearance="lightweight"
-                                href="https://github.com/microsoft/fast/"
-                            >
-                                GitHub
-                                <span slot="end">
-                                    <%= require("svg/icon-github.svg") %>
-                                </span>
-                            </fast-anchor>
-                        </div>
-                    </site-navigation>
-                </header>
-
+            <div class="site-wrapper">
+                <%= include('header') %>
                 <section class="section hero-section" id="hero">
                     <div class="section-content">
                         <site-section-header class="section-header">
@@ -249,47 +192,8 @@
                         class="section-scroll"
                     ></site-side-navigation>
                 </aside>
-
                 <fast-divider class="footer-divider" role="separator"></fast-divider>
-                <footer class="footer">
-                    <site-navigation>
-                        <ul>
-                            <li>
-                                <fast-anchor
-                                    appearance="lightweight"
-                                    href="https://github.com/microsoft/fast/blob/master/LICENSE"
-                                >
-                                    License
-                                </fast-anchor>
-                            </li>
-                            <li>
-                                <fast-anchor
-                                    appearance="lightweight"
-                                    href="https://privacy.microsoft.com/en-US/privacystatement"
-                                >
-                                    Privacy & Cookies
-                                </fast-anchor>
-                            </li>
-                            <li>
-                                <fast-anchor
-                                    appearance="lightweight"
-                                    href="https://www.microsoft.com/en-us/legal/intellectualproperty/copyright/default.aspx"
-                                >
-                                    Terms of Use
-                                </fast-anchor>
-                            </li>
-                            <li><p>&copy; 2020 Microsoft</p></li>
-                        </ul>
-                    </site-navigation>
-                    <fast-anchor
-                        class="logo"
-                        appearance="lightweight"
-                        href="/"
-                        aria-label="Home"
-                    >
-                        <%= require("svg/icon-brand.svg") %>
-                    </fast-anchor>
-                </footer>
+                <%= include('footer') %>
             </div>
             <background-design></background-design>
         </fast-design-system-provider>

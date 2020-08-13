@@ -1,16 +1,30 @@
-import { FASTElement, observable } from "@microsoft/fast-element";
+import { FASTElement, observable, attr } from "@microsoft/fast-element";
 import { applyMixins, StartEnd } from "@microsoft/fast-foundation";
+import { NavigationItem } from "../navigation-item/navigation-item";
 
 export class Navigation extends FASTElement {
-    @observable
-    public opened: boolean = false;
+    @attr({
+        attribute: "menu",
+        mode: "boolean",
+    })
+    menu: boolean;
 
     @observable
-    public debounce: boolean = true;
+    opened: boolean = false;
 
-    private mediaQueryList: MediaQueryList;
+    @observable
+    debounce: boolean = true;
 
-    private mqlListener = (e: MediaQueryListEvent): void => {
+    @observable
+    slottedNavigationItems: Node[];
+
+    widthOffset: number;
+
+    mediaQueryList: MediaQueryList;
+
+    htmlElement: HTMLElement = document.body.parentElement as HTMLElement;
+
+    mqlListener = (e: MediaQueryListEvent): void => {
         this.debounce = true;
 
         if (!e.matches) {
@@ -18,25 +32,31 @@ export class Navigation extends FASTElement {
         }
     };
 
+    openedChanged(): void {
+        this.widthOffset = window.innerWidth - document.body.clientWidth;
+        if (this.htmlElement) {
+            this.htmlElement.style.setProperty("--width-offset", `${this.widthOffset}`);
+            this.htmlElement.classList.toggle("menu-opened", this.opened);
+        }
+    }
+
+    menuChanged() {
+        if (this.menu) {
+            this.mediaQueryList = window.matchMedia("screen and (max-width: 900px)");
+            this.mediaQueryList.addListener(this.mqlListener);
+        }
+    }
+
     connectedCallback() {
         super.connectedCallback();
-
-        this.mediaQueryList = window.matchMedia("screen and (max-width: 800px)");
-        this.mediaQueryList.addListener(this.mqlListener);
     }
 
-    public toggleOpened(): void {
-        const htmlElement = document.body.parentElement as HTMLElement;
-        const widthOffset = window.innerWidth - document.body.clientWidth;
-
-        this.opened = !this.opened;
+    toggleOpened(force?: boolean): void {
+        this.opened = force ? force : !this.opened;
         this.debounce = false;
-
-        htmlElement.style.setProperty("--width-offset", `${widthOffset}`);
-        htmlElement.classList.toggle("menu-opened", this.opened);
     }
 
-    public handleFocusOut = (e: FocusEvent): void => {
+    handleFocusOut = (e: FocusEvent): void => {
         let captured = e.relatedTarget as Node;
         let contains = this.contains(captured);
 

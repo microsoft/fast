@@ -6,7 +6,7 @@
 const path = require("path");
 const copyfiles = require("copyfiles");
 const webpack = require("webpack");
-const fastWebsiteConfig = require("fast-website/webpack.prod.js");
+const fastWebsiteConfig = require("@microsoft/fast-website/webpack.prod.js");
 
 const staticPath = path.resolve(__dirname, "../static");
 const utilitiesPath = path.resolve(__dirname, "../../site-utilities");

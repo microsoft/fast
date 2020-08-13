@@ -69,6 +69,8 @@ import { divTag, linkedDataExamples } from "./configs";
 import { ProjectFileTransfer } from "./components";
 import { selectDeviceOverrideStyles } from "./utilities/style-overrides";
 import { previewReady } from "./preview";
+import { Footer } from "./site-footer";
+
 /* eslint-disable-next-line @typescript-eslint/no-var-requires */
 const FASTInlineLogo = require("@microsoft/site-utilities/statics/assets/fast-inline-logo.svg");
 const fastMessageSystemWorker = new FASTMessageSystemWorker();
@@ -179,7 +181,12 @@ class Creator extends Foundation<CreatorHandledProps, {}, CreatorState> {
     public render(): React.ReactNode {
         return (
             <Background value={neutralLayerL1}>
-                <Container style={{ overflow: "hidden" }}>
+                <Container
+                    style={{
+                        overflow: "hidden",
+                        maxWidth: "100%",
+                    }}
+                >
                     <Row style={{ flex: "1" }}>
                         <Pane width={260}>
                             <Logo
@@ -349,6 +356,7 @@ class Creator extends Foundation<CreatorHandledProps, {}, CreatorState> {
                         </Pane>
                     </Row>
                 </Container>
+                <Footer />
             </Background>
         );
     }

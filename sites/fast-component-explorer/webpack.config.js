@@ -4,12 +4,13 @@ const MonacoWebpackPlugin = require("monaco-editor-webpack-plugin");
 const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 const WebpackShellPlugin = require("webpack-shell-plugin");
 const CleanWebpackPlugin = require("clean-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
+const TerserJSPlugin = require("terser-webpack-plugin");
 const WorkboxPlugin = require("workbox-webpack-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
 const FASTCuratedManifest = require("@microsoft/site-utilities/src/curated-html.json");
 
-const rootNodeModules = path.resolve(__dirname, "../../node_modules");
-const nodeModules = path.resolve(__dirname, "node_modules");
 const appDir = path.resolve(__dirname, "./app");
 const outDir = path.resolve(__dirname, "./www");
 
@@ -21,10 +22,7 @@ module.exports = (env, args) => {
             main: path.resolve(appDir, "index.tsx"),
             // Due to issues during development, service workers and the WorkboxPlugin are disabled for now
             // serviceWorker: path.resolve(appDir, "service-worker-registration.ts"),
-            focusVisible: path.resolve(
-                rootNodeModules,
-                "focus-visible/dist/focus-visible.min.js"
-            ),
+            focusVisible: require.resolve("focus-visible/dist/focus-visible.min.js"),
         },
         output: {
             path: outDir,
@@ -32,6 +30,7 @@ module.exports = (env, args) => {
             filename: "[name]-[contenthash].js",
         },
         optimization: {
+            minimizer: [new TerserJSPlugin({}), new OptimizeCSSAssetsPlugin({})],
             runtimeChunk: "single",
             splitChunks: {
                 chunks: "all",
@@ -77,19 +76,30 @@ module.exports = (env, args) => {
                     },
                 },
                 {
-                    test: /\.css$/,
-                    use: ["style-loader", "css-loader"]
-                },
-                {
                     test: /(message\-system\.min\.js)$/,
                     use: {
                         loader: "worker-loader",
                     },
                 },
+                {
+                    test: /\.css$/,
+                    use: [
+                        {
+                            loader: MiniCssExtractPlugin.loader,
+                            options: {
+                                hmr: process.env.NODE_ENV === "development",
+                            },
+                        },
+                        {
+                            loader: "css-loader",
+                        },
+                    ],
+                },
             ],
         },
         plugins: [
             new CleanWebpackPlugin([outDir]),
+            new MiniCssExtractPlugin(),
             new HtmlWebpackPlugin({
                 title: "FAST Component explorer",
                 manifest: FASTCuratedManifest.reduce((manifestItems, manifestItem) => {
@@ -123,14 +133,14 @@ module.exports = (env, args) => {
             new MonacoWebpackPlugin({
                 // available options are documented at https://github.com/Microsoft/monaco-editor-webpack-plugin#options
                 languages: ["html"],
-                features: ["format", "coreCommands", "codeAction"]
-            })
+                features: ["format", "coreCommands", "codeAction"],
+            }),
         ],
         resolve: {
             extensions: [".js", ".tsx", ".ts", ".json"],
             alias: {
-                lodash: path.resolve(rootNodeModules, "lodash-es"),
-                "lodash-es": path.resolve(rootNodeModules, "lodash-es"),
+                lodash: require.resolve("lodash-es"),
+                "lodash-es": require.resolve("lodash-es"),
             },
         },
         devServer: {

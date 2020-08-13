@@ -13,6 +13,7 @@ module.exports = {
             async: true,
         },
     ],
+    stylesheets: ["https://use.typekit.net/spx2dgm.css"],
     themes: [require.resolve("@docusaurus/theme-live-codeblock")],
     themeConfig: {
         colorMode: {
