@@ -27,6 +27,7 @@ import { ControlPane } from "./control-pane";
 import ColorBlocks from "./color-blocks";
 import { Gradient } from "./gradient";
 import { ColorsDesignSystem } from "./design-system";
+import { Footer } from "./site-footer";
 
 interface AppProps {
     designSystem: ColorsDesignSystem;
@@ -43,7 +44,7 @@ class App extends React.Component<AppProps, {}> {
     private containerStyleOverrides: any = {
         container: {
             width: "100%",
-            height: "100%",
+            minHeight: "100%",
         },
     };
 
@@ -60,7 +61,7 @@ class App extends React.Component<AppProps, {}> {
     public render(): React.ReactNode {
         return (
             <DesignSystemProvider designSystem={this.props.designSystem}>
-                <Container>
+                <Container jssStyleSheet={this.containerStyleOverrides}>
                     <Row fill={true}>
                         <Canvas>
                             <Container jssStyleSheet={this.containerStyleOverrides}>
@@ -100,6 +101,7 @@ class App extends React.Component<AppProps, {}> {
                         </Background>
                     </Row>
                 </Container>
+                <Footer />
             </DesignSystemProvider>
         );
     }
