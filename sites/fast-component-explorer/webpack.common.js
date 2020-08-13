@@ -4,6 +4,7 @@ const path = require("path");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
+const WebpackShellPlugin = require("webpack-shell-plugin");
 const FASTCuratedManifest = require("@microsoft/site-utilities/src/curated-html.json");
 const MonacoWebpackPlugin = require("monaco-editor-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
@@ -81,6 +82,9 @@ module.exports = {
             }, ""),
             inject: "body",
             template: path.resolve(appDir, "index.html"),
+        }),
+        new WebpackShellPlugin({
+            onBuildStart: [`yarn convert:readme`],
         }),
         new CopyPlugin({
             patterns: [
