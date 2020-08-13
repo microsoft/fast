@@ -13,19 +13,49 @@ This will deploy from staging to production via Azure Web App Slot swapping.
     # Web App valid values
     declare -a subscriptions=("production" "development")
     declare -a locations=("west" "east")
-
-    # Defaults
     product=fast
-    subscription=production
+    status=false
 
-## SHELL Arguments
+## CONFIG Options
     echo "${bold}${green}DEPLOYMENT started ...${reset}"
     echo "${green}Predefined defaults found${reset}" && echo ""
+    echo "Select an ${bold}${green}Environment${reset}:"
+    select environment in production staging development exit
+    do
+        case $environment in
+            production)
+                subscription=$environment
+                environment=$environment
+                env_path=""
+                site_path=""
+                break ;;
+            staging)
+                # there is no staging subscription, is's on production
+                subscription=production
+                environment=staging
+                env_path=/slots/stage
+                break ;;
+             development)
+                # sandbox to freely create and destroy services with scripts
+                subscription=development
+                environment=development
+                env_path=
+                break ;;
+            exit)
+                echo "${bold}${green}DEPLOYMENT cancelled.${reset}" 
+                exit ;;
+            *)
+                echo "${red}invalid entry, try again${reset}" ;;
+        esac
+    done
+    echo "${green}Environment ${bold}$environment${reset} ${green}set ...${reset}"
+    echo ""
+
+## SHELL Arguments
     source inputs.sh --debug false --subscription $subscription
 
 ## TASK Process
     echo "${bold}${green}Application${reset} Select an application to deploy:"
-    status=false
     select application in app color create explore motion www exit
     do
         case $application in
@@ -36,8 +66,6 @@ This will deploy from staging to production via Azure Web App Slot swapping.
                 echo "${green}Deploying ${bold}$application${reset} ${green}now ...${reset}"
             
                 for location in ${locations[@]}; do
-                    status=true
-
                     # configure resource group and IP address
                     resource_group=fast-$location'us'-rg
                     public_ip="$(wget -qO- ipinfo.io/ip)"/16
@@ -86,15 +114,11 @@ This will deploy from staging to production via Azure Web App Slot swapping.
             exit)
 
                 echo ""
-                if [ status == true ];
-                then
-                    echo "${bold}${green}DEPLOYMENT finished.${reset}" 
-                else
-                    echo "${bold}${green}DEPLOYMENT cancelled.${reset}" 
-                fi    
-                break ;;
+                echo "${bold}${green}DEPLOYMENT cancelled.${reset}" 
+                exit ;;
 
             *)
                 echo "${red}invalid entry, try again${reset}" ;;
         esac
     done
+echo "${bold}${green}DEPLOYMENT finished.${reset}" 
