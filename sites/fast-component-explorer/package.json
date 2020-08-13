@@ -67,7 +67,7 @@
     "react-dnd": "^9.0.0",
     "react-dom": "^16.6.3",
     "react-router-dom": "^5.1.2",
-    "react-syntax-highlighter": "^10.3.0",
+    "react-syntax-highlighter": "^13.3.1",
     "style-loader": "^1.2.1",
     "terser-webpack-plugin": "^4.1.0",
     "ts-loader": "^7.0.2",
