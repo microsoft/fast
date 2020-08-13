@@ -9,13 +9,6 @@ export const fastBreadcrumbItemDefinition: WebComponentDefinition = {
             description: "The FAST breadcrumb item element",
             attributes: [
                 {
-                    name: "name",
-                    description: "The name attribute",
-                    type: DataType.string,
-                    default: "",
-                    required: false,
-                },
-                {
                     name: "href",
                     description: "The href attribute",
                     type: DataType.string,

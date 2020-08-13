@@ -11,7 +11,7 @@ The `fast-breadcrumb-item` is a widget meant to be used with `fast-breadcrumb`.
 
 ```html live
 <fast-design-system-provider use-defaults>
-    <fast-breadcrumb-item name="Breadcrumb item" href="#"></fast-breadcrumb-item>
+    <fast-breadcrumb-item href="#">Breadcrumb item</fast-breadcrumb-item>
 </fast-design-system-provider>
 ```
 

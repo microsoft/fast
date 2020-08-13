@@ -49,9 +49,21 @@ const fastBreadcrumbConfig: ComponentViewConfig = {
                         },
                         schemaId: fastBreadcrumbItemId,
                         data: {
-                            name: "Breadcrumb item 1",
                             href: "#",
+                            Slot: [
+                                {
+                                    id: "Slot00",
+                                },
+                            ],
                         },
+                    },
+                    Slot00: {
+                        parent: {
+                            id: "Slot0",
+                            dataLocation: "Slot",
+                        },
+                        schemaId: textSchema.id,
+                        data: "Breading item 1",
                     },
                     Slot1: {
                         parent: {
@@ -60,9 +72,21 @@ const fastBreadcrumbConfig: ComponentViewConfig = {
                         },
                         schemaId: fastBreadcrumbItemId,
                         data: {
-                            name: "Breadcrumb item 2",
                             href: "#",
+                            Slot: [
+                                {
+                                    id: "Slot10",
+                                },
+                            ],
                         },
+                    },
+                    Slot10: {
+                        parent: {
+                            id: "Slot1",
+                            dataLocation: "Slot",
+                        },
+                        schemaId: textSchema.id,
+                        data: "Breading item 2",
                     },
                     Slot2: {
                         parent: {
@@ -71,8 +95,20 @@ const fastBreadcrumbConfig: ComponentViewConfig = {
                         },
                         schemaId: fastBreadcrumbItemId,
                         data: {
-                            name: "Breadcrumb item 3",
+                            Slot: [
+                                {
+                                    id: "Slot20",
+                                },
+                            ],
                         },
+                    },
+                    Slot20: {
+                        parent: {
+                            id: "Slot2",
+                            dataLocation: "Slot",
+                        },
+                        schemaId: textSchema.id,
+                        data: "Breading item 3",
                     },
                 },
                 "root",
@@ -105,14 +141,26 @@ const fastBreadcrumbConfig: ComponentViewConfig = {
                         },
                         schemaId: fastBreadcrumbItemId,
                         data: {
-                            name: "Breadcrumb item 1",
                             href: "#",
+                            Slot: [
+                                {
+                                    id: "Slot00",
+                                },
+                            ],
                             SlotStart: [
                                 {
                                     id: startPlaceholderIcon1[1],
                                 },
                             ],
                         },
+                    },
+                    Slot00: {
+                        parent: {
+                            id: "Slot0",
+                            dataLocation: "Slot",
+                        },
+                        schemaId: textSchema.id,
+                        data: "Breading item 1",
                     },
                     ...startPlaceholderIcon1[0],
                     Slot1: {
@@ -122,14 +170,26 @@ const fastBreadcrumbConfig: ComponentViewConfig = {
                         },
                         schemaId: fastBreadcrumbItemId,
                         data: {
-                            name: "Breadcrumb item 2",
                             href: "#",
+                            Slot: [
+                                {
+                                    id: "Slot10",
+                                },
+                            ],
                             SlotStart: [
                                 {
                                     id: startPlaceholderIcon2[1],
                                 },
                             ],
                         },
+                    },
+                    Slot10: {
+                        parent: {
+                            id: "Slot1",
+                            dataLocation: "Slot",
+                        },
+                        schemaId: textSchema.id,
+                        data: "Breading item 2",
                     },
                     ...startPlaceholderIcon2[0],
                     Slot2: {
@@ -139,13 +199,25 @@ const fastBreadcrumbConfig: ComponentViewConfig = {
                         },
                         schemaId: fastBreadcrumbItemId,
                         data: {
-                            name: "Breadcrumb item 3",
+                            Slot: [
+                                {
+                                    id: "Slot20",
+                                },
+                            ],
                             SlotStart: [
                                 {
                                     id: startPlaceholderIcon3[1],
                                 },
                             ],
                         },
+                    },
+                    Slot20: {
+                        parent: {
+                            id: "Slot2",
+                            dataLocation: "Slot",
+                        },
+                        schemaId: textSchema.id,
+                        data: "Breading item 3",
                     },
                     ...startPlaceholderIcon3[0],
                 },
@@ -179,14 +251,26 @@ const fastBreadcrumbConfig: ComponentViewConfig = {
                         },
                         schemaId: fastBreadcrumbItemId,
                         data: {
-                            name: "Breadcrumb item 1",
                             href: "#",
+                            Slot: [
+                                {
+                                    id: "Slot00",
+                                },
+                            ],
                             SlotEnd: [
                                 {
                                     id: endPlaceholderIcon1[1],
                                 },
                             ],
                         },
+                    },
+                    Slot00: {
+                        parent: {
+                            id: "Slot0",
+                            dataLocation: "Slot",
+                        },
+                        schemaId: textSchema.id,
+                        data: "Breading item 1",
                     },
                     ...endPlaceholderIcon1[0],
                     Slot1: {
@@ -196,14 +280,26 @@ const fastBreadcrumbConfig: ComponentViewConfig = {
                         },
                         schemaId: fastBreadcrumbItemId,
                         data: {
-                            name: "Breadcrumb item 2",
                             href: "#",
+                            Slot: [
+                                {
+                                    id: "Slot10",
+                                },
+                            ],
                             SlotEnd: [
                                 {
                                     id: endPlaceholderIcon2[1],
                                 },
                             ],
                         },
+                    },
+                    Slot10: {
+                        parent: {
+                            id: "Slot1",
+                            dataLocation: "Slot",
+                        },
+                        schemaId: textSchema.id,
+                        data: "Breading item 2",
                     },
                     ...endPlaceholderIcon2[0],
                     Slot2: {
@@ -213,13 +309,25 @@ const fastBreadcrumbConfig: ComponentViewConfig = {
                         },
                         schemaId: fastBreadcrumbItemId,
                         data: {
-                            name: "Breadcrumb item 3",
+                            Slot: [
+                                {
+                                    id: "Slot20",
+                                },
+                            ],
                             SlotEnd: [
                                 {
                                     id: endPlaceholderIcon3[1],
                                 },
                             ],
                         },
+                    },
+                    Slot20: {
+                        parent: {
+                            id: "Slot2",
+                            dataLocation: "Slot",
+                        },
+                        schemaId: textSchema.id,
+                        data: "Breading item 3",
                     },
                     ...endPlaceholderIcon3[0],
                 },
@@ -253,9 +361,21 @@ const fastBreadcrumbConfig: ComponentViewConfig = {
                         },
                         schemaId: fastBreadcrumbItemId,
                         data: {
-                            name: "Breadcrumb item 1",
                             href: "#",
+                            Slot: [
+                                {
+                                    id: "Slot00",
+                                },
+                            ],
                         },
+                    },
+                    Slot00: {
+                        parent: {
+                            id: "Slot0",
+                            dataLocation: "Slot",
+                        },
+                        schemaId: textSchema.id,
+                        data: "Breading item 1",
                     },
                     Slot1: {
                         parent: {
@@ -264,9 +384,21 @@ const fastBreadcrumbConfig: ComponentViewConfig = {
                         },
                         schemaId: fastBreadcrumbItemId,
                         data: {
-                            name: "Breadcrumb item 2",
                             href: "#",
+                            Slot: [
+                                {
+                                    id: "Slot10",
+                                },
+                            ],
                         },
+                    },
+                    Slot10: {
+                        parent: {
+                            id: "Slot1",
+                            dataLocation: "Slot",
+                        },
+                        schemaId: textSchema.id,
+                        data: "Breading item 2",
                     },
                     Slot2: {
                         parent: {
@@ -275,9 +407,21 @@ const fastBreadcrumbConfig: ComponentViewConfig = {
                         },
                         schemaId: fastBreadcrumbItemId,
                         data: {
-                            name: "Breadcrumb item 3",
                             href: "#",
+                            Slot: [
+                                {
+                                    id: "Slot20",
+                                },
+                            ],
                         },
+                    },
+                    Slot20: {
+                        parent: {
+                            id: "Slot2",
+                            dataLocation: "Slot",
+                        },
+                        schemaId: textSchema.id,
+                        data: "Breading item 3",
                     },
                 },
                 "root",
