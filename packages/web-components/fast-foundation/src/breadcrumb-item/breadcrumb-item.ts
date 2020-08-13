@@ -18,16 +18,6 @@ export class BreadcrumbItem extends FASTElement {
     public href: string;
 
     /**
-     * The name of the hyperlink
-     *
-     * @public
-     * @remarks
-     * HTML Attribute: name
-     */
-    @attr
-    public name: string;
-
-    /**
      * @internal
      */
     @observable
@@ -38,12 +28,6 @@ export class BreadcrumbItem extends FASTElement {
      */
     @observable
     public isCurrent: boolean = false;
-
-    /**
-     * @internal
-     */
-    @observable
-    public defaultSlottedNodes: Node[];
 }
 
 /**
