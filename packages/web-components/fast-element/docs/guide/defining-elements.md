@@ -33,7 +33,7 @@ Web Component names must contain a `-` in order to prevent future conflicts with
 :::
 
 :::note
-HTML has a few special tags known as "self-closing tags." Common examples include `<input>` and `<img>`. However, most HTML elements and **all** web components must have an explicit closing tag.
+HTML has a few special tags known as "self-closing tags". Common examples include `<input>` and `<img>`. However, most HTML elements and **all** web components must have an explicit closing tag.
 :::
 
 We've got a basic Web Component in place, but it doesn't do much. So, let's add an attribute and make it render something. 
