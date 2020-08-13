@@ -2,7 +2,7 @@ import {
     WebComponentDefinition,
     WebComponentDefinitionTag,
 } from "@microsoft/fast-tooling/dist/data-utilities/web-component";
-import { fastComponentDefinitions } from "@microsoft/fast-components/dist/esm/component-definitions";
+import * as fastComponentDefinitions from "@microsoft/fast-components/dist/esm/component-definitions";
 import { commonHTMLAttributes } from "./native/common.definition";
 import * as nativeElementDefinitions from "./native";
 
