@@ -12,9 +12,9 @@ A `fast-breadcrumb` widget is used as a navigational aid, allowing users to main
 ```html live
 <fast-design-system-provider use-defaults>
     <fast-breadcrumb>
-        <fast-breadcrumb-item name="Breadcrumb item 1" href="#"></fast-breadcrumb-item>
-        <fast-breadcrumb-item name="Breadcrumb item 2" href="#"></fast-breadcrumb-item>
-        <fast-breadcrumb-item name="Breadcrumb item 3"></fast-breadcrumb-item>
+        <fast-breadcrumb-item href="#">Breadcrumb item 1</fast-breadcrumb-item>
+        <fast-breadcrumb-item href="#">Breadcrumb item 2</fast-breadcrumb-item>
+        <fast-breadcrumb-item >Breadcrumb item 3</fast-breadcrumb-item>
     </fast-breadcrumb>
 </fast-design-system-provider>
 ```
