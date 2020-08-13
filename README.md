@@ -21,7 +21,7 @@ This is the FAST monorepo, containing web component packages, tools, examples, a
 
 ## Introduction
 
-FAST is a collection of technologies built on Web Components and other modern Web Standards, designed to help you efficiently tackle some of the most common challenges in website and application design and development.
+FAST is a collection of technologies built on Web Components and modern Web Standards, designed to help you efficiently tackle some of the most common challenges in website and application design and development.
 
 **TL;DR**
 

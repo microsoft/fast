@@ -9,7 +9,7 @@ Welcome to the FAST documentation! We're glad you're here and can't wait to show
 
 ## What is FAST?
 
-FAST is a collection of technologies built on Web Components and other modern Web Standards, designed to help you efficiently tackle some of the most common challenges in website and application design and development.
+FAST is a collection of technologies built on Web Components and modern Web Standards, designed to help you efficiently tackle some of the most common challenges in website and application design and development.
 
 ### What are Web Components?
 
