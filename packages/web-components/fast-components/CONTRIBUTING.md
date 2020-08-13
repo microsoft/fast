@@ -6,7 +6,11 @@ The component explorer is a [site](https://explore.fast.design) that showcases t
 
 ## Definition
 
-Each component must have a [definition](https://github.com/microsoft/fast/tree/master/sites/site-utilities/src/definitions/fast-components/README.md). This file describes the components API.
+Each component must have a **definition**. This file describes the components API.
+
+Steps to add a new definition:
+- Create a TypeScript file using spinal-case, this should be the name of your component and append it with `definition` which should be preceeded by a `.`. An example would be a `fast-button`, the expected name would be `fast-button.definition.ts`.
+- Add your export from the file to the component's `index.ts`.
 
 ## Open UI Definition
 
