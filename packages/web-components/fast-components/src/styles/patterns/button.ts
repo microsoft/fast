@@ -1,5 +1,10 @@
 import { css } from "@microsoft/fast-element";
-import { disabledCursor, display, focusVisible } from "@microsoft/fast-foundation";
+import {
+    disabledCursor,
+    display,
+    focusVisible,
+    forcedColorsStylesheetBehavior,
+} from "@microsoft/fast-foundation";
 import { heightNumber } from "../size";
 import {
     accentFillActiveBehavior,
@@ -19,6 +24,7 @@ import {
     neutralFocusInnerAccentBehavior,
     neutralForegroundRestBehavior,
 } from "../recipes";
+import { SystemColors } from "@microsoft/fast-web-utilities";
 
 /**
  * @internal
@@ -243,7 +249,14 @@ export const LightweightButtonStyles = css`
     accentForegroundHoverBehavior,
     accentForegroundActiveBehavior,
     accentForegroundHoverBehavior,
-    neutralForegroundRestBehavior
+    neutralForegroundRestBehavior,
+    forcedColorsStylesheetBehavior(
+        css`
+            :host(.lightweight:hover) .content::before {
+                background: ${SystemColors.LinkText};
+            }
+        `
+    )
 );
 
 /**

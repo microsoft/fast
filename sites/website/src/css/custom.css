@@ -29,3 +29,8 @@
   --dialog-height: auto;
   padding: 16px;
 }
+
+.button.button--secondary.button--sm.menu__button {
+  background: var(--ifm-color-primary);
+  color: var(--ifm-color-secondary);
+}
