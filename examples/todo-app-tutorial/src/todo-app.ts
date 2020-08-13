@@ -25,19 +25,19 @@ const template = html<TodoApp>`
             x => x.todos,
             html<TodoItem, TodoApp>`
                 <li>
-                    <fast-checkbox
+                    <fluent-checkbox
                         checked=${x => x.done}
                         @change=${x => x.toggleDone()}
-                    ></fast-checkbox>
+                    ></fluent-checkbox>
                     <span class="list-text ${x => (x.done ? "done" : "")}">
                         ${x => x.description}
                     </span>
-                    <fast-button
+                    <fluent-button
                         @click=${(x, c) => c.parent.removeTodo(x)}
                         aria-label="Remove item"
                     >
                         &times;
-                    </fast-button>
+                    </fluent-button>
                 </li>
             `
         )}

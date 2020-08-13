@@ -1,5 +1,5 @@
 {
-    "$schema": "https://json-schema.org/schema#",
+    "$schema": "http://json-schema.org/schema#",
     "title": "CSS Position",
     "description": "A CSS position component's schema definition.",
     "id": "@microsoft/fast-tooling-react/css-position",

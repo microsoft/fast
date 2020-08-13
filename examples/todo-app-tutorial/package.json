@@ -1,5 +1,5 @@
 {
-  "name": "fast-components",
+  "name": "fast-todo-app",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -11,8 +11,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@microsoft/fast-colors": "^5.0.12",
     "@fluentui/web-components": "latest",
+    "@microsoft/fast-colors": "^5.0.12",
     "@microsoft/fast-element": "latest",
     "@microsoft/fast-foundation": "latest",
     "lodash-es": "^4.17.15",

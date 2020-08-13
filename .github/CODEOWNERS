@@ -5,7 +5,7 @@
 # The last matching pattern has the most precendence.
 
 # These *code owners* will be the default owners for everything in the repository.
-* @chrisdholt @janechu @nicholasrice
+* @chrisdholt @janechu @nicholasrice @EisenbergEffect
 
 # File type specific owners
 # Markdown specific files

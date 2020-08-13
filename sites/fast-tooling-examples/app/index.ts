@@ -15,7 +15,7 @@ import examples from "./registry";
 import toolingGuidance from "./.tmp/tooling-guidance";
 import toolingReactGuidance from "./.tmp/tooling-react-guidance";
 /* eslint-disable-next-line @typescript-eslint/no-var-requires */
-const FASTInlineLogo = require("@microsoft/site-utilities/statics/assets/fast-inline-logo.png");
+const FASTInlineLogo = require("@microsoft/site-utilities/statics/assets/fast-inline-logo.svg");
 
 // prevent tree shaking
 FASTAnchor;

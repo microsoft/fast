@@ -44,7 +44,7 @@ export const TreeItemTemplate = html<TreeItem>`
                             <slot name="expand-collapse-glyph">
                                 <svg
                                     viewBox="0 0 16 16"
-                                    xmlns="https://www.w3.org/2000/svg"
+                                    xmlns="http://www.w3.org/2000/svg"
                                     class="expand-collapse-glyph"
                                 >
                                     <path d="M4.29 12L12 4.29V12H4.29z" />

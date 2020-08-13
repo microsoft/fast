@@ -25,7 +25,7 @@ export const CheckboxTemplate = html<Checkbox>`
                     part="checked-indicator"
                     class="checked-indicator"
                     viewBox="0 0 20 20"
-                    xmlns="https://www.w3.org/2000/svg"
+                    xmlns="http://www.w3.org/2000/svg"
                 >
                     <path
                         fill-rule="evenodd"
