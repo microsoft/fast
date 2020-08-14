@@ -5,7 +5,7 @@ sidebar_label: breadcrumb-item
 custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-foundation/src/breadcrumb-item/README.md
 ---
 
-The `fast-breadcrumb-item` is a widget meant to be used with `fast-breadcrumb`.
+The `fast-breadcrumb-item` is a component meant to be used with `fast-breadcrumb`.
 
 ## Usage
 
