@@ -54,9 +54,9 @@ He clicks on `Kitchen and Dining` to go back to the category of kitchen items, s
 
 ```html
 <fast-breadcrumb>
-    <fast-breadcrumb-item name="Breadcrumb item 1" href="#"></fast-breadcrumb-item>
-    <fast-breadcrumb-item name="Breadcrumb item 2" href="#"></fast-breadcrumb-item>
-    <fast-breadcrumb-item name="Breadcrumb item 3"></fast-breadcrumb-item>
+    <fast-breadcrumb-item href="#">Breadcrumb item 1</fast-breadcrumb-item>
+    <fast-breadcrumb-item href="#">Breadcrumb item 2</fast-breadcrumb-item>
+    <fast-breadcrumb-item>Breadcrumb item 3</fast-breadcrumb-item>
 </fast-breadcrumb>
 ```
 
@@ -168,5 +168,5 @@ The `fast-breadcrumb-item` is placed inside the `fast-breadcrumb` component. It 
 ## Implementation
 
 ```html
-<fast-breadcrumb-item name="Breadcrumb item" href="#"></fast-breadcrumb-item>
+<fast-breadcrumb-item  href="#">Breadcrumb item</fast-breadcrumb-item>
 ```

@@ -63,7 +63,7 @@ const fastBreadcrumbConfig: ComponentViewConfig = {
                             dataLocation: "Slot",
                         },
                         schemaId: textSchema.id,
-                        data: "Breading item 1",
+                        data: "Breadcrumb item 1",
                     },
                     Slot1: {
                         parent: {
@@ -86,7 +86,7 @@ const fastBreadcrumbConfig: ComponentViewConfig = {
                             dataLocation: "Slot",
                         },
                         schemaId: textSchema.id,
-                        data: "Breading item 2",
+                        data: "Breadcrumb item 2",
                     },
                     Slot2: {
                         parent: {
@@ -108,7 +108,7 @@ const fastBreadcrumbConfig: ComponentViewConfig = {
                             dataLocation: "Slot",
                         },
                         schemaId: textSchema.id,
-                        data: "Breading item 3",
+                        data: "Breadcrumb item 3",
                     },
                 },
                 "root",
@@ -160,7 +160,7 @@ const fastBreadcrumbConfig: ComponentViewConfig = {
                             dataLocation: "Slot",
                         },
                         schemaId: textSchema.id,
-                        data: "Breading item 1",
+                        data: "Breadcrumb item 1",
                     },
                     ...startPlaceholderIcon1[0],
                     Slot1: {
@@ -189,7 +189,7 @@ const fastBreadcrumbConfig: ComponentViewConfig = {
                             dataLocation: "Slot",
                         },
                         schemaId: textSchema.id,
-                        data: "Breading item 2",
+                        data: "Breadcrumb item 2",
                     },
                     ...startPlaceholderIcon2[0],
                     Slot2: {
@@ -217,7 +217,7 @@ const fastBreadcrumbConfig: ComponentViewConfig = {
                             dataLocation: "Slot",
                         },
                         schemaId: textSchema.id,
-                        data: "Breading item 3",
+                        data: "Breadcrumb item 3",
                     },
                     ...startPlaceholderIcon3[0],
                 },
@@ -270,7 +270,7 @@ const fastBreadcrumbConfig: ComponentViewConfig = {
                             dataLocation: "Slot",
                         },
                         schemaId: textSchema.id,
-                        data: "Breading item 1",
+                        data: "Breadcrumb item 1",
                     },
                     ...endPlaceholderIcon1[0],
                     Slot1: {
@@ -299,7 +299,7 @@ const fastBreadcrumbConfig: ComponentViewConfig = {
                             dataLocation: "Slot",
                         },
                         schemaId: textSchema.id,
-                        data: "Breading item 2",
+                        data: "Breadcrumb item 2",
                     },
                     ...endPlaceholderIcon2[0],
                     Slot2: {
@@ -327,7 +327,7 @@ const fastBreadcrumbConfig: ComponentViewConfig = {
                             dataLocation: "Slot",
                         },
                         schemaId: textSchema.id,
-                        data: "Breading item 3",
+                        data: "Breadcrumb item 3",
                     },
                     ...endPlaceholderIcon3[0],
                 },
@@ -375,7 +375,7 @@ const fastBreadcrumbConfig: ComponentViewConfig = {
                             dataLocation: "Slot",
                         },
                         schemaId: textSchema.id,
-                        data: "Breading item 1",
+                        data: "Breadcrumb item 1",
                     },
                     Slot1: {
                         parent: {
@@ -398,7 +398,7 @@ const fastBreadcrumbConfig: ComponentViewConfig = {
                             dataLocation: "Slot",
                         },
                         schemaId: textSchema.id,
-                        data: "Breading item 2",
+                        data: "Breadcrumb item 2",
                     },
                     Slot2: {
                         parent: {
@@ -421,7 +421,7 @@ const fastBreadcrumbConfig: ComponentViewConfig = {
                             dataLocation: "Slot",
                         },
                         schemaId: textSchema.id,
-                        data: "Breading item 3",
+                        data: "Breadcrumb item 3",
                     },
                 },
                 "root",
