@@ -206,7 +206,6 @@ export class Tooltip extends FASTElement {
      */
     private delayTimer: number | null = null;
 
-    
     /**
      * Indicates whether the anchor is currently being hovered
      */
@@ -293,7 +292,6 @@ export class Tooltip extends FASTElement {
         this.startHover();
     };
 
-
     /**
      * starts the hover delay timer
      */
@@ -363,7 +361,6 @@ export class Tooltip extends FASTElement {
         return document.getElementById(this.anchor);
     };
 
-
     /**
      * handles key down events to check for dismiss
      */
@@ -395,7 +392,7 @@ export class Tooltip extends FASTElement {
             this.hideTooltip();
         }
     };
-    
+
     /**
      * shows the tooltip
      */
