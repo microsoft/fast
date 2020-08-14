@@ -2,7 +2,6 @@ import { attr, DOM, FASTElement, observable } from "@microsoft/fast-element";
 import { AnchoredRegion, AxisPositioningMode, AxisScalingMode } from "../anchored-region";
 import { Direction, keyCodeEscape } from "@microsoft/fast-web-utilities";
 
-
 /**
  * Enumerates possible tooltip positions
  *
