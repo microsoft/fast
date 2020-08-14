@@ -25,8 +25,7 @@ export const TooltipStyles = css`
     .tooltip {
         box-sizing: border-box;
         border-radius: calc(var(--corner-radius) * 1px);
-        border: calc(var(--outline-width) * 1px) solid ${accentFillActiveBehavior.var};
-        border-color: ${neutralFocusBehavior.var};
+        border: calc(var(--outline-width) * 1px) solid ${neutralFocusBehavior.var};
         box-shadow: 0 0 0 1px ${neutralFocusBehavior.var} inset;
         background: ${neutralFillRestBehavior.var};
         color: ${neutralForegroundRestBehavior.var};
@@ -37,6 +36,7 @@ export const TooltipStyles = css`
         font-size: var(--type-ramp-base-font-size);
         line-height: var(--type-ramp-base-line-height);
         white-space: nowrap;
+        // TODO: a mechanism to manage z-index across components
         z-index: 10000;
     }
 
