@@ -1,6 +1,10 @@
 import { html, ref, when } from "@microsoft/fast-element";
 import { Tooltip } from "./tooltip";
 
+/**
+ * The template for the {@link @microsoft/fast-foundation#(Tooltip:class)} component.
+ * @public
+ */
 export const TooltipTemplate = html<Tooltip>`
     ${when(
         x => x.tooltipVisible,
