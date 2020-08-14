@@ -269,7 +269,7 @@ export const FastFrameTemplate = html<FastFrame>`
                         <fast-menu-item role="menuitem" aria-label="Example menu item">Menu item 1</fast-menu-item>
                         <fast-menu-item role="menuitem" aria-label="Example menu item">Menu item 2</fast-menu-item>
                         <fast-menu-item role="menuitem" aria-label="Example menu item">Menu item 3</fast-menu-item>
-                        <hr />
+                        <fast-divider></fast-divider>
                         <fast-menu-item role="menuitem" aria-label="Example menu item">Menu item 4</fast-menu-item>
                     </fast-menu>
                     <div class="control-container">
