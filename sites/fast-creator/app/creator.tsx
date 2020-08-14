@@ -18,6 +18,7 @@ import ReactDOM from "react-dom";
 import {
     AjvMapper,
     CustomMessageIncomingOutgoing,
+    DataDictionary,
     MessageSystem,
     MessageSystemNavigationTypeAction,
     MessageSystemType,
@@ -57,7 +58,7 @@ import {
 } from "@microsoft/site-utilities";
 import { fastDesignSystemDefaults } from "@microsoft/fast-components/src/fast-design-system";
 import { StandardLuminance } from "@microsoft/fast-components";
-import * as monaco from "monaco-editor";
+import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
 import {
     CreatorHandledProps,
     CreatorProps,
@@ -380,15 +381,7 @@ class Creator extends Foundation<CreatorHandledProps, {}, CreatorState> {
                     dataDictionary: e.data.dataDictionary,
                 },
             };
-            this.editor.updateOptions({
-                readOnly: false,
-            });
-            this.editor.setValue(
-                mapDataDictionaryToMonacoEditorHTML(
-                    e.data.dataDictionary,
-                    schemaDictionary
-                )
-            );
+            this.updateEditorContent(e.data.dataDictionary);
         }
 
         if (
@@ -402,14 +395,8 @@ class Creator extends Foundation<CreatorHandledProps, {}, CreatorState> {
                     schemaDictionary,
                 });
                 updatedState.previewReady = true;
-                this.editor.updateOptions({
-                    readOnly: false,
-                });
-                this.editor.setValue(
-                    mapDataDictionaryToMonacoEditorHTML(
-                        this.state.views[this.state.activeView].dataDictionary,
-                        schemaDictionary
-                    )
+                this.updateEditorContent(
+                    this.state.views[this.state.activeView].dataDictionary
                 );
             } else if (e.data.value.type === MessageSystemType.navigation) {
                 fastMessageSystem.postMessage(e.data.value);
@@ -457,6 +444,17 @@ class Creator extends Foundation<CreatorHandledProps, {}, CreatorState> {
                 },
                 readOnly: true,
             });
+        }
+    }
+
+    private updateEditorContent(dataDictionary: DataDictionary<unknown>): void {
+        if (this.editor) {
+            this.editor.updateOptions({
+                readOnly: false,
+            });
+            this.editor.setValue(
+                mapDataDictionaryToMonacoEditorHTML(dataDictionary, schemaDictionary)
+            );
         }
     }
 

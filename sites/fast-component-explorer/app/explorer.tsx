@@ -48,7 +48,7 @@ import {
     TransparencyToggle,
     upChevron,
 } from "@microsoft/site-utilities";
-import * as monaco from "monaco-editor";
+import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
 import { ComponentViewConfig, Scenario } from "./fast-components/configs/data.props";
 import * as componentConfigs from "./fast-components/configs";
 import { history, menu, schemaDictionary } from "./config";
@@ -350,6 +350,17 @@ class Explorer extends Foundation<
         }
     }
 
+    private updateEditorContent(dataDictionary: DataDictionary<unknown>): void {
+        if (this.editor) {
+            this.editor.updateOptions({
+                readOnly: false,
+            });
+            this.editor.setValue(
+                mapDataDictionaryToMonacoEditorHTML(dataDictionary, schemaDictionary)
+            );
+        }
+    }
+
     private handlePopState = (): void => {
         if (window.location.pathname !== this.state.locationPathname) {
             this.handleUpdateRoute(window.location.pathname);
@@ -374,15 +385,7 @@ class Explorer extends Foundation<
                     schemaDictionary,
                 });
                 updatedState.previewReady = true;
-                this.editor.updateOptions({
-                    readOnly: false,
-                });
-                this.editor.setValue(
-                    mapDataDictionaryToMonacoEditorHTML(
-                        this.state.dataDictionary,
-                        schemaDictionary
-                    )
-                );
+                this.updateEditorContent(this.state.dataDictionary);
             }
         }
 
@@ -391,15 +394,7 @@ class Explorer extends Foundation<
             e.data.type === MessageSystemType.initialize
         ) {
             updatedState.dataDictionary = e.data.dataDictionary;
-            this.editor.updateOptions({
-                readOnly: false,
-            });
-            this.editor.setValue(
-                mapDataDictionaryToMonacoEditorHTML(
-                    e.data.dataDictionary,
-                    schemaDictionary
-                )
-            );
+            this.updateEditorContent(this.state.dataDictionary);
         }
 
         this.setState(updatedState as ExplorerState);
