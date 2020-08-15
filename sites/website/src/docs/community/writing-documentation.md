@@ -1,19 +1,19 @@
 ---
 id: writing-documentation
-title: Writing Documentation
-sidebar_label: Writing Documentation
+title: Writing documentation
+sidebar_label: Writing documentation
 custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/src/docs/community/writing-documentation.md
 ---
 
-Thank you for your interest in contributing to our documentation. We put together this guide to help you get started, whether you just want to fix minor spelling/grammar issues or have the more ambitious goal of writing a new article.
+Thank you for your interest in contributing to our documentation. We put together this guide to help you get started, whether you want to fix minor spelling/grammar issues or have a more ambitious goal to write a new article.
 
 ## Documentation types
 
-There are two types of documentation: articles and API reference. Articles are documents written using [GitHub-flavored Markdown syntax](https://github.github.com/gfm/) and located throughout our packages, while API reference details classes, methods, etc. and is written inline within the code itself.
+There are two types of documentation; articles and API references. Articles are documents that use [GitHub-flavored Markdown syntax](https://github.github.com/gfm/) located in our packages. API references include details such as classes and methods and are located within the code they describe.
 
 ## Writing articles
 
-Each article begins with a Yaml metadata block that is followed by a body written with [GitHub-flavored Markdown syntax](https://github.github.com/gfm/). The Yaml metadata block provides key information needed by our documentation system. Here's an example of what this document's Yaml metadata block looks like:
+Each article begins with a YAML metadata block followed by a body written with [GitHub-flavored Markdown syntax](https://github.github.com/gfm/). The YAML metadata block provides key information needed by our documentation system. Here's an example of this document's YAML metadata block:
 
 ```yaml
 ---
@@ -24,16 +24,16 @@ custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/src
 ---
 ```
 
-The required fields are as follows:
+The required fields are:
 
-* **id**: A human-readable unique id that will be used in the documents URL.
-* **title**: The title that will be displayed at the top of the document.
-* **sidebar_label**: The label that will be displayed in the left-side table of contents.
-* **custom_edit_url**: A URL where the document source can be edited by contributors.
+* **id**: A human-readable unique ID used in the document URL.
+* **title**: The title displayed at the top of the document.
+* **sidebar_label**: The label displayed in the table of contents.
+* **custom_edit_url**: A URL where the document source can be edited.
 
-Beneath the Yaml metadata block, the body of the article is written primarily with [GitHub-flavored Markdown syntax](https://github.github.com/gfm/). Since our documentation system will turn the `title` metadata into an appropriate article header, your content should begin immediately with a short introductory paragraph, followed by h2 headers for each section of the document. You may use h3 headers beneath the h2s but try to avoid further sub-sections.
+Beneath the YAML metadata block, article's body is written with [GitHub-flavored Markdown syntax](https://github.github.com/gfm/). Since our documentation system will turn the `title` metadata into the article header, the content should begin  with a short introductory paragraph, followed by an h2 header for each section of the document. You may use h3 headers beneath h2 headers but avoid deeper sub-sections.
 
-In addition to [GitHub-flavored Markdown syntax](https://github.github.com/gfm/), you may also use the admonitions `note`, `tip`, `important`, `caution`, and `warning`. Here's an example of the syntax of a `note`:
+In addition to [GitHub-flavored Markdown syntax](https://github.github.com/gfm/), you may use the admonitions `note`, `tip`, `important`, `caution`, and `warning`. Here's an example of the syntax for a `note`:
 
 ```markdown
 :::note
@@ -43,7 +43,7 @@ This is a note
 :::
 ```
 
-Which will be rendered as:
+Which is rendered as:
 
 :::note
 
@@ -51,9 +51,9 @@ This is a note
 
 :::
 
-## Writing API reference
+## Writing API references
 
-API reference is written inline with code using TSDoc syntax. [TSDoc](https://github.com/microsoft/tsdoc) is a proposal to standardize the doc comments used in TypeScript source files. It allows different tools to extract content from comments without getting confused by each other's syntax. The TSDoc notation looks pretty familiar:
+An API reference is written inline with code using TSDoc syntax. [TSDoc](https://github.com/microsoft/tsdoc) is a proposal to standardize documentation comments used in TypeScript source files. It allows tools to extract content from comments without getting confused by differing syntax. The TSDoc notation should be familiar:
 
 ```ts
 export class Statistics {
@@ -77,15 +77,15 @@ export class Statistics {
 
 ## Building and testing the docs
 
-To test your documentation changes, first, begin by cloning and building the documentation as described in [the contributor guide](./contributor-guide). Next, open a terminal and navigate to `sites/website`. From here, you can run the documentation site in developer mode with the following command: `yarn dev`. This will allow you to preview the site and validate that your documentation changes are rendering as expected.
+To test documentation changes, clone and build the documentation as described in [the contributor guide](./contributor-guide). Next, open a terminal and navigate to `sites/website` and run the documentation site with `yarn dev` to preview the site and validate your changes are rendering.
 
 ## Style guide
 
-Writing guidelines used for this project come from the [Chicago Manual of Style][CMoS] and [The Associated Press Stylebook][APS]. When these two publications have conflicting guidance, the Chicago Manual of Style is preferred.
+Writing guidelines for this project come from the [Chicago Manual of Style][CMoS] and [The Associated Press Stylebook][APS]. If these two publications have conflicting guidance, the Chicago Manual of Style guidance is preferred.
 
-We recognize that many of our contributors may not have access to these paid resources, so we provide a *style guide amendment* that covers many of the most common issues as well as some guidance that is different for this project, or is not covered in other guides.
+We recognize that our contributors may not have access to these resources, so we provide a *style guide amendment* that covers common issues and guidance specific to this project, or guidance that is not specified in other guides.
 
-For guidance not covered by this amendment, several free resources can be used as a supplement:
+For guidance not specified by this amendment, several free resources can be used as a supplement:
 
 * [The National Geographic style manual][NGSM]
 * [The Guardian and Observer style guide][GaOSG]
@@ -108,7 +108,6 @@ A sentence fragment in parenthesis:
 **Quotation marks with periods**: When a sentence ends with a quotation mark, the period goes on the inside. The only exception to this rule in cases where the quotation marks are around text intended to be input by the user, but in these cases, use `code` formatting.
 
 >The boy said, "The first time it said 'hello world,' I knew we would be friends."
-
 >At the prompt, type `hello world`.
 
 **Colons on sentences**: When a sentence proceeds and is describing or introducing a code block, list or example; use a colon.
@@ -144,7 +143,7 @@ Code comment:
 
 List:
 
-> Over the years, I have had a few say 'hello world' to me:
+> Over the years, I have had a few computers say 'hello world' to me:
 > * The first was a CBM 8032 I received for my 12th birthday.
 
 ### Headings
@@ -208,7 +207,7 @@ Paragraph
 ![Image](https://image.url)
 ```
 
-**Trailing space**: Remove trailing spaces at the end of elements and do not include an extra line break at the end of the markdown file.
+**Trailing space**: Remove trailing spaces at the end of elements. Include one new line character at the end of the markdown file.
 
 **Unordered lists**: Use `*` syntax for un-ordered lists:
 
@@ -236,7 +235,7 @@ Example CSS code fence:
 
 You can find a list of supported languages [here](https://github.com/github/linguist/blob/master/lib/linguist/languages.yml).
 
-**Testing examples**: Test your code examples to verify they are working as expected.
+**Testing examples**: Test your code examples to verify they work.
 
 **Code guidelines**: Verify that code examples follow the project's coding guidelines. For example, four spaces for indenting.
 
@@ -247,12 +246,12 @@ Code comments can be fragments or complete sentences. Depending on the format, t
 Code comments in **sentence** format:
 
 * Can be formatted as a single line or multi-line syntax.
-* Have periods or question marks at the end.
+* Have a period or question mark at the end.
 
 Code comments in **fragment** format:
 
 * Are formatted as single-line syntax.
-* Do *not* have periods or question marks at the end.
+* Do *not* have period or question mark at the end.
 
 [CMoS]: https://www.amazon.com/Chicago-Manual-Style-16th/dp/0226104206/ref=pd_lpo_sbs_14_t_0?_encoding=UTF8&psc=1&refRID=2QG7JEGM9PVNQJR5V00Y
 
