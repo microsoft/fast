@@ -29,6 +29,12 @@ function getDefinitionLocations(definitionLocations, definitionKeys) {
 /**
  * This normalizes the Web Component definition so that it is acceptable
  * in the JSON schema
+ * 
+ * Web component definitions must always have strings as attribute values,
+ * right now numbers and booleans can be specified, this aids when converting
+ * to a JSON schema that the fast-tooling can use.
+ * 
+ * Here for our exported Open UI schema, it is changed to strings so that it will validate.
  */
 function definitionNormalizer(definition) {
     return {
