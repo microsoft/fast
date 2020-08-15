@@ -1,6 +1,5 @@
 import { WebComponentDefinition } from "@microsoft/fast-tooling/dist/data-utilities/web-component";
 import { DataType } from "@microsoft/fast-tooling";
-import { DividerRole } from "@microsoft/fast-foundation";
 
 export const fastDividerDefinition: WebComponentDefinition = {
     version: 1,
@@ -15,13 +14,13 @@ export const fastDividerDefinition: WebComponentDefinition = {
                     description: "The role attribute",
                     values: [
                         {
-                            name: DividerRole.separator,
+                            name: "separator",
                         },
                         {
-                            name: DividerRole.presentation,
+                            name: "presentation",
                         },
                     ],
-                    default: DividerRole.separator,
+                    default: "separator",
                     required: false,
                 },
             ],

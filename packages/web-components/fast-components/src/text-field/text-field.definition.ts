@@ -1,34 +1,27 @@
 import { WebComponentDefinition } from "@microsoft/fast-tooling/dist/data-utilities/web-component";
 import { DataType } from "@microsoft/fast-tooling";
-import { TextAreaResize } from "@microsoft/fast-foundation";
 
-export const fastTextAreaDefinition: WebComponentDefinition = {
+export const fastTextFieldDefinition: WebComponentDefinition = {
     version: 1,
     tags: [
         {
-            name: "fast-text-area",
-            description: "The FAST text-area element",
+            name: "fast-text-field",
+            description: "The FAST text-field element",
             attributes: [
+                {
+                    name: "value",
+                    description: "The value attribute",
+                    default: undefined,
+                    required: false,
+                    type: DataType.string,
+                },
                 {
                     name: "appearance",
                     description: "The appearance attribute",
                     default: "outline",
-                    required: false,
-                    type: DataType.string,
                     values: [{ name: "outline" }, { name: "filled" }],
-                },
-                {
-                    name: "resize",
-                    description: "The resize attribute",
-                    required: false,
                     type: DataType.string,
-                    values: [
-                        { name: TextAreaResize.none },
-                        { name: TextAreaResize.both },
-                        { name: TextAreaResize.horizontal },
-                        { name: TextAreaResize.vertical },
-                    ],
-                    default: TextAreaResize.none,
+                    required: false,
                 },
                 {
                     name: "autofocus",
@@ -38,18 +31,25 @@ export const fastTextAreaDefinition: WebComponentDefinition = {
                     default: false,
                 },
                 {
-                    name: "cols",
-                    description: "The cols attribute",
-                    required: false,
-                    type: DataType.number,
-                    default: 20,
-                },
-                {
-                    name: "form",
-                    description: "The form attribute",
+                    name: "placeholder",
+                    description: "The placeholder attribute",
                     required: false,
                     type: DataType.string,
                     default: undefined,
+                },
+                {
+                    name: "type",
+                    description: "The type attribute",
+                    default: "text",
+                    values: [
+                        { name: "email" },
+                        { name: "password" },
+                        { name: "tel" },
+                        { name: "text" },
+                        { name: "url" },
+                    ],
+                    type: DataType.string,
+                    required: false,
                 },
                 {
                     name: "list",
@@ -73,15 +73,15 @@ export const fastTextAreaDefinition: WebComponentDefinition = {
                     default: undefined,
                 },
                 {
-                    name: "placeholder",
-                    description: "The placeholder attribute",
+                    name: "pattern",
+                    description: "The pattern attribute",
                     required: false,
                     type: DataType.string,
                     default: undefined,
                 },
                 {
-                    name: "rows",
-                    description: "The rows attribute",
+                    name: "size",
+                    description: "The size attribute",
                     required: false,
                     type: DataType.number,
                     default: undefined,
@@ -92,13 +92,6 @@ export const fastTextAreaDefinition: WebComponentDefinition = {
                     required: false,
                     type: DataType.boolean,
                     default: undefined,
-                },
-                {
-                    name: "value",
-                    description: "The value attribute",
-                    default: undefined,
-                    required: false,
-                    type: DataType.string,
                 },
                 {
                     name: "name",

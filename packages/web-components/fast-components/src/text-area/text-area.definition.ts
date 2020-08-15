@@ -1,28 +1,33 @@
 import { WebComponentDefinition } from "@microsoft/fast-tooling/dist/data-utilities/web-component";
 import { DataType } from "@microsoft/fast-tooling";
-import { TextFieldType } from "@microsoft/fast-foundation";
 
-export const fastTextFieldDefinition: WebComponentDefinition = {
+export const fastTextAreaDefinition: WebComponentDefinition = {
     version: 1,
     tags: [
         {
-            name: "fast-text-field",
-            description: "The FAST text-field element",
+            name: "fast-text-area",
+            description: "The FAST text-area element",
             attributes: [
-                {
-                    name: "value",
-                    description: "The value attribute",
-                    default: undefined,
-                    required: false,
-                    type: DataType.string,
-                },
                 {
                     name: "appearance",
                     description: "The appearance attribute",
                     default: "outline",
-                    values: [{ name: "outline" }, { name: "filled" }],
-                    type: DataType.string,
                     required: false,
+                    type: DataType.string,
+                    values: [{ name: "outline" }, { name: "filled" }],
+                },
+                {
+                    name: "resize",
+                    description: "The resize attribute",
+                    required: false,
+                    type: DataType.string,
+                    values: [
+                        { name: "none" },
+                        { name: "both" },
+                        { name: "horizontal" },
+                        { name: "vertical" },
+                    ],
+                    default: "none",
                 },
                 {
                     name: "autofocus",
@@ -32,25 +37,18 @@ export const fastTextFieldDefinition: WebComponentDefinition = {
                     default: false,
                 },
                 {
-                    name: "placeholder",
-                    description: "The placeholder attribute",
+                    name: "cols",
+                    description: "The cols attribute",
+                    required: false,
+                    type: DataType.number,
+                    default: 20,
+                },
+                {
+                    name: "form",
+                    description: "The form attribute",
                     required: false,
                     type: DataType.string,
                     default: undefined,
-                },
-                {
-                    name: "type",
-                    description: "The type attribute",
-                    default: TextFieldType.text,
-                    values: [
-                        { name: TextFieldType.email },
-                        { name: TextFieldType.password },
-                        { name: TextFieldType.tel },
-                        { name: TextFieldType.text },
-                        { name: TextFieldType.url },
-                    ],
-                    type: DataType.string,
-                    required: false,
                 },
                 {
                     name: "list",
@@ -74,15 +72,15 @@ export const fastTextFieldDefinition: WebComponentDefinition = {
                     default: undefined,
                 },
                 {
-                    name: "pattern",
-                    description: "The pattern attribute",
+                    name: "placeholder",
+                    description: "The placeholder attribute",
                     required: false,
                     type: DataType.string,
                     default: undefined,
                 },
                 {
-                    name: "size",
-                    description: "The size attribute",
+                    name: "rows",
+                    description: "The rows attribute",
                     required: false,
                     type: DataType.number,
                     default: undefined,
@@ -93,6 +91,13 @@ export const fastTextFieldDefinition: WebComponentDefinition = {
                     required: false,
                     type: DataType.boolean,
                     default: undefined,
+                },
+                {
+                    name: "value",
+                    description: "The value attribute",
+                    default: undefined,
+                    required: false,
+                    type: DataType.string,
                 },
                 {
                     name: "name",

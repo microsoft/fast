@@ -1,6 +1,5 @@
 import { WebComponentDefinition } from "@microsoft/fast-tooling/dist/data-utilities/web-component";
 import { DataType } from "@microsoft/fast-tooling";
-import { FlipperDirection } from "@microsoft/fast-foundation";
 
 export const fastFlipperDefinition: WebComponentDefinition = {
     version: 1,
@@ -29,13 +28,13 @@ export const fastFlipperDefinition: WebComponentDefinition = {
                     description: "The direction attribute",
                     values: [
                         {
-                            name: FlipperDirection.previous,
+                            name: "previous",
                         },
                         {
-                            name: FlipperDirection.next,
+                            name: "next",
                         },
                     ],
-                    default: FlipperDirection.next,
+                    default: "next",
                     required: false,
                 },
             ],
