@@ -1,5 +1,5 @@
 import { html, when } from "@microsoft/fast-element";
-import { BaseProgress } from "../base-progress";
+import { BaseProgress } from "../progress/base-progress";
 /**
  * The template for the {@link @microsoft/fast-foundation#BaseProgress} component.
  * @public

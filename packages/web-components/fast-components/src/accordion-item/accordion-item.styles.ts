@@ -12,8 +12,8 @@ import {
     neutralForegroundFocusBehavior,
     neutralForegroundHoverBehavior,
     neutralForegroundRestBehavior,
-} from "../../styles/recipes";
-import { heightNumber } from "../../styles/size";
+} from "../styles/recipes";
+import { heightNumber } from "../styles/size";
 
 export const AccordionItemStyles = css`
     ${display("flex")} :host {

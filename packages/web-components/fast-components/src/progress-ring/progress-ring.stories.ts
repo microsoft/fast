@@ -1,6 +1,6 @@
-import { FASTDesignSystemProvider } from "../../design-system-provider";
+import { FASTDesignSystemProvider } from "../design-system-provider";
 import Examples from "./fixtures/circular.html";
-import { FASTProgressRing } from ".";
+import { FASTProgressRing } from "./index";
 
 // Prevent tree-shaking
 FASTProgressRing;

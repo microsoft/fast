@@ -1,5 +1,5 @@
 import { html, ref } from "@microsoft/fast-element";
-import { endTemplate, startTemplate } from "../../patterns/start-end";
+import { endTemplate, startTemplate } from "../patterns/start-end";
 import { AccordionItem } from "./accordion-item";
 
 /**
