@@ -17,9 +17,7 @@ import { TabsStyles as styles } from "./tabs.styles";
     styles,
 })
 export class FASTTabs extends Tabs {}
-export * from "./tab";
-export * from "./tab-panel";
-
+export * from "../tab";
 /**
  * Styles for Tabs
  * @public

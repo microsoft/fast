@@ -1,6 +1,6 @@
-import { FASTDesignSystemProvider } from "../../design-system-provider";
+import { FASTDesignSystemProvider } from "../design-system-provider";
 import Examples from "./fixtures/linear.html";
-import { FASTProgress } from ".";
+import { FASTProgress } from "./index";
 
 // Prevent tree-shaking
 FASTProgress;

@@ -1,7 +1,7 @@
 import { FASTDesignSystemProvider } from "../design-system-provider";
 import { accentFillRestBehavior } from "../styles/recipes";
 import Examples from "./fixtures/base.html";
-import { FASTAccordionItem } from "./accordion-item";
+import { FASTAccordionItem } from "../accordion-item";
 import { FASTAccordion } from ".";
 
 // Prevent tree-shaking
