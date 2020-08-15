@@ -29,7 +29,6 @@ He clicks on `Kitchen and Dining` to go back to the category of kitchen items, s
 *Attribute*
 - `aria-labelledby`
 - `aria-label`
-- `separator` - used as part of the visual presentation that signifies the breadcrumb trail. The separator is defaulted to a `/`.
 
 *Slot Names*
 - `slottedBreadcrumbItems` - a property used in a slotted directive.
@@ -95,7 +94,7 @@ The `fast-breadcrumb-item` is placed inside the `fast-breadcrumb` component. It 
 
 *Slots*
 - default slot for item.
-- `separator` - used to overwrite the default separator.
+- `separator` - breadcrumb separator. The default separator is "/"
 
 *CSS Parts*
 - `listitem` - class style to align the control and the separator.
@@ -153,12 +152,7 @@ The `fast-breadcrumb-item` is placed inside the `fast-breadcrumb` component. It 
         x => x.showSeparator,
         html<BreadcrumbItem>`
             <span class="separator" part="separator" aria-hidden="true">
-                <slot name="separator">
-                    ${x =>
-                        x.parentElement
-                            ? (x.parentElement as Breadcrumb).separator
-                            : void 0}
-                </slot>
+                <slot name="separator">/</slot>
             </span>
         `
     )}

@@ -57,12 +57,7 @@ export const BreadcrumbItemTemplate = html<BreadcrumbItem>`
             x => x.showSeparator,
             html<BreadcrumbItem>`
                 <span class="separator" part="separator" aria-hidden="true">
-                    <slot name="separator">
-                        ${x =>
-                            x.parentElement
-                                ? (x.parentElement as Breadcrumb).separator
-                                : void 0}
-                    </slot>
+                    <slot name="separator">/</slot>
                 </span>
             `
         )}

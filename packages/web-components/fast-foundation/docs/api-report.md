@@ -123,7 +123,6 @@ export class BaseProgress extends FASTElement {
 export class Breadcrumb extends FASTElement {
     ariaLabel: string;
     ariaLabelledby: string;
-    separator: string;
     // @internal (undocumented)
     slottedBreadcrumbItems: HTMLElement[];
     // (undocumented)

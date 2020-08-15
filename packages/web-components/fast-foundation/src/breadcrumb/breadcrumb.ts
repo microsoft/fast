@@ -27,16 +27,6 @@ export class Breadcrumb extends FASTElement {
     public ariaLabel: string;
 
     /**
-     * The divider that visually represents a breadcrumb trail
-     *
-     * @public
-     * @remarks
-     * HTML Attribute: separator
-     */
-    @attr
-    public separator: string = "/";
-
-    /**
      * @internal
      */
     @observable
