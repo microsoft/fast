@@ -173,11 +173,7 @@ allWebComponentDefinitionKeys.forEach((definitionKey) => {
                     const valid = validate(fileContents);
 
                     if (!valid) {
-                        console.log("fail", definitionKey);
-                        console.log(validate.errors);
-                        // throw new Error(JSON.stringify(validate.errors, null, 2));
-                    } else {
-                        // console.log("pass", definitionKey);
+                        throw new Error(JSON.stringify(validate.errors, null, 2));
                     }
 
                     // Write the file
