@@ -1,5 +1,6 @@
 import { WebComponentDefinition } from "@microsoft/fast-tooling/dist/data-utilities/web-component";
 import { DataType } from "@microsoft/fast-tooling";
+import { MenuItemRole } from "@microsoft/fast-foundation";
 
 export const fastMenuItemDefinition: WebComponentDefinition = {
     version: 1,
@@ -26,11 +27,11 @@ export const fastMenuItemDefinition: WebComponentDefinition = {
                     name: "role",
                     type: DataType.boolean,
                     description: "The role attribute",
-                    default: "menuitem",
+                    default: MenuItemRole.menuitem,
                     values: [
-                        { name: "menuitem" },
-                        { name: "menuitemcheckbox" },
-                        { name: "menuitemradio" },
+                        { name: MenuItemRole.menuitem },
+                        { name: MenuItemRole.menuitemcheckbox },
+                        { name: MenuItemRole.menuitemradio },
                     ],
                     required: false,
                 },

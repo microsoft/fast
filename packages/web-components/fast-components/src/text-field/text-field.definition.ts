@@ -1,5 +1,6 @@
 import { WebComponentDefinition } from "@microsoft/fast-tooling/dist/data-utilities/web-component";
 import { DataType } from "@microsoft/fast-tooling";
+import { TextFieldType } from "@microsoft/fast-foundation";
 
 export const fastTextFieldDefinition: WebComponentDefinition = {
     version: 1,
@@ -40,13 +41,13 @@ export const fastTextFieldDefinition: WebComponentDefinition = {
                 {
                     name: "type",
                     description: "The type attribute",
-                    default: "text",
+                    default: TextFieldType.text,
                     values: [
-                        { name: "email" },
-                        { name: "password" },
-                        { name: "tel" },
-                        { name: "text" },
-                        { name: "url" },
+                        { name: TextFieldType.email },
+                        { name: TextFieldType.password },
+                        { name: TextFieldType.tel },
+                        { name: TextFieldType.text },
+                        { name: TextFieldType.url },
                     ],
                     type: DataType.string,
                     required: false,

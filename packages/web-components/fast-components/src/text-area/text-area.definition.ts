@@ -1,5 +1,6 @@
 import { WebComponentDefinition } from "@microsoft/fast-tooling/dist/data-utilities/web-component";
 import { DataType } from "@microsoft/fast-tooling";
+import { TextAreaResize } from "@microsoft/fast-foundation";
 
 export const fastTextAreaDefinition: WebComponentDefinition = {
     version: 1,
@@ -22,12 +23,12 @@ export const fastTextAreaDefinition: WebComponentDefinition = {
                     required: false,
                     type: DataType.string,
                     values: [
-                        { name: "none" },
-                        { name: "both" },
-                        { name: "horizontal" },
-                        { name: "vertical" },
+                        { name: TextAreaResize.none },
+                        { name: TextAreaResize.both },
+                        { name: TextAreaResize.horizontal },
+                        { name: TextAreaResize.vertical },
                     ],
-                    default: "none",
+                    default: TextAreaResize.none,
                 },
                 {
                     name: "autofocus",
