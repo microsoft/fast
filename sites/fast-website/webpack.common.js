@@ -7,7 +7,7 @@ const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
-const manifest = require("@microsoft/site-utilities/src/curated-html.json");
+const manifest = require("@microsoft/site-utilities/src/curated-html.json").join("");
 
 const appDir = path.resolve(__dirname, "src/app");
 const distDir = path.resolve(__dirname, "dist");
