@@ -11,7 +11,7 @@ export const AvatarTemplate = html<Avatar>`
       class="coin ${x => (x.shape === "square" ? "square" : "circle")}"
       style="${x =>
         x.fill || x.color
-            ? `background-color: var(--badge-fill-${x.fill}); color: var(--badge-color-${x.color})`
+            ? `background-color: var(--avatar-fill-${x.fill}); color: var(--avatar-color-${x.color});`
             : void 0}"
     >
       <a class="link" href="${x => (x.link ? x.link : void 0)}">
@@ -23,9 +23,9 @@ export const AvatarTemplate = html<Avatar>`
             class="image"
           />
         `)}
-        <span class="name">${x => x.name}</span>
+        <span class="name">${x => x.initials}</span>
       </a>
     </div>
-    <slot class="badge" name="badge"></slot>
-  </template> 
+    <slot name="badge"></slot>
+  </template>
 `;

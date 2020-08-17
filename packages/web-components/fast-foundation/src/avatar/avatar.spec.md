@@ -45,21 +45,28 @@ A common use case would be to display an image or text (usually initials) of a u
 
 *Template*
 ```js
-<template>
-  <div class="avatar-coin">
-    <a href="${x => (x.link ? x.link : void 0)}">
-      ${when(x => x.imgSrc, html`
-        <img 
-          src="${x => x.imgSrc}"
-          alt="${x => x.alt}"
-          tabindex="${x => (!x.link ? "0" : void 0)}"
-        />
-      `)}
-      <span class="avatar-name">${x => x.name}</span>
-    </a>
-  </div>
-  <slot class="avatar-badge" name="badge"></slot>
-</template> 
+  <template>
+    <div 
+      class="coin ${x => (x.shape === "square" ? "square" : "circle")}"
+      style="${x =>
+        x.fill || x.color
+            ? `background-color: var(--avatar-fill-${x.fill}); color: var(--avatar-color-${x.color});`
+            : void 0}"
+    >
+      <a class="link" href="${x => (x.link ? x.link : void 0)}">
+        ${when(x => x.imgSrc, html`
+          <img 
+            src="${x => x.imgSrc}"
+            alt="${x => x.alt}"
+            tabindex="${x => (!x.link ? "0" : void 0)}"
+            class="image"
+          />
+        `)}
+        <span class="name">${x => x.initials}</span>
+      </a>
+    </div>
+    <slot name="badge"></slot>
+  </template> 
 ```
 
 ---
@@ -70,13 +77,14 @@ A common use case would be to display an image or text (usually initials) of a u
 <fast-avatar 
   src="..."
   alt="..."
-  link="">
+  link="...">
 </fast-avatar>
 ```
 
 With `fast-badge` Component:
 ```html
-<fast-avatar 
+<fast-avatar
+  src="..." 
   alt="..."
   link="...">
   <fast-badge slot="badge">&nbsp</fast-badge>

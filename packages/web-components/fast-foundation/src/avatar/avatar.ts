@@ -13,18 +13,36 @@ export class Avatar extends FASTElement {
    * @remarks
    * HTML Attribute: name
    */
-  @attr({ attribute: "name" })
-  public name: string;
+  @attr public name: string;
 
   /**
-   * Indicates the Avatar should have a color fill.
+   * Indicates the Avatar should have initials.
    * 
+   * @public
+   * @remarks
+   * HTML Attribute: initials
+   */
+  @attr public initials: string;
+
+  /**
+   * Invoked when the `name` property changes.
+   * 
+   * @public
+   * @remarks
+   */
+  protected nameChanged(): void {
+    const result = this.name?.match(/\b\w/g) || [];
+    this.initials = ((result.shift() || '') + (result.pop() || '')).toUpperCase();
+  }
+  
+  /**
+   * Indicates the Avatar should have a color fill.
+   *  
    * @public
    * @remarks
    * HTML Attribute: fill
    */
-  @attr({ attribute: "fill" })
-  public fill: string;
+  @attr public fill: string;
 
   /**
    * Indicates the Avatar should have a text color.
@@ -33,8 +51,7 @@ export class Avatar extends FASTElement {
    * @remarks
    * HTML Attribute: color
    */
-  @attr({ attribute: "color" })
-  public color: string;
+  @attr public color: string;
 
   /**
    * Indicates the Avatar should have an image source
@@ -43,7 +60,7 @@ export class Avatar extends FASTElement {
    * @remarks
    * HTML Attribute: src
    */
-  @attr({attribute: 'src'}) 
+  @attr({attribute: "src"}) 
   public imgSrc: string;
 
   /**
@@ -53,8 +70,7 @@ export class Avatar extends FASTElement {
    * @remarks
    * HTML Attribute: alt
    */
-  @attr({attribute: 'alt'}) 
-  public alt: string;
+  @attr public alt: string;
 
   /**
    * Indicates the Avatar should have url link
@@ -63,8 +79,7 @@ export class Avatar extends FASTElement {
    * @remarks
    * HTML Attribute: link
    */
-  @attr({attribute: 'link'}) 
-  public link: string;
+  @attr public link: string;
 
   /**
    * Indicates the Avatar shape should be. By default it will be set to "circle".
@@ -73,6 +88,10 @@ export class Avatar extends FASTElement {
    * @remarks
    * HTML Attribute: shape
    */
-  @attr({ attribute: 'shape'})
-  public shape: string = 'circle';
+  @attr public shape: string = 'circle';
+
+  /**
+   * Converts name attribute to be initialized
+   * 
+   */
 }

@@ -1,4 +1,13 @@
 <fast-design-system-provider use-defaults>
+  <style>
+    fast-avatar {
+      --avatar-fill-accent-primary: #CF4073;
+      --avatar-fill-accent-secondary: #0078D4;
+      --avatar-color-foo: #ffffff;
+    }
+  </style>
+  <h1>Avatar</h1>
+
   <h2>Circular shaped avatar</h2>
 
   <h3>Circular avatar with image</h3>
@@ -6,16 +15,22 @@
     src="https://static2.sharepointonline.com/files/fabric/office-ui-fabric-react-assets/persona-female.png"
     alt="Annie's profile image"
     link="https://microsoft.com"
-    name="AL"
-    shape="circle">
+    name="Annie Lennox"
+    shape="circle"
+    fill="accent-primary"
+    color="foo"
+  >
   </fast-avatar>
 
   <h3>Circular avatar with initials</h3>
   <fast-avatar
     alt="Annie's profile image"
     link="https://microsoft.com"
-    name="AL"
-    shape="circle">
+    name="Carlos Riviera"
+    shape="circle"
+    fill="accent-primary"
+    color="foo"
+  >
   </fast-avatar>
   
   <h3>Circular avatar with image and badge</h3>
@@ -23,19 +38,26 @@
     src="https://static2.sharepointonline.com/files/fabric/office-ui-fabric-react-assets/persona-female.png"
     alt="Annie's profile image"
     link="https://microsoft.com"
-    name="AL"
-    shape="circle">
+    name="Harper Lewis"
+    shape="circle"
+    fill="accent-primary"
+    color="foo"
+  >
     <fast-badge slot="badge" 
       fill="primary"
-      circular>&nbsp</fast-badge>
+      circular>&nbsp</fast-badge
+    >
   </fast-avatar>
   
   <h3>Circular avatar with initials and badge</h3>
   <fast-avatar
     alt="Annie's profile image"
     link="https://microsoft.com"
-    name="AL"
-    shape="circle">
+    name="Bob Villa"
+    shape="circle"
+    fill="accent-secondary"
+    color="foo"
+  >
     <fast-badge slot="badge" 
       fill="primary"
       circular>&nbsp</fast-badge>
@@ -48,16 +70,22 @@
     src="https://static2.sharepointonline.com/files/fabric/office-ui-fabric-react-assets/persona-female.png"
     alt="Annie's profile image"
     link="https://microsoft.com"
-    name="AL"
-    shape="square">
+    name="Fang Law"
+    shape="square"
+    fill="accent-secondary"
+    color="foo"
+  >
   </fast-avatar>
 
   <h3>Square avatar with with initials and badge</h3>
   <fast-avatar
     alt="Annie's profile image"
     link="https://microsoft.com"
-    name="AL"
-    shape="square">
+    name="Scott Workman"
+    shape="square"
+    fill="accent-primary"
+    color="foo"
+  >
   </fast-avatar>
 
   <h3>Square avatar with image and badge</h3>
@@ -65,8 +93,11 @@
     src="https://static2.sharepointonline.com/files/fabric/office-ui-fabric-react-assets/persona-female.png"
     alt="Annie's profile image"
     link="https://microsoft.com"
-    name="AL"
-    shape="square">
+    name="Albert Wilbur"
+    shape="square"
+    fill="accent-secondary"
+    color="foo"
+  >
     <fast-badge slot="badge" 
       fill="primary"
       circular>&nbsp</fast-badge>
@@ -76,8 +107,11 @@
   <fast-avatar
     alt="Annie's profile image"
     link="https://microsoft.com"
-    name="AL"
-    shape="square">
+    name="Austin Space"
+    shape="square"
+    fill="accent-secondary"
+    color="foo"
+  >
     <fast-badge slot="badge" 
       fill="primary"
       circular>&nbsp</fast-badge>

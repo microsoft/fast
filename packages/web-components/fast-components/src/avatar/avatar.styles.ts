@@ -13,10 +13,10 @@ export const AvatarStyles = css`
     height: calc(${heightNumber} * 2.5px);
     position: relative;
   }
-
+  
   .link {
     text-decoration: none;
-    color: var(--neutral-foreground-res);
+    color: ${neutralForegroundRestBehavior.var};
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -25,13 +25,13 @@ export const AvatarStyles = css`
   }
 
   .square {
-    border-radius: 5px;
+    border-radius: calc(var(--corner-radius) * 1px);
     min-width: 100%;
+    overflow: hidden;
   }
 
   .coin {
     position: relative;
-    background-color: var(--accent-fill-rest);
     display: flex;
   }
 
@@ -45,15 +45,11 @@ export const AvatarStyles = css`
     min-width: 100%;
     position: absolute;
     display: block;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
   }
 
   .name {
-    font-size: var(--type-ramp-plus-3-font-size);
-    line-height: var(--type-ramp-plus-3-line-height);
+    font-size: var(--type-ramp-plus-5-font-size);
+    line-height: var(--type-ramp-plus-5-line-height);
     display: block;
   }
 
@@ -66,5 +62,5 @@ export const AvatarStyles = css`
   }
 `.withBehaviors(
   accentFillRestBehavior,
-  neutralForegroundRestBehavior	
+  neutralForegroundRestBehavior
 );
