@@ -6,7 +6,7 @@ const WorkboxPlugin = require("workbox-webpack-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
-const FASTCuratedManifest = require("@microsoft/site-utilities/src/curated-html.json");
+const manifest = require("@microsoft/site-utilities/src/curated-html.json").join("");
 
 const appDir = path.resolve(__dirname, "./app");
 const outDir = path.resolve(__dirname, "./www");
@@ -77,9 +77,7 @@ module.exports = (env, args) => {
             new MiniCssExtractPlugin(),
             new HtmlWebpackPlugin({
                 title: "FAST color explorer",
-                manifest: FASTCuratedManifest.reduce((manifestItems, manifestItem) => {
-                    return manifestItems + manifestItem;
-                }, ""),
+                manifest,
                 inject: "body",
                 template: path.resolve(appDir, "index.html"),
             }),
