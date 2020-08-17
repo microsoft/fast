@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.16.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-element@0.15.2...@microsoft/fast-element@0.16.0) (2020-08-13)
+
+
+### Bug Fixes
+
+* use higher bits for DOM marker ([#3649](https://github.com/Microsoft/fast/issues/3649)) ([2d1acd8](https://github.com/Microsoft/fast/commit/2d1acd8622aba481bfa3dad5340f8d045dfaef9a))
+
+
+### Features
+
+* **fast-element:** move template instance timing and enable dynamic templates and styles ([#3621](https://github.com/Microsoft/fast/issues/3621)) ([2e73088](https://github.com/Microsoft/fast/commit/2e730885a485febfbc2b993040f039ef4b85b4ec))
+
+
+
+
+
 ## [0.15.2](https://github.com/Microsoft/fast/compare/@microsoft/fast-element@0.15.1...@microsoft/fast-element@0.15.2) (2020-07-31)
 
 **Note:** Version bump only for package @microsoft/fast-element

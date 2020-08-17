@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.4.3](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling-examples@0.4.2...@microsoft/fast-tooling-examples@0.4.3) (2020-08-13)
+
+
+### Bug Fixes
+
+* addresses an issue with the inline logo sizing ([#3698](https://github.com/Microsoft/fast/issues/3698)) ([68daabb](https://github.com/Microsoft/fast/commit/68daabb1e0fc1860af0caeaf8f12001950729ef1))
+* update logo on documentation pages ([#3686](https://github.com/Microsoft/fast/issues/3686)) ([5c5e785](https://github.com/Microsoft/fast/commit/5c5e7851c4c4b7713552a03f20a5b2bbdbe5f840))
+
+
+
+
+
 ## [0.4.2](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling-examples@0.4.1...@microsoft/fast-tooling-examples@0.4.2) (2020-07-31)
 
 **Note:** Version bump only for package @microsoft/fast-tooling-examples

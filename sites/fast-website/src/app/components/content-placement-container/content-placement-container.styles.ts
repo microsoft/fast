@@ -120,11 +120,16 @@ export const ContentPlacementContainerStyles = css`
         opacity: 0;
     }
 
+    :host([section="community"]) {
+        padding-bottom: 94px;
+    }
+
     @media screen and (max-width: 1330px) {
         :host([section="feature"]) {
             --flow: row;
             grid-template-columns: unset;
         }
+
         site-feature-card:hover + site-feature-card::before {
             opacity: 0;
         }
@@ -133,15 +138,17 @@ export const ContentPlacementContainerStyles = css`
     @media screen and (min-width: 750px) {
         :host([section="community"]) {
             grid-template-columns: repeat(auto-fit, minmax(225px, 1fr));
+            padding-bottom: 0;
         }
     }
 
-    @media screen and (max-width: 900px) {
+    @media screen and (max-width: 899px) {
         :host([section="feature"]) site-feature-card :first-child {
             display: flex;
             flex-direction: row-reverse;
             justify-content: space-between;
         }
+
         :host([section="feature"]) site-feature-card :first-child::before {
             color: ${accentForegroundRestBehavior.var};
         }

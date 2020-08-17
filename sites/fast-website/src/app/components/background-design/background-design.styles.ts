@@ -11,6 +11,7 @@ export const BackgroundDesignStyles = css`
         left: 0;
         top: 0;
         width: 100vw;
+        z-index: -1;
     }
 
     :host .background-image {

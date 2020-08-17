@@ -66,7 +66,7 @@ const style: ComponentStyles<ExplorerClassNameContract, DesignSystem> = {
             fontSize: "12px",
             padding: "0",
             margin: "0",
-            overflow: "hidden",
+            overflowX: "hidden",
         },
     },
     explorer: {},

@@ -1,17 +1,16 @@
 import { memoize, uniqueId } from "lodash-es";
-import { Background } from "@microsoft/fast-components-react-msft";
+import {
+    ActionToggle,
+    ActionToggleAppearance,
+    ActionToggleProps,
+    Background,
+} from "@microsoft/fast-components-react-msft";
 import {
     neutralLayerL1,
     neutralLayerL2,
     neutralLayerL3,
 } from "@microsoft/fast-components-styles-msft";
-import {
-    Canvas,
-    Container,
-    Pane,
-    PaneResizeDirection,
-    Row,
-} from "@microsoft/fast-layouts-react";
+import { Container, Pane, Row, RowResizeDirection } from "@microsoft/fast-layouts-react";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import { Direction } from "@microsoft/fast-web-utilities";
 import React from "react";
@@ -19,12 +18,13 @@ import ReactDOM from "react-dom";
 import {
     AjvMapper,
     CustomMessageIncomingOutgoing,
+    DataDictionary,
     MessageSystem,
-    MessageSystemDataTypeAction,
     MessageSystemNavigationTypeAction,
     MessageSystemType,
     SchemaDictionary,
 } from "@microsoft/fast-tooling";
+import { mapDataDictionaryToMonacoEditorHTML } from "@microsoft/fast-tooling/dist/data-utilities/monaco";
 import {
     ControlConfig,
     ControlType,
@@ -48,14 +48,17 @@ import {
     AccentColorPicker,
     Dimension,
     DirectionSwitch,
+    downChevron,
     fastComponentExtendedSchemas,
     Logo,
     nativeElementExtendedSchemas,
     textSchema,
     ThemeSelector,
+    upChevron,
 } from "@microsoft/site-utilities";
 import { fastDesignSystemDefaults } from "@microsoft/fast-components/src/fast-design-system";
 import { StandardLuminance } from "@microsoft/fast-components";
+import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
 import {
     CreatorHandledProps,
     CreatorProps,
@@ -67,6 +70,8 @@ import { divTag, linkedDataExamples } from "./configs";
 import { ProjectFileTransfer } from "./components";
 import { selectDeviceOverrideStyles } from "./utilities/style-overrides";
 import { previewReady } from "./preview";
+import { Footer } from "./site-footer";
+
 /* eslint-disable-next-line @typescript-eslint/no-var-requires */
 const FASTInlineLogo = require("@microsoft/site-utilities/statics/assets/fast-inline-logo.svg");
 const fastMessageSystemWorker = new FASTMessageSystemWorker();
@@ -87,6 +92,8 @@ class Creator extends Foundation<CreatorHandledProps, {}, CreatorState> {
     private viewerContainerRef: React.RefObject<HTMLDivElement> = React.createRef();
 
     private viewerContentAreaPadding: number = 20;
+    private editor: monaco.editor.IStandaloneCodeEditor;
+    private editorContainerRef: React.RefObject<HTMLDivElement> = React.createRef();
 
     private devices: Device[];
 
@@ -139,7 +146,27 @@ class Creator extends Foundation<CreatorHandledProps, {}, CreatorState> {
             },
             activeDictionaryId: componentLinkedDataId,
             previewReady: false,
+            devToolsVisible: true,
         };
+
+        monaco.editor.onDidCreateModel((listener: monaco.editor.ITextModel) => {
+            (monaco.editor.getModel(
+                listener.uri
+            ) as monaco.editor.ITextModel).onDidChangeContent(
+                (event: monaco.editor.IModelContentChangedEvent) => {
+                    this.editor
+                        .getAction("editor.action.formatDocument")
+                        .run()
+                        .then((value: void) => {
+                            if (event.changes.length > 1) {
+                                this.editor.updateOptions({
+                                    readOnly: true,
+                                });
+                            }
+                        });
+                }
+            );
+        });
 
         if ((window as any).Worker) {
             fastMessageSystem = new MessageSystem({
@@ -155,9 +182,14 @@ class Creator extends Foundation<CreatorHandledProps, {}, CreatorState> {
     public render(): React.ReactNode {
         return (
             <Background value={neutralLayerL1}>
-                <Container>
+                <Container
+                    style={{
+                        overflow: "hidden",
+                        maxWidth: "100%",
+                    }}
+                >
                     <Row style={{ flex: "1" }}>
-                        <Pane resizable={true} resizeFrom={PaneResizeDirection.east}>
+                        <Pane width={260}>
                             <Logo
                                 backgroundColor={neutralLayerL3}
                                 logo={FASTInlineLogo}
@@ -170,8 +202,14 @@ class Creator extends Foundation<CreatorHandledProps, {}, CreatorState> {
                                 onUpdateProjectFile={this.handleUpdateProjectFile}
                             />
                         </Pane>
-                        <Canvas>
-                            <Row fill={true} height={46}>
+                        <div
+                            style={{
+                                display: "flex",
+                                flex: 1,
+                                flexDirection: "column",
+                            }}
+                        >
+                            <Row style={{ overflow: "visible", zIndex: 1 }} height={46}>
                                 <Background
                                     value={neutralLayerL2}
                                     drawBackground={true}
@@ -228,10 +266,14 @@ class Creator extends Foundation<CreatorHandledProps, {}, CreatorState> {
                                     </div>
                                 </Background>
                             </Row>
-                            <Row fill={true} style={{ height: "100%" }}>
+                            <Row fill={true}>
                                 <div
                                     ref={this.viewerContainerRef}
-                                    style={{ width: "100%", height: "100%" }}
+                                    style={{
+                                        padding: `${this.viewerContentAreaPadding}px`,
+                                        width: "100%",
+                                        height: "100%",
+                                    }}
                                 >
                                     <ModularViewer
                                         iframeSrc={"/preview"}
@@ -244,7 +286,52 @@ class Creator extends Foundation<CreatorHandledProps, {}, CreatorState> {
                                     />
                                 </div>
                             </Row>
-                        </Canvas>
+                            <Row
+                                resizable={true}
+                                resizeFrom={RowResizeDirection.north}
+                                initialHeight={400}
+                                collapsedHeight={36}
+                                collapsed={!this.state.devToolsVisible}
+                            >
+                                <Background
+                                    value={neutralLayerL1}
+                                    style={{
+                                        width: "100%",
+                                        height: "100%",
+                                    }}
+                                >
+                                    <div
+                                        style={{
+                                            marginTop: "12px",
+                                            padding: "24px",
+                                            position: "relative",
+                                            height: "100%",
+                                        }}
+                                    >
+                                        <div
+                                            ref={this.editorContainerRef}
+                                            style={{ height: "340px" }}
+                                        />
+                                        <ActionToggle
+                                            appearance={ActionToggleAppearance.stealth}
+                                            selectedLabel={"Development tools expanded"}
+                                            selectedGlyph={downChevron}
+                                            unselectedLabel={
+                                                "Development tools collapsed"
+                                            }
+                                            unselectedGlyph={upChevron}
+                                            selected={this.state.devToolsVisible}
+                                            onToggle={this.handleDevToolsToggle}
+                                            style={{
+                                                position: "absolute",
+                                                top: 0,
+                                                right: 0,
+                                            }}
+                                        />
+                                    </div>
+                                </Background>
+                            </Row>
+                        </div>
                         <Pane>
                             <ModularForm
                                 messageSystem={fastMessageSystem}
@@ -270,6 +357,7 @@ class Creator extends Foundation<CreatorHandledProps, {}, CreatorState> {
                         </Pane>
                     </Row>
                 </Container>
+                <Footer />
             </Background>
         );
     }
@@ -293,6 +381,7 @@ class Creator extends Foundation<CreatorHandledProps, {}, CreatorState> {
                     dataDictionary: e.data.dataDictionary,
                 },
             };
+            this.updateEditorContent(e.data.dataDictionary);
         }
 
         if (
@@ -306,6 +395,9 @@ class Creator extends Foundation<CreatorHandledProps, {}, CreatorState> {
                     schemaDictionary,
                 });
                 updatedState.previewReady = true;
+                this.updateEditorContent(
+                    this.state.views[this.state.activeView].dataDictionary
+                );
             } else if (e.data.value.type === MessageSystemType.navigation) {
                 fastMessageSystem.postMessage(e.data.value);
             }
@@ -333,6 +425,37 @@ class Creator extends Foundation<CreatorHandledProps, {}, CreatorState> {
 
     public componentDidMount(): void {
         this.setViewerToFullSize();
+
+        if (this.editorContainerRef.current) {
+            this.editor = monaco.editor.create(this.editorContainerRef.current, {
+                value: "",
+                language: "html",
+                formatOnType: true,
+                formatOnPaste: true,
+                lineNumbers: "off",
+                theme: "vs-dark",
+                wordWrap: "on",
+                wordWrapColumn: 80,
+                wordWrapMinified: true,
+                automaticLayout: true,
+                wrappingIndent: "same",
+                minimap: {
+                    showSlider: "mouseover",
+                },
+                readOnly: true,
+            });
+        }
+    }
+
+    private updateEditorContent(dataDictionary: DataDictionary<unknown>): void {
+        if (this.editor) {
+            this.editor.updateOptions({
+                readOnly: false,
+            });
+            this.editor.setValue(
+                mapDataDictionaryToMonacoEditorHTML(dataDictionary, schemaDictionary)
+            );
+        }
     }
 
     private setViewerToFullSize(): void {
@@ -475,6 +598,19 @@ class Creator extends Foundation<CreatorHandledProps, {}, CreatorState> {
             id: previewAccentColor,
             value,
         } as CustomMessageIncomingOutgoing);
+    };
+
+    /**
+     * Handle the visibility of the dev tools
+     * which contains the code editor
+     */
+    private handleDevToolsToggle = (
+        e: React.MouseEvent<HTMLButtonElement>,
+        props: ActionToggleProps
+    ): void => {
+        this.setState({
+            devToolsVisible: !props.selected,
+        });
     };
 }
 

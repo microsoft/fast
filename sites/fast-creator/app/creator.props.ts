@@ -70,6 +70,11 @@ export interface ProjectFile {
     views: {
         [key: string]: ProjectFileView;
     };
+
+    /**
+     * Dev tools visible
+     */
+    devToolsVisible: boolean;
 }
 
 export type CreatorManagedClasses = ManagedClasses<{}>;

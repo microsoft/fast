@@ -17,6 +17,10 @@
   --ifm-code-font-size: 95%;
 }
 
+html {
+  overflow-x: hidden;
+}
+
 .docusaurus-highlight-code-line {
   background-color: #212121;
   display: block;
@@ -28,4 +32,9 @@
   --dialog-width: 400px;
   --dialog-height: auto;
   padding: 16px;
+}
+
+.button.button--secondary.button--sm.menu__button {
+  background: var(--ifm-color-primary);
+  color: var(--ifm-color-secondary);
 }

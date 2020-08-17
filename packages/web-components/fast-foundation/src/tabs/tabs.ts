@@ -248,13 +248,11 @@ export class Tabs extends FASTElement {
         switch (keyCode) {
             case keyCodeHome:
                 event.preventDefault();
-                this.activeTabIndex = 0;
-                this.setComponent();
+                this.adjust(-this.activeTabIndex);
                 break;
             case keyCodeEnd:
                 event.preventDefault();
-                this.activeTabIndex = this.tabs.length - 1;
-                this.setComponent();
+                this.adjust(this.tabs.length - this.activeTabIndex - 1);
                 break;
         }
     };

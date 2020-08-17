@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.3.3](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling-react@2.3.2...@microsoft/fast-tooling-react@2.3.3) (2020-08-13)
+
+
+### Bug Fixes
+
+* increase drag and drop performance and remove potential for async errors on drop ([#3624](https://github.com/Microsoft/fast/issues/3624)) ([6e6affb](https://github.com/Microsoft/fast/commit/6e6affbd505893dfa84e68609635a225be5e394c))
+
+
+### Reverts
+
+* Revert "chore: update all http to https to resolve WS1262 security vulnerability (#3658)" (#3699) ([0cac64a](https://github.com/Microsoft/fast/commit/0cac64a869e1b65a94ef14ed50b1324d0e15be46)), closes [#3658](https://github.com/Microsoft/fast/issues/3658) [#3699](https://github.com/Microsoft/fast/issues/3699)
+
+
+
+
+
 ## [2.3.2](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling-react@2.3.1...@microsoft/fast-tooling-react@2.3.2) (2020-07-31)
 
 

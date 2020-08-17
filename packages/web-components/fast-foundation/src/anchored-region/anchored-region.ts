@@ -394,8 +394,13 @@ export class AnchoredRegion extends FASTElement {
             return;
         }
 
-        this.stopObservers();
-        this.startObservers();
+        if (this.viewportRect === null || this.regionDimension === null) {
+            this.requestLayoutUpdate();
+            return;
+        }
+
+        this.stopIntersectionObserver();
+        this.startIntersectionObserver();
     };
 
     /**
@@ -456,6 +461,9 @@ export class AnchoredRegion extends FASTElement {
         this.initializeResizeDetector();
         this.initializeIntersectionDetector();
         this.setInitialState();
+        if (this.anchorElement === null) {
+            this.anchorElement = this.getAnchor();
+        }
         this.requestReset();
     }
 
@@ -473,11 +481,14 @@ export class AnchoredRegion extends FASTElement {
      * Request a reset if there are currently no open requests
      */
     private requestReset(): void {
-        if (this.pendingReset === false) {
+        if (
+            (this as FASTElement).$fastController.isConnected &&
+            this.pendingReset === false
+        ) {
             this.pendingLayoutUpdate = false;
-            this.pendingReset = true;
             this.setInitialState();
             DOM.queueUpdate(this.reset);
+            this.pendingReset = true;
         }
     }
 
@@ -556,10 +567,7 @@ export class AnchoredRegion extends FASTElement {
             return;
         }
 
-        if (this.intersectionDetector !== null) {
-            this.intersectionDetector.observe(this);
-            this.intersectionDetector.observe(this.anchorElement);
-        }
+        this.startIntersectionObserver();
 
         if (this.resizeDetector !== null) {
             this.resizeDetector.observe(this.anchorElement);
@@ -571,13 +579,32 @@ export class AnchoredRegion extends FASTElement {
     };
 
     /**
-     * stops observers
+     * starts intersection observer
      */
-    private stopObservers = (): void => {
+    private startIntersectionObserver = (): void => {
+        if (this.anchorElement === null || this.viewportElement === null) {
+            return;
+        }
+        if (this.intersectionDetector !== null) {
+            this.intersectionDetector.observe(this);
+            this.intersectionDetector.observe(this.anchorElement);
+        }
+    };
+
+    /**
+     * stops intersection observer
+     */
+    private stopIntersectionObserver = (): void => {
         if (this.intersectionDetector !== null) {
             this.intersectionDetector.disconnect();
         }
+    };
 
+    /**
+     * stops observers
+     */
+    private stopObservers = (): void => {
+        this.stopIntersectionObserver();
         if (this.resizeDetector !== null) {
             this.resizeDetector.disconnect();
         }
@@ -758,8 +785,24 @@ export class AnchoredRegion extends FASTElement {
         entries.forEach((entry: ResizeObserverEntry) => {
             if (entry.target === this) {
                 this.handleRegionResize(entry);
+            }
+            if (entry.target === this.anchorElement) {
+                if (
+                    entry.contentRect.height !== this.anchorHeight ||
+                    entry.contentRect.width !== this.anchorWidth
+                ) {
+                    this.update();
+                }
             } else {
-                this.update();
+                // it is the viewport
+                if (
+                    this.offsetParent !== null &&
+                    this.viewportRect !== null &&
+                    (entry.contentRect.height !== this.viewportRect.height ||
+                        entry.contentRect.width !== this.viewportRect.height)
+                ) {
+                    this.update();
+                }
             }
         });
     };
@@ -787,6 +830,8 @@ export class AnchoredRegion extends FASTElement {
                 this.regionDimension.height = this.anchorHeight;
                 break;
         }
+
+        this.requestLayoutUpdate();
     };
 
     /**
@@ -814,11 +859,9 @@ export class AnchoredRegion extends FASTElement {
         }
         this.currentDirection = this.getDirection();
         this.startObservers();
-        if (this.useGbcr === "never") {
+        if (this.useGbcr === "always") {
             DOM.queueUpdate(this.updateGeometry);
-            return;
         }
-        this.requestLayoutUpdate();
     };
 
     /**
@@ -832,7 +875,7 @@ export class AnchoredRegion extends FASTElement {
         this.pendingLayoutUpdate = false;
 
         if (this.viewportRect === null || this.regionDimension === null) {
-            return;
+            this.applyNoIntersectionMode();
         }
 
         let desiredVerticalPosition: AnchoredRegionVerticalPositionLabel =

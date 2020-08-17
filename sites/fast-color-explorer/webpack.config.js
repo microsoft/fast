@@ -4,6 +4,8 @@ const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPl
 const CleanWebpackPlugin = require("clean-webpack-plugin");
 const WorkboxPlugin = require("workbox-webpack-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const FASTCuratedManifest = require("@microsoft/site-utilities/src/curated-html.json");
 
 const appDir = path.resolve(__dirname, "./app");
@@ -16,10 +18,7 @@ module.exports = (env, args) => {
         entry: {
             main: path.resolve(appDir, "index.tsx"),
             serviceWorker: path.resolve(appDir, "service-worker-registration.ts"),
-            focusVisible: path.resolve(
-                __dirname,
-                "../../node_modules/focus-visible/dist/focus-visible.min.js"
-            ),
+            focusVisible: require.resolve("focus-visible/dist/focus-visible.min.js"),
         },
         output: {
             path: outDir,
@@ -57,10 +56,25 @@ module.exports = (env, args) => {
                         },
                     ],
                 },
+                {
+                    test: /\.css$/,
+                    use: [
+                        {
+                            loader: MiniCssExtractPlugin.loader,
+                            options: {
+                                hmr: process.env.NODE_ENV === "development",
+                            },
+                        },
+                        {
+                            loader: "css-loader",
+                        },
+                    ],
+                },
             ],
         },
         plugins: [
             new CleanWebpackPlugin([outDir]),
+            new MiniCssExtractPlugin(),
             new HtmlWebpackPlugin({
                 title: "FAST color explorer",
                 manifest: FASTCuratedManifest.reduce((manifestItems, manifestItem) => {

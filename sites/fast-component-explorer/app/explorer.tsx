@@ -1,11 +1,5 @@
 import { camelCase, get } from "lodash-es";
-import {
-    Container,
-    Pane,
-    PaneResizeDirection,
-    Row,
-    RowResizeDirection,
-} from "@microsoft/fast-layouts-react";
+import { Container, Pane, Row, RowResizeDirection } from "@microsoft/fast-layouts-react";
 import {
     ModularForm,
     ModularViewer,
@@ -44,6 +38,7 @@ import {
     MessageSystem,
     MessageSystemType,
 } from "@microsoft/fast-tooling";
+import { mapDataDictionaryToMonacoEditorHTML } from "@microsoft/fast-tooling/dist/data-utilities/monaco";
 import FASTMessageSystemWorker from "@microsoft/fast-tooling/dist/message-system.min.js";
 import {
     DirectionSwitch,
@@ -53,6 +48,7 @@ import {
     TransparencyToggle,
     upChevron,
 } from "@microsoft/site-utilities";
+import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
 import { ComponentViewConfig, Scenario } from "./fast-components/configs/data.props";
 import * as componentConfigs from "./fast-components/configs";
 import { history, menu, schemaDictionary } from "./config";
@@ -116,6 +112,8 @@ class Explorer extends Foundation<
 
     private viewerContainerRef: React.RefObject<HTMLDivElement> = React.createRef();
     private viewerContentAreaPadding: number = 20;
+    private editor: monaco.editor.IStandaloneCodeEditor;
+    private editorContainerRef: React.RefObject<HTMLDivElement> = React.createRef();
 
     constructor(props: ExplorerProps) {
         super(props);
@@ -144,6 +142,25 @@ class Explorer extends Foundation<
 
         window.onpopstate = this.handlePopState;
 
+        monaco.editor.onDidCreateModel((listener: monaco.editor.ITextModel) => {
+            (monaco.editor.getModel(
+                listener.uri
+            ) as monaco.editor.ITextModel).onDidChangeContent(
+                (event: monaco.editor.IModelContentChangedEvent) => {
+                    this.editor
+                        .getAction("editor.action.formatDocument")
+                        .run()
+                        .then((value: void) => {
+                            if (event.changes.length > 1) {
+                                this.editor.updateOptions({
+                                    readOnly: true,
+                                });
+                            }
+                        });
+                }
+            );
+        });
+
         this.state = {
             width: 0,
             height: 0,
@@ -157,6 +174,7 @@ class Explorer extends Foundation<
             theme: StandardLuminance.DarkMode,
             previewReady: false,
             activeDictionaryId: componentLinkedDataId,
+            dataDictionary: this.getScenarioData(componentConfig, selectedScenarioIndex),
         };
     }
 
@@ -174,7 +192,7 @@ class Explorer extends Foundation<
             <Background value={neutralLayerL1}>
                 <Container>
                     <Row style={{ flex: "1" }}>
-                        <Pane resizable={true} resizeFrom={PaneResizeDirection.east}>
+                        <Pane width={260}>
                             <Logo
                                 backgroundColor={"#181818"}
                                 logo={FASTInlineLogo}
@@ -310,6 +328,37 @@ class Explorer extends Foundation<
 
     public componentDidMount(): void {
         this.setViewerToFullSize();
+
+        if (this.editorContainerRef.current) {
+            this.editor = monaco.editor.create(this.editorContainerRef.current, {
+                value: "",
+                language: "html",
+                formatOnType: true,
+                formatOnPaste: true,
+                lineNumbers: "off",
+                theme: "vs-dark",
+                wordWrap: "on",
+                wordWrapColumn: 80,
+                wordWrapMinified: true,
+                automaticLayout: true,
+                wrappingIndent: "same",
+                minimap: {
+                    showSlider: "mouseover",
+                },
+                readOnly: true,
+            });
+        }
+    }
+
+    private updateEditorContent(dataDictionary: DataDictionary<unknown>): void {
+        if (this.editor) {
+            this.editor.updateOptions({
+                readOnly: false,
+            });
+            this.editor.setValue(
+                mapDataDictionaryToMonacoEditorHTML(dataDictionary, schemaDictionary)
+            );
+        }
     }
 
     private handlePopState = (): void => {
@@ -332,14 +381,20 @@ class Explorer extends Foundation<
             if (e.data.value === previewReady) {
                 fastMessageSystem.postMessage({
                     type: MessageSystemType.initialize,
-                    dataDictionary: this.getScenarioData(
-                        this.state.componentConfig,
-                        this.state.selectedScenarioIndex
-                    ),
+                    dataDictionary: this.state.dataDictionary,
                     schemaDictionary,
                 });
                 updatedState.previewReady = true;
+                this.updateEditorContent(this.state.dataDictionary);
             }
+        }
+
+        if (
+            e.data.type === MessageSystemType.data ||
+            e.data.type === MessageSystemType.initialize
+        ) {
+            updatedState.dataDictionary = e.data.dataDictionary;
+            this.updateEditorContent(this.state.dataDictionary);
         }
 
         this.setState(updatedState as ExplorerState);
@@ -369,6 +424,29 @@ class Explorer extends Foundation<
 
     private renderPivotItems(): TabsItem[] {
         return [
+            {
+                tab: (className: string): React.ReactNode => {
+                    return (
+                        <Typography
+                            className={className}
+                            size={TypographySize._8}
+                            onClick={this.handleDevToolsTabTriggerClick}
+                        >
+                            Code
+                        </Typography>
+                    );
+                },
+                content: (className: string): React.ReactNode => {
+                    return (
+                        <div
+                            ref={this.editorContainerRef}
+                            className={className}
+                            style={{ height: "340px" }}
+                        />
+                    );
+                },
+                id: "code",
+            },
             {
                 tab: (className: string): React.ReactNode => {
                     return (

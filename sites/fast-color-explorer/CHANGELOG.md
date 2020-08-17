@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.6.3](https://github.com/Microsoft/fast/compare/@microsoft/fast-color-explorer@1.6.2...@microsoft/fast-color-explorer@1.6.3) (2020-08-13)
+
+
+### Reverts
+
+* Revert "chore: update all http to https to resolve WS1262 security vulnerability (#3658)" (#3699) ([0cac64a](https://github.com/Microsoft/fast/commit/0cac64a869e1b65a94ef14ed50b1324d0e15be46)), closes [#3658](https://github.com/Microsoft/fast/issues/3658) [#3699](https://github.com/Microsoft/fast/issues/3699)
+
+
+
+
+
 ## [1.6.2](https://github.com/Microsoft/fast/compare/@microsoft/fast-color-explorer@1.6.1...@microsoft/fast-color-explorer@1.6.2) (2020-07-31)
 
 **Note:** Version bump only for package @microsoft/fast-color-explorer

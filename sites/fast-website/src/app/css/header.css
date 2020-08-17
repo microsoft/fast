@@ -1,0 +1,105 @@
+.header {
+    align-items: center;
+    color: var(--neutral-foreground-hint);
+    display: grid;
+    /*
+        font is reflected here so it gets
+        picked up when used as a separate module
+    */
+    font: 16px "aktiv-grotesk", "Segoe UI", Arial, Helvetica, sans-serif;
+    grid-column: 1 / -1;
+    grid-template-columns: auto 1fr auto;
+    padding: 0 40px;
+}
+
+.header .github-link span,
+.header .github-link::part(end) {
+    display: flex;
+}
+
+.header .github-link::part(end) {
+    width: auto;
+    height: auto;
+}
+
+.header .logo,
+.header .github-link {
+    width: 110px;
+}
+
+.header .logo {
+    margin-inline-start: 20px;
+}
+
+.header .github-link {
+    display: inline-block;
+    margin-inline-start: 30px;
+}
+
+.header .icon-github {
+    height: 20px;
+    width: 18px;
+}
+
+.header .logo::part(content) {
+    align-items: flex-end;
+    display: flex;
+}
+
+.header .github-link::part(control) {
+    justify-content: flex-end;
+}
+
+.header .github-link::part(content) {
+    color: var(--neutral-foreground-rest);
+}
+
+.header .github-link:not(:focus):hover::part(content)::before {
+    background-color: currentColor;
+}
+
+.header .github-link:hover::part(end) {
+    color: var(--accent-foreground-rest);
+}
+
+.header site-navigation-item,
+.header .github-link {
+    margin-bottom: 20px;
+}
+
+@media screen and (min-width: 900px) {
+    .header .logo,
+    .header .github-link {
+        margin-inline-start: 0;
+    }
+
+    .header site-navigation-item,
+    .header .github-link {
+        margin-bottom: 0;
+    }
+
+    .header .github-link {
+        display: inline-flex;
+    }
+
+    .header fast-anchor {
+        font-size: var(--type-ramp-base-font-size);
+    }
+}
+
+@media screen and (max-width: 899px) {
+    .header {
+        box-shadow: 0 1.5px 1px rgba(0, 0, 0, 0.08), 0 1.6px 5px rgba(0, 0, 0, 0.15);
+        display: block;
+        padding: unset;
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 3;
+    }
+
+    .header site-navigation-item::part(item-link),
+    .header .github-link::part(content) {
+        font-size: var(--type-ramp-plus-2-font-size);
+    }
+}

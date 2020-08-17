@@ -1,14 +1,14 @@
 {
   "name": "@microsoft/fast-creator",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "description": "Creator app for composing UIs and general UI development",
   "sideEffects": false,
   "private": true,
   "scripts": {
-    "build": "webpack --progress --mode=production",
+    "build": "webpack --config=./webpack.prod.js",
     "prettier": "prettier --config ../../.prettierrc --write \"**/*.{ts,tsx,html}\"",
     "prettier:diff": "prettier --config ../../.prettierrc \"**/*.{ts,tsx,html}\" --list-different",
-    "start": "webpack-dev-server",
+    "start": "webpack-dev-server --config=./webpack.dev.js --history-api-fallback --progress",
     "test": "yarn eslint && yarn build",
     "eslint": "eslint . --ext .ts,.tsx",
     "eslint:fix": "eslint . --ext .ts,.tsx --fix"
@@ -29,15 +29,16 @@
     "@microsoft/fast-jss-manager-react": "^4.8.0",
     "@microsoft/fast-jss-utilities": "^4.8.0",
     "@microsoft/fast-layouts-react": "^4.12.0",
-    "@microsoft/site-utilities": "^0.4.2",
+    "@microsoft/site-utilities": "^0.4.3",
     "@types/jest": "^25.2.1",
     "@types/node": "^9.6.7",
     "@types/react": "^16.8.0",
     "@types/react-router": "^4.0.0",
     "babel-core": "^7.0.0-bridge.0",
     "babel-loader": "^8.0.6",
-    "clean-webpack-plugin": "^1.0.0",
+    "clean-webpack-plugin": "^3.0.0",
     "copy-webpack-plugin": "^6.0.3",
+    "css-loader": "^4.2.0",
     "csstype": "^2.5.8",
     "eslint-config-prettier": "6.10.1",
     "exenv-es6": "^1.0.0",
@@ -55,6 +56,8 @@
     "react-dnd-html5-backend": "^9.0.0",
     "react-dom": "^16.8.0",
     "react-router-dom": "^5.1.2",
+    "style-loader": "^1.2.1",
+    "terser-webpack-plugin": "^4.1.0",
     "ts-jest": "^25.4.0",
     "ts-loader": "^7.0.2",
     "typescript": "^3.9.0",
@@ -62,12 +65,15 @@
     "webpack-bundle-analyzer": "^3.0.3",
     "webpack-cli": "^3.1.2",
     "webpack-dev-server": "^3.11.0",
+    "webpack-merge": "^4.2.2",
     "workbox-webpack-plugin": "^3.6.3",
     "worker-loader": "^2.0.0"
   },
   "dependencies": {
-    "@microsoft/fast-components": "^1.7.0",
-    "@microsoft/fast-tooling": "^0.8.0",
-    "@microsoft/fast-tooling-react": "^2.3.2"
+    "@microsoft/fast-components": "^1.8.0",
+    "@microsoft/fast-tooling": "^0.9.0",
+    "@microsoft/fast-tooling-react": "^2.3.3",
+    "monaco-editor": "^0.20.0",
+    "monaco-editor-webpack-plugin": "^1.9.0"
   }
 }
