@@ -754,7 +754,7 @@ export class AnchoredRegion extends FASTElement {
     };
 
     /**
-     *  Update data based on anchor instersections
+     *  Update data based on anchor intersections
      */
     private handleAnchorIntersection = (anchorEntry: IntersectionObserverEntry): void => {
         this.viewportRect = anchorEntry.rootBounds;
