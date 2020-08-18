@@ -3,7 +3,7 @@
 ## Overview
 This spec regards a general implementation for components that should be form-associated, including checkboxes, radios, text inputs, and other components which store user input and should be captured during form submission.
 
-### Defintions and acronyms:
+### Definitions and acronyms:
 - FACE: form-associated custom elements
 
 ### Background

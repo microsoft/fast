@@ -8,14 +8,14 @@ The button component represent an control that should invoke an action or perfor
 - Creating simple button or link elements
 
 ### Non-goals
-- Complex or compisite buttons (like split button)
+- Complex or composite buttons (like split button)
 - Inline "hypertext" anchor
   - This component will expose a base class that a "hypertext" component can leverage, but the component itself is not in the scope of the button.
   
 ### Features
 - Can represent either a hyperlink or a button
 - Appearances including "lightweight", "justified", "outline", "primary" and "stealth"
-  - I'm proposing droping "justified" because this is a simple matter of removing starting padding.
+  - I'm proposing dropping "justified" because this is a simple matter of removing starting padding.
 
 ### Risks and Challenges
 
@@ -53,7 +53,7 @@ All "anchor" components will support all methods and attributes of the [anchor](
 #### Button
 ```html
 <host>
-  <button> <!-- focus defered to this element -->
+  <button> <!-- focus deferred to this element -->
     <slot name="start"></slot>
     <slot></slot>
     <slot name="end"></slot>
@@ -63,7 +63,7 @@ All "anchor" components will support all methods and attributes of the [anchor](
 #### Anchor
 ```html
 <host>
-  <a> <!-- focus defered to this element -->
+  <a> <!-- focus deferred to this element -->
     <slot name="start"></slot>
     <slot></slot>
     <slot name="end"></slot>

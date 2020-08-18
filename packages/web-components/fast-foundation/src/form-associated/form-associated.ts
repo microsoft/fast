@@ -192,7 +192,7 @@ export abstract class FormAssociated<
      * @param next - the new value
      *
      * @remarks
-     * If elmements extending `FormAssociated` implement a `valueChanged` method
+     * If elements extending `FormAssociated` implement a `valueChanged` method
      * They must be sure to invoke `super.valueChanged(previous, next)` to ensure
      * proper functioning of `FormAssociated`
      */
