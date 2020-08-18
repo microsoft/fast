@@ -9,7 +9,7 @@ As defined by the W3C:
 
 ### Use Cases
 
-1. Paired with a persistant [menu button](https://w3c.github.io/aria-practices/#menubutton) to create a dropdown menu control. An example of this might be the common `...` overflow menu patterns where the menus visual state is toggled when the menu button is clicked.
+1. Paired with a persistent [menu button](https://w3c.github.io/aria-practices/#menubutton) to create a dropdown menu control. An example of this might be the common `...` overflow menu patterns where the menus visual state is toggled when the menu button is clicked.
 
 2. A contextual menu triggered via right click, not paired with a menu button.
 
