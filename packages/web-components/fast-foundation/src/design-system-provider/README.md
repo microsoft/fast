@@ -127,7 +127,7 @@ To create a new _Design System Provider_, extend the `DesignSystemProvider` clas
 
 ```ts
 import { DesignSystemProvider, designSystemProvider, DesignSystemProviderTemplate as template } from "@microsoft/fast-foundation";
-import { MyDesignSystemProviderStyles as styles} from "../design-system-provder.styles.ts";
+import { MyDesignSystemProviderStyles as styles} from "../design-system-provider.styles.ts";
 
 @designSystemProvider({name: "fancy-design-system-provider", template, styles})
 class FancyDesignSystemProvider extends DesignSystemProvider {}

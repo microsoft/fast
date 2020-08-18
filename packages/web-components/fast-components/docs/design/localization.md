@@ -31,7 +31,7 @@ const styles = css`
 **Example: Using `DirectionalStyleSheetBehavior`**
 ```ts
 import { css } from "@microsoft/fast-element";
-import { DirectionalStyleSheetBehavior } from "@microsoft/fast-components";
+import { DirectionalStyleSheetBehavior } from "@microsoft/fast-foundation";
 
 const ltr = css`
     :host {
