@@ -66,7 +66,7 @@ module.exports = {
         new CleanWebpackPlugin(),
         new MiniCssExtractPlugin(),
         new HtmlWebpackPlugin({
-            title: "FAST",
+            title: "FAST tooling test application",
             inject: "body",
             template: path.resolve(appDir, "index.html"),
         }),
