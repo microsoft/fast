@@ -11,7 +11,7 @@ Typical use cases include, but are not limited to, turning a feature on and off 
 ### Features
 
 A switch should allow the following properties:
-- `checked`, whether the switch is cheched or not.
+- `checked`, whether the switch is checked or not.
 - `checked-message`, the message that displays when the switch is checked.
 - `unchecked-message`, the message that displays when switch is not checked.
 - `disabled`, whether the switch is disabled or not.
@@ -97,7 +97,7 @@ Typically it's best to include a checked and unchecked message but it is not req
 
 ### Globalization
 
-*Switch* should mirror in RTL languages, meaning the lable should render to the right and the checled and unchecked message should render ot the left in RTL.
+*Switch* should mirror in RTL languages, meaning the label should render to the right and the checked and unchecked message should render ot the left in RTL.
 
 ### Dependencies
 

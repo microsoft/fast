@@ -10,7 +10,7 @@ It is envisioned that this component would be used as a building block for other
 
 ### Features
 
-- **Relative positioning:** Users can use it to position an element relative to another another element, like enabling a menu to open above or below a trigger button. Additonally, the same anchored region can change which element it is anchored to dynamically, for example a single tooltip instance in a page could be positioned next to any other element on the page by switching the anchor property of the anchored region that contains it.
+- **Relative positioning:** Users can use it to position an element relative to another another element, like enabling a menu to open above or below a trigger button. Additionally, the same anchored region can change which element it is anchored to dynamically, for example a single tooltip instance in a page could be positioned next to any other element on the page by switching the anchor property of the anchored region that contains it.
 
 - **Responsive positioning:** Users can use it to position an element relative to another element based on available space, for example a menu could open upwards if the trigger button is near the bottom of the page, and downwards if it is nearer the top.
 
@@ -27,7 +27,7 @@ For a more in-depth understanding of how this component works under the covers p
 ## Design
 
 ### Relative placement: 'Inset' vs 'Adjacent';
-By default the anchored region is positioned adjacent to the element it is anchored to, but if the "horizontal-inset" or "vertical-inset" attributes are set then the region will be 'inset' and overlap the anchor on that axis.  Various combinations of these attributes can enable some commonly desired layouts.  In the following images the menu would be conidered to be the *anchored region* and the "Select an option" button the anchor.
+By default the anchored region is positioned adjacent to the element it is anchored to, but if the "horizontal-inset" or "vertical-inset" attributes are set then the region will be 'inset' and overlap the anchor on that axis.  Various combinations of these attributes can enable some commonly desired layouts.  In the following images the menu would be considered to be the *anchored region* and the "Select an option" button the anchor.
 
 | State | Image |
 | ----- | ----- |
@@ -238,7 +238,7 @@ Layout update checks in the component happen when:
 
 These layout checks analyse the DOM geometry based on callbacks and repositions the anchored region appropriately: top/bottom/unset for the vertical axis and left/right/unset for the horizontal axis. 
 
-The component will have an initialization state to determine placement where the instanciation of content will be delayed by one frame to give the component a chance to get placed correctly.  This is to avoid content triggering the browser's scroll into view behavior prematurely if a contained element gains focus immediately.
+The component will have an initialization state to determine placement where the instantiation of content will be delayed by one frame to give the component a chance to get placed correctly.  This is to avoid content triggering the browser's scroll into view behavior prematurely if a contained element gains focus immediately.
 
 ### Accessibility
 None required.  Basically a positioned div that authors can decorate for accessibility if required.
