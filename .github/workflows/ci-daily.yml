@@ -70,8 +70,8 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Install MSYS2
-      run: choco install msys2
+    - name: Look for mingw
+      run: gcc --version
 
     - name: Setup Node.js environment
       uses: actions/setup-node@v2.1.0
