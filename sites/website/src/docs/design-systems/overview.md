@@ -1,31 +1,60 @@
 ---
 id: overview
-title: Overview
+title: What is the Design System?
 sidebar_label: Overview
 custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/src/docs/design-systems/overview.md
 ---
-- What is the Design System?
-    - Answers the question "What is a Design System in FAST and what is it for?"
-    - Captures information about UX design
-        - [Colors](https://www.fast.design/docs/design/color)
-        - Fonts and [font sizes](https://www.fast.design/docs/design/type-ramp)
-        - Motion
-        - Contrast preferences
-        - UI density
-        - etc...
-    - Stores Design Tokens
-- How is the Design System used?
-    - Values represented as CSS custom properties
-    - Values represented as a JavaScript object
-        - Can be used for programmatic calculation. See "Using design system resolvers"
-    - Provided to components by a DesignSystemProvider
-- What is the DesignSystemProvider?
-    - HTML element
-    - Creates CSS custom properties for Design System values
-    - Propagates Design System JavaScript object to descendent elements
-    - Resolves functions of the Design System to CSS custom properties
-        - [See color recipes](https://www.fast.design/docs/design/color#algorithmic-colors-recipes) 
-    - `use-defaults` explained
-    - Explain "Adaptive UI"
-    - Describe property inheritance through document structure
-    - Using the DesignSystemProvider to configure and change the Design System
+A *Design System* is somewhat of an amorphous term but can generally be thought of as a collection of resources for interactive media that promotes brand alignment. While that definition is intentionally broad, in UI development, Design Systems generally manifest as component libraries surrounded by usage guidance and design principles.
+
+In code, FAST currently uses "Design System" in a narrower sense than the above; the Design System is a dictionary of data that informs the visual (and sometimes functional) representation of UI elements. The Design System captures, stores, and reflects any information that should inform the rendering of a UI element. This data is often referred to as *Design Tokens*. Common examples of data in a Design System are:
+- UI Colors
+- Fonts and type ramps
+- Motion data such as timings and easing curves
+- UI Density
+- Spacing values
+
+## How the Design System is used
+There are two primary ways that Design System values (Design Tokens) are used:
+1. In CSS stylesheets
+2. Programmatically in JavaScript
+
+### Design System in CSS
+Many Design Tokens are used as CSS property values in component stylesheets. Assume for a moment that a Design Token `font-size-large` exists in a Design System, you may see something like the following:
+
+```css
+:host {
+    font-size: var(--font-size-large);
+}
+```
+
+### Design System in JavaScript
+It is sometimes the case that the Design System must be used in JavaScript. Assume for a moment that a Design Token `fadeInDuration` exists in a Design System, you may see something like the following:
+
+```js
+const keyFrames = new KeyframeEffect(
+    targetElement,
+    [{ opacity: "0"}, {opacity: "1"}],
+    {duration: designSystem.fadeInDuration}
+)
+```
+
+## The DesignSystemProvider
+The Design System itself manifests through a [DesignSystemProvider](/docs/api/fast-foundation.designsystemprovider): it is the vessel through which the Design System is expressed. The [DesignSystemProvider](/docs/api/fast-foundation.designsystemprovider) is an HTML element that facilitates usage, configuration, and propagation of the Design System through a UI view. The [DesignSystemProvider](/docs/api/fast-foundation.designsystemprovider) is responsible for expressing the Design System both as a readable JavaScript property *and* as CSS custom properties. Because of this,
+
+### Design System flow
+It is important to understand that the Design System is a mutable and inherited. You can think of the Design System as a downward flow of data through the DOM toward leaf nodes, where every [DesignSystemProvider](/docs/api/fast-foundation.designsystemprovider) element inherits Design System data from it's closest [DesignSystemProvider](/docs/api/fast-foundation.designsystemprovider) ancestor and provides opportunity to *change* that data for all descendent elements. Let's visualize this and assume there is a `font-size-large` Design Token in the Design System:
+
+**Example: The Design System flows data down the DOM hierarchy
+```html
+<my-design-system-provider font-size-large="28px">
+    <my-text style="font-size: var(font-size-large);" id="one">My font size is 29px</my-text>
+
+    <my-design-system-provider font-size-large="15px">
+        <my-text style="font-size: var(font-size-large);" id="two">My font size is 15px</my-text>
+    </my-design-system-provider>
+</my-design-system-provider>
+```
+
+As you can see above, the `font-size-large` Design Token is set on each [DesignSystemProvider](/docs/api/fast-foundation.designsystemprovider) instance. The [DesignSystemProvider](/docs/api/fast-foundation.designsystemprovider) reflects that value to a CSS custom property (more on that later), which the `<my-text>` element in it's stylesheet.
+
+But we can *also* access that hierarchial information from JavaScript, which opens up many advanced scenarios that will be explored in the [FAST Frame Design System](/docs/design-systems/fast-frame).
