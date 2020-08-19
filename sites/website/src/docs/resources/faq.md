@@ -29,7 +29,7 @@ At this time, `fast-element` has a focus that's a bit different from the typical
 
 The work on Web Component standards, like the rest of the web, is ongoing. New APIs continue to be designed and released. Some recent APIs include Form Associated Custom Element APIs and CSS Shadow Parts. The W3C is currently working on standards for things like Constructible Style Sheets, Declarative Shadow DOM, Scoped Element Registries, Custom Pseudo Selectors, and more.
 
-### Why does FAST have an "anchor" component?
+### Why does FAST have components that are already available in HTML?
 
 Various members of our community have wondered why FAST has components that seem to mirror native elements. Examples include `fast-anchor`, `fast-button`, and `fast-divider`. There are several reasons for this:
 * CSS Encapsulation - By using Shadow DOM, FAST is able to provide a set of styles for these elements and guarantee that they will not conflict with your site or app. Your site styles will not break FAST and FAST will not break your site.
