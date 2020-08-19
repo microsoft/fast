@@ -28,3 +28,10 @@ At this time, `fast-element` has a focus that's a bit different from the typical
 ### Are Web Components "done"?
 
 The work on Web Component standards, like the rest of the web, is ongoing. New APIs continue to be designed and released. Some recent APIs include Form Associated Custom Element APIs and CSS Shadow Parts. The W3C is currently working on standards for things like Constructible Style Sheets, Declarative Shadow DOM, Scoped Element Registries, Custom Pseudo Selectors, and more.
+
+### Why does FAST have an "anchor" component?
+
+Various members of our community have wondered why FAST has components that seem to mirror native elements. Examples include `fast-anchor`, `fast-button`, and `fast-divider`. There are several reasons for this:
+* CSS Encapsulation - By using Shadow DOM, FAST is able to provide a set of styles for these elements and guarantee that they will not conflict with your site or app. Your site styles will not break FAST and FAST will not break your site.
+* CSS Behaviors - Custom elements enable FAST to dynamically add/remove styles based on runtime conditions, such as toggling high contrast mode. It also enables us to hook into the *design system* and enable the component to respond to changes over time.
+* Enhanced Anatomies - We refer to the DOM structure of a component as its "anatomy". Our research as part of [OpenUI](https://open-ui.org/) has revealed common anatomies across many design systems and component libraries. We leverage this research to design the structure of our FAST components so that they are built in a way that meets real-world needs, particularly regarding composition with other components. Some basic components, such as `anchor`, benefit from an expanded anatomy, based on industry usage. Through custom elements, we are able to implement this anatomy without inflicting an HTML authoring burden on our community.
