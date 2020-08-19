@@ -67,6 +67,16 @@ module.exports = {
         },
         {
             type: "category",
+            label: "Working with Design Systems",
+            items: [
+                "design-systems/overview",
+                "design-systems/fast-frame",
+                "design-systems/using-the-design-system",
+                "design-systems/creating-a-design-system",
+            ],
+        },
+        {
+            type: "category",
             label: "Tools",
             items: ["tools/component-explorer", "tools/vscode"],
         },
