@@ -63,3 +63,63 @@ jobs:
           ${{github.workspace}}/packages/utilities/fast-web-utilities/coverage/lcov.info:lcov
           ${{github.workspace}}/sites/fast-component-explorer/coverage/lcov.info:lcov
         debug: false
+  
+  build_windows:
+    name: Validate on Windows
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Install MSYS2
+      run: choco install msys2
+
+    - name: Setup Node.js environment
+      uses: actions/setup-node@v2.1.0
+      with:
+        node-version: '10'
+
+    - name: Install Lerna
+      run: npm i -g lerna
+
+    - name: Install package dependencies / prepare workspaces
+      env:
+        CHILD_CONCURRENCY: 1
+      run: |
+        yarn install --frozen-lockfile
+
+    - name: Ensure Prettier formatting
+      run: lerna run prettier:diff
+
+    - name: Execute unit tests
+      run: lerna run test --stream
+  
+  build_macos:
+    name: Validate on MacOS
+    
+    runs-on: macos-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: gcc
+      run: |
+        gcc-8 --version
+      shell: powershell
+
+    - name: Setup Node.js environment
+      uses: actions/setup-node@v2.1.0
+      with:
+        node-version: '10'
+
+    - name: Install Lerna
+      run: sudo yarn global add lerna 
+
+    - name: Install package dependencies / prepare workspaces
+      run: yarn install --frozen-lockfile
+
+    - name: Ensure Prettier formatting
+      run: lerna run prettier:diff
+
+    - name: Execute unit tests
+      run: lerna run test --stream
