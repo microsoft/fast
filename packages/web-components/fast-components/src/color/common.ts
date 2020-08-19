@@ -72,6 +72,9 @@ export type DesignSystemResolverFromSwatchResolver<T> = (
     resolver: SwatchResolver
 ) => DesignSystemResolver<T>;
 
+/**
+ * A function type that resolves a Swatch from a string literal.
+ */
 export type DesignSystemResolverFromSwatch<T> = (colorLiteral: string) => T;
 
 /**
@@ -131,6 +134,7 @@ export function colorRecipeFactory<T>(recipe: DesignSystemResolver<T>): ColorRec
  * the result of that function as background to the recipe. This is useful for applying text recipes to colors
  * other than the design system backgroundColor
  * 2. When provided a design system, the recipe will use that design-system to generate the color
+ * 3. When provided a color as a string literal it returns the same color back.
  */
 export type SwatchRecipe = ColorRecipe<Swatch>;
 
