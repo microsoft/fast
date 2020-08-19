@@ -13,10 +13,8 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: gcc
-      run: |
-        gcc-8 --version
-      shell: bash
+    - name: Install MSYS2
+      run: choco install msys2
 
     - name: Setup Node.js environment
       uses: actions/setup-node@v2.1.0
@@ -46,6 +44,11 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+
+    - name: gcc
+      run: |
+        gcc-8 --version
+      shell: powershell
 
     - name: Setup Node.js environment
       uses: actions/setup-node@v2.1.0
