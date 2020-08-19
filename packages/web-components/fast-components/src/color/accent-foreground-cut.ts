@@ -21,11 +21,14 @@ function accentForegroundCutFactory(targetContrast: number): SwatchRecipe {
     function accentForegroundCutInternal(
         backgroundResolver: SwatchResolver
     ): SwatchResolver;
+    function accentForegroundCutInternal(colorLiteral: string): Swatch;
     function accentForegroundCutInternal(arg: any): any {
         return typeof arg === "function"
             ? (designSystem: FASTDesignSystem): Swatch => {
                   return accentForegroundCutAlgorithm(arg(designSystem), targetContrast);
               }
+            : typeof arg === "string"
+            ? accentForegroundCutAlgorithm(arg, targetContrast)
             : accentForegroundCutAlgorithm(accentBaseColor(arg), targetContrast);
     }
 

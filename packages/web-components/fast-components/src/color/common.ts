@@ -72,6 +72,8 @@ export type DesignSystemResolverFromSwatchResolver<T> = (
     resolver: SwatchResolver
 ) => DesignSystemResolver<T>;
 
+export type DesignSystemResolverFromSwatch<T> = (colorLiteral: string) => T;
+
 /**
  * The states that a swatch can have
  * @internal
@@ -89,7 +91,8 @@ export enum SwatchFamilyType {
  * or resolves a ColorRecipe when provided a SwatchResolver
  */
 export type ColorRecipe<T> = DesignSystemResolver<T> &
-    DesignSystemResolverFromSwatchResolver<T>;
+    DesignSystemResolverFromSwatchResolver<T> &
+    DesignSystemResolverFromSwatch<T>;
 
 /**
  * @internal
@@ -101,6 +104,7 @@ export function colorRecipeFactory<T>(recipe: DesignSystemResolver<T>): ColorRec
     function curryRecipe(
         backgroundResolver: SwatchResolver
     ): (designSystem: FASTDesignSystem) => T;
+    function curryRecipe(colorLiteral: string): T;
     function curryRecipe(arg: any): any {
         if (typeof arg === "function") {
             return (designSystem: FASTDesignSystem): T => {
@@ -110,6 +114,8 @@ export function colorRecipeFactory<T>(recipe: DesignSystemResolver<T>): ColorRec
                     })
                 );
             };
+        } else if (typeof arg === "string") {
+            return arg;
         } else {
             return memoizedRecipe(arg);
         }
@@ -139,7 +145,7 @@ export function swatchFamilyToSwatchRecipeFactory<T extends SwatchFamily>(
     callback: SwatchFamilyResolver<T>
 ): SwatchRecipe {
     const memoizedRecipe: typeof callback = memoize(callback);
-    return (arg: FASTDesignSystem | SwatchResolver): any => {
+    return (arg: FASTDesignSystem | SwatchResolver | string): any => {
         if (typeof arg === "function") {
             return (designSystem: FASTDesignSystem): Swatch => {
                 return memoizedRecipe(
@@ -148,6 +154,8 @@ export function swatchFamilyToSwatchRecipeFactory<T extends SwatchFamily>(
                     })
                 )[type as string];
             };
+        } else if (typeof arg === "string") {
+            return arg;
         } else {
             return memoizedRecipe(arg)[type];
         }

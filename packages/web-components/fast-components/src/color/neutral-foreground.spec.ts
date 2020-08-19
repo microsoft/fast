@@ -24,6 +24,18 @@ describe("neutralForeground", (): void => {
         expect(typeof neutralForegroundActive(() => "#FFF")).to.equal("function");
     });
 
+    it("should return a string when invoked with a string", (): void => {
+        expect(typeof neutralForegroundRest("#FFF")).to.equal("string");
+        expect(typeof neutralForegroundHover("#FFF")).to.equal("string");
+        expect(typeof neutralForegroundActive("#FFF")).to.equal("string");
+    });
+
+    it("should return same value when invoked with a string", (): void => {
+        expect(neutralForegroundRest("#FFF")).to.equal("#FFF");
+        expect(neutralForegroundHover("#FFF")).to.equal("#FFF");
+        expect(neutralForegroundActive("#FFF")).to.equal("#FFF");
+    });
+
     it("should operate on default design system if no design system is supplied", (): void => {
         const palette = fastDesignSystemDefaults.neutralPalette;
         const limitColor = palette[palette.length - 1];
