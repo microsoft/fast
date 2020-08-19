@@ -105,7 +105,7 @@ export const SliderStyles = css`
     }
     :host(.vertical) {
         height: 100%;
-        min-height: calc(var(--design-unit) * 60px);
+        min-height: calc(var(--thumb-size) * 1px);
         min-width: calc(var(--design-unit) * 20px);
     }
     :host(.disabled) .label,
