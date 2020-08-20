@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include "dbg.h"
 #include "minunit.h"
-#if defined(__WINDOWS__) && defined(WIN32)
+#ifdef _WIN32
 #include <dlfcn-win32.h>
 #else
 #include <dlfcn.h>
