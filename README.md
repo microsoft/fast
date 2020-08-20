@@ -56,7 +56,7 @@ This package does not export Web Components registered as [custom elements](http
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![npm version](https://badge.fury.io/js/%40microsoft%2Ffast-components.svg)](https://badge.fury.io/js/%40microsoft%2Ffast-components)
 
-`@microsoft/fast-components` is a library of Web Components that *composes* the exports of `@microsoft/fast-foundation` with stylesheets aligning to the FAST Frame design system. This composition step registers a custom element. See the [quick start](https://fast.design/components/getting-started) to get started using the components.
+`@microsoft/fast-components` is a library of Web Components that *composes* the exports of `@microsoft/fast-foundation` with stylesheets aligning to the FAST Frame design system. This composition step registers a custom element. See the [quick start](https://fast.design/docs/components/getting-started) to get started using the components.
 
 ### `@fluentui/web-components`
 
