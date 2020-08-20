@@ -58,4 +58,3 @@ jobs:
           ${{github.workspace}}/packages/utilities/fast-web-utilities/coverage/lcov.info:lcov
           ${{github.workspace}}/sites/fast-component-explorer/coverage/lcov.info:lcov
         debug: false
-  
