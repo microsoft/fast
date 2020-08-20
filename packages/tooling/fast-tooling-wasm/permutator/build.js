@@ -5,6 +5,7 @@ const process = require("process");
 // Do not run on win32 as dlfcn.h is not available
 const isWin32 = process.platform === "win32";
 const changeDir = "cd permutator";
+const changeTestDir = "cd __tests__";
 const moveLib = "mv ../libpermutate.so libpermutate.so";
 const changeTestDir = "cd __tests__";
 
@@ -56,7 +57,7 @@ if (!isWin32) {
          * the tests against
          */
         exec(
-            `${changeDir} && ${sharedLibSetup} && ${sharedLibCompile} && ${changeTestDir} && ${moveLib} && ${staticTestFilesCompile}`,
+            `${changeDir} && ${sharedLibSetup} && ${sharedLibCompile} && ${changeTestDir} && ${moveLib} && ${staticTestFilesCompile} && ${changeTestDir} && ./test`,
             (error, stdout, stderr) => {
                 if (error) {
                     throw new Error(`error: ${error.message}`);

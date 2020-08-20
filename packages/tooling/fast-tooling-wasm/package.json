@@ -18,7 +18,7 @@
   "scripts": {
     "build": "yarn build:permutator",
     "build:permutator": "node ./permutator/build.js",
-    "test:permutator": "node ./permutator/build.js --test && cd permutator/__tests__/ && ./test",
+    "test:permutator": "node ./permutator/build.js --test",
     "start": "webpack-dev-server",
     "test": "yarn test:permutator"
   },
