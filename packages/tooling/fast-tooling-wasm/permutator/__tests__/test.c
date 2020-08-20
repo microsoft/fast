@@ -1,11 +1,11 @@
+#ifdef _WIN32
+// Do not run tests on Win32 as they require the use of
+// a different lib than dlfcn
+#else
+#include <dlfcn.h>
 #include <stdio.h>
 #include "dbg.h"
 #include "minunit.h"
-#ifdef _WIN32
-#include <dlfcn-win32.h>
-#else
-#include <dlfcn.h>
-#endif
 #include <stdbool.h>
 #include <math.h>
 #include "../cjson/cJSON.h"
@@ -322,3 +322,4 @@ char *all_tests()
 }
 
 RUN_TESTS(all_tests);
+#endif
