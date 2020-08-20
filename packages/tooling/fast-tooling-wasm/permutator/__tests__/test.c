@@ -1,4 +1,3 @@
-#include <dlfcn.h>
 #include <stdio.h>
 #include "dbg.h"
 #include "minunit.h"
@@ -7,6 +6,11 @@
 #include "../cjson/cJSON.h"
 #include "../permutate.h"
 #include "../type.h"
+
+#ifdef _WIN32
+// Don't compile for win32 due to incompatibility with dlfcn
+#else
+#include <dlfcn.h>
 
 typedef struct PermutatedType (*lib_function) (int iteration, struct cJSON *data);
 char *lib_file = "libpermutate.so";
@@ -318,3 +322,4 @@ char *all_tests()
 }
 
 RUN_TESTS(all_tests);
+#endif
