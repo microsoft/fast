@@ -6,8 +6,6 @@ var path = require("path");
 // Create application
 var app = express();
 
-// Security enhancements provided by https://github.com/helmetjs/helmet
-// contentSecurityPolicy() omitted because it breaks modern implementation methods
 app.use(helmet.dnsPrefetchControl());
 app.use(helmet.expectCt());
 app.use(helmet.frameguard());
@@ -17,7 +15,6 @@ app.use(helmet.ieNoOpen());
 app.use(helmet.noSniff());
 app.use(helmet.permittedCrossDomainPolicies());
 app.use(helmet.referrerPolicy());
-app.use(helmet.xssFilter());
 
 // Set public directory
 var publicDir = path.resolve(__dirname);
