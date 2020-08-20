@@ -19,8 +19,6 @@
     "build": "yarn build:permutator",
     "build:permutator": "node ./permutator/build.js",
     "test:permutator": "node ./permutator/build.js --test && cd permutator/__tests__/ && ./test",
-    "test:mac": "yarn run test:permutator",
-    "test:ubuntu": "yarn run test:permutator",
     "start": "webpack-dev-server"
   },
   "devDependencies": {

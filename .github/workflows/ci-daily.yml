@@ -19,10 +19,6 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: gcc
-      run: gcc-8 --version
-      shell: bash
-
     - name: Add or Update packages
       run: sudo yarn global add lerna@3.18.2
 
@@ -48,9 +44,6 @@ jobs:
     - name: Testing unit tests
       run: lerna run test --stream
 
-    - name: Execute mac specific unit tests
-      runL lerna run test:ubuntu --stream
-
     - name: Collect and upload code coverage to Code Climate
       uses: paambaati/codeclimate-action@v2.6.0
       env: 
@@ -66,57 +59,3 @@ jobs:
           ${{github.workspace}}/sites/fast-component-explorer/coverage/lcov.info:lcov
         debug: false
   
-  build_windows:
-    name: Validate on Windows
-    runs-on: windows-latest
-
-    steps:
-    - uses: actions/checkout@v2
-
-    - name: Setup Node.js environment
-      uses: actions/setup-node@v2.1.0
-      with:
-        node-version: '10'
-
-    - name: Install Lerna
-      run: npm i -g lerna
-
-    - name: Install package dependencies / prepare workspaces
-      env:
-        CHILD_CONCURRENCY: 1
-      run: |
-        yarn install --frozen-lockfile
-
-    - name: Execute unit tests
-      run: lerna run test --stream
-  
-  build_macos:
-    name: Validate on MacOS
-    
-    runs-on: macos-latest
-
-    steps:
-    - uses: actions/checkout@v2
-
-    - name: gcc
-      run: gcc-8 --version
-
-    - name: Setup Node.js environment
-      uses: actions/setup-node@v2.1.0
-      with:
-        node-version: '10'
-
-    - name: Install Lerna
-      run: sudo yarn global add lerna 
-
-    - name: Install package dependencies / prepare workspaces
-      run: yarn install --frozen-lockfile
-
-    - name: Ensure Prettier formatting
-      run: lerna run prettier:diff
-
-    - name: Execute unit tests
-      run: lerna run test --stream
-
-    - name: Execute mac specific unit tests
-      runL lerna run test:mac --stream
