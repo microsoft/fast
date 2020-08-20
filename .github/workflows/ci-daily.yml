@@ -19,11 +19,6 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: gcc
-      run: |
-        gcc-8 --version
-      shell: bash
-
     - name: Add or Update packages
       run: sudo yarn global add lerna@3.18.2
 
