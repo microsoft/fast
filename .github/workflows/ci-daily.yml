@@ -48,6 +48,9 @@ jobs:
     - name: Testing unit tests
       run: lerna run test --stream
 
+    - name: Execute mac specific unit tests
+      runL lerna run test:ubuntu --stream
+
     - name: Collect and upload code coverage to Code Climate
       uses: paambaati/codeclimate-action@v2.6.0
       env: 
@@ -69,9 +72,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-
-    - name: Look for mingw
-      run: gcc --version
 
     - name: Setup Node.js environment
       uses: actions/setup-node@v2.1.0
@@ -117,3 +117,6 @@ jobs:
 
     - name: Execute unit tests
       run: lerna run test --stream
+
+    - name: Execute mac specific unit tests
+      runL lerna run test:mac --stream
