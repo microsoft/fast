@@ -1,9 +1,15 @@
 name: CI - FAST Validation
 
-on:
-  schedule:
-  - cron: 0 7 * * 3
+#on:
+#  schedule:
+#  - cron: 0 7 * * 3
 
+# Temp testing 
+on:
+  pull_request:
+    branches:
+    - master
+    - users/*
 
 jobs:
   build_windows:
