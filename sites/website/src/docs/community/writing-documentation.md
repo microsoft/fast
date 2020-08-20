@@ -261,4 +261,4 @@ Code comments in **fragment** format:
 
 [GaOSG]: https://www.theguardian.com/guardian-observer-style-guide-a
 
-[TBNS]: http://www2.media.uoa.gr/lectures/linguistic_archives/academic_papers0506/notes/stylesheets_3.pdf
+[TBNS]: https://www2.media.uoa.gr/lectures/linguistic_archives/academic_papers0506/notes/stylesheets_3.pdf
