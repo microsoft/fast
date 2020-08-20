@@ -1,7 +1,11 @@
 #include <stdio.h>
 #include "dbg.h"
 #include "minunit.h"
+#if defined(__WINDOWS__) && defined(WIN32)
+#include <dlfcn-win32.h>
+#else
 #include <dlfcn.h>
+#endif
 #include <stdbool.h>
 #include <math.h>
 #include "../cjson/cJSON.h"
