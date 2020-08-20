@@ -105,23 +105,21 @@ module.exports = {
                             href: "https://github.com/microsoft/fast/blob/master/LICENSE",
                         },
                         {
-                            label: "Privacy & Cookies",
-                            href: "https://privacy.microsoft.com/en-US/privacystatement",
+                            label: "Privacy & cookies",
+                            href: "https://go.microsoft.com/fwlink/?LinkId=521839",
                         },
                         {
-                            label: "Terms of Use",
-                            href:
-                                "https://www.microsoft.com/en-us/legal/intellectualproperty/copyright/default.aspx",
+                            label: "Terms of use",
+                            href: "https://go.microsoft.com/fwlink/?LinkID=206977",
                         },
                         {
                             label: "Trademarks",
-                            href:
-                                "https://www.microsoft.com/en-us/legal/intellectualproperty/trademarks/usage/general",
+                            href: "https://www.microsoft.com/trademarks",
                         },
                     ],
                 },
             ],
-            copyright: `Copyright © Microsoft ${new Date().getFullYear()}`,
+            copyright: `© Microsoft ${new Date().getFullYear()}`,
         },
     },
     presets: [
