@@ -27,8 +27,8 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
         const scalingViewportOffset: HTMLElement | null = document.getElementById(
             "viewport-scaling-offset"
         );
-        if (scalingViewportUpdate !== null) {
-            scalingViewportUpdate.addEventListener("scroll", handleScrollViaOffset);
+        if (scalingViewportOffset !== null) {
+            scalingViewportOffset.addEventListener("scroll", handleScrollViaOffset);
         }
     }
 });
