@@ -48,7 +48,7 @@ const accessKey = process.env.SAUCE_LABS_KEY;
 const domain = "https://explore.fast.design";
 
 // Configure to connect to remote hub
-const remoteHub = `https://${username}:${accessKey}@ondemand.saucelabs.com:80/wd/hub`;
+const remoteHub = `https://${username}:${accessKey}@ondemand.saucelabs.com:443/wd/hub`;
 
 /**
  * Get configuration based on the accepted Phase argument
