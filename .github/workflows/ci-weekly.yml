@@ -7,9 +7,7 @@ name: CI - FAST Validation
 # Temp testing 
 on:
   pull_request:
-    branches:
-    - master
-    - users/*
+
 
 jobs:
   build_windows:
@@ -72,9 +70,16 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+      with:
+        fetch-depth: 2
 
+    - run: git checkout HEAD^2
+      if: ${{ github.event_name == 'pull_request' }}
+    
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v1
- 
+      with:
+        languages: javascript
+
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v1
