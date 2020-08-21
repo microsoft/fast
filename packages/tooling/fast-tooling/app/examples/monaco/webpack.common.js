@@ -7,6 +7,7 @@ const MonacoWebpackPlugin = require("monaco-editor-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 const appDir = path.resolve(__dirname, "./");
+const outDir = path.resolve(__dirname, "./www");
 
 module.exports = {
     name: "monaco",
@@ -16,7 +17,10 @@ module.exports = {
     resolve: {
         extensions: [".ts", ".js"],
     },
-    output: {},
+    output: {
+        path: outDir,
+        publicPath: "/"
+    },
     module: {
         // where we defined file patterns and their loaders
         rules: [
