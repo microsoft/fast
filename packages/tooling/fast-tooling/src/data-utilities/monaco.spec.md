@@ -12,7 +12,7 @@ Steps:
 1. `MonacoEditorDataDictionaryAdaptor` registers with the provided `MessageSystem`
 2. `DataDictionary` update with type `initialize` is received via the `MessageSystem`
 3. The `onDidInitialize` callback is called
-4. The internals of the `onDidInitialize` callback convert the `DataDictionary` into a string of `HTML` using the `mapDataDictionaryToMonacoEditorHTML`
+4. The internals of the `onDidInitialize` callback convert the `DataDictionary` into a string of `HTML` using the `mapDataDictionaryToMonacoEditorHTML` utility
 5. The `HTML` string is then set as the `value` of the model in the Monaco editor
 6. The Monaco editor `onDidChangeContent` event is called
 7. The `formatDocument` action fires within the `onDidChangeContent` callback
