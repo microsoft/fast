@@ -10,6 +10,8 @@ import {
     neutralFillCard,
     neutralFillInput,
     neutralFillStealth,
+    neutralFillStealthRest,
+    neutralFillStealthHover,
     neutralFillToggle,
     neutralFocus,
     neutralFocusInnerAccent,
@@ -27,6 +29,7 @@ import {
     neutralLayerL3,
     neutralLayerL4,
     neutralOutline,
+    neutralFillStealthSelected,
 } from "../color/index";
 import { accentBaseColor } from "../fast-design-system";
 import { FASTDesignSystemProvider } from "../design-system-provider/index";
@@ -238,6 +241,7 @@ export const neutralFillStealthRestBehavior = cssCustomPropertyBehaviorFactory(
     x => neutralFillStealth(x).rest,
     FASTDesignSystemProvider.findProvider
 );
+
 /**
  * Behavior to resolve and make available the neutral-fill-stealth-hover CSS custom property.
  * @public
@@ -247,6 +251,7 @@ export const neutralFillStealthHoverBehavior = cssCustomPropertyBehaviorFactory(
     x => neutralFillStealth(x).hover,
     FASTDesignSystemProvider.findProvider
 );
+
 /**
  * Behavior to resolve and make available the neutral-fill-stealth-active CSS custom property.
  * @public
@@ -328,6 +333,7 @@ export const neutralFillInputHoverBehavior = cssCustomPropertyBehaviorFactory(
     x => neutralFillInput(x).hover,
     FASTDesignSystemProvider.findProvider
 );
+
 /**
  * Behavior to resolve and make available the neutral-fill-input-active CSS custom property.
  * @public
@@ -562,6 +568,19 @@ export const neutralLayerL3Behavior = cssCustomPropertyBehaviorFactory(
     neutralLayerL3,
     FASTDesignSystemProvider.findProvider
 );
+
+export const neutralStealthHoverBackgroundBehavior = cssCustomPropertyBehaviorFactory(
+    "neutral-stealth-hover-background",
+    x => neutralFillStealthHover(neutralFillStealthHover)(x),
+    FASTDesignSystemProvider.findProvider
+);
+
+export const neutralStealthHoverSelectedBackgroundBehavior = cssCustomPropertyBehaviorFactory(
+    "neutral-stealth-hover-selected-background",
+    x => neutralFillStealthHover(neutralFillStealthSelected)(x),
+    FASTDesignSystemProvider.findProvider
+);
+
 /**
  * Behavior to resolve and make available the neutral-layer-l4 CSS custom property.
  * @public

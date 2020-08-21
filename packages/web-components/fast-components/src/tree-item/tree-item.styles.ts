@@ -12,7 +12,9 @@ import {
     accentForegroundRestBehavior,
     heightNumber,
     neutralFillStealthActiveBehavior,
+    neutralStealthHoverBackgroundBehavior,
     neutralFillStealthHoverBehavior,
+    neutralStealthHoverSelectedBackgroundBehavior,
     neutralFillStealthRestBehavior,
     neutralFillStealthSelectedBehavior,
     neutralFocusBehavior,
@@ -61,7 +63,7 @@ export const TreeItemStyles = css`
     }
 
     :host(:${focusVisible}) .positioning-region {
-        border: ${neutralFocusBehavior.var} 1px solid;
+        border: ${neutralFocusBehavior.var} calc(var(--outline-width) * 1px) solid;
         border-radius: calc(var(--corner-radius) * 1px);
         color: ${neutralForegroundActiveBehavior.var};
     }
@@ -70,8 +72,8 @@ export const TreeItemStyles = css`
         display: flex;
         position: relative;
         box-sizing: border-box;
-        border: transparent 1px solid;
-        height: calc(${heightNumber} * 1px);
+        border: transparent calc(var(--outline-width) * 1px) solid;
+        height: calc((${heightNumber} + 1) * 1px);
     }
 
     .positioning-region::before {
@@ -95,7 +97,7 @@ export const TreeItemStyles = css`
         white-space: nowrap;
         width: 100%;
         height: calc(${heightNumber} * 1px);
-        margin-inline-start: calc(var(--design-unit) * 2px + 2px);
+        margin-inline-start: calc(var(--design-unit) * 2px + 8px);
         font-size: var(--type-ramp-base-font-size);
         line-height: var(--type-ramp-base-line-height);
         font-weight: 400;
@@ -116,13 +118,15 @@ export const TreeItemStyles = css`
         ${
             /* Width and Height should be based off calc(glyph-size-number + (design-unit * 4) * 1px) - 
             update when density story is figured out */ ""
-        } width: var(--expand-collapse-button-size);
-        height: var(--expand-collapse-button-size);
+        } width: 35px;
+        height: 35px;
         padding: 0;
         display: flex;
         justify-content: center;
         align-items: center;
         cursor: pointer;
+        margin-left: 6px;
+        margin-right: 6px;
     }
 
     .expand-collapse-glyph {
@@ -175,6 +179,10 @@ export const TreeItemStyles = css`
         background: ${neutralFillStealthSelectedBehavior.var};
     }
 
+    :host([selected]) .expand-collapse-button {
+        background: ${neutralStealthHoverSelectedBackgroundBehavior.var},
+    }
+
     :host([selected])::after {
         content: "";
         display: block;
@@ -198,6 +206,10 @@ export const TreeItemStyles = css`
         position: absolute;
     }
 
+    :host(.nested) .expand-collapse-button:hover {
+        background: ${neutralStealthHoverBackgroundBehavior.var};
+    }
+
     ::slotted(fast-tree-item) {
         --tree-item-nested-width: 1em;
         --expand-collapse-button-nested-width: calc(${heightNumber} * -1px);
@@ -206,7 +218,9 @@ export const TreeItemStyles = css`
     accentForegroundRestBehavior,
     neutralFillStealthSelectedBehavior,
     neutralFillStealthActiveBehavior,
+    neutralStealthHoverBackgroundBehavior,
     neutralFillStealthHoverBehavior,
+    neutralStealthHoverSelectedBackgroundBehavior,
     neutralFillStealthRestBehavior,
     neutralFocusBehavior,
     neutralFocusInnerAccentBehavior,
