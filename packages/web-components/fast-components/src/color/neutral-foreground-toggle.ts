@@ -21,11 +21,12 @@ function neutralForegroundToggleFactory(targetContrast: number): SwatchRecipe {
     function neutralForegroundToggleInternal(
         backgroundResolver: SwatchResolver
     ): SwatchResolver;
+    function neutralForegroundToggleInternal(colorLiteral: string): SwatchResolver;
     function neutralForegroundToggleInternal(arg: any): any {
-        return typeof arg === "function"
+        return typeof arg === "function" || typeof arg === "string"
             ? (designSystem: FASTDesignSystem): Swatch => {
                   return neutralForegroundToggleAlgorithm(
-                      arg(designSystem),
+                      typeof arg === "function" ? arg(designSystem) : arg,
                       targetContrast
                   );
               }

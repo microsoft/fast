@@ -24,6 +24,12 @@ describe("neutralForeground", (): void => {
         expect(typeof neutralForegroundActive(() => "#FFF")).to.equal("function");
     });
 
+    it("should return a function when invoked with a string", (): void => {
+        expect(typeof neutralForegroundRest("#FFF")).to.equal("function");
+        expect(typeof neutralForegroundHover("#FFF")).to.equal("function");
+        expect(typeof neutralForegroundActive("#FFF")).to.equal("function");
+    });
+
     it("should operate on default design system if no design system is supplied", (): void => {
         const palette = fastDesignSystemDefaults.neutralPalette;
         const limitColor = palette[palette.length - 1];
