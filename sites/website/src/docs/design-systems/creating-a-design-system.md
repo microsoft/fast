@@ -69,7 +69,7 @@ The `attribute` property is used to set the HTML attribute that should correspon
 ```
 
 ### `cssCustomProperty`
-The `cssCustomProperty` property is used to define the name of the [CSS custom property](https://developer.mozilla.org/en-US/docs/Web/CSS/--*) to which the value is mapped. This allows easy use of the Design System value in CSS stylesheets. This property is optional and defaults to the name of the decorated property; it can also be set to `false` to omit the [CSS custom property](https://developer.mozilla.org/en-US/docs/Web/CSS/--*) association. In this case, the `cssCustomProperty` property is being used to spinal-case the property name.
+The `cssCustomProperty` property is used to define the name of the [CSS custom property](https://developer.mozilla.org/en-US/docs/Web/CSS/--*) to which the value is mapped. This allows easy use of the Design System value in CSS stylesheets. This property is optional and defaults to the attribute name of the decorated property; it can also be set to `false` to omit the [CSS custom property](https://developer.mozilla.org/en-US/docs/Web/CSS/--*) association. In this case, the `cssCustomProperty` property is being used to spinal-case the property name.
 
 ```ts
 const styles = css`:host { font-size: var(font-size-large)}`;
