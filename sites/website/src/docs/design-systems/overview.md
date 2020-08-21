@@ -44,13 +44,17 @@ The Design System itself manifests through a [DesignSystemProvider](/docs/api/fa
 ### Design System flow
 It is important to understand that the Design System is a mutable and inherited. You can think of the Design System as a downward flow of data through the DOM toward leaf nodes, where every [DesignSystemProvider](/docs/api/fast-foundation.designsystemprovider) element inherits Design System data from it's closest [DesignSystemProvider](/docs/api/fast-foundation.designsystemprovider) ancestor and provides opportunity to *change* that data for all descendent elements. Let's visualize this and assume there is a `font-size-large` Design Token in the Design System:
 
-**Example: The Design System flows data down the DOM hierarchy
+**Example: The Design System flows data down the DOM hierarchy**
 ```html
 <my-design-system-provider font-size-large="28px">
-    <my-text style="font-size: var(font-size-large);" id="one">My font size is 29px</my-text>
+    <my-text style="font-size: var(font-size-large);" id="one">
+        My font size is 29px
+    </my-text>
 
     <my-design-system-provider font-size-large="15px">
-        <my-text style="font-size: var(font-size-large);" id="two">My font size is 15px</my-text>
+        <my-text style="font-size: var(font-size-large);" id="two">
+            My font size is 15px
+        </my-text>
     </my-design-system-provider>
 </my-design-system-provider>
 ```
