@@ -73,6 +73,15 @@ export type DesignSystemResolverFromSwatchResolver<T> = (
 ) => DesignSystemResolver<T>;
 
 /**
+ * A function type that resolves a Swatch from a string literal
+ * and applies it to the backgroundColor property of the design system
+ * of the returned DesignSystemResolver
+ */
+export type DesignSystemResolverFromSwatch<T> = (
+    colorLiteral: string
+) => DesignSystemResolver<T>;
+
+/**
  * The states that a swatch can have
  * @internal
  */
@@ -89,7 +98,8 @@ export enum SwatchFamilyType {
  * or resolves a ColorRecipe when provided a SwatchResolver
  */
 export type ColorRecipe<T> = DesignSystemResolver<T> &
-    DesignSystemResolverFromSwatchResolver<T>;
+    DesignSystemResolverFromSwatchResolver<T> &
+    DesignSystemResolverFromSwatch<T>;
 
 /**
  * @internal
@@ -101,12 +111,14 @@ export function colorRecipeFactory<T>(recipe: DesignSystemResolver<T>): ColorRec
     function curryRecipe(
         backgroundResolver: SwatchResolver
     ): (designSystem: FASTDesignSystem) => T;
+    function curryRecipe(colorLiteral: string): DesignSystemResolver<T>;
     function curryRecipe(arg: any): any {
-        if (typeof arg === "function") {
+        if (typeof arg === "function" || typeof arg === "string") {
             return (designSystem: FASTDesignSystem): T => {
                 return memoizedRecipe(
                     Object.assign({}, designSystem, {
-                        backgroundColor: arg(designSystem),
+                        backgroundColor:
+                            typeof arg === "function" ? arg(designSystem) : arg,
                     })
                 );
             };
@@ -120,7 +132,7 @@ export function colorRecipeFactory<T>(recipe: DesignSystemResolver<T>): ColorRec
 
 /**
  * A function to apply a named style or recipe. A ColorRecipe has several behaviors:
- * 1. When provided a callback function, the color Recipe returns a function that expects a design-system.
+ * 1. When provided a callback function or a string literal, the color Recipe returns a function that expects a design-system.
  * When called, the returned function will call the callback function with the input design-system and apply
  * the result of that function as background to the recipe. This is useful for applying text recipes to colors
  * other than the design system backgroundColor
@@ -139,12 +151,13 @@ export function swatchFamilyToSwatchRecipeFactory<T extends SwatchFamily>(
     callback: SwatchFamilyResolver<T>
 ): SwatchRecipe {
     const memoizedRecipe: typeof callback = memoize(callback);
-    return (arg: FASTDesignSystem | SwatchResolver): any => {
-        if (typeof arg === "function") {
+    return (arg: FASTDesignSystem | SwatchResolver | string): any => {
+        if (typeof arg === "function" || typeof arg === "string") {
             return (designSystem: FASTDesignSystem): Swatch => {
                 return memoizedRecipe(
                     Object.assign({}, designSystem, {
-                        backgroundColor: arg(designSystem),
+                        backgroundColor:
+                            typeof arg === "function" ? arg(designSystem) : arg,
                     })
                 )[type as string];
             };
