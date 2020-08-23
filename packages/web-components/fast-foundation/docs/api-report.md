@@ -224,6 +224,9 @@ export interface DecoratorDesignSystemPropertyConfiguration extends Omit<Decorat
 }
 
 // @public
+export function defineDesignSystemProvider(nameOrDef: string | PartialFASTElementDefinition): <T extends typeof DesignSystemProvider>(providerCtor: T) => void;
+
+// @public
 export class DelegatesARIAButton extends ARIAGlobalStatesAndProperties {
     ariaExpanded: "true" | "false" | undefined;
     ariaPressed: "true" | "false" | "mixed" | undefined;
@@ -275,8 +278,10 @@ export class DesignSystemProvider extends FASTElement implements CSSCustomProper
     useDefaults: boolean;
     }
 
-// @public
-export function designSystemProvider(nameOrDef: string | PartialFASTElementDefinition): <T extends typeof DesignSystemProvider>(providerCtor: T) => void;
+// Warning: (ae-internal-missing-underscore) The name "designSystemProvider" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal @deprecated (undocumented)
+export const designSystemProvider: typeof defineDesignSystemProvider;
 
 // @public
 export const DesignSystemProviderTemplate: import("@microsoft/fast-element").ViewTemplate<DesignSystemProvider, any>;
