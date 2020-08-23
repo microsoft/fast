@@ -10,7 +10,7 @@ Creating a design system involves two key steps:
 
 The information the Design System should hold will be dictated by a project's design philosophies and capabilities and can vary widely from project to project. Therefore, this documentation will focus on creating and configuring a DesignSystemProvider and not data in the Design System.
 
-## Creating a DesignSystemProvider
+## Defining a DesignSystemProvider
 As discussed in the [overview](/docs/design-systems/overview#the-designSystemProvider), the [DesignSystemProvider](/docs/api/fast-foundation.designsystemprovider) is an HTML element designed to communicate the Design System. To create a [DesignSystemProvider](/docs/api/fast-foundation.designsystemprovider) element, we'll declare a new [DesignSystemProvider](/docs/api/fast-foundation.designsystemprovider) element using the [designSystemProvider](/docs/api/fast-foundation.designsystemprovider) decorator:
 
 ```ts
@@ -38,6 +38,24 @@ Loading the script with the above definition, you can now use the following HTML
 <my-design-system-provider>
     hello world
 </my-design-system-provider>
+```
+### Extending an existing DesignSystemProvider
+The same steps can be followed to *extend* an existing provider. Instead of extending the [DesignSystemProvider](/docs/api/fast-foundation.designsystemprovider), instead extend the existing provider.
+
+**Example: Extending FAST Frame's FASTDesignSystemProvider**
+```ts
+import { FASTDesignSystemProvider } from "@microsoft/fast-components";
+import {
+    designSystemProvider,
+    DesignSystemProviderTemplate as template,
+} from "@microsoft/fast-foundation";
+
+@designSystemProvider({
+    name: "my-design-system-provider",
+    template,
+    styles: css`:host { display: block }`
+})
+export class MyDesignSystemProvider extends FASTDesignSystemProvider {}
 ```
 
 ## Declaring the Design System
@@ -75,7 +93,7 @@ The `cssCustomProperty` property is used to define the name of the [CSS custom p
 const styles = css`:host { font-size: var(font-size-large)}`;
 ```
 ### `default`
-The `default` property naturally defines the default value for the Design System property. This is the value that gets used when an app author applies the `use-defaults` attribute (more on that later).
+The `default` property naturally defines the default value for the Design System property. This is the value that gets used when an app author applies the `use-defaults` attribute (see [`use-defaults`](#use-defaults)).
 
 :::important
 Notice the the default value is assigned as a property of the config and not directly to the *property itself*; the property is declared but never assigned a value. This is important because each instance of a provider inherits unset properties from a parent provider (if it exists); if each provider *set* each property explicitly to the default then there would be no inheritance.
@@ -96,3 +114,11 @@ Much like [`@attr()`](/docs/api/fast-element.attr), [`designSystemProperty()`](/
     public baseHeightMultiplier: number;
     // ...
 ```
+
+## `use-defaults`
+The `use-defaults` boolean attribute exists for all [DesignSystemProvider components](/docs/api/fast-foundation.designsystemprovider) and exposes a mechanism to apply the default values to an element while still allowing nested design system elements to intentionally override specific values. Every For details on how to set default values, see [Declaring Design System Properties](#declaring-the-design-system)
+
+In general, a _Design System Provider_ element with the `use-defaults` attribute should exist as an ancestor to all rendered UI - this will ensure that all the values enumerated in the Design System are defined.
+
+## Done!
+Thats it! Once you've configured all the Design System properties you can use your Design System Provider in your page. See [Using the Design System](/docs/design-systems/using-the-design-system) for more information on how to use the Design System values provided by your DesignSystemProvider.

@@ -19,7 +19,6 @@ module.exports = {
                         "components/button",
                         "components/card",
                         "components/checkbox",
-                        "components/design-system-provider",
                         "components/dialog",
                         "components/divider",
                         "components/flipper",
@@ -42,9 +41,6 @@ module.exports = {
                     label: "Design",
                     items: [
                         "design/introduction",
-                        "design/design-system",
-                        "design/type-ramp",
-                        "design/color",
                         "design/localization",
                         "design/match-media-stylesheets",
                     ],
