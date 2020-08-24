@@ -1,11 +1,14 @@
-import { html } from "@microsoft/fast-element";
-import { DataGrid } from "./data-grid";
+import { html, slotted, elements } from "@microsoft/fast-element";
+import { DataGridRow } from "./data-grid-row";
 
 /**
- * The template for the {@link @microsoft/fast-foundation#DataGrid} component.
+ * The template for the {@link @microsoft/fast-foundation#DataGridRow} component.
  * @public
  */
-export const DataGridTemplate = html<DataGrid>`
+export const DataGridRowTemplate = html<DataGridRow>`
     <template>
+    <slot
+        ${slotted({ property: "cellElements", filter: elements("fast-data-grid-cell") })}
+     ></slot>
     </template>
 `;

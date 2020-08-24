@@ -67,8 +67,17 @@ export class DataGrid extends FASTElement {
      * @public
      */
     @observable
-    public columnD: object[] | null = null;
+    public columnDefinitions: object[] | null = null;
     private columnDefinitionsChanged(): void {
         // this.requestReset();
+    }
+
+    /**
+     *
+     *
+     * @public
+     */
+    @observable rowElements?: object[];
+    private rowElementsChanged() {
     }
 }

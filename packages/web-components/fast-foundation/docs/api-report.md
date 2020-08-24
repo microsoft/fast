@@ -219,6 +219,32 @@ export interface CSSCustomPropertyTarget {
 export type CSSDisplayPropertyValue = "block" | "contents" | "flex" | "grid" | "inherit" | "initial" | "inline" | "inline-block" | "inline-flex" | "inline-grid" | "inline-table" | "list-item" | "none" | "run-in" | "table" | "table-caption" | "table-cell" | "table-column" | "table-column-group" | "table-footer-group" | "table-header-group" | "table-row" | "table-row-group";
 
 // @public
+export class DataGrid extends FASTElement {
+    columnDefinitions: object[] | null;
+    columns: string;
+    rowData: object[] | null;
+    // (undocumented)
+    rowElements?: object[];
+    rowkey: string;
+    rows: string;
+    }
+
+// @public
+export class DataGridRow extends FASTElement {
+    // (undocumented)
+    cellElements?: object[];
+    gridTemplateColumn: object | null;
+    rowData: object | null;
+    rowIndex: object | null;
+    }
+
+// @public
+export const DataGridRowTemplate: import("@microsoft/fast-element").ViewTemplate<DataGridRow, any>;
+
+// @public
+export const DataGridTemplate: import("@microsoft/fast-element").ViewTemplate<DataGrid, any>;
+
+// @public
 export interface DecoratorDesignSystemPropertyConfiguration extends Omit<DecoratorAttributeConfiguration, "attribute"> {
     attribute?: string | false;
     cssCustomProperty?: string | false;

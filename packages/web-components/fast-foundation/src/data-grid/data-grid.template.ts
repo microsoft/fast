@@ -1,4 +1,4 @@
-import { html } from "@microsoft/fast-element";
+import { html, slotted, elements } from "@microsoft/fast-element";
 import { DataGrid } from "./data-grid";
 
 /**
@@ -6,6 +6,9 @@ import { DataGrid } from "./data-grid";
  * @public
  */
 export const DataGridTemplate = html<DataGrid>`
-    <template>
+    <template role="grid">
+    <slot
+        ${slotted({ property: "rowElements", filter: elements("fast-data-grid-row") })}
+    ></slot>
     </template>
 `;
