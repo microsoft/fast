@@ -13,7 +13,7 @@ const configs = new Promise((resolver) => {
             resolver(
                 files.map((file) => {
                     const webpackConfig = require(file);
-                    const directories = path.parse(file).dir.split("/");
+                    const directories = path.parse(file).dir.split(path.sep);
                     const name = directories[directories.length - 1];
 
                     webpackConfig.name = name;
