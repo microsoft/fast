@@ -1,6 +1,6 @@
 import { attr, FASTElement, observable } from "@microsoft/fast-element";
 /**
- * A Data Grid Custom HTML Element.
+ * A Data Grid Row Custom HTML Element.
 *
  * @public
  */
@@ -36,5 +36,14 @@ export class DataGridRow extends FASTElement {
     public gridTemplateColumn: object | null = null;
     private gridTemplateColumnChanged(): void {
         // this.requestReset();
+    }
+
+    /**
+     *
+     *
+     * @public
+     */
+    @observable cellElements?: object[];
+    private cellElementsChanged() {
     }
 }
