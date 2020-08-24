@@ -106,6 +106,8 @@ If you look at the properties of the [`FASTDesignSystem`](/docs/api/fast-compone
 ### Color recipes
 Color recipes are algorithmic colors generated relative to a context. Recipes can be thought of and used as named colors, however they are more than simple variables; they are generated values where the value of the Recipe will change depending on the context in which it is generated. The primary inputs to any color recipe are [Palettes](/docs/design-systems/fast-frame#palettes), [the background color](/docs/design-systems/fast-frame#background-color), and [offsets / deltas](/docs/design-systems/fast-frame#offsets-deltas), which come from the nearest ancestor `<fast-design-system-provider>`.
 
+We created the [Color Explorer](https://color.fast.design/) as a visualization tool to help see what each of the following color recipes does.
+
 #### Using Color Recipes
 First, ensure the UI element has a [`FASTDesignSystemProvider`](/docs/api/fast-components.fastdesignsystemprovider) ancestor element - this element will *resolve* the recipe for a component within it that declares a dependency on the recipe.
 
