@@ -63,7 +63,7 @@ module.exports = {
         },
         {
             type: "category",
-            label: "Working with Design Systems",
+            label: "Design Systems",
             items: [
                 "design-systems/overview",
                 "design-systems/fast-frame",

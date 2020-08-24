@@ -6,22 +6,22 @@ custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/src
 ---
 Creating a design system involves two key steps:
 1. Determine what information the Design System should hold
-2. Creating a DesignSystemProvider to communicate the Design System
+2. Creating a [DesignSystemProvider](/docs/api/fast-foundation.designsystemprovider) to communicate the Design System
 
-The information the Design System should hold will be dictated by a project's design philosophies and capabilities and can vary widely from project to project. Therefore, this documentation will focus on creating and configuring a DesignSystemProvider and not data in the Design System.
+The information the Design System should hold will be dictated by a project's design philosophies and capabilities and can vary widely from project to project. Therefore, this documentation will focus on creating and configuring a [DesignSystemProvider](/docs/api/fast-foundation.designsystemprovider) and not data in the Design System.
 
 ## Defining a DesignSystemProvider
-As discussed in the [overview](/docs/design-systems/overview#the-designSystemProvider), the [DesignSystemProvider](/docs/api/fast-foundation.designsystemprovider) is an HTML element designed to communicate the Design System. To create a [DesignSystemProvider](/docs/api/fast-foundation.designsystemprovider) element, we'll declare a new [DesignSystemProvider](/docs/api/fast-foundation.designsystemprovider) element using the [designSystemProvider](/docs/api/fast-foundation.designsystemprovider) decorator:
+As discussed in the [overview](/docs/design-systems/overview#the-designSystemProvider), the [DesignSystemProvider](/docs/api/fast-foundation.designsystemprovider) is an HTML element designed to communicate the Design System. To create a [DesignSystemProvider](/docs/api/fast-foundation.designsystemprovider) element, we'll declare a new [DesignSystemProvider](/docs/api/fast-foundation.designsystemprovider) element using the [defineDesignSystemProvider](/docs/api/fast-foundation.definedesignsystemprovider) decorator:
 
 ```ts
 import { css } from "@microsoft/fast-element";
 import {
     DesignSystemProvider,
-    designSystemProvider,
+    defineDesignSystemProvider,
     DesignSystemProviderTemplate as template,
 } from "@microsoft/fast-foundation";
 
-@designSystemProvider({
+@defineDesignSystemProvider({
     name: "my-design-system-provider",
     template,
     styles: css`:host { display: block }`
@@ -59,7 +59,7 @@ export class MyDesignSystemProvider extends FASTDesignSystemProvider {}
 ```
 
 ## Declaring the Design System
-The above HTML at this point doesn't do much - let's change that by exploring how to creates properties of the design system using [`designSystemProperty()`](/docs/api/fast-foundation.designsystemproperty). Let's say that we want to add `font-size-large` to our Design System:
+The above HTML at this point doesn't do much. Let's change that by exploring how to creates properties of the design system using [`designSystemProperty()`](/docs/api/fast-foundation.designsystemproperty). Let's say that we want to add `font-size-large` to our Design System:
 
 ```ts
 // ...
@@ -116,9 +116,9 @@ Much like [`@attr()`](/docs/api/fast-element.attr), [`designSystemProperty()`](/
 ```
 
 ## `use-defaults`
-The `use-defaults` boolean attribute exists for all [DesignSystemProvider components](/docs/api/fast-foundation.designsystemprovider) and exposes a mechanism to apply the default values to an element while still allowing nested design system elements to intentionally override specific values. Every For details on how to set default values, see [Declaring Design System Properties](#declaring-the-design-system)
+The `use-defaults` boolean attribute exists for all [DesignSystemProviders](/docs/api/fast-foundation.designsystemprovider) and exposes a mechanism to apply the default values to an element while still allowing nested design system elements to intentionally override specific values. For details on how to set default values, see [Declaring Design System Properties](#declaring-the-design-system).
 
-In general, a _Design System Provider_ element with the `use-defaults` attribute should exist as an ancestor to all rendered UI - this will ensure that all the values enumerated in the Design System are defined.
+In general, a [DesignSystemProvider](/docs/api/fast-foundation.designsystemprovider) element with the `use-defaults` attribute should exist as an ancestor to all rendered UI; this will ensure that all the values enumerated in the Design System are defined.
 
 ## Done!
 Thats it! Once you've configured all the Design System properties you can use your Design System Provider in your page. See [Using the Design System](/docs/design-systems/using-the-design-system) for more information on how to use the Design System values provided by your DesignSystemProvider.

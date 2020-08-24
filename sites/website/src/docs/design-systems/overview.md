@@ -39,10 +39,10 @@ const keyFrames = new KeyframeEffect(
 ```
 
 ## The DesignSystemProvider
-The Design System itself manifests through a [DesignSystemProvider](/docs/api/fast-foundation.designsystemprovider): it is the vessel through which the Design System is expressed. The [DesignSystemProvider](/docs/api/fast-foundation.designsystemprovider) is an HTML element that facilitates usage, configuration, and propagation of the Design System through a UI view. The [DesignSystemProvider](/docs/api/fast-foundation.designsystemprovider) is responsible for expressing the Design System both as a readable JavaScript property *and* as CSS custom properties. Because of this,
+The Design System itself manifests through a [DesignSystemProvider](/docs/api/fast-foundation.designsystemprovider): it is the vessel through which the Design System is expressed. The [DesignSystemProvider](/docs/api/fast-foundation.designsystemprovider) is an HTML element that facilitates usage, configuration, and propagation of the Design System through a UI view. The [DesignSystemProvider](/docs/api/fast-foundation.designsystemprovider) is responsible for expressing the Design System both as a readable JavaScript property *and* as CSS custom properties.
 
 ### Design System flow
-It is important to understand that the Design System is a mutable and inherited. You can think of the Design System as a downward flow of data through the DOM toward leaf nodes, where every [DesignSystemProvider](/docs/api/fast-foundation.designsystemprovider) element inherits Design System data from it's closest [DesignSystemProvider](/docs/api/fast-foundation.designsystemprovider) ancestor and provides opportunity to *change* that data for all descendent elements. Let's visualize this and assume there is a `font-size-large` Design Token in the Design System:
+It is important to understand that in FAST, the Design System is a mutable and inherited. You can think of the Design System as a flow of data through the DOM toward leaf nodes, where every [DesignSystemProvider](/docs/api/fast-foundation.designsystemprovider) element inherits Design System data from it's closest ancestor [DesignSystemProvider](/docs/api/fast-foundation.designsystemprovider) and provides opportunity to *change* that data for all descendent elements. Let's visualize this and assume there is a `font-size-large` Design Token in the Design System:
 
 **Example: The Design System flows data down the DOM hierarchy**
 ```html

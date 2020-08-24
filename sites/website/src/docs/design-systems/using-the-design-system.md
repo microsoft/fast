@@ -5,7 +5,7 @@ sidebar_label: Using the Design System
 custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/src/docs/design-systems/using-the-design-system.md
 ---
 
-This section goes into further detail on how the Design System can be used. It will use [FAST Frame](/docs/design-systems/fast-frame) Design System as in the examples but none are *specific* to [FAST Frame](/docs/design-systems/fast-frame); use these features with your own Design System if you're not using [FAST Frame](/docs/design-systems/fast-frame).
+This section goes into further detail on how the Design System can be used. It will use [FAST Frame](/docs/design-systems/fast-frame) Design System in the examples but none are *specific* to [FAST Frame](/docs/design-systems/fast-frame); use these features with your own Design System if you're not using [FAST Frame](/docs/design-systems/fast-frame).
 
 ### Setting Design System Properties
 Design System properties can always be set by simple property assignment in JavaScript. Simply obtain a reference to the Custom Element instance and assign the property.
@@ -14,6 +14,17 @@ Design System properties can always be set by simple property assignment in Java
 ```ts
 const provider = document.querySelector('fast-design-system-provider');
 provider.designUnit = 6; // Set the Design System property.
+```
+
+or with FAST Element's [property bindings](/docs/fast-element/declaring-templates#properties):
+
+```ts
+import { html } from "@microsoft/fast-element";
+
+export const template = html`
+<fast-design-system-provider :designUnit="${() => 6}">
+</fast-design-system-provider>
+`
 ```
 
 *Most* Design System properties can be set by setting an HTML *attribute* on the element instance. The attribute name for the Design System property will be the corresponding JavaScript property name by default, but it can be customized or disabled for each Design System property. See [Declaring the Design System](/docs/design-systems/creating-a-design-system#declaring-the-design-system) for more info.
@@ -26,7 +37,7 @@ provider.designUnit = 6; // Set the Design System property.
 ```
 
 ## `use-defaults`
-Every [DesignSystemProvider](/docs/api/fast-foundation.designsystemprovider) supports the `use-defaults` boolean attribute. `use-defaults` is a mechanism to assign the default Design System values to the [DesignSystemProvider](/docs/api/fast-foundation.designsystemprovider).
+Every [DesignSystemProvider](/docs/api/fast-foundation.designsystemprovider) supports the `use-defaults` boolean attribute. `use-defaults` is a mechanism to assign the [default Design System values](/docs/design-systems/creating-a-design-system#default) to the [DesignSystemProvider](/docs/api/fast-foundation.designsystemprovider).
 
 It is generally a good idea to have a [DesignSystemProvider](/docs/api/fast-foundation.designsystemprovider) with the `use-defaults` attribute wrapping all of the app UI; this will ensure all properties used by descendent components are defined. This is especially important if the Design System properties reflect to CSS custom properties because the CSS custom properties are only created when the value is set.
 
@@ -59,16 +70,16 @@ Remember from the [overview](/docs/design-systems/overview#design-system-flow) t
 
 ```html
 <fast-design-system-provider design-unit="6">
-    <p>design unit is 6px</p>
-
     <fast-design-system-provider design-unit="12">
-        <p>design unit is 12px</p>
+        <p>Design unit is 12px.</p>
     </fast-design-system-provider>
+
+    <p>Design unit is 6px</p>
 </fast-design-system-provider>
 ```
 
 ### CSS Custom Properties
-Many Design System properties are intended to be consumed directly in CSS. When a Design System property is [configured](/docs/design-systems/creating-a-design-system#declaring-the-design-system) to emit a [CSS custom property](https://developer.mozilla.org/en-US/docs/Web/CSS/--*), the [CSS custom property](https://developer.mozilla.org/en-US/docs/Web/CSS/--*) can be used in any CSS targeting a descendent of the [DesignSystemProvider](/docs/api/fast-foundation.designsystemprovider).
+Many Design System properties are intended to be consumed directly in CSS. When a Design System property is [configured](/docs/design-systems/creating-a-design-system#declaring-the-design-system) to emit a [CSS custom property](https://developer.mozilla.org/en-US/docs/Web/CSS/--*), the [CSS custom property](https://developer.mozilla.org/en-US/docs/Web/CSS/--*) can be used in CSS for any descendent of the [DesignSystemProvider](/docs/api/fast-foundation.designsystemprovider).
 
 **Example: Using CSS Custom Properties**
 ```css
@@ -95,6 +106,7 @@ DesignSystemProvider.registerCSSCustomProperty({
 });
 ```
 
+#### CSSCustomPropertyBehavior
 The above API is especially useful when defining a [component stylesheet](docs/fast-element/leveraging-css); individual stylesheets can declare dependencies on CSS custom properties that are functions of the element instance's Design System through with the [CSSCustomPropertyBehavior](/docs/api/fast-foundation.csscustompropertybehavior). This is how the [FAST Frame Color Recipes](/docs/design-systems/fast-frame#color-recipes) work are constructed.
 
 **Example: creating a recipe dependency**
