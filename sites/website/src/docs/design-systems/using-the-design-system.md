@@ -54,62 +54,65 @@ It is generally a good idea to have a [DesignSystemProvider](/docs/api/fast-foun
 </fast-design-system-provider>
 ```
 
-- Using design system CSS custom properties
-- Using design system resolvers (CSS custom property behaviors, conditional CSS, etc)
-    - List the available Design System resolvers
-- How to create a Design System resolver.
-    - When is this useful? 
-        - Adaptive color
-        - Directional stylesheets
-
 ### Composing Design System Providers
 Remember from the [overview](/docs/design-systems/overview#design-system-flow) that the Design System values are inherited and propagate  down the DOM tree. This can be used to scope regions of a page with Design System changes.
 
 ```html
 <fast-design-system-provider design-unit="6">
-    <p style="height: calc(var(--design-unit) * 1px)">6px</p>
+    <p>design unit is 6px</p>
 
     <fast-design-system-provider design-unit="12">
-        <p style="height: calc(var(--design-unit) * 1px)">12px</p>
+        <p>design unit is 12px</p>
     </fast-design-system-provider>
 </fast-design-system-provider>
 ```
 
 ### CSS Custom Properties
+Many Design System properties are intended to be consumed directly in CSS. When a Design System property is [configured](/docs/design-systems/creating-a-design-system#declaring-the-design-system) to emit a [CSS custom property](https://developer.mozilla.org/en-US/docs/Web/CSS/--*), the [CSS custom property](https://developer.mozilla.org/en-US/docs/Web/CSS/--*) can be used in any CSS targeting a descendent of the [DesignSystemProvider](/docs/api/fast-foundation.designsystemprovider).
 
+**Example: Using CSS Custom Properties**
+```css
+p {
+    margin: calc(var(--design-unit) * 2px) 0;
+}
+```
+```html
+<fast-design-system-provider design-unit="6">
+    <p>vertical margin is 12px</p>
+</fast-design-system-provider>
+```
 
 ### CSS Custom Property Registry
-There are some things that CSS just can't do. Advanced math, array manipulation, and conditionals are simply not possible with today's CSS.
+There are some things that CSS just can't do: advanced math, complex data structures, and conditionals are simply not possible with CSS today.
 
-To address this gap, the `DesignSystemProvider` is capable of registering `CSSCustomPropertyDefinition` types through the `registerCSSCustomProperty` method:
+To address this, the [DesignSystemProvider](/docs/api/fast-foundation.designsystemprovider) provides a mechanism to register a JavaScript function that accepts the Design System object and returns a value to be written as a [CSS custom property](https://developer.mozilla.org/en-US/docs/Web/CSS/--*). The registered function will be re-evaluated when the Design System is mutated. 
 
-**EXAMPLE: Register a CSS custom property that is a function of the Design System**
-
+**Example: Register a CSS custom property that is a function of the Design System**
 ```ts
 DesignSystemProvider.registerCSSCustomProperty({
-    name: "design-unit-12th",
+    name: "design-unit-to-the-12th",
     value: designSystem => Math.pow(designSystem.designUnit, 12),
 });
 ```
 
-In the above example, the `value` function will be re-evaluated if the Design System ever changes.
+The above API is especially useful when defining a [component stylesheet](docs/fast-element/leveraging-css); individual stylesheets can declare dependencies on CSS custom properties that are functions of the element instance's Design System through with the [CSSCustomPropertyBehavior](/docs/api/fast-foundation.csscustompropertybehavior). This is how the [FAST Frame Color Recipes](/docs/design-systems/fast-frame#color-recipes) work are constructed.
 
-The above API is made especially useful when defining a [component stylesheet](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-element/docs/building-components.md#defining-css) - individual stylesheets can declare dependencies on CSS custom properties that are functions of the element instance's *design system*.
-
-**EXAMPLE: creating a recipe dependency**
+**Example: creating a recipe dependency**
 ```ts
 import { css } from "@microsoft/fast-element";
-import { cssCustomPropertyBehaviorFactory, FASTDesignSystemProvider } from "@microsoft/fast-components";
+import { CSSCustomPropertyBehavior } from "@microsoft/fast-foundation";
+import { FASTDesignSystemProvider } from "@microsoft/fast-components";
 
+const designUnitToTheTwelfth = new CSSCustomPropertyBehavior(
+    "design-unit-to-the-12th",
+    designSystem => Math.pow(designSystem.designUnit, 12),
+    FASTDesignSystemProvider.findProvider
+)
 const styles = css`
     :host {
-        height: var(--fancy-height);
+        height: ${designUnitToTheTwelfth.var};
     }
 `.withBehaviors(
-    cssCustomPropertyBehaviorFactory(
-        "fancy-height",
-        designSystem => Math.pow(designSystem.designUnit, 12),
-        FASTDesignSystemProvider.findProvider
-    )
+    designUnitToTheTwelfth
 )
 ```
