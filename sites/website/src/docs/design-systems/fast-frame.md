@@ -27,7 +27,7 @@ FASTDesignSystemProvider; // Prevent tree shaking
 ```
 
 :::note
-It is encouraged to add the `<fast-design-system-provider>` at the root of your view with the `use-defaults` attribute. This ensures that all Design System properties are initialized. For more info see the [`use-defaults`](/docs/design-systems/using-the-design-system#use-defaults)
+We recommend to add the `<fast-design-system-provider>` at the root of your view with the `use-defaults` attribute. This ensures that all Design System properties are initialized. For more info see the [`use-defaults`](/docs/design-systems/using-the-design-system#use-defaults)
 :::
 
 ### Type-ramp
