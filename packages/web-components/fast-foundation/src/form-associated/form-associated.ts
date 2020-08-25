@@ -85,6 +85,8 @@ interface HTMLElement {
     attachInternals?(): ElementInternals;
 }
 
+const proxySlotName = "form-associated-proxy";
+
 /**
  * @alpha
  */
@@ -430,8 +432,6 @@ export abstract class FormAssociated<
      * Attach the proxy element to the DOM
      */
     protected attachProxy() {
-        const proxySlotName = "form-associated-proxy";
-
         if (!this.proxyInitialized) {
             this.proxyInitialized = true;
             this.proxy.style.display = "none";
@@ -454,12 +454,12 @@ export abstract class FormAssociated<
             }
 
             this.proxy.setAttribute("slot", proxySlotName);
+
+            this.proxySlot = document.createElement("slot");
+            this.proxySlot.setAttribute("name", proxySlotName);
         }
 
-        this.proxySlot = document.createElement("slot");
-        this.proxySlot.setAttribute("name", proxySlotName);
-
-        this.shadowRoot?.appendChild(this.proxySlot);
+        this.shadowRoot?.appendChild(this.proxySlot as HTMLSlotElement);
         this.appendChild(this.proxy);
     }
 
