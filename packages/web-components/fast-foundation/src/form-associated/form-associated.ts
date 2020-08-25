@@ -181,6 +181,12 @@ export abstract class FormAssociated<
     private dirtyValue: boolean = false;
 
     /**
+     * Stores a reference to the slot element that holds the proxy
+     * element when it is appended.
+     */
+    private proxySlot: HTMLSlotElement | void;
+
+    /**
      * The value of the element to be associated with the form.
      */
     @observable
@@ -424,6 +430,8 @@ export abstract class FormAssociated<
      * Attach the proxy element to the DOM
      */
     protected attachProxy() {
+        const proxySlotName = "form-associated-proxy";
+
         if (!this.proxyInitialized) {
             this.proxyInitialized = true;
             this.proxy.style.display = "none";
@@ -444,8 +452,14 @@ export abstract class FormAssociated<
             if (typeof this.value === "string") {
                 this.proxy.value = this.value;
             }
+
+            this.proxy.setAttribute("slot", proxySlotName);
         }
 
+        this.proxySlot = document.createElement("slot");
+        this.proxySlot.setAttribute("name", proxySlotName);
+
+        this.shadowRoot?.appendChild(this.proxySlot);
         this.appendChild(this.proxy);
     }
 
@@ -454,6 +468,7 @@ export abstract class FormAssociated<
      */
     protected detachProxy() {
         this.removeChild(this.proxy);
+        this.shadowRoot?.removeChild(this.proxySlot as HTMLSlotElement);
     }
 
     /**
