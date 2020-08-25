@@ -52,7 +52,7 @@ The Design System is a mutable and inherited. Think of the Design System as a fl
     </my-text>
 
     <my-design-system-provider font-size-large="15px">
-        <my-text style="font-size: var(font-size-large);" id="two">
+        <my-text style="font-size: var(--font-size-large);" id="two">
             My font size is 15px
         </my-text>
     </my-design-system-provider>
