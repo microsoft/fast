@@ -1,0 +1,99 @@
+# Skeleton
+
+## Overview
+
+A skeleton is used as a visual placeholder for an element while it is in a loading state and usually presents itself as a simplified wireframe-like version of the UI it is representing.
+
+### Background
+
+- [Github Issue #3755](https://github.com/microsoft/fast/issues/3755)
+
+### Use Cases
+
+Used to give users a sense of loading progress activity rather than merely presenting a blank page or container.
+
+### Non-goals
+
+#### Specfic Skeletons
+
+Should not be made to reflect a specific element (e.g. `skeleton-button`, `skeleton-text`, `skeleton-heading`, etc...). The skeleton should be as generic of a container as possible as to represent various elements of different shapes and sizes.
+  
+### Features
+
+- `Shape`: Circle or rect shapes can be selected. Border radius of rectagled shape will be determined by the design system.
+
+### Prior Art/Examples
+
+- [Ant Design](https://ant.design/components/skeleton/)
+- [Carbon](https://www.carbondesignsystem.com/patterns/loading-pattern#skeleton-states)
+- [FluentUI (Shimmer)](https://developer.microsoft.com/en-us/fluentui#/controls/web/shimmer)
+- [Material UI](https://material-ui.com/components/skeleton/)
+- [Kalo](https://kalo.design/components/skeleton/)
+- [Pajamas](https://design.gitlab.com/components/skeleton-loader)
+- [Polaris](https://polaris.shopify.com/components/feedback-indicators/skeleton-thumbnail)
+- [React Loading Skeleton](https://github.com/dvtng/react-loading-skeleton#readme)
+- [Semantic UI (Placeholder)](https://semantic-ui.com/elements/placeholder.html)
+- [Telus](https://tds.telus.com/community/index.html#skeleton)
+- [Thumbprint](https://thumbprint.design/guide/product/loaders/#example-2.-skeleton-loader)
+- [Vercel](https://vercel.com/design/skeleton)
+
+### API
+
+#### Component Name
+- `fast-avatar`
+
+#### Attributes
+|   Name    | Description                                                 | Type                                |
+|-----------|-------------------------------------------------------------|-------------------------------------|
+| `shape`   | Determines the avatar coin shape. Rectangle by default.     | `string: rect (default) | circle`   |
+| `fill`    | Sets the background fill of the avatar coin.                | `string: hex color`                 |
+
+### Anatomy and Appearance
+
+#### Template
+
+```js
+<template
+  aria-busy="${x => x.ariaBusy}"
+>
+  <slot></slot>
+</template>
+```
+---
+
+## Implementation
+
+```html
+<fast-skeleton shape="rect"></fast-skeleton>
+```
+
+<!-- ### States
+
+*Key component states, valid state transitions, and how interactions trigger a state transition.* -->
+
+### Accessibility
+
+- The `aria-busy` attribute should be applied and set to `true` while this the UI the skeleton is represent is still in a loading state
+
+### Globalization
+
+Component should respond to directional settings.
+
+<!-- ### Test Plan
+
+*What is the plan for testing the component, if different from the normal path?* -->
+
+<!-- ### Documentation
+
+*What additions or changes are needed for user documentation and demos? Are there any architectural/engineering docs we should create as well, perhaps due to some interesting technical challenge or design decisions related to this component?*
+
+--- -->
+
+## Resources
+
+- [Open UI Analysis](https://open-ui.org/components/skeleton.research)
+- [Analysis Spreadsheet](https://microsoft-my.sharepoint-df.com/:x:/r/personal/jocusick_microsoft_com/_layouts/15/guestaccess.aspx?e=E6cgc9&share=EcwzVDELjoZMgn_mbQMGH0YBCLQfFpn-1ksv0j20sLtqsQ)
+
+<!-- ## Next Steps
+
+*What next steps, if any, are there? Is there some functionality that would be a nice-to-have or a common feature in other implementations that could be added but is not considered part of the MVP?* -->
