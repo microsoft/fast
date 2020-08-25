@@ -5,6 +5,7 @@ import {
     focusVisible,
     forcedColorsStylesheetBehavior,
 } from "@microsoft/fast-foundation";
+import { SystemColors } from "@microsoft/fast-web-utilities";
 import { heightNumber } from "../size";
 import {
     accentFillActiveBehavior,
@@ -24,7 +25,6 @@ import {
     neutralFocusInnerAccentBehavior,
     neutralForegroundRestBehavior,
 } from "../recipes";
-import { SystemColors } from "@microsoft/fast-web-utilities";
 
 /**
  * @internal
