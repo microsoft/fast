@@ -53,7 +53,7 @@
                                 "const": "web-component"
                             },
                             "implementation": {
-                                "$ref": "custom-element-definition"
+                                "$ref": "https://fast.design/docs/custom-element-definition"
                             }
                         },
                         "required": [

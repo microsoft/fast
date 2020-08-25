@@ -6,10 +6,10 @@ import {
     designSystemProvider,
     DesignSystemProviderTemplate as template,
 } from "@microsoft/fast-foundation";
+import { Direction } from "@microsoft/fast-web-utilities";
 import { FASTDesignSystem, fastDesignSystemDefaults } from "../fast-design-system";
 import { neutralForegroundRest } from "../color";
 import { DesignSystemProviderStyles as styles } from "./design-system-provider.styles";
-import { Direction } from "@microsoft/fast-web-utilities";
 
 const color = new CSSCustomPropertyBehavior(
     "neutral-foreground-rest",

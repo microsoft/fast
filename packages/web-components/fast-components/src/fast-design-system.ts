@@ -1,8 +1,8 @@
+import { Direction } from "@microsoft/fast-web-utilities";
 import {
     accentPalette as defaultAccentPalette,
     neutralPalette as defaultNeutralPalette,
 } from "./default-palette";
-import { Direction } from "@microsoft/fast-web-utilities";
 
 export type DesignSystemResolver<T, Y = FASTDesignSystem> = (d: Y) => T;
 

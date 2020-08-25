@@ -5,7 +5,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lerna.js.org/)
-[![TypeScript](https://img.shields.io/badge/%3C%2F%3E-TypeScript-%230074c1.svg)](http://www.typescriptlang.org/)
+[![TypeScript](https://img.shields.io/badge/%3C%2F%3E-TypeScript-%230074c1.svg)](https://www.typescriptlang.org/)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-f8bc45.svg)](https://github.com/prettier/prettier)
 
 [![Maintainability](https://api.codeclimate.com/v1/badges/8a74621e634a6e9b9561/maintainability)](https://codeclimate.com/github/Microsoft/fast/maintainability)
@@ -40,7 +40,7 @@ For an in-depth explanation of FAST [see our docs introduction](https://www.fast
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![npm version](https://badge.fury.io/js/%40microsoft%2Ffast-element.svg)](https://badge.fury.io/js/%40microsoft%2Ffast-element)
 
-The `@microsoft/fast-element` library is a lightweight means to easily build performant, memory-efficient, standards-compliant Web Components. FAST Elements work in every major browser and can be used in combination with any front-end framework or even without a framework. To get up and running with `@microsoft/fast-element` see [the Getting Started guide](http://fast.design/docs/fast-element/getting-started).
+The `@microsoft/fast-element` library is a lightweight means to easily build performant, memory-efficient, standards-compliant Web Components. FAST Elements work in every major browser and can be used in combination with any front-end framework or even without a framework. To get up and running with `@microsoft/fast-element` see [the Getting Started guide](https://fast.design/docs/fast-element/getting-started).
 
 ### `@microsoft/fast-foundation`
 
@@ -56,7 +56,7 @@ This package does not export Web Components registered as [custom elements](http
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![npm version](https://badge.fury.io/js/%40microsoft%2Ffast-components.svg)](https://badge.fury.io/js/%40microsoft%2Ffast-components)
 
-`@microsoft/fast-components` is a library of Web Components that *composes* the exports of `@microsoft/fast-foundation` with stylesheets aligning to the FAST Frame design system. This composition step registers a custom element. See the [quick start](http://fast.design/components/getting-started) to get started using the components.
+`@microsoft/fast-components` is a library of Web Components that *composes* the exports of `@microsoft/fast-foundation` with stylesheets aligning to the FAST Frame design system. This composition step registers a custom element. See the [quick start](https://fast.design/docs/components/getting-started) to get started using the components.
 
 ### `@fluentui/web-components`
 
@@ -76,13 +76,13 @@ Launch our [Component Explorer](https://explore.fast.design) to experience our [
 We hope you're excited by the possibilities that FAST presents. But, you may be wondering where to start. Here are a few statements that describe various members of our community. We recommend that you pick the statement you most identify with and follow the links where they lead. You can always come back and explore another topic at any time.
 
 * "I just want ready-made components!"
-  * [Jump to the component docs.](http://fast.design/docs/components/getting-started)
+  * [Jump to the component docs.](https://fast.design/docs/components/getting-started)
 * "I want to build my own design system."
-  * [Jump to the design system docs.](http://fast.design/docs/design/introduction)
+  * [Jump to the design system docs.](https://fast.design/docs/design/introduction)
 * "I want to build my own components."
-  * [Jump to the fast-element docs.](http://fast.design/docs/fast-element/getting-started)
+  * [Jump to the fast-element docs.](https://fast.design/docs/fast-element/getting-started)
 * "I need to integrate FAST with another framework or build system."
-  * [Jump to the integration docs.](http://fast.design/docs/integrations/introduction)
+  * [Jump to the integration docs.](https://fast.design/docs/integrations/introduction)
 
 ## Joining the Community
 

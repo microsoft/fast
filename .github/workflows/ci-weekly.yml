@@ -13,11 +13,6 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: gcc
-      run: |
-        gcc-8 --version
-      shell: bash
-
     - name: Setup Node.js environment
       uses: actions/setup-node@v2.1.0
       with:
@@ -71,17 +66,11 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-      with:
-        fetch-depth: 2
-        
-    - run: git checkout HEAD^2
-      if: ${{ github.event_name == 'pull_request' }}
 
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v1
-
-    - name: Autobuild
-      uses: github/codeql-action/autobuild@v1
+      with:
+        languages: javascript
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v1

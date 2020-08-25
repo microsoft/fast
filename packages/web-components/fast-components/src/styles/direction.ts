@@ -1,6 +1,6 @@
 import { cssCustomPropertyBehaviorFactory } from "@microsoft/fast-foundation";
 import { Direction } from "@microsoft/fast-web-utilities";
-import { FASTDesignSystem, direction } from "../fast-design-system";
+import { direction, FASTDesignSystem } from "../fast-design-system";
 import { FASTDesignSystemProvider } from "../design-system-provider";
 /**
  * Behavior to resolve and make available the inline-start CSS custom property.
