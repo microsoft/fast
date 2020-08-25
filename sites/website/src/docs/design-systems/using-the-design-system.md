@@ -8,7 +8,7 @@ custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/src
 This section goes into further detail on how the Design System can be used. It will use [FAST Frame](/docs/design-systems/fast-frame) Design System in the examples but none are *specific* to [FAST Frame](/docs/design-systems/fast-frame); use these features with your own Design System if you're not using [FAST Frame](/docs/design-systems/fast-frame).
 
 ### Setting Design System Properties
-Design System properties can always be set by simple property assignment in JavaScript. Simply obtain a reference to the Custom Element instance and assign the property.
+Design System properties can always be set by simple property assignment in JavaScript; obtain a reference to the Custom Element instance and assign the property.
 
 **Example: Setting a Design System value by property assignment**
 ```ts
@@ -39,7 +39,7 @@ export const template = html`
 ## `use-defaults`
 Every [DesignSystemProvider](/docs/api/fast-foundation.designsystemprovider) supports the `use-defaults` boolean attribute. `use-defaults` is a mechanism to assign the [default Design System values](/docs/design-systems/creating-a-design-system#default) to the [DesignSystemProvider](/docs/api/fast-foundation.designsystemprovider).
 
-It is generally a good idea to have a [DesignSystemProvider](/docs/api/fast-foundation.designsystemprovider) with the `use-defaults` attribute wrapping all of the app UI; this will ensure all properties used by descendent components are defined. This is especially important if the Design System properties reflect to CSS custom properties because the CSS custom properties are only created when the value is set.
+It is a good idea to have a [DesignSystemProvider](/docs/api/fast-foundation.designsystemprovider) with the `use-defaults` attribute wrapping all of the app UI to ensure all properties used by descendent components are defined. This is especially important if the Design System properties reflect to CSS custom properties because the CSS custom properties are only created when the value is set.
 
 **Example: using `use-defaults` at the page root**
 ```html
@@ -66,7 +66,7 @@ It is generally a good idea to have a [DesignSystemProvider](/docs/api/fast-foun
 ```
 
 ### Composing Design System Providers
-Remember from the [overview](/docs/design-systems/overview#design-system-flow) that the Design System values are inherited and propagate  down the DOM tree. This can be used to scope regions of a page with Design System changes.
+Remember from the [overview](/docs/design-systems/overview#design-system-flow) that the Design System values are inherited and propagate down the DOM tree. This can be used to scope regions of a page with Design System changes.
 
 ```html
 <fast-design-system-provider design-unit="6">

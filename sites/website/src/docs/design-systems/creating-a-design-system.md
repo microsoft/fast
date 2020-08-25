@@ -4,11 +4,11 @@ title: Creating a Design System
 sidebar_label: Creating a Design System
 custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/src/docs/design-systems/creating-a-design-system.md
 ---
-Creating a design system involves two key steps:
+Creating a design system involves two steps:
 1. Determine what information the Design System should hold
 2. Creating a [DesignSystemProvider](/docs/api/fast-foundation.designsystemprovider) to communicate the Design System
 
-The information the Design System should hold will be dictated by a project's design philosophies and capabilities and can vary widely from project to project. Therefore, this documentation will focus on creating and configuring a [DesignSystemProvider](/docs/api/fast-foundation.designsystemprovider) and not data in the Design System.
+The Design System holds information dictated by a project's design guidelines, philosophies, and capabilities which may vary widely across projects. Therefore, this documentation will focus on creating and configuring a [DesignSystemProvider](/docs/api/fast-foundation.designsystemprovider) and not data in the Design System.
 
 ## Defining a DesignSystemProvider
 As discussed in the [overview](/docs/design-systems/overview#the-designSystemProvider), the [DesignSystemProvider](/docs/api/fast-foundation.designsystemprovider) is an HTML element designed to communicate the Design System. To create a [DesignSystemProvider](/docs/api/fast-foundation.designsystemprovider) element, we'll declare a new [DesignSystemProvider](/docs/api/fast-foundation.designsystemprovider) element using the [defineDesignSystemProvider](/docs/api/fast-foundation.definedesignsystemprovider) decorator:
