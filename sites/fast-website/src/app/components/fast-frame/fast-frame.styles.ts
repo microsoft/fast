@@ -67,8 +67,7 @@ export const FastFrameStyles = css`
         justify-self: end;
     }
 
-    .content h1,
-    .content h4 {
+    .content .heading {
         font-size: var(--type-ramp-minus-1-font-size);
         line-height: var(--type-ramp-minus-1-line-height);
         color: ${neutralForegroundHintBehavior.var};
@@ -82,7 +81,7 @@ export const FastFrameStyles = css`
         color: ${accentForegroundRestBehavior.var};
     }
 
-    .content h2 {
+    .content .sub-heading {
         font-size: var(--type-ramp-plus-3-font-size);
         line-height: var(--type-ramp-plus-3-line-height);
         margin: 0;

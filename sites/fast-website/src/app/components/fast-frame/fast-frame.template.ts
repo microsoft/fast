@@ -20,11 +20,11 @@ export const FastFrameTemplate = html<FastFrame>`
                     class="${x => (x.expanded ? "tab-panel-expanded" : "")}"
                 >
                     <div class="content">
-                        <h4>
+                        <p class="heading">
                             <span class="content-heading-highlight">Fast Frame</span>
                             Dark Mode
-                        </h4>
-                        <h2>Pre-built for both light and dark modes</h2>
+                        </p>
+                        <p class="sub-heading">Pre-built for both light and dark modes</p>
                         <p>
                             Switching between dark and light mode is as easy as changing
                             the background color of the design system.
@@ -48,11 +48,11 @@ export const FastFrameTemplate = html<FastFrame>`
                     class="${x => (x.expanded ? "tab-panel-expanded" : "")}"
                 >
                     <div class="content">
-                        <h4>
+                        <p class="heading">
                             <span class="content-heading-highlight">Fast Frame</span>
                             Colors
-                        </h4>
-                        <h2>Pre-existing color you can customize</h2>
+                        </p>
+                        <p class="sub-heading">Pre-existing color you can customize</p>
                         <p>
                             Color is applied by using color recipes which require two
                             color palettes, neutral and accent, applied to the design
@@ -148,11 +148,11 @@ export const FastFrameTemplate = html<FastFrame>`
                     class="${x => (x.expanded ? "tab-panel-expanded" : "")}"
                 >
                     <div class="content">
-                        <h4>
+                        <p class="heading">
                             <span class="content-heading-highlight">Fast Frame</span>
                             Styles
-                        </h4>
-                        <h2>Adjust style settings on the fly</h2>
+                        </p>
+                        <p class="sub-heading">Adjust style settings on the fly</p>
                         <p>
                             Update design system values for border radius, outline width,
                             or density.
