@@ -47,7 +47,7 @@ A designer can override any internal styling applied to the slotted labels, the 
 - `step` - limits the values of the `slider` to increments of the `step` value added to the minimum value of the 
 `slider`'s total range.  The default value is 1. The minimum and maximum values of a `slider`'s range are always valid results regardless of the `step` prop. The `step` prop is used as the value for incrementing the thumb by pressing the arrow keys.
  - `value` - Allows authors to specify the initial selected range of the `slider`.  It defaults to a (step constrained) value at the midpoint on the `slider`'s total range. In `range` mode `value` is expected to be a 2 element array where the lower value is the first value and upper value is the second.
- - `orientation` - horizontal or vertical values allowed.
+ - `orientation` - horizontal or vertical values allowed. Note that if the slider is in vertical orientation by default the component will get a height using the css var `--fast-slider-height`, by default that equates to `(10px * var(--thumb-size))` or 160px. Inline style will override that height.
  - `mode` - `single-value` | `range` | `adjust-from-upper` | `adjust-from-lower`. `adjust-from-upper` and `adjust-from-lower` are special single value modes where a progress indicator is shown on the right or left of the thumb respectively. `range` mode produces a lower and upper thumb that can be adjusted independently producing a progress indicator (foreground-track) in between the two thumbs.
 
 *Events*
