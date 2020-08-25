@@ -26,7 +26,7 @@ import { FASTElement } from '@microsoft/fast-element';
 ```
 
 :::tip
-Looking for a setup that integrates with a particular front-end framework or bundler? Check out [our integration docs](http://fast.design/docs/integrations/introduction).
+Looking for a setup that integrates with a particular front-end framework or bundler? Check out [our integration docs](https://fast.design/docs/integrations/introduction).
 :::
 
 ### From CDN
