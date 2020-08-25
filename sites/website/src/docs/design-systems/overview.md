@@ -47,7 +47,7 @@ The Design System is a mutable and inherited. Think of the Design System as a fl
 **Example: The Design System flows data down the DOM hierarchy**
 ```html
 <my-design-system-provider font-size-large="28px">
-    <my-text style="font-size: var(font-size-large);" id="one">
+    <my-text style="font-size: var(--font-size-large);" id="one">
         My font size is 29px
     </my-text>
 
