@@ -4,8 +4,51 @@
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title><%= htmlWebpackPlugin.options.title %></title>
+        <style>
+            body, html {
+                margin: 0;
+                padding: 0;
+                overflow: hidden;
+            }
+
+            #grid {
+                display: grid;
+                grid-template-columns: 340px auto;
+            }
+
+            #menu {
+                grid-column-start: 1;
+                grid-column-end: 1;
+                overflow: scroll;
+                height: 100vh;
+                margin: 0;
+            }
+
+            #canvas {
+                grid-column-start: 2;
+                grid-column-end: 2;
+                width: 100%;
+                height: 100vh;
+            }
+        </style>
+        <script>
+            function updateIframeSrc(source) {
+                document.getElementById("canvas").setAttribute("src", source);
+            }
+        </script>
     </head>
     <body>
-        <div id="root"></div>
+        <div id="grid">
+            <ul id="menu">
+                <li>
+                    <button onClick="updateIframeSrc('monaco')">
+                        <code>
+                            MonacoEditorDataDictionaryAdaptor
+                        </code>
+                    </button>
+                </li>
+            </ul>
+            <iframe id="canvas" src=""></iframe>
+        </div>
     </body>
 </html>
