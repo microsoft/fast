@@ -5,7 +5,7 @@ sidebar_label: Glossary
 custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/src/docs/resources/glossary.md
 ---
 #### Design System
-In FAST, the Design System is a collection of properties that informs visual rendering.
+In FAST, the Design System is a collection of properties that informs visual rendering. It generally contains information about fonts, type-ramps, colors, etc.
 
 #### ES2015
 
