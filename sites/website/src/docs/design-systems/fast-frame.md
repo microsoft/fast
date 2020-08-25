@@ -12,7 +12,7 @@ Every piece of Design System data in the FAST Frame Design System exists in the 
 Each Design System property in the [`FASTDesignSystemProvider`](/docs/api/fast-components.fastdesignsystemprovider) will list the HTML attribute on the `<fast-design-system-provider>` that controls the property, and also whether it creates a corresponding CSS custom property. For more information on how to *set* each Design System property see [Setting Design System Properties](/docs/design-systems/using-the-design-system#setting-design-system-properties), and for information on how to use Design System CSS custom properties see [Using Design System CSS Custom Properties](/docs/design-systems/using-the-design-system#css-custom-properties).
 
 ## Using the FAST Frame Design System
-To use the FAST Frame Design System, simply ensure the [`FASTDesignSystemProvider`](/docs/api/fast-components.fastdesignsystemprovider) is define and use the element in your view:
+To use the FAST Frame Design System, simply ensure the [`FASTDesignSystemProvider`](/docs/api/fast-components.fastdesignsystemprovider) is defined and use the element in your view:
 
 **Example: Using the [`FASTDesignSystemProvider`](/docs/api/fast-components.fastdesignsystemprovider)**
 ```ts
