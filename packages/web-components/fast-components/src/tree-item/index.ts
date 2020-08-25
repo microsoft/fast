@@ -1,5 +1,5 @@
 import { customElement } from "@microsoft/fast-element";
-import { TreeItem, TreeItemTemplate as template } from "@microsoft/fast-foundation";
+import { TreeItemTemplate as template, TreeItem } from "@microsoft/fast-foundation";
 import { TreeItemStyles as styles } from "./tree-item.styles";
 
 /**
