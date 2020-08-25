@@ -107,7 +107,7 @@ DesignSystemProvider.registerCSSCustomProperty({
 ```
 
 #### CSSCustomPropertyBehavior
-The above API is especially useful when defining a [component stylesheet](docs/fast-element/leveraging-css); individual stylesheets can declare dependencies on CSS custom properties that are functions of the element instance's Design System through with the [CSSCustomPropertyBehavior](/docs/api/fast-foundation.csscustompropertybehavior). This is how the [FAST Frame Color Recipes](/docs/design-systems/fast-frame#color-recipes) work are constructed.
+The above API is especially useful when defining a [component stylesheet](docs/fast-element/leveraging-css); individual stylesheets can declare dependencies on CSS custom properties that are functions of the element instance's Design System through with the [CSSCustomPropertyBehavior](/docs/api/fast-foundation.csscustompropertybehavior). This is how the [FAST Frame Color Recipes](/docs/design-systems/fast-frame#color-recipes) are constructed.
 
 **Example: creating a recipe dependency**
 ```ts
