@@ -8,4 +8,18 @@ export const DataGridStyles = css`
     flex-direction: column;
     border: 1px solid black;
 }
+
+.header {
+    display: flex;
+    flex-direction: row;
+    height: 60px;
+    background: orange;
+}
+
+.rows {
+    display: flex;
+    flex-direction: column;
+    height: 60px;
+    background: yellow;
+}
 `.withBehaviors(accentForegroundRestBehavior);

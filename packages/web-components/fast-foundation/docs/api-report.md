@@ -11,6 +11,7 @@ import { ElementStyles } from '@microsoft/fast-element';
 import { FASTElement } from '@microsoft/fast-element';
 import { Orientation } from '@microsoft/fast-web-utilities';
 import { PartialFASTElementDefinition } from '@microsoft/fast-element';
+import { ViewTemplate } from '@microsoft/fast-element';
 
 // @public
 export class Accordion extends FASTElement {
@@ -220,14 +221,43 @@ export type CSSDisplayPropertyValue = "block" | "contents" | "flex" | "grid" | "
 
 // @public
 export class DataGrid extends FASTElement {
-    columnDefinitions: object[] | null;
+    constructor();
+    columnDefinitions: DataGridColumn[] | null;
     columns: string;
-    rowData: object[] | null;
+    // @internal (undocumented)
+    connectedCallback(): void;
+    // @internal (undocumented)
+    disconnectedCallback(): void;
+    // @internal (undocumented)
+    gridElement: HTMLDivElement;
+    // @internal (undocumented)
+    headerElement: HTMLDivElement;
     // (undocumented)
-    rowElements?: object[];
+    headerItemTemplate?: ViewTemplate;
+    rowData: object[];
+    // (undocumented)
+    rowItemTemplate?: ViewTemplate;
     rowkey: string;
     rows: string;
     }
+
+// @public
+export class DataGridCell extends FASTElement {
+    gridTemplateColumn: object | null;
+    rowData: object | null;
+    }
+
+// @public
+export const DataGridCellTemplate: import("@microsoft/fast-element").ViewTemplate<DataGridCell, any>;
+
+// @public
+export interface DataGridColumn {
+    cellTemplate?: ViewTemplate;
+    columnDataKey: string;
+    columnWidth?: string;
+    headerTemplate?: ViewTemplate;
+    title?: string;
+}
 
 // @public
 export class DataGridRow extends FASTElement {
