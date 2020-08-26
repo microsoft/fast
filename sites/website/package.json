@@ -5,9 +5,10 @@
   "scripts": {
     "clean": "node ../../build/clean.js docs",
     "prepare-docs": "yarn clean && node src/prepare-docs.js",
-    "build-homepage": "node src/build-homepage.js",
-    "dev": "yarn build-homepage && yarn prepare-docs && docusaurus start",
-    "build": "yarn build-homepage && yarn prepare-docs && docusaurus build"
+    "build-static": "node src/build-static.js",
+    "generate:badges": "yarn workspace @microsoft/site-utilities generate:badges",
+    "dev": "yarn build-static && yarn prepare-docs && docusaurus start",
+    "build": "yarn generate:badges && yarn build-static && yarn prepare-docs && yarn docusaurus build"
   },
   "browserslist": {
     "production": [
@@ -22,13 +23,12 @@
     ]
   },
   "devDependencies": {
+    "@docusaurus/core": "2.0.0-alpha.61",
+    "@docusaurus/preset-classic": "2.0.0-alpha.61",
+    "@docusaurus/theme-live-codeblock": "2.0.0-alpha.61",
     "@microsoft/api-documenter": "7.8.13",
-    "@docusaurus/core": "2.0.0-alpha.60",
-    "@docusaurus/preset-classic": "2.0.0-alpha.60",
-    "@docusaurus/theme-live-codeblock": "2.0.0-alpha.60",
     "classnames": "^2.2.6",
     "copyfiles": "^2.3.0",
-    "react": "^16.8.4",
-    "react-dom": "^16.8.4"
+    "progress-bar-webpack-plugin": "^2.1.0"
   }
 }
