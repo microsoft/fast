@@ -25,7 +25,7 @@ FAST Tooling is a library agnostic specific set of utilities to assist in creati
 
 ### JSON Schema
 
-[JSON schema](http://json-schema.org/) are used by FAST tooling libraries for generating data and creating UI. They have been extended to provide additional hooks for plugin systems in the FAST tooling libraries. When providing a dictionary of JSON schema, use the `id` as a key, this is required for utilities to quickly access the correct JSON schema.
+[JSON schema](https://json-schema.org/) are used by FAST tooling libraries for generating data and creating UI. They have been extended to provide additional hooks for plugin systems in the FAST tooling libraries. When providing a dictionary of JSON schema, use the `id` as a key, this is required for utilities to quickly access the correct JSON schema.
 
 #### Nesting data
 
@@ -37,7 +37,7 @@ Example JSON Schema with linked data properties:
 import { linkedDataSchema } from "@microsoft/fast-tooling";
 
 export default {
-    $schema: "http://json-schema.org/schema#",
+    $schema: "https://json-schema.org/schema#",
     title: "Component with nested properties",
     type: "object",
     id: "nestable-component",

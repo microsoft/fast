@@ -1095,7 +1095,7 @@ describe("mapWebComponentDefinitionToJSONSchema", () => {
             })
         ).toEqual([
             {
-                $schema: "http://json-schema.org/schema#",
+                $schema: "https://json-schema.org/schema#",
                 $id: name,
                 id: name,
                 title: `<${name}>`,
@@ -1143,7 +1143,7 @@ describe("mapWebComponentDefinitionToJSONSchema", () => {
             })
         ).toEqual([
             {
-                $schema: "http://json-schema.org/schema#",
+                $schema: "https://json-schema.org/schema#",
                 $id: name,
                 id: name,
                 title: `<${name}>`,
@@ -1186,7 +1186,7 @@ describe("mapWebComponentDefinitionToJSONSchema", () => {
             })
         ).toEqual([
             {
-                $schema: "http://json-schema.org/schema#",
+                $schema: "https://json-schema.org/schema#",
                 $id: name,
                 id: name,
                 title: `<${name}>`,
@@ -1229,7 +1229,7 @@ describe("mapWebComponentDefinitionToJSONSchema", () => {
             })
         ).toEqual([
             {
-                $schema: "http://json-schema.org/schema#",
+                $schema: "https://json-schema.org/schema#",
                 $id: name,
                 id: name,
                 title: `<${name}>`,
@@ -1284,7 +1284,7 @@ describe("mapWebComponentDefinitionToJSONSchema", () => {
             })
         ).toEqual([
             {
-                $schema: "http://json-schema.org/schema#",
+                $schema: "https://json-schema.org/schema#",
                 $id: name,
                 id: name,
                 title: `<${name}>`,
@@ -1341,7 +1341,7 @@ describe("mapWebComponentDefinitionToJSONSchema", () => {
             })
         ).toEqual([
             {
-                $schema: "http://json-schema.org/schema#",
+                $schema: "https://json-schema.org/schema#",
                 $id: name,
                 id: name,
                 title: `<${name}>`,

@@ -15,6 +15,20 @@ import {
 } from "../message-system";
 import { normalizeDataLocationToDotNotation } from "./location";
 
+export function enableHttpsSchema(ajv: Ajv.Ajv): Ajv.Ajv {
+    const _getSchema = ajv.getSchema.bind(ajv);
+
+    ajv.getSchema = function (keyRef: string): Ajv.ValidateFunction {
+        let schema: Ajv.ValidateFunction = _getSchema(keyRef);
+        if (!schema && keyRef && keyRef.indexOf("https:") === 0) {
+            schema = _getSchema(keyRef.replace("https:", "http:"));
+        }
+        return schema;
+    };
+
+    return ajv;
+}
+
 export interface AjvMapperConfig {
     /**
      * The message system
@@ -30,7 +44,9 @@ export class AjvMapper {
     private schemaDictionary: SchemaDictionary = {};
     private messageSystem: MessageSystem;
     private messageSystemConfig: { onMessage: (e: MessageEvent) => void };
-    private ajv: Ajv.Ajv = new Ajv({ schemaId: "auto", allErrors: true });
+    private ajv: Ajv.Ajv = enableHttpsSchema(
+        new Ajv({ schemaId: "auto", allErrors: true })
+    );
 
     constructor(config: AjvMapperConfig) {
         if (config.messageSystem !== undefined) {

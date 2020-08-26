@@ -181,7 +181,7 @@ describe("AjvMapper", () => {
     });
     test("should convert ajv errors to the error format expected by the message system", () => {
         const schema: any = {
-            $schema: "http://json-schema.org/schema#",
+            $schema: "https://json-schema.org/schema#",
             id: "foo",
             type: "string",
         };
@@ -264,7 +264,7 @@ describe("AjvMapper", () => {
     });
     describe("should call the message callback if a data message has been sent", () => {
         const schema: any = {
-            $schema: "http://json-schema.org/schema#",
+            $schema: "https://json-schema.org/schema#",
             id: "foo",
             type: "string",
         };
@@ -353,7 +353,7 @@ describe("AjvMapper", () => {
         });
         test("with action type 'addLinkedData'", () => {
             const schema2: any = {
-                $schema: "http://json-schema.org/schema#",
+                $schema: "https://json-schema.org/schema#",
                 id: "bar",
                 type: "boolean",
             };
@@ -575,24 +575,24 @@ describe("AjvMapper", () => {
     describe("should call the message callback if a custom validation message has been sent", () => {
         const containsValidSchema: any[] = [
             {
-                $schema: "http://json-schema.org/schema#",
+                $schema: "https://json-schema.org/schema#",
                 id: "bar",
                 type: "string",
             },
             {
-                $schema: "http://json-schema.org/schema#",
+                $schema: "https://json-schema.org/schema#",
                 id: "foo",
                 type: "number",
             },
         ];
         const containsInvalidSchema: any[] = [
             {
-                $schema: "http://json-schema.org/schema#",
+                $schema: "https://json-schema.org/schema#",
                 id: "bar",
                 type: "string",
             },
             {
-                $schema: "http://json-schema.org/schema#",
+                $schema: "https://json-schema.org/schema#",
                 id: "foo",
                 type: "boolean",
             },
