@@ -1,10 +1,23 @@
-const path = require("path"),
-    fs = require("fs"),
-    fse = require("fs-extra");
-const { createInterface } = require("readline");
-const { join, parse } = require("path");
-const { exec } = require("child_process");
+const path = require("path");
+const fs = require("fs-extra");
 const glob = require("glob");
+const { createInterface } = require("readline");
+const { exec } = require("child_process");
+
+const fastFoundation = path.dirname(
+    require.resolve("@microsoft/fast-foundation/package.json")
+);
+const fastElement = path.dirname(require.resolve("@microsoft/fast-element/package.json"));
+const fastComponents = path.dirname(
+    require.resolve("@microsoft/fast-components/package.json")
+);
+
+// sites/website
+const projectRoot = path.resolve(__dirname, "../");
+
+const root = path.resolve(projectRoot, "../../");
+
+const outputDir = path.resolve(projectRoot, "docs");
 
 function findFiles(startPath, filter, paths = []) {
     if (!fs.existsSync(startPath)) {
@@ -37,9 +50,9 @@ const packages = [
 ];
 
 function identifyPackage(path) {
-    for (const package of packages) {
-        if (path.indexOf(package) !== -1) {
-            return package;
+    for (const pkg of packages) {
+        if (path.indexOf(pkg) !== -1) {
+            return pkg;
         }
     }
 
@@ -48,19 +61,19 @@ function identifyPackage(path) {
 
 async function safeCopy(source, dest) {
     if (fs.existsSync(dest)) {
-        await fse.copyFile(source, dest);
+        await fs.copyFile(source, dest);
     } else {
-        await fse.mkdir(path.dirname(dest), { recursive: true });
-        await fse.copyFile(source, dest);
+        await fs.mkdir(path.dirname(dest), { recursive: true });
+        await fs.copyFile(source, dest);
     }
 }
 
 async function safeWrite(dest, content) {
     if (fs.existsSync(dest)) {
-        await fse.writeFile(dest, content);
+        await fs.writeFile(dest, content);
     } else {
-        await fse.mkdir(path.dirname(dest), { recursive: true });
-        await fse.writeFile(dest, content);
+        await fs.mkdir(path.dirname(dest), { recursive: true });
+        await fs.writeFile(dest, content);
     }
 }
 
@@ -68,8 +81,7 @@ async function moveMarkdownFiles(src, docsFolderDest) {
     const files = findFiles(src, ".md");
     for (const source of files) {
         const filename = path.basename(source);
-        const root = "./docs";
-        const dest = path.join(root, docsFolderDest, filename);
+        const dest = path.join(__dirname, "../docs", docsFolderDest, filename);
 
         await safeCopy(source, dest);
     }
@@ -77,48 +89,25 @@ async function moveMarkdownFiles(src, docsFolderDest) {
 
 async function copyArticleMarkdown() {
     await moveMarkdownFiles(
-        "../../packages/web-components/fast-foundation/docs/integrations",
+        path.resolve(fastFoundation, "docs/integrations"),
         "integrations"
     );
 
-    await moveMarkdownFiles(
-        "../../packages/web-components/fast-foundation/docs/tools",
-        "tools"
-    );
+    await moveMarkdownFiles(path.resolve(fastFoundation, "docs/tools"), "tools");
 
-    await moveMarkdownFiles(
-        "../../packages/web-components/fast-element/docs/guide",
-        "fast-element"
-    );
+    await moveMarkdownFiles(path.resolve(fastElement, "docs/guide"), "fast-element");
 
-    await moveMarkdownFiles(
-        "../../packages/web-components/fast-components/docs/design",
-        "design"
-    );
-
-    function isComponentExcluded(source) {
-        for (const exclude of ["anchored-region"]) {
-            if (source.indexOf(exclude) !== -1) {
-                return true;
-            }
-        }
-
-        return false;
-    }
+    await moveMarkdownFiles(path.resolve(fastComponents, "docs/design"), "design");
 
     const componentDocs = findFiles(
-        "../../packages/web-components/fast-foundation/src",
+        path.resolve(fastFoundation, "src"),
         "README.md"
-    );
-    for (const source of componentDocs) {
-        if (isComponentExcluded(source)) {
-            continue;
-        }
+    ).filter(x => !x.includes("anchored-region"));
 
-        const root = "./docs/components";
+    for (const source of componentDocs) {
         const folder = path.dirname(source);
         const dest = path.join(
-            root,
+            "./docs/components",
             `fast-${folder.substr(folder.lastIndexOf(path.sep) + 1)}.mdx`
         );
 
@@ -127,8 +116,8 @@ async function copyArticleMarkdown() {
 
     const mergeDocs = [
         {
-            src: "../../CODE_OF_CONDUCT.md",
-            dest: "./docs/community/code-of-conduct.md",
+            src: path.resolve(root, "CODE_OF_CONDUCT.md"),
+            dest: path.resolve(outputDir, "community/code-of-conduct.md"),
             metadata: {
                 id: "code-of-conduct",
                 title: "Code of Conduct",
@@ -138,8 +127,8 @@ async function copyArticleMarkdown() {
             },
         },
         {
-            src: "../../CONTRIBUTING.md",
-            dest: "./docs/community/contributor-guide.md",
+            src: path.resolve(root, "CONTRIBUTING.md"),
+            dest: path.resolve(outputDir, "community/contributor-guide.md"),
             metadata: {
                 id: "contributor-guide",
                 title: "Contributor Guide",
@@ -149,8 +138,8 @@ async function copyArticleMarkdown() {
             },
         },
         {
-            src: "../../LICENSE",
-            dest: "./docs/resources/license.md",
+            src: path.resolve(root, "LICENSE"),
+            dest: path.resolve(outputDir, "resources/license.md"),
             metadata: {
                 id: "license",
                 title: "License",
@@ -159,8 +148,8 @@ async function copyArticleMarkdown() {
             },
         },
         {
-            src: "../../SECURITY.md",
-            dest: "./docs/resources/security.md",
+            src: path.resolve(root, "SECURITY.md"),
+            dest: path.resolve(outputDir, "resources/security.md"),
             metadata: {
                 id: "security",
                 title: "Security",
@@ -170,8 +159,8 @@ async function copyArticleMarkdown() {
             },
         },
         {
-            src: "../../packages/web-components/fast-element/docs/ACKNOWLEDGEMENTS.md",
-            dest: "./docs/resources/acknowledgements.md",
+            src: require.resolve("@microsoft/fast-element/docs/ACKNOWLEDGEMENTS.md"),
+            dest: path.resolve(outputDir, "resources/acknowledgements.md"),
             metadata: {
                 id: "acknowledgements",
                 title: "Acknowledgements",
@@ -181,8 +170,8 @@ async function copyArticleMarkdown() {
             },
         },
         {
-            src: "../../packages/web-components/fast-element/README.md",
-            dest: "./docs/fast-element/getting-started.md",
+            src: require.resolve("@microsoft/fast-element/README.md"),
+            dest: path.resolve(outputDir, "fast-element/getting-started.md"),
             metadata: {
                 id: "getting-started",
                 title: "Getting Started with FAST Element",
@@ -196,7 +185,7 @@ async function copyArticleMarkdown() {
     for (const file of mergeDocs) {
         try {
             const docPath = file.src;
-            const input = fse.createReadStream(docPath);
+            const input = fs.createReadStream(docPath);
             const output = [];
             const lines = createInterface({
                 input,
@@ -217,6 +206,11 @@ async function copyArticleMarkdown() {
                 }
 
                 if (!skip) {
+                    // Replace badges routes with static versions generated in @microsoft/site-utilities
+                    line = line.replace(
+                        /https:\/\/(?:img\.shields\.io\/badge\/|badge\.fury\.io\/js\/%40microsoft%2F)(.*\.svg)/gi,
+                        "/badges/$1"
+                    );
                     output.push(line);
                 }
             });
@@ -242,10 +236,9 @@ async function copyArticleMarkdown() {
     const siteDocs = findFiles("./src/docs", ".md");
     for (const source of siteDocs) {
         const filename = path.basename(source);
-        const root = "./docs";
         const folder = path.dirname(source);
         const dest = path
-            .join(root, folder.substr(folder.lastIndexOf(path.sep) + 1), filename)
+            .join("./docs", folder.substr(folder.lastIndexOf(path.sep) + 1), filename)
             .replace(`docs${path.sep}docs`, "docs");
 
         await safeCopy(source, dest);
@@ -254,12 +247,12 @@ async function copyArticleMarkdown() {
 
 // Copy the api.json files from the web-components packages.
 async function copyAPI() {
-    for (const package of packages) {
-        const packageDir = glob.sync(path.resolve(`../../packages/**/${package}`))[0];
+    for (const pkg of packages) {
+        const packageDir = glob.sync(path.resolve(root, `packages/**/${pkg}`))[0];
 
         await safeCopy(
-            path.resolve(packageDir, `dist/${package}.api.json`),
-            `./src/docs/api/${package}.api.json`
+            path.resolve(packageDir, `dist/${pkg}.api.json`),
+            `./src/docs/api/${pkg}.api.json`
         );
     }
 }
@@ -269,32 +262,32 @@ async function buildAPIMarkdown() {
 
     await new Promise((resolve, reject) =>
         exec(
-            "api-documenter markdown -i src/docs/api -o docs/api",
+            "yarn api-documenter markdown -i src/docs/api -o docs/api",
             (err, stdout, stderr) => {
                 console.log(stdout);
                 console.error(stderr);
                 if (err) {
-                    reject(err);
-                } else {
-                    resolve();
+                    return reject(err);
                 }
+
+                return resolve();
             }
         )
     );
 
     const dir = "./docs/api";
-    const docFiles = await fse.readdir(dir);
+    const docFiles = await fs.readdir(dir);
     for (const docFile of docFiles) {
         try {
-            const { name: id, ext } = parse(docFile);
+            const { name: id, ext } = path.parse(docFile);
             if (ext !== ".md") {
                 continue;
             }
 
-            const package = identifyPackage(docFile);
-            const isAPIHome = id === package;
-            const docPath = join(dir, docFile);
-            const input = fse.createReadStream(docPath);
+            const pkg = identifyPackage(docFile);
+            const isAPIHome = id === pkg;
+            const docPath = path.join(dir, docFile);
+            const input = fs.createReadStream(docPath);
             const output = [];
             const lines = createInterface({
                 input,
