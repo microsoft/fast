@@ -4,17 +4,15 @@ const updateQueue = [] as Callable[];
 type TrustedTypesPolicy = { createHTML(html: string): string };
 
 // Tiny API-only polyfill for trustedTypes
+declare let trustedTypes: any;
 /* eslint-disable */
-if (globalThis.trustedTypes === void 0) {
-    globalThis.trustedTypes = { createPolicy: (name, rules) => rules };
+if (typeof trustedTypes == "undefined") {
+    trustedTypes = { createPolicy: (n, r) => r };
 }
 
-const fastHTMLPolicy: TrustedTypesPolicy = globalThis.trustedTypes.createPolicy(
-    "fast-html",
-    {
-        createHTML: html => html,
-    }
-);
+const fastHTMLPolicy: TrustedTypesPolicy = trustedTypes.createPolicy("fast-html", {
+    createHTML: html => html,
+});
 /* eslint-enable */
 
 let htmlPolicy: TrustedTypesPolicy = fastHTMLPolicy;
