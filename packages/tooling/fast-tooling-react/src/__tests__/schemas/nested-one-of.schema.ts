@@ -1,5 +1,5 @@
 export default {
-    $schema: "http://json-schema.org/schema#",
+    $schema: "https://json-schema.org/schema#",
     title: "Component with a nested oneOf",
     description: "A test component's schema definition.",
     type: "object",
