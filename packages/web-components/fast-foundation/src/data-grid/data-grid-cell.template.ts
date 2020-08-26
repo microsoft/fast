@@ -1,11 +1,11 @@
 import { html, slotted, elements } from "@microsoft/fast-element";
-import { DataGridRow } from "./data-grid-row";
+import { DataGridCell } from "./data-grid-cell";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#DataGridRow} component.
  * @public
  */
-export const DataGridRowTemplate = html<DataGridRow>`
+export const DataGridCellTemplate = html<DataGridCell>`
     <template>
     </template>
 `;
