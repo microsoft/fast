@@ -28,7 +28,7 @@ jobs:
     - name: Build & Prepare Web Application
       run: |
         cd ${{ env.AZURE_WEBAPP_BUILD_PATH }}
-        npm i
+        yarn i
         yarn build
         cp ../site-utilities/statics/server/package.json ../site-utilities/statics/server/server.js build 
         cd build
