@@ -10,8 +10,6 @@ import {
     neutralFillCard,
     neutralFillInput,
     neutralFillStealth,
-    neutralFillStealthRest,
-    neutralFillStealthHover,
     neutralFillToggle,
     neutralFocus,
     neutralFocusInnerAccent,
@@ -29,7 +27,6 @@ import {
     neutralLayerL3,
     neutralLayerL4,
     neutralOutline,
-    neutralFillStealthSelected,
 } from "../color/index";
 import { accentBaseColor } from "../fast-design-system";
 import { FASTDesignSystemProvider } from "../design-system-provider/index";
@@ -568,19 +565,6 @@ export const neutralLayerL3Behavior = cssCustomPropertyBehaviorFactory(
     neutralLayerL3,
     FASTDesignSystemProvider.findProvider
 );
-
-export const neutralStealthHoverBackgroundBehavior = cssCustomPropertyBehaviorFactory(
-    "neutral-stealth-hover-background",
-    x => neutralFillStealthHover(neutralFillStealthHover)(x),
-    FASTDesignSystemProvider.findProvider
-);
-
-export const neutralStealthHoverSelectedBackgroundBehavior = cssCustomPropertyBehaviorFactory(
-    "neutral-stealth-hover-selected-background",
-    x => neutralFillStealthHover(neutralFillStealthSelected)(x),
-    FASTDesignSystemProvider.findProvider
-);
-
 /**
  * Behavior to resolve and make available the neutral-layer-l4 CSS custom property.
  * @public

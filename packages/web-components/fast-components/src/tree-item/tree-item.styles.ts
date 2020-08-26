@@ -1,20 +1,18 @@
 import { css } from "@microsoft/fast-element";
 import {
+    cssCustomPropertyBehaviorFactory,
     DirectionalStyleSheetBehavior,
     disabledCursor,
     display,
     focusVisible,
     forcedColorsStylesheetBehavior,
 } from "@microsoft/fast-foundation";
-
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
     accentForegroundRestBehavior,
     heightNumber,
     neutralFillStealthActiveBehavior,
-    neutralStealthHoverBackgroundBehavior,
     neutralFillStealthHoverBehavior,
-    neutralStealthHoverSelectedBackgroundBehavior,
     neutralFillStealthRestBehavior,
     neutralFillStealthSelectedBehavior,
     neutralFocusBehavior,
@@ -22,6 +20,8 @@ import {
     neutralForegroundActiveBehavior,
     neutralForegroundRestBehavior,
 } from "../styles/index";
+import { neutralFillStealthHover, neutralFillStealthSelected } from "../color/index";
+import { FASTDesignSystemProvider } from "../design-system-provider/index";
 
 const ltr = css`
     :host(.nested) .expand-collapse-button {
@@ -40,6 +40,18 @@ const rtl = css`
         right: calc(var(--focus-outline-width) * 1px);
     }
 `;
+
+const neutralStealthHoverOverHoverBehavior = cssCustomPropertyBehaviorFactory(
+    "neutral-stealth-hover-over-hover",
+    x => neutralFillStealthHover(neutralFillStealthHover)(x),
+    FASTDesignSystemProvider.findProvider
+);
+
+const neutralStealthHoverOverSelectedBehavior = cssCustomPropertyBehaviorFactory(
+    "neutral-stealth-hover-over-selected",
+    x => neutralFillStealthHover(neutralFillStealthSelected)(x),
+    FASTDesignSystemProvider.findProvider
+);
 
 export const TreeItemStyles = css`
     ${display("block")} :host {
@@ -175,12 +187,25 @@ export const TreeItemStyles = css`
         cursor: ${disabledCursor};
     }
 
+    :host(.nested) .content-region {
+        position: relative;
+        margin-inline-start: var(--expand-collapse-button-size);
+    }
+
+    :host(.nested) .expand-collapse-button {
+        position: absolute;
+    }
+
+    :host(.nested) .expand-collapse-button:hover {
+        background: ${neutralStealthHoverOverHoverBehavior.var};
+    }
+    
     :host([selected]) .positioning-region {
         background: ${neutralFillStealthSelectedBehavior.var};
     }
 
-    :host([selected]) .expand-collapse-button {
-        background: ${neutralStealthHoverSelectedBackgroundBehavior.var},
+    :host([selected]) .expand-collapse-button:hover {
+        background: ${neutralStealthHoverOverSelectedBehavior.var};
     }
 
     :host([selected])::after {
@@ -197,19 +222,6 @@ export const TreeItemStyles = css`
         border-radius: calc(var(--corner-radius) * 1px);
     }
 
-    :host(.nested) .content-region {
-        position: relative;
-        margin-inline-start: var(--expand-collapse-button-size);
-    }
-
-    :host(.nested) .expand-collapse-button {
-        position: absolute;
-    }
-
-    :host(.nested) .expand-collapse-button:hover {
-        background: ${neutralStealthHoverBackgroundBehavior.var};
-    }
-
     ::slotted(fast-tree-item) {
         --tree-item-nested-width: 1em;
         --expand-collapse-button-nested-width: calc(${heightNumber} * -1px);
@@ -218,9 +230,9 @@ export const TreeItemStyles = css`
     accentForegroundRestBehavior,
     neutralFillStealthSelectedBehavior,
     neutralFillStealthActiveBehavior,
-    neutralStealthHoverBackgroundBehavior,
+    neutralStealthHoverOverHoverBehavior,
     neutralFillStealthHoverBehavior,
-    neutralStealthHoverSelectedBackgroundBehavior,
+    neutralStealthHoverOverSelectedBehavior,
     neutralFillStealthRestBehavior,
     neutralFocusBehavior,
     neutralFocusInnerAccentBehavior,
