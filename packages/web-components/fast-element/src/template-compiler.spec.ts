@@ -341,7 +341,18 @@ describe("The template compiler", () => {
         });
     });
 
-    context("when compiling comments", () => {});
+    context("when compiling comments", () => {
+        it("preserves comments", () => {
+            const comment = `<!--This is a comment-->`;
+            const html = `
+                ${comment}
+                <a href="${inline(0)}">Link</a>
+            `;
+
+            const { fragment } = compile(html, [binding()]);
+            expect(toHTML(fragment, true)).to.contain(comment);
+        });
+    });
 
     context("when compiling hosts", () => {});
 });

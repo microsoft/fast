@@ -239,9 +239,6 @@ export function compileTemplate(
                     directive.targetIndex = compilationContext.targetIndex;
                     compilationContext.locatedDirectives++;
                     viewBehaviorFactories.push(directive);
-                } else {
-                    node.parentNode!.removeChild(node);
-                    compilationContext.targetIndex--;
                 }
         }
     }
