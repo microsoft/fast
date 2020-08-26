@@ -10,7 +10,6 @@ on:
     - master
     - releases/*
     - features/*
-    - feature/*
 
 jobs:
   build_linux:
@@ -20,7 +19,7 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: Add or Update packages
-      run: sudo yarn global add lerna@3.18.2
+      run: sudo yarn global add lerna
 
     - name: Get yarn cache directory path
       id: yarn-cache-dir-path
