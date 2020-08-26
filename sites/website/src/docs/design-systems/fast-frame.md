@@ -103,7 +103,7 @@ See [backgroundColor](api/fast-components.fastdesignsystemprovider.backgroundcol
 If you look at the properties of the [`FASTDesignSystem`](/docs/api/fast-components.fastdesignsystem), you'll notice a number of "Delta" properties. These are used by color recipes to *shift* the colors derived from recipes by index of the palette. You can adjust these values to fine-tune each individual color recipe.
 
 #### Color recipes
-Color recipes are algorithmic colors generated relative to a context. Recipes can be thought of and used as named colors, however they are more than simple variables; they are generated values where the value of the Recipe will change depending on the context in which it is generated. The primary inputs to any color recipe are [Palettes](/docs/design-systems/fast-frame#palettes), [the background color](/docs/design-systems/fast-frame#background-color), and [offsets / deltas](/docs/design-systems/fast-frame#offsets-deltas), which come from the nearest ancestor `<fast-design-system-provider>`.
+Color recipes are algorithmic colors generated relative to a context. Recipes can be thought of and used as named colors, however they are more than simple variables; they are generated values where the value of the Recipe will change depending on the context in which it is generated. The primary inputs to any color recipe are [Palettes](/docs/design-systems/fast-frame#palettes), the [background color](/docs/design-systems/fast-frame#background-color), and [offsets / deltas](/docs/design-systems/fast-frame#offsets-deltas), which come from the nearest ancestor `<fast-design-system-provider>`.
 
 We created the [Color Explorer](https://color.fast.design/) as a visualization tool to help see what each of the following color recipes does.
 
