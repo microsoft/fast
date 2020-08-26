@@ -26,7 +26,6 @@ import { Slider } from '@microsoft/fast-foundation';
 import { SliderLabel } from '@microsoft/fast-foundation';
 import { Switch } from '@microsoft/fast-foundation';
 import { Tab } from '@microsoft/fast-foundation';
-import { TabPanel } from '@microsoft/fast-foundation';
 import { Tabs } from '@microsoft/fast-foundation';
 import { TextArea } from '@microsoft/fast-foundation';
 import { TextField } from '@microsoft/fast-foundation';
@@ -484,10 +483,6 @@ export class FASTProgress extends BaseProgress {
 }
 
 // @public
-export class FASTProgressRing extends BaseProgress {
-}
-
-// @public
 export class FASTRadio extends Radio {
 }
 
@@ -509,10 +504,6 @@ export class FASTSwitch extends Switch {
 
 // @public
 export class FASTTab extends Tab {
-}
-
-// @public
-export class FASTTabPanel extends TabPanel {
 }
 
 // @public
@@ -936,9 +927,6 @@ export enum PaletteType {
 export const parseColorString: (color: string) => ColorRGBA64;
 
 // @public
-export const ProgressRingStyles: import("@microsoft/fast-element").ElementStyles;
-
-// @public
 export const ProgressStyles: import("@microsoft/fast-element").ElementStyles;
 
 // @public
@@ -963,9 +951,6 @@ export enum StandardLuminance {
 
 // @public
 export const SwitchStyles: import("@microsoft/fast-element").ElementStyles;
-
-// @public
-export const TabPanelStyles: import("@microsoft/fast-element").ElementStyles;
 
 // @public
 export const TabsStyles: import("@microsoft/fast-element").ElementStyles;
