@@ -39,6 +39,7 @@ export const BaseButtonStyles = css`
         min-width: calc(${heightNumber} * 1px);
         background-color: ${neutralFillRestBehavior.var};
         color: ${neutralForegroundRestBehavior.var};
+        border: calc(var(--outline-width) * 1px) solid transparent;
         border-radius: calc(var(--corner-radius) * 1px);
         fill: currentColor;
         cursor: pointer;
@@ -56,8 +57,8 @@ export const BaseButtonStyles = css`
         white-space: nowrap;
         outline: none;
         text-decoration: none;
-        border: calc(var(--outline-width) * 1px) solid transparent;
         color: inherit;
+        border: none;
         border-radius: inherit;
         fill: inherit;
         cursor: inherit;
@@ -71,11 +72,10 @@ export const BaseButtonStyles = css`
         background-color: ${neutralFillActiveBehavior.var};
     }
 
-    .control:${focusVisible} {
+    :host(:focus-within) {
         border: calc(var(--outline-width) * 1px) solid ${neutralFocusBehavior.var};
-        box-shadow: 0 0 0 calc((var(--focus-outline-width) - var(--outline-width)) * 1px) ${
-            neutralFocusBehavior.var
-        };
+        box-shadow: 0 0 0 calc((var(--focus-outline-width) - var(--outline-width)) * 1px)
+            ${neutralFocusBehavior.var};
     }
 
     .control::-moz-focus-inner {
@@ -91,10 +91,8 @@ export const BaseButtonStyles = css`
     .start,
     .end,
     ::slotted(svg) {
-        ${
-            /* Glyph size and margin-left is temporary -
-            replace when adaptive typography is figured out */ ""
-        } width: 16px;
+        ${/* Glyph size and margin-left is temporary -
+            replace when adaptive typography is figured out */ ""} width: 16px;
         height: 16px;
     }
 
@@ -129,8 +127,9 @@ export const AccentButtonStyles = css`
         background: ${accentFillActiveBehavior.var};
     }
 
-    :host(.accent) .control:${focusVisible} {
-        box-shadow: 0 0 0 calc(var(--focus-outline-width) * 1px) inset ${neutralFocusInnerAccentBehavior.var};
+    :host(.accent:focus-within) {
+        box-shadow: 0 0 0 calc(var(--focus-outline-width) * 1px) inset
+            ${neutralFocusInnerAccentBehavior.var};
     }
 
     :host(.accent.disabled) {
@@ -154,13 +153,13 @@ export const HypertextStyles = css`
         height: auto;
         min-width: 0;
         background: transparent;
+        border: none;
+        box-shadow: none;
     }
 
     :host(.hypertext) .control {
         display: inline;
         padding: 0;
-        border: none;
-        box-shadow: none;
         border-radius: 0;
         line-height: 1;
     }
@@ -197,13 +196,13 @@ export const LightweightButtonStyles = css`
     :host(.lightweight) {
         background: transparent;
         color: ${accentForegroundRestBehavior.var};
+        border: none;
+        box-shadow: none;
     }
 
     :host(.lightweight) .control {
         padding: 0;
         height: initial;
-        border: none;
-        box-shadow: none;
         border-radius: 0;
     }
 
@@ -280,7 +279,7 @@ export const OutlineButtonStyles = css`
         border-color: inherit;
     }
 
-    :host(.outline) .control:${focusVisible} {
+    :host(.outline:focus-within) {
         border: calc(var(--outline-width) * 1px) solid ${neutralFocusBehavior.var});
         box-shadow: 0 0 0 calc((var(--focus-outline-width) - var(--outline-width)) * 1px) ${neutralFocusBehavior.var};
     }
