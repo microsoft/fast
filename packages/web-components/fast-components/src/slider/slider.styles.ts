@@ -26,6 +26,7 @@ export const SliderStyles = css`
         --thumb-translate: calc(var(--thumb-size) * 0.5);
         --track-overhang: calc((var(--design-unit) / 2) * -1);
         --track-width: var(--design-unit);
+        --fast-slider-height: calc(var(--thumb-size) * 10);
         align-items: center;
         width: 100%;
         margin: calc(var(--design-unit) * 1px) 0;
@@ -104,8 +105,8 @@ export const SliderStyles = css`
         border-radius: calc(var(--corner-radius) * 1px);
     }
     :host(.vertical) {
-        height: 100%;
-        min-height: calc(var(--design-unit) * 60px);
+        height: calc(var(--fast-slider-height) * 1px);
+        min-height: calc(var(--thumb-size) * 1px);
         min-width: calc(var(--design-unit) * 20px);
     }
     :host(.disabled) .label,

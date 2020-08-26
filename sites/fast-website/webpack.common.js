@@ -6,7 +6,6 @@ const webpack = require("webpack");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const CopyPlugin = require("copy-webpack-plugin");
 const manifest = require("@microsoft/site-utilities/src/curated-html.json").join("");
 
 const appDir = path.resolve(__dirname, "src/app");
@@ -87,16 +86,6 @@ module.exports = {
             title: "FAST",
             manifest,
             template: path.resolve(__dirname, "src/public/index.ejs"),
-        }),
-        new CopyPlugin({
-            patterns: [
-                {
-                    from: require.resolve(
-                        "@microsoft/site-utilities/statics/assets/favicon.ico"
-                    ),
-                    to: distDir,
-                },
-            ],
         }),
     ],
 };
