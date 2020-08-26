@@ -61,4 +61,4 @@ The Design System is mutable and inherited. Think of the Design System as a flow
 
 As shown above, the `font-size-large` Design System property is set on each [DesignSystemProvider](/docs/api/fast-foundation.designsystemprovider) instance. The [DesignSystemProvider](/docs/api/fast-foundation.designsystemprovider) reflects that value to a CSS custom property ([more on that later](/docs/design-systems/using-the-design-system#css-custom-properties)), which the `<my-text>` element uses in it's stylesheet.
 
-But we can *also* access that hierarchial information from JavaScript, which opens up many advanced scenarios that will be explored in the [FAST Frame Design System](/docs/design-systems/fast-frame).
+But we can *also* access that hierarchical information from JavaScript, which opens up many advanced scenarios that will be explored in the [FAST Frame Design System](/docs/design-systems/fast-frame).
