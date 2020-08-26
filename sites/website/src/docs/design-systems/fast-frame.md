@@ -1,35 +1,68 @@
 ---
-id: color
-title: Color
-custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-components/docs/design/color.md
+id: fast-frame
+title: The FAST Frame Design System 
+sidebar_label: FAST Frame
+custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/src/docs/design-systems/fast-frame.md
 ---
+The FAST Frame Design System is the Design System that comes with the `@microsoft/fast-components` package.
 
-FAST utilizes an adaptive color system that provides some unique advantages:
+## What's in the FAST Frame Design System?
+Every piece of Design System data in the FAST Frame Design System exists in the [`FASTDesignSystem`](/docs/api/fast-components.fastdesignsystem) interface. The [`FASTDesignSystemProvider`](/docs/api/fast-components.fastdesignsystemprovider) *implements* the [`FASTDesignSystem`](/docs/api/fast-components.fastdesignsystem). These two resources are the best place to look for a catalog of what Design System data exists in FAST Frame, as well as which CSS custom properties exist and which HTML attributes / JavaScript properties are used to configure the Design System.
+
+Each Design System property in the [`FASTDesignSystemProvider`](/docs/api/fast-components.fastdesignsystemprovider) will list the HTML attribute on the `<fast-design-system-provider>` that controls the property, and also whether it creates a corresponding CSS custom property. For more information on how to *set* each Design System property see [Setting Design System Properties](/docs/design-systems/using-the-design-system#setting-design-system-properties), and for information on how to use Design System CSS custom properties see [Using Design System CSS Custom Properties](/docs/design-systems/using-the-design-system#css-custom-properties).
+
+## Using the FAST Frame Design System
+To use the FAST Frame Design System, simply ensure the [`FASTDesignSystemProvider`](/docs/api/fast-components.fastdesignsystemprovider) is defined and use the element in your view:
+
+**Example: Using the [`FASTDesignSystemProvider`](/docs/api/fast-components.fastdesignsystemprovider)**
+```ts
+import { FASTDesignSystemProvider } from "@microsoft/fast-components";
+
+FASTDesignSystemProvider; // Prevent tree shaking
+```
+```html
+<fast-design-system-provider use-defaults>
+    Hello world
+</fast-design-system-provider>
+```
+
+:::note
+We recommend to add the `<fast-design-system-provider>` at the root of your view with the `use-defaults` attribute. This ensures that all Design System properties are initialized. For more info see the [`use-defaults`](/docs/design-systems/using-the-design-system#use-defaults)
+:::
+
+### Type-ramp
+The FAST type ramp is exposed by the `FASTDesignSystemProvider` as CSS Custom Properties. It organizes the ramp around a _base_ font size and line-height, ascending and descending from the _base_. The CSS Custom Properties that can be used are:
+
+| Level              | Font Size                       | Line Height                      |
+|--------------------|---------------------------------|----------------------------------|
+| Minus 2 (smallest) | `--type-ramp-minus-2-font-size` | `--type-ramp-minus-2-line-height`|
+| Minus 1            | `--type-ramp-minus-1-font-size` | `--type-ramp-minus-1-line-height`|
+| Base (body)        | `--type-ramp-base-font-size`    | `--type-ramp-base-line-height`   |
+| Plus 1             | `--type-ramp-plus-1-font-size`  | `--type-ramp-plus-1-line-height` |
+| Plus 2             | `--type-ramp-plus-2-font-size`  | `--type-ramp-plus-2-line-height` |
+| Plus 3             | `--type-ramp-plus-3-font-size`  | `--type-ramp-plus-3-line-height` |
+| Plus 4             | `--type-ramp-plus-4-font-size`  | `--type-ramp-plus-4-line-height` |
+| Plus 5             | `--type-ramp-plus-5-font-size`  | `--type-ramp-plus-5-line-height` |
+| Plus 6 (largest)   | `--type-ramp-plus-6-font-size`  | `--type-ramp-plus-6-line-height` |
+
+### Adaptive Color
+FAST Frame implements an adaptive color system that provides some unique advantages:
 - Ensure text meets [WCAG](https://www.w3.org/WAI/standards-guidelines/wcag/) contrast requirements.
 - Easily swap from light mode to dark, or anywhere in-between.
 - Color themeing through palette tinting.
-- Perceptually uniform UI across different background colors.
+- Perceptually uniform UI across background colors.
 
-## Algorithmic colors (recipes)
+To accomplish these goals, FAST Frame makes heavy use of algorithmic colors; named colors that are a product of the Design System in which they are calculated. In the documentation below, these algorithmic colors will be referred to as [Recipes](/docs/design-systems/fast-frame#color-recipes). [Recipes](/docs/design-systems/fast-frame#color-recipes) operate on three primary inputs: [Palettes](/docs/design-systems/fast-frame#palettes), [the background color](/docs/design-systems/fast-frame#background-color), and [offsets / deltas](/docs/design-systems/fast-frame#offsets-deltas).
 
-FAST makes heavy use of algorithmic colors; named colors are a product of the *designSystem* object in which they are calculated. In the documentation below, these algorithmic colors will be referred to as *recipes*.
-
-### Inputs
-
-Each color recipe expects as its sole argument the FAST *DesignSystem* object, but there are a few core pieces of data from that object that impact color resolution.
-
-### Palettes
-
-Each color recipe operates on a palette. A palette in an array of hexadecimal colors ordered from light to dark. By default, FAST components leverage the `neutralPalette` and the `accentPalette`.
+#### Palettes
+Each color recipe operates on a palette. A palette is an array of hexadecimal colors ordered from light to dark by [relative luminance](https://www.w3.org/WAI/GL/wiki/Relative_luminance#:~:text=WCAG%20definition%20of%20relative%20luminance,and%201%20for%20lightest%20white). By default, FAST components leverage the `neutralPalette` and the `accentPalette`.
 
 See [accentPalette](api/fast-components.fastdesignsystemprovider.accentpalette.md) and [neutralPalette](api/fast-components.fastdesignsystemprovider.neutralpalette.md) for more details.
 
-#### Replacing palettes
-
+##### Generating and Replacing Palettes
 `@microsoft/fast-components` exposes a convenient function to generate a color palette from an arbitrary source color, and this function is how the default `neutralPalette` and `accentPalette` are generated. You can generate a new palette by choosing a palette source color and invoking the palette generation function:
 
-##### Replacing the neutral palette
-
+###### Replacing the neutral palette
 ```js
 import { parseColorHexRGB } from "@microsoft/fast-colors";
 import { createColorPalette } from "@microsoft/fast-components";
@@ -46,8 +79,7 @@ const provider = document.querySelector("fast-design-system-provider");
 provider.neutralPalette = palette;
 ```
 
-##### Replacing the accent palette
-
+###### Replacing the accent palette
 The same approach can be taken for the `accentPalette`, but when doing so the `accentPaletteBaseColor` should *also* be replaced:
 
 ```js
@@ -62,20 +94,21 @@ provider.accentBaseColor = accent;
 provider.accentPalette = palette;
 ```
 
-### Background color
-
+#### Background color
 This is the contextual color that the recipe uses to determine what color it is rendering on. The foreground, outline, and divider recipes will use this color to ensure that the color created is accessible and meets contrast requirements. In fill recipes, it is sometimes used as the starting location in the appropriate palette to begin resolution.
 
 See [backgroundColor](api/fast-components.fastdesignsystemprovider.backgroundcolor.md) for more details.
 
-### Offsets
-Some recipes also leverage offset values, typically for *states* (rest, hovered, active, selected). These offsets are used to retrieve a color at the sum of the offset and some reference index (usually the index of the rest color or the background color in the palette).
+#### Offsets / Deltas
+If you look at the properties of the [`FASTDesignSystem`](/docs/api/fast-components.fastdesignsystem), you'll notice a number of "Delta" properties. These are used by color recipes to *shift* the colors derived from recipes by index of the palette. You can adjust these values to fine-tune each individual color recipe.
 
-## Color recipes
+#### Color recipes
+Color recipes are algorithmic colors generated relative to a context. Recipes can be thought of and used as named colors, however they are more than simple variables; they are generated values where the value of the Recipe will change depending on the context in which it is generated. The primary inputs to any color recipe are [Palettes](/docs/design-systems/fast-frame#palettes), the [background color](/docs/design-systems/fast-frame#background-color), and [offsets / deltas](/docs/design-systems/fast-frame#offsets-deltas), which come from the nearest ancestor `<fast-design-system-provider>`.
 
-### Using color recipes
+We created the [Color Explorer](https://color.fast.design/) as a visualization tool to help see what each of the following color recipes does.
 
-First, ensure the UI element has a *FASTDesignSystemProvider* ancestor element - this element will *resolve* the recipe for a component within it that declares a dependency on the recipe.
+##### Using Color Recipes
+First, ensure the UI element has a [`FASTDesignSystemProvider`](/docs/api/fast-components.fastdesignsystemprovider) ancestor element - this element will *resolve* the recipe for a component within it that declares a dependency on the recipe.
 
 ```html
 <fast-design-system-provider use-defaults>
@@ -83,10 +116,7 @@ First, ensure the UI element has a *FASTDesignSystemProvider* ancestor element -
 </fast-design-system-provider>
 ```
 
-*For more information on the DesignSystemProvider, see the [DesignSystemProvider documentation](/docs/components/design-system-provider)*
-
-
-Next - declare the recipe as a dependent *behavior* of a Web Component's stylesheet. Then use the recipe as a CSS Custom Property in the stylesheet:
+Next - declare the recipe as a dependent *behavior* of a FAST Component's stylesheet. Then use the recipe as a CSS Custom Property in the stylesheet:
 
 ```js
 import { css } from "@microsoft/fast-element";
@@ -101,10 +131,14 @@ const styles = css`
 );
 ```
 
-### Neutral recipes
+Then, define a [FAST element](/docs/fast-element/defining-elements) and use the element in your page!
 
-#### Layer recipes
+:::note
+For more information on what this is doing, see [CSS Custom Property Behaviors](/docs/design-systems/using-the-design-system#csscustompropertybehavior)
+:::
 
+##### Neutral recipes
+###### Layer recipes
 Layer recipes represent the UI layers and surfaces that individual UI elements are contained within. They are applied to primary regions such as toolbars, sidebars, canvas regions, fly-outs, dialogs, and cards.
 
 | Behavior Name | CSS Custom Property | Description |
@@ -118,8 +152,7 @@ Layer recipes represent the UI layers and surfaces that individual UI elements a
 | `neutralLayerL3Behavior` | `--neutral-layer-l3` | Used as the background for secondary command surfaces, logically below L2. |
 | `neutralLayerL4Behavior` | `--neutral-layer-l4`| Used as the background for the lowest command surface or title bar, logically below L3. |
 
-#### Text
-
+###### Text
 Neutral text recipes address *most* cases of text used in a UI, from interactive element text, headings, and body text.
 
 | Behavior Name | CSS Custom Property | Description |
@@ -130,8 +163,7 @@ Neutral text recipes address *most* cases of text used in a UI, from interactive
 | `neutralForegroundHintBehavior` | `--neutral-foreground-hint`| Secondary *hinting* text to be used with [non-large text](https://www.w3.org/TR/WCAG/#contrast-minimum) to meet a 4.5:1 contrast ratioBehavior to the background. |
 | `neutralForegroundHintLargeBehavior` | `--neutral-foreground-hint-large`| Secondary *hinting* text to be used with [large text](https://www.w3.org/TR/WCAG/#contrast-minimum) to meet a 3:1 contrast ratio to the background. |
 
-#### Fills (backgrounds)
-
+###### Fills (backgrounds)
 Neutral fills are indented to be used as fill colors (background) to UI elements to distinguish them from the background.
 
 | Behavior Name | CSS Custom Property | Description |
@@ -145,8 +177,7 @@ Neutral fills are indented to be used as fill colors (background) to UI elements
 | `neutralFillStealthActiveBehavior`| `--neutral-fill-stealth-active` | Used as the fill of a `neutralFillStealth` element when active. |
 | `neutralFillStealthSelectedBehavior`| `--neutral-fill-stealth-selected` | Used as the fill of a `neutralFillStealth` element when selected. |
 
-#### Outlines and dividers
-
+###### Outlines and dividers
 Neutral outlines are used to construct outline controls and dividers.
 
 | Behavior Name | CSS Custom Property | Description |
@@ -156,8 +187,7 @@ Neutral outlines are used to construct outline controls and dividers.
 | `neutralOutlineActiveBehavior` | `--neutral-outline-active` | Used as the outline of a `neutralOutline` control when active.  |
 | `neutralDividerRestBehavior` | `--neutral-divider-rest` | Used as the color for divider elements. |
 
-#### Toggles
-
+###### Toggles
 Toggle elements such as checkboxes and switches use a specific set of recipes.
 
 | Behavior Name | CSS Custom Property | Description |
@@ -168,8 +198,7 @@ Toggle elements such as checkboxes and switches use a specific set of recipes.
 | `neutralFillToggleHoverBehavior` | `--neutral-foreground-hover` | Used as the fill of a `neutralFillToggle` element when hovered. |
 | `neutralFillToggleActiveBehavior` | `--neutral-foreground-active` | Used as the fill of a `neutralFillToggle` element when active. |
 
-#### Inputs
-
+###### Inputs
 Text input elements also have a set of recipes specifically tailored.
 
 | Behavior Name | CSS Custom Property | Description |
@@ -179,15 +208,13 @@ Text input elements also have a set of recipes specifically tailored.
 | `neutralFillInputActiveBehavior` | `--neutral-fill-input-active` | Used as the fill of the text input when active. |
 | `neutralFillInputSelectedBehavior` | `--neutral-fill-input-selected` | Used as the fill of the text input when selected. |
 
-#### Document focus
-
+###### Document focus
 | Behavior Name | CSS Custom Property | Description |
 |---------------|---------------------|-------------|
 | `neutralFocusBehavior` | `--neutral-focus` | The color of the focus indicator when the element has document focus. |
 | `neutralFocusInnerAccentBehavior` | `--neutral-focus-inner-accent` | The color of the inner focus-indicator when an *accent fill* element has document focus. |
 
-### Accent recipes
-
+##### Accent recipes
 Accent recipes use the accent palette and are intended to bring attention or otherwise distinguish the element on the page.
 
 | Behavior Name | CSS Custom Property | Description |

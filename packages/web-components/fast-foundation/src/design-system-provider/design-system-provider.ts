@@ -497,7 +497,9 @@ export class DesignSystemProvider extends FASTElement
  * @param nameOrDef - the name or {@link @microsoft/fast-element#PartialFASTElementDefinition | element definition}
  * @public
  */
-export function designSystemProvider(nameOrDef: string | PartialFASTElementDefinition) {
+export function defineDesignSystemProvider(
+    nameOrDef: string | PartialFASTElementDefinition
+) {
     return <T extends typeof DesignSystemProvider>(providerCtor: T): void => {
         customElement(nameOrDef)(providerCtor);
         providerCtor.registerTagName(
@@ -505,3 +507,9 @@ export function designSystemProvider(nameOrDef: string | PartialFASTElementDefin
         );
     };
 }
+
+/**
+ * @internal
+ * @deprecated - use {@link defineDesignSystemProvider}
+ */
+export const designSystemProvider = defineDesignSystemProvider;
