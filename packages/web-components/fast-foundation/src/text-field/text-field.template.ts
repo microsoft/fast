@@ -8,7 +8,6 @@ import { TextField } from "./text-field";
  */
 export const TextFieldTemplate = html<TextField>`
     <template
-        tabindex="${x => (x.disabled ? null : 0)}"
         class="
             ${x => (x.readOnly ? "readonly" : "")}
         "
