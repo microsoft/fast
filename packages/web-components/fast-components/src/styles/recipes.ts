@@ -342,7 +342,7 @@ export const neutralFillInputActiveBehavior = cssCustomPropertyBehaviorFactory(
  * @public
  */
 export const neutralFillInputSelectedBehavior = cssCustomPropertyBehaviorFactory(
-    "neutral-fill-input-active",
+    "neutral-fill-input-selected",
     x => neutralFillInput(x).selected,
     FASTDesignSystemProvider.findProvider
 );
