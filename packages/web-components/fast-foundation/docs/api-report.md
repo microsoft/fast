@@ -847,7 +847,7 @@ export enum TextFieldType {
     url = "url"
 }
 
-// @public (undocumented)
+// @public
 export class Tooltip extends FASTElement {
     constructor();
     anchor: string;
@@ -871,7 +871,7 @@ export class Tooltip extends FASTElement {
     //
     // @internal (undocumented)
     horizontalScaling: AxisScalingMode;
-    position: TooltipPosition | null;
+    position: TooltipPosition;
     // Warning: (ae-forgotten-export) The symbol "AnchoredRegion" needs to be exported by the entry point index.d.ts
     //
     // @internal
@@ -893,10 +893,23 @@ export class Tooltip extends FASTElement {
     visible: boolean;
     }
 
-// @public (undocumented)
-export type TooltipPosition = "top" | "right" | "bottom" | "left" | "start" | "end";
+// @public
+export enum TooltipPosition {
+    // (undocumented)
+    bottom = "bottom",
+    // (undocumented)
+    end = "end",
+    // (undocumented)
+    left = "left",
+    // (undocumented)
+    right = "right",
+    // (undocumented)
+    start = "start",
+    // (undocumented)
+    top = "top"
+}
 
-// @public (undocumented)
+// @public
 export const TooltipTemplate: import("@microsoft/fast-element").ViewTemplate<Tooltip, any>;
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag

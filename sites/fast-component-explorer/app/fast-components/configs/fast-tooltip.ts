@@ -4,7 +4,7 @@ import {
     textSchema,
 } from "@microsoft/site-utilities";
 import { camelCase } from "lodash-es";
-import Guidance from "../../.tmp/badge/guidance";
+import Guidance from "../../.tmp/tooltip/guidance";
 import { ComponentViewConfig } from "./data.props";
 
 export const fastTooltipId = "fast-tooltip";

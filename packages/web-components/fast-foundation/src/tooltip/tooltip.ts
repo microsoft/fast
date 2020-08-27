@@ -7,7 +7,14 @@ import { Direction, keyCodeEscape } from "@microsoft/fast-web-utilities";
  *
  * @public
  */
-export type TooltipPosition = "top" | "right" | "bottom" | "left" | "start" | "end";
+export enum TooltipPosition {   
+    top = "top",  
+    right = "right",
+    bottom = "bottom",
+    left =  "left",
+    start =  "start",
+    end =  "end"
+};
 
 /**
  * An Tooltip Custom HTML Element.
@@ -68,7 +75,7 @@ export class Tooltip extends FASTElement {
      * HTML Attribute: position
      */
     @attr
-    public position: TooltipPosition | null = null;
+    public position: TooltipPosition;
     private positionChanged(): void {
         if ((this as FASTElement).$fastController.isConnected) {
             this.updateLayout();
@@ -325,8 +332,8 @@ export class Tooltip extends FASTElement {
      */
     private updateLayout(): void {
         switch (this.position) {
-            case "top":
-            case "bottom":
+            case TooltipPosition.top:
+            case TooltipPosition.bottom:
                 this.verticalPositioningMode = "locktodefault";
                 this.horizontalPositioningMode = "dynamic";
                 this.verticalDefaultPosition = this.position;
@@ -337,10 +344,10 @@ export class Tooltip extends FASTElement {
                 this.verticalScaling = "content";
                 break;
 
-            case "right":
-            case "left":
-            case "start":
-            case "end":
+            case TooltipPosition.right:
+            case TooltipPosition.left:
+            case TooltipPosition.start:
+            case TooltipPosition.end:
                 this.verticalPositioningMode = "dynamic";
                 this.horizontalPositioningMode = "locktodefault";
                 this.verticalDefaultPosition = undefined;
@@ -351,7 +358,7 @@ export class Tooltip extends FASTElement {
                 this.verticalScaling = "anchor";
                 break;
 
-            case null:
+            default:
                 this.verticalPositioningMode = "dynamic";
                 this.horizontalPositioningMode = "dynamic";
                 this.verticalDefaultPosition = undefined;
