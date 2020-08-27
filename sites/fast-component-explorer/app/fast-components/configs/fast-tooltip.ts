@@ -20,6 +20,7 @@ const fastTooltipConfig: ComponentViewConfig = {
                     root: {
                         schemaId: fastTooltipId,
                         data: {
+                            visible: true,
                             Slot: [
                                 {
                                     id: "Slot",
@@ -33,7 +34,7 @@ const fastTooltipConfig: ComponentViewConfig = {
                             dataLocation: "Slot",
                         },
                         schemaId: textSchema.id,
-                        data: "Tooltip",
+                        data: "Tooltip text",
                     },
                 },
                 "root",
