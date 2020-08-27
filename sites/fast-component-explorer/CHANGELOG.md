@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.12.1](https://github.com/Microsoft/fast/compare/@microsoft/fast-component-explorer@0.12.0...@microsoft/fast-component-explorer@0.12.1) (2020-08-27)
+
+
+### Bug Fixes
+
+* address a desync issue on explore site ([#3808](https://github.com/Microsoft/fast/issues/3808)) ([48bfd7e](https://github.com/Microsoft/fast/commit/48bfd7e51a77545e763fedac53e32e1b02ec284e))
+
+
+### Performance Improvements
+
+* improve performance in create and explore sites by adding terser and splitting webpack config files the same way as in fast-website ([#3717](https://github.com/Microsoft/fast/issues/3717)) ([8c76a11](https://github.com/Microsoft/fast/commit/8c76a11317ec841edca2da0d166f1c11f133a3fc))
+
+
+
+
+
 # [0.12.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-component-explorer@0.11.2...@microsoft/fast-component-explorer@0.12.0) (2020-08-13)
 
 

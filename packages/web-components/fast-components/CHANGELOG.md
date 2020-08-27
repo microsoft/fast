@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.9.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-components@1.8.0...@microsoft/fast-components@1.9.0) (2020-08-27)
+
+
+### Bug Fixes
+
+* add RTL style to Switch and firefox styling issues in Switch, Checkbox, and Radio ([#3778](https://github.com/Microsoft/fast/issues/3778)) ([d75cc25](https://github.com/Microsoft/fast/commit/d75cc25ec5db766f1a0798a8486193fde7d52fb3))
+* consistent with min-width, min-height is at least the thumb size add default height ([#3746](https://github.com/Microsoft/fast/issues/3746)) ([b3f9aee](https://github.com/Microsoft/fast/commit/b3f9aee644261ddcdd029fbafed69186db070c77))
+* **docs:** correct typos in readme and spec files ([#3740](https://github.com/Microsoft/fast/issues/3740)) ([9bdb11f](https://github.com/Microsoft/fast/commit/9bdb11f7eab686ab6de32eda352f1a0493ee9545))
+
+
+### Features
+
+* allow color recipes to accept string color values ([#3749](https://github.com/Microsoft/fast/issues/3749)) ([9348013](https://github.com/Microsoft/fast/commit/934801398c5f9d589f9580fce7e1802fba40db3e))
+
+
+
+
+
 # [1.8.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-components@1.7.0...@microsoft/fast-components@1.8.0) (2020-08-13)
 
 

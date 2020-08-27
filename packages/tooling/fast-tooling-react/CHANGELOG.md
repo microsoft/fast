@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.3.4](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling-react@2.3.3...@microsoft/fast-tooling-react@2.3.4) (2020-08-27)
+
+**Note:** Version bump only for package @microsoft/fast-tooling-react
+
+
+
+
+
 ## [2.3.3](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling-react@2.3.2...@microsoft/fast-tooling-react@2.3.3) (2020-08-13)
 
 

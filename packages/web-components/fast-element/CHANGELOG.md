@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.17.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-element@0.16.0...@microsoft/fast-element@0.17.0) (2020-08-27)
+
+
+### Bug Fixes
+
+* **fast-element:** add globalThis polyfill to fix trustedTypes polyfill ([#3797](https://github.com/Microsoft/fast/issues/3797)) ([e848800](https://github.com/Microsoft/fast/commit/e84880048d857f1f6806753bd0cf68361b86b2ef))
+* **fast-element:** do not remove user comments when compiling templates ([#3786](https://github.com/Microsoft/fast/issues/3786)) ([0478709](https://github.com/Microsoft/fast/commit/0478709d76bc8187aeaa28d022708cda12559419))
+* **fast-element:** observable callbacks on sub-classes should be invoked ([#3768](https://github.com/Microsoft/fast/issues/3768)) ([969d5dd](https://github.com/Microsoft/fast/commit/969d5ddeb6698208ba279742022fb5f2e7f96c18))
+
+
+### Features
+
+* **fast-element:** improve trustedTypes to not use globalThis ([#3784](https://github.com/Microsoft/fast/issues/3784)) ([5eca0a8](https://github.com/Microsoft/fast/commit/5eca0a8dbe23a98a066d3c148c2c98ead29fca10))
+
+
+
+
+
 # [0.16.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-element@0.15.2...@microsoft/fast-element@0.16.0) (2020-08-13)
 
 

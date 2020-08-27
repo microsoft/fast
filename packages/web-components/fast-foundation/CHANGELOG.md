@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.7.1](https://github.com/Microsoft/fast/compare/@microsoft/fast-foundation@1.7.0...@microsoft/fast-foundation@1.7.1) (2020-08-27)
+
+
+### Bug Fixes
+
+* consistent with min-width, min-height is at least the thumb size add default height ([#3746](https://github.com/Microsoft/fast/issues/3746)) ([b3f9aee](https://github.com/Microsoft/fast/commit/b3f9aee644261ddcdd029fbafed69186db070c77))
+* proxy element causes empty check on slots to fail ([#3779](https://github.com/Microsoft/fast/issues/3779)) ([78787c3](https://github.com/Microsoft/fast/commit/78787c35631edb2b86f985dbfbc68036797f60d0))
+* **docs:** correct typos in readme and spec files ([#3740](https://github.com/Microsoft/fast/issues/3740)) ([9bdb11f](https://github.com/Microsoft/fast/commit/9bdb11f7eab686ab6de32eda352f1a0493ee9545))
+
+
+
+
+
 # [1.7.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-foundation@1.6.0...@microsoft/fast-foundation@1.7.0) (2020-08-13)
 
 
