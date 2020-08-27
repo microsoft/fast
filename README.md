@@ -78,7 +78,7 @@ We hope you're excited by the possibilities that FAST presents. But, you may be 
 * "I just want ready-made components!"
   * [Jump to the component docs.](https://fast.design/docs/components/getting-started)
 * "I want to build my own design system."
-  * [Jump to the design system docs.](https://fast.design/docs/design/introduction)
+  * [Jump to the design system docs.](https://fast.design/docs/design-systems/overview)
 * "I want to build my own components."
   * [Jump to the fast-element docs.](https://fast.design/docs/fast-element/getting-started)
 * "I need to integrate FAST with another framework or build system."
