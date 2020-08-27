@@ -67,7 +67,7 @@ export const FastFrameStyles = css`
         justify-self: end;
     }
 
-    .content h1 {
+    .content .content-badge {
         font-size: var(--type-ramp-minus-1-font-size);
         line-height: var(--type-ramp-minus-1-line-height);
         color: ${neutralForegroundHintBehavior.var};
@@ -77,11 +77,11 @@ export const FastFrameStyles = css`
         text-transform: uppercase;
     }
 
-    .content-heading-highlight {
-        color: ${accentForegroundRestBehavior.var};
+    .content .content-badge .content-badge-highlight {
+        color: ${neutralForegroundHintBehavior.var};
     }
 
-    .content h2 {
+    .content .heading {
         font-size: var(--type-ramp-plus-3-font-size);
         line-height: var(--type-ramp-plus-3-line-height);
         margin: 0;
