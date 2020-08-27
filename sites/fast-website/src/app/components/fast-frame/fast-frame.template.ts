@@ -20,11 +20,11 @@ export const FastFrameTemplate = html<FastFrame>`
                     class="${x => (x.expanded ? "tab-panel-expanded" : "")}"
                 >
                     <div class="content">
-                        <p class="heading">
-                            <span class="content-heading-highlight">Fast Frame</span>
-                            Dark Mode
-                        </p>
-                        <p class="sub-heading">Pre-built for both light and dark modes</p>
+                        <fast-badge class="content-badge">
+                            Fast Frame
+                            <span class="content-badge-highlight">Dark Mode</span>
+                        </fast-badge>
+                        <h3 class="heading">Pre-built for both light and dark modes</h3>
                         <p>
                             Switching between dark and light mode is as easy as changing
                             the background color of the design system.
@@ -48,11 +48,11 @@ export const FastFrameTemplate = html<FastFrame>`
                     class="${x => (x.expanded ? "tab-panel-expanded" : "")}"
                 >
                     <div class="content">
-                        <p class="heading">
-                            <span class="content-heading-highlight">Fast Frame</span>
-                            Colors
-                        </p>
-                        <p class="sub-heading">Pre-existing color you can customize</p>
+                        <fast-badge class="content-badge">
+                            Fast Frame
+                            <span class="content-badge-highlight">Colors</span>
+                        </fast-badge>
+                        <h3 class="heading">Pre-existing color you can customize</h3>
                         <p>
                             Color is applied by using color recipes which require two
                             color palettes, neutral and accent, applied to the design
@@ -148,11 +148,11 @@ export const FastFrameTemplate = html<FastFrame>`
                     class="${x => (x.expanded ? "tab-panel-expanded" : "")}"
                 >
                     <div class="content">
-                        <p class="heading">
-                            <span class="content-heading-highlight">Fast Frame</span>
-                            Styles
-                        </p>
-                        <p class="sub-heading">Adjust style settings on the fly</p>
+                        <fast-badge class="content-badge">
+                            Fast Frame
+                            <span class="content-badge-highlight">Styles</span>
+                        </fast-badge>
+                        <h3 class="heading">Adjust style settings on the fly</h3>
                         <p>
                             Update design system values for border radius, outline width,
                             or density.
