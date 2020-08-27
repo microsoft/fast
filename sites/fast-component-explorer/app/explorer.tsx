@@ -394,7 +394,7 @@ class Explorer extends Foundation<
             e.data.type === MessageSystemType.initialize
         ) {
             updatedState.dataDictionary = e.data.dataDictionary;
-            this.updateEditorContent(this.state.dataDictionary);
+            this.updateEditorContent(e.data.dataDictionary);
         }
 
         this.setState(updatedState as ExplorerState);
