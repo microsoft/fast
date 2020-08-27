@@ -21,7 +21,7 @@ export default class NavigationMenu extends Foundation<
 
     public render(): React.ReactNode {
         return (
-            <nav className={this.generateClassNames()}>
+            <nav className={this.generateClassNames()} role="menu">
                 {this.renderNavigationMenuItem(this.props.menu)}
             </nav>
         );
