@@ -29,7 +29,7 @@ import {
 export class MyDesignSystemProvider extends DesignSystemProvider {}
 ```
 :::note
-You may notice that this syntax looks a lot like the [customElement](docs/api/fast-element.customelement) function from `@microsoft/fast-element` - thats because under the hood [designSystemProvider](/docs/api/fast-foundation.designsystemprovider) uses [customElement](docs/api/fast-element.customelement). In fact, it supports the same type signature as [customElement](docs/api/fast-element.customelement).
+You may notice that this syntax looks a lot like the [customElement](/docs/api/fast-element.customelement) function from `@microsoft/fast-element` - thats because under the hood [designSystemProvider](/docs/api/fast-foundation.designsystemprovider) uses [customElement](/docs/api/fast-element.customelement). In fact, it supports the same type signature as [customElement](/docs/api/fast-element.customelement).
 :::
 
 Loading the script with the above definition, you can now use the following HTML:
