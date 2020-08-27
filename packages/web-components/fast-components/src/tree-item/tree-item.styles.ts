@@ -104,7 +104,7 @@ export const TreeItemStyles = css`
     }
 
     .content-region {
-        display: flex;
+        display: inline-flex;
         align-items: center;
         white-space: nowrap;
         width: 100%;
@@ -130,8 +130,8 @@ export const TreeItemStyles = css`
         ${
             /* Width and Height should be based off calc(glyph-size-number + (design-unit * 4) * 1px) - 
             update when density story is figured out */ ""
-        } width: 35px;
-        height: 35px;
+        } width: 28px;
+        height: 28px;
         padding: 0;
         display: flex;
         justify-content: center;
