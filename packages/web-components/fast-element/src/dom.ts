@@ -3,16 +3,37 @@ import { Callable } from "./interfaces";
 const updateQueue = [] as Callable[];
 type TrustedTypesPolicy = { createHTML(html: string): string };
 
-// Tiny API-only polyfill for trustedTypes
-declare let trustedTypes: any;
 /* eslint-disable */
-if (typeof trustedTypes == "undefined") {
-    trustedTypes = { createPolicy: (n, r) => r };
+
+// Polyfill for globalThis
+declare const __magic__: any;
+
+(function () {
+    if (typeof globalThis === "object") return;
+
+    Object.defineProperty(Object.prototype, "__magic__", {
+        get: function () {
+            return this;
+        },
+        configurable: true,
+    });
+
+    __magic__.globalThis = __magic__;
+
+    delete (Object.prototype as any).__magic__;
+})();
+
+// API-only Polyfill for trustedTypes
+declare let trustedTypes: any;
+
+if (globalThis.trustedTypes === void 0) {
+    globalThis.trustedTypes = { createPolicy: (n, r) => r };
 }
 
 const fastHTMLPolicy: TrustedTypesPolicy = trustedTypes.createPolicy("fast-html", {
     createHTML: html => html,
 });
+
 /* eslint-enable */
 
 let htmlPolicy: TrustedTypesPolicy = fastHTMLPolicy;
