@@ -214,6 +214,7 @@ export const FastFrameTemplate = html<FastFrame>`
                 </fast-tab-panel>
             </fast-tabs>
             <fast-design-system-provider
+                use-defaults
                 class="${x => (x.expanded ? "preview preview-expanded" : "preview")}"
                 base-layer-luminance="${x => x.baseLayerLuminance}"
                 background-color="${x => x.backgroundColor}"
