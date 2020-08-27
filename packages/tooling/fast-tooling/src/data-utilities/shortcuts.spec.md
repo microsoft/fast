@@ -20,7 +20,7 @@ Shortcut actions can either be custom or imported from a set of actions availabl
 
 ```typescript
 import { DuplicateShortcutAction, ShortcutAction, Shortcuts } from "@microsoft/fast-tooling"
-import { keyCodeAlt, keyCodeAltName , keyCodeTab, keyCodeTabName } from "@microsoft/fast-web-utilities"
+import { keyCodeTab, keyCodeTabName } from "@microsoft/fast-web-utilities"
 
 new Shortcuts({
     messageSystem: fastMessageSystem,
@@ -30,8 +30,7 @@ new Shortcuts({
             name: "Random action",
             keyCodes: [
                 {
-                    name: keyCodeAltName, // "Alt"
-                    value: keyCodeAlt, // 18
+                    altKey: true
                 },
                 {
                     name: keyCodeTabName, // "Tab"
