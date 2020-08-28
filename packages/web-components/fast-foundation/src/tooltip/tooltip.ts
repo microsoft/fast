@@ -7,14 +7,14 @@ import { Direction, keyCodeEscape } from "@microsoft/fast-web-utilities";
  *
  * @public
  */
-export enum TooltipPosition {   
-    top = "top",  
+export enum TooltipPosition {
+    top = "top",
     right = "right",
     bottom = "bottom",
-    left =  "left",
-    start =  "start",
-    end =  "end"
-};
+    left = "left",
+    start = "start",
+    end = "end",
+}
 
 /**
  * An Tooltip Custom HTML Element.
