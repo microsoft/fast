@@ -5,6 +5,3 @@
  */
 export const heightNumber =
     "(var(--base-height-multiplier) + var(--density)) * var(--design-unit)";
-
-export const glyphSize =
-    "((var(--base-height-multiplier) / 2) * var(--design-unit)) + ((var(--design-unit) * var(--density)) / 2)";

@@ -10,7 +10,6 @@ import {
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
     accentForegroundRestBehavior,
-    glyphSize,
     heightNumber,
     neutralFillStealthActiveBehavior,
     neutralFillStealthHoverBehavior,
@@ -41,6 +40,9 @@ const rtl = css`
         right: calc(var(--focus-outline-width) * 1px);
     }
 `;
+
+export const expandCollapseButtonSize =
+    "((var(--base-height-multiplier) / 2) * var(--design-unit)) + ((var(--design-unit) * var(--density)) / 2)";
 
 const expandCollapseHoverBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-stealth-hover-over-hover",
@@ -131,8 +133,8 @@ export const TreeItemStyles = css`
         ${
             /* Width and Height should be based off calc(glyph-size-number + (design-unit * 4) * 1px) - 
             update when density story is figured out */ ""
-        } width: calc((${glyphSize} + (var(--design-unit) * 2)) * 1px);
-        height: calc((${glyphSize} + (var(--design-unit) * 2)) * 1px);
+        } width: calc((${expandCollapseButtonSize} + (var(--design-unit) * 2)) * 1px);
+        height: calc((${expandCollapseButtonSize} + (var(--design-unit) * 2)) * 1px);
         padding: 0;
         display: flex;
         justify-content: center;
