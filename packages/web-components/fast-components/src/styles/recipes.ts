@@ -238,6 +238,7 @@ export const neutralFillStealthRestBehavior = cssCustomPropertyBehaviorFactory(
     x => neutralFillStealth(x).rest,
     FASTDesignSystemProvider.findProvider
 );
+
 /**
  * Behavior to resolve and make available the neutral-fill-stealth-hover CSS custom property.
  * @public
@@ -247,6 +248,7 @@ export const neutralFillStealthHoverBehavior = cssCustomPropertyBehaviorFactory(
     x => neutralFillStealth(x).hover,
     FASTDesignSystemProvider.findProvider
 );
+
 /**
  * Behavior to resolve and make available the neutral-fill-stealth-active CSS custom property.
  * @public
@@ -328,6 +330,7 @@ export const neutralFillInputHoverBehavior = cssCustomPropertyBehaviorFactory(
     x => neutralFillInput(x).hover,
     FASTDesignSystemProvider.findProvider
 );
+
 /**
  * Behavior to resolve and make available the neutral-fill-input-active CSS custom property.
  * @public
