@@ -1,4 +1,15 @@
 [
     "<link rel=\"icon\" type=\"image/svg+xml\" href=\"https://static.fast.design/assets/favicon.svg\" sizes=\"any\">",
-    "<link rel=\"mask-icon\" href=\"https://static.fast.design/assets/favicon.svg\" color=\"#E1477E\">"
+    "<link rel=\"mask-icon\" href=\"https://static.fast.design/assets/favicon.svg\" color=\"#E1477E\">",
+    "<meta name=\"author\" content=\"Microsoft\">",
+    "<meta name=\"description\" property=\"og:description\" content=\"The adaptive interface system for modern web experiences.\">",
+    "<meta property=\"og:site_name\" content=\"FAST\" />",
+    "<meta name=\"image\" property=\"og:image\" content=\"https://static.fast.design/assets/fast-logo.png\" />",
+    "<meta property=\"og:image:alt\" content=\"\" />",
+    "<meta property=\"og:image:type\" content=\"image/png\" />",
+    "<meta property=\"og:image:width\" content=\"512\" />",
+    "<meta property=\"og:image:height\" content=\"512\" />",
+    "<meta name=\"twitter:card\" content=\"summary\" />",
+    "<meta name=\"twitter:site\" content=\"@FAST_UI\" />",
+    "<meta name=\"twitter:creator\" content=\"@FAST_UI\" />"
 ]
