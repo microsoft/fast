@@ -10,6 +10,7 @@ import {
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
     accentForegroundRestBehavior,
+    glyphSize,
     heightNumber,
     neutralFillStealthActiveBehavior,
     neutralFillStealthHoverBehavior,
@@ -41,13 +42,13 @@ const rtl = css`
     }
 `;
 
-const neutralStealthHoverOverHoverBehavior = cssCustomPropertyBehaviorFactory(
+const neutralStealthHoverOverHoverExpandCollapseButtonBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-stealth-hover-over-hover",
     x => neutralFillStealthHover(neutralFillStealthHover)(x),
     FASTDesignSystemProvider.findProvider
 );
 
-const neutralStealthHoverOverSelectedBehavior = cssCustomPropertyBehaviorFactory(
+const neutralStealthHoverOverSelectedExpandCollapseButtonBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-stealth-hover-over-selected",
     x => neutralFillStealthHover(neutralFillStealthSelected)(x),
     FASTDesignSystemProvider.findProvider
@@ -130,8 +131,8 @@ export const TreeItemStyles = css`
         ${
             /* Width and Height should be based off calc(glyph-size-number + (design-unit * 4) * 1px) - 
             update when density story is figured out */ ""
-        } width: 28px;
-        height: 28px;
+        } width: calc((${glyphSize} + (var(--design-unit) * 2)) * 1px);
+        height: calc((${glyphSize} + (var(--design-unit) * 2)) * 1px);
         padding: 0;
         display: flex;
         justify-content: center;
@@ -197,7 +198,7 @@ export const TreeItemStyles = css`
     }
 
     :host(.nested) .expand-collapse-button:hover {
-        background: ${neutralStealthHoverOverHoverBehavior.var};
+        background: ${neutralStealthHoverOverHoverExpandCollapseButtonBehavior.var};
     }
     
     :host([selected]) .positioning-region {
@@ -205,7 +206,7 @@ export const TreeItemStyles = css`
     }
 
     :host([selected]) .expand-collapse-button:hover {
-        background: ${neutralStealthHoverOverSelectedBehavior.var};
+        background: ${neutralStealthHoverOverSelectedExpandCollapseButtonBehavior.var};
     }
 
     :host([selected])::after {
@@ -230,9 +231,9 @@ export const TreeItemStyles = css`
     accentForegroundRestBehavior,
     neutralFillStealthSelectedBehavior,
     neutralFillStealthActiveBehavior,
-    neutralStealthHoverOverHoverBehavior,
+    neutralStealthHoverOverHoverExpandCollapseButtonBehavior,
     neutralFillStealthHoverBehavior,
-    neutralStealthHoverOverSelectedBehavior,
+    neutralStealthHoverOverSelectedExpandCollapseButtonBehavior,
     neutralFillStealthRestBehavior,
     neutralFocusBehavior,
     neutralFocusInnerAccentBehavior,
@@ -247,6 +248,12 @@ export const TreeItemStyles = css`
             background: ${SystemColors.Field};
         }
         :host .content-region .expand-collapse-glyph {
+            fill: ${SystemColors.FieldText};
+        }
+        :host(.nested) .expand-collapse-button:hover {
+            background: ${SystemColors.Field};
+         }
+        :host(.nested) .expand-collapse-button:hover .expand-collapse-glyph {
             fill: ${SystemColors.FieldText};
         }
         :host .positioning-region:hover,
