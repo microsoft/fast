@@ -250,9 +250,6 @@ export const TreeItemStyles = css`
         :host .content-region .expand-collapse-glyph {
             fill: ${SystemColors.FieldText};
         }
-        :host(.nested) .expand-collapse-button:hover {
-            background: ${SystemColors.Field};
-         }
         :host(.nested) .expand-collapse-button:hover .expand-collapse-glyph {
             fill: ${SystemColors.FieldText};
         }
