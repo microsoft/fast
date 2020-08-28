@@ -246,6 +246,7 @@ export const TreeItemStyles = css`
             forced-color-adjust: none;
             border-color: transparent;
             background: ${SystemColors.Field};
+            color: ${SystemColors.FieldText};
         }
         :host .content-region .expand-collapse-glyph {
             fill: ${SystemColors.FieldText};
@@ -275,6 +276,7 @@ export const TreeItemStyles = css`
         :host(:${focusVisible}) .positioning-region {
             border-color: ${SystemColors.FieldText};
             box-shadow: 0 0 0 2px inset ${SystemColors.Field};
+            color: ${SystemColors.FieldText};
         }
         :host([disabled]) .content-region,
         :host([disabled]) .positioning-region:hover .content-region {
@@ -291,6 +293,11 @@ export const TreeItemStyles = css`
         }
         :host([disabled]) .positioning-region:hover {
             background: ${SystemColors.Field};
+        }
+        .expand-collapse-glyph,
+        .start,
+        .end {
+            fill: ${SystemColors.FieldText};
         }
         `
     )
