@@ -42,13 +42,13 @@ const rtl = css`
     }
 `;
 
-const neutralStealthHoverOverHoverExpandCollapseButtonBehavior = cssCustomPropertyBehaviorFactory(
+const expandCollapseHoverBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-stealth-hover-over-hover",
     x => neutralFillStealthHover(neutralFillStealthHover)(x),
     FASTDesignSystemProvider.findProvider
 );
 
-const neutralStealthHoverOverSelectedExpandCollapseButtonBehavior = cssCustomPropertyBehaviorFactory(
+const selectedExpandCollapseHoverBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-stealth-hover-over-selected",
     x => neutralFillStealthHover(neutralFillStealthSelected)(x),
     FASTDesignSystemProvider.findProvider
@@ -198,7 +198,7 @@ export const TreeItemStyles = css`
     }
 
     :host(.nested) .expand-collapse-button:hover {
-        background: ${neutralStealthHoverOverHoverExpandCollapseButtonBehavior.var};
+        background: ${expandCollapseHoverBehavior.var};
     }
     
     :host([selected]) .positioning-region {
@@ -206,7 +206,7 @@ export const TreeItemStyles = css`
     }
 
     :host([selected]) .expand-collapse-button:hover {
-        background: ${neutralStealthHoverOverSelectedExpandCollapseButtonBehavior.var};
+        background: ${selectedExpandCollapseHoverBehavior.var};
     }
 
     :host([selected])::after {
@@ -231,9 +231,9 @@ export const TreeItemStyles = css`
     accentForegroundRestBehavior,
     neutralFillStealthSelectedBehavior,
     neutralFillStealthActiveBehavior,
-    neutralStealthHoverOverHoverExpandCollapseButtonBehavior,
+    expandCollapseHoverBehavior,
     neutralFillStealthHoverBehavior,
-    neutralStealthHoverOverSelectedExpandCollapseButtonBehavior,
+    selectedExpandCollapseHoverBehavior,
     neutralFillStealthRestBehavior,
     neutralFocusBehavior,
     neutralFocusInnerAccentBehavior,
