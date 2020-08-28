@@ -251,9 +251,6 @@ export const TreeItemStyles = css`
         :host .content-region .expand-collapse-glyph {
             fill: ${SystemColors.FieldText};
         }
-        :host(.nested) .expand-collapse-button:hover .expand-collapse-glyph {
-            fill: ${SystemColors.FieldText};
-        }
         :host .positioning-region:hover,
         :host([selected]) .positioning-region {
             background: ${SystemColors.Highlight};
@@ -297,6 +294,12 @@ export const TreeItemStyles = css`
         .expand-collapse-glyph,
         .start,
         .end {
+            fill: ${SystemColors.FieldText};
+        }
+        :host(.nested) .expand-collapse-button:hover {
+            background: ${SystemColors.Field};
+        }
+        :host(.nested) .expand-collapse-button:hover .expand-collapse-glyph {
             fill: ${SystemColors.FieldText};
         }
         `
