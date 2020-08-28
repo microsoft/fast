@@ -20,7 +20,6 @@ Shortcut actions can either be custom or imported from a set of actions availabl
 
 ```typescript
 import { DuplicateShortcutAction, ShortcutAction, Shortcuts } from "@microsoft/fast-tooling"
-import { keyCodeTab, keyCodeTabName } from "@microsoft/fast-web-utilities"
 
 new Shortcuts({
     messageSystem: fastMessageSystem,
@@ -28,13 +27,12 @@ new Shortcuts({
         // Custom shortcut
         new ShortcutAction({
             name: "Random action",
-            keyCodes: [
+            keys: [
                 {
                     altKey: true
                 },
                 {
-                    name: keyCodeTabName, // "Tab"
-                    value: keyCodeTab // 9
+                    value: "Tab"
                 }
             ],
             action: () => {
@@ -66,14 +64,12 @@ An example of the custom event that might be sent:
     shortcuts: [
         {
             name: "Random action",
-            keyCodes: [
+            keys: [
                 {
-                    name: keyCodeAltName,
-                    value: keyCodeAlt,
+                    altKey: true,
                 },
                 {
-                    name: keyCodeTabName,
-                    value: keyCodeTab
+                    value: "Tab"
                 }
             ],
             // executing this passed function should
@@ -82,14 +78,12 @@ An example of the custom event that might be sent:
         },
         {
             name: "Duplicate",
-            keyCodes: [
+            keys: [
                 {
-                    name: keyCodeCtrlName,
-                    value: keyCodeCtrl,
+                    ctrlKey: true,
                 },
                 {
-                    name: keyCodeDName,
-                    value: keyCodeD
+                    value: "d"
                 }
             ],
             action: func
