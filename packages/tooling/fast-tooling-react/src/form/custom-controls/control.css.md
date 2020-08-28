@@ -15,17 +15,32 @@ There should be a list of internal variables that are assigned to each CSS prope
     {
         "border": { // The property name should be pascalCase
             name: "border", // The name should be spinal-case
+            shorthand: true, // denotes that "border" CSS property is a shorthand
             default: "none",
-            value: [
+            globalValues: [
                 {
+                    value: "inherit"
+                },
+                {
+                    value: "initial"
+                },
+                {
+                    value: "unset"
+                }
+            ],
+            values: [ // these must be in order
+                {
+                    mapsToCssProperty: "border-width",
                     type: "width",
                     default: "1px"
                 },
                 {
+                    mapsToCssProperty: "border-style",
                     type: "border-style",
                     default: "solid"
                 },
                 {
+                    mapsToCssProperty: "border-color",
                     type: "color",
                     default: "black"
                 }
@@ -68,6 +83,9 @@ To make this flexible, the abstract class should allow a way to override the def
 
 ```tsx
 <CSSInline
+    // This is true be default as setting shorthand is more user friendly, 
+    // if set to false, all non-shorthand values short up eg. "border-style"
+    shorthandOnly={true}
     controls={[
         new StandardCSSControlPlugin({
             name: "border",
