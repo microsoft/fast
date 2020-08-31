@@ -20,7 +20,7 @@ TBD
 
 ### Stored history
 
-A history of different actions (data, navigation) will be stored as a local class instance.
+A history of different actions (data, navigation) will be stored as a local variable.
 
 Example of a history with 3 items:
 
