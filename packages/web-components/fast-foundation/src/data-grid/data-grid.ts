@@ -1,4 +1,4 @@
-import { attr, FASTElement, html, RepeatBehavior, RepeatDirective, observable, ViewTemplate, } from "@microsoft/fast-element";
+import { attr, FASTElement, html, RepeatBehavior, RepeatDirective, observable, ViewTemplate } from "@microsoft/fast-element";
 
 /**
  * Defines a column in the grid
@@ -38,10 +38,9 @@ const defaultRowItemTemplate = html`
     <fast-data-grid-row></fast-data-grid-row>
 `;
 
-const defaultHeaderItemTemplate = html`
-    <div>BOO!</div>
-`;
-
+// const defaultHeaderItemTemplate = html`
+//     <div>BOO!</div>
+// `;
 
 /**
  * A Data Grid Custom HTML Element.
@@ -119,27 +118,32 @@ export class DataGrid extends FASTElement {
     /**
      * @internal
      */
-    public headerElement: HTMLDivElement;
+    public slottedRowElements: HTMLElement[];
+
+    /**
+     * reference to the row container
+     *
+     * @internal
+     */
+    public gridRows: HTMLElement;
 
     /**
      * @internal
      */
-    public gridElement: HTMLDivElement;
+    public slottedHeaderElements: HTMLElement[];
 
-    private rowsRepeatBehavior?: RepeatBehavior;
-    private rowsPlaceholder?: Node;
     @observable 
     public rowItemTemplate?: ViewTemplate = defaultRowItemTemplate;
 
-    private headerRepeatBehavior?: RepeatBehavior;
-    private headerPlaceholder?: Node;
-    @observable 
-    public headerItemTemplate?: ViewTemplate = defaultHeaderItemTemplate;
+    private headerElement?: Node;
+    public rowsElement?: HTMLElement;
+
+    private rowsRepeatBehavior?: RepeatBehavior;
+    private rowsPlaceholder?: Node;
 
     constructor() {
         super();
     }
-
 
     /**
      * @internal
@@ -148,24 +152,15 @@ export class DataGrid extends FASTElement {
         super.connectedCallback();
 
         this.rowsPlaceholder = document.createComment("");
-        this.gridElement.appendChild(this.rowsPlaceholder);
+        this.rowsElement?.appendChild(this.rowsPlaceholder);
 
         this.rowsRepeatBehavior = new RepeatDirective(
-            x => x.rowData,
-            x => x.rowItemTemplate,
-            { positioning: false }
+             x => x.rowData,
+             x => x.rowItemTemplate,
+             { positioning: false }
         ).createBehavior(this.rowsPlaceholder);
 
-        this.headerPlaceholder = document.createComment("");
-        this.appendChild(this.headerPlaceholder);
-
-        this.headerRepeatBehavior = new RepeatDirective(
-            x => x.columnDefinitions,
-            x => x.headerItemTemplate,
-            { positioning: false }
-        ).createBehavior(this.headerPlaceholder);
-
-        this.$fastController.addBehaviors([this.rowsRepeatBehavior!, this.headerRepeatBehavior!]);
+        this.$fastController.addBehaviors([this.rowsRepeatBehavior!]);
 
         if (this.rows !== undefined) {
             this.rowData = JSON.parse(this.rows);

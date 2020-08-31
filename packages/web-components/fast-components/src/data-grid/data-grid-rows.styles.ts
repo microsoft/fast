@@ -1,10 +1,11 @@
 import { css } from "@microsoft/fast-element";
+import { display } from "@microsoft/fast-foundation";
 import { accentForegroundRestBehavior, heightNumber } from "../styles/index";
 
-export const DataGridStyles = css`
-:host {
-    display: flex;
-    flex-direction: column;
-    border: 1px solid black;
+export const DataGridRowsStyles = css`
+:host {;
+    min-height: 40px;
+    min-width: 40px;
+    background: pink;
 }
 `.withBehaviors(accentForegroundRestBehavior);

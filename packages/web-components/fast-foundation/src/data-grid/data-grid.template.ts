@@ -1,4 +1,4 @@
-import { html, ref } from "@microsoft/fast-element";
+import { html, ref, slotted } from "@microsoft/fast-element";
 import { DataGrid } from "./data-grid";
 
 /**
@@ -7,9 +7,9 @@ import { DataGrid } from "./data-grid";
  */
 export const DataGridTemplate = html<DataGrid>`
     <template role="grid">
-    <div part="header" class="header" ${ref("headerElement")}>
-    </div>
-    <div part="rows" class="rows" ${ref("gridElement")}>
-    </div>
+      <slot name="headerSlot" part="headerSlot" ${slotted("slottedHeaderElements")}></slot>
+      <fast-data-grid-rows ${ref("rowsElement")}>
+          <slot part="rowsSlot" ${slotted("slottedRowElements")}></slot>
+      </fast-data-grid-rows>
     </template>
 `;
