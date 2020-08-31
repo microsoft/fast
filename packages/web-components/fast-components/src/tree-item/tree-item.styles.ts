@@ -24,20 +24,32 @@ import { neutralFillStealthHover, neutralFillStealthSelected } from "../color/in
 import { FASTDesignSystemProvider } from "../design-system-provider/index";
 
 const ltr = css`
+    .expand-collapse-glyph {
+        transform: rotate(-45deg);
+    }
     :host(.nested) .expand-collapse-button {
         left: var(--expand-collapse-button-nested-width, calc(${heightNumber} * -1px));
     }
     :host([selected])::after {
         left: calc(var(--focus-outline-width) * 1px);
     }
+    :host(.expanded) > .positioning-region .expand-collapse-glyph {
+        ${/* transform needs to be localized */ ""} transform: rotate(0deg);
+    }
 `;
 
 const rtl = css`
+    .expand-collapse-glyph {
+        transform: rotate(135deg);
+    }
     :host(.nested) .expand-collapse-button {
         right: var(--expand-collapse-button-nested-width, calc(${heightNumber} * -1px));
     }
     :host([selected])::after {
         right: calc(var(--focus-outline-width) * 1px);
+    }
+    :host(.expanded) > .positioning-region .expand-collapse-glyph {
+        ${/* transform needs to be localized */ ""} transform: rotate(90deg);
     }
 `;
 
@@ -151,7 +163,7 @@ export const TreeItemStyles = css`
         } width: 16px;
         height: 16px;
         transition: transform 0.1s linear;
-        ${/* transform needs to be localized */ ""} transform: rotate(-45deg);
+
         pointer-events: none;
         fill: ${neutralForegroundRestBehavior.var};
     }
@@ -175,10 +187,6 @@ export const TreeItemStyles = css`
         ${
             /* need to swap out once we understand how horizontalSpacing will work */ ""
         } margin-inline-start: calc(var(--design-unit) * 2px + 2px);
-    }
-
-    :host(.expanded) > .positioning-region .expand-collapse-glyph {
-        ${/* transform needs to be localized */ ""} transform: rotate(0deg);
     }
 
     :host(.expanded) > .items {
