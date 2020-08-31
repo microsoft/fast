@@ -228,18 +228,20 @@ export class DataGrid extends FASTElement {
     connectedCallback(): void;
     // @internal (undocumented)
     disconnectedCallback(): void;
-    // @internal (undocumented)
-    gridElement: HTMLDivElement;
-    // @internal (undocumented)
-    headerElement: HTMLDivElement;
-    // (undocumented)
-    headerItemTemplate?: ViewTemplate;
+    // @internal
+    gridRows: HTMLElement;
     rowData: object[];
     // (undocumented)
     rowItemTemplate?: ViewTemplate;
     rowkey: string;
     rows: string;
-    }
+    // (undocumented)
+    rowsElement?: HTMLElement;
+    // @internal (undocumented)
+    slottedHeaderElements: HTMLElement[];
+    // @internal (undocumented)
+    slottedRowElements: HTMLElement[];
+}
 
 // @public
 export class DataGridCell extends FASTElement {
@@ -260,6 +262,14 @@ export interface DataGridColumn {
 }
 
 // @public
+export class DataGridHeader extends FASTElement {
+    columnDefinitions: DataGridColumn[];
+    }
+
+// @public
+export const DataGridHeaderTemplate: import("@microsoft/fast-element").ViewTemplate<DataGridHeader, any>;
+
+// @public
 export class DataGridRow extends FASTElement {
     // (undocumented)
     cellElements?: object[];
@@ -267,6 +277,19 @@ export class DataGridRow extends FASTElement {
     rowData: object | null;
     rowIndex: object | null;
     }
+
+// @public
+export class DataGridRows extends FASTElement {
+    columnDefinitions: DataGridColumn[];
+    // @internal (undocumented)
+    connectedCallback(): void;
+    rowElements: object[];
+    // (undocumented)
+    rowItemTemplate?: ViewTemplate;
+}
+
+// @public
+export const DataGridRowsTemplate: import("@microsoft/fast-element").ViewTemplate<DataGridRows, any>;
 
 // @public
 export const DataGridRowTemplate: import("@microsoft/fast-element").ViewTemplate<DataGridRow, any>;
