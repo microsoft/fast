@@ -49,6 +49,7 @@ export const AccordionItemStyles = css`
         height: calc(${heightNumber} * 1px);
         color: ${neutralForegroundRestBehavior.var};
         cursor: pointer;
+        font-family: inherit;
     }
 
     .button:hover {
