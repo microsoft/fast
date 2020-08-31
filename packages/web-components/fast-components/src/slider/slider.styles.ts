@@ -1,5 +1,6 @@
 import { css } from "@microsoft/fast-element";
 import {
+    DirectionalStyleSheetBehavior,
     disabledCursor,
     display,
     focusVisible,
@@ -15,6 +16,18 @@ import {
     neutralOutlineHoverBehavior,
     neutralOutlineRestBehavior,
 } from "../styles/index";
+
+const ltr = css`
+    :host(.vertical) .track {
+        margin-left: calc((var(--design-unit) + calc(var(--density) + 2)) * 1px);
+    }
+`;
+
+const rtl = css`
+    :host(.vertical) .track {
+        margin-right: calc((var(--design-unit) + calc(var(--density) + 2)) * 1px);
+    }
+`;
 
 export const SliderStyles = css`
     :host([hidden]) {
@@ -95,7 +108,6 @@ export const SliderStyles = css`
     :host(.vertical) .track {
         top: calc(var(--track-overhang) * 1px);
         bottom: calc(var(--track-overhang) * 1px);
-        margin-left: calc((var(--design-unit) + calc(var(--density) + 2)) * 1px);
         width: calc(var(--track-width) * 1px);
         height: 100%;
     }
@@ -125,6 +137,7 @@ export const SliderStyles = css`
     neutralForegroundRestBehavior,
     neutralOutlineHoverBehavior,
     neutralOutlineRestBehavior,
+    new DirectionalStyleSheetBehavior(ltr, rtl),
     forcedColorsStylesheetBehavior(
         css`
             .thumb-cursor {
