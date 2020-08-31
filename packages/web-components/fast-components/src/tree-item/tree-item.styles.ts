@@ -34,7 +34,7 @@ const ltr = css`
         left: calc(var(--focus-outline-width) * 1px);
     }
     :host(.expanded) > .positioning-region .expand-collapse-glyph {
-        ${/* transform needs to be localized */ ""} transform: rotate(0deg);
+        transform: rotate(0deg);
     }
 `;
 
@@ -49,7 +49,7 @@ const rtl = css`
         right: calc(var(--focus-outline-width) * 1px);
     }
     :host(.expanded) > .positioning-region .expand-collapse-glyph {
-        ${/* transform needs to be localized */ ""} transform: rotate(90deg);
+        transform: rotate(90deg);
     }
 `;
 
