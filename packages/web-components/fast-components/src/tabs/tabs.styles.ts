@@ -29,13 +29,8 @@ export const TabsStyles = css`
         box-sizing: border-box;
     }
 
-    .start {
-        padding: 2px;
-        align-self: center;
-    }
-
+    .start,
     .end {
-        padding: 2px;
         align-self: center;
     }
 
