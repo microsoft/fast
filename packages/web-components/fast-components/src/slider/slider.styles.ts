@@ -95,8 +95,8 @@ export const SliderStyles = css`
     :host(.vertical) .track {
         top: calc(var(--track-overhang) * 1px);
         bottom: calc(var(--track-overhang) * 1px);
-        margin-left: calc((var(--design-unit) + calc(var(--density) + 2)) * 1px);
         width: calc(var(--track-width) * 1px);
+        margin-inline-start: calc((var(--design-unit) + calc(var(--density) + 2)) * 1px);
         height: 100%;
     }
     .track {
