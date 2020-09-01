@@ -25,7 +25,7 @@ export interface SpecificKey {
 
 export type KeyConfig = SpecificKey | ModifierKey;
 
-export interface ShortcutActionConfig {
+export interface ShortcutActionCallbackConfig {
     /**
      * The unique identifier
      */
@@ -40,7 +40,9 @@ export interface ShortcutActionConfig {
      * The keys needed to execute the action
      */
     keys: KeyConfig[];
+}
 
+export interface ShortcutActionConfig extends ShortcutActionCallbackConfig {
     /**
      * The action to take when the keycodes have been pressed
      */
@@ -85,8 +87,8 @@ export function mapKeyboardEventToKeyConfig(e: KeyboardEvent): KeyConfig[] {
 }
 
 export class ShortcutAction {
+    private action: (config: ShortcutActionCallbackConfig) => void;
     public id: string;
-    private action: () => void;
     public keys: KeyConfig[];
     public name: string;
 
@@ -101,7 +103,11 @@ export class ShortcutAction {
      * Invokes the action
      */
     public invoke = (): void => {
-        this.action();
+        this.action({
+            id: this.id,
+            keys: this.keys,
+            name: this.name,
+        });
     };
 
     /**
