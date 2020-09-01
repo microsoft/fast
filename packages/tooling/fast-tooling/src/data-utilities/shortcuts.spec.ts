@@ -107,6 +107,7 @@ describe("Shortcuts", () => {
         const shortcutAction = jest.fn();
         const actions = [
             new ShortcutAction({
+                id: "foo",
                 name: "Foo",
                 keys: [
                     {
@@ -134,6 +135,7 @@ describe("Shortcuts", () => {
         const shortcutAction = jest.fn();
         const actions = [
             new ShortcutAction({
+                id: "foo",
                 name: "Foo",
                 keys: [
                     {
@@ -180,6 +182,7 @@ describe("Shortcuts", () => {
         const shortcutAction = jest.fn();
         const actions = [
             new ShortcutAction({
+                id: "foo",
                 name: "Foo",
                 keys: [
                     {
@@ -214,6 +217,7 @@ describe("Shortcuts", () => {
         const shortcutAction = jest.fn();
         const actions = [
             new ShortcutAction({
+                id: "foo",
                 name: "Foo",
                 keys: [
                     {
@@ -248,6 +252,7 @@ describe("Shortcuts", () => {
         const shortcutAction = jest.fn();
         const actions = [
             new ShortcutAction({
+                id: "foo",
                 name: "Foo",
                 keys: [
                     {
@@ -282,6 +287,7 @@ describe("Shortcuts", () => {
         const shortcutAction = jest.fn();
         const actions = [
             new ShortcutAction({
+                id: "foo",
                 name: "Foo",
                 keys: [
                     {
@@ -316,10 +322,11 @@ describe("Shortcuts", () => {
         const shortcutAction = jest.fn();
         const actions = [
             new ShortcutAction({
+                id: "foo",
                 name: "Foo",
                 keys: [
                     {
-                        value: "Tab",
+                        value: "d",
                     },
                 ],
                 action: shortcutAction,
@@ -336,7 +343,100 @@ describe("Shortcuts", () => {
                 },
             } as any);
         });
-        postMessageCallback.mock.calls[0][0].eventListener({ key: "Tab" });
+        postMessageCallback.mock.calls[0][0].eventListener({ key: "d" });
         expect(shortcutAction).toHaveBeenCalledTimes(1);
+    });
+    test("should not invoke an action if the keys do not match", () => {
+        const postMessageCallback: any = jest.fn();
+        const messageSystem = new MessageSystem({
+            webWorker: "",
+            dataDictionary: null,
+            schemaDictionary: null,
+        });
+        messageSystem.postMessage = postMessageCallback;
+        const shortcutAction = jest.fn();
+        const actions = [
+            new ShortcutAction({
+                id: "foo",
+                name: "Foo",
+                keys: [
+                    {
+                        value: "e",
+                    },
+                ],
+                action: shortcutAction,
+            }),
+        ];
+        new Shortcuts({
+            messageSystem,
+            actions,
+        });
+        messageSystem["register"].forEach((registeredItem: Register) => {
+            registeredItem.onMessage({
+                data: {
+                    type: MessageSystemType.initialize,
+                },
+            } as any);
+        });
+        postMessageCallback.mock.calls[0][0].eventListener({ key: "d" });
+        expect(shortcutAction).toHaveBeenCalledTimes(0);
+    });
+    test("should run an action if the id matches", () => {
+        const postMessageCallback: any = jest.fn();
+        const messageSystem = new MessageSystem({
+            webWorker: "",
+            dataDictionary: null,
+            schemaDictionary: null,
+        });
+        messageSystem.postMessage = postMessageCallback;
+        const shortcutAction = jest.fn();
+        const actions = [
+            new ShortcutAction({
+                id: "foo",
+                name: "Foo",
+                keys: [
+                    {
+                        value: "d",
+                    },
+                ],
+                action: shortcutAction,
+            }),
+        ];
+        const shortcuts = new Shortcuts({
+            messageSystem,
+            actions,
+        });
+        shortcuts.action("foo").run();
+        expect(shortcutAction).toHaveBeenCalledTimes(1);
+    });
+    test("should not run an action if the id does not match", () => {
+        const postMessageCallback: any = jest.fn();
+        const messageSystem = new MessageSystem({
+            webWorker: "",
+            dataDictionary: null,
+            schemaDictionary: null,
+        });
+        messageSystem.postMessage = postMessageCallback;
+        const shortcutAction = jest.fn();
+        const actions = [
+            new ShortcutAction({
+                id: "foo",
+                name: "Foo",
+                keys: [
+                    {
+                        value: "d",
+                    },
+                ],
+                action: shortcutAction,
+            }),
+        ];
+        const shortcuts = new Shortcuts({
+            messageSystem,
+            actions,
+        });
+
+        expect(() => {
+            shortcuts.action("bar").run();
+        }).toThrow();
     });
 });

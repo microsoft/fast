@@ -3,7 +3,7 @@ import {
     MessageSystem,
     MessageSystemType,
 } from "../message-system";
-import { KeyConfig, ShortcutAction, ShortcutActionConfig } from "./shortcut-action";
+import { ShortcutAction, ShortcutActionConfig } from "./shortcut-action";
 
 export type shortcutMessageSystemAction = "initialize";
 export type shortcutMessageSystemId = "shortcuts";
@@ -15,6 +15,20 @@ export interface ShortcutMessageOutgoing extends CustomMessageIncomingOutgoing {
     eventListener: () => void;
     eventListenerType: shortcutMessageSystemListenerType;
     shortcuts: ShortcutActionConfig[];
+}
+
+export interface IdentifiedAction {
+    /**
+     * The action to run
+     * throws an error if no action has been identified
+     */
+    run: () => void;
+
+    /**
+     * The error message
+     * if no action has been identified
+     */
+    error: string | null;
 }
 
 export interface ShortcutsConfig {
@@ -51,6 +65,31 @@ export class Shortcuts {
     }
 
     /**
+     * Runs a specific action
+     */
+    public action = (id: string): IdentifiedAction => {
+        const action = this.registeredShortcutActions.find((action: ShortcutAction) => {
+            return action.id === id;
+        });
+
+        if (action) {
+            return {
+                run: action.invoke,
+                error: null,
+            };
+        }
+
+        const errorMsg = `No action with id: ${id} is available`;
+
+        return {
+            run: () => {
+                throw new Error(errorMsg);
+            },
+            error: errorMsg,
+        };
+    };
+
+    /**
      * Destroy this before dereferencing the validator
      * or this will not be garbage collected
      */
@@ -63,48 +102,10 @@ export class Shortcuts {
      */
     private listener = (e: KeyboardEvent): void => {
         this.registeredShortcutActions.forEach((action: ShortcutAction) => {
-            return action.runAction(this.getKeyConfigs(e));
+            if (action.matches(e)) {
+                action.invoke();
+            }
         });
-    };
-
-    /**
-     * The utility that returns KeyConfigs from a keyboard event
-     */
-    private getKeyConfigs = (e: KeyboardEvent): KeyConfig[] => {
-        const modifierKeys = [];
-        const specificKeys = [];
-
-        if (e.metaKey) {
-            modifierKeys.push({
-                metaKey: true,
-            });
-        }
-
-        if (e.ctrlKey) {
-            modifierKeys.push({
-                ctrlKey: true,
-            });
-        }
-
-        if (e.shiftKey) {
-            modifierKeys.push({
-                shiftKey: true,
-            });
-        }
-
-        if (e.altKey) {
-            modifierKeys.push({
-                altKey: true,
-            });
-        }
-
-        if (typeof e.key === "string") {
-            specificKeys.push({
-                value: e.key,
-            });
-        }
-
-        return [...modifierKeys, ...specificKeys];
     };
 
     /**
@@ -123,7 +124,7 @@ export class Shortcuts {
                         return {
                             name: shortcutAction.name,
                             keys: shortcutAction.keys,
-                            action: shortcutAction.runAction,
+                            action: shortcutAction.invoke,
                         };
                     }),
                 } as ShortcutMessageOutgoing);

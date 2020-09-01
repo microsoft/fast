@@ -27,6 +27,11 @@ export type KeyConfig = SpecificKey | ModifierKey;
 
 export interface ShortcutActionConfig {
     /**
+     * The unique identifier
+     */
+    id: string;
+
+    /**
      * The display name of the shortcut action
      */
     name: string;
@@ -42,21 +47,68 @@ export interface ShortcutActionConfig {
     action: () => void;
 }
 
+export function mapKeyboardEventToKeyConfig(e: KeyboardEvent): KeyConfig[] {
+    const keys: KeyConfig[] = [];
+
+    // all keys larger than 1 are special keys
+    if (typeof e.key === "string" && e.key.length === 1) {
+        keys.push({
+            value: e.key,
+        });
+    }
+
+    if (e.metaKey) {
+        keys.push({
+            metaKey: true,
+        });
+    }
+
+    if (e.shiftKey) {
+        keys.push({
+            shiftKey: true,
+        });
+    }
+
+    if (e.ctrlKey) {
+        keys.push({
+            ctrlKey: true,
+        });
+    }
+
+    if (e.altKey) {
+        keys.push({
+            altKey: true,
+        });
+    }
+
+    return keys;
+}
+
 export class ShortcutAction {
+    public id: string;
     private action: () => void;
     public keys: KeyConfig[];
     public name: string;
 
     constructor(config: ShortcutActionConfig) {
+        this.id = config.id;
         this.action = config.action;
         this.keys = config.keys;
         this.name = config.name;
     }
 
-    public runAction = (keys: KeyConfig[]): void => {
-        if (this.shouldRunAction(keys)) {
-            this.action();
-        }
+    /**
+     * Invokes the action
+     */
+    public invoke = (): void => {
+        this.action();
+    };
+
+    /**
+     * Tests to see if this matches the keyboard event given
+     */
+    public matches = (e: KeyboardEvent): boolean => {
+        return this.shouldRunAction(mapKeyboardEventToKeyConfig(e));
     };
 
     private shouldRunAction = (keys: KeyConfig[]): boolean => {
