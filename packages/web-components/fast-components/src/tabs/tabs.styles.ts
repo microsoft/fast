@@ -30,11 +30,13 @@ export const TabsStyles = css`
     }
 
     .start {
-        padding: calc(var(--design-unit) * 4px) 0;
+        padding: 2px;
+        align-self: center;
     }
 
     .end {
-        padding: calc(var(--design-unit) * 4px) 0;
+        padding: 2px;
+        align-self: center;
     }
 
     .activeIndicator {
