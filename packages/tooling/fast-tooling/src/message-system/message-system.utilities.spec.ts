@@ -6,12 +6,15 @@ import {
     DuplicateDataMessageOutgoing,
     GetDataDictionaryMessageIncoming,
     GetDataDictionaryMessageOutgoing,
+    GetHistoryMessageIncoming,
+    GetHistoryMessageOutgoing,
     GetNavigationDictionaryMessageIncoming,
     GetNavigationDictionaryMessageOutgoing,
     GetNavigationMessageOutgoing,
     InitializeMessageOutgoing,
     MessageSystemDataDictionaryTypeAction,
     MessageSystemDataTypeAction,
+    MessageSystemHistoryTypeAction,
     MessageSystemNavigationDictionaryTypeAction,
     MessageSystemNavigationTypeAction,
     MessageSystemValidationTypeAction,
@@ -31,6 +34,83 @@ import { SchemaDictionary } from "./schema.props";
 import { getNavigationDictionary } from "./navigation";
 
 describe("getMessage", () => {
+    describe("history", () => {
+        test("should return messages sent to get the history", () => {
+            const getHistory: GetHistoryMessageIncoming = {
+                type: MessageSystemType.history,
+                action: MessageSystemHistoryTypeAction.get
+            }
+            expect(getMessage(getHistory)).toEqual({
+                type: MessageSystemType.history,
+                action: MessageSystemHistoryTypeAction.get,
+                history: {
+                    items: [],
+                    limit: 30
+                }
+            } as GetHistoryMessageOutgoing);
+        });
+        test("should update the history when a new message has been sent", () => {
+            const dataBlob: DataDictionary<unknown> = [
+                {
+                    data: {
+                        schemaId: "foo",
+                        data: {
+                            foo: "bar",
+                        },
+                    },
+                },
+                "data",
+            ];
+            const schemaDictionary: SchemaDictionary = {
+                foo: { id: "foo" },
+            };
+            getMessage({
+                type: MessageSystemType.initialize,
+                dataDictionary: dataBlob,
+                schemaDictionary,
+            }) as InitializeMessageOutgoing;
+
+            const getHistory: GetHistoryMessageIncoming = {
+                type: MessageSystemType.history,
+                action: MessageSystemHistoryTypeAction.get
+            }
+            
+            expect((getMessage(getHistory) as GetHistoryMessageOutgoing).history.items.length).toEqual(1);
+        });
+        test("should remove the first item in the array if another item is added that would be higher than the limit", () => {
+            const schemaDictionary: SchemaDictionary = {
+                foo: { id: "foo" },
+            };
+            function dataFactory(count): DataDictionary<unknown> {
+                return [
+                    {
+                        data: {
+                            schemaId: "foo",
+                            data: {
+                                foo: "bar" + count,
+                            },
+                        },
+                    },
+                    "data",
+                ];
+            }
+            for (let i = 0, limit = 50; i < limit; i++) {
+                getMessage({
+                    type: MessageSystemType.initialize,
+                    dataDictionary: dataFactory(i),
+                    schemaDictionary,
+                }) as InitializeMessageOutgoing;
+            }
+
+            const getHistory: GetHistoryMessageIncoming = {
+                type: MessageSystemType.history,
+                action: MessageSystemHistoryTypeAction.get
+            }
+            
+            expect((getMessage(getHistory) as GetHistoryMessageOutgoing).history.items.length).toEqual(30);
+            expect(((getMessage(getHistory) as GetHistoryMessageOutgoing).history.items[29] as any).data.foo).toEqual("bar49");
+        });
+    });
     describe("initialize", () => {
         test("should return messages sent with initial values provided", () => {
             const dataBlob: DataDictionary<unknown> = [

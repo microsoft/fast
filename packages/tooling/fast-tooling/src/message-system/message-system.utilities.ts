@@ -11,8 +11,11 @@ import {
     DataDictionaryMessageOutgoing,
     DataMessageIncoming,
     DataMessageOutgoing,
+    HistoryMessageIncoming,
+    HistoryMessageOutgoing,
     MessageSystemDataDictionaryTypeAction,
     MessageSystemDataTypeAction,
+    MessageSystemHistoryTypeAction,
     MessageSystemIncoming,
     MessageSystemNavigationDictionaryTypeAction,
     MessageSystemNavigationTypeAction,
@@ -28,6 +31,8 @@ import {
 import { getNavigationDictionary } from "./navigation";
 import { NavigationConfigDictionary } from "./navigation.props";
 import { DataDictionary, LinkedData } from "./data.props";
+import { defaultHistoryLimit } from "./history";
+import { History } from "./history.props";
 import { SchemaDictionary } from "./schema.props";
 import { Validation } from "./validation.props";
 
@@ -42,6 +47,11 @@ import { Validation } from "./validation.props";
  * single source for data updates.
  */
 
+const history: History = {
+    items: [],
+    limit: defaultHistoryLimit,
+};
+let activeHistoryIndex: number = 0;
 let dataDictionary: DataDictionary<unknown>;
 let navigationDictionary: NavigationConfigDictionary;
 let activeNavigationConfigId: string;
@@ -128,6 +138,20 @@ function getNavigationDictionaryMessage(
                 type: MessageSystemType.navigationDictionary,
                 action: MessageSystemNavigationDictionaryTypeAction.updateActiveId,
                 activeDictionaryId,
+            };
+    }
+}
+
+/**
+ * Handles all history manipulation messages
+ */
+function getHistoryMessage(data: HistoryMessageIncoming): HistoryMessageOutgoing {
+    switch (data.action) {
+        case MessageSystemHistoryTypeAction.get:
+            return {
+                type: MessageSystemType.history,
+                action: MessageSystemHistoryTypeAction.get,
+                history
             };
     }
 }
@@ -399,22 +423,39 @@ function getNavigationMessage(
     }
 }
 
+function updateHistory<C>(data: MessageSystemOutgoing<C>): MessageSystemOutgoing<C> {
+    history.items.push(data);
+    const historyItemsLength = history.items.length;
+
+    if (historyItemsLength > history.limit) {
+        history.items.splice(0, historyItemsLength - history.limit);
+    }
+
+    if (activeHistoryIndex !== historyItemsLength) {
+        activeHistoryIndex = historyItemsLength;
+    }
+
+    return data;
+}
+
 export function getMessage<C = {}>(
     data: MessageSystemIncoming<C>
 ): MessageSystemOutgoing<C> {
     switch (data.type) {
         case MessageSystemType.custom:
-            return getCustomMessage(data);
+            return updateHistory(getCustomMessage(data));
         case MessageSystemType.data:
-            return getDataMessage(data);
+            return updateHistory(getDataMessage(data));
         case MessageSystemType.dataDictionary:
-            return getDataDictionaryMessage(data);
+            return updateHistory(getDataDictionaryMessage(data));
         case MessageSystemType.navigation:
-            return getNavigationMessage(data);
+            return updateHistory(getNavigationMessage(data));
         case MessageSystemType.navigationDictionary:
-            return getNavigationDictionaryMessage(data);
+            return updateHistory(getNavigationDictionaryMessage(data));
         case MessageSystemType.validation:
-            return getValidationMessage(data);
+            return updateHistory(getValidationMessage(data));
+        case MessageSystemType.history:
+            return getHistoryMessage(data);
         case MessageSystemType.initialize:
             /**
              * TODO: remove this ternary to rely on the dataDictionary
@@ -431,8 +472,9 @@ export function getMessage<C = {}>(
             );
             activeNavigationConfigId =
                 navigationDictionary[0][navigationDictionary[1]][1];
+            history.limit = data.historyLimit || defaultHistoryLimit;
 
-            return {
+            return updateHistory({
                 type: MessageSystemType.initialize,
                 data: dataDictionary[0][activeDictionaryId].data,
                 dataDictionary,
@@ -442,6 +484,7 @@ export function getMessage<C = {}>(
                 activeNavigationConfigId,
                 schema: schemaDictionary[dataDictionary[0][activeDictionaryId].schemaId],
                 schemaDictionary,
-            };
+                historyLimit: history.limit
+            });
     }
 }

@@ -1,4 +1,5 @@
 import { MessageSystemType } from "./types";
+import { defaultHistoryLimit } from "./history";
 import { Initialize, MessageSystemConfig, Register } from "./message-system.props";
 import { MessageSystemIncoming } from "./message-system.utilities.props";
 
@@ -16,6 +17,11 @@ export default class MessageSystem {
      */
     private worker: void | Worker;
 
+    /**
+     * The history limit
+     */
+    private historyLimit: number;
+
     constructor(config: MessageSystemConfig) {
         if ((window as any).Worker) {
             this.worker =
@@ -23,6 +29,9 @@ export default class MessageSystem {
                     ? new Worker(config.webWorker)
                     : config.webWorker;
             this.worker.onmessage = this.onMessage;
+            this.historyLimit = typeof config.historyLimit === "number"
+                ? config.historyLimit
+                : defaultHistoryLimit;
 
             if (Array.isArray(config.dataDictionary) && config.schemaDictionary) {
                 this.worker.postMessage({
@@ -53,11 +62,15 @@ export default class MessageSystem {
      */
     public initialize(config: Initialize): void {
         if ((window as any).Worker) {
+            this.historyLimit = typeof config.historyLimit === "number"
+                ? config.historyLimit
+                : this.historyLimit;
             (this.worker as Worker).postMessage({
                 type: MessageSystemType.initialize,
                 dataDictionary: config.dataDictionary,
                 data: config.data,
                 schemaDictionary: config.schemaDictionary,
+                historyLimit: this.historyLimit
             });
         }
     }
