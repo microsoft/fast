@@ -8,9 +8,9 @@
     >
     <fast-data-grid-header slot="headerSlot">
     </fast-data-grid-header>
-    <fast-data-grid-row>
+    <fast-data-grid-row row='{"name": "robert", "age": 20}'>
     </fast-data-grid-row>
-    <fast-data-grid-row>
+    <fast-data-grid-row row='{"name": "bobby", "age": 20}'>
     </fast-data-grid-row>
     </fast-data-grid>
 
@@ -20,13 +20,13 @@
     </fast-data-grid-header>
 
     <h2>Row</h2>
-    <fast-data-grid-row>
+    <fast-data-grid-row row='{"name": "robert", "age": 20}' columns='[{"columnDataKey": "name"},{"columnDataKey": "age"}]'>
     </fast-data-grid-row>
 
 
     <h2>Cell</h2>
-    <fast-data-grid-row>
-    </fast-data-grid-row>
+    <fast-data-grid-cell row='{"name": "robert", "age": 20}' column='{"columnDataKey": "name"}'>
+    </fast-data-grid-cell>
 
 
 </fast-design-system-provider>

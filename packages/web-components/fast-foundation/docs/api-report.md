@@ -222,12 +222,13 @@ export type CSSDisplayPropertyValue = "block" | "contents" | "flex" | "grid" | "
 // @public
 export class DataGrid extends FASTElement {
     constructor();
-    columnDefinitions: DataGridColumn[] | null;
     columns: string;
+    columnsData: DataGridColumn[] | null;
     // @internal (undocumented)
     connectedCallback(): void;
     // @internal (undocumented)
     disconnectedCallback(): void;
+    static generateColumns: (row: object) => DataGridColumn[];
     // @internal
     gridRows: HTMLElement;
     rowData: object[];
@@ -245,7 +246,13 @@ export class DataGrid extends FASTElement {
 
 // @public
 export class DataGridCell extends FASTElement {
-    gridTemplateColumn: object | null;
+    column: string;
+    columnData: DataGridColumn | null;
+    // @internal (undocumented)
+    connectedCallback(): void;
+    // @internal (undocumented)
+    resolveTemplate(): import("@microsoft/fast-element").ViewTemplate<DataGridCell, any>;
+    row: string;
     rowData: object | null;
     }
 
@@ -263,7 +270,7 @@ export interface DataGridColumn {
 
 // @public
 export class DataGridHeader extends FASTElement {
-    columnDefinitions: DataGridColumn[];
+    columnData: DataGridColumn[];
     }
 
 // @public
@@ -273,19 +280,21 @@ export const DataGridHeaderTemplate: import("@microsoft/fast-element").ViewTempl
 export class DataGridRow extends FASTElement {
     // (undocumented)
     cellElements?: object[];
-    gridTemplateColumn: object | null;
+    // (undocumented)
+    cellItemTemplate?: ViewTemplate;
+    columns: string;
+    columnsData: DataGridColumn[] | null;
+    // @internal (undocumented)
+    connectedCallback(): void;
+    gridTemplateColumns: string;
+    row: string;
     rowData: object | null;
-    rowIndex: object | null;
+    // @internal (undocumented)
+    slottedCellElements: HTMLElement[];
     }
 
 // @public
 export class DataGridRows extends FASTElement {
-    columnDefinitions: DataGridColumn[];
-    // @internal (undocumented)
-    connectedCallback(): void;
-    rowElements: object[];
-    // (undocumented)
-    rowItemTemplate?: ViewTemplate;
 }
 
 // @public

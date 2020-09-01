@@ -7,5 +7,6 @@ import { DataGridCell } from "./data-grid-cell";
  */
 export const DataGridCellTemplate = html<DataGridCell>`
     <template>
+        "${x => (x.rowData === null || x.columnData === null) ? null : x.rowData[x.columnData.columnDataKey]}"
     </template>
 `;
