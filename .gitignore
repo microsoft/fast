@@ -1,0 +1,65 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Coverage directory used by tools like istanbul
+coverage
+cc-test-reporter
+
+# Dependency directories
+node_modules/
+
+# Typescript v1 declaration files
+typings/
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Yarn Integrity file
+.yarn-integrity
+
+# dotenv environment variables file
+.env
+
+# Ignore distribution directory 
+dist/
+
+# Ignore build www directories
+www/
+storybook-static
+
+#Ignore Mac .DS_Store
+.DS_Store
+
+#Ignore VSCode
+.vscode/
+.vs/
+
+# tmp directories
+.tmp/
+
+# npm package-locks
+package-lock.json
+
+# Docusaurus files to ignore
+sites/website/build/
+sites/website/docs/
+sites/website/src/docs/api/
+sites/website/yarn.lock
+sites/website/node_modules
+sites/website/i18n/
+
+# Docusaurus package readme's
+docs/en/packages/*/README.md
+
+# TypeDoc generated subsites
+docs/en/packages/*/api/
+
+# GitHub Actions Local Testing
+.github/workflows/testing/*.json

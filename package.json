@@ -1,0 +1,130 @@
+{
+  "name": "@microsoft/fast",
+  "description": "An unopinionated system of components, development tools, and utilities used à la carte or as a suite to build enterprise-grade websites and applications.",
+  "version": "1.8.0",
+  "author": {
+    "name": "Microsoft",
+    "url": "https://discord.gg/FcSNfg4"
+  },
+  "license": "MIT",
+  "private": true,
+  "workspaces": {
+    "packages": [
+      "packages/**/*",
+      "sites/fast-color-explorer",
+      "sites/fast-component-explorer",
+      "sites/fast-creator",
+      "sites/site-utilities",
+      "sites/fast-tooling-examples",
+      "sites/fast-website",
+      "sites/website"
+    ],
+    "nohoist": [
+      "**/react-syntax-highlighter",
+      "**/@types/chai",
+      "**/@types/jest",
+      "**/@types/karma",
+      "**/@types/mocha",
+      "**/monaco-editor"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Microsoft/fast.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Microsoft/fast/issues/new/choose"
+  },
+  "scripts": {
+    "integration-tests:alpha": "node build/testing/sauce-labs/test-browsers.js alpha",
+    "integration-tests:beta": "node build/testing/sauce-labs/test-browsers.js beta",
+    "integration-tests:release": "node build/testing/sauce-labs/test-browsers.js release",
+    "prepare": "lerna run prepare",
+    "test": "yarn eslint && yarn unit-tests",
+    "unit-tests": "jest --maxWorkers=4",
+    "unit-tests:watch": "jest --watch",
+    "watch": "tsc -p ./tsconfig.json -w --preserveWatchOutput"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "jest": {
+    "collectCoverage": false,
+    "collectCoverageFrom": [
+      "build/helpers/*.ts"
+    ],
+    "coverageReporters": [
+      "json",
+      [
+        "lcov", {"projectRoot": "."}
+      ]
+    ],
+    "coverageThreshold": {
+      "global": {
+        "statements": 100,
+        "branches": 100,
+        "functions": 100,
+        "lines": 100
+      }
+    },
+    "testURL": "http://localhost",
+    "transform": {
+      "^.+\\.ts?$": "ts-jest",
+      "^.+\\.js?$": "babel-jest"
+    },
+    "transformIgnorePatterns": [
+      "!<rootDir>/node_modules/lodash-es",
+      "node_modules/jss-*",
+      "node_modules/css-vendor"
+    ],
+    "testPathIgnorePatterns": [
+      "packages/",
+      "build/helpers/__tests__/*",
+      "build/helpers/"
+    ],
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(js?|ts?)$",
+    "moduleFileExtensions": [
+      "ts",
+      "js"
+    ]
+  },
+  "lint-staged": {
+    "*.{ts,tsx,js,html}": [
+      "prettier --write"
+    ]
+  },
+  "resolutions": {
+    "@types/react": "*"
+  },
+  "devDependencies": {
+    "@types/jest": "^25.2.1",
+    "@types/lodash-es": "^4.17.0",
+    "@types/node": "^9.4.7",
+    "babel-core": "^7.0.0-bridge.0",
+    "babel-preset-env": "^1.6.1",
+    "chalk": "^2.4.2",
+    "docusaurus-init": "^1.11.0",
+    "dotenv": "^6.0.0",
+    "eyes.selenium": "3.6.2",
+    "glob": "^7.1.2",
+    "husky": "^4.2.5",
+    "jest": "^25.4.0",
+    "lerna": "^3.20.2",
+    "lint-staged": "^10.1.2",
+    "markdown-it": "^8.4.1",
+    "prettier": "2.0.2",
+    "rimraf": "^3.0.2",
+    "ts-jest": "^25.4.0",
+    "ts-node": "^8.8.2",
+    "typedoc": "^0.14.2",
+    "typedoc-plugin-markdown": "^2.2.17",
+    "typescript": "^3.9.0",
+    "yargs": "^11.0.0"
+  },
+  "dependencies": {
+    "saucelabs": "^1.5.0",
+    "selenium-webdriver": "^3.6.0"
+  }
+}

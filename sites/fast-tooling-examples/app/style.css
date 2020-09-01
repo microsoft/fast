@@ -1,0 +1,117 @@
+/* This prevents a flash of unstyled components */
+:not(:defined) {
+    visibility: hidden;
+}
+
+:root {
+    --badge-fill-primary: #FB356D;
+    --badge-color-text: white;
+    --border: 1px solid #e1e1e1;
+}
+
+body {
+    margin: 0;
+}
+
+iframe {
+    border: var(--border);
+}
+
+.main {
+    display: grid;
+    grid-template-columns: 240px auto;
+    grid-template-rows: 44px auto;
+    min-height: 100vh;
+}
+
+.toolbar {
+    grid-column-start: 1;
+    grid-column-end: 3;
+    grid-row-start: 1;
+    grid-row-end: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border-bottom: var(--border);
+}
+
+.toolbar-logo {
+    grid-column-start: 1;
+    grid-column-end: 1;
+}
+
+.toolbar-logo img,
+.toolbar-logo span {
+    vertical-align: middle;
+}
+
+.toolbar-logo span {
+    display: inline-block;
+    margin: 0 10px;
+}
+
+.toolbar-links {
+    grid-column-start: 2;
+    grid-column-end: 2;
+    text-align: end;
+}
+
+.menu {
+    grid-column-start: 1;
+    grid-column-end: 1;
+    grid-row-start: 2;
+    grid-row-end: 2;
+    border-inline-end: var(--border);
+}
+
+.category-title {
+    /* This should be replaced at a later date once the typography styles are defined */
+    font-size: var(--type-ramp-plus-2-font-size);
+}
+
+.content {
+    grid-column-start: 2;
+    grid-column-end: 2;
+    grid-row-start: 2;
+    grid-row-end: 2;
+}
+
+.content-title {
+    /* This should be replaced at a later date once the typography styles are defined */
+    font-size: var(--type-ramp-plus-3-font-size);
+}
+
+.content-subtitle {
+    /* This should be replaced at a later date once the typography styles are defined */
+    font-size: var(--type-ramp-plus-2-font-size);
+}
+
+.content-paragraph {
+    /* This should be replaced at a later date once the typography styles are defined */
+    font-size: var(--type-ramp-plus-1-font-size);
+}
+
+.content-list {
+    /* This should be replaced at a later date once the typography styles are defined */
+    font-size: var(--type-ramp-plus-1-font-size);
+}
+
+.toolbar-logo,
+.toolbar-links,
+.menu,
+.content {
+    padding: 2px 10px;
+}
+
+.guidance {
+    max-width: 1000px;
+}
+
+.guidance pre {
+    background: #414141;
+    color: white;
+    padding: 10px;
+}
+
+#tabs {
+    display: none;
+}

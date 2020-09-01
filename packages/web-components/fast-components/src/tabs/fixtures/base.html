@@ -1,0 +1,237 @@
+<fast-design-system-provider use-defaults>
+    <style>
+        .icon {
+            pointer-events: none;
+        }
+    </style>
+    <h1>Tabs</h1>
+    <h4>Default</h4>
+    <fast-tabs id="myTab" activeId="TabTwo">
+        <fast-tab id="TabOne">Tab one</fast-tab>
+        <fast-tab id="TabTwo">Tab two</fast-tab>
+        <fast-tab id="TabThree">Tab three</fast-tab>
+        <fast-tab-panel id="TabPanelOne">
+            Tab one content. This is for testing.
+        </fast-tab-panel>
+        <fast-tab-panel id="TabPanelTwo">
+            Tab two content. This is for testing.
+        </fast-tab-panel>
+        <fast-tab-panel id="TabPanelThree">
+            Tab three content. This is for testing.
+        </fast-tab-panel>
+        <div>Testing</div>
+    </fast-tabs>
+    <h4>Vertical</h4>
+    <fast-tabs orientation="vertical">
+        <fast-tab id="TabOne">Tab one</fast-tab>
+        <fast-tab id="TabTwo">Tab two</fast-tab>
+        <fast-tab id="TabThree">Tab three</fast-tab>
+        <fast-tab-panel>
+            Tab one content. This is for testing.
+        </fast-tab-panel>
+        <fast-tab-panel>
+            Tab two content. This is for testing.
+        </fast-tab-panel>
+        <fast-tab-panel>
+            Tab three content. This is for testing.
+        </fast-tab-panel>
+    </fast-tabs>
+    <h4>Div and Paragraph Elements in Tab</h4>
+    <fast-tabs>
+        <fast-tab id="TabOne">Tab one</fast-tab>
+        <fast-tab id="TabTwo"><p class="element-tab">div tab</p></fast-tab>
+        <fast-tab id="TabThree"><div class="element-tab">paragraph tab</div></fast-tab>
+        <fast-tab-panel>
+            Tab one content. This is for testing.
+        </fast-tab-panel>
+        <fast-tab-panel>
+            Tab two content. This is for testing.
+        </fast-tab-panel>
+        <fast-tab-panel>
+            Tab three content. This is for testing.
+        </fast-tab-panel>
+    </fast-tabs>
+    <h4>Icons - horizontal</h4>
+    <fast-tabs id="myTab" activeId="TabTwo">
+        <fast-tab>
+            <svg
+                class="icon"
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 20 20"
+            >
+                <path
+                    d="M10 20C15.5228 20 20 15.5228 20 10C20 4.47715 15.5228 0 10 0C4.47715 0 0 4.47715 0 10C0 15.5228 4.47715 20 10 20ZM10 18.5V1.5C14.6944 1.5 18.5 5.30558 18.5 10C18.5 14.6944 14.6944 18.5 10 18.5Z"
+                />
+            </svg>
+        </fast-tab>
+        <fast-tab>
+            <svg
+                class="icon"
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 20 20"
+            >
+                <path
+                    d="M1.77405 4.01413C4.72422 -0.0894092 10.8318 -1.28348 15.1796 1.54073C19.4728 4.32946 21.0517 9.69108 19.2933 14.7217C17.633 19.4719 13.2582 21.3539 10.1051 18.9644C8.92397 18.0694 8.46609 16.9473 8.24477 15.1248L8.13906 14.0894L8.0935 13.6729C7.9705 12.694 7.78149 12.2555 7.38699 12.0258C6.84973 11.7129 6.49199 11.7056 5.78653 11.9912L5.43433 12.1438L5.25504 12.2255C4.2381 12.6869 3.56161 12.849 2.70595 12.6617L2.50508 12.6123L2.34104 12.5634C-0.456623 11.6577 -0.871 7.69326 1.77405 4.01413ZM2.76134 11.0529L2.88463 11.0911L3.01899 11.1234C3.45944 11.2146 3.83586 11.1386 4.46049 10.87L5.06454 10.6004C6.27043 10.0838 7.05597 10.0333 8.11956 10.6527C9.04001 11.1887 9.39876 12.0125 9.58174 13.44L9.6351 13.9211L9.68948 14.4784L9.73676 14.9211C9.90937 16.3477 10.2232 17.1119 10.9886 17.692C13.271 19.4216 16.5403 18.0152 17.8799 14.1825C19.4009 9.83105 18.0546 5.25933 14.3851 2.87572C10.6995 0.481614 5.45895 1.50616 2.97716 4.9582C0.895903 7.85312 1.15117 10.4912 2.76134 11.0529ZM14.0208 8.96284C13.8416 8.264 14.2385 7.54568 14.9074 7.35843C15.5764 7.17118 16.2639 7.5859 16.4432 8.28474C16.6224 8.98357 16.2254 9.70189 15.5565 9.88914C14.8876 10.0764 14.2 9.66168 14.0208 8.96284ZM14.5169 12.6189C14.3377 11.9201 14.7347 11.2018 15.4036 11.0145C16.0725 10.8273 16.76 11.242 16.9393 11.9408C17.1185 12.6397 16.7216 13.358 16.0526 13.5452C15.3837 13.7325 14.6962 13.3178 14.5169 12.6189ZM12.0361 5.81604C11.8569 5.11721 12.2539 4.39889 12.9228 4.21163C13.5917 4.02438 14.2792 4.4391 14.4585 5.13794C14.6377 5.83678 14.2407 6.5551 13.5718 6.74235C12.9029 6.9296 12.2154 6.51488 12.0361 5.81604ZM12.0076 15.2463C11.8283 14.5475 12.2253 13.8291 12.8942 13.6419C13.5631 13.4546 14.2507 13.8694 14.4299 14.5682C14.6091 15.267 14.2122 15.9854 13.5433 16.1726C12.8744 16.3599 12.1868 15.9451 12.0076 15.2463ZM8.49974 4.79782C8.32051 4.09898 8.71747 3.38066 9.38638 3.19341C10.0553 3.00616 10.7428 3.42088 10.9221 4.11972C11.1013 4.81855 10.7044 5.53687 10.0354 5.72412C9.36653 5.91138 8.67898 5.49665 8.49974 4.79782Z"
+                />
+            </svg>
+        </fast-tab>
+        <fast-tab>
+            <svg
+                class="icon"
+                xmlns="http://www.w3.org/2000/svg"
+                width="22"
+                height="20"
+                viewBox="0 0 22 20"
+            >
+                <path
+                    d="M18.6825 0C19.9361 0 20.9621 0.973832 21.0455 2.20621L21.0509 2.36837V13.4231C21.0509 14.6766 20.0771 15.7027 18.8447 15.786L18.6825 15.7915L14.2091 15.7912V18.4206L16.0523 18.4211C16.4883 18.4211 16.8417 18.7745 16.8417 19.2105C16.8417 19.6102 16.5447 19.9405 16.1594 19.9928L16.0523 20H4.99988C4.56388 20 4.21043 19.6465 4.21043 19.2105C4.21043 18.8109 4.50743 18.4806 4.89276 18.4283L4.99988 18.4211L6.84089 18.4206V15.7912L2.36837 15.7915C1.11485 15.7915 0.0887928 14.8177 0.00546392 13.5853L0 13.4231V2.36837C0 1.11485 0.973832 0.0887928 2.20621 0.00546393L2.36837 0H18.6825ZM12.6292 15.7912H8.41875L8.4198 18.4211H12.6302L12.6292 15.7912ZM18.6825 1.57891H2.36837C1.9687 1.57891 1.63839 1.87591 1.58612 2.26124L1.57891 2.36837V13.4231C1.57891 13.8228 1.87591 14.1531 2.26124 14.2054L2.36837 14.2126H18.6825C19.0822 14.2126 19.4125 13.9156 19.4648 13.5303L19.472 13.4231V2.36837C19.472 1.9687 19.175 1.63839 18.7897 1.58612L18.6825 1.57891ZM17.3713 3.15782C17.6297 3.15782 17.8445 3.344 17.8891 3.58952L17.8976 3.68413V12.1076C17.8976 12.3659 17.7114 12.5808 17.4659 12.6254L17.3713 12.6339H7.89332C7.63495 12.6339 7.42006 12.4477 7.3755 12.2022L7.36702 12.1076V3.68413C7.36702 3.42575 7.5532 3.21086 7.79872 3.1663L7.89332 3.15782H17.3713ZM5.78742 3.15782C6.0458 3.15782 6.26068 3.344 6.30525 3.58952L6.31373 3.68413V12.1076C6.31373 12.3659 6.12755 12.5808 5.88203 12.6254L5.78742 12.6339H3.68228C3.42391 12.6339 3.20902 12.4477 3.16446 12.2022L3.15598 12.1076V3.68413C3.15598 3.42575 3.34216 3.21086 3.58768 3.1663L3.68228 3.15782H5.78742Z"
+                />
+            </svg>
+        </fast-tab>
+        <fast-tab-panel id="TabPanelOne">
+            Tab one content. This is for testing.
+        </fast-tab-panel>
+        <fast-tab-panel id="TabPanelTwo">
+            Tab two content. This is for testing.
+        </fast-tab-panel>
+        <fast-tab-panel id="TabPanelThree">
+            Tab three content. This is for testing.
+        </fast-tab-panel>
+        <div>Testing</div>
+    </fast-tabs>
+    <h4>Icons - Vertical</h4>
+    <fast-tabs orientation="vertical">
+        <fast-tab>
+            <svg
+                class="icon"
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 20 20"
+            >
+                <path
+                    d="M10 20C15.5228 20 20 15.5228 20 10C20 4.47715 15.5228 0 10 0C4.47715 0 0 4.47715 0 10C0 15.5228 4.47715 20 10 20ZM10 18.5V1.5C14.6944 1.5 18.5 5.30558 18.5 10C18.5 14.6944 14.6944 18.5 10 18.5Z"
+                />
+            </svg>
+        </fast-tab>
+        <fast-tab>
+            <svg
+                class="icon"
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 20 20"
+            >
+                <path
+                    d="M1.77405 4.01413C4.72422 -0.0894092 10.8318 -1.28348 15.1796 1.54073C19.4728 4.32946 21.0517 9.69108 19.2933 14.7217C17.633 19.4719 13.2582 21.3539 10.1051 18.9644C8.92397 18.0694 8.46609 16.9473 8.24477 15.1248L8.13906 14.0894L8.0935 13.6729C7.9705 12.694 7.78149 12.2555 7.38699 12.0258C6.84973 11.7129 6.49199 11.7056 5.78653 11.9912L5.43433 12.1438L5.25504 12.2255C4.2381 12.6869 3.56161 12.849 2.70595 12.6617L2.50508 12.6123L2.34104 12.5634C-0.456623 11.6577 -0.871 7.69326 1.77405 4.01413ZM2.76134 11.0529L2.88463 11.0911L3.01899 11.1234C3.45944 11.2146 3.83586 11.1386 4.46049 10.87L5.06454 10.6004C6.27043 10.0838 7.05597 10.0333 8.11956 10.6527C9.04001 11.1887 9.39876 12.0125 9.58174 13.44L9.6351 13.9211L9.68948 14.4784L9.73676 14.9211C9.90937 16.3477 10.2232 17.1119 10.9886 17.692C13.271 19.4216 16.5403 18.0152 17.8799 14.1825C19.4009 9.83105 18.0546 5.25933 14.3851 2.87572C10.6995 0.481614 5.45895 1.50616 2.97716 4.9582C0.895903 7.85312 1.15117 10.4912 2.76134 11.0529ZM14.0208 8.96284C13.8416 8.264 14.2385 7.54568 14.9074 7.35843C15.5764 7.17118 16.2639 7.5859 16.4432 8.28474C16.6224 8.98357 16.2254 9.70189 15.5565 9.88914C14.8876 10.0764 14.2 9.66168 14.0208 8.96284ZM14.5169 12.6189C14.3377 11.9201 14.7347 11.2018 15.4036 11.0145C16.0725 10.8273 16.76 11.242 16.9393 11.9408C17.1185 12.6397 16.7216 13.358 16.0526 13.5452C15.3837 13.7325 14.6962 13.3178 14.5169 12.6189ZM12.0361 5.81604C11.8569 5.11721 12.2539 4.39889 12.9228 4.21163C13.5917 4.02438 14.2792 4.4391 14.4585 5.13794C14.6377 5.83678 14.2407 6.5551 13.5718 6.74235C12.9029 6.9296 12.2154 6.51488 12.0361 5.81604ZM12.0076 15.2463C11.8283 14.5475 12.2253 13.8291 12.8942 13.6419C13.5631 13.4546 14.2507 13.8694 14.4299 14.5682C14.6091 15.267 14.2122 15.9854 13.5433 16.1726C12.8744 16.3599 12.1868 15.9451 12.0076 15.2463ZM8.49974 4.79782C8.32051 4.09898 8.71747 3.38066 9.38638 3.19341C10.0553 3.00616 10.7428 3.42088 10.9221 4.11972C11.1013 4.81855 10.7044 5.53687 10.0354 5.72412C9.36653 5.91138 8.67898 5.49665 8.49974 4.79782Z"
+                />
+            </svg>
+        </fast-tab>
+        <fast-tab>
+            <svg
+                class="icon"
+                xmlns="http://www.w3.org/2000/svg"
+                width="22"
+                height="20"
+                viewBox="0 0 22 20"
+            >
+                <path
+                    d="M18.6825 0C19.9361 0 20.9621 0.973832 21.0455 2.20621L21.0509 2.36837V13.4231C21.0509 14.6766 20.0771 15.7027 18.8447 15.786L18.6825 15.7915L14.2091 15.7912V18.4206L16.0523 18.4211C16.4883 18.4211 16.8417 18.7745 16.8417 19.2105C16.8417 19.6102 16.5447 19.9405 16.1594 19.9928L16.0523 20H4.99988C4.56388 20 4.21043 19.6465 4.21043 19.2105C4.21043 18.8109 4.50743 18.4806 4.89276 18.4283L4.99988 18.4211L6.84089 18.4206V15.7912L2.36837 15.7915C1.11485 15.7915 0.0887928 14.8177 0.00546392 13.5853L0 13.4231V2.36837C0 1.11485 0.973832 0.0887928 2.20621 0.00546393L2.36837 0H18.6825ZM12.6292 15.7912H8.41875L8.4198 18.4211H12.6302L12.6292 15.7912ZM18.6825 1.57891H2.36837C1.9687 1.57891 1.63839 1.87591 1.58612 2.26124L1.57891 2.36837V13.4231C1.57891 13.8228 1.87591 14.1531 2.26124 14.2054L2.36837 14.2126H18.6825C19.0822 14.2126 19.4125 13.9156 19.4648 13.5303L19.472 13.4231V2.36837C19.472 1.9687 19.175 1.63839 18.7897 1.58612L18.6825 1.57891ZM17.3713 3.15782C17.6297 3.15782 17.8445 3.344 17.8891 3.58952L17.8976 3.68413V12.1076C17.8976 12.3659 17.7114 12.5808 17.4659 12.6254L17.3713 12.6339H7.89332C7.63495 12.6339 7.42006 12.4477 7.3755 12.2022L7.36702 12.1076V3.68413C7.36702 3.42575 7.5532 3.21086 7.79872 3.1663L7.89332 3.15782H17.3713ZM5.78742 3.15782C6.0458 3.15782 6.26068 3.344 6.30525 3.58952L6.31373 3.68413V12.1076C6.31373 12.3659 6.12755 12.5808 5.88203 12.6254L5.78742 12.6339H3.68228C3.42391 12.6339 3.20902 12.4477 3.16446 12.2022L3.15598 12.1076V3.68413C3.15598 3.42575 3.34216 3.21086 3.58768 3.1663L3.68228 3.15782H5.78742Z"
+                />
+            </svg>
+        </fast-tab>
+        <fast-tab-panel>
+            Tab one content. This is for testing.
+        </fast-tab-panel>
+        <fast-tab-panel>
+            Tab two content. This is for testing.
+        </fast-tab-panel>
+        <fast-tab-panel>
+            Tab three content. This is for testing.
+        </fast-tab-panel>
+    </fast-tabs>
+    <h4>Supplemental content</h4>
+    <fast-tabs>
+        <div slot="start">
+            <button>1</button>
+            <button>2</button>
+            <button>3</button>
+        </div>
+        <div slot="end">
+            <button>1</button>
+            <button>2</button>
+            <button>3</button>
+        </div>
+        <fast-tab>Tab one</fast-tab>
+        <fast-tab>Tab two</fast-tab>
+        <fast-tab>Tab three</fast-tab>
+        <fast-tab-panel>
+            Tab one content. This is for testing.
+        </fast-tab-panel>
+        <fast-tab-panel>
+            Tab two content. This is for testing.
+        </fast-tab-panel>
+        <fast-tab-panel>
+            Tab three content. This is for testing.
+        </fast-tab-panel>
+    </fast-tabs>
+    <h4>Supplemental content - Vertical</h4>
+    <fast-tabs orientation="vertical">
+        <div slot="start">
+            <button>1</button>
+            <button>2</button>
+            <button>3</button>
+        </div>
+        <div slot="end">
+            <button>1</button>
+            <button>2</button>
+            <button>3</button>
+        </div>
+        <fast-tab>Tab one</fast-tab>
+        <fast-tab>Tab two</fast-tab>
+        <fast-tab>Tab three</fast-tab>
+        <fast-tab-panel>
+            Tab one content. This is for testing.
+        </fast-tab-panel>
+        <fast-tab-panel>
+            Tab two content. This is for testing.
+        </fast-tab-panel>
+        <fast-tab-panel>
+            Tab three content. This is for testing.
+        </fast-tab-panel>
+    </fast-tabs>
+    <h4>No active indicator</h4>
+    <fast-tabs activeIndicator="false" activeId="TabTwo">
+        <fast-tab id="TabOne">Tab one</fast-tab>
+        <fast-tab id="TabTwo">Tab two</fast-tab>
+        <fast-tab id="TabThree">Tab three</fast-tab>
+        <fast-tab-panel id="TabPanelOne">
+            Tab one content. This is for testing.
+        </fast-tab-panel>
+        <fast-tab-panel id="TabPanelTwo">
+            Tab two content. This is for testing.
+        </fast-tab-panel>
+        <fast-tab-panel id="TabPanelThree">
+            Tab three content. This is for testing.
+        </fast-tab-panel>
+    </fast-tabs>
+    <h4>No active indicator - Vertical</h4>
+    <fast-tabs activeIndicator="false" orientation="vertical" activeIndicator>
+        <fast-tab>Tab one</fast-tab>
+        <fast-tab>Tab two</fast-tab>
+        <fast-tab>Tab three</fast-tab>
+        <fast-tab-panel>
+            Tab one content. This is for testing.
+        </fast-tab-panel>
+        <fast-tab-panel>
+            Tab two content. This is for testing.
+        </fast-tab-panel>
+        <fast-tab-panel>
+            Tab three content. This is for testing.
+        </fast-tab-panel>
+    </fast-tabs>
+</fast-design-system-provider>

@@ -1,0 +1,14 @@
+# Source files
+__tests__/
+
+# Source files
+client/
+lib/
+webpack/
+www/
+
+# Configs
+babel.config.js
+tsconfig.json
+postcss.config.js
+.eslintrc.js

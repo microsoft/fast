@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "emitDecoratorMetadata": true,
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "jsx": "react",
+    "target": "es5",
+    "module": "es2015",
+    "moduleResolution": "node",
+    "removeComments": true,
+    "sourceMap": true,
+    "rootDir": "./",
+    "baseUrl": ".",
+    "lib": [ "es2015", "es2017", "dom", "scripthost" ],
+    "paths": {
+      "[lib]/*": [
+        "./lib/*"
+      ]
+    }
+  }
+}

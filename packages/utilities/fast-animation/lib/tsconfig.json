@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "lib": [ "es2015", "es2017", "dom", "scripthost" ],
+    "moduleResolution": "node",
+    "module": "CommonJS",
+    "target": "es5",
+    "baseUrl": ".",
+    "declaration": true,
+    "outDir": "../dist"
+  }
+}

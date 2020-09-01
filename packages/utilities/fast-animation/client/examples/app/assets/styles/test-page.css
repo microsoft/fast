@@ -1,0 +1,272 @@
+body {
+    padding: 150px;
+}
+
+body * {
+    box-sizing: border-box;
+}
+
+.container-square {
+    width: 336px;
+    height: 336px;
+    padding: 32px;
+    background: #686868;
+    position: relative;
+    z-index: 1;
+    margin-bottom: 36px;
+    overflow: hidden;
+}
+
+.container-square .fill-bar-container {
+    width: 196px;
+    margin: 0 auto;
+    font-family: 'Segoe UI', 'Segoe', sans-serif;
+    font-weight: bold;
+    color: #a3a3a3;
+    position: absolute;
+    bottom:28px;
+    left: 0;
+    right: 0;
+}
+
+#doSvg1 {
+    width: 18px;
+    position: absolute;
+    left: 130px;
+    top: -28px;
+    transform: scale(0, 0);
+}
+
+#highlighter {
+    height: 112px;
+    width: 100%;
+    position: absolute;
+    top: 72px;
+    left: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 3;
+}
+
+#diamond {
+    margin: 50px auto;
+    width: 0;
+    height: 0;
+    border: 60px solid transparent;
+    border-bottom-color: #dadada;
+    position: relative;
+    top: -60px;
+}
+
+#diamond:before {
+    content: '';
+    width: 118px;
+    height: 2px;
+    background: #dadada;
+    position: absolute;
+    left: -59px;
+    top: 59px;
+}
+
+#diamond:after {
+    content: '';
+    position: absolute;
+    left: -60px;
+    top: 60px;
+    width: 0;
+    height: 0;
+    border: 60px solid transparent;
+    border-top-color: #dadada;
+}
+
+#easingCurve {
+    width: 200px;
+    height: 200px;
+    margin-top: 35px;
+}
+
+.container-square#overlapping {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.container-square .page-container {
+    background-color: #dadada;
+    min-height: 100%;
+    padding: 15px 0 8px 0;
+}
+
+.container-square .page-container .ui-line {
+    width: 120px;
+    height: 10px;
+    background: #818181;
+    margin: 0 auto 34px auto;
+    position: relative;
+    z-index: 4;
+}
+
+.container-square .page-container .ui-box {
+    width: 175px;
+    height: 82px;
+    margin: 0 auto;
+    background: #818181;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 22px;
+    position: relative;
+    z-index: 4;
+}
+
+.container-square .page-container .ui-box .ui-circle {
+    width: 27px;
+    height: 27px;
+    border-radius: 50%;
+    background: #dadada;
+    position: relative;
+    z-index: 5;
+}
+
+.container-square .fill-bar-container .bar-track {
+    background: #818181;
+    padding: 3px 0;
+
+}
+
+.container-square .fill-bar-container .bar-track .bar-fill {
+    width: 1px;
+    height: 8px;
+    background: #fff;
+    transform: scale(0, 1);
+}
+
+.container-square .fill-bar-container .bar-numbers {
+    display: table;
+    table-layout: fixed;
+    width: calc(100% + 24px);
+    margin: 0 -12px;
+}
+
+.container-square .fill-bar-container .bar-numbers span {
+    display: table-cell;
+    text-align: center;
+}
+
+.container-square #overlapping .light-square,
+.container-square #overlapping .medium-square {
+    margin: 0 auto;
+}
+
+.light-square {
+    background: #d1d1d1;
+}
+
+.medium-square {
+    background: #a4a4a4;
+}
+
+.dark-square {
+    background: #4c4c4c;
+}
+
+
+.light-square,
+.medium-square,
+.dark-square {
+    display: inline-block;
+
+}
+
+.size-small {
+    width: 36px;
+    height: 36px;
+    position: relative;
+    z-index: 4;
+    margin: 28px;
+}
+
+.size-medium {
+    width: 60px;
+    height: 60px;
+}
+
+.size-medium.fill-width {
+    width: 100%;
+}
+
+.size-large {
+    width: 120px;
+    height: 120px;
+}
+
+.size-fill {
+    margin: 32px;
+    width: calc(100% - 64px);
+    padding-bottom: calc(100% - 64px);
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: scale(0);
+}
+.circle-large {
+    background: #498f90;
+    border-radius: 50%;
+    height: 50px;
+    width: 50px;
+    position: absolute;
+    bottom: 42px;
+    right: 32px;
+}
+
+.circle-small {
+    background: #d1d1d1;
+    border-radius: 50%;
+    height: 16px;
+    width: 16px;
+    position: absolute;
+    bottom: 59px;
+    left: 24px;
+}
+
+.centerizer {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    margin: auto;
+    width: 212px;
+    height: 60px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.centerizer.foursquare {
+    width: 288px;
+}
+
+.centerizer.large {
+    height: 120px;
+}
+
+.centerizer.large.single {
+    width: 120px;
+}
+
+.centerizer.layout {
+    width: 136px;
+    height: 212px;
+    flex-direction: column;
+}
+
+.centerizer.layout .row1,
+.centerizer.layout .row2,
+.centerizer.layout .row3 {
+    opacity: 0;
+}
+
+.centerizer.layout > div {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}

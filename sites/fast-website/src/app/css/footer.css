@@ -1,0 +1,29 @@
+.footer {
+    align-items: center;
+    display: flex;
+    /*
+        font is reflected here so it gets
+        picked up when used as a separate module
+    */
+    font: 16px "aktiv-grotesk", "Segoe UI", Arial, Helvetica, sans-serif;
+    grid-column: 2;
+    min-height: var(--navbar-height);
+    padding: 0 20px 84px;
+}
+
+.footer .logo .icon {
+    margin-inline-end: 0;
+}
+
+.footer site-navigation-item {
+    color: var(--neutral-foreground-hint);
+    font-size: var(--type-ramp-minus-1-font-size);
+    margin: 0;
+    margin-inline-end: 50px;
+}
+
+@media screen and (min-width: 900px) {
+    .footer {
+        padding: 0 0 84px;
+    }
+}

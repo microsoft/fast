@@ -1,0 +1,29 @@
+<header class="header">
+    <site-navigation class="in-header" menu>
+        <fast-anchor
+            href="https://www.fast.design"
+            class="logo"
+            slot="start"
+            appearance="lightweight"
+            aria-label="Home"
+            alt="FAST"
+        >
+            <%= require("svg/icon-brand.svg") %> <%=
+            require("svg/icon-brand-fast.svg") %>
+        </fast-anchor>
+        <site-navigation-item href="https://explore.fast.design">Components</site-navigation-item>
+        <site-navigation-item href="/docs/introduction">Documentation</site-navigation-item>
+        <site-navigation-item href="https://discord.gg/FcSNfg4">Community</site-navigation-item>
+        <fast-anchor
+            class="github-link"
+            slot="end"
+            appearance="lightweight"
+            href="https://github.com/microsoft/fast/"
+        >
+            GitHub
+            <span slot="end">
+                <%= require("svg/icon-github.svg") %>
+            </span>
+        </fast-anchor>
+    </site-navigation>
+</header>

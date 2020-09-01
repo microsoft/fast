@@ -1,0 +1,13 @@
+{
+    "extends": "../../../tsconfig.json",
+    "compilerOptions": {
+        "target": "es6",
+        "baseUrl": ".",
+        "outDir": "./dist",
+        "declaration": false,
+        "jsx": "react",
+        "strictNullChecks": true,
+        "experimentalDecorators": true
+    },
+    "include": ["./src"]
+}

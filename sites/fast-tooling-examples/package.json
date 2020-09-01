@@ -1,0 +1,61 @@
+{
+  "name": "@microsoft/fast-tooling-examples",
+  "description": "A website of tooling examples from the FAST tooling packages",
+  "sideEffects": false,
+  "private": true,
+  "version": "0.4.4",
+  "author": {
+    "name": "Microsoft",
+    "url": "https://discord.gg/FcSNfg4"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Microsoft/fast.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Microsoft/fast/issues/new/choose"
+  },
+  "scripts": {
+    "build": "webpack --progress --mode=production",
+    "convert:readme": "node ./build/convert-readme.js",
+    "prettier": "prettier --config ../../.prettierrc --write \"**/*.{ts,html}\"",
+    "prettier:diff": "prettier --config ../../.prettierrc \"**/*.{ts,html}\" --list-different",
+    "eslint": "eslint . --ext .ts",
+    "eslint:fix": "eslint . --ext .ts --fix",
+    "start": "webpack-dev-server",
+    "test": "yarn convert:readme && yarn eslint && yarn build"
+  },
+  "devDependencies": {
+    "@microsoft/site-utilities": "^0.4.4",
+    "babel-core": "^6.26.3",
+    "babel-loader": "^8.1.0",
+    "babel-preset-env": "^1.7.0",
+    "clean-webpack-plugin": "^1.0.0",
+    "copy-webpack-plugin": "^6.0.3",
+    "css-loader": "^3.5.3",
+    "file-loader": "^6.0.0",
+    "html-webpack-plugin": "^4.3.0",
+    "markdown-it-anchor": "^5.3.0",
+    "mini-css-extract-plugin": "^0.9.0",
+    "prettier": "2.0.2",
+    "ts-loader": "^7.0.2",
+    "typescript": "^3.9.0",
+    "webpack": "^4.43.0",
+    "webpack-bundle-analyzer": "^3.0.3",
+    "webpack-cli": "^3.1.2",
+    "webpack-dev-server": "^3.11.0",
+    "webpack-shell-plugin": "^0.5.0",
+    "worker-loader": "^2.0.0"
+  },
+  "dependencies": {
+    "@microsoft/fast-components": "^1.9.0",
+    "@microsoft/fast-tooling": "^0.9.1",
+    "@microsoft/fast-tooling-react": "^2.3.4",
+    "focus-visible": "^4.1.5",
+    "react": "^16.13.1",
+    "react-dnd": "^9.0.0",
+    "react-dnd-html5-backend": "^9.0.0",
+    "react-dom": "^16.13.1"
+  }
+}

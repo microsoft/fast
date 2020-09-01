@@ -1,0 +1,34 @@
+{
+  "name": "fast-site",
+  "version": "0.2.0",
+  "private": true,
+  "scripts": {
+    "clean": "node ../../build/clean.js docs",
+    "prepare-docs": "yarn clean && node src/prepare-docs.js",
+    "build-static": "node src/build-static.js",
+    "generate:badges": "yarn workspace @microsoft/site-utilities generate:badges",
+    "dev": "yarn build-static && yarn prepare-docs && docusaurus start",
+    "build": "yarn generate:badges && yarn build-static && yarn prepare-docs && yarn docusaurus build"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@docusaurus/core": "2.0.0-alpha.61",
+    "@docusaurus/preset-classic": "2.0.0-alpha.61",
+    "@docusaurus/theme-live-codeblock": "2.0.0-alpha.61",
+    "@microsoft/api-documenter": "7.8.13",
+    "classnames": "^2.2.6",
+    "copyfiles": "^2.3.0",
+    "progress-bar-webpack-plugin": "^2.1.0"
+  }
+}

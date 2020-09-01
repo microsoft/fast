@@ -1,0 +1,18 @@
+# Source files
+src/
+
+# Tests
+__tests__/
+coverage/
+*.spec.*
+*.test.*
+
+# Config files
+.prettierignore
+.eslintignore
+.eslintrc.js
+.storybook
+babel.config.js
+tsconfig.json
+tsconfig.build.json
+webpack.message-system.config.js

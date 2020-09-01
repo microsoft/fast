@@ -1,0 +1,17 @@
+{
+  "name": "@microsoft/fast-production-sites",
+  "version": "1.0.0",
+  "description": "Required to install NPM packages on Azure running Node/Express.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/microsoft/fast.git"
+  },
+  "author": "Microsoft Corporation",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "express": "4.17.1",
+    "express-history-api-fallback": "2.2.1",
+    "helmet": "4.0.0"
+  }
+}

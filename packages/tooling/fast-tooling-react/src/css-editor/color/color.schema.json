@@ -1,0 +1,19 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "title": "CSS Color",
+    "description": "A CSS color component's schema definition.",
+    "id": "@microsoft/fast-tooling-react/css-color",
+    "type": "object",
+    "properties": {
+        "data": {
+            "title": "CSS Values",
+            "type": "object",
+            "properties": {
+                "color": {
+                    "title": "Color",
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

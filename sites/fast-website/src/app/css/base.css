@@ -1,0 +1,34 @@
+html {
+    background-color: var(--background-color);
+    box-sizing: border-box;
+    font: 16px "aktiv-grotesk", "Segoe UI", Arial, Helvetica, sans-serif;
+}
+
+html,
+body {
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    width: 100%;
+}
+
+body {
+    background-color: var(--background-color);
+    color: var(--neutral-foreground-rest);
+    margin: 0;
+    padding: 0;
+}
+
+.body-provider {
+    background-color: var(--background-color);
+    isolation: isolate;
+}
+
+.menu-opened {
+    --width-offset: 0;
+    padding-right: calc(var(--width-offset) * 1px);
+    overflow: hidden;
+}
+
+.section-header {
+    max-width: 900px;
+}

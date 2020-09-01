@@ -1,0 +1,9 @@
+# Compiled files
+permutator/permutator
+permutator/*.o
+permutator/*.so
+permutator/*.wasm
+permutator/permutator.js
+permutator/__tests__/test
+permutator/__tests__/*.o
+permutator/__tests__/*.so

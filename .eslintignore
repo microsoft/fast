@@ -1,0 +1,8 @@
+# Never lint node_modules
+node_modules
+
+# Never lint build output
+dist
+
+# Never lint coverage output
+coverage

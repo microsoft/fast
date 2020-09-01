@@ -1,0 +1,201 @@
+<% const include = name => require(`./${name}.ejs`)(); %>
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title><%= htmlWebpackPlugin.options.title %></title>
+        <%= htmlWebpackPlugin.options.manifest %>
+        <link href="https://use.typekit.net/spx2dgm.css" rel="stylesheet" />
+        <style type="text/css">*:not(:defined){visibility:hidden}</style>
+    </head>
+    <body>
+        <fast-design-system-provider
+            class="body-provider"
+            use-defaults
+            type-ramp-base-font-size="16px"
+        >
+            <div class="site-wrapper">
+                <%= include('header') %>
+                <section class="section hero-section" id="hero">
+                    <div class="section-content">
+                        <site-section-header class="section-header">
+                            <fast-badge
+                                fill="primary"
+                                color="primary"
+                                slot="badge"
+                                class="section-badge"
+                            >
+                                ADAPTIVE UI SYSTEM, UTILITIES, & TOOLS
+                            </fast-badge>
+                            <h1 class="section-heading-hero">
+                                The adaptive interface system for modern web experiences
+                            </h1>
+                            <p slot="body" class="section-paragraph-hero">
+                                Interfaces built with FAST adapt to your design system and
+                                can be used with any modern UI Framework by leveraging
+                                industry standard Web Components.
+                            </p>
+                            <fast-anchor
+                                slot="action"
+                                appearance="accent"
+                                href="/docs/introduction"
+                            >
+                                Get started
+                            </fast-anchor>
+                        </site-section-header>
+                    </div>
+                </section>
+
+                <section class="fast-frame-section" id="adaptive-ui">
+                    <div class="section-content">
+                        <site-section-header class="section-header fast-frame-header">
+                            <fast-badge
+                                fill="primary"
+                                color="primary"
+                                slot="badge"
+                                class="section-badge"
+                            >
+                                FLEXIBLE AND ADAPTABLE
+                            </fast-badge>
+                            <h2 class="section-heading">
+                                Dynamic themes with Adaptive UI
+                            </h2>
+                            <p slot="body" class="section-paragraph">
+                                FAST provides an innovative theming system called Adaptive
+                                UI, which builds design system properties that designers
+                                use every day directly into every component.
+                            </p>
+                            <fast-anchor
+                                href="https://explore.fast.design"
+                                slot="action"
+                                appearance="accent"
+                            >
+                                Explore components
+                            </fast-anchor>
+                        </site-section-header>
+                        <fast-divider
+                            class="section-decoration"
+                            role="presentation"
+                        ></fast-divider>
+                        <fast-frame></fast-frame>
+                    </div>
+                </section>
+
+                <section class="section" id="integration">
+                    <div class="section-content">
+                        <site-section-header class="section-header">
+                            <fast-badge
+                                fill="primary"
+                                color="primary"
+                                slot="badge"
+                                class="section-badge"
+                            >
+                                FULLY INTEGRATED
+                            </fast-badge>
+                            <h2 class="section-heading">
+                                Works with existing frameworks
+                            </h2>
+                            <p slot="body" class="section-paragraph">
+                                Standards-based Web Components are the foundation of each
+                                FAST component, making them compatible with almost any
+                                modern web framework, including those listed below.
+                            </p>
+                            <fast-anchor
+                                href="/docs/integrations/introduction"
+                                slot="action"
+                                appearance="accent"
+                            >
+                                Learn More
+                            </fast-anchor>
+                        </site-section-header>
+                        <fast-divider
+                            class="section-decoration"
+                            role="presentation"
+                        ></fast-divider>
+                        <site-content-placement-container
+                            section="framework"
+                        ></site-content-placement-container>
+                    </div>
+                </section>
+
+                <section class="section" id="features">
+                    <div class="section-content">
+                        <site-section-header class="section-header">
+                            <fast-badge
+                                fill="primary"
+                                color="primary"
+                                slot="badge"
+                                class="section-badge"
+                            >
+                                A COMPREHENSIVE TOOLKIT
+                            </fast-badge>
+                            <h2 class="section-heading">Features and utilities</h2>
+                            <p slot="body" class="section-paragraph">
+                                There are a million and one great ways to build your next
+                                website or application. To support the technologies you
+                                choose, creating unopinionated code is at the center of
+                                every decision we make in FAST.
+                            </p>
+                            <fast-anchor
+                                slot="action"
+                                appearance="accent"
+                                href="https://github.com/microsoft/fast"
+                            >
+                                View GitHub
+                            </fast-anchor>
+                        </site-section-header>
+                        <fast-divider
+                            class="section-decoration"
+                            role="presentation"
+                        ></fast-divider>
+                        <site-content-placement-container
+                            section="feature"
+                        ></site-content-placement-container>
+                    </div>
+                </section>
+
+                <section class="section community-section" id="community">
+                    <div class="section-content">
+                        <site-section-header class="section-header">
+                            <fast-badge
+                                fill="primary"
+                                color="primary"
+                                slot="badge"
+                                class="section-badge"
+                            >
+                                LEARN, MODIFY, AND FOLLOW
+                            </fast-badge>
+                            <h2 class="section-heading">Join the community</h2>
+                            <p slot="body" class="section-paragraph">
+                                Our community drives the rhythm and direction of FAST. By
+                                taking part, your voice will help shape our future.
+                            </p>
+                        </site-section-header>
+                        <fast-divider
+                            class="section-decoration"
+                            role="presentation"
+                        ></fast-divider>
+                        <site-content-placement-container
+                            section="community"
+                        ></site-content-placement-container>
+                    </div>
+                </section>
+
+                <aside class="side-nav-container">
+                    <site-side-navigation
+                        category="links"
+                        class="social-links"
+                    ></site-side-navigation>
+                    <site-side-navigation
+                        category="scroll"
+                        class="section-scroll"
+                    ></site-side-navigation>
+                </aside>
+                <fast-divider class="footer-divider" role="separator"></fast-divider>
+                <%= include('footer') %>
+            </div>
+            <background-design></background-design>
+        </fast-design-system-provider>
+    </body>
+</html>

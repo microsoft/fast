@@ -1,0 +1,102 @@
+{
+    "name": "@microsoft/fast-tooling",
+    "description": "A set of utilities to assist in creating web UI",
+    "sideEffects": false,
+    "version": "0.9.1",
+    "author": {
+        "name": "Microsoft",
+        "url": "https://discord.gg/FcSNfg4"
+    },
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Microsoft/fast.git"
+    },
+    "bugs": {
+        "url": "https://github.com/Microsoft/fast/issues/new/choose"
+    },
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "scripts": {
+        "build": "tsc -p ./tsconfig.build.json",
+        "build:message-system": "webpack --config webpack.message-system.config.js",
+        "clean:dist": "node ../../../build/clean.js dist",
+        "coverage": "jest --coverage",
+        "prepare": "yarn clean:dist && yarn build && yarn build:message-system",
+        "prettier": "prettier --config ../../../.prettierrc --write \"**/*.ts\"",
+        "prettier:diff": "prettier --config ../../../.prettierrc \"**/*.ts\" --list-different",
+        "start": "webpack-dev-server --history-api-fallback --progress",
+        "test": "yarn eslint && yarn run unit-tests && yarn build",
+        "eslint": "eslint . --ext .ts",
+        "eslint:fix": "eslint . --ext .ts --fix",
+        "unit-tests": "jest --runInBand",
+        "watch": "yarn build -- -w --preserveWatchOutput"
+    },
+    "jest": {
+        "collectCoverage": true,
+        "coverageReporters": [
+            "json",
+            "text",
+            [
+                "lcov",
+                {
+                    "projectRoot": "../../../"
+                }
+            ]
+        ],
+        "coverageThreshold": {
+            "global": {
+                "statements": 100,
+                "branches": 100,
+                "functions": 100,
+                "lines": 100
+            }
+        },
+        "coveragePathIgnorePatterns": [
+            "/(.tmp|__tests__)/*"
+        ],
+        "testURL": "http://localhost",
+        "transform": {
+            "^.+\\.ts$": "ts-jest",
+            "^.+\\.js$": "babel-jest"
+        },
+        "transformIgnorePatterns": [
+            "!<rootDir>/node_modules/lodash-es"
+        ],
+        "testRegex": "(\\.|/)(test|spec)\\.(js|ts)$",
+        "moduleFileExtensions": [
+            "ts",
+            "js",
+            "json"
+        ]
+    },
+    "devDependencies": {
+        "@types/jest": "^25.2.1",
+        "@types/lodash-es": "^4.17.0",
+        "@types/node": "^9.6.7",
+        "ajv": "^6.10.0",
+        "clean-webpack-plugin": "^3.0.0",
+        "css-loader": "^4.2.0",
+        "eslint-config-prettier": "^6.10.1",
+        "file-loader": "^6.0.0",
+        "html-webpack-plugin": "^3.2.0",
+        "jest": "^25.4.0",
+        "lodash-es": "^4.0.0",
+        "mini-css-extract-plugin": "^0.9.0",
+        "monaco-editor": "^0.20.0",
+        "monaco-editor-webpack-plugin": "^1.9.0",
+        "prettier": "2.0.2",
+        "style-loader": "^1.2.1",
+        "ts-jest": "^25.4.0",
+        "ts-loader": "^4.0.1",
+        "typescript": "^3.9.0",
+        "webpack": "4.28.4",
+        "webpack-cli": "^3.1.2",
+        "webpack-dev-server": "^3.11.0",
+        "webpack-merge": "^4.2.2",
+        "worker-loader": "^2.0.0"
+    },
+    "peerDependencies": {
+        "lodash-es": "^4.0.0"
+    }
+}

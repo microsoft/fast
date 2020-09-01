@@ -1,0 +1,59 @@
+{
+  "name": "@microsoft/fast-figma-plugin-msft",
+  "version": "0.8.1",
+  "description": "A Figma plugin for designing MSFT experiences",
+  "sideEffects": false,
+  "private": true,
+  "scripts": {
+    "build": "webpack --progress --mode=production",
+    "watch": "webpack --progress --watch --mode=production",
+    "prettier": "prettier --config ../../../.prettierrc --write \"**/*.{ts,tsx}\"",
+    "prettier:diff": "prettier --config ../../../.prettierrc \"**/*.{ts,tsx}\" --list-different",
+    "test": "yarn eslint && yarn build",
+    "eslint": "eslint . --ext .ts",
+    "eslint:fix": "eslint . --ext .ts --fix"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Microsoft/fast.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Microsoft/fast/issues/new/choose"
+  },
+  "author": {
+    "name": "Microsoft",
+    "url": "https://discord.gg/FcSNfg4"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/core": "^7.7.7",
+    "@babel/preset-env": "^7.7.7",
+    "@microsoft/fast-colors": "^5.1.0",
+    "@microsoft/fast-components": "^1.9.0",
+    "@microsoft/fast-components-react-msft": "^4.32.0",
+    "@microsoft/fast-components-styles-msft": "^4.29.0",
+    "@microsoft/fast-element": "^0.17.0",
+    "@types/figma": "^1.0.2",
+    "@types/node": "^10.12.12",
+    "@types/react": "^16.9.17",
+    "@types/react-dom": "^16.9.4",
+    "babel-loader": "^8.0.6",
+    "clean-webpack-plugin": "^3.0.0",
+    "copy-webpack-plugin": "^5.1.1",
+    "css-loader": "^3.4.1",
+    "eslint-config-prettier": "^6.10.1",
+    "html-webpack-inline-source-plugin": "^0.0.10",
+    "prettier": "2.0.2",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "style-loader": "^1.1.2",
+    "ts-loader": "^6.2.1",
+    "typescript": "^3.9.0",
+    "webpack": "^4.41.5",
+    "webpack-bundle-analyzer": "^3.6.0",
+    "webpack-cli": "^3.3.10"
+  },
+  "dependencies": {
+    "react-color": "^2.18.0"
+  }
+}

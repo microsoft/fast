@@ -1,0 +1,7 @@
+{
+  "name": "Theme Designer (Alpha)",
+  "api": "1.0.0",
+  "main": "./dist/main.js",
+  "ui": "./dist/index.html",
+  "id": "796902094715412666"
+}
