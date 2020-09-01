@@ -14,6 +14,38 @@ new Shortcuts({
 });
 ```
 
+The `Shortcuts` class also stores each action provided to it by an `id`. This will then allow an `id` to be referenced and the associated action called.
+
+Example:
+```typescript
+const shortcuts = new Shortcuts({
+    messageSystem: fastMessageSystem,
+    actions: [
+        // Custom shortcut
+        new ShortcutAction({
+            id: "random",
+            name: "Random action",
+            keys: [
+                {
+                    altKey: true
+                },
+                {
+                    value: "Tab"
+                }
+            ],
+            action: () => {
+                // perform some action
+                // use the fastMessageSystem
+                // to manipulate the data dictionary,
+                // history, or navigation
+            }
+        }),
+    ]
+});
+
+shortcuts.action("random").run();
+```
+
 ## Adding shortcut actions
 
 Shortcut actions can either be custom or imported from a set of actions available.
@@ -47,6 +79,8 @@ new Shortcuts({
     ]
 });
 ```
+
+The `ShortcutAction` class should also contain a `matches` method that takes a `KeyboardEvent` as an argument and returns a boolean if the given event matches the keys it has been provided with.
 
 ## Attaching the event listener
 
