@@ -60,7 +60,7 @@ export const SliderStyles = css`
         width: calc(var(--thumb-size) * 1px);
         transition: all 0.2s ease;
         color: ${neutralForegroundRestBehavior.var};
-        fill: currentColor;
+        fill: currentcolor;
     }
     .thumb-cursor {
         border: none;

@@ -83,7 +83,7 @@ export const TextFieldStyles = css`
         } width: 16px;
         height: 16px;
         margin: auto;
-        fill: currentColor;
+        fill: currentcolor;
     }
 
     .start {
@@ -158,7 +158,7 @@ export const TextFieldStyles = css`
             }
             .start,
             .end {
-                fill: currentColor;
+                fill: currentcolor;
             }
             :host(.disabled) {
                 opacity: 1;

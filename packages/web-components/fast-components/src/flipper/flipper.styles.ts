@@ -27,7 +27,7 @@ export const FlipperStyles = css`
         align-items: center;
         margin: 0;
         position: relative;
-        fill: currentColor;
+        fill: currentcolor;
         color: ${accentForegroundCutRestBehavior.var};
         background: transparent;
         outline: none;
@@ -61,7 +61,7 @@ export const FlipperStyles = css`
     :host(.disabled) {
         opacity: var(--disabled-opacity);
         cursor: ${disabledCursor};
-        fill: currentColor;
+        fill: currentcolor;
         color: ${neutralForegroundRestBehavior.var};
     }
 
@@ -114,7 +114,7 @@ export const FlipperStyles = css`
             :host .next,
             :host .previous {
                 color: ${SystemColors.ButtonText};
-                fill: currentColor;
+                fill: currentcolor;
             }
             :host::before {
                 background: ${SystemColors.Canvas};
@@ -130,7 +130,7 @@ export const FlipperStyles = css`
             :host(:hover) .previous {
                 forced-color-adjust: none;
                 color: ${SystemColors.HighlightText};
-                fill: currentColor;
+                fill: currentcolor;
             }
             :host(.disabled) {
                 opacity: 1;

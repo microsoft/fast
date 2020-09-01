@@ -10,7 +10,7 @@ import {
 export const SliderLabelStyles = css`
     ${display("block")} :host {
         color: ${neutralForegroundRestBehavior.var};
-        fill: currentColor;
+        fill: currentcolor;
     }
     .root {
         position: absolute;
