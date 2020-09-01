@@ -38,15 +38,15 @@ describe("getMessage", () => {
         test("should return messages sent to get the history", () => {
             const getHistory: GetHistoryMessageIncoming = {
                 type: MessageSystemType.history,
-                action: MessageSystemHistoryTypeAction.get
-            }
+                action: MessageSystemHistoryTypeAction.get,
+            };
             expect(getMessage(getHistory)).toEqual({
                 type: MessageSystemType.history,
                 action: MessageSystemHistoryTypeAction.get,
                 history: {
                     items: [],
-                    limit: 30
-                }
+                    limit: 30,
+                },
             } as GetHistoryMessageOutgoing);
         });
         test("should update the history when a new message has been sent", () => {
@@ -72,10 +72,12 @@ describe("getMessage", () => {
 
             const getHistory: GetHistoryMessageIncoming = {
                 type: MessageSystemType.history,
-                action: MessageSystemHistoryTypeAction.get
-            }
-            
-            expect((getMessage(getHistory) as GetHistoryMessageOutgoing).history.items.length).toEqual(1);
+                action: MessageSystemHistoryTypeAction.get,
+            };
+
+            expect(
+                (getMessage(getHistory) as GetHistoryMessageOutgoing).history.items.length
+            ).toEqual(1);
         });
         test("should remove the first item in the array if another item is added that would be higher than the limit", () => {
             const schemaDictionary: SchemaDictionary = {
@@ -104,11 +106,16 @@ describe("getMessage", () => {
 
             const getHistory: GetHistoryMessageIncoming = {
                 type: MessageSystemType.history,
-                action: MessageSystemHistoryTypeAction.get
-            }
-            
-            expect((getMessage(getHistory) as GetHistoryMessageOutgoing).history.items.length).toEqual(30);
-            expect(((getMessage(getHistory) as GetHistoryMessageOutgoing).history.items[29] as any).data.foo).toEqual("bar49");
+                action: MessageSystemHistoryTypeAction.get,
+            };
+
+            expect(
+                (getMessage(getHistory) as GetHistoryMessageOutgoing).history.items.length
+            ).toEqual(30);
+            expect(
+                ((getMessage(getHistory) as GetHistoryMessageOutgoing).history
+                    .items[29] as any).data.foo
+            ).toEqual("bar49");
         });
     });
     describe("initialize", () => {

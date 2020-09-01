@@ -151,7 +151,7 @@ function getHistoryMessage(data: HistoryMessageIncoming): HistoryMessageOutgoing
             return {
                 type: MessageSystemType.history,
                 action: MessageSystemHistoryTypeAction.get,
-                history
+                history,
             };
     }
 }
@@ -484,7 +484,7 @@ export function getMessage<C = {}>(
                 activeNavigationConfigId,
                 schema: schemaDictionary[dataDictionary[0][activeDictionaryId].schemaId],
                 schemaDictionary,
-                historyLimit: history.limit
+                historyLimit: history.limit,
             });
     }
 }

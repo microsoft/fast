@@ -250,7 +250,7 @@ describe("MessageSystem", () => {
 
         const messageSystem: MessageSystem = new MessageSystem({
             webWorker: "",
-            historyLimit: 10
+            historyLimit: 10,
         });
 
         expect(messageSystem["historyLimit"]).toEqual(10);
@@ -264,11 +264,11 @@ describe("MessageSystem", () => {
 
         const messageSystem: MessageSystem = new MessageSystem({
             webWorker: "",
-            historyLimit: 10
+            historyLimit: 10,
         });
         messageSystem.initialize({
             schemaDictionary: {},
-            historyLimit: 5
+            historyLimit: 5,
         });
 
         expect(messageSystem["historyLimit"]).toEqual(5);
