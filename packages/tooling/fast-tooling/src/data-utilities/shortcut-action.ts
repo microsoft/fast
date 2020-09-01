@@ -1,3 +1,6 @@
+type Without<T, U> = { [P in Exclude<keyof T, keyof U>]?: never };
+type XOR<T, U> = T | U extends object ? (Without<T, U> & U) | (Without<U, T> & T) : T | U;
+
 export interface MetaKey {
     metaKey: true;
 }
@@ -14,7 +17,7 @@ export interface AltKey {
     altKey: true;
 }
 
-export type ModifierKey = AltKey | CtrlKey | ShiftKey | MetaKey;
+export type ModifierKey = XOR<XOR<XOR<AltKey, CtrlKey>, ShiftKey>, MetaKey>;
 
 export interface SpecificKey {
     /**
@@ -23,7 +26,7 @@ export interface SpecificKey {
     value: string;
 }
 
-export type KeyConfig = SpecificKey | ModifierKey;
+export type KeyConfig = XOR<SpecificKey, ModifierKey>;
 
 export interface ShortcutActionCallbackConfig {
     /**
