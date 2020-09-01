@@ -4,8 +4,7 @@ import { accentForegroundRestBehavior, heightNumber } from "../styles/index";
 
 export const DataGridRowStyles = css`
 :host {
-    display: flex;
-    flex-direction: row;
+    display: grid;
     border: 1px solid black;
     min-height: 40px;
     background: yellow;

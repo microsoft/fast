@@ -38,16 +38,26 @@ const defaultRowItemTemplate = html`
     <fast-data-grid-row></fast-data-grid-row>
 `;
 
-// const defaultHeaderItemTemplate = html`
-//     <div>BOO!</div>
-// `;
-
 /**
  * A Data Grid Custom HTML Element.
 *
  * @public
  */
 export class DataGrid extends FASTElement {
+
+    /**
+     *  generates a basic column definition by examining sample row data
+     */
+    public static generateColumns = (row: object): DataGridColumn[] => {
+        const definitions: DataGridColumn[] = [];
+        const properties: string[] = Object.getOwnPropertyNames(row);
+        properties.forEach((property: string) => {
+            definitions.push({
+                columnDataKey: property,
+            });
+        });
+        return definitions;
+    };
 
     /**
      * The data to be displayed in the grid in JSON format
@@ -110,8 +120,8 @@ export class DataGrid extends FASTElement {
      * @public
      */
     @observable
-    public columnDefinitions: DataGridColumn[] | null = null;
-    private columnDefinitionsChanged(): void {
+    public columnsData: DataGridColumn[] | null = null;
+    private columnsDataChanged(): void {
         // this.requestReset();
     }
 
@@ -135,7 +145,6 @@ export class DataGrid extends FASTElement {
     @observable 
     public rowItemTemplate?: ViewTemplate = defaultRowItemTemplate;
 
-    private headerElement?: Node;
     public rowsElement?: HTMLElement;
 
     private rowsRepeatBehavior?: RepeatBehavior;
@@ -151,6 +160,10 @@ export class DataGrid extends FASTElement {
     public connectedCallback(): void {
         super.connectedCallback();
 
+        if (this.columns !== undefined) {
+            this.columnsData = JSON.parse(this.columns);
+        }
+
         this.rowsPlaceholder = document.createComment("");
         this.rowsElement?.appendChild(this.rowsPlaceholder);
 
@@ -164,10 +177,6 @@ export class DataGrid extends FASTElement {
 
         if (this.rows !== undefined) {
             this.rowData = JSON.parse(this.rows);
-        }
-
-        if (this.columns !== undefined) {
-            this.columns = JSON.parse(this.columns);
         }
     }
 
