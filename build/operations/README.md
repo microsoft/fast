@@ -98,11 +98,11 @@ This hierarchy uses the Workload separation strategy.
 
 
 ### Front Door
-This is considered a global resource and a type of Application Delivery Network (ADN) as a service, offering load-balancing capabilities for global routing to applications across availability regions using active/passive with hot standby approach. Performance is improved with dynamic site acceleration. Full end-to-end encyrption is achieved using TLS/SSL offloading. Configuration changes to Front Door, are deployed across all POPs globally in 3 to 5 minutes. Any updates to the backend pools are seamless and cause zero downtime when configured correctly. For greater scale as traffic increases immensely, we could implement an Azure Load Balance behind Front Door.
+This is considered a global resource and a type of Application Delivery Network (ADN) as a service, offering load-balancing capabilities for global routing to applications across availability regions using active/passive with hot standby approach. Performance is improved with dynamic site acceleration. Full end-to-end encyrption is achieved using TLS/SSL offloading. Configuration changes to Front Door, are deployed across all POPs globally in 3 to 5 minutes. Any updates to the backend pools are seamless and cause zero downtime. For greater scale as traffic increases immensely, we could implement an Azure Load Balance behind Front Door.
 
-Front Door is a globally distributed multi-tenant platform with huge volumes of capacity to cater to your application's scalability needs. Delivered from the edge of Microsoft's global network, Front Door provides global load balancing capability that allows you to fail over your entire application or even individual microservices across regions or different clouds.
+Front Door is a globally distributed multi-tenant platform with huge volumes of capacity to cater to your application's scalability needs. Delivered from the edge of Microsoft's global network, Front Door provides global load balancing capability that allows you to fail over your entire application or even individual microservices across regions or different clouds. The Front Door service provides faster failover support because Front Door is a reverse proxy and sits on the network between the customer and your backend services. As a reverse proxy, Front Door can also offer additional features that Traffic Manager cannot provide.
 
-The FAST Front Door will perform caching for web files.
+The FAST Front Door will perform caching for web files. Front Door can cache your static content and directly return cached assets to your customers without a trip to your backend, and as a proxy, Front Door also offers features to accelerate your dynamic content.
 
 #### Limitations
 Several limitations exist between Azure Front Door and Azure Active Directory (AAD).
@@ -293,3 +293,20 @@ This code will add network restrictions to apps.
             --rule-name "Front Door IPv6" \
             --action Allow \
             --ip-address 2a01:111:2050::/44
+
+## Caching Strategy
+FAST aims to serve optimized web traffic through extensive use of caching across several different services and application layers. There are two compression methods. Using middleware, for example in Express when running on Node, or using a Reverse Proxy, for example a load balancer or web server (iis, apache, nginx).
+
+Brotli (br) is a newer compression algorithm that aims to further improve compression ratios, which can result in even faster page loads. It is compatible with the latest versions of most browsers. When requests support multiple compression types, Brotli takes precedence. 
+
+All traffic enters through AFD (Azure Front Door) used for traffic management, load balancing, failover, and dynamic acceleration with caching. AFD has the ability to cache all requests for a duration of 1-3 days which is dynamically and randomly assigned. There is a purge feature, which allows cache busting, for releasing and deployments.  With AFD caching, no traffic requests are sent to the backend Azure Web Apps, drastically improving page load performance through reduced network latency.
+
+All FAST websites are build on Azure Web Apps for Linux, running NodeJS technology stack with Express middleware. The Helmet package is installed for security protection. Express uses file caching for 3 days. This works because webpack hashes all website files into a bundles folder. When new files are released and new requests are made, cache is automatically broken and re-issued. 
+
+All websites serve assets such as images, scripts, and other media files from Azure CDN located on https://static.fast.design/assets. These files are automatically deployed based on changes to source code located in `./sites/site-utlities/statics/*`. When a requested asset specifies `gzip` compression, the request returns the cached file, when not found, Azure CDN performs Gzip compression directly on the POP server.
+
+Any file not cached internally by the web app, CDN, are cached on Azure Front Door.
+
+
+### Risks
+There is a known bug on AFD, preventing "Purge", thus temporarily caching has been disabled for all sites, and thus Express middleware cachine was implemented. This bug relates to AFD use of wildcard domains. Once resolved Express middleware caching will be disabled and AFD will be enabled.
