@@ -28,6 +28,9 @@ const fastRadioGroupConfig: ComponentViewConfig = {
                                 {
                                     id: "Slot2",
                                 },
+                                {
+                                    id: "Slot3",
+                                },
                             ],
                             SlotLabel: [
                                 {
@@ -80,7 +83,7 @@ const fastRadioGroupConfig: ComponentViewConfig = {
                             dataLocation: "Slot",
                         },
                         schemaId: textSchema.id,
-                        data: "Radio label 2",
+                        data: "Radio label 1",
                     },
                     Slot2: {
                         parent: {
@@ -103,6 +106,28 @@ const fastRadioGroupConfig: ComponentViewConfig = {
                         },
                         schemaId: textSchema.id,
                         data: "Radio label 2",
+                    },
+                    Slot3: {
+                        parent: {
+                            id: "root",
+                            dataLocation: "Slot",
+                        },
+                        schemaId: fastRadioId,
+                        data: {
+                            Slot: [
+                                {
+                                    id: "Slot30",
+                                },
+                            ],
+                        },
+                    },
+                    Slot30: {
+                        parent: {
+                            id: "Slot3",
+                            dataLocation: "Slot",
+                        },
+                        schemaId: textSchema.id,
+                        data: "Radio label 3",
                     },
                 },
                 "root",
