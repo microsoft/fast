@@ -8,8 +8,6 @@ import { DataGrid } from "./data-grid";
 export const DataGridTemplate = html<DataGrid>`
     <template role="grid">
       <slot name="headerSlot" part="headerSlot" ${slotted("slottedHeaderElements")}></slot>
-      <fast-data-grid-rows ${ref("rowsElement")}>
-          <slot part="rowsSlot" ${slotted("slottedRowElements")}></slot>
-      </fast-data-grid-rows>
+      <slot part="rowsSlot" ${slotted("slottedRowElements")}></slot>
     </template>
 `;

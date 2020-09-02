@@ -4,7 +4,5 @@ export * from "./data-grid-header.template";
 export * from "./data-grid-header";
 export * from "./data-grid-row.template";
 export * from "./data-grid-row";
-export * from "./data-grid-rows.template";
-export * from "./data-grid-rows";
 export * from "./data-grid-cell.template";
 export * from "./data-grid-cell";
