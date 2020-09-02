@@ -3,11 +3,12 @@ import { DataGrid, DataGridColumn} from "./data-grid";
 
 const defaultCellItemTemplate = html`
     <fast-data-grid-cell
-    ></fast-data-grid-cell>
+        gridColumnIndex="${(x, c) => c.index + 1}"
+        :rowData="${(x, c) => c.parent.rowData}"
+        :columnData="${ x => x }"
+    >
+    </fast-data-grid-cell>
 `;
-
-        // rowData="${x => x.rowdata}"
-        // columnData="${(x,c) => x.columnsData[c.index]}"
 
 /**
  * A Data Grid Row Custom HTML Element.
@@ -25,10 +26,7 @@ export class DataGridRow extends FASTElement {
      */
     @attr
     public row: string;
-    private rowsChanged(): void {
-        if ((this as FASTElement).$fastController.isConnected) {
-            //
-        }
+    private rowChanged(): void {
     }
 
     /**
@@ -36,25 +34,23 @@ export class DataGridRow extends FASTElement {
      * 
      * @public
      * @remarks
-     * HTML Attribute: data
+     * HTML Attribute: columns
      */
     @attr
     public columns: string;
     private columnsChanged(): void {
-        if ((this as FASTElement).$fastController.isConnected) {
-            // 
-        }
     }
 
     /**
      * String that gets applied to the the css gridTemplateColumns attribute for the row
      *
      * @public
+     * @remarks
+     * HTML Attribute: grid-template-columns
      */
     @attr
-    public gridTemplateColumns: string = "";
+    public gridTemplateColumns: string;
     private gridTemplateColumnsChanged(): void {
-        // this.requestReset();
     }
 
     /**
@@ -65,7 +61,6 @@ export class DataGridRow extends FASTElement {
     @observable
     public rowData: object | null = null;
     private rowDataChanged(): void {
-        // this.requestReset();
     }
 
     /**
@@ -76,7 +71,6 @@ export class DataGridRow extends FASTElement {
     @observable
     public columnsData: DataGridColumn[] | null = null;
     private columnsDataChanged(): void {
-        // this.requestReset();
     }
 
     /**
@@ -110,6 +104,10 @@ export class DataGridRow extends FASTElement {
             this.columnsData = JSON.parse(this.columns);
         }
 
+        if (this.row !== undefined) {
+            this.rowData = JSON.parse(this.row);
+        }
+
         this.cellsPlaceholder = document.createComment("");
         this.appendChild(this.cellsPlaceholder);
 
@@ -124,16 +122,16 @@ export class DataGridRow extends FASTElement {
         this.updateRowStyle();
     }
 
-    /**
-     *  gets the current column configuration
-     */
-    private getColumns = (): DataGridColumn[] => {
-        return (this.columns === undefined)
-            ? (this.rowData !== null)
-                ? DataGrid.generateColumns(this.rowData)
-                : null
-            : JSON.parse(this.columns);;
-    };
+    // /**
+    //  *  gets the current column configuration
+    //  */
+    // private getColumns = (): DataGridColumn[] => {
+    //     return (this.columns === undefined)
+    //         ? (this.rowData !== null)
+    //             ? DataGrid.generateColumns(this.rowData)
+    //             : null
+    //         : JSON.parse(this.columns);;
+    // };
 
     /**
      *  Updates the style string applied to the region element as well as the css classes attached

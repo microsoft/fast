@@ -17,10 +17,7 @@ export class DataGridCell extends FASTElement {
      */
     @attr
     public row: string;
-    private rowsChanged(): void {
-        if ((this as FASTElement).$fastController.isConnected) {
-            //
-        }
+    private rowChanged(): void {
     }
 
     /**
@@ -33,9 +30,18 @@ export class DataGridCell extends FASTElement {
     @attr
     public column: string;
     private columnChanged(): void {
-        if ((this as FASTElement).$fastController.isConnected) {
-            //
-        }
+    }
+
+    /**
+     * The column index
+     * 
+     * @public
+     * @remarks
+     * HTML Attribute: grid-ccolumn-index
+     */
+    @attr
+    public gridColumnIndex: number;
+    private columnIndexChanged(): void {
     }
 
     /**
@@ -46,7 +52,7 @@ export class DataGridCell extends FASTElement {
     @observable
     public rowData: object | null = null;
     private rowDataChanged(): void {
-        // this.requestReset();
+        const x: any  = this.rowData;
     }
 
     /**
@@ -57,7 +63,7 @@ export class DataGridCell extends FASTElement {
     @observable
     public columnData: DataGridColumn | null = null;
     private columnDataChanged(): void {
-        // this.requestReset();
+        const x: any  = this.columnData;
     }
 
     /**
@@ -73,12 +79,14 @@ export class DataGridCell extends FASTElement {
         if (this.row !== undefined) {
             this.rowData = JSON.parse(this.row);
         }
+
+        this.style.gridColumn = `${this.gridColumnIndex === undefined ? 0 : this.gridColumnIndex}`;
     }
 
-    /**
-     * @internal
-     */
-    resolveTemplate() {
-        return DataGridCellTemplate;
-    }
+    // /**
+    //  * @internal
+    //  */
+    // publc resolveTemplate() {
+    //     return DataGridCellTemplate;
+    // }
 }
