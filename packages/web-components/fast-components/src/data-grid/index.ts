@@ -6,15 +6,12 @@ import {
     DataGridHeaderTemplate as gridHeaderTemplate, 
     DataGridRow, 
     DataGridRowTemplate as gridRowTemplate,
-    DataGridRows, 
-    DataGridRowsTemplate as gridRowsTemplate, 
     DataGridCell, 
     DataGridCellTemplate as gridCellTemplate  
 } from "@microsoft/fast-foundation";
 import { DataGridStyles as gridStyles } from "./data-grid.styles";
 import { DataGridHeaderStyles as headerStyles } from "./data-grid-header.styles";
 import { DataGridRowStyles as rowStyles } from "./data-grid-row.styles";
-import { DataGridRowsStyles as rowsStyles } from "./data-grid-rows.styles";
 import { DataGridCellStyles as cellStyles } from "./data-grid-cell.styles";
 
 /**
@@ -76,27 +73,6 @@ export class FASTDataGridRow extends DataGridRow {}
  * @public
  */
 export const DataGridRowStyles = rowStyles;
-
-/**
- * The FAST Data Grid Rows Element. 
- *
- * @public
- * @remarks
- * HTML Element: \<fast-data-grid-rows\>
- */
-@customElement({
-    name: "fast-data-grid-rows",
-    template: gridRowsTemplate,
-    styles: rowsStyles,
-})
-export class FASTDataGridRows extends DataGridRows {}
-
-/**
- * Styles for DataGrid rows
- * @public
- */
-export const DataGridRowsStyles = rowsStyles;
-
 
 /**
  * The FAST Data Grid Cell Element. 

@@ -158,7 +158,7 @@ export class DataGrid extends FASTElement {
         }
 
         this.rowsPlaceholder = document.createComment("");
-        this.rowsElement?.appendChild(this.rowsPlaceholder);
+        this.appendChild(this.rowsPlaceholder);
 
         this.rowsRepeatBehavior = new RepeatDirective(
              x => x.rowData,

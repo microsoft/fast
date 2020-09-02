@@ -293,13 +293,6 @@ export class DataGridRow extends FASTElement {
     }
 
 // @public
-export class DataGridRows extends FASTElement {
-}
-
-// @public
-export const DataGridRowsTemplate: import("@microsoft/fast-element").ViewTemplate<DataGridRows, any>;
-
-// @public
 export const DataGridRowTemplate: import("@microsoft/fast-element").ViewTemplate<DataGridRow, any>;
 
 // @public
