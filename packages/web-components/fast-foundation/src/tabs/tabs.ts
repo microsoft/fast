@@ -11,6 +11,7 @@ import {
 } from "@microsoft/fast-web-utilities";
 import { StartEnd } from "../patterns/start-end";
 import { applyMixins } from "../utilities/apply-mixins";
+import { getDirection } from "../utilities";
 
 /**
  * The orientation of the {@link @microsoft/fast-foundation#(Tabs:class)} component
@@ -127,11 +128,6 @@ export class Tabs extends FASTElement {
             return 0;
         }
     }
-
-    private getDirection = (): Direction => {
-        const dirNode: HTMLElement | null = this.parentElement!.closest("[dir]");
-        return dirNode !== null && dirNode.dir === "rtl" ? Direction.rtl : Direction.ltr;
-    };
 
     private setTabs = (): void => {
         this.tabIds = this.getTabIds();
@@ -341,7 +337,7 @@ export class Tabs extends FASTElement {
      */
     public connectedCallback(): void {
         super.connectedCallback();
-        this.direction = this.getDirection();
+        this.direction = getDirection(this);
     }
 }
 
