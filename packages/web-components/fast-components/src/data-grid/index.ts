@@ -9,7 +9,7 @@ import {
     DataGridRows, 
     DataGridRowsTemplate as gridRowsTemplate, 
     DataGridCell, 
-    DataGridRowTemplate as gridCellTemplate  
+    DataGridCellTemplate as gridCellTemplate  
 } from "@microsoft/fast-foundation";
 import { DataGridStyles as gridStyles } from "./data-grid.styles";
 import { DataGridHeaderStyles as headerStyles } from "./data-grid-header.styles";
@@ -52,7 +52,7 @@ export const DataGridStyles = gridStyles;
 export class FASTDataGridHeader extends DataGridHeader {}
 
 /**
- * Styles for DataGrid row
+ * Styles for DataGrid header
  * @public
  */
 export const DataGridHeaderStyles = headerStyles;
@@ -89,7 +89,7 @@ export const DataGridRowStyles = rowStyles;
     template: gridRowsTemplate,
     styles: rowsStyles,
 })
-export class FASTDataGridRows extends DataGridRow {}
+export class FASTDataGridRows extends DataGridRows {}
 
 /**
  * Styles for DataGrid rows

@@ -15,6 +15,5 @@ export class DataGridHeader extends FASTElement {
     @observable
     public columnData: DataGridColumn[]  = [];
     private columnDataChanged(): void {
-        // this.requestReset();
     }
 }

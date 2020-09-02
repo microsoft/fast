@@ -19,7 +19,7 @@ export interface DataGridColumn {
 
     /**
      * The width of the column in a form compatible with css grid column widths
-     * (i.e. "50px", "1fr", "20%", etc...), defaults to "1fr"
+     * (i.e. "50px", "1fr", "20%", etc...), defaults to "auto"
      */
     columnWidth?: string;
 
@@ -69,9 +69,6 @@ export class DataGrid extends FASTElement {
     @attr
     public rows: string;
     private rowsChanged(): void {
-        if ((this as FASTElement).$fastController.isConnected) {
-            //
-        }
     }
 
     /**
@@ -84,9 +81,6 @@ export class DataGrid extends FASTElement {
     @attr
     public rowkey: string;
     private rowkeyChanged(): void {
-        if ((this as FASTElement).$fastController.isConnected) {
-            // 
-        }
     }
 
     /**
@@ -99,9 +93,6 @@ export class DataGrid extends FASTElement {
     @attr
     public columns: string;
     private columnsChanged(): void {
-        if ((this as FASTElement).$fastController.isConnected) {
-            // 
-        }
     }
 
     /**
@@ -122,7 +113,6 @@ export class DataGrid extends FASTElement {
     @observable
     public columnsData: DataGridColumn[] | null = null;
     private columnsDataChanged(): void {
-        // this.requestReset();
     }
 
     /**
@@ -178,12 +168,5 @@ export class DataGrid extends FASTElement {
         if (this.rows !== undefined) {
             this.rowData = JSON.parse(this.rows);
         }
-    }
-
-    /**
-     * @internal
-     */
-    public disconnectedCallback(): void {
-        super.disconnectedCallback();
     }
 }

@@ -2,7 +2,7 @@
 
     <h1>Data grid</h1>
 
-    <h2>default</h2>
+    <!-- <h2>default</h2>
     <fast-data-grid
        rows='[{"name": "bob", "age": 20},{"name": "rob", "age": 21}]'
     >
@@ -17,16 +17,16 @@
 
     <h2>Header</h2>
     <fast-data-grid-header>
-    </fast-data-grid-header>
+    </fast-data-grid-header> -->
 
     <h2>Row</h2>
-    <fast-data-grid-row row='{"name": "robert", "age": 20}' columns='[{"columnDataKey": "name"},{"columnDataKey": "age"}]'>
+    <fast-data-grid-row row='{"name": "robert", "age": 20}' columns='[{"columnDataKey": "name", "columnWidth":"1fr"},{"columnDataKey": "age", "columnWidth":"1fr"}]' gridTemplateColumns="auto auto">
     </fast-data-grid-row>
 
 
-    <h2>Cell</h2>
+    <!-- <h2>Cell</h2>
     <fast-data-grid-cell row='{"name": "robert", "age": 20}' column='{"columnDataKey": "name"}'>
-    </fast-data-grid-cell>
+    </fast-data-grid-cell> -->
 
 
 </fast-design-system-provider>
