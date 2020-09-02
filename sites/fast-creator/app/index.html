@@ -1,10 +1,16 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="en" dir="ltr" prefix="og: https://ogp.me/ns#">
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title><%= htmlWebpackPlugin.options.title %></title>
         <%= htmlWebpackPlugin.options.manifest %>
+        <meta property="twitter:title" content="<%= htmlWebpackPlugin.options.title %>" />
+        <meta
+            name="title"
+            property="og:title"
+            content="<%= htmlWebpackPlugin.options.title %>"
+        />
         <link href="https://use.typekit.net/spx2dgm.css" rel="stylesheet" />
     </head>
     <body>
