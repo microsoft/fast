@@ -1,5 +1,5 @@
 import { attr, FASTElement, html, RepeatBehavior, RepeatDirective, observable, ViewTemplate } from "@microsoft/fast-element";
-import { DataGrid, DataGridColumn} from "./data-grid";
+import { DataGridColumn} from "./data-grid";
 
 const defaultCellItemTemplate = html`
     <fast-data-grid-cell
@@ -71,6 +71,7 @@ export class DataGridRow extends FASTElement {
     @observable
     public columnsData: DataGridColumn[] | null = null;
     private columnsDataChanged(): void {
+        const x: any  = this.columnsData;
     }
 
     /**

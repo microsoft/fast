@@ -52,7 +52,6 @@ export class DataGridCell extends FASTElement {
     @observable
     public rowData: object | null = null;
     private rowDataChanged(): void {
-        const x: any  = this.rowData;
     }
 
     /**
@@ -63,7 +62,6 @@ export class DataGridCell extends FASTElement {
     @observable
     public columnData: DataGridColumn | null = null;
     private columnDataChanged(): void {
-        const x: any  = this.columnData;
     }
 
     /**
@@ -83,10 +81,14 @@ export class DataGridCell extends FASTElement {
         this.style.gridColumn = `${this.gridColumnIndex === undefined ? 0 : this.gridColumnIndex}`;
     }
 
-    // /**
-    //  * @internal
-    //  */
-    // publc resolveTemplate() {
-    //     return DataGridCellTemplate;
-    // }
+    /**
+     * @internal
+     */
+    public resolveTemplate() {
+        if (this.columnData?.cellTemplate !== undefined && this.columnData?.cellTemplate !== null) {
+            return this.columnData?.cellTemplate
+        }
+
+        return DataGridCellTemplate;
+    }
 }

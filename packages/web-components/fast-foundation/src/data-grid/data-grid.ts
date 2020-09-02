@@ -35,7 +35,10 @@ export interface DataGridColumn {
 }
 
 const defaultRowItemTemplate = html`
-    <fast-data-grid-row></fast-data-grid-row>
+    <fast-data-grid-row
+        :columnsData="${(x, c) => c.parent.columnsData}"
+        :rowData="${ x => x }"
+    ></fast-data-grid-row>
 `;
 
 /**

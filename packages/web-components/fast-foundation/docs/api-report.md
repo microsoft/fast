@@ -249,6 +249,8 @@ export class DataGridCell extends FASTElement {
     // @internal (undocumented)
     connectedCallback(): void;
     gridColumnIndex: number;
+    // @internal (undocumented)
+    resolveTemplate(): import("@microsoft/fast-element").ViewTemplate<any, any>;
     row: string;
     rowData: object | null;
     }
