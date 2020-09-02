@@ -9,6 +9,7 @@ module.exports = merge(baseConfig, {
         contentBase: "./src/public",
         open: true,
         port: 7700,
+        disableHostCheck: true,
     },
     mode: "development",
     output: {
