@@ -19,7 +19,7 @@ export interface DataGridColumn {
 
     /**
      * The width of the column in a form compatible with css grid column widths
-     * (i.e. "50px", "1fr", "20%", etc...), defaults to "auto"
+     * (i.e. "50px", "1fr", "20%", etc...), defaults to "1fr"
      */
     columnWidth?: string;
 
@@ -75,23 +75,11 @@ export class DataGrid extends FASTElement {
     }
 
     /**
-     * The key that uniquely identifies each data row
-     * 
-     * @public
-     * @remarks
-     * HTML Attribute: rowkey
-     */
-    @attr
-    public rowkey: string;
-    private rowkeyChanged(): void {
-    }
-
-    /**
      * The column definitions of the grid in JSON format
      * 
      * @public
      * @remarks
-     * HTML Attribute: data
+     * HTML Attribute: columns
      */
     @attr
     public columns: string;
