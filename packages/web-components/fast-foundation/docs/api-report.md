@@ -142,7 +142,7 @@ export class BreadcrumbItem extends FASTElement {
 }
 
 // @internal
-export interface BreadcrumbItem extends StartEnd, DelegatesARIABreadcrumbItem {
+export interface BreadcrumbItem extends StartEnd, DelegatesARIALink {
 }
 
 // @public
