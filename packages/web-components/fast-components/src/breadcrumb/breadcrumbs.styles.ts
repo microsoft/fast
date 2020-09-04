@@ -8,4 +8,8 @@ export const BreadcrumbStyles = css`
         font-size: var(--type-ramp-base-font-size);
         line-height: var(--type-ramp-base-line-height);
     }
+
+    .list {
+        display: flex;
+    }
 `;
