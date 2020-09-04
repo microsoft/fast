@@ -24,7 +24,6 @@ export const BreadcrumbItemTemplate = html<BreadcrumbItem>`
                     aria-details="${x => x.ariaDetails}"
                     aria-disabled="${x => x.ariaDisabled}"
                     aria-errormessage="${x => x.ariaErrormessage}"
-                    aria-expanded="${x => x.ariaExpanded}"
                     aria-flowto="${x => x.ariaFlowto}"
                     aria-haspopup="${x => x.ariaHaspopup}"
                     aria-hidden="${x => x.ariaHidden}"
