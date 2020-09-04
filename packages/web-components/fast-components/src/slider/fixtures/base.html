@@ -17,7 +17,7 @@
             </button>
             <button
                 style="width: 90px; margin: 10px;"
-                onclick="const slider = document.getElementById('switcher'); const currentVal = Number(slider.getAttribute('value')); slider.setAttribute('value', (currentVal + 10).toString());"
+                onclick="const slider = document.getElementById('switcher'); const currentVal = Number(slider.value); slider.value = (currentVal + 10);"
             >
                 Change slider val
             </button>

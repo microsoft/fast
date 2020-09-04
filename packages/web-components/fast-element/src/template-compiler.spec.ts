@@ -4,7 +4,10 @@ import { BindingDirective } from "./directives/binding";
 import { compileTemplate } from "./template-compiler";
 import { Directive } from "./directives/directive";
 import { defaultExecutionContext } from "./observation/observable";
-import { toHTML } from "./__test__/helpers";
+import { toHTML, uniqueElementName } from "./__test__/helpers";
+import { html } from "./template";
+import { css, StyleTarget } from "./styles";
+import { FASTElement, customElement } from "./fast-element";
 
 describe("The template compiler", () => {
     function compile(html: string, directives: Directive[]) {
@@ -355,4 +358,44 @@ describe("The template compiler", () => {
     });
 
     context("when compiling hosts", () => {});
+
+    if (DOM.supportsAdoptedStyleSheets) {
+        it("handles templates with adoptedStyleSheets", () => {
+            const name = uniqueElementName();
+
+            @customElement({
+                name,
+                template: html`
+                    <div></div>
+                `,
+                styles: css`
+                    :host {
+                        display: "block";
+                    }
+                `,
+            })
+            class TestElement extends FASTElement {}
+
+            const viewTemplate = html`<${name}></${name}>`;
+
+            const host = document.createElement("div");
+            document.body.appendChild(host);
+
+            const view = viewTemplate.create();
+            view.appendTo(host);
+
+            const testElement = host.firstElementChild!;
+            const shadowRoot = testElement!.shadowRoot!;
+
+            expect((shadowRoot as StyleTarget).adoptedStyleSheets!.length).to.equal(1);
+
+            view.remove();
+
+            expect((shadowRoot as StyleTarget).adoptedStyleSheets!.length).to.equal(1);
+
+            view.appendTo(host);
+
+            expect((shadowRoot as StyleTarget).adoptedStyleSheets!.length).to.equal(1);
+        });
+    }
 });

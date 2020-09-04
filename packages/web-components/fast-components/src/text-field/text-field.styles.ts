@@ -43,6 +43,7 @@ export const TextFieldStyles = css`
         -webkit-appearance: none;
         background: transparent;
         border: 0;
+        color: inherit;
         height: calc(100% - 4px);
         width: 100%;
         margin-top: auto;
@@ -51,7 +52,6 @@ export const TextFieldStyles = css`
         padding: 0 calc(var(--design-unit) * 2px + 1px);
         font-size: var(--type-ramp-base-font-size);
         line-height: var(--type-ramp-base-line-height);
-        color: ${neutralForegroundRestBehavior.var};
     }
 
     .control:hover,
@@ -83,7 +83,7 @@ export const TextFieldStyles = css`
         } width: 16px;
         height: 16px;
         margin: auto;
-        fill: ${neutralForegroundRestBehavior.var};
+        fill: currentcolor;
     }
 
     .start {
@@ -158,7 +158,7 @@ export const TextFieldStyles = css`
             }
             .start,
             .end {
-                fill: ${SystemColors.ButtonText};
+                fill: currentcolor;
             }
             :host(.disabled) {
                 opacity: 1;

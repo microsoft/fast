@@ -32,7 +32,7 @@ export const TabStyles = css`
         height: calc(${heightNumber} * 1px);
         padding: calc(var(--design-unit) * 5px) calc(var(--design-unit) * 4px);
         color: ${neutralForegroundHintBehavior.var};
-        fill: ${neutralForegroundHintBehavior.var};
+        fill: currentcolor;
         border-radius: calc(var(--corner-radius) * 1px);
         border: calc(var(--outline-width) * 1px) solid transparent;
         align-items: center;
@@ -43,30 +43,30 @@ export const TabStyles = css`
 
     :host(:hover) {
         color: ${neutralForegroundHoverBehavior.var};
-        fill: ${neutralForegroundHoverBehavior.var};
+        fill: currentcolor;
     }
 
     :host(:active) {
         color: ${neutralForegroundActiveBehavior.var};
-        fill: ${neutralForegroundActiveBehavior.var};
+        fill: currentcolor;
     }
 
     :host([aria-selected="true"]) {
         background: ${neutralFillRestBehavior.var};
         color: ${accentForegroundRestBehavior.var};
-        fill: ${accentFillRestBehavior.var};
+        fill: currentcolor;
     }
 
     :host([aria-selected="true"]:hover) {
         background: ${neutralFillHoverBehavior.var};
         color: ${accentForegroundHoverBehavior.var};
-        fill: ${accentFillHoverBehavior.var};
+        fill: currentcolor;
     }
 
     :host([aria-selected="true"]:active) {
         background: ${neutralFillActiveBehavior.var};
         color: ${accentForegroundActiveBehavior.var};
-        fill: ${accentFillActiveBehavior.var};
+        fill: currentcolor;
     }
 
     :host(:${focusVisible}) {
@@ -120,19 +120,19 @@ export const TabStyles = css`
                 forced-color-adjust: none;
                 border-color: transparent;
                 color: ${SystemColors.ButtonText};
-                fill: ${SystemColors.ButtonText};
+                fill: currentcolor;
             }
             :host(:hover),
             :host(.vertical:hover),
             :host([aria-selected="true"]:hover) {
                 background: ${SystemColors.Highlight};
                 color: ${SystemColors.HighlightText};
-                fill: ${SystemColors.HighlightText};
+                fill: currentcolor;
             }
             :host([aria-selected="true"]) {
                 background: ${SystemColors.HighlightText};
                 color: ${SystemColors.Highlight};
-                fill: ${SystemColors.Highlight};
+                fill: currentcolor;
             }
             :host(:${focusVisible}) {
                 border-color: ${SystemColors.ButtonText};
