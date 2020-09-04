@@ -35,16 +35,7 @@ export class BreadcrumbItem extends FASTElement {
  *
  * @public
  */
-export class DelegatesARIABreadcrumbItem extends ARIAGlobalStatesAndProperties {
-    /**
-     * See {@link https://www.w3.org/WAI/PF/aria/roles#link} for more information
-     * @public
-     * @remarks
-     * HTML Attribute: aria-expanded
-     */
-    @attr({ attribute: "aria-expanded", mode: "fromView" })
-    public ariaExpanded: "true" | "false" | undefined;
-}
+export class DelegatesARIABreadcrumbItem extends ARIAGlobalStatesAndProperties {}
 
 /**
  * Mark internal because exporting class and interface of the same name
