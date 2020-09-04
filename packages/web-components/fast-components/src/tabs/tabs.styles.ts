@@ -29,12 +29,9 @@ export const TabsStyles = css`
         box-sizing: border-box;
     }
 
-    .start {
-        padding: calc(var(--design-unit) * 4px) 0;
-    }
-
+    .start,
     .end {
-        padding: calc(var(--design-unit) * 4px) 0;
+        align-self: center;
     }
 
     .activeIndicator {
