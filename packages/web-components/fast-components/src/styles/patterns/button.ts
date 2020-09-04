@@ -40,7 +40,7 @@ export const BaseButtonStyles = css`
         background-color: ${neutralFillRestBehavior.var};
         color: ${neutralForegroundRestBehavior.var};
         border-radius: calc(var(--corner-radius) * 1px);
-        fill: currentColor;
+        fill: currentcolor;
         cursor: pointer;
     }
 

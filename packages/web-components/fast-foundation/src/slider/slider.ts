@@ -11,6 +11,7 @@ import {
     Orientation,
 } from "@microsoft/fast-web-utilities";
 import { FormAssociated } from "../form-associated/form-associated";
+import { getDirection } from "../utilities/";
 import { convertPixelToPercent } from "./slider-utilities";
 
 /**
@@ -210,7 +211,7 @@ export class Slider extends FormAssociated<HTMLInputElement>
 
         this.proxy.setAttribute("type", "range");
 
-        this.direction = this.getDirection();
+        this.direction = getDirection(this);
         this.setupTrackConstraints();
         this.setupListeners();
         this.setupDefaultValue();
@@ -300,14 +301,6 @@ export class Slider extends FormAssociated<HTMLInputElement>
                 ? `bottom: ${percentage}%; transition: none;`
                 : `bottom: ${percentage}%; transition: all 0.2s ease;`;
         }
-    };
-
-    private getDirection = (): Direction => {
-        const dirNode: HTMLElement | null = this.parentElement!.closest("[dir]");
-        if (dirNode && dirNode!.dir === "rtl") {
-            this.setThumbPositionForOrientation(Direction.rtl);
-        }
-        return dirNode !== null && dirNode.dir === "rtl" ? Direction.rtl : Direction.ltr;
     };
 
     private setupTrackConstraints = (): void => {
