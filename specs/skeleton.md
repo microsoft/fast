@@ -16,12 +16,12 @@ Used to give users a sense of loading progress activity rather than merely prese
 
 #### Specfic Skeletons
 
-Should not be made to reflect a specific element (e.g. `skeleton-button`, `skeleton-text`, `skeleton-heading`, etc...). The skeleton should be as generic of a container as possible as to represent various elements of different shapes and sizes.
+Should not be made to reflect a specific element (e.g. `skeleton-button`, `skeleton-text`, `skeleton-heading`, etc...). The skeleton should be as generic of a container as possible to represent various elements of different shapes and sizes.
   
 ### Features
 
 #### Patterns
-This feature allows a `fast-skeleton` component to accept a source for a skeleton "pattern" through the `pattern` attribute or a inline SVG code via component slot. A skeleton pattern may be used to represent a transparent graphical shape and layout of a component.
+This feature allows a `fast-skeleton` component to accept a source for a skeleton "pattern" through the `pattern` attribute or an inline SVG code via the component's slot. A skeleton pattern may be used to represent a transparent graphical shape and layout of a component.
 
 When used in this way the skeleton component would essentially act as a container for the provided SVG mask which can then be applied anywhere in an application.
 
@@ -30,7 +30,7 @@ The SVG would have CSS mask properties applied to it allowing underlying colors 
 This feature allows the `fast-skeleton` component to provide maximum design flexibility to represent many shapes and layouts.
 
 #### Shape Attribute
-Circle or rect shapes can be selected. Border radius of rectagled shape will be determined by the design system.
+A `circle` or `rect` (rectangle) shape can be selected. The `border-radius` of the `rect` shape will be determined by the design system.
 
 ### Prior Art/Examples
 
@@ -49,7 +49,7 @@ Circle or rect shapes can be selected. Border radius of rectagled shape will be 
 
 ## Design
 
-A designer can create an SVG design pattern asset to create custom visual layouts for this component. If a developer does not have design support, they may use skeleton components as a stand-alone elements in an existing component. Developers also have the option to manually code SVG's to be used as templates. SVG code quality will have to be enforced to ensure proper rendering of the pattern masks.
+A designer can create an SVG design pattern asset to create custom visual layouts for this component. If a developer does not have design support, they may use skeleton components as a stand-alone element in an existing component. Developers also have the option to manually code SVG's to be used as templates. SVG code quality will have to be enforced to ensure proper rendering of the pattern masks.
 
 ### API
 
@@ -97,35 +97,16 @@ SVG pattern passed via component slot:
   <svg></svg>
 </fast-skeleton>
 ```
-
-<!-- ### States
-
-*Key component states, valid state transitions, and how interactions trigger a state transition.* -->
-
 ### Accessibility
 
-- The `aria-busy` attribute should be applied and set to `true` while this the UI the skeleton is represent is still in a loading state
+- The `aria-busy` attribute should be applied and set to `true` while this the UI the skeleton represented is still in a loading state
 - To maximize the information presented to assistive technologies inline SVG's are the preferred method for applying a `pattern`
 
 ### Globalization
 
-Component should respond to directional settings.
-
-<!-- ### Test Plan
-
-*What is the plan for testing the component, if different from the normal path?* -->
-
-<!-- ### Documentation
-
-*What additions or changes are needed for user documentation and demos? Are there any architectural/engineering docs we should create as well, perhaps due to some interesting technical challenge or design decisions related to this component?*
-
---- -->
+The component should respond to directional settings.
 
 ## Resources
 
 - [Open UI Analysis](https://open-ui.org/components/skeleton.research)
 - [Analysis Spreadsheet](https://microsoft-my.sharepoint-df.com/:x:/r/personal/jocusick_microsoft_com/_layouts/15/guestaccess.aspx?e=E6cgc9&share=EcwzVDELjoZMgn_mbQMGH0YBCLQfFpn-1ksv0j20sLtqsQ)
-
-<!-- ## Next Steps
-
-*What next steps, if any, are there? Is there some functionality that would be a nice-to-have or a common feature in other implementations that could be added but is not considered part of the MVP?* -->
