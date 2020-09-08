@@ -26,7 +26,7 @@ export abstract class RegisteredAction<C, M> {
     }
 
     /**
-     * Invokes the action
+     * Gets the action to be called
      */
     public getAction = (config: C | RegisteredActionCallbackConfig): () => void => {
         return () => {
