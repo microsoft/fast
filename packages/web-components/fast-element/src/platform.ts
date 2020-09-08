@@ -5,7 +5,7 @@
 export type TrustedTypesPolicy = {
     /**
      * Creates trusted HTML.
-     * @param html The HTML to clear as trustworthy.
+     * @param html - The HTML to clear as trustworthy.
      */
     createHTML(html: string): string;
 };
@@ -17,8 +17,8 @@ export type TrustedTypesPolicy = {
 export type TrustedTypes = {
     /**
      * Creates a trusted types policy.
-     * @param name The policy name.
-     * @param rules The policy rules implementation.
+     * @param name - The policy name.
+     * @param rules - The policy rules implementation.
      */
     createPolicy(name: string, rules: TrustedTypesPolicy): TrustedTypesPolicy;
 };
