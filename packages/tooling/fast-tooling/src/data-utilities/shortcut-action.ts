@@ -91,7 +91,7 @@ export class ShortcutAction extends RegisteredAction<ShortcutActionCallbackConfi
     /**
      * Invokes the action
      */
-    public invoke = (): any => {
+    public invoke = (): void => {
         this.getAction({
             keys: this.keys,
             name: this.name,
