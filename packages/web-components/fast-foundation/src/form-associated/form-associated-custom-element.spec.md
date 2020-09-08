@@ -46,7 +46,7 @@ The implementation will manage a "proxy" element that will be appended to the li
 - `protected setFormValue(value: File | string | FormData | null, state?: File | string | FormData): void`
   - When using `elementInternals`, this will set the value in the form. With no FACE support, this will do nothing because the value will automatically be associated by the proxy element. This can be overridden as necessary by components with more advanced behavior.
 - `protected handleKeyPress(): void`
-  - Will submit the form when `enter` key is pressed to match standard input behavior. Can be overridden or extended.
+  - Will trigger implicit submission when `enter` key is pressed to match standard input behavior. Can be overridden or extended.
 - `protected setValidity(flags: ValidityStateFlags, message?: string, anchor?: HTMLElement): void;`
   - With form association support, will set the validity of the component. With no form association, this will do nothing unless a message is passed. If a message is passed, the proxy element's `setCustomValidity` method will be invoked with the value of the message.
 
@@ -108,6 +108,7 @@ TBD. Form association APIs are very new so JSDOM is not likely to expose the fea
 - [Form Participation API Explained](https://docs.google.com/document/d/1JO8puctCSpW-ZYGU8lF-h4FWRIDQNDVexzHoOQ2iQmY/edit?pli=1)
 - [Creating a form-associated custom element](https://html.spec.whatwg.org/multipage/custom-elements.html#custom-elements-face-example)
 - [More capable form controls](https://web.dev/more-capable-form-controls/)
+- [Implicit submission](https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#implicit-submission)
 
 ### Next Steps
 - We will solve label-clicking for browsers with no FACE support in the future. A promising approach would be to catch click events on the parent form and delegate focus from there. The edge-case this does not address is elements that are not a descendent of the form element but are still associated using the [`form`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefform) content attributes.

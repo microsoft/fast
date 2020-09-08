@@ -83,6 +83,7 @@ declare let ElementInternals: {
 
 interface HTMLElement {
     attachInternals?(): ElementInternals;
+    click(): void;
 }
 
 const proxySlotName = "form-associated-proxy";
@@ -489,10 +490,12 @@ export abstract class FormAssociated<
         switch (e.keyCode) {
             case keyCodeEnter:
                 if (this.form instanceof HTMLFormElement) {
-                    // Match native behavior
-                    this.form.submit();
+                    // Implicit submission
+                    const defaultButton = this.form.querySelector(
+                        "[type=submit]"
+                    ) as HTMLElement | null;
+                    defaultButton?.click();
                 }
-
                 break;
         }
     }
