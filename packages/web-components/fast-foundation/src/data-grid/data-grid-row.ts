@@ -18,30 +18,6 @@ const defaultCellItemTemplate = html`
 export class DataGridRow extends FASTElement {
 
     /**
-     * The data to be displayed in the row in JSON format
-     * 
-     * @public
-     * @remarks
-     * HTML Attribute: row
-     */
-    @attr
-    public row: string;
-    private rowChanged(): void {
-    }
-
-    /**
-     * The column definitions of the grid in JSON format
-     * 
-     * @public
-     * @remarks
-     * HTML Attribute: columns
-     */
-    @attr
-    public columns: string;
-    private columnsChanged(): void {
-    }
-
-    /**
      * String that gets applied to the the css gridTemplateColumns attribute for the row
      *
      * @public
@@ -100,14 +76,6 @@ export class DataGridRow extends FASTElement {
      */
     public connectedCallback(): void {
         super.connectedCallback();
-
-        if (this.columns !== undefined) {
-            this.columnsData = JSON.parse(this.columns);
-        }
-
-        if (this.row !== undefined) {
-            this.rowData = JSON.parse(this.row);
-        }
 
         this.cellsPlaceholder = document.createComment("");
         this.appendChild(this.cellsPlaceholder);

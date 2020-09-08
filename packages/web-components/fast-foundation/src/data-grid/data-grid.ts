@@ -26,7 +26,7 @@ export interface DataGridColumn {
     /**
      *  header template
      */
-    headerTemplate?: ViewTemplate;
+    headerCellTemplate?: ViewTemplate;
 
     /**
      * cell template
@@ -63,37 +63,13 @@ export class DataGrid extends FASTElement {
     };
 
     /**
-     * The data to be displayed in the grid in JSON format
-     * 
-     * @public
-     * @remarks
-     * HTML Attribute: data
-     */
-    @attr
-    public rows: string;
-    private rowsChanged(): void {
-    }
-
-    /**
-     * The column definitions of the grid in JSON format
-     * 
-     * @public
-     * @remarks
-     * HTML Attribute: columns
-     */
-    @attr
-    public columns: string;
-    private columnsChanged(): void {
-    }
-
-    /**
      * The data being displayed in the grid
      *
      * @public
      */
     @observable
-    public rowData: object[] = [];
-    private rowDataChanged(): void {
+    public rowsData: object[] = [];
+    private rowsDataChanged(): void {
     }
 
     /**
@@ -141,23 +117,15 @@ export class DataGrid extends FASTElement {
     public connectedCallback(): void {
         super.connectedCallback();
 
-        if (this.columns !== undefined) {
-            this.columnsData = JSON.parse(this.columns);
-        }
-
         this.rowsPlaceholder = document.createComment("");
         this.appendChild(this.rowsPlaceholder);
 
         this.rowsRepeatBehavior = new RepeatDirective(
-             x => x.rowData,
+             x => x.rowsData,
              x => x.rowItemTemplate,
              { positioning: false }
         ).createBehavior(this.rowsPlaceholder);
 
         this.$fastController.addBehaviors([this.rowsRepeatBehavior!]);
-
-        if (this.rows !== undefined) {
-            this.rowData = JSON.parse(this.rows);
-        }
     }
 }
