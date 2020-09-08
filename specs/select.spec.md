@@ -48,7 +48,7 @@ On a web page a customer is shopping for a new shirt in size medium. The custome
 - `value` - The value of select is typed as `any`
 
 *Events*
-- `change` - raise the change event for external parties to be informed of the `selectedIndex`'s value change.
+- `change` - raise the change event for external parties to be informed of the `selected-option`'s value change.
 
 *Slots*
 - default - the list of option(s)
