@@ -77,7 +77,10 @@ export function mapKeyboardEventToKeyConfig(e: KeyboardEvent): KeyConfig[] {
     return keys;
 }
 
-export class ShortcutAction extends MessageSystemUtilityAction<ShortcutActionCallbackConfig, KeyboardEvent> {
+export class ShortcutAction extends MessageSystemUtilityAction<
+    ShortcutActionCallbackConfig,
+    KeyboardEvent
+> {
     public keys: KeyConfig[];
     public name: string;
 

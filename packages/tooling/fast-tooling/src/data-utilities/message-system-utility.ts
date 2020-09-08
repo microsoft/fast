@@ -55,7 +55,7 @@ export abstract class MessageSystemUtility<C> {
                 onMessage: this.handleMessageSystem,
             };
             config.messageSystem.add(this.messageSystemConfig);
-         }
+        }
 
         this.messageSystem = config.messageSystem;
 
@@ -74,9 +74,11 @@ export abstract class MessageSystemUtility<C> {
      * Returns an action with a specific ID that can be run
      */
     public action = (id: string): IdentifiedAction => {
-        const action = this.registeredActions.find((action: MessageSystemUtilityAction<C, unknown>) => {
-            return action.id === id;
-        });
+        const action = this.registeredActions.find(
+            (action: MessageSystemUtilityAction<C, unknown>) => {
+                return action.id === id;
+            }
+        );
 
         if (action) {
             return {

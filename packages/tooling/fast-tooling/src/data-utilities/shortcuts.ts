@@ -1,7 +1,4 @@
-import {
-    CustomMessageIncomingOutgoing,
-    MessageSystemType,
-} from "../message-system";
+import { CustomMessageIncomingOutgoing, MessageSystemType } from "../message-system";
 import { ShortcutAction, ShortcutActionCallbackConfig } from "./shortcut-action";
 import { MessageSystemUtility } from "./message-system-utility";
 
@@ -34,7 +31,7 @@ export class Shortcuts extends MessageSystemUtility<ShortcutActionCallbackConfig
             }
         });
     };
-    
+
     /**
      * Handles messages from the message system
      */
@@ -47,12 +44,14 @@ export class Shortcuts extends MessageSystemUtility<ShortcutActionCallbackConfig
                     id: "shortcuts",
                     eventListener: this.listener,
                     eventListenerType: "keypress",
-                    shortcuts: this.registeredActions.map((shortcutAction: ShortcutAction) => {
-                        return {
-                            name: shortcutAction.name,
-                            keys: shortcutAction.keys,
-                        };
-                    }),
+                    shortcuts: this.registeredActions.map(
+                        (shortcutAction: ShortcutAction) => {
+                            return {
+                                name: shortcutAction.name,
+                                keys: shortcutAction.keys,
+                            };
+                        }
+                    ),
                 } as ShortcutMessageOutgoing);
                 break;
         }

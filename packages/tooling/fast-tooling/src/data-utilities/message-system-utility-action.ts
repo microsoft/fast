@@ -5,7 +5,8 @@ export interface MessageSystemUtilityActionCallbackConfig {
     id: string;
 }
 
-export interface MessageSystemUtilityActionConfig extends MessageSystemUtilityActionCallbackConfig {
+export interface MessageSystemUtilityActionConfig
+    extends MessageSystemUtilityActionCallbackConfig {
     /**
      * The action to take when the keycodes have been pressed
      */
@@ -28,11 +29,13 @@ export abstract class MessageSystemUtilityAction<C, M> {
     /**
      * Gets the action to be called
      */
-    public getAction = (config: C | MessageSystemUtilityActionCallbackConfig): () => void => {
+    public getAction = (
+        config: C | MessageSystemUtilityActionCallbackConfig
+    ): (() => void) => {
         return () => {
             this.action({
                 ...config,
-                id: this.id
+                id: this.id,
             });
         };
     };
