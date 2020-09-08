@@ -82,9 +82,7 @@ export abstract class MessageSystemUtility<C> {
 
         if (action) {
             return {
-                run: action.getAction({
-                    id: action.id,
-                }),
+                run: action.getAction(),
                 error: null,
             };
         }

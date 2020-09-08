@@ -16,14 +16,14 @@ export interface MessageSystemUtilityActionConfig
 /**
  * This abstract class is for actions intended to be part
  * of a registered class
- * 
+ *
  * It takes two generics, C, an object which is added to the
  * MessageSystemUtilityActionCallbackConfig,
  * and M, a generic used for matching
  * the action to some specific parameters
  */
-export abstract class MessageSystemUtilityAction<C, M> {
-    private action: (config: C | MessageSystemUtilityActionCallbackConfig) => void;
+export abstract class MessageSystemUtilityAction<C = {}, M = {}> {
+    private action: (config: C & MessageSystemUtilityActionCallbackConfig) => void;
     public id: string;
 
     constructor(config: MessageSystemUtilityActionConfig) {
@@ -34,9 +34,7 @@ export abstract class MessageSystemUtilityAction<C, M> {
     /**
      * Gets the action to be called
      */
-    public getAction = (
-        config: C | MessageSystemUtilityActionCallbackConfig
-    ): (() => void) => {
+    public getAction = (config?: C): (() => void) => {
         return () => {
             this.action({
                 ...config,
