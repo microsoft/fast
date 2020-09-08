@@ -140,7 +140,7 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
         default: fastDesignSystemDefaults.density,
         converter: nullableNumberConverter,
     })
-    public density: 0;
+    public density: number;
 
     /**
      * The grid-unit that UI dimensions are derived from in pixels.
