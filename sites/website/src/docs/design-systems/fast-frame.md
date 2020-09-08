@@ -49,7 +49,7 @@ The FAST type ramp is exposed by the `FASTDesignSystemProvider` as CSS Custom Pr
 FAST Frame implements an adaptive color system that provides some unique advantages:
 - Ensure text meets [WCAG](https://www.w3.org/WAI/standards-guidelines/wcag/) contrast requirements.
 - Easily swap from light mode to dark, or anywhere in-between.
-- Color themeing through palette tinting.
+- Color theming through palette tinting.
 - Perceptually uniform UI across background colors.
 
 To accomplish these goals, FAST Frame makes heavy use of algorithmic colors; named colors that are a product of the Design System in which they are calculated. In the documentation below, these algorithmic colors will be referred to as [Recipes](/docs/design-systems/fast-frame#color-recipes). [Recipes](/docs/design-systems/fast-frame#color-recipes) operate on three primary inputs: [Palettes](/docs/design-systems/fast-frame#palettes), [the background color](/docs/design-systems/fast-frame#background-color), and [offsets / deltas](/docs/design-systems/fast-frame#offsets-deltas).
