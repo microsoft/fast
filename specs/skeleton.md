@@ -20,7 +20,17 @@ Should not be made to reflect a specific element (e.g. `skeleton-button`, `skele
   
 ### Features
 
-- `Shape`: Circle or rect shapes can be selected. Border radius of rectagled shape will be determined by the design system.
+#### Patterns
+This feature allows a `fast-skeleton` component to accept a source for a skeleton "pattern" through the `pattern` attribute or a inline SVG code via component slot. A skeleton pattern may be used to represent a transparent graphical shape and layout of a component.
+
+When used in this way the skeleton component would essentially act as a container for the provided SVG mask which can then be applied anywhere in an application.
+
+The SVG would have CSS mask properties applied to it allowing underlying colors and effects (i.e. [shimmer](https://developer.microsoft.com/en-us/fluentui#/controls/web/shimmer)) to be visible through the transparent template.
+
+This feature allows the `fast-skeleton` component to provide maximum design flexibility to represent many shapes and layouts.
+
+#### Shape Attribute
+Circle or rect shapes can be selected. Border radius of rectagled shape will be determined by the design system.
 
 ### Prior Art/Examples
 
@@ -37,16 +47,21 @@ Should not be made to reflect a specific element (e.g. `skeleton-button`, `skele
 - [Thumbprint](https://thumbprint.design/guide/product/loaders/#example-2.-skeleton-loader)
 - [Vercel](https://vercel.com/design/skeleton)
 
+## Design
+
+A designer can create an SVG design pattern asset to create custom visual layouts for this component. If a developer does not have design support, they may use skeleton components as a stand-alone elements in an existing component. Developers also have the option to manually code SVG's to be used as templates. SVG code quality will have to be enforced to ensure proper rendering of the pattern masks.
+
 ### API
 
 #### Component Name
-- `fast-avatar`
+- `fast-skeleton`
 
 #### Attributes
 |   Name    | Description                                                 | Type                                |
 |-----------|-------------------------------------------------------------|-------------------------------------|
-| `shape`   | Determines the avatar coin shape. Rectangle by default.     | `string: rect (default) | circle`   |
-| `fill`    | Sets the background fill of the avatar coin.                | `string: hex color`                 |
+| `shape`   | Determines the skeleton coin shape. Rectangle by default.   | `string: rect (default) | circle`   |
+| `fill`    | Sets the background fill of the skeleton component          | `string: hex color`                 |
+| `pattern` | Accepts a URL for an SVG asset                              | `string: URL`
 
 ### Anatomy and Appearance
 
@@ -56,6 +71,7 @@ Should not be made to reflect a specific element (e.g. `skeleton-button`, `skele
 <template
   aria-busy="${x => x.ariaBusy}"
 >
+  <img src="${x => x.pattern}" />
   <slot></slot>
 </template>
 ```
@@ -67,6 +83,21 @@ Should not be made to reflect a specific element (e.g. `skeleton-button`, `skele
 <fast-skeleton shape="rect"></fast-skeleton>
 ```
 
+SVG pattern passed via `pattern` attribute:
+```html
+<fast-skeleton 
+  pattern="https://example.com/template.svg"
+>
+</fast-skeleton>
+```
+
+SVG pattern passed via component slot:
+```html
+<fast-skeleton shape="rect">
+  <svg></svg>
+</fast-skeleton>
+```
+
 <!-- ### States
 
 *Key component states, valid state transitions, and how interactions trigger a state transition.* -->
@@ -74,6 +105,7 @@ Should not be made to reflect a specific element (e.g. `skeleton-button`, `skele
 ### Accessibility
 
 - The `aria-busy` attribute should be applied and set to `true` while this the UI the skeleton is represent is still in a loading state
+- To maximize the information presented to assistive technologies inline SVG's are the preferred method for applying a `pattern`
 
 ### Globalization
 
