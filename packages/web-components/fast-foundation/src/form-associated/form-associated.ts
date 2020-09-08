@@ -491,7 +491,7 @@ export abstract class FormAssociated<
             case keyCodeEnter:
                 if (this.form instanceof HTMLFormElement) {
                     // Implicit submission
-                    const defaultButton = this.form.querySelector("[type=submit]") as HTMLElement;
+                    const defaultButton = this.form.querySelector("[type=submit]") as (HTMLElement | null);
                     defaultButton?.click();
                 }
                 break;
