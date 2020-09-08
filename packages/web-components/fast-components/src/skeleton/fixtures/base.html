@@ -1,0 +1,35 @@
+<DesignSystemProvider use-defaults>
+  <style>
+    fluent-skeleton {
+      margin-top: 10px;
+      --neutral-fill-rest: #E1DFDD;
+      display: flex;
+      --shimmerOffset: -200px;
+    }
+
+    .skeleton-container {
+      display: flex;
+      flex-direction: row;
+    }
+
+    .thing-1 {
+      width: 200px;
+      height: 100px;
+    }
+
+    .thing-2 {
+      width: 100px;
+      height: 100px;
+    }
+
+    .thing-3 {
+      width: 500px;
+      height: 250px;
+    }
+  </style>
+  <div class="skeleton-container">
+    <fluent-skeleton class="thing-1" shape="rect"></fluent-skeleton>
+    <fluent-skeleton class="thing-2" shape="rect"></fluent-skeleton>
+    <fluent-skeleton class="thing-3" shape="rect"></fluent-skeleton>
+  </div>
+</DesignSystemProvider>

@@ -544,6 +544,20 @@ export const RadioGroupTemplate: import("@microsoft/fast-element").ViewTemplate<
 // @public
 export const RadioTemplate: import("@microsoft/fast-element").ViewTemplate<Radio, any>;
 
+// @public
+export class Skeleton extends FASTElement {
+    // (undocumented)
+    ariaBusy: boolean;
+    fill: string;
+    shape: skeletonShape;
+}
+
+// @public (undocumented)
+export type skeletonShape = 'rect' | 'circle';
+
+// @public (undocumented)
+export const SkeletonTemplate: import("@microsoft/fast-element").ViewTemplate<Skeleton, any>;
+
 // Warning: (ae-incompatible-release-tags) The symbol "Slider" is marked as @public, but its signature references "FormAssociated" which is marked as @alpha
 //
 // @public
