@@ -32,7 +32,7 @@ export interface MessageSystemUtilityUtilityConfig<C> {
  * This abstract class are for utilities that
  * use the MessageSystem to register and de-register themselves
  */
-export abstract class MessageSystemUtilityUtility<C> {
+export abstract class MessageSystemUtility<C> {
     public messageSystem: MessageSystem;
     private messageSystemConfig: { onMessage: (e: MessageEvent) => void };
     protected registeredActions: MessageSystemUtilityAction<C, unknown>[] = [];

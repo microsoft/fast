@@ -3,7 +3,7 @@ import {
     MessageSystemType,
 } from "../message-system";
 import { ShortcutAction, ShortcutActionCallbackConfig } from "./shortcut-action";
-import { MessageSystemUtilityUtility } from "./message-system-utility";
+import { MessageSystemUtility } from "./message-system-utility";
 
 export type shortcutMessageSystemAction = "initialize";
 export type shortcutMessageSystemId = "shortcuts";
@@ -17,7 +17,7 @@ export interface ShortcutMessageOutgoing extends CustomMessageIncomingOutgoing {
     shortcuts: ShortcutActionCallbackConfig[];
 }
 
-export class Shortcuts extends MessageSystemUtilityUtility<ShortcutActionCallbackConfig> {
+export class Shortcuts extends MessageSystemUtility<ShortcutActionCallbackConfig> {
     constructor(config) {
         super();
 
