@@ -5,6 +5,9 @@
 ```ts
 
 // @public
+export const $global: Global;
+
+// @public
 export interface Accessor {
     getValue(source: any): any;
     name: string;
@@ -311,6 +314,11 @@ export class FASTElementDefinition<TType extends Function = Function> {
 }
 
 // @public
+export type Global = typeof globalThis & {
+    trustedTypes: TrustedTypes;
+};
+
+// @public
 export function html<TSource = any, TParent = any>(strings: TemplateStringsArray, ...values: TemplateValue<TSource, TParent>[]): ViewTemplate<TSource, TParent>;
 
 // @public
@@ -479,6 +487,16 @@ export interface SyntheticViewTemplate<TSource = any, TParent = any> {
 export type TemplateValue<TScope, TParent = any> = Binding<TScope, any, TParent> | string | number | Directive | CaptureType<TScope>;
 
 // @public
+export type TrustedTypes = {
+    createPolicy(name: string, rules: TrustedTypesPolicy): TrustedTypesPolicy;
+};
+
+// @public
+export type TrustedTypesPolicy = {
+    createHTML(html: string): string;
+};
+
+// @public
 export interface ValueConverter {
     fromView(value: any): any;
     toView(value: any): any;
@@ -508,10 +526,6 @@ export function volatile(target: {}, name: any, descriptor: any): any;
 // @public
 export function when<TSource = any, TReturn = any>(binding: Binding<TSource, TReturn>, templateOrTemplateBinding: SyntheticViewTemplate | Binding<TSource, SyntheticViewTemplate>): CaptureType<TSource>;
 
-
-// Warnings were encountered during analysis:
-//
-// dist/dts/dom.d.ts:25:5 - (ae-forgotten-export) The symbol "TrustedTypesPolicy" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 
