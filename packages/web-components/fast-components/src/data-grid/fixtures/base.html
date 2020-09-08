@@ -4,13 +4,11 @@
 
     <h2>default</h2>
     <fast-data-grid
-       rows='[{"name": "bob", "age": 20},{"name": "rob", "age": 21}]'
-       columns='[{"columnDataKey": "name", "columnWidth":"1fr"},{"columnDataKey": "age", "columnWidth":"1fr"}]'
-    >
+    id="defaultGrid">
     <fast-data-grid-header slot="headerSlot">
         Header area
     </fast-data-grid-header>
-    <fast-data-grid-row row='{"name": "robert", "age": 20}' columns='[{"columnDataKey": "name", "columnWidth":"1fr"},{"columnDataKey": "age", "columnWidth":"1fr"}]'> 
+    <fast-data-grid-row id="defaultGridRow"> 
     </fast-data-grid-row>
     </fast-data-grid>
 
@@ -21,8 +19,7 @@
 
     <h2>Row</h2>
     <fast-data-grid-row 
-        row='{"name": "robert", "age": 20}' 
-        columns='[{"columnDataKey": "name", "columnWidth":"1fr"},{"columnDataKey": "age", "columnWidth":"1fr"}]' 
+        id="defaultRow"
         gridTemplateColumns="auto auto"
     >
     </fast-data-grid-row>
@@ -30,14 +27,13 @@
     <h2>Row with cell template</h2>
     <fast-data-grid-row 
         id="cellTemplateRow"
-        row='{"name": "robert", "age": 20}' 
         gridTemplateColumns="auto auto"
     >
     </fast-data-grid-row>
 
 
     <h2>Cell</h2>
-    <fast-data-grid-cell row='{"name": "robert", "age": 20}' column='{"columnDataKey": "name"}'>
+    <fast-data-grid-cell id="defaultCell">
     </fast-data-grid-cell>
 
 

@@ -222,18 +222,15 @@ export type CSSDisplayPropertyValue = "block" | "contents" | "flex" | "grid" | "
 // @public
 export class DataGrid extends FASTElement {
     constructor();
-    columns: string;
     columnsData: DataGridColumn[] | null;
     // @internal (undocumented)
     connectedCallback(): void;
     static generateColumns: (row: object) => DataGridColumn[];
     // @internal
     gridRows: HTMLElement;
-    rowData: object[];
     // (undocumented)
     rowItemTemplate?: ViewTemplate;
-    rowkey: string;
-    rows: string;
+    rowsData: object[];
     // (undocumented)
     rowsElement?: HTMLElement;
     // @internal (undocumented)
@@ -244,14 +241,12 @@ export class DataGrid extends FASTElement {
 
 // @public
 export class DataGridCell extends FASTElement {
-    column: string;
     columnData: DataGridColumn | null;
     // @internal (undocumented)
     connectedCallback(): void;
     gridColumnIndex: number;
     // @internal (undocumented)
     resolveTemplate(): import("@microsoft/fast-element").ViewTemplate<any, any>;
-    row: string;
     rowData: object | null;
     }
 
@@ -263,7 +258,7 @@ export interface DataGridColumn {
     cellTemplate?: ViewTemplate;
     columnDataKey: string;
     columnWidth?: string;
-    headerTemplate?: ViewTemplate;
+    headerCellTemplate?: ViewTemplate;
     title?: string;
 }
 
@@ -281,12 +276,10 @@ export class DataGridRow extends FASTElement {
     cellElements?: object[];
     // (undocumented)
     cellItemTemplate?: ViewTemplate;
-    columns: string;
     columnsData: DataGridColumn[] | null;
     // @internal (undocumented)
     connectedCallback(): void;
     gridTemplateColumns: string;
-    row: string;
     rowData: object | null;
     // @internal (undocumented)
     slottedCellElements: HTMLElement[];

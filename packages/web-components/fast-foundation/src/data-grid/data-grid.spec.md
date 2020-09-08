@@ -2,17 +2,14 @@
 
 ## Overview
 
-The `data grid` component enables authors to display an array of data in a grid layout.  The layout includes a "header" region where a title can be displayed for each column.  
+The `data grid` component enables authors to display an array of data in a tabular layout.  The layout can include a "header" region where a title can be displayed for each column.  
 
-`Data grid` actually consists of a number of components that work together to enable tabular displays of data:
+`Data grid` actually consists of a number of components that work together:
 - `data grid`:  The top level container element
 - `data grid header`: Displays column titles
 - `data grid header cell`: Displays the title for a single column of cells
 - `data grid row`: Displays a single row of data associated with a single record
 - `data grid cell`: Displays a single cell of data within a row
-
-The data grid 
-
 
 ### Background
 
@@ -22,15 +19,17 @@ The data grid
 Any time an author wants to display tabular data.
 
 ### Non-goals
-- The initial version of the component will not support virtualization to display large data sets but should be architected to support it in a future release.
+- The initial version of the component will not support virtualization or pagination to display large data sets but should be architected to support both in the future.
   
 ### Features
 - Generates a data grid layout based on provided data.
 - Authors can choose to generate elements themselves (ie. create their own rows elements instead of generated ones)
+- manages keyboard navigation across the grid
 
 ### Risks and Challenges
-
-*Notable risks or challenges associated with implementing the component. Would we need to make any breaking changes in order to achieve this component's goals?*
+- not yet clear how cells with focusable children work 
+- is it easy enough for authors to hook up to events from cell?
+- we're not requiring unique identifiers per row/data item, do we need to to ensure stable relationships between data rows and component representations?
 
 ### Prior Art/Examples
 
@@ -202,9 +201,7 @@ Default slot for items
 
 - programmatically generated rows/cells will will be created using [repeat directives](https://fast.design/docs/fast-element/using-directives#the-repeat-directive)
 
-### States
 
-*Key component states, valid state transitions, and how interactions trigger a state transition.*
 
 ### Accessibility
 
@@ -220,7 +217,7 @@ NA
 
 ### Performance
 
-*Are there any performance pitfalls or challenges with implementing the component?*
+We want to take full advantage of fast-element templating and directives for fast rendering.
 
 ### Dependencies
 
@@ -228,18 +225,8 @@ None
 
 ### Test Plan
 
-TBD
-
-### Documentation
-
-*What additions or changes are needed for user documentation and demos? Are there any architectural/engineering docs we should create as well, perhaps due to some interesting technical challenge or design decisions related to this component?*
-
----
-
-## Resources
-
-*Any related resource links such as web standards, discussion threads, diagrams, etc.*
+While testing is still TBD for our web components, I would expect this to align with the testing strategy and not require any additional test support.
 
 ## Next Steps
 
-*What next steps, if any, are there? Is there some functionality that would be a nice-to-have or a common feature in other implementations that could be added but is not considered part of the MVP?*
+Virtualization?  Pagination?

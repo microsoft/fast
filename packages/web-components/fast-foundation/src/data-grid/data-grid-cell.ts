@@ -9,30 +9,6 @@ import { DataGridCellTemplate } from "./data-grid-cell.template";
  */
 export class DataGridCell extends FASTElement {
     /**
-     * The base data for the parent row as a JSON string
-     * 
-     * @public
-     * @remarks
-     * HTML Attribute: row
-     */
-    @attr
-    public row: string;
-    private rowChanged(): void {
-    }
-
-    /**
-     * The base data for the column as a JSON string
-     * 
-     * @public
-     * @remarks
-     * HTML Attribute: row
-     */
-    @attr
-    public column: string;
-    private columnChanged(): void {
-    }
-
-    /**
      * The column index
      * 
      * @public
@@ -69,15 +45,7 @@ export class DataGridCell extends FASTElement {
      */
     public connectedCallback(): void {
         super.connectedCallback();
-        
-        if (this.column !== undefined) {
-            this.columnData = JSON.parse(this.column);
-        }
-
-        if (this.row !== undefined) {
-            this.rowData = JSON.parse(this.row);
-        }
-
+    
         this.style.gridColumn = `${this.gridColumnIndex === undefined ? 0 : this.gridColumnIndex}`;
     }
 
