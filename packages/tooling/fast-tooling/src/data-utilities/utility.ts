@@ -1,5 +1,5 @@
 import { MessageSystem } from "src/message-system";
-import { RegisteredAction } from "./registered-action";
+import { MessageSystemUtilityAction } from "./message-system-utility-action";
 
 export interface IdentifiedAction<C> {
     /**
@@ -15,7 +15,7 @@ export interface IdentifiedAction<C> {
     error: string | null;
 }
 
-export interface RegisteredUtilityConfig<C> {
+export interface UtilityConfig<C> {
     /**
      * The message system
      * used for sending and receiving shortcuts to the message system
@@ -25,17 +25,17 @@ export interface RegisteredUtilityConfig<C> {
     /**
      * Shortcut actions
      */
-    actions?: RegisteredAction<C, unknown>[];
+    actions?: MessageSystemUtilityAction<C, unknown>[];
 }
 
 /**
  * This abstract class are for utilities that
  * use the MessageSystem to register and de-register themselves
  */
-export abstract class RegisteredUtility<C> {
+export abstract class Utility<C> {
     public messageSystem: MessageSystem;
     private messageSystemConfig: { onMessage: (e: MessageEvent) => void };
-    protected registeredActions: RegisteredAction<C, unknown>[] = [];
+    protected registeredActions: MessageSystemUtilityAction<C, unknown>[] = [];
 
     /**
      * Destroy this before dereferencing the validator
@@ -49,7 +49,7 @@ export abstract class RegisteredUtility<C> {
      * Register this utility with the message system
      * This should be called during construction
      */
-    public registerMessageSystem(config: RegisteredUtilityConfig<C>): void {
+    public registerMessageSystem(config: UtilityConfig<C>): void {
         if (config.messageSystem !== undefined) {
             this.messageSystemConfig = {
                 onMessage: this.handleMessageSystem,
@@ -74,7 +74,7 @@ export abstract class RegisteredUtility<C> {
      * Runs a specific action
      */
     public action = (id: string): IdentifiedAction<C> => {
-        const action = this.registeredActions.find((action: RegisteredAction<C, unknown>) => {
+        const action = this.registeredActions.find((action: MessageSystemUtilityAction<C, unknown>) => {
             return action.id === id;
         });
 

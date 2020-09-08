@@ -1,4 +1,4 @@
-import { RegisteredAction } from "./registered-action";
+import { MessageSystemUtilityAction } from "./message-system-utility-action";
 import { XOR } from "./type.utilities";
 
 export interface MetaKey {
@@ -77,7 +77,7 @@ export function mapKeyboardEventToKeyConfig(e: KeyboardEvent): KeyConfig[] {
     return keys;
 }
 
-export class ShortcutAction extends RegisteredAction<ShortcutActionCallbackConfig, KeyboardEvent> {
+export class ShortcutAction extends MessageSystemUtilityAction<ShortcutActionCallbackConfig, KeyboardEvent> {
     public keys: KeyConfig[];
     public name: string;
 

@@ -1,11 +1,11 @@
-export interface RegisteredActionCallbackConfig {
+export interface MessageSystemUtilityActionCallbackConfig {
     /**
      * The unique identifier
      */
     id: string;
 }
 
-export interface RegisteredActionConfig extends RegisteredActionCallbackConfig {
+export interface MessageSystemUtilityActionConfig extends MessageSystemUtilityActionCallbackConfig {
     /**
      * The action to take when the keycodes have been pressed
      */
@@ -16,11 +16,11 @@ export interface RegisteredActionConfig extends RegisteredActionCallbackConfig {
  * This abstract class is for actions intended to be part
  * of a registered class
  */
-export abstract class RegisteredAction<C, M> {
-    private action: (config: C | RegisteredActionCallbackConfig) => void;
+export abstract class MessageSystemUtilityAction<C, M> {
+    private action: (config: C | MessageSystemUtilityActionCallbackConfig) => void;
     public id: string;
 
-    constructor(config: RegisteredActionConfig) {
+    constructor(config: MessageSystemUtilityActionConfig) {
         this.id = config.id;
         this.action = config.action;
     }
@@ -28,7 +28,7 @@ export abstract class RegisteredAction<C, M> {
     /**
      * Gets the action to be called
      */
-    public getAction = (config: C | RegisteredActionCallbackConfig): () => void => {
+    public getAction = (config: C | MessageSystemUtilityActionCallbackConfig): () => void => {
         return () => {
             this.action({
                 ...config,
