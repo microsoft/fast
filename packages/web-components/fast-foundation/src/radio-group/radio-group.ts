@@ -1,5 +1,6 @@
 import { attr, FASTElement, observable } from "@microsoft/fast-element";
 import {
+    Direction,
     keyCodeArrowDown,
     keyCodeArrowLeft,
     keyCodeArrowRight,
@@ -9,6 +10,7 @@ import {
     keyCodeTab,
     Orientation,
 } from "@microsoft/fast-web-utilities";
+import { getDirection } from "../utilities";
 
 /**
  * An Radio Group Custom HTML Element.
@@ -114,6 +116,7 @@ export class RadioGroup extends FASTElement {
     private focusedRadio: HTMLInputElement | null;
     private parentToolbar: HTMLElement | null | undefined;
     private isInsideToolbar: boolean = false;
+    private direction: Direction;
 
     constructor() {
         super();
@@ -129,6 +132,7 @@ export class RadioGroup extends FASTElement {
      */
     public connectedCallback(): void {
         super.connectedCallback();
+        this.direction = getDirection(this);
         this.setupRadioButtons();
         this.parentToolbar = this.parentElement?.closest('[role="toolbar"]');
         this.isInsideToolbar =
@@ -295,6 +299,63 @@ export class RadioGroup extends FASTElement {
         }
     };
 
+    private moveRight = (e: KeyboardEvent): void => {
+        const group: HTMLElement[] = this.slottedRadioButtons;
+        let index: number = 0;
+
+        index = this.focusedRadio ? group.indexOf(this.focusedRadio) + 1 : 1;
+        if (this.shouldMoveOffGroupToTheRight(index, group, e.keyCode)) {
+            this.moveRightOffGroup();
+            return;
+        } else if (index === group.length) {
+            index = 0;
+        }
+        /* looping to get to next radio that is not disabled */
+        /* matching native radio/radiogroup which does not select an item if there is only 1 in the group */
+        while (index < group.length && group.length > 1) {
+            if (!(group[index] as HTMLInputElement).disabled) {
+                this.moveToRadioByIndex(group, index);
+                break;
+            } else if (this.focusedRadio && index === group.indexOf(this.focusedRadio)) {
+                break;
+            } else if (index + 1 >= group.length) {
+                if (this.isInsideToolbar) {
+                    break;
+                } else {
+                    index = 0;
+                }
+            } else {
+                index += 1;
+            }
+        }
+    };
+
+    private moveLeft = (e: KeyboardEvent): void => {
+        const group: HTMLElement[] = this.slottedRadioButtons;
+        let index: number = 0;
+
+        index = this.focusedRadio ? group.indexOf(this.focusedRadio) - 1 : 0;
+        index = index < 0 ? group.length - 1 : index;
+
+        if (this.shouldMoveOffGroupToTheLeft(group, e.keyCode)) {
+            this.moveLeftOffGroup();
+            return;
+        }
+        /* looping to get to next radio that is not disabled */
+        while (index >= 0 && group.length > 1) {
+            if (!(group[index] as HTMLInputElement).disabled) {
+                this.moveToRadioByIndex(group, index);
+                break;
+            } else if (this.focusedRadio && index === group.indexOf(this.focusedRadio)) {
+                break;
+            } else if (index - 1 < 0) {
+                index = group.length - 1;
+            } else {
+                index -= 1;
+            }
+        }
+    };
+
     /**
      * keyboard handling per https://w3c.github.io/aria-practices/#for-radio-groups-not-contained-in-a-toolbar
      * navigation is different when there is an ancestor with role='toolbar'
@@ -302,8 +363,6 @@ export class RadioGroup extends FASTElement {
      * @internal
      */
     public keydownHandler = (e: KeyboardEvent): void => {
-        const group: HTMLElement[] = this.slottedRadioButtons;
-        let index: number = 0;
         if (e.keyCode !== keyCodeTab && e.keyCode !== keyCodeSpace) {
             e.preventDefault();
         }
@@ -313,59 +372,18 @@ export class RadioGroup extends FASTElement {
                 break;
             case keyCodeArrowRight:
             case keyCodeArrowDown:
-                index = this.focusedRadio ? group.indexOf(this.focusedRadio) + 1 : 1;
-                if (this.shouldMoveOffGroupToTheRight(index, group, e.keyCode)) {
-                    this.moveRightOffGroup();
-                    return;
-                } else if (index === group.length) {
-                    index = 0;
-                }
-                /* looping to get to next radio that is not disabled */
-                /* matching native radio/radiogroup which does not select an item if there is only 1 in the group */
-                while (index < group.length && group.length > 1) {
-                    if (!(group[index] as HTMLInputElement).disabled) {
-                        this.moveToRadioByIndex(group, index);
-                        break;
-                    } else if (
-                        this.focusedRadio &&
-                        index === group.indexOf(this.focusedRadio)
-                    ) {
-                        break;
-                    } else if (index + 1 >= group.length) {
-                        if (this.isInsideToolbar) {
-                            break;
-                        } else {
-                            index = 0;
-                        }
-                    } else {
-                        index += 1;
-                    }
+                if (this.direction === Direction.ltr) {
+                    this.moveRight(e);
+                } else {
+                    this.moveLeft(e);
                 }
                 break;
             case keyCodeArrowLeft:
             case keyCodeArrowUp:
-                if (this.shouldMoveOffGroupToTheLeft(group, e.keyCode)) {
-                    this.moveLeftOffGroup();
-                    return;
-                }
-                index = this.focusedRadio ? group.indexOf(this.focusedRadio) - 1 : 0;
-                index = index < 0 ? group.length - 1 : index;
-
-                /* looping to get to next radio that is not disabled */
-                while (index >= 0 && group.length > 1) {
-                    if (!(group[index] as HTMLInputElement).disabled) {
-                        this.moveToRadioByIndex(group, index);
-                        break;
-                    } else if (
-                        this.focusedRadio &&
-                        index === group.indexOf(this.focusedRadio)
-                    ) {
-                        break;
-                    } else if (index - 1 < 0) {
-                        index = group.length - 1;
-                    } else {
-                        index -= 1;
-                    }
+                if (this.direction === Direction.ltr) {
+                    this.moveLeft(e);
+                } else {
+                    this.moveRight(e);
                 }
                 break;
         }
