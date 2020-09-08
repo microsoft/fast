@@ -44,7 +44,6 @@ On a web page a customer is shopping for a new shirt in size medium. The custome
 - `name` - Name of the control
 - `options` - Returns an array of the `<fast-option>` elements contained by the `<fast-select>` element
 - `required` - Boolean value that sets the field as required
-- `selected-index` - index of the first or last selected `<fast-option>` element, depending on the value of `multiple`
 - `selected-options` - An array of the selected `<fast-option>` elements
 - `value` - The value of select is typed as `any`
 
