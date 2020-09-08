@@ -210,6 +210,10 @@ export function compileTemplate(
     compileAttributes(template, directives, hostBehaviorFactories, true);
 
     const fragment = template.content;
+
+    // https://bugs.chromium.org/p/chromium/issues/detail?id=1111864
+    document.adoptNode(fragment);
+
     const viewBehaviorFactories: BehaviorFactory[] = [];
     const directiveCount = directives.length;
     const walker = DOM.createTemplateWalker(fragment);

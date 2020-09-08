@@ -1,3 +1,4 @@
+export * from "./platform";
 export * from "./template";
 export * from "./fast-element";
 export { FASTElementDefinition, PartialFASTElementDefinition } from "./fast-definitions";
