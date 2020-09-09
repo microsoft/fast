@@ -23,7 +23,9 @@ export interface MessageSystemUtilityActionConfig
  * the action to some specific parameters
  */
 export abstract class MessageSystemUtilityAction<TCallback = {}, TMatch = {}> {
-    private action: (config: TCallback & MessageSystemUtilityActionCallbackConfig) => void;
+    private action: (
+        config: TCallback & MessageSystemUtilityActionCallbackConfig
+    ) => void;
     public id: string;
 
     constructor(config: MessageSystemUtilityActionConfig) {
