@@ -170,6 +170,9 @@ export interface CompilationResult {
 export function compileTemplate(template: HTMLTemplateElement, directives: ReadonlyArray<Directive>): CompilationResult;
 
 // @public
+export type ComposableStyles = string | ElementStyles | CSSStyleSheet;
+
+// @public
 export class Controller extends PropertyChangeNotifier {
     // @internal
     constructor(element: HTMLElement, definition: FASTElementDefinition);
@@ -192,8 +195,6 @@ export class Controller extends PropertyChangeNotifier {
     readonly view: ElementView | null;
 }
 
-// Warning: (ae-forgotten-export) The symbol "ComposableStyles" needs to be exported by the entry point index.d.ts
-//
 // @public
 export function css(strings: TemplateStringsArray, ...values: ComposableStyles[]): ElementStyles;
 
@@ -235,11 +236,15 @@ export const DOM: Readonly<{
 export function elements(selector?: string): (value: Node, index: number, array: Node[]) => boolean;
 
 // @public
+export type ElementStyleFactory = (styles: ReadonlyArray<ComposableStyles>) => ElementStyles;
+
+// @public
 export abstract class ElementStyles {
     // @internal (undocumented)
     abstract addStylesTo(target: StyleTarget): void;
     // @internal (undocumented)
     abstract readonly behaviors: ReadonlyArray<Behavior> | null;
+    static readonly create: ElementStyleFactory;
     static find(key: string): ElementStyles | null;
     // @internal (undocumented)
     abstract removeStylesFrom(target: StyleTarget): void;
@@ -377,7 +382,7 @@ export interface PartialFASTElementDefinition {
     readonly elementOptions?: ElementDefinitionOptions;
     readonly name: string;
     readonly shadowOptions?: Partial<ShadowRootInit> | null;
-    readonly styles?: ComposableStyles;
+    readonly styles?: ComposableStyles | ComposableStyles[];
     readonly template?: ElementViewTemplate;
 }
 

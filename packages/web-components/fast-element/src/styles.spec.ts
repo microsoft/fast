@@ -1,5 +1,10 @@
 import { expect } from "chai";
-import { AdoptedStyleSheetsStyles, StyleElementStyles, StyleTarget } from "./styles";
+import {
+    AdoptedStyleSheetsStyles,
+    StyleElementStyles,
+    StyleTarget,
+    ElementStyles,
+} from "./styles";
 import { DOM } from "./dom";
 
 if (DOM.supportsAdoptedStyleSheets) {
@@ -71,4 +76,79 @@ describe("StyleSheetStyles", () => {
 
         expect(shadowRoot.childNodes.length).to.equal(0);
     });
+});
+
+describe("ElementStyles", () => {
+    it("can create from a string", () => {
+        const css = ".class { color: red; }";
+        const styles = ElementStyles.create([css]);
+        expect(styles.styles).to.contain(css);
+    });
+
+    it("can create from multiple strings", () => {
+        const css1 = ".class { color: red; }";
+        const css2 = ".class2 { color: red; }";
+        const styles = ElementStyles.create([css1, css2]);
+        expect(styles.styles).to.contain(css1);
+        expect(styles.styles.indexOf(css1)).to.equal(0);
+        expect(styles.styles).to.contain(css2);
+    });
+
+    it("can create from an ElementStyles", () => {
+        const css = ".class { color: red; }";
+        const existingStyles = ElementStyles.create([css]);
+        const styles = ElementStyles.create([existingStyles]);
+        expect(styles.styles).to.contain(existingStyles);
+    });
+
+    it("can create from multiple ElementStyles", () => {
+        const css1 = ".class { color: red; }";
+        const css2 = ".class2 { color: red; }";
+        const existingStyles1 = ElementStyles.create([css1]);
+        const existingStyles2 = ElementStyles.create([css2]);
+        const styles = ElementStyles.create([existingStyles1, existingStyles2]);
+        expect(styles.styles).to.contain(existingStyles1);
+        expect(styles.styles.indexOf(existingStyles1)).to.equal(0);
+        expect(styles.styles).to.contain(existingStyles2);
+    });
+
+    it("can create from mixed strings and ElementStyles", () => {
+        const css1 = ".class { color: red; }";
+        const css2 = ".class2 { color: red; }";
+        const existingStyles2 = ElementStyles.create([css2]);
+        const styles = ElementStyles.create([css1, existingStyles2]);
+        expect(styles.styles).to.contain(css1);
+        expect(styles.styles.indexOf(css1)).to.equal(0);
+        expect(styles.styles).to.contain(existingStyles2);
+    });
+
+    if (DOM.supportsAdoptedStyleSheets) {
+        it("can create from a CSSStyleSheet", () => {
+            const styleSheet = new CSSStyleSheet();
+            const styles = ElementStyles.create([styleSheet]);
+            expect(styles.styles).to.contain(styleSheet);
+        });
+
+        it("can create from multiple CSSStyleSheets", () => {
+            const styleSheet1 = new CSSStyleSheet();
+            const styleSheet2 = new CSSStyleSheet();
+            const styles = ElementStyles.create([styleSheet1, styleSheet2]);
+            expect(styles.styles).to.contain(styleSheet1);
+            expect(styles.styles.indexOf(styleSheet1)).to.equal(0);
+            expect(styles.styles).to.contain(styleSheet2);
+        });
+
+        it("can create from mixed strings, ElementStyles, and CSSStyleSheets", () => {
+            const css1 = ".class { color: red; }";
+            const css2 = ".class2 { color: red; }";
+            const existingStyles2 = ElementStyles.create([css2]);
+            const styleSheet3 = new CSSStyleSheet();
+            const styles = ElementStyles.create([css1, existingStyles2, styleSheet3]);
+            expect(styles.styles).to.contain(css1);
+            expect(styles.styles.indexOf(css1)).to.equal(0);
+            expect(styles.styles).to.contain(existingStyles2);
+            expect(styles.styles.indexOf(existingStyles2)).to.equal(1);
+            expect(styles.styles).to.contain(styleSheet3);
+        });
+    }
 });
