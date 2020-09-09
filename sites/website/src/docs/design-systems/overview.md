@@ -42,7 +42,7 @@ const keyFrames = new KeyframeEffect(
 The Design System itself manifests through a [DesignSystemProvider](/docs/api/fast-foundation.designsystemprovider): it is the vessel through which the Design System is expressed. The [DesignSystemProvider](/docs/api/fast-foundation.designsystemprovider) is an HTML element that facilitates usage, configuration, and propagation of the Design System through a UI view. The [DesignSystemProvider](/docs/api/fast-foundation.designsystemprovider) is responsible for expressing the Design System both as a readable JavaScript property *and* as CSS custom properties.
 
 ### Design System flow
-The Design System is mutable and inherited. Think of the Design System as a flow of data through the DOM toward leaf nodes, where every [DesignSystemProvider](/docs/api/fast-foundation.designsystemprovider) element inherits Design System data from it's closest ancestor [DesignSystemProvider](/docs/api/fast-foundation.designsystemprovider) and provides opportunity to *change* that data for all descendent elements. Let's visualize this, and assume there is a `font-size-large` Design Token in the Design System:
+The Design System is mutable and inherited. Think of the Design System as a flow of data through the DOM toward leaf nodes, where every [DesignSystemProvider](/docs/api/fast-foundation.designsystemprovider) element inherits Design System data from its closest ancestor [DesignSystemProvider](/docs/api/fast-foundation.designsystemprovider) and provides opportunity to *change* that data for all descendent elements. Let's visualize this, and assume there is a `font-size-large` Design Token in the Design System:
 
 **Example: The Design System flows data down the DOM hierarchy**
 ```html

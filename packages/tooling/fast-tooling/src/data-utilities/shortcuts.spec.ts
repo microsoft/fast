@@ -122,7 +122,7 @@ describe("Shortcuts", () => {
             actions,
         });
 
-        expect(shortcuts["registeredShortcutActions"]).toEqual(actions);
+        expect(shortcuts["registeredActions"]).toEqual(actions);
     });
     test("should send a message via the message system that shortcuts have been registered", () => {
         const postMessageCallback: any = jest.fn();
