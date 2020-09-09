@@ -549,6 +549,8 @@ export class Skeleton extends FASTElement {
     // (undocumented)
     ariaBusy: boolean;
     fill: string;
+    // (undocumented)
+    pattern: string;
     shape: skeletonShape;
 }
 

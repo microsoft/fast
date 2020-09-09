@@ -4,15 +4,12 @@ import {
   neutralFillRestBehavior
 } from "../styles";
 
-
 export const SkeletonStyles = css`
   ${display("block")} :host {
-    height: 100px;
+
     background-color: ${neutralFillRestBehavior.var};
     overflow: hidden;
     position: relative;
-
-    --parentWidth: 880px;
   }
 
   :host(.rect) {
@@ -29,9 +26,9 @@ export const SkeletonStyles = css`
   .shimmer {
     display: block;
     position: absolute;
-    width: var(--parentWidth);
+    width: 100%;
     height: 100%;
-    background: linear-gradient(270deg, ${neutralFillRestBehavior.var} 0%, #F3F2F1 51.13%, ${neutralFillRestBehavior.var} 100%)0px 0px / 90% 100% no-repeat #E1DFDD;
+    background: linear-gradient(270deg, ${neutralFillRestBehavior.var} 0%, #F3F2F1 51.13%, ${neutralFillRestBehavior.var} 100%)0px 0px / 90% 100% no-repeat ${neutralFillRestBehavior.var};
     background-size: 125px 250px;
     animation: shimmer 2s infinite;
     animation-timing-function: ease-in-out;
@@ -40,7 +37,7 @@ export const SkeletonStyles = css`
 
   @keyframes shimmer {
     0% {
-      transform: translateX(-100%) translateX(var(--shimmerOffset));
+      transform: translateX(-100%);
     }
     100% {
       transform: translateX(100%);

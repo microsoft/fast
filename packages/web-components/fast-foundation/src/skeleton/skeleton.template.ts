@@ -1,4 +1,4 @@
-import { html, ref } from "@microsoft/fast-element";
+import { html } from "@microsoft/fast-element";
 import { Skeleton } from "./skeleton";
 
 export const SkeletonTemplate = html<Skeleton>`
@@ -6,8 +6,10 @@ export const SkeletonTemplate = html<Skeleton>`
     aria-busy="${x => x.ariaBusy}"
     shape="${x => x.shape}"
     class="${x => (x.shape === "circle" ? "circle" : "rect")}"
+    pattern="${x => x.pattern}"
   >
-    <span ${ref("shimmerEl")} class="shimmer" ></span>
+    <span class="shimmer" ></span>
+    <img class="pattern" src="${x => x.pattern}" />
     <slot></slot>
   </template>
 `;

@@ -1,4 +1,4 @@
-import { attr, FASTElement, observable } from "@microsoft/fast-element";
+import { attr, FASTElement} from "@microsoft/fast-element";
 
 export type skeletonShape = 'rect' | 'circle';
 
@@ -28,20 +28,5 @@ export class Skeleton extends FASTElement {
 
   @attr public ariaBusy: boolean;
 
-  @observable public offset: number;
-
-  public shimmerEl: HTMLElement;
-
-  @observable public getOffset = () => {
-    return this.offsetLeft;
-  }
-
-  public getParentWidth() { 
-    this.parentElement!.getBoundingClientRect().width; 
-  }
-  connectedCallback() {
-    super.connectedCallback()
-    this.style.setProperty('--shimmerOffset', `${this.offsetLeft}px`)
-    this.style.setProperty('--parentWidth', `${this.parentElement!.getBoundingClientRect().width}px`)
-  }
+  @attr public pattern: string;
 };
