@@ -22,8 +22,8 @@ export interface MessageSystemUtilityActionConfig
  * and M, a generic used for matching
  * the action to some specific parameters
  */
-export abstract class MessageSystemUtilityAction<C = {}, M = {}> {
-    private action: (config: C & MessageSystemUtilityActionCallbackConfig) => void;
+export abstract class MessageSystemUtilityAction<TCallback = {}, TMatch = {}> {
+    private action: (config: TCallback & MessageSystemUtilityActionCallbackConfig) => void;
     public id: string;
 
     constructor(config: MessageSystemUtilityActionConfig) {
@@ -34,7 +34,7 @@ export abstract class MessageSystemUtilityAction<C = {}, M = {}> {
     /**
      * Gets the action to be called
      */
-    public getAction = (config?: C): (() => void) => {
+    public getAction = (config?: TCallback): (() => void) => {
         return () => {
             this.action({
                 ...config,
@@ -46,5 +46,5 @@ export abstract class MessageSystemUtilityAction<C = {}, M = {}> {
     /**
      * Tests to see if this matches a given condition
      */
-    abstract matches(config: M): boolean;
+    abstract matches(config: TMatch): boolean;
 }
