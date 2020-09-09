@@ -82,7 +82,7 @@ describe("FASTElementDefinition", () => {
                 expect(def.styles!.styles).to.contain(styles);
             });
 
-            it("can create from multiple CSSStyleSheets", () => {
+            it("can accept multiple CSSStyleSheets", () => {
                 const styleSheet1 = new CSSStyleSheet();
                 const styleSheet2 = new CSSStyleSheet();
                 const options = {
@@ -95,7 +95,7 @@ describe("FASTElementDefinition", () => {
                 expect(def.styles!.styles).to.contain(styleSheet2);
             });
 
-            it("can create from mixed strings, ElementStyles, and CSSStyleSheets", () => {
+            it("can accept mixed strings, ElementStyles, and CSSStyleSheets", () => {
                 const css1 = ".class { color: red; }";
                 const css2 = ".class2 { color: red; }";
                 const existingStyles2 = ElementStyles.create([css2]);
