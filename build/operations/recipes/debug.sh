@@ -8,7 +8,7 @@ This will open network to expedite and improve troubleshooting capability across
     source ./config.sh
 
 # LAUNCH
-echo "${green}FAST Debugger launching ${bold}$application${reset} ${green}now ...${reset}"
+echo "${green}FAST Debugger - starting ${bold}$application${reset} ${green}now ...${reset}"
 
 ## SERVICE
  

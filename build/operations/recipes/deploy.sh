@@ -7,71 +7,60 @@ This will deploy from staging to production via Azure Web App Slot swapping.
 # TODOs
 # [] if deployment fails, add revert logic. Probably easiest to include as another select option. [Y] to resume (default), [N] to cancel, [R] to revert.
 
-## TASK Process
-    echo "${bold}${green}Application${reset} Select an application to deploy:"
-    select application in app color create explore motion www exit
-    do
-        case $application in
+# CONFIGURATION
+    source ./config.sh
 
-            app | color | create | explore | motion | www)
+# LAUNCH
+echo "${green}FAST Deployer - starting ${bold}$application${reset} ${green}now ...${reset}"
 
-                echo ""
-                echo "${green}Deploying ${bold}$application${reset} ${green}now ...${reset}"
-            
-                for location in ${locations[@]}; do
-                    # configure resource group and IP address
-                    resource_group=fast-$location'us'-rg
-                    public_ip="$(wget -qO- ipinfo.io/ip)"/16
-                    [[ $debug == true ]] && echo "public IP: ${public_ip}" && echo "performing release deployment into $resource_group ..."
-                    echo "${green}.. deploying into $location region started ...${reset}"
+## SERVICE
+ 
+    # configure resource group, location, and app service name
+    resource_group=fast-$region-rg
+    full_app_name=$application-$location-app$env_path
+    
+    if [ $environment == "staging" ];
+    then                    
+        full_app_url=$application-$location-app-stage
+    else
+        full_app_url=$application-$location-app
+    fi
 
-                    rule_name="Front Door IPv4 IP Testing"
-                    rule_description="Allow public IP access for testing from local system"
-                    new_app_name=$application-$location-app
-                    echo ".. to $new_app_name instance ..."
+    # configure public ip address
+    public_ip="$(wget -qO- ipinfo.io/ip)"/16
+    [[ $debug == true ]] && echo "public IP: ${public_ip}" && echo "performing release deployment into $resource_group ..."
+    
+    echo ".. launching into $region region ..."
+    echo ".. on $full_app_name instance ..."
+    echo ".. allowing access from $public_ip ..." && echo ""
+    
+    # create network access for IPv4
+    rule_name="Front Door IPv4 IP Testing"
+    rule_description="Allow public IP access for testing from local system"       
+    az webapp config access-restriction add --priority 300 \
+        --resource-group $resource_group \
+        --name $full_app_name \
+        --description "$rule_description" \
+        --rule-name "$rule_name" \
+        --action Allow \
+        --ip-address ${public_ip}
 
-                    echo ".. open network access for $public_ip ..."
-                    echo ""
-                    az webapp config access-restriction add --priority 300 \
-                        --resource-group $resource_group \
-                        --name $new_app_name \
-                        --description "$rule_description" \
-                        --rule-name "$rule_name" \
-                        --action Allow \
-                        --ip-address ${public_ip}
+    echo ".. ${magenta}swapping from staging to production in $resource_group${reset} ..."
+    az webapp deployment slot swap --resource-group $resource_group --name $new_app_name --slot stage --action swap --target-slot production
 
-                    echo ".. swapping from staging to production in $resource_group ..."
-                    az webapp deployment slot swap --resource-group $resource_group --name $new_app_name --slot stage --action swap --target-slot production
+    echo ".. ${magenta}purging cache on new production in $resource_group${reset} ..."
+    az network front-door purge-endpoint --content-paths "/*" --name "fast-front" --resource-group "fast-ops-rg"
 
-                    echo ""
-                    echo "${yellow}begin testing ..."
-                    echo ".. verify website on production at https://$new_app_name.azurewebsites.net"
-                    echo ".. verify files on production at https://$new_app_name.scm.azurewebsites.net/webssh/host"
-                    echo ""
-                    echo ".. verify website on staging at https://$new_app_name-stage.azurewebsites.net"
-                    echo ".. verify files on staging at https://$new_app_name-stage.scm.azurewebsites.net/webssh/host"
-                    echo "end testing ...${reset}"
-                    echo ""
-                    read -p ".. press [enter] key to resume if testing is complete ..."
+    # provide quick links for testing
+    echo ""
+    echo "begin testing ..."
+    echo ".. verify https://$full_app_url.azurewebsites.net"
+    echo ".. verify https://$full_app_url.scm.azurewebsites.net/webssh/host"
+    echo "end testing ..."
+    echo ""
+    read -p ".. press [enter] key to resume if testing is complete ..."
 
-                    az webapp config access-restriction remove -g $resource_group -n $new_app_name --rule-name "$rule_name"
-                    echo ".. close network access for $public_ip ..."
-                    
-                    echo "${green}.. deploying into $location region finished ...${reset}"
-                    echo ""
-
-                done
-                echo "${bold}${green}DEPLOYMENT finished. Continue with another?${reset}" 
-                ;;
-
-            exit)
-
-                echo ""
-                echo "${bold}${green}DEPLOYMENT cancelled.${reset}" 
-                exit ;;
-
-            *)
-                echo "${red}invalid entry, try again${reset}" ;;
-        esac
-    done
-echo "${bold}${green}DEPLOYMENT finished.${reset}" 
+    # remove access restriction
+    az webapp config access-restriction remove -g $resource_group -n $full_app_name --rule-name "$rule_name"
+    echo ".. close network access for $public_ip ..."
+    echo "${bold}${green}finished.${reset}"
