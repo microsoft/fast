@@ -121,7 +121,7 @@ export class AnchoredRegion extends FASTElement {
     @attr({ attribute: "horizontal-default-position" })
     public horizontalDefaultPosition: HorizontalPosition = "unset";
     private horizontalDefaultPositionChanged(): void {
-        this.updateLayoutForAttributeChange();
+        this.updateForAttributeChange();
     }
 
     /**
@@ -134,7 +134,7 @@ export class AnchoredRegion extends FASTElement {
     @attr({ attribute: "horizontal-inset", mode: "boolean" })
     public horizontalInset: boolean = false;
     private horizontalInsetChanged(): void {
-        this.updateLayoutForAttributeChange();
+        this.updateForAttributeChange();
     }
 
     /**
@@ -148,7 +148,7 @@ export class AnchoredRegion extends FASTElement {
     @attr({ attribute: "horizontal-threshold" })
     public horizontalThreshold: string = "";
     private horizontalThresholdChanged(): void {
-        this.updateLayoutForAttributeChange();
+        this.updateForAttributeChange();
     }
 
     /**
@@ -161,7 +161,7 @@ export class AnchoredRegion extends FASTElement {
     @attr({ attribute: "horizontal-scaling" })
     public horizontalScaling: AxisScalingMode = "content";
     private horizontalScalingChanged(): void {
-        this.updateLayoutForAttributeChange();
+        this.updateForAttributeChange();
     }
 
     /**
@@ -190,7 +190,7 @@ export class AnchoredRegion extends FASTElement {
     @attr({ attribute: "vertical-default-position" })
     public verticalDefaultPosition: VerticalPosition = "unset";
     private verticalDefaultPositionChanged(): void {
-        this.updateLayoutForAttributeChange();
+        this.updateForAttributeChange();
     }
 
     /**
@@ -203,7 +203,7 @@ export class AnchoredRegion extends FASTElement {
     @attr({ attribute: "vertical-inset", mode: "boolean" })
     public verticalInset: boolean = false;
     private verticalInsetChanged(): void {
-        this.updateLayoutForAttributeChange();
+        this.updateForAttributeChange();
     }
 
     /**
@@ -217,7 +217,7 @@ export class AnchoredRegion extends FASTElement {
     @attr({ attribute: "vertical-threshold" })
     public verticalThreshold: string = "";
     private verticalThresholdChanged(): void {
-        this.updateLayoutForAttributeChange();
+        this.updateForAttributeChange();
     }
 
     /**
@@ -230,7 +230,7 @@ export class AnchoredRegion extends FASTElement {
     @attr({ attribute: "vertical-scaling" })
     public verticalScaling: AxisScalingMode = "content";
     private verticalScalingChanged(): void {
-        this.updateLayoutForAttributeChange();
+        this.updateForAttributeChange();
     }
 
     /**
@@ -334,6 +334,7 @@ export class AnchoredRegion extends FASTElement {
     private baseHorizontalOffset: number;
     private baseVerticalOffset: number;
 
+    private pendingPositioningUpdate: boolean = false;
     private pendingLayoutUpdate: boolean = false;
     private pendingReset: boolean = false;
     private currentDirection: Direction = Direction.ltr;
@@ -373,7 +374,6 @@ export class AnchoredRegion extends FASTElement {
             return;
         }
 
-        this.stopIntersectionObserver();
         this.startIntersectionObserver();
     };
 
@@ -402,7 +402,6 @@ export class AnchoredRegion extends FASTElement {
             this.resizeDetector.disconnect();
             this.resizeDetector = null;
         }
-        window.removeEventListener("resize", this.handleWindowResize);
     }
 
     /**
@@ -413,18 +412,17 @@ export class AnchoredRegion extends FASTElement {
         this.resizeDetector = new ((window as unknown) as WindowWithResizeObserver).ResizeObserver(
             this.handleResize
         );
-        window.addEventListener("resize", this.handleWindowResize);
     }
 
     /**
-     * event thrown when the region's position changes
+     * react to attribute changes that don't require a reset
      */
-    private updateLayoutForAttributeChange(): void {
+    private updateForAttributeChange(): void {
         if (
             (this as FASTElement).$fastController.isConnected &&
             this.initialLayoutComplete
         ) {
-            this.requestLayoutUpdate();
+            this.update();
         }
     }
 
@@ -434,7 +432,7 @@ export class AnchoredRegion extends FASTElement {
     private initialize(): void {
         this.initializeResizeDetector();
         this.initializeIntersectionDetector();
-        this.setInitialState();
+        // this.setInitialState();
         if (this.anchorElement === null) {
             this.anchorElement = this.getAnchor();
         }
@@ -534,9 +532,6 @@ export class AnchoredRegion extends FASTElement {
         if (this.resizeDetector !== null) {
             this.resizeDetector.observe(this.anchorElement);
             this.resizeDetector.observe(this);
-            if (this.viewportElement !== null) {
-                this.resizeDetector.observe(this.viewportElement);
-            }
         }
     };
 
@@ -544,7 +539,10 @@ export class AnchoredRegion extends FASTElement {
      * starts intersection observer
      */
     private startIntersectionObserver = (): void => {
-        if (this.anchorElement === null) {
+        if (
+            this.anchorElement === null ||
+            this.pendingPositioningUpdate
+        ) {
             return;
         }
         if (this.intersectionDetector !== null) {
@@ -562,6 +560,7 @@ export class AnchoredRegion extends FASTElement {
     private stopIntersectionObserver = (): void => {
         if (this.intersectionDetector !== null) {
             this.intersectionDetector.disconnect();
+            this.pendingPositioningUpdate = false;
         }
     };
 
@@ -573,13 +572,6 @@ export class AnchoredRegion extends FASTElement {
         if (this.resizeDetector !== null) {
             this.resizeDetector.disconnect();
         }
-    };
-
-    /**
-     * handle window resizes
-     */
-    private handleWindowResize = (ev: Event): void => {
-        this.requestLayoutUpdate();
     };
 
     /**
@@ -616,9 +608,8 @@ export class AnchoredRegion extends FASTElement {
      *  Handle intersections
      */
     private handleIntersection = (entries: IntersectionObserverEntry[]): void => {
-        if (this.anchorElement === null) {
-            return;
-        }
+
+        this.stopIntersectionObserver();
 
         let regionRect: DOMRect | ClientRect | null = null;
 
@@ -632,8 +623,6 @@ export class AnchoredRegion extends FASTElement {
             this.applyIntersectionEntries(entries);
             this.requestLayoutUpdate();
         }
-
-        this.stopIntersectionObserver();
     };
 
     /**
