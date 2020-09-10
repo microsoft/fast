@@ -5,6 +5,7 @@ export * from "./badge/badge.definition";
 export * from "./button/button.definition";
 export * from "./card/card.definition";
 export * from "./checkbox/checkbox.definition";
+export * from "./data-grid/data-grid.definition";
 export * from "./design-system-provider/design-system-provider.definition";
 export * from "./dialog/dialog.definition";
 export * from "./divider/divider.definition";

@@ -1,6 +1,12 @@
-import { attr, FASTElement, observable } from "@microsoft/fast-element";
+import { attr, FASTElement, observable, html, HTMLView } from "@microsoft/fast-element";
 import { DataGridColumn } from  "./data-grid";
 import { DataGridCellTemplate } from "./data-grid-cell.template";
+
+const defaultCellContentsTemplate = html<DataGridCell>`
+    <template>
+        ${x => (x.rowData === null || x.columnData === null || x.columnData.columnDataKey === null) ? null : x.rowData[x.columnData.columnDataKey]}
+    </template>
+`; 
 
 /**
  * A Data Grid Cell Custom HTML Element.
@@ -40,6 +46,8 @@ export class DataGridCell extends FASTElement {
     private columnDataChanged(): void {
     }
 
+    private customCellView: HTMLView | null = null;
+
     /**
      * @internal
      */
@@ -47,16 +55,23 @@ export class DataGridCell extends FASTElement {
         super.connectedCallback();
     
         this.style.gridColumn = `${this.gridColumnIndex === undefined ? 0 : this.gridColumnIndex}`;
+
+        if (this.columnData?.cellTemplate !== undefined) {
+            this.customCellView = this.columnData.cellTemplate.render(this, this);
+        } else {
+            this.customCellView = defaultCellContentsTemplate.render(this, this);
+        }
     }
 
     /**
      * @internal
      */
-    public resolveTemplate() {
-        if (this.columnData?.cellTemplate !== undefined && this.columnData?.cellTemplate !== null) {
-            return this.columnData?.cellTemplate
-        }
+    public disconnectedCallback(): void {
+        super.disconnectedCallback();
 
-        return DataGridCellTemplate;
+        if (this.customCellView !== null) {
+            this.customCellView.unbind();
+            this.customCellView = null;
+        }
     }
 }
