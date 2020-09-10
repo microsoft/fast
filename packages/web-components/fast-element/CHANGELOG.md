@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.18.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-element@0.17.0...@microsoft/fast-element@0.18.0) (2020-09-10)
+
+
+### Bug Fixes
+
+* **fast-element:** better global support for older browsers ([#3864](https://github.com/Microsoft/fast/issues/3864)) ([61e85d8](https://github.com/Microsoft/fast/commit/61e85d85553ea1ea6bf128bc8add434d0e4d98aa))
+* **fast-element:** workaround for adoptedStyleSheets Chromium bug ([#3838](https://github.com/Microsoft/fast/issues/3838)) ([1b6570a](https://github.com/Microsoft/fast/commit/1b6570ae6a00c740320b8f1748676f0bed50b67d))
+
+
+### Features
+
+* **fast-element:** enable custom element to accept a styles array ([#3871](https://github.com/Microsoft/fast/issues/3871)) ([ae611a9](https://github.com/Microsoft/fast/commit/ae611a960af7d2bcab8f30de984582c7a2c09deb))
+
+
+
+
+
 # [0.17.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-element@0.16.0...@microsoft/fast-element@0.17.0) (2020-08-27)
 
 
