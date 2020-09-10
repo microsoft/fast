@@ -1,5 +1,7 @@
 import { attr, FASTElement } from "@microsoft/fast-element";
 
+type AvatarShape = "circle" | "square"
+
 /**
  * An Avatar Custom HTML Element
  * 
@@ -88,10 +90,10 @@ export class Avatar extends FASTElement {
    * @remarks
    * HTML Attribute: shape
    */
-  @attr public shape: string = 'circle';
+  @attr public shape: AvatarShape;
 
-  /**
-   * Converts name attribute to be initialized
-   * 
-   */
+  public connectedCallback(): void {
+    super.connectedCallback();
+    this.shape = "circle";
+  }
 }

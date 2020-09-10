@@ -2,16 +2,17 @@ import { css } from "@microsoft/fast-element";
 import { display } from "@microsoft/fast-foundation";
 import {
   accentFillRestBehavior,
-  heightNumber,	
   neutralForegroundRestBehavior
 } from "../styles/index";
 
 export const AvatarStyles = css`
   ${display("flex")} 
   :host {
-    max-width: calc(${heightNumber} * 2.5px);
-    height: calc(${heightNumber} * 2.5px);
+    max-width: var(--avatar-size);
+    height: var(--avatar-size);
     position: relative;
+    --avatar-text-size: var(--type-ramp-base-font-size);
+    --avatar-text-ratio: var(--design-unit);
   }
   
   .link {
@@ -42,23 +43,22 @@ export const AvatarStyles = css`
   }
 
   .image {
-    min-width: 100%;
+    width: 100%;
     position: absolute;
     display: block;
   }
 
   .name {
-    font-size: var(--type-ramp-plus-5-font-size);
+    font-size: calc((var(--avatar-text-size) + var(--avatar-size)) / var(--avatar-text-ratio));
     line-height: var(--type-ramp-plus-5-line-height);
     display: block;
   }
 
   ::slotted(fast-badge) {
-    --badge-fill-primary: #00FF00;
     position: absolute;
     display: block;
     bottom: 0;
-    right:0;
+    right: 0;
   }
 `.withBehaviors(
   accentFillRestBehavior,

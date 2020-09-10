@@ -9,12 +9,16 @@ export const AvatarTemplate = html<Avatar>`
   <template>
     <div 
       class="coin ${x => (x.shape === "square" ? "square" : "circle")}"
-      style="${x =>
-        x.fill || x.color
-            ? `background-color: var(--avatar-fill-${x.fill}); color: var(--avatar-color-${x.color});`
-            : void 0}"
+      part="coin"
+      style="${x => 
+        x.fill || x.color 
+          ? `background-color: var(--avatar-fill-${x.fill}); color: var(--avatar-color-${x.color});` 
+          : void 0}"
     >
-      <a class="link" href="${x => (x.link ? x.link : void 0)}">
+      <a 
+        class="link" 
+        part="link"
+        href="${x => (x.link ? x.link : void 0)}">
         ${when(x => x.imgSrc, html`
           <img 
             src="${x => x.imgSrc}"
@@ -23,9 +27,16 @@ export const AvatarTemplate = html<Avatar>`
             class="image"
           />
         `)}
-        <span class="name">${x => x.initials}</span>
+        <span 
+          class="name"
+          part="name"
+          >${x => x.initials}</span>
       </a>
     </div>
-    <slot name="badge"></slot>
+    <slot 
+      name="badge"
+      part="badge"
+    ></slot>
   </template>
 `;
+
