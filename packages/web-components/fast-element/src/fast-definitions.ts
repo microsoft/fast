@@ -1,5 +1,5 @@
 import { ElementViewTemplate } from "./template";
-import { ElementStyles, css, ComposableStyles } from "./styles";
+import { ElementStyles, ComposableStyles } from "./styles";
 import { AttributeConfiguration, AttributeDefinition } from "./attributes";
 import { Observable } from "./observation/observable";
 import { Mutable } from "./interfaces";
@@ -24,9 +24,9 @@ export interface PartialFASTElementDefinition {
     readonly template?: ElementViewTemplate;
 
     /**
-     * The styles to associated with the custom element.
+     * The styles to associate with the custom element.
      */
-    readonly styles?: ComposableStyles;
+    readonly styles?: ComposableStyles | ComposableStyles[];
 
     /**
      * The custom attributes of the custom element.
@@ -87,7 +87,7 @@ export class FASTElementDefinition<TType extends Function = Function> {
     public readonly template?: ElementViewTemplate;
 
     /**
-     * The styles to associated with the custom element.
+     * The styles to associate with the custom element.
      */
     public readonly styles?: ElementStyles;
 
@@ -149,12 +149,13 @@ export class FASTElementDefinition<TType extends Function = Function> {
                 : { ...defaultElementOptions, ...nameOrConfig.elementOptions };
 
         this.styles =
-            nameOrConfig.styles !== void 0 &&
-            !(nameOrConfig.styles instanceof ElementStyles)
-                ? css`
-                      ${nameOrConfig.styles}
-                  `
-                : nameOrConfig.styles;
+            nameOrConfig.styles === void 0
+                ? void 0
+                : Array.isArray(nameOrConfig.styles)
+                ? ElementStyles.create(nameOrConfig.styles)
+                : nameOrConfig.styles instanceof ElementStyles
+                ? nameOrConfig.styles
+                : ElementStyles.create([nameOrConfig.styles]);
     }
 
     /**

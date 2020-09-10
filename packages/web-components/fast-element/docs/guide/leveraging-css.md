@@ -125,7 +125,7 @@ const styles = css`
 Rather than simply concatenating CSS strings, the `css` helper understands that `normalize` is `ElementStyles` and is able to re-use the same Constructable StyleSheet instance as any other component that uses `normalize`. 
 
 :::note
-You can also pass a CSS string or a [CSSStyleSheet](https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleSheet) instance directly to the element definition, without needing to use the `css` helper and it will automatically be converted into `ElementStyles`. The advantage of using the `css` helper is that it enables the rich composition and reuse of styles described above, with automatic runtime caching for memory efficiency and performance.
+You can also pass a CSS `string` or a [CSSStyleSheet](https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleSheet) instance directly to the element definition, or even a mixed array of `string`, `CSSStyleSheet`, or `ElementStyles`.
 :::
 
 ## Shadow DOM styling

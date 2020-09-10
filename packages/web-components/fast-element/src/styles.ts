@@ -33,6 +33,20 @@ export interface StyleTarget {
 const styleLookup = new Map<string, ElementStyles>();
 
 /**
+ * Represents styles that can be composed into the ShadowDOM of a custom element.
+ * @public
+ */
+export type ComposableStyles = string | ElementStyles | CSSStyleSheet;
+
+/**
+ * Creates an ElementStyles instance for an array of ComposableStyles.
+ * @public
+ */
+export type ElementStyleFactory = (
+    styles: ReadonlyArray<ComposableStyles>
+) => ElementStyles;
+
+/**
  * Represents styles that can be applied to a custom element.
  * @public
  */
@@ -76,15 +90,22 @@ export abstract class ElementStyles {
     public static find(key: string): ElementStyles | null {
         return styleLookup.get(key) || null;
     }
+
+    /* eslint-disable @typescript-eslint/explicit-function-return-type */
+    /**
+     * Create ElementStyles from ComposableStyles.
+     */
+    public static readonly create: ElementStyleFactory = (() => {
+        if (DOM.supportsAdoptedStyleSheets) {
+            const styleSheetCache = new Map();
+            return (styles: ComposableStyles[]) =>
+                new AdoptedStyleSheetsStyles(styles, styleSheetCache);
+        }
+
+        return (styles: ComposableStyles[]) => new StyleElementStyles(styles);
+    })();
+    /* eslint-enable @typescript-eslint/explicit-function-return-type */
 }
-
-/**
- * Represents styles that can be composed into the ShadowDOM of a custom element.
- * @public
- */
-export type ComposableStyles = string | ElementStyles | CSSStyleSheet;
-
-type ElementStyleFactory = (styles: ReadonlyArray<ComposableStyles>) => ElementStyles;
 
 function reduceStyles(
     styles: ReadonlyArray<ComposableStyles>
@@ -211,18 +232,6 @@ export class StyleElementStyles extends ElementStyles {
     }
 }
 
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
-const createStyles: ElementStyleFactory = (() => {
-    if (DOM.supportsAdoptedStyleSheets) {
-        const styleSheetCache = new Map();
-        return (styles: ComposableStyles[]) =>
-            new AdoptedStyleSheetsStyles(styles, styleSheetCache);
-    }
-
-    return (styles: ComposableStyles[]) => new StyleElementStyles(styles);
-})();
-/* eslint-enable @typescript-eslint/explicit-function-return-type */
-
 /**
  * Transforms a template literal string into styles.
  * @param strings - The string fragments that are interpolated with the values.
@@ -260,5 +269,5 @@ export function css(
         styles.push(cssString);
     }
 
-    return createStyles(styles);
+    return ElementStyles.create(styles);
 }
