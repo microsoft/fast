@@ -153,7 +153,7 @@ export class TreeItem extends FASTElement {
 
     public handleKeyDown = (e: KeyboardEvent): void | boolean => {
         if (e.target !== e.currentTarget) {
-            return;
+            return true;
         }
 
         switch (e.keyCode) {
