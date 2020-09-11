@@ -46,7 +46,7 @@ echo "${green}FAST Deployer - starting ${bold}$application${reset} ${green}now .
         --ip-address ${public_ip}
 
     echo ".. ${magenta}swapping from staging to production in $resource_group${reset} ..."
-    az webapp deployment slot swap --resource-group $resource_group --name $new_app_name --slot stage --action swap --target-slot production
+    az webapp deployment slot swap --resource-group $resource_group --name $full_app_name --slot stage --action swap --target-slot production
 
     echo ".. ${magenta}purging cache on new production in $resource_group${reset} ..."
     az network front-door purge-endpoint --content-paths "/*" --name "fast-front" --resource-group "fast-ops-rg"
