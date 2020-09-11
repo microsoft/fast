@@ -51,7 +51,11 @@ export default {
 
 const dataGridButtonCellTemplate = html<DataGridCell>`
     <template>
-        <button>${x => (x.rowData === null || x.columnData === null || x.columnData.columnDataKey === null) ? null : x.rowData[x.columnData.columnDataKey]}</button>
+        <button
+            @click="${(x, c) => x.rowData?["age"] = x.rowData["age"] + 1}"
+        >
+            ${x => (x.rowData === null || x.columnData === null || x.columnData.columnDataKey === null) ? null : x.rowData[x.columnData.columnDataKey]}
+        </button>
     </template>
 `;
 
@@ -68,7 +72,6 @@ const templateColumns: DataGridColumn[] = [
 const dataGridRow1: object = {name: "bob", age: 21};
 const dataGridRow2: object = {name: "rob", age: 22};
 const dataGridRow3: object = {name: "bobby", age: 23};
-const dataGridRow4: object = {name: "robert", age: 24};
 
 const dataRows: object[] = [dataGridRow1, dataGridRow2];
 

@@ -72,13 +72,13 @@ Most `data grid` components use the `DataGridColumn` interface.  A `DataGridColu
 
 *Attributes:*
 - `generateHeader`  
-Boolean.  Automatically generate a header element based on provided columns. Default is true.
+Boolean.  Automatically generate a header element based on provided columns. Default is true.  Authors who wish to not have a header row or wish to generate their own can set this to false.
 
 *properties:*
-- `rows`  
+- `rowsData`  
 An array of objects that contain the data to be displayed.  Each object corresponds to one row.
 
-- `columns`  
+- `columnsData`  
 An array of `DataGridColumn` objects that define what columns will be displayed in the grid.  The order of the columns determines their order in the grid.
 
 - `rowItemTemplate`  
@@ -93,10 +93,15 @@ Items added here are added to the header region of the component.
 
 *Functions:*
 - `generateColumns(object): DataGridColumn`   
-Static function that creates a basic set of columns from an object representing a row.
+Static function that creates a basic set of columns from an object representing a row.  
 
 *Events*
 - none
+
+*parts:*
+- `headerSlot`
+
+- `rowsSlot`
 
 
 **Data grid header**
@@ -106,7 +111,7 @@ Static function that creates a basic set of columns from an object representing 
 - none
 
 *properties:*
-- `columns`  
+- `columnsData`  
 An array of `DataGridColumn` objects that define what columns will be displayed in the grid.  The order of the columns determines their order in the grid.
 
 - `headerCellItemTemplate`  
@@ -119,6 +124,9 @@ Default slot for items
 *Events*
 - none
 
+*parts:*
+- `headerCellsSlot`
+
 
 **Data grid header cell**
 - `fast-data-grid-header-cell`
@@ -127,7 +135,7 @@ Default slot for items
 - extends HTML Element attributes
 
 *properties:*
-- `column`  
+- `columnData`  
 The `DataGridColumn` this column header represents.
 
 *Slots:*
@@ -136,6 +144,9 @@ Default slot for items
 
 *Events*
 - none
+
+*parts:*
+- `headerCellsSlot`
 
 
 **Data grid row**
@@ -146,10 +157,10 @@ Default slot for items
 String that gets applied to the the css gridTemplateColumns attribute for the row
 
 *properties:*
-- `row`  
+- `rowData`  
 The objects that contains the data to be displayed in this row.
 
-- `columns`  
+- `columnsData`  
 An array of `DataGridColumn` objects that define what columns will be displayed in the grid.  The order of the columns determines their order in the grid.
 
 - `cellItemTemplate`  
@@ -162,6 +173,8 @@ Default slot for items
 *Events*
 - none
 
+*parts:*
+- `cellsSlot`
 
 **Data grid cell**
 *Component name:*
@@ -172,10 +185,10 @@ Default slot for items
 The grid column this cell appears in.
 
 *properties:*
-- `row`  
+- `rowData`  
 The object that contains the data to be displayed in this row.
 
-- `column`  
+- `columnData`  
 The `DataGridColumn` this cell represents.
 
 *Slots:*
@@ -185,23 +198,14 @@ Default slot for items
 *Events*
 - none
 
-
-### Anatomy and Appearance
-
-*Screenshots and/or description of the basic appearance of the component. Outline its structure with a diagram of its visual tree (shadow dom). Enumerate key areas of visual customization, such as:*
-
-- *Slot Names*
-- *Host Classes*
-- *Slotted Content/Slotted Classes*
-- *CSS Parts*
-
----
+*parts:*
+- `cellSlot`
 
 ## Implementation
 
 - programmatically generated rows/cells will will be created using [repeat directives](https://fast.design/docs/fast-element/using-directives#the-repeat-directive)
 
-
+- individual cells can be customized using by passing a custom ViewTemplate through the `DataGridColumn` interface for the column in question. These templates are rendered in the light dom within the cell so that authors can create custom cells with interactive elements.
 
 ### Accessibility
 
@@ -229,4 +233,4 @@ While testing is still TBD for our web components, I would expect this to align 
 
 ## Next Steps
 
-Virtualization?  Pagination?
+Virtualization and/or Pagination for large data sets.
