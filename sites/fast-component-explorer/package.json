@@ -5,7 +5,7 @@
   "sideEffects": false,
   "private": true,
   "scripts": {
-    "build:app": "webpack --config=./webpack.prod.js",
+    "build:app": "webpack --config=./webpack.prod.js --progress",
     "convert:readme": "node ./build/convert-readme.js",
     "clean:tmp": "node ../../build/clean.js app/.tmp",
     "prettier": "prettier --config ../../.prettierrc --write \"**/*.{ts,tsx,html}\"",
@@ -71,7 +71,7 @@
     "terser-webpack-plugin": "^4.1.0",
     "ts-loader": "^7.0.2",
     "typescript": "^3.9.0",
-    "webpack": "4.28.4",
+    "webpack": "^4.44.0",
     "webpack-bundle-analyzer": "^3.0.3",
     "webpack-cli": "^3.1.2",
     "webpack-dev-server": "^3.11.0",

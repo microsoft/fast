@@ -63,7 +63,7 @@ For simplicity, examples throughout the documentation will assume the library ha
 
 ## Add the design system provider
 
-The [Design System Provider](./design-system-provider) provides design information to child components. So, we must always wrap the portion of our site or app that uses the components with a provider element:
+The [Design System Provider](/docs/design-systems/overview#the-designSystemProvider) provides design information to child components. So, we must always wrap the portion of our site or app that uses the components with a provider element:
 
 ```html
 <!-- ... -->
