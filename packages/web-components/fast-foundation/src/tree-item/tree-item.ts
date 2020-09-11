@@ -235,10 +235,17 @@ export class TreeItem extends FASTElement {
             return;
         }
 
-        if (!this.expanded) {
+        if (!this.expanded && this.childItemLength() > 0) {
             this.setExpanded(true);
         } else {
-            this.focusNextNode(1);
+            if (this.childItems.length > 0) {
+                const childTreeItems: HTMLElement[] = this.childItems.filter(
+                    (item: HTMLElement) => {
+                        return isTreeItemElement(item);
+                    }
+                );
+                childTreeItems[0].focus();
+            }
         }
     }
 
