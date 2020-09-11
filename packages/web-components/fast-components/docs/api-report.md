@@ -403,7 +403,7 @@ export class FASTDesignSystemProvider extends DesignSystemProvider implements FA
     baseHorizontalSpacingMultiplier: number;
     baseLayerLuminance: number;
     cornerRadius: number;
-    density: 0;
+    density: number;
     designUnit: number;
     direction: Direction;
     disabledOpacity: number;
