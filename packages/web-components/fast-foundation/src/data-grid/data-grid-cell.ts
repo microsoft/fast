@@ -1,4 +1,4 @@
-import { attr, FASTElement, observable, html, HTMLView } from "@microsoft/fast-element";
+import { attr, DOM, FASTElement, observable, html, HTMLView } from "@microsoft/fast-element";
 import { DataGridColumn } from  "./data-grid";
 import { DataGridCellTemplate } from "./data-grid-cell.template";
 
@@ -34,6 +34,11 @@ export class DataGridCell extends FASTElement {
     @observable
     public rowData: object | null = null;
     private rowDataChanged(): void {
+        if (
+            (this as FASTElement).$fastController.isConnected
+        ) {
+            DOM.queueUpdate(this.update);
+        }
     }
 
     /**
@@ -73,5 +78,8 @@ export class DataGridCell extends FASTElement {
             this.customCellView.unbind();
             this.customCellView = null;
         }
+    }
+
+    private update = (): void =>  {
     }
 }
