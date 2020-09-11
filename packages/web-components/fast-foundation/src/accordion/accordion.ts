@@ -6,7 +6,7 @@ import {
     keyCodeHome,
     wrapInBounds,
 } from "@microsoft/fast-web-utilities";
-import { AccordionItem } from "./accordion-item";
+import { AccordionItem } from "../accordion-item";
 
 /**
  * Expand mode for {@link Accordion}
