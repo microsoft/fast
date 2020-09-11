@@ -63,6 +63,18 @@ export class DataGrid extends FASTElement {
     };
 
     /**
+     * 
+     *
+     * @public
+     * @remarks
+     * HTML Attribute: generate-header
+     */
+    @attr({ attribute: "generate-header", mode: "boolean" })
+    public generateHeader: boolean = true;
+    private generateHeaderChanged(): void {
+    }
+
+    /**
      * The data being displayed in the grid
      *
      * @public
@@ -88,22 +100,11 @@ export class DataGrid extends FASTElement {
     public slottedRowElements: HTMLElement[];
 
     /**
-     * reference to the row container
-     *
-     * @internal
-     */
-    public gridRows: HTMLElement;
-
-    /**
      * @internal
      */
     public slottedHeaderElements: HTMLElement[];
 
-    @observable 
-    public rowItemTemplate?: ViewTemplate = defaultRowItemTemplate;
-
-    public rowsElement?: HTMLElement;
-
+    private rowItemTemplate?: ViewTemplate = defaultRowItemTemplate;
     private rowsRepeatBehavior?: RepeatBehavior;
     private rowsPlaceholder?: Node;
 
