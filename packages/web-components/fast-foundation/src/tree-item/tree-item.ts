@@ -215,9 +215,15 @@ export class TreeItem extends FASTElement {
         return isTreeItemElement(this.parentElement as Element);
     };
 
-    private childTreeItems(): HTMLElement[] {
+    private allChildTreeItems(): HTMLElement[] {
         return this.childItems.filter((item: HTMLElement) => {
             return isTreeItemElement(item);
+        });
+    }
+
+    private enabledChildTreeItems(): HTMLElement[] {
+        return this.childItems.filter((item: HTMLElement) => {
+            return isTreeItemElement(item) && !item.hasAttribute("disabled");
         });
     }
 
@@ -245,7 +251,7 @@ export class TreeItem extends FASTElement {
             this.setExpanded(true);
         } else {
             if (this.childItemLength() > 0) {
-                this.childTreeItems()[0].focus();
+                this.enabledChildTreeItems()[0].focus();
             }
         }
     }
