@@ -80,6 +80,9 @@ export class TreeItem extends FASTElement {
                     (node as TreeItem).nested = true;
                 }
             });
+            this.enabledChildTreeItems = this.items.filter((item: HTMLElement) => {
+                return isTreeItemElement(item) && !item.hasAttribute("disabled");
+            });
         }
     }
 
@@ -93,6 +96,7 @@ export class TreeItem extends FASTElement {
     public renderCollapsedChildren: boolean;
 
     private notifier: Notifier;
+    private enabledChildTreeItems: HTMLElement[] = [];
 
     private getParentTreeNode(): HTMLElement | null | undefined {
         const parentNode: Element | null | undefined = this.parentElement!.closest(
@@ -215,18 +219,6 @@ export class TreeItem extends FASTElement {
         return isTreeItemElement(this.parentElement as Element);
     };
 
-    private allChildTreeItems(): HTMLElement[] {
-        return this.childItems.filter((item: HTMLElement) => {
-            return isTreeItemElement(item);
-        });
-    }
-
-    private enabledChildTreeItems(): HTMLElement[] {
-        return this.childItems.filter((item: HTMLElement) => {
-            return isTreeItemElement(item) && !item.hasAttribute("disabled");
-        });
-    }
-
     private handleArrowLeft(): void {
         if (this.expanded) {
             this.setExpanded(false);
@@ -250,9 +242,8 @@ export class TreeItem extends FASTElement {
         if (!this.expanded && this.childItemLength() > 0) {
             this.setExpanded(true);
         } else {
-            const childTreeItems: HTMLElement[] = this.enabledChildTreeItems();
-            if (childTreeItems.length > 0) {
-                childTreeItems[0].focus();
+            if (this.enabledChildTreeItems.length > 0) {
+                this.enabledChildTreeItems[0].focus();
             }
         }
     }
