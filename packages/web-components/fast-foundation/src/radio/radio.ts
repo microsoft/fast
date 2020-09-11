@@ -165,8 +165,8 @@ export class Radio extends FormAssociated<HTMLInputElement> implements RadioCont
      * @internal
      */
     public clickHandler = (e: MouseEvent): void => {
-        if (!this.disabled && !this.readOnly) {
-            this.checked = !this.checked;
+        if (!this.disabled && !this.readOnly && !this.checked) {
+            this.checked = true;
         }
     };
 }
