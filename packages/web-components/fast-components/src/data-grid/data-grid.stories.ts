@@ -49,12 +49,20 @@ export default {
     title: "Data grid",
 };
 
+function incrementAge(): void {
+    dataGridRow1["age"] = dataGridRow1["age"] + 1;
+    const rowWithCellTemplate: DataGridRow | null = document.getElementById("cellTemplateRow") as DataGridRow;
+    if (rowWithCellTemplate !== null){
+        rowWithCellTemplate.rowData = dataGridRow1;
+    }
+}
+
 const dataGridButtonCellTemplate = html<DataGridCell>`
     <template>
         <button
-            @click="${(x, c) => x.rowData?["age"] = x.rowData["age"] + 1}"
+           @click="${x => incrementAge()}"
         >
-            ${x => (x.rowData === null || x.columnData === null || x.columnData.columnDataKey === null) ? null : x.rowData[x.columnData.columnDataKey]}
+        ${x => (x.rowData === null || x.columnData === null || x.columnData.columnDataKey === null) ? null : x.rowData[x.columnData.columnDataKey]}
         </button>
     </template>
 `;
