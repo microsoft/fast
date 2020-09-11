@@ -250,8 +250,9 @@ export class TreeItem extends FASTElement {
         if (!this.expanded && this.childItemLength() > 0) {
             this.setExpanded(true);
         } else {
-            if (this.childItemLength() > 0) {
-                this.enabledChildTreeItems()[0].focus();
+            const childTreeItems: HTMLElement[] = this.enabledChildTreeItems();
+            if (childTreeItems.length > 0) {
+                childTreeItems[0].focus();
             }
         }
     }
