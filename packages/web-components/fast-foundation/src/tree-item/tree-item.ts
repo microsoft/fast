@@ -215,6 +215,12 @@ export class TreeItem extends FASTElement {
         return isTreeItemElement(this.parentElement as Element);
     };
 
+    private childTreeItems(): HTMLElement[] {
+        return this.childItems.filter((item: HTMLElement) => {
+            return isTreeItemElement(item);
+        });
+    }
+
     private handleArrowLeft(): void {
         if (this.expanded) {
             this.setExpanded(false);
@@ -238,13 +244,8 @@ export class TreeItem extends FASTElement {
         if (!this.expanded && this.childItemLength() > 0) {
             this.setExpanded(true);
         } else {
-            if (this.childItems.length > 0) {
-                const childTreeItems: HTMLElement[] = this.childItems.filter(
-                    (item: HTMLElement) => {
-                        return isTreeItemElement(item);
-                    }
-                );
-                childTreeItems[0].focus();
+            if (this.childItemLength() > 0) {
+                this.childTreeItems()[0].focus();
             }
         }
     }
