@@ -5,8 +5,7 @@
  */
 export default {
     $schema: "http://json-schema.org/schema#",
-    $id: "custom-element-definition",
-    id: "custom-element-definition",
+    $id: "https://fast.design/docs/custom-element-definition",
     title: "A definition for web components",
     type: "object",
     version: 1,

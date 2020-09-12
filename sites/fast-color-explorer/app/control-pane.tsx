@@ -132,6 +132,9 @@ const styles: any = (
                     boxShadow: `0 0 0 2px ${neutralFocus(designSystem)} inset !important`,
                 },
             },
+            ".sketch-picker .flexbox-fix span": {
+                color: `${neutralForegroundRest(designSystem)} !important`,
+            },
         },
         controlPane: {
             position: "relative",

@@ -87,6 +87,17 @@ export class AppComponent {
 }
 ```
 
+
+To allow an NgModule to contain Non-Angular element names, add the following code in your `app/app.module.ts` file:
+
+```ts 
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+
+@NgModule({  
+  schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
+}) 
+```
+
 To add a splash of style, replace the `app/app.component.css` file contents with this:
 
 ```css

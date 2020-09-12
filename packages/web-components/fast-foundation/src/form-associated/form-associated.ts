@@ -83,7 +83,10 @@ declare let ElementInternals: {
 
 interface HTMLElement {
     attachInternals?(): ElementInternals;
+    click(): void;
 }
+
+const proxySlotName = "form-associated-proxy";
 
 /**
  * @alpha
@@ -179,6 +182,12 @@ export abstract class FormAssociated<
      * Track whether the value has been changed from the initial value
      */
     private dirtyValue: boolean = false;
+
+    /**
+     * Stores a reference to the slot element that holds the proxy
+     * element when it is appended.
+     */
+    private proxySlot: HTMLSlotElement | void;
 
     /**
      * The value of the element to be associated with the form.
@@ -444,8 +453,14 @@ export abstract class FormAssociated<
             if (typeof this.value === "string") {
                 this.proxy.value = this.value;
             }
+
+            this.proxy.setAttribute("slot", proxySlotName);
+
+            this.proxySlot = document.createElement("slot");
+            this.proxySlot.setAttribute("name", proxySlotName);
         }
 
+        this.shadowRoot?.appendChild(this.proxySlot as HTMLSlotElement);
         this.appendChild(this.proxy);
     }
 
@@ -454,6 +469,7 @@ export abstract class FormAssociated<
      */
     protected detachProxy() {
         this.removeChild(this.proxy);
+        this.shadowRoot?.removeChild(this.proxySlot as HTMLSlotElement);
     }
 
     /**
@@ -474,10 +490,12 @@ export abstract class FormAssociated<
         switch (e.keyCode) {
             case keyCodeEnter:
                 if (this.form instanceof HTMLFormElement) {
-                    // Match native behavior
-                    this.form.submit();
+                    // Implicit submission
+                    const defaultButton = this.form.querySelector(
+                        "[type=submit]"
+                    ) as HTMLElement | null;
+                    defaultButton?.click();
                 }
-
                 break;
         }
     }

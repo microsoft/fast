@@ -5,6 +5,7 @@ import {
     focusVisible,
     forcedColorsStylesheetBehavior,
 } from "@microsoft/fast-foundation";
+import { SystemColors } from "@microsoft/fast-web-utilities";
 import { heightNumber } from "../size";
 import {
     accentFillActiveBehavior,
@@ -24,7 +25,6 @@ import {
     neutralFocusInnerAccentBehavior,
     neutralForegroundRestBehavior,
 } from "../recipes";
-import { SystemColors } from "@microsoft/fast-web-utilities";
 
 /**
  * @internal
@@ -40,7 +40,7 @@ export const BaseButtonStyles = css`
         background-color: ${neutralFillRestBehavior.var};
         color: ${neutralForegroundRestBehavior.var};
         border-radius: calc(var(--corner-radius) * 1px);
-        fill: currentColor;
+        fill: currentcolor;
         cursor: pointer;
     }
 
@@ -61,6 +61,7 @@ export const BaseButtonStyles = css`
         border-radius: inherit;
         fill: inherit;
         cursor: inherit;
+        font-family: inherit;
     }
 
     :host(:hover) {

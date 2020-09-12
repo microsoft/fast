@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.3.2](https://github.com/Microsoft/fast/compare/@microsoft/fast-creator@0.3.1...@microsoft/fast-creator@0.3.2) (2020-09-10)
+
+**Note:** Version bump only for package @microsoft/fast-creator
+
+
+
+
+
+## [0.3.1](https://github.com/Microsoft/fast/compare/@microsoft/fast-creator@0.3.0...@microsoft/fast-creator@0.3.1) (2020-08-27)
+
+
+### Performance Improvements
+
+* improve performance in create and explore sites by adding terser and splitting webpack config files the same way as in fast-website ([#3717](https://github.com/Microsoft/fast/issues/3717)) ([8c76a11](https://github.com/Microsoft/fast/commit/8c76a11317ec841edca2da0d166f1c11f133a3fc))
+
+
+
+
+
 # [0.3.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-creator@0.2.2...@microsoft/fast-creator@0.3.0) (2020-08-13)
 
 

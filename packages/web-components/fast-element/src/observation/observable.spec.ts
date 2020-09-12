@@ -11,6 +11,12 @@ describe("The Observable", () => {
         @observable trigger = 0;
         @observable value = 10;
 
+        childChangedCalled = false;
+
+        childChanged() {
+            this.childChangedCalled = true;
+        }
+
         incrementTrigger() {
             this.trigger++;
         }
@@ -46,6 +52,12 @@ describe("The Observable", () => {
 
     class DerivedModel extends Model {
         @observable derivedChild = new ChildModel();
+
+        child2ChangedCalled = false;
+
+        child2Changed() {
+            this.child2ChangedCalled = true;
+        }
     }
 
     context("facade", () => {
@@ -563,6 +575,20 @@ describe("The Observable", () => {
             await DOM.nextUpdate();
 
             expect(wasCalled).to.equal(false);
+        });
+    });
+
+    context("DefaultObservableAccessor", () => {
+        it("calls its own change callback", () => {
+            const model = new Model();
+            model.child = new ChildModel();
+            expect(model.childChangedCalled).to.be.true;
+        });
+
+        it("calls a derived change callback", () => {
+            const model = new DerivedModel();
+            model.child2 = new ChildModel();
+            expect(model.child2ChangedCalled).to.be.true;
         });
     });
 });

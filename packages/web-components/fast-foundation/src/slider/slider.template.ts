@@ -26,7 +26,6 @@ export const SliderTemplate = html<Slider>`
             <div ${ref("track")} part="track-container" class="track">
                 <slot name="track"></slot>
             </div>
-            <div></div>
             <slot></slot>
             <div
                 ${ref("thumb")}

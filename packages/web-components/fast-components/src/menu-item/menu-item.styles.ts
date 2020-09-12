@@ -5,6 +5,7 @@ import {
     focusVisible,
     forcedColorsStylesheetBehavior,
 } from "@microsoft/fast-foundation";
+import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
     accentFillActiveBehavior,
     accentFillHoverBehavior,
@@ -15,7 +16,6 @@ import {
     neutralFocusInnerAccentBehavior,
     neutralForegroundRestBehavior,
 } from "../styles/index";
-import { SystemColors } from "@microsoft/fast-web-utilities";
 
 export const MenuItemStyles = css`
     ${display("grid")} :host {
@@ -31,7 +31,7 @@ export const MenuItemStyles = css`
         white-space: nowrap;
         overflow: hidden;
         color: ${neutralForegroundRestBehavior.var};
-        fill: ${neutralForegroundRestBehavior.var};
+        fill: currentcolor;
         cursor: pointer;
         font-size: var(--type-ramp-base-font-size);
         line-height: var(--type-ramp-base-line-height);
@@ -65,7 +65,7 @@ export const MenuItemStyles = css`
 
     :host(.disabled:hover) {
         color: ${neutralForegroundRestBehavior.var};
-        fill: ${neutralForegroundRestBehavior.var};
+        fill: currentcolor;
         background: ${neutralFillStealthRestBehavior.var}
     }
 
@@ -131,7 +131,7 @@ export const MenuItemStyles = css`
                 border-color: ${SystemColors.ButtonText};
                 box-shadow: 0 0 0 calc(var(--focus-outline-width) * 1px) inset ${SystemColors.HighlightText};
                 color: ${SystemColors.HighlightText};
-                fill: ${SystemColors.HighlightText};
+                fill: currentcolor;
             }
             :host(.disabled),
             :host(.disabled:hover),
@@ -140,7 +140,7 @@ export const MenuItemStyles = css`
             :host(.disabled:hover)::slotted(svg) {
                 background: ${SystemColors.Canvas};
                 color: ${SystemColors.GrayText};
-                fill: ${SystemColors.GrayText};
+                fill: currentcolor;
                 opacity: 1;
             }
         `

@@ -78,19 +78,20 @@ export const CheckboxStyles = css`
         border-radius: calc(var(--corner-radius) * 1px);
         background: ${accentForegroundCutRestBehavior.var};
         position: absolute;
-        top: 25%;
-        right: 25%;
-        bottom: 25%;
-        left: 25%;
+        top: 50%;
+        left: 50%;
+        width: 50%;
+        height: 50%;
+        transform: translate(-50%, -50%);
         opacity: 0;
     }
 
-    :host(:enabled) .control:hover {
+    :host(:not([disabled])) .control:hover {
         background: ${neutralFillInputHoverBehavior.var};
         border-color: ${neutralOutlineHoverBehavior.var};
     }
 
-    :host(:enabled) .control:active {
+    :host(:not([disabled])) .control:active {
         background: ${neutralFillInputActiveBehavior.var};
         border-color: ${neutralOutlineActiveBehavior.var};
     }
@@ -107,17 +108,17 @@ export const CheckboxStyles = css`
         border: calc(var(--outline-width) * 1px) solid ${accentFillRestBehavior.var};
     }
 
-    :host(.checked:enabled) .control:hover {
+    :host(.checked:not([disabled])) .control:hover {
         background: ${accentFillHoverBehavior.var};
         border: calc(var(--outline-width) * 1px) solid ${accentFillHoverBehavior.var};
     }
 
-    :host(.checked:enabled) .control:active {
+    :host(.checked:not([disabled])) .control:active {
         background: ${accentFillActiveBehavior.var};
         border: calc(var(--outline-width) * 1px) solid ${accentFillActiveBehavior.var};
     }
 
-    :host(.checked:${focusVisible}:enabled) .control {
+    :host(.checked:${focusVisible}:not([disabled])) .control {
         box-shadow: 0 0 0 2px var(--background-color), 0 0 0 4px ${
             neutralFocusBehavior.var
         };
@@ -167,7 +168,7 @@ export const CheckboxStyles = css`
             .indeterminate-indicator {
                 background: ${SystemColors.FieldText};
             }
-            :host(:enabled) .control:hover, .control:active {
+            :host(:not([disabled])) .control:hover, .control:active {
                 border-color: ${SystemColors.Highlight};
                 background: ${SystemColors.Field};
             }
@@ -175,21 +176,21 @@ export const CheckboxStyles = css`
                 border-color: ${SystemColors.Highlight};
                 box-shadow: 0 0 0 2px ${SystemColors.Field}, 0 0 0 4px ${SystemColors.FieldText};
             }
-            :host(.checked:${focusVisible}:enabled) .control {
+            :host(.checked:${focusVisible}:not([disabled])) .control {
                 box-shadow: 0 0 0 2px ${SystemColors.Field}, 0 0 0 4px ${SystemColors.FieldText};
             }
             :host(.checked) .control {
                 background: ${SystemColors.Highlight};
                 border-color: ${SystemColors.Highlight};
             }
-            :host(.checked:enabled) .control:hover, .control:active {
+            :host(.checked:not([disabled])) .control:hover, .control:active {
                 border-color: ${SystemColors.Highlight};
                 background: ${SystemColors.HighlightText};
             }
             :host(.checked) .checked-indicator {
                 fill: ${SystemColors.HighlightText};
             }
-            :host(.checked:enabled) .control:hover .checked-indicator {
+            :host(.checked:not([disabled])) .control:hover .checked-indicator {
                 fill: ${SystemColors.Highlight}
             }
             :host(.checked) .indeterminate-indicator {
