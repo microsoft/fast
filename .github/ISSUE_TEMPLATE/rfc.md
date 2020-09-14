@@ -1,6 +1,8 @@
 ---
 name: 💬 Request For Comment (RFC)
-about: Feature discussion
+about: Want comments from the team and community on your proposal?
+title: "rfc: add [what] to/in [where]"
+labels: 'status:triage'
 ---
 
 <!---

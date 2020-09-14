@@ -1,7 +1,7 @@
 ---
 name: '🐛 Bug Report'
 about: Did FAST not work as expected?
-title: "[what is the issue?] in [where is the issue?]"
+title: "fix: [what is the issue?] in [where is the issue?]"
 labels: 'status:triage'
 ---
 

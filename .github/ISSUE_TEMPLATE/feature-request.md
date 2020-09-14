@@ -1,7 +1,7 @@
 ---
 name: 🙋 Feature Request
 about: Want us to add something to FAST?
-title: Add [what] to/in [where]
+title: "feat: add [what] to/in [where]"
 labels: 'status:triage'
 ---
 
