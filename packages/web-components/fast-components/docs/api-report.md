@@ -19,10 +19,13 @@ import { Dialog } from '@microsoft/fast-foundation';
 import { Direction } from '@microsoft/fast-web-utilities';
 import { Divider } from '@microsoft/fast-foundation';
 import { Flipper } from '@microsoft/fast-foundation';
+import { Listbox } from '@microsoft/fast-foundation';
 import { Menu } from '@microsoft/fast-foundation';
 import { MenuItem } from '@microsoft/fast-foundation';
+import { Option as Option_2 } from '@microsoft/fast-foundation';
 import { Radio } from '@microsoft/fast-foundation';
 import { RadioGroup } from '@microsoft/fast-foundation';
+import { Select } from '@microsoft/fast-foundation';
 import { Skeleton } from '@microsoft/fast-foundation';
 import { Slider } from '@microsoft/fast-foundation';
 import { SliderLabel } from '@microsoft/fast-foundation';
@@ -490,11 +493,19 @@ export class FASTFlipper extends Flipper {
 }
 
 // @public
+export class FASTListbox extends Listbox {
+}
+
+// @public
 export class FASTMenu extends Menu {
 }
 
 // @public
 export class FASTMenuItem extends MenuItem {
+}
+
+// @public
+export class FASTOption extends Option_2 {
 }
 
 // @public
@@ -511,6 +522,10 @@ export class FASTRadio extends Radio {
 
 // @public
 export class FASTRadioGroup extends RadioGroup {
+}
+
+// @public
+export class FASTSelect extends Select {
 }
 
 // @public
@@ -580,6 +595,9 @@ export const inlineStartBehavior: import("@microsoft/fast-foundation").CSSCustom
 
 // @public
 export function isDarkMode(designSystem: FASTDesignSystem): boolean;
+
+// @public
+export const ListboxStyles: import("@microsoft/fast-element").ElementStyles;
 
 // @public
 export const MenuItemStyles: import("@microsoft/fast-element").ElementStyles;
@@ -941,6 +959,9 @@ export const neutralOutlineRest: SwatchRecipe;
 export const neutralOutlineRestBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
 
 // @public
+export const OptionStyles: import("@microsoft/fast-element").ElementStyles;
+
+// @public
 export type Palette = Swatch[];
 
 // Warning: (ae-internal-missing-underscore) The name "palette" should be prefixed with an underscore because the declaration is marked as @internal
@@ -970,6 +991,9 @@ export const RadioGroupStyles: import("@microsoft/fast-element").ElementStyles;
 
 // @public
 export const RadioStyles: import("@microsoft/fast-element").ElementStyles;
+
+// @public
+export const SelectStyles: import("@microsoft/fast-element").ElementStyles;
 
 // @public
 export const SkeletonStyles: import("@microsoft/fast-element").ElementStyles;

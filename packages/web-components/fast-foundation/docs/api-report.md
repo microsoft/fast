@@ -500,6 +500,20 @@ export function isDesignSystemConsumer(element: HTMLElement | DesignSystemConsum
 // @public
 export function isTreeItemElement(el: Element): el is HTMLElement;
 
+// @public (undocumented)
+export class Listbox extends FASTElement {
+    constructor();
+    // (undocumented)
+    clickHandler: (e: MouseEvent) => void;
+    // (undocumented)
+    defaultSlottedNodes: Node[];
+    // (undocumented)
+    keypressHandler: (e: KeyboardEvent) => void;
+}
+
+// @public (undocumented)
+export const ListboxTemplate: import("@microsoft/fast-element").ViewTemplate<Listbox, any>;
+
 // @public
 export abstract class MatchMediaBehavior implements Behavior {
     constructor(query: MediaQueryList);
@@ -574,6 +588,36 @@ export const MenuItemTemplate: import("@microsoft/fast-element").ViewTemplate<Me
 // @public
 export const MenuTemplate: import("@microsoft/fast-element").ViewTemplate<Menu, any>;
 
+// Warning: (ae-incompatible-release-tags) The symbol "Option" is marked as @public, but its signature references "FormAssociated" which is marked as @alpha
+//
+// @public (undocumented)
+class Option_2 extends FormAssociated<HTMLInputElement> {
+    constructor();
+    checked: boolean;
+    // (undocumented)
+    checkedAttribute: boolean;
+    // (undocumented)
+    clickHandler: (e: MouseEvent) => void;
+    // (undocumented)
+    connectedCallback(): void;
+    // (undocumented)
+    defaultChecked: boolean;
+    // (undocumented)
+    defaultSlottedNodes: Node[];
+    // (undocumented)
+    protected proxy: HTMLInputElement;
+    // (undocumented)
+    readOnly: boolean;
+    value: string;
+    // (undocumented)
+    valueChanged(): void;
+}
+
+export { Option_2 as Option }
+
+// @public (undocumented)
+export const OptionTemplate: import("@microsoft/fast-element").ViewTemplate<Option_2, any>;
+
 // @public
 export const ProgressRingTemplate: import("@microsoft/fast-element").ViewTemplate<BaseProgress, any>;
 
@@ -638,6 +682,62 @@ export const RadioGroupTemplate: import("@microsoft/fast-element").ViewTemplate<
 
 // @public
 export const RadioTemplate: import("@microsoft/fast-element").ViewTemplate<Radio, any>;
+
+// Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
+// Warning: (ae-incompatible-release-tags) The symbol "Select" is marked as @public, but its signature references "FormAssociated" which is marked as @alpha
+// Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "Select" because one of its declarations is marked as @internal
+//
+// @public (undocumented)
+export class Select extends FormAssociated<HTMLInputElement> {
+    constructor();
+    // (undocumented)
+    adjust(adjustment: number): void;
+    // (undocumented)
+    button: HTMLElement;
+    // (undocumented)
+    clickHandler: (e: MouseEvent) => void;
+    // (undocumented)
+    connectedCallback(): void;
+    // (undocumented)
+    defaultSlottedNodes: Node[];
+    focusoutHandlerListbox: (e: FocusEvent) => void;
+    handleMultiple: (value: string) => void;
+    // (undocumented)
+    handleTypeAhead(typedKey: any): void;
+    // (undocumented)
+    keypressHandlerButton: (e: KeyboardEvent) => void;
+    keypressHandlerListbox: (e: KeyboardEvent) => void;
+    // @internal (undocumented)
+    listbox: HTMLElement[];
+    // (undocumented)
+    multiple: boolean;
+    // (undocumented)
+    open: boolean;
+    // @internal (undocumented)
+    options: Option_2[];
+    optionSelectionChange(value: string): void;
+    // (undocumented)
+    protected proxy: HTMLInputElement;
+    // (undocumented)
+    readOnly: boolean;
+    registerButtonSlotChange(): void;
+    // (undocumented)
+    selectedValue: HTMLElement;
+    setFocusOnOption: (optionToFocus?: null) => void;
+    // (undocumented)
+    updateButtonPartAttr(): void;
+    // (undocumented)
+    value: string;
+    // (undocumented)
+    valueChanged(): void;
+}
+
+// @internal
+export interface Select extends StartEnd {
+}
+
+// @public (undocumented)
+export const SelectTemplate: import("@microsoft/fast-element").ViewTemplate<Select, any>;
 
 // @public
 export class Skeleton extends FASTElement {
