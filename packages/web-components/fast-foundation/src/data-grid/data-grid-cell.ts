@@ -1,12 +1,31 @@
-import { attr, DOM, FASTElement, observable, html, HTMLView } from "@microsoft/fast-element";
+import { attr, DOM, FASTElement, observable, html, HTMLView, ViewTemplate } from "@microsoft/fast-element";
 import { DataGridColumn } from  "./data-grid";
 import { DataGridCellTemplate } from "./data-grid-cell.template";
 
-const defaultCellContentsTemplate = html<DataGridCell>`
+const defaultCellContentsTemplate: ViewTemplate = html<any>`
     <template>
         ${x => (x.rowData === null || x.columnData === null || x.columnData.columnDataKey === null) ? null : x.rowData[x.columnData.columnDataKey]}
     </template>
 `; 
+
+/**
+ * Data grid cell config
+*
+ * @public
+ */
+export interface DataGridCellConfig {
+    /**
+     * 
+     */
+    columnData: DataGridColumn;
+
+
+    /**
+     * 
+     */
+    rowData: object;
+}
+
 
 /**
  * A Data Grid Cell Custom HTML Element.
@@ -51,6 +70,17 @@ export class DataGridCell extends FASTElement {
     private columnDataChanged(): void {
     }
 
+
+    /**
+     * 
+     *
+     * @public
+     */
+    @observable
+    public cellConfig: DataGridCellConfig | null = null;
+    private cellConfigChanged(): void {
+    }
+
     private customCellView: HTMLView | null = null;
 
     /**
@@ -61,10 +91,12 @@ export class DataGridCell extends FASTElement {
     
         this.style.gridColumn = `${this.gridColumnIndex === undefined ? 0 : this.gridColumnIndex}`;
 
-        if (this.columnData?.cellTemplate !== undefined) {
-            this.customCellView = this.columnData.cellTemplate.render(this, this);
+        this.update();
+
+        if (this.columnData?.cellTemplate !== undefined && this.cellConfig !== null) {
+            this.customCellView = this.columnData.cellTemplate.render(this.cellConfig, this);
         } else {
-            this.customCellView = defaultCellContentsTemplate.render(this, this);
+            this.customCellView = defaultCellContentsTemplate.render(this.cellConfig, this);
         }
     }
 
@@ -81,5 +113,16 @@ export class DataGridCell extends FASTElement {
     }
 
     private update = (): void =>  {
+        if (
+            this.columnData === null ||
+            this.rowData === null
+        ) {
+            return;
+        }
+
+        this.cellConfig = {
+            columnData: this.columnData,
+            rowData: this.rowData
+        }
     }
 }
