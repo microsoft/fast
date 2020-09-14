@@ -18,6 +18,7 @@ export * from "./progress/index";
 export * from "./progress-ring/index";
 export * from "./radio/index";
 export * from "./radio-group/index";
+export * from "./select/index";
 export * from "./slider/index";
 export * from "./slider-label/index";
 export * from "./switch/index";
