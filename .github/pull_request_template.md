@@ -1,50 +1,77 @@
-<!--- Provide a summary of your changes in the title field above. For guidance on formatting, see the comment at the bottom of this template. -->
+<!---
+Thanks for filing a pull request 😄 ! Before you submit, please read the following:
 
-# Description
+Search open/closed issues before submitting. Someone may have pushed the same thing before!
 
-<!--- Describe your changes. -->
+Provide a summary of your changes in the title field above. For guidance on title formatting, see the comment at the bottom of this template.
+-->
 
-## Motivation & context
+# Pull Request
 
-<!--- What problem does this change solve? -->
-<!--- Provide a link if you are addressing an open issue. -->
+## 📖 Description
 
-## Issue type checklist
+<!---
+Provide some background and a description of your work.
+What problem does this change solve?
+Is this a breaking change, chore, fix, feature, etc?
+-->
 
-<!--- What type of change are you submitting? Put an x in the box that applies: -->
+### 🎫 Issues
 
-- [ ] **Chore**: A change that does not impact distributed packages.
-- [ ] **Bug fix**: A change that fixes an issue, link to the issue above.
-- [ ] **New feature**: A change that adds functionality.
+<!---
+* List and link relevant issues here.
+-->
 
-**Is this a breaking change?**
-- [ ] This change causes current functionality to break.
+## 👩‍💻 Reviewer Notes
 
-<!--- If yes, describe the impact. -->
+<!---
+Provide some notes for reviewers to help them provide targeted feedback and testing.
 
-**Adding or modifying component(s) in `@microsoft/fast-components` checklist**
+Do you recommend a smoke test for this PR? What steps should be followed?
+Are there particular areas of the code the reviewer should focus on?
+-->
 
-<!-- Do your changes add or modify components in the @microsoft/fast-components package? Put an x in the box that applies: -->
+## 📑 Test Plan
+
+<!---
+Please provide a summary of the tests affected by this work and any unique strategies employed in testing the features/fixes.
+-->
+
+## ✅ Checklist
+
+### General
+
+<!--- Review the list and put an x in the boxes that apply. -->
+
+- [ ] I have followed the title guidelines for my PR
+- [ ] I have included a change request file using `$ yarn change`
+- [ ] I have added tests for my changes.
+- [ ] I have tested my changes.
+- [ ] I have updated the project documentation to reflect my changes.
+- [ ] I have read the [CONTRIBUTING](https://github.com/Microsoft/fast/blob/master/CONTRIBUTING.md) documentation and followed the [standards](https://www.fast.design/docs/community/code-of-conduct/#our-standards) for this project.
+
+### Component-specific
+
+<!--- Review the list and put an x in the boxes that apply. -->
 
 - [ ] I have added a new component
 - [ ] I have modified an existing component
 - [ ] I have updated the [definition file](https://github.com/Microsoft/fast/blob/master/packages/web-components/fast-components/CONTRIBUTING.md#definition)
 - [ ] I have updated the [configuration file](https://github.com/Microsoft/fast/blob/master/packages/web-components/fast-components/CONTRIBUTING.md#configuration)
 
-## Process & policy checklist
-
-<!--- Review the list and check the boxes that apply. -->
-
-- [ ] I have added tests for my changes.
-- [ ] I have tested my changes.
-- [ ] I have updated the project documentation to reflect my changes.
-- [ ] I have read the [CONTRIBUTING](https://github.com/Microsoft/fast/blob/master/CONTRIBUTING.md) documentation and followed the [standards](https://www.fast.design/docs/community/code-of-conduct/#our-standards) for this project.
+## ⏭ Next Steps
 
 <!---
-Formatting guidelines:
+If there is relevant follow-up work to this PR, please list any existing issues or provide brief descriptions of what you would like to do next.
+-->
+
+
+
+<!---
+Title formatting guidelines:
 
 Accepted peer review title format:
-<type>: <description>
+    <type>: <description>
 
 Example titles:
     chore: add unit tests for all components
