@@ -237,6 +237,8 @@ export class DataGrid extends FASTElement {
 
 // @public
 export class DataGridCell extends FASTElement {
+    // (undocumented)
+    cellConfig: DataGridCellConfig | null;
     columnData: DataGridColumn | null;
     // @internal (undocumented)
     connectedCallback(): void;
@@ -245,6 +247,14 @@ export class DataGridCell extends FASTElement {
     gridColumnIndex: number;
     rowData: object | null;
     }
+
+// @public
+export interface DataGridCellConfig {
+    // (undocumented)
+    columnData: DataGridColumn;
+    // (undocumented)
+    rowData: object;
+}
 
 // @public
 export const DataGridCellTemplate: import("@microsoft/fast-element").ViewTemplate<DataGridCell, any>;
