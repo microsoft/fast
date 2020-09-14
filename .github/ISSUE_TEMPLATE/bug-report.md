@@ -15,6 +15,10 @@ Search open/closed issues before submitting. Someone may have reported the same 
 
 <!--- Provide a general summary of the issue here -->
 
+## 💻 Repro or Code Sample
+
+<!-- Please provide steps to reproduce the issue and/or a code repository, gist, code snippet or sample files -->
+
 ## 🤔 Expected Behavior
 
 <!--- Tell us what should happen -->
@@ -34,10 +38,6 @@ Search open/closed issues before submitting. Someone may have reported the same 
 
 <!--- How has this issue affected you? What are you trying to accomplish? -->
 <!--- Providing context helps us come up with a solution that is most useful in the real world -->
-
-## 💻 Repro or Code Sample
-
-<!-- Please provide steps to reproduce the issue and/or a code repository, gist, code snippet or sample files -->
 
 ## 🌍 Your Environment
 

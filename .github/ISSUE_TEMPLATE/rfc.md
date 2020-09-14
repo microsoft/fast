@@ -13,7 +13,7 @@ Search open/closed issues before submitting. Someone may have created a similar 
 
 # 💬 RFC
 
-<!--- Provide a detailed summary of the issue here -->
+<!--- Provide a detailed summary of the feature here -->
 
 ## 🔦 Context
 
