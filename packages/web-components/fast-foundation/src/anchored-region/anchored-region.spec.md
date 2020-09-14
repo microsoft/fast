@@ -12,7 +12,7 @@ It is envisioned that this component would be used as a building block for other
 
 - **Relative positioning:** Users can use it to position an element relative to another another element, like enabling a menu to open above or below a trigger button. Additionally, the same anchored region can change which element it is anchored to dynamically, for example a single tooltip instance in a page could be positioned next to any other element on the page by switching the anchor property of the anchored region that contains it.
 
-- **Responsive positioning:** Users can use it to position an element relative to another element based on available space, for example a menu could open upwards if the trigger button is near the bottom of the page, and downwards if it is nearer the top.
+- **Responsive positioning:** Users can use it to position an element relative to another element based on available space, for example a menu could open upwards if the trigger button is near the bottom of the page, and downwards if it is nearer the top.  Authors can call the component's update() function to reevaluate positioning.
 
 - **Responsive scaling:** Users can use it to create a layout region that dynamically sizes depending on space between the anchor and the viewport elements.
 
@@ -20,7 +20,7 @@ It is envisioned that this component would be used as a building block for other
 For a more in-depth understanding of how this component works under the covers please refer to the [intersection observer api](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API). 
 
 ### Risks and Challenges
-- see discussion of `getBoundingClientRect` usage in the "Performance" section below.
+- must keep an eye on performance
 
 ---
 
@@ -190,7 +190,6 @@ NOTE: this component api will not be exposed outside of the fast-components pack
 - vertical-inset - Boolean that indicates whether the region should overlap the anchor on the vertical axis. Default is false which places the region adjacent to the anchor element.
 - vertical-threshold - Numeric value that defines how small the region must be to the edge of the viewport to switch to the opposite side of the anchor. The component favors the default position until this value is crossed.  When there is not enough space on either side or the value is unset the side with the most space is chosen.
 - vertical-scaling - Can be 'anchor', 'fill' or 'content'. Default is 'content' 
-- use-gbcr - Whether the component uses calls to `getBoundingClientRect` to calculate positioning. Can be 'default', 'always' or 'never'.  Default behavior attempts to use gbcr if the initial attempt to use [IntersectionObserver](https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver) fails to return usable data. 
 
 *Properties:*
 - anchorElement - Holds a reference to the HTMLElement currently being used as the anchor.  Can be set directly or be populated by setting the anchor attribute.
@@ -232,9 +231,10 @@ The anchored region is essentially a container around the slotted items.
 ## Implementation
 
 ### States
-Layout update checks in the component happen when:
-- intersection observer reports a collision with the viewport
-- resize observer reports a resize event on the anchor, the viewport, the component's `offsetParent` or the component itself.
+Positioning update checks in the component happen when:
+- an attribute or property is changed on the component
+- the component's "update()" function is called
+- resize observer reports a resize event on the anchor or the component itself.
 
 These layout checks analyse the DOM geometry based on callbacks and repositions the anchored region appropriately: top/bottom/unset for the vertical axis and left/right/unset for the horizontal axis. 
 
@@ -247,11 +247,7 @@ None required.  Basically a positioned div that authors can decorate for accessi
 Authors may want to change default position from left to right or vice versa based on rtl settings, but that can't be predicted by the component itself.
 
 ### Performance
-The component needs information about the geometry of the surrounding DOM in order to function and it acquires this through either [IntersectionObserver](https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver) events or calls to `getBoundingClientRect`.  
-
-By default the component relies on observer events, but in some cases that data may not be usable such as when there is an intervening element in the DOM hierarchy between the viewport and the anchor or the region itself.  When the component detects this condition it is able to fall back to expensive calls to `getBoundingClientRect`.
-
-Developers can use the "use-gbcr" attribute to limit this behavior to either always use calls to `getBoundingClientRect` to skip the cost of even trying to use the observer to begin with, or 'never' to block gbcr completely (presumably changing other aspects of their layout to allow the observer to function).
+The component uses [IntersectionObserver](https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver) events to determine positioning rather than more demanding calls to getBoundingClientRect.  Further performance improvements, like perhaps sharing a singleton intersection observer instance across anchored regions, should be considered.
 
 ### Dependencies
 [IntersectionObserver api](https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver) is unsupported on IE, and [ResizeObserver](https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver) is unsupported on IE, Safari and Firefox.  Both are required by the component.  Authors who wish to use this component on these platforms will need to use polyfills.
