@@ -368,7 +368,6 @@ export class AnchoredRegion extends FASTElement {
      * update position
      */
     public update = (): void => {
-
         if (this.viewportRect === null || this.regionDimension === null) {
             this.requestLayoutUpdate();
             return;
@@ -503,14 +502,11 @@ export class AnchoredRegion extends FASTElement {
      */
     private initializeIntersectionDetector = (): void => {
         this.disconnectIntersectionDetector();
-        this.intersectionDetector = new IntersectionObserver(
-            this.handleIntersection,
-            {
-                root: null,
-                rootMargin: "0px",
-                threshold: [0, 1],
-            }
-        );
+        this.intersectionDetector = new IntersectionObserver(this.handleIntersection, {
+            root: null,
+            rootMargin: "0px",
+            threshold: [0, 1],
+        });
     };
 
     /**
@@ -521,8 +517,8 @@ export class AnchoredRegion extends FASTElement {
 
         if (
             this.anchorElement === null ||
-            ((this.viewportElement !== null) &&
-            !this.viewportElement.contains(this.anchorElement))
+            (this.viewportElement !== null &&
+                !this.viewportElement.contains(this.anchorElement))
         ) {
             return;
         }
@@ -539,10 +535,7 @@ export class AnchoredRegion extends FASTElement {
      * starts intersection observer
      */
     private startIntersectionObserver = (): void => {
-        if (
-            this.anchorElement === null ||
-            this.pendingPositioningUpdate
-        ) {
+        if (this.anchorElement === null || this.pendingPositioningUpdate) {
             return;
         }
         if (this.intersectionDetector !== null) {
@@ -608,7 +601,6 @@ export class AnchoredRegion extends FASTElement {
      *  Handle intersections
      */
     private handleIntersection = (entries: IntersectionObserverEntry[]): void => {
-
         this.stopIntersectionObserver();
 
         let regionRect: DOMRect | ClientRect | null = null;
