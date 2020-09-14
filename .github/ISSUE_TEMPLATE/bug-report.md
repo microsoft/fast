@@ -22,19 +22,17 @@ Search open/closed issues before submitting. Someone may have reported the same 
 ## 😯 Current Behavior
 
 <!--- Tell us what happens instead of the expected behavior -->
-
 <!--- If you are seeing an error, please include the full error message and stack trace -->
-
 <!--- If applicable, provide screenshots -->
 
 ## 💁 Possible Solution
 
 <!--- Not obligatory, but suggest a fix/reason for the bug -->
+<!--- Please let us know if you'd be willing to contribute the fix; we'd be happy to work with you -->
 
 ## 🔦 Context
 
 <!--- How has this issue affected you? What are you trying to accomplish? -->
-
 <!--- Providing context helps us come up with a solution that is most useful in the real world -->
 
 ## 💻 Repro or Code Sample
