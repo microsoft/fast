@@ -8,8 +8,6 @@ export const SkeletonTemplate = html<Skeleton>`
     class="${x => (x.shape === "circle" ? "circle" : "rect")}"
     pattern="${x => x.pattern}"
   >
-    <span class="shimmer" ></span>
-    <img class="pattern" src="${x => x.pattern}" />
     <slot></slot>
   </template>
 `;
