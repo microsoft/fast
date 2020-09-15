@@ -36,4 +36,21 @@ export class Badge extends FASTElement {
      */
     @attr({ mode: "boolean" })
     public circular: boolean;
+
+    public generateBadgeStyle = () => {
+        if (!this.fill && !this.color) {
+            return;
+        }
+        
+        const fill: string = `background-color: var(--badge-fill-${this.fill});`;
+        const color: string = `color: var(--badge-color-${this.color});`;
+
+        if (this.fill && !this.color) {
+            return fill;
+        } else if (this.color && !this.fill) {
+            return color;
+        } else {
+            return `${color} ${fill}`;
+        }
+    };
 }
