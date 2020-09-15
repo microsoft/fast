@@ -1,7 +1,7 @@
 import { attr, observable } from "@microsoft/fast-element";
 import { FormAssociated } from "../form-associated/index";
 import { Option } from './option';
-import { wrapInBounds } from '@microsoft/fast-web-utilities';
+import { wrapInBounds, KeyCodes } from '@microsoft/fast-web-utilities';
 import { StartEnd } from "../patterns/start-end";
 import { applyMixins } from "../utilities/apply-mixins";
 
@@ -92,20 +92,18 @@ export class Select extends FormAssociated<HTMLInputElement> {
     public keypressHandlerButton = (e: KeyboardEvent): void => {
         super.keypressHandler(e);
         switch (e.keyCode) {
-            // Space
-            case 32:
+            case KeyCodes.space:
                 this.open = !this.open;
                 console.log("Call one")
                 setTimeout(() => this.setFocusOnOption(), 0);
                 break;
-            // Enter
-            case 13:
+            case KeyCodes.enter:
                 this.open = !this.open;
                 console.log("Call two")
                 setTimeout(() => this.setFocusOnOption(), 0);
                 e.preventDefault(); // Enter also causes 'click' to fire for <button>s.  Prevent that so we don't immediately revert the change to this.open.
                 break;
-            case 9:
+            case KeyCodes.tab:
                 this.setFocusOnOption();
                 break;
         }
@@ -120,23 +118,19 @@ export class Select extends FormAssociated<HTMLInputElement> {
         // Don't scroll the page for arrow keys, and spacebar.
         e.preventDefault();
         switch (e.keyCode) {
-            // Down
-            case 40:
+            case KeyCodes.arrowDown:
                 this.adjust(1)
                 break;
-            // Up
-            case 38:
+            case KeyCodes.arrowUp:
                 this.adjust(-1)
                 break;
-            // Enter
-            case 13:
+            case KeyCodes.enter:
                 this.value = this.options[this.activeOptionIndex].value;
                 console.log("Fire Enter", this.activeOptionIndex)
                 this.options[this.activeOptionIndex].checked = true;
                 this.optionSelectionChange(this.options[this.activeOptionIndex].value);
                 break;
-            // Escape
-            case 27:
+            case KeyCodes.escape:
                 this.options[this.activeOptionIndex].removeAttribute('current');
                 this.open = !this.open;
                 console.log("Call three")
