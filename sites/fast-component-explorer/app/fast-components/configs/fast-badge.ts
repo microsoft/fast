@@ -18,8 +18,58 @@ const fastBadgeConfig: ComponentViewConfig = {
             dataDictionary: [
                 {
                     root: {
+                        schemaId: "div",
+                        data: {
+                            Slot: [
+                                {
+                                    id: "style",
+                                },
+                                {
+                                    id: "badge",
+                                },
+                            ],
+                        },
+                    },
+                    style: {
+                        parent: {
+                            id: "root",
+                            dataLocation: "Slot",
+                        },
+                        schemaId: "style",
+                        data: {
+                            Slot: [
+                                {
+                                    id: "styleContent",
+                                },
+                            ],
+                        },
+                    },
+                    styleContent: {
+                        parent: {
+                            id: "style",
+                            dataLocation: "Slot",
+                        },
+                        schemaId: textSchema.id,
+                        data: `
+                        /* For example purposes only. App authors needs to define */
+
+                        fast-badge {
+                            --badge-fill-primary: rgba(255, 0, 0, 1);
+                            --badge-fill-secondary: #00FF00;
+                            --badge-fill-transparent: transparent;
+                            --badge-color-black: #000000;
+                            --badge-color-white: #FFFFFF;
+                         }`,
+                    },
+                    badge: {
+                        parent: {
+                            id: "root",
+                            dataLocation: "Slot",
+                        },
                         schemaId: fastBadgeId,
                         data: {
+                            fill: "primary",
+                            color: "white",
                             Slot: [
                                 {
                                     id: "Slot",
@@ -29,7 +79,7 @@ const fastBadgeConfig: ComponentViewConfig = {
                     },
                     Slot: {
                         parent: {
-                            id: "root",
+                            id: "badge",
                             dataLocation: "Slot",
                         },
                         schemaId: textSchema.id,
