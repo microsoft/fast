@@ -3,7 +3,7 @@ Thanks for filing a pull request 😄 ! Before you submit, please read the follo
 
 Search open/closed issues before submitting. Someone may have pushed the same thing before!
 
-Provide a summary of your changes in the title field above. For guidance on title formatting, see the comment at the bottom of this template.
+Provide a summary of your changes in the title field above.
 -->
 
 # Pull Request
@@ -43,7 +43,6 @@ Please provide a summary of the tests affected by this work and any unique strat
 
 <!--- Review the list and put an x in the boxes that apply. -->
 
-- [ ] I have followed the title guidelines for my PR
 - [ ] I have included a change request file using `$ yarn change`
 - [ ] I have added tests for my changes.
 - [ ] I have tested my changes.
@@ -53,6 +52,7 @@ Please provide a summary of the tests affected by this work and any unique strat
 ### Component-specific
 
 <!--- Review the list and put an x in the boxes that apply. -->
+<!--- Remove this section if not applicable. -->
 
 - [ ] I have added a new component
 - [ ] I have modified an existing component
@@ -63,35 +63,4 @@ Please provide a summary of the tests affected by this work and any unique strat
 
 <!---
 If there is relevant follow-up work to this PR, please list any existing issues or provide brief descriptions of what you would like to do next.
--->
-
-
-
-<!---
-Title formatting guidelines:
-
-Accepted peer review title format:
-    <type>: <description>
-
-Example titles:
-    chore: add unit tests for all components
-    feat: add a border radius to button
-    fix: update design system to use 3px border radius
-
-    <type> is required to be one of the following:
-
-        - chore: A change that does not impact distributed packages.
-        - fix: A change which fixes an issue.
-        - feat: A that adds functionality.
-
-    <description> is required for the CHANGELOG and speaks to what the user gets from this PR:
-
-        - Be concise.
-        - Use all lowercase characters. 
-        - Use imperative, present tense (e.g. `add` not `adds`.)
-        - Do not end your description with a period.
-        - Avoid redundant words.
-
-For additional information regarding working on FAST, check out our documentation site:
-https://www.fast.design/docs/community/contributor-guide
 -->
