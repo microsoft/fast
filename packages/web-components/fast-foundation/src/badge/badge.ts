@@ -41,7 +41,7 @@ export class Badge extends FASTElement {
         if (!this.fill && !this.color) {
             return;
         }
-        
+
         const fill: string = `background-color: var(--badge-fill-${this.fill});`;
         const color: string = `color: var(--badge-color-${this.color});`;
 
