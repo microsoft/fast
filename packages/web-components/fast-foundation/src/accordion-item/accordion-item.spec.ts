@@ -29,8 +29,7 @@ describe("Accordion item", () => {
         ).to.equal("4");
     });
 
-    // This is "fromView" so how do we test it?
-    xit("should set a default heading level of 2 when NOT provided a `headinglevel`", async () => {
+    it("should set a default heading level of 2 when NOT provided a `headinglevel`", async () => {
         const { element, connect } = await fixture<FASTAccordionItem>(
             "fast-accordion-item"
         );
