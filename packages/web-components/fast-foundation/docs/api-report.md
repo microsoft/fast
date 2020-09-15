@@ -404,6 +404,9 @@ export abstract class FormAssociated<T extends HTMLInputElement | HTMLTextAreaEl
 }
 
 // @public
+export const getDirection: (rootNode: HTMLElement) => Direction;
+
+// @public
 export const hidden = ":host([hidden]){display:none}";
 
 // @public
@@ -715,6 +718,8 @@ export class Tabs extends FASTElement {
     activeIndicatorRef: HTMLElement;
     activetab: HTMLElement;
     adjust(adjustment: number): void;
+    // @internal (undocumented)
+    connectedCallback(): void;
     orientation: TabsOrientation;
     // @internal (undocumented)
     tabpanels: HTMLElement[];

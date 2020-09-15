@@ -1,3 +1,4 @@
+export * from "./platform";
 export * from "./template";
 export * from "./fast-element";
 export { FASTElementDefinition, PartialFASTElementDefinition } from "./fast-definitions";
@@ -5,7 +6,13 @@ export * from "./attributes";
 export * from "./controller";
 export * from "./interfaces";
 export * from "./template-compiler";
-export { css, ElementStyles, StyleTarget } from "./styles";
+export {
+    css,
+    ElementStyles,
+    ElementStyleFactory,
+    ComposableStyles,
+    StyleTarget,
+} from "./styles";
 export * from "./view";
 export * from "./observation/observable";
 export * from "./observation/notifier";

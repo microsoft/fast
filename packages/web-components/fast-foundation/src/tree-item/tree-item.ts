@@ -80,6 +80,9 @@ export class TreeItem extends FASTElement {
                     (node as TreeItem).nested = true;
                 }
             });
+            this.enabledChildTreeItems = this.items.filter((item: HTMLElement) => {
+                return isTreeItemElement(item) && !item.hasAttribute("disabled");
+            });
         }
     }
 
@@ -93,6 +96,7 @@ export class TreeItem extends FASTElement {
     public renderCollapsedChildren: boolean;
 
     private notifier: Notifier;
+    private enabledChildTreeItems: HTMLElement[] = [];
 
     private getParentTreeNode(): HTMLElement | null | undefined {
         const parentNode: Element | null | undefined = this.parentElement!.closest(
@@ -153,7 +157,7 @@ export class TreeItem extends FASTElement {
 
     public handleKeyDown = (e: KeyboardEvent): void | boolean => {
         if (e.target !== e.currentTarget) {
-            return;
+            return true;
         }
 
         switch (e.keyCode) {
@@ -235,10 +239,12 @@ export class TreeItem extends FASTElement {
             return;
         }
 
-        if (!this.expanded) {
+        if (!this.expanded && this.childItemLength() > 0) {
             this.setExpanded(true);
         } else {
-            this.focusNextNode(1);
+            if (this.enabledChildTreeItems.length > 0) {
+                this.enabledChildTreeItems[0].focus();
+            }
         }
     }
 

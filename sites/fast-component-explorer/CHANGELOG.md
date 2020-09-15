@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.12.2](https://github.com/Microsoft/fast/compare/@microsoft/fast-component-explorer@0.12.1...@microsoft/fast-component-explorer@0.12.2) (2020-09-10)
+
+
+### Bug Fixes
+
+* move right and move left functionality of radio-group in RTL ([f2735aa](https://github.com/Microsoft/fast/commit/f2735aa2fdb3c9ac71e143fddee84397f045afec))
+
+
+
+
+
 ## [0.12.1](https://github.com/Microsoft/fast/compare/@microsoft/fast-component-explorer@0.12.0...@microsoft/fast-component-explorer@0.12.1) (2020-08-27)
 
 

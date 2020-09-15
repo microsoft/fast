@@ -1,6 +1,6 @@
 import { attr, FASTElement, nullableNumberConverter } from "@microsoft/fast-element";
-import { StartEnd } from "../../patterns/start-end";
-import { applyMixins } from "../../utilities/apply-mixins";
+import { StartEnd } from "../patterns/start-end";
+import { applyMixins } from "../utilities/apply-mixins";
 
 /**
  * An individual item in an {@link @microsoft/fast-foundation#(Accordion:class) }.

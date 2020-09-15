@@ -63,10 +63,17 @@ export const SwitchStyles = css`
         border: calc(var(--outline-width) * 1px) solid ${neutralOutlineRestBehavior.var};
     }
 
-    :host(:not([disabled])) .switch:hover {
+    .switch:hover {
         background: ${neutralFillInputHoverBehavior.var};
         border-color: ${neutralOutlineHoverBehavior.var};
         cursor: pointer;
+    }
+
+    host([disabled]) .switch:hover,
+    host([readonly]) .switch:hover {
+        background: ${neutralFillInputHoverBehavior.var};
+        border-color: ${neutralOutlineHoverBehavior.var};
+        cursor: ${disabledCursor};
     }
 
     :host(:not([disabled])) .switch:active {
@@ -97,6 +104,11 @@ export const SwitchStyles = css`
         line-height: var(--type-ramp-base-line-height);
     }
 
+    :host([disabled]) .status-message,
+    :host([readonly]) .status-message {
+        cursor: ${disabledCursor};
+    }
+
     .label {
         color: ${neutralForegroundRestBehavior.var};
 
@@ -105,6 +117,7 @@ export const SwitchStyles = css`
         } margin-inline-end: calc(var(--design-unit) * 2px + 2px);
         font-size: var(--type-ramp-base-font-size);
         line-height: var(--type-ramp-base-line-height);
+        cursor: pointer;
     }
 
     .label__hidden {
