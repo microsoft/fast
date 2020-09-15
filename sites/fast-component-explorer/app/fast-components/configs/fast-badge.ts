@@ -2,7 +2,6 @@ import {
     fastComponentDefinitions,
     fastComponentSchemas,
     textSchema,
-    nativeElementExtendedSchemas,
 } from "@microsoft/site-utilities";
 import { camelCase } from "lodash-es";
 import Guidance from "../../.tmp/badge/guidance";
