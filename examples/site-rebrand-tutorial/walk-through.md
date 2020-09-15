@@ -1,33 +1,26 @@
-<video controls width="720">
-    <source src="intro-video.mp4"
-            type="video/mp4">
-
-    ![]()
-</video>
-
-# Walkthrough of FAST web components
+# Adopting FAST with an Existing Website
 
 If you've ever tried to build consistent custom markup structures for a website or an app, you might have looked at web components. As they're standards compliant and supported by all the main evergreen browsers, web components allow you to define reusable and encapsulated HTML tags.
 
 FAST gives you a collection of packages that include web components to define a set of reusable, stylable, and flexible HTML components. These components can encapsulate an entire user experience design language like Microsoft's Fluent design or Google's Material design. The other packages include an intelligent color system and a design system provider.
 
-This walkthrough will introduce you to FAST web components. You'll add the components to an existing website and see the impact of changing the design systems' properties. You'll see how to completely alter the design language of a website, by only changing a single line of code.
+This walkthrough will introduce you to FAST web components. You'll add the components to an existing website and see the impact of changing the design system's properties. You'll see how to completely alter the design language of a website within seconds, by making a few minor changes.
 
 ## Prerequisites
 
-In this walkthrough, you'll be editing an existing HTML static website. If you'd like to follow the step-by-step, guide you'll need some tools. Start with a code editor like [Visual Studio Code](https://code.visualstudio.com/). You'll also need a local development server. A simple way to set one up is to use the [Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer) extension for VS Code. The example code used in this walkthrough is stored on GitHub so you'll need a way to clone the repository, either by installing Git or using the built-in VS Code Git tooling.
+In this walkthrough, you'll be editing an existing HTML static website. If you'd like to follow the step-by-step guide, you'll need some tools. Start with a code editor like [Visual Studio Code](https://code.visualstudio.com/). You'll also need a local development server. A simple way to set one up is to use the [Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer) extension for VS Code. The example code used in this walkthrough is stored on GitHub so you'll need a way to clone the repository, either by installing Git or using the built-in VS Code Git tooling.
 
-You should have some understanding of web design and experience of HTML, CSS, and JavaScript. Experience of web components is not required.
+You should have some understanding of web design and experience with HTML, CSS, and JavaScript. Experience with web components is not required.
 
 ## Scenario
 
-Imagine you work for a company that has an existing website. Your company's design department has been asked to re-brand the company and need to apply this new look and feel to the website. The current website has been built with classic HTML and CSS for styling. You'd like to take this opportunity to implement web components and have recently discovered FAST as an option.
+Imagine you work for a company that has an existing website. Your company's design department has been asked to re-brand the company and needs to apply this new look and feel to the website. The current website has been built with classic HTML and CSS for styling. You'd like to take this opportunity to implement web components and have recently discovered FAST as an option.
 
 ## The website
 
 ![A screenshot of the starter website](website.png)
 
-To start this walkthrough, you'll clone your company's existing website. Exploring the code you'll see it's a simple static website with this folder structure:
+To start this walkthrough, you'll clone your company's existing website. Exploring the code, you'll see it's a simple static website with this folder structure:
 
 ![Diagram showing the site structure with folders for CSS, images, JavaScript, and an index.html file](site-structure.png)
 
@@ -87,7 +80,7 @@ Save your changes, and the browser should automatically reload. You'll see nothi
 
 ### Enable FAST web components
 
-The second step is to add the [Design System Provider](https://www.fast.design/docs/components/design-system-provider) that contains the design properties and web components on the page. At line 13, under the `<body>` tag, add this HTML tag:
+The second step is to add the [Design System Provider](https://www.fast.design/docs/design-systems/overview#the-designsystemprovider) that contains the design properties and web components on the page. At line 13, under the `<body>` tag, add this HTML tag:
 
 ```html
 <body>
@@ -107,9 +100,9 @@ Adding these tags enables you to use the imported design system provider and its
 
 When you saved these changes, you might not have noticed much of an impact on the website. The background went a little darker, and the text brightened slightly. This is because the design system provider you added includes an implementation of the FAST design language. This is a dark theme, with magenta accents.
 
-You can access these colors using CSS variables, for the background `var(--background-color)`, with the main color of the page being `var(--neutral-foreground-rest)`. To learn more about how colors palettes are supported, see the [documentation](https://www.fast.design/docs/design/color#palettes).
+You can access these colors using CSS variables, for the background `var(--background-color)`, with the main color of the page being `var(--neutral-foreground-rest)`. To learn more about how colors palettes are supported, see the [documentation](https://www.fast.design/docs/design-systems/fast-frame#adaptive-color).
 
-An advantage of using a FAST design system is that the color pallet is calculated. It has built-in support to create enough contrast between elements based on the [WCAG specification](https://www.w3.org/TR/WCAG21/#contrast-minimum).
+An advantage of using a FAST design system is that the color pallete is calculated. It has built-in support to create enough contrast between elements based on the [WCAG specification](https://www.w3.org/TR/WCAG21/#contrast-minimum).
 
 ### Add FAST web components
 
@@ -154,7 +147,7 @@ Replace all the buttons in the summary section, lines 64, 75, and 84, with this 
 
 Save your changes and view the updated webpage. You'll see the two different appearances in the design system. The `"accent"` appearance on the **Browse gallery** button uses a filled magenta color. Compare this to the **View details »** button that's using the `"outline"` appearance. There is also a third appearance included in the design system, the default `"neutral"` style. You can see this on the **Submit** button in the menu.
 
-All of the colors are based around color recipes that inherit from one of FAST's two palettes. These are the `neutralPalette` and the `accentPalette`. You can see all the available color recipes in the [documentation](https://www.fast.design/docs/design/color#algorithmic-colors-recipes).
+All of the colors are based around color recipes that inherit from one of FAST's two palettes. These are the `neutralPalette` and the `accentPalette`. You can see all the available color recipes in the [documentation](https://www.fast.design/docs/design-systems/fast-frame/#using-color-recipes).
 
 :::note
 If you refresh your browser, you might notice the new web components flash. This is because the browser doesn't know how to display the web components until they have been defined. To stop the flash of unstyled content, add this CSS at line 9 in the header of the page:
@@ -246,16 +239,16 @@ Again, there are some style issues that need to be fixed. Add this CSS at the bo
 }
 ```
 
-[Web components](https://developer.mozilla.org/en-US/docs/Web/Web_Components) are made up of custom elements, Shadow DOM, and HTML templates. The CSS on for the message text-area inside the `<fast-text-area>` web components is set using the `::part` in the Shadow tree to set the width. You only need to do this for some controls like the <fast-text-area> because it combines a label and a textarea control. For most of the simpler FAST web components you can target the styles at the control itself.
+[Web components](https://developer.mozilla.org/en-US/docs/Web/Web_Components) are made up of custom elements, Shadow DOM, and HTML templates. The CSS for the message text-area inside the `<fast-text-area>` web components is set using the `::part` in the Shadow tree to set the width. You only need to do this for some controls like the <fast-text-area> because it combines a label and a textarea control. For most of the simpler FAST web components you can target the styles at the control itself.
 
 
 ### Change the design system dynamically
 
-Another strength of using FAST alongside the color pallet is the codified design properties. You can access and change a number of properties.
+Another strength of using FAST alongside the color pallete is the codified design properties. You can access and change a number of properties.
 
 | Name                                   | Description   |
 |----------------------------------------|-------------  |
-| `background-color`                   | Defines the background color of the node. This is used by color recipes and should represent the color the UI is rendering on for a given node tree. |
+| `backgroundColor`                   | Defines the background color of the node. This is used by color recipes and should represent the color the UI is rendering on for a given node tree. |
 | `baseLayerLuminance`                   | Defines the base luminance used in layer recipes.  |
 | `density`                            | A multiplier to control the density of UI elements.                        |
 | `designUnit`                        | The core sizing unit that all sizes are derived from.                      |
@@ -272,7 +265,7 @@ At line 52, under the `<a>` tag in index.html, add this HTML:
 <img style="float: left;padding: 20px" src="design-panel.png"/>
 
 ```html
-<!-- Design system properties pallet -->
+<!-- Design system properties pallete -->
 <fast-card id="designPalletteOn">
   <h5>Design System Properties</h5>
   <p>cornerRadius: <label id="currentCorner">0</label>px
@@ -328,7 +321,7 @@ At line 52, under the `<a>` tag in index.html, add this HTML:
   </fast-switch>
 </fast-card>
 
-<!-- Design pallet off -->
+<!-- Design pallete off -->
 <fast-card id="designPalletteOff">
   <fast-switch id="showPanel" checked>
     Controls&nbsp;
@@ -467,7 +460,7 @@ The controls themselves now need some JavaScript to manage the design system pro
 
 Stepping through the JavaScript line by line, you'll see how the `designSystemProvider` properties are being connected to the individual web components. Save your changes and reload the website.
 
-Drag the cornerRadius slider and see all the FAST components change. Try the `baseLayerLuminance` slider to see the whole page adapting to a lighter or darker theme. You might notice that this breaks the call to action in the header. This is because the hero text is statically defined in the CSS. You need to use the design system's CSS variables.
+Drag the `cornerRadius` slider and see all the FAST components change. Try the `baseLayerLuminance` slider to see the whole page adapting to a lighter or darker theme. You might notice that this breaks the call to action in the header. This is because the hero text is statically defined in the CSS. You need to use the design system's CSS variables.
 
 In the CSS file, at line 38, change the declaration for `.hero-text` to this:
 
@@ -493,7 +486,7 @@ The hero text panel will now reflect the changes to the corner radius, backgroun
 }
 ```
 
-The next fix is around how the call to action and contact buttons are no longer larger than other buttons on the site. FAST has defined a [typography ramp](https://www.fast.design/docs/design/type-ramp) system that allows you to scale text relatively. You're going to increase the font size and line-height by adding this CSS declaration:
+The next fix is around how the call to action and contact buttons are no longer larger than other buttons on the site. FAST has defined a [typography ramp](https://www.fast.design/docs/design-systems/fast-frame#type-ramp) system that allows you to scale text relatively. You're going to increase the font size and line-height by adding this CSS declaration:
 
 ```css
 
@@ -522,22 +515,22 @@ Save your changes and alter the `baseLayerLuminance` slider again. See how the h
 
 ## The FAST adaptive color system
 
-Earlier in this walkthrough you saw how adding an accented appearance to a FAST button filled it with the loaded design systems chosen highlight color. In the design properties panel you can choose to change the accent color. The code that supports this is:
+Earlier in this walkthrough you saw how adding an accented appearance to a FAST button filled it with the loaded design system's chosen highlight color. In the design properties panel you can choose to change the accent color. The code that supports this is:
 
 ```javascript
   designSystemProvider.accentBaseColor = e.target.value;
   designSystemProvider.accentPalette = createColorPalette(parseColorHexRGB(e.target.value));
 ```
 
-FAST allows you to change the palette, the change will then be propagated to all the controls that are using that color palette. Try changing the color and see how all the controls that use the accentPalette are updated. For more information see the [Algorithmic Colors (Recipes)](https://www.fast.design/docs/design/color#algorithmic-colors-recipes) section in the documentation.
+FAST allows you to change the palette. The change will then be propagated to all the controls that are using that color palette. Try changing the color and see how all the controls that use the `accentPalette` are updated. For more information see the [Algorithmic Colors (Recipes)](https://www.fast.design/docs/design-systems/fast-frame#using-color-recipes) section in the documentation.
 
 ## FAST and the flexibility of the design system
 
-So far in this tutorial, you've changed a statically designed website into using FAST's modern responsive design system. FAST separates the base web components from their flexible design system. Through this example, you've been using the default FAST web components. The out-of-the-box design system provided is based on a dark user experience.
+So far in this tutorial, you've updated a statically designed website to use FAST's modern responsive design system. FAST separates the base web components from their flexible design system. Through this example, you've been using the default FAST web components. The out-of-the-box design system provided is based on a dark user experience.
 
 To demonstrate how the separation of this design system from its components works, you're going to switch to the FAST implementation of Microsoft's Fluent design system.
 
-As the design system and components are all defined in the pre-bundled FAST JavaScript module, you just need to change two lines.
+As the design system and components are all defined in the pre-bundled FAST JavaScript module, you just need to change two lines of code and execute a simple search and replace.
 
 Change line 247 to:
 
@@ -552,11 +545,13 @@ And the import statement at line 253 to:
     from "https://unpkg.com/@fluentui/web-components";
 ```
 
+Finally, using search and replace within the HTML and CSS files, replace all instances of "fast-" with "fluent-".
+
 ![The website using the Fluent design system versus FAST](side-by-side.png)
 
 Fluent is based around a lighter user experience, using blue accents. There's also a different corner radius to controls and a smaller height multiplier.
 
 As you can see, it's possible to encapsulate your company's entire design philosophy as a FAST design system provider, and deploy it across all your websites and apps. However, the flexibility is still there. You can still change the base luminance to a darker or black theme. You could adjust all the design properties to make the design system provider match the appearance of the default FAST design system.
 
-There's a completed sample webpage located in in FastPage\index.html if you'd like to just view all of the above changes already made to the example.
+There's a completed sample webpage located in in FastPage\index.html if you'd like to view all of the above changes already made to the example.
 
