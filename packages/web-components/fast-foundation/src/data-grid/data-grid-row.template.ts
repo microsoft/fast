@@ -7,6 +7,6 @@ import { DataGridRow } from "./data-grid-row";
  */
 export const DataGridRowTemplate = html<DataGridRow>`
     <template>
-       <slot part="cellsSlot" ${slotted("slottedCellElements")}></slot>
+        <slot part="cellsSlot" ${slotted("slottedCellElements")}></slot>
     </template>
 `;

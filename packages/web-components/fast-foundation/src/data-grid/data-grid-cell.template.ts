@@ -7,6 +7,6 @@ import { DataGridCell } from "./data-grid-cell";
  */
 export const DataGridCellTemplate = html<DataGridCell>`
     <template>
-    <slot part="cellSlot"></slot>
+        <slot part="cellSlot"></slot>
     </template>
 `;

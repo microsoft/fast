@@ -1,13 +1,13 @@
 import { customElement } from "@microsoft/fast-element";
-import { 
-    DataGrid, 
+import {
+    DataGrid,
     DataGridTemplate as gridTemplate,
-    DataGridHeader, 
-    DataGridHeaderTemplate as gridHeaderTemplate, 
-    DataGridRow, 
+    DataGridHeader,
+    DataGridHeaderTemplate as gridHeaderTemplate,
+    DataGridRow,
     DataGridRowTemplate as gridRowTemplate,
-    DataGridCell, 
-    DataGridCellTemplate as gridCellTemplate  
+    DataGridCell,
+    DataGridCellTemplate as gridCellTemplate,
 } from "@microsoft/fast-foundation";
 import { DataGridStyles as gridStyles } from "./data-grid.styles";
 import { DataGridHeaderStyles as headerStyles } from "./data-grid-header.styles";
@@ -15,7 +15,7 @@ import { DataGridRowStyles as rowStyles } from "./data-grid-row.styles";
 import { DataGridCellStyles as cellStyles } from "./data-grid-cell.styles";
 
 /**
- * The FAST Data Grid Element. 
+ * The FAST Data Grid Element.
  *
  * @public
  * @remarks
@@ -35,7 +35,7 @@ export class FASTDataGrid extends DataGrid {}
 export const DataGridStyles = gridStyles;
 
 /**
- * The FAST Data Grid Header Element. 
+ * The FAST Data Grid Header Element.
  *
  * @public
  * @remarks
@@ -55,7 +55,7 @@ export class FASTDataGridHeader extends DataGridHeader {}
 export const DataGridHeaderStyles = headerStyles;
 
 /**
- * The FAST Data Grid Row Element. 
+ * The FAST Data Grid Row Element.
  *
  * @public
  * @remarks
@@ -75,7 +75,7 @@ export class FASTDataGridRow extends DataGridRow {}
 export const DataGridRowStyles = rowStyles;
 
 /**
- * The FAST Data Grid Cell Element. 
+ * The FAST Data Grid Cell Element.
  *
  * @public
  * @remarks
@@ -93,4 +93,3 @@ export class FASTDataGridCell extends DataGridCell {}
  * @public
  */
 export const DataGridCellStyles = cellStyles;
-

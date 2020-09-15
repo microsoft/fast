@@ -1,22 +1,28 @@
-import { attr, FASTElement, html, RepeatBehavior, RepeatDirective, observable, ViewTemplate } from "@microsoft/fast-element";
-import { DataGridColumn} from "./data-grid";
+import {
+    attr,
+    FASTElement,
+    html,
+    RepeatBehavior,
+    RepeatDirective,
+    observable,
+    ViewTemplate,
+} from "@microsoft/fast-element";
+import { DataGridColumn } from "./data-grid";
 
 const defaultCellItemTemplate = html`
     <fast-data-grid-cell
         gridColumnIndex="${(x, c) => c.index + 1}"
         :rowData="${(x, c) => c.parent.rowData}"
-        :columnData="${ x => x }"
-    >
-    </fast-data-grid-cell>
+        :columnData="${x => x}"
+    ></fast-data-grid-cell>
 `;
 
 /**
  * A Data Grid Row Custom HTML Element.
-*
+ *
  * @public
  */
 export class DataGridRow extends FASTElement {
-
     /**
      * String that gets applied to the the css gridTemplateColumns attribute for the row
      *
@@ -26,8 +32,7 @@ export class DataGridRow extends FASTElement {
      */
     @attr
     public gridTemplateColumns: string;
-    private gridTemplateColumnsChanged(): void {
-    }
+    private gridTemplateColumnsChanged(): void {}
 
     /**
      * The base data for this row
@@ -37,6 +42,9 @@ export class DataGridRow extends FASTElement {
     @observable
     public rowData: object | null = null;
     private rowDataChanged(): void {
+        if ((this as FASTElement).$fastController.isConnected) {
+            // DOM.queueUpdate(this.update);
+        }
     }
 
     /**
@@ -46,9 +54,7 @@ export class DataGridRow extends FASTElement {
      */
     @observable
     public columnsData: DataGridColumn[] | null = null;
-    private columnsDataChanged(): void {
-        const x: any  = this.columnsData;
-    }
+    private columnsDataChanged(): void {}
 
     /**
      *
@@ -56,19 +62,17 @@ export class DataGridRow extends FASTElement {
      * @public
      */
     @observable cellElements?: object[];
-    private cellElementsChanged() {
-    }
+    private cellElementsChanged() {}
 
     private cellsRepeatBehavior?: RepeatBehavior;
     private cellsPlaceholder?: Node;
 
-    
     /**
      * @internal
      */
     public slottedCellElements: HTMLElement[];
 
-    @observable 
+    @observable
     public cellItemTemplate?: ViewTemplate = defaultCellItemTemplate;
 
     /**
@@ -81,9 +85,9 @@ export class DataGridRow extends FASTElement {
         this.appendChild(this.cellsPlaceholder);
 
         this.cellsRepeatBehavior = new RepeatDirective(
-             x => x.columnsData,
-             x => x.cellItemTemplate,
-             { positioning: true }
+            x => x.columnsData,
+            x => x.cellItemTemplate,
+            { positioning: true }
         ).createBehavior(this.cellsPlaceholder);
 
         this.$fastController.addBehaviors([this.cellsRepeatBehavior!]);
@@ -108,5 +112,5 @@ export class DataGridRow extends FASTElement {
      */
     private updateRowStyle = (): void => {
         this.style.gridTemplateColumns = this.gridTemplateColumns;
-    }
+    };
 }
