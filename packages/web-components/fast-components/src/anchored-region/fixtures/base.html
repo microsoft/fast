@@ -449,36 +449,6 @@
             </div>
         </div>
 
-        <h4>Force getBoundingClientRect</h4>
-        <div
-            id="viewport-forcegbcr"
-            style="
-                position: relative;
-                height: 400px;
-                width: 400px;
-                background: lightgray;
-                overflow: scroll;
-            "
-        >
-            <div style="height: 1000px; width: 1000px;">
-                <button
-                    id="anchor-forcegbcr"
-                    style="margin-left: 500px; margin-top: 500px;"
-                >
-                    anchor
-                </button>
-                <fast-anchored-region
-                    use-gbcr="never"
-                    anchor="anchor-forcegbcr"
-                    viewport="viewport-forcegbcr"
-                    vertical-positioning-mode="dynamic"
-                    horizontal-positioning-mode="dynamic"
-                >
-                    <div style="height: 100px; width: 100px; background: yellow;"></div>
-                </fast-anchored-region>
-            </div>
-        </div>
-
         <h4>Start & End</h4>
         <div
             id="viewport-se"
