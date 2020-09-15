@@ -7,6 +7,6 @@ import { DataGridHeader } from "./data-grid-header";
  */
 export const DataGridHeaderTemplate = html<DataGridHeader>`
     <template>
-    <slot></slot>
+        <slot></slot>
     </template>
 `;

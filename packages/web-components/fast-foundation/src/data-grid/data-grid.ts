@@ -1,8 +1,16 @@
-import { attr, FASTElement, html, RepeatBehavior, RepeatDirective, observable, ViewTemplate } from "@microsoft/fast-element";
+import {
+    attr,
+    FASTElement,
+    html,
+    RepeatBehavior,
+    RepeatDirective,
+    observable,
+    ViewTemplate,
+} from "@microsoft/fast-element";
 
 /**
  * Defines a column in the grid
-*
+ *
  * @public
  */
 export interface DataGridColumn {
@@ -37,17 +45,16 @@ export interface DataGridColumn {
 const defaultRowItemTemplate = html`
     <fast-data-grid-row
         :columnsData="${(x, c) => c.parent.columnsData}"
-        :rowData="${ x => x }"
+        :rowData="${x => x}"
     ></fast-data-grid-row>
 `;
 
 /**
  * A Data Grid Custom HTML Element.
-*
+ *
  * @public
  */
 export class DataGrid extends FASTElement {
-
     /**
      *  generates a basic column definition by examining sample row data
      */
@@ -63,7 +70,7 @@ export class DataGrid extends FASTElement {
     };
 
     /**
-     * 
+     *
      *
      * @public
      * @remarks
@@ -71,8 +78,7 @@ export class DataGrid extends FASTElement {
      */
     @attr({ attribute: "generate-header", mode: "boolean" })
     public generateHeader: boolean = true;
-    private generateHeaderChanged(): void {
-    }
+    private generateHeaderChanged(): void {}
 
     /**
      * The data being displayed in the grid
@@ -81,8 +87,7 @@ export class DataGrid extends FASTElement {
      */
     @observable
     public rowsData: object[] = [];
-    private rowsDataChanged(): void {
-    }
+    private rowsDataChanged(): void {}
 
     /**
      * The column definitions of the grid
@@ -91,8 +96,7 @@ export class DataGrid extends FASTElement {
      */
     @observable
     public columnsData: DataGridColumn[] | null = null;
-    private columnsDataChanged(): void {
-    }
+    private columnsDataChanged(): void {}
 
     /**
      * @internal
@@ -122,9 +126,9 @@ export class DataGrid extends FASTElement {
         this.appendChild(this.rowsPlaceholder);
 
         this.rowsRepeatBehavior = new RepeatDirective(
-             x => x.rowsData,
-             x => x.rowItemTemplate,
-             { positioning: false }
+            x => x.rowsData,
+            x => x.rowItemTemplate,
+            { positioning: false }
         ).createBehavior(this.rowsPlaceholder);
 
         this.$fastController.addBehaviors([this.rowsRepeatBehavior!]);

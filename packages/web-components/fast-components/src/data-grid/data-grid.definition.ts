@@ -7,10 +7,8 @@ export const fastDataGridDefinition: WebComponentDefinition = {
         {
             name: "fast-data-grid",
             description: "The FAST data grid element",
-            attributes: [
-            ],
-            slots: [
-            ],
+            attributes: [],
+            slots: [],
         },
     ],
 };
