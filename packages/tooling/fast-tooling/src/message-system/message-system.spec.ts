@@ -244,4 +244,33 @@ describe("MessageSystem", () => {
 
         expect(registeredCallback).toHaveBeenCalledTimes(1);
     });
+    test("should set the limit on history items if the historyLimit is set", () => {
+        class Worker {}
+        (window as any).Worker = Worker;
+
+        const messageSystem: MessageSystem = new MessageSystem({
+            webWorker: "",
+            historyLimit: 10,
+        });
+
+        expect(messageSystem["historyLimit"]).toEqual(10);
+    });
+    test("should update the limit on history items if the historyLimit is set again", () => {
+        const postMessageCallback: any = jest.fn();
+        class Worker {
+            public postMessage: any = postMessageCallback;
+        }
+        (window as any).Worker = Worker;
+
+        const messageSystem: MessageSystem = new MessageSystem({
+            webWorker: "",
+            historyLimit: 10,
+        });
+        messageSystem.initialize({
+            schemaDictionary: {},
+            historyLimit: 5,
+        });
+
+        expect(messageSystem["historyLimit"]).toEqual(5);
+    });
 });

@@ -180,6 +180,7 @@ describe("Navigation", () => {
                     schemaDictionary: {
                         foo: schema,
                     },
+                    historyLimit: 30,
                 } as InitializeMessageOutgoing,
             } as any);
         });
@@ -288,6 +289,7 @@ describe("Navigation", () => {
                     schemaDictionary: {
                         foo: schema,
                     },
+                    historyLimit: 30,
                 } as InitializeMessageOutgoing,
             } as any);
         });

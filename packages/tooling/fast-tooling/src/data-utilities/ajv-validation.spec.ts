@@ -173,6 +173,7 @@ describe("AjvMapper", () => {
                     schemaDictionary: {
                         foo: schema,
                     },
+                    historyLimit: 30,
                 } as InitializeMessageOutgoing,
             } as any);
         });
@@ -251,6 +252,7 @@ describe("AjvMapper", () => {
                     schemaDictionary: {
                         foo: schema,
                     },
+                    historyLimit: 30,
                 } as InitializeMessageOutgoing,
             } as any);
         });
@@ -328,6 +330,7 @@ describe("AjvMapper", () => {
                         schemaDictionary: {
                             foo: schema,
                         },
+                        historyLimit: 30,
                     } as InitializeMessageOutgoing,
                 } as any);
             });
@@ -383,6 +386,7 @@ describe("AjvMapper", () => {
                         schemaDictionary: {
                             foo: schema,
                         },
+                        historyLimit: 30,
                     } as InitializeMessageOutgoing,
                 } as any);
             });
@@ -450,6 +454,7 @@ describe("AjvMapper", () => {
                         schemaDictionary: {
                             foo: schema,
                         },
+                        historyLimit: 30,
                     } as InitializeMessageOutgoing,
                 } as any);
             });
@@ -499,6 +504,7 @@ describe("AjvMapper", () => {
                         schemaDictionary: {
                             foo: schema,
                         },
+                        historyLimit: 30,
                     } as InitializeMessageOutgoing,
                 } as any);
             });
@@ -548,6 +554,7 @@ describe("AjvMapper", () => {
                         schemaDictionary: {
                             foo: schema,
                         },
+                        historyLimit: 30,
                     } as InitializeMessageOutgoing,
                 } as any);
             });
