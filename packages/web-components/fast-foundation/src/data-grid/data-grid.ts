@@ -108,7 +108,7 @@ export class DataGrid extends FASTElement {
      */
     public slottedHeaderElements: HTMLElement[];
 
-    private rowItemTemplate?: ViewTemplate = defaultRowItemTemplate;
+    private rowItemTemplate: ViewTemplate = defaultRowItemTemplate;
     private rowsRepeatBehavior?: RepeatBehavior;
     private rowsPlaceholder?: Node;
 

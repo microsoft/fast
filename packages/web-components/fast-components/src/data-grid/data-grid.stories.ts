@@ -64,15 +64,33 @@ export default {
 };
 
 function incrementAge(): void {
-    const newRow: object = { ...dataGridRow1 };
-    newRow["age"] = newRow["age"] + 1;
+    dataGridRow1["age"] = dataGridRow1["age"] + 1;
+
     const rowWithCellTemplate: DataGridRow | null = document.getElementById(
         "cellTemplateRow"
     ) as DataGridRow;
     if (rowWithCellTemplate !== null) {
-        rowWithCellTemplate.rowData = newRow;
+        rowWithCellTemplate.rowData = { ...dataGridRow1 };
     }
-    dataGridRow1 = newRow;
+
+    dataRows.splice(0,1,{ ...dataGridRow1 });
+
+    // const defaultGrid: DataGrid | null = document.getElementById(
+    //     "defaultGrid"
+    // ) as DataGrid;
+    // if (defaultGrid !== null) {
+    //     defaultGrid.rowsData = dataRows;
+    // }
+
+    // const newRow: object = { ...dataGridRow1 };
+    // newRow["age"] = newRow["age"] + 1;
+    // const rowWithCellTemplate: DataGridRow | null = document.getElementById(
+    //     "cellTemplateRow"
+    // ) as DataGridRow;
+    // if (rowWithCellTemplate !== null) {
+    //     rowWithCellTemplate.rowData = newRow;
+    // }
+    // dataGridRow1 = newRow;
 }
 
 const dataGridButtonCellTemplate = html<DataGridCell>`
