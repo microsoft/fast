@@ -26,11 +26,12 @@ Search open/closed issues before submitting. Someone may have requested the same
 ## 💁 Possible Solution
 
 <!--- Ideas how to implement this feature -->
-<!--- What solution would be ideal for you? -->
+<!--- What implementation solution would be ideal for you? -->
 
 ## 🔦 Context
 
-<!--- What are you trying to accomplish? How has not having this feature affected you? -->
+<!--- What are you trying to accomplish? -->
+<!--- How has not having this feature affected you? -->
 <!--- What alternatives have you considered? -->
 
 ## 💻 Examples
