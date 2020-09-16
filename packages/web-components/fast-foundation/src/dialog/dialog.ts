@@ -118,7 +118,7 @@ export class Dialog extends FASTElement {
         document.removeEventListener("keydown", this.handleDocumentKeydown);
 
         // if we are trapping focus remove the focusin listener
-        if (this.shouldDialogTrapFocus()) {
+        if (this.trapFocus) {
             document.removeEventListener("focusin", this.handleDocumentFocus);
         }
     }
@@ -134,7 +134,7 @@ export class Dialog extends FASTElement {
     }
 
     private trapFocusChanged = (): void => {
-        if (this.shouldDialogTrapFocus()) {
+        if (this.trapFocus) {
             // Add an event listener for focusin events if we should be trapping focus
             document.addEventListener("focusin", this.handleDocumentFocus);
 
@@ -149,7 +149,7 @@ export class Dialog extends FASTElement {
     };
 
     private handleDocumentKeydown = (e: KeyboardEvent): void => {
-        if (!e.defaultPrevented && !this.isDialogHidden()) {
+        if (!e.defaultPrevented && !this.hidden) {
             switch (e.keyCode) {
                 case keyCodeEscape:
                     this.dismiss();
@@ -170,7 +170,7 @@ export class Dialog extends FASTElement {
     };
 
     private handleTabKeyDown = (e: KeyboardEvent): void => {
-        if (!this.shouldDialogTrapFocus()) {
+        if (!this.trapFocus) {
             return;
         }
 
@@ -209,26 +209,6 @@ export class Dialog extends FASTElement {
      * we should only focus if focus has not already been brought to the dialog
      */
     private shouldForceFocus = (currentFocusElement: Element | null): boolean => {
-        return !this.isDialogHidden() && !this.contains(currentFocusElement);
+        return !this.hidden && !this.contains(currentFocusElement);
     };
-
-    /**
-     * TODO: Issue #2742 - https://github.com/microsoft/fast/issues/2742
-     * This is a placeholder function to check if the hidden attribute is present
-     * Currently there is not support for boolean attributes.
-     * Once support is added, we will simply use this.hidden.
-     */
-    private isDialogHidden(): boolean {
-        return typeof this.hidden !== "boolean";
-    }
-
-    /**
-     * TODO: Issue #2742 - https://github.com/microsoft/fast/issues/2742
-     * This is a placeholder function to check if the trapFocus attribute is present
-     * Currently there is not support for boolean attributes.
-     * Once support is added, we will simply use this.trapFocus.
-     */
-    private shouldDialogTrapFocus(): boolean {
-        return typeof this.trapFocus === "boolean";
-    }
 }
