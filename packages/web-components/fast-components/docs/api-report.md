@@ -534,7 +534,7 @@ export class FASTTextField extends TextField {
     connectedCallback(): void;
 }
 
-// @public (undocumented)
+// @public
 export class FASTTooltip extends Tooltip {
 }
 
