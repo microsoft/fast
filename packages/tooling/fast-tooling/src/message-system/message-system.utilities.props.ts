@@ -40,10 +40,25 @@ export enum MessageSystemHistoryTypeAction {
     get = "get",
 }
 
+interface ArbitraryMessageIncoming<TConfig = {}> {
+    /**
+     * Additional arbitrary options to be passed with the message
+     */
+    options?: TConfig;
+}
+
+interface ArbitraryMessageOutgoing<TConfig = {}> {
+    /**
+     * Additional arbitrary options to be passed with the message
+     */
+    options?: TConfig;
+}
+
 /**
  * The message to initialize the message system
  */
-export interface InitializeMessageIncoming {
+export interface InitializeMessageIncoming<TConfig = {}>
+    extends ArbitraryMessageIncoming<TConfig> {
     type: MessageSystemType.initialize;
     /**
      * This is deprecated in favor of the dataDictionary
@@ -62,7 +77,8 @@ export interface InitializeMessageIncoming {
 /**
  * The message that the message system has been initialized
  */
-export interface InitializeMessageOutgoing {
+export interface InitializeMessageOutgoing<TConfig = {}>
+    extends ArbitraryMessageOutgoing<TConfig> {
     type: MessageSystemType.initialize;
     data: unknown;
     dataDictionary: DataDictionary<unknown>;
@@ -78,7 +94,8 @@ export interface InitializeMessageOutgoing {
 /**
  * The message to get the data dictionary
  */
-export interface GetDataDictionaryMessageIncoming {
+export interface GetDataDictionaryMessageIncoming<TConfig = {}>
+    extends ArbitraryMessageIncoming<TConfig> {
     type: MessageSystemType.dataDictionary;
     action: MessageSystemDataDictionaryTypeAction.get;
 }
@@ -86,7 +103,8 @@ export interface GetDataDictionaryMessageIncoming {
 /**
  * The message that the data dictionary has been given
  */
-export interface GetDataDictionaryMessageOutgoing {
+export interface GetDataDictionaryMessageOutgoing<TConfig = {}>
+    extends ArbitraryMessageOutgoing<TConfig> {
     type: MessageSystemType.dataDictionary;
     action: MessageSystemDataDictionaryTypeAction.get;
     dataDictionary: DataDictionary<unknown>;
@@ -96,7 +114,8 @@ export interface GetDataDictionaryMessageOutgoing {
 /**
  * The message that the validation should be updated
  */
-export interface UpdateValidationMessageIncoming {
+export interface UpdateValidationMessageIncoming<TConfig = {}>
+    extends ArbitraryMessageIncoming<TConfig> {
     type: MessageSystemType.validation;
     action: MessageSystemValidationTypeAction.update;
     dictionaryId: string;
@@ -106,7 +125,8 @@ export interface UpdateValidationMessageIncoming {
 /**
  * The message that the validation has been updated
  */
-export interface UpdateValidationMessageOutgoing {
+export interface UpdateValidationMessageOutgoing<TConfig = {}>
+    extends ArbitraryMessageOutgoing<TConfig> {
     type: MessageSystemType.validation;
     action: MessageSystemValidationTypeAction.update;
     dictionaryId: string;
@@ -116,7 +136,8 @@ export interface UpdateValidationMessageOutgoing {
 /**
  * The message to get the validation
  */
-export interface GetValidationMessageIncoming {
+export interface GetValidationMessageIncoming<TConfig = {}>
+    extends ArbitraryMessageIncoming<TConfig> {
     type: MessageSystemType.validation;
     action: MessageSystemValidationTypeAction.get;
     dictionaryId: string;
@@ -125,7 +146,8 @@ export interface GetValidationMessageIncoming {
 /**
  * The message that the validation has been given
  */
-export interface GetValidationMessageOutgoing {
+export interface GetValidationMessageOutgoing<TConfig = {}>
+    extends ArbitraryMessageOutgoing<TConfig> {
     type: MessageSystemType.validation;
     action: MessageSystemValidationTypeAction.get;
     dictionaryId: string;
@@ -135,7 +157,8 @@ export interface GetValidationMessageOutgoing {
 /**
  * The message to get the navigation dictionary
  */
-export interface GetNavigationDictionaryMessageIncoming {
+export interface GetNavigationDictionaryMessageIncoming<TConfig = {}>
+    extends ArbitraryMessageIncoming<TConfig> {
     type: MessageSystemType.navigationDictionary;
     action: MessageSystemNavigationDictionaryTypeAction.get;
 }
@@ -143,7 +166,8 @@ export interface GetNavigationDictionaryMessageIncoming {
 /**
  * The message that the navigation dictionary has been given
  */
-export interface GetNavigationDictionaryMessageOutgoing {
+export interface GetNavigationDictionaryMessageOutgoing<TConfig = {}>
+    extends ArbitraryMessageOutgoing<TConfig> {
     type: MessageSystemType.navigationDictionary;
     action: MessageSystemNavigationDictionaryTypeAction.get;
     navigationDictionary: NavigationConfigDictionary;
@@ -153,7 +177,8 @@ export interface GetNavigationDictionaryMessageOutgoing {
 /**
  * The message to update the active id of the data dictionary
  */
-export interface UpdateActiveIdDataDictionaryMessageIncoming {
+export interface UpdateActiveIdDataDictionaryMessageIncoming<TConfig = {}>
+    extends ArbitraryMessageIncoming<TConfig> {
     type: MessageSystemType.dataDictionary;
     action: MessageSystemDataDictionaryTypeAction.updateActiveId;
     activeDictionaryId: string;
@@ -162,7 +187,8 @@ export interface UpdateActiveIdDataDictionaryMessageIncoming {
 /**
  * The message that the active id of the data dictionary has been updated
  */
-export interface UpdateActiveIdDataDictionaryMessageOutgoing {
+export interface UpdateActiveIdDataDictionaryMessageOutgoing<TConfig = {}>
+    extends ArbitraryMessageOutgoing<TConfig> {
     type: MessageSystemType.dataDictionary;
     action: MessageSystemDataDictionaryTypeAction.updateActiveId;
     activeDictionaryId: string;
@@ -171,7 +197,8 @@ export interface UpdateActiveIdDataDictionaryMessageOutgoing {
 /**
  * The message to update the active id of the navigation dictionary
  */
-export interface UpdateActiveIdNavigationDictionaryMessageIncoming {
+export interface UpdateActiveIdNavigationDictionaryMessageIncoming<TConfig = {}>
+    extends ArbitraryMessageIncoming<TConfig> {
     type: MessageSystemType.navigationDictionary;
     action: MessageSystemNavigationDictionaryTypeAction.updateActiveId;
     activeDictionaryId: string;
@@ -180,7 +207,8 @@ export interface UpdateActiveIdNavigationDictionaryMessageIncoming {
 /**
  * The message that the active id of the navigation dictionary has been updated
  */
-export interface UpdateActiveIdNavigationDictionaryMessageOutgoing {
+export interface UpdateActiveIdNavigationDictionaryMessageOutgoing<TConfig = {}>
+    extends ArbitraryMessageOutgoing<TConfig> {
     type: MessageSystemType.navigationDictionary;
     action: MessageSystemNavigationDictionaryTypeAction.updateActiveId;
     activeDictionaryId: string;
@@ -189,7 +217,8 @@ export interface UpdateActiveIdNavigationDictionaryMessageOutgoing {
 /**
  * The message to update data
  */
-export interface UpdateDataMessageIncoming {
+export interface UpdateDataMessageIncoming<TConfig = {}>
+    extends ArbitraryMessageIncoming<TConfig> {
     type: MessageSystemType.data;
     action: MessageSystemDataTypeAction.update;
     /**
@@ -204,7 +233,8 @@ export interface UpdateDataMessageIncoming {
 /**
  * The message that the data has been updated
  */
-export interface UpdateDataMessageOutgoing {
+export interface UpdateDataMessageOutgoing<TConfig = {}>
+    extends ArbitraryMessageOutgoing<TConfig> {
     type: MessageSystemType.data;
     action: MessageSystemDataTypeAction.update;
     data: unknown;
@@ -216,7 +246,8 @@ export interface UpdateDataMessageOutgoing {
 /**
  * The message to add a linked data
  */
-export interface AddLinkedDataDataMessageIncoming {
+export interface AddLinkedDataDataMessageIncoming<TConfig = {}>
+    extends ArbitraryMessageIncoming<TConfig> {
     type: MessageSystemType.data;
     action: MessageSystemDataTypeAction.addLinkedData;
     /**
@@ -236,7 +267,8 @@ export interface AddLinkedDataDataMessageIncoming {
 /**
  * The message that linked data has been added
  */
-export interface AddLinkedDataDataMessageOutgoing {
+export interface AddLinkedDataDataMessageOutgoing<TConfig = {}>
+    extends ArbitraryMessageOutgoing<TConfig> {
     type: MessageSystemType.data;
     action: MessageSystemDataTypeAction.addLinkedData;
     dictionaryId: string; // dictionary id that the linked data was added to
@@ -250,7 +282,8 @@ export interface AddLinkedDataDataMessageOutgoing {
 /**
  * The message to remove linked data
  */
-export interface RemoveLinkedDataDataMessageIncoming {
+export interface RemoveLinkedDataDataMessageIncoming<TConfig = {}>
+    extends ArbitraryMessageIncoming<TConfig> {
     type: MessageSystemType.data;
     action: MessageSystemDataTypeAction.removeLinkedData;
     /**
@@ -265,7 +298,8 @@ export interface RemoveLinkedDataDataMessageIncoming {
 /**
  * The message that linked data has been removed
  */
-export interface RemoveLinkedDataDataMessageOutgoing {
+export interface RemoveLinkedDataDataMessageOutgoing<TConfig = {}>
+    extends ArbitraryMessageOutgoing<TConfig> {
     type: MessageSystemType.data;
     action: MessageSystemDataTypeAction.removeLinkedData;
     data: unknown;
@@ -282,7 +316,8 @@ export interface RemoveLinkedDataDataMessageOutgoing {
 /**
  * The message to reorder linked data
  */
-export interface ReorderLinkedDataDataMessageIncoming {
+export interface ReorderLinkedDataDataMessageIncoming<TConfig = {}>
+    extends ArbitraryMessageIncoming<TConfig> {
     type: MessageSystemType.data;
     action: MessageSystemDataTypeAction.reorderLinkedData;
     dataLocation: string;
@@ -292,7 +327,8 @@ export interface ReorderLinkedDataDataMessageIncoming {
 /**
  * The message that linked data has been reordered
  */
-export interface ReorderLinkedDataDataMessageOutgoing {
+export interface ReorderLinkedDataDataMessageOutgoing<TConfig = {}>
+    extends ArbitraryMessageOutgoing<TConfig> {
     type: MessageSystemType.data;
     action: MessageSystemDataTypeAction.reorderLinkedData;
     data: unknown;
@@ -304,7 +340,8 @@ export interface ReorderLinkedDataDataMessageOutgoing {
 /**
  * The message to duplicate data
  */
-export interface DuplicateDataMessageIncoming {
+export interface DuplicateDataMessageIncoming<TConfig = {}>
+    extends ArbitraryMessageIncoming<TConfig> {
     type: MessageSystemType.data;
     action: MessageSystemDataTypeAction.duplicate;
     sourceDataLocation: string;
@@ -314,7 +351,8 @@ export interface DuplicateDataMessageIncoming {
  * The message that the data has been duplicated
  * with updated data
  */
-export interface DuplicateDataMessageOutgoing {
+export interface DuplicateDataMessageOutgoing<TConfig = {}>
+    extends ArbitraryMessageOutgoing<TConfig> {
     type: MessageSystemType.data;
     action: MessageSystemDataTypeAction.duplicate;
     sourceDataLocation: string;
@@ -327,7 +365,8 @@ export interface DuplicateDataMessageOutgoing {
 /**
  * The message to remove data
  */
-export interface RemoveDataMessageIncoming {
+export interface RemoveDataMessageIncoming<TConfig = {}>
+    extends ArbitraryMessageIncoming<TConfig> {
     type: MessageSystemType.data;
     action: MessageSystemDataTypeAction.remove;
     dataLocation: string;
@@ -337,7 +376,8 @@ export interface RemoveDataMessageIncoming {
  * The message that the data has been removed
  * with updated data
  */
-export interface RemoveDataMessageOutgoing {
+export interface RemoveDataMessageOutgoing<TConfig = {}>
+    extends ArbitraryMessageOutgoing<TConfig> {
     type: MessageSystemType.data;
     action: MessageSystemDataTypeAction.remove;
     data: unknown;
@@ -349,7 +389,8 @@ export interface RemoveDataMessageOutgoing {
 /**
  * The message to add data
  */
-export interface AddDataMessageIncoming {
+export interface AddDataMessageIncoming<TConfig = {}>
+    extends ArbitraryMessageIncoming<TConfig> {
     type: MessageSystemType.data;
     action: MessageSystemDataTypeAction.add;
     dataLocation: string;
@@ -361,7 +402,8 @@ export interface AddDataMessageIncoming {
  * The message that the data has been added
  * with updated data
  */
-export interface AddDataMessageOutgoing {
+export interface AddDataMessageOutgoing<TConfig = {}>
+    extends ArbitraryMessageOutgoing<TConfig> {
     type: MessageSystemType.data;
     action: MessageSystemDataTypeAction.add;
     data: unknown;
@@ -397,7 +439,8 @@ export type DataMessageOutgoing =
 /**
  * The message to update navigation
  */
-export interface UpdateNavigationMessageIncoming {
+export interface UpdateNavigationMessageIncoming<TConfig = {}>
+    extends ArbitraryMessageIncoming<TConfig> {
     type: MessageSystemType.navigation;
     action: MessageSystemNavigationTypeAction.update;
     activeDictionaryId: string;
@@ -407,7 +450,8 @@ export interface UpdateNavigationMessageIncoming {
 /**
  * The message that the navigation has been updated
  */
-export interface UpdateNavigationMessageOutgoing {
+export interface UpdateNavigationMessageOutgoing<TConfig = {}>
+    extends ArbitraryMessageOutgoing<TConfig> {
     type: MessageSystemType.navigation;
     action: MessageSystemNavigationTypeAction.update;
     activeDictionaryId: string;
@@ -417,7 +461,8 @@ export interface UpdateNavigationMessageOutgoing {
 /**
  * The message to get navigation
  */
-export interface GetNavigationMessageIncoming {
+export interface GetNavigationMessageIncoming<TConfig = {}>
+    extends ArbitraryMessageIncoming<TConfig> {
     type: MessageSystemType.navigation;
     action: MessageSystemNavigationTypeAction.get;
 }
@@ -425,7 +470,8 @@ export interface GetNavigationMessageIncoming {
 /**
  * The message that the navigation has been given
  */
-export interface GetNavigationMessageOutgoing {
+export interface GetNavigationMessageOutgoing<TConfig = {}>
+    extends ArbitraryMessageOutgoing<TConfig> {
     type: MessageSystemType.navigation;
     action: MessageSystemNavigationTypeAction.get;
     activeDictionaryId: string;
@@ -436,7 +482,8 @@ export interface GetNavigationMessageOutgoing {
 /**
  * The message to get history
  */
-export interface GetHistoryMessageIncoming {
+export interface GetHistoryMessageIncoming<TConfig = {}>
+    extends ArbitraryMessageIncoming<TConfig> {
     type: MessageSystemType.history;
     action: MessageSystemHistoryTypeAction.get;
 }
@@ -444,7 +491,8 @@ export interface GetHistoryMessageIncoming {
 /**
  * The message that the history has been given
  */
-export interface GetHistoryMessageOutgoing {
+export interface GetHistoryMessageOutgoing<TConfig = {}>
+    extends ArbitraryMessageOutgoing<TConfig> {
     type: MessageSystemType.history;
     action: MessageSystemHistoryTypeAction.get;
     history: History;
