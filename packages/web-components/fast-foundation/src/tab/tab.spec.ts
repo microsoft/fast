@@ -22,7 +22,7 @@ describe("Tab", () => {
         await disconnect();
     });
 
-    it("should have an attribute of `tab`", async () => {
+    it("should have a slot attribute of `tab`", async () => {
         const { element, connect, disconnect } = await fixture<FASTTab>("fast-tab");
 
         await connect();
