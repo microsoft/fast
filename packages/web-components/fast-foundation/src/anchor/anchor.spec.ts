@@ -3,8 +3,8 @@ import { Anchor, AnchorTemplate as template } from "./index";
 import { fixture } from "../fixture";
 import { DOM, customElement } from "@microsoft/fast-element";
 
-describe("A", () => {
-    const name = "A";
+describe("Anchor", () => {
+    const name = "Anchor";
 
     @customElement({
         name: "fast-anchor",
