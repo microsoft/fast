@@ -14,7 +14,7 @@ describe("Divider", () => {
     class FASTDivider extends Divider {}
 
     it("should include a role attribute equal to the role provided", async () => {
-        const { element, connect } = await fixture<Divider>("fast-divider");
+        const { element, connect, disconnect } = await fixture<Divider>("fast-divider");
 
         element.role = DividerRole.separator;
 
@@ -27,14 +27,18 @@ describe("Divider", () => {
         await DOM.nextUpdate();
 
         expect(element.getAttribute("role")).to.equal(`${DividerRole.presentation}`);
+    
+        await disconnect();
     });
 
     it("should include a default role of `separator` if no role is passed", async () => {
-        const { element, connect } = await fixture<Divider>("fast-divider");
+        const { element, connect, disconnect } = await fixture<Divider>("fast-divider");
 
         await connect();
         await DOM.nextUpdate();
 
         expect(element.getAttribute("role")).to.equal(`${DividerRole.separator}`);
+    
+        await disconnect();
     });
 });

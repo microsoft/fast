@@ -14,52 +14,62 @@ describe("Flipper", () => {
     class FASTFlipper extends Flipper {}
 
     it("should include a role of button", async () => {
-        const { element, connect } = await fixture<Flipper>("fast-flipper");
+        const { element, connect, disconnect } = await fixture<Flipper>("fast-flipper");
 
         await connect();
 
         expect(element.getAttribute("role")).to.equal("button");
+
+        await disconnect();
     });
 
     it("should include an attribute of `aria-disabled` when disabled is true", async () => {
-        const { element, connect } = await fixture<Flipper>("fast-flipper");
+        const { element, connect, disconnect } = await fixture<Flipper>("fast-flipper");
 
         element.disabled = true;
 
         await connect();
 
         expect(element.getAttribute("aria-disabled")).to.equal("true");
+
+        await disconnect();
     });
 
     it("should include a tabindex of -1 when hiddenFromAT is true", async () => {
-        const { element, connect } = await fixture<Flipper>("fast-flipper");
+        const { element, connect, disconnect } = await fixture<Flipper>("fast-flipper");
 
         element.hiddenFromAT = true;
 
         await connect();
 
         expect(element.getAttribute("tabindex")).to.equal("-1");
+
+        await disconnect();
     });
 
     it("should set an attribute of aria-hidden with a value of true by default", async () => {
-        const { element, connect } = await fixture<Flipper>("fast-flipper");
+        const { element, connect, disconnect } = await fixture<Flipper>("fast-flipper");
 
         await connect();
         await DOM.nextUpdate();
 
         expect(element.getAttribute("aria-hidden")).to.equal("true");
+
+        await disconnect();
     });
 
     it("should set a default value of true for hiddenFromAT property", async () => {
-        const { element, connect } = await fixture<Flipper>("fast-flipper");
+        const { element, connect, disconnect } = await fixture<Flipper>("fast-flipper");
 
         await connect();
 
         expect(element.hiddenFromAT).to.equal(true);
+
+        await disconnect();
     });
 
     it("should set a tabindex of 0 when aria-hidden attribute is false", async () => {
-        const { element, connect } = await fixture<Flipper>(
+        const { element, connect, disconnect } = await fixture<Flipper>(
             html`
                 <fast-flipper aria-hidden="false"></fast-flipper>
             `
@@ -69,10 +79,12 @@ describe("Flipper", () => {
         await DOM.nextUpdate();
 
         expect(element.getAttribute("tabindex")).to.equal("0");
+
+            await disconnect();
     });
 
     it("should render a span with a class of `next` when direction is `next`", async () => {
-        const { element, connect } = await fixture<Flipper>("fast-flipper");
+        const { element, connect, disconnect } = await fixture<Flipper>("fast-flipper");
 
         element.direction = FlipperDirection.next;
 
@@ -81,10 +93,12 @@ describe("Flipper", () => {
         expect(
             element.shadowRoot?.querySelector("span")?.classList.contains("next")
         ).to.equal(true);
+
+            await disconnect();
     });
 
     it("should render a span with a class of `previous` when direction is `previous`", async () => {
-        const { element, connect } = await fixture<Flipper>("fast-flipper");
+        const { element, connect, disconnect } = await fixture<Flipper>("fast-flipper");
 
         element.direction = FlipperDirection.previous;
 
@@ -93,10 +107,12 @@ describe("Flipper", () => {
         expect(
             element.shadowRoot?.querySelector("span")?.classList.contains("previous")
         ).to.equal(true);
+
+            await disconnect();
     });
 
     it("should render a span with a class of `next` when direction is NOT passed", async () => {
-        const { element, connect } = await fixture<Flipper>("fast-flipper");
+        const { element, connect, disconnect } = await fixture<Flipper>("fast-flipper");
 
         await connect();
         await DOM.nextUpdate();
@@ -104,5 +120,7 @@ describe("Flipper", () => {
         expect(
             element.shadowRoot?.querySelector("span")?.classList.contains("next")
         ).to.equal(true);
+
+            await disconnect();
     });
 });

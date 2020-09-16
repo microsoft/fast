@@ -13,7 +13,7 @@ describe("Accordion item", () => {
     class FASTAccordionItem extends AccordionItem {}
 
     it("should set an `aria-level` to the heading when provided", async () => {
-        const { element, connect } = await fixture<FASTAccordionItem>(
+        const { element, connect, disconnect } = await fixture<FASTAccordionItem>(
             "fast-accordion-item"
         );
 
@@ -27,10 +27,12 @@ describe("Accordion item", () => {
                 ?.querySelector("[role='heading']")
                 ?.getAttribute("aria-level")
         ).to.equal("4");
+
+        await disconnect();
     });
 
     it("should set a default heading level of 2 when NOT provided a `headinglevel`", async () => {
-        const { element, connect } = await fixture<FASTAccordionItem>(
+        const { element, connect, disconnect } = await fixture<FASTAccordionItem>(
             "fast-accordion-item"
         );
 
@@ -42,10 +44,12 @@ describe("Accordion item", () => {
                 ?.querySelector("[role='heading']")
                 ?.getAttribute("aria-level")
         ).to.equal("2");
+
+        await disconnect();
     });
 
     it("should add a class of `expanded` when expanded is true", async () => {
-        const { element, connect } = await fixture<FASTAccordionItem>(
+        const { element, connect, disconnect } = await fixture<FASTAccordionItem>(
             "fast-accordion-item"
         );
 
@@ -54,10 +58,12 @@ describe("Accordion item", () => {
         await connect();
 
         expect(element.classList.contains("expanded")).to.equal(true);
+
+        await disconnect();
     });
 
     it("should NOT add a class of `expanded` when expanded is false", async () => {
-        const { element, connect } = await fixture<FASTAccordionItem>(
+        const { element, connect, disconnect } = await fixture<FASTAccordionItem>(
             "fast-accordion-item"
         );
 
@@ -66,10 +72,12 @@ describe("Accordion item", () => {
         await connect();
 
         expect(element.classList.contains("expanded")).to.equal(false);
+
+        await disconnect();
     });
 
     it("should set `aria-expanded` value to false on the button when expanded is false", async () => {
-        const { element, connect } = await fixture<FASTAccordionItem>(
+        const { element, connect, disconnect } = await fixture<FASTAccordionItem>(
             "fast-accordion-item"
         );
 
@@ -80,10 +88,12 @@ describe("Accordion item", () => {
         expect(
             element.shadowRoot?.querySelector("button")?.getAttribute("aria-expanded")
         ).to.equal("false");
+
+        await disconnect();
     });
 
     it("should set `aria-expanded` value to false on the button when expanded is false", async () => {
-        const { element, connect } = await fixture<FASTAccordionItem>(
+        const { element, connect, disconnect } = await fixture<FASTAccordionItem>(
             "fast-accordion-item"
         );
 
@@ -94,10 +104,12 @@ describe("Accordion item", () => {
         expect(
             element.shadowRoot?.querySelector("button")?.getAttribute("aria-expanded")
         ).to.equal("true");
+
+        await disconnect();
     });
 
     it("should set `aria-expanded` value to false on the button when expanded is undefined", async () => {
-        const { element, connect } = await fixture<FASTAccordionItem>(
+        const { element, connect, disconnect } = await fixture<FASTAccordionItem>(
             "fast-accordion-item"
         );
 
@@ -106,10 +118,12 @@ describe("Accordion item", () => {
         expect(
             element.shadowRoot?.querySelector("button")?.getAttribute("aria-expanded")
         ).to.equal("false");
+
+        await disconnect();
     });
 
     it("should set `aria-labelledby` value on the region when the id attribute is provided", async () => {
-        const { element, connect } = await fixture<FASTAccordionItem>(
+        const { element, connect, disconnect } = await fixture<FASTAccordionItem>(
             "fast-accordion-item"
         );
         const id: string = "testId";
@@ -123,10 +137,12 @@ describe("Accordion item", () => {
                 ?.querySelector("[role='region']")
                 ?.getAttribute("aria-labelledby")
         ).to.equal(id);
+
+        await disconnect();
     });
 
     it("should set the id value on the button when the id attribute is provided", async () => {
-        const { element, connect } = await fixture<FASTAccordionItem>(
+        const { element, connect, disconnect } = await fixture<FASTAccordionItem>(
             "fast-accordion-item"
         );
         const id: string = "testId";
@@ -138,5 +154,7 @@ describe("Accordion item", () => {
         expect(element.shadowRoot?.querySelector("button")?.getAttribute("id")).to.equal(
             id
         );
+
+        await disconnect();
     });
 });
