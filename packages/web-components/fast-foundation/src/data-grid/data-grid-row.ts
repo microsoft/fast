@@ -43,7 +43,6 @@ export class DataGridRow extends FASTElement {
     public rowData: object | null = null;
     private rowDataChanged(): void {
         if ((this as FASTElement).$fastController.isConnected) {
-            // DOM.queueUpdate(this.update);
         }
     }
 

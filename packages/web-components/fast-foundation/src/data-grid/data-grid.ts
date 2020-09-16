@@ -128,7 +128,7 @@ export class DataGrid extends FASTElement {
         this.rowsRepeatBehavior = new RepeatDirective(
             x => x.rowsData,
             x => x.rowItemTemplate,
-            { positioning: false }
+            { positioning: true }
         ).createBehavior(this.rowsPlaceholder);
 
         this.$fastController.addBehaviors([this.rowsRepeatBehavior!]);

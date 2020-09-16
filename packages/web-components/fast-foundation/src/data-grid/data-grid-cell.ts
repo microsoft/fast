@@ -10,7 +10,7 @@ import {
 import { DataGridColumn } from "./data-grid";
 import { DataGridCellTemplate } from "./data-grid-cell.template";
 
-const defaultCellContentsTemplate: ViewTemplate = html<any>`
+const defaultCellContentsTemplate: ViewTemplate = html<DataGridCell>`
     <template>
         ${x =>
             x.rowData === null ||

@@ -64,16 +64,23 @@ export default {
 };
 
 function incrementAge(): void {
-    dataGridRow1["age"] = dataGridRow1["age"] + 1;
 
-    const rowWithCellTemplate: DataGridRow | null = document.getElementById(
-        "cellTemplateRow"
-    ) as DataGridRow;
-    if (rowWithCellTemplate !== null) {
-        rowWithCellTemplate.rowData = { ...dataGridRow1 };
-    }
+    const newRow = Object.assign({}, editRow);
+    newRow["age"] = newRow["age"] + 1;
 
-    dataRows.splice(0,1,{ ...dataGridRow1 });
+    editRow = newRow;
+
+    // const rowWithCellTemplate: DataGridRow | null = document.getElementById(
+    //     "cellTemplateRow"
+    // ) as DataGridRow;
+    // if (rowWithCellTemplate !== null) {
+    //     rowWithCellTemplate.rowData = newRow;
+    // }
+
+    dataRows.shift();
+    dataRows.unshift(newRow);
+    // dataRows.push(newRow);
+    // dataRows.splice(0,1, newRow);
 
     // const defaultGrid: DataGrid | null = document.getElementById(
     //     "defaultGrid"
@@ -120,9 +127,11 @@ const templateColumns: DataGridColumn[] = [
     },
 ];
 
-let dataGridRow1: object = { name: "bob", age: 21 };
+const dataGridRow1: object = { name: "bob", age: 21 };
 const dataGridRow2: object = { name: "rob", age: 22 };
 const dataGridRow3: object = { name: "bobby", age: 23 };
+
+let editRow: object = dataGridRow1;
 
 const dataRows: object[] = [dataGridRow1, dataGridRow2];
 
