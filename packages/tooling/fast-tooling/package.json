@@ -101,6 +101,6 @@
     },
     "dependencies": {
         "@microsoft/fast-web-utilities": "^4.6.0",
-        "vscode-html-languageservice": "^3.1.2"
+        "vscode-html-languageservice": "^3.1.3"
     }
 }
