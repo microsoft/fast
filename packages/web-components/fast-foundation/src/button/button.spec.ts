@@ -281,7 +281,7 @@ describe("Button", () => {
             await disconnect();
         });
 
-        it("should set the `aria-message` attribute on the internal button when provided", async () => {
+        it("should set the `aria-errormessage` attribute on the internal button when provided", async () => {
             const { element, connect, disconnect } = await fixture<FASTButton>("fast-button");
             const ariaErrormessage = "test";
 

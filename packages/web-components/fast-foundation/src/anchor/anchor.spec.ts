@@ -235,7 +235,7 @@ describe("Anchor", () => {
             await disconnect();
         });
 
-        it("should set the `aria-message` attribute on the internal anchor when provided", async () => {
+        it("should set the `aria-errormessage` attribute on the internal anchor when provided", async () => {
             const { element, connect, disconnect } = await fixture<FASTAnchor>("fast-anchor");
             const ariaErrormessage = "test";
     
