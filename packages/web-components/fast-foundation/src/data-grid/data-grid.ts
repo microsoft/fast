@@ -98,6 +98,16 @@ export class DataGrid extends FASTElement {
     public columnsData: DataGridColumn[] | null = null;
     private columnsDataChanged(): void {}
 
+
+    /**
+     * The template to use for the programmatic generation of rows
+     *
+     * @public
+     */
+    @observable
+    public rowItemTemplate: ViewTemplate = defaultRowItemTemplate;
+    private rowItemTemplateChanged(): void {}
+
     /**
      * @internal
      */
@@ -108,7 +118,6 @@ export class DataGrid extends FASTElement {
      */
     public slottedHeaderElements: HTMLElement[];
 
-    private rowItemTemplate: ViewTemplate = defaultRowItemTemplate;
     private rowsRepeatBehavior?: RepeatBehavior;
     private rowsPlaceholder?: Node;
 
