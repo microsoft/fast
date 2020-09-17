@@ -5,12 +5,12 @@ export interface MessageSystemUtilityActionCallbackConfig {
     id: string;
 }
 
-export interface MessageSystemUtilityActionConfig
+export interface MessageSystemUtilityActionConfig<TCallback>
     extends MessageSystemUtilityActionCallbackConfig {
     /**
      * The action to take when the keycodes have been pressed
      */
-    action: () => void;
+    action: (config: TCallback) => void;
 }
 
 /**
@@ -28,7 +28,7 @@ export abstract class MessageSystemUtilityAction<TCallback = {}, TMatch = {}> {
     ) => void;
     public id: string;
 
-    constructor(config: MessageSystemUtilityActionConfig) {
+    constructor(config: MessageSystemUtilityActionConfig<TCallback>) {
         this.id = config.id;
         this.action = config.action;
     }
@@ -36,7 +36,7 @@ export abstract class MessageSystemUtilityAction<TCallback = {}, TMatch = {}> {
     /**
      * Gets the action to be called
      */
-    public getAction = (config?: TCallback): (() => void) => {
+    public getAction = (config: TCallback): (() => void) => {
         return () => {
             this.action({
                 ...config,
