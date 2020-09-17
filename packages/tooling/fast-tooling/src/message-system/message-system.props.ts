@@ -23,6 +23,11 @@ export interface MessageSystemConfig {
      * The schema to map to the message system
      */
     schemaDictionary?: SchemaDictionary;
+
+    /**
+     * The limit on the number of history items
+     */
+    historyLimit?: number;
 }
 
 export type Initialize = Omit<InitializeMessageIncoming, "type">;

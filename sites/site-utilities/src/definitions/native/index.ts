@@ -5,4 +5,5 @@ export * from "./label.definition";
 export * from "./paragraph.definition";
 export * from "./path.definition";
 export * from "./span.definition";
+export * from "./style.definition";
 export * from "./svg.definition";

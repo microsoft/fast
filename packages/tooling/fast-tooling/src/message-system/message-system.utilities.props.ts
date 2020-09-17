@@ -4,6 +4,7 @@ import { Data, DataDictionary, LinkedData } from "./data.props";
 import { SchemaDictionary } from "./schema.props";
 import { MessageSystemType } from "./types";
 import { ValidationError } from "./validation.props";
+import { History } from "./history.props";
 
 export enum MessageSystemDataDictionaryTypeAction {
     get = "get",
@@ -35,6 +36,10 @@ export enum MessageSystemValidationTypeAction {
     get = "get",
 }
 
+export enum MessageSystemHistoryTypeAction {
+    get = "get",
+}
+
 /**
  * The message to initialize the message system
  */
@@ -51,6 +56,7 @@ export interface InitializeMessageIncoming {
      */
     dataDictionary?: DataDictionary<unknown>;
     schemaDictionary: SchemaDictionary;
+    historyLimit?: number;
 }
 
 /**
@@ -66,6 +72,7 @@ export interface InitializeMessageOutgoing {
     activeNavigationConfigId: string;
     schema: any;
     schemaDictionary: SchemaDictionary;
+    historyLimit: number;
 }
 
 /**
@@ -426,6 +433,23 @@ export interface GetNavigationMessageOutgoing {
     navigation: NavigationConfig;
 }
 
+/**
+ * The message to get history
+ */
+export interface GetHistoryMessageIncoming {
+    type: MessageSystemType.history;
+    action: MessageSystemHistoryTypeAction.get;
+}
+
+/**
+ * The message that the history has been given
+ */
+export interface GetHistoryMessageOutgoing {
+    type: MessageSystemType.history;
+    action: MessageSystemHistoryTypeAction.get;
+    history: History;
+}
+
 export interface CustomMessageIncomingOutgoing {
     type: MessageSystemType.custom;
 }
@@ -492,11 +516,22 @@ export type ValidationMessageOutgoing =
     | GetValidationMessageOutgoing;
 
 /**
+ * Incoming history messages to the message system
+ */
+export type HistoryMessageIncoming = GetHistoryMessageIncoming;
+
+/**
+ * Outgoing history messages from the message system
+ */
+export type HistoryMessageOutgoing = GetHistoryMessageOutgoing;
+
+/**
  * Incoming messages to the message system
  */
 export type MessageSystemIncoming<C = {}> =
     | InitializeMessageIncoming
     | DataMessageIncoming
+    | HistoryMessageIncoming
     | NavigationMessageIncoming
     | NavigationDictionaryMessageIncoming
     | DataDictionaryMessageIncoming
@@ -509,6 +544,7 @@ export type MessageSystemIncoming<C = {}> =
 export type MessageSystemOutgoing<C = {}> =
     | InitializeMessageOutgoing
     | DataMessageOutgoing
+    | HistoryMessageOutgoing
     | NavigationMessageOutgoing
     | NavigationDictionaryMessageOutgoing
     | DataDictionaryMessageOutgoing
