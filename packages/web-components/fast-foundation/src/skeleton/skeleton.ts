@@ -1,4 +1,4 @@
-import { attr, FASTElement, observable } from "@microsoft/fast-element";
+import { attr, FASTElement } from "@microsoft/fast-element";
 
 export type skeletonShape = 'rect' | 'circle';
 
@@ -26,14 +26,12 @@ export class Skeleton extends FASTElement {
    */
   @attr public shape: skeletonShape = "rect";
 
-  @attr public ariaBusy: boolean;
-
-  @observable public offset: number;
-
+  /**
+   * Indicates that the component can accept a pattern URL.
+   * 
+   * @public
+   * @remarks
+   * HTML Attribute: shape
+   */
   @attr public pattern: string;
-
-  connectedCallback() {
-    super.connectedCallback()
-    this.style.setProperty('--skeleton-pattern-url', `url(${this.pattern})`);
-  }
 };

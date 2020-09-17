@@ -7,6 +7,7 @@ import {
 export const SkeletonStyles = css`
   ${display("block")} :host {
     overflow: hidden;
+    width: 100%;
     position: relative;
     background-color: ${neutralFillRestBehavior.var};
     --skeleton-animation-gradient-default: linear-gradient(270deg, ${neutralFillRestBehavior.var} 0%, #F3F2F1 51.13%, ${neutralFillRestBehavior.var} 100%);
@@ -22,6 +23,13 @@ export const SkeletonStyles = css`
     border-radius: 100%;
     overflow: hidden;
   }
+
+  object {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 1000
+  }
   
   ::slotted(.shimmer) {
     display: block;
@@ -35,6 +43,7 @@ export const SkeletonStyles = css`
     animation: shimmer 2s infinite;
     animation-timing-function: var(--skeleton-animation-timing, ease-in-out);
     animation-direction: normal;
+    z-index: 1;
   }
 
   ::slotted(svg) {
@@ -44,8 +53,6 @@ export const SkeletonStyles = css`
   ::slotted(.pattern) {
     width: 100%;
     height: 100%;
-    background-color: red;
-    -webkit-mask-image: var(--skeleton-pattern-url);
   }
 
 `.withBehaviors(
