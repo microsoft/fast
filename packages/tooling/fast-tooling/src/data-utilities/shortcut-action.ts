@@ -1,5 +1,6 @@
 import { MessageSystemUtilityAction } from "./message-system-utility-action";
 import { XOR } from "./type.utilities";
+import { ActionNotFound } from "./message-system-utility";
 
 export interface MetaKey {
     metaKey: true;
@@ -28,7 +29,7 @@ export interface SpecificKey {
 
 export type KeyConfig = XOR<SpecificKey, ModifierKey>;
 
-export interface ShortcutActionCallbackConfig {
+export interface ShortcutActionCallbackConfigSuccess {
     /**
      * The display name of the shortcut action
      */
@@ -39,6 +40,11 @@ export interface ShortcutActionCallbackConfig {
      */
     keys: KeyConfig[];
 }
+
+export type ShortcutActionCallbackConfig = XOR<
+    ShortcutActionCallbackConfigSuccess,
+    ActionNotFound
+>;
 
 export function mapKeyboardEventToKeyConfig(e: KeyboardEvent): KeyConfig[] {
     const keys: KeyConfig[] = [];
