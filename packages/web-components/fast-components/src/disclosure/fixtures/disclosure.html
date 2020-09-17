@@ -1,0 +1,97 @@
+<fast-design-system-provider use-defaults>
+    <h1>Disclosure</h1>
+    <fast-card
+        class="class-override"
+        style="--card-width: 400px; --card-height: auto; --elevation: 24; padding: 12px;"
+    >
+        The Flash (or simply Flash) is the name of several superheroes appearing in
+        American comic books published by DC Comics.
+        <fast-disclosure id="car-disclosure">
+            <fast-button slot="invoker" appearance="accent">More about Flash</fast-button>
+            <div slot="content">
+                Created by writer Gardner Fox and artist Harry Lampert, the original Flash
+                first appeared in Flash Comics #1 (cover date January 1940/release month
+                November 1939). Nicknamed the "Scarlet Speedster", all incarnations of the
+                Flash possess "super speed", which includes the ability to run, move, and
+                think extremely fast, use superhuman reflexes, and seemingly violate
+                certain laws of physics.
+            </div>
+        </fast-disclosure>
+    </fast-card>
+    <br />
+    <fast-divider role="presentation"></fast-divider>
+    <h4>Default expanded</h4>
+    <fast-card
+        class="class-override"
+        style="--card-width: 400px; --card-height: auto; --elevation: 24; padding: 12px;"
+    >
+        <fast-disclosure expanded>
+            <fast-button slot="invoker" appearance="accent">
+                More about Green Arrow
+            </fast-button>
+            <div slot="content">
+                Green Arrow is a fictional superhero who appears in comic books published
+                by DC Comics. Created by Mort Weisinger and designed by George Papp, he
+                first appeared in More Fun Comics #73 in November 1941. His real name is
+                Oliver Jonas Queen, a wealthy businessman and owner of Queen Industries
+                who is also a well-known celebrity in Star City.
+            </div>
+        </fast-disclosure>
+    </fast-card>
+    <br />
+    <fast-divider role="presentation"></fast-divider>
+    <h4>Helper methods (toggle(), show(), hide())</h4>
+    <fast-card
+        class="class-override"
+        style="--card-width: 400px; --card-height: auto; --elevation: 24; padding: 12px;"
+    >
+        <fast-disclosure id="supergirl">
+            <fast-button slot="invoker" appearance="accent">
+                Read about Supergirl
+            </fast-button>
+            <div slot="content">
+                Supergirl is an American superhero television series developed by Ali
+                Adler, Greg Berlanti and Andrew Kreisberg that originally aired on CBS and
+                premiered on October 26, 2015. It is based on the DC Comics character
+                Supergirl, created by Otto Binder and Al Plastino, and stars Melissa
+                Benoist in the title role.
+            </div>
+        </fast-disclosure>
+        <fast-button onclick="getElementById('supergirl').toggle()" appearance="accent">
+            Toggle
+        </fast-button>
+        <fast-button onclick="getElementById('supergirl').show()" appearance="accent">
+            Show
+        </fast-button>
+        <fast-button onclick="getElementById('supergirl').hide()" appearance="accent">
+            Hide
+        </fast-button>
+    </fast-card>
+    <br />
+    <fast-divider role="presentation"></fast-divider>
+    <h4>With hypertext</h4>
+    <fast-card
+        class="class-override"
+        style="--card-width: 400px; --card-height: auto; --elevation: 24; padding: 12px;"
+    >
+        <fast-disclosure>
+            <fast-anchor href="javscript:void();" slot="invoker" appearance="hypertext">
+                Read about White Canary
+            </fast-anchor>
+            <div slot="content">
+                Sara Lance, also known by her alter-ego White Canary, is a fictional
+                character in The CW's Arrowverse franchise, first introduced in the 2012
+                pilot episode of the television series Arrow, and later starring in
+                Legends of Tomorrow. The character is an original character to the
+                television series, created by Greg Berlanti, Marc Guggenheim and Andrew
+                Kreisberg, but incorporates character and plot elements of the DC Comics
+                character Black Canary. Sara Lance was originally portrayed by Jacqueline
+                MacInnes Wood in the pilot episode, and has since been continually
+                portrayed by Caity Lotz. Sara initially goes by the moniker of The Canary,
+                a translation of her Arabic League of Assassins name الطائر الصافر (Ta-er
+                al-Sahfer), which translates to "Whistling Bird". She later adopts the
+                code name of White Canary before joining the Legends of Tomorrow.
+            </div>
+        </fast-disclosure>
+    </fast-card>
+</fast-design-system-provider>

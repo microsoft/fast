@@ -7,6 +7,7 @@ export * from "./card/card.definition";
 export * from "./checkbox/checkbox.definition";
 export * from "./design-system-provider/design-system-provider.definition";
 export * from "./dialog/dialog.definition";
+export * from "./disclosure/disclosure.definition";
 export * from "./divider/divider.definition";
 export * from "./flipper/flipper.definition";
 export * from "./menu/menu.definition";

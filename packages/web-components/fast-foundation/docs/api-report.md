@@ -322,6 +322,30 @@ export class DirectionalStyleSheetBehavior implements Behavior {
 export const disabledCursor = "not-allowed";
 
 // @public
+export class Disclosure extends FASTElement {
+    constructor();
+    // @internal (undocumented)
+    connectedCallback(): void;
+    // (undocumented)
+    protected get contentHeight(): number;
+    // (undocumented)
+    protected get contentNode(): HTMLElement;
+    expanded: boolean;
+    hide(): void;
+    protected hideAnimation({ contentNode }: {
+        contentNode: any;
+    }): Promise<void>;
+    show(): void;
+    protected showAnimation({ contentNode }: {
+        contentNode: any;
+    }): Promise<void>;
+    toggle(): void;
+    }
+
+// @public
+export const DisclosureTemplate: import("@microsoft/fast-element").ViewTemplate<Disclosure, any>;
+
+// @public
 export function display(displayValue: CSSDisplayPropertyValue): string;
 
 // @public

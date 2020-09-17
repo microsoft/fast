@@ -8,6 +8,7 @@ export * from "./color/index";
 export * from "./design-system-provider/index";
 export { FASTDesignSystem, fastDesignSystemDefaults } from "./fast-design-system";
 export * from "./dialog/index";
+export * from "./disclosure/index";
 export * from "./divider/index";
 export * from "./flipper/index";
 export * from "./menu/index";
