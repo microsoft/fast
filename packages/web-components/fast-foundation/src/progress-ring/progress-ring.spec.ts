@@ -4,15 +4,13 @@ import { ProgressRingTemplate as template } from "./index";
 import { fixture } from "../fixture";
 import { DOM, customElement } from "@microsoft/fast-element";
 
+@customElement({
+    name: "fast-progress-ring",
+    template,
+})
+class FASTProgressRing extends Progress {}
+
 describe("Progress ring", () => {
-    const name = "Progress ring";
-
-    @customElement({
-        name: "fast-progress-ring",
-        template,
-    })
-    class FASTProgressRing extends Progress {}
-
     it("should include a role of progressbar", async () => {
         const { element, connect, disconnect } = await fixture<FASTProgressRing>(
             "fast-progress-ring"

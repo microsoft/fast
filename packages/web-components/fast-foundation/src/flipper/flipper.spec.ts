@@ -4,15 +4,13 @@ import { fixture } from "../fixture";
 import { DOM, customElement, html } from "@microsoft/fast-element";
 import { FlipperDirection } from "./flipper";
 
+@customElement({
+    name: "fast-flipper",
+    template,
+})
+class FASTFlipper extends Flipper {}
+
 describe("Flipper", () => {
-    const name = "Flipper";
-
-    @customElement({
-        name: "fast-flipper",
-        template,
-    })
-    class FASTFlipper extends Flipper {}
-
     it("should include a role of button", async () => {
         const { element, connect, disconnect } = await fixture<Flipper>("fast-flipper");
 
@@ -80,7 +78,7 @@ describe("Flipper", () => {
 
         expect(element.getAttribute("tabindex")).to.equal("0");
 
-            await disconnect();
+        await disconnect();
     });
 
     it("should render a span with a class of `next` when direction is `next`", async () => {
@@ -94,7 +92,7 @@ describe("Flipper", () => {
             element.shadowRoot?.querySelector("span")?.classList.contains("next")
         ).to.equal(true);
 
-            await disconnect();
+        await disconnect();
     });
 
     it("should render a span with a class of `previous` when direction is `previous`", async () => {
@@ -108,7 +106,7 @@ describe("Flipper", () => {
             element.shadowRoot?.querySelector("span")?.classList.contains("previous")
         ).to.equal(true);
 
-            await disconnect();
+        await disconnect();
     });
 
     it("should render a span with a class of `next` when direction is NOT passed", async () => {
@@ -121,6 +119,6 @@ describe("Flipper", () => {
             element.shadowRoot?.querySelector("span")?.classList.contains("next")
         ).to.equal(true);
 
-            await disconnect();
+        await disconnect();
     });
 });

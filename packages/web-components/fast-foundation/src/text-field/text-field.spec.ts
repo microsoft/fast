@@ -1,17 +1,15 @@
 import { expect } from "chai";
 import { TextField, TextFieldTemplate as template } from "./index";
 import { fixture } from "../fixture";
-import { DOM, customElement } from "@microsoft/fast-element";
+import { customElement } from "@microsoft/fast-element";
+
+@customElement({
+    name: "fast-text-field",
+    template,
+})
+class FASTTextField extends TextField {}
 
 describe("TextField", () => {
-    const name = "TextField";
-
-    @customElement({
-        name: "fast-text-field",
-        template,
-    })
-    class FASTTextField extends TextField {}
-
     it("should set the `autofocus` attribute on the internal control equal to the value provided", async () => {
         const { element, connect, disconnect } = await fixture<FASTTextField>(
             "fast-text-field"

@@ -4,22 +4,20 @@ import { MenuItem, MenuItemTemplate as itemTemplate } from "../menu-item";
 import { fixture } from "../fixture";
 import { DOM, customElement, html } from "@microsoft/fast-element";
 
+@customElement({
+    name: "fast-menu",
+    template,
+})
+class FASTMenu extends Menu {}
+
+@customElement({
+    name: "fast-menu-item",
+    template: itemTemplate,
+})
+class FASTMenuItem extends MenuItem {}
+
+// TODO: Add tests for keyboard handling
 describe("Menu", () => {
-    // TODO: Add tests for keyboard handling
-    const name = "Menu";
-
-    @customElement({
-        name: "fast-menu",
-        template,
-    })
-    class FASTMenu extends Menu {}
-
-    @customElement({
-        name: "fast-menu-item",
-        template: itemTemplate,
-    })
-    class FASTMenuItem extends MenuItem {}
-
     it("should include a role of menu", async () => {
         const { element, connect, disconnect } = await fixture<Menu>("fast-menu");
 

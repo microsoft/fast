@@ -4,15 +4,13 @@ import { fixture } from "../fixture";
 import { DOM, customElement } from "@microsoft/fast-element";
 import { DividerRole } from "./divider";
 
+@customElement({
+    name: "fast-divider",
+    template,
+})
+class FASTDivider extends Divider {}
+
 describe("Divider", () => {
-    const name = "Divider";
-
-    @customElement({
-        name: "fast-divider",
-        template,
-    })
-    class FASTDivider extends Divider {}
-
     it("should include a role attribute equal to the role provided", async () => {
         const { element, connect, disconnect } = await fixture<Divider>("fast-divider");
 
@@ -27,7 +25,7 @@ describe("Divider", () => {
         await DOM.nextUpdate();
 
         expect(element.getAttribute("role")).to.equal(`${DividerRole.presentation}`);
-    
+
         await disconnect();
     });
 
@@ -38,7 +36,7 @@ describe("Divider", () => {
         await DOM.nextUpdate();
 
         expect(element.getAttribute("role")).to.equal(`${DividerRole.separator}`);
-    
+
         await disconnect();
     });
 });

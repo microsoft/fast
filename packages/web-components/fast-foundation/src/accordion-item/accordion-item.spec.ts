@@ -1,11 +1,9 @@
 import { expect } from "chai";
 import { AccordionItem, AccordionItemTemplate as template } from "./index";
 import { fixture } from "../fixture";
-import { DOM, customElement } from "@microsoft/fast-element";
+import { customElement } from "@microsoft/fast-element";
 
 describe("Accordion item", () => {
-    const name = "AccordionItem";
-
     @customElement({
         name: "fast-accordion-item",
         template,

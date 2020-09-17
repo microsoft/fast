@@ -5,16 +5,14 @@ import { fixture } from "../fixture";
 import { DOM, customElement, html } from "@microsoft/fast-element";
 import { KeyCodes, Orientation } from "@microsoft/fast-web-utilities";
 
+@customElement({
+    name: "fast-radio-group",
+    template,
+})
+class FASTRadioGroup extends RadioGroup {}
+
+// TODO: Need to add tests for keyboard handling & focus management
 describe("Radio Group", () => {
-    // TODO: Need to add tests for keyboard handling & focus management
-    const name = "Radio Group";
-
-    @customElement({
-        name: "fast-radio-group",
-        template,
-    })
-    class FASTRadioGroup extends RadioGroup {}
-
     @customElement({
         name: "fast-radio",
         template: itemTemplate,

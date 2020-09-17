@@ -3,24 +3,21 @@ import { TreeView, TreeViewTemplate as template } from "./index";
 import { TreeItem, TreeItemTemplate as itemTemplate } from "../tree-item";
 import { fixture } from "../fixture";
 import { DOM, customElement } from "@microsoft/fast-element";
-import { Button } from "../button";
 
+@customElement({
+    name: "fast-tree-view",
+    template,
+})
+class FASTTreeView extends TreeView {}
+
+@customElement({
+    name: "fast-tree-item",
+    template: itemTemplate,
+})
+class FASTTreeItem extends TreeItem {}
+
+// TODO: Need to add tests for keyboard handling & focus management
 describe("TreeView", () => {
-    // TODO: Need to add tests for keyboard handling & focus management
-    const name = "TreeView";
-
-    @customElement({
-        name: "fast-tree-view",
-        template,
-    })
-    class FASTTreeView extends TreeView {}
-
-    @customElement({
-        name: "fast-tree-item",
-        template: itemTemplate,
-    })
-    class FASTTreeItem extends TreeItem {}
-
     it("should include a role of `tree`", async () => {
         const { element, connect, disconnect } = await fixture<FASTTreeView>(
             "fast-tree-view"

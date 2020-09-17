@@ -5,22 +5,20 @@ import { fixture } from "../fixture";
 import { DOM, customElement, html } from "@microsoft/fast-element";
 import { KeyCodes, Orientation, Direction } from "@microsoft/fast-web-utilities";
 
+@customElement({
+    name: "fast-slider",
+    template,
+})
+class FASTSlider extends Slider {}
+
+@customElement({
+    name: "fast-slider-label",
+    template: itemTemplate,
+})
+class FASTSliderLabel extends SliderLabel {}
+
+// TODO: Need to add tests for keyboard handling, position, and focus management
 describe("Slider", () => {
-    // TODO: Need to add tests for keyboard handling, position, and focus management
-    const name = "Slider";
-
-    @customElement({
-        name: "fast-slider",
-        template,
-    })
-    class FASTSlider extends Slider {}
-
-    @customElement({
-        name: "fast-slider-label",
-        template: itemTemplate,
-    })
-    class FASTSliderLabel extends SliderLabel {}
-
     it("should have a role of `slider`", async () => {
         const { element, connect, disconnect } = await fixture<FASTSlider>("fast-slider");
 
@@ -199,7 +197,6 @@ describe("Slider", () => {
         await disconnect();
     });
 
-
     it("should constrain and normalize the value between `min` and `max` when the value is out of range", async () => {
         const { element, connect, disconnect } = await fixture<FASTSlider>("fast-slider");
 
@@ -228,7 +225,7 @@ describe("Slider", () => {
     it("should set an `aria-valuestring` attribute with the result of the valueTextFormatter() method", async () => {
         const { element, connect, disconnect } = await fixture<FASTSlider>("fast-slider");
 
-        element.valueTextFormatter = () => ("Seventy Five Years");
+        element.valueTextFormatter = () => "Seventy Five Years";
 
         await connect();
 
@@ -262,47 +259,51 @@ describe("Slider", () => {
 
     describe("methods", () => {
         it("should increment the value when the `increment()` method is invoked", async () => {
-            const { element, connect, disconnect } = await fixture<FASTSlider>("fast-slider");
+            const { element, connect, disconnect } = await fixture<FASTSlider>(
+                "fast-slider"
+            );
 
             element.min = 0;
             element.max = 100;
             element.value = "50";
             element.step = 5;
-    
+
             await connect();
-            
+
             expect(element.getAttribute("aria-valuenow")).to.equal("50");
 
             element.increment();
 
             await DOM.nextUpdate();
-    
+
             expect(element.value).to.equal("55");
             expect(element.getAttribute("aria-valuenow")).to.equal("55");
-    
+
             await disconnect();
         });
 
         it("should decrement the value when the `decrement()` method is invoked", async () => {
-            const { element, connect, disconnect } = await fixture<FASTSlider>("fast-slider");
+            const { element, connect, disconnect } = await fixture<FASTSlider>(
+                "fast-slider"
+            );
 
             element.min = 0;
             element.max = 100;
             element.value = "50";
             element.step = 5;
-    
+
             await connect();
-            
+
             expect(element.getAttribute("aria-valuenow")).to.equal("50");
 
             element.decrement();
 
             await DOM.nextUpdate();
-    
+
             expect(element.value).to.equal("45");
             expect(element.getAttribute("aria-valuenow")).to.equal("45");
-    
+
             await disconnect();
         });
-    })
+    });
 });

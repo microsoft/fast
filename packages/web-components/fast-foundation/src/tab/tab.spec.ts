@@ -1,17 +1,15 @@
 import { expect } from "chai";
 import { Tab, TabTemplate as template } from "./index";
 import { fixture } from "../fixture";
-import { DOM, customElement, html } from "@microsoft/fast-element";
+import { customElement } from "@microsoft/fast-element";
+
+@customElement({
+    name: "fast-tab",
+    template,
+})
+class FASTTab extends Tab {}
 
 describe("Tab", () => {
-    const name = "Tab";
-
-    @customElement({
-        name: "fast-tab",
-        template,
-    })
-    class FASTTab extends Tab {}
-
     it("should have a role of `tab`", async () => {
         const { element, connect, disconnect } = await fixture<FASTTab>("fast-tab");
 

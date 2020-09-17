@@ -4,15 +4,13 @@ import { fixture } from "../fixture";
 import { DOM, customElement, html } from "@microsoft/fast-element";
 import { KeyCodes } from "@microsoft/fast-web-utilities";
 
+@customElement({
+    name: "fast-switch",
+    template,
+})
+class FASTSwitch extends Switch {}
+
 describe("Switch", () => {
-    const name = "Switch";
-
-    @customElement({
-        name: "fast-switch",
-        template,
-    })
-    class FASTSwitch extends Switch {}
-
     it("should have a role of `switch`", async () => {
         const { element, connect, disconnect } = await fixture<FASTSwitch>("fast-switch");
 

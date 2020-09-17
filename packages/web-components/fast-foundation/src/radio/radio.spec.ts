@@ -4,15 +4,13 @@ import { fixture } from "../fixture";
 import { DOM, customElement, html } from "@microsoft/fast-element";
 import { KeyCodes } from "@microsoft/fast-web-utilities";
 
+@customElement({
+    name: "fast-radio",
+    template,
+})
+class FASTRadio extends Radio {}
+
 describe("Radio", () => {
-    const name = "Radio";
-
-    @customElement({
-        name: "fast-radio",
-        template,
-    })
-    class FASTRadio extends Radio {}
-
     it("should have a role of `radio`", async () => {
         const { element, connect, disconnect } = await fixture<FASTRadio>("fast-radio");
 

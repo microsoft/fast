@@ -4,15 +4,14 @@ import { fixture } from "../fixture";
 import { DOM, customElement } from "@microsoft/fast-element";
 import { KeyCodes } from "@microsoft/fast-web-utilities";
 
+@customElement({
+    name: "fast-dialog",
+    template,
+})
+class FASTDialog extends Dialog {}
+
+// TODO: Add tests for focus management
 describe("Dialog", () => {
-    const name = "Dialog";
-
-    @customElement({
-        name: "fast-dialog",
-        template,
-    })
-    class FASTDialog extends Dialog {}
-
     it("should include a role of `dialog` on the control", async () => {
         const { element, connect, disconnect } = await fixture<Dialog>("fast-dialog");
 
@@ -40,7 +39,7 @@ describe("Dialog", () => {
         await DOM.nextUpdate();
 
         expect(element.hasAttribute("hidden")).to.equal(false);
-        
+
         await disconnect();
     });
 
@@ -50,7 +49,7 @@ describe("Dialog", () => {
         await connect();
 
         expect(element.hasAttribute("hidden")).to.equal(false);
-        
+
         await disconnect();
     });
 
@@ -76,7 +75,7 @@ describe("Dialog", () => {
                 ?.querySelector("[role='dialog']")
                 ?.getAttribute("aria-modal")
         ).to.equal("false");
-        
+
         await disconnect();
     });
 
@@ -90,7 +89,7 @@ describe("Dialog", () => {
                 ?.querySelector("[role='dialog']")
                 ?.getAttribute("aria-modal")
         ).to.equal("true");
-        
+
         await disconnect();
     });
 
@@ -102,7 +101,7 @@ describe("Dialog", () => {
         expect(
             element.shadowRoot?.querySelector(".overlay")?.getAttribute("role")
         ).to.equal("presentation");
-        
+
         await disconnect();
     });
 
@@ -114,7 +113,7 @@ describe("Dialog", () => {
         expect(
             element.shadowRoot?.querySelector(".overlay")?.getAttribute("tabindex")
         ).to.equal("-1");
-        
+
         await disconnect();
     });
 
@@ -127,7 +126,7 @@ describe("Dialog", () => {
         await DOM.nextUpdate();
 
         expect(element.hasAttribute("trap-focus")).to.equal(true);
-        
+
         await disconnect();
     });
 
@@ -139,7 +138,7 @@ describe("Dialog", () => {
 
         expect(element.trapFocus).to.equal(true);
         expect(element.hasAttribute("trap-focus")).to.equal(true);
-        
+
         await disconnect();
     });
 
@@ -149,7 +148,7 @@ describe("Dialog", () => {
         await connect();
 
         expect(element.hasAttribute("hidden")).to.equal(false);
-        
+
         await disconnect();
     });
 
@@ -166,7 +165,7 @@ describe("Dialog", () => {
                 ?.querySelector("[role='dialog']")
                 ?.getAttribute("aria-describedBy")
         ).to.equal(ariaDescribedby);
-        
+
         await disconnect();
     });
 
@@ -183,7 +182,7 @@ describe("Dialog", () => {
                 ?.querySelector("[role='dialog']")
                 ?.getAttribute("aria-labelledby")
         ).to.equal(ariaLabelledby);
-        
+
         await disconnect();
     });
 
@@ -200,14 +199,16 @@ describe("Dialog", () => {
                 ?.querySelector("[role='dialog']")
                 ?.getAttribute("aria-label")
         ).to.equal(ariaLabel);
-        
+
         await disconnect();
     });
 
     describe("events", () => {
         // TODO: test trap focus
         it("should fire an event on click", async () => {
-            const { element, connect, disconnect } = await fixture<FASTDialog>("fast-dialog");
+            const { element, connect, disconnect } = await fixture<FASTDialog>(
+                "fast-dialog"
+            );
             let wasDismissed: boolean = false;
             const event = new MouseEvent("click");
 
@@ -231,7 +232,9 @@ describe("Dialog", () => {
         });
 
         it("should fire an event when spacebar is invoked", async () => {
-            const { element, connect, disconnect } = await fixture<FASTDialog>("fast-dialog");
+            const { element, connect, disconnect } = await fixture<FASTDialog>(
+                "fast-dialog"
+            );
             let wasDismissed: boolean = false;
             const event = new KeyboardEvent("keydown", {
                 key: "escape",

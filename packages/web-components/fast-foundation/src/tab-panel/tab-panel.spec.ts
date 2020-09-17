@@ -1,17 +1,15 @@
 import { expect } from "chai";
 import { TabPanel, TabPanelTemplate as template } from "./index";
 import { fixture } from "../fixture";
-import { DOM, customElement, html } from "@microsoft/fast-element";
+import { customElement } from "@microsoft/fast-element";
+
+@customElement({
+    name: "fast-tab-panel",
+    template,
+})
+class FASTTabPanel extends TabPanel {}
 
 describe("TabPanel", () => {
-    const name = "TabPanel";
-
-    @customElement({
-        name: "fast-tab-panel",
-        template,
-    })
-    class FASTTabPanel extends TabPanel {}
-
     it("should have a role of `tabpanel`", async () => {
         const { element, connect, disconnect } = await fixture<FASTTabPanel>(
             "fast-tab-panel"

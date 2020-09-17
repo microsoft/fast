@@ -3,16 +3,14 @@ import { TabsOrientation, Tabs, TabsTemplate as template } from "./index";
 import { fixture } from "../fixture";
 import { DOM, customElement, html } from "@microsoft/fast-element";
 
+@customElement({
+    name: "fast-tabs",
+    template,
+})
+class FASTTabs extends Tabs {}
+
+// TODO: Need to add tests for keyboard handling, activeIndicator position, and focus managemen
 describe("Tabs", () => {
-    // TODO: Need to add tests for keyboard handling, activeIndicator position, and focus management
-    const name = "Tabs";
-
-    @customElement({
-        name: "fast-tabs",
-        template,
-    })
-    class FASTTabs extends Tabs {}
-
     it("should have an internal element with a role of `tablist`", async () => {
         const { element, connect, disconnect } = await fixture<FASTTabs>("fast-tabs");
 

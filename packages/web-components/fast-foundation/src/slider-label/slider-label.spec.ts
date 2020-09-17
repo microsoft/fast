@@ -5,22 +5,20 @@ import { fixture } from "../fixture";
 import { DOM, customElement, html } from "@microsoft/fast-element";
 import { KeyCodes, Orientation } from "@microsoft/fast-web-utilities";
 
+@customElement({
+    name: "fast-slider",
+    template: SliderTemplate,
+})
+class FASTSlider extends Slider {}
+
+@customElement({
+    name: "fast-slider-label",
+    template,
+})
+class FASTSliderLabel extends SliderLabel {}
+
+// TODO: Need to add tests for positioning and slider configuration
 describe("Slider", () => {
-    // TODO: Need to add tests for positioning and slider configuration
-    const name = "Slider";
-
-    @customElement({
-        name: "fast-slider",
-        template: SliderTemplate,
-    })
-    class FASTSlider extends Slider {}
-
-    @customElement({
-        name: "fast-slider-label",
-        template,
-    })
-    class FASTSliderLabel extends SliderLabel {}
-
     it("should set the `aria-disabled` attribute when `disabled` value is true", async () => {
         const { element, connect, disconnect } = await fixture<FASTSliderLabel>(
             "fast-slider-label"

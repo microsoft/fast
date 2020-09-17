@@ -1,17 +1,15 @@
 import { expect } from "chai";
 import { BaseProgress as Progress, ProgressTemplate as template } from "./index";
 import { fixture } from "../fixture";
-import { DOM, customElement } from "@microsoft/fast-element";
+import { customElement } from "@microsoft/fast-element";
+
+@customElement({
+    name: "fast-progress",
+    template,
+})
+class FASTProgress extends Progress {}
 
 describe("Progress ring", () => {
-    const name = "Progress";
-
-    @customElement({
-        name: "fast-progress",
-        template,
-    })
-    class FASTProgress extends Progress {}
-
     it("should include a role of progressbar", async () => {
         const { element, connect, disconnect } = await fixture<FASTProgress>(
             "fast-progress"

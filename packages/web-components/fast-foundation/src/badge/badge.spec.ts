@@ -3,19 +3,17 @@ import { Badge, BadgeTemplate as template } from "./index";
 import { fixture } from "../fixture";
 import { DOM, customElement } from "@microsoft/fast-element";
 
+@customElement({
+    name: "fast-badge",
+    template,
+})
+class FASTBadge extends Badge {}
+
+let expectedFill = (fill?: string) => `background-color: var(--badge-fill-${fill});`;
+
+let expectedColor = (color?: string) => `color: var(--badge-color-${color});`;
+
 describe("Badge", () => {
-    const name = "Badge";
-
-    @customElement({
-        name: "fast-badge",
-        template,
-    })
-    class FASTBadge extends Badge {}
-
-    let expectedFill = (fill?: string) => `background-color: var(--badge-fill-${fill});`;
-
-    let expectedColor = (color?: string) => `color: var(--badge-color-${color});`;
-
     it("should set both the background-color and fill on the control as an inline style when `fill` and `color` are provided", async () => {
         const { element, connect, disconnect } = await fixture<FASTBadge>("fast-badge");
         const fill: string = "foo";
@@ -29,7 +27,7 @@ describe("Badge", () => {
         expect(
             element.shadowRoot?.querySelector(".control")?.getAttribute("style")
         ).to.equal(`${expectedColor(color)} ${expectedFill(fill)}`);
-    
+
         await disconnect();
     });
 
@@ -44,7 +42,7 @@ describe("Badge", () => {
         expect(
             element.shadowRoot?.querySelector(".control")?.getAttribute("style")
         ).to.equal(expectedFill(fill));
-    
+
         await disconnect();
     });
 
@@ -56,7 +54,7 @@ describe("Badge", () => {
         expect(
             element.shadowRoot?.querySelector(".control")?.getAttribute("style")
         ).to.equal(null);
-    
+
         await disconnect();
     });
 
@@ -71,7 +69,7 @@ describe("Badge", () => {
         expect(
             element.shadowRoot?.querySelector(".control")?.getAttribute("style")
         ).to.equal(expectedColor(color));
-    
+
         await disconnect();
     });
 
@@ -83,7 +81,7 @@ describe("Badge", () => {
         expect(
             element.shadowRoot?.querySelector(".control")?.getAttribute("style")
         ).to.equal(null);
-    
+
         await disconnect();
     });
 
@@ -95,7 +93,7 @@ describe("Badge", () => {
         expect(
             element.shadowRoot?.querySelector(".control")?.getAttribute("style")
         ).to.equal(null);
-    
+
         await disconnect();
     });
 });
