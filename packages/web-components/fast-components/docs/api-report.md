@@ -16,6 +16,7 @@ import { ColorRGBA64 } from '@microsoft/fast-colors';
 import { DesignSystemProvider } from '@microsoft/fast-foundation';
 import { Dialog } from '@microsoft/fast-foundation';
 import { Direction } from '@microsoft/fast-web-utilities';
+import { Disclosure } from '@microsoft/fast-foundation';
 import { Divider } from '@microsoft/fast-foundation';
 import { Flipper } from '@microsoft/fast-foundation';
 import { Menu } from '@microsoft/fast-foundation';
@@ -225,6 +226,9 @@ export function createColorPalette(baseColor: any): string[];
 
 // @public
 export const DialogStyles: import("@microsoft/fast-element").ElementStyles;
+
+// @public
+export const DisclosureStyles: import("@microsoft/fast-element").ElementStyles;
 
 // @public
 export const DividerStyles: import("@microsoft/fast-element").ElementStyles;
@@ -462,6 +466,17 @@ export class FASTDesignSystemProvider extends DesignSystemProvider implements FA
 // @public
 export class FASTDialog extends Dialog {
 }
+
+// @public
+export class FASTDisclosure extends Disclosure {
+    // (undocumented)
+    connectedCallback(): void;
+    // @override
+    hideAnimation({ contentNode }: any): Promise<void>;
+    // @override
+    showAnimation({ contentNode }: any): Promise<void>;
+    transitioning: boolean;
+    }
 
 // @public
 export class FASTDivider extends Divider {

@@ -3,7 +3,6 @@ import { Disclosure, DisclosureTemplate as template } from "@microsoft/fast-foun
 import { DisclosureStyles as styles } from "./disclosure.styles";
 /**
  * Animation event types for {@link Disclosure}
- * @private
  */
 const EVENT = {
     TRANSITION_END: "transitionend",
@@ -42,7 +41,7 @@ export class FASTDisclosure extends Disclosure {
 
     /**
      * Trigger show animation and wait for transition to be finished.
-     * @param {object} options - element node and its options
+     * @param options - element node and its options
      * @override
      */
     async showAnimation({ contentNode }: any) {
@@ -56,7 +55,7 @@ export class FASTDisclosure extends Disclosure {
 
     /**
      * Trigger hide animation and wait for transition to be finished.
-     * @param {object} options - element node and its options
+     * @param options - element node and its options
      * @override
      */
     async hideAnimation({ contentNode }: any) {
@@ -68,10 +67,10 @@ export class FASTDisclosure extends Disclosure {
 
     /**
      *  Wait until the transition event is finished.
-     * @param {object} options - element node and its options
-     * @returns {Promise} transition event
+     * @param options - element node and its options
+     * @returns transition event promise
      */
-    private waitForTransition({ contentNode }: any) {
+    private waitForTransition({ contentNode }: any): Promise<any> {
         return new Promise(resolve => {
             const transitionStarted = () => {
                 contentNode.removeEventListener(
@@ -93,9 +92,8 @@ export class FASTDisclosure extends Disclosure {
 
     /**
      * Calculate total content height after Disclosure opens
-     * @param {object} contentNode content node
-     * @returns {string} content node height
-     * @private
+     * @param contentNode - content node
+     * @returns content node height
      */
     private async calculateHeight(contentNode: any): Promise<number> {
         contentNode.style.setProperty("max-height", "");
@@ -105,7 +103,7 @@ export class FASTDisclosure extends Disclosure {
 
     /**
      * Resolves after requestAnimationFrame
-     * @returns {Promise<void>} Promise that is resolved after requestAnimationFrame
+     * @returns Promise that is resolved after requestAnimationFrame
      */
     private nextFrame = async (): Promise<void> =>
         new Promise(resolve => requestAnimationFrame(() => resolve()));
