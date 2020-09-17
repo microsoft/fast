@@ -4,16 +4,14 @@
 
 The `data grid` component enables authors to display an array of data in a tabular layout.  The layout can include a "header" region where a title can be displayed for each column.  
 
+![](./images/grid.png)
+
 `Data grid` actually consists of a number of components that work together:
 - `data grid`:  The top level container element
 - `data grid header`: Displays column titles
 - `data grid header cell`: Displays the title for a single column of cells
 - `data grid row`: Displays a single row of data associated with a single record
 - `data grid cell`: Displays a single cell of data within a row
-
-### Background
-
-*Relevant historical or background information, related existing issues, etc.*
 
 ### Use Cases
 Any time an author wants to display tabular data.
@@ -23,12 +21,11 @@ Any time an author wants to display tabular data.
   
 ### Features
 - Generates a data grid layout based on provided data.
-- Authors can choose to generate elements themselves (ie. create their own rows elements instead of generated ones)
+- Authors can take advantage of multiple customization points to control the grid display
 - manages keyboard navigation across the grid
 
 ### Risks and Challenges
 - not yet clear how cells with focusable children work 
-- is it easy enough for authors to hook up to events from cell?
 - we're not requiring unique identifiers per row/data item, do we need to to ensure stable relationships between data rows and component representations?
 
 ### Prior Art/Examples
@@ -48,7 +45,7 @@ Any time an author wants to display tabular data.
 
 ## Design
 
-`Data grid` enables a high degree of customizability in addition to the component's base styles. Authors can choose the templates applied to grid and header cells on a per column basis using the cell and header cell template properties of `DataGridColumn`, additionally authors can specify the templates used during the creation of rows and cells from data sources.  Additionally authors can add elements they create and manage themselves through slots.
+`Data grid` enables a high degree of customizability in addition to the component's base styles. Authors can choose the templates applied to grid and header cells on a per column basis using the properties of `DataGridColumn`. Additionally, authors can specify the templates used during the creation of rows and cells from data sources through the item template properties of the grid and row components (`rowItemTemplate` and `cellItemTemplate`).  Finally, authors can add elements they create and manage themselves through the various element slots.
 
 ### API
 
@@ -65,6 +62,24 @@ Most `data grid` components use the `DataGridColumn` interface.  A `DataGridColu
 - `headerCellTemplate`:  Custom [template](https://fast.design/docs/fast-element/declaring-templates) to use for header cells of this column.
 
 - `cellTemplate`:  Custom [template](https://fast.design/docs/fast-element/declaring-templates) to use for data cells of this column.
+
+Authors can hook up custom events to html elements within cell templates in order to enable user interaction with grid data.
+
+For example a button handler on a `cellTemplate` could be implemented with a click event that calls back to the author's own function:
+
+```html
+    <template>
+        <button @click="${x => myCustomHandler()}">
+            ${x =>
+                x.rowData === null ||
+                x.columnData === null ||
+                x.columnData.columnDataKey === null
+                    ? null
+                    : x.rowData[x.columnData.columnDataKey]}
+        </button>
+    </template>
+```
+
 
 
 **Data grid**
@@ -202,6 +217,57 @@ Default slot for items
 - `cellSlot`
 
 ## Implementation
+
+The most basic use case for this component would be to just pass it an array of objects for it to render.  
+
+For example given a grid component:
+```html
+ <fast-data-grid id="defaultGrid"></fast-data-grid>
+ ```
+
+ And some data:
+ ```js
+const baseRows: object[] = [
+    { name: "Rob", age: "19" },
+    { name: "Bob", age: "20" },
+];
+ ```
+
+ An author could pass the data to the component from a javascript function:
+
+```js
+onLoad(): void {
+   const defaultGrid: DataGrid | null = document.getElementById(
+        "defaultGrid"
+    ) as DataGrid;
+    if (defaultGrid !== null) {
+        defaultGrid.rowsData = baseRows;
+    }
+}
+```
+
+This renders a basic grid with a column titled "name" and another titled "age".  In addition to the title row there would be two rows of data populated with the values for name and age.  Note that data
+
+![](./images/ex1.png)
+
+The next level of customization involves changing the default columns that are created by the component when none are provided.
+
+And author would define the columns by providing an array of `DataGridColumn` objects to the component's `columnsData` property:
+
+```js
+const baseColumns: DataGridColumn[] = [
+    { columnDataKey: "name", title:"Player name", columnWidth: "1fr" },
+    { columnDataKey: "age", title:"Age", columnWidth: "80px" },
+];
+
+...
+    defaultGrid.columnsData = baseColumns;
+...
+```
+
+Applying these columns to our previous example results in our columns having the new titles applied as well as having a fixed width for the "Player age" column.
+
+![](./images/ex2.png)
 
 - programmatically generated rows/cells will will be created using [repeat directives](https://fast.design/docs/fast-element/using-directives#the-repeat-directive)
 
