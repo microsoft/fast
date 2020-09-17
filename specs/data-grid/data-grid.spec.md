@@ -248,7 +248,7 @@ onLoad(): void {
 
 This renders a basic grid with a column titled "name" and another titled "age".  In addition to the title row there would be two rows of data populated with the values for name and age.  Note that data
 
-<TODO: Add image>
+![](./images/ex1.png)
 
 The next level of customization involves changing the default columns that are created by the component when none are provided.
 
@@ -257,7 +257,7 @@ And author would define the columns by providing an array of `DataGridColumn` ob
 ```js
 const baseColumns: DataGridColumn[] = [
     { columnDataKey: "name", title:"Player name", columnWidth: "1fr" },
-    { columnDataKey: "age", title:"Player age", columnWidth: "100px" },
+    { columnDataKey: "age", title:"Age", columnWidth: "80px" },
 ];
 
 ...
@@ -267,8 +267,7 @@ const baseColumns: DataGridColumn[] = [
 
 Applying these columns to our previous example results in our columns having the new titles applied as well as having a fixed width for the "Player age" column.
 
-<TODO: Add image>
-
+![](./images/ex2.png)
 
 - programmatically generated rows/cells will will be created using [repeat directives](https://fast.design/docs/fast-element/using-directives#the-repeat-directive)
 
