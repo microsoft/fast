@@ -1,5 +1,5 @@
 import { camelCase, get } from "lodash-es";
-import { Container, Pane, Row, RowResizeDirection } from "@microsoft/fast-layouts-react";
+import rafThrottle from "raf-throttle";
 import {
     ModularForm,
     ModularViewer,
@@ -60,6 +60,7 @@ import {
     ExplorerUnhandledProps,
 } from "./explorer.props";
 import { previewReady } from "./preview";
+import { Footer } from "./site-footer";
 /* eslint-disable-next-line @typescript-eslint/no-var-requires */
 const FASTInlineLogo = require("@microsoft/site-utilities/statics/assets/fast-inline-logo.svg");
 export const previewBackgroundTransparency: string = "PREVIEW::TRANSPARENCY";
@@ -112,6 +113,9 @@ class Explorer extends Foundation<
 
     private viewerContainerRef: React.RefObject<HTMLDivElement> = React.createRef();
     private viewerContentAreaPadding: number = 20;
+    private maxViewerHeight: number = 0;
+    private maxViewerWidth: number = 0;
+    private windowResizing;
     private editor: monaco.editor.IStandaloneCodeEditor;
     private editorContainerRef: React.RefObject<HTMLDivElement> = React.createRef();
 
@@ -140,7 +144,8 @@ class Explorer extends Foundation<
             });
         }
 
-        window.onpopstate = this.handlePopState;
+        window.onpopstate = this.handleWindowPopState;
+        window.onresize = rafThrottle(this.handleWindowResize);
 
         monaco.editor.onDidCreateModel((listener: monaco.editor.ITextModel) => {
             (monaco.editor.getModel(
@@ -175,6 +180,9 @@ class Explorer extends Foundation<
             previewReady: false,
             activeDictionaryId: componentLinkedDataId,
             dataDictionary: this.getScenarioData(componentConfig, selectedScenarioIndex),
+            activePivotTab: "code",
+            mobileFormVisible: false,
+            mobileNavigationVisible: false,
         };
     }
 
@@ -189,165 +197,142 @@ class Explorer extends Foundation<
         }
 
         return (
-            <Background value={neutralLayerL1}>
-                <Container>
-                    <Row style={{ flex: "1" }}>
-                        <Pane width={260}>
+            <div className={this.getContainerClassNames()}>
+                <div className={"pane pane__start"}>
+                    <Logo
+                        className={"logo"}
+                        logo={FASTInlineLogo}
+                        title={"Component Explorer"}
+                    />
+                    <NavigationMenu
+                        menu={menu}
+                        expanded={true}
+                        activeLocation={this.state.locationPathname}
+                        onLocationUpdate={this.handleUpdateRoute}
+                    />
+                </div>
+                <div className={"canvas"}>
+                    <div
+                        className={`canvas-overlay${
+                            this.state.mobileFormVisible ||
+                            this.state.mobileNavigationVisible
+                                ? " canvas-overlay__active"
+                                : ""
+                        }`}
+                        onClick={this.handleCanvasOverlayTrigger}
+                    ></div>
+                    <div className={"menu-bar"}>
+                        <Background
+                            value={neutralLayerL2}
+                            drawBackground={true}
+                            className="mobile-menu-bar"
+                        >
+                            {this.renderMobileNavigationTrigger()}
                             <Logo
-                                backgroundColor={"#181818"}
+                                backgroundColor={neutralLayerL2}
                                 logo={FASTInlineLogo}
-                                title={"Component Explorer"}
                             />
-                            <NavigationMenu
-                                menu={menu}
-                                expanded={true}
-                                activeLocation={this.state.locationPathname}
-                                onLocationUpdate={this.handleUpdateRoute}
-                            />
-                        </Pane>
+                            {this.renderMobileFormTrigger()}
+                        </Background>
+                        <Background
+                            value={neutralLayerL2}
+                            drawBackground={true}
+                            className={"canvas-menu-bar"}
+                        >
+                            <div className={"menu-item-region"}>
+                                {this.renderScenarioSelect()}
+                            </div>
+                            <div className={"menu-item-region"}>
+                                <TransparencyToggle
+                                    id={"transparency-toggle"}
+                                    transparency={this.state.transparentBackground}
+                                    onUpdateTransparency={this.handleUpdateTransparency}
+                                    disabled={!this.state.previewReady}
+                                />
+                                <DirectionSwitch
+                                    id={"direction-switch"}
+                                    direction={this.state.direction}
+                                    onUpdateDirection={this.handleUpdateDirection}
+                                    disabled={!this.state.previewReady}
+                                />
+                                <ThemeSelector
+                                    id={"theme-selector"}
+                                    theme={this.state.theme}
+                                    onUpdateTheme={this.handleUpdateTheme}
+                                    disabled={!this.state.previewReady}
+                                />
+                            </div>
+                        </Background>
+                    </div>
+                    <div
+                        className={`canvas-content${
+                            this.state.devToolsVisible
+                                ? ""
+                                : " canvas-content__dev-tools-hidden"
+                        }`}
+                    >
                         <div
+                            ref={this.viewerContainerRef}
+                            className={"preview"}
                             style={{
-                                display: "flex",
-                                flex: 1,
-                                flexDirection: "column",
+                                padding: `${this.viewerContentAreaPadding}px`,
                             }}
                         >
-                            <Row style={{ overflow: "visible", zIndex: 1 }} height={46}>
-                                <Background
-                                    value={neutralLayerL2}
-                                    drawBackground={true}
-                                    style={{
-                                        width: "100%",
-                                        display: "flex",
-                                        alignItems: "center",
-                                        justifyContent: "space-between",
-                                        padding: "0 8px",
-                                    }}
-                                >
-                                    {this.renderScenarioSelect()}
-                                    <div style={{ display: "flex" }}>
-                                        <TransparencyToggle
-                                            id={"transparency-toggle"}
-                                            transparency={
-                                                this.state.transparentBackground
-                                            }
-                                            onUpdateTransparency={
-                                                this.handleUpdateTransparency
-                                            }
-                                            disabled={!this.state.previewReady}
-                                        />
-                                        <DirectionSwitch
-                                            id={"direction-switch"}
-                                            direction={this.state.direction}
-                                            onUpdateDirection={this.handleUpdateDirection}
-                                            disabled={!this.state.previewReady}
-                                        />
-                                        <ThemeSelector
-                                            id={"theme-selector"}
-                                            theme={this.state.theme}
-                                            onUpdateTheme={this.handleUpdateTheme}
-                                            disabled={!this.state.previewReady}
-                                        />
-                                    </div>
-                                </Background>
-                            </Row>
-                            <Row fill={true}>
-                                <div
-                                    ref={this.viewerContainerRef}
-                                    style={{
-                                        padding: `${this.viewerContentAreaPadding}px`,
-                                        width: "100%",
-                                        height: "100%",
-                                    }}
-                                >
-                                    <ModularViewer
-                                        iframeSrc={"/preview"}
-                                        width={this.state.width}
-                                        height={this.state.height}
-                                        onUpdateHeight={this.handleUpdateHeight}
-                                        onUpdateWidth={this.handleUpdateWidth}
-                                        responsive={true}
-                                        messageSystem={fastMessageSystem as MessageSystem}
-                                    />
-                                </div>
-                            </Row>
-                            <Row
-                                resizable={true}
-                                resizeFrom={RowResizeDirection.north}
-                                initialHeight={400}
-                                collapsedHeight={36}
-                                collapsed={!this.state.devToolsVisible}
-                            >
-                                <Background
-                                    value={neutralLayerL1}
-                                    style={{
-                                        width: "100%",
-                                        height: "100%",
-                                    }}
-                                >
-                                    <div
-                                        style={{
-                                            marginTop: "12px",
-                                            position: "relative",
-                                            height: "100%",
-                                        }}
-                                    >
-                                        <Pivot
-                                            label={"documentation"}
-                                            items={this.renderPivotItems()}
-                                            jssStyleSheet={pivotStyleSheetOverrides}
-                                        />
-                                        <ActionToggle
-                                            appearance={ActionToggleAppearance.stealth}
-                                            selectedLabel={"Development tools expanded"}
-                                            selectedGlyph={downChevron}
-                                            unselectedLabel={
-                                                "Development tools collapsed"
-                                            }
-                                            unselectedGlyph={upChevron}
-                                            selected={this.state.devToolsVisible}
-                                            onToggle={this.handleDevToolsToggle}
-                                            style={{
-                                                position: "absolute",
-                                                top: 0,
-                                                right: 0,
-                                            }}
-                                        />
-                                    </div>
-                                </Background>
-                            </Row>
+                            <ModularViewer
+                                iframeSrc={"/preview"}
+                                width={this.state.width}
+                                height={this.state.height}
+                                onUpdateHeight={this.handleUpdateHeight}
+                                onUpdateWidth={this.handleUpdateWidth}
+                                responsive={true}
+                                messageSystem={fastMessageSystem as MessageSystem}
+                            />
                         </div>
-                        <Pane>
-                            <ModularForm messageSystem={fastMessageSystem} />
-                        </Pane>
-                    </Row>
-                </Container>
-            </Background>
+                        <Background value={neutralLayerL1} className={"dev-tools"}>
+                            <Pivot
+                                label={"documentation"}
+                                items={this.renderPivotItems()}
+                                jssStyleSheet={pivotStyleSheetOverrides}
+                                onUpdate={this.handlePivotUpdate}
+                            />
+                            <ActionToggle
+                                appearance={ActionToggleAppearance.stealth}
+                                selectedLabel={"Development tools expanded"}
+                                selectedGlyph={downChevron}
+                                unselectedLabel={"Development tools collapsed"}
+                                unselectedGlyph={upChevron}
+                                selected={this.state.devToolsVisible}
+                                onToggle={this.handleDevToolsToggle}
+                                className={"dev-tools-trigger"}
+                            />
+                        </Background>
+                    </div>
+                </div>
+                <div className={"pane pane__end"}>
+                    <ModularForm messageSystem={fastMessageSystem} />
+                </div>
+                <Footer />
+            </div>
         );
     }
 
     public componentDidMount(): void {
         this.setViewerToFullSize();
+        this.createMonacoEditor();
+    }
 
-        if (this.editorContainerRef.current) {
-            this.editor = monaco.editor.create(this.editorContainerRef.current, {
-                value: "",
-                language: "html",
-                formatOnType: true,
-                formatOnPaste: true,
-                lineNumbers: "off",
-                theme: "vs-dark",
-                wordWrap: "on",
-                wordWrapColumn: 80,
-                wordWrapMinified: true,
-                automaticLayout: true,
-                wrappingIndent: "same",
-                minimap: {
-                    showSlider: "mouseover",
-                },
-                readOnly: true,
-            });
+    private getContainerClassNames(): string {
+        const classNames = ["container"];
+
+        if (this.state.mobileFormVisible) {
+            classNames.push("container__form-visible");
         }
+
+        if (this.state.mobileNavigationVisible) {
+            classNames.push("container__navigation-visible");
+        }
+
+        return classNames.join(" ");
     }
 
     private updateEditorContent(dataDictionary: DataDictionary<unknown>): void {
@@ -361,9 +346,64 @@ class Explorer extends Foundation<
         }
     }
 
-    private handlePopState = (): void => {
+    private handleCanvasOverlayTrigger = (): void => {
+        this.setState({
+            mobileFormVisible: false,
+            mobileNavigationVisible: false,
+        });
+    };
+
+    private handleWindowPopState = (): void => {
         if (window.location.pathname !== this.state.locationPathname) {
             this.handleUpdateRoute(window.location.pathname);
+        }
+    };
+
+    private handleWindowResize = (): void => {
+        if (this.editorContainerRef.current) {
+            if (this.windowResizing) {
+                clearTimeout(this.windowResizing);
+            }
+
+            this.windowResizing = setTimeout(() => {
+                this.setState({
+                    width: 0,
+                    height: 0,
+                });
+
+                this.setViewerToFullSize();
+
+                if (this.state.activePivotTab === "code") {
+                    this.createMonacoEditor();
+                }
+            }, 800);
+        }
+    };
+
+    private createMonacoEditor = (): void => {
+        if (this.editorContainerRef.current) {
+            if (this.editor && this.state.activePivotTab === "code") {
+                this.editor.layout();
+            } else if (!this.editor) {
+                this.editor = monaco.editor.create(this.editorContainerRef.current, {
+                    value: "",
+                    language: "html",
+                    formatOnType: true,
+                    formatOnPaste: true,
+                    lineNumbers: "off",
+                    theme: "vs-dark",
+                    wordWrap: "on",
+                    wordWrapColumn: 80,
+                    wordWrapMinified: true,
+                    wrappingIndent: "same",
+                    minimap: {
+                        showSlider: "mouseover",
+                    },
+                    readOnly: true,
+                });
+
+                this.updateEditorContent(this.state.dataDictionary);
+            }
         }
     };
 
@@ -410,16 +450,73 @@ class Explorer extends Foundation<
             );
 
             if (viewerNode instanceof Element) {
-                const height: number =
-                    viewerNode.clientHeight - this.viewerContentAreaPadding * 2;
-                const width: number =
+                // 24 is height of view label
+                this.maxViewerHeight =
+                    viewerNode.clientHeight - this.viewerContentAreaPadding * 2 - 24;
+                this.maxViewerWidth =
                     viewerNode.clientWidth - this.viewerContentAreaPadding * 2;
+
                 this.setState({
-                    width,
-                    height: height - 24, // 24 is height of view label
+                    width: this.maxViewerWidth,
+                    height: this.maxViewerHeight,
                 });
             }
         }
+    }
+
+    private handleMobileNavigationTrigger = (): void => {
+        this.setState({
+            mobileNavigationVisible: true,
+        });
+    };
+
+    private handleMobileFormTrigger = (): void => {
+        this.setState({
+            mobileFormVisible: true,
+        });
+    };
+
+    private renderMobileNavigationTrigger(): React.ReactNode {
+        return (
+            <button
+                className={"mobile-pane-trigger"}
+                onClick={this.handleMobileNavigationTrigger}
+            >
+                <svg
+                    width="16"
+                    height="15"
+                    viewBox="0 0 16 15"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                >
+                    <rect width="16" height="1" rx="0.5" fill="white" />
+                    <rect y="7" width="16" height="1" rx="0.5" fill="white" />
+                    <rect y="14" width="16" height="1" rx="0.5" fill="white" />
+                </svg>
+            </button>
+        );
+    }
+
+    private renderMobileFormTrigger(): React.ReactNode {
+        return (
+            <button
+                className={"mobile-pane-trigger"}
+                onClick={this.handleMobileFormTrigger}
+            >
+                <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 18 18"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                >
+                    <path
+                        d="M16.5253 1.47498C17.6898 2.63953 17.6898 4.52764 16.5253 5.69219L6.55167 15.6658C6.32095 15.8965 6.034 16.0631 5.71919 16.1489L1.45612 17.3116C0.989558 17.4388 0.56145 17.0107 0.688694 16.5441L1.85135 12.2811C1.93721 11.9663 2.10373 11.6793 2.33446 11.4486L12.3081 1.47498C13.4726 0.310424 15.3607 0.310424 16.5253 1.47498ZM11.5001 4.05073L3.21834 12.3325C3.14143 12.4094 3.08592 12.505 3.05731 12.61L2.18243 15.8178L5.3903 14.943C5.49523 14.9143 5.59088 14.8588 5.66779 14.7819L13.9493 6.4999L11.5001 4.05073ZM13.1919 2.35886L12.3835 3.16656L14.8326 5.61656L15.6414 4.80831C16.3178 4.13191 16.3178 3.03526 15.6414 2.35886C14.965 1.68246 13.8683 1.68246 13.1919 2.35886Z"
+                        fill="white"
+                    />
+                </svg>
+            </button>
+        );
     }
 
     private renderPivotItems(): TabsItem[] {
@@ -430,6 +527,7 @@ class Explorer extends Foundation<
                         <Typography
                             className={className}
                             size={TypographySize._8}
+                            id={"code"}
                             onClick={this.handleDevToolsTabTriggerClick}
                         >
                             Code
@@ -441,7 +539,7 @@ class Explorer extends Foundation<
                         <div
                             ref={this.editorContainerRef}
                             className={className}
-                            style={{ height: "340px" }}
+                            style={{ height: "100%" }}
                         />
                     );
                 },
@@ -647,14 +745,19 @@ class Explorer extends Foundation<
     };
 
     private handleUpdateHeight = (updatedHeight: number): void => {
+        const maxViewerHeight = this.state.devToolsVisible
+            ? this.maxViewerHeight
+            : this.maxViewerHeight * 2;
+
         this.setState({
-            height: updatedHeight,
+            height: updatedHeight > maxViewerHeight ? maxViewerHeight : updatedHeight,
         });
     };
 
     private handleUpdateWidth = (updatedWidth: number): void => {
         this.setState({
-            width: updatedWidth,
+            width:
+                updatedWidth > this.maxViewerWidth ? this.maxViewerWidth : updatedWidth,
         });
     };
 
@@ -706,6 +809,18 @@ class Explorer extends Foundation<
         this.setState({
             devToolsVisible: !props.selected,
         });
+    };
+
+    private handlePivotUpdate = (activeTab: string): void => {
+        this.setState({
+            activePivotTab: activeTab,
+        });
+
+        if (activeTab === "code") {
+            window.setTimeout(() => {
+                this.createMonacoEditor();
+            });
+        }
     };
 
     /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
