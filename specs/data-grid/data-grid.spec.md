@@ -218,6 +218,58 @@ Default slot for items
 
 ## Implementation
 
+The most basic use case for this component would be to just pass it an array of objects for it to render.  
+
+For example given a grid component:
+```html
+ <fast-data-grid id="defaultGrid"></fast-data-grid>
+ ```
+
+ And some data:
+ ```js
+const baseRows: object[] = [
+    { name: "Rob", age: "19" },
+    { name: "Bob", age: "20" },
+];
+ ```
+
+ An author could pass the data to the component from a javascript function:
+
+```js
+onLoad(): void {
+   const defaultGrid: DataGrid | null = document.getElementById(
+        "defaultGrid"
+    ) as DataGrid;
+    if (defaultGrid !== null) {
+        defaultGrid.rowsData = baseRows;
+    }
+}
+```
+
+This renders a basic grid with a column titled "name" and another titled "age".  In addition to the title row there would be two rows of data populated with the values for name and age.  Note that data
+
+<TODO: Add image>
+
+The next level of customization involves changing the default columns that are created by the component when none are provided.
+
+And author would define the columns by providing an array of `DataGridColumn` objects to the component's `columnsData` property:
+
+```js
+const baseColumns: DataGridColumn[] = [
+    { columnDataKey: "name", title:"Player name", columnWidth: "1fr" },
+    { columnDataKey: "age", title:"Player age", columnWidth: "100px" },
+];
+
+...
+    defaultGrid.columnsData = baseColumns;
+...
+```
+
+Applying these columns to our previous example results in our columns having the new titles applied as well as having a fixed width for the "Player age" column.
+
+<TODO: Add image>
+
+
 - programmatically generated rows/cells will will be created using [repeat directives](https://fast.design/docs/fast-element/using-directives#the-repeat-directive)
 
 - individual cells can be customized using by passing a custom ViewTemplate through the `DataGridColumn` interface for the column in question. These templates are rendered in the light dom within the cell so that authors can create custom cells with interactive elements.
