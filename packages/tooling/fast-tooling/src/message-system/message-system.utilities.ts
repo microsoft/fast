@@ -81,6 +81,7 @@ function getValidationMessage(
                 action: MessageSystemValidationTypeAction.update,
                 dictionaryId: data.dictionaryId,
                 validationErrors: data.validationErrors,
+                options: data.options,
             };
         case MessageSystemValidationTypeAction.get:
             return {
@@ -88,6 +89,7 @@ function getValidationMessage(
                 action: MessageSystemValidationTypeAction.get,
                 dictionaryId: data.dictionaryId,
                 validationErrors: validation[data.dictionaryId],
+                options: data.options,
             };
     }
 }
@@ -105,6 +107,7 @@ function getDataDictionaryMessage(
                 action: MessageSystemDataDictionaryTypeAction.get,
                 dataDictionary,
                 activeDictionaryId,
+                options: data.options,
             };
         case MessageSystemDataDictionaryTypeAction.updateActiveId:
             activeDictionaryId = data.activeDictionaryId;
@@ -113,6 +116,7 @@ function getDataDictionaryMessage(
                 type: MessageSystemType.dataDictionary,
                 action: MessageSystemDataDictionaryTypeAction.updateActiveId,
                 activeDictionaryId,
+                options: data.options,
             };
     }
 }
@@ -130,6 +134,7 @@ function getNavigationDictionaryMessage(
                 action: MessageSystemNavigationDictionaryTypeAction.get,
                 navigationDictionary,
                 activeDictionaryId,
+                options: data.options,
             };
         case MessageSystemNavigationDictionaryTypeAction.updateActiveId:
             activeDictionaryId = data.activeDictionaryId;
@@ -138,6 +143,7 @@ function getNavigationDictionaryMessage(
                 type: MessageSystemType.navigationDictionary,
                 action: MessageSystemNavigationDictionaryTypeAction.updateActiveId,
                 activeDictionaryId,
+                options: data.options,
             };
     }
 }
@@ -179,6 +185,7 @@ function getDataMessage(data: DataMessageIncoming): DataMessageOutgoing {
                 dataDictionary,
                 navigation: navigationDictionary[0][activeDictionaryId],
                 navigationDictionary,
+                options: data.options,
             };
         case MessageSystemDataTypeAction.remove:
             dataDictionary[0][activeDictionaryId].data = getDataUpdatedWithoutSourceData({
@@ -197,6 +204,7 @@ function getDataMessage(data: DataMessageIncoming): DataMessageOutgoing {
                 dataDictionary,
                 navigation: navigationDictionary[0][activeDictionaryId],
                 navigationDictionary,
+                options: data.options,
             };
         case MessageSystemDataTypeAction.add:
             dataDictionary[0][activeDictionaryId].data = getDataUpdatedWithSourceData({
@@ -217,6 +225,7 @@ function getDataMessage(data: DataMessageIncoming): DataMessageOutgoing {
                 dataDictionary,
                 navigation: navigationDictionary[0][activeDictionaryId],
                 navigationDictionary,
+                options: data.options,
             };
         case MessageSystemDataTypeAction.update: {
             const dictionaryId: string =
@@ -244,6 +253,7 @@ function getDataMessage(data: DataMessageIncoming): DataMessageOutgoing {
                 dataDictionary,
                 navigation: navigationDictionary[0][dictionaryId],
                 navigationDictionary,
+                options: data.options,
             };
         }
         case MessageSystemDataTypeAction.addLinkedData: {
@@ -316,6 +326,7 @@ function getDataMessage(data: DataMessageIncoming): DataMessageOutgoing {
                 dataDictionary,
                 navigation: navigationDictionary[0][addLinkedDataDictionaryId],
                 navigationDictionary,
+                options: data.options,
             };
         }
         case MessageSystemDataTypeAction.removeLinkedData: {
@@ -373,6 +384,7 @@ function getDataMessage(data: DataMessageIncoming): DataMessageOutgoing {
                 navigation: navigationDictionary[0][activeDictionaryId],
                 navigationDictionary,
                 linkedDataIds,
+                options: data.options,
             };
         }
         case MessageSystemDataTypeAction.reorderLinkedData:
@@ -394,6 +406,7 @@ function getDataMessage(data: DataMessageIncoming): DataMessageOutgoing {
                 dataDictionary,
                 navigation: navigationDictionary[0][activeDictionaryId],
                 navigationDictionary,
+                options: data.options,
             };
     }
 }
@@ -411,6 +424,7 @@ function getNavigationMessage(
                 action: MessageSystemNavigationTypeAction.update,
                 activeDictionaryId: data.activeDictionaryId,
                 activeNavigationConfigId: data.activeNavigationConfigId,
+                options: data.options,
             };
         case MessageSystemNavigationTypeAction.get:
             return {
@@ -419,6 +433,7 @@ function getNavigationMessage(
                 activeDictionaryId,
                 activeNavigationConfigId,
                 navigation: navigationDictionary[0][activeDictionaryId],
+                options: data.options,
             };
     }
 }
@@ -485,6 +500,7 @@ export function getMessage<C = {}>(
                 schema: schemaDictionary[dataDictionary[0][activeDictionaryId].schemaId],
                 schemaDictionary,
                 historyLimit: history.limit,
+                options: data.options,
             });
     }
 }
