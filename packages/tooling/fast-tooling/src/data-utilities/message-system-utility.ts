@@ -1,4 +1,4 @@
-import { MessageSystem } from "src/message-system";
+import { MessageSystem } from "../message-system";
 import { MessageSystemUtilityAction } from "./message-system-utility-action";
 
 export interface IdentifiedAction {
@@ -15,7 +15,14 @@ export interface IdentifiedAction {
     error: string | null;
 }
 
-export interface MessageSystemUtilityUtilityConfig<C> {
+export interface ActionNotFound {
+    /**
+     * The error when the action can't be found
+     */
+    error: string;
+}
+
+export interface MessageSystemUtilityConfig<C> {
     /**
      * The message system
      * used for sending and receiving shortcuts to the message system
@@ -49,7 +56,7 @@ export abstract class MessageSystemUtility<C> {
      * Register this utility with the message system
      * This should be called during construction
      */
-    public registerMessageSystem(config: MessageSystemUtilityUtilityConfig<C>): void {
+    public registerMessageSystem(config: MessageSystemUtilityConfig<C>): void {
         if (config.messageSystem !== undefined) {
             this.messageSystemConfig = {
                 onMessage: this.handleMessageSystem,
@@ -71,6 +78,12 @@ export abstract class MessageSystemUtility<C> {
     abstract handleMessageSystem(e: MessageEvent): void;
 
     /**
+     * The utility should get any config to be passed to
+     * the registered actions
+     */
+    abstract getActionConfig(id: string): C;
+
+    /**
      * Returns an action with a specific ID that can be run
      */
     public action = (id: string): IdentifiedAction => {
@@ -82,7 +95,7 @@ export abstract class MessageSystemUtility<C> {
 
         if (action) {
             return {
-                run: action.getAction(),
+                run: action.getAction(this.getActionConfig(id)),
                 error: null,
             };
         }
