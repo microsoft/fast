@@ -8,6 +8,6 @@ import { Disclosure } from "./disclosure";
 export const DisclosureTemplate = html<Disclosure>`
     <template>
         <slot name="invoker"></slot>
-        <slot name="content"></slot>
+        <slot></slot>
     </template>
 `;

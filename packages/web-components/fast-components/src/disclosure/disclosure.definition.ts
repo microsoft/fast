@@ -29,7 +29,7 @@ export const fastDisclosureDefinition: WebComponentDefinition = {
                     description: "The invoker slot",
                 },
                 {
-                    name: "content",
+                    name: "",
                     description: "The content slot",
                 },
             ],

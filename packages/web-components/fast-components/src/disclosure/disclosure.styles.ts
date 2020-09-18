@@ -13,7 +13,7 @@ export const DisclosureStyles = css`
         margin: 0;
     }
 
-    :host ::slotted([slot="content"]) {
+    :host ::slotted(*) {
         overflow: hidden;
         transition: max-height 0.35s, padding 0.35s, opacity 0.35s;
     }

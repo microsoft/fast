@@ -13,7 +13,7 @@ custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-comp
 <fast-design-system-provider use-defaults>
     <fast-disclosure>
         <button type="button" slot="invoker">More about cars</button>
-        <div slot="content">
+        <div>
             Most definitions of cars say that they run primarily on roads, seat one to
             eight people, have four tires, and mainly transport people rather than goods.
         </div>

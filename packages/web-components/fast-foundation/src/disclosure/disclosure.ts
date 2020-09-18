@@ -73,7 +73,7 @@ export class Disclosure extends FASTElement {
 
     protected get contentNode(): HTMLElement {
         return Array.from(this.children).find(
-            child => child.slot === "content"
+            child => child.slot !== "invoker"
         ) as HTMLElement;
     }
 
