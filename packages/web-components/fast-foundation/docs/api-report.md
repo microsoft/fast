@@ -393,11 +393,12 @@ export abstract class FormAssociated<T extends HTMLInputElement | HTMLTextAreaEl
     protected abstract proxy: T;
     reportValidity(): boolean;
     required: boolean;
-    protected requiredChanged(): void;
+    protected requiredChanged(prev: boolean, next: boolean): void;
     protected setFormValue(value: File | string | FormData | null, state?: File | string | FormData | null): void;
     // Warning: (ae-forgotten-export) The symbol "ValidityStateFlags" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "HTMLElement" needs to be exported by the entry point index.d.ts
     setValidity(flags: ValidityStateFlags, message?: string, anchor?: HTMLElement_2): void;
+    protected validate(): void;
     get validationMessage(): string;
     get validity(): ValidityState;
     value: string;
@@ -823,14 +824,10 @@ export class TextField extends FormAssociated<HTMLInputElement> {
     // (undocumented)
     protected proxy: HTMLInputElement;
     readOnly: boolean;
-    // (undocumented)
-    protected requiredChanged(): void;
     size: number;
     spellcheck: boolean;
     type: TextFieldType;
-    // (undocumented)
-    protected valueChanged(prev: string, next: string): void;
-}
+    }
 
 // @internal
 export interface TextField extends StartEnd, DelegatesARIATextbox {
