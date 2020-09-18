@@ -15,5 +15,6 @@ export const DisclosureStyles = css`
 
     :host ::slotted([slot="content"]) {
         overflow: hidden;
+        transition: max-height 0.35s, padding 0.35s, opacity 0.35s;
     }
 `;

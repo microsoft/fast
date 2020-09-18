@@ -469,8 +469,6 @@ export class FASTDialog extends Dialog {
 
 // @public
 export class FASTDisclosure extends Disclosure {
-    // (undocumented)
-    connectedCallback(): void;
     // @override
     hideAnimation({ contentNode }: any): Promise<void>;
     // @override

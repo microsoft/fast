@@ -31,14 +31,6 @@ export class FASTDisclosure extends Disclosure {
     @attr({ mode: "boolean" })
     public transitioning: boolean;
 
-    public connectedCallback(): void {
-        super.connectedCallback();
-        this.contentNode.style.setProperty(
-            "transition",
-            "max-height 0.35s, padding 0.35s, opacity 0.35s"
-        );
-    }
-
     /**
      * Trigger show animation and wait for transition to be finished.
      * @param options - element node and its options
