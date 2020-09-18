@@ -27,8 +27,13 @@ export const SkeletonStyles = css`
   object {
     position: absolute;
     width: 100%;
-    height: 100%;
+    height: auto;
     z-index: 1000
+  }
+
+  object img {
+    width: 100%;
+    height: auto;
   }
   
   ::slotted(.shimmer) {
