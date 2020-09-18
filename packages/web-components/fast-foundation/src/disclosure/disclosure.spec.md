@@ -56,10 +56,10 @@ The disclosure component can easily be extended for customization, for example a
 ```
 
 -   _Slot Names_
+    -   default: extra content to be placed
     -   invoker: button or custom component that mimics native button behavior
-    -   content: extra content to be placed
 -   _Slotted Content/Slotted Classes_
-    -   content: `:host ::slotted([slot="content"])` to hide extra content by default
+    -   default: `:host ::slotted(*)` to hide extra content by default
 
 ---
 
@@ -68,7 +68,7 @@ The disclosure component can easily be extended for customization, for example a
 ```html
 <fast-disclosure>
     <button type="button" slot="invoker">More about Green Arrow</button>
-    <div slot="content">
+    <div>
         Green Arrow is a fictional superhero who appears in comic books published by DC
         Comics. Created by Mort Weisinger and designed by George Papp, he first appeared
         in More Fun Comics #73 in November 1941. His real name is Oliver Jonas Queen, a
