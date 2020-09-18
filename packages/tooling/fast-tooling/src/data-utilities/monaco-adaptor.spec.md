@@ -2,33 +2,33 @@
 
 These are spec files for utilities relating to the use of the [Monaco Editor](https://github.com/microsoft/monaco-editor).
 
-## `MonacoEditorDataDictionaryAdaptor`
+## `MonacoAdaptor`
 
 The adaptor will function as a go-between to convert data structures inherent to the Monaco editor, and the `DataDictionary`.
 
 ### Initialization
 
 Steps:
-1. `MonacoEditorDataDictionaryAdaptor` registers with the provided `MessageSystem`
+1. `MonacoAdaptor` registers with the provided `MessageSystem`
 2. An initialization message is sent via the `MessageSystem`
-3. The internals of the `MonacoEditorDataDictionaryAdaptor` convert the supplied `DataDictionary` from the initialization into a string array of `HTML` using the `mapDataDictionaryToMonacoEditorHTML` utility in conjunction with the `js-beautify` (a dependency of the `vscode-html-languageservice`) and separating out each newline as its own array item
-4. The `HTML` string array is then retrieved from the `onInitialize` callback of the `MonacoEditorDataDictionaryAdaptor` and set as the `value` of the model in the Monaco editor
+3. The internals of the `MonacoAdaptor` convert the supplied `DataDictionary` from the initialization into a string array of `HTML` using the `mapDataDictionaryToMonacoEditorHTML` utility in conjunction with the `js-beautify` (a dependency of the `vscode-html-languageservice`) and separating out each newline as its own array item
+4. The `HTML` string array is then retrieved from the `onInitialize` callback of the `MonacoAdaptor` and set as the `value` of the model in the Monaco editor
 5. Subsequent updates follow the [Editing the Data Dictionary](#editing-the-data-dictionary) and [Editing using the Monaco Editor](#editing-using-the-monaco-editor) sections
 
-### `MonacoEditorDataDictionaryAdaptor`
+### `MonacoAdaptor`
 
-The `MonacoEditorDataDictionaryAdaptor` will serve as an instantiated class that takes the FAST message system and actions as properties. It will store the string value from Monaco and use this as a baseline for retrieving `DataDictionary`. To do this it will make use of the [vscode-html-languageservice](https://github.com/microsoft/vscode-html-languageservice) to parse into the `HTMLDocument` interface from a `TextDocument`.
+The `MonacoAdaptor` will serve as an instantiated class that takes the FAST message system and actions as properties. It will store the string value from Monaco and use this as a baseline for retrieving `DataDictionary`. To do this it will make use of the [vscode-html-languageservice](https://github.com/microsoft/vscode-html-languageservice) to parse into the `HTMLDocument` interface from a `TextDocument`.
 
 All `actions` are a subset of functionality and will borrow from the nomenclature established by Monaco. Here we will use `actions` and a string `id` representing the registered action. These will all be related to retrieving a value to be used by Monaco or FAST with each having `monaco` or `fast` as a prefix. All `actions` are promises and can be chained.
 
 ### Editing the Data Dictionary
 
-When the `DataDictionary` has been updated through the `MessageSystem`, this should be registered by the `MonacoEditorDataDictionaryAdaptor`.
+When the `DataDictionary` has been updated through the `MessageSystem`, this should be registered by the `MonacoAdaptor`.
 
 Example of an implementation that triggers a Monaco editor update when a `DataDictionary` has been updated:
 
 ```typescript
-const adaptor = new MonacoEditorDataDictionaryAdaptor({
+const adaptor = new MonacoAdaptor({
     /**
      * the FAST tooling message system web worker
      * as defined in https://github.com/microsoft/fast/tree/master/packages/tooling/fast-tooling#message-system
@@ -68,7 +68,7 @@ When the `onDidChangeContent` for the Monaco editor model is called, an `action`
 Example of the implementation that triggers a `MessageSystem` update targeting the `DataDictionary`:
 
 ```typescript
-const adaptor = new MonacoEditorDataDictionaryAdaptor({
+const adaptor = new MonacoAdaptor({
     messageSystem: fastMessageSystem,
     actions: [
         {
