@@ -823,10 +823,14 @@ export class TextField extends FormAssociated<HTMLInputElement> {
     // (undocumented)
     protected proxy: HTMLInputElement;
     readOnly: boolean;
+    // (undocumented)
+    protected requiredChanged(): void;
     size: number;
     spellcheck: boolean;
     type: TextFieldType;
-    }
+    // (undocumented)
+    protected valueChanged(prev: string, next: string): void;
+}
 
 // @internal
 export interface TextField extends StartEnd, DelegatesARIATextbox {
