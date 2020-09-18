@@ -16,6 +16,10 @@ export class Avatar extends FASTElement {
    * HTML Attribute: name
    */
   @attr public name: string;
+  protected nameChanged(): void {
+    const result = this.name?.match(/\b\w/g) || [];
+    this.initials = ((result.shift() || '') + (result.pop() || '')).toUpperCase();
+  }
 
   /**
    * Indicates the Avatar should have initials.
@@ -25,17 +29,6 @@ export class Avatar extends FASTElement {
    * HTML Attribute: initials
    */
   @attr public initials: string;
-
-  /**
-   * Invoked when the `name` property changes.
-   * 
-   * @public
-   * @remarks
-   */
-  protected nameChanged(): void {
-    const result = this.name?.match(/\b\w/g) || [];
-    this.initials = ((result.shift() || '') + (result.pop() || '')).toUpperCase();
-  }
   
   /**
    * Indicates the Avatar should have a color fill.
