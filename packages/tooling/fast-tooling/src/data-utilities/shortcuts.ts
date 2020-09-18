@@ -56,4 +56,19 @@ export class Shortcuts extends MessageSystemUtility<ShortcutActionCallbackConfig
                 break;
         }
     };
+
+    getActionConfig = (id: string): ShortcutActionCallbackConfig => {
+        this.registeredActions.forEach((action: ShortcutAction) => {
+            if (action.id === id) {
+                return {
+                    name: action.name,
+                    keys: action.keys,
+                };
+            }
+        });
+
+        return {
+            error: `No such action found.`,
+        };
+    };
 }
