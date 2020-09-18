@@ -158,6 +158,31 @@ describe("mapVSCodeParsedHTMLToDataDictionary", () => {
             },
         });
     });
+    test("should return a DataDictionary containing an HTML element with a JSON schema unspecified null attribute if an HTML element with a null attribute has been passed", () => {
+        const value = mapVSCodeParsedHTMLToDataDictionary({
+            value: ["<input data-id />"],
+            schemaDictionary: {
+                [inputSchema.id]: inputSchema,
+            },
+        });
+        const root: string = value[1];
+        expect(value[0][root]).toEqual({
+            schemaId: inputSchema.id,
+            data: {
+                "data-id": true,
+            },
+        });
+    });
+    test("should return a DataDictionary containing an HTML element with a JSON schema unspecified half written string attribute if an HTML element with an incomplete attribute has been passed", () => {
+        expect(() => {
+            mapVSCodeParsedHTMLToDataDictionary({
+                value: ["<input data-id= bar />"],
+                schemaDictionary: {
+                    [inputSchema.id]: inputSchema,
+                },
+            });
+        }).not.toThrow();
+    });
     test("should return a DataDictionary containing an HTML element nested inside another HTML element", () => {
         const value = mapVSCodeParsedHTMLToDataDictionary({
             value: ["<div>", "<input />", "</div>"],
