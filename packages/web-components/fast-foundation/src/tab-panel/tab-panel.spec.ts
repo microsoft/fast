@@ -9,11 +9,17 @@ import { customElement } from "@microsoft/fast-element";
 })
 class FASTTabPanel extends TabPanel {}
 
+async function setup() {
+    const { element, connect, disconnect } = await fixture<FASTTabPanel>(
+        "fast-tab-panel"
+    );
+
+    return { element, connect, disconnect };
+}
+
 describe("TabPanel", () => {
     it("should have a role of `tabpanel`", async () => {
-        const { element, connect, disconnect } = await fixture<FASTTabPanel>(
-            "fast-tab-panel"
-        );
+        const { element, connect, disconnect } = await setup();
 
         await connect();
 
@@ -23,9 +29,7 @@ describe("TabPanel", () => {
     });
 
     it("should have a slot attribute of `tabpanel`", async () => {
-        const { element, connect, disconnect } = await fixture<FASTTabPanel>(
-            "fast-tab-panel"
-        );
+        const { element, connect, disconnect } = await setup();
 
         await connect();
 

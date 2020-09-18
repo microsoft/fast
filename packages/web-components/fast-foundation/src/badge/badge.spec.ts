@@ -9,13 +9,19 @@ import { DOM, customElement } from "@microsoft/fast-element";
 })
 class FASTBadge extends Badge {}
 
+async function setup() {
+    const { element, connect, disconnect } = await fixture<FASTBadge>("fast-badge");
+
+    return { element, connect, disconnect };
+}
+
 let expectedFill = (fill?: string) => `background-color: var(--badge-fill-${fill});`;
 
 let expectedColor = (color?: string) => `color: var(--badge-color-${color});`;
 
 describe("Badge", () => {
     it("should set both the background-color and fill on the control as an inline style when `fill` and `color` are provided", async () => {
-        const { element, connect, disconnect } = await fixture<FASTBadge>("fast-badge");
+        const { element, connect, disconnect } = await setup();
         const fill: string = "foo";
         const color: string = "bar";
 
@@ -32,7 +38,7 @@ describe("Badge", () => {
     });
 
     it("should set the background-color on the control as an inline style when `fill` is provided", async () => {
-        const { element, connect, disconnect } = await fixture<FASTBadge>("fast-badge");
+        const { element, connect, disconnect } = await setup();
         const fill: string = "foo";
 
         element.fill = fill;
@@ -47,7 +53,7 @@ describe("Badge", () => {
     });
 
     it("should NOT set the background-color on the control as an inline style when `fill` is NOT provided", async () => {
-        const { element, connect, disconnect } = await fixture<FASTBadge>("fast-badge");
+        const { element, connect, disconnect } = await setup();
 
         await connect();
 
@@ -59,7 +65,7 @@ describe("Badge", () => {
     });
 
     it("should set the color on the control as an inline style when `color` is provided", async () => {
-        const { element, connect, disconnect } = await fixture<FASTBadge>("fast-badge");
+        const { element, connect, disconnect } = await setup();
         const color: string = "bar";
 
         element.color = color;
@@ -74,7 +80,7 @@ describe("Badge", () => {
     });
 
     it("should NOT set the color on the control as an inline style when `color` is NOT provided", async () => {
-        const { element, connect, disconnect } = await fixture<FASTBadge>("fast-badge");
+        const { element, connect, disconnect } = await setup();
 
         await connect();
 
@@ -86,7 +92,7 @@ describe("Badge", () => {
     });
 
     it("should NOT set an inline style when neither `fill` or `color` are provided", async () => {
-        const { element, connect, disconnect } = await fixture<FASTBadge>("fast-badge");
+        const { element, connect, disconnect } = await setup();
 
         await connect();
 

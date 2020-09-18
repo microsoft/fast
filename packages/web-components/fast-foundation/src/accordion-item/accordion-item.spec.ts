@@ -3,17 +3,23 @@ import { AccordionItem, AccordionItemTemplate as template } from "./index";
 import { fixture } from "../fixture";
 import { customElement } from "@microsoft/fast-element";
 
-describe("Accordion item", () => {
-    @customElement({
-        name: "fast-accordion-item",
-        template,
-    })
-    class FASTAccordionItem extends AccordionItem {}
+@customElement({
+    name: "fast-accordion-item",
+    template,
+})
+class FASTAccordionItem extends AccordionItem {}
 
+async function setup() {
+    const { element, connect, disconnect } = await fixture<FASTAccordionItem>(
+        "fast-accordion-item"
+    );
+
+    return { element, connect, disconnect };
+}
+
+describe("Accordion item", () => {
     it("should set an `aria-level` to the heading when provided", async () => {
-        const { element, connect, disconnect } = await fixture<FASTAccordionItem>(
-            "fast-accordion-item"
-        );
+        const { element, connect, disconnect } = await setup();
 
         element.headinglevel = 4;
 
@@ -30,9 +36,7 @@ describe("Accordion item", () => {
     });
 
     it("should set a default heading level of 2 when NOT provided a `headinglevel`", async () => {
-        const { element, connect, disconnect } = await fixture<FASTAccordionItem>(
-            "fast-accordion-item"
-        );
+        const { element, connect, disconnect } = await setup();
 
         await connect();
 
@@ -47,9 +51,7 @@ describe("Accordion item", () => {
     });
 
     it("should add a class of `expanded` when expanded is true", async () => {
-        const { element, connect, disconnect } = await fixture<FASTAccordionItem>(
-            "fast-accordion-item"
-        );
+        const { element, connect, disconnect } = await setup();
 
         element.expanded = true;
 
@@ -61,9 +63,7 @@ describe("Accordion item", () => {
     });
 
     it("should NOT add a class of `expanded` when expanded is false", async () => {
-        const { element, connect, disconnect } = await fixture<FASTAccordionItem>(
-            "fast-accordion-item"
-        );
+        const { element, connect, disconnect } = await setup();
 
         element.expanded = false;
 
@@ -75,9 +75,7 @@ describe("Accordion item", () => {
     });
 
     it("should set `aria-expanded` value to false on the button when expanded is false", async () => {
-        const { element, connect, disconnect } = await fixture<FASTAccordionItem>(
-            "fast-accordion-item"
-        );
+        const { element, connect, disconnect } = await setup();
 
         element.expanded = false;
 
@@ -91,9 +89,7 @@ describe("Accordion item", () => {
     });
 
     it("should set `aria-expanded` value to false on the button when expanded is false", async () => {
-        const { element, connect, disconnect } = await fixture<FASTAccordionItem>(
-            "fast-accordion-item"
-        );
+        const { element, connect, disconnect } = await setup();
 
         element.expanded = true;
 
@@ -107,9 +103,7 @@ describe("Accordion item", () => {
     });
 
     it("should set `aria-expanded` value to false on the button when expanded is undefined", async () => {
-        const { element, connect, disconnect } = await fixture<FASTAccordionItem>(
-            "fast-accordion-item"
-        );
+        const { element, connect, disconnect } = await setup();
 
         await connect();
 
@@ -121,9 +115,7 @@ describe("Accordion item", () => {
     });
 
     it("should set `aria-labelledby` value on the region when the id attribute is provided", async () => {
-        const { element, connect, disconnect } = await fixture<FASTAccordionItem>(
-            "fast-accordion-item"
-        );
+        const { element, connect, disconnect } = await setup();
         const id: string = "testId";
 
         element.id = id;
@@ -140,9 +132,7 @@ describe("Accordion item", () => {
     });
 
     it("should set the id value on the button when the id attribute is provided", async () => {
-        const { element, connect, disconnect } = await fixture<FASTAccordionItem>(
-            "fast-accordion-item"
-        );
+        const { element, connect, disconnect } = await setup();
         const id: string = "testId";
 
         element.id = id;

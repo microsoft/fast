@@ -9,11 +9,16 @@ import { DOM, customElement, html } from "@microsoft/fast-element";
 })
 class FASTTabs extends Tabs {}
 
+async function setup() {
+    const { element, connect, disconnect } = await fixture<FASTTabs>("fast-tabs");
+
+    return { element, connect, disconnect };
+}
+
 // TODO: Need to add tests for keyboard handling, activeIndicator position, and focus managemen
 describe("Tabs", () => {
     it("should have an internal element with a role of `tablist`", async () => {
-        const { element, connect, disconnect } = await fixture<FASTTabs>("fast-tabs");
-
+        const { element, connect, disconnect } = await setup();
         await connect();
 
         expect(
@@ -24,8 +29,7 @@ describe("Tabs", () => {
     });
 
     it("should set a default value of `orientation` when orientation is not provided", async () => {
-        const { element, connect, disconnect } = await fixture<FASTTabs>("fast-tabs");
-
+        const { element, connect, disconnect } = await setup();
         await connect();
 
         expect(element.orientation).to.equal(`${TabsOrientation.horizontal}`);
@@ -34,8 +38,7 @@ describe("Tabs", () => {
     });
 
     it("should add a class equal to the `orientation` value", async () => {
-        const { element, connect, disconnect } = await fixture<FASTTabs>("fast-tabs");
-
+        const { element, connect, disconnect } = await setup();
         element.orientation = TabsOrientation.horizontal;
 
         await connect();
@@ -53,9 +56,8 @@ describe("Tabs", () => {
     });
 
     it("should set a property equal to activeIndicator when `activeIndicator` property is true", async () => {
-        const { element, connect, disconnect } = await fixture<FASTTabs>("fast-tabs");
-
-        element.activeindicator = false;
+        const { element, connect, disconnect } = await setup();
+        element.setAttribute("activeIndicator", "false");
 
         await connect();
 
@@ -65,8 +67,7 @@ describe("Tabs", () => {
     });
 
     it("should render an internal element with a class of 'activeIndicator' when `activeIndicator` is true", async () => {
-        const { element, connect, disconnect } = await fixture<FASTTabs>("fast-tabs");
-
+        const { element, connect, disconnect } = await setup();
         await connect();
 
         expect(element.shadowRoot?.querySelector(".activeIndicator")).to.exist;

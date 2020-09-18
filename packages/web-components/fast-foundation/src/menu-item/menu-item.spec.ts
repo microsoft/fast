@@ -11,12 +11,18 @@ import { KeyCodes } from "@microsoft/fast-web-utilities";
 })
 class FASTMenuItem extends MenuItem {}
 
+async function setup() {
+    const { element, connect, disconnect } = await fixture<FASTMenuItem>(
+        "fast-menu-item"
+    );
+
+    return { element, connect, disconnect };
+}
+
 // TODO: Add tests for keyboard handling
 describe("Menu item", () => {
     it("should include a role of menuitem when `menuitem` role is provided", async () => {
-        const { element, connect, disconnect } = await fixture<FASTMenuItem>(
-            "fast-menu-item"
-        );
+        const { element, connect, disconnect } = await setup();
         const role = MenuItemRole.menuitem;
 
         element.role = role;
@@ -29,9 +35,7 @@ describe("Menu item", () => {
     });
 
     it("should include a role of `menuitemcheckbox` when `menuitemcheckbox` role is provided", async () => {
-        const { element, connect, disconnect } = await fixture<FASTMenuItem>(
-            "fast-menu-item"
-        );
+        const { element, connect, disconnect } = await setup();
         const role = MenuItemRole.menuitemcheckbox;
 
         element.role = role;
@@ -44,9 +48,7 @@ describe("Menu item", () => {
     });
 
     it("should include a role of `menuitemradio` when `menuitemradio` role is provided", async () => {
-        const { element, connect, disconnect } = await fixture<FASTMenuItem>(
-            "fast-menu-item"
-        );
+        const { element, connect, disconnect } = await setup();
         const role = MenuItemRole.menuitemradio;
 
         element.role = role;
@@ -59,9 +61,7 @@ describe("Menu item", () => {
     });
 
     it("should include a role of `menuitem` by default when no role is provided", async () => {
-        const { element, connect, disconnect } = await fixture<FASTMenuItem>(
-            "fast-menu-item"
-        );
+        const { element, connect, disconnect } = await setup();
 
         await connect();
 
@@ -71,9 +71,7 @@ describe("Menu item", () => {
     });
 
     it("should set the `aria-disabled` attribute with the `disabled` value when provided", async () => {
-        const { element, connect, disconnect } = await fixture<FASTMenuItem>(
-            "fast-menu-item"
-        );
+        const { element, connect, disconnect } = await setup();
 
         element.disabled = true;
 
@@ -85,9 +83,7 @@ describe("Menu item", () => {
     });
 
     it("should set an `aria-expanded` attribute with the `expanded` value when provided", async () => {
-        const { element, connect, disconnect } = await fixture<FASTMenuItem>(
-            "fast-menu-item"
-        );
+        const { element, connect, disconnect } = await setup();
 
         element.expanded = true;
 
@@ -99,9 +95,7 @@ describe("Menu item", () => {
     });
 
     it("should set an `aria-checked` attribute with the `checked` value when provided to a menuitemcheckbox", async () => {
-        const { element, connect, disconnect } = await fixture<FASTMenuItem>(
-            "fast-menu-item"
-        );
+        const { element, connect, disconnect } = await setup();
 
         element.role = MenuItemRole.menuitemcheckbox;
         element.checked = true;
@@ -114,9 +108,7 @@ describe("Menu item", () => {
     });
 
     it("should NOT set an `aria-checked` attribute when checked is provided to a menuitem", async () => {
-        const { element, connect, disconnect } = await fixture<FASTMenuItem>(
-            "fast-menu-item"
-        );
+        const { element, connect, disconnect } = await setup();
 
         element.role = MenuItemRole.menuitem;
         element.checked = true;
@@ -130,9 +122,7 @@ describe("Menu item", () => {
 
     describe("events", () => {
         it("should fire an event on click", async () => {
-            const { element, connect, disconnect } = await fixture<FASTMenuItem>(
-                "fast-menu-item"
-            );
+            const { element, connect, disconnect } = await setup();
             let wasClicked: boolean = false;
 
             await connect();
@@ -153,9 +143,7 @@ describe("Menu item", () => {
         });
 
         it("should fire an event when spacebar is invoked", async () => {
-            const { element, connect, disconnect } = await fixture<FASTMenuItem>(
-                "fast-menu-item"
-            );
+            const { element, connect, disconnect } = await setup();
             let wasInvoked: boolean = false;
             const event = new KeyboardEvent("keydown", {
                 key: "space",
@@ -180,9 +168,7 @@ describe("Menu item", () => {
         });
 
         it("should fire an event when enter is invoked", async () => {
-            const { element, connect, disconnect } = await fixture<FASTMenuItem>(
-                "fast-menu-item"
-            );
+            const { element, connect, disconnect } = await setup();
             let wasInvoked: boolean = false;
             const event = new KeyboardEvent("keydown", {
                 key: "enter",

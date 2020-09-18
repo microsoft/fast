@@ -19,10 +19,28 @@ describe("Radio Group", () => {
     })
     class FASTRadio extends Radio {}
 
-    it("should have a role of `radiogroup`", async () => {
+    async function setup() {
         const { element, connect, disconnect } = await fixture<FASTRadioGroup>(
             "fast-radio-group"
         );
+
+        const radio1 = document.createElement("fast-radio");
+        const radio2 = document.createElement("fast-radio");
+        const radio3 = document.createElement("fast-radio");
+
+        (radio1 as FASTRadio).className = "one";
+        (radio2 as FASTRadio).className = "two";
+        (radio3 as FASTRadio).className = "three";
+
+        element.appendChild(radio1);
+        element.appendChild(radio2);
+        element.appendChild(radio3);
+
+        return { element, connect, disconnect, radio1, radio2, radio3 };
+    }
+
+    it("should have a role of `radiogroup`", async () => {
+        const { element, connect, disconnect } = await setup();
 
         await connect();
 
@@ -32,9 +50,7 @@ describe("Radio Group", () => {
     });
 
     it("should set a `horizontal` class on the 'positioning-region' when an orientation of `horizontal` is provided", async () => {
-        const { element, connect, disconnect } = await fixture<FASTRadioGroup>(
-            "fast-radio-group"
-        );
+        const { element, connect, disconnect } = await setup();
 
         element.orientation = Orientation.horizontal;
 
@@ -50,9 +66,7 @@ describe("Radio Group", () => {
     });
 
     it("should set a `vertical` class on the 'positioning-region' when an orientation of `vertical` is provided", async () => {
-        const { element, connect, disconnect } = await fixture<FASTRadioGroup>(
-            "fast-radio-group"
-        );
+        const { element, connect, disconnect } = await setup();
 
         element.orientation = Orientation.vertical;
 
@@ -68,9 +82,7 @@ describe("Radio Group", () => {
     });
 
     it("should set a default class on the 'positioning-region' of `horizontal` when no orientation is provided", async () => {
-        const { element, connect, disconnect } = await fixture<FASTRadioGroup>(
-            "fast-radio-group"
-        );
+        const { element, connect, disconnect } = await setup();
 
         await connect();
 
@@ -84,9 +96,7 @@ describe("Radio Group", () => {
     });
 
     it("should set the `aria-disabled` attribute equal to the `disabled` value", async () => {
-        const { element, connect, disconnect } = await fixture<FASTRadioGroup>(
-            "fast-radio-group"
-        );
+        const { element, connect, disconnect } = await setup();
 
         element.disabled = true;
 
@@ -104,9 +114,7 @@ describe("Radio Group", () => {
     });
 
     it("should NOT set a default `aria-disabled` value when `disabled` is not defined", async () => {
-        const { element, connect, disconnect } = await fixture<FASTRadioGroup>(
-            "fast-radio-group"
-        );
+        const { element, connect, disconnect } = await setup();
 
         await connect();
 
@@ -116,13 +124,8 @@ describe("Radio Group", () => {
     });
 
     it("should set all child radio elements to disabled when the`disabled` is passed", async () => {
-        const { element, connect, disconnect } = await fixture(html<FASTRadioGroup>`
-            <fast-radio-group disabled>
-                <fast-radio class="one">Foo</fast-radio>
-                <fast-radio class="two">Bar</fast-radio>
-                <fast-radio class="three">Baz</fast-radio>
-            </fast-radio-group>
-        `);
+        const { element, connect, disconnect } = await setup();
+        element.disabled = true;
 
         await connect();
         await DOM.nextUpdate();
@@ -177,13 +180,8 @@ describe("Radio Group", () => {
     });
 
     it("should set all child radio elements to readonly when the`readonly` is passed", async () => {
-        const { element, connect, disconnect } = await fixture(html<FASTRadioGroup>`
-            <fast-radio-group readonly>
-                <fast-radio class="one">Foo</fast-radio>
-                <fast-radio class="two">Bar</fast-radio>
-                <fast-radio class="three">Baz</fast-radio>
-            </fast-radio-group>
-        `);
+        const { element, connect, disconnect } = await setup();
+        element.readOnly = true;
 
         await connect();
         await DOM.nextUpdate();

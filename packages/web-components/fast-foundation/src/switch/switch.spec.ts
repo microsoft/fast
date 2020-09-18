@@ -10,9 +10,15 @@ import { KeyCodes } from "@microsoft/fast-web-utilities";
 })
 class FASTSwitch extends Switch {}
 
+async function setup() {
+    const { element, connect, disconnect } = await fixture<FASTSwitch>("fast-switch");
+
+    return { element, connect, disconnect };
+}
+
 describe("Switch", () => {
     it("should have a role of `switch`", async () => {
-        const { element, connect, disconnect } = await fixture<FASTSwitch>("fast-switch");
+        const { element, connect, disconnect } = await setup();
 
         await connect();
 
@@ -22,7 +28,7 @@ describe("Switch", () => {
     });
 
     it("should set the `aria-checked` attribute equal to the `checked` value", async () => {
-        const { element, connect, disconnect } = await fixture<FASTSwitch>("fast-switch");
+        const { element, connect, disconnect } = await setup();
 
         element.checked = true;
 
@@ -40,7 +46,7 @@ describe("Switch", () => {
     });
 
     it("should add a class of `checked` when checked is true", async () => {
-        const { element, connect, disconnect } = await fixture<FASTSwitch>("fast-switch");
+        const { element, connect, disconnect } = await setup();
 
         element.checked = true;
 
@@ -52,7 +58,7 @@ describe("Switch", () => {
     });
 
     it("should set a default `aria-checked` value when `checked` is not defined", async () => {
-        const { element, connect, disconnect } = await fixture<FASTSwitch>("fast-switch");
+        const { element, connect, disconnect } = await setup();
 
         await connect();
 
@@ -62,7 +68,7 @@ describe("Switch", () => {
     });
 
     it("should set the `aria-disabled` attribute equal to the `disabled` value", async () => {
-        const { element, connect, disconnect } = await fixture<FASTSwitch>("fast-switch");
+        const { element, connect, disconnect } = await setup();
 
         element.disabled = true;
 
@@ -80,7 +86,7 @@ describe("Switch", () => {
     });
 
     it("should set a default `aria-disabled` value when `disabled` is not defined", async () => {
-        const { element, connect, disconnect } = await fixture<FASTSwitch>("fast-switch");
+        const { element, connect, disconnect } = await setup();
 
         await connect();
 
@@ -90,7 +96,7 @@ describe("Switch", () => {
     });
 
     it("should set the `aria-readonly` attribute equal to the `readonly` value", async () => {
-        const { element, connect, disconnect } = await fixture<FASTSwitch>("fast-switch");
+        const { element, connect, disconnect } = await setup();
 
         element.readOnly = true;
 
@@ -108,7 +114,7 @@ describe("Switch", () => {
     });
 
     it("should NOT set a default `aria-readonly` value when `readonly` is not defined", async () => {
-        const { element, connect, disconnect } = await fixture<FASTSwitch>("fast-switch");
+        const { element, connect, disconnect } = await setup();
 
         await connect();
 
@@ -118,7 +124,7 @@ describe("Switch", () => {
     });
 
     it("should set a tabindex of 0 on the element", async () => {
-        const { element, connect, disconnect } = await fixture<FASTSwitch>("fast-switch");
+        const { element, connect, disconnect } = await setup();
 
         await connect();
 
@@ -128,7 +134,7 @@ describe("Switch", () => {
     });
 
     it("should NOT set a tabindex when disabled is `true`", async () => {
-        const { element, connect, disconnect } = await fixture<FASTSwitch>("fast-switch");
+        const { element, connect, disconnect } = await setup();
 
         element.disabled = true;
 
@@ -142,9 +148,10 @@ describe("Switch", () => {
 
     describe("label", () => {
         it("should add a class of `label` to the internal label when default slotted content exists", async () => {
-            const { element, connect, disconnect } = await fixture(html<FASTSwitch>`
-                <fast-switch><span>My Switch</span></fast-switch>
-            `);
+            const { element, connect, disconnect } = await setup();
+
+            const label = document.createElement("span");
+            element.appendChild(label);
 
             await connect();
 
@@ -156,9 +163,7 @@ describe("Switch", () => {
         });
 
         it("should add classes of `label` and `label__hidden` to the internal label when default slotted content exists", async () => {
-            const { element, connect, disconnect } = await fixture<FASTSwitch>(
-                "fast-switch"
-            );
+            const { element, connect, disconnect } = await setup();
 
             await connect();
 

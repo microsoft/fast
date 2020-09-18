@@ -9,11 +9,17 @@ import { customElement } from "@microsoft/fast-element";
 })
 class FASTTextField extends TextField {}
 
+async function setup() {
+    const { element, connect, disconnect } = await fixture<FASTTextField>(
+        "fast-text-field"
+    );
+
+    return { element, connect, disconnect };
+}
+
 describe("TextField", () => {
     it("should set the `autofocus` attribute on the internal control equal to the value provided", async () => {
-        const { element, connect, disconnect } = await fixture<FASTTextField>(
-            "fast-text-field"
-        );
+        const { element, connect, disconnect } = await setup();
         const autofocus = true;
 
         element.autofocus = autofocus;
@@ -27,9 +33,7 @@ describe("TextField", () => {
     });
 
     it("should set the `disabled` attribute on the internal control equal to the value provided", async () => {
-        const { element, connect, disconnect } = await fixture<FASTTextField>(
-            "fast-text-field"
-        );
+        const { element, connect, disconnect } = await setup();
         const disabled = true;
 
         element.disabled = disabled;
@@ -43,9 +47,7 @@ describe("TextField", () => {
     });
 
     it("should set the `list` attribute on the internal control equal to the value provided", async () => {
-        const { element, connect, disconnect } = await fixture<FASTTextField>(
-            "fast-text-field"
-        );
+        const { element, connect, disconnect } = await setup();
         const list = "listId";
 
         element.list = list;
@@ -59,9 +61,7 @@ describe("TextField", () => {
     });
 
     it("should set the `maxlength` attribute on the internal control equal to the value provided", async () => {
-        const { element, connect, disconnect } = await fixture<FASTTextField>(
-            "fast-text-field"
-        );
+        const { element, connect, disconnect } = await setup();
         const maxlength = 14;
 
         element.maxlength = maxlength;
@@ -75,9 +75,7 @@ describe("TextField", () => {
     });
 
     it("should set the `minlength` attribute on the internal control equal to the value provided", async () => {
-        const { element, connect, disconnect } = await fixture<FASTTextField>(
-            "fast-text-field"
-        );
+        const { element, connect, disconnect } = await setup();
         const minlength = 8;
 
         element.minlength = minlength;
@@ -91,9 +89,7 @@ describe("TextField", () => {
     });
 
     it("should set the `placeholder` attribute on the internal control equal to the value provided", async () => {
-        const { element, connect, disconnect } = await fixture<FASTTextField>(
-            "fast-text-field"
-        );
+        const { element, connect, disconnect } = await setup();
         const placeholder = "placeholder";
 
         element.placeholder = placeholder;
@@ -107,9 +103,7 @@ describe("TextField", () => {
     });
 
     it("should set the `readonly` attribute on the internal control equal to the value provided", async () => {
-        const { element, connect, disconnect } = await fixture<FASTTextField>(
-            "fast-text-field"
-        );
+        const { element, connect, disconnect } = await setup();
         const readonly = true;
 
         element.readOnly = readonly;
@@ -123,9 +117,7 @@ describe("TextField", () => {
     });
 
     it("should set the `required` attribute on the internal control equal to the value provided", async () => {
-        const { element, connect, disconnect } = await fixture<FASTTextField>(
-            "fast-text-field"
-        );
+        const { element, connect, disconnect } = await setup();
         const required = true;
 
         element.required = required;
@@ -139,9 +131,7 @@ describe("TextField", () => {
     });
 
     it("should set the `size` attribute on the internal control equal to the value provided", async () => {
-        const { element, connect, disconnect } = await fixture<FASTTextField>(
-            "fast-text-field"
-        );
+        const { element, connect, disconnect } = await setup();
         const size = 8;
 
         element.size = size;
@@ -155,9 +145,7 @@ describe("TextField", () => {
     });
 
     it("should set the `spellcheck` attribute on the internal control equal to the value provided", async () => {
-        const { element, connect, disconnect } = await fixture<FASTTextField>(
-            "fast-text-field"
-        );
+        const { element, connect, disconnect } = await setup();
         const spellcheck = true;
 
         element.spellcheck = spellcheck;
@@ -172,9 +160,7 @@ describe("TextField", () => {
 
     describe("Delegates ARIA textbox", () => {
         it("should set the `aria-atomic` attribute on the internal control when provided", async () => {
-            const { element, connect, disconnect } = await fixture<FASTTextField>(
-                "fast-text-field"
-            );
+            const { element, connect, disconnect } = await setup();
             const ariaAtomic = "true";
 
             element.ariaAtomic = ariaAtomic;
@@ -189,9 +175,7 @@ describe("TextField", () => {
         });
 
         it("should set the `aria-busy` attribute on the internal control when provided", async () => {
-            const { element, connect, disconnect } = await fixture<FASTTextField>(
-                "fast-text-field"
-            );
+            const { element, connect, disconnect } = await setup();
             const ariaBusy = "false";
 
             element.ariaBusy = ariaBusy;
@@ -206,9 +190,7 @@ describe("TextField", () => {
         });
 
         it("should set the `aria-controls` attribute on the internal control when provided", async () => {
-            const { element, connect, disconnect } = await fixture<FASTTextField>(
-                "fast-text-field"
-            );
+            const { element, connect, disconnect } = await setup();
             const ariaControls = "testId";
 
             element.ariaControls = ariaControls;
@@ -225,9 +207,7 @@ describe("TextField", () => {
         });
 
         it("should set the `aria-current` attribute on the internal control when provided", async () => {
-            const { element, connect, disconnect } = await fixture<FASTTextField>(
-                "fast-text-field"
-            );
+            const { element, connect, disconnect } = await setup();
             const ariaCurrent = "page";
 
             element.ariaCurrent = ariaCurrent;
@@ -244,9 +224,7 @@ describe("TextField", () => {
         });
 
         it("should set the `aria-describedBy` attribute on the internal control when provided", async () => {
-            const { element, connect, disconnect } = await fixture<FASTTextField>(
-                "fast-text-field"
-            );
+            const { element, connect, disconnect } = await setup();
             const ariaDescribedby = "testId";
 
             element.ariaDescribedby = ariaDescribedby;
@@ -263,9 +241,7 @@ describe("TextField", () => {
         });
 
         it("should set the `aria-details` attribute on the internal control when provided", async () => {
-            const { element, connect, disconnect } = await fixture<FASTTextField>(
-                "fast-text-field"
-            );
+            const { element, connect, disconnect } = await setup();
             const ariaDetails = "testId";
 
             element.ariaDetails = ariaDetails;
@@ -282,9 +258,7 @@ describe("TextField", () => {
         });
 
         it("should set the `aria-disabled` attribute on the internal control when provided", async () => {
-            const { element, connect, disconnect } = await fixture<FASTTextField>(
-                "fast-text-field"
-            );
+            const { element, connect, disconnect } = await setup();
             const ariaDisabled = "true";
 
             element.ariaDisabled = ariaDisabled;
@@ -301,9 +275,7 @@ describe("TextField", () => {
         });
 
         it("should set the `aria-errormessage` attribute on the internal control when provided", async () => {
-            const { element, connect, disconnect } = await fixture<FASTTextField>(
-                "fast-text-field"
-            );
+            const { element, connect, disconnect } = await setup();
             const ariaErrormessage = "test";
 
             element.ariaErrormessage = ariaErrormessage;
@@ -320,9 +292,7 @@ describe("TextField", () => {
         });
 
         it("should set the `aria-flowto` attribute on the internal control when provided", async () => {
-            const { element, connect, disconnect } = await fixture<FASTTextField>(
-                "fast-text-field"
-            );
+            const { element, connect, disconnect } = await setup();
             const ariaFlowto = "testId";
 
             element.ariaFlowto = ariaFlowto;
@@ -337,9 +307,7 @@ describe("TextField", () => {
         });
 
         it("should set the `aria-haspopup` attribute on the internal control when provided", async () => {
-            const { element, connect, disconnect } = await fixture<FASTTextField>(
-                "fast-text-field"
-            );
+            const { element, connect, disconnect } = await setup();
             const ariaHaspopup = "true";
 
             element.ariaHaspopup = ariaHaspopup;
@@ -356,9 +324,7 @@ describe("TextField", () => {
         });
 
         it("should set the `aria-hidden` attribute on the internal control when provided", async () => {
-            const { element, connect, disconnect } = await fixture<FASTTextField>(
-                "fast-text-field"
-            );
+            const { element, connect, disconnect } = await setup();
             const ariaHidden = "true";
 
             element.ariaHidden = ariaHidden;
@@ -373,9 +339,7 @@ describe("TextField", () => {
         });
 
         it("should set the `aria-invalid` attribute on the internal control when provided", async () => {
-            const { element, connect, disconnect } = await fixture<FASTTextField>(
-                "fast-text-field"
-            );
+            const { element, connect, disconnect } = await setup();
             const ariaInvalid = "spelling";
 
             element.ariaInvalid = ariaInvalid;
@@ -392,9 +356,7 @@ describe("TextField", () => {
         });
 
         it("should set the `aria-keyshortcuts` attribute on the internal control when provided", async () => {
-            const { element, connect, disconnect } = await fixture<FASTTextField>(
-                "fast-text-field"
-            );
+            const { element, connect, disconnect } = await setup();
             const ariaKeyshortcuts = "F4";
 
             element.ariaKeyshortcuts = ariaKeyshortcuts;
@@ -411,9 +373,7 @@ describe("TextField", () => {
         });
 
         it("should set the `aria-label` attribute on the internal control when provided", async () => {
-            const { element, connect, disconnect } = await fixture<FASTTextField>(
-                "fast-text-field"
-            );
+            const { element, connect, disconnect } = await setup();
             const ariaLabel = "Foo label";
 
             element.ariaLabel = ariaLabel;
@@ -428,9 +388,7 @@ describe("TextField", () => {
         });
 
         it("should set the `aria-labelledby` attribute on the internal control when provided", async () => {
-            const { element, connect, disconnect } = await fixture<FASTTextField>(
-                "fast-text-field"
-            );
+            const { element, connect, disconnect } = await setup();
             const ariaLabelledby = "testId";
 
             element.ariaLabelledby = ariaLabelledby;
@@ -447,9 +405,7 @@ describe("TextField", () => {
         });
 
         it("should set the `aria-live` attribute on the internal control when provided", async () => {
-            const { element, connect, disconnect } = await fixture<FASTTextField>(
-                "fast-text-field"
-            );
+            const { element, connect, disconnect } = await setup();
             const ariaLive = "polite";
 
             element.ariaLive = ariaLive;
@@ -464,9 +420,7 @@ describe("TextField", () => {
         });
 
         it("should set the `aria-owns` attribute on the internal control when provided", async () => {
-            const { element, connect, disconnect } = await fixture<FASTTextField>(
-                "fast-text-field"
-            );
+            const { element, connect, disconnect } = await setup();
             const ariaOwns = "testId";
 
             element.ariaOwns = ariaOwns;
@@ -481,9 +435,7 @@ describe("TextField", () => {
         });
 
         it("should set the `aria-relevant` attribute on the internal control when provided", async () => {
-            const { element, connect, disconnect } = await fixture<FASTTextField>(
-                "fast-text-field"
-            );
+            const { element, connect, disconnect } = await setup();
             const ariaRelevant = "removals";
 
             element.ariaRelevant = ariaRelevant;
@@ -500,9 +452,7 @@ describe("TextField", () => {
         });
 
         it("should set the `aria-roledescription` attribute on the internal control when provided", async () => {
-            const { element, connect, disconnect } = await fixture<FASTTextField>(
-                "fast-text-field"
-            );
+            const { element, connect, disconnect } = await setup();
             const ariaRoledescription = "slide";
 
             element.ariaRoledescription = ariaRoledescription;
@@ -521,9 +471,7 @@ describe("TextField", () => {
 
     describe("events", () => {
         it("should fire a change event the internal control emits a change event", async () => {
-            const { element, connect, disconnect } = await fixture<FASTTextField>(
-                "fast-text-field"
-            );
+            const { element, connect, disconnect } = await setup();
             const event = new Event("change", {
                 key: "a",
             } as KeyboardEventInit);

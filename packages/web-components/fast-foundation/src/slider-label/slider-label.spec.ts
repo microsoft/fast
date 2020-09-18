@@ -17,12 +17,18 @@ class FASTSlider extends Slider {}
 })
 class FASTSliderLabel extends SliderLabel {}
 
+async function setup() {
+    const { element, connect, disconnect } = await fixture<FASTSliderLabel>(
+        "fast-slider-label"
+    );
+
+    return { element, connect, disconnect };
+}
+
 // TODO: Need to add tests for positioning and slider configuration
 describe("Slider", () => {
     it("should set the `aria-disabled` attribute when `disabled` value is true", async () => {
-        const { element, connect, disconnect } = await fixture<FASTSliderLabel>(
-            "fast-slider-label"
-        );
+        const { element, connect, disconnect } = await setup();
 
         element.disabled = true;
 
@@ -34,9 +40,7 @@ describe("Slider", () => {
     });
 
     it("should NOT set a default `aria-disabled` value when `disabled` is not defined", async () => {
-        const { element, connect, disconnect } = await fixture<FASTSliderLabel>(
-            "fast-slider-label"
-        );
+        const { element, connect, disconnect } = await setup();
 
         await connect();
 
@@ -46,17 +50,15 @@ describe("Slider", () => {
     });
 
     it("should add a class equal to the `sliderOrientation` value", async () => {
-        const { element, connect, disconnect } = await fixture<FASTSliderLabel>(
-            "fast-slider-label"
-        );
+        const { element, connect, disconnect } = await setup();
 
-        element.sliderOrientation = Orientation.horizontal;
+        (element as FASTSliderLabel).sliderOrientation = Orientation.horizontal;
 
         await connect();
 
         expect(element.classList.contains(`${Orientation.horizontal}`)).to.equal(true);
 
-        element.sliderOrientation = Orientation.vertical;
+        (element as FASTSliderLabel).sliderOrientation = Orientation.vertical;
 
         await DOM.nextUpdate();
 
@@ -65,9 +67,7 @@ describe("Slider", () => {
     });
 
     it("should add an element with a class of `mark` by default", async () => {
-        const { element, connect, disconnect } = await fixture<FASTSliderLabel>(
-            "fast-slider-label"
-        );
+        const { element, connect, disconnect } = await setup();
 
         await connect();
 
@@ -77,9 +77,7 @@ describe("Slider", () => {
     });
 
     it("should NOT add an element with a class of `mark` when `hideMark` is true", async () => {
-        const { element, connect, disconnect } = await fixture<FASTSliderLabel>(
-            "fast-slider-label"
-        );
+        const { element, connect, disconnect } = await setup();
 
         element.hideMark = true;
 

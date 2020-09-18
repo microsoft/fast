@@ -10,9 +10,15 @@ import { DividerRole } from "./divider";
 })
 class FASTDivider extends Divider {}
 
+async function setup() {
+    const { element, connect, disconnect } = await fixture<Divider>("fast-divider");
+
+    return { element, connect, disconnect };
+}
+
 describe("Divider", () => {
     it("should include a role attribute equal to the role provided", async () => {
-        const { element, connect, disconnect } = await fixture<Divider>("fast-divider");
+        const { element, connect, disconnect } = await setup();
 
         element.role = DividerRole.separator;
 
@@ -30,7 +36,7 @@ describe("Divider", () => {
     });
 
     it("should include a default role of `separator` if no role is passed", async () => {
-        const { element, connect, disconnect } = await fixture<Divider>("fast-divider");
+        const { element, connect, disconnect } = await setup();
 
         await connect();
         await DOM.nextUpdate();

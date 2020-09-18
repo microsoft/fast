@@ -10,10 +10,16 @@ import { KeyCodes } from "@microsoft/fast-web-utilities";
 })
 class FASTDialog extends Dialog {}
 
+async function setup() {
+    const { element, connect, disconnect } = await fixture<Dialog>("fast-dialog");
+
+    return { element, connect, disconnect };
+}
+
 // TODO: Add tests for focus management
 describe("Dialog", () => {
     it("should include a role of `dialog` on the control", async () => {
-        const { element, connect, disconnect } = await fixture<Dialog>("fast-dialog");
+        const { element, connect, disconnect } = await setup();
 
         await connect();
 
@@ -25,7 +31,7 @@ describe("Dialog", () => {
     });
 
     it("should add an attribute of `hidden` when passed", async () => {
-        const { element, connect, disconnect } = await fixture<Dialog>("fast-dialog");
+        const { element, connect, disconnect } = await setup();
 
         element.hidden = true;
 
@@ -44,7 +50,7 @@ describe("Dialog", () => {
     });
 
     it("should NOT add an attribute of `hidden` when passed", async () => {
-        const { element, connect, disconnect } = await fixture<Dialog>("fast-dialog");
+        const { element, connect, disconnect } = await setup();
 
         await connect();
 
@@ -54,7 +60,7 @@ describe("Dialog", () => {
     });
 
     it("should add an attribute of `aria-modal` with a value equal to the modal attribute", async () => {
-        const { element, connect, disconnect } = await fixture<Dialog>("fast-dialog");
+        const { element, connect, disconnect } = await setup();
 
         element.modal = true;
 
@@ -80,7 +86,7 @@ describe("Dialog", () => {
     });
 
     it("should add a default `aria-modal` value of TRUE when the modal attribute is not provided", async () => {
-        const { element, connect, disconnect } = await fixture<Dialog>("fast-dialog");
+        const { element, connect, disconnect } = await setup();
 
         await connect();
 
@@ -94,7 +100,7 @@ describe("Dialog", () => {
     });
 
     it("should add an overlay element with a role of `presentation` when modal is true", async () => {
-        const { element, connect, disconnect } = await fixture<Dialog>("fast-dialog");
+        const { element, connect, disconnect } = await setup();
 
         await connect();
 
@@ -106,7 +112,7 @@ describe("Dialog", () => {
     });
 
     it("should add a tabindex of -1 to the modal overlay when modal is true", async () => {
-        const { element, connect, disconnect } = await fixture<Dialog>("fast-dialog");
+        const { element, connect, disconnect } = await setup();
 
         await connect();
 
@@ -118,7 +124,7 @@ describe("Dialog", () => {
     });
 
     it("should add an attribute of `trap-focus` when trapFocus is true", async () => {
-        const { element, connect, disconnect } = await fixture<Dialog>("fast-dialog");
+        const { element, connect, disconnect } = await setup();
 
         element.trapFocus = true;
 
@@ -131,7 +137,7 @@ describe("Dialog", () => {
     });
 
     it("should add a default attribute of `trap-focus` when trapFocus not defined", async () => {
-        const { element, connect, disconnect } = await fixture<Dialog>("fast-dialog");
+        const { element, connect, disconnect } = await setup();
 
         await connect();
         await DOM.nextUpdate();
@@ -143,7 +149,7 @@ describe("Dialog", () => {
     });
 
     it("should NOT add an attribute of `hidden` when passed", async () => {
-        const { element, connect, disconnect } = await fixture<Dialog>("fast-dialog");
+        const { element, connect, disconnect } = await setup();
 
         await connect();
 
@@ -153,7 +159,7 @@ describe("Dialog", () => {
     });
 
     it("should set the `aria-describedBy` attribute on the dialog control when provided", async () => {
-        const { element, connect, disconnect } = await fixture<FASTDialog>("fast-dialog");
+        const { element, connect, disconnect } = await setup();
         const ariaDescribedby = "testId";
 
         element.ariaDescribedby = ariaDescribedby;
@@ -170,7 +176,7 @@ describe("Dialog", () => {
     });
 
     it("should set the `aria-labelledby` attribute on the dialog control when provided", async () => {
-        const { element, connect, disconnect } = await fixture<FASTDialog>("fast-dialog");
+        const { element, connect, disconnect } = await setup();
         const ariaLabelledby = "testId";
 
         element.ariaLabelledby = ariaLabelledby;
@@ -187,7 +193,7 @@ describe("Dialog", () => {
     });
 
     it("should set the `aria-label` attribute on the dialog control when provided", async () => {
-        const { element, connect, disconnect } = await fixture<FASTDialog>("fast-dialog");
+        const { element, connect, disconnect } = await setup();
         const ariaLabel = "test label";
 
         element.ariaLabel = ariaLabel;
@@ -206,9 +212,7 @@ describe("Dialog", () => {
     describe("events", () => {
         // TODO: test trap focus
         it("should fire an event on click", async () => {
-            const { element, connect, disconnect } = await fixture<FASTDialog>(
-                "fast-dialog"
-            );
+            const { element, connect, disconnect } = await setup();
             let wasDismissed: boolean = false;
             const event = new MouseEvent("click");
 
@@ -232,9 +236,7 @@ describe("Dialog", () => {
         });
 
         it("should fire an event when spacebar is invoked", async () => {
-            const { element, connect, disconnect } = await fixture<FASTDialog>(
-                "fast-dialog"
-            );
+            const { element, connect, disconnect } = await setup();
             let wasDismissed: boolean = false;
             const event = new KeyboardEvent("keydown", {
                 key: "escape",

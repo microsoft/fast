@@ -16,12 +16,18 @@ class FASTTreeView extends TreeView {}
 })
 class FASTTreeItem extends TreeItem {}
 
+async function setup() {
+    const { element, connect, disconnect } = await fixture<FASTTreeView>(
+        "fast-tree-view"
+    );
+
+    return { element, connect, disconnect };
+}
+
 // TODO: Need to add tests for keyboard handling & focus management
 describe("TreeView", () => {
     it("should include a role of `tree`", async () => {
-        const { element, connect, disconnect } = await fixture<FASTTreeView>(
-            "fast-tree-view"
-        );
+        const { element, connect, disconnect } = await setup();
 
         await connect();
 
@@ -31,9 +37,7 @@ describe("TreeView", () => {
     });
 
     it("should set a tabindex of '0' when `focusable` is true", async () => {
-        const { element, connect, disconnect } = await fixture<FASTTreeView>(
-            "fast-tree-view"
-        );
+        const { element, connect, disconnect } = await setup();
 
         element.focusable = true;
 
@@ -45,9 +49,7 @@ describe("TreeView", () => {
     });
 
     it("should set a tabindex of '-1' when `focusable` is false", async () => {
-        const { element, connect, disconnect } = await fixture<FASTTreeView>(
-            "fast-tree-view"
-        );
+        const { element, connect, disconnect } = await setup();
 
         element.focusable = false;
 
@@ -59,9 +61,7 @@ describe("TreeView", () => {
     });
 
     it("should set a default value of 'true' to `focusable`", async () => {
-        const { element, connect, disconnect } = await fixture<FASTTreeView>(
-            "fast-tree-view"
-        );
+        const { element, connect, disconnect } = await setup();
 
         await connect();
         await DOM.nextUpdate();
@@ -72,9 +72,7 @@ describe("TreeView", () => {
     });
 
     it("should set tree item `nested` properties to true if *any* tree item has nested items", async () => {
-        const { element, connect, disconnect } = await fixture<FASTTreeView>(
-            "fast-tree-view"
-        );
+        const { element, connect, disconnect } = await setup();
         const item1 = document.createElement("fast-tree-item");
         const item2 = document.createElement("fast-tree-item");
         const item3 = document.createElement("fast-tree-item");

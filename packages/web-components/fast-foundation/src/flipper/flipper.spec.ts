@@ -10,9 +10,15 @@ import { FlipperDirection } from "./flipper";
 })
 class FASTFlipper extends Flipper {}
 
+async function setup() {
+    const { element, connect, disconnect } = await fixture<Flipper>("fast-flipper");
+
+    return { element, connect, disconnect };
+}
+
 describe("Flipper", () => {
     it("should include a role of button", async () => {
-        const { element, connect, disconnect } = await fixture<Flipper>("fast-flipper");
+        const { element, connect, disconnect } = await setup();
 
         await connect();
 
@@ -22,7 +28,7 @@ describe("Flipper", () => {
     });
 
     it("should include an attribute of `aria-disabled` when disabled is true", async () => {
-        const { element, connect, disconnect } = await fixture<Flipper>("fast-flipper");
+        const { element, connect, disconnect } = await setup();
 
         element.disabled = true;
 
@@ -34,7 +40,7 @@ describe("Flipper", () => {
     });
 
     it("should include a tabindex of -1 when hiddenFromAT is true", async () => {
-        const { element, connect, disconnect } = await fixture<Flipper>("fast-flipper");
+        const { element, connect, disconnect } = await setup();
 
         element.hiddenFromAT = true;
 
@@ -46,7 +52,7 @@ describe("Flipper", () => {
     });
 
     it("should set an attribute of aria-hidden with a value of true by default", async () => {
-        const { element, connect, disconnect } = await fixture<Flipper>("fast-flipper");
+        const { element, connect, disconnect } = await setup();
 
         await connect();
         await DOM.nextUpdate();
@@ -57,7 +63,7 @@ describe("Flipper", () => {
     });
 
     it("should set a default value of true for hiddenFromAT property", async () => {
-        const { element, connect, disconnect } = await fixture<Flipper>("fast-flipper");
+        const { element, connect, disconnect } = await setup();
 
         await connect();
 
@@ -82,7 +88,7 @@ describe("Flipper", () => {
     });
 
     it("should render a span with a class of `next` when direction is `next`", async () => {
-        const { element, connect, disconnect } = await fixture<Flipper>("fast-flipper");
+        const { element, connect, disconnect } = await setup();
 
         element.direction = FlipperDirection.next;
 
@@ -96,7 +102,7 @@ describe("Flipper", () => {
     });
 
     it("should render a span with a class of `previous` when direction is `previous`", async () => {
-        const { element, connect, disconnect } = await fixture<Flipper>("fast-flipper");
+        const { element, connect, disconnect } = await setup();
 
         element.direction = FlipperDirection.previous;
 
@@ -110,7 +116,7 @@ describe("Flipper", () => {
     });
 
     it("should render a span with a class of `next` when direction is NOT passed", async () => {
-        const { element, connect, disconnect } = await fixture<Flipper>("fast-flipper");
+        const { element, connect, disconnect } = await setup();
 
         await connect();
         await DOM.nextUpdate();

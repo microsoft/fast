@@ -10,12 +10,18 @@ import { Button } from "../button";
 })
 class FASTTreeItem extends TreeItem {}
 
+async function setup() {
+    const { element, connect, disconnect } = await fixture<FASTTreeItem>(
+        "fast-tree-item"
+    );
+
+    return { element, connect, disconnect };
+}
+
 // TODO: Need to add tests for keyboard handling & focus management
 describe("TreeItem", () => {
     it("should include a role of `treeitem`", async () => {
-        const { element, connect, disconnect } = await fixture<FASTTreeItem>(
-            "fast-tree-item"
-        );
+        const { element, connect, disconnect } = await setup();
 
         await connect();
 
@@ -25,9 +31,7 @@ describe("TreeItem", () => {
     });
 
     it("should set the `aria-expanded` attribute equal when `expanded` value is true", async () => {
-        const { element, connect, disconnect } = await fixture<FASTTreeItem>(
-            "fast-tree-item"
-        );
+        const { element, connect, disconnect } = await setup();
 
         element.expanded = true;
 
@@ -39,9 +43,7 @@ describe("TreeItem", () => {
     });
 
     it("should NOT set the `aria-expanded` attribute if `expanded` value is not provided", async () => {
-        const { element, connect, disconnect } = await fixture<FASTTreeItem>(
-            "fast-tree-item"
-        );
+        const { element, connect, disconnect } = await setup();
 
         await connect();
 
@@ -51,9 +53,7 @@ describe("TreeItem", () => {
     });
 
     it("should add a class of `expanded` when expanded is true", async () => {
-        const { element, connect, disconnect } = await fixture<FASTTreeItem>(
-            "fast-tree-item"
-        );
+        const { element, connect, disconnect } = await setup();
 
         element.expanded = true;
 
@@ -65,9 +65,7 @@ describe("TreeItem", () => {
     });
 
     it("should set the `aria-selected` attribute equal to the `selected` value", async () => {
-        const { element, connect, disconnect } = await fixture<FASTTreeItem>(
-            "fast-tree-item"
-        );
+        const { element, connect, disconnect } = await setup();
 
         element.selected = true;
 
@@ -85,9 +83,7 @@ describe("TreeItem", () => {
     });
 
     it("should NOT set the `aria-selected` attribute if `selected` value is not provided", async () => {
-        const { element, connect, disconnect } = await fixture<FASTTreeItem>(
-            "fast-tree-item"
-        );
+        const { element, connect, disconnect } = await setup();
 
         await connect();
 
@@ -97,9 +93,7 @@ describe("TreeItem", () => {
     });
 
     it("should add a class of `selected` when selected is true", async () => {
-        const { element, connect, disconnect } = await fixture<FASTTreeItem>(
-            "fast-tree-item"
-        );
+        const { element, connect, disconnect } = await setup();
 
         element.selected = true;
 
@@ -111,9 +105,7 @@ describe("TreeItem", () => {
     });
 
     it("should set the `aria-disabled` attribute equal to the `disabled` value", async () => {
-        const { element, connect, disconnect } = await fixture<FASTTreeItem>(
-            "fast-tree-item"
-        );
+        const { element, connect, disconnect } = await setup();
 
         element.disabled = true;
 
@@ -131,9 +123,7 @@ describe("TreeItem", () => {
     });
 
     it("should NOT set the `aria-disabled` attribute if `disabled` value is not provided", async () => {
-        const { element, connect, disconnect } = await fixture<FASTTreeItem>(
-            "fast-tree-item"
-        );
+        const { element, connect, disconnect } = await setup();
 
         await connect();
 
@@ -143,9 +133,7 @@ describe("TreeItem", () => {
     });
 
     it("should add a class of `disabled` when disabled is true", async () => {
-        const { element, connect, disconnect } = await fixture<FASTTreeItem>(
-            "fast-tree-item"
-        );
+        const { element, connect, disconnect } = await setup();
 
         element.disabled = true;
 
@@ -157,9 +145,7 @@ describe("TreeItem", () => {
     });
 
     it("should add a slot attribute of `item` to nested tree items", async () => {
-        const { element, connect, disconnect } = await fixture<FASTTreeItem>(
-            "fast-tree-item"
-        );
+        const { element, connect, disconnect } = await setup();
         const nestedItem = document.createElement("fast-tree-item");
 
         element.appendChild(nestedItem);
@@ -172,9 +158,7 @@ describe("TreeItem", () => {
     });
 
     it("should add a class of `nested` when nested is true", async () => {
-        const { element, connect, disconnect } = await fixture<FASTTreeItem>(
-            "fast-tree-item"
-        );
+        const { element, connect, disconnect } = await setup();
 
         element.nested = true;
 
@@ -186,9 +170,7 @@ describe("TreeItem", () => {
     });
 
     it("should NOT set a tabindex when disabled is `true`", async () => {
-        const { element, connect, disconnect } = await fixture<FASTTreeItem>(
-            "fast-tree-item"
-        );
+        const { element, connect, disconnect } = await setup();
 
         element.disabled = true;
 
@@ -201,9 +183,7 @@ describe("TreeItem", () => {
     });
 
     it("should set a tabindex when `focusable` is true", async () => {
-        const { element, connect, disconnect } = await fixture<FASTTreeItem>(
-            "fast-tree-item"
-        );
+        const { element, connect, disconnect } = await setup();
 
         element.focusable = true;
 
@@ -216,9 +196,7 @@ describe("TreeItem", () => {
     });
 
     it("should render an element with a class of `expand-collapse-button` when nested tree items exist", async () => {
-        const { element, connect, disconnect } = await fixture<FASTTreeItem>(
-            "fast-tree-item"
-        );
+        const { element, connect, disconnect } = await setup();
         const nestedItem = document.createElement("fast-tree-item");
 
         element.appendChild(nestedItem);
@@ -231,9 +209,7 @@ describe("TreeItem", () => {
     });
 
     it("should include an aria-hidden attribute on the `expand-collapse-button`", async () => {
-        const { element, connect, disconnect } = await fixture<FASTTreeItem>(
-            "fast-tree-item"
-        );
+        const { element, connect, disconnect } = await setup();
         const nestedItem = document.createElement("fast-tree-item");
 
         element.appendChild(nestedItem);
@@ -249,9 +225,7 @@ describe("TreeItem", () => {
     });
 
     it("should render an element with a role of `group` when nested tree items exist and expanded is true", async () => {
-        const { element, connect, disconnect } = await fixture<FASTTreeItem>(
-            "fast-tree-item"
-        );
+        const { element, connect, disconnect } = await setup();
         const nestedItem = document.createElement("fast-tree-item");
 
         element.appendChild(nestedItem);
@@ -268,9 +242,7 @@ describe("TreeItem", () => {
     });
 
     it("should NOT render an element with a role of `group` when nested tree items exist and expanded is false", async () => {
-        const { element, connect, disconnect } = await fixture<FASTTreeItem>(
-            "fast-tree-item"
-        );
+        const { element, connect, disconnect } = await setup();
         const nestedItem = document.createElement("fast-tree-item");
 
         element.appendChild(nestedItem);
@@ -285,9 +257,7 @@ describe("TreeItem", () => {
 
     describe("events", () => {
         it("should fire a change event when expanded changes", async () => {
-            const { element, connect, disconnect } = await fixture<FASTTreeItem>(
-                "fast-tree-item"
-            );
+            const { element, connect, disconnect } = await setup();
             const nestedItem = document.createElement("fast-tree-item");
             element.appendChild(nestedItem);
 
@@ -315,9 +285,7 @@ describe("TreeItem", () => {
         });
 
         it("should toggle the expanded state when `expand-collapse-button` is clicked", async () => {
-            const { element, connect, disconnect } = await fixture<FASTTreeItem>(
-                "fast-tree-item"
-            );
+            const { element, connect, disconnect } = await setup();
             const nestedItem = document.createElement("fast-tree-item");
 
             element.appendChild(nestedItem);
@@ -346,9 +314,7 @@ describe("TreeItem", () => {
         });
 
         it("should fire a selected change event when selected changes", async () => {
-            const { element, connect, disconnect } = await fixture<FASTTreeItem>(
-                "fast-tree-item"
-            );
+            const { element, connect, disconnect } = await setup();
             const nestedItem = document.createElement("fast-tree-item");
             element.appendChild(nestedItem);
 
@@ -376,9 +342,7 @@ describe("TreeItem", () => {
         });
 
         it("should toggle the selected state when the positioning region is clicked", async () => {
-            const { element, connect, disconnect } = await fixture<FASTTreeItem>(
-                "fast-tree-item"
-            );
+            const { element, connect, disconnect } = await setup();
             const nestedItem = document.createElement("fast-tree-item");
 
             element.appendChild(nestedItem);
@@ -407,9 +371,7 @@ describe("TreeItem", () => {
         });
 
         it("should NOT toggle the selected state when the positioning region is clicked and the element is disabled", async () => {
-            const { element, connect, disconnect } = await fixture<FASTTreeItem>(
-                "fast-tree-item"
-            );
+            const { element, connect, disconnect } = await setup();
             const nestedItem = document.createElement("fast-tree-item");
 
             element.appendChild(nestedItem);

@@ -9,9 +9,15 @@ import { customElement } from "@microsoft/fast-element";
 })
 class FASTAnchor extends Anchor {}
 
+async function setup() {
+    const { element, connect, disconnect } = await fixture<FASTAnchor>("fast-anchor");
+
+    return { element, connect, disconnect };
+}
+
 describe("Anchor", () => {
     it("should set the `download` attribute on the internal anchor equal to the value provided", async () => {
-        const { element, connect, disconnect } = await fixture<FASTAnchor>("fast-anchor");
+        const { element, connect, disconnect } = await setup();
         const download: string = "foo";
 
         element.download = download;
@@ -25,7 +31,7 @@ describe("Anchor", () => {
     });
 
     it("should set the `href` attribute on the internal anchor equal to the value provided", async () => {
-        const { element, connect, disconnect } = await fixture<FASTAnchor>("fast-anchor");
+        const { element, connect, disconnect } = await setup();
         const href: string = "https://fast.design";
 
         element.href = href;
@@ -40,7 +46,7 @@ describe("Anchor", () => {
     });
 
     it("should set the `hreflang` attribute on the internal anchor equal to the value provided", async () => {
-        const { element, connect, disconnect } = await fixture<FASTAnchor>("fast-anchor");
+        const { element, connect, disconnect } = await setup();
         const hreflang: string = "en-GB";
 
         element.hreflang = hreflang;
@@ -55,7 +61,7 @@ describe("Anchor", () => {
     });
 
     it("should set the `ping` attribute on the internal anchor equal to the value provided", async () => {
-        const { element, connect, disconnect } = await fixture<FASTAnchor>("fast-anchor");
+        const { element, connect, disconnect } = await setup();
         const ping: string = "https://fast.design/trackingthepings";
 
         element.ping = ping;
@@ -70,7 +76,7 @@ describe("Anchor", () => {
     });
 
     it("should set the `referrerpolicy` attribute on the internal anchor equal to the value provided", async () => {
-        const { element, connect, disconnect } = await fixture<FASTAnchor>("fast-anchor");
+        const { element, connect, disconnect } = await setup();
         const referrerpolicy: string = "no-referrer";
 
         element.referrerpolicy = referrerpolicy;
@@ -85,7 +91,7 @@ describe("Anchor", () => {
     });
 
     it("should set the `rel` attribute on the internal anchor equal to the value provided", async () => {
-        const { element, connect, disconnect } = await fixture<FASTAnchor>("fast-anchor");
+        const { element, connect, disconnect } = await setup();
         const rel: string = "external";
 
         element.rel = rel;
@@ -98,7 +104,7 @@ describe("Anchor", () => {
     });
 
     it("should set the `target` attribute on the internal anchor equal to the value provided", async () => {
-        const { element, connect, disconnect } = await fixture<FASTAnchor>("fast-anchor");
+        const { element, connect, disconnect } = await setup();
         const target = "_self";
 
         element.target = target;
@@ -113,7 +119,7 @@ describe("Anchor", () => {
     });
 
     it("should set the `type` attribute on the internal anchor equal to the value provided", async () => {
-        const { element, connect, disconnect } = await fixture<FASTAnchor>("fast-anchor");
+        const { element, connect, disconnect } = await setup();
         const type = "text/html";
 
         element.type = type;
@@ -129,9 +135,7 @@ describe("Anchor", () => {
 
     describe("Delegates ARIA link", () => {
         it("should set the `aria-atomic` attribute on the internal anchor when provided", async () => {
-            const { element, connect, disconnect } = await fixture<FASTAnchor>(
-                "fast-anchor"
-            );
+            const { element, connect, disconnect } = await setup();
             const ariaAtomic = "true";
 
             element.ariaAtomic = ariaAtomic;
@@ -146,9 +150,7 @@ describe("Anchor", () => {
         });
 
         it("should set the `aria-busy` attribute on the internal anchor when provided", async () => {
-            const { element, connect, disconnect } = await fixture<FASTAnchor>(
-                "fast-anchor"
-            );
+            const { element, connect, disconnect } = await setup();
             const ariaBusy = "false";
 
             element.ariaBusy = ariaBusy;
@@ -163,9 +165,7 @@ describe("Anchor", () => {
         });
 
         it("should set the `aria-controls` attribute on the internal anchor when provided", async () => {
-            const { element, connect, disconnect } = await fixture<FASTAnchor>(
-                "fast-anchor"
-            );
+            const { element, connect, disconnect } = await setup();
             const ariaControls = "testId";
 
             element.ariaControls = ariaControls;
@@ -180,9 +180,7 @@ describe("Anchor", () => {
         });
 
         it("should set the `aria-current` attribute on the internal anchor when provided", async () => {
-            const { element, connect, disconnect } = await fixture<FASTAnchor>(
-                "fast-anchor"
-            );
+            const { element, connect, disconnect } = await setup();
             const ariaCurrent = "page";
 
             element.ariaCurrent = ariaCurrent;
@@ -197,9 +195,7 @@ describe("Anchor", () => {
         });
 
         it("should set the `aria-describedBy` attribute on the internal anchor when provided", async () => {
-            const { element, connect, disconnect } = await fixture<FASTAnchor>(
-                "fast-anchor"
-            );
+            const { element, connect, disconnect } = await setup();
             const ariaDescribedby = "testId";
 
             element.ariaDescribedby = ariaDescribedby;
@@ -214,9 +210,7 @@ describe("Anchor", () => {
         });
 
         it("should set the `aria-details` attribute on the internal anchor when provided", async () => {
-            const { element, connect, disconnect } = await fixture<FASTAnchor>(
-                "fast-anchor"
-            );
+            const { element, connect, disconnect } = await setup();
             const ariaDetails = "testId";
 
             element.ariaDetails = ariaDetails;
@@ -231,9 +225,7 @@ describe("Anchor", () => {
         });
 
         it("should set the `aria-disabled` attribute on the internal anchor when provided", async () => {
-            const { element, connect, disconnect } = await fixture<FASTAnchor>(
-                "fast-anchor"
-            );
+            const { element, connect, disconnect } = await setup();
             const ariaDisabled = "true";
 
             element.ariaDisabled = ariaDisabled;
@@ -248,9 +240,7 @@ describe("Anchor", () => {
         });
 
         it("should set the `aria-errormessage` attribute on the internal anchor when provided", async () => {
-            const { element, connect, disconnect } = await fixture<FASTAnchor>(
-                "fast-anchor"
-            );
+            const { element, connect, disconnect } = await setup();
             const ariaErrormessage = "test";
 
             element.ariaErrormessage = ariaErrormessage;
@@ -265,9 +255,7 @@ describe("Anchor", () => {
         });
 
         it("should set the `aria-expanded` attribute on the internal anchor when provided", async () => {
-            const { element, connect, disconnect } = await fixture<FASTAnchor>(
-                "fast-anchor"
-            );
+            const { element, connect, disconnect } = await setup();
             const ariaExpanded = "true";
 
             element.ariaExpanded = ariaExpanded;
@@ -282,9 +270,7 @@ describe("Anchor", () => {
         });
 
         it("should set the `aria-flowto` attribute on the internal anchor when provided", async () => {
-            const { element, connect, disconnect } = await fixture<FASTAnchor>(
-                "fast-anchor"
-            );
+            const { element, connect, disconnect } = await setup();
             const ariaFlowto = "testId";
 
             element.ariaFlowto = ariaFlowto;
@@ -299,9 +285,7 @@ describe("Anchor", () => {
         });
 
         it("should set the `aria-haspopup` attribute on the internal anchor when provided", async () => {
-            const { element, connect, disconnect } = await fixture<FASTAnchor>(
-                "fast-anchor"
-            );
+            const { element, connect, disconnect } = await setup();
             const ariaHaspopup = "true";
 
             element.ariaHaspopup = ariaHaspopup;
@@ -316,9 +300,7 @@ describe("Anchor", () => {
         });
 
         it("should set the `aria-hidden` attribute on the internal anchor when provided", async () => {
-            const { element, connect, disconnect } = await fixture<FASTAnchor>(
-                "fast-anchor"
-            );
+            const { element, connect, disconnect } = await setup();
             const ariaHidden = "true";
 
             element.ariaHidden = ariaHidden;
@@ -333,9 +315,7 @@ describe("Anchor", () => {
         });
 
         it("should set the `aria-invalid` attribute on the internal anchor when provided", async () => {
-            const { element, connect, disconnect } = await fixture<FASTAnchor>(
-                "fast-anchor"
-            );
+            const { element, connect, disconnect } = await setup();
             const ariaInvalid = "spelling";
 
             element.ariaInvalid = ariaInvalid;
@@ -350,9 +330,7 @@ describe("Anchor", () => {
         });
 
         it("should set the `aria-keyshortcuts` attribute on the internal anchor when provided", async () => {
-            const { element, connect, disconnect } = await fixture<FASTAnchor>(
-                "fast-anchor"
-            );
+            const { element, connect, disconnect } = await setup();
             const ariaKeyshortcuts = "F4";
 
             element.ariaKeyshortcuts = ariaKeyshortcuts;
@@ -367,9 +345,7 @@ describe("Anchor", () => {
         });
 
         it("should set the `aria-label` attribute on the internal anchor when provided", async () => {
-            const { element, connect, disconnect } = await fixture<FASTAnchor>(
-                "fast-anchor"
-            );
+            const { element, connect, disconnect } = await setup();
             const ariaLabel = "Foo label";
 
             element.ariaLabel = ariaLabel;
@@ -384,9 +360,7 @@ describe("Anchor", () => {
         });
 
         it("should set the `aria-labelledby` attribute on the internal anchor when provided", async () => {
-            const { element, connect, disconnect } = await fixture<FASTAnchor>(
-                "fast-anchor"
-            );
+            const { element, connect, disconnect } = await setup();
             const ariaLabelledby = "testId";
 
             element.ariaLabelledby = ariaLabelledby;
@@ -401,9 +375,7 @@ describe("Anchor", () => {
         });
 
         it("should set the `aria-live` attribute on the internal anchor when provided", async () => {
-            const { element, connect, disconnect } = await fixture<FASTAnchor>(
-                "fast-anchor"
-            );
+            const { element, connect, disconnect } = await setup();
             const ariaLive = "polite";
 
             element.ariaLive = ariaLive;
@@ -418,9 +390,7 @@ describe("Anchor", () => {
         });
 
         it("should set the `aria-owns` attribute on the internal anchor when provided", async () => {
-            const { element, connect, disconnect } = await fixture<FASTAnchor>(
-                "fast-anchor"
-            );
+            const { element, connect, disconnect } = await setup();
             const ariaOwns = "testId";
 
             element.ariaOwns = ariaOwns;
@@ -435,9 +405,7 @@ describe("Anchor", () => {
         });
 
         it("should set the `aria-relevant` attribute on the internal anchor when provided", async () => {
-            const { element, connect, disconnect } = await fixture<FASTAnchor>(
-                "fast-anchor"
-            );
+            const { element, connect, disconnect } = await setup();
             const ariaRelevant = "removals";
 
             element.ariaRelevant = ariaRelevant;
@@ -452,9 +420,7 @@ describe("Anchor", () => {
         });
 
         it("should set the `aria-roledescription` attribute on the internal anchor when provided", async () => {
-            const { element, connect, disconnect } = await fixture<FASTAnchor>(
-                "fast-anchor"
-            );
+            const { element, connect, disconnect } = await setup();
             const ariaRoledescription = "slide";
 
             element.ariaRoledescription = ariaRoledescription;

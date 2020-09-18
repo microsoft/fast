@@ -10,11 +10,17 @@ import { DOM, customElement } from "@microsoft/fast-element";
 })
 class FASTProgressRing extends Progress {}
 
+async function setup() {
+    const { element, connect, disconnect } = await fixture<FASTProgressRing>(
+        "fast-progress-ring"
+    );
+
+    return { element, connect, disconnect };
+}
+
 describe("Progress ring", () => {
     it("should include a role of progressbar", async () => {
-        const { element, connect, disconnect } = await fixture<FASTProgressRing>(
-            "fast-progress-ring"
-        );
+        const { element, connect, disconnect } = await setup();
 
         await connect();
 
@@ -24,9 +30,7 @@ describe("Progress ring", () => {
     });
 
     it("should set the `aria-valuenow` attribute with the `value` property when provided", async () => {
-        const { element, connect, disconnect } = await fixture<FASTProgressRing>(
-            "fast-progress-ring"
-        );
+        const { element, connect, disconnect } = await setup();
 
         element.value = 50;
 
@@ -38,9 +42,7 @@ describe("Progress ring", () => {
     });
 
     it("should set the `aria-valuemin` attribute with the `min` property when provided", async () => {
-        const { element, connect, disconnect } = await fixture<FASTProgressRing>(
-            "fast-progress-ring"
-        );
+        const { element, connect, disconnect } = await setup();
 
         element.min = 0;
 
@@ -52,9 +54,7 @@ describe("Progress ring", () => {
     });
 
     it("should set the `aria-valuemax` attribute with the `max` property when provided", async () => {
-        const { element, connect, disconnect } = await fixture<FASTProgressRing>(
-            "fast-progress-ring"
-        );
+        const { element, connect, disconnect } = await setup();
 
         element.max = 75;
 
@@ -66,9 +66,7 @@ describe("Progress ring", () => {
     });
 
     it("should add a `paused` class when `paused` is true", async () => {
-        const { element, connect, disconnect } = await fixture<FASTProgressRing>(
-            "fast-progress-ring"
-        );
+        const { element, connect, disconnect } = await setup();
 
         element.paused = true;
 
@@ -80,9 +78,7 @@ describe("Progress ring", () => {
     });
 
     it("should render an element with a `determinate` slot when a value is provided", async () => {
-        const { element, connect, disconnect } = await fixture<FASTProgressRing>(
-            "fast-progress-ring"
-        );
+        const { element, connect, disconnect } = await setup();
 
         element.value = 50;
 
