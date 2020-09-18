@@ -37,7 +37,7 @@ export class MonacoAdaptor extends MessageSystemUtility<
     handleMessageSystem = (e: MessageEvent): void => {
         switch (e.data.type) {
             case MessageSystemType.initialize:
-                if (e.data.from !== monacoAdaptorId) {
+                if (!e.data.options || e.data.options.from !== monacoAdaptorId) {
                     this.schemaDictionary = e.data.schemaDictionary;
                     this.monacoModelValue = [
                         // TODO: format this with vscode-html-languageservice

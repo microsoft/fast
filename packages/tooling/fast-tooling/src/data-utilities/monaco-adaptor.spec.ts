@@ -235,6 +235,54 @@ describe("MonacoAdaptor", () => {
 
         expect(monacoAdaptor["monacoModelValue"]).toEqual(["bar"]);
     });
+    test("should not update the monaco value if the message is from the adaptor", () => {
+        const dataDictionary: DataDictionary<unknown> = [
+            {
+                div: {
+                    schemaId: "div",
+                    data: {},
+                },
+            },
+            "div",
+        ];
+        const schemaDictionary = {
+            div: {
+                id: "div",
+                $id: "div",
+                type: "object",
+                mapsToTagName: "div",
+            },
+        };
+        const messageSystem = new MessageSystem({
+            webWorker: "",
+        });
+        const callback = jest.fn();
+        new MonacoAdaptor({
+            messageSystem,
+            actions: [
+                new MonacoAdaptorAction({
+                    id: "foo",
+                    action: callback,
+                    messageSystemType: MessageSystemType.initialize,
+                }),
+            ],
+        });
+
+        messageSystem["register"].forEach((registeredItem: Register) => {
+            registeredItem.onMessage({
+                data: {
+                    type: MessageSystemType.initialize,
+                    dataDictionary,
+                    schemaDictionary,
+                    options: {
+                        from: "monaco-adaptor",
+                    },
+                },
+            } as any);
+        });
+
+        expect(callback).not.toHaveBeenCalled();
+    });
     test("should update the dataDictionary to correct values when the monaco value has been updated", () => {
         const callback = jest.fn();
         const dataDictionary: DataDictionary<unknown> = [
