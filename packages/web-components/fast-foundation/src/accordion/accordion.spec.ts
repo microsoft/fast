@@ -2,7 +2,7 @@ import { expect } from "chai";
 import { Accordion, AccordionTemplate as template } from "./index";
 import { AccordionItem, AccordionItemTemplate as itemTemplate } from "../accordion-item";
 import { fixture } from "../fixture";
-import { customElement } from "@microsoft/fast-element";
+import { customElement, DOM } from "@microsoft/fast-element";
 import { AccordionExpandMode } from "./accordion";
 
 @customElement({
@@ -33,8 +33,9 @@ describe("Accordion", () => {
         element.expandmode = AccordionExpandMode.multi;
 
         await connect();
+        await DOM.nextUpdate();
 
-        expect((element as FASTAccordion).expandmode).to.equal(AccordionExpandMode.multi);
+        expect(element.getAttribute("expand-mode")).to.equal(AccordionExpandMode.multi);
 
         await disconnect();
     });
@@ -54,10 +55,9 @@ describe("Accordion", () => {
         element.expandmode = AccordionExpandMode.single;
 
         await connect();
+        await DOM.nextUpdate();
 
-        expect((element as FASTAccordion).expandmode).to.equal(
-            AccordionExpandMode.single
-        );
+        expect(element.getAttribute("expand-mode")).to.equal(AccordionExpandMode.single);
 
         await disconnect();
     });
@@ -73,9 +73,12 @@ describe("Accordion", () => {
         element.appendChild(item1);
         element.appendChild(item2);
         element.appendChild(item3);
+
         await connect();
+        await DOM.nextUpdate();
 
         expect((element as FASTAccordion).expandmode).to.equal(AccordionExpandMode.multi);
+        expect(element.getAttribute("expand-mode")).to.equal(AccordionExpandMode.multi);
 
         await disconnect();
     });
