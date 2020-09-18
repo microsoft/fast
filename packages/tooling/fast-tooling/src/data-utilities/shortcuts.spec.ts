@@ -401,6 +401,16 @@ describe("Shortcuts", () => {
                 ],
                 action: shortcutAction,
             }),
+            new ShortcutAction({
+                id: "bat",
+                name: "Bat",
+                keys: [
+                    {
+                        value: "c",
+                    },
+                ],
+                action: shortcutAction,
+            }),
         ];
         const shortcuts = new Shortcuts({
             messageSystem,
@@ -425,6 +435,16 @@ describe("Shortcuts", () => {
                 keys: [
                     {
                         value: "d",
+                    },
+                ],
+                action: shortcutAction,
+            }),
+            new ShortcutAction({
+                id: "bat",
+                name: "Bat",
+                keys: [
+                    {
+                        value: "c",
                     },
                 ],
                 action: shortcutAction,

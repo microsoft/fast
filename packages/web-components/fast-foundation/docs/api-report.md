@@ -104,6 +104,8 @@ export class Badge extends FASTElement {
     circular: boolean;
     color: string;
     fill: string;
+    // (undocumented)
+    generateBadgeStyle: () => string | undefined;
 }
 
 // @public
