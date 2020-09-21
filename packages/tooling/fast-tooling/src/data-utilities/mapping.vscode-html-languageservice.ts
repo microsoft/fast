@@ -48,7 +48,14 @@ function mapAttributesAndSlotsToData(
                     return [attributeKey, parseFloat(JSON.parse(attributeValue))];
                 }
             }
-            return [attributeKey, JSON.parse(attributeValue)];
+
+            try {
+                const parsedValue = JSON.parse(attributeValue);
+
+                return [attributeKey, parsedValue === null ? true : parsedValue];
+            } catch (e) {
+                return [attributeKey, ""];
+            }
         })
         .reduce((previousValue, currentValue) => {
             return {
