@@ -33,6 +33,7 @@ export const pivotStyleSheetOverrides: ComponentStyles<
     },
     pivot_tabList: {
         padding: "0 16px",
+        height: "36px",
     },
     pivot_tabPanels: {
         padding: "0 24px",
@@ -42,6 +43,9 @@ export const pivotStyleSheetOverrides: ComponentStyles<
         "& a": {
             color: accent,
         },
+    },
+    pivot_tabPanel: {
+        height: "100%",
     },
 };
 

@@ -77,4 +77,19 @@ export interface ExplorerState {
      * The current data dictionary
      */
     dataDictionary: DataDictionary<unknown>;
+
+    /**
+     * The active pivot tab
+     */
+    activePivotTab: string;
+
+    /**
+     * The visibility of the mobile navigation pane
+     */
+    mobileNavigationVisible: boolean;
+
+    /**
+     * The visibility of the mobile form pane
+     */
+    mobileFormVisible: boolean;
 }
