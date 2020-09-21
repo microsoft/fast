@@ -28,7 +28,7 @@ The web page itself is simple and has menu, hero, gallery, contact, and footer s
 
 ```html
   <body>
-    <header />
+    <header></header>
 
     <div class="hero"></div>
 
@@ -36,7 +36,7 @@ The web page itself is simple and has menu, hero, gallery, contact, and footer s
 
     <div class="row featurette"></div>
         
-    <footer />
+    <footer></footer>
   </body>
 ```
 
@@ -237,7 +237,7 @@ Again, there are some style issues that need to be fixed. Add this CSS at the bo
 }
 ```
 
-[Web components](https://developer.mozilla.org/en-US/docs/Web/Web_Components) are made up of custom elements, Shadow DOM, and HTML templates. The CSS for the message text-area inside the `<fast-text-area>` web components is set using the `::part` in the Shadow tree to set the width. You only need to do this for some controls like the <fast-text-area> because it combines a label and a textarea control. For most of the simpler FAST web components you can target the styles at the control itself.
+[Web components](https://developer.mozilla.org/en-US/docs/Web/Web_Components) are made up of custom elements, Shadow DOM, and HTML templates. The CSS for the message text-area inside the `<fast-text-area>` web components is set using the `::part` in the Shadow tree to set the width. You only need to do this for some controls like the `<fast-text-area>` because it combines a label and a textarea control. For most of the simpler FAST web components you can target the styles at the control itself.
 
 
 ### Change the design system dynamically
@@ -260,7 +260,7 @@ You've been asked to demonstrate how these properties affect the look and feel o
 
 At line 52, under the `<a>` tag in index.html, add this HTML:
 
-<img style="float: left;padding: 20px" src="design-panel.png"/>
+![Design Panel](/examples/site-rebrand-tutorial/design-panel.png)
 
 ```html
 <!-- Design system properties pallete -->

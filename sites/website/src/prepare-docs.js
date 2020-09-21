@@ -19,6 +19,8 @@ const root = path.resolve(projectRoot, "../../");
 
 const outputDir = path.resolve(projectRoot, "docs");
 
+const staticOutputDir = path.resolve(projectRoot, "static");
+
 function findFiles(startPath, filter, paths = []) {
     if (!fs.existsSync(startPath)) {
         console.log("no dir ", startPath);
@@ -355,8 +357,56 @@ async function buildAPIMarkdown() {
     }
 }
 
+async function copyImages() {
+    const images = [
+        {
+            src: path.resolve(root, "examples/site-rebrand-tutorial/website.png"),
+            dest: path.resolve(
+                staticOutputDir,
+                "examples/site-rebrand-tutorial/website.png"
+            ),
+        },
+        {
+            src: path.resolve(root, "examples/site-rebrand-tutorial/site-structure.png"),
+            dest: path.resolve(
+                staticOutputDir,
+                "examples/site-rebrand-tutorial/site-structure.png"
+            ),
+        },
+        {
+            src: path.resolve(
+                root,
+                "examples/site-rebrand-tutorial/example-controls.png"
+            ),
+            dest: path.resolve(
+                staticOutputDir,
+                "examples/site-rebrand-tutorial/example-controls.png"
+            ),
+        },
+        {
+            src: path.resolve(root, "examples/site-rebrand-tutorial/side-by-side.png"),
+            dest: path.resolve(
+                staticOutputDir,
+                "examples/site-rebrand-tutorial/side-by-side.png"
+            ),
+        },
+        {
+            src: path.resolve(root, "examples/site-rebrand-tutorial/design-panel.png"),
+            dest: path.resolve(
+                staticOutputDir,
+                "examples/site-rebrand-tutorial/design-panel.png"
+            ),
+        },
+    ];
+
+    for (const img of images) {
+        await safeCopy(img.src, img.dest);
+    }
+}
+
 async function main() {
     await copyArticleMarkdown();
+    await copyImages();
     await buildAPIMarkdown();
 }
 
