@@ -47,6 +47,9 @@ export class Tabs extends FASTElement {
      */
     @attr
     public activeid: string;
+    /**
+     * @internal
+     */
     public activeidChanged(): void {
         if (
             this.$fastController.isConnected &&
