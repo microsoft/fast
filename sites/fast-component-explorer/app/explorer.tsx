@@ -376,7 +376,7 @@ class Explorer extends Foundation<
                 if (this.state.activePivotTab === "code") {
                     this.createMonacoEditor();
                 }
-            }, 800);
+            });
         }
     };
 
