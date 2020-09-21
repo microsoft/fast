@@ -546,12 +546,8 @@ export const RadioTemplate: import("@microsoft/fast-element").ViewTemplate<Radio
 
 // @public
 export class Skeleton extends FASTElement {
-    // (undocumented)
-    ariaBusy: boolean;
+    animation: string;
     fill: string;
-    // (undocumented)
-    offset: number;
-    // (undocumented)
     pattern: string;
     shape: skeletonShape;
 }

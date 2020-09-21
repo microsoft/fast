@@ -1,41 +1,10 @@
 <DesignSystemProvider use-defaults>
   <style>
-
-    h3 {
-      color: #ffffff;
-    }
-
-    .skeleton-container {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .container {
-      display: flex;
-      flex-direction: column;
-    }
-
-    fluent-skeleton {
-      --neutral-fill-rest: #E1DFDD;
-      display: flex;
+    .card-placeholder {
+      background-color: #fff;
+      padding: 20px;
+      width: 500px;
       border-radius: 4px;
-      overflow: hidden;
-    }
-
-    .thing-1 {
-      width: 500px;
-      height: 350px;
-    }
-
-    .thing-3 {
-      width: 500px;
-      height: 250px;
-    }
-
-    svg {
-      position:absolute;
-      left: 0;
-      top: 0;
     }
 
     @keyframes shimmer {
@@ -46,94 +15,57 @@
         transform: translateX(100%);
       }
     }
-
-    .card-placeholder {
-      background-color: #fff;
-      padding: 20px;
-      width: 500px;
-      border-radius: 4px;
-    }
-    
-    .avatar-bone {
-      width: 50px;
-      height: 50px;
-    }
-
-    .text-bone {
-      margin-top: 10px;
-      height: 10px;
-    }
-
-    .button-bone {
-      width: 75px;
-      height: 30px;
-      margin-top: 20px;
-      margin-bottom: 10px;
-    }
   </style>
 
-  <div class="skeleton-container">
-    <!-- <div class="container">
+  <h1>Skeleton</h1>
 
-      <h3>Used as element blocks</h3>
-      <div class="card-placeholder">
-        <fluent-skeleton class="avatar-bone" shape="circle"></fluent-skeleton>
-        <fluent-skeleton class="text-bone" shape="rect"></fluent-skeleton>
-        <fluent-skeleton class="text-bone" shape="rect"></fluent-skeleton>
-        <fluent-skeleton class="text-bone" shape="rect"></fluent-skeleton>
-        <fluent-skeleton class="button-bone" shape="rect"></fluent-skeleton>
-      </div>
-
-    </div> -->
-
-    <!-- <h3>Used as element blocks with shimmer effect element</h3>
-    <div class="card-placeholder">
-      <fluent-skeleton class="avatar-bone" shape="circle">
-        <span class="shimmer"></span>
-      </fluent-skeleton>
-      <fluent-skeleton class="text-bone" shape="rect">
-        <span class="shimmer"></span>
-      </fluent-skeleton>
-      <fluent-skeleton class="text-bone" shape="rect">
-        <span class="shimmer"></span>
-      </fluent-skeleton>
-      <fluent-skeleton class="text-bone" shape="rect">
-        <span class="shimmer"></span>
-      </fluent-skeleton>
-      <fluent-skeleton class="button-bone" shape="rect">
-        <span class="shimmer"></span>
-      </fluent-skeleton>
-    </div> -->
-
-
-    <div class="container">
-
-      <h3>Using SVG via Pattern attribute</h3>
-      <fluent-skeleton class="thing-1" shape="rect" pattern="http://thetieronelife.com/wp-content/uploads/2020/09/test-template.svg">
-        <span class="shimmer"></span>
-      </fluent-skeleton>
-
-    </div>
-
-    <!-- <div class="container">
-      <h3>Using inline SVG</h3>
-
-      <fluent-skeleton class="thing-3" shape="rect">
-        <span class="shimmer"></span>
-        <svg id="pattern" width="100%" height="100%">
-          <defs> 
-            <mask id="mask" x="0" y="0" width="100%" height="100%">
-              <rect x="0" y="0" width="100%" height="100%" fill="#ffffff" />
-              <rect x="0" y="0" width="100%" height="45%" rx="4" />
-              <rect x="25" y="55%" width="90%" height="15px" rx="4" />
-              <rect x="25" y="65%" width="70%" height="15px" rx="4" />
-              <rect x="25" y="80%" width="90px" height="30px" rx="4" />
-            </mask>
-          </defs>
-          <rect x="0" y="0" width="100%" height="100%" mask="url(#mask)" fill="#ffffff" />
-        </svg>
-      </fluent-skeleton>
-
-    </div> -->
+  <h4>Used as element blocks</h>
+  <div class="card-placeholder">
+    <fluent-skeleton style="--neutral-fill-rest: #E1DFDD; border-radius: 4px; width: 50px; height: 50px;" shape="circle"></fluent-skeleton>
+    <fluent-skeleton style="--neutral-fill-rest: #E1DFDD; border-radius: 4px; margin-top: 10px; height: 10px;" shape="rect"></fluent-skeleton>
+    <fluent-skeleton style="--neutral-fill-rest: #E1DFDD; border-radius: 4px; margin-top: 10px; height: 10px;" shape="rect"></fluent-skeleton>
+    <fluent-skeleton style="--neutral-fill-rest: #E1DFDD; border-radius: 4px; margin-top: 10px; height: 10px;" shape="rect"></fluent-skeleton>
+    <fluent-skeleton style="--neutral-fill-rest: #E1DFDD; border-radius: 4px; width: 75px; height: 30px; margin-top: 20px; margin-bottom: 10px;" shape="rect"></fluent-skeleton>
   </div>
+
+  <h4>Used as element blocks with shimmer effect element</h4>
+  <div class="card-placeholder">
+    <fluent-skeleton style="--neutral-fill-rest: #E1DFDD; border-radius: 4px; width: 50px; height: 50px;" shape="circle">
+      <span class="shimmer"></span>
+    </fluent-skeleton>
+    <fluent-skeleton style="--neutral-fill-rest: #E1DFDD; border-radius: 4px; margin-top: 10px; height: 10px;" shape="rect">
+      <span class="shimmer"></span>
+    </fluent-skeleton>
+    <fluent-skeleton style="--neutral-fill-rest: #E1DFDD; border-radius: 4px; margin-top: 10px; height: 10px;" shape="rect">
+      <span class="shimmer"></span>
+    </fluent-skeleton>
+    <fluent-skeleton style="--neutral-fill-rest: #E1DFDD; border-radius: 4px; margin-top: 10px; height: 10px;" shape="rect">
+      <span class="shimmer"></span>
+    </fluent-skeleton>
+    <fluent-skeleton style="--neutral-fill-rest: #E1DFDD; border-radius: 4px; width: 75px; height: 30px; margin-top: 20px; margin-bottom: 10px;" shape="rect">
+      <span class="shimmer"></span>
+    </fluent-skeleton>
+  </div>
+
+  <h4>Using SVG via Pattern attribute</h4>
+  <fluent-skeleton style="--neutral-fill-rest: #E1DFDD; border-radius: 4px; width: 500px; height: 350px;" shape="rect" pattern="http://thetieronelife.com/wp-content/uploads/2020/09/test-template.svg">
+    <span class="shimmer"></span>
+  </fluent-skeleton>
+
+  <h4>Using inline SVG</h4>
+  <fluent-skeleton style="--neutral-fill-rest: #E1DFDD; border-radius: 4px; width: 500px; height: 250px;" shape="rect">
+    <span class="shimmer"></span>
+    <svg style="position:absolute; left: 0; top: 0;" id="pattern" width="100%" height="100%">
+      <defs> 
+        <mask id="mask" x="0" y="0" width="100%" height="100%">
+          <rect x="0" y="0" width="100%" height="100%" fill="#ffffff" />
+          <rect x="0" y="0" width="100%" height="45%" rx="4" />
+          <rect x="25" y="55%" width="90%" height="15px" rx="4" />
+          <rect x="25" y="65%" width="70%" height="15px" rx="4" />
+          <rect x="25" y="80%" width="90px" height="30px" rx="4" />
+        </mask>
+      </defs>
+      <rect x="0" y="0" width="100%" height="100%" mask="url(#mask)" fill="#ffffff" />
+    </svg>
+  </fluent-skeleton>
 </DesignSystemProvider>

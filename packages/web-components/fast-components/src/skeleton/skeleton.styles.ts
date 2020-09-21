@@ -18,8 +18,6 @@ export const SkeletonStyles = css`
   }
 
   :host(.circle) {
-    width: 50px;
-    height: 50px;
     border-radius: 100%;
     overflow: hidden;
   }
@@ -28,7 +26,7 @@ export const SkeletonStyles = css`
     position: absolute;
     width: 100%;
     height: auto;
-    z-index: 1000
+    z-index: 1000;
   }
 
   object img {
