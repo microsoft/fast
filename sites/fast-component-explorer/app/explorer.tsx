@@ -115,7 +115,7 @@ class Explorer extends Foundation<
     private viewerContentAreaPadding: number = 20;
     private maxViewerHeight: number = 0;
     private maxViewerWidth: number = 0;
-    private windowResizing;
+    private windowResizing: NodeJS.Timeout;
     private editor: monaco.editor.IStandaloneCodeEditor;
     private editorContainerRef: React.RefObject<HTMLDivElement> = React.createRef();
 
