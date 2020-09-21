@@ -293,7 +293,7 @@ describe("Tabs", () => {
 
             await connect();
 
-            element.querySelectorAll("fast-tabs")[0]?.setAttribute("activeId", "03")
+            element.setAttribute("activeId", "03")
 
             expect(
                 element.querySelectorAll("fast-tab")[2]?.getAttribute("aria-selected")
