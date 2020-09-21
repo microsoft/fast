@@ -2,8 +2,8 @@ import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
 import FASTMessageSystemWorker from "../../../dist/message-system.min.js";
 import {
     MessageSystem,
-    MessageSystemType,
     MessageSystemDataTypeAction,
+    MessageSystemType,
 } from "../../../src";
 import { mapDataDictionaryToMonacoEditorHTML } from "../../../src/data-utilities/monaco";
 import { MonacoAdaptor } from "../../../src/data-utilities/monaco-adaptor";
@@ -23,6 +23,18 @@ let monacoValue = [];
 let monacoEditorModel;
 let fastMessageSystem: MessageSystem;
 let dataDictionary;
+
+function updateFormInputs() {
+    textInput.value = dataDictionary[0][dataDictionary[1]].data.foo;
+    boolInput.checked = dataDictionary[0][dataDictionary[1]].data.bar;
+}
+
+function updateMonacoEditor() {
+    /* eslint-disable-next-line @typescript-eslint/no-use-before-define */
+    editor.setValue(
+        mapDataDictionaryToMonacoEditorHTML(dataDictionary, schemaDictionary)
+    );
+}
 
 function handleMessageSystem(e: MessageEvent) {
     if (e.data) {
@@ -109,17 +121,6 @@ function handleBooleanInputOnChange() {
         dataLocation: "bar",
         data: boolInput.checked,
     });
-}
-
-function updateMonacoEditor() {
-    editor.setValue(
-        mapDataDictionaryToMonacoEditorHTML(dataDictionary, schemaDictionary)
-    );
-}
-
-function updateFormInputs() {
-    textInput.value = dataDictionary[0][dataDictionary[1]].data.foo;
-    boolInput.checked = dataDictionary[0][dataDictionary[1]].data.bar;
 }
 
 textInput.addEventListener("keyup", handleTextInputOnKeyUp);
