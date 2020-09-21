@@ -75,7 +75,7 @@ describe("Tabs", () => {
         await disconnect();
     });
 
-    it("should set an `id` attribute on the active tab when an `id is provided", async () => {
+    it("should set an `id` attribute on the active tab when an `id` is provided", async () => {
         const { element, connect, disconnect } = await fixture(html<FASTTabs>`
             <fast-tabs>
                 <fast-tab id="01">Tab one</fast-tab>
@@ -246,7 +246,34 @@ describe("Tabs", () => {
             await disconnect();
         });
 
-        it("should set an `aria-controls` attribute on the tab with a value of the panel id when `activeId` is provided", async () => {
+        it("should set an `aria-selected` attribute on the active tab when `activeId` is provided", async () => {
+            const { element, connect, disconnect } = await fixture(html<FASTTabs>`
+                <fast-tabs activeId="02">
+                    <fast-tab id="01">Tab one</fast-tab>
+                    <fast-tab id="02">Tab two</fast-tab>
+                    <fast-tab id="03">Tab three</fast-tab>
+                    <fast-tab-panel>
+                        Tab one content. This is for testing.
+                    </fast-tab-panel>
+                    <fast-tab-panel>
+                        Tab two content. This is for testing.
+                    </fast-tab-panel>
+                    <fast-tab-panel>
+                        Tab three content. This is for testing.
+                    </fast-tab-panel>
+                </fast-tabs>
+            `);
+
+            await connect();
+
+            expect(
+                element.querySelectorAll("fast-tab")[1]?.getAttribute("aria-selected")
+            ).to.equal("true");
+
+            await disconnect();
+        });
+
+        it("should update `aria-selected` attribute on the active tab when `activeId` is updated", async () => {
             const { element, connect, disconnect } = await fixture(html<FASTTabs>`
                 <fast-tabs activeId="02">
                     <fast-tab id="01">Tab one</fast-tab>
@@ -266,9 +293,11 @@ describe("Tabs", () => {
 
             await connect();
 
+            element.setAttribute("activeId", "03")
+
             expect(
-                element.querySelectorAll("fast-tab")[1]?.getAttribute("aria-controls")
-            ).to.equal("panel02");
+                element.querySelectorAll("fast-tab")[2]?.getAttribute("aria-selected")
+            ).to.equal("true");
 
             await disconnect();
         });
