@@ -30,7 +30,7 @@ import {
     SelectOption,
     Typography,
 } from "@microsoft/fast-components-react-msft";
-import { Direction } from "@microsoft/fast-web-utilities";
+import { classNames, Direction } from "@microsoft/fast-web-utilities";
 import {
     AjvMapper,
     CustomMessageIncomingOutgoing,
@@ -213,12 +213,11 @@ class Explorer extends Foundation<
                 </div>
                 <div className={"canvas"}>
                     <div
-                        className={`canvas-overlay${
+                        className={classNames("canvas-overlay", [
+                            "canvas-overlay__active",
                             this.state.mobileFormVisible ||
-                            this.state.mobileNavigationVisible
-                                ? " canvas-overlay__active"
-                                : ""
-                        }`}
+                                this.state.mobileNavigationVisible,
+                        ])}
                         onClick={this.handleCanvasOverlayTrigger}
                     ></div>
                     <div className={"menu-bar"}>
@@ -265,11 +264,10 @@ class Explorer extends Foundation<
                         </Background>
                     </div>
                     <div
-                        className={`canvas-content${
-                            this.state.devToolsVisible
-                                ? ""
-                                : " canvas-content__dev-tools-hidden"
-                        }`}
+                        className={classNames("canvas-content", [
+                            "canvas-content__dev-tools-hidden",
+                            this.state.devToolsVisible,
+                        ])}
                     >
                         <div
                             ref={this.viewerContainerRef}
@@ -322,17 +320,11 @@ class Explorer extends Foundation<
     }
 
     private getContainerClassNames(): string {
-        const classNames = ["container"];
-
-        if (this.state.mobileFormVisible) {
-            classNames.push("container__form-visible");
-        }
-
-        if (this.state.mobileNavigationVisible) {
-            classNames.push("container__navigation-visible");
-        }
-
-        return classNames.join(" ");
+        return classNames(
+            "container",
+            ["container__form-visible", this.state.mobileFormVisible],
+            ["container__navigation-visible", this.state.mobileNavigationVisible]
+        );
     }
 
     private updateEditorContent(dataDictionary: DataDictionary<unknown>): void {
