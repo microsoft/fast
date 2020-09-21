@@ -9,7 +9,6 @@ import {
 import { StandardLuminance } from "@microsoft/fast-components-styles-msft";
 import Explorer from "./explorer";
 import { accent } from "./explorer.style";
-import { Footer } from "./site-footer";
 
 const accentPaletteSource: ColorRGBA64 | null = parseColor(accent);
 let creatorDesignSystem: DesignSystem = DesignSystemDefaults;
@@ -29,7 +28,6 @@ class ExplorerRegion extends React.Component<{}, {}> {
         return (
             <DesignSystemProvider designSystem={creatorDesignSystem}>
                 <Explorer {...this.props} />
-                <Footer />
             </DesignSystemProvider>
         );
     }
