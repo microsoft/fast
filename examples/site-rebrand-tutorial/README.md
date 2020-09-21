@@ -1,9 +1,4 @@
----
-id: site-rebrand
-title: Using FAST to Rebrand an Existing Website
-sidebar_label: Rebranding an Existing Site
-custom_edit_url: https://github.com/microsoft/fast/blob/master/examples/site-rebrand-tutorial/README.md
----
+# Using FAST to Rebrand an Existing Website
 
 If you've ever tried to build consistent, custom markup structures for a website or an app, you might have looked at web components. As they're standards compliant and supported by all the main evergreen browsers, web components allow you to define reusable and encapsulated HTML tags.
 
@@ -23,11 +18,11 @@ Imagine you work for a company that has an existing website. Your company's desi
 
 ## The website
 
-![A screenshot of the starter website](website.png)
+![A screenshot of the starter website](/examples/site-rebrand-tutorial/website.png)
 
 To start this tutorial, you'll clone your company's existing website. Exploring the code, you'll see it's a simple static website with this folder structure:
 
-![Diagram showing the site structure with folders for CSS, images, JavaScript, and an index.html file](site-structure.png)
+![Diagram showing the site structure with folders for CSS, images, JavaScript, and an index.html file](/examples/site-rebrand-tutorial/site-structure.png)
 
 The web page itself is simple and has menu, hero, gallery, contact, and footer sections.
 
@@ -109,7 +104,7 @@ An advantage of using a FAST design system is that the color pallete is calculat
 
 ### Add FAST web components
 
-![Example FAST web components](example-controls.png)
+![Example FAST web components](/examples/site-rebrand-tutorial/example-controls.png)
 
 Taking each section of your website in turn, you'll replace the existing HTML controls with FAST web components. In the menu, you'll replace the search controls.
 
@@ -549,7 +544,7 @@ And the import statement at line 253 to:
 
 Finally, using search and replace within the HTML and CSS files, replace all instances of "fast-" with "fluent-".
 
-![The website using the Fluent design system versus FAST](side-by-side.png)
+![The website using the Fluent design system versus FAST](/examples/site-rebrand-tutorial/side-by-side.png)
 
 Fluent is based around a lighter user experience, using blue accents. There's also a different corner radius to controls and a smaller height multiplier.
 

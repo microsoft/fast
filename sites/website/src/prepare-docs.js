@@ -180,6 +180,17 @@ async function copyArticleMarkdown() {
                     "https://github.com/microsoft/fast/edit/master/packages/web-components/fast-element/README.md",
             },
         },
+        {
+            src: path.resolve(root, "examples/site-rebrand-tutorial/README.md"),
+            dest: path.resolve(outputDir, "tutorials/site-rebrand.md"),
+            metadata: {
+                id: "site-rebrand",
+                title: "Using FAST to Rebrand an Existing Website",
+                sidebar_label: "Rebranding an Existing Site",
+                custom_edit_url:
+                    "https://github.com/microsoft/fast/blob/master/examples/site-rebrand-tutorial/README.md",
+            },
+        },
     ];
 
     for (const file of mergeDocs) {
