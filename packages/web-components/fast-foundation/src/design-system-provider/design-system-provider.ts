@@ -477,10 +477,9 @@ export class DesignSystemProvider extends FASTElement
     private syncDesignSystemWithProvider(): void {
         if (this.provider) {
             const designProperties = this.designSystemProperties;
-            const providerProperties = this.provider.designSystemProperties;
             new Set(
                 Object.keys(this.designSystemProperties).concat(
-                    Object.keys(providerProperties)
+                    Object.keys(this.provider.designSystemProperties)
                 )
             ).forEach((key: string) => {
                 const property = designProperties[key];
