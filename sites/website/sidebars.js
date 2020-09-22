@@ -6,6 +6,11 @@ module.exports = {
         },
         {
             type: "category",
+            label: "Tutorials",
+            items: ["tutorials/site-rebrand"],
+        },
+        {
+            type: "category",
             label: "Using FAST Components",
             items: [
                 "components/getting-started",
