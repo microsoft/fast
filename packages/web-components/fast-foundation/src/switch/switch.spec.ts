@@ -231,4 +231,28 @@ describe("Switch", () => {
             await disconnect();
         });
     });
+
+    describe("that is required", () => {
+        it("should be invalid when unchecked", async () => {
+            const { element, connect, disconnect } = await setup();
+            await connect();
+
+            element.required = true;
+            element.checked = false;
+
+            expect(element.validity.valueMissing).to.equal(true);
+
+            await disconnect();
+        });
+        it("should be valid when checked", async () => {
+            const { element, connect, disconnect } = await setup();
+            await connect();
+
+            element.required = true;
+            element.checked = true;
+
+            expect(element.validity.valueMissing).to.equal(false);
+            await disconnect();
+        });
+    });
 });

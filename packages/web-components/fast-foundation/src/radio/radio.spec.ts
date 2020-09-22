@@ -266,4 +266,31 @@ describe("Radio", () => {
             await disconnect();
         });
     });
+
+    describe("that is required", () => {
+        it("should be invalid when not checked", async () => {
+            const { element, connect, disconnect } = await setup();
+            await connect();
+            element.name = "name";
+            element.required = true;
+            element.value = "test";
+            expect(element.validity.valueMissing).to.equal(true);
+
+            await disconnect();
+        });
+
+        it("should be valid when checked", async () => {
+            const { element, connect, disconnect } = await setup();
+            await connect();
+
+            element.name = "name";
+            element.value = "test";
+            element.required = true;
+            element.checked = true;
+
+            expect(element.validity.valueMissing).to.equal(false);
+
+            await disconnect();
+        });
+    });
 });
