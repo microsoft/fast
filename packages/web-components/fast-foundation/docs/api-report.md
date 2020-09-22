@@ -162,13 +162,13 @@ export type AxisScalingMode = "anchor" | "fill" | "content";
 export class Avatar extends FASTElement {
     alt: string;
     color: string;
-    // (undocumented)
     connectedCallback(): void;
     fill: string;
     imgSrc: string;
     initials: string;
     link: string;
     name: string;
+    // (undocumented)
     protected nameChanged(): void;
     // Warning: (ae-forgotten-export) The symbol "AvatarShape" needs to be exported by the entry point index.d.ts
     shape: AvatarShape;
