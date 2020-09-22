@@ -490,6 +490,8 @@ const template = html<FriendList>`
 `;
 ```
 
+If using the `subtree` option for `children` then a `selector` is *required* in place of a `filter`. This enables more efficient collection of the desired nodes in the presence of a potential large node quantity throughout the subtree.
+
 ### The `slotted` directive
 
 Sometimes you may want references to all nodes that are assigned to a particular slot. To accomplish this, use the `slotted` directive. (For more on slots, see [Working with Shadow DOM](./working-with-shadow-dom).)
