@@ -1,6 +1,7 @@
 import { attr, DOM, FASTElement, observable } from "@microsoft/fast-element";
 import { AnchoredRegion, AxisPositioningMode, AxisScalingMode } from "../anchored-region";
 import { Direction, keyCodeEscape } from "@microsoft/fast-web-utilities";
+import { getDirection } from "../utilities/";
 
 /**
  * Enumerates possible tooltip positions
@@ -228,10 +229,6 @@ export class Tooltip extends FASTElement {
      */
     private isAnchorHovered: boolean = false;
 
-    constructor() {
-        super();
-    }
-
     public connectedCallback(): void {
         super.connectedCallback();
         this.anchorElement = this.getAnchor();
@@ -417,7 +414,7 @@ export class Tooltip extends FASTElement {
         if (this.tooltipVisible) {
             return;
         }
-        this.currentDirection = this.getDirection();
+        this.currentDirection = getDirection(this);
         this.tooltipVisible = true;
         document.addEventListener("keydown", this.handleDocumentKeydown);
         DOM.queueUpdate(this.setRegionProps);
@@ -451,19 +448,5 @@ export class Tooltip extends FASTElement {
         this.region.viewportElement = this.viewportElement;
         this.region.anchorElement = this.anchorElement;
         (this.region as any).addEventListener("change", this.handlePositionChange);
-    };
-
-    /**
-     *  gets the current direction
-     */
-    private getDirection = (): Direction => {
-        const closest: Element | null = this.closest(
-            `[${Tooltip.DirectionAttributeName}]`
-        );
-
-        return closest === null ||
-            closest.getAttribute(Tooltip.DirectionAttributeName) === Direction.ltr
-            ? Direction.ltr
-            : Direction.rtl;
     };
 }

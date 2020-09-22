@@ -849,7 +849,6 @@ export enum TextFieldType {
 
 // @public
 export class Tooltip extends FASTElement {
-    constructor();
     anchor: string;
     anchorElement: HTMLElement | null;
     // (undocumented)
