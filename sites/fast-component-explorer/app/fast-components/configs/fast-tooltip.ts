@@ -18,19 +18,48 @@ const fastTooltipConfig: ComponentViewConfig = {
             dataDictionary: [
                 {
                     root: {
+                        schemaId: "div",
+                        data: {
+                            Slot: [
+                                {
+                                    id: "RootSlot1",
+                                },
+                                {
+                                    id: "RootSlot2",
+                                }
+                            ],
+                        },
+                    },
+                    RootSlot1: {
+                        parent: {
+                            id: "root",
+                            dataLocation: "Slot",
+                        },
+                        schemaId: "div",
+                        data: {
+                            id: "anchor",
+                            style: "height: 40px; width: 40px; background: green",
+                        }
+                    },
+                    RootSlot2: {
+                        parent: {
+                            id: "root",
+                            dataLocation: "Slot",
+                        },
                         schemaId: fastTooltipId,
                         data: {
+                            anchor: "anchor",
                             visible: true,
                             Slot: [
                                 {
-                                    id: "Slot",
+                                    id: "TooltipSlot",
                                 },
                             ],
                         },
                     },
-                    Slot: {
+                    TooltipSlot: {
                         parent: {
-                            id: "root",
+                            id: "RootSlot2",
                             dataLocation: "Slot",
                         },
                         schemaId: textSchema.id,
