@@ -138,6 +138,10 @@ export interface CaptureType<TSource> {
 }
 
 // @public
+export interface ChildListBehaviorOptions<T = any> extends NodeBehaviorOptions<T>, Omit<MutationObserverInit, "subtree" | "childList"> {
+}
+
+// @public
 export function children<T = any>(propertyOrOptions: (keyof T & string) | ChildrenBehaviorOptions<keyof T & string>): CaptureType<T>;
 
 // Warning: (ae-forgotten-export) The symbol "NodeObservationBehavior" needs to be exported by the entry point index.d.ts
@@ -150,11 +154,8 @@ export class ChildrenBehavior extends NodeObservationBehavior<ChildrenBehaviorOp
     observe(): void;
     }
 
-// Warning: (ae-forgotten-export) The symbol "NodeBehaviorBehaviorOptions" needs to be exported by the entry point index.d.ts
-//
 // @public
-export interface ChildrenBehaviorOptions<T = any> extends NodeBehaviorBehaviorOptions<T>, MutationObserverInit {
-}
+export type ChildrenBehaviorOptions<T = any> = ChildListBehaviorOptions<T> | SubtreeBehaviorOptions<T>;
 
 // @beta
 export interface CompilationResult {
@@ -350,6 +351,12 @@ export type Mutable<T> = {
 };
 
 // @public
+export interface NodeBehaviorOptions<T = any> {
+    filter?(value: Node, index: number, array: Node[]): boolean;
+    property: T;
+}
+
+// @public
 export interface Notifier {
     notify(args: any): void;
     readonly source: any;
@@ -448,7 +455,7 @@ export class SlottedBehavior extends NodeObservationBehavior<SlottedBehaviorOpti
 }
 
 // @public
-export interface SlottedBehaviorOptions<T = any> extends NodeBehaviorBehaviorOptions<T>, AssignedNodesOptions {
+export interface SlottedBehaviorOptions<T = any> extends NodeBehaviorOptions<T>, AssignedNodesOptions {
 }
 
 // @public
@@ -472,6 +479,12 @@ export class SubscriberSet implements Notifier {
     readonly source: any;
     subscribe(subscriber: Subscriber): void;
     unsubscribe(subscriber: Subscriber): void;
+}
+
+// @public
+export interface SubtreeBehaviorOptions<T = any> extends Omit<NodeBehaviorOptions<T>, "filter">, Omit<MutationObserverInit, "subtree" | "childList"> {
+    selector: string;
+    subtree: boolean;
 }
 
 // @public
