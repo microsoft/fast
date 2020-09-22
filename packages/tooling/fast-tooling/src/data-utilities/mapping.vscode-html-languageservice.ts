@@ -168,7 +168,9 @@ function mapNodeToDataDictionary(
                 for (let i = 0; i < nodeChildrenLength; i++) {
                     children.push(
                         mapNodeToDataDictionary(
-                            node.children[i],
+                            parse(
+                                value.slice(node.children[i].start, node.children[i].end)
+                            ).roots[0],
                             value.slice(node.children[i].start, node.children[i].end),
                             textSchemaId,
                             schemaDictionary,

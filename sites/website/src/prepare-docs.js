@@ -19,6 +19,8 @@ const root = path.resolve(projectRoot, "../../");
 
 const outputDir = path.resolve(projectRoot, "docs");
 
+const staticOutputDir = path.resolve(projectRoot, "static");
+
 function findFiles(startPath, filter, paths = []) {
     if (!fs.existsSync(startPath)) {
         console.log("no dir ", startPath);
@@ -178,6 +180,17 @@ async function copyArticleMarkdown() {
                 sidebar_label: "Getting Started",
                 custom_edit_url:
                     "https://github.com/microsoft/fast/edit/master/packages/web-components/fast-element/README.md",
+            },
+        },
+        {
+            src: path.resolve(root, "examples/site-rebrand-tutorial/README.md"),
+            dest: path.resolve(outputDir, "tutorials/site-rebrand.md"),
+            metadata: {
+                id: "site-rebrand",
+                title: "Using FAST to Rebrand an Existing Website",
+                sidebar_label: "Rebranding an Existing Site",
+                custom_edit_url:
+                    "https://github.com/microsoft/fast/blob/master/examples/site-rebrand-tutorial/README.md",
             },
         },
     ];
@@ -344,9 +357,55 @@ async function buildAPIMarkdown() {
     }
 }
 
+async function copyImages() {
+    const images = [
+        {
+            src: path.resolve(root, "examples/site-rebrand-tutorial/website.png"),
+            dest: path.resolve(
+                staticOutputDir,
+                "examples/site-rebrand-tutorial/website.png"
+            ),
+        },
+        {
+            src: path.resolve(root, "examples/site-rebrand-tutorial/site-structure.png"),
+            dest: path.resolve(
+                staticOutputDir,
+                "examples/site-rebrand-tutorial/site-structure.png"
+            ),
+        },
+        {
+            src: path.resolve(
+                root,
+                "examples/site-rebrand-tutorial/example-controls.png"
+            ),
+            dest: path.resolve(
+                staticOutputDir,
+                "examples/site-rebrand-tutorial/example-controls.png"
+            ),
+        },
+        {
+            src: path.resolve(root, "examples/site-rebrand-tutorial/side-by-side.png"),
+            dest: path.resolve(
+                staticOutputDir,
+                "examples/site-rebrand-tutorial/side-by-side.png"
+            ),
+        },
+        {
+            src: path.resolve(root, "examples/site-rebrand-tutorial/design-panel.png"),
+            dest: path.resolve(
+                staticOutputDir,
+                "examples/site-rebrand-tutorial/design-panel.png"
+            ),
+        },
+    ];
+
+    for (const img of images) {
+        await safeCopy(img.src, img.dest);
+    }
+}
+
 async function main() {
-    await copyArticleMarkdown();
-    await buildAPIMarkdown();
+    await Promise.all([copyArticleMarkdown(), copyImages(), buildAPIMarkdown()]);
 }
 
 main();

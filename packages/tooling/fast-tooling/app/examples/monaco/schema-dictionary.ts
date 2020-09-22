@@ -1,9 +1,12 @@
+import { linkedDataSchema } from "../../../src";
+import { ReservedElementMappingKeyword } from "../../../src/data-utilities/types";
+
 export default {
     div: {
         $id: "div",
         id: "div",
         type: "object",
-        mapsToTagName: "div",
+        [ReservedElementMappingKeyword.mapsToTagName]: "div",
         properties: {
             foo: {
                 title: "Foo",
@@ -12,6 +15,22 @@ export default {
             bar: {
                 title: "Bar",
                 type: "boolean",
+            },
+            Slot: {
+                [ReservedElementMappingKeyword.mapsToSlot]: "",
+                ...linkedDataSchema,
+            },
+        },
+    },
+    span: {
+        $id: "span",
+        id: "span",
+        type: "object",
+        [ReservedElementMappingKeyword.mapsToTagName]: "span",
+        properties: {
+            Slot: {
+                [ReservedElementMappingKeyword.mapsToSlot]: "",
+                ...linkedDataSchema,
             },
         },
     },
