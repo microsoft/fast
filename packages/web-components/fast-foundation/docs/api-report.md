@@ -847,6 +847,70 @@ export enum TextFieldType {
     url = "url"
 }
 
+// @public
+export class Tooltip extends FASTElement {
+    anchor: string;
+    anchorElement: HTMLElement | null;
+    // (undocumented)
+    connectedCallback(): void;
+    // @internal
+    currentDirection: Direction;
+    delay: number;
+    // (undocumented)
+    disconnectedCallback(): void;
+    // @internal
+    handlePositionChange: (ev: Event) => void;
+    // @internal (undocumented)
+    horizontalDefaultPosition: string | undefined;
+    // @internal (undocumented)
+    horizontalInset: string;
+    // @internal (undocumented)
+    horizontalPositioningMode: AxisPositioningMode;
+    // Warning: (ae-forgotten-export) The symbol "AxisScalingMode" needs to be exported by the entry point index.d.ts
+    //
+    // @internal (undocumented)
+    horizontalScaling: AxisScalingMode;
+    position: TooltipPosition;
+    // Warning: (ae-forgotten-export) The symbol "AnchoredRegion" needs to be exported by the entry point index.d.ts
+    //
+    // @internal
+    region: AnchoredRegion;
+    // @internal (undocumented)
+    tooltipVisible: boolean;
+    // @internal (undocumented)
+    verticalDefaultPosition: string | undefined;
+    // @internal (undocumented)
+    verticalInset: string;
+    // Warning: (ae-forgotten-export) The symbol "AxisPositioningMode" needs to be exported by the entry point index.d.ts
+    //
+    // @internal (undocumented)
+    verticalPositioningMode: AxisPositioningMode;
+    // @internal (undocumented)
+    verticalScaling: AxisScalingMode;
+    // @internal
+    viewportElement: HTMLElement | null;
+    visible: boolean;
+    }
+
+// @public
+export enum TooltipPosition {
+    // (undocumented)
+    bottom = "bottom",
+    // (undocumented)
+    end = "end",
+    // (undocumented)
+    left = "left",
+    // (undocumented)
+    right = "right",
+    // (undocumented)
+    start = "start",
+    // (undocumented)
+    top = "top"
+}
+
+// @public
+export const TooltipTemplate: import("@microsoft/fast-element").ViewTemplate<Tooltip, any>;
+
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "TreeItem" because one of its declarations is marked as @internal
 //

@@ -38,6 +38,7 @@ module.exports = {
                         "components/tabs",
                         "components/text-area",
                         "components/text-field",
+                        "components/tooltip",
                         "components/tree-view",
                     ],
                 },
