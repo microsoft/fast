@@ -52,6 +52,7 @@ export class TextField extends FormAssociated<HTMLInputElement> {
     private readOnlyChanged(): void {
         if (this.proxy instanceof HTMLElement) {
             this.proxy.readOnly = this.readOnly;
+            this.validate();
         }
     }
 
@@ -66,6 +67,7 @@ export class TextField extends FormAssociated<HTMLInputElement> {
     private autofocusChanged(): void {
         if (this.proxy instanceof HTMLElement) {
             this.proxy.autofocus = this.autofocus;
+            this.validate();
         }
     }
 
@@ -95,6 +97,7 @@ export class TextField extends FormAssociated<HTMLInputElement> {
     private typeChanged(): void {
         if (this.proxy instanceof HTMLElement) {
             this.proxy.type = this.type;
+            this.validate();
         }
     }
 
@@ -109,6 +112,7 @@ export class TextField extends FormAssociated<HTMLInputElement> {
     private listChanged(): void {
         if (this.proxy instanceof HTMLElement) {
             this.proxy.setAttribute("list", this.list);
+            this.validate();
         }
     }
 
@@ -123,6 +127,7 @@ export class TextField extends FormAssociated<HTMLInputElement> {
     private maxlengthChanged(): void {
         if (this.proxy instanceof HTMLElement) {
             this.proxy.maxLength = this.maxlength;
+            this.validate();
         }
     }
 
@@ -137,6 +142,7 @@ export class TextField extends FormAssociated<HTMLInputElement> {
     private minlengthChanged(): void {
         if (this.proxy instanceof HTMLElement) {
             this.proxy.minLength = this.minlength;
+            this.validate();
         }
     }
 
@@ -151,6 +157,7 @@ export class TextField extends FormAssociated<HTMLInputElement> {
     private patternChanged(): void {
         if (this.proxy instanceof HTMLElement) {
             this.proxy.pattern = this.pattern;
+            this.validate();
         }
     }
 
@@ -203,6 +210,7 @@ export class TextField extends FormAssociated<HTMLInputElement> {
         super.connectedCallback();
 
         this.proxy.setAttribute("type", this.type);
+        this.validate();
 
         if (this.autofocus) {
             DOM.queueUpdate(() => {

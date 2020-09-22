@@ -90,6 +90,8 @@ export class Checkbox extends FormAssociated<HTMLInputElement> {
         if (this.constructed) {
             this.$emit("change");
         }
+
+        this.validate();
     }
 
     protected proxy: HTMLInputElement = document.createElement("input");

@@ -1,7 +1,8 @@
-import { expect } from "chai";
-import { TextField, TextFieldTemplate as template } from "./index";
-import { fixture } from "../fixture";
 import { customElement } from "@microsoft/fast-element";
+import { expect } from "chai";
+import { fixture } from "../fixture";
+import { TextField, TextFieldTemplate as template, TextFieldTemplate } from "./index";
+import { TextFieldType } from "./text-field";
 
 @customElement({
     name: "fast-text-field",
@@ -491,6 +492,174 @@ describe("TextField", () => {
             expect(wasChanged).to.equal(true);
 
             await disconnect();
+        });
+    });
+
+    describe("with constraint validation", () => {
+        Object.keys(TextFieldType)
+            .map(key => TextFieldType[key])
+            .forEach(type => {
+                describe(`of [type="${type}"]`, () => {
+                    describe("that is [required]", () => {
+                        it("should be invalid when it's value property is an empty string", async () => {
+                            const { element, connect, disconnect } = await setup();
+                            await connect();
+
+                            element.type = type;
+                            element.required = true;
+                            element.value = "";
+
+                            expect(element.validity.valueMissing).to.equal(true);
+
+                            await disconnect();
+                        });
+
+                        it("should be valid when value property is a string that is non-empty", async () => {
+                            const { element, connect, disconnect } = await setup();
+                            await connect();
+
+                            element.type = type;
+
+                            element.required = true;
+                            element.value = "some value";
+
+                            expect(element.validity.valueMissing).to.equal(false);
+                            await disconnect();
+                        });
+                    });
+                    describe("that has a [minlength] attribute", () => {
+                        it("should be valid if the value is an empty string", async () => {
+                            const { element, connect, disconnect } = await setup();
+                            await connect();
+                            const value = "";
+                            const el = document.createElement(
+                                "fast-text-field"
+                            ) as TextField;
+                            el.type = type;
+                            el.value = value;
+                            el.minlength = value.length + 1;
+
+                            expect(el.validity.tooShort).to.equal(false);
+                        });
+                        it("should be valid if the value has a length less than the minlength", async () => {
+                            const { element, connect, disconnect } = await setup();
+                            await connect();
+                            const value = "value";
+                            const el = document.createElement(
+                                "fast-text-field"
+                            ) as TextField;
+                            el.type = type;
+                            el.value = value;
+                            el.minlength = value.length + 1;
+
+                            expect(el.validity.tooShort).to.equal(false);
+                        });
+                    });
+
+                    describe("that has a [maxlength] attribute", () => {
+                        it("should be valid if the value is an empty string", async () => {
+                            const { element, connect, disconnect } = await setup();
+                            await connect();
+
+                            const value = "";
+                            const el = document.createElement(
+                                "fast-text-field"
+                            ) as TextField;
+                            el.type = type;
+                            el.value = value;
+                            el.maxlength = value.length;
+
+                            expect(el.validity.tooLong).to.equal(false);
+                        });
+                        it("should be valid if the value has a exceeding the maxlength", async () => {
+                            const { element, connect, disconnect } = await setup();
+                            await connect();
+                            const value = "value";
+                            element.type = type;
+                            element.value = value;
+                            element.maxlength = value.length - 1;
+
+                            expect(element.validity.tooLong).to.equal(false);
+                        });
+                        it("should be valid if the value has a length shorter than maxlength and the element is [required]", async () => {
+                            const { element, connect, disconnect } = await setup();
+                            await connect();
+                            const value = "value";
+                            element.type = type;
+                            element.required = true;
+                            element.value = value;
+                            element.maxlength = value.length + 1;
+
+                            expect(element.validity.tooLong).to.equal(false);
+                        });
+                    });
+
+                    describe("that has a [pattern] attribute", () => {
+                        it("should be valid if the value matches a pattern", async () => {
+                            const { element, connect, disconnect } = await setup();
+                            await connect();
+                            const value = "value";
+                            element.type = type;
+                            element.required = true;
+                            element.pattern = value;
+                            element.value = value;
+
+                            expect(element.validity.patternMismatch).to.equal(false);
+                        });
+
+                        it("should be invalid if the value does not match a pattern", async () => {
+                            const { element, connect, disconnect } = await setup();
+                            await connect();
+                            const value = "value";
+                            element.type = type;
+                            element.required = true;
+                            element.pattern = value;
+                            element.value = "foo";
+
+                            expect(element.validity.patternMismatch).to.equal(true);
+                        });
+                    });
+                });
+            });
+        describe('of [type="email"]', () => {
+            it("should be valid when value is an empty string", async () => {
+                const { element, connect, disconnect } = await setup();
+                await connect();
+                element.type = TextFieldType.email;
+                element.required = true;
+                element.value = "";
+
+                expect(element.validity.typeMismatch).to.equal(false);
+            });
+            it("should be a typeMismatch when value is not a valid email", async () => {
+                const { element, connect, disconnect } = await setup();
+                await connect();
+                element.type = TextFieldType.email;
+                element.required = true;
+                element.value = "foobar";
+
+                expect(element.validity.typeMismatch).to.equal(true);
+            });
+        });
+        describe('of [type="url"]', () => {
+            it("should be valid when value is an empty string", async () => {
+                const { element, connect, disconnect } = await setup();
+                await connect();
+                element.type = TextFieldType.url;
+                element.required = true;
+                element.value = "";
+
+                expect(element.validity.typeMismatch).to.equal(false);
+            });
+            it("should be a typeMismatch when value is not a valid URL", async () => {
+                const { element, connect, disconnect } = await setup();
+                await connect();
+                element.type = TextFieldType.url;
+                element.required = true;
+                element.value = "foobar";
+
+                expect(element.validity.typeMismatch).to.equal(true);
+            });
         });
     });
 });
