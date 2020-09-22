@@ -38,6 +38,8 @@ import {
     MessageSystem,
     MessageSystemType,
 } from "@microsoft/fast-tooling";
+import { MonacoAdaptor } from "@microsoft/fast-tooling/dist/data-utilities/monaco-adaptor";
+import { MonacoAdaptorAction } from "@microsoft/fast-tooling/dist/data-utilities/monaco-adaptor-action";
 import { mapDataDictionaryToMonacoEditorHTML } from "@microsoft/fast-tooling/dist/data-utilities/monaco";
 import FASTMessageSystemWorker from "@microsoft/fast-tooling/dist/message-system.min.js";
 import {
@@ -61,6 +63,7 @@ import {
 } from "./explorer.props";
 import { previewReady } from "./preview";
 import { Footer } from "./site-footer";
+import { html_beautify } from "vscode-html-languageservice/lib/esm/beautify/beautify-html";
 /* eslint-disable-next-line @typescript-eslint/no-var-requires */
 const FASTInlineLogo = require("@microsoft/site-utilities/statics/assets/fast-inline-logo.svg");
 export const previewBackgroundTransparency: string = "PREVIEW::TRANSPARENCY";
@@ -118,6 +121,10 @@ class Explorer extends Foundation<
     private windowResizing: number;
     private editor: monaco.editor.IStandaloneCodeEditor;
     private editorContainerRef: React.RefObject<HTMLDivElement> = React.createRef();
+    private adaptor: MonacoAdaptor;
+    private monacoValue: string[];
+    private monacoEditorModel: monaco.editor.ITextModel;
+    private firstRun: boolean = true;
 
     constructor(props: ExplorerProps) {
         super(props);
@@ -147,21 +154,45 @@ class Explorer extends Foundation<
         window.onpopstate = this.handleWindowPopState;
         window.onresize = rafThrottle(this.handleWindowResize);
 
+        this.monacoValue = [];
+
+        this.adaptor = new MonacoAdaptor({
+            messageSystem: fastMessageSystem,
+            actions: [
+                new MonacoAdaptorAction({
+                    id: "monaco.setValue",
+                    action: config => {
+                        // trigger an update to the monaco value that
+                        // also updates the DataDictionary which fires a
+                        // postMessage to the MessageSystem
+                        config.updateMonacoModelValue(this.monacoValue);
+                    },
+                }),
+            ],
+        });
+
         monaco.editor.onDidCreateModel((listener: monaco.editor.ITextModel) => {
-            (monaco.editor.getModel(
+            this.monacoEditorModel = monaco.editor.getModel(
                 listener.uri
-            ) as monaco.editor.ITextModel).onDidChangeContent(
-                (event: monaco.editor.IModelContentChangedEvent) => {
-                    this.editor
-                        .getAction("editor.action.formatDocument")
-                        .run()
-                        .then((value: void) => {
-                            if (event.changes.length > 1) {
-                                this.editor.updateOptions({
-                                    readOnly: true,
-                                });
-                            }
-                        });
+            ) as monaco.editor.ITextModel;
+
+            this.monacoEditorModel.onDidChangeContent(
+                (e: monaco.editor.IModelContentChangedEvent) => {
+                    /**
+                     * Sets the value to be used by monaco
+                     */
+                    if (this.state.previewReady) {
+                        const modelValue = this.monacoEditorModel.getValue();
+                        this.monacoValue = Array.isArray(modelValue)
+                            ? modelValue
+                            : [modelValue];
+
+                        if (!this.firstRun) {
+                            this.adaptor.action("monaco.setValue").run();
+                        }
+
+                        this.firstRun = false;
+                    }
                 }
             );
         });
@@ -330,11 +361,10 @@ class Explorer extends Foundation<
 
     private updateEditorContent(dataDictionary: DataDictionary<unknown>): void {
         if (this.editor) {
-            this.editor.updateOptions({
-                readOnly: false,
-            });
             this.editor.setValue(
-                mapDataDictionaryToMonacoEditorHTML(dataDictionary, schemaDictionary)
+                html_beautify(
+                    mapDataDictionaryToMonacoEditorHTML(dataDictionary, schemaDictionary)
+                )
             );
         }
     }
@@ -381,7 +411,6 @@ class Explorer extends Foundation<
                 this.editor = monaco.editor.create(this.editorContainerRef.current, {
                     value: "",
                     language: "html",
-                    formatOnType: true,
                     formatOnPaste: true,
                     lineNumbers: "off",
                     theme: "vs-dark",
@@ -392,7 +421,6 @@ class Explorer extends Foundation<
                     minimap: {
                         showSlider: "mouseover",
                     },
-                    readOnly: true,
                 });
 
                 this.updateEditorContent(this.state.dataDictionary);
@@ -427,7 +455,10 @@ class Explorer extends Foundation<
             e.data.type === MessageSystemType.initialize
         ) {
             updatedState.dataDictionary = e.data.dataDictionary;
-            this.updateEditorContent(e.data.dataDictionary);
+
+            if (!e.data.options || e.data.options.from !== "monaco-adaptor") {
+                this.updateEditorContent(e.data.dataDictionary);
+            }
         }
 
         this.setState(updatedState as ExplorerState);
