@@ -266,7 +266,7 @@ class Explorer extends Foundation<
                     <div
                         className={classNames("canvas-content", [
                             "canvas-content__dev-tools-hidden",
-                            this.state.devToolsVisible,
+                            !this.state.devToolsVisible,
                         ])}
                     >
                         <div
