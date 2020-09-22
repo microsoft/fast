@@ -27,7 +27,7 @@ const fastTooltipConfig: ComponentViewConfig = {
                                 },
                                 {
                                     id: "RootSlot2",
-                                }
+                                },
                             ],
                         },
                     },
@@ -39,13 +39,14 @@ const fastTooltipConfig: ComponentViewConfig = {
                         schemaId: fastButtonId,
                         data: {
                             id: "anchor",
-                            style: "height: 40px; width: 100px; margin: 100px; background: green",
+                            style:
+                                "height: 40px; width: 100px; margin: 100px; background: green",
                             Slot: [
                                 {
                                     id: "ButtonSlot",
-                                }
+                                },
                             ],
-                        }
+                        },
                     },
                     RootSlot2: {
                         parent: {
