@@ -1,21 +1,35 @@
 import { expect } from "chai";
 import { repeat, RepeatDirective, RepeatBehavior } from "./repeat";
 import { html } from "../template";
-import { defaultExecutionContext, observable } from "../observation/observable";
+import {
+    defaultExecutionContext,
+    ExecutionContext,
+    observable,
+} from "../observation/observable";
 import { DOM } from "../dom";
 import { toHTML } from "../__test__/helpers";
 
 describe("The repeat", () => {
     context("template function", () => {
         it("returns a RepeatDirective", () => {
-            const directive = repeat(() => [], html`test`);
+            const directive = repeat(
+                () => [],
+                html`
+                    test
+                `
+            );
             expect(directive).to.be.instanceOf(RepeatDirective);
         });
     });
 
     context("directive", () => {
         it("creates a RepeatBehavior", () => {
-            const directive = repeat(() => [], html`test`) as RepeatDirective;
+            const directive = repeat(
+                () => [],
+                html`
+                    test
+                `
+            ) as RepeatDirective;
             const target = document.createComment("");
             const behavior = directive.createBehavior(target);
 
@@ -24,13 +38,18 @@ describe("The repeat", () => {
     });
 
     context("behavior", () => {
-        const template = html<Item>`${x => x.name}`;
-        const altTemplate = html<Item>`*${x => x.name}`;
+        const itemTemplate = html<Item>`
+            ${x => x.name}
+        `;
+        const altItemTemplate = html<Item>`
+            *${x => x.name}
+        `;
         const oneThroughTen = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
         const zeroThroughTen = [0].concat(oneThroughTen);
 
         interface Item {
             name: string;
+            items?: Item[];
         }
 
         function createArray(size: number) {
@@ -44,11 +63,16 @@ describe("The repeat", () => {
         }
 
         class ViewModel {
+            name = "root";
             @observable items: Item[];
-            @observable template = template;
+            @observable template = itemTemplate;
 
-            constructor(size: number) {
+            constructor(size: number, nested: boolean = false) {
                 this.items = createArray(size);
+
+                if (nested) {
+                    this.items.forEach(x => (x.items = createArray(size)));
+                }
             }
         }
 
@@ -82,7 +106,7 @@ describe("The repeat", () => {
                 const { parent, location } = createLocation();
                 const directive = repeat<ViewModel>(
                     x => x.items,
-                    template
+                    itemTemplate
                 ) as RepeatDirective;
                 const behavior = directive.createBehavior(location);
                 const vm = new ViewModel(size);
@@ -98,7 +122,7 @@ describe("The repeat", () => {
                 const { parent, location } = createLocation();
                 const directive = repeat<ViewModel>(
                     x => x.items,
-                    template
+                    itemTemplate
                 ) as RepeatDirective;
                 const behavior = directive.createBehavior(location);
                 const data = new ViewModel(size);
@@ -126,7 +150,7 @@ describe("The repeat", () => {
                 const { parent, location } = createLocation();
                 const directive = repeat<ViewModel>(
                     x => x.items,
-                    template
+                    itemTemplate
                 ) as RepeatDirective;
                 const behavior = directive.createBehavior(location);
                 const vm = new ViewModel(size);
@@ -145,7 +169,7 @@ describe("The repeat", () => {
                 const { parent, location } = createLocation();
                 const directive = repeat<ViewModel>(
                     x => x.items,
-                    template
+                    itemTemplate
                 ) as RepeatDirective;
                 const behavior = directive.createBehavior(location);
                 const vm = new ViewModel(size);
@@ -168,7 +192,7 @@ describe("The repeat", () => {
                 const { parent, location } = createLocation();
                 const directive = repeat<ViewModel>(
                     x => x.items,
-                    template
+                    itemTemplate
                 ) as RepeatDirective;
                 const behavior = directive.createBehavior(location);
                 const vm = new ViewModel(size);
@@ -188,7 +212,7 @@ describe("The repeat", () => {
                 const { parent, location } = createLocation();
                 const directive = repeat<ViewModel>(
                     x => x.items,
-                    template
+                    itemTemplate
                 ) as RepeatDirective;
                 const behavior = directive.createBehavior(location);
                 const vm = new ViewModel(size);
@@ -211,7 +235,7 @@ describe("The repeat", () => {
                 const { parent, location } = createLocation();
                 const directive = repeat<ViewModel>(
                     x => x.items,
-                    template
+                    itemTemplate
                 ) as RepeatDirective;
                 const behavior = directive.createBehavior(location);
                 const vm = new ViewModel(size);
@@ -242,11 +266,43 @@ describe("The repeat", () => {
 
                 expect(toHTML(parent)).to.equal(createOutput(size));
 
-                vm.template = altTemplate;
+                vm.template = altItemTemplate;
 
                 await DOM.nextUpdate();
 
                 expect(toHTML(parent)).to.equal(createOutput(size, () => true, "*"));
+            });
+        });
+
+        oneThroughTen.forEach(size => {
+            it(`renders grandparent values from nested arrays of size ${size}`, async () => {
+                const deepItemTemplate = html<Item>`
+                    parent-${x => x.name}${repeat(
+                        x => x.items!,
+                        html<Item>`
+                            child-${x => x.name}root-${(x, c) =>
+                                c.parentContext.parent.name}
+                        `
+                    )}
+                `;
+
+                const { parent, location } = createLocation();
+                const directive = repeat<ViewModel>(
+                    x => x.items,
+                    deepItemTemplate
+                ) as RepeatDirective;
+
+                const behavior = directive.createBehavior(location);
+                const vm = new ViewModel(size, true);
+
+                behavior.bind(vm, defaultExecutionContext);
+
+                const text = toHTML(parent);
+
+                for (let i = 0; i < size; ++i) {
+                    const str = `child-item${i + 1}root-root`;
+                    expect(text.indexOf(str)).to.not.equal(-1);
+                }
             });
         });
     });

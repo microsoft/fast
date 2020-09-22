@@ -206,7 +206,7 @@ export function customElement(nameOrDef: string | PartialFASTElementDefinition):
 export type DecoratorAttributeConfiguration = Omit<AttributeConfiguration, "property">;
 
 // @public
-export const defaultExecutionContext: ExecutionContext<any>;
+export const defaultExecutionContext: ExecutionContext<any, any>;
 
 // @public
 export abstract class Directive implements BehaviorFactory {
@@ -272,7 +272,7 @@ export interface ElementViewTemplate {
 export const emptyArray: readonly never[];
 
 // @public
-export class ExecutionContext<TParent = any> {
+export class ExecutionContext<TParent = any, TGrandparent = any> {
     get event(): Event;
     index: number;
     get isEven(): boolean;
@@ -282,6 +282,7 @@ export class ExecutionContext<TParent = any> {
     get isOdd(): boolean;
     length: number;
     parent: TParent;
+    parentContext: ExecutionContext<TGrandparent>;
 }
 
 // @public
