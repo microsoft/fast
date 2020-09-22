@@ -96,7 +96,7 @@
     "react-redux": "^5.0.7",
     "react-router-dom": "^4.2.2",
     "react-test-renderer": "^16.6.3",
-    "rimraf": "^2.6.2",
+    "rimraf": "^3.0.2",
     "ts-jest": "^25.4.0",
     "ts-loader": "^4.0.1",
     "typescript": "^3.9.0",

@@ -104,6 +104,8 @@ export class Badge extends FASTElement {
     circular: boolean;
     color: string;
     fill: string;
+    // (undocumented)
+    generateBadgeStyle: () => string | undefined;
 }
 
 // @public
@@ -391,11 +393,12 @@ export abstract class FormAssociated<T extends HTMLInputElement | HTMLTextAreaEl
     protected abstract proxy: T;
     reportValidity(): boolean;
     required: boolean;
-    protected requiredChanged(): void;
+    protected requiredChanged(prev: boolean, next: boolean): void;
     protected setFormValue(value: File | string | FormData | null, state?: File | string | FormData | null): void;
     // Warning: (ae-forgotten-export) The symbol "ValidityStateFlags" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "HTMLElement" needs to be exported by the entry point index.d.ts
     setValidity(flags: ValidityStateFlags, message?: string, anchor?: HTMLElement_2): void;
+    protected validate(): void;
     get validationMessage(): string;
     get validity(): ValidityState;
     value: string;
@@ -713,6 +716,8 @@ export const TabPanelTemplate: import("@microsoft/fast-element").ViewTemplate<Ta
 export class Tabs extends FASTElement {
     constructor();
     activeid: string;
+    // @internal (undocumented)
+    activeidChanged(): void;
     activeindicator: boolean;
     // @internal (undocumented)
     activeIndicatorRef: HTMLElement;

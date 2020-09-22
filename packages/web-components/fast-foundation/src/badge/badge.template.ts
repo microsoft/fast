@@ -7,14 +7,7 @@ import { Badge } from "./badge";
  */
 export const BadgeTemplate = html<Badge>`
     <template class="${x => (x.circular ? "circular" : "")}">
-        <div
-            class="control"
-            part="control"
-            style="${x =>
-                x.fill || x.color
-                    ? `background-color: var(--badge-fill-${x.fill}); color: var(--badge-color-${x.color})`
-                    : void 0}"
-        >
+        <div class="control" part="control" style="${x => x.generateBadgeStyle()}">
             <slot></slot>
         </div>
     </template>

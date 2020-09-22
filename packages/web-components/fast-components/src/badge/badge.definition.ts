@@ -11,8 +11,8 @@ export const fastBadgeDefinition: WebComponentDefinition = {
                 {
                     name: "circular",
                     description: "The circular attribute",
-                    type: DataType.string,
-                    default: "",
+                    type: DataType.boolean,
+                    default: false,
                     required: false,
                 },
                 {

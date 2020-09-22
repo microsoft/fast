@@ -49,6 +49,8 @@ describe("The value property:", () => {
             document.body.appendChild(el);
 
             expect(el.value).to.equal(el["initialValue"]);
+
+            document.body.removeChild(el);
         });
 
         it("should initialize to the initial value when initial value is assigned by extending class", () => {
@@ -58,6 +60,8 @@ describe("The value property:", () => {
             document.body.appendChild(el);
 
             expect(el.value).to.equal("foobar");
+
+            document.body.removeChild(el);
         });
 
         it("should communicate initial value to the parent form", () => {
@@ -71,6 +75,8 @@ describe("The value property:", () => {
             const formData = new FormData(form);
 
             expect(formData.get("test")).to.equal("foobar");
+
+            document.body.removeChild(form);
         });
     });
 
@@ -84,6 +90,8 @@ describe("The value property:", () => {
 
             el.setAttribute("value", "barbat");
             expect(el.value).to.equal("barbat");
+
+            document.body.removeChild(el);
         });
 
         it("setting value attribute should not set value if value property has been explicitly set", () => {
@@ -95,6 +103,8 @@ describe("The value property:", () => {
 
             el.setAttribute("value", "barbat");
             expect(el.value).to.equal("foobar");
+
+            document.body.removeChild(el);
         });
 
         it("setting value attribute should set parent form value if value property has not been explicitly set", () => {
@@ -111,6 +121,8 @@ describe("The value property:", () => {
             el.setAttribute("value", "foobar");
             formData = new FormData(form);
             expect(formData.get("test")).to.equal("foobar");
+
+            document.body.removeChild(form);
         });
 
         it("setting value property should set parent form value", () => {
@@ -127,6 +139,8 @@ describe("The value property:", () => {
             el.value = "foobar";
             formData = new FormData(form);
             expect(formData.get("test")).to.equal("foobar");
+
+            document.body.removeChild(form);
         });
     });
 });
