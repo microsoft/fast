@@ -39,7 +39,10 @@ import {
     MessageSystemType,
 } from "@microsoft/fast-tooling";
 import { MonacoAdaptor } from "@microsoft/fast-tooling/dist/data-utilities/monaco-adaptor";
-import { MonacoAdaptorAction } from "@microsoft/fast-tooling/dist/data-utilities/monaco-adaptor-action";
+import {
+    MonacoAdaptorAction,
+    MonacoAdaptorActionCallbackConfig,
+} from "@microsoft/fast-tooling/dist/data-utilities/monaco-adaptor-action";
 import { mapDataDictionaryToMonacoEditorHTML } from "@microsoft/fast-tooling/dist/data-utilities/monaco";
 import FASTMessageSystemWorker from "@microsoft/fast-tooling/dist/message-system.min.js";
 import {
@@ -51,6 +54,7 @@ import {
     upChevron,
 } from "@microsoft/site-utilities";
 import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
+import { html_beautify } from "vscode-html-languageservice/lib/esm/beautify/beautify-html";
 import { ComponentViewConfig, Scenario } from "./fast-components/configs/data.props";
 import * as componentConfigs from "./fast-components/configs";
 import { history, menu, schemaDictionary } from "./config";
@@ -63,7 +67,6 @@ import {
 } from "./explorer.props";
 import { previewReady } from "./preview";
 import { Footer } from "./site-footer";
-import { html_beautify } from "vscode-html-languageservice/lib/esm/beautify/beautify-html";
 /* eslint-disable-next-line @typescript-eslint/no-var-requires */
 const FASTInlineLogo = require("@microsoft/site-utilities/statics/assets/fast-inline-logo.svg");
 export const previewBackgroundTransparency: string = "PREVIEW::TRANSPARENCY";
@@ -161,7 +164,7 @@ class Explorer extends Foundation<
             actions: [
                 new MonacoAdaptorAction({
                     id: "monaco.setValue",
-                    action: config => {
+                    action: (config: MonacoAdaptorActionCallbackConfig): void => {
                         // trigger an update to the monaco value that
                         // also updates the DataDictionary which fires a
                         // postMessage to the MessageSystem
