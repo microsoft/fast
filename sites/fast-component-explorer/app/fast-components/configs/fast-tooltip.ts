@@ -6,6 +6,7 @@ import {
 import { camelCase } from "lodash-es";
 import Guidance from "../../.tmp/tooltip/guidance";
 import { ComponentViewConfig } from "./data.props";
+import { fastButtonId } from "./fast-button";
 
 export const fastTooltipId = "fast-tooltip";
 const fastTooltipConfig: ComponentViewConfig = {
@@ -35,10 +36,15 @@ const fastTooltipConfig: ComponentViewConfig = {
                             id: "root",
                             dataLocation: "Slot",
                         },
-                        schemaId: "div",
+                        schemaId: fastButtonId,
                         data: {
                             id: "anchor",
-                            style: "height: 40px; width: 40px; background: green",
+                            style: "height: 40px; width: 100px; margin: 100px; background: green",
+                            Slot: [
+                                {
+                                    id: "ButtonSlot",
+                                }
+                            ],
                         }
                     },
                     RootSlot2: {
@@ -49,7 +55,6 @@ const fastTooltipConfig: ComponentViewConfig = {
                         schemaId: fastTooltipId,
                         data: {
                             anchor: "anchor",
-                            visible: true,
                             Slot: [
                                 {
                                     id: "TooltipSlot",
@@ -64,6 +69,14 @@ const fastTooltipConfig: ComponentViewConfig = {
                         },
                         schemaId: textSchema.id,
                         data: "Tooltip text",
+                    },
+                    ButtonSlot: {
+                        parent: {
+                            id: "RootSlot1",
+                            dataLocation: "Slot",
+                        },
+                        schemaId: textSchema.id,
+                        data: "Hover me",
                     },
                 },
                 "root",
