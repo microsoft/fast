@@ -246,7 +246,7 @@ onLoad(): void {
 }
 ```
 
-This renders a basic grid with a column titled "name" and another titled "age".  In addition to the title row there would be two rows of data populated with the values for name and age.  Note that data
+This renders a basic grid with a column titled "name" and another titled "age" in addition to the two rows of data populated with the values.  
 
 ![](./images/ex1.png)
 
