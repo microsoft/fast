@@ -405,9 +405,7 @@ async function copyImages() {
 }
 
 async function main() {
-    await copyArticleMarkdown();
-    await copyImages();
-    await buildAPIMarkdown();
+    await Promise.all([copyArticleMarkdown(), copyImages(), buildAPIMarkdown()]);
 }
 
 main();
