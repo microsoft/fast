@@ -1,6 +1,6 @@
 import { attr, FASTElement } from "@microsoft/fast-element";
 
-export type skeletonShape = 'rect' | 'circle';
+export type SkeletonShape = 'rect' | 'circle';
 
 /**
  * A Skeleton Custom HTML Element.
@@ -24,7 +24,7 @@ export class Skeleton extends FASTElement {
    * @remarks
    * HTML Attribute: shape
    */
-  @attr public shape: skeletonShape = "rect";
+  @attr public shape: SkeletonShape = "rect";
 
   /**
    * Indicates that the component can accept a pattern URL.
@@ -34,4 +34,14 @@ export class Skeleton extends FASTElement {
    * HTML Attribute: shape
    */
   @attr public pattern: string;
+
+  /**
+   * Indicates that the component has an activated shimmer effect
+   * 
+   * @public
+   * @remarks
+   * HTML Attribute: shimmer
+   */
+  @attr({mode: "boolean"}) 
+  public shimmer: boolean;
 };

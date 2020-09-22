@@ -34,7 +34,7 @@ export const SkeletonStyles = css`
     height: auto;
   }
   
-  ::slotted(.shimmer) {
+  span.shimmer {
     display: block;
     position: absolute;
     width: 100%;
@@ -56,6 +56,15 @@ export const SkeletonStyles = css`
   ::slotted(.pattern) {
     width: 100%;
     height: 100%;
+  }
+
+  @keyframes shimmer {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(100%);
+    }
   }
 
 `.withBehaviors(

@@ -546,14 +546,14 @@ export const RadioTemplate: import("@microsoft/fast-element").ViewTemplate<Radio
 
 // @public
 export class Skeleton extends FASTElement {
-    animation: string;
     fill: string;
     pattern: string;
-    shape: skeletonShape;
+    shape: SkeletonShape;
+    shimmer: boolean;
 }
 
 // @public (undocumented)
-export type skeletonShape = 'rect' | 'circle';
+export type SkeletonShape = 'rect' | 'circle';
 
 // @public (undocumented)
 export const SkeletonTemplate: import("@microsoft/fast-element").ViewTemplate<Skeleton, any>;

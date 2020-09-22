@@ -1,12 +1,15 @@
-import { html } from "@microsoft/fast-element";
+import { html, when } from "@microsoft/fast-element";
 import { Skeleton } from "./skeleton";
 
 export const SkeletonTemplate = html<Skeleton>`
   <template
-    shape="${x => x.shape}"
     class="${x => (x.shape === "circle" ? "circle" : "rect")}"
     pattern="${x => x.pattern}"
+    ?shimmer="${x => x.shimmer}"
   >
+    ${when(x => x.shimmer === true, html`
+      <span class="shimmer"></span>
+    `)}
     <object
       type="image/svg+xml" 
       data="${x => x.pattern}"
