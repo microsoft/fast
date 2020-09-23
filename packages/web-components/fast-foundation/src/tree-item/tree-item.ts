@@ -12,7 +12,9 @@ import {
     keyCodeArrowLeft,
     keyCodeArrowRight,
     keyCodeArrowUp,
+    keyCodeEnd,
     keyCodeEnter,
+    keyCodeHome,
     keyCodeSpace,
 } from "@microsoft/fast-web-utilities";
 import { StartEnd } from "../patterns/start-end";
@@ -155,6 +157,11 @@ export class TreeItem extends FASTElement {
         this.focusable = false;
     };
 
+    /**
+     * The keyboarding on treeview should conform to the following spec
+     * https://w3c.github.io/aria-practices/#keyboard-interaction-23
+     * @param e - Event object for keyDown event
+     */
     public handleKeyDown = (e: KeyboardEvent): void | boolean => {
         if (e.target !== e.currentTarget) {
             return true;
@@ -162,10 +169,10 @@ export class TreeItem extends FASTElement {
 
         switch (e.keyCode) {
             case keyCodeArrowLeft:
-                this.handleArrowLeft();
+                this.collapseOrFocusParent();
                 break;
             case keyCodeArrowRight:
-                this.handleArrowRight();
+                this.expandOrFocusFirstChild();
                 break;
             case keyCodeArrowDown:
                 // preventDefault to ensure we don't scroll the page
@@ -178,10 +185,9 @@ export class TreeItem extends FASTElement {
                 this.focusNextNode(-1);
                 break;
             case keyCodeEnter:
+                // In single-select trees where selection does not follow focus (see note below),
+                // the default action is typically to select the focused node.
                 this.handleSelected(e);
-                break;
-            case keyCodeSpace:
-                this.handleSpaceBar();
                 break;
         }
 
@@ -214,7 +220,7 @@ export class TreeItem extends FASTElement {
         return isTreeItemElement(this.parentElement as Element);
     };
 
-    private handleArrowLeft(): void {
+    private collapseOrFocusParent(): void {
         if (this.expanded) {
             this.setExpanded(false);
         } else if (isHTMLElement(this.parentElement)) {
@@ -229,7 +235,7 @@ export class TreeItem extends FASTElement {
         }
     }
 
-    private handleArrowRight(): void {
+    private expandOrFocusFirstChild(): void {
         if (typeof this.expanded !== "boolean") {
             return;
         }
@@ -241,13 +247,6 @@ export class TreeItem extends FASTElement {
                 this.enabledChildTreeItems[0].focus();
             }
         }
-    }
-
-    private handleSpaceBar(): void {
-        if (typeof this.expanded !== "boolean") {
-            return;
-        }
-        this.setExpanded(!this.expanded);
     }
 
     private focusNextNode(delta: number): void {
