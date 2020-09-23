@@ -482,7 +482,7 @@ export abstract class FormAssociated<
         newValue: string
     ): void {
         if (this.proxy instanceof HTMLElement) {
-            this.proxy[name] = this[name];
+            this.proxy[name] = `${this[name]}`;
         }
         super.attributeChangedCallback(name, oldValue, newValue);
     }
