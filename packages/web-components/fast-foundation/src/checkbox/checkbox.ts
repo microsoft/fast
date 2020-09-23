@@ -17,11 +17,6 @@ export class Checkbox extends FormAssociated<HTMLInputElement> {
      */
     @attr({ attribute: "readonly", mode: "boolean" })
     public readOnly: boolean; // Map to proxy element
-    private readOnlyChanged(): void {
-        if (this.proxy instanceof HTMLElement) {
-            this.proxy.readOnly = this.readOnly;
-        }
-    }
 
     /**
      * The element's value to be included in form submission when checked.
@@ -81,14 +76,10 @@ export class Checkbox extends FormAssociated<HTMLInputElement> {
             this.dirtyChecked = true;
         }
 
-        this.updateForm();
-
-        if (this.proxy instanceof HTMLElement) {
-            this.proxy.checked = this.checked;
-        }
-
         if (this.constructed) {
             this.$emit("change");
+            this.checkedAttribute = this.checked;
+            this.updateForm();
         }
     }
 

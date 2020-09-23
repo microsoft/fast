@@ -26,11 +26,6 @@ export class Radio extends FormAssociated<HTMLInputElement> implements RadioCont
      */
     @attr({ attribute: "readonly", mode: "boolean" })
     public readOnly: boolean; // Map to proxy element
-    private readOnlyChanged(): void {
-        if (this.proxy instanceof HTMLElement) {
-            this.proxy.readOnly = this.readOnly;
-        }
-    }
 
     /**
      * The name of the radio. See {@link https://developer.mozilla.org/en-US/docs/Web/API/Element/name | name attribute} for more info.
@@ -41,11 +36,6 @@ export class Radio extends FormAssociated<HTMLInputElement> implements RadioCont
      */
     @attr
     public name: string; // Map to proxy element
-    protected nameChanged(): void {
-        if (this.proxy instanceof HTMLElement) {
-            this.proxy.name = this.name;
-        }
-    }
 
     /**
      * The element's value to be included in form submission when checked.
@@ -103,10 +93,6 @@ export class Radio extends FormAssociated<HTMLInputElement> implements RadioCont
     private checkedChanged(): void {
         if (!this.dirtyChecked) {
             this.dirtyChecked = true;
-        }
-
-        if (this.proxy instanceof HTMLElement) {
-            this.proxy.checked = this.checked;
         }
 
         this.$emit("change");

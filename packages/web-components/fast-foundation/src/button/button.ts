@@ -39,11 +39,6 @@ export class Button extends FormAssociated<HTMLInputElement> {
      */
     @attr
     public formaction: string;
-    private formactionChanged(): void {
-        if (this.proxy instanceof HTMLElement) {
-            this.proxy.formAction = this.formaction;
-        }
-    }
 
     /**
      * See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button | <button> element} for more details.
@@ -54,11 +49,6 @@ export class Button extends FormAssociated<HTMLInputElement> {
      */
     @attr
     public formenctype: string;
-    private formenctypeChanged(): void {
-        if (this.proxy instanceof HTMLElement) {
-            this.proxy.formEnctype = this.formenctype;
-        }
-    }
 
     /**
      * See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button | <button> element} for more details.
@@ -69,11 +59,6 @@ export class Button extends FormAssociated<HTMLInputElement> {
      */
     @attr
     public formmethod: string;
-    private formmethodChanged(): void {
-        if (this.proxy instanceof HTMLElement) {
-            this.proxy.formMethod = this.formmethod;
-        }
-    }
 
     /**
      * See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button | <button> element} for more details.
@@ -84,11 +69,6 @@ export class Button extends FormAssociated<HTMLInputElement> {
      */
     @attr({ mode: "boolean" })
     public formnovalidate: boolean;
-    private formnovalidateChanged(): void {
-        if (this.proxy instanceof HTMLElement) {
-            this.proxy.formNoValidate = this.formnovalidate;
-        }
-    }
 
     /**
      * See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button | <button> element} for more details.
@@ -99,11 +79,6 @@ export class Button extends FormAssociated<HTMLInputElement> {
      */
     @attr
     public formtarget: "_self" | "_blank" | "_parent" | "_top";
-    private formtargetChanged(): void {
-        if (this.proxy instanceof HTMLElement) {
-            this.proxy.formTarget = this.formtarget;
-        }
-    }
 
     /**
      * The button type.
@@ -118,10 +93,6 @@ export class Button extends FormAssociated<HTMLInputElement> {
         previous: "submit" | "reset" | "button" | void,
         next: "submit" | "reset" | "button"
     ): void {
-        if (this.proxy instanceof HTMLElement) {
-            this.proxy.type = this.type;
-        }
-
         next === "submit" && this.addEventListener("click", this.handleSubmission);
         previous === "submit" && this.removeEventListener("click", this.handleSubmission);
         next === "reset" && this.addEventListener("click", this.handleFormReset);

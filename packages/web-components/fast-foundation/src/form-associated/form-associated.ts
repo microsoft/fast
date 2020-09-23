@@ -207,10 +207,6 @@ export abstract class FormAssociated<
     protected valueChanged(previous: string, next: string) {
         this.dirtyValue = true;
 
-        if (this.proxy instanceof HTMLElement) {
-            this.proxy.value = this.value;
-        }
-
         this.setFormValue(this.value);
     }
 
@@ -265,10 +261,6 @@ export abstract class FormAssociated<
      * proper functioning of `FormAssociated`
      */
     protected disabledChanged(previous: boolean, next: boolean): void {
-        if (this.proxy instanceof HTMLElement) {
-            this.proxy.disabled = this.disabled;
-        }
-
         DOM.queueUpdate(() => this.classList.toggle("disabled", this.disabled));
     }
 
@@ -280,23 +272,6 @@ export abstract class FormAssociated<
      */
     @attr
     public name: string;
-
-    /**
-     * Invoked when the `name` property changes
-     *
-     * @param previous - the previous value
-     * @param next - the new value
-     *
-     * @remarks
-     * If elements extending `FormAssociated` implement a `nameChanged` method
-     * They must be sure to invoke `super.nameChanged(previous, next)` to ensure
-     * proper functioning of `FormAssociated`
-     */
-    protected nameChanged(): void {
-        if (this.proxy instanceof HTMLElement) {
-            this.proxy.name = this.name;
-        }
-    }
 
     /**
      * Require the field to be completed prior to form submission.
@@ -319,10 +294,6 @@ export abstract class FormAssociated<
      * proper functioning of `FormAssociated`
      */
     protected requiredChanged(): void {
-        if (this.proxy instanceof HTMLElement) {
-            this.proxy.required = this.required;
-        }
-
         DOM.queueUpdate(() => this.classList.toggle("required", this.required));
     }
 
@@ -503,5 +474,16 @@ export abstract class FormAssociated<
      */
     private stopPropagation(e: Event): void {
         e.stopPropagation();
+    }
+
+    public attributeChangedCallback(
+        name: string,
+        oldValue: string,
+        newValue: string
+    ): void {
+        if (this.proxy instanceof HTMLElement) {
+            this.proxy[name] = this[name];
+        }
+        super.attributeChangedCallback(name, oldValue, newValue);
     }
 }
