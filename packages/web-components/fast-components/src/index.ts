@@ -23,5 +23,6 @@ export * from "./switch/index";
 export * from "./tabs/index";
 export * from "./text-area/index";
 export * from "./text-field/index";
+export * from "./tooltip/index";
 export * from "./tree-view/index";
 export * from "./tree-item/index";

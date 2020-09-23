@@ -25,4 +25,4 @@ export * from "./directives/when";
 export * from "./directives/repeat";
 export * from "./directives/slotted";
 export * from "./directives/children";
-export { elements } from "./directives/node-observation";
+export { elements, NodeBehaviorOptions } from "./directives/node-observation";

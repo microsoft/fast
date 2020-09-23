@@ -92,6 +92,8 @@ export class Switch extends FormAssociated<HTMLInputElement> {
         this.$emit("change");
 
         this.checked ? this.classList.add("checked") : this.classList.remove("checked");
+
+        this.validate();
     }
 
     protected proxy = document.createElement("input");

@@ -14,6 +14,13 @@ const divSchema = {
     mapsToTagName: "div",
 };
 
+const spanSchema = {
+    id: "span",
+    $id: "span",
+    type: "object",
+    mapsToTagName: "span",
+};
+
 const inputSchema = {
     id: "input",
     $id: "input",
@@ -280,7 +287,7 @@ describe("mapVSCodeParsedHTMLToDataDictionary", () => {
         const inputChildKey2: string = (value[0][root].data as any).Slot[2].id;
 
         expect(typeof inputChildKey1).toEqual("string");
-        // expect(value[0][inputChildKey1].schemaId).toEqual(inputSchema.id);
+        expect(value[0][inputChildKey1].schemaId).toEqual(inputSchema.id);
         expect(value[0][inputChildKey1].data).toEqual({});
         expect(value[0][inputChildKey1].parent.id).toEqual(root);
         expect(value[0][inputChildKey1].parent.dataLocation).toEqual("Slot");
@@ -294,5 +301,36 @@ describe("mapVSCodeParsedHTMLToDataDictionary", () => {
         expect(value[0][inputChildKey2].data).toEqual({});
         expect(value[0][inputChildKey2].parent.id).toEqual(root);
         expect(value[0][inputChildKey2].parent.dataLocation).toEqual("Slot");
+    });
+    test("should return a DataDictionary containing nested HTML elements and text nodes", () => {
+        const value = mapVSCodeParsedHTMLToDataDictionary({
+            value: ["<div>", "<span>", "foobar", "</span>", "</div>"],
+            schemaDictionary: {
+                [textSchema.id]: textSchema,
+                [divSchema.id]: divSchema,
+                [inputSchema.id]: inputSchema,
+                [spanSchema.id]: spanSchema,
+            },
+        });
+
+        const root: string = value[1];
+        const spanChildKey: string = (value[0][root].data as any).Slot[0].id;
+        const textChildKey: string = (value[0][spanChildKey].data as any).Slot[0].id;
+
+        expect(value[0][root].data).toEqual({
+            Slot: [
+                {
+                    id: spanChildKey,
+                },
+            ],
+        });
+        expect(value[0][spanChildKey].data).toEqual({
+            Slot: [
+                {
+                    id: textChildKey,
+                },
+            ],
+        });
+        expect(value[0][textChildKey].data).toEqual("foobar");
     });
 });

@@ -6,6 +6,11 @@ module.exports = {
         },
         {
             type: "category",
+            label: "Tutorials",
+            items: ["tutorials/site-rebrand"],
+        },
+        {
+            type: "category",
             label: "Using FAST Components",
             items: [
                 "components/getting-started",
@@ -33,6 +38,7 @@ module.exports = {
                         "components/tabs",
                         "components/text-area",
                         "components/text-field",
+                        "components/tooltip",
                         "components/tree-view",
                     ],
                 },
