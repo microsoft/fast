@@ -553,7 +553,7 @@ export class Skeleton extends FASTElement {
 }
 
 // @public (undocumented)
-export type SkeletonShape = 'rect' | 'circle';
+export type SkeletonShape = "rect" | "circle";
 
 // @public (undocumented)
 export const SkeletonTemplate: import("@microsoft/fast-element").ViewTemplate<Skeleton, any>;

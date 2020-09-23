@@ -2,47 +2,47 @@ import { WebComponentDefinition } from "@microsoft/fast-tooling/dist/data-utilit
 import { DataType } from "@microsoft/fast-tooling";
 
 export const fastSkeletonDefinitions: WebComponentDefinition = {
-  version: 1,
-  tags: [
-    {
-      name: "fluent-skeleton",
-      description: "The Fluent skeleton element",
-      attributes: [
+    version: 1,
+    tags: [
         {
-          name: "fill",
-          description: "The fill attribute",
-          type: DataType.string,
-          default: undefined,
-          required: false
+            name: "fluent-skeleton",
+            description: "The Fluent skeleton element",
+            attributes: [
+                {
+                    name: "fill",
+                    description: "The fill attribute",
+                    type: DataType.string,
+                    default: undefined,
+                    required: false,
+                },
+                {
+                    name: "shape",
+                    description: "The shape attribute",
+                    type: DataType.string,
+                    default: "circle",
+                    required: false,
+                },
+                {
+                    name: "pattern",
+                    description: "The pattern attribute",
+                    type: DataType.string,
+                    default: undefined,
+                    required: false,
+                },
+                {
+                    name: "shimmer",
+                    description: "The shimmer attribute",
+                    type: DataType.boolean,
+                    default: undefined,
+                    required: false,
+                },
+            ],
+            slots: [
+                {
+                    name: "",
+                    description: "The default slot",
+                },
+            ],
         },
-        {
-          name: "shape",
-          description: "The shape attribute",
-          type: DataType.string,
-          default: "",
-          required: false
-        },
-        {
-          name: "pattern",
-          description: "The pattern attribute",
-          type: DataType.string,
-          default: "",
-          required: false
-        },
-        {
-          name: "shimmer",
-          description: "The shimmer attribute",
-          type: DataType.boolean,
-          default: "",
-          required: false
-        }
-      ],
-      slots: [
-        {
-          name: "",
-          description: "The default slot"
-        }
-      ]
-    }
-  ]
-}
+    ],
+};

@@ -6,7 +6,7 @@ FluentSkeleton;
 FASTDesignSystemProvider;
 
 export default {
-  title: "Skeleton"
+    title: "Skeleton",
 };
 
 export const Skeleton = () => SkeletonTemplate;
