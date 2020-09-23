@@ -162,25 +162,26 @@ export class TreeItem extends FASTElement {
 
         switch (e.keyCode) {
             case keyCodeArrowLeft:
-                this.handleArrowLeft(e);
+                this.handleArrowLeft();
                 break;
             case keyCodeArrowRight:
-                this.handleArrowRight(e);
+                this.handleArrowRight();
                 break;
             case keyCodeArrowDown:
+                // preventDefault to ensure we don't scroll the page
                 e.preventDefault();
                 this.focusNextNode(1);
                 break;
             case keyCodeArrowUp:
+                // preventDefault to ensure we don't scroll the page
                 e.preventDefault();
                 this.focusNextNode(-1);
                 break;
             case keyCodeEnter:
-                e.preventDefault();
                 this.handleSelected(e);
                 break;
             case keyCodeSpace:
-                this.handleSpaceBar(e);
+                this.handleSpaceBar();
                 break;
         }
 
@@ -195,9 +196,8 @@ export class TreeItem extends FASTElement {
     };
 
     public handleClick = (e: MouseEvent): void => {
-        if (!this.disabled && !e.defaultPrevented) {
+        if (!e.defaultPrevented) {
             this.handleSelected(e);
-            e.preventDefault();
         }
     };
 
@@ -214,9 +214,8 @@ export class TreeItem extends FASTElement {
         return isTreeItemElement(this.parentElement as Element);
     };
 
-    private handleArrowLeft(e: KeyboardEvent): void {
+    private handleArrowLeft(): void {
         if (this.expanded) {
-            e.preventDefault();
             this.setExpanded(false);
         } else if (isHTMLElement(this.parentElement)) {
             const parentTreeItemNode:
@@ -225,33 +224,29 @@ export class TreeItem extends FASTElement {
                 | undefined = this.parentElement!.closest("[role='treeitem']");
 
             if (isHTMLElement(parentTreeItemNode)) {
-                e.preventDefault();
                 (parentTreeItemNode as HTMLElement).focus();
             }
         }
     }
 
-    private handleArrowRight(e: KeyboardEvent): void {
+    private handleArrowRight(): void {
         if (typeof this.expanded !== "boolean") {
             return;
         }
-        e.preventDefault();
+
         if (!this.expanded && this.childItemLength() > 0) {
-            e.preventDefault();
             this.setExpanded(true);
         } else {
             if (this.enabledChildTreeItems.length > 0) {
-                e.preventDefault();
                 this.enabledChildTreeItems[0].focus();
             }
         }
     }
 
-    private handleSpaceBar(e: KeyboardEvent): void {
+    private handleSpaceBar(): void {
         if (typeof this.expanded !== "boolean") {
             return;
         }
-        e.preventDefault();
         this.setExpanded(!this.expanded);
     }
 
