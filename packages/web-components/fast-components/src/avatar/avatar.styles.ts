@@ -1,66 +1,61 @@
 import { css } from "@microsoft/fast-element";
 import { display } from "@microsoft/fast-foundation";
-import {
-  accentFillRestBehavior,
-  neutralForegroundRestBehavior
-} from "../styles/index";
+import { accentFillRestBehavior, neutralForegroundRestBehavior } from "../styles/index";
 
 export const AvatarStyles = css`
-  ${display("flex")} 
-  :host {
-    max-width: var(--avatar-size);
-    height: var(--avatar-size);
-    position: relative;
-    --avatar-text-size: var(--type-ramp-base-font-size);
-    --avatar-text-ratio: var(--design-unit);
-  }
-  
-  .link {
-    text-decoration: none;
-    color: ${neutralForegroundRestBehavior.var};
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    min-width: 100%;
-  }
+    ${display("flex")} :host {
+        max-width: var(--avatar-size);
+        height: var(--avatar-size);
+        position: relative;
+        --avatar-text-size: var(--type-ramp-base-font-size);
+        --avatar-text-ratio: var(--design-unit);
+    }
 
-  .square {
-    border-radius: calc(var(--corner-radius) * 1px);
-    min-width: 100%;
-    overflow: hidden;
-  }
+    .link {
+        text-decoration: none;
+        color: ${neutralForegroundRestBehavior.var};
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        min-width: 100%;
+    }
 
-  .coin {
-    position: relative;
-    display: flex;
-  }
+    .square {
+        border-radius: calc(var(--corner-radius) * 1px);
+        min-width: 100%;
+        overflow: hidden;
+    }
 
-  .circle {
-    border-radius: 100%;
-    min-width: 100%;
-    overflow: hidden;
-  }
+    .coin {
+        position: relative;
+        display: flex;
+    }
 
-  .image {
-    width: 100%;
-    position: absolute;
-    display: block;
-  }
+    .circle {
+        border-radius: 100%;
+        min-width: 100%;
+        overflow: hidden;
+    }
 
-  .name {
-    font-size: calc((var(--avatar-text-size) + var(--avatar-size)) / var(--avatar-text-ratio));
-    line-height: var(--type-ramp-plus-5-line-height);
-    display: block;
-  }
+    .image {
+        width: 100%;
+        position: absolute;
+        display: block;
+    }
 
-  ::slotted(fast-badge) {
-    position: absolute;
-    display: block;
-    bottom: 0;
-    right: 0;
-  }
-`.withBehaviors(
-  accentFillRestBehavior,
-  neutralForegroundRestBehavior
-);
+    .name {
+        font-size: calc(
+            (var(--avatar-text-size) + var(--avatar-size)) / var(--avatar-text-ratio)
+        );
+        line-height: var(--type-ramp-plus-5-line-height);
+        display: block;
+    }
+
+    ::slotted(fast-badge) {
+        position: absolute;
+        display: block;
+        bottom: 0;
+        right: 0;
+    }
+`.withBehaviors(accentFillRestBehavior, neutralForegroundRestBehavior);

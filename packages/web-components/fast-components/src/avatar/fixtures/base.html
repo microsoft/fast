@@ -1,127 +1,114 @@
 <fast-design-system-provider use-defaults>
-  <style>
-    fast-avatar {
-      --avatar-fill-accent-primary: #CF4073;
-      --avatar-fill-accent-secondary: #0078D4;
-      --avatar-color-foo: #ffffff;
-      --avatar-size: 150px;
-      --avatar-text-ratio: 2.5;
-      --badge-fill-primary: var(--accent-fill-rest);
-    }
+    <style>
+        fast-avatar {
+            --avatar-fill-accent-primary: #cf4073;
+            --avatar-fill-accent-secondary: #0078d4;
+            --avatar-color-foo: #ffffff;
+            --avatar-size: 150px;
+            --avatar-text-ratio: 2.5;
+            --badge-fill-primary: var(--accent-fill-rest);
+        }
 
-    fast-badge {
-      right: 10px;
-      bottom: 10px;
-    }
-  </style>
-  <h1>Avatar</h1>
+        fast-badge {
+            right: 10px;
+            bottom: 10px;
+        }
+    </style>
+    <h1>Avatar</h1>
 
-  <h2>Circular shaped avatar</h2>
+    <h2>Circular shaped avatar</h2>
 
-  <h3>Circular avatar with image</h3>
-  <fast-avatar
-    src="https://static2.sharepointonline.com/files/fabric/office-ui-fabric-react-assets/persona-female.png"
-    alt="Annie's profile image"
-    link="https://microsoft.com"
-    name="Annie Lennox"
-    shape="circle"
-    fill="accent-primary"
-    color="foo"
-  >
-  </fast-avatar>
+    <h3>Circular avatar with image</h3>
+    <fast-avatar
+        src="https://static2.sharepointonline.com/files/fabric/office-ui-fabric-react-assets/persona-female.png"
+        alt="Annie's profile image"
+        link="https://microsoft.com"
+        name="Annie Lennox"
+        shape="circle"
+        fill="accent-primary"
+        color="foo"
+    ></fast-avatar>
 
-  <h3>Circular avatar with initials</h3>
-  <fast-avatar
-    alt="Annie's profile image"
-    link="https://microsoft.com"
-    name="Carlos Riviera"
-    shape="circle"
-    fill="accent-primary"
-    color="foo"
-  >
-  </fast-avatar>
-  
-  <h3>Circular avatar with image and badge</h3>
-  <fast-avatar
-    src="https://static2.sharepointonline.com/files/fabric/office-ui-fabric-react-assets/persona-female.png"
-    alt="Annie's profile image"
-    link="https://microsoft.com"
-    name="Harper Lewis"
-    shape="circle"
-    fill="accent-primary"
-    color="foo"
-  >
-    <fast-badge slot="badge" 
-      fill="primary"
-      circular>&nbsp</fast-badge
+    <h3>Circular avatar with initials</h3>
+    <fast-avatar
+        alt="Annie's profile image"
+        link="https://microsoft.com"
+        name="Carlos Riviera"
+        shape="circle"
+        fill="accent-primary"
+        color="foo"
+    ></fast-avatar>
+
+    <h3>Circular avatar with image and badge</h3>
+    <fast-avatar
+        src="https://static2.sharepointonline.com/files/fabric/office-ui-fabric-react-assets/persona-female.png"
+        alt="Annie's profile image"
+        link="https://microsoft.com"
+        name="Harper Lewis"
+        shape="circle"
+        fill="accent-primary"
+        color="foo"
     >
-  </fast-avatar>
-  
-  <h3>Circular avatar with initials and badge</h3>
-  <fast-avatar
-    alt="Annie's profile image"
-    link="https://microsoft.com"
-    name="Bob Villa"
-    shape="circle"
-    fill="accent-secondary"
-    color="foo"
-  >
-    <fast-badge slot="badge" 
-      fill="primary"
-      circular>&nbsp</fast-badge>
-  </fast-avatar>
+        <fast-badge slot="badge" fill="primary" circular>&nbsp</fast-badge>
+    </fast-avatar>
 
-  <h2>Square shaped avatar</h2>
+    <h3>Circular avatar with initials and badge</h3>
+    <fast-avatar
+        alt="Annie's profile image"
+        link="https://microsoft.com"
+        name="Bob Villa"
+        shape="circle"
+        fill="accent-secondary"
+        color="foo"
+    >
+        <fast-badge slot="badge" fill="primary" circular>&nbsp</fast-badge>
+    </fast-avatar>
 
-  <h3>Square avatar with image</h3>
-  <fast-avatar
-    src="https://static2.sharepointonline.com/files/fabric/office-ui-fabric-react-assets/persona-female.png"
-    alt="Annie's profile image"
-    link="https://microsoft.com"
-    name="Fang Law"
-    shape="square"
-    fill="accent-secondary"
-    color="foo"
-  >
-  </fast-avatar>
+    <h2>Square shaped avatar</h2>
 
-  <h3>Square avatar with with initials and badge</h3>
-  <fast-avatar
-    alt="Annie's profile image"
-    link="https://microsoft.com"
-    name="Scott Workman"
-    shape="square"
-    fill="accent-primary"
-    color="foo"
-  >
-  </fast-avatar>
+    <h3>Square avatar with image</h3>
+    <fast-avatar
+        src="https://static2.sharepointonline.com/files/fabric/office-ui-fabric-react-assets/persona-female.png"
+        alt="Annie's profile image"
+        link="https://microsoft.com"
+        name="Fang Law"
+        shape="square"
+        fill="accent-secondary"
+        color="foo"
+    ></fast-avatar>
 
-  <h3>Square avatar with image and badge</h3>
-  <fast-avatar
-    src="https://static2.sharepointonline.com/files/fabric/office-ui-fabric-react-assets/persona-female.png"
-    alt="Annie's profile image"
-    link="https://microsoft.com"
-    name="Albert Wilbur"
-    shape="square"
-    fill="accent-secondary"
-    color="foo"
-  >
-    <fast-badge slot="badge" 
-      fill="primary"
-      circular>&nbsp</fast-badge>
-  </fast-avatar>
+    <h3>Square avatar with with initials and badge</h3>
+    <fast-avatar
+        alt="Annie's profile image"
+        link="https://microsoft.com"
+        name="Scott Workman"
+        shape="square"
+        fill="accent-primary"
+        color="foo"
+    ></fast-avatar>
 
-  <h3>Square avatar with initials and badge</h3>
-  <fast-avatar
-    alt="Annie's profile image"
-    link="https://microsoft.com"
-    name="Austin Space"
-    shape="square"
-    fill="accent-secondary"
-    color="foo"
-  >
-    <fast-badge slot="badge" 
-      fill="primary"
-      circular>&nbsp</fast-badge>
-  </fast-avatar>
+    <h3>Square avatar with image and badge</h3>
+    <fast-avatar
+        src="https://static2.sharepointonline.com/files/fabric/office-ui-fabric-react-assets/persona-female.png"
+        alt="Annie's profile image"
+        link="https://microsoft.com"
+        name="Albert Wilbur"
+        shape="square"
+        fill="accent-secondary"
+        color="foo"
+    >
+        <fast-badge slot="badge" fill="primary" circular>&nbsp</fast-badge>
+    </fast-avatar>
+
+    <h3>Square avatar with initials and badge</h3>
+    <fast-avatar
+        alt="Annie's profile image"
+        link="https://microsoft.com"
+        name="Austin Space"
+        shape="square"
+        fill="accent-secondary"
+        color="foo"
+    >
+        <fast-badge slot="badge" fill="primary" circular>&nbsp</fast-badge>
+    </fast-avatar>
 </fast-design-system-provider>
