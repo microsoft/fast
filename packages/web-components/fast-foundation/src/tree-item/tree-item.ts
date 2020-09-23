@@ -12,10 +12,7 @@ import {
     keyCodeArrowLeft,
     keyCodeArrowRight,
     keyCodeArrowUp,
-    keyCodeEnd,
     keyCodeEnter,
-    keyCodeHome,
-    keyCodeSpace,
 } from "@microsoft/fast-web-utilities";
 import { StartEnd } from "../patterns/start-end";
 import { applyMixins } from "../utilities/apply-mixins";
