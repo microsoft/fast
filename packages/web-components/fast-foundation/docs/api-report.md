@@ -935,9 +935,9 @@ export class TreeItem extends FASTElement {
     // (undocumented)
     handleChange(source: any, propertyName: string): void;
     // (undocumented)
-    handleContainerClick: (e: MouseEvent) => void;
+    handleClick: (e: MouseEvent) => void;
     // (undocumented)
-    handleExpandCollapseButtonClick: () => void;
+    handleExpandCollapseButtonClick: (e: MouseEvent) => void;
     // (undocumented)
     handleFocus: (e: Event) => void;
     // (undocumented)

@@ -162,25 +162,27 @@ export class TreeItem extends FASTElement {
 
         switch (e.keyCode) {
             case keyCodeArrowLeft:
+                e.preventDefault();
                 this.handleArrowLeft();
                 break;
             case keyCodeArrowRight:
+                e.preventDefault();
                 this.handleArrowRight();
                 break;
             case keyCodeArrowDown:
-                // preventDefault to ensure we don't scroll the page
                 e.preventDefault();
                 this.focusNextNode(1);
                 break;
             case keyCodeArrowUp:
-                // preventDefault to ensure we don't scroll the page
                 e.preventDefault();
                 this.focusNextNode(-1);
                 break;
             case keyCodeEnter:
+                e.preventDefault();
                 this.handleSelected(e);
                 break;
             case keyCodeSpace:
+                e.preventDefault();
                 this.handleSpaceBar();
                 break;
         }
@@ -188,21 +190,20 @@ export class TreeItem extends FASTElement {
         return true;
     };
 
-    public handleExpandCollapseButtonClick = (): void => {
+    public handleExpandCollapseButtonClick = (e: MouseEvent): void => {
         if (!this.disabled) {
+            e.preventDefault();
             this.setExpanded(!this.expanded);
         }
     };
 
-    public handleContainerClick = (e: MouseEvent): void => {
-        const expandButton: HTMLElement | null = this.expandCollapseButton;
-        const isButtonAnHTMLElement: boolean = isHTMLElement(expandButton);
+    public handleClick = (e: MouseEvent): void => {
         if (
-            (!isButtonAnHTMLElement ||
-                (isButtonAnHTMLElement && expandButton !== e.target)) &&
-            !this.disabled
+            !this.disabled &&
+            !e.defaultPrevented
         ) {
             this.handleSelected(e);
+            e.preventDefault();
         }
     };
 
