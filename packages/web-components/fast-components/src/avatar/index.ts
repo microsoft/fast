@@ -14,7 +14,10 @@ import { AvatarStyles as styles} from "./avatar.styles";
 @customElement({
   name: "fast-avatar",
   template,
-  styles
+  styles,
+  shadowOptions: {
+    delegatesFocus: true
+  }
 })
 export class FASTAvatar extends Avatar {}
 
