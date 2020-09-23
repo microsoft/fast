@@ -341,7 +341,7 @@ describe("TreeItem", () => {
             await disconnect();
         });
 
-        it("should toggle the selected state when the positioning region is clicked", async () => {
+        it("should toggle the selected state when the component is clicked", async () => {
             const { element, connect, disconnect } = await setup();
             const nestedItem = document.createElement("fast-tree-item");
 
@@ -350,17 +350,14 @@ describe("TreeItem", () => {
             await connect();
             await DOM.nextUpdate();
 
-            let container = element.shadowRoot?.querySelector(
-                ".positioning-region"
-            ) as any;
-            container?.click();
+            element.click();
 
             await DOM.nextUpdate();
 
             expect(element.selected).to.equal(true);
             expect(element.getAttribute("aria-selected")).to.equal("true");
 
-            container?.click();
+            element.click();
 
             await DOM.nextUpdate();
 
@@ -370,7 +367,7 @@ describe("TreeItem", () => {
             await disconnect();
         });
 
-        it("should NOT toggle the selected state when the positioning region is clicked and the element is disabled", async () => {
+        it("should NOT toggle the selected state when the element is clicked when disabled", async () => {
             const { element, connect, disconnect } = await setup();
             const nestedItem = document.createElement("fast-tree-item");
 
@@ -380,10 +377,7 @@ describe("TreeItem", () => {
             await connect();
             await DOM.nextUpdate();
 
-            let container = element.shadowRoot?.querySelector(
-                ".positioning-region"
-            ) as any;
-            container?.click();
+            element.click();
 
             await DOM.nextUpdate();
 
