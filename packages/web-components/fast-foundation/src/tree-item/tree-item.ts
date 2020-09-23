@@ -196,7 +196,7 @@ export class TreeItem extends FASTElement {
     };
 
     public handleClick = (e: MouseEvent): void => {
-        if (!e.defaultPrevented) {
+        if (!e.defaultPrevented && !this.disabled) {
             this.handleSelected(e);
         }
     };
