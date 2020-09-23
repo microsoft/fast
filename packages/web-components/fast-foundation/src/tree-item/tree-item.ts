@@ -162,12 +162,10 @@ export class TreeItem extends FASTElement {
 
         switch (e.keyCode) {
             case keyCodeArrowLeft:
-                e.preventDefault();
-                this.handleArrowLeft();
+                this.handleArrowLeft(e);
                 break;
             case keyCodeArrowRight:
-                e.preventDefault();
-                this.handleArrowRight();
+                this.handleArrowRight(e);
                 break;
             case keyCodeArrowDown:
                 e.preventDefault();
@@ -182,8 +180,7 @@ export class TreeItem extends FASTElement {
                 this.handleSelected(e);
                 break;
             case keyCodeSpace:
-                e.preventDefault();
-                this.handleSpaceBar();
+                this.handleSpaceBar(e);
                 break;
         }
 
@@ -198,10 +195,7 @@ export class TreeItem extends FASTElement {
     };
 
     public handleClick = (e: MouseEvent): void => {
-        if (
-            !this.disabled &&
-            !e.defaultPrevented
-        ) {
+        if (!this.disabled && !e.defaultPrevented) {
             this.handleSelected(e);
             e.preventDefault();
         }
@@ -220,8 +214,9 @@ export class TreeItem extends FASTElement {
         return isTreeItemElement(this.parentElement as Element);
     };
 
-    private handleArrowLeft(): void {
+    private handleArrowLeft(e: KeyboardEvent): void {
         if (this.expanded) {
+            e.preventDefault();
             this.setExpanded(false);
         } else if (isHTMLElement(this.parentElement)) {
             const parentTreeItemNode:
@@ -230,29 +225,33 @@ export class TreeItem extends FASTElement {
                 | undefined = this.parentElement!.closest("[role='treeitem']");
 
             if (isHTMLElement(parentTreeItemNode)) {
+                e.preventDefault();
                 (parentTreeItemNode as HTMLElement).focus();
             }
         }
     }
 
-    private handleArrowRight(): void {
+    private handleArrowRight(e: KeyboardEvent): void {
         if (typeof this.expanded !== "boolean") {
             return;
         }
-
+        e.preventDefault();
         if (!this.expanded && this.childItemLength() > 0) {
+            e.preventDefault();
             this.setExpanded(true);
         } else {
             if (this.enabledChildTreeItems.length > 0) {
+                e.preventDefault();
                 this.enabledChildTreeItems[0].focus();
             }
         }
     }
 
-    private handleSpaceBar(): void {
+    private handleSpaceBar(e: KeyboardEvent): void {
         if (typeof this.expanded !== "boolean") {
             return;
         }
+        e.preventDefault();
         this.setExpanded(!this.expanded);
     }
 

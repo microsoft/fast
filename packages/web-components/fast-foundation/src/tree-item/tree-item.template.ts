@@ -26,10 +26,7 @@ export const TreeItemTemplate = html<TreeItem>`
             filter: elements(),
         })}
     >
-        <div
-            class="positioning-region"
-            part="positioning-region"
-        >
+        <div class="positioning-region" part="positioning-region">
             <div class="content-region" part="content-region">
                 ${when(
                     x => x.childItems && x.childItemLength() > 0,
@@ -38,7 +35,8 @@ export const TreeItemTemplate = html<TreeItem>`
                             aria-hidden="true"
                             class="expand-collapse-button"
                             part="expand-collapse-button"
-                            @click="${(x, c) => x.handleExpandCollapseButtonClick(c.event as MouseEvent)}"
+                            @click="${(x, c) =>
+                                x.handleExpandCollapseButtonClick(c.event as MouseEvent)}"
                             ${ref("expandCollapseButton")}
                         >
                             <slot name="expand-collapse-glyph">
