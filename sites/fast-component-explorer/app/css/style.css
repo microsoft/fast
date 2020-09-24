@@ -42,7 +42,7 @@ html::-webkit-scrollbar-thumb {
     background: var(--container-background);
     grid-template-columns: 260px auto 260px;
     grid-template-rows: auto var(--desktop-footer-height);
-    height: calc(100vh + var(--mobile-footer-height));
+    height: calc(100vh + var(--desktop-footer-height));
 }
 
 .canvas {
@@ -59,7 +59,7 @@ html::-webkit-scrollbar-thumb {
 
 .canvas-content {
     display: grid;
-    grid-template-rows: 50% 50%;
+    grid-template-rows: calc((100vh + var(--desktop-footer-height))/2) calc((100vh + var(--desktop-footer-height))/2);
 }
 
 .canvas-content.canvas-content__dev-tools-hidden {
@@ -120,6 +120,7 @@ html::-webkit-scrollbar-thumb {
         margin-left: calc(var(--mobile-pane-width) * -1px);
         width: calc((var(--mobile-pane-width) * 2 * 1px) + 100vw);
         transition: margin-left 0.2s ease-in;
+        height: calc(100vh + var(--mobile-footer-height));
     }
 
     .container.container__form-visible {
