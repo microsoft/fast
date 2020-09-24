@@ -1,5 +1,5 @@
 import { css } from "@microsoft/fast-element";
-import { display } from "@microsoft/fast-foundation";
+import { display, forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
 import {
     accentFillRestBehavior,
     accentForegroundCutRestBehavior,
@@ -9,6 +9,7 @@ import {
     neutralFillCardRestBehavior,
 } from "@microsoft/fast-components";
 import { drawerBreakpoint } from "./fast-frame";
+import { SystemColors } from "@microsoft/fast-web-utilities";
 
 export const FastFrameStyles = css`
     ${display("block")} :host {
@@ -371,5 +372,12 @@ export const FastFrameStyles = css`
     accentForegroundRestBehavior,
     neutralForegroundHintBehavior,
     neutralForegroundRestBehavior,
-    neutralFillCardRestBehavior
+    neutralFillCardRestBehavior,
+    forcedColorsStylesheetBehavior(
+        css`
+            .text-container {
+                color: ${SystemColors.ButtonText};
+            }
+        `
+    )
 );
