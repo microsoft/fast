@@ -5,17 +5,19 @@ html {
     --mobile-footer-height: 283px;
     --mobile-pane-width: 260;
     --footer-background-color: #181818;
+    --fast-tooling-l1-color: #3B3B3B;
+    --fast-tooling-l3-color: #2B2B2B;
     --fast-tooling-l4-color: #1B1B1B;
 }
 
 html::-webkit-scrollbar {
-    background: #3B3B3B;
+    background: var(--fast-tooling-l1-color);
     width: 8px;
     height: 8px;
 }
 
 html::-webkit-scrollbar-thumb {
-    background: #2B2B2B;
+    background: var(--fast-tooling-l3-color);
     border-radius: 8px;
 }
 
@@ -27,6 +29,19 @@ html::-webkit-scrollbar-thumb {
     grid-row-start: 1;
     grid-row-end: 1;
     max-height: 100vh;
+    overflow: auto;
+    background: var(--fast-tooling-l4-color, #1B1B1B);
+}
+
+.pane::-webkit-scrollbar {
+    background: var(--fast-tooling-l1-color);
+    width: 8px;
+    height: 8px;
+}
+
+.pane::-webkit-scrollbar-thumb {
+    background: var(--fast-tooling-l3-color);
+    border-radius: 8px;
 }
 
 .pane__start {
@@ -36,6 +51,10 @@ html::-webkit-scrollbar-thumb {
 
 .pane__end {
     grid-column-start: 3;
+}
+
+.navigation {
+    height: auto !important;
 }
 
 .container {
