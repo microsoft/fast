@@ -7,14 +7,46 @@ import { ExecutionContext, Binding } from "./observation/observable";
 type InlineDirective = Directive & {
     targetName?: string;
     binding: Binding;
-    targetAtContent();
+    targetAtContent(): void;
 };
 
-const compilationContext = { locatedDirectives: 0, targetIndex: -1 };
+class CompilationContext {
+    public targetIndex!: number;
+    public behaviorFactories!: BehaviorFactory[];
+    public directives: ReadonlyArray<Directive>;
+
+    public addFactory(factory: BehaviorFactory) {
+        factory.targetIndex = this.targetIndex;
+        this.behaviorFactories.push(factory);
+    }
+
+    public captureContentBinding(directive: BindingDirective): void {
+        directive.targetAtContent();
+        this.addFactory(directive);
+    }
+
+    public reset() {
+        this.behaviorFactories = [];
+        this.targetIndex = -1;
+    }
+
+    public release() {
+        sharedContext = this;
+    }
+
+    public static borrow(directives: ReadonlyArray<Directive>) {
+        const shareable = sharedContext || new CompilationContext();
+        shareable.directives = directives;
+        shareable.reset();
+        sharedContext = null;
+        return shareable;
+    }
+}
+
+let sharedContext: CompilationContext | null = null;
 
 function createAggregateBinding(parts: (string | InlineDirective)[]): BindingDirective {
     if (parts.length === 1) {
-        compilationContext.locatedDirectives++;
         return parts[0] as BindingDirective;
     }
 
@@ -26,7 +58,6 @@ function createAggregateBinding(parts: (string | InlineDirective)[]): BindingDir
         }
 
         targetName = x.targetName || targetName;
-        compilationContext.locatedDirectives++;
         return x.binding;
     });
 
@@ -48,8 +79,8 @@ function createAggregateBinding(parts: (string | InlineDirective)[]): BindingDir
 const interpolationEndLength = _interpolationEnd.length;
 
 function parseContent(
-    value: string,
-    directives: ReadonlyArray<Directive>
+    context: CompilationContext,
+    value: string
 ): (string | InlineDirective)[] | null {
     const valueParts = value.split(_interpolationStart);
 
@@ -68,7 +99,7 @@ function parseContent(
             literal = current;
         } else {
             const directiveIndex = parseInt(current.substring(0, index));
-            bindingParts.push(directives[directiveIndex]);
+            bindingParts.push(context.directives[directiveIndex]);
             literal = current.substring(index + interpolationEndLength);
         }
 
@@ -81,9 +112,8 @@ function parseContent(
 }
 
 function compileAttributes(
+    context: CompilationContext,
     node: HTMLElement,
-    directives: ReadonlyArray<Directive>,
-    factories: BehaviorFactory[],
     includeBasicValues: boolean = false
 ): void {
     const attributes = node.attributes;
@@ -91,7 +121,7 @@ function compileAttributes(
     for (let i = 0, ii = attributes.length; i < ii; ++i) {
         const attr = attributes[i];
         const attrValue = attr.value;
-        const parseResult = parseContent(attrValue, directives);
+        const parseResult = parseContent(context, attrValue);
         let result: BindingDirective | null = null;
 
         if (parseResult === null) {
@@ -107,30 +137,17 @@ function compileAttributes(
             node.removeAttributeNode(attr);
             i--;
             ii--;
-
-            result.targetIndex = compilationContext.targetIndex;
-            factories.push(result);
+            context.addFactory(result);
         }
     }
 }
 
-function captureContentBinding(
-    directive: BindingDirective,
-    viewBehaviorFactories: BehaviorFactory[]
-): void {
-    directive.targetAtContent();
-    directive.targetIndex = compilationContext.targetIndex;
-    viewBehaviorFactories.push(directive);
-    compilationContext.locatedDirectives++;
-}
-
 function compileContent(
+    context: CompilationContext,
     node: Text,
-    directives: ReadonlyArray<Directive>,
-    factories: BehaviorFactory[],
     walker: TreeWalker
 ): void {
-    const parseResult = parseContent(node.textContent!, directives);
+    const parseResult = parseContent(context, node.textContent!);
 
     if (parseResult !== null) {
         let lastNode = node;
@@ -148,18 +165,18 @@ function compileContent(
                 currentNode.textContent = currentPart;
             } else {
                 currentNode.textContent = " ";
-                captureContentBinding(currentPart as BindingDirective, factories);
+                context.captureContentBinding(currentPart as BindingDirective);
             }
 
             lastNode = currentNode;
-            compilationContext.targetIndex++;
+            context.targetIndex++;
 
             if (currentNode !== node) {
                 walker.nextNode();
             }
         }
 
-        compilationContext.targetIndex--;
+        context.targetIndex--;
     }
 }
 
@@ -204,45 +221,34 @@ export function compileTemplate(
     template: HTMLTemplateElement,
     directives: ReadonlyArray<Directive>
 ): CompilationResult {
-    const hostBehaviorFactories: BehaviorFactory[] = [];
-
-    compilationContext.locatedDirectives = 0;
-    compileAttributes(template, directives, hostBehaviorFactories, true);
-
     const fragment = template.content;
-
     // https://bugs.chromium.org/p/chromium/issues/detail?id=1111864
     document.adoptNode(fragment);
 
-    const viewBehaviorFactories: BehaviorFactory[] = [];
-    const directiveCount = directives.length;
+    const context = CompilationContext.borrow(directives);
+    compileAttributes(context, template, true);
+    const hostBehaviorFactories = context.behaviorFactories;
+    context.reset();
+
     const walker = DOM.createTemplateWalker(fragment);
 
-    compilationContext.targetIndex = -1;
+    let node: Node | null;
 
-    while (compilationContext.locatedDirectives < directiveCount) {
-        const node = walker.nextNode();
-
-        if (node === null) {
-            break;
-        }
-
-        compilationContext.targetIndex++;
+    while ((node = walker.nextNode())) {
+        context.targetIndex++;
 
         switch (node.nodeType) {
             case 1: // element node
-                compileAttributes(node as HTMLElement, directives, viewBehaviorFactories);
+                compileAttributes(context, node as HTMLElement);
                 break;
             case 3: // text node
-                compileContent(node as Text, directives, viewBehaviorFactories, walker);
+                compileContent(context, node as Text, walker);
                 break;
             case 8: // comment
                 if (DOM.isMarker(node)) {
-                    const directive =
-                        directives[DOM.extractDirectiveIndexFromMarker(node)];
-                    directive.targetIndex = compilationContext.targetIndex;
-                    compilationContext.locatedDirectives++;
-                    viewBehaviorFactories.push(directive);
+                    context.addFactory(
+                        directives[DOM.extractDirectiveIndexFromMarker(node)]
+                    );
                 }
         }
     }
@@ -257,6 +263,9 @@ export function compileTemplate(
         fragment.insertBefore(document.createComment(""), fragment.firstChild);
         targetOffset = -1;
     }
+
+    const viewBehaviorFactories = context.behaviorFactories;
+    context.release();
 
     return {
         fragment,
