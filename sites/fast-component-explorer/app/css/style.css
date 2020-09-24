@@ -89,6 +89,7 @@ html::-webkit-scrollbar-thumb {
 
 .menu-bar {
     grid-row-start: 1;
+    z-index: 1;
 }
 
 .canvas-menu-bar {
