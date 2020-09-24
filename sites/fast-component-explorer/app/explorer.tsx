@@ -205,6 +205,7 @@ class Explorer extends Foundation<
                         title={"Component Explorer"}
                     />
                     <NavigationMenu
+                        className={"navigation"}
                         menu={menu}
                         expanded={true}
                         activeLocation={this.state.locationPathname}
