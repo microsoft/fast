@@ -1,6 +1,10 @@
 import { html, when } from "@microsoft/fast-element";
 import { Skeleton } from "./skeleton";
 
+/**
+ * The template for the fluent-skeleton component
+ * @public
+ */
 export const SkeletonTemplate = html<Skeleton>`
     <template
         class="${x => (x.shape === "circle" ? "circle" : "rect")}"
