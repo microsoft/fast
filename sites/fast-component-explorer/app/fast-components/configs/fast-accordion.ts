@@ -174,7 +174,7 @@ const fastAccordionConfig: ComponentViewConfig = {
                     root: {
                         schemaId: fastAccordionId,
                         data: {
-                            SlotItem: [
+                            Slot: [
                                 {
                                     id: "Slot1",
                                 },
@@ -193,7 +193,7 @@ const fastAccordionConfig: ComponentViewConfig = {
                     Slot1: {
                         parent: {
                             id: "root",
-                            dataLocation: "SlotItem",
+                            dataLocation: "Slot",
                         },
                         schemaId: fastAccordionItemId,
                         data: {
@@ -252,7 +252,7 @@ const fastAccordionConfig: ComponentViewConfig = {
                     Slot2: {
                         parent: {
                             id: "root",
-                            dataLocation: "SlotItem",
+                            dataLocation: "Slot",
                         },
                         schemaId: fastAccordionItemId,
                         data: {
@@ -311,7 +311,7 @@ const fastAccordionConfig: ComponentViewConfig = {
                     Slot3: {
                         parent: {
                             id: "root",
-                            dataLocation: "SlotItem",
+                            dataLocation: "Slot",
                         },
                         schemaId: fastAccordionItemId,
                         data: {
@@ -370,7 +370,7 @@ const fastAccordionConfig: ComponentViewConfig = {
                     Slot4: {
                         parent: {
                             id: "root",
-                            dataLocation: "SlotItem",
+                            dataLocation: "Slot",
                         },
                         schemaId: fastAccordionItemId,
                         data: {
@@ -445,7 +445,7 @@ const fastAccordionConfig: ComponentViewConfig = {
                     root: {
                         schemaId: fastAccordionId,
                         data: {
-                            SlotItem: [
+                            Slot: [
                                 {
                                     id: "Slot1",
                                 },
@@ -464,7 +464,7 @@ const fastAccordionConfig: ComponentViewConfig = {
                     Slot1: {
                         parent: {
                             id: "root",
-                            dataLocation: "SlotItem",
+                            dataLocation: "Slot",
                         },
                         schemaId: fastAccordionItemId,
                         data: {
@@ -557,7 +557,7 @@ const fastAccordionConfig: ComponentViewConfig = {
                     Slot2: {
                         parent: {
                             id: "root",
-                            dataLocation: "SlotItem",
+                            dataLocation: "Slot",
                         },
                         schemaId: fastAccordionItemId,
                         data: {
@@ -650,7 +650,7 @@ const fastAccordionConfig: ComponentViewConfig = {
                     Slot3: {
                         parent: {
                             id: "root",
-                            dataLocation: "SlotItem",
+                            dataLocation: "Slot",
                         },
                         schemaId: fastAccordionItemId,
                         data: {
@@ -743,7 +743,7 @@ const fastAccordionConfig: ComponentViewConfig = {
                     Slot4: {
                         parent: {
                             id: "root",
-                            dataLocation: "SlotItem",
+                            dataLocation: "Slot",
                         },
                         schemaId: fastAccordionItemId,
                         data: {
@@ -853,7 +853,7 @@ const fastAccordionConfig: ComponentViewConfig = {
                         schemaId: fastAccordionId,
                         data: {
                             "expand-mode": "single",
-                            SlotItem: [
+                            Slot: [
                                 {
                                     id: "Slot1",
                                 },
@@ -872,7 +872,7 @@ const fastAccordionConfig: ComponentViewConfig = {
                     Slot1: {
                         parent: {
                             id: "root",
-                            dataLocation: "SlotItem",
+                            dataLocation: "Slot",
                         },
                         schemaId: fastAccordionItemId,
                         data: {
@@ -931,7 +931,7 @@ const fastAccordionConfig: ComponentViewConfig = {
                     Slot2: {
                         parent: {
                             id: "root",
-                            dataLocation: "SlotItem",
+                            dataLocation: "Slot",
                         },
                         schemaId: fastAccordionItemId,
                         data: {
@@ -990,7 +990,7 @@ const fastAccordionConfig: ComponentViewConfig = {
                     Slot3: {
                         parent: {
                             id: "root",
-                            dataLocation: "SlotItem",
+                            dataLocation: "Slot",
                         },
                         schemaId: fastAccordionItemId,
                         data: {
@@ -1049,7 +1049,7 @@ const fastAccordionConfig: ComponentViewConfig = {
                     Slot4: {
                         parent: {
                             id: "root",
-                            dataLocation: "SlotItem",
+                            dataLocation: "Slot",
                         },
                         schemaId: fastAccordionItemId,
                         data: {

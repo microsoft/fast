@@ -171,6 +171,37 @@ describe("getMessage", () => {
             expect(message.schema).toEqual(schemaDictionary["foo"]);
             expect(typeof message.navigation).toEqual("object");
         });
+        test("should return messages sent with a dictionary id provided", () => {
+            const dataBlob: DataDictionary<unknown> = [
+                {
+                    data: {
+                        schemaId: "foo",
+                        data: {
+                            foo: "bar",
+                        },
+                    },
+                    data2: {
+                        schemaId: "foo",
+                        data: {
+                            foo: "bar",
+                        },
+                    },
+                },
+                "data",
+            ];
+            const schemaDictionary: SchemaDictionary = {
+                foo: { id: "foo" },
+            };
+            const message: InitializeMessageOutgoing = getMessage({
+                type: MessageSystemType.initialize,
+                dataDictionary: dataBlob,
+                schemaDictionary,
+                dictionaryId: "data2",
+            }) as InitializeMessageOutgoing;
+
+            expect(message.type).toEqual(MessageSystemType.initialize);
+            expect(message.activeDictionaryId).toEqual("data2");
+        });
     });
     describe("data", () => {
         test("should return a data blob with duplicated values", () => {

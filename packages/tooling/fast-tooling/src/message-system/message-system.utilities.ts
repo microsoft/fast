@@ -479,7 +479,10 @@ export function getMessage<C = {}>(
             dataDictionary = Array.isArray(data.dataDictionary)
                 ? data.dataDictionary
                 : data.data;
-            activeDictionaryId = dataDictionary[1];
+            activeDictionaryId =
+                typeof data.dictionaryId === "string"
+                    ? data.dictionaryId
+                    : dataDictionary[1];
             schemaDictionary = data.schemaDictionary;
             navigationDictionary = getNavigationDictionary(
                 schemaDictionary,
