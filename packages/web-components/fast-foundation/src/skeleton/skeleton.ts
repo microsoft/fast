@@ -1,5 +1,9 @@
 import { attr, FASTElement } from "@microsoft/fast-element";
 
+/**
+ * A structure representing skeleton shapes
+ * @public
+ */
 export type SkeletonShape = "rect" | "circle";
 
 /**

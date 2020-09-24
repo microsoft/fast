@@ -552,7 +552,7 @@ export class Skeleton extends FASTElement {
     shimmer: boolean;
 }
 
-// @public (undocumented)
+// @public
 export type SkeletonShape = "rect" | "circle";
 
 // @public (undocumented)
