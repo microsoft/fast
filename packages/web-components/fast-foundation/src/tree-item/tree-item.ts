@@ -188,20 +188,15 @@ export class TreeItem extends FASTElement {
         return true;
     };
 
-    public handleExpandCollapseButtonClick = (): void => {
+    public handleExpandCollapseButtonClick = (e: MouseEvent): void => {
         if (!this.disabled) {
+            e.preventDefault();
             this.setExpanded(!this.expanded);
         }
     };
 
-    public handleContainerClick = (e: MouseEvent): void => {
-        const expandButton: HTMLElement | null = this.expandCollapseButton;
-        const isButtonAnHTMLElement: boolean = isHTMLElement(expandButton);
-        if (
-            (!isButtonAnHTMLElement ||
-                (isButtonAnHTMLElement && expandButton !== e.target)) &&
-            !this.disabled
-        ) {
+    public handleClick = (e: MouseEvent): void => {
+        if (!e.defaultPrevented && !this.disabled) {
             this.handleSelected(e);
         }
     };

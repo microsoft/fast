@@ -108,6 +108,7 @@ export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
         this.originalContext = context;
         this.childContext = Object.create(context);
         this.childContext!.parent = source;
+        this.childContext!.parentContext = this.originalContext;
 
         this.items = this.itemsBindingObserver.observe(source, this.originalContext);
         this.template = this.templateBindingObserver.observe(

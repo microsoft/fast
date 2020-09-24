@@ -3,7 +3,8 @@ import ReactDOM from "react-dom";
 import HTML5Backend from "react-dnd-html5-backend";
 import { DndProvider } from "react-dnd";
 import App from "./app";
-import "./css/style.css";
+/* eslint-disable-next-line */
+const styles = require("./css/style.css");
 
 /**
  * Create the root node
