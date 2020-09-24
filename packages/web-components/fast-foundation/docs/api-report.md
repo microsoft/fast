@@ -555,7 +555,7 @@ export class Skeleton extends FASTElement {
 // @public
 export type SkeletonShape = "rect" | "circle";
 
-// @public (undocumented)
+// @public
 export const SkeletonTemplate: import("@microsoft/fast-element").ViewTemplate<Skeleton, any>;
 
 // Warning: (ae-incompatible-release-tags) The symbol "Slider" is marked as @public, but its signature references "FormAssociated" which is marked as @alpha

@@ -81,3 +81,14 @@ _Example:_
   </fluent-skeleton>
 </fast-design-system-provider>
 ```
+
+## Customization
+
+
+
+| CSS Variable                  | Expected value  |
+|-------------------------------|-----------------|
+|`--skeleton-fill`              | Color           |
+|`--skeleton-animation-fill`    | Color           |
+|`--skeleton-animation-gradient`| Linear gradient |
+|`--skeleton-animation-timing`  | Easing function |

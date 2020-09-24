@@ -4,16 +4,18 @@ import { neutralFillRestBehavior } from "../styles";
 
 export const SkeletonStyles = css`
     ${display("block")} :host {
+        --skeleton-fill-default: #e1dfdd;
         overflow: hidden;
         width: 100%;
         position: relative;
-        background-color: ${neutralFillRestBehavior.var};
+        background-color: var(--skeleton-fill, var(--skeleton-fill-default));
         --skeleton-animation-gradient-default: linear-gradient(
             270deg,
-            ${neutralFillRestBehavior.var} 0%,
+            var(--skeleton-fill, var(--skeleton-fill-default)) 0%,
             #f3f2f1 51.13%,
-            ${neutralFillRestBehavior.var} 100%
+            var(--skeleton-fill, var(--skeleton-fill-default)) 100%
         );
+        --skeleton-animation-timing-default: ease-in-out;
     }
 
     :host(.rect) {
@@ -50,7 +52,10 @@ export const SkeletonStyles = css`
         background-repeat: no-repeat;
         background-color: var(--skeleton-animation-fill, ${neutralFillRestBehavior.var});
         animation: shimmer 2s infinite;
-        animation-timing-function: var(--skeleton-animation-timing, ease-in-out);
+        animation-timing-function: var(
+            --skeleton-animation-timing,
+            var(--skeleton-timing-default)
+        );
         animation-direction: normal;
         z-index: 1;
     }
