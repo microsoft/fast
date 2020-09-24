@@ -31,7 +31,7 @@ A disclosure component is the combination of a button and section of content, a 
 
 The disclosure component can easily be extended for customization, for example adding animation to reveal the content or get the height of extra content slot.
 
--   `showAnimation({ contentNode })` and `hideAnimation({ contentNode })` `async` methods are `protected` and designed to override in the derived class to add animations.
+-   Basic component which toggles the extra content and to add animation extra styles can be applied to derived/extended component.
 -   To have further control to the extra content, there are also `contentNode` and `contentHeight` available as getters.
 
 ### API
@@ -44,30 +44,51 @@ The disclosure component can easily be extended for customization, for example a
     -   `hide()`: to hide the content
     -   `toggle()`: to toggle the content
 -   _Events_
-    -   `expanded-changed: CustomEvent` - No custom data.
+    -   `toggle: CustomEvent` - No custom data.
 
 ### Anatomy and Appearance
 
 ```html
 <host>
-    <slot name="invoker"></slot>
-    <slot name="content"></slot>
+    <details>
+        <summary>
+            <slot name="title"></slot>
+        </summary>
+        <div>
+            <slot></slot>
+        </div>
+    </details>
 </host>
 ```
 
 -   _Slot Names_
+    -   title: invoker title (could look like as a button or hyperlink)
     -   default: extra content to be placed
-    -   invoker: button or custom component that mimics native button behavior
--   _Slotted Content/Slotted Classes_
-    -   default: `:host ::slotted(*)` to hide extra content by default
 
 ---
 
 ## Implementation
 
+Invoker as button
+
 ```html
 <fast-disclosure>
-    <button type="button" slot="invoker">More about Green Arrow</button>
+    <span slot="title">More about Green Arrow</span>
+    <div>
+        Green Arrow is a fictional superhero who appears in comic books published by DC
+        Comics. Created by Mort Weisinger and designed by George Papp, he first appeared
+        in More Fun Comics #73 in November 1941. His real name is Oliver Jonas Queen, a
+        wealthy businessman and owner of Queen Industries who is also a well-known
+        celebrity in Star City.
+    </div>
+</fast-disclosure>
+```
+
+Invoker as hypertext
+
+```html
+<fast-disclosure as-button="false">
+    <span slot="title">More about Green Arrow</span>
     <div>
         Green Arrow is a fictional superhero who appears in comic books published by DC
         Comics. Created by Mort Weisinger and designed by George Papp, he first appeared
