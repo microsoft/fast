@@ -940,7 +940,6 @@ export class TreeItem extends FASTElement {
     handleExpandCollapseButtonClick: (e: MouseEvent) => void;
     // (undocumented)
     handleFocus: (e: Event) => void;
-    // (undocumented)
     handleKeyDown: (e: KeyboardEvent) => void | boolean;
     // (undocumented)
     readonly isNestedItem: () => boolean;
