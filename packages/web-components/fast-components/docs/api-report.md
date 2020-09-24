@@ -485,6 +485,10 @@ export class FASTProgress extends BaseProgress {
 }
 
 // @public
+export class FASTProgressRing extends BaseProgress {
+}
+
+// @public
 export class FASTRadio extends Radio {
 }
 
@@ -935,6 +939,9 @@ export enum PaletteType {
 
 // @public
 export const parseColorString: (color: string) => ColorRGBA64;
+
+// @public
+export const ProgressRingStyles: import("@microsoft/fast-element").ElementStyles;
 
 // @public
 export const ProgressStyles: import("@microsoft/fast-element").ElementStyles;
