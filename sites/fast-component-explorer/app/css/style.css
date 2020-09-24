@@ -5,17 +5,19 @@ html {
     --mobile-footer-height: 283px;
     --mobile-pane-width: 260;
     --footer-background-color: #181818;
+    --fast-tooling-l1-color: #3B3B3B;
+    --fast-tooling-l3-color: #2B2B2B;
     --fast-tooling-l4-color: #1B1B1B;
 }
 
 html::-webkit-scrollbar {
-    background: #3B3B3B;
+    background: var(--fast-tooling-l1-color);
     width: 8px;
     height: 8px;
 }
 
 html::-webkit-scrollbar-thumb {
-    background: #2B2B2B;
+    background: var(--fast-tooling-l3-color);
     border-radius: 8px;
 }
 
@@ -26,6 +28,20 @@ html::-webkit-scrollbar-thumb {
 .pane {
     grid-row-start: 1;
     grid-row-end: 1;
+    max-height: 100vh;
+    overflow: auto;
+    background: var(--fast-tooling-l4-color, #1B1B1B);
+}
+
+.pane::-webkit-scrollbar {
+    background: var(--fast-tooling-l1-color);
+    width: 8px;
+    height: 8px;
+}
+
+.pane::-webkit-scrollbar-thumb {
+    background: var(--fast-tooling-l3-color);
+    border-radius: 8px;
 }
 
 .pane__start {
@@ -37,12 +53,16 @@ html::-webkit-scrollbar-thumb {
     grid-column-start: 3;
 }
 
+.navigation {
+    height: auto !important;
+}
+
 .container {
     display: grid;
     background: var(--container-background);
     grid-template-columns: 260px auto 260px;
     grid-template-rows: auto var(--desktop-footer-height);
-    height: calc(100vh + var(--mobile-footer-height));
+    height: calc(100vh + var(--desktop-footer-height));
 }
 
 .canvas {
@@ -51,6 +71,7 @@ html::-webkit-scrollbar-thumb {
     display: grid;
     grid-template-columns: auto;
     grid-template-rows: 40px auto;
+    max-height: 100vh;
 }
 
 .canvas-overlay {
@@ -59,7 +80,7 @@ html::-webkit-scrollbar-thumb {
 
 .canvas-content {
     display: grid;
-    grid-template-rows: 50% 50%;
+    grid-template-rows: calc(100vh / 2) calc(100vh / 2);
 }
 
 .canvas-content.canvas-content__dev-tools-hidden {
@@ -68,6 +89,7 @@ html::-webkit-scrollbar-thumb {
 
 .menu-bar {
     grid-row-start: 1;
+    z-index: 1;
 }
 
 .canvas-menu-bar {
@@ -120,6 +142,7 @@ html::-webkit-scrollbar-thumb {
         margin-left: calc(var(--mobile-pane-width) * -1px);
         width: calc((var(--mobile-pane-width) * 2 * 1px) + 100vw);
         transition: margin-left 0.2s ease-in;
+        height: calc(100vh + var(--mobile-footer-height));
     }
 
     .container.container__form-visible {
