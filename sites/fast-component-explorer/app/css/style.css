@@ -26,6 +26,7 @@ html::-webkit-scrollbar-thumb {
 .pane {
     grid-row-start: 1;
     grid-row-end: 1;
+    max-height: 100vh;
 }
 
 .pane__start {
@@ -51,6 +52,7 @@ html::-webkit-scrollbar-thumb {
     display: grid;
     grid-template-columns: auto;
     grid-template-rows: 40px auto;
+    max-height: 100vh;
 }
 
 .canvas-overlay {
@@ -59,7 +61,7 @@ html::-webkit-scrollbar-thumb {
 
 .canvas-content {
     display: grid;
-    grid-template-rows: calc((100vh + var(--desktop-footer-height))/2) calc((100vh + var(--desktop-footer-height))/2);
+    grid-template-rows: calc(100vh / 2) calc(100vh / 2);
 }
 
 .canvas-content.canvas-content__dev-tools-hidden {
