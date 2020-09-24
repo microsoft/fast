@@ -1,8 +1,11 @@
 ---
-id: fast-tooltip
+id: tooltip
 title: fast-tooltip
-sidebar_label: fast-tooltip
+sidebar_label: tooltip
 custom_edit_url: https://github.com/microsoft/fast-dna/edit/master/packages/web-components/fast-foundation/src/tooltip/README.md
+---
+
+The `fast-tooltip` component is used provide extra information about another element when it is hovered.
 
 ## Usage
 
