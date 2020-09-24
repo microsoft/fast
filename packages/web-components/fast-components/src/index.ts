@@ -13,6 +13,7 @@ export * from "./flipper/index";
 export * from "./menu/index";
 export * from "./menu-item/index";
 export * from "./progress/index";
+export * from "./progress-ring/index";
 export * from "./radio/index";
 export * from "./radio-group/index";
 export * from "./slider/index";
