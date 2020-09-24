@@ -15,7 +15,7 @@ class CompilationContext {
     public behaviorFactories!: BehaviorFactory[];
     public directives: ReadonlyArray<Directive>;
 
-    public addFactory(factory: BehaviorFactory) {
+    public addFactory(factory: BehaviorFactory): void {
         factory.targetIndex = this.targetIndex;
         this.behaviorFactories.push(factory);
     }
@@ -25,16 +25,16 @@ class CompilationContext {
         this.addFactory(directive);
     }
 
-    public reset() {
+    public reset(): void {
         this.behaviorFactories = [];
         this.targetIndex = -1;
     }
 
-    public release() {
+    public release(): void {
         sharedContext = this;
     }
 
-    public static borrow(directives: ReadonlyArray<Directive>) {
+    public static borrow(directives: ReadonlyArray<Directive>): CompilationContext {
         const shareable = sharedContext || new CompilationContext();
         shareable.directives = directives;
         shareable.reset();
