@@ -195,7 +195,7 @@ export class MonacoAdaptor extends MessageSystemUtility<
                 return lineValue.replace(/^\s*/g, "");
             });
         const dataDictionary = mapVSCodeParsedHTMLToDataDictionary({
-            value,
+            value: this.monacoModelValue,
             schemaDictionary: this.schemaDictionary,
         });
 
