@@ -40,7 +40,6 @@ export class MonacoAdaptor extends MessageSystemUtility<
                 if (!e.data.options || e.data.options.from !== monacoAdaptorId) {
                     this.schemaDictionary = e.data.schemaDictionary;
                     this.monacoModelValue = [
-                        // TODO: format this with vscode-html-languageservice
                         mapDataDictionaryToMonacoEditorHTML(
                             e.data.dataDictionary,
                             e.data.schemaDictionary
@@ -94,7 +93,16 @@ export class MonacoAdaptor extends MessageSystemUtility<
      * Update the Monaco Model value
      */
     private updateMonacoModelValue = (value: string[]): void => {
-        this.monacoModelValue = value;
+        /**
+         * Normalize values by converting all new lines into an array
+         * and remove the leading spaces
+         */
+        this.monacoModelValue = value
+            .join("")
+            .split("\n")
+            .map((lineValue: string) => {
+                return lineValue.replace(/^\s*/g, "");
+            });
 
         this.messageSystem.postMessage({
             type: MessageSystemType.initialize,

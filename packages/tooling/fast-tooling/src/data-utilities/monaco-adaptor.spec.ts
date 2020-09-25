@@ -235,6 +235,53 @@ describe("MonacoAdaptor", () => {
 
         expect(monacoAdaptor["monacoModelValue"]).toEqual(["bar"]);
     });
+    test("should remove newlines and leading spaces from the monaco model value", () => {
+        const dataDictionary: DataDictionary<unknown> = [
+            {
+                div: {
+                    schemaId: "div",
+                    data: {},
+                },
+            },
+            "div",
+        ];
+        const schemaDictionary = {
+            div: {
+                id: "div",
+                $id: "div",
+                type: "object",
+                mapsToTagName: "div",
+            },
+        };
+        const messageSystem = new MessageSystem({
+            webWorker: "",
+        });
+        const monacoAdaptor = new MonacoAdaptor({
+            messageSystem,
+            actions: [
+                new MonacoAdaptorAction({
+                    id: "foo",
+                    action: config => {
+                        config.updateMonacoModelValue(["    foo\n   bar"]);
+                    },
+                }),
+            ],
+        });
+
+        messageSystem["register"].forEach((registeredItem: Register) => {
+            registeredItem.onMessage({
+                data: {
+                    type: MessageSystemType.initialize,
+                    dataDictionary,
+                    schemaDictionary,
+                },
+            } as any);
+        });
+
+        monacoAdaptor.action("foo").run();
+
+        expect(monacoAdaptor["monacoModelValue"]).toEqual(["foo", "bar"]);
+    });
     test("should not update the monaco value if the message is from the adaptor", () => {
         const dataDictionary: DataDictionary<unknown> = [
             {
