@@ -38,6 +38,7 @@ export function findDictionaryIdParents(
     parents: ExtendedParent[] = []
 ): ExtendedParent[] {
     if (
+        dataDictionary[0][dictionaryId] &&
         dataDictionary[0][dictionaryId].parent &&
         dataDictionary[0][dictionaryId].parent.id
     ) {
