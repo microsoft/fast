@@ -101,9 +101,11 @@ export class Radio extends FormAssociated<HTMLInputElement> implements RadioCont
     @observable
     public checked: boolean = this.defaultChecked;
     private checkedChanged(): void {
-        if (!this.dirtyChecked) {
-            this.dirtyChecked = true;
-        }
+        // TODO: temporarily removed as it's causing issues with
+        // changing the value via code and from radio-group
+        // if (!this.dirtyChecked) {
+        //     this.dirtyChecked = true;
+        // }
 
         if (this.proxy instanceof HTMLElement) {
             this.proxy.checked = this.checked;
