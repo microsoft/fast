@@ -26,10 +26,6 @@ export const fastAccordionDefinition: WebComponentDefinition = {
             ],
             slots: [
                 {
-                    name: "",
-                    description: "The default slot",
-                },
-                {
                     name: "item",
                     description: "The item slot",
                 },
