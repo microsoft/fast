@@ -643,4 +643,27 @@ describe("findUpdatedDictionaryId", () => {
             )
         ).toEqual("bar");
     });
+    test("should find the nearest dictionary id if the data structure has changed", () => {
+        expect(
+            findUpdatedDictionaryId(
+                [
+                    {
+                        id: "a",
+                        dataLocation: "Slot",
+                        currentId: "b",
+                        linkedDataIndex: 0,
+                    },
+                ],
+                [
+                    {
+                        foo: {
+                            schemaId: "foo",
+                            data: {},
+                        },
+                    },
+                    "foo",
+                ]
+            )
+        ).toEqual("foo");
+    });
 });

@@ -70,6 +70,17 @@ export function findUpdatedDictionaryId(
 
     const dataLocation = parents[0].dataLocation;
     const linkedDataIndex = parents[0].linkedDataIndex;
+
+    if (
+        !dataDictionary[0][dictionaryId].data ||
+        !dataDictionary[0][dictionaryId].data[dataLocation] ||
+        !dataDictionary[0][dictionaryId].data[dataLocation][linkedDataIndex] ||
+        typeof dataDictionary[0][dictionaryId].data[dataLocation][linkedDataIndex].id !==
+            "string"
+    ) {
+        return dictionaryId;
+    }
+
     const newDictionaryId =
         dataDictionary[0][dictionaryId].data[dataLocation][linkedDataIndex].id;
     parents.shift();
