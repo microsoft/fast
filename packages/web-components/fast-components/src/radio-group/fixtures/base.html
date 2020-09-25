@@ -1,6 +1,22 @@
 <fast-design-system-provider use-defaults>
     <h1>Radio Group</h1>
 
+    <button
+        onclick="const rg = document.getElementById('vertical'); rg.setAttribute('value', 'juniper' );"
+    >
+        Set Juniper
+    </button>
+    <button
+        onclick="const rg = document.getElementById('vertical'); rg.setAttribute('value', 'hemlock' );"
+    >
+        Set Hemlock
+    </button>
+    <button
+        onclick="const rg = document.getElementById('vertical'); rg.setAttribute('value', 'fir' );"
+    >
+        Set fir
+    </button>
+
     <h4>Defaults</h4>
     <div>
         <fast-radio-group name="numbers">
@@ -13,7 +29,7 @@
     </div>
 
     <div>
-        <fast-radio-group orientation="vertical" name="trees">
+        <fast-radio-group id="vertical" orientation="vertical" name="trees">
             <label style="color: --var(neutral-foreground-rest);" slot="label">
                 Trees
             </label>

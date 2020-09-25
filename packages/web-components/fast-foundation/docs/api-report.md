@@ -537,6 +537,8 @@ export class RadioGroup extends FASTElement {
     // @internal (undocumented)
     connectedCallback(): void;
     disabled: boolean;
+    // (undocumented)
+    disconnectedCallback(): void;
     // @internal
     keydownHandler: (e: KeyboardEvent) => void;
     name: string;
@@ -547,6 +549,8 @@ export class RadioGroup extends FASTElement {
     // @internal (undocumented)
     slottedRadioButtons: HTMLElement[];
     value: string;
+    // (undocumented)
+    protected valueChanged(): void;
 }
 
 // @public

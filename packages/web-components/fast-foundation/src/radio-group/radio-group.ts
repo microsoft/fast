@@ -87,6 +87,16 @@ export class RadioGroup extends FASTElement {
      */
     @attr
     public value: string;
+    protected valueChanged(): void {
+        if (this.slottedRadioButtons) {
+            this.slottedRadioButtons.forEach((radio: HTMLInputElement) => {
+                if (radio.getAttribute("value") === this.value) {
+                    radio.checked = true;
+                    this.selectedRadio = radio;
+                }
+            });
+        }
+    }
 
     /**
      * The orientation of the group
@@ -137,6 +147,14 @@ export class RadioGroup extends FASTElement {
         this.parentToolbar = this.parentElement?.closest('[role="toolbar"]');
         this.isInsideToolbar =
             this.parentToolbar !== undefined && this.parentToolbar !== null;
+    }
+
+    public disconnectedCallback(): void {
+        this.removeEventListener("keydown", this.keydownHandler);
+        this.removeEventListener("change", this.radioChangeHandler);
+        this.removeEventListener("keypress", this.keypressHandler);
+        this.removeEventListener("click", this.clickHandler);
+        this.removeEventListener("focusout", this.focusOutHandler);
     }
 
     private setupRadioButtons(): void {
