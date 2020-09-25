@@ -31,7 +31,7 @@ export const SkeletonStyles = css`
         position: absolute;
         width: 100%;
         height: auto;
-        z-index: 1000;
+        z-index: 2;
     }
 
     object img {
@@ -39,8 +39,7 @@ export const SkeletonStyles = css`
         height: auto;
     }
 
-    span.shimmer {
-        display: block;
+    ${display("block")} span.shimmer {
         position: absolute;
         width: 100%;
         height: 100%;
@@ -61,7 +60,7 @@ export const SkeletonStyles = css`
     }
 
     ::slotted(svg) {
-        z-index: 9999;
+        z-index: 2;
     }
 
     ::slotted(.pattern) {
