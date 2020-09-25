@@ -639,7 +639,7 @@ class Explorer extends Foundation<
             return (
                 <Select
                     onValueChange={this.handleUpdateScenario}
-                    defaultSelection={[scenarioOptions[1].displayName]}
+                    defaultSelection={[scenarioOptions[0].displayName]}
                     selectedItems={[
                         scenarioOptions[this.state.selectedScenarioIndex].displayName,
                     ]}
