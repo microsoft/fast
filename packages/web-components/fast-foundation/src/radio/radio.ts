@@ -107,13 +107,14 @@ export class Radio extends FormAssociated<HTMLInputElement> implements RadioCont
         //     this.dirtyChecked = true;
         // }
 
+        this.updateForm();
+
         if (this.proxy instanceof HTMLElement) {
             this.proxy.checked = this.checked;
         }
 
         this.$emit("change");
         this.checkedAttribute = this.checked;
-        this.updateForm();
 
         this.validate();
     }
