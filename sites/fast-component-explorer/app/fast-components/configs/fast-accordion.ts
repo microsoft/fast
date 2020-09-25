@@ -853,7 +853,7 @@ const fastAccordionConfig: ComponentViewConfig = {
                         schemaId: fastAccordionId,
                         data: {
                             "expand-mode": "single",
-                            SlotItem: [
+                            Slot: [
                                 {
                                     id: "Slot1",
                                 },

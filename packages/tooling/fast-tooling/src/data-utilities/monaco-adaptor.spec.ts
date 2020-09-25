@@ -4,7 +4,11 @@ import {
     MessageSystemType,
     Register,
 } from "../message-system";
-import { MonacoAdaptor } from "./monaco-adaptor";
+import {
+    findDictionaryIdParents,
+    findUpdatedDictionaryId,
+    MonacoAdaptor,
+} from "./monaco-adaptor";
 import { mapDataDictionaryToMonacoEditorHTML } from "./monaco";
 import { MonacoAdaptorAction } from "./monaco-adaptor-action";
 
@@ -142,6 +146,61 @@ describe("MonacoAdaptor", () => {
             mapDataDictionaryToMonacoEditorHTML(dataDictionary, schemaDictionary),
         ]);
     });
+    test("should change the dictionary id when a navigation event is fired", () => {
+        const dataDictionary: DataDictionary<unknown> = [
+            {
+                div: {
+                    schemaId: "div",
+                    data: {},
+                },
+                text: {
+                    schemaId: "text",
+                    data: "foo",
+                },
+            },
+            "div",
+        ];
+        const schemaDictionary = {
+            div: {
+                id: "div",
+                $id: "div",
+                type: "object",
+                mapsToTagName: "div",
+            },
+            text: {
+                id: "text",
+                $id: "text",
+                type: "string",
+            },
+        };
+        const messageSystem = new MessageSystem({
+            webWorker: "",
+        });
+        const monacoAdaptor = new MonacoAdaptor({
+            messageSystem,
+            actions: [],
+        });
+
+        messageSystem["register"].forEach((registeredItem: Register) => {
+            registeredItem.onMessage({
+                data: {
+                    type: MessageSystemType.initialize,
+                    dataDictionary,
+                    schemaDictionary,
+                },
+            } as any);
+        });
+        messageSystem["register"].forEach((registeredItem: Register) => {
+            registeredItem.onMessage({
+                data: {
+                    type: MessageSystemType.navigation,
+                    activeDictionaryId: "text",
+                },
+            } as any);
+        });
+
+        expect(monacoAdaptor["dictionaryId"]).toEqual("text");
+    });
     test("should fire an action when the corresponding id is used", () => {
         const dataDictionary: DataDictionary<unknown> = [
             {
@@ -227,6 +286,7 @@ describe("MonacoAdaptor", () => {
                     type: MessageSystemType.initialize,
                     dataDictionary,
                     schemaDictionary,
+                    activeDictionaryId: "div",
                 },
             } as any);
         });
@@ -381,6 +441,7 @@ describe("MonacoAdaptor", () => {
                     type: MessageSystemType.initialize,
                     dataDictionary,
                     schemaDictionary,
+                    activeDictionaryId: "div",
                 },
             } as any);
         });
@@ -414,5 +475,195 @@ describe("MonacoAdaptor", () => {
             },
             root,
         ]);
+    });
+});
+
+describe("findDictionaryIdParents", () => {
+    test("should not return any parents if this is the root dictionary item", () => {
+        expect(
+            findDictionaryIdParents("root", [
+                {
+                    root: {
+                        schemaId: "text",
+                        data: "foo",
+                    },
+                },
+                "root",
+            ])
+        ).toEqual([]);
+    });
+    test("should return parents if the dictionary item is nested", () => {
+        expect(
+            findDictionaryIdParents("a", [
+                {
+                    root: {
+                        schemaId: "bar",
+                        data: {
+                            Slot: [
+                                {
+                                    id: "a",
+                                },
+                            ],
+                        },
+                    },
+                    a: {
+                        schemaId: "foo",
+                        parent: {
+                            id: "root",
+                            dataLocation: "Slot",
+                        },
+                        data: "foo",
+                    },
+                },
+                "root",
+            ])
+        ).toEqual([
+            {
+                id: "root",
+                dataLocation: "Slot",
+                currentId: "a",
+                linkedDataIndex: 0,
+            },
+        ]);
+    });
+    test("should return a deeply nested id with multiple items in a slot", () => {
+        expect(
+            findDictionaryIdParents("c", [
+                {
+                    root: {
+                        schemaId: "bar",
+                        data: {
+                            Slot: [
+                                {
+                                    id: "b",
+                                },
+                                {
+                                    id: "a",
+                                },
+                            ],
+                        },
+                    },
+                    a: {
+                        schemaId: "foo",
+                        parent: {
+                            id: "root",
+                            dataLocation: "Slot",
+                        },
+                        data: {
+                            Slot: [
+                                {
+                                    id: "c",
+                                },
+                            ],
+                        },
+                    },
+                    b: {
+                        schemaId: "foo",
+                        parent: {
+                            id: "root",
+                            dataLocation: "Slot",
+                        },
+                        data: "foo",
+                    },
+                    c: {
+                        schemaId: "foo",
+                        parent: {
+                            id: "a",
+                            dataLocation: "Slot",
+                        },
+                        data: "foo",
+                    },
+                },
+                "root",
+            ])
+        ).toEqual([
+            {
+                id: "root",
+                dataLocation: "Slot",
+                currentId: "a",
+                linkedDataIndex: 1,
+            },
+            {
+                id: "a",
+                dataLocation: "Slot",
+                currentId: "c",
+                linkedDataIndex: 0,
+            },
+        ]);
+    });
+});
+
+describe("findUpdatedDictionaryId", () => {
+    test("should return the root dictionary id if there is no parent items", () => {
+        expect(
+            findUpdatedDictionaryId(
+                [],
+                [
+                    {
+                        foo: {
+                            schemaId: "foo",
+                            data: "bar",
+                        },
+                    },
+                    "foo",
+                ]
+            )
+        ).toEqual("foo");
+    });
+    test("should return a nested dictionary id if there is a parent item", () => {
+        expect(
+            findUpdatedDictionaryId(
+                [
+                    {
+                        id: "a",
+                        dataLocation: "Slot",
+                        currentId: "b",
+                        linkedDataIndex: 0,
+                    },
+                ],
+                [
+                    {
+                        foo: {
+                            schemaId: "foo",
+                            data: {
+                                Slot: [
+                                    {
+                                        id: "bar",
+                                    },
+                                ],
+                            },
+                        },
+                        bar: {
+                            schemaId: "bar",
+                            data: "foo",
+                        },
+                    },
+                    "foo",
+                ]
+            )
+        ).toEqual("bar");
+    });
+    test("should find the nearest dictionary id if the data structure has changed", () => {
+        expect(
+            findUpdatedDictionaryId(
+                [
+                    {
+                        id: "a",
+                        dataLocation: "Slot",
+                        currentId: "b",
+                        linkedDataIndex: 0,
+                    },
+                ],
+                [
+                    {
+                        foo: {
+                            schemaId: "foo",
+                            data: {},
+                        },
+                    },
+                    "foo",
+                ]
+            )
+        ).toEqual("foo");
     });
 });
