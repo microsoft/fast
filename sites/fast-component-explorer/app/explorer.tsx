@@ -74,35 +74,6 @@ export const previewDirection: string = "PREVIEW::DIRECTION";
 export const previewTheme: string = "PREVIEW::THEME";
 let componentLinkedDataId: string = "root";
 
-interface ObjectOfComponentViewConfigs {
-    [key: string]: ComponentViewConfig;
-}
-
-// Prepends the custom scenario to each components list fo scenarios
-function setViewConfigsWithCustomConfig(
-    viewConfigs: ObjectOfComponentViewConfigs
-): ObjectOfComponentViewConfigs {
-    const componentViewConfigs: ObjectOfComponentViewConfigs = {};
-
-    Object.keys(viewConfigs).forEach((viewConfigKey: string): void => {
-        componentViewConfigs[viewConfigKey] = Object.assign(
-            {},
-            viewConfigs[viewConfigKey],
-            {
-                scenarios: [
-                    {
-                        displayName: "Custom",
-                        dataDictionary:
-                            viewConfigs[viewConfigKey].scenarios[0].dataDictionary,
-                    },
-                ].concat(viewConfigs[viewConfigKey].scenarios),
-            }
-        );
-    });
-
-    return componentViewConfigs;
-}
-
 const fastMessageSystemWorker = new FASTMessageSystemWorker();
 let fastMessageSystem: MessageSystem;
 
@@ -137,10 +108,10 @@ class Explorer extends Foundation<
             locationPathname
         );
         const componentConfig: any = get(
-            setViewConfigsWithCustomConfig(componentConfigs),
+            componentConfigs,
             `${camelCase(componentName)}Config`
         );
-        const selectedScenarioIndex: number = 1;
+        const selectedScenarioIndex: number = 0;
 
         if ((window as any).Worker) {
             fastMessageSystem = new MessageSystem({
@@ -660,9 +631,7 @@ class Explorer extends Foundation<
 
     private renderScenarioSelect(): React.ReactNode {
         const scenarioOptions: Array<Scenario> = get(
-            setViewConfigsWithCustomConfig(componentConfigs)[
-                `${camelCase(this.state.componentName)}Config`
-            ],
+            componentConfigs[`${camelCase(this.state.componentName)}Config`],
             "scenarios"
         );
 
@@ -670,7 +639,7 @@ class Explorer extends Foundation<
             return (
                 <Select
                     onValueChange={this.handleUpdateScenario}
-                    defaultSelection={[scenarioOptions[1].displayName]}
+                    defaultSelection={[scenarioOptions[0].displayName]}
                     selectedItems={[
                         scenarioOptions[this.state.selectedScenarioIndex].displayName,
                     ]}
@@ -760,7 +729,7 @@ class Explorer extends Foundation<
                 if ((window as any).Worker && fastMessageSystem) {
                     fastMessageSystem.postMessage({
                         type: MessageSystemType.initialize,
-                        data: this.getScenarioData(
+                        dataDictionary: this.getScenarioData(
                             this.state.componentConfig,
                             selectedScenarioIndex
                         ),
@@ -791,14 +760,14 @@ class Explorer extends Foundation<
     private handleUpdateRoute = (route: string): void => {
         const componentName: string = this.getComponentNameSpinalCaseByPath(route);
         const componentConfig: any = get(
-            setViewConfigsWithCustomConfig(componentConfigs),
+            componentConfigs,
             `${camelCase(componentName)}Config`
         );
 
         if ((window as any).Worker && fastMessageSystem) {
             fastMessageSystem.postMessage({
                 type: MessageSystemType.initialize,
-                dataDictionary: this.getScenarioData(componentConfig, 1),
+                dataDictionary: this.getScenarioData(componentConfig, 0),
                 schemaDictionary,
             });
         }
@@ -808,7 +777,7 @@ class Explorer extends Foundation<
                 locationPathname: route,
                 componentName,
                 componentConfig,
-                selectedScenarioIndex: 1,
+                selectedScenarioIndex: 0,
             },
             () => {
                 history.push(route);
