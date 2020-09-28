@@ -1,15 +1,10 @@
 import { Callable } from "./interfaces";
+import { TrustedTypesPolicy, $global } from "./platform";
 
 const updateQueue = [] as Callable[];
-type TrustedTypesPolicy = { createHTML(html: string): string };
 
-// Tiny API-only polyfill for trustedTypes
 /* eslint-disable */
-if (globalThis.trustedTypes === void 0) {
-    globalThis.trustedTypes = { createPolicy: (name, rules) => rules };
-}
-
-const fastHTMLPolicy: TrustedTypesPolicy = globalThis.trustedTypes.createPolicy(
+const fastHTMLPolicy: TrustedTypesPolicy = $global.trustedTypes.createPolicy(
     "fast-html",
     {
         createHTML: html => html,

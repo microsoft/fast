@@ -17,8 +17,8 @@ export const SliderTemplate = html<Slider>`
         aria-valuenow="${x => x.value}"
         aria-valuemin="${x => x.min}"
         aria-valuemax="${x => x.max}"
-        ?aria-disabled="${x => x.disabled}"
-        ?aria-readonly="${x => x.readOnly}"
+        aria-disabled="${x => (x.disabled ? true : void 0)}"
+        aria-readonly="${x => (x.readOnly ? true : void 0)}"
         aria-orientation="${x => x.orientation}"
         class="${x => x.orientation}"
     >
@@ -26,7 +26,6 @@ export const SliderTemplate = html<Slider>`
             <div ${ref("track")} part="track-container" class="track">
                 <slot name="track"></slot>
             </div>
-            <div></div>
             <slot></slot>
             <div
                 ${ref("thumb")}

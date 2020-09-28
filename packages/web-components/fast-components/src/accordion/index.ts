@@ -2,7 +2,7 @@ import { customElement } from "@microsoft/fast-element";
 import { Accordion, AccordionTemplate as template } from "@microsoft/fast-foundation";
 import { AccordionStyles as styles } from "./accordion.styles";
 
-export * from "./accordion-item/index";
+export * from "../accordion-item/index";
 
 /**
  * The FAST Accordion Element. Implements {@link @microsoft/fast-foundation#Accordion},

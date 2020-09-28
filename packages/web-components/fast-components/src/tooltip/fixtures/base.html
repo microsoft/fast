@@ -1,0 +1,151 @@
+<fast-design-system-provider use-defaults>
+    <h1>Tooltip</h1>
+
+    <h2>Default</h2>
+    <div style="height: 400px; width: 400px; background: lightgray;">
+        <fast-tooltip anchor="anchor-default">
+            Helpful text is helpful
+        </fast-tooltip>
+        <fast-tooltip anchor="anchor-default" visible="true" position="right">
+            Always visible
+        </fast-tooltip>
+
+        <fast-button id="anchor-default" style="margin: 200px;">
+            anchor
+        </fast-button>
+    </div>
+
+    <h2>Top</h2>
+    <div style="height: 400px; width: 400px; background: lightgray; overflow: scroll;">
+        <fast-tooltip position="top" anchor="anchor-top">
+            Helpful text is helpful
+        </fast-tooltip>
+
+        <fast-button id="anchor-top" style="margin: 200px;">
+            anchor
+        </fast-button>
+    </div>
+
+    <h2>Right</h2>
+    <div style="height: 400px; width: 400px; background: lightgray; overflow: scroll;">
+        <fast-tooltip anchor="anchor-right" position="right">
+            Helpful text is helpful
+        </fast-tooltip>
+
+        <fast-button id="anchor-right" style="margin: 200px;">
+            anchor
+        </fast-button>
+    </div>
+
+    <h2>Bottom</h2>
+    <div style="height: 400px; width: 400px; background: lightgray; overflow: scroll;">
+        <fast-tooltip anchor="anchor-bottom" position="bottom">
+            Helpful text is helpful
+        </fast-tooltip>
+
+        <fast-button id="anchor-bottom" style="margin: 200px;">
+            anchor
+        </fast-button>
+    </div>
+
+    <h2>Left</h2>
+    <div style="height: 400px; width: 400px; background: lightgray; overflow: scroll;">
+        <fast-tooltip anchor="anchor-left" position="left">
+            Helpful text is helpful
+        </fast-tooltip>
+
+        <fast-button id="anchor-left" style="margin: 200px;">
+            anchor
+        </fast-button>
+    </div>
+
+    <h2>Switch anchors</h2>
+    <div style="height: 400px; width: 400px; background: lightgray; overflow: scroll;">
+        <fast-tooltip id="tooltip-anchor-switch">
+            Helpful text is helpful
+        </fast-tooltip>
+
+        <fast-button id="anchor-anchor-switch-1" style="margin: 40px;">
+            anchor
+        </fast-button>
+
+        <fast-button id="anchor-anchor-switch-2" style="margin: 40px;">
+            anchor
+        </fast-button>
+
+        <fast-button id="anchor-anchor-switch-3" style="margin: 40px;">
+            anchor
+        </fast-button>
+
+        <fast-button id="anchor-anchor-switch-4" style="margin: 40px;">
+            anchor
+        </fast-button>
+
+        <fast-button id="anchor-anchor-switch-5" style="margin: 40px;">
+            anchor
+        </fast-button>
+
+        <fast-button id="anchor-anchor-switch-6" style="margin: 40px;">
+            anchor
+        </fast-button>
+
+        <fast-button id="anchor-anchor-switch-7" style="margin: 40px;">
+            anchor
+        </fast-button>
+
+        <fast-button id="anchor-anchor-switch-8" style="margin: 40px;">
+            anchor
+        </fast-button>
+    </div>
+
+    <h2>RTL</h2>
+    <div
+        style="height: 400px; width: 400px; background: lightgray; overflow: scroll;"
+        dir="rtl"
+    >
+        <fast-button id="anchor-rtl" style="margin: 200px;">
+            anchor
+        </fast-button>
+
+        <fast-tooltip anchor="anchor-rtl" position="left">
+            Left
+        </fast-tooltip>
+
+        <fast-tooltip anchor="anchor-rtl" position="right">
+            Right
+        </fast-tooltip>
+    </div>
+
+    <h2>start/end</h2>
+    <div style="height: 400px; width: 400px; background: lightgray; overflow: scroll;">
+        <fast-button id="anchor-se" style="margin: 200px;">
+            anchor
+        </fast-button>
+
+        <fast-tooltip anchor="anchor-se" position="start">
+            Start
+        </fast-tooltip>
+
+        <fast-tooltip anchor="anchor-se" position="end">
+            End
+        </fast-tooltip>
+    </div>
+
+    <h2>start/end RTL</h2>
+    <div
+        style="height: 400px; width: 400px; background: lightgray; overflow: scroll;"
+        dir="rtl"
+    >
+        <fast-button id="anchor-sertl" style="margin: 200px;">
+            anchor
+        </fast-button>
+
+        <fast-tooltip anchor="anchor-sertl" position="start">
+            Start
+        </fast-tooltip>
+
+        <fast-tooltip anchor="anchor-sertl" position="end">
+            End
+        </fast-tooltip>
+    </div>
+</fast-design-system-provider>

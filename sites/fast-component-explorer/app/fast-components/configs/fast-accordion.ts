@@ -3,7 +3,7 @@ import {
     fastComponentSchemas,
     textSchema,
 } from "@microsoft/site-utilities";
-import { camelCase, uniqueId } from "lodash-es";
+import { camelCase, cloneDeep, uniqueId } from "lodash-es";
 import { DataDictionary } from "@microsoft/fast-tooling";
 import Guidance from "../../.tmp/accordion/guidance";
 import { placeholderIcon } from "../utilities/icons";
@@ -153,14 +153,14 @@ function collapsedIcon(parent: string): DataDictionary<any> {
     ];
 }
 
-const collapsedIcon1 = collapsedIcon("Slot1");
-const collapsedIcon2 = collapsedIcon("Slot2");
-const collapsedIcon3 = collapsedIcon("Slot3");
-const collapsedIcon4 = collapsedIcon("Slot4");
-const expandedIcon1 = expandedIcon("Slot1");
-const expandedIcon2 = expandedIcon("Slot2");
-const expandedIcon3 = expandedIcon("Slot3");
-const expandedIcon4 = expandedIcon("Slot4");
+const collapsedIcon1 = cloneDeep(collapsedIcon("Slot1"));
+const collapsedIcon2 = cloneDeep(collapsedIcon("Slot2"));
+const collapsedIcon3 = cloneDeep(collapsedIcon("Slot3"));
+const collapsedIcon4 = cloneDeep(collapsedIcon("Slot4"));
+const expandedIcon1 = cloneDeep(expandedIcon("Slot1"));
+const expandedIcon2 = cloneDeep(expandedIcon("Slot2"));
+const expandedIcon3 = cloneDeep(expandedIcon("Slot3"));
+const expandedIcon4 = cloneDeep(expandedIcon("Slot4"));
 
 const fastAccordionConfig: ComponentViewConfig = {
     schema: fastComponentSchemas[fastAccordionId],

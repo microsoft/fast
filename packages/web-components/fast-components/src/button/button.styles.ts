@@ -79,7 +79,7 @@ export const ButtonStyles = css`
                 background: none;
                 border-color: transparent;
                 color: ${SystemColors.ButtonText};
-                fill: currentColor;
+                fill: currentcolor;
             }
             :host(.stealth) .control:hover,
             :host(.stealth:${focusVisible}) .control {

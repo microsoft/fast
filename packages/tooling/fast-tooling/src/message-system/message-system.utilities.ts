@@ -11,8 +11,11 @@ import {
     DataDictionaryMessageOutgoing,
     DataMessageIncoming,
     DataMessageOutgoing,
+    HistoryMessageIncoming,
+    HistoryMessageOutgoing,
     MessageSystemDataDictionaryTypeAction,
     MessageSystemDataTypeAction,
+    MessageSystemHistoryTypeAction,
     MessageSystemIncoming,
     MessageSystemNavigationDictionaryTypeAction,
     MessageSystemNavigationTypeAction,
@@ -28,6 +31,8 @@ import {
 import { getNavigationDictionary } from "./navigation";
 import { NavigationConfigDictionary } from "./navigation.props";
 import { DataDictionary, LinkedData } from "./data.props";
+import { defaultHistoryLimit } from "./history";
+import { History } from "./history.props";
 import { SchemaDictionary } from "./schema.props";
 import { Validation } from "./validation.props";
 
@@ -42,6 +47,11 @@ import { Validation } from "./validation.props";
  * single source for data updates.
  */
 
+const history: History = {
+    items: [],
+    limit: defaultHistoryLimit,
+};
+let activeHistoryIndex: number = 0;
 let dataDictionary: DataDictionary<unknown>;
 let navigationDictionary: NavigationConfigDictionary;
 let activeNavigationConfigId: string;
@@ -71,6 +81,7 @@ function getValidationMessage(
                 action: MessageSystemValidationTypeAction.update,
                 dictionaryId: data.dictionaryId,
                 validationErrors: data.validationErrors,
+                options: data.options,
             };
         case MessageSystemValidationTypeAction.get:
             return {
@@ -78,6 +89,7 @@ function getValidationMessage(
                 action: MessageSystemValidationTypeAction.get,
                 dictionaryId: data.dictionaryId,
                 validationErrors: validation[data.dictionaryId],
+                options: data.options,
             };
     }
 }
@@ -95,6 +107,7 @@ function getDataDictionaryMessage(
                 action: MessageSystemDataDictionaryTypeAction.get,
                 dataDictionary,
                 activeDictionaryId,
+                options: data.options,
             };
         case MessageSystemDataDictionaryTypeAction.updateActiveId:
             activeDictionaryId = data.activeDictionaryId;
@@ -103,6 +116,7 @@ function getDataDictionaryMessage(
                 type: MessageSystemType.dataDictionary,
                 action: MessageSystemDataDictionaryTypeAction.updateActiveId,
                 activeDictionaryId,
+                options: data.options,
             };
     }
 }
@@ -120,6 +134,7 @@ function getNavigationDictionaryMessage(
                 action: MessageSystemNavigationDictionaryTypeAction.get,
                 navigationDictionary,
                 activeDictionaryId,
+                options: data.options,
             };
         case MessageSystemNavigationDictionaryTypeAction.updateActiveId:
             activeDictionaryId = data.activeDictionaryId;
@@ -128,6 +143,21 @@ function getNavigationDictionaryMessage(
                 type: MessageSystemType.navigationDictionary,
                 action: MessageSystemNavigationDictionaryTypeAction.updateActiveId,
                 activeDictionaryId,
+                options: data.options,
+            };
+    }
+}
+
+/**
+ * Handles all history manipulation messages
+ */
+function getHistoryMessage(data: HistoryMessageIncoming): HistoryMessageOutgoing {
+    switch (data.action) {
+        case MessageSystemHistoryTypeAction.get:
+            return {
+                type: MessageSystemType.history,
+                action: MessageSystemHistoryTypeAction.get,
+                history,
             };
     }
 }
@@ -155,6 +185,7 @@ function getDataMessage(data: DataMessageIncoming): DataMessageOutgoing {
                 dataDictionary,
                 navigation: navigationDictionary[0][activeDictionaryId],
                 navigationDictionary,
+                options: data.options,
             };
         case MessageSystemDataTypeAction.remove:
             dataDictionary[0][activeDictionaryId].data = getDataUpdatedWithoutSourceData({
@@ -173,6 +204,7 @@ function getDataMessage(data: DataMessageIncoming): DataMessageOutgoing {
                 dataDictionary,
                 navigation: navigationDictionary[0][activeDictionaryId],
                 navigationDictionary,
+                options: data.options,
             };
         case MessageSystemDataTypeAction.add:
             dataDictionary[0][activeDictionaryId].data = getDataUpdatedWithSourceData({
@@ -193,6 +225,7 @@ function getDataMessage(data: DataMessageIncoming): DataMessageOutgoing {
                 dataDictionary,
                 navigation: navigationDictionary[0][activeDictionaryId],
                 navigationDictionary,
+                options: data.options,
             };
         case MessageSystemDataTypeAction.update: {
             const dictionaryId: string =
@@ -220,6 +253,7 @@ function getDataMessage(data: DataMessageIncoming): DataMessageOutgoing {
                 dataDictionary,
                 navigation: navigationDictionary[0][dictionaryId],
                 navigationDictionary,
+                options: data.options,
             };
         }
         case MessageSystemDataTypeAction.addLinkedData: {
@@ -292,6 +326,7 @@ function getDataMessage(data: DataMessageIncoming): DataMessageOutgoing {
                 dataDictionary,
                 navigation: navigationDictionary[0][addLinkedDataDictionaryId],
                 navigationDictionary,
+                options: data.options,
             };
         }
         case MessageSystemDataTypeAction.removeLinkedData: {
@@ -349,6 +384,7 @@ function getDataMessage(data: DataMessageIncoming): DataMessageOutgoing {
                 navigation: navigationDictionary[0][activeDictionaryId],
                 navigationDictionary,
                 linkedDataIds,
+                options: data.options,
             };
         }
         case MessageSystemDataTypeAction.reorderLinkedData:
@@ -370,6 +406,7 @@ function getDataMessage(data: DataMessageIncoming): DataMessageOutgoing {
                 dataDictionary,
                 navigation: navigationDictionary[0][activeDictionaryId],
                 navigationDictionary,
+                options: data.options,
             };
     }
 }
@@ -387,6 +424,7 @@ function getNavigationMessage(
                 action: MessageSystemNavigationTypeAction.update,
                 activeDictionaryId: data.activeDictionaryId,
                 activeNavigationConfigId: data.activeNavigationConfigId,
+                options: data.options,
             };
         case MessageSystemNavigationTypeAction.get:
             return {
@@ -395,8 +433,24 @@ function getNavigationMessage(
                 activeDictionaryId,
                 activeNavigationConfigId,
                 navigation: navigationDictionary[0][activeDictionaryId],
+                options: data.options,
             };
     }
+}
+
+function updateHistory<C>(data: MessageSystemOutgoing<C>): MessageSystemOutgoing<C> {
+    history.items.push(data);
+    const historyItemsLength = history.items.length;
+
+    if (historyItemsLength > history.limit) {
+        history.items.splice(0, historyItemsLength - history.limit);
+    }
+
+    if (activeHistoryIndex !== historyItemsLength) {
+        activeHistoryIndex = historyItemsLength;
+    }
+
+    return data;
 }
 
 export function getMessage<C = {}>(
@@ -404,17 +458,19 @@ export function getMessage<C = {}>(
 ): MessageSystemOutgoing<C> {
     switch (data.type) {
         case MessageSystemType.custom:
-            return getCustomMessage(data);
+            return updateHistory(getCustomMessage(data));
         case MessageSystemType.data:
-            return getDataMessage(data);
+            return updateHistory(getDataMessage(data));
         case MessageSystemType.dataDictionary:
-            return getDataDictionaryMessage(data);
+            return updateHistory(getDataDictionaryMessage(data));
         case MessageSystemType.navigation:
-            return getNavigationMessage(data);
+            return updateHistory(getNavigationMessage(data));
         case MessageSystemType.navigationDictionary:
-            return getNavigationDictionaryMessage(data);
+            return updateHistory(getNavigationDictionaryMessage(data));
         case MessageSystemType.validation:
-            return getValidationMessage(data);
+            return updateHistory(getValidationMessage(data));
+        case MessageSystemType.history:
+            return getHistoryMessage(data);
         case MessageSystemType.initialize:
             /**
              * TODO: remove this ternary to rely on the dataDictionary
@@ -423,7 +479,10 @@ export function getMessage<C = {}>(
             dataDictionary = Array.isArray(data.dataDictionary)
                 ? data.dataDictionary
                 : data.data;
-            activeDictionaryId = dataDictionary[1];
+            activeDictionaryId =
+                typeof data.dictionaryId === "string"
+                    ? data.dictionaryId
+                    : dataDictionary[1];
             schemaDictionary = data.schemaDictionary;
             navigationDictionary = getNavigationDictionary(
                 schemaDictionary,
@@ -431,8 +490,9 @@ export function getMessage<C = {}>(
             );
             activeNavigationConfigId =
                 navigationDictionary[0][navigationDictionary[1]][1];
+            history.limit = data.historyLimit || defaultHistoryLimit;
 
-            return {
+            return updateHistory({
                 type: MessageSystemType.initialize,
                 data: dataDictionary[0][activeDictionaryId].data,
                 dataDictionary,
@@ -442,6 +502,8 @@ export function getMessage<C = {}>(
                 activeNavigationConfigId,
                 schema: schemaDictionary[dataDictionary[0][activeDictionaryId].schemaId],
                 schemaDictionary,
-            };
+                historyLimit: history.limit,
+                options: data.options,
+            });
     }
 }

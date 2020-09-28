@@ -8,7 +8,7 @@
         "
     >
         <h4>Toggle orientation</h4>
-        <div style="margin-bottom: 60px;">
+        <div style="margin-bottom: 60px; height: 200px;">
             <button
                 style="width: 90px; margin: 10px;"
                 onclick="const slider = document.getElementById('switcher'); slider.getAttribute('orientation') === 'horizontal' ? slider.setAttribute('orientation', 'vertical') : slider.setAttribute('orientation', 'horizontal');"
@@ -17,7 +17,7 @@
             </button>
             <button
                 style="width: 90px; margin: 10px;"
-                onclick="const slider = document.getElementById('switcher'); const currentVal = Number(slider.getAttribute('value')); slider.setAttribute('value', (currentVal + 10).toString());"
+                onclick="const slider = document.getElementById('switcher'); const currentVal = Number(slider.value); slider.value = (currentVal + 10);"
             >
                 Change slider val
             </button>
@@ -46,7 +46,10 @@
 
         <!-- Margin offsets vertical -->
         <h4>Vertical with top offset</h4>
-        <fast-slider orientation="vertical" , style="margin-left: 100px;"></fast-slider>
+        <fast-slider
+            orientation="vertical"
+            style="margin-left: 100px; height: 120px;"
+        ></fast-slider>
 
         <!-- Negative positions -->
         <h4>Negative positions</h4>

@@ -15,15 +15,21 @@ export const FastFrameTemplate = html<FastFrame>`
                 <fast-tab id="contrast-tab" title="Dark Mode">${ContrastIcon}</fast-tab>
                 <fast-tab id="palette-tab" title="Color">${PaletteIcon}</fast-tab>
                 <fast-tab id="style-tab" title="Styles">${SwatchesIcon}</fast-tab>
-                <fast-tab-panel id="contrast-tab-panel" class="${x =>
-                    x.expanded ? "tab-panel-expanded" : ""}">
+                <fast-tab-panel
+                    id="contrast-tab-panel"
+                    class="${x => (x.expanded ? "tab-panel-expanded" : "")}"
+                >
                     <div class="content">
-                        <h1><span class="content-heading-highlight">Fast Frame</span> Dark Mode</h4>
-                        <h2>Pre-built for both light and dark modes</h2>
+                        <fast-badge class="content-badge">
+                            Fast Frame
+                            <span class="content-badge-highlight">Dark Mode</span>
+                        </fast-badge>
+                        <h3 class="heading">Pre-built for both light and dark modes</h3>
                         <p>
-                            Switching between dark and light mode is as easy as changing the background color of the design system.
+                            Switching between dark and light mode is as easy as changing
+                            the background color of the design system.
                         </p>
-                        <div class="content-control-container" >
+                        <div class="content-control-container">
                             <label for="dark-mode-switch">Dark mode</label>
                             <fast-switch
                                 id="dark-mode-switch"
@@ -37,15 +43,23 @@ export const FastFrameTemplate = html<FastFrame>`
                         </div>
                     </div>
                 </fast-tab-panel>
-                <fast-tab-panel id="palette-tab-panel" class="${x =>
-                    x.expanded ? "tab-panel-expanded" : ""}">
+                <fast-tab-panel
+                    id="palette-tab-panel"
+                    class="${x => (x.expanded ? "tab-panel-expanded" : "")}"
+                >
                     <div class="content">
-                        <h1><span class="content-heading-highlight">Fast Frame</span> Colors</h4>
-                        <h2>Pre-existing color you can customize</h2>
+                        <fast-badge class="content-badge">
+                            Fast Frame
+                            <span class="content-badge-highlight">Colors</span>
+                        </fast-badge>
+                        <h3 class="heading">Pre-existing color you can customize</h3>
                         <p>
-                            Color is applied by using color recipes which require two color palettes, neutral and accent, applied to the design system. These palettes are customizable which allows for a wide range of styles.
+                            Color is applied by using color recipes which require two
+                            color palettes, neutral and accent, applied to the design
+                            system. These palettes are customizable which allows for a
+                            wide range of styles.
                         </p>
-                        <div class="content-control-container" >
+                        <div class="content-control-container">
                             <label for="neutral-color-pickers">Neutral color</label>
                             <fast-radio-group
                                 class="swatches"
@@ -114,22 +128,34 @@ export const FastFrameTemplate = html<FastFrame>`
                                 @change="${(x, c) =>
                                     x.saturationChangeHandler(c.event as CustomEvent)}"
                             >
-                                <div slot="track" class="saturation-slider-track" style="background-image: linear-gradient(to right, ${x =>
-                                    hslToRGB(
-                                        new ColorHSL(x.hue, 0, x.lightness)
-                                    ).toStringHexRGB()}, ${x =>
-    hslToRGB(new ColorHSL(x.hue, 1, x.lightness)).toStringHexRGB()});"></div>
+                                <div
+                                    slot="track"
+                                    class="saturation-slider-track"
+                                    style="background-image: linear-gradient(to right, ${x =>
+                                        hslToRGB(
+                                            new ColorHSL(x.hue, 0, x.lightness)
+                                        ).toStringHexRGB()}, ${x =>
+                                        hslToRGB(
+                                            new ColorHSL(x.hue, 1, x.lightness)
+                                        ).toStringHexRGB()});"
+                                ></div>
                             </fast-slider>
                         </div>
                     </div>
                 </fast-tab-panel>
-                <fast-tab-panel id="style-tab-panel" class="${x =>
-                    x.expanded ? "tab-panel-expanded" : ""}">
+                <fast-tab-panel
+                    id="style-tab-panel"
+                    class="${x => (x.expanded ? "tab-panel-expanded" : "")}"
+                >
                     <div class="content">
-                        <h1><span class="content-heading-highlight">Fast Frame</span> Styles</h4>
-                        <h2>Adjust style settings on the fly</h2>
+                        <fast-badge class="content-badge">
+                            Fast Frame
+                            <span class="content-badge-highlight">Styles</span>
+                        </fast-badge>
+                        <h3 class="heading">Adjust style settings on the fly</h3>
                         <p>
-                            Update design system values for border radius, outline width, or density.
+                            Update design system values for border radius, outline width,
+                            or density.
                         </p>
                         <div class="content-control-container-2">
                             <label for="border-radius-slider">Border radius</label>
@@ -142,16 +168,10 @@ export const FastFrameTemplate = html<FastFrame>`
                                 @change="${(x, c) =>
                                     x.borderRadiusChangeHandler(c.event as CustomEvent)}"
                             >
-                                <fast-slider-label
-                                    hide-mark
-                                    position="0"
-                                >
+                                <fast-slider-label hide-mark position="0">
                                     0
                                 </fast-slider-label>
-                                <fast-slider-label
-                                    hide-mark
-                                    position="20"
-                                >
+                                <fast-slider-label hide-mark position="20">
                                     20PX
                                 </fast-slider-label>
                             </fast-slider>
@@ -165,16 +185,10 @@ export const FastFrameTemplate = html<FastFrame>`
                                 @change="${(x, c) =>
                                     x.outlineWidthChangeHandler(c.event as CustomEvent)}"
                             >
-                                <fast-slider-label
-                                    hide-mark
-                                    position="1"
-                                >
+                                <fast-slider-label hide-mark position="1">
                                     1PX
                                 </fast-slider-label>
-                                <fast-slider-label
-                                    hide-mark
-                                    position="6"
-                                >
+                                <fast-slider-label hide-mark position="6">
                                     4PX
                                 </fast-slider-label>
                             </fast-slider>
@@ -188,16 +202,10 @@ export const FastFrameTemplate = html<FastFrame>`
                                 @change="${(x, c) =>
                                     x.densityChangeHandler(c.event as CustomEvent)}"
                             >
-                                <fast-slider-label
-                                    hide-mark
-                                    position="-3"
-                                >
+                                <fast-slider-label hide-mark position="-3">
                                     -3
                                 </fast-slider-label>
-                                <fast-slider-label
-                                    hide-mark
-                                    position="3"
-                                >
+                                <fast-slider-label hide-mark position="3">
                                     3
                                 </fast-slider-label>
                             </fast-slider>
@@ -206,6 +214,7 @@ export const FastFrameTemplate = html<FastFrame>`
                 </fast-tab-panel>
             </fast-tabs>
             <fast-design-system-provider
+                use-defaults
                 class="${x => (x.expanded ? "preview preview-expanded" : "preview")}"
                 base-layer-luminance="${x => x.baseLayerLuminance}"
                 background-color="${x => x.backgroundColor}"
@@ -232,8 +241,7 @@ export const FastFrameTemplate = html<FastFrame>`
                             x.handleExpandKeypress(c.event as KeyboardEvent)}"
                         @click="${(x, c) =>
                             x.handleExpandKeypress(c.event as KeyboardEvent)}"
-                    >
-                    </fast-flipper>
+                    ></fast-flipper>
                 </fast-design-system-provider>
                 <fast-card>
                     <div class="image-container">
@@ -253,55 +261,86 @@ export const FastFrameTemplate = html<FastFrame>`
                             <span class="sample-control-icon"></span>
                             <span class="sample-control-text">Label</span>
                             <div class="sample-control-actions">
-                                <fast-button appearance="stealth" aria-label="Example 'more' button"
-                                    >${ContextIcon}</fast-button
+                                <fast-button
+                                    appearance="stealth"
+                                    aria-label="Example 'more' button"
                                 >
+                                    ${ContextIcon}
+                                </fast-button>
                             </div>
                         </div>
                     </div>
                 </fast-card>
-                <div
-                    class="preview-controls"
-                >
+                <div class="preview-controls">
                     <fast-progress aria-label="Example progress bar"></fast-progress>
-                    <fast-menu tabindex="${x =>
-                        x.setTabIndex()}" aria-label="Example menu">
-                        <fast-menu-item role="menuitem" aria-label="Example menu item">Menu item 1</fast-menu-item>
-                        <fast-menu-item role="menuitem" aria-label="Example menu item">Menu item 2</fast-menu-item>
-                        <fast-menu-item role="menuitem" aria-label="Example menu item">Menu item 3</fast-menu-item>
+                    <fast-menu
+                        tabindex="${x => x.setTabIndex()}"
+                        aria-label="Example menu"
+                    >
+                        <fast-menu-item role="menuitem" aria-label="Example menu item">
+                            Menu item 1
+                        </fast-menu-item>
+                        <fast-menu-item role="menuitem" aria-label="Example menu item">
+                            Menu item 2
+                        </fast-menu-item>
+                        <fast-menu-item role="menuitem" aria-label="Example menu item">
+                            Menu item 3
+                        </fast-menu-item>
                         <fast-divider></fast-divider>
-                        <fast-menu-item role="menuitem" aria-label="Example menu item">Menu item 4</fast-menu-item>
+                        <fast-menu-item role="menuitem" aria-label="Example menu item">
+                            Menu item 4
+                        </fast-menu-item>
                     </fast-menu>
                     <div class="control-container">
-                        <fast-radio-group class="example-radios" name="example radio group" orientation="vertical">
+                        <fast-radio-group
+                            class="example-radios"
+                            name="example radio group"
+                            orientation="vertical"
+                        >
                             <fast-radio aria-label="Example radio 1">Radio 1</fast-radio>
                             <fast-radio aria-label="Example radio 2">Radio 2</fast-radio>
                         </fast-radio-group>
                         <div class="control-container-grid">
-                            <fast-switch tabindex="${x =>
-                                x.setTabIndex()}" aria-label="Example toggle"></fast-switch>
+                            <fast-switch
+                                tabindex="${x => x.setTabIndex()}"
+                                aria-label="Example toggle"
+                            ></fast-switch>
                             <p>Toggle</p>
-                            <fast-checkbox tabindex="${x =>
-                                x.setTabIndex()}" class="checkbox" aria-label="Example checkbox"></fast-checkbox>
+                            <fast-checkbox
+                                tabindex="${x => x.setTabIndex()}"
+                                class="checkbox"
+                                aria-label="Example checkbox"
+                            ></fast-checkbox>
                             <p class="checkbox-label">Checkbox</p>
                         </div>
                     </div>
-                    <fast-text-field placeholder="Text field" tabindex="${x =>
-                        x.setTabIndex()}" aria-label="Example text field"></fast-text-field>
+                    <fast-text-field
+                        placeholder="Text field"
+                        tabindex="${x => x.setTabIndex()}"
+                        aria-label="Example text field"
+                    ></fast-text-field>
                     <div class="control-container-2">
-                        <fast-slider tabindex="${x =>
-                            x.setTabIndex()}" aria-label="Example slider"></fast-slider>
+                        <fast-slider
+                            tabindex="${x => x.setTabIndex()}"
+                            aria-label="Example slider"
+                        ></fast-slider>
                         <fast-flipper></fast-flipper>
                         <fast-flipper disabled></fast-flipper>
                     </div>
                     <div class="control-container">
-                        <fast-button appearance="accent" aria-label="Example 'download' button" tabindex="${x =>
-                            x.setTabIndex()}">
+                        <fast-button
+                            appearance="accent"
+                            aria-label="Example 'download' button"
+                            tabindex="${x => x.setTabIndex()}"
+                        >
                             Button
                             <span slot="start">${DownloadIcon}</span>
                         </fast-button>
-                        <fast-button appearance="neutral" aria-label="Example 'play' button" tabindex="${x =>
-                            x.setTabIndex()}">
+                        <fast-button
+                            appearance="neutral"
+                            aria-label="Example 'play' button"
+                            tabindex="${x => x.setTabIndex()}"
+                        >
                             Button
                             <span slot="start">${PlayIcon}</span>
                         </fast-button>

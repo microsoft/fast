@@ -104,6 +104,8 @@ export class Badge extends FASTElement {
     circular: boolean;
     color: string;
     fill: string;
+    // (undocumented)
+    generateBadgeStyle: () => string | undefined;
 }
 
 // @public
@@ -224,6 +226,9 @@ export interface DecoratorDesignSystemPropertyConfiguration extends Omit<Decorat
 }
 
 // @public
+export function defineDesignSystemProvider(nameOrDef: string | PartialFASTElementDefinition): <T extends typeof DesignSystemProvider>(providerCtor: T) => void;
+
+// @public
 export class DelegatesARIAButton extends ARIAGlobalStatesAndProperties {
     ariaExpanded: "true" | "false" | undefined;
     ariaPressed: "true" | "false" | "mixed" | undefined;
@@ -275,8 +280,10 @@ export class DesignSystemProvider extends FASTElement implements CSSCustomProper
     useDefaults: boolean;
     }
 
-// @public
-export function designSystemProvider(nameOrDef: string | PartialFASTElementDefinition): <T extends typeof DesignSystemProvider>(providerCtor: T) => void;
+// Warning: (ae-internal-missing-underscore) The name "designSystemProvider" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal @deprecated (undocumented)
+export const designSystemProvider: typeof defineDesignSystemProvider;
 
 // @public
 export const DesignSystemProviderTemplate: import("@microsoft/fast-element").ViewTemplate<DesignSystemProvider, any>;
@@ -386,17 +393,21 @@ export abstract class FormAssociated<T extends HTMLInputElement | HTMLTextAreaEl
     protected abstract proxy: T;
     reportValidity(): boolean;
     required: boolean;
-    protected requiredChanged(): void;
+    protected requiredChanged(prev: boolean, next: boolean): void;
     protected setFormValue(value: File | string | FormData | null, state?: File | string | FormData | null): void;
     // Warning: (ae-forgotten-export) The symbol "ValidityStateFlags" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "HTMLElement" needs to be exported by the entry point index.d.ts
     setValidity(flags: ValidityStateFlags, message?: string, anchor?: HTMLElement_2): void;
+    protected validate(): void;
     get validationMessage(): string;
     get validity(): ValidityState;
     value: string;
     protected valueChanged(previous: string, next: string): void;
     get willValidate(): boolean;
 }
+
+// @public
+export const getDirection: (rootNode: HTMLElement) => Direction;
 
 // @public
 export const hidden = ":host([hidden]){display:none}";
@@ -719,11 +730,15 @@ export const TabPanelTemplate: import("@microsoft/fast-element").ViewTemplate<Ta
 export class Tabs extends FASTElement {
     constructor();
     activeid: string;
+    // @internal (undocumented)
+    activeidChanged(): void;
     activeindicator: boolean;
     // @internal (undocumented)
     activeIndicatorRef: HTMLElement;
     activetab: HTMLElement;
     adjust(adjustment: number): void;
+    // @internal (undocumented)
+    connectedCallback(): void;
     orientation: TabsOrientation;
     // @internal (undocumented)
     tabpanels: HTMLElement[];
@@ -846,6 +861,70 @@ export enum TextFieldType {
     url = "url"
 }
 
+// @public
+export class Tooltip extends FASTElement {
+    anchor: string;
+    anchorElement: HTMLElement | null;
+    // (undocumented)
+    connectedCallback(): void;
+    // @internal
+    currentDirection: Direction;
+    delay: number;
+    // (undocumented)
+    disconnectedCallback(): void;
+    // @internal
+    handlePositionChange: (ev: Event) => void;
+    // @internal (undocumented)
+    horizontalDefaultPosition: string | undefined;
+    // @internal (undocumented)
+    horizontalInset: string;
+    // @internal (undocumented)
+    horizontalPositioningMode: AxisPositioningMode;
+    // Warning: (ae-forgotten-export) The symbol "AxisScalingMode" needs to be exported by the entry point index.d.ts
+    //
+    // @internal (undocumented)
+    horizontalScaling: AxisScalingMode;
+    position: TooltipPosition;
+    // Warning: (ae-forgotten-export) The symbol "AnchoredRegion" needs to be exported by the entry point index.d.ts
+    //
+    // @internal
+    region: AnchoredRegion;
+    // @internal (undocumented)
+    tooltipVisible: boolean;
+    // @internal (undocumented)
+    verticalDefaultPosition: string | undefined;
+    // @internal (undocumented)
+    verticalInset: string;
+    // Warning: (ae-forgotten-export) The symbol "AxisPositioningMode" needs to be exported by the entry point index.d.ts
+    //
+    // @internal (undocumented)
+    verticalPositioningMode: AxisPositioningMode;
+    // @internal (undocumented)
+    verticalScaling: AxisScalingMode;
+    // @internal
+    viewportElement: HTMLElement | null;
+    visible: boolean;
+    }
+
+// @public
+export enum TooltipPosition {
+    // (undocumented)
+    bottom = "bottom",
+    // (undocumented)
+    end = "end",
+    // (undocumented)
+    left = "left",
+    // (undocumented)
+    right = "right",
+    // (undocumented)
+    start = "start",
+    // (undocumented)
+    top = "top"
+}
+
+// @public
+export const TooltipTemplate: import("@microsoft/fast-element").ViewTemplate<Tooltip, any>;
+
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "TreeItem" because one of its declarations is marked as @internal
 //
@@ -870,12 +949,11 @@ export class TreeItem extends FASTElement {
     // (undocumented)
     handleChange(source: any, propertyName: string): void;
     // (undocumented)
-    handleContainerClick: (e: MouseEvent) => void;
+    handleClick: (e: MouseEvent) => void;
     // (undocumented)
-    handleExpandCollapseButtonClick: () => void;
+    handleExpandCollapseButtonClick: (e: MouseEvent) => void;
     // (undocumented)
     handleFocus: (e: Event) => void;
-    // (undocumented)
     handleKeyDown: (e: KeyboardEvent) => void | boolean;
     // (undocumented)
     readonly isNestedItem: () => boolean;

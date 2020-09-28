@@ -3,6 +3,33 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.7.2](https://github.com/Microsoft/fast/compare/@microsoft/fast-foundation@1.7.1...@microsoft/fast-foundation@1.7.2) (2020-09-10)
+
+
+### Bug Fixes
+
+* able to keyboard tab back in the tree view ([#3867](https://github.com/Microsoft/fast/issues/3867)) ([d3e3cde](https://github.com/Microsoft/fast/commit/d3e3cde2fc3efd034569f6ade35a739aaf3e2738)), closes [#3801](https://github.com/Microsoft/fast/issues/3801)
+* implicit form-associated submission ([#3861](https://github.com/Microsoft/fast/issues/3861)) ([8342912](https://github.com/Microsoft/fast/commit/8342912802b0cff20b38d16d28ccff49147088fa))
+* move right and move left functionality of radio-group in RTL ([f2735aa](https://github.com/Microsoft/fast/commit/f2735aa2fdb3c9ac71e143fddee84397f045afec))
+* tabs right and left keyboarding in rtl ([#3836](https://github.com/Microsoft/fast/issues/3836)) ([d9ac1b1](https://github.com/Microsoft/fast/commit/d9ac1b13bafbb94a204b58dcc56a02321fbc8fbd))
+
+
+
+
+
+## [1.7.1](https://github.com/Microsoft/fast/compare/@microsoft/fast-foundation@1.7.0...@microsoft/fast-foundation@1.7.1) (2020-08-27)
+
+
+### Bug Fixes
+
+* consistent with min-width, min-height is at least the thumb size add default height ([#3746](https://github.com/Microsoft/fast/issues/3746)) ([b3f9aee](https://github.com/Microsoft/fast/commit/b3f9aee644261ddcdd029fbafed69186db070c77))
+* proxy element causes empty check on slots to fail ([#3779](https://github.com/Microsoft/fast/issues/3779)) ([78787c3](https://github.com/Microsoft/fast/commit/78787c35631edb2b86f985dbfbc68036797f60d0))
+* **docs:** correct typos in readme and spec files ([#3740](https://github.com/Microsoft/fast/issues/3740)) ([9bdb11f](https://github.com/Microsoft/fast/commit/9bdb11f7eab686ab6de32eda352f1a0493ee9545))
+
+
+
+
+
 # [1.7.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-foundation@1.6.0...@microsoft/fast-foundation@1.7.0) (2020-08-13)
 
 

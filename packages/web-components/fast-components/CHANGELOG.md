@@ -3,6 +3,46 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.10.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-components@1.9.0...@microsoft/fast-components@1.10.0) (2020-09-10)
+
+
+### Bug Fixes
+
+* add font-family inherit to controls for button and accordion item ([#3828](https://github.com/Microsoft/fast/issues/3828)) ([58de050](https://github.com/Microsoft/fast/commit/58de0502af0250abc4cf53f7acb031562be3bb89))
+* center the indeterminate indicator inside the checkbox ([#3829](https://github.com/Microsoft/fast/issues/3829)) ([b2361f2](https://github.com/Microsoft/fast/commit/b2361f240be93b2bebb24e00d04b9ca283e4eece)), closes [#3796](https://github.com/Microsoft/fast/issues/3796)
+* density type is a number ([#3841](https://github.com/Microsoft/fast/issues/3841)) ([3ab278c](https://github.com/Microsoft/fast/commit/3ab278cf947d7fc895e8d4a968245799c300972b))
+* mirror the arrow glyph of tree-item for rtl resting and expanded ([#3831](https://github.com/Microsoft/fast/issues/3831)) ([3bf7e1b](https://github.com/Microsoft/fast/commit/3bf7e1b70089a4e916a8c7bfd08b011b76129217))
+* update glyphs to use currentcolor ([#3811](https://github.com/Microsoft/fast/issues/3811)) ([ce86a0d](https://github.com/Microsoft/fast/commit/ce86a0d2b0aa44e493d21e0a80836377703534f9)), closes [#2260](https://github.com/Microsoft/fast/issues/2260)
+* update the padding to start and end slot on tabs to add align self ([#3837](https://github.com/Microsoft/fast/issues/3837)) ([96a58a1](https://github.com/Microsoft/fast/commit/96a58a1cd702ab0a41ded33da82c285f314f7f49))
+* use margin-inline-start to fix mis-aligned thumb on slider in rtl and vertical orientation ([#3830](https://github.com/Microsoft/fast/issues/3830)) ([ff6b262](https://github.com/Microsoft/fast/commit/ff6b262f0cde51b441e1a3368fbeeca4b59885bb))
+
+
+### Features
+
+* add hover state for expand collapse button in tree-item ([#3794](https://github.com/Microsoft/fast/issues/3794)) ([9fe1133](https://github.com/Microsoft/fast/commit/9fe113383eff907af6ca5ebd385d061c5df6be30))
+
+
+
+
+
+# [1.9.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-components@1.8.0...@microsoft/fast-components@1.9.0) (2020-08-27)
+
+
+### Bug Fixes
+
+* add RTL style to Switch and firefox styling issues in Switch, Checkbox, and Radio ([#3778](https://github.com/Microsoft/fast/issues/3778)) ([d75cc25](https://github.com/Microsoft/fast/commit/d75cc25ec5db766f1a0798a8486193fde7d52fb3))
+* consistent with min-width, min-height is at least the thumb size add default height ([#3746](https://github.com/Microsoft/fast/issues/3746)) ([b3f9aee](https://github.com/Microsoft/fast/commit/b3f9aee644261ddcdd029fbafed69186db070c77))
+* **docs:** correct typos in readme and spec files ([#3740](https://github.com/Microsoft/fast/issues/3740)) ([9bdb11f](https://github.com/Microsoft/fast/commit/9bdb11f7eab686ab6de32eda352f1a0493ee9545))
+
+
+### Features
+
+* allow color recipes to accept string color values ([#3749](https://github.com/Microsoft/fast/issues/3749)) ([9348013](https://github.com/Microsoft/fast/commit/934801398c5f9d589f9580fce7e1802fba40db3e))
+
+
+
+
+
 # [1.8.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-components@1.7.0...@microsoft/fast-components@1.8.0) (2020-08-13)
 
 

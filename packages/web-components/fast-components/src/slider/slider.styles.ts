@@ -26,6 +26,7 @@ export const SliderStyles = css`
         --thumb-translate: calc(var(--thumb-size) * 0.5);
         --track-overhang: calc((var(--design-unit) / 2) * -1);
         --track-width: var(--design-unit);
+        --fast-slider-height: calc(var(--thumb-size) * 10);
         align-items: center;
         width: 100%;
         margin: calc(var(--design-unit) * 1px) 0;
@@ -59,7 +60,7 @@ export const SliderStyles = css`
         width: calc(var(--thumb-size) * 1px);
         transition: all 0.2s ease;
         color: ${neutralForegroundRestBehavior.var};
-        fill: ${neutralForegroundRestBehavior.var};
+        fill: currentcolor;
     }
     .thumb-cursor {
         border: none;
@@ -94,8 +95,8 @@ export const SliderStyles = css`
     :host(.vertical) .track {
         top: calc(var(--track-overhang) * 1px);
         bottom: calc(var(--track-overhang) * 1px);
-        margin-left: calc((var(--design-unit) + calc(var(--density) + 2)) * 1px);
         width: calc(var(--track-width) * 1px);
+        margin-inline-start: calc((var(--design-unit) + calc(var(--density) + 2)) * 1px);
         height: 100%;
     }
     .track {
@@ -104,8 +105,8 @@ export const SliderStyles = css`
         border-radius: calc(var(--corner-radius) * 1px);
     }
     :host(.vertical) {
-        height: 100%;
-        min-height: calc(var(--design-unit) * 60px);
+        height: calc(var(--fast-slider-height) * 1px);
+        min-height: calc(var(--thumb-size) * 1px);
         min-width: calc(var(--design-unit) * 20px);
     }
     :host(.disabled) .label,

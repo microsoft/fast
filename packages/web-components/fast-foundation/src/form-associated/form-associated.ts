@@ -83,7 +83,10 @@ declare let ElementInternals: {
 
 interface HTMLElement {
     attachInternals?(): ElementInternals;
+    click(): void;
 }
+
+const proxySlotName = "form-associated-proxy";
 
 /**
  * @alpha
@@ -181,6 +184,12 @@ export abstract class FormAssociated<
     private dirtyValue: boolean = false;
 
     /**
+     * Stores a reference to the slot element that holds the proxy
+     * element when it is appended.
+     */
+    private proxySlot: HTMLSlotElement | void;
+
+    /**
      * The value of the element to be associated with the form.
      */
     @observable
@@ -204,6 +213,7 @@ export abstract class FormAssociated<
         }
 
         this.setFormValue(this.value);
+        this.validate();
     }
 
     /**
@@ -310,12 +320,13 @@ export abstract class FormAssociated<
      * They must be sure to invoke `super.requiredChanged(previous, next)` to ensure
      * proper functioning of `FormAssociated`
      */
-    protected requiredChanged(): void {
+    protected requiredChanged(prev: boolean, next: boolean): void {
         if (this.proxy instanceof HTMLElement) {
             this.proxy.required = this.required;
         }
 
         DOM.queueUpdate(() => this.classList.toggle("required", this.required));
+        this.validate();
     }
 
     /**
@@ -444,8 +455,14 @@ export abstract class FormAssociated<
             if (typeof this.value === "string") {
                 this.proxy.value = this.value;
             }
+
+            this.proxy.setAttribute("slot", proxySlotName);
+
+            this.proxySlot = document.createElement("slot");
+            this.proxySlot.setAttribute("name", proxySlotName);
         }
 
+        this.shadowRoot?.appendChild(this.proxySlot as HTMLSlotElement);
         this.appendChild(this.proxy);
     }
 
@@ -454,6 +471,17 @@ export abstract class FormAssociated<
      */
     protected detachProxy() {
         this.removeChild(this.proxy);
+        this.shadowRoot?.removeChild(this.proxySlot as HTMLSlotElement);
+    }
+
+    /**
+     * Sets the validity of the custom element. By default this uses the proxy element to determine
+     * validity, but this can be extended or replaced in implementation.
+     */
+    protected validate() {
+        if (this.proxy instanceof HTMLElement) {
+            this.setValidity(this.proxy.validity, this.proxy.validationMessage);
+        }
     }
 
     /**
@@ -474,10 +502,12 @@ export abstract class FormAssociated<
         switch (e.keyCode) {
             case keyCodeEnter:
                 if (this.form instanceof HTMLFormElement) {
-                    // Match native behavior
-                    this.form.submit();
+                    // Implicit submission
+                    const defaultButton = this.form.querySelector(
+                        "[type=submit]"
+                    ) as HTMLElement | null;
+                    defaultButton?.click();
                 }
-
                 break;
         }
     }

@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.10.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling@0.9.1...@microsoft/fast-tooling@0.10.0) (2020-09-10)
+
+
+### Features
+
+* add a shortcut utility ([#3814](https://github.com/Microsoft/fast/issues/3814)) ([8b44da4](https://github.com/Microsoft/fast/commit/8b44da42e82ac98eb7d1fcb59781c40c527c6526)), closes [#3781](https://github.com/Microsoft/fast/issues/3781)
+
+
+
+
+
+## [0.9.1](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling@0.9.0...@microsoft/fast-tooling@0.9.1) (2020-08-27)
+
+**Note:** Version bump only for package @microsoft/fast-tooling
+
+
+
+
+
 # [0.9.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling@0.8.0...@microsoft/fast-tooling@0.9.0) (2020-08-13)
 
 

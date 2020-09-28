@@ -6,6 +6,11 @@ module.exports = {
         },
         {
             type: "category",
+            label: "Tutorials",
+            items: ["tutorials/site-rebrand"],
+        },
+        {
+            type: "category",
             label: "Using FAST Components",
             items: [
                 "components/getting-started",
@@ -19,7 +24,6 @@ module.exports = {
                         "components/button",
                         "components/card",
                         "components/checkbox",
-                        "components/design-system-provider",
                         "components/dialog",
                         "components/divider",
                         "components/flipper",
@@ -35,6 +39,7 @@ module.exports = {
                         "components/tabs",
                         "components/text-area",
                         "components/text-field",
+                        "components/tooltip",
                         "components/tree-view",
                     ],
                 },
@@ -43,9 +48,6 @@ module.exports = {
                     label: "Design",
                     items: [
                         "design/introduction",
-                        "design/design-system",
-                        "design/type-ramp",
-                        "design/color",
                         "design/localization",
                         "design/match-media-stylesheets",
                     ],
@@ -64,6 +66,16 @@ module.exports = {
                 "fast-element/working-with-shadow-dom",
                 "fast-element/leveraging-css",
                 "fast-element/next-steps",
+            ],
+        },
+        {
+            type: "category",
+            label: "Design Systems",
+            items: [
+                "design-systems/overview",
+                "design-systems/fast-frame",
+                "design-systems/using-the-design-system",
+                "design-systems/creating-a-design-system",
             ],
         },
         {

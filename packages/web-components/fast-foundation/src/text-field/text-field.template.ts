@@ -8,7 +8,6 @@ import { TextField } from "./text-field";
  */
 export const TextFieldTemplate = html<TextField>`
     <template
-        tabindex="${x => (x.disabled ? null : 0)}"
         class="
             ${x => (x.readOnly ? "readonly" : "")}
         "
@@ -32,10 +31,17 @@ export const TextFieldTemplate = html<TextField>`
                 @keypress="${(x, c) => x.keypressHandler(c.event as KeyboardEvent)}"
                 @input="${x => x.handleTextInput()}"
                 @change="${x => x.handleChange()}"
-                placeholder="${x => x.placeholder}"
-                ?required="${x => x.required}"
+                ?autofocus="${x => x.autofocus}"
                 ?disabled="${x => x.disabled}"
+                list="${x => x.list}"
+                maxlength="${x => x.maxlength}"
+                minlength="${x => x.minlength}"
+                pattern="${x => x.pattern}"
+                placeholder="${x => x.placeholder}"
                 ?readonly="${x => x.readOnly}"
+                ?required="${x => x.required}"
+                size="${x => x.size}"
+                ?spellcheck="${x => x.spellcheck}"
                 :value="${x => x.value}"
                 type="${x => x.type}"
                 aria-atomic="${x => x.ariaAtomic}"

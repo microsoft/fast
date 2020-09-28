@@ -1,5 +1,6 @@
 import { css } from "@microsoft/fast-element";
 import {
+    DirectionalStyleSheetBehavior,
     disabledCursor,
     display,
     focusVisible,
@@ -62,13 +63,20 @@ export const SwitchStyles = css`
         border: calc(var(--outline-width) * 1px) solid ${neutralOutlineRestBehavior.var};
     }
 
-    :host(:enabled) .switch:hover {
+    .switch:hover {
         background: ${neutralFillInputHoverBehavior.var};
         border-color: ${neutralOutlineHoverBehavior.var};
         cursor: pointer;
     }
 
-    :host(:enabled) .switch:active {
+    host([disabled]) .switch:hover,
+    host([readonly]) .switch:hover {
+        background: ${neutralFillInputHoverBehavior.var};
+        border-color: ${neutralOutlineHoverBehavior.var};
+        cursor: ${disabledCursor};
+    }
+
+    :host(:not([disabled])) .switch:active {
         background: ${neutralFillInputActiveBehavior.var};
         border-color: ${neutralOutlineActiveBehavior.var};
     }
@@ -83,8 +91,6 @@ export const SwitchStyles = css`
     .checked-indicator {
         position: absolute;
         top: 5px;
-        left: 5px;
-        right: calc(((${heightNumber} / 2) + 1) * 1px);
         bottom: 5px;
         background: ${neutralForegroundRestBehavior.var};
         border-radius: calc(var(--corner-radius) * 1px);
@@ -98,6 +104,11 @@ export const SwitchStyles = css`
         line-height: var(--type-ramp-base-line-height);
     }
 
+    :host([disabled]) .status-message,
+    :host([readonly]) .status-message {
+        cursor: ${disabledCursor};
+    }
+
     .label {
         color: ${neutralForegroundRestBehavior.var};
 
@@ -106,6 +117,7 @@ export const SwitchStyles = css`
         } margin-inline-end: calc(var(--design-unit) * 2px + 2px);
         font-size: var(--type-ramp-base-font-size);
         line-height: var(--type-ramp-base-line-height);
+        cursor: pointer;
     }
 
     .label__hidden {
@@ -120,8 +132,6 @@ export const SwitchStyles = css`
     }
 
     :host(.checked) .checked-indicator {
-        left: calc(((${heightNumber} / 2) + 1) * 1px);
-        right: 5px;
         background: ${accentForegroundCutRestBehavior.var};
     }
 
@@ -130,17 +140,17 @@ export const SwitchStyles = css`
         border-color: ${accentFillRestBehavior.var};
     }
 
-    :host(.checked:enabled) .switch:hover {
+    :host(.checked:not([disabled])) .switch:hover {
         background: ${accentFillHoverBehavior.var};
         border-color: ${accentFillHoverBehavior.var};
     }
 
-    :host(.checked:enabled) .switch:active {
+    :host(.checked:not([disabled])) .switch:active {
         background: ${accentFillActiveBehavior.var};
         border-color: ${accentFillActiveBehavior.var};
     }
 
-    :host(.checked:${focusVisible}:enabled) .switch {
+    :host(.checked:${focusVisible}:not([disabled])) .switch {
         box-shadow: 0 0 0 2px var(--background-color), 0 0 0 4px ${
             neutralFocusBehavior.var
         };
@@ -178,7 +188,7 @@ export const SwitchStyles = css`
     forcedColorsStylesheetBehavior(
         css`
             .checked-indicator,
-            :host(:enabled) .switch:active .checked-indicator {
+            :host(:not([disabled])) .switch:active .checked-indicator {
                 forced-color-adjust: none;
                 background: ${SystemColors.FieldText};
             }
@@ -187,7 +197,7 @@ export const SwitchStyles = css`
                 background: ${SystemColors.Field};
                 border-color: ${SystemColors.FieldText};
             }
-            :host(:enabled) .switch:hover {
+            :host(:not([disabled])) .switch:hover {
                 background: ${SystemColors.HighlightText};
                 border-color: ${SystemColors.Highlight};
             }
@@ -195,15 +205,15 @@ export const SwitchStyles = css`
                 background: ${SystemColors.Highlight};
                 border-color: ${SystemColors.Highlight};
             }
-            :host(.checked:enabled) .switch:hover,
-            :host(:enabled) .switch:active {
+            :host(.checked:not([disabled])) .switch:hover,
+            :host(:not([disabled])) .switch:active {
                 background: ${SystemColors.HighlightText};
                 border-color: ${SystemColors.Highlight};
             }
             :host(.checked) .checked-indicator {
                 background: ${SystemColors.HighlightText};
             }
-            :host(.checked:enabled) .switch:hover .checked-indicator {
+            :host(.checked:not([disabled])) .switch:hover .checked-indicator {
                 background: ${SystemColors.Highlight};
             }
             :host(.disabled) {
@@ -213,7 +223,7 @@ export const SwitchStyles = css`
                 border-color: ${SystemColors.Highlight};
                 box-shadow: 0 0 0 2px ${SystemColors.Field}, 0 0 0 4px ${SystemColors.FieldText};
             }
-            :host(.checked:${focusVisible}:enabled) .switch {
+            :host(.checked:${focusVisible}:not([disabled])) .switch {
                 box-shadow: 0 0 0 2px ${SystemColors.Field}, 0 0 0 4px ${SystemColors.FieldText};
             }
             :host(.disabled) .checked-indicator {
@@ -222,6 +232,30 @@ export const SwitchStyles = css`
             :host(.disabled) .switch {
                 background: ${SystemColors.Field};
                 border-color: ${SystemColors.GrayText};
+            }
+        `
+    ),
+    new DirectionalStyleSheetBehavior(
+        css`
+            .checked-indicator {
+                left: 5px;
+                right: calc(((${heightNumber} / 2) + 1) * 1px);
+            }
+
+            :host(.checked) .checked-indicator {
+                left: calc(((${heightNumber} / 2) + 1) * 1px);
+                right: 5px;
+            }
+        `,
+        css`
+            .checked-indicator {
+                right: 5px;
+                left: calc(((${heightNumber} / 2) + 1) * 1px);
+            }
+
+            :host(.checked) .checked-indicator {
+                right: calc(((${heightNumber} / 2) + 1) * 1px);
+                left: 5px;
             }
         `
     )

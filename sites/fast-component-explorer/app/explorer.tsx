@@ -1,5 +1,5 @@
 import { camelCase, get } from "lodash-es";
-import { Container, Pane, Row, RowResizeDirection } from "@microsoft/fast-layouts-react";
+import rafThrottle from "raf-throttle";
 import {
     ModularForm,
     ModularViewer,
@@ -30,7 +30,7 @@ import {
     SelectOption,
     Typography,
 } from "@microsoft/fast-components-react-msft";
-import { Direction } from "@microsoft/fast-web-utilities";
+import { classNames, Direction } from "@microsoft/fast-web-utilities";
 import {
     AjvMapper,
     CustomMessageIncomingOutgoing,
@@ -38,6 +38,11 @@ import {
     MessageSystem,
     MessageSystemType,
 } from "@microsoft/fast-tooling";
+import { MonacoAdaptor } from "@microsoft/fast-tooling/dist/data-utilities/monaco-adaptor";
+import {
+    MonacoAdaptorAction,
+    MonacoAdaptorActionCallbackConfig,
+} from "@microsoft/fast-tooling/dist/data-utilities/monaco-adaptor-action";
 import { mapDataDictionaryToMonacoEditorHTML } from "@microsoft/fast-tooling/dist/data-utilities/monaco";
 import FASTMessageSystemWorker from "@microsoft/fast-tooling/dist/message-system.min.js";
 import {
@@ -49,6 +54,7 @@ import {
     upChevron,
 } from "@microsoft/site-utilities";
 import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
+import { html_beautify } from "vscode-html-languageservice/lib/esm/beautify/beautify-html";
 import { ComponentViewConfig, Scenario } from "./fast-components/configs/data.props";
 import * as componentConfigs from "./fast-components/configs";
 import { history, menu, schemaDictionary } from "./config";
@@ -60,41 +66,13 @@ import {
     ExplorerUnhandledProps,
 } from "./explorer.props";
 import { previewReady } from "./preview";
+import { Footer } from "./site-footer";
 /* eslint-disable-next-line @typescript-eslint/no-var-requires */
 const FASTInlineLogo = require("@microsoft/site-utilities/statics/assets/fast-inline-logo.svg");
 export const previewBackgroundTransparency: string = "PREVIEW::TRANSPARENCY";
 export const previewDirection: string = "PREVIEW::DIRECTION";
 export const previewTheme: string = "PREVIEW::THEME";
 let componentLinkedDataId: string = "root";
-
-interface ObjectOfComponentViewConfigs {
-    [key: string]: ComponentViewConfig;
-}
-
-// Prepends the custom scenario to each components list fo scenarios
-function setViewConfigsWithCustomConfig(
-    viewConfigs: ObjectOfComponentViewConfigs
-): ObjectOfComponentViewConfigs {
-    const componentViewConfigs: ObjectOfComponentViewConfigs = {};
-
-    Object.keys(viewConfigs).forEach((viewConfigKey: string): void => {
-        componentViewConfigs[viewConfigKey] = Object.assign(
-            {},
-            viewConfigs[viewConfigKey],
-            {
-                scenarios: [
-                    {
-                        displayName: "Custom",
-                        dataDictionary:
-                            viewConfigs[viewConfigKey].scenarios[0].dataDictionary,
-                    },
-                ].concat(viewConfigs[viewConfigKey].scenarios),
-            }
-        );
-    });
-
-    return componentViewConfigs;
-}
 
 const fastMessageSystemWorker = new FASTMessageSystemWorker();
 let fastMessageSystem: MessageSystem;
@@ -112,8 +90,15 @@ class Explorer extends Foundation<
 
     private viewerContainerRef: React.RefObject<HTMLDivElement> = React.createRef();
     private viewerContentAreaPadding: number = 20;
+    private maxViewerHeight: number = 0;
+    private maxViewerWidth: number = 0;
+    private windowResizing: number;
     private editor: monaco.editor.IStandaloneCodeEditor;
     private editorContainerRef: React.RefObject<HTMLDivElement> = React.createRef();
+    private adaptor: MonacoAdaptor;
+    private monacoValue: string[];
+    private monacoEditorModel: monaco.editor.ITextModel;
+    private firstRun: boolean = true;
 
     constructor(props: ExplorerProps) {
         super(props);
@@ -123,10 +108,10 @@ class Explorer extends Foundation<
             locationPathname
         );
         const componentConfig: any = get(
-            setViewConfigsWithCustomConfig(componentConfigs),
+            componentConfigs,
             `${camelCase(componentName)}Config`
         );
-        const selectedScenarioIndex: number = 1;
+        const selectedScenarioIndex: number = 0;
 
         if ((window as any).Worker) {
             fastMessageSystem = new MessageSystem({
@@ -140,23 +125,48 @@ class Explorer extends Foundation<
             });
         }
 
-        window.onpopstate = this.handlePopState;
+        window.onpopstate = this.handleWindowPopState;
+        window.onresize = rafThrottle(this.handleWindowResize);
+
+        this.monacoValue = [];
+
+        this.adaptor = new MonacoAdaptor({
+            messageSystem: fastMessageSystem,
+            actions: [
+                new MonacoAdaptorAction({
+                    id: "monaco.setValue",
+                    action: (config: MonacoAdaptorActionCallbackConfig): void => {
+                        // trigger an update to the monaco value that
+                        // also updates the DataDictionary which fires a
+                        // postMessage to the MessageSystem
+                        config.updateMonacoModelValue(this.monacoValue);
+                    },
+                }),
+            ],
+        });
 
         monaco.editor.onDidCreateModel((listener: monaco.editor.ITextModel) => {
-            (monaco.editor.getModel(
+            this.monacoEditorModel = monaco.editor.getModel(
                 listener.uri
-            ) as monaco.editor.ITextModel).onDidChangeContent(
-                (event: monaco.editor.IModelContentChangedEvent) => {
-                    this.editor
-                        .getAction("editor.action.formatDocument")
-                        .run()
-                        .then((value: void) => {
-                            if (event.changes.length > 1) {
-                                this.editor.updateOptions({
-                                    readOnly: true,
-                                });
-                            }
-                        });
+            ) as monaco.editor.ITextModel;
+
+            this.monacoEditorModel.onDidChangeContent(
+                (e: monaco.editor.IModelContentChangedEvent) => {
+                    /**
+                     * Sets the value to be used by monaco
+                     */
+                    if (this.state.previewReady) {
+                        const modelValue = this.monacoEditorModel.getValue();
+                        this.monacoValue = Array.isArray(modelValue)
+                            ? modelValue
+                            : [modelValue];
+
+                        if (!this.firstRun) {
+                            this.adaptor.action("monaco.setValue").run();
+                        }
+
+                        this.firstRun = false;
+                    }
                 }
             );
         });
@@ -175,6 +185,9 @@ class Explorer extends Foundation<
             previewReady: false,
             activeDictionaryId: componentLinkedDataId,
             dataDictionary: this.getScenarioData(componentConfig, selectedScenarioIndex),
+            activePivotTab: "code",
+            mobileFormVisible: false,
+            mobileNavigationVisible: false,
         };
     }
 
@@ -189,181 +202,203 @@ class Explorer extends Foundation<
         }
 
         return (
-            <Background value={neutralLayerL1}>
-                <Container>
-                    <Row style={{ flex: "1" }}>
-                        <Pane width={260}>
+            <div className={this.getContainerClassNames()}>
+                <div className={"pane pane__start"}>
+                    <Logo
+                        className={"logo"}
+                        logo={FASTInlineLogo}
+                        title={"Component Explorer"}
+                    />
+                    <NavigationMenu
+                        className={"navigation"}
+                        menu={menu}
+                        expanded={true}
+                        activeLocation={this.state.locationPathname}
+                        onLocationUpdate={this.handleUpdateRoute}
+                    />
+                </div>
+                <div className={"canvas"}>
+                    <div
+                        className={classNames("canvas-overlay", [
+                            "canvas-overlay__active",
+                            this.state.mobileFormVisible ||
+                                this.state.mobileNavigationVisible,
+                        ])}
+                        onClick={this.handleCanvasOverlayTrigger}
+                    ></div>
+                    <div className={"menu-bar"}>
+                        <Background
+                            value={neutralLayerL2}
+                            drawBackground={true}
+                            className="mobile-menu-bar"
+                        >
+                            {this.renderMobileNavigationTrigger()}
                             <Logo
-                                backgroundColor={"#181818"}
+                                backgroundColor={neutralLayerL2}
                                 logo={FASTInlineLogo}
-                                title={"Component Explorer"}
                             />
-                            <NavigationMenu
-                                menu={menu}
-                                expanded={true}
-                                activeLocation={this.state.locationPathname}
-                                onLocationUpdate={this.handleUpdateRoute}
-                            />
-                        </Pane>
+                            {this.renderMobileFormTrigger()}
+                        </Background>
+                        <Background
+                            value={neutralLayerL2}
+                            drawBackground={true}
+                            className={"canvas-menu-bar"}
+                        >
+                            <div className={"menu-item-region"}>
+                                {this.renderScenarioSelect()}
+                            </div>
+                            <div className={"menu-item-region"}>
+                                <TransparencyToggle
+                                    id={"transparency-toggle"}
+                                    transparency={this.state.transparentBackground}
+                                    onUpdateTransparency={this.handleUpdateTransparency}
+                                    disabled={!this.state.previewReady}
+                                />
+                                <DirectionSwitch
+                                    id={"direction-switch"}
+                                    direction={this.state.direction}
+                                    onUpdateDirection={this.handleUpdateDirection}
+                                    disabled={!this.state.previewReady}
+                                />
+                                <ThemeSelector
+                                    id={"theme-selector"}
+                                    theme={this.state.theme}
+                                    onUpdateTheme={this.handleUpdateTheme}
+                                    disabled={!this.state.previewReady}
+                                />
+                            </div>
+                        </Background>
+                    </div>
+                    <div
+                        className={classNames("canvas-content", [
+                            "canvas-content__dev-tools-hidden",
+                            !this.state.devToolsVisible,
+                        ])}
+                    >
                         <div
+                            ref={this.viewerContainerRef}
+                            className={"preview"}
                             style={{
-                                display: "flex",
-                                flex: 1,
-                                flexDirection: "column",
+                                padding: `${this.viewerContentAreaPadding}px`,
                             }}
                         >
-                            <Row style={{ overflow: "visible", zIndex: 1 }} height={46}>
-                                <Background
-                                    value={neutralLayerL2}
-                                    drawBackground={true}
-                                    style={{
-                                        width: "100%",
-                                        display: "flex",
-                                        alignItems: "center",
-                                        justifyContent: "space-between",
-                                        padding: "0 8px",
-                                    }}
-                                >
-                                    {this.renderScenarioSelect()}
-                                    <div style={{ display: "flex" }}>
-                                        <TransparencyToggle
-                                            id={"transparency-toggle"}
-                                            transparency={
-                                                this.state.transparentBackground
-                                            }
-                                            onUpdateTransparency={
-                                                this.handleUpdateTransparency
-                                            }
-                                            disabled={!this.state.previewReady}
-                                        />
-                                        <DirectionSwitch
-                                            id={"direction-switch"}
-                                            direction={this.state.direction}
-                                            onUpdateDirection={this.handleUpdateDirection}
-                                            disabled={!this.state.previewReady}
-                                        />
-                                        <ThemeSelector
-                                            id={"theme-selector"}
-                                            theme={this.state.theme}
-                                            onUpdateTheme={this.handleUpdateTheme}
-                                            disabled={!this.state.previewReady}
-                                        />
-                                    </div>
-                                </Background>
-                            </Row>
-                            <Row fill={true}>
-                                <div
-                                    ref={this.viewerContainerRef}
-                                    style={{
-                                        padding: `${this.viewerContentAreaPadding}px`,
-                                        width: "100%",
-                                        height: "100%",
-                                    }}
-                                >
-                                    <ModularViewer
-                                        iframeSrc={"/preview"}
-                                        width={this.state.width}
-                                        height={this.state.height}
-                                        onUpdateHeight={this.handleUpdateHeight}
-                                        onUpdateWidth={this.handleUpdateWidth}
-                                        responsive={true}
-                                        messageSystem={fastMessageSystem as MessageSystem}
-                                    />
-                                </div>
-                            </Row>
-                            <Row
-                                resizable={true}
-                                resizeFrom={RowResizeDirection.north}
-                                initialHeight={400}
-                                collapsedHeight={36}
-                                collapsed={!this.state.devToolsVisible}
-                            >
-                                <Background
-                                    value={neutralLayerL1}
-                                    style={{
-                                        width: "100%",
-                                        height: "100%",
-                                    }}
-                                >
-                                    <div
-                                        style={{
-                                            marginTop: "12px",
-                                            position: "relative",
-                                            height: "100%",
-                                        }}
-                                    >
-                                        <Pivot
-                                            label={"documentation"}
-                                            items={this.renderPivotItems()}
-                                            jssStyleSheet={pivotStyleSheetOverrides}
-                                        />
-                                        <ActionToggle
-                                            appearance={ActionToggleAppearance.stealth}
-                                            selectedLabel={"Development tools expanded"}
-                                            selectedGlyph={downChevron}
-                                            unselectedLabel={
-                                                "Development tools collapsed"
-                                            }
-                                            unselectedGlyph={upChevron}
-                                            selected={this.state.devToolsVisible}
-                                            onToggle={this.handleDevToolsToggle}
-                                            style={{
-                                                position: "absolute",
-                                                top: 0,
-                                                right: 0,
-                                            }}
-                                        />
-                                    </div>
-                                </Background>
-                            </Row>
+                            <ModularViewer
+                                iframeSrc={"/preview"}
+                                width={this.state.width}
+                                height={this.state.height}
+                                onUpdateHeight={this.handleUpdateHeight}
+                                onUpdateWidth={this.handleUpdateWidth}
+                                responsive={true}
+                                messageSystem={fastMessageSystem as MessageSystem}
+                            />
                         </div>
-                        <Pane>
-                            <ModularForm messageSystem={fastMessageSystem} />
-                        </Pane>
-                    </Row>
-                </Container>
-            </Background>
+                        <Background value={neutralLayerL1} className={"dev-tools"}>
+                            <Pivot
+                                label={"documentation"}
+                                items={this.renderPivotItems()}
+                                jssStyleSheet={pivotStyleSheetOverrides}
+                                onUpdate={this.handlePivotUpdate}
+                            />
+                            <ActionToggle
+                                appearance={ActionToggleAppearance.stealth}
+                                selectedLabel={"Development tools expanded"}
+                                selectedGlyph={downChevron}
+                                unselectedLabel={"Development tools collapsed"}
+                                unselectedGlyph={upChevron}
+                                selected={this.state.devToolsVisible}
+                                onToggle={this.handleDevToolsToggle}
+                                className={"dev-tools-trigger"}
+                            />
+                        </Background>
+                    </div>
+                </div>
+                <div className={"pane pane__end"}>
+                    <ModularForm messageSystem={fastMessageSystem} />
+                </div>
+                <Footer />
+            </div>
         );
     }
 
     public componentDidMount(): void {
         this.setViewerToFullSize();
+        this.createMonacoEditor();
+    }
 
-        if (this.editorContainerRef.current) {
-            this.editor = monaco.editor.create(this.editorContainerRef.current, {
-                value: "",
-                language: "html",
-                formatOnType: true,
-                formatOnPaste: true,
-                lineNumbers: "off",
-                theme: "vs-dark",
-                wordWrap: "on",
-                wordWrapColumn: 80,
-                wordWrapMinified: true,
-                automaticLayout: true,
-                wrappingIndent: "same",
-                minimap: {
-                    showSlider: "mouseover",
-                },
-                readOnly: true,
-            });
-        }
+    private getContainerClassNames(): string {
+        return classNames(
+            "container",
+            ["container__form-visible", this.state.mobileFormVisible],
+            ["container__navigation-visible", this.state.mobileNavigationVisible]
+        );
     }
 
     private updateEditorContent(dataDictionary: DataDictionary<unknown>): void {
         if (this.editor) {
-            this.editor.updateOptions({
-                readOnly: false,
-            });
             this.editor.setValue(
-                mapDataDictionaryToMonacoEditorHTML(dataDictionary, schemaDictionary)
+                html_beautify(
+                    mapDataDictionaryToMonacoEditorHTML(dataDictionary, schemaDictionary)
+                )
             );
         }
     }
 
-    private handlePopState = (): void => {
+    private handleCanvasOverlayTrigger = (): void => {
+        this.setState({
+            mobileFormVisible: false,
+            mobileNavigationVisible: false,
+        });
+    };
+
+    private handleWindowPopState = (): void => {
         if (window.location.pathname !== this.state.locationPathname) {
             this.handleUpdateRoute(window.location.pathname);
+        }
+    };
+
+    private handleWindowResize = (): void => {
+        if (this.editorContainerRef.current) {
+            if (this.windowResizing) {
+                clearTimeout(this.windowResizing);
+            }
+
+            this.windowResizing = window.setTimeout(() => {
+                this.setState({
+                    width: 0,
+                    height: 0,
+                });
+
+                this.setViewerToFullSize();
+
+                if (this.state.activePivotTab === "code") {
+                    this.createMonacoEditor();
+                }
+            });
+        }
+    };
+
+    private createMonacoEditor = (): void => {
+        if (this.editorContainerRef.current) {
+            if (this.editor && this.state.activePivotTab === "code") {
+                this.editor.layout();
+            } else if (!this.editor) {
+                this.editor = monaco.editor.create(this.editorContainerRef.current, {
+                    value: "",
+                    language: "html",
+                    formatOnPaste: true,
+                    lineNumbers: "off",
+                    theme: "vs-dark",
+                    wordWrap: "on",
+                    wordWrapColumn: 80,
+                    wordWrapMinified: true,
+                    wrappingIndent: "same",
+                    minimap: {
+                        showSlider: "mouseover",
+                    },
+                });
+
+                this.updateEditorContent(this.state.dataDictionary);
+            }
         }
     };
 
@@ -394,7 +429,10 @@ class Explorer extends Foundation<
             e.data.type === MessageSystemType.initialize
         ) {
             updatedState.dataDictionary = e.data.dataDictionary;
-            this.updateEditorContent(this.state.dataDictionary);
+
+            if (!e.data.options || e.data.options.from !== "monaco-adaptor") {
+                this.updateEditorContent(e.data.dataDictionary);
+            }
         }
 
         this.setState(updatedState as ExplorerState);
@@ -410,16 +448,73 @@ class Explorer extends Foundation<
             );
 
             if (viewerNode instanceof Element) {
-                const height: number =
-                    viewerNode.clientHeight - this.viewerContentAreaPadding * 2;
-                const width: number =
+                // 24 is height of view label
+                this.maxViewerHeight =
+                    viewerNode.clientHeight - this.viewerContentAreaPadding * 2 - 24;
+                this.maxViewerWidth =
                     viewerNode.clientWidth - this.viewerContentAreaPadding * 2;
+
                 this.setState({
-                    width,
-                    height: height - 24, // 24 is height of view label
+                    width: this.maxViewerWidth,
+                    height: this.maxViewerHeight,
                 });
             }
         }
+    }
+
+    private handleMobileNavigationTrigger = (): void => {
+        this.setState({
+            mobileNavigationVisible: true,
+        });
+    };
+
+    private handleMobileFormTrigger = (): void => {
+        this.setState({
+            mobileFormVisible: true,
+        });
+    };
+
+    private renderMobileNavigationTrigger(): React.ReactNode {
+        return (
+            <button
+                className={"mobile-pane-trigger"}
+                onClick={this.handleMobileNavigationTrigger}
+            >
+                <svg
+                    width="16"
+                    height="15"
+                    viewBox="0 0 16 15"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                >
+                    <rect width="16" height="1" rx="0.5" fill="white" />
+                    <rect y="7" width="16" height="1" rx="0.5" fill="white" />
+                    <rect y="14" width="16" height="1" rx="0.5" fill="white" />
+                </svg>
+            </button>
+        );
+    }
+
+    private renderMobileFormTrigger(): React.ReactNode {
+        return (
+            <button
+                className={"mobile-pane-trigger"}
+                onClick={this.handleMobileFormTrigger}
+            >
+                <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 18 18"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                >
+                    <path
+                        d="M16.5253 1.47498C17.6898 2.63953 17.6898 4.52764 16.5253 5.69219L6.55167 15.6658C6.32095 15.8965 6.034 16.0631 5.71919 16.1489L1.45612 17.3116C0.989558 17.4388 0.56145 17.0107 0.688694 16.5441L1.85135 12.2811C1.93721 11.9663 2.10373 11.6793 2.33446 11.4486L12.3081 1.47498C13.4726 0.310424 15.3607 0.310424 16.5253 1.47498ZM11.5001 4.05073L3.21834 12.3325C3.14143 12.4094 3.08592 12.505 3.05731 12.61L2.18243 15.8178L5.3903 14.943C5.49523 14.9143 5.59088 14.8588 5.66779 14.7819L13.9493 6.4999L11.5001 4.05073ZM13.1919 2.35886L12.3835 3.16656L14.8326 5.61656L15.6414 4.80831C16.3178 4.13191 16.3178 3.03526 15.6414 2.35886C14.965 1.68246 13.8683 1.68246 13.1919 2.35886Z"
+                        fill="white"
+                    />
+                </svg>
+            </button>
+        );
     }
 
     private renderPivotItems(): TabsItem[] {
@@ -430,6 +525,7 @@ class Explorer extends Foundation<
                         <Typography
                             className={className}
                             size={TypographySize._8}
+                            id={"code"}
                             onClick={this.handleDevToolsTabTriggerClick}
                         >
                             Code
@@ -441,7 +537,7 @@ class Explorer extends Foundation<
                         <div
                             ref={this.editorContainerRef}
                             className={className}
-                            style={{ height: "340px" }}
+                            style={{ height: "100%" }}
                         />
                     );
                 },
@@ -535,9 +631,7 @@ class Explorer extends Foundation<
 
     private renderScenarioSelect(): React.ReactNode {
         const scenarioOptions: Array<Scenario> = get(
-            setViewConfigsWithCustomConfig(componentConfigs)[
-                `${camelCase(this.state.componentName)}Config`
-            ],
+            componentConfigs[`${camelCase(this.state.componentName)}Config`],
             "scenarios"
         );
 
@@ -545,7 +639,7 @@ class Explorer extends Foundation<
             return (
                 <Select
                     onValueChange={this.handleUpdateScenario}
-                    defaultSelection={[scenarioOptions[1].displayName]}
+                    defaultSelection={[scenarioOptions[0].displayName]}
                     selectedItems={[
                         scenarioOptions[this.state.selectedScenarioIndex].displayName,
                     ]}
@@ -635,7 +729,7 @@ class Explorer extends Foundation<
                 if ((window as any).Worker && fastMessageSystem) {
                     fastMessageSystem.postMessage({
                         type: MessageSystemType.initialize,
-                        data: this.getScenarioData(
+                        dataDictionary: this.getScenarioData(
                             this.state.componentConfig,
                             selectedScenarioIndex
                         ),
@@ -647,28 +741,33 @@ class Explorer extends Foundation<
     };
 
     private handleUpdateHeight = (updatedHeight: number): void => {
+        const maxViewerHeight = this.state.devToolsVisible
+            ? this.maxViewerHeight
+            : this.maxViewerHeight * 2;
+
         this.setState({
-            height: updatedHeight,
+            height: updatedHeight > maxViewerHeight ? maxViewerHeight : updatedHeight,
         });
     };
 
     private handleUpdateWidth = (updatedWidth: number): void => {
         this.setState({
-            width: updatedWidth,
+            width:
+                updatedWidth > this.maxViewerWidth ? this.maxViewerWidth : updatedWidth,
         });
     };
 
     private handleUpdateRoute = (route: string): void => {
         const componentName: string = this.getComponentNameSpinalCaseByPath(route);
         const componentConfig: any = get(
-            setViewConfigsWithCustomConfig(componentConfigs),
+            componentConfigs,
             `${camelCase(componentName)}Config`
         );
 
         if ((window as any).Worker && fastMessageSystem) {
             fastMessageSystem.postMessage({
                 type: MessageSystemType.initialize,
-                dataDictionary: this.getScenarioData(componentConfig, 1),
+                dataDictionary: this.getScenarioData(componentConfig, 0),
                 schemaDictionary,
             });
         }
@@ -678,7 +777,7 @@ class Explorer extends Foundation<
                 locationPathname: route,
                 componentName,
                 componentConfig,
-                selectedScenarioIndex: 1,
+                selectedScenarioIndex: 0,
             },
             () => {
                 history.push(route);
@@ -706,6 +805,18 @@ class Explorer extends Foundation<
         this.setState({
             devToolsVisible: !props.selected,
         });
+    };
+
+    private handlePivotUpdate = (activeTab: string): void => {
+        this.setState({
+            activePivotTab: activeTab,
+        });
+
+        if (activeTab === "code") {
+            window.setTimeout(() => {
+                this.createMonacoEditor();
+            });
+        }
     };
 
     /* eslint-disable-next-line @typescript-eslint/no-unused-vars */

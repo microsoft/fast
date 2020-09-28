@@ -12,7 +12,7 @@ export const TreeViewTemplate = html<TreeView>`
         ${ref("treeView")}
         @keydown="${(x, c) => x.handleKeyDown(c.event as KeyboardEvent)}"
         @focus="${(x, c) => x.handleFocus(c.event as FocusEvent)}"
-        @blur="${(x, c) => x.handleBlur(c.event as FocusEvent)}"
+        @focusout="${(x, c) => x.handleBlur(c.event as FocusEvent)}"
     >
         <slot ${slotted("slottedTreeItems")}></slot>
     </template>

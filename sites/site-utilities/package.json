@@ -1,14 +1,16 @@
 {
   "name": "@microsoft/site-utilities",
-  "version": "0.4.3",
+  "version": "0.4.5",
   "description": "Utilities for the Creator and Component Explorer sites",
   "sideEffects": false,
   "private": true,
   "scripts": {
     "build": "tsc -p ./tsconfig.json",
     "clean:dist": "node ../../build/clean.js dist",
+    "generate:badges": "node ./build/badges.js",
     "generate:icons": "node ./build/icons.js",
-    "prepare": "yarn clean:dist && yarn build",
+    "generate:all": "yarn generate:badges && yarn generate:icons",
+    "prepare": "yarn clean:dist && yarn generate:badges && yarn build",
     "prettier": "prettier --config ../../.prettierrc --write \"**/*.{ts,tsx}\"",
     "prettier:diff": "prettier --config ../../.prettierrc \"**/*.{ts,tsx}\" --list-different",
     "test": "yarn eslint && yarn build",
@@ -34,9 +36,11 @@
     "babel-core": "^7.0.0-bridge.0",
     "babel-jest": "^25.4.0",
     "babel-loader": "^8.0.6",
+    "badge-maker": "^3.2.0",
     "csstype": "^2.5.8",
     "eslint-config-prettier": "6.10.1",
     "favicons": "^6.1.0",
+    "fs-extra": "^9.0.1",
     "jest": "^25.4.0",
     "jss": "^9.8.7",
     "jss-preset-default": "^4.5.0",
@@ -44,15 +48,16 @@
     "prettier": "^1.15.3",
     "raf-throttle": "^2.0.3",
     "react": "^16.8.0",
+    "rimraf": "^3.0.2",
     "ts-jest": "^25.4.0",
     "typescript": "^3.9.0"
   },
   "dependencies": {
-    "@microsoft/fast-components": "^1.8.0",
+    "@microsoft/fast-components": "^1.10.0",
     "@microsoft/fast-components-react-msft": "^4.32.0",
-    "@microsoft/fast-foundation": "^1.7.0",
-    "@microsoft/fast-tooling": "^0.9.0",
-    "@microsoft/fast-tooling-react": "^2.3.3",
+    "@microsoft/fast-foundation": "^1.7.2",
+    "@microsoft/fast-tooling": "^0.10.0",
+    "@microsoft/fast-tooling-react": "^2.3.5",
     "chalk": "^4.1.0"
   }
 }

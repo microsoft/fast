@@ -89,17 +89,17 @@ export interface FASTDesignSystem {
     cornerRadius: number;
 
     /**
-     * The width of the outline applied to outline components in pixels.
+     * The width of the standard outline applied to outline components in pixels.
      */
     outlineWidth: number;
 
     /**
-     * The width of the outline for focus state in pixels.
+     * The width of the standard focus outline in pixels.
      */
     focusOutlineWidth: number;
 
     /**
-     * The opacity to use for disabled component state.
+     * The opacity of a disabled control.
      */
     disabledOpacity: number;
 

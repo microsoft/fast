@@ -6,7 +6,7 @@ import { Behavior } from "./behavior";
  * Options for configuring node observation behavior.
  * @public
  */
-export interface NodeBehaviorBehaviorOptions<T = any> {
+export interface NodeBehaviorOptions<T = any> {
     /**
      * The property to assign the observed nodes to.
      */
@@ -43,7 +43,7 @@ export function elements(selector?: string) {
  * A base class for node observation.
  * @internal
  */
-export abstract class NodeObservationBehavior<T extends NodeBehaviorBehaviorOptions>
+export abstract class NodeObservationBehavior<T extends NodeBehaviorOptions>
     implements Behavior {
     private source: any = null;
     private shouldUpdate!: boolean;

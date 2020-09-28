@@ -1,5 +1,5 @@
 import { css } from "@microsoft/fast-element";
-import { display } from "@microsoft/fast-foundation";
+import { display, forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
 import {
     accentFillRestBehavior,
     accentForegroundCutRestBehavior,
@@ -9,6 +9,7 @@ import {
     neutralFillCardRestBehavior,
 } from "@microsoft/fast-components";
 import { drawerBreakpoint } from "./fast-frame";
+import { SystemColors } from "@microsoft/fast-web-utilities";
 
 export const FastFrameStyles = css`
     ${display("block")} :host {
@@ -67,7 +68,8 @@ export const FastFrameStyles = css`
         justify-self: end;
     }
 
-    .content h1 {
+    .content .content-badge {
+        --design-unit: 0;
         font-size: var(--type-ramp-minus-1-font-size);
         line-height: var(--type-ramp-minus-1-line-height);
         color: ${neutralForegroundHintBehavior.var};
@@ -77,11 +79,11 @@ export const FastFrameStyles = css`
         text-transform: uppercase;
     }
 
-    .content-heading-highlight {
-        color: ${accentForegroundRestBehavior.var};
+    .content .content-badge .content-badge-highlight {
+        color: ${neutralForegroundHintBehavior.var};
     }
 
-    .content h2 {
+    .content .heading {
         font-size: var(--type-ramp-plus-3-font-size);
         line-height: var(--type-ramp-plus-3-line-height);
         margin: 0;
@@ -190,9 +192,9 @@ export const FastFrameStyles = css`
     .hue-slider-track {
         height: 100%;
         border-radius: calc(var(--corner-radius) * 1px);
-        background-image: 
+        background-image:
             linear-gradient(
-                to right, 
+                to right,
                 rgb(255, 0, 0),
                 rgb(255, 77, 0),
                 rgb(255, 153, 0),
@@ -264,19 +266,19 @@ export const FastFrameStyles = css`
     }
 
     site-color-swatch {
-        margin: 0;      
+        margin: 0;
     }
 
     fast-slider-label {
         font-size: var(--type-ramp-minus-2-font-size);
         color: ${neutralForegroundHintBehavior.var};
     }
-    
+
     @media screen and (max-width: 1330px) {
         :host {
             --gutter: 10;
         }
-    
+
         fast-card {
             display: none;
         }
@@ -285,13 +287,13 @@ export const FastFrameStyles = css`
             grid-template-columns: minMax(300px, auto);
             border-radius: calc(var(--corner-radius) * 1px);
         }
-    
+
     }
     @media screen and (max-width: ${drawerBreakpoint}) {
         :host {
             --gutter: 10;
         }
-    
+
         fast-card {
             display: none;
         }
@@ -309,7 +311,7 @@ export const FastFrameStyles = css`
         .preview-expanded {
             transition: right .5s ease-in-out;
             right: -10%;
-        }    
+        }
 
         .wrapper {
             display: grid;
@@ -321,7 +323,7 @@ export const FastFrameStyles = css`
             display: inline-flex;
             visibility: visible;
         }
-        
+
         .tab-panel-expanded {
             opacity: 0;
             transition: opacity .5s ease-in-out;
@@ -331,7 +333,7 @@ export const FastFrameStyles = css`
             opacity: 1;
             transition: opacity .5s ease-in-out;
         }
-    
+
     }
     @media screen and (max-width: 480px) {
         .preview {
@@ -342,7 +344,7 @@ export const FastFrameStyles = css`
 
         .preview-expanded {
             right: -5%;
-        }    
+        }
 
         .wrapper {
             width: calc(100vw - 12vw);
@@ -370,5 +372,12 @@ export const FastFrameStyles = css`
     accentForegroundRestBehavior,
     neutralForegroundHintBehavior,
     neutralForegroundRestBehavior,
-    neutralFillCardRestBehavior
+    neutralFillCardRestBehavior,
+    forcedColorsStylesheetBehavior(
+        css`
+            .text-container {
+                color: ${SystemColors.ButtonText};
+            }
+        `
+    )
 );

@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-tooling-react",
   "description": "A React-specific set of components and utilities to assist in creating web UI",
   "sideEffects": false,
-  "version": "2.3.3",
+  "version": "2.3.5",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -96,11 +96,11 @@
     "react-redux": "^5.0.7",
     "react-router-dom": "^4.2.2",
     "react-test-renderer": "^16.6.3",
-    "rimraf": "^2.6.2",
+    "rimraf": "^3.0.2",
     "ts-jest": "^25.4.0",
     "ts-loader": "^4.0.1",
     "typescript": "^3.9.0",
-    "webpack": "^4.1.0",
+    "webpack": "^4.44.0",
     "webpack-cli": "^3.1.1",
     "webpack-dev-server": "^3.11.0",
     "yargs": "^11.0.0"
@@ -116,7 +116,7 @@
     "@microsoft/fast-components-foundation-react": "^3.2.0",
     "@microsoft/fast-jss-manager-react": "^4.8.0",
     "@microsoft/fast-jss-utilities": "^4.8.0",
-    "@microsoft/fast-tooling": "^0.9.0",
+    "@microsoft/fast-tooling": "^0.10.0",
     "@microsoft/fast-web-utilities": "^4.6.0",
     "exenv-es6": "^1.0.0",
     "raf-throttle": "^2.0.3",

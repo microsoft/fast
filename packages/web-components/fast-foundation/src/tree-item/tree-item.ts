@@ -13,7 +13,6 @@ import {
     keyCodeArrowRight,
     keyCodeArrowUp,
     keyCodeEnter,
-    keyCodeSpace,
 } from "@microsoft/fast-web-utilities";
 import { StartEnd } from "../patterns/start-end";
 import { applyMixins } from "../utilities/apply-mixins";
@@ -80,6 +79,9 @@ export class TreeItem extends FASTElement {
                     (node as TreeItem).nested = true;
                 }
             });
+            this.enabledChildTreeItems = this.items.filter((item: HTMLElement) => {
+                return isTreeItemElement(item) && !item.hasAttribute("disabled");
+            });
         }
     }
 
@@ -93,6 +95,7 @@ export class TreeItem extends FASTElement {
     public renderCollapsedChildren: boolean;
 
     private notifier: Notifier;
+    private enabledChildTreeItems: HTMLElement[] = [];
 
     private getParentTreeNode(): HTMLElement | null | undefined {
         const parentNode: Element | null | undefined = this.parentElement!.closest(
@@ -151,17 +154,22 @@ export class TreeItem extends FASTElement {
         this.focusable = false;
     };
 
+    /**
+     * The keyboarding on treeview should conform to the following spec
+     * https://w3c.github.io/aria-practices/#keyboard-interaction-23
+     * @param e - Event object for keyDown event
+     */
     public handleKeyDown = (e: KeyboardEvent): void | boolean => {
         if (e.target !== e.currentTarget) {
-            return;
+            return true;
         }
 
         switch (e.keyCode) {
             case keyCodeArrowLeft:
-                this.handleArrowLeft();
+                this.collapseOrFocusParent();
                 break;
             case keyCodeArrowRight:
-                this.handleArrowRight();
+                this.expandOrFocusFirstChild();
                 break;
             case keyCodeArrowDown:
                 // preventDefault to ensure we don't scroll the page
@@ -174,30 +182,24 @@ export class TreeItem extends FASTElement {
                 this.focusNextNode(-1);
                 break;
             case keyCodeEnter:
+                // In single-select trees where selection does not follow focus (see note below),
+                // the default action is typically to select the focused node.
                 this.handleSelected(e);
-                break;
-            case keyCodeSpace:
-                this.handleSpaceBar();
                 break;
         }
 
         return true;
     };
 
-    public handleExpandCollapseButtonClick = (): void => {
+    public handleExpandCollapseButtonClick = (e: MouseEvent): void => {
         if (!this.disabled) {
+            e.preventDefault();
             this.setExpanded(!this.expanded);
         }
     };
 
-    public handleContainerClick = (e: MouseEvent): void => {
-        const expandButton: HTMLElement | null = this.expandCollapseButton;
-        const isButtonAnHTMLElement: boolean = isHTMLElement(expandButton);
-        if (
-            (!isButtonAnHTMLElement ||
-                (isButtonAnHTMLElement && expandButton !== e.target)) &&
-            !this.disabled
-        ) {
+    public handleClick = (e: MouseEvent): void => {
+        if (!e.defaultPrevented && !this.disabled) {
             this.handleSelected(e);
         }
     };
@@ -215,7 +217,7 @@ export class TreeItem extends FASTElement {
         return isTreeItemElement(this.parentElement as Element);
     };
 
-    private handleArrowLeft(): void {
+    private collapseOrFocusParent(): void {
         if (this.expanded) {
             this.setExpanded(false);
         } else if (isHTMLElement(this.parentElement)) {
@@ -230,23 +232,18 @@ export class TreeItem extends FASTElement {
         }
     }
 
-    private handleArrowRight(): void {
+    private expandOrFocusFirstChild(): void {
         if (typeof this.expanded !== "boolean") {
             return;
         }
 
-        if (!this.expanded) {
+        if (!this.expanded && this.childItemLength() > 0) {
             this.setExpanded(true);
         } else {
-            this.focusNextNode(1);
+            if (this.enabledChildTreeItems.length > 0) {
+                this.enabledChildTreeItems[0].focus();
+            }
         }
-    }
-
-    private handleSpaceBar(): void {
-        if (typeof this.expanded !== "boolean") {
-            return;
-        }
-        this.setExpanded(!this.expanded);
     }
 
     private focusNextNode(delta: number): void {
