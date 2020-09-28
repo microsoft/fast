@@ -2,6 +2,7 @@
 id: skeleton
 title: skeleton
 sidebar_label: skeleton
+custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-foundation/src/skeleton/README.md
 ---
 
 The `skeleton` component is used as a placeholder for another component that is in a loading state.
