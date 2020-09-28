@@ -57,6 +57,7 @@ import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
 import { html_beautify } from "vscode-html-languageservice/lib/esm/beautify/beautify-html";
 import { ComponentViewConfig, Scenario } from "./fast-components/configs/data.props";
 import * as componentConfigs from "./fast-components/configs";
+console.log("component configs", componentConfigs);
 import { history, menu, schemaDictionary } from "./config";
 import style, { pivotStyleSheetOverrides } from "./explorer.style";
 import {

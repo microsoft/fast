@@ -40,6 +40,9 @@ export { fastRadioConfig };
 import fastRadioGroupConfig from "./fast-radio-group";
 export { fastRadioGroupConfig };
 
+import fastSkeletonConfig from "./fast-skeleton";
+export { fastSkeletonConfig };
+
 import fastSliderConfig from "./fast-slider";
 export { fastSliderConfig };
 
