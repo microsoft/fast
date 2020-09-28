@@ -1,8 +1,8 @@
 import { FASTDesignSystemProvider } from "../design-system-provider";
 import SkeletonTemplate from "./fixtures/base.html";
-import { FluentSkeleton } from "./";
+import { FASTSkeleton } from "./";
 
-FluentSkeleton;
+FASTSkeleton;
 FASTDesignSystemProvider;
 
 export default {

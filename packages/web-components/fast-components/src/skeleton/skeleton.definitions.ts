@@ -5,8 +5,8 @@ export const fastSkeletonDefinitions: WebComponentDefinition = {
     version: 1,
     tags: [
         {
-            name: "fluent-skeleton",
-            description: "The Fluent skeleton element",
+            name: "fast-skeleton",
+            description: "The FAST skeleton element",
             attributes: [
                 {
                     name: "fill",

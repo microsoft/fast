@@ -3,10 +3,10 @@ import { Skeleton, SkeletonTemplate as template } from "@microsoft/fast-foundati
 import { SkeletonStyles as styles } from "./skeleton.styles";
 
 @customElement({
-    name: "fluent-skeleton",
+    name: "fast-skeleton",
     template,
     styles,
 })
-export class FluentSkeleton extends Skeleton {}
+export class FASTSkeleton extends Skeleton {}
 
 export const SkeletonStyles = styles;

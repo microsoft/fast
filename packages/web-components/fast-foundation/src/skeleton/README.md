@@ -1,18 +1,18 @@
 ---
 id: skeleton
-title: fluent-skeleton
+title: skeleton
 sidebar_label: skeleton
 ---
 
-The `fluent-skeleton` component is used as a placeholder for another component that is in a loading state.
+The `skeleton` component is used as a placeholder for another component that is in a loading state.
 
 ## Usage
 
-A URL for an image asset may be passed to the `pattern` attribute. In this mode, the `fluent-skeleton` component is used as a container for a transparent SVG that may express a more complex placeholder
+A URL for an image asset may be passed to the `pattern` attribute. In this mode, the `fast-skeleton` component is used as a container for a transparent SVG that may express a more complex placeholder
 
 _Example:_
 ```html live
-<fluent-skeleton
+<fast-skeleton
     style="
         --neutral-fill-rest: #e1dfdd;
         border-radius: 4px;
@@ -20,14 +20,14 @@ _Example:_
         height: 50px;
     "
     shape="circle"
-></fluent-skeleton>
+></fast-skeleton>
 ```
 
 The `shimmer` boolean attribute will activate the component's shimmer effect.
 
 _Example:_
 ```html live
-<fluent-skeleton
+<fast-skeleton
     style="
         --neutral-fill-rest: #e1dfdd;
         border-radius: 4px;
@@ -37,14 +37,14 @@ _Example:_
     shape="rect"
     pattern="https://static.fast.design/assets/skeleton-test-pattern.svg"
     shimmer
-></fluent-skeleton>
+></fast-skeleton>
 ```
 
-An inline SVG can also be inserted into the slot of the `fluent-skeleton`.
+An inline SVG can also be inserted into the slot of the `fast-skeleton`.
 
 _Example:_
 ```html live
-<fluent-skeleton
+<fast-skeleton
     style="
         --neutral-fill-rest: #e1dfdd;
         border-radius: 4px;
@@ -78,7 +78,7 @@ _Example:_
             fill="#ffffff"
         />
     </svg>
-  </fluent-skeleton>
+  </fast-skeleton>
 </fast-design-system-provider>
 ```
 

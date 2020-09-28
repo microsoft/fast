@@ -2,7 +2,7 @@ import { html, when } from "@microsoft/fast-element";
 import { Skeleton } from "./skeleton";
 
 /**
- * The template for the fluent-skeleton component
+ * The template for the fast-skeleton component
  * @public
  */
 export const SkeletonTemplate = html<Skeleton>`
