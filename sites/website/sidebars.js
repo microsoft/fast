@@ -28,6 +28,7 @@ module.exports = {
                         "components/progress",
                         "components/radio",
                         "components/radio-group",
+                        "components/skeleton",
                         "components/slider",
                         "components/slider-label",
                         "components/switch",
