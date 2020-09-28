@@ -3,6 +3,31 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.11.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-components@1.10.0...@microsoft/fast-components@1.11.0) (2020-09-28)
+
+
+### Bug Fixes
+
+* add skeleton, its definition, and its example to component explorer ([#3982](https://github.com/Microsoft/fast/issues/3982)) ([28c1021](https://github.com/Microsoft/fast/commit/28c10215148b457f64383e19543c57f0775925f7))
+* aria attributes for slider should have explicit values ([#3915](https://github.com/Microsoft/fast/issues/3915)) ([8335702](https://github.com/Microsoft/fast/commit/8335702e28295e216fb7c673457a09285a388be4))
+* badge example in component explorer ([#3901](https://github.com/Microsoft/fast/issues/3901)) ([8c34aa5](https://github.com/Microsoft/fast/commit/8c34aa50e2af0848c84147e24e0d55fc5f68ee64))
+* cursor should be disabledCursor when switch is readonly or disabled, otherwise pointer ([#3895](https://github.com/Microsoft/fast/issues/3895)) ([2ff5980](https://github.com/Microsoft/fast/commit/2ff5980c5915891f6d55149ed79042fcaddead8a))
+* ensure attributes are passed to text field template ([#3923](https://github.com/Microsoft/fast/issues/3923)) ([31afcd4](https://github.com/Microsoft/fast/commit/31afcd430d80fe2fb13d921b11b7ec92cf1a0bc8))
+* fixed typos ([#3934](https://github.com/Microsoft/fast/issues/3934)) ([f82468c](https://github.com/Microsoft/fast/commit/f82468c730165983d64e51ce74abaa8a27a8fb64))
+* re-export the progress ring component ([#3964](https://github.com/Microsoft/fast/issues/3964)) ([08da213](https://github.com/Microsoft/fast/commit/08da21361dd25b97f37e053b25e5361d2ee64142))
+
+
+### Features
+
+*  Anchored region reliability/perf improvements ([#3876](https://github.com/Microsoft/fast/issues/3876)) ([0e697f6](https://github.com/Microsoft/fast/commit/0e697f6ab6bd8f40894b9791d3eec8fe97a97d26))
+* add monaco adaptor to component explorer site ([#3949](https://github.com/Microsoft/fast/issues/3949)) ([1aa994e](https://github.com/Microsoft/fast/commit/1aa994e986e52e8b1fab93e65665a1d4e56ae496))
+* add skeleton component ([#3877](https://github.com/Microsoft/fast/issues/3877)) ([aff7d30](https://github.com/Microsoft/fast/commit/aff7d3010574183744cf7105ae51a275c2c70a12))
+* add tooltip component ([#3549](https://github.com/Microsoft/fast/issues/3549)) ([cb7aa98](https://github.com/Microsoft/fast/commit/cb7aa98ccaaad00e9e86b4575ef011986c054d08))
+
+
+
+
+
 # [1.10.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-components@1.9.0...@microsoft/fast-components@1.10.0) (2020-09-10)
 
 

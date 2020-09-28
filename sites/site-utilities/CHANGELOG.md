@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.5.0](https://github.com/Microsoft/fast/compare/@microsoft/site-utilities@0.4.5...@microsoft/site-utilities@0.5.0) (2020-09-28)
+
+
+### Bug Fixes
+
+* badge example in component explorer ([#3901](https://github.com/Microsoft/fast/issues/3901)) ([8c34aa5](https://github.com/Microsoft/fast/commit/8c34aa50e2af0848c84147e24e0d55fc5f68ee64))
+
+
+### Features
+
+* add mobile view to the component explore site ([#3937](https://github.com/Microsoft/fast/issues/3937)) ([deb455b](https://github.com/Microsoft/fast/commit/deb455b8c313d368596e83c9f8e855c865fa3829))
+* add monaco adaptor to component explorer site ([#3949](https://github.com/Microsoft/fast/issues/3949)) ([1aa994e](https://github.com/Microsoft/fast/commit/1aa994e986e52e8b1fab93e65665a1d4e56ae496))
+* add skeleton component ([#3877](https://github.com/Microsoft/fast/issues/3877)) ([aff7d30](https://github.com/Microsoft/fast/commit/aff7d3010574183744cf7105ae51a275c2c70a12))
+* add tooltip component ([#3549](https://github.com/Microsoft/fast/issues/3549)) ([cb7aa98](https://github.com/Microsoft/fast/commit/cb7aa98ccaaad00e9e86b4575ef011986c054d08))
+
+
+
+
+
 ## [0.4.5](https://github.com/Microsoft/fast/compare/@microsoft/site-utilities@0.4.4...@microsoft/site-utilities@0.4.5) (2020-09-10)
 
 **Note:** Version bump only for package @microsoft/site-utilities

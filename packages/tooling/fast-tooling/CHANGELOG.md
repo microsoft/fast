@@ -3,6 +3,30 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.11.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling@0.10.0...@microsoft/fast-tooling@0.11.0) (2020-09-28)
+
+
+### Bug Fixes
+
+* add slot as attribute to elements that are assigned to a slot ([#3919](https://github.com/Microsoft/fast/issues/3919)) ([9a65648](https://github.com/Microsoft/fast/commit/9a6564847a5d848d85fc0bfc8bc66203b233b19a)), closes [#3910](https://github.com/Microsoft/fast/issues/3910)
+* address a nesting issue with the monaco adaptor ([#3946](https://github.com/Microsoft/fast/issues/3946)) ([cca6bf4](https://github.com/Microsoft/fast/commit/cca6bf4a0c0f3c4a02048ac6b3ef53a1ca2b28c9))
+* allow null attributes when mapping from Monaco editor values to be treated as booleans ([#3927](https://github.com/Microsoft/fast/issues/3927)) ([2d8b47d](https://github.com/Microsoft/fast/commit/2d8b47d3f9442465d33a6a907d85b77d27511223))
+* removes newlines and leading spaces from returned monaco value ([#3971](https://github.com/Microsoft/fast/issues/3971)) ([883e8ec](https://github.com/Microsoft/fast/commit/883e8ec816a20bb64bef0ed63c87f98a3c2159af)), closes [#3949](https://github.com/Microsoft/fast/issues/3949)
+
+
+### Features
+
+* add history and a way to retrieve history from the message system ([#3834](https://github.com/Microsoft/fast/issues/3834)) ([76dee0d](https://github.com/Microsoft/fast/commit/76dee0d0c9b885435ab094c59cd0d3c931a11d0f))
+* add monaco adaptor and adaptor actions ([#3917](https://github.com/Microsoft/fast/issues/3917)) ([dcf17ee](https://github.com/Microsoft/fast/commit/dcf17ee4a4eb25b7802dc4324426bbba806fce21)), closes [#3898](https://github.com/Microsoft/fast/issues/3898) [#3916](https://github.com/Microsoft/fast/issues/3916) [#3562](https://github.com/Microsoft/fast/issues/3562)
+* add monaco adaptor to component explorer site ([#3949](https://github.com/Microsoft/fast/issues/3949)) ([1aa994e](https://github.com/Microsoft/fast/commit/1aa994e986e52e8b1fab93e65665a1d4e56ae496))
+* add vscode-html-languageservice parser converter to data dictionary ([#3898](https://github.com/Microsoft/fast/issues/3898)) ([d24b874](https://github.com/Microsoft/fast/commit/d24b8746a8af5696f969cfb750ab63e1c7adc224)), closes [#3562](https://github.com/Microsoft/fast/issues/3562)
+* allow a dictionary id to be set during initialization ([#3955](https://github.com/Microsoft/fast/issues/3955)) ([70f3d00](https://github.com/Microsoft/fast/commit/70f3d0076a88fb42f26e610fa25204981aa2678e))
+* allow arbitrary options to be passed with any message system message ([#3916](https://github.com/Microsoft/fast/issues/3916)) ([9f2dd80](https://github.com/Microsoft/fast/commit/9f2dd807c5199deab55a5fda7c709556e9b5bbc0))
+
+
+
+
+
 # [0.10.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling@0.9.1...@microsoft/fast-tooling@0.10.0) (2020-09-10)
 
 
