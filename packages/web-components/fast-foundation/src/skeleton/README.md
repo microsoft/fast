@@ -12,7 +12,7 @@ The `skeleton` component is used as a placeholder for another component that is 
 A URL for an image asset may be passed to the `pattern` attribute. In this mode, the `fast-skeleton` component is used as a container for a transparent SVG that may express a more complex placeholder
 
 _Example:_
-```html live
+```html
 <fast-skeleton
     style="
         --neutral-fill-rest: #e1dfdd;
@@ -27,7 +27,7 @@ _Example:_
 The `shimmer` boolean attribute will activate the component's shimmer effect.
 
 _Example:_
-```html live
+```html
 <fast-skeleton
     style="
         --neutral-fill-rest: #e1dfdd;
@@ -44,7 +44,7 @@ _Example:_
 An inline SVG can also be inserted into the slot of the `fast-skeleton`.
 
 _Example:_
-```html live
+```html
 <fast-skeleton
     style="
         --neutral-fill-rest: #e1dfdd;
@@ -79,8 +79,7 @@ _Example:_
             fill="#ffffff"
         />
     </svg>
-  </fast-skeleton>
-</fast-design-system-provider>
+</fast-skeleton>
 ```
 
 ## Customization
