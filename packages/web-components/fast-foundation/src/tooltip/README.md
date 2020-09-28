@@ -16,7 +16,7 @@ The `fast-tooltip` component is used provide extra information about another ele
     </button>
     <fast-tooltip anchor="mybutton">
       helpful text
-    </fast-slider>
+    </fast-tooltip>
 </fast-design-system-provider>
 ```
 ---
