@@ -136,13 +136,11 @@ export class Breadcrumb extends FASTElement {
 export class BreadcrumbItem extends FASTElement {
     href: string;
     // @internal (undocumented)
-    isCurrent: boolean;
-    // @internal (undocumented)
     showSeparator: boolean;
 }
 
 // @internal
-export interface BreadcrumbItem extends StartEnd, DelegatesARIALink {
+export interface BreadcrumbItem extends StartEnd {
 }
 
 // @public
