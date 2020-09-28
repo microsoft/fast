@@ -23,5 +23,6 @@ export * from "./tabs/tab.definition";
 export * from "./tabs/tabs.definition";
 export * from "./text-area/text-area.definition";
 export * from "./text-field/text-field.definition";
+export * from "./tooltip/tooltip.definition";
 export * from "./tree-item/tree-item.definition";
 export * from "./tree-view/tree-view.definition";

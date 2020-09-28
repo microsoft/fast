@@ -118,7 +118,8 @@ export class FriendList extends FASTElement {
 Similar to event handlers, within a `repeat` block you have access to a special context object. Here is a list of the properties that are available on the context:
 
 * `event` - The event object when inside an event handler.
-* `parent` - The parent scope when inside a `repeat` block.
+* `parent` - The parent view-model when inside a `repeat` block.
+* `parentContext` - The parent `ExecutionContext` when inside a `repeat` block. This is useful when repeats are nested and the inner-most repeat needs access to the root view-model.
 * `index` - The index of the current item when inside a `repeat` block (opt-in).
 * `length` - The length of the array when inside a `repeat` block (opt-in).
 * `isEven` - True if the index of the current item is even when inside a `repeat` block (opt-in).
@@ -489,6 +490,8 @@ const template = html<FriendList>`
   </ul>
 `;
 ```
+
+If using the `subtree` option for `children` then a `selector` is *required* in place of a `filter`. This enables more efficient collection of the desired nodes in the presence of a potential large node quantity throughout the subtree.
 
 ### The `slotted` directive
 

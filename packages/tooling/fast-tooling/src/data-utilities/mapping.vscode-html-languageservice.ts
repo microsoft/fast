@@ -48,7 +48,14 @@ function mapAttributesAndSlotsToData(
                     return [attributeKey, parseFloat(JSON.parse(attributeValue))];
                 }
             }
-            return [attributeKey, JSON.parse(attributeValue)];
+
+            try {
+                const parsedValue = JSON.parse(attributeValue);
+
+                return [attributeKey, parsedValue === null ? true : parsedValue];
+            } catch (e) {
+                return [attributeKey, ""];
+            }
         })
         .reduce((previousValue, currentValue) => {
             return {
@@ -161,7 +168,9 @@ function mapNodeToDataDictionary(
                 for (let i = 0; i < nodeChildrenLength; i++) {
                     children.push(
                         mapNodeToDataDictionary(
-                            node.children[i],
+                            parse(
+                                value.slice(node.children[i].start, node.children[i].end)
+                            ).roots[0],
                             value.slice(node.children[i].start, node.children[i].end),
                             textSchemaId,
                             schemaDictionary,

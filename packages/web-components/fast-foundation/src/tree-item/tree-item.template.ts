@@ -20,16 +20,13 @@ export const TreeItemTemplate = html<TreeItem>`
         @focus="${(x, c) => x.handleFocus(c.event as FocusEvent)}"
         @blur="${(x, c) => x.handleBlur(c.event as FocusEvent)}"
         @keydown="${(x, c) => x.handleKeyDown(c.event as KeyboardEvent)}"
+        @click="${(x, c) => x.handleClick(c.event as MouseEvent)}"
         ${children({
             property: "childItems",
             filter: elements(),
         })}
     >
-        <div
-            class="positioning-region"
-            part="positioning-region"
-            @click="${(x, c) => x.handleContainerClick(c.event as MouseEvent)}"
-        >
+        <div class="positioning-region" part="positioning-region">
             <div class="content-region" part="content-region">
                 ${when(
                     x => x.childItems && x.childItemLength() > 0,
@@ -38,7 +35,8 @@ export const TreeItemTemplate = html<TreeItem>`
                             aria-hidden="true"
                             class="expand-collapse-button"
                             part="expand-collapse-button"
-                            @click="${x => x.handleExpandCollapseButtonClick()}"
+                            @click="${(x, c) =>
+                                x.handleExpandCollapseButtonClick(c.event as MouseEvent)}"
                             ${ref("expandCollapseButton")}
                         >
                             <slot name="expand-collapse-glyph">

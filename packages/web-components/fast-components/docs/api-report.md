@@ -30,6 +30,7 @@ import { TabPanel } from '@microsoft/fast-foundation';
 import { Tabs } from '@microsoft/fast-foundation';
 import { TextArea } from '@microsoft/fast-foundation';
 import { TextField } from '@microsoft/fast-foundation';
+import { Tooltip } from '@microsoft/fast-foundation';
 import { TreeItem } from '@microsoft/fast-foundation';
 import { TreeView } from '@microsoft/fast-foundation';
 
@@ -484,6 +485,10 @@ export class FASTProgress extends BaseProgress {
 }
 
 // @public
+export class FASTProgressRing extends BaseProgress {
+}
+
+// @public
 export class FASTRadio extends Radio {
 }
 
@@ -531,6 +536,10 @@ export class FASTTextField extends TextField {
     appearanceChanged(oldValue: TextFieldAppearance, newValue: TextFieldAppearance): void;
     // @internal (undocumented)
     connectedCallback(): void;
+}
+
+// @public
+export class FASTTooltip extends Tooltip {
 }
 
 // @public
@@ -930,6 +939,9 @@ export enum PaletteType {
 
 // @public
 export const parseColorString: (color: string) => ColorRGBA64;
+
+// @public
+export const ProgressRingStyles: import("@microsoft/fast-element").ElementStyles;
 
 // @public
 export const ProgressStyles: import("@microsoft/fast-element").ElementStyles;

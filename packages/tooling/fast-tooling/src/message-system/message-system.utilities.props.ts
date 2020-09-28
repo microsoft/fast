@@ -70,6 +70,10 @@ export interface InitializeMessageIncoming<TConfig = {}>
      * This is required when data is not provided
      */
     dataDictionary?: DataDictionary<unknown>;
+    /**
+     * Set the dictionary id, otherwise default to the root
+     */
+    dictionaryId?: string;
     schemaDictionary: SchemaDictionary;
     historyLimit?: number;
 }

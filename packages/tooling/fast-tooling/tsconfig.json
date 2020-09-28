@@ -4,5 +4,8 @@
         "baseUrl": ".",
         "outDir": "./dist",
         "resolveJsonModule": true
-    }
+    },
+    "exclude": [
+        "app"
+    ]
   }

@@ -51,7 +51,6 @@ describe("The children", () => {
             const { host, children } = createDOM();
             const behavior = new ChildrenBehavior(host, {
                 property: "nodes",
-                childList: true,
             });
             const model = new Model();
 
@@ -64,7 +63,6 @@ describe("The children", () => {
             const { host, children } = createDOM("foo-bar");
             const behavior = new ChildrenBehavior(host, {
                 property: "nodes",
-                childList: true,
                 filter: elements("foo-bar"),
             });
             const model = new Model();
@@ -78,7 +76,6 @@ describe("The children", () => {
             const { host, children } = createDOM("foo-bar");
             const behavior = new ChildrenBehavior(host, {
                 property: "nodes",
-                childList: true,
             });
             const model = new Model();
 
@@ -97,7 +94,6 @@ describe("The children", () => {
             const { host, children } = createDOM("foo-bar");
             const behavior = new ChildrenBehavior(host, {
                 property: "nodes",
-                childList: true,
                 filter: elements("foo-bar"),
             });
             const model = new Model();
@@ -113,11 +109,50 @@ describe("The children", () => {
             expect(model.nodes).members(updatedChildren.filter(elements("foo-bar")));
         });
 
+        it("updates subtree nodes when they change with a selector", async () => {
+            const { host, children } = createDOM("foo-bar");
+            const subtreeElement = "foo-bar-baz";
+            const subtreeChildren: HTMLElement[] = [];
+
+            for (let child of children) {
+                for (let i = 0; i < 3; ++i) {
+                    const subChild = document.createElement("foo-bar-baz");
+                    subtreeChildren.push(subChild);
+                    child.appendChild(subChild);
+                }
+            }
+
+            const behavior = new ChildrenBehavior(host, {
+                property: "nodes",
+                subtree: true,
+                selector: subtreeElement,
+            });
+
+            const model = new Model();
+
+            behavior.bind(model);
+
+            expect(model.nodes).members(subtreeChildren);
+
+            const newChildren = createAndAppendChildren(host);
+
+            for (let child of newChildren) {
+                for (let i = 0; i < 3; ++i) {
+                    const subChild = document.createElement("foo-bar-baz");
+                    subtreeChildren.push(subChild);
+                    child.appendChild(subChild);
+                }
+            }
+
+            await DOM.nextUpdate();
+
+            expect(model.nodes).members(subtreeChildren);
+        });
+
         it("clears and unwatches when unbound", async () => {
             const { host, children } = createDOM("foo-bar");
             const behavior = new ChildrenBehavior(host, {
                 property: "nodes",
-                childList: true,
             });
             const model = new Model();
 

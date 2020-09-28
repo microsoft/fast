@@ -1,6 +1,7 @@
 import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager-react";
 import {
     DesignSystem,
+    highContrastForeground,
     neutralLayerL1,
     neutralLayerL3,
 } from "@microsoft/fast-components-styles-msft";
@@ -30,9 +31,11 @@ export const pivotStyleSheetOverrides: ComponentStyles<
 > = {
     pivot: {
         height: "100%",
+        ...highContrastForeground,
     },
     pivot_tabList: {
         padding: "0 16px",
+        height: "36px",
     },
     pivot_tabPanels: {
         padding: "0 24px",
@@ -42,6 +45,12 @@ export const pivotStyleSheetOverrides: ComponentStyles<
         "& a": {
             color: accent,
         },
+    },
+    pivot_tabPanel: {
+        height: "100%",
+    },
+    pivot_tabContent: {
+        ...highContrastForeground,
     },
 };
 

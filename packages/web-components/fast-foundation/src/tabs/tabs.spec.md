@@ -122,10 +122,10 @@ Some scenarios require an indicator that highlights the currently active tab the
     <fast-tab-panel id="panel-1">Content of the first tab</fast-tab-panel>
     <fast-tab-panel id="panel-2">Content of the Second tab</fast-tab-panel>
     <fast-tab-panel id="panel-3">Content of the Third tab</fast-tab-panel>
-    <div slot="before-content">
+    <div slot="start">
         Before content
     </div>
-    <div slot="after-content">
+    <div slot="end">
         Before content
     </div>
 </fast-tabs>
