@@ -6,8 +6,8 @@ import {
     MessageSystemType,
 } from "../../../src";
 import { mapDataDictionaryToMonacoEditorHTML } from "../../../src/data-utilities/monaco";
-import { MonacoAdaptor } from "../../../src/data-utilities/monaco-adaptor";
-import { MonacoAdaptorAction } from "../../../src/data-utilities/monaco-adaptor-action";
+import { MonacoAdapter } from "../../../src/data-utilities/monaco-adapter";
+import { MonacoAdapterAction } from "../../../src/data-utilities/monaco-adapter-action";
 import monacoEditorConfig from "./monaco-editor-config";
 import dataDictionaryConfig from "./data-dictionary-config";
 import schemaDictionary from "./schema-dictionary";
@@ -41,7 +41,7 @@ function handleMessageSystem(e: MessageEvent) {
         if (e.data.type === MessageSystemType.initialize) {
             dataDictionary = e.data.dataDictionary;
 
-            if (e.data.options && e.data.options.from === "monaco-adaptor") {
+            if (e.data.options && e.data.options.from === "monaco-adapter") {
                 updateFormInputs();
             } else {
                 updateFormInputs();
@@ -69,10 +69,10 @@ if ((window as any).Worker) {
     });
 }
 
-const adaptor = new MonacoAdaptor({
+const adapter = new MonacoAdapter({
     messageSystem: fastMessageSystem,
     actions: [
-        new MonacoAdaptorAction({
+        new MonacoAdapterAction({
             id: "monaco.setValue",
             action: config => {
                 // trigger an update to the monaco value that
@@ -96,7 +96,7 @@ monaco.editor.onDidCreateModel((listener: monaco.editor.ITextModel) => {
         monacoValue = Array.isArray(modelValue) ? modelValue : [modelValue];
 
         if (!firstRun) {
-            adaptor.action("monaco.setValue").run();
+            adapter.action("monaco.setValue").run();
         }
 
         firstRun = false;

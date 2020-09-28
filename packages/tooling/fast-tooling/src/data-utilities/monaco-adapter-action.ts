@@ -1,7 +1,7 @@
 import { MessageSystemType } from "../message-system";
 import { MessageSystemUtilityAction } from "./message-system-utility-action";
 
-export interface MonacoAdaptorActionCallbackConfig {
+export interface MonacoAdapterActionCallbackConfig {
     /**
      * Retrieve the Monaco Model value
      */
@@ -19,10 +19,10 @@ export interface MonacoAdaptorActionCallbackConfig {
 }
 
 /**
- * Actions for the monaco adaptor
+ * Actions for the monaco adapter
  */
-export class MonacoAdaptorAction extends MessageSystemUtilityAction<
-    MonacoAdaptorActionCallbackConfig,
+export class MonacoAdapterAction extends MessageSystemUtilityAction<
+    MonacoAdapterActionCallbackConfig,
     MessageSystemType
 > {
     private getMonacoModelValue: () => string[];
@@ -47,9 +47,9 @@ export class MonacoAdaptorAction extends MessageSystemUtilityAction<
     };
 
     /**
-     * Retrieve callbacks from parent adaptor
+     * Retrieve callbacks from parent adapter
      */
-    public addConfig(config: MonacoAdaptorActionCallbackConfig): void {
+    public addConfig(config: MonacoAdapterActionCallbackConfig): void {
         this.getMonacoModelValue = config.getMonacoModelValue;
         this.updateMonacoModelValue = config.updateMonacoModelValue;
         this.messageSystemType = config.messageSystemType;

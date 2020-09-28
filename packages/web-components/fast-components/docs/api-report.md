@@ -497,7 +497,7 @@ export class FASTRadio extends Radio {
 export class FASTRadioGroup extends RadioGroup {
 }
 
-// @public (undocumented)
+// @public
 export class FASTSkeleton extends Skeleton {
 }
 
@@ -957,7 +957,7 @@ export const RadioGroupStyles: import("@microsoft/fast-element").ElementStyles;
 // @public
 export const RadioStyles: import("@microsoft/fast-element").ElementStyles;
 
-// @public (undocumented)
+// @public
 export const SkeletonStyles: import("@microsoft/fast-element").ElementStyles;
 
 // @public

@@ -7,12 +7,12 @@ import {
 import {
     findDictionaryIdParents,
     findUpdatedDictionaryId,
-    MonacoAdaptor,
-} from "./monaco-adaptor";
+    MonacoAdapter,
+} from "./monaco-adapter";
 import { mapDataDictionaryToMonacoEditorHTML } from "./monaco";
-import { MonacoAdaptorAction } from "./monaco-adaptor-action";
+import { MonacoAdapterAction } from "./monaco-adapter-action";
 
-describe("MonacoAdaptor", () => {
+describe("MonacoAdapter", () => {
     test("should not throw", () => {
         expect(() => {
             const messageSystem = new MessageSystem({
@@ -31,14 +31,14 @@ describe("MonacoAdaptor", () => {
                 },
             });
 
-            new MonacoAdaptor({
+            new MonacoAdapter({
                 messageSystem,
             });
         }).not.toThrow();
     });
     test("should not throw if the message system is undefined", () => {
         expect(() => {
-            new MonacoAdaptor({
+            new MonacoAdapter({
                 messageSystem: undefined,
             });
         }).not.toThrow();
@@ -62,7 +62,7 @@ describe("MonacoAdaptor", () => {
 
         expect(messageSystem["register"].size).toEqual(0);
 
-        new MonacoAdaptor({
+        new MonacoAdapter({
             messageSystem,
         });
 
@@ -87,7 +87,7 @@ describe("MonacoAdaptor", () => {
 
         expect(messageSystem["register"].size).toEqual(0);
 
-        const shortcuts: MonacoAdaptor = new MonacoAdaptor({
+        const shortcuts: MonacoAdapter = new MonacoAdapter({
             messageSystem,
         });
 
@@ -119,10 +119,10 @@ describe("MonacoAdaptor", () => {
         const messageSystem = new MessageSystem({
             webWorker: "",
         });
-        new MonacoAdaptor({
+        new MonacoAdapter({
             messageSystem,
             actions: [
-                new MonacoAdaptorAction({
+                new MonacoAdapterAction({
                     id: "foo",
                     action: config => {
                         expectedValue = config.getMonacoModelValue();
@@ -176,7 +176,7 @@ describe("MonacoAdaptor", () => {
         const messageSystem = new MessageSystem({
             webWorker: "",
         });
-        const monacoAdaptor = new MonacoAdaptor({
+        const monacoAdapter = new MonacoAdapter({
             messageSystem,
             actions: [],
         });
@@ -199,7 +199,7 @@ describe("MonacoAdaptor", () => {
             } as any);
         });
 
-        expect(monacoAdaptor["dictionaryId"]).toEqual("text");
+        expect(monacoAdapter["dictionaryId"]).toEqual("text");
     });
     test("should fire an action when the corresponding id is used", () => {
         const dataDictionary: DataDictionary<unknown> = [
@@ -223,10 +223,10 @@ describe("MonacoAdaptor", () => {
             webWorker: "",
         });
         const runAction = jest.fn();
-        const monacoAdaptor = new MonacoAdaptor({
+        const monacoAdapter = new MonacoAdapter({
             messageSystem,
             actions: [
-                new MonacoAdaptorAction({
+                new MonacoAdapterAction({
                     id: "foo",
                     action: runAction,
                 }),
@@ -243,7 +243,7 @@ describe("MonacoAdaptor", () => {
             } as any);
         });
 
-        monacoAdaptor.action("foo").run();
+        monacoAdapter.action("foo").run();
 
         expect(runAction).toHaveBeenCalledTimes(1);
     });
@@ -268,10 +268,10 @@ describe("MonacoAdaptor", () => {
         const messageSystem = new MessageSystem({
             webWorker: "",
         });
-        const monacoAdaptor = new MonacoAdaptor({
+        const monacoAdapter = new MonacoAdapter({
             messageSystem,
             actions: [
-                new MonacoAdaptorAction({
+                new MonacoAdapterAction({
                     id: "foo",
                     action: config => {
                         config.updateMonacoModelValue(["bar"]);
@@ -291,9 +291,9 @@ describe("MonacoAdaptor", () => {
             } as any);
         });
 
-        monacoAdaptor.action("foo").run();
+        monacoAdapter.action("foo").run();
 
-        expect(monacoAdaptor["monacoModelValue"]).toEqual(["bar"]);
+        expect(monacoAdapter["monacoModelValue"]).toEqual(["bar"]);
     });
     test("should remove newlines and leading spaces from the monaco model value", () => {
         const dataDictionary: DataDictionary<unknown> = [
@@ -316,10 +316,10 @@ describe("MonacoAdaptor", () => {
         const messageSystem = new MessageSystem({
             webWorker: "",
         });
-        const monacoAdaptor = new MonacoAdaptor({
+        const monacoAdapter = new MonacoAdapter({
             messageSystem,
             actions: [
-                new MonacoAdaptorAction({
+                new MonacoAdapterAction({
                     id: "foo",
                     action: config => {
                         config.updateMonacoModelValue(["    foo\n   bar"]);
@@ -338,11 +338,11 @@ describe("MonacoAdaptor", () => {
             } as any);
         });
 
-        monacoAdaptor.action("foo").run();
+        monacoAdapter.action("foo").run();
 
-        expect(monacoAdaptor["monacoModelValue"]).toEqual(["foo", "bar"]);
+        expect(monacoAdapter["monacoModelValue"]).toEqual(["foo", "bar"]);
     });
-    test("should not update the monaco value if the message is from the adaptor", () => {
+    test("should not update the monaco value if the message is from the adapter", () => {
         const dataDictionary: DataDictionary<unknown> = [
             {
                 div: {
@@ -364,10 +364,10 @@ describe("MonacoAdaptor", () => {
             webWorker: "",
         });
         const callback = jest.fn();
-        new MonacoAdaptor({
+        new MonacoAdapter({
             messageSystem,
             actions: [
-                new MonacoAdaptorAction({
+                new MonacoAdapterAction({
                     id: "foo",
                     action: callback,
                     messageSystemType: MessageSystemType.initialize,
@@ -382,7 +382,7 @@ describe("MonacoAdaptor", () => {
                     dataDictionary,
                     schemaDictionary,
                     options: {
-                        from: "monaco-adaptor",
+                        from: "monaco-adapter",
                     },
                 },
             } as any);
@@ -424,10 +424,10 @@ describe("MonacoAdaptor", () => {
             webWorker: "",
         });
         messageSystem.postMessage = callback;
-        const monacoAdaptor = new MonacoAdaptor({
+        const monacoAdapter = new MonacoAdapter({
             messageSystem,
             actions: [
-                new MonacoAdaptorAction({
+                new MonacoAdapterAction({
                     id: "foo",
                     action: config => {
                         config.updateMonacoModelValue(["<ul>", "foobar", "</ul>"]);
@@ -446,7 +446,7 @@ describe("MonacoAdaptor", () => {
             } as any);
         });
 
-        monacoAdaptor.action("foo").run();
+        monacoAdapter.action("foo").run();
 
         const updatedDataDictionary = callback.mock.calls[0][0].dataDictionary;
         const root = updatedDataDictionary[1];
