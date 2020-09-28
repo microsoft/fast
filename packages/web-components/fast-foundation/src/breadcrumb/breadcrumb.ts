@@ -41,20 +41,27 @@ export class Breadcrumb extends FASTElement {
                 (lastNode as BreadcrumbItem).showSeparator = false;
             }
 
+            let childNodeWithHref: HTMLElement | null = null;
+
             if (lastNode.childElementCount > 0) {
                 lastNode.childNodes.forEach((item: HTMLElement) => {
                     if (item instanceof HTMLElement && item.hasAttribute("href")) {
-                        item.setAttribute("aria-current", "page");
+                        childNodeWithHref = item;
                     }
                 });
-            } else {
-                if (lastNode.hasAttribute("href")) {
-                    if (lastNode instanceof BreadcrumbItem) {
-                        (lastNode as BreadcrumbItem).isCurrent = true;
-                    } else {
-                        lastNode.setAttribute("aria-current", "page");
-                    }
-                }
+            }
+
+            /**
+             *  If child node with href is found then apply aria-current to child node otherwise apply aria-current to the host element, with an href
+             */
+            if (
+                childNodeWithHref === null &&
+                lastNode.hasAttribute("href") &&
+                lastNode instanceof BreadcrumbItem
+            ) {
+                lastNode.setAttribute("aria-current", "page");
+            } else if (childNodeWithHref !== null) {
+                (childNodeWithHref as HTMLElement).setAttribute("aria-current", "page");
             }
         }
     }

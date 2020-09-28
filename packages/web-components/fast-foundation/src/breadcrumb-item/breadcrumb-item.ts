@@ -1,7 +1,6 @@
 import { attr, FASTElement, observable } from "@microsoft/fast-element";
-import { ARIAGlobalStatesAndProperties, StartEnd } from "../patterns/index";
+import { StartEnd } from "../patterns/index";
 import { applyMixins } from "../utilities/apply-mixins";
-import { DelegatesARIALink } from "../anchor/index";
 
 /**
  * A Breadcrumb Item Custom HTML Element.
@@ -23,12 +22,6 @@ export class BreadcrumbItem extends FASTElement {
      */
     @observable
     public showSeparator: boolean = true;
-
-    /**
-     * @internal
-     */
-    @observable
-    public isCurrent: boolean = false;
 }
 
 /**
@@ -38,5 +31,5 @@ export class BreadcrumbItem extends FASTElement {
  * @internal
  */
 /* eslint-disable-next-line */
-export interface BreadcrumbItem extends StartEnd, DelegatesARIALink {}
-applyMixins(BreadcrumbItem, StartEnd, DelegatesARIALink);
+export interface BreadcrumbItem extends StartEnd {}
+applyMixins(BreadcrumbItem, StartEnd);
