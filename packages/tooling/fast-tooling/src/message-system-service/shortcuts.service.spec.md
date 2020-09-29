@@ -1,6 +1,6 @@
 # Abstract
 
-The shortcuts utility accepts an instance of the `MessageSystem` and through this sends information about available shortcuts and events.
+The shortcuts service accepts an instance of the `MessageSystem` and through this sends information about available shortcuts and events.
 
 ## Instantiating
 

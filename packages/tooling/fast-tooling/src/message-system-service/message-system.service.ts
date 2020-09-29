@@ -36,7 +36,7 @@ export interface MessageSystemServiceConfig<C> {
 }
 
 /**
- * This abstract class are for utilities that
+ * This abstract class are for services that
  * use the MessageSystem to register and de-register themselves
  */
 export abstract class MessageSystemService<C> {
@@ -53,7 +53,7 @@ export abstract class MessageSystemService<C> {
     }
 
     /**
-     * Register this utility with the message system
+     * Register this service with the message system
      * This should be called during construction
      */
     public registerMessageSystem(config: MessageSystemServiceConfig<C>): void {
@@ -72,13 +72,13 @@ export abstract class MessageSystemService<C> {
     }
 
     /**
-     * The utility should always handle incoming messages
+     * The service should always handle incoming messages
      * from the message system
      */
     abstract handleMessageSystem(e: MessageEvent): void;
 
     /**
-     * The utility should get any config to be passed to
+     * The service should get any config to be passed to
      * the registered actions
      */
     abstract getActionConfig(id: string): C;
