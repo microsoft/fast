@@ -91,10 +91,6 @@ export class RadioGroup extends FASTElement {
         if (this.slottedRadioButtons) {
             this.slottedRadioButtons.forEach((radio: HTMLInputElement) => {
                 if (radio.getAttribute("value") === this.value) {
-                    console.log(
-                        "setting checked to true in valueChanged...value:",
-                        radio.value
-                    );
                     radio.checked = true;
                     this.selectedRadio = radio;
                 }
@@ -261,7 +257,6 @@ export class RadioGroup extends FASTElement {
                     }
                 });
             } else {
-                console.log("setting checked to true, moveToRadioIndex...");
                 radio.checked = true;
                 this.selectedRadio = radio;
             }
@@ -353,7 +348,6 @@ export class RadioGroup extends FASTElement {
             !this.focusedRadio.readOnly &&
             !this.focusedRadio.checked
         ) {
-            console.log("settings checked to true in checkFocusedRadio");
             this.focusedRadio.checked = true;
             this.focusedRadio.setAttribute("tabindex", "0");
             this.focusedRadio.focus();

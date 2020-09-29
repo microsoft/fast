@@ -104,12 +104,6 @@ export class Radio extends FormAssociated<HTMLInputElement> implements RadioCont
     public checked: boolean = this.defaultChecked;
     private checkedChanged(): void {
         if (this.$fastController.isConnected) {
-            console.log(
-                "checkedChanged for value:",
-                this.value,
-                " checked:",
-                this.checked
-            );
             // TODO: temporarily removed as it's causing issues with
             // changing the value via code and from radio-group
             if (!this.dirtyChecked) {
@@ -126,7 +120,6 @@ export class Radio extends FormAssociated<HTMLInputElement> implements RadioCont
             this.checkedAttribute = this.checked;
 
             this.validate();
-            console.log("in checkedCHanged this.checked:", this.checked);
         }
     }
 
