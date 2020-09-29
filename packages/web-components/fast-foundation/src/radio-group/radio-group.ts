@@ -91,6 +91,10 @@ export class RadioGroup extends FASTElement {
         if (this.slottedRadioButtons) {
             this.slottedRadioButtons.forEach((radio: HTMLInputElement) => {
                 if (radio.getAttribute("value") === this.value) {
+                    console.log(
+                        "setting checked to true in valueChanged...value:",
+                        radio.value
+                    );
                     radio.checked = true;
                     this.selectedRadio = radio;
                 }
@@ -158,6 +162,20 @@ export class RadioGroup extends FASTElement {
     }
 
     private setupRadioButtons(): void {
+        const checkedRadios: HTMLElement[] = this.slottedRadioButtons.filter(
+            (radio: HTMLInputElement) => {
+                return radio.hasAttribute("checked");
+            }
+        );
+        const numberOfCheckedRadios: number = checkedRadios ? checkedRadios.length : 0;
+        if (numberOfCheckedRadios > 1) {
+            const lastCheckedRadio: HTMLInputElement = checkedRadios[
+                numberOfCheckedRadios - 1
+            ] as HTMLInputElement;
+            lastCheckedRadio.checked = true;
+        }
+        let foundMatchingVal: boolean = false;
+
         this.slottedRadioButtons.forEach((radio: HTMLInputElement) => {
             if (this.name !== undefined) {
                 radio.setAttribute("name", this.name);
@@ -176,14 +194,36 @@ export class RadioGroup extends FASTElement {
                 this.focusedRadio = radio;
                 radio.checked = true;
                 radio.setAttribute("tabindex", "0");
+                foundMatchingVal = true;
             } else {
                 radio.setAttribute("tabindex", "-1");
             }
         });
 
         if (this.value === undefined && this.slottedRadioButtons.length > 0) {
-            this.slottedRadioButtons[0].setAttribute("tabindex", "0");
-            this.focusedRadio = this.slottedRadioButtons[0] as HTMLInputElement;
+            const checkedRadios: HTMLElement[] = this.slottedRadioButtons.filter(
+                (radio: HTMLInputElement) => {
+                    return radio.hasAttribute("checked");
+                }
+            );
+            const numberOfCheckedRadios: number =
+                checkedRadios !== null ? checkedRadios.length : 0;
+            if (numberOfCheckedRadios > 0 && !foundMatchingVal) {
+                const lastCheckedRadio: HTMLInputElement = checkedRadios[
+                    numberOfCheckedRadios - 1
+                ] as HTMLInputElement;
+                lastCheckedRadio.checked = true;
+                this.focusedRadio = lastCheckedRadio;
+                lastCheckedRadio.setAttribute("tabindex", "0");
+                // checkedRadios.forEach((radio: HTMLInputElement) => {
+                //     if (radio !== lastCheckedRadio) {
+                //         radio.removeAttribute("checked");
+                //     }
+                // })
+            } else {
+                this.slottedRadioButtons[0].setAttribute("tabindex", "0");
+                this.focusedRadio = this.slottedRadioButtons[0] as HTMLInputElement;
+            }
         }
     }
 
@@ -221,6 +261,7 @@ export class RadioGroup extends FASTElement {
                     }
                 });
             } else {
+                console.log("setting checked to true, moveToRadioIndex...");
                 radio.checked = true;
                 this.selectedRadio = radio;
             }
@@ -312,6 +353,7 @@ export class RadioGroup extends FASTElement {
             !this.focusedRadio.readOnly &&
             !this.focusedRadio.checked
         ) {
+            console.log("settings checked to true in checkFocusedRadio");
             this.focusedRadio.checked = true;
             this.focusedRadio.setAttribute("tabindex", "0");
             this.focusedRadio.focus();
