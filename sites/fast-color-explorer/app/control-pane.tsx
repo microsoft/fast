@@ -286,7 +286,7 @@ class ControlPaneBase extends React.Component<ControlPaneProps, ControlPaneState
         );
     }
 
-    private renderColorShortcuts(
+    private renderColorShortcutsService(
         colorValues: any,
         stateKey: keyof ControlPaneState,
         callback: (value: ColorRGBA64) => void

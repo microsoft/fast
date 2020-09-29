@@ -22,7 +22,7 @@ const shortcuts = new Shortcuts({
     messageSystem: fastMessageSystem,
     actions: [
         // Custom shortcut
-        new ShortcutAction({
+        new ShortcutsAction({
             id: "random",
             name: "Random action",
             keys: [
@@ -51,13 +51,13 @@ shortcuts.action("random").run();
 Shortcut actions can either be custom or imported from a set of actions available.
 
 ```typescript
-import { DuplicateShortcutAction, ShortcutAction, Shortcuts } from "@microsoft/fast-tooling"
+import { DuplicateShortcutsAction, ShortcutsAction, Shortcuts } from "@microsoft/fast-tooling"
 
 new Shortcuts({
     messageSystem: fastMessageSystem,
     actions: [
         // Custom shortcut
-        new ShortcutAction({
+        new ShortcutsAction({
             name: "Random action",
             keys: [
                 {
@@ -75,12 +75,12 @@ new Shortcuts({
             }
         }),
         // Pre-defined shortcut
-        new DuplicateShortcutAction()
+        new DuplicateShortcutsAction()
     ]
 });
 ```
 
-The `ShortcutAction` class should also contain a `matches` method that takes a `KeyboardEvent` as an argument and returns a boolean if the given event matches the keys it has been provided with.
+The `ShortcutsAction` class should also contain a `matches` method that takes a `KeyboardEvent` as an argument and returns a boolean if the given event matches the keys it has been provided with.
 
 ## Attaching the event listener
 

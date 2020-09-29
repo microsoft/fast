@@ -1,6 +1,9 @@
 import { CustomMessageIncomingOutgoing, MessageSystemType } from "../message-system";
-import { ShortcutAction, ShortcutActionCallbackConfig } from "./shortcut-action";
-import { MessageSystemUtility } from "./message-system-utility";
+import {
+    ShortcutsAction,
+    ShortcutsActionCallbackConfig,
+} from "./shortcuts.service-action";
+import { MessageSystemService } from "./message-system.service";
 
 export type shortcutMessageSystemAction = "initialize";
 export type shortcutMessageSystemId = "shortcuts";
@@ -11,10 +14,10 @@ export interface ShortcutMessageOutgoing extends CustomMessageIncomingOutgoing {
     action: shortcutMessageSystemAction;
     eventListener: () => void;
     eventListenerType: shortcutMessageSystemListenerType;
-    shortcuts: ShortcutActionCallbackConfig[];
+    shortcuts: ShortcutsActionCallbackConfig[];
 }
 
-export class Shortcuts extends MessageSystemUtility<ShortcutActionCallbackConfig> {
+export class Shortcuts extends MessageSystemService<ShortcutsActionCallbackConfig> {
     constructor(config) {
         super();
 
@@ -25,7 +28,7 @@ export class Shortcuts extends MessageSystemUtility<ShortcutActionCallbackConfig
      * The listener to attach to HTML elements
      */
     private listener = (e: KeyboardEvent): void => {
-        this.registeredActions.forEach((action: ShortcutAction) => {
+        this.registeredActions.forEach((action: ShortcutsAction) => {
             if (action.matches(e)) {
                 action.invoke();
             }
@@ -45,7 +48,7 @@ export class Shortcuts extends MessageSystemUtility<ShortcutActionCallbackConfig
                     eventListener: this.listener,
                     eventListenerType: "keypress",
                     shortcuts: this.registeredActions.map(
-                        (shortcutAction: ShortcutAction) => {
+                        (shortcutAction: ShortcutsAction) => {
                             return {
                                 name: shortcutAction.name,
                                 keys: shortcutAction.keys,
@@ -57,8 +60,8 @@ export class Shortcuts extends MessageSystemUtility<ShortcutActionCallbackConfig
         }
     };
 
-    getActionConfig = (id: string): ShortcutActionCallbackConfig => {
-        this.registeredActions.forEach((action: ShortcutAction) => {
+    getActionConfig = (id: string): ShortcutsActionCallbackConfig => {
+        this.registeredActions.forEach((action: ShortcutsAction) => {
             if (action.id === id) {
                 return {
                     name: action.name,

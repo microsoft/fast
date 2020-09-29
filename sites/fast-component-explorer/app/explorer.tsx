@@ -38,11 +38,11 @@ import {
     MessageSystem,
     MessageSystemType,
 } from "@microsoft/fast-tooling";
-import { MonacoAdapter } from "@microsoft/fast-tooling/dist/data-utilities/monaco-adapter";
+import { MonacoAdapter } from "@microsoft/fast-tooling/dist/message-system-service/monaco-adapter.service";
 import {
     MonacoAdapterAction,
     MonacoAdapterActionCallbackConfig,
-} from "@microsoft/fast-tooling/dist/data-utilities/monaco-adapter-action";
+} from "@microsoft/fast-tooling/dist/message-system-service/monaco-adapter.service-action";
 import { mapDataDictionaryToMonacoEditorHTML } from "@microsoft/fast-tooling/dist/data-utilities/monaco";
 import FASTMessageSystemWorker from "@microsoft/fast-tooling/dist/message-system.min.js";
 import {

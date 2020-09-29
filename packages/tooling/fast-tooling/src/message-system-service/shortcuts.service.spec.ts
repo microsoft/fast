@@ -1,6 +1,6 @@
 import { MessageSystem, MessageSystemType, Register } from "../message-system";
-import { Shortcuts } from "./shortcuts";
-import { ShortcutAction } from "./shortcut-action";
+import { Shortcuts } from "./shortcuts.service";
+import { ShortcutsAction } from "./shortcuts.service-action";
 
 describe("Shortcuts", () => {
     test("should not throw", () => {
@@ -106,7 +106,7 @@ describe("Shortcuts", () => {
 
         const shortcutAction = jest.fn();
         const actions = [
-            new ShortcutAction({
+            new ShortcutsAction({
                 id: "foo",
                 name: "Foo",
                 keys: [
@@ -134,7 +134,7 @@ describe("Shortcuts", () => {
         messageSystem.postMessage = postMessageCallback;
         const shortcutAction = jest.fn();
         const actions = [
-            new ShortcutAction({
+            new ShortcutsAction({
                 id: "foo",
                 name: "Foo",
                 keys: [
@@ -181,7 +181,7 @@ describe("Shortcuts", () => {
         messageSystem.postMessage = postMessageCallback;
         const shortcutAction = jest.fn();
         const actions = [
-            new ShortcutAction({
+            new ShortcutsAction({
                 id: "foo",
                 name: "Foo",
                 keys: [
@@ -216,7 +216,7 @@ describe("Shortcuts", () => {
         messageSystem.postMessage = postMessageCallback;
         const shortcutAction = jest.fn();
         const actions = [
-            new ShortcutAction({
+            new ShortcutsAction({
                 id: "foo",
                 name: "Foo",
                 keys: [
@@ -251,7 +251,7 @@ describe("Shortcuts", () => {
         messageSystem.postMessage = postMessageCallback;
         const shortcutAction = jest.fn();
         const actions = [
-            new ShortcutAction({
+            new ShortcutsAction({
                 id: "foo",
                 name: "Foo",
                 keys: [
@@ -286,7 +286,7 @@ describe("Shortcuts", () => {
         messageSystem.postMessage = postMessageCallback;
         const shortcutAction = jest.fn();
         const actions = [
-            new ShortcutAction({
+            new ShortcutsAction({
                 id: "foo",
                 name: "Foo",
                 keys: [
@@ -321,7 +321,7 @@ describe("Shortcuts", () => {
         messageSystem.postMessage = postMessageCallback;
         const shortcutAction = jest.fn();
         const actions = [
-            new ShortcutAction({
+            new ShortcutsAction({
                 id: "foo",
                 name: "Foo",
                 keys: [
@@ -356,7 +356,7 @@ describe("Shortcuts", () => {
         messageSystem.postMessage = postMessageCallback;
         const shortcutAction = jest.fn();
         const actions = [
-            new ShortcutAction({
+            new ShortcutsAction({
                 id: "foo",
                 name: "Foo",
                 keys: [
@@ -391,7 +391,7 @@ describe("Shortcuts", () => {
         messageSystem.postMessage = postMessageCallback;
         const shortcutAction = jest.fn();
         const actions = [
-            new ShortcutAction({
+            new ShortcutsAction({
                 id: "foo",
                 name: "Foo",
                 keys: [
@@ -401,7 +401,7 @@ describe("Shortcuts", () => {
                 ],
                 action: shortcutAction,
             }),
-            new ShortcutAction({
+            new ShortcutsAction({
                 id: "bat",
                 name: "Bat",
                 keys: [
@@ -429,7 +429,7 @@ describe("Shortcuts", () => {
         messageSystem.postMessage = postMessageCallback;
         const shortcutAction = jest.fn();
         const actions = [
-            new ShortcutAction({
+            new ShortcutsAction({
                 id: "foo",
                 name: "Foo",
                 keys: [
@@ -439,7 +439,7 @@ describe("Shortcuts", () => {
                 ],
                 action: shortcutAction,
             }),
-            new ShortcutAction({
+            new ShortcutsAction({
                 id: "bat",
                 name: "Bat",
                 keys: [
