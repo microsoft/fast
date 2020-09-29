@@ -1,5 +1,10 @@
 import { customElement } from "@microsoft/fast-element";
-import { Card, CardTemplate as template } from "@microsoft/fast-foundation";
+import {
+    Card,
+    CardTemplate as template,
+    defineDesignSystemProvider,
+} from "@microsoft/fast-foundation";
+import { neutralFillCard } from "../color";
 import { CardStyles as styles } from "./card.styles";
 
 /**
@@ -11,12 +16,18 @@ import { CardStyles as styles } from "./card.styles";
  * @remarks
  * HTML Element: \<fast-card\>
  */
-@customElement({
+@defineDesignSystemProvider({
     name: "fast-card",
     template,
     styles,
 })
-export class FASTCard extends Card {}
+export class FASTCard extends Card {
+    connectedCallback() {
+        this.backgroundColor = neutralFillCard(this.provider?.designSystem as any);
+
+        super.connectedCallback();
+    }
+}
 
 /**
  * Styles for Card

@@ -147,7 +147,9 @@ export interface Button extends StartEnd, DelegatesARIAButton {
 export const ButtonTemplate: import("@microsoft/fast-element").ViewTemplate<Button, any>;
 
 // @public
-export class Card extends FASTElement {
+export class Card extends DesignSystemProvider {
+    // (undocumented)
+    backgroundColor: string;
 }
 
 // @public
@@ -260,6 +262,9 @@ export class DesignSystemProvider extends FASTElement implements CSSCustomProper
     constructor();
     // @internal (undocumented)
     connectedCallback(): void;
+    protected cssCustomPropertyDefinitions: Map<string, CSSCustomPropertyDefinition & {
+        count: number;
+    }>;
     designSystem: {};
     // @internal
     designSystemProperties: {
@@ -270,6 +275,7 @@ export class DesignSystemProvider extends FASTElement implements CSSCustomProper
     disconnectedRegistry: Array<(provider: DesignSystemProvider) => void> | void;
     evaluate(definition: CSSCustomPropertyDefinition): string;
     static findProvider(el: HTMLElement & Partial<DesignSystemConsumer>): DesignSystemProvider | null;
+    getCustomPropertyTargetSheet(): CSSStyleSheet;
     static isDesignSystemProvider(el: HTMLElement | DesignSystemProvider): el is DesignSystemProvider;
     readonly isDesignSystemProvider = true;
     provider: DesignSystemProvider | null;

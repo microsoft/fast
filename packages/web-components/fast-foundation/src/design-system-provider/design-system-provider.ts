@@ -216,7 +216,7 @@ export class DesignSystemProvider extends FASTElement
     /**
      * Stores all CSSCustomPropertyDefinitions registered with the provider.
      */
-    private cssCustomPropertyDefinitions: Map<
+    protected cssCustomPropertyDefinitions: Map<
         string,
         CSSCustomPropertyDefinition & { count: number }
     > = new Map();
@@ -323,19 +323,45 @@ export class DesignSystemProvider extends FASTElement
         super();
 
         if (supportsAdoptedStylesheets && this.shadowRoot !== null) {
-            const sheet = new CSSStyleSheet();
-            sheet.insertRule(":host{}");
+            const sheet = this.getCustomPropertyTargetSheet();
+            const ruleLength = sheet.cssRules.length;
+            let ruleIndex: number | null = null;
+
+            if (ruleLength > 0) {
+                for (let i = 0; i < ruleLength; i++) {
+                    const rule = sheet.cssRules[i];
+                    if (
+                        rule.type === CSSRule.STYLE_RULE &&
+                        (rule as CSSStyleRule).selectorText === ":host"
+                    ) {
+                        ruleIndex = i;
+                        break;
+                    }
+                }
+            }
+
+            if (typeof ruleIndex !== "number") {
+                ruleIndex = sheet.insertRule(":host{}");
+            }
+
             (this.shadowRoot as any).adoptedStyleSheets = [
                 ...(this.shadowRoot as any).adoptedStyleSheets,
                 sheet,
             ];
 
-            this.customPropertyTarget = (sheet.rules[0] as CSSStyleRule).style;
+            this.customPropertyTarget = (sheet.rules[ruleIndex] as CSSStyleRule).style;
         } else {
             this.customPropertyTarget = this.style;
         }
 
         this.$fastController.addBehaviors([designSystemConsumerBehavior]);
+    }
+
+    /**
+     * Retrieves
+     */
+    public getCustomPropertyTargetSheet(): CSSStyleSheet {
+        return new CSSStyleSheet();
     }
 
     /**
@@ -374,16 +400,12 @@ export class DesignSystemProvider extends FASTElement
                     this.disconnectedCSSCustomPropertyRegistry[i]
                 );
             }
-
-            delete this.disconnectedCSSCustomPropertyRegistry;
         }
 
         if (Array.isArray(this.disconnectedRegistry)) {
             for (let i = 0; i < this.disconnectedRegistry.length; i++) {
                 this.disconnectedRegistry[i](this);
             }
-
-            delete this.disconnectedRegistry;
         }
     }
 
@@ -440,10 +462,12 @@ export class DesignSystemProvider extends FASTElement
      * evaluating any function values with the design system.
      */
     private setCustomProperty = (definition: CSSCustomPropertyDefinition) => {
-        this.customPropertyTarget.setProperty(
-            `--${definition.name}`,
-            this.evaluate(definition)
-        );
+        if (this.customPropertyTarget.getPropertyValue(`--${definition.name}`) === "") {
+            this.customPropertyTarget.setProperty(
+                `--${definition.name}`,
+                this.evaluate(definition)
+            );
+        }
     };
 
     /**
