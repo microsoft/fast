@@ -1,14 +1,19 @@
-import { AttachedBehaviorDirective, CaptureType, ChildrenBehavior, ChildrenBehaviorOptions } from "@microsoft/fast-element";
+import {
+    AttachedBehaviorDirective,
+    CaptureType,
+    ChildListBehaviorOptions,
+    ChildrenBehavior,
+} from "@microsoft/fast-element";
 
 /**
  * The options used to configure subtree observation.
  * @public
  */
 export interface SubtreeBehaviorOptions<T = any>
-    extends ChildrenBehaviorOptions<T>,
+    extends ChildListBehaviorOptions<T>,
         MutationObserverInit {
-            selector: string;
-        }
+    selector: string;
+}
 
 /**
  * The runtime behavior for subtree observation.
@@ -19,7 +24,11 @@ export class SubtreeBehavior extends ChildrenBehavior {
      * Retrieves the nodes that should be assigned to the target.
      */
     protected getNodes(): ChildNode[] {
-        return Array.from(this.target.querySelectorAll((this.options as SubtreeBehaviorOptions).selector));
+        return Array.from(
+            this.target.querySelectorAll(
+                (this.options as SubtreeBehaviorOptions).selector
+            )
+        );
     }
 }
 
@@ -35,9 +44,5 @@ export function subtree<T = any>(
     (options as MutationObserverInit).childList = true;
     (options as MutationObserverInit).subtree = true;
 
-    return new AttachedBehaviorDirective(
-        "fast-subtree",
-        SubtreeBehavior,
-        options as any
-    );
+    return new AttachedBehaviorDirective("fast-subtree", SubtreeBehavior, options as any);
 }
