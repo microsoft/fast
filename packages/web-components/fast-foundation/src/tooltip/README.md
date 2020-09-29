@@ -11,10 +11,10 @@ The `fast-tooltip` component is used provide extra information about another ele
 
 ```html live
 <fast-design-system-provider use-defaults>
-    <button id="mybutton">
+    <fast-button id="mybutton">
        Hover me for more info
-    </button>
-    <fast-tooltip anchor="mybutton">
+    </fast-button>
+    <fast-tooltip anchor="mybutton" position="right">
       helpful text
     </fast-tooltip>
 </fast-design-system-provider>
