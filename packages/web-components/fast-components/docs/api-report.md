@@ -7,7 +7,11 @@
 import { Accordion } from '@microsoft/fast-foundation';
 import { AccordionItem } from '@microsoft/fast-foundation';
 import { Anchor } from '@microsoft/fast-foundation';
+<<<<<<< HEAD
 import { AnchoredRegion } from '@microsoft/fast-foundation';
+=======
+import { Avatar } from '@microsoft/fast-foundation';
+>>>>>>> update api-report
 import { Badge } from '@microsoft/fast-foundation';
 import { BaseProgress } from '@microsoft/fast-foundation';
 import { Breadcrumb } from '@microsoft/fast-foundation';
@@ -225,6 +229,9 @@ export const AnchoredRegionStyles: import("@microsoft/fast-element").ElementStyl
 export const AnchorStyles: import("@microsoft/fast-element").ElementStyles;
 
 // @public
+export const AvatarStyles: import("@microsoft/fast-element").ElementStyles;
+
+// @public
 export const BadgeStyles: import("@microsoft/fast-element").ElementStyles;
 
 // @public
@@ -287,6 +294,10 @@ export class FASTAnchor extends Anchor {
 
 // @beta
 export class FASTAnchoredRegion extends AnchoredRegion {
+}
+
+// @public
+export class FASTAvatar extends Avatar {
 }
 
 // @public
