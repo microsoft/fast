@@ -38,11 +38,11 @@ import {
     MessageSystem,
     MessageSystemType,
 } from "@microsoft/fast-tooling";
-import { MonacoAdaptor } from "@microsoft/fast-tooling/dist/data-utilities/monaco-adaptor";
+import { MonacoAdapter } from "@microsoft/fast-tooling/dist/data-utilities/monaco-adapter";
 import {
-    MonacoAdaptorAction,
-    MonacoAdaptorActionCallbackConfig,
-} from "@microsoft/fast-tooling/dist/data-utilities/monaco-adaptor-action";
+    MonacoAdapterAction,
+    MonacoAdapterActionCallbackConfig,
+} from "@microsoft/fast-tooling/dist/data-utilities/monaco-adapter-action";
 import { mapDataDictionaryToMonacoEditorHTML } from "@microsoft/fast-tooling/dist/data-utilities/monaco";
 import FASTMessageSystemWorker from "@microsoft/fast-tooling/dist/message-system.min.js";
 import {
@@ -95,7 +95,7 @@ class Explorer extends Foundation<
     private windowResizing: number;
     private editor: monaco.editor.IStandaloneCodeEditor;
     private editorContainerRef: React.RefObject<HTMLDivElement> = React.createRef();
-    private adaptor: MonacoAdaptor;
+    private adapter: MonacoAdapter;
     private monacoValue: string[];
     private monacoEditorModel: monaco.editor.ITextModel;
     private firstRun: boolean = true;
@@ -130,12 +130,12 @@ class Explorer extends Foundation<
 
         this.monacoValue = [];
 
-        this.adaptor = new MonacoAdaptor({
+        this.adapter = new MonacoAdapter({
             messageSystem: fastMessageSystem,
             actions: [
-                new MonacoAdaptorAction({
+                new MonacoAdapterAction({
                     id: "monaco.setValue",
-                    action: (config: MonacoAdaptorActionCallbackConfig): void => {
+                    action: (config: MonacoAdapterActionCallbackConfig): void => {
                         // trigger an update to the monaco value that
                         // also updates the DataDictionary which fires a
                         // postMessage to the MessageSystem
@@ -162,7 +162,7 @@ class Explorer extends Foundation<
                             : [modelValue];
 
                         if (!this.firstRun) {
-                            this.adaptor.action("monaco.setValue").run();
+                            this.adapter.action("monaco.setValue").run();
                         }
 
                         this.firstRun = false;
@@ -430,7 +430,7 @@ class Explorer extends Foundation<
         ) {
             updatedState.dataDictionary = e.data.dataDictionary;
 
-            if (!e.data.options || e.data.options.from !== "monaco-adaptor") {
+            if (!e.data.options || e.data.options.from !== "monaco-adapter") {
                 this.updateEditorContent(e.data.dataDictionary);
             }
         }

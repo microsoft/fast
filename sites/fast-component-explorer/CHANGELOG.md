@@ -18,7 +18,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 ### Features
 
 * add mobile view to the component explore site ([#3937](https://github.com/Microsoft/fast/issues/3937)) ([deb455b](https://github.com/Microsoft/fast/commit/deb455b8c313d368596e83c9f8e855c865fa3829))
-* add monaco adaptor to component explorer site ([#3949](https://github.com/Microsoft/fast/issues/3949)) ([1aa994e](https://github.com/Microsoft/fast/commit/1aa994e986e52e8b1fab93e65665a1d4e56ae496))
+* add monaco adapter to component explorer site ([#3949](https://github.com/Microsoft/fast/issues/3949)) ([1aa994e](https://github.com/Microsoft/fast/commit/1aa994e986e52e8b1fab93e65665a1d4e56ae496))
 * add tooltip component ([#3549](https://github.com/Microsoft/fast/issues/3549)) ([cb7aa98](https://github.com/Microsoft/fast/commit/cb7aa98ccaaad00e9e86b4575ef011986c054d08))
 * allow a dictionary id to be set during initialization ([#3955](https://github.com/Microsoft/fast/issues/3955)) ([70f3d00](https://github.com/Microsoft/fast/commit/70f3d0076a88fb42f26e610fa25204981aa2678e))
 

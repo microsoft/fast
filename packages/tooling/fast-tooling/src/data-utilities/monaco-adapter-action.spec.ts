@@ -1,10 +1,10 @@
 import { MessageSystemType } from "../message-system";
-import { MonacoAdaptorAction } from "./monaco-adaptor-action";
+import { MonacoAdapterAction } from "./monaco-adapter-action";
 
-describe("MonacoAdaptorAction", () => {
+describe("MonacoAdapterAction", () => {
     test("should not throw", () => {
         expect(() => {
-            new MonacoAdaptorAction({
+            new MonacoAdapterAction({
                 action: jest.fn(),
                 id: "foo",
             });
@@ -13,20 +13,20 @@ describe("MonacoAdaptorAction", () => {
     test("should add config items to an instance of the action", () => {
         const callback1 = jest.fn();
         const callback2 = jest.fn();
-        const monacoAdaptorAction = new MonacoAdaptorAction({
+        const monacoAdapterAction = new MonacoAdapterAction({
             action: jest.fn(),
             id: "foo",
         });
 
-        monacoAdaptorAction.addConfig({
+        monacoAdapterAction.addConfig({
             getMonacoModelValue: callback1,
             updateMonacoModelValue: callback2,
             messageSystemType: MessageSystemType.custom,
         });
 
-        expect(monacoAdaptorAction["getMonacoModelValue"]).toEqual(callback1);
-        expect(monacoAdaptorAction["updateMonacoModelValue"]).toEqual(callback2);
-        expect(monacoAdaptorAction["messageSystemType"]).toEqual(
+        expect(monacoAdapterAction["getMonacoModelValue"]).toEqual(callback1);
+        expect(monacoAdapterAction["updateMonacoModelValue"]).toEqual(callback2);
+        expect(monacoAdapterAction["messageSystemType"]).toEqual(
             MessageSystemType.custom
         );
     });
@@ -34,12 +34,12 @@ describe("MonacoAdaptorAction", () => {
         const callback1 = jest.fn();
         const callback2 = jest.fn();
         const action = jest.fn();
-        const monacoAdaptorAction = new MonacoAdaptorAction({
+        const monacoAdapterAction = new MonacoAdapterAction({
             action,
             id: "foo",
         });
 
-        monacoAdaptorAction.addConfig({
+        monacoAdapterAction.addConfig({
             getMonacoModelValue: callback1,
             updateMonacoModelValue: callback2,
             messageSystemType: MessageSystemType.custom,
@@ -47,7 +47,7 @@ describe("MonacoAdaptorAction", () => {
 
         expect(action).toHaveBeenCalledTimes(0);
 
-        monacoAdaptorAction.invoke();
+        monacoAdapterAction.invoke();
 
         expect(action).toHaveBeenCalledTimes(1);
         expect(action.mock.calls[0][0]).toEqual({
@@ -61,18 +61,18 @@ describe("MonacoAdaptorAction", () => {
         const callback1 = jest.fn();
         const callback2 = jest.fn();
         const action = jest.fn();
-        const monacoAdaptorAction = new MonacoAdaptorAction({
+        const monacoAdapterAction = new MonacoAdapterAction({
             action,
             id: "foo",
         });
 
-        monacoAdaptorAction.addConfig({
+        monacoAdapterAction.addConfig({
             getMonacoModelValue: callback1,
             updateMonacoModelValue: callback2,
             messageSystemType: MessageSystemType.custom,
         });
 
-        expect(monacoAdaptorAction.getMessageSystemType()).toEqual(
+        expect(monacoAdapterAction.getMessageSystemType()).toEqual(
             MessageSystemType.custom
         );
     });
@@ -80,34 +80,34 @@ describe("MonacoAdaptorAction", () => {
         const callback1 = jest.fn();
         const callback2 = jest.fn();
         const action = jest.fn();
-        const monacoAdaptorAction = new MonacoAdaptorAction({
+        const monacoAdapterAction = new MonacoAdapterAction({
             action,
             id: "foo",
         });
 
-        monacoAdaptorAction.addConfig({
+        monacoAdapterAction.addConfig({
             getMonacoModelValue: callback1,
             updateMonacoModelValue: callback2,
             messageSystemType: MessageSystemType.custom,
         });
 
-        expect(monacoAdaptorAction.matches(MessageSystemType.custom)).toEqual(true);
+        expect(monacoAdapterAction.matches(MessageSystemType.custom)).toEqual(true);
     });
     test("should return false if the MessageSystemType does not match", () => {
         const callback1 = jest.fn();
         const callback2 = jest.fn();
         const action = jest.fn();
-        const monacoAdaptorAction = new MonacoAdaptorAction({
+        const monacoAdapterAction = new MonacoAdapterAction({
             action,
             id: "foo",
         });
 
-        monacoAdaptorAction.addConfig({
+        monacoAdapterAction.addConfig({
             getMonacoModelValue: callback1,
             updateMonacoModelValue: callback2,
             messageSystemType: MessageSystemType.custom,
         });
 
-        expect(monacoAdaptorAction.matches(MessageSystemType.initialize)).toEqual(false);
+        expect(monacoAdapterAction.matches(MessageSystemType.initialize)).toEqual(false);
     });
 });

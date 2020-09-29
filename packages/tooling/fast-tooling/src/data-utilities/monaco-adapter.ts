@@ -4,16 +4,16 @@ import {
     SchemaDictionary,
 } from "../message-system";
 import { DataDictionary } from "../message-system";
-import { LinkedData, Parent } from "../";
+import { LinkedData, Parent } from "..";
 import { mapDataDictionaryToMonacoEditorHTML } from "./monaco";
 import {
     MessageSystemUtility,
     MessageSystemUtilityConfig,
 } from "./message-system-utility";
 import {
-    MonacoAdaptorAction,
-    MonacoAdaptorActionCallbackConfig,
-} from "./monaco-adaptor-action";
+    MonacoAdapterAction,
+    MonacoAdapterActionCallbackConfig,
+} from "./monaco-adapter-action";
 import { mapVSCodeParsedHTMLToDataDictionary } from "./mapping.vscode-html-languageservice";
 
 export type actionCallback = () => void;
@@ -30,7 +30,7 @@ export interface ExtendedParent extends Parent {
     linkedDataIndex: number;
 }
 
-const monacoAdaptorId: string = "monaco-adaptor";
+const monacoAdapterId: string = "monaco-adapter";
 
 export function findDictionaryIdParents(
     dictionaryId: string,
@@ -89,15 +89,15 @@ export function findUpdatedDictionaryId(
     return findUpdatedDictionaryId(parents, dataDictionary, newDictionaryId);
 }
 
-export class MonacoAdaptor extends MessageSystemUtility<
-    MonacoAdaptorActionCallbackConfig
+export class MonacoAdapter extends MessageSystemUtility<
+    MonacoAdapterActionCallbackConfig
 > {
     private monacoModelValue: string[];
     private schemaDictionary: SchemaDictionary;
     private dataDictionary: DataDictionary<unknown>;
     private dictionaryId: string;
 
-    constructor(config: MessageSystemUtilityConfig<MonacoAdaptorActionCallbackConfig>) {
+    constructor(config: MessageSystemUtilityConfig<MonacoAdapterActionCallbackConfig>) {
         super();
 
         this.registerMessageSystem(config);
@@ -113,7 +113,7 @@ export class MonacoAdaptor extends MessageSystemUtility<
                 this.dictionaryId = e.data.activeDictionaryId;
                 this.dataDictionary = e.data.dataDictionary;
 
-                if (!e.data.options || e.data.options.from !== monacoAdaptorId) {
+                if (!e.data.options || e.data.options.from !== monacoAdapterId) {
                     this.schemaDictionary = e.data.schemaDictionary;
                     this.monacoModelValue = [
                         mapDataDictionaryToMonacoEditorHTML(
@@ -121,7 +121,7 @@ export class MonacoAdaptor extends MessageSystemUtility<
                             e.data.schemaDictionary
                         ),
                     ];
-                    this.registeredActions.forEach((action: MonacoAdaptorAction) => {
+                    this.registeredActions.forEach((action: MonacoAdapterAction) => {
                         if (action.matches(e.data.type)) {
                             action.invoke();
                         }
@@ -139,7 +139,7 @@ export class MonacoAdaptor extends MessageSystemUtility<
      */
     getActionConfig = (
         messageSystemType: MessageSystemType
-    ): MonacoAdaptorActionCallbackConfig => {
+    ): MonacoAdapterActionCallbackConfig => {
         return {
             getMonacoModelValue: this.getMonacoModelValue,
             updateMonacoModelValue: this.updateMonacoModelValue,
@@ -151,7 +151,7 @@ export class MonacoAdaptor extends MessageSystemUtility<
      * Adds all config options to registered actions
      */
     private addConfigToActions(): void {
-        this.registeredActions.forEach((registeredAction: MonacoAdaptorAction) => {
+        this.registeredActions.forEach((registeredAction: MonacoAdapterAction) => {
             registeredAction.addConfig({
                 getMonacoModelValue: this.getMonacoModelValue,
                 updateMonacoModelValue: this.updateMonacoModelValue,
@@ -205,7 +205,7 @@ export class MonacoAdaptor extends MessageSystemUtility<
             dataDictionary,
             schemaDictionary: this.schemaDictionary,
             options: {
-                from: monacoAdaptorId,
+                from: monacoAdapterId,
             },
             dictionaryId: this.dictionaryId,
         } as InitializeMessageIncoming);
