@@ -239,11 +239,11 @@ export class Tabs extends FASTElement {
             switch (keyCode) {
                 case keyCodeArrowLeft:
                     event.preventDefault();
-                    this.adjust(1);
+                    this.adjust(-1);
                     break;
                 case keyCodeArrowRight:
                     event.preventDefault();
-                    this.adjust(-1);
+                    this.adjust(1);
                     break;
             }
         } else {
