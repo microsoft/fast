@@ -96,6 +96,7 @@ export class RadioGroup extends FASTElement {
                 }
             });
         }
+        this.$emit("change");
     }
 
     /**
@@ -131,7 +132,6 @@ export class RadioGroup extends FASTElement {
     constructor() {
         super();
         this.addEventListener("keydown", this.keydownHandler);
-        this.addEventListener("change", this.radioChangeHandler);
         this.addEventListener("keypress", this.keypressHandler);
         this.addEventListener("click", this.clickHandler);
         this.addEventListener("focusout", this.focusOutHandler);
@@ -151,10 +151,12 @@ export class RadioGroup extends FASTElement {
 
     public disconnectedCallback(): void {
         this.removeEventListener("keydown", this.keydownHandler);
-        this.removeEventListener("change", this.radioChangeHandler);
         this.removeEventListener("keypress", this.keypressHandler);
         this.removeEventListener("click", this.clickHandler);
         this.removeEventListener("focusout", this.focusOutHandler);
+        this.slottedRadioButtons.forEach((radio: HTMLInputElement) => {
+            radio.removeEventListener("change", this.radioChangeHandler);
+        });
     }
 
     private setupRadioButtons(): void {
@@ -194,6 +196,7 @@ export class RadioGroup extends FASTElement {
             } else {
                 radio.setAttribute("tabindex", "-1");
             }
+            radio.addEventListener("change", this.radioChangeHandler);
         });
 
         if (this.value === undefined && this.slottedRadioButtons.length > 0) {
@@ -225,8 +228,9 @@ export class RadioGroup extends FASTElement {
         }
     };
 
-    private radioChangeHandler = (e: CustomEvent): void => {
+    private radioChangeHandler = (e: CustomEvent): boolean | void => {
         const changedRadio: HTMLInputElement = e.target as HTMLInputElement;
+
         if (changedRadio.checked) {
             this.slottedRadioButtons.forEach((radio: HTMLInputElement) => {
                 if (radio !== changedRadio) {
@@ -239,6 +243,7 @@ export class RadioGroup extends FASTElement {
             changedRadio.setAttribute("tabindex", "0");
             this.focusedRadio = changedRadio;
         }
+        e.stopPropagation();
     };
 
     private moveToRadioByIndex = (group: HTMLElement[], index: number) => {
