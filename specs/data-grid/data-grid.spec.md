@@ -45,7 +45,7 @@ Any time an author wants to display tabular data.
 
 ## Design
 
-`Data grid` enables a high degree of customizability in addition to being the component's base styles. Authors can choose the templates applied to grid and header cells on a per column basis using the properties of `DataGridColumn`. Additionally, authors can specify the templates used during the creation of rows and cells from data sources through the item template properties of the grid and row components (`rowItemTemplate` and `cellItemTemplate`).  Finally, authors can add elements they create and manage themselves through the various element slots.
+The Fast `Data grid` components enable a high degree of customizability. In addition to being able to set the base styles of the components authors can choose the templates applied to grid and header cells on a per column basis using the properties of `DataGridColumn`. Additionally, authors can specify the templates used during the creation of rows and cells from data sources through the item template properties of the grid and row components (`rowItemTemplate` and `cellItemTemplate`).  Finally, authors can add elements they create and manage themselves through the various element slots.
 
 ### API
 
@@ -118,7 +118,6 @@ Static function that creates a basic set of columns from an object representing 
 
 - `rowsSlot`
 
-
 **Data grid header**
 - `fast-data-grid-header`
 
@@ -130,7 +129,7 @@ Static function that creates a basic set of columns from an object representing 
 An array of `DataGridColumn` objects that define what columns will be displayed in the grid.  The order of the columns determines their order in the grid.
 
 - `headerCellItemTemplate`  
-Custom [template](https://fast.design/docs/fast-element/declaring-templates) to use when generating header cells by iterating over data.  The default template uses `fast-data-grid-header-cell`, this is where authors change that.
+Custom [template](https://fast.design/docs/fast-element/declaring-templates) to use when generating header cells by iterating over data.  The default template uses `<fast-data-grid-header-cell>`, this is where authors change that.
 
 *Slots:*
 - `default`  
@@ -179,7 +178,7 @@ The objects that contains the data to be displayed in this row.
 An array of `DataGridColumn` objects that define what columns will be displayed in the grid.  The order of the columns determines their order in the grid.
 
 - `cellItemTemplate`  
-Custom [template](https://fast.design/docs/fast-element/declaring-templates) to use when generating cells by iterating over data.  The default template uses `fast-data-grid-cell`, this is where authors change that.
+Custom [template](https://fast.design/docs/fast-element/declaring-templates) to use when generating cells by iterating over data.  The default template uses `<fast-data-grid-cell>`, this is where authors change that.
 
 *Slots:*
 - `default`  
