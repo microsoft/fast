@@ -41,8 +41,6 @@ A common use case would be to display an image or text (usually initials) of a u
 | `fill`    | Accepts a string that defines the `avatar-fill-*` post-fix for custom variable mapping.                | `string`                 |
 | `color`   | Accepts a string that defines the `avatar-color-*` post-fix for custom variable mapping.                    | `string`                |
 
-Accepts a string that defines the `avatar-color-*` post-fix for custom variable mapping.
-
 ### Anatomy and Appearance
 
 *Template*
