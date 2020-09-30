@@ -38,35 +38,41 @@ A common use case would be to display an image or text (usually initials) of a u
 | `alt`| Accepts alt text for image                                  | `string`                            |
 | `link`    | Accepts a URL for the anchor source                         | `string`                            |
 | `shape`   | Determines the avatar coin shape. Default will be a circle. | `string: default | circle | square` |
-| `fill`    | Sets the background fill of the avatar coin.                | `string: hex color`                 |
-| `color`   | Sets the color of the avatar coin text.                     | `string: hex color`                 |
+| `fill`    | Accepts a string that defines the `avatar-fill-*` post-fix for custom variable mapping.                | `string`                 |
+| `color`   | Accepts a string that defines the `avatar-color-*` post-fix for custom variable mapping.                    | `string`                |
+
+Accepts a string that defines the `avatar-color-*` post-fix for custom variable mapping.
 
 ### Anatomy and Appearance
 
 *Template*
 ```js
-  <template>
-    <div 
-      class="coin ${x => (x.shape === "square" ? "square" : "circle")}"
-      style="${x =>
-        x.fill || x.color
-            ? `background-color: var(--avatar-fill-${x.fill}); color: var(--avatar-color-${x.color});`
-            : void 0}"
-    >
-      <a class="link" href="${x => (x.link ? x.link : void 0)}">
-        ${when(x => x.imgSrc, html`
-          <img 
+<template>
+  <div
+    class="coin ${x => (x.shape === "square" ? "square" : "circle")}"
+    part="coin"
+    style="${x =>
+      x.fill || x.color
+        ? `background-color: var(--avatar-fill-${x.fill}); color: var(--avatar-color-${x.color});`
+        : void 0}"
+  >
+    <a class="link" part="link" href="${x => (x.link ? x.link : void 0)}">
+      ${when(
+        x => x.imgSrc,
+        html`
+          <img
             src="${x => x.imgSrc}"
             alt="${x => x.alt}"
             tabindex="${x => (!x.link ? "0" : void 0)}"
             class="image"
           />
-        `)}
-        <span class="name">${x => x.initials}</span>
-      </a>
-    </div>
-    <slot name="badge"></slot>
-  </template> 
+        `
+      )}
+      <span class="name" part="name">${x => x.initials}</span>
+    </a>
+  </div>
+  <slot name="badge" part="badge"></slot>
+</template> 
 ```
 
 ---
@@ -106,7 +112,6 @@ If a badge is used it should appear on the appropriate side of the coin.
 ## Resources
 
 - [WCAG - 1.4.3 Contrast (Minimum)](https://www.w3.org/TR/UNDERSTANDING-WCAG20/visual-audio-contrast-contrast.html)
-- When a link source URL is provided an `aria-link` attribute should be conditionally added
 
 ## Next Steps
 
