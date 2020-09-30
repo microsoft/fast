@@ -4,36 +4,29 @@
     <button
         onclick="const rg1 = document.getElementById('vertical'); rg1.setAttribute('value', 'juniper' );"
     >
-        Set Juniper
+        Set value to Juniper
     </button>
     <button
         onclick="const rg2 = document.getElementById('vertical'); rg2.setAttribute('value', 'hemlock' );"
     >
-        Set Hemlock attr
+        Set value to hemlock
     </button>
     <button
         onclick="const rg3 = document.getElementById('vertical'); rg3.setAttribute('value', 'fir' );"
     >
-        Set fir
+        Set value to fir
     </button>
 
     <button
         onclick="const rg4 = document.getElementById('hemlock'); rg4.checked = !rg4.checked;"
     >
-        Set Hemlock
+        Set Hemlock radio
     </button>
     <button
         onclick="const rg5 = document.getElementById('fir'); rg5.checked = !rg5.checked;"
     >
-        Set fir
+        Set fir radio
     </button>
-    <h4>native</h4>
-    <input type="radio" name="foo" value="blue" id="blue-radio" />
-    <label for="blue-radio">blue</label>
-    <input type="radio" name="foo" value="red" checked id="red-radio" />
-    <label for="red-radio">red</label>
-    <input type="radio" name="foo" value="white" checked id="white-radio" />
-    <label for="white-radio">white</label>
 
     <h4>Defaults</h4>
     <div>
@@ -54,7 +47,7 @@
             <fast-radio id="fir" value="fir">Fir</fast-radio>
             <fast-radio value="juniper">Juniper</fast-radio>
             <fast-radio id="hemlock" value="hemlock" checked>Hemlock</fast-radio>
-            <fast-radio value="pine">Pine</fast-radio>
+            <fast-radio value="pine" checked>Pine</fast-radio>
         </fast-radio-group>
     </div>
 

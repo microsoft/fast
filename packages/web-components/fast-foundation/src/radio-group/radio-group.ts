@@ -211,11 +211,6 @@ export class RadioGroup extends FASTElement {
                 lastCheckedRadio.checked = true;
                 this.focusedRadio = lastCheckedRadio;
                 lastCheckedRadio.setAttribute("tabindex", "0");
-                // checkedRadios.forEach((radio: HTMLInputElement) => {
-                //     if (radio !== lastCheckedRadio) {
-                //         radio.removeAttribute("checked");
-                //     }
-                // })
             } else {
                 this.slottedRadioButtons[0].setAttribute("tabindex", "0");
                 this.focusedRadio = this.slottedRadioButtons[0] as HTMLInputElement;
