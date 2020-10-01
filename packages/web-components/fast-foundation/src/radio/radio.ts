@@ -101,7 +101,7 @@ export class Radio extends FormAssociated<HTMLInputElement> implements RadioCont
      * @public
      */
     @observable
-    public checked: boolean = this.defaultChecked;
+    public checked: boolean = this.defaultChecked ?? false;
     private checkedChanged(): void {
         if (this.$fastController.isConnected) {
             // TODO: temporarily removed as it's causing issues with

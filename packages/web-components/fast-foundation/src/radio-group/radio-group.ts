@@ -195,6 +195,7 @@ export class RadioGroup extends FASTElement {
                 foundMatchingVal = true;
             } else {
                 radio.setAttribute("tabindex", "-1");
+                radio.checked = false;
             }
             radio.addEventListener("change", this.radioChangeHandler);
         });
