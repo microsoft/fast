@@ -16,5 +16,3 @@ source inputs.sh --debug true --product $product --subscription $subscription --
 
 ## DELETE Services
 source $dir/services/delete-rg.sh & wait $!
-# source $dir/services/create-asp.sh & wait $!
-# source $dir/services/create-app.sh & wait $!
