@@ -2,7 +2,7 @@
 
 ## Overview
 
-A disclosure component is the combination of a button and section of content, a button that toggles the visibility of the section. As defined by the W3C:
+A disclosure component is the implementation of native `details` and `summary` control that toggles the visibility of the extra content. Visually, it would look like a button or hyperlink and beneath extra content. As defined by the W3C:
 
 > A disclosure is a button that controls the visibility of a section of content. When the controlled content is hidden, it is often styled as a typical push button with a right-pointing arrow or triangle to hint that activating the button will display additional content. When the content is visible, the arrow or triangle typically points down.
 
@@ -31,7 +31,7 @@ A disclosure component is the combination of a button and section of content, a 
 
 The disclosure component can easily be extended for customization, for example adding animation to reveal the content or get the height of extra content slot.
 
--   Basic component which toggles the extra content and to add animation extra styles can be applied to derived/extended component.
+-   Basic component which toggles the extra content and to add animation extra styles that can be applied to derived/extended component.
 -   To have further control to the extra content, there are also `contentNode` and `contentHeight` available as getters.
 
 ### API
