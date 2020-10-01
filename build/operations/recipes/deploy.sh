@@ -1,12 +1,10 @@
 #!/bin/bash
 
 : 'AZURE FAST DEPLOYING
-This will deploy from staging to production via Azure Web App Slot swapping.
-
+This will deploy from staging to production via Azure Web App Slot swapping. 
+To revert, simply re-run, and the instances will swap back to their original 
+states assuming there has been no merges into master between executions.
 '
-# TODOs
-# [] if deployment fails, add revert logic. Probably easiest to include as another select option. [Y] to resume (default), [N] to cancel, [R] to revert.
-
 # CONFIGURATION
     source ./config.sh
 
