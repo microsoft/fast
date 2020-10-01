@@ -11,6 +11,10 @@ A disclosure component is the implementation of native `details` and `summary` c
 -   In general, reveal the extra information on button click when the end-user is needed to know/see.
 -   Laurel wanted to buy a new phone and she was looking at one of the websites where all the basic information was shown. She read about a camera feature called Night Mode and there was a section labeled "See the advanced technology that goes into every Night mode shot". She clicked on it and found out how that feature would work. With that extra information on that feature, she was quite confident in her buying.
 
+### Non-goals
+
+Many times disclosures may take different appearances, such as a button or anchor. Inclusion of such attributes should be applied at the design system / component implementation level.
+
 ### Features
 
 -   Enter and Space: activates the disclosure component and toggles the visibility of the disclosure content.
@@ -32,7 +36,6 @@ A disclosure component is the implementation of native `details` and `summary` c
 The disclosure component can easily be extended for customization, for example adding animation to reveal the content or get the height of extra content slot.
 
 -   Basic component which toggles the extra content and to add animation extra styles that can be applied to derived/extended component.
--   To have further control to the extra content, there are also `contentNode` and `contentHeight` available as getters.
 
 ### API
 
@@ -43,7 +46,7 @@ The disclosure component can easily be extended for customization, for example a
     -   `show()`: to show the content
     -   `hide()`: to hide the content
     -   `toggle()`: to toggle the content
--   _Events_
+-   _Events_:
     -   `toggle: CustomEvent` - No custom data.
 
 ### Anatomy and Appearance
@@ -52,7 +55,9 @@ The disclosure component can easily be extended for customization, for example a
 <host>
     <details>
         <summary>
+            <slot name="start"></slot>
             <slot name="title"></slot>
+            <slot name="end"></slot>
         </summary>
         <div>
             <slot></slot>
@@ -62,32 +67,17 @@ The disclosure component can easily be extended for customization, for example a
 ```
 
 -   _Slot Names_
+    -   start: add glyph for toggle state
     -   title: invoker title (could look like as a button or hyperlink)
+    -   end: add glyph for toggle state
     -   default: extra content to be placed
 
 ---
 
 ## Implementation
 
-Invoker as button
-
 ```html
 <fast-disclosure>
-    <span slot="title">More about Green Arrow</span>
-    <div>
-        Green Arrow is a fictional superhero who appears in comic books published by DC
-        Comics. Created by Mort Weisinger and designed by George Papp, he first appeared
-        in More Fun Comics #73 in November 1941. His real name is Oliver Jonas Queen, a
-        wealthy businessman and owner of Queen Industries who is also a well-known
-        celebrity in Star City.
-    </div>
-</fast-disclosure>
-```
-
-Invoker as hypertext
-
-```html
-<fast-disclosure as-button="false">
     <span slot="title">More about Green Arrow</span>
     <div>
         Green Arrow is a fictional superhero who appears in comic books published by DC
