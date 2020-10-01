@@ -30,7 +30,9 @@ __Example__
 
 The file can have as many `template` elements as needed as long as the `title` attributes are unique for each one.
 
-## Definition
+## Definitions
+
+### Component Definition
 
 Each component must have a **definition**. This file describes the components API.
 
@@ -38,9 +40,30 @@ Steps to add a new definition:
 - Create a TypeScript file using spinal-case, this should be the name of your component and append it with `definition` which should be preceeded by a `.`. An example would be a `fast-button`, the expected name would be `fast-button.definition.ts`.
 - Add your export from the file to the component's `index.ts`.
 
-## Open UI Definition
+_Component Folder Structure_
+```
+my-component/
+  └─ fixtures/
+  └─ index.ts
+  └─ my-component.definition.ts <--
+  └─ my-component.stories.ts
+  └─ my-component.styles.ts
+```
+
+### Open UI Definition
 
 Each component must have an [Open UI definition](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-components/src/__test__/component.schema.json). The `implementation` section of the definition will be populated by the above definition.
+
+_Component Folder Structure_
+```
+my-component/
+  └─ fixtures/
+  └─ index.ts
+  └─ my-component.definition.ts 
+  └─ my-component.open-ui.definition.ts <--
+  └─ my-component.stories.ts
+  └─ my-component.styles.ts
+```
 
 ## Configuration
 
