@@ -6,11 +6,7 @@ import { Breadcrumb } from "./breadcrumb";
  * @public
  */
 export const BreadcrumbTemplate = html<Breadcrumb>`
-    <template
-        role="navigation"
-        aria-label="${x => x.ariaLabel}"
-        aria-labelledby="${x => x.ariaLabelledby}"
-    >
+    <template role="navigation">
         <div role="list" class="list" part="list">
             <slot
                 ${slotted({ property: "slottedBreadcrumbItems", filter: elements() })}

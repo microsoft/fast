@@ -8,25 +8,6 @@ import { BreadcrumbItem } from "../breadcrumb-item";
  */
 export class Breadcrumb extends FASTElement {
     /**
-     * The id of the element labeling the breadcrumb.
-     * @public
-     * @remarks
-     * HTML Attribute: aria-labelledby
-     */
-    @attr({ attribute: "aria-labelledby" })
-    public ariaLabelledby: string;
-
-    /**
-     * The label surfaced to assistive technologies.
-     *
-     * @public
-     * @remarks
-     * HTML Attribute: aria-label
-     */
-    @attr({ attribute: "aria-label" })
-    public ariaLabel: string;
-
-    /**
      * @internal
      */
     @observable
