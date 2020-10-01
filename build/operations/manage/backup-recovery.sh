@@ -8,5 +8,3 @@ https://docs.microsoft.com/en-us/Azure/app-service/app-service-web-restore-snaps
 '
 
 az webapp config snapshots list
-
-
