@@ -1,11 +1,11 @@
 #!/bin/bash
 
 : 'AZURE OPERATIONS RESOURCE GROUP (fast-ops-rg)
-These services are located at subscription root and environment specific, one each, for production and development. 
-Isolating by environment improves security. Key Vault stores secrets, keys, and certificates. If Key Vault is 
+Services are located at subscription root and environment specific, one each, for production and development. 
+Isolating by environment improves security and reduces cost in development. Key Vault stores secrets, keys, and certificates. If Key Vault is 
 compromised in development, that same vault information is not redundant in other environment Key Vaults.
 
-These services (Front Door, Key Vault, CDN) are manually created and locked except for administrators and owners.  
+These services (Front Door, Key Vault, CDN) are manually created and locked except for administrators and owners.
 
 Note: Some aspects of Key Vault are in preview and not creatable using Azure CLI.
 '
