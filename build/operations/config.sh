@@ -45,69 +45,12 @@ az configure --defaults output=table disable_confirm_prompt=false enable_log_fil
 
 # SHELL Arguments
     source inputs.sh
+    source $dir/functions.sh
 
-# ENVIRONMENT CONFIGURATION
-
-    if [ -z "$environment" ];
-    then
-        echo "Select an ${bold}${green}Environment${reset}:"
-        select environment in ${environments[@]}
-        do
-            case $environment in
-                production | development)
-                    source inputs.sh -e $environment -s $environment 
-                    break ;;
-                staging)
-                    source inputs.sh -e $environment -s production
-                    break ;;
-                exit)
-                    echo "${bold}${green}cancelled.${reset}" 
-                    exit ;;
-                *)
-                    echo "${red}invalid entry, try again${reset}" ;;
-            esac
-        done
-    fi
-
-# REGION CONFIGURATION
-
-    if [ -z "$region" ];
-    then
-        echo "Select an ${bold}${green}Region${reset}:"    
-        select region in ${regions[@]}
-        do
-            case $region in
-                westus | eastus | centralus)  
-                    source inputs.sh -r $region
-                    break ;;
-                exit)
-                    echo "${bold}${green}cancelled.${reset}" 
-                    exit ;;
-                *)
-                    echo "${red}invalid entry, try again${reset}" ;;
-            esac
-        done
-    fi
-
-# APPLICATION CONFIGURATION
-
-    if [ -z "$application" ];
-    then
-        echo "Select an ${bold}${green}Application${reset}:"    
-        select application in ${applications[@]}
-        do
-            case $application in
-                app | color | create | explore | motion | www)
-                    source inputs.sh -a $application
-                    break ;;
-                exit)
-                    echo "${bold}${green}cancelled.${reset}" 
-                    exit ;;
-                *)
-                    echo "${red}invalid entry, try again${reset}" ;;
-            esac
-        done
-    fi
-
-# SUBSCRIPTION RETRIEVAL
-    source inputs.sh --debug false --subscription $subscription
+# SHELL Prompting
+    setEnvironment
+    setRegion
+   
+# SHELL Operations
+    getSubscription
+    

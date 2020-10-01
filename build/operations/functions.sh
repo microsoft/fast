@@ -67,7 +67,8 @@ function setRegion() {
         do
             case $region in
                 westus | eastus | centralus)  
-                    source inputs.sh -r $region
+                    resource_group=fast-$region-rg
+                    source inputs.sh -r $region -rg $resource_group
                     break ;;
                 exit)
                     echo "${bold}${green}cancelled.${reset}" 
@@ -78,3 +79,9 @@ function setRegion() {
         done
     fi
 }
+
+function setTitle() {
+    echo "${green}Starting to ${bold}$1${reset} ${green}now ...${reset}"
+
+}
+
