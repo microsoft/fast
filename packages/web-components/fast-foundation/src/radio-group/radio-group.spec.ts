@@ -267,7 +267,7 @@ describe("Radio Group", () => {
     });
 
     it("should mark the last radio defaulted to checked as checked, the rest should not be checked", async () => {
-        const { element, connect, disconnect } = await fixture(html<FASTRadioGroup>`
+        const { element, connect, disconnect } = await fixture(html`
             <fast-radio-group>
                 <fast-radio value="foo">Foo</fast-radio>
                 <fast-radio value="bar" checked>Bar</fast-radio>
@@ -284,7 +284,7 @@ describe("Radio Group", () => {
     });
 
     it("should mark radio matching value on radio-group over any checked attributes", async () => {
-        const { element, connect, disconnect } = await fixture(html<FASTRadioGroup>`
+        const { element, connect, disconnect } = await fixture(html`
             <fast-radio-group value="bar">
                 <fast-radio value="foo">Foo</fast-radio>
                 <fast-radio value="bar" checked>Bar</fast-radio>
