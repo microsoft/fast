@@ -1,4 +1,5 @@
-import { attr, FASTElement, observable } from "@microsoft/fast-element";
+import { observable } from "@microsoft/fast-element";
+import { DelegatesARIALink, Anchor } from "../anchor";
 import { StartEnd } from "../patterns/index";
 import { applyMixins } from "../utilities/apply-mixins";
 
@@ -7,16 +8,7 @@ import { applyMixins } from "../utilities/apply-mixins";
  *
  * @public
  */
-export class BreadcrumbItem extends FASTElement {
-    /**
-     * The URL of the hyperlink
-     * @public
-     * @remarks
-     * HTML Attribute: href
-     */
-    @attr
-    public href: string;
-
+export class BreadcrumbItem extends Anchor {
     /**
      * @internal
      */
@@ -31,5 +23,5 @@ export class BreadcrumbItem extends FASTElement {
  * @internal
  */
 /* eslint-disable-next-line */
-export interface BreadcrumbItem extends StartEnd {}
-applyMixins(BreadcrumbItem, StartEnd);
+export interface BreadcrumbItem extends StartEnd, DelegatesARIALink {}
+applyMixins(BreadcrumbItem, StartEnd, DelegatesARIALink);

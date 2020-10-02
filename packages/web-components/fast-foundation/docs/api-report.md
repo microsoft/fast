@@ -131,14 +131,13 @@ export class Breadcrumb extends FASTElement {
 // Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "BreadcrumbItem" because one of its declarations is marked as @internal
 //
 // @public
-export class BreadcrumbItem extends FASTElement {
-    href: string;
+export class BreadcrumbItem extends Anchor {
     // @internal (undocumented)
     showSeparator: boolean;
 }
 
 // @internal
-export interface BreadcrumbItem extends StartEnd {
+export interface BreadcrumbItem extends StartEnd, DelegatesARIALink {
 }
 
 // @public
