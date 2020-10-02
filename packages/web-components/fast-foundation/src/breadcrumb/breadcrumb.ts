@@ -40,7 +40,7 @@ export class Breadcrumb extends FASTElement {
                 lastNode.hasAttribute("href") &&
                 lastNode instanceof BreadcrumbItem
             ) {
-                lastNode.setAttribute("aria-current", "page");
+                (lastNode as BreadcrumbItem).ariaCurrent = "page";
             } else if (childNodeWithHref !== null) {
                 (childNodeWithHref as HTMLElement).setAttribute("aria-current", "page");
             }
