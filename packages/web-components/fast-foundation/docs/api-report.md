@@ -531,16 +531,21 @@ export type RadioControl = Pick<HTMLInputElement, "checked" | "disabled" | "read
 
 // @public
 export class RadioGroup extends FASTElement {
-    constructor();
     // (undocumented)
     childItems: HTMLElement[];
+    // (undocumented)
+    clickHandler: (e: MouseEvent) => void;
     // @internal (undocumented)
     connectedCallback(): void;
     disabled: boolean;
     // (undocumented)
     disconnectedCallback(): void;
+    // (undocumented)
+    focusOutHandler: (e: FocusEvent) => boolean | void;
     // @internal
     keydownHandler: (e: KeyboardEvent) => void;
+    // (undocumented)
+    keypressHandler: (e: KeyboardEvent) => void;
     name: string;
     // (undocumented)
     protected nameChanged(): void;

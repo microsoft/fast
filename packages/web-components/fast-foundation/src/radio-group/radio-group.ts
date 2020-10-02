@@ -129,14 +129,6 @@ export class RadioGroup extends FASTElement {
     private isInsideToolbar: boolean = false;
     private direction: Direction;
 
-    constructor() {
-        super();
-        this.addEventListener("keydown", this.keydownHandler);
-        this.addEventListener("keypress", this.keypressHandler);
-        this.addEventListener("click", this.clickHandler);
-        this.addEventListener("focusout", this.focusOutHandler);
-    }
-
     /**
      * @internal
      */
@@ -150,10 +142,6 @@ export class RadioGroup extends FASTElement {
     }
 
     public disconnectedCallback(): void {
-        this.removeEventListener("keydown", this.keydownHandler);
-        this.removeEventListener("keypress", this.keypressHandler);
-        this.removeEventListener("click", this.clickHandler);
-        this.removeEventListener("focusout", this.focusOutHandler);
         this.slottedRadioButtons.forEach((radio: HTMLInputElement) => {
             radio.removeEventListener("change", this.radioChangeHandler);
         });
@@ -222,7 +210,7 @@ export class RadioGroup extends FASTElement {
         }
     }
 
-    private keypressHandler = (e: KeyboardEvent): void => {
+    public keypressHandler = (e: KeyboardEvent): void => {
         const radio: HTMLInputElement | null = e.target as HTMLInputElement;
         if (radio) {
             radio.setAttribute("tabindex", radio.checked ? "0" : "-1");
@@ -275,7 +263,7 @@ export class RadioGroup extends FASTElement {
     };
 
     /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
-    private focusOutHandler = (e: FocusEvent) => {
+    public focusOutHandler = (e: FocusEvent): boolean | void => {
         const group: HTMLElement[] = this.slottedRadioButtons;
         const radio: HTMLInputElement | null = e.target as HTMLInputElement;
         const index: number = radio !== null ? group.indexOf(radio) : 0;
@@ -305,9 +293,10 @@ export class RadioGroup extends FASTElement {
                 });
             }
         }
+        return true;
     };
 
-    private clickHandler = (e: MouseEvent): void => {
+    public clickHandler = (e: MouseEvent): void => {
         const radio: HTMLInputElement | null = e.target as HTMLInputElement;
         if (radio) {
             const group: HTMLElement[] = this.slottedRadioButtons;
