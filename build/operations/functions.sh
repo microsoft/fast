@@ -1,8 +1,23 @@
 #!/bin/bash
-## Accepting parameters by $1, $2, etc
 
-function printLog() {
+: 'FAST CLI FUNCTIONS
+Contains internal fast functions for processing Azure required logic.
+'
 
+function debugService() {
+    if [[ $debug == true ]];
+    then
+        echo "${yellow}"
+        props=$1
+        for arg in "${args[@]}"
+        do
+            echo "${arg}"
+        done
+        echo "${reset}"
+    fi
+}
+
+function debugSystem() {
     if [[ $debug == true ]];
     then 
         echo "${yellow}"
@@ -11,7 +26,6 @@ function printLog() {
         echo "machine: $MACHTYPE"
         echo "shell: $SHELL"
         echo "path: $dir"
-        echo "file: $1"
         echo "home: $HOME"
         echo "${reset}"
     fi
@@ -66,6 +80,11 @@ function setEnvironment() {
     fi
 }
 
+function setLocation() {
+    arg=$1
+    location=${arg:0:4}
+}
+
 function setRegion() {
     if [ -z "$region" ];
     then
@@ -75,11 +94,9 @@ function setRegion() {
             case $region in
                 westus | eastus)  
                     resource_group=fast-$region-rg
-                    #source inputs.sh -r $region -rg $resource_group
                     break ;;
                 centralus)  
                     resource_group=fast-ops-rg
-                    #source inputs.sh -r $region -rg $resource_group
                     break ;;
                 exit)
                     echo "${bold}${green}cancelled.${reset}" 
@@ -93,10 +110,9 @@ function setRegion() {
 }
 
 function setTitle() {
-    echo "${green}${bold}$1${reset} ...${reset}"
+    echo "${green}${bold}$1${reset} ...${reset}" && echo ""
 }
 
 function setService() {
-   echo "${green}${bold}$1${reset} ${green}$2${reset}"
+   echo "" && echo "${green}${bold}$1${reset} ${green}$2${reset}"
 }
-

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-: 'PROCESS COMMAND LINE ARGUMENTS
+: 'FAST CLI ARGUMENTS
 Set global variables passed in as input parameters overwriting initial launch configurations.
 '
 
@@ -12,8 +12,8 @@ while (( $# > 1 )); do
             ;;
 
         --debug | -d)
-            printLog 
             debug=$2 
+            debugSystem
             ;;
 
         --environment | -e)
@@ -37,8 +37,7 @@ while (( $# > 1 )); do
             ;;
 
         --location | -l)             
-            location=$2
-            region=$2us       
+            location=$2    
             echo "${green}Location ${bold}$location${reset} ${green}set.${reset}" && echo ""
             ;;
   
@@ -49,7 +48,6 @@ while (( $# > 1 )); do
         
         --region | -r)            
             region=$2
-            location=${region:0:4}
             echo "${green}Region ${bold}$region${reset} ${green}set.${reset}" && echo ""
             ;;
        

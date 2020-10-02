@@ -1,6 +1,8 @@
 #!/bin/bash
 
-: 'SET DEFAULT CONFIGURATION
+: 'FAST CLI CONFIGURATIONS
+Contains all system, application, and Azure cli required configurations.
+
 File is located at $AZURE_CONFIG_DIR/config and generated on first run of `$ bash login.sh`
 * On Linux/MacOS: $HOME/.azure
 * On Windows: %USERPROFILE%\.azure
@@ -44,14 +46,14 @@ az configure --defaults output=table disable_confirm_prompt=false enable_log_fil
     echo "${bold}${green}Configuring session ...${reset}"
     echo "${green}Default configurations found.${reset}" && echo ""
 
-# SHELL Arguments
+# SHELL References
+    source functions.sh
     source inputs.sh
-    source $dir/functions.sh
-
+    
 # SHELL Prompting
     setEnvironment
     setRegion
-   
+
 # SHELL Operations
+    setLocation $region
     getSubscription
-    

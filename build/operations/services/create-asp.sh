@@ -15,6 +15,11 @@ service=$location-$service_code
 
 setService "Create $service_name" "$service"
 
+# Debugging only
+declare -a args=("$service" "$resource_group" "$location")
+debugService args
+
+# Azure CLI
 az appservice plan create \
     --name $service \
     --resource-group $resource_group \
