@@ -112,6 +112,8 @@ export class Radio extends FormAssociated<HTMLInputElement> implements RadioCont
         this.$emit("change");
         this.checkedAttribute = this.checked;
         this.updateForm();
+
+        this.validate();
     }
 
     protected proxy: HTMLInputElement = document.createElement("input");
@@ -130,6 +132,7 @@ export class Radio extends FormAssociated<HTMLInputElement> implements RadioCont
         super.connectedCallback();
 
         this.proxy.setAttribute("type", "radio");
+        this.validate();
 
         if (
             this.parentElement?.getAttribute("role") !== "radiogroup" &&
@@ -139,6 +142,7 @@ export class Radio extends FormAssociated<HTMLInputElement> implements RadioCont
                 this.setAttribute("tabindex", "0");
             }
         }
+
         this.updateForm();
     }
 

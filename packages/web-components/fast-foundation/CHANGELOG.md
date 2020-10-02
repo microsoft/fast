@@ -3,6 +3,35 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.8.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-foundation@1.7.2...@microsoft/fast-foundation@1.8.0) (2020-09-28)
+
+
+### Bug Fixes
+
+* active id should update selected tab ([#3931](https://github.com/Microsoft/fast/issues/3931)) ([ff956ba](https://github.com/Microsoft/fast/commit/ff956ba15c7b4078e1a38283d1d45f763d761940))
+* adds constraint validation to all form-associated elements ([#3932](https://github.com/Microsoft/fast/issues/3932)) ([60fbec0](https://github.com/Microsoft/fast/commit/60fbec074d94606951311a2db4feff93a96a11e1))
+* aria attributes for slider should have explicit values ([#3915](https://github.com/Microsoft/fast/issues/3915)) ([8335702](https://github.com/Microsoft/fast/commit/8335702e28295e216fb7c673457a09285a388be4))
+* click does not uncheck radio if it was already checked ([#3888](https://github.com/Microsoft/fast/issues/3888)) ([989c785](https://github.com/Microsoft/fast/commit/989c7856fe5a8233a4744627d1710f0dd0467b69))
+* ensure a dsp pulls all relevant properties from the parent provider ([#3939](https://github.com/Microsoft/fast/issues/3939)) ([c70c519](https://github.com/Microsoft/fast/commit/c70c5190337890775f29b863b00d703ffda3a853))
+* ensure attributes are passed to text field template ([#3923](https://github.com/Microsoft/fast/issues/3923)) ([31afcd4](https://github.com/Microsoft/fast/commit/31afcd430d80fe2fb13d921b11b7ec92cf1a0bc8))
+* ensure badge always applies inline-style when attributes exist ([#3905](https://github.com/Microsoft/fast/issues/3905)) ([7624cba](https://github.com/Microsoft/fast/commit/7624cba3a7ec74bebc199a038a054fab8816684e))
+* fixed typos ([#3934](https://github.com/Microsoft/fast/issues/3934)) ([f82468c](https://github.com/Microsoft/fast/commit/f82468c730165983d64e51ce74abaa8a27a8fb64))
+* for tree-view removing space bar key handler and match aria spec ([#3954](https://github.com/Microsoft/fast/issues/3954)) ([4cb03e8](https://github.com/Microsoft/fast/commit/4cb03e86995efcd52c24ef4a0a606e0221df334a)), closes [/w3c.github.io/aria-practices/#keyboard-interaction-23](https://github.com//w3c.github.io/aria-practices//issues/keyboard-interaction-23)
+* remove placeholder functions for boolean attributes in dialog component ([#3913](https://github.com/Microsoft/fast/issues/3913)) ([ab21eb7](https://github.com/Microsoft/fast/commit/ab21eb760ba2f84858b24dbf6c459f1602a3f7b0))
+* tree view item should have a click handler on root element ([#3951](https://github.com/Microsoft/fast/issues/3951)) ([913c2bd](https://github.com/Microsoft/fast/commit/913c2bd3a8f28622788c1f87a9f320ba7dbc1297))
+* tree-view right and left arrow keyboarding should behave as wai-aria spec suggests ([#3890](https://github.com/Microsoft/fast/issues/3890)) ([f866359](https://github.com/Microsoft/fast/commit/f8663590879ef2b1a064d10f9302f14cb7be0293))
+
+
+### Features
+
+*  Anchored region reliability/perf improvements ([#3876](https://github.com/Microsoft/fast/issues/3876)) ([0e697f6](https://github.com/Microsoft/fast/commit/0e697f6ab6bd8f40894b9791d3eec8fe97a97d26))
+* add skeleton component ([#3877](https://github.com/Microsoft/fast/issues/3877)) ([aff7d30](https://github.com/Microsoft/fast/commit/aff7d3010574183744cf7105ae51a275c2c70a12))
+* add tooltip component ([#3549](https://github.com/Microsoft/fast/issues/3549)) ([cb7aa98](https://github.com/Microsoft/fast/commit/cb7aa98ccaaad00e9e86b4575ef011986c054d08))
+
+
+
+
+
 ## [1.7.2](https://github.com/Microsoft/fast/compare/@microsoft/fast-foundation@1.7.1...@microsoft/fast-foundation@1.7.2) (2020-09-10)
 
 

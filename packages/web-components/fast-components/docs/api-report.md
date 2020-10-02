@@ -22,6 +22,7 @@ import { Menu } from '@microsoft/fast-foundation';
 import { MenuItem } from '@microsoft/fast-foundation';
 import { Radio } from '@microsoft/fast-foundation';
 import { RadioGroup } from '@microsoft/fast-foundation';
+import { Skeleton } from '@microsoft/fast-foundation';
 import { Slider } from '@microsoft/fast-foundation';
 import { SliderLabel } from '@microsoft/fast-foundation';
 import { Switch } from '@microsoft/fast-foundation';
@@ -30,6 +31,7 @@ import { TabPanel } from '@microsoft/fast-foundation';
 import { Tabs } from '@microsoft/fast-foundation';
 import { TextArea } from '@microsoft/fast-foundation';
 import { TextField } from '@microsoft/fast-foundation';
+import { Tooltip } from '@microsoft/fast-foundation';
 import { TreeItem } from '@microsoft/fast-foundation';
 import { TreeView } from '@microsoft/fast-foundation';
 
@@ -484,11 +486,19 @@ export class FASTProgress extends BaseProgress {
 }
 
 // @public
+export class FASTProgressRing extends BaseProgress {
+}
+
+// @public
 export class FASTRadio extends Radio {
 }
 
 // @public
 export class FASTRadioGroup extends RadioGroup {
+}
+
+// @public
+export class FASTSkeleton extends Skeleton {
 }
 
 // @public
@@ -531,6 +541,10 @@ export class FASTTextField extends TextField {
     appearanceChanged(oldValue: TextFieldAppearance, newValue: TextFieldAppearance): void;
     // @internal (undocumented)
     connectedCallback(): void;
+}
+
+// @public
+export class FASTTooltip extends Tooltip {
 }
 
 // @public
@@ -932,6 +946,9 @@ export enum PaletteType {
 export const parseColorString: (color: string) => ColorRGBA64;
 
 // @public
+export const ProgressRingStyles: import("@microsoft/fast-element").ElementStyles;
+
+// @public
 export const ProgressStyles: import("@microsoft/fast-element").ElementStyles;
 
 // @public
@@ -939,6 +956,9 @@ export const RadioGroupStyles: import("@microsoft/fast-element").ElementStyles;
 
 // @public
 export const RadioStyles: import("@microsoft/fast-element").ElementStyles;
+
+// @public
+export const SkeletonStyles: import("@microsoft/fast-element").ElementStyles;
 
 // @public
 export const SliderLabelStyles: import("@microsoft/fast-element").ElementStyles;

@@ -258,7 +258,7 @@ export function setCurrentEvent(event: Event | null): void {
  * Provides additional contextual information available to behaviors and expressions.
  * @public
  */
-export class ExecutionContext<TParent = any> {
+export class ExecutionContext<TParent = any, TGrandparent = any> {
     /**
      * The index of the current item within a repeat context.
      */
@@ -273,6 +273,11 @@ export class ExecutionContext<TParent = any> {
      * The parent data object within a repeat context.
      */
     public parent: TParent = null as any;
+
+    /**
+     * The parent execution context when in nested context scenarios.
+     */
+    public parentContext: ExecutionContext<TGrandparent> = null as any;
 
     /**
      * The current event within an event handler.
