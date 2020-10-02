@@ -29,7 +29,7 @@ Here you'll find specifications for custom elements and other library features.
 | Rating | -- | -- |
 | Select | -- | -- |
 | [Slider](../packages/web-components/fast-foundation/src/slider/slider.spec.md) | :white_check_mark: | :white_check_mark: |
-| Spin button | -- | -- |
+| [Spin button](../packages/web-components/fast-foundation/src/spin-button/spin-button.spec.md) | :white_check_mark: | -- |
 | [Switch](../packages/web-components/fast-foundation/src/switch/switch.spec.md) | :white_check_mark: | :white_check_mark: |
 | [Tabs](../packages/web-components/fast-foundation/src/tabs/tabs.spec.md) | :white_check_mark: | :white_check_mark: |
 | [Text area](../packages/web-components/fast-foundation/src/text-area/text-area.spec.md) | :white_check_mark: | :white_check_mark: |
