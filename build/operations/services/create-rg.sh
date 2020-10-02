@@ -8,5 +8,12 @@ Ref:
 https://docs.microsoft.com/en-us/azure/best-practices-availability-paired-regions
 https://docs.microsoft.com/en-us/azure/architecture/reference-architectures/app-service-web-app/multi-region#regional-pairing
 '
+service_name="Resource Group"
+service_code="rg"
+service=$system-$region-$service_code
 
-az group create --location $region --name $resource_group
+setService "Create $service_name" "$service"
+
+az group create \
+    --location $region \
+    --name $resource_group

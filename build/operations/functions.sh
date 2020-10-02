@@ -1,19 +1,24 @@
 #!/bin/bash
 ## Accepting parameters by $1, $2, etc
 
-function debugPrint() {
+function printLog() {
 
     if [[ $debug == true ]];
-    then
-        echo "debugging on"
-    else
-        echo "debuging off"
+    then 
+        echo "${yellow}"
+        echo "bash version: $BASH_VERSION"
+        echo "host: $HOSTNAME"
+        echo "machine: $MACHTYPE"
+        echo "shell: $SHELL"
+        echo "path: $dir"
+        echo "file: $1"
+        echo "home: $HOME"
+        echo "${reset}"
     fi
-
 }
 
 function getSubscription() {
-    source inputs.sh --debug false --subscription $subscription
+    source inputs.sh --subscription $subscription
 }
 
 function setApplication() {
@@ -30,7 +35,8 @@ function setApplication() {
                     echo "${bold}${green}cancelled.${reset}" 
                     exit ;;
                 *)
-                    echo "${red}invalid entry, try again${reset}" ;;
+                    echo "${red}invalid entry, try again${reset}" 
+                    ;;
             esac
         done
     fi
@@ -53,7 +59,8 @@ function setEnvironment() {
                     echo "${bold}${green}cancelled.${reset}" 
                     exit ;;
                 *)
-                    echo "${red}invalid entry, try again${reset}" ;;
+                    echo "${red}invalid entry, try again${reset}" 
+                    ;;
             esac
         done
     fi
@@ -68,24 +75,28 @@ function setRegion() {
             case $region in
                 westus | eastus)  
                     resource_group=fast-$region-rg
-                    source inputs.sh -r $region -rg $resource_group
+                    #source inputs.sh -r $region -rg $resource_group
                     break ;;
                 centralus)  
                     resource_group=fast-ops-rg
-                    source inputs.sh -r $region -rg $resource_group
+                    #source inputs.sh -r $region -rg $resource_group
                     break ;;
                 exit)
                     echo "${bold}${green}cancelled.${reset}" 
                     exit ;;
                 *)
-                    echo "${red}invalid entry, try again${reset}" ;;
+                    echo "${red}invalid entry, try again${reset}" 
+                    ;;
             esac
         done
     fi
 }
 
 function setTitle() {
-    echo "${green}Starting to ${bold}$1${reset} ${green}now ...${reset}"
+    echo "${green}${bold}$1${reset} ...${reset}"
+}
 
+function setService() {
+   echo "${green}${bold}$1${reset} ${green}$2${reset}"
 }
 

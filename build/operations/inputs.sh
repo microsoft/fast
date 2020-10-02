@@ -1,6 +1,8 @@
 #!/bin/bash
 
-# Set arguments passed in from command line to overwrite the default configurations
+: 'PROCESS COMMAND LINE ARGUMENTS
+Set global variables passed in as input parameters overwriting initial launch configurations.
+'
 
 while (( $# > 1 )); do 
     case $1 in 
@@ -10,8 +12,9 @@ while (( $# > 1 )); do
             ;;
 
         --debug | -d)
-            [[ $debug == true ]] && echo "${bold}${green}Debug"${reset} $debug
-            debug=$2 ;;
+            printLog 
+            debug=$2 
+            ;;
 
         --environment | -e)
             environment=$2
@@ -35,29 +38,34 @@ while (( $# > 1 )); do
 
         --location | -l)             
             location=$2
-            region=$2us         
-            echo "${bold}${green}Location"${reset} $location ;;
-
+            region=$2us       
+            echo "${green}Location ${bold}$location${reset} ${green}set.${reset}" && echo ""
+            ;;
+  
         --name | -n)            
             name=$2
-            echo "${bold}${green}Name"${reset} $name ;;
-
+            echo "${green}Name ${bold}$name${reset} ${green}set.${reset}" && echo ""
+            ;;
+        
         --region | -r)            
             region=$2
             location=${region:0:4}
-            echo "${green}Region ${bold}$region${reset} ${green}set.${reset}" && echo "" ;;
+            echo "${green}Region ${bold}$region${reset} ${green}set.${reset}" && echo ""
+            ;;
        
         --resource-group | -rg)   
             resource_group=$2
-            echo "${bold}${green}Resource Group"${reset} $resource_group ;;
+            echo "${green}Resource Group ${bold}$resource_group${reset} ${green}set.${reset}" && echo ""
+            ;;
 
         --service | -s) 
             service=$2
-            echo "${bold}${green}Service"${reset} $service ;;
+            echo "${green}Service ${bold}$service${reset} ${green}set.${reset}" && echo ""
+            ;;
      
-        --subscription)
+        --subscription | -s)
             subscription=$2
-            echo "${green}Subscription ${bold}$subscription${reset} ${green}set.${reset}" && echo ""
+            echo "${green}Subscription ${bold}$subscription${reset} ${green}set.${reset}"
             
             # Retrieve subscription from Global Azure Key Vault
             case "$subscription" in 
@@ -72,7 +80,8 @@ while (( $# > 1 )); do
             if [ $debug == true ];
             then
                 az account show --subscription $subscription
-            fi 
+            fi
+            echo "" 
             ;;
         *) ;;
     esac; shift 2

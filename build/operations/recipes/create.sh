@@ -8,13 +8,13 @@ This will create/configure all resources based on configuration
     source ./config.sh
 
 # LAUNCH
-    setTitle "Create Resources"
-
+    printLog "processing recipes/create.sh"
+    setTitle "Creating Azure Services"
+ 
 ## SHELL Arguments
-echo "$resource_group"
-source inputs.sh --debug true --product $product --subscription $subscription --location $location --resource-group $resource_group
-
+source inputs.sh --location $location
+ 
 ## CREATE Services
 source $dir/services/create-rg.sh & wait $!
-# source $dir/services/create-asp.sh & wait $!
+source $dir/services/create-asp.sh & wait $!
 # source $dir/services/create-app.sh & wait $!

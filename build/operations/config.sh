@@ -33,6 +33,7 @@ az configure --defaults output=table disable_confirm_prompt=false enable_log_fil
     declare -a regions=("westus" "eastus" "centralus" "exit")
     declare -a subscriptions=("production" "development" "exit")
 
+    system=fast
     status=false
 
 # GETTING STARTED
