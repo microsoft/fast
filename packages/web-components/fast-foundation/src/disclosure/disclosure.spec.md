@@ -42,6 +42,7 @@ The disclosure component can easily be extended for customization, for example a
 -   _Component Name:_ `fast-disclosure`
 -   _Props/Attrs:_
     -   `expanded: boolean` - Current state of the disclosure component
+    -   `title: string` - invoker title (slot title is also available for custom template)
 -   _Methods_:
     -   `show()`: to show the content
     -   `hide()`: to hide the content
