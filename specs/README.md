@@ -28,6 +28,7 @@ Here you'll find specifications for custom elements and other library features.
 | [Radio group](../packages/web-components/fast-foundation/src/radio-group/radio-group.spec.md) | :white_check_mark: | :white_check_mark: |
 | Rating | -- | -- |
 | Select | -- | -- |
+| [Skeleton](../packages/web-components/fast-foundation/src/skeleton/skeleton.spec.md) | :white_check_mark: | :white_check_mark: |
 | [Slider](../packages/web-components/fast-foundation/src/slider/slider.spec.md) | :white_check_mark: | :white_check_mark: |
 | Spin button | -- | -- |
 | [Switch](../packages/web-components/fast-foundation/src/switch/switch.spec.md) | :white_check_mark: | :white_check_mark: |
