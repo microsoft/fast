@@ -1,0 +1,20 @@
+{
+    "extends": "../../../tsconfig.json",
+    "compilerOptions": {
+        "declarationDir": "dist/dts",
+        "outDir": "dist/esm",
+        "strictNullChecks": true,
+        "experimentalDecorators": true,
+        "target": "es2015",
+        "module": "ESNext",
+        "types": [
+            "mocha",
+            "webpack-env"
+        ],
+        "lib": [
+            "DOM",
+            "ES2015"
+        ]
+    },
+    "include": ["src"]
+}
