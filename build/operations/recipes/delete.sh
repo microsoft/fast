@@ -11,7 +11,6 @@ This will delete all resources within a region
     setTitle "Delete Resources"
 
 ## SHELL Arguments
-echo "$resource_group"
 source inputs.sh --debug true --product $product --subscription $subscription --location $location --resource-group $resource_group
 
 ## DELETE Services

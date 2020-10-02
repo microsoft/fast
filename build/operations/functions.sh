@@ -66,8 +66,12 @@ function setRegion() {
         select region in ${regions[@]}
         do
             case $region in
-                westus | eastus | centralus)  
+                westus | eastus)  
                     resource_group=fast-$region-rg
+                    source inputs.sh -r $region -rg $resource_group
+                    break ;;
+                centralus)  
+                    resource_group=fast-ops-rg
                     source inputs.sh -r $region -rg $resource_group
                     break ;;
                 exit)

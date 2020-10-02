@@ -30,7 +30,7 @@ az configure --defaults output=table disable_confirm_prompt=false enable_log_fil
 
     declare -a applications=("app" "color" "create" "explore" "motion" "www" "exit")
     declare -a environments=("production" "staging" "development" "exit")
-    declare -a regions=("westus" "eastus" "exit")
+    declare -a regions=("westus" "eastus" "centralus" "exit")
     declare -a subscriptions=("production" "development" "exit")
 
     status=false
