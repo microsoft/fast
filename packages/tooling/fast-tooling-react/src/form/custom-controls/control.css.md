@@ -1,5 +1,7 @@
 # Abstract
 
+**Status**: Draft
+
 The CSS controls consist of an abstract control and two extended controls, CSS styles and CSS stylesheets. These controls will provide a way to interpret CSS strings for inline (styles) and CSS stylesheets into form UI and back to strings.
 
 ## Build script
