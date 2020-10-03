@@ -1,6 +1,6 @@
-# Monaco editor utilities
+# Monaco editor service
 
-These are spec files for utilities relating to the use of the [Monaco Editor](https://github.com/microsoft/monaco-editor).
+These are spec files for the service relating to the use of the [Monaco Editor](https://github.com/microsoft/monaco-editor).
 
 ## `MonacoAdapter`
 

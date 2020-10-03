@@ -1,12 +1,12 @@
-export interface MessageSystemUtilityActionCallbackConfig {
+export interface MessageSystemServiceActionCallbackConfig {
     /**
      * The unique identifier
      */
     id: string;
 }
 
-export interface MessageSystemUtilityActionConfig<TCallback>
-    extends MessageSystemUtilityActionCallbackConfig {
+export interface MessageSystemServiceActionConfig<TCallback>
+    extends MessageSystemServiceActionCallbackConfig {
     /**
      * The action to take when the keycodes have been pressed
      */
@@ -18,17 +18,17 @@ export interface MessageSystemUtilityActionConfig<TCallback>
  * of a registered class
  *
  * It takes two generics, C, an object which is added to the
- * MessageSystemUtilityActionCallbackConfig,
+ * MessageSystemServiceActionCallbackConfig,
  * and M, a generic used for matching
  * the action to some specific parameters
  */
-export abstract class MessageSystemUtilityAction<TCallback = {}, TMatch = {}> {
+export abstract class MessageSystemServiceAction<TCallback = {}, TMatch = {}> {
     private action: (
-        config: TCallback & MessageSystemUtilityActionCallbackConfig
+        config: TCallback & MessageSystemServiceActionCallbackConfig
     ) => void;
     public id: string;
 
-    constructor(config: MessageSystemUtilityActionConfig<TCallback>) {
+    constructor(config: MessageSystemServiceActionConfig<TCallback>) {
         this.id = config.id;
         this.action = config.action;
     }
