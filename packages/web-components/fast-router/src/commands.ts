@@ -71,9 +71,12 @@ export class Render implements NavigationCommand {
         let currentView = router.view;
         let createView = this.createView;
 
-        const viewModel = {}; // TODO: build view model from route params
+        const viewModel = transaction.route.params;
 
         if (router.command === this) {
+            // TODO: if the command is the same, defer to a strategy
+            // strategy should determine whether or not to re-create the view
+            // or to just update the params
             createView = async () => currentView!;
         }
 
