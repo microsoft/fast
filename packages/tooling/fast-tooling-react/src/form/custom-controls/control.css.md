@@ -53,6 +53,12 @@ There should be a list of variables that are assigned to each CSS property. The 
 
 From this structure we can construct via the UI generated from the below methods: `border: 1px solid red`.
 
+## Wireframe
+
+A basic wireframe showing the border, margin and color interpretations:
+
+![example-css-custom-control-wireframes.png](./example-css-custom-control-wireframes.png)
+
 ## Methods
 
 ### Render methods
