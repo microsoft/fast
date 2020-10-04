@@ -8,6 +8,7 @@ import {
 } from "@microsoft/fast-element";
 import { Transition } from "./transition";
 import { RouterConfiguration } from "./configuration";
+import { NavigationTransaction } from './transaction';
 
 export type LayoutDefinition = {
     template?: ViewTemplate;
@@ -85,11 +86,12 @@ export type CommandRouteDefinition<TSettings = any> = PathedRouteDefinition<TSet
 export type CommandFallbackRouteDefinition<TSettings = any> = HasCommand &
     SupportsSettings<TSettings>;
 
-export type FallbackRouteDefinition<TSettings = any> =
-    | ElementFallbackRouteDefinition<TSettings>
+export type FallbackRouteDefinition<TSettings = any> = 
+    ElementFallbackRouteDefinition<TSettings>
     | TemplateFallbackRouteDefinition<TSettings>
     | RedirectRouteDefinition<TSettings>
-    | CommandFallbackRouteDefinition<TSettings>;
+    | CommandFallbackRouteDefinition<TSettings>
+    | ((transaction: NavigationTransaction) => Promise<void>);
 
 export type RenderableRouteDefinition<TSettings = any> =
     | ElementRouteDefinition<TSettings>
@@ -150,7 +152,9 @@ export class RouteCollection<TSettings = any> {
     }
 
     public fallback(definition: FallbackRouteDefinition<TSettings>) {
-        if ("command" in definition) {
+        if (typeof definition === 'function') {
+            this.fallbackCommand = { execute: definition };
+        } else if ("command" in definition) {
             this.fallbackCommand = definition.command;
         } else if ("redirect" in definition) {
             this.fallbackCommand = new Redirect(definition.redirect);
