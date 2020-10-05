@@ -944,7 +944,8 @@ export class TreeItem extends FASTElement {
     expanded: boolean;
     // (undocumented)
     focusable: boolean;
-    // (undocumented)
+    static focusItem(el: HTMLElement): void;
+    // @deprecated (undocumented)
     handleBlur: (e: FocusEvent) => void;
     // (undocumented)
     handleChange(source: any, propertyName: string): void;
@@ -952,7 +953,7 @@ export class TreeItem extends FASTElement {
     handleClick: (e: MouseEvent) => void;
     // (undocumented)
     handleExpandCollapseButtonClick: (e: MouseEvent) => void;
-    // (undocumented)
+    // @deprecated (undocumented)
     handleFocus: (e: Event) => void;
     handleKeyDown: (e: KeyboardEvent) => void | boolean;
     // (undocumented)
@@ -979,11 +980,11 @@ export class TreeView extends FASTElement {
     connectedCallback(): void;
     // (undocumented)
     currentSelected: HTMLElement | TreeItem | null;
-    // (undocumented)
+    // @deprecated (undocumented)
     focusable: boolean;
     // (undocumented)
     handleBlur: (e: FocusEvent) => void;
-    // (undocumented)
+    // @deprecated (undocumented)
     handleFocus: (e: FocusEvent) => void;
     // (undocumented)
     handleKeyDown: (e: KeyboardEvent) => void | boolean;
