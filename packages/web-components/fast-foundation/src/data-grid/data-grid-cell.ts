@@ -8,7 +8,6 @@ import {
     ViewTemplate,
 } from "@microsoft/fast-element";
 import { DataGridColumn } from "./data-grid";
-import { DataGridCellTemplate } from "./data-grid-cell.template";
 
 const defaultCellContentsTemplate: ViewTemplate = html<DataGridCell>`
     <template>
@@ -62,6 +61,14 @@ export class DataGridCell extends FASTElement {
         }
     }
 
+    /**
+     * If this cell currently has focus
+     *
+     * @public
+     */
+    @observable
+    public isActiveCell: boolean = false;
+
     private customCellView: HTMLView | null = null;
 
     /**
@@ -91,5 +98,18 @@ export class DataGridCell extends FASTElement {
             this.customCellView.unbind();
             this.customCellView = null;
         }
+    }
+
+    public handleFocusin(e: FocusEvent): void {
+        if (this.isActiveCell) {
+            return;
+        }
+        this.isActiveCell = true;
+
+        this.$emit("cell-focused", this);
+    }
+
+    public handleFocusout(e: FocusEvent): void {
+        this.isActiveCell = false;
     }
 }

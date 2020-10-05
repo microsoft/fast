@@ -6,7 +6,11 @@ import { DataGridCell } from "./data-grid-cell";
  * @public
  */
 export const DataGridCellTemplate = html<DataGridCell>`
-    <template>
+    <template
+        tabindex="-1"
+        @focusin="${(x, c) => x.handleFocusin(c.event as FocusEvent)}"
+        @focusout="${(x, c) => x.handleFocusin(c.event as FocusEvent)}"
+    >
         <slot part="cellSlot"></slot>
     </template>
 `;

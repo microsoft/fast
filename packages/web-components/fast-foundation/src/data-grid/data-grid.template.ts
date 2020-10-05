@@ -6,7 +6,7 @@ import { DataGrid } from "./data-grid";
  * @public
  */
 export const DataGridTemplate = html<DataGrid>`
-    <template role="grid">
+    <template role="grid" tabindex="0">
         <slot
             name="headerSlot"
             part="headerSlot"
