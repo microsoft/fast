@@ -115,11 +115,29 @@ export class DataGrid extends FASTElement {
     public rowItemTemplate: ViewTemplate = defaultRowItemTemplate;
     private rowItemTemplateChanged(): void {}
 
+    /**
+     * The index of the row that will receive focus the next time the
+     * grid is focused. This value changes as focus moves to different
+     * rows within the grid.  Changing this value when focus is already
+     * within the grid moves focus to the specified row.
+     *
+     * @public
+     */
     @observable
-    public focusRowIndex: number = -1;
+    public focusRowIndex: number = 0;
+    private focusRowIndexChanged(): void {}
 
+    /**
+     * The index of the column that will receive focus the next time the
+     * grid is focused. This value changes as focus moves to different rows
+     * within the grid.  Changing this value when focus is already within
+     * the grid moves focus to the specified column.
+     *
+     * @public
+     */
     @observable
     public focusColumnIndex: number = 0;
+    private focusColumnIndexChanged(): void {}
 
     /**
      * @internal
@@ -185,15 +203,12 @@ export class DataGrid extends FASTElement {
         const rows: NodeListOf<Element> = this.querySelectorAll(this.rowElementTag);
 
         if (rows.length === 0) {
-            this.focusRowIndex = -1;
+            this.focusRowIndex = 0;
             return;
         }
 
         if (e.target === this) {
             // focus on an internal cell
-            if (this.focusRowIndex === -1) {
-                this.focusRowIndex = 0;
-            }
 
             this.focusRowIndex = Math.min(rows.length - 1, this.focusRowIndex);
             const focusRow: Element = rows[this.focusRowIndex];

@@ -7,11 +7,11 @@ The `data grid` component enables authors to display an array of data in a tabul
 ![](./images/grid.png)
 
 `Data grid` actually consists of a number of components that work together:
-- `data grid`:  The top level container element
-- `data grid header`: Displays column titles
-- `data grid header cell`: Displays the title for a single column of cells
-- `data grid row`: Displays a single row of data associated with a single record
-- `data grid cell`: Displays a single cell of data within a row
+- `<data-grid>`:  The top level container element
+- `<data-grid-header>`: Displays column titles
+- `<data-grid-header-cell>`: Displays the title for a single column of cells
+- `<data-grid-row>`: Displays a single row of data associated with a single record
+- `<data-grid-cell>`: Displays a single cell of data within a row
 
 ### Use Cases
 Any time an author wants to display tabular data.
@@ -20,13 +20,13 @@ Any time an author wants to display tabular data.
 - The initial version of the component will not support virtualization or pagination to display large data sets but should be architected to support both in the future.
   
 ### Features
-- Generates a data grid layout based on provided data.
-- Authors can take advantage of multiple customization points to control the grid display
-- manages keyboard navigation across the grid
+- Generate a data grid layout based on provided data.
+- Authors can take advantage of multiple customization points to control the grid display.
+- Manage keyboard navigation across the grid.
 
 ### Risks and Challenges
-- not yet clear how cells with focusable children work 
-- we're not requiring unique identifiers per row/data item, do we need to to ensure stable relationships between data rows and component representations?
+- It is not yet clear how cells with focusable children work.
+- Unique identifiers are not required per row/data item, this may cause an unstable relationships between data rows and component representations.
 
 ### Prior Art/Examples
 
@@ -45,15 +45,15 @@ Any time an author wants to display tabular data.
 
 ## Design
 
-`Data grid` enables a high degree of customizability in addition to the component's base styles. Authors can choose the templates applied to grid and header cells on a per column basis using the properties of `DataGridColumn`. Additionally, authors can specify the templates used during the creation of rows and cells from data sources through the item template properties of the grid and row components (`rowItemTemplate` and `cellItemTemplate`).  Finally, authors can add elements they create and manage themselves through the various element slots.
+The Fast **data grid** enables a high degree of customizability. In addition to the base css styling that can be applied to the grid and its sub-components, authors can choose the templates applied to grid and header cells on a per column basis using the properties of `DataGridColumn`. Additionally, authors can specify the templates used during the creation of rows and cells from data sources through the item template properties of the grid and row components (`rowItemTemplate` and `cellItemTemplate`).  Finally, authors can add elements they create and manage themselves through the various element slots.
 
 ### API
 
 #### The DataGridColumn interface
 
-Most `data grid` components use the `DataGridColumn` interface.  A `DataGridColumn` is an object that describes the properties of a single column in the grid as follows:
+Most **data grid** components use the `DataGridColumn` interface.  A `DataGridColumn` is an object that describes the properties of a single column in the grid as follows:
 
-- `columnDataKey`: A string that identifies which data item should be shown in the column.  For example if the source data had a field called "Name" the `columnDataKey` for the column that displays the values for "Name" would be "Name".
+- `columnDataKey`: A string that identifies which data item should be shown in the column.  For example, if the source data had a field called "Name" the `columnDataKey` for the column that displays the values for "Name" would be "Name".
 
 - `title`:  The title of the column, if not provided the `columnDataKey` is used instead.
 
@@ -80,10 +80,8 @@ For example a button handler on a `cellTemplate` could be implemented with a cli
     </template>
 ```
 
-
-
 **Data grid**
-- `fast-data-grid`
+- `<fast-data-grid>`
 
 *Attributes:*
 - `generateHeader`  
@@ -98,6 +96,12 @@ An array of `DataGridColumn` objects that define what columns will be displayed 
 
 - `rowItemTemplate`  
 Custom [template](https://fast.design/docs/fast-element/declaring-templates) to use when generating rows by iterating over data.  The default template uses `fast-data-grid-row`, this is where authors change that.
+
+- `focusRowIndex`
+The index of the row that will receive focus the next time the grid is focused. This value changes as focus moves to different rows within the grid.  Changing this value when focus is already within the grid moves focus to the specified row.  
+
+- `focusColumnIndex`
+The index of the column that will receive focus the next time the grid is focused. This value changes as focus moves to different rows within the grid.  Changing this value when focus is already within the grid moves focus to the specified column.
 
 *Slots:*
 - `default`  
@@ -120,7 +124,7 @@ Static function that creates a basic set of columns from an object representing 
 
 
 **Data grid header**
-- `fast-data-grid-header`
+- `<fast-data-grid-header>`
 
 *Attributes:*
 - none
@@ -144,7 +148,7 @@ Default slot for items
 
 
 **Data grid header cell**
-- `fast-data-grid-header-cell`
+- `<fast-data-grid-header-cell>`
 
 *Attributes:*
 - extends HTML Element attributes
@@ -165,11 +169,11 @@ Default slot for items
 
 
 **Data grid row**
-- `fast-data-grid-row`
+- `<fast-data-grid-row>`
 
 *Attributes:*
 - `gridTemplateColumns`  
-String that gets applied to the the css gridTemplateColumns attribute for the row
+String that gets applied to the the css `gridTemplateColumns` attribute for the row.
 
 *properties:*
 - `rowData`  
@@ -186,14 +190,13 @@ Custom [template](https://fast.design/docs/fast-element/declaring-templates) to 
 Default slot for items
 
 *Events*
-- none
+- `row-focused` - Event triggered when a row or one of its internal elements is focused.
 
 *parts:*
 - `cellsSlot`
 
 **Data grid cell**
-*Component name:*
-- `fast-data-grid-cell`
+- `<fast-data-grid-cell>`
 
 *Attributes:*
 - `gridColumnIndex`  
@@ -211,7 +214,7 @@ The `DataGridColumn` this cell represents.
 Default slot for items
 
 *Events*
-- none
+- `cell-focused` - Event triggered when a cell or one of its internal elements is focused.
 
 *parts:*
 - `cellSlot`
@@ -269,9 +272,9 @@ Applying these columns to our previous example results in our columns having the
 
 ![](./images/ex2.png)
 
-- programmatically generated rows/cells will will be created using [repeat directives](https://fast.design/docs/fast-element/using-directives#the-repeat-directive)
+- Programmatically generated rows/cells will will be created using [repeat directives](https://fast.design/docs/fast-element/using-directives#the-repeat-directive).
 
-- individual cells can be customized using by passing a custom ViewTemplate through the `DataGridColumn` interface for the column in question. These templates are rendered in the light dom within the cell so that authors can create custom cells with interactive elements.
+- Individual cells can be customized using by passing a custom ViewTemplate through the `DataGridColumn` interface for the column in question. These templates are rendered in the light DOM within the cell so that authors can create custom cells with interactive elements.
 
 ### Accessibility
 
@@ -294,9 +297,8 @@ We want to take full advantage of fast-element templating and directives for fas
 None
 
 ### Test Plan
-
-While testing is still TBD for our web components, I would expect this to align with the testing strategy and not require any additional test support.
+This component should have component testing in the @microsoft/fast-foundation package.
 
 ## Next Steps
 
-Virtualization and/or Pagination for large data sets.
+- Virtualization and/or Pagination for large data sets.
