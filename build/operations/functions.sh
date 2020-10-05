@@ -9,8 +9,7 @@ function debugService() {
     then
         echo "${yellow}"
         props=$1
-        for arg in "${args[@]}"
-        do
+        for arg in "${args[@]}"; do
             echo "${arg}"
         done
         echo "${reset}"
@@ -81,19 +80,14 @@ function setEnvironment() {
 }
 
 function setLocation() {
-    arg=$1
-    location=${arg:0:4}
-}
-
-function setRegion() {
     if [ -z "$region" ];
     then
-        echo "Select an ${bold}${green}Region${reset}:"    
-        select region in ${regions[@]}
+        echo "Select an ${bold}${green}Location${reset}:"    
+        select location in ${locations[@]}
         do
-            case $region in
+            case $location in
                 westus | eastus)  
-                    resource_group=fast-$region-rg
+                    resource_group=fast-$location-rg
                     break ;;
                 centralus)  
                     resource_group=fast-ops-rg

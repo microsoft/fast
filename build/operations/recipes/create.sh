@@ -9,10 +9,7 @@ This will create/configure all resources based on configuration
 
 # LAUNCH
     setTitle "Creating Azure Services"
- 
-## SHELL Arguments
-#source inputs.sh --location $location
- 
+  
 ## CREATE Services
 source $dir/services/create-rg.sh & wait $!
 source $dir/services/create-asp.sh & wait $!

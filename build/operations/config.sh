@@ -32,7 +32,7 @@ az configure --defaults output=table disable_confirm_prompt=false enable_log_fil
 
     declare -a applications=("app" "color" "create" "explore" "motion" "www" "exit")
     declare -a environments=("production" "staging" "development" "exit")
-    declare -a regions=("westus" "eastus" "centralus" "exit")
+    declare -a locations=("westus" "eastus" "centralus" "exit")
     declare -a subscriptions=("production" "development" "exit")
 
     system=fast
@@ -49,11 +49,11 @@ az configure --defaults output=table disable_confirm_prompt=false enable_log_fil
 # SHELL References
     source functions.sh
     source inputs.sh
-    
+
 # SHELL Prompting
     setEnvironment
-    setRegion
+    setLocation
 
 # SHELL Operations
-    setLocation $region
+#    getRegion
     getSubscription

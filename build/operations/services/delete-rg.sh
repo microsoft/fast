@@ -9,4 +9,18 @@ https://docs.microsoft.com/en-us/azure/best-practices-availability-paired-region
 https://docs.microsoft.com/en-us/azure/architecture/reference-architectures/app-service-web-app/multi-region#regional-pairing
 '
 
-az group delete --name $resource_group --yes
+# Configure
+service_name="Resource Group"
+service_code="rg"
+service=$system-$location-$service_code
+
+setService "Delete $service_name" "$service"
+
+# Debugging
+declare -a args=("$service" "$location")
+debugService args
+
+# Azure CLI
+az group delete \
+    --name $resource_group \
+    --yes

@@ -9,14 +9,15 @@ Ref:
 https://app.pluralsight.com/course-player?clipId=9b58df17-fdf9-4802-bbc4-40ea42a83655
 '
 
+# Configure
 service_name="App Service Plan"
 service_code="asp"
 service=$location-$service_code
 
 setService "Create $service_name" "$service"
 
-# Debugging only
-declare -a args=("$service" "$resource_group" "$location")
+# Debugging
+declare -a args=("$resource_group" "$service" "$location")
 debugService args
 
 # Azure CLI
