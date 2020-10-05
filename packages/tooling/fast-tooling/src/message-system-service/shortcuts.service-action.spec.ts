@@ -1,9 +1,9 @@
-import { ShortcutAction } from "./shortcut-action";
+import { ShortcutsAction } from "./shortcuts.service-action";
 
-describe("ShortcutAction", () => {
+describe("ShortcutsAction", () => {
     test("should not throw", () => {
         expect(() => {
-            new ShortcutAction({
+            new ShortcutsAction({
                 id: "foo",
                 name: "Foo",
                 keys: [],
@@ -15,7 +15,7 @@ describe("ShortcutAction", () => {
     });
     test("should not run an action if supplied action lengths do not match", () => {
         const action = jest.fn();
-        const shortcutAction = new ShortcutAction({
+        const shortcutAction = new ShortcutsAction({
             id: "foo",
             name: "Foo",
             keys: [],
@@ -29,7 +29,7 @@ describe("ShortcutAction", () => {
     });
     test("should run an action if supplied actions match registered actions", () => {
         const action = jest.fn();
-        const shortcutAction = new ShortcutAction({
+        const shortcutAction = new ShortcutsAction({
             id: "foo",
             name: "Foo",
             keys: [],
@@ -43,7 +43,7 @@ describe("ShortcutAction", () => {
     });
     test("should not run an action if modifier keys do not match", () => {
         const action = jest.fn();
-        const shortcutAction = new ShortcutAction({
+        const shortcutAction = new ShortcutsAction({
             id: "foo",
             name: "Foo",
             keys: [
@@ -65,7 +65,7 @@ describe("ShortcutAction", () => {
     });
     test("should run an action if meta modifier keys match", () => {
         const action = jest.fn();
-        const shortcutAction = new ShortcutAction({
+        const shortcutAction = new ShortcutsAction({
             id: "foo",
             name: "Foo",
             keys: [
@@ -87,7 +87,7 @@ describe("ShortcutAction", () => {
     });
     test("should run an action if shift modifier keys match", () => {
         const action = jest.fn();
-        const shortcutAction = new ShortcutAction({
+        const shortcutAction = new ShortcutsAction({
             id: "foo",
             name: "Foo",
             keys: [
@@ -109,7 +109,7 @@ describe("ShortcutAction", () => {
     });
     test("should run an action if ctrl modifier keys match", () => {
         const action = jest.fn();
-        const shortcutAction = new ShortcutAction({
+        const shortcutAction = new ShortcutsAction({
             id: "foo",
             name: "Foo",
             keys: [
@@ -131,7 +131,7 @@ describe("ShortcutAction", () => {
     });
     test("should run an action if alt modifier keys match", () => {
         const action = jest.fn();
-        const shortcutAction = new ShortcutAction({
+        const shortcutAction = new ShortcutsAction({
             id: "foo",
             name: "Foo",
             keys: [
@@ -153,7 +153,7 @@ describe("ShortcutAction", () => {
     });
     test("should not run an action if specific keys do not match", () => {
         const action = jest.fn();
-        const shortcutAction = new ShortcutAction({
+        const shortcutAction = new ShortcutsAction({
             id: "foo",
             name: "Foo",
             keys: [
@@ -175,7 +175,7 @@ describe("ShortcutAction", () => {
     });
     test("should run an action if specific keys match", () => {
         const action = jest.fn();
-        const shortcutAction = new ShortcutAction({
+        const shortcutAction = new ShortcutsAction({
             id: "foo",
             name: "Foo",
             keys: [

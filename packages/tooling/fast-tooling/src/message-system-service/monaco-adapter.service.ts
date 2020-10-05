@@ -4,17 +4,17 @@ import {
     SchemaDictionary,
 } from "../message-system";
 import { DataDictionary } from "../message-system";
-import { LinkedData, Parent } from "..";
-import { mapDataDictionaryToMonacoEditorHTML } from "./monaco";
+import { LinkedData, Parent } from "../";
+import { mapVSCodeParsedHTMLToDataDictionary } from "../data-utilities/mapping.vscode-html-languageservice";
+import { mapDataDictionaryToMonacoEditorHTML } from "../data-utilities/monaco";
 import {
-    MessageSystemUtility,
-    MessageSystemUtilityConfig,
-} from "./message-system-utility";
+    MessageSystemService,
+    MessageSystemServiceConfig,
+} from "./message-system.service";
 import {
     MonacoAdapterAction,
     MonacoAdapterActionCallbackConfig,
-} from "./monaco-adapter-action";
-import { mapVSCodeParsedHTMLToDataDictionary } from "./mapping.vscode-html-languageservice";
+} from "./monaco-adapter.service-action";
 
 export type actionCallback = () => void;
 
@@ -89,7 +89,7 @@ export function findUpdatedDictionaryId(
     return findUpdatedDictionaryId(parents, dataDictionary, newDictionaryId);
 }
 
-export class MonacoAdapter extends MessageSystemUtility<
+export class MonacoAdapter extends MessageSystemService<
     MonacoAdapterActionCallbackConfig
 > {
     private monacoModelValue: string[];
@@ -97,7 +97,7 @@ export class MonacoAdapter extends MessageSystemUtility<
     private dataDictionary: DataDictionary<unknown>;
     private dictionaryId: string;
 
-    constructor(config: MessageSystemUtilityConfig<MonacoAdapterActionCallbackConfig>) {
+    constructor(config: MessageSystemServiceConfig<MonacoAdapterActionCallbackConfig>) {
         super();
 
         this.registerMessageSystem(config);

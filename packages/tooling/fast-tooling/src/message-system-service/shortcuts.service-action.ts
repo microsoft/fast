@@ -1,6 +1,6 @@
-import { MessageSystemUtilityAction } from "./message-system-utility-action";
-import { XOR } from "./type.utilities";
-import { ActionNotFound } from "./message-system-utility";
+import { XOR } from "../data-utilities/type.utilities";
+import { MessageSystemServiceAction } from "./message-system.service-action";
+import { ActionNotFound } from "./message-system.service";
 
 export interface MetaKey {
     metaKey: true;
@@ -29,7 +29,7 @@ export interface SpecificKey {
 
 export type KeyConfig = XOR<SpecificKey, ModifierKey>;
 
-export interface ShortcutActionCallbackConfigSuccess {
+export interface ShortcutsActionCallbackConfigSuccess {
     /**
      * The display name of the shortcut action
      */
@@ -41,8 +41,8 @@ export interface ShortcutActionCallbackConfigSuccess {
     keys: KeyConfig[];
 }
 
-export type ShortcutActionCallbackConfig = XOR<
-    ShortcutActionCallbackConfigSuccess,
+export type ShortcutsActionCallbackConfig = XOR<
+    ShortcutsActionCallbackConfigSuccess,
     ActionNotFound
 >;
 
@@ -83,8 +83,8 @@ export function mapKeyboardEventToKeyConfig(e: KeyboardEvent): KeyConfig[] {
     return keys;
 }
 
-export class ShortcutAction extends MessageSystemUtilityAction<
-    ShortcutActionCallbackConfig,
+export class ShortcutsAction extends MessageSystemServiceAction<
+    ShortcutsActionCallbackConfig,
     KeyboardEvent
 > {
     public keys: KeyConfig[];

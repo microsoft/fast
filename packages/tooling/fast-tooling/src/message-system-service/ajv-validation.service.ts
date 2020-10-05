@@ -6,14 +6,12 @@ import {
     MessageSystemValidationTypeAction,
     NavigationConfigDictionary,
     SchemaDictionary,
+    SchemaSetValidationAction,
+    SchemaSetValidationMessageResponse,
     Validation,
     ValidationError,
 } from "../message-system";
-import {
-    SchemaSetValidationAction,
-    SchemaSetValidationMessageResponse,
-} from "../message-system";
-import { normalizeDataLocationToDotNotation } from "./location";
+import { normalizeDataLocationToDotNotation } from "../data-utilities/location";
 
 export interface AjvMapperConfig {
     /**

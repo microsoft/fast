@@ -4,13 +4,13 @@ import {
     MessageSystemType,
     Register,
 } from "../message-system";
+import { mapDataDictionaryToMonacoEditorHTML } from "../data-utilities/monaco";
 import {
     findDictionaryIdParents,
     findUpdatedDictionaryId,
     MonacoAdapter,
-} from "./monaco-adapter";
-import { mapDataDictionaryToMonacoEditorHTML } from "./monaco";
-import { MonacoAdapterAction } from "./monaco-adapter-action";
+} from "./monaco-adapter.service";
+import { MonacoAdapterAction } from "./monaco-adapter.service-action";
 
 describe("MonacoAdapter", () => {
     test("should not throw", () => {

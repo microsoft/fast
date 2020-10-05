@@ -1,5 +1,5 @@
 import { MessageSystem } from "../message-system";
-import { MessageSystemUtilityAction } from "./message-system-utility-action";
+import { MessageSystemServiceAction } from "./message-system.service-action";
 
 export interface IdentifiedAction {
     /**
@@ -22,7 +22,7 @@ export interface ActionNotFound {
     error: string;
 }
 
-export interface MessageSystemUtilityConfig<C> {
+export interface MessageSystemServiceConfig<C> {
     /**
      * The message system
      * used for sending and receiving shortcuts to the message system
@@ -32,17 +32,17 @@ export interface MessageSystemUtilityConfig<C> {
     /**
      * Shortcut actions
      */
-    actions?: MessageSystemUtilityAction<C, unknown>[];
+    actions?: MessageSystemServiceAction<C, unknown>[];
 }
 
 /**
- * This abstract class are for utilities that
+ * This abstract class are for services that
  * use the MessageSystem to register and de-register themselves
  */
-export abstract class MessageSystemUtility<C> {
+export abstract class MessageSystemService<C> {
     public messageSystem: MessageSystem;
     private messageSystemConfig: { onMessage: (e: MessageEvent) => void };
-    protected registeredActions: MessageSystemUtilityAction<C, unknown>[] = [];
+    protected registeredActions: MessageSystemServiceAction<C, unknown>[] = [];
 
     /**
      * Destroy this before dereferencing the validator
@@ -53,10 +53,10 @@ export abstract class MessageSystemUtility<C> {
     }
 
     /**
-     * Register this utility with the message system
+     * Register this service with the message system
      * This should be called during construction
      */
-    public registerMessageSystem(config: MessageSystemUtilityConfig<C>): void {
+    public registerMessageSystem(config: MessageSystemServiceConfig<C>): void {
         if (config.messageSystem !== undefined) {
             this.messageSystemConfig = {
                 onMessage: this.handleMessageSystem,
@@ -72,13 +72,13 @@ export abstract class MessageSystemUtility<C> {
     }
 
     /**
-     * The utility should always handle incoming messages
+     * The service should always handle incoming messages
      * from the message system
      */
     abstract handleMessageSystem(e: MessageEvent): void;
 
     /**
-     * The utility should get any config to be passed to
+     * The service should get any config to be passed to
      * the registered actions
      */
     abstract getActionConfig(id: string): C;
@@ -88,7 +88,7 @@ export abstract class MessageSystemUtility<C> {
      */
     public action = (id: string): IdentifiedAction => {
         const action = this.registeredActions.find(
-            (action: MessageSystemUtilityAction<C, unknown>) => {
+            (action: MessageSystemServiceAction<C, unknown>) => {
                 return action.id === id;
             }
         );

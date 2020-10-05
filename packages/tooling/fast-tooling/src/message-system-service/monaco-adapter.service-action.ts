@@ -1,5 +1,5 @@
 import { MessageSystemType } from "../message-system";
-import { MessageSystemUtilityAction } from "./message-system-utility-action";
+import { MessageSystemServiceAction } from "./message-system.service-action";
 
 export interface MonacoAdapterActionCallbackConfig {
     /**
@@ -21,7 +21,7 @@ export interface MonacoAdapterActionCallbackConfig {
 /**
  * Actions for the monaco adapter
  */
-export class MonacoAdapterAction extends MessageSystemUtilityAction<
+export class MonacoAdapterAction extends MessageSystemServiceAction<
     MonacoAdapterActionCallbackConfig,
     MessageSystemType
 > {

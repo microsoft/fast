@@ -1,5 +1,5 @@
 import { MessageSystemType } from "../message-system";
-import { MonacoAdapterAction } from "./monaco-adapter-action";
+import { MonacoAdapterAction } from "./monaco-adapter.service-action";
 
 describe("MonacoAdapterAction", () => {
     test("should not throw", () => {
