@@ -133,7 +133,7 @@ export class Breadcrumb extends FASTElement {
 // @public
 export class BreadcrumbItem extends Anchor {
     // @internal (undocumented)
-    showSeparator: boolean;
+    separator: boolean;
 }
 
 // @internal

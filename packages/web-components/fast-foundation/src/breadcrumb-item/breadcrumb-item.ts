@@ -13,7 +13,7 @@ export class BreadcrumbItem extends Anchor {
      * @internal
      */
     @observable
-    public showSeparator: boolean = true;
+    public separator: boolean = true;
 }
 
 /**

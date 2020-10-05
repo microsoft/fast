@@ -42,10 +42,10 @@ describe("Breadcrumb item", () => {
         await disconnect();
     });
 
-    it("should add an element with a class of `separator` when `showSeparator` is true", async () => {
+    it("should add an element with a class of `separator` when `separator` is true", async () => {
         const { element, connect, disconnect } = await setup();
 
-        element.showSeparator = true;
+        element.separator = true;
 
         await connect();
 
