@@ -8,6 +8,7 @@ import {
     ViewTemplate,
 } from "@microsoft/fast-element";
 import { DataGridColumn } from "./data-grid";
+import { DataGridCell } from "./data-grid-cell";
 
 const defaultCellItemTemplate = html`
     <fast-data-grid-cell
@@ -75,6 +76,18 @@ export class DataGridRow extends FASTElement {
     public cellItemTemplate?: ViewTemplate = defaultCellItemTemplate;
 
     /**
+     * If this cell currently has focus
+     *
+     * @public
+     */
+    @observable
+    public isActiveRow: boolean = false;
+
+    public focusColumnIndex: number = -1;
+
+    private cellElementTag: string = "fast-data-grid-cell";
+
+    /**
      * @internal
      */
     public connectedCallback(): void {
@@ -91,7 +104,34 @@ export class DataGridRow extends FASTElement {
 
         this.$fastController.addBehaviors([this.cellsRepeatBehavior!]);
 
+        this.addEventListener("cell-focused", this.handleCellFocus);
+        this.addEventListener("focusout", this.handleFocusout);
+
         this.updateRowStyle();
+    }
+
+    /**
+     * @internal
+     */
+    public disconnectedCallback(): void {
+        super.disconnectedCallback();
+
+        this.removeEventListener("cell-focused", this.handleCellFocus);
+        this.removeEventListener("focusout", this.handleFocusout);
+    }
+
+    public handleFocusout(e: FocusEvent): void {
+        if (!this.contains(e.relatedTarget as Element)) {
+            this.isActiveRow = false;
+            this.focusColumnIndex = -1;
+        }
+    }
+
+    public handleCellFocus(e: Event): void {
+        this.isActiveRow = true;
+        const cells: Element[] = Array.from(this.querySelectorAll(this.cellElementTag));
+        this.focusColumnIndex = cells.indexOf(e.target as Element);
+        this.$emit("row-focused", this);
     }
 
     // /**

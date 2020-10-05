@@ -225,9 +225,21 @@ export class DataGrid extends FASTElement {
     columnsData: DataGridColumn[] | null;
     // @internal (undocumented)
     connectedCallback(): void;
+    // @internal (undocumented)
+    disconnectedCallback(): void;
+    // (undocumented)
+    focusColumnIndex: number;
+    // (undocumented)
+    focusRowIndex: number;
     static generateColumns: (row: object) => DataGridColumn[];
     // (undocumented)
     generateHeader: boolean;
+    // (undocumented)
+    handleFocusin: (e: FocusEvent) => void;
+    // (undocumented)
+    handleKeydown(e: KeyboardEvent): void;
+    // (undocumented)
+    handleRowFocus(e: Event): void;
     rowItemTemplate: ViewTemplate;
     rowsData: object[];
     // @internal (undocumented)
@@ -244,6 +256,11 @@ export class DataGridCell extends FASTElement {
     // @internal (undocumented)
     disconnectedCallback(): void;
     gridColumnIndex: number;
+    // (undocumented)
+    handleFocusin(e: FocusEvent): void;
+    // (undocumented)
+    handleFocusout(e: FocusEvent): void;
+    isActiveCell: boolean;
     rowData: object | null;
     }
 
@@ -276,7 +293,16 @@ export class DataGridRow extends FASTElement {
     columnsData: DataGridColumn[] | null;
     // @internal (undocumented)
     connectedCallback(): void;
+    // @internal (undocumented)
+    disconnectedCallback(): void;
+    // (undocumented)
+    focusColumnIndex: number;
     gridTemplateColumns: string;
+    // (undocumented)
+    handleCellFocus(e: Event): void;
+    // (undocumented)
+    handleFocusout(e: FocusEvent): void;
+    isActiveRow: boolean;
     rowData: object | null;
     // @internal (undocumented)
     slottedCellElements: HTMLElement[];
