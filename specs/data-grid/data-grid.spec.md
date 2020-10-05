@@ -21,8 +21,8 @@ Any time an author wants to display tabular data.
   
 ### Features
 - Generate a data grid layout based on provided data.
-- Multiple customization points to control the grid display
-- Manages keyboard navigation across the grid
+- Authors can take advantage of multiple customization points to control the grid display.
+- Manage keyboard navigation across the grid.
 
 ### Risks and Challenges
 - It is not yet clear how cells with focusable children work.
@@ -45,15 +45,15 @@ Any time an author wants to display tabular data.
 
 ## Design
 
-The Fast `Data grid` components enable a high degree of customizability. In addition to being able to set the base styles of the components authors can choose the templates applied to grid and header cells on a per column basis using the properties of `DataGridColumn`. Additionally, authors can specify the templates used during the creation of rows and cells from data sources through the item template properties of the grid and row components (`rowItemTemplate` and `cellItemTemplate`).  Finally, authors can add elements they create and manage themselves through the various element slots.
+The Fast **data grid** component enables a high degree of customizability. In addition to the base css styling that can be applied to the grid and its sub-components, authors can choose the templates applied to grid and header cells on a per column basis using the properties of `DataGridColumn`. Additionally, authors can specify the templates used during the creation of rows and cells from data sources through the item template properties of the grid and row components (`rowItemTemplate` and `cellItemTemplate`).  Finally, authors can add elements they create and manage themselves through the various element slots.
 
 ### API
 
 #### The DataGridColumn interface
 
-Most `data grid` components use the `DataGridColumn` interface.  A `DataGridColumn` is an object that describes the properties of a single column in the grid as follows:
+Most **data grid** components use the `DataGridColumn` interface.  A `DataGridColumn` is an object that describes the properties of a single column in the grid as follows:
 
-- `columnDataKey`: A string that identifies which data item should be shown in the column.  For example if the source data had a field called "Name" the `columnDataKey` for the column that displays the values for "Name" would be "Name".
+- `columnDataKey`: A string that identifies which data item should be shown in the column.  For example, if the source data had a field called "Name" the `columnDataKey` for the column that displays the values for "Name" would be "Name".
 
 - `title`:  The title of the column, if not provided the `columnDataKey` is used instead.
 
@@ -80,10 +80,8 @@ For example a button handler on a `cellTemplate` could be implemented with a cli
     </template>
 ```
 
-
-
 **Data grid**
-- `fast-data-grid`
+- `<fast-data-grid>`
 
 *Attributes:*
 - `generateHeader`  
@@ -98,6 +96,12 @@ An array of `DataGridColumn` objects that define what columns will be displayed 
 
 - `rowItemTemplate`  
 Custom [template](https://fast.design/docs/fast-element/declaring-templates) to use when generating rows by iterating over data.  The default template uses `fast-data-grid-row`, this is where authors change that.
+
+- `focusRowIndex`
+The index of the row that will receive focus the next time the grid is focused. This value changes as focus moves to different rows within the grid.  Changing this value when focus is already within the grid moves focus to the specified row.  
+
+- `focusColumnIndex`
+The index of the column that will receive focus the next time the grid is focused. This value changes as focus moves to different rows within the grid.  Changing this value when focus is already within the grid moves focus to the specified column.
 
 *Slots:*
 - `default`  
@@ -118,8 +122,9 @@ Static function that creates a basic set of columns from an object representing 
 
 - `rowsSlot`
 
+
 **Data grid header**
-- `fast-data-grid-header`
+- `<fast-data-grid-header>`
 
 *Attributes:*
 - none
@@ -129,7 +134,7 @@ Static function that creates a basic set of columns from an object representing 
 An array of `DataGridColumn` objects that define what columns will be displayed in the grid.  The order of the columns determines their order in the grid.
 
 - `headerCellItemTemplate`  
-Custom [template](https://fast.design/docs/fast-element/declaring-templates) to use when generating header cells by iterating over data.  The default template uses `<fast-data-grid-header-cell>`, this is where authors change that.
+Custom [template](https://fast.design/docs/fast-element/declaring-templates) to use when generating header cells by iterating over data.  The default template uses `fast-data-grid-header-cell`, this is where authors change that.
 
 *Slots:*
 - `default`  
@@ -143,7 +148,7 @@ Default slot for items
 
 
 **Data grid header cell**
-- `fast-data-grid-header-cell`
+- `<fast-data-grid-header-cell>`
 
 *Attributes:*
 - extends HTML Element attributes
@@ -164,11 +169,11 @@ Default slot for items
 
 
 **Data grid row**
-- `fast-data-grid-row`
+- `<fast-data-grid-row>`
 
 *Attributes:*
 - `gridTemplateColumns`  
-String that gets applied to the the css `gridTemplateColumns` attribute for the row
+String that gets applied to the the css `gridTemplateColumns` attribute for the row.
 
 *properties:*
 - `rowData`  
@@ -178,21 +183,20 @@ The objects that contains the data to be displayed in this row.
 An array of `DataGridColumn` objects that define what columns will be displayed in the grid.  The order of the columns determines their order in the grid.
 
 - `cellItemTemplate`  
-Custom [template](https://fast.design/docs/fast-element/declaring-templates) to use when generating cells by iterating over data.  The default template uses `<fast-data-grid-cell>`, this is where authors change that.
+Custom [template](https://fast.design/docs/fast-element/declaring-templates) to use when generating cells by iterating over data.  The default template uses `fast-data-grid-cell`, this is where authors change that.
 
 *Slots:*
 - `default`  
 Default slot for items
 
 *Events*
-- none
+- `row-focused` - Event triggered when a row or one of its internal elements is focused.
 
 *parts:*
 - `cellsSlot`
 
 **Data grid cell**
-*Component name:*
-- `fast-data-grid-cell`
+- `<fast-data-grid-cell>`
 
 *Attributes:*
 - `gridColumnIndex`  
@@ -210,7 +214,7 @@ The `DataGridColumn` this cell represents.
 Default slot for items
 
 *Events*
-- none
+- `cell-focused` - Event triggered when a cell or one of its internal elements is focused.
 
 *parts:*
 - `cellSlot`
@@ -225,7 +229,7 @@ For example given a grid component:
  ```
 
  And some data:
- ```ts
+ ```js
 const baseRows: object[] = [
     { name: "Rob", age: "19" },
     { name: "Bob", age: "20" },
@@ -234,7 +238,7 @@ const baseRows: object[] = [
 
  An author could pass the data to the component from a javascript function:
 
-```ts
+```js
 onLoad(): void {
    const defaultGrid: DataGrid | null = document.getElementById(
         "defaultGrid"
@@ -245,7 +249,7 @@ onLoad(): void {
 }
 ```
 
-This renders a basic grid with a column titled "name" and another titled "age" in addition to the two rows of data populated with the values.  
+This renders a basic grid with a column titled "name" and another titled "age" in addition to the two rows of data populated with the values. 
 
 ![](./images/ex1.png)
 
@@ -253,7 +257,7 @@ The next level of customization involves changing the default columns that are c
 
 And author would define the columns by providing an array of `DataGridColumn` objects to the component's `columnsData` property:
 
-```ts
+```js
 const baseColumns: DataGridColumn[] = [
     { columnDataKey: "name", title:"Player name", columnWidth: "1fr" },
     { columnDataKey: "age", title:"Age", columnWidth: "80px" },
@@ -268,9 +272,9 @@ Applying these columns to our previous example results in our columns having the
 
 ![](./images/ex2.png)
 
-- Programmatically generated rows/cells will will be created using [repeat directives](https://fast.design/docs/fast-element/using-directives#the-repeat-directive)
+- Programmatically generated rows/cells will will be created using [repeat directives](https://fast.design/docs/fast-element/using-directives#the-repeat-directive).
 
-- Individual cells can be customized using by passing a custom ViewTemplate through the `DataGridColumn` interface for the column in question. These templates are rendered in the light dom within the cell so that authors can create custom cells with interactive elements.
+- Individual cells can be customized using by passing a custom ViewTemplate through the `DataGridColumn` interface for the column in question. These templates are rendered in the light DOM within the cell so that authors can create custom cells with interactive elements.
 
 ### Accessibility
 
@@ -293,8 +297,7 @@ We want to take full advantage of fast-element templating and directives for fas
 None
 
 ### Test Plan
-
-This component should have Jest component testing in the @microsoft/fast-foundation package
+This component should have component testing in the @microsoft/fast-foundation package.
 
 ## Next Steps
 
