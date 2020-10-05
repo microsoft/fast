@@ -18,7 +18,7 @@ async function setup() {
 }
 
 describe("Breadcrumb", () => {
-    it("should include a role of navigation", async () => {
+    it("should include a `role` of `navigation`", async () => {
         const { element, connect, disconnect } = await fixture<Breadcrumb>(
             "fast-breadcrumb"
         );
@@ -26,6 +26,16 @@ describe("Breadcrumb", () => {
         await connect();
 
         expect(element.getAttribute("role")).to.equal("navigation");
+
+        await disconnect();
+    });
+
+    it("should include a `role` of `list`", async () => {
+        const { element, connect, disconnect } = await setup();
+
+        await connect();
+
+        expect(element?.shadowRoot?.querySelector("[role='list']")).to.not.equal(null);
 
         await disconnect();
     });
