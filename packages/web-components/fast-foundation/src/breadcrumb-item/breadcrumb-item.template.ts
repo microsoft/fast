@@ -24,7 +24,7 @@ export const BreadcrumbItemTemplate = html<BreadcrumbItem>`
             `
         )}
         ${when(
-            x => x.showSeparator,
+            x => x.separator,
             html<BreadcrumbItem>`
                 <span class="separator" part="separator" aria-hidden="true">
                     <slot name="separator">/</slot>

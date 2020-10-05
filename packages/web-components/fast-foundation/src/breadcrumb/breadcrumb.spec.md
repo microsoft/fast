@@ -27,8 +27,6 @@ He clicks on `Kitchen and Dining` to go back to the category of kitchen items, s
 - `slottedBreadcrumbItems` - HTMLElement[] used in the slotted directive.
 
 *Attribute*
-- `aria-labelledby`
-- `aria-label`
 
 *Slot Names*
 - `slottedBreadcrumbItems` - a property used in a slotted directive.
@@ -38,8 +36,6 @@ He clicks on `Kitchen and Dining` to go back to the category of kitchen items, s
 ```html
 <template
     role="navigation"
-    aria-label="${x => x.ariaLabel}"
-    aria-labelledby="${x => x.ariaLabelledby}"
 >
     <div role="list">
         <slot ${slotted({ property: "slottedBreadcrumbItems", filter: elements() })}></slot>
@@ -86,11 +82,9 @@ The `fast-breadcrumb-item` is placed inside the `fast-breadcrumb` component. It 
 - `fast-breadcrumb-item`
 
 *Attribute*
-- `href` - link destination for `fast-breadcrumb-item`. The control will be an anchor only if an `href` is specified on the `fast-breadcrumb-item`.
 
 *Properties*
-- `showSeparator` - is a boolean to show and hide the separator.
-- `isCurrent` - is a boolean that checks if it is the last item set `aria-current`.
+- `separator` - is a boolean to show and hide the separator.
 
 *Slots*
 - default slot for item.
@@ -99,49 +93,19 @@ The `fast-breadcrumb-item` is placed inside the `fast-breadcrumb` component. It 
 *CSS Parts*
 - `listitem` - class style to align the control and the separator.
 - `separator` - class style to adjust margin layout.
-- `control` - class styles for the default anchor control.
-- `content`- class style for the content inside the control.
 
 ### Anatomy and Appearance
 
 ```html
 <div role="listitem" class="listitem" part="listitem">
-    ${when(x => x.href && x.href.length > 0,
+    ${when(
+        x => x.href && x.href.length > 0,
         html<BreadcrumbItem>`
-            <a
-                class="control"
-                part="control"
-                href="${x => x.href}"
-                aria-atomic="${x => x.ariaAtomic}"
-                aria-busy="${x => x.ariaBusy}"
-                aria-controls="${x => x.ariaControls}"
-                aria-current="${x => (x.isCurrent ? "page" : void 0)}"
-                aria-describedBy="${x => x.ariaDescribedby}"
-                aria-details="${x => x.ariaDetails}"
-                aria-disabled="${x => x.ariaDisabled}"
-                aria-errormessage="${x => x.ariaErrormessage}"
-                aria-expanded="${x => x.ariaExpanded}"
-                aria-flowto="${x => x.ariaFlowto}"
-                aria-haspopup="${x => x.ariaHaspopup}"
-                aria-hidden="${x => x.ariaHidden}"
-                aria-invalid="${x => x.ariaInvalid}"
-                aria-keyshortcuts="${x => x.ariaKeyshortcuts}"
-                aria-label="${x => x.ariaLabel}"
-                aria-labelledby="${x => x.ariaLabelledby}"
-                aria-live="${x => x.ariaLive}"
-                aria-owns="${x => x.ariaOwns}"
-                aria-relevant="${x => x.ariaRelevant}"
-                aria-roledescription="${x => x.ariaRoledescription}"
-            >
-                ${startTemplate}
-                <span class="content" part="content">
-                    <slot></slot>
-                </span>
-                ${endTemplate}
-            </a>
+            ${AnchorTemplate}
         `
     )}
-    ${when(x => !x.href,
+    ${when(
+        x => !x.href,
         html<BreadcrumbItem>`
             ${startTemplate}
             <slot></slot>
@@ -149,7 +113,7 @@ The `fast-breadcrumb-item` is placed inside the `fast-breadcrumb` component. It 
         `
     )}
     ${when(
-        x => x.showSeparator,
+        x => x.separator,
         html<BreadcrumbItem>`
             <span class="separator" part="separator" aria-hidden="true">
                 <slot name="separator">/</slot>

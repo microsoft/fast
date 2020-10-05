@@ -19,7 +19,7 @@ export class Breadcrumb extends FASTElement {
             ];
 
             if (lastNode instanceof BreadcrumbItem) {
-                (lastNode as BreadcrumbItem).showSeparator = false;
+                (lastNode as BreadcrumbItem).separator = false;
             }
 
             let childNodeWithHref: HTMLElement | null = null;
