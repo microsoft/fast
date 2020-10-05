@@ -36,41 +36,6 @@ describe("TreeView", () => {
         await disconnect();
     });
 
-    it("should set a tabindex of '0' when `focusable` is true", async () => {
-        const { element, connect, disconnect } = await setup();
-
-        element.focusable = true;
-
-        await connect();
-
-        expect(element.getAttribute("tabindex")).to.equal("0");
-
-        await disconnect();
-    });
-
-    it("should set a tabindex of '-1' when `focusable` is false", async () => {
-        const { element, connect, disconnect } = await setup();
-
-        element.focusable = false;
-
-        await connect();
-
-        expect(element.getAttribute("tabindex")).to.equal("-1");
-
-        await disconnect();
-    });
-
-    it("should set a default value of 'true' to `focusable`", async () => {
-        const { element, connect, disconnect } = await setup();
-
-        await connect();
-        await DOM.nextUpdate();
-
-        expect(element.focusable).to.equal(true);
-
-        await disconnect();
-    });
-
     it("should set tree item `nested` properties to true if *any* tree item has nested items", async () => {
         const { element, connect, disconnect } = await setup();
         const item1 = document.createElement("fast-tree-item");
