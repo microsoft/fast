@@ -20,9 +20,9 @@ Any time an author wants to display tabular data.
 - The initial version of the component will not support virtualization or pagination to display large data sets but should be architected to support both in the future.
   
 ### Features
-- Generate a data grid layout based on provided data.
+- Generates a data grid layout based on provided data.
 - Authors can take advantage of multiple customization points to control the grid display.
-- Manage keyboard navigation across the grid.
+- Manages keyboard navigation across the grid.
 
 ### Risks and Challenges
 - It is not yet clear how cells with focusable children work.
