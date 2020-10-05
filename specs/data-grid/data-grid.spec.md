@@ -274,7 +274,7 @@ Applying these columns to our previous example results in our columns having the
 
 - Programmatically generated rows/cells will will be created using [repeat directives](https://fast.design/docs/fast-element/using-directives#the-repeat-directive).
 
-- Individual cells can be customized using by passing a custom ViewTemplate through the `DataGridColumn` interface for the column in question. These templates are rendered in the light DOM within the cell so that authors can create custom cells with interactive elements.
+- Individual cells can be customized using by passing a custom `ViewTemplate` through the `DataGridColumn` interface for the column in question. These templates are rendered in the light DOM within the cell so that authors can create custom cells with interactive elements.
 
 ### Accessibility
 
