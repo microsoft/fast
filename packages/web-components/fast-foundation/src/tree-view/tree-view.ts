@@ -76,7 +76,7 @@ export class TreeView extends FASTElement {
     };
 
     /**
-     * @deprecated
+     * @deprecated - no longer needed
      */
     /* eslint-disable-next-line */
     public handleFocus = (e: FocusEvent): void => {};

@@ -151,14 +151,14 @@ export class TreeItem extends FASTElement {
     }
 
     /**
-     * @deprecated
+     * @deprecated - no longer needed.
      * @param e - Event object
      */
     /* eslint-disable-next-line */
     public handleFocus = (e: Event): void => {};
 
     /**
-     * @deprecated
+     * @deprecated - no longer needed.
      * @param e - Event object
      */
     /* eslint-disable-next-line */
