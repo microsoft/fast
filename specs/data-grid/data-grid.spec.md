@@ -85,7 +85,7 @@ For example a button handler on a `cellTemplate` could be implemented with a cli
 
 *Attributes:*
 - `generateHeader`  
-Boolean.  Automatically generate a header element based on provided columns. Default is true.  Authors who wish to not have a header row or wish to generate their own can set this to false.
+Boolean.  Automatically generate a header element based on provided columns. The default is `true`.  Authors who wish to not have a header row or wish to generate their own can set this to `false`.
 
 *properties:*
 - `rowsData`  
