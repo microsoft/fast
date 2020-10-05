@@ -18,6 +18,18 @@ async function setup() {
 }
 
 describe("Breadcrumb item", () => {
+    it("should include a `role` of `listitem`", async () => {
+        const { element, connect, disconnect } = await setup();
+
+        await connect();
+
+        expect(element?.shadowRoot?.querySelector("[role='listitem']")).to.not.equal(
+            null
+        );
+
+        await disconnect();
+    });
+
     it("should render `anchor` when `href` is provided", async () => {
         const { element, connect, disconnect } = await setup();
         const hrefExample: string = "https://fast.design";
