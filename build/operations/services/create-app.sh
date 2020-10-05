@@ -5,8 +5,7 @@ A fully managed compute platform that is optimized for hosting websites and web 
 Customers can use App Service on Linux to host web apps natively on Linux for supported 
 application stacks.
 
-Note: This backend service is only accessible through the Front Door or through Staging 
-sites which are locked down with Azure Active Directory.
+Note: This backend service is only accessible through the Front Door.
 
 Ref:
 https://docs.microsoft.com/en-us/azure/app-service/containers/app-service-linux-intro
@@ -20,25 +19,33 @@ https://docs.microsoft.com/en-us/azure/app-service/containers/app-service-linux-
 # [] Set --number-of-workers
 # [] Archive logs in their own storage container
 
-# Configure and set name pattern
-web_app=$location_abbr-app && [[ $debug == true ]] && echo "${bold}${green}Web App Name Pattern"${reset}${unbold} && echo *-$web_app
+
+# Configure
+service_name="App Service"
+service_code="app"
 azure_log_analytics_location=southcentralus
 azure_log_analytics_workspace_name=fast-ops-log
 
-echo "creating web apps ..."
-for name in ${names[@]}; do
+# Debugging
+declare -a args=("$resource_group" "$service")
+debugService args
+
+# Azure CLI
+for application in ${applications[@]}; do
     
-    # Compose names
-    echo "setting names ..."
-        new_name=$name-$web_app && [[ $debug == true ]] && echo "${bold}${green}Web App Name"${reset}${unbold} && echo $new_name
-        dns_cname=$new_name.azurewebsites.net && [[ $debug == true ]] && echo "${bold}${green}DNS CNAME"${reset}${unbold} && echo $dns_cname
+    # Configure
+    service=$application-$location-$service_code
 
-    echo "creating web app [$new_name] ..."
-        az webapp create --name $new_name --plan $app_service_plan --resource-group $resource_group \
-            --runtime "NODE|12-lts"
+    setService "Create $service_name" "$service"
+        az webapp create \
+            --name $service \
+            --plan $app_service_plan \
+            --resource-group $resource_group \
+            --runtime "NODE|lts"
 
-    echo "configuring web app ..."
-        az webapp config set --name $new_name \
+    printStatus "configuring web app"
+        az webapp config set \
+            --name $service \
             --always-on true \
             --auto-heal-enabled true \
             --ftps-state Disabled \
@@ -50,8 +57,9 @@ for name in ${names[@]}; do
             --use-32bit-worker-process false \
             --startup-file "pm2 start /home/site/wwwroot/server.js --no-daemon"
            
-    echo "configuring web app logs ..."
-        az webapp log config --name $new_name\
+    printStatus "configuring web app logs"
+        az webapp log config \
+            --name $service \
             --application-logging true \
             --detailed-error-messages true \
             --docker-container-logging filesystem \
@@ -60,11 +68,17 @@ for name in ${names[@]}; do
             --resource-group $resource_group \
             --web-server-logging filesystem
 
-    echo "setting https only ..."
-        az webapp update --https-only true --name $new_name --resource-group $resource_group
+    printStatus "setting https only"
+        az webapp update \
+            --https-only true \
+            --name $service \
+            --resource-group $resource_group
     
-    echo "creating slot for staging ..."
-        az webapp deployment slot create --name $new_name --resource_group $resource_group --slot stage
+    printStatus "creating slot for staging"
+        az webapp deployment slot create \
+            --name $service \
+            --resource_group $resource_group \
+            --slot stage
 
     #TODO: Configure staging slot
     # echo "configuring staging slot ..."
@@ -81,7 +95,7 @@ for name in ${names[@]}; do
     echo "configuring IPv4 restrictions ..."
         az webapp config access-restriction add --priority 100 \
             --resource-group $resource_group \
-            --name $new_name-stage \
+            --name $service-stage \
             --description "Deny access to all except Front Door" \
             --rule-name "Front Door IPv4" \
             --action Allow \
@@ -90,17 +104,17 @@ for name in ${names[@]}; do
     echo "configuring IPv6 restrictions ..."
         az webapp config access-restriction add --priority 200 \
             --resource-group $resource_group \
-            --name $new_name-stage \
+            --name $service-stage \
             --description "Deny access to all except Front Door" \
             --rule-name "Front Door IPv6" \
             --action Allow \
             --ip-address 2a01:111:2050::/44
 
     echo "creating slot for last-known-good ..."
-        az webapp deployment slot create --name $new_name -g $resource_group --slot lkg
+        az webapp deployment slot create --name $service -g $resource_group --slot lkg
 
-    echo "internal web sites: http://$new_name-stage.azurewebsites.net => https://$name-stage.$dns_zone"
-    echo "internal web sites: http://$new_name-lkg.azurewebsites.net => https://$name-lkg.$dns_zone"
+    echo "internal web sites: http://$service-stage.azurewebsites.net => https://$name-stage.$dns_zone"
+    echo "internal web sites: http://$service-lkg.azurewebsites.net => https://$name-lkg.$dns_zone"
 
     echo "configure customer domain name ..."
     echo "creating web app dns zone w/cname record ..."

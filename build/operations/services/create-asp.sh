@@ -13,6 +13,7 @@ https://app.pluralsight.com/course-player?clipId=9b58df17-fdf9-4802-bbc4-40ea42a
 service_name="App Service Plan"
 service_code="asp"
 service=$location-$service_code
+app_service_plan=$service
 
 setService "Create $service_name" "$service"
 

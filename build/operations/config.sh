@@ -55,5 +55,4 @@ az configure --defaults output=table disable_confirm_prompt=false enable_log_fil
     setLocation
 
 # SHELL Operations
-#    getRegion
     getSubscription

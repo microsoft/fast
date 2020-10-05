@@ -28,7 +28,7 @@ while (( $# > 1 )); do
                     site_path=""
                     break ;;
                 staging)
-                    # there is no staging subscription, is's on production
+                    # there is no staging subscription, it uses production slots for staging
                     subscription=production
                     environment=staging
                     env_path=/slots/stage

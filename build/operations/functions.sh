@@ -5,14 +5,19 @@ Contains internal fast functions for processing Azure required logic.
 '
 
 function debugService() {
-    if [[ $debug == true ]];
-    then
+    if [[ $debug == true ]]; then
         echo "${yellow}"
         props=$1
         for arg in "${args[@]}"; do
             echo "${arg}"
         done
         echo "${reset}"
+    fi
+}
+
+function debugStatus() {
+    if [[ $debug == true ]]; then
+        echo ""
     fi
 }
 
@@ -109,4 +114,8 @@ function setTitle() {
 
 function setService() {
    echo "" && echo "${green}${bold}$1${reset} ${green}$2${reset}"
+}
+
+function printStatus() {
+    echo "$1 ..."
 }
