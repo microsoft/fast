@@ -21,7 +21,7 @@ jobs:
       run: |
         git config user.name "Microsoft FAST Builds"
         git config user.email "fastdna@service.microsoft.com"
-        git remote set-url origin https://$(githubUser):$(githubPAT)@github.com/microsoft/fluentui.git
+        git remote set-url origin https://$(githubUser):$(githubPAT)@github.com/microsoft/fast.git
     
     - name: Install package dependencies / prepare workspaces
       run: yarn install --frozen-lockfile
