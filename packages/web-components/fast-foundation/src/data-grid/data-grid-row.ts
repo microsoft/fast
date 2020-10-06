@@ -7,8 +7,13 @@ import {
     observable,
     ViewTemplate,
 } from "@microsoft/fast-element";
+import {
+    keyCodeArrowLeft,
+    keyCodeArrowRight,
+    keyCodeEnd,
+    keyCodeHome,
+} from "@microsoft/fast-web-utilities";
 import { DataGridColumn } from "./data-grid";
-import { DataGridCell } from "./data-grid-cell";
 
 const defaultCellItemTemplate = html`
     <fast-data-grid-cell
@@ -106,6 +111,7 @@ export class DataGridRow extends FASTElement {
 
         this.addEventListener("cell-focused", this.handleCellFocus);
         this.addEventListener("focusout", this.handleFocusout);
+        this.addEventListener("keydown", this.handleKeydown);
 
         this.updateRowStyle();
     }
@@ -118,6 +124,7 @@ export class DataGridRow extends FASTElement {
 
         this.removeEventListener("cell-focused", this.handleCellFocus);
         this.removeEventListener("focusout", this.handleFocusout);
+        this.removeEventListener("keydown", this.handleKeydown);
     }
 
     public handleFocusout(e: FocusEvent): void {
@@ -132,6 +139,48 @@ export class DataGridRow extends FASTElement {
         const cells: Element[] = Array.from(this.querySelectorAll(this.cellElementTag));
         this.focusColumnIndex = cells.indexOf(e.target as Element);
         this.$emit("row-focused", this);
+    }
+
+    public handleKeydown(e: KeyboardEvent): void {
+        if (e.defaultPrevented) {
+            return;
+        }
+        let cells: Element[] = [];
+        let newFocusColumnIndex: number = 0;
+        switch (e.keyCode) {
+            case keyCodeArrowLeft:
+                // focus left one cell
+                cells = Array.from(this.querySelectorAll(this.cellElementTag));
+                newFocusColumnIndex = Math.max(0, this.focusColumnIndex - 1);
+                (cells[newFocusColumnIndex] as HTMLElement).focus();
+                e.preventDefault();
+                break;
+
+            case keyCodeArrowRight:
+                // focus right one cell
+                cells = Array.from(this.querySelectorAll(this.cellElementTag));
+                newFocusColumnIndex = Math.min(cells.length, this.focusColumnIndex + 1);
+                (cells[newFocusColumnIndex] as HTMLElement).focus();
+                e.preventDefault();
+                break;
+
+            case keyCodeHome:
+                if (!e.ctrlKey) {
+                    // focus first cell of the row
+                    cells = Array.from(this.querySelectorAll(this.cellElementTag));
+                    (cells[0] as HTMLElement).focus();
+                    e.preventDefault();
+                }
+                break;
+            case keyCodeEnd:
+                if (!e.ctrlKey) {
+                    // focus last cell of the row
+                    cells = Array.from(this.querySelectorAll(this.cellElementTag));
+                    (cells[cells.length - 1] as HTMLElement).focus();
+                    e.preventDefault();
+                }
+                break;
+        }
     }
 
     // /**
