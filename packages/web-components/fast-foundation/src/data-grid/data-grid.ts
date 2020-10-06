@@ -1,5 +1,6 @@
 import {
     attr,
+    DOM,
     FASTElement,
     html,
     RepeatBehavior,
@@ -12,8 +13,8 @@ import {
     keyCodeArrowUp,
     keyCodeEnd,
     keyCodeHome,
-    keyCodePageUp,
     keyCodePageDown,
+    keyCodePageUp,
 } from "@microsoft/fast-web-utilities";
 import { DataGridRow } from "./data-grid-row";
 
@@ -104,7 +105,7 @@ export class DataGrid extends FASTElement {
      * @public
      */
     @observable
-    public columnsData: DataGridColumn[] | null = null;
+    public columnsData: DataGridColumn[] = [];
     private columnsDataChanged(): void {}
 
     /**
@@ -126,7 +127,11 @@ export class DataGrid extends FASTElement {
      */
     @observable
     public focusRowIndex: number = 0;
-    private focusRowIndexChanged(): void {}
+    private focusRowIndexChanged(): void {
+        if ((this as FASTElement).$fastController.isConnected) {
+            this.queueFocusUpdate();
+        }
+    }
 
     /**
      * The index of the column that will receive focus the next time the
@@ -138,7 +143,11 @@ export class DataGrid extends FASTElement {
      */
     @observable
     public focusColumnIndex: number = 0;
-    private focusColumnIndexChanged(): void {}
+    private focusColumnIndexChanged(): void {
+        if ((this as FASTElement).$fastController.isConnected) {
+            this.queueFocusUpdate();
+        }
+    }
 
     /**
      * @internal
@@ -153,8 +162,8 @@ export class DataGrid extends FASTElement {
     private rowsRepeatBehavior?: RepeatBehavior;
     private rowsPlaceholder?: Node;
 
-    private rowElementTag: string = "fast-data-grid-row";
-    private cellElementTag: string = "fast-data-grid-cell";
+    private isUpdatingFocus: boolean = false;
+    private pendingFocusUpdate: boolean = false;
 
     constructor() {
         super();
@@ -178,7 +187,7 @@ export class DataGrid extends FASTElement {
         this.$fastController.addBehaviors([this.rowsRepeatBehavior!]);
 
         this.addEventListener("row-focused", this.handleRowFocus);
-        this.addEventListener("focusin", this.handleFocusin);
+        this.addEventListener("focus", this.handleFocus);
         this.addEventListener("keydown", this.handleKeydown);
     }
 
@@ -189,40 +198,22 @@ export class DataGrid extends FASTElement {
         super.disconnectedCallback();
 
         this.removeEventListener("row-focused", this.handleRowFocus);
-        this.removeEventListener("focusin", this.handleFocusin);
+        this.removeEventListener("focus", this.handleFocus);
         this.removeEventListener("keydown", this.handleKeydown);
     }
 
     public handleRowFocus(e: Event): void {
+        this.isUpdatingFocus = true;
         const focusRow: DataGridRow = e.target as DataGridRow;
         this.focusColumnIndex = focusRow.focusColumnIndex;
-        const rows: Element[] = Array.from(this.querySelectorAll(this.rowElementTag));
+        const rows: Element[] = Array.from(this.querySelectorAll('[role="row"]'));
         this.focusRowIndex = rows.indexOf(e.target as Element);
+        this.isUpdatingFocus = false;
     }
 
-    public handleFocusin = (e: FocusEvent): void => {
-        const rows: NodeListOf<Element> = this.querySelectorAll(this.rowElementTag);
-
-        if (rows.length === 0) {
-            this.focusRowIndex = 0;
-            return;
-        }
-
-        if (e.target === this) {
-            // focus on an internal cell
-
-            this.focusRowIndex = Math.min(rows.length - 1, this.focusRowIndex);
-            const focusRow: Element = rows[this.focusRowIndex];
-
-            const cells: NodeListOf<Element> = focusRow.querySelectorAll(
-                this.cellElementTag
-            );
-            this.focusColumnIndex = Math.min(cells.length - 1, this.focusColumnIndex);
-
-            (cells[this.focusColumnIndex] as HTMLElement).focus();
-            return;
-        }
-    };
+    public handleFocus(e: FocusEvent): void {
+        this.focusOnCell(this.focusRowIndex, this.focusColumnIndex);
+    }
 
     public handleKeydown(e: KeyboardEvent): void {
         if (e.defaultPrevented) {
@@ -231,11 +222,13 @@ export class DataGrid extends FASTElement {
         switch (e.keyCode) {
             case keyCodeArrowUp:
                 // focus up one row
+                this.focusOnCell(this.focusRowIndex - 1, this.focusColumnIndex);
                 e.preventDefault();
                 break;
 
             case keyCodeArrowDown:
                 // focus down one row
+                this.focusOnCell(this.focusRowIndex + 1, this.focusColumnIndex);
                 e.preventDefault();
                 break;
 
@@ -252,15 +245,63 @@ export class DataGrid extends FASTElement {
             case keyCodeHome:
                 if (e.ctrlKey) {
                     // focus first cell of first row
+                    this.focusOnCell(0, 0);
                     e.preventDefault();
                 }
                 break;
             case keyCodeEnd:
                 if (e.ctrlKey) {
                     // focus last cell of last row
+                    const rows: NodeListOf<Element> = this.querySelectorAll(
+                        '[role="row"]'
+                    );
+                    this.focusOnCell(rows.length - 1, this.columnsData?.length - 1, rows);
                     e.preventDefault();
                 }
                 break;
         }
+    }
+
+    private focusOnCell = (
+        rowIndex: number,
+        columnIndex: number,
+        rows?: NodeListOf<Element>
+    ): void => {
+        if (rows === undefined) {
+            rows = this.querySelectorAll('[role="row"]');
+        }
+
+        if (rows.length === 0 || this.columnsData.length === 0) {
+            this.focusRowIndex = 0;
+            this.focusColumnIndex = 0;
+            return;
+        }
+
+        let focusRowIndex = Math.max(0, Math.min(rows.length - 1, rowIndex));
+        const focusRow: Element = rows[focusRowIndex];
+
+        const cells: NodeListOf<Element> = focusRow.querySelectorAll('[role="cell"]');
+
+        let focusColumnIndex = Math.max(0, Math.min(cells.length - 1, columnIndex));
+
+        (cells[focusColumnIndex] as HTMLElement).focus();
+    };
+
+    private queueFocusUpdate(): void {
+        if (
+            this.isUpdatingFocus &&
+            (this.contains(document.activeElement) || this === document.activeElement)
+        ) {
+            return;
+        }
+        if (this.pendingFocusUpdate === false) {
+            this.pendingFocusUpdate = true;
+            DOM.queueUpdate(this.updateFocus);
+        }
+    }
+
+    private updateFocus(): void {
+        this.pendingFocusUpdate = false;
+        this.focusOnCell(this.focusRowIndex, this.focusColumnIndex);
     }
 }
