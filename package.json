@@ -107,6 +107,7 @@
     "@types/react": "*"
   },
   "devDependencies": {
+    "@octokit/rest": "^18.0.6",
     "@types/jest": "^25.2.1",
     "@types/lodash-es": "^4.17.0",
     "@types/node": "^9.4.7",
