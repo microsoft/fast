@@ -38,6 +38,7 @@ abstract class Editor<P, S extends EditorState> extends React.Component<P, S> {
     public maxViewerHeight: number = 0;
     public maxViewerWidth: number = 0;
     public fastMessageSystem: MessageSystem;
+    // This is the current monaco editor models string value
     public monacoValue: string[];
     public paneStartClassNames: string = "pane pane__start";
     public paneEndClassNames: string = "pane pane__end";
