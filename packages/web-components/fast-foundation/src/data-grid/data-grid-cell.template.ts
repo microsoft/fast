@@ -6,7 +6,7 @@ import { DataGridCell } from "./data-grid-cell";
  * @public
  */
 export const DataGridCellTemplate = html<DataGridCell>`
-    <template tabindex="-1">
+    <template tabindex="-1" role="cell">
         <slot part="cellSlot"></slot>
     </template>
 `;

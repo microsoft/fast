@@ -90,8 +90,6 @@ export class DataGridRow extends FASTElement {
 
     public focusColumnIndex: number = -1;
 
-    private cellElementTag: string = "fast-data-grid-cell";
-
     /**
      * @internal
      */
@@ -136,7 +134,7 @@ export class DataGridRow extends FASTElement {
 
     public handleCellFocus(e: Event): void {
         this.isActiveRow = true;
-        const cells: Element[] = Array.from(this.querySelectorAll(this.cellElementTag));
+        const cells: Element[] = Array.from(this.querySelectorAll('[role="cell"]'));
         this.focusColumnIndex = cells.indexOf(e.target as Element);
         this.$emit("row-focused", this);
     }
@@ -150,7 +148,7 @@ export class DataGridRow extends FASTElement {
         switch (e.keyCode) {
             case keyCodeArrowLeft:
                 // focus left one cell
-                cells = Array.from(this.querySelectorAll(this.cellElementTag));
+                cells = Array.from(this.querySelectorAll('[role="cell"]'));
                 newFocusColumnIndex = Math.max(0, this.focusColumnIndex - 1);
                 (cells[newFocusColumnIndex] as HTMLElement).focus();
                 e.preventDefault();
@@ -158,7 +156,7 @@ export class DataGridRow extends FASTElement {
 
             case keyCodeArrowRight:
                 // focus right one cell
-                cells = Array.from(this.querySelectorAll(this.cellElementTag));
+                cells = Array.from(this.querySelectorAll('[role="cell"]'));
                 newFocusColumnIndex = Math.min(cells.length, this.focusColumnIndex + 1);
                 (cells[newFocusColumnIndex] as HTMLElement).focus();
                 e.preventDefault();
@@ -167,7 +165,7 @@ export class DataGridRow extends FASTElement {
             case keyCodeHome:
                 if (!e.ctrlKey) {
                     // focus first cell of the row
-                    cells = Array.from(this.querySelectorAll(this.cellElementTag));
+                    cells = Array.from(this.querySelectorAll('[role="cell"]'));
                     (cells[0] as HTMLElement).focus();
                     e.preventDefault();
                 }
@@ -175,7 +173,7 @@ export class DataGridRow extends FASTElement {
             case keyCodeEnd:
                 if (!e.ctrlKey) {
                     // focus last cell of the row
-                    cells = Array.from(this.querySelectorAll(this.cellElementTag));
+                    cells = Array.from(this.querySelectorAll('[role="cell"]'));
                     (cells[cells.length - 1] as HTMLElement).focus();
                     e.preventDefault();
                 }
