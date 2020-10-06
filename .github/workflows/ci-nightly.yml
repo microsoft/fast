@@ -1,0 +1,39 @@
+name: CI - FAST Publish
+
+on:
+  schedule:
+  - cron: 0 12 * * 7
+
+jobs:
+  build_linux:
+    runs-on: ubuntu-latest
+
+    env:
+      GITHUB_PUBLISH_PAT: $(githubPAT)
+    
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Add or Update packages
+      run: sudo yarn global add lerna
+
+    - name: Authenticate Git for Pushes
+      run: |
+        git config user.name "Microsoft FAST Builds"
+        git config user.email "fastdna@service.microsoft.com"
+        git remote set-url origin https://$(githubUser):$(githubPAT)@github.com/microsoft/fluentui.git
+    
+    - name: Install package dependencies / prepare workspaces
+      run: yarn install --frozen-lockfile
+
+    - name: Testing Prettier format
+      run: lerna run prettier:diff
+
+    - name: Testing unit tests
+      run: lerna run test --stream
+
+    - name: Publish NPM changed packages
+      run: |
+        npm run beachball-publish -- -b origin/master -n $(npmToken) --access public -y
+        git reset --hard origin/master
+    

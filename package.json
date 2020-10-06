@@ -36,6 +36,11 @@
     "url": "https://github.com/Microsoft/fast/issues/new/choose"
   },
   "scripts": {
+    "beachball-bump": "beachball bump",
+    "beachball-change": "beachball change",
+    "beachball-check": "beachball check",
+    "beachball-publish": "beachball publish",
+    "beachball-publish-ci": "beachball publish -n $(npm.token)",
     "integration-tests:alpha": "node build/testing/sauce-labs/test-browsers.js alpha",
     "integration-tests:beta": "node build/testing/sauce-labs/test-browsers.js beta",
     "integration-tests:release": "node build/testing/sauce-labs/test-browsers.js release",
@@ -104,6 +109,7 @@
     "@types/node": "^9.4.7",
     "babel-core": "^7.0.0-bridge.0",
     "babel-preset-env": "^1.6.1",
+    "beachball": "^1.36.2",
     "chalk": "^2.4.2",
     "docusaurus-init": "^1.11.0",
     "dotenv": "^6.0.0",
