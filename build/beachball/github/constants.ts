@@ -1,6 +1,6 @@
 import { IRepoDetails } from "./types";
 
-export const fluentRepoDetails: IRepoDetails = {
+export const repoDetails: IRepoDetails = {
     owner: "microsoft",
     repo: "fast",
 };
