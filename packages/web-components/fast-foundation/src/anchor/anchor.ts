@@ -104,6 +104,5 @@ export class DelegatesARIALink extends ARIAGlobalStatesAndProperties {
  * TODO: https://github.com/microsoft/fast/issues/3317
  * @internal
  */
-/* eslint-disable-next-line */
 export interface Anchor extends StartEnd, DelegatesARIALink {}
 applyMixins(Anchor, StartEnd, DelegatesARIALink);

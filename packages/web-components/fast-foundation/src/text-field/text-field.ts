@@ -235,6 +235,5 @@ export class DelegatesARIATextbox extends ARIAGlobalStatesAndProperties {}
  * TODO: https://github.com/microsoft/fast/issues/3317
  * @internal
  */
-/* eslint-disable-next-line */
 export interface TextField extends StartEnd, DelegatesARIATextbox {}
 applyMixins(TextField, StartEnd, DelegatesARIATextbox);
