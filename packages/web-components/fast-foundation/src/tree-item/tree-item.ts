@@ -287,7 +287,6 @@ export class TreeItem extends FASTElement {
     }
 
     private handleSelected(e?: Event): void {
-        this.selected = !this.selected;
         this.$emit("selected-change", e);
     }
 

@@ -176,6 +176,7 @@ export class TreeView extends FASTElement {
                 (this.currentSelected as HTMLElement).removeAttribute("selected");
                 (this.currentSelected as TreeItem).selected = false;
             }
+            newSelection.setAttribute("selected", "");
             this.currentSelected = newSelection;
         }
     };
