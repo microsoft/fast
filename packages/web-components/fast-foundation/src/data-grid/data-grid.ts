@@ -8,11 +8,12 @@ import {
     ViewTemplate,
 } from "@microsoft/fast-element";
 import {
-    Direction,
     keyCodeArrowDown,
-    keyCodeArrowLeft,
-    keyCodeArrowRight,
     keyCodeArrowUp,
+    keyCodeEnd,
+    keyCodeHome,
+    keyCodePageUp,
+    keyCodePageDown,
 } from "@microsoft/fast-web-utilities";
 import { DataGridRow } from "./data-grid-row";
 
@@ -224,14 +225,41 @@ export class DataGrid extends FASTElement {
     };
 
     public handleKeydown(e: KeyboardEvent): void {
+        if (e.defaultPrevented) {
+            return;
+        }
         switch (e.keyCode) {
-            case keyCodeArrowLeft:
-                break;
-            case keyCodeArrowRight:
-                break;
             case keyCodeArrowUp:
+                // focus up one row
+                e.preventDefault();
                 break;
+
             case keyCodeArrowDown:
+                // focus down one row
+                e.preventDefault();
+                break;
+
+            case keyCodePageUp:
+                // focus up one "page"
+                e.preventDefault();
+                break;
+
+            case keyCodePageDown:
+                // focus down one "page"
+                e.preventDefault();
+                break;
+
+            case keyCodeHome:
+                if (e.ctrlKey) {
+                    // focus first cell of first row
+                    e.preventDefault();
+                }
+                break;
+            case keyCodeEnd:
+                if (e.ctrlKey) {
+                    // focus last cell of last row
+                    e.preventDefault();
+                }
                 break;
         }
     }

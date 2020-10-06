@@ -77,6 +77,9 @@ export class DataGridCell extends FASTElement {
     public connectedCallback(): void {
         super.connectedCallback();
 
+        this.addEventListener("focusin", this.handleFocusin);
+        this.addEventListener("focusout", this.handleFocusout);
+
         this.style.gridColumn = `${
             this.gridColumnIndex === undefined ? 0 : this.gridColumnIndex
         }`;
@@ -93,6 +96,9 @@ export class DataGridCell extends FASTElement {
      */
     public disconnectedCallback(): void {
         super.disconnectedCallback();
+
+        this.removeEventListener("focusin", this.handleFocusin);
+        this.removeEventListener("focusout", this.handleFocusout);
 
         if (this.customCellView !== null) {
             this.customCellView.unbind();

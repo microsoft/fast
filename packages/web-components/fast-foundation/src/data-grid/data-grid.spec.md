@@ -7,11 +7,11 @@ The `data grid` component enables authors to display an array of data in a tabul
 ![](./images/grid.png)
 
 `Data grid` actually consists of a number of components that work together:
-- `<data-grid>`:  The top level container element
-- `<data-grid-header>`: Displays column titles
-- `<data-grid-header-cell>`: Displays the title for a single column of cells
-- `<data-grid-row>`: Displays a single row of data associated with a single record
-- `<data-grid-cell>`: Displays a single cell of data within a row
+- `<fast-data-grid>`:  The top level container element
+- `<fast-data-grid-header>`: Displays column titles
+- `<fast-data-grid-header-cell>`: Displays the title for a single column of cells
+- `<fast-data-grid-row>`: Displays a single row of data associated with a single record
+- `<fast-data-grid-cell>`: Displays a single cell of data within a row
 
 ### Use Cases
 Any time an author wants to display tabular data.
@@ -20,9 +20,9 @@ Any time an author wants to display tabular data.
 - The initial version of the component will not support virtualization or pagination to display large data sets but should be architected to support both in the future.
   
 ### Features
-- Generate a data grid layout based on provided data.
+- Generates a data grid layout based on provided data.
 - Authors can take advantage of multiple customization points to control the grid display.
-- Manage keyboard navigation across the grid.
+- Manages keyboard navigation across the grid.
 
 ### Risks and Challenges
 - It is not yet clear how cells with focusable children work.
@@ -45,7 +45,7 @@ Any time an author wants to display tabular data.
 
 ## Design
 
-The Fast **data grid** enables a high degree of customizability. In addition to the base css styling that can be applied to the grid and its sub-components, authors can choose the templates applied to grid and header cells on a per column basis using the properties of `DataGridColumn`. Additionally, authors can specify the templates used during the creation of rows and cells from data sources through the item template properties of the grid and row components (`rowItemTemplate` and `cellItemTemplate`).  Finally, authors can add elements they create and manage themselves through the various element slots.
+The Fast **data grid** component enables a high degree of customizability. In addition to the base css styling that can be applied to the grid and its sub-components, authors can choose the templates applied to grid and header cells on a per column basis using the properties of `DataGridColumn`. Additionally, authors can specify the templates used during the creation of rows and cells from data sources through the item template properties of the grid and row components (`rowItemTemplate` and `cellItemTemplate`).  Finally, authors can add elements they create and manage themselves through the various element slots.
 
 ### API
 
@@ -85,7 +85,7 @@ For example a button handler on a `cellTemplate` could be implemented with a cli
 
 *Attributes:*
 - `generateHeader`  
-Boolean.  Automatically generate a header element based on provided columns. Default is true.  Authors who wish to not have a header row or wish to generate their own can set this to false.
+Boolean.  Automatically generate a header element based on provided columns. The default is `true`.  Authors who wish to not have a header row or wish to generate their own can set this to `false`.
 
 *properties:*
 - `rowsData`  
@@ -249,7 +249,7 @@ onLoad(): void {
 }
 ```
 
-This renders a basic grid with a column titled "name" and another titled "age".  In addition to the title row there would be two rows of data populated with the values for name and age.  Note that data
+This renders a basic grid with a column titled "name" and another titled "age" in addition to the two rows of data populated with the values. 
 
 ![](./images/ex1.png)
 
@@ -274,7 +274,7 @@ Applying these columns to our previous example results in our columns having the
 
 - Programmatically generated rows/cells will will be created using [repeat directives](https://fast.design/docs/fast-element/using-directives#the-repeat-directive).
 
-- Individual cells can be customized using by passing a custom ViewTemplate through the `DataGridColumn` interface for the column in question. These templates are rendered in the light DOM within the cell so that authors can create custom cells with interactive elements.
+- Individual cells can be customized using by passing a custom `ViewTemplate` through the `DataGridColumn` interface for the column in question. These templates are rendered in the light DOM within the cell so that authors can create custom cells with interactive elements.
 
 ### Accessibility
 
