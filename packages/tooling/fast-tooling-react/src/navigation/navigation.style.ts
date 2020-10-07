@@ -6,8 +6,8 @@ import {
     gutterCSSProperty,
     inactiveTextColorCSSProperty,
     insetStrongBoxShadow,
-    L4CSSProperty,
     L3OutlineColorProperty,
+    L4CSSProperty,
     textColorCSSProperty,
 } from "../style";
 
