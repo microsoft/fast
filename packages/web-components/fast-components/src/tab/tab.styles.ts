@@ -1,5 +1,6 @@
 import { css } from "@microsoft/fast-element";
 import {
+    disabledCursor,
     display,
     focusVisible,
     forcedColorsStylesheetBehavior,
@@ -16,6 +17,7 @@ import {
     neutralFillActiveBehavior,
     neutralFillHoverBehavior,
     neutralFillRestBehavior,
+    neutralFillStealthRestBehavior,
     neutralFocusBehavior,
     neutralForegroundActiveBehavior,
     neutralForegroundHintBehavior,
@@ -49,6 +51,19 @@ export const TabStyles = css`
     :host(:active) {
         color: ${neutralForegroundActiveBehavior.var};
         fill: currentcolor;
+    }
+
+    :host([disabled]),
+    :host(.disabled) {
+        cursor: ${disabledCursor};
+        opacity: var(--disabled-opacity);
+    }
+
+    :host([disabled]:hover),
+    :host(.disabled:hover) {
+        color: ${neutralForegroundRestBehavior.var};
+        fill: currentcolor;
+        background: ${neutralFillStealthRestBehavior.var}
     }
 
     :host([aria-selected="true"]) {
@@ -109,6 +124,7 @@ export const TabStyles = css`
     neutralFillActiveBehavior,
     neutralFillHoverBehavior,
     neutralFillRestBehavior,
+    neutralFillStealthRestBehavior,
     neutralFocusBehavior,
     neutralForegroundHintBehavior,
     neutralForegroundActiveBehavior,
