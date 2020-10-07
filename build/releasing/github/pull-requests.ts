@@ -4,9 +4,9 @@ import { IPullRequest, IRepoDetails } from "./types";
 export interface IGetPullRequestFromCommitParams {
     github: Octokit;
     repoDetails: IRepoDetails;
-    /** Commit hash */
+    // Commit hash
     commit: string;
-    /** Provide this to have it included in the resulting IPullRequest */
+    // Provide this to have it included in the resulting IPullRequest
     authorEmail?: string;
     verbose?: boolean;
 }
