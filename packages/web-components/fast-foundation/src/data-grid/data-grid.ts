@@ -16,6 +16,7 @@ import {
     keyCodePageDown,
     keyCodePageUp,
 } from "@microsoft/fast-web-utilities";
+import { DataGridCell } from "./data-grid-cell";
 import { DataGridRow } from "./data-grid-row";
 
 /**
@@ -50,6 +51,21 @@ export interface DataGridColumn {
      * cell template
      */
     cellTemplate?: ViewTemplate;
+
+    /**
+     * Whether the cell has in internal focus queue
+     */
+    hasInternalFocusQueue?: boolean;
+
+    /**
+     * Callback function that returns the element to focus in a custom cell.
+     * When hasInternalFocusQueue is false this function is called when the cell is first focused
+     * to immediately move focus to a cell element, for example a cell that is a checkbox could move
+     * focus directly to the checkbox.
+     * When hasInternalFocusQueue is true this function is called when the user hits Enter or F2
+     */
+
+    focusTargetCallback?: (cell: DataGridCell) => HTMLElement;
 }
 
 const defaultRowItemTemplate = html`

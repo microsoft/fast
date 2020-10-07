@@ -64,7 +64,6 @@ export default {
 };
 
 function incrementAge(): void {
-
     const newRow = Object.assign({}, editRow);
     newRow["age"] = newRow["age"] + 1;
 
@@ -118,12 +117,17 @@ const baseColumns: DataGridColumn[] = [
     { columnDataKey: "age", columnWidth: "1fr" },
 ];
 
+function getFocusTarget(cell: DataGridCell): HTMLElement {
+    return cell.querySelector("button") as HTMLElement;
+}
+
 const templateColumns: DataGridColumn[] = [
     { columnDataKey: "name", columnWidth: "1fr" },
     {
         columnDataKey: "age",
         columnWidth: "1fr",
         cellTemplate: dataGridButtonCellTemplate,
+        focusTargetCallback: getFocusTarget,
     },
 ];
 

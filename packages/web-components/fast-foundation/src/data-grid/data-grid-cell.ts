@@ -7,6 +7,11 @@ import {
     HTMLView,
     ViewTemplate,
 } from "@microsoft/fast-element";
+import {
+    keyCodeEnter,
+    keyCodeEscape,
+    keyCodeFunction2,
+} from "@microsoft/fast-web-utilities";
 import { DataGridColumn } from "./data-grid";
 
 const defaultCellContentsTemplate: ViewTemplate = html<DataGridCell>`
@@ -55,7 +60,7 @@ export class DataGridCell extends FASTElement {
      * @public
      */
     @observable
-    public columnData: DataGridColumn | null = null;
+    public columnData: DataGridColumn;
     private columnDataChanged(): void {
         if ((this as FASTElement).$fastController.isConnected) {
         }
@@ -70,6 +75,7 @@ export class DataGridCell extends FASTElement {
     public isActiveCell: boolean = false;
 
     private customCellView: HTMLView | null = null;
+    private isInternalFocused: boolean = false;
 
     /**
      * @internal
@@ -79,6 +85,7 @@ export class DataGridCell extends FASTElement {
 
         this.addEventListener("focusin", this.handleFocusin);
         this.addEventListener("focusout", this.handleFocusout);
+        this.addEventListener("keydown", this.handleKeydown);
 
         this.style.gridColumn = `${
             this.gridColumnIndex === undefined ? 0 : this.gridColumnIndex
@@ -99,6 +106,7 @@ export class DataGridCell extends FASTElement {
 
         this.removeEventListener("focusin", this.handleFocusin);
         this.removeEventListener("focusout", this.handleFocusout);
+        this.removeEventListener("keydown", this.handleKeydown);
 
         if (this.customCellView !== null) {
             this.customCellView.unbind();
@@ -107,15 +115,68 @@ export class DataGridCell extends FASTElement {
     }
 
     public handleFocusin(e: FocusEvent): void {
-        if (this.isActiveCell) {
+        if (this.isActiveCell || this.columnData === null) {
             return;
         }
+
         this.isActiveCell = true;
+
+        if (
+            this.columnData.hasInternalFocusQueue !== true &&
+            typeof this.columnData.focusTargetCallback === "function"
+        ) {
+            // move focus to the focus target
+            const focusTarget: HTMLElement = this.columnData.focusTargetCallback(this);
+            if (focusTarget !== null) {
+                focusTarget.focus();
+            }
+        }
 
         this.$emit("cell-focused", this);
     }
 
     public handleFocusout(e: FocusEvent): void {
-        this.isActiveCell = false;
+        if (this !== document.activeElement && this.contains(document.activeElement)) {
+            this.isActiveCell = false;
+            this.isInternalFocused = false;
+        }
+    }
+
+    public handleKeydown(e: KeyboardEvent): void {
+        if (
+            e.defaultPrevented ||
+            this.columnData === undefined ||
+            this.columnData.hasInternalFocusQueue !== true
+        ) {
+            return;
+        }
+
+        switch (e.keyCode) {
+            case keyCodeEnter:
+            case keyCodeFunction2:
+                if (
+                    !this.isInternalFocused &&
+                    this.columnData !== undefined &&
+                    this.columnData.focusTargetCallback !== undefined
+                ) {
+                    const focusTarget: HTMLElement = this.columnData.focusTargetCallback(
+                        this
+                    );
+                    if (focusTarget !== null) {
+                        this.isInternalFocused = true;
+                        focusTarget.focus();
+                    }
+                    e.preventDefault();
+                }
+                break;
+
+            case keyCodeEscape:
+                if (this.isInternalFocused) {
+                    this.focus();
+                    this.isInternalFocused = false;
+                    e.preventDefault();
+                }
+                break;
+        }
     }
 }
