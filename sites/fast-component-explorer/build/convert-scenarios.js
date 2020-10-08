@@ -17,7 +17,12 @@ const startFile = `// Generated file from ./build/convert-scenarios.js
 export default `;
 
 /**
- * Function to create string exports of a given path
+ * Function to convert scenarios into a format that can be imported and should look like:
+ *
+ * {
+ *     "displayName": "Scenario description",
+ *     "html": "<div>Scenario</div>"
+ * }
  */
 (function convertScenarios() {
     const scenarioPaths = path.resolve(process.cwd(), srcDir);
@@ -32,7 +37,6 @@ export default `;
         files.forEach(filePath => {
             const html = fs.readFileSync(filePath, "utf8");
             const dom = new jsdom.JSDOM(html);
-
             const pathSegments = filePath.split("/");
             const componentFolderName = pathSegments[pathSegments.length - 3];
             const templates = dom.window.document.querySelectorAll("template");
