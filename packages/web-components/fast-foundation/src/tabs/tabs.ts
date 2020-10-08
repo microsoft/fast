@@ -128,6 +128,14 @@ export class Tabs extends FASTElement {
         this.$emit("change", this.activetab);
     };
 
+    private isDisabledElement = (el: Element): el is HTMLElement => {
+        return el.getAttribute("aria-disabled") === "true";
+    };
+
+    private isFocusableElement = (el: Element): el is HTMLElement => {
+        return !this.isDisabledElement(el);
+    };
+
     private getActiveIndex(): number {
         const id: string = this.activeid;
         if (id !== undefined) {
@@ -151,10 +159,12 @@ export class Tabs extends FASTElement {
                     "id",
                     typeof tabId !== "string" ? `tab-${index + 1}` : tabId
                 );
-                tab.setAttribute(
-                    "aria-selected",
-                    this.activeTabIndex === index ? "true" : "false"
-                );
+                if (this.isFocusableElement(tab)) {
+                    tab.setAttribute(
+                        "aria-selected",
+                        this.activeTabIndex === index ? "true" : "false"
+                    );
+                }
                 tab.setAttribute(
                     "aria-controls",
                     typeof tabpanelId !== "string" ? `panel-${index + 1}` : tabpanelId
@@ -224,7 +234,7 @@ export class Tabs extends FASTElement {
         const selectedTab = event.currentTarget as HTMLElement;
         this.prevActiveTabIndex = this.activeTabIndex;
         this.activeTabIndex = Array.from(this.tabs).indexOf(selectedTab);
-        if (selectedTab.nodeType === 1) {
+        if (selectedTab.nodeType === 1 && this.isFocusableElement(selectedTab)) {
             this.setComponent();
         }
     };
@@ -320,7 +330,9 @@ export class Tabs extends FASTElement {
     }
 
     private focusTab(): void {
-        this.tabs[this.activeTabIndex].focus();
+        if (!this.isFocusableElement(this.tabs[this.activeTabIndex])) {
+            this.tabs[this.activeTabIndex].focus();
+        }
     }
 
     constructor() {

@@ -62,7 +62,7 @@ export const TabStyles = css`
     :host([disabled]:hover),
     :host(.disabled:hover) {
         color: ${neutralForegroundRestBehavior.var};
-        fill: currentcolor;
+        fill: currentcolor; 
         background: ${neutralFillStealthRestBehavior.var}
     }
 
