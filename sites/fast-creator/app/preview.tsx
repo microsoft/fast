@@ -233,7 +233,6 @@ class Preview extends Foundation<{}, {}, PreviewState> {
                         );
                         break;
                     case MessageSystemType.custom:
-                        console.log("ugh", messageData);
                         if ((messageData as any).id === previewDirection) {
                             this.setState(
                                 {
