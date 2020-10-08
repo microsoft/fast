@@ -402,9 +402,6 @@ export class RadioGroup extends FASTElement {
      * @internal
      */
     public keydownHandler = (e: KeyboardEvent): boolean | void => {
-        if (e.keyCode !== keyCodeTab && e.keyCode !== keyCodeSpace) {
-            e.preventDefault();
-        }
         switch (e.keyCode) {
             case keyCodeEnter:
                 this.checkFocusedRadio();
@@ -426,6 +423,7 @@ export class RadioGroup extends FASTElement {
                 }
                 break;
         }
-        return true;
+
+        return e.keyCode === keyCodeTab || e.keyCode === keyCodeSpace;
     };
 }
