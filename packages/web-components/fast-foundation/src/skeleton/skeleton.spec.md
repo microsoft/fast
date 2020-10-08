@@ -61,7 +61,8 @@ A designer can create an SVG design pattern asset to create custom visual layout
 |-----------|-------------------------------------------------------------|-------------------------------------|
 | `shape`   | Determines the skeleton coin shape. Rectangle by default.   | `string: rect (default) | circle`   |
 | `fill`    | Sets the background fill of the skeleton component          | `string: hex color`                 |
-| `pattern` | Accepts a URL for an SVG asset                              | `string: URL`
+| `pattern` | Accepts a URL for an SVG asset                              | `string: URL`                       |
+| `shimmer` | Toggles the shimmer effect                                  | `boolean`                           |
 
 ### Anatomy and Appearance
 
