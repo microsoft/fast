@@ -72,6 +72,18 @@ class Creator extends Editor<{}, CreatorState> {
     public editorContainerRef: React.RefObject<HTMLDivElement> = React.createRef();
     private windowResizing: number;
     private devices: Device[];
+    private linkedDataControl = new StandardControlPlugin({
+        type: ControlType.linkedData,
+        context: ControlContext.fill,
+        control: (config: ControlConfig): React.ReactNode => {
+            return (
+                <LinkedDataControl
+                    {...config}
+                    onChange={this.handleAddLinkedData(config.onChange)}
+                />
+            );
+        },
+    });
 
     private handleDimensionChange: (
         cb: (value: number) => void
@@ -260,22 +272,7 @@ class Creator extends Editor<{}, CreatorState> {
                 <div className={this.paneEndClassNames}>
                     <ModularForm
                         messageSystem={this.fastMessageSystem}
-                        controls={[
-                            new StandardControlPlugin({
-                                type: ControlType.linkedData,
-                                context: ControlContext.fill,
-                                control: (config: ControlConfig): React.ReactNode => {
-                                    return (
-                                        <LinkedDataControl
-                                            {...config}
-                                            onChange={this.handleAddLinkedData(
-                                                config.onChange
-                                            )}
-                                        />
-                                    );
-                                },
-                            }),
-                        ]}
+                        controls={[this.linkedDataControl]}
                     />
                 </div>
                 <Footer />
