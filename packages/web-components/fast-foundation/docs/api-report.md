@@ -543,9 +543,7 @@ export class RadioGroup extends FASTElement {
     // (undocumented)
     focusOutHandler: (e: FocusEvent) => boolean | void;
     // @internal
-    keydownHandler: (e: KeyboardEvent) => void;
-    // (undocumented)
-    keypressHandler: (e: KeyboardEvent) => void;
+    keydownHandler: (e: KeyboardEvent) => boolean | void;
     name: string;
     // (undocumented)
     protected nameChanged(): void;

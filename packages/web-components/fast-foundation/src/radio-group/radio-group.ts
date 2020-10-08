@@ -210,13 +210,6 @@ export class RadioGroup extends FASTElement {
         }
     }
 
-    public keypressHandler = (e: KeyboardEvent): void => {
-        const radio: HTMLInputElement | null = e.target as HTMLInputElement;
-        if (radio) {
-            radio.setAttribute("tabindex", radio.checked ? "0" : "-1");
-        }
-    };
-
     private radioChangeHandler = (e: CustomEvent): boolean | void => {
         const changedRadio: HTMLInputElement = e.target as HTMLInputElement;
 
@@ -408,7 +401,7 @@ export class RadioGroup extends FASTElement {
      *
      * @internal
      */
-    public keydownHandler = (e: KeyboardEvent): void => {
+    public keydownHandler = (e: KeyboardEvent): boolean | void => {
         if (e.keyCode !== keyCodeTab && e.keyCode !== keyCodeSpace) {
             e.preventDefault();
         }
@@ -433,5 +426,6 @@ export class RadioGroup extends FASTElement {
                 }
                 break;
         }
+        return true;
     };
 }
