@@ -1,18 +1,13 @@
 import { Direction } from "@microsoft/fast-web-utilities";
 import { StandardLuminance } from "@microsoft/fast-components-styles-msft";
 import { DataDictionary } from "@microsoft/fast-tooling";
-import { ExplorerClassNameContract } from "./explorer.style";
+import { EditorState } from "@microsoft/site-utilities";
 import { ComponentViewConfig } from "./fast-components/configs/data.props";
 
-export type ExplorerUnhandledProps = React.HTMLAttributes<HTMLDivElement>;
+/* eslint-disable-next-line @typescript-eslint/no-empty-interface */
+export interface ExplorerProps {}
 
-export interface ExplorerHandledProps {
-    managedClasses: ExplorerClassNameContract;
-}
-
-export type ExplorerProps = ExplorerHandledProps & ExplorerUnhandledProps;
-
-export interface ExplorerState {
+export interface ExplorerState extends EditorState {
     /**
      * The current location path based on route
      */
@@ -21,12 +16,12 @@ export interface ExplorerState {
     /**
      * The width of the preview
      */
-    width: number;
+    viewerWidth: number;
 
     /**
      * The height of the preview
      */
-    height: number;
+    viewerHeight: number;
 
     /**
      * The selected component

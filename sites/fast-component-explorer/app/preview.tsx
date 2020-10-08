@@ -22,6 +22,9 @@ import { neutralLayerL1 } from "@microsoft/fast-components";
 import {
     fastComponentDefinitions,
     nativeElementDefinitions,
+    previewBackgroundTransparency,
+    previewDirection,
+    previewTheme,
 } from "@microsoft/site-utilities";
 import {
     PreviewHandledProps,
@@ -31,11 +34,6 @@ import {
     StandardLuminance,
 } from "./preview.props";
 import style from "./preview.style";
-import {
-    previewBackgroundTransparency,
-    previewDirection,
-    previewTheme,
-} from "./explorer";
 
 // Prevent tree shaking
 FASTComponents;

@@ -37,6 +37,7 @@
     "babel-jest": "^25.4.0",
     "babel-loader": "^8.0.6",
     "badge-maker": "^3.2.0",
+    "chalk": "^4.1.0",
     "csstype": "^2.5.8",
     "eslint-config-prettier": "6.10.1",
     "favicons": "^6.1.0",
@@ -58,6 +59,7 @@
     "@microsoft/fast-foundation": "^1.8.0",
     "@microsoft/fast-tooling": "^0.11.0",
     "@microsoft/fast-tooling-react": "^2.4.0",
-    "chalk": "^4.1.0"
+    "monaco-editor": "^0.21.2",
+    "vscode-html-languageservice": "^3.1.3"
   }
 }
