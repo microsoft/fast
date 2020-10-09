@@ -84,7 +84,7 @@ export class Disclosure extends FASTElement {
     }
 
     /**
-     * Toggle the current(expanded/closed) state.
+     * Toggle the current(expanded/collapsed) state.
      */
     public toggle(): void {
         this.details.open = !this.details.open;
@@ -102,7 +102,7 @@ export class Disclosure extends FASTElement {
     }
 
     /**
-     * Toggle the current(expanded/closed) state.
+     * Update the aria attr and fire `toggle` event
      */
     protected onToggle() {
         this.expanded = this.details.open;

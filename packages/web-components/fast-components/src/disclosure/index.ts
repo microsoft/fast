@@ -23,8 +23,13 @@ export type DisclosureAppearance = "accent" | "hypertext";
     styles,
 })
 export class FASTDisclosure extends Disclosure {
+    /**
+     * Disclosure default height
+     */
     private height: number;
-
+    /**
+     * Disclosure height after it's expanded
+     */
     private totalHeight: number;
 
     /**
