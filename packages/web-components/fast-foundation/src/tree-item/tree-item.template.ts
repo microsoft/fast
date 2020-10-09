@@ -10,26 +10,21 @@ export const TreeItemTemplate = html<TreeItem>`
     <template
         role="treeitem"
         slot="${x => (x.isNestedItem() ? "item" : void 0)}"
-        tabindex="${x => (x.disabled ? void 0 : x.focusable ? 0 : -1)}"
+        tabindex="${x => (x.disabled || !x.focusable ? void 0 : 0)}"
         class="${x => (x.expanded ? "expanded" : "")} ${x =>
             x.selected ? "selected" : ""} ${x => (x.nested ? "nested" : "")}
             ${x => (x.disabled ? "disabled" : "")}"
         aria-expanded="${x => (x.expanded ? x.expanded : void 0)}"
         aria-selected="${x => x.selected}"
         aria-disabled="${x => x.disabled}"
-        @focus="${(x, c) => x.handleFocus(c.event as FocusEvent)}"
-        @blur="${(x, c) => x.handleBlur(c.event as FocusEvent)}"
         @keydown="${(x, c) => x.handleKeyDown(c.event as KeyboardEvent)}"
+        @click="${(x, c) => x.handleClick(c.event as MouseEvent)}"
         ${children({
             property: "childItems",
             filter: elements(),
         })}
     >
-        <div
-            class="positioning-region"
-            part="positioning-region"
-            @click="${(x, c) => x.handleContainerClick(c.event as MouseEvent)}"
-        >
+        <div class="positioning-region" part="positioning-region">
             <div class="content-region" part="content-region">
                 ${when(
                     x => x.childItems && x.childItemLength() > 0,
@@ -38,7 +33,8 @@ export const TreeItemTemplate = html<TreeItem>`
                             aria-hidden="true"
                             class="expand-collapse-button"
                             part="expand-collapse-button"
-                            @click="${x => x.handleExpandCollapseButtonClick()}"
+                            @click="${(x, c) =>
+                                x.handleExpandCollapseButtonClick(c.event as MouseEvent)}"
                             ${ref("expandCollapseButton")}
                         >
                             <slot name="expand-collapse-glyph">

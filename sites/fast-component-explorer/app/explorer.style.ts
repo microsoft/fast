@@ -1,14 +1,11 @@
 import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager-react";
 import {
     DesignSystem,
+    highContrastForeground,
     neutralLayerL1,
     neutralLayerL3,
 } from "@microsoft/fast-components-styles-msft";
 import { PivotClassNameContract } from "@microsoft/fast-components-react-msft";
-
-export interface ExplorerClassNameContract {
-    explorer: string;
-}
 
 export const accent: string = "#FB356D";
 
@@ -30,9 +27,11 @@ export const pivotStyleSheetOverrides: ComponentStyles<
 > = {
     pivot: {
         height: "100%",
+        ...highContrastForeground,
     },
     pivot_tabList: {
         padding: "0 16px",
+        height: "36px",
     },
     pivot_tabPanels: {
         padding: "0 24px",
@@ -43,33 +42,10 @@ export const pivotStyleSheetOverrides: ComponentStyles<
             color: accent,
         },
     },
-};
-
-const style: ComponentStyles<ExplorerClassNameContract, DesignSystem> = {
-    "@font-face": [
-        {
-            fontFamily: "SegoeUIVF",
-            src:
-                "url(https://res.cloudinary.com/fast-dna/raw/upload/v1558051831/SegoeUI-Roman-VF_web.ttf) format('truetype')",
-            fontWeight: "1 1000",
-        },
-        {
-            fontFamily: "Segoe UI",
-            src:
-                "url('//c.s-microsoft.com/static/fonts/segoe-ui/west-european/Normal/latest.woff2') format('woff2')",
-        },
-    ] as any,
-    "@global": {
-        "body, html": {
-            fontFamily:
-                "SegoeUIVF, Segoe UI, SegoeUI, Helvetica Neue, Helvetica, Arial, sans-serif",
-            fontSize: "12px",
-            padding: "0",
-            margin: "0",
-            overflowX: "hidden",
-        },
+    pivot_tabPanel: {
+        height: "100%",
     },
-    explorer: {},
+    pivot_tabContent: {
+        ...highContrastForeground,
+    },
 };
-
-export default style;

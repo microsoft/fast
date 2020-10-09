@@ -3,6 +3,29 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.13.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-component-explorer@0.12.2...@microsoft/fast-component-explorer@0.13.0) (2020-09-28)
+
+
+### Bug Fixes
+
+* add skeleton, its definition, and its example to component explorer ([#3982](https://github.com/Microsoft/fast/issues/3982)) ([28c1021](https://github.com/Microsoft/fast/commit/28c10215148b457f64383e19543c57f0775925f7))
+* address wrong state being used to set a class ([#3943](https://github.com/Microsoft/fast/issues/3943)) ([4cf1344](https://github.com/Microsoft/fast/commit/4cf1344621dfa386f96ac71acaa5010391ab65fb))
+* badge example in component explorer ([#3901](https://github.com/Microsoft/fast/issues/3901)) ([8c34aa5](https://github.com/Microsoft/fast/commit/8c34aa50e2af0848c84147e24e0d55fc5f68ee64))
+* update formatting to resolve an issue where the dev tools panel would resize ([#3959](https://github.com/Microsoft/fast/issues/3959)) ([63f6fa8](https://github.com/Microsoft/fast/commit/63f6fa85c87fec763d7e0c417345b44dcd0bc97b)), closes [#3958](https://github.com/Microsoft/fast/issues/3958) [#3962](https://github.com/Microsoft/fast/issues/3962)
+* update high contrast light theme foreground color on pivot [#3967](https://github.com/Microsoft/fast/issues/3967) ([4ef46c0](https://github.com/Microsoft/fast/commit/4ef46c0f828d4172ec9351e90f7f67c027928b98))
+
+
+### Features
+
+* add mobile view to the component explore site ([#3937](https://github.com/Microsoft/fast/issues/3937)) ([deb455b](https://github.com/Microsoft/fast/commit/deb455b8c313d368596e83c9f8e855c865fa3829))
+* add monaco adapter to component explorer site ([#3949](https://github.com/Microsoft/fast/issues/3949)) ([1aa994e](https://github.com/Microsoft/fast/commit/1aa994e986e52e8b1fab93e65665a1d4e56ae496))
+* add tooltip component ([#3549](https://github.com/Microsoft/fast/issues/3549)) ([cb7aa98](https://github.com/Microsoft/fast/commit/cb7aa98ccaaad00e9e86b4575ef011986c054d08))
+* allow a dictionary id to be set during initialization ([#3955](https://github.com/Microsoft/fast/issues/3955)) ([70f3d00](https://github.com/Microsoft/fast/commit/70f3d0076a88fb42f26e610fa25204981aa2678e))
+
+
+
+
+
 ## [0.12.2](https://github.com/Microsoft/fast/compare/@microsoft/fast-component-explorer@0.12.1...@microsoft/fast-component-explorer@0.12.2) (2020-09-10)
 
 

@@ -43,7 +43,7 @@ export const fastTabsDefinition: WebComponentDefinition = {
                 },
                 {
                     name: "end",
-                    description: "The start slot",
+                    description: "The end slot",
                 },
             ],
         },

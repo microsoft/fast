@@ -1,8 +1,15 @@
+import { ColorRecipe } from "@microsoft/fast-components-styles-msft/dist/utilities/color/common";
+
 export interface LogoProps {
+    /**
+     * The class name to add
+     */
+    className?: string;
+
     /**
      * The background color
      */
-    backgroundColor: string;
+    backgroundColor?: ColorRecipe<string>;
 
     /**
      * The version
@@ -17,5 +24,5 @@ export interface LogoProps {
     /**
      * The title
      */
-    title: string;
+    title?: string;
 }

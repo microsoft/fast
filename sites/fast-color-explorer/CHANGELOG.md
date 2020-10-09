@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.6.6](https://github.com/Microsoft/fast/compare/@microsoft/fast-color-explorer@1.6.5...@microsoft/fast-color-explorer@1.6.6) (2020-09-28)
+
+**Note:** Version bump only for package @microsoft/fast-color-explorer
+
+
+
+
+
 ## [1.6.5](https://github.com/Microsoft/fast/compare/@microsoft/fast-color-explorer@1.6.4...@microsoft/fast-color-explorer@1.6.5) (2020-09-10)
 
 **Note:** Version bump only for package @microsoft/fast-color-explorer

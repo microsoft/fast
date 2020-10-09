@@ -2,7 +2,7 @@
 
 ## Overview
 
-A disclosure component is the combination of a button and section of content, a button that toggles the visibility of the section. As defined by the W3C:
+A disclosure component is the implementation of native `details` and `summary` control that toggles the visibility of the extra content. Visually, it would look like a button or hyperlink and beneath extra content. As defined by the W3C:
 
 > A disclosure is a button that controls the visibility of a section of content. When the controlled content is hidden, it is often styled as a typical push button with a right-pointing arrow or triangle to hint that activating the button will display additional content. When the content is visible, the arrow or triangle typically points down.
 
@@ -10,6 +10,10 @@ A disclosure component is the combination of a button and section of content, a 
 
 -   In general, reveal the extra information on button click when the end-user is needed to know/see.
 -   Laurel wanted to buy a new phone and she was looking at one of the websites where all the basic information was shown. She read about a camera feature called Night Mode and there was a section labeled "See the advanced technology that goes into every Night mode shot". She clicked on it and found out how that feature would work. With that extra information on that feature, she was quite confident in her buying.
+
+### Non-goals
+
+Many times disclosures may take different appearances, such as a button or anchor. Inclusion of such attributes should be applied at the design system / component implementation level.
 
 ### Features
 
@@ -31,35 +35,43 @@ A disclosure component is the combination of a button and section of content, a 
 
 The disclosure component can easily be extended for customization, for example adding animation to reveal the content or get the height of extra content slot.
 
--   `showAnimation({ contentNode })` and `hideAnimation({ contentNode })` `async` methods are `protected` and designed to override in the derived class to add animations.
--   To have further control to the extra content, there are also `contentNode` and `contentHeight` available as getters.
+-   Basic component which toggles the extra content and to add animation extra styles that can be applied to derived/extended component.
 
 ### API
 
 -   _Component Name:_ `fast-disclosure`
 -   _Props/Attrs:_
     -   `expanded: boolean` - Current state of the disclosure component
+    -   `title: string` - invoker title (slot title is also available for custom template)
 -   _Methods_:
     -   `show()`: to show the content
     -   `hide()`: to hide the content
     -   `toggle()`: to toggle the content
--   _Events_
-    -   `expanded-changed: CustomEvent` - No custom data.
+-   _Events_:
+    -   `toggle: CustomEvent` - No custom data.
 
 ### Anatomy and Appearance
 
 ```html
 <host>
-    <slot name="invoker"></slot>
-    <slot name="content"></slot>
+    <details>
+        <summary>
+            <slot name="start"></slot>
+            <slot name="title"></slot>
+            <slot name="end"></slot>
+        </summary>
+        <div>
+            <slot></slot>
+        </div>
+    </details>
 </host>
 ```
 
 -   _Slot Names_
+    -   start: add glyph for toggle state
+    -   title: invoker title (could look like as a button or hyperlink)
+    -   end: add glyph for toggle state
     -   default: extra content to be placed
-    -   invoker: button or custom component that mimics native button behavior
--   _Slotted Content/Slotted Classes_
-    -   default: `:host ::slotted(*)` to hide extra content by default
 
 ---
 
@@ -67,7 +79,7 @@ The disclosure component can easily be extended for customization, for example a
 
 ```html
 <fast-disclosure>
-    <button type="button" slot="invoker">More about Green Arrow</button>
+    <span slot="title">More about Green Arrow</span>
     <div>
         Green Arrow is a fictional superhero who appears in comic books published by DC
         Comics. Created by Mort Weisinger and designed by George Papp, he first appeared

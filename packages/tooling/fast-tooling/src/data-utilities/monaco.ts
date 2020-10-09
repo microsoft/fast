@@ -91,6 +91,29 @@ function mapDataDictionaryItemToMonacoEditorHTMLLine(
                 });
 
             if (
+                dataDictionary[0][dictionaryId].parent &&
+                schemaDictionary[
+                    dataDictionary[0][dataDictionary[0][dictionaryId].parent.id].schemaId
+                ].properties &&
+                schemaDictionary[
+                    dataDictionary[0][dataDictionary[0][dictionaryId].parent.id].schemaId
+                ].properties[dataDictionary[0][dictionaryId].parent.dataLocation][
+                    ReservedElementMappingKeyword.mapsToSlot
+                ] !== ""
+            ) {
+                attributes.push(
+                    `slot${Delimiter.assign}${doubleQuote}${
+                        schemaDictionary[
+                            dataDictionary[0][dataDictionary[0][dictionaryId].parent.id]
+                                .schemaId
+                        ].properties[dataDictionary[0][dictionaryId].parent.dataLocation][
+                            ReservedElementMappingKeyword.mapsToSlot
+                        ]
+                    }${doubleQuote}`
+                );
+            }
+
+            if (
                 voidElements.includes(schema[ReservedElementMappingKeyword.mapsToTagName])
             ) {
                 lines.push(

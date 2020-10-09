@@ -1,14 +1,41 @@
 import { CaptureType } from "../template";
 import { AttachedBehaviorDirective } from "./directive";
-import { NodeBehaviorBehaviorOptions, NodeObservationBehavior } from "./node-observation";
+import { NodeBehaviorOptions, NodeObservationBehavior } from "./node-observation";
 
 /**
- * The options used to configure child node observation.
+ * The options used to configure child list observation.
  * @public
  */
-export interface ChildrenBehaviorOptions<T = any>
-    extends NodeBehaviorBehaviorOptions<T>,
-        MutationObserverInit {}
+export interface ChildListBehaviorOptions<T = any>
+    extends NodeBehaviorOptions<T>,
+        Omit<MutationObserverInit, "subtree" | "childList"> {}
+
+/**
+ * The options used to configure subtree observation.
+ * @public
+ */
+export interface SubtreeBehaviorOptions<T = any>
+    extends Omit<NodeBehaviorOptions<T>, "filter">,
+        Omit<MutationObserverInit, "subtree" | "childList"> {
+    /**
+     * Indicates that child subtrees should be observed for changes.
+     */
+    subtree: boolean;
+
+    /**
+     * When subtrees are observed, a query selector is required to indicate
+     * which of potentially many nodes should be assigned to the property.
+     */
+    selector: string;
+}
+
+/**
+ * The options used to configure child/subtree node observation.
+ * @public
+ */
+export type ChildrenBehaviorOptions<T = any> =
+    | ChildListBehaviorOptions<T>
+    | SubtreeBehaviorOptions<T>;
 
 /**
  * The runtime behavior for child node observation.
@@ -24,6 +51,7 @@ export class ChildrenBehavior extends NodeObservationBehavior<ChildrenBehaviorOp
      */
     public constructor(target: HTMLElement, options: ChildrenBehaviorOptions) {
         super(target, options);
+        (options as MutationObserverInit).childList = true;
     }
 
     /**
@@ -48,6 +76,10 @@ export class ChildrenBehavior extends NodeObservationBehavior<ChildrenBehaviorOp
      * Retrieves the nodes that should be assigned to the target.
      */
     protected getNodes(): ChildNode[] {
+        if ("subtree" in this.options) {
+            return Array.from(this.target.querySelectorAll(this.options.selector));
+        }
+
         return Array.from(this.target.childNodes);
     }
 }
@@ -64,10 +96,7 @@ export function children<T = any>(
     if (typeof propertyOrOptions === "string") {
         propertyOrOptions = {
             property: propertyOrOptions,
-            childList: true,
         };
-    } else {
-        (propertyOrOptions as MutationObserverInit).childList = true;
     }
 
     return new AttachedBehaviorDirective(

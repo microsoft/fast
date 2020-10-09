@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.4.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling-react@2.3.5...@microsoft/fast-tooling-react@2.4.0) (2020-09-28)
+
+
+### Features
+
+* add history and a way to retrieve history from the message system ([#3834](https://github.com/Microsoft/fast/issues/3834)) ([76dee0d](https://github.com/Microsoft/fast/commit/76dee0d0c9b885435ab094c59cd0d3c931a11d0f))
+
+
+
+
+
 ## [2.3.5](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling-react@2.3.4...@microsoft/fast-tooling-react@2.3.5) (2020-09-10)
 
 **Note:** Version bump only for package @microsoft/fast-tooling-react

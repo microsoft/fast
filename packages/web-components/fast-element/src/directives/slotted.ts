@@ -1,13 +1,13 @@
 import { CaptureType } from "../template";
 import { AttachedBehaviorDirective } from "./directive";
-import { NodeBehaviorBehaviorOptions, NodeObservationBehavior } from "./node-observation";
+import { NodeBehaviorOptions, NodeObservationBehavior } from "./node-observation";
 
 /**
  * The options used to configure slotted node observation.
  * @public
  */
 export interface SlottedBehaviorOptions<T = any>
-    extends NodeBehaviorBehaviorOptions<T>,
+    extends NodeBehaviorOptions<T>,
         AssignedNodesOptions {}
 
 /**

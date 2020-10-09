@@ -147,6 +147,8 @@ export class Slider extends FormAssociated<HTMLInputElement>
         if (this.proxy instanceof HTMLElement) {
             this.proxy.min = `${this.min}`;
         }
+
+        this.validate;
     }
 
     /**
@@ -162,6 +164,7 @@ export class Slider extends FormAssociated<HTMLInputElement>
         if (this.proxy instanceof HTMLElement) {
             this.proxy.max = `${this.max}`;
         }
+        this.validate();
     }
 
     /**
@@ -176,6 +179,8 @@ export class Slider extends FormAssociated<HTMLInputElement>
         if (this.proxy instanceof HTMLElement) {
             this.proxy.step = `${this.step}`;
         }
+
+        this.validate();
     }
 
     /**

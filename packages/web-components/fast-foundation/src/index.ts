@@ -19,6 +19,7 @@ export * from "./progress/index";
 export * from "./progress-ring/index";
 export * from "./radio/index";
 export * from "./radio-group/index";
+export * from "./skeleton/index";
 export * from "./slider/index";
 export * from "./slider-label/index";
 export * from "./switch/index";
@@ -29,6 +30,7 @@ export * from "./text-area/index";
 export * from "./text-field/index";
 export * from "./tree-item/index";
 export * from "./tree-view/index";
+export * from "./tooltip/index";
 
 // export our utilities
 export * from "./utilities/index";
