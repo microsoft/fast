@@ -13,6 +13,10 @@ import {
 import { SchemaDictionary } from "./schema.props";
 import { DataDictionary, Parent } from "./data.props";
 
+function testChange(schema: any) {
+    console.log("this is a test");
+}
+
 function getNavigationRecursive(
     schema: any,
     disabled: boolean,

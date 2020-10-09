@@ -3,6 +3,9 @@ import { Octokit } from "@octokit/rest";
 import { PackageChangelogRenderInfo, ChangelogEntry } from "beachball";
 import { getPullRequestForCommit, repoDetails } from "./github";
 
+// If there is the need to perform locally and manually consider adding `.dotenv` files
+// referenced https://www.npmjs.com/package/dotenv
+
 const githubPAT = process.env.GITHUB_PUBLISH_PAT;
 if (!githubPAT && (process.argv.includes("bump") || process.argv.includes("publish"))) {
     console.warn(
