@@ -531,14 +531,19 @@ export type RadioControl = Pick<HTMLInputElement, "checked" | "disabled" | "read
 
 // @public
 export class RadioGroup extends FASTElement {
-    constructor();
     // (undocumented)
     childItems: HTMLElement[];
+    // (undocumented)
+    clickHandler: (e: MouseEvent) => void;
     // @internal (undocumented)
     connectedCallback(): void;
     disabled: boolean;
+    // (undocumented)
+    disconnectedCallback(): void;
+    // (undocumented)
+    focusOutHandler: (e: FocusEvent) => boolean | void;
     // @internal
-    keydownHandler: (e: KeyboardEvent) => void;
+    keydownHandler: (e: KeyboardEvent) => boolean | void;
     name: string;
     // (undocumented)
     protected nameChanged(): void;
@@ -547,6 +552,8 @@ export class RadioGroup extends FASTElement {
     // @internal (undocumented)
     slottedRadioButtons: HTMLElement[];
     value: string;
+    // (undocumented)
+    protected valueChanged(): void;
 }
 
 // @public
@@ -554,6 +561,20 @@ export const RadioGroupTemplate: import("@microsoft/fast-element").ViewTemplate<
 
 // @public
 export const RadioTemplate: import("@microsoft/fast-element").ViewTemplate<Radio, any>;
+
+// @public
+export class Skeleton extends FASTElement {
+    fill: string;
+    pattern: string;
+    shape: SkeletonShape;
+    shimmer: boolean;
+}
+
+// @public
+export type SkeletonShape = "rect" | "circle";
+
+// @public
+export const SkeletonTemplate: import("@microsoft/fast-element").ViewTemplate<Skeleton, any>;
 
 // Warning: (ae-incompatible-release-tags) The symbol "Slider" is marked as @public, but its signature references "FormAssociated" which is marked as @alpha
 //
@@ -930,7 +951,8 @@ export class TreeItem extends FASTElement {
     expanded: boolean;
     // (undocumented)
     focusable: boolean;
-    // (undocumented)
+    static focusItem(el: HTMLElement): void;
+    // @deprecated (undocumented)
     handleBlur: (e: FocusEvent) => void;
     // (undocumented)
     handleChange(source: any, propertyName: string): void;
@@ -938,7 +960,7 @@ export class TreeItem extends FASTElement {
     handleClick: (e: MouseEvent) => void;
     // (undocumented)
     handleExpandCollapseButtonClick: (e: MouseEvent) => void;
-    // (undocumented)
+    // @deprecated (undocumented)
     handleFocus: (e: Event) => void;
     handleKeyDown: (e: KeyboardEvent) => void | boolean;
     // (undocumented)
@@ -965,11 +987,11 @@ export class TreeView extends FASTElement {
     connectedCallback(): void;
     // (undocumented)
     currentSelected: HTMLElement | TreeItem | null;
-    // (undocumented)
+    // @deprecated (undocumented)
     focusable: boolean;
     // (undocumented)
     handleBlur: (e: FocusEvent) => void;
-    // (undocumented)
+    // @deprecated (undocumented)
     handleFocus: (e: FocusEvent) => void;
     // (undocumented)
     handleKeyDown: (e: KeyboardEvent) => void | boolean;

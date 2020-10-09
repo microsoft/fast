@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.3.3](https://github.com/Microsoft/fast/compare/@microsoft/fast-website@1.3.2...@microsoft/fast-website@1.3.3) (2020-09-28)
+
+
+### Bug Fixes
+
+* update text on adaptive fast frame component to use high contrast foreground color ([#3970](https://github.com/Microsoft/fast/issues/3970)) ([4ce5a84](https://github.com/Microsoft/fast/commit/4ce5a8412b8964e03a8fdc8347c9e9b7294977cd))
+
+
+
+
+
 ## [1.3.2](https://github.com/Microsoft/fast/compare/@microsoft/fast-website@1.3.1...@microsoft/fast-website@1.3.2) (2020-09-10)
 
 **Note:** Version bump only for package @microsoft/fast-website

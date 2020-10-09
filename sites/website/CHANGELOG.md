@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.3.0](https://github.com/microsoft/fast/compare/fast-site@0.2.1...fast-site@0.3.0) (2020-09-28)
+
+
+### Features
+
+* add skeleton component ([#3877](https://github.com/microsoft/fast/issues/3877)) ([aff7d30](https://github.com/microsoft/fast/commit/aff7d3010574183744cf7105ae51a275c2c70a12))
+* add tooltip component ([#3549](https://github.com/microsoft/fast/issues/3549)) ([cb7aa98](https://github.com/microsoft/fast/commit/cb7aa98ccaaad00e9e86b4575ef011986c054d08))
+
+
+
+
+
 ## [0.2.1](https://github.com/microsoft/fast/compare/fast-site@0.2.0...fast-site@0.2.1) (2020-09-10)
 
 **Note:** Version bump only for package fast-site

@@ -15,6 +15,7 @@ export * from "./progress/progress-ring.definition";
 export * from "./progress/progress.definition";
 export * from "./radio/radio.definition";
 export * from "./radio-group/radio-group.definition";
+export * from "./skeleton/skeleton.definition";
 export * from "./slider/slider.definition";
 export * from "./slider-label/slider-label.definition";
 export * from "./switch/switch.definition";
