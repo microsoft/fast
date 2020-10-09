@@ -18,3 +18,5 @@ assignees: ''
 **Is there any additional context for your request?**
 
 **Attach screenshots or images add detail to your request:**
+
+**Simple documentation update**g
