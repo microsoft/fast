@@ -4,8 +4,10 @@ import { IPullRequest, IRepoDetails } from "./types";
 export interface IGetPullRequestFromCommitParams {
     github: Octokit;
     repoDetails: IRepoDetails;
-    commit: string; // Commit hash
-    authorEmail?: string; // Provide this to have it included in the resulting IPullRequest
+    // Commit hash
+    commit: string;
+    // Provide this to have it included in the resulting IPullRequest
+    authorEmail?: string;
     verbose?: boolean;
 }
 
@@ -54,7 +56,9 @@ export async function getPullRequestForCommit(
  * The `author.email` property is only present if `authorEmail` is provided.
  */
 export function processPullRequestApiResponse(
-    pr: any,
+    pr:
+        | Octokit.ReposListPullRequestsAssociatedWithCommitResponseItem
+        | Octokit.SearchIssuesAndPullRequestsResponseItemsItem,
     authorEmail?: string
 ): IPullRequest {
     return {
