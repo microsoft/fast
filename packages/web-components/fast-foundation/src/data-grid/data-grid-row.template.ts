@@ -1,4 +1,4 @@
-import { html, slotted, elements } from "@microsoft/fast-element";
+import { html, slotted } from "@microsoft/fast-element";
 import { DataGridRow } from "./data-grid-row";
 
 /**

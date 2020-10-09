@@ -192,10 +192,6 @@ export class DataGridRow extends FASTElement {
     //         : JSON.parse(this.columns);;
     // };
 
-    /**
-     *  Updates the style string applied to the region element as well as the css classes attached
-     *  to the root element
-     */
     private updateRowStyle = (): void => {
         this.style.gridTemplateColumns = this.gridTemplateColumns;
     };

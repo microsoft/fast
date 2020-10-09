@@ -7,6 +7,7 @@ import {
     DataGrid,
     DataGridCell,
     DataGridColumn,
+    DataGridHeader,
     DataGridRow,
 } from "@microsoft/fast-foundation";
 import { FASTDataGrid } from "./";
@@ -40,6 +41,13 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
     if (defaultRow !== null) {
         defaultRow.columnsData = baseColumns;
         defaultRow.rowData = dataGridRow1;
+    }
+
+    const defaultHeader: DataGridHeader | null = document.getElementById(
+        "defaultHeader"
+    ) as DataGridHeader;
+    if (defaultHeader !== null) {
+        defaultHeader.columnsData = baseColumns;
     }
 
     const rowWithCellTemplate: DataGridRow | null = document.getElementById(

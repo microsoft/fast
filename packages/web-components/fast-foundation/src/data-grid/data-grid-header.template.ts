@@ -1,4 +1,4 @@
-import { html, slotted, elements } from "@microsoft/fast-element";
+import { html, slotted } from "@microsoft/fast-element";
 import { DataGridHeader } from "./data-grid-header";
 
 /**
@@ -7,6 +7,6 @@ import { DataGridHeader } from "./data-grid-header";
  */
 export const DataGridHeaderTemplate = html<DataGridHeader>`
     <template>
-        <slot></slot>
+        <slot part="cellsSlot" ${slotted("slottedCellElements")}></slot>
     </template>
 `;

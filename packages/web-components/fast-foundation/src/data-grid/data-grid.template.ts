@@ -1,4 +1,4 @@
-import { html, ref, slotted } from "@microsoft/fast-element";
+import { html, slotted, when } from "@microsoft/fast-element";
 import { DataGrid } from "./data-grid";
 
 /**
@@ -12,6 +12,15 @@ export const DataGridTemplate = html<DataGrid>`
             part="headerSlot"
             ${slotted("slottedHeaderElements")}
         ></slot>
+        ${when(
+            x => x.generateHeader,
+            html<DataGrid>`
+                <fast-data-grid-header
+                    gridTemplateColumns="${x => x.gridTemplateColumns}"
+                    :columnsData="${x => x.columnsData}"
+                ></fast-data-grid-header>
+            `
+        )}
         <slot part="rowsSlot" ${slotted("slottedRowElements")}></slot>
     </template>
 `;
