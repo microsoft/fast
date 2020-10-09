@@ -1,8 +1,0 @@
-{
-  "type": "patch",
-  "comment": "This is a test of Beachball change aspects",
-  "packageName": "@microsoft/fast-tooling",
-  "email": "16669785+awentzel@users.noreply.github.com",
-  "dependentChangeType": "patch",
-  "date": "2020-10-09T21:04:39.063Z"
-}
