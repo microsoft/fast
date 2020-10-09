@@ -11,11 +11,13 @@ custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-comp
 
 ```html live
 <fast-design-system-provider use-defaults>
-    <fast-disclosure>
-        <button type="button" slot="invoker">More about cars</button>
+    <fast-disclosure appearance="hypertext">
+        <span slot="start">👩🏻‍🦳</span>
+        <strong slot="title">Read about White Canary</strong>
         <div>
-            Most definitions of cars say that they run primarily on roads, seat one to
-            eight people, have four tires, and mainly transport people rather than goods.
+            Sara Lance, also known by her alter-ego White Canary, is a fictional character
+            in The CW's Arrowverse franchise, first introduced in the 2012 pilot episode
+            of the television series Arrow, and later starring in Legends of Tomorrow.
         </div>
     </fast-disclosure>
 </fast-design-system-provider>

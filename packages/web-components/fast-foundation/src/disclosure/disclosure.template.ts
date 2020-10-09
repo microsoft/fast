@@ -1,4 +1,4 @@
-import { html } from "@microsoft/fast-element";
+import { html, ref } from "@microsoft/fast-element";
 import { Disclosure } from "./disclosure";
 
 /**
@@ -7,7 +7,18 @@ import { Disclosure } from "./disclosure";
  */
 export const DisclosureTemplate = html<Disclosure>`
     <template>
-        <slot name="invoker"></slot>
-        <slot></slot>
+        <details class="disclosure" ${ref("details")}>
+            <summary
+                class="invoker"
+                role="button"
+                aria-controls="${x => x.ariaControls}"
+                aria-expanded="${x => x.ariaExpanded}"
+            >
+                <slot name="start"></slot>
+                <slot name="title">${x => x.title}</slot>
+                <slot name="end"></slot>
+            </summary>
+            <div id="${x => x.ariaControls}"><slot></slot></div>
+        </details>
     </template>
 `;

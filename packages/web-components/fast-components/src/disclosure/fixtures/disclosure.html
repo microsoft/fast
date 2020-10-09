@@ -6,8 +6,8 @@
     >
         The Flash (or simply Flash) is the name of several superheroes appearing in
         American comic books published by DC Comics.
-        <fast-disclosure id="car-disclosure">
-            <fast-button slot="invoker" appearance="accent">More about Flash</fast-button>
+        <fast-disclosure title="More about Flash">
+            <span slot="end">⚡️</span>
             <div>
                 Created by writer Gardner Fox and artist Harry Lampert, the original Flash
                 first appeared in Flash Comics #1 (cover date January 1940/release month
@@ -25,10 +25,7 @@
         class="class-override"
         style="--card-width: 400px; --card-height: auto; --elevation: 24; padding: 12px;"
     >
-        <fast-disclosure expanded>
-            <fast-button slot="invoker" appearance="accent">
-                More about Green Arrow
-            </fast-button>
+        <fast-disclosure expanded title="More about Green Arrow">
             <div>
                 Green Arrow is a fictional superhero who appears in comic books published
                 by DC Comics. Created by Mort Weisinger and designed by George Papp, he
@@ -45,10 +42,7 @@
         class="class-override"
         style="--card-width: 400px; --card-height: auto; --elevation: 24; padding: 12px;"
     >
-        <fast-disclosure id="supergirl">
-            <fast-button slot="invoker" appearance="accent">
-                Read about Supergirl
-            </fast-button>
+        <fast-disclosure id="supergirl" title="Read about Supergirl">
             <div>
                 Supergirl is an American superhero television series developed by Ali
                 Adler, Greg Berlanti and Andrew Kreisberg that originally aired on CBS and
@@ -72,15 +66,19 @@
     </fast-card>
     <br />
     <fast-divider role="presentation"></fast-divider>
-    <h4>With hypertext</h4>
+    <h4>With hypertext (also extra slots)</h4>
     <fast-card
         class="class-override"
-        style="--card-width: 400px; --card-height: auto; --elevation: 24; padding: 12px;"
+        style="
+            --card-width: 400px;
+            --card-height: auto;
+            --elevation: 24;
+            padding: 0 12px 12px 12px;
+        "
     >
-        <fast-disclosure>
-            <fast-anchor href="javscript:void();" slot="invoker" appearance="hypertext">
-                Read about White Canary
-            </fast-anchor>
+        <fast-disclosure appearance="hypertext">
+            <span slot="start">👩🏻‍🦳</span>
+            <strong slot="title">Read about White Canary</strong>
             <div>
                 Sara Lance, also known by her alter-ego White Canary, is a fictional
                 character in The CW's Arrowverse franchise, first introduced in the 2012

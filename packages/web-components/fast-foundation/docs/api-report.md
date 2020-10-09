@@ -324,21 +324,20 @@ export const disabledCursor = "not-allowed";
 // @public
 export class Disclosure extends FASTElement {
     constructor();
+    ariaControls: string;
+    ariaExpanded: true | false;
     // @internal (undocumented)
     connectedCallback(): void;
-    // (undocumented)
-    protected get contentHeight(): number;
-    // (undocumented)
-    protected get contentNode(): HTMLElement;
+    // @internal (undocumented)
+    details: HTMLDetailsElement;
+    // @internal (undocumented)
+    disconnectedCallback(): void;
     expanded: boolean;
     hide(): void;
-    protected hideAnimation({ contentNode }: {
-        contentNode: any;
-    }): Promise<void>;
+    protected onToggle(): void;
+    protected setup(): void;
     show(): void;
-    protected showAnimation({ contentNode }: {
-        contentNode: any;
-    }): Promise<void>;
+    title: string;
     toggle(): void;
     }
 

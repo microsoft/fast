@@ -230,6 +230,9 @@ export function createColorPalette(baseColor: any): string[];
 export const DialogStyles: import("@microsoft/fast-element").ElementStyles;
 
 // @public
+export type DisclosureAppearance = "accent" | "hypertext";
+
+// @public
 export const DisclosureStyles: import("@microsoft/fast-element").ElementStyles;
 
 // @public
@@ -471,11 +474,15 @@ export class FASTDialog extends Dialog {
 
 // @public
 export class FASTDisclosure extends Disclosure {
+    appearance: DisclosureAppearance;
+    // (undocumented)
+    appearanceChanged(oldValue: DisclosureAppearance, newValue: DisclosureAppearance): void;
+    // (undocumented)
+    get disclosureHeight(): number;
     // @override
-    hideAnimation({ contentNode }: any): Promise<void>;
+    onToggle(): void;
     // @override
-    showAnimation({ contentNode }: any): Promise<void>;
-    transitioning: boolean;
+    setup(): void;
     }
 
 // @public

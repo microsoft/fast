@@ -16,17 +16,40 @@ export const fastDisclosureDefinition: WebComponentDefinition = {
                     required: false,
                 },
                 {
-                    name: "transitioning",
-                    description: "The transitioning attribute",
-                    type: DataType.boolean,
+                    name: "title",
+                    description: "Invoker title attribute",
+                    type: DataType.string,
                     default: false,
+                    required: false,
+                },
+                {
+                    name: "appearance",
+                    description: "The appearance attribute",
+                    type: DataType.string,
+                    values: [
+                        {
+                            name: "accent",
+                        },
+                        {
+                            name: "hypertext",
+                        },
+                    ],
+                    default: "accent",
                     required: false,
                 },
             ],
             slots: [
                 {
-                    name: "invoker",
-                    description: "The invoker slot",
+                    name: "start",
+                    description: "The start slot",
+                },
+                {
+                    name: "title",
+                    description: "The title slot",
+                },
+                {
+                    name: "end",
+                    description: "The end slot",
                 },
                 {
                     name: "",

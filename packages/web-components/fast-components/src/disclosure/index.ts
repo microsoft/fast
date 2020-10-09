@@ -2,12 +2,11 @@ import { attr, customElement } from "@microsoft/fast-element";
 import { Disclosure, DisclosureTemplate as template } from "@microsoft/fast-foundation";
 import { DisclosureStyles as styles } from "./disclosure.styles";
 /**
- * Animation event types for {@link Disclosure}
+ * Types of anchor appearance.
+ * @public
  */
-const EVENT = {
-    TRANSITION_END: "transitionend",
-    TRANSITION_START: "transitionstart",
-};
+export type DisclosureAppearance = "accent" | "hypertext";
+
 /**
  * The FAST Disclosure Element. Implements {@link @microsoft/fast-foundation#Disclosure},
  * {@link @microsoft/fast-foundation#DisclosureTemplate}
@@ -24,81 +23,66 @@ const EVENT = {
     styles,
 })
 export class FASTDisclosure extends Disclosure {
+    private height: number;
+
+    private totalHeight: number;
+
     /**
-     * During the transition period
+     * The appearance the anchor should have.
      *
+     * @public
+     * @remarks
+     * HTML Attribute: appearance
      */
-    @attr({ mode: "boolean" })
-    public transitioning: boolean;
-
-    /**
-     * Trigger show animation and wait for transition to be finished.
-     * @param options - element node and its options
-     * @override
-     */
-    async showAnimation({ contentNode }: any) {
-        const expectedHeight = await this.calculateHeight(contentNode);
-        contentNode.style.setProperty("opacity", "1");
-        contentNode.style.setProperty("max-height", "0px");
-        await this.nextFrame();
-        contentNode.style.setProperty("max-height", `${expectedHeight}px`);
-        await this.waitForTransition({ contentNode });
-    }
-
-    /**
-     * Trigger hide animation and wait for transition to be finished.
-     * @param options - element node and its options
-     * @override
-     */
-    async hideAnimation({ contentNode }: any) {
-        if (this.contentHeight !== 0) {
-            ["opacity", "max-height"].map(prop => contentNode.style.setProperty(prop, 0));
-            await this.waitForTransition({ contentNode });
+    @attr
+    public appearance: DisclosureAppearance;
+    public appearanceChanged(
+        oldValue: DisclosureAppearance,
+        newValue: DisclosureAppearance
+    ): void {
+        if (oldValue !== newValue) {
+            this.classList.add(newValue);
+            this.classList.remove(oldValue);
         }
     }
 
     /**
-     *  Wait until the transition event is finished.
-     * @param options - element node and its options
-     * @returns transition event promise
+     * Set disclosure height while transitioning
+     * @override
      */
-    private waitForTransition({ contentNode }: any): Promise<any> {
-        return new Promise(resolve => {
-            const transitionStarted = () => {
-                contentNode.removeEventListener(
-                    EVENT.TRANSITION_START,
-                    transitionStarted
-                );
-                this.transitioning = true;
-            };
-            contentNode.addEventListener(EVENT.TRANSITION_START, transitionStarted);
-
-            const transitionEnded = () => {
-                contentNode.removeEventListener(EVENT.TRANSITION_END, transitionEnded);
-                this.transitioning = false;
-                resolve();
-            };
-            contentNode.addEventListener(EVENT.TRANSITION_END, transitionEnded);
-        });
+    onToggle() {
+        super.onToggle();
+        this.details.style.setProperty("height", `${this.disclosureHeight}px`);
     }
 
     /**
-     * Calculate total content height after Disclosure opens
-     * @param contentNode - content node
-     * @returns content node height
+     * Calculate disclosure height before and after expanded
+     * @override
      */
-    private async calculateHeight(contentNode: any): Promise<number> {
-        contentNode.style.setProperty("max-height", "");
-        await this.nextFrame();
-        return this.contentHeight; // Expected height i.e. actual size once collapsed after animation
+    setup() {
+        super.setup();
+        if (!this.appearance) {
+            this.appearance = "accent";
+        }
+
+        const getCurrentHeight = () => this.details.getBoundingClientRect().height;
+        if (this.expanded) {
+            this.totalHeight = getCurrentHeight();
+            this.hide();
+            this.height = getCurrentHeight();
+            this.show();
+        } else {
+            this.height = getCurrentHeight();
+            this.show();
+            this.totalHeight = getCurrentHeight();
+            this.hide();
+        }
+        this.details.style.setProperty("transition", "height 0.35s");
     }
 
-    /**
-     * Resolves after requestAnimationFrame
-     * @returns Promise that is resolved after requestAnimationFrame
-     */
-    private nextFrame = async (): Promise<void> =>
-        new Promise(resolve => requestAnimationFrame(() => resolve()));
+    get disclosureHeight(): number {
+        return this.expanded ? this.totalHeight : this.height;
+    }
 }
 
 /**
