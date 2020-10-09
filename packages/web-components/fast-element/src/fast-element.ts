@@ -52,11 +52,6 @@ export interface FASTElement {
      * attribute of FASTElement has a value change.
      */
     attributeChangedCallback(name: string, oldValue: string, newValue: string): void;
-
-    /**
-     * This is only a test for Beachball and should not be in committed source code
-     */
-    testingOnly(): void;
 }
 
 /* eslint-disable-next-line @typescript-eslint/explicit-function-return-type */
