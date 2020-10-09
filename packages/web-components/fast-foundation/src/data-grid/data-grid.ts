@@ -17,6 +17,7 @@ import {
     keyCodePageUp,
 } from "@microsoft/fast-web-utilities";
 import { DataGridCell } from "./data-grid-cell";
+import { DataGridHeader } from "./data-grid-header";
 import { DataGridRow } from "./data-grid-row";
 
 /**
@@ -32,15 +33,15 @@ export interface DataGridColumn {
     columnDataKey: string;
 
     /**
-     *  Column title, if not provided columnDataKey is used as title
-     */
-    title?: string;
-
-    /**
      * The width of the column in a form compatible with css grid column widths
      * (i.e. "50px", "1fr", "20%", etc...), defaults to "1fr"
      */
     columnWidth?: string;
+
+    /**
+     *  Column title, if not provided columnDataKey is used as title
+     */
+    title?: string;
 
     /**
      *  header template
@@ -70,6 +71,7 @@ export interface DataGridColumn {
 
 const defaultRowItemTemplate = html`
     <fast-data-grid-row
+        :gridTemplateColumns="${(x, c) => c.parent.gridTemplateColumns}"
         :columnsData="${(x, c) => c.parent.columnsData}"
         :rowData="${x => x}"
     ></fast-data-grid-row>
@@ -90,10 +92,24 @@ export class DataGrid extends FASTElement {
         properties.forEach((property: string) => {
             definitions.push({
                 columnDataKey: property,
+                columnWidth: "1fr",
             });
         });
         return definitions;
     };
+
+    /**
+     *  generates a gridTemplateColumns based on columndata array
+     */
+    public static generateTemplateColumns(columnsData: DataGridColumn[]): string {
+        let templateColumns: string = "";
+        columnsData.forEach((column: DataGridColumn) => {
+            templateColumns = `${templateColumns}${templateColumns === "" ? "" : " "}${
+                column.columnWidth === undefined ? "1fr" : column.columnWidth
+            }`;
+        });
+        return templateColumns;
+    }
 
     /**
      *
@@ -122,7 +138,9 @@ export class DataGrid extends FASTElement {
      */
     @observable
     public columnsData: DataGridColumn[] = [];
-    private columnsDataChanged(): void {}
+    private columnsDataChanged(): void {
+        this.gridTemplateColumns = DataGrid.generateTemplateColumns(this.columnsData);
+    }
 
     /**
      * The template to use for the programmatic generation of rows
@@ -164,6 +182,15 @@ export class DataGrid extends FASTElement {
             this.queueFocusUpdate();
         }
     }
+
+    /**
+     * String that gets applied to the the css gridTemplateColumns attribute of generated rows
+     *
+     * @internal
+     */
+    @observable
+    public gridTemplateColumns: string;
+    private gridTemplateColumnsChanged(): void {}
 
     /**
      * @internal

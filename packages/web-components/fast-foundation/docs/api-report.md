@@ -232,6 +232,9 @@ export class DataGrid extends FASTElement {
     static generateColumns: (row: object) => DataGridColumn[];
     // (undocumented)
     generateHeader: boolean;
+    static generateTemplateColumns(columnsData: DataGridColumn[]): string;
+    // @internal
+    gridTemplateColumns: string;
     // (undocumented)
     handleFocus(e: FocusEvent): void;
     // (undocumented)
@@ -280,8 +283,30 @@ export interface DataGridColumn {
 
 // @public
 export class DataGridHeader extends FASTElement {
-    columnData: DataGridColumn[];
+    // (undocumented)
+    cellElements?: object[];
+    // (undocumented)
+    cellItemTemplate?: ViewTemplate;
+    columnsData: DataGridColumn[] | null;
+    // @internal (undocumented)
+    connectedCallback(): void;
+    gridTemplateColumns: string;
+    // @internal (undocumented)
+    slottedCellElements: HTMLElement[];
     }
+
+// @public
+export class DataGridHeaderCell extends FASTElement {
+    columnData: DataGridColumn;
+    // @internal (undocumented)
+    connectedCallback(): void;
+    // @internal (undocumented)
+    disconnectedCallback(): void;
+    gridColumnIndex: number;
+}
+
+// @public
+export const DataGridHeaderCellTemplate: import("@microsoft/fast-element").ViewTemplate<DataGridHeaderCell, any>;
 
 // @public
 export const DataGridHeaderTemplate: import("@microsoft/fast-element").ViewTemplate<DataGridHeader, any>;
