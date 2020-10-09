@@ -1,8 +1,11 @@
 name: CI - FAST Publish
 
 on:
-  schedule:
-  - cron: 0 12 * * 7
+  pull_request:
+    branches:
+    - master
+  # schedule:
+  # - cron: 0 12 * * 7
 
 jobs:
   build_linux:
