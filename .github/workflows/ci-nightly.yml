@@ -12,8 +12,10 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      GITHUB_PUBLISH_PAT: $(githubPAT)
-    
+      GITHUB_SERVICE_PAT: ${{ secrets.GH_PAT }}
+      GITHUB_SERVICE_USER: "Microsoft FAST Builds"
+      GITHUB_SERVICE_EMAIL: "fastdna@service.microsoft.com"
+
     steps:
     - uses: actions/checkout@v2
 
@@ -22,9 +24,9 @@ jobs:
 
     - name: Authenticate Git for Pushes
       run: |
-        git config user.name "Microsoft FAST Builds"
-        git config user.email "fastdna@service.microsoft.com"
-        git remote set-url origin https://$(githubUser):$(githubPAT)@github.com/microsoft/fast.git
+        git config user.name ${{ env.GITHUB_PUBLISH_USER }}
+        git config user.email ${{ env.GITHUB_PUBLISH_EMAIL }}
+        git remote set-url origin https://${{GITHUB_SERVICE_PAT}}:${{env.GITHUB_SERVICE_PAT}}@github.com/microsoft/fast.git
     
     - name: Install package dependencies / prepare workspaces
       run: yarn install --frozen-lockfile
