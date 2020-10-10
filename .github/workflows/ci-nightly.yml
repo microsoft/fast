@@ -12,6 +12,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
+      NPM_SERVICE_PAT: ${{ secrets.NPM_PAT }}
       GITHUB_SERVICE_PAT: ${{ secrets.GH_PAT }}
       GITHUB_SERVICE_USER: "Microsoft FAST Builds"
       GITHUB_SERVICE_EMAIL: "fastdna@service.microsoft.com"
@@ -39,6 +40,6 @@ jobs:
 
     - name: Publish NPM changed packages
       run: |
-        npm run beachball-publish -- -b origin/master -n $(npmToken) --access public -y
+        npm run beachball-publish -- -b origin/master -n ${{ NPM_SERVICE_PAT }} --access public -y
         git reset --hard origin/master
     
