@@ -82,14 +82,16 @@ export class Radio extends FormAssociated<HTMLInputElement> implements RadioCont
      * @public
      */
     @observable
-    public defaultChecked: boolean = !!this.checkedAttribute;
+    public defaultChecked: boolean;
     private defaultCheckedChanged(): void {
-        if (!this.dirtyChecked) {
+        if (this.$fastController.isConnected && !this.dirtyChecked) {
             // Setting this.checked will cause us to enter a dirty state,
             // but if we are clean when defaultChecked is changed, we want to stay
             // in a clean state, so reset this.dirtyChecked
-            this.checked = this.defaultChecked;
-            this.dirtyChecked = false;
+            if (!this.isInsideRadioGroup()) {
+                this.checked = this.defaultChecked;
+                this.dirtyChecked = false;
+            }
         }
     }
 
@@ -99,21 +101,26 @@ export class Radio extends FormAssociated<HTMLInputElement> implements RadioCont
      * @public
      */
     @observable
-    public checked: boolean = this.defaultChecked;
+    public checked: boolean = this.defaultChecked ?? false;
     private checkedChanged(): void {
-        if (!this.dirtyChecked) {
-            this.dirtyChecked = true;
+        if (this.$fastController.isConnected) {
+            // TODO: temporarily removed as it's causing issues with
+            // changing the value via code and from radio-group
+            if (!this.dirtyChecked) {
+                this.dirtyChecked = true;
+            }
+
+            this.updateForm();
+
+            if (this.proxy instanceof HTMLElement) {
+                this.proxy.checked = this.checked;
+            }
+
+            this.$emit("change");
+            this.checkedAttribute = this.checked;
+
+            this.validate();
         }
-
-        if (this.proxy instanceof HTMLElement) {
-            this.proxy.checked = this.checked;
-        }
-
-        this.$emit("change");
-        this.checkedAttribute = this.checked;
-        this.updateForm();
-
-        this.validate();
     }
 
     protected proxy: HTMLInputElement = document.createElement("input");
@@ -144,6 +151,33 @@ export class Radio extends FormAssociated<HTMLInputElement> implements RadioCont
         }
 
         this.updateForm();
+
+        if (this.checkedAttribute) {
+            if (!this.dirtyChecked) {
+                // Setting this.checked will cause us to enter a dirty state,
+                // but if we are clean when defaultChecked is changed, we want to stay
+                // in a clean state, so reset this.dirtyChecked
+                if (!this.isInsideRadioGroup()) {
+                    this.checked = this.defaultChecked;
+                    this.dirtyChecked = false;
+                }
+            }
+        }
+    }
+
+    private isInsideRadioGroup(): boolean {
+        //return this.name !== undefined && this.name !== null && this.name.length > 0;
+        const parent: HTMLElement | null = (this as HTMLElement).closest(
+            "[role=radiogroup]"
+        );
+        return parent !== null;
+    }
+
+    private getParentNode(): HTMLElement | null | undefined {
+        const parentNode: Element | null | undefined = this.parentElement!.closest(
+            "[role='tree']"
+        );
+        return parentNode as HTMLElement;
     }
 
     private updateForm(): void {
