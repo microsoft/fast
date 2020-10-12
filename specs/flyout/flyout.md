@@ -1,5 +1,5 @@
 # Flyout
-
+// TODO: INVESTIGATE a potentially better name than `flyout`, maybe use popover??? Compare with Open UI names
 ## Overview
 Flyout is a focusable floating container that shows over a pages content and displays UI related to what the user is doing. Similar to a Dialog, but with positioning controls and no specific action is required, a Flyout can be used to reveal a secondary control or show more detail about an item.
 
@@ -21,6 +21,7 @@ A Flyout can be less intrusive to the user experience than a Dialog and should b
 **Overlay:** - A control of whether or not the Flyout has an overlay effect that dims the surrounding UI when the Flyout is active.
 
 ### Prior Art/Examples
+//TODO: ADD fluent UI examples callout or teaching bubble popover
 ##### Context Menu
 *Note:* the "Manage, Apply, Show more options" is the Flyout for this example.
 ![Context Menu](https://docs.microsoft.com/en-us/windows/uwp/design/controls-and-patterns/images/flyout-nested.png)
@@ -40,9 +41,9 @@ A Flyout can be less intrusive to the user experience than a Dialog and should b
 - `fast-flyout`
 
 *Attributes*
-- `anchor` - string, the html id of the HTMLElement that the Flyout is attached to, (viewport for anchored region defaults to the parent of the anchor)
+- `anchor` - string, the html id of the HTMLElement that the Flyout is attached to, (viewport for anchored region defaults to the parent of the anchor) // TODO: ASK is anchor the right name? What do other design systems (fluent) use for this name???
 - `overlay` - boolean, specifies whether an overlay is drawn to dim the out of scope UI until the Flyout is dismissed
-- `light-dismiss` - boolean, specifies whether or not the flyout can be dismissed by clicking elsewhere or pressing `esc` key, defaults to true
+- `light-dismiss` - boolean //TODO: Make this always emit an event, so remove this attribute and update somewhere else in this spec that an event will be emitted. Look at other components
 - `visible` - boolean, whether or not the Flyout is visible, defaults to undefined, as this is controlled by the author
 - `responsive` - boolean, whether or not the positioning is responsive based on available space, defaults to true, uses Anchored Region logic
 - `position` - enum, where the tooltip should appear relative to its target, uses Anchored Region logic
