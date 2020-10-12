@@ -88,7 +88,7 @@ export class DataGridRow extends FASTElement {
     @observable
     public isActiveRow: boolean = false;
 
-    public focusColumnIndex: number = -1;
+    public focusColumnIndex: number = 0;
 
     /**
      * @internal
@@ -126,9 +126,9 @@ export class DataGridRow extends FASTElement {
     }
 
     public handleFocusout(e: FocusEvent): void {
-        if (!this.contains(e.relatedTarget as Element)) {
+        if (!this.contains(e.target as Element)) {
             this.isActiveRow = false;
-            this.focusColumnIndex = -1;
+            this.focusColumnIndex = 0;
         }
     }
 
@@ -157,7 +157,10 @@ export class DataGridRow extends FASTElement {
             case keyCodeArrowRight:
                 // focus right one cell
                 cells = Array.from(this.querySelectorAll('[role="cell"]'));
-                newFocusColumnIndex = Math.min(cells.length, this.focusColumnIndex + 1);
+                newFocusColumnIndex = Math.min(
+                    cells.length - 1,
+                    this.focusColumnIndex + 1
+                );
                 (cells[newFocusColumnIndex] as HTMLElement).focus();
                 e.preventDefault();
                 break;
