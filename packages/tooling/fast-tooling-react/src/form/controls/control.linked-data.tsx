@@ -240,8 +240,6 @@ class LinkedDataControl extends React.Component<
                 }
                 // Tab performs an autocompete if there is a single schema it can match to
             } else if (e.keyCode === keyCodeTab) {
-                e.preventDefault();
-
                 const normalizedValue = e.currentTarget.value.toLowerCase();
                 const matchedSchema = this.lazyMatchValueWithASingleSchema(
                     normalizedValue
