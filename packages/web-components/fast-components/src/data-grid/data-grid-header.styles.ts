@@ -1,11 +1,30 @@
 import { css } from "@microsoft/fast-element";
-import { accentForegroundRestBehavior } from "../styles/index";
+import { forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
+import {
+    neutralDividerRestBehavior,
+    neutralFillRestBehavior,
+    neutralFocusBehavior,
+    neutralForegroundActiveBehavior,
+    neutralForegroundFocusBehavior,
+    neutralForegroundHoverBehavior,
+    neutralForegroundRestBehavior,
+} from "../styles/recipes";
 
 export const DataGridHeaderStyles = css`
     :host {
         display: grid;
-        border: 1px solid black;
-        min-height: 40px;
-        background: blue;
+        padding: 1px 0;
+        box-sizing: border-box;
+        width: 100%;
+        border-bottom: calc(var(--outline-width) * 1px) solid var(--neutral-divider-rest);
+        background: ${neutralFillRestBehavior.var};
     }
-`.withBehaviors(accentForegroundRestBehavior);
+`.withBehaviors(
+    neutralFillRestBehavior,
+    forcedColorsStylesheetBehavior(
+        css`
+            :host {
+            }
+        `
+    )
+);
