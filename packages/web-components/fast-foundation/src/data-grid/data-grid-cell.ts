@@ -136,7 +136,7 @@ export class DataGridCell extends FASTElement {
     }
 
     public handleFocusout(e: FocusEvent): void {
-        if (this !== document.activeElement && this.contains(document.activeElement)) {
+        if (this !== document.activeElement && !this.contains(document.activeElement)) {
             this.isActiveCell = false;
             this.isInternalFocused = false;
         }

@@ -248,9 +248,9 @@ export class DataGrid extends FASTElement {
     public handleRowFocus(e: Event): void {
         this.isUpdatingFocus = true;
         const focusRow: DataGridRow = e.target as DataGridRow;
-        this.focusColumnIndex = focusRow.focusColumnIndex;
         const rows: Element[] = Array.from(this.querySelectorAll('[role="row"]'));
         this.focusRowIndex = rows.indexOf(e.target as Element);
+        this.focusColumnIndex = focusRow.focusColumnIndex;
         this.isUpdatingFocus = false;
     }
 
