@@ -152,19 +152,17 @@ export class Tabs extends FASTElement {
         this.tabpanelIds = this.getTabPanelIds();
         this.activeTabIndex = this.getActiveIndex();
         this.tabs.forEach((tab: HTMLElement, index: number) => {
-            if (tab.slot === "tab") {
+            if (tab.slot === "tab" && this.isFocusableElement(tab)) {
                 const tabId: string | null = this.tabIds[index];
                 const tabpanelId: string | null = this.tabpanelIds[index];
                 tab.setAttribute(
                     "id",
                     typeof tabId !== "string" ? `tab-${index + 1}` : tabId
                 );
-                if (this.isFocusableElement(tab)) {
-                    tab.setAttribute(
-                        "aria-selected",
-                        this.activeTabIndex === index ? "true" : "false"
-                    );
-                }
+                tab.setAttribute(
+                    "aria-selected",
+                    this.activeTabIndex === index ? "true" : "false"
+                );
                 tab.setAttribute(
                     "aria-controls",
                     typeof tabpanelId !== "string" ? `panel-${index + 1}` : tabpanelId
@@ -232,9 +230,9 @@ export class Tabs extends FASTElement {
 
     private handleTabClick = (event: MouseEvent): void => {
         const selectedTab = event.currentTarget as HTMLElement;
-        this.prevActiveTabIndex = this.activeTabIndex;
-        this.activeTabIndex = Array.from(this.tabs).indexOf(selectedTab);
         if (selectedTab.nodeType === 1 && this.isFocusableElement(selectedTab)) {
+            this.prevActiveTabIndex = this.activeTabIndex;
+            this.activeTabIndex = Array.from(this.tabs).indexOf(selectedTab);
             this.setComponent();
         }
     };
@@ -326,11 +324,13 @@ export class Tabs extends FASTElement {
             this.tabs.length - 1,
             this.activeTabIndex + adjustment
         );
-        this.setComponent();
+        if (this.isFocusableElement(this.tabs[this.activeTabIndex])) {
+            this.setComponent();
+        }
     }
 
     private focusTab(): void {
-        if (!this.isFocusableElement(this.tabs[this.activeTabIndex])) {
+        if (this.isFocusableElement(this.tabs[this.activeTabIndex])) {
             this.tabs[this.activeTabIndex].focus();
         }
     }
