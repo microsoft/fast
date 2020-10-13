@@ -10,6 +10,7 @@ import {
     DataGridHeader,
     DataGridRow,
 } from "@microsoft/fast-foundation";
+import { FASTButton } from "../button";
 import { FASTDataGrid } from "./";
 
 // Prevent tree-shaking
@@ -109,14 +110,14 @@ function incrementAge(): void {
 
 const dataGridButtonCellTemplate = html<DataGridCell>`
     <template>
-        <button @click="${x => incrementAge()}">
+        <fast-button @click="${x => incrementAge()}">
             ${x =>
                 x.rowData === null ||
                 x.columnData === null ||
                 x.columnData.columnDataKey === null
                     ? null
                     : x.rowData[x.columnData.columnDataKey]}
-        </button>
+        </fast-button>
     </template>
 `;
 
