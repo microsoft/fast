@@ -9,6 +9,7 @@ import * as nativeElementDefinitions from "./native";
 function extendElementDefinitions(definitions: {
     [key: string]: WebComponentDefinition;
 }): { [key: string]: WebComponentDefinition } {
+    console.log("\n***definitions:", definitions, "\n");
     return Object.entries(definitions)
         .map(([definitionKey, definitionValue]: [string, WebComponentDefinition]): [
             string,
