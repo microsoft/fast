@@ -6,7 +6,7 @@ import { DataGridHeaderCell } from "./data-grid-header-cell";
  * @public
  */
 export const DataGridHeaderCellTemplate = html<DataGridHeaderCell>`
-    <template>
+    <template role="row">
         <slot part="cellSlot"></slot>
     </template>
 `;

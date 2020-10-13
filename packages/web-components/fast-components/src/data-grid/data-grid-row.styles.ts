@@ -1,13 +1,6 @@
 import { css } from "@microsoft/fast-element";
 import { forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
-import {
-    neutralDividerRestBehavior,
-    neutralFocusBehavior,
-    neutralForegroundActiveBehavior,
-    neutralForegroundFocusBehavior,
-    neutralForegroundHoverBehavior,
-    neutralForegroundRestBehavior,
-} from "../styles/recipes";
+import { neutralDividerRestBehavior } from "../styles/recipes";
 
 export const DataGridRowStyles = css`
     :host {

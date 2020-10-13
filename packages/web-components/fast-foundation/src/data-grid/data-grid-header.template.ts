@@ -6,7 +6,7 @@ import { DataGridHeader } from "./data-grid-header";
  * @public
  */
 export const DataGridHeaderTemplate = html<DataGridHeader>`
-    <template>
+    <template role="row">
         <slot part="cellsSlot" ${slotted("slottedCellElements")}></slot>
     </template>
 `;

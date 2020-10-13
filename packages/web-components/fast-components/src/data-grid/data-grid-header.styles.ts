@@ -1,14 +1,6 @@
 import { css } from "@microsoft/fast-element";
 import { forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
-import {
-    neutralDividerRestBehavior,
-    neutralFillRestBehavior,
-    neutralFocusBehavior,
-    neutralForegroundActiveBehavior,
-    neutralForegroundFocusBehavior,
-    neutralForegroundHoverBehavior,
-    neutralForegroundRestBehavior,
-} from "../styles/recipes";
+import { neutralDividerRestBehavior } from "../styles/recipes";
 
 export const DataGridHeaderStyles = css`
     :host {
@@ -17,10 +9,9 @@ export const DataGridHeaderStyles = css`
         box-sizing: border-box;
         width: 100%;
         border-bottom: calc(var(--outline-width) * 1px) solid var(--neutral-divider-rest);
-        background: ${neutralFillRestBehavior.var};
     }
 `.withBehaviors(
-    neutralFillRestBehavior,
+    neutralDividerRestBehavior,
     forcedColorsStylesheetBehavior(
         css`
             :host {

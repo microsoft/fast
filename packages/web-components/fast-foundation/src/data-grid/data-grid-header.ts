@@ -29,9 +29,13 @@ export class DataGridHeader extends FASTElement {
      * @remarks
      * HTML Attribute: grid-template-columns
      */
-    @attr
+    @attr({ attribute: "grid-template-columns" })
     public gridTemplateColumns: string;
-    private gridTemplateColumnsChanged(): void {}
+    private gridTemplateColumnsChanged(): void {
+        if ((this as FASTElement).$fastController.isConnected) {
+            this.updateHeaderStyle();
+        }
+    }
 
     /**
      * The column definitions of the row

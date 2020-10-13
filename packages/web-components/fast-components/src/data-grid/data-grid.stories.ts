@@ -127,7 +127,7 @@ const baseColumns: DataGridColumn[] = [
 ];
 
 function getFocusTarget(cell: DataGridCell): HTMLElement {
-    return cell.querySelector("button") as HTMLElement;
+    return cell.querySelector("fast-button") as HTMLElement;
 }
 
 const templateColumns: DataGridColumn[] = [
