@@ -489,24 +489,10 @@ export class DesignSystemProvider extends FASTElement
                 }
 
                 if (sync) {
-                    if (!localDSAccessors.findIndex(y => y.name === x.name)) {
+                    if (localDSAccessors.findIndex(y => y.name === x.name) === -1) {
                         Observable.defineProperty(this.designSystem, x.name);
                     }
-
-                    // this.designSystem[x.name] = this.provider?.designSystem[x.name]
-                    console.log(
-                        this,
-                        this.provider,
-                        this.designSystem,
-                        this.provider?.designSystem
-                    );
                     this.designSystem[x.name] = this.provider?.designSystem[x.name];
-                    console.log(
-                        this,
-                        this.provider,
-                        this.designSystem,
-                        this.provider?.designSystem
-                    );
                 }
             });
         }
