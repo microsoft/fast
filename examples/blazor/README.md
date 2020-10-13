@@ -24,7 +24,7 @@ Additionally, we configure the design system in the `index.html` so that it appl
 </fluent-design-system-provider>
 ```
 
-With this in place, the Fluent UI Web Components can be used throughout all Blazor views. Here's what the Counter page markup looks like:
+With this in place, the Fluent UI Web Components can be used throughout all Blazor views. For example, here's what the Counter page markup looks like:
 
 ```html
 <h1>Counter</h1>
@@ -37,10 +37,12 @@ With this in place, the Fluent UI Web Components can be used throughout all Blaz
 <fluent-button appearance="accent" @onclick="IncrementCount">Click me</fluent-button>
 ```
 
-## Mac Debug with VS Code
+## Running the Example
 
-Sometimes stopping the debugger leaves orphaned processes behind that prevent additional debug sessions from starting. To fix this, kill the process with the following command:
+The recommended way to run the example is with the following command:
 
 ```shell
-lsof -t -i tcp:5001 | xargs kill
+dotnet watch run
 ```
+
+This will build, run, and open a browser. As you make changes, the browser should auto-refresh.
