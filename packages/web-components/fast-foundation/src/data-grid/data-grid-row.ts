@@ -85,7 +85,7 @@ export class DataGridRow extends FASTElement {
     public cellItemTemplate?: ViewTemplate = defaultCellItemTemplate;
 
     /**
-     * If this cell currently has focus
+     * If this row currently has focus
      *
      * @public
      */

@@ -1,7 +1,15 @@
 import { css } from "@microsoft/fast-element";
-import { neutralForegroundRestBehavior } from "../styles/recipes";
+import {
+    neutralFocusBehavior,
+    neutralForegroundActiveBehavior,
+    neutralForegroundRestBehavior,
+} from "../styles/recipes";
 import { SystemColors } from "@microsoft/fast-web-utilities";
-import { forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
+import {
+    display,
+    focusVisible,
+    forcedColorsStylesheetBehavior,
+} from "@microsoft/fast-foundation";
 
 export const DataGridHeaderCellStyles = css`
     :host {
@@ -17,7 +25,14 @@ export const DataGridHeaderCellStyles = css`
         white-space: nowrap;
     }
 
+    :host(:${focusVisible}) {
+        border: ${neutralFocusBehavior.var} calc(var(--outline-width) * 1px) solid;
+        color: ${neutralForegroundActiveBehavior.var};
+    }
+
 `.withBehaviors(
+    neutralFocusBehavior,
+    neutralForegroundActiveBehavior,
     neutralForegroundRestBehavior,
     forcedColorsStylesheetBehavior(
         css`

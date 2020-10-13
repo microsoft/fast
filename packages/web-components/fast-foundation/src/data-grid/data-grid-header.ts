@@ -7,6 +7,12 @@ import {
     observable,
     ViewTemplate,
 } from "@microsoft/fast-element";
+import {
+    keyCodeArrowLeft,
+    keyCodeArrowRight,
+    keyCodeEnd,
+    keyCodeHome,
+} from "@microsoft/fast-web-utilities";
 import { DataGridColumn } from "./data-grid";
 
 const defaultCellItemTemplate = html`
@@ -66,6 +72,16 @@ export class DataGridHeader extends FASTElement {
     public cellItemTemplate?: ViewTemplate = defaultCellItemTemplate;
 
     /**
+     * If this row currently has focus
+     *
+     * @public
+     */
+    @observable
+    public isActiveRow: boolean = false;
+
+    public focusColumnIndex: number = 0;
+
+    /**
      * @internal
      */
     public connectedCallback(): void {
@@ -82,7 +98,81 @@ export class DataGridHeader extends FASTElement {
 
         this.$fastController.addBehaviors([this.cellsRepeatBehavior!]);
 
+        this.addEventListener("cell-focused", this.handleCellFocus);
+        this.addEventListener("focusout", this.handleFocusout);
+        this.addEventListener("keydown", this.handleKeydown);
+
         this.updateHeaderStyle();
+    }
+
+    /**
+     * @internal
+     */
+    public disconnectedCallback(): void {
+        super.disconnectedCallback();
+
+        this.removeEventListener("cell-focused", this.handleCellFocus);
+        this.removeEventListener("focusout", this.handleFocusout);
+        this.removeEventListener("keydown", this.handleKeydown);
+    }
+
+    public handleFocusout(e: FocusEvent): void {
+        if (!this.contains(e.target as Element)) {
+            this.isActiveRow = false;
+            this.focusColumnIndex = 0;
+        }
+    }
+
+    public handleCellFocus(e: Event): void {
+        this.isActiveRow = true;
+        const cells: Element[] = Array.from(this.querySelectorAll('[role="cell"]'));
+        this.focusColumnIndex = cells.indexOf(e.target as Element);
+        this.$emit("row-focused", this);
+    }
+
+    public handleKeydown(e: KeyboardEvent): void {
+        if (e.defaultPrevented) {
+            return;
+        }
+        let cells: Element[] = [];
+        let newFocusColumnIndex: number = 0;
+        switch (e.keyCode) {
+            case keyCodeArrowLeft:
+                // focus left one cell
+                cells = Array.from(this.querySelectorAll('[role="columnheader"]'));
+                newFocusColumnIndex = Math.max(0, this.focusColumnIndex - 1);
+                (cells[newFocusColumnIndex] as HTMLElement).focus();
+                e.preventDefault();
+                break;
+
+            case keyCodeArrowRight:
+                // focus right one cell
+                cells = Array.from(this.querySelectorAll('[role="columnheader"]'));
+                newFocusColumnIndex = Math.min(
+                    cells.length - 1,
+                    this.focusColumnIndex + 1
+                );
+                (cells[newFocusColumnIndex] as HTMLElement).focus();
+                e.preventDefault();
+                break;
+
+            case keyCodeHome:
+                if (!e.ctrlKey) {
+                    // focus first cell of the row
+                    cells = Array.from(this.querySelectorAll('[role="columnheader"]'));
+                    (cells[0] as HTMLElement).focus();
+                    e.preventDefault();
+                }
+                break;
+            case keyCodeEnd:
+                if (!e.ctrlKey) {
+                    // focus last cell of the row
+                    cells = Array.from(this.querySelectorAll('[role="columnheader"]'));
+                    (cells[cells.length - 1] as HTMLElement).focus();
+                    e.preventDefault();
+                }
+                break;
+        }
     }
 
     private updateHeaderStyle = (): void => {

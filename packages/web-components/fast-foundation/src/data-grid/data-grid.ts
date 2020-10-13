@@ -16,6 +16,7 @@ import {
     keyCodePageDown,
     keyCodePageUp,
 } from "@microsoft/fast-web-utilities";
+import { Button } from "../button";
 import { DataGridCell } from "./data-grid-cell";
 import { DataGridHeader } from "./data-grid-header";
 import { DataGridRow } from "./data-grid-row";
@@ -120,7 +121,11 @@ export class DataGrid extends FASTElement {
      */
     @attr({ attribute: "generate-header", mode: "boolean" })
     public generateHeader: boolean = true;
-    private generateHeaderChanged(): void {}
+    private generateHeaderChanged(): void {
+        if ((this as FASTElement).$fastController.isConnected) {
+            this.toggleGeneratedHeader();
+        }
+    }
 
     /**
      * The data being displayed in the grid
@@ -140,6 +145,11 @@ export class DataGrid extends FASTElement {
     public columnsData: DataGridColumn[] = [];
     private columnsDataChanged(): void {
         this.gridTemplateColumns = DataGrid.generateTemplateColumns(this.columnsData);
+        if ((this as FASTElement).$fastController.isConnected) {
+            if (this.generatedHeader !== null) {
+                this.generatedHeader.columnsData = this.columnsData;
+            }
+        }
     }
 
     /**
@@ -190,7 +200,13 @@ export class DataGrid extends FASTElement {
      */
     @observable
     public gridTemplateColumns: string;
-    private gridTemplateColumnsChanged(): void {}
+    private gridTemplateColumnsChanged(): void {
+        if ((this as FASTElement).$fastController.isConnected) {
+            if (this.generatedHeader !== null) {
+                this.generatedHeader.gridTemplateColumns = this.gridTemplateColumns;
+            }
+        }
+    }
 
     /**
      * @internal
@@ -202,8 +218,10 @@ export class DataGrid extends FASTElement {
      */
     public slottedHeaderElements: HTMLElement[];
 
-    private rowsRepeatBehavior?: RepeatBehavior;
-    private rowsPlaceholder?: Node;
+    private rowsRepeatBehavior: RepeatBehavior | null;
+    private rowsPlaceholder: Node | null = null;
+
+    private generatedHeader: DataGridHeader | null = null;
 
     private isUpdatingFocus: boolean = false;
     private pendingFocusUpdate: boolean = false;
@@ -220,6 +238,8 @@ export class DataGrid extends FASTElement {
 
         this.rowsPlaceholder = document.createComment("");
         this.appendChild(this.rowsPlaceholder);
+
+        this.toggleGeneratedHeader();
 
         this.rowsRepeatBehavior = new RepeatDirective(
             x => x.rowsData,
@@ -243,6 +263,9 @@ export class DataGrid extends FASTElement {
         this.removeEventListener("row-focused", this.handleRowFocus);
         this.removeEventListener("focus", this.handleFocus);
         this.removeEventListener("keydown", this.handleKeydown);
+
+        this.rowsPlaceholder = null;
+        this.generatedHeader = null;
     }
 
     public handleRowFocus(e: Event): void {
@@ -346,5 +369,28 @@ export class DataGrid extends FASTElement {
     private updateFocus(): void {
         this.pendingFocusUpdate = false;
         this.focusOnCell(this.focusRowIndex, this.focusColumnIndex);
+    }
+
+    private toggleGeneratedHeader(): void {
+        if (this.generateHeader && this.generatedHeader === null) {
+            const generatedHeaderElement: HTMLElement = document.createElement(
+                "fast-data-grid-header"
+            );
+            this.generatedHeader = (generatedHeaderElement as unknown) as DataGridHeader;
+            this.generatedHeader.columnsData = this.columnsData;
+            this.generatedHeader.gridTemplateColumns = this.gridTemplateColumns;
+            if (this.firstChild !== null || this.rowsPlaceholder !== null) {
+                this.insertBefore(
+                    generatedHeaderElement,
+                    this.firstChild !== null ? this.firstChild : this.rowsPlaceholder
+                );
+            }
+            return;
+        }
+
+        if (!this.generateHeader && this.generatedHeader !== null) {
+            this.removeChild(this.generatedHeader);
+            this.generatedHeader === null;
+        }
     }
 }
