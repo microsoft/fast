@@ -2,6 +2,7 @@ import {
     attr,
     Behavior,
     customElement,
+    ElementStyles,
     FASTElement,
     observable,
     Observable,
@@ -322,14 +323,10 @@ export class DesignSystemProvider extends FASTElement
     constructor() {
         super();
 
-        if (supportsAdoptedStylesheets && this.shadowRoot !== null) {
+        if (supportsAdoptedStylesheets) {
             const sheet = new CSSStyleSheet();
             sheet.insertRule(":host{}");
-            (this.shadowRoot as any).adoptedStyleSheets = [
-                ...(this.shadowRoot as any).adoptedStyleSheets,
-                sheet,
-            ];
-
+            this.$fastController.addStyles(ElementStyles.create([sheet]));
             this.customPropertyTarget = (sheet.rules[0] as CSSStyleRule).style;
         } else {
             this.customPropertyTarget = this.style;
