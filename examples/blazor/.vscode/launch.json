@@ -5,25 +5,10 @@
    "version": "0.2.0",
    "configurations": [
         {
-            "name": ".NET Core Launch (Blazor Standalone)",
-            "type": "coreclr",
+            "name": "Launch and Debug Standalone Blazor WebAssembly App",
+            "type": "blazorwasm",
             "request": "launch",
-            "program": "dotnet",
-            "args": ["run"],
-            "cwd": "${workspaceFolder}",
-            "env": {
-                "ASPNETCORE_ENVIRONMENT": "Development"
-            }
-        },
-        {
-            "name": ".NET Core Debug Blazor Web Assembly in Edge",
-            "type": "pwa-msedge",
-            "request": "launch",
-            "timeout": 30000,
-            // If you have changed the default port / launch URL make sure to update the expectation below
-            "url": "https://localhost:5001",
-            "webRoot": "${workspaceFolder}",
-            "inspectUri": "{wsProtocol}://{url.hostname}:{url.port}/_framework/debug/ws-proxy?browser={browserInspectUri}"
+            "cwd": "${workspaceFolder}"
         }
     ]
 }

@@ -6,25 +6,25 @@
     <h4 class="mb-3">Contact</h4>
     <form>
       <div class="row">
-          <fluent-text-field @bind-value="FirstName" @bind-value:event="onchange">First Name</fluent-text-field>
+          <fluent-text-field @bind-value="FirstName" @bind-value:event="oninput">First Name</fluent-text-field>
       </div>
       <div class="row">
-          <fluent-text-field @bind-value="LastName" @bind-value:event="onchange">Last Name</fluent-text-field>
+          <fluent-text-field @bind-value="LastName" @bind-value:event="oninput">Last Name</fluent-text-field>
       </div>
       <div class="row">
           Full Name: @FirstName @LastName
       </div>
       <div class="row">
-          <fluent-text-field id="username">Username</fluent-text-field>
+          <fluent-text-field>Username</fluent-text-field>
       </div>
       <div class="row">
-        <fluent-text-field type="email" id="email">Email</fluent-text-field>
+        <fluent-text-field type="email">Email</fluent-text-field>
       </div>
       <div class="row">
-        <fluent-text-area id="message" placeholder="Please enter your message here.">Message</fluent-text-area>
+        <fluent-text-area placeholder="Please enter your message here.">Message</fluent-text-area>
       </div>
       <div class="row">
-        <fluent-checkbox id="sign-up">
+        <fluent-checkbox>
           Sign up for our newsletter
         </fluent-checkbox>
       </div>
