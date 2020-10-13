@@ -2,8 +2,8 @@ import {
     fastComponentDefinitions,
     fastComponentSchemas,
 } from "@microsoft/site-utilities";
-import { mapScenarios } from "../utilities/mapping";
 import { camelCase } from "lodash-es";
+import { mapScenarios } from "../utilities/mapping";
 import Guidance from "../../.tmp/badge/guidance";
 import Scenarios from "../../.tmp/badge/scenario";
 import { ComponentViewConfig } from "./data.props";

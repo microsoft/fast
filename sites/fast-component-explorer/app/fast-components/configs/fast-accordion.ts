@@ -2,8 +2,8 @@ import {
     fastComponentDefinitions,
     fastComponentSchemas,
 } from "@microsoft/site-utilities";
-import { mapScenarios } from "../utilities/mapping";
 import { camelCase } from "lodash-es";
+import { mapScenarios } from "../utilities/mapping";
 
 import Guidance from "../../.tmp/accordion/guidance";
 import Scenarios from "../../.tmp/accordion/scenario";
