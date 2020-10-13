@@ -12,6 +12,9 @@
           <fluent-text-field @bind-value="LastName" @bind-value:event="onchange">Last Name</fluent-text-field>
       </div>
       <div class="row">
+          Full Name: @FirstName @LastName
+      </div>
+      <div class="row">
           <fluent-text-field id="username">Username</fluent-text-field>
       </div>
       <div class="row">
@@ -35,13 +38,4 @@
 @code {
   private string FirstName { get; set; } = "Blazor";
   private string LastName { get; set; } = "FAST";
-
-  protected override void OnInitialized()
-  {
-    new Timer {
-      Interval = 500,
-      AutoReset = true,
-      Enabled = true
-    }.Elapsed += delegate { Console.WriteLine($"{this.FirstName} {this.LastName}"); };
-  }
 }
