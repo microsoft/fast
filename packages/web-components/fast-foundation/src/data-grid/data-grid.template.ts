@@ -16,7 +16,7 @@ export const DataGridTemplate = html<DataGrid>`
             x => x.generateHeader,
             html<DataGrid>`
                 <fast-data-grid-header
-                    gridTemplateColumns="${x => x.gridTemplateColumns}"
+                    grid-template-columns="${x => x.gridTemplateColumns}"
                     :columnsData="${x => x.columnsData}"
                 ></fast-data-grid-header>
             `
