@@ -431,7 +431,7 @@ export class DesignSystemProvider extends FASTElement
     /**
      * Writes all CSS custom property definitions to the design system provider.
      */
-    private writeCustomProperties(): void {
+    private writeCustomProperties(...args): void {
         this.cssCustomPropertyDefinitions.forEach(this.setCustomProperty);
     }
 
@@ -475,16 +475,38 @@ export class DesignSystemProvider extends FASTElement
      * over the value defined by the provider
      */
     private syncDesignSystemWithProvider(): void {
+        const localDSAccessors = Observable.getAccessors(this.designSystem);
         if (this.provider) {
-            const designProperties = this.designSystemProperties;
-            new Set(
-                Object.keys(this.designSystemProperties).concat(
-                    Object.keys(this.provider.designSystemProperties)
-                )
-            ).forEach((key: string) => {
-                const property = designProperties[key];
-                if (!this.isValidDesignSystemValue(property)) {
-                    this.designSystem[key] = this.provider!.designSystem[key];
+            Observable.getAccessors(this.provider.designSystem).forEach(x => {
+                // If the property is not enumerated by this DSP, bring it down.
+                // If it is, only bring it down if the local prop is not a valid design system property value
+                let sync = false;
+
+                if (!this.designSystemProperties.hasOwnProperty(x.name)) {
+                    sync = true;
+                } else if (!this.isValidDesignSystemValue(this[x.name])) {
+                    sync = true;
+                }
+
+                if (sync) {
+                    if (!localDSAccessors.findIndex(y => y.name === x.name)) {
+                        Observable.defineProperty(this.designSystem, x.name);
+                    }
+
+                    // this.designSystem[x.name] = this.provider?.designSystem[x.name]
+                    console.log(
+                        this,
+                        this.provider,
+                        this.designSystem,
+                        this.provider?.designSystem
+                    );
+                    this.designSystem[x.name] = this.provider?.designSystem[x.name];
+                    console.log(
+                        this,
+                        this.provider,
+                        this.designSystem,
+                        this.provider?.designSystem
+                    );
                 }
             });
         }
