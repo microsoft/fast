@@ -199,8 +199,10 @@ export class Dialog extends FASTElement {
      */
     private focusFirstElement = (): void => {
         if (this.tabbableElements.length === 0) {
+            console.log(this.tabbableElements);
             this.dialog.focus();
         } else {
+            console.log(this.tabbableElements);
             this.tabbableElements[0].focus();
         }
     };
