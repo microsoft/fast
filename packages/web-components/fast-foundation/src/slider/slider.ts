@@ -359,6 +359,7 @@ export class Slider extends FormAssociated<HTMLInputElement>
             return;
         }
 
+        // update the value based on current position
         const sourceEvent = e instanceof TouchEvent ? e.touches[0] : e;
         const eventValue: number =
             this.orientation === Orientation.horizontal
