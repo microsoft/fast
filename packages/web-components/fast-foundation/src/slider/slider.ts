@@ -354,16 +354,24 @@ export class Slider extends FormAssociated<HTMLInputElement>
     /**
      *  Handle mouse moves during a thumb drag operation
      */
-    private handleMouseMove = (e: MouseEvent): void => {
+    private handleMouseMove = (e: MouseEvent | TouchEvent): void => {
         if (this.readOnly || this.disabled || e.defaultPrevented) {
             return;
         }
 
-        // update the value based on current position
-        const eventValue: number =
-            this.orientation === Orientation.horizontal
-                ? e.pageX - this.trackLeft
-                : e.pageY;
+        let eventValue: number = 0;
+
+        if (e instanceof MouseEvent) {
+            eventValue =
+                this.orientation === Orientation.horizontal
+                    ? e.pageX - this.trackLeft
+                    : e.pageY;
+        } else if (e instanceof TouchEvent) {
+            eventValue =
+                this.orientation === Orientation.horizontal
+                    ? e.touches[0].pageX - this.trackLeft
+                    : e.touches[0].pageY;
+        }
 
         this.value = `${this.calculateNewValue(eventValue)}`;
     };
@@ -418,6 +426,9 @@ export class Slider extends FormAssociated<HTMLInputElement>
     };
 
     private convertToConstrainedValue = (value: number): number => {
+        if (isNaN(value)) {
+            value = this.min;
+        }
         let constrainedValue: number = value - this.min;
         const remainderVal: number = constrainedValue % Number(this.step);
         constrainedValue =
