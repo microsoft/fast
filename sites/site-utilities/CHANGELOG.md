@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.1](https://github.com/Microsoft/fast/compare/@microsoft/site-utilities@0.5.0...@microsoft/site-utilities@0.5.1) (2020-10-14)
+
+
+### Bug Fixes
+
+* rename instances of adaptor to adapter ([#3983](https://github.com/Microsoft/fast/issues/3983)) ([3aa532e](https://github.com/Microsoft/fast/commit/3aa532e214a9300ae8b4cf305f7d1baab279b7be))
+
+
+
+
+
 # [0.5.0](https://github.com/Microsoft/fast/compare/@microsoft/site-utilities@0.4.5...@microsoft/site-utilities@0.5.0) (2020-09-28)
 
 
