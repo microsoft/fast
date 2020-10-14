@@ -19,3 +19,12 @@ export const voidElements: string[] = [
     "track",
     "wbr",
 ];
+
+export const enum Delimiter {
+    startTagOpen = "<",
+    startTagClose = ">",
+    startTagSelfClose = "/>",
+    endTagOpen = "</",
+    endTagClose = ">",
+    assign = "=",
+}
