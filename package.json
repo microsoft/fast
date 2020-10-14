@@ -10,13 +10,23 @@
   "private": true,
   "workspaces": {
     "packages": [
-      "packages/**/*",
+      "packages/tooling/fast-figma-plugin-msft",
+      "packages/tooling/fast-tooling-react",
+      "packages/tooling/fast-tooling-wasm",
+      "packages/tooling/fast-tooling",
+      "packages/utilities/fast-animation",
+      "packages/utilities/fast-colors",
+      "packages/utilities/fast-eslint-rules",
+      "packages/utilities/fast-web-utilities",
+      "packages/web-components/fast-components",
+      "packages/web-components/fast-element",
+      "packages/web-components/fast-foundation",
       "sites/fast-color-explorer",
       "sites/fast-component-explorer",
       "sites/fast-creator",
-      "sites/site-utilities",
       "sites/fast-tooling-examples",
       "sites/fast-website",
+      "sites/site-utilities",
       "sites/website"
     ],
     "nohoist": [
