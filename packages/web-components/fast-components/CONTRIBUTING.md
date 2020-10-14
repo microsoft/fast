@@ -2,7 +2,33 @@
 
 ## The component explorer
 
-The component explorer is a [site](https://explore.fast.design) that showcases the components in the `@microsoft/fast-components` package. This acts as part of the documentation story, in order to expose a component it must have a [definition](#definition) and [configuration](#configuration).
+The component explorer is a [site](https://explore.fast.design) that showcases the components in the `@microsoft/fast-components` package. This acts as part of the documentation story, in order to expose a component it must have [scenarios](#scenarios), a [definition](#definition) and [configuration](#configuration).
+
+## Scenarios
+
+Each component must have one or more **scenarios**. The scenarios will be surfaced to the component explorer site to be used as examples for that component.
+
+Create a scenario file by adding an `index.html` file inside of a `scenarios` folder.
+
+__Example Folder Structure__
+```
+my-component/
+  └─ fixtures/
+  └─ scenarios/index.html <--
+  └─ my-component.stories.ts
+  └─ my-component.styles.ts
+```
+
+The format of the file should be at least one `template` element, with a `title` attribute that will be used as the display name. The contents of the `template` will then be used as the example. There should only be one child element in the `template`, if more elements are needed, wrap them in a single element such as a `div`.
+
+__Example__
+```
+<template title="Default">
+    <my-component></my-component>
+</template>
+```
+
+The file can have as many `template` elements as needed as long as the `title` attributes are unique for each one.
 
 ## Definition
 
