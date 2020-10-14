@@ -191,11 +191,9 @@ export class DesignSystemProvider extends FASTElement
         next: DesignSystemProvider | null
     ): void {
         if (prev instanceof HTMLElement) {
-            Object.keys(prev.designSystemProperties).forEach(key => {
-                Observable.getNotifier(prev.designSystem).unsubscribe(
-                    this.providerDesignSystemChangeHandler,
-                    key
-                );
+            const notifier = Observable.getNotifier(prev.designSystem);
+            Observable.getAccessors(prev.designSystem).forEach(x => {
+                notifier.unsubscribe(this.providerDesignSystemChangeHandler, x.name);
             });
         }
 
@@ -203,11 +201,9 @@ export class DesignSystemProvider extends FASTElement
             next instanceof HTMLElement &&
             DesignSystemProvider.isDesignSystemProvider(next)
         ) {
-            Object.keys(next.designSystemProperties).forEach(key => {
-                Observable.getNotifier(next.designSystem).subscribe(
-                    this.providerDesignSystemChangeHandler,
-                    key
-                );
+            const notifier = Observable.getNotifier(next.designSystem);
+            Observable.getAccessors(next.designSystem).forEach(x => {
+                notifier.subscribe(this.providerDesignSystemChangeHandler, x.name);
             });
 
             this.syncDesignSystemWithProvider();
@@ -472,16 +468,29 @@ export class DesignSystemProvider extends FASTElement
      * over the value defined by the provider
      */
     private syncDesignSystemWithProvider(): void {
+        const localDSAccessors = Observable.getAccessors(this.designSystem).reduce(
+            (prev, next) => {
+                prev[next.name] = next;
+                return prev;
+            },
+            {}
+        );
+
         if (this.provider) {
-            const designProperties = this.designSystemProperties;
-            new Set(
-                Object.keys(this.designSystemProperties).concat(
-                    Object.keys(this.provider.designSystemProperties)
-                )
-            ).forEach((key: string) => {
-                const property = designProperties[key];
-                if (!this.isValidDesignSystemValue(property)) {
-                    this.designSystem[key] = this.provider!.designSystem[key];
+            Observable.getAccessors(this.provider.designSystem).forEach(x => {
+                // If the property is not enumerated as a DesignSystemProperty,
+                // Or it is but the property is unset on the this provider instance,
+                // And the parent value *is* a valid value,
+                // Sync the value from the parent provider's designSystem to the local designSystem
+                if (
+                    (!this.designSystemProperties.hasOwnProperty(x.name) ||
+                        !this.isValidDesignSystemValue(this[x.name])) &&
+                    this.isValidDesignSystemValue(this.provider?.designSystem[x.name])
+                ) {
+                    if (!localDSAccessors[x.name]) {
+                        Observable.defineProperty(this.designSystem, x.name);
+                    }
+                    this.designSystem[x.name] = this.provider!.designSystem[x.name];
                 }
             });
         }
