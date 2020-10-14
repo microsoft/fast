@@ -1,7 +1,6 @@
 import { customElement } from "@microsoft/fast-element";
-import { ListboxTemplate as template, Listbox } from "@microsoft/fast-foundation";
+import { Listbox, ListboxTemplate as template } from "@microsoft/fast-foundation";
 import { ListboxStyles as styles } from "./listbox.styles";
-
 
 /**
  * The FAST listbox Custom Element. Implements, {@link @microsoft/fast-foundation#Listbox}
