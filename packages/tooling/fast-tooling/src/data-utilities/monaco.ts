@@ -7,7 +7,7 @@
 import { get } from "lodash-es";
 import { Data, DataDictionary, SchemaDictionary } from "../message-system";
 import { ReservedElementMappingKeyword } from "./types";
-import { voidElements } from "./html-elements";
+import { voidElements } from "./html-element";
 
 const whiteSpace = " ";
 const newline = "\n";
