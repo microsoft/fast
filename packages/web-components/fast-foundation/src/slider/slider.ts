@@ -359,19 +359,11 @@ export class Slider extends FormAssociated<HTMLInputElement>
             return;
         }
 
-        let eventValue: number = 0;
-
-        if (e instanceof MouseEvent) {
-            eventValue =
-                this.orientation === Orientation.horizontal
-                    ? e.pageX - this.trackLeft
-                    : e.pageY;
-        } else if (e instanceof TouchEvent) {
-            eventValue =
-                this.orientation === Orientation.horizontal
-                    ? e.touches[0].pageX - this.trackLeft
-                    : e.touches[0].pageY;
-        }
+        const sourceEvent = e instanceof TouchEvent ? e.touches[0] : e;
+        const eventValue: number =
+            this.orientation === Orientation.horizontal
+                ? sourceEvent.pageX - this.trackLeft
+                : sourceEvent.pageY;
 
         this.value = `${this.calculateNewValue(eventValue)}`;
     };
