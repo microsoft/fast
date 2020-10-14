@@ -204,9 +204,6 @@ export class DesignSystemProvider extends FASTElement
             Observable.getAccessors(next.designSystem).forEach(x => {
                 notifier.subscribe(this.providerDesignSystemChangeHandler, x.name);
             });
-            // Object.keys(next.designSystemProperties).forEach(key => {
-
-            // });
 
             this.syncDesignSystemWithProvider();
         }
@@ -430,7 +427,7 @@ export class DesignSystemProvider extends FASTElement
     /**
      * Writes all CSS custom property definitions to the design system provider.
      */
-    private writeCustomProperties(...args): void {
+    private writeCustomProperties(): void {
         this.cssCustomPropertyDefinitions.forEach(this.setCustomProperty);
     }
 
@@ -474,24 +471,29 @@ export class DesignSystemProvider extends FASTElement
      * over the value defined by the provider
      */
     private syncDesignSystemWithProvider(): void {
-        const localDSAccessors = Observable.getAccessors(this.designSystem);
+        const localDSAccessors = Observable.getAccessors(this.designSystem).reduce(
+            (prev, next) => {
+                prev[next.name] = next;
+                return prev;
+            },
+            {}
+        );
+
         if (this.provider) {
             Observable.getAccessors(this.provider.designSystem).forEach(x => {
-                // If the property is not enumerated by this DSP, bring it down.
-                // If it is, only bring it down if the local prop is not a valid design system property value
-                let sync = false;
-
-                if (!this.designSystemProperties.hasOwnProperty(x.name)) {
-                    sync = true;
-                } else if (!this.isValidDesignSystemValue(this[x.name])) {
-                    sync = true;
-                }
-
-                if (sync) {
-                    if (localDSAccessors.findIndex(y => y.name === x.name) === -1) {
+                // If the property is not enumerated as a DesignSystemProperty,
+                // Or it is but the property is unset on the this provider instance,
+                // And the parent value *is* a valid value,
+                // Sync the value from the parent provider's designSystem to the local designSystem
+                if (
+                    (!this.designSystemProperties.hasOwnProperty(x.name) ||
+                        !this.isValidDesignSystemValue(this[x.name])) &&
+                    this.isValidDesignSystemValue(this.provider?.designSystem[x.name])
+                ) {
+                    if (!localDSAccessors[x.name]) {
                         Observable.defineProperty(this.designSystem, x.name);
                     }
-                    this.designSystem[x.name] = this.provider?.designSystem[x.name];
+                    this.designSystem[x.name] = this.provider!.designSystem[x.name];
                 }
             });
         }
