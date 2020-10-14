@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.13.1](https://github.com/Microsoft/fast/compare/@microsoft/fast-component-explorer@0.13.0...@microsoft/fast-component-explorer@0.13.1) (2020-10-14)
+
+
+### Bug Fixes
+
+* clean up and rename registered utilities to registered services ([#3984](https://github.com/Microsoft/fast/issues/3984)) ([22f6426](https://github.com/Microsoft/fast/commit/22f6426c89cedefeaf26adee56b428e9a9b69515))
+* rename instances of adaptor to adapter ([#3983](https://github.com/Microsoft/fast/issues/3983)) ([3aa532e](https://github.com/Microsoft/fast/commit/3aa532e214a9300ae8b4cf305f7d1baab279b7be))
+
+
+
+
+
 # [0.13.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-component-explorer@0.12.2...@microsoft/fast-component-explorer@0.13.0) (2020-09-28)
 
 

@@ -115,21 +115,20 @@ export const ProgressStyles = css`
     neutralForegroundHintBehavior,
     forcedColorsStylesheetBehavior(
         css`
+            .progress {
+                forced-color-adjust: none;
+                background-color: ${SystemColors.Field};
+                box-shadow: 0 0 0 1px inset ${SystemColors.FieldText};
+            }
+            .determinate,
             .indeterminate-indicator-1,
-            .indeterminate-indicator-2,
-            .determinate {
+            .indeterminate-indicator-2 {
                 forced-color-adjust: none;
                 background-color: ${SystemColors.FieldText};
             }
-            .progress {
-                background-color: ${SystemColors.Field};
-                border: calc(var(--outline-width) * 1px) solid ${SystemColors.FieldText};
-            }
+            :host(.paused) .determinate,
             :host(.paused) .indeterminate-indicator-1,
-            .indeterminate-indicator-2 {
-                background-color: ${SystemColors.Field};
-            }
-            :host(.paused) .determinate {
+            :host(.paused) .indeterminate-indicator-2 {
                 background-color: ${SystemColors.GrayText};
             }
         `
