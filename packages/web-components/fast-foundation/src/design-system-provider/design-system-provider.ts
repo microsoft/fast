@@ -190,11 +190,9 @@ export class DesignSystemProvider extends FASTElement
         next: DesignSystemProvider | null
     ): void {
         if (prev instanceof HTMLElement) {
-            Object.keys(prev.designSystemProperties).forEach(key => {
-                Observable.getNotifier(prev.designSystem).unsubscribe(
-                    this.providerDesignSystemChangeHandler,
-                    key
-                );
+            const notifier = Observable.getNotifier(prev.designSystem);
+            Observable.getAccessors(prev.designSystem).forEach(x => {
+                notifier.unsubscribe(this.providerDesignSystemChangeHandler, x.name);
             });
         }
 
@@ -202,12 +200,13 @@ export class DesignSystemProvider extends FASTElement
             next instanceof HTMLElement &&
             DesignSystemProvider.isDesignSystemProvider(next)
         ) {
-            Object.keys(next.designSystemProperties).forEach(key => {
-                Observable.getNotifier(next.designSystem).subscribe(
-                    this.providerDesignSystemChangeHandler,
-                    key
-                );
+            const notifier = Observable.getNotifier(next.designSystem);
+            Observable.getAccessors(next.designSystem).forEach(x => {
+                notifier.subscribe(this.providerDesignSystemChangeHandler, x.name);
             });
+            // Object.keys(next.designSystemProperties).forEach(key => {
+
+            // });
 
             this.syncDesignSystemWithProvider();
         }

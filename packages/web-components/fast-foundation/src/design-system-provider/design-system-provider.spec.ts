@@ -8,10 +8,6 @@ import {
     DesignSystemProviderTemplate as template,
 } from "./index";
 
-const a = Symbol();
-const b = Symbol();
-const c = Symbol();
-
 @defineDesignSystemProvider({
     name: "dsp-a",
     template,
@@ -25,7 +21,7 @@ class DSPA extends DesignSystemProvider {
     public a: symbol;
 
     @designSystemProperty({
-        default: b,
+        default: Symbol(),
         cssCustomProperty: false,
         attribute: false,
     })
@@ -73,16 +69,16 @@ class DSPC extends DesignSystemProvider {
 }
 
 async function setup() {
-    const { element: dspA, connect: connectA, disconnect: disconnectA } = await fixture<
+    const { element: a, connect: connectA, disconnect: disconnectA } = await fixture<
         DSPA
     >("dsp-a");
-    const { element: dspB, connect: connectB, disconnect: disconnectB } = await fixture<
+    const { element: b, connect: connectB, disconnect: disconnectB } = await fixture<
         DSPB
     >("dsp-b");
 
     return {
-        dspA,
-        dspB,
+        a,
+        b,
         connect: async () => Promise.all([connectA(), connectB()]),
         disconnect: async () => Promise.all([disconnectA(), disconnectB()]),
     };
@@ -91,35 +87,35 @@ async function setup() {
 describe("A DesignSystemProvider", () => {
     describe("that is nested inside an instance of the same DesignSystemProvider definition", () => {
         it("should sync all unset design system properties from the parent provider", done => {
-            const dspA = document.createElement("dsp-a") as DSPA;
-            const dspB = document.createElement("dsp-a") as DSPA;
-            dspA.useDefaults = true;
-            dspA.appendChild(dspB);
-            document.body.appendChild(dspA);
-            const aAccessors = Observable.getAccessors(dspA.designSystem);
+            const a = document.createElement("dsp-a") as DSPA;
+            const n = document.createElement("dsp-a") as DSPA;
+            a.useDefaults = true;
+            a.appendChild(n);
+            document.body.appendChild(a);
+            const aAccessors = Observable.getAccessors(a.designSystem);
 
             expect(aAccessors.length).to.equal(2);
 
             window.setTimeout(() => {
-                Observable.getAccessors(dspA.designSystem).forEach(x => {
-                    expect(dspA.designSystem[x.name]).to.equal(dspB.designSystem[x.name]);
+                Observable.getAccessors(a.designSystem).forEach(x => {
+                    expect(a.designSystem[x.name]).to.equal(n.designSystem[x.name]);
                 });
                 done();
             }, 0);
         });
 
         it("should update it's local design system when a parent DesignSystemProperty is changed and the local property is unset", done => {
-            const dspA = document.createElement("dsp-a") as DSPA;
-            const dspB = document.createElement("dsp-a") as DSPA;
-            dspA.useDefaults = true;
-            dspA.appendChild(dspB);
-            document.body.appendChild(dspA);
+            const a = document.createElement("dsp-a") as DSPA;
+            const b = document.createElement("dsp-a") as DSPA;
+            a.useDefaults = true;
+            a.appendChild(b);
+            document.body.appendChild(a);
 
             window.setTimeout(() => {
-                dspA.a = Symbol();
-                Observable.getAccessors(dspA.designSystem).forEach(x => {
-                    expect(dspB.designSystem[x.name]).not.to.equal(undefined);
-                    expect(dspA.designSystem[x.name]).to.equal(dspB.designSystem[x.name]);
+                a.a = Symbol();
+                Observable.getAccessors(a.designSystem).forEach(x => {
+                    expect(b.designSystem[x.name]).not.to.equal(undefined);
+                    expect(a.designSystem[x.name]).to.equal(b.designSystem[x.name]);
                 });
 
                 done();
@@ -129,49 +125,75 @@ describe("A DesignSystemProvider", () => {
 
     describe("that is nested inside an instance of a different DesignSystemProvider definition", () => {
         it("should have a design system that is the union of ancestor's and descendant's design system properties", async () => {
-            const { dspA, dspB, connect, disconnect } = await setup();
+            const { a, b, connect, disconnect } = await setup();
             await connect();
 
-            dspA.a = a;
-            dspA.b = b;
+            const _a = Symbol();
+            const _b = Symbol();
+            const _c = Symbol();
+            a.a = _a;
+            a.b = _b;
 
-            dspB.b = b;
-            dspB.c = c;
+            b.b = _b;
+            b.c = _c;
 
-            dspA.appendChild(dspB);
+            a.appendChild(b);
 
             await Promise.resolve();
 
-            expect((dspB.designSystem as any).a).to.equal(a);
-            expect((dspB.designSystem as any).b).to.equal(b);
-            expect((dspB.designSystem as any).c).to.equal(c);
+            expect((b.designSystem as any).a).to.equal(_a);
+            expect((b.designSystem as any).b).to.equal(_b);
+            expect((b.designSystem as any).c).to.equal(_c);
 
             await disconnect();
         });
 
         it("should have a design system that is the union of ancestor's when deeply nested", done => {
-            const dspA = document.createElement("dsp-a") as DSPA;
-            const dspB = document.createElement("dsp-b") as DSPB;
-            const dspC = document.createElement("dsp-c") as DSPC;
+            const a = document.createElement("dsp-a") as DSPA;
+            const b = document.createElement("dsp-b") as DSPB;
+            const c = document.createElement("dsp-c") as DSPC;
 
-            dspA.useDefaults = true;
-            dspB.useDefaults = true;
-            dspC.useDefaults = true;
-            dspB.appendChild(dspC);
-            dspA.appendChild(dspB);
-            document.body.appendChild(dspA);
+            a.useDefaults = true;
+            b.useDefaults = true;
+            c.useDefaults = true;
+            b.appendChild(c);
+            a.appendChild(b);
+            document.body.appendChild(a);
 
             window.setTimeout(() => {
-                expect(dspC.designSystem["a"]).not.to.equal(undefined);
-                expect(dspC.designSystem["b"]).not.to.equal(undefined);
-                expect(dspC.designSystem["c"]).not.to.equal(undefined);
-                expect(dspC.designSystem["d"]).not.to.equal(undefined);
+                expect(c.designSystem["a"]).not.to.equal(undefined);
+                expect(c.designSystem["b"]).not.to.equal(undefined);
+                expect(c.designSystem["c"]).not.to.equal(undefined);
+                expect(c.designSystem["d"]).not.to.equal(undefined);
 
-                expect(dspC.designSystem["a"]).to.equal(dspA.designSystem["a"]);
-                expect(dspC.designSystem["b"]).to.equal(dspB.designSystem["b"]);
-                expect(dspC.designSystem["c"]).to.equal(dspC.c);
-                expect(dspC.designSystem["d"]).to.equal(dspC.d);
+                expect(c.designSystem["a"]).to.equal(a.designSystem["a"]);
+                expect(c.designSystem["b"]).to.equal(b.designSystem["b"]);
+                expect(c.designSystem["c"]).to.equal(c.c);
+                expect(c.designSystem["d"]).to.equal(c.d);
 
+                done();
+            });
+        });
+
+        it("should propagate property updates through providers where a parent provider doesn't declare the property as a designSystemProperty", done => {
+            const a = document.createElement("dsp-a") as DSPA;
+            const b = document.createElement("dsp-b") as DSPB;
+            const c = document.createElement("dsp-c") as DSPC;
+
+            a.useDefaults = true;
+            b.useDefaults = true;
+            c.useDefaults = true;
+            b.appendChild(c);
+            a.appendChild(b);
+            document.body.appendChild(a);
+
+            window.setTimeout(() => {
+                expect(c.designSystem["a"]).to.equal(a.designSystem["a"]);
+                const symbol = Symbol();
+                a.a = symbol;
+
+                expect(a.designSystem["a"]).to.equal(symbol);
+                expect(c.designSystem["a"]).to.equal(symbol);
                 done();
             });
         });
