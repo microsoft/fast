@@ -325,9 +325,9 @@ export class DesignSystemProvider extends FASTElement
 
         if (supportsAdoptedStylesheets) {
             const sheet = new CSSStyleSheet();
-            sheet.insertRule(":host{}");
+            const index = sheet.insertRule(":host{}");
             this.$fastController.addStyles(ElementStyles.create([sheet]));
-            this.customPropertyTarget = (sheet.rules[0] as CSSStyleRule).style;
+            this.customPropertyTarget = (sheet.rules[index] as CSSStyleRule).style;
         } else {
             this.customPropertyTarget = this.style;
         }
