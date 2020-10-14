@@ -246,7 +246,7 @@ class LinkedDataControl extends React.Component<
                 );
 
                 if (typeof matchedSchema === "string") {
-                    // prevent normal tabbing when single schema matched
+                    // prevent navigating away by tab when single schema matched
                     e.preventDefault();
                     this.setState({
                         searchTerm: this.props.schemaDictionary[matchedSchema].title,
