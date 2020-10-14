@@ -1,9 +1,9 @@
 import { attr, observable } from "@microsoft/fast-element";
+import { KeyCodes, wrapInBounds } from "@microsoft/fast-web-utilities";
 import { FormAssociated } from "../form-associated/index";
-import { Option } from './option';
-import { wrapInBounds, KeyCodes } from '@microsoft/fast-web-utilities';
 import { StartEnd } from "../patterns/start-end";
 import { applyMixins } from "../utilities/apply-mixins";
+import { Option } from "../option/option";
 
 export class Select extends FormAssociated<HTMLInputElement> {
     protected proxy: HTMLInputElement;
@@ -86,9 +86,10 @@ export class Select extends FormAssociated<HTMLInputElement> {
     }
 
     private updateForm(): void {
+        //
     }
 
-    
+
     public keypressHandlerButton = (e: KeyboardEvent): void => {
         super.keypressHandler(e);
         switch (e.keyCode) {
@@ -114,7 +115,7 @@ export class Select extends FormAssociated<HTMLInputElement> {
      */
     public keypressHandlerListbox = (e: KeyboardEvent): void => {
         super.keypressHandler(e);
-        
+
         // Don't scroll the page for arrow keys, and spacebar.
         e.preventDefault();
         switch (e.keyCode) {
@@ -126,8 +127,8 @@ export class Select extends FormAssociated<HTMLInputElement> {
                 break;
             case KeyCodes.enter:
                 this.value = this.options[this.activeOptionIndex].value;
-                console.log("Fire Enter", this.activeOptionIndex)
-                this.options[this.activeOptionIndex].checked = true;
+                console.log("Fire Enter", this.activeOptionIndex);
+                this.options[this.activeOptionIndex].selected = true;
                 this.optionSelectionChange(this.options[this.activeOptionIndex].value);
                 break;
             case KeyCodes.escape:
@@ -176,8 +177,8 @@ export class Select extends FormAssociated<HTMLInputElement> {
     public handleMultiple = (value: string): void => {
         if (!this.multiple) {
             this.options.forEach(element => {
-                if (element.value != this.value && element.checked) {
-                    element.checked = false;
+                if (element.value != this.value && element.selected) {
+                    element.selected = false;
                 }
             });
         }
@@ -224,7 +225,7 @@ export class Select extends FormAssociated<HTMLInputElement> {
      * This will update the text that is in the select's
      * button by default that renders the selected value
      *
-     * @param value This is the value for the <option>
+     * @param value - This is the value for the <option>
      */
     private updateSelectValue(value: string) {
         this.value = value;
@@ -232,7 +233,7 @@ export class Select extends FormAssociated<HTMLInputElement> {
     }
 
     private getFirstSelectedOption(): Option | null {
-        const selectedOption: Option | undefined = this.options.find(x => x.checked)
+        const selectedOption: Option | undefined = this.options.find(x => x.selected);
         if (selectedOption) {
             this.activeOptionIndex = Array.from(this.options).indexOf(selectedOption);
         }
@@ -270,7 +271,7 @@ export class Select extends FormAssociated<HTMLInputElement> {
      * functionality that is tied to the given part still function as designed
      */
     public registerButtonSlotChange(): void {
-        let slot = this.shadowRoot!.querySelector('slot[name=button-container]');
+        const slot = this.shadowRoot!.querySelector("slot[name=button-container]");
         if (slot) {
             slot.addEventListener('slotchange', () => {
                 this.applyButtonControllerCode();
@@ -300,7 +301,7 @@ export class Select extends FormAssociated<HTMLInputElement> {
     }
 
     private regexEscape(str) {
-        return str.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')
+        return str.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&");
     }
 
     /**
@@ -308,8 +309,8 @@ export class Select extends FormAssociated<HTMLInputElement> {
      * Consecutive keystrokes are batched into a buffer of search text used
      * to match against the set of options.  If TYPE_AHEAD_TIMEOUT_MS passes
      * between consecutive keystrokes, the search restarts.
-     * 
-     * @param typedKey
+     *
+     * @param typedKey - the key to be evaluated
      */
     private typeAheadValue: string = '';
     private typeAheadTimeoutHandler: number = -1;
@@ -329,29 +330,29 @@ export class Select extends FormAssociated<HTMLInputElement> {
 
         this.typeAheadValue = `${this.typeAheadValue}${typedKey}`;
 
-        let focusedIndex = this.options.indexOf(document.activeElement as any);
-        let searchStartOffset = this.typeAheadExpired ? 1 : 0;
+        const focusedIndex = this.options.indexOf(document.activeElement as any);
+        const searchStartOffset = this.typeAheadExpired ? 1 : 0;
         // Try to match first against options that come after the currently
         // selected option. If none of those match, loop back around starting
         // from the top of the list. If we're in the middle of a search,
         // continue matching against the currently focused option before moving
         // on to the next option.
-        let optionsForSearch =
-            this.options.slice(focusedIndex + searchStartOffset, this.options.length)
+        const optionsForSearch = this.options
+            .slice(focusedIndex + searchStartOffset, this.options.length)
             .concat(this.options.slice(0, focusedIndex + searchStartOffset));
 
-        let pattern = `^(${this.regexEscape(this.typeAheadValue)})`;
-        let re = new RegExp(pattern, "gi");
+        const pattern = `^(${this.regexEscape(this.typeAheadValue)})`;
+        const re = new RegExp(pattern, "gi");
 
         for (const option of optionsForSearch) {
             // Match against the visible text of the option, rather than
-            // the 'value' attribute. For a real <option> element, the
-            // 'label' property could be used here.
+            // the `value` attribute. For a real <option> element, the
+            // `label` property could be used here.
             // Chromium/Firefox's native <select>s ignore whitespace at the
             // beginning/end of the visible text when matching, so trim()
             // the search text to align with that behavior.
-            const element: any = option
-            let matches = element.innerText.trim().match(re);
+            const element: any = option;
+            const matches = element.innerText.trim().match(re);
 
             if (matches) {
                 this.setFocusOnOption(element);

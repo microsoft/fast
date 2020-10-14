@@ -15,6 +15,7 @@ export * from "./form-associated/index";
 export * from "./flipper/index";
 export * from "./menu/index";
 export * from "./menu-item/index";
+export * from "./option/index";
 export * from "./patterns/index";
 export * from "./progress/index";
 export * from "./progress-ring/index";

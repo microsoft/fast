@@ -1,7 +1,6 @@
 import { customElement } from "@microsoft/fast-element";
-import { OptionTemplate as template, Option } from "@microsoft/fast-foundation";
+import { Option, OptionTemplate as template } from "@microsoft/fast-foundation";
 import { OptionStyles as styles } from "./option.styles";
-
 
 /**
  * The FAST option Custom Element. Implements, {@link @microsoft/fast-foundation#Option}
