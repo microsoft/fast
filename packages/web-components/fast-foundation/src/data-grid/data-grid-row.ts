@@ -138,7 +138,9 @@ export class DataGridRow extends FASTElement {
 
     public handleCellFocus(e: Event): void {
         this.isActiveRow = true;
-        const cells: Element[] = Array.from(this.querySelectorAll('[role="cell"]'));
+        const cells: Element[] = Array.from(
+            this.querySelectorAll('[role="cell"], [role="gridcell"]')
+        );
         this.focusColumnIndex = cells.indexOf(e.target as Element);
         this.$emit("row-focused", this);
     }
@@ -187,17 +189,6 @@ export class DataGridRow extends FASTElement {
                 break;
         }
     }
-
-    // /**
-    //  *  gets the current column configuration
-    //  */
-    // private getColumns = (): DataGridColumn[] => {
-    //     return (this.columns === undefined)
-    //         ? (this.rowData !== null)
-    //             ? DataGrid.generateColumns(this.rowData)
-    //             : null
-    //         : JSON.parse(this.columns);;
-    // };
 
     private updateRowStyle = (): void => {
         this.style.gridTemplateColumns = this.gridTemplateColumns;

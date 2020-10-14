@@ -6,6 +6,11 @@ import {
     HTMLView,
     ViewTemplate,
 } from "@microsoft/fast-element";
+import {
+    keyCodeEnter,
+    keyCodeEscape,
+    keyCodeFunction2,
+} from "@microsoft/fast-web-utilities";
 import { DataGridColumn } from "./data-grid";
 
 const defaultHeaderCellContentsTemplate: ViewTemplate = html<DataGridHeaderCell>`
@@ -46,13 +51,26 @@ export class DataGridHeaderCell extends FASTElement {
         }
     }
 
+    /**
+     * If this cell currently has focus
+     *
+     * @public
+     */
+    @observable
+    public isActiveCell: boolean = false;
+
     private customCellView: HTMLView | null = null;
+    private isInternalFocused: boolean = false;
 
     /**
      * @internal
      */
     public connectedCallback(): void {
         super.connectedCallback();
+
+        this.addEventListener("focusin", this.handleFocusin);
+        this.addEventListener("focusout", this.handleFocusout);
+        this.addEventListener("keydown", this.handleKeydown);
 
         this.style.gridColumn = `${
             this.gridColumnIndex === undefined ? 0 : this.gridColumnIndex
@@ -71,9 +89,81 @@ export class DataGridHeaderCell extends FASTElement {
     public disconnectedCallback(): void {
         super.disconnectedCallback();
 
+        this.removeEventListener("focusin", this.handleFocusin);
+        this.removeEventListener("focusout", this.handleFocusout);
+        this.removeEventListener("keydown", this.handleKeydown);
+
         if (this.customCellView !== null) {
             this.customCellView.unbind();
             this.customCellView = null;
+        }
+    }
+
+    public handleFocusin(e: FocusEvent): void {
+        if (this.isActiveCell || this.columnData === null) {
+            return;
+        }
+
+        this.isActiveCell = true;
+
+        if (
+            this.columnData.headerCellInternalFocusQueue !== true &&
+            typeof this.columnData.headerCellFocusTargetCallback === "function"
+        ) {
+            // move focus to the focus target
+            const focusTarget: HTMLElement = this.columnData.headerCellFocusTargetCallback(
+                this
+            );
+            if (focusTarget !== null) {
+                focusTarget.focus();
+            }
+        }
+
+        this.$emit("cell-focused", this);
+    }
+
+    public handleFocusout(e: FocusEvent): void {
+        if (this !== document.activeElement && !this.contains(document.activeElement)) {
+            this.isActiveCell = false;
+            this.isInternalFocused = false;
+        }
+    }
+
+    public handleKeydown(e: KeyboardEvent): void {
+        if (
+            e.defaultPrevented ||
+            this.columnData === undefined ||
+            this.columnData.headerCellInternalFocusQueue !== true
+        ) {
+            return;
+        }
+
+        switch (e.keyCode) {
+            case keyCodeEnter:
+            case keyCodeFunction2:
+                if (
+                    !this.isInternalFocused &&
+                    this.columnData !== undefined &&
+                    this.columnData.headerCellFocusTargetCallback !== undefined
+                ) {
+                    const focusTarget: HTMLElement = this.columnData.headerCellFocusTargetCallback(
+                        this
+                    );
+                    if (focusTarget !== null) {
+                        this.isInternalFocused = true;
+                        focusTarget.focus();
+                    }
+                    e.preventDefault();
+                }
+                break;
+
+            case keyCodeEscape:
+                if (this.isInternalFocused) {
+                    this.focus();
+                    this.isInternalFocused = false;
+                    e.preventDefault();
+                }
+                break;
         }
     }
 }

@@ -16,8 +16,8 @@ import {
     keyCodePageDown,
     keyCodePageUp,
 } from "@microsoft/fast-web-utilities";
-import { Button } from "../button";
 import { DataGridCell } from "./data-grid-cell";
+import { DataGridHeaderCell } from "./data-grid-header-cell";
 import { DataGridHeader } from "./data-grid-header";
 import { DataGridRow } from "./data-grid-row";
 
@@ -45,9 +45,24 @@ export interface DataGridColumn {
     title?: string;
 
     /**
-     *  header template
+     *  header cell template
      */
     headerCellTemplate?: ViewTemplate;
+
+    /**
+     * Whether the header cell has an internal focus queue
+     */
+    headerCellInternalFocusQueue?: boolean;
+
+    /**
+     * Callback function that returns the element to focus in a custom cell.
+     * When headerCellInternalFocusQueue is false this function is called when the cell is first focused
+     * to immediately move focus to a cell element, for example a cell that is a checkbox could move
+     * focus directly to the checkbox.
+     * When headerCellInternalFocusQueue is true this function is called when the user hits Enter or F2
+     */
+
+    headerCellFocusTargetCallback?: (cell: DataGridHeaderCell) => HTMLElement;
 
     /**
      * cell template
@@ -55,19 +70,19 @@ export interface DataGridColumn {
     cellTemplate?: ViewTemplate;
 
     /**
-     * Whether the cell has in internal focus queue
+     * Whether the cell has an internal focus queue
      */
-    hasInternalFocusQueue?: boolean;
+    cellInternalFocusQueue?: boolean;
 
     /**
      * Callback function that returns the element to focus in a custom cell.
-     * When hasInternalFocusQueue is false this function is called when the cell is first focused
+     * When cellInternalFocusQueue is false this function is called when the cell is first focused
      * to immediately move focus to a cell element, for example a cell that is a checkbox could move
      * focus directly to the checkbox.
-     * When hasInternalFocusQueue is true this function is called when the user hits Enter or F2
+     * When cellInternalFocusQueue is true this function is called when the user hits Enter or F2
      */
 
-    focusTargetCallback?: (cell: DataGridCell) => HTMLElement;
+    cellFocusTargetCallback?: (cell: DataGridCell) => HTMLElement;
 }
 
 const defaultRowItemTemplate = html`
@@ -346,7 +361,9 @@ export class DataGrid extends FASTElement {
         let focusRowIndex = Math.max(0, Math.min(rows.length - 1, rowIndex));
         const focusRow: Element = rows[focusRowIndex];
 
-        const cells: NodeListOf<Element> = focusRow.querySelectorAll('[role="cell"]');
+        const cells: NodeListOf<Element> = focusRow.querySelectorAll(
+            '[role="cell"], [role="gridcell"], [role="columnheader"]'
+        );
 
         let focusColumnIndex = Math.max(0, Math.min(cells.length - 1, columnIndex));
 

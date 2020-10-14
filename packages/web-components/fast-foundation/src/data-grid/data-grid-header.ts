@@ -125,7 +125,9 @@ export class DataGridHeader extends FASTElement {
 
     public handleCellFocus(e: Event): void {
         this.isActiveRow = true;
-        const cells: Element[] = Array.from(this.querySelectorAll('[role="cell"]'));
+        const cells: Element[] = Array.from(
+            this.querySelectorAll('[role="columnheader"]')
+        );
         this.focusColumnIndex = cells.indexOf(e.target as Element);
         this.$emit("row-focused", this);
     }

@@ -136,7 +136,7 @@ const templateColumns: DataGridColumn[] = [
         columnDataKey: "age",
         columnWidth: "1fr",
         cellTemplate: dataGridButtonCellTemplate,
-        focusTargetCallback: getFocusTarget,
+        cellFocusTargetCallback: getFocusTarget,
     },
 ];
 

@@ -1,6 +1,5 @@
 import {
     attr,
-    DOM,
     FASTElement,
     observable,
     html,
@@ -122,11 +121,13 @@ export class DataGridCell extends FASTElement {
         this.isActiveCell = true;
 
         if (
-            this.columnData.hasInternalFocusQueue !== true &&
-            typeof this.columnData.focusTargetCallback === "function"
+            this.columnData.cellInternalFocusQueue !== true &&
+            typeof this.columnData.cellFocusTargetCallback === "function"
         ) {
             // move focus to the focus target
-            const focusTarget: HTMLElement = this.columnData.focusTargetCallback(this);
+            const focusTarget: HTMLElement = this.columnData.cellFocusTargetCallback(
+                this
+            );
             if (focusTarget !== null) {
                 focusTarget.focus();
             }
@@ -146,7 +147,7 @@ export class DataGridCell extends FASTElement {
         if (
             e.defaultPrevented ||
             this.columnData === undefined ||
-            this.columnData.hasInternalFocusQueue !== true
+            this.columnData.cellInternalFocusQueue !== true
         ) {
             return;
         }
@@ -157,9 +158,9 @@ export class DataGridCell extends FASTElement {
                 if (
                     !this.isInternalFocused &&
                     this.columnData !== undefined &&
-                    this.columnData.focusTargetCallback !== undefined
+                    this.columnData.cellFocusTargetCallback !== undefined
                 ) {
-                    const focusTarget: HTMLElement = this.columnData.focusTargetCallback(
+                    const focusTarget: HTMLElement = this.columnData.cellFocusTargetCallback(
                         this
                     );
                     if (focusTarget !== null) {
