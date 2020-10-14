@@ -7,6 +7,7 @@
 import { get } from "lodash-es";
 import { Data, DataDictionary, SchemaDictionary } from "../message-system";
 import { ReservedElementMappingKeyword } from "./types";
+import { voidElements } from "./html-elements";
 
 const whiteSpace = " ";
 const newline = "\n";
@@ -19,27 +20,6 @@ const enum Delimiter {
     endTagClose = ">",
     assign = "=",
 }
-/**
- * These elements are self closing because they cannot have content
- */
-const voidElements: string[] = [
-    "area",
-    "base",
-    "br",
-    "col",
-    "embed",
-    "hr",
-    "img",
-    "input",
-    "keygen",
-    "link",
-    "menuitem",
-    "meta",
-    "param",
-    "source",
-    "track",
-    "wbr",
-];
 
 function getLinkedDataDataLocations(
     dictionaryId: string,
