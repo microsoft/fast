@@ -59,9 +59,25 @@ export class DataGridCell extends FASTElement {
      * @public
      */
     @observable
-    public columnData: DataGridColumn;
-    private columnDataChanged(): void {
+    public columnData: DataGridColumn | null = null;
+    private columnDataChanged(
+        oldValue: DataGridColumn | null,
+        newValue: DataGridColumn | null
+    ): void {
         if ((this as FASTElement).$fastController.isConnected) {
+            if (newValue === null) {
+                this.disconnectCellView();
+                return;
+            }
+
+            if (oldValue === null) {
+                this.updateCellView();
+                return;
+            }
+
+            if (oldValue.cellTemplate !== newValue.cellTemplate) {
+                this.updateCellView();
+            }
         }
     }
 
@@ -90,11 +106,7 @@ export class DataGridCell extends FASTElement {
             this.gridColumnIndex === undefined ? 0 : this.gridColumnIndex
         }`;
 
-        if (this.columnData?.cellTemplate !== undefined) {
-            this.customCellView = this.columnData.cellTemplate.render(this, this);
-        } else {
-            this.customCellView = defaultCellContentsTemplate.render(this, this);
-        }
+        this.updateCellView();
     }
 
     /**
@@ -107,10 +119,7 @@ export class DataGridCell extends FASTElement {
         this.removeEventListener("focusout", this.handleFocusout);
         this.removeEventListener("keydown", this.handleKeydown);
 
-        if (this.customCellView !== null) {
-            this.customCellView.unbind();
-            this.customCellView = null;
-        }
+        this.disconnectCellView();
     }
 
     public handleFocusin(e: FocusEvent): void {
@@ -146,7 +155,7 @@ export class DataGridCell extends FASTElement {
     public handleKeydown(e: KeyboardEvent): void {
         if (
             e.defaultPrevented ||
-            this.columnData === undefined ||
+            this.columnData === null ||
             this.columnData.cellInternalFocusQueue !== true
         ) {
             return;
@@ -178,6 +187,27 @@ export class DataGridCell extends FASTElement {
                     e.preventDefault();
                 }
                 break;
+        }
+    }
+
+    private updateCellView(): void {
+        this.disconnectCellView();
+
+        if (this.columnData === null) {
+            return;
+        }
+
+        if (this.columnData.cellTemplate !== undefined) {
+            this.customCellView = this.columnData.cellTemplate.render(this, this);
+        } else {
+            this.customCellView = defaultCellContentsTemplate.render(this, this);
+        }
+    }
+
+    private disconnectCellView(): void {
+        if (this.customCellView !== null) {
+            this.customCellView.unbind();
+            this.customCellView = null;
         }
     }
 }

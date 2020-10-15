@@ -16,7 +16,9 @@ import { DataGridColumn } from "./data-grid";
 const defaultHeaderCellContentsTemplate: ViewTemplate = html<DataGridHeaderCell>`
     <template>
         ${x =>
-            x.columnData.title === undefined
+            x.columnData === null
+                ? null
+                : x.columnData.title === undefined
                 ? x.columnData.columnDataKey
                 : x.columnData.title}
     </template>
@@ -45,9 +47,25 @@ export class DataGridHeaderCell extends FASTElement {
      * @public
      */
     @observable
-    public columnData: DataGridColumn;
-    private columnDataChanged(): void {
+    public columnData: DataGridColumn | null = null;
+    private columnDataChanged(
+        oldValue: DataGridColumn | null,
+        newValue: DataGridColumn | null
+    ): void {
         if ((this as FASTElement).$fastController.isConnected) {
+            if (newValue === null) {
+                this.disconnectCellView();
+                return;
+            }
+
+            if (oldValue === null) {
+                this.updateCellView();
+                return;
+            }
+
+            if (oldValue.headerCellTemplate !== newValue.headerCellTemplate) {
+                this.updateCellView();
+            }
         }
     }
 
@@ -76,11 +94,7 @@ export class DataGridHeaderCell extends FASTElement {
             this.gridColumnIndex === undefined ? 0 : this.gridColumnIndex
         }`;
 
-        if (this.columnData?.headerCellTemplate !== undefined) {
-            this.customCellView = this.columnData.headerCellTemplate.render(this, this);
-        } else {
-            this.customCellView = defaultHeaderCellContentsTemplate.render(this, this);
-        }
+        this.updateCellView();
     }
 
     /**
@@ -132,7 +146,7 @@ export class DataGridHeaderCell extends FASTElement {
     public handleKeydown(e: KeyboardEvent): void {
         if (
             e.defaultPrevented ||
-            this.columnData === undefined ||
+            this.columnData === null ||
             this.columnData.headerCellInternalFocusQueue !== true
         ) {
             return;
@@ -143,7 +157,7 @@ export class DataGridHeaderCell extends FASTElement {
             case keyCodeFunction2:
                 if (
                     !this.isInternalFocused &&
-                    this.columnData !== undefined &&
+                    this.columnData !== null &&
                     this.columnData.headerCellFocusTargetCallback !== undefined
                 ) {
                     const focusTarget: HTMLElement = this.columnData.headerCellFocusTargetCallback(
@@ -164,6 +178,27 @@ export class DataGridHeaderCell extends FASTElement {
                     e.preventDefault();
                 }
                 break;
+        }
+    }
+
+    private updateCellView(): void {
+        this.disconnectCellView();
+
+        if (this.columnData === null) {
+            return;
+        }
+
+        if (this.columnData.headerCellTemplate !== undefined) {
+            this.customCellView = this.columnData.headerCellTemplate.render(this, this);
+        } else {
+            this.customCellView = defaultHeaderCellContentsTemplate.render(this, this);
+        }
+    }
+
+    private disconnectCellView(): void {
+        if (this.customCellView !== null) {
+            this.customCellView.unbind();
+            this.customCellView = null;
         }
     }
 }

@@ -74,6 +74,17 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
         defaultCell.columnData = { columnDataKey: "name", columnWidth: "1fr" };
         defaultCell.rowData = dataGridRow1;
     }
+
+    const headerCell: DataGridHeaderCell | null = document.getElementById(
+        "headerCell"
+    ) as DataGridHeaderCell;
+    if (rowWithCellTemplate !== null) {
+        headerCell.columnData = {
+            columnDataKey: "name",
+            columnWidth: "1fr",
+            title: "Name",
+        };
+    }
 });
 
 export default {
@@ -133,7 +144,9 @@ const buttonHeaderCellTemplate = html<DataGridHeaderCell>`
     <template>
         <fast-button @click="${x => incrementAge()}">
             ${x =>
-                x.columnData === null || x.columnData.title === undefined
+                x.columnData === null
+                    ? null
+                    : x.columnData.title === undefined
                     ? x.columnData.columnDataKey
                     : x.columnData.title}
         </fast-button>
