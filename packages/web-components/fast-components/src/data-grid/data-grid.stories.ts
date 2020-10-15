@@ -8,6 +8,7 @@ import {
     DataGridCell,
     DataGridColumn,
     DataGridHeader,
+    DataGridHeaderCell,
     DataGridRow,
 } from "@microsoft/fast-foundation";
 import { FASTButton } from "../button";
@@ -59,6 +60,13 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
         rowWithCellTemplate.rowData = dataGridRow1;
     }
 
+    const headerWithCellTemplate: DataGridHeader | null = document.getElementById(
+        "headerTemplateRow"
+    ) as DataGridHeader;
+    if (headerWithCellTemplate !== null) {
+        headerWithCellTemplate.columnsData = templateColumns;
+    }
+
     const defaultCell: DataGridCell | null = document.getElementById(
         "defaultCell"
     ) as DataGridCell;
@@ -108,7 +116,7 @@ function incrementAge(): void {
     // dataGridRow1 = newRow;
 }
 
-const dataGridButtonCellTemplate = html<DataGridCell>`
+const buttonCellTemplate = html<DataGridCell>`
     <template>
         <fast-button @click="${x => incrementAge()}">
             ${x =>
@@ -121,12 +129,23 @@ const dataGridButtonCellTemplate = html<DataGridCell>`
     </template>
 `;
 
+const buttonHeaderCellTemplate = html<DataGridHeaderCell>`
+    <template>
+        <fast-button @click="${x => incrementAge()}">
+            ${x =>
+                x.columnData === null || x.columnData.title === undefined
+                    ? x.columnData.columnDataKey
+                    : x.columnData.title}
+        </fast-button>
+    </template>
+`;
+
 const baseColumns: DataGridColumn[] = [
     { columnDataKey: "name", columnWidth: "1fr" },
     { columnDataKey: "age", columnWidth: "1fr" },
 ];
 
-function getFocusTarget(cell: DataGridCell): HTMLElement {
+function getFocusTarget(cell: DataGridCell | DataGridHeaderCell): HTMLElement {
     return cell.querySelector("fast-button") as HTMLElement;
 }
 
@@ -135,8 +154,10 @@ const templateColumns: DataGridColumn[] = [
     {
         columnDataKey: "age",
         columnWidth: "1fr",
-        cellTemplate: dataGridButtonCellTemplate,
+        cellTemplate: buttonCellTemplate,
         cellFocusTargetCallback: getFocusTarget,
+        headerCellTemplate: buttonHeaderCellTemplate,
+        headerCellFocusTargetCallback: getFocusTarget,
     },
 ];
 

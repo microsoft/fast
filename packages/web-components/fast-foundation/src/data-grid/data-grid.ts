@@ -61,7 +61,6 @@ export interface DataGridColumn {
      * focus directly to the checkbox.
      * When headerCellInternalFocusQueue is true this function is called when the user hits Enter or F2
      */
-
     headerCellFocusTargetCallback?: (cell: DataGridHeaderCell) => HTMLElement;
 
     /**
