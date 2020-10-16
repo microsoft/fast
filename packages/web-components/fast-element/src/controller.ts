@@ -146,16 +146,24 @@ export class Controller extends PropertyChangeNotifier {
      * Adds styles to this element.
      * @param styles - The styles to add.
      */
-    public addStyles(styles: ElementStyles): void {
-        const sourceBehaviors = styles.behaviors;
+    public addStyles(styles: ElementStyles | HTMLStyleElement): void {
         const target =
             getShadowRoot(this.element) ||
             ((this.element.getRootNode() as any) as StyleTarget);
 
-        styles.addStylesTo(target);
+        if (styles instanceof HTMLStyleElement) {
+            target.prepend(styles);
+        } else {
+            const sourceBehaviors = styles.behaviors;
+            const target =
+                getShadowRoot(this.element) ||
+                ((this.element.getRootNode() as any) as StyleTarget);
 
-        if (sourceBehaviors !== null) {
-            this.addBehaviors(sourceBehaviors);
+            styles.addStylesTo(target);
+
+            if (sourceBehaviors !== null) {
+                this.addBehaviors(sourceBehaviors);
+            }
         }
     }
 
@@ -163,16 +171,21 @@ export class Controller extends PropertyChangeNotifier {
      * Removes styles from this element.
      * @param styles - the styles to remove.
      */
-    public removeStyles(styles: ElementStyles): void {
-        const sourceBehaviors = styles.behaviors;
+    public removeStyles(styles: ElementStyles | HTMLStyleElement): void {
         const target =
             getShadowRoot(this.element) ||
             ((this.element.getRootNode() as any) as StyleTarget);
 
-        styles.removeStylesFrom(target);
+        if (styles instanceof HTMLStyleElement) {
+            target.removeChild(styles);
+        } else {
+            const sourceBehaviors = styles.behaviors;
 
-        if (sourceBehaviors !== null) {
-            this.removeBehaviors(sourceBehaviors);
+            styles.removeStylesFrom(target);
+
+            if (sourceBehaviors !== null) {
+                this.removeBehaviors(sourceBehaviors);
+            }
         }
     }
 
