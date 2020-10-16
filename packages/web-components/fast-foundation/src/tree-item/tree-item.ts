@@ -310,9 +310,8 @@ export class TreeItem extends FASTElement {
 /**
  * Mark internal because exporting class and interface of the same name
  * confuses API documenter.
- * TODO: https://github.com/microsoft/fast-dna/issues/3317
+ * TODO: https://github.com/microsoft/fast/issues/3317
  * @internal
  */
-/* eslint-disable-next-line */
 export interface TreeItem extends StartEnd {}
 applyMixins(TreeItem, StartEnd);

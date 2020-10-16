@@ -217,6 +217,5 @@ export class TextArea extends FormAssociated<HTMLTextAreaElement> {
  * TODO: https://github.com/microsoft/fast/issues/3317
  * @internal
  */
-/* eslint-disable-next-line */
 export interface TextArea extends DelegatesARIATextbox {}
 applyMixins(TextArea, DelegatesARIATextbox);

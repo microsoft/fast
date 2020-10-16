@@ -6,5 +6,6 @@ module.exports = {
         "@typescript-eslint/typedef": "off",
         "@typescript-eslint/explicit-function-return-type": "off",
         "@typescript-eslint/no-non-null-assertion": "off",
+        "@typescript-eslint/no-empty-interface": ["error", { allowSingleExtends: true }],
     },
 };
