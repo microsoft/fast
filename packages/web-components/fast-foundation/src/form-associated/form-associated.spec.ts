@@ -1,7 +1,6 @@
-import { FormAssociated } from "./form-associated";
+import { customElement, html } from "@microsoft/fast-element";
 import { expect } from "chai";
-import { customElement, html, DOM } from "@microsoft/fast-element";
-import { classNames } from "@microsoft/fast-web-utilities";
+import { FormAssociated } from "./form-associated";
 
 @customElement({
     name: "test-element",

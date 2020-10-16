@@ -1,7 +1,7 @@
 import { customElement } from "@microsoft/fast-element";
-import { Tooltip, TooltipTemplate as template } from "@microsoft/fast-foundation";
-import { TooltipStyles as styles } from "./tooltip.styles";
+import { TooltipTemplate as template, Tooltip } from "@microsoft/fast-foundation";
 import { FASTAnchoredRegion } from "../anchored-region";
+import { TooltipStyles as styles } from "./tooltip.styles";
 
 // prevent tree shaking
 FASTAnchoredRegion;

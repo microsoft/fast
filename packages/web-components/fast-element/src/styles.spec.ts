@@ -1,11 +1,11 @@
 import { expect } from "chai";
+import { DOM } from "./dom";
 import {
     AdoptedStyleSheetsStyles,
+    ElementStyles,
     StyleElementStyles,
     StyleTarget,
-    ElementStyles,
 } from "./styles";
-import { DOM } from "./dom";
 
 if (DOM.supportsAdoptedStyleSheets) {
     describe("AdoptedStyleSheetsStyles", () => {

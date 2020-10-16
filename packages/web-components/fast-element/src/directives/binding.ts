@@ -1,8 +1,8 @@
 import {
-    ExecutionContext,
     Binding,
-    setCurrentEvent,
     BindingObserver,
+    ExecutionContext,
+    setCurrentEvent,
 } from "../observation/observable";
 import { Observable } from "../observation/observable";
 import { DOM } from "../dom";

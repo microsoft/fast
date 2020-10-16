@@ -1,5 +1,5 @@
-import { Accessor, Observable } from "../observation/observable";
 import { emptyArray } from "../interfaces";
+import { Accessor, Observable } from "../observation/observable";
 import { Behavior } from "./behavior";
 
 /**

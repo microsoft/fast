@@ -1,8 +1,7 @@
+import { customElement, DOM } from "@microsoft/fast-element";
 import { expect } from "chai";
-import { TreeItem, TreeItemTemplate as template } from "./index";
 import { fixture } from "../fixture";
-import { DOM, customElement } from "@microsoft/fast-element";
-import { Button } from "../button";
+import { TreeItemTemplate as template, TreeItem } from "./index";
 
 @customElement({
     name: "fast-tree-item",

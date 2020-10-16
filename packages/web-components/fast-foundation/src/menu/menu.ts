@@ -1,5 +1,4 @@
 import { FASTElement, observable } from "@microsoft/fast-element";
-import { inRange, invert } from "lodash-es";
 import {
     isHTMLElement,
     keyCodeArrowDown,
@@ -9,6 +8,7 @@ import {
     keyCodeEnd,
     keyCodeHome,
 } from "@microsoft/fast-web-utilities";
+import { inRange, invert } from "lodash-es";
 import { MenuItemRole } from "../menu-item/index";
 
 /**

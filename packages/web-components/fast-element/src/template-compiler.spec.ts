@@ -1,13 +1,13 @@
 import { expect } from "chai";
-import { DOM } from "./dom";
 import { BindingDirective } from "./directives/binding";
-import { compileTemplate } from "./template-compiler";
 import { Directive } from "./directives/directive";
+import { DOM } from "./dom";
+import { customElement, FASTElement } from "./fast-element";
 import { defaultExecutionContext } from "./observation/observable";
-import { toHTML, uniqueElementName } from "./__test__/helpers";
-import { html } from "./template";
 import { css, StyleTarget } from "./styles";
-import { FASTElement, customElement } from "./fast-element";
+import { html } from "./template";
+import { compileTemplate } from "./template-compiler";
+import { toHTML, uniqueElementName } from "./__test__/helpers";
 
 describe("The template compiler", () => {
     function compile(html: string, directives: Directive[]) {

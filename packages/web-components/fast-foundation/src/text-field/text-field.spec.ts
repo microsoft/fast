@@ -1,8 +1,8 @@
 import { customElement } from "@microsoft/fast-element";
 import { expect } from "chai";
 import { fixture } from "../fixture";
-import { TextField, TextFieldTemplate as template, TextFieldTemplate } from "./index";
 import { TextFieldType } from "./text-field";
+import { TextFieldTemplate as template, TextField } from "./index";
 
 @customElement({
     name: "fast-text-field",

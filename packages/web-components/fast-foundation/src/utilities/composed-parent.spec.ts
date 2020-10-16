@@ -1,5 +1,5 @@
-import { composedParent } from "./composed-parent";
 import { expect } from "chai";
+import { composedParent } from "./composed-parent";
 
 describe("The composedParent function", () => {
     it("returns the parent of an element, if it has one", () => {

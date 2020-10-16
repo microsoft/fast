@@ -1,7 +1,7 @@
-import { expect } from "chai";
-import { TabPanel, TabPanelTemplate as template } from "./index";
-import { fixture } from "../fixture";
 import { customElement } from "@microsoft/fast-element";
+import { expect } from "chai";
+import { fixture } from "../fixture";
+import { TabPanel, TabPanelTemplate as template } from "./index";
 
 @customElement({
     name: "fast-tab-panel",

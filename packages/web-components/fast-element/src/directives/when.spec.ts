@@ -1,17 +1,24 @@
 import { expect } from "chai";
-import { when } from "./when";
-import { html } from "../template";
 import { Binding, defaultExecutionContext } from "../observation/observable";
+import { html } from "../template";
+import { when } from "./when";
 
 describe("The 'when' template function", () => {
     it("returns an expression", () => {
-        const expression = when(() => true, html`test`);
+        const expression = when(
+            () => true,
+            html`
+                test
+            `
+        );
         expect(typeof expression).to.equal("function");
     });
 
     context("expression", () => {
         const scope = {};
-        const template = html`template1`;
+        const template = html`
+            template1
+        `;
 
         it("returns a template when the condition is true", () => {
             const expression = when(() => true, template) as Binding;

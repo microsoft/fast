@@ -1,8 +1,8 @@
 import { BehaviorFactory } from "./directives/behavior";
-import { DOM, _interpolationEnd, _interpolationStart } from "./dom";
 import { BindingDirective } from "./directives/binding";
 import { Directive } from "./directives/directive";
-import { ExecutionContext, Binding } from "./observation/observable";
+import { _interpolationEnd, _interpolationStart, DOM } from "./dom";
+import { Binding, ExecutionContext } from "./observation/observable";
 
 type InlineDirective = Directive & {
     targetName?: string;

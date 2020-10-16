@@ -1,8 +1,8 @@
 import { expect } from "chai";
-import { enableArrayObservation } from "./array-observer";
-import { SubscriberSet, PropertyChangeNotifier } from "./notifier";
-import { Observable, observable, defaultExecutionContext, volatile } from "./observable";
 import { DOM } from "../dom";
+import { enableArrayObservation } from "./array-observer";
+import { PropertyChangeNotifier, SubscriberSet } from "./notifier";
+import { defaultExecutionContext, Observable, observable, volatile } from "./observable";
 
 describe("The Observable", () => {
     class Model {

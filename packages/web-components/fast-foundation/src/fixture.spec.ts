@@ -1,17 +1,20 @@
-import { expect } from "chai";
 import {
     attr,
     customElement,
+    DOM,
     FASTElement,
     html,
-    DOM,
     observable,
 } from "@microsoft/fast-element";
-import { uniqueElementName, fixture } from "./fixture";
+import { expect } from "chai";
+import { fixture, uniqueElementName } from "./fixture";
 
 describe("The fixture helper", () => {
     const name = uniqueElementName();
-    const template = html<MyElement>`${x => x.value}<slot></slot>`;
+    const template = html<MyElement>`
+        ${x => x.value}
+        <slot></slot>
+    `;
 
     @customElement({
         name,

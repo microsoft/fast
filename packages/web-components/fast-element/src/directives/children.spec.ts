@@ -1,9 +1,9 @@
 import { expect } from "chai";
+import { DOM } from "../dom";
+import { observable } from "../observation/observable";
 import { children, ChildrenBehavior } from "./children";
 import { AttachedBehaviorDirective } from "./directive";
-import { observable } from "../observation/observable";
 import { elements } from "./node-observation";
-import { DOM } from "../dom";
 
 describe("The children", () => {
     context("template function", () => {

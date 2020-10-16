@@ -1,5 +1,5 @@
-import { expect } from "chai";
 import { customElement } from "@microsoft/fast-element";
+import { expect } from "chai";
 import { fixture } from "../fixture";
 import { Button, ButtonTemplate as template } from "./index";
 

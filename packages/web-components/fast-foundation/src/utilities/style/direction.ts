@@ -1,12 +1,12 @@
 import {
-    ElementStyles,
     Behavior,
+    ElementStyles,
     FASTElement,
-    Subscriber,
     Observable,
+    Subscriber,
 } from "@microsoft/fast-element";
-import { DesignSystemProvider } from "../../design-system-provider";
 import { Direction } from "@microsoft/fast-web-utilities";
+import { DesignSystemProvider } from "../../design-system-provider";
 
 /**
  * Behavior to conditionally apply LTR and RTL stylesheets. To determine which to apply,

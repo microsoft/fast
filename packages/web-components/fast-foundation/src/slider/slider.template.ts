@@ -1,5 +1,4 @@
-import { html } from "@microsoft/fast-element";
-import { ref } from "@microsoft/fast-element";
+import { html, ref } from "@microsoft/fast-element";
 import { Orientation } from "@microsoft/fast-web-utilities";
 import { Slider } from "./slider";
 

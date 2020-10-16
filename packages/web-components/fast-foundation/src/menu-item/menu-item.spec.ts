@@ -1,9 +1,9 @@
-import { expect } from "chai";
-import { MenuItem, MenuItemTemplate as template } from "./index";
-import { fixture } from "../fixture";
-import { DOM, customElement } from "@microsoft/fast-element";
-import { MenuItemRole } from "./menu-item";
+import { customElement, DOM } from "@microsoft/fast-element";
 import { KeyCodes } from "@microsoft/fast-web-utilities";
+import { expect } from "chai";
+import { fixture } from "../fixture";
+import { MenuItemRole } from "./menu-item";
+import { MenuItem, MenuItemTemplate as template } from "./index";
 
 @customElement({
     name: "fast-menu-item",

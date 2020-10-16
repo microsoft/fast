@@ -1,9 +1,9 @@
 import { expect } from "chai";
-import { slotted, SlottedBehavior } from "./slotted";
-import { AttachedBehaviorDirective } from "./directive";
-import { observable } from "../observation/observable";
-import { elements } from "./node-observation";
 import { DOM } from "../dom";
+import { observable } from "../observation/observable";
+import { AttachedBehaviorDirective } from "./directive";
+import { elements } from "./node-observation";
+import { slotted, SlottedBehavior } from "./slotted";
 
 describe("The slotted", () => {
     context("template function", () => {

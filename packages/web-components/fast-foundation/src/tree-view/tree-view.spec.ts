@@ -1,8 +1,8 @@
+import { customElement, DOM } from "@microsoft/fast-element";
 import { expect } from "chai";
-import { TreeView, TreeViewTemplate as template } from "./index";
-import { TreeItem, TreeItemTemplate as itemTemplate } from "../tree-item";
 import { fixture } from "../fixture";
-import { DOM, customElement } from "@microsoft/fast-element";
+import { TreeItemTemplate as itemTemplate, TreeItem } from "../tree-item";
+import { TreeViewTemplate as template, TreeView } from "./index";
 
 @customElement({
     name: "fast-tree-view",

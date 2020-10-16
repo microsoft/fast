@@ -1,8 +1,8 @@
-import { expect } from "chai";
-import { Checkbox, CheckboxTemplate as template } from "./index";
-import { fixture } from "../fixture";
-import { DOM, customElement, html } from "@microsoft/fast-element";
+import { customElement, DOM } from "@microsoft/fast-element";
 import { KeyCodes } from "@microsoft/fast-web-utilities";
+import { expect } from "chai";
+import { fixture } from "../fixture";
+import { Checkbox, CheckboxTemplate as template } from "./index";
 
 @customElement({
     name: "fast-checkbox",

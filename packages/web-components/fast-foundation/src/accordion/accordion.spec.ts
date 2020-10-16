@@ -1,9 +1,9 @@
+import { customElement, DOM } from "@microsoft/fast-element";
 import { expect } from "chai";
-import { Accordion, AccordionTemplate as template } from "./index";
 import { AccordionItem, AccordionItemTemplate as itemTemplate } from "../accordion-item";
 import { fixture } from "../fixture";
-import { customElement, DOM, elements } from "@microsoft/fast-element";
 import { AccordionExpandMode } from "./accordion";
+import { Accordion, AccordionTemplate as template } from "./index";
 
 @customElement({
     name: "fast-accordion",

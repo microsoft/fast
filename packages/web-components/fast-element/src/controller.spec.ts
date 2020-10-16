@@ -1,19 +1,27 @@
 import { expect } from "chai";
-import { FASTElementDefinition, PartialFASTElementDefinition } from "./fast-definitions";
 import { Controller } from "./controller";
-import { FASTElement } from "./fast-element";
-import { uniqueElementName, toHTML } from "./__test__/helpers";
-import { html } from "./template";
 import { DOM } from "./dom";
+import { FASTElementDefinition, PartialFASTElementDefinition } from "./fast-definitions";
+import { FASTElement } from "./fast-element";
 import { css } from "./styles";
+import { html } from "./template";
+import { toHTML, uniqueElementName } from "./__test__/helpers";
 
 describe("The Controller", () => {
-    const templateA = html`a`;
-    const templateB = html`b`;
+    const templateA = html`
+        a
+    `;
+    const templateB = html`
+        b
+    `;
     const cssA = "class-a { color: red; }";
-    const stylesA = css`${cssA}`;
+    const stylesA = css`
+        ${cssA}
+    `;
     const cssB = "class-b { color: blue; }";
-    const stylesB = css`${cssB}`;
+    const stylesB = css`
+        ${cssB}
+    `;
 
     function createController(
         config: Omit<PartialFASTElementDefinition, "name"> = {},

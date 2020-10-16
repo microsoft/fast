@@ -1,8 +1,8 @@
+import { customElement } from "@microsoft/fast-element";
 import { expect } from "chai";
+import { fixture } from "../fixture";
 import { BaseProgress as Progress } from "../progress";
 import { ProgressRingTemplate as template } from "./index";
-import { fixture } from "../fixture";
-import { DOM, customElement } from "@microsoft/fast-element";
 
 @customElement({
     name: "fast-progress-ring",

@@ -1,7 +1,7 @@
-import { expect } from "chai";
-import { TextArea, TextAreaTemplate as template } from "./index";
-import { fixture } from "../fixture";
 import { customElement } from "@microsoft/fast-element";
+import { expect } from "chai";
+import { fixture } from "../fixture";
+import { TextAreaTemplate as template, TextArea } from "./index";
 
 @customElement({
     name: "fast-text-area",

@@ -1,2 +1,2 @@
-export * from "./radio-group.template";
 export * from "./radio-group";
+export * from "./radio-group.template";

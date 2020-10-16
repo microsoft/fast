@@ -1,15 +1,15 @@
-import { CaptureType, SyntheticViewTemplate, ViewTemplate } from "../template";
 import { DOM } from "../dom";
-import {
-    ExecutionContext,
-    Binding,
-    Observable,
-    BindingObserver,
-} from "../observation/observable";
-import { HTMLView, SyntheticView } from "../view";
-import { Subscriber, Notifier } from "../observation/notifier";
-import { enableArrayObservation } from "../observation/array-observer";
 import { Splice } from "../observation/array-change-records";
+import { enableArrayObservation } from "../observation/array-observer";
+import { Notifier, Subscriber } from "../observation/notifier";
+import {
+    Binding,
+    BindingObserver,
+    ExecutionContext,
+    Observable,
+} from "../observation/observable";
+import { CaptureType, SyntheticViewTemplate } from "../template";
+import { HTMLView, SyntheticView } from "../view";
 import { Behavior } from "./behavior";
 import { Directive } from "./directive";
 

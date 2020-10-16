@@ -1,7 +1,7 @@
-import { expect } from "chai";
-import { Anchor, AnchorTemplate as template } from "./index";
-import { fixture } from "../fixture";
 import { customElement } from "@microsoft/fast-element";
+import { expect } from "chai";
+import { fixture } from "../fixture";
+import { Anchor, AnchorTemplate as template } from "./index";
 
 @customElement({
     name: "fast-anchor",

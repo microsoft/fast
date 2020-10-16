@@ -1,5 +1,5 @@
 import { DOM } from "../dom";
-import { Notifier, PropertyChangeNotifier, SubscriberSet, Subscriber } from "./notifier";
+import { Notifier, PropertyChangeNotifier, Subscriber, SubscriberSet } from "./notifier";
 
 const volatileRegex = /(\:|\&\&|\|\||if)/;
 const notifierLookup = new WeakMap<any, Notifier>();

@@ -1,9 +1,9 @@
+import { customElement, DOM } from "@microsoft/fast-element";
+import { Direction, Orientation } from "@microsoft/fast-web-utilities";
 import { expect } from "chai";
-import { Slider, SliderTemplate as template } from "./index";
-import { SliderLabel, SliderLabelTemplate as itemTemplate } from "../slider-label";
 import { fixture } from "../fixture";
-import { DOM, customElement } from "@microsoft/fast-element";
-import { Orientation, Direction } from "@microsoft/fast-web-utilities";
+import { SliderLabelTemplate as itemTemplate, SliderLabel } from "../slider-label";
+import { Slider, SliderTemplate as template } from "./index";
 
 @customElement({
     name: "fast-slider",

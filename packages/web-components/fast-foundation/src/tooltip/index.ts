@@ -1,2 +1,2 @@
-export * from "./tooltip.template";
 export * from "./tooltip";
+export * from "./tooltip.template";

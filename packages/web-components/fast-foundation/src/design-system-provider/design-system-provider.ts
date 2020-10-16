@@ -6,8 +6,8 @@ import {
     FASTElement,
     observable,
     Observable,
+    PartialFASTElementDefinition,
 } from "@microsoft/fast-element";
-import { PartialFASTElementDefinition } from "@microsoft/fast-element";
 import {
     CSSCustomPropertyDefinition,
     CSSCustomPropertyTarget,

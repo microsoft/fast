@@ -1,9 +1,9 @@
+import { customElement, DOM, html } from "@microsoft/fast-element";
+import { Orientation } from "@microsoft/fast-web-utilities";
 import { expect } from "chai";
-import { RadioGroup, RadioGroupTemplate as template } from "./index";
-import { Radio, RadioTemplate as itemTemplate } from "../radio";
 import { fixture } from "../fixture";
-import { DOM, customElement, html } from "@microsoft/fast-element";
-import { KeyCodes, Orientation } from "@microsoft/fast-web-utilities";
+import { RadioTemplate as itemTemplate, Radio } from "../radio";
+import { RadioGroup, RadioGroupTemplate as template } from "./index";
 
 @customElement({
     name: "fast-radio-group",

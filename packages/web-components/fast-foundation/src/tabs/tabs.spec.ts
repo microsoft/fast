@@ -1,7 +1,7 @@
+import { customElement, DOM, html } from "@microsoft/fast-element";
 import { expect } from "chai";
-import { TabsOrientation, Tabs, TabsTemplate as template } from "./index";
 import { fixture } from "../fixture";
-import { DOM, customElement, html } from "@microsoft/fast-element";
+import { Tabs, TabsOrientation, TabsTemplate as template } from "./index";
 
 @customElement({
     name: "fast-tabs",
@@ -293,7 +293,7 @@ describe("Tabs", () => {
 
             await connect();
 
-            element.setAttribute("activeId", "03")
+            element.setAttribute("activeId", "03");
 
             expect(
                 element.querySelectorAll("fast-tab")[2]?.getAttribute("aria-selected")

@@ -1,10 +1,10 @@
 import { expect } from "chai";
-import { BindingDirective } from "./binding";
-import { observable, defaultExecutionContext } from "../observation/observable";
 import { DOM } from "../dom";
+import { defaultExecutionContext, observable } from "../observation/observable";
 import { html, ViewTemplate } from "../template";
+import { HTMLView, SyntheticView } from "../view";
 import { toHTML } from "../__test__/helpers";
-import { SyntheticView, HTMLView } from "../view";
+import { BindingDirective } from "./binding";
 
 describe("The binding directive", () => {
     class Model {
@@ -68,7 +68,9 @@ describe("The binding directive", () => {
     context("when binding template content", () => {
         it("initially inserts a view based on the template", () => {
             const { behavior, parentNode } = contentBinding();
-            const template = html<Model>`This is a template. ${x => x.knownValue}`;
+            const template = html<Model>`
+                This is a template. ${x => x.knownValue}
+            `;
             const model = new Model(template);
 
             behavior.bind(model, defaultExecutionContext);
@@ -78,7 +80,9 @@ describe("The binding directive", () => {
 
         it("removes an inserted view when the value changes to plain text", async () => {
             const { behavior, parentNode } = contentBinding();
-            const template = html`This is a template. ${x => x.knownValue}`;
+            const template = html`
+                This is a template. ${x => x.knownValue}
+            `;
             const model = new Model(template);
 
             behavior.bind(model, defaultExecutionContext);
@@ -94,7 +98,9 @@ describe("The binding directive", () => {
 
         it("removes an inserted view when the value changes to null", async () => {
             const { behavior, parentNode } = contentBinding();
-            const template = html`This is a template. ${x => x.knownValue}`;
+            const template = html`
+                This is a template. ${x => x.knownValue}
+            `;
             const model = new Model(template);
 
             behavior.bind(model, defaultExecutionContext);
@@ -110,7 +116,9 @@ describe("The binding directive", () => {
 
         it("removes an inserted view when the value changes to undefined", async () => {
             const { behavior, parentNode } = contentBinding();
-            const template = html`This is a template. ${x => x.knownValue}`;
+            const template = html`
+                This is a template. ${x => x.knownValue}
+            `;
             const model = new Model(template);
 
             behavior.bind(model, defaultExecutionContext);
@@ -126,14 +134,18 @@ describe("The binding directive", () => {
 
         it("updates an inserted view when the value changes to a new template", async () => {
             const { behavior, parentNode } = contentBinding();
-            const template = html`This is a template. ${x => x.knownValue}`;
+            const template = html`
+                This is a template. ${x => x.knownValue}
+            `;
             const model = new Model(template);
 
             behavior.bind(model, defaultExecutionContext);
 
             expect(toHTML(parentNode)).to.equal(`This is a template. value`);
 
-            const newTemplate = html<Model>`This is a new template ${x => x.knownValue}`;
+            const newTemplate = html<Model>`
+                This is a new template ${x => x.knownValue}
+            `;
             model.value = newTemplate;
 
             await DOM.nextUpdate();
@@ -143,7 +155,9 @@ describe("The binding directive", () => {
 
         it("reuses a previous view when the value changes back from a string", async () => {
             const { behavior, parentNode, node } = contentBinding();
-            const template = html`This is a template. ${x => x.knownValue}`;
+            const template = html`
+                This is a template. ${x => x.knownValue}
+            `;
             const model = new Model(template);
 
             behavior.bind(model, defaultExecutionContext);
@@ -175,7 +189,9 @@ describe("The binding directive", () => {
 
         it("doesn't compose an already composed view", async () => {
             const { behavior, parentNode } = contentBinding("computedValue");
-            const template = html`This is a template. ${x => x.knownValue}`;
+            const template = html`
+                This is a template. ${x => x.knownValue}
+            `;
             const model = new Model(template);
 
             behavior.bind(model, defaultExecutionContext);
@@ -194,7 +210,9 @@ describe("The binding directive", () => {
     context("when unbinding template content", () => {
         it("unbinds a composed view", () => {
             const { behavior, node, parentNode } = contentBinding();
-            const template = html`This is a template. ${x => x.knownValue}`;
+            const template = html`
+                This is a template. ${x => x.knownValue}
+            `;
             const model = new Model(template);
 
             behavior.bind(model, defaultExecutionContext);
@@ -210,7 +228,9 @@ describe("The binding directive", () => {
 
         it("rebinds a previously unbound composed view", () => {
             const { behavior, node, parentNode } = contentBinding();
-            const template = html`This is a template. ${x => x.knownValue}`;
+            const template = html`
+                This is a template. ${x => x.knownValue}
+            `;
             const model = new Model(template);
 
             behavior.bind(model, defaultExecutionContext);

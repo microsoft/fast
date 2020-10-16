@@ -1,7 +1,7 @@
-import { expect } from "chai";
-import { BaseProgress as Progress, ProgressTemplate as template } from "./index";
-import { fixture } from "../fixture";
 import { customElement } from "@microsoft/fast-element";
+import { expect } from "chai";
+import { fixture } from "../fixture";
+import { BaseProgress as Progress, ProgressTemplate as template } from "./index";
 
 @customElement({
     name: "fast-progress",
