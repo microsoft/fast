@@ -1,7 +1,7 @@
 import { DOM } from "../dom";
 import { Notifier, PropertyChangeNotifier, Subscriber, SubscriberSet } from "./notifier";
 
-const volatileRegex = /(\:|\&\&|\|\||if)/;
+const volatileRegex = /(:|&&|\|\||if)/;
 const notifierLookup = new WeakMap<any, Notifier>();
 const accessorLookup = new WeakMap<any, Accessor[]>();
 let watcher: BindingObserverImplementation | undefined = void 0;
@@ -235,7 +235,7 @@ export function observable(target: {}, nameOrAccessor: string | Accessor): void 
  * @param name - The existing descriptor.
  * @public
  */
-export function volatile(target: {}, name, descriptor) {
+export function volatile(target: {}, name: string, descriptor: any): any {
     return Object.assign({}, descriptor, {
         get: function (this: any) {
             trackVolatile();

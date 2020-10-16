@@ -4,5 +4,6 @@ module.exports = {
         "max-classes-per-file": "off",
         "no-case-declarations": "off",
         "@typescript-eslint/no-non-null-assertion": "off",
+        "@typescript-eslint/no-use-before-define": ["error", { classes: false }],
     },
 };

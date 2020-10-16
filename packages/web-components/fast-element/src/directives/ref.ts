@@ -23,11 +23,11 @@ export class RefBehavior implements Behavior {
         source[this.propertyName] = this.target;
     }
 
-    /* eslint-disable-next-line @typescript-eslint/no-empty-function */
     /**
      * Unbinds this behavior from the source.
      * @param source - The source to unbind from.
      */
+    /* eslint-disable-next-line @typescript-eslint/no-empty-function */
     public unbind(): void {}
 }
 

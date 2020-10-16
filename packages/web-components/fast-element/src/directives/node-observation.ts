@@ -27,7 +27,9 @@ export interface NodeBehaviorOptions<T = any> {
  * @param selector - An optional selector to restrict the filter to.
  * @public
  */
-export function elements(selector?: string) {
+export function elements(
+    selector?: string
+): (value: Node, index: number, array: Node[]) => boolean {
     if (selector) {
         return function (value: Node, index: number, array: Node[]): boolean {
             return value.nodeType === 1 && (value as HTMLElement).matches(selector);
@@ -106,7 +108,7 @@ export abstract class NodeObservationBehavior<T extends NodeBehaviorOptions>
         this.updateTarget(this.computeNodes());
     }
 
-    private computeNodes() {
+    private computeNodes(): Node[] {
         let nodes = this.getNodes();
 
         if (this.options.filter !== void 0) {

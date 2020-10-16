@@ -41,7 +41,7 @@ declare const global: any;
  * for browsers that don't yet support the spec.
  * @public
  */
-export const $global: Global = (function () {
+export const $global: Global = (function (): any {
     if (typeof globalThis !== "undefined") {
         // We're running in a modern environment.
         return globalThis;
@@ -76,5 +76,7 @@ export const $global: Global = (function () {
 
 // API-only Polyfill for trustedTypes
 if ($global.trustedTypes === void 0) {
-    $global.trustedTypes = { createPolicy: (n, r) => r };
+    $global.trustedTypes = {
+        createPolicy: (n: string, r: TrustedTypesPolicy): TrustedTypesPolicy => r,
+    };
 }

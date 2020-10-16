@@ -10,6 +10,8 @@ type InlineDirective = Directive & {
     targetAtContent(): void;
 };
 
+let sharedContext: CompilationContext | null = null;
+
 class CompilationContext {
     public targetIndex!: number;
     public behaviorFactories!: BehaviorFactory[];
@@ -42,8 +44,6 @@ class CompilationContext {
         return shareable;
     }
 }
-
-let sharedContext: CompilationContext | null = null;
 
 function createAggregateBinding(parts: (string | InlineDirective)[]): BindingDirective {
     if (parts.length === 1) {

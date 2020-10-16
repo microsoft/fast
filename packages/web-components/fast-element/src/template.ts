@@ -178,12 +178,12 @@ const lastAttributeNameRegex =
     // eslint-disable-next-line no-control-regex
     /([ \x09\x0a\x0c\x0d])([^\0-\x1F\x7F-\x9F "'>=/]+)([ \x09\x0a\x0c\x0d]*=[ \x09\x0a\x0c\x0d]*(?:[^ \x09\x0a\x0c\x0d"'`<>=]*|"[^"]*|'[^']*))$/;
 
-/* eslint-disable-next-line @typescript-eslint/no-empty-interface */
 /**
  * A marker interface used to capture types when interpolating Directive helpers
  * into templates.
  * @public
  */
+/* eslint-disable-next-line @typescript-eslint/no-empty-interface */
 export interface CaptureType<TSource> {}
 
 /**

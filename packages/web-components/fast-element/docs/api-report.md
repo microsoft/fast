@@ -540,7 +540,7 @@ export class ViewTemplate<TSource = any, TParent = any> implements ElementViewTe
     }
 
 // @public
-export function volatile(target: {}, name: any, descriptor: any): any;
+export function volatile(target: {}, name: string, descriptor: any): any;
 
 // @public
 export function when<TSource = any, TReturn = any>(binding: Binding<TSource, TReturn>, templateOrTemplateBinding: SyntheticViewTemplate | Binding<TSource, SyntheticViewTemplate>): CaptureType<TSource>;

@@ -25,7 +25,7 @@ function getShadowRoot(element: HTMLElement): ShadowRoot | null {
 export class Controller extends PropertyChangeNotifier {
     private boundObservables: Record<string, any> | null = null;
     private behaviors: Behavior[] | null = null;
-    private needsInitialization = true;
+    private needsInitialization: boolean = true;
     private _template: ElementViewTemplate | null = null;
     private _styles: ElementStyles | null = null;
 
@@ -58,7 +58,7 @@ export class Controller extends PropertyChangeNotifier {
      * @remarks
      * This value can only be accurately read after connect but can be set at any time.
      */
-    get template() {
+    get template(): ElementViewTemplate | null {
         return this._template;
     }
 
@@ -79,7 +79,7 @@ export class Controller extends PropertyChangeNotifier {
      * @remarks
      * This value can only be accurately read after connect but can be set at any time.
      */
-    get styles() {
+    get styles(): ElementStyles | null {
         return this._styles;
     }
 
@@ -321,7 +321,7 @@ export class Controller extends PropertyChangeNotifier {
         return false;
     }
 
-    private finishInitialization() {
+    private finishInitialization(): void {
         const element = this.element;
         const boundObservables = this.boundObservables;
 
@@ -376,7 +376,7 @@ export class Controller extends PropertyChangeNotifier {
         this.needsInitialization = false;
     }
 
-    private renderTemplate(template: ElementViewTemplate | null | undefined) {
+    private renderTemplate(template: ElementViewTemplate | null | undefined): void {
         const element = this.element;
         // When getting the host to render to, we start by looking
         // up the shadow root. If there isn't one, then that means
