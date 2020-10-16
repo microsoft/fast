@@ -1,72 +1,78 @@
 import { expect } from "chai";
-import { customElement, html } from "@microsoft/fast-element";
-import { Disclosure } from "./disclosure";
+import { fixture } from "../fixture";
+import { customElement, DOM, html, ref } from "@microsoft/fast-element";
+import { Disclosure, DisclosureTemplate as template } from "./index";
 
 @customElement({
-    name: "test-disclosure",
-    template: html`
-        <slot name="invoker"></slot>
-        <slot name="content"></slot>
-    `,
+    name: "fast-disclosure",
+    template
 })
-class TestDisclosureElement extends Disclosure {}
+class FastDisclosure extends Disclosure {}
 
-const createDisclosure = () => {
-    const disclosure = document.createElement("test-disclosure") as Disclosure;
-    disclosure.innerHTML = `
-        <button slot="invoker">invoker</button>
-        <div>content</div>
-    `;
-    document.body.appendChild(disclosure);
-    return disclosure;
-};
+async function createDisclosure() {
+    const { element, connect, disconnect } = await fixture<FastDisclosure>("fast-disclosure");
+
+    return { element, connect, disconnect };
+}
 
 describe("Disclosure", () => {
-    describe("User interaction", () => {
-        it("opens a invoker on click", () => {
-            const disclosure = createDisclosure();
-            const invoker = document.querySelector("[slot=invoker]") as HTMLSlotElement;
-            invoker.dispatchEvent(new Event("click"));
-            expect(disclosure.expanded).to.equal(true);
-        });
+    describe("User interaction", () => {      
 
-        it("should toggle the content using `toggle()`", async () => {
-            const disclosure = createDisclosure();
-            disclosure.toggle();
-            expect(disclosure.expanded).to.equal(true);
+        it("should toggle the content using `toggle()`",  async () => {
+            const { element, connect, disconnect } =  await createDisclosure();
+            await connect();                  
+            element.toggle();
+            await DOM.nextUpdate();      
+            expect(element.expanded).to.equal(true);
+            await disconnect();
         });
 
         it("should expand and collapse the content using `show()` and `hide()`", async () => {
-            const disclosure = createDisclosure();
-            disclosure.show();
-            expect(disclosure.expanded).to.equal(true);
-            disclosure.hide();
-            expect(disclosure.expanded).to.equal(false);
-        });
-    });
+            const { element, connect, disconnect } =  await createDisclosure();
+            await connect();            
+            element.show();
+            await DOM.nextUpdate();      
+            expect(element.expanded).to.equal(true);
+            element.hide();
+            await DOM.nextUpdate();      
+            expect(element.expanded).to.equal(false);
+            await disconnect();
+        });        
+    });    
 
-    describe("Invoker", () => {
-        it("links id of content items to invoker via [aria-controls]", () => {
-            createDisclosure();
-            const invoker = document.querySelector("[slot=invoker]") as HTMLSlotElement;
-            const content = document.querySelector("div") as HTMLDivElement;
-            expect(invoker.getAttribute("aria-controls")).to.equal(content.id);
+    describe("Accessibility", () => {
+        it("should set the `aria-controls` attribute on the internal summary element", async () => {
+            const { element, connect, disconnect } = await createDisclosure();
+            const ariaControls = "disclosure-content-hyhogaqp1n";
+
+            element.ariaControls = ariaControls;
+
+            await connect();
+
+            expect(
+                element.shadowRoot
+                    ?.querySelector("summary")
+                    ?.getAttribute("aria-controls")
+            ).to.equal(ariaControls);
+
+            await disconnect();
         });
 
-        it('adds aria-expanded="true" to invoker when its content is expanded', () => {
-            const disclosure = createDisclosure();
-            disclosure.expanded = true;
-            const invoker = document.querySelector("[slot=invoker]") as HTMLSlotElement;
-            expect(invoker.getAttribute("aria-expanded")).to.equal("true");
-        });
-    });
+        it("should set the `aria-expanded` attribute on the internal summary element", async () => {
+            const { element, connect, disconnect } = await createDisclosure();
+            const ariaExpanded = true
 
-    describe("Contents", () => {
-        it("adds aria-labelledby referring to invoker id", async () => {
-            createDisclosure();
-            const invoker = document.querySelector("[slot=invoker]") as HTMLSlotElement;
-            const content = document.querySelector("div") as HTMLDivElement;
-            expect(content.getAttribute("aria-labelledby")).to.equal(invoker.id);
-        });
+            element.ariaExpanded = ariaExpanded;
+
+            await connect();
+
+            expect(
+                element.shadowRoot
+                    ?.querySelector("summary")
+                    ?.getAttribute("aria-expanded")
+            ).to.equal(ariaExpanded.toString());
+
+            await disconnect();
+        });       
     });
 });
