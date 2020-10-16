@@ -266,6 +266,42 @@ describe("Radio Group", () => {
         await disconnect();
     });
 
+    it("should mark the last radio defaulted to checked as checked, the rest should not be checked", async () => {
+        const { element, connect, disconnect } = await fixture(html`
+            <fast-radio-group>
+                <fast-radio value="foo">Foo</fast-radio>
+                <fast-radio value="bar" checked>Bar</fast-radio>
+                <fast-radio value="baz" checked>Baz</fast-radio>
+            </fast-radio-group>
+        `);
+
+        await connect();
+        await DOM.nextUpdate();
+
+        const radios: NodeList = element.querySelectorAll("fast-radio");
+        expect((radios[2] as HTMLInputElement).checked).to.equal(true);
+        expect((radios[1] as HTMLInputElement).checked).to.equal(false);
+    });
+
+    it("should mark radio matching value on radio-group over any checked attributes", async () => {
+        const { element, connect, disconnect } = await fixture(html`
+            <fast-radio-group value="bar">
+                <fast-radio value="foo">Foo</fast-radio>
+                <fast-radio value="bar" checked>Bar</fast-radio>
+                <fast-radio value="baz" checked>Baz</fast-radio>
+            </fast-radio-group>
+        `);
+
+        await connect();
+        await DOM.nextUpdate();
+
+        const radios: NodeList = element.querySelectorAll("fast-radio");
+        expect((radios[2] as HTMLInputElement).checked).to.equal(false);
+        expect((radios[1] as HTMLInputElement).checked).to.equal(true);
+        // radio-group explicitly sets non-matching radio's checked to false if a value match was found
+        expect((radios[2] as HTMLInputElement).hasAttribute("checked")).to.equal(false);
+    });
+
     it("should NOT set a child radio to `checked` if its value does not match the radiogroup `value`", async () => {
         const { element, connect, disconnect } = await fixture(html<FASTRadioGroup>`
             <fast-radio-group value="baz">

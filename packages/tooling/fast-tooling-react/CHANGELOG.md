@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.4.1](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling-react@2.4.0...@microsoft/fast-tooling-react@2.4.1) (2020-10-14)
+
+
+### Bug Fixes
+
+* updates the background of the Navigation component to match the other FAST tooling components ([#4011](https://github.com/Microsoft/fast/issues/4011)) ([0154e6b](https://github.com/Microsoft/fast/commit/0154e6b33bca6ca0d3e394b8c9a6df769ec17f46))
+
+
+
+
+
 # [2.4.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling-react@2.3.5...@microsoft/fast-tooling-react@2.4.0) (2020-09-28)
 
 
