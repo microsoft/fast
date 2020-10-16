@@ -45,6 +45,20 @@ export class DataGridRow extends FASTElement {
     }
 
     /**
+     * The index of the row in the parent grid
+     *
+     * @public
+     * @remarks
+     * HTML Attribute: row-index
+     */
+    @attr({ attribute: "row-index" })
+    public rowIndex: number;
+    private rowIndexChanged(): void {
+        if ((this as FASTElement).$fastController.isConnected) {
+        }
+    }
+
+    /**
      * The base data for this row
      *
      * @public

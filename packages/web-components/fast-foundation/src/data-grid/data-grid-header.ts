@@ -44,6 +44,20 @@ export class DataGridHeader extends FASTElement {
     }
 
     /**
+     * The index of the row in the parent grid
+     *
+     * @public
+     * @remarks
+     * HTML Attribute: row-index
+     */
+    @attr({ attribute: "row-index" })
+    public rowIndex: number;
+    private rowIndexChanged(): void {
+        if ((this as FASTElement).$fastController.isConnected) {
+        }
+    }
+
+    /**
      * The column definitions of the row
      *
      * @public

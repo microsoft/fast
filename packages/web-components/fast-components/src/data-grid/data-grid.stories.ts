@@ -33,7 +33,6 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
         "defaultGridRow"
     ) as DataGridRow;
     if (defaultGridRow !== null) {
-        defaultGridRow.columnsData = baseColumns;
         defaultGridRow.rowData = dataGridRow3;
     }
 
@@ -127,6 +126,10 @@ function incrementAge(): void {
     // dataGridRow1 = newRow;
 }
 
+function setColumnWidth(columnIndex: number, width: string): void {
+    templateColumns[columnIndex].columnWidth = width;
+}
+
 const buttonCellTemplate = html<DataGridCell>`
     <template>
         <fast-button @click="${x => incrementAge()}">
@@ -154,7 +157,7 @@ const buttonHeaderCellTemplate = html<DataGridHeaderCell>`
 `;
 
 const baseColumns: DataGridColumn[] = [
-    { columnDataKey: "name", columnWidth: "1fr" },
+    { columnDataKey: "name", columnWidth: "200px" },
     { columnDataKey: "age", columnWidth: "1fr" },
 ];
 

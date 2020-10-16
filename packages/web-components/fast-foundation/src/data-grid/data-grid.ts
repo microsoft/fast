@@ -85,12 +85,16 @@ export interface DataGridColumn {
 }
 
 const defaultRowItemTemplate = html`
-    <fast-data-grid-row
-        :gridTemplateColumns="${(x, c) => c.parent.gridTemplateColumns}"
-        :columnsData="${(x, c) => c.parent.columnsData}"
-        :rowData="${x => x}"
-    ></fast-data-grid-row>
+    <fast-data-grid-row :rowData="${x => x}"></fast-data-grid-row>
 `;
+
+// const defaultRowItemTemplate = html`
+//     <fast-data-grid-row
+//         :gridTemplateColumns="${(x, c) => c.parent.gridTemplateColumns}"
+//         :columnsData="${(x, c) => c.parent.columnsData}"
+//         :rowData="${x => x}"
+//     ></fast-data-grid-row>
+// `;
 
 /**
  * A Data Grid Custom HTML Element.
@@ -157,12 +161,14 @@ export class DataGrid extends FASTElement {
      */
     @observable
     public columnsData: DataGridColumn[] = [];
-    private columnsDataChanged(): void {
+    private columnsDataChanged(
+        oldValue: DataGridColumn[],
+        newValue: DataGridColumn[]
+    ): void {
         this.gridTemplateColumns = DataGrid.generateTemplateColumns(this.columnsData);
         if ((this as FASTElement).$fastController.isConnected) {
-            if (this.generatedHeader !== null) {
-                this.generatedHeader.columnsData = this.columnsData;
-            }
+            this.columnDataStale = true;
+            this.queueRowIndexUpdate();
         }
     }
 
@@ -222,16 +228,6 @@ export class DataGrid extends FASTElement {
         }
     }
 
-    /**
-     * @internal
-     */
-    public slottedRowElements: HTMLElement[];
-
-    /**
-     * @internal
-     */
-    public slottedHeaderElements: HTMLElement[];
-
     private rowsRepeatBehavior: RepeatBehavior | null;
     private rowsPlaceholder: Node | null = null;
 
@@ -239,6 +235,11 @@ export class DataGrid extends FASTElement {
 
     private isUpdatingFocus: boolean = false;
     private pendingFocusUpdate: boolean = false;
+
+    private observer: MutationObserver;
+
+    private rowindexUpdateQueued = false;
+    private columnDataStale = true;
 
     constructor() {
         super();
@@ -266,6 +267,12 @@ export class DataGrid extends FASTElement {
         this.addEventListener("row-focused", this.handleRowFocus);
         this.addEventListener("focus", this.handleFocus);
         this.addEventListener("keydown", this.handleKeydown);
+
+        this.observer = new MutationObserver(this.onChildListChange);
+        // only observe if nodes are added or removed
+        this.observer.observe(this as Element, { childList: true });
+
+        DOM.queueUpdate(this.queueRowIndexUpdate);
     }
 
     /**
@@ -277,6 +284,9 @@ export class DataGrid extends FASTElement {
         this.removeEventListener("row-focused", this.handleRowFocus);
         this.removeEventListener("focus", this.handleFocus);
         this.removeEventListener("keydown", this.handleKeydown);
+
+        // disconnect observer
+        this.observer.disconnect();
 
         this.rowsPlaceholder = null;
         this.generatedHeader = null;
@@ -409,4 +419,48 @@ export class DataGrid extends FASTElement {
             this.generatedHeader === null;
         }
     }
+
+    private onChildListChange = (
+        mutations: MutationRecord[],
+        /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
+        observer: MutationObserver
+    ): void => {
+        if (mutations!.length) {
+            mutations.forEach((mutation: MutationRecord): void => {
+                mutation.addedNodes.forEach((newNode: Node): void => {
+                    if (
+                        newNode.nodeType === 1 &&
+                        (newNode as Element).getAttribute("role") === "row"
+                    ) {
+                        (newNode as DataGridRow).columnsData = this.columnsData;
+                    }
+                });
+            });
+
+            this.queueRowIndexUpdate();
+        }
+    };
+
+    private queueRowIndexUpdate = (): void => {
+        if (!this.rowindexUpdateQueued) {
+            this.rowindexUpdateQueued = true;
+            DOM.queueUpdate(this.updateRowIndexes);
+        }
+    };
+
+    private updateRowIndexes = (): void => {
+        const rows: NodeListOf<Element> = this.querySelectorAll('[role="row"]');
+
+        rows.forEach((element: Element, index: number): void => {
+            const thisRow = element as DataGridRow;
+            thisRow.rowIndex = index;
+            thisRow.gridTemplateColumns = this.gridTemplateColumns;
+            if (this.columnDataStale) {
+                thisRow.columnsData = this.columnsData;
+            }
+        });
+
+        this.rowindexUpdateQueued = false;
+        this.columnDataStale = false;
+    };
 }
