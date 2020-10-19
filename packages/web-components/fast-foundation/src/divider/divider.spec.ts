@@ -8,7 +8,7 @@ import { Divider, DividerTemplate as template } from "./index";
     name: "fast-divider",
     template,
 })
-export class FASTDivider extends Divider {}
+class FASTDivider extends Divider {}
 
 async function setup() {
     const { element, connect, disconnect } = await fixture<Divider>("fast-divider");
