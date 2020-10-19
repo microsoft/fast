@@ -360,7 +360,10 @@ export class Slider extends FormAssociated<HTMLInputElement>
         }
 
         // update the value based on current position
-        const sourceEvent = e instanceof TouchEvent ? e.touches[0] : e;
+        const sourceEvent =
+            window.TouchEvent && e instanceof TouchEvent
+                ? e.touches[0]
+                : (e as MouseEvent);
         const eventValue: number =
             this.orientation === Orientation.horizontal
                 ? sourceEvent.pageX - this.trackLeft
