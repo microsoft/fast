@@ -5,23 +5,22 @@ import {
     forcedColorsStylesheetBehavior,
 } from "@microsoft/fast-foundation";
 import {
-    accentForegroundActiveBehavior,
-    accentForegroundHoverBehavior,
-    accentForegroundRestBehavior,
     neutralForegroundRestBehavior,
     heightNumber,
+    neutralFillStealthRestBehavior,
+    neutralFillStealthHoverBehavior,
+    neutralFillStealthActiveBehavior,
+    neutralFocusBehavior,
 } from "../styles/index";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 
 export const BreadcrumbItemStyles = css`
     ${display("inline-flex")} :host {
-        background: transparent;
-        box-sizing: border-box;
         font-family: var(--body-font);
         font-size: var(--type-ramp-base-font-size);
-        fill: currentColor;
         line-height: var(--type-ramp-base-line-height);
-        min-width: calc(${heightNumber} * 1px);
+        color: ${neutralForegroundRestBehavior.var};
+        fill: ${neutralForegroundRestBehavior.var};
         outline: none;
     }
 
@@ -35,60 +34,46 @@ export const BreadcrumbItemStyles = css`
     }
 
     .control {
-        align-items: center;
+        flex-grow: 1;
         box-sizing: border-box;
-        color: ${accentForegroundRestBehavior.var};
-        cursor: pointer;
-        display: flex;
-        fill: inherit;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        padding: 0 calc((10 + (var(--design-unit) * 2 * var(--density))) * 1px);
+        white-space: nowrap;
         outline: none;
         text-decoration: none;
-        white-space: nowrap;
+        background-color: ${neutralFillStealthRestBehavior.var};
+        border: calc(var(--outline-width) * 1px) solid transparent;
+        border-radius: calc(var(--corner-radius) * 1px);
+        color: ${neutralForegroundRestBehavior.var};
+        fill: ${neutralForegroundRestBehavior.var};
+        cursor: pointer;
+        height: calc(${heightNumber} * 1px);
+        min-width: calc(${heightNumber} * 1px);
     }
 
     .control:hover {
-        color: ${accentForegroundHoverBehavior.var};
+        background: ${neutralFillStealthHoverBehavior.var};
     }
 
     .control:active {
-        color: ${accentForegroundActiveBehavior.var};
+        background: ${neutralFillStealthActiveBehavior.var};
+    }
+
+    .control:${focusVisible} {
+        border: calc(var(--outline-width) * 1px) solid ${neutralFocusBehavior.var};
+        box-shadow: 0 0 0 calc((var(--focus-outline-width) - var(--outline-width)) * 1px) ${
+            neutralFocusBehavior.var
+        };
+    }
+
+    .control::-moz-focus-inner {
+        border: 0;
     }
 
     .control .content {
         position: relative;
-    }
-
-    .control .content::before {
-        content: "";
-        display: block;
-        height: calc(var(--outline-width) * 1px);
-        left: 0;
-        position: absolute;
-        right: 0;
-        top: calc(1em + 4px);
-        width: 100%;
-    }
-
-    .control:hover .content::before {
-        background: ${accentForegroundHoverBehavior.var};
-    }
-
-    .control:active .content::before {
-        background: ${accentForegroundActiveBehavior.var};
-    }
-
-    .control:${focusVisible} .content::before {
-        background: ${neutralForegroundRestBehavior.var};
-        height: calc(var(--focus-outline-width) * 1px);
-    }
-
-    .control:not([href]) {
-        color: ${neutralForegroundRestBehavior.var};
-        cursor: default;
-    }
-
-    .control:not([href]) .content::before {
-        background: none;
     }
 
     .start,
@@ -109,11 +94,11 @@ export const BreadcrumbItemStyles = css`
         margin-inline-start: 6px;
     }
 `.withBehaviors(
-    accentForegroundRestBehavior,
-    accentForegroundHoverBehavior,
-    accentForegroundActiveBehavior,
-    accentForegroundHoverBehavior,
     neutralForegroundRestBehavior,
+    neutralFillStealthRestBehavior,
+    neutralFillStealthHoverBehavior,
+    neutralFillStealthActiveBehavior,
+    neutralFocusBehavior,
     forcedColorsStylesheetBehavior(
         css`
             .control:hover .content::before {
