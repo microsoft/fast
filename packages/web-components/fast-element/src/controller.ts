@@ -143,7 +143,7 @@ export class Controller extends PropertyChangeNotifier {
     }
 
     /**
-     * Adds styles to this element.
+     * Adds styles to this element. Providing an HTMLStyleElement will attach the element instance to the shadowRoot.
      * @param styles - The styles to add.
      */
     public addStyles(styles: ElementStyles | HTMLStyleElement): void {
@@ -155,10 +155,6 @@ export class Controller extends PropertyChangeNotifier {
             target.prepend(styles);
         } else {
             const sourceBehaviors = styles.behaviors;
-            const target =
-                getShadowRoot(this.element) ||
-                ((this.element.getRootNode() as any) as StyleTarget);
-
             styles.addStylesTo(target);
 
             if (sourceBehaviors !== null) {
@@ -168,7 +164,7 @@ export class Controller extends PropertyChangeNotifier {
     }
 
     /**
-     * Removes styles from this element.
+     * Removes styles from this element. Providing an HTMLStyleElement will detach the element instance from the shadowRoot.
      * @param styles - the styles to remove.
      */
     public removeStyles(styles: ElementStyles | HTMLStyleElement): void {

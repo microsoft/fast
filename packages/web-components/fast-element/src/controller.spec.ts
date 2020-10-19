@@ -8,12 +8,20 @@ import { DOM } from "./dom";
 import { css } from "./styles";
 
 describe("The Controller", () => {
-    const templateA = html`a`;
-    const templateB = html`b`;
+    const templateA = html`
+        a
+    `;
+    const templateB = html`
+        b
+    `;
     const cssA = "class-a { color: red; }";
-    const stylesA = css`${cssA}`;
+    const stylesA = css`
+        ${cssA}
+    `;
     const cssB = "class-b { color: blue; }";
-    const stylesB = css`${cssB}`;
+    const stylesB = css`
+        ${cssB}
+    `;
 
     function createController(
         config: Omit<PartialFASTElementDefinition, "name"> = {},
@@ -304,5 +312,25 @@ describe("The Controller", () => {
                 );
             });
         }
+    });
+
+    it("should attach and detach the HTMLStyleElement supplied to .addStyles() and .removeStyles() to the shadowRoot", () => {
+        const { controller, element } = createController({
+            shadowOptions: {
+                mode: "open",
+            },
+            template: templateA,
+        });
+
+        const style = document.createElement("style") as HTMLStyleElement;
+        expect(element.shadowRoot?.contains(style)).to.equal(false);
+
+        controller.addStyles(style);
+
+        expect(element.shadowRoot?.contains(style)).to.equal(true);
+
+        controller.removeStyles(style);
+
+        expect(element.shadowRoot?.contains(style)).to.equal(false);
     });
 });
