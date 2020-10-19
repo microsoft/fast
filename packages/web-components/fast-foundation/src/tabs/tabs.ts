@@ -224,7 +224,7 @@ export class Tabs extends FASTElement {
         this.setTabs();
         this.handleActiveIndicatorPosition();
         this.setTabPanels();
-        this.focusTab();
+        // this.focusTab();
         this.change();
     }
 
@@ -247,11 +247,11 @@ export class Tabs extends FASTElement {
             switch (keyCode) {
                 case keyCodeArrowLeft:
                     event.preventDefault();
-                    this.adjust(-1);
+                    this.adjustLeft(event);
                     break;
                 case keyCodeArrowRight:
                     event.preventDefault();
-                    this.adjust(1);
+                    this.adjustRight(event);
                     break;
             }
         } else {
@@ -318,21 +318,64 @@ export class Tabs extends FASTElement {
      * This method allows the active index to be adjusted by numerical increments
      */
     public adjust(adjustment: number): void {
-        this.prevActiveTabIndex = this.activeTabIndex;
-        this.activeTabIndex = wrapInBounds(
-            0,
-            this.tabs.length - 1,
-            this.activeTabIndex + adjustment
-        );
         if (this.isFocusableElement(this.tabs[this.activeTabIndex])) {
+            this.prevActiveTabIndex = this.activeTabIndex;
+            this.activeTabIndex = wrapInBounds(
+                0,
+                this.tabs.length - 1,
+                this.activeTabIndex + adjustment
+            );
             this.setComponent();
         }
     }
 
-    private focusTab(): void {
-        if (this.isFocusableElement(this.tabs[this.activeTabIndex])) {
-            this.tabs[this.activeTabIndex].focus();
+    private adjustRight = (e: KeyboardEvent): void => {
+        const group: HTMLElement[] = this.tabs;
+        let index: number = 0;
+
+        index = this.activetab ? group.indexOf(this.activetab) + 1 : 1;
+
+        while (index < group.length && group.length > 1) {
+            if (this.isFocusableElement(group[index])) {
+                this.moveToTabByIndex(group, index);
+                break;
+            } else if (this.activetab && index === group.indexOf(this.activetab)) {
+                break;
+            } else if (index + 1 >= group.length) {
+                index = 0;
+            } else {
+                index += 1;
+            }
         }
+    };
+
+    private adjustLeft = (e: KeyboardEvent): void => {
+        const group: HTMLElement[] = this.tabs;
+        let index: number = 0;
+
+        index = this.activetab ? group.indexOf(this.activetab) - 1 : 0;
+        index = index < 0 ? group.length - 1 : index;
+
+        while (index >= 0 && group.length > 1) {
+            if (this.isFocusableElement(group[index])) {
+                this.moveToTabByIndex(group, index);
+                break;
+            } else if (index - 1 < 0) {
+                index = group.length - 1;
+            } else {
+                index -= 1;
+            }
+        }
+    };
+
+    private moveToTabByIndex = (group: HTMLElement[], index: number) => {
+        const tab: HTMLElement = group[index] as HTMLElement;
+        this.activetab = tab;
+        tab.focus();
+    };
+
+    private focusTab(): void {
+        this.tabs[this.activeTabIndex].focus();
     }
 
     constructor() {
