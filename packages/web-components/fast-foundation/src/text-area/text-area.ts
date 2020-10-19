@@ -2,32 +2,9 @@ import { attr, nullableNumberConverter, observable } from "@microsoft/fast-eleme
 import { FormAssociated } from "../form-associated/form-associated";
 import { DelegatesARIATextbox } from "../text-field/index";
 import { applyMixins } from "../utilities";
+import { TextAreaResize } from "./text-area.options";
 
-/**
- * Resize mode for a TextArea
- * @public
- */
-export enum TextAreaResize {
-    /**
-     * No resize.
-     */
-    none = "none",
-
-    /**
-     * Resize vertically and horizontally.
-     */
-    both = "both",
-
-    /**
-     * Resize horizontally.
-     */
-    horizontal = "horizontal",
-
-    /**
-     * Resize vertically.
-     */
-    vertical = "vertical",
-}
+export { TextAreaResize };
 
 /**
  * An Text Area Custom HTML Element.

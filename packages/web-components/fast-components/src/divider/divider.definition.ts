@@ -1,6 +1,6 @@
 import { WebComponentDefinition } from "@microsoft/fast-tooling/dist/data-utilities/web-component";
 import { DataType } from "@microsoft/fast-tooling";
-import { DividerRole } from "@microsoft/fast-foundation";
+import { DividerRole } from "@microsoft/fast-foundation/dist/esm/divider/divider.options";
 
 export const fastDividerDefinition: WebComponentDefinition = {
     version: 1,

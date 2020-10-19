@@ -1,6 +1,6 @@
 import { WebComponentDefinition } from "@microsoft/fast-tooling/dist/data-utilities/web-component";
 import { DataType } from "@microsoft/fast-tooling";
-import { FlipperDirection } from "@microsoft/fast-foundation";
+import { FlipperDirection } from "@microsoft/fast-foundation/dist/esm/flipper/flipper.options";
 
 export const fastFlipperDefinition: WebComponentDefinition = {
     version: 1,
