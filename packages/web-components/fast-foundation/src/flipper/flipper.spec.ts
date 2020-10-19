@@ -8,7 +8,7 @@ import { Flipper, FlipperTemplate as template } from "./index";
     name: "fast-flipper",
     template,
 })
-export class FASTFlipper extends Flipper {}
+class FASTFlipper extends Flipper {}
 
 async function setup() {
     const { element, connect, disconnect } = await fixture<Flipper>("fast-flipper");
