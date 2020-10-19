@@ -132,7 +132,7 @@ export class DataGrid extends FASTElement {
     }
 
     /**
-     *
+     *  Whether the grid should auto generate a header row
      *
      * @public
      * @remarks

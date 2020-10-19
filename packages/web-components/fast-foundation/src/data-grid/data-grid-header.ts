@@ -44,7 +44,8 @@ export class DataGridHeader extends FASTElement {
     }
 
     /**
-     * The index of the row in the parent grid
+     * The index of the row in the parent grid, generally set programmatically by the
+     * parent grid
      *
      * @public
      * @remarks

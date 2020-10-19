@@ -23,12 +23,32 @@ const defaultCellItemTemplate = html`
     ></fast-data-grid-cell>
 `;
 
+const headerCellItemTemplate = html`
+    <fast-data-grid-header-cell
+        gridColumnIndex="${(x, c) => c.index + 1}"
+        :columnData="${x => x}"
+    ></fast-data-grid-header-cell>
+`;
+
+/**
+ * Types of rows
+ *
+ * @public
+ */
+export enum rowType {
+    default = "default",
+    header = "header",
+}
+
 /**
  * A Data Grid Row Custom HTML Element.
  *
  * @public
  */
 export class DataGridRow extends FASTElement {
+    private static cellQueryString =
+        '[role="cell"], [role="gridcell"], [role="columnheader"]';
+
     /**
      * String that gets applied to the the css gridTemplateColumns attribute for the row
      *
@@ -54,6 +74,20 @@ export class DataGridRow extends FASTElement {
     @attr({ attribute: "row-index" })
     public rowIndex: number;
     private rowIndexChanged(): void {
+        if ((this as FASTElement).$fastController.isConnected) {
+        }
+    }
+
+    /**
+     * The type of row
+     *
+     * @public
+     * @remarks
+     * HTML Attribute: generate-header
+     */
+    @attr({ attribute: "row-type" })
+    public rowType: rowType = rowType.default;
+    private rowTypeChanged(): void {
         if ((this as FASTElement).$fastController.isConnected) {
         }
     }
@@ -120,6 +154,11 @@ export class DataGridRow extends FASTElement {
         this.cellsPlaceholder = document.createComment("");
         this.appendChild(this.cellsPlaceholder);
 
+        this.cellItemTemplate =
+            this.rowType === rowType.default
+                ? defaultCellItemTemplate
+                : headerCellItemTemplate;
+
         this.cellsRepeatBehavior = new RepeatDirective(
             x => x.columnsData,
             x => x.cellItemTemplate,
@@ -156,7 +195,7 @@ export class DataGridRow extends FASTElement {
     public handleCellFocus(e: Event): void {
         this.isActiveRow = true;
         const cells: Element[] = Array.from(
-            this.querySelectorAll('[role="cell"], [role="gridcell"]')
+            this.querySelectorAll(DataGridRow.cellQueryString)
         );
         this.focusColumnIndex = cells.indexOf(e.target as Element);
         this.$emit("row-focused", this);
@@ -171,7 +210,7 @@ export class DataGridRow extends FASTElement {
         switch (e.keyCode) {
             case keyCodeArrowLeft:
                 // focus left one cell
-                cells = Array.from(this.querySelectorAll('[role="cell"]'));
+                cells = Array.from(this.querySelectorAll(DataGridRow.cellQueryString));
                 newFocusColumnIndex = Math.max(0, this.focusColumnIndex - 1);
                 (cells[newFocusColumnIndex] as HTMLElement).focus();
                 e.preventDefault();
@@ -179,7 +218,7 @@ export class DataGridRow extends FASTElement {
 
             case keyCodeArrowRight:
                 // focus right one cell
-                cells = Array.from(this.querySelectorAll('[role="cell"]'));
+                cells = Array.from(this.querySelectorAll(DataGridRow.cellQueryString));
                 newFocusColumnIndex = Math.min(
                     cells.length - 1,
                     this.focusColumnIndex + 1
@@ -191,7 +230,9 @@ export class DataGridRow extends FASTElement {
             case keyCodeHome:
                 if (!e.ctrlKey) {
                     // focus first cell of the row
-                    cells = Array.from(this.querySelectorAll('[role="cell"]'));
+                    cells = Array.from(
+                        this.querySelectorAll(DataGridRow.cellQueryString)
+                    );
                     (cells[0] as HTMLElement).focus();
                     e.preventDefault();
                 }
@@ -199,7 +240,9 @@ export class DataGridRow extends FASTElement {
             case keyCodeEnd:
                 if (!e.ctrlKey) {
                     // focus last cell of the row
-                    cells = Array.from(this.querySelectorAll('[role="cell"]'));
+                    cells = Array.from(
+                        this.querySelectorAll(DataGridRow.cellQueryString)
+                    );
                     (cells[cells.length - 1] as HTMLElement).focus();
                     e.preventDefault();
                 }
