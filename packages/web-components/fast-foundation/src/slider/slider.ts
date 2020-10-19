@@ -328,10 +328,20 @@ export class Slider extends FormAssociated<HTMLInputElement>
     };
 
     private setupDefaultValue = (): void => {
-        if (this.value === "") {
-            this.initialValue = `${this.convertToConstrainedValue(
+        if (typeof this.value === "string") {
+            const midpoint = `${this.convertToConstrainedValue(
                 (this.max + this.min) / 2
             )}`;
+
+            if (this.value.length === 0) {
+                this.initialValue = midpoint;
+            } else {
+                const value = parseFloat(this.value);
+
+                if (!Number.isNaN(value) && (value < this.min || value > this.max)) {
+                    this.value = midpoint;
+                }
+            }
         }
     };
 

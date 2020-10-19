@@ -44,11 +44,51 @@ describe("The value property:", () => {
             expect(el.value).to.equal(undefined);
         });
 
-        it("should initialize to the initial value", () => {
+        it("should initialize to the initial value if no value property is set", () => {
             const el: TestElement = document.createElement("test-element") as TestElement;
             document.body.appendChild(el);
 
             expect(el.value).to.equal(el["initialValue"]);
+
+            document.body.removeChild(el);
+        });
+
+        it("should initialize to the provided value attribute if set pre-connection", () => {
+            const el: TestElement = document.createElement("test-element") as TestElement;
+            el.setAttribute("value", "foobar");
+            document.body.appendChild(el);
+
+            expect(el.value).to.equal("foobar");
+
+            document.body.removeChild(el);
+        });
+
+        it("should initialize to the provided value attribute if set post-connection", () => {
+            const el: TestElement = document.createElement("test-element") as TestElement;
+            document.body.appendChild(el);
+            el.setAttribute("value", "foobar");
+
+            expect(el.value).to.equal("foobar");
+
+            document.body.removeChild(el);
+        });
+
+        it("should initialize to the provided value property if set pre-connection", () => {
+            const el: TestElement = document.createElement("test-element") as TestElement;
+            el.value = "foobar";
+            document.body.appendChild(el);
+
+            expect(el.value).to.equal("foobar");
+
+            document.body.removeChild(el);
+        });
+
+        it("should initialize to the provided value property if set post-connection", () => {
+            const el: TestElement = document.createElement("test-element") as TestElement;
+            document.body.appendChild(el);
+            el.value = "foobar";
+
+            expect(el.value).to.equal("foobar");
 
             document.body.removeChild(el);
         });
