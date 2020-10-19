@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.6.1](https://github.com/Microsoft/fast/compare/@microsoft/fast-web-utilities@4.6.0...@microsoft/fast-web-utilities@4.6.1) (2020-10-14)
+
+**Note:** Version bump only for package @microsoft/fast-web-utilities
+
+
+
+
+
 # [4.6.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-web-utilities@4.5.2...@microsoft/fast-web-utilities@4.6.0) (2020-07-14)
 
 
