@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.8.1](https://github.com/Microsoft/fast/compare/@microsoft/fast-foundation@1.8.0...@microsoft/fast-foundation@1.8.1) (2020-10-14)
+
+
+### Bug Fixes
+
+* allow child radio buttons to be changed multiple times from javascript ([#3976](https://github.com/Microsoft/fast/issues/3976)) ([8ea7cc8](https://github.com/Microsoft/fast/commit/8ea7cc81cb34cf52d944136c9dc771fd03997bb1))
+* corrects keyboard behavior of tree view and tree view item. ([#4003](https://github.com/Microsoft/fast/issues/4003)) ([9d80632](https://github.com/Microsoft/fast/commit/9d806322c632ddf6294bddd782f39ec6c0300798))
+* designSystem property resolution behavior correction ([#4032](https://github.com/Microsoft/fast/issues/4032)) ([7e82cae](https://github.com/Microsoft/fast/commit/7e82caeb78c86898c38bd24d171d5ded8fc8473a))
+* leverage FASTController.addStyles to attach css custom property target sheet ([#4031](https://github.com/Microsoft/fast/issues/4031)) ([2ca2ed0](https://github.com/Microsoft/fast/commit/2ca2ed075879f6e1ec04d0ee2753cbf23dcaff9f))
+* tabs directional arrow key bug ([#3986](https://github.com/Microsoft/fast/issues/3986)) ([2d797a5](https://github.com/Microsoft/fast/commit/2d797a525eafd163aa9cba59823bc76d6b5b7d1f))
+
+
+
+
+
 # [1.8.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-foundation@1.7.2...@microsoft/fast-foundation@1.8.0) (2020-09-28)
 
 
