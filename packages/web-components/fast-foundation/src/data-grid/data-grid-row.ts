@@ -77,7 +77,10 @@ export class DataGridRow extends FASTElement {
      */
     @observable
     public columnsData: DataGridColumn[] | null = null;
-    private columnsDataChanged(): void {}
+    private columnsDataChanged(): void {
+        if ((this as FASTElement).$fastController.isConnected) {
+        }
+    }
 
     /**
      *
