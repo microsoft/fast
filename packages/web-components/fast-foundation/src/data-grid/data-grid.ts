@@ -28,16 +28,17 @@ import { DataGridRow } from "./data-grid-row";
  */
 export interface DataGridColumn {
     /**
-     * identifies the data item to be displayed in this column
+     * Identifies the data item to be displayed in this column
      * (i.e. how the data item is labelled in each row)
      */
     columnDataKey: string;
 
     /**
-     * The width of the column in a form compatible with css grid column widths
-     * (i.e. "50px", "1fr", "20%", etc...), defaults to "1fr"
+     * Sets the css grid-column property on the cell which controls its placement in
+     * the parent row. If left unset the cells will set this value to match the index
+     * of their column in the parent collection of DataGridColumns.
      */
-    columnWidth?: string;
+    gridColumn?: string;
 
     /**
      *  Column title, if not provided columnDataKey is used as title
@@ -45,7 +46,7 @@ export interface DataGridColumn {
     title?: string;
 
     /**
-     *  header cell template
+     *  Header cell template
      */
     headerCellTemplate?: ViewTemplate;
 
@@ -108,10 +109,10 @@ export class DataGrid extends FASTElement {
     public static generateColumns = (row: object): DataGridColumn[] => {
         const definitions: DataGridColumn[] = [];
         const properties: string[] = Object.getOwnPropertyNames(row);
-        properties.forEach((property: string) => {
+        properties.forEach((property: string, index: number) => {
             definitions.push({
                 columnDataKey: property,
-                columnWidth: "1fr",
+                gridColumn: `${index}`,
             });
         });
         return definitions;
@@ -123,9 +124,9 @@ export class DataGrid extends FASTElement {
     public static generateTemplateColumns(columnsData: DataGridColumn[]): string {
         let templateColumns: string = "";
         columnsData.forEach((column: DataGridColumn) => {
-            templateColumns = `${templateColumns}${templateColumns === "" ? "" : " "}${
-                column.columnWidth === undefined ? "1fr" : column.columnWidth
-            }`;
+            templateColumns = `${templateColumns}${
+                templateColumns === "" ? "" : " "
+            }${"1fr"}`;
         });
         return templateColumns;
     }
@@ -146,6 +147,21 @@ export class DataGrid extends FASTElement {
     }
 
     /**
+     * String that gets applied to the the css gridTemplateColumns attribute of generated rows
+     *
+     * @public
+     * @remarks
+     * HTML Attribute: grid-template-columns
+     */
+    @attr({ attribute: "grid-template-columns" })
+    public gridTemplateColumns: string;
+    private gridTemplateColumnsChanged(): void {
+        if ((this as FASTElement).$fastController.isConnected) {
+            this.updateRowIndexes();
+        }
+    }
+
+    /**
      * The data being displayed in the grid
      *
      * @public
@@ -161,11 +177,10 @@ export class DataGrid extends FASTElement {
      */
     @observable
     public columnsData: DataGridColumn[] = [];
-    private columnsDataChanged(
-        oldValue: DataGridColumn[],
-        newValue: DataGridColumn[]
-    ): void {
-        this.gridTemplateColumns = DataGrid.generateTemplateColumns(this.columnsData);
+    private columnsDataChanged(): void {
+        this.generatedGridTemplateColumns = DataGrid.generateTemplateColumns(
+            this.columnsData
+        );
         if ((this as FASTElement).$fastController.isConnected) {
             this.columnDataStale = true;
             this.queueRowIndexUpdate();
@@ -213,21 +228,6 @@ export class DataGrid extends FASTElement {
         }
     }
 
-    /**
-     * String that gets applied to the the css gridTemplateColumns attribute of generated rows
-     *
-     * @internal
-     */
-    @observable
-    public gridTemplateColumns: string;
-    private gridTemplateColumnsChanged(): void {
-        if ((this as FASTElement).$fastController.isConnected) {
-            if (this.generatedHeader !== null) {
-                this.generatedHeader.gridTemplateColumns = this.gridTemplateColumns;
-            }
-        }
-    }
-
     private rowsRepeatBehavior: RepeatBehavior | null;
     private rowsPlaceholder: Node | null = null;
 
@@ -238,8 +238,10 @@ export class DataGrid extends FASTElement {
 
     private observer: MutationObserver;
 
-    private rowindexUpdateQueued = false;
-    private columnDataStale = true;
+    private rowindexUpdateQueued: boolean = false;
+    private columnDataStale: boolean = true;
+
+    private generatedGridTemplateColumns: string = "";
 
     constructor() {
         super();
@@ -451,10 +453,15 @@ export class DataGrid extends FASTElement {
     private updateRowIndexes = (): void => {
         const rows: NodeListOf<Element> = this.querySelectorAll('[role="row"]');
 
+        const newGridTemplateColumns =
+            this.gridTemplateColumns === undefined
+                ? this.generatedGridTemplateColumns
+                : this.gridTemplateColumns;
+
         rows.forEach((element: Element, index: number): void => {
             const thisRow = element as DataGridRow;
             thisRow.rowIndex = index;
-            thisRow.gridTemplateColumns = this.gridTemplateColumns;
+            thisRow.gridTemplateColumns = newGridTemplateColumns;
             if (this.columnDataStale) {
                 thisRow.columnsData = this.columnsData;
             }

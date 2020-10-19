@@ -21,6 +21,9 @@ FASTDesignSystemProvider;
 let defaultGridElement: DataGrid | null = null;
 let defaultRowData: object = newDataRow("default");
 
+const gridTemplateColumns1 = "200px 1fr 1fr 1fr";
+const gridTemplateColumns2 = "100px 1fr 1fr 1fr";
+
 addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
     if (name.toLowerCase().startsWith("data-grid")) {
         defaultGridElement = document.getElementById("defaultGrid") as DataGrid;
@@ -67,7 +70,7 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
             "defaultCell"
         ) as DataGridCell;
         if (rowWithCellTemplate !== null) {
-            defaultCell.columnData = { columnDataKey: "name", columnWidth: "1fr" };
+            defaultCell.columnData = { columnDataKey: "name" };
             defaultCell.rowData = defaultRow;
         }
 
@@ -77,7 +80,6 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
         if (rowWithCellTemplate !== null) {
             headerCell.columnData = {
                 columnDataKey: "name",
-                columnWidth: "1fr",
                 title: "Name",
             };
         }
@@ -135,6 +137,7 @@ function reset(): void {
     }
     defaultGridElement.columnsData = baseColumns;
     defaultGridElement.rowsData = newDataSet(10);
+    defaultGridElement.gridTemplateColumns = gridTemplateColumns1;
 }
 
 function setDefaultCols(): void {
@@ -152,18 +155,13 @@ function setTemplateCols(): void {
 }
 
 function toggleWidth(): void {
-    if (
-        defaultGridElement === null ||
-        defaultGridElement.columnsData === null ||
-        defaultGridElement.columnsData.length < 1 ||
-        defaultGridElement.columnsData[0].columnWidth === null
-    ) {
+    if (defaultGridElement === null) {
         return;
     }
-    if (defaultGridElement.columnsData[0].columnWidth === "200px") {
-        defaultGridElement.columnsData[0].columnWidth = "100px";
+    if (defaultGridElement.gridTemplateColumns === gridTemplateColumns1) {
+        defaultGridElement.gridTemplateColumns = gridTemplateColumns2;
     } else {
-        defaultGridElement.columnsData[0].columnWidth = "200px";
+        defaultGridElement.gridTemplateColumns = gridTemplateColumns1;
     }
 }
 
@@ -188,25 +186,24 @@ function newDataRow(id: string): object {
 }
 
 const baseColumns: DataGridColumn[] = [
-    { columnDataKey: "rowId", columnWidth: "200px" },
-    { columnDataKey: "item1", columnWidth: "1fr" },
-    { columnDataKey: "item2", columnWidth: "1fr" },
-    { columnDataKey: "item3", columnWidth: "1fr" },
+    { columnDataKey: "rowId" },
+    { columnDataKey: "item1" },
+    { columnDataKey: "item2" },
+    { columnDataKey: "item3" },
 ];
 
 const templateColumns: DataGridColumn[] = [
     {
         title: "RowID",
         columnDataKey: "rowId",
-        columnWidth: "200px",
         cellTemplate: buttonCellTemplate,
         cellFocusTargetCallback: getFocusTarget,
         headerCellTemplate: buttonHeaderCellTemplate,
         headerCellFocusTargetCallback: getFocusTarget,
     },
-    { columnDataKey: "item1", columnWidth: "1fr", title: "Column 1" },
-    { columnDataKey: "item2", columnWidth: "1fr", title: "Column 2" },
-    { columnDataKey: "item3", columnWidth: "1fr", title: "Column 3" },
+    { columnDataKey: "item1", title: "Column 1" },
+    { columnDataKey: "item2", title: "Column 2" },
+    { columnDataKey: "item3", title: "Column 3" },
 ];
 
 function incrementAge(): void {

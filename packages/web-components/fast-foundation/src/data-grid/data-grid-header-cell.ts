@@ -31,17 +31,6 @@ const defaultHeaderCellContentsTemplate: ViewTemplate = html<DataGridHeaderCell>
  */
 export class DataGridHeaderCell extends FASTElement {
     /**
-     * The column index
-     *
-     * @public
-     * @remarks
-     * HTML Attribute: grid-ccolumn-index
-     */
-    @attr
-    public gridColumnIndex: number;
-    private columnIndexChanged(): void {}
-
-    /**
      * The base data for the column
      *
      * @public
@@ -91,7 +80,7 @@ export class DataGridHeaderCell extends FASTElement {
         this.addEventListener("keydown", this.handleKeydown);
 
         this.style.gridColumn = `${
-            this.gridColumnIndex === undefined ? 0 : this.gridColumnIndex
+            this.columnData?.gridColumn === undefined ? 0 : this.columnData.gridColumn
         }`;
 
         this.updateCellView();
