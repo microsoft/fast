@@ -117,5 +117,11 @@ function setService() {
 }
 
 function printStatus() {
-    echo "$1 ..."
+    # stop script upon command failure
+    set -e
+    
+    # write additional details
+    echo ""
+    echo "${green}$1 ...${reset}"
+    echo ""
 }

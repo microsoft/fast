@@ -24,3 +24,5 @@ debugService args
 az group create \
     --location $location \
     --name $resource_group
+
+export az_resource_group="$service"

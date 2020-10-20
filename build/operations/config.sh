@@ -37,6 +37,7 @@ az configure --defaults output=table disable_confirm_prompt=false enable_log_fil
 
     system=fast
     status=false
+    app_service_plan=
 
 # GETTING STARTED
 

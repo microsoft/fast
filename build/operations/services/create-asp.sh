@@ -13,7 +13,6 @@ https://app.pluralsight.com/course-player?clipId=9b58df17-fdf9-4802-bbc4-40ea42a
 service_name="App Service Plan"
 service_code="asp"
 service=$location-$service_code
-app_service_plan=$service
 
 setService "Create $service_name" "$service"
 
@@ -29,3 +28,6 @@ az appservice plan create \
     --sku P3V2 \
     --only-show-errors \
     --is-linux
+
+# In this instance the plan id is required not plan name ref: https://github.com/Azure/azure-cli/issues/6545#issuecomment-712940827
+export az_app_service_plan=$(az appservice plan show --name $service --resource-group $resource_group --query "id" -o tsv)
