@@ -68,6 +68,28 @@ class DSPC extends DesignSystemProvider {
     public d: symbol;
 }
 
+class DSPCustomProperties extends DesignSystemProvider {
+    @designSystemProperty({
+        default: "blue",
+    })
+    public color: string;
+}
+
+@defineDesignSystemProvider({
+    name: "dsp-custom-properties-open",
+    template,
+})
+class DSPCustomPropertiesOpen extends DSPCustomProperties {}
+
+@defineDesignSystemProvider({
+    name: "dsp-custom-properties-closed",
+    template,
+    shadowOptions: {
+        mode: "closed",
+    },
+})
+class DSPCustomPropertiesClosed extends DSPCustomProperties {}
+
 async function setup() {
     const { element: a, connect: connectA, disconnect: disconnectA } = await fixture<
         DSPA
@@ -195,6 +217,84 @@ describe("A DesignSystemProvider", () => {
                 expect(a.designSystem["a"]).to.equal(symbol);
                 expect(c.designSystem["a"]).to.equal(symbol);
                 done();
+            });
+        });
+    });
+
+    describe("that is configured with CSSCustomProperty designSystemProperties", () => {
+        ["open", "closed"].forEach(mode => {
+            describe(`with shadowMode: ${mode}`, () => {
+                it("should write the default value when the use-defaults attribute is applied", () => {
+                    const p = document.createElement(
+                        `dsp-custom-properties-${mode}`
+                    ) as DSPCustomProperties;
+                    p.setAttribute("use-defaults", "");
+                    document.body.appendChild(p);
+
+                    expect(
+                        window.getComputedStyle(p).getPropertyValue("--color")
+                    ).to.equal("blue");
+                });
+
+                it("should not write the default value when the use-defaults attribute is applied but the property is also assigned", () => {
+                    const p = document.createElement(
+                        `dsp-custom-properties-${mode}`
+                    ) as DSPCustomProperties;
+                    p.color = "pink";
+                    p.setAttribute("use-defaults", "");
+                    document.body.appendChild(p);
+
+                    expect(
+                        window.getComputedStyle(p).getPropertyValue("--color")
+                    ).to.equal("pink");
+                });
+
+                it("should not create a CSS custom property when the value is unassigned", () => {
+                    const p = document.createElement(
+                        `dsp-custom-properties-${mode}`
+                    ) as DSPCustomProperties;
+                    document.body.appendChild(p);
+
+                    expect(
+                        window.getComputedStyle(p).getPropertyValue("--color")
+                    ).to.equal("");
+                });
+
+                it("should create a CSS custom property equal to the property value when the value is assigned", () => {
+                    const p = document.createElement(
+                        `dsp-custom-properties-${mode}`
+                    ) as DSPCustomProperties;
+                    document.body.appendChild(p);
+
+                    p.color = "red";
+
+                    expect(
+                        window.getComputedStyle(p).getPropertyValue("--color")
+                    ).to.equal("red");
+                });
+
+                it("should update a CSS custom property equal to the property value when the value is re-assigned", () => {
+                    const p = document.createElement(
+                        `dsp-custom-properties-${mode}`
+                    ) as DSPCustomProperties;
+                    document.body.appendChild(p);
+
+                    expect(
+                        window.getComputedStyle(p).getPropertyValue("--color")
+                    ).to.equal("");
+
+                    p.color = "green";
+
+                    expect(
+                        window.getComputedStyle(p).getPropertyValue("--color")
+                    ).to.equal("green");
+
+                    p.color = "blue";
+
+                    expect(
+                        window.getComputedStyle(p).getPropertyValue("--color")
+                    ).to.equal("blue");
+                });
             });
         });
     });
