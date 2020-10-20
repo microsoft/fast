@@ -11,7 +11,7 @@ He clicks on `Kitchen and Dining` to go back to the category of kitchen items, s
 - [Ant Design](https://ant.design/components/breadcrumb/)
 - [Atlaskit](https://atlaskit.atlassian.com/packages/core/breadcrumbs)
 - [Carbon Design](https://www.carbondesignsystem.com/components/breadcrumb/code/)
-- [FAST Breadcrumb (React)](https://www.npmjs.com/package/@microsoft/fast-components-react-msft)
+- [FAST Breadcrumb (React)](https://github.com/microsoft/fast-react/tree/master/packages/react/fast-components-react-msft/src/breadcrumb)
 - [Lightning Design System](https://www.lightningdesignsystem.com/components/breadcrumbs/#site-main-content)
 - [Material UI](https://material-ui.com/components/breadcrumbs/)
 - [Office Fabric](https://developer.microsoft.com/en-us/fluentui#/controls/web/breadcrumb)

@@ -99,20 +99,6 @@ describe("Breadcrumb item", () => {
         await disconnect();
     });
 
-    it("should NOT set the `target` attribute on the internal anchor if `href` is not passed", async () => {
-        const { element, connect, disconnect } = await setup();
-        const targetExample = "_blank";
-
-        element.target = targetExample;
-
-        await connect();
-
-        expect(element.shadowRoot?.querySelector("a")?.getAttribute("target")).to.not
-            .exist;
-
-        await disconnect();
-    });
-
     it("should set the `download` attribute on the internal anchor when `href` is passed", async () => {
         const { element, connect, disconnect } = await setup();
         const download: string = "foo";
