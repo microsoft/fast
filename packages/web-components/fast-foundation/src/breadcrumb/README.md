@@ -5,7 +5,7 @@ sidebar_label: breadcrumb
 custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-foundation/src/breadcrumb/README.md
 ---
 
-`fast-breadcrumb` is used as a navigational aid, allowing users to maintain awareness of their locations within a program, app, or a website.
+`fast-breadcrumb` is used as a navigational aid, allowing users to maintain awareness of their navigated path within a program, app, or a website.
 
 ## Usage
 
