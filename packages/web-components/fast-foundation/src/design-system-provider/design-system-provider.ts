@@ -2,6 +2,7 @@ import {
     attr,
     Behavior,
     customElement,
+    elements,
     ElementStyles,
     FASTElement,
     observable,
@@ -54,6 +55,8 @@ export const designSystemConsumerBehavior: Behavior = {
     /* eslint-disable-next-line */
     unbind<T extends DesignSystemConsumer & HTMLElement>(source: T) {},
 };
+
+const hostSelector = ":host{}";
 
 /**
  * A element to provide Design System values to consumers via CSS custom properties
@@ -319,11 +322,20 @@ export class DesignSystemProvider extends FASTElement
     constructor() {
         super();
 
+        let sheet: CSSStyleSheet | null | void;
+
         if (supportsAdoptedStylesheets) {
-            const sheet = new CSSStyleSheet();
-            const index = sheet.insertRule(":host{}");
+            sheet = new CSSStyleSheet();
             this.$fastController.addStyles(ElementStyles.create([sheet]));
-            this.customPropertyTarget = (sheet.rules[index] as CSSStyleRule).style;
+        } else {
+            const element = document.createElement("style");
+            this.$fastController.addStyles(element);
+            sheet = element.sheet;
+        }
+
+        if (sheet) {
+            const rule = sheet.insertRule(hostSelector);
+            this.customPropertyTarget = (sheet.rules[rule] as CSSStyleRule).style;
         } else {
             this.customPropertyTarget = this.style;
         }
