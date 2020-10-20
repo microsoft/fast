@@ -1,5 +1,6 @@
 import { attr, DOM, FASTElement, observable } from "@microsoft/fast-element";
 import { Direction } from "@microsoft/fast-web-utilities";
+import { getDirection } from "../utilities";
 
 // TODO: the Resize Observer related files are a temporary stopgap measure until
 // Resize Observer types are pulled into TypeScript, which seems imminent
@@ -63,8 +64,6 @@ enum Location {
 }
 
 export class AnchoredRegion extends FASTElement {
-    private static DirectionAttributeName: string = "dir";
-
     /**
      * The HTML id of the anchor element this region is positioned relative to
      *
@@ -722,7 +721,7 @@ export class AnchoredRegion extends FASTElement {
             this.viewportElement = this.getViewport();
         }
 
-        this.currentDirection = this.getDirection();
+        this.currentDirection = getDirection(this);
         this.startObservers();
     };
 
@@ -753,7 +752,7 @@ export class AnchoredRegion extends FASTElement {
                     dirCorrectedHorizontalDefaultPosition === "end"
                 ) {
                     // if direction changes we reset the layout
-                    const newDirection: Direction = this.getDirection();
+                    const newDirection: Direction = getDirection(this);
                     if (newDirection !== this.currentDirection) {
                         this.currentDirection = newDirection;
                         this.initialize();
@@ -1209,19 +1208,5 @@ export class AnchoredRegion extends FASTElement {
         }
 
         return newRegionDimension;
-    };
-
-    /**
-     *  gets the current direction
-     */
-    private getDirection = (): Direction => {
-        const closest: Element | null = this.closest(
-            `[${AnchoredRegion.DirectionAttributeName}]`
-        );
-
-        return closest === null ||
-            closest.getAttribute(AnchoredRegion.DirectionAttributeName) === Direction.ltr
-            ? Direction.ltr
-            : Direction.rtl;
     };
 }
