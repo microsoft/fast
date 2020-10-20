@@ -36,7 +36,7 @@ const headerCellItemTemplate = html`
  *
  * @public
  */
-export enum rowType {
+export enum rowTypes {
     default = "default",
     header = "header",
 }
@@ -87,7 +87,7 @@ export class DataGridRow extends FASTElement {
      * HTML Attribute: row-type
      */
     @attr({ attribute: "row-type" })
-    public rowType: rowType = rowType.default;
+    public rowType: rowTypes;
     private rowTypeChanged(): void {
         if ((this as FASTElement).$fastController.isConnected) {
         }
@@ -156,9 +156,9 @@ export class DataGridRow extends FASTElement {
         this.appendChild(this.cellsPlaceholder);
 
         this.cellItemTemplate =
-            this.rowType === rowType.default
-                ? defaultCellItemTemplate
-                : headerCellItemTemplate;
+            this.rowType === rowTypes.header
+                ? headerCellItemTemplate
+                : defaultCellItemTemplate;
 
         this.cellsRepeatBehavior = new RepeatDirective(
             x => x.columnsData,

@@ -40,7 +40,7 @@ const defaultHeaderCellContentsTemplate: ViewTemplate = html<DataGridCell>`
  *
  * @public
  */
-export enum cellType {
+export enum cellTypes {
     default = "default",
     columnHeader = "column-header",
 }
@@ -59,7 +59,7 @@ export class DataGridCell extends FASTElement {
      * HTML Attribute: cell-type
      */
     @attr({ attribute: "cell-type" })
-    public cellType: cellType = cellType.default;
+    public cellType: cellTypes;
     private cellTypeChanged(): void {
         if ((this as FASTElement).$fastController.isConnected) {
         }
@@ -154,7 +154,7 @@ export class DataGridCell extends FASTElement {
         this.isActiveCell = true;
 
         switch (this.cellType) {
-            case cellType.default:
+            case cellTypes.default:
                 if (
                     this.columnData.cellInternalFocusQueue !== true &&
                     typeof this.columnData.cellFocusTargetCallback === "function"
@@ -169,7 +169,7 @@ export class DataGridCell extends FASTElement {
                 }
                 break;
 
-            case cellType.columnHeader:
+            case cellTypes.columnHeader:
                 if (
                     this.columnData.headerCellInternalFocusQueue !== true &&
                     typeof this.columnData.headerCellFocusTargetCallback === "function"
@@ -199,9 +199,9 @@ export class DataGridCell extends FASTElement {
         if (
             e.defaultPrevented ||
             this.columnData === null ||
-            (this.cellType === cellType.default &&
+            (this.cellType === cellTypes.default &&
                 this.columnData.cellInternalFocusQueue !== true) ||
-            (this.cellType === cellType.columnHeader &&
+            (this.cellType === cellTypes.columnHeader &&
                 this.columnData.headerCellInternalFocusQueue !== true)
         ) {
             return;
@@ -215,7 +215,7 @@ export class DataGridCell extends FASTElement {
                 }
 
                 switch (this.cellType) {
-                    case cellType.default:
+                    case cellTypes.default:
                         if (this.columnData.cellFocusTargetCallback !== undefined) {
                             const focusTarget: HTMLElement = this.columnData.cellFocusTargetCallback(
                                 this
@@ -228,7 +228,7 @@ export class DataGridCell extends FASTElement {
                         }
                         break;
 
-                    case cellType.columnHeader:
+                    case cellTypes.columnHeader:
                         if (this.columnData.headerCellFocusTargetCallback !== undefined) {
                             const focusTarget: HTMLElement = this.columnData.headerCellFocusTargetCallback(
                                 this
@@ -261,15 +261,7 @@ export class DataGridCell extends FASTElement {
         }
 
         switch (this.cellType) {
-            case cellType.default:
-                if (this.columnData.cellTemplate !== undefined) {
-                    this.customCellView = this.columnData.cellTemplate.render(this, this);
-                } else {
-                    this.customCellView = defaultCellContentsTemplate.render(this, this);
-                }
-                break;
-
-            case cellType.columnHeader:
+            case cellTypes.columnHeader:
                 if (this.columnData.headerCellTemplate !== undefined) {
                     this.customCellView = this.columnData.headerCellTemplate.render(
                         this,
@@ -282,12 +274,21 @@ export class DataGridCell extends FASTElement {
                     );
                 }
                 break;
+
+            case undefined:
+            case cellTypes.default:
+                if (this.columnData.cellTemplate !== undefined) {
+                    this.customCellView = this.columnData.cellTemplate.render(this, this);
+                } else {
+                    this.customCellView = defaultCellContentsTemplate.render(this, this);
+                }
+                break;
         }
     }
 
     private disconnectCellView(): void {
         if (this.customCellView !== null) {
-            this.customCellView.unbind();
+            this.customCellView.dispose();
             this.customCellView = null;
         }
     }

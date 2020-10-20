@@ -17,7 +17,7 @@ import {
     keyCodePageUp,
 } from "@microsoft/fast-web-utilities";
 import { DataGridCell } from "./data-grid-cell";
-import { DataGridRow, rowType } from "./data-grid-row";
+import { DataGridRow, rowTypes } from "./data-grid-row";
 
 /**
  * Defines a column in the grid
@@ -405,7 +405,7 @@ export class DataGrid extends FASTElement {
             this.generatedHeader = (generatedHeaderElement as unknown) as DataGridRow;
             this.generatedHeader.columnsData = this.columnsData;
             this.generatedHeader.gridTemplateColumns = this.gridTemplateColumns;
-            this.generatedHeader.rowType = rowType.header;
+            this.generatedHeader.rowType = rowTypes.header;
             if (this.firstChild !== null || this.rowsPlaceholder !== null) {
                 this.insertBefore(
                     generatedHeaderElement,

@@ -39,7 +39,7 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
         ) as DataGridRow;
         if (defaultRow !== null) {
             defaultRow.columnsData = baseColumns;
-            defaultRow.rowData = defaultRow;
+            defaultRow.rowData = defaultRowData;
         }
 
         const defaultHeader: DataGridRow | null = document.getElementById(
@@ -54,7 +54,7 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
         ) as DataGridRow;
         if (rowWithCellTemplate !== null) {
             rowWithCellTemplate.columnsData = templateColumns;
-            rowWithCellTemplate.rowData = defaultRow;
+            rowWithCellTemplate.rowData = defaultRowData;
         }
 
         const headerWithCellTemplate: DataGridRow | null = document.getElementById(
@@ -68,8 +68,8 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
             "defaultCell"
         ) as DataGridCell;
         if (rowWithCellTemplate !== null) {
-            defaultCell.columnData = { columnDataKey: "name" };
-            defaultCell.rowData = defaultRow;
+            defaultCell.columnData = { columnDataKey: "rowId" };
+            defaultCell.rowData = defaultRowData;
         }
 
         const headerCell: DataGridCell | null = document.getElementById(
