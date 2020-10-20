@@ -8,7 +8,6 @@ import {
     DataGrid,
     DataGridCell,
     DataGridColumn,
-    DataGridHeaderCell,
     DataGridRow,
 } from "@microsoft/fast-foundation";
 import { FASTDataGrid } from "./";
@@ -73,9 +72,9 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
             defaultCell.rowData = defaultRow;
         }
 
-        const headerCell: DataGridHeaderCell | null = document.getElementById(
+        const headerCell: DataGridCell | null = document.getElementById(
             "headerCell"
-        ) as DataGridHeaderCell;
+        ) as DataGridCell;
         if (rowWithCellTemplate !== null) {
             headerCell.columnData = {
                 columnDataKey: "name",
@@ -117,7 +116,7 @@ const buttonCellTemplate = html<DataGridCell>`
     </template>
 `;
 
-const buttonHeaderCellTemplate = html<DataGridHeaderCell>`
+const buttonHeaderCellTemplate = html<DataGridCell>`
     <template>
         <fast-button @click="${x => toggleWidth()}">
             ${x =>
@@ -240,7 +239,7 @@ function incrementAge(): void {
 //     templateColumns[columnIndex].columnWidth = width;
 // }
 
-function getFocusTarget(cell: DataGridCell | DataGridHeaderCell): HTMLElement {
+function getFocusTarget(cell: DataGridCell): HTMLElement {
     return cell.querySelector("fast-button") as HTMLElement;
 }
 

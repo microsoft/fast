@@ -17,7 +17,6 @@ import {
     keyCodePageUp,
 } from "@microsoft/fast-web-utilities";
 import { DataGridCell } from "./data-grid-cell";
-import { DataGridHeaderCell } from "./data-grid-header-cell";
 import { DataGridRow, rowType } from "./data-grid-row";
 
 /**
@@ -61,7 +60,7 @@ export interface DataGridColumn {
      * focus directly to the checkbox.
      * When headerCellInternalFocusQueue is true this function is called when the user hits Enter or F2
      */
-    headerCellFocusTargetCallback?: (cell: DataGridHeaderCell) => HTMLElement;
+    headerCellFocusTargetCallback?: (cell: DataGridCell) => HTMLElement;
 
     /**
      * cell template

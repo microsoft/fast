@@ -24,12 +24,47 @@ const defaultCellContentsTemplate: ViewTemplate = html<DataGridCell>`
     </template>
 `;
 
+const defaultHeaderCellContentsTemplate: ViewTemplate = html<DataGridCell>`
+    <template>
+        ${x =>
+            x.columnData === null
+                ? null
+                : x.columnData.title === undefined
+                ? x.columnData.columnDataKey
+                : x.columnData.title}
+    </template>
+`;
+
+/**
+ * Types of cells
+ *
+ * @public
+ */
+export enum cellType {
+    default = "default",
+    columnHeader = "column-header",
+}
+
 /**
  * A Data Grid Cell Custom HTML Element.
  *
  * @public
  */
 export class DataGridCell extends FASTElement {
+    /**
+     * The type of cell
+     *
+     * @public
+     * @remarks
+     * HTML Attribute: cell-type
+     */
+    @attr({ attribute: "cell-type" })
+    public cellType: cellType = cellType.default;
+    private cellTypeChanged(): void {
+        if ((this as FASTElement).$fastController.isConnected) {
+        }
+    }
+
     /**
      * The base data for the parent row
      *
@@ -118,17 +153,36 @@ export class DataGridCell extends FASTElement {
 
         this.isActiveCell = true;
 
-        if (
-            this.columnData.cellInternalFocusQueue !== true &&
-            typeof this.columnData.cellFocusTargetCallback === "function"
-        ) {
-            // move focus to the focus target
-            const focusTarget: HTMLElement = this.columnData.cellFocusTargetCallback(
-                this
-            );
-            if (focusTarget !== null) {
-                focusTarget.focus();
-            }
+        switch (this.cellType) {
+            case cellType.default:
+                if (
+                    this.columnData.cellInternalFocusQueue !== true &&
+                    typeof this.columnData.cellFocusTargetCallback === "function"
+                ) {
+                    // move focus to the focus target
+                    const focusTarget: HTMLElement = this.columnData.cellFocusTargetCallback(
+                        this
+                    );
+                    if (focusTarget !== null) {
+                        focusTarget.focus();
+                    }
+                }
+                break;
+
+            case cellType.columnHeader:
+                if (
+                    this.columnData.headerCellInternalFocusQueue !== true &&
+                    typeof this.columnData.headerCellFocusTargetCallback === "function"
+                ) {
+                    // move focus to the focus target
+                    const focusTarget: HTMLElement = this.columnData.headerCellFocusTargetCallback(
+                        this
+                    );
+                    if (focusTarget !== null) {
+                        focusTarget.focus();
+                    }
+                }
+                break;
         }
 
         this.$emit("cell-focused", this);
@@ -145,7 +199,10 @@ export class DataGridCell extends FASTElement {
         if (
             e.defaultPrevented ||
             this.columnData === null ||
-            this.columnData.cellInternalFocusQueue !== true
+            (this.cellType === cellType.default &&
+                this.columnData.cellInternalFocusQueue !== true) ||
+            (this.cellType === cellType.columnHeader &&
+                this.columnData.headerCellInternalFocusQueue !== true)
         ) {
             return;
         }
@@ -153,19 +210,36 @@ export class DataGridCell extends FASTElement {
         switch (e.keyCode) {
             case keyCodeEnter:
             case keyCodeFunction2:
-                if (
-                    !this.isInternalFocused &&
-                    this.columnData !== undefined &&
-                    this.columnData.cellFocusTargetCallback !== undefined
-                ) {
-                    const focusTarget: HTMLElement = this.columnData.cellFocusTargetCallback(
-                        this
-                    );
-                    if (focusTarget !== null) {
-                        this.isInternalFocused = true;
-                        focusTarget.focus();
-                    }
-                    e.preventDefault();
+                if (this.isInternalFocused || this.columnData === undefined) {
+                    return;
+                }
+
+                switch (this.cellType) {
+                    case cellType.default:
+                        if (this.columnData.cellFocusTargetCallback !== undefined) {
+                            const focusTarget: HTMLElement = this.columnData.cellFocusTargetCallback(
+                                this
+                            );
+                            if (focusTarget !== null) {
+                                this.isInternalFocused = true;
+                                focusTarget.focus();
+                            }
+                            e.preventDefault();
+                        }
+                        break;
+
+                    case cellType.columnHeader:
+                        if (this.columnData.headerCellFocusTargetCallback !== undefined) {
+                            const focusTarget: HTMLElement = this.columnData.headerCellFocusTargetCallback(
+                                this
+                            );
+                            if (focusTarget !== null) {
+                                this.isInternalFocused = true;
+                                focusTarget.focus();
+                            }
+                            e.preventDefault();
+                        }
+                        break;
                 }
                 break;
 
@@ -186,10 +260,28 @@ export class DataGridCell extends FASTElement {
             return;
         }
 
-        if (this.columnData.cellTemplate !== undefined) {
-            this.customCellView = this.columnData.cellTemplate.render(this, this);
-        } else {
-            this.customCellView = defaultCellContentsTemplate.render(this, this);
+        switch (this.cellType) {
+            case cellType.default:
+                if (this.columnData.cellTemplate !== undefined) {
+                    this.customCellView = this.columnData.cellTemplate.render(this, this);
+                } else {
+                    this.customCellView = defaultCellContentsTemplate.render(this, this);
+                }
+                break;
+
+            case cellType.columnHeader:
+                if (this.columnData.headerCellTemplate !== undefined) {
+                    this.customCellView = this.columnData.headerCellTemplate.render(
+                        this,
+                        this
+                    );
+                } else {
+                    this.customCellView = defaultHeaderCellContentsTemplate.render(
+                        this,
+                        this
+                    );
+                }
+                break;
         }
     }
 

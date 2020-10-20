@@ -26,6 +26,10 @@ export const DataGridCellStyles = css`
         border-radius: calc(var(--corner-radius) * 1px);
     }
 
+    :host(.column-header) {
+        font-weight: 600;
+    }
+
     :host(:${focusVisible}) {
         border: ${neutralFocusBehavior.var} calc(var(--outline-width) * 1px) solid;
         color: ${neutralForegroundActiveBehavior.var};

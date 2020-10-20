@@ -24,7 +24,8 @@ const defaultCellItemTemplate = html`
 `;
 
 const headerCellItemTemplate = html`
-    <fast-data-grid-header-cell
+    <fast-data-grid-cell
+        cell-type="column-header"
         gridColumnIndex="${(x, c) => c.index + 1}"
         :columnData="${x => x}"
     ></fast-data-grid-header-cell>
@@ -83,7 +84,7 @@ export class DataGridRow extends FASTElement {
      *
      * @public
      * @remarks
-     * HTML Attribute: generate-header
+     * HTML Attribute: row-type
      */
     @attr({ attribute: "row-type" })
     public rowType: rowType = rowType.default;
