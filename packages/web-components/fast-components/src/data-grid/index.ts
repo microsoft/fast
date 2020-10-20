@@ -2,8 +2,6 @@ import { customElement } from "@microsoft/fast-element";
 import {
     DataGrid,
     DataGridTemplate as gridTemplate,
-    DataGridHeader,
-    DataGridHeaderTemplate as gridHeaderTemplate,
     DataGridHeaderCell,
     DataGridHeaderCellTemplate as gridHeaderCellTemplate,
     DataGridRow,
@@ -12,7 +10,6 @@ import {
     DataGridCellTemplate as gridCellTemplate,
 } from "@microsoft/fast-foundation";
 import { DataGridStyles as gridStyles } from "./data-grid.styles";
-import { DataGridHeaderStyles as headerStyles } from "./data-grid-header.styles";
 import { DataGridHeaderCellStyles as headerCellStyles } from "./data-grid-header-cell.styles";
 import { DataGridRowStyles as rowStyles } from "./data-grid-row.styles";
 import { DataGridCellStyles as cellStyles } from "./data-grid-cell.styles";
@@ -36,26 +33,6 @@ export class FASTDataGrid extends DataGrid {}
  * @public
  */
 export const DataGridStyles = gridStyles;
-
-/**
- * The FAST Data Grid Header Element.
- *
- * @public
- * @remarks
- * HTML Element: \<fast-data-grid-header\>
- */
-@customElement({
-    name: "fast-data-grid-header",
-    template: gridHeaderTemplate,
-    styles: headerStyles,
-})
-export class FASTDataGridHeader extends DataGridHeader {}
-
-/**
- * Styles for DataGrid header
- * @public
- */
-export const DataGridHeaderStyles = headerStyles;
 
 /**
  * The FAST Data Grid Header Cell Element.

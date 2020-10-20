@@ -18,8 +18,7 @@ import {
 } from "@microsoft/fast-web-utilities";
 import { DataGridCell } from "./data-grid-cell";
 import { DataGridHeaderCell } from "./data-grid-header-cell";
-import { DataGridHeader } from "./data-grid-header";
-import { DataGridRow } from "./data-grid-row";
+import { DataGridRow, rowType } from "./data-grid-row";
 
 /**
  * Defines a column in the grid
@@ -231,7 +230,7 @@ export class DataGrid extends FASTElement {
     private rowsRepeatBehavior: RepeatBehavior | null;
     private rowsPlaceholder: Node | null = null;
 
-    private generatedHeader: DataGridHeader | null = null;
+    private generatedHeader: DataGridRow | null = null;
 
     private isUpdatingFocus: boolean = false;
     private pendingFocusUpdate: boolean = false;
@@ -402,11 +401,12 @@ export class DataGrid extends FASTElement {
     private toggleGeneratedHeader(): void {
         if (this.generateHeader && this.generatedHeader === null) {
             const generatedHeaderElement: HTMLElement = document.createElement(
-                "fast-data-grid-header"
+                "fast-data-grid-row"
             );
-            this.generatedHeader = (generatedHeaderElement as unknown) as DataGridHeader;
+            this.generatedHeader = (generatedHeaderElement as unknown) as DataGridRow;
             this.generatedHeader.columnsData = this.columnsData;
             this.generatedHeader.gridTemplateColumns = this.gridTemplateColumns;
+            this.generatedHeader.rowType = rowType.header;
             if (this.firstChild !== null || this.rowsPlaceholder !== null) {
                 this.insertBefore(
                     generatedHeaderElement,

@@ -6,7 +6,7 @@ import { DataGridRow } from "./data-grid-row";
  * @public
  */
 export const DataGridRowTemplate = html<DataGridRow>`
-    <template role="row">
+    <template role="row" class="${x => (x.rowType === "header" ? "header" : "")}">
         <slot part="cellsSlot" ${slotted("slottedCellElements")}></slot>
     </template>
 `;
