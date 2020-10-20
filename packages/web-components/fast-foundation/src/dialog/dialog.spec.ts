@@ -209,6 +209,33 @@ describe("Dialog", () => {
         await disconnect();
     });
 
+    describe("methods", () => {
+        it("should set the hidden attribute to `false` when the `show()` method is invoked", async () => {
+            const { element, connect, disconnect } = await setup();
+            element.hidden = true;
+
+            await connect();
+
+            expect(element.hidden).to.equal(true);
+
+            element.show();
+
+            expect(element.hidden).to.equal(false);
+        });
+
+        it("should set the hidden attribute to `true` when the `hide()` method is invoked", async () => {
+            const { element, connect, disconnect } = await setup();
+
+            await connect();
+
+            expect(element.hidden).to.equal(false);
+
+            element.hide();
+
+            expect(element.hidden).to.equal(true);
+        });
+    });
+
     describe("events", () => {
         // TODO: test trap focus
         it("should fire an event on click", async () => {
