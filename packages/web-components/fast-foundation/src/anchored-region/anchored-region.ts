@@ -515,11 +515,7 @@ export class AnchoredRegion extends FASTElement {
     private startObservers = (): void => {
         this.stopObservers();
 
-        if (
-            this.anchorElement === null ||
-            (this.viewportElement !== null &&
-                !this.viewportElement.contains(this.anchorElement))
-        ) {
+        if (this.anchorElement === null) {
             return;
         }
 
