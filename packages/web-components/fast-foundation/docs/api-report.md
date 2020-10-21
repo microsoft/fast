@@ -260,6 +260,9 @@ export class DesignSystemProvider extends FASTElement implements CSSCustomProper
     constructor();
     // @internal (undocumented)
     connectedCallback(): void;
+    protected customPropertyStyleSheet: CSSStyleSheet;
+    // (undocumented)
+    protected customPropertyStyleSheetChanged(prev: CSSStyleSheet | void, next: CSSStyleSheet): void;
     designSystem: {};
     // @internal
     designSystemProperties: {

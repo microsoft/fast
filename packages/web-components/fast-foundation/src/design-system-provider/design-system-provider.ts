@@ -2,13 +2,12 @@ import {
     attr,
     Behavior,
     customElement,
-    elements,
     ElementStyles,
     FASTElement,
     observable,
     Observable,
+    PartialFASTElementDefinition,
 } from "@microsoft/fast-element";
-import { PartialFASTElementDefinition } from "@microsoft/fast-element";
 import {
     CSSCustomPropertyDefinition,
     CSSCustomPropertyTarget,
@@ -57,6 +56,12 @@ export const designSystemConsumerBehavior: Behavior = {
 };
 
 const hostSelector = ":host{}";
+const customPropertyRuleCache = new Map<CSSStyleSheet, CSSStyleRule>();
+
+const customPropertyStylesheetCache = new Map<
+    CSSStyleSheet,
+    { target: CSSStyleRule; styles: ElementStyles }
+>();
 
 /**
  * A element to provide Design System values to consumers via CSS custom properties
@@ -222,6 +227,68 @@ export class DesignSystemProvider extends FASTElement
     > = new Map();
 
     /**
+     * Stores a reference to the stylesheet where CSS custom properties are written.
+     *
+     * @remarks
+     * Setting this property can be used to force the DesignSystemProvider to re-use stylesheet references.
+     * This is useful for scenarios where there are many of the same DesignSystemProvider elements on the page but
+     * all or most share the same configuration, eg Card elements. Be especially careful when re-using stylesheet
+     * references in these cases to ensure the element's DesignSystem configurations are the same.
+     *
+     * This property can only be re-assigned when {@link adoptedStyleSheets | https://wicg.github.io/construct-stylesheets/#using-constructed-stylesheets} is supported.
+     * If adoptedStyleSheets are not supported, the DesignSystemProvider will write to a HTMLStyleElement
+     * reference held internally.
+     */
+    @observable
+    protected customPropertyStyleSheet: CSSStyleSheet;
+    protected customPropertyStyleSheetChanged(
+        prev: CSSStyleSheet | void,
+        next: CSSStyleSheet
+    ) {
+        if (!supportsAdoptedStylesheets && prev) {
+            // An app author has tried to re-assign this property when adoptedStyleSheets is not supported. Warn that this is not supported.
+            console.warn(
+                `Assigning ${this.constructor.name}.${DesignSystemProvider.prototype.customPropertyStyleSheetChanged.name} when adoptedStyleSheets is unsupported is not allowed. Avoid setting this property when adoptedStyleSheets is unsupported.`
+            );
+            this.customPropertyStyleSheet = prev;
+            return;
+        }
+
+        // The CSSStyleSheet is connected to an HTMLStyleElement. HTMLStyleElements
+        //  can't be shared so we don't need to do any reconciliation work.
+        if (next.ownerNode) {
+            // We've already added the styles in the constructor, we just need to set up the custom property target
+            this.customPropertyTarget = (next.rules[
+                next.insertRule(hostSelector)
+            ] as CSSStyleRule).style;
+            return;
+        }
+
+        let nextConfig = customPropertyStylesheetCache.get(next);
+
+        if (!nextConfig) {
+            const styles = ElementStyles.create([next]);
+            const target = next.rules[next.insertRule(hostSelector)] as CSSStyleRule;
+            nextConfig = {
+                styles,
+                target,
+            };
+            customPropertyStylesheetCache.set(next, nextConfig);
+        }
+
+        this.customPropertyTarget = nextConfig.target.style;
+        this.$fastController.addStyles(nextConfig.styles);
+
+        if (prev) {
+            const prevConfig = customPropertyStylesheetCache.get(prev);
+
+            if (prevConfig) {
+                this.$fastController.removeStyles(prevConfig.styles);
+            }
+        }
+    }
+
+    /**
      * Track all design system property names so we can react to changes
      * in those properties. Do not initialize or it will clobber value stored
      * by the decorator.
@@ -322,22 +389,14 @@ export class DesignSystemProvider extends FASTElement
     constructor() {
         super();
 
-        let sheet: CSSStyleSheet | null | void;
-
-        if (supportsAdoptedStylesheets) {
-            sheet = new CSSStyleSheet();
-            this.$fastController.addStyles(ElementStyles.create([sheet]));
-        } else {
+        // In cases where adoptedStyleSheets *is* supported, the customPropertyStyleSheet is assigned in the connectedCallback
+        // to give authors opportunity to assign an initial value. In cases where adoptedStyleSheets are *un-supported*, the
+        // property is assigned in the constructor to ensure the DesignSystemProvider initializes the property. The change handler
+        // will then prevent any future assignment.
+        if (!supportsAdoptedStylesheets) {
             const element = document.createElement("style");
             this.$fastController.addStyles(element);
-            sheet = element.sheet;
-        }
-
-        if (sheet) {
-            const rule = sheet.insertRule(hostSelector);
-            this.customPropertyTarget = (sheet.rules[rule] as CSSStyleRule).style;
-        } else {
-            this.customPropertyTarget = this.style;
+            this.customPropertyStyleSheet = element.sheet!;
         }
 
         this.$fastController.addBehaviors([designSystemConsumerBehavior]);
@@ -347,7 +406,12 @@ export class DesignSystemProvider extends FASTElement
      * @internal
      */
     public connectedCallback(): void {
+        if (supportsAdoptedStylesheets && !this.customPropertyStyleSheet) {
+            this.customPropertyStyleSheet = new CSSStyleSheet();
+        }
+
         super.connectedCallback();
+
         const selfNotifier = Observable.getNotifier(this);
         const designSystemNotifier = Observable.getNotifier(this.designSystem);
 

@@ -298,4 +298,5 @@ describe("A DesignSystemProvider", () => {
             });
         });
     });
+    it("should not allow the customPropertyStyleSheet property to be re-assigned when adoptedStyleSheets is unsupported", () => {});
 });
