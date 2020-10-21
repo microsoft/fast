@@ -100,6 +100,20 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
         if (templateColsButton !== null) {
             templateColsButton.onclick = setTemplateCols;
         }
+
+        const addRowButton: Button | null = document.getElementById(
+            "btnaddrow"
+        ) as Button;
+        if (addRowButton !== null) {
+            addRowButton.onclick = addRow;
+        }
+
+        const removeRowButton: Button | null = document.getElementById(
+            "btnremoverow"
+        ) as Button;
+        if (removeRowButton !== null) {
+            removeRowButton.onclick = removeRow;
+        }
     }
 });
 
@@ -150,6 +164,26 @@ function setTemplateCols(): void {
         return;
     }
     defaultGridElement.columnsData = templateColumns;
+}
+
+function addRow(): void {
+    if (defaultGridElement === null || defaultGridElement.rowsData === null) {
+        return;
+    }
+    defaultGridElement.rowsData.push(
+        newDataRow(`${defaultGridElement.rowsData.length + 1}`)
+    );
+}
+
+function removeRow(): void {
+    if (
+        defaultGridElement === null ||
+        defaultGridElement.rowsData === null ||
+        defaultGridElement.rowsData.length === 0
+    ) {
+        return;
+    }
+    defaultGridElement.rowsData.pop();
 }
 
 function toggleWidth(): void {
