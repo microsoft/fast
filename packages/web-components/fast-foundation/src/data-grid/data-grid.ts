@@ -87,14 +87,6 @@ const defaultRowItemTemplate = html`
     <fast-data-grid-row :rowData="${x => x}"></fast-data-grid-row>
 `;
 
-// const defaultRowItemTemplate = html`
-//     <fast-data-grid-row
-//         :gridTemplateColumns="${(x, c) => c.parent.gridTemplateColumns}"
-//         :columnsData="${(x, c) => c.parent.columnsData}"
-//         :rowData="${x => x}"
-//     ></fast-data-grid-row>
-// `;
-
 /**
  * A Data Grid Custom HTML Element.
  *

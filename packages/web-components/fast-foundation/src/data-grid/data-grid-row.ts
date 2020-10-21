@@ -125,8 +125,8 @@ export class DataGridRow extends FASTElement {
     @observable cellElements?: object[];
     private cellElementsChanged() {}
 
-    private cellsRepeatBehavior?: RepeatBehavior;
-    private cellsPlaceholder?: Node;
+    private cellsRepeatBehavior: RepeatBehavior | null = null;
+    private cellsPlaceholder: Node | null = null;
 
     /**
      * @internal
@@ -180,6 +180,14 @@ export class DataGridRow extends FASTElement {
      */
     public disconnectedCallback(): void {
         super.disconnectedCallback();
+
+        if (this.cellsRepeatBehavior !== null && this.cellsPlaceholder !== null) {
+            this.cellsRepeatBehavior.unbind();
+            this.$fastController.removeBehaviors([this.cellsRepeatBehavior!]);
+            this.removeChild(this.cellsPlaceholder);
+            this.cellsRepeatBehavior = null;
+            this.cellsPlaceholder = null;
+        }
 
         this.removeEventListener("cell-focused", this.handleCellFocus);
         this.removeEventListener("focusout", this.handleFocusout);

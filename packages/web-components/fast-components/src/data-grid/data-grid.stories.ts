@@ -216,7 +216,14 @@ function cellTemplateButtonClick(cell: DataGridCell): void {
     ) {
         return;
     }
-    cell.rowData[cell.columnData.columnDataKey] = "clicked";
+    const newRowData: object = { ...cell.rowData };
+    newRowData[cell.columnData.columnDataKey] = "clicked";
+
+    const rowIndex: number = defaultGridElement.rowsData.indexOf(cell.rowData);
+
+    if (rowIndex > -1) {
+        defaultGridElement.rowsData.splice(rowIndex, 1, newRowData);
+    }
 }
 
 function newDataSet(rowCount: number): object[] {
