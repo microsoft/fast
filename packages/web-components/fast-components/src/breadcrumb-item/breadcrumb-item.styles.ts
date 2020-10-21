@@ -29,10 +29,6 @@ export const BreadcrumbItemStyles = css`
         align-items: center;
     }
 
-    .separator {
-        margin: 0 6px;
-    }
-
     .control {
         flex-grow: 1;
         box-sizing: border-box;
@@ -76,14 +72,10 @@ export const BreadcrumbItemStyles = css`
         position: relative;
     }
 
-    .start,
-    .end,
-    ::slotted(svg) {
-        ${
-            /* Glyph size and margin-left is temporary - 
-            replace when adaptive typography is figured out */ ""
-        } width: 16px;
-        height: 16px;
+    :host(:not([href])) {
+        font-weight: 600;
+        margin-inline-start: 11px;
+        cursor: default;
     }
 
     .start {
