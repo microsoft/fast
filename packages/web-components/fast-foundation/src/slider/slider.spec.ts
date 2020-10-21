@@ -263,6 +263,47 @@ describe("Slider", () => {
         await disconnect();
     });
 
+    it("should initialize to the initial value if no value property is set", async () => {
+        const { element, connect, disconnect } = await setup();
+
+        await connect();
+        expect(element.value).to.equal(element["initialValue"]);
+
+        await disconnect();
+    });
+
+    it("should initialize to the provided value attribute if set pre-connection", async () => {
+        const { element, connect, disconnect } = await setup();
+
+        element.setAttribute("value", ".5");
+        await connect();
+
+        expect(element.value).to.equal(".5");
+
+        await disconnect();
+    });
+
+    it("should initialize to the provided value attribute if set post-connection", async () => {
+        const { element, connect, disconnect } = await setup();
+
+        await connect();
+        element.setAttribute("value", ".5");
+
+        expect(element.value).to.equal(".5");
+
+        await disconnect();
+    });
+
+    it("should initialize to the provided value property if set pre-connection", async () => {
+        const { element, connect, disconnect } = await setup();
+        element.value = ".5";
+        await connect();
+
+        expect(element.value).to.equal(".5");
+
+        await disconnect();
+    });
+
     describe("methods", () => {
         it("should increment the value when the `increment()` method is invoked", async () => {
             const { element, connect, disconnect } = await setup();
