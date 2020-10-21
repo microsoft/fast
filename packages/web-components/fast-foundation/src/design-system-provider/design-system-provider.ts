@@ -56,8 +56,6 @@ export const designSystemConsumerBehavior: Behavior = {
 };
 
 const hostSelector = ":host{}";
-const customPropertyRuleCache = new Map<CSSStyleSheet, CSSStyleRule>();
-
 const customPropertyStylesheetCache = new Map<
     CSSStyleSheet,
     { target: CSSStyleRule; styles: ElementStyles }
@@ -241,7 +239,7 @@ export class DesignSystemProvider extends FASTElement
      */
     @observable
     protected customPropertyStyleSheet: CSSStyleSheet;
-    protected customPropertyStyleSheetChanged(
+    private customPropertyStyleSheetChanged(
         prev: CSSStyleSheet | void,
         next: CSSStyleSheet
     ) {
@@ -327,11 +325,7 @@ export class DesignSystemProvider extends FASTElement
 
     /**
      * The target of CSSCustomPropertyDefinitions registered
-     * with the provider. This will be #1 when adoptedStyleSheets are supported
-     * and #2 when they are not.
-     *
-     * 1. The `style` property of a CSSStyleRule on an adoptedStyleSheet
-     * 2. The `style` property of the element, resulting in inline styles
+     * with the provider.
      */
     private customPropertyTarget: CSSStyleDeclaration;
 
