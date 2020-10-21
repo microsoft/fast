@@ -57,4 +57,28 @@ describe("Breadcrumb", () => {
 
         await disconnect();
     });
+
+    it("should set the `aria-current` on the internal, last node, anchor when `href` is passed", async () => {
+        const { element, connect, disconnect } = await fixture(html<FASTBreadcrumb>`
+            <fast-breadcrumb>
+                <fast-breadcrumb-item>
+                    <a href="#">Item1</a>
+                </fast-breadcrumb-item>
+                <fast-breadcrumb-item>
+                    <a href="#">Item2</a>
+                </fast-breadcrumb-item>
+                <fast-breadcrumb-item>
+                    <a href="#" aria-current="page">Item3</a>
+                </fast-breadcrumb-item>
+            </fast-breadcrumb>
+        `);
+
+        await connect();
+
+        expect(
+            element.querySelectorAll("a[href]")[2].getAttribute("aria-current")
+        ).to.equal("page");
+
+        await disconnect();
+    });
 });
