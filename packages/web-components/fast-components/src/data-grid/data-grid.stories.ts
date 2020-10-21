@@ -19,8 +19,9 @@ FASTDesignSystemProvider;
 let defaultGridElement: DataGrid | null = null;
 let defaultRowData: object = newDataRow("default");
 
-const gridTemplateColumns1 = "200px 1fr 1fr 1fr";
-const gridTemplateColumns2 = "100px 1fr 1fr 1fr";
+let columnWidths: string[] = ["1fr", "1fr", "1fr", "1fr"];
+
+let gridTemplateColumnsDefault = "1fr 1fr 1fr 1fr";
 
 addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
     if (name.toLowerCase().startsWith("data-grid")) {
@@ -119,7 +120,7 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
 
 const buttonCellTemplate = html<DataGridCell>`
     <template>
-        <fast-button @click="${x => toggleWidth()}">
+        <fast-button @click="${x => cellTemplateButtonClick(x)}">
             ${x =>
                 x.rowData === null ||
                 x.columnData === null ||
@@ -132,7 +133,7 @@ const buttonCellTemplate = html<DataGridCell>`
 
 const buttonHeaderCellTemplate = html<DataGridCell>`
     <template>
-        <fast-button @click="${x => toggleWidth()}">
+        <fast-button @click="${x => headerTemplateButtonClick(x)}">
             ${x =>
                 x.columnData === null
                     ? null
@@ -149,7 +150,8 @@ function reset(): void {
     }
     defaultGridElement.columnsData = baseColumns;
     defaultGridElement.rowsData = newDataSet(10);
-    defaultGridElement.gridTemplateColumns = gridTemplateColumns1;
+    columnWidths = ["1fr", "1fr", "1fr", "1fr"];
+    defaultGridElement.gridTemplateColumns = `${columnWidths[0]} ${columnWidths[1]} ${columnWidths[2]} ${columnWidths[3]}`;
 }
 
 function setDefaultCols(): void {
@@ -186,15 +188,35 @@ function removeRow(): void {
     defaultGridElement.rowsData.pop();
 }
 
-function toggleWidth(): void {
-    if (defaultGridElement === null) {
+function headerTemplateButtonClick(cell: DataGridCell): void {
+    if (
+        cell.columnData === null ||
+        defaultGridElement === null ||
+        defaultGridElement.columnsData === null
+    ) {
         return;
     }
-    if (defaultGridElement.gridTemplateColumns === gridTemplateColumns1) {
-        defaultGridElement.gridTemplateColumns = gridTemplateColumns2;
+
+    const index: number = defaultGridElement.columnsData.indexOf(cell.columnData);
+
+    if (columnWidths[index] === "1fr") {
+        columnWidths.splice(index, 1, "2fr");
     } else {
-        defaultGridElement.gridTemplateColumns = gridTemplateColumns1;
+        columnWidths.splice(index, 1, "1fr");
     }
+
+    defaultGridElement.gridTemplateColumns = `${columnWidths[0]} ${columnWidths[1]} ${columnWidths[2]} ${columnWidths[3]}`;
+}
+
+function cellTemplateButtonClick(cell: DataGridCell): void {
+    if (
+        cell.columnData === null ||
+        cell.rowData === null ||
+        defaultGridElement === null
+    ) {
+        return;
+    }
+    cell.rowData[cell.columnData.columnDataKey] = "clicked";
 }
 
 function newDataSet(rowCount: number): object[] {
@@ -233,45 +255,31 @@ const templateColumns: DataGridColumn[] = [
         headerCellTemplate: buttonHeaderCellTemplate,
         headerCellFocusTargetCallback: getFocusTarget,
     },
-    { columnDataKey: "item1", title: "Column 1" },
-    { columnDataKey: "item2", title: "Column 2" },
-    { columnDataKey: "item3", title: "Column 3" },
+    {
+        title: "Column 1",
+        columnDataKey: "item1",
+        cellTemplate: buttonCellTemplate,
+        cellFocusTargetCallback: getFocusTarget,
+        headerCellTemplate: buttonHeaderCellTemplate,
+        headerCellFocusTargetCallback: getFocusTarget,
+    },
+    {
+        title: "Column 2",
+        columnDataKey: "item2",
+        cellTemplate: buttonCellTemplate,
+        cellFocusTargetCallback: getFocusTarget,
+        headerCellTemplate: buttonHeaderCellTemplate,
+        headerCellFocusTargetCallback: getFocusTarget,
+    },
+    {
+        title: "Column 3",
+        columnDataKey: "item3",
+        cellTemplate: buttonCellTemplate,
+        cellFocusTargetCallback: getFocusTarget,
+        headerCellTemplate: buttonHeaderCellTemplate,
+        headerCellFocusTargetCallback: getFocusTarget,
+    },
 ];
-
-function incrementAge(): void {
-    // const newRow = Object.assign({}, editRow);
-    // newRow["age"] = newRow["age"] + 1;
-    // editRow = newRow;
-    // const rowWithCellTemplate: DataGridRow | null = document.getElementById(
-    //     "cellTemplateRow"
-    // ) as DataGridRow;
-    // if (rowWithCellTemplate !== null) {
-    //     rowWithCellTemplate.rowData = newRow;
-    // }
-    // dataRows.shift();
-    // dataRows.unshift(newRow);
-    // dataRows.push(newRow);
-    // dataRows.splice(0,1, newRow);
-    // const defaultGrid: DataGrid | null = document.getElementById(
-    //     "defaultGrid"
-    // ) as DataGrid;
-    // if (defaultGrid !== null) {
-    //     defaultGrid.rowsData = dataRows;
-    // }
-    // const newRow: object = { ...dataGridRow1 };
-    // newRow["age"] = newRow["age"] + 1;
-    // const rowWithCellTemplate: DataGridRow | null = document.getElementById(
-    //     "cellTemplateRow"
-    // ) as DataGridRow;
-    // if (rowWithCellTemplate !== null) {
-    //     rowWithCellTemplate.rowData = newRow;
-    // }
-    // dataGridRow1 = newRow;
-}
-
-// function setColumnWidth(columnIndex: number, width: string): void {
-//     templateColumns[columnIndex].columnWidth = width;
-// }
 
 function getFocusTarget(cell: DataGridCell): HTMLElement {
     return cell.querySelector("fast-button") as HTMLElement;
