@@ -51,7 +51,6 @@ describe("Breadcrumb", () => {
 
         await connect();
 
-        // expect(element?.shadowRoot?.querySelector("")).to.not.equal(null);
         expect(
             element.querySelectorAll("fast-breadcrumb-item")[2].getAttribute("separator")
         ).to.equal(null);

@@ -1,4 +1,4 @@
-import { FASTElement, observable, attr } from "@microsoft/fast-element";
+import { FASTElement, observable } from "@microsoft/fast-element";
 import { BreadcrumbItem } from "../breadcrumb-item";
 
 /**
@@ -14,6 +14,13 @@ export class Breadcrumb extends FASTElement {
     public slottedBreadcrumbItems: HTMLElement[];
     public slottedBreadcrumbItemsChanged() {
         if (this.$fastController.isConnected) {
+            if (
+                this.slottedBreadcrumbItems === undefined ||
+                this.slottedBreadcrumbItems.length === 0
+            ) {
+                return;
+            }
+
             const lastNode: HTMLElement = this.slottedBreadcrumbItems[
                 this.slottedBreadcrumbItems.length - 1
             ];
