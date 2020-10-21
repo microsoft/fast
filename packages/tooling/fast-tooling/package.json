@@ -26,7 +26,7 @@
         "prettier": "prettier --config ../../../.prettierrc --write \"**/*.ts\"",
         "prettier:diff": "prettier --config ../../../.prettierrc \"**/*.ts\" --list-different",
         "start": "yarn build:message-system && webpack-dev-server --history-api-fallback --progress",
-        "test": "yarn eslint && yarn run unit-tests && yarn build",
+        "test": "yarn eslint && yarn unit-tests && yarn build",
         "eslint": "eslint . --ext .ts",
         "eslint:fix": "eslint . --ext .ts --fix",
         "unit-tests": "jest --runInBand",

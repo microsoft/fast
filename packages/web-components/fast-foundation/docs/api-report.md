@@ -302,7 +302,9 @@ export class Dialog extends FASTElement {
     // @internal (undocumented)
     dismiss(): void;
     hidden: boolean;
+    hide(): void;
     modal: boolean;
+    show(): void;
     trapFocus: boolean;
     }
 
