@@ -224,7 +224,7 @@ export class Tabs extends FASTElement {
         this.setTabs();
         this.handleActiveIndicatorPosition();
         this.setTabPanels();
-        // this.focusTab();
+        this.focusTab();
         this.change();
     }
 
@@ -334,6 +334,9 @@ export class Tabs extends FASTElement {
         let index: number = 0;
 
         index = this.activetab ? group.indexOf(this.activetab) + 1 : 1;
+        if (index === group.length) {
+            index = 0;
+        }
 
         while (index < group.length && group.length > 1) {
             if (this.isFocusableElement(group[index])) {
