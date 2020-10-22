@@ -42,18 +42,15 @@ export class Breadcrumb extends FASTElement {
      * We look in the shadow DOM because we insert an anchor when breadcrumb-item has an href.
      */
     private findChildWithHref(node: HTMLElement): HTMLElement | null {
-        let findNodeWithHref: HTMLElement | null = null;
-
         if (node.childElementCount > 0) {
-            findNodeWithHref = node.querySelector("a[href]");
+            return node.querySelector("a[href]");
         } else if (node.shadowRoot?.childElementCount) {
-            findNodeWithHref = node.shadowRoot?.querySelector("a[href]");
-        }
-        return findNodeWithHref;
+            return node.shadowRoot?.querySelector("a[href]");
+        } else return null;
     }
 
     /**
-     *  If child node with href is found then apply aria-current to child node otherwise apply aria-current to the host element, with an href
+     *  If child node with an anchor tag and with href is found then apply aria-current to child node otherwise apply aria-current to the host element, with an href
      */
     private setLastItemAriaCurrent(lastNode: HTMLElement): void {
         const childNodeWithHref: HTMLElement | null = this.findChildWithHref(lastNode);
