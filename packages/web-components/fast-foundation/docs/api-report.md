@@ -286,6 +286,7 @@ export class DataGridCell extends FASTElement {
     connectedCallback(): void;
     // @internal (undocumented)
     disconnectedCallback(): void;
+    gridColumn: string;
     // (undocumented)
     handleFocusin(e: FocusEvent): void;
     // (undocumented)

@@ -17,7 +17,7 @@ import { DataGridColumn } from "./data-grid";
 
 const defaultCellItemTemplate = html`
     <fast-data-grid-cell
-        gridColumnIndex="${(x, c) => c.index + 1}"
+        grid-column="${(x, c) => c.index + 1}"
         :rowData="${(x, c) => c.parent.rowData}"
         :columnData="${x => x}"
     ></fast-data-grid-cell>
@@ -26,7 +26,7 @@ const defaultCellItemTemplate = html`
 const headerCellItemTemplate = html`
     <fast-data-grid-cell
         cell-type="column-header"
-        gridColumnIndex="${(x, c) => c.index + 1}"
+        grid-column="${(x, c) => c.index + 1}"
         :columnData="${x => x}"
     ></fast-data-grid-header-cell>
 `;

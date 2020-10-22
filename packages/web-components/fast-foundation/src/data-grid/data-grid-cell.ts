@@ -66,6 +66,22 @@ export class DataGridCell extends FASTElement {
     }
 
     /**
+     * The column index of the cell.
+     * This will be applied to the css grid-column-index value
+     * applied to the cell
+     *
+     * @public
+     * @remarks
+     * HTML Attribute: grid-column
+     */
+    @attr({ attribute: "grid-column" })
+    public gridColumn: string;
+    private gridColumnChanged(): void {
+        if ((this as FASTElement).$fastController.isConnected) {
+        }
+    }
+
+    /**
      * The base data for the parent row
      *
      * @public
@@ -131,6 +147,8 @@ export class DataGridCell extends FASTElement {
         }`;
 
         this.updateCellView();
+
+        this.updateCellStyle();
     }
 
     /**
@@ -292,4 +310,8 @@ export class DataGridCell extends FASTElement {
             this.customCellView = null;
         }
     }
+
+    private updateCellStyle = (): void => {
+        this.style.gridColumn = this.gridColumn;
+    };
 }
