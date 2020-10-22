@@ -11,7 +11,7 @@ import {
     keyCodeEscape,
     keyCodeFunction2,
 } from "@microsoft/fast-web-utilities";
-import { DataGridColumn } from "./data-grid";
+import { ColumnDefinition } from "./data-grid";
 
 const defaultCellContentsTemplate: ViewTemplate = html<DataGridCell>`
     <template>
@@ -99,10 +99,10 @@ export class DataGridCell extends FASTElement {
      * @public
      */
     @observable
-    public columnData: DataGridColumn | null = null;
+    public columnData: ColumnDefinition | null = null;
     private columnDataChanged(
-        oldValue: DataGridColumn | null,
-        newValue: DataGridColumn | null
+        oldValue: ColumnDefinition | null,
+        newValue: ColumnDefinition | null
     ): void {
         if ((this as FASTElement).$fastController.isConnected) {
             if (newValue === null) {

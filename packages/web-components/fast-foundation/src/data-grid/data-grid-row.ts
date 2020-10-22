@@ -13,7 +13,7 @@ import {
     keyCodeEnd,
     keyCodeHome,
 } from "@microsoft/fast-web-utilities";
-import { DataGridColumn } from "./data-grid";
+import { ColumnDefinition } from "./data-grid";
 
 const defaultCellItemTemplate = html`
     <fast-data-grid-cell
@@ -111,7 +111,7 @@ export class DataGridRow extends FASTElement {
      * @public
      */
     @observable
-    public columnsData: DataGridColumn[] | null = null;
+    public columnsData: ColumnDefinition[] | null = null;
     private columnsDataChanged(): void {
         if ((this as FASTElement).$fastController.isConnected) {
         }

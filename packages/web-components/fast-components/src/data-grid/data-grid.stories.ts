@@ -7,7 +7,7 @@ import {
     Button,
     DataGrid,
     DataGridCell,
-    DataGridColumn,
+    ColumnDefinition,
     DataGridRow,
 } from "@microsoft/fast-foundation";
 import { FASTDataGrid } from "./";
@@ -246,14 +246,14 @@ function newDataRow(id: string): object {
     };
 }
 
-const baseColumns: DataGridColumn[] = [
+const baseColumns: ColumnDefinition[] = [
     { columnDataKey: "rowId" },
     { columnDataKey: "item1" },
     { columnDataKey: "item2" },
     { columnDataKey: "item3" },
 ];
 
-const templateColumns: DataGridColumn[] = [
+const templateColumns: ColumnDefinition[] = [
     {
         title: "RowID",
         columnDataKey: "rowId",

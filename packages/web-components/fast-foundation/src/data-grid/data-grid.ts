@@ -24,7 +24,7 @@ import { DataGridRow, rowTypes } from "./data-grid-row";
  *
  * @public
  */
-export interface DataGridColumn {
+export interface ColumnDefinition {
     /**
      * Identifies the data item to be displayed in this column
      * (i.e. how the data item is labelled in each row)
@@ -34,7 +34,7 @@ export interface DataGridColumn {
     /**
      * Sets the css grid-column property on the cell which controls its placement in
      * the parent row. If left unset the cells will set this value to match the index
-     * of their column in the parent collection of DataGridColumns.
+     * of their column in the parent collection of ColumnDefinitions.
      */
     gridColumn?: string;
 
@@ -96,8 +96,8 @@ export class DataGrid extends FASTElement {
     /**
      *  generates a basic column definition by examining sample row data
      */
-    public static generateColumns = (row: object): DataGridColumn[] => {
-        const definitions: DataGridColumn[] = [];
+    public static generateColumns = (row: object): ColumnDefinition[] => {
+        const definitions: ColumnDefinition[] = [];
         const properties: string[] = Object.getOwnPropertyNames(row);
         properties.forEach((property: string, index: number) => {
             definitions.push({
@@ -111,9 +111,9 @@ export class DataGrid extends FASTElement {
     /**
      *  generates a gridTemplateColumns based on columndata array
      */
-    public static generateTemplateColumns(columnsData: DataGridColumn[]): string {
+    public static generateTemplateColumns(columnsData: ColumnDefinition[]): string {
         let templateColumns: string = "";
-        columnsData.forEach((column: DataGridColumn) => {
+        columnsData.forEach((column: ColumnDefinition) => {
             templateColumns = `${templateColumns}${
                 templateColumns === "" ? "" : " "
             }${"1fr"}`;
@@ -166,7 +166,7 @@ export class DataGrid extends FASTElement {
      * @public
      */
     @observable
-    public columnsData: DataGridColumn[] = [];
+    public columnsData: ColumnDefinition[] = [];
     private columnsDataChanged(): void {
         this.generatedGridTemplateColumns = DataGrid.generateTemplateColumns(
             this.columnsData

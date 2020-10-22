@@ -217,6 +217,19 @@ export class Checkbox extends FormAssociated<HTMLInputElement> {
 export const CheckboxTemplate: import("@microsoft/fast-element").ViewTemplate<Checkbox, any>;
 
 // @public
+export interface ColumnDefinition {
+    cellFocusTargetCallback?: (cell: DataGridCell) => HTMLElement;
+    cellInternalFocusQueue?: boolean;
+    cellTemplate?: ViewTemplate;
+    columnDataKey: string;
+    gridColumn?: string;
+    headerCellFocusTargetCallback?: (cell: DataGridCell) => HTMLElement;
+    headerCellInternalFocusQueue?: boolean;
+    headerCellTemplate?: ViewTemplate;
+    title?: string;
+}
+
+// @public
 export function composedParent<T extends HTMLElement>(element: T): HTMLElement | null;
 
 // @public
@@ -257,16 +270,16 @@ export type CSSDisplayPropertyValue = "block" | "contents" | "flex" | "grid" | "
 // @public
 export class DataGrid extends FASTElement {
     constructor();
-    columnsData: DataGridColumn[];
+    columnsData: ColumnDefinition[];
     // @internal (undocumented)
     connectedCallback(): void;
     // @internal (undocumented)
     disconnectedCallback(): void;
     focusColumnIndex: number;
     focusRowIndex: number;
-    static generateColumns: (row: object) => DataGridColumn[];
+    static generateColumns: (row: object) => ColumnDefinition[];
     generateHeader: boolean;
-    static generateTemplateColumns(columnsData: DataGridColumn[]): string;
+    static generateTemplateColumns(columnsData: ColumnDefinition[]): string;
     gridTemplateColumns: string;
     // (undocumented)
     handleFocus(e: FocusEvent): void;
@@ -281,7 +294,7 @@ export class DataGrid extends FASTElement {
 // @public
 export class DataGridCell extends FASTElement {
     cellType: cellTypes;
-    columnData: DataGridColumn | null;
+    columnData: ColumnDefinition | null;
     // @internal (undocumented)
     connectedCallback(): void;
     // @internal (undocumented)
@@ -301,25 +314,12 @@ export class DataGridCell extends FASTElement {
 export const DataGridCellTemplate: import("@microsoft/fast-element").ViewTemplate<DataGridCell, any>;
 
 // @public
-export interface DataGridColumn {
-    cellFocusTargetCallback?: (cell: DataGridCell) => HTMLElement;
-    cellInternalFocusQueue?: boolean;
-    cellTemplate?: ViewTemplate;
-    columnDataKey: string;
-    gridColumn?: string;
-    headerCellFocusTargetCallback?: (cell: DataGridCell) => HTMLElement;
-    headerCellInternalFocusQueue?: boolean;
-    headerCellTemplate?: ViewTemplate;
-    title?: string;
-}
-
-// @public
 export class DataGridRow extends FASTElement {
     // (undocumented)
     cellElements?: object[];
     // (undocumented)
     cellItemTemplate?: ViewTemplate;
-    columnsData: DataGridColumn[] | null;
+    columnsData: ColumnDefinition[] | null;
     // @internal (undocumented)
     connectedCallback(): void;
     // @internal (undocumented)
