@@ -28,16 +28,6 @@ function mapAttributesAndSlotsToData(
     schemaId: string,
     schemaDictionary: SchemaDictionary
 ) {
-    console.log(
-        "\n***mapAttributesAndSlotsToDa",
-        node,
-        " slotAttributes:",
-        slotAttributes,
-        " schemaId:",
-        schemaId,
-        " schemaDictionary:",
-        schemaDictionary
-    );
     if (schemaId !== null && schemaId !== undefined) {
         return Object.entries(node.attributes)
             .map(([attributeKey, attributeValue]: [string, string]) => {
@@ -74,13 +64,6 @@ function mapAttributesAndSlotsToData(
                     [currentValue[0]]: currentValue[1],
                 };
             }, slotAttributes);
-    } else {
-        console.log(
-            "schemaId was null so the reduce won't work for this item node:",
-            node,
-            " schemaDictionary:",
-            schemaDictionary
-        );
     }
 }
 
