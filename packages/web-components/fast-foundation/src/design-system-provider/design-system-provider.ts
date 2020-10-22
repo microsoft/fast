@@ -136,6 +136,7 @@ class CustomPropertyManager {
             }
         }
     }
+
     public subscribe(dsp: DesignSystemProvider): void {
         this.subscribers.add(dsp);
 
@@ -143,14 +144,18 @@ class CustomPropertyManager {
             this._owner = dsp;
         }
 
+        dsp.cssCustomPropertyDefinitions.forEach(def => {
+            this.register(def);
+        });
+
         if (!this.sheet.ownerNode && this.styles) {
             dsp.$fastController.addStyles(this.styles);
         }
-
-        // TODO: register any custom properties registered to the DSP
     }
+
     public unsubscribe(dsp: DesignSystemProvider): void {
         this.subscribers.delete(dsp);
+        dsp.cssCustomPropertyDefinitions.forEach(def => this.unregister(def.name));
 
         if (this.owner === dsp) {
             this._owner = this.subscribers.size
@@ -161,8 +166,6 @@ class CustomPropertyManager {
         if (!this.sheet.ownerNode && this.styles) {
             dsp.$fastController.removeStyles(this.styles);
         }
-
-        // TODO: un-register any custom properties registered to the DSP
     }
 
     /**
@@ -402,6 +405,13 @@ export class DesignSystemProvider extends FASTElement
     }
 
     /**
+     * Stores all CSSCustomPropertyDefinitions registered with the provider.
+     * @internal
+     *
+     */
+    public cssCustomPropertyDefinitions = new Map<string, CSSCustomPropertyDefinition>();
+
+    /**
      * Track all design system property names so we can react to changes
      * in those properties. Do not initialize or it will clobber value stored
      * by the decorator.
@@ -453,12 +463,7 @@ export class DesignSystemProvider extends FASTElement
                 this.designSystem[key] = value;
                 const property = this.designSystemProperties[key];
 
-                if (
-                    property &&
-                    property.cssCustomProperty &&
-                    manager &&
-                    manager.owner === this
-                ) {
+                if (property && property.cssCustomProperty && manager) {
                     manager.set({
                         name: property.cssCustomProperty,
                         value,
@@ -468,7 +473,7 @@ export class DesignSystemProvider extends FASTElement
                 this.syncDesignSystemWithProvider();
                 const property = this.designSystemProperties[key].cssCustomProperty;
 
-                if (manager?.owner === this) {
+                if (manager) {
                     if (typeof property === "string") {
                         manager.set({
                             name: property,
@@ -591,14 +596,15 @@ export class DesignSystemProvider extends FASTElement
      * Register a {@link @microsoft/fast-foundation#CSSCustomPropertyDefinition} with the DeignSystemProvider.
      * Registering a {@link @microsoft/fast-foundation#CSSCustomPropertyDefinition} will create the CSS custom property.
      *
-     * @param behavior - The {@link @microsoft/fast-foundation#CSSCustomPropertyDefinition} to register.
+     * @param def - The {@link @microsoft/fast-foundation#CSSCustomPropertyDefinition} to register.
      * @public
      */
-    public registerCSSCustomProperty(behavior: CSSCustomPropertyDefinition) {
+    public registerCSSCustomProperty(def: CSSCustomPropertyDefinition) {
         const manager = customPropertyStylesheetCache.get(this.customPropertyStyleSheet);
+        this.cssCustomPropertyDefinitions.set(def.name, def);
 
         if (manager) {
-            manager.register(behavior);
+            manager.register(def);
         }
     }
 
@@ -611,6 +617,7 @@ export class DesignSystemProvider extends FASTElement
      */
     public unregisterCSSCustomProperty(def: CSSCustomPropertyDefinition) {
         const manager = customPropertyStylesheetCache.get(this.customPropertyStyleSheet);
+        this.cssCustomPropertyDefinitions.delete(def.name);
 
         if (manager) {
             manager.unregister(def.name);

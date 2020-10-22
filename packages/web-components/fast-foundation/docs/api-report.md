@@ -260,6 +260,8 @@ export class DesignSystemProvider extends FASTElement implements CSSCustomProper
     constructor();
     // @internal (undocumented)
     connectedCallback(): void;
+    // @internal
+    cssCustomPropertyDefinitions: Map<string, CSSCustomPropertyDefinition>;
     protected customPropertyStyleSheet: CSSStyleSheet;
     designSystem: {};
     // @internal
@@ -274,7 +276,7 @@ export class DesignSystemProvider extends FASTElement implements CSSCustomProper
     static isDesignSystemProvider(el: HTMLElement | DesignSystemProvider): el is DesignSystemProvider;
     readonly isDesignSystemProvider = true;
     provider: DesignSystemProvider | null;
-    registerCSSCustomProperty(behavior: CSSCustomPropertyDefinition): void;
+    registerCSSCustomProperty(def: CSSCustomPropertyDefinition): void;
     static registerTagName(tagName: string): void;
     static get tagNames(): string[];
     unregisterCSSCustomProperty(def: CSSCustomPropertyDefinition): void;
