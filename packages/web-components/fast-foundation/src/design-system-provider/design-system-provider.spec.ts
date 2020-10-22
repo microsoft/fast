@@ -118,6 +118,7 @@ describe("A DesignSystemProvider", () => {
 
             expect(aAccessors.length).to.equal(2);
 
+            console.log(a.designSystem, n.designSystem);
             window.setTimeout(() => {
                 Observable.getAccessors(a.designSystem).forEach(x => {
                     expect(a.designSystem[x.name]).to.equal(n.designSystem[x.name]);
