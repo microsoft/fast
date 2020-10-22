@@ -152,7 +152,7 @@ class CustomPropertyManager {
     public unsubscribe(dsp: DesignSystemProvider): void {
         this.subscribers.delete(dsp);
 
-        if (this._owner === dsp) {
+        if (this.owner === dsp) {
             this._owner = this.subscribers.size
                 ? this.subscribers.values().next().value
                 : null;
@@ -470,7 +470,10 @@ export class DesignSystemProvider extends FASTElement
 
                 if (manager?.owner === this) {
                     if (typeof property === "string") {
-                        manager.unregister(property);
+                        manager.set({
+                            name: property,
+                            value: "",
+                        });
                     }
 
                     manager.setAll();
@@ -546,7 +549,6 @@ export class DesignSystemProvider extends FASTElement
 
             const value = this[property];
 
-            // this.designSystem[property] = value;
             // If property is set then put it onto the design system
             if (this.isValidDesignSystemValue(value)) {
                 this.designSystem[property] = value;
@@ -559,7 +561,7 @@ export class DesignSystemProvider extends FASTElement
                 ) {
                     manager.set({
                         name: cssCustomProperty,
-                        value: () => this[property],
+                        value: this[property],
                     });
                 }
             }
