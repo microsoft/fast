@@ -1,6 +1,6 @@
 import { customElement } from "@microsoft/fast-element";
 import { Breadcrumb, BreadcrumbTemplate as template } from "@microsoft/fast-foundation";
-import { BreadcrumbStyles as styles } from "./breadcrumbs.styles";
+import { BreadcrumbStyles as styles } from "./breadcrumb.styles";
 
 /**
  * The FAST Breadcrumb Element. Implements {@link @microsoft/fast-foundation#Breadcrumb},
