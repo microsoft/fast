@@ -183,6 +183,22 @@ export const CheckboxTemplate: import("@microsoft/fast-element").ViewTemplate<Ch
 // @public
 export function composedParent<T extends HTMLElement>(element: T): HTMLElement | null;
 
+// Warning: (ae-forgotten-export) The symbol "CustomPropertyManagerBase" needs to be exported by the entry point index.d.ts
+//
+// @public
+export class ConstructableStylesCustomPropertyManager extends CustomPropertyManagerBase {
+    constructor(sheet: CSSStyleSheet);
+    // (undocumented)
+    protected customPropertyTarget: CSSStyleDeclaration;
+    isSubscribed(provider: DesignSystemProvider): boolean;
+    // (undocumented)
+    protected readonly sheet: CSSStyleSheet;
+    // (undocumented)
+    protected styles: ElementStyles;
+    subscribe(provider: DesignSystemProvider): void;
+    unsubscribe(provider: DesignSystemProvider): void;
+}
+
 // @public
 export class CSSCustomPropertyBehavior implements Behavior, CSSCustomPropertyDefinition {
     constructor(name: string, value: CSSCustomPropertyDefinition["value"], host: (source: HTMLElement) => Partial<CSSCustomPropertyTarget> | null);
@@ -217,6 +233,18 @@ export interface CSSCustomPropertyTarget {
 
 // @public
 export type CSSDisplayPropertyValue = "block" | "contents" | "flex" | "grid" | "inherit" | "initial" | "inline" | "inline-block" | "inline-flex" | "inline-grid" | "inline-table" | "list-item" | "none" | "run-in" | "table" | "table-caption" | "table-cell" | "table-column" | "table-column-group" | "table-footer-group" | "table-header-group" | "table-row" | "table-row-group";
+
+// @public
+export interface CustomPropertyManager {
+    isSubscribed?(provider: DesignSystemProvider): boolean;
+    readonly owner: DesignSystemProvider | null;
+    register(definition: CSSCustomPropertyDefinition): void;
+    set(definition: CSSCustomPropertyDefinition): void;
+    setAll(): void;
+    subscribe?(provider: DesignSystemProvider): void;
+    unregister(name: string): void;
+    unsubscribe?(provider: DesignSystemProvider): void;
+}
 
 // @public
 export interface DecoratorDesignSystemPropertyConfiguration extends Omit<DecoratorAttributeConfiguration, "attribute"> {
@@ -262,12 +290,14 @@ export class DesignSystemProvider extends FASTElement implements CSSCustomProper
     connectedCallback(): void;
     // @internal
     cssCustomPropertyDefinitions: Map<string, CSSCustomPropertyDefinition>;
-    protected customPropertyStyleSheet: CSSStyleSheet;
+    protected customPropertyManager: CustomPropertyManager;
     designSystem: {};
     // @internal
     designSystemProperties: {
         [propertyName: string]: Required<Pick<DecoratorDesignSystemPropertyConfiguration, "cssCustomProperty" | "default">>;
     };
+    // (undocumented)
+    disconnectedCallback(): void;
     // @deprecated
     disconnectedCSSCustomPropertyRegistry: CSSCustomPropertyDefinition[];
     disconnectedRegistry: Array<(provider: DesignSystemProvider) => void> | void;
@@ -693,6 +723,17 @@ export class StartEnd {
 
 // @public
 export const startTemplate: import("@microsoft/fast-element").ViewTemplate<StartEnd, any>;
+
+// @public
+export class StyleElementCustomPropertyManager extends CustomPropertyManagerBase {
+    constructor(style: HTMLStyleElement, provider: DesignSystemProvider);
+    // (undocumented)
+    protected customPropertyTarget: CSSStyleDeclaration;
+    // (undocumented)
+    readonly sheet: CSSStyleSheet;
+    // (undocumented)
+    readonly styles: HTMLStyleElement;
+}
 
 // @alpha (undocumented)
 export const supportsElementInternals: boolean;

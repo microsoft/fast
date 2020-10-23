@@ -57,29 +57,84 @@ export const designSystemConsumerBehavior: Behavior = {
 };
 
 const hostSelector = ":host{}";
-const customPropertyStylesheetCache = new Map<CSSStyleSheet, CustomPropertyManager>();
 
-class CustomPropertyManager {
+/**
+ * Describes the interface for custom property management object used by the {@link DesignSystemProvider}
+ * to manage CSS custom properties.
+ *
+ * The managers role is to attach a stylesheet to the DesignSystemProvider instance
+ * and to write CSS custom properties to that stylesheet instance when required by the
+ * DesignSystemProvider.
+ */
+export interface CustomPropertyManager {
     /**
-     * The stylesheet to which custom properties are written
+     * The DesignSystemProvider responsible for evaluating CSSCustomPropertyDefinitions
      */
-    public readonly sheet: CSSStyleSheet;
+    readonly owner: DesignSystemProvider | null;
 
     /**
-     * The element that owns the manager. This is the only element that should write to the
+     * Register and write a CSSCustomPropertyDefinition
+     * @param definition - The definition to register
+     */
+    register(definition: CSSCustomPropertyDefinition): void;
+
+    /**
+     * Unregister a CSSCustomPropertyDefinition by name. If there are no other
+     * registrations, the CSS custom property will be removed.
+     * @param name - The name of the custom property definition to unregister
+     */
+    unregister(name: string): void;
+
+    /**
+     * Write a CSSCustomProperty without registering it
+     * @param definition - The definition to write
+     */
+    set(definition: CSSCustomPropertyDefinition): void;
+
+    /**
+     * Sets all CSSCustomPropertyDefinitions that have been registered
+     */
+    setAll(): void;
+
+    /**
+     * Subscribe a DesignSystemProvider instances to the manager.
+     * @param provider - The DesignSystemProvider to subscribe
+     */
+    subscribe?(provider: DesignSystemProvider): void;
+
+    /**
+     * Unsubscribe a DesignSystemProvider instance from the manager.
+     * @param provider - The DesignSystemProvider to unsubscribe.
+     */
+    unsubscribe?(provider: DesignSystemProvider): void;
+
+    /**
+     * Return whether the DesignSystemProvider instances is subscribed.
+     */
+    isSubscribed?(provider: DesignSystemProvider): boolean;
+}
+
+abstract class CustomPropertyManagerBase implements CustomPropertyManager {
+    /**
+     * The CSSStyleDeclaration to which all CSS custom properties are written
+     */
+    protected abstract customPropertyTarget: CSSStyleDeclaration;
+
+    /**
+     * {@inheritdoc CustomPropertyManager.owner}
      */
     public get owner(): DesignSystemProvider | null {
         return this._owner;
     }
 
-    private _owner: DesignSystemProvider | null = null;
+    /**
+     * The private settable owner
+     */
+    protected _owner: DesignSystemProvider | null = null;
 
-    private subscribers = new Set();
-
-    private customPropertyTarget: CSSStyleDeclaration;
-
-    private styles: ElementStyles | void;
-
+    /**
+     * Tracks state of rAF to only invoke property writes once per animation frame
+     */
     private ticking: boolean = false;
 
     /**
@@ -90,25 +145,8 @@ class CustomPropertyManager {
         CSSCustomPropertyDefinition & { count: number }
     > = new Map();
 
-    constructor(sheet: CSSStyleSheet) {
-        this.sheet = sheet;
-
-        this.customPropertyTarget = (sheet.rules[
-            sheet.insertRule(hostSelector)
-        ] as CSSStyleRule).style;
-
-        // If sheet is not connected to an HTMLStyleElement
-        if (!sheet.ownerNode) {
-            this.styles = ElementStyles.create([this.sheet]);
-        }
-    }
-
     /**
-     * Unregister a {@link @microsoft/fast-foundation#CSSCustomPropertyDefinition} from the DeignSystemProvider.
-     * If all registrations of the definition are unregistered, the CSS custom property will be removed.
-     *
-     * @param behavior - The {@link @microsoft/fast-foundation#CSSCustomPropertyDefinition} to register.
-     * @public
+     * {@inheritdoc CustomPropertyManager.register}
      */
     public register(def: CSSCustomPropertyDefinition): void {
         const cached = this.cssCustomPropertyDefinitions.get(def.name);
@@ -124,6 +162,9 @@ class CustomPropertyManager {
         }
     }
 
+    /**
+     * {@inheritdoc CustomPropertyManager.unregister}
+     */
     public unregister(name: string): void {
         const cached = this.cssCustomPropertyDefinitions.get(name);
 
@@ -137,40 +178,8 @@ class CustomPropertyManager {
         }
     }
 
-    public subscribe(dsp: DesignSystemProvider): void {
-        this.subscribers.add(dsp);
-
-        if (this.subscribers.size === 1) {
-            this._owner = dsp;
-        }
-
-        dsp.cssCustomPropertyDefinitions.forEach(def => {
-            this.register(def);
-        });
-
-        if (!this.sheet.ownerNode && this.styles) {
-            dsp.$fastController.addStyles(this.styles);
-        }
-    }
-
-    public unsubscribe(dsp: DesignSystemProvider): void {
-        this.subscribers.delete(dsp);
-        dsp.cssCustomPropertyDefinitions.forEach(def => this.unregister(def.name));
-
-        if (this.owner === dsp) {
-            this._owner = this.subscribers.size
-                ? this.subscribers.values().next().value
-                : null;
-        }
-
-        if (!this.sheet.ownerNode && this.styles) {
-            dsp.$fastController.removeStyles(this.styles);
-        }
-    }
-
     /**
-     * Writes a CSS custom property to the design system provider,
-     * evaluating any function values with the design system.
+     * {@inheritdoc CustomPropertyManager.set}
      */
     public set = (definition: CSSCustomPropertyDefinition) => {
         if (this.owner) {
@@ -181,6 +190,9 @@ class CustomPropertyManager {
         }
     };
 
+    /**
+     * {@inheritdoc CustomPropertyManager.set}
+     */
     public setAll() {
         if (this.ticking) {
             return;
@@ -201,6 +213,106 @@ class CustomPropertyManager {
     private deleteCustomProperty = (name: string): void => {
         this.customPropertyTarget.removeProperty(`--${name}`);
     };
+}
+
+/**
+ * An implementation of {@link CustomPropertyManager} that uses the constructable CSSStyleSheet object.
+ * This implementation supports multiple DesignSystemProvider subscriptions.
+ *
+ * @public
+ */
+export class ConstructableStylesCustomPropertyManager extends CustomPropertyManagerBase {
+    protected readonly sheet: CSSStyleSheet;
+    protected styles: ElementStyles;
+    protected customPropertyTarget: CSSStyleDeclaration;
+    private subscribers = new Set();
+
+    constructor(sheet: CSSStyleSheet) {
+        super();
+
+        this.sheet = sheet;
+
+        this.styles = ElementStyles.create([sheet]);
+
+        this.customPropertyTarget = (sheet.rules[
+            sheet.insertRule(hostSelector)
+        ] as CSSStyleRule).style;
+    }
+
+    /**
+     * {@inheritdoc CustomPropertyManager.subscribe}
+     */
+    public subscribe(provider: DesignSystemProvider): void {
+        this.subscribers.add(provider);
+
+        if (this.subscribers.size === 1) {
+            this._owner = provider;
+        }
+
+        provider.cssCustomPropertyDefinitions.forEach(def => {
+            this.register(def);
+        });
+
+        provider.$fastController.addStyles(this.styles);
+    }
+
+    /**
+     * {@inheritdoc CustomPropertyManager.unsubscribe}
+     */
+    public unsubscribe(provider: DesignSystemProvider): void {
+        this.subscribers.delete(provider);
+        provider.cssCustomPropertyDefinitions.forEach(def => this.unregister(def.name));
+
+        if (this.owner === provider) {
+            this._owner = this.subscribers.size
+                ? this.subscribers.values().next().value
+                : null;
+        }
+
+        if (!this.sheet.ownerNode && this.styles) {
+            provider.$fastController.removeStyles(this.styles);
+        }
+    }
+
+    /**
+     * {@inheritdoc CustomPropertyManager.isSubscribed}
+     */
+    public isSubscribed(provider: DesignSystemProvider): boolean {
+        return this.subscribers.has(provider);
+    }
+}
+
+/**
+ * An implementation of {@link CustomPropertyManager} that uses the HTMLStyleElement. This implementation
+ * does not support multiple DesignSystemProvider subscriptions.
+ *
+ * @public
+ */
+export class StyleElementCustomPropertyManager extends CustomPropertyManagerBase {
+    public readonly sheet: CSSStyleSheet;
+    protected customPropertyTarget: CSSStyleDeclaration;
+    public readonly styles: HTMLStyleElement;
+
+    constructor(style: HTMLStyleElement, provider: DesignSystemProvider) {
+        super();
+
+        // For HTMLStyleElements we need to attach the element
+        // to the DOM prior to accessing the HTMLStyleElement.sheet
+        // because the property evaluates null if disconnected
+        provider.$fastController.addStyles(style);
+        this.sheet = style.sheet!;
+        this.styles = style;
+
+        this.customPropertyTarget = (this.sheet.rules[
+            this.sheet.insertRule(hostSelector)
+        ] as CSSStyleRule).style;
+
+        this._owner = provider;
+
+        provider.cssCustomPropertyDefinitions.forEach(def => {
+            this.register(def);
+        });
+    }
 }
 
 /**
@@ -372,35 +484,17 @@ export class DesignSystemProvider extends FASTElement
      * reference held internally.
      */
     @observable
-    protected customPropertyStyleSheet: CSSStyleSheet;
-    private customPropertyStyleSheetChanged(
-        prev: CSSStyleSheet | void,
-        next: CSSStyleSheet
+    protected customPropertyManager: CustomPropertyManager;
+    private customPropertyManagerChanged(
+        prev: CustomPropertyManager | void,
+        next: CustomPropertyManager
     ) {
-        if (!supportsAdoptedStylesheets && prev) {
-            // An app author has tried to re-assign this property when adoptedStyleSheets is not supported. Warn that this is not supported.
-            console.warn(
-                `Assigning ${this.constructor.name}.${DesignSystemProvider.prototype.customPropertyStyleSheetChanged.name} when adoptedStyleSheets is unsupported is not allowed. Avoid setting this property when adoptedStyleSheets is unsupported.`
-            );
-            this.customPropertyStyleSheet = prev;
-            return;
+        if (prev && prev.unsubscribe) {
+            prev.unsubscribe(this);
         }
 
-        let nextManager = customPropertyStylesheetCache.get(next);
-
-        if (!nextManager) {
-            nextManager = new CustomPropertyManager(next);
-            customPropertyStylesheetCache.set(next, nextManager);
-        }
-
-        nextManager.subscribe(this);
-
-        if (prev) {
-            const prevManager = customPropertyStylesheetCache.get(prev);
-
-            if (prevManager) {
-                prevManager.unsubscribe(this);
-            }
+        if (next.subscribe) {
+            next.subscribe(this);
         }
     }
 
@@ -455,9 +549,7 @@ export class DesignSystemProvider extends FASTElement
     private attributeChangeHandler = {
         handleChange: (source: this, key: string) => {
             const value = this[key];
-            const manager = customPropertyStylesheetCache.get(
-                this.customPropertyStyleSheet
-            );
+            const manager = this.customPropertyManager;
 
             if (this.isValidDesignSystemValue(value)) {
                 this.designSystem[key] = value;
@@ -492,9 +584,7 @@ export class DesignSystemProvider extends FASTElement
      */
     private localDesignSystemChangeHandler = {
         handleChange: () => {
-            const manager = customPropertyStylesheetCache.get(
-                this.customPropertyStyleSheet
-            );
+            const manager = this.customPropertyManager;
 
             if (manager && manager.owner === this) {
                 manager.setAll();
@@ -524,9 +614,14 @@ export class DesignSystemProvider extends FASTElement
         // property is assigned in the constructor to ensure the DesignSystemProvider initializes the property. The change handler
         // will then prevent any future assignment.
         if (!supportsAdoptedStylesheets) {
-            const element = document.createElement("style");
-            this.$fastController.addStyles(element);
-            this.customPropertyStyleSheet = element.sheet!;
+            this.customPropertyManager = new StyleElementCustomPropertyManager(
+                document.createElement("style"),
+                this
+            );
+        } else {
+            this.customPropertyManager = new ConstructableStylesCustomPropertyManager(
+                new CSSStyleSheet()
+            );
         }
 
         this.$fastController.addBehaviors([designSystemConsumerBehavior]);
@@ -536,15 +631,18 @@ export class DesignSystemProvider extends FASTElement
      * @internal
      */
     public connectedCallback(): void {
-        if (supportsAdoptedStylesheets && !this.customPropertyStyleSheet) {
-            this.customPropertyStyleSheet = new CSSStyleSheet();
-        }
-
         super.connectedCallback();
+
+        if (
+            this.customPropertyManager.subscribe &&
+            this.customPropertyManager.isSubscribed &&
+            !this.customPropertyManager.isSubscribed(this)
+        ) {
+            this.customPropertyManager.subscribe(this);
+        }
 
         const selfNotifier = Observable.getNotifier(this);
         const designSystemNotifier = Observable.getNotifier(this.designSystem);
-        const manager = customPropertyStylesheetCache.get(this.customPropertyStyleSheet);
 
         Object.keys(this.designSystemProperties).forEach(property => {
             observable(this.designSystem, property);
@@ -561,10 +659,10 @@ export class DesignSystemProvider extends FASTElement
 
                 if (
                     typeof cssCustomProperty === "string" &&
-                    manager &&
-                    manager.owner === this
+                    this.customPropertyManager &&
+                    this.customPropertyManager.owner === this
                 ) {
-                    manager.set({
+                    this.customPropertyManager.set({
                         name: cssCustomProperty,
                         value: this[property],
                     });
@@ -592,6 +690,13 @@ export class DesignSystemProvider extends FASTElement
         }
     }
 
+    public disconnectedCallback(): void {
+        super.disconnectedCallback();
+        if (this.customPropertyManager.unsubscribe) {
+            this.customPropertyManager.unsubscribe(this);
+        }
+    }
+
     /**
      * Register a {@link @microsoft/fast-foundation#CSSCustomPropertyDefinition} with the DeignSystemProvider.
      * Registering a {@link @microsoft/fast-foundation#CSSCustomPropertyDefinition} will create the CSS custom property.
@@ -600,12 +705,8 @@ export class DesignSystemProvider extends FASTElement
      * @public
      */
     public registerCSSCustomProperty(def: CSSCustomPropertyDefinition) {
-        const manager = customPropertyStylesheetCache.get(this.customPropertyStyleSheet);
         this.cssCustomPropertyDefinitions.set(def.name, def);
-
-        if (manager) {
-            manager.register(def);
-        }
+        this.customPropertyManager.register(def);
     }
 
     /**
@@ -616,12 +717,8 @@ export class DesignSystemProvider extends FASTElement
      * @public
      */
     public unregisterCSSCustomProperty(def: CSSCustomPropertyDefinition) {
-        const manager = customPropertyStylesheetCache.get(this.customPropertyStyleSheet);
         this.cssCustomPropertyDefinitions.delete(def.name);
-
-        if (manager) {
-            manager.unregister(def.name);
-        }
+        this.customPropertyManager.unregister(def.name);
     }
 
     /**
