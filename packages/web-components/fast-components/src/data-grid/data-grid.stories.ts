@@ -39,7 +39,7 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
             "defaultRow"
         ) as DataGridRow;
         if (defaultRow !== null) {
-            defaultRow.columnsData = baseColumns;
+            defaultRow.columnDefinitions = baseColumns;
             defaultRow.rowData = defaultRowData;
         }
 
@@ -47,14 +47,14 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
             "defaultHeader"
         ) as DataGridRow;
         if (defaultHeader !== null) {
-            defaultHeader.columnsData = baseColumns;
+            defaultHeader.columnDefinitions = baseColumns;
         }
 
         const rowWithCellTemplate: DataGridRow | null = document.getElementById(
             "cellTemplateRow"
         ) as DataGridRow;
         if (rowWithCellTemplate !== null) {
-            rowWithCellTemplate.columnsData = templateColumns;
+            rowWithCellTemplate.columnDefinitions = templateColumns;
             rowWithCellTemplate.rowData = defaultRowData;
         }
 
@@ -62,14 +62,14 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
             "headerTemplateRow"
         ) as DataGridRow;
         if (headerWithCellTemplate !== null) {
-            headerWithCellTemplate.columnsData = templateColumns;
+            headerWithCellTemplate.columnDefinitions = templateColumns;
         }
 
         const defaultCell: DataGridCell | null = document.getElementById(
             "defaultCell"
         ) as DataGridCell;
         if (rowWithCellTemplate !== null) {
-            defaultCell.columnData = { columnDataKey: "rowId" };
+            defaultCell.columnDefinition = { columnDataKey: "rowId" };
             defaultCell.rowData = defaultRowData;
         }
 
@@ -77,7 +77,7 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
             "headerCell"
         ) as DataGridCell;
         if (rowWithCellTemplate !== null) {
-            headerCell.columnData = {
+            headerCell.columnDefinition = {
                 columnDataKey: "name",
                 title: "Name",
             };
@@ -123,10 +123,10 @@ const buttonCellTemplate = html<DataGridCell>`
         <fast-button @click="${x => cellTemplateButtonClick(x)}">
             ${x =>
                 x.rowData === null ||
-                x.columnData === null ||
-                x.columnData.columnDataKey === null
+                x.columnDefinition === null ||
+                x.columnDefinition.columnDataKey === null
                     ? null
-                    : x.rowData[x.columnData.columnDataKey]}
+                    : x.rowData[x.columnDefinition.columnDataKey]}
         </fast-button>
     </template>
 `;
@@ -135,11 +135,11 @@ const buttonHeaderCellTemplate = html<DataGridCell>`
     <template>
         <fast-button @click="${x => headerTemplateButtonClick(x)}">
             ${x =>
-                x.columnData === null
+                x.columnDefinition === null
                     ? null
-                    : x.columnData.title === undefined
-                    ? x.columnData.columnDataKey
-                    : x.columnData.title}
+                    : x.columnDefinition.title === undefined
+                    ? x.columnDefinition.columnDataKey
+                    : x.columnDefinition.title}
         </fast-button>
     </template>
 `;
@@ -148,7 +148,7 @@ function reset(): void {
     if (defaultGridElement === null) {
         return;
     }
-    defaultGridElement.columnsData = baseColumns;
+    defaultGridElement.columnDefinitions = baseColumns;
     defaultGridElement.rowsData = newDataSet(10);
     columnWidths = ["1fr", "1fr", "1fr", "1fr"];
     defaultGridElement.gridTemplateColumns = `${columnWidths[0]} ${columnWidths[1]} ${columnWidths[2]} ${columnWidths[3]}`;
@@ -158,14 +158,14 @@ function setDefaultCols(): void {
     if (defaultGridElement === null) {
         return;
     }
-    defaultGridElement.columnsData = baseColumns;
+    defaultGridElement.columnDefinitions = baseColumns;
 }
 
 function setTemplateCols(): void {
     if (defaultGridElement === null) {
         return;
     }
-    defaultGridElement.columnsData = templateColumns;
+    defaultGridElement.columnDefinitions = templateColumns;
 }
 
 function addRow(): void {
@@ -190,14 +190,16 @@ function removeRow(): void {
 
 function headerTemplateButtonClick(cell: DataGridCell): void {
     if (
-        cell.columnData === null ||
+        cell.columnDefinition === null ||
         defaultGridElement === null ||
-        defaultGridElement.columnsData === null
+        defaultGridElement.columnDefinitions === null
     ) {
         return;
     }
 
-    const index: number = defaultGridElement.columnsData.indexOf(cell.columnData);
+    const index: number = defaultGridElement.columnDefinitions.indexOf(
+        cell.columnDefinition
+    );
 
     if (columnWidths[index] === "1fr") {
         columnWidths.splice(index, 1, "2fr");
@@ -210,14 +212,14 @@ function headerTemplateButtonClick(cell: DataGridCell): void {
 
 function cellTemplateButtonClick(cell: DataGridCell): void {
     if (
-        cell.columnData === null ||
+        cell.columnDefinition === null ||
         cell.rowData === null ||
         defaultGridElement === null
     ) {
         return;
     }
     const newRowData: object = { ...cell.rowData };
-    newRowData[cell.columnData.columnDataKey] = "clicked";
+    newRowData[cell.columnDefinition.columnDataKey] = "clicked";
 
     const rowIndex: number = defaultGridElement.rowsData.indexOf(cell.rowData);
 

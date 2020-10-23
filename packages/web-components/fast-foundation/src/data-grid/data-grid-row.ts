@@ -19,7 +19,7 @@ const defaultCellItemTemplate = html`
     <fast-data-grid-cell
         grid-column="${(x, c) => c.index + 1}"
         :rowData="${(x, c) => c.parent.rowData}"
-        :columnData="${x => x}"
+        :columnDefinition="${x => x}"
     ></fast-data-grid-cell>
 `;
 
@@ -27,7 +27,7 @@ const headerCellItemTemplate = html`
     <fast-data-grid-cell
         cell-type="column-header"
         grid-column="${(x, c) => c.index + 1}"
-        :columnData="${x => x}"
+        :columnDefinition="${x => x}"
     ></fast-data-grid-header-cell>
 `;
 
@@ -111,19 +111,14 @@ export class DataGridRow extends FASTElement {
      * @public
      */
     @observable
-    public columnsData: ColumnDefinition[] | null = null;
-    private columnsDataChanged(): void {
+    public columnDefinitions: ColumnDefinition[] | null = null;
+    private columnDefinitionsChanged(): void {
         if ((this as FASTElement).$fastController.isConnected) {
         }
     }
 
-    /**
-     *
-     *
-     * @public
-     */
-    @observable cellElements?: object[];
-    private cellElementsChanged() {}
+    @observable
+    public cellItemTemplate?: ViewTemplate = defaultCellItemTemplate;
 
     private cellsRepeatBehavior: RepeatBehavior | null = null;
     private cellsPlaceholder: Node | null = null;
@@ -133,18 +128,11 @@ export class DataGridRow extends FASTElement {
      */
     public slottedCellElements: HTMLElement[];
 
-    @observable
-    public cellItemTemplate?: ViewTemplate = defaultCellItemTemplate;
-
     /**
-     * If this row currently has focus
-     *
-     * @public
+     * @internal
      */
-    @observable
-    public isActiveRow: boolean = false;
-
     public focusColumnIndex: number = 0;
+    private isActiveRow: boolean = false;
 
     /**
      * @internal
@@ -161,7 +149,7 @@ export class DataGridRow extends FASTElement {
                 : defaultCellItemTemplate;
 
         this.cellsRepeatBehavior = new RepeatDirective(
-            x => x.columnsData,
+            x => x.columnDefinitions,
             x => x.cellItemTemplate,
             { positioning: true }
         ).createBehavior(this.cellsPlaceholder);

@@ -17,21 +17,21 @@ const defaultCellContentsTemplate: ViewTemplate = html<DataGridCell>`
     <template>
         ${x =>
             x.rowData === null ||
-            x.columnData === null ||
-            x.columnData.columnDataKey === null
+            x.columnDefinition === null ||
+            x.columnDefinition.columnDataKey === null
                 ? null
-                : x.rowData[x.columnData.columnDataKey]}
+                : x.rowData[x.columnDefinition.columnDataKey]}
     </template>
 `;
 
 const defaultHeaderCellContentsTemplate: ViewTemplate = html<DataGridCell>`
     <template>
         ${x =>
-            x.columnData === null
+            x.columnDefinition === null
                 ? null
-                : x.columnData.title === undefined
-                ? x.columnData.columnDataKey
-                : x.columnData.title}
+                : x.columnDefinition.title === undefined
+                ? x.columnDefinition.columnDataKey
+                : x.columnDefinition.title}
     </template>
 `;
 
@@ -42,7 +42,7 @@ const defaultHeaderCellContentsTemplate: ViewTemplate = html<DataGridCell>`
  */
 export enum cellTypes {
     default = "default",
-    columnHeader = "column-header",
+    columnHeader = "columnheader",
 }
 
 /**
@@ -99,8 +99,8 @@ export class DataGridCell extends FASTElement {
      * @public
      */
     @observable
-    public columnData: ColumnDefinition | null = null;
-    private columnDataChanged(
+    public columnDefinition: ColumnDefinition | null = null;
+    private columnDefinitionChanged(
         oldValue: ColumnDefinition | null,
         newValue: ColumnDefinition | null
     ): void {
@@ -121,14 +121,7 @@ export class DataGridCell extends FASTElement {
         }
     }
 
-    /**
-     * If this cell currently has focus
-     *
-     * @public
-     */
-    @observable
-    public isActiveCell: boolean = false;
-
+    private isActiveCell: boolean = false;
     private customCellView: HTMLView | null = null;
     private isInternalFocused: boolean = false;
 
@@ -143,7 +136,9 @@ export class DataGridCell extends FASTElement {
         this.addEventListener("keydown", this.handleKeydown);
 
         this.style.gridColumn = `${
-            this.columnData?.gridColumn === undefined ? 0 : this.columnData.gridColumn
+            this.columnDefinition?.gridColumn === undefined
+                ? 0
+                : this.columnDefinition.gridColumn
         }`;
 
         this.updateCellView();
@@ -165,7 +160,7 @@ export class DataGridCell extends FASTElement {
     }
 
     public handleFocusin(e: FocusEvent): void {
-        if (this.isActiveCell || this.columnData === null) {
+        if (this.isActiveCell || this.columnDefinition === null) {
             return;
         }
 
@@ -174,11 +169,11 @@ export class DataGridCell extends FASTElement {
         switch (this.cellType) {
             case cellTypes.default:
                 if (
-                    this.columnData.cellInternalFocusQueue !== true &&
-                    typeof this.columnData.cellFocusTargetCallback === "function"
+                    this.columnDefinition.cellInternalFocusQueue !== true &&
+                    typeof this.columnDefinition.cellFocusTargetCallback === "function"
                 ) {
                     // move focus to the focus target
-                    const focusTarget: HTMLElement = this.columnData.cellFocusTargetCallback(
+                    const focusTarget: HTMLElement = this.columnDefinition.cellFocusTargetCallback(
                         this
                     );
                     if (focusTarget !== null) {
@@ -189,11 +184,12 @@ export class DataGridCell extends FASTElement {
 
             case cellTypes.columnHeader:
                 if (
-                    this.columnData.headerCellInternalFocusQueue !== true &&
-                    typeof this.columnData.headerCellFocusTargetCallback === "function"
+                    this.columnDefinition.headerCellInternalFocusQueue !== true &&
+                    typeof this.columnDefinition.headerCellFocusTargetCallback ===
+                        "function"
                 ) {
                     // move focus to the focus target
-                    const focusTarget: HTMLElement = this.columnData.headerCellFocusTargetCallback(
+                    const focusTarget: HTMLElement = this.columnDefinition.headerCellFocusTargetCallback(
                         this
                     );
                     if (focusTarget !== null) {
@@ -216,11 +212,11 @@ export class DataGridCell extends FASTElement {
     public handleKeydown(e: KeyboardEvent): void {
         if (
             e.defaultPrevented ||
-            this.columnData === null ||
+            this.columnDefinition === null ||
             (this.cellType === cellTypes.default &&
-                this.columnData.cellInternalFocusQueue !== true) ||
+                this.columnDefinition.cellInternalFocusQueue !== true) ||
             (this.cellType === cellTypes.columnHeader &&
-                this.columnData.headerCellInternalFocusQueue !== true)
+                this.columnDefinition.headerCellInternalFocusQueue !== true)
         ) {
             return;
         }
@@ -228,14 +224,14 @@ export class DataGridCell extends FASTElement {
         switch (e.keyCode) {
             case keyCodeEnter:
             case keyCodeFunction2:
-                if (this.isInternalFocused || this.columnData === undefined) {
+                if (this.isInternalFocused || this.columnDefinition === undefined) {
                     return;
                 }
 
                 switch (this.cellType) {
                     case cellTypes.default:
-                        if (this.columnData.cellFocusTargetCallback !== undefined) {
-                            const focusTarget: HTMLElement = this.columnData.cellFocusTargetCallback(
+                        if (this.columnDefinition.cellFocusTargetCallback !== undefined) {
+                            const focusTarget: HTMLElement = this.columnDefinition.cellFocusTargetCallback(
                                 this
                             );
                             if (focusTarget !== null) {
@@ -247,8 +243,11 @@ export class DataGridCell extends FASTElement {
                         break;
 
                     case cellTypes.columnHeader:
-                        if (this.columnData.headerCellFocusTargetCallback !== undefined) {
-                            const focusTarget: HTMLElement = this.columnData.headerCellFocusTargetCallback(
+                        if (
+                            this.columnDefinition.headerCellFocusTargetCallback !==
+                            undefined
+                        ) {
+                            const focusTarget: HTMLElement = this.columnDefinition.headerCellFocusTargetCallback(
                                 this
                             );
                             if (focusTarget !== null) {
@@ -274,14 +273,14 @@ export class DataGridCell extends FASTElement {
     private updateCellView(): void {
         this.disconnectCellView();
 
-        if (this.columnData === null) {
+        if (this.columnDefinition === null) {
             return;
         }
 
         switch (this.cellType) {
             case cellTypes.columnHeader:
-                if (this.columnData.headerCellTemplate !== undefined) {
-                    this.customCellView = this.columnData.headerCellTemplate.render(
+                if (this.columnDefinition.headerCellTemplate !== undefined) {
+                    this.customCellView = this.columnDefinition.headerCellTemplate.render(
                         this,
                         this
                     );
@@ -295,8 +294,11 @@ export class DataGridCell extends FASTElement {
 
             case undefined:
             case cellTypes.default:
-                if (this.columnData.cellTemplate !== undefined) {
-                    this.customCellView = this.columnData.cellTemplate.render(this, this);
+                if (this.columnDefinition.cellTemplate !== undefined) {
+                    this.customCellView = this.columnDefinition.cellTemplate.render(
+                        this,
+                        this
+                    );
                 } else {
                     this.customCellView = defaultCellContentsTemplate.render(this, this);
                 }

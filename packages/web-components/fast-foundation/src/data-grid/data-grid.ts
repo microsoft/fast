@@ -111,9 +111,11 @@ export class DataGrid extends FASTElement {
     /**
      *  generates a gridTemplateColumns based on columndata array
      */
-    public static generateTemplateColumns(columnsData: ColumnDefinition[]): string {
+    private static generateTemplateColumns(
+        columnDefinitions: ColumnDefinition[]
+    ): string {
         let templateColumns: string = "";
-        columnsData.forEach((column: ColumnDefinition) => {
+        columnDefinitions.forEach((column: ColumnDefinition) => {
             templateColumns = `${templateColumns}${
                 templateColumns === "" ? "" : " "
             }${"1fr"}`;
@@ -137,7 +139,7 @@ export class DataGrid extends FASTElement {
     }
 
     /**
-     * String that gets applied to the the css gridTemplateColumns attribute of generated rows
+     * String that gets applied to the the css gridTemplateColumns attribute of child rows
      *
      * @public
      * @remarks
@@ -166,13 +168,13 @@ export class DataGrid extends FASTElement {
      * @public
      */
     @observable
-    public columnsData: ColumnDefinition[] = [];
-    private columnsDataChanged(): void {
+    public columnDefinitions: ColumnDefinition[] = [];
+    private columnDefinitionsChanged(): void {
         this.generatedGridTemplateColumns = DataGrid.generateTemplateColumns(
-            this.columnsData
+            this.columnDefinitions
         );
         if ((this as FASTElement).$fastController.isConnected) {
-            this.columnDataStale = true;
+            this.columnDefinitionsStale = true;
             this.queueRowIndexUpdate();
         }
     }
@@ -229,7 +231,7 @@ export class DataGrid extends FASTElement {
     private observer: MutationObserver;
 
     private rowindexUpdateQueued: boolean = false;
-    private columnDataStale: boolean = true;
+    private columnDefinitionsStale: boolean = true;
 
     private generatedGridTemplateColumns: string = "";
 
@@ -337,7 +339,11 @@ export class DataGrid extends FASTElement {
                     const rows: NodeListOf<Element> = this.querySelectorAll(
                         '[role="row"]'
                     );
-                    this.focusOnCell(rows.length - 1, this.columnsData?.length - 1, rows);
+                    this.focusOnCell(
+                        rows.length - 1,
+                        this.columnDefinitions?.length - 1,
+                        rows
+                    );
                     e.preventDefault();
                 }
                 break;
@@ -353,7 +359,7 @@ export class DataGrid extends FASTElement {
             rows = this.querySelectorAll('[role="row"]');
         }
 
-        if (rows.length === 0 || this.columnsData.length === 0) {
+        if (rows.length === 0 || this.columnDefinitions.length === 0) {
             this.focusRowIndex = 0;
             this.focusColumnIndex = 0;
             return;
@@ -395,7 +401,7 @@ export class DataGrid extends FASTElement {
                 "fast-data-grid-row"
             );
             this.generatedHeader = (generatedHeaderElement as unknown) as DataGridRow;
-            this.generatedHeader.columnsData = this.columnsData;
+            this.generatedHeader.columnDefinitions = this.columnDefinitions;
             this.generatedHeader.gridTemplateColumns = this.gridTemplateColumns;
             this.generatedHeader.rowType = rowTypes.header;
             if (this.firstChild !== null || this.rowsPlaceholder !== null) {
@@ -425,7 +431,7 @@ export class DataGrid extends FASTElement {
                         newNode.nodeType === 1 &&
                         (newNode as Element).getAttribute("role") === "row"
                     ) {
-                        (newNode as DataGridRow).columnsData = this.columnsData;
+                        (newNode as DataGridRow).columnDefinitions = this.columnDefinitions;
                     }
                 });
             });
@@ -453,12 +459,12 @@ export class DataGrid extends FASTElement {
             const thisRow = element as DataGridRow;
             thisRow.rowIndex = index;
             thisRow.gridTemplateColumns = newGridTemplateColumns;
-            if (this.columnDataStale) {
-                thisRow.columnsData = this.columnsData;
+            if (this.columnDefinitionsStale) {
+                thisRow.columnDefinitions = this.columnDefinitions;
             }
         });
 
         this.rowindexUpdateQueued = false;
-        this.columnDataStale = false;
+        this.columnDefinitionsStale = false;
     };
 }
