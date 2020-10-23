@@ -140,21 +140,25 @@ export class DataGridRow extends FASTElement {
     public connectedCallback(): void {
         super.connectedCallback();
 
-        this.cellsPlaceholder = document.createComment("");
-        this.appendChild(this.cellsPlaceholder);
+        // note that row elements can be reused with a different data object
+        // as the parent grid's repeat behavior reacts to changes in the data set.
+        if (this.cellsRepeatBehavior === null) {
+            this.cellsPlaceholder = document.createComment("");
+            this.appendChild(this.cellsPlaceholder);
 
-        this.cellItemTemplate =
-            this.rowType === rowTypes.header
-                ? headerCellItemTemplate
-                : defaultCellItemTemplate;
+            this.cellItemTemplate =
+                this.rowType === rowTypes.header
+                    ? headerCellItemTemplate
+                    : defaultCellItemTemplate;
 
-        this.cellsRepeatBehavior = new RepeatDirective(
-            x => x.columnDefinitions,
-            x => x.cellItemTemplate,
-            { positioning: true }
-        ).createBehavior(this.cellsPlaceholder);
+            this.cellsRepeatBehavior = new RepeatDirective(
+                x => x.columnDefinitions,
+                x => x.cellItemTemplate,
+                { positioning: true }
+            ).createBehavior(this.cellsPlaceholder);
 
-        this.$fastController.addBehaviors([this.cellsRepeatBehavior!]);
+            this.$fastController.addBehaviors([this.cellsRepeatBehavior!]);
+        }
 
         this.addEventListener("cell-focused", this.handleCellFocus);
         this.addEventListener("focusout", this.handleFocusout);
@@ -168,14 +172,6 @@ export class DataGridRow extends FASTElement {
      */
     public disconnectedCallback(): void {
         super.disconnectedCallback();
-
-        if (this.cellsRepeatBehavior !== null && this.cellsPlaceholder !== null) {
-            this.cellsRepeatBehavior.unbind();
-            this.$fastController.removeBehaviors([this.cellsRepeatBehavior!]);
-            this.removeChild(this.cellsPlaceholder);
-            this.cellsRepeatBehavior = null;
-            this.cellsPlaceholder = null;
-        }
 
         this.removeEventListener("cell-focused", this.handleCellFocus);
         this.removeEventListener("focusout", this.handleFocusout);
