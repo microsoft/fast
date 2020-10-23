@@ -107,6 +107,43 @@ async function setup() {
 }
 
 describe("A DesignSystemProvider", () => {
+    describe("should resolve a parent provider", () => {
+        it("to null if the provider is not nested inside another provider", async () => {
+            const { a, connect } = await setup();
+
+            await connect();
+
+            expect(a.provider).to.equal(null);
+        });
+
+        it("to the DSP instance if it is nested inside another provider", async () => {
+            const { a, b, connect } = await setup();
+            a.appendChild(b);
+
+            await connect();
+
+            expect(b.provider).to.equal(a);
+        });
+
+        it("to the nearest ancestor DSP instance when nested within non-DSP elements", async () => {
+            const { a, b, connect } = await setup();
+            const div = Array(10)
+                .fill(0)
+                .reduce((prev, next) => {
+                    const child = document.createElement("div");
+                    prev.appendChild(child);
+                    return child;
+                }, document.createElement("div"));
+
+            div.appendChild(b);
+            a.appendChild(div);
+
+            await connect();
+
+            expect(b.provider).to.equal(a);
+        });
+    });
+
     describe("that is nested inside an instance of the same DesignSystemProvider definition", () => {
         it("should sync all unset design system properties from the parent provider", done => {
             const a = document.createElement("dsp-a") as DSPA;
@@ -118,7 +155,6 @@ describe("A DesignSystemProvider", () => {
 
             expect(aAccessors.length).to.equal(2);
 
-            console.log(a.designSystem, n.designSystem);
             window.setTimeout(() => {
                 Observable.getAccessors(a.designSystem).forEach(x => {
                     expect(a.designSystem[x.name]).to.equal(n.designSystem[x.name]);
