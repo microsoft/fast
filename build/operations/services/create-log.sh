@@ -1,24 +1,51 @@
 #!/bin/bash
-source config.sh
 
 : 'AZURE LOG ANALYTICS
-
-
-Ref:
-https://docs.microsoft.com/en-gb/azure/azure-monitor/overview
-https://docs.microsoft.com/en-us/cli/azure/monitor/log-analytics/workspace?view=azure-cli-latest
+Log queries help you to fully leverage the value of the data collected in Azure Monitor Logs. 
+A powerful query language allows you to join data from multiple tables, aggregate large sets 
+of data, and perform complex operations with minimal code. Virtually any question can be answered 
+and analysis performed as long as the supporting data has been collected, and you understand how 
+to construct the right query.
 '
+
+# Configure
+service_type="Log Analytics"
+service_code="log"
+service_resource_group=$system-analytics-rg
+service_name=$system-operations-$service_code
+service_location=centralus
+service_retention=90
+
+# Validation
+## The operations resource group must exist for hosting Global Azure services 
+title="checking pre-requisites"
+    printStatus "$title"
+    {
+        check=$(az group exists --name $service_resource_group --subscription $subscription)
+        if [[ $check == false ]];
+        then # Create operations resource group for non-locale specific services
+        
+            setService "Create $service_type" "$service_resource_group"
+            
+            az group create \
+                --location "centralus" \
+                --name $service_resource_group
+       fi
+    } || {
+        printStatus "Error: $title"
+    }
+
 # Install Prerequisite extensions
 az extension add -n application-insights
 
-# Configure and set name
-product_name=fast
-azure_log_analytics_workspace_name=$product_name-ops-log
-azure_log_analytics_resource_group=$product_name-ops-rg
-azure_log_analytics_location=southcentralus
-azure_log_analytics_retention=90
+setService "Create $service_type" "$service_name"
 
-echo "creating log analytics workspace ..."
-az monitor log-analytics workspace create --resource-group $azure_log_analytics_resource_group --workspace-name $azure_log_analytics_workspace_name \
-    --location $azure_log_analytics_location \
-    --retention-time $azure_log_analytics_retention
+# Debugging
+declare -a args=("$service_resource_group" "$service_name")
+debugService args
+
+az monitor log-analytics workspace create --resource-group $service_resource_group \
+    --workspace-name $service_name \
+    --location $service_location \
+    --retention-time $service_retention
+

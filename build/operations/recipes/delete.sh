@@ -1,7 +1,7 @@
 #!/bin/bash
 
-: 'AZURE FAST PRODUCTION => DELETION
-This will delete all resources within a region
+: 'DELETE FAST INFRASTRUCTURE
+This will delete all resources within selected location
 '
 
 # CONFIGURATION
@@ -10,6 +10,5 @@ This will delete all resources within a region
 # LAUNCH
     setTitle "Delete Resources"
 
-## DELETE Services
-source $dir/services/delete-asp.sh & wait $!
-source $dir/services/delete-rg.sh & wait $!
+## EXECUTE Services
+    source $dir/services/delete-rg.sh

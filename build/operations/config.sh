@@ -11,6 +11,8 @@ az configure --defaults output=table disable_confirm_prompt=false enable_log_fil
 
 # TERMINAL CONFIGURATIONS
 
+    set -ex 
+    
     black=$(tput setaf 0)
     red=$(tput setaf 1) 
     green=$(tput setaf 2)
@@ -24,26 +26,26 @@ az configure --defaults output=table disable_confirm_prompt=false enable_log_fil
     bold=$(tput bold)
     blink=$(tput blink)
     reset=$(tput sgr0) 
-
+    
 # COMMON VARIABLES
     
     debug=false
     dir=$(PWD)
 
-    declare -a applications=("app" "color" "create" "explore" "motion" "www" "exit")
-    declare -a environments=("production" "staging" "development" "exit")
-    declare -a locations=("westus" "eastus" "centralus" "exit")
-    declare -a subscriptions=("production" "development" "exit")
+    declare -a applications=("color" "create" "explore" "www")
+    declare -a environments=("production" "staging" "development")
+    declare -a locations=("westus" "eastus" "centralus")
+    declare -a subscriptions=("production" "development")
 
     system=fast
     status=false
-    app_service_plan=
 
 # GETTING STARTED
 
     echo "----------------------------------------------------------------"
     echo "${bold}${magenta}FAST AZURE OPERATIONS CLI"${reset}
-    echo "${bold}${magenta}Scripts are required to run from inside './fast/build/operations'"${reset} && echo ""
+    echo "${bold}${magenta}Scripts are required to run from inside './fast/build/operations'"${reset}
+    echo "${magenta}To exit this program enter on [CTRL+c]'"${reset} && echo ""
     echo "${bold}${green}Configuring session ...${reset}"
     echo "${green}Default configurations found.${reset}" && echo ""
 

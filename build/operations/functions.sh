@@ -63,7 +63,7 @@ function setApplication() {
 function setEnvironment() {
     if [ -z "$environment" ];
     then
-        echo "Select an ${bold}${green}Environment${reset}:"
+        echo "Select ${bold}${green}Environment${reset}:"
         select environment in ${environments[@]}
         do
             case $environment in
@@ -73,9 +73,6 @@ function setEnvironment() {
                 staging)
                     source inputs.sh -e $environment -s production
                     break ;;
-                exit)
-                    echo "${bold}${green}cancelled.${reset}" 
-                    exit ;;
                 *)
                     echo "${red}invalid entry, try again${reset}" 
                     ;;
@@ -87,7 +84,7 @@ function setEnvironment() {
 function setLocation() {
     if [ -z "$region" ];
     then
-        echo "Select an ${bold}${green}Location${reset}:"    
+        echo "Select ${bold}${green}Location${reset}:"    
         select location in ${locations[@]}
         do
             case $location in
@@ -97,19 +94,17 @@ function setLocation() {
                 centralus)  
                     resource_group=fast-ops-rg
                     break ;;
-                exit)
-                    echo "${bold}${green}cancelled.${reset}" 
-                    exit ;;
                 *)
                     echo "${red}invalid entry, try again${reset}" 
                     ;;
             esac
         done
+        source inputs.sh -l $location
     fi
 }
 
 function setTitle() {
-    echo "${green}${bold}$1${reset} ...${reset}" && echo ""
+    echo "" && echo "${green}${bold}$1${reset} ...${reset}" && echo ""
 }
 
 function setService() {
@@ -117,10 +112,14 @@ function setService() {
 }
 
 function printStatus() {
-    # stop script upon command failure
-    set -e
-    
-    # write additional details
+    # # stop script upon command failure
+    # if [ -z "$2" ]; then
+    #     set $2
+    #     echo "${red}"
+    # else
+    #     echo "${green}"
+    # fi
+
     echo ""
     echo "${green}$1 ...${reset}"
     echo ""

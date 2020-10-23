@@ -1,28 +1,25 @@
 #!/bin/bash
 
-: 'AZURE RESOURCE GROUP => CREATE
+: 'AZURE RESOURCE GROUPS
 For improved isolation and availability in business continuity disaster recovery (BCDR) 
 regionally pair "East US" and "West US" for indepth details on paired regions.
-
-Ref: 
-https://docs.microsoft.com/en-us/azure/best-practices-availability-paired-regions
-https://docs.microsoft.com/en-us/azure/architecture/reference-architectures/app-service-web-app/multi-region#regional-pairing
 '
 
 # Configure
-service_name="Resource Group"
+service_type="Resource Group"
 service_code="rg"
-service=$system-$location-$service_code
+service_name=$system-operations-$service_code
 
-setService "Create $service_name" "$service"
+# Create locale specific services as denoted during CLI prompting
+service_name=$system-$location-$service_code
+setService "Create $service_type" "$service_name"
 
 # Debugging
-declare -a args=("$service" "$location")
+declare -a args=("$service_name" "$location")
 debugService args
 
-# Azure CLI
 az group create \
     --location $location \
-    --name $resource_group
+    --name $service_name
 
-export az_resource_group="$service"
+export az_resource_group="$service_name"
