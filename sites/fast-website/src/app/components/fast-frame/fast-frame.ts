@@ -6,6 +6,7 @@ import {
     fastDesignSystemDefaults,
     StandardLuminance,
     neutralLayerCardContainer,
+    FASTRadioGroup,
 } from "@microsoft/fast-components";
 import {
     ColorHSL,
@@ -96,12 +97,10 @@ export class FastFrame extends FASTElement {
     };
 
     public neutralChangeHandler = (e: CustomEvent): void => {
-        if (e.target instanceof SiteColorSwatch) {
-            if (e.target.checked) {
-                const parsedColor = parseColorHexRGB(e.target.value);
-                this.neutralPalette = createColorPalette(parsedColor as ColorRGBA64);
-                this.updateBackgroundColor();
-            }
+        if (e.target instanceof FASTRadioGroup) {
+            const parsedColor = parseColorHexRGB(e.target.value);
+            this.neutralPalette = createColorPalette(parsedColor as ColorRGBA64);
+            this.updateBackgroundColor();
         }
     };
 
