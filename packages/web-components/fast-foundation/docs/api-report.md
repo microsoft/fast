@@ -184,7 +184,7 @@ export const CardTemplate: import("@microsoft/fast-element").ViewTemplate<Card, 
 // @public
 export enum cellTypes {
     // (undocumented)
-    columnHeader = "column-header",
+    columnHeader = "columnheader",
     // (undocumented)
     default = "default"
 }

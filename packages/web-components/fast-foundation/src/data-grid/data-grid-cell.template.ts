@@ -8,8 +8,8 @@ import { DataGridCell } from "./data-grid-cell";
 export const DataGridCellTemplate = html<DataGridCell>`
     <template
         tabindex="-1"
-        role="${x => (x.cellType === "column-header" ? "column-header" : "grid-cell")}"
-        class="${x => (x.cellType === "column-header" ? "column-header" : "")}"
+        role="${x => (x.cellType === "columnheader" ? "columnheader" : "gridcell")}"
+        class="${x => (x.cellType === "columnheader" ? "column-header" : "")}"
     >
         <slot part="cellSlot"></slot>
     </template>

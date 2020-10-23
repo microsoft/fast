@@ -25,7 +25,7 @@ const defaultCellItemTemplate = html`
 
 const headerCellItemTemplate = html`
     <fast-data-grid-cell
-        cell-type="column-header"
+        cell-type="columnheader"
         grid-column="${(x, c) => c.index + 1}"
         :columnDefinition="${x => x}"
     ></fast-data-grid-header-cell>
