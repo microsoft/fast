@@ -398,7 +398,6 @@ describe("A DesignSystemProvider", () => {
 
             await disconnect();
         });
-
         it("should evaluate function values with the current designSystem object", async () => {
             const { a, connect, disconnect } = await setup();
             let arg: any;
@@ -494,7 +493,6 @@ describe("A DesignSystemProvider", () => {
 
             await disconnect();
         });
-
         it("should unregister all registered CSSCustomPropertyDefinition objects when connected", async () => {
             const { a, connect, disconnect } = await setup();
 
@@ -518,9 +516,4 @@ describe("A DesignSystemProvider", () => {
             ).to.equal("");
         });
     });
-
-    describe("with an assigned custom property stylesheet", () => {
-        it("should attach the assigned stylesheet", () => {});
-    });
-    it("should not allow the customPropertyStyleSheet property to be re-assigned when adoptedStyleSheets is unsupported", () => {});
 });
