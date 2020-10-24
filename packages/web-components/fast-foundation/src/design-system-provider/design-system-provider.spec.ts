@@ -1,5 +1,6 @@
 import { Observable } from "@microsoft/fast-element";
 import { assert, expect } from "chai";
+import { ConstructableStylesCustomPropertyManager } from "../custom-properties";
 import { fixture } from "../fixture";
 import {
     defineDesignSystemProvider,
@@ -515,5 +516,65 @@ describe("A DesignSystemProvider", () => {
                 window.getComputedStyle(a).getPropertyValue("--function-value")
             ).to.equal("");
         });
+    });
+
+    it("should subscribe to a CustomPropertyManager when one is assigned", async () => {
+        const { a, connect, disconnect } = await setup();
+        let subscribed = false;
+
+        class Manager extends ConstructableStylesCustomPropertyManager {
+            subscribe() {
+                subscribed = true;
+            }
+        }
+
+        await connect();
+
+        a.customPropertyManager = new Manager(new CSSStyleSheet());
+
+        assert(subscribed);
+
+        await disconnect();
+    });
+
+    it("should unsubscribe from a previous CustomPropertyManager when a new one is assigned", async () => {
+        const { a, connect, disconnect } = await setup();
+        let unsubscribed = false;
+
+        class Manager extends ConstructableStylesCustomPropertyManager {
+            unsubscribe() {
+                unsubscribed = true;
+            }
+        }
+
+        await connect();
+
+        a.customPropertyManager = new Manager(new CSSStyleSheet());
+        a.customPropertyManager = new Manager(new CSSStyleSheet());
+
+        assert(unsubscribed);
+
+        await disconnect();
+    });
+
+    it("should unsubscribe from it's customPropertyManager when disconnecting", async () => {
+        const { a, connect, disconnect } = await setup();
+        let unsubscribed = false;
+
+        class Manager extends ConstructableStylesCustomPropertyManager {
+            unsubscribe() {
+                unsubscribed = true;
+            }
+        }
+
+        await connect();
+
+        a.customPropertyManager = new Manager(new CSSStyleSheet());
+
+        assert(!unsubscribed);
+
+        await disconnect();
+
+        assert(unsubscribed);
     });
 });

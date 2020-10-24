@@ -232,7 +232,7 @@ export class DesignSystemProvider extends FASTElement
      * reference held internally.
      */
     @observable
-    protected customPropertyManager: CustomPropertyManager;
+    public customPropertyManager: CustomPropertyManager;
     private customPropertyManagerChanged(
         prev: CustomPropertyManager | void,
         next: CustomPropertyManager
