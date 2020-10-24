@@ -255,13 +255,13 @@ export class StyleElementCustomPropertyManager extends CustomPropertyManagerBase
     protected customPropertyTarget: CSSStyleDeclaration;
     public readonly styles: HTMLStyleElement;
 
-    constructor(style: HTMLStyleElement, provider: CustomPropertyManagerClient) {
+    constructor(style: HTMLStyleElement, client: CustomPropertyManagerClient) {
         super();
 
         // For HTMLStyleElements we need to attach the element
         // to the DOM prior to accessing the HTMLStyleElement.sheet
         // because the property evaluates null if disconnected
-        provider.$fastController.addStyles(style);
+        client.$fastController.addStyles(style);
         this.sheet = style.sheet!;
         this.styles = style;
 
@@ -269,9 +269,9 @@ export class StyleElementCustomPropertyManager extends CustomPropertyManagerBase
             this.sheet.insertRule(hostSelector)
         ] as CSSStyleRule).style;
 
-        this._owner = provider;
+        this._owner = client;
 
-        provider.cssCustomPropertyDefinitions.forEach(def => {
+        client.cssCustomPropertyDefinitions.forEach(def => {
             this.register(def);
         });
     }
