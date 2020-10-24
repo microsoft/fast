@@ -219,17 +219,11 @@ export class DesignSystemProvider extends FASTElement
     }
 
     /**
-     * Stores a reference to the stylesheet where CSS custom properties are written.
+     * A reference to the object that manages the CSS custom properties
+     * the DesignSystemProvider depends on.
      *
+     * @internal
      * @remarks
-     * Setting this property can be used to force the DesignSystemProvider to re-use stylesheet references.
-     * This is useful for scenarios where there are many of the same DesignSystemProvider elements on the page but
-     * all or most share the same configuration, eg Card elements. Be especially careful when re-using stylesheet
-     * references in these cases to ensure the element's DesignSystem configurations are the same.
-     *
-     * This property can only be re-assigned when {@link adoptedStyleSheets | https://wicg.github.io/construct-stylesheets/#using-constructed-stylesheets} is supported.
-     * If adoptedStyleSheets are not supported, the DesignSystemProvider will write to a HTMLStyleElement
-     * reference held internally.
      */
     @observable
     public customPropertyManager: CustomPropertyManager;

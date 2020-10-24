@@ -190,13 +190,13 @@ export class ConstructableStylesCustomPropertyManager extends CustomPropertyMana
     constructor(sheet: CSSStyleSheet);
     // (undocumented)
     protected customPropertyTarget: CSSStyleDeclaration;
-    isSubscribed(provider: DesignSystemProvider): boolean;
+    isSubscribed(client: CustomPropertyManagerClient): boolean;
     // (undocumented)
     protected readonly sheet: CSSStyleSheet;
     // (undocumented)
     protected styles: ElementStyles;
-    subscribe(provider: DesignSystemProvider): void;
-    unsubscribe(provider: DesignSystemProvider): void;
+    subscribe(client: CustomPropertyManagerClient): void;
+    unsubscribe(client: CustomPropertyManagerClient): void;
 }
 
 // @public
@@ -236,14 +236,20 @@ export type CSSDisplayPropertyValue = "block" | "contents" | "flex" | "grid" | "
 
 // @public
 export interface CustomPropertyManager {
-    isSubscribed?(provider: DesignSystemProvider): boolean;
-    readonly owner: DesignSystemProvider | null;
+    isSubscribed?(provider: CustomPropertyManagerClient): boolean;
+    readonly owner: CustomPropertyManagerClient | null;
     register(definition: CSSCustomPropertyDefinition): void;
     set(definition: CSSCustomPropertyDefinition): void;
     setAll(): void;
-    subscribe?(provider: DesignSystemProvider): void;
+    subscribe?(provider: CustomPropertyManagerClient): void;
     unregister(name: string): void;
-    unsubscribe?(provider: DesignSystemProvider): void;
+    unsubscribe?(provider: CustomPropertyManagerClient): void;
+}
+
+// @public
+export interface CustomPropertyManagerClient extends FASTElement {
+    cssCustomPropertyDefinitions: Map<string, CSSCustomPropertyDefinition>;
+    evaluate(definition: CSSCustomPropertyDefinition): string;
 }
 
 // @public
@@ -284,13 +290,14 @@ export const designSystemConsumerBehavior: Behavior;
 export function designSystemProperty<T extends DesignSystemProvider>(config: DecoratorDesignSystemPropertyConfiguration): (source: T, property: string) => void;
 
 // @public
-export class DesignSystemProvider extends FASTElement implements CSSCustomPropertyTarget, DesignSystemConsumer {
+export class DesignSystemProvider extends FASTElement implements CSSCustomPropertyTarget, DesignSystemConsumer, CustomPropertyManagerClient {
     constructor();
     // @internal (undocumented)
     connectedCallback(): void;
     // @internal
     cssCustomPropertyDefinitions: Map<string, CSSCustomPropertyDefinition>;
-    protected customPropertyManager: CustomPropertyManager;
+    // @internal
+    customPropertyManager: CustomPropertyManager;
     designSystem: {};
     // @internal
     designSystemProperties: {
@@ -726,7 +733,7 @@ export const startTemplate: import("@microsoft/fast-element").ViewTemplate<Start
 
 // @public
 export class StyleElementCustomPropertyManager extends CustomPropertyManagerBase {
-    constructor(style: HTMLStyleElement, provider: DesignSystemProvider);
+    constructor(style: HTMLStyleElement, client: CustomPropertyManagerClient);
     // (undocumented)
     protected customPropertyTarget: CSSStyleDeclaration;
     // (undocumented)

@@ -6,6 +6,8 @@ const hostSelector = ":host{}";
 /**
  * Defines the interface of an HTMLElement that can be used
  * with a {@link CustomPropertyManager}.
+ *
+ * @public
  */
 export interface CustomPropertyManagerClient extends FASTElement {
     /**
@@ -21,12 +23,14 @@ export interface CustomPropertyManagerClient extends FASTElement {
 }
 
 /**
- * Describes the interface for custom property management object used by the {@link CustomPropertyManagerTarget}
+ * Describes the interface for custom property management object used by the {@link CustomPropertyManagerClient}
  * to manage CSS custom properties.
  *
- * The managers role is to attach a stylesheet to the CustomPropertyManagerTarget instance
+ * The managers role is to attach a stylesheet to the CustomPropertyManagerClient instance
  * and to write CSS custom properties to that stylesheet instance when required by the
  * CustomPropertyManagerTarget.
+ *
+ * @public
  */
 export interface CustomPropertyManager {
     /**
@@ -204,43 +208,43 @@ export class ConstructableStylesCustomPropertyManager extends CustomPropertyMana
     /**
      * {@inheritdoc CustomPropertyManager.subscribe}
      */
-    public subscribe(provider: CustomPropertyManagerClient): void {
-        this.subscribers.add(provider);
+    public subscribe(client: CustomPropertyManagerClient): void {
+        this.subscribers.add(client);
 
         if (this.subscribers.size === 1) {
-            this._owner = provider;
+            this._owner = client;
         }
 
-        provider.cssCustomPropertyDefinitions.forEach(def => {
+        client.cssCustomPropertyDefinitions.forEach(def => {
             this.register(def);
         });
 
-        provider.$fastController.addStyles(this.styles);
+        client.$fastController.addStyles(this.styles);
     }
 
     /**
      * {@inheritdoc CustomPropertyManager.unsubscribe}
      */
-    public unsubscribe(provider: CustomPropertyManagerClient): void {
-        this.subscribers.delete(provider);
-        provider.cssCustomPropertyDefinitions.forEach(def => this.unregister(def.name));
+    public unsubscribe(client: CustomPropertyManagerClient): void {
+        this.subscribers.delete(client);
+        client.cssCustomPropertyDefinitions.forEach(def => this.unregister(def.name));
 
-        if (this.owner === provider) {
+        if (this.owner === client) {
             this._owner = this.subscribers.size
                 ? this.subscribers.values().next().value
                 : null;
         }
 
         if (!this.sheet.ownerNode && this.styles) {
-            provider.$fastController.removeStyles(this.styles);
+            client.$fastController.removeStyles(this.styles);
         }
     }
 
     /**
      * {@inheritdoc CustomPropertyManager.isSubscribed}
      */
-    public isSubscribed(provider: CustomPropertyManagerClient): boolean {
-        return this.subscribers.has(provider);
+    public isSubscribed(client: CustomPropertyManagerClient): boolean {
+        return this.subscribers.has(client);
     }
 }
 
