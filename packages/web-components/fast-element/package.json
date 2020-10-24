@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-element",
   "description": "A library for constructing Web Components",
   "sideEffects": false,
-  "version": "0.19.0",
+  "version": "0.19.1",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -22,9 +22,11 @@
     "clean:dist": "node ../../../build/clean.js dist",
     "doc": "api-extractor run --local",
     "doc:ci": "api-extractor run",
-    "build": "tsc -p ./tsconfig.json && rollup -c && npm run doc",
+    "build": "yarn build:tsc && yarn build:rollup && yarn doc",
+    "build:rollup": "rollup -c",
+    "build:tsc": "tsc -p ./tsconfig.json",
     "dev": "tsc -p ./tsconfig.json -w",
-    "tdd": "npm run dev & npm run test-chrome:watch",
+    "tdd": "yarn dev & yarn test-chrome:watch",
     "prepare": "yarn clean:dist && yarn build",
     "prettier": "prettier --config ../../../.prettierrc --write \"**/*.ts\"",
     "prettier:diff": "prettier --config ../../../.prettierrc \"**/*.ts\" --list-different",

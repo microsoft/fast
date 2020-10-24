@@ -238,16 +238,17 @@ class LinkedDataControl extends React.Component<
                         searchTerm: "",
                     });
                 }
-                // Tab performs an autocompete if there is a single schema it can match to
+                // Tab performs an auto-complete if there is a single schema it can match to
             } else if (e.keyCode === keyCodeTab) {
-                e.preventDefault();
-
                 const normalizedValue = e.currentTarget.value.toLowerCase();
                 const matchedSchema = this.lazyMatchValueWithASingleSchema(
                     normalizedValue
                 );
 
                 if (typeof matchedSchema === "string") {
+                    // prevent navigating away by tab when single schema matched
+                    e.preventDefault();
+
                     this.setState({
                         searchTerm: this.props.schemaDictionary[matchedSchema].title,
                     });

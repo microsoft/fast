@@ -35,11 +35,6 @@ export interface ProjectFile {
     activeDictionaryId: string;
 
     /**
-     * The active view
-     */
-    activeView: string;
-
-    /**
      * The x position in the preview
      */
     xCoord: number;
@@ -52,12 +47,12 @@ export interface ProjectFile {
     /**
      * The width of the preview
      */
-    width: number;
+    viewerWidth: number;
 
     /**
      * The height of the preview
      */
-    height: number;
+    viewerHeight: number;
 
     /**
      * The selected device for the preview
@@ -65,23 +60,32 @@ export interface ProjectFile {
     deviceId: string;
 
     /**
-     * The views
-     */
-    views: {
-        [key: string]: ProjectFileView;
-    };
-
-    /**
      * Dev tools visible
      */
     devToolsVisible: boolean;
+
+    /**
+     * Show data navigation
+     */
+    mobileNavigationVisible: boolean;
+
+    /**
+     * Show form
+     */
+    mobileFormVisible: boolean;
+
+    /**
+     * The dictionary of data
+     */
+    dataDictionary: DataDictionary<unknown>;
+
+    /**
+     * Preview background transparency
+     */
+    transparentBackground: boolean;
 }
 
 export type CreatorManagedClasses = ManagedClasses<{}>;
-
-export type CreatorHandledProps = CreatorManagedClasses;
-
-export type CreatorProps = CreatorHandledProps;
 
 export interface CreatorState extends ProjectFile {
     /**

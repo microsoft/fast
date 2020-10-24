@@ -1,5 +1,6 @@
+import { linkedDataSchema } from "../schemas";
 import { mapVSCodeParsedHTMLToDataDictionary } from "./mapping.vscode-html-languageservice";
-import { DataType } from "./types";
+import { DataType, ReservedElementMappingKeyword } from "./types";
 
 const textSchema = {
     id: "text",
@@ -19,6 +20,7 @@ const spanSchema = {
     $id: "span",
     type: "object",
     mapsToTagName: "span",
+    properties: {},
 };
 
 const inputSchema = {
@@ -38,6 +40,19 @@ const inputSchema = {
         },
         name: {
             type: DataType.string,
+        },
+    },
+};
+
+const customSchema = {
+    id: "foo-bar",
+    $id: "foo-bar",
+    type: "object",
+    mapsToTagName: "foo-bar",
+    properties: {
+        SlotFoo: {
+            [ReservedElementMappingKeyword.mapsToSlot]: "foo",
+            ...linkedDataSchema,
         },
     },
 };
@@ -332,5 +347,28 @@ describe("mapVSCodeParsedHTMLToDataDictionary", () => {
             ],
         });
         expect(value[0][textChildKey].data).toEqual("foobar");
+    });
+    test("should return a DataDictionary containing nested HTML elements with slot names", () => {
+        const value = mapVSCodeParsedHTMLToDataDictionary({
+            value: ["<foo-bar>", '<span slot="foo">', "foobar", "</span>", "</foo-bar>"],
+            schemaDictionary: {
+                [textSchema.id]: textSchema,
+                [divSchema.id]: divSchema,
+                [inputSchema.id]: inputSchema,
+                [spanSchema.id]: spanSchema,
+                [customSchema.id]: customSchema,
+            },
+        });
+
+        const root: string = value[1];
+        const spanChildKey: string = (value[0][root].data as any).SlotFoo[0].id;
+
+        expect(value[0][root].data).toEqual({
+            SlotFoo: [
+                {
+                    id: spanChildKey,
+                },
+            ],
+        });
     });
 });

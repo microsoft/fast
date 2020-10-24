@@ -186,6 +186,47 @@ describe("Radio", () => {
         await disconnect();
     });
 
+    it("should initialize to the initial value if no value property is set", async () => {
+        const { element, connect, disconnect } = await setup();
+
+        await connect();
+        expect(element.value).to.equal(element["initialValue"]);
+
+        await disconnect();
+    });
+
+    it("should initialize to the provided value attribute if set pre-connection", async () => {
+        const { element, connect, disconnect } = await setup();
+
+        element.setAttribute("value", "foobar");
+        await connect();
+
+        expect(element.value).to.equal("foobar");
+
+        await disconnect();
+    });
+
+    it("should initialize to the provided value attribute if set post-connection", async () => {
+        const { element, connect, disconnect } = await setup();
+
+        await connect();
+        element.setAttribute("value", "foobar");
+
+        expect(element.value).to.equal("foobar");
+
+        await disconnect();
+    });
+
+    it("should initialize to the provided value property if set pre-connection", async () => {
+        const { element, connect, disconnect } = await setup();
+        element.value = "foobar";
+        await connect();
+
+        expect(element.value).to.equal("foobar");
+
+        await disconnect();
+    });
+
     describe("label", () => {
         it("should add a class of `label` to the internal label when default slotted content exists", async () => {
             const { element, connect, disconnect } = await setup();
