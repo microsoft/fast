@@ -6,6 +6,7 @@ import {
     fastDesignSystemDefaults,
     StandardLuminance,
     neutralLayerCardContainer,
+    FASTRadioGroup,
 } from "@microsoft/fast-components";
 import {
     ColorHSL,
@@ -82,26 +83,22 @@ export class FastFrame extends FASTElement {
     public isMobile: boolean = this.mql.matches;
 
     public accentChangeHandler = (e: CustomEvent): void => {
-        if (e.target instanceof SiteColorSwatch) {
-            if (e.target.checked) {
-                this.accentColor = e.target.value;
-                const accentColorHSL = rgbToHSL(parseColorHexRGB(this.accentColor)!);
-                this.hue = accentColorHSL.h;
-                this.saturation = accentColorHSL.s;
-                this.lightness = accentColorHSL.l;
-                const parsedColor = parseColorHexRGB(this.accentColor);
-                this.accentPalette = createColorPalette(parsedColor as ColorRGBA64);
-            }
+        if (e.target instanceof FASTRadioGroup) {
+            this.accentColor = e.target.value;
+            const accentColorHSL = rgbToHSL(parseColorHexRGB(this.accentColor)!);
+            this.hue = accentColorHSL.h;
+            this.saturation = accentColorHSL.s;
+            this.lightness = accentColorHSL.l;
+            const parsedColor = parseColorHexRGB(this.accentColor);
+            this.accentPalette = createColorPalette(parsedColor as ColorRGBA64);
         }
     };
 
     public neutralChangeHandler = (e: CustomEvent): void => {
-        if (e.target instanceof SiteColorSwatch) {
-            if (e.target.checked) {
-                const parsedColor = parseColorHexRGB(e.target.value);
-                this.neutralPalette = createColorPalette(parsedColor as ColorRGBA64);
-                this.updateBackgroundColor();
-            }
+        if (e.target instanceof FASTRadioGroup) {
+            const parsedColor = parseColorHexRGB(e.target.value);
+            this.neutralPalette = createColorPalette(parsedColor as ColorRGBA64);
+            this.updateBackgroundColor();
         }
     };
 
