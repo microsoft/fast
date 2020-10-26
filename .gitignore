@@ -37,9 +37,9 @@ storybook-static
 #Ignore Mac .DS_Store
 .DS_Store
 
-#Ignore VSCode
-.vscode/
-.vs/
+#Ignore VSCode in Root
+/.vscode/
+/.vs/
 
 # tmp directories
 .tmp/
@@ -63,3 +63,7 @@ docs/en/packages/*/api/
 
 # GitHub Actions Local Testing
 .github/workflows/testing/*.json
+
+# Ignore Build Artefacts
+bin/
+obj/
