@@ -28,43 +28,41 @@ function mapAttributesAndSlotsToData(
     schemaId: string,
     schemaDictionary: SchemaDictionary
 ) {
-    if (schemaId !== null && schemaId !== undefined) {
-        return Object.entries(node.attributes)
-            .map(([attributeKey, attributeValue]: [string, string]) => {
-                if (schemaDictionary[schemaId].properties[attributeKey]) {
-                    if (
-                        schemaDictionary[schemaId].properties[attributeKey].type ===
-                        DataType.boolean
-                    ) {
-                        // When the attribute is a boolean, it does not matter
-                        // what it's value, it will always be true if present
-                        return [attributeKey, true];
-                    }
-
-                    if (
-                        schemaDictionary[schemaId].properties[attributeKey].type ===
-                        DataType.number
-                    ) {
-                        // Attributes are always strings, this must be converted
-                        return [attributeKey, parseFloat(JSON.parse(attributeValue))];
-                    }
+    return Object.entries(node.attributes)
+        .map(([attributeKey, attributeValue]: [string, string]) => {
+            if (schemaDictionary[schemaId].properties[attributeKey]) {
+                if (
+                    schemaDictionary[schemaId].properties[attributeKey].type ===
+                    DataType.boolean
+                ) {
+                    // When the attribute is a boolean, it does not matter
+                    // what it's value, it will always be true if present
+                    return [attributeKey, true];
                 }
 
-                try {
-                    const parsedValue = JSON.parse(attributeValue);
-
-                    return [attributeKey, parsedValue === null ? true : parsedValue];
-                } catch (e) {
-                    return [attributeKey, ""];
+                if (
+                    schemaDictionary[schemaId].properties[attributeKey].type ===
+                    DataType.number
+                ) {
+                    // Attributes are always strings, this must be converted
+                    return [attributeKey, parseFloat(JSON.parse(attributeValue))];
                 }
-            })
-            .reduce((previousValue, currentValue) => {
-                return {
-                    ...previousValue,
-                    [currentValue[0]]: currentValue[1],
-                };
-            }, slotAttributes);
-    }
+            }
+
+            try {
+                const parsedValue = JSON.parse(attributeValue);
+
+                return [attributeKey, parsedValue === null ? true : parsedValue];
+            } catch (e) {
+                return [attributeKey, ""];
+            }
+        })
+        .reduce((previousValue, currentValue) => {
+            return {
+                ...previousValue,
+                [currentValue[0]]: currentValue[1],
+            };
+        }, slotAttributes);
 }
 
 function resolveDataDictionaryFromNode(
@@ -283,12 +281,6 @@ export function mapVSCodeParsedHTMLToDataDictionary(
 
     if (textSchema) {
         textSchemaId = textSchema[1].$id;
-        if (textSchemaId === null || textSchemaId === undefined) {
-            console.log(
-                "textSchemaId is null in mapVSCodeParsedHTMLToDataDictionary config:",
-                config
-            );
-        }
     }
 
     return mapNodeToDataDictionary(
