@@ -432,6 +432,11 @@ export abstract class FormAssociated<
         this.disabled = disabled;
     }
 
+    public formResetCallback() {
+        this.value = this.initialValue;
+        this.dirtyValue = false;
+    }
+
     private proxyInitialized: boolean = false;
 
     /**
@@ -497,7 +502,7 @@ export abstract class FormAssociated<
         state?: File | string | FormData | null
     ): void {
         if (supportsElementInternals && this.elementInternals) {
-            this.elementInternals.setFormValue(value, state);
+            this.elementInternals.setFormValue(value, state || value);
         }
     }
 

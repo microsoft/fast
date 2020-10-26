@@ -385,6 +385,8 @@ export abstract class FormAssociated<T extends HTMLInputElement | HTMLTextAreaEl
     // @internal
     static get formAssociated(): boolean;
     formDisabledCallback(disabled: boolean): void;
+    // (undocumented)
+    formResetCallback(): void;
     protected initialValue: string;
     protected initialValueChanged(previous: string, next: string): void;
     // (undocumented)
