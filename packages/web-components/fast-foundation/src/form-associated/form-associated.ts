@@ -363,8 +363,11 @@ export abstract class FormAssociated<
      */
     public connectedCallback(): void {
         super.connectedCallback();
-        this.value = this.initialValue;
-        this.dirtyValue = false;
+
+        if (!this.value) {
+            this.value = this.initialValue;
+            this.dirtyValue = false;
+        }
 
         if (!supportsElementInternals) {
             this.attachProxy();

@@ -25,7 +25,7 @@ export const fastFlipperDefinition: WebComponentDefinition = {
                 },
                 {
                     name: "direction",
-                    type: DataType.boolean,
+                    type: DataType.string,
                     description: "The direction attribute",
                     values: [
                         {
