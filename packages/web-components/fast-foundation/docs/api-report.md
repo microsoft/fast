@@ -181,14 +181,6 @@ export class Card extends FASTElement {
 // @public
 export const CardTemplate: import("@microsoft/fast-element").ViewTemplate<Card, any>;
 
-// @public
-export enum cellTypes {
-    // (undocumented)
-    columnHeader = "columnheader",
-    // (undocumented)
-    default = "default"
-}
-
 // Warning: (ae-incompatible-release-tags) The symbol "Checkbox" is marked as @public, but its signature references "FormAssociated" which is marked as @alpha
 //
 // @public
@@ -292,7 +284,7 @@ export class DataGrid extends FASTElement {
 
 // @public
 export class DataGridCell extends FASTElement {
-    cellType: cellTypes;
+    cellType: DataGridCellTypes;
     columnDefinition: ColumnDefinition | null;
     // @internal (undocumented)
     connectedCallback(): void;
@@ -312,9 +304,16 @@ export class DataGridCell extends FASTElement {
 export const DataGridCellTemplate: import("@microsoft/fast-element").ViewTemplate<DataGridCell, any>;
 
 // @public
-export class DataGridRow extends FASTElement {
+export enum DataGridCellTypes {
     // (undocumented)
-    cellItemTemplate?: ViewTemplate;
+    columnHeader = "columnheader",
+    // (undocumented)
+    default = "default"
+}
+
+// @public
+export class DataGridRow extends FASTElement {
+    cellItemTemplate?: ViewTemplate | undefined;
     columnDefinitions: ColumnDefinition[] | null;
     // @internal (undocumented)
     connectedCallback(): void;
@@ -329,15 +328,25 @@ export class DataGridRow extends FASTElement {
     handleFocusout(e: FocusEvent): void;
     // (undocumented)
     handleKeydown(e: KeyboardEvent): void;
+    // @internal
+    isActiveRow: boolean;
     rowData: object | null;
     rowIndex: number;
-    rowType: rowTypes;
+    rowType: DataGridRowTypes;
     // @internal (undocumented)
     slottedCellElements: HTMLElement[];
     }
 
 // @public
 export const DataGridRowTemplate: import("@microsoft/fast-element").ViewTemplate<DataGridRow, any>;
+
+// @public
+export enum DataGridRowTypes {
+    // (undocumented)
+    default = "default",
+    // (undocumented)
+    header = "header"
+}
 
 // @public
 export const DataGridTemplate: import("@microsoft/fast-element").ViewTemplate<DataGrid, any>;
@@ -686,14 +695,6 @@ export const RadioGroupTemplate: import("@microsoft/fast-element").ViewTemplate<
 
 // @public
 export const RadioTemplate: import("@microsoft/fast-element").ViewTemplate<Radio, any>;
-
-// @public
-export enum rowTypes {
-    // (undocumented)
-    default = "default",
-    // (undocumented)
-    header = "header"
-}
 
 // @public
 export class Skeleton extends FASTElement {

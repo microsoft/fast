@@ -36,11 +36,11 @@ const defaultHeaderCellContentsTemplate: ViewTemplate = html<DataGridCell>`
 `;
 
 /**
- * Types of cells
+ * Enumerates possible cell types.
  *
  * @public
  */
-export enum cellTypes {
+export enum DataGridCellTypes {
     default = "default",
     columnHeader = "columnheader",
 }
@@ -59,7 +59,7 @@ export class DataGridCell extends FASTElement {
      * HTML Attribute: cell-type
      */
     @attr({ attribute: "cell-type" })
-    public cellType: cellTypes;
+    public cellType: DataGridCellTypes;
     private cellTypeChanged(): void {
         if ((this as FASTElement).$fastController.isConnected) {
         }
@@ -167,7 +167,7 @@ export class DataGridCell extends FASTElement {
         this.isActiveCell = true;
 
         switch (this.cellType) {
-            case cellTypes.default:
+            case DataGridCellTypes.default:
                 if (
                     this.columnDefinition.cellInternalFocusQueue !== true &&
                     typeof this.columnDefinition.cellFocusTargetCallback === "function"
@@ -182,7 +182,7 @@ export class DataGridCell extends FASTElement {
                 }
                 break;
 
-            case cellTypes.columnHeader:
+            case DataGridCellTypes.columnHeader:
                 if (
                     this.columnDefinition.headerCellInternalFocusQueue !== true &&
                     typeof this.columnDefinition.headerCellFocusTargetCallback ===
@@ -213,9 +213,9 @@ export class DataGridCell extends FASTElement {
         if (
             e.defaultPrevented ||
             this.columnDefinition === null ||
-            (this.cellType === cellTypes.default &&
+            (this.cellType === DataGridCellTypes.default &&
                 this.columnDefinition.cellInternalFocusQueue !== true) ||
-            (this.cellType === cellTypes.columnHeader &&
+            (this.cellType === DataGridCellTypes.columnHeader &&
                 this.columnDefinition.headerCellInternalFocusQueue !== true)
         ) {
             return;
@@ -229,7 +229,7 @@ export class DataGridCell extends FASTElement {
                 }
 
                 switch (this.cellType) {
-                    case cellTypes.default:
+                    case DataGridCellTypes.default:
                         if (this.columnDefinition.cellFocusTargetCallback !== undefined) {
                             const focusTarget: HTMLElement = this.columnDefinition.cellFocusTargetCallback(
                                 this
@@ -242,7 +242,7 @@ export class DataGridCell extends FASTElement {
                         }
                         break;
 
-                    case cellTypes.columnHeader:
+                    case DataGridCellTypes.columnHeader:
                         if (
                             this.columnDefinition.headerCellFocusTargetCallback !==
                             undefined
@@ -278,7 +278,7 @@ export class DataGridCell extends FASTElement {
         }
 
         switch (this.cellType) {
-            case cellTypes.columnHeader:
+            case DataGridCellTypes.columnHeader:
                 if (this.columnDefinition.headerCellTemplate !== undefined) {
                     this.customCellView = this.columnDefinition.headerCellTemplate.render(
                         this,
@@ -293,7 +293,7 @@ export class DataGridCell extends FASTElement {
                 break;
 
             case undefined:
-            case cellTypes.default:
+            case DataGridCellTypes.default:
                 if (this.columnDefinition.cellTemplate !== undefined) {
                     this.customCellView = this.columnDefinition.cellTemplate.render(
                         this,

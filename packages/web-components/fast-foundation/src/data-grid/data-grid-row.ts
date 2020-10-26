@@ -32,11 +32,11 @@ const headerCellItemTemplate = html`
 `;
 
 /**
- * Types of rows
+ * Enumerates possible row types
  *
  * @public
  */
-export enum rowTypes {
+export enum DataGridRowTypes {
     default = "default",
     header = "header",
 }
@@ -66,20 +66,6 @@ export class DataGridRow extends FASTElement {
     }
 
     /**
-     * The index of the row in the parent grid
-     *
-     * @public
-     * @remarks
-     * HTML Attribute: row-index
-     */
-    @attr({ attribute: "row-index" })
-    public rowIndex: number;
-    private rowIndexChanged(): void {
-        if ((this as FASTElement).$fastController.isConnected) {
-        }
-    }
-
-    /**
      * The type of row
      *
      * @public
@@ -87,7 +73,7 @@ export class DataGridRow extends FASTElement {
      * HTML Attribute: row-type
      */
     @attr({ attribute: "row-type" })
-    public rowType: rowTypes;
+    public rowType: DataGridRowTypes;
     private rowTypeChanged(): void {
         if ((this as FASTElement).$fastController.isConnected) {
         }
@@ -117,8 +103,38 @@ export class DataGridRow extends FASTElement {
         }
     }
 
+    /**
+     * The template used to render programmatically generated cells.
+     *
+     * @public
+     */
     @observable
-    public cellItemTemplate?: ViewTemplate = defaultCellItemTemplate;
+    public cellItemTemplate?: ViewTemplate | undefined;
+    private cellItemTemplateChanged(): void {
+        if ((this as FASTElement).$fastController.isConnected) {
+        }
+    }
+
+    /**
+     * The index of the row in the parent grid.
+     * This is typically set programmatically by the parent grid.
+     *
+     * @public
+     */
+    @observable
+    public rowIndex: number;
+    private rowIndexChanged(): void {
+        if ((this as FASTElement).$fastController.isConnected) {
+        }
+    }
+
+    /**
+     * Whether focus is on/in a cell within this row.
+     *
+     * @internal
+     */
+    @observable
+    public isActiveRow: boolean = false;
 
     private cellsRepeatBehavior: RepeatBehavior | null = null;
     private cellsPlaceholder: Node | null = null;
@@ -132,7 +148,6 @@ export class DataGridRow extends FASTElement {
      * @internal
      */
     public focusColumnIndex: number = 0;
-    private isActiveRow: boolean = false;
 
     /**
      * @internal
@@ -147,7 +162,7 @@ export class DataGridRow extends FASTElement {
             this.appendChild(this.cellsPlaceholder);
 
             this.cellItemTemplate =
-                this.rowType === rowTypes.header
+                this.rowType === DataGridRowTypes.header
                     ? headerCellItemTemplate
                     : defaultCellItemTemplate;
 

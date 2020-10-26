@@ -120,7 +120,7 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
 
 const buttonCellTemplate = html<DataGridCell>`
     <template>
-        <fast-button @click="${x => cellTemplateButtonClick(x)}">
+        <fast-button @click="${x => cellTemplateButtonClick(x)}" style="width: 100%;">
             ${x =>
                 x.rowData === null ||
                 x.columnDefinition === null ||
@@ -133,7 +133,7 @@ const buttonCellTemplate = html<DataGridCell>`
 
 const buttonHeaderCellTemplate = html<DataGridCell>`
     <template>
-        <fast-button @click="${x => headerTemplateButtonClick(x)}">
+        <fast-button @click="${x => headerTemplateButtonClick(x)}" style="width: 100%;">
             ${x =>
                 x.columnDefinition === null
                     ? null
