@@ -10,7 +10,9 @@ describe("The repeat", () => {
         it("returns a RepeatDirective", () => {
             const directive = repeat(
                 () => [],
-                html`test`
+                html`
+                    test
+                `
             );
             expect(directive).to.be.instanceOf(RepeatDirective);
         });
@@ -20,7 +22,9 @@ describe("The repeat", () => {
         it("creates a RepeatBehavior", () => {
             const directive = repeat(
                 () => [],
-                html`test`
+                html`
+                    test
+                `
             ) as RepeatDirective;
             const target = document.createComment("");
             const behavior = directive.createBehavior(target);
@@ -30,8 +34,12 @@ describe("The repeat", () => {
     });
 
     context("behavior", () => {
-        const itemTemplate = html<Item>`${x => x.name}`;
-        const altItemTemplate = html<Item>`*${x => x.name}`;
+        const itemTemplate = html<Item>`
+            ${x => x.name}
+        `;
+        const altItemTemplate = html<Item>`
+            *${x => x.name}
+        `;
         const oneThroughTen = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
         const zeroThroughTen = [0].concat(oneThroughTen);
 
@@ -264,10 +272,15 @@ describe("The repeat", () => {
 
         oneThroughTen.forEach(size => {
             it(`renders grandparent values from nested arrays of size ${size}`, async () => {
-                const deepItemTemplate = html<Item>`parent-${x => x.name}${repeat(
+                const deepItemTemplate = html<Item>`
+                    parent-${x => x.name}${repeat(
                         x => x.items!,
-                        html<Item>`child-${x => x.name}root-${(x, c) =>
-                                c.parentContext.parent.name}`)}`;
+                        html<Item>`
+                            child-${x => x.name}root-${(x, c) =>
+                                c.parentContext.parent.name}
+                        `
+                    )}
+                `;
 
                 const { parent, location } = createLocation();
                 const directive = repeat<ViewModel>(
@@ -286,6 +299,29 @@ describe("The repeat", () => {
                     const str = `child-item${i + 1}root-root`;
                     expect(text.indexOf(str)).to.not.equal(-1);
                 }
+            });
+        });
+
+        oneThroughTen.forEach(size => {
+            it(`handles back to back shift operations for arrays of size ${size}`, async () => {
+                const { parent, location } = createLocation();
+                const directive = repeat<ViewModel>(
+                    x => x.items,
+                    itemTemplate
+                ) as RepeatDirective;
+                const behavior = directive.createBehavior(location);
+                const vm = new ViewModel(size);
+
+                behavior.bind(vm, defaultExecutionContext);
+
+                vm.items.shift();
+                vm.items.unshift({ name: "shift" });
+
+                await DOM.nextUpdate();
+
+                expect(toHTML(parent)).to.equal(
+                    `shift${createOutput(size, index => index !== 0)}`
+                );
             });
         });
     });
