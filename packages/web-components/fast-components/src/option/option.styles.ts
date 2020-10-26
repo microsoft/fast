@@ -1,11 +1,12 @@
 import { css } from "@microsoft/fast-element";
-import { display, focusVisible } from "@microsoft/fast-foundation";
+import { disabledCursor, display, focusVisible } from "@microsoft/fast-foundation";
 import {
     accentFillActiveBehavior,
     accentFillHoverBehavior,
     accentForegroundCutRestBehavior,
     accentForegroundFocusBehavior,
     neutralFillStealthHoverBehavior,
+    neutralFillStealthRestBehavior,
     neutralFocusBehavior,
     neutralFocusInnerAccentBehavior,
     neutralForegroundRestBehavior,
@@ -45,15 +46,23 @@ export const OptionStyles = css`
         color: ${accentForegroundCutRestBehavior.var};
     }
 
-    /* :host(.selected) {
-        color: ${accentForegroundFocusBehavior.var};
-    } */
+    :host(.disabled) {
+        cursor: ${disabledCursor};
+        opacity: var(--disabled-opacity);
+    }
+
+    :host(.disabled:hover) {
+        color: ${neutralForegroundRestBehavior.var};
+        fill: currentcolor;
+        background: ${neutralFillStealthRestBehavior.var}
+    }
 `.withBehaviors(
     accentFillActiveBehavior,
     accentFillHoverBehavior,
     accentForegroundCutRestBehavior,
     accentForegroundFocusBehavior,
     neutralFillStealthHoverBehavior,
+    neutralFillStealthRestBehavior,
     neutralFocusBehavior,
     neutralFocusInnerAccentBehavior,
     neutralForegroundRestBehavior,

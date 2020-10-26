@@ -1,15 +1,11 @@
-import { FASTDesignSystemProvider } from "../design-system-provider";
+import "../design-system-provider";
+import "../listbox";
+import "../option";
 import Examples from "./fixtures/base.html";
-import { FASTSelect, FASTListbox, FASTOption } from ".";
-
-// Prevent tree-shaking
-FASTSelect;
-FASTOption;
-FASTListbox;
-FASTDesignSystemProvider;
+import "./index";
 
 export default {
     title: "Select",
 };
 
-export const Base = () => Examples;
+export const Select = () => Examples;

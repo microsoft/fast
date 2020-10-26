@@ -8,7 +8,20 @@ import { attr, FASTElement, observable } from "@microsoft/fast-element";
  */
 export class Option extends FASTElement {
     /**
+     * The defaultSelected state of the option.
+     * @public
+     */
+    @observable
+    public defaultSelected: boolean = false;
+    private defaultSelectedChanged(): void {
+        if (!this.dirtySelected) {
+            this.selected = this.defaultSelected;
+        }
+    }
+
+    /**
      * Tracks whether the "selected" property has been changed.
+     * @internal
      */
     private dirtySelected: boolean = false;
 
@@ -20,18 +33,6 @@ export class Option extends FASTElement {
      */
     @attr({ mode: "boolean" })
     public disabled: boolean;
-
-    /**
-     * When true, the control will be immutable by user interaction. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly | readonly HTML attribute} for more information.
-     * @public
-     * @remarks
-     * HTML Attribute: readonly
-     */
-    @attr({ attribute: "readonly", mode: "boolean" })
-    public readOnly: boolean; // Map to proxy element
-    private readOnlyChanged(): void {
-        void 0;
-    }
 
     /**
      * The selected attribute value. This sets the initial selected value.
@@ -47,12 +48,28 @@ export class Option extends FASTElement {
     }
 
     /**
-     * The element's value to be included in form submission when checked.
+     * The checked state of the control.
+     *
      * @public
      */
-    public value: string = "";
-    public valueChanged(): void {
-        void 0;
+    @observable
+    public selected: boolean = this.defaultSelected;
+    private selectedChanged(oldValue, newValue): void {
+        if (this.$fastController.isConnected) {
+            if (!this.dirtySelected) {
+                this.dirtySelected = true;
+            }
+
+            this.classList.toggle("selected", oldValue !== newValue ? newValue : false);
+
+            if (newValue) {
+                this.$emit("change");
+            }
+        }
+    }
+
+    public get value(): string {
+        return this.valueAttribute ? this.valueAttribute : this.textContent || "";
     }
 
     /**
@@ -64,73 +81,19 @@ export class Option extends FASTElement {
     @attr({ attribute: "value", mode: "fromView" })
     public valueAttribute: string;
 
-    /**
-     * The defaultSelected state of the option.
-     * @public
-     */
-    @observable
-    public defaultSelected: boolean = false;
-    private defaultSelectedChanged(): void {
-        if (!this.dirtySelected) {
-            // Setting this.selected will cause us to enter a dirty state,
-            // but if we are clean when defaultSelected is changed, we want to
-            // stay in a clean state, so reset this.dirtySelected
-            this.selected = this.defaultSelected;
-        }
-    }
-
-    /**
-     * The checked state of the control.
-     *
-     * @public
-     */
-    @observable
-    public selected: boolean = this.defaultSelected;
-    private selectedChanged(oldValue, newValue): void {
-        if (!this.dirtySelected) {
-            this.dirtySelected = true;
-        }
-
-        this.classList.toggle("selected", oldValue !== newValue ? newValue : false);
-
-        if (this.$fastController.isConnected) {
-            this.$emit("change");
-        }
-    }
-
-    @observable
-    public focusable: boolean = false;
-
-    public handleFocus = (e: Event): void => {
-        if (e.target === e.currentTarget) {
-            this.focusable = true;
-        }
-    };
-
-    constructor() {
-        super();
-        this.addEventListener("focus", this.handleFocus);
-        this.addEventListener("blur", this.handleBlur);
-        // @focus="${(x, c) => x.handleFocus(c.event as FocusEvent)}"
-        // @blur="${(x, c) => x.handleBlur(c.event as FocusEvent)}"
-    }
-
-    public handleBlur = (e: FocusEvent): void => {
-        console.log(e.target, e.currentTarget);
-        if (e.target !== e.currentTarget) {
+    public handleClick = (e: MouseEvent): void => {
+        if (this.disabled) {
             return;
         }
 
-        this.focusable = false;
+        this.selected = true;
     };
 
-    @observable
-    public defaultSlottedNodes: Node[];
+    public get label() {
+        return this.value ? this.value : this.textContent;
+    }
 
-    /**
-     * @internal
-     */
-    public connectedCallback(): void {
-        super.connectedCallback();
+    public get text(): string | null {
+        return this.textContent;
     }
 }

@@ -1,9 +1,5 @@
-import { attr, FASTElement, observable } from "@microsoft/fast-element";
+import { attr, DOM, FASTElement, observable } from "@microsoft/fast-element";
 import { Option } from "../option";
-
-interface ListboxMouseEvent extends MouseEvent {
-    target: Option;
-}
 
 /**
  * A Listbox Custom HTML Element.
@@ -22,7 +18,15 @@ export class Listbox extends FASTElement {
     @attr({ attribute: "disabled", mode: "boolean" })
     public disabled: boolean;
     private disabledChanged(): void {
-        if (this.listboxItems !== undefined) {
+        if (!this.$fastController.isConnected) {
+            return;
+        }
+
+        if (this.disabled) {
+            this.setAttribute("aria-disabled", "true");
+        }
+
+        if (this.listboxItems.length) {
             this.listboxItems.forEach((option: Option) => {
                 if (this.disabled) {
                     option.disabled = true;
@@ -36,48 +40,41 @@ export class Listbox extends FASTElement {
     @observable
     public activeDescendent: string;
 
-    @observable
-    public focusable: boolean = false;
+    public selectedOption: Option;
 
     @observable
-    private focusedOptionIndex: number;
-    private focusedOptionIndexChanged(oldValue, newValue): void {
-        if (!this.$fastController.isConnected) {
+    private selectedOptionIndex: number;
+    protected selectedOptionIndexChanged(): void {
+        this.setSelectedOption();
+    }
+
+    public setSelectedOption = (): void => {
+        const selectedOption = this.listboxItems[this.selectedOptionIndex];
+        if (!selectedOption) {
             return;
         }
 
-        this.listboxItems.forEach(el => (el.selected = false));
+        this.listboxItems.forEach(el => {
+            const isSameNode = el.isSameNode(selectedOption);
+            el.selected = isSameNode;
+            if (isSameNode) {
+                this.selectedOption = el;
+            }
+            this.activeDescendent = isSameNode ? el.id : this.activeDescendent;
+        });
 
-        const focusedOption = this.listboxItems[newValue];
-        focusedOption.selected = true;
-        this.activeDescendent = focusedOption.id;
-        focusedOption.focus();
-    }
+        this.focusFirstSelectedOption();
+    };
 
-    /**
-     * When true, the child options will be immutable by user interaction. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly | readonly HTML attribute} for more information.
-     * @public
-     * @remarks
-     * HTML Attribute: readonly
-     */
-    @attr({ attribute: "readonly", mode: "boolean" })
-    public readOnly: boolean;
-    private readOnlyChanged(): void {
-        if (this.listboxItems) {
-            this.listboxItems.forEach((option: Option): void => {
-                if (this.readOnly) {
-                    option.readOnly = true;
-                } else {
-                    option.readOnly = false;
-                }
-            });
-        }
+    public focusFirstSelectedOption(): void {
+        const selectedOption = this.listboxItems[this.selectedOptionIndex];
+        DOM.queueUpdate(() => selectedOption.focus());
     }
 
     /**
      * @internal
      */
-    private listboxItems: Option[];
+    public listboxItems: Option[];
 
     /**
      * @internal
@@ -89,10 +86,11 @@ export class Listbox extends FASTElement {
      */
     @observable
     public items: Element[];
-    private itemsChanged(oldValue, newValue): void {
+    protected itemsChanged(oldValue, newValue): void {
         if (!this.$fastController.isConnected) {
             return;
         }
+
         this.listboxItems = newValue.filter(
             (n: Option) =>
                 n.nodeType === Node.ELEMENT_NODE &&
@@ -103,102 +101,238 @@ export class Listbox extends FASTElement {
         this.setupOptions();
     }
 
+    public connectedCallback() {
+        super.connectedCallback();
+        this.addEventListener("click", this.handleClick);
+        this.addEventListener("focusin", this.handleFocusIn);
+        this.addEventListener("keydown", this.handleKeyDown);
+
+        this.listboxItems = (this.items as Option[]).filter(
+            (n: Option) =>
+                n.nodeType === Node.ELEMENT_NODE &&
+                n.getAttribute("role") === "option" &&
+                !n.disabled
+        );
+
+        this.listboxItemsCount = this.listboxItems.length;
+        this.selectedOptionIndex = this.listboxItems.findIndex(el => el.selected) || 0;
+
+        DOM.queueUpdate(() => this.setupOptions());
+
+        // this.addEventListener("keypress", this.keypressHandler);
+    }
+
     private setupOptions(): void {
-        this.listboxItems.forEach((o, i) => (o.id = `option-${i}`));
-        this.focusedOptionIndex = 0;
+        this.listboxItems.forEach((el, i) => {
+            el.setAttribute("tabindex", "0");
+            el.id = `option-${i}`;
+        });
+        this.selectedOptionIndex = 0;
     }
 
-    constructor() {
-        super();
-        this.addEventListener("keydown", this.keydownHandler);
-        this.addEventListener("click", this.clickHandler);
-        this.addEventListener("keypress", this.keypressHandler);
-        this.addEventListener("focusout", this.focusOutHandler);
-        this.addEventListener("focusin", this.handleFocus);
-    }
+    public keypressHandler(e: KeyboardEvent): void {
+        if (!this.$fastController.isConnected) {
+            return;
+        }
 
-    private focusOutHandler = (e: FocusEvent) => {
-        console.log(e);
-    };
+        let captured: Option = e.target! as Option;
 
-    private keypressHandler = (e: KeyboardEvent): void => {
-        const captured: Option | null = e.target as Option;
+        if (!this.listboxItems.includes(captured)) {
+            captured = this.getFocusedOption();
+        }
+
         if (captured) {
-            captured.setAttribute("tabindex", captured.selected ? "0" : "-1");
+            if (captured.selected) {
+                captured.setAttribute("tabindex", "0");
+                return;
+            }
+            captured.removeAttribute("tabindex");
+            // captured.setAttribute("tabindex", captured.selected ? "0" : "-1");
         }
-    };
-
-    public handleFocus = (e: Event): void => {
-        if (e.target !== e.currentTarget) {
-            return;
-        }
-
-        // this.$emit("selected-change", e);
-
-        this.focusable = true;
-
-        const focusedOption = this.getFocusedOption();
-
-        focusedOption.focus();
-    };
-
-    private getFocusedOption() {
-        return this.listboxItems[this.focusedOptionIndex || 0];
     }
 
-    public handleBlur = (e: FocusEvent): void => {
-        if (e.target !== e.currentTarget) {
-            return;
+    public handleFocusIn = (e: FocusEvent): void => {
+        if (e.target === e.currentTarget) {
+            this.setSelectedOption();
         }
-
-        this.focusable = false;
     };
 
-    public keydownHandler = (e: KeyboardEvent) => {
+    private getFocusedOption(): Option {
+        return this.listboxItems[this.selectedOptionIndex || 0];
+    }
+
+    private rejectIfDisabled = (func, e): typeof func => {
+        if (!this.disabled) {
+            return func(e);
+        }
+    };
+
+    public handleKeyDown = (e: KeyboardEvent): void | boolean => {
         if (!e.key) {
             return;
         }
 
         const keyCode = e.key || e.key.charCodeAt(0);
-        console.log(keyCode);
 
         switch (keyCode) {
-            case "Enter":
-                // changes the selected state of the current option and updates
-                // the select value property
-                break;
-
+            case "ArrowLeft":
             case "ArrowUp":
-                e.preventDefault();
-                // moves focus to the previous option in the listbox
-                if (this.focusedOptionIndex > 0) {
-                    this.focusedOptionIndex -= 1;
-                }
-                break;
+                return this.selectPreviousOption(e);
 
             case "ArrowDown":
-                e.preventDefault();
-                // moves focus to the next option in the listbox
-                if (this.focusedOptionIndex < this.listboxItemsCount - 1) {
-                    this.focusedOptionIndex += 1;
+            case "ArrowRight":
+                return this.selectNextOption(e);
+
+            case "Home":
+                return this.selectFirstOption(e);
+
+            case "End":
+                return this.selectLastOption(e);
+
+            case "Tab":
+                if (e.defaultPrevented) {
+                    return;
                 }
+
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                this.focusFirstSelectedOption();
+                return;
+
+            case " ":
+            case "Enter":
+            case "Escape":
                 break;
 
             default:
-                return;
+                e.stopImmediatePropagation();
         }
     };
 
-    public clickHandler = (e: ListboxMouseEvent): void => {
-        const captured = e.target.closest("[role='option']");
+    /**
+     * Moves focus to the first selectable option
+     *
+     * @internal
+     */
+    private selectFirstOption = (e: KeyboardEvent): void => {
+        e.stopPropagation();
+        this.selectedOptionIndex = 0;
+    };
 
-        if (this.disabled || this.readOnly || !captured) {
+    /**
+     * Moves focus to the previous selectable option
+     *
+     * @internal
+     */
+    private selectPreviousOption = (e: KeyboardEvent): void => {
+        e.stopPropagation();
+        if (!this.disabled && this.selectedOptionIndex > 0) {
+            this.selectedOptionIndex -= 1;
+        }
+    };
+
+    /**
+     * Moves focus to the next selectable option
+     * @internal
+     */
+    private selectNextOption(e: KeyboardEvent) {
+        e.stopPropagation();
+        if (!this.disabled && this.selectedOptionIndex < this.listboxItemsCount - 1) {
+            this.selectedOptionIndex += 1;
+        }
+    }
+
+    /**
+     * Moves focus to the last selectable option
+     *
+     * @internal
+     */
+    private selectLastOption = (e: KeyboardEvent): void => {
+        e.stopPropagation();
+        if (!this.disabled) {
+            this.selectedOptionIndex = this.listboxItemsCount - 1;
+        }
+    };
+
+    /**
+     *
+     * @internal
+     */
+    public handleClick = (e: MouseEvent): void => {
+        e.preventDefault();
+
+        const captured = (e.target as HTMLElement).closest("[role='option']");
+        if (!captured) {
             return;
         }
 
         const selectedIndex = this.listboxItems.findIndex(el => el.isEqualNode(captured));
         if (selectedIndex !== -1) {
-            this.focusedOptionIndex = selectedIndex;
+            this.selectedOptionIndex = selectedIndex;
+            this.selectedOption = this.listboxItems[selectedIndex];
         }
     };
+
+    /**
+     * Move focus to an option whose label matches characters typed by the user.
+     * Consecutive keystrokes are batched into a buffer of search text used
+     * to match against the set of options.  If TYPE_AHEAD_TIMEOUT_MS passes
+     * between consecutive keystrokes, the search restarts.
+     *
+     * @param typedKey - the key to be evaluated
+     */
+    private typeAheadValue: string = "";
+    private typeAheadTimeoutHandler: number = -1;
+    private typeAheadExpired: boolean = false;
+    private static readonly TYPE_AHEAD_TIMEOUT_MS = 1000;
+    public handleTypeAhead(typedKey) {
+        // For every keystroke, reset the timer that triggers when enough
+        // time has elapsed such that the search should restart.
+        window.clearTimeout(this.typeAheadTimeoutHandler);
+        this.typeAheadTimeoutHandler = window.setTimeout(() => {
+            this.typeAheadExpired = true;
+        }, Listbox.TYPE_AHEAD_TIMEOUT_MS);
+
+        if (this.typeAheadExpired) {
+            this.typeAheadValue = "";
+        }
+
+        this.typeAheadValue = `${this.typeAheadValue}${typedKey}`;
+
+        const focusedIndex = this.listboxItems.indexOf(document.activeElement as any);
+        const searchStartOffset = this.typeAheadExpired ? 1 : 0;
+        // Try to match first against options that come after the currently
+        // selected option. If none of those match, loop back around starting
+        // from the top of the list. If we're in the middle of a search,
+        // continue matching against the currently focused option before moving
+        // on to the next option.
+        const optionsForSearch = this.listboxItems
+            .slice(focusedIndex + searchStartOffset, this.listboxItems.length)
+            .concat(this.listboxItems.slice(0, focusedIndex + searchStartOffset));
+
+        const pattern = `^(${this.typeAheadValue.replace(
+            /[-/\\^$*+?.()|[\]{}]/g,
+            "\\$&"
+        )})`;
+        const re = new RegExp(pattern, "gi");
+
+        for (const option of optionsForSearch) {
+            // Match against the visible text of the option, rather than
+            // the `value` attribute. For a real <option> element, the
+            // `label` property could be used here.
+            // Chromium/Firefox's native <select>s ignore whitespace at the
+            // beginning/end of the visible text when matching, so trim()
+            // the search text to align with that behavior.
+            const element: any = option;
+            const matches = element.innerText.trim().match(re);
+
+            if (matches) {
+                // this.setFocusOnOption(element);
+                console.log(element);
+                break;
+            }
+        }
+
+        this.typeAheadExpired = false;
+    }
 }

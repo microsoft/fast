@@ -500,18 +500,40 @@ export function isDesignSystemConsumer(element: HTMLElement | DesignSystemConsum
 // @public
 export function isTreeItemElement(el: Element): el is HTMLElement;
 
-// @public (undocumented)
+// @public
 export class Listbox extends FASTElement {
-    constructor();
     // (undocumented)
-    clickHandler: (e: MouseEvent) => void;
+    activeDescendent: string;
     // (undocumented)
-    defaultSlottedNodes: Node[];
+    connectedCallback(): void;
+    disabled: boolean;
     // (undocumented)
-    keypressHandler: (e: KeyboardEvent) => void;
-}
+    focusFirstSelectedOption(): void;
+    // @internal (undocumented)
+    handleClick: (e: MouseEvent) => void;
+    // (undocumented)
+    handleFocusIn: (e: FocusEvent) => void;
+    // (undocumented)
+    handleKeyDown: (e: KeyboardEvent) => void | boolean;
+    // (undocumented)
+    handleTypeAhead(typedKey: any): void;
+    // @internal (undocumented)
+    items: Element[];
+    // (undocumented)
+    protected itemsChanged(oldValue: any, newValue: any): void;
+    // (undocumented)
+    keypressHandler(e: KeyboardEvent): void;
+    // @internal (undocumented)
+    listboxItems: Option_2[];
+    // (undocumented)
+    selectedOption: Option_2;
+    // (undocumented)
+    protected selectedOptionIndexChanged(): void;
+    // (undocumented)
+    setSelectedOption: () => void;
+    }
 
-// @public (undocumented)
+// @public
 export const ListboxTemplate: import("@microsoft/fast-element").ViewTemplate<Listbox, any>;
 
 // @public
@@ -588,34 +610,26 @@ export const MenuItemTemplate: import("@microsoft/fast-element").ViewTemplate<Me
 // @public
 export const MenuTemplate: import("@microsoft/fast-element").ViewTemplate<Menu, any>;
 
-// Warning: (ae-incompatible-release-tags) The symbol "Option" is marked as @public, but its signature references "FormAssociated" which is marked as @alpha
-//
-// @public (undocumented)
-class Option_2 extends FormAssociated<HTMLInputElement> {
-    constructor();
-    checked: boolean;
+// @public
+class Option_2 extends FASTElement {
+    defaultSelected: boolean;
+    disabled: boolean;
     // (undocumented)
-    checkedAttribute: boolean;
+    handleClick: (e: MouseEvent) => void;
     // (undocumented)
-    clickHandler: (e: MouseEvent) => void;
+    get label(): string | null;
+    selected: boolean;
+    selectedAttribute: boolean;
     // (undocumented)
-    connectedCallback(): void;
+    get text(): string | null;
     // (undocumented)
-    defaultChecked: boolean;
-    // (undocumented)
-    defaultSlottedNodes: Node[];
-    // (undocumented)
-    protected proxy: HTMLInputElement;
-    // (undocumented)
-    readOnly: boolean;
-    value: string;
-    // (undocumented)
-    valueChanged(): void;
+    get value(): string;
+    valueAttribute: string;
 }
 
 export { Option_2 as Option }
 
-// @public (undocumented)
+// @public
 export const OptionTemplate: import("@microsoft/fast-element").ViewTemplate<Option_2, any>;
 
 // @public
@@ -687,56 +701,45 @@ export const RadioTemplate: import("@microsoft/fast-element").ViewTemplate<Radio
 // Warning: (ae-incompatible-release-tags) The symbol "Select" is marked as @public, but its signature references "FormAssociated" which is marked as @alpha
 // Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "Select" because one of its declarations is marked as @internal
 //
-// @public (undocumented)
-export class Select extends FormAssociated<HTMLInputElement> {
-    constructor();
+// @public
+export class Select extends FormAssociated<HTMLSelectElement> {
     // (undocumented)
-    adjust(adjustment: number): void;
+    autocomplete: string;
     // (undocumented)
+    autofocus: boolean;
     button: HTMLElement;
     // (undocumented)
     clickHandler: (e: MouseEvent) => void;
     // (undocumented)
     connectedCallback(): void;
-    // (undocumented)
-    defaultSlottedNodes: Node[];
-    focusoutHandlerListbox: (e: FocusEvent) => void;
-    handleMultiple: (value: string) => void;
-    // (undocumented)
-    handleTypeAhead(typedKey: any): void;
-    // (undocumented)
-    keypressHandlerButton: (e: KeyboardEvent) => void;
-    keypressHandlerListbox: (e: KeyboardEvent) => void;
     // @internal (undocumented)
-    listbox: HTMLElement[];
+    defaultSlottedNodes: Node[];
+    displayValue: string;
     // (undocumented)
-    multiple: boolean;
+    focusoutHandler: (e: FocusEvent) => void;
+    // @internal
+    indicatorContainer: HTMLElement;
     // (undocumented)
+    keydownHandler: (e: KeyboardEvent) => void;
+    // @internal (undocumented)
+    listbox: Listbox;
     open: boolean;
     // @internal (undocumented)
     options: Option_2[];
-    optionSelectionChange(value: string): void;
     // (undocumented)
-    protected proxy: HTMLInputElement;
-    // (undocumented)
-    readOnly: boolean;
-    registerButtonSlotChange(): void;
+    protected proxy: HTMLSelectElement;
     // (undocumented)
     selectedValue: HTMLElement;
-    setFocusOnOption: (optionToFocus?: null) => void;
+    slottedButtonContainer: Node[];
     // (undocumented)
-    updateButtonPartAttr(): void;
-    // (undocumented)
-    value: string;
-    // (undocumented)
-    valueChanged(): void;
+    protected valueChanged(previous: string, next: string): void;
 }
 
 // @internal
 export interface Select extends StartEnd {
 }
 
-// @public (undocumented)
+// @public
 export const SelectTemplate: import("@microsoft/fast-element").ViewTemplate<Select, any>;
 
 // @public

@@ -10,9 +10,9 @@ export const OptionTemplate = html<Option>`
     <template
         role="option"
         aria-selected="${x => x.selectedAttribute}"
-        tabindex="${x => (x.disabled ? void 0 : x.focusable ? 0 : -1)}"
         class="${x => (x.selected ? "selected" : "")} ${x =>
             x.disabled ? "disabled" : ""}"
+        @click="${(x, c) => x.handleClick(c.event as MouseEvent)}"
     >
         ${startTemplate}
         <span class="content" part="content">

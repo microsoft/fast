@@ -1,226 +1,185 @@
-import { attr, observable } from "@microsoft/fast-element";
-import { KeyCodes, wrapInBounds } from "@microsoft/fast-web-utilities";
+import { attr, DOM, observable } from "@microsoft/fast-element";
 import { FormAssociated } from "../form-associated/index";
 import { StartEnd } from "../patterns/start-end";
 import { applyMixins } from "../utilities/apply-mixins";
 import { Option } from "../option/option";
+import { Listbox } from "../listbox/listbox";
 
-export class Select extends FormAssociated<HTMLInputElement> {
-    protected proxy: HTMLInputElement;
-    @attr({ attribute: "readonly", mode: "boolean" })
-    public readOnly: boolean; // Map to proxy element
+/**
+ * A Select Custom HTML Element.
+ * Implements the {@link https://www.w3.org/TR/wai-aria-1.1/#select | ARIA select }.
+ *
+ * @public
+ */
+export class Select extends FormAssociated<HTMLSelectElement> {
+    protected proxy: HTMLSelectElement = document.createElement("select");
 
-    @attr({ attribute: "multiple", mode: "boolean" })
-    public multiple: boolean;
+    @attr
+    public autocomplete: string = "off";
 
+    @attr({ attribute: "autofocus", mode: "boolean" })
+    public autofocus: boolean = false;
+
+    /**
+     * The open attribute
+     */
     @attr({ attribute: "open", mode: "boolean" })
-
-    @observable
     public open: boolean;
-    private openChanged() {
-        this.updateButtonPartAttr();
+    private openChanged(): void {
+        if (this.$fastController.isConnected) {
+            this.button.setAttribute("aria-expanded", `${this.open}`);
+
+            if (this.open) {
+                this.listbox.focusFirstSelectedOption();
+            }
+        }
     }
 
+    /**
+     * The container for the indicator icon.
+     * @internal
+     */
     @observable
-    public defaultSlottedNodes: Node[];
-
-    @observable
-    public button: HTMLElement;
-
-    @observable
-    public selectedValue: HTMLElement;
+    public indicatorContainer: HTMLElement;
 
     /**
      * @internal
      */
     @observable
-    public listbox: HTMLElement[];
-    private listboxChanged() {
-        if (this.$fastController.isConnected) {
-            this.applyListboxControllerCode();
-        }
-    }
+    public defaultSlottedNodes: Node[];
+
+    /**
+     * @internal
+     */
+    @observable
+    public listbox: Listbox;
 
     /**
      * @internal
      */
     @observable
     public options: Option[];
-    private optionsChanged() {
-        if (this.$fastController.isConnected) {
-            //
-        }
-    }
-
-    // TODO: This needs to change to support multiple values
-    public value: string = "Selected Value"; // Map to proxy element.
-    public valueChanged(): void {
-        if (this.proxy instanceof HTMLElement) {
-            this.proxy.value = this.value;
-        }
-    }
-
-    private activeOptionIndex: number = 0;
 
     /**
-     * Set to true when the component has constructed
+     * The value displayed on the button
+     * @public
      */
-    private constructed: boolean = false;
+    @observable
+    public displayValue: string;
 
-    constructor() {
-        super();
-        this.constructed = true;
-    }
+    /**
+     * The button element that displays the selected value and triggers the visibility of the listbox.
+     * @public
+     */
+    @observable
+    public button: HTMLElement;
 
-    public connectedCallback(): void {
-        super.connectedCallback();
+    /**
+     * The slot that holds the contents of the button
+     * @public
+     */
+    @observable
+    public slottedButtonContainer: Node[];
 
-        this.registerButtonSlotChange();
+    /**
+     * Update the value and display value when the listbox emits a change event.
+     * @param e - Event object
+     */
+    private listboxChangeHandler = (e: Event): void => {
+        const captured = e.target as Option;
+        this.value = captured.value;
+    };
 
-        // We won't get a slotchange for event for parts that were not replaced
-        // by user-provided parts, so apply their controller code here.
-        this.applyButtonControllerCode();
-        this.applyListboxControllerCode();
-
-        this.updateForm();
+    protected valueChanged(previous: string, next: string): void {
+        super.valueChanged(previous, next);
+        DOM.queueUpdate(() => {
+            const selectedOption = this.listbox.selectedOption;
+            this.displayValue = selectedOption.textContent || selectedOption.value;
+        });
     }
 
     private updateForm(): void {
-        //
+        const value = this.value ? this.value : null;
+        this.setFormValue(value, value);
     }
 
-
-    public keypressHandlerButton = (e: KeyboardEvent): void => {
-        super.keypressHandler(e);
-        switch (e.keyCode) {
-            case KeyCodes.space:
-                this.open = !this.open;
-                console.log("Call one")
-                setTimeout(() => this.setFocusOnOption(), 0);
-                break;
-            case KeyCodes.enter:
-                this.open = !this.open;
-                console.log("Call two")
-                setTimeout(() => this.setFocusOnOption(), 0);
-                e.preventDefault(); // Enter also causes 'click' to fire for <button>s.  Prevent that so we don't immediately revert the change to this.open.
-                break;
-            case KeyCodes.tab:
-                this.setFocusOnOption();
-                break;
-        }
-    }
-
-    /**
-     * Handle keyboard interactions for listbox
-     */
-    public keypressHandlerListbox = (e: KeyboardEvent): void => {
+    public keydownHandler = (e: KeyboardEvent): void => {
         super.keypressHandler(e);
 
-        // Don't scroll the page for arrow keys, and spacebar.
-        e.preventDefault();
-        switch (e.keyCode) {
-            case KeyCodes.arrowDown:
-                this.adjust(1)
-                break;
-            case KeyCodes.arrowUp:
-                this.adjust(-1)
-                break;
-            case KeyCodes.enter:
-                this.value = this.options[this.activeOptionIndex].value;
-                console.log("Fire Enter", this.activeOptionIndex);
-                this.options[this.activeOptionIndex].selected = true;
-                this.optionSelectionChange(this.options[this.activeOptionIndex].value);
-                break;
-            case KeyCodes.escape:
-                this.options[this.activeOptionIndex].removeAttribute('current');
-                this.open = !this.open;
-                console.log("Call three")
-                break;
-            // Handle type ahead mode
-            default:
-                if (/^.$/.test(e.key)) {
-                    this.handleTypeAhead(e.key);
-                }
-                break;
-        }
-    };
+        const keyCode = e.key || e.key.charCodeAt(0);
 
-    /**
-     * Set state to closed when focus moves away from the listbox ("light dismiss").
-     * With this implementation, clicking on non-focusable content inside
-     * the listbox will cause it to close (e.relatedTarget will be null).
-     * This issue is not trivially remedied (see https://github.com/WICG/open-ui/issues/137).
-     * But, this behavior works sufficiently well for the current set of examples.
-     */
-    public focusoutHandlerListbox = (e: FocusEvent): void => {
-        const elementReceivingFocus = e.relatedTarget as HTMLElement;
-        if (this.listbox === undefined) {
-            return
-        }
-        if (this.open && (!elementReceivingFocus || !this.listbox[0].contains(elementReceivingFocus))) {
+        if (keyCode === "Escape") {
             this.open = false;
+            DOM.queueUpdate(() => this.button.focus());
+            return;
         }
-    };
 
-    /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
-    public clickHandler = (e: MouseEvent): void => {
-        if (!this.disabled && !this.readOnly) {
-            this.open = !this.open;
-            setTimeout(() => this.setFocusOnOption(), 0);
+        if ([" ", "Enter"].includes(`${keyCode}`)) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            if (!this.disabled) {
+                this.open = !this.open;
+            }
+
+            if (this.open) {
+                this.listbox.focusFirstSelectedOption();
+            } else {
+                DOM.queueUpdate(() => this.button.focus());
+            }
+
+            return;
         }
-    };
 
-    /**
-     * This will only allow a selection of multiple values if the
-     * multiple attribute is set
-     */
-    public handleMultiple = (value: string): void => {
-        if (!this.multiple) {
-            this.options.forEach(element => {
-                if (element.value != this.value && element.selected) {
-                    element.selected = false;
-                }
+        // Pass the event to the listbox
+        if (!e.defaultPrevented) {
+            DOM.queueUpdate(() => {
+                e.preventDefault();
+                this.listbox.dispatchEvent(e);
             });
         }
-    }
+    };
 
-    /**
-     * Will set focus to the necessary element
-     * TODO: This will probably get removed by moveOption
-     */
-    public setFocusOnOption = (optionToFocus = null): void => {
-        //this.getFirstSelectedOption();
-        if(this.open) {
-            console.log("Calls");
-            this.getFirstSelectedOption();
-            this.options[this.activeOptionIndex].focus();
+    public focusoutHandler = (e: FocusEvent): void => {
+        const focusTarget = e.relatedTarget as HTMLElement;
+
+        if (!this.open) {
+            return;
+        }
+
+        if (this.isSameNode(focusTarget)) {
+            e.stopPropagation();
+            e.preventDefault();
+            return;
+        }
+
+        if (!this.listbox.listboxItems.includes(focusTarget as Option)) {
+            e.stopPropagation();
+            this.open = false;
+
+            if (!focusTarget) {
+                DOM.queueUpdate(() => this.button.focus());
+            }
         }
     }
 
-    public adjust(adjustment: number): void {
-        this.activeOptionIndex = wrapInBounds(
-            0,
-            this.options.length - 1,
-            this.activeOptionIndex + adjustment
-        );
-        this.options[this.activeOptionIndex].focus();
-    }
-
-    public updateButtonPartAttr(): void {
-        if(!this.button) {
-            return
+    public clickHandler = (e: MouseEvent): void => {
+        if (this.disabled) {
+            return;
         }
 
-        switch(this.open) {
-            case true:
-                this.button.setAttribute('aria-expanded', 'true');
-                break;
-            case false:
-                this.button.setAttribute('aria-expanded', 'false');
-                break;
-        }
-    }
+        this.open = !this.open;
 
+        if (this.open) {
+            this.listbox.focusFirstSelectedOption();
+            return;
+        }
+
+        DOM.queueUpdate(() => this.button.focus());
+    };
+
+    @observable
+    public selectedValue: HTMLElement;
     /**
      * This will update the text that is in the select's
      * button by default that renders the selected value
@@ -229,138 +188,28 @@ export class Select extends FormAssociated<HTMLInputElement> {
      */
     private updateSelectValue(value: string) {
         this.value = value;
-        if (this.selectedValue) this.selectedValue.textContent = value;
-    }
-
-    private getFirstSelectedOption(): Option | null {
-        const selectedOption: Option | undefined = this.options.find(x => x.selected);
-        if (selectedOption) {
-            this.activeOptionIndex = Array.from(this.options).indexOf(selectedOption);
-        }
-        return selectedOption || null
-    }
-
-    /**
-     * When a user clicks on an option we need to update the known
-     * parts of
-     * - currently selected value
-     * - array of values
-     */
-    /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
-    public optionSelectionChange(value: string): void {
-        this.handleMultiple(value);
-
-        this.options.forEach(element  => {
-            if (element.value != value) {
-                const el: any = element;
-                el.removeAttribute('current');
-                this.activeOptionIndex = Array.from(this.options).indexOf(element);
-            }
-        });
-
-        this.updateSelectValue(value);
-        this.typeAheadValue = '';
-        this.open = !this.open;
-        console.log("Call six")
-        // Focus back on the select when menu closes
-        this.button.focus()
-    }
-
-    /**
-     * When the author leverages the slot we need to ensure that the a11y and
-     * functionality that is tied to the given part still function as designed
-     */
-    public registerButtonSlotChange(): void {
-        const slot = this.shadowRoot!.querySelector("slot[name=button-container]");
-        if (slot) {
-            slot.addEventListener('slotchange', () => {
-                this.applyButtonControllerCode();
-            });
+        if (this.selectedValue) {
+            this.selectedValue.textContent = value;
         }
     }
 
-    private applyButtonControllerCode(): void {
-        if (this.button) {
-            console.log("This hits", this.button)
-            this.button.setAttribute('tabindex', '0');
-            this.button.setAttribute('aria-haspopup', 'listbox');
-            this.button.setAttribute('aria-expanded', this.open ? 'true' : 'false');
-            this.button.setAttribute('role', 'button');
+    public connectedCallback(): void {
+        super.connectedCallback();
 
-            this.button.addEventListener('click', this.clickHandler);
-            this.button.addEventListener('keydown', this.keypressHandlerButton);
-        }
-    }
+        this.options = this.listbox.listboxItems;
 
-    private applyListboxControllerCode(): void {
-        this.listbox.forEach((listbox: HTMLElement, index: number) => {
-            listbox.setAttribute("role", "listbox");
-            listbox.addEventListener("keydown", this.keypressHandlerListbox);
-            listbox.addEventListener("focusout", this.focusoutHandlerListbox);
-        })
-    }
+        this.button.setAttribute("aria-haspopup", "listbox");
+        this.button.setAttribute("aria-expanded", this.open ? "true" : "false");
+        this.button.setAttribute("role", "button");
+        this.button.addEventListener("mousedown", this.clickHandler);
 
-    private regexEscape(str) {
-        return str.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&");
-    }
+        this.addEventListener("keydown", this.keydownHandler);
+        this.addEventListener("focusout", this.focusoutHandler);
 
-    /**
-     * Move focus to an option whose label matches characters typed by the user.
-     * Consecutive keystrokes are batched into a buffer of search text used
-     * to match against the set of options.  If TYPE_AHEAD_TIMEOUT_MS passes
-     * between consecutive keystrokes, the search restarts.
-     *
-     * @param typedKey - the key to be evaluated
-     */
-    private typeAheadValue: string = '';
-    private typeAheadTimeoutHandler: number = -1;
-    private typeAheadExpired: boolean = false;
-    private static readonly TYPE_AHEAD_TIMEOUT_MS = 1000;
-    public handleTypeAhead(typedKey) {
-        // For every keystroke, reset the timer that triggers when enough
-        // time has elapsed such that the search should restart.
-        window.clearTimeout(this.typeAheadTimeoutHandler);
-        this.typeAheadTimeoutHandler = window.setTimeout(() => {
-            this.typeAheadExpired = true;
-        }, Select.TYPE_AHEAD_TIMEOUT_MS);
+        this.listbox.addEventListener("change", this.listboxChangeHandler);
+        this.listbox.addEventListener("click", this.clickHandler);
 
-        if (this.typeAheadExpired) {
-            this.typeAheadValue = '';
-        }
-
-        this.typeAheadValue = `${this.typeAheadValue}${typedKey}`;
-
-        const focusedIndex = this.options.indexOf(document.activeElement as any);
-        const searchStartOffset = this.typeAheadExpired ? 1 : 0;
-        // Try to match first against options that come after the currently
-        // selected option. If none of those match, loop back around starting
-        // from the top of the list. If we're in the middle of a search,
-        // continue matching against the currently focused option before moving
-        // on to the next option.
-        const optionsForSearch = this.options
-            .slice(focusedIndex + searchStartOffset, this.options.length)
-            .concat(this.options.slice(0, focusedIndex + searchStartOffset));
-
-        const pattern = `^(${this.regexEscape(this.typeAheadValue)})`;
-        const re = new RegExp(pattern, "gi");
-
-        for (const option of optionsForSearch) {
-            // Match against the visible text of the option, rather than
-            // the `value` attribute. For a real <option> element, the
-            // `label` property could be used here.
-            // Chromium/Firefox's native <select>s ignore whitespace at the
-            // beginning/end of the visible text when matching, so trim()
-            // the search text to align with that behavior.
-            const element: any = option;
-            const matches = element.innerText.trim().match(re);
-
-            if (matches) {
-                this.setFocusOnOption(element);
-                break;
-            }
-        }
-
-        this.typeAheadExpired = false;
+        this.updateForm();
     }
 }
 
