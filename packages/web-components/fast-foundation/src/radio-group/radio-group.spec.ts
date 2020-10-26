@@ -1,4 +1,4 @@
-import { expect } from "chai";
+import { assert, expect } from "chai";
 import { RadioGroup, RadioGroupTemplate as template } from "./index";
 import { Radio, RadioTemplate as itemTemplate } from "../radio";
 import { fixture } from "../fixture";
@@ -296,10 +296,12 @@ describe("Radio Group", () => {
         await DOM.nextUpdate();
 
         const radios: NodeList = element.querySelectorAll("fast-radio");
-        expect((radios[2] as HTMLInputElement).checked).to.equal(false);
         expect((radios[1] as HTMLInputElement).checked).to.equal(true);
-        // radio-group explicitly sets non-matching radio's checked to false if a value match was found
-        expect((radios[2] as HTMLInputElement).hasAttribute("checked")).to.equal(false);
+
+        // radio-group explicitly sets non-matching radio's checked to false if a value match was found,
+        // but the attribute should still persist.
+        expect((radios[2] as HTMLInputElement).hasAttribute("checked")).to.equal(true);
+        expect((radios[2] as HTMLInputElement).checked).to.equal(false);
     });
 
     it("should NOT set a child radio to `checked` if its value does not match the radiogroup `value`", async () => {
@@ -327,6 +329,36 @@ describe("Radio Group", () => {
         expect(
             element.querySelectorAll("fast-radio")[1].getAttribute("aria-checked")
         ).to.equal("false");
+
+        await disconnect();
+    });
+
+    it("should allow resetting of elements by the parent form", async () => {
+        const { element, connect, disconnect } = await fixture(html`
+            <form>
+                <fast-radio-group value="bar" name='foo'>
+                    <fast-radio value="foo">Foo</fast-radio>
+                    <fast-radio value="bar" checked>Bar</fast-radio>
+                    <fast-radio value="baz" ></fast-radio>Baz</fast-radio>
+                </fast-radio-group>
+            </form>
+        `);
+
+        await connect();
+
+        const elements = element.querySelectorAll("fast-radio") as NodeListOf<Radio>;
+
+        elements[0].checked = true;
+
+        assert(element[0].checked === true);
+        assert(element[1].checked === false);
+        assert(element[2].checked === false);
+
+        (element as HTMLFormElement).reset();
+
+        assert(element[0].checked === false);
+        assert(element[1].checked === true);
+        assert(element[2].checked === false);
 
         await disconnect();
     });

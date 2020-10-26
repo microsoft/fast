@@ -1,4 +1,4 @@
-import { expect } from "chai";
+import { assert, expect } from "chai";
 import { Checkbox, CheckboxTemplate as template } from "./index";
 import { fixture } from "../fixture";
 import { DOM, customElement, html } from "@microsoft/fast-element";
@@ -342,6 +342,61 @@ describe("Checkbox", () => {
 
             expect(element.validity.valueMissing).to.equal(false);
             await disconnect();
+        });
+    });
+
+    describe("who's parent form has it's reset() method invoked", () => {
+        it("should set it's checked property to false if the checked attribute is unset", async () => {
+            const { element, connect, disconnect } = await setup();
+            await connect();
+
+            const form = document.createElement("form");
+            document.body.appendChild(form);
+            form.appendChild(element);
+            element.checked = true;
+
+            assert(element.getAttribute("checked") === null);
+            assert(element.checked);
+            form.reset();
+
+            assert(!element.checked);
+        });
+
+        it("should set it's checked property to true if the checked attribute is set", async () => {
+            const { element, connect, disconnect } = await setup();
+            await connect();
+
+            const form = document.createElement("form");
+            document.body.appendChild(form);
+            form.appendChild(element);
+            element.setAttribute("checked", "");
+
+            assert(element.getAttribute("checked") === "");
+            assert(element.checked);
+
+            element.checked = false;
+            assert(!element.checked);
+            form.reset();
+
+            assert(element.checked);
+        });
+        it("should put the control into a clean state, where checked attribute changes change the checked property prior to user or programmatic interaction", () => {
+            const element = document.createElement("fast-checkbox") as FASTCheckbox;
+            const form = document.createElement("form");
+            form.appendChild(element);
+            document.body.appendChild(form);
+            element.checked = true;
+            element.removeAttribute("checked");
+
+            assert(element.checked);
+
+            form.reset();
+
+            assert(!element.checked);
+
+            element.setAttribute("checked", "");
+
+            assert(element.value);
         });
     });
 });
