@@ -90,7 +90,10 @@ export const BaseButtonStyles = css`
     }
 
     .start,
-    .end,
+    .end {
+        display: flex;
+    }
+
     ::slotted(svg) {
         ${
             /* Glyph size and margin-left is temporary -
