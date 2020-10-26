@@ -483,11 +483,8 @@ export interface MenuItem extends StartEnd {
 
 // @public
 export enum MenuItemRole {
-    // (undocumented)
     menuitem = "menuitem",
-    // (undocumented)
     menuitemcheckbox = "menuitemcheckbox",
-    // (undocumented)
     menuitemradio = "menuitemradio"
 }
 
@@ -917,17 +914,11 @@ export class Tooltip extends FASTElement {
 
 // @public
 export enum TooltipPosition {
-    // (undocumented)
     bottom = "bottom",
-    // (undocumented)
     end = "end",
-    // (undocumented)
     left = "left",
-    // (undocumented)
     right = "right",
-    // (undocumented)
     start = "start",
-    // (undocumented)
     top = "top"
 }
 
