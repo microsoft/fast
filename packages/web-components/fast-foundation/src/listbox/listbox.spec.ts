@@ -5,7 +5,7 @@ import { fixture } from "../fixture";
 import { Listbox, ListboxTemplate as template } from "./index";
 
 @customElement({
-    name: "fast-list-box",
+    name: "fast-listbox",
     template,
 })
 class FASTListbox extends Listbox {}
