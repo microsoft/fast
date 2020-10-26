@@ -6,7 +6,7 @@ The CSS controls consist of an abstract control and two extended controls, CSS s
 
 ## Data import
 
-The CSS data will be imported from `@microsoft/fast-tooling`, for more information on the exported data format for this, refer to [the documentation](../../../../fast-tooling/build/convert-mdn-data.md).
+The CSS data will be imported from `@microsoft/fast-tooling`, for more information on the exported data format for this, refer to [the documentation](../../../../fast-tooling/src/data-utilities/mapping.mdn-data.md).
 
 ## Wireframe
 
