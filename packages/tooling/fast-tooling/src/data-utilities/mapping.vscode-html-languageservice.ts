@@ -142,10 +142,6 @@ function mapNodeToDataDictionary(
 
         return false;
     });
-
-    if (schemaId === null || schemaId === undefined) {
-        console.log("schemaId was:", schemaId, " value:", value, " node:", node);
-    }
     const isNode: boolean = node && typeof node.tag === "string";
     const hasParent: boolean = typeof parentId === "string";
     const hasContent: boolean =

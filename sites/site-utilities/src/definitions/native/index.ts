@@ -1,42 +1,17 @@
 import { DataType } from "@microsoft/fast-tooling";
 import {
     WebComponentAttribute,
-    WebComponentAttributeValues,
     WebComponentDefinition,
 } from "@microsoft/fast-tooling/dist/data-utilities/web-component";
-// export * from "./div.definition";
-// export * from "./heading.definition";
-// export * from "./image.definition";
-// export * from "./label.definition";
-// export * from "./paragraph.definition";
-export * from "./path.definition";
-// export * from "./span.definition";
-// export * from "./style.definition";
-export * from "./svg.definition";
+import { voidElements } from "@microsoft/fast-tooling/dist/data-utilities/html-element";
 
-const voidElements: string[] = [
-    "area",
-    "base",
-    "br",
-    "col",
-    "embed",
-    "hr",
-    "img",
-    "input",
-    "keygen",
-    "link",
-    "menuitem",
-    "meta",
-    "param",
-    "source",
-    "track",
-    "wbr",
-];
+export * from "./path.definition";
+export * from "./svg.definition";
 
 const vcodeHTMLData = require("vscode-web-custom-data/data/browsers.html-data.json");
 const valueSets: any[] = vcodeHTMLData["valueSets"];
 
-export const nativeHTMLDefinitions: WebComponentDefinition = {
+export const htmlNativeDefinitions: WebComponentDefinition = {
     version: vcodeHTMLData["version"],
     tags: vcodeHTMLData["tags"],
 };
@@ -51,17 +26,10 @@ function getDataTypeForAttribute(attribute: any): DataType {
     }
 }
 
-function findValueSet(valueSetName: string): any | undefined {
-    return valueSets.find((item: any) => {
+function findValueSetValues(valueSetName: string): any | undefined {
+    const valueSet: any | undefined = valueSets.find((item: any) => {
         return item.name === valueSetName;
     });
-}
-
-function getValuesFromValueSet(valueName: string | undefined): any[] | undefined {
-    let valueSet: any | undefined;
-    if (valueName !== undefined) {
-        valueSet = findValueSet(valueName);
-    }
     return valueSet && valueSet.values ? valueSet.values : undefined;
 }
 
@@ -71,20 +39,18 @@ function convertAttributeData(tag: any): WebComponentAttribute[] {
     }
 
     return tag.attributes?.map((attribute: any) => {
-        let valueSet: any[] | undefined = getValuesFromValueSet(attribute.valueSet);
-
         return {
             name: attribute.name,
             description: attribute.name,
             type: getDataTypeForAttribute(attribute),
             default: undefined,
             required: false,
-            values: valueSet,
+            values: findValueSetValues(attribute.valueSet),
         };
     });
 }
 
-nativeHTMLDefinitions.tags = nativeHTMLDefinitions.tags?.map((tag: any) => {
+htmlNativeDefinitions.tags = htmlNativeDefinitions.tags?.map((tag: any) => {
     if (!voidElements.includes(tag.name)) {
         Object.assign(tag, {
             slots: [
@@ -104,5 +70,3 @@ nativeHTMLDefinitions.tags = nativeHTMLDefinitions.tags?.map((tag: any) => {
     tag.attributes = convertAttributeData(tag);
     return tag;
 });
-
-console.log("nativeHTMLDefinitions:", nativeHTMLDefinitions);
