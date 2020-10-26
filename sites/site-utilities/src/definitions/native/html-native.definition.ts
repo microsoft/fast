@@ -1,8 +1,5 @@
 import { DataType } from "@microsoft/fast-tooling";
-import {
-    WebComponentAttribute,
-    WebComponentDefinition,
-} from "@microsoft/fast-tooling/dist/data-utilities/web-component";
+import { WebComponentAttribute } from "@microsoft/fast-tooling/dist/data-utilities/web-component";
 import { voidElements } from "@microsoft/fast-tooling/dist/data-utilities/html-element";
 
 /**
@@ -10,11 +7,12 @@ import { voidElements } from "@microsoft/fast-tooling/dist/data-utilities/html-e
  * speficially the browsers.html-data.json which defines native html elements and their attributes
  * as used by vscode
  */
-const vcodeHTMLData = require("vscode-web-custom-data/data/browsers.html-data.json");
+import * as vcodeHTMLData from "vscode-web-custom-data/data/browsers.html-data.json";
+
 const valueSets: any[] = vcodeHTMLData.valueSets;
 
-export const htmlNativeDefinitions: WebComponentDefinition = {
-    version: vcodeHTMLData.version,
+export const htmlNativeDefinitions: any = {
+    version: 1, // WebComponentDefinition has this typed as 1, vcodeHTMLData.version could be anything
     tags: vcodeHTMLData.tags,
 };
 
