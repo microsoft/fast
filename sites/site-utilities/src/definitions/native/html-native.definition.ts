@@ -5,20 +5,17 @@ import {
 } from "@microsoft/fast-tooling/dist/data-utilities/web-component";
 import { voidElements } from "@microsoft/fast-tooling/dist/data-utilities/html-element";
 
-export * from "./path.definition";
-export * from "./svg.definition";
-
 /**
  * These definitions are dependent on a devDependency on "vscode-web-custom-data"
  * speficially the browsers.html-data.json which defines native html elements and their attributes
  * as used by vscode
  */
 const vcodeHTMLData = require("vscode-web-custom-data/data/browsers.html-data.json");
-const valueSets: any[] = vcodeHTMLData["valueSets"];
+const valueSets: any[] = vcodeHTMLData.valueSets;
 
 export const htmlNativeDefinitions: WebComponentDefinition = {
-    version: vcodeHTMLData["version"],
-    tags: vcodeHTMLData["tags"],
+    version: vcodeHTMLData.version,
+    tags: vcodeHTMLData.tags,
 };
 
 function getDataTypeForAttribute(attribute: any): DataType {
@@ -47,12 +44,16 @@ function convertAttributeData(tag: any): WebComponentAttribute[] {
         return [];
     }
 
+    /**
+     * default and required are not extractable from vscode html definitions files
+     * so hard coding them to what was in the previously used definition files, "" and false
+     */
     return tag.attributes?.map((attribute: any) => {
         return {
             name: attribute.name,
             description: attribute.name,
             type: getDataTypeForAttribute(attribute),
-            default: undefined,
+            default: "",
             required: false,
             values: findValueSetValues(attribute.valueSet),
         };
