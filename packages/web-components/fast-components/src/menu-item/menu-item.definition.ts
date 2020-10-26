@@ -1,6 +1,6 @@
 import { WebComponentDefinition } from "@microsoft/fast-tooling/dist/data-utilities/web-component";
 import { DataType } from "@microsoft/fast-tooling";
-import { MenuItemRole } from "@microsoft/fast-foundation";
+import { MenuItemRole } from "@microsoft/fast-foundation/dist/esm/menu-item/menu-item.options";
 
 export const fastMenuItemDefinition: WebComponentDefinition = {
     version: 1,

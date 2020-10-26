@@ -1,13 +1,7 @@
 import { attr, booleanConverter, FASTElement } from "@microsoft/fast-element";
+import { FlipperDirection } from "./flipper.options";
 
-/**
- * The direction options for flipper.
- * @public
- */
-export enum FlipperDirection {
-    next = "next",
-    previous = "previous",
-}
+export { FlipperDirection };
 
 /**
  * A Flipper Custom HTML Element.

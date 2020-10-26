@@ -1,6 +1,6 @@
 import { WebComponentDefinition } from "@microsoft/fast-tooling/dist/data-utilities/web-component";
 import { DataType } from "@microsoft/fast-tooling";
-import { TextFieldType } from "@microsoft/fast-foundation";
+import { TextFieldType } from "@microsoft/fast-foundation/dist/esm/text-field/text-field.options";
 
 export const fastTextFieldDefinition: WebComponentDefinition = {
     version: 1,
