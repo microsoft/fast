@@ -219,13 +219,15 @@ export class Tabs extends FASTElement {
     }
 
     private setComponent(): void {
-        this.activeid = this.tabIds[this.activeTabIndex] as string;
-        this.change();
-        this.setTabs();
-        this.handleActiveIndicatorPosition();
-        this.setTabPanels();
-        this.focusTab();
-        this.change();
+        if (this.activeTabIndex !== this.prevActiveTabIndex) {
+            this.activeid = this.tabIds[this.activeTabIndex] as string;
+            this.change();
+            this.setTabs();
+            this.handleActiveIndicatorPosition();
+            this.setTabPanels();
+            this.focusTab();
+            this.change();
+        }
     }
 
     private handleTabClick = (event: MouseEvent): void => {
