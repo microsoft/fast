@@ -58,20 +58,20 @@ export const MenuItemStyles = css`
         color: ${accentForegroundCutRestBehavior.var};
     }
 
-    :host(.disabled) {
+    :host([disabled]) {
         cursor: ${disabledCursor};
         opacity: var(--disabled-opacity);
     }
 
-    :host(.disabled:hover) {
+    :host([disabled]:hover) {
         color: ${neutralForegroundRestBehavior.var};
         fill: currentcolor;
         background: ${neutralFillStealthRestBehavior.var}
     }
 
-    :host(.disabled:hover) .start,
-    :host(.disabled:hover) .end,
-    :host(.disabled:hover)::slotted(svg) {
+    :host([disabled]:hover) .start,
+    :host([disabled]:hover) .end,
+    :host([disabled]:hover)::slotted(svg) {
         fill: ${neutralForegroundRestBehavior.var};
     }
 
@@ -133,11 +133,11 @@ export const MenuItemStyles = css`
                 color: ${SystemColors.HighlightText};
                 fill: currentcolor;
             }
-            :host(.disabled),
-            :host(.disabled:hover),
-            :host(.disabled:hover) .start,
-            :host(.disabled:hover) .end,
-            :host(.disabled:hover)::slotted(svg) {
+            :host([disabled]),
+            :host([disabled]:hover),
+            :host([disabled]:hover) .start,
+            :host([disabled]:hover) .end,
+            :host([disabled]:hover)::slotted(svg) {
                 background: ${SystemColors.Canvas};
                 color: ${SystemColors.GrayText};
                 fill: currentcolor;
