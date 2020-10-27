@@ -167,22 +167,22 @@ export class Tabs extends FASTElement {
                     "aria-controls",
                     typeof tabpanelId !== "string" ? `panel-${index + 1}` : tabpanelId
                 );
-                tab.setAttribute(
-                    "style",
-                    this.isHorizontal()
-                        ? `grid-column: ${index + 1};`
-                        : `grid-row: ${index + 1};`
-                );
                 tab.addEventListener("click", this.handleTabClick);
                 tab.addEventListener("keydown", this.handleTabKeyDown);
                 tab.setAttribute("tabindex", this.activeTabIndex === index ? "0" : "-1");
                 if (this.activeTabIndex === index) {
                     this.activetab = tab;
                 }
-                !this.isHorizontal()
-                    ? tab.classList.add("vertical")
-                    : tab.classList.remove("vertical");
             }
+            tab.setAttribute(
+                "style",
+                this.isHorizontal()
+                    ? `grid-column: ${index + 1};`
+                    : `grid-row: ${index + 1};`
+            );
+            !this.isHorizontal()
+                ? tab.classList.add("vertical")
+                : tab.classList.remove("vertical");
         });
     };
 
