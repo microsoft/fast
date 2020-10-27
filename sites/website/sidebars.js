@@ -21,6 +21,8 @@ module.exports = {
                         "components/accordion",
                         "components/anchor",
                         "components/badge",
+                        "components/breadcrumb",
+                        "components/breadcrumb-item",
                         "components/button",
                         "components/card",
                         "components/checkbox",
