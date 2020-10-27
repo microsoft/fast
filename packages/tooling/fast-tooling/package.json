@@ -20,9 +20,11 @@
     "scripts": {
         "build": "tsc -p ./tsconfig.build.json",
         "build:message-system": "webpack --config webpack.message-system.config.js",
-        "clean:dist": "node ../../../build/clean.js dist",
+        "build:node": "tsc -p ./tsconfig.node.json",
+        "clean:dist": "node ../../../build/clean.js dist && node ../../../build/clean.js .tmp",
+        "convert:mdn-data": "node -r esm ./build/generate-mdn-data-files.js",
         "coverage": "jest --coverage",
-        "prepare": "yarn clean:dist && yarn build && yarn build:message-system",
+        "prepare": "yarn clean:dist && yarn build && yarn build:message-system && yarn build:node && yarn convert:mdn-data",
         "prettier": "prettier --config ../../../.prettierrc --write \"**/*.ts\"",
         "prettier:diff": "prettier --config ../../../.prettierrc \"**/*.ts\" --list-different",
         "start": "yarn build:message-system && webpack-dev-server --history-api-fallback --progress",
