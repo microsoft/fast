@@ -34,6 +34,7 @@ describe("The repeat", () => {
         const altItemTemplate = html<Item>`*${x => x.name}`;
         const oneThroughTen = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
         const zeroThroughTen = [0].concat(oneThroughTen);
+        const wrappedItemTemplate = html<Item>`<div>${x => x.name}</div>`;
 
         interface Item {
             name: string;
@@ -76,13 +77,14 @@ describe("The repeat", () => {
         function createOutput(
             size: number,
             filter: (index: number) => boolean = () => true,
-            prefix = ""
+            prefix = "",
+            wrapper = input => input
         ) {
             let output = "";
 
             for (let i = 0; i < size; ++i) {
                 if (filter(i)) {
-                    output += `${prefix}item${i + 1}`;
+                    output += wrapper(`${prefix}item${i + 1}`);
                 }
             }
 
@@ -110,14 +112,16 @@ describe("The repeat", () => {
                 const { parent, location } = createLocation();
                 const directive = repeat<ViewModel>(
                     x => x.items,
-                    itemTemplate
+                    wrappedItemTemplate
                 ) as RepeatDirective;
                 const behavior = directive.createBehavior(location);
                 const data = new ViewModel(size);
 
                 behavior.bind(data, defaultExecutionContext);
 
-                expect(toHTML(parent)).to.equal(createOutput(size));
+                expect(toHTML(parent)).to.equal(
+                    createOutput(size, void 0, void 0, input => `<div>${input}</div>`)
+                );
 
                 data.items = [];
 
@@ -129,7 +133,9 @@ describe("The repeat", () => {
 
                 await DOM.nextUpdate();
 
-                expect(toHTML(parent)).to.equal(createOutput(size));
+                expect(toHTML(parent)).to.equal(
+                    createOutput(size, void 0, void 0, input => `<div>${input}</div>`)
+                );
             });
         });
 
