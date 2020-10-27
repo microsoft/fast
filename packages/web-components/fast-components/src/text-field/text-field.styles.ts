@@ -94,37 +94,37 @@ export const TextFieldStyles = css`
         margin-inline-end: 11px;
     }
 
-    :host(:hover:not(.disabled)) .root {
+    :host(:hover:not([disabled])) .root {
         background: ${neutralFillInputHoverBehavior.var};
         border-color: ${accentFillHoverBehavior.var};
     }
 
-    :host(:active:not(.disabled)) .root {
+    :host(:active:not([disabled])) .root {
         background: ${neutralFillInputHoverBehavior.var};
         border-color: ${accentFillActiveBehavior.var};
     }
 
-    :host(:focus-within:not(.disabled)) .root {
+    :host(:focus-within:not([disabled])) .root {
         border-color: ${neutralFocusBehavior.var};
         box-shadow: 0 0 0 1px ${neutralFocusBehavior.var} inset;
     }
 
-    :host(.filled) .root {
+    :host([appearance="filled"]) .root {
         background: ${neutralFillRestBehavior.var};
     }
 
-    :host(.filled:hover:not(.disabled)) .root {
+    :host([appearance="filled"]:hover:not([disabled])) .root {
         background: ${neutralFillHoverBehavior.var};
     }
 
-    :host(.disabled) .label,
-    :host(.readonly) .label,
-    :host(.readonly) .control,
-    :host(.disabled) .control {
+    :host([disabled]) .label,
+    :host([readonly]) .label,
+    :host([readonly]) .control,
+    :host([disabled]) .control {
         cursor: ${disabledCursor};
     }
 
-    :host(.disabled) {
+    :host([disabled]) {
         opacity: var(--disabled-opacity);
     }
 
@@ -145,14 +145,14 @@ export const TextFieldStyles = css`
     forcedColorsStylesheetBehavior(
         css`
             .root,
-            :host(.filled) .root {
+            :host([appearance="filled"]) .root {
                 forced-color-adjust: none;
                 background: ${SystemColors.Field};
                 border-color: ${SystemColors.FieldText};
             }
-            :host(:hover:not(.disabled)) .root,
-            :host(.filled:hover:not(.disabled)) .root,
-            :host(.filled:hover) .root {
+            :host(:hover:not([disabled])) .root,
+            :host([appearance="filled"]:hover:not([disabled])) .root,
+            :host([appearance="filled"]:hover) .root {
                 background: ${SystemColors.Field};
                 border-color: ${SystemColors.Highlight};
             }
@@ -160,11 +160,11 @@ export const TextFieldStyles = css`
             .end {
                 fill: currentcolor;
             }
-            :host(.disabled) {
+            :host([disabled]) {
                 opacity: 1;
             }
-            :host(.disabled) .root,
-            :host(.filled:hover.disabled) .root {
+            :host([disabled]) .root,
+            :host([appearance="filled"]:hover[disabled]) .root {
                 border-color: ${SystemColors.GrayText};
                 background: ${SystemColors.Field};
             }
