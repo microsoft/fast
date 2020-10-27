@@ -2,7 +2,7 @@
  * This file is generated from build/generate-mdn-data-files.js
  * any modifications will be overwritten.
  */
-export default {
+export const properties = {
     "--*": {
         name: "--*",
         appliesTo: "allElements",

@@ -18,14 +18,14 @@ const comment = `/**
 (function () {
     fs.writeFile(
         outFilePath,
-        `${comment}export default ${JSON.stringify(
+        `${comment}export const properties = ${JSON.stringify(
             mapCSSProperties({
                 properties: mdnCSS.properties,
                 syntaxes: mdnCSS.syntaxes,
                 types: mdnCSS.types,
             }),
             null,
-            2
+            4
         )}`,
         {},
         error => {
